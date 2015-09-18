@@ -1,0 +1,77 @@
+﻿<Window x:Class="ChartsTest.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:charts="clr-namespace:Charts.Charts;assembly=Charts"
+        xmlns:shapes="clr-namespace:Charts.Shapes;assembly=Charts"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="600" Width="600"
+        FontFamily="Calibri"
+        FontSize="14"
+        Foreground="#404040">
+    <Window.Resources>
+        <Style TargetType="Button">
+            <Setter Property="Background" Value="Transparent"></Setter>
+            <Setter Property="BorderThickness" Value="2"></Setter>
+            <Setter Property="BorderBrush" Value="Gray"></Setter>
+            <Setter Property="Padding" Value="10 5"></Setter>
+        </Style>
+    </Window.Resources>
+    <Grid x:Name="LayoutRoot">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+        </Grid.RowDefinitions>
+        <ScrollViewer Grid.Row="0" Padding="15">
+            <StackPanel>
+                <Image Source="live.png" Stretch="None" Margin="0 0 0 20"></Image>
+                <TextBlock TextWrapping="Wrap">Here is a list of examples scroll down to check them out, resize window, charts will follow too.</TextBlock>
+                <TextBlock FontSize="20" FontWeight="Bold" HorizontalAlignment="Center" Margin="10">Line Chart</TextBlock>
+                <charts:LineChart Height="300" x:Name="LineChart" 
+                                      Background="#FBFBFB" BorderBrush="LightGray" BorderThickness="1"
+                                      Zooming="True"></charts:LineChart>
+                <TextBlock TextWrapping="Wrap">1. Click on buttons to test auto-update properties.</TextBlock>
+                <TextBlock TextWrapping="Wrap">2. You can use mouse wheel to zoom and drag graph to pan it when zoomed</TextBlock>
+                <TextBlock TextWrapping="Wrap">3. All types of graphs could do this too.</TextBlock>
+                <TextBlock FontSize="20" FontWeight="Bold" HorizontalAlignment="Center" Margin="10">Bar Chart</TextBlock>
+                <charts:BarChart Height="300" x:Name="BarChart" Margin="0 10"
+                                 Background="#FBFBFB" BorderBrush="LightGray" 
+                                 BorderThickness="1"></charts:BarChart>
+                <TextBlock FontSize="20" FontWeight="Bold" HorizontalAlignment="Center" Margin="10">Pie and Doughnut Chart</TextBlock>
+                <charts:PieChart Height="300" Name="PieChart" Margin="10"
+                                 Background="#FBFBFB" BorderBrush="LightGray" 
+                                 BorderThickness="1" InnerRadius="50"></charts:PieChart>
+                <charts:PieChart Height="300" Name="PieChart1" Margin="10"
+                                 Background="#FBFBFB" BorderBrush="LightGray" 
+                                 BorderThickness="1" InnerRadius="0"></charts:PieChart>
+                <TextBlock Margin="10" TextWrapping="Wrap">change InnerRadius property to 0 to make a pie chart</TextBlock>
+                <TextBlock FontSize="20" FontWeight="Bold" HorizontalAlignment="Center" Margin="10">Scatter Chart</TextBlock>
+                <charts:ScatterChart Height="300" Name="ScatterChart" Margin="10"
+                                 Background="#FBFBFB" BorderBrush="LightGray" 
+                                 BorderThickness="1" LineType="Bezier"></charts:ScatterChart>
+                <TextBlock FontSize="20" FontWeight="Bold" HorizontalAlignment="Center" Margin="10">Finally a performance test!</TextBlock>
+                <charts:ScatterChart Height="300" Name="PerfomranceChart" Margin="10"
+                                     Background="#FBFBFB" BorderBrush="LightGray" 
+                                     BorderThickness="1" DisableAnimation="True" 
+                                     LineType="None"
+                                     ></charts:ScatterChart>
+                <StackPanel Orientation="Horizontal">
+                    <Button Margin="0 10" Click="PerformanceTest">Run Test</Button>
+                </StackPanel>
+            </StackPanel>
+        </ScrollViewer>
+        <StackPanel Grid.Row="1" Orientation="Horizontal" Background="#FBFBFB">
+            <TextBlock VerticalAlignment="Center" Margin="5">Points</TextBlock>
+            <Button Width="30" Margin="5 10" HorizontalAlignment="Left" Click="AddPoint">+</Button>
+            <Button Width="30" Margin="0 10" HorizontalAlignment="Left" Click="RemovePoint">-</Button>
+
+            <TextBlock VerticalAlignment="Center" Margin="15 0 5 0">Series</TextBlock>
+            <Button Width="30" Margin="5 10" HorizontalAlignment="Left" Click="AddSerie">+</Button>
+            <Button Width="30" Margin="0 10" HorizontalAlignment="Left" Click="RemoveSerie">-</Button>
+
+            <Button Width="100" Margin="10" Click="Redraw">Redraw All</Button>
+            <Button Width="100" Margin="10" Click="IsAlive">Go Wild!</Button>
+        </StackPanel>
+    </Grid>
+</Window>
