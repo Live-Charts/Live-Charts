@@ -48,13 +48,19 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Axis.cs" />
+    <Compile Include="AxisTags.cs" />
     <Compile Include="BezierSpline.cs" />
     <Compile Include="Charts\BarChart.cs" />
     <Compile Include="Charts\LineChart.cs" />
     <Compile Include="Charts\PieChart.cs" />
     <Compile Include="Charts\ScatterChart.cs" />
-    <Compile Include="Helpers.cs" />
+    <Compile Include="ShapeHoverBehavior.cs" />
     <Compile Include="Charts\Chart.cs" />
+    <Compile Include="HoverableShape.cs" />
+    <Compile Include="LineChartLineType.cs" />
+    <Compile Include="Methods.cs" />
+    <Compile Include="Separator.cs" />
     <Compile Include="Series\BarSerie.cs" />
     <Compile Include="Series\LineSerie.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
