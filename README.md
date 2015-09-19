@@ -2,9 +2,6 @@
 <p align="center">
   <img src="https://dl.dropboxusercontent.com/u/40165535/live.png" />
 </p>
-
-**What does this library does?**
-
 <p align="center">
   <img src="https://dl.dropboxusercontent.com/u/40165535/live1.gif" />
   <img src="https://dl.dropboxusercontent.com/u/40165535/live2.gif" />
