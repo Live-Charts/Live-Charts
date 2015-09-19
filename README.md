@@ -127,17 +127,17 @@ All charts inherits from `Chart`, this is the core of this library, change prope
 <h3>Properties</h3>
 | Name  | Description | Type |
 | ------------- | ------------- | ------------- |
-| Zooming  | Gets or sets weather graph can zoom  | `bool` |
-| Hoverable  | Gets or sets weather graph will display tooltip on hover  | `bool` | 
+| Zooming  | Gets or sets whether graph can zoom  | `bool` |
+| Hoverable  | Gets or sets whether graph will display tooltip on hover  | `bool` | 
 | PointHoverColor | Gets or sets color when a point is hovered | [`Color`](https://msdn.microsoft.com/en-us/library/system.windows.media.colors(v=vs.110).aspx) |
 | PrimaryAxis | Gets or sets primary axis | `Axis` |
 | SecondaryAxis | Gets or sets secondary axis | `Axis` |
-| DisableAnimation | Gets or sets weather animation is disabled or not | `bool` |
+| DisableAnimation | Gets or sets whether animation is disabled or not | `bool` |
 | Series | Gets or sets series to draw | `IEnumerable<Serie>`  |
 <h3>Methods</h3>
 | Name  | Description | Returned Type |
 | ------------- | ------------- | ------------- |
-| Zooming  | Gets or sets weather graph can zoom  | `bool` |
+| Zooming  | Gets or sets whether graph can zoom  | `bool` |
 <hr/>
 #[BarChart](https://github.com/beto-rodriguez/Live-Charts/blob/master/Charts/Charts/BarChart.cs)
 Inherits from `Chart`
@@ -151,7 +151,7 @@ Inherits from `Chart`
 <h3>Properties</h3>
 | Name  | Description | Type |
 | ------------- | ------------- | ------------- |
-| IncludeArea | Gets or sets weather series should draw its area | `bool` |
+| IncludeArea | Gets or sets whether series should draw its area | `bool` |
 | LineType | Gets or sets line type to draw | [`LineChartLineType`](https://github.com/beto-rodriguez/Live-Charts/blob/master/Charts/LineChartLineType.cs) |
 <h3>Methods</h3>
 None extra methods
@@ -211,14 +211,14 @@ helper class to define axis behavior and style
 | Separator | Gets or sets separator | `Separator` |
 | LabelFormatter | Gets or sets a label formatter, a formatter is useful when you need charts to display a custom format, for example diplay labels as currency, see for example below | `Func<double, string>` |
 | Labels | Gets or sets labels to use for the axis, labels is what is shown over the axis, if this property is set `LabelFormatter` will be ignored | `IEnumerable<string>` |
-| Enabled | Indicates weather to draw axis or not. | `bool` |
+| Enabled | Indicates whether to draw axis or not. | `bool` |
 | Color | Gets or sets axis color |  [`Color`](https://msdn.microsoft.com/en-us/library/system.windows.media.colors(v=vs.110).aspx) |
 | Thickness | Gets or sets axis thickness | `int` |
 | FontFamily | Gets or sets axis FontFamily | [`FontFamily`](https://msdn.microsoft.com/es-es/library/system.windows.media.fontfamily(v=vs.110).aspx) |
 | FontSize | Gets or sets axis font size | `int` |
 | FontWeight | Gets or sets axis font weight | [`FontWeight`](https://msdn.microsoft.com/en-us/library/system.windows.controls.textblock.fontweight(v=vs.110).aspx ) |
 | FontStretch | Gets or sets axis font stretch  | [`FontStretch`](https://msdn.microsoft.com/en-us/library/system.windows.fontstretch(v=vs.110).aspx) |
-| PrintLabels | Indicates weather or not print axis labels | `bool` | 
+| PrintLabels | Indicates whether or not print axis labels | `bool` | 
 | TextColor | Gets or sets axis text color | [`Color`](https://msdn.microsoft.com/en-us/library/system.windows.media.colors(v=vs.110).aspx) |
 | CleanFactor | Gets or sets axis clean factor, clean factor is used to determinate separations, default is 3. increase it to make it 'cleaner', separations have not easy to explain without seeing the source code.  | `int`  |
 <hr/>
@@ -227,6 +227,6 @@ helper class to define axis separators
 <h3>Properties</h3>
 | Name  | Description | Type |
 | ------------- | ------------- | ------------- |
-| Enabled | Indicates weather to draw separators or not. | `bool` |
+| Enabled | Indicates whether to draw separators or not. | `bool` |
 | Color | Gets or sets separators color |  [`Color`](https://msdn.microsoft.com/en-us/library/system.windows.media.colors(v=vs.110).aspx) |
 | Thickness | Gets or sets separators thickness | `int` |
