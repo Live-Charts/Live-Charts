@@ -36,6 +36,7 @@ namespace Charts.Series
         private Color? _color;
         protected List<Shape> Shapes = new List<Shape>();
         private Chart _chart;
+        private int _colorId;
 
         protected Serie()
         {
@@ -70,9 +71,13 @@ namespace Charts.Series
             }
         }
 
-        public int ColorId { get; set; }
         public double StrokeThickness { get; set; }
         public double PointRadius { get; set; }
+        public int ColorId
+        {
+            get { return _colorId + Chart.ColorStartIndex; }
+            set { _colorId = value; }
+        }
         public Color Color
         {
             get

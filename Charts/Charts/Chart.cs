@@ -53,6 +53,8 @@ namespace Charts.Charts
         public List<HoverableShape> HoverableShapes = new List<HoverableShape>(); 
         private Point _panOrigin;
         private bool _isDragging;
+        public int ColorStartIndex = 0;
+        private static Random _randomizer;
 
         //these timers are to avoid multiple graph ploting, graph will only plot when timer ticks.
         private readonly DispatcherTimer _resizeTimer;
@@ -77,6 +79,7 @@ namespace Charts.Charts
                 Color.FromRgb(210,84,0),
                 Color.FromRgb(191,57,43)
             };
+            _randomizer = new Random();
         }
 
         protected Chart()
@@ -111,12 +114,23 @@ namespace Charts.Charts
             _seriesCangedTimer.Tick += UpdateModifiedDataSeries;
             
             CurrentScale = 1;
+            if (RandomizeStartingColor)
+            {
+                ColorStartIndex = _randomizer.Next(0, Colors.Count - 1);
+            }
         }
 
         abstract protected void Scale();
         abstract protected bool ScaleChanged { get; }
 
+        /// <summary>
+        /// List of Colors series will use, yu can change this list to your own colors.
+        /// </summary>
         public static List<Color> Colors { get; set; }
+        /// <summary>
+        /// indicates wether each instance of chart you create needs to randomize starting color
+        /// </summary>
+        public static bool RandomizeStartingColor { get; set; }
 
         public static readonly DependencyProperty ZoomingProperty = DependencyProperty.Register(
             "Zooming", typeof(bool), typeof(Chart));
