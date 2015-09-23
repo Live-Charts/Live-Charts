@@ -41,7 +41,7 @@
                 <TextBlock FontSize="20" FontWeight="Bold" HorizontalAlignment="Center" Margin="10">Pie and Doughnut Chart</TextBlock>
                 <charts:PieChart Height="300" Name="PieChart" Margin="10"
                                  Background="#FBFBFB" BorderBrush="LightGray" 
-                                 BorderThickness="1" InnerRadius="50"></charts:PieChart>
+                                 BorderThickness="1" InnerRadius="50" DisableAnimation="True"></charts:PieChart>
                 <charts:PieChart Height="300" Name="PieChart1" Margin="10"
                                  Background="#FBFBFB" BorderBrush="LightGray" 
                                  BorderThickness="1" InnerRadius="0"></charts:PieChart>

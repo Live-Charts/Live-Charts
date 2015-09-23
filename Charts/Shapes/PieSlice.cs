@@ -158,32 +158,45 @@ namespace Charts.Shapes
         /// </summary>
         private void DrawGeometry(StreamGeometryContext context)
         {
-            Point innerArcStartPoint = Utils.ComputeCartesianCoordinate(RotationAngle, InnerRadius);
+            var innerArcStartPoint = Utils.ComputeCartesianCoordinate(RotationAngle, InnerRadius);
             innerArcStartPoint.Offset(CentreX, CentreY);
-
-            Point innerArcEndPoint = Utils.ComputeCartesianCoordinate(RotationAngle + WedgeAngle, InnerRadius);
+            var innerArcEndPoint = Utils.ComputeCartesianCoordinate(RotationAngle + WedgeAngle, InnerRadius);
             innerArcEndPoint.Offset(CentreX, CentreY);
-
-            Point outerArcStartPoint = Utils.ComputeCartesianCoordinate(RotationAngle, Radius);
+            var outerArcStartPoint = Utils.ComputeCartesianCoordinate(RotationAngle, Radius);
             outerArcStartPoint.Offset(CentreX, CentreY);
-
-            Point outerArcEndPoint = Utils.ComputeCartesianCoordinate(RotationAngle + WedgeAngle, Radius);
+            var outerArcEndPoint = Utils.ComputeCartesianCoordinate(RotationAngle + WedgeAngle, Radius);
             outerArcEndPoint.Offset(CentreX, CentreY);
+            var innerArcMidPoint = Utils.ComputeCartesianCoordinate(RotationAngle + WedgeAngle * .5, InnerRadius);
+            innerArcMidPoint.Offset(CentreX, CentreY);
+            var outerArcMidPoint = Utils.ComputeCartesianCoordinate(RotationAngle + WedgeAngle * .5, Radius);
+            outerArcMidPoint.Offset(CentreX, CentreY);
 
-            bool largeArc = WedgeAngle > 180.0;
+            var largeArc = WedgeAngle > 180.0d;
+            var requiresMidPoint = Math.Abs(WedgeAngle - 360) < .01;
 
-            if (PushOut > 0)
+            if (PushOut > 0 && !requiresMidPoint)
             {
-                Point offset = Utils.ComputeCartesianCoordinate(RotationAngle + WedgeAngle / 2, PushOut);
+                var offset = Utils.ComputeCartesianCoordinate(RotationAngle + WedgeAngle / 2, PushOut);
                 innerArcStartPoint.Offset(offset.X, offset.Y);
                 innerArcEndPoint.Offset(offset.X, offset.Y);
                 outerArcStartPoint.Offset(offset.X, offset.Y);
                 outerArcEndPoint.Offset(offset.X, offset.Y);
             }
 
-            Size outerArcSize = new Size(Radius, Radius);
-            Size innerArcSize = new Size(InnerRadius, InnerRadius);
+            var outerArcSize = new Size(Radius, Radius);
+            var innerArcSize = new Size(InnerRadius, InnerRadius);
 
+            if (requiresMidPoint)
+            {
+                context.BeginFigure(innerArcStartPoint, true, true);
+                context.LineTo(outerArcStartPoint, true, true);
+                context.ArcTo(outerArcMidPoint, outerArcSize, 0, false, SweepDirection.Clockwise, true, true);
+                context.ArcTo(outerArcEndPoint, outerArcSize, 0, false, SweepDirection.Clockwise, true, true);
+                context.LineTo(innerArcEndPoint, true, true);
+                context.ArcTo(innerArcMidPoint, innerArcSize, 0, false, SweepDirection.Counterclockwise, true, true);
+                context.ArcTo(innerArcStartPoint, innerArcSize, 0, false, SweepDirection.Counterclockwise, true, true);
+                return;
+            }
             context.BeginFigure(innerArcStartPoint, true, true);
             context.LineTo(outerArcStartPoint, true, true);
             context.ArcTo(outerArcEndPoint, outerArcSize, 0, largeArc, SweepDirection.Clockwise, true, true);

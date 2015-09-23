@@ -90,7 +90,7 @@ namespace ChartsTest
                 //if you add more than one serie to pie chart, they will be overridden
                 new PieSerie
                 {
-                    PrimaryValues = new ObservableCollection<double> { 8,2,5 },
+                    PrimaryValues = new ObservableCollection<double> { 8 },
                     Labels = standardLabels
                 }
             };
@@ -106,7 +106,7 @@ namespace ChartsTest
             };
 
             //func for serie 1
-            Func<double, double> fx1 = x => Math.Pow(x, 2) + 10*x;
+            Func<double, double> fx1 = x => Math.Pow(x, 2) + 10 * x;
             Func<double, double> fx2 = x => Math.Pow(x, 2);
             ScatterChart.Series = new ObservableCollection<Serie>
             {
