@@ -40,6 +40,7 @@ namespace Charts.Series
         {
             var pChart = Chart as PieChart;
             if (pChart == null) return;
+            if (pChart.PieSum <= 0) return;
             var rotated = 0d;
 
             Chart.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
