@@ -6,6 +6,7 @@
   <img src="https://dl.dropboxusercontent.com/u/40165535/live1.gif" />
   <img src="https://dl.dropboxusercontent.com/u/40165535/live2.gif" />
   <img src="https://dl.dropboxusercontent.com/u/40165535/live3.gif" />
+  <img src="https://dl.dropboxusercontent.com/u/40165535/live4.gif" />
 </p>
 
 **What this library is**
@@ -27,12 +28,12 @@ I decided to start this because current open source alternatives were not exactl
 
 #Instalation
 
- 1. Install package from [**Nuget**](https://www.nuget.org/packages/LiveCharts/0.0.1) `Install-Package LiveCharts`
+ 1. Install package from [**Nuget**](https://www.nuget.org/packages/LiveCharts) `Install-Package LiveCharts`
  2. Add name space to your `Window` XAML `xmlns:charts="clr-namespace:Charts.Charts;assembly=Charts"`
  3. Thats it. You are ready.
  
 #Examples
-It is recommended to clone this repo on your desktop, you only have to click the `Open In Visual Studio` button to the right, and see examples included but here is a resume.
+It is recommended to clone this repo on your desktop, you only have to click  [here](git-client://clone?repo=https%3A%2F%2Fgithub.com%2Fbeto-rodriguez%2FLive-Charts) and hopefully this project will open in visual studio, then see examples included, but here is a resume.
 
 **XAML**
 ```xml
@@ -112,11 +113,17 @@ It is recommended to clone this repo on your desktop, you only have to click the
 ```
 
 #Included Graphs
-
   - Lines and Areas
   - Bars
   - Pie and doughnut
   - Scatter
+
+#Formatters
+  This library also includes some common label formatters, for example when ploting you don't normally need to display big labels because they will take a lot of space in the chart, so next if you set your chart with the preloaded currency label formatter:
+```
+MyChart.PrimaryAxis.LabelFormatter = LabelFormatters.Number;
+```
+will make `10` look like `10.00`, or `1000` like `1K`, or `1000000` like `1M`
 
 <hr/>
 #[Chart](https://github.com/beto-rodriguez/Live-Charts/blob/master/Charts/Charts/Chart.cs)
@@ -131,20 +138,29 @@ All charts inherits from `Chart`, this is the core of this library, change prope
 | SecondaryAxis | Gets or sets secondary axis | `Axis` |
 | DisableAnimation | Gets or sets whether animation is disabled or not | `bool` |
 | Series | Gets or sets series to draw | `IEnumerable<Serie>`  |
+| TooltipBackground | Gets or sets tooltip backgorund | [`Brush`](https://msdn.microsoft.com/en-us/library/system.windows.media.brush(v=vs.110).aspx)  |
+| TooltipForeground | Gets or sets tooltip foreground | [`Brush`](https://msdn.microsoft.com/en-us/library/system.windows.media.brush(v=vs.110).aspx)  |
+| TooltipBorderBrush | Gets or sets tooltip borderbrush | [`Brush`](https://msdn.microsoft.com/en-us/library/system.windows.media.brush(v=vs.110).aspx)  |
+| TooltipCornerRadius | Gets or sets tooltip corner radius | [`CornerRadius`](https://msdn.microsoft.com/en-us/library/system.windows.cornerradius(v=vs.110).aspx)  |
+| TooltipBorderThickness | Gets or sets tooltip border thickness | [`Thickness`](https://msdn.microsoft.com/en-us/library/system.windows.thickness(v=vs.110).aspx)  |
+
 <h3>Methods</h3>
 | Name  | Description | Returned Type |
 | ------------- | ------------- | ------------- |
-| Zooming  | Gets or sets whether graph can zoom  | `bool` |
+| ClearAndPlot  | Redraw chart  | `void` |
+| ZoomIn  | Zooms a unit in  | `void` |
+| ZoomOut  | Zooms a unit out  | `void` |
+
 <hr/>
 #[BarChart](https://github.com/beto-rodriguez/Live-Charts/blob/master/Charts/Charts/BarChart.cs)
-Inherits from `Chart`
+Inherits from [`Chart`](https://github.com/beto-rodriguez/Live-Charts#chart)
 <h3>Properties</h3>
 No extra properties
 <h3>Methods</h3>
 None extra methods
 <hr/>
 #[LineChart](https://github.com/beto-rodriguez/Live-Charts/blob/master/Charts/Charts/LineChart.cs)
-Inherits from `Chart`
+Inherits from [`Chart`](https://github.com/beto-rodriguez/Live-Charts#chart)
 <h3>Properties</h3>
 | Name  | Description | Type |
 | ------------- | ------------- | ------------- |
@@ -154,7 +170,7 @@ Inherits from `Chart`
 None extra methods
 <hr/>
 #[PieChart](https://github.com/beto-rodriguez/Live-Charts/blob/master/Charts/Charts/PieChart.cs)
-Inherits from `Chart`
+Inherits from [`Chart`](https://github.com/beto-rodriguez/Live-Charts#chart)
 <h3>Properties</h3>
 | Name  | Description | Type |
 | ------------- | ------------- | ------------- |
@@ -164,7 +180,7 @@ Inherits from `Chart`
 None extra methods
 <hr/>
 #[ScatterChart](https://github.com/beto-rodriguez/Live-Charts/blob/master/Charts/Charts/ScatterChart.cs)
-Inherits from `Chart`
+Inherits from [`Chart`](https://github.com/beto-rodriguez/Live-Charts#chart)
 <h3>Properties</h3>
 | Name  | Description | Type |
 | ------------- | ------------- | ------------- |
@@ -208,6 +224,8 @@ helper class to define axis behavior and style
 | Separator | Gets or sets separator | `Separator` |
 | LabelFormatter | Gets or sets a label formatter, a formatter is useful when you need charts to display a custom format, for example diplay labels as currency, see for example below | `Func<double, string>` |
 | Labels | Gets or sets labels to use for the axis, labels is what is shown over the axis, if this property is set `LabelFormatter` will be ignored | `IEnumerable<string>` |
+| MaxValue | Indicates max value to plot, if null this will be calculated automatically based on values of series, default is null | `double?` |
+| MinValue | Indicates min value to plot, if null this will be calculated automatically based on values of series, default is null| `double?` |
 | Enabled | Indicates whether to draw axis or not. | `bool` |
 | Color | Gets or sets axis color |  [`Color`](https://msdn.microsoft.com/en-us/library/system.windows.media.colors(v=vs.110).aspx) |
 | Thickness | Gets or sets axis thickness | `int` |
