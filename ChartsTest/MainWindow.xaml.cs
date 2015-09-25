@@ -90,7 +90,7 @@ namespace ChartsTest
                 //if you add more than one serie to pie chart, they will be overridden
                 new PieSerie
                 {
-                    PrimaryValues = new ObservableCollection<double> { 8 },
+                    PrimaryValues = new ObservableCollection<double> { 8, 1, 5 },
                     Labels = standardLabels
                 }
             };
@@ -100,7 +100,7 @@ namespace ChartsTest
                 //do not mix positive and negative values in a pie chart. It has no sense
                 new PieSerie
                 {
-                    PrimaryValues = new ObservableCollection<double> {0,0,0},
+                    PrimaryValues = new ObservableCollection<double> {8,8,3},
                     Labels = standardLabels
                 }
             };
