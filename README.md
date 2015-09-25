@@ -33,7 +33,7 @@ I decided to start this because current open source alternatives were not exactl
  3. Thats it. You are ready.
  
 #Examples
-It is recommended to clone this repo on your desktop, you only have to click  [here](git-client://clone?repo=https%3A%2F%2Fgithub.com%2Fbeto-rodriguez%2FLive-Charts) and hopefully this project will open in visual studio, then see examples included, but here is a resume.
+It is recommended to clone this repo on your desktop, you only have to scroll up and click `Open in Visual Studio` button to the right, then see examples included, but here is a resume.
 
 **XAML**
 ```xml
@@ -119,11 +119,11 @@ It is recommended to clone this repo on your desktop, you only have to click  [h
   - Scatter
 
 #Formatters
-  This library also includes some common label formatters, for example when ploting you don't normally need to display big labels because they will take a lot of space in the chart, so next if you set your chart with the preloaded currency label formatter:
+  This library also includes some common label formatters, for example when ploting you don't normally need to display big labels because they will take a lot of space in the chart, so if you set your chart with the preloaded number label formatter, like this:
 ```
 MyChart.PrimaryAxis.LabelFormatter = LabelFormatters.Number;
 ```
-will make `10` look like `10.00`, or `1000` like `1K`, or `1000000` like `1M`
+will make `10` look like `10.00`, or `1000` like `1.00K`, or `1000000` like `1.00M`
 
 <hr/>
 #[Chart](https://github.com/beto-rodriguez/Live-Charts/blob/master/Charts/Charts/Chart.cs)
