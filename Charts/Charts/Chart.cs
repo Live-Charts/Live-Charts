@@ -106,7 +106,7 @@ namespace Charts.Charts
             };
             _resizeTimer.Tick += (sender, e) =>
             {
-                ClearAndPlot();
+                ClearAndPlot(false);
                 _resizeTimer.Stop();
             };
 
@@ -221,6 +221,12 @@ namespace Charts.Charts
                 ClearAndPlot();
             }
         }
+
+        public Brush TooltipBackground { get; set; } = null;
+        public Brush TooltipForegroung { get; set; } = null;
+        public Brush TooltipBorderBrush { get; set; } = null;
+        public CornerRadius? TooltipCornerRadius { get; set; } = null;
+        public Thickness? TooltipBorderThickness { get; set; } = null;
 
         /// <summary>
         /// Axis Y: is Horizontal axis, Axis X: Vertical, confusing but this is how it is!
@@ -480,9 +486,10 @@ namespace Charts.Charts
         {
             var b = new Border
             {
-                BorderThickness = new Thickness(0),
-                Background = new SolidColorBrush { Color = Color.FromRgb(30, 30, 30), Opacity = .8 },
-                CornerRadius = new CornerRadius(1)
+                BorderThickness = TooltipBorderThickness ?? new Thickness(0),
+                Background = TooltipBackground ?? new SolidColorBrush { Color = Color.FromRgb(30, 30, 30), Opacity = .8 },
+                CornerRadius = TooltipCornerRadius ?? new CornerRadius(2),
+                BorderBrush = TooltipBorderBrush ?? Brushes.Transparent
             };
             var sp = new StackPanel
             {
@@ -514,7 +521,7 @@ namespace Charts.Charts
                 VerticalAlignment = VerticalAlignment.Center,
                 FontFamily = new FontFamily("Calibri"),
                 FontSize = 11,
-                Foreground = Brushes.White
+                Foreground = TooltipForegroung ?? Brushes.White
             });
 
             foreach (var sibiling in sibilings)
@@ -552,7 +559,7 @@ namespace Charts.Charts
                             VerticalAlignment = VerticalAlignment.Center,
                             FontFamily = new FontFamily("Calibri"),
                             FontSize = 11,
-                            Foreground = Brushes.White
+                            Foreground = TooltipForegroung ?? Brushes.White
                         }
                     }
                 });

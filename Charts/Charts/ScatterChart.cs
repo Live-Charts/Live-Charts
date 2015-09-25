@@ -42,11 +42,11 @@ namespace Charts.Charts
             Min = GetMin();
             S = GetS();
 
-            Max.Y = (Math.Truncate(Max.Y / S.Y) + 1) * S.Y;
-            Min.Y = (Math.Truncate(Min.Y / S.Y) - 1) * S.Y;
+            Max.Y = PrimaryAxis.MaxValue ?? (Math.Truncate(Max.Y / S.Y) + 1) * S.Y;
+            Min.Y = PrimaryAxis.MinValue ?? (Math.Truncate(Min.Y / S.Y) - 1) * S.Y;
 
-            Max.X = (Math.Truncate(Max.X / S.X) + 1) * S.X;
-            Min.X = (Math.Truncate(Min.X / S.X) - 1) * S.X;
+            Max.X = SecondaryAxis.MaxValue ?? (Math.Truncate(Max.X / S.X) + 1) * S.X;
+            Min.X = SecondaryAxis.MinValue ?? (Math.Truncate(Min.X / S.X) - 1) * S.X;
 
             DrawAxis();
         }
@@ -55,9 +55,10 @@ namespace Charts.Charts
         {
             var b = new Border
             {
-                BorderThickness = new Thickness(0),
-                Background = new SolidColorBrush {Color = Color.FromRgb(30, 30, 30), Opacity = .8},
-                CornerRadius = new CornerRadius(1)
+                BorderThickness = TooltipBorderThickness ?? new Thickness(0),
+                Background = TooltipBackground ?? new SolidColorBrush {Color = Color.FromRgb(30, 30, 30), Opacity = .8},
+                CornerRadius = TooltipCornerRadius ?? new CornerRadius(1),
+                BorderBrush = TooltipBorderBrush ?? Brushes.Transparent
             };
             var sp = new StackPanel
             {
@@ -84,7 +85,7 @@ namespace Charts.Charts
                 VerticalAlignment = VerticalAlignment.Center,
                 FontFamily = new FontFamily("Calibri"),
                 FontSize = 11,
-                Foreground = Brushes.White
+                Foreground = TooltipForegroung ?? Brushes.White
             });
 
             b.Child = sp;
@@ -121,15 +122,17 @@ namespace Charts.Charts
         private Point GetMax()
         {
             return new Point(
-                (Series.Cast<ScatterSerie>().Select(x => x.SecondaryValues.Max()).DefaultIfEmpty(0).Max()),
-                (Series.Cast<ScatterSerie>().Select(x => x.PrimaryValues.Max()).DefaultIfEmpty(0).Max()));
+                SecondaryAxis.MaxValue ??
+                Series.Cast<ScatterSerie>().Select(x => x.SecondaryValues.Max()).DefaultIfEmpty(0).Max(),
+                PrimaryAxis.MaxValue ??
+                Series.Cast<ScatterSerie>().Select(x => x.PrimaryValues.Max()).DefaultIfEmpty(0).Max());
         }
 
         private Point GetMin()
         {
             return new Point(
-                (Series.Cast<ScatterSerie>().Select(x => x.SecondaryValues.Min()).DefaultIfEmpty(0).Min()),
-                (Series.Cast<ScatterSerie>().Select(x => x.PrimaryValues.Min()).DefaultIfEmpty(0).Min()));
+                Series.Cast<ScatterSerie>().Select(x => x.SecondaryValues.Min()).DefaultIfEmpty(0).Min(),
+                Series.Cast<ScatterSerie>().Select(x => x.PrimaryValues.Min()).DefaultIfEmpty(0).Min());
         }
 
         private Point GetS()

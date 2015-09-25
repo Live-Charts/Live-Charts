@@ -72,8 +72,8 @@ namespace Charts.Charts
         private Point GetMax()
         {
             return new Point(
-                (Series.Cast<LineSerie>().Select(x => x.PrimaryValues.Count).DefaultIfEmpty(0).Max() - 1),
-                (Series.Cast<LineSerie>().Select(x => x.PrimaryValues.Max()).DefaultIfEmpty(0).Max()));
+                Series.Cast<LineSerie>().Select(x => x.PrimaryValues.Count).DefaultIfEmpty(0).Max() - 1,
+                Series.Cast<LineSerie>().Select(x => x.PrimaryValues.Max()).DefaultIfEmpty(0).Max());
         }
 
         private Point GetMin()
@@ -81,7 +81,7 @@ namespace Charts.Charts
             //x cannot be 0, because of precision reasons...
             //it should be an almost cero value
             return new Point(.01,
-                (Series.Cast<LineSerie>().Select(x => x.PrimaryValues.Min()).DefaultIfEmpty(0).Min()));
+                Series.Cast<LineSerie>().Select(x => x.PrimaryValues.Min()).DefaultIfEmpty(0).Min());
         }
 
         private Point GetS()
@@ -97,9 +97,8 @@ namespace Charts.Charts
             Min = GetMin();
             S = GetS();
 
-            //we force Y interval to start and finish on a multiple of _s.Y
-            Max.Y = (Math.Truncate(Max.Y/S.Y)+1)*S.Y;
-            Min.Y = (Math.Truncate(Min.Y / S.Y)-1)*S.Y;
+            Max.Y = PrimaryAxis.MaxValue ?? (Math.Truncate(Max.Y/S.Y)+1)*S.Y;
+            Min.Y = PrimaryAxis.MinValue ?? (Math.Truncate(Min.Y / S.Y)-1)*S.Y;
 
             DrawAxis();
         }

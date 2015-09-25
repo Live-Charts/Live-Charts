@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Threading;
+using Charts;
 using Charts.Series;
 
 namespace ChartsTest
@@ -106,8 +107,9 @@ namespace ChartsTest
             };
 
             //func for serie 1
-            Func<double, double> fx1 = x => Math.Pow(x, 2) + 10 * x;
-            Func<double, double> fx2 = x => Math.Pow(x, 2);
+            Func<double, double> fx1 = x => (Math.Pow(x, 2) + 10 * x)*1000;
+            Func<double, double> fx2 = x => (Math.Pow(x, 2))*1000;
+            ScatterChart.PrimaryAxis.LabelFormatter = LabelFormatters.Currency;
             ScatterChart.Series = new ObservableCollection<Serie>
             {
                 new ScatterSerie

@@ -113,6 +113,7 @@
     <Compile Include="Charts\LineChart.cs" />
     <Compile Include="Charts\PieChart.cs" />
     <Compile Include="Charts\ScatterChart.cs" />
+    <Compile Include="LabelFormatters.cs" />
     <Compile Include="ShapeHoverBehavior.cs" />
     <Compile Include="Charts\Chart.cs" />
     <Compile Include="HoverableShape.cs" />

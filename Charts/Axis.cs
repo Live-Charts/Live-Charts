@@ -85,5 +85,13 @@ namespace Charts
         /// initialSeparations = Graph.Heigth / (label.Height * cleanFactor)
         /// </summary>
         public int CleanFactor { get; set; }
+        /// <summary>
+        /// Gets or sets chart max value, set it to null to make this property Auto, default value is null
+        /// </summary>
+        public double? MaxValue { get; set; }
+        /// <summary>
+        /// Gets or sets chart min value, set it to null to make this property Auto, default value is null
+        /// </summary>
+        public double? MinValue { get; set; }
     }
 }
