@@ -48,6 +48,12 @@ namespace ChartsTest
                 f1.Add(r.Next(abs, abs + 100));
                 f.RemoveAt(0);
                 f1.RemoveAt(0);
+
+                foreach (var serie in ScatterChart.Series)
+                {
+                    serie.PrimaryValues.Add(r.Next(_aliveScalator - 30, _aliveScalator + 30));
+                    serie.PrimaryValues.RemoveAt(0);
+                }
             };
 
             var standardLabels = new[]
@@ -233,6 +239,9 @@ namespace ChartsTest
                 PieChart.ClearAndPlot();
                 PieChart1.Hoverable = true;
                 PieChart1.ClearAndPlot();
+
+                ScatterChart.Hoverable = true;
+                ScatterChart.ClearAndPlot();
             }
             else
             {
@@ -243,6 +252,8 @@ namespace ChartsTest
                 BarChart.Hoverable = false;
                 PieChart.Hoverable = false;
                 PieChart1.Hoverable = false;
+                ScatterChart.Hoverable = false;
+                ScatterChart.PrimaryAxis.MinValue = null;
             }
         }
 

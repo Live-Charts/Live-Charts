@@ -71,17 +71,19 @@ namespace Charts.Charts
 
         private Point GetMax()
         {
-            return new Point(
-                Series.Cast<LineSerie>().Select(x => x.PrimaryValues.Count).DefaultIfEmpty(0).Max() - 1,
+            var p = new Point(Series.Cast<LineSerie>().Select(x => x.PrimaryValues.Count).DefaultIfEmpty(0).Max() - 1,
                 Series.Cast<LineSerie>().Select(x => x.PrimaryValues.Max()).DefaultIfEmpty(0).Max());
+            p.Y = PrimaryAxis.MaxValue ?? p.Y;
+            return p;
+
         }
 
         private Point GetMin()
         {
-            //x cannot be 0, because of precision reasons...
-            //it should be an almost cero value
-            return new Point(.01,
+            var p = new Point(.01,
                 Series.Cast<LineSerie>().Select(x => x.PrimaryValues.Min()).DefaultIfEmpty(0).Min());
+            p.Y = PrimaryAxis.MinValue ?? p.Y;
+            return p;
         }
 
         private Point GetS()
