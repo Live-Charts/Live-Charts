@@ -4,6 +4,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Threading;
 using Charts;
+using Charts.Charts;
 using Charts.Series;
 
 namespace ChartsTest
@@ -21,6 +22,9 @@ namespace ChartsTest
         {
             InitializeComponent();
 
+            //set this property to true so charts use diferent colors (and don't look boring!).
+            Chart.RandomizeStartingColor = true;
+
             _timer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(100) };
             _timer.Tick += (sender, args) =>
             {
@@ -31,17 +35,17 @@ namespace ChartsTest
                     serie.PrimaryValues.Add(r.Next(_aliveScalator - 30, _aliveScalator + 30));
                     serie.PrimaryValues.RemoveAt(0);
                 }
+                var abs = Math.Abs(_aliveScalator);
                 foreach (var serie in BarChart.Series)
                 {
-                    serie.PrimaryValues.Add(r.Next(_aliveScalator - 30, _aliveScalator + 30));
+                    serie.PrimaryValues.Add(r.Next(abs, abs + 30));
                     serie.PrimaryValues.RemoveAt(0);
                 }
 
                 var f = PieChart.Series.First().PrimaryValues;
                 var f1 = PieChart1.Series.First().PrimaryValues;
-                var aa = Math.Abs(_aliveScalator);
-                f.Add(r.Next(aa , aa + 100));
-                f1.Add(r.Next(aa, aa + 100));
+                f.Add(r.Next(abs , abs + 100));
+                f1.Add(r.Next(abs, abs + 100));
                 f.RemoveAt(0);
                 f1.RemoveAt(0);
             };
@@ -136,7 +140,7 @@ namespace ChartsTest
             }
             foreach (var s in BarChart.Series)
             {
-                s.PrimaryValues.Add(r.Next(-10, 10));
+                s.PrimaryValues.Add(r.Next(0, 10));
             }
             PieChart.Series.First().PrimaryValues.Add(r.Next(0,10));
             PieChart1.Series.First().PrimaryValues.Add(r.Next(0, 10));
@@ -164,7 +168,7 @@ namespace ChartsTest
             var r = new Random();
 
             var s = new LineSerie { PrimaryValues = new ObservableCollection<double>() };
-            var lineSerie = LineChart.Series[0] as LineSerie;
+            var lineSerie = LineChart.Series.Count > 0 ? (LineChart.Series[0] as LineSerie) : null;
             if (lineSerie != null)
             {
                 var l = LineChart.Series.Count == 0 ? 0 : lineSerie.PrimaryValues.Count;
@@ -173,27 +177,42 @@ namespace ChartsTest
                     s.PrimaryValues.Add(r.Next(-30, 30));
                 }
             }
+            else
+            {
+                s = new LineSerie
+                {
+                    PrimaryValues = new ObservableCollection<double>(new double[] {1, -1, 2, -2, 3, -3, 4, -4, 5, -5})
+                };
+            }
+
             LineChart.Series.Add(s);
 
             var s1 = new BarSerie { PrimaryValues = new ObservableCollection<double>() };
-            var barSerie = BarChart.Series[0] as BarSerie;
+            var barSerie = BarChart.Series.Count > 0 ? BarChart.Series[0] as BarSerie : null;
             if (barSerie != null)
             {
                 var l1 = BarChart.Series.Count == 0 ? 0 : barSerie.PrimaryValues.Count;
                 for (int i = 0; i < l1; i++)
                 {
-                    s1.PrimaryValues.Add(r.Next(-30, 30));
+                    s1.PrimaryValues.Add(r.Next(0, 30));
                 }
+            }
+            else
+            {
+                s1 = new BarSerie
+                {
+                    PrimaryValues = new ObservableCollection<double>(new double[] { 1,2,3,4,5 })
+                };
             }
             BarChart.Series.Add(s1);
         }
 
         private void RemoveSerie(object sender, RoutedEventArgs e)
         {
-            if (LineChart.Series.Count == 0) return;
+            if (LineChart.Series.Count != 0)
             LineChart.Series.RemoveAt(LineChart.Series.Count - 1);
 
-            if (BarChart.Series.Count == 0) return;
+            if (BarChart.Series.Count != 0)
             BarChart.Series.RemoveAt(BarChart.Series.Count - 1);
         }
 
