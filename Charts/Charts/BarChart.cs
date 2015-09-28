@@ -95,5 +95,11 @@ namespace LiveCharts.Charts
             var y = ActualHeight*.5 - b.DesiredSize.Height*.5;
             return new Point(x, y);
         }
+
+        protected override void DrawAxis()
+        {
+            ConfigureSmartAxis(SecondaryAxis);
+            base.DrawAxis();
+        }
     }
 }

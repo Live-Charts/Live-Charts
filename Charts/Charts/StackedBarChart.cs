@@ -50,7 +50,8 @@ namespace LiveCharts.Charts
 
         private Point GetMax()
         {
-            var s = Series.First();
+            var s = Series.FirstOrDefault();
+            if (s == null) return new Point(0,0);
             var p = new Point(
                 Series.Select(x => x.PrimaryValues.Count).DefaultIfEmpty(0).Max(),
                 s.PrimaryValues.Select((t, i) => Series.Sum(serie => serie.PrimaryValues[i]))
@@ -61,7 +62,8 @@ namespace LiveCharts.Charts
 
         private Point GetMin()
         {
-            var s = Series.First();
+            var s = Series.FirstOrDefault();
+            if (s==null) return new Point(0,0);
             var p = new Point(.01,
                 s.PrimaryValues.Select((t, i) => Series.Sum(serie => serie.PrimaryValues[i]))
                     .Concat(new[] { double.MaxValue }).Min());
@@ -121,6 +123,12 @@ namespace LiveCharts.Charts
                 : ToPlotArea(sender.Value.X, AxisTags.X) + unitW + overflow * .5;
             var y = ActualHeight * .5 - b.DesiredSize.Height * .5;
             return new Point(x, y);
+        }
+
+        protected override void DrawAxis()
+        {
+            ConfigureSmartAxis(SecondaryAxis);
+            base.DrawAxis();
         }
     }
 

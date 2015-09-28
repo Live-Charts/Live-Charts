@@ -275,6 +275,24 @@ namespace LiveCharts.Charts
             return tick;
         }
 
+        protected void ConfigureSmartAxis(Axis axis)
+        {
+            axis.PrintLabels = axis.Labels != null;
+            if (axis.Labels == null || !axis.PrintLabels) return;
+            var m = axis.Labels.Max(x => x.Length);
+            var l = "";
+            for (var i = 0; i < m; i++)
+            {
+                l += "_";
+            }
+            var longestYLabel = new FormattedText(l, CultureInfo.CurrentUICulture, FlowDirection.LeftToRight,
+                new Typeface(axis.FontFamily, axis.FontStyle, axis.FontWeight, axis.FontStretch), axis.FontSize,
+                Brushes.Black);
+            axis.Separator.Step = (longestYLabel.Width*Max.X)*1.25 > PlotArea.Width
+                ? null
+                : (int?) 1;
+        }
+
         protected virtual void Plot(bool animate = true)
         {
             if (Series == null ||

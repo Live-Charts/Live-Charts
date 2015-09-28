@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
+using System.Windows.Documents;
 using System.Windows.Threading;
 using LiveCharts;
 using LiveCharts.Charts;
@@ -67,10 +69,12 @@ namespace ChartsTest
                 }
             };
 
-            var standardLabels = new[]
+            var l = new List<string>();
+            for (int i = 0; i < 100; i++)
             {
-                "Day 1","Day 2","Day 3","Day 4","Day 5","Day 6","Day 7","Day 8","Day 9","Day 10","Day 11","Day 12","Day 13","Day 14"
-            };
+                l.Add("Day " + (i + 1));
+            }
+            var standardLabels = l.ToArray();
 
 
             //Line Chart
@@ -98,7 +102,7 @@ namespace ChartsTest
                 },
                 new BarSerie
                 {
-                    PrimaryValues = new ObservableCollection<double> { 0,0,0,0 }
+                    PrimaryValues = new ObservableCollection<double> { 4,3,1,2 }
                 },
                 new BarSerie
                 {

@@ -33,7 +33,7 @@ namespace LiveCharts.Charts
             PrimaryAxis = new Axis();
             SecondaryAxis = new Axis
             {
-                Separator = {Enabled = false},
+                Separator = {Enabled = false, Step = 1},
                 Enabled = false
             };
             LineType = LineChartLineType.Bezier;
@@ -102,6 +102,12 @@ namespace LiveCharts.Charts
             Min.Y = PrimaryAxis.MinValue ?? (Math.Truncate(Min.Y / S.Y)-1)*S.Y;
 
             DrawAxis();
+        }
+
+        protected override void DrawAxis()
+        {
+            ConfigureSmartAxis(SecondaryAxis);
+            base.DrawAxis();
         }
     }
 }
