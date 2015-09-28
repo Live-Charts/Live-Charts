@@ -9,7 +9,8 @@
         Title="MainWindow" Height="600" Width="600"
         FontFamily="Calibri"
         FontSize="14"
-        Foreground="#404040">
+        Foreground="#404040"
+        WindowStartupLocation="CenterScreen">
     <Window.Resources>
         <Style TargetType="Button">
             <Setter Property="Background" Value="Transparent"></Setter>
@@ -95,8 +96,12 @@
                         </liveCharts:Axis>
                     </charts:ScatterChart.SecondaryAxis>
                 </charts:ScatterChart>
-                
-                
+                <StackPanel Orientation="Horizontal">
+                    <Label>Test included formatters here</Label>
+                    <Button Margin="5 0" Click="IncreaseScale">+</Button>
+                    <Button Margin="5 0" Click="DecreaseScale">-</Button>
+                </StackPanel>
+
                 <TextBlock FontSize="20" FontWeight="Bold" HorizontalAlignment="Center" Margin="10">Finally a performance test!</TextBlock>
                 <charts:ScatterChart Height="300" Name="PerfomranceChart" Margin="10"
                                      Background="#FBFBFB" BorderBrush="LightGray" 

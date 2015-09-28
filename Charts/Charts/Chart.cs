@@ -343,7 +343,7 @@ namespace LiveCharts.Charts
                 ? (SecondaryAxis.LabelFormatter == null
                     ? vx.ToString(CultureInfo.InvariantCulture)
                     : SecondaryAxis.LabelFormatter(vx))
-                : (labels.Length > vx
+                : (labels.Length > vx && vx >= 0
                     ? labels[(int) vx]
                     : "");
             labx = SecondaryAxis.PrintLabels ? labx : "";

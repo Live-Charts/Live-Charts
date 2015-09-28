@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
-using System.Windows.Documents;
 using System.Windows.Threading;
 using LiveCharts;
 using LiveCharts.Charts;
@@ -385,6 +384,7 @@ namespace ChartsTest
             PieChart.ClearAndPlot();
             PieChart1.ClearAndPlot();
             StackedBarChart.ClearAndPlot();
+            ScatterChart.ClearAndPlot();
             RadarChart.ClearAndPlot();
         }
 
@@ -412,6 +412,28 @@ namespace ChartsTest
                 serie
             };
             MessageBox.Show("drew 1000 pts in " + (DateTime.Now - timer).TotalMilliseconds + " ms");
+        }
+
+        private void IncreaseScale(object sender, RoutedEventArgs e)
+        {
+            foreach (var serie in ScatterChart.Series.Cast<ScatterSerie>())
+            {
+                for (var index = 0; index < serie.PrimaryValues.Count; index++)
+                {
+                    serie.PrimaryValues[index] = serie.PrimaryValues[index] * 10;
+                }
+            }
+        }
+
+        private void DecreaseScale(object sender, RoutedEventArgs e)
+        {
+            foreach (var serie in ScatterChart.Series.Cast<ScatterSerie>())
+            {
+                for (var index = 0; index < serie.PrimaryValues.Count; index++)
+                {
+                    serie.PrimaryValues[index] = serie.PrimaryValues[index] / 10;
+                }
+            }
         }
     }
 }
