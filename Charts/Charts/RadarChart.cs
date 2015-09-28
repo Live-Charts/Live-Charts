@@ -19,7 +19,6 @@
 //LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,12 +31,6 @@ namespace LiveCharts.Charts
 {
     public class RadarChart : Chart
     {
-        public static readonly DependencyProperty IncludeAreaProperty = DependencyProperty.Register("IncludeArea",
-            typeof (bool), typeof (RadarChart));
-
-        public static readonly DependencyProperty LineTypeProperty = DependencyProperty.Register("LineType",
-            typeof (LineChartLineType), typeof (RadarChart));
-
         public double Radius;
 
         public double InnerRadius { get; set; } = 10.0;
@@ -51,25 +44,11 @@ namespace LiveCharts.Charts
                 return true;
             }
         }
-
-        public bool IncludeArea
-        {
-            get { return (bool) GetValue(IncludeAreaProperty); }
-            set { SetValue(IncludeAreaProperty, value); }
-        }
-
-        public LineChartLineType LineType
-        {
-            get { return (LineChartLineType) GetValue(LineTypeProperty); }
-            set { SetValue(LineTypeProperty, value); }
-        }
-
+        
         public RadarChart()
         {
             PrimaryAxis = new Axis();
             SecondaryAxis = new Axis();
-            LineType = LineChartLineType.Polyline;
-            IncludeArea = true;
             Hoverable = true;
             ShapeHoverBehavior = ShapeHoverBehavior.Dot;
             AlphaLabel = true;
