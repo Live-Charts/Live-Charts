@@ -3,8 +3,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:charts="clr-namespace:Charts.Charts;assembly=Charts"
-        xmlns:charts1="clr-namespace:Charts;assembly=Charts"
+        xmlns:charts="clr-namespace:LiveCharts.Charts;assembly=LiveCharts"
+        xmlns:liveCharts="clr-namespace:LiveCharts;assembly=LiveCharts"
         mc:Ignorable="d"
         Title="MainWindow" Height="600" Width="600"
         FontFamily="Calibri"
@@ -34,15 +34,22 @@
                 <TextBlock TextWrapping="Wrap">1. Click on buttons to test auto-update properties.</TextBlock>
                 <TextBlock TextWrapping="Wrap">2. You can use mouse wheel to zoom and drag graph to pan it when zoomed</TextBlock>
                 <TextBlock TextWrapping="Wrap">3. All types of graphs could do this too.</TextBlock>
+                
                 <TextBlock FontSize="20" FontWeight="Bold" HorizontalAlignment="Center" Margin="10">Bar Chart</TextBlock>
                 <charts:BarChart Height="300" x:Name="BarChart" Margin="0 10"
                                  Background="#FBFBFB" BorderBrush="LightGray" 
                                  BorderThickness="1">
                     <charts:BarChart.PrimaryAxis>
-                        <charts1:Axis MinValue="0"></charts1:Axis>
+                        <liveCharts:Axis MinValue="0"></liveCharts:Axis>
                     </charts:BarChart.PrimaryAxis>
                 </charts:BarChart>
-                
+
+                <TextBlock FontSize="20" FontWeight="Bold" HorizontalAlignment="Center" Margin="10">Stacked Bar Chart</TextBlock>
+                <charts:StackedBarChart Height="300" x:Name="StackedBarChart" Margin="0 10"
+                                 Background="#FBFBFB" BorderBrush="LightGray" 
+                                 BorderThickness="1">
+                </charts:StackedBarChart>
+
                 <TextBlock FontSize="20" FontWeight="Bold" HorizontalAlignment="Center" Margin="10">Pie and Doughnut Chart</TextBlock>
                 <charts:PieChart Height="300" Name="PieChart" Margin="10"
                                  Background="#FBFBFB" BorderBrush="LightGray" 
@@ -51,6 +58,13 @@
                                  Background="#FBFBFB" BorderBrush="LightGray" 
                                  BorderThickness="1" InnerRadius="0"></charts:PieChart>
                 <TextBlock Margin="10" TextWrapping="Wrap">change InnerRadius property to 0 to make a pie chart</TextBlock>
+
+                <TextBlock FontSize="20" FontWeight="Bold" HorizontalAlignment="Center" Margin="10">Radar Chart</TextBlock>
+                <charts:RadarChart Height="300" x:Name="RadarChart" Margin="0 10"
+                                 Background="#FBFBFB" BorderBrush="LightGray" 
+                                 BorderThickness="1">
+                </charts:RadarChart>
+                
                 
                 <TextBlock FontSize="20" FontWeight="Bold" HorizontalAlignment="Center" Margin="10">
                     Scatter Chart, changing a lot of default properties
@@ -64,21 +78,21 @@
                                      TooltipCornerRadius="5"
                                      TooltipForegroung="#505050">
                     <charts:ScatterChart.PrimaryAxis>
-                        <charts1:Axis MinValue="0" 
+                        <liveCharts:Axis MinValue="0" 
                                       FontFamily="Comic Sans" Color="WhiteSmoke" Thickness="4"
                                       TextColor="DodgerBlue">
-                            <charts1:Axis.Separator>
-                                <charts1:Separator Color="DodgerBlue" Thickness="4" Enabled="True"></charts1:Separator>
-                            </charts1:Axis.Separator>
-                        </charts1:Axis>
+                            <liveCharts:Axis.Separator>
+                                <liveCharts:Separator Color="DodgerBlue" Thickness="4" Enabled="True"></liveCharts:Separator>
+                            </liveCharts:Axis.Separator>
+                        </liveCharts:Axis>
                     </charts:ScatterChart.PrimaryAxis>
                     <charts:ScatterChart.SecondaryAxis>
-                        <charts1:Axis FontFamily="Arial" Color="RosyBrown" Thickness="2"
+                        <liveCharts:Axis FontFamily="Arial" Color="RosyBrown" Thickness="2"
                                       TextColor="SandyBrown">
-                            <charts1:Axis.Separator>
-                                <charts1:Separator Color="SandyBrown" Thickness="1" Enabled="True"></charts1:Separator>
-                            </charts1:Axis.Separator>
-                        </charts1:Axis>
+                            <liveCharts:Axis.Separator>
+                                <liveCharts:Separator Color="SandyBrown" Thickness="1" Enabled="True"></liveCharts:Separator>
+                            </liveCharts:Axis.Separator>
+                        </liveCharts:Axis>
                     </charts:ScatterChart.SecondaryAxis>
                 </charts:ScatterChart>
                 

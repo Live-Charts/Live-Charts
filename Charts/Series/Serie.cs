@@ -27,9 +27,9 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Shapes;
-using Charts.Charts;
+using LiveCharts.Charts;
 
-namespace Charts.Series
+namespace LiveCharts.Series
 {
     public abstract class Serie
     {

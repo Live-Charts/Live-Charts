@@ -31,44 +31,44 @@ using LiveCharts.Charts;
 
 namespace LiveCharts.Series
 {
-    public class BarSerie : Serie
+    public class StackedBarSerie : Serie
     {
         public override ObservableCollection<double> PrimaryValues { get; set; }
 
         public override void Plot(bool animate = true)
         {
-            var chart = Chart as BarChart;
+            var chart = Chart as StackedBarChart;
             if (chart == null) return;
-            var xCount = 0;
-            var pos = Chart.Series.IndexOf(this);
-            var count = Chart.Series.Count;
+
+            var serieIndex = Chart.Series.IndexOf(this);
             var unitW = ToPlotArea(1, AxisTags.X) - Chart.PlotArea.X + 5;
-            var overflow = unitW - chart.MaxColumnWidth*3 > 0 ? unitW - chart.MaxColumnWidth*3 : 0;
-            unitW = unitW > chart.MaxColumnWidth*3 ? chart.MaxColumnWidth*3 : unitW;
-
-            var pointPadding = .1*unitW;
+            var overflow = unitW - chart.MaxColumnWidth > 0 ? unitW - chart.MaxColumnWidth : 0;
+            unitW = unitW > chart.MaxColumnWidth ? chart.MaxColumnWidth : unitW;
+            var pointPadding = .1 * unitW;
             const int seriesPadding = 2;
-            var barW = (unitW - 2*pointPadding)/count;
+            var barW = unitW - 2 * pointPadding;
 
-            foreach (var d in PrimaryValues)
+            for (var index = 0; index < PrimaryValues.Count; index++)
             {
-                xCount ++;
-                var point = new Point(xCount -1, d);
+                var d = PrimaryValues[index];
 
                 var t = new TranslateTransform();
                 var r = new Rectangle
                 {
                     StrokeThickness = StrokeThickness,
-                    Stroke = new SolidColorBrush{Color = Color},
-                    Fill = new SolidColorBrush { Color = Color, Opacity = .8},
+                    Stroke = new SolidColorBrush {Color = Color},
+                    Fill = new SolidColorBrush {Color = Color, Opacity = .8},
                     Width = barW - seriesPadding,
                     Height = 0,
                     RenderTransform = t
                 };
-               
-                var rh = ToPlotArea(Chart.Min.Y, AxisTags.Y) - ToPlotArea(point.Y, AxisTags.Y);
 
-                Canvas.SetLeft(r, ToPlotArea(point.X, AxisTags.X) + barW*pos + pointPadding + overflow/2);
+                var helper = chart.IndexTotals[index];
+                var barH = ToPlotArea(Chart.Min.Y, AxisTags.Y) - ToPlotArea(helper.Total, AxisTags.Y);
+                var rh = barH*(d/helper.Total);
+                var stackedH = barH*(helper.Stacked[serieIndex].Stacked/helper.Total);
+
+                Canvas.SetLeft(r, ToPlotArea(index, AxisTags.X) + pointPadding + overflow/2);
 
                 Chart.Canvas.Children.Add(r);
                 Shapes.Add(r);
@@ -81,7 +81,7 @@ namespace LiveCharts.Series
                 var rAnim = new DoubleAnimation
                 {
                     From = ToPlotArea(Chart.Min.Y, AxisTags.Y),
-                    To = ToPlotArea(Chart.Min.Y, AxisTags.Y) - rh,
+                    To = ToPlotArea(Chart.Min.Y, AxisTags.Y) - rh - stackedH,
                     Duration = TimeSpan.FromMilliseconds(300)
                 };
 
@@ -99,7 +99,7 @@ namespace LiveCharts.Series
                 if (!animated)
                 {
                     r.Height = rh;
-                    t.Y = ToPlotArea(Chart.Min.Y, AxisTags.Y) - rh;
+                    t.Y = (double) rAnim.To;
                 }
 
                 if (!Chart.Hoverable) continue;
@@ -110,7 +110,7 @@ namespace LiveCharts.Series
                     Serie = this,
                     Shape = r,
                     Target = r,
-                    Value = point
+                    Value = new Point(index, d)
                 });
             }
         }

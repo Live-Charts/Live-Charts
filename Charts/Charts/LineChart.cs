@@ -23,9 +23,8 @@
 using System;
 using System.Linq;
 using System.Windows;
-using Charts.Series;
 
-namespace Charts.Charts
+namespace LiveCharts.Charts
 {
     public class LineChart : Chart
     {
@@ -71,8 +70,8 @@ namespace Charts.Charts
 
         private Point GetMax()
         {
-            var p = new Point(Series.Cast<LineSerie>().Select(x => x.PrimaryValues.Count).DefaultIfEmpty(0).Max() - 1,
-                Series.Cast<LineSerie>().Select(x => x.PrimaryValues.Max()).DefaultIfEmpty(0).Max());
+            var p = new Point(Series.Select(x => x.PrimaryValues.Count).DefaultIfEmpty(0).Max() - 1,
+                Series.Select(x => x.PrimaryValues.Max()).DefaultIfEmpty(0).Max());
             p.Y = PrimaryAxis.MaxValue ?? p.Y;
             return p;
 
@@ -81,7 +80,7 @@ namespace Charts.Charts
         private Point GetMin()
         {
             var p = new Point(.01,
-                Series.Cast<LineSerie>().Select(x => x.PrimaryValues.Min()).DefaultIfEmpty(0).Min());
+                Series.Select(x => x.PrimaryValues.Min()).DefaultIfEmpty(0).Min());
             p.Y = PrimaryAxis.MinValue ?? p.Y;
             return p;
         }
@@ -89,8 +88,8 @@ namespace Charts.Charts
         private Point GetS()
         {
             return new Point(
-                CalculateSeparator(Max.X - Min.X, AxisTags.X),
-                CalculateSeparator(Max.Y - Min.Y, AxisTags.Y));
+                SecondaryAxis.Separator.Step ?? CalculateSeparator(Max.X - Min.X, AxisTags.X),
+                PrimaryAxis.Separator.Step ?? CalculateSeparator(Max.Y - Min.Y, AxisTags.Y));
         }
 
         protected override void Scale()

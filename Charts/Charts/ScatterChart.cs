@@ -1,4 +1,26 @@
-﻿using System;
+﻿//The MIT License(MIT)
+
+//Copyright(c) 2015 Alberto Rodriguez
+
+//Permission is hereby granted, free of charge, to any person obtaining a copy
+//of this software and associated documentation files (the "Software"), to deal
+//in the Software without restriction, including without limitation the rights
+//to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+//copies of the Software, and to permit persons to whom the Software is
+//furnished to do so, subject to the following conditions:
+
+//The above copyright notice and this permission notice shall be included in all
+//copies or substantial portions of the Software.
+
+//THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+//OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+//SOFTWARE.
+
+using System;
 using System.Globalization;
 using System.Linq;
 using System.Windows;
@@ -6,9 +28,9 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
-using Charts.Series;
+using LiveCharts.Series;
 
-namespace Charts.Charts
+namespace LiveCharts.Charts
 {
     public class ScatterChart : Chart
     {
@@ -96,8 +118,8 @@ namespace Charts.Charts
                 ? ToPlotArea(senderShape.Value.X, AxisTags.X) - 10 - b.DesiredSize.Width
                 : ToPlotArea(senderShape.Value.X, AxisTags.X) + 10;
             var y = senderShape.Value.Y > (Min.Y+ Max.Y)/2
-                ? ToPlotArea(senderShape.Value.Y, AxisTags.Y) - 10 - b.DesiredSize.Height
-                : ToPlotArea(senderShape.Value.Y, AxisTags.Y) + 10;
+                ? ToPlotArea(senderShape.Value.Y, AxisTags.Y) + 10
+                : ToPlotArea(senderShape.Value.Y, AxisTags.Y) - 10 - b.DesiredSize.Height;
 
             Canvas.SetLeft(b, x);
             Canvas.SetTop(b, y);
@@ -125,7 +147,7 @@ namespace Charts.Charts
                 SecondaryAxis.MaxValue ??
                 Series.Cast<ScatterSerie>().Select(x => x.SecondaryValues.Max()).DefaultIfEmpty(0).Max(),
                 PrimaryAxis.MaxValue ??
-                Series.Cast<ScatterSerie>().Select(x => x.PrimaryValues.Max()).DefaultIfEmpty(0).Max());
+                Series.Select(x => x.PrimaryValues.Max()).DefaultIfEmpty(0).Max());
             p.X = SecondaryAxis.MaxValue ?? p.X;
             p.Y = PrimaryAxis.MaxValue ?? p.Y;
             return p;
@@ -135,7 +157,7 @@ namespace Charts.Charts
         {
             var p = new Point(
                 Series.Cast<ScatterSerie>().Select(x => x.SecondaryValues.Min()).DefaultIfEmpty(0).Min(),
-                Series.Cast<ScatterSerie>().Select(x => x.PrimaryValues.Min()).DefaultIfEmpty(0).Min());
+                Series.Select(x => x.PrimaryValues.Min()).DefaultIfEmpty(0).Min());
             p.X = SecondaryAxis.MinValue ?? p.X;
             p.Y = PrimaryAxis.MinValue ?? p.Y;
             return p;
@@ -144,8 +166,8 @@ namespace Charts.Charts
         private Point GetS()
         {
             return new Point(
-                CalculateSeparator(Max.X - Min.X, AxisTags.X),
-                CalculateSeparator(Max.Y - Min.Y, AxisTags.Y));
+                SecondaryAxis.Separator.Step ?? CalculateSeparator(Max.X - Min.X, AxisTags.X),
+                PrimaryAxis.Separator.Step ?? CalculateSeparator(Max.Y - Min.Y, AxisTags.Y));
         }
     }
 }

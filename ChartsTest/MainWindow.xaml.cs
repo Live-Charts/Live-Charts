@@ -3,9 +3,9 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Threading;
-using Charts;
-using Charts.Charts;
-using Charts.Series;
+using LiveCharts;
+using LiveCharts.Charts;
+using LiveCharts.Series;
 
 namespace ChartsTest
 {
@@ -41,15 +41,26 @@ namespace ChartsTest
                     serie.PrimaryValues.Add(r.Next(abs, abs + 30));
                     serie.PrimaryValues.RemoveAt(0);
                 }
+                foreach (var serie in StackedBarChart.Series)
+                {
+                    serie.PrimaryValues.Add(r.Next(abs, abs + 30));
+                    serie.PrimaryValues.RemoveAt(0);
+                }
 
                 var f = PieChart.Series.First().PrimaryValues;
                 var f1 = PieChart1.Series.First().PrimaryValues;
-                f.Add(r.Next(abs , abs + 100));
+                f.Add(r.Next(abs, abs + 100));
                 f1.Add(r.Next(abs, abs + 100));
                 f.RemoveAt(0);
                 f1.RemoveAt(0);
 
                 foreach (var serie in ScatterChart.Series)
+                {
+                    serie.PrimaryValues.Add(r.Next(_aliveScalator - 30, _aliveScalator + 30));
+                    serie.PrimaryValues.RemoveAt(0);
+                }
+
+                foreach (var serie in RadarChart.Series)
                 {
                     serie.PrimaryValues.Add(r.Next(_aliveScalator - 30, _aliveScalator + 30));
                     serie.PrimaryValues.RemoveAt(0);
@@ -87,13 +98,33 @@ namespace ChartsTest
                 },
                 new BarSerie
                 {
-                    PrimaryValues = new ObservableCollection<double> { 4,3,2,1 }
+                    PrimaryValues = new ObservableCollection<double> { 0,0,0,0 }
                 },
                 new BarSerie
                 {
                     PrimaryValues = new ObservableCollection<double> { 3,1,4,2 }
                 }
             };
+
+            //Stacked Bar Chart
+            StackedBarChart.SecondaryAxis.Labels = standardLabels;
+            StackedBarChart.PrimaryAxis.MinValue = 0;
+            StackedBarChart.Series = new ObservableCollection<Serie>
+            {
+                new StackedBarSerie
+                {
+                    PrimaryValues = new ObservableCollection<double> { 1,2,3,4,1,5,2 }
+                },
+                new StackedBarSerie
+                {
+                    PrimaryValues = new ObservableCollection<double> { 4,3,2,1,8,1,4 }
+                },
+                new StackedBarSerie
+                {
+                    PrimaryValues = new ObservableCollection<double> { 3,1,4,2,7,3,2 }
+                }
+            };
+
 
             //PieChart
             PieChart.Series = new ObservableCollection<Serie>
@@ -116,9 +147,26 @@ namespace ChartsTest
                 }
             };
 
-            //func for serie 1
-            Func<double, double> fx1 = x => (Math.Pow(x, 2) + 10 * x)*1000;
-            Func<double, double> fx2 = x => (Math.Pow(x, 2))*1000;
+            RadarChart.SecondaryAxis.Labels = standardLabels;
+            RadarChart.Series = new ObservableCollection<Serie>
+            {
+                new RadarSerie
+                {
+                    PrimaryValues = new ObservableCollection<double> {9, 8, 2, 1, 6, 3, 7}
+                },
+                new RadarSerie
+                {
+                    PrimaryValues = new ObservableCollection<double> {4, 2, 7, 5, 10, 5, 2}
+                },
+                new RadarSerie
+                {
+                    PrimaryValues = new ObservableCollection<double> {2, 2, 4, 3, 2, 9, 5}
+                }
+            };
+
+            ////func for serie 1
+            Func<double, double> fx1 = x => (Math.Pow(x, 2) + 10 * x) * 1000;
+            Func<double, double> fx2 = x => (Math.Pow(x, 2)) * 1000;
             ScatterChart.PrimaryAxis.LabelFormatter = LabelFormatters.Currency;
             ScatterChart.Series = new ObservableCollection<Serie>
             {
@@ -148,8 +196,16 @@ namespace ChartsTest
             {
                 s.PrimaryValues.Add(r.Next(0, 10));
             }
-            PieChart.Series.First().PrimaryValues.Add(r.Next(0,10));
+            foreach (var s in StackedBarChart.Series)
+            {
+                s.PrimaryValues.Add(r.Next(0, 10));
+            }
+            PieChart.Series.First().PrimaryValues.Add(r.Next(0, 10));
             PieChart1.Series.First().PrimaryValues.Add(r.Next(0, 10));
+            foreach (var s in RadarChart.Series)
+            {
+                s.PrimaryValues.Add(r.Next(-10, 10));
+            }
         }
 
         private void RemovePoint(object sender, RoutedEventArgs e)
@@ -162,11 +218,20 @@ namespace ChartsTest
             {
                 s.PrimaryValues.RemoveAt(s.PrimaryValues.Count - 1);
             }
+            foreach (var s in StackedBarChart.Series.Where(s => s.PrimaryValues.Count > 2))
+            {
+                s.PrimaryValues.RemoveAt(s.PrimaryValues.Count - 1);
+            }
             var f = PieChart.Series.First().PrimaryValues;
             var f1 = PieChart1.Series.First().PrimaryValues;
-            
-            if (f.Count > 1)f.RemoveAt(f.Count-1);
-            if(f1.Count>1) f1.RemoveAt(f1.Count-1);
+
+            if (f.Count > 1) f.RemoveAt(f.Count - 1);
+            if (f1.Count > 1) f1.RemoveAt(f1.Count - 1);
+
+            foreach (var s in RadarChart.Series.Where(s => s.PrimaryValues.Count > 2))
+            {
+                s.PrimaryValues.RemoveAt(s.PrimaryValues.Count - 1);
+            }
         }
 
         private void AddSerie(object sender, RoutedEventArgs e)
@@ -187,7 +252,7 @@ namespace ChartsTest
             {
                 s = new LineSerie
                 {
-                    PrimaryValues = new ObservableCollection<double>(new double[] {1, -1, 2, -2, 3, -3, 4, -4, 5, -5})
+                    PrimaryValues = new ObservableCollection<double>(new double[] { 1, -1, 2, -2, 3, -3, 4, -4, 5, -5 })
                 };
             }
 
@@ -207,19 +272,63 @@ namespace ChartsTest
             {
                 s1 = new BarSerie
                 {
-                    PrimaryValues = new ObservableCollection<double>(new double[] { 1,2,3,4,5 })
+                    PrimaryValues = new ObservableCollection<double>(new double[] { 1, 2, 3, 4, 5 })
                 };
             }
             BarChart.Series.Add(s1);
+
+            var s2 = new StackedBarSerie { PrimaryValues = new ObservableCollection<double>() };
+            var stackedSerie = StackedBarChart.Series.Count > 0 ? StackedBarChart.Series[0] as StackedBarSerie : null;
+            if (stackedSerie != null)
+            {
+                var l1 = StackedBarChart.Series.Count == 0 ? 0 : stackedSerie.PrimaryValues.Count;
+                for (int i = 0; i < l1; i++)
+                {
+                    s2.PrimaryValues.Add(r.Next(0, 30));
+                }
+            }
+            else
+            {
+                s2 = new StackedBarSerie
+                {
+                    PrimaryValues = new ObservableCollection<double>(new double[] { 1, 2, 3, 4, 5 })
+                };
+            }
+            StackedBarChart.Series.Add(s2);
+
+            var s8 = new RadarSerie { PrimaryValues = new ObservableCollection<double>() };
+            var radarSerie = RadarChart.Series.Count > 0 ? RadarChart.Series[0] as RadarSerie : null;
+            if (radarSerie != null)
+            {
+                var l1 = RadarChart.Series.Count == 0 ? 0 : radarSerie.PrimaryValues.Count;
+                for (int i = 0; i < l1; i++)
+                {
+                    s8.PrimaryValues.Add(r.Next(0, 30));
+                }
+            }
+            else
+            {
+                s8 = new RadarSerie
+                {
+                    PrimaryValues = new ObservableCollection<double>(new double[] { 1, 2, 3, 4, 5 })
+                };
+            }
+            RadarChart.Series.Add(s8);
         }
 
         private void RemoveSerie(object sender, RoutedEventArgs e)
         {
             if (LineChart.Series.Count != 0)
-            LineChart.Series.RemoveAt(LineChart.Series.Count - 1);
+                LineChart.Series.RemoveAt(LineChart.Series.Count - 1);
 
             if (BarChart.Series.Count != 0)
-            BarChart.Series.RemoveAt(BarChart.Series.Count - 1);
+                BarChart.Series.RemoveAt(BarChart.Series.Count - 1);
+
+            if (StackedBarChart.Series.Count != 0)
+                StackedBarChart.Series.RemoveAt(StackedBarChart.Series.Count - 1);
+
+            if (RadarChart.Series.Count != 0)
+                RadarChart.Series.RemoveAt(RadarChart.Series.Count - 1);
         }
 
         private void IsAlive(object sender, RoutedEventArgs e)
@@ -235,6 +344,9 @@ namespace ChartsTest
                 BarChart.Hoverable = true;
                 BarChart.ClearAndPlot(false);
 
+                StackedBarChart.Hoverable = true;
+                StackedBarChart.ClearAndPlot(false);
+
                 PieChart.Hoverable = true;
                 PieChart.ClearAndPlot();
                 PieChart1.Hoverable = true;
@@ -242,6 +354,9 @@ namespace ChartsTest
 
                 ScatterChart.Hoverable = true;
                 ScatterChart.ClearAndPlot();
+
+                RadarChart.Hoverable = true;
+                RadarChart.ClearAndPlot();
             }
             else
             {
@@ -250,10 +365,12 @@ namespace ChartsTest
 
                 LineChart.Hoverable = false;
                 BarChart.Hoverable = false;
+                StackedBarChart.Hoverable = false;
                 PieChart.Hoverable = false;
                 PieChart1.Hoverable = false;
                 ScatterChart.Hoverable = false;
                 ScatterChart.PrimaryAxis.MinValue = null;
+                RadarChart.Hoverable = false;
             }
         }
 
@@ -263,6 +380,8 @@ namespace ChartsTest
             BarChart.ClearAndPlot();
             PieChart.ClearAndPlot();
             PieChart1.ClearAndPlot();
+            StackedBarChart.ClearAndPlot();
+            RadarChart.ClearAndPlot();
         }
 
         private void PerformanceTest(object sender, RoutedEventArgs e)
@@ -276,11 +395,11 @@ namespace ChartsTest
                 PointRadius = 3,
                 StrokeThickness = 0
             };
-            
+
             for (int i = 0; i < testLenght; i++)
             {
-                serie.PrimaryValues.Add(i*r.NextDouble());
-                serie.SecondaryValues[i] = i*r.NextDouble();
+                serie.PrimaryValues.Add(i * r.NextDouble());
+                serie.SecondaryValues[i] = i * r.NextDouble();
             }
 
             var timer = DateTime.Now;

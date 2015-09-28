@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Charts", "Charts\Charts.csproj", "{EF235236-364D-4DF8-A222-1E74CA0CBAD9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LiveCharts Core", "Charts\LiveCharts Core.csproj", "{EF235236-364D-4DF8-A222-1E74CA0CBAD9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChartsTest", "ChartsTest\ChartsTest.csproj", "{3BEF47C9-6FE4-4DF1-B796-6787F2C62E6A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WPF Example", "ChartsTest\WPF Example.csproj", "{3BEF47C9-6FE4-4DF1-B796-6787F2C62E6A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WinForms Example", "WinForms\WinForms Example.csproj", "{276302F1-0617-4AF9-80F6-62A4033518F7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,6 +43,20 @@ Global
 		{3BEF47C9-6FE4-4DF1-B796-6787F2C62E6A}.r46|Any CPU.ActiveCfg = Release|Any CPU
 		{3BEF47C9-6FE4-4DF1-B796-6787F2C62E6A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3BEF47C9-6FE4-4DF1-B796-6787F2C62E6A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{276302F1-0617-4AF9-80F6-62A4033518F7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{276302F1-0617-4AF9-80F6-62A4033518F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{276302F1-0617-4AF9-80F6-62A4033518F7}.r40|Any CPU.ActiveCfg = Release|Any CPU
+		{276302F1-0617-4AF9-80F6-62A4033518F7}.r40|Any CPU.Build.0 = Release|Any CPU
+		{276302F1-0617-4AF9-80F6-62A4033518F7}.r45|Any CPU.ActiveCfg = Release|Any CPU
+		{276302F1-0617-4AF9-80F6-62A4033518F7}.r45|Any CPU.Build.0 = Release|Any CPU
+		{276302F1-0617-4AF9-80F6-62A4033518F7}.r451|Any CPU.ActiveCfg = Release|Any CPU
+		{276302F1-0617-4AF9-80F6-62A4033518F7}.r451|Any CPU.Build.0 = Release|Any CPU
+		{276302F1-0617-4AF9-80F6-62A4033518F7}.r452|Any CPU.ActiveCfg = Release|Any CPU
+		{276302F1-0617-4AF9-80F6-62A4033518F7}.r452|Any CPU.Build.0 = Release|Any CPU
+		{276302F1-0617-4AF9-80F6-62A4033518F7}.r46|Any CPU.ActiveCfg = Release|Any CPU
+		{276302F1-0617-4AF9-80F6-62A4033518F7}.r46|Any CPU.Build.0 = Release|Any CPU
+		{276302F1-0617-4AF9-80F6-62A4033518F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{276302F1-0617-4AF9-80F6-62A4033518F7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

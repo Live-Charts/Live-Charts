@@ -20,21 +20,15 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
+using System;
+
 namespace LiveCharts
 {
-    public enum LineChartLineType
+    public class LiveChartsException : Exception
     {
-        /// <summary>
-        /// Use no line
-        /// </summary>
-        None,
-        /// <summary>
-        /// Uses an aproximation algorithm to make soft curves that passes by all points in serie.
-        /// </summary>
-        Bezier,
-        /// <summary>
-        /// Line that passes exactly by all points.
-        /// </summary>
-        Polyline
+        public LiveChartsException(string message)
+            : base(message)
+        {
+        }
     }
 }

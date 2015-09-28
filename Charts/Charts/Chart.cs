@@ -33,9 +33,9 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using System.Windows.Threading;
-using Charts.Series;
+using LiveCharts.Series;
 
-namespace Charts.Charts
+namespace LiveCharts.Charts
 {
     public abstract class Chart : UserControl
     {
@@ -50,6 +50,7 @@ namespace Charts.Charts
         protected double CurrentScale;
         protected ShapeHoverBehavior ShapeHoverBehavior;
         protected double LabelOffset;
+        protected bool AlphaLabel;
         public List<HoverableShape> HoverableShapes = new List<HoverableShape>(); 
         private Point _panOrigin;
         private bool _isDragging;
@@ -499,12 +500,13 @@ namespace Charts.Charts
             var senderShape = HoverableShapes.FirstOrDefault(s => Equals(s.Shape, sender));
             if (senderShape == null) return;
             var sibilings = HoverableShapes
-                .Where(s => Math.Abs(s.Value.X - senderShape.Value.X) < .001*Min.X).ToList();
+                .Where(s => Math.Abs(s.Value.X - senderShape.Value.X) < .01*Min.X).ToList();
 
             var first = sibilings.Count > 0 ? sibilings[0] : null;
             var last = sibilings.Count > 0 ? sibilings[sibilings.Count - 1] : null;
             var labels = SecondaryAxis.Labels?.ToArray();
             var vx = first?.Value.X ?? 0;
+            vx = AlphaLabel ? (int) (vx/(360d/Series.First().PrimaryValues.Count)) : vx;
 
             sp.Children.Add(new TextBlock
             {
@@ -516,7 +518,7 @@ namespace Charts.Charts
                     ? vx.ToString(CultureInfo.InvariantCulture)
                     : SecondaryAxis.LabelFormatter(vx))
                 : (labels.Length > vx
-                    ? labels[(int)vx]
+                    ? labels[ (int)vx]
                     : ""),
                 VerticalAlignment = VerticalAlignment.Center,
                 FontFamily = new FontFamily("Calibri"),
@@ -569,16 +571,11 @@ namespace Charts.Charts
             Canvas.Children.Add(b);
 
             b.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
-            var x = senderShape.Value.X > (Min.X + Max.X) / 2
-                ? ToPlotArea(senderShape.Value.X, AxisTags.X) - 10 - b.DesiredSize.Width
-                : ToPlotArea(senderShape.Value.X, AxisTags.X) + 10;
-            var y = ToPlotArea(sibilings.Select(s => s.Value.Y).DefaultIfEmpty(0).Sum()
-                               /sibilings.Count, AxisTags.Y);
-            y = y + b.DesiredSize.Height > ActualHeight
-                ? y - (y + b.DesiredSize.Height - ActualHeight) - 5
-                : y;
-            Canvas.SetLeft(b, x);
-            Canvas.SetTop(b, y);
+            var p = GetToolTipPosition(senderShape, sibilings, b);
+
+            Canvas.SetLeft(b, p.X);
+            Canvas.SetTop(b, p.Y);
+
             CurrentToolTip = b;
         }
 
@@ -608,6 +605,19 @@ namespace Charts.Charts
             if (CurrentToolTip == null) return;
             Canvas.Children.Remove(CurrentToolTip);
             CurrentToolTip = null;
+        }
+
+        protected virtual Point GetToolTipPosition(HoverableShape sender, List<HoverableShape> sibilings , Border b)
+        {
+            var x = sender.Value.X > (Min.X + Max.X) / 2
+                ? ToPlotArea(sender.Value.X, AxisTags.X) - 10 - b.DesiredSize.Width
+                : ToPlotArea(sender.Value.X, AxisTags.X) + 10;
+            var y = ToPlotArea(sibilings.Select(s => s.Value.Y).DefaultIfEmpty(0).Sum()
+                               / sibilings.Count, AxisTags.Y);
+            y = y + b.DesiredSize.Height > ActualHeight
+                ? y - (y + b.DesiredSize.Height - ActualHeight) - 5
+                : y;
+            return new Point(x, y);
         }
 
         public void ClearAndPlot(bool animate = true)
