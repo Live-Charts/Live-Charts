@@ -7,6 +7,8 @@
   <img src="https://dl.dropboxusercontent.com/u/40165535/live2.gif" />
   <img src="https://dl.dropboxusercontent.com/u/40165535/live3.gif" />
   <img src="https://dl.dropboxusercontent.com/u/40165535/live4.gif" />
+  <img src="https://dl.dropboxusercontent.com/u/40165535/live5.gif" />
+  <img src="https://dl.dropboxusercontent.com/u/40165535/live6.gif" />
 </p>
 
 **What this library is**
@@ -29,7 +31,7 @@ I decided to start this because current open source alternatives were not exactl
 #Instalation
 
  1. Install package from [**Nuget**](https://www.nuget.org/packages/LiveCharts) `Install-Package LiveCharts`
- 2. Add name space to your `Window` XAML `xmlns:charts="clr-namespace:Charts.Charts;assembly=Charts"`
+ 2. Add name space to your `Window` `XAML` `xmlns:charts="clr-namespace:LiveCharts.Charts;assembly=LiveCharts"`
  3. Thats it. You are ready.
  
 #Examples
@@ -112,18 +114,20 @@ It is recommended to clone this repo on your desktop, you only have to scroll up
             };
 ```
 
-#Included Graphs
-  - Lines and Areas
+#Included Charts
+  - Lines and Area
   - Bars
+  - StackedBad
   - Pie and doughnut
   - Scatter
+  - Radar
 
 #Formatters
-  This library also includes some common label formatters, for example when ploting you don't normally need to display big labels because they will take a lot of space in the chart, so if you set your chart with the preloaded number label formatter, like this:
+  This library also includes some common label formatters, you don't normally need to display big labels because they will take a lot of space in the chart, so if you set your chart with the preloaded number label formatter, like this:
 ```
 MyChart.PrimaryAxis.LabelFormatter = LabelFormatters.Number;
 ```
-will make `10` look like `10.00`, or `1000` like `1.00K`, or `1000000` like `1.00M`
+will make `10` look like `10.0`, or `1000` like `1.00K`, or `1000000` like `1.00M`
 
 <hr/>
 #[Chart](https://github.com/beto-rodriguez/Live-Charts/blob/master/Charts/Charts/Chart.cs)
@@ -245,3 +249,4 @@ helper class to define axis separators
 | Enabled | Indicates whether to draw separators or not. | `bool` |
 | Color | Gets or sets separators color |  [`Color`](https://msdn.microsoft.com/en-us/library/system.windows.media.colors(v=vs.110).aspx) |
 | Thickness | Gets or sets separators thickness | `int` |
+| Step | Gets or sets separator step, default value changes according to chart, if null then it will be calculated based on series values | `double?` |
