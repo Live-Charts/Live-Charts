@@ -7,6 +7,8 @@
   <img src="https://dl.dropboxusercontent.com/u/40165535/live2.gif" />
   <img src="https://dl.dropboxusercontent.com/u/40165535/live3.gif" />
   <img src="https://dl.dropboxusercontent.com/u/40165535/live4.gif" />
+  <img src="https://dl.dropboxusercontent.com/u/40165535/live5.gif" />
+  <img src="https://dl.dropboxusercontent.com/u/40165535/live6.gif" />
 </p>
 
 **What this library is**
@@ -29,7 +31,7 @@ I decided to start this because current open source alternatives were not exactl
 #Instalation
 
  1. Install package from [**Nuget**](https://www.nuget.org/packages/LiveCharts) `Install-Package LiveCharts`
- 2. Add name space to your `Window` XAML `xmlns:charts="clr-namespace:Charts.Charts;assembly=Charts"`
+ 2. Add name space to your `Window` `XAML` `xmlns:charts="clr-namespace:LiveCharts.Charts;assembly=LiveCharts"`
  3. Thats it. You are ready.
  
 #Examples
@@ -112,18 +114,20 @@ It is recommended to clone this repo on your desktop, you only have to scroll up
             };
 ```
 
-#Included Graphs
-  - Lines and Areas
+#Included Charts
+  - Lines and Area
   - Bars
+  - StackedBad
   - Pie and doughnut
   - Scatter
+  - Radar
 
 #Formatters
-  This library also includes some common label formatters, for example when ploting you don't normally need to display big labels because they will take a lot of space in the chart, so if you set your chart with the preloaded number label formatter, like this:
+  This library also includes some common label formatters, you don't normally need to display big labels because they will take a lot of space in the chart, so if you set your chart with the preloaded number label formatter, like this:
 ```
 MyChart.PrimaryAxis.LabelFormatter = LabelFormatters.Number;
 ```
-will make `10` look like `10.00`, or `1000` like `1.00K`, or `1000000` like `1.00M`
+will make `10` look like `10.0`, or `1000` like `1.00K`, or `1000000` like `1.00M`
 
 <hr/>
 #[Chart](https://github.com/beto-rodriguez/Live-Charts/blob/master/Charts/Charts/Chart.cs)
@@ -155,7 +159,18 @@ All charts inherits from `Chart`, this is the core of this library, change prope
 #[BarChart](https://github.com/beto-rodriguez/Live-Charts/blob/master/Charts/Charts/BarChart.cs)
 Inherits from [`Chart`](https://github.com/beto-rodriguez/Live-Charts#chart)
 <h3>Properties</h3>
-No extra properties
+| Name  | Description | Type |
+| ------------- | ------------- | ------------- |
+| MaxColumnWidth | Gets or sets max columns width, default is 60 | `double` |
+<h3>Methods</h3>
+None extra methods
+<hr/>
+#[StackedBarChart](https://github.com/beto-rodriguez/Live-Charts/blob/master/Charts/Charts/StackedBarChart.cs)
+Inherits from [`Chart`](https://github.com/beto-rodriguez/Live-Charts#chart)
+<h3>Properties</h3>
+| Name  | Description | Type |
+| ------------- | ------------- | ------------- |
+| MaxColumnWidth | Gets or sets max columns width, default is 60 | `double` |
 <h3>Methods</h3>
 None extra methods
 <hr/>
@@ -186,6 +201,15 @@ Inherits from [`Chart`](https://github.com/beto-rodriguez/Live-Charts#chart)
 | ------------- | ------------- | ------------- |
 | LineType | Gets or sets line type to draw | [`LineChartLineType`](https://github.com/beto-rodriguez/Live-Charts/blob/master/Charts/LineChartLineType.cs) |
 <hr/>
+#[RadarChart](https://github.com/beto-rodriguez/Live-Charts/blob/master/Charts/Charts/RadarChart.cs)
+Inherits from [`Chart`](https://github.com/beto-rodriguez/Live-Charts#chart)
+<h3>Properties</h3>
+| Name  | Description | Type |
+| ------------- | ------------- | ------------- |
+| InnerRadius | Gets or sets inner radius, this is the distance between center and min value, default is 10 | `double` |
+<h3>Methods</h3>
+None extra methods
+<hr/>
 #[Serie](https://github.com/beto-rodriguez/Live-Charts/blob/master/Charts/Series/Serie.cs)
 A serie is an abstract class to define chart series.
 <h3>Properties</h3>
@@ -199,6 +223,9 @@ A serie is an abstract class to define chart series.
 #[BarSerie](https://github.com/beto-rodriguez/Live-Charts/blob/master/Charts/Series/BarSerie.cs)
 Inherits from Serie, defines how a bar serie should be drawn
 <hr/>
+#[StackedBarSerie](https://github.com/beto-rodriguez/Live-Charts/blob/master/Charts/Series/StackedBarSerie.cs)
+Inherits from Serie, defines how a bar serie should be drawn
+<hr/>
 #[LineSerie](https://github.com/beto-rodriguez/Live-Charts/blob/master/Charts/Series/LineSerie.cs)
 Inherits from Serie, defines how a line serie should be drawn
 <hr/>
@@ -208,6 +235,9 @@ Inherits from Serie, defines how a pie serie should be drawn
 | Name  | Description | Type |
 | ------------- | ------------- | ------------- |
 | Labels | Gets or sets corresponding labels for serie | `string[]` |
+<hr/>
+#[RadarSerie](https://github.com/beto-rodriguez/Live-Charts/blob/master/Charts/Series/RadarSerie.cs)
+Inherits from Serie, defines how a radar serie should be drawn
 <hr/>
 #[ScatterSerie](https://github.com/beto-rodriguez/Live-Charts/blob/master/Charts/Series/ScatterSerie.cs)
 Inherits from Serie, defines how a scatter serie should be drawn
@@ -245,3 +275,4 @@ helper class to define axis separators
 | Enabled | Indicates whether to draw separators or not. | `bool` |
 | Color | Gets or sets separators color |  [`Color`](https://msdn.microsoft.com/en-us/library/system.windows.media.colors(v=vs.110).aspx) |
 | Thickness | Gets or sets separators thickness | `int` |
+| Step | Gets or sets separator step, default value changes according to chart, if null then it will be calculated based on series values | `double?` |
