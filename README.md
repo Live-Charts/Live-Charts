@@ -159,6 +159,8 @@ All charts inherits from `Chart`, this is the core of this library, change prope
 #[BarChart](https://github.com/beto-rodriguez/Live-Charts/blob/master/Charts/Charts/BarChart.cs)
 Inherits from [`Chart`](https://github.com/beto-rodriguez/Live-Charts#chart)
 <h3>Properties</h3>
+| Name  | Description | Type |
+| ------------- | ------------- | ------------- |
 | MaxColumnWidth | Gets or sets max columns width, default is 60 | `double` |
 <h3>Methods</h3>
 None extra methods
@@ -166,6 +168,8 @@ None extra methods
 #[StackedBarChart](https://github.com/beto-rodriguez/Live-Charts/blob/master/Charts/Charts/StackedBarChart.cs)
 Inherits from [`Chart`](https://github.com/beto-rodriguez/Live-Charts#chart)
 <h3>Properties</h3>
+| Name  | Description | Type |
+| ------------- | ------------- | ------------- |
 | MaxColumnWidth | Gets or sets max columns width, default is 60 | `double` |
 <h3>Methods</h3>
 None extra methods
