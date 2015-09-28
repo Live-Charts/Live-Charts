@@ -159,7 +159,14 @@ All charts inherits from `Chart`, this is the core of this library, change prope
 #[BarChart](https://github.com/beto-rodriguez/Live-Charts/blob/master/Charts/Charts/BarChart.cs)
 Inherits from [`Chart`](https://github.com/beto-rodriguez/Live-Charts#chart)
 <h3>Properties</h3>
-No extra properties
+| MaxColumnWidth | Gets or sets max columns width, default is 60 | `double` |
+<h3>Methods</h3>
+None extra methods
+<hr/>
+#[StackedBarChart](https://github.com/beto-rodriguez/Live-Charts/blob/master/Charts/Charts/StackedBarChart.cs)
+Inherits from [`Chart`](https://github.com/beto-rodriguez/Live-Charts#chart)
+<h3>Properties</h3>
+| MaxColumnWidth | Gets or sets max columns width, default is 60 | `double` |
 <h3>Methods</h3>
 None extra methods
 <hr/>
@@ -190,6 +197,15 @@ Inherits from [`Chart`](https://github.com/beto-rodriguez/Live-Charts#chart)
 | ------------- | ------------- | ------------- |
 | LineType | Gets or sets line type to draw | [`LineChartLineType`](https://github.com/beto-rodriguez/Live-Charts/blob/master/Charts/LineChartLineType.cs) |
 <hr/>
+#[RadarChart](https://github.com/beto-rodriguez/Live-Charts/blob/master/Charts/Charts/RadarChart.cs)
+Inherits from [`Chart`](https://github.com/beto-rodriguez/Live-Charts#chart)
+<h3>Properties</h3>
+| Name  | Description | Type |
+| ------------- | ------------- | ------------- |
+| InnerRadius | Gets or sets inner radius, this is the distance between center and min value, default is 10 | `double` |
+<h3>Methods</h3>
+None extra methods
+<hr/>
 #[Serie](https://github.com/beto-rodriguez/Live-Charts/blob/master/Charts/Series/Serie.cs)
 A serie is an abstract class to define chart series.
 <h3>Properties</h3>
@@ -203,6 +219,9 @@ A serie is an abstract class to define chart series.
 #[BarSerie](https://github.com/beto-rodriguez/Live-Charts/blob/master/Charts/Series/BarSerie.cs)
 Inherits from Serie, defines how a bar serie should be drawn
 <hr/>
+#[StackedBarSerie](https://github.com/beto-rodriguez/Live-Charts/blob/master/Charts/Series/StackedBarSerie.cs)
+Inherits from Serie, defines how a bar serie should be drawn
+<hr/>
 #[LineSerie](https://github.com/beto-rodriguez/Live-Charts/blob/master/Charts/Series/LineSerie.cs)
 Inherits from Serie, defines how a line serie should be drawn
 <hr/>
@@ -212,6 +231,9 @@ Inherits from Serie, defines how a pie serie should be drawn
 | Name  | Description | Type |
 | ------------- | ------------- | ------------- |
 | Labels | Gets or sets corresponding labels for serie | `string[]` |
+<hr/>
+#[RadarSerie](https://github.com/beto-rodriguez/Live-Charts/blob/master/Charts/Series/RadarSerie.cs)
+Inherits from Serie, defines how a radar serie should be drawn
 <hr/>
 #[ScatterSerie](https://github.com/beto-rodriguez/Live-Charts/blob/master/Charts/Series/ScatterSerie.cs)
 Inherits from Serie, defines how a scatter serie should be drawn
