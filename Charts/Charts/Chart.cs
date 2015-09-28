@@ -279,13 +279,8 @@ namespace LiveCharts.Charts
         {
             axis.PrintLabels = axis.Labels != null;
             if (axis.Labels == null || !axis.PrintLabels) return;
-            var m = axis.Labels.Max(x => x.Length);
-            var l = "";
-            for (var i = 0; i < m; i++)
-            {
-                l += "_";
-            }
-            var longestYLabel = new FormattedText(l, CultureInfo.CurrentUICulture, FlowDirection.LeftToRight,
+            var m = axis.Labels.OrderByDescending(x => x.Length);
+            var longestYLabel = new FormattedText(m.First(), CultureInfo.CurrentUICulture, FlowDirection.LeftToRight,
                 new Typeface(axis.FontFamily, axis.FontStyle, axis.FontWeight, axis.FontStretch), axis.FontSize,
                 Brushes.Black);
             axis.Separator.Step = (longestYLabel.Width*Max.X)*1.25 > PlotArea.Width
