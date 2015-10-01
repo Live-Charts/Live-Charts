@@ -28,6 +28,8 @@
             <StackPanel>
                 <Image Source="live.png" Stretch="None" Margin="0 0 0 20"></Image>
                 <TextBlock TextWrapping="Wrap">Here is a list of examples scroll down to check them out, resize window, charts will follow too.</TextBlock>
+                
+                
                 <TextBlock FontSize="20" FontWeight="Bold" HorizontalAlignment="Center" Margin="10">Line Chart</TextBlock>
                 <charts:LineChart Height="300" x:Name="LineChart" 
                                       Background="#FBFBFB" BorderBrush="LightGray" BorderThickness="1"

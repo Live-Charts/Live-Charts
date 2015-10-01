@@ -118,8 +118,8 @@ namespace LiveCharts.Charts
             var unitW = ToPlotArea(1, AxisTags.X) - PlotArea.X + 5;
             var overflow = unitW - MaxColumnWidth > 0 ? unitW - MaxColumnWidth : 0;
             unitW = unitW > MaxColumnWidth ? MaxColumnWidth : unitW;
-            var x = sender.Value.X > (Min.X + Max.X) / 2
-                ? ToPlotArea(sender.Value.X, AxisTags.X) - unitW + overflow * .5
+            var x = sender.Value.X + 1 > (Min.X + Max.X) / 2
+                ? ToPlotArea(sender.Value.X, AxisTags.X) + overflow * .5 - b.DesiredSize.Width
                 : ToPlotArea(sender.Value.X, AxisTags.X) + unitW + overflow * .5;
             var y = ActualHeight * .5 - b.DesiredSize.Height * .5;
             return new Point(x, y);

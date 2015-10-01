@@ -75,7 +75,6 @@ namespace ChartsTest
             }
             var standardLabels = l.ToArray();
 
-
             //Line Chart
             LineChart.PrimaryAxis.LabelFormatter = x => x.ToString("C");
             LineChart.SecondaryAxis.Labels = standardLabels;
