@@ -199,28 +199,37 @@ namespace LiveCharts.Charts
             set { SetValue(DisableAnimationProperty, value); }
         }
 
-        public static readonly DependencyProperty SeriesProperty = DependencyProperty.Register(
-            "Series", typeof(IEnumerable<Serie>), typeof(Chart));
+        public static readonly DependencyProperty SeriesProperty = DependencyProperty.Register("Series", typeof(ObservableCollection<Serie>), typeof(Chart), new PropertyMetadata(null, SeriesPropertyChangedCallback));
+
+        private static void SeriesPropertyChangedCallback(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
+        {
+          var chart = dependencyObject as Chart;
+          if (chart == null)
+            return;
+
+          var observableCollection = dependencyPropertyChangedEventArgs.NewValue as ObservableCollection<Serie>;
+          if (observableCollection == null)
+            return;
+
+          observableCollection.CollectionChanged += chart.OnSeriesCollectionChanged;
+          var index = 0;
+          foreach (var serie in observableCollection)
+          {
+            serie.ColorId = index;
+            serie.PrimaryValues.CollectionChanged += chart.OnDataSeriesChanged;
+            serie.Chart = chart;
+            index++;
+          }
+          chart.ClearAndPlot();
+        }
+
         /// <summary>
         /// Collection of series to be drawn.
         /// </summary>
         public ObservableCollection<Serie> Series
         {
-            get { return GetValue(SeriesProperty) as ObservableCollection<Serie>; }
-            set
-            {
-                SetValue(SeriesProperty, value);
-                value.CollectionChanged += OnSeriesCollectionChanged;
-                var index = 0;
-                foreach (var serie in value)
-                {
-                    serie.ColorId = index;
-                    serie.PrimaryValues.CollectionChanged += OnDataSeriesChanged;
-                    serie.Chart = this;
-                    index++;
-                }
-                ClearAndPlot();
-            }
+          get { return GetValue(SeriesProperty) as ObservableCollection<Serie>; }
+          set { SetValue(SeriesProperty, value); }
         }
 
         public Brush TooltipBackground { get; set; } = null;
