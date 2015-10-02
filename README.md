@@ -16,7 +16,7 @@
  - Easy to maintain and create new charts, as you can see in the source code, some charts have almost no code.
  - Ready for WPF Bindings.
  - Supports zooming and panning.
- - MIT License, permissive licesing.
+ - MIT License, permissive licensing.
 
 **What this is not**
  - A high performance library (by now), the first target of this library is to make good looking charts. That does not means performance will not be improved.
@@ -28,7 +28,7 @@ I decided to start this because current open source alternatives were not exactl
    - Now if you Google it you will surely arrive to [this Stackoverflow question](http://stackoverflow.com/questions/577278/wpf-chart-controls), but that question is closed and the newest answer was at May 2013. So most of answers are out of date.
    - The last option pay for a charting library. Really? Is this that an option? How can someone charge you any amount of money for some thousands of lines, we should build our own.
 
-#Instalation
+#Installation
 
  1. Install package from [**Nuget**](https://www.nuget.org/packages/LiveCharts) `Install-Package LiveCharts`
  2. Add name space to your `Window` `XAML` `xmlns:charts="clr-namespace:LiveCharts.Charts;assembly=LiveCharts"`
