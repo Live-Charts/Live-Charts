@@ -31,7 +31,7 @@ using LiveCharts.Charts;
 
 namespace LiveCharts.Series
 {
-    public abstract class Serie
+    public abstract class Serie : DependencyObject
     {
         private Color? _color;
         protected List<Shape> Shapes = new List<Shape>();
@@ -43,6 +43,7 @@ namespace LiveCharts.Series
             StrokeThickness = 2.5;
             PointRadius = 4;
             ColorId = -1;
+            Name = "An Unnamed Serie";
         }
 
         abstract public ObservableCollection<double> PrimaryValues { get; set; }
@@ -59,6 +60,17 @@ namespace LiveCharts.Series
                 Chart.Canvas.Children.Remove(hs.Shape);
                 Chart.HoverableShapes.Remove(hs);
             }
+        }
+
+        public static readonly DependencyProperty NameProperty = DependencyProperty.Register(
+            "Name", typeof (string), typeof (Serie), new PropertyMetadata(default(string)));
+        /// <summary>
+        /// Gets or sets serie name
+        /// </summary>
+        public string Name
+        {
+            get { return (string) GetValue(NameProperty); }
+            set { SetValue(NameProperty, value); }
         }
 
         public Chart Chart

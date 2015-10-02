@@ -75,6 +75,7 @@ namespace ChartsTest
             }
             var standardLabels = l.ToArray();
 
+
             //Line Chart
             LineChart.PrimaryAxis.LabelFormatter = x => x.ToString("C");
             LineChart.SecondaryAxis.Labels = standardLabels;
@@ -82,13 +83,21 @@ namespace ChartsTest
             {
                 new LineSerie
                 {
+                    Name = "Vegetables",
                     PrimaryValues = new ObservableCollection<double>
                     {
                         -10, 5, 9, 28, -3, 2, 0, 5, 10, 1, 7, 2
                     }
+                },
+                new LineSerie
+                {
+                    Name = "Fruits",
+                    PrimaryValues = new ObservableCollection<double>
+                    {
+                        -6, 1, 6, 20, -3, -7, -9, 2, 16, 10,16, 12
+                    }
                 }
             };
-
 
             ////Bar Chart
             BarChart.SecondaryAxis.Labels = standardLabels;

@@ -114,6 +114,9 @@
     <Compile Include="Charts\PieChart.cs" />
     <Compile Include="Charts\RadarChart.cs" />
     <Compile Include="Charts\ScatterChart.cs" />
+    <Compile Include="Charts\SeriesViewer.xaml.cs">
+      <DependentUpon>SeriesViewer.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Charts\StackedBarChart.cs" />
     <Compile Include="LabelFormatters.cs" />
     <Compile Include="LiveChartsException.cs" />
@@ -154,7 +157,12 @@
     </None>
     <AppDesigner Include="Properties\" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Page Include="Charts\SeriesViewer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
