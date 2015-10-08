@@ -122,6 +122,9 @@ It is recommended to clone this repo on your desktop, you only have to scroll up
   - Scatter
   - Radar
 
+#Questions 
+Try [Stackoverflow](http://stackoverflow.com/), comunity is awesome and I will review Live Charts tag periodically. if you are not getting an aswer then try reporting a [new issue](https://github.com/beto-rodriguez/Live-Charts/issues)
+
 #Formatters
   This library also includes some common label formatters, you don't normally need to display big labels because they will take a lot of space in the chart, so if you set your chart with the preloaded number label formatter, like this:
 ```
