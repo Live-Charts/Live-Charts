@@ -127,7 +127,7 @@ Chart | Example
 *Single axis scale chart:* it means that this chart is designed to compare values just in one axis, for example if John sales 3 items, Mark 8 and Susan 3, in you chart, sales should be displayed on primary axis while secondary axis labels should contain names (John, Mark, Susan). Records on Secondary axis will have the same distance between them. 
 
 #Questions 
-Try [Stackoverflow](http://stackoverflow.com/), comunity is awesome and I will review Live Charts tag periodically. if you are not getting an aswer then try reporting a [new issue](https://github.com/beto-rodriguez/Live-Charts/issues)
+Try [Stackoverflow](http://stackoverflow.com/). if you are not getting an aswer then try reporting a [new issue](https://github.com/beto-rodriguez/Live-Charts/issues)
 
 #Formatters
   This library also includes some common label formatters, you don't normally need to display big labels because they will take a lot of space in the chart, so if you set your chart with the preloaded number label formatter, like this:
