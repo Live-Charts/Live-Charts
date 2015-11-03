@@ -249,6 +249,9 @@ namespace LiveCharts.Charts
             //based on:
             //http://stackoverflow.com/questions/361681/algorithm-for-nice-grid-line-intervals-on-a-graph
 
+            var m = axis == AxisTags.Y ? Min.Y : Min.X;
+            if (Math.Abs(range) < m*.01) range = m;
+
             var ft = axis == AxisTags.Y
                 ? new FormattedText(
                     "A label",
