@@ -115,12 +115,19 @@ It is recommended to clone this repo on your desktop, you only have to scroll up
 ```
 
 #Included Charts
-  - Lines and Area
-  - Bars
-  - StackedBad
-  - Pie and doughnut
-  - Scatter
-  - Radar
+Chart | Example
+------------- | -------------
+|**Lines and Area:** single axis scale chart, useful to show trend or compare data, joins points with a bezier or polyline.  | <img align="right" src="https://dl.dropboxusercontent.com/u/40165535/live1.gif" /> |
+|**Bar:** single axis scale chart, useful to show trend or compare data, draws bars according to primary axis value.|<img align="right" src="https://dl.dropboxusercontent.com/u/40165535/live3.gif" />|
+|**StackedBar** single axis scale chart, useful to show trend or compare data and relational proportions between data.|<img align="right" src="https://dl.dropboxusercontent.com/u/40165535/live6.gif" />|
+|**Pie and doughnut:** useful to display relational proportion between data.|<img align="right" src="https://dl.dropboxusercontent.com/u/40165535/live2.gif" />|
+|**Scatter:** a chart with scale on both axis, useful when you need to display math functions or simply need scale on both axis.|<img align="right" src="https://dl.dropboxusercontent.com/u/40165535/live4.gif" />|
+|**Radar** usefull to show multiple data points and the variation between them.|<img align="right" src="https://dl.dropboxusercontent.com/u/40165535/live5.gif" />|
+
+*Single axis scale chart:* it means that this chart is designed to compare values just in one axis, for example if John sales 3 items, Mark 8 and Susan 3, in you chart, sales should be displayed on primary axis while secondary axis labels should contain names (John, Mark, Susan). Records on Secondary axis will have the same distance between them. 
+
+#Questions 
+Try [Stackoverflow](http://stackoverflow.com/). if you are not getting an aswer then try reporting a [new issue](https://github.com/beto-rodriguez/Live-Charts/issues)
 
 #Formatters
   This library also includes some common label formatters, you don't normally need to display big labels because they will take a lot of space in the chart, so if you set your chart with the preloaded number label formatter, like this:
