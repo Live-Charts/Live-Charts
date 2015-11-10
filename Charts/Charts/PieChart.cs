@@ -21,10 +21,9 @@
 //SOFTWARE.
 
 using System;
-using System.Globalization;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
@@ -35,20 +34,21 @@ namespace LiveCharts.Charts
 {
     public class PieChart : Chart
     {
-        private double _pieSum;
         private int _pointsCount;
 
         public PieChart()
         {
-            PrimaryAxis = new Axis();
+            PrimaryAxis = new Axis { FontWeight = FontWeights.Bold, FontSize = 11, FontFamily = new FontFamily("Calibri")};
             SecondaryAxis = new Axis();
             Hoverable = true;
             ShapeHoverBehavior = ShapeHoverBehavior.Shape;
             InnerRadius = 0;
             SlicePadding = 5;
+            DrawPadding = 20;
             Background = Brushes.White;
+            AnimatesNewPoints = true;
         }
-
+        
         public static readonly DependencyProperty InnerRadiusProperty = DependencyProperty.Register(
             "InnerRadius", typeof(double), typeof(PieChart));
         /// <summary>
@@ -71,7 +71,9 @@ namespace LiveCharts.Charts
             set { SetValue(SlicePaddingProperty, value); }
         }
 
-        public double PieSum => _pieSum;
+        public double PieSum { get; private set; }
+
+        public double DrawPadding { get; set; }
 
         protected override bool ScaleChanged
         {
@@ -87,58 +89,64 @@ namespace LiveCharts.Charts
 
         protected override void Scale()
         {
+            DrawAxis();
             var serie = Series.FirstOrDefault();
             var pieSerie = serie as PieSerie;
             if (pieSerie == null) return;
             _pointsCount = pieSerie.PrimaryValues.Count;
-            _pieSum = GetPieSum();
+            PieSum = GetPieSum();
         }
 
         protected override void DrawAxis()
         {
-            //we dont need axis for a pie chart.
-            //we override it with an empty void.
+            foreach (var l in AxisLabels) Canvas.Children.Remove(l);
+            foreach (var s in AxisShapes) Canvas.Children.Remove(s);
+            AxisLabels.Clear();
+            AxisShapes.Clear();
         }
         
         public override void OnDataMouseEnter(object sender, MouseEventArgs e)
         {
-            var b = new Border
-            {
-                BorderThickness = new Thickness(0),
-                Background = new SolidColorBrush { Color = Color.FromRgb(30, 30, 30), Opacity = .8 },
-                CornerRadius = new CornerRadius(1)
-            };
-            var sp = new StackPanel
-            {
-                Orientation = Orientation.Vertical
-            };
+            //This code is maybe going to be removed. I think Pie charts do not need hover, they work better 
+            //if we print just values on charts
+
+            //var b = new Border
+            //{
+            //    BorderThickness = new Thickness(0),
+            //    Background = new SolidColorBrush { Color = Color.FromRgb(30, 30, 30), Opacity = .8 },
+            //    CornerRadius = new CornerRadius(1)
+            //};
+            //var sp = new StackPanel
+            //{
+            //    Orientation = Orientation.Vertical
+            //};
 
             var senderShape = HoverableShapes.FirstOrDefault(s => Equals(s.Shape, sender));
             var pieSlice = senderShape?.Shape as PieSlice;
             if (pieSlice == null) return;
 
-            pieSlice.Opacity = .8;
+            //pieSlice.Opacity = .8;
 
-            sp.Children.Add(new TextBlock
-            {
-                Text = senderShape.Label + ", " + (SecondaryAxis.LabelFormatter == null
-                    ? senderShape.Value.Y.ToString(CultureInfo.InvariantCulture)
-                    : SecondaryAxis.LabelFormatter(senderShape.Value.Y)),
-                Margin = new Thickness(5),
-                VerticalAlignment = VerticalAlignment.Center,
-                FontFamily = new FontFamily("Calibri"),
-                FontSize = 11,
-                Foreground = Brushes.White
-            });
+            //sp.Children.Add(new TextBlock
+            //{
+            //    Text = senderShape.Label + ", " + (SecondaryAxis.LabelFormatter == null
+            //        ? senderShape.Value.Y.ToString(CultureInfo.InvariantCulture)
+            //        : SecondaryAxis.LabelFormatter(senderShape.Value.Y)),
+            //    Margin = new Thickness(5),
+            //    VerticalAlignment = VerticalAlignment.Center,
+            //    FontFamily = new FontFamily("Calibri"),
+            //    FontSize = 11,
+            //    Foreground = Brushes.White
+            //});
 
-            b.Child = sp;
-            Canvas.Children.Add(b);
+            //b.Child = sp;
+            //Canvas.Children.Add(b);
 
-            var minDimension = DesiredSize.Width < DesiredSize.Height
-               ? DesiredSize.Width : DesiredSize.Height;
+            //var minDimension = DesiredSize.Width < DesiredSize.Height
+            //   ? DesiredSize.Width : DesiredSize.Height;
 
-            Canvas.SetLeft(b, (DesiredSize.Width-minDimension)/2 +10);
-            Canvas.SetTop(b, (DesiredSize.Height - minDimension) / 2 +10);
+            //Canvas.SetLeft(b, (DesiredSize.Width-minDimension)/2 +10);
+            //Canvas.SetTop(b, (DesiredSize.Height - minDimension) / 2 +10);
 
             var anim = new DoubleAnimation
             {
@@ -148,7 +156,7 @@ namespace LiveCharts.Charts
 
             pieSlice.BeginAnimation(PieSlice.PushOutProperty, anim);
 
-            CurrentToolTip = b;
+            //CurrentToolTip = b;
         }
 
         public override void OnDataMouseLeave(object sender, MouseEventArgs e)

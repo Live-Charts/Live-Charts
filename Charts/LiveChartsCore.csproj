@@ -114,7 +114,11 @@
     <Compile Include="Charts\PieChart.cs" />
     <Compile Include="Charts\RadarChart.cs" />
     <Compile Include="Charts\ScatterChart.cs" />
-    <Compile Include="Charts\SeriesViewer.xaml.cs">
+    <Compile Include="Viewers\Converters.cs" />
+    <Compile Include="Viewers\PieSeriesViewer.xaml.cs">
+      <DependentUpon>PieSeriesViewer.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Viewers\SeriesViewer.xaml.cs">
       <DependentUpon>SeriesViewer.xaml</DependentUpon>
     </Compile>
     <Compile Include="Charts\StackedBarChart.cs" />
@@ -158,7 +162,11 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="Charts\SeriesViewer.xaml">
+    <Page Include="Viewers\PieSeriesViewer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Viewers\SeriesViewer.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -101,7 +101,7 @@ namespace LiveCharts.Series
             set { _color = value; }
         }
 
-        protected Color GetColorByIndex(int index)
+        public static Color GetColorByIndex(int index)
         {
             return Chart.Colors[
                     (int)(index - Chart.Colors.Count * Math.Truncate(index / (decimal)Chart.Colors.Count))];

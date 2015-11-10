@@ -39,23 +39,23 @@ namespace LiveCharts.Charts
 {
     public abstract class Chart : UserControl
     {
-        public Rect PlotArea;
-        public Canvas Canvas;
-        public Point Max;
-        public Point Min;
-        public Point S;
+        internal Rect PlotArea;
+        internal Canvas Canvas;
+        internal Point Max;
+        internal Point Min;
+        internal Point S;
         protected Border CurrentToolTip;
         protected List<Shape> AxisShapes = new List<Shape>();
-        protected List<TextBlock> AxisLabels = new List<TextBlock>();
+        internal List<TextBlock> AxisLabels = new List<TextBlock>();
         protected double CurrentScale;
         protected ShapeHoverBehavior ShapeHoverBehavior;
         protected double LabelOffset;
         protected bool AlphaLabel;
-        public List<HoverableShape> HoverableShapes = new List<HoverableShape>(); 
+        internal List<HoverableShape> HoverableShapes = new List<HoverableShape>(); 
         private Point _panOrigin;
         private bool _isDragging;
-        public int ColorStartIndex = 0;
-        private static Random _randomizer;
+        internal int ColorStartIndex = 0;
+        private static readonly Random Randomizer;
 
         //these timers are to avoid multiple graph ploting, graph will only plot when timer ticks.
         private readonly DispatcherTimer _resizeTimer;
@@ -80,7 +80,7 @@ namespace LiveCharts.Charts
                 Color.FromRgb(210,84,0),
                 Color.FromRgb(191,57,43)
             };
-            _randomizer = new Random();
+            Randomizer = new Random();
         }
 
         protected Chart()
@@ -117,8 +117,10 @@ namespace LiveCharts.Charts
             CurrentScale = 1;
             if (RandomizeStartingColor)
             {
-                ColorStartIndex = _randomizer.Next(0, Colors.Count - 1);
+                ColorStartIndex = Randomizer.Next(0, Colors.Count - 1);
             }
+
+            AnimatesNewPoints = false;
         }
 
         abstract protected void Scale();
@@ -132,6 +134,8 @@ namespace LiveCharts.Charts
         /// indicates wether each instance of chart you create needs to randomize starting color
         /// </summary>
         public static bool RandomizeStartingColor { get; set; }
+
+        protected bool AnimatesNewPoints { get; set; }
 
         public static readonly DependencyProperty ZoomingProperty = DependencyProperty.Register(
             "Zooming", typeof(bool), typeof(Chart));
@@ -656,6 +660,7 @@ namespace LiveCharts.Charts
             Canvas.Children.Clear();
 #if DEBUG
             //this takes as much time as drawing.
+            //ToDo: Improve performance here!
             Trace.WriteLine("clearing arrays took " + (DateTime.Now-timer).TotalMilliseconds);
 #endif
             Canvas.Width = ActualWidth*CurrentScale;
@@ -787,7 +792,7 @@ namespace LiveCharts.Charts
             foreach (var serie in Series)
             {
                 serie.Erase();
-                serie.Plot(false);
+                serie.Plot(AnimatesNewPoints);
             }
         }
 

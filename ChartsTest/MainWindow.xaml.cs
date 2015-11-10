@@ -149,7 +149,7 @@ namespace ChartsTest
                 //do not mix positive and negative values in a pie chart. It has no sense
                 new PieSerie
                 {
-                    PrimaryValues = new ObservableCollection<double> {8,8,3},
+                    PrimaryValues = new ObservableCollection<double> {8, 8, 3},
                     Labels = standardLabels
                 }
             };

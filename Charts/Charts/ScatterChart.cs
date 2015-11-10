@@ -41,6 +41,7 @@ namespace LiveCharts.Charts
             Hoverable = true;
             Zooming = true;
             ShapeHoverBehavior = ShapeHoverBehavior.Dot;
+            AnimatesNewPoints = true;
         }
 
         public static readonly DependencyProperty LineTypeProperty = DependencyProperty.Register(

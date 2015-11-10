@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:charts="clr-namespace:LiveCharts.Charts;assembly=LiveCharts"
         xmlns:liveCharts="clr-namespace:LiveCharts;assembly=LiveCharts"
+        xmlns:viewers="clr-namespace:LiveCharts.Viewers;assembly=LiveCharts"
         mc:Ignorable="d"
         Title="MainWindow" Height="600" Width="600"
         FontFamily="Calibri"
@@ -58,8 +59,8 @@
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>-->
-                    <charts:SeriesViewer Grid.Column="1" Series="{Binding ElementName=LineChart, Path=Series}"
-                                         VerticalAlignment="Center"></charts:SeriesViewer>
+                    <viewers:SeriesViewer Grid.Column="1" Series="{Binding ElementName=LineChart, Path=Series}"
+                                         VerticalAlignment="Center"></viewers:SeriesViewer>
                 </Grid>
                 
                 <TextBlock TextWrapping="Wrap">1. Click on buttons to test auto-update properties.</TextBlock>
@@ -87,7 +88,14 @@
                                  BorderThickness="1" InnerRadius="50" ></charts:PieChart>
                 <charts:PieChart Height="300" Name="PieChart1" Margin="10"
                                  Background="#FBFBFB" BorderBrush="LightGray" 
-                                 BorderThickness="1" InnerRadius="0"></charts:PieChart>
+                                 BorderThickness="1" InnerRadius="0">
+                    <charts:PieChart.PrimaryAxis>
+                        <liveCharts:Axis FontFamily="Arial" FontSize="14" FontWeight="Bold"/>
+                    </charts:PieChart.PrimaryAxis>
+                </charts:PieChart>
+                <viewers:PieSeriesViewer Series="{Binding ElementName=PieChart1, Path=Series}"
+                                         HorizontalAlignment="Center" Orientation="Horizontal"
+                                         Margin="5"/>
                 <TextBlock Margin="10" TextWrapping="Wrap">change InnerRadius property to 0 to make a pie chart</TextBlock>
 
                 <TextBlock FontSize="20" FontWeight="Bold" HorizontalAlignment="Center" Margin="10">Radar Chart</TextBlock>

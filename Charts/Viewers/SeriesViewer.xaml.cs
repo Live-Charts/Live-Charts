@@ -1,8 +1,9 @@
 ﻿using System.Collections.ObjectModel;
 using System.Windows;
+using System.Windows.Controls;
 using LiveCharts.Series;
 
-namespace LiveCharts.Charts
+namespace LiveCharts.Viewers
 {
     /// <summary>
     /// Interaction logic for SeriesViewer.xaml
@@ -22,6 +23,15 @@ namespace LiveCharts.Charts
         {
             get { return (ObservableCollection<Serie>) GetValue(SeriesProperty); }
             set { SetValue(SeriesProperty, value); }
+        }
+
+        public static readonly DependencyProperty OrientationProperty = DependencyProperty.Register(
+            "Orientation", typeof (Orientation), typeof (SeriesViewer), new PropertyMetadata(Orientation.Vertical));
+
+        public Orientation Orientation
+        {
+            get { return (Orientation) GetValue(OrientationProperty); }
+            set { SetValue(OrientationProperty, value); }
         }
     }
 }
