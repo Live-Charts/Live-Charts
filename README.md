@@ -34,7 +34,7 @@ I decided to start this because current open source alternatives were not exactl
  2. Add name space to your `Window` `XAML` `xmlns:charts="clr-namespace:LiveCharts.Charts;assembly=LiveCharts"`
  3. Thats it. You are ready.
  
-**NOTE:** Since this library is in a beta version, everything could not be documented. So we highly recommend to clone this repo and see included examples, there are a lot trying to cover all the cases.
+**NOTE:** Since this library is in a beta version, everything could not be documented. So we highly recommend to clone this repo and see included examples, there are a lot trying to cover all the cases. Images included in thos documentation might not be updated to the last version.
 
 #Examples
 It is recommended to clone this repo on your desktop, you only have to scroll up and click `Open in Visual Studio` button to the right, then see examples included, but here is a resume.
