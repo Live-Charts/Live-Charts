@@ -34,6 +34,8 @@ I decided to start this because current open source alternatives were not exactl
  2. Add name space to your `Window` `XAML` `xmlns:charts="clr-namespace:LiveCharts.Charts;assembly=LiveCharts"`
  3. Thats it. You are ready.
  
+**NOTE:** Since this library is in a beta version, everything could not be documented. So we highly recommend to clone this repo and see included examples, there are a lot trying to cover all the cases. Images included in this documentation might not be updated to the last version.
+
 #Examples
 It is recommended to clone this repo on your desktop, you only have to scroll up and click `Open in Visual Studio` button to the right, then see examples included, but here is a resume.
 
@@ -130,9 +132,27 @@ Chart | Example
 Try [Stackoverflow](http://stackoverflow.com/). if you are not getting an aswer then try reporting a [new issue](https://github.com/beto-rodriguez/Live-Charts/issues)
 
 #Formatters
-  This library also includes some common label formatters, you don't normally need to display big labels because they will take a lot of space in the chart, so if you set your chart with the preloaded number label formatter, like this:
+
+Formatters are your functions that takes a double value as parameter and returns a string. for example if you need to display your values as currency you would need to:
+  
+```
+private string MyFormat(double value)
+{
+  return value.ToString("C");
+}
+
+public SomeWhereInYourCode()
+{
+  LineChart.PrimaryAxis.LabelFormatter = MyFormat;
+  //or use a lambda expression
+  LineChart.PrimaryAxis.LabelFormatter = value => value.ToString("C");
+}
+```
+
+This library also includes some common label formatters, you don't normally need to display big labels because they will take a lot of space in the chart, so if you set your chart with the preloaded number label formatter, like this:
 ```
 MyChart.PrimaryAxis.LabelFormatter = LabelFormatters.Number;
+MyChart.PrimaryAxis.LabelFormatter = LabelFormatters.Currency; //or this to get same behavior but as currency.
 ```
 will make `10` look like `10.0`, or `1000` like `1.00K`, or `1000000` like `1.00M`
 
