@@ -132,9 +132,27 @@ Chart | Example
 Try [Stackoverflow](http://stackoverflow.com/). if you are not getting an aswer then try reporting a [new issue](https://github.com/beto-rodriguez/Live-Charts/issues)
 
 #Formatters
-  This library also includes some common label formatters, you don't normally need to display big labels because they will take a lot of space in the chart, so if you set your chart with the preloaded number label formatter, like this:
+
+Formatters are your functions that takes a double value as parameter and returns a string. for example if you need to display your values as currency you would need to:
+  
+```
+private string MyFormat(double value)
+{
+  return value.ToString("C");
+}
+
+public SomeWhereInYourCode()
+{
+  LineChart.PrimaryAxis.LabelFormatter = MyFormat;
+  //or use a lambda expression
+  LineChart.PrimaryAxis.LabelFormatter = value => value.ToString("C");
+}
+```
+
+This library also includes some common label formatters, you don't normally need to display big labels because they will take a lot of space in the chart, so if you set your chart with the preloaded number label formatter, like this:
 ```
 MyChart.PrimaryAxis.LabelFormatter = LabelFormatters.Number;
+MyChart.PrimaryAxis.LabelFormatter = LabelFormatters.Currency; //or this to get same behavior but as currency.
 ```
 will make `10` look like `10.0`, or `1000` like `1.00K`, or `1000000` like `1.00M`
 
