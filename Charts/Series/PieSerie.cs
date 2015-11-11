@@ -22,6 +22,7 @@
 
 using System;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -40,7 +41,7 @@ namespace LiveCharts.Series
         {
             var pChart = Chart as PieChart;
             if (pChart == null) return;
-            if (pChart.PieSum <= 0) return;
+            if (pChart.PieTotalSum <= 0) return;
             var rotated = 0d;
 
             Chart.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
@@ -54,7 +55,7 @@ namespace LiveCharts.Series
             for (var index = 0; index < PrimaryValues.Count; index++)
             {
                 var value = PrimaryValues[index];
-                var participation = value/pChart.PieSum;
+                var participation = value/pChart.PieTotalSum;
                 if (index == 0) rotated = participation *-.5;
 
                 var slice = new PieSlice
@@ -91,7 +92,9 @@ namespace LiveCharts.Series
 
                 var valueBlock = new TextBlock
                 {
-                    Text = participation.ToString("P"),
+                    Text = Chart.PrimaryAxis.LabelFormatter == null
+                        ? value.ToString(CultureInfo.InvariantCulture)
+                        : Chart.PrimaryAxis.LabelFormatter(value),
                     FontFamily = Chart.PrimaryAxis.FontFamily,
                     FontSize = Chart.PrimaryAxis.FontSize,
                     FontStretch = Chart.PrimaryAxis.FontStretch,
@@ -100,7 +103,7 @@ namespace LiveCharts.Series
                     Foreground = Brushes.White
                 };
 
-                var hypo = ((minDimension / 2) + pChart.InnerRadius)/2;
+                var hypo = ((minDimension/2) + (pChart.InnerRadius > 10 ? pChart.InnerRadius : 10))/2;
                 var gamma = participation*360/2 + rotated*360;
                 var cp = new Point(hypo*Math.Sin(gamma*(Math.PI/180)), hypo*Math.Cos(gamma*(Math.PI/180)));
 
@@ -111,7 +114,7 @@ namespace LiveCharts.Series
                 Panel.SetZIndex(valueBlock, int.MaxValue);
                 //because math is kind of complex to detetrmine if label fits inside the slide, by now we 
                 //will just add it if participation > 5% ToDo: the math!
-                if (participation > .05) 
+                if (participation > .05 && Chart.PrimaryAxis.PrintLabels)
                 {
                     Chart.Canvas.Children.Add(valueBlock);
                     Chart.AxisLabels.Add(valueBlock);

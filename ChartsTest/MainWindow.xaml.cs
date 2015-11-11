@@ -77,7 +77,7 @@ namespace ChartsTest
 
 
             //Line Chart
-            LineChart.PrimaryAxis.LabelFormatter = x => x.ToString("C");
+            LineChart.PrimaryAxis.LabelFormatter = (value) => value.ToString("C");
             LineChart.SecondaryAxis.Labels = standardLabels;
             LineChart.Series = new ObservableCollection<Serie>
             {
@@ -143,6 +143,7 @@ namespace ChartsTest
                     Labels = standardLabels
                 }
             };
+            PieChart1.PrimaryAxis.LabelFormatter = value => (value/PieChart1.PieTotalSum).ToString("P");
             PieChart1.Series = new ObservableCollection<Serie>
             {
                 //if you add more than one serie to pie chart, they will be overridden

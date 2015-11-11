@@ -21,7 +21,6 @@
 //SOFTWARE.
 
 using System;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
@@ -71,7 +70,7 @@ namespace LiveCharts.Charts
             set { SetValue(SlicePaddingProperty, value); }
         }
 
-        public double PieSum { get; private set; }
+        public double PieTotalSum { get; private set; }
 
         public double DrawPadding { get; set; }
 
@@ -83,7 +82,7 @@ namespace LiveCharts.Charts
                 var pieSerie = serie as PieSerie;
                 var min = pieSerie?.PrimaryValues.DefaultIfEmpty(0).Min() ?? 0.01;
                 var psc = pieSerie?.PrimaryValues?.Count ?? 0;
-                return Math.Abs(GetPieSum() - PieSum) > .001*min || _pointsCount != psc;
+                return Math.Abs(GetPieSum() - PieTotalSum) > .001*min || _pointsCount != psc;
             }
         }
 
@@ -94,7 +93,7 @@ namespace LiveCharts.Charts
             var pieSerie = serie as PieSerie;
             if (pieSerie == null) return;
             _pointsCount = pieSerie.PrimaryValues.Count;
-            PieSum = GetPieSum();
+            PieTotalSum = GetPieSum();
         }
 
         protected override void DrawAxis()
@@ -125,7 +124,7 @@ namespace LiveCharts.Charts
             var pieSlice = senderShape?.Shape as PieSlice;
             if (pieSlice == null) return;
 
-            //pieSlice.Opacity = .8;
+            pieSlice.Opacity = .8;
 
             //sp.Children.Add(new TextBlock
             //{
