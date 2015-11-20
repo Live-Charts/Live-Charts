@@ -19,7 +19,7 @@
  - MIT License, permissive licensing.
 
 **What this is not**
- - A high performance library (by now), the first target of this library is to make good looking charts. That does not means performance will not be improved.
+ - A high performance library (by now), the first target of this library is to make good looking charts. That does not means performance will not be improved (Draws 1000 points in 400ms aprox depends on chart type).
 
 I decided to start this because current open source alternatives were not exactly what I needed. The best options I could find were:
 
@@ -133,7 +133,7 @@ Try [Stackoverflow](http://stackoverflow.com/). if you are not getting an aswer 
 
 #Formatters
 
-Formatters are your functions that takes a double value as parameter and returns a string. for example if you need to display your values as currency you would need to:
+Formatters are just functions that takes a double value as parameter and returns a string. for example if you need to display your values as currency you would need to:
   
 ```
 private string MyFormat(double value)
