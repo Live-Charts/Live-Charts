@@ -60,7 +60,7 @@
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>-->
                     <viewers:SeriesViewer Grid.Column="1" Series="{Binding ElementName=LineChart, Path=Series}"
-                                         VerticalAlignment="Center"></viewers:SeriesViewer>
+                                         VerticalAlignment="Center" Margin="5"></viewers:SeriesViewer>
                 </Grid>
                 
                 <TextBlock TextWrapping="Wrap">1. Click on buttons to test auto-update properties.</TextBlock>
@@ -145,6 +145,12 @@
                                      Background="#FBFBFB" BorderBrush="LightGray" 
                                      BorderThickness="1" DisableAnimation="True" 
                                      LineType="None">
+                    <charts:ScatterChart.PrimaryAxis>
+                        <liveCharts:Axis MinValue="0"></liveCharts:Axis>
+                    </charts:ScatterChart.PrimaryAxis>
+                    <charts:ScatterChart.SecondaryAxis>
+                        <liveCharts:Axis MinValue="0"></liveCharts:Axis>
+                    </charts:ScatterChart.SecondaryAxis>
                 </charts:ScatterChart>
                 <StackPanel Orientation="Horizontal">
                     <Button Margin="0 10" Click="PerformanceTest">Run Test</Button>

@@ -37,6 +37,7 @@ namespace LiveCharts.Charts
             Hoverable = true;
             PrimaryAxis.MinValue = 0d;
             ShapeHoverBehavior = ShapeHoverBehavior.Shape;
+            IgnoresLastLabel = true;
         }
 
         /// <summary>
@@ -64,7 +65,7 @@ namespace LiveCharts.Charts
         {
             var s = Series.FirstOrDefault();
             if (s==null) return new Point(0,0);
-            var p = new Point(.01,
+            var p = new Point(0,
                 s.PrimaryValues.Select((t, i) => Series.Sum(serie => serie.PrimaryValues[i]))
                     .Concat(new[] { double.MaxValue }).Min());
             p.Y = PrimaryAxis.MinValue ?? p.Y;
@@ -107,9 +108,6 @@ namespace LiveCharts.Charts
             Max.Y = PrimaryAxis.MaxValue ?? (Math.Truncate(Max.Y / S.Y) + 1) * S.Y;
             Min.Y = PrimaryAxis.MinValue ?? (Math.Truncate(Min.Y / S.Y) - 1) * S.Y;
 
-            var unitW = ToPlotArea(1, AxisTags.X) - PlotArea.X + 5;
-            LabelOffset = unitW / 2;
-
             DrawAxis();
         }
 
@@ -128,6 +126,38 @@ namespace LiveCharts.Charts
         protected override void DrawAxis()
         {
             ConfigureSmartAxis(SecondaryAxis);
+
+            S = GetS();
+
+            Canvas.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+
+            var lastLabelX = Math.Truncate((Max.X - Min.X) / S.X) * S.X;
+            var longestYLabelSize = GetLongestLabelSize(PrimaryAxis);
+            var fistXLabelSize = GetLabelSize(SecondaryAxis, Min.X);
+            var lastXLabelSize = GetLabelSize(SecondaryAxis, lastLabelX);
+
+            const int padding = 5;
+
+            var unitW = ToPlotArea(1, AxisTags.X) - PlotArea.X + 5;
+            unitW = unitW > MaxColumnWidth * 3 ? MaxColumnWidth * 3 : unitW;
+            LabelOffset = unitW / 2;
+
+            PlotArea.X = padding * 2 +
+                         (fistXLabelSize.X * 0.5 - LabelOffset > longestYLabelSize.X
+                             ? fistXLabelSize.X * 0.5 - LabelOffset
+                             : longestYLabelSize.X);
+            PlotArea.Y = longestYLabelSize.Y * .5 + padding;
+            PlotArea.Height = Canvas.DesiredSize.Height - (padding * 2 + fistXLabelSize.Y) - PlotArea.Y;
+            PlotArea.Width = Canvas.DesiredSize.Width - PlotArea.X - padding;
+            var distanceToEnd = PlotArea.Width - (ToPlotArea(Max.X, AxisTags.X) - ToPlotArea(1, AxisTags.X));
+            distanceToEnd -= LabelOffset + padding;
+            PlotArea.Width -= lastXLabelSize.X * .5 - distanceToEnd > 0 ? lastXLabelSize.X * .5 - distanceToEnd : 0;
+
+            //calculate it again to get a better result
+            unitW = ToPlotArea(1, AxisTags.X) - PlotArea.X + 5;
+            unitW = unitW > MaxColumnWidth * 3 ? MaxColumnWidth * 3 : unitW;
+            LabelOffset = unitW / 2;
+
             base.DrawAxis();
         }
     }

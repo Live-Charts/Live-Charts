@@ -23,11 +23,16 @@
 using System;
 using System.Linq;
 using System.Windows;
+using System.Windows.Media;
 
 namespace LiveCharts.Charts
 {
     public class LineChart : Chart
     {
+        private Point _rawMax = new Point(0,0);
+        private Point _rawMin = new Point(0, 0);
+        private Point _rawS = new Point(0,0);
+
         public LineChart()
         {
             PrimaryAxis = new Axis();
@@ -42,8 +47,9 @@ namespace LiveCharts.Charts
             ShapeHoverBehavior = ShapeHoverBehavior.Dot;
         }
 
-        protected override bool ScaleChanged => GetMax() != Max ||
-                                                GetMin() != Min;
+        protected override bool ScaleChanged => GetMax() != _rawMax ||
+                                                GetMin() != _rawMin ||
+                                                GetS() != _rawS;
 
         public static readonly DependencyProperty IncludeAreaProperty = DependencyProperty.Register(
             "IncludeArea", typeof(bool), typeof(LineChart));
@@ -79,7 +85,7 @@ namespace LiveCharts.Charts
 
         private Point GetMin()
         {
-            var p = new Point(.01,
+            var p = new Point(0,
                 Series.Select(x => x.PrimaryValues.Min()).DefaultIfEmpty(0).Min());
             p.Y = PrimaryAxis.MinValue ?? p.Y;
             return p;
@@ -94,9 +100,14 @@ namespace LiveCharts.Charts
 
         protected override void Scale()
         {
-            Max = GetMax();
-            Min = GetMin();
-            S = GetS();
+            _rawMax = GetMax();
+            _rawMin = GetMin();
+            
+            Max = new Point(_rawMax.X,_rawMax.Y);
+            Min = new Point(_rawMin.X, _rawMin.Y);
+
+            _rawS = GetS();
+            S = new Point(_rawS.X, _rawS.Y);
 
             Max.Y = PrimaryAxis.MaxValue ?? (Math.Truncate(Max.Y/S.Y)+1)*S.Y;
             Min.Y = PrimaryAxis.MinValue ?? (Math.Truncate(Min.Y / S.Y)-1)*S.Y;
@@ -107,6 +118,25 @@ namespace LiveCharts.Charts
         protected override void DrawAxis()
         {
             ConfigureSmartAxis(SecondaryAxis);
+
+            S = GetS();
+
+            Canvas.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+
+            var lastLabelX = Math.Truncate((Max.X - Min.X)/S.X)*S.X;
+            var longestYLabelSize = GetLongestLabelSize(PrimaryAxis);
+            var fistXLabelSize = GetLabelSize(SecondaryAxis, Min.X);
+            var lastXLabelSize = GetLabelSize(SecondaryAxis, lastLabelX);
+
+            const int padding = 5;
+
+            PlotArea.X = padding*2 +
+                         (longestYLabelSize.X > fistXLabelSize.X*.5 ? longestYLabelSize.X : fistXLabelSize.X*.5);
+            PlotArea.Y = longestYLabelSize.Y*.5 + padding;
+            PlotArea.Height = Canvas.DesiredSize.Height - (padding*2 + fistXLabelSize.Y) -PlotArea.Y;
+            PlotArea.Width = Canvas.DesiredSize.Width - PlotArea.X - padding;
+            var distanceToEnd = ToPlotArea(Max.X - lastLabelX, AxisTags.X) - PlotArea.X;
+            PlotArea.Width -= lastXLabelSize.X*.5 - distanceToEnd > 0 ? lastXLabelSize.X*.5 - distanceToEnd : 0;
             base.DrawAxis();
         }
     }

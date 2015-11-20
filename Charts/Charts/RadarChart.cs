@@ -78,7 +78,7 @@ namespace LiveCharts.Charts
 
         private Point GetMin()
         {
-            var point = new Point(0.01,
+            var point = new Point(0,
                 Series.Select((x => x.PrimaryValues.Min())).DefaultIfEmpty(0.0).Min());
             point.Y = PrimaryAxis.MinValue ?? point.Y;
             return point;

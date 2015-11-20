@@ -26,16 +26,16 @@
                             <ColumnDefinition Width="Auto"></ColumnDefinition>
                             <ColumnDefinition Width="Auto"></ColumnDefinition>
                         </Grid.ColumnDefinitions>
-                        <Ellipse Grid.Column="0" Width="15" Height="15" StrokeThickness="0">
-                            <Ellipse.Fill>
+                        <Rectangle Grid.Column="0" Width="12" Height="12" StrokeThickness="0">
+                            <Rectangle.Fill>
                                 <SolidColorBrush>
                                     <SolidColorBrush.Color>
                                         <Binding Path="(ItemsControl.AlternationIndex)" RelativeSource="{RelativeSource TemplatedParent}"
                                                  Converter="{StaticResource PieSerieColorConverter}" />
                                     </SolidColorBrush.Color>
                                 </SolidColorBrush>
-                            </Ellipse.Fill>
-                        </Ellipse>
+                            </Rectangle.Fill>
+                        </Rectangle>
                         <TextBlock Grid.Column="1" Margin="10 0">
                             <TextBlock.Text>
                                 <MultiBinding Converter="{StaticResource PieSerieLabelConverter}">

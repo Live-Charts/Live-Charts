@@ -33,8 +33,8 @@ namespace ChartsTest
                 if (r.NextDouble() < .1) _aliveScalator += r.Next(-100, 100);
                 foreach (var serie in LineChart.Series)
                 {
-                    serie.PrimaryValues.Add(r.Next(_aliveScalator - 30, _aliveScalator + 30));
                     serie.PrimaryValues.RemoveAt(0);
+                    serie.PrimaryValues.Add(r.Next(_aliveScalator - 30, _aliveScalator + 30));
                 }
                 var abs = Math.Abs(_aliveScalator);
                 foreach (var serie in BarChart.Series)
@@ -48,12 +48,12 @@ namespace ChartsTest
                     serie.PrimaryValues.RemoveAt(0);
                 }
 
-                var f = PieChart.Series.First().PrimaryValues;
-                var f1 = PieChart1.Series.First().PrimaryValues;
-                f.Add(r.Next(abs, abs + 100));
-                f1.Add(r.Next(abs, abs + 100));
-                f.RemoveAt(0);
-                f1.RemoveAt(0);
+                //var f = PieChart.Series.First().PrimaryValues;
+                //var f1 = PieChart1.Series.First().PrimaryValues;
+                //f.Add(r.Next(abs, abs + 100));
+                //f1.Add(r.Next(abs, abs + 100));
+                //f.RemoveAt(0);
+                //f1.RemoveAt(0);
 
                 foreach (var serie in ScatterChart.Series)
                 {
@@ -71,7 +71,7 @@ namespace ChartsTest
             var l = new List<string>();
             for (int i = 0; i < 100; i++)
             {
-                l.Add("Day " + (i + 1));
+                l.Add("long long long label " + (i + 1));
             }
             var standardLabels = l.ToArray();
 
@@ -109,7 +109,7 @@ namespace ChartsTest
                 },
                 new BarSerie
                 {
-                    PrimaryValues = new ObservableCollection<double> { 3,1,4,2 }
+                    PrimaryValues = new ObservableCollection<double> { 3,1,4,3 }
                 }
             };
 
