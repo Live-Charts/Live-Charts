@@ -119,8 +119,8 @@ namespace LiveCharts.Charts
                              ? fistXLabelSize.X*0.5 - LabelOffset
                              : longestYLabelSize.X);
             PlotArea.Y = longestYLabelSize.Y * .5 + padding;
-            PlotArea.Height = Canvas.DesiredSize.Height - (padding * 2 + fistXLabelSize.Y) - PlotArea.Y;
-            PlotArea.Width = Canvas.DesiredSize.Width - PlotArea.X - padding;
+            PlotArea.Height = Math.Max(0, Canvas.DesiredSize.Height - (padding * 2 + fistXLabelSize.Y) - PlotArea.Y);
+            PlotArea.Width = Math.Max(0, Canvas.DesiredSize.Width - PlotArea.X - padding);
             var distanceToEnd = PlotArea.Width - (ToPlotArea(Max.X, AxisTags.X) - ToPlotArea(1, AxisTags.X));
             distanceToEnd -= LabelOffset + padding;
             PlotArea.Width -= lastXLabelSize.X * .5 - distanceToEnd > 0 ? lastXLabelSize.X * .5 - distanceToEnd : 0;

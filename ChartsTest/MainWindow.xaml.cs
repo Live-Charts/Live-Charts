@@ -20,12 +20,16 @@ namespace ChartsTest
         private bool _isAlive;
         private int _aliveScalator;
 
-        public MainWindow()
+		public ObservableCollection<double> LineValues { get; } = new ObservableCollection<double> { 3, 2, 1, 6, 5, 4, 9, 8, 7 };
+
+	    public MainWindow()
         {
             InitializeComponent();
 
-            //set this property to true so charts use diferent colors (and don't look boring!).
-            Chart.RandomizeStartingColor = true;
+			DataContext = this;
+
+			//set this property to true so charts use diferent colors (and don't look boring!).
+			Chart.RandomizeStartingColor = true;
 
             _timer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(100) };
             _timer.Tick += (sender, args) =>

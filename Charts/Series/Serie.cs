@@ -31,7 +31,7 @@ using LiveCharts.Charts;
 
 namespace LiveCharts.Series
 {
-    public abstract class Serie : DependencyObject
+    public abstract class Serie : FrameworkElement
     {
         private Color? _color;
         protected List<Shape> Shapes = new List<Shape>();

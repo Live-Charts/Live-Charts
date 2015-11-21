@@ -6,10 +6,11 @@
         xmlns:charts="clr-namespace:LiveCharts.Charts;assembly=LiveCharts"
         xmlns:liveCharts="clr-namespace:LiveCharts;assembly=LiveCharts"
         xmlns:viewers="clr-namespace:LiveCharts.Viewers;assembly=LiveCharts"
+        xmlns:series="clr-namespace:LiveCharts.Series;assembly=LiveCharts"
         mc:Ignorable="d"
         Title="MainWindow" Height="600" Width="900"
         FontFamily="Calibri"
-        FontSize="14"
+        FontSize="14" x:Name="Window"
         Foreground="#404040"
         WindowStartupLocation="CenterScreen">
     <Window.Resources>
@@ -20,98 +21,101 @@
             <Setter Property="Padding" Value="10 5"></Setter>
         </Style>
     </Window.Resources>
-    <Grid x:Name="LayoutRoot">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
-        </Grid.RowDefinitions>
-        <ScrollViewer Grid.Row="0" Padding="15">
-            <StackPanel>
-                <Image Source="live.png" Stretch="None" Margin="0 0 0 20"></Image>
-                <TextBlock TextWrapping="Wrap">Here is a list of examples scroll down to check them out, resize window, charts will follow too.</TextBlock>
+	<TabControl>
+		<!-- #region Code-Behind -->
+		<TabItem Header="Code-Behind">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                </Grid.RowDefinitions>
+                <ScrollViewer Grid.Row="0" Padding="15">
+                    <StackPanel>
+                        <Image Source="live.png" Stretch="None" Margin="0 0 0 20"></Image>
+                        <TextBlock TextWrapping="Wrap">Here is a list of examples scroll down to check them out, resize window, charts will follow too.</TextBlock>
 
-                <DockPanel HorizontalAlignment="Center">
-                    <TextBlock FontSize="20" FontWeight="Bold" HorizontalAlignment="Center" Margin="10">Line and Area Chart</TextBlock>
-                    <Button Click="MoreLineChartExmaplesOnClick" Margin="30 0" Height="30" Background="CornflowerBlue" Foreground="WhiteSmoke">More Line chart Examples</Button>
-                </DockPanel>
+                        <DockPanel HorizontalAlignment="Center">
+                            <TextBlock FontSize="20" FontWeight="Bold" HorizontalAlignment="Center" Margin="10">Line and Area Chart</TextBlock>
+                            <Button Click="MoreLineChartExmaplesOnClick" Margin="30 0" Height="30" Background="CornflowerBlue" Foreground="WhiteSmoke">More Line chart Examples</Button>
+                        </DockPanel>
 
-                <Grid Background="#FBFBFB">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"></ColumnDefinition>
-                        <ColumnDefinition Width="Auto"></ColumnDefinition>
-                    </Grid.ColumnDefinitions>
-                    <charts:LineChart Height="300" x:Name="LineChart" 
+                        <Grid Background="#FBFBFB">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <charts:LineChart Height="300" x:Name="LineChart" 
                                       Zooming="True" Grid.Column="0"></charts:LineChart>
-                    <viewers:SeriesViewer Grid.Column="1" Series="{Binding ElementName=LineChart, Path=Series}"
+                            <viewers:SeriesViewer Grid.Column="1" Series="{Binding ElementName=LineChart, Path=Series}"
                                          VerticalAlignment="Center" Margin="5"></viewers:SeriesViewer>
-                    <!--add a series viewer, or build your own, to get a custom behavior, for example
-                     this control can be replaced with this-->
-                    <!--<ItemsControl Grid.Column="0" ItemsSource="{Binding ElementName=LineChart, Path=Series}">
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate>
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto"></ColumnDefinition>
-                                        <ColumnDefinition Width="Auto"></ColumnDefinition>
-                                    </Grid.ColumnDefinitions>
-                                    <Rectangle Grid.Column="0" Width="10" Height="10" StrokeThickness="0">
-                                        <Rectangle.Fill>
-                                            <SolidColorBrush Color="{Binding Color}"></SolidColorBrush>
-                                        </Rectangle.Fill>
-                                    </Rectangle>
-                                    <TextBlock Grid.Column="1" Margin="10 0" Text="{Binding Name}"></TextBlock>
-                                </Grid>
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>-->
-                </Grid>
-                
-                <TextBlock TextWrapping="Wrap">1. Click on buttons to test auto-update properties.</TextBlock>
-                <TextBlock TextWrapping="Wrap">2. You can use mouse wheel to zoom and drag graph to pan it when zoomed</TextBlock>
-                <TextBlock TextWrapping="Wrap">3. All types of graphs could do this too.</TextBlock>
-                
-                <TextBlock FontSize="20" FontWeight="Bold" HorizontalAlignment="Center" Margin="10">Bar Chart</TextBlock>
-                <charts:BarChart Height="200" x:Name="BarChart" Margin="0 10"
+                            <!--add a series viewer, or build your own, to get a custom behavior, for example
+								this control can be replaced with this-->
+							<!--<ItemsControl Grid.Column="0" ItemsSource="{Binding ElementName=LineChart, Path=Series}">
+								<ItemsControl.ItemTemplate>
+									<DataTemplate>
+										<Grid>
+											<Grid.ColumnDefinitions>
+												<ColumnDefinition Width="Auto"></ColumnDefinition>
+												<ColumnDefinition Width="Auto"></ColumnDefinition>
+											</Grid.ColumnDefinitions>
+											<Rectangle Grid.Column="0" Width="10" Height="10" StrokeThickness="0">
+												<Rectangle.Fill>
+													<SolidColorBrush Color="{Binding Color}"></SolidColorBrush>
+												</Rectangle.Fill>
+											</Rectangle>
+											<TextBlock Grid.Column="1" Margin="10 0" Text="{Binding Name}"></TextBlock>
+										</Grid>
+									</DataTemplate>
+								</ItemsControl.ItemTemplate>
+							</ItemsControl>-->
+                        </Grid>
+
+                        <TextBlock TextWrapping="Wrap">1. Click on buttons to test auto-update properties.</TextBlock>
+                        <TextBlock TextWrapping="Wrap">2. You can use mouse wheel to zoom and drag graph to pan it when zoomed</TextBlock>
+                        <TextBlock TextWrapping="Wrap">3. All types of graphs could do this too.</TextBlock>
+
+                        <TextBlock FontSize="20" FontWeight="Bold" HorizontalAlignment="Center" Margin="10">Bar Chart</TextBlock>
+                        <charts:BarChart Height="200" x:Name="BarChart" Margin="0 10"
                                  Background="#FBFBFB" BorderBrush="LightGray" 
                                  BorderThickness="1">
-                    <charts:BarChart.PrimaryAxis>
-                        <liveCharts:Axis MinValue="0"></liveCharts:Axis>
-                    </charts:BarChart.PrimaryAxis>
-                </charts:BarChart>
+                            <charts:BarChart.PrimaryAxis>
+                                <liveCharts:Axis MinValue="0"></liveCharts:Axis>
+                            </charts:BarChart.PrimaryAxis>
+                        </charts:BarChart>
 
-                <TextBlock FontSize="20" FontWeight="Bold" HorizontalAlignment="Center" Margin="10">Stacked Bar Chart</TextBlock>
-                <charts:StackedBarChart Height="300" x:Name="StackedBarChart" Margin="0 10"
+                        <TextBlock FontSize="20" FontWeight="Bold" HorizontalAlignment="Center" Margin="10">Stacked Bar Chart</TextBlock>
+                        <charts:StackedBarChart Height="300" x:Name="StackedBarChart" Margin="0 10"
                                  Background="#FBFBFB" BorderBrush="LightGray" 
                                  BorderThickness="1">
-                </charts:StackedBarChart>
+                        </charts:StackedBarChart>
 
-                <TextBlock FontSize="20" FontWeight="Bold" HorizontalAlignment="Center" Margin="10">Pie and Doughnut Chart</TextBlock>
-                <charts:PieChart Height="300" Name="PieChart" Margin="10"
+                        <TextBlock FontSize="20" FontWeight="Bold" HorizontalAlignment="Center" Margin="10">Pie and Doughnut Chart</TextBlock>
+                        <charts:PieChart Height="300" Name="PieChart" Margin="10"
                                  Background="#FBFBFB" BorderBrush="LightGray" 
                                  BorderThickness="1" InnerRadius="50" ></charts:PieChart>
-                <charts:PieChart Height="300" Name="PieChart1" Margin="10"
+                        <charts:PieChart Height="300" Name="PieChart1" Margin="10"
                                  Background="#FBFBFB" BorderBrush="LightGray" 
                                  BorderThickness="1" InnerRadius="0">
-                    <charts:PieChart.PrimaryAxis>
-                        <liveCharts:Axis FontFamily="Arial" FontSize="14" FontWeight="Bold"/>
-                    </charts:PieChart.PrimaryAxis>
-                </charts:PieChart>
-                <viewers:PieSeriesViewer Series="{Binding ElementName=PieChart1, Path=Series}"
+                            <charts:PieChart.PrimaryAxis>
+                                <liveCharts:Axis FontFamily="Arial" FontSize="14" FontWeight="Bold"/>
+                            </charts:PieChart.PrimaryAxis>
+                        </charts:PieChart>
+                        <viewers:PieSeriesViewer Series="{Binding ElementName=PieChart1, Path=Series}"
                                          HorizontalAlignment="Center" Orientation="Horizontal"
                                          Margin="5"/>
-                <TextBlock Margin="10" TextWrapping="Wrap">change InnerRadius property to 0 to make a pie chart</TextBlock>
+                        <TextBlock Margin="10" TextWrapping="Wrap">change InnerRadius property to 0 to make a pie chart</TextBlock>
 
-                <TextBlock FontSize="20" FontWeight="Bold" HorizontalAlignment="Center" Margin="10">Radar Chart</TextBlock>
-                <charts:RadarChart Height="300" x:Name="RadarChart" Margin="0 10"
+                        <TextBlock FontSize="20" FontWeight="Bold" HorizontalAlignment="Center" Margin="10">Radar Chart</TextBlock>
+                        <charts:RadarChart Height="300" x:Name="RadarChart" Margin="0 10"
                                  Background="#FBFBFB" BorderBrush="LightGray" 
                                  BorderThickness="1">
-                </charts:RadarChart>
-                
-                
-                <TextBlock FontSize="20" FontWeight="Bold" HorizontalAlignment="Center" Margin="10">
+                        </charts:RadarChart>
+
+
+                        <TextBlock FontSize="20" FontWeight="Bold" HorizontalAlignment="Center" Margin="10">
                     Scatter Chart, changing a lot of default properties
-                </TextBlock>
-                <charts:ScatterChart Height="300" Name="ScatterChart" Margin="10"
+                        </TextBlock>
+                        <charts:ScatterChart Height="300" Name="ScatterChart" Margin="10"
                                      Background="#505050" BorderBrush="LightGray" 
                                      BorderThickness="1" LineType="Bezier"
                                      TooltipBackground="AntiqueWhite"
@@ -119,58 +123,200 @@
                                      TooltipBorderThickness="3"
                                      TooltipCornerRadius="5"
                                      TooltipForegroung="#505050">
-                    <charts:ScatterChart.PrimaryAxis>
-                        <liveCharts:Axis MinValue="0" 
+                            <charts:ScatterChart.PrimaryAxis>
+                                <liveCharts:Axis MinValue="0" 
                                       FontFamily="Comic Sans" Color="WhiteSmoke" Thickness="4"
                                       TextColor="DodgerBlue">
-                            <liveCharts:Axis.Separator>
-                                <liveCharts:Separator Color="DodgerBlue" Thickness="4" Enabled="True"></liveCharts:Separator>
-                            </liveCharts:Axis.Separator>
-                        </liveCharts:Axis>
-                    </charts:ScatterChart.PrimaryAxis>
-                    <charts:ScatterChart.SecondaryAxis>
-                        <liveCharts:Axis FontFamily="Arial" Color="RosyBrown" Thickness="2"
+                                    <liveCharts:Axis.Separator>
+                                        <liveCharts:Separator Color="DodgerBlue" Thickness="4" Enabled="True"></liveCharts:Separator>
+                                    </liveCharts:Axis.Separator>
+                                </liveCharts:Axis>
+                            </charts:ScatterChart.PrimaryAxis>
+                            <charts:ScatterChart.SecondaryAxis>
+                                <liveCharts:Axis FontFamily="Arial" Color="RosyBrown" Thickness="2"
                                       TextColor="SandyBrown">
-                            <liveCharts:Axis.Separator>
-                                <liveCharts:Separator Color="SandyBrown" Thickness="1" Enabled="True"></liveCharts:Separator>
-                            </liveCharts:Axis.Separator>
-                        </liveCharts:Axis>
-                    </charts:ScatterChart.SecondaryAxis>
-                </charts:ScatterChart>
-                <StackPanel Orientation="Horizontal">
-                    <Label>Test included formatters here</Label>
-                    <Button Margin="5 0" Click="IncreaseScale">+</Button>
-                    <Button Margin="5 0" Click="DecreaseScale">-</Button>
-                </StackPanel>
+                                    <liveCharts:Axis.Separator>
+                                        <liveCharts:Separator Color="SandyBrown" Thickness="1" Enabled="True"></liveCharts:Separator>
+                                    </liveCharts:Axis.Separator>
+                                </liveCharts:Axis>
+                            </charts:ScatterChart.SecondaryAxis>
+                        </charts:ScatterChart>
+                        <StackPanel Orientation="Horizontal">
+                            <Label>Test included formatters here</Label>
+                            <Button Margin="5 0" Click="IncreaseScale">+</Button>
+                            <Button Margin="5 0" Click="DecreaseScale">-</Button>
+                        </StackPanel>
 
-                <TextBlock FontSize="20" FontWeight="Bold" HorizontalAlignment="Center" Margin="10">Finally a performance test!</TextBlock>
-                <charts:ScatterChart Height="300" Name="PerfomranceChart" Margin="10"
+                        <TextBlock FontSize="20" FontWeight="Bold" HorizontalAlignment="Center" Margin="10">Finally a performance test!</TextBlock>
+                        <charts:ScatterChart Height="300" Name="PerfomranceChart" Margin="10"
                                      Background="#FBFBFB" BorderBrush="LightGray" 
                                      BorderThickness="1" DisableAnimation="True" 
                                      LineType="None">
-                    <charts:ScatterChart.PrimaryAxis>
-                        <liveCharts:Axis MinValue="0"></liveCharts:Axis>
-                    </charts:ScatterChart.PrimaryAxis>
-                    <charts:ScatterChart.SecondaryAxis>
-                        <liveCharts:Axis MinValue="0"></liveCharts:Axis>
-                    </charts:ScatterChart.SecondaryAxis>
-                </charts:ScatterChart>
-                <StackPanel Orientation="Horizontal">
-                    <Button Margin="0 10" Click="PerformanceTest">Run Test</Button>
+                            <charts:ScatterChart.PrimaryAxis>
+                                <liveCharts:Axis MinValue="0"></liveCharts:Axis>
+                            </charts:ScatterChart.PrimaryAxis>
+                            <charts:ScatterChart.SecondaryAxis>
+                                <liveCharts:Axis MinValue="0"></liveCharts:Axis>
+                            </charts:ScatterChart.SecondaryAxis>
+                        </charts:ScatterChart>
+                        <StackPanel Orientation="Horizontal">
+                            <Button Margin="0 10" Click="PerformanceTest">Run Test</Button>
+                        </StackPanel>
+                    </StackPanel>
+                </ScrollViewer>
+                <StackPanel Grid.Row="1" Orientation="Horizontal" Background="#FBFBFB">
+                    <TextBlock VerticalAlignment="Center" Margin="5">Points</TextBlock>
+                    <Button Width="30" Margin="5 10" HorizontalAlignment="Left" Click="AddPoint">+</Button>
+                    <Button Width="30" Margin="0 10" HorizontalAlignment="Left" Click="RemovePoint">-</Button>
+
+                    <TextBlock VerticalAlignment="Center" Margin="15 0 5 0">Series</TextBlock>
+                    <Button Width="30" Margin="5 10" HorizontalAlignment="Left" Click="AddSerie">+</Button>
+                    <Button Width="30" Margin="0 10" HorizontalAlignment="Left" Click="RemoveSerie">-</Button>
+
+                    <Button Width="100" Margin="10" Click="Redraw">Redraw All</Button>
+                    <Button Width="100" Margin="10" Click="IsAlive">Go Wild!</Button>
                 </StackPanel>
-            </StackPanel>
-        </ScrollViewer>
-        <StackPanel Grid.Row="1" Orientation="Horizontal" Background="#FBFBFB">
-            <TextBlock VerticalAlignment="Center" Margin="5">Points</TextBlock>
-            <Button Width="30" Margin="5 10" HorizontalAlignment="Left" Click="AddPoint">+</Button>
-            <Button Width="30" Margin="0 10" HorizontalAlignment="Left" Click="RemovePoint">-</Button>
+            </Grid>
+        </TabItem>
+        <!-- #endregion -->
+        <TabItem Header="Literals &amp; Bindings">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                </Grid.RowDefinitions>
+                <ScrollViewer Grid.Row="0" Padding="15">
+                    <StackPanel>
+                        <Image Source="live.png" Stretch="None" Margin="0 0 0 20"></Image>
+                        <TextBlock TextWrapping="Wrap">Here is a list of examples scroll down to check them out, resize window, charts will follow too.</TextBlock>
 
-            <TextBlock VerticalAlignment="Center" Margin="15 0 5 0">Series</TextBlock>
-            <Button Width="30" Margin="5 10" HorizontalAlignment="Left" Click="AddSerie">+</Button>
-            <Button Width="30" Margin="0 10" HorizontalAlignment="Left" Click="RemoveSerie">-</Button>
+                        <DockPanel HorizontalAlignment="Center">
+                            <TextBlock FontSize="20" FontWeight="Bold" HorizontalAlignment="Center" Margin="10">Line and Area Chart</TextBlock>
+                            <Button Click="MoreLineChartExmaplesOnClick" Margin="30 0" Height="30" Background="CornflowerBlue" Foreground="WhiteSmoke">More Line chart Examples</Button>
+                        </DockPanel>
 
-            <Button Width="100" Margin="10" Click="Redraw">Redraw All</Button>
-            <Button Width="100" Margin="10" Click="IsAlive">Go Wild!</Button>
-        </StackPanel>
-    </Grid>
+                        <Grid Background="#FBFBFB">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <charts:LineChart x:Name="BoundLineChart" Height="300" Zooming="True" Grid.Column="0">
+                                <charts:LineChart.Series>
+									<series:LineSerie Name="Literal" PrimaryValues="1,4,7,9,6,3,2,5,8"/>
+									<series:LineSerie Name="Bound" PrimaryValues="{Binding LineValues}"/>
+                                </charts:LineChart.Series>
+							</charts:LineChart>
+                            <viewers:SeriesViewer Grid.Column="1" Series="{Binding ElementName=BoundLineChart, Path=Series}"
+												  VerticalAlignment="Center" Margin="5"></viewers:SeriesViewer>
+                        </Grid>
+
+                        <TextBlock TextWrapping="Wrap">1. Click on buttons to test auto-update properties.</TextBlock>
+                        <TextBlock TextWrapping="Wrap">2. You can use mouse wheel to zoom and drag graph to pan it when zoomed</TextBlock>
+                        <TextBlock TextWrapping="Wrap">3. All types of graphs could do this too.</TextBlock>
+
+                        <!--<TextBlock FontSize="20" FontWeight="Bold" HorizontalAlignment="Center" Margin="10">Bar Chart</TextBlock>
+                        <charts:BarChart Height="200" Margin="0 10"
+                                 Background="#FBFBFB" BorderBrush="LightGray" 
+                                 BorderThickness="1">
+                            <charts:BarChart.PrimaryAxis>
+                                <liveCharts:Axis MinValue="0"></liveCharts:Axis>
+                            </charts:BarChart.PrimaryAxis>
+                        </charts:BarChart>
+
+                        <TextBlock FontSize="20" FontWeight="Bold" HorizontalAlignment="Center" Margin="10">Stacked Bar Chart</TextBlock>
+                        <charts:StackedBarChart Height="300" Margin="0 10"
+                                 Background="#FBFBFB" BorderBrush="LightGray" 
+                                 BorderThickness="1">
+                        </charts:StackedBarChart>
+
+                        <TextBlock FontSize="20" FontWeight="Bold" HorizontalAlignment="Center" Margin="10">Pie and Doughnut Chart</TextBlock>
+                        <charts:PieChart Height="300" Margin="10"
+                                 Background="#FBFBFB" BorderBrush="LightGray" 
+                                 BorderThickness="1" InnerRadius="50" ></charts:PieChart>
+                        <charts:PieChart Height="300" Margin="10"
+                                 Background="#FBFBFB" BorderBrush="LightGray" 
+                                 BorderThickness="1" InnerRadius="0">
+                            <charts:PieChart.PrimaryAxis>
+                                <liveCharts:Axis FontFamily="Arial" FontSize="14" FontWeight="Bold"/>
+                            </charts:PieChart.PrimaryAxis>
+                        </charts:PieChart>
+                        <viewers:PieSeriesViewer Series="{Binding ElementName=PieChart1, Path=Series}"
+                                         HorizontalAlignment="Center" Orientation="Horizontal"
+                                         Margin="5"/>
+                        <TextBlock Margin="10" TextWrapping="Wrap">change InnerRadius property to 0 to make a pie chart</TextBlock>
+
+                        <TextBlock FontSize="20" FontWeight="Bold" HorizontalAlignment="Center" Margin="10">Radar Chart</TextBlock>
+                        <charts:RadarChart Height="300" Margin="0 10"
+                                 Background="#FBFBFB" BorderBrush="LightGray" 
+                                 BorderThickness="1">
+                        </charts:RadarChart>
+
+
+                        <TextBlock FontSize="20" FontWeight="Bold" HorizontalAlignment="Center" Margin="10">
+                    Scatter Chart, changing a lot of default properties
+                        </TextBlock>
+                        <charts:ScatterChart Height="300" Margin="10"
+                                     Background="#505050" BorderBrush="LightGray" 
+                                     BorderThickness="1" LineType="Bezier"
+                                     TooltipBackground="AntiqueWhite"
+                                     TooltipBorderBrush="Gray"
+                                     TooltipBorderThickness="3"
+                                     TooltipCornerRadius="5"
+                                     TooltipForegroung="#505050">
+                            <charts:ScatterChart.PrimaryAxis>
+                                <liveCharts:Axis MinValue="0" 
+                                      FontFamily="Comic Sans" Color="WhiteSmoke" Thickness="4"
+                                      TextColor="DodgerBlue">
+                                    <liveCharts:Axis.Separator>
+                                        <liveCharts:Separator Color="DodgerBlue" Thickness="4" Enabled="True"></liveCharts:Separator>
+                                    </liveCharts:Axis.Separator>
+                                </liveCharts:Axis>
+                            </charts:ScatterChart.PrimaryAxis>
+                            <charts:ScatterChart.SecondaryAxis>
+                                <liveCharts:Axis FontFamily="Arial" Color="RosyBrown" Thickness="2"
+                                      TextColor="SandyBrown">
+                                    <liveCharts:Axis.Separator>
+                                        <liveCharts:Separator Color="SandyBrown" Thickness="1" Enabled="True"></liveCharts:Separator>
+                                    </liveCharts:Axis.Separator>
+                                </liveCharts:Axis>
+                            </charts:ScatterChart.SecondaryAxis>
+                        </charts:ScatterChart>
+                        <StackPanel Orientation="Horizontal">
+                            <Label>Test included formatters here</Label>
+                            <Button Margin="5 0" Click="IncreaseScale">+</Button>
+                            <Button Margin="5 0" Click="DecreaseScale">-</Button>
+                        </StackPanel>
+
+                        <TextBlock FontSize="20" FontWeight="Bold" HorizontalAlignment="Center" Margin="10">Finally a performance test!</TextBlock>
+                        <charts:ScatterChart Height="300" Margin="10"
+                                     Background="#FBFBFB" BorderBrush="LightGray" 
+                                     BorderThickness="1" DisableAnimation="True" 
+                                     LineType="None">
+                            <charts:ScatterChart.PrimaryAxis>
+                                <liveCharts:Axis MinValue="0"></liveCharts:Axis>
+                            </charts:ScatterChart.PrimaryAxis>
+                            <charts:ScatterChart.SecondaryAxis>
+                                <liveCharts:Axis MinValue="0"></liveCharts:Axis>
+                            </charts:ScatterChart.SecondaryAxis>
+                        </charts:ScatterChart>
+                        <StackPanel Orientation="Horizontal">
+                            <Button Margin="0 10" Click="PerformanceTest">Run Test</Button>
+                        </StackPanel>-->
+                    </StackPanel>
+                </ScrollViewer>
+                <StackPanel Grid.Row="1" Orientation="Horizontal" Background="#FBFBFB">
+                    <TextBlock VerticalAlignment="Center" Margin="5">Points</TextBlock>
+                    <Button Width="30" Margin="5 10" HorizontalAlignment="Left" Click="AddPoint">+</Button>
+                    <Button Width="30" Margin="0 10" HorizontalAlignment="Left" Click="RemovePoint">-</Button>
+
+                    <TextBlock VerticalAlignment="Center" Margin="15 0 5 0">Series</TextBlock>
+                    <Button Width="30" Margin="5 10" HorizontalAlignment="Left" Click="AddSerie">+</Button>
+                    <Button Width="30" Margin="0 10" HorizontalAlignment="Left" Click="RemoveSerie">-</Button>
+
+                    <Button Width="100" Margin="10" Click="Redraw">Redraw All</Button>
+                    <Button Width="100" Margin="10" Click="IsAlive">Go Wild!</Button>
+                </StackPanel>
+            </Grid>
+        </TabItem>
+    </TabControl>
 </Window>

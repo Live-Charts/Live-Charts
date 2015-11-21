@@ -141,7 +141,8 @@ namespace LiveCharts.Charts
         protected bool AnimatesNewPoints { get; set; }
 
         #region Dependency Properties
-        public static readonly DependencyProperty SeriesProperty = DependencyProperty.Register("Series", typeof(ObservableCollection<Serie>), typeof(Chart), new PropertyMetadata(null, SeriesPropertyChangedCallback));
+        public static readonly DependencyProperty SeriesProperty =
+			DependencyProperty.Register("Series", typeof(ObservableCollection<Serie>), typeof(Chart), new PropertyMetadata(null, SeriesPropertyChangedCallback));
 
         /// <summary>
         /// Collection of series to be drawn.
@@ -753,12 +754,23 @@ namespace LiveCharts.Charts
                 serie.ColorId = index;
                 serie.PrimaryValues.CollectionChanged += chart.OnDataSeriesChanged;
                 serie.Chart = chart;
+				chart.AddSerieToVisualTree(serie);
                 index++;
             }
             chart.ClearAndPlot();
         }
 
-        private void PreventGraphToBeVisible()
+		protected virtual void AddSerieToVisualTree(Serie serie)
+		{
+
+		}
+
+		protected virtual void RemoveSerieFromVisualTree(Serie serie)
+		{
+
+		}
+
+		private void PreventGraphToBeVisible()
         {
             var tt = Canvas.RenderTransform as TranslateTransform;
             if (tt == null) return;
@@ -809,7 +821,11 @@ namespace LiveCharts.Charts
         private void OnSeriesCollectionChanged(object sender, NotifyCollectionChangedEventArgs args)
         {
             if (args.OldItems != null)
-                foreach (var serie in args.OldItems.Cast<Serie>()) serie.Erase();
+	            foreach (var serie in args.OldItems.Cast<Serie>())
+	            {
+		            serie.Erase();
+					RemoveSerieFromVisualTree(serie);
+	            }
 
             var newSeries = args.NewItems?.Cast<Serie>() ?? new List<Serie>();
 
@@ -830,6 +846,7 @@ namespace LiveCharts.Charts
                     serie.ColorId = Series.Max(x => x.ColorId) + 1;
                     serie.Plot();
                     serie.PrimaryValues.CollectionChanged += OnDataSeriesChanged;
+					AddSerieToVisualTree(serie);
                 }
         }
 
