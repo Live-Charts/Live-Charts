@@ -89,8 +89,8 @@ namespace LiveCharts.Series
                         StrokeThickness = 0
                     };
 
-                    r.MouseEnter += Chart.OnDataMouseEnter;
-                    r.MouseLeave += Chart.OnDataMouseLeave;
+                    r.MouseEnter += Chart.DataMouseEnter;
+                    r.MouseLeave += Chart.DataMouseLeave;
 
                     Canvas.SetLeft(r, ToPlotArea(point.X, AxisTags.X) - r.Width / 2);
                     Canvas.SetTop(r, ToPlotArea(point.Y, AxisTags.Y) - r.Height / 2);

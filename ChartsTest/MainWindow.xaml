@@ -7,7 +7,7 @@
         xmlns:liveCharts="clr-namespace:LiveCharts;assembly=LiveCharts"
         xmlns:viewers="clr-namespace:LiveCharts.Viewers;assembly=LiveCharts"
         mc:Ignorable="d"
-        Title="MainWindow" Height="600" Width="600"
+        Title="MainWindow" Height="600" Width="900"
         FontFamily="Calibri"
         FontSize="14"
         Foreground="#404040"
@@ -29,9 +29,12 @@
             <StackPanel>
                 <Image Source="live.png" Stretch="None" Margin="0 0 0 20"></Image>
                 <TextBlock TextWrapping="Wrap">Here is a list of examples scroll down to check them out, resize window, charts will follow too.</TextBlock>
-                
-                <TextBlock FontSize="20" FontWeight="Bold" HorizontalAlignment="Center" Margin="10">Line Chart</TextBlock>
-                
+
+                <DockPanel HorizontalAlignment="Center">
+                    <TextBlock FontSize="20" FontWeight="Bold" HorizontalAlignment="Center" Margin="10">Line and Area Chart</TextBlock>
+                    <Button Click="MoreLineChartExmaplesOnClick" Margin="30 0" Height="30" Background="CornflowerBlue" Foreground="WhiteSmoke">More Line chart Examples</Button>
+                </DockPanel>
+
                 <Grid Background="#FBFBFB">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"></ColumnDefinition>
@@ -39,6 +42,8 @@
                     </Grid.ColumnDefinitions>
                     <charts:LineChart Height="300" x:Name="LineChart" 
                                       Zooming="True" Grid.Column="0"></charts:LineChart>
+                    <viewers:SeriesViewer Grid.Column="1" Series="{Binding ElementName=LineChart, Path=Series}"
+                                         VerticalAlignment="Center" Margin="5"></viewers:SeriesViewer>
                     <!--add a series viewer, or build your own, to get a custom behavior, for example
                      this control can be replaced with this-->
                     <!--<ItemsControl Grid.Column="0" ItemsSource="{Binding ElementName=LineChart, Path=Series}">
@@ -59,8 +64,6 @@
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>-->
-                    <viewers:SeriesViewer Grid.Column="1" Series="{Binding ElementName=LineChart, Path=Series}"
-                                         VerticalAlignment="Center" Margin="5"></viewers:SeriesViewer>
                 </Grid>
                 
                 <TextBlock TextWrapping="Wrap">1. Click on buttons to test auto-update properties.</TextBlock>

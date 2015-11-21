@@ -23,7 +23,6 @@
 using System;
 using System.Linq;
 using System.Windows;
-using System.Windows.Media;
 
 namespace LiveCharts.Charts
 {
@@ -129,7 +128,7 @@ namespace LiveCharts.Charts
             var lastXLabelSize = GetLabelSize(SecondaryAxis, lastLabelX);
 
             const int padding = 5;
-
+            
             PlotArea.X = padding*2 +
                          (longestYLabelSize.X > fistXLabelSize.X*.5 ? longestYLabelSize.X : fistXLabelSize.X*.5);
             PlotArea.Y = longestYLabelSize.Y*.5 + padding;
@@ -137,6 +136,7 @@ namespace LiveCharts.Charts
             PlotArea.Width = Canvas.DesiredSize.Width - PlotArea.X - padding;
             var distanceToEnd = ToPlotArea(Max.X - lastLabelX, AxisTags.X) - PlotArea.X;
             PlotArea.Width -= lastXLabelSize.X*.5 - distanceToEnd > 0 ? lastXLabelSize.X*.5 - distanceToEnd : 0;
+
             base.DrawAxis();
         }
     }

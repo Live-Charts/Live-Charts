@@ -68,8 +68,29 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="MoreExamples\LineAndAreaChart\Example1.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MoreExamples\LineAndAreaChart\Example2.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MoreExamples\LineAndAreaChart\LineAndAreaExamples.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MoreExamples\LineAndAreaChart\Example1.xaml.cs">
+      <DependentUpon>Example1.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MoreExamples\LineAndAreaChart\Example2.xaml.cs">
+      <DependentUpon>Example2.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MoreExamples\LineAndAreaChart\LineAndAreaExamples.xaml.cs">
+      <DependentUpon>LineAndAreaExamples.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

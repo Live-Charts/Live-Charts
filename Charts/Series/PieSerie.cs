@@ -131,8 +131,8 @@ namespace LiveCharts.Series
 
                 if (Chart.Hoverable)
                 {
-                    slice.MouseEnter += Chart.OnDataMouseEnter;
-                    slice.MouseLeave += Chart.OnDataMouseLeave;
+                    slice.MouseEnter += Chart.DataMouseEnter;
+                    slice.MouseLeave += Chart.DataMouseLeave;
                     Chart.HoverableShapes.Add(new HoverableShape
                     {
                         Serie = this,

@@ -99,8 +99,8 @@ namespace LiveCharts.Series
                         StrokeThickness = 2
                     };
 
-                    r.MouseEnter += chart.OnDataMouseEnter;
-                    r.MouseLeave += chart.OnDataMouseLeave;
+                    r.MouseEnter += chart.DataMouseEnter;
+                    r.MouseLeave += chart.DataMouseLeave;
                     chart.Canvas.Children.Add(r);
                     Shapes.Add(r);
                     chart.HoverableShapes.Add(new HoverableShape

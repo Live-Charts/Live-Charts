@@ -104,7 +104,7 @@ namespace LiveCharts.Charts
             AxisShapes.Clear();
         }
         
-        public override void OnDataMouseEnter(object sender, MouseEventArgs e)
+        public override void DataMouseEnter(object sender, MouseEventArgs e)
         {
             //This code is maybe going to be removed. I think Pie charts do not need hover, they work better 
             //if we print just values on charts
@@ -158,9 +158,9 @@ namespace LiveCharts.Charts
             //CurrentToolTip = b;
         }
 
-        public override void OnDataMouseLeave(object sender, MouseEventArgs e)
+        public override void DataMouseLeave(object sender, MouseEventArgs e)
         {
-            base.OnDataMouseLeave(sender, e);
+            base.DataMouseLeave(sender, e);
             var senderShape = HoverableShapes.FirstOrDefault(s => Equals(s.Shape, sender));
             var pieSlice = senderShape?.Shape as PieSlice;
             if (pieSlice == null) return;

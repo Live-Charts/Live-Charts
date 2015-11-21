@@ -39,20 +39,20 @@ namespace LiveCharts.Charts
 {
     public abstract class Chart : UserControl
     {
-        internal Rect PlotArea;
-        internal Canvas Canvas;
-        internal Point Max;
-        internal Point Min;
-        internal Point S;
+        protected Rect PlotArea;
+        protected Canvas Canvas;
+        protected Point Max;
+        protected Point Min;
+        protected Point S;
         protected Border CurrentToolTip;
         protected List<Shape> AxisShapes = new List<Shape>();
-        internal List<TextBlock> AxisLabels = new List<TextBlock>();
+        protected List<TextBlock> AxisLabels = new List<TextBlock>();
         protected double CurrentScale;
         protected ShapeHoverBehavior ShapeHoverBehavior;
         protected double LabelOffset;
         protected bool IgnoresLastLabel;
         protected bool AlphaLabel;
-        internal List<HoverableShape> HoverableShapes = new List<HoverableShape>(); 
+        protected List<HoverableShape> HoverableShapes = new List<HoverableShape>(); 
         private Point _panOrigin;
         private bool _isDragging;
         internal int ColorStartIndex = 0;
@@ -140,6 +140,17 @@ namespace LiveCharts.Charts
 
         protected bool AnimatesNewPoints { get; set; }
 
+        #region Dependency Properties
+        public static readonly DependencyProperty SeriesProperty = DependencyProperty.Register("Series", typeof(ObservableCollection<Serie>), typeof(Chart), new PropertyMetadata(null, SeriesPropertyChangedCallback));
+
+        /// <summary>
+        /// Collection of series to be drawn.
+        /// </summary>
+        public ObservableCollection<Serie> Series
+        {
+            get { return GetValue(SeriesProperty) as ObservableCollection<Serie>; }
+            set { SetValue(SeriesProperty, value); }
+        }
         public static readonly DependencyProperty ZoomingProperty = DependencyProperty.Register(
             "Zooming", typeof(bool), typeof(Chart));
         /// <summary>
@@ -150,7 +161,6 @@ namespace LiveCharts.Charts
             get { return (bool)GetValue(ZoomingProperty); }
             set { SetValue(ZoomingProperty, value); }
         }
-
         public static readonly DependencyProperty HoverableProperty = DependencyProperty.Register(
             "Hoverable", typeof(bool), typeof(Chart));
         /// <summary>
@@ -158,12 +168,11 @@ namespace LiveCharts.Charts
         /// </summary>
         public bool Hoverable
         {
-            get { return (bool) GetValue(HoverableProperty); }
+            get { return (bool)GetValue(HoverableProperty); }
             set { SetValue(HoverableProperty, value); }
         }
-
         public static readonly DependencyProperty PointHoverColorProperty = DependencyProperty.Register(
-            "PointHoverColor", typeof(Color), typeof(Chart));
+           "PointHoverColor", typeof(Color), typeof(Chart));
         /// <summary>
         /// Indicates Point hover color.
         /// </summary>
@@ -172,29 +181,6 @@ namespace LiveCharts.Charts
             get { return (Color)GetValue(PointHoverColorProperty); }
             set { SetValue(PointHoverColorProperty, value); }
         }
-
-        public Axis PrimaryAxis
-        {
-            get { return _primaryAxis; }
-            set
-            {
-                _primaryAxis = value;
-                _primaryAxis.InverseAxis = SecondaryAxis;
-                if (SecondaryAxis != null) SecondaryAxis.InverseAxis = _primaryAxis;
-            }
-        }
-
-        public Axis SecondaryAxis
-        {
-            get { return _secondaryAxis; }
-            set
-            {
-                _secondaryAxis = value;
-                _secondaryAxis.InverseAxis = PrimaryAxis;
-                if (PrimaryAxis != null) PrimaryAxis.InverseAxis = _secondaryAxis;
-            }
-        }
-
         public static readonly DependencyProperty DisableAnimationProperty = DependencyProperty.Register(
             "DisableAnimation", typeof(bool), typeof(Chart));
         /// <summary>
@@ -205,46 +191,74 @@ namespace LiveCharts.Charts
             get { return (bool)GetValue(DisableAnimationProperty); }
             set { SetValue(DisableAnimationProperty, value); }
         }
+        #endregion
 
-        public static readonly DependencyProperty SeriesProperty = DependencyProperty.Register("Series", typeof(ObservableCollection<Serie>), typeof(Chart), new PropertyMetadata(null, SeriesPropertyChangedCallback));
-
-        private static void SeriesPropertyChangedCallback(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
+        #region Properties
+        public Axis PrimaryAxis
         {
-          var chart = dependencyObject as Chart;
-          if (chart == null)
-            return;
-
-          var observableCollection = dependencyPropertyChangedEventArgs.NewValue as ObservableCollection<Serie>;
-          if (observableCollection == null)
-            return;
-
-          observableCollection.CollectionChanged += chart.OnSeriesCollectionChanged;
-          var index = 0;
-          foreach (var serie in observableCollection)
-          {
-            serie.ColorId = index;
-            serie.PrimaryValues.CollectionChanged += chart.OnDataSeriesChanged;
-            serie.Chart = chart;
-            index++;
-          }
-          chart.ClearAndPlot();
+            get { return _primaryAxis; }
+            set
+            {
+                _primaryAxis = value;
+                _primaryAxis.InverseAxis = SecondaryAxis;
+                if (SecondaryAxis != null) SecondaryAxis.InverseAxis = _primaryAxis;
+            }
         }
-
-        /// <summary>
-        /// Collection of series to be drawn.
-        /// </summary>
-        public ObservableCollection<Serie> Series
+        public Axis SecondaryAxis
         {
-          get { return GetValue(SeriesProperty) as ObservableCollection<Serie>; }
-          set { SetValue(SeriesProperty, value); }
+            get { return _secondaryAxis; }
+            set
+            {
+                _secondaryAxis = value;
+                _secondaryAxis.InverseAxis = PrimaryAxis;
+                if (PrimaryAxis != null) PrimaryAxis.InverseAxis = _secondaryAxis;
+            }
         }
-
         public Brush TooltipBackground { get; set; } = null;
         public Brush TooltipForegroung { get; set; } = null;
         public Brush TooltipBorderBrush { get; set; } = null;
         public CornerRadius? TooltipCornerRadius { get; set; } = null;
         public Thickness? TooltipBorderThickness { get; set; } = null;
+        #endregion
 
+        #region Public Methods
+        public void ClearAndPlot(bool animate = true)
+        {
+#if DEBUG
+            var timer = DateTime.Now;
+#endif
+            HoverableShapes = new List<HoverableShape>();
+            AxisShapes = new List<Shape>();
+            AxisLabels = new List<TextBlock>();
+            Canvas.Children.Clear();
+#if DEBUG
+            //this takes as much time as drawing.
+            //ToDo: Improve performance here!
+            Trace.WriteLine("clearing arrays took " + (DateTime.Now - timer).TotalMilliseconds);
+#endif
+            Canvas.Width = ActualWidth * CurrentScale;
+            Canvas.Height = ActualHeight * CurrentScale;
+            PlotArea = new Rect(0, 0, ActualWidth * CurrentScale, ActualHeight * CurrentScale);
+            Plot(animate);
+        }
+
+        public void ZoomIn()
+        {
+            CurrentScale += .1;
+            ClearAndPlot(false);
+            PreventGraphToBeVisible();
+        }
+
+        public void ZoomOut()
+        {
+            CurrentScale -= .1;
+            if (CurrentScale <= 1) CurrentScale = 1;
+            ClearAndPlot(false);
+            PreventGraphToBeVisible();
+        }
+        #endregion
+
+        #region ProtectedMethods
         /// <summary>
         /// Axis Y: is Horizontal axis, Axis X: Vertical, confusing but this is how it is!
         /// </summary>
@@ -257,7 +271,7 @@ namespace LiveCharts.Charts
             //http://stackoverflow.com/questions/361681/algorithm-for-nice-grid-line-intervals-on-a-graph
 
             var m = axis == AxisTags.Y ? Min.Y : Min.X;
-            if (Math.Abs(range) < m*.01) range = m;
+            if (Math.Abs(range) < m * .01) range = m;
 
             var ft = axis == AxisTags.Y
                 ? new FormattedText(
@@ -274,21 +288,21 @@ namespace LiveCharts.Charts
                         SecondaryAxis.FontStretch), SecondaryAxis.FontSize, Brushes.Black);
 
             var separations = axis == AxisTags.Y
-                ? Math.Round(PlotArea.Height/((ft.Height)*PrimaryAxis.CleanFactor), 0)
-                : Math.Round(PlotArea.Width /( (ft.Width) * SecondaryAxis.CleanFactor), 0);
+                ? Math.Round(PlotArea.Height / ((ft.Height) * PrimaryAxis.CleanFactor), 0)
+                : Math.Round(PlotArea.Width / ((ft.Width) * SecondaryAxis.CleanFactor), 0);
 
             separations = separations < 2 ? 2 : separations;
 
-            var minimum = range/separations;
-            var magnitude =Math.Pow(10,Math.Floor(Math.Log(minimum)/Math.Log(10)));
-            var residual = minimum/magnitude;
+            var minimum = range / separations;
+            var magnitude = Math.Pow(10, Math.Floor(Math.Log(minimum) / Math.Log(10)));
+            var residual = minimum / magnitude;
             double tick;
             if (residual > 5)
-                tick = 10*magnitude;
+                tick = 10 * magnitude;
             else if (residual > 2)
-                tick = 5*magnitude;
+                tick = 5 * magnitude;
             else if (residual > 1)
-                tick = 2*magnitude;
+                tick = 2 * magnitude;
             else
                 tick = magnitude;
             return tick;
@@ -302,26 +316,9 @@ namespace LiveCharts.Charts
             var longestYLabel = new FormattedText(m.First(), CultureInfo.CurrentUICulture, FlowDirection.LeftToRight,
                 new Typeface(axis.FontFamily, axis.FontStyle, axis.FontWeight, axis.FontStretch), axis.FontSize,
                 Brushes.Black);
-            axis.Separator.Step = (longestYLabel.Width*Max.X)*1.25 > PlotArea.Width
+            axis.Separator.Step = (longestYLabel.Width * Max.X) * 1.25 > PlotArea.Width
                 ? null
-                : (int?) 1;
-        }
-
-        protected virtual void Plot(bool animate = true)
-        {
-            if (Series == null ||
-                ActualHeight < 10 ||
-                ActualWidth < 10)
-                return;
-
-            Scale();
-            foreach (var serie in Series)
-            {
-                serie.Plot(animate);
-            }
-#if DEBUG
-            Trace.WriteLine("Plot called at " + DateTime.Now.ToString("mm:ss.fff"));
-#endif
+                : (int?)1;
         }
 
         protected Point GetLongestLabelSize(Axis axis)
@@ -341,12 +338,12 @@ namespace LiveCharts.Charts
                     label = iL;
                 }
             }
-            var longestLabel = new FormattedText(label, CultureInfo.CurrentUICulture, FlowDirection.LeftToRight, 
+            var longestLabel = new FormattedText(label, CultureInfo.CurrentUICulture, FlowDirection.LeftToRight,
                 new Typeface(axis.FontFamily, axis.FontStyle, axis.FontWeight,
                 axis.FontStretch), axis.FontSize, Brushes.Black);
             return new Point(longestLabel.Width, longestLabel.Height);
         }
-        
+
         protected Point GetLabelSize(Axis axis, double value)
         {
             if (!axis.PrintLabels) return new Point(0, 0);
@@ -357,7 +354,7 @@ namespace LiveCharts.Charts
                     ? Min.X.ToString(CultureInfo.InvariantCulture)
                     : SecondaryAxis.LabelFormatter(value))
                 : (labels.Length > value
-                    ? labels[(int) value]
+                    ? labels[(int)value]
                     : "");
             var uiLabelSize = new FormattedText(fomattedValue, CultureInfo.CurrentUICulture, FlowDirection.LeftToRight,
                 new Typeface(axis.FontFamily, axis.FontStyle, axis.FontWeight, axis.FontStretch),
@@ -365,6 +362,54 @@ namespace LiveCharts.Charts
             return new Point(uiLabelSize.Width, uiLabelSize.Height);
         }
 
+        protected Point GetLabelSize(Axis axis, string value)
+        {
+            if (!axis.PrintLabels) return new Point(0, 0);
+            var fomattedValue = value;
+            var uiLabelSize = new FormattedText(fomattedValue, CultureInfo.CurrentUICulture, FlowDirection.LeftToRight,
+                new Typeface(axis.FontFamily, axis.FontStyle, axis.FontWeight, axis.FontStretch),
+                axis.FontSize, Brushes.Black);
+            return new Point(uiLabelSize.Width, uiLabelSize.Height);
+        }
+        /// <summary>
+        /// Scales a graph value to screen according to an axis. 
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="axis"></param>
+        /// <returns></returns>
+        protected double ToPlotArea(double value, AxisTags axis)
+        {
+            return Methods.ToPlotArea(value, axis, this);
+        }
+        /// <summary>
+        /// Scales a graph point to screen.
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        protected Point ToPlotArea(Point value)
+        {
+            return new Point(ToPlotArea(value.X, AxisTags.X), ToPlotArea(value.Y, AxisTags.Y));
+        }
+
+        #endregion
+
+        #region Virtual Methods
+        protected virtual void Plot(bool animate = true)
+        {
+            if (Series == null ||
+                ActualHeight < 10 ||
+                ActualWidth < 10)
+                return;
+
+            Scale();
+            foreach (var serie in Series)
+            {
+                serie.Plot(animate);
+            }
+#if DEBUG
+            Trace.WriteLine("Plot called at " + DateTime.Now.ToString("mm:ss.fff"));
+#endif
+        }
         protected virtual void DrawAxis()
         {
             foreach (var l in AxisLabels) Canvas.Children.Remove(l);
@@ -372,6 +417,53 @@ namespace LiveCharts.Charts
 
             AxisLabels.Clear();
             AxisShapes.Clear();
+
+            //Titles
+            var titleY = 0d;
+            if (!string.IsNullOrWhiteSpace(PrimaryAxis.Title))
+            {
+                var ty = GetLabelSize(PrimaryAxis.InverseAxis, PrimaryAxis.Title);
+                var yLabel = new TextBlock
+                {
+                    FontFamily = PrimaryAxis.FontFamily,
+                    FontSize = PrimaryAxis.FontSize,
+                    FontStretch = PrimaryAxis.FontStretch,
+                    FontStyle = PrimaryAxis.FontStyle,
+                    FontWeight = PrimaryAxis.FontWeight,
+                    Foreground = new SolidColorBrush { Color = PrimaryAxis.TextColor },
+                    Text = PrimaryAxis.Title,
+                    RenderTransform = new RotateTransform(-90)
+                };
+                AxisLabels.Add(yLabel);
+                Canvas.Children.Add(yLabel);
+                Canvas.SetLeft(yLabel, 5);
+                Canvas.SetTop(yLabel, Canvas.DesiredSize.Height * .5 + ty.X * .5);
+                titleY += ty.Y + 5;
+            }
+            var titleX = 0d;
+            if (!string.IsNullOrWhiteSpace(SecondaryAxis.Title))
+            {
+                var tx = GetLabelSize(SecondaryAxis.InverseAxis, SecondaryAxis.Title);
+                var yLabel = new TextBlock
+                {
+                    FontFamily = SecondaryAxis.FontFamily,
+                    FontSize = SecondaryAxis.FontSize,
+                    FontStretch = SecondaryAxis.FontStretch,
+                    FontStyle = SecondaryAxis.FontStyle,
+                    FontWeight = SecondaryAxis.FontWeight,
+                    Foreground = new SolidColorBrush { Color = SecondaryAxis.TextColor },
+                    Text = SecondaryAxis.Title
+                };
+                AxisLabels.Add(yLabel);
+                Canvas.Children.Add(yLabel);
+                Canvas.SetLeft(yLabel, Canvas.DesiredSize.Width * .5 - tx.X * .5);
+                Canvas.SetTop(yLabel, Canvas.DesiredSize.Height - tx.Y - 5);
+                titleX += tx.X - 5;
+            }
+
+            PlotArea.X += titleY;
+            PlotArea.Width -= titleY;
+            PlotArea.Height -= titleX;
 
             //drawing primary axis
             var ly = PrimaryAxis.Separator.Enabled || PrimaryAxis.PrintLabels
@@ -385,7 +477,7 @@ namespace LiveCharts.Charts
                 {
                     var l = new Line
                     {
-                        Stroke = new SolidColorBrush {Color = PrimaryAxis.Separator.Color},
+                        Stroke = new SolidColorBrush { Color = PrimaryAxis.Separator.Color },
                         StrokeThickness = PrimaryAxis.Separator.Thickness,
                         X1 = ToPlotArea(Min.X, AxisTags.X),
                         Y1 = y,
@@ -395,7 +487,7 @@ namespace LiveCharts.Charts
                     Canvas.Children.Add(l);
                     AxisShapes.Add(l);
                 }
-                    
+
                 if (PrimaryAxis.PrintLabels)
                 {
                     var t = PrimaryAxis.LabelFormatter == null
@@ -408,7 +500,7 @@ namespace LiveCharts.Charts
                         FontStretch = PrimaryAxis.FontStretch,
                         FontStyle = PrimaryAxis.FontStyle,
                         FontWeight = PrimaryAxis.FontWeight,
-                        Foreground = new SolidColorBrush {Color = PrimaryAxis.TextColor},
+                        Foreground = new SolidColorBrush { Color = PrimaryAxis.TextColor },
                         Text = t
                     };
                     var fl = new FormattedText(t, CultureInfo.CurrentUICulture, FlowDirection.LeftToRight,
@@ -416,7 +508,7 @@ namespace LiveCharts.Charts
                             PrimaryAxis.FontStretch), PrimaryAxis.FontSize, Brushes.Black);
                     Canvas.Children.Add(label);
                     AxisLabels.Add(label);
-                    Canvas.SetLeft(label, (5 + longestYLabelSize.X) - fl.Width);
+                    Canvas.SetLeft(label, titleY + (5 + longestYLabelSize.X) - fl.Width);
                     Canvas.SetTop(label, ToPlotArea(i, AxisTags.Y) - longestYLabelSize.Y * .5);
                 }
             }
@@ -425,7 +517,7 @@ namespace LiveCharts.Charts
             var lx = SecondaryAxis.Separator.Enabled || SecondaryAxis.PrintLabels
                 ? Max.X + (IgnoresLastLabel ? -1 : 0)
                 : Min.X - 1;
-            
+
             for (var i = Min.X; i <= lx; i += S.X)
             {
                 var x = ToPlotArea(i, AxisTags.X);
@@ -433,7 +525,7 @@ namespace LiveCharts.Charts
                 {
                     var l = new Line
                     {
-                        Stroke = new SolidColorBrush {Color = SecondaryAxis.Separator.Color},
+                        Stroke = new SolidColorBrush { Color = SecondaryAxis.Separator.Color },
                         StrokeThickness = SecondaryAxis.Separator.Thickness,
                         X1 = x,
                         Y1 = ToPlotArea(Max.Y, AxisTags.Y),
@@ -443,7 +535,7 @@ namespace LiveCharts.Charts
                     Canvas.Children.Add(l);
                     AxisShapes.Add(l);
                 }
-                    
+
                 if (SecondaryAxis.PrintLabels)
                 {
                     var labels = SecondaryAxis.Labels?.ToArray();
@@ -473,13 +565,13 @@ namespace LiveCharts.Charts
                     Canvas.SetTop(label, PlotArea.Y + PlotArea.Height + 5);
                 }
             }
-            
+
             //drawing ceros.
             if (Max.Y >= 0 && Min.Y <= 0 && PrimaryAxis.Enabled)
             {
                 var l = new Line
                 {
-                    Stroke = new SolidColorBrush {Color = PrimaryAxis.Color},
+                    Stroke = new SolidColorBrush { Color = PrimaryAxis.Color },
                     StrokeThickness = PrimaryAxis.Thickness,
                     X1 = ToPlotArea(Min.X, AxisTags.X),
                     Y1 = ToPlotArea(0, AxisTags.Y),
@@ -494,7 +586,7 @@ namespace LiveCharts.Charts
             {
                 var l = new Line
                 {
-                    Stroke = new SolidColorBrush {Color = SecondaryAxis.Color},
+                    Stroke = new SolidColorBrush { Color = SecondaryAxis.Color },
                     StrokeThickness = SecondaryAxis.Thickness,
                     X1 = ToPlotArea(0, AxisTags.X),
                     Y1 = ToPlotArea(Min.Y, AxisTags.Y),
@@ -505,8 +597,7 @@ namespace LiveCharts.Charts
                 AxisShapes.Add(l);
             }
         }
-
-        public virtual void OnDataMouseEnter(object sender, MouseEventArgs e)
+        public virtual void DataMouseEnter(object sender, MouseEventArgs e)
         {
             var b = new Border
             {
@@ -523,17 +614,17 @@ namespace LiveCharts.Charts
             var senderShape = HoverableShapes.FirstOrDefault(s => Equals(s.Shape, sender));
             if (senderShape == null) return;
             var sibilings = HoverableShapes
-                .Where(s => Math.Abs(s.Value.X - senderShape.Value.X) < S.X*.001).ToList();
+                .Where(s => Math.Abs(s.Value.X - senderShape.Value.X) < S.X * .001).ToList();
 
             var first = sibilings.Count > 0 ? sibilings[0] : null;
             var last = sibilings.Count > 0 ? sibilings[sibilings.Count - 1] : null;
             var labels = SecondaryAxis.Labels?.ToArray();
             var vx = first?.Value.X ?? 0;
-            vx = AlphaLabel ? (int) (vx/(360d/Series.First().PrimaryValues.Count)) : vx;
+            vx = AlphaLabel ? (int)(vx / (360d / Series.First().PrimaryValues.Count)) : vx;
 
             sp.Children.Add(new TextBlock
             {
-                Margin = new Thickness(10, 5, 10 ,0),
+                Margin = new Thickness(10, 5, 10, 0),
                 HorizontalAlignment = HorizontalAlignment.Center,
                 TextAlignment = TextAlignment.Center,
                 Text = labels == null
@@ -541,7 +632,7 @@ namespace LiveCharts.Charts
                     ? vx.ToString(CultureInfo.InvariantCulture)
                     : SecondaryAxis.LabelFormatter(vx))
                 : (labels.Length > vx
-                    ? labels[ (int)vx]
+                    ? labels[(int)vx]
                     : ""),
                 VerticalAlignment = VerticalAlignment.Center,
                 FontFamily = new FontFamily("Calibri"),
@@ -553,8 +644,8 @@ namespace LiveCharts.Charts
             {
                 if (ShapeHoverBehavior == ShapeHoverBehavior.Dot)
                 {
-                    sibiling.Target.Stroke = new SolidColorBrush {Color = sibiling.Serie.Color};
-                    sibiling.Target.Fill = new SolidColorBrush {Color = PointHoverColor};
+                    sibiling.Target.Stroke = new SolidColorBrush { Color = sibiling.Serie.Color };
+                    sibiling.Target.Fill = new SolidColorBrush { Color = PointHoverColor };
                 }
                 else
                 {
@@ -577,9 +668,9 @@ namespace LiveCharts.Charts
                         },
                         new TextBlock
                         {
-                            Text = PrimaryAxis.LabelFormatter == null
+                            Text = sibiling.Serie.Name + " " + (PrimaryAxis.LabelFormatter == null
                                 ? sibiling.Value.Y.ToString(CultureInfo.InvariantCulture)
-                                : PrimaryAxis.LabelFormatter(sibiling.Value.Y),
+                                : PrimaryAxis.LabelFormatter(sibiling.Value.Y)),
                             Margin = new Thickness(5, 0, 5, 0),
                             VerticalAlignment = VerticalAlignment.Center,
                             FontFamily = new FontFamily("Calibri"),
@@ -602,7 +693,7 @@ namespace LiveCharts.Charts
             CurrentToolTip = b;
         }
 
-        public virtual void OnDataMouseLeave(object sender, MouseEventArgs e)
+        public virtual void DataMouseLeave(object sender, MouseEventArgs e)
         {
             var s = sender as Shape;
             if (s == null) return;
@@ -617,8 +708,8 @@ namespace LiveCharts.Charts
             {
                 if (ShapeHoverBehavior == ShapeHoverBehavior.Dot)
                 {
-                    p.Target.Fill = new SolidColorBrush {Color = p.Serie.Color};
-                    p.Target.Stroke = new SolidColorBrush {Color = PointHoverColor};
+                    p.Target.Fill = new SolidColorBrush { Color = p.Serie.Color };
+                    p.Target.Stroke = new SolidColorBrush { Color = PointHoverColor };
                 }
                 else
                 {
@@ -630,7 +721,7 @@ namespace LiveCharts.Charts
             CurrentToolTip = null;
         }
 
-        protected virtual Point GetToolTipPosition(HoverableShape sender, List<HoverableShape> sibilings , Border b)
+        protected virtual Point GetToolTipPosition(HoverableShape sender, List<HoverableShape> sibilings, Border b)
         {
             var x = sender.Value.X > (Min.X + Max.X) / 2
                 ? ToPlotArea(sender.Value.X, AxisTags.X) - 10 - b.DesiredSize.Width
@@ -642,60 +733,29 @@ namespace LiveCharts.Charts
                 : y;
             return new Point(x, y);
         }
+        #endregion
 
-        public void ClearAndPlot(bool animate = true)
+        #region Private Methods
+        private static void SeriesPropertyChangedCallback(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
         {
-#if DEBUG
-            var timer = DateTime.Now;
-#endif
-            HoverableShapes = new List<HoverableShape>();
-            AxisShapes = new List<Shape>();
-            AxisLabels = new List<TextBlock>();
-            Canvas.Children.Clear();
-#if DEBUG
-            //this takes as much time as drawing.
-            //ToDo: Improve performance here!
-            Trace.WriteLine("clearing arrays took " + (DateTime.Now-timer).TotalMilliseconds);
-#endif
-            Canvas.Width = ActualWidth*CurrentScale;
-            Canvas.Height = ActualHeight*CurrentScale;
-            PlotArea = new Rect(0, 0, ActualWidth*CurrentScale, ActualHeight*CurrentScale);
-            Plot(animate);
-        }
+            var chart = dependencyObject as Chart;
+            if (chart == null)
+                return;
 
-        public void ZoomIn()
-        {
-            CurrentScale += .1;
-            ClearAndPlot(false);
-            PreventGraphToBeVisible();
-        }
+            var observableCollection = dependencyPropertyChangedEventArgs.NewValue as ObservableCollection<Serie>;
+            if (observableCollection == null)
+                return;
 
-        public void ZoomOut()
-        {
-            CurrentScale -= .1;
-            if (CurrentScale <= 1) CurrentScale = 1;
-            ClearAndPlot(false);
-            PreventGraphToBeVisible();
-        }
-
-        /// <summary>
-        /// Scales a graph value to screen according to an axis. 
-        /// </summary>
-        /// <param name="value"></param>
-        /// <param name="axis"></param>
-        /// <returns></returns>
-        protected double ToPlotArea(double value, AxisTags axis)
-        {
-            return Methods.ToPlotArea(value, axis, this);
-        }
-        /// <summary>
-        /// Scales a graph point to screen.
-        /// </summary>
-        /// <param name="value"></param>
-        /// <returns></returns>
-        protected Point ToPlotArea(Point value)
-        {
-            return new Point(ToPlotArea(value.X, AxisTags.X), ToPlotArea(value.Y, AxisTags.Y));
+            observableCollection.CollectionChanged += chart.OnSeriesCollectionChanged;
+            var index = 0;
+            foreach (var serie in observableCollection)
+            {
+                serie.ColorId = index;
+                serie.PrimaryValues.CollectionChanged += chart.OnDataSeriesChanged;
+                serie.Chart = chart;
+                index++;
+            }
+            chart.ClearAndPlot();
         }
 
         private void PreventGraphToBeVisible()
@@ -826,6 +886,6 @@ namespace LiveCharts.Charts
             _isDragging = false;
             PreventGraphToBeVisible();
         }
-        
+        #endregion
     }
 }

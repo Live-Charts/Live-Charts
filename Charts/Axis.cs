@@ -115,7 +115,7 @@ namespace LiveCharts
         /// Gets or sets chart min value, set it to null to make this property Auto, default value is null
         /// </summary>
         public double? MinValue { get; set; }
-
+        public string Title { get; set; }
         /// <summary>
         /// Gets or sets the inverse Axis
         /// </summary>

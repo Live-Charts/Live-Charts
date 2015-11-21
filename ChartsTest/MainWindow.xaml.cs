@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Threading;
+using ChartsTest.MoreExamples.LineAndAreaChart;
 using LiveCharts;
 using LiveCharts.Charts;
 using LiveCharts.Series;
@@ -71,7 +72,7 @@ namespace ChartsTest
             var l = new List<string>();
             for (int i = 0; i < 100; i++)
             {
-                l.Add("long long long label " + (i + 1));
+                l.Add("Day number " + (i + 1));
             }
             var standardLabels = l.ToArray();
 
@@ -105,10 +106,12 @@ namespace ChartsTest
             {
                 new BarSerie
                 {
+                    Name = "John",
                     PrimaryValues = new ObservableCollection<double> { 4,3,1,2 }
                 },
                 new BarSerie
                 {
+                    Name = "Judit",
                     PrimaryValues = new ObservableCollection<double> { 3,1,4,3 }
                 }
             };
@@ -120,14 +123,17 @@ namespace ChartsTest
             {
                 new StackedBarSerie
                 {
+                    Name = "Charles",
                     PrimaryValues = new ObservableCollection<double> { 1,2,3,4,1,5,2 }
                 },
                 new StackedBarSerie
                 {
+                    Name = "Susan",
                     PrimaryValues = new ObservableCollection<double> { 4,3,2,1,8,1,4 }
                 },
                 new StackedBarSerie
                 {
+                    Name = "Eli",
                     PrimaryValues = new ObservableCollection<double> { 3,1,4,2,7,3,2 }
                 }
             };
@@ -439,6 +445,11 @@ namespace ChartsTest
                     serie.PrimaryValues[index] = serie.PrimaryValues[index] / 10;
                 }
             }
+        }
+
+        private void MoreLineChartExmaplesOnClick(object sender, RoutedEventArgs e)
+        {
+            new LineAndAreaExamples().ShowDialog();
         }
     }
 }

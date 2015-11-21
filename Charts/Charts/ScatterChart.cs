@@ -74,7 +74,7 @@ namespace LiveCharts.Charts
             DrawAxis();
         }
 
-        public override void OnDataMouseEnter(object sender, MouseEventArgs e)
+        public override void DataMouseEnter(object sender, MouseEventArgs e)
         {
             var b = new Border
             {
@@ -128,7 +128,7 @@ namespace LiveCharts.Charts
             CurrentToolTip = b;
         }
 
-        public override void OnDataMouseLeave(object sender, MouseEventArgs e)
+        public override void DataMouseLeave(object sender, MouseEventArgs e)
         {
             var s = sender as Shape;
             if (s == null) return;
