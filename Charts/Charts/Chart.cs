@@ -39,20 +39,20 @@ namespace LiveCharts.Charts
 {
     public abstract class Chart : UserControl
     {
-        protected Rect PlotArea;
-        protected Canvas Canvas;
-        protected Point Max;
-        protected Point Min;
-        protected Point S;
+        public Rect PlotArea;
+        public Canvas Canvas;
+        public Point Max;
+        public Point Min;
+        public Point S;
         protected Border CurrentToolTip;
-        protected List<Shape> AxisShapes = new List<Shape>();
-        protected List<TextBlock> AxisLabels = new List<TextBlock>();
+        public List<Shape> AxisShapes = new List<Shape>();
+        public List<TextBlock> AxisLabels = new List<TextBlock>();
         protected double CurrentScale;
         protected ShapeHoverBehavior ShapeHoverBehavior;
         protected double LabelOffset;
         protected bool IgnoresLastLabel;
         protected bool AlphaLabel;
-        protected List<HoverableShape> HoverableShapes = new List<HoverableShape>(); 
+        public List<HoverableShape> HoverableShapes = new List<HoverableShape>(); 
         private Point _panOrigin;
         private bool _isDragging;
         internal int ColorStartIndex = 0;
