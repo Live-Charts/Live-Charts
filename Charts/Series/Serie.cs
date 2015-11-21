@@ -23,16 +23,21 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using LiveCharts.Charts;
+using LiveCharts.TypeConverters;
 
 namespace LiveCharts.Series
 {
     public abstract class Serie : FrameworkElement
     {
+		public static readonly DependencyProperty PrimaryValuesProperty =
+			DependencyProperty.Register("PrimaryValues", typeof(ObservableCollection<double>), typeof(Serie), new PropertyMetadata(new ObservableCollection<double>()));
+
         private Color? _color;
         protected List<Shape> Shapes = new List<Shape>();
         private Chart _chart;
@@ -46,8 +51,14 @@ namespace LiveCharts.Series
             Name = "An Unnamed Serie";
         }
 
-        abstract public ObservableCollection<double> PrimaryValues { get; set; }
-        public abstract void Plot(bool animate = true);
+		[TypeConverter(typeof (ValueCollectionConverter))]
+		public ObservableCollection<double> PrimaryValues
+		{
+			get { return (ObservableCollection<double>)GetValue(PrimaryValuesProperty); }
+			set { SetValue(PrimaryValuesProperty, value); }
+		}
+
+		public abstract void Plot(bool animate = true);
         public virtual void Erase()
         {
             foreach (var s in Shapes)

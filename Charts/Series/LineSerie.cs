@@ -22,8 +22,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -31,25 +29,14 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using LiveCharts.Charts;
-using LiveCharts.TypeConverters;
 
 namespace LiveCharts.Series
 {
 	public class LineSerie : Serie
 	{
-		public static readonly DependencyProperty PrimaryValuesProperty =
-			DependencyProperty.Register("PrimaryValues", typeof (ObservableCollection<double>), typeof (LineSerie), new PropertyMetadata(new ObservableCollection<double>()));
-
 		// ReSharper disable once InconsistentNaming
 		//because Charts is a protected name in Serie class.
 		private LineChart _chart => Chart as LineChart;
-
-		[TypeConverter(typeof (ValueCollectionConverter))]
-		public override ObservableCollection<double> PrimaryValues
-		{
-			get { return (ObservableCollection<double>) GetValue(PrimaryValuesProperty); }
-			set { SetValue(PrimaryValuesProperty, value); }
-		}
 
 		public override void Plot(bool animate = true)
 		{

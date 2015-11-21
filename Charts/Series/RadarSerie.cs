@@ -22,7 +22,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -34,8 +33,6 @@ namespace LiveCharts.Series
 {
     public class RadarSerie : Serie
     {
-        public override ObservableCollection<double> PrimaryValues { get; set; }
-
         public override void Plot(bool animate = true)
         {
             var chart = Chart as RadarChart;

@@ -35,9 +35,6 @@ namespace LiveCharts.Series
 {
     public class ScatterSerie : Serie
     {
-        //TODO I think this could be better, strongly typing points.
-        //problem is that i attach a watcher to PrimaryValues in Chart class
-        public override ObservableCollection<double> PrimaryValues { get; set; }
         public double[] SecondaryValues { get; set; }
 
         public override void Plot(bool animate = true)

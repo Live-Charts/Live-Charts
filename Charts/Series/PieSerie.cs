@@ -34,7 +34,6 @@ namespace LiveCharts.Series
 {
     public class PieSerie : Serie
     {
-        public override ObservableCollection<double> PrimaryValues { get; set; }
         public string[] Labels { get; set; } 
 
         public override void Plot(bool animate = true)
