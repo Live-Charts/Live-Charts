@@ -20,7 +20,7 @@ namespace ChartsTest
         private bool _isAlive;
         private int _aliveScalator;
 
-		public IList<double> LineValues { get; } = new List<double> { 3, 2, 1, 6, 5, 4, 9, 8, 7 };
+	    public IEnumerable<double> LineValues { get; } = new List<double> {3, 2, 1, 6, 5, 4, 9, 8, 7};
 
 	    public MainWindow()
         {
@@ -36,18 +36,18 @@ namespace ChartsTest
             {
                 var r = new Random();
                 if (r.NextDouble() < .1) _aliveScalator += r.Next(-100, 100);
-                foreach (var serie in LineChart.Series.Cast<Serie>())
+                foreach (var serie in LineChart.Series)
                 {
                     serie.PrimaryValues.RemoveAt(0);
                     serie.PrimaryValues.Add(r.Next(_aliveScalator - 30, _aliveScalator + 30));
                 }
                 var abs = Math.Abs(_aliveScalator);
-                foreach (var serie in BarChart.Series.Cast<Serie>())
+                foreach (var serie in BarChart.Series)
                 {
                     serie.PrimaryValues.Add(r.Next(abs, abs + 30));
                     serie.PrimaryValues.RemoveAt(0);
                 }
-                foreach (var serie in StackedBarChart.Series.Cast<Serie>())
+                foreach (var serie in StackedBarChart.Series)
                 {
                     serie.PrimaryValues.Add(r.Next(abs, abs + 30));
                     serie.PrimaryValues.RemoveAt(0);
@@ -60,13 +60,13 @@ namespace ChartsTest
                 //f.RemoveAt(0);
                 //f1.RemoveAt(0);
 
-                foreach (var serie in ScatterChart.Series.Cast<Serie>())
+                foreach (var serie in ScatterChart.Series)
                 {
                     serie.PrimaryValues.Add(r.Next(_aliveScalator - 30, _aliveScalator + 30));
                     serie.PrimaryValues.RemoveAt(0);
                 }
 
-                foreach (var serie in RadarChart.Series.Cast<Serie>())
+                foreach (var serie in RadarChart.Series)
                 {
                     serie.PrimaryValues.Add(r.Next(_aliveScalator - 30, _aliveScalator + 30));
                     serie.PrimaryValues.RemoveAt(0);
@@ -178,21 +178,21 @@ namespace ChartsTest
         private void AddPoint(object sender, RoutedEventArgs e)
         {
             var r = new Random();
-            foreach (var s in LineChart.Series.Cast<Serie>())
+            foreach (var s in LineChart.Series)
             {
                 s.PrimaryValues.Add(r.Next(-10, 10));
             }
-            foreach (var s in BarChart.Series.Cast<Serie>())
+            foreach (var s in BarChart.Series)
             {
                 s.PrimaryValues.Add(r.Next(0, 10));
             }
-            foreach (var s in StackedBarChart.Series.Cast<Serie>())
+            foreach (var s in StackedBarChart.Series)
             {
                 s.PrimaryValues.Add(r.Next(0, 10));
             }
-            PieChart.Series.Cast<Serie>().First().PrimaryValues.Add(r.Next(0, 10));
-            PieChart1.Series.Cast<Serie>().First().PrimaryValues.Add(r.Next(0, 10));
-            foreach (var s in RadarChart.Series.Cast<Serie>())
+            PieChart.Series.First().PrimaryValues.Add(r.Next(0, 10));
+            PieChart1.Series.First().PrimaryValues.Add(r.Next(0, 10));
+            foreach (var s in RadarChart.Series)
             {
                 s.PrimaryValues.Add(r.Next(-10, 10));
             }
@@ -200,25 +200,25 @@ namespace ChartsTest
 
         private void RemovePoint(object sender, RoutedEventArgs e)
         {
-            foreach (var s in LineChart.Series.Cast<Serie>().Where(s => s.PrimaryValues.Count > 2))
+            foreach (var s in LineChart.Series.Where(s => s.PrimaryValues.Count > 2))
             {
                 s.PrimaryValues.RemoveAt(s.PrimaryValues.Count - 1);
             }
-            foreach (var s in BarChart.Series.Cast<Serie>().Where(s => s.PrimaryValues.Count > 2))
+            foreach (var s in BarChart.Series.Where(s => s.PrimaryValues.Count > 2))
             {
                 s.PrimaryValues.RemoveAt(s.PrimaryValues.Count - 1);
             }
-            foreach (var s in StackedBarChart.Series.Cast<Serie>().Where(s => s.PrimaryValues.Count > 2))
+            foreach (var s in StackedBarChart.Series.Where(s => s.PrimaryValues.Count > 2))
             {
                 s.PrimaryValues.RemoveAt(s.PrimaryValues.Count - 1);
             }
-            var f = PieChart.Series.Cast<Serie>().First().PrimaryValues;
-            var f1 = PieChart1.Series.Cast<Serie>().First().PrimaryValues;
+            var f = PieChart.Series.First().PrimaryValues;
+            var f1 = PieChart1.Series.First().PrimaryValues;
 
             if (f.Count > 1) f.RemoveAt(f.Count - 1);
             if (f1.Count > 1) f1.RemoveAt(f1.Count - 1);
 
-            foreach (var s in RadarChart.Series.Cast<Serie>().Where(s => s.PrimaryValues.Count > 2))
+            foreach (var s in RadarChart.Series.Where(s => s.PrimaryValues.Count > 2))
             {
                 s.PrimaryValues.RemoveAt(s.PrimaryValues.Count - 1);
             }

@@ -63,6 +63,7 @@ namespace LiveCharts.Series
                 var helper = chart.IndexTotals[index];
                 var barH = ToPlotArea(Chart.Min.Y, AxisTags.Y) - ToPlotArea(helper.Total, AxisTags.Y);
                 var rh = barH*(d/helper.Total);
+	            if (double.IsNaN(rh)) return;
                 var stackedH = barH*(helper.Stacked[serieIndex].Stacked/helper.Total);
 
                 Canvas.SetLeft(r, ToPlotArea(index, AxisTags.X) + pointPadding + overflow/2);

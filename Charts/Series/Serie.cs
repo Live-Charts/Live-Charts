@@ -52,7 +52,11 @@ namespace LiveCharts.Series
 		}
 
 		[TypeConverter(typeof (ValueCollectionConverter))]
-		public IList<double> PrimaryValues { get { return (IList<double>) GetValue(PrimaryValuesProperty); } set { SetValue(PrimaryValuesProperty, value); } }
+		public IList<double> PrimaryValues
+		{
+			get { return (IList<double>) GetValue(PrimaryValuesProperty); }
+			set { SetValue(PrimaryValuesProperty, value); }
+		}
 
 		public abstract void Plot(bool animate = true);
 		public virtual void Erase()

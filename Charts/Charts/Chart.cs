@@ -21,7 +21,6 @@
 //SOFTWARE.
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
@@ -230,6 +229,10 @@ namespace LiveCharts.Charts
             AxisShapes = new List<Shape>();
             AxisLabels = new List<TextBlock>();
             Canvas.Children.Clear();
+	        foreach (var serie in Series)
+	        {
+		        Canvas.Children.Add(serie);
+	        }
 #if DEBUG
             //this takes as much time as drawing.
             //ToDo: Improve performance here!
@@ -736,15 +739,6 @@ namespace LiveCharts.Charts
         #endregion
 
         #region Private Methods
-		protected void AddSerieToVisualTree(Serie serie)
-		{
-			Canvas.Children.Add(serie);
-		}
-
-		protected void RemoveSerieFromVisualTree(Serie serie)
-		{
-			Canvas.Children.Remove(serie);
-		}
 
 	    private double EnsureDouble(double d)
 	    {
@@ -805,7 +799,6 @@ namespace LiveCharts.Charts
 	            foreach (var serie in args.OldItems.Cast<Serie>())
 	            {
 		            serie.Erase();
-					RemoveSerieFromVisualTree(serie);
 	            }
 
             var newSeries = args.NewItems?.Cast<Serie>() ?? new List<Serie>();
@@ -829,7 +822,6 @@ namespace LiveCharts.Charts
 					var observable = serie.PrimaryValues as INotifyCollectionChanged;
 					if (observable != null)
 						observable.CollectionChanged += OnDataSeriesChanged;
-					AddSerieToVisualTree(serie);
                 }
         }
 

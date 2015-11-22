@@ -55,7 +55,7 @@ namespace LiveCharts.Charts
             if (s == null) return new Point(0,0);
             var p = new Point(
 				Series.Select(x => x.PrimaryValues.Count).DefaultIfEmpty(0).Max(),
-                s.PrimaryValues.Select((t, i) => Series.Sum(serie => serie.PrimaryValues[i]))
+                s.PrimaryValues.Select((t, i) => Series.Sum(serie => serie.PrimaryValues.Any() ? serie.PrimaryValues[i] : double.MinValue))
                     .Concat(new[] { double.MinValue }).Max());
             p.Y = PrimaryAxis.MaxValue ?? p.Y;
             return p;
@@ -66,7 +66,7 @@ namespace LiveCharts.Charts
             var s = Series.FirstOrDefault();
             if (s==null) return new Point(0,0);
             var p = new Point(0,
-                s.PrimaryValues.Select((t, i) => Series.Sum(serie => serie.PrimaryValues[i]))
+                s.PrimaryValues.Select((t, i) => Series.Sum(serie => serie.PrimaryValues.Any() ? serie.PrimaryValues[i] : double.MinValue))
                     .Concat(new[] { double.MaxValue }).Min());
             p.Y = PrimaryAxis.MinValue ?? p.Y;
             return p;
@@ -90,12 +90,13 @@ namespace LiveCharts.Charts
                 for (int index = 0; index < Series.Count; index++)
                 {
                     var serie = Series[index];
+	                var value = serie.PrimaryValues.Any() ? serie.PrimaryValues[i] : double.MinValue;
                     helper.Stacked[index] = new StackedItem
                     {
-                        Value = serie.PrimaryValues[i],
+                        Value = value,
                         Stacked = sum
                     };
-                    sum += serie.PrimaryValues[i];
+                    sum += value;
                 }
                 helper.Total = sum;
                 IndexTotals[i] = helper;

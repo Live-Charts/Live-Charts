@@ -10,7 +10,7 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="600" Width="900"
         FontFamily="Calibri"
-        FontSize="14" x:Name="Window"
+        FontSize="14"
         Foreground="#404040"
         WindowStartupLocation="CenterScreen">
     <Window.Resources>
@@ -45,8 +45,8 @@
                             </Grid.ColumnDefinitions>
                             <charts:LineChart Height="300" x:Name="LineChart" 
                                       Zooming="True" Grid.Column="0"></charts:LineChart>
-                            <viewers:SeriesViewer Grid.Column="1" Series="{Binding ElementName=LineChart, Path=Series}"
-                                         VerticalAlignment="Center" Margin="5"></viewers:SeriesViewer>
+                            <!--<viewers:SeriesViewer Grid.Column="1" Series="{Binding ElementName=LineChart, Path=Series}"
+                                         VerticalAlignment="Center" Margin="5"></viewers:SeriesViewer>-->
                             <!--add a series viewer, or build your own, to get a custom behavior, for example
 								this control can be replaced with this-->
 							<!--<ItemsControl Grid.Column="0" ItemsSource="{Binding ElementName=LineChart, Path=Series}">
@@ -188,7 +188,7 @@
                         <Image Source="live.png" Stretch="None" Margin="0 0 0 20"></Image>
                         <TextBlock TextWrapping="Wrap">Here is a list of examples scroll down to check them out, resize window, charts will follow too.</TextBlock>
 
-                        <!--<DockPanel HorizontalAlignment="Center">
+                        <DockPanel HorizontalAlignment="Center">
                             <TextBlock FontSize="20" FontWeight="Bold" HorizontalAlignment="Center" Margin="10">Line and Area Chart</TextBlock>
                             <Button Click="MoreLineChartExmaplesOnClick" Margin="30 0" Height="30" Background="CornflowerBlue" Foreground="WhiteSmoke">More Line chart Examples</Button>
                         </DockPanel>
@@ -204,9 +204,9 @@
                                     <series:LineSerie Label="Bound" PrimaryValues="{Binding LineValues}"/>
                                 </charts:LineChart.Series>
 							</charts:LineChart>
-                            <viewers:SeriesViewer Grid.Column="1" Series="{Binding ElementName=BoundLineChart, Path=Series}"
-												  VerticalAlignment="Center" Margin="5"></viewers:SeriesViewer>
-                        </Grid>-->
+                            <!--<viewers:SeriesViewer Grid.Column="1" Series="{Binding ElementName=BoundLineChart, Path=Series}"
+												  VerticalAlignment="Center" Margin="5"></viewers:SeriesViewer>-->
+                        </Grid>
 
                         <TextBlock TextWrapping="Wrap">1. Click on buttons to test auto-update properties.</TextBlock>
                         <TextBlock TextWrapping="Wrap">2. You can use mouse wheel to zoom and drag graph to pan it when zoomed</TextBlock>
@@ -225,7 +225,7 @@
                             </charts:BarChart.Series>
                         </charts:BarChart>
 
-                        <!--<TextBlock FontSize="20" FontWeight="Bold" HorizontalAlignment="Center" Margin="10">Stacked Bar Chart</TextBlock>
+                        <TextBlock FontSize="20" FontWeight="Bold" HorizontalAlignment="Center" Margin="10">Stacked Bar Chart</TextBlock>
                         <charts:StackedBarChart Height="300" Margin="0 10"
                                  Background="#FBFBFB" BorderBrush="LightGray" 
                                  BorderThickness="1">
@@ -292,7 +292,7 @@
                             </charts:ScatterChart.SecondaryAxis>
                             <charts:ScatterChart.Series>
                                 <series:ScatterSerie Label="Literal" PrimaryValues="1,4,7,9,6,3,2,5,8" SecondaryValues="8 5 2 3 6 9 7 4 1"/>
-                                <series:ScatterSerie Label="Bound" PrimaryValues="{Binding LineValues}" SecondaryValues="{Binding LineValues}"/>
+                                <series:ScatterSerie Label="Bound" PrimaryValues="{Binding LineValues}" SecondaryValues="1,4,7,9,6,3,2,5,8"/>
                             </charts:ScatterChart.Series>
                         </charts:ScatterChart>
                         <StackPanel Orientation="Horizontal">
@@ -319,7 +319,7 @@
                         </charts:ScatterChart>
                         <StackPanel Orientation="Horizontal">
                             <Button Margin="0 10" Click="PerformanceTest">Run Test</Button>
-                        </StackPanel>-->
+                        </StackPanel>
                     </StackPanel>
                 </ScrollViewer>
                 <StackPanel Grid.Row="1" Orientation="Horizontal" Background="#FBFBFB">
