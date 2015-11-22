@@ -22,7 +22,6 @@
         </Style>
     </Window.Resources>
 	<TabControl>
-		<!-- #region Code-Behind -->
 		<TabItem Header="Code-Behind">
             <Grid>
                 <Grid.RowDefinitions>
@@ -90,10 +89,10 @@
                         </charts:StackedBarChart>
 
                         <TextBlock FontSize="20" FontWeight="Bold" HorizontalAlignment="Center" Margin="10">Pie and Doughnut Chart</TextBlock>
-                        <charts:PieChart Height="300" Name="PieChart" Margin="10"
+                        <charts:PieChart Height="300" x:Name="PieChart" Margin="10"
                                  Background="#FBFBFB" BorderBrush="LightGray" 
                                  BorderThickness="1" InnerRadius="50" ></charts:PieChart>
-                        <charts:PieChart Height="300" Name="PieChart1" Margin="10"
+                        <charts:PieChart Height="300" x:Name="PieChart1" Margin="10"
                                  Background="#FBFBFB" BorderBrush="LightGray" 
                                  BorderThickness="1" InnerRadius="0">
                             <charts:PieChart.PrimaryAxis>
@@ -115,7 +114,7 @@
                         <TextBlock FontSize="20" FontWeight="Bold" HorizontalAlignment="Center" Margin="10">
                     Scatter Chart, changing a lot of default properties
                         </TextBlock>
-                        <charts:ScatterChart Height="300" Name="ScatterChart" Margin="10"
+                        <charts:ScatterChart Height="300" x:Name="ScatterChart" Margin="10"
                                      Background="#505050" BorderBrush="LightGray" 
                                      BorderThickness="1" LineType="Bezier"
                                      TooltipBackground="AntiqueWhite"
@@ -148,7 +147,7 @@
                         </StackPanel>
 
                         <TextBlock FontSize="20" FontWeight="Bold" HorizontalAlignment="Center" Margin="10">Finally a performance test!</TextBlock>
-                        <charts:ScatterChart Height="300" Name="PerfomranceChart" Margin="10"
+                        <charts:ScatterChart Height="300" x:Name="PerformanceChart" Margin="10"
                                      Background="#FBFBFB" BorderBrush="LightGray" 
                                      BorderThickness="1" DisableAnimation="True" 
                                      LineType="None">
@@ -178,7 +177,6 @@
                 </StackPanel>
             </Grid>
         </TabItem>
-        <!-- #endregion -->
         <TabItem Header="Literals &amp; Bindings">
             <Grid>
                 <Grid.RowDefinitions>
@@ -190,7 +188,7 @@
                         <Image Source="live.png" Stretch="None" Margin="0 0 0 20"></Image>
                         <TextBlock TextWrapping="Wrap">Here is a list of examples scroll down to check them out, resize window, charts will follow too.</TextBlock>
 
-                        <DockPanel HorizontalAlignment="Center">
+                        <!--<DockPanel HorizontalAlignment="Center">
                             <TextBlock FontSize="20" FontWeight="Bold" HorizontalAlignment="Center" Margin="10">Line and Area Chart</TextBlock>
                             <Button Click="MoreLineChartExmaplesOnClick" Margin="30 0" Height="30" Background="CornflowerBlue" Foreground="WhiteSmoke">More Line chart Examples</Button>
                         </DockPanel>
@@ -202,31 +200,39 @@
                             </Grid.ColumnDefinitions>
                             <charts:LineChart x:Name="BoundLineChart" Height="300" Zooming="True" Grid.Column="0">
                                 <charts:LineChart.Series>
-									<series:LineSerie Name="Literal" PrimaryValues="1,4,7,9,6,3,2,5,8"/>
-									<series:LineSerie Name="Bound" PrimaryValues="{Binding LineValues}"/>
+									<series:LineSerie Label="Literal" PrimaryValues="1,4,7,9,6,3,2,5,8"/>
+                                    <series:LineSerie Label="Bound" PrimaryValues="{Binding LineValues}"/>
                                 </charts:LineChart.Series>
 							</charts:LineChart>
                             <viewers:SeriesViewer Grid.Column="1" Series="{Binding ElementName=BoundLineChart, Path=Series}"
 												  VerticalAlignment="Center" Margin="5"></viewers:SeriesViewer>
-                        </Grid>
+                        </Grid>-->
 
                         <TextBlock TextWrapping="Wrap">1. Click on buttons to test auto-update properties.</TextBlock>
                         <TextBlock TextWrapping="Wrap">2. You can use mouse wheel to zoom and drag graph to pan it when zoomed</TextBlock>
                         <TextBlock TextWrapping="Wrap">3. All types of graphs could do this too.</TextBlock>
 
-                        <!--<TextBlock FontSize="20" FontWeight="Bold" HorizontalAlignment="Center" Margin="10">Bar Chart</TextBlock>
+                        <TextBlock FontSize="20" FontWeight="Bold" HorizontalAlignment="Center" Margin="10">Bar Chart</TextBlock>
                         <charts:BarChart Height="200" Margin="0 10"
                                  Background="#FBFBFB" BorderBrush="LightGray" 
                                  BorderThickness="1">
                             <charts:BarChart.PrimaryAxis>
                                 <liveCharts:Axis MinValue="0"></liveCharts:Axis>
                             </charts:BarChart.PrimaryAxis>
+                            <charts:BarChart.Series>
+                                <series:BarSerie Label="Literal" PrimaryValues="1,4,7,9,6,3,2,5,8"/>
+                                <series:BarSerie Label="Bound" PrimaryValues="{Binding LineValues}"/>
+                            </charts:BarChart.Series>
                         </charts:BarChart>
 
-                        <TextBlock FontSize="20" FontWeight="Bold" HorizontalAlignment="Center" Margin="10">Stacked Bar Chart</TextBlock>
+                        <!--<TextBlock FontSize="20" FontWeight="Bold" HorizontalAlignment="Center" Margin="10">Stacked Bar Chart</TextBlock>
                         <charts:StackedBarChart Height="300" Margin="0 10"
                                  Background="#FBFBFB" BorderBrush="LightGray" 
                                  BorderThickness="1">
+                            <charts:StackedBarChart.Series>
+                                <series:StackedBarSerie Label="Literal" PrimaryValues="1,4,7,9,6,3,2,5,8"/>
+                                <series:StackedBarSerie Label="Bound" PrimaryValues="{Binding LineValues}"/>
+                            </charts:StackedBarChart.Series>
                         </charts:StackedBarChart>
 
                         <TextBlock FontSize="20" FontWeight="Bold" HorizontalAlignment="Center" Margin="10">Pie and Doughnut Chart</TextBlock>
@@ -239,6 +245,10 @@
                             <charts:PieChart.PrimaryAxis>
                                 <liveCharts:Axis FontFamily="Arial" FontSize="14" FontWeight="Bold"/>
                             </charts:PieChart.PrimaryAxis>
+                            <charts:PieChart.Series>
+                                <series:PieSerie Label="Literal" PrimaryValues="1,4,7,9,6,3,2,5,8"/>
+                                <series:PieSerie Label="Bound" PrimaryValues="{Binding LineValues}"/>
+                            </charts:PieChart.Series>
                         </charts:PieChart>
                         <viewers:PieSeriesViewer Series="{Binding ElementName=PieChart1, Path=Series}"
                                          HorizontalAlignment="Center" Orientation="Horizontal"
@@ -280,6 +290,10 @@
                                     </liveCharts:Axis.Separator>
                                 </liveCharts:Axis>
                             </charts:ScatterChart.SecondaryAxis>
+                            <charts:ScatterChart.Series>
+                                <series:ScatterSerie Label="Literal" PrimaryValues="1,4,7,9,6,3,2,5,8" SecondaryValues="8 5 2 3 6 9 7 4 1"/>
+                                <series:ScatterSerie Label="Bound" PrimaryValues="{Binding LineValues}" SecondaryValues="{Binding LineValues}"/>
+                            </charts:ScatterChart.Series>
                         </charts:ScatterChart>
                         <StackPanel Orientation="Horizontal">
                             <Label>Test included formatters here</Label>
@@ -298,6 +312,10 @@
                             <charts:ScatterChart.SecondaryAxis>
                                 <liveCharts:Axis MinValue="0"></liveCharts:Axis>
                             </charts:ScatterChart.SecondaryAxis>
+                            <charts:ScatterChart.Series>
+                                <series:ScatterSerie Label="Literal" PrimaryValues="1,4,7,9,6,3,2,5,8"/>
+                                <series:ScatterSerie Label="Bound" PrimaryValues="{Binding LineValues}"/>
+                            </charts:ScatterChart.Series>
                         </charts:ScatterChart>
                         <StackPanel Orientation="Horizontal">
                             <Button Margin="0 10" Click="PerformanceTest">Run Test</Button>

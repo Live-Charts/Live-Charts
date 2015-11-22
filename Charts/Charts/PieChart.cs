@@ -78,7 +78,7 @@ namespace LiveCharts.Charts
         {
             get
             {
-                var serie = Series.FirstOrDefault();
+                var serie = TypedSeries.FirstOrDefault();
                 var pieSerie = serie as PieSerie;
                 var min = pieSerie?.PrimaryValues.DefaultIfEmpty(0).Min() ?? 0.01;
                 var psc = pieSerie?.PrimaryValues?.Count ?? 0;
@@ -89,7 +89,7 @@ namespace LiveCharts.Charts
         protected override void Scale()
         {
             DrawAxis();
-            var serie = Series.FirstOrDefault();
+            var serie = TypedSeries.FirstOrDefault();
             var pieSerie = serie as PieSerie;
             if (pieSerie == null) return;
             _pointsCount = pieSerie.PrimaryValues.Count;
@@ -177,7 +177,7 @@ namespace LiveCharts.Charts
 
         private double GetPieSum()
         {
-            var serie = Series.FirstOrDefault();
+            var serie = TypedSeries.FirstOrDefault();
             var pieSerie = serie as PieSerie;
             return pieSerie?.PrimaryValues.DefaultIfEmpty(0).Sum() ?? 0;
         }

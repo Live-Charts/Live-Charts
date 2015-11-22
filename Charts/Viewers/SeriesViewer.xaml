@@ -25,7 +25,7 @@
                             <SolidColorBrush Color="{Binding Color}"></SolidColorBrush>
                         </Rectangle.Fill>
                     </Rectangle>
-                    <TextBlock Grid.Column="1" Margin="10 0" Text="{Binding Name}"></TextBlock>
+                    <TextBlock Grid.Column="1" Margin="10 0" Text="{Binding Label}"></TextBlock>
                 </Grid>
             </DataTemplate>
         </ItemsControl.ItemTemplate>

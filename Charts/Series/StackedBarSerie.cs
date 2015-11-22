@@ -55,7 +55,7 @@ namespace LiveCharts.Series
                     StrokeThickness = StrokeThickness,
                     Stroke = new SolidColorBrush {Color = Color},
                     Fill = new SolidColorBrush {Color = Color, Opacity = .8},
-                    Width = barW - seriesPadding,
+                    Width = Math.Max(0, barW - seriesPadding),
                     Height = 0,
                     RenderTransform = t
                 };

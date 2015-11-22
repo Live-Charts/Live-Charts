@@ -21,10 +21,8 @@
 //SOFTWARE.
 
 using System;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
-using LiveCharts.Series;
 
 namespace LiveCharts.Charts
 {
@@ -46,7 +44,6 @@ namespace LiveCharts.Charts
 			IncludeArea = true;
 			Hoverable = true;
 			ShapeHoverBehavior = ShapeHoverBehavior.Dot;
-			Series = new ObservableCollection<Serie>();
 		}
 
 		protected override bool ScaleChanged => GetMax() != _rawMax ||
@@ -76,8 +73,8 @@ namespace LiveCharts.Charts
 
 		private Point GetMax()
 		{
-			var p = new Point(Series.Select(x => x.PrimaryValues.Count).DefaultIfEmpty(0).Max() - 1,
-			                  Series.Select(x => x.PrimaryValues.DefaultIfEmpty(0).Max()).DefaultIfEmpty(0).Max());
+			var p = new Point(TypedSeries.Select(x => x.PrimaryValues.Count).DefaultIfEmpty(0).Max() - 1,
+							  TypedSeries.Select(x => x.PrimaryValues.DefaultIfEmpty(0).Max()).DefaultIfEmpty(0).Max());
 			p.Y = PrimaryAxis.MaxValue ?? p.Y;
 			return p;
 
@@ -86,7 +83,7 @@ namespace LiveCharts.Charts
 		private Point GetMin()
 		{
 			var p = new Point(0,
-			                  Series.Select(x => x.PrimaryValues.DefaultIfEmpty(0).Min()).DefaultIfEmpty(0).Min());
+							  TypedSeries.Select(x => x.PrimaryValues.DefaultIfEmpty(0).Min()).DefaultIfEmpty(0).Min());
 			p.Y = PrimaryAxis.MinValue ?? p.Y;
 			return p;
 		}
@@ -135,19 +132,11 @@ namespace LiveCharts.Charts
 			PlotArea.Height = Math.Max(0, Canvas.DesiredSize.Height - (padding * 2 + firstXLabelSize.Y) - PlotArea.Y);
 			PlotArea.Width = Math.Max(0, Canvas.DesiredSize.Width - PlotArea.X - padding);
 			var distanceToEnd = ToPlotArea(Max.X - lastLabelX, AxisTags.X) - PlotArea.X;
-			PlotArea.Width -= lastXLabelSize.X * .5 - distanceToEnd > 0 ? lastXLabelSize.X * .5 - distanceToEnd : 0;
+			var change = lastXLabelSize.X * .5 - distanceToEnd > 0 ? lastXLabelSize.X * .5 - distanceToEnd : 0;
+			if (change <= PlotArea.Width)
+				PlotArea.Width -= change;
 
 			base.DrawAxis();
-		}
-
-		protected override void AddSerieToVisualTree(Serie serie)
-		{
-			Canvas.Children.Add(serie);
-		}
-
-		protected override void RemoveSerieFromVisualTree(Serie serie)
-		{
-			Canvas.Children.Remove(serie);
 		}
 	}
 }

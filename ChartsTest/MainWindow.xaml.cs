@@ -20,7 +20,7 @@ namespace ChartsTest
         private bool _isAlive;
         private int _aliveScalator;
 
-		public ObservableCollection<double> LineValues { get; } = new ObservableCollection<double> { 3, 2, 1, 6, 5, 4, 9, 8, 7 };
+		public IList<double> LineValues { get; } = new List<double> { 3, 2, 1, 6, 5, 4, 9, 8, 7 };
 
 	    public MainWindow()
         {
@@ -36,18 +36,18 @@ namespace ChartsTest
             {
                 var r = new Random();
                 if (r.NextDouble() < .1) _aliveScalator += r.Next(-100, 100);
-                foreach (var serie in LineChart.Series)
+                foreach (var serie in LineChart.Series.Cast<Serie>())
                 {
                     serie.PrimaryValues.RemoveAt(0);
                     serie.PrimaryValues.Add(r.Next(_aliveScalator - 30, _aliveScalator + 30));
                 }
                 var abs = Math.Abs(_aliveScalator);
-                foreach (var serie in BarChart.Series)
+                foreach (var serie in BarChart.Series.Cast<Serie>())
                 {
                     serie.PrimaryValues.Add(r.Next(abs, abs + 30));
                     serie.PrimaryValues.RemoveAt(0);
                 }
-                foreach (var serie in StackedBarChart.Series)
+                foreach (var serie in StackedBarChart.Series.Cast<Serie>())
                 {
                     serie.PrimaryValues.Add(r.Next(abs, abs + 30));
                     serie.PrimaryValues.RemoveAt(0);
@@ -60,13 +60,13 @@ namespace ChartsTest
                 //f.RemoveAt(0);
                 //f1.RemoveAt(0);
 
-                foreach (var serie in ScatterChart.Series)
+                foreach (var serie in ScatterChart.Series.Cast<Serie>())
                 {
                     serie.PrimaryValues.Add(r.Next(_aliveScalator - 30, _aliveScalator + 30));
                     serie.PrimaryValues.RemoveAt(0);
                 }
 
-                foreach (var serie in RadarChart.Series)
+                foreach (var serie in RadarChart.Series.Cast<Serie>())
                 {
                     serie.PrimaryValues.Add(r.Next(_aliveScalator - 30, _aliveScalator + 30));
                     serie.PrimaryValues.RemoveAt(0);
@@ -84,143 +84,115 @@ namespace ChartsTest
             //Line Chart
             LineChart.PrimaryAxis.LabelFormatter = (value) => value.ToString("C");
             LineChart.SecondaryAxis.Labels = standardLabels;
-            LineChart.Series = new ObservableCollection<Serie>
-            {
-                new LineSerie
-                {
-                    Name = "Vegetables",
-                    PrimaryValues = new ObservableCollection<double>
-                    {
-                        -10, 5, 9, 28, -3, 2, 0, 5, 10, 1, 7, 2
-                    }
-                },
-                new LineSerie
-                {
-                    Name = "Fruits",
-                    PrimaryValues = new ObservableCollection<double>
-                    {
-                        -6, 1, 6, 20, -3, -7, -9, 2, 16, 10,16, 12
-                    }
-                }
-            };
+		    LineChart.Series.Add(new LineSerie
+			                         {
+				                         Label = "Vegetables",
+				                         PrimaryValues = new ObservableCollection<double> {-10, 5, 9, 28, -3, 2, 0, 5, 10, 1, 7, 2}
+			                         });
+		    LineChart.Series.Add(new LineSerie
+			                         {
+				                         Label = "Fruits",
+				                         PrimaryValues = new ObservableCollection<double> {-6, 1, 6, 20, -3, -7, -9, 2, 16, 10, 16, 12}
+			                         });
 
             ////Bar Chart
             BarChart.SecondaryAxis.Labels = standardLabels;
-            BarChart.Series = new ObservableCollection<Serie>
-            {
-                new BarSerie
-                {
-                    Name = "John",
-                    PrimaryValues = new ObservableCollection<double> { 4,3,1,2 }
-                },
-                new BarSerie
-                {
-                    Name = "Judit",
-                    PrimaryValues = new ObservableCollection<double> { 3,1,4,3 }
-                }
-            };
+		    BarChart.Series.Add(new BarSerie
+			                        {
+				                        Label = "John",
+				                        PrimaryValues = new ObservableCollection<double> {4, 3, 1, 2}
+			                        });
+		    BarChart.Series.Add(new BarSerie
+			    {
+				    Label = "Judit",
+				    PrimaryValues = new ObservableCollection<double> {3, 1, 4, 3}
+			    });
 
             //Stacked Bar Chart
             StackedBarChart.SecondaryAxis.Labels = standardLabels;
             StackedBarChart.PrimaryAxis.MinValue = 0;
-            StackedBarChart.Series = new ObservableCollection<Serie>
-            {
-                new StackedBarSerie
-                {
-                    Name = "Charles",
-                    PrimaryValues = new ObservableCollection<double> { 1,2,3,4,1,5,2 }
-                },
-                new StackedBarSerie
-                {
-                    Name = "Susan",
+		    StackedBarChart.Series.Add(new StackedBarSerie
+			    {
+				    Label = "Charles",
+				    PrimaryValues = new ObservableCollection<double> {1, 2, 3, 4, 1, 5, 2}
+			    });
+			StackedBarChart.Series.Add(new StackedBarSerie
+			{
+				Label = "Susan",
                     PrimaryValues = new ObservableCollection<double> { 4,3,2,1,8,1,4 }
-                },
-                new StackedBarSerie
-                {
-                    Name = "Eli",
+			});
+			StackedBarChart.Series.Add(new StackedBarSerie
+			{
+				Label = "Eli",
                     PrimaryValues = new ObservableCollection<double> { 3,1,4,2,7,3,2 }
-                }
-            };
+			});
 
-
-            //PieChart
-            PieChart.Series = new ObservableCollection<Serie>
-            {
-                //if you add more than one serie to pie chart, they will be overridden
-                new PieSerie
-                {
-                    PrimaryValues = new ObservableCollection<double> { 8, 1, 5 },
-                    Labels = standardLabels
-                }
-            };
+			//PieChart
+			//if you add more than one serie to pie chart, they will be overridden
+		    PieChart.Series.Add(new PieSerie
+			    {
+				    PrimaryValues = new ObservableCollection<double> {8, 1, 5},
+				    Labels = standardLabels
+			    });
             PieChart1.PrimaryAxis.LabelFormatter = value => (value/PieChart1.PieTotalSum).ToString("P");
-            PieChart1.Series = new ObservableCollection<Serie>
-            {
-                //if you add more than one serie to pie chart, they will be overridden
-                //do not mix positive and negative values in a pie chart. It has no sense
-                new PieSerie
-                {
-                    PrimaryValues = new ObservableCollection<double> {8, 8, 3},
-                    Labels = standardLabels
-                }
-            };
+            //if you add more than one serie to pie chart, they will be overridden
+            //do not mix positive and negative values in a pie chart. It has no sense
+		    PieChart1.Series.Add(new PieSerie
+			                         {
+				                         PrimaryValues = new ObservableCollection<double> {8, 8, 3},
+				                         Labels = standardLabels
+			                         });
 
             RadarChart.SecondaryAxis.Labels = standardLabels;
-            RadarChart.Series = new ObservableCollection<Serie>
-            {
-                new RadarSerie
-                {
-                    PrimaryValues = new ObservableCollection<double> {9, 8, 2, 1, 6, 3, 7}
-                },
-                new RadarSerie
-                {
-                    PrimaryValues = new ObservableCollection<double> {4, 2, 7, 5, 10, 5, 2}
-                },
-                new RadarSerie
-                {
-                    PrimaryValues = new ObservableCollection<double> {2, 2, 4, 3, 2, 9, 5}
-                }
-            };
+		    RadarChart.Series.Add(new RadarSerie
+			    {
+				    PrimaryValues = new ObservableCollection<double> {9, 8, 2, 1, 6, 3, 7}
+			    });
+			RadarChart.Series.Add(new RadarSerie
+			{
+				PrimaryValues = new ObservableCollection<double> {4, 2, 7, 5, 10, 5, 2}
+                });
+		    RadarChart.Series.Add(new RadarSerie
+			    {
+				    PrimaryValues = new ObservableCollection<double> {2, 2, 4, 3, 2, 9, 5}
+			    });
 
             ////func for serie 1
             Func<double, double> fx1 = x => (Math.Pow(x, 2) + 10 * x) * 1000;
             Func<double, double> fx2 = x => (Math.Pow(x, 2)) * 1000;
             ScatterChart.PrimaryAxis.LabelFormatter = LabelFormatters.Currency;
-            ScatterChart.Series = new ObservableCollection<Serie>
-            {
-                new ScatterSerie
+            ScatterChart.Series.Add(new ScatterSerie
                 {
                     PrimaryValues = new ObservableCollection<double> {fx1(-10), fx1(-3), fx1(5), fx1(7)},
                     SecondaryValues =  new double[] {-10, -3, 5, 7},
                     PointRadius = 7
-                },
-                new ScatterSerie
-                {
-                    PrimaryValues = new ObservableCollection<double> {fx2(-5), fx2(-2), fx2(3), fx2(10)},
-                    SecondaryValues =  new double[]{-5, -2, 3, 10},
-                    PointRadius = 7
-                },
-            };
+                });
+		    ScatterChart.Series.Add(new ScatterSerie
+			    {
+				    PrimaryValues = new ObservableCollection<double> {fx2(-5), fx2(-2), fx2(3), fx2(10)},
+				    SecondaryValues = new double[] {-5, -2, 3, 10},
+				    PointRadius = 7
+			    });
         }
 
         private void AddPoint(object sender, RoutedEventArgs e)
         {
             var r = new Random();
-            foreach (var s in LineChart.Series)
+            foreach (var s in LineChart.Series.Cast<Serie>())
             {
                 s.PrimaryValues.Add(r.Next(-10, 10));
             }
-            foreach (var s in BarChart.Series)
+            foreach (var s in BarChart.Series.Cast<Serie>())
             {
                 s.PrimaryValues.Add(r.Next(0, 10));
             }
-            foreach (var s in StackedBarChart.Series)
+            foreach (var s in StackedBarChart.Series.Cast<Serie>())
             {
                 s.PrimaryValues.Add(r.Next(0, 10));
             }
-            PieChart.Series.First().PrimaryValues.Add(r.Next(0, 10));
-            PieChart1.Series.First().PrimaryValues.Add(r.Next(0, 10));
-            foreach (var s in RadarChart.Series)
+            PieChart.Series.Cast<Serie>().First().PrimaryValues.Add(r.Next(0, 10));
+            PieChart1.Series.Cast<Serie>().First().PrimaryValues.Add(r.Next(0, 10));
+            foreach (var s in RadarChart.Series.Cast<Serie>())
             {
                 s.PrimaryValues.Add(r.Next(-10, 10));
             }
@@ -228,25 +200,25 @@ namespace ChartsTest
 
         private void RemovePoint(object sender, RoutedEventArgs e)
         {
-            foreach (var s in LineChart.Series.Where(s => s.PrimaryValues.Count > 2))
+            foreach (var s in LineChart.Series.Cast<Serie>().Where(s => s.PrimaryValues.Count > 2))
             {
                 s.PrimaryValues.RemoveAt(s.PrimaryValues.Count - 1);
             }
-            foreach (var s in BarChart.Series.Where(s => s.PrimaryValues.Count > 2))
+            foreach (var s in BarChart.Series.Cast<Serie>().Where(s => s.PrimaryValues.Count > 2))
             {
                 s.PrimaryValues.RemoveAt(s.PrimaryValues.Count - 1);
             }
-            foreach (var s in StackedBarChart.Series.Where(s => s.PrimaryValues.Count > 2))
+            foreach (var s in StackedBarChart.Series.Cast<Serie>().Where(s => s.PrimaryValues.Count > 2))
             {
                 s.PrimaryValues.RemoveAt(s.PrimaryValues.Count - 1);
             }
-            var f = PieChart.Series.First().PrimaryValues;
-            var f1 = PieChart1.Series.First().PrimaryValues;
+            var f = PieChart.Series.Cast<Serie>().First().PrimaryValues;
+            var f1 = PieChart1.Series.Cast<Serie>().First().PrimaryValues;
 
             if (f.Count > 1) f.RemoveAt(f.Count - 1);
             if (f1.Count > 1) f1.RemoveAt(f1.Count - 1);
 
-            foreach (var s in RadarChart.Series.Where(s => s.PrimaryValues.Count > 2))
+            foreach (var s in RadarChart.Series.Cast<Serie>().Where(s => s.PrimaryValues.Count > 2))
             {
                 s.PrimaryValues.RemoveAt(s.PrimaryValues.Count - 1);
             }
@@ -422,10 +394,7 @@ namespace ChartsTest
             }
 
             var timer = DateTime.Now;
-            PerfomranceChart.Series = new ObservableCollection<Serie>
-            {
-                serie
-            };
+	        PerformanceChart.Series.Add(serie);
             MessageBox.Show("drew 1000 pts in " + (DateTime.Now - timer).TotalMilliseconds + " ms");
         }
 

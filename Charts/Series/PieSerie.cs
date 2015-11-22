@@ -21,7 +21,6 @@
 //SOFTWARE.
 
 using System;
-using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
@@ -34,7 +33,7 @@ namespace LiveCharts.Series
 {
     public class PieSerie : Serie
     {
-        public string[] Labels { get; set; } 
+	    public string[] Labels { get; set; } = new string[0];
 
         public override void Plot(bool animate = true)
         {
