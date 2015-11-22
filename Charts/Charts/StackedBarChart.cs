@@ -51,11 +51,11 @@ namespace LiveCharts.Charts
 
         private Point GetMax()
         {
-            var s = TypedSeries.FirstOrDefault();
+            var s = Series.FirstOrDefault();
             if (s == null) return new Point(0,0);
             var p = new Point(
-				TypedSeries.Select(x => x.PrimaryValues.Count).DefaultIfEmpty(0).Max(),
-                s.PrimaryValues.Select((t, i) => TypedSeries.Sum(serie => serie.PrimaryValues[i]))
+				Series.Select(x => x.PrimaryValues.Count).DefaultIfEmpty(0).Max(),
+                s.PrimaryValues.Select((t, i) => Series.Sum(serie => serie.PrimaryValues[i]))
                     .Concat(new[] { double.MinValue }).Max());
             p.Y = PrimaryAxis.MaxValue ?? p.Y;
             return p;
@@ -63,10 +63,10 @@ namespace LiveCharts.Charts
 
         private Point GetMin()
         {
-            var s = TypedSeries.FirstOrDefault();
+            var s = Series.FirstOrDefault();
             if (s==null) return new Point(0,0);
             var p = new Point(0,
-                s.PrimaryValues.Select((t, i) => TypedSeries.Sum(serie => serie.PrimaryValues[i]))
+                s.PrimaryValues.Select((t, i) => Series.Sum(serie => serie.PrimaryValues[i]))
                     .Concat(new[] { double.MaxValue }).Min());
             p.Y = PrimaryAxis.MinValue ?? p.Y;
             return p;
@@ -81,7 +81,7 @@ namespace LiveCharts.Charts
 
         protected override void Scale()
         {
-            var fSerie = TypedSeries.FirstOrDefault();
+            var fSerie = Series.FirstOrDefault();
             if (fSerie == null) return;
             for (var i = 0; i < fSerie.PrimaryValues.Count; i++)
             {
@@ -89,7 +89,7 @@ namespace LiveCharts.Charts
                 var sum = 0d;
                 for (int index = 0; index < Series.Count; index++)
                 {
-                    var serie = TypedSeries[index];
+                    var serie = Series[index];
                     helper.Stacked[index] = new StackedItem
                     {
                         Value = serie.PrimaryValues[i],

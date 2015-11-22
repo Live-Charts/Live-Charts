@@ -50,15 +50,15 @@ namespace LiveCharts.Charts
         private Point GetMax()
         {
             var p = new Point(
-                TypedSeries.Select(x => x.PrimaryValues.Count).DefaultIfEmpty(0).Max(),
-				TypedSeries.Select(x => x.PrimaryValues.DefaultIfEmpty(0).Max()).DefaultIfEmpty(0).Max());
+                Series.Select(x => x.PrimaryValues.Count).DefaultIfEmpty(0).Max(),
+				Series.Select(x => x.PrimaryValues.DefaultIfEmpty(0).Max()).DefaultIfEmpty(0).Max());
             p.Y = PrimaryAxis.MaxValue ?? p.Y;
             return p;
         }
 
         private Point GetMin()
         {
-            var p = new Point(0, TypedSeries.Select(x => x.PrimaryValues.DefaultIfEmpty(0).Min()).DefaultIfEmpty(0).Min());
+            var p = new Point(0, Series.Select(x => x.PrimaryValues.DefaultIfEmpty(0).Min()).DefaultIfEmpty(0).Min());
             p.Y = PrimaryAxis.MinValue ?? p.Y;
 			return p;
         }

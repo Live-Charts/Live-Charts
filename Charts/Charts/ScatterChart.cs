@@ -148,7 +148,7 @@ namespace LiveCharts.Charts
                 SecondaryAxis.MaxValue ??
                 Series.Cast<ScatterSerie>().Select(x => x.SecondaryValues.DefaultIfEmpty(0).Max()).DefaultIfEmpty(0).Max(),
                 PrimaryAxis.MaxValue ??
-				TypedSeries.Select(x => x.PrimaryValues.DefaultIfEmpty(0).Max()).DefaultIfEmpty(0).Max());
+				Series.Select(x => x.PrimaryValues.DefaultIfEmpty(0).Max()).DefaultIfEmpty(0).Max());
             p.X = SecondaryAxis.MaxValue ?? p.X;
             p.Y = PrimaryAxis.MaxValue ?? p.Y;
             return p;
@@ -158,7 +158,7 @@ namespace LiveCharts.Charts
         {
             var p = new Point(
                 Series.Cast<ScatterSerie>().Select(x => x.SecondaryValues.DefaultIfEmpty(0).Min()).DefaultIfEmpty(0).Min(),
-				TypedSeries.Select(x => x.PrimaryValues.DefaultIfEmpty(0).Min()).DefaultIfEmpty(0).Min());
+				Series.Select(x => x.PrimaryValues.DefaultIfEmpty(0).Min()).DefaultIfEmpty(0).Min());
             p.X = SecondaryAxis.MinValue ?? p.X;
             p.Y = PrimaryAxis.MinValue ?? p.Y;
             return p;

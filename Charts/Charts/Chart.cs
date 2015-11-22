@@ -126,8 +126,8 @@ namespace LiveCharts.Charts
 
             AnimatesNewPoints = false;
 
-			TypedSeries = new ObservableCollection<Serie>();
-			TypedSeries.CollectionChanged += OnSeriesCollectionChanged;
+			Series = new ObservableCollection<Serie>();
+			Series.CollectionChanged += OnSeriesCollectionChanged;
 		}
 
         abstract protected void Scale();
@@ -148,9 +148,7 @@ namespace LiveCharts.Charts
         /// <summary>
         /// Collection of series to be drawn.
         /// </summary>
-        public IList Series => TypedSeries;
-
-	    protected ObservableCollection<Serie> TypedSeries { get; }
+        public ObservableCollection<Serie> Series { get; }
 
 	    public static readonly DependencyProperty ZoomingProperty = DependencyProperty.Register(
             "Zooming", typeof(bool), typeof(Chart));
@@ -404,7 +402,7 @@ namespace LiveCharts.Charts
                 return;
 
             Scale();
-            foreach (var serie in TypedSeries)
+            foreach (var serie in Series)
             {
                 serie.Plot(animate);
             }
@@ -622,7 +620,7 @@ namespace LiveCharts.Charts
             var last = sibilings.Count > 0 ? sibilings[sibilings.Count - 1] : null;
             var labels = SecondaryAxis.Labels?.ToArray();
             var vx = first?.Value.X ?? 0;
-            vx = AlphaLabel ? (int)(vx / (360d / TypedSeries.First().PrimaryValues.Count)) : vx;
+            vx = AlphaLabel ? (int)(vx / (360d / Series.First().PrimaryValues.Count)) : vx;
 
             sp.Children.Add(new TextBlock
             {
@@ -815,7 +813,7 @@ namespace LiveCharts.Charts
             if (ScaleChanged)
             {
                 Scale();
-                foreach (var serie in TypedSeries.Where(x => !newSeries.Contains(x)))
+                foreach (var serie in Series.Where(x => !newSeries.Contains(x)))
                 {
                     serie.Erase();
                     serie.Plot(false);
@@ -826,7 +824,7 @@ namespace LiveCharts.Charts
                 foreach (var serie in newSeries)
                 {
                     serie.Chart = this;
-                    serie.ColorId = TypedSeries.Max(x => x.ColorId) + 1;
+                    serie.ColorId = Series.Max(x => x.ColorId) + 1;
                     serie.Plot();
 					var observable = serie.PrimaryValues as INotifyCollectionChanged;
 					if (observable != null)
@@ -845,7 +843,7 @@ namespace LiveCharts.Charts
         {
             _seriesCangedTimer.Stop();
             if (ScaleChanged) Scale();
-            foreach (var serie in TypedSeries)
+            foreach (var serie in Series)
             {
                 serie.Erase();
                 serie.Plot(AnimatesNewPoints);
