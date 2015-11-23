@@ -22,7 +22,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -52,16 +51,16 @@ namespace LiveCharts.Charts
         {
             var p = new Point(
                 Series.Select(x => x.PrimaryValues.Count).DefaultIfEmpty(0).Max(),
-                Series.Select(x => x.PrimaryValues.Max()).DefaultIfEmpty(0).Max());
+				Series.Select(x => x.PrimaryValues.DefaultIfEmpty(0).Max()).DefaultIfEmpty(0).Max());
             p.Y = PrimaryAxis.MaxValue ?? p.Y;
             return p;
         }
 
         private Point GetMin()
         {
-            var p = new Point(0, Series.Select(x => x.PrimaryValues.Min()).DefaultIfEmpty(0).Min());
+            var p = new Point(0, Series.Select(x => x.PrimaryValues.DefaultIfEmpty(0).Min()).DefaultIfEmpty(0).Min());
             p.Y = PrimaryAxis.MinValue ?? p.Y;
-            return p;
+			return p;
         }
 
         private Point GetS()
@@ -119,11 +118,13 @@ namespace LiveCharts.Charts
                              ? fistXLabelSize.X*0.5 - LabelOffset
                              : longestYLabelSize.X);
             PlotArea.Y = longestYLabelSize.Y * .5 + padding;
-            PlotArea.Height = Canvas.DesiredSize.Height - (padding * 2 + fistXLabelSize.Y) - PlotArea.Y;
-            PlotArea.Width = Canvas.DesiredSize.Width - PlotArea.X - padding;
+            PlotArea.Height = Math.Max(0, Canvas.DesiredSize.Height - (padding * 2 + fistXLabelSize.Y) - PlotArea.Y);
+            PlotArea.Width = Math.Max(0, Canvas.DesiredSize.Width - PlotArea.X - padding);
             var distanceToEnd = PlotArea.Width - (ToPlotArea(Max.X, AxisTags.X) - ToPlotArea(1, AxisTags.X));
             distanceToEnd -= LabelOffset + padding;
-            PlotArea.Width -= lastXLabelSize.X * .5 - distanceToEnd > 0 ? lastXLabelSize.X * .5 - distanceToEnd : 0;
+			var change = lastXLabelSize.X * .5 - distanceToEnd > 0 ? lastXLabelSize.X * .5 - distanceToEnd : 0;
+	        if (change <= PlotArea.Width)
+		        PlotArea.Width -= change;
 
             //calculate it again to get a better result
             unitW = ToPlotArea(1, AxisTags.X) - PlotArea.X + 5; 

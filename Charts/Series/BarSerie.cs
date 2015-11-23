@@ -21,7 +21,6 @@
 //SOFTWARE.
 
 using System;
-using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -33,9 +32,7 @@ namespace LiveCharts.Series
 {
     public class BarSerie : Serie
     {
-        public override ObservableCollection<double> PrimaryValues { get; set; }
-
-        public override void Plot(bool animate = true)
+	    public override void Plot(bool animate = true)
         {
             var chart = Chart as BarChart;
             if (chart == null) return;
@@ -56,15 +53,15 @@ namespace LiveCharts.Series
                 var point = new Point(xCount -1, d);
 
                 var t = new TranslateTransform();
-                var r = new Rectangle
-                {
-                    StrokeThickness = StrokeThickness,
-                    Stroke = new SolidColorBrush{Color = Color},
-                    Fill = new SolidColorBrush { Color = Color, Opacity = .8},
-                    Width = barW - seriesPadding,
-                    Height = 0,
-                    RenderTransform = t
-                };
+	            var r = new Rectangle
+		            {
+			            StrokeThickness = StrokeThickness,
+			            Stroke = new SolidColorBrush {Color = Color},
+			            Fill = new SolidColorBrush {Color = Color, Opacity = .8},
+			            Width = Math.Max(0, barW - seriesPadding),
+			            Height = 0,
+			            RenderTransform = t
+		            };
                
                 var rh = ToPlotArea(Chart.Min.Y, AxisTags.Y) - ToPlotArea(point.Y, AxisTags.Y);
 

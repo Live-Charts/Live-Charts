@@ -23,108 +23,109 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using LiveCharts.Charts;
+using LiveCharts.TypeConverters;
 
 namespace LiveCharts.Series
 {
-    public abstract class Serie : DependencyObject
-    {
-        private Color? _color;
-        protected List<Shape> Shapes = new List<Shape>();
-        private Chart _chart;
-        private int _colorId;
+	public abstract class Serie : FrameworkElement
+	{
+		public static readonly DependencyProperty PrimaryValuesProperty =
+			DependencyProperty.Register("PrimaryValues", typeof (IList<double>), typeof (Serie), new PropertyMetadata(new ObservableCollection<double>()));
 
-        protected Serie()
-        {
-            StrokeThickness = 2.5;
-            PointRadius = 4;
-            ColorId = -1;
-            Name = "An Unnamed Serie";
-        }
+		private Color? _color;
+		protected List<Shape> Shapes = new List<Shape>();
+		private Chart _chart;
+		private int _colorId;
 
-        abstract public ObservableCollection<double> PrimaryValues { get; set; }
-        public abstract void Plot(bool animate = true);
-        public virtual void Erase()
-        {
-            foreach (var s in Shapes)
-                Chart.Canvas.Children.Remove(s);
-            Shapes.Clear();
+		protected Serie()
+		{
+			StrokeThickness = 2.5;
+			PointRadius = 4;
+			ColorId = -1;
+			Label = "An Unnamed Serie";
+		}
 
-            var hoverableShapes = Chart.HoverableShapes.Where(x => x.Serie == this).ToList();
-            foreach (var hs in hoverableShapes)
-            {
-                Chart.Canvas.Children.Remove(hs.Shape);
-                Chart.HoverableShapes.Remove(hs);
-            }
-        }
+		[TypeConverter(typeof (ValueCollectionConverter))]
+		public IList<double> PrimaryValues
+		{
+			get { return (IList<double>) GetValue(PrimaryValuesProperty); }
+			set { SetValue(PrimaryValuesProperty, value); }
+		}
 
-        public static readonly DependencyProperty NameProperty = DependencyProperty.Register(
-            "Name", typeof (string), typeof (Serie), new PropertyMetadata(default(string)));
-        /// <summary>
-        /// Gets or sets serie name
-        /// </summary>
-        public string Name
-        {
-            get { return (string) GetValue(NameProperty); }
-            set { SetValue(NameProperty, value); }
-        }
+		public abstract void Plot(bool animate = true);
+		public virtual void Erase()
+		{
+			foreach (var s in Shapes)
+				Chart.Canvas.Children.Remove(s);
+			Shapes.Clear();
 
-        public Chart Chart
-        {
-            get { return _chart; }
-            set
-            {
-                if (_chart != null) throw new Exception("can't set chart property twice.");
-                _chart = value;
-            }
-        }
+			var hoverableShapes = Chart.HoverableShapes.Where(x => x.Serie == this).ToList();
+			foreach (var hs in hoverableShapes)
+			{
+				Chart.Canvas.Children.Remove(hs.Shape);
+				Chart.HoverableShapes.Remove(hs);
+			}
+		}
 
-        public double StrokeThickness { get; set; }
-        public double PointRadius { get; set; }
-        public int ColorId
-        {
-            get { return _colorId + Chart.ColorStartIndex; }
-            set { _colorId = value; }
-        }
-        public Color Color
-        {
-            get
-            {
-                if (_color != null) return _color.Value;
-                return Chart.Colors[
-                    (int) (ColorId - Chart.Colors.Count*Math.Truncate(ColorId/(decimal) Chart.Colors.Count))];
-            }
-            set { _color = value; }
-        }
+		public static readonly DependencyProperty LabelProperty =
+			DependencyProperty.Register("Label", typeof (string), typeof (Serie), new PropertyMetadata(default(string)));
+		/// <summary>
+		/// Gets or sets serie name
+		/// </summary>
+		public string Label { get { return (string) GetValue(LabelProperty); } set { SetValue(LabelProperty, value); } }
 
-        public static Color GetColorByIndex(int index)
-        {
-            return Chart.Colors[
-                    (int)(index - Chart.Colors.Count * Math.Truncate(index / (decimal)Chart.Colors.Count))];
-        }
+		public Chart Chart
+		{
+			get { return _chart; }
+			set
+			{
+				if (_chart != null) throw new Exception("can't set chart property twice.");
+				_chart = value;
+			}
+		}
 
-        /// <summary>
-        /// Scales a graph value to screen according to an axis. 
-        /// </summary>
-        /// <param name="value"></param>
-        /// <param name="axis"></param>
-        /// <returns></returns>
-        protected double ToPlotArea(double value, AxisTags axis)
-        {
-            return Methods.ToPlotArea(value, axis, Chart);
-        }
-        /// <summary>
-        /// Scales a graph point to screen.
-        /// </summary>
-        /// <param name="value"></param>
-        /// <returns></returns>
-        protected Point ToPlotArea(Point value)
-        {
-            return new Point(ToPlotArea(value.X, AxisTags.X), ToPlotArea(value.Y, AxisTags.Y));
-        }
-    }
+		public double StrokeThickness { get; set; }
+		public double PointRadius { get; set; }
+		public int ColorId { get { return _colorId + Chart.ColorStartIndex; } set { _colorId = value; } }
+		public Color Color
+		{
+			get
+			{
+				if (_color != null) return _color.Value;
+				return Chart.Colors[(int) (ColorId - Chart.Colors.Count * Math.Truncate(ColorId / (decimal) Chart.Colors.Count))];
+			}
+			set { _color = value; }
+		}
+
+		public static Color GetColorByIndex(int index)
+		{
+			return Chart.Colors[(int) (index - Chart.Colors.Count * Math.Truncate(index / (decimal) Chart.Colors.Count))];
+		}
+
+		/// <summary>
+		/// Scales a graph value to screen according to an axis. 
+		/// </summary>
+		/// <param name="value"></param>
+		/// <param name="axis"></param>
+		/// <returns></returns>
+		protected double ToPlotArea(double value, AxisTags axis)
+		{
+			return Methods.ToPlotArea(value, axis, Chart);
+		}
+		/// <summary>
+		/// Scales a graph point to screen.
+		/// </summary>
+		/// <param name="value"></param>
+		/// <returns></returns>
+		protected Point ToPlotArea(Point value)
+		{
+			return new Point(ToPlotArea(value.X, AxisTags.X), ToPlotArea(value.Y, AxisTags.Y));
+		}
+	}
 }

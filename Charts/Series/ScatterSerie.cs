@@ -23,6 +23,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -30,20 +31,27 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using LiveCharts.Charts;
+using LiveCharts.TypeConverters;
 
 namespace LiveCharts.Series
 {
     public class ScatterSerie : Serie
     {
-        //TODO I think this could be better, strongly typing points.
-        //problem is that i attach a watcher to PrimaryValues in Chart class
-        public override ObservableCollection<double> PrimaryValues { get; set; }
-        public double[] SecondaryValues { get; set; }
+		public static readonly DependencyProperty SecondaryValuesProperty =
+			DependencyProperty.Register("SecondaryValues", typeof(IList<double>), typeof(ScatterSerie), new PropertyMetadata(new ObservableCollection<double>()));
+
+		[TypeConverter(typeof(ValueCollectionConverter))]
+		public IList<double> SecondaryValues
+		{
+			get { return (IList<double>)GetValue(SecondaryValuesProperty); }
+			set { SetValue(SecondaryValuesProperty, value); }
+		}
 
         public override void Plot(bool animate = true)
         {
             var points = new List<Point>();
-            for (int index = 0; index < PrimaryValues.Count; index++)
+	        var count = Math.Min(PrimaryValues.Count, SecondaryValues.Count);
+            for (int index = 0; index < count; index++)
             {
                 var value = new Point(SecondaryValues[index], PrimaryValues[index]);
                 var point = ToPlotArea(value);
@@ -105,6 +113,8 @@ namespace LiveCharts.Series
         private IEnumerable<Shape> _addSerieAsBezier(Point[] points, Color color, double storkeThickness,
             bool animate = true)
         {
+	        if (points.Length < 2) return Enumerable.Empty<Shape>();
+
             var addedFigures = new List<Shape>();
 
             Point[] cp1, cp2;

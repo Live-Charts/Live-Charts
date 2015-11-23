@@ -71,7 +71,7 @@ namespace LiveCharts.Charts
             if (fSerie == null) return new Point(0,0);
             var point =
                 new Point(fSerie.PrimaryValues.Count,
-                    Series.Select(x => x.PrimaryValues.Max()).DefaultIfEmpty(0.0).Max());
+					Series.Select(x => x.PrimaryValues.Max()).DefaultIfEmpty(0.0).Max());
             point.Y = PrimaryAxis.MaxValue ?? point.Y;
             return point;
         }
@@ -79,7 +79,7 @@ namespace LiveCharts.Charts
         private Point GetMin()
         {
             var point = new Point(0,
-                Series.Select((x => x.PrimaryValues.Min())).DefaultIfEmpty(0.0).Min());
+				Series.Select((x => x.PrimaryValues.Min())).DefaultIfEmpty(0.0).Min());
             point.Y = PrimaryAxis.MinValue ?? point.Y;
             return point;
         }

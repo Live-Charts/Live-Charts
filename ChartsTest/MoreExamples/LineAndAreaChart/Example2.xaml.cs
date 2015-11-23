@@ -16,17 +16,14 @@ namespace ChartsTest.MoreExamples.LineAndAreaChart
 
         private void Example2_OnLoaded(object sender, RoutedEventArgs e)
         {
-            Chart.Series = new ObservableCollection<Serie>
-            {
-                new LineSerie
-                {
-                    PrimaryValues = new ObservableCollection<double> {15, 30, 23, 29, 45, 5, -10}
-                },
-                new LineSerie
-                {
-                    PrimaryValues = new ObservableCollection<double> {5, 2, 4, 3, 6, 2, 29}
-                }
-            };
+	        Chart.Series.Add(new LineSerie
+		        {
+			        PrimaryValues = new ObservableCollection<double> {15, 30, 23, 29, 45, 5, -10}
+		        });
+	        Chart.Series.Add(new LineSerie
+		        {
+			        PrimaryValues = new ObservableCollection<double> {5, 2, 4, 3, 6, 2, 29}
+		        });
         }
     }
 }

@@ -21,7 +21,6 @@
 //SOFTWARE.
 
 using System;
-using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -33,8 +32,6 @@ namespace LiveCharts.Series
 {
     public class StackedBarSerie : Serie
     {
-        public override ObservableCollection<double> PrimaryValues { get; set; }
-
         public override void Plot(bool animate = true)
         {
             var chart = Chart as StackedBarChart;
@@ -58,7 +55,7 @@ namespace LiveCharts.Series
                     StrokeThickness = StrokeThickness,
                     Stroke = new SolidColorBrush {Color = Color},
                     Fill = new SolidColorBrush {Color = Color, Opacity = .8},
-                    Width = barW - seriesPadding,
+                    Width = Math.Max(0, barW - seriesPadding),
                     Height = 0,
                     RenderTransform = t
                 };
@@ -66,6 +63,7 @@ namespace LiveCharts.Series
                 var helper = chart.IndexTotals[index];
                 var barH = ToPlotArea(Chart.Min.Y, AxisTags.Y) - ToPlotArea(helper.Total, AxisTags.Y);
                 var rh = barH*(d/helper.Total);
+	            if (double.IsNaN(rh)) return;
                 var stackedH = barH*(helper.Stacked[serieIndex].Stacked/helper.Total);
 
                 Canvas.SetLeft(r, ToPlotArea(index, AxisTags.X) + pointPadding + overflow/2);

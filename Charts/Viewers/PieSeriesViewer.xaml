@@ -8,12 +8,8 @@
              d:DesignHeight="300" d:DesignWidth="300"
              d:DataContext="{d:DesignInstance local:PieSeriesViewer}"
              Name="Element">
-    <UserControl.Resources>
-        <local:PieSerieColorConverter x:Key="PieSerieColorConverter"></local:PieSerieColorConverter>
-        <local:PieSerieLabelConverter x:Key="PieSerieLabelConverter"></local:PieSerieLabelConverter>
-    </UserControl.Resources>
     <Grid>
-        <ItemsControl ItemsSource="{Binding Path=Series[0].PrimaryValues}" AlternationCount="100">
+        <ItemsControl ItemsSource="{Binding Path=Series[0].PrimaryValues, Converter={x:Static local:SerieConverter.Instance}}" AlternationCount="100">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
                     <StackPanel Orientation="{Binding Orientation}"/>
@@ -29,18 +25,17 @@
                         <Rectangle Grid.Column="0" Width="12" Height="12" StrokeThickness="0">
                             <Rectangle.Fill>
                                 <SolidColorBrush>
-                                    <SolidColorBrush.Color>
-                                        <Binding Path="(ItemsControl.AlternationIndex)" RelativeSource="{RelativeSource TemplatedParent}"
-                                                 Converter="{StaticResource PieSerieColorConverter}" />
-                                    </SolidColorBrush.Color>
+	                                <SolidColorBrush.Color>
+		                                <Binding Path="(ItemsControl.AlternationIndex)" RelativeSource="{RelativeSource TemplatedParent}"
+		                                         Converter="{x:Static local:PieSerieColorConverter.Instance}"/>
+	                                </SolidColorBrush.Color>
                                 </SolidColorBrush>
                             </Rectangle.Fill>
                         </Rectangle>
                         <TextBlock Grid.Column="1" Margin="10 0">
                             <TextBlock.Text>
-                                <MultiBinding Converter="{StaticResource PieSerieLabelConverter}">
-                                    <Binding Path="(ItemsControl.AlternationIndex)" 
-                                                     RelativeSource="{RelativeSource TemplatedParent}" />
+                                <MultiBinding Converter="{x:Static local:PieSerieLabelConverter.Instance}">
+                                    <Binding Path="(ItemsControl.AlternationIndex)" RelativeSource="{RelativeSource TemplatedParent}" />
                                     <Binding ElementName="Element" Path="DataContext"></Binding>
                                 </MultiBinding>
                             </TextBlock.Text>

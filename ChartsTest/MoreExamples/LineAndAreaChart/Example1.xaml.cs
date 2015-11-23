@@ -16,19 +16,16 @@ namespace ChartsTest.MoreExamples.LineAndAreaChart
 
         private void Example1_OnLoaded(object sender, RoutedEventArgs e)
         {
-            Chart.Series = new ObservableCollection<Serie>
-            {
-                new LineSerie
+            Chart.Series.Add(new LineSerie
                 {
-                    Name = "Washington",
+                    Label = "Washington",
                     PrimaryValues = new ObservableCollection<double> {15, 30, 23, 29, 45, 5, -10}
-                },
-                new LineSerie
-                {
-                    Name = "Tokio",
-                    PrimaryValues = new ObservableCollection<double> {5, 2, 4, 3, 6, 2, 29}
-                }
-            };
+                });
+	        Chart.Series.Add(new LineSerie
+		        {
+			        Label = "Tokio",
+			        PrimaryValues = new ObservableCollection<double> {5, 2, 4, 3, 6, 2, 29}
+		        });
             Chart.PrimaryAxis.LabelFormatter = value => value + " °C";
             Chart.SecondaryAxis.Labels = new[] {"January", "February", "March", "April", "May", "June", "July"};
         }

@@ -54,8 +54,8 @@ namespace LiveCharts.Charts
             var s = Series.FirstOrDefault();
             if (s == null) return new Point(0,0);
             var p = new Point(
-                Series.Select(x => x.PrimaryValues.Count).DefaultIfEmpty(0).Max(),
-                s.PrimaryValues.Select((t, i) => Series.Sum(serie => serie.PrimaryValues[i]))
+				Series.Select(x => x.PrimaryValues.Count).DefaultIfEmpty(0).Max(),
+                s.PrimaryValues.Select((t, i) => Series.Sum(serie => serie.PrimaryValues.Any() ? serie.PrimaryValues[i] : double.MinValue))
                     .Concat(new[] { double.MinValue }).Max());
             p.Y = PrimaryAxis.MaxValue ?? p.Y;
             return p;
@@ -66,7 +66,7 @@ namespace LiveCharts.Charts
             var s = Series.FirstOrDefault();
             if (s==null) return new Point(0,0);
             var p = new Point(0,
-                s.PrimaryValues.Select((t, i) => Series.Sum(serie => serie.PrimaryValues[i]))
+                s.PrimaryValues.Select((t, i) => Series.Sum(serie => serie.PrimaryValues.Any() ? serie.PrimaryValues[i] : double.MinValue))
                     .Concat(new[] { double.MaxValue }).Min());
             p.Y = PrimaryAxis.MinValue ?? p.Y;
             return p;
@@ -90,12 +90,13 @@ namespace LiveCharts.Charts
                 for (int index = 0; index < Series.Count; index++)
                 {
                     var serie = Series[index];
+	                var value = serie.PrimaryValues.Any() ? serie.PrimaryValues[i] : double.MinValue;
                     helper.Stacked[index] = new StackedItem
                     {
-                        Value = serie.PrimaryValues[i],
+                        Value = value,
                         Stacked = sum
                     };
-                    sum += serie.PrimaryValues[i];
+                    sum += value;
                 }
                 helper.Total = sum;
                 IndexTotals[i] = helper;
@@ -147,11 +148,13 @@ namespace LiveCharts.Charts
                              ? fistXLabelSize.X * 0.5 - LabelOffset
                              : longestYLabelSize.X);
             PlotArea.Y = longestYLabelSize.Y * .5 + padding;
-            PlotArea.Height = Canvas.DesiredSize.Height - (padding * 2 + fistXLabelSize.Y) - PlotArea.Y;
-            PlotArea.Width = Canvas.DesiredSize.Width - PlotArea.X - padding;
+            PlotArea.Height = Math.Max(0, Canvas.DesiredSize.Height - (padding * 2 + fistXLabelSize.Y) - PlotArea.Y);
+            PlotArea.Width = Math.Max(0,  Canvas.DesiredSize.Width - PlotArea.X - padding);
             var distanceToEnd = PlotArea.Width - (ToPlotArea(Max.X, AxisTags.X) - ToPlotArea(1, AxisTags.X));
             distanceToEnd -= LabelOffset + padding;
-            PlotArea.Width -= lastXLabelSize.X * .5 - distanceToEnd > 0 ? lastXLabelSize.X * .5 - distanceToEnd : 0;
+	        var change = lastXLabelSize.X * .5 - distanceToEnd > 0 ? lastXLabelSize.X * .5 - distanceToEnd : 0;
+			if (change <= PlotArea.Width)
+	            PlotArea.Width -= change;
 
             //calculate it again to get a better result
             unitW = ToPlotArea(1, AxisTags.X) - PlotArea.X + 5;

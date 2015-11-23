@@ -124,7 +124,10 @@ namespace LiveCharts.Charts
             }
 
             AnimatesNewPoints = false;
-        }
+
+			Series = new ObservableCollection<Serie>();
+			Series.CollectionChanged += OnSeriesCollectionChanged;
+		}
 
         abstract protected void Scale();
         abstract protected bool ScaleChanged { get; }
@@ -141,17 +144,12 @@ namespace LiveCharts.Charts
         protected bool AnimatesNewPoints { get; set; }
 
         #region Dependency Properties
-        public static readonly DependencyProperty SeriesProperty = DependencyProperty.Register("Series", typeof(ObservableCollection<Serie>), typeof(Chart), new PropertyMetadata(null, SeriesPropertyChangedCallback));
-
         /// <summary>
         /// Collection of series to be drawn.
         /// </summary>
-        public ObservableCollection<Serie> Series
-        {
-            get { return GetValue(SeriesProperty) as ObservableCollection<Serie>; }
-            set { SetValue(SeriesProperty, value); }
-        }
-        public static readonly DependencyProperty ZoomingProperty = DependencyProperty.Register(
+        public ObservableCollection<Serie> Series { get; }
+
+	    public static readonly DependencyProperty ZoomingProperty = DependencyProperty.Register(
             "Zooming", typeof(bool), typeof(Chart));
         /// <summary>
         /// Indicates weather user can zoom graph with mouse wheel.
@@ -231,6 +229,10 @@ namespace LiveCharts.Charts
             AxisShapes = new List<Shape>();
             AxisLabels = new List<TextBlock>();
             Canvas.Children.Clear();
+	        foreach (var serie in Series)
+	        {
+		        Canvas.Children.Add(serie);
+	        }
 #if DEBUG
             //this takes as much time as drawing.
             //ToDo: Improve performance here!
@@ -379,8 +381,9 @@ namespace LiveCharts.Charts
         /// <returns></returns>
         protected double ToPlotArea(double value, AxisTags axis)
         {
-            return Methods.ToPlotArea(value, axis, this);
+            return EnsureDouble(Methods.ToPlotArea(value, axis, this));
         }
+
         /// <summary>
         /// Scales a graph point to screen.
         /// </summary>
@@ -668,7 +671,7 @@ namespace LiveCharts.Charts
                         },
                         new TextBlock
                         {
-                            Text = sibiling.Serie.Name + " " + (PrimaryAxis.LabelFormatter == null
+                            Text = sibiling.Serie.Label + " " + (PrimaryAxis.LabelFormatter == null
                                 ? sibiling.Value.Y.ToString(CultureInfo.InvariantCulture)
                                 : PrimaryAxis.LabelFormatter(sibiling.Value.Y)),
                             Margin = new Thickness(5, 0, 5, 0),
@@ -736,29 +739,13 @@ namespace LiveCharts.Charts
         #endregion
 
         #region Private Methods
-        private static void SeriesPropertyChangedCallback(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
-        {
-            var chart = dependencyObject as Chart;
-            if (chart == null)
-                return;
 
-            var observableCollection = dependencyPropertyChangedEventArgs.NewValue as ObservableCollection<Serie>;
-            if (observableCollection == null)
-                return;
+	    private double EnsureDouble(double d)
+	    {
+		    return double.IsNaN(d) ? 0 : d;
+	    }
 
-            observableCollection.CollectionChanged += chart.OnSeriesCollectionChanged;
-            var index = 0;
-            foreach (var serie in observableCollection)
-            {
-                serie.ColorId = index;
-                serie.PrimaryValues.CollectionChanged += chart.OnDataSeriesChanged;
-                serie.Chart = chart;
-                index++;
-            }
-            chart.ClearAndPlot();
-        }
-
-        private void PreventGraphToBeVisible()
+		private void PreventGraphToBeVisible()
         {
             var tt = Canvas.RenderTransform as TranslateTransform;
             if (tt == null) return;
@@ -809,7 +796,10 @@ namespace LiveCharts.Charts
         private void OnSeriesCollectionChanged(object sender, NotifyCollectionChangedEventArgs args)
         {
             if (args.OldItems != null)
-                foreach (var serie in args.OldItems.Cast<Serie>()) serie.Erase();
+	            foreach (var serie in args.OldItems.Cast<Serie>())
+	            {
+		            serie.Erase();
+	            }
 
             var newSeries = args.NewItems?.Cast<Serie>() ?? new List<Serie>();
 
@@ -829,7 +819,9 @@ namespace LiveCharts.Charts
                     serie.Chart = this;
                     serie.ColorId = Series.Max(x => x.ColorId) + 1;
                     serie.Plot();
-                    serie.PrimaryValues.CollectionChanged += OnDataSeriesChanged;
+					var observable = serie.PrimaryValues as INotifyCollectionChanged;
+					if (observable != null)
+						observable.CollectionChanged += OnDataSeriesChanged;
                 }
         }
 

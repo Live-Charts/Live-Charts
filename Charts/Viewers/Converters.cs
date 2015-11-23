@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Windows.Data;
 using System.Windows.Media;
@@ -9,6 +8,14 @@ namespace LiveCharts.Viewers
 {
     public class PieSerieColorConverter : IValueConverter
     {
+		public static PieSerieColorConverter Instance { get; }
+
+	    static PieSerieColorConverter()
+	    {
+		    Instance = new PieSerieColorConverter();
+	    }
+		private PieSerieColorConverter() { }
+
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             var v = value as int?;
@@ -23,7 +30,15 @@ namespace LiveCharts.Viewers
 
     public class PieSerieLabelConverter : IMultiValueConverter
     {
-        public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
+		public static PieSerieLabelConverter Instance { get; }
+
+		static PieSerieLabelConverter()
+		{
+			Instance = new PieSerieLabelConverter();
+		}
+		private PieSerieLabelConverter() { }
+
+		public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
             if (values == null || values.Length < 2) return null;
 
@@ -32,7 +47,7 @@ namespace LiveCharts.Viewers
 
             if (index == null || context == null) return null;
 
-            return context.Length  > index ? context[index.Value] : null;
+            return context.Count  > index ? context[index.Value] : null;
         }
 
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)

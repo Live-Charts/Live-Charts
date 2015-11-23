@@ -114,10 +114,13 @@
     <Compile Include="Charts\PieChart.cs" />
     <Compile Include="Charts\RadarChart.cs" />
     <Compile Include="Charts\ScatterChart.cs" />
+    <Compile Include="TypeConverters\ValueCollectionConverter.cs" />
     <Compile Include="Viewers\Converters.cs" />
     <Compile Include="Viewers\PieSeriesViewer.xaml.cs">
       <DependentUpon>PieSeriesViewer.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Viewers\SerieConverter.cs" />
+    <Compile Include="Viewers\SerieStandin.cs" />
     <Compile Include="Viewers\SeriesViewer.xaml.cs">
       <DependentUpon>SeriesViewer.xaml</DependentUpon>
     </Compile>
@@ -171,6 +174,7 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
