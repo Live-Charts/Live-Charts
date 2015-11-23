@@ -7,7 +7,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300" 
              d:DataContext="{d:DesignInstance viewers:SeriesViewer}">
-    <ItemsControl ItemsSource="{Binding Path=Series}">
+    <ItemsControl ItemsSource="{Binding Path=Series, Converter={x:Static viewers:SerieConverter.Instance}}">
         <ItemsControl.ItemsPanel>
             <ItemsPanelTemplate>
                 <StackPanel Orientation="{Binding Orientation}"/>

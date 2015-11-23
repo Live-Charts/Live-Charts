@@ -28,14 +28,22 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using LiveCharts.Charts;
 using LiveCharts.Shapes;
+using System.Collections.Generic;
 
 namespace LiveCharts.Series
 {
     public class PieSerie : Serie
     {
-	    public string[] Labels { get; set; } = new string[0];
+		public static readonly DependencyProperty LabelsProperty =
+			DependencyProperty.Register("Labels", typeof(IList<string>), typeof(PieSerie), new PropertyMetadata(null));
 
-        public override void Plot(bool animate = true)
+		public IList<string> Labels
+		{
+			get { return (IList<string>)GetValue(LabelsProperty); }
+			set { SetValue(LabelsProperty, value); }
+		}
+
+		public override void Plot(bool animate = true)
         {
             var pChart = Chart as PieChart;
             if (pChart == null) return;
@@ -137,7 +145,7 @@ namespace LiveCharts.Series
                         Shape = slice,
                         Target = slice,
                         Value = new Point(0, value),
-                        Label = Labels.Length > index ? Labels[index] : ""
+                        Label = Labels != null && Labels.Count > index ? Labels[index] : ""
                     });
                 }
 

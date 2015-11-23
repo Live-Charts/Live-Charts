@@ -21,6 +21,7 @@ namespace ChartsTest
         private int _aliveScalator;
 
 	    public IEnumerable<double> LineValues { get; } = new List<double> {3, 2, 1, 6, 5, 4, 9, 8, 7};
+	    public IEnumerable<string> PieLabels { get; } = new List<string> {"Alex", "Betty", "Charlie", "Daniel", "Erin", "Frank", "Geoffrey", "Hector", "Isabella"};
 
 	    public MainWindow()
         {

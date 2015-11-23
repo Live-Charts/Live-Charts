@@ -45,8 +45,8 @@
                             </Grid.ColumnDefinitions>
                             <charts:LineChart Height="300" x:Name="LineChart" 
                                       Zooming="True" Grid.Column="0"></charts:LineChart>
-                            <!--<viewers:SeriesViewer Grid.Column="1" Series="{Binding ElementName=LineChart, Path=Series}"
-                                         VerticalAlignment="Center" Margin="5"></viewers:SeriesViewer>-->
+                            <viewers:SeriesViewer Grid.Column="1" Series="{Binding ElementName=LineChart, Path=Series}"
+                                         VerticalAlignment="Center" Margin="5"></viewers:SeriesViewer>
                             <!--add a series viewer, or build your own, to get a custom behavior, for example
 								this control can be replaced with this-->
 							<!--<ItemsControl Grid.Column="0" ItemsSource="{Binding ElementName=LineChart, Path=Series}">
@@ -204,8 +204,8 @@
                                     <series:LineSerie Label="Bound" PrimaryValues="{Binding LineValues}"/>
                                 </charts:LineChart.Series>
 							</charts:LineChart>
-                            <!--<viewers:SeriesViewer Grid.Column="1" Series="{Binding ElementName=BoundLineChart, Path=Series}"
-												  VerticalAlignment="Center" Margin="5"></viewers:SeriesViewer>-->
+                            <viewers:SeriesViewer Grid.Column="1" Series="{Binding ElementName=BoundLineChart, Path=Series}"
+												  VerticalAlignment="Center" Margin="5"></viewers:SeriesViewer>
                         </Grid>
 
                         <TextBlock TextWrapping="Wrap">1. Click on buttons to test auto-update properties.</TextBlock>
@@ -238,19 +238,22 @@
                         <TextBlock FontSize="20" FontWeight="Bold" HorizontalAlignment="Center" Margin="10">Pie and Doughnut Chart</TextBlock>
                         <charts:PieChart Height="300" Margin="10"
                                  Background="#FBFBFB" BorderBrush="LightGray" 
-                                 BorderThickness="1" InnerRadius="50" ></charts:PieChart>
-                        <charts:PieChart Height="300" Margin="10"
+                                 BorderThickness="1" InnerRadius="50" >
+                            <charts:PieChart.Series>
+                                <series:PieSerie Label="Literal" PrimaryValues="8 5 2 3"/>
+                            </charts:PieChart.Series>
+                        </charts:PieChart>
+                        <charts:PieChart x:Name="BoundPieChart" Height="300" Margin="10"
                                  Background="#FBFBFB" BorderBrush="LightGray" 
                                  BorderThickness="1" InnerRadius="0">
                             <charts:PieChart.PrimaryAxis>
                                 <liveCharts:Axis FontFamily="Arial" FontSize="14" FontWeight="Bold"/>
                             </charts:PieChart.PrimaryAxis>
                             <charts:PieChart.Series>
-                                <series:PieSerie Label="Literal" PrimaryValues="1,4,7,9,6,3,2,5,8"/>
-                                <series:PieSerie Label="Bound" PrimaryValues="{Binding LineValues}"/>
+                                <series:PieSerie Label="Bound" PrimaryValues="{Binding LineValues}" Labels="{Binding PieLabels}"/>
                             </charts:PieChart.Series>
                         </charts:PieChart>
-                        <viewers:PieSeriesViewer Series="{Binding ElementName=PieChart1, Path=Series}"
+                        <viewers:PieSeriesViewer Series="{Binding ElementName=BoundPieChart, Path=Series}"
                                          HorizontalAlignment="Center" Orientation="Horizontal"
                                          Margin="5"/>
                         <TextBlock Margin="10" TextWrapping="Wrap">change InnerRadius property to 0 to make a pie chart</TextBlock>
