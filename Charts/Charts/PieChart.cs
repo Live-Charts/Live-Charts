@@ -26,10 +26,10 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
-using LiveCharts.Series;
+using LiveCharts.Charts;
 using LiveCharts.Shapes;
 
-namespace LiveCharts.Charts
+namespace LiveCharts
 {
     public class PieChart : Chart
     {

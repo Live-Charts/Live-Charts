@@ -23,8 +23,9 @@
 using System;
 using System.Linq;
 using System.Windows;
+using LiveCharts.Charts;
 
-namespace LiveCharts.Charts
+namespace LiveCharts
 {
 	public class LineChart : Chart
 	{
@@ -44,32 +45,18 @@ namespace LiveCharts.Charts
 			IncludeArea = true;
 			Hoverable = true;
 			ShapeHoverBehavior = ShapeHoverBehavior.Dot;
+		    AreaOpacity = 0.3;
 		}
 
 		protected override bool ScaleChanged => GetMax() != _rawMax ||
 		                                        GetMin() != _rawMin ||
 		                                        GetS() != _rawS;
 
-		public static readonly DependencyProperty IncludeAreaProperty = DependencyProperty.Register("IncludeArea", typeof (bool), typeof (LineChart));
-		/// <summary>
-		/// indicates wheather Series should  draw its area.
-		/// </summary>
-		public bool IncludeArea
-		{
-			get { return (bool) GetValue(IncludeAreaProperty); }
-			set { SetValue(IncludeAreaProperty, value); }
-		}
+	    public bool IncludeArea { get; set; }
 
-		public static readonly DependencyProperty LineTypeProperty = DependencyProperty.Register("LineType", typeof (LineChartLineType), typeof (LineChart));
-		/// <summary>
-		/// Iditacates series line type, use Bezier to get a smooth but aproximated line, or Polyline to
-		/// draw a line only by the known points.
-		/// </summary>
-		public LineChartLineType LineType
-		{
-			get { return (LineChartLineType) GetValue(LineTypeProperty); }
-			set { SetValue(LineTypeProperty, value); }
-		}
+	    public LineChartLineType LineType { get; set; }
+
+	    public double AreaOpacity { get; set; }
 
 		private Point GetMax()
 		{

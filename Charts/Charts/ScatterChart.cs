@@ -28,9 +28,9 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
-using LiveCharts.Series;
+using LiveCharts.Charts;
 
-namespace LiveCharts.Charts
+namespace LiveCharts
 {
     public class ScatterChart : Chart
     {
@@ -44,17 +44,7 @@ namespace LiveCharts.Charts
             AnimatesNewPoints = true;
         }
 
-        public static readonly DependencyProperty LineTypeProperty = DependencyProperty.Register(
-            "LineType", typeof(LineChartLineType), typeof(ScatterChart));
-        /// <summary>
-        /// Iditacates series line type, use Bezier to get a smooth but aproximated line, or Polyline to
-        /// draw a line only by the known points.
-        /// </summary>
-        public LineChartLineType LineType
-        {
-            get { return (LineChartLineType)GetValue(LineTypeProperty); }
-            set { SetValue(LineTypeProperty, value); }
-        }
+        public LineChartLineType LineType { get; set; }
 
         protected override bool ScaleChanged => GetMax() != Max ||
                                                 GetMin() != Min;

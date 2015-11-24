@@ -26,11 +26,10 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
-using LiveCharts.Charts;
 using LiveCharts.Shapes;
 using System.Collections.Generic;
 
-namespace LiveCharts.Series
+namespace LiveCharts
 {
     public class PieSerie : Serie
     {

@@ -1,9 +1,8 @@
 ﻿using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
-using LiveCharts.Series;
 
-namespace LiveCharts.Viewers
+namespace LiveCharts
 {
     /// <summary>
     /// Interaction logic for SeriesViewer.xaml

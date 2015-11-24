@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Windows.Forms;
-using LiveCharts.Charts;
-using LiveCharts.Series;
+using LiveCharts;
 
 namespace WinForms
 {

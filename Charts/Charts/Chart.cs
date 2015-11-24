@@ -33,7 +33,6 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using System.Windows.Threading;
-using LiveCharts.Series;
 
 namespace LiveCharts.Charts
 {
@@ -129,9 +128,12 @@ namespace LiveCharts.Charts
 			Series.CollectionChanged += OnSeriesCollectionChanged;
 		}
 
+        #region Abstracts
         abstract protected void Scale();
         abstract protected bool ScaleChanged { get; }
+        #endregion
 
+        #region StaticProperties
         /// <summary>
         /// List of Colors series will use, yu can change this list to your own colors.
         /// </summary>
@@ -140,16 +142,11 @@ namespace LiveCharts.Charts
         /// indicates wether each instance of chart you create needs to randomize starting color
         /// </summary>
         public static bool RandomizeStartingColor { get; set; }
-
-        protected bool AnimatesNewPoints { get; set; }
+        #endregion
 
         #region Dependency Properties
-        /// <summary>
-        /// Collection of series to be drawn.
-        /// </summary>
-        public ObservableCollection<Serie> Series { get; }
 
-	    public static readonly DependencyProperty ZoomingProperty = DependencyProperty.Register(
+        public static readonly DependencyProperty ZoomingProperty = DependencyProperty.Register(
             "Zooming", typeof(bool), typeof(Chart));
         /// <summary>
         /// Indicates weather user can zoom graph with mouse wheel.
@@ -162,7 +159,7 @@ namespace LiveCharts.Charts
         public static readonly DependencyProperty HoverableProperty = DependencyProperty.Register(
             "Hoverable", typeof(bool), typeof(Chart));
         /// <summary>
-        /// Indicates weather points should be visible or not.
+        /// Indicates weather chart is hoverable or not
         /// </summary>
         public bool Hoverable
         {
@@ -192,6 +189,10 @@ namespace LiveCharts.Charts
         #endregion
 
         #region Properties
+        /// <summary>
+        /// Collection of series to be drawn.
+        /// </summary>
+        public ObservableCollection<Serie> Series { get; }
         public Axis PrimaryAxis
         {
             get { return _primaryAxis; }
@@ -217,6 +218,10 @@ namespace LiveCharts.Charts
         public Brush TooltipBorderBrush { get; set; } = null;
         public CornerRadius? TooltipCornerRadius { get; set; } = null;
         public Thickness? TooltipBorderThickness { get; set; } = null;
+        #endregion
+
+        #region ProtectedProperties
+        protected bool AnimatesNewPoints { get; set; }
         #endregion
 
         #region Public Methods
@@ -425,7 +430,7 @@ namespace LiveCharts.Charts
             var titleY = 0d;
             if (!string.IsNullOrWhiteSpace(PrimaryAxis.Title))
             {
-                var ty = GetLabelSize(PrimaryAxis.InverseAxis, PrimaryAxis.Title);
+                var ty = GetLabelSize(PrimaryAxis, PrimaryAxis.Title);
                 var yLabel = new TextBlock
                 {
                     FontFamily = PrimaryAxis.FontFamily,
@@ -433,7 +438,7 @@ namespace LiveCharts.Charts
                     FontStretch = PrimaryAxis.FontStretch,
                     FontStyle = PrimaryAxis.FontStyle,
                     FontWeight = PrimaryAxis.FontWeight,
-                    Foreground = new SolidColorBrush { Color = PrimaryAxis.TextColor },
+                    Foreground = new SolidColorBrush { Color = PrimaryAxis.Foreground },
                     Text = PrimaryAxis.Title,
                     RenderTransform = new RotateTransform(-90)
                 };
@@ -446,7 +451,7 @@ namespace LiveCharts.Charts
             var titleX = 0d;
             if (!string.IsNullOrWhiteSpace(SecondaryAxis.Title))
             {
-                var tx = GetLabelSize(SecondaryAxis.InverseAxis, SecondaryAxis.Title);
+                var tx = GetLabelSize(SecondaryAxis, SecondaryAxis.Title);
                 var yLabel = new TextBlock
                 {
                     FontFamily = SecondaryAxis.FontFamily,
@@ -454,14 +459,14 @@ namespace LiveCharts.Charts
                     FontStretch = SecondaryAxis.FontStretch,
                     FontStyle = SecondaryAxis.FontStyle,
                     FontWeight = SecondaryAxis.FontWeight,
-                    Foreground = new SolidColorBrush { Color = SecondaryAxis.TextColor },
+                    Foreground = new SolidColorBrush { Color = SecondaryAxis.Foreground },
                     Text = SecondaryAxis.Title
                 };
                 AxisLabels.Add(yLabel);
                 Canvas.Children.Add(yLabel);
                 Canvas.SetLeft(yLabel, Canvas.DesiredSize.Width * .5 - tx.X * .5);
                 Canvas.SetTop(yLabel, Canvas.DesiredSize.Height - tx.Y - 5);
-                titleX += tx.X - 5;
+                titleX += tx.Y;
             }
 
             PlotArea.X += titleY;
@@ -503,7 +508,7 @@ namespace LiveCharts.Charts
                         FontStretch = PrimaryAxis.FontStretch,
                         FontStyle = PrimaryAxis.FontStyle,
                         FontWeight = PrimaryAxis.FontWeight,
-                        Foreground = new SolidColorBrush { Color = PrimaryAxis.TextColor },
+                        Foreground = new SolidColorBrush { Color = PrimaryAxis.Foreground },
                         Text = t
                     };
                     var fl = new FormattedText(t, CultureInfo.CurrentUICulture, FlowDirection.LeftToRight,
@@ -556,7 +561,7 @@ namespace LiveCharts.Charts
                         FontStretch = SecondaryAxis.FontStretch,
                         FontStyle = SecondaryAxis.FontStyle,
                         FontWeight = SecondaryAxis.FontWeight,
-                        Foreground = new SolidColorBrush { Color = SecondaryAxis.TextColor },
+                        Foreground = new SolidColorBrush { Color = SecondaryAxis.Foreground },
                         Text = t
                     };
                     var fl = new FormattedText(t, CultureInfo.CurrentUICulture, FlowDirection.LeftToRight,
@@ -671,7 +676,7 @@ namespace LiveCharts.Charts
                         },
                         new TextBlock
                         {
-                            Text = sibiling.Serie.Label + " " + (PrimaryAxis.LabelFormatter == null
+                            Text = sibiling.Serie.Title + " " + (PrimaryAxis.LabelFormatter == null
                                 ? sibiling.Value.Y.ToString(CultureInfo.InvariantCulture)
                                 : PrimaryAxis.LabelFormatter(sibiling.Value.Y)),
                             Margin = new Thickness(5, 0, 5, 0),

@@ -1,6 +1,6 @@
-//The MIT License(MIT)
+﻿//The MIT License(MIT)
 
-//Copyright(c) 2015 Alberto Rodriguez
+//Copyright(c) 2015 Alberto Rodríguez
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -20,32 +20,30 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-using System.Windows;
-using System.Windows.Shapes;
+using System;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Globalization;
+using System.Linq;
 
-namespace LiveCharts
+namespace LiveCharts.TypeConverters
 {
-    public class HoverableShape
+    public class LabelsTypeConverter : TypeConverter
     {
-        /// <summary>
-        /// Point of this area
-        /// </summary>
-        public Point Value { get; set; }
-        /// <summary>
-        /// Shape that fires hover
-        /// </summary>
-        public Shape Shape { get; set; }
-        /// <summary>
-        /// Shape that that changes style on hover
-        /// </summary>
-        public Shape Target { get; set; }
-        /// <summary>
-        /// serie that contains thos point
-        /// </summary>
-        public Serie Serie { get; set; }
-        /// <summary>
-        /// Point label
-        /// </summary>
-        public string Label { get; set; }
+        public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
+        {
+            return sourceType == typeof(string) || base.CanConvertFrom(context, sourceType);
+        }
+
+        public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
+        {
+            var valueString = value as string;
+            if (valueString != null)
+            {
+                var values = valueString.Split(new[] {',', ' '}, StringSplitOptions.RemoveEmptyEntries);
+                return values;
+            }
+            return base.ConvertFrom(context, culture, value);
+        }
     }
 }

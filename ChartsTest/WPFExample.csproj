@@ -56,6 +56,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="Line Examples\BasicLine.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Line Examples\CustomLine.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -64,33 +72,20 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ExamplesMapper.cs" />
+    <Compile Include="Line Examples\BasicLine.xaml.cs">
+      <DependentUpon>BasicLine.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Line Examples\CustomLine.xaml.cs">
+      <DependentUpon>CustomLine.xaml</DependentUpon>
+    </Compile>
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="MoreExamples\LineAndAreaChart\Example1.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="MoreExamples\LineAndAreaChart\Example2.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="MoreExamples\LineAndAreaChart\LineAndAreaExamples.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MoreExamples\LineAndAreaChart\Example1.xaml.cs">
-      <DependentUpon>Example1.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="MoreExamples\LineAndAreaChart\Example2.xaml.cs">
-      <DependentUpon>Example2.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="MoreExamples\LineAndAreaChart\LineAndAreaExamples.xaml.cs">
-      <DependentUpon>LineAndAreaExamples.xaml</DependentUpon>
-    </Compile>
+    <Compile Include="More\TestConverter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -129,6 +124,11 @@
       <Name>LiveChartsCore</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Left.png" />
+    <Resource Include="Right.png" />
+  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

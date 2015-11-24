@@ -28,15 +28,12 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
-using LiveCharts.Charts;
 
-namespace LiveCharts.Series
+namespace LiveCharts
 {
 	public class LineSerie : Serie
 	{
-		// ReSharper disable once InconsistentNaming
-		//because Charts is a protected name in Serie class.
-		private LineChart _chart => Chart as LineChart;
+		private LineChart LineChart => Chart as LineChart;
 
 		public override void Plot(bool animate = true)
 		{
@@ -54,17 +51,17 @@ namespace LiveCharts.Series
 			}
 
 			var s = new List<Shape>();
-			if (_chart.LineType == LineChartLineType.Bezier)
+			if (LineChart.LineType == LineChartLineType.Bezier)
 				s.AddRange(_addSerieAsBezier(points.Select(ToPlotArea).ToArray(), Color,
 				                             serie.StrokeThickness, animate));
 
-			if (_chart.LineType == LineChartLineType.Polyline)
+			if (LineChart.LineType == LineChartLineType.Polyline)
 				s.AddRange(_addSeriesAsPolyline(points.Select(ToPlotArea).ToArray(), Color,
 				                                serie.StrokeThickness, animate));
 
 			var hoverableAreas = new List<HoverableShape>();
 
-			if (_chart.Hoverable)
+			if (LineChart.Hoverable)
 			{
 				foreach (var point in points)
 				{
@@ -139,9 +136,9 @@ namespace LiveCharts.Series
 			//aprox factor, it was calculated by aproximation.
 			//the more line is curved, the more it fails.
 			l = l * .65;
-			areaLines.Add(new LineSegment(new Point(points.Max(x => x.X), ToPlotArea(_chart.Min.Y, AxisTags.Y)), true));
+			areaLines.Add(new LineSegment(new Point(points.Max(x => x.X), ToPlotArea(LineChart.Min.Y, AxisTags.Y)), true));
 			var f = new PathFigure(points[0], lines, false);
-			var fa = new PathFigure(ToPlotArea(new Point(_chart.Min.X, _chart.Min.Y)), areaLines, false);
+			var fa = new PathFigure(ToPlotArea(new Point(LineChart.Min.X, LineChart.Min.Y)), areaLines, false);
 			var g = new PathGeometry(new[] {f});
 			var ga = new PathGeometry(new[] {fa});
 
@@ -160,15 +157,15 @@ namespace LiveCharts.Series
 				{
 					StrokeThickness = 0,
 					Data = ga,
-					Fill = new SolidColorBrush {Color = color, Opacity = .05},
+					Fill = new SolidColorBrush {Color = color, Opacity = LineChart.AreaOpacity},
 					ClipToBounds = true
 				};
 
-			_chart.Canvas.Children.Add(path);
+			LineChart.Canvas.Children.Add(path);
 			addedFigures.Add(path);
-			if (_chart.IncludeArea)
+			if (LineChart.IncludeArea)
 			{
-				_chart.Canvas.Children.Add(patha);
+				LineChart.Canvas.Children.Add(patha);
 				addedFigures.Add(patha);
 			}
 
@@ -195,7 +192,7 @@ namespace LiveCharts.Series
 			var sbDraw = new Storyboard();
 			sbDraw.Children.Add(draw);
 			var animated = false;
-			if (!_chart.DisableAnimation)
+			if (!LineChart.DisableAnimation)
 			{
 				if (animate)
 				{
@@ -210,7 +207,8 @@ namespace LiveCharts.Series
 		private IEnumerable<Shape> _addSeriesAsPolyline(Point[] points, Color color, double storkeThickness,
 		                                                bool animate = true)
 		{
-			var addedFigures = new List<Shape>();
+            if (points.Length < 2) return Enumerable.Empty<Shape>();
+            var addedFigures = new List<Shape>();
 
 			var l = 0d;
 			for (var i = 1; i < points.Length; i++)
@@ -251,14 +249,14 @@ namespace LiveCharts.Series
 				};
 
 			var sp = points.ToList();
-			sp.Add(new Point(points.Max(x => x.X), ToPlotArea(_chart.Min.Y, AxisTags.Y)));
+			sp.Add(new Point(points.Max(x => x.X), ToPlotArea(LineChart.Min.Y, AxisTags.Y)));
 			var sg = new PathGeometry
 				{
 					Figures = new PathFigureCollection(new List<PathFigure>
 						{
 							new PathFigure
 								{
-									StartPoint = ToPlotArea(new Point(_chart.Min.X, _chart.Min.Y)),
+									StartPoint = ToPlotArea(new Point(LineChart.Min.X, LineChart.Min.Y)),
 									Segments = new PathSegmentCollection(
 						                                   sp.Select(x => new LineSegment {Point = new Point(x.X, x.Y)}))
 								}
@@ -268,16 +266,18 @@ namespace LiveCharts.Series
 				{
 					StrokeThickness = 0,
 					Data = sg,
-					Fill = new SolidColorBrush {Color = color, Opacity = .05},
+					Fill = new SolidColorBrush {Color = color, Opacity = LineChart.AreaOpacity},
 					ClipToBounds = true
 				};
 
-			_chart.Canvas.Children.Add(path);
+			LineChart.Canvas.Children.Add(path);
 			addedFigures.Add(path);
-			_chart.Canvas.Children.Add(spath);
-			addedFigures.Add(spath);
-
-			var draw = new DoubleAnimationUsingKeyFrames
+		    if (LineChart.IncludeArea)
+		    {
+		        LineChart.Canvas.Children.Add(spath);
+		        addedFigures.Add(spath);
+		    }
+		    var draw = new DoubleAnimationUsingKeyFrames
 				{
 					BeginTime = TimeSpan.FromSeconds(0),
 					KeyFrames = new DoubleKeyFrameCollection
@@ -299,7 +299,7 @@ namespace LiveCharts.Series
 			var sbDraw = new Storyboard();
 			sbDraw.Children.Add(draw);
 			var animated = false;
-			if (!_chart.DisableAnimation)
+			if (!LineChart.DisableAnimation)
 			{
 				if (animate)
 				{

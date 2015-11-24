@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Windows.Data;
-using LiveCharts.Series;
 
 namespace LiveCharts.Viewers
 {
@@ -23,7 +22,7 @@ namespace LiveCharts.Viewers
 			if (series != null)
 				return series.Select(s => new SerieStandin
 					{
-						Label = s.Label,
+						Title = s.Title,
 						Color = s.Color
 					});
 
@@ -31,7 +30,7 @@ namespace LiveCharts.Viewers
 			if (serie != null)
 				return new SerieStandin
 					{
-						Label = serie.Label,
+						Title = serie.Title,
 						Color = serie.Color
 					};
 

@@ -28,10 +28,11 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using LiveCharts.Annotations;
 using LiveCharts.Charts;
 using LiveCharts.TypeConverters;
 
-namespace LiveCharts.Series
+namespace LiveCharts
 {
 	public abstract class Serie : FrameworkElement
 	{
@@ -48,7 +49,7 @@ namespace LiveCharts.Series
 			StrokeThickness = 2.5;
 			PointRadius = 4;
 			ColorId = -1;
-			Label = "An Unnamed Serie";
+			Title = "An Unnamed Serie";
 		}
 
 		[TypeConverter(typeof (ValueCollectionConverter))]
@@ -73,14 +74,26 @@ namespace LiveCharts.Series
 			}
 		}
 
-		public static readonly DependencyProperty LabelProperty =
-			DependencyProperty.Register("Label", typeof (string), typeof (Serie), new PropertyMetadata(default(string)));
-		/// <summary>
-		/// Gets or sets serie name
-		/// </summary>
-		public string Label { get { return (string) GetValue(LabelProperty); } set { SetValue(LabelProperty, value); } }
+		public static readonly DependencyProperty TitleProperty =
+			DependencyProperty.Register("Title", typeof (string), typeof (Serie), new PropertyMetadata(default(string),
+			    (o, args) =>
+			    {
+			        var sender = o as Serie;
+			        sender?.OnPropertyChanged(nameof(Title));
+			    }));
+	    /// <summary>
+	    /// Gets or sets serie name
+	    /// </summary>
+	    public string Title
+	    {
+	        get { return (string) GetValue(TitleProperty); }
+	        set
+	        {
+	            SetValue(TitleProperty, value);
+	        }
+	    }
 
-		public Chart Chart
+	    public Chart Chart
 		{
 			get { return _chart; }
 			set
@@ -127,5 +140,13 @@ namespace LiveCharts.Series
 		{
 			return new Point(ToPlotArea(value.X, AxisTags.X), ToPlotArea(value.Y, AxisTags.Y));
 		}
+
+	    public event PropertyChangedEventHandler PropertyChanged;
+
+	    [NotifyPropertyChangedInvocator]
+	    protected virtual void OnPropertyChanged(string propertyName)
+	    {
+	        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+	    }
 	}
 }
