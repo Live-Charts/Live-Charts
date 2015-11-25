@@ -4,9 +4,9 @@ using System.Windows;
 
 namespace ChartsTest.Line_Examples
 {
-    public partial class LinePerformanceTest
+    public partial class PerformanceLine
     {
-        public LinePerformanceTest()
+        public PerformanceLine()
         {
             InitializeComponent();
             var l = new List<double>();

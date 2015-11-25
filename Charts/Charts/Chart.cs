@@ -64,7 +64,6 @@ namespace LiveCharts.Charts
         private readonly DispatcherTimer _seriesChanged;
         private Point _panOrigin;
         private bool _isDragging;
-        private bool _initialized;
         private Axis _primaryAxis;
         private Axis _secondaryAxis;
 
@@ -114,10 +113,8 @@ namespace LiveCharts.Charts
             };
             _resizeTimer.Tick += (sender, e) =>
             {
-                if (_initialized) ForceRedrawNow();
-                //the first tick is always ingored, becasue it fires when control is loaded.
-                _initialized = true;
                 _resizeTimer.Stop();
+                ClearAndPlot();
             };
 
             _serieValuesChanged = new DispatcherTimer {Interval = TimeSpan.FromMilliseconds(100)};
@@ -249,9 +246,6 @@ namespace LiveCharts.Charts
         #region Public Methods
         public void ClearAndPlot()
         {
-#if DEBUG
-            var timer = DateTime.Now;
-#endif
             _seriesChanged.Stop();
             _seriesChanged.Start();
 
@@ -266,11 +260,6 @@ namespace LiveCharts.Charts
                 serie.RequiresAnimation = true;
                 serie.RequiresPlot = true;
             }
-#if DEBUG
-            //this takes as much time as drawing.
-            //ToDo: Improve performance here!
-            Trace.WriteLine("clearing arrays took " + (DateTime.Now - timer).TotalMilliseconds);
-#endif
             Canvas.Width = ActualWidth * CurrentScale;
             Canvas.Height = ActualHeight * CurrentScale;
             PlotArea = new Rect(0, 0, ActualWidth * CurrentScale, ActualHeight * CurrentScale);

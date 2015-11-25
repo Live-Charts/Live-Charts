@@ -5,14 +5,14 @@ using System.Linq;
 using System.Windows;
 using LiveCharts;
 
-namespace ChartsTest.Line_Examples
+namespace ChartsTest.BarExamples
 {
     /// <summary>
-    /// Interaction logic for MvvmExample.xaml
+    /// Interaction logic for MvvmBar.xaml
     /// </summary>
-    public partial class MvvmExample
+    public partial class MvvmBar
     {
-        public MvvmExample()
+        public MvvmBar()
         {
             InitializeComponent();
             Sales = new SalesViewModel();
@@ -48,7 +48,6 @@ namespace ChartsTest.Line_Examples
             Chart.ClearAndPlot();
         }
     }
-
     public class SalesViewModel
     {
         private readonly string[] _names =
@@ -69,7 +68,7 @@ namespace ChartsTest.Line_Examples
             AvailableMonths = _months;
             Salesmen = new ObservableCollection<Serie>
             {
-                new LineSerie
+                new BarSerie
                 {
                     Title = "John",
                     PrimaryValues = new ObservableCollection<double>(new[] {2d, 4, 7, 1, 5})
@@ -88,7 +87,7 @@ namespace ChartsTest.Line_Examples
 
             for (var i = 0; i < Salesmen[0].PrimaryValues.Count; i++) values.Add(r.Next(0, 10));
 
-            Salesmen.Add(new LineSerie
+            Salesmen.Add(new BarSerie
             {
                 Title = _names[r.Next(0, _names.Count() - 1)],
                 PrimaryValues = new ObservableCollection<double>(values)
@@ -98,13 +97,13 @@ namespace ChartsTest.Line_Examples
         public void RemoveLastSalesman()
         {
             if (Salesmen.Count == 1) return;
-            Salesmen.RemoveAt(Salesmen.Count-1);
+            Salesmen.RemoveAt(Salesmen.Count - 1);
         }
 
         public void AddOneMonth()
         {
             var r = new Random();
-            if (Salesmen[0].PrimaryValues.Count >= _months.Count()) return; 
+            if (Salesmen[0].PrimaryValues.Count >= _months.Count()) return;
             foreach (var salesman in Salesmen)
             {
                 salesman.PrimaryValues.Add(r.Next(0, 10));

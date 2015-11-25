@@ -39,6 +39,7 @@ namespace LiveCharts
             PrimaryAxis.MinValue = 0d;
             ShapeHoverBehavior = ShapeHoverBehavior.Shape;
             IgnoresLastLabel = true;
+            PerformanceConfiguration = new PerformanceConfiguration { Enabled = false };
         }
 
         /// <summary>

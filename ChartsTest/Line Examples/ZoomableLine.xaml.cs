@@ -2,14 +2,14 @@
 
 namespace ChartsTest.Line_Examples
 {
-    public partial class CleanLine
+    public partial class ZoomableLine
     {
-        public CleanLine()
+        public ZoomableLine()
         {
             InitializeComponent();
         }
 
-        private void CleanLine_OnLoaded(object sender, RoutedEventArgs e)
+        private void JustAreasAndZoomable_OnLoaded(object sender, RoutedEventArgs e)
         {
             //this is just to see animation everytime you click next
             Chart.ClearAndPlot();

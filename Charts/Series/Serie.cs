@@ -128,6 +128,11 @@ namespace LiveCharts
         }
         public virtual void CalculatePoints()
         {
+            var index = 0;
+
+            ChartPoints = Chart.PerformanceConfiguration.Enabled
+                ? PrimaryValues.Select(val => new Point(index++, val)).OptimizeAsIndexedChart(Chart)
+                : PrimaryValues.Select(val => new Point(index++, val)).ToList();
         }
         #endregion
 

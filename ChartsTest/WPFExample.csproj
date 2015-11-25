@@ -56,11 +56,46 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="StackedBarExamples\BasicStackedBar.xaml.cs">
+      <DependentUpon>BasicStackedBar.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="StackedBarExamples\BindingStackedBar.xaml.cs">
+      <DependentUpon>BindingStackedBar.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="StackedBarExamples\CustomStackedBar.xaml.cs">
+      <DependentUpon>CustomStackedBar.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="StackedBarExamples\MvvmStackedBar.xaml.cs">
+      <DependentUpon>MvvmStackedBar.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="StackedBarExamples\ZoomableStackedBar.xaml.cs">
+      <DependentUpon>ZoomableStackedBar.xaml</DependentUpon>
+    </Compile>
+    <Page Include="BarExamples\BasicBar.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="BarExamples\BindingBar.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="BarExamples\CustomBar.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="BarExamples\MvvmBar.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="BarExamples\ZoomableBar.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Line Examples\BasicLine.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Line Examples\CleanLine.xaml">
+    <Page Include="Line Examples\BindingLine.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -68,15 +103,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Line Examples\JustAreasAndZoomable.xaml">
+    <Page Include="Line Examples\ZoomableLine.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Line Examples\LinePerformanceTest.xaml">
+    <Page Include="Line Examples\PerformanceLine.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Line Examples\MvvmExample.xaml">
+    <Page Include="Line Examples\MvvmLine.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -88,29 +123,64 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="BarExamples\BasicBar.xaml.cs">
+      <DependentUpon>BasicBar.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="BarExamples\BindingBar.xaml.cs">
+      <DependentUpon>BindingBar.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="BarExamples\CustomBar.xaml.cs">
+      <DependentUpon>CustomBar.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="BarExamples\MvvmBar.xaml.cs">
+      <DependentUpon>MvvmBar.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="BarExamples\ZoomableBar.xaml.cs">
+      <DependentUpon>ZoomableBar.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ExamplesMapper.cs" />
     <Compile Include="Line Examples\BasicLine.xaml.cs">
       <DependentUpon>BasicLine.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Line Examples\CleanLine.xaml.cs">
-      <DependentUpon>CleanLine.xaml</DependentUpon>
+    <Compile Include="Line Examples\BindingLine.xaml.cs">
+      <DependentUpon>BindingLine.xaml</DependentUpon>
     </Compile>
     <Compile Include="Line Examples\CustomLine.xaml.cs">
       <DependentUpon>CustomLine.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Line Examples\JustAreasAndZoomable.xaml.cs">
-      <DependentUpon>JustAreasAndZoomable.xaml</DependentUpon>
+    <Compile Include="Line Examples\ZoomableLine.xaml.cs">
+      <DependentUpon>ZoomableLine.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Line Examples\LinePerformanceTest.xaml.cs">
-      <DependentUpon>LinePerformanceTest.xaml</DependentUpon>
+    <Compile Include="Line Examples\PerformanceLine.xaml.cs">
+      <DependentUpon>PerformanceLine.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Line Examples\MvvmExample.xaml.cs">
-      <DependentUpon>MvvmExample.xaml</DependentUpon>
+    <Compile Include="Line Examples\MvvmLine.xaml.cs">
+      <DependentUpon>MvvmLine.xaml</DependentUpon>
     </Compile>
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="StackedBarExamples\BasicStackedBar.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="StackedBarExamples\BindingStackedBar.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="StackedBarExamples\CustomStackedBar.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="StackedBarExamples\MvvmStackedBar.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="StackedBarExamples\ZoomableStackedBar.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="More\TestConverter.cs" />

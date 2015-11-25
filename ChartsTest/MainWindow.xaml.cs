@@ -27,6 +27,22 @@ namespace ChartsTest
         {
             LineControl.Previous(ExamplesMapper.LineAndAreaAexamples);
         }
+        private void BarPrevious(object sender, MouseButtonEventArgs e)
+        {
+            BarControl.Previous(ExamplesMapper.BarExamples);
+        }
+        private void BarNext(object sender, MouseButtonEventArgs e)
+        {
+            BarControl.Next(ExamplesMapper.BarExamples);
+        }
+        private void StackedBarPrevious(object sender, MouseButtonEventArgs e)
+        {
+            StackedBarControl.Previous(ExamplesMapper.StackedBarExamples);
+        }
+        private void StackedBarNext(object sender, MouseButtonEventArgs e)
+        {
+            StackedBarControl.Next(ExamplesMapper.StackedBarExamples);
+        }
         #endregion
     }
 }

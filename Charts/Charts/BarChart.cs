@@ -38,6 +38,12 @@ namespace LiveCharts
             Hoverable = true;
             ShapeHoverBehavior = ShapeHoverBehavior.Shape;
             IgnoresLastLabel = true;
+
+            //no performance config for a bar chart
+            //why? because this chart need to build a bar per point,
+            //I think there is no practicall way to make this work
+            //It is better if final develover groups some of their points.
+            PerformanceConfiguration = new PerformanceConfiguration {Enabled = false};
         }
 
         protected override bool ScaleChanged => GetMax() != Max ||
@@ -75,6 +81,15 @@ namespace LiveCharts
         {
             Max = GetMax();
             Min = GetMin();
+            S = GetS();
+
+            foreach (var serie in Series) serie.CalculatePoints();
+
+            //corrected values (includes performance optimization values)
+            Max.X = Series.Select(serie => serie.ChartPoints.Select(x => x.X).DefaultIfEmpty(0).Max()).DefaultIfEmpty(0).Max();
+            Max.Y = Series.Select(serie => serie.ChartPoints.Select(x => x.Y).DefaultIfEmpty(0).Max()).DefaultIfEmpty(0).Max();
+            Min.X = Series.Select(serie => serie.ChartPoints.Select(x => x.X).DefaultIfEmpty(0).Min()).DefaultIfEmpty(0).Min();
+            Min.Y = Series.Select(serie => serie.ChartPoints.Select(x => x.Y).DefaultIfEmpty(0).Min()).DefaultIfEmpty(0).Min();
             S = GetS();
 
             Max.Y = PrimaryAxis.MaxValue ?? (Math.Truncate(Max.Y / S.Y) + 1) * S.Y;
