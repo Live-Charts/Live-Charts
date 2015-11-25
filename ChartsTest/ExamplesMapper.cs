@@ -15,9 +15,13 @@ namespace ChartsTest
             LineAndAreaAexamples = new List<UserControl>
             {
                 new BasicLine(),
-                new CustomLine()
+                new CustomLine(),
+                new JustAreasAndZoomable(),
+                new CleanLine(),
+                new MvvmExample(),
+                new LinePerformanceTest()
             };
-            window.LineControl.Content = LineAndAreaAexamples[0];
+            window.LineControl.Content = LineAndAreaAexamples.Count > 0 ? LineAndAreaAexamples[0] : null;
         }
         public static List<UserControl> LineAndAreaAexamples { get; set; }
 

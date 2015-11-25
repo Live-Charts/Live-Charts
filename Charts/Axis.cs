@@ -29,7 +29,7 @@ using LiveCharts.TypeConverters;
 
 namespace LiveCharts
 {
-    public class Axis : DependencyObject
+    public class Axis : FrameworkElement
     {
         public Axis()
         {
@@ -52,16 +52,14 @@ namespace LiveCharts
             };
         }
 
-        public static readonly DependencyProperty ListProperty = DependencyProperty.Register(
-            "List", typeof (IList<string>), typeof (Axis), new PropertyMetadata(default(IList<string>)));
-        /// <summary>
-        /// Hardcoded labels, this property overrides LabelFormatter
-        /// </summary>
+        public static readonly DependencyProperty LabelsProperty = DependencyProperty.Register(
+            "Labels", typeof (IList<string>), typeof (Axis), new PropertyMetadata(default(IList<string>)));
+
         [TypeConverter(typeof (StringCollectionConverter))]
         public IList<string> Labels
         {
-            get { return (IList<string>) GetValue(ListProperty); }
-            set { SetValue(ListProperty, value); }
+            get { return (IList<string>) GetValue(LabelsProperty); }
+            set { SetValue(LabelsProperty, value); }
         }
 
         /// <summary>
@@ -129,6 +127,6 @@ namespace LiveCharts
         /// <summary>
         /// Gets or sets the inverse Axis
         /// </summary>
-        internal Axis InverseAxis { get; set; }
+        public Axis InverseAxis { get; internal set; }
     }
 }

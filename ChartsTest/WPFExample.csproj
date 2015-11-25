@@ -60,7 +60,23 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Line Examples\CleanLine.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Line Examples\CustomLine.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Line Examples\JustAreasAndZoomable.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Line Examples\LinePerformanceTest.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Line Examples\MvvmExample.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -76,8 +92,20 @@
     <Compile Include="Line Examples\BasicLine.xaml.cs">
       <DependentUpon>BasicLine.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Line Examples\CleanLine.xaml.cs">
+      <DependentUpon>CleanLine.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Line Examples\CustomLine.xaml.cs">
       <DependentUpon>CustomLine.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Line Examples\JustAreasAndZoomable.xaml.cs">
+      <DependentUpon>JustAreasAndZoomable.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Line Examples\LinePerformanceTest.xaml.cs">
+      <DependentUpon>LinePerformanceTest.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Line Examples\MvvmExample.xaml.cs">
+      <DependentUpon>MvvmExample.xaml</DependentUpon>
     </Compile>
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>

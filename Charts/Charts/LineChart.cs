@@ -45,7 +45,7 @@ namespace LiveCharts
 			IncludeArea = true;
 			Hoverable = true;
 			ShapeHoverBehavior = ShapeHoverBehavior.Dot;
-		    AreaOpacity = 0.3;
+		    AreaOpacity = 0.2;
 		}
 
 		protected override bool ScaleChanged => GetMax() != _rawMax ||
@@ -60,17 +60,17 @@ namespace LiveCharts
 
 		private Point GetMax()
 		{
-			var p = new Point(Series.Select(x => x.PrimaryValues.Count).DefaultIfEmpty(0).Max() - 1,
-							  Series.Select(x => x.PrimaryValues.DefaultIfEmpty(0).Max()).DefaultIfEmpty(0).Max());
+		    var x = Series.Select(serie => serie.PrimaryValues.Count - 1).DefaultIfEmpty(0).Max();
+		    var y = Series.Select(serie => serie.PrimaryValues.DefaultIfEmpty(0).Max()).DefaultIfEmpty(0).Max();
+            var p = new Point(x,y);
 			p.Y = PrimaryAxis.MaxValue ?? p.Y;
 			return p;
-
 		}
 
 		private Point GetMin()
 		{
-			var p = new Point(0,
-							  Series.Select(x => x.PrimaryValues.DefaultIfEmpty(0).Min()).DefaultIfEmpty(0).Min());
+		    var p = new Point(0,
+		        Series.Select(x => x.ChartPoints.Select(pt => pt.Y).DefaultIfEmpty(0).Min()).DefaultIfEmpty(0).Min());
 			p.Y = PrimaryAxis.MinValue ?? p.Y;
 			return p;
 		}
@@ -84,19 +84,30 @@ namespace LiveCharts
 
 		protected override void Scale()
 		{
-			_rawMax = GetMax();
+            _rawMax = GetMax();
 			_rawMin = GetMin();
 
 			Max = new Point(_rawMax.X, _rawMax.Y);
 			Min = new Point(_rawMin.X, _rawMin.Y);
 
-			_rawS = GetS();
-			S = new Point(_rawS.X, _rawS.Y);
+            _rawS = GetS();
+            S = new Point(_rawS.X, _rawS.Y);
 
-			Max.Y = PrimaryAxis.MaxValue ?? (Math.Truncate(Max.Y / S.Y) + 1) * S.Y;
+            foreach (var serie in Series) serie.CalculatePoints();
+
+		    Max.X = Series.Select(serie => serie.ChartPoints.Select(x => x.X).DefaultIfEmpty(0).Max()).DefaultIfEmpty(0).Max();
+		    Max.Y = Series.Select(serie => serie.ChartPoints.Select(x => x.Y).DefaultIfEmpty(0).Max()).DefaultIfEmpty(0).Max();
+            Min.X = Series.Select(serie => serie.ChartPoints.Select(x => x.X).DefaultIfEmpty(0).Min()).DefaultIfEmpty(0).Min();
+            Min.Y = Series.Select(serie => serie.ChartPoints.Select(x => x.Y).DefaultIfEmpty(0).Min()).DefaultIfEmpty(0).Min();
+
+            //corrected S
+            _rawS = GetS();
+            S = new Point(_rawS.X, _rawS.Y);
+
+            Max.Y = PrimaryAxis.MaxValue ?? (Math.Truncate(Max.Y / S.Y) + 1) * S.Y;
 			Min.Y = PrimaryAxis.MinValue ?? (Math.Truncate(Min.Y / S.Y) - 1) * S.Y;
 
-			DrawAxis();
+            DrawAxis();
 		}
 
 		protected override void DrawAxis()
@@ -105,25 +116,24 @@ namespace LiveCharts
 
 			S = GetS();
 
-			Canvas.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+            Canvas.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+            var lastLabelX = Math.Truncate((Max.X - Min.X) / S.X) * S.X;
+            var longestYLabelSize = GetLongestLabelSize(PrimaryAxis);
+            var firstXLabelSize = GetLabelSize(SecondaryAxis, Min.X);
+            var lastXLabelSize = GetLabelSize(SecondaryAxis, lastLabelX);
 
-			var lastLabelX = Math.Truncate((Max.X - Min.X) / S.X) * S.X;
-			var longestYLabelSize = GetLongestLabelSize(PrimaryAxis);
-			var firstXLabelSize = GetLabelSize(SecondaryAxis, Min.X);
-			var lastXLabelSize = GetLabelSize(SecondaryAxis, lastLabelX);
+            const int padding = 5;
 
-			const int padding = 5;
+            PlotArea.X = padding * 2 + (longestYLabelSize.X > firstXLabelSize.X * .5 ? longestYLabelSize.X : firstXLabelSize.X * .5);
+            PlotArea.Y = longestYLabelSize.Y * .5 + padding;
+            PlotArea.Height = Math.Max(0, Canvas.DesiredSize.Height - (padding * 2 + firstXLabelSize.Y) - PlotArea.Y);
+            PlotArea.Width = Math.Max(0, Canvas.DesiredSize.Width - PlotArea.X - padding);
+            var distanceToEnd = ToPlotArea(Max.X - lastLabelX, AxisTags.X) - PlotArea.X;
+            var change = lastXLabelSize.X * .5 - distanceToEnd > 0 ? lastXLabelSize.X * .5 - distanceToEnd : 0;
+            if (change <= PlotArea.Width)
+                PlotArea.Width -= change;
 
-			PlotArea.X = padding * 2 + (longestYLabelSize.X > firstXLabelSize.X * .5 ? longestYLabelSize.X : firstXLabelSize.X * .5);
-			PlotArea.Y = longestYLabelSize.Y * .5 + padding;
-			PlotArea.Height = Math.Max(0, Canvas.DesiredSize.Height - (padding * 2 + firstXLabelSize.Y) - PlotArea.Y);
-			PlotArea.Width = Math.Max(0, Canvas.DesiredSize.Width - PlotArea.X - padding);
-			var distanceToEnd = ToPlotArea(Max.X - lastLabelX, AxisTags.X) - PlotArea.X;
-			var change = lastXLabelSize.X * .5 - distanceToEnd > 0 ? lastXLabelSize.X * .5 - distanceToEnd : 0;
-			if (change <= PlotArea.Width)
-				PlotArea.Width -= change;
-
-			base.DrawAxis();
+            base.DrawAxis();
 		}
 	}
 }

@@ -43,23 +43,28 @@ namespace LiveCharts.Charts
         public Point Max;
         public Point Min;
         public Point S;
-        protected Border CurrentToolTip;
         public List<Shape> AxisShapes = new List<Shape>();
         public List<TextBlock> AxisLabels = new List<TextBlock>();
+        public List<HoverableShape> HoverableShapes = new List<HoverableShape>();
+
+        internal int ColorStartIndex;
+        internal bool RequiresScale;
+        internal List<Serie> EraseSerieBuffer = new List<Serie>();
+
+        protected Border CurrentToolTip;
         protected double CurrentScale;
         protected ShapeHoverBehavior ShapeHoverBehavior;
         protected double LabelOffset;
         protected bool IgnoresLastLabel;
         protected bool AlphaLabel;
-        public List<HoverableShape> HoverableShapes = new List<HoverableShape>(); 
+
+        private static readonly Random Randomizer;
+        private readonly DispatcherTimer _resizeTimer;
+        private readonly DispatcherTimer _serieValuesChanged;
+        private readonly DispatcherTimer _seriesChanged;
         private Point _panOrigin;
         private bool _isDragging;
-        internal int ColorStartIndex = 0;
-        private static readonly Random Randomizer;
-
-        //these timers are to avoid multiple graph ploting, graph will only plot when timer ticks.
-        private readonly DispatcherTimer _resizeTimer;
-        private readonly DispatcherTimer _seriesCangedTimer;
+        private bool _initialized;
         private Axis _primaryAxis;
         private Axis _secondaryAxis;
 
@@ -67,20 +72,20 @@ namespace LiveCharts.Charts
         {
             Colors = new List<Color>
             {
-                Color.FromRgb(41,127,184),
-                Color.FromRgb(230,76,60),
-                Color.FromRgb(240,195,15),
-                Color.FromRgb(26,187,155),
-                Color.FromRgb(87,213,140),
-                Color.FromRgb(154,89,181),
-                Color.FromRgb(92,109,126),
-                Color.FromRgb(22,159,132),
-                Color.FromRgb(39,173,96),
-                Color.FromRgb(92,171,225),
-                Color.FromRgb(141,68,172),
-                Color.FromRgb(229,126,34),
-                Color.FromRgb(210,84,0),
-                Color.FromRgb(191,57,43)
+                Color.FromRgb(41, 127, 184),
+                Color.FromRgb(230, 76, 60),
+                Color.FromRgb(240, 195, 15),
+                Color.FromRgb(26, 187, 155),
+                Color.FromRgb(87, 213, 140),
+                Color.FromRgb(154, 89, 181),
+                Color.FromRgb(92, 109, 126),
+                Color.FromRgb(22, 159, 132),
+                Color.FromRgb(39, 173, 96),
+                Color.FromRgb(92, 171, 225),
+                Color.FromRgb(141, 68, 172),
+                Color.FromRgb(229, 126, 34),
+                Color.FromRgb(210, 84, 0),
+                Color.FromRgb(191, 57, 43)
             };
             Randomizer = new Random();
         }
@@ -88,7 +93,7 @@ namespace LiveCharts.Charts
         protected Chart()
         {
             var b = new Border {ClipToBounds = true};
-            Canvas = new Canvas {RenderTransform = new TranslateTransform(0,0)};
+            Canvas = new Canvas {RenderTransform = new TranslateTransform(0, 0)};
             b.Child = Canvas;
             Content = b;
 
@@ -109,13 +114,18 @@ namespace LiveCharts.Charts
             };
             _resizeTimer.Tick += (sender, e) =>
             {
-                ClearAndPlot(false);
+                if (_initialized) ForceRedrawNow();
+                //the first tick is always ingored, becasue it fires when control is loaded.
+                _initialized = true;
                 _resizeTimer.Stop();
             };
 
-            _seriesCangedTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(50) };
-            _seriesCangedTimer.Tick += UpdateModifiedDataSeries;
-            
+            _serieValuesChanged = new DispatcherTimer {Interval = TimeSpan.FromMilliseconds(100)};
+            _serieValuesChanged.Tick += UpdateModifiedDataSeries;
+
+            _seriesChanged = new DispatcherTimer {Interval = TimeSpan.FromMilliseconds(100)};
+            _seriesChanged.Tick += UpdateSeries;
+
             CurrentScale = 1;
             if (RandomizeStartingColor)
             {
@@ -124,75 +134,83 @@ namespace LiveCharts.Charts
 
             AnimatesNewPoints = false;
 
-			Series = new ObservableCollection<Serie>();
-			Series.CollectionChanged += OnSeriesCollectionChanged;
-		}
+            PerformanceConfiguration = new PerformanceConfiguration();
+
+            Series = new ObservableCollection<Serie>();
+        }
 
         #region Abstracts
-        abstract protected void Scale();
-        abstract protected bool ScaleChanged { get; }
+
+        protected abstract void Scale();
+        protected abstract bool ScaleChanged { get; }
+
         #endregion
 
         #region StaticProperties
+
         /// <summary>
         /// List of Colors series will use, yu can change this list to your own colors.
         /// </summary>
         public static List<Color> Colors { get; set; }
+
         /// <summary>
         /// indicates wether each instance of chart you create needs to randomize starting color
         /// </summary>
         public static bool RandomizeStartingColor { get; set; }
+
         #endregion
 
         #region Dependency Properties
 
-        public static readonly DependencyProperty ZoomingProperty = DependencyProperty.Register(
-            "Zooming", typeof(bool), typeof(Chart));
-        /// <summary>
-        /// Indicates weather user can zoom graph with mouse wheel.
-        /// </summary>
-        public bool Zooming
-        {
-            get { return (bool)GetValue(ZoomingProperty); }
-            set { SetValue(ZoomingProperty, value); }
-        }
         public static readonly DependencyProperty HoverableProperty = DependencyProperty.Register(
-            "Hoverable", typeof(bool), typeof(Chart));
+            "Hoverable", typeof (bool), typeof (Chart));
+
         /// <summary>
         /// Indicates weather chart is hoverable or not
         /// </summary>
         public bool Hoverable
         {
-            get { return (bool)GetValue(HoverableProperty); }
+            get { return (bool) GetValue(HoverableProperty); }
             set { SetValue(HoverableProperty, value); }
         }
+
         public static readonly DependencyProperty PointHoverColorProperty = DependencyProperty.Register(
-           "PointHoverColor", typeof(Color), typeof(Chart));
+            "PointHoverColor", typeof (Color), typeof (Chart));
+
         /// <summary>
         /// Indicates Point hover color.
         /// </summary>
         public Color PointHoverColor
         {
-            get { return (Color)GetValue(PointHoverColorProperty); }
+            get { return (Color) GetValue(PointHoverColorProperty); }
             set { SetValue(PointHoverColorProperty, value); }
         }
+
         public static readonly DependencyProperty DisableAnimationProperty = DependencyProperty.Register(
-            "DisableAnimation", typeof(bool), typeof(Chart));
+            "DisableAnimation", typeof (bool), typeof (Chart));
+
         /// <summary>
         /// Indicates weather to show animation or not.
         /// </summary>
         public bool DisableAnimation
         {
-            get { return (bool)GetValue(DisableAnimationProperty); }
+            get { return (bool) GetValue(DisableAnimationProperty); }
             set { SetValue(DisableAnimationProperty, value); }
+        }
+
+        public static readonly DependencyProperty SeriesProperty = DependencyProperty.Register(
+            "Series", typeof (ObservableCollection<Serie>), typeof (Chart),
+            new PropertyMetadata(new ObservableCollection<Serie>(), SeriesChangedCallback ));
+        
+        public ObservableCollection<Serie> Series
+        {
+            get { return (ObservableCollection<Serie>) GetValue(SeriesProperty); }
+            set { SetValue(SeriesProperty, value); }
         }
         #endregion
 
         #region Properties
-        /// <summary>
-        /// Collection of series to be drawn.
-        /// </summary>
-        public ObservableCollection<Serie> Series { get; }
+
         public Axis PrimaryAxis
         {
             get { return _primaryAxis; }
@@ -203,6 +221,7 @@ namespace LiveCharts.Charts
                 if (SecondaryAxis != null) SecondaryAxis.InverseAxis = _primaryAxis;
             }
         }
+
         public Axis SecondaryAxis
         {
             get { return _secondaryAxis; }
@@ -213,11 +232,14 @@ namespace LiveCharts.Charts
                 if (PrimaryAxis != null) PrimaryAxis.InverseAxis = _secondaryAxis;
             }
         }
+
         public Brush TooltipBackground { get; set; } = null;
         public Brush TooltipForegroung { get; set; } = null;
         public Brush TooltipBorderBrush { get; set; } = null;
         public CornerRadius? TooltipCornerRadius { get; set; } = null;
         public Thickness? TooltipBorderThickness { get; set; } = null;
+        public PerformanceConfiguration PerformanceConfiguration { get; set; }
+        public bool Zooming { get; set; }
         #endregion
 
         #region ProtectedProperties
@@ -225,19 +247,25 @@ namespace LiveCharts.Charts
         #endregion
 
         #region Public Methods
-        public void ClearAndPlot(bool animate = true)
+        public void ClearAndPlot()
         {
 #if DEBUG
             var timer = DateTime.Now;
 #endif
+            _seriesChanged.Stop();
+            _seriesChanged.Start();
+
             HoverableShapes = new List<HoverableShape>();
             AxisShapes = new List<Shape>();
             AxisLabels = new List<TextBlock>();
             Canvas.Children.Clear();
-	        foreach (var serie in Series)
-	        {
-		        Canvas.Children.Add(serie);
-	        }
+            foreach (var serie in Series)
+            {
+                Canvas.Children.Add(serie);
+                EraseSerieBuffer.Add(serie);
+                serie.RequiresAnimation = true;
+                serie.RequiresPlot = true;
+            }
 #if DEBUG
             //this takes as much time as drawing.
             //ToDo: Improve performance here!
@@ -246,13 +274,13 @@ namespace LiveCharts.Charts
             Canvas.Width = ActualWidth * CurrentScale;
             Canvas.Height = ActualHeight * CurrentScale;
             PlotArea = new Rect(0, 0, ActualWidth * CurrentScale, ActualHeight * CurrentScale);
-            Plot(animate);
+            RequiresScale = true;
         }
 
         public void ZoomIn()
         {
             CurrentScale += .1;
-            ClearAndPlot(false);
+            ForceRedrawNow();
             PreventGraphToBeVisible();
         }
 
@@ -260,8 +288,29 @@ namespace LiveCharts.Charts
         {
             CurrentScale -= .1;
             if (CurrentScale <= 1) CurrentScale = 1;
-            ClearAndPlot(false);
+            ForceRedrawNow();
             PreventGraphToBeVisible();
+        }
+
+        /// <summary>
+        /// Scales a graph value to screen according to an axis. 
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="axis"></param>
+        /// <returns></returns>
+        public double ToPlotArea(double value, AxisTags axis)
+        {
+            return EnsureDouble(Methods.ToPlotArea(value, axis, this));
+        }
+
+        /// <summary>
+        /// Scales a graph point to screen.
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public Point ToPlotArea(Point value)
+        {
+            return new Point(ToPlotArea(value.X, AxisTags.X), ToPlotArea(value.Y, AxisTags.Y));
         }
         #endregion
 
@@ -332,9 +381,9 @@ namespace LiveCharts.Charts
         {
             if (!axis.PrintLabels) return new Point(0, 0);
             var label = "";
-            var from = axis == PrimaryAxis ? Min.Y : Min.X;
-            var to = axis == PrimaryAxis ? Max.Y : Max.X;
-            var s = axis == PrimaryAxis ? S.Y : S.X;
+            var from = Equals(axis, PrimaryAxis) ? Min.Y : Min.X;
+            var to = Equals(axis, PrimaryAxis) ? Max.Y : Max.X;
+            var s = Equals(axis, PrimaryAxis) ? S.Y : S.X;
             for (var i = from; i <= to; i += s)
             {
                 var iL = axis.LabelFormatter == null
@@ -378,46 +427,9 @@ namespace LiveCharts.Charts
                 axis.FontSize, Brushes.Black);
             return new Point(uiLabelSize.Width, uiLabelSize.Height);
         }
-        /// <summary>
-        /// Scales a graph value to screen according to an axis. 
-        /// </summary>
-        /// <param name="value"></param>
-        /// <param name="axis"></param>
-        /// <returns></returns>
-        protected double ToPlotArea(double value, AxisTags axis)
-        {
-            return EnsureDouble(Methods.ToPlotArea(value, axis, this));
-        }
-
-        /// <summary>
-        /// Scales a graph point to screen.
-        /// </summary>
-        /// <param name="value"></param>
-        /// <returns></returns>
-        protected Point ToPlotArea(Point value)
-        {
-            return new Point(ToPlotArea(value.X, AxisTags.X), ToPlotArea(value.Y, AxisTags.Y));
-        }
-
         #endregion
 
         #region Virtual Methods
-        protected virtual void Plot(bool animate = true)
-        {
-            if (Series == null ||
-                ActualHeight < 10 ||
-                ActualWidth < 10)
-                return;
-
-            Scale();
-            foreach (var serie in Series)
-            {
-                serie.Plot(animate);
-            }
-#if DEBUG
-            Trace.WriteLine("Plot called at " + DateTime.Now.ToString("mm:ss.fff"));
-#endif
-        }
         protected virtual void DrawAxis()
         {
             foreach (var l in AxisLabels) Canvas.Children.Remove(l);
@@ -744,11 +756,30 @@ namespace LiveCharts.Charts
         #endregion
 
         #region Private Methods
-
 	    private double EnsureDouble(double d)
 	    {
 		    return double.IsNaN(d) ? 0 : d;
 	    }
+
+        private void ForceRedrawNow()
+        {
+            HoverableShapes = new List<HoverableShape>();
+            AxisShapes = new List<Shape>();
+            AxisLabels = new List<TextBlock>();
+            Canvas.Children.Clear();
+            foreach (var serie in Series)
+            {
+                Canvas.Children.Add(serie);
+                EraseSerieBuffer.Add(serie);
+                serie.RequiresAnimation = false;
+                serie.RequiresPlot = true;
+            }
+            Canvas.Width = ActualWidth * CurrentScale;
+            Canvas.Height = ActualHeight * CurrentScale;
+            PlotArea = new Rect(0, 0, ActualWidth * CurrentScale, ActualHeight * CurrentScale);
+            RequiresScale = true;
+            UpdateSeries(null, null);
+        }
 
 		private void PreventGraphToBeVisible()
         {
@@ -798,47 +829,96 @@ namespace LiveCharts.Charts
             _resizeTimer.Start();
         }
 
-        private void OnSeriesCollectionChanged(object sender, NotifyCollectionChangedEventArgs args)
+        private static void SeriesChangedCallback(DependencyObject o, DependencyPropertyChangedEventArgs eventArgs)
         {
-            if (args.OldItems != null)
-	            foreach (var serie in args.OldItems.Cast<Serie>())
-	            {
-		            serie.Erase();
-	            }
+            var chart = o as Chart;
+            if (chart == null) return;
 
-            var newSeries = args.NewItems?.Cast<Serie>() ?? new List<Serie>();
-
-            if (ScaleChanged)
+            foreach (var serie in chart.Series)
             {
-                Scale();
-                foreach (var serie in Series.Where(x => !newSeries.Contains(x)))
-                {
-                    serie.Erase();
-                    serie.Plot(false);
-                }
+                serie.Chart = chart;
+                serie.ColorId = chart.Series.Max(x => x.ColorId) + 1;
+                serie.RequiresPlot = true;
+                serie.RequiresAnimation = true;
+                var observable = serie.PrimaryValues as INotifyCollectionChanged;
+                if (observable != null)
+                    observable.CollectionChanged += chart.OnDataSeriesChanged;
             }
 
-            if (args.NewItems != null)
-                foreach (var serie in newSeries)
+            chart.Series.CollectionChanged += (sender, args) =>
+            {               
+                chart._seriesChanged.Stop();
+                chart._seriesChanged.Start();
+
+                if (args.OldItems != null)
+                    foreach (var serie in args.OldItems.Cast<Serie>())
+                    {
+                        chart.EraseSerieBuffer.Add(serie);
+                    }
+
+                var newElements = args.NewItems?.Cast<Serie>() ?? new List<Serie>();
+
+                if (chart.ScaleChanged)
                 {
-                    serie.Chart = this;
-                    serie.ColorId = Series.Max(x => x.ColorId) + 1;
-                    serie.Plot();
-					var observable = serie.PrimaryValues as INotifyCollectionChanged;
-					if (observable != null)
-						observable.CollectionChanged += OnDataSeriesChanged;
+                    chart.RequiresScale = true;
+                    foreach (var serie in chart.Series.Where(x => !newElements.Contains(x)))
+                    {
+                        chart.EraseSerieBuffer.Add(serie);
+                        serie.RequiresPlot = true;
+                    }
                 }
+
+                if (args.NewItems != null)
+                    foreach (var serie in newElements)
+                    {
+                        serie.Chart = chart;
+                        serie.ColorId = chart.Series.Max(x => x.ColorId) + 1;
+                        serie.RequiresPlot = true;
+                        serie.RequiresAnimation = true;
+                        var observable = serie.PrimaryValues as INotifyCollectionChanged;
+                        if (observable != null)
+                            observable.CollectionChanged += chart.OnDataSeriesChanged;
+                    }
+            };
+        }
+
+        private void UpdateSeries(object sender, EventArgs e)
+        {
+            _seriesChanged.Stop();
+            if (PlotArea.Width < 15 || PlotArea.Height < 15) return;
+
+            if (RequiresScale)
+            {
+                Scale();
+                RequiresScale = false;
+            }
+            foreach (var serie in EraseSerieBuffer.GroupBy(x => x))
+            {
+                serie.First().Erase();
+            }
+            EraseSerieBuffer.Clear();
+            var toPlot = Series.Where(x => x.RequiresPlot).ToList();
+            foreach (var serie in toPlot)
+            {
+                serie.CalculatePoints();
+                serie.Plot(serie.RequiresAnimation);
+                serie.RequiresPlot = false;
+                serie.RequiresAnimation = false;
+            }
+#if DEBUG
+            Trace.WriteLine("Series Updated!");
+#endif
         }
 
         private void OnDataSeriesChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            _seriesCangedTimer.Stop();
-            _seriesCangedTimer.Start();
+            _serieValuesChanged.Stop();
+            _serieValuesChanged.Start();
         }
 
         private void UpdateModifiedDataSeries(object sender, EventArgs e)
         {
-            _seriesCangedTimer.Stop();
+            _serieValuesChanged.Stop();
             if (ScaleChanged) Scale();
             foreach (var serie in Series)
             {

@@ -7,10 +7,15 @@ namespace ChartsTest
     /// </summary>
     public partial class MainWindow
     {
+        public double[] TestPrimaryValues { get; set; }
 	    public MainWindow()
         {
             InitializeComponent();
 	        ExamplesMapper.Initialize(this);
+
+	        TestPrimaryValues = new[] {3d, 2, 4, 6};
+
+	        DataContext = TestPrimaryValues;
         }
 
         #region NavigationButtons

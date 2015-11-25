@@ -37,33 +37,22 @@ namespace LiveCharts
 
 		public override void Plot(bool animate = true)
 		{
-			//TODO Improve
-			//we are runing 3 foreach that could maybe be 1
 			var serie = this;
 
-			var xCount = 0;
-			var points = new List<Point>();
-
-			foreach (var d in serie.PrimaryValues)
-			{
-				xCount++;
-				points.Add(new Point(xCount - 1, d));
-			}
-
-			var s = new List<Shape>();
+		    var s = new List<Shape>();
 			if (LineChart.LineType == LineChartLineType.Bezier)
-				s.AddRange(_addSerieAsBezier(points.Select(ToPlotArea).ToArray(), Color,
+				s.AddRange(_addSerieAsBezier(ChartPoints.Select(ToPlotArea).ToArray(), Color,
 				                             serie.StrokeThickness, animate));
 
 			if (LineChart.LineType == LineChartLineType.Polyline)
-				s.AddRange(_addSeriesAsPolyline(points.Select(ToPlotArea).ToArray(), Color,
+				s.AddRange(_addSeriesAsPolyline(ChartPoints.Select(ToPlotArea).ToArray(), Color,
 				                                serie.StrokeThickness, animate));
 
 			var hoverableAreas = new List<HoverableShape>();
 
 			if (LineChart.Hoverable)
 			{
-				foreach (var point in points)
+				foreach (var point in ChartPoints)
 				{
 					var plotPoint = ToPlotArea(point);
 					var e = new Ellipse
@@ -310,5 +299,14 @@ namespace LiveCharts
 			if (!animated) path.StrokeDashOffset = 0;
 			return addedFigures;
 		}
+
+	    public override void CalculatePoints()
+	    {
+            var index = 0;
+            
+            ChartPoints = Chart.PerformanceConfiguration.Enabled
+                ? PrimaryValues.Select(val => new Point(index++, val)).OptimizeAsIndexedChart(Chart)
+                : PrimaryValues.Select(val => new Point(index++, val)).ToList();
+        }
 	}
 }

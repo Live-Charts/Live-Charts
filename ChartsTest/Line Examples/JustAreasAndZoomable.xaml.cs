@@ -1,16 +1,15 @@
-﻿
-using System.Windows;
+﻿using System.Windows;
 
 namespace ChartsTest.Line_Examples
 {
-    public partial class CustomLine
+    public partial class JustAreasAndZoomable
     {
-        public CustomLine()
+        public JustAreasAndZoomable()
         {
             InitializeComponent();
         }
 
-        private void CustomLine_OnLoaded(object sender, RoutedEventArgs e)
+        private void JustAreasAndZoomable_OnLoaded(object sender, RoutedEventArgs e)
         {
             //this is just to see animation everytime you click next
             Chart.ClearAndPlot();

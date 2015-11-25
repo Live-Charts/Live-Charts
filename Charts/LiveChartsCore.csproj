@@ -114,6 +114,7 @@
     <Compile Include="Charts\PieChart.cs" />
     <Compile Include="Charts\RadarChart.cs" />
     <Compile Include="Charts\ScatterChart.cs" />
+    <Compile Include="PerformanceConfiguration.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="TypeConverters\StringCollectionConverter.cs" />
     <Compile Include="TypeConverters\ValueCollectionConverter.cs" />

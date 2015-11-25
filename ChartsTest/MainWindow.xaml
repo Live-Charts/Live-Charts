@@ -34,7 +34,7 @@
 
             <TextBlock Style="{StaticResource Title}">Multiple Simple Examples</TextBlock>
 
-            <Grid>
+            <!--<Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="150"></RowDefinition>
                     <RowDefinition Height="150"></RowDefinition>
@@ -48,7 +48,7 @@
                 <liveCharts:LineChart Grid.Row="0" Grid.Column="0" Margin="0 0 10 0">
                     <liveCharts:LineChart.Series>
                         <liveCharts:LineSerie Title="Asia" PrimaryValues="1, 6, 10, 0"></liveCharts:LineSerie>
-                        <liveCharts:LineSerie Title="Europe" PrimaryValues="5, 2, 3, 2"></liveCharts:LineSerie>
+                        <liveCharts:LineSerie Title="Europe" PrimaryValues="{Binding}"></liveCharts:LineSerie>
                     </liveCharts:LineChart.Series>
                 </liveCharts:LineChart>
 
@@ -82,10 +82,11 @@
 
                 <liveCharts:PieChart Grid.Row="2" Grid.Column="1" InnerRadius="40" Margin="10 0 0 0">
                     <liveCharts:PieChart.Series>
-                        <liveCharts:PieSerie PrimaryValues="4, 2, 2, 2"></liveCharts:PieSerie>
+                        <liveCharts:PieSerie PrimaryValues="{Binding}"></liveCharts:PieSerie>
                     </liveCharts:PieChart.Series>
                 </liveCharts:PieChart>
-            </Grid>
+            </Grid>-->
+            
             <TextBlock>For the next exmples click on left or right arrows to navigate through different examples</TextBlock>
             <TextBlock Style="{StaticResource Title}">Line and Area Examples</TextBlock>
             <Grid>
@@ -94,9 +95,9 @@
                     <ColumnDefinition Width="*"></ColumnDefinition>
                     <ColumnDefinition Width="Auto"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
-                <Image Grid.Column="0" Source="Left.png" MouseDown="LineNext"/>
+                <Image Grid.Column="0" Source="Left.png" MouseDown="LinePrevious"/>
                 <ContentControl Name="LineControl" Grid.Column="1" Height="300" Width="Auto"></ContentControl>
-                <Image Grid.Column="2" Source="Right.png" MouseDown="LinePrevious"/>
+                <Image Grid.Column="2" Source="Right.png" MouseDown="LineNext"/>
             </Grid>
         </StackPanel>
     </ScrollViewer>
