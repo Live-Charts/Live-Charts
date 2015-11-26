@@ -87,7 +87,9 @@ namespace LiveCharts
             foreach (var serie in Series) serie.CalculatePoints();
 
             //corrected values (includes performance optimization values)
-            Max.X = Series.Select(serie => serie.ChartPoints.Select(x => x.X).DefaultIfEmpty(0).Max()).DefaultIfEmpty(0).Max();
+            Max.X =
+                Series.Select(serie => serie.ChartPoints.Select(x => x.X).DefaultIfEmpty(0).Max())
+                    .DefaultIfEmpty(0).Max() + 1;
             Max.Y = Series.Select(serie => serie.ChartPoints.Select(x => x.Y).DefaultIfEmpty(0).Max()).DefaultIfEmpty(0).Max();
             Min.X = Series.Select(serie => serie.ChartPoints.Select(x => x.X).DefaultIfEmpty(0).Min()).DefaultIfEmpty(0).Min();
             Min.Y = Series.Select(serie => serie.ChartPoints.Select(x => x.Y).DefaultIfEmpty(0).Min()).DefaultIfEmpty(0).Min();
