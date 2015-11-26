@@ -24,7 +24,7 @@ I decided to start this because current open source alternatives were not exactl
   <img src="https://dl.dropboxusercontent.com/u/40165535/LiveCharts/BarChart.gif" />
 </p>
 
-### StackedBar Chart ([examples](https://github.com/beto-rodriguez/Live-Charts/wiki/3.1-StackedBar-Chart-Simplet))
+### StackedBar Chart ([examples](https://github.com/beto-rodriguez/Live-Charts/wiki/3.1-StackedBar-Chart-Simple))
 
 <p align="center">
   <img src="https://dl.dropboxusercontent.com/u/40165535/LiveCharts/StackedBarChart.gif" />
