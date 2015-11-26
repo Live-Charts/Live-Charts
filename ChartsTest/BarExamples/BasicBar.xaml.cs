@@ -1,5 +1,4 @@
 ﻿using System.Windows;
-using System.Windows.Controls;
 
 namespace ChartsTest.BarExamples
 {
@@ -13,7 +12,7 @@ namespace ChartsTest.BarExamples
             InitializeComponent();
         }
 
-        private void BasicBar_OnLoaded(object sender, RoutedEventArgs e)
+        private void OnLoaded(object sender, RoutedEventArgs e)
         {
             //this is just to see animation everytime you click next
             Chart.ClearAndPlot();

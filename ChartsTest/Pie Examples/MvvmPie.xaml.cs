@@ -1,18 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using LiveCharts;
 
-namespace ChartsTest.BarExamples
+namespace ChartsTest.Pie_Examples
 {
     /// <summary>
     /// Interaction logic for MvvmBar.xaml
     /// </summary>
-    public partial class MvvmBar 
+    public partial class MvvmPie
     {
-        public MvvmBar()
+        public MvvmPie()
         {
             InitializeComponent();
             Sales = new SalesViewModel();
@@ -23,16 +22,6 @@ namespace ChartsTest.BarExamples
 
         public SalesViewModel Sales { get; set; }
 
-        private void AddSalesmanOnClick(object sender, RoutedEventArgs e)
-        {
-            Sales.AddRandomSalesman();
-        }
-
-        private void RemoveSalesmanOnClick(object sender, RoutedEventArgs e)
-        {
-            Sales.RemoveLastSalesman();
-        }
-
         private void AddMonthOnClick(object sender, RoutedEventArgs e)
         {
             Sales.AddOneMonth();
@@ -42,7 +31,7 @@ namespace ChartsTest.BarExamples
             Sales.RemoveLastMonth();
         }
 
-        private void MvvmExample_OnLoaded(object sender, RoutedEventArgs e)
+        private void OnLoaded(object sender, RoutedEventArgs e)
         {
             //this is just to see animation everytime you click next
             Chart.ClearAndPlot();
@@ -50,12 +39,6 @@ namespace ChartsTest.BarExamples
     }
     public class SalesViewModel
     {
-        private readonly string[] _names =
-        {
-            "Charles", "Susan", "Edit", "Roger", "Peter", "James", "Ana", "Alice", "Maria",
-            "Jesus", "Jose", "Miriam", "Aristoteles", "Socrates", "Isaac", "Thomas", "Nicholas"
-        };
-
         private readonly string[] _months =
         {
             "Jan 65", "Feb 65", "Mar 65", "Apr 65", "May 65", "Jun 65", "Jul 65", "Ago 65", "Sep 65", "Oct 65", "Nov 65", "Dec 65",
@@ -68,37 +51,17 @@ namespace ChartsTest.BarExamples
             AvailableMonths = _months;
             Salesmen = new ObservableCollection<Serie>
             {
-                new BarSerie
+                new PieSerie
                 {
                     Title = "John",
-                    PrimaryValues = new ObservableCollection<double>(new[] {2d, 4, 7, 1, 5})
+                    PrimaryValues = new ObservableCollection<double>(new[] {2d, 4, 7, 1, 5}),
+                    Labels = _months
                 }
             };
         }
 
         public ObservableCollection<Serie> Salesmen { get; set; }
         public string[] AvailableMonths { get; set; }
-
-        public void AddRandomSalesman()
-        {
-            var r = new Random();
-
-            var values = new List<double>();
-
-            for (var i = 0; i < Salesmen[0].PrimaryValues.Count; i++) values.Add(r.Next(0, 10));
-
-            Salesmen.Add(new BarSerie
-            {
-                Title = _names[r.Next(0, _names.Count() - 1)],
-                PrimaryValues = new ObservableCollection<double>(values)
-            });
-        }
-
-        public void RemoveLastSalesman()
-        {
-            if (Salesmen.Count == 1) return;
-            Salesmen.RemoveAt(Salesmen.Count - 1);
-        }
 
         public void AddOneMonth()
         {

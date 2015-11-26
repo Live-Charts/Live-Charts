@@ -43,6 +43,14 @@ namespace ChartsTest
         {
             StackedBarControl.Next(ExamplesMapper.StackedBarExamples);
         }
+        private void PiePrevious(object sender, MouseButtonEventArgs e)
+        {
+            PieControl.Previous(ExamplesMapper.PieExamples);
+        }
+        private void PieNext(object sender, MouseButtonEventArgs e)
+        {
+            PieControl.Next(ExamplesMapper.PieExamples);
+        }
         #endregion
     }
 }

@@ -2,9 +2,9 @@
 using System.Globalization;
 using System.Windows.Data;
 
-namespace ChartsTest.More
+namespace ChartsTest
 {
-    public class TestConverter :IValueConverter
+    public class TestConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {

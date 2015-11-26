@@ -2,7 +2,9 @@
 using System.Windows.Controls;
 using ChartsTest.BarExamples;
 using ChartsTest.Line_Examples;
+using ChartsTest.Pie_Examples;
 using ChartsTest.StackedBarExamples;
+using ZoomableBar = ChartsTest.BarExamples.ZoomableBar;
 
 namespace ChartsTest
 {
@@ -30,7 +32,7 @@ namespace ChartsTest
                 new ZoomableBar(),
                 new BindingBar(),
                 new MvvmBar()
-                //new PerformanceBar()
+                //new Performance()
             };
             StackedBarExamples = new List<UserControl>
             {
@@ -41,13 +43,24 @@ namespace ChartsTest
                 new MvvmStackedBar(),
                 //new PerformanceBar()
             };
+            PieExamples = new List<UserControl>
+            {
+                new BasicPie(),
+                new CustomPie(),
+                //new ZoomablePie(),
+                new BindingPie(),
+                new MvvmPie(),
+                //new PerformanceBar()
+            };
             window.LineControl.Content = LineAndAreaAexamples.Count > 0 ? LineAndAreaAexamples[0] : null;
             window.BarControl.Content = BarExamples.Count > 0 ? BarExamples[0] : null;
             window.StackedBarControl.Content = StackedBarExamples.Count > 0 ? StackedBarExamples[0] : null;
+            window.PieControl.Content = PieExamples.Count > 0 ? PieExamples[0] : null;
         }
         public static List<UserControl> LineAndAreaAexamples { get; set; }
         public static List<UserControl> BarExamples { get; set; }
         public static List<UserControl> StackedBarExamples { get; set; }
+        public static List<UserControl> PieExamples { get; set; }
 
         public static void Next(this ContentControl control, List<UserControl> list)
         {

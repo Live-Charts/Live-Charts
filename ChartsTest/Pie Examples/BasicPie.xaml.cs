@@ -1,13 +1,13 @@
 ﻿using System.Windows;
 
-namespace ChartsTest.BarExamples
+namespace ChartsTest.Pie_Examples
 {
     /// <summary>
-    /// Interaction logic for ZoomableBar.xaml
+    /// Interaction logic for BasicBar.xaml
     /// </summary>
-    public partial class ZoomableBar
+    public partial class BasicPie
     {
-        public ZoomableBar()
+        public BasicPie()
         {
             InitializeComponent();
         }

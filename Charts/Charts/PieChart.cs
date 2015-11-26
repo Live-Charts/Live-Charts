@@ -46,6 +46,8 @@ namespace LiveCharts
             DrawPadding = 20;
             Background = Brushes.White;
             AnimatesNewPoints = true;
+
+            PerformanceConfiguration = new PerformanceConfiguration { Enabled = false };
         }
         
         public static readonly DependencyProperty InnerRadiusProperty = DependencyProperty.Register(

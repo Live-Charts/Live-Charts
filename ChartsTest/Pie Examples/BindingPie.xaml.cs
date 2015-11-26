@@ -1,15 +1,17 @@
-﻿using System.Windows;
+﻿using System.Collections.ObjectModel;
+using System.Windows;
 
-namespace ChartsTest.BarExamples
+namespace ChartsTest.Pie_Examples
 {
     /// <summary>
-    /// Interaction logic for ZoomableBar.xaml
+    /// Interaction logic for BindingBar.xaml
     /// </summary>
-    public partial class ZoomableBar
+    public partial class BindingPie
     {
-        public ZoomableBar()
+        public BindingPie()
         {
             InitializeComponent();
+            Serie1.DataContext = new ObservableCollection<double> { 2, 3, 5, 7 };
         }
 
         private void OnLoaded(object sender, RoutedEventArgs e)

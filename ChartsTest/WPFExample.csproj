@@ -56,6 +56,21 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="BarExamples\BasicBar.xaml.cs">
+      <DependentUpon>BasicBar.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="BarExamples\BindingBar.xaml.cs">
+      <DependentUpon>BindingBar.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="BarExamples\CustomBar.xaml.cs">
+      <DependentUpon>CustomBar.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="BarExamples\MvvmBar.xaml.cs">
+      <DependentUpon>MvvmBar.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="BarExamples\ZoomableBar.xaml.cs">
+      <DependentUpon>ZoomableBar.xaml</DependentUpon>
+    </Compile>
     <Compile Include="StackedBarExamples\BasicStackedBar.xaml.cs">
       <DependentUpon>BasicStackedBar.xaml</DependentUpon>
     </Compile>
@@ -72,22 +87,38 @@
       <DependentUpon>ZoomableStackedBar.xaml</DependentUpon>
     </Compile>
     <Page Include="BarExamples\BasicBar.xaml">
-      <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="BarExamples\BindingBar.xaml">
-      <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="BarExamples\CustomBar.xaml">
-      <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="BarExamples\MvvmBar.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="BarExamples\ZoomableBar.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pie Examples\BasicPie.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="BarExamples\ZoomableBar.xaml">
+    <Page Include="Pie Examples\BindingPie.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pie Examples\CustomPie.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pie Examples\MvvmPie.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -123,20 +154,17 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="BarExamples\BasicBar.xaml.cs">
-      <DependentUpon>BasicBar.xaml</DependentUpon>
+    <Compile Include="Pie Examples\BasicPie.xaml.cs">
+      <DependentUpon>BasicPie.xaml</DependentUpon>
     </Compile>
-    <Compile Include="BarExamples\BindingBar.xaml.cs">
-      <DependentUpon>BindingBar.xaml</DependentUpon>
+    <Compile Include="Pie Examples\BindingPie.xaml.cs">
+      <DependentUpon>BindingPie.xaml</DependentUpon>
     </Compile>
-    <Compile Include="BarExamples\CustomBar.xaml.cs">
-      <DependentUpon>CustomBar.xaml</DependentUpon>
+    <Compile Include="Pie Examples\CustomPie.xaml.cs">
+      <DependentUpon>CustomPie.xaml</DependentUpon>
     </Compile>
-    <Compile Include="BarExamples\MvvmBar.xaml.cs">
-      <DependentUpon>MvvmBar.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="BarExamples\ZoomableBar.xaml.cs">
-      <DependentUpon>ZoomableBar.xaml</DependentUpon>
+    <Compile Include="Pie Examples\MvvmPie.xaml.cs">
+      <DependentUpon>MvvmPie.xaml</DependentUpon>
     </Compile>
     <Compile Include="ExamplesMapper.cs" />
     <Compile Include="Line Examples\BasicLine.xaml.cs">
@@ -183,7 +211,7 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="More\TestConverter.cs" />
+    <Compile Include="TestConverter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

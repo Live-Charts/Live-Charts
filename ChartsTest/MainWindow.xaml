@@ -86,9 +86,10 @@
                     </liveCharts:PieChart.Series>
                 </liveCharts:PieChart>
             </Grid>-->
-            
+
             <TextBlock>For the next exmples click on left or right arrows to navigate through different examples</TextBlock>
-            <TextBlock Style="{StaticResource Title}">Line and Area Chart Examples</TextBlock>
+
+            <TextBlock Style="{StaticResource Title}">Line &amp; Area Chart Examples</TextBlock>
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"></ColumnDefinition>
@@ -123,6 +124,19 @@
                 <ContentControl Name="StackedBarControl" Grid.Column="1" Height="300" Width="Auto"></ContentControl>
                 <Image Grid.Column="2" Source="Right.png" MouseDown="StackedBarNext"/>
             </Grid>
+
+            <TextBlock Style="{StaticResource Title}">Pie &amp; Doughnut Chart Examples</TextBlock>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Image Grid.Column="0" Source="Left.png" MouseDown="PiePrevious"/>
+                <ContentControl Name="PieControl" Grid.Column="1" Height="300" Width="Auto"></ContentControl>
+                <Image Grid.Column="2" Source="Right.png" MouseDown="PieNext"/>
+            </Grid>
+
         </StackPanel>
     </ScrollViewer>
 </Window>

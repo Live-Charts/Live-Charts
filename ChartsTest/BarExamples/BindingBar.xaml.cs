@@ -15,7 +15,7 @@ namespace ChartsTest.BarExamples
             Serie2.DataContext = new ObservableCollection<double> { 7, 3, 4, 1 };
         }
 
-        private void BindingBar_OnLoaded(object sender, RoutedEventArgs e)
+        private void OnLoaded(object sender, RoutedEventArgs e)
         {
             //this is just to see animation everytime you click next
             Chart.ClearAndPlot();

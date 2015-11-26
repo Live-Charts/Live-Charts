@@ -28,6 +28,8 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using LiveCharts.Shapes;
 using System.Collections.Generic;
+using System.ComponentModel;
+using LiveCharts.TypeConverters;
 
 namespace LiveCharts
 {
@@ -35,7 +37,7 @@ namespace LiveCharts
     {
 		public static readonly DependencyProperty LabelsProperty =
 			DependencyProperty.Register("Labels", typeof(IList<string>), typeof(PieSerie), new PropertyMetadata(null));
-
+        [TypeConverter(typeof(StringCollectionConverter))]
 		public IList<string> Labels
 		{
 			get { return (IList<string>)GetValue(LabelsProperty); }

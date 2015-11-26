@@ -35,7 +35,6 @@ namespace LiveCharts
         {
             var chart = Chart as BarChart;
             if (chart == null) return;
-            var xCount = 0;
             var pos = Chart.Series.IndexOf(this);
             var count = Chart.Series.Count;
             var unitW = ToPlotArea(1, AxisTags.X) - Chart.PlotArea.X + 5;
@@ -46,10 +45,8 @@ namespace LiveCharts
             const int seriesPadding = 2;
             var barW = (unitW - 2*pointPadding)/count;
 
-            foreach (var d in PrimaryValues)
+            foreach (var point in ChartPoints)
             {
-                xCount ++;
-                var point = new Point(xCount -1, d);
 
                 var t = new TranslateTransform();
 	            var r = new Rectangle

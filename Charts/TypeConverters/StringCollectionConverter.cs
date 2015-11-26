@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Globalization;
+using System.Linq;
 
 namespace LiveCharts.TypeConverters
 {
@@ -17,7 +18,7 @@ namespace LiveCharts.TypeConverters
             if (valueString != null)
             {
                 var values = valueString.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
-                return values;
+                return values.Select(x => x.Trim()).ToArray();
             }
             return base.ConvertFrom(context, culture, value);
         }
