@@ -34,7 +34,7 @@
 
             <TextBlock Style="{StaticResource Title}">Multiple Simple Examples</TextBlock>
 
-            <!--<Grid>
+            <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="150"></RowDefinition>
                     <RowDefinition Height="150"></RowDefinition>
@@ -52,7 +52,7 @@
                     </liveCharts:LineChart.Series>
                 </liveCharts:LineChart>
 
-                <liveCharts:ScatterChart Grid.Row="0" Grid.Column="1" Zooming="False" Margin="10 0 0 0">
+                <liveCharts:ScatterChart Grid.Row="0" Grid.Column="1" Zooming="False" Margin="10 0 0 0" LineType="None">
                     <liveCharts:ScatterChart.Series>
                         <liveCharts:ScatterSerie Title="Plot 1" PrimaryValues="1, 5, 3" SecondaryValues="5, 2, 6"/>
                         <liveCharts:ScatterSerie Title="Plot 2" PrimaryValues="-3, 5, -3" SecondaryValues="5, -2, 6"/>
@@ -85,7 +85,7 @@
                         <liveCharts:PieSerie PrimaryValues="{Binding}"></liveCharts:PieSerie>
                     </liveCharts:PieChart.Series>
                 </liveCharts:PieChart>
-            </Grid>-->
+            </Grid>
 
             <TextBlock>For the next exmples click on left or right arrows to navigate through different examples</TextBlock>
 

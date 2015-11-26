@@ -14,7 +14,7 @@
             <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
         <TextBlock Grid.Row="0" HorizontalAlignment="Center" Grid.ColumnSpan="2" Margin="5" Foreground="White">
-            Polyline and Custom Style</TextBlock>
+            Custom Style</TextBlock>
         <liveCharts:ScatterChart Name="Chart" Grid.Row="1" Grid.Column="0">
             <liveCharts:ScatterChart.Series>
                 <liveCharts:ScatterSerie Name="Serie1" Title="Tan" Color="#FFB300" PointRadius="0" StrokeThickness="4"></liveCharts:ScatterSerie>
