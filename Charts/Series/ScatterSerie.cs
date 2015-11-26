@@ -36,6 +36,12 @@ namespace LiveCharts
 {
     public class ScatterSerie : Serie
     {
+        public ScatterSerie()
+        {
+            StrokeThickness = 2.5;
+            PointRadius = 6;
+        }
+
 		public static readonly DependencyProperty SecondaryValuesProperty =
 			DependencyProperty.Register("SecondaryValues", typeof(IList<double>), typeof(ScatterSerie), new PropertyMetadata(new ObservableCollection<double>()));
 
@@ -45,6 +51,9 @@ namespace LiveCharts
 			get { return (IList<double>)GetValue(SecondaryValuesProperty); }
 			set { SetValue(SecondaryValuesProperty, value); }
 		}
+
+        public double StrokeThickness { get; set; }
+        public double PointRadius { get; set; }
 
         public override void Plot(bool animate = true)
         {
@@ -191,6 +200,7 @@ namespace LiveCharts
         private IEnumerable<Shape> _addSeriesAsPolyline(Point[] points, Color color, double storkeThickness,
             bool animate = true)
         {
+            if (points.Length < 2) return Enumerable.Empty<Shape>();
             var addedFigures = new List<Shape>();
 
             var l = 0d;

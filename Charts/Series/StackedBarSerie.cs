@@ -31,6 +31,13 @@ namespace LiveCharts
 {
     public class StackedBarSerie : Serie
     {
+        public StackedBarSerie()
+        {
+            StrokeThickness = 2.5;
+        }
+
+        public double StrokeThickness { get; set; }
+
         public override void Plot(bool animate = true)
         {
             var chart = Chart as StackedBarChart;
@@ -53,7 +60,7 @@ namespace LiveCharts
                 {
                     StrokeThickness = StrokeThickness,
                     Stroke = new SolidColorBrush {Color = Color},
-                    Fill = new SolidColorBrush {Color = Color, Opacity = .8},
+                    Fill = new SolidColorBrush {Color = Color, Opacity = Chart.AreaOpacity},
                     Width = Math.Max(0, barW - seriesPadding),
                     Height = 0,
                     RenderTransform = t

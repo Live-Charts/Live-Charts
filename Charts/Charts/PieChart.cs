@@ -46,6 +46,7 @@ namespace LiveCharts
             DrawPadding = 20;
             Background = Brushes.White;
             AnimatesNewPoints = true;
+            AreaOpacity = 1;
 
             PerformanceConfiguration = new PerformanceConfiguration { Enabled = false };
         }

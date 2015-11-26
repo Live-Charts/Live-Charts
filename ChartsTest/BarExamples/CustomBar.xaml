@@ -18,9 +18,9 @@
         </TextBlock>
         <liveCharts:BarChart Name="Chart" Grid.Row="1" Grid.Column="0">
             <liveCharts:BarChart.Series>
-                <liveCharts:BarSerie Title="Maria" PrimaryValues="20, 40, 45, 60, 55, 60, 65, 70" Color="#465CFF" PointRadius="0" StrokeThickness="4"></liveCharts:BarSerie>
-                <liveCharts:BarSerie Title="John" PrimaryValues="30, 35, 43, 68, 65 ,70, 55, 60" Color="#465CFF" PointRadius="0" StrokeThickness="4"></liveCharts:BarSerie>
-                <liveCharts:BarSerie Title="Erick" PrimaryValues="40, 42, 50, 70, 50, 55, 44, 73" Color="#3C4ED8" PointRadius="0" StrokeThickness="4"></liveCharts:BarSerie>
+                <liveCharts:BarSerie Title="Maria" PrimaryValues="20, 40, 45, 60, 55, 60, 65, 70" Color="#FFB300" StrokeThickness="4" />
+                <liveCharts:BarSerie Title="John" PrimaryValues="30, 35, 43, 68, 65 ,70, 55, 60" Color="#FFA000" StrokeThickness="4" />
+                <liveCharts:BarSerie Title="Erick" PrimaryValues="40, 42, 50, 70, 50, 55, 44, 73" Color="#FF8F00"  StrokeThickness="4"/>
             </liveCharts:BarChart.Series>
             <liveCharts:BarChart.PrimaryAxis>
                 <liveCharts:Axis Title="Sold Items" Enabled="False" Foreground="White" FontSize="13" FontFamily="Arial">

@@ -44,8 +44,6 @@ namespace LiveCharts
 
 		protected Serie()
 		{
-			StrokeThickness = 2.5;
-			PointRadius = 4;
 			ColorId = -1;
             ChartPoints = new List<Point>();
 		}
@@ -87,8 +85,7 @@ namespace LiveCharts
                 _chart = value;
             }
         }
-        public double StrokeThickness { get; set; }
-        public double PointRadius { get; set; }
+        
         public int ColorId { get { return _colorId + Chart.ColorStartIndex; } set { _colorId = value; } }
         public Color Color
         {

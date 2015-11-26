@@ -18,8 +18,10 @@
         </TextBlock>
         <liveCharts:PieChart Name="Chart" Grid.Row="1" Grid.Column="0" Background="#505050">
             <liveCharts:PieChart.Series>
-                <liveCharts:PieSerie Title="Maria" PrimaryValues="20, 40, 45, 60, 55, 60, 65, 70" Color="#465CFF"
-                                     Labels="Jan, Feb, Mar, Apr, May, Jun, Ago, Sep, Oct, Nov, Dec"></liveCharts:PieSerie>
+                <liveCharts:PieSerie Title="Maria"
+                                     PrimaryValues="20, 40, 45"
+                                     Labels="Jan, Feb, Mar"
+                                     Colors="#FFB300, #FFA000, #FF8F00"/>
             </liveCharts:PieChart.Series>
             <liveCharts:PieChart.PrimaryAxis>
                 <liveCharts:Axis Title="Sold Items" Enabled="False" Foreground="White" FontSize="13" FontFamily="Arial">

@@ -40,6 +40,7 @@ namespace LiveCharts
             ShapeHoverBehavior = ShapeHoverBehavior.Shape;
             IgnoresLastLabel = true;
             PerformanceConfiguration = new PerformanceConfiguration { Enabled = false };
+            AreaOpacity = 0.8;
         }
 
         /// <summary>

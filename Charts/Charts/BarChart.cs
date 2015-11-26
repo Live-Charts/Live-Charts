@@ -38,6 +38,7 @@ namespace LiveCharts
             Hoverable = true;
             ShapeHoverBehavior = ShapeHoverBehavior.Shape;
             IgnoresLastLabel = true;
+            AreaOpacity = .8;
 
             //no performance config for a bar chart
             //why? because this chart need to build a bar per point,

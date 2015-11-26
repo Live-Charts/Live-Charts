@@ -44,7 +44,16 @@ namespace LiveCharts
 			set { SetValue(LabelsProperty, value); }
 		}
 
-		public override void Plot(bool animate = true)
+        public static readonly DependencyProperty ColorsProperty = DependencyProperty.Register(
+            "Colors", typeof (Color[]), typeof (PieSerie), new PropertyMetadata(default(Color[])));
+        [TypeConverter(typeof(ColorCollectionConverter))]
+        public Color[] Colors
+        {
+            get { return (Color[]) GetValue(ColorsProperty); }
+            set { SetValue(ColorsProperty, value); }
+        }
+
+        public override void Plot(bool animate = true)
         {
             var pChart = Chart as PieChart;
             if (pChart == null) return;
@@ -69,11 +78,17 @@ namespace LiveCharts
                 {
                     CentreX = 0,
                     CentreY = 0,
-                    RotationAngle = 360 * rotated,
-                    WedgeAngle = 360 * participation,
-                    Radius = minDimension / 2,
+                    RotationAngle = 360*rotated,
+                    WedgeAngle = 360*participation,
+                    Radius = minDimension/2,
                     InnerRadius = pChart.InnerRadius,
-                    Fill = new SolidColorBrush {Color = GetColorByIndex(sliceId), Opacity = .8},
+                    Fill = new SolidColorBrush
+                    {
+                        Color = Colors != null && Colors.Length > sliceId
+                            ? Colors[sliceId]
+                            : GetColorByIndex(sliceId),
+                        Opacity = Chart.AreaOpacity
+                    },
                     Stroke = Chart.Background,
                     StrokeThickness = pChart.SlicePadding
                 };

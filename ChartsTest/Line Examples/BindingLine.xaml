@@ -17,7 +17,7 @@
         <TextBlock Grid.Row="0" HorizontalAlignment="Center" Grid.ColumnSpan="2" Margin="5" TextWrapping="Wrap">
             Series with bindings
         </TextBlock>
-        <liveCharts:LineChart Name="Chart" Grid.Row="1" Grid.Column="0" IncludeArea="False">
+        <liveCharts:LineChart Name="Chart" Grid.Row="1" Grid.Column="0" AreaOpacity="0">
             <liveCharts:LineChart.Series>
                 <liveCharts:LineSerie Name="Serie1" Title="Maria" PrimaryValues="{Binding}" StrokeThickness="4" PointRadius="6"></liveCharts:LineSerie>
                 <liveCharts:LineSerie Name="Serie2" Title="John" PrimaryValues="{Binding}" StrokeThickness="4" PointRadius="6"></liveCharts:LineSerie>

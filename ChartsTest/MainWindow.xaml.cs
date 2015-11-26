@@ -51,6 +51,14 @@ namespace ChartsTest
         {
             PieControl.Next(ExamplesMapper.PieExamples);
         }
+        private void ScatterPrevious(object sender, MouseButtonEventArgs e)
+        {
+            ScatterControl.Previous(ExamplesMapper.ScatterExamples);
+        }
+        private void ScatterNext(object sender, MouseButtonEventArgs e)
+        {
+            ScatterControl.Next(ExamplesMapper.ScatterExamples);
+        }
         #endregion
     }
 }

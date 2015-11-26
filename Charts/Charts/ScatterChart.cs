@@ -39,98 +39,16 @@ namespace LiveCharts
             PrimaryAxis = new Axis();
             SecondaryAxis = new Axis();
             Hoverable = true;
-            Zooming = true;
             ShapeHoverBehavior = ShapeHoverBehavior.Dot;
             AnimatesNewPoints = true;
+            AreaOpacity = 0.2;
+            LineType = LineChartLineType.Bezier;
         }
 
         public LineChartLineType LineType { get; set; }
 
         protected override bool ScaleChanged => GetMax() != Max ||
                                                 GetMin() != Min;
-
-        protected override void Scale()
-        {
-            Max = GetMax();
-            Min = GetMin();
-            S = GetS();
-
-            Max.Y = PrimaryAxis.MaxValue ?? (Math.Truncate(Max.Y / S.Y) + 1) * S.Y;
-            Min.Y = PrimaryAxis.MinValue ?? (Math.Truncate(Min.Y / S.Y) - 1) * S.Y;
-
-            Max.X = SecondaryAxis.MaxValue ?? (Math.Truncate(Max.X / S.X) + 1) * S.X;
-            Min.X = SecondaryAxis.MinValue ?? (Math.Truncate(Min.X / S.X) - 1) * S.X;
-
-            DrawAxis();
-        }
-
-        public override void DataMouseEnter(object sender, MouseEventArgs e)
-        {
-            var b = new Border
-            {
-                BorderThickness = TooltipBorderThickness ?? new Thickness(0),
-                Background = TooltipBackground ?? new SolidColorBrush {Color = Color.FromRgb(30, 30, 30), Opacity = .8},
-                CornerRadius = TooltipCornerRadius ?? new CornerRadius(1),
-                BorderBrush = TooltipBorderBrush ?? Brushes.Transparent
-            };
-            var sp = new StackPanel
-            {
-                Orientation = Orientation.Vertical
-            };
-
-            var senderShape = HoverableShapes.FirstOrDefault(s => Equals(s.Shape, sender));
-            if (senderShape == null) return;
-
-            senderShape.Target.Stroke = new SolidColorBrush {Color = senderShape.Serie.Color};
-            senderShape.Target.Fill = new SolidColorBrush {Color = PointHoverColor};
-
-            sp.Children.Add(new TextBlock
-            {
-                Text = "X:" +
-                       (PrimaryAxis.LabelFormatter == null
-                           ? senderShape.Value.X.ToString(CultureInfo.InvariantCulture)
-                           : PrimaryAxis.LabelFormatter(senderShape.Value.X)) +
-                       " Y: " +
-                       (SecondaryAxis.LabelFormatter == null
-                           ? senderShape.Value.Y.ToString(CultureInfo.InvariantCulture)
-                           : SecondaryAxis.LabelFormatter(senderShape.Value.Y)),
-                Margin = new Thickness(5),
-                VerticalAlignment = VerticalAlignment.Center,
-                FontFamily = new FontFamily("Calibri"),
-                FontSize = 11,
-                Foreground = TooltipForegroung ?? Brushes.White
-            });
-
-            b.Child = sp;
-            Canvas.Children.Add(b);
-
-            b.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
-            var x = senderShape.Value.X > (Min.X + Max.X)/2
-                ? ToPlotArea(senderShape.Value.X, AxisTags.X) - 10 - b.DesiredSize.Width
-                : ToPlotArea(senderShape.Value.X, AxisTags.X) + 10;
-            var y = senderShape.Value.Y > (Min.Y+ Max.Y)/2
-                ? ToPlotArea(senderShape.Value.Y, AxisTags.Y) + 10
-                : ToPlotArea(senderShape.Value.Y, AxisTags.Y) - 10 - b.DesiredSize.Height;
-
-            Canvas.SetLeft(b, x);
-            Canvas.SetTop(b, y);
-            Panel.SetZIndex(b, int.MaxValue-1);
-            CurrentToolTip = b;
-        }
-
-        public override void DataMouseLeave(object sender, MouseEventArgs e)
-        {
-            var s = sender as Shape;
-            if (s == null) return;
-
-            var shape = HoverableShapes.FirstOrDefault(x => Equals(x.Shape, s));
-            if (shape == null) return;
-
-            shape.Target.Fill = new SolidColorBrush {Color = shape.Serie.Color};
-            shape.Target.Stroke = new SolidColorBrush {Color = PointHoverColor};
-
-            Canvas.Children.Remove(CurrentToolTip);
-        }
 
         private Point GetMax()
         {
@@ -159,6 +77,113 @@ namespace LiveCharts
             return new Point(
                 SecondaryAxis.Separator.Step ?? CalculateSeparator(Max.X - Min.X, AxisTags.X),
                 PrimaryAxis.Separator.Step ?? CalculateSeparator(Max.Y - Min.Y, AxisTags.Y));
+        }
+
+        protected override void Scale()
+        {
+            Max = GetMax();
+            Min = GetMin();
+            S = GetS();
+
+            Max.Y = PrimaryAxis.MaxValue ?? (Math.Truncate(Max.Y / S.Y) + 1) * S.Y;
+            Min.Y = PrimaryAxis.MinValue ?? (Math.Truncate(Min.Y / S.Y) - 1) * S.Y;
+
+            Max.X = SecondaryAxis.MaxValue ?? (Math.Truncate(Max.X / S.X) + 1) * S.X;
+            Min.X = SecondaryAxis.MinValue ?? (Math.Truncate(Min.X / S.X) - 1) * S.X;
+
+            DrawAxis();
+        }
+
+        protected override void DrawAxis()
+        {
+            S = GetS();
+
+            Canvas.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+            var lastLabelX = Math.Truncate((Max.X - Min.X) / S.X) * S.X;
+            var longestYLabelSize = GetLongestLabelSize(PrimaryAxis);
+            var firstXLabelSize = GetLabelSize(SecondaryAxis, Min.X);
+            var lastXLabelSize = GetLabelSize(SecondaryAxis, lastLabelX);
+
+            const int padding = 5;
+
+            PlotArea.X = padding * 2 + (longestYLabelSize.X > firstXLabelSize.X * .5 ? longestYLabelSize.X : firstXLabelSize.X * .5);
+            PlotArea.Y = longestYLabelSize.Y * .5 + padding;
+            PlotArea.Height = Math.Max(0, Canvas.DesiredSize.Height - (padding * 2 + firstXLabelSize.Y) - PlotArea.Y);
+            PlotArea.Width = Math.Max(0, Canvas.DesiredSize.Width - PlotArea.X - padding);
+            var distanceToEnd = ToPlotArea(Max.X - lastLabelX, AxisTags.X) - PlotArea.X;
+            var change = lastXLabelSize.X * .5 - distanceToEnd > 0 ? lastXLabelSize.X * .5 - distanceToEnd : 0;
+            if (change <= PlotArea.Width)
+                PlotArea.Width -= change;
+
+            base.DrawAxis();
+        }
+
+        public override void DataMouseEnter(object sender, MouseEventArgs e)
+        {
+            var b = new Border
+            {
+                BorderThickness = TooltipBorderThickness ?? new Thickness(0),
+                Background = TooltipBackground ?? new SolidColorBrush { Color = Color.FromRgb(30, 30, 30), Opacity = .8 },
+                CornerRadius = TooltipCornerRadius ?? new CornerRadius(1),
+                BorderBrush = TooltipBorderBrush ?? Brushes.Transparent
+            };
+            var sp = new StackPanel
+            {
+                Orientation = Orientation.Vertical
+            };
+
+            var senderShape = HoverableShapes.FirstOrDefault(s => Equals(s.Shape, sender));
+            if (senderShape == null) return;
+
+            senderShape.Target.Stroke = new SolidColorBrush { Color = senderShape.Serie.Color };
+            senderShape.Target.Fill = new SolidColorBrush { Color = PointHoverColor };
+
+            sp.Children.Add(new TextBlock
+            {
+                Text = "X:" +
+                       (PrimaryAxis.LabelFormatter == null
+                           ? senderShape.Value.X.ToString(CultureInfo.InvariantCulture)
+                           : PrimaryAxis.LabelFormatter(senderShape.Value.X)) +
+                       " Y: " +
+                       (SecondaryAxis.LabelFormatter == null
+                           ? senderShape.Value.Y.ToString(CultureInfo.InvariantCulture)
+                           : SecondaryAxis.LabelFormatter(senderShape.Value.Y)),
+                Margin = new Thickness(5),
+                VerticalAlignment = VerticalAlignment.Center,
+                FontFamily = new FontFamily("Calibri"),
+                FontSize = 11,
+                Foreground = TooltipForegroung ?? Brushes.White
+            });
+
+            b.Child = sp;
+            Canvas.Children.Add(b);
+
+            b.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+            var x = senderShape.Value.X > (Min.X + Max.X) / 2
+                ? ToPlotArea(senderShape.Value.X, AxisTags.X) - 10 - b.DesiredSize.Width
+                : ToPlotArea(senderShape.Value.X, AxisTags.X) + 10;
+            var y = senderShape.Value.Y > (Min.Y + Max.Y) / 2
+                ? ToPlotArea(senderShape.Value.Y, AxisTags.Y) + 10
+                : ToPlotArea(senderShape.Value.Y, AxisTags.Y) - 10 - b.DesiredSize.Height;
+
+            Canvas.SetLeft(b, x);
+            Canvas.SetTop(b, y);
+            Panel.SetZIndex(b, int.MaxValue - 1);
+            CurrentToolTip = b;
+        }
+
+        public override void DataMouseLeave(object sender, MouseEventArgs e)
+        {
+            var s = sender as Shape;
+            if (s == null) return;
+
+            var shape = HoverableShapes.FirstOrDefault(x => Equals(x.Shape, s));
+            if (shape == null) return;
+
+            shape.Target.Fill = new SolidColorBrush { Color = shape.Serie.Color };
+            shape.Target.Stroke = new SolidColorBrush { Color = PointHoverColor };
+
+            Canvas.Children.Remove(CurrentToolTip);
         }
     }
 }

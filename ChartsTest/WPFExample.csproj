@@ -71,6 +71,24 @@
     <Compile Include="BarExamples\ZoomableBar.xaml.cs">
       <DependentUpon>ZoomableBar.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Scatter Examples\BasicScatter.xaml.cs">
+      <DependentUpon>BasicScatter.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Scatter Examples\BindingScatter.xaml.cs">
+      <DependentUpon>BindingScatter.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Scatter Examples\CustomScatter.xaml.cs">
+      <DependentUpon>CustomScatter.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Scatter Examples\MvvmScatter.xaml.cs">
+      <DependentUpon>MvvmScatter.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Scatter Examples\PerformanceScatter.xaml.cs">
+      <DependentUpon>PerformanceScatter.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Scatter Examples\ZoomableScatter.xaml.cs">
+      <DependentUpon>ZoomableScatter.xaml</DependentUpon>
+    </Compile>
     <Compile Include="StackedBarExamples\BasicStackedBar.xaml.cs">
       <DependentUpon>BasicStackedBar.xaml</DependentUpon>
     </Compile>
@@ -189,6 +207,30 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Scatter Examples\BasicScatter.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Scatter Examples\BindingScatter.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Scatter Examples\CustomScatter.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Scatter Examples\MvvmScatter.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Scatter Examples\PerformanceScatter.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Scatter Examples\ZoomableScatter.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="StackedBarExamples\BasicStackedBar.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

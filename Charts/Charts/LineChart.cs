@@ -42,7 +42,6 @@ namespace LiveCharts
 					Enabled = false
 				};
 			LineType = LineChartLineType.Bezier;
-			IncludeArea = true;
 			Hoverable = true;
 			ShapeHoverBehavior = ShapeHoverBehavior.Dot;
 		    AreaOpacity = 0.2;
@@ -52,12 +51,8 @@ namespace LiveCharts
 		                                        GetMin() != _rawMin ||
 		                                        GetS() != _rawS;
 
-	    public bool IncludeArea { get; set; }
-
 	    public LineChartLineType LineType { get; set; }
-
-	    public double AreaOpacity { get; set; }
-
+	    
 		private Point GetMax()
 		{
 		    var x = Series.Select(serie => serie.PrimaryValues.Count - 1).DefaultIfEmpty(0).Max();

@@ -32,6 +32,15 @@ namespace LiveCharts
 {
     public class RadarSerie : Serie
     {
+        public RadarSerie()
+        {
+            StrokeThickness = 2.5;
+            PointRadius = 4;
+        }
+
+        public double StrokeThickness { get; set; }
+        public double PointRadius { get; set; }
+
         public override void Plot(bool animate = true)
         {
             var chart = Chart as RadarChart;
@@ -82,9 +91,7 @@ namespace LiveCharts
                     {
                         Fill = Brushes.Transparent,
                         Width = 40,
-                        Height = 40,
-                        StrokeThickness = 0,
-                        Stroke = Brushes.Red
+                        Height = 40
                     };
                     var e = new Ellipse
                     {
@@ -154,7 +161,7 @@ namespace LiveCharts
                 Data = g,
                 StrokeEndLineCap = PenLineCap.Round,
                 StrokeStartLineCap = PenLineCap.Round,
-                Fill = new SolidColorBrush { Color = Color, Opacity = .2 },
+                Fill = new SolidColorBrush { Color = Color, Opacity = chart.AreaOpacity },
                 StrokeDashOffset = l,
                 StrokeDashArray = new DoubleCollection { l, l }
             };

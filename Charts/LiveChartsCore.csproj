@@ -116,6 +116,7 @@
     <Compile Include="Charts\ScatterChart.cs" />
     <Compile Include="PerformanceConfiguration.cs" />
     <Compile Include="Properties\Annotations.cs" />
+    <Compile Include="TypeConverters\ColorCollectionConverter.cs" />
     <Compile Include="TypeConverters\StringCollectionConverter.cs" />
     <Compile Include="TypeConverters\ValueCollectionConverter.cs" />
     <Compile Include="Viewers\Converters.cs" />

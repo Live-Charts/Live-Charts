@@ -33,9 +33,18 @@ namespace LiveCharts
 {
 	public class LineSerie : Serie
 	{
+	    public LineSerie()
+	    {
+	        StrokeThickness = 2.5;
+	        PointRadius = 4;
+	    }
+
 		private LineChart LineChart => Chart as LineChart;
 
-		public override void Plot(bool animate = true)
+        public double StrokeThickness { get; set; }
+        public double PointRadius { get; set; }
+
+        public override void Plot(bool animate = true)
 		{
 			var serie = this;
 
@@ -152,11 +161,9 @@ namespace LiveCharts
 
 			LineChart.Canvas.Children.Add(path);
 			addedFigures.Add(path);
-			if (LineChart.IncludeArea)
-			{
-				LineChart.Canvas.Children.Add(patha);
-				addedFigures.Add(patha);
-			}
+
+		    LineChart.Canvas.Children.Add(patha);
+		    addedFigures.Add(patha);
 
 			var draw = new DoubleAnimationUsingKeyFrames
 				{
@@ -261,11 +268,10 @@ namespace LiveCharts
 
 			LineChart.Canvas.Children.Add(path);
 			addedFigures.Add(path);
-		    if (LineChart.IncludeArea)
-		    {
-		        LineChart.Canvas.Children.Add(spath);
-		        addedFigures.Add(spath);
-		    }
+
+		    LineChart.Canvas.Children.Add(spath);
+		    addedFigures.Add(spath);
+		    
 		    var draw = new DoubleAnimationUsingKeyFrames
 				{
 					BeginTime = TimeSpan.FromSeconds(0),

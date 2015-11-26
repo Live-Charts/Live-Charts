@@ -35,6 +35,16 @@ namespace LiveCharts
     {
         public double Radius;
 
+        public RadarChart()
+        {
+            PrimaryAxis = new Axis();
+            SecondaryAxis = new Axis();
+            Hoverable = true;
+            ShapeHoverBehavior = ShapeHoverBehavior.Dot;
+            AlphaLabel = true;
+            AreaOpacity = .2;
+        }
+
         public double InnerRadius { get; set; } = 10.0;
 
         protected override bool ScaleChanged
@@ -47,15 +57,6 @@ namespace LiveCharts
             }
         }
         
-        public RadarChart()
-        {
-            PrimaryAxis = new Axis();
-            SecondaryAxis = new Axis();
-            Hoverable = true;
-            ShapeHoverBehavior = ShapeHoverBehavior.Dot;
-            AlphaLabel = true;
-        }
-
         private void Measure()
         {
             Size desiredSize = DesiredSize;

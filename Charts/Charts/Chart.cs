@@ -237,6 +237,7 @@ namespace LiveCharts.Charts
         public Thickness? TooltipBorderThickness { get; set; } = null;
         public PerformanceConfiguration PerformanceConfiguration { get; set; }
         public bool Zooming { get; set; }
+        public double AreaOpacity { get; set; }
         #endregion
 
         #region ProtectedProperties
