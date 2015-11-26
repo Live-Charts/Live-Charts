@@ -10,6 +10,7 @@ namespace ChartsTest.BarExamples
         public BasicBar()
         {
             InitializeComponent();
+            //PrimaryAxis.LabelFormatter = val => val + " items";
         }
 
         private void OnLoaded(object sender, RoutedEventArgs e)

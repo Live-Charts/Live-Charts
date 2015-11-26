@@ -97,7 +97,7 @@
                     <ColumnDefinition Width="Auto"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
                 <Image Grid.Column="0" Source="Left.png" MouseDown="LinePrevious"/>
-                <ContentControl Name="LineControl" Grid.Column="1" Height="300" Width="Auto"></ContentControl>
+                <ContentControl Name="LineControl" Grid.Column="1" Height="500" Width="Auto"></ContentControl>
                 <Image Grid.Column="2" Source="Right.png" MouseDown="LineNext"/>
             </Grid>
 
@@ -109,7 +109,7 @@
                     <ColumnDefinition Width="Auto"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
                 <Image Grid.Column="0" Source="Left.png" MouseDown="BarPrevious"/>
-                <ContentControl Name="BarControl" Grid.Column="1" Height="300" Width="Auto"></ContentControl>
+                <ContentControl Name="BarControl" Grid.Column="1" Height="500" Width="Auto"></ContentControl>
                 <Image Grid.Column="2" Source="Right.png" MouseDown="BarNext"/>
             </Grid>
 
@@ -121,7 +121,7 @@
                     <ColumnDefinition Width="Auto"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
                 <Image Grid.Column="0" Source="Left.png" MouseDown="StackedBarPrevious"/>
-                <ContentControl Name="StackedBarControl" Grid.Column="1" Height="300" Width="Auto"></ContentControl>
+                <ContentControl Name="StackedBarControl" Grid.Column="1" Height="500" Width="Auto"></ContentControl>
                 <Image Grid.Column="2" Source="Right.png" MouseDown="StackedBarNext"/>
             </Grid>
 
@@ -133,7 +133,7 @@
                     <ColumnDefinition Width="Auto"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
                 <Image Grid.Column="0" Source="Left.png" MouseDown="PiePrevious"/>
-                <ContentControl Name="PieControl" Grid.Column="1" Height="300" Width="Auto"></ContentControl>
+                <ContentControl Name="PieControl" Grid.Column="1" Height="500" Width="Auto"></ContentControl>
                 <Image Grid.Column="2" Source="Right.png" MouseDown="PieNext"/>
             </Grid>
 
@@ -145,7 +145,7 @@
                     <ColumnDefinition Width="Auto"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
                 <Image Grid.Column="0" Source="Left.png" MouseDown="ScatterPrevious"/>
-                <ContentControl Name="ScatterControl" Grid.Column="1" Height="300" Width="Auto"></ContentControl>
+                <ContentControl Name="ScatterControl" Grid.Column="1" Height="500" Width="Auto"></ContentControl>
                 <Image Grid.Column="2" Source="Right.png" MouseDown="ScatterNext"/>
             </Grid>
             

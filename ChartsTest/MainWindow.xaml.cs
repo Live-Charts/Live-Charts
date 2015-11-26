@@ -1,4 +1,7 @@
-﻿using System.Windows.Input;
+﻿using System.Collections.Generic;
+using System.Windows.Input;
+using System.Windows.Media;
+using LiveCharts.Charts;
 
 namespace ChartsTest
 {

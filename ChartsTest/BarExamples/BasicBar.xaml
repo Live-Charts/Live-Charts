@@ -23,7 +23,7 @@
                 <liveCharts:BarSerie Title="John" PrimaryValues="30, 35, 43, 68, 65 ,70, 55, 60"></liveCharts:BarSerie>
             </liveCharts:BarChart.Series>
             <liveCharts:BarChart.PrimaryAxis>
-                <liveCharts:Axis Title="Sold Items"></liveCharts:Axis>
+                <liveCharts:Axis Name="PrimaryAxis" Title="Sold Items"></liveCharts:Axis>
             </liveCharts:BarChart.PrimaryAxis>
             <liveCharts:BarChart.SecondaryAxis>
                 <liveCharts:Axis Title="Month" Labels="Jan, Feb, Mar, Apr, May, Jun, Ago, Sep, Oct, Nov, Dec"></liveCharts:Axis>
