@@ -170,7 +170,7 @@ namespace LiveCharts
 			Chart.Canvas.Children.Add(path);
 			addedFigures.Add(path);
 
-		    if (AreaOpacity > 0.01)
+		    if (AreaOpacity == null || AreaOpacity > 0.01)
 		    {
 		        Chart.Canvas.Children.Add(patha);
 		        addedFigures.Add(patha);
@@ -278,10 +278,13 @@ namespace LiveCharts
 				};
 
             Chart.Canvas.Children.Add(path);
-			addedFigures.Add(path);
+            addedFigures.Add(path);
 
-            Chart.Canvas.Children.Add(spath);
-		    addedFigures.Add(spath);
+            if (AreaOpacity == null || AreaOpacity > 0.01)
+		    {
+                Chart.Canvas.Children.Add(spath);
+                addedFigures.Add(spath);
+            }
 		    
 		    var draw = new DoubleAnimationUsingKeyFrames
 				{
