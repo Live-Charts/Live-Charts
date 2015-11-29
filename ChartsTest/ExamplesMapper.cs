@@ -22,6 +22,7 @@ namespace ChartsTest
                 new CustomLine(),
                 new ZoomableLine(),
                 new BindingLine(),
+                new UiElementsLine(),
                 new MvvmLine(),
                 new PerformanceLine()
             };

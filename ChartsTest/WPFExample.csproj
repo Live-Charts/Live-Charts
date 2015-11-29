@@ -38,6 +38,8 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -70,6 +72,9 @@
     </Compile>
     <Compile Include="BarExamples\ZoomableBar.xaml.cs">
       <DependentUpon>ZoomableBar.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Line Examples\UiElementsLine.xaml.cs">
+      <DependentUpon>UiElementsLine.xaml</DependentUpon>
     </Compile>
     <Compile Include="Scatter Examples\BasicScatter.xaml.cs">
       <DependentUpon>BasicScatter.xaml</DependentUpon>
@@ -123,6 +128,10 @@
     <Page Include="BarExamples\ZoomableBar.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Line Examples\UiElementsLine.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pie Examples\BasicPie.xaml">
       <SubType>Designer</SubType>
@@ -300,7 +309,7 @@
     <Resource Include="sun.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="moon.png" />
+    <Resource Include="snow.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

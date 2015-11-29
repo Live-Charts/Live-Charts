@@ -1,0 +1,23 @@
+﻿<UserControl x:Class="ChartsTest.Line_Examples.UiElementsLine"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:liveCharts="clr-namespace:LiveCharts;assembly=LiveCharts"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300"
+             Loaded="UiElementsLine_OnLoaded">
+    <Grid>
+        <liveCharts:LineChart Name="Chart" Plot="Chart_OnPlot">
+            <liveCharts:LineChart.Series>
+                <liveCharts:LineSeries PrimaryValues="10, 5, 20, 30, 35, 30, 10, 5, -3, 10"></liveCharts:LineSeries>
+            </liveCharts:LineChart.Series>
+            <liveCharts:LineChart.PrimaryAxis>
+                <liveCharts:Axis Name="TemperatureAxis" Title="Temperature"></liveCharts:Axis>
+            </liveCharts:LineChart.PrimaryAxis>
+            <liveCharts:LineChart.SecondaryAxis>
+                <liveCharts:Axis Title="Date" Labels="March 10, March 11, March 12, March 13, March 14, March 15, March 16, March 17, March 18, March 19"></liveCharts:Axis>
+            </liveCharts:LineChart.SecondaryAxis>
+        </liveCharts:LineChart>
+    </Grid>
+</UserControl>
