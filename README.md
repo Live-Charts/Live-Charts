@@ -53,7 +53,7 @@ xmlns:liveCharts="clr-namespace:LiveCharts;assembly=LiveCharts"
 ```
 **3**. Thats it. You are ready.
 
-# Need more examples?
+# Need examples?
 
 Try [Live Charts Wiki](https://github.com/beto-rodriguez/Live-Charts/wiki), or cloning this repo, test project includes a lot of examples.
 
@@ -62,3 +62,13 @@ Try [Live Charts Wiki](https://github.com/beto-rodriguez/Live-Charts/wiki), or c
 * Star this repo
 * Try it
 * Report Issues and Improvements
+
+
+# More Images
+
+<p align="center">
+<img src="https://dl.dropboxusercontent.com/u/40165535/LiveCharts/Tooltip.gif" />
+</p>
+<p align="center">
+<img src="https://dl.dropboxusercontent.com/u/40165535/LiveCharts/multiseries.png" />
+</p>
