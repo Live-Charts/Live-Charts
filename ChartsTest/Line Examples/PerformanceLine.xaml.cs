@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows;
+using LiveCharts;
 
 namespace ChartsTest.Line_Examples
 {
@@ -17,6 +18,7 @@ namespace ChartsTest.Line_Examples
                 Values = l.ToArray(),
                 Name = "Sales"
             };
+            Chart.PerformanceConfiguration = new PerformanceConfiguration();
         }
 
         private void MvvmPerformanceOptimization_OnLoaded(object sender, RoutedEventArgs e)

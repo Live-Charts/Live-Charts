@@ -64,7 +64,6 @@
                     <liveCharts:BarChart.Series>
                         <liveCharts:BarSeries Title="Maria" PrimaryValues="4, 2, 2"></liveCharts:BarSeries>
                         <liveCharts:BarSeries Title="Jose" PrimaryValues="2, 1, 5"></liveCharts:BarSeries>
-                        <liveCharts:LineSeries Title="Average" PrimaryValues="10, 1.5, 3.5" AreaOpacity="0" StrokeThickness="2" PointRadius="0"></liveCharts:LineSeries>
                     </liveCharts:BarChart.Series>
                 </liveCharts:BarChart>
 

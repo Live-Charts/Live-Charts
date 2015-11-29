@@ -24,7 +24,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
-using System.Windows.Controls;
 using LiveCharts.Charts;
 
 namespace LiveCharts
@@ -66,6 +65,15 @@ namespace LiveCharts
                         ? serie.PrimaryValues[i]
                         : double.MinValue))
                     .Concat(new[] {double.MinValue}).Max());
+
+            //correction for lineSeries
+            var maxLineSeries =
+                Series.OfType<LineSeries>()
+                    .Select(series => series.PrimaryValues.DefaultIfEmpty(0).Max())
+                    .DefaultIfEmpty(0)
+                    .Max();
+            p.Y = p.Y > maxLineSeries ? p.Y : maxLineSeries;
+
             p.Y = PrimaryAxis.MaxValue ?? p.Y;
             return p;
         }
@@ -80,6 +88,15 @@ namespace LiveCharts
                         ? serie.PrimaryValues[i]
                         : double.MinValue))
                     .Concat(new[] {double.MaxValue}).Min());
+
+            //correction for lineSeries
+            var minLineSeries =
+                Series.OfType<LineSeries>()
+                    .Select(series => series.PrimaryValues.DefaultIfEmpty(0).Min())
+                    .DefaultIfEmpty(0)
+                    .Min();
+            p.Y = p.Y < minLineSeries ? p.Y : minLineSeries;
+
             p.Y = PrimaryAxis.MinValue ?? p.Y;
             return p;
         }
@@ -93,6 +110,8 @@ namespace LiveCharts
 
         protected override void Scale()
         {
+            PrimaryAxis.MinValue = 0;
+
             var stackedSeries = Series.OfType<StackedBarSeries>().ToList();
             var fSerie = stackedSeries.FirstOrDefault();
             if (fSerie == null) return;

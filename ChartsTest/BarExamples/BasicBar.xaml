@@ -22,6 +22,7 @@
             <liveCharts:BarChart.Series>
                 <liveCharts:BarSeries Title="Maria"    PrimaryValues="20, 40, 45, 60, 55, 60, 65, 70"></liveCharts:BarSeries>
                 <liveCharts:BarSeries Title="John"     PrimaryValues="30, 35, 43, 68, 65 ,70, 55, 60"></liveCharts:BarSeries>
+                <liveCharts:LineSeries Title="Averge"  PrimaryValues="25, 37.5, 44, 64, 60, 65, 60, 65" AreaOpacity="0"></liveCharts:LineSeries>
             </liveCharts:BarChart.Series>
             <liveCharts:BarChart.PrimaryAxis>
                 <liveCharts:Axis Name="PrimaryAxis" Title="Sold Items"></liveCharts:Axis>

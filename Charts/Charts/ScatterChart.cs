@@ -140,12 +140,12 @@ namespace LiveCharts
                 Series = senderShape.Series as ScatterSeries,
                 PrimaryAxisTitle = PrimaryAxis.Title,
                 PrimaryValue = PrimaryAxis.LabelFormatter == null
-                    ? senderShape.Value.X.ToString(CultureInfo.InvariantCulture)
-                    : PrimaryAxis.LabelFormatter(senderShape.Value.X),
+                    ? senderShape.Value.Y.ToString(CultureInfo.InvariantCulture)
+                    : PrimaryAxis.LabelFormatter(senderShape.Value.Y),
                 SecondaryAxisTitle = SecondaryAxis.Title,
                 SecondaryValue = SecondaryAxis.LabelFormatter == null
-                    ? senderShape.Value.Y.ToString(CultureInfo.InvariantCulture)
-                    : SecondaryAxis.LabelFormatter(senderShape.Value.Y)
+                    ? senderShape.Value.X.ToString(CultureInfo.InvariantCulture)
+                    : SecondaryAxis.LabelFormatter(senderShape.Value.X)
             };
 
             var p = GetToolTipPosition(senderShape, null);

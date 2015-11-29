@@ -98,7 +98,7 @@ namespace LiveCharts.Charts
             AnimatesNewPoints = false;
             CurrentScale = 1;
 
-            PerformanceConfiguration = new PerformanceConfiguration();
+            PerformanceConfiguration = new PerformanceConfiguration {Enabled = false};
             Series = new ObservableCollection<Series>();
             DataToolTip = new IndexedToolTip();
             Shapes = new List<FrameworkElement>();
@@ -228,11 +228,6 @@ namespace LiveCharts.Charts
                 Canvas.Children.Add(_dataToolTip);
             }
         }
-        public Brush TooltipBackground { get; set; } = null;
-        public Brush TooltipForegroung { get; set; } = null;
-        public Brush TooltipBorderBrush { get; set; } = null;
-        public CornerRadius? TooltipCornerRadius { get; set; } = null;
-        public Thickness? TooltipBorderThickness { get; set; } = null;
         public PerformanceConfiguration PerformanceConfiguration { get; set; }
         public bool Zooming { get; set; }
         public double AreaOpacity { get; set; }
@@ -247,7 +242,7 @@ namespace LiveCharts.Charts
         {
             _seriesChanged.Stop();
             _seriesChanged.Start();
-            PrepareCanvas();
+            PrepareCanvas(true);
         }
 
         public void ZoomIn()
@@ -701,7 +696,7 @@ namespace LiveCharts.Charts
             UpdateSeries(null, null);
         }
 
-        private void PrepareCanvas()
+        private void PrepareCanvas(bool animate = false)
         {
             foreach (var shape in Shapes) Canvas.Children.Remove(shape);
             foreach (var shape in HoverableShapes.Select(x => x.Shape).ToList())
@@ -713,7 +708,7 @@ namespace LiveCharts.Charts
             {
                 Canvas.Children.Add(serie);
                 EraseSerieBuffer.Add(serie);
-                serie.RequiresAnimation = true;
+                serie.RequiresAnimation = animate;
                 serie.RequiresPlot = true;
             }
             Canvas.Width = ActualWidth * CurrentScale;

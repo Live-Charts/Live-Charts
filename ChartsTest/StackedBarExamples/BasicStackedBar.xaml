@@ -21,6 +21,7 @@
             <liveCharts:StackedBarChart.Series>
                 <liveCharts:StackedBarSeries Title="Maria" PrimaryValues="20, 40, 45, 60, 55, 60, 65, 70"></liveCharts:StackedBarSeries>
                 <liveCharts:StackedBarSeries Title="John" PrimaryValues="30, 35, 43, 68, 65 ,70, 55, 60"></liveCharts:StackedBarSeries>
+                <liveCharts:LineSeries Title="Expected Sales"  PrimaryValues="10, 70, 80, 110,120, 140,120, 120" AreaOpacity="0"></liveCharts:LineSeries>
             </liveCharts:StackedBarChart.Series>
             <liveCharts:StackedBarChart.PrimaryAxis>
                 <liveCharts:Axis Title="Sold Items"></liveCharts:Axis>

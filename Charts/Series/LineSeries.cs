@@ -170,10 +170,13 @@ namespace LiveCharts
 			Chart.Canvas.Children.Add(path);
 			addedFigures.Add(path);
 
-		    Chart.Canvas.Children.Add(patha);
-		    addedFigures.Add(patha);
+		    if (AreaOpacity > 0.01)
+		    {
+		        Chart.Canvas.Children.Add(patha);
+		        addedFigures.Add(patha);
+		    }
 
-			var draw = new DoubleAnimationUsingKeyFrames
+		    var draw = new DoubleAnimationUsingKeyFrames
 				{
 					BeginTime = TimeSpan.FromSeconds(0),
 					KeyFrames = new DoubleKeyFrameCollection
