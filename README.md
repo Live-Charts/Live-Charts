@@ -72,3 +72,6 @@ Try [Live Charts Wiki](https://github.com/beto-rodriguez/Live-Charts/wiki), or c
 <p align="center">
 <img src="https://dl.dropboxusercontent.com/u/40165535/LiveCharts/multiseries.png" />
 </p>
+<p align="center">
+<img src="https://dl.dropboxusercontent.com/u/40165535/LiveCharts/UiElements.png" />
+</p>
