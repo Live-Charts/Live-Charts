@@ -124,9 +124,5 @@ namespace LiveCharts
         /// </summary>
         public double? MinValue { get; set; }
         public string Title { get; set; }
-        /// <summary>
-        /// Gets or sets the inverse Axis
-        /// </summary>
-        public Axis InverseAxis { get; internal set; }
     }
 }

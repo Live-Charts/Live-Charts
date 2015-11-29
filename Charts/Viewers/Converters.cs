@@ -18,7 +18,7 @@ namespace LiveCharts.Viewers
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             var v = value as int?;
-            return v == null ? Colors.Transparent : Serie.GetColorByIndex(v.Value);
+            return v == null ? Colors.Transparent : Series.GetColorByIndex(v.Value);
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
@@ -42,7 +42,7 @@ namespace LiveCharts.Viewers
             if (values == null || values.Length < 2) return null;
 
             var index = values[0] as int?;
-            var context = (((values[1] as PieSeriesViewer)?.Series)?[0] as PieSerie)?.Labels;
+            var context = (((values[1] as PieSeriesViewer)?.Series)?[0] as PieSeries)?.Labels;
 
             if (index == null || context == null) return null;
 

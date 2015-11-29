@@ -34,16 +34,16 @@ using LiveCharts.TypeConverters;
 
 namespace LiveCharts
 {
-    public class ScatterSerie : Serie
+    public class ScatterSeries : Series
     {
-        public ScatterSerie()
+        public ScatterSeries()
         {
             StrokeThickness = 2.5;
             PointRadius = 6;
         }
 
 		public static readonly DependencyProperty SecondaryValuesProperty =
-			DependencyProperty.Register("SecondaryValues", typeof(IList<double>), typeof(ScatterSerie), new PropertyMetadata(new ObservableCollection<double>()));
+			DependencyProperty.Register("SecondaryValues", typeof(IList<double>), typeof(ScatterSeries), new PropertyMetadata(new ObservableCollection<double>()));
 
 		[TypeConverter(typeof(ValueCollectionConverter))]
 		public IList<double> SecondaryValues
@@ -100,7 +100,7 @@ namespace LiveCharts
 
                     Chart.HoverableShapes.Add(new HoverableShape
                     {
-                        Serie = this,
+                        Series = this,
                         Shape = r,
                         Target = e,
                         Value = value
@@ -109,7 +109,7 @@ namespace LiveCharts
                 Shapes.Add(e);
             }
 
-            var c = Chart as ScatterChart;
+            var c = Chart as ILine;
             if (c == null) return;
 
             if (c.LineType == LineChartLineType.Bezier) 

@@ -18,8 +18,8 @@
         </TextBlock>
         <liveCharts:BarChart Name="Chart" Grid.Row="1" Grid.Column="0" AreaOpacity="0">
             <liveCharts:BarChart.Series>
-                <liveCharts:BarSerie Name="Serie1" Title="Maria" PrimaryValues="{Binding}"></liveCharts:BarSerie>
-                <liveCharts:BarSerie Name="Serie2" Title="John" PrimaryValues="{Binding}"></liveCharts:BarSerie>
+                <liveCharts:BarSeries Name="Serie1" Title="Maria" PrimaryValues="{Binding}"></liveCharts:BarSeries>
+                <liveCharts:BarSeries Name="Serie2" Title="John" PrimaryValues="{Binding}"></liveCharts:BarSeries>
             </liveCharts:BarChart.Series>
             <liveCharts:BarChart.PrimaryAxis>
                 <liveCharts:Axis Enabled="False" PrintLabels="False">

@@ -18,8 +18,8 @@
         </TextBlock>
         <liveCharts:StackedBarChart Name="Chart" Grid.Row="1" Grid.Column="0" AreaOpacity="0">
             <liveCharts:StackedBarChart.Series>
-                <liveCharts:StackedBarSerie Name="Serie1" Title="Maria" PrimaryValues="{Binding}"></liveCharts:StackedBarSerie>
-                <liveCharts:StackedBarSerie Name="Serie2" Title="John" PrimaryValues="{Binding}"></liveCharts:StackedBarSerie>
+                <liveCharts:StackedBarSeries Name="Serie1" Title="Maria" PrimaryValues="{Binding}"></liveCharts:StackedBarSeries>
+                <liveCharts:StackedBarSeries Name="Serie2" Title="John" PrimaryValues="{Binding}"></liveCharts:StackedBarSeries>
             </liveCharts:StackedBarChart.Series>
             <liveCharts:StackedBarChart.PrimaryAxis>
                 <liveCharts:Axis Enabled="False" PrintLabels="False">

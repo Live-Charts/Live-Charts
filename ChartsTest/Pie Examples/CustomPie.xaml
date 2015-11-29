@@ -18,7 +18,7 @@
         </TextBlock>
         <liveCharts:PieChart Name="Chart" Grid.Row="1" Grid.Column="0" Background="#505050">
             <liveCharts:PieChart.Series>
-                <liveCharts:PieSerie Title="Maria"
+                <liveCharts:PieSeries Title="Maria"
                                      PrimaryValues="20, 40, 45"
                                      Labels="Jan, Feb, Mar"
                                      Colors="#FFB300, #FFA000, #FF8F00"/>

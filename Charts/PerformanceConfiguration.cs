@@ -20,6 +20,7 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -56,9 +57,9 @@ namespace LiveCharts
             var g = new List<Point>();
             foreach (var point in points)
             {
-                var inChartPoint = chart.ToPlotArea(point);
-                if (x == null) x = inChartPoint.X;
-                if (inChartPoint.X - x < ppp)
+                var chartValue = chart.ToPlotArea(point.X,AxisTags.X);
+                if (x == null) x = chartValue;
+                if (chartValue - x < ppp)
                 {
                     g.Add(point);
                     continue;
@@ -74,8 +75,7 @@ namespace LiveCharts
                 }
                 result.Add(new Point(xx, g.Average(p => p.Y)));
                 g = new List<Point> {point};
-                var newPoint = chart.ToPlotArea(point);
-                x = newPoint.X;
+                x = chart.ToPlotArea(point.X, AxisTags.X);
             }
             result.Add(new Point(g.Last().X, g.Average(p => p.Y)));
             return result;

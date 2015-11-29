@@ -27,7 +27,7 @@ using LiveCharts.Charts;
 
 namespace LiveCharts
 {
-	public class LineChart : Chart
+	public class LineChart : Chart, ILine
 	{
 		private Point _rawMax = new Point(0, 0);
 		private Point _rawMin = new Point(0, 0);
@@ -52,21 +52,26 @@ namespace LiveCharts
 		                                        GetS() != _rawS;
 
 	    public LineChartLineType LineType { get; set; }
-	    
-		private Point GetMax()
+        public double MaxColumnWidth { get; set; } = 60;
+
+        private Point GetMax()
 		{
 		    var x = Series.Select(serie => serie.PrimaryValues.Count - 1).DefaultIfEmpty(0).Max();
 		    var y = Series.Select(serie => serie.PrimaryValues.DefaultIfEmpty(0).Max()).DefaultIfEmpty(0).Max();
-            var p = new Point(x,y);
+		    var p = new Point(x, y);
 			p.Y = PrimaryAxis.MaxValue ?? p.Y;
+		    p.X = SecondaryAxis.MaxValue ?? p.X;
 			return p;
 		}
 
 		private Point GetMin()
 		{
-		    var p = new Point(0,
-		        Series.Select(x => x.ChartPoints.Select(pt => pt.Y).DefaultIfEmpty(0).Min()).DefaultIfEmpty(0).Min());
+            const int x = 0;
+            var y = Series.Select(serie => serie.PrimaryValues.DefaultIfEmpty(0).Min()).DefaultIfEmpty(0).Min();
+
+		    var p = new Point(x, y);
 			p.Y = PrimaryAxis.MinValue ?? p.Y;
+		    p.X = SecondaryAxis.MinValue ?? p.X;
 			return p;
 		}
 
@@ -91,15 +96,19 @@ namespace LiveCharts
             foreach (var serie in Series) serie.CalculatePoints();
 
             //corrected values (includes performance optimization values)
-		    Max.X = Series.Select(serie => serie.ChartPoints.Select(x => x.X).DefaultIfEmpty(0).Max()).DefaultIfEmpty(0).Max();
-		    Max.Y = Series.Select(serie => serie.ChartPoints.Select(x => x.Y).DefaultIfEmpty(0).Max()).DefaultIfEmpty(0).Max();
-            Min.X = Series.Select(serie => serie.ChartPoints.Select(x => x.X).DefaultIfEmpty(0).Min()).DefaultIfEmpty(0).Min();
-            Min.Y = Series.Select(serie => serie.ChartPoints.Select(x => x.Y).DefaultIfEmpty(0).Min()).DefaultIfEmpty(0).Min();
+            var maxX = Series.Select(serie => serie.ChartPoints.Select(x => x.X).DefaultIfEmpty(0).Max()).DefaultIfEmpty(0).Max();
+            var maxY = Series.Select(serie => serie.ChartPoints.Select(x => x.Y).DefaultIfEmpty(0).Max()).DefaultIfEmpty(0).Max();
+            var minX = Series.Select(serie => serie.ChartPoints.Select(x => x.X).DefaultIfEmpty(0).Min()).DefaultIfEmpty(0).Min();
+            var minY = Series.Select(serie => serie.ChartPoints.Select(x => x.Y).DefaultIfEmpty(0).Min()).DefaultIfEmpty(0).Min();
+
+		    Max = new Point(maxX, maxY);
+		    Min = new Point(minX, minY);
+
             _rawS = GetS();
             S = new Point(_rawS.X, _rawS.Y);
 
-            Max.Y = PrimaryAxis.MaxValue ?? (Math.Truncate(Max.Y / S.Y) + 1) * S.Y;
-			Min.Y = PrimaryAxis.MinValue ?? (Math.Truncate(Min.Y / S.Y) - 1) * S.Y;
+		    Max.Y = PrimaryAxis.MaxValue ?? (Math.Truncate(Max.Y/S.Y) + 1)*S.Y;
+		    Min.Y = PrimaryAxis.MinValue ?? (Math.Truncate(Min.Y/S.Y) - 1)*S.Y;
 
             DrawAxis();
 		}

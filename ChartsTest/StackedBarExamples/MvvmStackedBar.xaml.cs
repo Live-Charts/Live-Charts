@@ -66,9 +66,9 @@ namespace ChartsTest.StackedBarExamples
         public SalesViewModel()
         {
             AvailableMonths = _months;
-            Salesmen = new ObservableCollection<Serie>
+            Salesmen = new ObservableCollection<Series>
             {
-                new StackedBarSerie
+                new StackedBarSeries
                 {
                     Title = "John",
                     PrimaryValues = new ObservableCollection<double>(new[] {2d, 4, 7, 1, 5})
@@ -76,7 +76,7 @@ namespace ChartsTest.StackedBarExamples
             };
         }
 
-        public ObservableCollection<Serie> Salesmen { get; set; }
+        public ObservableCollection<Series> Salesmen { get; set; }
         public string[] AvailableMonths { get; set; }
 
         public void AddRandomSalesman()
@@ -87,7 +87,7 @@ namespace ChartsTest.StackedBarExamples
 
             for (var i = 0; i < Salesmen[0].PrimaryValues.Count; i++) values.Add(r.Next(0, 10));
 
-            Salesmen.Add(new StackedBarSerie
+            Salesmen.Add(new StackedBarSeries
             {
                 Title = _names[r.Next(0, _names.Count() - 1)],
                 PrimaryValues = new ObservableCollection<double>(values)

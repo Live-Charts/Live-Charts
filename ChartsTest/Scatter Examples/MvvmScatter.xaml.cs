@@ -74,9 +74,9 @@ namespace ChartsTest.Scatter_Examples
 
         public MathViewModel()
         {
-            Functions = new ObservableCollection<Serie>
+            Functions = new ObservableCollection<Series>
             {
-                new ScatterSerie
+                new ScatterSeries
                 {
                     PrimaryValues = new ObservableCollection<double>(_secondaryValues.Select(x => baseFunc(x, 0))),
                     SecondaryValues = _secondaryValues,
@@ -86,11 +86,11 @@ namespace ChartsTest.Scatter_Examples
             };
         }
 
-        public ObservableCollection<Serie> Functions { get; set; }
+        public ObservableCollection<Series> Functions { get; set; }
 
         public void AddRandomFunction()
         {
-            Functions.Add(new ScatterSerie
+            Functions.Add(new ScatterSeries
             {
                 PrimaryValues = new ObservableCollection<double>(_secondaryValues.Select(x => baseFunc(x, Functions.Count))),
                 SecondaryValues = _secondaryValues,
@@ -110,7 +110,7 @@ namespace ChartsTest.Scatter_Examples
             var nextVal = _secondaryValues[_secondaryValues.Count - 1] + 1;
             _secondaryValues.Add(nextVal);
 
-            foreach (var func in Functions.Cast<ScatterSerie>())
+            foreach (var func in Functions.Cast<ScatterSeries>())
             {
                 var evaluation = baseFunc(nextVal, Functions.IndexOf(func));
                 func.PrimaryValues.Add(evaluation);

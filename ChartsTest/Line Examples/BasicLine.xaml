@@ -19,8 +19,8 @@
         <TextBlock Grid.Row="0" HorizontalAlignment="Center" Grid.ColumnSpan="2" Margin="5">Basic Line</TextBlock>
         <liveCharts:LineChart Name="Chart" Grid.Row="1" Grid.Column="0">
             <liveCharts:LineChart.Series>
-                <liveCharts:LineSerie Title="Maria" PrimaryValues="20, 40, 45, 60, 55, 60, 65, 70"></liveCharts:LineSerie>
-                <liveCharts:LineSerie Title="John" PrimaryValues="30, 35, 43, 68, 65 ,70, 55, 60"></liveCharts:LineSerie>
+                <liveCharts:LineSeries Title="Maria" PrimaryValues="20, 40, 45, 60, 55, 60, 65, 70"></liveCharts:LineSeries>
+                <liveCharts:LineSeries Title="John" PrimaryValues="30, 35, 43, 68, 65 ,70, 55, 60"></liveCharts:LineSeries>
             </liveCharts:LineChart.Series>
             <liveCharts:LineChart.PrimaryAxis>
                 <liveCharts:Axis Title="Sold Items"></liveCharts:Axis>

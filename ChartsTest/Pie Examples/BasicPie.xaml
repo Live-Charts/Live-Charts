@@ -19,8 +19,8 @@
         <TextBlock Grid.Row="0" HorizontalAlignment="Center" Grid.ColumnSpan="2" Margin="5">Basic Pie Chart</TextBlock>
         <liveCharts:PieChart Name="Chart" Grid.Row="1" Grid.Column="0">
             <liveCharts:PieChart.Series>
-                <liveCharts:PieSerie Title="Maria" PrimaryValues="15, 10, 40, 55" 
-                                     Labels="Day 1, Day 2, Day 3, Day 4"></liveCharts:PieSerie>
+                <liveCharts:PieSeries Title="Maria" PrimaryValues="15, 10, 40, 55" 
+                                     Labels="Day 1, Day 2, Day 3, Day 4"></liveCharts:PieSeries>
             </liveCharts:PieChart.Series>
             <liveCharts:PieChart.PrimaryAxis>
                 <liveCharts:Axis Title="Sold Items"></liveCharts:Axis>

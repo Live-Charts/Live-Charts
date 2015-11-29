@@ -19,8 +19,8 @@
         </TextBlock>
         <liveCharts:LineChart Name="Chart" Grid.Row="1" Grid.Column="0" AreaOpacity="0">
             <liveCharts:LineChart.Series>
-                <liveCharts:LineSerie Name="Serie1" Title="Maria" PrimaryValues="{Binding}" StrokeThickness="4" PointRadius="6"></liveCharts:LineSerie>
-                <liveCharts:LineSerie Name="Serie2" Title="John" PrimaryValues="{Binding}" StrokeThickness="4" PointRadius="6"></liveCharts:LineSerie>
+                <liveCharts:LineSeries Name="Serie1" Title="Maria" PrimaryValues="{Binding}" StrokeThickness="4" PointRadius="6"></liveCharts:LineSeries>
+                <liveCharts:LineSeries Name="Serie2" Title="John" PrimaryValues="{Binding}" StrokeThickness="4" PointRadius="6"></liveCharts:LineSeries>
             </liveCharts:LineChart.Series>
             <liveCharts:LineChart.PrimaryAxis>
                 <liveCharts:Axis Enabled="False" PrintLabels="False">

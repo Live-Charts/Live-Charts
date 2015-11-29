@@ -33,7 +33,7 @@ using LiveCharts.TypeConverters;
 
 namespace LiveCharts
 {
-	public abstract class Serie : FrameworkElement
+	public abstract class Series : FrameworkElement
 	{
 		private Color? _color;
 		protected List<Shape> Shapes = new List<Shape>();
@@ -42,7 +42,7 @@ namespace LiveCharts
 	    internal bool RequiresAnimation;
 	    internal bool RequiresPlot;
 
-		protected Serie()
+		protected Series()
 		{
 			ColorId = -1;
             ChartPoints = new List<Point>();
@@ -51,7 +51,7 @@ namespace LiveCharts
 
         #region Dependency Properties
         public static readonly DependencyProperty PrimaryValuesProperty =
-            DependencyProperty.Register("PrimaryValues", typeof(IList<double>), typeof(Serie), new PropertyMetadata(new ObservableCollection<double>()));
+            DependencyProperty.Register("PrimaryValues", typeof(IList<double>), typeof(Series), new PropertyMetadata(new ObservableCollection<double>()));
         [TypeConverter(typeof(ValueCollectionConverter))]
         public IList<double> PrimaryValues
         {
@@ -59,7 +59,7 @@ namespace LiveCharts
             set { SetValue(PrimaryValuesProperty, value); }
         }
         public static readonly DependencyProperty TitleProperty =
-           DependencyProperty.Register("Title", typeof(string), typeof(Serie),
+           DependencyProperty.Register("Title", typeof(string), typeof(Series),
                new PropertyMetadata("An Unnamed Serie"));
         /// <summary>
         /// Gets or sets serie name
@@ -116,7 +116,7 @@ namespace LiveCharts
                 Chart.Canvas.Children.Remove(s);
             Shapes.Clear();
 
-            var hoverableShapes = Chart.HoverableShapes.Where(x => x.Serie == this).ToList();
+            var hoverableShapes = Chart.HoverableShapes.Where(x => x.Series == this).ToList();
             foreach (var hs in hoverableShapes)
             {
                 Chart.Canvas.Children.Remove(hs.Shape);

@@ -1,6 +1,6 @@
 ﻿//The MIT License(MIT)
 
-//Copyright(c) 2015 Greg Dennis
+//Copyright(c) 2015 Alberto Rodriguez
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -21,32 +21,34 @@
 //SOFTWARE.
 
 using System;
-using System.ComponentModel;
 using System.Globalization;
-using System.Linq;
-using System.Windows.Media;
+using System.Windows.Data;
 
-namespace LiveCharts.TypeConverters
+namespace LiveCharts.Tooltip
 {
-    public class ColorCollectionConverter : TypeConverter
+    public class XTitleConverter : IValueConverter
     {
-        public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return sourceType == typeof(string) || base.CanConvertFrom(context, sourceType);
+            return value ?? "X";
         }
 
-        public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var valueString = value as string;
-            if (valueString != null)
-            {
-                var values = valueString.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
-                return values
-                    .Select(x => (Color) (ColorConverter.ConvertFromString(x.Trim())
-                                          ?? Colors.Transparent))
-                    .ToArray();
-            }
-            return base.ConvertFrom(context, culture, value);
+            throw new NotImplementedException();
+        }
+    }
+
+    public class YTitleConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return value ?? "Y";
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
         }
     }
 }

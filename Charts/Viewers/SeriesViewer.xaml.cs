@@ -16,11 +16,11 @@ namespace LiveCharts
         }
 
         public static readonly DependencyProperty SeriesProperty = DependencyProperty.Register(
-            "Series", typeof (ObservableCollection<Serie>), typeof (SeriesViewer), new PropertyMetadata(null));
+            "Series", typeof (ObservableCollection<Series>), typeof (SeriesViewer), new PropertyMetadata(null));
 
-        public ObservableCollection<Serie> Series
+        public ObservableCollection<Series> Series
         {
-            get { return (ObservableCollection<Serie>) GetValue(SeriesProperty); }
+            get { return (ObservableCollection<Series>) GetValue(SeriesProperty); }
             set { SetValue(SeriesProperty, value); }
         }
 

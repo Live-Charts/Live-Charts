@@ -67,9 +67,9 @@ namespace ChartsTest.Line_Examples
         public SalesViewModel()
         {
             AvailableMonths = _months;
-            Salesmen = new ObservableCollection<Serie>
+            Salesmen = new ObservableCollection<Series>
             {
-                new LineSerie
+                new LineSeries
                 {
                     Title = "John",
                     PrimaryValues = new ObservableCollection<double>(new[] {2d, 4, 7, 1, 5})
@@ -77,7 +77,7 @@ namespace ChartsTest.Line_Examples
             };
         }
 
-        public ObservableCollection<Serie> Salesmen { get; set; }
+        public ObservableCollection<Series> Salesmen { get; set; }
         public string[] AvailableMonths { get; set; }
 
         public void AddRandomSalesman()
@@ -88,7 +88,7 @@ namespace ChartsTest.Line_Examples
 
             for (var i = 0; i < Salesmen[0].PrimaryValues.Count; i++) values.Add(r.Next(0, 10));
 
-            Salesmen.Add(new LineSerie
+            Salesmen.Add(new LineSeries
             {
                 Title = _names[r.Next(0, _names.Count() - 1)],
                 PrimaryValues = new ObservableCollection<double>(values)

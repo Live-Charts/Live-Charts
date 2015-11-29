@@ -26,4 +26,12 @@ namespace LiveCharts
     {
         X ,Y
     }
+
+    public static class AxisExtentions
+    {
+        public static AxisTags Invert(this AxisTags axis)
+        {
+            return axis == AxisTags.X ? AxisTags.Y : AxisTags.X;
+        }
+    }
 }

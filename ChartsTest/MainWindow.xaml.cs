@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Windows.Input;
-using System.Windows.Media;
-using LiveCharts.Charts;
+﻿using System.Windows.Input;
 
 namespace ChartsTest
 {
@@ -11,7 +8,8 @@ namespace ChartsTest
     public partial class MainWindow
     {
         public double[] TestPrimaryValues { get; set; }
-	    public MainWindow()
+        
+        public MainWindow()
         {
             InitializeComponent();
 	        ExamplesMapper.Initialize(this);
@@ -63,5 +61,6 @@ namespace ChartsTest
             ScatterControl.Next(ExamplesMapper.ScatterExamples);
         }
         #endregion
+      
     }
 }

@@ -33,10 +33,10 @@ using LiveCharts.TypeConverters;
 
 namespace LiveCharts
 {
-    public class PieSerie : Serie
+    public class PieSeries : Series
     {
 		public static readonly DependencyProperty LabelsProperty =
-			DependencyProperty.Register("Labels", typeof(IList<string>), typeof(PieSerie), new PropertyMetadata(null));
+			DependencyProperty.Register("Labels", typeof(IList<string>), typeof(PieSeries), new PropertyMetadata(null));
         [TypeConverter(typeof(StringCollectionConverter))]
 		public IList<string> Labels
 		{
@@ -45,7 +45,7 @@ namespace LiveCharts
 		}
 
         public static readonly DependencyProperty ColorsProperty = DependencyProperty.Register(
-            "Colors", typeof (Color[]), typeof (PieSerie), new PropertyMetadata(default(Color[])));
+            "Colors", typeof (Color[]), typeof (PieSeries), new PropertyMetadata(default(Color[])));
         [TypeConverter(typeof(ColorCollectionConverter))]
         public Color[] Colors
         {
@@ -139,7 +139,7 @@ namespace LiveCharts
                 if (participation > .05 && Chart.PrimaryAxis.PrintLabels)
                 {
                     Chart.Canvas.Children.Add(valueBlock);
-                    Chart.AxisLabels.Add(valueBlock);
+                    Chart.Shapes.Add(valueBlock);
                 }
 
                 if (!Chart.DisableAnimation)
@@ -157,7 +157,7 @@ namespace LiveCharts
                     slice.MouseLeave += Chart.DataMouseLeave;
                     Chart.HoverableShapes.Add(new HoverableShape
                     {
-                        Serie = this,
+                        Series = this,
                         Shape = slice,
                         Target = slice,
                         Value = new Point(0, value),

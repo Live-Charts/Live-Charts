@@ -18,7 +18,7 @@
         </TextBlock>
         <liveCharts:PieChart Name="Chart" Grid.Row="1" Grid.Column="0" AreaOpacity=".7" InnerRadius="200" >
             <liveCharts:PieChart.Series>
-                <liveCharts:PieSerie Name="Serie1" Title="Maria" PrimaryValues="{Binding}"></liveCharts:PieSerie>
+                <liveCharts:PieSeries Name="Serie1" Title="Maria" PrimaryValues="{Binding}"></liveCharts:PieSeries>
             </liveCharts:PieChart.Series>
             <liveCharts:PieChart.PrimaryAxis>
                 <liveCharts:Axis Enabled="False" PrintLabels="False">

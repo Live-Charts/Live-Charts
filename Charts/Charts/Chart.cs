@@ -31,32 +31,28 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
+using LiveCharts.Tooltip;
 
 namespace LiveCharts.Charts
 {
     public abstract class Chart : UserControl
     {
-        public Rect PlotArea;
-        public Canvas Canvas;
-        public Point Max;
-        public Point Min;
-        public Point S;
-        public List<Shape> AxisShapes = new List<Shape>();
-        public List<TextBlock> AxisLabels = new List<TextBlock>();
-        public List<HoverableShape> HoverableShapes = new List<HoverableShape>();
-
+        internal Rect PlotArea;
+        internal Point Max;
+        internal Point Min;
+        internal Point S;
         internal int ColorStartIndex;
         internal bool RequiresScale;
-        internal List<Serie> EraseSerieBuffer = new List<Serie>();
+        internal List<Series> EraseSerieBuffer = new List<Series>();
 
-        protected Border CurrentToolTip;
         protected double CurrentScale;
         protected ShapeHoverBehavior ShapeHoverBehavior;
-        protected double LabelOffset;
         protected bool IgnoresLastLabel;
         protected bool AlphaLabel;
+        protected readonly DispatcherTimer TooltipTimer;
 
         private static readonly Random Randomizer;
         private readonly DispatcherTimer _resizeTimer;
@@ -64,8 +60,9 @@ namespace LiveCharts.Charts
         private readonly DispatcherTimer _seriesChanged;
         private Point _panOrigin;
         private bool _isDragging;
-        private Axis _primaryAxis;
-        private Axis _secondaryAxis;
+        private UserControl _dataToolTip;
+
+        public event Action<Chart> Plot;
 
         static Chart()
         {
@@ -96,6 +93,16 @@ namespace LiveCharts.Charts
             b.Child = Canvas;
             Content = b;
 
+            if (RandomizeStartingColor) ColorStartIndex = Randomizer.Next(0, Colors.Count - 1);
+
+            AnimatesNewPoints = false;
+            CurrentScale = 1;
+
+            PerformanceConfiguration = new PerformanceConfiguration();
+            Series = new ObservableCollection<Series>();
+            DataToolTip = new IndexedToolTip();
+            Shapes = new List<FrameworkElement>();
+            HoverableShapes = new List<HoverableShape>();
             PointHoverColor = System.Windows.Media.Colors.White;
 
             //it requieres a background so it detect mouse down/up events.
@@ -116,24 +123,17 @@ namespace LiveCharts.Charts
                 _resizeTimer.Stop();
                 ClearAndPlot();
             };
+            TooltipTimer = new DispatcherTimer
+            {
+                Interval = TimeSpan.FromMilliseconds(1000)
+            };
+            TooltipTimer.Tick += TooltipTimerOnTick;
 
             _serieValuesChanged = new DispatcherTimer {Interval = TimeSpan.FromMilliseconds(100)};
             _serieValuesChanged.Tick += UpdateModifiedDataSeries;
 
             _seriesChanged = new DispatcherTimer {Interval = TimeSpan.FromMilliseconds(100)};
             _seriesChanged.Tick += UpdateSeries;
-
-            CurrentScale = 1;
-            if (RandomizeStartingColor)
-            {
-                ColorStartIndex = Randomizer.Next(0, Colors.Count - 1);
-            }
-
-            AnimatesNewPoints = false;
-
-            PerformanceConfiguration = new PerformanceConfiguration();
-
-            Series = new ObservableCollection<Serie>();
         }
 
         #region Abstracts
@@ -196,40 +196,38 @@ namespace LiveCharts.Charts
         }
 
         public static readonly DependencyProperty SeriesProperty = DependencyProperty.Register(
-            "Series", typeof (ObservableCollection<Serie>), typeof (Chart),
-            new PropertyMetadata(new ObservableCollection<Serie>(), SeriesChangedCallback ));
+            "Series", typeof (ObservableCollection<Series>), typeof (Chart),
+            new PropertyMetadata(new ObservableCollection<Series>(), SeriesChangedCallback ));
         
-        public ObservableCollection<Serie> Series
+        public ObservableCollection<Series> Series
         {
-            get { return (ObservableCollection<Serie>) GetValue(SeriesProperty); }
+            get { return (ObservableCollection<Series>) GetValue(SeriesProperty); }
             set { SetValue(SeriesProperty, value); }
         }
         #endregion
 
         #region Properties
+        public Canvas Canvas { get; internal set; }
+        public double XOffset { get; internal set; }
+        public List<FrameworkElement> Shapes { get; internal set; }
+        public List<HoverableShape> HoverableShapes { get; internal set; } 
 
-        public Axis PrimaryAxis
+        public Axis PrimaryAxis { get; set; }
+        public Axis SecondaryAxis { get; set; }
+        public UserControl DataToolTip
         {
-            get { return _primaryAxis; }
+            get { return _dataToolTip; }
             set
             {
-                _primaryAxis = value;
-                _primaryAxis.InverseAxis = SecondaryAxis;
-                if (SecondaryAxis != null) SecondaryAxis.InverseAxis = _primaryAxis;
+                _dataToolTip = value;
+                if (value == null) return;
+                Panel.SetZIndex(_dataToolTip, int.MaxValue);
+                Canvas.SetLeft(_dataToolTip,0);
+                Canvas.SetTop(_dataToolTip, 0);
+                _dataToolTip.Visibility = Visibility.Hidden;
+                Canvas.Children.Add(_dataToolTip);
             }
         }
-
-        public Axis SecondaryAxis
-        {
-            get { return _secondaryAxis; }
-            set
-            {
-                _secondaryAxis = value;
-                _secondaryAxis.InverseAxis = PrimaryAxis;
-                if (PrimaryAxis != null) PrimaryAxis.InverseAxis = _secondaryAxis;
-            }
-        }
-
         public Brush TooltipBackground { get; set; } = null;
         public Brush TooltipForegroung { get; set; } = null;
         public Brush TooltipBorderBrush { get; set; } = null;
@@ -249,22 +247,7 @@ namespace LiveCharts.Charts
         {
             _seriesChanged.Stop();
             _seriesChanged.Start();
-
-            HoverableShapes = new List<HoverableShape>();
-            AxisShapes = new List<Shape>();
-            AxisLabels = new List<TextBlock>();
-            Canvas.Children.Clear();
-            foreach (var serie in Series)
-            {
-                Canvas.Children.Add(serie);
-                EraseSerieBuffer.Add(serie);
-                serie.RequiresAnimation = true;
-                serie.RequiresPlot = true;
-            }
-            Canvas.Width = ActualWidth * CurrentScale;
-            Canvas.Height = ActualHeight * CurrentScale;
-            PlotArea = new Rect(0, 0, ActualWidth * CurrentScale, ActualHeight * CurrentScale);
-            RequiresScale = true;
+            PrepareCanvas();
         }
 
         public void ZoomIn()
@@ -422,12 +405,7 @@ namespace LiveCharts.Charts
         #region Virtual Methods
         protected virtual void DrawAxis()
         {
-            foreach (var l in AxisLabels) Canvas.Children.Remove(l);
-            foreach (var s in AxisShapes) Canvas.Children.Remove(s);
-
-            AxisLabels.Clear();
-            AxisShapes.Clear();
-
+            foreach (var l in Shapes) Canvas.Children.Remove(l);
             //Titles
             var titleY = 0d;
             if (!string.IsNullOrWhiteSpace(PrimaryAxis.Title))
@@ -444,7 +422,7 @@ namespace LiveCharts.Charts
                     Text = PrimaryAxis.Title,
                     RenderTransform = new RotateTransform(-90)
                 };
-                AxisLabels.Add(yLabel);
+                Shapes.Add(yLabel);
                 Canvas.Children.Add(yLabel);
                 Canvas.SetLeft(yLabel, 5);
                 Canvas.SetTop(yLabel, Canvas.DesiredSize.Height * .5 + ty.X * .5);
@@ -464,7 +442,7 @@ namespace LiveCharts.Charts
                     Foreground = new SolidColorBrush { Color = SecondaryAxis.Foreground },
                     Text = SecondaryAxis.Title
                 };
-                AxisLabels.Add(yLabel);
+                Shapes.Add(yLabel);
                 Canvas.Children.Add(yLabel);
                 Canvas.SetLeft(yLabel, Canvas.DesiredSize.Width * .5 - tx.X * .5);
                 Canvas.SetTop(yLabel, Canvas.DesiredSize.Height - tx.Y - 5);
@@ -495,7 +473,7 @@ namespace LiveCharts.Charts
                         Y2 = y
                     };
                     Canvas.Children.Add(l);
-                    AxisShapes.Add(l);
+                    Shapes.Add(l);
                 }
 
                 if (PrimaryAxis.PrintLabels)
@@ -517,7 +495,7 @@ namespace LiveCharts.Charts
                         new Typeface(PrimaryAxis.FontFamily, PrimaryAxis.FontStyle, PrimaryAxis.FontWeight,
                             PrimaryAxis.FontStretch), PrimaryAxis.FontSize, Brushes.Black);
                     Canvas.Children.Add(label);
-                    AxisLabels.Add(label);
+                    Shapes.Add(label);
                     Canvas.SetLeft(label, titleY + (5 + longestYLabelSize.X) - fl.Width);
                     Canvas.SetTop(label, ToPlotArea(i, AxisTags.Y) - longestYLabelSize.Y * .5);
                 }
@@ -543,7 +521,7 @@ namespace LiveCharts.Charts
                         Y2 = ToPlotArea(Min.Y, AxisTags.Y)
                     };
                     Canvas.Children.Add(l);
-                    AxisShapes.Add(l);
+                    Shapes.Add(l);
                 }
 
                 if (SecondaryAxis.PrintLabels)
@@ -570,8 +548,8 @@ namespace LiveCharts.Charts
                         new Typeface(SecondaryAxis.FontFamily, SecondaryAxis.FontStyle, SecondaryAxis.FontWeight,
                             SecondaryAxis.FontStretch), SecondaryAxis.FontSize, Brushes.Black);
                     Canvas.Children.Add(label);
-                    AxisLabels.Add(label);
-                    Canvas.SetLeft(label, ToPlotArea(i, AxisTags.X) - fl.Width * .5 + LabelOffset);
+                    Shapes.Add(label);
+                    Canvas.SetLeft(label, ToPlotArea(i, AxisTags.X) - fl.Width * .5 + XOffset);
                     Canvas.SetTop(label, PlotArea.Y + PlotArea.Height + 5);
                 }
             }
@@ -589,7 +567,7 @@ namespace LiveCharts.Charts
                     Y2 = ToPlotArea(0, AxisTags.Y)
                 };
                 Canvas.Children.Add(l);
-                AxisShapes.Add(l);
+                Shapes.Add(l);
             }
 
             if (Max.X >= 0 && Min.X <= 0 && SecondaryAxis.Enabled)
@@ -604,103 +582,70 @@ namespace LiveCharts.Charts
                     Y2 = ToPlotArea(Max.Y, AxisTags.Y)
                 };
                 Canvas.Children.Add(l);
-                AxisShapes.Add(l);
+                Shapes.Add(l);
             }
         }
+
         public virtual void DataMouseEnter(object sender, MouseEventArgs e)
         {
-            var b = new Border
-            {
-                BorderThickness = TooltipBorderThickness ?? new Thickness(0),
-                Background = TooltipBackground ?? new SolidColorBrush { Color = Color.FromRgb(30, 30, 30), Opacity = .8 },
-                CornerRadius = TooltipCornerRadius ?? new CornerRadius(2),
-                BorderBrush = TooltipBorderBrush ?? Brushes.Transparent
-            };
-            var sp = new StackPanel
-            {
-                Orientation = Orientation.Vertical
-            };
+            if (DataToolTip == null) return;
+
+            DataToolTip.Visibility = Visibility.Visible;
+            TooltipTimer.Stop();
 
             var senderShape = HoverableShapes.FirstOrDefault(s => Equals(s.Shape, sender));
             if (senderShape == null) return;
             var sibilings = HoverableShapes
-                .Where(s => Math.Abs(s.Value.X - senderShape.Value.X) < S.X * .001).ToList();
+                .Where(s => Math.Abs(s.Value.X - senderShape.Value.X) < S.X*.001).ToList();
 
             var first = sibilings.Count > 0 ? sibilings[0] : null;
-            var last = sibilings.Count > 0 ? sibilings[sibilings.Count - 1] : null;
             var labels = SecondaryAxis.Labels?.ToArray();
             var vx = first?.Value.X ?? 0;
-            vx = AlphaLabel ? (int)(vx / (360d / Series.First().PrimaryValues.Count)) : vx;
-
-            sp.Children.Add(new TextBlock
-            {
-                Margin = new Thickness(10, 5, 10, 0),
-                HorizontalAlignment = HorizontalAlignment.Center,
-                TextAlignment = TextAlignment.Center,
-                Text = labels == null
-                ? (SecondaryAxis.LabelFormatter == null
-                    ? vx.ToString(CultureInfo.InvariantCulture)
-                    : SecondaryAxis.LabelFormatter(vx))
-                : (labels.Length > vx
-                    ? labels[(int)vx]
-                    : ""),
-                VerticalAlignment = VerticalAlignment.Center,
-                FontFamily = new FontFamily("Calibri"),
-                FontSize = 11,
-                Foreground = TooltipForegroung ?? Brushes.White
-            });
+            vx = AlphaLabel ? (int) (vx/(360d/Series.First().PrimaryValues.Count)) : vx;
 
             foreach (var sibiling in sibilings)
             {
                 if (ShapeHoverBehavior == ShapeHoverBehavior.Dot)
                 {
-                    sibiling.Target.Stroke = new SolidColorBrush { Color = sibiling.Serie.Color };
+                    sibiling.Target.Stroke = new SolidColorBrush { Color = sibiling.Series.Color };
                     sibiling.Target.Fill = new SolidColorBrush { Color = PointHoverColor };
                 }
                 else
                 {
                     sibiling.Target.Opacity = .8;
                 }
-
-                sp.Children.Add(new StackPanel
-                {
-                    Orientation = Orientation.Horizontal,
-                    Margin = new Thickness(10, 0, 10, (sibiling == last ? 5 : 0)),
-                    Children =
-                    {
-                        new Border
-                        {
-                            Background = new SolidColorBrush {Color = sibiling.Serie.Color},
-                            Height = 10,
-                            Width = 10,
-                            CornerRadius = new CornerRadius(5),
-                            BorderThickness = new Thickness(0)
-                        },
-                        new TextBlock
-                        {
-                            Text = sibiling.Serie.Title + " " + (PrimaryAxis.LabelFormatter == null
-                                ? sibiling.Value.Y.ToString(CultureInfo.InvariantCulture)
-                                : PrimaryAxis.LabelFormatter(sibiling.Value.Y)),
-                            Margin = new Thickness(5, 0, 5, 0),
-                            VerticalAlignment = VerticalAlignment.Center,
-                            FontFamily = new FontFamily("Calibri"),
-                            FontSize = 11,
-                            Foreground = TooltipForegroung ?? Brushes.White
-                        }
-                    }
-                });
             }
 
-            b.Child = sp;
-            Canvas.Children.Add(b);
+            DataToolTip.DataContext = new IndexedTooltipViewModel
+            {
+                Label = labels == null
+                    ? (SecondaryAxis.LabelFormatter == null
+                        ? vx.ToString(CultureInfo.InvariantCulture)
+                        : SecondaryAxis.LabelFormatter(vx))
+                    : (labels.Length > vx
+                        ? labels[(int) vx]
+                        : ""),
+                Data = sibilings.Select(x => new IndexedTooltipData
+                {
+                    Series = x.Series,
+                    Value = (PrimaryAxis.LabelFormatter == null
+                        ? x.Value.Y.ToString(CultureInfo.InvariantCulture)
+                        : PrimaryAxis.LabelFormatter(x.Value.Y))
+                }).ToArray()
+            };
 
-            b.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
-            var p = GetToolTipPosition(senderShape, sibilings, b);
+            var p = GetToolTipPosition(senderShape, sibilings);
 
-            Canvas.SetLeft(b, p.X);
-            Canvas.SetTop(b, p.Y);
-
-            CurrentToolTip = b;
+            DataToolTip.BeginAnimation(Canvas.LeftProperty, new DoubleAnimation
+            {
+                To = p.X,
+                Duration = TimeSpan.FromMilliseconds(200)
+            });
+            DataToolTip.BeginAnimation(Canvas.TopProperty, new DoubleAnimation
+            {
+                To = p.Y,
+                Duration = TimeSpan.FromMilliseconds(200)
+            });
         }
 
         public virtual void DataMouseLeave(object sender, MouseEventArgs e)
@@ -718,7 +663,7 @@ namespace LiveCharts.Charts
             {
                 if (ShapeHoverBehavior == ShapeHoverBehavior.Dot)
                 {
-                    p.Target.Fill = new SolidColorBrush { Color = p.Serie.Color };
+                    p.Target.Fill = new SolidColorBrush { Color = p.Series.Color };
                     p.Target.Stroke = new SolidColorBrush { Color = PointHoverColor };
                 }
                 else
@@ -726,20 +671,19 @@ namespace LiveCharts.Charts
                     p.Target.Opacity = 1;
                 }
             }
-            if (CurrentToolTip == null) return;
-            Canvas.Children.Remove(CurrentToolTip);
-            CurrentToolTip = null;
+            TooltipTimer.Stop();
+            TooltipTimer.Start();
         }
-
-        protected virtual Point GetToolTipPosition(HoverableShape sender, List<HoverableShape> sibilings, Border b)
+        protected virtual Point GetToolTipPosition(HoverableShape sender, List<HoverableShape> sibilings)
         {
+            DataToolTip.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
             var x = sender.Value.X > (Min.X + Max.X) / 2
-                ? ToPlotArea(sender.Value.X, AxisTags.X) - 10 - b.DesiredSize.Width
+                ? ToPlotArea(sender.Value.X, AxisTags.X) - 10 - DataToolTip.DesiredSize.Width
                 : ToPlotArea(sender.Value.X, AxisTags.X) + 10;
             var y = ToPlotArea(sibilings.Select(s => s.Value.Y).DefaultIfEmpty(0).Sum()
                                / sibilings.Count, AxisTags.Y);
-            y = y + b.DesiredSize.Height > ActualHeight
-                ? y - (y + b.DesiredSize.Height - ActualHeight) - 5
+            y = y + DataToolTip.DesiredSize.Height > ActualHeight
+                ? y - (y + DataToolTip.DesiredSize.Height - ActualHeight) - 5
                 : y;
             return new Point(x, y);
         }
@@ -753,22 +697,29 @@ namespace LiveCharts.Charts
 
         private void ForceRedrawNow()
         {
+            PrepareCanvas();
+            UpdateSeries(null, null);
+        }
+
+        private void PrepareCanvas()
+        {
+            foreach (var shape in Shapes) Canvas.Children.Remove(shape);
+            foreach (var shape in HoverableShapes.Select(x => x.Shape).ToList())
+                Canvas.Children.Remove(shape);
+            foreach (var serie in Series) Canvas.Children.Remove(serie);
             HoverableShapes = new List<HoverableShape>();
-            AxisShapes = new List<Shape>();
-            AxisLabels = new List<TextBlock>();
-            Canvas.Children.Clear();
+            Shapes = new List<FrameworkElement>();
             foreach (var serie in Series)
             {
                 Canvas.Children.Add(serie);
                 EraseSerieBuffer.Add(serie);
-                serie.RequiresAnimation = false;
+                serie.RequiresAnimation = true;
                 serie.RequiresPlot = true;
             }
             Canvas.Width = ActualWidth * CurrentScale;
             Canvas.Height = ActualHeight * CurrentScale;
             PlotArea = new Rect(0, 0, ActualWidth * CurrentScale, ActualHeight * CurrentScale);
             RequiresScale = true;
-            UpdateSeries(null, null);
         }
 
 		private void PreventGraphToBeVisible()
@@ -841,12 +792,12 @@ namespace LiveCharts.Charts
                 chart._seriesChanged.Start();
 
                 if (args.OldItems != null)
-                    foreach (var serie in args.OldItems.Cast<Serie>())
+                    foreach (var serie in args.OldItems.Cast<Series>())
                     {
                         chart.EraseSerieBuffer.Add(serie);
                     }
 
-                var newElements = args.NewItems?.Cast<Serie>() ?? new List<Serie>();
+                var newElements = args.NewItems?.Cast<Series>() ?? new List<Series>();
 
                 if (chart.ScaleChanged)
                 {
@@ -895,6 +846,8 @@ namespace LiveCharts.Charts
                 serie.RequiresPlot = false;
                 serie.RequiresAnimation = false;
             }
+
+            Plot?.Invoke(this);
 #if DEBUG
             Trace.WriteLine("Series Updated!");
 #endif
@@ -952,6 +905,11 @@ namespace LiveCharts.Charts
             if (!Zooming) return;
             _isDragging = false;
             PreventGraphToBeVisible();
+        }
+
+        private void TooltipTimerOnTick(object sender, EventArgs e)
+        {
+            DataToolTip.Visibility = Visibility.Hidden;
         }
         #endregion
     }

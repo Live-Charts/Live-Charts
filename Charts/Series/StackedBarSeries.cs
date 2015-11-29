@@ -21,6 +21,7 @@
 //SOFTWARE.
 
 using System;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -29,9 +30,9 @@ using System.Windows.Shapes;
 
 namespace LiveCharts
 {
-    public class StackedBarSerie : Serie
+    public class StackedBarSeries : Series
     {
-        public StackedBarSerie()
+        public StackedBarSeries()
         {
             StrokeThickness = 2.5;
         }
@@ -40,10 +41,12 @@ namespace LiveCharts
 
         public override void Plot(bool animate = true)
         {
-            var chart = Chart as StackedBarChart;
+            var chart = Chart as IStackedBar;
             if (chart == null) return;
 
-            var serieIndex = Chart.Series.IndexOf(this);
+            var stackedSeries = Chart.Series.OfType<StackedBarSeries>().ToList();
+
+            var serieIndex = stackedSeries.IndexOf(this);
             var unitW = ToPlotArea(1, AxisTags.X) - Chart.PlotArea.X + 5;
             var overflow = unitW - chart.MaxColumnWidth > 0 ? unitW - chart.MaxColumnWidth : 0;
             unitW = unitW > chart.MaxColumnWidth ? chart.MaxColumnWidth : unitW;
@@ -111,7 +114,7 @@ namespace LiveCharts
                 r.MouseLeave += Chart.DataMouseLeave;
                 Chart.HoverableShapes.Add(new HoverableShape
                 {
-                    Serie = this,
+                    Series = this,
                     Shape = r,
                     Target = r,
                     Value = new Point(index, d)

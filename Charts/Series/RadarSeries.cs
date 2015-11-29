@@ -30,9 +30,9 @@ using System.Windows.Shapes;
 
 namespace LiveCharts
 {
-    public class RadarSerie : Serie
+    public class RadarSeries : Series
     {
-        public RadarSerie()
+        public RadarSeries()
         {
             StrokeThickness = 2.5;
             PointRadius = 4;
@@ -108,7 +108,7 @@ namespace LiveCharts
                     Shapes.Add(r);
                     chart.HoverableShapes.Add(new HoverableShape
                     {
-                        Serie = this,
+                        Series = this,
                         Shape = r,
                         Value = new Point(index * alpha, PrimaryValues[index]),
                         Target = e

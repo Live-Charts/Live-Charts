@@ -47,42 +47,43 @@
 
                 <liveCharts:LineChart Grid.Row="0" Grid.Column="0" Margin="0 0 10 0">
                     <liveCharts:LineChart.Series>
-                        <liveCharts:LineSerie Title="Asia" PrimaryValues="1, 6, 10, 0"></liveCharts:LineSerie>
-                        <liveCharts:LineSerie Title="Europe" PrimaryValues="{Binding}"></liveCharts:LineSerie>
+                        <liveCharts:LineSeries Title="Asia" PrimaryValues="1, 6, 10, 0"></liveCharts:LineSeries>
+                        <liveCharts:LineSeries Title="Europe" PrimaryValues="{Binding}"></liveCharts:LineSeries>
                     </liveCharts:LineChart.Series>
                 </liveCharts:LineChart>
 
                 <liveCharts:ScatterChart Grid.Row="0" Grid.Column="1" Zooming="False" Margin="10 0 0 0" LineType="None">
                     <liveCharts:ScatterChart.Series>
-                        <liveCharts:ScatterSerie Title="Plot 1" PrimaryValues="1, 5, 3" SecondaryValues="5, 2, 6"/>
-                        <liveCharts:ScatterSerie Title="Plot 2" PrimaryValues="-3, 5, -3" SecondaryValues="5, -2, 6"/>
-                        <liveCharts:ScatterSerie Title="Plot 3" PrimaryValues="1, 6, 2" SecondaryValues="0, 3, 2"/>
+                        <liveCharts:ScatterSeries Title="Plot 1" PrimaryValues="1, 5, 3" SecondaryValues="5, 2, 6"/>
+                        <liveCharts:ScatterSeries Title="Plot 2" PrimaryValues="-3, 5, -3" SecondaryValues="5, -2, 6"/>
+                        <liveCharts:ScatterSeries Title="Plot 3" PrimaryValues="1, 6, 2" SecondaryValues="0, 3, 2"/>
                     </liveCharts:ScatterChart.Series>
                 </liveCharts:ScatterChart>
 
                 <liveCharts:BarChart Grid.Row="1" Grid.Column="0" Margin="0 0 10 0">
                     <liveCharts:BarChart.Series>
-                        <liveCharts:BarSerie Title="Maria" PrimaryValues="4, 2, 2"></liveCharts:BarSerie>
-                        <liveCharts:BarSerie Title="Jose" PrimaryValues="2, 1, 5"></liveCharts:BarSerie>
+                        <liveCharts:BarSeries Title="Maria" PrimaryValues="4, 2, 2"></liveCharts:BarSeries>
+                        <liveCharts:BarSeries Title="Jose" PrimaryValues="2, 1, 5"></liveCharts:BarSeries>
+                        <liveCharts:LineSeries Title="Average" PrimaryValues="10, 1.5, 3.5" AreaOpacity="0" StrokeThickness="2" PointRadius="0"></liveCharts:LineSeries>
                     </liveCharts:BarChart.Series>
                 </liveCharts:BarChart>
 
                 <liveCharts:StackedBarChart Grid.Row="1" Grid.Column="1" Margin="10 0 0 0">
                     <liveCharts:StackedBarChart.Series>
-                        <liveCharts:StackedBarSerie Title="John" PrimaryValues="4, 2, 2"></liveCharts:StackedBarSerie>
-                        <liveCharts:StackedBarSerie Title="Susan" PrimaryValues="2, 1, 5"></liveCharts:StackedBarSerie>
+                        <liveCharts:StackedBarSeries Title="John" PrimaryValues="4, 2, 2"></liveCharts:StackedBarSeries>
+                        <liveCharts:StackedBarSeries Title="Susan" PrimaryValues="2, 1, 5"></liveCharts:StackedBarSeries>
                     </liveCharts:StackedBarChart.Series>
                 </liveCharts:StackedBarChart>
 
                 <liveCharts:PieChart Grid.Row="2" Grid.Column="0" Margin="0 0 10 0">
                     <liveCharts:PieChart.Series>
-                        <liveCharts:PieSerie PrimaryValues="4, 2, 2, 2"></liveCharts:PieSerie>
+                        <liveCharts:PieSeries PrimaryValues="4, 2, 2, 2"></liveCharts:PieSeries>
                     </liveCharts:PieChart.Series>
                 </liveCharts:PieChart>
 
                 <liveCharts:PieChart Grid.Row="2" Grid.Column="1" InnerRadius="40" Margin="10 0 0 0">
                     <liveCharts:PieChart.Series>
-                        <liveCharts:PieSerie PrimaryValues="{Binding}"></liveCharts:PieSerie>
+                        <liveCharts:PieSeries PrimaryValues="{Binding}"></liveCharts:PieSeries>
                     </liveCharts:PieChart.Series>
                 </liveCharts:PieChart>
             </Grid>
@@ -148,7 +149,7 @@
                 <ContentControl Name="ScatterControl" Grid.Column="1" Height="500" Width="Auto"></ContentControl>
                 <Image Grid.Column="2" Source="Right.png" MouseDown="ScatterNext"/>
             </Grid>
-            
+
         </StackPanel>
     </ScrollViewer>
 </Window>

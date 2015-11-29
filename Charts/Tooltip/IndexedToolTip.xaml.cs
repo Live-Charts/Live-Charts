@@ -1,6 +1,6 @@
 ﻿//The MIT License(MIT)
 
-//Copyright(c) 2015 Greg Dennis
+//Copyright(c) 2015 Alberto Rodriguez
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -20,33 +20,16 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-using System;
-using System.ComponentModel;
-using System.Globalization;
-using System.Linq;
-using System.Windows.Media;
-
-namespace LiveCharts.TypeConverters
+namespace LiveCharts.Tooltip
 {
-    public class ColorCollectionConverter : TypeConverter
+    /// <summary>
+    /// Interaction logic for BaseToolTip.xaml
+    /// </summary>
+    public partial class IndexedToolTip
     {
-        public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
+        public IndexedToolTip()
         {
-            return sourceType == typeof(string) || base.CanConvertFrom(context, sourceType);
-        }
-
-        public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
-        {
-            var valueString = value as string;
-            if (valueString != null)
-            {
-                var values = valueString.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
-                return values
-                    .Select(x => (Color) (ColorConverter.ConvertFromString(x.Trim())
-                                          ?? Colors.Transparent))
-                    .ToArray();
-            }
-            return base.ConvertFrom(context, culture, value);
+            InitializeComponent();
         }
     }
 }

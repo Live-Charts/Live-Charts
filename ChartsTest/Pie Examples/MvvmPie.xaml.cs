@@ -49,9 +49,9 @@ namespace ChartsTest.Pie_Examples
         public SalesViewModel()
         {
             AvailableMonths = _months;
-            Salesmen = new ObservableCollection<Serie>
+            Salesmen = new ObservableCollection<Series>
             {
-                new PieSerie
+                new PieSeries
                 {
                     Title = "John",
                     PrimaryValues = new ObservableCollection<double>(new[] {2d, 4, 7, 1, 5}),
@@ -60,7 +60,7 @@ namespace ChartsTest.Pie_Examples
             };
         }
 
-        public ObservableCollection<Serie> Salesmen { get; set; }
+        public ObservableCollection<Series> Salesmen { get; set; }
         public string[] AvailableMonths { get; set; }
 
         public void AddOneMonth()

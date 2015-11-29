@@ -18,7 +18,7 @@
         </TextBlock>
         <liveCharts:ScatterChart Name="Chart" Grid.Row="1" Grid.Column="0" Zooming="True">
             <liveCharts:ScatterChart.Series>
-                <liveCharts:ScatterSerie Name="Serie1" Title="Sin"/>
+                <liveCharts:ScatterSeries Name="Serie1" Title="Sin"/>
             </liveCharts:ScatterChart.Series>
         </liveCharts:ScatterChart>
     </Grid>

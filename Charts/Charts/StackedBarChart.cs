@@ -29,7 +29,7 @@ using LiveCharts.Charts;
 
 namespace LiveCharts
 {
-    public class StackedBarChart : Chart
+    public class StackedBarChart : Chart, IStackedBar, ILine
     {
         public StackedBarChart()
         {
@@ -41,14 +41,17 @@ namespace LiveCharts
             IgnoresLastLabel = true;
             PerformanceConfiguration = new PerformanceConfiguration { Enabled = false };
             AreaOpacity = 0.8;
+            LineType = LineChartLineType.Bezier;
+            IndexTotals = new Dictionary<int, StackedBarHelper>();
         }
 
         /// <summary>
         /// Gets or sets maximum column width, default is 60
         /// </summary>
         public double MaxColumnWidth { get; set; } = 60;
+        public LineChartLineType LineType { get; set; }
 
-        public Dictionary<int, StackedBarHelper> IndexTotals = new Dictionary<int, StackedBarHelper>();
+        public Dictionary<int, StackedBarHelper> IndexTotals { get; set; } 
         protected override bool ScaleChanged => GetMax() != Max ||
                                                 GetMin() != Min;
 
@@ -57,9 +60,12 @@ namespace LiveCharts
             var s = Series.FirstOrDefault();
             if (s == null) return new Point(0,0);
             var p = new Point(
-				Series.Select(x => x.PrimaryValues.Count).DefaultIfEmpty(0).Max(),
-                s.PrimaryValues.Select((t, i) => Series.Sum(serie => serie.PrimaryValues.Any() ? serie.PrimaryValues[i] : double.MinValue))
-                    .Concat(new[] { double.MinValue }).Max());
+                Series.Select(x => x.PrimaryValues.Count).DefaultIfEmpty(0).Max(),
+                s.PrimaryValues.Select(
+                    (t, i) => Series.OfType<StackedBarSeries>().Sum(serie => serie.PrimaryValues.Any()
+                        ? serie.PrimaryValues[i]
+                        : double.MinValue))
+                    .Concat(new[] {double.MinValue}).Max());
             p.Y = PrimaryAxis.MaxValue ?? p.Y;
             return p;
         }
@@ -69,8 +75,11 @@ namespace LiveCharts
             var s = Series.FirstOrDefault();
             if (s==null) return new Point(0,0);
             var p = new Point(0,
-                s.PrimaryValues.Select((t, i) => Series.Sum(serie => serie.PrimaryValues.Any() ? serie.PrimaryValues[i] : double.MinValue))
-                    .Concat(new[] { double.MaxValue }).Min());
+                s.PrimaryValues.Select(
+                    (t, i) => Series.OfType<StackedBarSeries>().Sum(serie => serie.PrimaryValues.Any()
+                        ? serie.PrimaryValues[i]
+                        : double.MinValue))
+                    .Concat(new[] {double.MaxValue}).Min());
             p.Y = PrimaryAxis.MinValue ?? p.Y;
             return p;
         }
@@ -84,15 +93,16 @@ namespace LiveCharts
 
         protected override void Scale()
         {
-            var fSerie = Series.FirstOrDefault();
+            var stackedSeries = Series.OfType<StackedBarSeries>().ToList();
+            var fSerie = stackedSeries.FirstOrDefault();
             if (fSerie == null) return;
             for (var i = 0; i < fSerie.PrimaryValues.Count; i++)
             {
                 var helper = new StackedBarHelper();
                 var sum = 0d;
-                for (int index = 0; index < Series.Count; index++)
+                for (int index = 0; index < stackedSeries.Count; index++)
                 {
-                    var serie = Series[index];
+                    var serie = stackedSeries[index];
 	                var value = serie.PrimaryValues.Any() ? serie.PrimaryValues[i] : double.MinValue;
                     helper.Stacked[index] = new StackedItem
                     {
@@ -115,15 +125,16 @@ namespace LiveCharts
             DrawAxis();
         }
 
-        protected override Point GetToolTipPosition(HoverableShape sender, List<HoverableShape> sibilings, Border b)
+        protected override Point GetToolTipPosition(HoverableShape sender, List<HoverableShape> sibilings)
         {
+            DataToolTip.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
             var unitW = ToPlotArea(1, AxisTags.X) - PlotArea.X + 5;
             var overflow = unitW - MaxColumnWidth > 0 ? unitW - MaxColumnWidth : 0;
             unitW = unitW > MaxColumnWidth ? MaxColumnWidth : unitW;
             var x = sender.Value.X + 1 > (Min.X + Max.X) / 2
-                ? ToPlotArea(sender.Value.X, AxisTags.X) + overflow * .5 - b.DesiredSize.Width
+                ? ToPlotArea(sender.Value.X, AxisTags.X) + overflow * .5 - DataToolTip.DesiredSize.Width
                 : ToPlotArea(sender.Value.X, AxisTags.X) + unitW + overflow * .5;
-            var y = ActualHeight * .5 - b.DesiredSize.Height * .5;
+            var y = ActualHeight * .5 - DataToolTip.DesiredSize.Height * .5;
             return new Point(x, y);
         }
 
@@ -144,17 +155,17 @@ namespace LiveCharts
 
             var unitW = ToPlotArea(1, AxisTags.X) - PlotArea.X + 5;
             unitW = unitW > MaxColumnWidth * 3 ? MaxColumnWidth * 3 : unitW;
-            LabelOffset = unitW / 2;
+            XOffset = unitW / 2;
 
             PlotArea.X = padding * 2 +
-                         (fistXLabelSize.X * 0.5 - LabelOffset > longestYLabelSize.X
-                             ? fistXLabelSize.X * 0.5 - LabelOffset
+                         (fistXLabelSize.X * 0.5 - XOffset > longestYLabelSize.X
+                             ? fistXLabelSize.X * 0.5 - XOffset
                              : longestYLabelSize.X);
             PlotArea.Y = longestYLabelSize.Y * .5 + padding;
             PlotArea.Height = Math.Max(0, Canvas.DesiredSize.Height - (padding * 2 + fistXLabelSize.Y) - PlotArea.Y);
             PlotArea.Width = Math.Max(0,  Canvas.DesiredSize.Width - PlotArea.X - padding);
             var distanceToEnd = PlotArea.Width - (ToPlotArea(Max.X, AxisTags.X) - ToPlotArea(1, AxisTags.X));
-            distanceToEnd -= LabelOffset + padding;
+            distanceToEnd -= XOffset + padding;
 	        var change = lastXLabelSize.X * .5 - distanceToEnd > 0 ? lastXLabelSize.X * .5 - distanceToEnd : 0;
 			if (change <= PlotArea.Width)
 	            PlotArea.Width -= change;
@@ -162,7 +173,7 @@ namespace LiveCharts
             //calculate it again to get a better result
             unitW = ToPlotArea(1, AxisTags.X) - PlotArea.X + 5;
             unitW = unitW > MaxColumnWidth * 3 ? MaxColumnWidth * 3 : unitW;
-            LabelOffset = unitW / 2;
+            XOffset = unitW / 2;
 
             base.DrawAxis();
         }

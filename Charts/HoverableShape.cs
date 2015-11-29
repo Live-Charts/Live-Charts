@@ -42,7 +42,7 @@ namespace LiveCharts
         /// <summary>
         /// serie that contains thos point
         /// </summary>
-        public Serie Serie { get; set; }
+        public Series Series { get; set; }
         /// <summary>
         /// Point label
         /// </summary>

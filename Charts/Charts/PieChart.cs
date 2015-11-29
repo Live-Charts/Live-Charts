@@ -82,7 +82,7 @@ namespace LiveCharts
             get
             {
                 var serie = Series.FirstOrDefault();
-                var pieSerie = serie as PieSerie;
+                var pieSerie = serie as PieSeries;
                 var min = pieSerie?.PrimaryValues.DefaultIfEmpty(0).Min() ?? 0.01;
                 var psc = pieSerie?.PrimaryValues?.Count ?? 0;
                 return Math.Abs(GetPieSum() - PieTotalSum) > .001*min || _pointsCount != psc;
@@ -93,7 +93,7 @@ namespace LiveCharts
         {
             DrawAxis();
             var serie = Series.FirstOrDefault();
-            var pieSerie = serie as PieSerie;
+            var pieSerie = serie as PieSeries;
             if (pieSerie == null) return;
             _pointsCount = pieSerie.PrimaryValues.Count;
             PieTotalSum = GetPieSum();
@@ -101,10 +101,7 @@ namespace LiveCharts
 
         protected override void DrawAxis()
         {
-            foreach (var l in AxisLabels) Canvas.Children.Remove(l);
-            foreach (var s in AxisShapes) Canvas.Children.Remove(s);
-            AxisLabels.Clear();
-            AxisShapes.Clear();
+            foreach (var l in Shapes) Canvas.Children.Remove(l);
         }
         
         public override void DataMouseEnter(object sender, MouseEventArgs e)
@@ -181,7 +178,7 @@ namespace LiveCharts
         private double GetPieSum()
         {
             var serie = Series.FirstOrDefault();
-            var pieSerie = serie as PieSerie;
+            var pieSerie = serie as PieSeries;
             return pieSerie?.PrimaryValues.DefaultIfEmpty(0).Sum() ?? 0;
         }
     }

@@ -21,6 +21,7 @@
 //SOFTWARE.
 
 using System;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -29,9 +30,9 @@ using System.Windows.Shapes;
 
 namespace LiveCharts
 {
-    public class BarSerie : Serie
+    public class BarSeries : Series
     {
-        public BarSerie()
+        public BarSeries()
         {
             StrokeThickness = 2.5;
         }
@@ -40,10 +41,11 @@ namespace LiveCharts
 
         public override void Plot(bool animate = true)
         {
-            var chart = Chart as BarChart;
+            var chart = Chart as IBar;
             if (chart == null) return;
-            var pos = Chart.Series.IndexOf(this);
-            var count = Chart.Series.Count;
+            var barSeries = Chart.Series.OfType<BarSeries>().ToList();
+            var pos = barSeries.IndexOf(this);
+            var count = barSeries.Count;
             var unitW = ToPlotArea(1, AxisTags.X) - Chart.PlotArea.X + 5;
             var overflow = unitW - chart.MaxColumnWidth*3 > 0 ? unitW - chart.MaxColumnWidth*3 : 0;
             unitW = unitW > chart.MaxColumnWidth*3 ? chart.MaxColumnWidth*3 : unitW;
@@ -107,7 +109,7 @@ namespace LiveCharts
                 r.MouseLeave += Chart.DataMouseLeave;
                 Chart.HoverableShapes.Add(new HoverableShape
                 {
-                    Serie = this,
+                    Series = this,
                     Shape = r,
                     Target = r,
                     Value = point

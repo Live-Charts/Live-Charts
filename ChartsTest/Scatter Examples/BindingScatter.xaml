@@ -19,10 +19,10 @@
         </TextBlock>
         <liveCharts:ScatterChart Name="Chart" Grid.Row="1" Grid.Column="0">
             <liveCharts:ScatterChart.Series>
-                <liveCharts:ScatterSerie Name="Serie1" Title="f(x1)" PrimaryValues="{Binding}"
-                                      StrokeThickness="4" PointRadius="6"></liveCharts:ScatterSerie>
-                <liveCharts:ScatterSerie Name="Serie2" Title="f(x2)" PrimaryValues="{Binding}" 
-                                         StrokeThickness="4" PointRadius="6"></liveCharts:ScatterSerie>
+                <liveCharts:ScatterSeries Name="Serie1" Title="f(x1)" PrimaryValues="{Binding}"
+                                      StrokeThickness="4" PointRadius="6"></liveCharts:ScatterSeries>
+                <liveCharts:ScatterSeries Name="Serie2" Title="f(x2)" PrimaryValues="{Binding}" 
+                                         StrokeThickness="4" PointRadius="6"></liveCharts:ScatterSeries>
             </liveCharts:ScatterChart.Series>
             <liveCharts:ScatterChart.PrimaryAxis>
                 <liveCharts:Axis Enabled="False" PrintLabels="False">
