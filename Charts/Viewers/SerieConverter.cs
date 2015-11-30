@@ -23,7 +23,8 @@ namespace LiveCharts.Viewers
 				return series.Select(s => new SerieStandin
 					{
 						Title = s.Title,
-						Color = s.Color
+						Stroke = s.Stroke,
+						Fill = s.Fill
 					});
 
 			var serie = value as Series;
@@ -31,7 +32,8 @@ namespace LiveCharts.Viewers
 				return new SerieStandin
 					{
 						Title = serie.Title,
-						Color = serie.Color
+						Stroke = serie.Stroke,
+						Fill = serie.Fill
 					};
 
 			return value;

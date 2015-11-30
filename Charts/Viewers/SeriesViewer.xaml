@@ -21,11 +21,7 @@
                         <ColumnDefinition Width="Auto"></ColumnDefinition>
                         <ColumnDefinition Width="Auto"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
-                    <Rectangle Grid.Column="0" Width="12" Height="12" StrokeThickness="0">
-                        <Rectangle.Fill>
-                            <SolidColorBrush Color="{Binding Color}"></SolidColorBrush>
-                        </Rectangle.Fill>
-                    </Rectangle>
+                    <Rectangle Grid.Column="0" Width="12" Height="12" StrokeThickness="2" Fill="{Binding Fill}" Stroke="{Binding Stroke}"/>
                     <TextBlock Grid.Column="1" Margin="10 0" 
                                Text="{Binding Title}"/>
                 </Grid>

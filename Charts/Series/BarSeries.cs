@@ -61,8 +61,8 @@ namespace LiveCharts
 	            var r = new Rectangle
 		            {
 			            StrokeThickness = StrokeThickness,
-			            Stroke = new SolidColorBrush {Color = Color},
-			            Fill = new SolidColorBrush {Color = Color, Opacity = Chart.AreaOpacity},
+			            Stroke = Stroke,
+			            Fill = Fill,
 			            Width = Math.Max(0, barW - seriesPadding),
 			            Height = 0,
 			            RenderTransform = t

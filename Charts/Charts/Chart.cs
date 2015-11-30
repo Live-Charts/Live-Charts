@@ -413,7 +413,7 @@ namespace LiveCharts.Charts
                     FontStretch = PrimaryAxis.FontStretch,
                     FontStyle = PrimaryAxis.FontStyle,
                     FontWeight = PrimaryAxis.FontWeight,
-                    Foreground = new SolidColorBrush { Color = PrimaryAxis.Foreground },
+                    Foreground = PrimaryAxis.Foreground,
                     Text = PrimaryAxis.Title,
                     RenderTransform = new RotateTransform(-90)
                 };
@@ -434,7 +434,7 @@ namespace LiveCharts.Charts
                     FontStretch = SecondaryAxis.FontStretch,
                     FontStyle = SecondaryAxis.FontStyle,
                     FontWeight = SecondaryAxis.FontWeight,
-                    Foreground = new SolidColorBrush { Color = SecondaryAxis.Foreground },
+                    Foreground = SecondaryAxis.Foreground,
                     Text = SecondaryAxis.Title
                 };
                 Shapes.Add(yLabel);
@@ -483,7 +483,7 @@ namespace LiveCharts.Charts
                         FontStretch = PrimaryAxis.FontStretch,
                         FontStyle = PrimaryAxis.FontStyle,
                         FontWeight = PrimaryAxis.FontWeight,
-                        Foreground = new SolidColorBrush { Color = PrimaryAxis.Foreground },
+                        Foreground = PrimaryAxis.Foreground,
                         Text = t
                     };
                     var fl = new FormattedText(t, CultureInfo.CurrentUICulture, FlowDirection.LeftToRight,
@@ -536,7 +536,7 @@ namespace LiveCharts.Charts
                         FontStretch = SecondaryAxis.FontStretch,
                         FontStyle = SecondaryAxis.FontStyle,
                         FontWeight = SecondaryAxis.FontWeight,
-                        Foreground = new SolidColorBrush { Color = SecondaryAxis.Foreground },
+                        Foreground = SecondaryAxis.Foreground,
                         Text = t
                     };
                     var fl = new FormattedText(t, CultureInfo.CurrentUICulture, FlowDirection.LeftToRight,
@@ -602,7 +602,7 @@ namespace LiveCharts.Charts
             {
                 if (ShapeHoverBehavior == ShapeHoverBehavior.Dot)
                 {
-                    sibiling.Target.Stroke = new SolidColorBrush { Color = sibiling.Series.Color };
+                    sibiling.Target.Stroke = sibiling.Series.Stroke;
                     sibiling.Target.Fill = new SolidColorBrush { Color = PointHoverColor };
                 }
                 else
@@ -658,7 +658,7 @@ namespace LiveCharts.Charts
             {
                 if (ShapeHoverBehavior == ShapeHoverBehavior.Dot)
                 {
-                    p.Target.Fill = new SolidColorBrush { Color = p.Series.Color };
+                    p.Target.Fill = p.Series.Stroke;
                     p.Target.Stroke = new SolidColorBrush { Color = PointHoverColor };
                 }
                 else
@@ -773,7 +773,7 @@ namespace LiveCharts.Charts
             foreach (var serie in chart.Series)
             {
                 serie.Chart = chart;
-                serie.ColorId = chart.Series.Max(x => x.ColorId) + 1;
+                serie.ColorIndex = chart.Series.Max(x => x.ColorIndex) + 1;
                 serie.RequiresPlot = true;
                 serie.RequiresAnimation = true;
                 var observable = serie.PrimaryValues as INotifyCollectionChanged;
@@ -808,7 +808,7 @@ namespace LiveCharts.Charts
                     foreach (var serie in newElements)
                     {
                         serie.Chart = chart;
-                        serie.ColorId = chart.Series.Max(x => x.ColorId) + 1;
+                        serie.ColorIndex = chart.Series.Max(x => x.ColorIndex) + 1;
                         serie.RequiresPlot = true;
                         serie.RequiresAnimation = true;
                         var observable = serie.PrimaryValues as INotifyCollectionChanged;

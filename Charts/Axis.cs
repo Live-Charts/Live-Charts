@@ -34,13 +34,6 @@ namespace LiveCharts
         public Axis()
         {
             CleanFactor = 3;
-            Color = Color.FromRgb(205, 205, 205);
-            FontFamily = new FontFamily("Calibri");
-            FontSize = 11;
-            FontWeight = FontWeights.Normal;
-            FontStyle = FontStyles.Normal;
-            FontStretch = FontStretches.Normal;
-            Foreground = Color.FromRgb(150,150,150);
             Separator = new Separator
             {
                 Enabled = true,
@@ -137,38 +130,86 @@ namespace LiveCharts
 			set { SetValue(TitleProperty, value); }
 		}
 
+		public static readonly DependencyProperty FontFamilyProperty =
+			DependencyProperty.Register("FontFamily", typeof(FontFamily), typeof(Axis), new PropertyMetadata(new FontFamily("Calibri")));
+
+		/// <summary>
+		/// Gets or sets labels font family
+		/// </summary>
+		public FontFamily FontFamily
+		{
+			get { return (FontFamily)GetValue(FontFamilyProperty); }
+			set { SetValue(FontFamilyProperty, value); }
+		}
+
+		public static readonly DependencyProperty FontSizeProperty =
+			DependencyProperty.Register("FontSize", typeof(double), typeof(Axis), new PropertyMetadata(11.0));
+
+		/// <summary>
+		/// Gets or sets labels font size
+		/// </summary>
+		public double FontSize
+		{
+			get { return (double)GetValue(FontSizeProperty); }
+			set { SetValue(FontSizeProperty, value); }
+		}
+
+		public static readonly DependencyProperty FontWeightProperty =
+			DependencyProperty.Register("FontWeight", typeof(FontWeight), typeof(Axis), new PropertyMetadata(FontWeights.Normal));
+
+		/// <summary>
+		/// Gets or sets labels font weight
+		/// </summary>
+		public FontWeight FontWeight
+		{
+			get { return (FontWeight)GetValue(FontWeightProperty); }
+			set { SetValue(FontWeightProperty, value); }
+		}
+
+		public static readonly DependencyProperty FontStyleProperty =
+			DependencyProperty.Register("FontStyle", typeof(FontStyle), typeof(Axis), new PropertyMetadata(FontStyles.Normal));
+
+        /// <summary>
+        /// Gets or sets labels font style
+        /// </summary>
+		public FontStyle FontStyle
+		{
+			get { return (FontStyle)GetValue(FontStyleProperty); }
+			set { SetValue(FontStyleProperty, value); }
+		}
+
+		public static readonly DependencyProperty FontStretchProperty =
+			DependencyProperty.Register("FontStretch", typeof(FontStretch), typeof(Axis), new PropertyMetadata(FontStretches.Normal));
+
+        /// <summary>
+        /// Gets or sets labels font strech
+        /// </summary>
+		public FontStretch FontStretch
+		{
+			get { return (FontStretch)GetValue(FontStretchProperty); }
+			set { SetValue(FontStretchProperty, value); }
+		}
+
+	    public static readonly DependencyProperty ForegroundProperty =
+		    DependencyProperty.Register("Foreground", typeof (Brush), typeof (Axis), new PropertyMetadata(new SolidColorBrush(Color.FromRgb(150, 150, 150))));
+
+        /// <summary>
+        /// Gets or sets labels text color.
+        /// </summary>
+		public Brush Foreground
+		{
+			get { return (Brush)GetValue(ForegroundProperty); }
+			set { SetValue(ForegroundProperty, value); }
+		}
+
 		/// <summary>
 		/// Get or sets configuration for parallel lines to axis.
 		/// </summary>
 		public Separator Separator { get; set; }
         /// <summary>
-        /// Gets or sets labels font family
-        /// </summary>
-        public FontFamily FontFamily { get; set; }
-        /// <summary>
-        /// Gets or sets labels font size
-        /// </summary>
-        public int FontSize { get; set; }
-        /// <summary>
-        /// Gets or sets labels font weight
-        /// </summary>
-        public FontWeight FontWeight { get; set; }
-        /// <summary>
-        /// Gets or sets labels font style
-        /// </summary>
-        public FontStyle FontStyle { get; set; }
-        /// <summary>
-        /// Gets or sets labels font strech
-        /// </summary>
-        public FontStretch FontStretch { get; set; }
-        /// <summary>
-        /// Gets or sets labels text color.
-        /// </summary>
-        public Color Foreground { get; set; }
-        /// <summary>
         /// Factor used to calculate label separations. default is 3. increase it to make it 'cleaner'
         /// initialSeparations = Graph.Heigth / (label.Height * cleanFactor)
         /// </summary>
         public int CleanFactor { get; set; }
-    }
+	}
 }

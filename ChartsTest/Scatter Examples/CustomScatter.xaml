@@ -18,8 +18,8 @@
         </TextBlock>
         <liveCharts:ScatterChart Name="Chart" Grid.Row="1" Grid.Column="0">
             <liveCharts:ScatterChart.Series>
-                <liveCharts:ScatterSeries Name="Serie1" Title="Tan" Color="#FFB300" PointRadius="0" StrokeThickness="4"></liveCharts:ScatterSeries>
-                <liveCharts:ScatterSeries Name="Serie2" Title="ATan" Color="#FFA000" PointRadius="0" StrokeThickness="4"></liveCharts:ScatterSeries>
+                <liveCharts:ScatterSeries Name="Serie1" Title="Tan" Stroke="#FFB300" Fill="#AAFFB300" PointRadius="0" StrokeThickness="4"></liveCharts:ScatterSeries>
+                <liveCharts:ScatterSeries Name="Serie2" Title="ATan" Stroke="#FFA000" Fill="#AAFFA000" PointRadius="0" StrokeThickness="4"></liveCharts:ScatterSeries>
             </liveCharts:ScatterChart.Series>
             <liveCharts:ScatterChart.PrimaryAxis>
                 <liveCharts:Axis IsEnabled="False" Foreground="White" FontSize="13" FontFamily="Arial">

@@ -18,9 +18,9 @@
         </TextBlock>
         <liveCharts:StackedBarChart Name="Chart" Grid.Row="1" Grid.Column="0">
             <liveCharts:StackedBarChart.Series>
-                <liveCharts:StackedBarSeries Title="Maria" PrimaryValues="20, 40, 45, 60, 55, 60, 65, 70" Color="#FFB300" StrokeThickness="4"/>
-                <liveCharts:StackedBarSeries Title="John" PrimaryValues="30, 35, 43, 68, 65 ,70, 55, 60" Color="#FFA000" StrokeThickness="4"/>
-                <liveCharts:StackedBarSeries Title="Erick" PrimaryValues="40, 42, 50, 70, 50, 55, 44, 73" Color="#FF8F00"  StrokeThickness="4"/>
+                <liveCharts:StackedBarSeries Title="Maria" PrimaryValues="20, 40, 45, 60, 55, 60, 65, 70" Stroke="#FFB300" Fill="#AAFFB300" StrokeThickness="4"/>
+                <liveCharts:StackedBarSeries Title="John" PrimaryValues="30, 35, 43, 68, 65 ,70, 55, 60" Stroke="#FFA000" Fill="#AAFFA000" StrokeThickness="4"/>
+                <liveCharts:StackedBarSeries Title="Erick" PrimaryValues="40, 42, 50, 70, 50, 55, 44, 73" Stroke="#FF8F00" Fill="#AAFF8F00" StrokeThickness="4"/>
             </liveCharts:StackedBarChart.Series>
             <liveCharts:StackedBarChart.PrimaryAxis>
                 <liveCharts:Axis Title="Sold Items" IsEnabled="False" Foreground="White" FontSize="13" FontFamily="Arial">

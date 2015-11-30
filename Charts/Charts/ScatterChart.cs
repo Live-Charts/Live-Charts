@@ -132,7 +132,7 @@ namespace LiveCharts
             var senderShape = HoverableShapes.FirstOrDefault(s => Equals(s.Shape, sender));
             if (senderShape == null) return;
 
-            senderShape.Target.Stroke = new SolidColorBrush { Color = senderShape.Series.Color };
+            senderShape.Target.Stroke = senderShape.Series.Stroke;
             senderShape.Target.Fill = new SolidColorBrush { Color = PointHoverColor };
 
             DataToolTip.DataContext = new ScatterTooltipViewModel
@@ -170,7 +170,7 @@ namespace LiveCharts
             var shape = HoverableShapes.FirstOrDefault(x => Equals(x.Shape, s));
             if (shape == null) return;
 
-            shape.Target.Fill = new SolidColorBrush { Color = shape.Series.Color };
+            shape.Target.Fill = shape.Series.Stroke;
             shape.Target.Stroke = new SolidColorBrush { Color = PointHoverColor };
 
             TooltipTimer.Stop();
