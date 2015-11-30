@@ -550,7 +550,7 @@ namespace LiveCharts.Charts
             }
 
             //drawing ceros.
-            if (Max.Y >= 0 && Min.Y <= 0 && PrimaryAxis.Enabled)
+            if (Max.Y >= 0 && Min.Y <= 0 && PrimaryAxis.IsEnabled)
             {
                 var l = new Line
                 {
@@ -565,7 +565,7 @@ namespace LiveCharts.Charts
                 Shapes.Add(l);
             }
 
-            if (Max.X >= 0 && Min.X <= 0 && SecondaryAxis.Enabled)
+            if (Max.X >= 0 && Min.X <= 0 && SecondaryAxis.IsEnabled)
             {
                 var l = new Line
                 {

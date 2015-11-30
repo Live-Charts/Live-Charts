@@ -39,7 +39,7 @@ namespace LiveCharts
 			SecondaryAxis = new Axis
 				{
 					Separator = {Enabled = false, Step = 1},
-					Enabled = false
+					IsEnabled = false
 				};
 			LineType = LineChartLineType.Bezier;
 			Hoverable = true;

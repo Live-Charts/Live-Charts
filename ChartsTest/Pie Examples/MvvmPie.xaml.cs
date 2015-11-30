@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.ObjectModel;
-using System.Linq;
 using System.Windows;
 using LiveCharts;
 
@@ -14,10 +13,7 @@ namespace ChartsTest.Pie_Examples
         public MvvmPie()
         {
             InitializeComponent();
-            Sales = new SalesViewModel();
-            Chart.DataContext = Sales.Salesmen;
-            SecondaryAxis.DataContext = Sales.AvailableMonths;
-            Chart.PrimaryAxis.LabelFormatter = x => x + ".00k items";
+            DataContext = Sales = new SalesViewModel();
         }
 
         public SalesViewModel Sales { get; set; }
@@ -63,10 +59,10 @@ namespace ChartsTest.Pie_Examples
         public ObservableCollection<Series> Salesmen { get; set; }
         public string[] AvailableMonths { get; set; }
 
-        public void AddOneMonth()
+		public void AddOneMonth()
         {
             var r = new Random();
-            if (Salesmen[0].PrimaryValues.Count >= _months.Count()) return;
+            if (Salesmen[0].PrimaryValues.Count >= _months.Length) return;
             foreach (var salesman in Salesmen)
             {
                 salesman.PrimaryValues.Add(r.Next(0, 10));

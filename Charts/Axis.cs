@@ -35,14 +35,11 @@ namespace LiveCharts
         {
             CleanFactor = 3;
             Color = Color.FromRgb(205, 205, 205);
-            Thickness = 3;
-            Enabled = true;
             FontFamily = new FontFamily("Calibri");
             FontSize = 11;
             FontWeight = FontWeights.Normal;
             FontStyle = FontStyles.Normal;
             FontStretch = FontStretches.Normal;
-            PrintLabels = true;
             Foreground = Color.FromRgb(150,150,150);
             Separator = new Separator
             {
@@ -62,26 +59,88 @@ namespace LiveCharts
             set { SetValue(LabelsProperty, value); }
         }
 
-        /// <summary>
-        /// Get or sets configuration for parallel lines to axis.
-        /// </summary>
-        public Separator Separator { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public Func<double, string> LabelFormatter { get; set; }
-        /// <summary>
-        /// Indicates weather to draw axis or not.
-        /// </summary>
-        public bool Enabled { get; set; }
-        /// <summary>
-        /// Gets or sets axis color.
-        /// </summary>
-        public Color Color { get; set; }
-        /// <summary>
-        /// Gets or sets axis thickness.
-        /// </summary>
-        public int Thickness { get; set; }
+		public static readonly DependencyProperty LabelFormatterProperty =
+			DependencyProperty.Register("LabelFormatter", typeof(Func<double, string>), typeof(Axis), new PropertyMetadata(null));
+
+		public Func<double, string> LabelFormatter
+		{
+			get { return (Func<double, string>)GetValue(LabelFormatterProperty); }
+			set { SetValue(LabelFormatterProperty, value); }
+		}
+
+		public static readonly DependencyProperty ColorProperty =
+			DependencyProperty.Register("Color", typeof(Color), typeof(Axis), new PropertyMetadata(Color.FromRgb(205, 205, 205)));
+
+		/// <summary>
+		/// Gets or sets axis color.
+		/// </summary>
+		public Color Color
+		{
+			get { return (Color)GetValue(ColorProperty); }
+			set { SetValue(ColorProperty, value); }
+		}
+
+		public static readonly DependencyProperty ThicknessProperty =
+			DependencyProperty.Register("Thickness", typeof(int), typeof(Axis), new PropertyMetadata(3));
+
+		/// <summary>
+		/// Gets or sets axis thickness.
+		/// </summary>
+		public int Thickness
+		{
+			get { return (int)GetValue(ThicknessProperty); }
+			set { SetValue(ThicknessProperty, value); }
+		}
+
+		public static readonly DependencyProperty PrintLabelsProperty =
+			DependencyProperty.Register("PrintLabels", typeof(bool), typeof(Axis), new PropertyMetadata(true));
+
+		/// <summary>
+		/// Gets or sets if labels should be printed.
+		/// </summary>
+		public bool PrintLabels
+		{
+			get { return (bool)GetValue(PrintLabelsProperty); }
+			set { SetValue(PrintLabelsProperty, value); }
+		}
+
+		public static readonly DependencyProperty MaxValueProperty =
+			DependencyProperty.Register("MaxValue", typeof(double?), typeof(Axis), new PropertyMetadata(null));
+
+		/// <summary>
+		/// Gets or sets chart max value, set it to null to make this property Auto, default value is null
+		/// </summary>
+		public double? MaxValue
+		{
+			get { return (double?)GetValue(MaxValueProperty); }
+			set { SetValue(MaxValueProperty, value); }
+		}
+
+		public static readonly DependencyProperty MinValueProperty =
+			DependencyProperty.Register("MinValue", typeof(double?), typeof(Axis), new PropertyMetadata(null));
+
+		/// <summary>
+		/// Gets or sets chart min value, set it to null to make this property Auto, default value is null
+		/// </summary>
+		public double? MinValue
+		{
+			get { return (double?)GetValue(MinValueProperty); }
+			set { SetValue(MinValueProperty, value); }
+		}
+
+		public static readonly DependencyProperty TitleProperty =
+			DependencyProperty.Register("Title", typeof(string), typeof(Axis), new PropertyMetadata(null));
+
+		public string Title
+		{
+			get { return (string)GetValue(TitleProperty); }
+			set { SetValue(TitleProperty, value); }
+		}
+
+		/// <summary>
+		/// Get or sets configuration for parallel lines to axis.
+		/// </summary>
+		public Separator Separator { get; set; }
         /// <summary>
         /// Gets or sets labels font family
         /// </summary>
@@ -103,10 +162,6 @@ namespace LiveCharts
         /// </summary>
         public FontStretch FontStretch { get; set; }
         /// <summary>
-        /// Gets or sets if labels should be printed.
-        /// </summary>
-        public bool PrintLabels { get; set; }
-        /// <summary>
         /// Gets or sets labels text color.
         /// </summary>
         public Color Foreground { get; set; }
@@ -115,14 +170,5 @@ namespace LiveCharts
         /// initialSeparations = Graph.Heigth / (label.Height * cleanFactor)
         /// </summary>
         public int CleanFactor { get; set; }
-        /// <summary>
-        /// Gets or sets chart max value, set it to null to make this property Auto, default value is null
-        /// </summary>
-        public double? MaxValue { get; set; }
-        /// <summary>
-        /// Gets or sets chart min value, set it to null to make this property Auto, default value is null
-        /// </summary>
-        public double? MinValue { get; set; }
-        public string Title { get; set; }
     }
 }

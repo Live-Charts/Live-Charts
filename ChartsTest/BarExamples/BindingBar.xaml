@@ -22,14 +22,14 @@
                 <liveCharts:BarSeries Name="Serie2" Title="John" PrimaryValues="{Binding}"></liveCharts:BarSeries>
             </liveCharts:BarChart.Series>
             <liveCharts:BarChart.PrimaryAxis>
-                <liveCharts:Axis Enabled="False" PrintLabels="False">
+                <liveCharts:Axis IsEnabled="False" PrintLabels="False">
                     <liveCharts:Axis.Separator>
                         <liveCharts:Separator Enabled="False"></liveCharts:Separator>
                     </liveCharts:Axis.Separator>
                 </liveCharts:Axis>
             </liveCharts:BarChart.PrimaryAxis>
             <liveCharts:BarChart.SecondaryAxis>
-                <liveCharts:Axis Enabled="False" PrintLabels="False">
+                <liveCharts:Axis IsEnabled="False" PrintLabels="False">
                     <liveCharts:Axis.Separator>
                         <liveCharts:Separator Enabled="False"></liveCharts:Separator>
                     </liveCharts:Axis.Separator>
