@@ -135,20 +135,20 @@ namespace LiveCharts
             senderShape.Target.Stroke = senderShape.Series.Stroke;
             senderShape.Target.Fill = new SolidColorBrush { Color = PointHoverColor };
 
-            DataToolTip.DataContext = new ScatterTooltipViewModel
-            {
-                Series = senderShape.Series as ScatterSeries,
-                PrimaryAxisTitle = PrimaryAxis.Title,
-                PrimaryValue = PrimaryAxis.LabelFormatter == null
-                    ? senderShape.Value.Y.ToString(CultureInfo.InvariantCulture)
-                    : PrimaryAxis.LabelFormatter(senderShape.Value.Y),
-                SecondaryAxisTitle = SecondaryAxis.Title,
-                SecondaryValue = SecondaryAxis.LabelFormatter == null
-                    ? senderShape.Value.X.ToString(CultureInfo.InvariantCulture)
-                    : SecondaryAxis.LabelFormatter(senderShape.Value.X)
-            };
+	        var scatterToolTip = DataToolTip as ScatterTooltip;
 
-            var p = GetToolTipPosition(senderShape, null);
+	        if (scatterToolTip != null)
+	        {
+		        scatterToolTip.PrimaryAxisTitle = PrimaryAxis.Title;
+		        scatterToolTip.PrimaryValue = PrimaryAxis.LabelFormatter == null
+			                                      ? senderShape.Value.Y.ToString(CultureInfo.InvariantCulture)
+			                                      : PrimaryAxis.LabelFormatter(senderShape.Value.Y);
+		        scatterToolTip.SecondaryAxisTitle = SecondaryAxis.Title;
+		        scatterToolTip.SecondaryValue = SecondaryAxis.LabelFormatter == null
+			                                        ? senderShape.Value.X.ToString(CultureInfo.InvariantCulture)
+			                                        : SecondaryAxis.LabelFormatter(senderShape.Value.X);
+	        }
+	        var p = GetToolTipPosition(senderShape, null);
 
             DataToolTip.BeginAnimation(Canvas.LeftProperty, new DoubleAnimation
             {
