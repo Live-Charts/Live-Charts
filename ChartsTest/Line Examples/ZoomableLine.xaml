@@ -1,0 +1,27 @@
+﻿<UserControl x:Class="ChartsTest.Line_Examples.ZoomableLine"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:liveCharts="clr-namespace:LiveCharts;assembly=LiveCharts"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300" 
+             Loaded="JustAreasAndZoomable_OnLoaded">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+        </Grid.RowDefinitions>
+        <TextBlock Grid.Row="0" HorizontalAlignment="Center" Grid.ColumnSpan="2" Margin="5" TextWrapping="Wrap">
+            Just Areas and Zoomable, use mouse wheel to zoom in/out, click and drag to pan.
+        </TextBlock>
+        <liveCharts:LineChart Name="Chart" Grid.Row="1" Grid.Column="0" AreaOpacity=".3" Zooming="True" Hoverable="False">
+            <liveCharts:LineChart.Series>
+                <liveCharts:LineSeries Title="Maria" PrimaryValues="20, 40, 48, 60, 55, 60, 65, 70" PointRadius="0" StrokeThickness="0"></liveCharts:LineSeries>
+                <liveCharts:LineSeries Title="John" PrimaryValues="30, 35, 41, 68, 65 ,70, 55, 60" PointRadius="0" StrokeThickness="0"></liveCharts:LineSeries>
+                <liveCharts:LineSeries Title="Erick" PrimaryValues="40, 42, 65, 70, 50, 55, 44, 73" PointRadius="0" StrokeThickness="0"></liveCharts:LineSeries>
+            </liveCharts:LineChart.Series>
+        </liveCharts:LineChart>
+    </Grid>
+</UserControl>

@@ -19,6 +19,7 @@
 //LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,12 +27,23 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using LiveCharts.Charts;
 
-namespace LiveCharts.Charts
+namespace LiveCharts
 {
     public class RadarChart : Chart
     {
         public double Radius;
+
+        public RadarChart()
+        {
+            PrimaryAxis = new Axis();
+            SecondaryAxis = new Axis();
+            Hoverable = true;
+            ShapeHoverBehavior = ShapeHoverBehavior.Dot;
+            AlphaLabel = true;
+            AreaOpacity = .2;
+        }
 
         public double InnerRadius { get; set; } = 10.0;
 
@@ -45,15 +57,6 @@ namespace LiveCharts.Charts
             }
         }
         
-        public RadarChart()
-        {
-            PrimaryAxis = new Axis();
-            SecondaryAxis = new Axis();
-            Hoverable = true;
-            ShapeHoverBehavior = ShapeHoverBehavior.Dot;
-            AlphaLabel = true;
-        }
-
         private void Measure()
         {
             Size desiredSize = DesiredSize;
@@ -98,12 +101,12 @@ namespace LiveCharts.Charts
             if (Series == null || Series.Count == 0) return;
             this.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
             this.Measure();
-            foreach (UIElement element in this.AxisLabels)
+            foreach (UIElement element in this.Shapes)
                 this.Canvas.Children.Remove(element);
-            foreach (UIElement element in this.AxisShapes)
+            foreach (UIElement element in this.Shapes)
                 this.Canvas.Children.Remove(element);
-            this.AxisLabels.Clear();
-            this.AxisShapes.Clear();
+            this.Shapes.Clear();
+            this.Shapes.Clear();
             double num1 = 0.0;
             while (num1 < 360.0)
             {
@@ -121,7 +124,7 @@ namespace LiveCharts.Charts
                     line1.Y2 = this.ActualHeight/2.0 - Math.Cos(num1*(Math.PI/180.0))*this.Radius;
                     Line line2 = line1;
                     this.Canvas.Children.Add((UIElement) line2);
-                    this.AxisShapes.Add((Shape) line2);
+                    this.Shapes.Add((Shape) line2);
                 }
                 double num2 = num1 + 360.0/this.Max.X;
                 double y = this.Max.Y;
@@ -139,7 +142,7 @@ namespace LiveCharts.Charts
                     line1.Y2 = this.ActualHeight/2.0 - Math.Cos(num2*(Math.PI/180.0))*this.ToChartRadius(y);
                     Line line2 = line1;
                     this.Canvas.Children.Add((UIElement) line2);
-                    this.AxisShapes.Add((Shape) line2);
+                    this.Shapes.Add((Shape) line2);
                     y -= this.S.Y;
                 }
                 num1 += 360.0/this.Max.X;
@@ -155,7 +158,7 @@ namespace LiveCharts.Charts
             this.DrawAxis();
         }
 
-        protected override Point GetToolTipPosition(HoverableShape sender, List<HoverableShape> sibilings, Border b)
+        protected override Point GetToolTipPosition(HoverableShape sender, List<HoverableShape> sibilings)
         {
             Size desiredSize1 = this.DesiredSize;
             double width = desiredSize1.Width;

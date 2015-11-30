@@ -114,6 +114,19 @@
     <Compile Include="Charts\PieChart.cs" />
     <Compile Include="Charts\RadarChart.cs" />
     <Compile Include="Charts\ScatterChart.cs" />
+    <Compile Include="Interfaces.cs" />
+    <Compile Include="PerformanceConfiguration.cs" />
+    <Compile Include="Properties\Annotations.cs" />
+    <Compile Include="Tooltip\Converters.cs" />
+    <Compile Include="Tooltip\IndexedToolTip.xaml.cs">
+      <DependentUpon>IndexedToolTip.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Tooltip\ScatterTooltip.xaml.cs">
+      <DependentUpon>ScatterTooltip.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Tooltip\ViewModels.cs" />
+    <Compile Include="TypeConverters\ColorCollectionConverter.cs" />
+    <Compile Include="TypeConverters\StringCollectionConverter.cs" />
     <Compile Include="TypeConverters\ValueCollectionConverter.cs" />
     <Compile Include="Viewers\Converters.cs" />
     <Compile Include="Viewers\PieSeriesViewer.xaml.cs">
@@ -127,16 +140,16 @@
     <Compile Include="Charts\StackedBarChart.cs" />
     <Compile Include="LabelFormatters.cs" />
     <Compile Include="LiveChartsException.cs" />
-    <Compile Include="Series\RadarSerie.cs" />
-    <Compile Include="Series\StackedBarSerie.cs" />
+    <Compile Include="Series\RadarSeries.cs" />
+    <Compile Include="Series\StackedBarSeries.cs" />
     <Compile Include="ShapeHoverBehavior.cs" />
     <Compile Include="Charts\Chart.cs" />
     <Compile Include="HoverableShape.cs" />
     <Compile Include="LineChartLineType.cs" />
     <Compile Include="Methods.cs" />
     <Compile Include="Separator.cs" />
-    <Compile Include="Series\BarSerie.cs" />
-    <Compile Include="Series\LineSerie.cs" />
+    <Compile Include="Series\BarSeries.cs" />
+    <Compile Include="Series\LineSeries.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -150,9 +163,9 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="Series\PieSerie.cs" />
-    <Compile Include="Series\ScatterSerie.cs" />
-    <Compile Include="Series\Serie.cs" />
+    <Compile Include="Series\PieSeries.cs" />
+    <Compile Include="Series\ScatterSeries.cs" />
+    <Compile Include="Series\Series.cs" />
     <Compile Include="Shapes\PieSlice.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -165,6 +178,14 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Tooltip\IndexedToolTip.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Tooltip\ScatterTooltip.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Viewers\PieSeriesViewer.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -174,7 +195,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

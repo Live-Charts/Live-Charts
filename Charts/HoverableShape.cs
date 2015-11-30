@@ -22,7 +22,6 @@
 
 using System.Windows;
 using System.Windows.Shapes;
-using LiveCharts.Series;
 
 namespace LiveCharts
 {
@@ -43,7 +42,7 @@ namespace LiveCharts
         /// <summary>
         /// serie that contains thos point
         /// </summary>
-        public Serie Serie { get; set; }
+        public Series Series { get; set; }
         /// <summary>
         /// Point label
         /// </summary>

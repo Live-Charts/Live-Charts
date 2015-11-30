@@ -22,12 +22,14 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Media;
+using LiveCharts.TypeConverters;
 
 namespace LiveCharts
 {
-    public class Axis
+    public class Axis : FrameworkElement
     {
         public Axis()
         {
@@ -41,13 +43,23 @@ namespace LiveCharts
             FontStyle = FontStyles.Normal;
             FontStretch = FontStretches.Normal;
             PrintLabels = true;
-            TextColor = Color.FromRgb(150,150,150);
+            Foreground = Color.FromRgb(150,150,150);
             Separator = new Separator
             {
                 Enabled = true,
                 Color = Color.FromRgb(205, 205, 205),
                 Thickness = 1
             };
+        }
+
+        public static readonly DependencyProperty LabelsProperty = DependencyProperty.Register(
+            "Labels", typeof (IList<string>), typeof (Axis), new PropertyMetadata(default(IList<string>)));
+
+        [TypeConverter(typeof (StringCollectionConverter))]
+        public IList<string> Labels
+        {
+            get { return (IList<string>) GetValue(LabelsProperty); }
+            set { SetValue(LabelsProperty, value); }
         }
 
         /// <summary>
@@ -58,10 +70,6 @@ namespace LiveCharts
         /// 
         /// </summary>
         public Func<double, string> LabelFormatter { get; set; }
-        /// <summary>
-        /// Hardcoded labels, this property overrides LabelFormatter
-        /// </summary>
-        public IEnumerable<string> Labels { get; set; }
         /// <summary>
         /// Indicates weather to draw axis or not.
         /// </summary>
@@ -101,7 +109,7 @@ namespace LiveCharts
         /// <summary>
         /// Gets or sets labels text color.
         /// </summary>
-        public Color TextColor { get; set; }
+        public Color Foreground { get; set; }
         /// <summary>
         /// Factor used to calculate label separations. default is 3. increase it to make it 'cleaner'
         /// initialSeparations = Graph.Heigth / (label.Height * cleanFactor)
@@ -116,9 +124,5 @@ namespace LiveCharts
         /// </summary>
         public double? MinValue { get; set; }
         public string Title { get; set; }
-        /// <summary>
-        /// Gets or sets the inverse Axis
-        /// </summary>
-        internal Axis InverseAxis { get; set; }
     }
 }

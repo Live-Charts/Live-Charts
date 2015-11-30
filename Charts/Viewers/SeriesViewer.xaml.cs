@@ -1,9 +1,8 @@
 ﻿using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
-using LiveCharts.Series;
 
-namespace LiveCharts.Viewers
+namespace LiveCharts
 {
     /// <summary>
     /// Interaction logic for SeriesViewer.xaml
@@ -17,11 +16,11 @@ namespace LiveCharts.Viewers
         }
 
         public static readonly DependencyProperty SeriesProperty = DependencyProperty.Register(
-            "Series", typeof (ObservableCollection<Serie>), typeof (SeriesViewer), new PropertyMetadata(null));
+            "Series", typeof (ObservableCollection<Series>), typeof (SeriesViewer), new PropertyMetadata(null));
 
-        public ObservableCollection<Serie> Series
+        public ObservableCollection<Series> Series
         {
-            get { return (ObservableCollection<Serie>) GetValue(SeriesProperty); }
+            get { return (ObservableCollection<Series>) GetValue(SeriesProperty); }
             set { SetValue(SeriesProperty, value); }
         }
 

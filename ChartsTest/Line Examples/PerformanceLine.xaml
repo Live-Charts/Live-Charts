@@ -1,0 +1,32 @@
+﻿<UserControl x:Class="ChartsTest.Line_Examples.PerformanceLine"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:ChartsTest.Line_Examples"
+             xmlns:liveCharts="clr-namespace:LiveCharts;assembly=LiveCharts"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300"
+             d:DataContext="{d:DesignInstance local:ViewModel}"
+             Loaded="MvvmPerformanceOptimization_OnLoaded">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <TextBlock Name="OutPut" Grid.Row="0" HorizontalAlignment="Center" Grid.ColumnSpan="2" Margin="5" TextWrapping="Wrap">
+            
+        </TextBlock>
+        <liveCharts:LineChart Name="Chart" Grid.Row="1" Grid.Column="0" Zooming="True">
+            <liveCharts:LineChart.Series>
+                <liveCharts:LineSeries Title="{Binding Name}" PrimaryValues="{Binding Values}" StrokeThickness="4" PointRadius="0"></liveCharts:LineSeries>
+            </liveCharts:LineChart.Series>
+            <liveCharts:LineChart.PrimaryAxis>
+                <liveCharts:Axis></liveCharts:Axis>
+            </liveCharts:LineChart.PrimaryAxis>
+            <liveCharts:LineChart.SecondaryAxis>
+                <liveCharts:Axis></liveCharts:Axis>
+            </liveCharts:LineChart.SecondaryAxis>
+        </liveCharts:LineChart>
+    </Grid>
+</UserControl>

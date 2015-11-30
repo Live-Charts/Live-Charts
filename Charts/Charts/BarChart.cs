@@ -25,10 +25,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using LiveCharts.Charts;
 
-namespace LiveCharts.Charts
+namespace LiveCharts
 {
-    public class BarChart : Chart
+    public class BarChart : Chart, IBar, ILine
     {
         public BarChart()
         {
@@ -37,6 +38,14 @@ namespace LiveCharts.Charts
             Hoverable = true;
             ShapeHoverBehavior = ShapeHoverBehavior.Shape;
             IgnoresLastLabel = true;
+            AreaOpacity = .8;
+            LineType = LineChartLineType.Bezier;
+
+            //no performance config for a bar chart
+            //why? because this chart need to build a bar per point,
+            //I think there is no practicall way to make this work
+            //It is better if final develover groups some of their points.
+            PerformanceConfiguration = new PerformanceConfiguration {Enabled = false};
         }
 
         protected override bool ScaleChanged => GetMax() != Max ||
@@ -46,6 +55,7 @@ namespace LiveCharts.Charts
         /// Gets or sets maximum column width, default is 60
         /// </summary>
         public double MaxColumnWidth { get; set; } = 60;
+        public LineChartLineType LineType { get; set; }
 
         private Point GetMax()
         {
@@ -76,21 +86,33 @@ namespace LiveCharts.Charts
             Min = GetMin();
             S = GetS();
 
+            foreach (var serie in Series) serie.CalculatePoints();
+
+            //corrected values (includes performance optimization values)
+            Max.X =
+                Series.Select(serie => serie.ChartPoints.Select(x => x.X).DefaultIfEmpty(0).Max())
+                    .DefaultIfEmpty(0).Max() + 1;
+            Max.Y = Series.Select(serie => serie.ChartPoints.Select(x => x.Y).DefaultIfEmpty(0).Max()).DefaultIfEmpty(0).Max();
+            Min.X = Series.Select(serie => serie.ChartPoints.Select(x => x.X).DefaultIfEmpty(0).Min()).DefaultIfEmpty(0).Min();
+            Min.Y = Series.Select(serie => serie.ChartPoints.Select(x => x.Y).DefaultIfEmpty(0).Min()).DefaultIfEmpty(0).Min();
+            S = GetS();
+
             Max.Y = PrimaryAxis.MaxValue ?? (Math.Truncate(Max.Y / S.Y) + 1) * S.Y;
             Min.Y = PrimaryAxis.MinValue ?? (Math.Truncate(Min.Y / S.Y) - 1) * S.Y;
 
             DrawAxis();
         }
 
-        protected override Point GetToolTipPosition(HoverableShape sender, List<HoverableShape> sibilings, Border b)
+        protected override Point GetToolTipPosition(HoverableShape sender, List<HoverableShape> sibilings)
         {
+            DataToolTip.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
             var unitW = ToPlotArea(1, AxisTags.X) - PlotArea.X + 5;
             var overflow = unitW - MaxColumnWidth * 3 > 0 ? unitW - MaxColumnWidth * 3 : 0;
             unitW = unitW > MaxColumnWidth * 3 ? MaxColumnWidth * 3 : unitW;
             var x = sender.Value.X + 1 > (Min.X + Max.X)/2
-                ? ToPlotArea(sender.Value.X, AxisTags.X) + overflow*.5 - b.DesiredSize.Width
+                ? ToPlotArea(sender.Value.X, AxisTags.X) + overflow*.5 - DataToolTip.DesiredSize.Width
                 : ToPlotArea(sender.Value.X, AxisTags.X) + unitW + overflow*.5;
-            var y = ActualHeight*.5 - b.DesiredSize.Height*.5;
+            var y = ActualHeight*.5 - DataToolTip.DesiredSize.Height*.5;
             return new Point(x, y);
         }
 
@@ -111,17 +133,17 @@ namespace LiveCharts.Charts
 
             var unitW = ToPlotArea(1, AxisTags.X) - PlotArea.X + 5;
             unitW = unitW > MaxColumnWidth * 3 ? MaxColumnWidth * 3 : unitW;
-            LabelOffset = unitW / 2;
+            XOffset = unitW / 2;
 
             PlotArea.X = padding*2 +
-                         (fistXLabelSize.X*0.5 - LabelOffset > longestYLabelSize.X
-                             ? fistXLabelSize.X*0.5 - LabelOffset
+                         (fistXLabelSize.X*0.5 - XOffset > longestYLabelSize.X
+                             ? fistXLabelSize.X*0.5 - XOffset
                              : longestYLabelSize.X);
             PlotArea.Y = longestYLabelSize.Y * .5 + padding;
             PlotArea.Height = Math.Max(0, Canvas.DesiredSize.Height - (padding * 2 + fistXLabelSize.Y) - PlotArea.Y);
             PlotArea.Width = Math.Max(0, Canvas.DesiredSize.Width - PlotArea.X - padding);
             var distanceToEnd = PlotArea.Width - (ToPlotArea(Max.X, AxisTags.X) - ToPlotArea(1, AxisTags.X));
-            distanceToEnd -= LabelOffset + padding;
+            distanceToEnd -= XOffset + padding;
 			var change = lastXLabelSize.X * .5 - distanceToEnd > 0 ? lastXLabelSize.X * .5 - distanceToEnd : 0;
 	        if (change <= PlotArea.Width)
 		        PlotArea.Width -= change;
@@ -129,7 +151,7 @@ namespace LiveCharts.Charts
             //calculate it again to get a better result
             unitW = ToPlotArea(1, AxisTags.X) - PlotArea.X + 5; 
             unitW = unitW > MaxColumnWidth * 3 ? MaxColumnWidth * 3 : unitW;
-            LabelOffset = unitW / 2;
+            XOffset = unitW / 2;
 
             base.DrawAxis();
         }

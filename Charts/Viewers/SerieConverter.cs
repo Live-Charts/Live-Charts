@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Windows.Data;
-using LiveCharts.Series;
 
 namespace LiveCharts.Viewers
 {
@@ -19,19 +18,19 @@ namespace LiveCharts.Viewers
 
 		public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
 		{
-			var series = value as IEnumerable<Serie>;
+			var series = value as IEnumerable<Series>;
 			if (series != null)
 				return series.Select(s => new SerieStandin
 					{
-						Label = s.Label,
+						Title = s.Title,
 						Color = s.Color
 					});
 
-			var serie = value as Serie;
+			var serie = value as Series;
 			if (serie != null)
 				return new SerieStandin
 					{
-						Label = serie.Label,
+						Title = serie.Title,
 						Color = serie.Color
 					};
 

@@ -1,0 +1,35 @@
+﻿<UserControl x:Class="ChartsTest.Pie_Examples.BasicPie"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:liveCharts="clr-namespace:LiveCharts;assembly=LiveCharts"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300"
+             Loaded="OnLoaded">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="Auto"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <TextBlock Grid.Row="0" HorizontalAlignment="Center" Grid.ColumnSpan="2" Margin="5">Basic Pie Chart</TextBlock>
+        <liveCharts:PieChart Name="Chart" Grid.Row="1" Grid.Column="0">
+            <liveCharts:PieChart.Series>
+                <liveCharts:PieSeries Title="Maria" PrimaryValues="15, 10, 40, 55" 
+                                     Labels="Day 1, Day 2, Day 3, Day 4"></liveCharts:PieSeries>
+            </liveCharts:PieChart.Series>
+            <liveCharts:PieChart.PrimaryAxis>
+                <liveCharts:Axis Title="Sold Items"></liveCharts:Axis>
+            </liveCharts:PieChart.PrimaryAxis>
+        </liveCharts:PieChart>
+        <liveCharts:PieSeriesViewer Grid.Row="1" Grid.Column="1" 
+                                 Series="{Binding ElementName=Chart, Path=Series}"
+                                 VerticalAlignment="Center"
+                                 Margin="5">
+        </liveCharts:PieSeriesViewer>
+    </Grid>
+</UserControl>

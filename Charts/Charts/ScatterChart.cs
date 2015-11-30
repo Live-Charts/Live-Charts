@@ -21,43 +21,67 @@
 //SOFTWARE.
 
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Shapes;
-using LiveCharts.Series;
+using LiveCharts.Charts;
+using LiveCharts.Tooltip;
 
-namespace LiveCharts.Charts
+namespace LiveCharts
 {
-    public class ScatterChart : Chart
+    public class ScatterChart : Chart, ILine
     {
         public ScatterChart()
         {
             PrimaryAxis = new Axis();
             SecondaryAxis = new Axis();
             Hoverable = true;
-            Zooming = true;
             ShapeHoverBehavior = ShapeHoverBehavior.Dot;
             AnimatesNewPoints = true;
+            AreaOpacity = 0.2;
+            LineType = LineChartLineType.Bezier;
+            DataToolTip = new ScatterTooltip();
         }
 
-        public static readonly DependencyProperty LineTypeProperty = DependencyProperty.Register(
-            "LineType", typeof(LineChartLineType), typeof(ScatterChart));
-        /// <summary>
-        /// Iditacates series line type, use Bezier to get a smooth but aproximated line, or Polyline to
-        /// draw a line only by the known points.
-        /// </summary>
-        public LineChartLineType LineType
-        {
-            get { return (LineChartLineType)GetValue(LineTypeProperty); }
-            set { SetValue(LineTypeProperty, value); }
-        }
+        public LineChartLineType LineType { get; set; }
 
         protected override bool ScaleChanged => GetMax() != Max ||
                                                 GetMin() != Min;
+
+        private Point GetMax()
+        {
+            var p = new Point(
+                SecondaryAxis.MaxValue ??
+                Series.Cast<ScatterSeries>().Select(x => x.SecondaryValues.DefaultIfEmpty(0).Max()).DefaultIfEmpty(0).Max(),
+                PrimaryAxis.MaxValue ??
+				Series.Select(x => x.PrimaryValues.DefaultIfEmpty(0).Max()).DefaultIfEmpty(0).Max());
+            p.X = SecondaryAxis.MaxValue ?? p.X;
+            p.Y = PrimaryAxis.MaxValue ?? p.Y;
+            return p;
+        }
+
+        private Point GetMin()
+        {
+            var p = new Point(
+                Series.Cast<ScatterSeries>().Select(x => x.SecondaryValues.DefaultIfEmpty(0).Min()).DefaultIfEmpty(0).Min(),
+				Series.Select(x => x.PrimaryValues.DefaultIfEmpty(0).Min()).DefaultIfEmpty(0).Min());
+            p.X = SecondaryAxis.MinValue ?? p.X;
+            p.Y = PrimaryAxis.MinValue ?? p.Y;
+            return p;
+        }
+
+        private Point GetS()
+        {
+            return new Point(
+                SecondaryAxis.Separator.Step ?? CalculateSeparator(Max.X - Min.X, AxisTags.X),
+                PrimaryAxis.Separator.Step ?? CalculateSeparator(Max.Y - Min.Y, AxisTags.Y));
+        }
 
         protected override void Scale()
         {
@@ -74,58 +98,68 @@ namespace LiveCharts.Charts
             DrawAxis();
         }
 
-        public override void DataMouseEnter(object sender, MouseEventArgs e)
+        protected override void DrawAxis()
         {
-            var b = new Border
-            {
-                BorderThickness = TooltipBorderThickness ?? new Thickness(0),
-                Background = TooltipBackground ?? new SolidColorBrush {Color = Color.FromRgb(30, 30, 30), Opacity = .8},
-                CornerRadius = TooltipCornerRadius ?? new CornerRadius(1),
-                BorderBrush = TooltipBorderBrush ?? Brushes.Transparent
-            };
-            var sp = new StackPanel
-            {
-                Orientation = Orientation.Vertical
-            };
+            S = GetS();
+
+            Canvas.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+            var lastLabelX = Math.Truncate((Max.X - Min.X) / S.X) * S.X;
+            var longestYLabelSize = GetLongestLabelSize(PrimaryAxis);
+            var firstXLabelSize = GetLabelSize(SecondaryAxis, Min.X);
+            var lastXLabelSize = GetLabelSize(SecondaryAxis, lastLabelX);
+
+            const int padding = 5;
+
+            PlotArea.X = padding * 2 + (longestYLabelSize.X > firstXLabelSize.X * .5 ? longestYLabelSize.X : firstXLabelSize.X * .5);
+            PlotArea.Y = longestYLabelSize.Y * .5 + padding;
+            PlotArea.Height = Math.Max(0, Canvas.DesiredSize.Height - (padding * 2 + firstXLabelSize.Y) - PlotArea.Y);
+            PlotArea.Width = Math.Max(0, Canvas.DesiredSize.Width - PlotArea.X - padding);
+            var distanceToEnd = ToPlotArea(Max.X - lastLabelX, AxisTags.X) - PlotArea.X;
+            var change = lastXLabelSize.X * .5 - distanceToEnd > 0 ? lastXLabelSize.X * .5 - distanceToEnd : 0;
+            if (change <= PlotArea.Width)
+                PlotArea.Width -= change;
+
+            base.DrawAxis();
+        }
+
+        public override void DataMouseEnter(object sender, MouseEventArgs e)
+        {         
+            if (DataToolTip == null) return;
+
+            DataToolTip.Visibility = Visibility.Visible;
+            TooltipTimer.Stop();
 
             var senderShape = HoverableShapes.FirstOrDefault(s => Equals(s.Shape, sender));
             if (senderShape == null) return;
 
-            senderShape.Target.Stroke = new SolidColorBrush {Color = senderShape.Serie.Color};
-            senderShape.Target.Fill = new SolidColorBrush {Color = PointHoverColor};
+            senderShape.Target.Stroke = new SolidColorBrush { Color = senderShape.Series.Color };
+            senderShape.Target.Fill = new SolidColorBrush { Color = PointHoverColor };
 
-            sp.Children.Add(new TextBlock
+            DataToolTip.DataContext = new ScatterTooltipViewModel
             {
-                Text = "X:" +
-                       (PrimaryAxis.LabelFormatter == null
-                           ? senderShape.Value.X.ToString(CultureInfo.InvariantCulture)
-                           : PrimaryAxis.LabelFormatter(senderShape.Value.X)) +
-                       " Y: " +
-                       (SecondaryAxis.LabelFormatter == null
-                           ? senderShape.Value.Y.ToString(CultureInfo.InvariantCulture)
-                           : SecondaryAxis.LabelFormatter(senderShape.Value.Y)),
-                Margin = new Thickness(5),
-                VerticalAlignment = VerticalAlignment.Center,
-                FontFamily = new FontFamily("Calibri"),
-                FontSize = 11,
-                Foreground = TooltipForegroung ?? Brushes.White
+                Series = senderShape.Series as ScatterSeries,
+                PrimaryAxisTitle = PrimaryAxis.Title,
+                PrimaryValue = PrimaryAxis.LabelFormatter == null
+                    ? senderShape.Value.Y.ToString(CultureInfo.InvariantCulture)
+                    : PrimaryAxis.LabelFormatter(senderShape.Value.Y),
+                SecondaryAxisTitle = SecondaryAxis.Title,
+                SecondaryValue = SecondaryAxis.LabelFormatter == null
+                    ? senderShape.Value.X.ToString(CultureInfo.InvariantCulture)
+                    : SecondaryAxis.LabelFormatter(senderShape.Value.X)
+            };
+
+            var p = GetToolTipPosition(senderShape, null);
+
+            DataToolTip.BeginAnimation(Canvas.LeftProperty, new DoubleAnimation
+            {
+                To = p.X,
+                Duration = TimeSpan.FromMilliseconds(200)
             });
-
-            b.Child = sp;
-            Canvas.Children.Add(b);
-
-            b.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
-            var x = senderShape.Value.X > (Min.X + Max.X)/2
-                ? ToPlotArea(senderShape.Value.X, AxisTags.X) - 10 - b.DesiredSize.Width
-                : ToPlotArea(senderShape.Value.X, AxisTags.X) + 10;
-            var y = senderShape.Value.Y > (Min.Y+ Max.Y)/2
-                ? ToPlotArea(senderShape.Value.Y, AxisTags.Y) + 10
-                : ToPlotArea(senderShape.Value.Y, AxisTags.Y) - 10 - b.DesiredSize.Height;
-
-            Canvas.SetLeft(b, x);
-            Canvas.SetTop(b, y);
-            Panel.SetZIndex(b, int.MaxValue-1);
-            CurrentToolTip = b;
+            DataToolTip.BeginAnimation(Canvas.TopProperty, new DoubleAnimation
+            {
+                To = p.Y,
+                Duration = TimeSpan.FromMilliseconds(200)
+            });
         }
 
         public override void DataMouseLeave(object sender, MouseEventArgs e)
@@ -136,39 +170,23 @@ namespace LiveCharts.Charts
             var shape = HoverableShapes.FirstOrDefault(x => Equals(x.Shape, s));
             if (shape == null) return;
 
-            shape.Target.Fill = new SolidColorBrush {Color = shape.Serie.Color};
-            shape.Target.Stroke = new SolidColorBrush {Color = PointHoverColor};
+            shape.Target.Fill = new SolidColorBrush { Color = shape.Series.Color };
+            shape.Target.Stroke = new SolidColorBrush { Color = PointHoverColor };
 
-            Canvas.Children.Remove(CurrentToolTip);
+            TooltipTimer.Stop();
+            TooltipTimer.Start();
         }
 
-        private Point GetMax()
+        protected override Point GetToolTipPosition(HoverableShape sender, List<HoverableShape> sibilings)
         {
-            var p = new Point(
-                SecondaryAxis.MaxValue ??
-                Series.Cast<ScatterSerie>().Select(x => x.SecondaryValues.DefaultIfEmpty(0).Max()).DefaultIfEmpty(0).Max(),
-                PrimaryAxis.MaxValue ??
-				Series.Select(x => x.PrimaryValues.DefaultIfEmpty(0).Max()).DefaultIfEmpty(0).Max());
-            p.X = SecondaryAxis.MaxValue ?? p.X;
-            p.Y = PrimaryAxis.MaxValue ?? p.Y;
-            return p;
-        }
-
-        private Point GetMin()
-        {
-            var p = new Point(
-                Series.Cast<ScatterSerie>().Select(x => x.SecondaryValues.DefaultIfEmpty(0).Min()).DefaultIfEmpty(0).Min(),
-				Series.Select(x => x.PrimaryValues.DefaultIfEmpty(0).Min()).DefaultIfEmpty(0).Min());
-            p.X = SecondaryAxis.MinValue ?? p.X;
-            p.Y = PrimaryAxis.MinValue ?? p.Y;
-            return p;
-        }
-
-        private Point GetS()
-        {
-            return new Point(
-                SecondaryAxis.Separator.Step ?? CalculateSeparator(Max.X - Min.X, AxisTags.X),
-                PrimaryAxis.Separator.Step ?? CalculateSeparator(Max.Y - Min.Y, AxisTags.Y));
+            DataToolTip.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+            var x = sender.Value.X > (Min.X + Max.X) / 2
+                ? ToPlotArea(sender.Value.X, AxisTags.X) - 10 - DataToolTip.DesiredSize.Width
+                : ToPlotArea(sender.Value.X, AxisTags.X) + 10;
+            var y = sender.Value.Y > (Min.Y + Max.Y) / 2
+                ? ToPlotArea(sender.Value.Y, AxisTags.Y) + 10
+                : ToPlotArea(sender.Value.Y, AxisTags.Y) - 10 - DataToolTip.DesiredSize.Height;
+            return new Point(x, y);
         }
     }
 }

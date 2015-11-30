@@ -26,10 +26,10 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
-using LiveCharts.Series;
+using LiveCharts.Charts;
 using LiveCharts.Shapes;
 
-namespace LiveCharts.Charts
+namespace LiveCharts
 {
     public class PieChart : Chart
     {
@@ -46,6 +46,9 @@ namespace LiveCharts.Charts
             DrawPadding = 20;
             Background = Brushes.White;
             AnimatesNewPoints = true;
+            AreaOpacity = 1;
+
+            PerformanceConfiguration = new PerformanceConfiguration { Enabled = false };
         }
         
         public static readonly DependencyProperty InnerRadiusProperty = DependencyProperty.Register(
@@ -79,7 +82,7 @@ namespace LiveCharts.Charts
             get
             {
                 var serie = Series.FirstOrDefault();
-                var pieSerie = serie as PieSerie;
+                var pieSerie = serie as PieSeries;
                 var min = pieSerie?.PrimaryValues.DefaultIfEmpty(0).Min() ?? 0.01;
                 var psc = pieSerie?.PrimaryValues?.Count ?? 0;
                 return Math.Abs(GetPieSum() - PieTotalSum) > .001*min || _pointsCount != psc;
@@ -90,7 +93,7 @@ namespace LiveCharts.Charts
         {
             DrawAxis();
             var serie = Series.FirstOrDefault();
-            var pieSerie = serie as PieSerie;
+            var pieSerie = serie as PieSeries;
             if (pieSerie == null) return;
             _pointsCount = pieSerie.PrimaryValues.Count;
             PieTotalSum = GetPieSum();
@@ -98,10 +101,7 @@ namespace LiveCharts.Charts
 
         protected override void DrawAxis()
         {
-            foreach (var l in AxisLabels) Canvas.Children.Remove(l);
-            foreach (var s in AxisShapes) Canvas.Children.Remove(s);
-            AxisLabels.Clear();
-            AxisShapes.Clear();
+            foreach (var l in Shapes) Canvas.Children.Remove(l);
         }
         
         public override void DataMouseEnter(object sender, MouseEventArgs e)
@@ -178,7 +178,7 @@ namespace LiveCharts.Charts
         private double GetPieSum()
         {
             var serie = Series.FirstOrDefault();
-            var pieSerie = serie as PieSerie;
+            var pieSerie = serie as PieSeries;
             return pieSerie?.PrimaryValues.DefaultIfEmpty(0).Sum() ?? 0;
         }
     }

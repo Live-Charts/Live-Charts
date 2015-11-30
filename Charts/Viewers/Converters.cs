@@ -2,7 +2,6 @@
 using System.Globalization;
 using System.Windows.Data;
 using System.Windows.Media;
-using LiveCharts.Series;
 
 namespace LiveCharts.Viewers
 {
@@ -19,7 +18,7 @@ namespace LiveCharts.Viewers
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             var v = value as int?;
-            return v == null ? Colors.Transparent : Serie.GetColorByIndex(v.Value);
+            return v == null ? Colors.Transparent : Series.GetColorByIndex(v.Value);
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
@@ -43,7 +42,7 @@ namespace LiveCharts.Viewers
             if (values == null || values.Length < 2) return null;
 
             var index = values[0] as int?;
-            var context = (((values[1] as PieSeriesViewer)?.Series)?[0] as PieSerie)?.Labels;
+            var context = (((values[1] as PieSeriesViewer)?.Series)?[0] as PieSeries)?.Labels;
 
             if (index == null || context == null) return null;
 
@@ -51,6 +50,20 @@ namespace LiveCharts.Viewers
         }
 
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    public class TestConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            var v = value;
+            return null;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             throw new NotImplementedException();
         }

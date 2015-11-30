@@ -1,0 +1,47 @@
+﻿<UserControl x:Class="ChartsTest.Scatter_Examples.CustomScatter"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:liveCharts="clr-namespace:LiveCharts;assembly=LiveCharts"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="600"
+             Loaded="OnLoaded">
+    <Grid Background="#505050">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+        </Grid.RowDefinitions>
+        <TextBlock Grid.Row="0" HorizontalAlignment="Center" Grid.ColumnSpan="2" Margin="5" Foreground="White">
+            Custom Style
+        </TextBlock>
+        <liveCharts:ScatterChart Name="Chart" Grid.Row="1" Grid.Column="0">
+            <liveCharts:ScatterChart.Series>
+                <liveCharts:ScatterSeries Name="Serie1" Title="Tan" Color="#FFB300" PointRadius="0" StrokeThickness="4"></liveCharts:ScatterSeries>
+                <liveCharts:ScatterSeries Name="Serie2" Title="ATan" Color="#FFA000" PointRadius="0" StrokeThickness="4"></liveCharts:ScatterSeries>
+            </liveCharts:ScatterChart.Series>
+            <liveCharts:ScatterChart.PrimaryAxis>
+                <liveCharts:Axis Enabled="False" Foreground="White" FontSize="13" FontFamily="Arial">
+                    <liveCharts:Axis.Separator>
+                        <liveCharts:Separator Color="#404040" Thickness="2" Enabled="True"></liveCharts:Separator>
+                    </liveCharts:Axis.Separator>
+                </liveCharts:Axis>
+            </liveCharts:ScatterChart.PrimaryAxis>
+            <liveCharts:ScatterChart.SecondaryAxis>
+                <liveCharts:Axis Enabled="False" MinValue="0" MaxValue="1">
+                    <liveCharts:Axis.Separator>
+                        <liveCharts:Separator Enabled="False"></liveCharts:Separator>
+                    </liveCharts:Axis.Separator>
+                </liveCharts:Axis>
+            </liveCharts:ScatterChart.SecondaryAxis>
+        </liveCharts:ScatterChart>
+        <liveCharts:SeriesViewer Grid.Row="2"
+                                 Series="{Binding ElementName=Chart, Path=Series}"
+                                 HorizontalAlignment="Center"
+                                 Orientation="Horizontal"
+                                 Foreground="White"
+                                 Margin="5">
+        </liveCharts:SeriesViewer>
+    </Grid>
+</UserControl>
