@@ -20,44 +20,41 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.-->
     
-    <UserControl x:Class="LiveCharts.Tooltip.IndexedToolTip"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:tooltip="clr-namespace:LiveCharts.Tooltip"
-             mc:Ignorable="d" 
-             Width="Auto"
-             Height="Auto"
-             Foreground="WhiteSmoke" d:DataContext="{d:DesignInstance tooltip:IndexedTooltipViewModel}"
-             FontFamily="Calibri"
-             FontSize="11">
+<UserControl x:Class="LiveCharts.Tooltip.IndexedToolTip"
+			 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+			 xmlns:tooltip="clr-namespace:LiveCharts.Tooltip"
+			 mc:Ignorable="d" d:DataContext="{d:DesignInstance tooltip:IndexedToolTip}"
+			 Width="Auto"
+			 Height="Auto"
+			 Foreground="WhiteSmoke"
+			 FontFamily="Calibri"
+			 FontSize="11"
+			 x:Name="ToolTipRoot">
     <Border CornerRadius="2">
         <Border.Background>
             <SolidColorBrush Color="#303030" Opacity=".85"/>
         </Border.Background>
         <StackPanel Margin="4">
-            <TextBlock Text="{Binding Label}" Margin="0 2" HorizontalAlignment="Center" FontWeight="SemiBold"></TextBlock>
-            <DataGrid ItemsSource="{Binding Data}" AutoGenerateColumns="False" HeadersVisibility="None" 
-                      Background="Transparent" RowBackground="Transparent"
-                      GridLinesVisibility="None"
-                      BorderThickness="0">
-                <DataGrid.Columns>
-                    <DataGridTemplateColumn Header="Buttons" Width="15">
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <Ellipse Width="11" Height="11" StrokeThickness="1" Stroke="WhiteSmoke">
-                                    <Ellipse.Fill>
-                                        <SolidColorBrush Color="{Binding Series.Color}"></SolidColorBrush>
-                                    </Ellipse.Fill>
-                                </Ellipse>
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
-                    <DataGridTextColumn Binding="{Binding Series.Title}" Foreground="WhiteSmoke" />
-                    <DataGridTextColumn Binding="{Binding Value}" Foreground="WhiteSmoke" />
-                </DataGrid.Columns>
-            </DataGrid>
+            <TextBlock Text="{Binding Header}" Margin="0 2" HorizontalAlignment="Center" FontWeight="SemiBold"/>
+			<ItemsControl ItemsSource="{Binding Data}" Grid.IsSharedSizeScope="True">
+				<ItemsControl.ItemTemplate>
+                    <DataTemplate DataType="{x:Type tooltip:IndexedTooltipData}">
+						<Grid Margin="2">
+							<Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition Width="Auto" SharedSizeGroup="Title"/>
+                                <ColumnDefinition Width="Auto" SharedSizeGroup="Value"/>
+                            </Grid.ColumnDefinitions>
+                            <Ellipse Width="11" Height="11" StrokeThickness="1" Stroke="{Binding Stroke}" Fill="{Binding Fill}"/>
+                            <TextBlock Grid.Column="1" Text="{Binding Title}" Margin="4 0" VerticalAlignment="Center"/>
+                            <TextBlock Grid.Column="2" Text="{Binding Value}" VerticalAlignment="Center"/>
+                        </Grid>
+					</DataTemplate>
+				</ItemsControl.ItemTemplate>
+			</ItemsControl>
         </StackPanel>
     </Border>
 </UserControl>

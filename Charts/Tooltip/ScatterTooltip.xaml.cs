@@ -20,6 +20,8 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
+using System.Windows;
+
 namespace LiveCharts.Tooltip
 {
     /// <summary>
@@ -27,9 +29,47 @@ namespace LiveCharts.Tooltip
     /// </summary>
     public partial class ScatterTooltip 
     {
+
+		public static readonly DependencyProperty PrimaryAxisTitleProperty =
+			DependencyProperty.Register("PrimaryAxisTitle", typeof(string), typeof(ScatterTooltip), new PropertyMetadata(null));
+
+		public string PrimaryAxisTitle
+		{
+			get { return (string)GetValue(PrimaryAxisTitleProperty); }
+			set { SetValue(PrimaryAxisTitleProperty, value); }
+		}
+
+		public static readonly DependencyProperty PrimaryValueProperty =
+			DependencyProperty.Register("PrimaryValue", typeof(string), typeof(ScatterTooltip), new PropertyMetadata(null));
+
+		public string PrimaryValue
+		{
+			get { return (string)GetValue(PrimaryValueProperty); }
+			set { SetValue(PrimaryValueProperty, value); }
+		}
+
+		public static readonly DependencyProperty SecondaryAxisTitleProperty =
+			DependencyProperty.Register("SecondaryAxisTitle", typeof(string), typeof(ScatterTooltip), new PropertyMetadata(null));
+
+		public string SecondaryAxisTitle
+		{
+			get { return (string)GetValue(SecondaryAxisTitleProperty); }
+			set { SetValue(SecondaryAxisTitleProperty, value); }
+		}
+
+		public static readonly DependencyProperty SecondaryValueProperty =
+			DependencyProperty.Register("SecondaryValue", typeof(string), typeof(ScatterTooltip), new PropertyMetadata(null));
+
+		public string SecondaryValue
+		{
+			get { return (string)GetValue(SecondaryValueProperty); }
+			set { SetValue(SecondaryValueProperty, value); }
+		}
+
         public ScatterTooltip()
         {
             InitializeComponent();
+	        DataContext = this;
         }
     }
 }

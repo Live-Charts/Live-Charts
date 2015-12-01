@@ -69,7 +69,7 @@ namespace LiveCharts
                 {
                     Width = PointRadius*2,
                     Height = PointRadius*2,
-                    Fill = new SolidColorBrush {Color = Color},
+                    Fill = Stroke,
                     Stroke = new SolidColorBrush {Color = Chart.PointHoverColor},
                     StrokeThickness = 2
                 };
@@ -113,12 +113,12 @@ namespace LiveCharts
             if (c == null) return;
 
             if (c.LineType == LineChartLineType.Bezier) 
-                Shapes.AddRange(_addSerieAsBezier(points.ToArray(), Color, StrokeThickness, animate));
+                Shapes.AddRange(_addSerieAsBezier(points.ToArray(), Stroke, StrokeThickness, animate));
             if (c.LineType == LineChartLineType.Polyline)
-                Shapes.AddRange(_addSeriesAsPolyline(points.ToArray(), Color, StrokeThickness, animate));
+                Shapes.AddRange(_addSeriesAsPolyline(points.ToArray(), Stroke, StrokeThickness, animate));
         }
 
-        private IEnumerable<Shape> _addSerieAsBezier(Point[] points, Color color, double storkeThickness,
+        private IEnumerable<Shape> _addSerieAsBezier(Point[] points, Brush color, double storkeThickness,
             bool animate = true)
         {
 	        if (points.Length < 2) return Enumerable.Empty<Shape>();
@@ -149,7 +149,7 @@ namespace LiveCharts
 
             var path = new Path
             {
-                Stroke = new SolidColorBrush { Color = color },
+                Stroke = color,
                 StrokeThickness = storkeThickness,
                 Data = g,
                 StrokeEndLineCap = PenLineCap.Round,
@@ -197,7 +197,7 @@ namespace LiveCharts
             return addedFigures;
         }
 
-        private IEnumerable<Shape> _addSeriesAsPolyline(Point[] points, Color color, double storkeThickness,
+        private IEnumerable<Shape> _addSeriesAsPolyline(Point[] points, Brush color, double storkeThickness,
             bool animate = true)
         {
             if (points.Length < 2) return Enumerable.Empty<Shape>();
@@ -231,7 +231,7 @@ namespace LiveCharts
 
             var path = new Path
             {
-                Stroke = new SolidColorBrush { Color = color },
+                Stroke = color,
                 StrokeThickness = storkeThickness,
                 Data = g,
                 StrokeEndLineCap = PenLineCap.Round,

@@ -4,10 +4,11 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:liveCharts="clr-namespace:LiveCharts;assembly=LiveCharts"
+             xmlns:pieExamples="clr-namespace:ChartsTest.Pie_Examples"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300"
              Loaded="OnLoaded">
-    <Grid d:DataContext="{d:DesignInstance SalesViewModel}">
+    <Grid d:DataContext="{d:DesignInstance pieExamples:SalesViewModel}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
@@ -20,12 +21,12 @@
         <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" TextWrapping="Wrap" HorizontalAlignment="Center">
             MVVM example, click on the buttons below to update chart
         </TextBlock>
-        <liveCharts:PieChart Name="Chart" Grid.Row="1" Grid.Column="0" Series="{Binding}" >
+        <liveCharts:PieChart Name="Chart" Grid.Row="1" Grid.Column="0" Series="{Binding Salesmen}" >
             <liveCharts:PieChart.PrimaryAxis>
-                <liveCharts:Axis Title="Sold Items"></liveCharts:Axis>
+                <liveCharts:Axis Title="Sold Items" LabelFormatter="{x:Static liveCharts:LabelFormatters.Number}"></liveCharts:Axis>
             </liveCharts:PieChart.PrimaryAxis>
             <liveCharts:PieChart.SecondaryAxis>
-                <liveCharts:Axis Name="SecondaryAxis" Title="Month" Labels="{Binding}"></liveCharts:Axis>
+                <liveCharts:Axis Name="SecondaryAxis" Title="Month" Labels="{Binding AvailableMonths}"></liveCharts:Axis>
             </liveCharts:PieChart.SecondaryAxis>
         </liveCharts:PieChart>
         <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Center">
@@ -45,6 +46,6 @@
             <Button Click="RemoveMonthOnClick">-</Button>
         </StackPanel>
         <liveCharts:PieSeriesViewer Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" 
-                                 Series="{Binding ElementName=Chart, Path=Series}"></liveCharts:PieSeriesViewer>
+									Series="{Binding ElementName=Chart, Path=Series}"></liveCharts:PieSeriesViewer>
     </Grid>
 </UserControl>

@@ -97,7 +97,7 @@ namespace LiveCharts
                     {
                         Width = PointRadius * 2,
                         Height = PointRadius * 2,
-                        Fill = new SolidColorBrush { Color = Color },
+                        Fill = Stroke,
                         Stroke = new SolidColorBrush { Color = Chart.PointHoverColor },
                         StrokeThickness = 2
                     };
@@ -156,12 +156,12 @@ namespace LiveCharts
 
             var path = new Path
             {
-                Stroke = new SolidColorBrush { Color = Color },
+                Stroke = Stroke,
                 StrokeThickness = StrokeThickness,
                 Data = g,
                 StrokeEndLineCap = PenLineCap.Round,
                 StrokeStartLineCap = PenLineCap.Round,
-                Fill = new SolidColorBrush { Color = Color, Opacity = chart.AreaOpacity },
+                Fill = Fill,
                 StrokeDashOffset = l,
                 StrokeDashArray = new DoubleCollection { l, l }
             };

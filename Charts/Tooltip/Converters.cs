@@ -26,29 +26,25 @@ using System.Windows.Data;
 
 namespace LiveCharts.Tooltip
 {
-    public class XTitleConverter : IValueConverter
-    {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            return value ?? "X";
-        }
+	public class DefaultIfNullConverter : IValueConverter
+	{
+		public static DefaultIfNullConverter Instance { get; private set; }
 
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            throw new NotImplementedException();
-        }
-    }
+		static DefaultIfNullConverter()
+		{
+			Instance = new DefaultIfNullConverter();
+		}
 
-    public class YTitleConverter : IValueConverter
-    {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            return value ?? "Y";
-        }
+		private DefaultIfNullConverter() {}
 
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            throw new NotImplementedException();
-        }
-    }
+		public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+		{
+			return value ?? parameter;
+		}
+
+		public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+		{
+			throw new NotImplementedException();
+		}
+	}
 }

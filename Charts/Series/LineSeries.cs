@@ -55,13 +55,13 @@ namespace LiveCharts
             if (LineChart.LineType == LineChartLineType.Bezier)
                 s.AddRange(_addSerieAsBezier(ChartPoints.Select(x => new Point(
                     ToPlotArea(x.X, AxisTags.X) + Chart.XOffset, ToPlotArea(x.Y, AxisTags.Y))).ToArray(),
-                    Color,
+                    Stroke,
                     serie.StrokeThickness, animate));
 
             if (LineChart.LineType == LineChartLineType.Polyline)
                 s.AddRange(_addSeriesAsPolyline(ChartPoints.Select(x => new Point(
                     ToPlotArea(x.X, AxisTags.X) + Chart.XOffset, ToPlotArea(x.Y, AxisTags.Y))).ToArray(),
-                    Color,
+					Stroke,
                     serie.StrokeThickness, animate));
 
 			var hoverableAreas = new List<HoverableShape>();
@@ -76,7 +76,7 @@ namespace LiveCharts
 						{
 							Width = serie.PointRadius * 2,
 							Height = serie.PointRadius * 2,
-							Fill = new SolidColorBrush {Color = Color},
+							Fill = Stroke,
 							Stroke = new SolidColorBrush {Color = Chart.PointHoverColor},
 							StrokeThickness = 2,
 							ClipToBounds = true
@@ -115,7 +115,7 @@ namespace LiveCharts
 			Chart.HoverableShapes.AddRange(hoverableAreas);
 		}
 
-		private IEnumerable<Shape> _addSerieAsBezier(Point[] points, Color color, double storkeThickness,
+		private IEnumerable<Shape> _addSerieAsBezier(Point[] points, Brush color, double storkeThickness,
 		                                             bool animate = true)
 		{
 			if (points.Length < 2) return Enumerable.Empty<Shape>();
@@ -150,7 +150,7 @@ namespace LiveCharts
 
 			var path = new Path
 				{
-					Stroke = new SolidColorBrush {Color = color},
+					Stroke = color,
 					StrokeThickness = storkeThickness,
 					Data = g,
 					StrokeEndLineCap = PenLineCap.Round,
@@ -163,9 +163,10 @@ namespace LiveCharts
 				{
 					StrokeThickness = 0,
 					Data = ga,
-					Fill = new SolidColorBrush {Color = color, Opacity = AreaOpacity ?? Chart.AreaOpacity},
-					ClipToBounds = true
-				};
+					Fill = color,
+					ClipToBounds = true,
+					Opacity = AreaOpacity ?? Chart.AreaOpacity
+			};
 
 			Chart.Canvas.Children.Add(path);
 			addedFigures.Add(path);
@@ -211,7 +212,7 @@ namespace LiveCharts
 			return addedFigures;
 		}
 
-		private IEnumerable<Shape> _addSeriesAsPolyline(Point[] points, Color color, double storkeThickness,
+		private IEnumerable<Shape> _addSeriesAsPolyline(Point[] points, Brush color, double storkeThickness,
 		                                                bool animate = true)
 		{
             if (points.Length < 2) return Enumerable.Empty<Shape>();
@@ -245,7 +246,7 @@ namespace LiveCharts
 
 			var path = new Path
 				{
-					Stroke = new SolidColorBrush {Color = color},
+					Stroke = color,
 					StrokeThickness = storkeThickness,
 					Data = g,
 					StrokeEndLineCap = PenLineCap.Round,
@@ -273,9 +274,10 @@ namespace LiveCharts
 				{
 					StrokeThickness = 0,
 					Data = sg,
-					Fill = new SolidColorBrush {Color = color, Opacity = AreaOpacity ?? Chart.AreaOpacity},
-					ClipToBounds = true
-				};
+					Fill = color,
+					ClipToBounds = true,
+					Opacity = AreaOpacity ?? Chart.AreaOpacity
+			};
 
             Chart.Canvas.Children.Add(path);
             addedFigures.Add(path);

@@ -124,7 +124,6 @@
     <Compile Include="Tooltip\ScatterTooltip.xaml.cs">
       <DependentUpon>ScatterTooltip.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Tooltip\ViewModels.cs" />
     <Compile Include="TypeConverters\ColorCollectionConverter.cs" />
     <Compile Include="TypeConverters\StringCollectionConverter.cs" />
     <Compile Include="TypeConverters\ValueCollectionConverter.cs" />

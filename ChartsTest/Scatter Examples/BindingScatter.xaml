@@ -25,14 +25,14 @@
                                          StrokeThickness="4" PointRadius="6"></liveCharts:ScatterSeries>
             </liveCharts:ScatterChart.Series>
             <liveCharts:ScatterChart.PrimaryAxis>
-                <liveCharts:Axis Enabled="False" PrintLabels="False">
+                <liveCharts:Axis IsEnabled="False" PrintLabels="False">
                     <liveCharts:Axis.Separator>
                         <liveCharts:Separator Enabled="False"></liveCharts:Separator>
                     </liveCharts:Axis.Separator>
                 </liveCharts:Axis>
             </liveCharts:ScatterChart.PrimaryAxis>
             <liveCharts:ScatterChart.SecondaryAxis>
-                <liveCharts:Axis Enabled="False" PrintLabels="False" MinValue="16" MaxValue="128">
+                <liveCharts:Axis IsEnabled="False" PrintLabels="False" MinValue="16" MaxValue="128">
                     <liveCharts:Axis.Separator>
                         <liveCharts:Separator Enabled="False"></liveCharts:Separator>
                     </liveCharts:Axis.Separator>

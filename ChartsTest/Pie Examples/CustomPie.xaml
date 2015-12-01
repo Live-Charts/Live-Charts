@@ -24,14 +24,14 @@
                                      Colors="#FFB300, #FFA000, #FF8F00"/>
             </liveCharts:PieChart.Series>
             <liveCharts:PieChart.PrimaryAxis>
-                <liveCharts:Axis Title="Sold Items" Enabled="False" Foreground="White" FontSize="13" FontFamily="Arial">
+                <liveCharts:Axis Title="Sold Items" IsEnabled="False" Foreground="White" FontSize="13" FontFamily="Arial">
                     <liveCharts:Axis.Separator>
                         <liveCharts:Separator Color="#404040" Thickness="2" Enabled="True"></liveCharts:Separator>
                     </liveCharts:Axis.Separator>
                 </liveCharts:Axis>
             </liveCharts:PieChart.PrimaryAxis>
             <liveCharts:PieChart.SecondaryAxis>
-                <liveCharts:Axis Title="Month" Enabled="False">
+                <liveCharts:Axis Title="Month" IsEnabled="False">
                     <liveCharts:Axis.Separator>
                         <liveCharts:Separator Enabled="False"></liveCharts:Separator>
                     </liveCharts:Axis.Separator>

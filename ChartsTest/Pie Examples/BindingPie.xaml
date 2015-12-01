@@ -21,14 +21,14 @@
                 <liveCharts:PieSeries Name="Serie1" Title="Maria" PrimaryValues="{Binding}"></liveCharts:PieSeries>
             </liveCharts:PieChart.Series>
             <liveCharts:PieChart.PrimaryAxis>
-                <liveCharts:Axis Enabled="False" PrintLabels="False">
+                <liveCharts:Axis IsEnabled="False" PrintLabels="False">
                     <liveCharts:Axis.Separator>
                         <liveCharts:Separator Enabled="False"></liveCharts:Separator>
                     </liveCharts:Axis.Separator>
                 </liveCharts:Axis>
             </liveCharts:PieChart.PrimaryAxis>
             <liveCharts:PieChart.SecondaryAxis>
-                <liveCharts:Axis Enabled="False" PrintLabels="False">
+                <liveCharts:Axis IsEnabled="False" PrintLabels="False">
                     <liveCharts:Axis.Separator>
                         <liveCharts:Separator Enabled="False"></liveCharts:Separator>
                     </liveCharts:Axis.Separator>

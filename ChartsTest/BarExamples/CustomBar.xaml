@@ -18,19 +18,19 @@
         </TextBlock>
         <liveCharts:BarChart Name="Chart" Grid.Row="1" Grid.Column="0">
             <liveCharts:BarChart.Series>
-                <liveCharts:BarSeries Title="Maria" PrimaryValues="20, 40, 45, 60, 55, 60, 65, 70" Color="#FFB300" StrokeThickness="4" />
-                <liveCharts:BarSeries Title="John" PrimaryValues="30, 35, 43, 68, 65 ,70, 55, 60" Color="#FFA000" StrokeThickness="4" />
-                <liveCharts:BarSeries Title="Erick" PrimaryValues="40, 42, 50, 70, 50, 55, 44, 73" Color="#FF8F00"  StrokeThickness="4"/>
+                <liveCharts:BarSeries Title="Maria" PrimaryValues="20, 40, 45, 60, 55, 60, 65, 70" Stroke="#FFB300" Fill="#AAFFB300" StrokeThickness="4" />
+                <liveCharts:BarSeries Title="John" PrimaryValues="30, 35, 43, 68, 65 ,70, 55, 60" Stroke="#FFA000" Fill="#AAFFA000" StrokeThickness="4" />
+                <liveCharts:BarSeries Title="Erick" PrimaryValues="40, 42, 50, 70, 50, 55, 44, 73" Stroke="#FF8F00" Fill="#AAFF8F00" StrokeThickness="4"/>
             </liveCharts:BarChart.Series>
             <liveCharts:BarChart.PrimaryAxis>
-                <liveCharts:Axis Title="Sold Items" Enabled="False" Foreground="White" FontSize="13" FontFamily="Arial">
+                <liveCharts:Axis Title="Sold Items" IsEnabled="False" Foreground="White" FontSize="13" FontFamily="Arial">
                     <liveCharts:Axis.Separator>
                         <liveCharts:Separator Color="#404040" Thickness="2" Enabled="True"></liveCharts:Separator>
                     </liveCharts:Axis.Separator>
                 </liveCharts:Axis>
             </liveCharts:BarChart.PrimaryAxis>
             <liveCharts:BarChart.SecondaryAxis>
-                <liveCharts:Axis Title="Month" Labels="Jan, Feb, Mar, Apr, May, Jun, Ago, Sep, Oct, Nov, Dec" Enabled="False">
+                <liveCharts:Axis Title="Month" Labels="Jan, Feb, Mar, Apr, May, Jun, Ago, Sep, Oct, Nov, Dec" IsEnabled="False">
                     <liveCharts:Axis.Separator>
                         <liveCharts:Separator Enabled="False"></liveCharts:Separator>
                     </liveCharts:Axis.Separator>

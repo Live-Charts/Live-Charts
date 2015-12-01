@@ -44,7 +44,6 @@ namespace LiveCharts
 
 		protected Series()
 		{
-			ColorId = -1;
             ChartPoints = new List<Point>();
 		}
 
@@ -59,8 +58,7 @@ namespace LiveCharts
             set { SetValue(PrimaryValuesProperty, value); }
         }
         public static readonly DependencyProperty TitleProperty =
-           DependencyProperty.Register("Title", typeof(string), typeof(Series),
-               new PropertyMetadata("An Unnamed Serie"));
+           DependencyProperty.Register("Title", typeof(string), typeof(Series), new PropertyMetadata("An Unnamed Serie"));
         /// <summary>
         /// Gets or sets serie name
         /// </summary>
@@ -72,10 +70,38 @@ namespace LiveCharts
                 SetValue(TitleProperty, value);
             }
         }
-        #endregion
 
-        #region Properties
-        internal List<Point> ChartPoints { get; set; }
+		public static readonly DependencyProperty ColorIndexProperty =
+			DependencyProperty.Register("ColorIndex", typeof(int), typeof(Series), new PropertyMetadata(-1));
+
+		public int ColorIndex
+		{
+			get { return (int)GetValue(ColorIndexProperty); }
+			set { SetValue(ColorIndexProperty, value); }
+		}
+
+		public static readonly DependencyProperty StrokeProperty =
+			DependencyProperty.Register("Stroke", typeof(Brush), typeof(Series), new PropertyMetadata(null));
+
+		public Brush Stroke
+		{
+			get { return (Brush)GetValue(StrokeProperty) ?? new SolidColorBrush(GetColorByIndex(ColorIndex)); }
+			set { SetValue(StrokeProperty, value); }
+		}
+
+		public static readonly DependencyProperty FillProperty =
+			DependencyProperty.Register("Fill", typeof(Brush), typeof(Series), new PropertyMetadata(null));
+
+		public Brush Fill
+		{
+			get { return (Brush)GetValue(FillProperty) ?? new SolidColorBrush(GetColorByIndex(ColorIndex)) {Opacity = 0.75}; }
+			set { SetValue(FillProperty, value); }
+		}
+
+		#endregion
+
+		#region Properties
+		internal List<Point> ChartPoints { get; set; }
         public Chart Chart
         {
             get { return _chart; }
@@ -84,17 +110,6 @@ namespace LiveCharts
                 if (_chart != null) throw new Exception("can't set chart property twice.");
                 _chart = value;
             }
-        }
-        
-        public int ColorId { get { return _colorId + Chart.ColorStartIndex; } set { _colorId = value; } }
-        public Color Color
-        {
-            get
-            {
-                if (_color != null) return _color.Value;
-                return Chart.Colors[(int)(ColorId - Chart.Colors.Count * Math.Truncate(ColorId / (decimal)Chart.Colors.Count))];
-            }
-            set { _color = value; }
         }
         #endregion
 
