@@ -55,7 +55,7 @@ xmlns:liveCharts="clr-namespace:LiveCharts;assembly=LiveCharts"
 
 # Need examples?
 
-Try [Live Charts Wiki](https://github.com/beto-rodriguez/Live-Charts/wiki), or cloning this repo, test project includes a lot of examples.
+Try [Live Charts Wiki](https://github.com/beto-rodriguez/Live-Charts/wiki), or cloning this repo, test project includes a lot of examples, copy and paste this link in your browser for a cloning shortcut (git-client://clone?repo=https%3A%2F%2Fgithub.com%2Fbeto-rodriguez%2FLive-Charts).
 
 # How to Contribute
 
