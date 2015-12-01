@@ -33,7 +33,7 @@ namespace LiveCharts
         public BarChart()
         {
             PrimaryAxis = new Axis();
-            SecondaryAxis = new Axis {Separator = new Separator {Step = 1}};
+            SecondaryAxis = new Axis {Separator = {Step = 1}};
             Hoverable = true;
             ShapeHoverBehavior = ShapeHoverBehavior.Shape;
             IgnoresLastLabel = true;

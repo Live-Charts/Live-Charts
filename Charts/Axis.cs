@@ -34,12 +34,7 @@ namespace LiveCharts
         public Axis()
         {
             CleanFactor = 3;
-            Separator = new Separator
-            {
-                Enabled = true,
-                Color = Color.FromRgb(205, 205, 205),
-                Thickness = 1
-            };
+            Separator = new Separator();
         }
 
         public static readonly DependencyProperty LabelsProperty = DependencyProperty.Register(

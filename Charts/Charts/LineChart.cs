@@ -38,7 +38,7 @@ namespace LiveCharts
 			PrimaryAxis = new Axis();
 			SecondaryAxis = new Axis
 				{
-					Separator = {Enabled = false, Step = 1},
+					Separator = { IsEnabled = false, Step = 1},
 					IsEnabled = false
 				};
 			LineType = LineChartLineType.Bezier;

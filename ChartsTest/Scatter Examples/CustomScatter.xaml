@@ -24,14 +24,14 @@
             <liveCharts:ScatterChart.PrimaryAxis>
                 <liveCharts:Axis IsEnabled="False" Foreground="White" FontSize="13" FontFamily="Arial">
                     <liveCharts:Axis.Separator>
-                        <liveCharts:Separator Color="#404040" Thickness="2" Enabled="True"></liveCharts:Separator>
+                        <liveCharts:Separator Stroke="#404040" Thickness="2" IsEnabled="True"></liveCharts:Separator>
                     </liveCharts:Axis.Separator>
                 </liveCharts:Axis>
             </liveCharts:ScatterChart.PrimaryAxis>
             <liveCharts:ScatterChart.SecondaryAxis>
                 <liveCharts:Axis IsEnabled="False" MinValue="0" MaxValue="1">
                     <liveCharts:Axis.Separator>
-                        <liveCharts:Separator Enabled="False"></liveCharts:Separator>
+                        <liveCharts:Separator IsEnabled="False"></liveCharts:Separator>
                     </liveCharts:Axis.Separator>
                 </liveCharts:Axis>
             </liveCharts:ScatterChart.SecondaryAxis>

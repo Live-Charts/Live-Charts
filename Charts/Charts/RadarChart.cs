@@ -110,13 +110,10 @@ namespace LiveCharts
             double num1 = 0.0;
             while (num1 < 360.0)
             {
-                if (this.PrimaryAxis.Separator.Enabled)
+                if (this.PrimaryAxis.Separator.IsEnabled)
                 {
                     Line line1 = new Line();
-                    line1.Stroke = (Brush) new SolidColorBrush()
-                    {
-                        Color = this.PrimaryAxis.Separator.Color
-                    };
+	                line1.Stroke = PrimaryAxis.Separator.Stroke;
                     line1.StrokeThickness = (double) this.PrimaryAxis.Separator.Thickness;
                     line1.X1 = this.ActualWidth/2.0;
                     line1.Y1 = this.ActualHeight/2.0;
@@ -131,10 +128,7 @@ namespace LiveCharts
                 while (y >= this.Min.Y)
                 {
                     Line line1 = new Line();
-                    line1.Stroke = (Brush) new SolidColorBrush()
-                    {
-                        Color = this.PrimaryAxis.Separator.Color
-                    };
+	                line1.Stroke = PrimaryAxis.Separator.Stroke;
                     line1.StrokeThickness = (double) this.PrimaryAxis.Separator.Thickness;
                     line1.X1 = this.ActualWidth/2.0 + Math.Sin(num1*(Math.PI/180.0))*this.ToChartRadius(y);
                     line1.Y1 = this.ActualHeight/2.0 - Math.Cos(num1*(Math.PI/180.0))*this.ToChartRadius(y);

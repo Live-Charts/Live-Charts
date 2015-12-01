@@ -449,18 +449,18 @@ namespace LiveCharts.Charts
 			PlotArea.Height -= titleX;
 
 			//drawing primary axis
-			var ly = PrimaryAxis.Separator.Enabled || PrimaryAxis.PrintLabels
+			var ly = PrimaryAxis.Separator.IsEnabled || PrimaryAxis.PrintLabels
 				? Max.Y
 				: Min.Y - 1;
 			var longestYLabelSize = GetLongestLabelSize(PrimaryAxis);
 			for (var i = Min.Y; i <= ly; i += S.Y)
 			{
 				var y = ToPlotArea(i, AxisTags.Y);
-				if (PrimaryAxis.Separator.Enabled)
+				if (PrimaryAxis.Separator.IsEnabled)
 				{
 					var l = new Line
 					{
-						Stroke = new SolidColorBrush { Color = PrimaryAxis.Separator.Color },
+						Stroke = PrimaryAxis.Separator.Stroke,
 						StrokeThickness = PrimaryAxis.Separator.Thickness,
 						X1 = ToPlotArea(Min.X, AxisTags.X),
 						Y1 = y,
@@ -497,18 +497,18 @@ namespace LiveCharts.Charts
 			}
 
 			//drawing secondary axis
-			var lx = SecondaryAxis.Separator.Enabled || SecondaryAxis.PrintLabels
+			var lx = SecondaryAxis.Separator.IsEnabled || SecondaryAxis.PrintLabels
 				? Max.X + (IgnoresLastLabel ? -1 : 0)
 				: Min.X - 1;
 
 			for (var i = Min.X; i <= lx; i += S.X)
 			{
 				var x = ToPlotArea(i, AxisTags.X);
-				if (SecondaryAxis.Separator.Enabled)
+				if (SecondaryAxis.Separator.IsEnabled)
 				{
 					var l = new Line
 					{
-						Stroke = new SolidColorBrush { Color = SecondaryAxis.Separator.Color },
+						Stroke = SecondaryAxis.Separator.Stroke,
 						StrokeThickness = SecondaryAxis.Separator.Thickness,
 						X1 = x,
 						Y1 = ToPlotArea(Max.Y, AxisTags.Y),

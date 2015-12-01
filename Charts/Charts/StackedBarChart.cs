@@ -33,7 +33,7 @@ namespace LiveCharts
         public StackedBarChart()
         {
             PrimaryAxis = new Axis();
-            SecondaryAxis = new Axis {Separator = new Separator {Step = 1}};
+            SecondaryAxis = new Axis {Separator = {Step = 1}};
             Hoverable = true;
             PrimaryAxis.MinValue = 0d;
             ShapeHoverBehavior = ShapeHoverBehavior.Shape;

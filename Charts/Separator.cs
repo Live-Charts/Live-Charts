@@ -20,30 +20,47 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
+using System.Windows;
 using System.Windows.Media;
 
 namespace LiveCharts
 {
-    public class Separator
+    public class Separator : UIElement
     {
-        /// <summary>
-        /// Indicates weather to draw separators or not.
-        /// </summary>
-        public bool Enabled { get; set; }
+		public static readonly DependencyProperty StrokeProperty =
+			DependencyProperty.Register("Stroke", typeof(Brush), typeof(Separator), new PropertyMetadata(new SolidColorBrush(Color.FromRgb(205, 205, 205))));
 
-        /// <summary>
-        /// Gets or sets color separators color 
-        /// </summary>
-        public Color Color { get; set; }
+		/// <summary>
+		/// Gets or sets color separators color 
+		/// </summary>
+		public Brush Stroke
+		{
+			get { return (Brush)GetValue(StrokeProperty); }
+			set { SetValue(StrokeProperty, value); }
+		}
 
-        /// <summary>
-        /// Gets or sets separatos thickness
-        /// </summary>
-        public int Thickness { get; set; }
+		public static readonly DependencyProperty ThicknessProperty =
+			DependencyProperty.Register("Thickness", typeof(int), typeof(Separator), new PropertyMetadata(1));
 
-        /// <summary>
-        /// Gets or sets sepator step, use null to make it auto
-        /// </summary>
-        public double? Step { get; set; } = null;
+		/// <summary>
+		/// Gets or sets separatos thickness
+		/// </summary>
+		public int Thickness
+		{
+			get { return (int)GetValue(ThicknessProperty); }
+			set { SetValue(ThicknessProperty, value); }
+		}
+
+		public static readonly DependencyProperty StepProperty =
+			DependencyProperty.Register("Step", typeof(double?), typeof(Separator), new PropertyMetadata(null));
+
+		/// <summary>
+		/// Gets or sets sepator step, use null to make it auto
+		/// </summary>
+		public double? Step
+		{
+			get { return (double?)GetValue(StepProperty); }
+			set { SetValue(StepProperty, value); }
+		}
     }
 }
