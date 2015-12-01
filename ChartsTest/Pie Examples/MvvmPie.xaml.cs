@@ -58,6 +58,7 @@ namespace ChartsTest.Pie_Examples
 
         public ObservableCollection<Series> Salesmen { get; set; }
         public string[] AvailableMonths { get; set; }
+	    public Func<double, string> ValueFormatter { get; } = x => x.ToString("C");
 
 		public void AddOneMonth()
         {

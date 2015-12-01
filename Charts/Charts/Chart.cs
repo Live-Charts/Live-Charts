@@ -61,6 +61,8 @@ namespace LiveCharts.Charts
 		private Point _panOrigin;
 		private bool _isDragging;
 		private UIElement _dataToolTip;
+		private Axis _primaryAxis;
+		private Axis _secondaryAxis;
 
 		public event Action<Chart> Plot;
 
@@ -204,16 +206,39 @@ namespace LiveCharts.Charts
 			get { return (ObservableCollection<Series>) GetValue(SeriesProperty); }
 			set { SetValue(SeriesProperty, value); }
 		}
+
 		#endregion
 
 		#region Properties
-		public Canvas Canvas { get; internal set; }
+		public Canvas Canvas { get; }
 		public double XOffset { get; internal set; }
-		public List<FrameworkElement> Shapes { get; internal set; }
-		public List<HoverableShape> HoverableShapes { get; internal set; } 
+		public List<FrameworkElement> Shapes { get; private set; }
+		public List<HoverableShape> HoverableShapes { get; private set; }
 
-		public Axis PrimaryAxis { get; set; }
-		public Axis SecondaryAxis { get; set; }
+		public Axis PrimaryAxis
+		{
+			get { return _primaryAxis; }
+			set
+			{
+				if (_primaryAxis != null)
+					Canvas.Children.Remove(_primaryAxis);
+				_primaryAxis = value;
+				if (_primaryAxis != null)
+					Canvas.Children.Add(_primaryAxis);
+			}
+		}
+		public Axis SecondaryAxis
+		{
+			get { return _secondaryAxis; }
+			set
+			{
+				if (_secondaryAxis != null)
+					Canvas.Children.Remove(_secondaryAxis);
+				_secondaryAxis = value;
+				if (_secondaryAxis != null)
+					Canvas.Children.Add(_secondaryAxis);
+			}
+		}
 		public UIElement DataToolTip
 		{
 			get { return _dataToolTip; }

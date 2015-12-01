@@ -23,7 +23,7 @@
         </TextBlock>
         <liveCharts:PieChart Name="Chart" Grid.Row="1" Grid.Column="0" Series="{Binding Salesmen}" >
             <liveCharts:PieChart.PrimaryAxis>
-                <liveCharts:Axis Title="Sold Items" LabelFormatter="{x:Static liveCharts:LabelFormatters.Number}"></liveCharts:Axis>
+                <liveCharts:Axis Title="Sold Items" LabelFormatter="{Binding ValueFormatter}"></liveCharts:Axis>
             </liveCharts:PieChart.PrimaryAxis>
             <liveCharts:PieChart.SecondaryAxis>
                 <liveCharts:Axis Name="SecondaryAxis" Title="Month" Labels="{Binding AvailableMonths}"></liveCharts:Axis>
