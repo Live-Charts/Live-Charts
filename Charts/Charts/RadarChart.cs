@@ -43,9 +43,10 @@ namespace LiveCharts
             ShapeHoverBehavior = ShapeHoverBehavior.Dot;
             AlphaLabel = true;
             AreaOpacity = .2;
+            InnerRadius = 10;
         }
 
-        public double InnerRadius { get; set; } = 10.0;
+        public double InnerRadius { get; set; }
 
         protected override bool ScaleChanged
         {

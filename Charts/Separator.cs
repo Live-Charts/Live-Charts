@@ -26,6 +26,11 @@ namespace LiveCharts
 {
     public class Separator
     {
+        public Separator()
+        {
+            Step = null;
+        }
+
         /// <summary>
         /// Indicates weather to draw separators or not.
         /// </summary>
@@ -44,6 +49,6 @@ namespace LiveCharts
         /// <summary>
         /// Gets or sets sepator step, use null to make it auto
         /// </summary>
-        public double? Step { get; set; } = null;
+        public double? Step { get; set; }
     }
 }

@@ -39,6 +39,7 @@ namespace LiveCharts
             IgnoresLastLabel = true;
             AreaOpacity = .8;
             LineType = LineChartLineType.Bezier;
+            MaxColumnWidth = 60;
 
             //no performance config for a bar chart
             //why? because this chart need to build a bar per point,
@@ -53,7 +54,7 @@ namespace LiveCharts
         /// <summary>
         /// Gets or sets maximum column width, default is 60
         /// </summary>
-        public double MaxColumnWidth { get; set; } = 60;
+        public double MaxColumnWidth { get; set; }
         public LineChartLineType LineType { get; set; }
 
         private Point GetMax()

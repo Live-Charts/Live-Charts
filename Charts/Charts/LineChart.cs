@@ -52,7 +52,6 @@ namespace LiveCharts
 		                                        GetS() != _rawS;
 
 	    public LineChartLineType LineType { get; set; }
-        public double MaxColumnWidth { get; set; } = 60;
 
         private Point GetMax()
 		{

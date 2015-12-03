@@ -42,12 +42,13 @@ namespace LiveCharts
             AreaOpacity = 0.8;
             LineType = LineChartLineType.Bezier;
             IndexTotals = new Dictionary<int, StackedBarHelper>();
+            MaxColumnWidth = 60;
         }
 
         /// <summary>
         /// Gets or sets maximum column width, default is 60
         /// </summary>
-        public double MaxColumnWidth { get; set; } = 60;
+        public double MaxColumnWidth { get; set; }
         public LineChartLineType LineType { get; set; }
 
         public Dictionary<int, StackedBarHelper> IndexTotals { get; set; } 

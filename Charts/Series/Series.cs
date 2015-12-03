@@ -54,7 +54,14 @@ namespace LiveCharts
         [TypeConverter(typeof(ValueCollectionConverter))]
         public IList<double> PrimaryValues
         {
-            get { return (IList<double>)GetValue(PrimaryValuesProperty); }
+            get
+            {
+                var pv = (IList<double>) GetValue(PrimaryValuesProperty);
+                if (DesignerProperties.GetIsInDesignMode(this))
+                    if (pv == null) pv = new List<double>();
+                
+                return pv;
+            }
             set { SetValue(PrimaryValuesProperty, value); }
         }
         public static readonly DependencyProperty TitleProperty =
