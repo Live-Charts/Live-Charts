@@ -33,7 +33,7 @@ namespace WinForms
         private void button1_Click(object sender, EventArgs e)
         {
             var lineChart = Host.Child as LineChart;
-            lineChart?.ClearAndPlot();
+            if (lineChart != null) lineChart.ClearAndPlot();
         }
     }
 }

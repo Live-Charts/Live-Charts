@@ -8,9 +8,9 @@ namespace LiveCharts.Viewers
 {
 	internal class SerieConverter : IValueConverter
 	{
-		public static SerieConverter Instance { get; }
+		public static SerieConverter Instance { get; set; }
 
-		static SerieConverter()
+	    static SerieConverter()
 		{
 			Instance = new SerieConverter();
 		}

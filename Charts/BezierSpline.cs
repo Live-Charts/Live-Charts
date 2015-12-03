@@ -41,10 +41,10 @@ namespace LiveCharts
         public static void GetCurveControlPoints(Point[] knots, out Point[] firstControlPoints, out Point[] secondControlPoints)
         {
             if (knots == null)
-                throw new ArgumentNullException(nameof(knots));
+                throw new ArgumentNullException();
             int n = knots.Length - 1;
             if (n < 1)
-                throw new ArgumentException(@"At least two knot points required", nameof(knots));
+                throw new ArgumentException(@"At least two knot points required");
             if (n == 1)
             { // Special case: Bezier curve should be a straight line.
                 firstControlPoints = new Point[1];

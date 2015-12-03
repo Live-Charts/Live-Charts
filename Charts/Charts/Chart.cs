@@ -372,7 +372,7 @@ namespace LiveCharts.Charts
 		{
 			if (!axis.PrintLabels) return new Point(0, 0);
 
-			var labels = axis.Labels?.ToArray();
+			var labels = axis.Labels != null ? axis.Labels.ToArray() : null;
 			var fomattedValue = labels == null
 				? (SecondaryAxis.LabelFormatter == null
 					? Min.X.ToString(CultureInfo.InvariantCulture)
@@ -521,7 +521,7 @@ namespace LiveCharts.Charts
 
 				if (SecondaryAxis.PrintLabels)
 				{
-					var labels = SecondaryAxis.Labels?.ToArray();
+					var labels = SecondaryAxis.Labels != null ? SecondaryAxis.Labels.ToArray() : null;
 					var t = labels == null
 						? (SecondaryAxis.LabelFormatter == null
 							? i.ToString(CultureInfo.InvariantCulture)
@@ -594,8 +594,8 @@ namespace LiveCharts.Charts
 				.Where(s => Math.Abs(s.Value.X - senderShape.Value.X) < S.X*.001).ToList();
 
 			var first = sibilings.Count > 0 ? sibilings[0] : null;
-			var labels = SecondaryAxis.Labels?.ToArray();
-			var vx = first?.Value.X ?? 0;
+			var labels = SecondaryAxis.Labels != null ? SecondaryAxis.Labels.ToArray() : null;
+			var vx = first != null ? first.Value.X : 0;
 			vx = AlphaLabel ? (int) (vx/(360d/Series.First().PrimaryValues.Count)) : vx;
 
 			foreach (var sibiling in sibilings)
@@ -795,7 +795,7 @@ namespace LiveCharts.Charts
 						chart.EraseSerieBuffer.Add(serie);
 					}
 
-				var newElements = args.NewItems?.Cast<Series>() ?? new List<Series>();
+			    var newElements = args.NewItems != null ? args.NewItems.Cast<Series>() : new List<Series>();
 
 				if (chart.ScaleChanged)
 				{
@@ -845,7 +845,7 @@ namespace LiveCharts.Charts
 				serie.RequiresAnimation = false;
 			}
 
-			Plot?.Invoke(this);
+		    if (Plot != null) Plot(this);
 #if DEBUG
 			Trace.WriteLine("Series Updated!");
 #endif

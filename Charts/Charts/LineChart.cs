@@ -47,9 +47,15 @@ namespace LiveCharts
 		    AreaOpacity = 0.2;
 		}
 
-		protected override bool ScaleChanged => GetMax() != _rawMax ||
-		                                        GetMin() != _rawMin ||
-		                                        GetS() != _rawS;
+		protected override bool ScaleChanged
+		{
+		    get
+		    {
+		        return GetMax() != _rawMax ||
+		               GetMin() != _rawMin ||
+		               GetS() != _rawS;
+		    }
+		}
 
 	    public LineChartLineType LineType { get; set; }
 

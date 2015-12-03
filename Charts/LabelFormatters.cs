@@ -27,34 +27,47 @@ namespace LiveCharts
 {
     public static class LabelFormatters
     {
-        public static Func<double, string> Currency => x =>
+        public static Func<double, string> Currency
         {
-            var a = Math.Abs(x);
-            if (a < 1) return x.ToString("$0.00", CultureInfo.InvariantCulture);
-            if (a < 10) return x.ToString("$#,#.00", CultureInfo.InvariantCulture);
-            if (a < 100) return x.ToString("$#,#.0", CultureInfo.InvariantCulture);
-            if (a < 1000)  return x.ToString("$#,#", CultureInfo.InvariantCulture);
-            if (a < 10000) return x.ToString("$#,.00K", CultureInfo.InvariantCulture);
-            if (a < 100000) return x.ToString("$#,.0K", CultureInfo.InvariantCulture);
-            if (a < 1000000) return x.ToString("$#,K", CultureInfo.InvariantCulture);
-            if (a < 10000000) return x.ToString("$#,##0,,.00M", CultureInfo.InvariantCulture);
-            if (a < 100000000) return x.ToString("$#,##0,,.0M", CultureInfo.InvariantCulture);
-            return x.ToString("$#,##0,,M", CultureInfo.InvariantCulture);
-            //since billions means a diferent number according to location, this is only build to millions.
-        };
-        public static Func<double, string> Number => x =>
+            get
+            {
+                return x =>
+                {
+                    var a = Math.Abs(x);
+                    if (a < 1) return x.ToString("$0.00", CultureInfo.InvariantCulture);
+                    if (a < 10) return x.ToString("$#,#.00", CultureInfo.InvariantCulture);
+                    if (a < 100) return x.ToString("$#,#.0", CultureInfo.InvariantCulture);
+                    if (a < 1000) return x.ToString("$#,#", CultureInfo.InvariantCulture);
+                    if (a < 10000) return x.ToString("$#,.00K", CultureInfo.InvariantCulture);
+                    if (a < 100000) return x.ToString("$#,.0K", CultureInfo.InvariantCulture);
+                    if (a < 1000000) return x.ToString("$#,K", CultureInfo.InvariantCulture);
+                    if (a < 10000000) return x.ToString("$#,##0,,.00M", CultureInfo.InvariantCulture);
+                    if (a < 100000000) return x.ToString("$#,##0,,.0M", CultureInfo.InvariantCulture);
+                    return x.ToString("$#,##0,,M", CultureInfo.InvariantCulture);
+                    //since billions means a diferent number according to location, this is only build to millions.
+                };
+            }
+        }
+
+        public static Func<double, string> Number
         {
-            var a = Math.Abs(x);
-            if (a < 1) return x.ToString("0.00", CultureInfo.InvariantCulture);
-            if (a < 10) return x.ToString("#,#.00", CultureInfo.InvariantCulture);
-            if (a < 100) return x.ToString("#,#.0", CultureInfo.InvariantCulture);
-            if (a < 1000) return x.ToString("#,#", CultureInfo.InvariantCulture);
-            if (a < 10000) return x.ToString("#,.00K", CultureInfo.InvariantCulture);
-            if (a < 100000) return x.ToString("#,.0K", CultureInfo.InvariantCulture);
-            if (a < 1000000) return x.ToString("#,K", CultureInfo.InvariantCulture);
-            if (a < 10000000) return x.ToString("#,##0,,.00M", CultureInfo.InvariantCulture);
-            if (a < 100000000) return x.ToString("#,##0,,.0M", CultureInfo.InvariantCulture);
-            return x.ToString("#,##0,,M", CultureInfo.InvariantCulture);
-        };
+            get
+            {
+                return x =>
+                {
+                    var a = Math.Abs(x);
+                    if (a < 1) return x.ToString("0.00", CultureInfo.InvariantCulture);
+                    if (a < 10) return x.ToString("#,#.00", CultureInfo.InvariantCulture);
+                    if (a < 100) return x.ToString("#,#.0", CultureInfo.InvariantCulture);
+                    if (a < 1000) return x.ToString("#,#", CultureInfo.InvariantCulture);
+                    if (a < 10000) return x.ToString("#,.00K", CultureInfo.InvariantCulture);
+                    if (a < 100000) return x.ToString("#,.0K", CultureInfo.InvariantCulture);
+                    if (a < 1000000) return x.ToString("#,K", CultureInfo.InvariantCulture);
+                    if (a < 10000000) return x.ToString("#,##0,,.00M", CultureInfo.InvariantCulture);
+                    if (a < 100000000) return x.ToString("#,##0,,.0M", CultureInfo.InvariantCulture);
+                    return x.ToString("#,##0,,M", CultureInfo.InvariantCulture);
+                };
+            }
+        }
     }
 }

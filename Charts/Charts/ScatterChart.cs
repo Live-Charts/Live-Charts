@@ -51,8 +51,14 @@ namespace LiveCharts
 
         public LineChartLineType LineType { get; set; }
 
-        protected override bool ScaleChanged => GetMax() != Max ||
-                                                GetMin() != Min;
+        protected override bool ScaleChanged
+        {
+            get
+            {
+                return GetMax() != Max ||
+                       GetMin() != Min;
+            }
+        }
 
         private Point GetMax()
         {

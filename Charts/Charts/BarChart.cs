@@ -48,8 +48,14 @@ namespace LiveCharts
             PerformanceConfiguration = new PerformanceConfiguration {Enabled = false};
         }
 
-        protected override bool ScaleChanged => GetMax() != Max ||
-                                                GetMin() != Min;
+        protected override bool ScaleChanged
+        {
+            get
+            {
+                return GetMax() != Max ||
+                       GetMin() != Min;
+            }
+        }
 
         /// <summary>
         /// Gets or sets maximum column width, default is 60

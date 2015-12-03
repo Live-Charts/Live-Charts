@@ -83,8 +83,8 @@ namespace LiveCharts
             {
                 var serie = Series.FirstOrDefault();
                 var pieSerie = serie as PieSeries;
-                var min = pieSerie?.PrimaryValues.DefaultIfEmpty(0).Min() ?? 0.01;
-                var psc = pieSerie?.PrimaryValues?.Count ?? 0;
+                var min = pieSerie != null ? pieSerie.PrimaryValues.DefaultIfEmpty(0).Min() : 0.01;
+                var psc = pieSerie != null ? pieSerie.PrimaryValues.Count : 0;
                 return Math.Abs(GetPieSum() - PieTotalSum) > .001*min || _pointsCount != psc;
             }
         }
@@ -121,7 +121,7 @@ namespace LiveCharts
             //};
 
             var senderShape = HoverableShapes.FirstOrDefault(s => Equals(s.Shape, sender));
-            var pieSlice = senderShape?.Shape as PieSlice;
+            var pieSlice = senderShape != null ? senderShape.Shape as PieSlice : null;
             if (pieSlice == null) return;
 
             pieSlice.Opacity = .8;
@@ -162,7 +162,7 @@ namespace LiveCharts
         {
             base.DataMouseLeave(sender, e);
             var senderShape = HoverableShapes.FirstOrDefault(s => Equals(s.Shape, sender));
-            var pieSlice = senderShape?.Shape as PieSlice;
+            var pieSlice = senderShape != null ? senderShape.Shape as PieSlice : null;
             if (pieSlice == null) return;
             pieSlice.Opacity = 1;
 
@@ -179,7 +179,7 @@ namespace LiveCharts
         {
             var serie = Series.FirstOrDefault();
             var pieSerie = serie as PieSeries;
-            return pieSerie?.PrimaryValues.DefaultIfEmpty(0).Sum() ?? 0;
+            return pieSerie != null ? pieSerie.PrimaryValues.DefaultIfEmpty(0).Sum() : 0;
         }
     }
 }

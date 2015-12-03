@@ -148,7 +148,17 @@
                 <ContentControl Name="ScatterControl" Grid.Column="1" Height="500" Width="Auto"></ContentControl>
                 <Image Grid.Column="2" Source="Right.png" MouseDown="ScatterNext"/>
             </Grid>
-
+            <liveCharts:BarChart x:Name="Trend" Grid.Column="1" Hoverable="False" Zooming="False" Margin="5" Height="500">
+                <liveCharts:BarChart.Series>
+                    <liveCharts:BarSeries PrimaryValues="1,2,3"/>
+                </liveCharts:BarChart.Series>
+                <liveCharts:BarChart.PrimaryAxis>
+                    <liveCharts:Axis MinValue="0"/>
+                </liveCharts:BarChart.PrimaryAxis>
+                <liveCharts:BarChart.SecondaryAxis>
+                    <liveCharts:Axis MinValue="0"/>
+                </liveCharts:BarChart.SecondaryAxis>
+            </liveCharts:BarChart>
         </StackPanel>
     </ScrollViewer>
 </Window>

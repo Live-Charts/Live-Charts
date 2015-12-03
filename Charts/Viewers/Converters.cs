@@ -7,9 +7,9 @@ namespace LiveCharts.Viewers
 {
     public class PieSerieColorConverter : IValueConverter
     {
-		public static PieSerieColorConverter Instance { get; }
+		public static PieSerieColorConverter Instance { get; set; }
 
-	    static PieSerieColorConverter()
+        static PieSerieColorConverter()
 	    {
 		    Instance = new PieSerieColorConverter();
 	    }
@@ -29,9 +29,9 @@ namespace LiveCharts.Viewers
 
     public class PieSerieLabelConverter : IMultiValueConverter
     {
-		public static PieSerieLabelConverter Instance { get; }
+		public static PieSerieLabelConverter Instance { get; set; }
 
-		static PieSerieLabelConverter()
+        static PieSerieLabelConverter()
 		{
 			Instance = new PieSerieLabelConverter();
 		}
@@ -42,11 +42,20 @@ namespace LiveCharts.Viewers
             if (values == null || values.Length < 2) return null;
 
             var index = values[0] as int?;
-            var context = (((values[1] as PieSeriesViewer)?.Series)?[0] as PieSeries)?.Labels;
+		    var pieSeriesViewer = values[1] as PieSeriesViewer;
+		    if (pieSeriesViewer != null)
+		    {
+		        var pieSeries = (pieSeriesViewer.Series)[0] as PieSeries;
+		        if (pieSeries != null)
+		        {
+		            var context = pieSeries.Labels;
 
-            if (index == null || context == null) return null;
+		            if (index == null || context == null) return null;
 
-            return context.Count  > index ? context[index.Value] : null;
+		            return context.Count  > index ? context[index.Value] : null;
+		        }
+		    }
+            return null;
         }
 
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)

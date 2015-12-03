@@ -40,7 +40,10 @@ namespace LiveCharts
             AreaOpacity = null;
 	    }
 
-		private ILine LineChart => Chart as ILine;
+		private ILine LineChart
+		{
+		    get { return Chart as ILine; }
+		}
 
 	    public double StrokeThickness { get; set; }
         public double PointRadius { get; set; }
