@@ -40,7 +40,6 @@ namespace LiveCharts
             AreaOpacity = .8;
             LineType = LineChartLineType.Bezier;
             MaxColumnWidth = 60;
-
             //no performance config for a bar chart
             //why? because this chart need to build a bar per point,
             //I think there is no practicall way to make this work
@@ -118,7 +117,11 @@ namespace LiveCharts
             var x = sender.Value.X + 1 > (Min.X + Max.X)/2
                 ? ToPlotArea(sender.Value.X, AxisTags.X) + overflow*.5 - DataToolTip.DesiredSize.Width
                 : ToPlotArea(sender.Value.X, AxisTags.X) + unitW + overflow*.5;
-            var y = ActualHeight*.5 - DataToolTip.DesiredSize.Height*.5;
+            var y = ToPlotArea(sibilings.Select(s => s.Value.Y).DefaultIfEmpty(0).Sum()
+                               / sibilings.Count, AxisTags.Y);
+            y = y + DataToolTip.DesiredSize.Height > ActualHeight
+                ? y - (y + DataToolTip.DesiredSize.Height - ActualHeight) - 5
+                : y;
             return new Point(x, y);
         }
 

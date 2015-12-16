@@ -19,9 +19,9 @@
         <TextBlock Grid.Row="0" HorizontalAlignment="Center" Grid.ColumnSpan="2" Margin="5">Basic Bar Chart</TextBlock>
         <liveCharts:BarChart Name="Chart" Grid.Row="1" Grid.Column="0">
             <liveCharts:BarChart.Series>
-                <liveCharts:BarSeries Title="Maria"    PrimaryValues="20, 40, 45, 60, 55, 60, 65, 70"></liveCharts:BarSeries>
-                <liveCharts:BarSeries Title="John"     PrimaryValues="30, 35, 43, 68, 65 ,70, 55, 60"></liveCharts:BarSeries>
-                <liveCharts:LineSeries Title="Averge"  PrimaryValues="25, 37.5, 44, 64, 60, 65, 60, 65" AreaOpacity="0"></liveCharts:LineSeries>
+                <liveCharts:BarSeries Title="Maria"    PrimaryValues="20, 40, 45, 60, 55, 60, 65, 70"/>
+                <liveCharts:BarSeries Title="John"     PrimaryValues="30, 35, 43, 68, 65 ,70, 55, 60"/>
+                <liveCharts:LineSeries Title="Averge"  PrimaryValues="25, 37.5, 44, 64, 60, 65, 60, 65" Fill="Transparent" />
             </liveCharts:BarChart.Series>
             <liveCharts:BarChart.PrimaryAxis>
                 <liveCharts:Axis Name="PrimaryAxis" Title="Sold Items"></liveCharts:Axis>

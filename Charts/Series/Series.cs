@@ -37,6 +37,7 @@ namespace LiveCharts
 	{
 		private Color? _color;
 		protected List<Shape> Shapes = new List<Shape>();
+	    protected double DefaultOpacity = 0.35;
 		private Chart _chart;
 		private int _colorId;
 	    internal bool RequiresAnimation;
@@ -83,7 +84,7 @@ namespace LiveCharts
 
 		public int ColorIndex
 		{
-			get { return (int)GetValue(ColorIndexProperty); }
+			get { return (int) GetValue(ColorIndexProperty); }
 			set { SetValue(ColorIndexProperty, value); }
 		}
 
@@ -92,7 +93,7 @@ namespace LiveCharts
 
 		public Brush Stroke
 		{
-			get { return (Brush)GetValue(StrokeProperty) ?? new SolidColorBrush(GetColorByIndex(ColorIndex)); }
+			get { return (Brush) GetValue(StrokeProperty) ?? new SolidColorBrush(GetColorByIndex(ColorIndex)); }
 			set { SetValue(StrokeProperty, value); }
 		}
 
@@ -101,7 +102,11 @@ namespace LiveCharts
 
 		public Brush Fill
 		{
-			get { return (Brush)GetValue(FillProperty) ?? new SolidColorBrush(GetColorByIndex(ColorIndex)) {Opacity = 0.75}; }
+			get
+			{
+			    return (Brush) GetValue(FillProperty) ??
+			           new SolidColorBrush(GetColorByIndex(ColorIndex)) {Opacity = DefaultOpacity};
+			}
 			set { SetValue(FillProperty, value); }
 		}
 

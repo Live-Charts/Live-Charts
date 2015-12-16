@@ -160,7 +160,10 @@ namespace LiveCharts
             var x = sender.Value.X + 1 > (Min.X + Max.X) / 2
                 ? ToPlotArea(sender.Value.X, AxisTags.X) + overflow * .5 - DataToolTip.DesiredSize.Width
                 : ToPlotArea(sender.Value.X, AxisTags.X) + unitW + overflow * .5;
-            var y = ActualHeight * .5 - DataToolTip.DesiredSize.Height * .5;
+            var y = ToPlotArea(sibilings.Where(s => s.Series is StackedBarSeries).Select(s => s.Value.Y).DefaultIfEmpty(0).Sum()*0.5, AxisTags.Y);
+            y = y + DataToolTip.DesiredSize.Height > ActualHeight
+                ? y - (y + DataToolTip.DesiredSize.Height - ActualHeight) - 5
+                : y;
             return new Point(x, y);
         }
 

@@ -17,9 +17,9 @@
             Polyline and Custom Style</TextBlock>
         <liveCharts:LineChart Name="Chart" Grid.Row="1" Grid.Column="0" AreaOpacity=".1" LineType="Polyline">
             <liveCharts:LineChart.Series>
-                <liveCharts:LineSeries Title="Maria" PrimaryValues="20, 40, 45, 60, 55, 60, 65, 70" Stroke="#FFB300" Fill="#AAFFB300" PointRadius="0" StrokeThickness="4"></liveCharts:LineSeries>
-                <liveCharts:LineSeries Title="John" PrimaryValues="30, 35, 43, 68, 65 ,70, 55, 60" Stroke="#FFA000" Fill="#AAFFA000" PointRadius="0" StrokeThickness="4"></liveCharts:LineSeries>
-                <liveCharts:LineSeries Title="Erick" PrimaryValues="40, 42, 50, 70, 50, 55, 44, 73" Stroke="#FF8F00" Fill="#AAFF8F00" PointRadius="0" StrokeThickness="4"></liveCharts:LineSeries>
+                <liveCharts:LineSeries Title="Maria" PrimaryValues="20, 40, 45, 60, 55, 60, 65, 70" Stroke="#FFB300" Fill="#33FFB300" PointRadius="0" StrokeThickness="4"></liveCharts:LineSeries>
+                <liveCharts:LineSeries Title="John" PrimaryValues="30, 35, 43, 68, 65 ,70, 55, 60" Stroke="#FFA000" Fill="#33FFA000" PointRadius="0" StrokeThickness="4"></liveCharts:LineSeries>
+                <liveCharts:LineSeries Title="Erick" PrimaryValues="40, 42, 50, 70, 50, 55, 44, 73" Stroke="#FF8F00" Fill="#33FF8F00" PointRadius="0" StrokeThickness="4"></liveCharts:LineSeries>
             </liveCharts:LineChart.Series>
             <liveCharts:LineChart.PrimaryAxis>
                 <liveCharts:Axis Title="Sold Items" IsEnabled="False" Foreground="White" FontSize="13" FontFamily="Arial">

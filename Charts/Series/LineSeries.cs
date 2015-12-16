@@ -37,7 +37,6 @@ namespace LiveCharts
 	    {
 	        StrokeThickness = 2.5;
 	        PointRadius = 4;
-            AreaOpacity = null;
 	    }
 
 		private ILine LineChart
@@ -48,24 +47,16 @@ namespace LiveCharts
 	    public double StrokeThickness { get; set; }
         public double PointRadius { get; set; }
 
-	    public double? AreaOpacity { get; set; }
-
         public override void Plot(bool animate = true)
 		{
-			var serie = this;
-
             var s = new List<Shape>();
             if (LineChart.LineType == LineChartLineType.Bezier)
                 s.AddRange(_addSerieAsBezier(ChartPoints.Select(x => new Point(
-                    ToPlotArea(x.X, AxisTags.X) + Chart.XOffset, ToPlotArea(x.Y, AxisTags.Y))).ToArray(),
-                    Stroke,
-                    serie.StrokeThickness, animate));
+                    ToPlotArea(x.X, AxisTags.X) + Chart.XOffset, ToPlotArea(x.Y, AxisTags.Y))).ToArray(), animate));
 
             if (LineChart.LineType == LineChartLineType.Polyline)
                 s.AddRange(_addSeriesAsPolyline(ChartPoints.Select(x => new Point(
-                    ToPlotArea(x.X, AxisTags.X) + Chart.XOffset, ToPlotArea(x.Y, AxisTags.Y))).ToArray(),
-					Stroke,
-                    serie.StrokeThickness, animate));
+                    ToPlotArea(x.X, AxisTags.X) + Chart.XOffset, ToPlotArea(x.Y, AxisTags.Y))).ToArray(), animate));
 
 			var hoverableAreas = new List<HoverableShape>();
 
@@ -77,8 +68,8 @@ namespace LiveCharts
 				    plotPoint.X += Chart.XOffset;
                     var e = new Ellipse
 						{
-							Width = serie.PointRadius * 2,
-							Height = serie.PointRadius * 2,
+							Width = PointRadius * 2,
+							Height = PointRadius * 2,
 							Fill = Stroke,
 							Stroke = new SolidColorBrush {Color = Chart.PointHoverColor},
 							StrokeThickness = 2,
@@ -118,8 +109,7 @@ namespace LiveCharts
 			Chart.HoverableShapes.AddRange(hoverableAreas);
 		}
 
-		private IEnumerable<Shape> _addSerieAsBezier(Point[] points, Brush color, double storkeThickness,
-		                                             bool animate = true)
+		private IEnumerable<Shape> _addSerieAsBezier(Point[] points, bool animate = true)
 		{
 			if (points.Length < 2) return Enumerable.Empty<Shape>();
 			var addedFigures = new List<Shape>();
@@ -151,52 +141,51 @@ namespace LiveCharts
 			var g = new PathGeometry(new[] {f});
 			var ga = new PathGeometry(new[] {fa});
 
-			var path = new Path
-				{
-					Stroke = color,
-					StrokeThickness = storkeThickness,
-					Data = g,
-					StrokeEndLineCap = PenLineCap.Round,
-					StrokeStartLineCap = PenLineCap.Round,
-					StrokeDashOffset = l,
-					StrokeDashArray = new DoubleCollection {l, l},
-					ClipToBounds = true
-				};
-			var patha = new Path
-				{
-					StrokeThickness = 0,
-					Data = ga,
-					Fill = color,
-					ClipToBounds = true,
-					Opacity = AreaOpacity ?? Chart.AreaOpacity
-			};
+		    var path = new Path
+		    {
+		        Stroke = Stroke,
+		        StrokeThickness = StrokeThickness,
+		        Data = g,
+		        StrokeEndLineCap = PenLineCap.Round,
+		        StrokeStartLineCap = PenLineCap.Round,
+		        StrokeDashOffset = l,
+		        StrokeDashArray = new DoubleCollection {l, l},
+		        ClipToBounds = true
+		    };
+		    var patha = new Path
+		    {
+		        StrokeThickness = 0,
+		        Data = ga,
+		        Fill = Fill,
+		        ClipToBounds = true
+		    };
 
 			Chart.Canvas.Children.Add(path);
 			addedFigures.Add(path);
 
-		    if (AreaOpacity == null || AreaOpacity > 0.01)
-		    {
+		    //if (AreaOpacity == null || AreaOpacity > 0.01)
+		    //{
 		        Chart.Canvas.Children.Add(patha);
 		        addedFigures.Add(patha);
-		    }
+		    //}
 
 		    var draw = new DoubleAnimationUsingKeyFrames
-				{
-					BeginTime = TimeSpan.FromSeconds(0),
-					KeyFrames = new DoubleKeyFrameCollection
-						{
-							new SplineDoubleKeyFrame
-								{
-									KeyTime = TimeSpan.FromMilliseconds(1),
-									Value = l
-								},
-							new SplineDoubleKeyFrame
-								{
-									KeyTime = TimeSpan.FromMilliseconds(750),
-									Value = 0
-								}
-						}
-				};
+		    {
+		        BeginTime = TimeSpan.FromSeconds(0),
+		        KeyFrames = new DoubleKeyFrameCollection
+		        {
+		            new SplineDoubleKeyFrame
+		            {
+		                KeyTime = TimeSpan.FromMilliseconds(1),
+		                Value = l
+		            },
+		            new SplineDoubleKeyFrame
+		            {
+		                KeyTime = TimeSpan.FromMilliseconds(750),
+		                Value = 0
+		            }
+		        }
+		    };
 
 			Storyboard.SetTarget(draw, path);
 			Storyboard.SetTargetProperty(draw, new PropertyPath(Shape.StrokeDashOffsetProperty));
@@ -215,14 +204,13 @@ namespace LiveCharts
 			return addedFigures;
 		}
 
-		private IEnumerable<Shape> _addSeriesAsPolyline(Point[] points, Brush color, double storkeThickness,
-		                                                bool animate = true)
+		private IEnumerable<Shape> _addSeriesAsPolyline(IList<Point> points, bool animate = true)
 		{
-            if (points.Length < 2) return Enumerable.Empty<Shape>();
+            if (points.Count < 2) return Enumerable.Empty<Shape>();
             var addedFigures = new List<Shape>();
 
             var l = 0d;
-			for (var i = 1; i < points.Length; i++)
+			for (var i = 1; i < points.Count; i++)
 			{
 				var p1 = points[i - 1];
 				var p2 = points[i];
@@ -247,49 +235,49 @@ namespace LiveCharts
 						})
 				};
 
-			var path = new Path
-				{
-					Stroke = color,
-					StrokeThickness = storkeThickness,
-					Data = g,
-					StrokeEndLineCap = PenLineCap.Round,
-					StrokeStartLineCap = PenLineCap.Round,
-					StrokeDashOffset = l,
-					StrokeDashArray = new DoubleCollection {l, l},
-					ClipToBounds = true
-				};
+		    var path = new Path
+		    {
+		        Stroke = Stroke,
+		        StrokeThickness = StrokeThickness,
+		        Data = g,
+		        StrokeEndLineCap = PenLineCap.Round,
+		        StrokeStartLineCap = PenLineCap.Round,
+		        StrokeDashOffset = l,
+		        StrokeDashArray = new DoubleCollection {l, l},
+		        ClipToBounds = true
+		    };
 
 			var sp = points.ToList();
 			sp.Add(new Point(points.Max(x => x.X), ToPlotArea(Chart.Min.Y, AxisTags.Y)));
-			var sg = new PathGeometry
-				{
-					Figures = new PathFigureCollection(new List<PathFigure>
-						{
-							new PathFigure
-								{
-									StartPoint = ToPlotArea(new Point(Chart.Min.X, Chart.Min.Y)),
-									Segments = new PathSegmentCollection(
-						                                   sp.Select(x => new LineSegment {Point = new Point(x.X, x.Y)}))
-								}
-						})
-				};
-			var spath = new Path
-				{
-					StrokeThickness = 0,
-					Data = sg,
-					Fill = color,
-					ClipToBounds = true,
-					Opacity = AreaOpacity ?? Chart.AreaOpacity
-			};
+		    var sg = new PathGeometry
+		    {
+		        Figures = new PathFigureCollection(new List<PathFigure>
+		        {
+		            new PathFigure
+		            {
+		                StartPoint = ToPlotArea(new Point(Chart.Min.X, Chart.Min.Y)),
+		                Segments = new PathSegmentCollection(
+		                    sp.Select(x => new LineSegment {Point = new Point(x.X, x.Y)}))
+		            }
+		        })
+		    };
+
+		    var spath = new Path
+		    {
+		        StrokeThickness = 0,
+		        Data = sg,
+		        Fill = Fill,
+		        ClipToBounds = true
+		    };
 
             Chart.Canvas.Children.Add(path);
             addedFigures.Add(path);
 
-            if (AreaOpacity == null || AreaOpacity > 0.01)
-		    {
+      //      if (AreaOpacity == null || AreaOpacity > 0.01)
+		    //{
                 Chart.Canvas.Children.Add(spath);
                 addedFigures.Add(spath);
-            }
+            //}
 		    
 		    var draw = new DoubleAnimationUsingKeyFrames
 				{

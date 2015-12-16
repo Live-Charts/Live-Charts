@@ -36,6 +36,7 @@ namespace LiveCharts
         {
             StrokeThickness = 2.5;
             PointRadius = 4;
+            DefaultOpacity = 0.75;
         }
 
         public double StrokeThickness { get; set; }

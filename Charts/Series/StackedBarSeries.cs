@@ -35,6 +35,7 @@ namespace LiveCharts
         public StackedBarSeries()
         {
             StrokeThickness = 2.5;
+            DefaultOpacity = 0.75;
         }
 
         public double StrokeThickness { get; set; }
@@ -59,6 +60,13 @@ namespace LiveCharts
                 var d = PrimaryValues[index];
 
                 var t = new TranslateTransform();
+
+                var helper = chart.IndexTotals[index];
+                var barH = ToPlotArea(Chart.Min.Y, AxisTags.Y) - ToPlotArea(helper.Total, AxisTags.Y);
+                var rh = barH * (d / helper.Total);
+                if (double.IsNaN(rh)) return;
+                var stackedH = barH * (helper.Stacked[serieIndex].Stacked / helper.Total);
+
                 var r = new Rectangle
                 {
                     StrokeThickness = StrokeThickness,
@@ -68,17 +76,23 @@ namespace LiveCharts
                     Height = 0,
                     RenderTransform = t
                 };
-
-                var helper = chart.IndexTotals[index];
-                var barH = ToPlotArea(Chart.Min.Y, AxisTags.Y) - ToPlotArea(helper.Total, AxisTags.Y);
-                var rh = barH*(d/helper.Total);
-	            if (double.IsNaN(rh)) return;
-                var stackedH = barH*(helper.Stacked[serieIndex].Stacked/helper.Total);
-
+                var hr = new Rectangle
+                {
+                    StrokeThickness = 0,
+                    Fill = Brushes.Transparent,
+                    Width = Math.Max(0, barW - seriesPadding),
+                    Height = rh
+                };
+                
                 Canvas.SetLeft(r, ToPlotArea(index, AxisTags.X) + pointPadding + overflow/2);
+                Canvas.SetLeft(hr, ToPlotArea(index, AxisTags.X) + pointPadding + overflow / 2);
+                Canvas.SetTop(hr, ToPlotArea(Chart.Min.Y, AxisTags.Y) - rh - stackedH);
+                Panel.SetZIndex(hr, int.MaxValue);
 
                 Chart.Canvas.Children.Add(r);
+                Chart.Canvas.Children.Add(hr);
                 Shapes.Add(r);
+                Shapes.Add(hr);
 
                 var hAnim = new DoubleAnimation
                 {
@@ -97,7 +111,7 @@ namespace LiveCharts
                 {
                     if (animate)
                     {
-                        r.BeginAnimation(FrameworkElement.HeightProperty, hAnim);
+                        r.BeginAnimation(HeightProperty, hAnim);
                         t.BeginAnimation(TranslateTransform.YProperty, rAnim);
                         animated = true;
                     }
@@ -106,16 +120,16 @@ namespace LiveCharts
                 if (!animated)
                 {
                     r.Height = rh;
-                    t.Y = (double) rAnim.To;
+                    if (rAnim.To != null) t.Y = (double) rAnim.To;
                 }
 
                 if (!Chart.Hoverable) continue;
-                r.MouseEnter += Chart.DataMouseEnter;
-                r.MouseLeave += Chart.DataMouseLeave;
+                hr.MouseEnter += Chart.DataMouseEnter;
+                hr.MouseLeave += Chart.DataMouseLeave;
                 Chart.HoverableShapes.Add(new HoverableShape
                 {
                     Series = this,
-                    Shape = r,
+                    Shape = hr,
                     Target = r,
                     Value = new Point(index, d)
                 });
