@@ -117,13 +117,16 @@
     <Compile Include="Interfaces.cs" />
     <Compile Include="PerformanceConfiguration.cs" />
     <Compile Include="Properties\Annotations.cs" />
+    <Compile Include="Tooltip\IndexedTooltipData.cs" />
     <Compile Include="Tooltip\Converters.cs" />
-    <Compile Include="Tooltip\IndexedToolTip.xaml.cs">
-      <DependentUpon>IndexedToolTip.xaml</DependentUpon>
+    <Compile Include="Tooltip\DefaultIndexedTooltip.xaml.cs">
+      <DependentUpon>DefaultIndexedTooltip.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Tooltip\ScatterTooltip.xaml.cs">
-      <DependentUpon>ScatterTooltip.xaml</DependentUpon>
+    <Compile Include="Tooltip\DefaultScatterTooltip.xaml.cs">
+      <DependentUpon>DefaultScatterTooltip.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Tooltip\IndexedTooltip.cs" />
+    <Compile Include="Tooltip\ScatterTooltip.cs" />
     <Compile Include="TypeConverters\ColorCollectionConverter.cs" />
     <Compile Include="TypeConverters\StringCollectionConverter.cs" />
     <Compile Include="TypeConverters\ValueCollectionConverter.cs" />
@@ -177,11 +180,11 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="Tooltip\IndexedToolTip.xaml">
+    <Page Include="Tooltip\DefaultIndexedTooltip.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Tooltip\ScatterTooltip.xaml">
+    <Page Include="Tooltip\DefaultScatterTooltip.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

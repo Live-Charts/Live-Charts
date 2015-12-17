@@ -67,6 +67,9 @@
     <Compile Include="BarExamples\CustomBar.xaml.cs">
       <DependentUpon>CustomBar.xaml</DependentUpon>
     </Compile>
+    <Compile Include="BarExamples\CustomTooltip.xaml.cs">
+      <DependentUpon>CustomTooltip.xaml</DependentUpon>
+    </Compile>
     <Compile Include="BarExamples\MvvmBar.xaml.cs">
       <DependentUpon>MvvmBar.xaml</DependentUpon>
     </Compile>
@@ -120,6 +123,10 @@
     <Page Include="BarExamples\CustomBar.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="BarExamples\CustomTooltip.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="BarExamples\MvvmBar.xaml">
       <Generator>MSBuild:Compile</Generator>

@@ -21,6 +21,7 @@
 //SOFTWARE.
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
@@ -100,7 +101,7 @@ namespace LiveCharts.Charts
 
 			PerformanceConfiguration = new PerformanceConfiguration {Enabled = false};
 			Series = new ObservableCollection<Series>();
-			DataToolTip = new IndexedToolTip();
+			DataToolTip = new DefaultIndexedTooltip();
 			Shapes = new List<FrameworkElement>();
 			HoverableShapes = new List<HoverableShape>();
 			PointHoverColor = System.Windows.Media.Colors.White;
@@ -204,10 +205,10 @@ namespace LiveCharts.Charts
 			get { return (ObservableCollection<Series>) GetValue(SeriesProperty); }
 			set { SetValue(SeriesProperty, value); }
 		}
-		#endregion
+        #endregion
 
-		#region Properties
-		public Canvas Canvas { get; internal set; }
+        #region Properties
+        public Canvas Canvas { get; internal set; }
 		public double XOffset { get; internal set; }
 		public List<FrameworkElement> Shapes { get; internal set; }
 		public List<HoverableShape> HoverableShapes { get; internal set; } 
@@ -611,7 +612,7 @@ namespace LiveCharts.Charts
 				}
 			}
 
-			var indexedToolTip = DataToolTip as IndexedToolTip;
+			var indexedToolTip = DataToolTip as IndexedTooltip;
 			if (indexedToolTip != null)
 			{
 				indexedToolTip.Header = labels == null
@@ -621,15 +622,15 @@ namespace LiveCharts.Charts
 						: (labels.Length > vx
 							? labels[(int) vx]
 							: "");
-				indexedToolTip.Data = sibilings.Select(x => new IndexedTooltipData
-					{
-						Fill = x.Series.Fill,
-						Stroke = x.Series.Stroke,
-						Title = x.Series.Title,
-						Value = PrimaryAxis.LabelFormatter == null
-							        ? x.Value.Y.ToString(CultureInfo.InvariantCulture)
-							        : PrimaryAxis.LabelFormatter(x.Value.Y)
-					}).ToArray();
+			    indexedToolTip.Data = sibilings.Select(x => new IndexedTooltipData
+			    {
+                    Index = Series.IndexOf(x.Series),
+			        Series = x.Series,
+			        Point = x.Value,
+			        Value = PrimaryAxis.LabelFormatter == null
+			            ? x.Value.Y.ToString(CultureInfo.InvariantCulture)
+			            : PrimaryAxis.LabelFormatter(x.Value.Y)
+			    }).ToArray();
 			}
 
 			var p = GetToolTipPosition(senderShape, sibilings);

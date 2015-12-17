@@ -93,7 +93,10 @@ namespace LiveCharts
 
 		public Brush Stroke
 		{
-			get { return (Brush) GetValue(StrokeProperty) ?? new SolidColorBrush(GetColorByIndex(ColorIndex)); }
+		    get
+		    {
+                return ((Brush)GetValue(StrokeProperty)) ?? new SolidColorBrush(GetColorByIndex(ColorIndex));
+		    }
 			set { SetValue(StrokeProperty, value); }
 		}
 
@@ -109,7 +112,6 @@ namespace LiveCharts
 			}
 			set { SetValue(FillProperty, value); }
 		}
-
 		#endregion
 
 		#region Properties

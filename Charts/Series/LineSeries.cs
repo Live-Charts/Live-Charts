@@ -162,12 +162,9 @@ namespace LiveCharts
 
 			Chart.Canvas.Children.Add(path);
 			addedFigures.Add(path);
-
-		    //if (AreaOpacity == null || AreaOpacity > 0.01)
-		    //{
-		        Chart.Canvas.Children.Add(patha);
-		        addedFigures.Add(patha);
-		    //}
+            
+		    Chart.Canvas.Children.Add(patha);
+		    addedFigures.Add(patha);
 
 		    var draw = new DoubleAnimationUsingKeyFrames
 		    {
@@ -273,29 +270,26 @@ namespace LiveCharts
             Chart.Canvas.Children.Add(path);
             addedFigures.Add(path);
 
-      //      if (AreaOpacity == null || AreaOpacity > 0.01)
-		    //{
-                Chart.Canvas.Children.Add(spath);
-                addedFigures.Add(spath);
-            //}
-		    
+		    Chart.Canvas.Children.Add(spath);
+		    addedFigures.Add(spath);
+
 		    var draw = new DoubleAnimationUsingKeyFrames
-				{
-					BeginTime = TimeSpan.FromSeconds(0),
-					KeyFrames = new DoubleKeyFrameCollection
-						{
-							new SplineDoubleKeyFrame
-								{
-									KeyTime = TimeSpan.FromMilliseconds(1),
-									Value = l
-								},
-							new SplineDoubleKeyFrame
-								{
-									KeyTime = TimeSpan.FromMilliseconds(750),
-									Value = 0
-								}
-						}
-				};
+		    {
+		        BeginTime = TimeSpan.FromSeconds(0),
+		        KeyFrames = new DoubleKeyFrameCollection
+		        {
+		            new SplineDoubleKeyFrame
+		            {
+		                KeyTime = TimeSpan.FromMilliseconds(1),
+		                Value = l
+		            },
+		            new SplineDoubleKeyFrame
+		            {
+		                KeyTime = TimeSpan.FromMilliseconds(750),
+		                Value = 0
+		            }
+		        }
+		    };
 			Storyboard.SetTarget(draw, path);
 			Storyboard.SetTargetProperty(draw, new PropertyPath(Shape.StrokeDashOffsetProperty));
 			var sbDraw = new Storyboard();

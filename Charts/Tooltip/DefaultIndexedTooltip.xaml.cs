@@ -20,49 +20,16 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-using System.Windows;
-using System.Windows.Media;
-
 namespace LiveCharts.Tooltip
 {
     /// <summary>
     /// Interaction logic for BaseToolTip.xaml
     /// </summary>
-    public partial class IndexedToolTip
+    public partial class DefaultIndexedTooltip 
     {
-		public static readonly DependencyProperty HeaderProperty =
-			DependencyProperty.Register("Header", typeof(string), typeof(IndexedToolTip), new PropertyMetadata(null));
-
-		public string Header
-		{
-			get { return (string)GetValue(HeaderProperty); }
-			set { SetValue(HeaderProperty, value); }
-		}
-
-		public static readonly DependencyProperty DataProperty =
-			DependencyProperty.Register("Data", typeof(IndexedTooltipData[]), typeof(IndexedToolTip), new PropertyMetadata(null));
-
-		public IndexedTooltipData[] Data
-		{
-			get { return (IndexedTooltipData[])GetValue(DataProperty); }
-			set { SetValue(DataProperty, value); }
-		}
-
-		// Using a DependencyProperty as the backing store for Data.  This enables animation, styling, binding, etc...
-
-        public IndexedToolTip()
+        public DefaultIndexedTooltip()
         {
             InitializeComponent();
-
-			DataContext = this;
         }
     }
-
-	public class IndexedTooltipData
-	{
-		public Brush Stroke { get; set; }
-		public Brush Fill { get; set; }
-		public string Title { get; set; }
-		public string Value { get; set; }
-	}
 }

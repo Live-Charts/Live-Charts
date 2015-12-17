@@ -20,13 +20,13 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.-->
     
-<UserControl x:Class="LiveCharts.Tooltip.ScatterTooltip"
+<tooltip:ScatterTooltip x:Class="LiveCharts.Tooltip.DefaultScatterTooltip"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:tooltip="clr-namespace:LiveCharts.Tooltip"
-             mc:Ignorable="d" d:DataContext="{d:DesignInstance tooltip:ScatterTooltip}"
+             mc:Ignorable="d" d:DataContext="{d:DesignInstance tooltip:DefaultScatterTooltip}"
              Width="Auto"
              Height="Auto"
              Foreground="WhiteSmoke"
@@ -46,11 +46,11 @@
                 <ColumnDefinition Width="Auto"></ColumnDefinition>
             </Grid.ColumnDefinitions>
             <TextBlock Grid.Row="0" Grid.Column="0" Margin="10 5 5 0" 
-					   Text="{Binding PrimaryAxisTitle, Converter={x:Static tooltip:DefaultIfNullConverter.Instance}, ConverterParameter=X}"/>
+					   Text="{Binding PrimaryAxisTitle, Converter={x:Static tooltip:DefaultIfNullConverter.Instance}, ConverterParameter=Y}"/>
             <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding PrimaryValue}" Margin="5 5 10 0"/>
             <TextBlock Grid.Row="1" Grid.Column="0" Margin="10 0 5 5"
-					   Text="{Binding SecondaryAxisTitle, Converter={x:Static tooltip:DefaultIfNullConverter.Instance}, ConverterParameter=Y}" />
+					   Text="{Binding SecondaryAxisTitle, Converter={x:Static tooltip:DefaultIfNullConverter.Instance}, ConverterParameter=X}" />
             <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding SecondaryValue}" Margin="5 0 10 5"/>
         </Grid>
     </Border>
-</UserControl>
+</tooltip:ScatterTooltip>

@@ -46,7 +46,7 @@ namespace LiveCharts
             AnimatesNewPoints = true;
             AreaOpacity = 0.2;
             LineType = LineChartLineType.Bezier;
-            DataToolTip = new ScatterTooltip();
+            DataToolTip = new DefaultScatterTooltip();
         }
 
         public LineChartLineType LineType { get; set; }
