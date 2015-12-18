@@ -240,11 +240,11 @@ namespace LiveCharts.Charts
 		#endregion
 
 		#region Public Methods
-		public void ClearAndPlot()
+		public void ClearAndPlot(bool animate = true)
 		{
 			_seriesChanged.Stop();
 			_seriesChanged.Start();
-			PrepareCanvas(true);
+			PrepareCanvas(animate);
 		}
 
 		public void ZoomIn()
@@ -498,7 +498,7 @@ namespace LiveCharts.Charts
 						Foreground = PrimaryAxis.Foreground,
 						Text = t
 					};
-					var fl = new FormattedText(t, CultureInfo.CurrentUICulture, FlowDirection.LeftToRight,
+                    var fl = new FormattedText(t, CultureInfo.CurrentUICulture, FlowDirection.LeftToRight,
 						new Typeface(PrimaryAxis.FontFamily, PrimaryAxis.FontStyle, PrimaryAxis.FontWeight,
 							PrimaryAxis.FontStretch), PrimaryAxis.FontSize, Brushes.Black);
 					Canvas.Children.Add(label);

@@ -1,4 +1,5 @@
-﻿using System.Windows.Input;
+﻿using System.Collections.ObjectModel;
+using System.Windows.Input;
 
 namespace ChartsTest
 {
@@ -8,7 +9,7 @@ namespace ChartsTest
     public partial class MainWindow
     {
         public double[] TestPrimaryValues { get; set; }
-        
+
         public MainWindow()
         {
             InitializeComponent();
@@ -16,7 +17,7 @@ namespace ChartsTest
 
 	        TestPrimaryValues = new[] {3d, 2, 4, 6};
 
-	        DataContext = TestPrimaryValues;
+	        DataContext = this;
         }
 
         #region NavigationButtons
