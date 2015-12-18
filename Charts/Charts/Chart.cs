@@ -30,6 +30,7 @@ using System.Globalization;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
@@ -415,10 +416,15 @@ namespace LiveCharts.Charts
 					FontStyle = PrimaryAxis.FontStyle,
 					FontWeight = PrimaryAxis.FontWeight,
 					Foreground = PrimaryAxis.Foreground,
-					Text = PrimaryAxis.Title,
 					RenderTransform = new RotateTransform(-90)
 				};
-				Shapes.Add(yLabel);
+			    var binding = new Binding
+			    {
+			        Path = new PropertyPath("Title"),
+			        Source = PrimaryAxis
+			    };
+			    BindingOperations.SetBinding(yLabel, TextBlock.TextProperty, binding);
+                Shapes.Add(yLabel);
 				Canvas.Children.Add(yLabel);
 				Canvas.SetLeft(yLabel, 5);
 				Canvas.SetTop(yLabel, Canvas.DesiredSize.Height * .5 + ty.X * .5);
@@ -435,10 +441,15 @@ namespace LiveCharts.Charts
 					FontStretch = SecondaryAxis.FontStretch,
 					FontStyle = SecondaryAxis.FontStyle,
 					FontWeight = SecondaryAxis.FontWeight,
-					Foreground = SecondaryAxis.Foreground,
-					Text = SecondaryAxis.Title
+					Foreground = SecondaryAxis.Foreground
 				};
-				Shapes.Add(yLabel);
+                var binding = new Binding
+                {
+                    Path = new PropertyPath("Title"),
+                    Source = SecondaryAxis
+                };
+                BindingOperations.SetBinding(yLabel, TextBlock.TextProperty, binding);
+                Shapes.Add(yLabel);
 				Canvas.Children.Add(yLabel);
 				Canvas.SetLeft(yLabel, Canvas.DesiredSize.Width * .5 - tx.X * .5);
 				Canvas.SetTop(yLabel, Canvas.DesiredSize.Height - tx.Y - 5);
