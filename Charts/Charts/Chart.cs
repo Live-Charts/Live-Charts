@@ -21,7 +21,6 @@
 //SOFTWARE.
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
@@ -242,6 +241,7 @@ namespace LiveCharts.Charts
 		#region Public Methods
 		public void ClearAndPlot(bool animate = true)
 		{
+		    if (_seriesChanged == null) return;
 			_seriesChanged.Stop();
 			_seriesChanged.Start();
 			PrepareCanvas(animate);
@@ -707,12 +707,14 @@ namespace LiveCharts.Charts
 
 		private void ForceRedrawNow()
 		{
-			PrepareCanvas();
+            PrepareCanvas();
 			UpdateSeries(null, null);
 		}
 
 		private void PrepareCanvas(bool animate = false)
 		{
+		    if (Series == null) return;
+
 			foreach (var shape in Shapes) Canvas.Children.Remove(shape);
 			foreach (var shape in HoverableShapes.Select(x => x.Shape).ToList())
 				Canvas.Children.Remove(shape);
@@ -783,7 +785,7 @@ namespace LiveCharts.Charts
 		private static void SeriesChangedCallback(DependencyObject o, DependencyPropertyChangedEventArgs eventArgs)
 		{
 			var chart = o as Chart;
-			if (chart == null) return;
+			if (chart == null || chart.Series == null) return;
 
 			foreach (var serie in chart.Series)
 			{
@@ -795,6 +797,16 @@ namespace LiveCharts.Charts
 				if (observable != null)
 					observable.CollectionChanged += chart.OnDataSeriesChanged;
 			}
+
+            chart.Canvas.Children.Clear();
+            chart.ClearAndPlot();
+            var anim = new DoubleAnimation
+            {
+                From = 0,
+                To = 1,
+                Duration = TimeSpan.FromMilliseconds(1000)
+            };
+		    if (!chart.DisableAnimation) chart.Canvas.BeginAnimation(OpacityProperty, anim);
 
 			chart.Series.CollectionChanged += (sender, args) =>
 			{               
@@ -835,7 +847,9 @@ namespace LiveCharts.Charts
 
 		private void UpdateSeries(object sender, EventArgs e)
 		{
-			_seriesChanged.Stop();
+            _seriesChanged.Stop();
+
+		    if (Series == null) return;
 			if (PlotArea.Width < 15 || PlotArea.Height < 15) return;
 
 			if (RequiresScale)

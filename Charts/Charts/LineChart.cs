@@ -36,11 +36,11 @@ namespace LiveCharts
 		public LineChart()
 		{
 			PrimaryAxis = new Axis();
-			SecondaryAxis = new Axis
-				{
-					Separator = {Enabled = false, Step = 1},
-					IsEnabled = false
-				};
+		    SecondaryAxis = new Axis
+		    {
+		        Separator = {Enabled = false, Step = 1},
+		        IsEnabled = false
+		    };
 			LineType = LineChartLineType.Bezier;
 			Hoverable = true;
 			ShapeHoverBehavior = ShapeHoverBehavior.Dot;
@@ -120,6 +120,8 @@ namespace LiveCharts
 
 		protected override void DrawAxis()
 		{
+		    if (Math.Abs(S.X) <= Min.X*.01 || Math.Abs(S.Y) <= Min.Y*.01) return;
+
 			ConfigureSmartAxis(SecondaryAxis);
 
 			S = GetS();
