@@ -1,0 +1,28 @@
+﻿<Window x:Class="LazyData.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:LazyData"
+        xmlns:liveCharts="clr-namespace:LiveCharts;assembly=LiveCharts"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="350" Width="525">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Button Content="Fetch data" Click="FetchDataOnClick"/>
+
+        <liveCharts:LineChart Name="Chart" Grid.Row="1" Series="{Binding DummySeries}" >
+            <liveCharts:LineChart.PrimaryAxis>
+                <liveCharts:Axis Title="Megatrons" />
+            </liveCharts:LineChart.PrimaryAxis>
+            <liveCharts:LineChart.SecondaryAxis>
+                <liveCharts:Axis Name="SecondaryAxis" Title="Candies" Labels="{Binding DummyLabels}" />
+            </liveCharts:LineChart.SecondaryAxis>
+        </liveCharts:LineChart>
+
+    </Grid>
+</Window>
