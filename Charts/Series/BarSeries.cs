@@ -55,6 +55,9 @@ namespace LiveCharts
             const int seriesPadding = 2;
             var barW = (unitW - 2*pointPadding)/count;
 
+            var bothLimitsPositive = Chart.Max.Y > 0 && Chart.Min.Y > 0 - Chart.S.Y*.01;
+            var bothLimitsNegative = Chart.Max.Y < 0 + Chart.S.Y*.01 && Chart.Min.Y < 0;
+
             foreach (var point in ChartPoints)
             {
                 var t = new TranslateTransform();
@@ -67,7 +70,15 @@ namespace LiveCharts
                     Height = 0,
                     RenderTransform = t
                 };
-                var rh = ToPlotArea(Chart.Min.Y, AxisTags.Y) - ToPlotArea(point.Y, AxisTags.Y);
+
+                var barStart = bothLimitsPositive
+                    ? Chart.Min.Y
+                    : (bothLimitsNegative ? Chart.Max.Y : 0);
+                var direction = point.Y > 0 ? 1 : -1;
+
+                var rh = bothLimitsNegative
+                    ? ToPlotArea(point.Y, AxisTags.Y)
+                    : ToPlotArea(barStart, AxisTags.Y) - ToPlotArea(point.Y*direction, AxisTags.Y);
                 var hr = new Rectangle
                 {
                     Fill = Brushes.Transparent,
@@ -78,7 +89,10 @@ namespace LiveCharts
 
                 Canvas.SetLeft(r, ToPlotArea(point.X, AxisTags.X) + barW*pos + pointPadding + overflow/2);
                 Canvas.SetLeft(hr, ToPlotArea(point.X, AxisTags.X) + barW * pos + pointPadding + overflow / 2);
-                Canvas.SetTop(hr, ToPlotArea(Chart.Min.Y, AxisTags.Y) - rh);
+
+                var h = direction > 0 ? ToPlotArea(barStart, AxisTags.Y) - rh : ToPlotArea(barStart, AxisTags.Y);
+
+                Canvas.SetTop(hr, h);
                 Panel.SetZIndex(hr, int.MaxValue);
 
                 Chart.Canvas.Children.Add(r);
@@ -93,8 +107,8 @@ namespace LiveCharts
                 };
                 var rAnim = new DoubleAnimation
                 {
-                    From = ToPlotArea(Chart.Min.Y, AxisTags.Y),
-                    To = ToPlotArea(Chart.Min.Y, AxisTags.Y) - rh,
+                    From = ToPlotArea(barStart, AxisTags.Y),
+                    To =h,
                     Duration = TimeSpan.FromMilliseconds(300)
                 };
 
