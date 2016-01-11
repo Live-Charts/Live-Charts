@@ -38,14 +38,14 @@
             <liveCharts:StackedBarChart.PrimaryAxis>
                 <liveCharts:Axis IsEnabled="False" PrintLabels="False">
                     <liveCharts:Axis.Separator>
-                        <liveCharts:Separator Enabled="False"></liveCharts:Separator>
+                        <liveCharts:Separator IsEnabled="False"></liveCharts:Separator>
                     </liveCharts:Axis.Separator>
                 </liveCharts:Axis>
             </liveCharts:StackedBarChart.PrimaryAxis>
             <liveCharts:StackedBarChart.SecondaryAxis>
                 <liveCharts:Axis IsEnabled="False" PrintLabels="False">
                     <liveCharts:Axis.Separator>
-                        <liveCharts:Separator Enabled="False"></liveCharts:Separator>
+                        <liveCharts:Separator IsEnabled="False"></liveCharts:Separator>
                     </liveCharts:Axis.Separator>
                 </liveCharts:Axis>
             </liveCharts:StackedBarChart.SecondaryAxis>

@@ -1,18 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.Windows.Data;
-using LiveCharts;
 using LiveCharts.Tooltip;
 
-namespace ChartsTest.BarExamples
+namespace ChartsTest.z.CustomTooltips
 {
     /// <summary>
     /// Interaction logic for CustomTooltip.xaml
     /// </summary>
-    public partial class CustomTooltip
+    public partial class CustomIndexedTooltip
     {
-        public CustomTooltip()
+        public CustomIndexedTooltip()
         {
             InitializeComponent();
         }

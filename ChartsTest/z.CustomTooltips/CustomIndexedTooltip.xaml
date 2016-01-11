@@ -1,15 +1,16 @@
-﻿<tooltip:IndexedTooltip x:Class="ChartsTest.BarExamples.CustomTooltip"
+﻿<tooltip:IndexedTooltip x:Class="ChartsTest.z.CustomTooltips.CustomIndexedTooltip"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:tooltip="clr-namespace:LiveCharts.Tooltip;assembly=LiveCharts"
              xmlns:barExamples="clr-namespace:ChartsTest.BarExamples"
+             xmlns:customTooltips="clr-namespace:ChartsTest.z.CustomTooltips"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance tooltip:DefaultIndexedTooltip}"
              x:Name="Tooltip">
     <tooltip:IndexedTooltip.Resources>
-        <barExamples:MyConverter x:Key="MyConverter"></barExamples:MyConverter>
+        <customTooltips:MyConverter x:Key="MyConverter"></customTooltips:MyConverter>
     </tooltip:IndexedTooltip.Resources>
     <Border CornerRadius="2">
         <Border.Background>

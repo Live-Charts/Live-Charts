@@ -38,14 +38,14 @@
             <liveCharts:LineChart.PrimaryAxis>
                 <liveCharts:Axis IsEnabled="False" PrintLabels="False">
                     <liveCharts:Axis.Separator>
-                        <liveCharts:Separator Enabled="False"></liveCharts:Separator>
+                        <liveCharts:Separator IsEnabled="False"></liveCharts:Separator>
                     </liveCharts:Axis.Separator>
                 </liveCharts:Axis>
             </liveCharts:LineChart.PrimaryAxis>
             <liveCharts:LineChart.SecondaryAxis>
                 <liveCharts:Axis IsEnabled="False" PrintLabels="False">
                     <liveCharts:Axis.Separator>
-                        <liveCharts:Separator Enabled="False"></liveCharts:Separator>
+                        <liveCharts:Separator IsEnabled="False"></liveCharts:Separator>
                     </liveCharts:Axis.Separator>
                 </liveCharts:Axis>
             </liveCharts:LineChart.SecondaryAxis>

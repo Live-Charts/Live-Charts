@@ -64,9 +64,14 @@ namespace LiveCharts
         {
             var p = new Point(
                 SecondaryAxis.MaxValue ??
-                Series.Cast<ScatterSeries>().Select(x => x.SecondaryValues.DefaultIfEmpty(0).Max()).DefaultIfEmpty(0).Max(),
+                Series.Cast<ScatterSeries>()
+                    .Select(x => x.SecondaryValues.Where(i => !double.IsNaN(i)).DefaultIfEmpty(0).Max())
+                    .DefaultIfEmpty(0)
+                    .Max(),
                 PrimaryAxis.MaxValue ??
-				Series.Select(x => x.PrimaryValues.DefaultIfEmpty(0).Max()).DefaultIfEmpty(0).Max());
+                Series.Select(x => x.PrimaryValues.Where(i => !double.IsNaN(i)).DefaultIfEmpty(0).Max())
+                    .DefaultIfEmpty(0)
+                    .Max());
             p.X = SecondaryAxis.MaxValue ?? p.X;
             p.Y = PrimaryAxis.MaxValue ?? p.Y;
             return p;
@@ -75,8 +80,13 @@ namespace LiveCharts
         private Point GetMin()
         {
             var p = new Point(
-                Series.Cast<ScatterSeries>().Select(x => x.SecondaryValues.DefaultIfEmpty(0).Min()).DefaultIfEmpty(0).Min(),
-				Series.Select(x => x.PrimaryValues.DefaultIfEmpty(0).Min()).DefaultIfEmpty(0).Min());
+                Series.Cast<ScatterSeries>()
+                    .Select(x => x.SecondaryValues.Where(i => !double.IsNaN(i)).DefaultIfEmpty(0).Min())
+                    .DefaultIfEmpty(0)
+                    .Min(),
+                Series.Select(x => x.PrimaryValues.Where(i => !double.IsNaN(i)).DefaultIfEmpty(0).Min())
+                    .DefaultIfEmpty(0)
+                    .Min());
             p.X = SecondaryAxis.MinValue ?? p.X;
             p.Y = PrimaryAxis.MinValue ?? p.Y;
             return p;

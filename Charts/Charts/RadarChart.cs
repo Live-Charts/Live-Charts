@@ -111,7 +111,7 @@ namespace LiveCharts
             double num1 = 0.0;
             while (num1 < 360.0)
             {
-                if (this.PrimaryAxis.Separator.Enabled)
+                if (this.PrimaryAxis.Separator.IsEnabled)
                 {
                     Line line1 = new Line();
                     line1.Stroke = (Brush) new SolidColorBrush()

@@ -20,8 +20,6 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
@@ -48,7 +46,7 @@ namespace LiveCharts
 
     public static class PerformanceConfigurationExtentions
     {
-        public static List<Point> OptimizeAsIndexedChart(this IEnumerable<Point> points, Chart chart)
+        public static List<Point> OptimizeForIndexedChart(this IEnumerable<Point> points, Chart chart)
         {
             var isFirst = true;
             var result = new List<Point>();

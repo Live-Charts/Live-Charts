@@ -20,6 +20,7 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
+using System.Collections.Generic;
 using System.Windows;
 using LiveCharts.Charts;
 
@@ -59,6 +60,25 @@ namespace LiveCharts
         public static Point ToPlotArea(Point value, Chart chart)
         {
             return new Point(ToPlotArea(value.X, AxisTags.X, chart), ToPlotArea(value.Y, AxisTags.Y, chart));
+        }
+
+        //based on http://stackoverflow.com/questions/13194898/linq-operator-to-split-list-of-doubles-to-multiple-list-of-double-based-on-gener
+        public static IEnumerable<List<Point>> AsSegments(this IEnumerable<Point> source)
+        {
+            List<Point> buffer = new List<Point>();
+            foreach (var item in source)
+            {
+                if (double.IsNaN(item.Y) || double.IsNaN(item.X))
+                {
+                    yield return buffer;
+                    buffer = new List<Point>();
+                }
+                else
+                {
+                    buffer.Add(item);
+                }
+            }
+            yield return buffer;
         }
     }
 }

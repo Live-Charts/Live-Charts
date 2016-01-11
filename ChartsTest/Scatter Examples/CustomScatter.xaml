@@ -4,6 +4,9 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:liveCharts="clr-namespace:LiveCharts;assembly=LiveCharts"
+             xmlns:barExamples="clr-namespace:ChartsTest.BarExamples"
+             xmlns:customTooltips="clr-namespace:ChartsTest.z.CustomTooltips"
+             xmlns:tooltip="clr-namespace:LiveCharts.Tooltip"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="600"
              Loaded="OnLoaded">
@@ -17,6 +20,9 @@
             Custom Style
         </TextBlock>
         <liveCharts:ScatterChart Name="Chart" Grid.Row="1" Grid.Column="0">
+            <liveCharts:ScatterChart.DataToolTip>
+                <tooltip:CustomScatterTooltip x:Name="CustomTooltip"/>
+            </liveCharts:ScatterChart.DataToolTip>
             <liveCharts:ScatterChart.Series>
                 <liveCharts:ScatterSeries Name="Serie1" Title="Tan" Stroke="#FFB300" Fill="#AAFFB300" PointRadius="0" StrokeThickness="4"></liveCharts:ScatterSeries>
                 <liveCharts:ScatterSeries Name="Serie2" Title="ATan" Stroke="#FFA000" Fill="#AAFFA000" PointRadius="0" StrokeThickness="4"></liveCharts:ScatterSeries>
@@ -24,14 +30,14 @@
             <liveCharts:ScatterChart.PrimaryAxis>
                 <liveCharts:Axis IsEnabled="False" Foreground="White" FontSize="13" FontFamily="Arial">
                     <liveCharts:Axis.Separator>
-                        <liveCharts:Separator Color="#404040" Thickness="2" Enabled="True"></liveCharts:Separator>
+                        <liveCharts:Separator Color="#404040" Thickness="2" IsEnabled="True"></liveCharts:Separator>
                     </liveCharts:Axis.Separator>
                 </liveCharts:Axis>
             </liveCharts:ScatterChart.PrimaryAxis>
             <liveCharts:ScatterChart.SecondaryAxis>
                 <liveCharts:Axis IsEnabled="False" MinValue="0" MaxValue="1">
                     <liveCharts:Axis.Separator>
-                        <liveCharts:Separator Enabled="False"></liveCharts:Separator>
+                        <liveCharts:Separator IsEnabled="False"></liveCharts:Separator>
                     </liveCharts:Axis.Separator>
                 </liveCharts:Axis>
             </liveCharts:ScatterChart.SecondaryAxis>

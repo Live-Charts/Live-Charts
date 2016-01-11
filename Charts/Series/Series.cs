@@ -121,7 +121,7 @@ namespace LiveCharts
             get { return _chart; }
             internal set
             {
-                if (_chart != null) throw new Exception("can't set chart property twice.");
+                if (_chart != null) throw new InvalidOperationException("Can't set chart property twice.");
                 _chart = value;
             }
         }
@@ -157,7 +157,7 @@ namespace LiveCharts
             var index = 0;
 
             ChartPoints = Chart.PerformanceConfiguration.Enabled
-                ? PrimaryValues.Select(val => new Point(index++, val)).OptimizeAsIndexedChart(Chart)
+                ? PrimaryValues.Select(val => new Point(index++, val)).OptimizeForIndexedChart(Chart)
                 : PrimaryValues.Select(val => new Point(index++, val)).ToList();
         }
         #endregion

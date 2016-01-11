@@ -34,7 +34,7 @@ namespace LiveCharts
         /// <summary>
         /// Indicates weather to draw separators or not.
         /// </summary>
-        public bool Enabled { get; set; }
+        public bool IsEnabled { get; set; }
 
         /// <summary>
         /// Gets or sets color separators color 

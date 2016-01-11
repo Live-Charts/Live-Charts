@@ -57,65 +57,66 @@ namespace LiveCharts
 
         public override void Plot(bool animate = true)
         {
-            var points = new List<Point>();
-	        var count = Math.Min(PrimaryValues.Count, SecondaryValues.Count);
-            for (int index = 0; index < count; index++)
+            foreach (var segment in ChartPoints.AsSegments())
             {
-                var value = new Point(SecondaryValues[index], PrimaryValues[index]);
-                var point = ToPlotArea(value);
-                points.Add(point);
-
-                var e = new Ellipse
+                var points = new List<Point>();
+                foreach (var datapoint in segment)
                 {
-                    Width = PointRadius*2,
-                    Height = PointRadius*2,
-                    Fill = Stroke,
-                    Stroke = new SolidColorBrush {Color = Chart.PointHoverColor},
-                    StrokeThickness = 2
-                };
+                    var point = ToPlotArea(datapoint);
+                    points.Add(point);
 
-                Panel.SetZIndex(e, int.MaxValue-2);
-                Canvas.SetLeft(e, point.X - e.Width*.5);
-                Canvas.SetTop(e, point.Y - e.Height*.5);
-                Chart.Canvas.Children.Add(e);
-
-                if (Chart.Hoverable)
-                {
-                    var r = new Rectangle
+                    var e = new Ellipse
                     {
-                        Fill = Brushes.Transparent,
-                        Width = 40,
-                        Height = 40,
-                        StrokeThickness = 0
+                        Width = PointRadius * 2,
+                        Height = PointRadius * 2,
+                        Fill = Stroke,
+                        Stroke = new SolidColorBrush { Color = Chart.PointHoverColor },
+                        StrokeThickness = 2
                     };
 
-                    r.MouseEnter += Chart.DataMouseEnter;
-                    r.MouseLeave += Chart.DataMouseLeave;
+                    Panel.SetZIndex(e, int.MaxValue - 2);
+                    Canvas.SetLeft(e, point.X - e.Width * .5);
+                    Canvas.SetTop(e, point.Y - e.Height * .5);
+                    Chart.Canvas.Children.Add(e);
 
-                    Canvas.SetLeft(r, point.X - r.Width/2);
-                    Canvas.SetTop(r, point.Y - r.Height/2);
-                    Panel.SetZIndex(r, int.MaxValue);
-
-                    Chart.Canvas.Children.Add(r);
-
-                    Chart.HoverableShapes.Add(new HoverableShape
+                    if (Chart.Hoverable)
                     {
-                        Series = this,
-                        Shape = r,
-                        Target = e,
-                        Value = value
-                    });
+                        var r = new Rectangle
+                        {
+                            Fill = Brushes.Transparent,
+                            Width = 40,
+                            Height = 40,
+                            StrokeThickness = 0
+                        };
+
+                        r.MouseEnter += Chart.DataMouseEnter;
+                        r.MouseLeave += Chart.DataMouseLeave;
+
+                        Canvas.SetLeft(r, point.X - r.Width / 2);
+                        Canvas.SetTop(r, point.Y - r.Height / 2);
+                        Panel.SetZIndex(r, int.MaxValue);
+
+                        Chart.Canvas.Children.Add(r);
+
+                        Chart.HoverableShapes.Add(new HoverableShape
+                        {
+                            Series = this,
+                            Shape = r,
+                            Target = e,
+                            Value = datapoint
+                        });
+                    }
+                    Shapes.Add(e);
                 }
-                Shapes.Add(e);
+
+                var c = Chart as ILine;
+                if (c == null) return;
+
+                if (c.LineType == LineChartLineType.Bezier)
+                    Shapes.AddRange(_addSerieAsBezier(points.ToArray(), Stroke, StrokeThickness, animate));
+                if (c.LineType == LineChartLineType.Polyline)
+                    Shapes.AddRange(_addSeriesAsPolyline(points.ToArray(), Stroke, StrokeThickness, animate));
             }
-
-            var c = Chart as ILine;
-            if (c == null) return;
-
-            if (c.LineType == LineChartLineType.Bezier) 
-                Shapes.AddRange(_addSerieAsBezier(points.ToArray(), Stroke, StrokeThickness, animate));
-            if (c.LineType == LineChartLineType.Polyline)
-                Shapes.AddRange(_addSeriesAsPolyline(points.ToArray(), Stroke, StrokeThickness, animate));
         }
 
         private IEnumerable<Shape> _addSerieAsBezier(Point[] points, Brush color, double storkeThickness,
@@ -279,6 +280,18 @@ namespace LiveCharts
             }
             if (!animated) path.StrokeDashOffset = 0;
             return addedFigures;
+        }
+
+        public override void CalculatePoints()
+        {
+            //ToDo: create a method to support optimizations for scatter chart.
+
+            ChartPoints = new List<Point>();
+
+            var count = Math.Min(PrimaryValues.Count, SecondaryValues.Count);
+            for (int index = 0; index < count; index++)
+                ChartPoints.Add(new Point(SecondaryValues[index], PrimaryValues[index]));
+
         }
     }
 }

@@ -3,9 +3,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:liveCharts="clr-namespace:LiveCharts;assembly=LiveCharts"
         mc:Ignorable="d" 
-        Title="Live Charts" Width="650" Height="600"
+        Title="Live Charts" Width="700" Height="650"
         FontFamily="Calibri"
         FontSize="14"
         Foreground="#404040"
@@ -29,68 +28,8 @@
             <Image Source="live.png" Stretch="None" Margin="0 0 0 20"></Image>
             <TextBlock TextWrapping="Wrap">
                             Here is a list of examples scroll down to check them out, resize window, 
-                            charts will follow too.
+                            charts will follow too. Click on left or right arrows to navigate through different examples
             </TextBlock>
-
-            <TextBlock Style="{StaticResource Title}">Multiple Simple Examples</TextBlock>
-
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="150"></RowDefinition>
-                    <RowDefinition Height="150"></RowDefinition>
-                    <RowDefinition Height="150"></RowDefinition>
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"></ColumnDefinition>
-                    <ColumnDefinition Width="*"></ColumnDefinition>
-                </Grid.ColumnDefinitions>
-
-                <liveCharts:LineChart Grid.Row="0" Grid.Column="0" Margin="0 0 10 0">
-                    <liveCharts:LineChart.Series>
-                        <liveCharts:LineSeries Title="Asia" PrimaryValues="1, 6, 10, 0"/>
-                        <liveCharts:LineSeries Title="Europe" PrimaryValues="{Binding TestPrimaryValues}"/>
-                    </liveCharts:LineChart.Series>
-                    <liveCharts:LineChart.SecondaryAxis>
-                        <liveCharts:Axis Labels="day 1, day 2, day3, day4, day 5"></liveCharts:Axis>
-                    </liveCharts:LineChart.SecondaryAxis>
-                </liveCharts:LineChart>
-
-                <liveCharts:ScatterChart Grid.Row="0" Grid.Column="1" Zooming="False" Margin="10 0 0 0" LineType="None">
-                    <liveCharts:ScatterChart.Series>
-                        <liveCharts:ScatterSeries Title="Plot 1" PrimaryValues="1, 5, 3" SecondaryValues="5, 2, 6"/>
-                        <liveCharts:ScatterSeries Title="Plot 2" PrimaryValues="-3, 5, -3" SecondaryValues="5, -2, 6"/>
-                        <liveCharts:ScatterSeries Title="Plot 3" PrimaryValues="1, 6, 2" SecondaryValues="0, 3, 2"/>
-                    </liveCharts:ScatterChart.Series>
-                </liveCharts:ScatterChart>
-
-                <liveCharts:BarChart Grid.Row="1" Grid.Column="0" Margin="0 0 10 0">
-                    <liveCharts:BarChart.Series>
-                        <liveCharts:BarSeries Title="Maria" PrimaryValues="4, 2, 2"></liveCharts:BarSeries>
-                        <liveCharts:BarSeries Title="Jose" PrimaryValues="2, 1, 5"></liveCharts:BarSeries>
-                    </liveCharts:BarChart.Series>
-                </liveCharts:BarChart>
-
-                <liveCharts:StackedBarChart Grid.Row="1" Grid.Column="1" Margin="10 0 0 0">
-                    <liveCharts:StackedBarChart.Series>
-                        <liveCharts:StackedBarSeries Title="John" PrimaryValues="4, 2, 2"></liveCharts:StackedBarSeries>
-                        <liveCharts:StackedBarSeries Title="Susan" PrimaryValues="2, 1, 5"></liveCharts:StackedBarSeries>
-                    </liveCharts:StackedBarChart.Series>
-                </liveCharts:StackedBarChart>
-
-                <liveCharts:PieChart Grid.Row="2" Grid.Column="0" Margin="0 0 10 0">
-                    <liveCharts:PieChart.Series>
-                        <liveCharts:PieSeries PrimaryValues="4, 2, 2, 2"></liveCharts:PieSeries>
-                    </liveCharts:PieChart.Series>
-                </liveCharts:PieChart>
-
-                <liveCharts:PieChart Grid.Row="2" Grid.Column="1" InnerRadius="40" Margin="10 0 0 0">
-                    <liveCharts:PieChart.Series>
-                        <liveCharts:PieSeries PrimaryValues="{Binding TestPrimaryValues}"></liveCharts:PieSeries>
-                    </liveCharts:PieChart.Series>
-                </liveCharts:PieChart>
-            </Grid>
-
-            <TextBlock>For the next exmples click on left or right arrows to navigate through different examples</TextBlock>
 
             <TextBlock Style="{StaticResource Title}">Line &amp; Area Chart Examples</TextBlock>
             <Grid>

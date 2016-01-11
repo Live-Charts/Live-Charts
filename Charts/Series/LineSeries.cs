@@ -48,70 +48,73 @@ namespace LiveCharts
         public double PointRadius { get; set; }
 
         public override void Plot(bool animate = true)
-		{
-            var s = new List<Shape>();
-            if (LineChart.LineType == LineChartLineType.Bezier)
-                s.AddRange(_addSerieAsBezier(ChartPoints.Select(x => new Point(
-                    ToPlotArea(x.X, AxisTags.X) + Chart.XOffset, ToPlotArea(x.Y, AxisTags.Y))).ToArray(), animate));
+        {
+            foreach (var segment in ChartPoints.AsSegments())
+            {
+                var s = new List<Shape>();
+                if (LineChart.LineType == LineChartLineType.Bezier)
+                    s.AddRange(_addSerieAsBezier(segment.Select(x => new Point(
+                        ToPlotArea(x.X, AxisTags.X) + Chart.XOffset, ToPlotArea(x.Y, AxisTags.Y))).ToArray(), animate));
 
-            if (LineChart.LineType == LineChartLineType.Polyline)
-                s.AddRange(_addSeriesAsPolyline(ChartPoints.Select(x => new Point(
-                    ToPlotArea(x.X, AxisTags.X) + Chart.XOffset, ToPlotArea(x.Y, AxisTags.Y))).ToArray(), animate));
+                if (LineChart.LineType == LineChartLineType.Polyline)
+                    s.AddRange(_addSeriesAsPolyline(segment.Select(x => new Point(
+                        ToPlotArea(x.X, AxisTags.X) + Chart.XOffset, ToPlotArea(x.Y, AxisTags.Y))).ToArray(), animate));
 
-			var hoverableAreas = new List<HoverableShape>();
+                var hoverableAreas = new List<HoverableShape>();
 
-			if (Chart.Hoverable)
-			{
-				foreach (var point in ChartPoints)
-				{
-					var plotPoint = ToPlotArea(point);
-				    plotPoint.X += Chart.XOffset;
-                    var e = new Ellipse
-						{
-							Width = PointRadius * 2,
-							Height = PointRadius * 2,
-							Fill = Stroke,
-							Stroke = new SolidColorBrush {Color = Chart.PointHoverColor},
-							StrokeThickness = 2,
-							ClipToBounds = true
-						};
-					var r = new Rectangle
-						{
-							Fill = Brushes.Transparent,
-							Width = 40,
-							Height = 40,
-							StrokeThickness = 0
-						};
+                if (Chart.Hoverable)
+                {
+                    foreach (var point in segment)
+                    {
+                        var plotPoint = ToPlotArea(point);
+                        plotPoint.X += Chart.XOffset;
+                        var e = new Ellipse
+                        {
+                            Width = PointRadius * 2,
+                            Height = PointRadius * 2,
+                            Fill = Stroke,
+                            Stroke = new SolidColorBrush { Color = Chart.PointHoverColor },
+                            StrokeThickness = 2,
+                            ClipToBounds = true
+                        };
+                        var r = new Rectangle
+                        {
+                            Fill = Brushes.Transparent,
+                            Width = 40,
+                            Height = 40,
+                            StrokeThickness = 0
+                        };
 
-					r.MouseEnter += Chart.DataMouseEnter;
-					r.MouseLeave += Chart.DataMouseLeave;
+                        r.MouseEnter += Chart.DataMouseEnter;
+                        r.MouseLeave += Chart.DataMouseLeave;
 
-					Canvas.SetLeft(r, ToPlotArea(point.X, AxisTags.X) - r.Width / 2);
-					Canvas.SetTop(r, ToPlotArea(point.Y, AxisTags.Y) - r.Height / 2);
-					Panel.SetZIndex(r, int.MaxValue);
-					Canvas.SetLeft(e, plotPoint.X - e.Width * .5);
-					Canvas.SetTop(e, plotPoint.Y - e.Height * .5);
+                        Canvas.SetLeft(r, ToPlotArea(point.X, AxisTags.X) - r.Width / 2);
+                        Canvas.SetTop(r, ToPlotArea(point.Y, AxisTags.Y) - r.Height / 2);
+                        Panel.SetZIndex(r, int.MaxValue);
+                        Canvas.SetLeft(e, plotPoint.X - e.Width * .5);
+                        Canvas.SetTop(e, plotPoint.Y - e.Height * .5);
 
-					Chart.Canvas.Children.Add(r);
-					Chart.Canvas.Children.Add(e);
+                        Chart.Canvas.Children.Add(r);
+                        Chart.Canvas.Children.Add(e);
 
-					s.Add(e);
-					hoverableAreas.Add(new HoverableShape
-						{
-							Series = this,
-							Shape = r,
-							Value = point,
-							Target = e
-						});
-				}
-			}
-			Shapes.AddRange(s);
-			Chart.HoverableShapes.AddRange(hoverableAreas);
+                        s.Add(e);
+                        hoverableAreas.Add(new HoverableShape
+                        {
+                            Series = this,
+                            Shape = r,
+                            Value = point,
+                            Target = e
+                        });
+                    }
+                }
+                Shapes.AddRange(s);
+                Chart.HoverableShapes.AddRange(hoverableAreas);
+            }
 		}
 
 		private IEnumerable<Shape> _addSerieAsBezier(Point[] points, bool animate = true)
 		{
-			if (points.Length < 2) return Enumerable.Empty<Shape>();
+            if (points.Length < 2) return Enumerable.Empty<Shape>();
 			var addedFigures = new List<Shape>();
 
 			Point[] cp1, cp2;

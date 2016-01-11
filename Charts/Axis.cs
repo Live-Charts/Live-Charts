@@ -36,7 +36,7 @@ namespace LiveCharts
             CleanFactor = 3;
             Separator = new Separator
             {
-                Enabled = true,
+                IsEnabled = true,
                 Color = Color.FromRgb(205, 205, 205),
                 Thickness = 1
             };
