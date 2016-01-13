@@ -54,6 +54,8 @@ xmlns:liveCharts="clr-namespace:LiveCharts;assembly=LiveCharts"
 ```
 **3**. Thats it. You are ready.
 
+**Note:** Since this is a pre-release version, some names, properties or namespaces might vary, we highly recommend to clone this repo and see included examples since they all are always up to date.
+
 # How to Contribute
 
 * Star this repo
