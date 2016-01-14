@@ -58,7 +58,8 @@ namespace LiveCharts
 
                     var observable = series.PrimaryValues as INotifyCollectionChanged;
                     if  (observable == null) return;
-
+                    if (series.Chart == null) return;
+                     
                     observable.CollectionChanged += series.Chart.OnDataSeriesChanged;
                 }));
         [TypeConverter(typeof(ValueCollectionConverter))]

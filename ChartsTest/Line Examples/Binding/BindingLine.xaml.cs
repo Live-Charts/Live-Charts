@@ -44,7 +44,11 @@ namespace ChartsTest.Line_Examples
     public class BindingLineViewModel
     {
         private Random _random = new Random();
-        private DispatcherTimer _timer = new DispatcherTimer {Interval = TimeSpan.FromMilliseconds(500)};
+        //live charts requires at least 100 ms without changes to update the chart
+        //livecharts waits for the data to stop changing within 100ms, and then draws all the changes
+        //if you set this timer interval to less than 100ms chart should not update because it will be waiting
+        //for data to stop changing, this is to prevent multiple chart redraw.
+        private DispatcherTimer _timer = new DispatcherTimer {Interval = TimeSpan.FromMilliseconds(150)};
         private bool _isWild;
 
         public BindingLineViewModel()

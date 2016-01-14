@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
+using System.Windows.Threading;
 using LiveCharts;
 using LiveCharts.Annotations;
 
@@ -69,7 +70,7 @@ namespace ChartsTest.Line_Examples
             if (fe == null) return;
             var model = fe.DataContext as TestViewModel;
             if (model == null) return;
-            model.PlayRealTime();
+            model.GoWild();
         }
     }
 
@@ -79,11 +80,25 @@ namespace ChartsTest.Line_Examples
         private ObservableCollection<Series> _series;
         private string _name;
         private static Random _random = new Random();
+        //live charts requires at least 100 ms without changes to update the chart
+        //livecharts waits for the data to stop changing within 100ms, and then draws all the changes
+        //if you set this timer interval to less than 100ms chart should not update because it will be waiting
+        //for data to stop changing, this is to prevent multiple chart redraw.
+        private DispatcherTimer _timer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(150) };
+        private bool _isWild;
 
         public TestViewModel()
         {
             Labels = new List<string>();
             Series = new ObservableCollection<Series>();
+            _timer.Tick += (sender, args) =>
+            {
+                foreach (var series in Series)
+                {
+                    series.PrimaryValues.RemoveAt(0);
+                    series.PrimaryValues.Add(_random.Next(-10, 10));
+                }
+            };
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -145,19 +160,24 @@ namespace ChartsTest.Line_Examples
 
         public void RemoveSeries()
         {
-            if (Series.Count < 1) return;
+            if (Series.Count < 2) return;
             Series.RemoveAt(0);
         }
 
-        public void PlayRealTime()
+        public void GoWild()
         {
-            if (Series.Any(x => !x.PrimaryValues.Any())) return;
-            foreach (var series in Series)
-            {
-                series.PrimaryValues.RemoveAt(0);
-                series.PrimaryValues.Add(_random.Next(-10,10));
-            }
+            if (Series.Count < 1) return;
 
+            if (_isWild)
+            {
+                _isWild = false;
+                _timer.Stop();
+            }
+            else
+            {
+                _isWild = true;
+                _timer.Start();
+            }
         }
 
         private static ObservableCollection<double> BuildRandomValues()

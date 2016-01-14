@@ -48,7 +48,8 @@ namespace LiveCharts.Charts
         internal int ColorStartIndex;
         internal bool RequiresScale;
         internal List<Series> EraseSerieBuffer = new List<Series>();
-        
+        internal bool SeriesInitialized;
+
         protected double CurrentScale;
         protected ShapeHoverBehavior ShapeHoverBehavior;
         protected bool IgnoresLastLabel;
@@ -63,7 +64,6 @@ namespace LiveCharts.Charts
         private Point _panOrigin;
         private bool _isDragging;
         private UIElement _dataToolTip;
-        private bool _initialized;
         private int _colorIndexer;
 
         public event Action<Chart> Plot;
@@ -724,7 +724,7 @@ namespace LiveCharts.Charts
         private void PrepareCanvas(bool animate = false)
         {
             if (Series == null) return;
-            if (!_initialized) InitializeSeries(this);
+            if (!SeriesInitialized) InitializeSeries(this);
 
             if (PrimaryAxis.Parent == null) Canvas.Children.Add(PrimaryAxis);
             if (SecondaryAxis.Parent == null) Canvas.Children.Add(SecondaryAxis);
@@ -806,7 +806,7 @@ namespace LiveCharts.Charts
 
         private void InitializeSeries(Chart chart)
         {
-            chart._initialized = true;
+            chart.SeriesInitialized = true;
             foreach (var series in chart.Series)
             {
                 var index = _colorIndexer++;
