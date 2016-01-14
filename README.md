@@ -21,7 +21,7 @@ Live charts is an easy way to build useful charts, all charts are animated, they
  
 This is the logic you use in every chart, there are just some litle properties or rules that change from each type of chart. Use the sintax that better fits your needs.
 
-## In Line Charting 
+## a) In Line Charting 
 
 Useful when you need to plot easly static series and static values.
 
@@ -37,7 +37,7 @@ Useful when you need to plot easly static series and static values.
 </liveCharts:LineChart>
 ```
 
-## Partial Binding
+## b) Partial Binding
 
 Useful to keep your view models simple and when you have a static number of series.
 
@@ -72,7 +72,7 @@ ViewModel = new BindingLineViewModel
 DataContext = this;
 ```
 
-## Full Binding
+## c) Full Binding
 
 Useful when you need to change the number of series and the values of each serie.
 
@@ -113,7 +113,7 @@ Sales = new SalesViewModel();
 DataContext = this;
 ```
 
-**Full Code Behind or WinForms**
+## d) Full Code Behind or WinForms
 
 ```c#
 Chart.Series.Add(new LineSeries
