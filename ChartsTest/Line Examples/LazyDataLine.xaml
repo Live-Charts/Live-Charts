@@ -45,8 +45,7 @@
                                 </StackPanel>
                                 <liveCharts:LineChart Height="100" Series="{Binding Series}">
                                     <liveCharts:LineChart.SecondaryAxis>
-                                        <liveCharts:Axis Labels="{Binding Labels, Converter={StaticResource TestConverter},
-                                                PresentationTraceSources.TraceLevel=High}"></liveCharts:Axis>
+                                        <liveCharts:Axis Labels="{Binding Labels, PresentationTraceSources.TraceLevel=High}"></liveCharts:Axis>
                                     </liveCharts:LineChart.SecondaryAxis>
                                 </liveCharts:LineChart>
                             </StackPanel>

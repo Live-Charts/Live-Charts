@@ -723,9 +723,11 @@ namespace LiveCharts.Charts
             if (Series == null) return;
             if (!_initialized) InitializeSeries(this);
 
+            if (PrimaryAxis.Parent == null) Canvas.Children.Add(PrimaryAxis);
+            if (SecondaryAxis.Parent == null) Canvas.Children.Add(SecondaryAxis);
+
             foreach (var shape in Shapes) Canvas.Children.Remove(shape);
-            foreach (var shape in HoverableShapes.Select(x => x.Shape).ToList())
-                Canvas.Children.Remove(shape);
+            foreach (var shape in HoverableShapes.Select(x => x.Shape).ToList()) Canvas.Children.Remove(shape);
             foreach (var serie in Series) Canvas.Children.Remove(serie);
             HoverableShapes = new List<HoverableShape>();
             Shapes = new List<FrameworkElement>();
@@ -802,9 +804,6 @@ namespace LiveCharts.Charts
         private void InitializeSeries(Chart chart)
         {
             chart._initialized = true;
-            //chart.AddVisualChild(SecondaryAxis);
-            //chart.AddChild(SecondaryAxis);
-            var p = SecondaryAxis.Parent;
             foreach (var series in chart.Series)
             {
                 var index = _colorIndexer++;
