@@ -4,9 +4,10 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:liveCharts="clr-namespace:LiveCharts;assembly=LiveCharts"
+             xmlns:lineExamples="clr-namespace:ChartsTest.Line_Examples"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300"
-             Loaded="CleanLine_OnLoaded">
+             Loaded="CleanLine_OnLoaded" d:DataContext="{d:DesignInstance lineExamples:BindingLine}">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
@@ -19,7 +20,7 @@
         <liveCharts:LineChart Name="Chart" Grid.Row="1" Grid.Column="0">
             <liveCharts:LineChart.Series>
                <liveCharts:SeriesCollection>
-                    <liveCharts:LineSeries Name="Serie1" Title="Maria" PrimaryValues="{Binding}" StrokeThickness="4" PointRadius="6" Stroke="IndianRed">
+                    <liveCharts:LineSeries Title="Maria" PrimaryValues="{Binding ViewModel.FirstSeries}" StrokeThickness="4" PointRadius="6" Stroke="IndianRed">
                         <liveCharts:LineSeries.Fill>
                             <LinearGradientBrush EndPoint=".5,1" StartPoint="1,0">
                                 <GradientStop Color="#4CCD5C5C" Offset="1"/>
@@ -27,7 +28,7 @@
                             </LinearGradientBrush>
                         </liveCharts:LineSeries.Fill>
                     </liveCharts:LineSeries>
-                    <liveCharts:LineSeries Name="Serie2" Title="John" PrimaryValues="{Binding}" StrokeThickness="4" PointRadius="6" Stroke="CornflowerBlue">
+                    <liveCharts:LineSeries Name="Serie2" Title="John" PrimaryValues="{Binding ViewModel.SecondSeries}" StrokeThickness="4" PointRadius="6" Stroke="CornflowerBlue">
                         <liveCharts:LineSeries.Fill>
                             <LinearGradientBrush EndPoint=".5,1" StartPoint="1,0">
                                 <GradientStop Color="#4C6495ED" Offset="1"/>

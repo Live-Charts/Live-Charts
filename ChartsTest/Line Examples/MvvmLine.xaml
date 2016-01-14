@@ -8,8 +8,9 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="500"
              Loaded="MvvmExample_OnLoaded"
-             Name="Control">
-    <Grid d:DataContext="{d:DesignInstance lineExamples:SalesViewModel}">
+             Name="Control"
+              d:DataContext="{d:DesignInstance lineExamples:MvvmLine}">
+    <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
@@ -22,12 +23,12 @@
         <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" TextWrapping="Wrap" HorizontalAlignment="Center">
             MVVM example, click on the buttons below to update chart
         </TextBlock>
-        <liveCharts:LineChart Name="Chart" Grid.Row="1" Grid.Column="0" Series="{Binding}" >
+        <liveCharts:LineChart Name="Chart" Grid.Row="1" Grid.Column="0" Series="{Binding Sales.Salesmen}" >
             <liveCharts:LineChart.PrimaryAxis>
                 <liveCharts:Axis Title="Sold Items"></liveCharts:Axis>
             </liveCharts:LineChart.PrimaryAxis>
             <liveCharts:LineChart.SecondaryAxis>
-                <liveCharts:Axis Name="SecondaryAxis" Title="Month" Labels="{Binding}"></liveCharts:Axis>
+                <liveCharts:Axis Name="SecondaryAxis" Title="Month" Labels="{Binding Sales.AvailableMonths}"></liveCharts:Axis>
             </liveCharts:LineChart.SecondaryAxis>
         </liveCharts:LineChart>
         <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Center">

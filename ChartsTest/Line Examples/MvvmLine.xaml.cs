@@ -16,8 +16,7 @@ namespace ChartsTest.Line_Examples
         {
             InitializeComponent();
             Sales = new SalesViewModel();
-            Chart.DataContext = Sales.Salesmen;
-            SecondaryAxis.DataContext = Sales.AvailableMonths;
+            DataContext = this;
             Chart.PrimaryAxis.LabelFormatter = x => x + ".00k items";
         }
 
