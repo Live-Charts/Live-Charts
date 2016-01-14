@@ -23,6 +23,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows;
@@ -49,7 +50,17 @@ namespace LiveCharts
 
         #region Dependency Properties
         public static readonly DependencyProperty PrimaryValuesProperty =
-            DependencyProperty.Register("PrimaryValues", typeof(IList<double>), typeof(Series), new PropertyMetadata(new ObservableCollection<double>()));
+            DependencyProperty.Register("PrimaryValues", typeof(IList<double>), typeof(Series), new PropertyMetadata(new ObservableCollection<double>(),
+                (o, args) =>
+                {
+                    var series = o as Series;
+                    if (series == null) return;
+
+                    var observable = series.PrimaryValues as INotifyCollectionChanged;
+                    if  (observable == null) return;
+
+                    observable.CollectionChanged += series.Chart.OnDataSeriesChanged;
+                }));
         [TypeConverter(typeof(ValueCollectionConverter))]
         public IList<double> PrimaryValues
         {
@@ -61,7 +72,10 @@ namespace LiveCharts
                 
                 return pv;
             }
-            set { SetValue(PrimaryValuesProperty, value); }
+            set
+            {
+                SetValue(PrimaryValuesProperty, value);
+            }
         }
         public static readonly DependencyProperty TitleProperty =
            DependencyProperty.Register("Title", typeof(string), typeof(Series), new PropertyMetadata("An Unnamed Serie"));

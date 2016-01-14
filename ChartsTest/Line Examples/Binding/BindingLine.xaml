@@ -14,9 +14,26 @@
             <RowDefinition Height="*"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
-        <TextBlock Grid.Row="0" HorizontalAlignment="Center" Grid.ColumnSpan="2" Margin="5" TextWrapping="Wrap">
-            Binded Series
-        </TextBlock>
+        <StackPanel Orientation="Horizontal" Grid.Row="0" HorizontalAlignment="Center" Grid.ColumnSpan="2">
+            <TextBlock Margin="5" TextWrapping="Wrap">
+                Binded Series
+            </TextBlock>
+            <Button Margin="10 0" Background="Transparent" 
+                    BorderBrush="#505050" BorderThickness="3" Foreground="#505050"
+                    Click="GoWildOnClick" Padding="10 3">
+                Real Time
+            </Button>
+            <Button Margin="10 0" Background="Transparent" 
+                    BorderBrush="#505050" BorderThickness="3" Foreground="#505050"
+                    Click="AddValueOnClick" Padding="10 3">
+                +
+            </Button>
+            <Button Margin="10 0" Background="Transparent" 
+                    BorderBrush="#505050" BorderThickness="3" Foreground="#505050"
+                    Click="RemoveValueOnClick" Padding="10 3">
+                -
+            </Button>
+        </StackPanel>
         <liveCharts:LineChart Name="Chart" Grid.Row="1" Grid.Column="0">
             <liveCharts:LineChart.Series>
                <liveCharts:SeriesCollection>

@@ -39,6 +39,11 @@
                                             Click="RemoveLastSeriesOnClick" Padding="10 3">
                                         Remove Last Series
                                     </Button>
+                                    <Button DataContext="{Binding}" Margin="10 0" Background="Transparent" 
+                                            BorderBrush="#505050" BorderThickness="3" Foreground="#505050"
+                                            Click="RealTimeOnClick" Padding="10 3">
+                                        Real Time
+                                    </Button>
                                 </StackPanel>
                                 <liveCharts:LineChart Height="100" Series="{Binding Series}">
                                     <liveCharts:LineChart.SecondaryAxis>

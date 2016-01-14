@@ -339,7 +339,7 @@ namespace LiveCharts.Charts
         protected void ConfigureSmartAxis(Axis axis)
         {
             axis.PrintLabels = axis.Labels != null;
-            if (axis.Labels == null || !axis.PrintLabels) return;
+            if (axis.Labels == null || !axis.Labels.Any() || !axis.PrintLabels) return;
             var m = axis.Labels.OrderByDescending(x => x.Length);
             var longestYLabel = new FormattedText(m.First(), CultureInfo.CurrentUICulture, FlowDirection.LeftToRight,
                 new Typeface(axis.FontFamily, axis.FontStyle, axis.FontWeight, axis.FontStretch), axis.FontSize,
@@ -701,6 +701,14 @@ namespace LiveCharts.Charts
         }
         #endregion
 
+        #region Internal Methods
+        internal void OnDataSeriesChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            _serieValuesChanged.Stop();
+            _serieValuesChanged.Start();
+        }
+        #endregion
+
         #region Private Methods
         private double EnsureDouble(double d)
         {
@@ -841,6 +849,7 @@ namespace LiveCharts.Charts
 
                 var newElements = args.NewItems != null ? args.NewItems.Cast<Series>() : new List<Series>();
 
+
                 if (chart.ScaleChanged)
                 {
                     chart.RequiresScale = true;
@@ -870,6 +879,9 @@ namespace LiveCharts.Charts
                         var observable = series.PrimaryValues as INotifyCollectionChanged;
                         if (observable != null)
                             observable.CollectionChanged += chart.OnDataSeriesChanged;
+#if DEBUG
+                        if (observable == null) Trace.WriteLine("serie is not observable collection or null");
+#endif
                     }
             };
         }
@@ -902,20 +914,23 @@ namespace LiveCharts.Charts
 
             if (Plot != null) Plot(this);
 #if DEBUG
-            Trace.WriteLine("Series Updated!");
+            Trace.WriteLine("Series Updated (" + DateTime.Now.ToLongTimeString() + ")");
 #endif
-        }
-
-        private void OnDataSeriesChanged(object sender, NotifyCollectionChangedEventArgs e)
-        {
-            _serieValuesChanged.Stop();
-            _serieValuesChanged.Start();
         }
 
         private void UpdateModifiedDataSeries(object sender, EventArgs e)
         {
+#if DEBUG
+            Trace.WriteLine("Primary Values Updated (" + DateTime.Now.ToLongTimeString() + ")");
+#endif
             _serieValuesChanged.Stop();
-            if (ScaleChanged) Scale();
+            //if (ScaleChanged) Scale();
+            //this if can be safely removed without making this library to redraw multiple times
+            //because now implemented a buffer, and performance optimizations, so it should be fine 
+            //if we force redraw everytime we make a change.
+            //this could be a future improvemnt,
+            //by now this is perfectly fine and should not impact in performance.
+            Scale();
             foreach (var serie in Series)
             {
                 serie.Erase();

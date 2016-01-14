@@ -18,50 +18,50 @@ namespace ChartsTest
         {
             LineAndAreaAexamples = new List<UserControl>
             {
-                new BasicLine(),
-                new CustomLine(),
-                new ZoomableLine(),
+                //new BasicLine(),
+                //new CustomLine(),
+                //new ZoomableLine(),
                 new BindingLine(),
-                new UiElementsLine(),
-                new MvvmLine(),
-                new LazyDataLine(),
-                new PerformanceLine()
+                //new UiElementsLine(),
+                //new MvvmLine(),
+                //new LazyDataLine(),
+                //new PerformanceLine()
             };
             BarExamples = new List<UserControl>
             {
-                new BasicBar(),
-                new CustomBar(),
-                new ZoomableBar(),
-                new BindingBar(),
-                new MvvmBar()
-                //new Performance()
+                //new BasicBar(),
+                //new CustomBar(),
+                //new ZoomableBar(),
+                //new BindingBar(),
+                //new MvvmBar()
+                ////new Performance()
             };
             StackedBarExamples = new List<UserControl>
             {
-                new BasicStackedBar(),
-                new CustomStackedBar(),
-                new ZoomableStackedBar(),
-                new BindingStackedBar(),
-                new MvvmStackedBar(),
-                //new PerformanceBar()
+                //new BasicStackedBar(),
+                //new CustomStackedBar(),
+                //new ZoomableStackedBar(),
+                //new BindingStackedBar(),
+                //new MvvmStackedBar(),
+                ////new PerformanceBar()
             };
             PieExamples = new List<UserControl>
             {
-                new BasicPie(),
-                new CustomPie(),
-                //new ZoomablePie(),
-                new BindingPie(),
-                new MvvmPie(),
-                //new PerformanceBar()
+                //new BasicPie(),
+                //new CustomPie(),
+                ////new ZoomablePie(),
+                //new BindingPie(),
+                //new MvvmPie(),
+                ////new PerformanceBar()
             };
             ScatterExamples = new List<UserControl>
             {
-                new BasicScatter(),
-                new CustomScatter(),
-                new ZoomableScatter(),
-                new BindingScatter(),
-                new MvvmScatter(),
-                //new PerformanceScatter()
+                //new BasicScatter(),
+                //new CustomScatter(),
+                //new ZoomableScatter(),
+                //new BindingScatter(),
+                //new MvvmScatter(),
+                ////new PerformanceScatter()
             };
             window.LineControl.Content = LineAndAreaAexamples.Count > 0 ? LineAndAreaAexamples[0] : null;
             window.BarControl.Content = BarExamples.Count > 0 ? BarExamples[0] : null;

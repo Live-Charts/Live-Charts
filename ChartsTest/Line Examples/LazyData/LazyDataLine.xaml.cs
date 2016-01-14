@@ -61,6 +61,16 @@ namespace ChartsTest.Line_Examples
             if (model == null) return;
             model.RemoveSeries();
         }
+
+        private void RealTimeOnClick(object sender, RoutedEventArgs e)
+        {
+            if (sender == null) return;
+            var fe = sender as FrameworkElement;
+            if (fe == null) return;
+            var model = fe.DataContext as TestViewModel;
+            if (model == null) return;
+            model.PlayRealTime();
+        }
     }
 
 
@@ -137,6 +147,17 @@ namespace ChartsTest.Line_Examples
         {
             if (Series.Count < 1) return;
             Series.RemoveAt(0);
+        }
+
+        public void PlayRealTime()
+        {
+            if (Series.Any(x => !x.PrimaryValues.Any())) return;
+            foreach (var series in Series)
+            {
+                series.PrimaryValues.RemoveAt(0);
+                series.PrimaryValues.Add(_random.Next(-10,10));
+            }
+
         }
 
         private static ObservableCollection<double> BuildRandomValues()
