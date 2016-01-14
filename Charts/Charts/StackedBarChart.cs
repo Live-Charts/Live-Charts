@@ -43,6 +43,7 @@ namespace LiveCharts
             LineType = LineChartLineType.Bezier;
             IndexTotals = new Dictionary<int, StackedBarHelper>();
             MaxColumnWidth = 60;
+            DefaultFillOpacity = 0.75;
         }
 
         /// <summary>

@@ -40,6 +40,7 @@ namespace LiveCharts
             AreaOpacity = .8;
             LineType = LineChartLineType.Bezier;
             MaxColumnWidth = 60;
+            DefaultFillOpacity = 0.75;
             //no performance config for a bar chart
             //why? because this chart need to build a bar per point,
             //I think there is no practicall way to make this work

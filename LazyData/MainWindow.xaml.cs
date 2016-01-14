@@ -25,7 +25,7 @@ namespace LazyData
             //SecondaryAxis.Labels is a dependency property
             //note: this breaks MVVM
 
-            SecondaryAxis.Labels = new[] { "w", "x", "y", "z" };
+            //SecondaryAxis.Labels = new[] { "w", "x", "y", "z" };
 
             //this only works when called twice
             //SecondaryAxis.Labels = _viewModel.DummyLabels;

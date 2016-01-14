@@ -117,6 +117,7 @@
     <Compile Include="Interfaces.cs" />
     <Compile Include="PerformanceConfiguration.cs" />
     <Compile Include="Properties\Annotations.cs" />
+    <Compile Include="Series\RowSeries.cs" />
     <Compile Include="Tooltip\IndexedTooltipData.cs" />
     <Compile Include="Tooltip\Converters.cs" />
     <Compile Include="Tooltip\DefaultIndexedTooltip.xaml.cs">

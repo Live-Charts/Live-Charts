@@ -35,7 +35,6 @@ namespace LiveCharts
         public StackedBarSeries()
         {
             StrokeThickness = 2.5;
-            DefaultOpacity = 0.75;
         }
 
         public double StrokeThickness { get; set; }

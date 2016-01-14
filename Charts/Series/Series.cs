@@ -37,8 +37,7 @@ namespace LiveCharts
 	{
 		private Color? _color;
 		protected List<Shape> Shapes = new List<Shape>();
-	    protected double DefaultOpacity = 0.35;
-		private Chart _chart;
+	    private Chart _chart;
 		private int _colorId;
 	    internal bool RequiresAnimation;
 	    internal bool RequiresPlot;
@@ -79,24 +78,12 @@ namespace LiveCharts
             }
         }
 
-		public static readonly DependencyProperty ColorIndexProperty =
-			DependencyProperty.Register("ColorIndex", typeof(int), typeof(Series), new PropertyMetadata(-1));
-
-		public int ColorIndex
-		{
-			get { return (int) GetValue(ColorIndexProperty); }
-			set { SetValue(ColorIndexProperty, value); }
-		}
-
 		public static readonly DependencyProperty StrokeProperty =
 			DependencyProperty.Register("Stroke", typeof(Brush), typeof(Series), new PropertyMetadata(null));
 
 		public Brush Stroke
 		{
-		    get
-		    {
-                return ((Brush)GetValue(StrokeProperty)) ?? new SolidColorBrush(GetColorByIndex(ColorIndex));
-		    }
+		    get { return ((Brush) GetValue(StrokeProperty)); }
 			set { SetValue(StrokeProperty, value); }
 		}
 
@@ -107,8 +94,7 @@ namespace LiveCharts
 		{
 			get
 			{
-			    return (Brush) GetValue(FillProperty) ??
-			           new SolidColorBrush(GetColorByIndex(ColorIndex)) {Opacity = DefaultOpacity};
+			    return (Brush) GetValue(FillProperty);
 			}
 			set { SetValue(FillProperty, value); }
 		}
@@ -130,7 +116,7 @@ namespace LiveCharts
         #region PublicMethods
         public static Color GetColorByIndex(int index)
         {
-            return Chart.Colors[(int)(index - Chart.Colors.Count * Math.Truncate(index / (decimal)Chart.Colors.Count))];
+            return Chart.Colors[(int) (index - Chart.Colors.Count*Math.Truncate(index/(decimal) Chart.Colors.Count))];
         }
         #endregion
 

@@ -43,10 +43,7 @@ namespace LiveCharts
         }
 
         public static readonly DependencyProperty LabelsProperty = DependencyProperty.Register(
-            "Labels", typeof (IList<string>), typeof (Axis), new PropertyMetadata(default(IList<string>), (o, args) =>
-            {
-                var a = 1;
-            }));
+            "Labels", typeof (IList<string>), typeof (Axis), new PropertyMetadata(default(IList<string>)));
 
         [TypeConverter(typeof (StringCollectionConverter))]
         public IList<string> Labels

@@ -29,9 +29,9 @@ namespace LiveCharts
 {
 	public class LineChart : Chart, ILine
 	{
-		private Point _rawMax = new Point(0, 0);
-		private Point _rawMin = new Point(0, 0);
-		private Point _rawS = new Point(0, 0);
+		protected Point _rawMax = new Point(0, 0);
+        protected Point _rawMin = new Point(0, 0);
+        protected Point _rawS = new Point(0, 0);
 
 		public LineChart()
 		{
@@ -59,7 +59,7 @@ namespace LiveCharts
 
 	    public LineChartLineType LineType { get; set; }
 
-        private Point GetMax()
+        protected Point GetMax()
 		{
 		    var x = Series.Select(serie => serie.PrimaryValues.Count - 1).DefaultIfEmpty(0).Max();
 		    var y = Series.Select(serie => serie.PrimaryValues.Where(i => !double.IsNaN(i)).DefaultIfEmpty(0).Max()).DefaultIfEmpty(0).Max();
@@ -69,7 +69,7 @@ namespace LiveCharts
 			return p;
 		}
 
-		private Point GetMin()
+		protected Point GetMin()
 		{
             const int x = 0;
             var y = Series.Select(serie => serie.PrimaryValues.Where(i => !double.IsNaN(i)).DefaultIfEmpty(0).Min()).DefaultIfEmpty(0).Min();
@@ -80,7 +80,7 @@ namespace LiveCharts
 			return p;
 		}
 
-		private Point GetS()
+		protected Point GetS()
 		{
 			return new Point(
 				SecondaryAxis.Separator.Step ?? CalculateSeparator(Max.X - Min.X, AxisTags.X),

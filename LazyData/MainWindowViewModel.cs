@@ -17,7 +17,7 @@ namespace LC_Demo
 
         public void FetchData()
         {
-            //labels comes from data too, so I expect to be refreshed with databinding
+            //labels comes from data too, so I expect to be refreshed with databinding}
             DummyLabels = new[] { "w", "x", "y", "z" };
             
             //my data comes from a DB

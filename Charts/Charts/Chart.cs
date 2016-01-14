@@ -48,12 +48,13 @@ namespace LiveCharts.Charts
         internal int ColorStartIndex;
         internal bool RequiresScale;
         internal List<Series> EraseSerieBuffer = new List<Series>();
-
+        
         protected double CurrentScale;
         protected ShapeHoverBehavior ShapeHoverBehavior;
         protected bool IgnoresLastLabel;
         protected bool AlphaLabel;
         protected readonly DispatcherTimer TooltipTimer;
+        protected double DefaultFillOpacity = 0.35;
 
         private static readonly Random Randomizer;
         private readonly DispatcherTimer _resizeTimer;
@@ -62,6 +63,8 @@ namespace LiveCharts.Charts
         private Point _panOrigin;
         private bool _isDragging;
         private UIElement _dataToolTip;
+        private bool _initialized;
+        private int _colorIndexer;
 
         public event Action<Chart> Plot;
 
@@ -100,7 +103,7 @@ namespace LiveCharts.Charts
             CurrentScale = 1;
 
             PerformanceConfiguration = new PerformanceConfiguration {Enabled = false};
-            Series = new ObservableCollection<Series>();
+            //Series = new ObservableCollection<Series>();
             DataToolTip = new DefaultIndexedTooltip();
             Shapes = new List<FrameworkElement>();
             HoverableShapes = new List<HoverableShape>();
@@ -203,7 +206,11 @@ namespace LiveCharts.Charts
         public ObservableCollection<Series> Series
         {
             get { return (ObservableCollection<Series>) GetValue(SeriesProperty); }
-            set { SetValue(SeriesProperty, value); }
+            set
+            {
+                SetValue(SeriesProperty, value);
+                
+            }
         }
         #endregion
 
@@ -251,7 +258,7 @@ namespace LiveCharts.Charts
         {
             CurrentScale += .1;
             ForceRedrawNow();
-            PreventGraphToBeVisible();
+            PreventPlotAreaToBeVisible();
         }
 
         public void ZoomOut()
@@ -259,7 +266,7 @@ namespace LiveCharts.Charts
             CurrentScale -= .1;
             if (CurrentScale <= 1) CurrentScale = 1;
             ForceRedrawNow();
-            PreventGraphToBeVisible();
+            PreventPlotAreaToBeVisible();
         }
 
         /// <summary>
@@ -714,6 +721,7 @@ namespace LiveCharts.Charts
         private void PrepareCanvas(bool animate = false)
         {
             if (Series == null) return;
+            if (!_initialized) InitializeSeries(this);
 
             foreach (var shape in Shapes) Canvas.Children.Remove(shape);
             foreach (var shape in HoverableShapes.Select(x => x.Shape).ToList())
@@ -734,7 +742,7 @@ namespace LiveCharts.Charts
             RequiresScale = true;
         }
 
-        private void PreventGraphToBeVisible()
+        private void PreventPlotAreaToBeVisible()
         {
             var tt = Canvas.RenderTransform as TranslateTransform;
             if (tt == null) return;
@@ -785,15 +793,34 @@ namespace LiveCharts.Charts
         private static void SeriesChangedCallback(DependencyObject o, DependencyPropertyChangedEventArgs eventArgs)
         {
             var chart = o as Chart;
+            
             if (chart == null || chart.Series == null) return;
 
-            foreach (var serie in chart.Series)
+            chart.InitializeSeries(chart);
+        }
+
+        private void InitializeSeries(Chart chart)
+        {
+            chart._initialized = true;
+            //chart.AddVisualChild(SecondaryAxis);
+            //chart.AddChild(SecondaryAxis);
+            var p = SecondaryAxis.Parent;
+            foreach (var series in chart.Series)
             {
-                serie.Chart = chart;
-                serie.ColorIndex = chart.Series.Max(x => x.ColorIndex) + 1;
-                serie.RequiresPlot = true;
-                serie.RequiresAnimation = true;
-                var observable = serie.PrimaryValues as INotifyCollectionChanged;
+                var index = _colorIndexer++;
+                series.Chart = this;
+                series.Stroke = series.Stroke ??
+                                new SolidColorBrush(
+                                    Colors[(int) (index - Colors.Count*Math.Truncate(index/(decimal) Colors.Count))]);
+                series.Fill = series.Fill ??
+                              new SolidColorBrush(
+                                  Colors[(int) (index - Colors.Count*Math.Truncate(index/(decimal) Colors.Count))])
+                              {
+                                  Opacity = DefaultFillOpacity
+                              };
+                series.RequiresPlot = true;
+                series.RequiresAnimation = true;
+                var observable = series.PrimaryValues as INotifyCollectionChanged;
                 if (observable != null)
                     observable.CollectionChanged += chart.OnDataSeriesChanged;
             }
@@ -809,7 +836,7 @@ namespace LiveCharts.Charts
             if (!chart.DisableAnimation) chart.Canvas.BeginAnimation(OpacityProperty, anim);
 
             chart.Series.CollectionChanged += (sender, args) =>
-            {               
+            {
                 chart._seriesChanged.Stop();
                 chart._seriesChanged.Start();
 
@@ -832,13 +859,22 @@ namespace LiveCharts.Charts
                 }
 
                 if (args.NewItems != null)
-                    foreach (var serie in newElements)
+                    foreach (var series in newElements)
                     {
-                        serie.Chart = chart;
-                        serie.ColorIndex = chart.Series.Max(x => x.ColorIndex) + 1;
-                        serie.RequiresPlot = true;
-                        serie.RequiresAnimation = true;
-                        var observable = serie.PrimaryValues as INotifyCollectionChanged;
+                        var index = _colorIndexer++;
+                        series.Chart = chart;
+                        series.Stroke = series.Stroke ??
+                                new SolidColorBrush(
+                                    Colors[(int)(index - Colors.Count * Math.Truncate(index / (decimal)Colors.Count))]);
+                        series.Fill = series.Fill ??
+                                      new SolidColorBrush(
+                                          Colors[(int)(index - Colors.Count * Math.Truncate(index / (decimal)Colors.Count))])
+                                      {
+                                          Opacity = DefaultFillOpacity
+                                      };
+                        series.RequiresPlot = true;
+                        series.RequiresAnimation = true;
+                        var observable = series.PrimaryValues as INotifyCollectionChanged;
                         if (observable != null)
                             observable.CollectionChanged += chart.OnDataSeriesChanged;
                     }
@@ -928,7 +964,7 @@ namespace LiveCharts.Charts
         {
             if (!Zooming) return;
             _isDragging = false;
-            PreventGraphToBeVisible();
+            PreventPlotAreaToBeVisible();
         }
 
         private void TooltipTimerOnTick(object sender, EventArgs e)

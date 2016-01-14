@@ -1,26 +1,4 @@
-﻿//The MIT License(MIT)
-
-//Copyright(c) 2015 Alberto Rodriguez
-
-//Permission is hereby granted, free of charge, to any person obtaining a copy
-//of this software and associated documentation files (the "Software"), to deal
-//in the Software without restriction, including without limitation the rights
-//to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-//copies of the Software, and to permit persons to whom the Software is
-//furnished to do so, subject to the following conditions:
-
-//The above copyright notice and this permission notice shall be included in all
-//copies or substantial portions of the Software.
-
-//THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-//IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-//FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-//AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-//LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-//OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-//SOFTWARE.
-
-using System;
+﻿using System;
 using System.Linq;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -29,9 +7,9 @@ using System.Windows.Shapes;
 
 namespace LiveCharts
 {
-    public class BarSeries : Series
+    public class RowSeries : BarSeries
     {
-        public BarSeries()
+        public RowSeries()
         {
             StrokeThickness = 2.5;
         }
@@ -46,15 +24,15 @@ namespace LiveCharts
             var pos = barSeries.IndexOf(this);
             var count = barSeries.Count;
             var unitW = ToPlotArea(1, AxisTags.X) - Chart.PlotArea.X + 5;
-            var overflow = unitW - chart.MaxColumnWidth*3 > 0 ? unitW - chart.MaxColumnWidth*3 : 0;
-            unitW = unitW > chart.MaxColumnWidth*3 ? chart.MaxColumnWidth*3 : unitW;
+            var overflow = unitW - chart.MaxColumnWidth * 3 > 0 ? unitW - chart.MaxColumnWidth * 3 : 0;
+            unitW = unitW > chart.MaxColumnWidth * 3 ? chart.MaxColumnWidth * 3 : unitW;
 
-            var pointPadding = .1*unitW;
+            var pointPadding = .1 * unitW;
             const int seriesPadding = 2;
-            var barW = (unitW - 2*pointPadding)/count;
+            var barW = (unitW - 2 * pointPadding) / count;
 
-            var bothLimitsPositive = Chart.Max.Y > 0 && Chart.Min.Y > 0 - Chart.S.Y*.01;
-            var bothLimitsNegative = Chart.Max.Y < 0 + Chart.S.Y*.01 && Chart.Min.Y < 0;
+            var bothLimitsPositive = Chart.Max.Y > 0 && Chart.Min.Y > 0 - Chart.S.Y * .01;
+            var bothLimitsNegative = Chart.Max.Y < 0 + Chart.S.Y * .01 && Chart.Min.Y < 0;
 
             foreach (var point in ChartPoints)
             {
@@ -76,7 +54,7 @@ namespace LiveCharts
 
                 var rh = bothLimitsNegative
                     ? ToPlotArea(point.Y, AxisTags.Y)
-                    : ToPlotArea(barStart, AxisTags.Y) - ToPlotArea(point.Y*direction, AxisTags.Y);
+                    : ToPlotArea(barStart, AxisTags.Y) - ToPlotArea(point.Y * direction, AxisTags.Y);
                 var hr = new Rectangle
                 {
                     Fill = Brushes.Transparent,
@@ -85,7 +63,7 @@ namespace LiveCharts
                     Height = rh
                 };
 
-                Canvas.SetLeft(r, ToPlotArea(point.X, AxisTags.X) + barW*pos + pointPadding + overflow/2);
+                Canvas.SetLeft(r, ToPlotArea(point.X, AxisTags.X) + barW * pos + pointPadding + overflow / 2);
                 Canvas.SetLeft(hr, ToPlotArea(point.X, AxisTags.X) + barW * pos + pointPadding + overflow / 2);
 
                 var h = direction > 0 ? ToPlotArea(barStart, AxisTags.Y) - rh : ToPlotArea(barStart, AxisTags.Y);
@@ -106,7 +84,7 @@ namespace LiveCharts
                 var rAnim = new DoubleAnimation
                 {
                     From = ToPlotArea(barStart, AxisTags.Y),
-                    To =h,
+                    To = h,
                     Duration = TimeSpan.FromMilliseconds(300)
                 };
 
