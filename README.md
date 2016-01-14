@@ -19,27 +19,111 @@ Live charts is an easy way to build useful charts, all charts are animated, they
  - Supports zooming and panning.
  - MIT License, permissive licensing.
  
-This is the logic you use in every chart, there are just some litle properties or rules that change from each type of chart.
+This is the logic you use in every chart, there are just some litle properties or rules that change from each type of chart. Use the sintax that better fits your needs.
 
-**XAML**
+## In Line Charting 
+
+Useful when you need to plot easly static series and static values.
+
+**XAML** [see full file](https://github.com/beto-rodriguez/Live-Charts/blob/master/ChartsTest/Line%20Examples/BasicLine.xaml)
 ```xml
-<liveCharts:LineChart Name="Chart">
-    <liveCharts:LineChart.Series>
-       <liveCharts:LineSeries Name="MariaSeries" Title="Maria" PrimaryValues="{Binding}" />
-       <liveCharts:LineSeries Name="JohnSeries" Title="John" PrimaryValues="{Binding}" />
-     </liveCharts:LineChart.Series>
+ <liveCharts:LineChart Name="Chart">
+  <liveCharts:LineChart.Series>
+    <liveCharts:SeriesCollection>
+      <liveCharts:LineSeries Title="Maria" PrimaryValues="20, 40, 45, 60, 55, 60, 65, 70" />
+      <liveCharts:LineSeries Title="John" PrimaryValues="30, 35, 43, 68, 65 ,70, 55, 60" />
+    </liveCharts:SeriesCollection>
+  </liveCharts:LineChart.Series>
 </liveCharts:LineChart>
 ```
-**Code Behind**
+
+## Partial Binding
+
+Useful to keep your view models simple and when you have a static number of series.
+
+**XAML** [see full file][https://github.com/beto-rodriguez/Live-Charts/blob/master/ChartsTest/Line%20Examples/BindingLine.xaml]
+```xml
+<liveCharts:LineChart>
+  <liveCharts:LineChart.Series>
+   <liveCharts:SeriesCollection>
+      <liveCharts:LineSeries PrimaryValues="{Binding ViewModel.FirstSeries}" />
+      <liveCharts:LineSeries PrimaryValues="{Binding ViewModel.SecondSeries}" />
+    </liveCharts:SeriesCollection>
+  </liveCharts:LineChart.Series>
+</liveCharts:LineChart>
+```
+**CodeBehind** [see full file](https://github.com/beto-rodriguez/Live-Charts/blob/master/ChartsTest/Line%20Examples/BindingLine.xaml.cs)
+
+*view model*
+```c#
+public class BindingLineViewModel
+{
+  public ObservableCollection<double> FirstSeries { get; set; }
+  public ObservableCollection<double> SecondSeries { get; set; }
+}
+```
+*view constructor*
+```c#
+ViewModel = new BindingLineViewModel
+{
+  FirstSeries = new ObservableCollection<double> { 2, 4, double.NaN, 7, 8, 6, 2, 4, 2, 5 },
+  SecondSeries = new ObservableCollection<double> { 7, 3, 4, 1, 5, 6, 8, 5, 1, 3 }
+};
+DataContext = this;
+```
+
+## Full Binding
+
+Useful when you need to change the number of series and the values of each serie.
+
+**XAML** [see full file][https://github.com/beto-rodriguez/Live-Charts/blob/master/ChartsTest/Line%20Examples/MvvmLine.xaml]
+```xml
+<liveCharts:LineChart Series="{Binding Sales.Salesmen}" />
+```
+**Code Behind** [see full file](https://github.com/beto-rodriguez/Live-Charts/blob/master/ChartsTest/Line%20Examples/MvvmLine.xaml.cs)
+*view model*
+```c#
+public class SalesViewModel
+{
+  public SalesViewModel()
+  {
+    Salesmen = new ObservableCollection<Series>
+    {
+      new LineSeries
+      {
+        Title = "John",
+        PrimaryValues = new ObservableCollection<double>(new[] {2d, 4, 7, 1, 5})
+      },
+      new LineSeries
+      {
+        Title = "Maria",
+        PrimaryValues = new ObservableCollection<double>(new[] {5d, 3, 2, 4, 7})
+      }
+    };
+ }
+
+ public ObservableCollection<Series> Salesmen { get; set; }
+
+}
+```
+*view contructor*
+```c#
+Sales = new SalesViewModel();
+DataContext = this;
+```
+
+**Full Code Behind or WinForms**
 
 ```c#
-MariaSeries.DataContext = new ObservableCollection<double> {2, 3, 5, 7};
-JohnSeries.DataContext = new ObservableCollection<double> {7, 3, 4, 1};
-//you can add more series too!
 Chart.Series.Add(new LineSeries
 {
     Title = "Charles",
     PrimaryValues = new ObservableCollection<double> { 5, 8, 1, 9}
+});
+Chart.Series.Add(new LineSeries
+{
+    Title = "Maria",
+    PrimaryValues = new ObservableCollection<double> { 4, 1, 2, 7}
 });
 ```
 
