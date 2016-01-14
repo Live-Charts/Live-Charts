@@ -41,7 +41,7 @@ Useful when you need to plot easly static series and static values.
 
 Useful to keep your view models simple and when you have a static number of series.
 
-**XAML** [see full file][https://github.com/beto-rodriguez/Live-Charts/blob/master/ChartsTest/Line%20Examples/BindingLine.xaml]
+**XAML** [see full file](https://github.com/beto-rodriguez/Live-Charts/blob/master/ChartsTest/Line%20Examples/BindingLine.xaml)
 ```xml
 <liveCharts:LineChart>
   <liveCharts:LineChart.Series>
