@@ -19,10 +19,12 @@
         </TextBlock>
         <liveCharts:PieChart Name="Chart" Grid.Row="1" Grid.Column="0" Background="#505050">
             <liveCharts:PieChart.Series>
-                <liveCharts:PieSeries Title="Maria"
+                <liveCharts:SeriesCollection>
+                    <liveCharts:PieSeries Title="Maria"
                                      PrimaryValues="20, 40, 45"
                                      Labels="Jan, Feb, Mar"
                                      Colors="#FFB300, #FFA000, #FF8F00"/>
+                </liveCharts:SeriesCollection>
             </liveCharts:PieChart.Series>
             <liveCharts:PieChart.PrimaryAxis>
                 <liveCharts:Axis Title="Sold Items" IsEnabled="False" Foreground="White" FontSize="13" FontFamily="Arial">

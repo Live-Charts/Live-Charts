@@ -47,7 +47,6 @@ namespace LiveCharts
             ChartPoints = new List<Point>();
 		}
 
-
         #region Dependency Properties
         public static readonly DependencyProperty PrimaryValuesProperty =
             DependencyProperty.Register("PrimaryValues", typeof(IList<double>), typeof(Series), new PropertyMetadata(new ObservableCollection<double>()));
@@ -107,7 +106,7 @@ namespace LiveCharts
             get { return _chart; }
             internal set
             {
-                if (_chart != null) throw new InvalidOperationException("Can't set chart property twice.");
+                //if (_chart != null) throw new InvalidOperationException("Can't set chart property twice.");
                 _chart = value;
             }
         }

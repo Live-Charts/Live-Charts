@@ -9,7 +9,7 @@ namespace ChartsTest
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             var v = value;
-            return true;
+            return v;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

@@ -18,9 +18,11 @@
         </TextBlock>
         <liveCharts:BarChart Name="Chart" Grid.Row="1" Grid.Column="0" Zooming="True" Hoverable="False">
             <liveCharts:BarChart.Series>
-                <liveCharts:BarSeries Title="Maria" PrimaryValues="20, 40, 48, 60, 55, 60, 65, 70"></liveCharts:BarSeries>
-                <liveCharts:BarSeries Title="John" PrimaryValues="30, 35, 41, 68, 65 ,70, 55, 60"></liveCharts:BarSeries>
-                <liveCharts:BarSeries Title="Erick" PrimaryValues="40, 42, 65, 70, 50, 55, 44, 73"></liveCharts:BarSeries>
+                <liveCharts:SeriesCollection>
+                    <liveCharts:BarSeries Title="Maria" PrimaryValues="20, 40, 48, 60, 55, 60, 65, 70"></liveCharts:BarSeries>
+                    <liveCharts:BarSeries Title="John" PrimaryValues="30, 35, 41, 68, 65 ,70, 55, 60"></liveCharts:BarSeries>
+                    <liveCharts:BarSeries Title="Erick" PrimaryValues="40, 42, 65, 70, 50, 55, 44, 73"></liveCharts:BarSeries>
+                </liveCharts:SeriesCollection>
             </liveCharts:BarChart.Series>
         </liveCharts:BarChart>
     </Grid>

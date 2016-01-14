@@ -1,5 +1,8 @@
 ﻿using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using System.Windows.Input;
+using LiveCharts.Annotations;
 
 namespace ChartsTest
 {
@@ -9,6 +12,7 @@ namespace ChartsTest
     public partial class MainWindow
     {
         public double[] TestPrimaryValues { get; set; }
+        public ObservableCollection<string> TestProperty { get; set; }
 
         public MainWindow()
         {
@@ -16,8 +20,10 @@ namespace ChartsTest
 	        ExamplesMapper.Initialize(this);
 
 	        TestPrimaryValues = new[] {3d, 2, 4, 6};
+            TestProperty = new ObservableCollection<string> { "bye!" };
 
-	        DataContext = this;
+            DataContext = this;
+
         }
 
         #region NavigationButtons

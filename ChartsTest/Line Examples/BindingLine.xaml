@@ -18,22 +18,24 @@
         </TextBlock>
         <liveCharts:LineChart Name="Chart" Grid.Row="1" Grid.Column="0">
             <liveCharts:LineChart.Series>
-                <liveCharts:LineSeries Name="Serie1" Title="Maria" PrimaryValues="{Binding}" StrokeThickness="4" PointRadius="6" Stroke="IndianRed">
-                    <liveCharts:LineSeries.Fill>
-                        <LinearGradientBrush EndPoint=".5,1" StartPoint="1,0">
-                            <GradientStop Color="#4CCD5C5C" Offset="1"/>
-                            <GradientStop Color="#4C800080" Offset="0.5"/>
-                        </LinearGradientBrush>
-                    </liveCharts:LineSeries.Fill>
-                </liveCharts:LineSeries>
-                <liveCharts:LineSeries Name="Serie2" Title="John" PrimaryValues="{Binding}" StrokeThickness="4" PointRadius="6" Stroke="CornflowerBlue">
-                    <liveCharts:LineSeries.Fill>
-                        <LinearGradientBrush EndPoint=".5,1" StartPoint="1,0">
-                            <GradientStop Color="#4C6495ED" Offset="1"/>
-                            <GradientStop Color="#4CADFF2F" Offset="0.5"/>
-                        </LinearGradientBrush>
-                    </liveCharts:LineSeries.Fill>
-                </liveCharts:LineSeries>
+               <liveCharts:SeriesCollection>
+                    <liveCharts:LineSeries Name="Serie1" Title="Maria" PrimaryValues="{Binding}" StrokeThickness="4" PointRadius="6" Stroke="IndianRed">
+                        <liveCharts:LineSeries.Fill>
+                            <LinearGradientBrush EndPoint=".5,1" StartPoint="1,0">
+                                <GradientStop Color="#4CCD5C5C" Offset="1"/>
+                                <GradientStop Color="#4C800080" Offset="0.5"/>
+                            </LinearGradientBrush>
+                        </liveCharts:LineSeries.Fill>
+                    </liveCharts:LineSeries>
+                    <liveCharts:LineSeries Name="Serie2" Title="John" PrimaryValues="{Binding}" StrokeThickness="4" PointRadius="6" Stroke="CornflowerBlue">
+                        <liveCharts:LineSeries.Fill>
+                            <LinearGradientBrush EndPoint=".5,1" StartPoint="1,0">
+                                <GradientStop Color="#4C6495ED" Offset="1"/>
+                                <GradientStop Color="#4CADFF2F" Offset="0.5"/>
+                            </LinearGradientBrush>
+                        </liveCharts:LineSeries.Fill>
+                    </liveCharts:LineSeries>
+                </liveCharts:SeriesCollection>
             </liveCharts:LineChart.Series>
             <liveCharts:LineChart.PrimaryAxis>
                 <liveCharts:Axis IsEnabled="False" PrintLabels="False">

@@ -103,7 +103,6 @@ namespace LiveCharts.Charts
             CurrentScale = 1;
 
             PerformanceConfiguration = new PerformanceConfiguration {Enabled = false};
-            //Series = new ObservableCollection<Series>();
             DataToolTip = new DefaultIndexedTooltip();
             Shapes = new List<FrameworkElement>();
             HoverableShapes = new List<HoverableShape>();
@@ -201,16 +200,12 @@ namespace LiveCharts.Charts
 
         public static readonly DependencyProperty SeriesProperty = DependencyProperty.Register(
             "Series", typeof (ObservableCollection<Series>), typeof (Chart),
-            new PropertyMetadata(new ObservableCollection<Series>(), SeriesChangedCallback ));
+            new PropertyMetadata(null, SeriesChangedCallback ));
         
         public ObservableCollection<Series> Series
         {
             get { return (ObservableCollection<Series>) GetValue(SeriesProperty); }
-            set
-            {
-                SetValue(SeriesProperty, value);
-                
-            }
+            set { SetValue(SeriesProperty, value); }
         }
         #endregion
 
@@ -807,7 +802,7 @@ namespace LiveCharts.Charts
             foreach (var series in chart.Series)
             {
                 var index = _colorIndexer++;
-                series.Chart = this;
+                series.Chart = chart;
                 series.Stroke = series.Stroke ??
                                 new SolidColorBrush(
                                     Colors[(int) (index - Colors.Count*Math.Truncate(index/(decimal) Colors.Count))]);
@@ -824,7 +819,6 @@ namespace LiveCharts.Charts
                     observable.CollectionChanged += chart.OnDataSeriesChanged;
             }
 
-            chart.Canvas.Children.Clear();
             chart.ClearAndPlot();
             var anim = new DoubleAnimation
             {

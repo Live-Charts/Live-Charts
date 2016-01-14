@@ -3,6 +3,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:chartsTest="clr-namespace:ChartsTest"
+        xmlns:system="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d" 
         Title="Live Charts" Width="700" Height="650"
         FontFamily="Calibri"
@@ -10,6 +12,7 @@
         Foreground="#404040"
         WindowStartupLocation="CenterScreen">
     <Window.Resources>
+        <chartsTest:TestConverter x:Key="TestConverter"></chartsTest:TestConverter>
         <Style TargetType="Button">
             <Setter Property="Background" Value="Transparent"></Setter>
             <Setter Property="BorderThickness" Value="2"></Setter>
@@ -90,6 +93,14 @@
                 <ContentControl Name="ScatterControl" Grid.Column="1" Height="500" Width="Auto"></ContentControl>
                 <Image Grid.Column="2" Source="Right.png" MouseDown="ScatterNext"/>
             </Grid>
+            <chartsTest:TestControl Background="Red">
+                <chartsTest:TestControl.Collection>
+                    <system:String>hello</system:String>
+                </chartsTest:TestControl.Collection>
+            </chartsTest:TestControl>
+            <chartsTest:TestControl Background="Blue" x:Name="TestControl" 
+                                    Collection="{Binding Path=TestProperty}">                
+            </chartsTest:TestControl>
         </StackPanel>
     </ScrollViewer>
 </Window>

@@ -9,9 +9,6 @@
              mc:Ignorable="d"  
              d:DesignWidth="600"
              d:DataContext="{d:DesignInstance local:LazyDataLine}">
-    <UserControl.Resources>
-        <chartsTest:TestConverter x:Key="TestConverter"></chartsTest:TestConverter>
-    </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
@@ -45,7 +42,7 @@
                                 </StackPanel>
                                 <liveCharts:LineChart Height="100" Series="{Binding Series}">
                                     <liveCharts:LineChart.SecondaryAxis>
-                                        <liveCharts:Axis Labels="{Binding Labels, PresentationTraceSources.TraceLevel=High}"></liveCharts:Axis>
+                                        <liveCharts:Axis Labels="{Binding Labels}"></liveCharts:Axis>
                                     </liveCharts:LineChart.SecondaryAxis>
                                 </liveCharts:LineChart>
                             </StackPanel>

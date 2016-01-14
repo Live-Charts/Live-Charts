@@ -10,7 +10,9 @@
     <Grid>
         <liveCharts:LineChart Name="Chart" Plot="Chart_OnPlot">
             <liveCharts:LineChart.Series>
-                <liveCharts:LineSeries PrimaryValues="10, 5, 20, 30, 35, 30, 10, 5, -3, 10"></liveCharts:LineSeries>
+                <liveCharts:SeriesCollection>
+                    <liveCharts:LineSeries PrimaryValues="10, 5, 20, 30, 35, 30, 10, 5, -3, 10"/>
+                </liveCharts:SeriesCollection>
             </liveCharts:LineChart.Series>
             <liveCharts:LineChart.PrimaryAxis>
                 <liveCharts:Axis Name="TemperatureAxis" Title="Temperature"></liveCharts:Axis>

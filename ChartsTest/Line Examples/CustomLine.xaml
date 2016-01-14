@@ -6,6 +6,7 @@
              xmlns:liveCharts="clr-namespace:LiveCharts;assembly=LiveCharts"
              xmlns:barExamples="clr-namespace:ChartsTest.BarExamples"
              xmlns:customTooltips="clr-namespace:ChartsTest.z.CustomTooltips"
+             xmlns:objectModel="clr-namespace:System.Collections.ObjectModel;assembly=System"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="600"
              Loaded="CustomLine_OnLoaded">
@@ -22,9 +23,11 @@
                 <customTooltips:CustomIndexedTooltip x:Name="CustomTooltip"/>
             </liveCharts:LineChart.DataToolTip>
             <liveCharts:LineChart.Series>
-                <liveCharts:LineSeries Title="Maria" PrimaryValues="20, 40, 45, 60, 55, 60, 65, 70" Stroke="#FFB300" Fill="#33FFB300" PointRadius="0" StrokeThickness="4"></liveCharts:LineSeries>
-                <liveCharts:LineSeries Title="John" PrimaryValues="30, 35, 43, 68, 65 ,70, 55, 60" Stroke="#FFA000" Fill="#33FFA000" PointRadius="0" StrokeThickness="4"></liveCharts:LineSeries>
-                <liveCharts:LineSeries Title="Erick" PrimaryValues="40, 42, 50, 70, 50, 55, 44, 73" Stroke="#FF8F00" Fill="#33FF8F00" PointRadius="0" StrokeThickness="4"></liveCharts:LineSeries>
+                <liveCharts:SeriesCollection>
+                    <liveCharts:LineSeries Title="Maria" PrimaryValues="20, 40, 45, 60, 55, 60, 65, 70" Stroke="#FFB300" Fill="#33FFB300" PointRadius="0" StrokeThickness="4"></liveCharts:LineSeries>
+                    <liveCharts:LineSeries Title="John" PrimaryValues="30, 35, 43, 68, 65 ,70, 55, 60" Stroke="#FFA000" Fill="#33FFA000" PointRadius="0" StrokeThickness="4"></liveCharts:LineSeries>
+                    <liveCharts:LineSeries Title="Erick" PrimaryValues="40, 42, 50, 70, 50, 55, 44, 73" Stroke="#FF8F00" Fill="#33FF8F00" PointRadius="0" StrokeThickness="4"></liveCharts:LineSeries>
+                </liveCharts:SeriesCollection>
             </liveCharts:LineChart.Series>
             <liveCharts:LineChart.PrimaryAxis>
                 <liveCharts:Axis Title="Sold Items" IsEnabled="False" Foreground="White" FontSize="13" FontFamily="Arial">

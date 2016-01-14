@@ -106,7 +106,8 @@ namespace ChartsTest.Line_Examples
         {
             Name = GetRandomName();
             Labels.Clear();
-            for (int i = 0; i < 10; i++) Labels.Add("Day " + 1);
+            var randomStartDay = _random.Next(1, 10);
+            for (int i = 0; i < 10; i++) Labels.Add("Day " + (randomStartDay +i));
             foreach (var series in Series.ToArray()) Series.Remove(series);
             Series.Add(new LineSeries
             {

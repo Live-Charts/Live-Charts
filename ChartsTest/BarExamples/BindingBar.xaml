@@ -18,22 +18,24 @@
         </TextBlock>
         <liveCharts:BarChart Name="Chart" Grid.Row="1" Grid.Column="0" AreaOpacity="0">
             <liveCharts:BarChart.Series>
-                <liveCharts:BarSeries Name="Serie1" Title="Maria" PrimaryValues="{Binding}" Stroke="IndianRed">
-                    <liveCharts:BarSeries.Fill>
-                        <LinearGradientBrush EndPoint=".5,1" StartPoint="1,0">
-                            <GradientStop Color="IndianRed" Offset="1"/>
-                            <GradientStop Color="#CD3434" Offset="0.5"/>
-                        </LinearGradientBrush>
-                    </liveCharts:BarSeries.Fill>
-                </liveCharts:BarSeries>
-                <liveCharts:BarSeries Name="Serie2" Title="John" PrimaryValues="{Binding}" Stroke="CornflowerBlue">
-                    <liveCharts:BarSeries.Fill>
-                        <LinearGradientBrush EndPoint=".5,1" StartPoint="1,0">
-                            <GradientStop Color="CornflowerBlue" Offset="1"/>
-                            <GradientStop Color="#3174ED" Offset="0.5"/>
-                        </LinearGradientBrush>
-                    </liveCharts:BarSeries.Fill>
-                </liveCharts:BarSeries>
+                <liveCharts:SeriesCollection>
+                    <liveCharts:BarSeries Name="Serie1" Title="Maria" PrimaryValues="{Binding}" Stroke="IndianRed">
+                        <liveCharts:BarSeries.Fill>
+                            <LinearGradientBrush EndPoint=".5,1" StartPoint="1,0">
+                                <GradientStop Color="IndianRed" Offset="1"/>
+                                <GradientStop Color="#CD3434" Offset="0.5"/>
+                            </LinearGradientBrush>
+                        </liveCharts:BarSeries.Fill>
+                    </liveCharts:BarSeries>
+                    <liveCharts:BarSeries Name="Serie2" Title="John" PrimaryValues="{Binding}" Stroke="CornflowerBlue">
+                        <liveCharts:BarSeries.Fill>
+                            <LinearGradientBrush EndPoint=".5,1" StartPoint="1,0">
+                                <GradientStop Color="CornflowerBlue" Offset="1"/>
+                                <GradientStop Color="#3174ED" Offset="0.5"/>
+                            </LinearGradientBrush>
+                        </liveCharts:BarSeries.Fill>
+                    </liveCharts:BarSeries>
+                </liveCharts:SeriesCollection>
             </liveCharts:BarChart.Series>
             <liveCharts:BarChart.PrimaryAxis>
                 <liveCharts:Axis IsEnabled="False" PrintLabels="False">

@@ -70,6 +70,9 @@
     <Compile Include="Line Examples\LazyDataLine.xaml.cs">
       <DependentUpon>LazyDataLine.xaml</DependentUpon>
     </Compile>
+    <Compile Include="TestControl.xaml.cs">
+      <DependentUpon>TestControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="z.CustomTooltips\CustomIndexedTooltip.xaml.cs">
       <DependentUpon>CustomIndexedTooltip.xaml</DependentUpon>
     </Compile>
@@ -131,6 +134,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Line Examples\LazyDataLine.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="TestControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
