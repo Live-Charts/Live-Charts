@@ -76,7 +76,7 @@ DataContext = this;
 
 Useful when you need to change the number of series and the values of each serie.
 
-**XAML** [see full file][https://github.com/beto-rodriguez/Live-Charts/blob/master/ChartsTest/Line%20Examples/MvvmLine.xaml]
+**XAML** [see full file](https://github.com/beto-rodriguez/Live-Charts/blob/master/ChartsTest/Line%20Examples/MvvmLine.xaml)
 ```xml
 <liveCharts:LineChart Series="{Binding Sales.Salesmen}" />
 ```
