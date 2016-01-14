@@ -81,6 +81,7 @@ Useful when you need to change the number of series and the values of each serie
 <liveCharts:LineChart Series="{Binding Sales.Salesmen}" />
 ```
 **Code Behind** [see full file](https://github.com/beto-rodriguez/Live-Charts/blob/master/ChartsTest/Line%20Examples/MvvmLine.xaml.cs)
+
 *view model*
 ```c#
 public class SalesViewModel
