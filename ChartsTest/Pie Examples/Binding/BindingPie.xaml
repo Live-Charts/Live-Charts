@@ -4,10 +4,11 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:liveCharts="clr-namespace:LiveCharts;assembly=LiveCharts"
+             xmlns:pieExamples="clr-namespace:ChartsTest.Pie_Examples"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300"
-             Loaded="OnLoaded">
-    <Grid>
+             Loaded="OnLoaded" d:DataContext="{d:DesignInstance pieExamples:BindingPie}">
+    <Grid>  
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
@@ -16,10 +17,10 @@
         <TextBlock Grid.Row="0" HorizontalAlignment="Center" Grid.ColumnSpan="2" Margin="5" TextWrapping="Wrap">
             Series with bindings
         </TextBlock>
-        <liveCharts:PieChart Name="Chart" Grid.Row="1" Grid.Column="0" AreaOpacity=".7" InnerRadius="200" >
+        <liveCharts:PieChart Name="Chart" Grid.Row="1" Grid.Column="0" AreaOpacity=".7" InnerRadius="150" >
             <liveCharts:PieChart.Series>
                 <liveCharts:SeriesCollection>
-                    <liveCharts:PieSeries Name="Serie1" Title="Maria" PrimaryValues="{Binding}"></liveCharts:PieSeries>
+                    <liveCharts:PieSeries Name="Serie1" Title="Maria" PrimaryValues="{Binding ViewModel.FirstSeries}"></liveCharts:PieSeries>
                 </liveCharts:SeriesCollection>
             </liveCharts:PieChart.Series>
             <liveCharts:PieChart.PrimaryAxis>

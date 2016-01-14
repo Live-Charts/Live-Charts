@@ -58,86 +58,79 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="BarExamples\BasicBar.xaml.cs">
+    <Compile Include="BarExamples\Basic\BasicBar.xaml.cs">
       <DependentUpon>BasicBar.xaml</DependentUpon>
     </Compile>
-    <Compile Include="BarExamples\BindingBar.xaml.cs">
+    <Compile Include="BarExamples\Binding\BindingBar.xaml.cs">
       <DependentUpon>BindingBar.xaml</DependentUpon>
     </Compile>
-    <Compile Include="BarExamples\CustomBar.xaml.cs">
+    <Compile Include="BarExamples\Custom\CustomBar.xaml.cs">
       <DependentUpon>CustomBar.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Line Examples\LazyDataLine.xaml.cs">
+    <Compile Include="Line Examples\LazyData\LazyDataLine.xaml.cs">
       <DependentUpon>LazyDataLine.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="TestControl.xaml.cs">
-      <DependentUpon>TestControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="z.CustomTooltips\CustomIndexedTooltip.xaml.cs">
       <DependentUpon>CustomIndexedTooltip.xaml</DependentUpon>
     </Compile>
-    <Compile Include="BarExamples\MvvmBar.xaml.cs">
+    <Compile Include="BarExamples\Mvvm\MvvmBar.xaml.cs">
       <DependentUpon>MvvmBar.xaml</DependentUpon>
     </Compile>
-    <Compile Include="BarExamples\ZoomableBar.xaml.cs">
+    <Compile Include="BarExamples\Zoomable\ZoomableBar.xaml.cs">
       <DependentUpon>ZoomableBar.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Line Examples\UiElementsLine.xaml.cs">
+    <Compile Include="Line Examples\UiElements\UiElementsLine.xaml.cs">
       <DependentUpon>UiElementsLine.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Scatter Examples\BasicScatter.xaml.cs">
+    <Compile Include="Scatter Examples\Basic\BasicScatter.xaml.cs">
       <DependentUpon>BasicScatter.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Scatter Examples\BindingScatter.xaml.cs">
+    <Compile Include="Scatter Examples\Binding\BindingScatter.xaml.cs">
       <DependentUpon>BindingScatter.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Scatter Examples\CustomScatter.xaml.cs">
+    <Compile Include="Scatter Examples\Custom\CustomScatter.xaml.cs">
       <DependentUpon>CustomScatter.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Scatter Examples\MvvmScatter.xaml.cs">
+    <Compile Include="Scatter Examples\Mvvm\MvvmScatter.xaml.cs">
       <DependentUpon>MvvmScatter.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Scatter Examples\PerformanceScatter.xaml.cs">
+    <Compile Include="Scatter Examples\Performance\PerformanceScatter.xaml.cs">
       <DependentUpon>PerformanceScatter.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Scatter Examples\ZoomableScatter.xaml.cs">
+    <Compile Include="Scatter Examples\Zoomable\ZoomableScatter.xaml.cs">
       <DependentUpon>ZoomableScatter.xaml</DependentUpon>
     </Compile>
-    <Compile Include="StackedBarExamples\BasicStackedBar.xaml.cs">
+    <Compile Include="StackedBarExamples\Basic\BasicStackedBar.xaml.cs">
       <DependentUpon>BasicStackedBar.xaml</DependentUpon>
     </Compile>
-    <Compile Include="StackedBarExamples\BindingStackedBar.xaml.cs">
+    <Compile Include="StackedBarExamples\Binding\BindingStackedBar.xaml.cs">
       <DependentUpon>BindingStackedBar.xaml</DependentUpon>
     </Compile>
-    <Compile Include="StackedBarExamples\CustomStackedBar.xaml.cs">
+    <Compile Include="StackedBarExamples\Custom\CustomStackedBar.xaml.cs">
       <DependentUpon>CustomStackedBar.xaml</DependentUpon>
     </Compile>
-    <Compile Include="StackedBarExamples\MvvmStackedBar.xaml.cs">
+    <Compile Include="StackedBarExamples\Mvvm\MvvmStackedBar.xaml.cs">
       <DependentUpon>MvvmStackedBar.xaml</DependentUpon>
     </Compile>
-    <Compile Include="StackedBarExamples\ZoomableStackedBar.xaml.cs">
+    <Compile Include="StackedBarExamples\Zoomable\ZoomableStackedBar.xaml.cs">
       <DependentUpon>ZoomableStackedBar.xaml</DependentUpon>
     </Compile>
     <Compile Include="z.CustomTooltips\CustomScatterTooltip.xaml.cs">
       <DependentUpon>CustomScatterTooltip.xaml</DependentUpon>
     </Compile>
-    <Page Include="BarExamples\BasicBar.xaml">
+    <Page Include="BarExamples\Basic\BasicBar.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="BarExamples\BindingBar.xaml">
+    <Page Include="BarExamples\Binding\BindingBar.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="BarExamples\CustomBar.xaml">
+    <Page Include="BarExamples\Custom\CustomBar.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Line Examples\LazyDataLine.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="TestControl.xaml">
+    <Page Include="Line Examples\LazyData\LazyDataLine.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -145,55 +138,55 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="BarExamples\MvvmBar.xaml">
+    <Page Include="BarExamples\Mvvm\MvvmBar.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="BarExamples\ZoomableBar.xaml">
+    <Page Include="BarExamples\Zoomable\ZoomableBar.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Line Examples\UiElementsLine.xaml">
+    <Page Include="Line Examples\UiElements\UiElementsLine.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Pie Examples\BasicPie.xaml">
+    <Page Include="Pie Examples\Basic\BasicPie.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Pie Examples\BindingPie.xaml">
+    <Page Include="Pie Examples\Binding\BindingPie.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Pie Examples\CustomPie.xaml">
+    <Page Include="Pie Examples\Custom\CustomPie.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Pie Examples\MvvmPie.xaml">
+    <Page Include="Pie Examples\Mvvm\MvvmPie.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Line Examples\BasicLine.xaml">
+    <Page Include="Line Examples\Basic\BasicLine.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Line Examples\BindingLine.xaml">
+    <Page Include="Line Examples\Binding\BindingLine.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Line Examples\CustomLine.xaml">
+    <Page Include="Line Examples\Custom\CustomLine.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Line Examples\ZoomableLine.xaml">
+    <Page Include="Line Examples\Zoomable\ZoomableLine.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Line Examples\PerformanceLine.xaml">
+    <Page Include="Line Examples\Performance\PerformanceLine.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Line Examples\MvvmLine.xaml">
+    <Page Include="Line Examples\Mvvm\MvvmLine.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -205,82 +198,82 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Pie Examples\BasicPie.xaml.cs">
+    <Compile Include="Pie Examples\Basic\BasicPie.xaml.cs">
       <DependentUpon>BasicPie.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pie Examples\BindingPie.xaml.cs">
+    <Compile Include="Pie Examples\Binding\BindingPie.xaml.cs">
       <DependentUpon>BindingPie.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pie Examples\CustomPie.xaml.cs">
+    <Compile Include="Pie Examples\Custom\CustomPie.xaml.cs">
       <DependentUpon>CustomPie.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pie Examples\MvvmPie.xaml.cs">
+    <Compile Include="Pie Examples\Mvvm\MvvmPie.xaml.cs">
       <DependentUpon>MvvmPie.xaml</DependentUpon>
     </Compile>
     <Compile Include="ExamplesMapper.cs" />
-    <Compile Include="Line Examples\BasicLine.xaml.cs">
+    <Compile Include="Line Examples\Basic\BasicLine.xaml.cs">
       <DependentUpon>BasicLine.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Line Examples\BindingLine.xaml.cs">
+    <Compile Include="Line Examples\Binding\BindingLine.xaml.cs">
       <DependentUpon>BindingLine.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Line Examples\CustomLine.xaml.cs">
+    <Compile Include="Line Examples\Custom\CustomLine.xaml.cs">
       <DependentUpon>CustomLine.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Line Examples\ZoomableLine.xaml.cs">
+    <Compile Include="Line Examples\Zoomable\ZoomableLine.xaml.cs">
       <DependentUpon>ZoomableLine.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Line Examples\PerformanceLine.xaml.cs">
+    <Compile Include="Line Examples\Performance\PerformanceLine.xaml.cs">
       <DependentUpon>PerformanceLine.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Line Examples\MvvmLine.xaml.cs">
+    <Compile Include="Line Examples\Mvvm\MvvmLine.xaml.cs">
       <DependentUpon>MvvmLine.xaml</DependentUpon>
     </Compile>
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Scatter Examples\BasicScatter.xaml">
+    <Page Include="Scatter Examples\Basic\BasicScatter.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Scatter Examples\BindingScatter.xaml">
+    <Page Include="Scatter Examples\Binding\BindingScatter.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Scatter Examples\CustomScatter.xaml">
+    <Page Include="Scatter Examples\Custom\CustomScatter.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Scatter Examples\MvvmScatter.xaml">
+    <Page Include="Scatter Examples\Mvvm\MvvmScatter.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Scatter Examples\PerformanceScatter.xaml">
+    <Page Include="Scatter Examples\Performance\PerformanceScatter.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Scatter Examples\ZoomableScatter.xaml">
+    <Page Include="Scatter Examples\Zoomable\ZoomableScatter.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="StackedBarExamples\BasicStackedBar.xaml">
+    <Page Include="StackedBarExamples\Basic\BasicStackedBar.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="StackedBarExamples\BindingStackedBar.xaml">
+    <Page Include="StackedBarExamples\Binding\BindingStackedBar.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="StackedBarExamples\CustomStackedBar.xaml">
+    <Page Include="StackedBarExamples\Custom\CustomStackedBar.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="StackedBarExamples\MvvmStackedBar.xaml">
+    <Page Include="StackedBarExamples\Mvvm\MvvmStackedBar.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="StackedBarExamples\ZoomableStackedBar.xaml">
+    <Page Include="StackedBarExamples\Zoomable\ZoomableStackedBar.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

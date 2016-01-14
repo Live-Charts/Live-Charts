@@ -21,7 +21,7 @@
             <liveCharts:PieChart.Series>
                 <liveCharts:SeriesCollection>
                     <liveCharts:PieSeries Title="Maria" PrimaryValues="15, 10, 40, 55" 
-                                     Labels="Day 1, Day 2, Day 3, Day 4"></liveCharts:PieSeries>
+                                          Labels="Day 1, Day 2, Day 3, Day 4"/>
                 </liveCharts:SeriesCollection>
             </liveCharts:PieChart.Series>
             <liveCharts:PieChart.PrimaryAxis>

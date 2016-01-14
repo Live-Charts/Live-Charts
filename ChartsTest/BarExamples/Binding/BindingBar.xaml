@@ -4,9 +4,10 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:liveCharts="clr-namespace:LiveCharts;assembly=LiveCharts"
+             xmlns:barExamples="clr-namespace:ChartsTest.BarExamples"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300"
-             Loaded="OnLoaded">
+             Loaded="OnLoaded" d:DataContext="{d:DesignInstance barExamples:BindingBar}">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
@@ -19,7 +20,7 @@
         <liveCharts:BarChart Name="Chart" Grid.Row="1" Grid.Column="0" AreaOpacity="0">
             <liveCharts:BarChart.Series>
                 <liveCharts:SeriesCollection>
-                    <liveCharts:BarSeries Name="Serie1" Title="Maria" PrimaryValues="{Binding}" Stroke="IndianRed">
+                    <liveCharts:BarSeries Name="Serie1" Title="Maria" PrimaryValues="{Binding ViewModel.FirstSerie}" Stroke="IndianRed">
                         <liveCharts:BarSeries.Fill>
                             <LinearGradientBrush EndPoint=".5,1" StartPoint="1,0">
                                 <GradientStop Color="IndianRed" Offset="1"/>
@@ -27,7 +28,7 @@
                             </LinearGradientBrush>
                         </liveCharts:BarSeries.Fill>
                     </liveCharts:BarSeries>
-                    <liveCharts:BarSeries Name="Serie2" Title="John" PrimaryValues="{Binding}" Stroke="CornflowerBlue">
+                    <liveCharts:BarSeries Name="Serie2" Title="John" PrimaryValues="{Binding ViewModel.SecondSerie}" Stroke="CornflowerBlue">
                         <liveCharts:BarSeries.Fill>
                             <LinearGradientBrush EndPoint=".5,1" StartPoint="1,0">
                                 <GradientStop Color="CornflowerBlue" Offset="1"/>

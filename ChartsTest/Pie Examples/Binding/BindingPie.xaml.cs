@@ -11,13 +11,25 @@ namespace ChartsTest.Pie_Examples
         public BindingPie()
         {
             InitializeComponent();
-            Serie1.DataContext = new ObservableCollection<double> { 2, 3, 5, 7 };
+            ViewModel = new BindingPieViewModel
+            {
+                FirstSeries = new ObservableCollection<double> { 2, 3, 5, 7 }
+            };
+            DataContext = this;
         }
+
+        public BindingPieViewModel ViewModel { get; set; }
 
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
             //this is just to see animation everytime you click next
             Chart.ClearAndPlot();
         }
+    }
+
+    public class BindingPieViewModel
+    {
+        public ObservableCollection<double> FirstSeries { get; set; }
+        public ObservableCollection<double> SecondSeries { get; set; }
     }
 }

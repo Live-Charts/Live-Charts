@@ -5,9 +5,10 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:ChartsTest.Line_Examples"
              xmlns:liveCharts="clr-namespace:LiveCharts;assembly=LiveCharts"
+             xmlns:scatterExamples="clr-namespace:ChartsTest.Scatter_Examples"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300"
-             Loaded="OnLoaded">
+             Loaded="OnLoaded" d:DataContext="{d:DesignInstance scatterExamples:BindingScatter}">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
@@ -20,10 +21,14 @@
         <liveCharts:ScatterChart Name="Chart" Grid.Row="1" Grid.Column="0">
             <liveCharts:ScatterChart.Series>
                 <liveCharts:SeriesCollection>
-                    <liveCharts:ScatterSeries Name="Serie1" Title="f(x1)" PrimaryValues="{Binding}"
-                                      StrokeThickness="4" PointRadius="6"></liveCharts:ScatterSeries>
-                    <liveCharts:ScatterSeries Name="Serie2" Title="f(x2)" PrimaryValues="{Binding}" 
-                                         StrokeThickness="4" PointRadius="6"></liveCharts:ScatterSeries>
+                    <liveCharts:ScatterSeries Title="f(x1)" 
+                                              PrimaryValues="{Binding ViewModel.FirstPrimaryValues}"
+                                              SecondaryValues="{Binding ViewModel.FirstSecondaryValues}"
+                                              StrokeThickness="4" PointRadius="6" />
+                    <liveCharts:ScatterSeries Title="f(x2)" 
+                                              PrimaryValues="{Binding ViewModel.SecondPrimaryValues}" 
+                                              SecondaryValues="{Binding ViewModel.SecondPrimaryValues}"
+                                              StrokeThickness="4" PointRadius="6"/>
                 </liveCharts:SeriesCollection>
             </liveCharts:ScatterChart.Series>
             <liveCharts:ScatterChart.PrimaryAxis>

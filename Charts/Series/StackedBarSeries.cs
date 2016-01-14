@@ -64,7 +64,7 @@ namespace LiveCharts
                 var barH = ToPlotArea(Chart.Min.Y, AxisTags.Y) - ToPlotArea(helper.Total, AxisTags.Y);
                 var rh = barH * (d / helper.Total);
                 if (double.IsNaN(rh)) return;
-                var stackedH = barH * (helper.Stacked[serieIndex].Stacked / helper.Total);
+                var stackedH = barH * (helper.Stacked.ContainsKey(serieIndex) ? (helper.Stacked[serieIndex].Stacked / helper.Total) : 0);
 
                 var r = new Rectangle
                 {

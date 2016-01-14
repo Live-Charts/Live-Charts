@@ -4,9 +4,10 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:liveCharts="clr-namespace:LiveCharts;assembly=LiveCharts"
+             xmlns:stackedBarExamples="clr-namespace:ChartsTest.StackedBarExamples"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300"
-             Loaded="BindingStackedBar_OnLoaded">
+             Loaded="BindingStackedBar_OnLoaded" d:DataContext="{d:DesignInstance  stackedBarExamples:BindingStackedBar}">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
@@ -19,7 +20,7 @@
         <liveCharts:StackedBarChart Name="Chart" Grid.Row="1" Grid.Column="0" AreaOpacity="0">
             <liveCharts:StackedBarChart.Series>
                 <liveCharts:SeriesCollection>
-                    <liveCharts:StackedBarSeries Name="Serie1" Title="Maria" PrimaryValues="{Binding}" Stroke="IndianRed">
+                    <liveCharts:StackedBarSeries Name="Serie1" Title="Maria" PrimaryValues="{Binding ViewModel.FirstSeries}" Stroke="IndianRed">
                         <liveCharts:StackedBarSeries.Fill>
                             <LinearGradientBrush EndPoint=".5,1" StartPoint="1,0">
                                 <GradientStop Color="IndianRed" Offset="1"/>
@@ -27,7 +28,7 @@
                             </LinearGradientBrush>
                         </liveCharts:StackedBarSeries.Fill>
                     </liveCharts:StackedBarSeries>
-                    <liveCharts:StackedBarSeries Name="Serie2" Title="John" PrimaryValues="{Binding}" Stroke="CornflowerBlue">
+                    <liveCharts:StackedBarSeries Name="Serie2" Title="John" PrimaryValues="{Binding ViewModel.SecondSeries}" Stroke="CornflowerBlue">
                         <liveCharts:StackedBarSeries.Fill>
                             <LinearGradientBrush EndPoint=".5,1" StartPoint="1,0">
                                 <GradientStop Color="CornflowerBlue" Offset="1"/>
