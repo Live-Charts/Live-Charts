@@ -22,62 +22,48 @@
 
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Shapes;
-using LiveCharts.Charts;
-using LiveCharts.TypeConverters;
+using lvc.Charts;
+using lvc.TypeConverters;
 
-namespace LiveCharts
+namespace lvc
 {
 	public abstract class Series : FrameworkElement
 	{
-		private Color? _color;
 		protected List<Shape> Shapes = new List<Shape>();
 	    private Chart _chart;
-		private int _colorId;
 	    internal bool RequiresAnimation;
 	    internal bool RequiresPlot;
 
 		protected Series()
 		{
-            ChartPoints = new List<Point>();
+            Points = new List<Point>();
 		}
 
         #region Dependency Properties
-        public static readonly DependencyProperty PrimaryValuesProperty =
-            DependencyProperty.Register("PrimaryValues", typeof(IList<double>), typeof(Series), new PropertyMetadata(new ObservableCollection<double>(),
-                (o, args) =>
-                {
-                    var series = o as Series;
-                    if (series == null) return;
+	    public static readonly DependencyProperty ValuesProperty = DependencyProperty.Register(
+	        "Values", typeof (IChartsValues), typeof (Series), new PropertyMetadata(default(IChartsValues), ValuesCallBack));
 
-                    var observable = series.PrimaryValues as INotifyCollectionChanged;
-                    if  (observable == null) return;
-                    if (series.Chart == null) return;
-                     
-                    observable.CollectionChanged += series.Chart.OnDataSeriesChanged;
-                }));
         [TypeConverter(typeof(ValueCollectionConverter))]
-        public IList<double> PrimaryValues
-        {
-            get
-            {
-                var pv = (IList<double>) GetValue(PrimaryValuesProperty);
+        public IChartsValues Values
+	    {
+	        get
+	        {
+	            var values = (IChartsValues) GetValue(ValuesProperty);
+#if DEBUG
                 if (DesignerProperties.GetIsInDesignMode(this))
-                    if (pv == null) pv = new List<double>();
-                
-                return pv;
-            }
-            set
-            {
-                SetValue(PrimaryValuesProperty, value);
-            }
-        }
+                    if (values == null) values = new IndexedChartValues();
+#endif
+                return values;
+	        }
+	        set { SetValue(ValuesProperty, value); }
+	    }
+
         public static readonly DependencyProperty TitleProperty =
            DependencyProperty.Register("Title", typeof(string), typeof(Series), new PropertyMetadata("An Unnamed Serie"));
         /// <summary>
@@ -115,7 +101,7 @@ namespace LiveCharts
 		#endregion
 
 		#region Properties
-		internal List<Point> ChartPoints { get; set; }
+		internal IEnumerable<Point> Points { get; set; }
         public Chart Chart
         {
             get { return _chart; }
@@ -138,6 +124,20 @@ namespace LiveCharts
         public abstract void Plot(bool animate = true);
         #endregion
 
+        #region PrivateMethods
+        private static void ValuesCallBack(DependencyObject o, DependencyPropertyChangedEventArgs args)
+        {
+            var series = o as Series;
+            if (series == null) return;
+
+            var observable = series.Values as INotifyCollectionChanged;
+            if (observable == null) return;
+            if (series.Chart == null) return;
+
+            observable.CollectionChanged += series.Chart.OnDataSeriesChanged;
+        }
+        #endregion
+
         #region Virtual Methods
         public virtual void Erase()
         {
@@ -151,14 +151,6 @@ namespace LiveCharts
                 Chart.Canvas.Children.Remove(hs.Shape);
                 Chart.HoverableShapes.Remove(hs);
             }
-        }
-        public virtual void CalculatePoints()
-        {
-            var index = 0;
-
-            ChartPoints = Chart.PerformanceConfiguration.Enabled
-                ? PrimaryValues.Select(val => new Point(index++, val)).OptimizeForIndexedChart(Chart)
-                : PrimaryValues.Select(val => new Point(index++, val)).ToList();
         }
         #endregion
 

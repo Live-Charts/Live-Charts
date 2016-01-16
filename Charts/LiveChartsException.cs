@@ -22,7 +22,7 @@
 
 using System;
 
-namespace LiveCharts
+namespace lvc
 {
     public class LiveChartsException : Exception
     {

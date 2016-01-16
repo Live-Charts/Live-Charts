@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Windows;
-using LiveCharts;
+using lvc;
 
 namespace ChartsTest.Pie_Examples
 {
@@ -50,7 +50,7 @@ namespace ChartsTest.Pie_Examples
                 new PieSeries
                 {
                     Title = "John",
-                    PrimaryValues = new ObservableCollection<double>(new[] {2d, 4, 7, 1, 5}),
+                    Values = new IndexedChartValues { 2d, 4, 7, 1, 5 },
                     Labels = _months
                 }
             };
@@ -62,19 +62,19 @@ namespace ChartsTest.Pie_Examples
 		public void AddOneMonth()
         {
             var r = new Random();
-            if (Salesmen[0].PrimaryValues.Count >= _months.Length) return;
+            if (Salesmen[0].Values.Count >= _months.Length) return;
             foreach (var salesman in Salesmen)
             {
-                salesman.PrimaryValues.Add(r.Next(0, 10));
+                salesman.Values.Add(r.Next(0, 10));
             }
         }
 
         public void RemoveLastMonth()
         {
-            if (Salesmen[0].PrimaryValues.Count == 2) return;
+            if (Salesmen[0].Values.Count == 2) return;
             foreach (var salesman in Salesmen)
             {
-                salesman.PrimaryValues.RemoveAt(salesman.PrimaryValues.Count - 1);
+                salesman.Values.RemoveAt(salesman.Values.Count - 1);
             }
         }
     }

@@ -23,7 +23,7 @@
 using System.Windows;
 using System.Windows.Controls;
 
-namespace LiveCharts.Tooltip
+namespace lvc.Tooltip
 {
     public class ScatterTooltip : UserControl
     {

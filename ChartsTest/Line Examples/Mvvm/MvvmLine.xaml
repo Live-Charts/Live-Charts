@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:liveCharts="clr-namespace:LiveCharts;assembly=LiveCharts"
+             xmlns:liveCharts="clr-namespace:lvc;assembly=LiveCharts"
              xmlns:lineExamples="clr-namespace:ChartsTest.Line_Examples"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="500"
@@ -24,12 +24,12 @@
             MVVM example, click on the buttons below to update chart
         </TextBlock>
         <liveCharts:LineChart Name="Chart" Grid.Row="1" Grid.Column="0" Series="{Binding Sales.Salesmen}" >
-            <liveCharts:LineChart.PrimaryAxis>
+            <liveCharts:LineChart.AxisX>
                 <liveCharts:Axis Title="Sold Items"></liveCharts:Axis>
-            </liveCharts:LineChart.PrimaryAxis>
-            <liveCharts:LineChart.SecondaryAxis>
+            </liveCharts:LineChart.AxisX>
+            <liveCharts:LineChart.AxisY>
                 <liveCharts:Axis Name="SecondaryAxis" Title="Month" Labels="{Binding Sales.AvailableMonths}"></liveCharts:Axis>
-            </liveCharts:LineChart.SecondaryAxis>
+            </liveCharts:LineChart.AxisY>
         </liveCharts:LineChart>
         <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Center">
             <StackPanel.Resources>

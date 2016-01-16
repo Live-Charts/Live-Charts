@@ -21,17 +21,18 @@
 //SOFTWARE.
 
 using System;
+using System.Collections;
 using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
-using LiveCharts.Shapes;
 using System.Collections.Generic;
 using System.ComponentModel;
-using LiveCharts.TypeConverters;
+using lvc.Shapes;
+using lvc.TypeConverters;
 
-namespace LiveCharts
+namespace lvc
 {
     public class PieSeries : Series
     {
@@ -68,19 +69,22 @@ namespace LiveCharts
             minDimension = minDimension < pChart.DrawPadding ? pChart.DrawPadding : minDimension;
 
             var sliceId = 0;
-            for (var index = 0; index < PrimaryValues.Count; index++)
+            var isFist = true;
+            foreach (var point in Values.Points)
             {
-                var value = PrimaryValues[index];
-                var participation = value/pChart.PieTotalSum;
-                if (index == 0) rotated = participation *-.5;
-
+                var participation = point.Y / pChart.PieTotalSum;
+                if (isFist)
+                {
+                    rotated = participation * -.5;
+                    isFist = false;
+                }
                 var slice = new PieSlice
                 {
                     CentreX = 0,
                     CentreY = 0,
-                    RotationAngle = 360*rotated,
-                    WedgeAngle = 360*participation,
-                    Radius = minDimension/2,
+                    RotationAngle = 360 * rotated,
+                    WedgeAngle = 360 * participation,
+                    Radius = minDimension / 2,
                     InnerRadius = pChart.InnerRadius,
                     Fill = new SolidColorBrush
                     {
@@ -92,7 +96,6 @@ namespace LiveCharts
                     Stroke = Chart.Background,
                     StrokeThickness = pChart.SlicePadding
                 };
-
                 var wa = new DoubleAnimation
                 {
                     From = 0,
@@ -106,37 +109,37 @@ namespace LiveCharts
                     Duration = TimeSpan.FromMilliseconds(300)
                 };
 
-                Canvas.SetTop(slice, Chart.ActualHeight/2);
-                Canvas.SetLeft(slice, Chart.ActualWidth/2);
-                
+                Canvas.SetTop(slice, Chart.ActualHeight / 2);
+                Canvas.SetLeft(slice, Chart.ActualWidth / 2);
+
                 Chart.Canvas.Children.Add(slice);
                 Shapes.Add(slice);
 
                 var valueBlock = new TextBlock
                 {
-                    Text = Chart.PrimaryAxis.LabelFormatter == null
-                        ? value.ToString(CultureInfo.InvariantCulture)
-                        : Chart.PrimaryAxis.LabelFormatter(value),
-                    FontFamily = Chart.PrimaryAxis.FontFamily,
-                    FontSize = Chart.PrimaryAxis.FontSize,
-                    FontStretch = Chart.PrimaryAxis.FontStretch,
-                    FontStyle = Chart.PrimaryAxis.FontStyle,
-                    FontWeight = Chart.PrimaryAxis.FontWeight,
+                    Text = Chart.AxisX.LabelFormatter == null
+                        ? point.Y.ToString(CultureInfo.InvariantCulture)
+                        : Chart.AxisX.LabelFormatter(point.Y),
+                    FontFamily = Chart.AxisX.FontFamily,
+                    FontSize = Chart.AxisX.FontSize,
+                    FontStretch = Chart.AxisX.FontStretch,
+                    FontStyle = Chart.AxisX.FontStyle,
+                    FontWeight = Chart.AxisX.FontWeight,
                     Foreground = Brushes.White
                 };
 
-                var hypo = ((minDimension/2) + (pChart.InnerRadius > 10 ? pChart.InnerRadius : 10))/2;
-                var gamma = participation*360/2 + rotated*360;
-                var cp = new Point(hypo*Math.Sin(gamma*(Math.PI/180)), hypo*Math.Cos(gamma*(Math.PI/180)));
+                var hypo = ((minDimension / 2) + (pChart.InnerRadius > 10 ? pChart.InnerRadius : 10)) / 2;
+                var gamma = participation * 360 / 2 + rotated * 360;
+                var cp = new Point(hypo * Math.Sin(gamma * (Math.PI / 180)), hypo * Math.Cos(gamma * (Math.PI / 180)));
 
                 valueBlock.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
 
-                Canvas.SetTop(valueBlock, Chart.ActualHeight/2 -cp.Y - valueBlock.DesiredSize.Height*.5);
-                Canvas.SetLeft(valueBlock, cp.X + Chart.ActualWidth/2 - valueBlock.DesiredSize.Width*.5);
+                Canvas.SetTop(valueBlock, Chart.ActualHeight / 2 - cp.Y - valueBlock.DesiredSize.Height * .5);
+                Canvas.SetLeft(valueBlock, cp.X + Chart.ActualWidth / 2 - valueBlock.DesiredSize.Width * .5);
                 Panel.SetZIndex(valueBlock, int.MaxValue);
                 //because math is kind of complex to detetrmine if label fits inside the slide, by now we 
                 //will just add it if participation > 5% ToDo: the math!
-                if (participation > .05 && Chart.PrimaryAxis.PrintLabels)
+                if (participation > .05 && Chart.AxisX.PrintLabels)
                 {
                     Chart.Canvas.Children.Add(valueBlock);
                     Chart.Shapes.Add(valueBlock);
@@ -160,8 +163,8 @@ namespace LiveCharts
                         Series = this,
                         Shape = slice,
                         Target = slice,
-                        Value = new Point(0, value),
-                        Label = Labels != null && Labels.Count > index ? Labels[index] : ""
+                        Value = new Point(0, point.Y),
+                        Label = Labels != null && Labels.Count > point.X ? Labels[(int) point.X] : ""
                     });
                 }
 

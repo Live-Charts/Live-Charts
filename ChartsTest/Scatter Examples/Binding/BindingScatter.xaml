@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:ChartsTest.Line_Examples"
-             xmlns:liveCharts="clr-namespace:LiveCharts;assembly=LiveCharts"
+             xmlns:liveCharts="clr-namespace:lvc;assembly=LiveCharts"
              xmlns:scatterExamples="clr-namespace:ChartsTest.Scatter_Examples"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300"
@@ -22,29 +22,29 @@
             <liveCharts:ScatterChart.Series>
                 <liveCharts:SeriesCollection>
                     <liveCharts:ScatterSeries Title="f(x1)" 
-                                              PrimaryValues="{Binding ViewModel.FirstPrimaryValues}"
+                                              Values="{Binding ViewModel.FirstPrimaryValues}"
                                               SecondaryValues="{Binding ViewModel.FirstSecondaryValues}"
                                               StrokeThickness="4" PointRadius="6" />
                     <liveCharts:ScatterSeries Title="f(x2)" 
-                                              PrimaryValues="{Binding ViewModel.SecondPrimaryValues}" 
+                                              Values="{Binding ViewModel.SecondPrimaryValues}" 
                                               SecondaryValues="{Binding ViewModel.SecondPrimaryValues}"
                                               StrokeThickness="4" PointRadius="6"/>
                 </liveCharts:SeriesCollection>
             </liveCharts:ScatterChart.Series>
-            <liveCharts:ScatterChart.PrimaryAxis>
+            <liveCharts:ScatterChart.AxisX>
                 <liveCharts:Axis IsEnabled="False" PrintLabels="False">
                     <liveCharts:Axis.Separator>
                         <liveCharts:Separator IsEnabled="False"></liveCharts:Separator>
                     </liveCharts:Axis.Separator>
                 </liveCharts:Axis>
-            </liveCharts:ScatterChart.PrimaryAxis>
-            <liveCharts:ScatterChart.SecondaryAxis>
+            </liveCharts:ScatterChart.AxisX>
+            <liveCharts:ScatterChart.AxisY>
                 <liveCharts:Axis IsEnabled="False" PrintLabels="False" MinValue="1" MaxValue="15">
                     <liveCharts:Axis.Separator>
                         <liveCharts:Separator IsEnabled="False"></liveCharts:Separator>
                     </liveCharts:Axis.Separator>
                 </liveCharts:Axis>
-            </liveCharts:ScatterChart.SecondaryAxis>
+            </liveCharts:ScatterChart.AxisY>
         </liveCharts:ScatterChart>
     </Grid>
 </UserControl>

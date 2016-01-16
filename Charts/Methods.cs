@@ -22,9 +22,9 @@
 
 using System.Collections.Generic;
 using System.Windows;
-using LiveCharts.Charts;
+using lvc.Charts;
 
-namespace LiveCharts
+namespace lvc
 {
     /// <summary>
     /// Dont repeat yourself!

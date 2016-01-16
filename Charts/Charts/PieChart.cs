@@ -26,19 +26,17 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
-using LiveCharts.Charts;
-using LiveCharts.Shapes;
+using lvc.Charts;
+using lvc.Shapes;
 
-namespace LiveCharts
+namespace lvc
 {
     public class PieChart : Chart
     {
-        private int _pointsCount;
-
         public PieChart()
         {
-            PrimaryAxis = new Axis { FontWeight = FontWeights.Bold, FontSize = 11, FontFamily = new FontFamily("Calibri")};
-            SecondaryAxis = new Axis();
+            AxisX = new Axis {FontWeight = FontWeights.Bold, FontSize = 11, FontFamily = new FontFamily("Calibri")};
+            AxisY = new Axis();
             Hoverable = true;
             ShapeHoverBehavior = ShapeHoverBehavior.Shape;
             InnerRadius = 0;
@@ -48,104 +46,75 @@ namespace LiveCharts
             AnimatesNewPoints = true;
             AreaOpacity = 1;
 
-            PerformanceConfiguration = new PerformanceConfiguration { Enabled = false };
+            PerformanceConfiguration = new PerformanceConfiguration {Enabled = false};
         }
-        
+
+        #region Dependency Properties
+
         public static readonly DependencyProperty InnerRadiusProperty = DependencyProperty.Register(
-            "InnerRadius", typeof(double), typeof(PieChart));
+            "InnerRadius", typeof (double), typeof (PieChart));
+
         /// <summary>
-        /// Gets or sets chart inner radius.
+        /// Gets or sets chart inner radius, set this property to transform a pie chart into a doughnut!
         /// </summary>
         public double InnerRadius
         {
-            get { return (double)GetValue(InnerRadiusProperty); }
+            get { return (double) GetValue(InnerRadiusProperty); }
             set { SetValue(InnerRadiusProperty, value); }
         }
 
         public static readonly DependencyProperty SlicePaddingProperty = DependencyProperty.Register(
-            "SlicePadding", typeof(double), typeof(Chart));
+            "SlicePadding", typeof (double), typeof (Chart));
+
         /// <summary>
         /// Gets or sets padding between slices.
         /// </summary>
         public double SlicePadding
         {
-            get { return (double)GetValue(SlicePaddingProperty); }
+            get { return (double) GetValue(SlicePaddingProperty); }
             set { SetValue(SlicePaddingProperty, value); }
         }
 
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        /// Gets the total sum of the values in the chart.
+        /// </summary>
         public double PieTotalSum { get; private set; }
 
+        /// <summary>
+        /// Gets or sets the distance between pie and shortest chart dimnsion.
+        /// </summary>
         public double DrawPadding { get; set; }
 
-        protected override bool ScaleChanged
-        {
-            get
-            {
-                var serie = Series.FirstOrDefault();
-                var pieSerie = serie as PieSeries;
-                var min = pieSerie != null ? pieSerie.PrimaryValues.DefaultIfEmpty(0).Min() : 0.01;
-                var psc = pieSerie != null ? pieSerie.PrimaryValues.Count : 0;
-                return Math.Abs(GetPieSum() - PieTotalSum) > .001*min || _pointsCount != psc;
-            }
-        }
+        #endregion
+
+        #region Overriden Methods
 
         protected override void Scale()
         {
-            DrawAxis();
+            DrawAxes();
+            //rest of the series are ignored by now, we only plot the firt one
             var serie = Series.FirstOrDefault();
             var pieSerie = serie as PieSeries;
             if (pieSerie == null) return;
-            _pointsCount = pieSerie.PrimaryValues.Count;
             PieTotalSum = GetPieSum();
         }
 
-        protected override void DrawAxis()
+        protected override void DrawAxes()
         {
             foreach (var l in Shapes) Canvas.Children.Remove(l);
         }
-        
+
         public override void DataMouseEnter(object sender, MouseEventArgs e)
         {
-            //This code is maybe going to be removed. I think Pie charts do not need hover, they work better 
-            //if we print just values on charts
-
-            //var b = new Border
-            //{
-            //    BorderThickness = new Thickness(0),
-            //    Background = new SolidColorBrush { Color = Color.FromRgb(30, 30, 30), Opacity = .8 },
-            //    CornerRadius = new CornerRadius(1)
-            //};
-            //var sp = new StackPanel
-            //{
-            //    Orientation = Orientation.Vertical
-            //};
-
             var senderShape = HoverableShapes.FirstOrDefault(s => Equals(s.Shape, sender));
             var pieSlice = senderShape != null ? senderShape.Shape as PieSlice : null;
             if (pieSlice == null) return;
 
             pieSlice.Opacity = .8;
-
-            //sp.Children.Add(new TextBlock
-            //{
-            //    Text = senderShape.Label + ", " + (SecondaryAxis.LabelFormatter == null
-            //        ? senderShape.Value.Y.ToString(CultureInfo.InvariantCulture)
-            //        : SecondaryAxis.LabelFormatter(senderShape.Value.Y)),
-            //    Margin = new Thickness(5),
-            //    VerticalAlignment = VerticalAlignment.Center,
-            //    FontFamily = new FontFamily("Calibri"),
-            //    FontSize = 11,
-            //    Foreground = Brushes.White
-            //});
-
-            //b.Child = sp;
-            //Canvas.Children.Add(b);
-
-            //var minDimension = DesiredSize.Width < DesiredSize.Height
-            //   ? DesiredSize.Width : DesiredSize.Height;
-
-            //Canvas.SetLeft(b, (DesiredSize.Width-minDimension)/2 +10);
-            //Canvas.SetTop(b, (DesiredSize.Height - minDimension) / 2 +10);
 
             var anim = new DoubleAnimation
             {
@@ -154,8 +123,6 @@ namespace LiveCharts
             };
 
             pieSlice.BeginAnimation(PieSlice.PushOutProperty, anim);
-
-            //CurrentToolTip = b;
         }
 
         public override void DataMouseLeave(object sender, MouseEventArgs e)
@@ -175,11 +142,17 @@ namespace LiveCharts
             pieSlice.BeginAnimation(PieSlice.PushOutProperty, anim);
         }
 
+        #endregion
+
+        #region Private Methods
+
         private double GetPieSum()
         {
             var serie = Series.FirstOrDefault();
             var pieSerie = serie as PieSeries;
-            return pieSerie != null ? pieSerie.PrimaryValues.DefaultIfEmpty(0).Sum() : 0;
+            return pieSerie != null ? pieSerie.Values.Points.Select(pt => pt.Y).DefaultIfEmpty(0).Sum() : 0;
         }
+
+        #endregion
     }
 }

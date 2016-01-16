@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:liveCharts="clr-namespace:LiveCharts;assembly=LiveCharts"
+             xmlns:liveCharts="clr-namespace:lvc;assembly=LiveCharts"
              xmlns:barExamples="clr-namespace:ChartsTest.BarExamples"
              xmlns:customTooltips="clr-namespace:ChartsTest.z.CustomTooltips"
              mc:Ignorable="d" 
@@ -24,25 +24,25 @@
             </liveCharts:StackedBarChart.DataToolTip>
             <liveCharts:StackedBarChart.Series>
                 <liveCharts:SeriesCollection>
-                    <liveCharts:StackedBarSeries Title="Maria" PrimaryValues="20, 40, 45, 60, 55, 60, 65, 70" Stroke="#FFB300" Fill="#AAFFB300" StrokeThickness="4"/>
-                    <liveCharts:StackedBarSeries Title="John" PrimaryValues="30, 35, 43, 68, 65 ,70, 55, 60" Stroke="#FFA000" Fill="#AAFFA000" StrokeThickness="4"/>
-                    <liveCharts:StackedBarSeries Title="Erick" PrimaryValues="40, 42, 50, 70, 50, 55, 44, 73" Stroke="#FF8F00" Fill="#AAFF8F00" StrokeThickness="4"/>
+                    <liveCharts:StackedBarSeries Title="Maria" Values="20, 40, 45, 60, 55, 60, 65, 70" Stroke="#FFB300" Fill="#AAFFB300" StrokeThickness="4"/>
+                    <liveCharts:StackedBarSeries Title="John" Values="30, 35, 43, 68, 65 ,70, 55, 60" Stroke="#FFA000" Fill="#AAFFA000" StrokeThickness="4"/>
+                    <liveCharts:StackedBarSeries Title="Erick" Values="40, 42, 50, 70, 50, 55, 44, 73" Stroke="#FF8F00" Fill="#AAFF8F00" StrokeThickness="4"/>
                 </liveCharts:SeriesCollection>
             </liveCharts:StackedBarChart.Series>
-            <liveCharts:StackedBarChart.PrimaryAxis>
+            <liveCharts:StackedBarChart.AxisX>
                 <liveCharts:Axis Title="Sold Items" IsEnabled="False" Foreground="White" FontSize="13" FontFamily="Arial">
                     <liveCharts:Axis.Separator>
                         <liveCharts:Separator Color="#404040" Thickness="2" IsEnabled="True"></liveCharts:Separator>
                     </liveCharts:Axis.Separator>
                 </liveCharts:Axis>
-            </liveCharts:StackedBarChart.PrimaryAxis>
-            <liveCharts:StackedBarChart.SecondaryAxis>
+            </liveCharts:StackedBarChart.AxisX>
+            <liveCharts:StackedBarChart.AxisY>
                 <liveCharts:Axis Title="Month" Labels="Jan, Feb, Mar, Apr, May, Jun, Ago, Sep, Oct, Nov, Dec" IsEnabled="False">
                     <liveCharts:Axis.Separator>
                         <liveCharts:Separator IsEnabled="False"></liveCharts:Separator>
                     </liveCharts:Axis.Separator>
                 </liveCharts:Axis>
-            </liveCharts:StackedBarChart.SecondaryAxis>
+            </liveCharts:StackedBarChart.AxisY>
         </liveCharts:StackedBarChart>
         <liveCharts:SeriesViewer Grid.Row="2"
                                  Series="{Binding ElementName=Chart, Path=Series}"

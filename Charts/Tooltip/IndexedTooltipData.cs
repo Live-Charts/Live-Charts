@@ -23,7 +23,7 @@
 using System.Windows;
 using System.Windows.Media;
 
-namespace LiveCharts.Tooltip
+namespace lvc.Tooltip
 {
     public class IndexedTooltipData
     {

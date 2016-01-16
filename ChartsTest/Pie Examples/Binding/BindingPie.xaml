@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:liveCharts="clr-namespace:LiveCharts;assembly=LiveCharts"
+             xmlns:liveCharts="clr-namespace:lvc;assembly=LiveCharts"
              xmlns:pieExamples="clr-namespace:ChartsTest.Pie_Examples"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300"
@@ -20,23 +20,23 @@
         <liveCharts:PieChart Name="Chart" Grid.Row="1" Grid.Column="0" AreaOpacity=".7" InnerRadius="150" >
             <liveCharts:PieChart.Series>
                 <liveCharts:SeriesCollection>
-                    <liveCharts:PieSeries Name="Serie1" Title="Maria" PrimaryValues="{Binding ViewModel.FirstSeries}"></liveCharts:PieSeries>
+                    <liveCharts:PieSeries Name="Serie1" Title="Maria" Values="{Binding ViewModel.FirstSeries}"></liveCharts:PieSeries>
                 </liveCharts:SeriesCollection>
             </liveCharts:PieChart.Series>
-            <liveCharts:PieChart.PrimaryAxis>
+            <liveCharts:PieChart.AxisX>
                 <liveCharts:Axis IsEnabled="False" PrintLabels="False">
                     <liveCharts:Axis.Separator>
                         <liveCharts:Separator IsEnabled="False"></liveCharts:Separator>
                     </liveCharts:Axis.Separator>
                 </liveCharts:Axis>
-            </liveCharts:PieChart.PrimaryAxis>
-            <liveCharts:PieChart.SecondaryAxis>
+            </liveCharts:PieChart.AxisX>
+            <liveCharts:PieChart.AxisY>
                 <liveCharts:Axis IsEnabled="False" PrintLabels="False">
                     <liveCharts:Axis.Separator>
                         <liveCharts:Separator IsEnabled="False"></liveCharts:Separator>
                     </liveCharts:Axis.Separator>
                 </liveCharts:Axis>
-            </liveCharts:PieChart.SecondaryAxis>
+            </liveCharts:PieChart.AxisY>
         </liveCharts:PieChart>
     </Grid>
 </UserControl>

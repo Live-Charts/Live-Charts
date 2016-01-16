@@ -24,18 +24,18 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
-using LiveCharts.Charts;
+using lvc.Charts;
 
-namespace LiveCharts
+namespace lvc
 {
     public class StackedBarChart : Chart, IStackedBar, ILine
     {
         public StackedBarChart()
         {
-            PrimaryAxis = new Axis();
-            SecondaryAxis = new Axis {Separator = new Separator {Step = 1}};
+            AxisX = new Axis();
+            AxisY = new Axis {Separator = new Separator {Step = 1}};
             Hoverable = true;
-            PrimaryAxis.MinValue = 0d;
+            AxisX.MinValue = 0d;
             ShapeHoverBehavior = ShapeHoverBehavior.Shape;
             IgnoresLastLabel = true;
             PerformanceConfiguration = new PerformanceConfiguration { Enabled = false };
@@ -46,43 +46,42 @@ namespace LiveCharts
             DefaultFillOpacity = 0.75;
         }
 
+        #region Properties
         /// <summary>
         /// Gets or sets maximum column width, default is 60
         /// </summary>
         public double MaxColumnWidth { get; set; }
+        /// <summary>
+        /// Gets or sets Line Type
+        /// </summary>
         public LineChartLineType LineType { get; set; }
-
-        public Dictionary<int, StackedBarHelper> IndexTotals { get; set; } 
-        protected override bool ScaleChanged
-        {
-            get
-            {
-                return GetMax() != Max ||
-                       GetMin() != Min;
-            }
-        }
+        /// <summary>
+        /// Gets a dictinary that groups every bar proportion
+        /// </summary>
+        public Dictionary<int, StackedBarHelper> IndexTotals { get; internal set; }
+#endregion
 
         private Point GetMax()
         {
             var s = Series.FirstOrDefault();
             if (s == null) return new Point(0,0);
             var p = new Point(
-                Series.Select(x => x.PrimaryValues.Count).DefaultIfEmpty(0).Max(),
-                s.PrimaryValues.Select(
-                    (t, i) => Series.OfType<StackedBarSeries>().Sum(serie => serie.PrimaryValues.Any()
-                        ? serie.PrimaryValues[i]
+                Series.Select(x => x.Values.Count).DefaultIfEmpty(0).Max(),
+                s.Values.Points.Select(
+                    (t, i) => Series.OfType<StackedBarSeries>().Sum(serie => serie.Values.Points.Any()
+                        ? (serie.Values.Points as IList<Point>)[i].Y
                         : double.MinValue))
                     .Concat(new[] {double.MinValue}).Max());
 
             //correction for lineSeries
             var maxLineSeries =
                 Series.OfType<LineSeries>()
-                    .Select(series => series.PrimaryValues.DefaultIfEmpty(0).Max())
+                    .Select(series => series.Values.Points.Select(x => x.Y).DefaultIfEmpty(0).Max())
                     .DefaultIfEmpty(0)
                     .Max();
             p.Y = p.Y > maxLineSeries ? p.Y : maxLineSeries;
 
-            p.Y = PrimaryAxis.MaxValue ?? p.Y;
+            p.Y = AxisX.MaxValue ?? p.Y;
             return p;
         }
 
@@ -91,46 +90,48 @@ namespace LiveCharts
             var s = Series.FirstOrDefault();
             if (s==null) return new Point(0,0);
             var p = new Point(0,
-                s.PrimaryValues.Select(
-                    (t, i) => Series.OfType<StackedBarSeries>().Sum(serie => serie.PrimaryValues.Any()
-                        ? serie.PrimaryValues[i]
+                s.Values.Points.Select(
+                    (t, i) => Series.OfType<StackedBarSeries>().Sum(serie => serie.Values.Points.Any()
+                        ? (serie.Values.Points as IList<Point>)[i].Y
                         : double.MinValue))
                     .Concat(new[] {double.MaxValue}).Min());
 
             //correction for lineSeries
             var minLineSeries =
                 Series.OfType<LineSeries>()
-                    .Select(series => series.PrimaryValues.DefaultIfEmpty(0).Min())
+                    .Select(series => series.Values.Points.Select(x => x.Y).DefaultIfEmpty(0).Min())
                     .DefaultIfEmpty(0)
                     .Min();
             p.Y = p.Y < minLineSeries ? p.Y : minLineSeries;
 
-            p.Y = PrimaryAxis.MinValue ?? p.Y;
+            p.Y = AxisX.MinValue ?? p.Y;
             return p;
         }
 
         private Point GetS()
         {
             return new Point(
-                SecondaryAxis.Separator.Step ?? CalculateSeparator(Max.X - Min.X, AxisTags.X),
-                PrimaryAxis.Separator.Step ?? CalculateSeparator(Max.Y - Min.Y, AxisTags.Y));
+                AxisY.Separator.Step ?? CalculateSeparator(Max.X - Min.X, AxisTags.X),
+                AxisX.Separator.Step ?? CalculateSeparator(Max.Y - Min.Y, AxisTags.Y));
         }
 
         protected override void Scale()
         {
-            PrimaryAxis.MinValue = 0;
+            AxisX.MinValue = 0;
 
             var stackedSeries = Series.OfType<StackedBarSeries>().ToList();
             var fSerie = stackedSeries.FirstOrDefault();
             if (fSerie == null) return;
-            for (var i = 0; i < fSerie.PrimaryValues.Count; i++)
+            for (var i = 0; i < fSerie.Values.Count; i++)
             {
                 var helper = new StackedBarHelper();
                 var sum = 0d;
                 for (int index = 0; index < stackedSeries.Count; index++)
                 {
                     var serie = stackedSeries[index];
-	                var value = serie.PrimaryValues.Any() ? serie.PrimaryValues[i] : double.MinValue;
+                    var value = serie.Values.Points.Any()
+                        ? (serie.Values.Points as IList<Point>)[i].Y
+                        : double.MinValue;
                     helper.Stacked[index] = new StackedItem
                     {
                         Value = value,
@@ -146,10 +147,10 @@ namespace LiveCharts
             Min = GetMin();
             S = GetS();
 
-            Max.Y = PrimaryAxis.MaxValue ?? (Math.Truncate(Max.Y / S.Y) + 1) * S.Y;
-            Min.Y = PrimaryAxis.MinValue ?? (Math.Truncate(Min.Y / S.Y) - 1) * S.Y;
+            Max.Y = AxisX.MaxValue ?? (Math.Truncate(Max.Y / S.Y) + 1) * S.Y;
+            Min.Y = AxisX.MinValue ?? (Math.Truncate(Min.Y / S.Y) - 1) * S.Y;
 
-            DrawAxis();
+            DrawAxes();
         }
 
         protected override Point GetToolTipPosition(HoverableShape sender, List<HoverableShape> sibilings)
@@ -168,18 +169,18 @@ namespace LiveCharts
             return new Point(x, y);
         }
 
-        protected override void DrawAxis()
+        protected override void DrawAxes()
         {
-            ConfigureSmartAxis(SecondaryAxis);
+            ConfigureSmartAxis(AxisY);
 
             S = GetS();
 
             Canvas.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
 
             var lastLabelX = Math.Truncate((Max.X - Min.X) / S.X) * S.X;
-            var longestYLabelSize = GetLongestLabelSize(PrimaryAxis);
-            var fistXLabelSize = GetLabelSize(SecondaryAxis, Min.X);
-            var lastXLabelSize = GetLabelSize(SecondaryAxis, lastLabelX);
+            var longestYLabelSize = GetLongestLabelSize(AxisX);
+            var fistXLabelSize = GetLabelSize(AxisY, Min.X);
+            var lastXLabelSize = GetLabelSize(AxisY, lastLabelX);
 
             const int padding = 5;
 
@@ -205,7 +206,7 @@ namespace LiveCharts
             unitW = unitW > MaxColumnWidth * 3 ? MaxColumnWidth * 3 : unitW;
             XOffset = unitW / 2;
 
-            base.DrawAxis();
+            base.DrawAxes();
         }
     }
 

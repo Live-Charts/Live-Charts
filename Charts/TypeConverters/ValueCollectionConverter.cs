@@ -26,7 +26,7 @@ using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
 
-namespace LiveCharts.TypeConverters
+namespace lvc.TypeConverters
 {
 	internal class ValueCollectionConverter : TypeConverter
 	{
@@ -42,7 +42,9 @@ namespace LiveCharts.TypeConverters
 			{
 			    var values = valueString.Split(new[] {',', ' '}, StringSplitOptions.RemoveEmptyEntries)
 			        .Select(d => double.Parse(d, CultureInfo.InvariantCulture));
-				return new ObservableCollection<double>(values);
+                var series = new IndexedChartValues();
+                series.AddRange(values);
+				return series;
 			}
 			return base.ConvertFrom(context, culture, value);
 		}

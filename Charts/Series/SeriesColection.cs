@@ -1,6 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 
-namespace LiveCharts
+namespace lvc
 {
     public class SeriesCollection : ObservableCollection<Series>
     {

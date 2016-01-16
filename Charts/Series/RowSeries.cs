@@ -5,7 +5,7 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 
-namespace LiveCharts
+namespace lvc
 {
     public class RowSeries : BarSeries
     {
@@ -34,7 +34,7 @@ namespace LiveCharts
             var bothLimitsPositive = Chart.Max.Y > 0 && Chart.Min.Y > 0 - Chart.S.Y * .01;
             var bothLimitsNegative = Chart.Max.Y < 0 + Chart.S.Y * .01 && Chart.Min.Y < 0;
 
-            foreach (var point in ChartPoints)
+            foreach (var point in Points)
             {
                 var t = new TranslateTransform();
                 var r = new Rectangle

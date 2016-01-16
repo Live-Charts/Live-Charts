@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:ChartsTest.Line_Examples"
-             xmlns:liveCharts="clr-namespace:LiveCharts;assembly=LiveCharts"
+             xmlns:liveCharts="clr-namespace:lvc;assembly=LiveCharts"
              xmlns:chartsTest="clr-namespace:ChartsTest"
              mc:Ignorable="d"  
              d:DesignWidth="600"
@@ -46,9 +46,9 @@
                                     </Button>
                                 </StackPanel>
                                 <liveCharts:LineChart Height="100" Series="{Binding Series}">
-                                    <liveCharts:LineChart.SecondaryAxis>
+                                    <liveCharts:LineChart.AxisY>
                                         <liveCharts:Axis Labels="{Binding Labels}"></liveCharts:Axis>
-                                    </liveCharts:LineChart.SecondaryAxis>
+                                    </liveCharts:LineChart.AxisY>
                                 </liveCharts:LineChart>
                             </StackPanel>
                         </DataTemplate>

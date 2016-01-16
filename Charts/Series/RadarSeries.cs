@@ -22,13 +22,14 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 
-namespace LiveCharts
+namespace lvc
 {
     public class RadarSeries : Series
     {
@@ -52,28 +53,31 @@ namespace LiveCharts
             var l = 0d;
 
             Point? p2 = null;
-            for (var index = 0; index <= PrimaryValues.Count; index++)
-            {
-                var r1 = index != PrimaryValues.Count
-                    ? chart.ToChartRadius(PrimaryValues[index])
-                    : chart.ToChartRadius(PrimaryValues[0]);
 
-                if (index == 0)
+            if (!Points.Any()) return;
+            var lastPoint = Points.Last();
+            var fisrtPoint = Points.First();
+            foreach (var point in Points)
+            {
+                var r1 = point != lastPoint
+                    ? chart.ToChartRadius(point.Y)
+                    : chart.ToChartRadius(fisrtPoint.Y);
+                if (point == fisrtPoint)
                     pf.StartPoint = new Point(
-                        chart.ActualWidth / 2 + Math.Sin(alpha * index * (Math.PI / 180)) * r1,
-                        chart.ActualHeight / 2 - Math.Cos(alpha * index * (Math.PI / 180)) * r1);
+                        chart.ActualWidth / 2 + Math.Sin(alpha * point.X * (Math.PI / 180)) * r1,
+                        chart.ActualHeight / 2 - Math.Cos(alpha * point.X * (Math.PI / 180)) * r1);
                 else
                     segments.Add(new LineSegment
                     {
                         Point = new Point
                         {
-                            X = chart.ActualWidth / 2 + Math.Sin(alpha * index * (Math.PI / 180)) * r1,
-                            Y = chart.ActualHeight / 2 - Math.Cos(alpha * index * (Math.PI / 180)) * r1
+                            X = chart.ActualWidth / 2 + Math.Sin(alpha * point.X * (Math.PI / 180)) * r1,
+                            Y = chart.ActualHeight / 2 - Math.Cos(alpha * point.X * (Math.PI / 180)) * r1
                         }
                     });
 
-                var p1 = new Point(chart.ActualWidth / 2 + Math.Sin(alpha * index * (Math.PI / 180)) * r1,
-                    chart.ActualHeight / 2 - Math.Cos(alpha * index * (Math.PI / 180)) * r1);
+                var p1 = new Point(chart.ActualWidth / 2 + Math.Sin(alpha * point.X * (Math.PI / 180)) * r1,
+                    chart.ActualHeight / 2 - Math.Cos(alpha * point.X * (Math.PI / 180)) * r1);
                 if (p2 != null)
                 {
                     l += Math.Sqrt(
@@ -83,7 +87,7 @@ namespace LiveCharts
                 }
                 p2 = p1;
 
-                if (index == PrimaryValues.Count) continue;
+                if (point == lastPoint) continue;
 
                 if (chart.Hoverable)
                 {
@@ -110,7 +114,7 @@ namespace LiveCharts
                     {
                         Series = this,
                         Shape = r,
-                        Value = new Point(index * alpha, PrimaryValues[index]),
+                        Value = new Point(point.X * alpha, point.Y),
                         Target = e
                     });
 
@@ -145,6 +149,7 @@ namespace LiveCharts
                     }
                 }
             }
+
             pf.Segments = segments;
             var g = new PathGeometry
             {

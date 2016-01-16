@@ -26,7 +26,7 @@ using System.Globalization;
 using System.Linq;
 using System.Windows.Media;
 
-namespace LiveCharts.TypeConverters
+namespace lvc.TypeConverters
 {
     public class ColorCollectionConverter : TypeConverter
     {

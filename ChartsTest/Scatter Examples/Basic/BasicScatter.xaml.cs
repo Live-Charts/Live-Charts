@@ -1,5 +1,5 @@
 ﻿using System.Windows;
-using LiveCharts;
+using lvc;
 
 namespace ChartsTest.Scatter_Examples
 {
@@ -8,8 +8,8 @@ namespace ChartsTest.Scatter_Examples
         public BasicScatter()
         {
             InitializeComponent();
-            Chart.PrimaryAxis.LabelFormatter = LabelFormatters.Number;
-            Chart.SecondaryAxis.LabelFormatter = value => value + "°";
+            Chart.AxisX.LabelFormatter = LabelFormatters.Number;
+            Chart.AxisY.LabelFormatter = value => value + "°";
         }
 
         private void OnLoaded(object sender, RoutedEventArgs e)

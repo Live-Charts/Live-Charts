@@ -3,7 +3,7 @@ using System.Windows;
 using System.Windows.Media;
 using System.Windows.Shapes;
 
-namespace LiveCharts.Shapes
+namespace lvc.Shapes
 {
     //http://www.codeproject.com/Articles/28098/A-WPF-Pie-Chart-with-Data-Binding-Support
     //special thanks to Colin Eberhardt for the article.

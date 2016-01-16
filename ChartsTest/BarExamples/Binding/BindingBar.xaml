@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:liveCharts="clr-namespace:LiveCharts;assembly=LiveCharts"
+             xmlns:liveCharts="clr-namespace:lvc;assembly=LiveCharts"
              xmlns:barExamples="clr-namespace:ChartsTest.BarExamples"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300"
@@ -20,7 +20,7 @@
         <liveCharts:BarChart Name="Chart" Grid.Row="1" Grid.Column="0" AreaOpacity="0">
             <liveCharts:BarChart.Series>
                 <liveCharts:SeriesCollection>
-                    <liveCharts:BarSeries Name="Serie1" Title="Maria" PrimaryValues="{Binding ViewModel.FirstSerie}" Stroke="IndianRed">
+                    <liveCharts:BarSeries Name="Serie1" Title="Maria" Values="{Binding ViewModel.FirstSerie}" Stroke="IndianRed">
                         <liveCharts:BarSeries.Fill>
                             <LinearGradientBrush EndPoint=".5,1" StartPoint="1,0">
                                 <GradientStop Color="IndianRed" Offset="1"/>
@@ -28,7 +28,7 @@
                             </LinearGradientBrush>
                         </liveCharts:BarSeries.Fill>
                     </liveCharts:BarSeries>
-                    <liveCharts:BarSeries Name="Serie2" Title="John" PrimaryValues="{Binding ViewModel.SecondSerie}" Stroke="CornflowerBlue">
+                    <liveCharts:BarSeries Name="Serie2" Title="John" Values="{Binding ViewModel.SecondSerie}" Stroke="CornflowerBlue">
                         <liveCharts:BarSeries.Fill>
                             <LinearGradientBrush EndPoint=".5,1" StartPoint="1,0">
                                 <GradientStop Color="CornflowerBlue" Offset="1"/>
@@ -38,20 +38,20 @@
                     </liveCharts:BarSeries>
                 </liveCharts:SeriesCollection>
             </liveCharts:BarChart.Series>
-            <liveCharts:BarChart.PrimaryAxis>
+            <liveCharts:BarChart.AxisX>
                 <liveCharts:Axis IsEnabled="False" PrintLabels="False">
                     <liveCharts:Axis.Separator>
                         <liveCharts:Separator IsEnabled="False"></liveCharts:Separator>
                     </liveCharts:Axis.Separator>
                 </liveCharts:Axis>
-            </liveCharts:BarChart.PrimaryAxis>
-            <liveCharts:BarChart.SecondaryAxis>
+            </liveCharts:BarChart.AxisX>
+            <liveCharts:BarChart.AxisY>
                 <liveCharts:Axis IsEnabled="False" PrintLabels="False">
                     <liveCharts:Axis.Separator>
                         <liveCharts:Separator IsEnabled="False"></liveCharts:Separator>
                     </liveCharts:Axis.Separator>
                 </liveCharts:Axis>
-            </liveCharts:BarChart.SecondaryAxis>
+            </liveCharts:BarChart.AxisY>
         </liveCharts:BarChart>
     </Grid>
 </UserControl>

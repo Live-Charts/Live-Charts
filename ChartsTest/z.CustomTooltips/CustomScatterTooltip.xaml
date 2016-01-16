@@ -20,13 +20,13 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.-->
     
-<tooltip1:ScatterTooltip x:Class="LiveCharts.Tooltip.CustomScatterTooltip"
+<tooltip1:ScatterTooltip x:Class="lvc.Tooltip.CustomScatterTooltip"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:tooltip="clr-namespace:LiveCharts.Tooltip"
-             xmlns:tooltip1="clr-namespace:LiveCharts.Tooltip;assembly=LiveCharts"
+             xmlns:tooltip="clr-namespace:lvc.Tooltip"
+             xmlns:tooltip1="clr-namespace:lvc.Tooltip;assembly=LiveCharts"
              mc:Ignorable="d" d:DataContext="{d:DesignInstance tooltip:CustomScatterTooltip}"
              Width="Auto"
              Height="Auto"

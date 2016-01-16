@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
-using LiveCharts.Annotations;
+using lvc.Annotations;
 
 namespace ChartsTest
 {

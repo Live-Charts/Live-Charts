@@ -23,9 +23,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
-using LiveCharts.Charts;
+using lvc.Charts;
 
-namespace LiveCharts
+namespace lvc
 {
     public class PerformanceConfiguration
     {

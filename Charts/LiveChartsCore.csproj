@@ -119,6 +119,9 @@
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Series\RowSeries.cs" />
     <Compile Include="Series\SeriesColection.cs" />
+    <Compile Include="Values\IChartsValues.cs" />
+    <Compile Include="Values\LiveChartsValuesExtentions.cs" />
+    <Compile Include="Values\IndexedChartValues.cs" />
     <Compile Include="Tooltip\IndexedTooltipData.cs" />
     <Compile Include="Tooltip\Converters.cs" />
     <Compile Include="Tooltip\DefaultIndexedTooltip.xaml.cs">
@@ -147,7 +150,7 @@
     <Compile Include="Series\RadarSeries.cs" />
     <Compile Include="Series\StackedBarSeries.cs" />
     <Compile Include="ShapeHoverBehavior.cs" />
-    <Compile Include="Charts\Chart.cs" />
+    <Compile Include="Chart.cs" />
     <Compile Include="HoverableShape.cs" />
     <Compile Include="LineChartLineType.cs" />
     <Compile Include="Methods.cs" />
@@ -169,7 +172,7 @@
     </Compile>
     <Compile Include="Series\PieSeries.cs" />
     <Compile Include="Series\ScatterSeries.cs" />
-    <Compile Include="Series\Series.cs" />
+    <Compile Include="Series.cs" />
     <Compile Include="Shapes\PieSlice.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -199,6 +202,7 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

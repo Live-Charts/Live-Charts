@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
-using LiveCharts;
+using lvc;
 
 namespace ChartsTest.Scatter_Examples
 {
@@ -14,14 +14,14 @@ namespace ChartsTest.Scatter_Examples
             var secondaryValues = new List<double>();
             for (double i = 0; i <= 1080; i += 36) secondaryValues.Add(i);
             var s1 = secondaryValues.Select(Math.Sin).ToList();
-            Serie1.PrimaryValues = s1;
+            Serie1.Values = s1.AsChartValues();
             Serie1.SecondaryValues = secondaryValues;
-            Chart.PrimaryAxis.MaxValue = s1.Max();
-            Chart.PrimaryAxis.MinValue = s1.Min();
-            Chart.SecondaryAxis.MaxValue = secondaryValues.Max();
-            Chart.SecondaryAxis.MinValue = secondaryValues.Min();
-            Chart.PrimaryAxis.LabelFormatter = LabelFormatters.Number;
-            Chart.SecondaryAxis.LabelFormatter = val => val.ToString("N1") + "°";
+            Chart.AxisX.MaxValue = s1.Max();
+            Chart.AxisX.MinValue = s1.Min();
+            Chart.AxisY.MaxValue = secondaryValues.Max();
+            Chart.AxisY.MinValue = secondaryValues.Min();
+            Chart.AxisX.LabelFormatter = LabelFormatters.Number;
+            Chart.AxisY.LabelFormatter = val => val.ToString("N1") + "°";
         }
 
         private void JustAreasAndZoomable_OnLoaded(object sender, RoutedEventArgs e)

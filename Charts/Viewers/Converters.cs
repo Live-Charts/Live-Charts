@@ -3,7 +3,7 @@ using System.Globalization;
 using System.Windows.Data;
 using System.Windows.Media;
 
-namespace LiveCharts.Viewers
+namespace lvc.Viewers
 {
     public class PieSerieColorConverter : IValueConverter
     {

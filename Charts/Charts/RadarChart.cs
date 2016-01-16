@@ -20,16 +20,17 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
+//ToDo: Review this file
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
-using LiveCharts.Charts;
+using lvc.Charts;
 
-namespace LiveCharts
+namespace lvc
 {
     public class RadarChart : Chart
     {
@@ -37,67 +38,66 @@ namespace LiveCharts
 
         public RadarChart()
         {
-            PrimaryAxis = new Axis();
-            SecondaryAxis = new Axis();
+            AxisX = new Axis();
+            AxisY = new Axis();
             Hoverable = true;
             ShapeHoverBehavior = ShapeHoverBehavior.Dot;
             AlphaLabel = true;
             AreaOpacity = .2;
-            InnerRadius = 10;
+            MinInnerRadius = 10;
         }
 
-        public double InnerRadius { get; set; }
+        #region Properties
 
-        protected override bool ScaleChanged
-        {
-            get
-            {
-                if (!(GetMax() != Max))
-                    return GetMin() != Min;
-                return true;
-            }
-        }
-        
+        /// <summary>
+        /// Gets or sets the Min Radius if the chart, this is the distance between 
+        /// the center of the chart and the zero value.
+        /// </summary>
+        public double MinInnerRadius { get; set; }
+
+        #endregion
+
+        #region PrivateMethods
         private void Measure()
         {
-            Size desiredSize = DesiredSize;
-            double height = desiredSize.Height;
+            var desiredSize = DesiredSize;
+            var height = desiredSize.Height;
             desiredSize = DesiredSize;
-            double width = desiredSize.Width;
+            var width = desiredSize.Width;
             Radius = height < width ? DesiredSize.Height : DesiredSize.Width;
-            Radius = Radius/2.0;
+            Radius = Radius / 2.0;
             Radius = Radius - 20.0;
         }
-
         private Point GetMax()
         {
             var fSerie = Series.FirstOrDefault();
-            if (fSerie == null) return new Point(0,0);
+            if (fSerie == null) return new Point(0, 0);
             var point =
-                new Point(fSerie.PrimaryValues.Count,
-					Series.Select(x => x.PrimaryValues.Max()).DefaultIfEmpty(0.0).Max());
-            point.Y = PrimaryAxis.MaxValue ?? point.Y;
+                new Point(fSerie.Values.Count,
+                    Series.Select(x => x.Values.Points.Select(pt => pt.Y).Max())
+                        .DefaultIfEmpty(0.0).Max());
+            point.Y = AxisX.MaxValue ?? point.Y;
             return point;
+        }
+        private Point GetS()
+        {
+            double? step = this.AxisY.Separator.Step;
+            double x = step ?? this.CalculateSeparator(this.Max.X - this.Min.X, AxisTags.X);
+            step = this.AxisX.Separator.Step;
+            double y = step ?? this.CalculateSeparator(this.Max.Y - this.Min.Y, AxisTags.Y);
+            return new Point(x, y);
         }
 
         private Point GetMin()
         {
             var point = new Point(0,
-				Series.Select((x => x.PrimaryValues.Min())).DefaultIfEmpty(0.0).Min());
-            point.Y = PrimaryAxis.MinValue ?? point.Y;
+                Series.Select((x => x.Values.Points.Select(pt => pt.Y).Min())).DefaultIfEmpty(0.0).Min());
+            point.Y = AxisX.MinValue ?? point.Y;
             return point;
         }
+        #endregion
 
-        private Point GetS()
-        {
-            double? step = this.SecondaryAxis.Separator.Step;
-            double x = step ?? this.CalculateSeparator(this.Max.X - this.Min.X, AxisTags.X);
-            step = this.PrimaryAxis.Separator.Step;
-            double y = step ?? this.CalculateSeparator(this.Max.Y - this.Min.Y, AxisTags.Y);
-            return new Point(x, y);
-        }
-
-        protected override void DrawAxis()
+        protected override void DrawAxes()
         {
             if (Series == null || Series.Count == 0) return;
             this.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
@@ -111,14 +111,14 @@ namespace LiveCharts
             double num1 = 0.0;
             while (num1 < 360.0)
             {
-                if (this.PrimaryAxis.Separator.IsEnabled)
+                if (this.AxisX.Separator.IsEnabled)
                 {
                     Line line1 = new Line();
                     line1.Stroke = (Brush) new SolidColorBrush()
                     {
-                        Color = this.PrimaryAxis.Separator.Color
+                        Color = this.AxisX.Separator.Color
                     };
-                    line1.StrokeThickness = (double) this.PrimaryAxis.Separator.Thickness;
+                    line1.StrokeThickness = (double) this.AxisX.Separator.Thickness;
                     line1.X1 = this.ActualWidth/2.0;
                     line1.Y1 = this.ActualHeight/2.0;
                     line1.X2 = this.ActualWidth/2.0 + Math.Sin(num1*(Math.PI/180.0))*this.Radius;
@@ -134,9 +134,9 @@ namespace LiveCharts
                     Line line1 = new Line();
                     line1.Stroke = (Brush) new SolidColorBrush()
                     {
-                        Color = this.PrimaryAxis.Separator.Color
+                        Color = this.AxisX.Separator.Color
                     };
-                    line1.StrokeThickness = (double) this.PrimaryAxis.Separator.Thickness;
+                    line1.StrokeThickness = (double) this.AxisX.Separator.Thickness;
                     line1.X1 = this.ActualWidth/2.0 + Math.Sin(num1*(Math.PI/180.0))*this.ToChartRadius(y);
                     line1.Y1 = this.ActualHeight/2.0 - Math.Cos(num1*(Math.PI/180.0))*this.ToChartRadius(y);
                     line1.X2 = this.ActualWidth/2.0 + Math.Sin(num2*(Math.PI/180.0))*this.ToChartRadius(y);
@@ -156,7 +156,7 @@ namespace LiveCharts
             this.Min = this.GetMin();
             this.S = this.GetS();
             this.Measure();
-            this.DrawAxis();
+            this.DrawAxes();
         }
 
         protected override Point GetToolTipPosition(HoverableShape sender, List<HoverableShape> sibilings)
@@ -187,7 +187,7 @@ namespace LiveCharts
 
         public double ToChartRadius(double value)
         {
-            return (this.InnerRadius - this.Radius)/(this.Min.Y - this.Max.Y)*(value - this.Min.Y) + this.InnerRadius;
+            return (this.MinInnerRadius - this.Radius)/(this.Min.Y - this.Max.Y)*(value - this.Min.Y) + this.MinInnerRadius;
         }
     }
 }

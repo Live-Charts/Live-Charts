@@ -6,8 +6,8 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Threading;
-using LiveCharts;
-using LiveCharts.Annotations;
+using lvc;
+using lvc.Annotations;
 
 namespace ChartsTest.Line_Examples
 {
@@ -95,8 +95,8 @@ namespace ChartsTest.Line_Examples
             {
                 foreach (var series in Series)
                 {
-                    series.PrimaryValues.RemoveAt(0);
-                    series.PrimaryValues.Add(_random.Next(-10, 10));
+                    series.Values.RemoveAt(0);
+                    series.Values.Add(_random.Next(-10, 10));
                 }
             };
         }
@@ -137,13 +137,13 @@ namespace ChartsTest.Line_Examples
             Series.Add(new LineSeries
             {
                 Title = "Serie 1",
-                PrimaryValues = BuildRandomValues(),
+                Values = BuildRandomValues(),
                 PointRadius = 0
             });
             Series.Add(new LineSeries
             {
                 Title = "Serie 2",
-                PrimaryValues = BuildRandomValues(),
+                Values = BuildRandomValues(),
                 PointRadius = 0
             });
         }
@@ -153,7 +153,7 @@ namespace ChartsTest.Line_Examples
             Series.Add(new LineSeries
             {
                 Title = "Series " + Series.Count + 1,
-                PrimaryValues = BuildRandomValues(),
+                Values = BuildRandomValues(),
                 PointRadius = 0
             });
         }
@@ -180,9 +180,9 @@ namespace ChartsTest.Line_Examples
             }
         }
 
-        private static ObservableCollection<double> BuildRandomValues()
+        private static IndexedChartValues BuildRandomValues()
         {
-            var serie = new ObservableCollection<double>();
+            var serie = new IndexedChartValues();
             for (int i = 0; i < 10; i++) serie.Add(_random.Next(-10,10));
             return serie;
         }

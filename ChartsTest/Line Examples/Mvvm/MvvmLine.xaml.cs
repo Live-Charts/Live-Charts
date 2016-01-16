@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
-using LiveCharts;
+using lvc;
 
 namespace ChartsTest.Line_Examples
 {
@@ -17,7 +17,7 @@ namespace ChartsTest.Line_Examples
             InitializeComponent();
             Sales = new SalesViewModel();
             DataContext = this;
-            Chart.PrimaryAxis.LabelFormatter = x => x + ".00k items";
+            Chart.AxisX.LabelFormatter = x => x + ".00k items";
         }
 
         public SalesViewModel Sales { get; set; }
@@ -71,7 +71,7 @@ namespace ChartsTest.Line_Examples
                 new LineSeries
                 {
                     Title = "John",
-                    PrimaryValues = new ObservableCollection<double>(new[] {2d, 4, 7, 1, 5})
+                    Values = new IndexedChartValues {2d, 4, 7, 1, 5}
                 }
             };
         }
@@ -83,14 +83,13 @@ namespace ChartsTest.Line_Examples
         {
             var r = new Random();
 
-            var values = new List<double>();
-
-            for (var i = 0; i < Salesmen[0].PrimaryValues.Count; i++) values.Add(r.Next(0, 10));
+            var values = new IndexedChartValues();
+            for (var i = 0; i < Salesmen[0].Values.Count; i++) values.Add(r.Next(0, 10));
 
             Salesmen.Add(new LineSeries
             {
                 Title = _names[r.Next(0, _names.Count() - 1)],
-                PrimaryValues = new ObservableCollection<double>(values)
+                Values = values
             });
         }
 
@@ -103,19 +102,19 @@ namespace ChartsTest.Line_Examples
         public void AddOneMonth()
         {
             var r = new Random();
-            if (Salesmen[0].PrimaryValues.Count >= _months.Count()) return; 
+            if (Salesmen[0].Values.Count >= _months.Count()) return; 
             foreach (var salesman in Salesmen)
             {
-                salesman.PrimaryValues.Add(r.Next(0, 10));
+                salesman.Values.Add(r.Next(0, 10));
             }
         }
 
         public void RemoveLastMonth()
         {
-            if (Salesmen[0].PrimaryValues.Count == 2) return;
+            if (Salesmen[0].Values.Count == 2) return;
             foreach (var salesman in Salesmen)
             {
-                salesman.PrimaryValues.RemoveAt(salesman.PrimaryValues.Count - 1);
+                salesman.Values.RemoveAt(salesman.Values.Count - 1);
             }
         }
     }

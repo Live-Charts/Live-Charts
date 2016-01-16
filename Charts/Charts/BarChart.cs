@@ -24,16 +24,16 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
-using LiveCharts.Charts;
+using lvc.Charts;
 
-namespace LiveCharts
+namespace lvc
 {
     public class BarChart : Chart, IBar, ILine
     {
         public BarChart()
         {
-            PrimaryAxis = new Axis();
-            SecondaryAxis = new Axis {Separator = new Separator {Step = 1}};
+            AxisX = new Axis();
+            AxisY = new Axis {Separator = new Separator {Step = 1}};
             Hoverable = true;
             ShapeHoverBehavior = ShapeHoverBehavior.Shape;
             IgnoresLastLabel = true;
@@ -41,129 +41,82 @@ namespace LiveCharts
             LineType = LineChartLineType.Bezier;
             MaxColumnWidth = 60;
             DefaultFillOpacity = 0.75;
-            //no performance config for a bar chart
-            //why? because this chart need to build a bar per point,
-            //I think there is no practicall way to make this work
-            //It is better if final develover groups some of their points.
             PerformanceConfiguration = new PerformanceConfiguration {Enabled = false};
         }
 
-        protected override bool ScaleChanged
-        {
-            get
-            {
-                return GetMax() != Max ||
-                       GetMin() != Min;
-            }
-        }
+        #region Properties
 
         /// <summary>
         /// Gets or sets maximum column width, default is 60
         /// </summary>
         public double MaxColumnWidth { get; set; }
+
+        /// <summary>
+        /// Gets or sets Line Type
+        /// </summary>
         public LineChartLineType LineType { get; set; }
 
-        private Point GetMax()
-        {
-            var p = new Point(
-                Series.Select(x => x.PrimaryValues.Count).DefaultIfEmpty(0).Max(),
-				Series.Select(x => x.PrimaryValues.DefaultIfEmpty(0).Max()).DefaultIfEmpty(0).Max());
-            p.Y = PrimaryAxis.MaxValue ?? p.Y;
-            return p;
-        }
+        #endregion
 
-        private Point GetMin()
-        {
-            var p = new Point(0, Series.Select(x => x.PrimaryValues.DefaultIfEmpty(0).Min()).DefaultIfEmpty(0).Min());
-            p.Y = PrimaryAxis.MinValue ?? p.Y;
-			return p;
-        }
-
-        private Point GetS()
-        {
-            return new Point(
-                SecondaryAxis.Separator.Step ?? CalculateSeparator(Max.X - Min.X, AxisTags.X),
-                PrimaryAxis.Separator.Step ?? CalculateSeparator(Max.Y - Min.Y, AxisTags.Y));
-        }
-
-        protected override void Scale()
-        {
-            Max = GetMax();
-            Min = GetMin();
-            S = GetS();
-
-            foreach (var serie in Series) serie.CalculatePoints();
-
-            //corrected values (includes performance optimization values)
-            Max.X =
-                Series.Select(serie => serie.ChartPoints.Select(x => x.X).DefaultIfEmpty(0).Max())
-                    .DefaultIfEmpty(0).Max() + 1;
-            Max.Y = Series.Select(serie => serie.ChartPoints.Select(x => x.Y).DefaultIfEmpty(0).Max()).DefaultIfEmpty(0).Max();
-            Min.X = Series.Select(serie => serie.ChartPoints.Select(x => x.X).DefaultIfEmpty(0).Min()).DefaultIfEmpty(0).Min();
-            Min.Y = Series.Select(serie => serie.ChartPoints.Select(x => x.Y).DefaultIfEmpty(0).Min()).DefaultIfEmpty(0).Min();
-            S = GetS();
-
-            Max.Y = PrimaryAxis.MaxValue ?? (Math.Truncate(Max.Y / S.Y) + 1) * S.Y;
-            Min.Y = PrimaryAxis.MinValue ?? (Math.Truncate(Min.Y / S.Y) - 1) * S.Y;
-
-            DrawAxis();
-        }
+        #region Overriden Methods
 
         protected override Point GetToolTipPosition(HoverableShape sender, List<HoverableShape> sibilings)
         {
             DataToolTip.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
             var unitW = ToPlotArea(1, AxisTags.X) - PlotArea.X + 5;
-            var overflow = unitW - MaxColumnWidth * 3 > 0 ? unitW - MaxColumnWidth * 3 : 0;
-            unitW = unitW > MaxColumnWidth * 3 ? MaxColumnWidth * 3 : unitW;
+            var overflow = unitW - MaxColumnWidth*3 > 0 ? unitW - MaxColumnWidth*3 : 0;
+            unitW = unitW > MaxColumnWidth*3 ? MaxColumnWidth*3 : unitW;
             var x = sender.Value.X + 1 > (Min.X + Max.X)/2
                 ? ToPlotArea(sender.Value.X, AxisTags.X) + overflow*.5 - DataToolTip.DesiredSize.Width
                 : ToPlotArea(sender.Value.X, AxisTags.X) + unitW + overflow*.5;
             var y = ToPlotArea(sibilings.Select(s => s.Value.Y).DefaultIfEmpty(0).Sum()
-                               / sibilings.Count, AxisTags.Y);
+                               /sibilings.Count, AxisTags.Y);
             y = y + DataToolTip.DesiredSize.Height > ActualHeight
                 ? y - (y + DataToolTip.DesiredSize.Height - ActualHeight) - 5
                 : y;
             return new Point(x, y);
         }
 
-        protected override void DrawAxis()
+        protected override void DrawAxes()
         {
-            ConfigureSmartAxis(SecondaryAxis);
+            ConfigureSmartAxis(AxisY);
 
-            S = GetS();
+            //S = GetS();
 
             Canvas.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
 
-            var lastLabelX = Math.Truncate((Max.X - Min.X) / S.X) * S.X;
-            var longestYLabelSize = GetLongestLabelSize(PrimaryAxis);
-            var fistXLabelSize = GetLabelSize(SecondaryAxis, Min.X);
-            var lastXLabelSize = GetLabelSize(SecondaryAxis, lastLabelX);
+            var lastLabelX = Math.Truncate((Max.X - Min.X)/S.X)*S.X;
+            var longestYLabelSize = GetLongestLabelSize(AxisX);
+            var fistXLabelSize = GetLabelSize(AxisY, Min.X);
+            var lastXLabelSize = GetLabelSize(AxisY, lastLabelX);
 
             const int padding = 5;
 
             var unitW = ToPlotArea(1, AxisTags.X) - PlotArea.X + 5;
-            unitW = unitW > MaxColumnWidth * 3 ? MaxColumnWidth * 3 : unitW;
-            XOffset = unitW / 2;
+            unitW = unitW > MaxColumnWidth*3 ? MaxColumnWidth*3 : unitW;
+            XOffset = unitW/2;
 
             PlotArea.X = padding*2 +
                          (fistXLabelSize.X*0.5 - XOffset > longestYLabelSize.X
                              ? fistXLabelSize.X*0.5 - XOffset
                              : longestYLabelSize.X);
-            PlotArea.Y = longestYLabelSize.Y * .5 + padding;
-            PlotArea.Height = Math.Max(0, Canvas.DesiredSize.Height - (padding * 2 + fistXLabelSize.Y) - PlotArea.Y);
+            PlotArea.Y = longestYLabelSize.Y*.5 + padding;
+            PlotArea.Height = Math.Max(0, Canvas.DesiredSize.Height - (padding*2 + fistXLabelSize.Y) - PlotArea.Y);
             PlotArea.Width = Math.Max(0, Canvas.DesiredSize.Width - PlotArea.X - padding);
             var distanceToEnd = PlotArea.Width - (ToPlotArea(Max.X, AxisTags.X) - ToPlotArea(1, AxisTags.X));
             distanceToEnd -= XOffset + padding;
-			var change = lastXLabelSize.X * .5 - distanceToEnd > 0 ? lastXLabelSize.X * .5 - distanceToEnd : 0;
-	        if (change <= PlotArea.Width)
-		        PlotArea.Width -= change;
+            var change = lastXLabelSize.X*.5 - distanceToEnd > 0 ? lastXLabelSize.X*.5 - distanceToEnd : 0;
+            if (change <= PlotArea.Width)
+                PlotArea.Width -= change;
 
             //calculate it again to get a better result
-            unitW = ToPlotArea(1, AxisTags.X) - PlotArea.X + 5; 
-            unitW = unitW > MaxColumnWidth * 3 ? MaxColumnWidth * 3 : unitW;
-            XOffset = unitW / 2;
+            unitW = ToPlotArea(1, AxisTags.X) - PlotArea.X + 5;
+            unitW = unitW > MaxColumnWidth*3 ? MaxColumnWidth*3 : unitW;
+            XOffset = unitW/2;
 
-            base.DrawAxis();
+            base.DrawAxes();
         }
+
+        #endregion
     }
 }

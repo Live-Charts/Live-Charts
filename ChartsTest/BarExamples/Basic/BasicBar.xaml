@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:liveCharts="clr-namespace:LiveCharts;assembly=LiveCharts"
+             xmlns:liveCharts="clr-namespace:lvc;assembly=LiveCharts"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300"
              Loaded="OnLoaded">
@@ -20,17 +20,17 @@
         <liveCharts:BarChart Name="Chart" Grid.Row="1" Grid.Column="0">
             <liveCharts:BarChart.Series>
                 <liveCharts:SeriesCollection>
-                    <liveCharts:BarSeries Title="Maria"    PrimaryValues="20, 40, 45, 60, 55, 60, 65, 70"/>
-                    <liveCharts:BarSeries Title="John"     PrimaryValues="30, 35, 43, 68, 65 ,70, 55, 60"/>
-                    <liveCharts:LineSeries Title="Averge"  PrimaryValues="25, 37.5, 44, 64, 60, 65, 60, 65" Fill="Transparent" />
+                    <liveCharts:BarSeries Title="Maria"    Values="20, 40, 45, 60, 55, 60, 65, 70"/>
+                    <liveCharts:BarSeries Title="John"     Values="30, 35, 43, 68, 65 ,70, 55, 60"/>
+                    <liveCharts:LineSeries Title="Averge"  Values="25, 37.5, 44, 64, 60, 65, 60, 65" Fill="Transparent" />
                 </liveCharts:SeriesCollection>
             </liveCharts:BarChart.Series>
-            <liveCharts:BarChart.PrimaryAxis>
+            <liveCharts:BarChart.AxisX>
                 <liveCharts:Axis Name="PrimaryAxis" Title="Sold Items"></liveCharts:Axis>
-            </liveCharts:BarChart.PrimaryAxis>
-            <liveCharts:BarChart.SecondaryAxis>
+            </liveCharts:BarChart.AxisX>
+            <liveCharts:BarChart.AxisY>
                 <liveCharts:Axis Title="Month" Labels="Jan, Feb, Mar, Apr, May, Jun, Ago, Sep, Oct, Nov, Dec"></liveCharts:Axis>
-            </liveCharts:BarChart.SecondaryAxis>
+            </liveCharts:BarChart.AxisY>
         </liveCharts:BarChart>
         <liveCharts:SeriesViewer Grid.Row="1" Grid.Column="1" 
                                  Series="{Binding ElementName=Chart, Path=Series}"

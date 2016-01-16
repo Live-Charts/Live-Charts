@@ -20,7 +20,7 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-namespace LiveCharts.Tooltip
+namespace lvc.Tooltip
 {
     /// <summary>
     /// Interaction logic for BaseToolTip.xaml

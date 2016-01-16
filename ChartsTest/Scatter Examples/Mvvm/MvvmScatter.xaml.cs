@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
-using LiveCharts;
+using lvc;
 
 namespace ChartsTest.Scatter_Examples
 {
@@ -17,8 +17,8 @@ namespace ChartsTest.Scatter_Examples
             InitializeComponent();
             Math = new MathViewModel();
             Chart.DataContext = Math.Functions;
-            Chart.SecondaryAxis.MinValue = 0;
-            Chart.PrimaryAxis.MinValue = 0;
+            Chart.AxisY.MinValue = 0;
+            Chart.AxisX.MinValue = 0;
         }
 
         public MathViewModel Math { get; set; }
@@ -78,7 +78,7 @@ namespace ChartsTest.Scatter_Examples
             {
                 new ScatterSeries
                 {
-                    PrimaryValues = new ObservableCollection<double>(_secondaryValues.Select(x => baseFunc(x, 0))),
+                    Values = _secondaryValues.Select(x => baseFunc(x, 0)).AsChartValues(),
                     SecondaryValues = _secondaryValues,
                     PointRadius = 0,
                     StrokeThickness = 4
@@ -92,7 +92,7 @@ namespace ChartsTest.Scatter_Examples
         {
             Functions.Add(new ScatterSeries
             {
-                PrimaryValues = new ObservableCollection<double>(_secondaryValues.Select(x => baseFunc(x, Functions.Count))),
+                Values = _secondaryValues.Select(x => baseFunc(x, Functions.Count)).AsChartValues(),
                 SecondaryValues = _secondaryValues,
                 PointRadius = 0,
                 StrokeThickness = 4
@@ -113,17 +113,17 @@ namespace ChartsTest.Scatter_Examples
             foreach (var func in Functions.Cast<ScatterSeries>())
             {
                 var evaluation = baseFunc(nextVal, Functions.IndexOf(func));
-                func.PrimaryValues.Add(evaluation);
+                func.Values.Add(evaluation);
                 func.SecondaryValues = _secondaryValues;
             }
         }
 
         public void RemoveLastMonth()
         {
-            if (Functions[0].PrimaryValues.Count == 2) return;
+            if (Functions[0].Values.Count == 2) return;
             foreach (var func in Functions)
             {
-                func.PrimaryValues.RemoveAt(func.PrimaryValues.Count - 1);
+                func.Values.RemoveAt(func.Values.Count - 1);
             }
         }
     }

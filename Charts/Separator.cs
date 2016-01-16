@@ -22,7 +22,7 @@
 
 using System.Windows.Media;
 
-namespace LiveCharts
+namespace lvc
 {
     public class Separator
     {

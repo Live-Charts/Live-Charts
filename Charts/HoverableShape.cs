@@ -23,7 +23,7 @@
 using System.Windows;
 using System.Windows.Shapes;
 
-namespace LiveCharts
+namespace lvc
 {
     public class HoverableShape
     {

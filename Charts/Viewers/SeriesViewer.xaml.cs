@@ -2,7 +2,7 @@
 using System.Windows;
 using System.Windows.Controls;
 
-namespace LiveCharts
+namespace lvc
 {
     /// <summary>
     /// Interaction logic for SeriesViewer.xaml

@@ -29,7 +29,7 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 
-namespace LiveCharts
+namespace lvc
 {
 	public class LineSeries : Series
 	{
@@ -49,7 +49,7 @@ namespace LiveCharts
 
         public override void Plot(bool animate = true)
         {
-            foreach (var segment in ChartPoints.AsSegments())
+            foreach (var segment in Points.AsSegments())
             {
                 var s = new List<Shape>();
                 if (LineChart.LineType == LineChartLineType.Bezier)
@@ -310,4 +310,9 @@ namespace LiveCharts
 			return addedFigures;
 		}
 	}
+
+    public class LineSeries<T> : LineSeries
+    {
+
+    }
 }

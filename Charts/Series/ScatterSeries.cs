@@ -30,9 +30,9 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
-using LiveCharts.TypeConverters;
+using lvc.TypeConverters;
 
-namespace LiveCharts
+namespace lvc
 {
     public class ScatterSeries : Series
     {
@@ -57,7 +57,7 @@ namespace LiveCharts
 
         public override void Plot(bool animate = true)
         {
-            foreach (var segment in ChartPoints.AsSegments())
+            foreach (var segment in Points.AsSegments())
             {
                 var points = new List<Point>();
                 foreach (var datapoint in segment)
@@ -280,18 +280,6 @@ namespace LiveCharts
             }
             if (!animated) path.StrokeDashOffset = 0;
             return addedFigures;
-        }
-
-        public override void CalculatePoints()
-        {
-            //ToDo: create a method to support optimizations for scatter chart.
-
-            ChartPoints = new List<Point>();
-
-            var count = Math.Min(PrimaryValues.Count, SecondaryValues.Count);
-            for (int index = 0; index < count; index++)
-                ChartPoints.Add(new Point(SecondaryValues[index], PrimaryValues[index]));
-
         }
     }
 }

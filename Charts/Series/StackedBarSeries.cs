@@ -28,7 +28,7 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 
-namespace LiveCharts
+namespace lvc
 {
     public class StackedBarSeries : Series
     {
@@ -54,15 +54,13 @@ namespace LiveCharts
             const int seriesPadding = 2;
             var barW = unitW - 2 * pointPadding;
 
-            for (var index = 0; index < PrimaryValues.Count; index++)
+            foreach (var point in Points)
             {
-                var d = PrimaryValues[index];
-
                 var t = new TranslateTransform();
 
-                var helper = chart.IndexTotals[index];
+                var helper = chart.IndexTotals[(int) point.X];
                 var barH = ToPlotArea(Chart.Min.Y, AxisTags.Y) - ToPlotArea(helper.Total, AxisTags.Y);
-                var rh = barH * (d / helper.Total);
+                var rh = barH * (point.Y / helper.Total);
                 if (double.IsNaN(rh)) return;
                 var stackedH = barH * (helper.Stacked.ContainsKey(serieIndex) ? (helper.Stacked[serieIndex].Stacked / helper.Total) : 0);
 
@@ -82,9 +80,9 @@ namespace LiveCharts
                     Width = Math.Max(0, barW - seriesPadding),
                     Height = rh
                 };
-                
-                Canvas.SetLeft(r, ToPlotArea(index, AxisTags.X) + pointPadding + overflow/2);
-                Canvas.SetLeft(hr, ToPlotArea(index, AxisTags.X) + pointPadding + overflow / 2);
+
+                Canvas.SetLeft(r, ToPlotArea(point.X, AxisTags.X) + pointPadding + overflow / 2);
+                Canvas.SetLeft(hr, ToPlotArea(point.X, AxisTags.X) + pointPadding + overflow / 2);
                 Canvas.SetTop(hr, ToPlotArea(Chart.Min.Y, AxisTags.Y) - rh - stackedH);
                 Panel.SetZIndex(hr, int.MaxValue);
 
@@ -119,7 +117,7 @@ namespace LiveCharts
                 if (!animated)
                 {
                     r.Height = rh;
-                    if (rAnim.To != null) t.Y = (double) rAnim.To;
+                    if (rAnim.To != null) t.Y = (double)rAnim.To;
                 }
 
                 if (!Chart.Hoverable) continue;
@@ -130,7 +128,7 @@ namespace LiveCharts
                     Series = this,
                     Shape = hr,
                     Target = r,
-                    Value = new Point(index, d)
+                    Value = point
                 });
             }
         }
