@@ -40,21 +40,16 @@ namespace lvc
 	    internal bool RequiresAnimation;
 	    internal bool RequiresPlot;
 
-		protected Series()
-		{
-            Points = new List<Point>();
-		}
-
         #region Dependency Properties
 	    public static readonly DependencyProperty ValuesProperty = DependencyProperty.Register(
-	        "Values", typeof (IChartsValues), typeof (Series), new PropertyMetadata(default(IChartsValues), ValuesCallBack));
+	        "Values", typeof (IChartValues), typeof (Series), new PropertyMetadata(default(IChartValues), ValuesCallBack));
 
-        [TypeConverter(typeof(ValueCollectionConverter))]
-        public IChartsValues Values
+        [TypeConverter(typeof(IndexedChartValuesConverter))]
+        public IChartValues Values
 	    {
 	        get
 	        {
-	            var values = (IChartsValues) GetValue(ValuesProperty);
+	            var values = (IChartValues) GetValue(ValuesProperty);
 #if DEBUG
                 if (DesignerProperties.GetIsInDesignMode(this))
                     if (values == null) values = new IndexedChartValues();
@@ -101,7 +96,6 @@ namespace lvc
 		#endregion
 
 		#region Properties
-		internal IEnumerable<Point> Points { get; set; }
         public Chart Chart
         {
             get { return _chart; }

@@ -78,7 +78,7 @@ namespace ChartsTest.Scatter_Examples
             {
                 new ScatterSeries
                 {
-                    Values = _secondaryValues.Select(x => baseFunc(x, 0)).AsChartValues(),
+                    Values = _secondaryValues.Select(x => baseFunc(x, 0)).AsChartValues(val => 0, val => val),
                     SecondaryValues = _secondaryValues,
                     PointRadius = 0,
                     StrokeThickness = 4
@@ -92,7 +92,7 @@ namespace ChartsTest.Scatter_Examples
         {
             Functions.Add(new ScatterSeries
             {
-                Values = _secondaryValues.Select(x => baseFunc(x, Functions.Count)).AsChartValues(),
+                Values = _secondaryValues.Select(x => baseFunc(x, Functions.Count)).AsChartValues(val => 0, val => val),
                 SecondaryValues = _secondaryValues,
                 PointRadius = 0,
                 StrokeThickness = 4

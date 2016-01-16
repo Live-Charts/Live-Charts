@@ -193,7 +193,9 @@ namespace lvc.Charts
         public static readonly DependencyProperty SeriesProperty = DependencyProperty.Register(
             "Series", typeof (ObservableCollection<Series>), typeof (Chart),
             new PropertyMetadata(null, SeriesChangedCallback ));
-        
+        /// <summary>
+        /// Gets or sets chart series to plot
+        /// </summary>
         public ObservableCollection<Series> Series
         {
             get { return (ObservableCollection<Series>) GetValue(SeriesProperty); }
@@ -202,13 +204,33 @@ namespace lvc.Charts
         #endregion
 
         #region Properties
+        /// <summary>
+        /// Gets chart canvas
+        /// </summary>
         public Canvas Canvas { get; internal set; }
+        /// <summary>
+        /// Gets chart point offset
+        /// </summary>
         public double XOffset { get; internal set; }
+        /// <summary>
+        /// Gets current set of shapes added to canvas by LiveCharts
+        /// </summary>
         public List<FrameworkElement> Shapes { get; internal set; }
+        /// <summary>
+        /// Gets collection of shapes that fires tooltip on hover
+        /// </summary>
         public List<HoverableShape> HoverableShapes { get; internal set; } 
-
+        /// <summary>
+        /// Gets or sets X Axis
+        /// </summary>
         public Axis AxisX { get; set; }
+        /// <summary>
+        /// Gets or sets Y Axis
+        /// </summary>
         public Axis AxisY { get; set; }
+        /// <summary>
+        /// Gets or sets current tooltip when mouse is over a hoverable shape
+        /// </summary>
         public UIElement DataToolTip
         {
             get { return _dataToolTip; }
@@ -223,9 +245,14 @@ namespace lvc.Charts
                 Canvas.Children.Add(_dataToolTip);
             }
         }
+        /// <summary>
+        /// Gets or set current performance configuration
+        /// </summary>
         public PerformanceConfiguration PerformanceConfiguration { get; set; }
+        /// <summary>
+        /// Gets or sets if chart allows zooming or not
+        /// </summary>
         public bool Zooming { get; set; }
-        public double AreaOpacity { get; set; }
         #endregion
 
         #region ProtectedProperties
@@ -398,19 +425,17 @@ namespace lvc.Charts
                 Series.Select(x => x.Values.Max.Y).DefaultIfEmpty(0).Max());
 
             var min = new Point(Series.Select(x => x.Values.Min.X).DefaultIfEmpty(0).Min(),
-                Series.Select(x => x.Values.Max.Y).DefaultIfEmpty(0).Min());
+                Series.Select(x => x.Values.Min.Y).DefaultIfEmpty(0).Min());
 
-            min.X = AxisX.MinValue ?? min.X;
-            max.X = AxisX.MaxValue ?? max.X;
+            Min.X = AxisX.MinValue ?? min.X;
+            Max.X = AxisX.MaxValue ?? max.X;
 
-            min.Y = AxisY.MinValue ?? min.Y;
-            max.Y = AxisY.MaxValue ?? max.Y;
+            Min.Y = AxisY.MinValue ?? min.Y;
+            Max.Y = AxisY.MaxValue ?? max.Y;
 
             S = new Point(
                 AxisY.Separator.Step ?? CalculateSeparator(Max.X - Min.X, AxisTags.X),
                 AxisX.Separator.Step ?? CalculateSeparator(Max.Y - Min.Y, AxisTags.Y));
-
-            Max = max;
         }
         #endregion
 
@@ -814,8 +839,8 @@ namespace lvc.Charts
             
             if (chart == null || chart.Series == null) return;
 
-            var xs = chart.Series.SelectMany(x => x.Points.Select(pt => pt.X)).DefaultIfEmpty(0).ToArray();
-            var ys = chart.Series.SelectMany(x => x.Points.Select(pt => pt.Y)).DefaultIfEmpty(0).ToArray();
+            var xs = chart.Series.SelectMany(x => x.Values.Points.Select(pt => pt.X)).DefaultIfEmpty(0).ToArray();
+            var ys = chart.Series.SelectMany(x => x.Values.Points.Select(pt => pt.Y)).DefaultIfEmpty(0).ToArray();
 
             chart.Min = new Point(xs.Min(), ys.Min());
             chart.Max = new Point(xs.Max(), ys.Max());
@@ -924,7 +949,7 @@ namespace lvc.Charts
                 serie.First().Erase();
             }
             EraseSerieBuffer.Clear();
-            var toPlot = Series.Where(x => x.RequiresPlot).ToList();
+            var toPlot = Series.Where(x => x.RequiresPlot);
             foreach (var serie in toPlot)
             {
                 serie.Plot(serie.RequiresAnimation);

@@ -54,7 +54,7 @@ namespace lvc
             const int seriesPadding = 2;
             var barW = unitW - 2 * pointPadding;
 
-            foreach (var point in Points)
+            foreach (var point in Values.Points)
             {
                 var t = new TranslateTransform();
 

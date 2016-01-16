@@ -1,6 +1,6 @@
 ﻿//The MIT License(MIT)
 
-//Copyright(c) 2015 Greg Dennis
+//Copyright(c) 2015 Greg Dennis & Beto Rodríguez
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -21,14 +21,13 @@
 //SOFTWARE.
 
 using System;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
 
 namespace lvc.TypeConverters
 {
-	internal class ValueCollectionConverter : TypeConverter
+	internal class IndexedChartValuesConverter : TypeConverter
 	{
 		public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
 		{
@@ -40,11 +39,11 @@ namespace lvc.TypeConverters
 			var valueString = value as string;
 			if (valueString != null)
 			{
-			    var values = valueString.Split(new[] {',', ' '}, StringSplitOptions.RemoveEmptyEntries)
-			        .Select(d => double.Parse(d, CultureInfo.InvariantCulture));
-                var series = new IndexedChartValues();
-                series.AddRange(values);
-				return series;
+			    var v = valueString
+			        .Split(new[] {',', ' '}, StringSplitOptions.RemoveEmptyEntries)
+			        .Select(d => double.Parse(d, CultureInfo.InvariantCulture))
+			        .AsChartValues((val, index) => index, val => val);
+                return v;
 			}
 			return base.ConvertFrom(context, culture, value);
 		}

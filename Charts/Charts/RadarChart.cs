@@ -43,7 +43,6 @@ namespace lvc
             Hoverable = true;
             ShapeHoverBehavior = ShapeHoverBehavior.Dot;
             AlphaLabel = true;
-            AreaOpacity = .2;
             MinInnerRadius = 10;
         }
 

@@ -71,7 +71,7 @@ namespace ChartsTest.StackedBarExamples
                 new StackedBarSeries
                 {
                     Title = "John",
-                    Values = new[] {2d, 4, 7, 1, 5}.AsChartValues()
+                    Values = new[] {2d, 4, 7, 1, 5}.AsChartValues(val => 0, val => val)
                 }
             };
         }
@@ -90,7 +90,7 @@ namespace ChartsTest.StackedBarExamples
             Salesmen.Add(new StackedBarSeries
             {
                 Title = _names[r.Next(0, _names.Count() - 1)],
-                Values = values.AsChartValues()
+                Values = values.AsChartValues(val => 0, val => val)
             });
         }
 

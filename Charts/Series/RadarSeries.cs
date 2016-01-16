@@ -54,10 +54,10 @@ namespace lvc
 
             Point? p2 = null;
 
-            if (!Points.Any()) return;
-            var lastPoint = Points.Last();
-            var fisrtPoint = Points.First();
-            foreach (var point in Points)
+            if (!Values.Points.Any()) return;
+            var lastPoint = Values.Points.Last();
+            var fisrtPoint = Values.Points.First();
+            foreach (var point in Values.Points)
             {
                 var r1 = point != lastPoint
                     ? chart.ToChartRadius(point.Y)

@@ -1,24 +1,27 @@
+using System;
 using System.Collections.Generic;
 
 namespace lvc
 {
     public static class LiveChartsValuesExtentions
     {
-        public static void AddRange(this IndexedChartValues chartValues, IEnumerable<double> toAdd)
+        public static ChartValues<T> AsChartValues<T>(this IEnumerable<T> values, Func<T, int, double> x, Func<T, int, double> y)
         {
-            foreach(var element in toAdd) chartValues.Add(element);
-        }
-
-        public static void AddRange<T>(this SeriesValues<T> values, IEnumerable<T> toAdd) where T : class
-        {
-            foreach (var element in toAdd) values.Add(element);
-        }
-
-        public static IndexedChartValues AsChartValues(this IEnumerable<double> values)
-        {
-            var l = new IndexedChartValues();
+            var l = new ChartValues<T>().PullX(x).PullY(y);
             l.AddRange(values);
             return l;
+        }
+        public static ChartValues<T> AsChartValues<T>(this IEnumerable<T> values, Func<T, double> x, Func<T, double> y)
+        {
+            return values.AsChartValues((val, i) => x(val), (val, i) => y(val));
+        }
+        public static ChartValues<T> AsChartValues<T>(this IEnumerable<T> values, Func<T, int, double> x, Func<T, double> y)
+        {
+            return values.AsChartValues(x, (val, i) => y(val));
+        }
+        public static ChartValues<T> AsChartValues<T>(this IEnumerable<T> values, Func<T, double> x, Func<T, int, double> y)
+        {
+            return values.AsChartValues((val, i) => x(val), y);
         }
     }
 }

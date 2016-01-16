@@ -45,7 +45,7 @@ namespace lvc
 		public static readonly DependencyProperty SecondaryValuesProperty =
 			DependencyProperty.Register("SecondaryValues", typeof(IList<double>), typeof(ScatterSeries), new PropertyMetadata(new ObservableCollection<double>()));
 
-		[TypeConverter(typeof(ValueCollectionConverter))]
+		[TypeConverter(typeof(IndexedChartValuesConverter))]
 		public IList<double> SecondaryValues
 		{
 			get { return (IList<double>)GetValue(SecondaryValuesProperty); }
@@ -57,7 +57,7 @@ namespace lvc
 
         public override void Plot(bool animate = true)
         {
-            foreach (var segment in Points.AsSegments())
+            foreach (var segment in Values.Points.AsSegments())
             {
                 var points = new List<Point>();
                 foreach (var datapoint in segment)

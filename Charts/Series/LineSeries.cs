@@ -49,7 +49,7 @@ namespace lvc
 
         public override void Plot(bool animate = true)
         {
-            foreach (var segment in Points.AsSegments())
+            foreach (var segment in Values.Points.AsSegments())
             {
                 var s = new List<Shape>();
                 if (LineChart.LineType == LineChartLineType.Bezier)

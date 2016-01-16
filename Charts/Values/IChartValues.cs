@@ -5,7 +5,7 @@ using System.Windows;
 
 namespace lvc
 {
-    public interface IChartsValues : IList, INotifyCollectionChanged
+    public interface IChartValues : IList, INotifyCollectionChanged
     {
         IEnumerable<Point> Points { get; }
         Point Max { get; }

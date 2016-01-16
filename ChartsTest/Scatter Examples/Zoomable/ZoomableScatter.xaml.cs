@@ -14,7 +14,7 @@ namespace ChartsTest.Scatter_Examples
             var secondaryValues = new List<double>();
             for (double i = 0; i <= 1080; i += 36) secondaryValues.Add(i);
             var s1 = secondaryValues.Select(Math.Sin).ToList();
-            Serie1.Values = s1.AsChartValues();
+            Serie1.Values = s1.AsChartValues(val => 0, val => val);
             Serie1.SecondaryValues = secondaryValues;
             Chart.AxisX.MaxValue = s1.Max();
             Chart.AxisX.MinValue = s1.Min();

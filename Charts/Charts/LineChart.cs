@@ -39,7 +39,6 @@ namespace lvc
             LineType = LineChartLineType.Bezier;
             Hoverable = true;
             ShapeHoverBehavior = ShapeHoverBehavior.Dot;
-            AreaOpacity = 0.2;
         }
 
         #region Properties

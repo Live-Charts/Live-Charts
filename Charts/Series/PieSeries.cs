@@ -91,7 +91,7 @@ namespace lvc
                         Color = Colors != null && Colors.Length > sliceId
                             ? Colors[sliceId]
                             : GetColorByIndex(sliceId),
-                        Opacity = Chart.AreaOpacity
+                        Opacity = 1
                     },
                     Stroke = Chart.Background,
                     StrokeThickness = pChart.SlicePadding

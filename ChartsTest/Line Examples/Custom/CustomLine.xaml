@@ -18,7 +18,7 @@
         </Grid.RowDefinitions>
         <TextBlock Grid.Row="0" HorizontalAlignment="Center" Grid.ColumnSpan="2" Margin="5" Foreground="White">
             Polyline and Custom Style</TextBlock>
-        <liveCharts:LineChart Name="Chart" Grid.Row="1" Grid.Column="0" AreaOpacity=".1" LineType="Polyline">
+        <liveCharts:LineChart Name="Chart" Grid.Row="1" Grid.Column="0" LineType="Polyline">
             <liveCharts:LineChart.DataToolTip>
                 <customTooltips:CustomIndexedTooltip x:Name="CustomTooltip"/>
             </liveCharts:LineChart.DataToolTip>

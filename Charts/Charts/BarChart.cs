@@ -37,7 +37,6 @@ namespace lvc
             Hoverable = true;
             ShapeHoverBehavior = ShapeHoverBehavior.Shape;
             IgnoresLastLabel = true;
-            AreaOpacity = .8;
             LineType = LineChartLineType.Bezier;
             MaxColumnWidth = 60;
             DefaultFillOpacity = 0.75;

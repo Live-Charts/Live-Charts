@@ -44,7 +44,6 @@ namespace lvc
             Hoverable = true;
             ShapeHoverBehavior = ShapeHoverBehavior.Dot;
             AnimatesNewPoints = true;
-            AreaOpacity = 0.2;
             LineType = LineChartLineType.Bezier;
             DataToolTip = new DefaultScatterTooltip();
         }
