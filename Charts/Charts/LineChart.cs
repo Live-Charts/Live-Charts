@@ -49,6 +49,16 @@ namespace lvc
 
         #region Overriden Methods
 
+        protected override void Scale()
+        {
+            base.Scale();
+
+            Max.Y = AxisY.MaxValue ?? (Math.Truncate(Max.Y / S.Y) + 1) * S.Y;
+            Min.Y = AxisY.MinValue ?? (Math.Truncate(Min.Y / S.Y) - 1) * S.Y;
+
+            DrawAxes();
+        }
+
         protected override void DrawAxes()
         {
             if (Math.Abs(S.X) <= Min.X*.01 || Math.Abs(S.Y) <= Min.Y*.01) return;

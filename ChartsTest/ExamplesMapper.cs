@@ -18,10 +18,10 @@ namespace ChartsTest
         {
             LineAndAreaAexamples = new List<UserControl>
             {
-                new BasicLine(),
+                //new BasicLine(),
                 //new CustomLine(),
                 //new ZoomableLine(),
-                //new BindingLine(),
+                new BindingLine(),
                 //new UiElementsLine(),
                 //new MvvmLine(),
                 //new LazyDataLine(),

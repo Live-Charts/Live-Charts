@@ -56,7 +56,10 @@ namespace lvc
 #endif
                 return values;
 	        }
-	        set { SetValue(ValuesProperty, value); }
+            set
+            {
+                SetValue(ValuesProperty, value);
+            }
 	    }
 
         public static readonly DependencyProperty TitleProperty =

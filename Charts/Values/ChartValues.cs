@@ -15,12 +15,18 @@ namespace lvc
         private Point _max = new Point(double.MinValue, double.MinValue);
         private int _xIndexer;
         private int _yIndexer;
+        private bool _hasChanged;
+        private string _title;
+        private Func<T, int, double> _xMapper;
+        private Func<T, int, double> _yMapper;
 
         public ChartValues()
         {
             CollectionChanged += OnCollectionChanged;
+            XMapper = (x, i) => i;
         }
 
+        #region Properties
         internal Chart Chart { get; set; }
         public IEnumerable<Point> Points
         {
@@ -29,39 +35,70 @@ namespace lvc
                 return Optimize();
             }
         }
-        public Point Max { get { return _max; } }
-        public Point Min { get { return _min; } }
-        public Func<T, int, double> XMapp { get; set; }
-        public Func<T, int, double> YMapp { get; set; }
-        protected Func<ChartValues<T>, IEnumerable<Point>> Optimization { get; set; } 
+        public Point MaxChartPoint { get { return _max; } }
+        public Point MinChartPoint { get { return _min; } }
 
-        public void AddRange(IEnumerable<T> collection)
+        public Func<T, int, double> XMapper
+        {
+            get { return _xMapper; }
+            set
+            {
+                _xMapper = value;
+                if (_hasChanged && value != null && YMapper != null) EvaluateAllPoints();
+            }
+        }
+
+        public Func<T, int, double> YMapper
+        {
+            get { return _yMapper; }
+            set
+            {
+                _yMapper = value;
+                if (_hasChanged && value != null && XMapper != null) EvaluateAllPoints();
+            }
+        }
+
+        public string Title
+        {
+            get { return _title; }
+            set
+            {
+                _title = value;
+                OnPropertyChanged(new PropertyChangedEventArgs("Title"));
+            }
+        }
+
+        protected Func<ChartValues<T>, IEnumerable<Point>> Optimization { get; set; }
+        #endregion
+
+        public ChartValues<T> AddRange(IEnumerable<T> collection)
         {
             CheckReentrancy();
             foreach (var item in collection) Items.Add(item);
             OnPropertyChanged(new PropertyChangedEventArgs("Count"));
             OnPropertyChanged(new PropertyChangedEventArgs("Item[]"));
             OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
+            return this;
         }
 
-        public ChartValues<T> PullX(Func<T, double> predicate)
+        public ChartValues<T> X(Func<T, double> predicate)
         {
-            XMapp = (x, i) => predicate(x);
+            XMapper = (x, i) => predicate(x);
             return this;
         }
-        public ChartValues<T> PullX(Func<T, int, double> predicate)
+        public ChartValues<T> X(Func<T, int, double> predicate)
         {
-            XMapp = predicate;
+            XMapper = predicate;
             return this;
         }
-        public ChartValues<T> PullY(Func<T, double> predicate)
+        public ChartValues<T> Y(Func<T, double> predicate)
         {
-            YMapp = (x,i) => predicate(x);
+            YMapper = (x,i) => predicate(x);
             return this;
         }
-        public ChartValues<T> PullY(Func<T, int, double> predicate)
+        public ChartValues<T> Y(Func<T, int, double> predicate)
         {
-            YMapp = predicate;
+            YMapper = predicate;
             return this;
         }
 
@@ -69,30 +106,22 @@ namespace lvc
         {
             Optimization = optimization;
             return this;
-        } 
+        }
+
+        public ChartValues<T> WithTitle(string title)
+        {
+            Title = Title;
+            return this;
+        }
 
         private void OnCollectionChanged(object sender, NotifyCollectionChangedEventArgs args)
         {
-            if (XMapp == null || YMapp == null)
-                throw new InvalidEnumArgumentException("XMapp and YMapp properties can not be null");
-
-            var optimized = Optimize().ToArray();
-
-            var xs = optimized.Select(x => x.X).ToArray();
-
-            var xMax = xs.Max();
-            var xMin = xs.Min();
-
-            _min.X = xMin < _min.X ? xMin : _min.X;
-            _max.X = xMax > _max.X ? xMax : _max.X;
-
-            var ys = optimized.Select(x => x.Y).ToArray();
-
-            var yMax = ys.Max();
-            var yMin = ys.Min();
-
-            _min.Y = yMin < _min.Y ? yMin : _min.Y;
-            _max.Y = yMax > _max.Y ? yMax : _max.Y;
+            if (XMapper == null || YMapper == null)
+            {
+                _hasChanged = true;
+                return;
+            }
+            EvaluateAllPoints();   
         }
 
         private IEnumerable<Point> Optimize()
@@ -100,8 +129,29 @@ namespace lvc
             _xIndexer = 0;
             _yIndexer = 0;
             return Optimization == null
-                ? this.Select(value => new Point(XMapp(value, _xIndexer++), YMapp(value, _yIndexer++)))
+                ? this.Select(value => new Point(XMapper(value, _xIndexer++), YMapper(value, _yIndexer++)))
                 : Optimization(this);
+        }
+
+        private void EvaluateAllPoints()
+        {
+            var optimized = Optimize().ToArray();
+
+            var xs = optimized.Select(x => x.X).ToArray();
+
+            var xMax = xs.Max();
+            var xMin = xs.Min();
+
+            _min.X = xMin;
+            _max.X = xMax;
+
+            var ys = optimized.Select(x => x.Y).ToArray();
+
+            var yMax = ys.Max();
+            var yMin = ys.Min();
+
+            _min.Y = yMin;
+            _max.Y = yMax;
         }
 
         public sealed override event NotifyCollectionChangedEventHandler CollectionChanged
@@ -132,8 +182,8 @@ namespace lvc
             }
         }
 
-        public Point Max { get { return _max; } }
-        public Point Min { get { return _min; } }
+        public Point MaxChartPoint { get { return _max; } }
+        public Point MinChartPoint { get { return _min; } }
 
         public void AddRange(IEnumerable<double> collection)
         {

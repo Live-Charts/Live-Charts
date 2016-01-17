@@ -28,7 +28,7 @@
                 <liveCharts:Axis Title="Sold Items"></liveCharts:Axis>
             </liveCharts:LineChart.AxisX>
             <liveCharts:LineChart.AxisY>
-                <liveCharts:Axis Title="Month" Labels="Jan, Feb, Mar, Apr, May, Jun, Ago, Sep, Oct, Nov, Dec"></liveCharts:Axis>
+                <liveCharts:Axis Title="Month"></liveCharts:Axis>
             </liveCharts:LineChart.AxisY>
         </liveCharts:LineChart>
         <liveCharts:SeriesViewer Grid.Row="1" Grid.Column="1" 

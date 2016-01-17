@@ -7,7 +7,7 @@ namespace lvc
     {
         public static ChartValues<T> AsChartValues<T>(this IEnumerable<T> values, Func<T, int, double> x, Func<T, int, double> y)
         {
-            var l = new ChartValues<T>().PullX(x).PullY(y);
+            var l = new ChartValues<T>().X(x).Y(y);
             l.AddRange(values);
             return l;
         }

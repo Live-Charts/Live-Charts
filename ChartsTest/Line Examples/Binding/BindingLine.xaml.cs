@@ -1,21 +1,54 @@
 ﻿using System;
-using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows;
 using System.Windows.Threading;
+using lvc;
 
 namespace ChartsTest.Line_Examples
 {
     public partial class BindingLine
     {
-        public BindingLineViewModel ViewModel { get; set; }
+        public WeatherViewModel ViewModel { get; set; }
         public BindingLine()
         {
             InitializeComponent();
-            ViewModel = new BindingLineViewModel
+
+            Func<int, DateTime> buildADate = x =>
             {
-                FirstSeries = new ObservableCollection<double> { 2, 4, double.NaN, 7, 8, 6, 2, 4, 2, 5 },
-                SecondSeries = new ObservableCollection<double> { 7, 3, 4, 1, 5, 6, 8, 5, 1, 3 }
+                return DateTime.Now + TimeSpan.FromDays(x);
             };
+
+            var tokio = new ChartValues<WeatherDay>()
+                .WithTitle("Tokio") // set a title for the values
+                .Y(day => day.Temperature) //idicate which property to use as Y
+                .AddRange(new[]
+                {
+                    new WeatherDay {DateTime = buildADate(-5), Temperature = 15},
+                    new WeatherDay {DateTime = buildADate(-4), Temperature = 18},
+                    new WeatherDay {DateTime = buildADate(-3), Temperature = 20},
+                    new WeatherDay {DateTime = buildADate(-2), Temperature = 25},
+                    new WeatherDay {DateTime = buildADate(-1), Temperature = 22},
+                    new WeatherDay {DateTime = buildADate(0), Temperature = 19}
+                });
+            var newYork = new ChartValues<WeatherDay>()
+                .WithTitle("New York")
+                .Y(day => day.Temperature)
+                .AddRange(new[]
+                {
+                    new WeatherDay {DateTime = buildADate(-5), Temperature = 9},
+                    new WeatherDay {DateTime = buildADate(-4), Temperature = 13},
+                    new WeatherDay {DateTime = buildADate(-3), Temperature = 15},
+                    new WeatherDay {DateTime = buildADate(-2), Temperature = 16},
+                    new WeatherDay {DateTime = buildADate(-1), Temperature = 15},
+                    new WeatherDay {DateTime = buildADate(0), Temperature = 13}
+                });
+
+            ViewModel = new WeatherViewModel
+            {
+                Tokio = tokio,
+                NewYork = newYork
+            };
+
             DataContext = this;
         }
 
@@ -41,7 +74,13 @@ namespace ChartsTest.Line_Examples
         }
     }
 
-    public class BindingLineViewModel
+    public class WeatherDay
+    {
+        public DateTime DateTime { get; set; }
+        public double Temperature { get; set; }
+    }
+
+    public class WeatherViewModel
     {
         private Random _random = new Random();
         //live charts requires at least 100 ms without changes to update the chart
@@ -51,32 +90,47 @@ namespace ChartsTest.Line_Examples
         private DispatcherTimer _timer = new DispatcherTimer {Interval = TimeSpan.FromMilliseconds(150)};
         private bool _isWild;
 
-        public BindingLineViewModel()
+        public WeatherViewModel()
         {
             _timer.Tick += (sender, args) =>
             {
-                var r = _random.NextDouble();
-                FirstSeries.RemoveAt(0);
-                FirstSeries.Add(r > 0.95 ? double.NaN : _random.Next(1, 10));
-                SecondSeries.RemoveAt(0);
-                SecondSeries.Add(r > 0.95 ? double.NaN : _random.Next(1, 10));
+                Tokio.RemoveAt(0);
+                Tokio.Add(new WeatherDay
+                {
+                    DateTime = Tokio.Last().DateTime + TimeSpan.FromDays(1),
+                    Temperature = _random.Next(-10, 39)
+                });
+                NewYork.RemoveAt(0);
+                NewYork.Add(new WeatherDay
+                {
+                    DateTime = NewYork.Last().DateTime + TimeSpan.FromDays(1),
+                    Temperature = _random.Next(-10, 39)
+                });
             };
         }
 
-        public ObservableCollection<double> FirstSeries { get; set; }
-        public ObservableCollection<double> SecondSeries { get; set; }
+        public ChartValues<WeatherDay> Tokio { get; set; }
+        public ChartValues<WeatherDay> NewYork { get; set; }
 
         public void AddValue()
         {
-            FirstSeries.Add(_random.Next(1,10));
-            SecondSeries.Add(_random.Next(1,10));
+            Tokio.Add(new WeatherDay
+            {
+                DateTime = Tokio.Last().DateTime + TimeSpan.FromDays(1),
+                Temperature = _random.Next(-10, 39)
+            });
+            NewYork.Add(new WeatherDay
+            {
+                DateTime = Tokio.Last().DateTime + TimeSpan.FromDays(1),
+                Temperature = _random.Next(-10, 39)
+            });
         }
 
         public void RemoveValue()
         {
-            if (FirstSeries.Count < 3) return;
-            FirstSeries.RemoveAt(0);
-            SecondSeries.RemoveAt(0);
+            if (Tokio.Count < 3) return;
+            Tokio.RemoveAt(0);
+            NewYork.RemoveAt(0);
         }
 
         public void GoWild()

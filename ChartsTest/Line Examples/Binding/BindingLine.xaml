@@ -37,7 +37,7 @@
         <liveCharts:LineChart Name="Chart" Grid.Row="1" Grid.Column="0">
             <liveCharts:LineChart.Series>
                <liveCharts:SeriesCollection>
-                    <liveCharts:LineSeries Title="Maria" Values="{Binding ViewModel.FirstSeries}" StrokeThickness="4" PointRadius="6" Stroke="IndianRed">
+                    <liveCharts:LineSeries Title="Tokio" Values="{Binding ViewModel.Tokio}" StrokeThickness="4" PointRadius="6" Stroke="IndianRed">
                         <liveCharts:LineSeries.Fill>
                             <LinearGradientBrush EndPoint=".5,1" StartPoint="1,0">
                                 <GradientStop Color="#4CCD5C5C" Offset="1"/>
@@ -45,7 +45,7 @@
                             </LinearGradientBrush>
                         </liveCharts:LineSeries.Fill>
                     </liveCharts:LineSeries>
-                    <liveCharts:LineSeries Name="Serie2" Title="John" Values="{Binding ViewModel.SecondSeries}" StrokeThickness="4" PointRadius="6" Stroke="CornflowerBlue">
+                    <liveCharts:LineSeries Title="New York" Values="{Binding ViewModel.NewYork}" StrokeThickness="4" PointRadius="6" Stroke="CornflowerBlue">
                         <liveCharts:LineSeries.Fill>
                             <LinearGradientBrush EndPoint=".5,1" StartPoint="1,0">
                                 <GradientStop Color="#4C6495ED" Offset="1"/>

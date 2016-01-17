@@ -421,11 +421,11 @@ namespace lvc.Charts
 
         protected virtual void Scale()
         {
-            var max = new Point(Series.Select(x => x.Values.Max.X).DefaultIfEmpty(0).Max(),
-                Series.Select(x => x.Values.Max.Y).DefaultIfEmpty(0).Max());
+            var max = new Point(Series.Select(x => x.Values.MaxChartPoint.X).DefaultIfEmpty(0).Max(),
+                Series.Select(x => x.Values.MaxChartPoint.Y).DefaultIfEmpty(0).Max());
 
-            var min = new Point(Series.Select(x => x.Values.Min.X).DefaultIfEmpty(0).Min(),
-                Series.Select(x => x.Values.Min.Y).DefaultIfEmpty(0).Min());
+            var min = new Point(Series.Select(x => x.Values.MinChartPoint.X).DefaultIfEmpty(0).Min(),
+                Series.Select(x => x.Values.MinChartPoint.Y).DefaultIfEmpty(0).Min());
 
             Min.X = AxisX.MinValue ?? min.X;
             Max.X = AxisX.MaxValue ?? max.X;
@@ -839,13 +839,15 @@ namespace lvc.Charts
             
             if (chart == null || chart.Series == null) return;
 
+            chart.InitializeSeries(chart);
+
+            if (chart.Series.Any(x => x.Values == null)) return;
+
             var xs = chart.Series.SelectMany(x => x.Values.Points.Select(pt => pt.X)).DefaultIfEmpty(0).ToArray();
             var ys = chart.Series.SelectMany(x => x.Values.Points.Select(pt => pt.Y)).DefaultIfEmpty(0).ToArray();
 
             chart.Min = new Point(xs.Min(), ys.Min());
             chart.Max = new Point(xs.Max(), ys.Max());
-
-            chart.InitializeSeries(chart);
         }
 
         private void InitializeSeries(Chart chart)
