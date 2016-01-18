@@ -44,8 +44,6 @@ namespace lvc
             DrawPadding = 20;
             Background = Brushes.White;
             AnimatesNewPoints = true;
-
-            PerformanceConfiguration = new PerformanceConfiguration {Enabled = false};
         }
 
         #region Dependency Properties

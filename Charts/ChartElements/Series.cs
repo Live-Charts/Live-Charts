@@ -53,7 +53,7 @@ namespace lvc
 	            var values = (IChartValues) GetValue(ValuesProperty);
 #if DEBUG
                 if (DesignerProperties.GetIsInDesignMode(this))
-                    if (values == null) values = new IndexedChartValues();
+                    if (values == null) values = new ChartValues<double>();
 #endif
                 return values;
 	        }
@@ -63,7 +63,7 @@ namespace lvc
             }
 	    }
 
-        public ISeriesCollection SeriesCollection { get; internal set; }
+        public ISeriesCollection Collection { get; internal set; }
 
         public static readonly DependencyProperty TitleProperty =
            DependencyProperty.Register("Title", typeof(string), typeof(Series), new PropertyMetadata("An Unnamed Serie"));

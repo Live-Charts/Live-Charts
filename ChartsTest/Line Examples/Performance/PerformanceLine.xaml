@@ -19,9 +19,7 @@
         </TextBlock>
         <liveCharts:LineChart Name="Chart" Grid.Row="1" Grid.Column="0" Zooming="True">
             <liveCharts:LineChart.Series>
-                <liveCharts:SeriesCollection>
-                    <liveCharts:LineSeries Title="{Binding Name}" Values="{Binding Values}" StrokeThickness="4" PointRadius="0"></liveCharts:LineSeries>
-                </liveCharts:SeriesCollection>
+                <liveCharts:LineSeries Title="{Binding Name}" Values="{Binding Values}" StrokeThickness="4" PointRadius="0"></liveCharts:LineSeries>
             </liveCharts:LineChart.Series>
             <liveCharts:LineChart.AxisX>
                 <liveCharts:Axis></liveCharts:Axis>

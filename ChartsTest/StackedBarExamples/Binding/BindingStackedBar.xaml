@@ -19,8 +19,7 @@
         </TextBlock>
         <liveCharts:StackedBarChart Name="Chart" Grid.Row="1" Grid.Column="0">
             <liveCharts:StackedBarChart.Series>
-                <liveCharts:SeriesCollection>
-                    <liveCharts:StackedBarSeries Name="Serie1" Title="Maria" Values="{Binding ViewModel.FirstSeries}" Stroke="IndianRed">
+                <liveCharts:StackedBarSeries Name="Serie1" Title="Maria" Values="{Binding ViewModel.FirstSeries}" Stroke="IndianRed">
                         <liveCharts:StackedBarSeries.Fill>
                             <LinearGradientBrush EndPoint=".5,1" StartPoint="1,0">
                                 <GradientStop Color="IndianRed" Offset="1"/>
@@ -28,15 +27,14 @@
                             </LinearGradientBrush>
                         </liveCharts:StackedBarSeries.Fill>
                     </liveCharts:StackedBarSeries>
-                    <liveCharts:StackedBarSeries Name="Serie2" Title="John" Values="{Binding ViewModel.SecondSeries}" Stroke="CornflowerBlue">
-                        <liveCharts:StackedBarSeries.Fill>
-                            <LinearGradientBrush EndPoint=".5,1" StartPoint="1,0">
-                                <GradientStop Color="CornflowerBlue" Offset="1"/>
-                                <GradientStop Color="#3174ED" Offset="0.5"/>
-                            </LinearGradientBrush>
-                        </liveCharts:StackedBarSeries.Fill>
-                    </liveCharts:StackedBarSeries>
-                </liveCharts:SeriesCollection>
+                <liveCharts:StackedBarSeries Name="Serie2" Title="John" Values="{Binding ViewModel.SecondSeries}" Stroke="CornflowerBlue">
+                    <liveCharts:StackedBarSeries.Fill>
+                        <LinearGradientBrush EndPoint=".5,1" StartPoint="1,0">
+                            <GradientStop Color="CornflowerBlue" Offset="1"/>
+                            <GradientStop Color="#3174ED" Offset="0.5"/>
+                        </LinearGradientBrush>
+                    </liveCharts:StackedBarSeries.Fill>
+                </liveCharts:StackedBarSeries>
             </liveCharts:StackedBarChart.Series>
             <liveCharts:StackedBarChart.AxisX>
                 <liveCharts:Axis IsEnabled="False" PrintLabels="False">

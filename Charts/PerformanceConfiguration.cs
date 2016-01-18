@@ -43,40 +43,4 @@ namespace lvc
         /// </summary>
         public int PixelsPerPoint { get; set; }
     }
-
-    public static class PerformanceConfigurationExtentions
-    {
-        public static List<Point> OptimizeForIndexedChart(this IEnumerable<Point> points, Chart chart)
-        {
-            var isFirst = true;
-            var result = new List<Point>();
-            var ppp = chart.PerformanceConfiguration.PixelsPerPoint;
-            double? x = null;
-            var g = new List<Point>();
-            foreach (var point in points)
-            {
-                var chartValue = chart.ToPlotArea(point.X,AxisTags.X);
-                if (x == null) x = chartValue;
-                if (chartValue - x < ppp)
-                {
-                    g.Add(point);
-                    continue;
-                }
-                //ToDo: Think about this:
-                //average seems the best "general" method, but maybe a developer
-                //should be able to choose the method.
-                var xx = g.Average(p => p.X);
-                if (isFirst)
-                {
-                    xx = g.First().X;
-                    isFirst = false;
-                }
-                result.Add(new Point(xx, g.Average(p => p.Y)));
-                g = new List<Point> {point};
-                x = chart.ToPlotArea(point.X, AxisTags.X);
-            }
-            result.Add(new Point(g.Last().X, g.Average(p => p.Y)));
-            return result;
-        }
-    }
 }

@@ -15,18 +15,37 @@ namespace lvc
 
         public SeriesCollection()
         {
-            XValueMapper = (x, i) => i;
+            XValueMapper = (value, index) => index;
+            OptimizationMethod = values =>
+            {
+                _xIndexer = 0;
+                _yIndexer = 0;
+                return values.Select(v => new Point(XValueMapper(v, _xIndexer), YValueMapper(v, _yIndexer)));
+            };
             CollectionChanged += (sender, args) =>
             {
                 if (args.NewItems != null)
                     foreach (var series in args.NewItems.Cast<Series>())
-                        series.SeriesCollection = this;
+                        series.Collection = this;
             };
         }
 
+        /// <summary>
+        /// Gets max chart point
+        /// </summary>
         public Point MaxChartPoint { get; }
+        /// <summary>
+        /// Gets min chart point
+        /// </summary>
         public Point MinChartPoint { get; }
+        /// <summary>
+        /// Gets or sets chart
+        /// </summary>
         public Chart Chart { get; set; }
+        /// <summary>
+        /// Gets or sets optimization method
+        /// </summary>
+        public Func<IEnumerable<T>, IEnumerable<Point>> OptimizationMethod { get; set; }
 
         /// <summary>
         /// Gets X labels
@@ -71,35 +90,66 @@ namespace lvc
         /// </summary>
         public Func<double, string> YLabelMapper { get; set; }
 
+        /// <summary>
+        /// Maps X value
+        /// </summary>
+        /// <param name="predicate"></param>
+        /// <returns></returns>
         public SeriesCollection<T> X(Func<T, double> predicate)
         {
             XValueMapper = (x, i) => predicate(x);
             return this;
         }
 
+        /// <summary>
+        /// Maps Y Value
+        /// </summary>
+        /// <param name="predicate"></param>
+        /// <returns></returns>
         public SeriesCollection<T> X(Func<T, int, double> predicate)
         {
             XValueMapper = predicate;
             return this;
         }
 
+        /// <summary>
+        /// Maps Y Value
+        /// </summary>
+        /// <param name="predicate"></param>
+        /// <returns></returns>
         public SeriesCollection<T> Y(Func<T, double> predicate)
         {
             YValueMapper = (x, i) => predicate(x);
             return this;
         }
 
+        /// <summary>
+        /// Max X Value
+        /// </summary>
+        /// <param name="predicate"></param>
+        /// <returns></returns>
         public SeriesCollection<T> Y(Func<T, int, double> predicate)
         {
             YValueMapper = predicate;
             return this;
         }
 
+        /// <summary>
+        /// Maps X Labels
+        /// </summary>
+        /// <param name="predicate"></param>
+        /// <returns></returns>
         public SeriesCollection<T> XLabel(Func<double, string> predicate)
         {
             XLabelMapper = predicate;
             return this;
         }
+
+        /// <summary>
+        /// Maps X Labels
+        /// </summary>
+        /// <param name="predicate"></param>
+        /// <returns></returns>
         public SeriesCollection<T> XLabel(Func<T, string> predicate)
         {
             XLabelMapper = x =>
@@ -114,11 +164,22 @@ namespace lvc
             return this;
         }
 
+        /// <summary>
+        /// Maps Y labels
+        /// </summary>
+        /// <param name="predicate"></param>
+        /// <returns></returns>
         public SeriesCollection<T> YLabel(Func<double, string> predicate)
         {
             YLabelMapper = predicate;
             return this;
         }
+
+        /// <summary>
+        /// Maps Y Labels
+        /// </summary>
+        /// <param name="predicate"></param>
+        /// <returns></returns>
         public SeriesCollection<T> YLabel(Func<T, string> predicate)
         {
             XLabelMapper = x =>
@@ -132,6 +193,12 @@ namespace lvc
             };
             return this;
         }
+
+        public SeriesCollection<T> HasOptimization(Func<IEnumerable<T>, IEnumerable<Point>> predicate)
+        {
+            OptimizationMethod = predicate;
+            return this;
+        } 
 
         public override sealed event NotifyCollectionChangedEventHandler CollectionChanged
         {

@@ -38,7 +38,6 @@ namespace lvc
             AxisX.MinValue = 0d;
             ShapeHoverBehavior = ShapeHoverBehavior.Shape;
             IgnoresLastLabel = true;
-            PerformanceConfiguration = new PerformanceConfiguration { Enabled = false };
             LineType = LineChartLineType.Bezier;
             IndexTotals = new Dictionary<int, StackedBarHelper>();
             MaxColumnWidth = 60;

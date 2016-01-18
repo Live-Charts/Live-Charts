@@ -19,14 +19,12 @@
         <TextBlock Grid.Row="0" HorizontalAlignment="Center" Grid.ColumnSpan="2" Margin="5">Basic Line</TextBlock>
         <liveCharts:ScatterChart Name="Chart" Grid.Row="1" Grid.Column="0">
             <liveCharts:ScatterChart.Series>
-                <liveCharts:SeriesCollection>
-                    <liveCharts:ScatterSeries Title="Sin" 
+                <liveCharts:ScatterSeries Title="Sin" 
                                          Values="0, .7071, 1, .7071, 0, -0.7071, -1, -0.7071, 0"
                                          SecondaryValues="0, 45, 90, 135, 180, 225, 270, 315, 360"/>
-                    <liveCharts:ScatterSeries Title="Cos" 
+                <liveCharts:ScatterSeries Title="Cos" 
                                          Values="1, .7071, 0, -.7071, -1 ,-.7071, 0, .7071, 1"
                                          SecondaryValues="0, 45, 90, 135, 180, 225, 270, 315, 360"></liveCharts:ScatterSeries>
-                </liveCharts:SeriesCollection>
             </liveCharts:ScatterChart.Series>
             <liveCharts:ScatterChart.AxisX>
                 <liveCharts:Axis MinValue="-1" MaxValue="1"></liveCharts:Axis>

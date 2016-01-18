@@ -40,7 +40,6 @@ namespace lvc
             LineType = LineChartLineType.Bezier;
             MaxColumnWidth = 60;
             DefaultFillOpacity = 0.75;
-            PerformanceConfiguration = new PerformanceConfiguration {Enabled = false};
         }
 
         #region Properties

@@ -26,7 +26,7 @@ namespace WinForms
             };
             lineChart.Series.Add(new LineSeries
             {
-                Values = new IndexedChartValues {1, -1, 1, -1, 1, -1, 1, -1, 1, -1, 1, -1, 1, -1}
+                Values = new ChartValues<double> {1, -1, 1, -1, 1, -1, 1, -1, 1, -1, 1, -1, 1, -1}
             });
         }
 

@@ -71,7 +71,7 @@ namespace ChartsTest.BarExamples
                 new BarSeries
                 {
                     Title = "John",
-                    Values = new IndexedChartValues { 2d, 4, 7, 1, 5 }
+                    Values = new ChartValues<double> { 2d, 4, 7, 1, 5 }
                 }
             };
         }
@@ -83,7 +83,7 @@ namespace ChartsTest.BarExamples
         {
             var r = new Random();
 
-            var values = new IndexedChartValues();
+            var values = new ChartValues<double>();
 
             for (var i = 0; i < Salesmen[0].Values.Count; i++) values.Add(r.Next(0, 10));
 

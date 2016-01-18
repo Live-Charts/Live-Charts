@@ -19,10 +19,8 @@
         <TextBlock Grid.Row="0" HorizontalAlignment="Center" Grid.ColumnSpan="2" Margin="5">Basic Pie Chart</TextBlock>
         <liveCharts:PieChart Name="Chart" Grid.Row="1" Grid.Column="0" DisableAnimation="True">
             <liveCharts:PieChart.Series>
-                <liveCharts:SeriesCollection>
-                    <liveCharts:PieSeries Title="Maria" Values="15, 10, 40, 55" 
+                <liveCharts:PieSeries Title="Maria" Values="15, 10, 40, 55" 
                                           Labels="Day 1, Day 2, Day 3, Day 4"/>
-                </liveCharts:SeriesCollection>
             </liveCharts:PieChart.Series>
             <liveCharts:PieChart.AxisX>
                 <liveCharts:Axis Title="Sold Items"></liveCharts:Axis>

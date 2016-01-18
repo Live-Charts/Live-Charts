@@ -20,16 +20,14 @@
         </TextBlock>
         <liveCharts:ScatterChart Name="Chart" Grid.Row="1" Grid.Column="0">
             <liveCharts:ScatterChart.Series>
-                <liveCharts:SeriesCollection>
-                    <liveCharts:ScatterSeries Title="f(x1)" 
+                <liveCharts:ScatterSeries Title="f(x1)" 
                                               Values="{Binding ViewModel.FirstPrimaryValues}"
                                               SecondaryValues="{Binding ViewModel.FirstSecondaryValues}"
                                               StrokeThickness="4" PointRadius="6" />
-                    <liveCharts:ScatterSeries Title="f(x2)" 
+                <liveCharts:ScatterSeries Title="f(x2)" 
                                               Values="{Binding ViewModel.SecondPrimaryValues}" 
                                               SecondaryValues="{Binding ViewModel.SecondPrimaryValues}"
                                               StrokeThickness="4" PointRadius="6"/>
-                </liveCharts:SeriesCollection>
             </liveCharts:ScatterChart.Series>
             <liveCharts:ScatterChart.AxisX>
                 <liveCharts:Axis IsEnabled="False" PrintLabels="False">

@@ -101,7 +101,7 @@ namespace lvc.Charts
             AnimatesNewPoints = false;
             CurrentScale = 1;
 
-            PerformanceConfiguration = new PerformanceConfiguration {Enabled = false};
+            SetCurrentValue(SeriesProperty, new SeriesCollection<IChartSeries>());
             DataToolTip = new DefaultIndexedTooltip();
             Shapes = new List<FrameworkElement>();
             HoverableShapes = new List<HoverableShape>();
@@ -244,10 +244,6 @@ namespace lvc.Charts
                 Canvas.Children.Add(_dataToolTip);
             }
         }
-        /// <summary>
-        /// Gets or set current performance configuration
-        /// </summary>
-        public PerformanceConfiguration PerformanceConfiguration { get; set; }
         /// <summary>
         /// Gets or sets if chart allows zooming or not
         /// </summary>

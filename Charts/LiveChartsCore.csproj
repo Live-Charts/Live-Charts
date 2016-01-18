@@ -106,7 +106,7 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Axis.cs" />
+    <Compile Include="ChartElements\Axis.cs" />
     <Compile Include="AxisTags.cs" />
     <Compile Include="BezierSpline.cs" />
     <Compile Include="Charts\BarChart.cs" />
@@ -114,15 +114,15 @@
     <Compile Include="Charts\PieChart.cs" />
     <Compile Include="Charts\RadarChart.cs" />
     <Compile Include="Charts\ScatterChart.cs" />
-    <Compile Include="IBar.cs" />
-    <Compile Include="IChartSeries.cs" />
-    <Compile Include="ILine.cs" />
-    <Compile Include="IStackedBar.cs" />
-    <Compile Include="ISeriesCollection.cs" />
+    <Compile Include="Interfaces\IBar.cs" />
+    <Compile Include="Interfaces\IChartSeries.cs" />
+    <Compile Include="Interfaces\ILine.cs" />
+    <Compile Include="Interfaces\IStackedBar.cs" />
+    <Compile Include="Interfaces\ISeriesCollection.cs" />
     <Compile Include="PerformanceConfiguration.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Series\RowSeries.cs" />
-    <Compile Include="SeriesCollection.cs" />
+    <Compile Include="Charts\SeriesCollection.cs" />
     <Compile Include="ChartValues\IChartValues.cs" />
     <Compile Include="LiveChartsExtentions.cs" />
     <Compile Include="ChartValues\ChartValues.cs" />
@@ -154,11 +154,11 @@
     <Compile Include="Series\RadarSeries.cs" />
     <Compile Include="Series\StackedBarSeries.cs" />
     <Compile Include="ShapeHoverBehavior.cs" />
-    <Compile Include="Chart.cs" />
-    <Compile Include="HoverableShape.cs" />
+    <Compile Include="ChartElements\Chart.cs" />
+    <Compile Include="ChartElements\HoverableShape.cs" />
     <Compile Include="LineChartLineType.cs" />
     <Compile Include="Methods.cs" />
-    <Compile Include="Separator.cs" />
+    <Compile Include="ChartElements\Separator.cs" />
     <Compile Include="Series\BarSeries.cs" />
     <Compile Include="Series\LineSeries.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -176,7 +176,7 @@
     </Compile>
     <Compile Include="Series\PieSeries.cs" />
     <Compile Include="Series\ScatterSeries.cs" />
-    <Compile Include="Series.cs" />
+    <Compile Include="ChartElements\Series.cs" />
     <Compile Include="Shapes\PieSlice.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

@@ -18,11 +18,9 @@
         </TextBlock>
         <liveCharts:StackedBarChart Name="Chart" Grid.Row="1" Grid.Column="0" Zooming="True" Hoverable="False">
             <liveCharts:StackedBarChart.Series>
-                <liveCharts:SeriesCollection>
-                    <liveCharts:StackedBarSeries Title="Maria" Values="20, 40, 48, 60, 55, 60, 65, 70"></liveCharts:StackedBarSeries>
+                <liveCharts:StackedBarSeries Title="Maria" Values="20, 40, 48, 60, 55, 60, 65, 70"></liveCharts:StackedBarSeries>
                     <liveCharts:StackedBarSeries Title="John" Values="30, 35, 41, 68, 65 ,70, 55, 60"></liveCharts:StackedBarSeries>
-                    <liveCharts:StackedBarSeries Title="Erick" Values="40, 42, 65, 70, 50, 55, 44, 73"></liveCharts:StackedBarSeries>
-                </liveCharts:SeriesCollection>
+                <liveCharts:StackedBarSeries Title="Erick" Values="40, 42, 65, 70, 50, 55, 44, 73"></liveCharts:StackedBarSeries>
             </liveCharts:StackedBarChart.Series>
         </liveCharts:StackedBarChart>
     </Grid>

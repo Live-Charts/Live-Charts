@@ -19,9 +19,7 @@
         </TextBlock>
         <liveCharts:PieChart Name="Chart" Grid.Row="1" Grid.Column="0" InnerRadius="150" >
             <liveCharts:PieChart.Series>
-                <liveCharts:SeriesCollection>
-                    <liveCharts:PieSeries Name="Serie1" Title="Maria" Values="{Binding ViewModel.FirstSeries}"></liveCharts:PieSeries>
-                </liveCharts:SeriesCollection>
+                <liveCharts:PieSeries Name="Serie1" Title="Maria" Values="{Binding ViewModel.FirstSeries}"></liveCharts:PieSeries>
             </liveCharts:PieChart.Series>
             <liveCharts:PieChart.AxisX>
                 <liveCharts:Axis IsEnabled="False" PrintLabels="False">

@@ -42,7 +42,7 @@ namespace lvc.TypeConverters
 			    var v = valueString
 			        .Split(new[] {',', ' '}, StringSplitOptions.RemoveEmptyEntries)
 			        .Select(d => double.Parse(d, CultureInfo.InvariantCulture))
-			        .AsChartValues((val, index) => index, val => val);
+			        .AsChartValues();
                 return v;
 			}
 			return base.ConvertFrom(context, culture, value);

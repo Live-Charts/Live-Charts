@@ -50,7 +50,7 @@ namespace ChartsTest.Pie_Examples
                 new PieSeries
                 {
                     Title = "John",
-                    Values = new IndexedChartValues { 2d, 4, 7, 1, 5 },
+                    Values = new ChartValues<double>() { 2d, 4, 7, 1, 5 },
                     Labels = _months
                 }
             };

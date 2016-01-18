@@ -18,7 +18,6 @@ namespace ChartsTest.Line_Examples
                 Values = l.ToArray(),
                 Name = "Sales"
             };
-            Chart.PerformanceConfiguration = new PerformanceConfiguration();
         }
 
         private void MvvmPerformanceOptimization_OnLoaded(object sender, RoutedEventArgs e)

@@ -180,9 +180,9 @@ namespace ChartsTest.Line_Examples
             }
         }
 
-        private static IndexedChartValues BuildRandomValues()
+        private static ChartValues<double> BuildRandomValues()
         {
-            var serie = new IndexedChartValues();
+            var serie = new ChartValues<double>();
             for (int i = 0; i < 10; i++) serie.Add(_random.Next(-10,10));
             return serie;
         }
