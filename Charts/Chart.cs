@@ -22,7 +22,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Diagnostics;
 using System.Globalization;
@@ -191,14 +190,14 @@ namespace lvc.Charts
         }
 
         public static readonly DependencyProperty SeriesProperty = DependencyProperty.Register(
-            "Series", typeof (ObservableCollection<Series>), typeof (Chart),
+            "Series", typeof (SeriesCollection<IChartSeries>), typeof (Chart),
             new PropertyMetadata(null, SeriesChangedCallback ));
         /// <summary>
         /// Gets or sets chart series to plot
         /// </summary>
-        public ObservableCollection<Series> Series
+        public SeriesCollection<IChartSeries> Series
         {
-            get { return (ObservableCollection<Series>) GetValue(SeriesProperty); }
+            get { return (SeriesCollection<IChartSeries>)  GetValue(SeriesProperty); }
             set { SetValue(SeriesProperty, value); }
         }
         #endregion
@@ -421,6 +420,7 @@ namespace lvc.Charts
 
         protected virtual void Scale()
         {
+            
             var max = new Point(Series.Select(x => x.Values.MaxChartPoint.X).DefaultIfEmpty(0).Max(),
                 Series.Select(x => x.Values.MaxChartPoint.Y).DefaultIfEmpty(0).Max());
 
@@ -443,26 +443,14 @@ namespace lvc.Charts
         protected virtual void DrawAxes()
         {
             foreach (var l in Shapes) Canvas.Children.Remove(l);
-            //Titles
+            foreach (var series in Series) if (series != null) series.Values.Chart = this;
+
             var titleY = 0d;
             if (!string.IsNullOrWhiteSpace(AxisX.Title))
             {
                 var ty = GetLabelSize(AxisX, AxisX.Title);
-                var yLabel = new TextBlock
-                {
-                    FontFamily = AxisX.FontFamily,
-                    FontSize = AxisX.FontSize,
-                    FontStretch = AxisX.FontStretch,
-                    FontStyle = AxisX.FontStyle,
-                    FontWeight = AxisX.FontWeight,
-                    Foreground = AxisX.Foreground,
-                    RenderTransform = new RotateTransform(-90)
-                };
-                var binding = new Binding
-                {
-                    Path = new PropertyPath("Title"),
-                    Source = AxisX
-                };
+                var yLabel = AxisX.BuildATextBlock(-90);
+                var binding = new Binding {Path = new PropertyPath("Title"), Source = AxisX};
                 BindingOperations.SetBinding(yLabel, TextBlock.TextProperty, binding);
                 Shapes.Add(yLabel);
                 Canvas.Children.Add(yLabel);
@@ -474,20 +462,8 @@ namespace lvc.Charts
             if (!string.IsNullOrWhiteSpace(AxisY.Title))
             {
                 var tx = GetLabelSize(AxisY, AxisY.Title);
-                var yLabel = new TextBlock
-                {
-                    FontFamily = AxisY.FontFamily,
-                    FontSize = AxisY.FontSize,
-                    FontStretch = AxisY.FontStretch,
-                    FontStyle = AxisY.FontStyle,
-                    FontWeight = AxisY.FontWeight,
-                    Foreground = AxisY.Foreground
-                };
-                var binding = new Binding
-                {
-                    Path = new PropertyPath("Title"),
-                    Source = AxisY
-                };
+                var yLabel = AxisX.BuildATextBlock(0);
+                var binding = new Binding {Path = new PropertyPath("Title"), Source = AxisY};
                 BindingOperations.SetBinding(yLabel, TextBlock.TextProperty, binding);
                 Shapes.Add(yLabel);
                 Canvas.Children.Add(yLabel);
@@ -500,7 +476,6 @@ namespace lvc.Charts
             PlotArea.Width -= titleY;
             PlotArea.Height -= titleX;
 
-            //drawing primary axis
             var ly = AxisX.Separator.IsEnabled || AxisX.PrintLabels
                 ? Max.Y
                 : Min.Y - 1;
@@ -769,10 +744,10 @@ namespace lvc.Charts
 
             foreach (var shape in Shapes) Canvas.Children.Remove(shape);
             foreach (var shape in HoverableShapes.Select(x => x.Shape).ToList()) Canvas.Children.Remove(shape);
-            foreach (var serie in Series) Canvas.Children.Remove(serie);
+            foreach (var serie in Series.Cast<Series>()) Canvas.Children.Remove(serie);
             HoverableShapes = new List<HoverableShape>();
             Shapes = new List<FrameworkElement>();
-            foreach (var serie in Series)
+            foreach (var serie in Series.Cast<Series>())
             {
                 Canvas.Children.Add(serie);
                 EraseSerieBuffer.Add(serie);
@@ -841,7 +816,7 @@ namespace lvc.Charts
 
             chart.InitializeSeries(chart);
 
-            if (chart.Series.Any(x => x.Values == null)) return;
+            if (chart.Series.Any(x => x == null)) return;
 
             var xs = chart.Series.SelectMany(x => x.Values.Points.Select(pt => pt.X)).DefaultIfEmpty(0).ToArray();
             var ys = chart.Series.SelectMany(x => x.Values.Points.Select(pt => pt.Y)).DefaultIfEmpty(0).ToArray();
@@ -856,7 +831,7 @@ namespace lvc.Charts
             Trace.WriteLine("Chart was initialized (" + DateTime.Now.ToLongTimeString() + ")");
 #endif
             chart.SeriesInitialized = true;
-            foreach (var series in chart.Series)
+            foreach (var series in chart.Series.Cast<Series>())
             {
                 var index = _colorIndexer++;
                 series.Chart = chart;
@@ -901,7 +876,7 @@ namespace lvc.Charts
 
 
                 chart.RequiresScale = true;
-                foreach (var serie in chart.Series.Where(x => !newElements.Contains(x)))
+                foreach (var serie in chart.Series.Where(x => !newElements.Contains(x)).Cast<Series>())
                 {
                     chart.EraseSerieBuffer.Add(serie);
                     serie.RequiresPlot = true;
@@ -951,7 +926,7 @@ namespace lvc.Charts
                 serie.First().Erase();
             }
             EraseSerieBuffer.Clear();
-            var toPlot = Series.Where(x => x.RequiresPlot);
+            var toPlot = Series.Cast<Series>().Where(x => x.RequiresPlot);
             foreach (var serie in toPlot)
             {
                 serie.Plot(serie.RequiresAnimation);
@@ -978,7 +953,7 @@ namespace lvc.Charts
             //this could be a future improvemnt,
             //by now this is perfectly fine and should not impact in performance.
             Scale();
-            foreach (var serie in Series)
+            foreach (var serie in Series.Cast<Series>())
             {
                 serie.Erase();
                 serie.Plot(AnimatesNewPoints);

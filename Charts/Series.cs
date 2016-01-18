@@ -33,7 +33,7 @@ using lvc.TypeConverters;
 
 namespace lvc
 {
-	public abstract class Series : FrameworkElement
+    public abstract class Series : FrameworkElement, IChartSeries
 	{
 		protected List<Shape> Shapes = new List<Shape>();
 	    private Chart _chart;
@@ -42,7 +42,8 @@ namespace lvc
 
         #region Dependency Properties
 	    public static readonly DependencyProperty ValuesProperty = DependencyProperty.Register(
-	        "Values", typeof (IChartValues), typeof (Series), new PropertyMetadata(default(IChartValues), ValuesCallBack));
+	        "Values", typeof (IChartValues), typeof (Series), 
+            new PropertyMetadata(default(IChartValues), ValuesCallBack));
 
         [TypeConverter(typeof(IndexedChartValuesConverter))]
         public IChartValues Values
@@ -61,6 +62,8 @@ namespace lvc
                 SetValue(ValuesProperty, value);
             }
 	    }
+
+        public ISeriesCollection SeriesCollection { get; internal set; }
 
         public static readonly DependencyProperty TitleProperty =
            DependencyProperty.Register("Title", typeof(string), typeof(Series), new PropertyMetadata("An Unnamed Serie"));

@@ -310,9 +310,4 @@ namespace lvc
 			return addedFigures;
 		}
 	}
-
-    public class LineSeries<T> : LineSeries
-    {
-
-    }
 }

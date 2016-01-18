@@ -24,6 +24,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media;
 using lvc.TypeConverters;
 
@@ -216,6 +217,20 @@ namespace lvc
         /// Factor used to calculate label separations. default is 3. increase it to make it 'cleaner'
         /// initialSeparations = Graph.Heigth / (label.Height * cleanFactor)
         /// </summary>
-        public int CleanFactor { get; set; }
+        internal int CleanFactor { get; set; }
+
+        internal TextBlock BuildATextBlock(int rotate)
+        {
+            return new TextBlock
+            {
+                FontFamily = FontFamily,
+                FontSize = FontSize,
+                FontStretch = FontStretch,
+                FontStyle = FontStyle,
+                FontWeight = FontWeight,
+                Foreground = Foreground,
+                RenderTransform = new RotateTransform(rotate)
+            };
+        }
 	}
 }

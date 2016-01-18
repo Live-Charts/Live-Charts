@@ -3,8 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:liveCharts="clr-namespace:lvc;assembly=LiveCharts"
              xmlns:lineExamples="clr-namespace:ChartsTest.Line_Examples"
+             xmlns:lvc="clr-namespace:lvc;assembly=LiveCharts"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300"
              Loaded="CleanLine_OnLoaded" d:DataContext="{d:DesignInstance lineExamples:BindingLine}">
@@ -34,41 +34,45 @@
                 -
             </Button>
         </StackPanel>
-        <liveCharts:LineChart Name="Chart" Grid.Row="1" Grid.Column="0">
-            <liveCharts:LineChart.Series>
-               <liveCharts:SeriesCollection>
-                    <liveCharts:LineSeries Title="Tokio" Values="{Binding ViewModel.Tokio}" StrokeThickness="4" PointRadius="6" Stroke="IndianRed">
-                        <liveCharts:LineSeries.Fill>
-                            <LinearGradientBrush EndPoint=".5,1" StartPoint="1,0">
-                                <GradientStop Color="#4CCD5C5C" Offset="1"/>
-                                <GradientStop Color="#4C800080" Offset="0.5"/>
+        <lvc:LineChart Name="Chart" Grid.Row="1" Grid.Column="0">
+            <lvc:LineChart.Series>
+               <lvc:SeriesCollection>
+                    <lvc:LineSeries Title="Tokio" 
+                                           Values="{Binding ViewModel.Tokio}" 
+                                           StrokeThickness="4" PointRadius="6" Stroke="IndianRed">
+                        <lvc:LineSeries.Fill>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                <GradientStop Color="IndianRed" Offset="0"/>
+                                <GradientStop Color="#4CFFFFFF" Offset="0.5"/>
                             </LinearGradientBrush>
-                        </liveCharts:LineSeries.Fill>
-                    </liveCharts:LineSeries>
-                    <liveCharts:LineSeries Title="New York" Values="{Binding ViewModel.NewYork}" StrokeThickness="4" PointRadius="6" Stroke="CornflowerBlue">
-                        <liveCharts:LineSeries.Fill>
-                            <LinearGradientBrush EndPoint=".5,1" StartPoint="1,0">
-                                <GradientStop Color="#4C6495ED" Offset="1"/>
-                                <GradientStop Color="#4CADFF2F" Offset="0.5"/>
+                        </lvc:LineSeries.Fill>
+                    </lvc:LineSeries>
+                    <lvc:LineSeries Title="New York" 
+                                           Values="{Binding ViewModel.NewYork}" 
+                                           StrokeThickness="4" PointRadius="6" Stroke="CornflowerBlue">
+                        <lvc:LineSeries.Fill>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint=".0,1">
+                                <GradientStop Color="CornflowerBlue" Offset="0"/>
+                                <GradientStop Color="#4CFFFFFF" Offset="0.5"/>
                             </LinearGradientBrush>
-                        </liveCharts:LineSeries.Fill>
-                    </liveCharts:LineSeries>
-                </liveCharts:SeriesCollection>
-            </liveCharts:LineChart.Series>
-            <liveCharts:LineChart.AxisX>
-                <liveCharts:Axis IsEnabled="False" PrintLabels="False">
-                    <liveCharts:Axis.Separator>
-                        <liveCharts:Separator IsEnabled="False"></liveCharts:Separator>
-                    </liveCharts:Axis.Separator>
-                </liveCharts:Axis>
-            </liveCharts:LineChart.AxisX>
-            <liveCharts:LineChart.AxisY>
-                <liveCharts:Axis IsEnabled="False" PrintLabels="False">
-                    <liveCharts:Axis.Separator>
-                        <liveCharts:Separator IsEnabled="False"></liveCharts:Separator>
-                    </liveCharts:Axis.Separator>
-                </liveCharts:Axis>
-            </liveCharts:LineChart.AxisY>
-        </liveCharts:LineChart>
+                        </lvc:LineSeries.Fill>
+                    </lvc:LineSeries>
+                </lvc:SeriesCollection>
+            </lvc:LineChart.Series>
+            <lvc:LineChart.AxisX>
+                <lvc:Axis IsEnabled="False" PrintLabels="False">
+                    <lvc:Axis.Separator>
+                        <lvc:Separator IsEnabled="False"></lvc:Separator>
+                    </lvc:Axis.Separator>
+                </lvc:Axis>
+            </lvc:LineChart.AxisX>
+            <lvc:LineChart.AxisY>
+                <lvc:Axis IsEnabled="False" PrintLabels="False">
+                    <lvc:Axis.Separator>
+                        <lvc:Separator IsEnabled="False" ></lvc:Separator>
+                    </lvc:Axis.Separator>
+                </lvc:Axis>
+            </lvc:LineChart.AxisY>
+        </lvc:LineChart>
     </Grid>
 </UserControl>

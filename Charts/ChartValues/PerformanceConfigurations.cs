@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using lvc;
 
-namespace LiveCharts.Values
+namespace LiveCharts
 {
     public static class PerformanceConfigurations
     {

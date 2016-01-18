@@ -114,14 +114,18 @@
     <Compile Include="Charts\PieChart.cs" />
     <Compile Include="Charts\RadarChart.cs" />
     <Compile Include="Charts\ScatterChart.cs" />
-    <Compile Include="Interfaces.cs" />
+    <Compile Include="IBar.cs" />
+    <Compile Include="IChartSeries.cs" />
+    <Compile Include="ILine.cs" />
+    <Compile Include="IStackedBar.cs" />
+    <Compile Include="ISeriesCollection.cs" />
     <Compile Include="PerformanceConfiguration.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Series\RowSeries.cs" />
-    <Compile Include="Series\SeriesColection.cs" />
-    <Compile Include="Values\IChartValues.cs" />
-    <Compile Include="Values\LiveChartsValuesExtentions.cs" />
-    <Compile Include="Values\ChartValues.cs" />
+    <Compile Include="SeriesCollection.cs" />
+    <Compile Include="ChartValues\IChartValues.cs" />
+    <Compile Include="LiveChartsExtentions.cs" />
+    <Compile Include="ChartValues\ChartValues.cs" />
     <Compile Include="Tooltip\IndexedTooltipData.cs" />
     <Compile Include="Tooltip\Converters.cs" />
     <Compile Include="Tooltip\DefaultIndexedTooltip.xaml.cs">
@@ -135,7 +139,7 @@
     <Compile Include="TypeConverters\ColorCollectionConverter.cs" />
     <Compile Include="TypeConverters\StringCollectionConverter.cs" />
     <Compile Include="TypeConverters\IndexedChartValuesConverter.cs" />
-    <Compile Include="Values\PerformanceConfigurations.cs" />
+    <Compile Include="ChartValues\PerformanceConfigurations.cs" />
     <Compile Include="Viewers\Converters.cs" />
     <Compile Include="Viewers\PieSeriesViewer.xaml.cs">
       <DependentUpon>PieSeriesViewer.xaml</DependentUpon>
@@ -147,7 +151,6 @@
     </Compile>
     <Compile Include="Charts\StackedBarChart.cs" />
     <Compile Include="LabelFormatters.cs" />
-    <Compile Include="LiveChartsException.cs" />
     <Compile Include="Series\RadarSeries.cs" />
     <Compile Include="Series\StackedBarSeries.cs" />
     <Compile Include="ShapeHoverBehavior.cs" />

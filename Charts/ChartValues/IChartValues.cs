@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Windows;
+using lvc.Charts;
 
 namespace lvc
 {
@@ -11,5 +12,7 @@ namespace lvc
         IEnumerable<Point> Points { get; }
         Point MaxChartPoint { get; }
         Point MinChartPoint { get; }
+        Chart Chart { get; set; }
+        IChartSeries Series { get; }
     }
 }

@@ -18,10 +18,31 @@ namespace ChartsTest.Line_Examples
                 return DateTime.Now + TimeSpan.FromDays(x);
             };
 
+            var tok = new LineSeries
+            {
+                Values = new ChartValues<WeatherDay>()
+                    .AddRange(new[]
+                    {
+                        new WeatherDay {DateTime = buildADate(-5), Temperature = 15},
+                        new WeatherDay {DateTime = buildADate(-4), Temperature = 18},
+                        new WeatherDay {DateTime = buildADate(-3), Temperature = 20},
+                        new WeatherDay {DateTime = buildADate(-2), Temperature = 25},
+                        new WeatherDay {DateTime = buildADate(-1), Temperature = 22},
+                        new WeatherDay {DateTime = buildADate(0), Temperature = 19}
+                    })
+            };
+
+            var series = new SeriesCollection<WeatherDay>
+            {
+                new LineSeries(),
+                new LineSeries(),
+                tok
+            };
+
             var tokio = new ChartValues<WeatherDay>()
-                .WithTitle("Tokio") // set a title for the values
-                .Y(day => day.Temperature) //idicate which property to use as Y
-                .AddRange(new[]
+                .WithTitle("Tokio")         // Set a title for the values
+                .Y(day => day.Temperature)  // Idicate which property to use as Y
+                .AddRange(new[]             // Add some initial values
                 {
                     new WeatherDay {DateTime = buildADate(-5), Temperature = 15},
                     new WeatherDay {DateTime = buildADate(-4), Temperature = 18},

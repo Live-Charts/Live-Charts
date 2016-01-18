@@ -9,55 +9,64 @@ using lvc.Charts;
 
 namespace lvc
 {
+    /// <summary>
+    /// Creates a collection of values ready to plot
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public class ChartValues<T> : ObservableCollection<T>, IChartValues
     {
         private Point _min = new Point(double.MaxValue, double.MaxValue);
         private Point _max = new Point(double.MinValue, double.MinValue);
-        private int _xIndexer;
-        private int _yIndexer;
-        private bool _hasChanged;
         private string _title;
-        private Func<T, int, double> _xMapper;
-        private Func<T, int, double> _yMapper;
+        private Point[] _points;
 
         public ChartValues()
         {
             CollectionChanged += OnCollectionChanged;
-            XMapper = (x, i) => i;
         }
 
         #region Properties
-        internal Chart Chart { get; set; }
+
+        /// <summary>
+        /// Chart that owns the values
+        /// </summary>
+        public Chart Chart { get; set; }
+
+        public IChartSeries Series { get; internal set; }
+
+        /// <summary>
+        /// Gets the collection of points displayed in the chart current view
+        /// </summary>
         public IEnumerable<Point> Points
         {
             get
             {
-                return Optimize();
+                var index = 0;
+                var collection = Series.SeriesCollection as SeriesCollection<T>;
+                if (collection == null) return Enumerable.Empty<Point>();
+                return this.Select(x => new Point(index++, collection.XValueMapper()));
             }
         }
-        public Point MaxChartPoint { get { return _max; } }
-        public Point MinChartPoint { get { return _min; } }
 
-        public Func<T, int, double> XMapper
+        /// <summary>
+        /// Gets Max X and Y coordinates in chart
+        /// </summary>
+        public Point MaxChartPoint
         {
-            get { return _xMapper; }
-            set
-            {
-                _xMapper = value;
-                if (_hasChanged && value != null && YMapper != null) EvaluateAllPoints();
-            }
+            get { return _max; }
         }
 
-        public Func<T, int, double> YMapper
+        /// <summary>
+        /// Gets Min X and Y coordintes in chart
+        /// </summary>
+        public Point MinChartPoint
         {
-            get { return _yMapper; }
-            set
-            {
-                _yMapper = value;
-                if (_hasChanged && value != null && XMapper != null) EvaluateAllPoints();
-            }
+            get { return _min; }
         }
 
+        /// <summary>
+        /// Gets or sets chart Title
+        /// </summary>
         public string Title
         {
             get { return _title; }
@@ -68,8 +77,9 @@ namespace lvc
             }
         }
 
-        protected Func<ChartValues<T>, IEnumerable<Point>> Optimization { get; set; }
         #endregion
+
+        #region Public Methods
 
         public ChartValues<T> AddRange(IEnumerable<T> collection)
         {
@@ -81,32 +91,7 @@ namespace lvc
             return this;
         }
 
-        public ChartValues<T> X(Func<T, double> predicate)
-        {
-            XMapper = (x, i) => predicate(x);
-            return this;
-        }
-        public ChartValues<T> X(Func<T, int, double> predicate)
-        {
-            XMapper = predicate;
-            return this;
-        }
-        public ChartValues<T> Y(Func<T, double> predicate)
-        {
-            YMapper = (x,i) => predicate(x);
-            return this;
-        }
-        public ChartValues<T> Y(Func<T, int, double> predicate)
-        {
-            YMapper = predicate;
-            return this;
-        }
-
-        public ChartValues<T> HasOptimization(Func<ChartValues<T>, IEnumerable<Point>> optimization)
-        {
-            Optimization = optimization;
-            return this;
-        }
+        
 
         public ChartValues<T> WithTitle(string title)
         {
@@ -114,30 +99,20 @@ namespace lvc
             return this;
         }
 
+        #endregion
+
+        #region Private Methods
+
         private void OnCollectionChanged(object sender, NotifyCollectionChangedEventArgs args)
         {
-            if (XMapper == null || YMapper == null)
-            {
-                _hasChanged = true;
-                return;
-            }
-            EvaluateAllPoints();   
-        }
-
-        private IEnumerable<Point> Optimize()
-        {
-            _xIndexer = 0;
-            _yIndexer = 0;
-            return Optimization == null
-                ? this.Select(value => new Point(XMapper(value, _xIndexer++), YMapper(value, _yIndexer++)))
-                : Optimization(this);
+            EvaluateAllPoints();
         }
 
         private void EvaluateAllPoints()
         {
-            var optimized = Optimize().ToArray();
+            _points = Points.ToArray();
 
-            var xs = optimized.Select(x => x.X).ToArray();
+            var xs = _points.Select(x => x.X).ToArray();
 
             var xMax = xs.Max();
             var xMin = xs.Min();
@@ -145,7 +120,7 @@ namespace lvc
             _min.X = xMin;
             _max.X = xMax;
 
-            var ys = optimized.Select(x => x.Y).ToArray();
+            var ys = _points.Select(x => x.Y).ToArray();
 
             var yMax = ys.Max();
             var yMin = ys.Min();
@@ -154,7 +129,9 @@ namespace lvc
             _max.Y = yMax;
         }
 
-        public sealed override event NotifyCollectionChangedEventHandler CollectionChanged
+        #endregion
+
+        public override sealed event NotifyCollectionChangedEventHandler CollectionChanged
         {
             add { base.CollectionChanged += value; }
             remove { base.CollectionChanged -= value; }
@@ -171,7 +148,8 @@ namespace lvc
             CollectionChanged += OnCollectionChanged;
         }
 
-        internal Chart Chart { get; set; }
+        public IEnumerable<KeyValuePair<double, string>> XLabels { get; }
+        public IEnumerable<KeyValuePair<double, string>> YLabels { get; }
 
         public IEnumerable<Point> Points
         {
@@ -184,6 +162,8 @@ namespace lvc
 
         public Point MaxChartPoint { get { return _max; } }
         public Point MinChartPoint { get { return _min; } }
+
+        public Chart Chart { get; set; }
 
         public void AddRange(IEnumerable<double> collection)
         {
