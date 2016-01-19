@@ -8,94 +8,57 @@ using lvc.Charts;
 
 namespace lvc
 {
-    public class SeriesCollection<T> : ObservableCollection<Series>, ISeriesCollection
+    public interface ISeriesConfiguration
+    {
+    }
+    public class SeriesConfiguration<T> : ISeriesConfiguration
     {
         private int _xIndexer;
         private int _yIndexer;
-
-        public SeriesCollection()
+        public SeriesConfiguration()
         {
             XValueMapper = (value, index) => index;
             OptimizationMethod = values =>
             {
                 _xIndexer = 0;
                 _yIndexer = 0;
-                return values.Select(v => new Point(XValueMapper(v, _xIndexer), YValueMapper(v, _yIndexer)));
-            };
-            CollectionChanged += (sender, args) =>
-            {
-                if (args.NewItems != null)
-                    foreach (var series in args.NewItems.Cast<Series>())
-                        series.Collection = this;
+                return values.Select(v => new Point(XValueMapper(v, _xIndexer++), YValueMapper(v, _yIndexer++)));
             };
         }
 
-        /// <summary>
-        /// Gets max chart point
-        /// </summary>
-        public Point MaxChartPoint { get; }
-        /// <summary>
-        /// Gets min chart point
-        /// </summary>
-        public Point MinChartPoint { get; }
-        /// <summary>
-        /// Gets or sets chart
-        /// </summary>
-        public Chart Chart { get; set; }
         /// <summary>
         /// Gets or sets optimization method
         /// </summary>
-        public Func<IEnumerable<T>, IEnumerable<Point>> OptimizationMethod { get; set; }
-
-        /// <summary>
-        /// Gets X labels
-        /// </summary>
-        public IEnumerable<KeyValuePair<double, string>> XLabels
-        {
-            get
-            {
-                for (var i = MinChartPoint.X; i <= MaxChartPoint.X; i += Chart.S.X)
-                    yield return new KeyValuePair<double, string>(i, XLabelMapper(i));
-            }
-        }
-        /// <summary>
-        /// Gets Y labels
-        /// </summary>
-        public IEnumerable<KeyValuePair<double, string>> YLabels
-        {
-            get
-            {
-                for (var i = MinChartPoint.Y; i <= MaxChartPoint.Y; i += Chart.S.Y)
-                    yield return new KeyValuePair<double, string>(i, YLabelMapper(i));
-            }
-        }
-
+        internal Func<IEnumerable<T>, IEnumerable<Point>> OptimizationMethod { get; set; }
+       
         /// <summary>
         /// Gets or sets the current function that pulls X value from T
         /// </summary>
-        public Func<T, int, double> XValueMapper { get; set; }
+        private Func<T, int, double> XValueMapper { get; set; }
 
         /// <summary>
         /// Gets or sets the current function that pulls Y value from T
         /// </summary>
-        public Func<T, int, double> YValueMapper { get; set; }
+        private Func<T, int, double> YValueMapper { get; set; }
 
         /// <summary>
         /// Get or sets a function that pulls X labels
         /// </summary>
-        public Func<double, string> XLabelMapper { get; set; }
+        private Func<double, string> XLabelMapper { get; set; }
 
         /// <summary>
         /// Gets or sets a functions that pulls Y labels
         /// </summary>
-        public Func<double, string> YLabelMapper { get; set; }
+        private Func<double, string> YLabelMapper { get; set; }
+
+        private SeriesCollection Collection { get; set; } 
 
         /// <summary>
         /// Maps X value
         /// </summary>
         /// <param name="predicate"></param>
         /// <returns></returns>
-        public SeriesCollection<T> X(Func<T, double> predicate)
+        public SeriesConfiguration<T> X(Func<T, double> predicate)
         {
             XValueMapper = (x, i) => predicate(x);
             return this;
@@ -106,7 +69,7 @@ namespace lvc
         /// </summary>
         /// <param name="predicate"></param>
         /// <returns></returns>
-        public SeriesCollection<T> X(Func<T, int, double> predicate)
+        public SeriesConfiguration<T> X(Func<T, int, double> predicate)
         {
             XValueMapper = predicate;
             return this;
@@ -117,7 +80,7 @@ namespace lvc
         /// </summary>
         /// <param name="predicate"></param>
         /// <returns></returns>
-        public SeriesCollection<T> Y(Func<T, double> predicate)
+        public SeriesConfiguration<T> Y(Func<T, double> predicate)
         {
             YValueMapper = (x, i) => predicate(x);
             return this;
@@ -128,18 +91,18 @@ namespace lvc
         /// </summary>
         /// <param name="predicate"></param>
         /// <returns></returns>
-        public SeriesCollection<T> Y(Func<T, int, double> predicate)
+        public SeriesConfiguration<T> Y(Func<T, int, double> predicate)
         {
             YValueMapper = predicate;
             return this;
         }
-
+        
         /// <summary>
         /// Maps X Labels
         /// </summary>
         /// <param name="predicate"></param>
         /// <returns></returns>
-        public SeriesCollection<T> XLabel(Func<double, string> predicate)
+        public SeriesConfiguration<T> XLabel(Func<double, string> predicate)
         {
             XLabelMapper = predicate;
             return this;
@@ -150,7 +113,7 @@ namespace lvc
         /// </summary>
         /// <param name="predicate"></param>
         /// <returns></returns>
-        public SeriesCollection<T> XLabel(Func<T, string> predicate)
+        public SeriesConfiguration<T> XLabel(Func<T, string> predicate)
         {
             XLabelMapper = x =>
             {
@@ -169,7 +132,7 @@ namespace lvc
         /// </summary>
         /// <param name="predicate"></param>
         /// <returns></returns>
-        public SeriesCollection<T> YLabel(Func<double, string> predicate)
+        public SeriesConfiguration<T> YLabel(Func<double, string> predicate)
         {
             YLabelMapper = predicate;
             return this;
@@ -180,7 +143,7 @@ namespace lvc
         /// </summary>
         /// <param name="predicate"></param>
         /// <returns></returns>
-        public SeriesCollection<T> YLabel(Func<T, string> predicate)
+        public SeriesConfiguration<T> YLabel(Func<T, string> predicate)
         {
             XLabelMapper = x =>
             {
@@ -194,11 +157,73 @@ namespace lvc
             return this;
         }
 
-        public SeriesCollection<T> HasOptimization(Func<IEnumerable<T>, IEnumerable<Point>> predicate)
+        public SeriesConfiguration<T> HasOptimization(Func<IEnumerable<T>, IEnumerable<Point>> predicate)
         {
             OptimizationMethod = predicate;
             return this;
-        } 
+        }
+    }
+
+    public class SeriesCollection : ObservableCollection<Series>
+    {
+        public SeriesCollection()
+        {
+            Configuration = new SeriesConfiguration<double>();
+            CollectionChanged += (sender, args) =>
+            {
+                if (args.NewItems != null)
+                    foreach (var series in args.NewItems.Cast<Series>())
+                        series.Collection = this;
+            };
+        }
+
+        public SeriesCollection(ISeriesConfiguration configuration)
+        {
+            Configuration = configuration;
+        }
+
+        /// <summary>
+        /// Gets max chart point
+        /// </summary>
+        public Point MaxChartPoint { get; }
+        /// <summary>
+        /// Gets min chart point
+        /// </summary>
+        public Point MinChartPoint { get; }
+        /// <summary>
+        /// Gets or sets chart
+        /// </summary>
+        public Chart Chart { get; set; }
+
+        public ISeriesConfiguration Configuration { get; set; }
+        /// <summary>
+        /// Gets X labels
+        /// </summary>
+        public IEnumerable<KeyValuePair<double, string>> XLabels
+        {
+            get
+            {
+                for (var i = MinChartPoint.X; i <= MaxChartPoint.X; i += Chart.S.X)
+                    yield return new KeyValuePair<double, string>(1,""); // new KeyValuePair<double, string>(i, Configuration.XLabelMapper(i));
+            }
+        }
+        /// <summary>
+        /// Gets Y labels
+        /// </summary>
+        public IEnumerable<KeyValuePair<double, string>> YLabels
+        {
+            get
+            {
+                for (var i = MinChartPoint.Y; i <= MaxChartPoint.Y; i += Chart.S.Y)
+                    yield return new KeyValuePair<double, string>(1,""); //new KeyValuePair<double, string>(i, Configuration.YLabelMapper(i));
+            }
+        }
+
+        public SeriesConfiguration<T> For<T>()
+        {
+            Configuration = new SeriesConfiguration<T>();
+            return (SeriesConfiguration<T>) Configuration;
+        }
 
         public override sealed event NotifyCollectionChangedEventHandler CollectionChanged
         {

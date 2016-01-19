@@ -101,7 +101,8 @@ namespace lvc.Charts
             AnimatesNewPoints = false;
             CurrentScale = 1;
 
-            SetCurrentValue(SeriesProperty, new SeriesCollection<IChartSeries>());
+            var defaultConfig = new SeriesConfiguration<double>().Y(x => x);
+            SetCurrentValue(SeriesProperty, new SeriesCollection(defaultConfig));
             DataToolTip = new DefaultIndexedTooltip();
             Shapes = new List<FrameworkElement>();
             HoverableShapes = new List<HoverableShape>();
@@ -190,14 +191,14 @@ namespace lvc.Charts
         }
 
         public static readonly DependencyProperty SeriesProperty = DependencyProperty.Register(
-            "Series", typeof (SeriesCollection<IChartSeries>), typeof (Chart),
+            "Series", typeof (SeriesCollection), typeof (Chart),
             new PropertyMetadata(null, SeriesChangedCallback ));
         /// <summary>
         /// Gets or sets chart series to plot
         /// </summary>
-        public SeriesCollection<IChartSeries> Series
+        public SeriesCollection Series
         {
-            get { return (SeriesCollection<IChartSeries>)  GetValue(SeriesProperty); }
+            get { return (SeriesCollection)  GetValue(SeriesProperty); }
             set { SetValue(SeriesProperty, value); }
         }
         #endregion

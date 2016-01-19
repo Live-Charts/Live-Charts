@@ -70,7 +70,6 @@
     <Compile Include="Line Examples\LazyData\LazyDataLine.xaml.cs">
       <DependentUpon>LazyDataLine.xaml</DependentUpon>
     </Compile>
-    <Compile Include="SeriesCollectionWrapper.cs" />
     <Compile Include="z.CustomTooltips\CustomIndexedTooltip.xaml.cs">
       <DependentUpon>CustomIndexedTooltip.xaml</DependentUpon>
     </Compile>

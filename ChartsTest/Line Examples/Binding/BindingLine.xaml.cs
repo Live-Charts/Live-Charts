@@ -32,7 +32,7 @@ namespace ChartsTest.Line_Examples
                     })
             };
 
-            var series = new SeriesCollection<WeatherDay>
+            var series = new SeriesCollection
             {
                 new LineSeries(),
                 new LineSeries(),

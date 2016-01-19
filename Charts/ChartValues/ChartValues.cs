@@ -89,10 +89,17 @@ namespace lvc
 
         private void EvalueateValues()
         {
-            var collection = Series == null ? null : Series.Collection as SeriesCollection<T>;
+            var c1 = Series.Collection;
+            var c2 = c1.Configuration as SeriesConfiguration<T>;
+
+            var e = this.AsEnumerable();
+
+            //var a = c2.OptimizationMethod().ToArray();
+
+            var collection = Series == null ? null : Series.Collection;
             _points = collection == null
-                ? new Point[] { }
-                : collection.OptimizationMethod(this).ToArray();
+                ? new Point[] {}
+                : c2.OptimizationMethod(this).ToArray();
 
             var xs = _points.Select(x => x.X).DefaultIfEmpty(0).ToArray();
 

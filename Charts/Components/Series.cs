@@ -63,7 +63,7 @@ namespace lvc
             }
 	    }
 
-        public ISeriesCollection Collection { get; internal set; }
+        public SeriesCollection Collection { get; internal set; }
 
         public static readonly DependencyProperty TitleProperty =
            DependencyProperty.Register("Title", typeof(string), typeof(Series), new PropertyMetadata("An Unnamed Serie"));
