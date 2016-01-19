@@ -17,12 +17,15 @@ namespace lvc
     {
         private Point _min = new Point(double.MaxValue, double.MaxValue);
         private Point _max = new Point(double.MinValue, double.MinValue);
-        private string _title;
         private Point[] _points;
+        private bool _requiresEvaluation;
 
         public ChartValues()
         {
-            CollectionChanged += OnCollectionChanged;
+            CollectionChanged += (sender, args) =>
+            {
+                _requiresEvaluation = true;
+            };
         }
 
         #region Properties
@@ -32,8 +35,8 @@ namespace lvc
         /// </summary>
         public Chart Chart { get; set; }
 
-        public IChartSeries Series { get; internal set; }
-
+        public IChartSeries Series { get; set; }
+       
         /// <summary>
         /// Gets the collection of points displayed in the chart current view
         /// </summary>
@@ -57,20 +60,7 @@ namespace lvc
         {
             get { return _min; }
         }
-
-        /// <summary>
-        /// Gets or sets chart Title
-        /// </summary>
-        public string Title
-        {
-            get { return _title; }
-            set
-            {
-                _title = value;
-                OnPropertyChanged(new PropertyChangedEventArgs("Title"));
-            }
-        }
-
+        public bool RequiresEvaluation { get { return _requiresEvaluation; } }
         #endregion
 
         #region Public Methods
@@ -84,29 +74,24 @@ namespace lvc
             OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
             return this;
         }
-
-        
-
-        public ChartValues<T> WithTitle(string title)
+        public void Evaluate()
         {
-            Title = Title;
-            return this;
+            if (_requiresEvaluation)
+            {
+                EvalueateValues();
+                _requiresEvaluation = false;
+            }
         }
 
         #endregion
 
         #region Private Methods
 
-        private void OnCollectionChanged(object sender, NotifyCollectionChangedEventArgs args)
-        {
-            EvaluateAllPoints();
-        }
-
-        private void EvaluateAllPoints()
+        private void EvalueateValues()
         {
             var collection = Series == null ? null : Series.Collection as SeriesCollection<T>;
             _points = collection == null
-                ? new Point[] {}
+                ? new Point[] { }
                 : collection.OptimizationMethod(this).ToArray();
 
             var xs = _points.Select(x => x.X).DefaultIfEmpty(0).ToArray();

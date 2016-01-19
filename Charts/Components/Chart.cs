@@ -286,7 +286,7 @@ namespace lvc.Charts
         /// <returns></returns>
         public double ToPlotArea(double value, AxisTags axis)
         {
-            return EnsureDouble(Methods.ToPlotArea(value, axis, this));
+            return Methods.ToPlotArea(value, axis, this);
         }
 
         /// <summary>
@@ -301,12 +301,6 @@ namespace lvc.Charts
         #endregion
 
         #region ProtectedMethods
-        /// <summary>
-        /// Axis Y: is Horizontal axis, Axis X: Vertical, confusing but this is how it is!
-        /// </summary>
-        /// <param name="range"></param>
-        /// <param name="axis"></param>
-        /// <returns></returns>
         internal double CalculateSeparator(double range, AxisTags axis)
         {
             //based on:
@@ -416,7 +410,6 @@ namespace lvc.Charts
 
         protected virtual void Scale()
         {
-            
             var max = new Point(Series.Select(x => x.Values.MaxChartPoint.X).DefaultIfEmpty(0).Max(),
                 Series.Select(x => x.Values.MaxChartPoint.Y).DefaultIfEmpty(0).Max());
 
@@ -695,6 +688,7 @@ namespace lvc.Charts
             TooltipTimer.Stop();
             TooltipTimer.Start();
         }
+
         protected virtual Point GetToolTipPosition(HoverableShape sender, List<HoverableShape> sibilings)
         {
             DataToolTip.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
@@ -719,11 +713,6 @@ namespace lvc.Charts
         #endregion
 
         #region Private Methods
-        private double EnsureDouble(double d)
-        {
-            return double.IsNaN(d) ? 0 : d;
-        }
-
         private void ForceRedrawNow()
         {
             PrepareCanvas();
@@ -740,15 +729,21 @@ namespace lvc.Charts
 
             foreach (var shape in Shapes) Canvas.Children.Remove(shape);
             foreach (var shape in HoverableShapes.Select(x => x.Shape).ToList()) Canvas.Children.Remove(shape);
-            foreach (var serie in Series.Cast<Series>()) Canvas.Children.Remove(serie);
+            foreach (var serie in Series) Canvas.Children.Remove(serie);
             HoverableShapes = new List<HoverableShape>();
             Shapes = new List<FrameworkElement>();
-            foreach (var serie in Series.Cast<Series>())
+            foreach (var series in Series)
             {
-                Canvas.Children.Add(serie);
-                EraseSerieBuffer.Add(serie);
-                serie.RequiresAnimation = animate;
-                serie.RequiresPlot = true;
+                series.Collection = Series;
+                if (series.Values != null)
+                {
+                    series.Values.Series = series;
+                    series.Values.Evaluate();
+                }
+                Canvas.Children.Add(series);
+                EraseSerieBuffer.Add(series);
+                series.RequiresAnimation = animate;
+                series.RequiresPlot = true;
             }
             Canvas.Width = ActualWidth * CurrentScale;
             Canvas.Height = ActualHeight * CurrentScale;
@@ -831,6 +826,7 @@ namespace lvc.Charts
             {
                 var index = _colorIndexer++;
                 series.Chart = chart;
+                series.Collection = Series;
                 series.Stroke = series.Stroke ??
                                 new SolidColorBrush(
                                     Colors[(int) (index - Colors.Count*Math.Truncate(index/(decimal) Colors.Count))]);
@@ -869,8 +865,6 @@ namespace lvc.Charts
 
                 var newElements = args.NewItems != null ? args.NewItems.Cast<Series>() : new List<Series>();
 
-
-
                 chart.RequiresScale = true;
                 foreach (var serie in chart.Series.Where(x => !newElements.Contains(x)).Cast<Series>())
                 {
@@ -878,12 +872,12 @@ namespace lvc.Charts
                     serie.RequiresPlot = true;
                 }
 
-
                 if (args.NewItems != null)
                     foreach (var series in newElements)
                     {
                         var index = _colorIndexer++;
                         series.Chart = chart;
+                        series.Collection = Series;
                         series.Stroke = series.Stroke ??
                                 new SolidColorBrush(
                                     Colors[(int)(index - Colors.Count * Math.Truncate(index / (decimal)Colors.Count))]);

@@ -40,7 +40,6 @@ namespace ChartsTest.Line_Examples
             };
 
             var tokio = new ChartValues<WeatherDay>()
-                .WithTitle("Tokio")         // Set a title for the values
                 .AddRange(new[]             // Add some initial values
                 {
                     new WeatherDay {DateTime = buildADate(-5), Temperature = 15},
@@ -51,7 +50,6 @@ namespace ChartsTest.Line_Examples
                     new WeatherDay {DateTime = buildADate(0), Temperature = 19}
                 });
             var newYork = new ChartValues<WeatherDay>()
-                .WithTitle("New York")
                 .AddRange(new[]
                 {
                     new WeatherDay {DateTime = buildADate(-5), Temperature = 9},

@@ -55,7 +55,7 @@ namespace lvc
                 if (DesignerProperties.GetIsInDesignMode(this))
                     if (values == null) values = new ChartValues<double>();
 #endif
-                return values;
+	            return values;
 	        }
             set
             {

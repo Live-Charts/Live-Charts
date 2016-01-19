@@ -13,6 +13,8 @@ namespace lvc
         Point MaxChartPoint { get; }
         Point MinChartPoint { get; }
         Chart Chart { get; set; }
-        IChartSeries Series { get; }
+        IChartSeries Series { get; set; }
+        void Evaluate();
+        bool RequiresEvaluation { get; }
     }
 }
