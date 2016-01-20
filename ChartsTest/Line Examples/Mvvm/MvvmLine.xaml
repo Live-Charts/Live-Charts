@@ -24,12 +24,12 @@
             MVVM example, click on the buttons below to update chart
         </TextBlock>
         <liveCharts:LineChart Name="Chart" Grid.Row="1" Grid.Column="0" Series="{Binding Sales.Salesmen}" >
-            <liveCharts:LineChart.AxisX>
-                <liveCharts:Axis Title="Sold Items"></liveCharts:Axis>
-            </liveCharts:LineChart.AxisX>
             <liveCharts:LineChart.AxisY>
-                <liveCharts:Axis Name="SecondaryAxis" Title="Month" Labels="{Binding Sales.AvailableMonths}"></liveCharts:Axis>
+                <liveCharts:Axis Title="Sold Items"></liveCharts:Axis>
             </liveCharts:LineChart.AxisY>
+            <liveCharts:LineChart.AxisX>
+                <liveCharts:Axis Name="SecondaryAxis" Title="Month" Labels="{Binding Sales.AvailableMonths}"></liveCharts:Axis>
+            </liveCharts:LineChart.AxisX>
         </liveCharts:LineChart>
         <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Center">
             <StackPanel.Resources>

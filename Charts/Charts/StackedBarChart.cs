@@ -32,12 +32,11 @@ namespace lvc
     {
         public StackedBarChart()
         {
-            AxisX = new Axis();
-            AxisY = new Axis {Separator = new Separator {Step = 1}};
+            AxisY = new Axis();
+            AxisX = new Axis {Separator = new Separator {Step = 1}};
             Hoverable = true;
-            AxisX.MinValue = 0d;
+            AxisY.MinValue = 0d;
             ShapeHoverBehavior = ShapeHoverBehavior.Shape;
-            IgnoresLastLabel = true;
             LineType = LineChartLineType.Bezier;
             IndexTotals = new Dictionary<int, StackedBarHelper>();
             MaxColumnWidth = 60;
@@ -79,7 +78,7 @@ namespace lvc
                     .Max();
             p.Y = p.Y > maxLineSeries ? p.Y : maxLineSeries;
 
-            p.Y = AxisX.MaxValue ?? p.Y;
+            p.Y = AxisY.MaxValue ?? p.Y;
             return p;
         }
 
@@ -102,20 +101,20 @@ namespace lvc
                     .Min();
             p.Y = p.Y < minLineSeries ? p.Y : minLineSeries;
 
-            p.Y = AxisX.MinValue ?? p.Y;
+            p.Y = AxisY.MinValue ?? p.Y;
             return p;
         }
 
         private Point GetS()
         {
             return new Point(
-                AxisY.Separator.Step ?? CalculateSeparator(Max.X - Min.X, AxisTags.X),
-                AxisX.Separator.Step ?? CalculateSeparator(Max.Y - Min.Y, AxisTags.Y));
+                AxisX.Separator.Step ?? CalculateSeparator(Max.X - Min.X, AxisTags.X),
+                AxisY.Separator.Step ?? CalculateSeparator(Max.Y - Min.Y, AxisTags.Y));
         }
 
         protected override void Scale()
         {
-            AxisX.MinValue = 0;
+            AxisY.MinValue = 0;
 
             var stackedSeries = Series.OfType<StackedBarSeries>().ToList();
             var fSerie = stackedSeries.FirstOrDefault();
@@ -145,8 +144,8 @@ namespace lvc
             Min = GetMin();
             S = GetS();
 
-            Max.Y = AxisX.MaxValue ?? (Math.Truncate(Max.Y / S.Y) + 1) * S.Y;
-            Min.Y = AxisX.MinValue ?? (Math.Truncate(Min.Y / S.Y) - 1) * S.Y;
+            Max.Y = AxisY.MaxValue ?? (Math.Truncate(Max.Y / S.Y) + 1) * S.Y;
+            Min.Y = AxisY.MinValue ?? (Math.Truncate(Min.Y / S.Y) - 1) * S.Y;
 
             DrawAxes();
         }
@@ -169,16 +168,17 @@ namespace lvc
 
         protected override void DrawAxes()
         {
-            ConfigureSmartAxis(AxisY);
+            AxisX.IgnoresLastLabel = true;
+            ConfigureSmartAxis(AxisX);
 
-            S = GetS();
+            //S = GetS();
 
             Canvas.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
 
             var lastLabelX = Math.Truncate((Max.X - Min.X) / S.X) * S.X;
-            var longestYLabelSize = GetLongestLabelSize(AxisX);
-            var fistXLabelSize = GetLabelSize(AxisY, Min.X);
-            var lastXLabelSize = GetLabelSize(AxisY, lastLabelX);
+            var longestYLabelSize = GetLongestLabelSize(AxisY);
+            var fistXLabelSize = GetLabelSize(AxisX, Min.X);
+            var lastXLabelSize = GetLabelSize(AxisX, lastLabelX);
 
             const int padding = 5;
 

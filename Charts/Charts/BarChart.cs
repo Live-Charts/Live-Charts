@@ -32,11 +32,10 @@ namespace lvc
     {
         public BarChart()
         {
-            AxisX = new Axis();
-            AxisY = new Axis {Separator = new Separator {Step = 1}};
+            AxisY = new Axis();
+            AxisX = new Axis {Separator = new Separator {Step = 1}};
             Hoverable = true;
             ShapeHoverBehavior = ShapeHoverBehavior.Shape;
-            IgnoresLastLabel = true;
             LineType = LineChartLineType.Bezier;
             MaxColumnWidth = 60;
             DefaultFillOpacity = 0.75;
@@ -77,16 +76,17 @@ namespace lvc
 
         protected override void DrawAxes()
         {
-            ConfigureSmartAxis(AxisY);
+            AxisX.IgnoresLastLabel = true;
+            ConfigureSmartAxis(AxisX);
 
             //S = GetS();
 
             Canvas.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
 
             var lastLabelX = Math.Truncate((Max.X - Min.X)/S.X)*S.X;
-            var longestYLabelSize = GetLongestLabelSize(AxisX);
-            var fistXLabelSize = GetLabelSize(AxisY, Min.X);
-            var lastXLabelSize = GetLabelSize(AxisY, lastLabelX);
+            var longestYLabelSize = GetLongestLabelSize(AxisY);
+            var fistXLabelSize = GetLabelSize(AxisX, Min.X);
+            var lastXLabelSize = GetLabelSize(AxisX, lastLabelX);
 
             const int padding = 5;
 

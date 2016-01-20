@@ -22,9 +22,9 @@
                 <liveCharts:PieSeries Title="Maria" Values="15, 10, 40, 55" 
                                           Labels="Day 1, Day 2, Day 3, Day 4"/>
             </liveCharts:PieChart.Series>
-            <liveCharts:PieChart.AxisX>
+            <liveCharts:PieChart.AxisY>
                 <liveCharts:Axis Title="Sold Items"></liveCharts:Axis>
-            </liveCharts:PieChart.AxisX>
+            </liveCharts:PieChart.AxisY>
         </liveCharts:PieChart>
         <liveCharts:PieSeriesViewer Grid.Row="1" Grid.Column="1" 
                                  Series="{Binding ElementName=Chart, Path=Series}"

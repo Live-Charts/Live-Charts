@@ -8,8 +8,8 @@ namespace ChartsTest.Scatter_Examples
         public BasicScatter()
         {
             InitializeComponent();
-            Chart.AxisX.LabelFormatter = LabelFormatters.Number;
-            Chart.AxisY.LabelFormatter = value => value + "°";
+            Chart.AxisY.LabelFormatter = LabelFormatters.Number;
+            Chart.AxisX.LabelFormatter = value => value + "°";
         }
 
         private void OnLoaded(object sender, RoutedEventArgs e)

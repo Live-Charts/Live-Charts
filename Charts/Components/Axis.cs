@@ -92,16 +92,16 @@ namespace lvc
 			set { SetValue(ThicknessProperty, value); }
 		}
 
-		public static readonly DependencyProperty PrintLabelsProperty =
-			DependencyProperty.Register("PrintLabels", typeof(bool), typeof(Axis), new PropertyMetadata(true));
+		public static readonly DependencyProperty ShowLabelsProperty =
+			DependencyProperty.Register("ShowLabels", typeof(bool), typeof(Axis), new PropertyMetadata(true));
 
 		/// <summary>
 		/// Gets or sets if labels should be printed.
 		/// </summary>
-		public bool PrintLabels
+		public bool ShowLabels
 		{
-			get { return (bool)GetValue(PrintLabelsProperty); }
-			set { SetValue(PrintLabelsProperty, value); }
+			get { return (bool)GetValue(ShowLabelsProperty); }
+			set { SetValue(ShowLabelsProperty, value); }
 		}
 
 		public static readonly DependencyProperty MaxValueProperty =
@@ -218,6 +218,8 @@ namespace lvc
         /// initialSeparations = Graph.Heigth / (label.Height * cleanFactor)
         /// </summary>
         internal int CleanFactor { get; set; }
+
+        internal bool IgnoresLastLabel { get; set; }
 
         internal TextBlock BuildATextBlock(int rotate)
         {

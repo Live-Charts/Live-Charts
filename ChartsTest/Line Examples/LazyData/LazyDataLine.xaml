@@ -46,9 +46,9 @@
                                     </Button>
                                 </StackPanel>
                                 <liveCharts:LineChart Height="100" Series="{Binding Series}">
-                                    <liveCharts:LineChart.AxisY>
+                                    <liveCharts:LineChart.AxisX>
                                         <liveCharts:Axis Labels="{Binding Labels}"></liveCharts:Axis>
-                                    </liveCharts:LineChart.AxisY>
+                                    </liveCharts:LineChart.AxisX>
                                 </liveCharts:LineChart>
                             </StackPanel>
                         </DataTemplate>

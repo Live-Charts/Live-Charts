@@ -16,12 +16,12 @@ namespace ChartsTest.Scatter_Examples
             var s1 = secondaryValues.Select(Math.Sin).ToList();
             Serie1.Values = s1.AsChartValues();
             Serie1.SecondaryValues = secondaryValues;
-            Chart.AxisX.MaxValue = s1.Max();
-            Chart.AxisX.MinValue = s1.Min();
-            Chart.AxisY.MaxValue = secondaryValues.Max();
-            Chart.AxisY.MinValue = secondaryValues.Min();
-            Chart.AxisX.LabelFormatter = LabelFormatters.Number;
-            Chart.AxisY.LabelFormatter = val => val.ToString("N1") + "°";
+            Chart.AxisY.MaxValue = s1.Max();
+            Chart.AxisY.MinValue = s1.Min();
+            Chart.AxisX.MaxValue = secondaryValues.Max();
+            Chart.AxisX.MinValue = secondaryValues.Min();
+            Chart.AxisY.LabelFormatter = LabelFormatters.Number;
+            Chart.AxisX.LabelFormatter = val => val.ToString("N1") + "°";
         }
 
         private void JustAreasAndZoomable_OnLoaded(object sender, RoutedEventArgs e)

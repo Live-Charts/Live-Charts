@@ -22,12 +22,12 @@
                 <lvc:LineSeries Title="Maria" Values="20, 40, 45, 60, 55, 60, 65, 70"></lvc:LineSeries>
                 <lvc:LineSeries Title="John" Values="30, 35, 43, 68, 65 ,70, 55, 60"></lvc:LineSeries>
             </lvc:LineChart.Series>
-            <lvc:LineChart.AxisX>
-                <lvc:Axis Title="Sold Items"></lvc:Axis>
-            </lvc:LineChart.AxisX>
             <lvc:LineChart.AxisY>
-                <lvc:Axis Title="Month" Labels="e,f,m,a,m,j,j,a,s,o,n,d"></lvc:Axis>
+                <lvc:Axis Title="Sold Items"></lvc:Axis>
             </lvc:LineChart.AxisY>
+            <lvc:LineChart.AxisX>
+                <lvc:Axis Title="Month" Labels="j,f,m,a,m,j,j,a,s,o,n,d"/>
+            </lvc:LineChart.AxisX>
         </lvc:LineChart>
         <lvc:SeriesViewer Grid.Row="1" Grid.Column="1" 
                                  Series="{Binding ElementName=Chart, Path=Series}"

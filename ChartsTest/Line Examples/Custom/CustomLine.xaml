@@ -27,20 +27,20 @@
                     <liveCharts:LineSeries Title="John" Values="30, 35, 43, 68, 65 ,70, 55, 60" Stroke="#FFA000" Fill="#33FFA000" PointRadius="0" StrokeThickness="4"></liveCharts:LineSeries>
                 <liveCharts:LineSeries Title="Erick" Values="40, 42, 50, 70, 50, 55, 44, 73" Stroke="#FF8F00" Fill="#33FF8F00" PointRadius="0" StrokeThickness="4"></liveCharts:LineSeries>
             </liveCharts:LineChart.Series>
-            <liveCharts:LineChart.AxisX>
+            <liveCharts:LineChart.AxisY>
                 <liveCharts:Axis Title="Sold Items" IsEnabled="False" Foreground="White" FontSize="13" FontFamily="Arial">
                     <liveCharts:Axis.Separator>
                         <liveCharts:Separator Color="#404040" Thickness="2" IsEnabled="True"></liveCharts:Separator>
                     </liveCharts:Axis.Separator>
                 </liveCharts:Axis>
-            </liveCharts:LineChart.AxisX>
-            <liveCharts:LineChart.AxisY>
+            </liveCharts:LineChart.AxisY>
+            <liveCharts:LineChart.AxisX>
                 <liveCharts:Axis Title="Month" Labels="Jan, Feb, Mar, Apr, May, Jun, Ago, Sep, Oct, Nov, Dec" IsEnabled="False">
                     <liveCharts:Axis.Separator>
                         <liveCharts:Separator IsEnabled="False"></liveCharts:Separator>
                     </liveCharts:Axis.Separator>
                 </liveCharts:Axis>
-            </liveCharts:LineChart.AxisY>
+            </liveCharts:LineChart.AxisX>
         </liveCharts:LineChart>
         <liveCharts:SeriesViewer Grid.Row="2"
                                  Series="{Binding ElementName=Chart, Path=Series}"

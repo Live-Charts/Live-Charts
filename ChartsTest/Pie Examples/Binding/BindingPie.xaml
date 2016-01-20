@@ -21,20 +21,20 @@
             <liveCharts:PieChart.Series>
                 <liveCharts:PieSeries Name="Serie1" Title="Maria" Values="{Binding ViewModel.FirstSeries}"></liveCharts:PieSeries>
             </liveCharts:PieChart.Series>
-            <liveCharts:PieChart.AxisX>
-                <liveCharts:Axis IsEnabled="False" PrintLabels="False">
-                    <liveCharts:Axis.Separator>
-                        <liveCharts:Separator IsEnabled="False"></liveCharts:Separator>
-                    </liveCharts:Axis.Separator>
-                </liveCharts:Axis>
-            </liveCharts:PieChart.AxisX>
             <liveCharts:PieChart.AxisY>
-                <liveCharts:Axis IsEnabled="False" PrintLabels="False">
+                <liveCharts:Axis IsEnabled="False" ShowLabels="False">
                     <liveCharts:Axis.Separator>
                         <liveCharts:Separator IsEnabled="False"></liveCharts:Separator>
                     </liveCharts:Axis.Separator>
                 </liveCharts:Axis>
             </liveCharts:PieChart.AxisY>
+            <liveCharts:PieChart.AxisX>
+                <liveCharts:Axis IsEnabled="False" ShowLabels="False">
+                    <liveCharts:Axis.Separator>
+                        <liveCharts:Separator IsEnabled="False"></liveCharts:Separator>
+                    </liveCharts:Axis.Separator>
+                </liveCharts:Axis>
+            </liveCharts:PieChart.AxisX>
         </liveCharts:PieChart>
     </Grid>
 </UserControl>

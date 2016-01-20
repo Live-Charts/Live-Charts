@@ -38,8 +38,8 @@ namespace lvc
 
         public RadarChart()
         {
-            AxisX = new Axis();
             AxisY = new Axis();
+            AxisX = new Axis();
             Hoverable = true;
             ShapeHoverBehavior = ShapeHoverBehavior.Dot;
             AlphaLabel = true;
@@ -75,14 +75,14 @@ namespace lvc
                 new Point(fSerie.Values.Count,
                     Series.Select(x => x.Values.Points.Select(pt => pt.Y).Max())
                         .DefaultIfEmpty(0.0).Max());
-            point.Y = AxisX.MaxValue ?? point.Y;
+            point.Y = AxisY.MaxValue ?? point.Y;
             return point;
         }
         private Point GetS()
         {
-            double? step = this.AxisY.Separator.Step;
+            double? step = this.AxisX.Separator.Step;
             double x = step ?? this.CalculateSeparator(this.Max.X - this.Min.X, AxisTags.X);
-            step = this.AxisX.Separator.Step;
+            step = this.AxisY.Separator.Step;
             double y = step ?? this.CalculateSeparator(this.Max.Y - this.Min.Y, AxisTags.Y);
             return new Point(x, y);
         }
@@ -91,7 +91,7 @@ namespace lvc
         {
             var point = new Point(0,
                 Series.Select((x => x.Values.Points.Select(pt => pt.Y).Min())).DefaultIfEmpty(0.0).Min());
-            point.Y = AxisX.MinValue ?? point.Y;
+            point.Y = AxisY.MinValue ?? point.Y;
             return point;
         }
         #endregion
@@ -110,14 +110,14 @@ namespace lvc
             double num1 = 0.0;
             while (num1 < 360.0)
             {
-                if (this.AxisX.Separator.IsEnabled)
+                if (this.AxisY.Separator.IsEnabled)
                 {
                     Line line1 = new Line();
                     line1.Stroke = (Brush) new SolidColorBrush()
                     {
-                        Color = this.AxisX.Separator.Color
+                        Color = this.AxisY.Separator.Color
                     };
-                    line1.StrokeThickness = (double) this.AxisX.Separator.Thickness;
+                    line1.StrokeThickness = (double) this.AxisY.Separator.Thickness;
                     line1.X1 = this.ActualWidth/2.0;
                     line1.Y1 = this.ActualHeight/2.0;
                     line1.X2 = this.ActualWidth/2.0 + Math.Sin(num1*(Math.PI/180.0))*this.Radius;
@@ -133,9 +133,9 @@ namespace lvc
                     Line line1 = new Line();
                     line1.Stroke = (Brush) new SolidColorBrush()
                     {
-                        Color = this.AxisX.Separator.Color
+                        Color = this.AxisY.Separator.Color
                     };
-                    line1.StrokeThickness = (double) this.AxisX.Separator.Thickness;
+                    line1.StrokeThickness = (double) this.AxisY.Separator.Thickness;
                     line1.X1 = this.ActualWidth/2.0 + Math.Sin(num1*(Math.PI/180.0))*this.ToChartRadius(y);
                     line1.Y1 = this.ActualHeight/2.0 - Math.Cos(num1*(Math.PI/180.0))*this.ToChartRadius(y);
                     line1.X2 = this.ActualWidth/2.0 + Math.Sin(num2*(Math.PI/180.0))*this.ToChartRadius(y);

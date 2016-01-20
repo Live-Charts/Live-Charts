@@ -39,8 +39,8 @@ namespace lvc
     {
         public ScatterChart()
         {
-            AxisX = new Axis();
             AxisY = new Axis();
+            AxisX = new Axis();
             Hoverable = true;
             ShapeHoverBehavior = ShapeHoverBehavior.Dot;
             AnimatesNewPoints = true;
@@ -66,9 +66,9 @@ namespace lvc
 
             Canvas.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
             var lastLabelX = Math.Truncate((Max.X - Min.X)/S.X)*S.X;
-            var longestYLabelSize = GetLongestLabelSize(AxisX);
-            var firstXLabelSize = GetLabelSize(AxisY, Min.X);
-            var lastXLabelSize = GetLabelSize(AxisY, lastLabelX);
+            var longestYLabelSize = GetLongestLabelSize(AxisY);
+            var firstXLabelSize = GetLabelSize(AxisX, Min.X);
+            var lastXLabelSize = GetLabelSize(AxisX, lastLabelX);
 
             const int padding = 5;
 
@@ -102,14 +102,14 @@ namespace lvc
 
             if (scatterToolTip != null)
             {
-                scatterToolTip.PrimaryAxisTitle = AxisX.Title;
-                scatterToolTip.PrimaryValue = AxisX.LabelFormatter == null
+                scatterToolTip.PrimaryAxisTitle = AxisY.Title;
+                scatterToolTip.PrimaryValue = AxisY.LabelFormatter == null
                     ? senderShape.Value.Y.ToString(CultureInfo.InvariantCulture)
-                    : AxisX.LabelFormatter(senderShape.Value.Y);
-                scatterToolTip.SecondaryAxisTitle = AxisY.Title;
-                scatterToolTip.SecondaryValue = AxisY.LabelFormatter == null
+                    : AxisY.LabelFormatter(senderShape.Value.Y);
+                scatterToolTip.SecondaryAxisTitle = AxisX.Title;
+                scatterToolTip.SecondaryValue = AxisX.LabelFormatter == null
                     ? senderShape.Value.X.ToString(CultureInfo.InvariantCulture)
-                    : AxisY.LabelFormatter(senderShape.Value.X);
+                    : AxisX.LabelFormatter(senderShape.Value.X);
             }
             var p = GetToolTipPosition(senderShape, null);
 

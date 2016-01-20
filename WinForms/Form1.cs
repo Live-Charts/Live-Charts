@@ -17,8 +17,8 @@ namespace WinForms
             var lineChart = Host.Child as LineChart;
             if (lineChart == null) return;
             lineChart.Zooming = true;
-            lineChart.AxisX.LabelFormatter = d => d.ToString("C");
-            lineChart.AxisX.Labels = new []
+            lineChart.AxisY.LabelFormatter = d => d.ToString("C");
+            lineChart.AxisY.Labels = new []
             {
                 "label1","label2","label3","label4","label5","label6","label7","label8",
                 "label9","label10","label11","label12","label13","label14","label15","label16",

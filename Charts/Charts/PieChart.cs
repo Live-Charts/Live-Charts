@@ -35,8 +35,8 @@ namespace lvc
     {
         public PieChart()
         {
-            AxisX = new Axis {FontWeight = FontWeights.Bold, FontSize = 11, FontFamily = new FontFamily("Calibri")};
-            AxisY = new Axis();
+            AxisY = new Axis {FontWeight = FontWeights.Bold, FontSize = 11, FontFamily = new FontFamily("Calibri")};
+            AxisX = new Axis();
             Hoverable = true;
             ShapeHoverBehavior = ShapeHoverBehavior.Shape;
             InnerRadius = 0;

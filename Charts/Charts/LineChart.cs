@@ -30,8 +30,8 @@ namespace lvc
     {
         public LineChart()
         {
-            AxisX = new Axis();
-            AxisY = new Axis
+            AxisY = new Axis();
+            AxisX = new Axis
             {
                 Separator = {IsEnabled = false, Step = 1},
                 IsEnabled = false
@@ -53,8 +53,8 @@ namespace lvc
         {
             base.Scale();
 
-            Max.Y = AxisY.MaxValue ?? (Math.Truncate(Max.Y / S.Y) + 1) * S.Y;
-            Min.Y = AxisY.MinValue ?? (Math.Truncate(Min.Y / S.Y) - 1) * S.Y;
+            Max.Y = AxisX.MaxValue ?? (Math.Truncate(Max.Y / S.Y) + 1) * S.Y;
+            Min.Y = AxisX.MinValue ?? (Math.Truncate(Min.Y / S.Y) - 1) * S.Y;
 
             DrawAxes();
         }
@@ -63,15 +63,15 @@ namespace lvc
         {
             if (Math.Abs(S.X) <= Min.X*.01 || Math.Abs(S.Y) <= Min.Y*.01) return;
 
-            ConfigureSmartAxis(AxisY);
+            ConfigureSmartAxis(AxisX);
 
             //S = GetS();
 
             Canvas.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
             var lastLabelX = Math.Truncate((Max.X - Min.X)/S.X)*S.X;
-            var longestYLabelSize = GetLongestLabelSize(AxisX);
-            var firstXLabelSize = GetLabelSize(AxisY, Min.X);
-            var lastXLabelSize = GetLabelSize(AxisY, lastLabelX);
+            var longestYLabelSize = GetLongestLabelSize(AxisY);
+            var firstXLabelSize = GetLabelSize(AxisX, Min.X);
+            var lastXLabelSize = GetLabelSize(AxisX, lastLabelX);
 
             const int padding = 5;
 

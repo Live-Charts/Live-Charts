@@ -57,20 +57,20 @@
                     </lvc:LineSeries.Fill>
                 </lvc:LineSeries>
             </lvc:LineChart.Series>
-            <lvc:LineChart.AxisX>
-                <lvc:Axis IsEnabled="False" PrintLabels="False">
+            <lvc:LineChart.AxisY>
+                <lvc:Axis IsEnabled="False" ShowLabels="False">
                     <lvc:Axis.Separator>
                         <lvc:Separator IsEnabled="False"></lvc:Separator>
                     </lvc:Axis.Separator>
                 </lvc:Axis>
-            </lvc:LineChart.AxisX>
-            <lvc:LineChart.AxisY>
-                <lvc:Axis IsEnabled="False" PrintLabels="False">
+            </lvc:LineChart.AxisY>
+            <lvc:LineChart.AxisX>
+                <lvc:Axis IsEnabled="False" ShowLabels="False">
                     <lvc:Axis.Separator>
                         <lvc:Separator IsEnabled="False" ></lvc:Separator>
                     </lvc:Axis.Separator>
                 </lvc:Axis>
-            </lvc:LineChart.AxisY>
+            </lvc:LineChart.AxisX>
         </lvc:LineChart>
     </Grid>
 </UserControl>

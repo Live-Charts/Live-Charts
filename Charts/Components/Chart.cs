@@ -53,7 +53,6 @@ namespace lvc.Charts
 
         protected double CurrentScale;
         protected ShapeHoverBehavior ShapeHoverBehavior;
-        protected bool IgnoresLastLabel;
         protected bool AlphaLabel;
         protected readonly DispatcherTimer TooltipTimer;
         protected double DefaultFillOpacity = 0.35;
@@ -223,11 +222,11 @@ namespace lvc.Charts
         /// <summary>
         /// Gets or sets X Axis
         /// </summary>
-        public Axis AxisX { get; set; }
+        public Axis AxisY { get; set; }
         /// <summary>
         /// Gets or sets Y Axis
         /// </summary>
-        public Axis AxisY { get; set; }
+        public Axis AxisX { get; set; }
         /// <summary>
         /// Gets or sets current tooltip when mouse is over a hoverable shape
         /// </summary>
@@ -315,18 +314,18 @@ namespace lvc.Charts
                     "A label",
                     CultureInfo.CurrentUICulture,
                     FlowDirection.LeftToRight,
-                    new Typeface(AxisX.FontFamily, AxisX.FontStyle, AxisX.FontWeight,
-                        AxisX.FontStretch), AxisX.FontSize, Brushes.Black)
+                    new Typeface(AxisY.FontFamily, AxisY.FontStyle, AxisY.FontWeight,
+                        AxisY.FontStretch), AxisY.FontSize, Brushes.Black)
                 : new FormattedText(
                     "A label",
                     CultureInfo.CurrentUICulture,
                     FlowDirection.LeftToRight,
-                    new Typeface(AxisY.FontFamily, AxisY.FontStyle, AxisY.FontWeight,
-                        AxisY.FontStretch), AxisY.FontSize, Brushes.Black);
+                    new Typeface(AxisX.FontFamily, AxisX.FontStyle, AxisX.FontWeight,
+                        AxisX.FontStretch), AxisX.FontSize, Brushes.Black);
 
             var separations = axis == AxisTags.Y
-                ? Math.Round(PlotArea.Height / ((ft.Height) * AxisX.CleanFactor), 0)
-                : Math.Round(PlotArea.Width / ((ft.Width) * AxisY.CleanFactor), 0);
+                ? Math.Round(PlotArea.Height / ((ft.Height) * AxisY.CleanFactor), 0)
+                : Math.Round(PlotArea.Width / ((ft.Width) * AxisX.CleanFactor), 0);
 
             separations = separations < 2 ? 2 : separations;
 
@@ -347,8 +346,8 @@ namespace lvc.Charts
 
         protected void ConfigureSmartAxis(Axis axis)
         {
-            axis.PrintLabels = axis.Labels != null;
-            if (axis.Labels == null || !axis.Labels.Any() || !axis.PrintLabels) return;
+            axis.ShowLabels = axis.Labels != null;
+            if (axis.Labels == null || !axis.Labels.Any() || !axis.ShowLabels) return;
             var m = axis.Labels.OrderByDescending(x => x.Length);
             var longestYLabel = new FormattedText(m.First(), CultureInfo.CurrentUICulture, FlowDirection.LeftToRight,
                 new Typeface(axis.FontFamily, axis.FontStyle, axis.FontWeight, axis.FontStretch), axis.FontSize,
@@ -360,11 +359,11 @@ namespace lvc.Charts
 
         protected Point GetLongestLabelSize(Axis axis)
         {
-            if (!axis.PrintLabels) return new Point(0, 0);
+            if (!axis.ShowLabels) return new Point(0, 0);
             var label = "";
-            var from = Equals(axis, AxisX) ? Min.Y : Min.X;
-            var to = Equals(axis, AxisX) ? Max.Y : Max.X;
-            var s = Equals(axis, AxisX) ? S.Y : S.X;
+            var from = Equals(axis, AxisY) ? Min.Y : Min.X;
+            var to = Equals(axis, AxisY) ? Max.Y : Max.X;
+            var s = Equals(axis, AxisY) ? S.Y : S.X;
             for (var i = from; i <= to; i += s)
             {
                 var iL = axis.LabelFormatter == null
@@ -383,13 +382,13 @@ namespace lvc.Charts
 
         protected Point GetLabelSize(Axis axis, double value)
         {
-            if (!axis.PrintLabels) return new Point(0, 0);
+            if (!axis.ShowLabels) return new Point(0, 0);
 
             var labels = axis.Labels != null ? axis.Labels.ToArray() : null;
             var fomattedValue = labels == null
-                ? (AxisY.LabelFormatter == null
+                ? (AxisX.LabelFormatter == null
                     ? Min.X.ToString(CultureInfo.InvariantCulture)
-                    : AxisY.LabelFormatter(value))
+                    : AxisX.LabelFormatter(value))
                 : (labels.Length > value && value>=0
                     ? labels[(int)value]
                     : "");
@@ -401,7 +400,7 @@ namespace lvc.Charts
 
         protected Point GetLabelSize(Axis axis, string value)
         {
-            if (!axis.PrintLabels) return new Point(0, 0);
+            if (!axis.ShowLabels) return new Point(0, 0);
             var fomattedValue = value;
             var uiLabelSize = new FormattedText(fomattedValue, CultureInfo.CurrentUICulture, FlowDirection.LeftToRight,
                 new Typeface(axis.FontFamily, axis.FontStyle, axis.FontWeight, axis.FontStretch),
@@ -417,30 +416,28 @@ namespace lvc.Charts
             var min = new Point(Series.Select(x => x.Values.MinChartPoint.X).DefaultIfEmpty(0).Min(),
                 Series.Select(x => x.Values.MinChartPoint.Y).DefaultIfEmpty(0).Min());
 
-            Min.X = AxisX.MinValue ?? min.X;
-            Max.X = AxisX.MaxValue ?? max.X;
+            Min.X = AxisY.MinValue ?? min.X;
+            Max.X = AxisY.MaxValue ?? max.X;
 
-            Min.Y = AxisY.MinValue ?? min.Y;
-            Max.Y = AxisY.MaxValue ?? max.Y;
+            Min.Y = AxisX.MinValue ?? min.Y;
+            Max.Y = AxisX.MaxValue ?? max.Y;
 
             S = new Point(
-                AxisY.Separator.Step ?? CalculateSeparator(Max.X - Min.X, AxisTags.X),
-                AxisX.Separator.Step ?? CalculateSeparator(Max.Y - Min.Y, AxisTags.Y));
+                AxisX.Separator.Step ?? CalculateSeparator(Max.X - Min.X, AxisTags.X),
+                AxisY.Separator.Step ?? CalculateSeparator(Max.Y - Min.Y, AxisTags.Y));
         }
         #endregion
 
         #region Virtual Methods
         protected virtual void DrawAxes()
         {
-            foreach (var l in Shapes) Canvas.Children.Remove(l);
-            foreach (var series in Series) if (series != null) series.Values.Chart = this;
-
+            //draw axes titles
             var titleY = 0d;
-            if (!string.IsNullOrWhiteSpace(AxisX.Title))
+            if (!string.IsNullOrWhiteSpace(AxisY.Title))
             {
-                var ty = GetLabelSize(AxisX, AxisX.Title);
-                var yLabel = AxisX.BuildATextBlock(-90);
-                var binding = new Binding {Path = new PropertyPath("Title"), Source = AxisX};
+                var ty = GetLabelSize(AxisY, AxisY.Title);
+                var yLabel = AxisY.BuildATextBlock(-90);
+                var binding = new Binding {Path = new PropertyPath("Title"), Source = AxisY};
                 BindingOperations.SetBinding(yLabel, TextBlock.TextProperty, binding);
                 Shapes.Add(yLabel);
                 Canvas.Children.Add(yLabel);
@@ -449,11 +446,11 @@ namespace lvc.Charts
                 titleY += ty.Y + 5;
             }
             var titleX = 0d;
-            if (!string.IsNullOrWhiteSpace(AxisY.Title))
+            if (!string.IsNullOrWhiteSpace(AxisX.Title))
             {
-                var tx = GetLabelSize(AxisY, AxisY.Title);
-                var yLabel = AxisX.BuildATextBlock(0);
-                var binding = new Binding {Path = new PropertyPath("Title"), Source = AxisY};
+                var tx = GetLabelSize(AxisX, AxisX.Title);
+                var yLabel = AxisY.BuildATextBlock(0);
+                var binding = new Binding {Path = new PropertyPath("Title"), Source = AxisX};
                 BindingOperations.SetBinding(yLabel, TextBlock.TextProperty, binding);
                 Shapes.Add(yLabel);
                 Canvas.Children.Add(yLabel);
@@ -461,118 +458,24 @@ namespace lvc.Charts
                 Canvas.SetTop(yLabel, Canvas.DesiredSize.Height - tx.Y - 5);
                 titleX += tx.Y;
             }
-
             PlotArea.X += titleY;
             PlotArea.Width -= titleY;
             PlotArea.Height -= titleX;
 
-            var ly = AxisX.Separator.IsEnabled || AxisX.PrintLabels
-                ? Max.Y
-                : Min.Y - 1;
-            var longestYLabelSize = GetLongestLabelSize(AxisX);
-            for (var i = Min.Y; i <= ly; i += S.Y)
-            {
-                var y = ToPlotArea(i, AxisTags.Y);
-                if (AxisX.Separator.IsEnabled)
-                {
-                    var l = new Line
-                    {
-                        Stroke = new SolidColorBrush { Color = AxisX.Separator.Color },
-                        StrokeThickness = AxisX.Separator.Thickness,
-                        X1 = ToPlotArea(Min.X, AxisTags.X),
-                        Y1 = y,
-                        X2 = ToPlotArea(Max.X, AxisTags.X),
-                        Y2 = y
-                    };
-                    Canvas.Children.Add(l);
-                    Shapes.Add(l);
-                }
-
-                if (AxisX.PrintLabels)
-                {
-                    var t = AxisX.LabelFormatter == null
-                        ? i.ToString(CultureInfo.InvariantCulture)
-                        : AxisX.LabelFormatter(i);
-                    var label = new TextBlock
-                    {
-                        FontFamily = AxisX.FontFamily,
-                        FontSize = AxisX.FontSize,
-                        FontStretch = AxisX.FontStretch,
-                        FontStyle = AxisX.FontStyle,
-                        FontWeight = AxisX.FontWeight,
-                        Foreground = AxisX.Foreground,
-                        Text = t
-                    };
-                    var fl = new FormattedText(t, CultureInfo.CurrentUICulture, FlowDirection.LeftToRight,
-                        new Typeface(AxisX.FontFamily, AxisX.FontStyle, AxisX.FontWeight,
-                            AxisX.FontStretch), AxisX.FontSize, Brushes.Black);
-                    Canvas.Children.Add(label);
-                    Shapes.Add(label);
-                    Canvas.SetLeft(label, titleY + (5 + longestYLabelSize.X) - fl.Width);
-                    Canvas.SetTop(label, ToPlotArea(i, AxisTags.Y) - longestYLabelSize.Y * .5);
-                }
-            }
-
-            //drawing secondary axis
-            var lx = AxisY.Separator.IsEnabled || AxisY.PrintLabels
-                ? Max.X + (IgnoresLastLabel ? -1 : 0)
-                : Min.X - 1;
-
-            for (var i = Min.X; i <= lx; i += S.X)
-            {
-                var x = ToPlotArea(i, AxisTags.X);
-                if (AxisY.Separator.IsEnabled)
-                {
-                    var l = new Line
-                    {
-                        Stroke = new SolidColorBrush { Color = AxisY.Separator.Color },
-                        StrokeThickness = AxisY.Separator.Thickness,
-                        X1 = x,
-                        Y1 = ToPlotArea(Max.Y, AxisTags.Y),
-                        X2 = x,
-                        Y2 = ToPlotArea(Min.Y, AxisTags.Y)
-                    };
-                    Canvas.Children.Add(l);
-                    Shapes.Add(l);
-                }
-
-                if (AxisY.PrintLabels)
-                {
-                    var labels = AxisY.Labels != null ? AxisY.Labels.ToArray() : null;
-                    var t = labels == null
-                        ? (AxisY.LabelFormatter == null
-                            ? i.ToString(CultureInfo.InvariantCulture)
-                            : AxisY.LabelFormatter(i))
-                        : (labels.Length > i && i >= 0
-                            ? labels[(int)i]
-                            : "");
-                    var label = new TextBlock
-                    {
-                        FontFamily = AxisY.FontFamily,
-                        FontSize = AxisY.FontSize,
-                        FontStretch = AxisY.FontStretch,
-                        FontStyle = AxisY.FontStyle,
-                        FontWeight = AxisY.FontWeight,
-                        Foreground = AxisY.Foreground,
-                        Text = t
-                    };
-                    var fl = new FormattedText(t, CultureInfo.CurrentUICulture, FlowDirection.LeftToRight,
-                        new Typeface(AxisY.FontFamily, AxisY.FontStyle, AxisY.FontWeight,
-                            AxisY.FontStretch), AxisY.FontSize, Brushes.Black);
-                    Canvas.Children.Add(label);
-                    Shapes.Add(label);
-                    Canvas.SetLeft(label, ToPlotArea(i, AxisTags.X) - fl.Width * .5 + XOffset);
-                    Canvas.SetTop(label, PlotArea.Y + PlotArea.Height + 5);
-                }
-            }
-
+            //now lets draw axis
+            var longestY = GetLongestLabelSize(AxisY);
+            var longestX = GetLongestLabelSize(AxisX);
+            //YAxis
+            DrawAxis(AxisY, longestY, longestX, titleY, 0);
+            //XAxis
+            DrawAxis(AxisX, longestX, longestX, 0, 0);
             //drawing ceros.
-            if (Max.Y >= 0 && Min.Y <= 0 && AxisX.IsEnabled)
+            if (Max.Y >= 0 && Min.Y <= 0 && AxisY.IsEnabled)
             {
                 var l = new Line
                 {
-                    Stroke = new SolidColorBrush { Color = AxisX.Color },
-                    StrokeThickness = AxisX.Thickness,
+                    Stroke = new SolidColorBrush { Color = AxisY.Color },
+                    StrokeThickness = AxisY.Thickness,
                     X1 = ToPlotArea(Min.X, AxisTags.X),
                     Y1 = ToPlotArea(0, AxisTags.Y),
                     X2 = ToPlotArea(Max.X, AxisTags.X),
@@ -581,13 +484,12 @@ namespace lvc.Charts
                 Canvas.Children.Add(l);
                 Shapes.Add(l);
             }
-
-            if (Max.X >= 0 && Min.X <= 0 && AxisY.IsEnabled)
+            if (Max.X >= 0 && Min.X <= 0 && AxisX.IsEnabled)
             {
                 var l = new Line
                 {
-                    Stroke = new SolidColorBrush { Color = AxisY.Color },
-                    StrokeThickness = AxisY.Thickness,
+                    Stroke = new SolidColorBrush { Color = AxisX.Color },
+                    StrokeThickness = AxisX.Thickness,
                     X1 = ToPlotArea(0, AxisTags.X),
                     Y1 = ToPlotArea(Min.Y, AxisTags.Y),
                     X2 = ToPlotArea(0, AxisTags.X),
@@ -611,7 +513,7 @@ namespace lvc.Charts
                 .Where(s => Math.Abs(s.Value.X - senderShape.Value.X) < S.X*.001).ToList();
 
             var first = sibilings.Count > 0 ? sibilings[0] : null;
-            var labels = AxisY.Labels != null ? AxisY.Labels.ToArray() : null;
+            var labels = AxisX.Labels != null ? AxisX.Labels.ToArray() : null;
             var vx = first != null ? first.Value.X : 0;
             vx = AlphaLabel ? (int) (vx/(360d/Series.First().Values.Count)) : vx;
 
@@ -632,9 +534,9 @@ namespace lvc.Charts
             if (indexedToolTip != null)
             {
                 indexedToolTip.Header = labels == null
-                        ? (AxisY.LabelFormatter == null
+                        ? (AxisX.LabelFormatter == null
                             ? vx.ToString(CultureInfo.InvariantCulture)
-                            : AxisY.LabelFormatter(vx))
+                            : AxisX.LabelFormatter(vx))
                         : (labels.Length > vx
                             ? labels[(int) vx]
                             : "");
@@ -643,9 +545,9 @@ namespace lvc.Charts
                     Index = Series.IndexOf(x.Series),
                     Series = x.Series,
                     Point = x.Value,
-                    Value = AxisX.LabelFormatter == null
+                    Value = AxisY.LabelFormatter == null
                         ? x.Value.Y.ToString(CultureInfo.InvariantCulture)
-                        : AxisX.LabelFormatter(x.Value.Y)
+                        : AxisY.LabelFormatter(x.Value.Y)
                 }).ToArray();
             }
 
@@ -714,6 +616,92 @@ namespace lvc.Charts
         #endregion
 
         #region Private Methods
+
+        private void DrawAxis(Axis axis, Point longestY, Point longestX, double offsetY, double offsetX)
+        {
+            var isX = Equals(axis, AxisX);
+            var max = isX ? Max.X : Max.Y;
+            var min = isX ? Min.X : Min.Y;
+            var s = isX ? S.X : S.Y;
+
+            var maxval = axis.Separator.IsEnabled || axis.ShowLabels
+                ? max + (axis.IgnoresLastLabel ? -1 : 0)
+                : min - 1;
+
+            var formatter = GetFormatter(axis);
+
+            for (var i = min; i <= maxval; i += s)
+            {
+                if (axis.Separator.IsEnabled)
+                {
+                    var l = new Line
+                    {
+                        Stroke = new SolidColorBrush { Color = axis.Separator.Color },
+                        StrokeThickness = axis.Separator.Thickness
+                    };
+                    if (isX)
+                    {
+                        var x = ToPlotArea(i, AxisTags.X);
+                        l.X1 = x;
+                        l.X2 = x;
+                        l.Y1 = ToPlotArea(Max.Y, AxisTags.Y);
+                        l.Y2 = ToPlotArea(Min.Y, AxisTags.Y);
+                    }
+                    else
+                    {
+                        var y = ToPlotArea(i, AxisTags.Y);
+                        l.X1 = ToPlotArea(Min.X, AxisTags.X);
+                        l.X2 = ToPlotArea(Max.X, AxisTags.X);
+                        l.Y1 = y;
+                        l.Y2 = y;
+                    }
+
+                    Canvas.Children.Add(l);
+                    Shapes.Add(l);
+                }
+
+                if (AxisX.ShowLabels)
+                {
+                    var text = formatter(i);
+                    var label = axis.BuildATextBlock(0);
+                    label.Text = text;
+                    var fl = new FormattedText(text, CultureInfo.CurrentUICulture, FlowDirection.LeftToRight,
+                        new Typeface(axis.FontFamily, axis.FontStyle, axis.FontWeight,
+                            axis.FontStretch), axis.FontSize, Brushes.Black);
+                    Canvas.Children.Add(label);
+                    Shapes.Add(label);
+
+                    var top = 0;
+                    var left = 0;
+
+
+                    if (isX)
+                    {
+                        Canvas.SetLeft(label, ToPlotArea(i, AxisTags.X) - fl.Width*.5 + XOffset);
+                        Canvas.SetTop(label, PlotArea.Y + PlotArea.Height + 5);
+                    }
+                    else
+                    {
+                        Canvas.SetLeft(label, offsetY + (5 + longestY.X) - fl.Width);
+                        Canvas.SetTop(label, ToPlotArea(i, AxisTags.Y) - longestY.Y * .5);
+                    }
+                }
+            }
+        }
+
+        private Func<double, string> GetFormatter(Axis axis)
+        {
+            var labels = axis.Labels != null ? axis.Labels : null;
+
+            return x => labels == null
+                ? (axis.LabelFormatter == null
+                    ? x.ToString(CultureInfo.InvariantCulture)
+                    : AxisX.LabelFormatter(x))
+                : (labels.Count > x && x >= 0
+                    ? labels[(int) x]
+                    : "");
+        } 
+
         private void ForceRedrawNow()
         {
             PrepareCanvas();
@@ -725,8 +713,8 @@ namespace lvc.Charts
             if (Series == null) return;
             if (!SeriesInitialized) InitializeSeries(this);
 
-            if (AxisX.Parent == null) Canvas.Children.Add(AxisX);
             if (AxisY.Parent == null) Canvas.Children.Add(AxisY);
+            if (AxisX.Parent == null) Canvas.Children.Add(AxisX);
 
             foreach (var shape in Shapes) Canvas.Children.Remove(shape);
             foreach (var shape in HoverableShapes.Select(x => x.Shape).ToList()) Canvas.Children.Remove(shape);

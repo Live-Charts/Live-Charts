@@ -29,20 +29,20 @@
                                               SecondaryValues="{Binding ViewModel.SecondPrimaryValues}"
                                               StrokeThickness="4" PointRadius="6"/>
             </liveCharts:ScatterChart.Series>
-            <liveCharts:ScatterChart.AxisX>
-                <liveCharts:Axis IsEnabled="False" PrintLabels="False">
-                    <liveCharts:Axis.Separator>
-                        <liveCharts:Separator IsEnabled="False"></liveCharts:Separator>
-                    </liveCharts:Axis.Separator>
-                </liveCharts:Axis>
-            </liveCharts:ScatterChart.AxisX>
             <liveCharts:ScatterChart.AxisY>
-                <liveCharts:Axis IsEnabled="False" PrintLabels="False" MinValue="1" MaxValue="15">
+                <liveCharts:Axis IsEnabled="False" ShowLabels="False">
                     <liveCharts:Axis.Separator>
                         <liveCharts:Separator IsEnabled="False"></liveCharts:Separator>
                     </liveCharts:Axis.Separator>
                 </liveCharts:Axis>
             </liveCharts:ScatterChart.AxisY>
+            <liveCharts:ScatterChart.AxisX>
+                <liveCharts:Axis IsEnabled="False" ShowLabels="False" MinValue="1" MaxValue="15">
+                    <liveCharts:Axis.Separator>
+                        <liveCharts:Separator IsEnabled="False"></liveCharts:Separator>
+                    </liveCharts:Axis.Separator>
+                </liveCharts:Axis>
+            </liveCharts:ScatterChart.AxisX>
         </liveCharts:ScatterChart>
     </Grid>
 </UserControl>

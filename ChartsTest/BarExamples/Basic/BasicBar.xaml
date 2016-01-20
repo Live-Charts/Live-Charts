@@ -23,12 +23,12 @@
                 <liveCharts:BarSeries Title="John"     Values="30, 35, 43, 68, 65 ,70, 55, 60"/>
                 <liveCharts:LineSeries Title="Averge"  Values="25, 37.5, 44, 64, 60, 65, 60, 65" Fill="Transparent" />
             </liveCharts:BarChart.Series>
-            <liveCharts:BarChart.AxisX>
-                <liveCharts:Axis Name="PrimaryAxis" Title="Sold Items"></liveCharts:Axis>
-            </liveCharts:BarChart.AxisX>
             <liveCharts:BarChart.AxisY>
-                <liveCharts:Axis Title="Month" Labels="Jan, Feb, Mar, Apr, May, Jun, Ago, Sep, Oct, Nov, Dec"></liveCharts:Axis>
+                <liveCharts:Axis Name="PrimaryAxis" Title="Sold Items"></liveCharts:Axis>
             </liveCharts:BarChart.AxisY>
+            <liveCharts:BarChart.AxisX>
+                <liveCharts:Axis Title="Month" Labels="Jan, Feb, Mar, Apr, May, Jun, Ago, Sep, Oct, Nov, Dec"></liveCharts:Axis>
+            </liveCharts:BarChart.AxisX>
         </liveCharts:BarChart>
         <liveCharts:SeriesViewer Grid.Row="1" Grid.Column="1" 
                                  Series="{Binding ElementName=Chart, Path=Series}"

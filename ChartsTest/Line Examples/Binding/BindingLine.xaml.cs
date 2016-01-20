@@ -34,10 +34,15 @@ namespace ChartsTest.Line_Examples
 
             var series = new SeriesCollection
             {
+                new LineSeries
+                {
+                    Values = new ChartValues<WeatherDay> {new WeatherDay {DateTime = buildADate(-5), Temperature = 15}}
+                },
                 new LineSeries(),
-                new LineSeries(),
-                tok
-            };
+                new LineSeries()
+            }.For(new SeriesConfiguration<WeatherDay>()
+                .X((day, index) => index)
+                .Y(day => day.Temperature));
 
             var tokio = new ChartValues<WeatherDay>()
                 .AddRange(new[]             // Add some initial values

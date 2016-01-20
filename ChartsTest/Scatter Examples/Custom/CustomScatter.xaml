@@ -27,20 +27,20 @@
                 <liveCharts:ScatterSeries Name="Serie1" Title="Tan" Stroke="#FFB300" Fill="#AAFFB300" PointRadius="0" StrokeThickness="4"></liveCharts:ScatterSeries>
                 <liveCharts:ScatterSeries Name="Serie2" Title="ATan" Stroke="#FFA000" Fill="#AAFFA000" PointRadius="0" StrokeThickness="4"></liveCharts:ScatterSeries>
             </liveCharts:ScatterChart.Series>
-            <liveCharts:ScatterChart.AxisX>
+            <liveCharts:ScatterChart.AxisY>
                 <liveCharts:Axis IsEnabled="False" Foreground="White" FontSize="13" FontFamily="Arial">
                     <liveCharts:Axis.Separator>
                         <liveCharts:Separator Color="#404040" Thickness="2" IsEnabled="True"></liveCharts:Separator>
                     </liveCharts:Axis.Separator>
                 </liveCharts:Axis>
-            </liveCharts:ScatterChart.AxisX>
-            <liveCharts:ScatterChart.AxisY>
+            </liveCharts:ScatterChart.AxisY>
+            <liveCharts:ScatterChart.AxisX>
                 <liveCharts:Axis IsEnabled="False" MinValue="0" MaxValue="1">
                     <liveCharts:Axis.Separator>
                         <liveCharts:Separator IsEnabled="False"></liveCharts:Separator>
                     </liveCharts:Axis.Separator>
                 </liveCharts:Axis>
-            </liveCharts:ScatterChart.AxisY>
+            </liveCharts:ScatterChart.AxisX>
         </liveCharts:ScatterChart>
         <liveCharts:SeriesViewer Grid.Row="2"
                                  Series="{Binding ElementName=Chart, Path=Series}"

@@ -106,6 +106,8 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Components\SeriesConfiguration.cs" />
+    <Compile Include="Interfaces\ISeriesConfiguration.cs" />
     <Compile Include="Components\Axis.cs" />
     <Compile Include="AxisTags.cs" />
     <Compile Include="BezierSpline.cs" />
@@ -122,7 +124,7 @@
     <Compile Include="PerformanceConfiguration.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Series\RowSeries.cs" />
-    <Compile Include="Charts\SeriesCollection.cs" />
+    <Compile Include="Components\SeriesCollection.cs" />
     <Compile Include="ChartValues\IChartValues.cs" />
     <Compile Include="LiveChartsExtentions.cs" />
     <Compile Include="ChartValues\ChartValues.cs" />

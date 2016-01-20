@@ -21,12 +21,12 @@
             <liveCharts:LineChart.Series>
                 <liveCharts:LineSeries Title="{Binding Name}" Values="{Binding Values}" StrokeThickness="4" PointRadius="0"></liveCharts:LineSeries>
             </liveCharts:LineChart.Series>
-            <liveCharts:LineChart.AxisX>
-                <liveCharts:Axis></liveCharts:Axis>
-            </liveCharts:LineChart.AxisX>
             <liveCharts:LineChart.AxisY>
                 <liveCharts:Axis></liveCharts:Axis>
             </liveCharts:LineChart.AxisY>
+            <liveCharts:LineChart.AxisX>
+                <liveCharts:Axis></liveCharts:Axis>
+            </liveCharts:LineChart.AxisX>
         </liveCharts:LineChart>
     </Grid>
 </UserControl>

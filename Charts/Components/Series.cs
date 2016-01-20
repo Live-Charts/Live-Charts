@@ -57,10 +57,7 @@ namespace lvc
 #endif
 	            return values;
 	        }
-            set
-            {
-                SetValue(ValuesProperty, value);
-            }
+            set { SetValue(ValuesProperty, value); }
 	    }
 
         public SeriesCollection Collection { get; internal set; }

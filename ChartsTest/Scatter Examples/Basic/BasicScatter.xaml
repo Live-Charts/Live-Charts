@@ -26,12 +26,12 @@
                                          Values="1, .7071, 0, -.7071, -1 ,-.7071, 0, .7071, 1"
                                          SecondaryValues="0, 45, 90, 135, 180, 225, 270, 315, 360"></liveCharts:ScatterSeries>
             </liveCharts:ScatterChart.Series>
-            <liveCharts:ScatterChart.AxisX>
-                <liveCharts:Axis MinValue="-1" MaxValue="1"></liveCharts:Axis>
-            </liveCharts:ScatterChart.AxisX>
             <liveCharts:ScatterChart.AxisY>
-                <liveCharts:Axis Title="Degrees" MinValue="0"></liveCharts:Axis>
+                <liveCharts:Axis MinValue="-1" MaxValue="1"></liveCharts:Axis>
             </liveCharts:ScatterChart.AxisY>
+            <liveCharts:ScatterChart.AxisX>
+                <liveCharts:Axis Title="Degrees" MinValue="0"></liveCharts:Axis>
+            </liveCharts:ScatterChart.AxisX>
         </liveCharts:ScatterChart>
         <liveCharts:SeriesViewer Grid.Row="1" Grid.Column="1" 
                                  Series="{Binding ElementName=Chart, Path=Series}"

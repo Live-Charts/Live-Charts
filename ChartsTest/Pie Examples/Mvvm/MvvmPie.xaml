@@ -22,12 +22,12 @@
             MVVM example, click on the buttons below to update chart
         </TextBlock>
         <liveCharts:PieChart Name="Chart" Grid.Row="1" Grid.Column="0" Series="{Binding Salesmen}" >
-            <liveCharts:PieChart.AxisX>
-                <liveCharts:Axis Title="Sold Items" LabelFormatter="{x:Static liveCharts:LabelFormatters.Number}"></liveCharts:Axis>
-            </liveCharts:PieChart.AxisX>
             <liveCharts:PieChart.AxisY>
-                <liveCharts:Axis Name="SecondaryAxis" Title="Month" Labels="{Binding AvailableMonths}"></liveCharts:Axis>
+                <liveCharts:Axis Title="Sold Items" LabelFormatter="{x:Static liveCharts:LabelFormatters.Number}"></liveCharts:Axis>
             </liveCharts:PieChart.AxisY>
+            <liveCharts:PieChart.AxisX>
+                <liveCharts:Axis Name="SecondaryAxis" Title="Month" Labels="{Binding AvailableMonths}"></liveCharts:Axis>
+            </liveCharts:PieChart.AxisX>
         </liveCharts:PieChart>
         <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Center">
             <StackPanel.Resources>

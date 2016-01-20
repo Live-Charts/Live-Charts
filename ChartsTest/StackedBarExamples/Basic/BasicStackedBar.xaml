@@ -23,12 +23,12 @@
                     <liveCharts:StackedBarSeries Title="John" Values="30, 35, 43, 68, 65 ,70, 55, 60"/>
                 <liveCharts:LineSeries Title="Expected Sales"  Values="10, 70, 80, 110,120, 140,120, 120" Fill="Transparent"/>
             </liveCharts:StackedBarChart.Series>
-            <liveCharts:StackedBarChart.AxisX>
-                <liveCharts:Axis Title="Sold Items"></liveCharts:Axis>
-            </liveCharts:StackedBarChart.AxisX>
             <liveCharts:StackedBarChart.AxisY>
-                <liveCharts:Axis Title="Month" Labels="Jan, Feb, Mar, Apr, May, Jun, Ago, Sep, Oct, Nov, Dec"></liveCharts:Axis>
+                <liveCharts:Axis Title="Sold Items"></liveCharts:Axis>
             </liveCharts:StackedBarChart.AxisY>
+            <liveCharts:StackedBarChart.AxisX>
+                <liveCharts:Axis Title="Month" Labels="Jan, Feb, Mar, Apr, May, Jun, Ago, Sep, Oct, Nov, Dec"></liveCharts:Axis>
+            </liveCharts:StackedBarChart.AxisX>
         </liveCharts:StackedBarChart>
         <liveCharts:SeriesViewer Grid.Row="1" Grid.Column="1" 
                                  Series="{Binding ElementName=Chart, Path=Series}"

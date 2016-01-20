@@ -23,12 +23,12 @@
             MVVM example, click on the buttons below to update chart
         </TextBlock>
         <liveCharts:ScatterChart Name="Chart" Grid.Row="1" Grid.Column="0" Series="{Binding}" >
-            <liveCharts:ScatterChart.AxisX>
-                <liveCharts:Axis Title="Sold Items"></liveCharts:Axis>
-            </liveCharts:ScatterChart.AxisX>
             <liveCharts:ScatterChart.AxisY>
-                <liveCharts:Axis Name="SecondaryAxis" Title="Month" Labels="{Binding}"></liveCharts:Axis>
+                <liveCharts:Axis Title="Sold Items"></liveCharts:Axis>
             </liveCharts:ScatterChart.AxisY>
+            <liveCharts:ScatterChart.AxisX>
+                <liveCharts:Axis Name="SecondaryAxis" Title="Month" Labels="{Binding}"></liveCharts:Axis>
+            </liveCharts:ScatterChart.AxisX>
         </liveCharts:ScatterChart>
         <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Center">
             <StackPanel.Resources>

@@ -10,7 +10,7 @@ namespace ChartsTest.Pie_Examples
         public CustomPie()
         {
             InitializeComponent();
-            Chart.AxisX.LabelFormatter = val => (val/Chart.PieTotalSum).ToString("P");
+            Chart.AxisY.LabelFormatter = val => (val/Chart.PieTotalSum).ToString("P");
         }
 
         private void OnLoaded(object sender, RoutedEventArgs e)

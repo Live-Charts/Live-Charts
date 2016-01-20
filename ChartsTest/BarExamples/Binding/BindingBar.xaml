@@ -36,20 +36,20 @@
                     </liveCharts:BarSeries.Fill>
                 </liveCharts:BarSeries>
             </liveCharts:BarChart.Series>
-            <liveCharts:BarChart.AxisX>
-                <liveCharts:Axis IsEnabled="False" PrintLabels="False">
-                    <liveCharts:Axis.Separator>
-                        <liveCharts:Separator IsEnabled="False"></liveCharts:Separator>
-                    </liveCharts:Axis.Separator>
-                </liveCharts:Axis>
-            </liveCharts:BarChart.AxisX>
             <liveCharts:BarChart.AxisY>
-                <liveCharts:Axis IsEnabled="False" PrintLabels="False">
+                <liveCharts:Axis IsEnabled="False" ShowLabels="False">
                     <liveCharts:Axis.Separator>
                         <liveCharts:Separator IsEnabled="False"></liveCharts:Separator>
                     </liveCharts:Axis.Separator>
                 </liveCharts:Axis>
             </liveCharts:BarChart.AxisY>
+            <liveCharts:BarChart.AxisX>
+                <liveCharts:Axis IsEnabled="False" ShowLabels="False">
+                    <liveCharts:Axis.Separator>
+                        <liveCharts:Separator IsEnabled="False"></liveCharts:Separator>
+                    </liveCharts:Axis.Separator>
+                </liveCharts:Axis>
+            </liveCharts:BarChart.AxisX>
         </liveCharts:BarChart>
     </Grid>
 </UserControl>

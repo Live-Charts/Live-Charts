@@ -12,12 +12,12 @@
             <liveCharts:LineChart.Series>
                 <liveCharts:LineSeries Values="10, 5, 20, 30, 35, 30, 10, 5, -3, 10"/>
             </liveCharts:LineChart.Series>
-            <liveCharts:LineChart.AxisX>
-                <liveCharts:Axis Name="TemperatureAxis" Title="Temperature"></liveCharts:Axis>
-            </liveCharts:LineChart.AxisX>
             <liveCharts:LineChart.AxisY>
-                <liveCharts:Axis Title="Date" Labels="March 10, March 11, March 12, March 13, March 14, March 15, March 16, March 17, March 18, March 19"></liveCharts:Axis>
+                <liveCharts:Axis Name="TemperatureAxis" Title="Temperature"></liveCharts:Axis>
             </liveCharts:LineChart.AxisY>
+            <liveCharts:LineChart.AxisX>
+                <liveCharts:Axis Title="Date" Labels="March 10, March 11, March 12, March 13, March 14, March 15, March 16, March 17, March 18, March 19"></liveCharts:Axis>
+            </liveCharts:LineChart.AxisX>
         </liveCharts:LineChart>
     </Grid>
 </UserControl>

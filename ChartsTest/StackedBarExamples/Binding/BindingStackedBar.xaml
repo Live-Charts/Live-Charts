@@ -36,20 +36,20 @@
                     </liveCharts:StackedBarSeries.Fill>
                 </liveCharts:StackedBarSeries>
             </liveCharts:StackedBarChart.Series>
-            <liveCharts:StackedBarChart.AxisX>
-                <liveCharts:Axis IsEnabled="False" PrintLabels="False">
-                    <liveCharts:Axis.Separator>
-                        <liveCharts:Separator IsEnabled="False"></liveCharts:Separator>
-                    </liveCharts:Axis.Separator>
-                </liveCharts:Axis>
-            </liveCharts:StackedBarChart.AxisX>
             <liveCharts:StackedBarChart.AxisY>
-                <liveCharts:Axis IsEnabled="False" PrintLabels="False">
+                <liveCharts:Axis IsEnabled="False" ShowLabels="False">
                     <liveCharts:Axis.Separator>
                         <liveCharts:Separator IsEnabled="False"></liveCharts:Separator>
                     </liveCharts:Axis.Separator>
                 </liveCharts:Axis>
             </liveCharts:StackedBarChart.AxisY>
+            <liveCharts:StackedBarChart.AxisX>
+                <liveCharts:Axis IsEnabled="False" ShowLabels="False">
+                    <liveCharts:Axis.Separator>
+                        <liveCharts:Separator IsEnabled="False"></liveCharts:Separator>
+                    </liveCharts:Axis.Separator>
+                </liveCharts:Axis>
+            </liveCharts:StackedBarChart.AxisX>
         </liveCharts:StackedBarChart>
     </Grid>
 </UserControl>

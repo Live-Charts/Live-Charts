@@ -18,7 +18,7 @@ namespace ChartsTest.StackedBarExamples
             Sales = new SalesViewModel();
             Chart.DataContext = Sales.Salesmen;
             SecondaryAxis.DataContext = Sales.AvailableMonths;
-            Chart.AxisX.LabelFormatter = x => x + ".00k items";
+            Chart.AxisY.LabelFormatter = x => x + ".00k items";
         }
 
         public SalesViewModel Sales { get; set; }

@@ -117,14 +117,14 @@ namespace lvc
 
                 var valueBlock = new TextBlock
                 {
-                    Text = Chart.AxisX.LabelFormatter == null
+                    Text = Chart.AxisY.LabelFormatter == null
                         ? point.Y.ToString(CultureInfo.InvariantCulture)
-                        : Chart.AxisX.LabelFormatter(point.Y),
-                    FontFamily = Chart.AxisX.FontFamily,
-                    FontSize = Chart.AxisX.FontSize,
-                    FontStretch = Chart.AxisX.FontStretch,
-                    FontStyle = Chart.AxisX.FontStyle,
-                    FontWeight = Chart.AxisX.FontWeight,
+                        : Chart.AxisY.LabelFormatter(point.Y),
+                    FontFamily = Chart.AxisY.FontFamily,
+                    FontSize = Chart.AxisY.FontSize,
+                    FontStretch = Chart.AxisY.FontStretch,
+                    FontStyle = Chart.AxisY.FontStyle,
+                    FontWeight = Chart.AxisY.FontWeight,
                     Foreground = Brushes.White
                 };
 
@@ -139,7 +139,7 @@ namespace lvc
                 Panel.SetZIndex(valueBlock, int.MaxValue);
                 //because math is kind of complex to detetrmine if label fits inside the slide, by now we 
                 //will just add it if participation > 5% ToDo: the math!
-                if (participation > .05 && Chart.AxisX.PrintLabels)
+                if (participation > .05 && Chart.AxisY.ShowLabels)
                 {
                     Chart.Canvas.Children.Add(valueBlock);
                     Chart.Shapes.Add(valueBlock);

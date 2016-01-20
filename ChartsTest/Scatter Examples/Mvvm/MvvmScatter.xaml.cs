@@ -17,8 +17,8 @@ namespace ChartsTest.Scatter_Examples
             InitializeComponent();
             Math = new MathViewModel();
             Chart.DataContext = Math.Functions;
-            Chart.AxisY.MinValue = 0;
             Chart.AxisX.MinValue = 0;
+            Chart.AxisY.MinValue = 0;
         }
 
         public MathViewModel Math { get; set; }
