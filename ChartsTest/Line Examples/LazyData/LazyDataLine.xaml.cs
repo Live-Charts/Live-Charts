@@ -19,18 +19,18 @@ namespace ChartsTest.Line_Examples
         public LazyDataLine()
         {
             InitializeComponent();
-            Models = new ObservableCollection<TestViewModel>();
+            Charts = new ObservableCollection<ChartViewModel>();
             DataContext = this;
 
-            Models.Add(new TestViewModel());
-            Models.Add(new TestViewModel());
+            Charts.Add(new ChartViewModel());
+            Charts.Add(new ChartViewModel());
         }
 
-        public ObservableCollection<TestViewModel> Models { get; set; }
+        public ObservableCollection<ChartViewModel> Charts { get; set; }
 
         private void AddElementOnClick(object sender, RoutedEventArgs e)
         {
-            Models.Add(new TestViewModel());
+            Charts.Add(new ChartViewModel());
         }
 
         private void GetDataOnClick(object sender, RoutedEventArgs e)
@@ -38,7 +38,7 @@ namespace ChartsTest.Line_Examples
             if (sender == null) return;
             var fe = sender as FrameworkElement;
             if (fe == null) return;
-            var model = fe.DataContext as TestViewModel;
+            var model = fe.DataContext as ChartViewModel;
             if (model == null) return;
             model.GetNewData();
         }
@@ -48,7 +48,7 @@ namespace ChartsTest.Line_Examples
             if (sender == null) return;
             var fe = sender as FrameworkElement;
             if (fe == null) return;
-            var model = fe.DataContext as TestViewModel;
+            var model = fe.DataContext as ChartViewModel;
             if (model == null) return;
             model.AddSeries();
         }
@@ -58,7 +58,7 @@ namespace ChartsTest.Line_Examples
             if (sender == null) return;
             var fe = sender as FrameworkElement;
             if (fe == null) return;
-            var model = fe.DataContext as TestViewModel;
+            var model = fe.DataContext as ChartViewModel;
             if (model == null) return;
             model.RemoveSeries();
         }
@@ -68,14 +68,14 @@ namespace ChartsTest.Line_Examples
             if (sender == null) return;
             var fe = sender as FrameworkElement;
             if (fe == null) return;
-            var model = fe.DataContext as TestViewModel;
+            var model = fe.DataContext as ChartViewModel;
             if (model == null) return;
             model.GoWild();
         }
     }
 
 
-    public class TestViewModel : INotifyPropertyChanged
+    public class ChartViewModel : INotifyPropertyChanged
     {
         private ObservableCollection<Series> _series;
         private string _name;
@@ -87,16 +87,16 @@ namespace ChartsTest.Line_Examples
         private DispatcherTimer _timer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(150) };
         private bool _isWild;
 
-        public TestViewModel()
+        public ChartViewModel()
         {
             Labels = new List<string>();
-            Series = new ObservableCollection<Series>();
+            Series = new SeriesCollection().Setup(new SeriesConfiguration<double>().Y(y => y));
             _timer.Tick += (sender, args) =>
             {
                 foreach (var series in Series)
                 {
                     series.Values.RemoveAt(0);
-                    series.Values.Add(_random.Next(-10, 10));
+                    series.Values.Add((double) _random.Next(-10, 10));
                 }
             };
         }

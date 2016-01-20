@@ -418,11 +418,15 @@ namespace lvc.Charts
                 series.Values.Evaluate();
             }
 
-            var max = new Point(Series.Select(x => x.Values.MaxChartPoint.X).DefaultIfEmpty(0).Max(),
-                Series.Select(x => x.Values.MaxChartPoint.Y).DefaultIfEmpty(0).Max());
+            var max =
+                new Point(
+                    Series.Where(x => x.Values != null).Select(x => x.Values.MaxChartPoint.X).DefaultIfEmpty(0).Max(),
+                    Series.Where(x => x.Values != null).Select(x => x.Values.MaxChartPoint.Y).DefaultIfEmpty(0).Max());
 
-            var min = new Point(Series.Select(x => x.Values.MinChartPoint.X).DefaultIfEmpty(0).Min(),
-                Series.Select(x => x.Values.MinChartPoint.Y).DefaultIfEmpty(0).Min());
+            var min =
+                new Point(
+                    Series.Where(x => x.Values != null).Select(x => x.Values.MinChartPoint.X).DefaultIfEmpty(0).Min(),
+                    Series.Where(x => x.Values != null).Select(x => x.Values.MinChartPoint.Y).DefaultIfEmpty(0).Min());
 
             Min.X = AxisY.MinValue ?? min.X;
             Max.X = AxisY.MaxValue ?? max.X;

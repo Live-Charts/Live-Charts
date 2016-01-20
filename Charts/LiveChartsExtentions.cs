@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
+using LiveCharts.Components;
 
 namespace lvc
 {
@@ -15,15 +16,15 @@ namespace lvc
         }
 
         //based on http://stackoverflow.com/questions/13194898/linq-operator-to-split-list-of-doubles-to-multiple-list-of-double-based-on-gener
-        internal static IEnumerable<List<Point>> AsSegments(this IEnumerable<Point> source)
+        internal static IEnumerable<List<ChartPoint>> AsSegments(this IEnumerable<ChartPoint> source)
         {
-            List<Point> buffer = new List<Point>();
+            var buffer = new List<ChartPoint>();
             foreach (var item in source)
             {
                 if (double.IsNaN(item.Y) || double.IsNaN(item.X))
                 {
                     yield return buffer;
-                    buffer = new List<Point>();
+                    buffer = new List<ChartPoint>();
                 }
                 else
                 {

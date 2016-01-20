@@ -74,7 +74,7 @@ namespace lvc
                             Height = PointRadius * 2,
                             Fill = Stroke,
                             Stroke = new SolidColorBrush { Color = Chart.PointHoverColor },
-                            StrokeThickness = 2,
+                            StrokeThickness = 1,
                             ClipToBounds = true
                         };
                         var r = new Rectangle

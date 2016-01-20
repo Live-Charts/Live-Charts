@@ -15,13 +15,13 @@ namespace ChartsTest
             LineAndAreaAexamples = new List<UserControl>
             {
                 new BasicLine(),
-                new CustomLine(),
-                new ZoomableLine(),
                 new BindingLine(),
-                new UiElementsLine(),
                 new MvvmLine(),
                 new LazyDataLine(),
-                new PerformanceLine()
+                new CustomLine(),
+                new ZoomableLine(),
+                new UiElementsLine(),
+                //new PerformanceLine() // disabled mean while
             };
             BarExamples = new List<UserControl>
             {

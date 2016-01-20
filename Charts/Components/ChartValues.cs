@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using lvc.Charts;
+using LiveCharts.Components;
 
 namespace lvc
 {
@@ -16,7 +17,7 @@ namespace lvc
     {
         private Point _min = new Point(double.MaxValue, double.MaxValue);
         private Point _max = new Point(double.MinValue, double.MinValue);
-        private Point[] _points;
+        private ChartPoint[] _points;
         private bool _requiresEvaluation;
 
         public ChartValues()
@@ -39,7 +40,7 @@ namespace lvc
         /// <summary>
         /// Gets the collection of points displayed in the chart current view
         /// </summary>
-        public IEnumerable<Point> Points
+        public IEnumerable<ChartPoint> Points
         {
             get { return _points; }
         }
@@ -93,7 +94,7 @@ namespace lvc
 
             var collection = Series == null ? null : Series.Collection;
             _points = collection == null
-                ? new Point[] {}
+                ? new ChartPoint[] {}
                 : config.OptimizationMethod(this).ToArray();
 
             var xs = _points.Select(x => x.X).DefaultIfEmpty(0).ToArray();

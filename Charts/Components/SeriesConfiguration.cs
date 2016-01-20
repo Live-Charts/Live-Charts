@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
+using LiveCharts.Components;
 
 namespace lvc
 {
@@ -16,14 +17,19 @@ namespace lvc
             {
                 _xIndexer = 0;
                 _yIndexer = 0;
-                return values.Select(v => new Point(XValueMapper(v, _xIndexer++), YValueMapper(v, _yIndexer++)));
+                return values.Select(v => new ChartPoint
+                {
+                    X = XValueMapper(v, _xIndexer++),
+                    Y = YValueMapper(v, _yIndexer++),
+                    Instance = v
+                });
             };
         }
 
         /// <summary>
         /// Gets or sets optimization method
         /// </summary>
-        internal Func<IEnumerable<T>, IEnumerable<Point>> OptimizationMethod { get; set; }
+        internal Func<IEnumerable<T>, IEnumerable<ChartPoint>> OptimizationMethod { get; set; }
        
         /// <summary>
         /// Gets or sets the current function that pulls X value from T
@@ -79,7 +85,7 @@ namespace lvc
             return this;
         }
 
-        public SeriesConfiguration<T> HasOptimization(Func<IEnumerable<T>, IEnumerable<Point>> predicate)
+        public SeriesConfiguration<T> HasOptimization(Func<IEnumerable<T>, IEnumerable<ChartPoint>> predicate)
         {
             OptimizationMethod = predicate;
             return this;

@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Windows;
+using ChartsTest.Line_Examples.Mvvm;
 using lvc;
 
 namespace ChartsTest.Line_Examples
@@ -19,18 +17,19 @@ namespace ChartsTest.Line_Examples
             Sales = new SalesViewModel();
             DataContext = this;
             Chart.AxisY.LabelFormatter = x => x + ".00k items";
+            Chart.DataToolTip = new SalesTooltip();
         }
 
         public SalesViewModel Sales { get; set; }
 
         private void AddSalesmanOnClick(object sender, RoutedEventArgs e)
         {
-            Sales.AddRandomSalesman();
+            Sales.AddRandomSalesData();
         }
 
         private void RemoveSalesmanOnClick(object sender, RoutedEventArgs e)
         {
-            Sales.RemoveLastSalesman();
+            Sales.RemoveLastSalesData();
         }
 
         private void AddMonthOnClick(object sender, RoutedEventArgs e)
@@ -53,8 +52,12 @@ namespace ChartsTest.Line_Examples
     {
         public int ItemsSold { get; set; }
         public decimal ItemsAverageSellPrice { get; set; }
-        public double ItemsAverageCost { get; set; }
-        public bool IsAboveAverage { get; set; }
+        public double Rentability { get; set; }
+    }
+
+    public class AverageSalesData
+    {
+        public int AverageItemsSold { get; set; }
     }
 
     public class SalesViewModel
@@ -77,37 +80,68 @@ namespace ChartsTest.Line_Examples
             AvailableMonths = _months;
             SalesmenSeries = new SeriesCollection
             {
+                //will use SeriesCollection Setup
                 new LineSeries
                 {
                     Title = "Charles",
                     Values = new ChartValues<SalesData>
                     {
-                        new SalesData {ItemsSold = 15, ItemsAverageCost = .15, ItemsAverageSellPrice = 5000, IsAboveAverage = true},
-                        new SalesData {ItemsSold = 16, ItemsAverageCost = .15, ItemsAverageSellPrice = 5000, IsAboveAverage = true},
-                        new SalesData {ItemsSold = 22, ItemsAverageCost = .15, ItemsAverageSellPrice = 5000, IsAboveAverage = true},
-                        new SalesData {ItemsSold = 25, ItemsAverageCost = .15, ItemsAverageSellPrice = 5000, IsAboveAverage = true},
-                        new SalesData {ItemsSold = 20, ItemsAverageCost = .15, ItemsAverageSellPrice = 5000, IsAboveAverage = true},
-                        new SalesData {ItemsSold = 10, ItemsAverageCost = .15, ItemsAverageSellPrice = 5000, IsAboveAverage = true},
-                        new SalesData {ItemsSold = 12, ItemsAverageCost = .15, ItemsAverageSellPrice = 5000, IsAboveAverage = true}
+                        new SalesData {ItemsSold = 15, Rentability = .15, ItemsAverageSellPrice = 5000},
+                        new SalesData {ItemsSold = 16, Rentability = .12, ItemsAverageSellPrice = 5200},
+                        new SalesData {ItemsSold = 22, Rentability = .11, ItemsAverageSellPrice = 5100},
+                        new SalesData {ItemsSold = 25, Rentability = .13, ItemsAverageSellPrice = 5400},
+                        new SalesData {ItemsSold = 20, Rentability = .12, ItemsAverageSellPrice = 5100},
+                        new SalesData {ItemsSold = 10, Rentability = .11, ItemsAverageSellPrice = 5200},
+                        new SalesData {ItemsSold = 12, Rentability = .13, ItemsAverageSellPrice = 5400}
                     }
-                }
-            }.Setup(new SeriesConfiguration<SalesData>().Y(x => x.ItemsSold));
+                },
+                //Will use series collection Setup too
+                new LineSeries
+                {
+                    Title = "Frida",
+                    Values = new ChartValues<SalesData>
+                    {
+                        new SalesData {ItemsSold = 25, Rentability = .12, ItemsAverageSellPrice = 5200},
+                        new SalesData {ItemsSold = 12, Rentability = .19, ItemsAverageSellPrice = 5100},
+                        new SalesData {ItemsSold = 24, Rentability = .12, ItemsAverageSellPrice = 5400},
+                        new SalesData {ItemsSold = 15, Rentability = .13, ItemsAverageSellPrice = 5200},
+                        new SalesData {ItemsSold = 14, Rentability = .14, ItemsAverageSellPrice = 5100},
+                        new SalesData {ItemsSold = 15, Rentability = .13, ItemsAverageSellPrice = 5600},
+                        new SalesData {ItemsSold = 14, Rentability = .11, ItemsAverageSellPrice = 4900}
+                    }
+                },
+                //Override Setup for this series to plot another property or even another type
+                new LineSeries
+                {
+                    Title = "Average Series",
+                    Values = new ChartValues<AverageSalesData>
+                    {
+                        new AverageSalesData {AverageItemsSold = 22},
+                        new AverageSalesData {AverageItemsSold = 23},
+                        new AverageSalesData {AverageItemsSold = 21},
+                        new AverageSalesData {AverageItemsSold = 22},
+                        new AverageSalesData {AverageItemsSold = 23},
+                        new AverageSalesData {AverageItemsSold = 24},
+                        new AverageSalesData {AverageItemsSold = 22}
+                    }
+                }.Setup(new SeriesConfiguration<AverageSalesData>().Y(data => data.AverageItemsSold)) // this is the line that overrides SeriesCollection Setup
+
+            }.Setup(new SeriesConfiguration<SalesData>().Y(data => data.ItemsSold)); // Setup a default configuration for all series in this collection.
         }
 
         public SeriesCollection SalesmenSeries { get; set; }
         public string[] AvailableMonths { get; set; }
 
-        public void AddRandomSalesman()
+        public void AddRandomSalesData()
         {
             var r = new Random();
 
             var values = new ChartValues<SalesData>();
             for (var i = 0; i < SalesmenSeries[0].Values.Count; i++) values.Add(new SalesData
             {
-                ItemsSold = r.Next(5,20),
-                ItemsAverageCost = .15,
-                ItemsAverageSellPrice = 5000,
-                IsAboveAverage = true
+                ItemsSold = r.Next(5,30),
+                Rentability = .15,
+                ItemsAverageSellPrice = 5000
             });
 
             SalesmenSeries.Add(new LineSeries
@@ -117,7 +151,7 @@ namespace ChartsTest.Line_Examples
             });
         }
 
-        public void RemoveLastSalesman()
+        public void RemoveLastSalesData()
         {
             if (SalesmenSeries.Count == 1) return;
             SalesmenSeries.RemoveAt(SalesmenSeries.Count-1);
@@ -127,15 +161,19 @@ namespace ChartsTest.Line_Examples
         {
             var r = new Random();
             if (SalesmenSeries[0].Values.Count >= _months.Count()) return; 
-            foreach (var salesman in SalesmenSeries)
+            foreach (var salesman in SalesmenSeries.Where(x => x.Title != "Average Series"))
             {
                 salesman.Values.Add(new SalesData
                 {
-                    ItemsSold = r.Next(5,20),
-                    ItemsAverageCost = .15,
-                    ItemsAverageSellPrice = 5000,
-                    IsAboveAverage = true
+                    ItemsSold = r.Next(5,30),
+                    Rentability = .15,
+                    ItemsAverageSellPrice = 5000
                 });
+            }
+            var averageSeries = SalesmenSeries.FirstOrDefault(x => x.Title == "Average Series");
+            if (averageSeries != null)
+            {
+                averageSeries.Values.Add(new AverageSalesData {AverageItemsSold = r.Next(20, 25)});
             }
         }
 

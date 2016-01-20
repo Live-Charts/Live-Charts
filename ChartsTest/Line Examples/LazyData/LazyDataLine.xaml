@@ -18,9 +18,9 @@
         <TextBlock Grid.Row="0">This example show how to handle "lazy data" and MVVM.</TextBlock>
         <ScrollViewer Grid.Row="1" MaxHeight="300">
             <StackPanel>
-                <ItemsControl ItemsSource="{Binding Models}">
+                <ItemsControl ItemsSource="{Binding Charts}">
                     <ItemsControl.ItemTemplate>
-                        <DataTemplate DataType="local:TestViewModel">
+                        <DataTemplate DataType="local:ChartViewModel">
                             <StackPanel Margin="10">
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock Text="{Binding Name}" FontSize="14" Foreground="#505050" FontWeight="Bold" VerticalAlignment="Center"/>

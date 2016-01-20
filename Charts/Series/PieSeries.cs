@@ -163,7 +163,7 @@ namespace lvc
                         Series = this,
                         Shape = slice,
                         Target = slice,
-                        Value = new Point(0, point.Y),
+                        Value = point,
                         Label = Labels != null && Labels.Count > point.X ? Labels[(int) point.X] : ""
                     });
                 }

@@ -6,7 +6,7 @@
         xmlns:chartsTest="clr-namespace:ChartsTest"
         xmlns:system="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d" 
-        Title="Live Charts" Width="700" Height="650"
+        Title="Live Charts" Width="900" Height="650"
         FontFamily="Calibri"
         FontSize="14"
         Foreground="#404040"

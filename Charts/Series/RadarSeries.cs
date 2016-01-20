@@ -114,7 +114,7 @@ namespace lvc
                     {
                         Series = this,
                         Shape = r,
-                        Value = new Point(point.X * alpha, point.Y),
+                        Value = point,
                         Target = e
                     });
 

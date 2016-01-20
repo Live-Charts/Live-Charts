@@ -14,45 +14,36 @@
             <RowDefinition Height="*"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
-        <StackPanel Orientation="Horizontal" Grid.Row="0" HorizontalAlignment="Center" Grid.ColumnSpan="2">
+        <Grid Grid.Row="0" HorizontalAlignment="Center" Grid.ColumnSpan="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+            </Grid.RowDefinitions>
             <TextBlock Margin="5" TextWrapping="Wrap">
-                Binded Series
+                <Bold>Live Changes</Bold>: if you have a static number of series and need to change their Values this might help you, click on the buttons bellow to see how charts update automatically with their data
             </TextBlock>
-            <Button Margin="10 0" Background="Transparent" 
+            <StackPanel Grid.Row="1" Orientation="Horizontal">
+                <Button Margin="10 0" Background="Transparent" 
                     BorderBrush="#505050" BorderThickness="3" Foreground="#505050"
                     Click="GoWildOnClick" Padding="10 3">
-                Real Time
-            </Button>
-            <Button Margin="10 0" Background="Transparent" 
+                    Real Time
+                </Button>
+                <Button Margin="10 0" Background="Transparent" 
                     BorderBrush="#505050" BorderThickness="3" Foreground="#505050"
                     Click="AddValueOnClick" Padding="10 3">
-                +
-            </Button>
-            <Button Margin="10 0" Background="Transparent" 
+                    +
+                </Button>
+                <Button Margin="10 0" Background="Transparent" 
                     BorderBrush="#505050" BorderThickness="3" Foreground="#505050"
                     Click="RemoveValueOnClick" Padding="10 3">
-                -
-            </Button>
-        </StackPanel>
+                    -
+                </Button>
+            </StackPanel>
+        </Grid>
         <lvc:LineChart Name="Chart" Grid.Row="1" Grid.Column="0">
             <lvc:LineChart.Series>
-                <lvc:LineSeries Title="Tokio" Values="{Binding ViewModel.Tokio, PresentationTraceSources.TraceLevel=High}" 
-                                StrokeThickness="4" PointRadius="6" Stroke="IndianRed">
-                        <lvc:LineSeries.Fill>
-                            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                                <GradientStop Color="IndianRed" Offset="0"/>
-                                <GradientStop Color="#4CFFFFFF" Offset="0.5"/>
-                            </LinearGradientBrush>
-                        </lvc:LineSeries.Fill>
-                    </lvc:LineSeries>
-                <lvc:LineSeries Title="New York" Values="{Binding ViewModel.NewYork}" StrokeThickness="4" PointRadius="6" Stroke="CornflowerBlue">
-                    <lvc:LineSeries.Fill>
-                        <LinearGradientBrush StartPoint="0,0" EndPoint=".0,1">
-                            <GradientStop Color="CornflowerBlue" Offset="0"/>
-                            <GradientStop Color="#4CFFFFFF" Offset="0.5"/>
-                        </LinearGradientBrush>
-                    </lvc:LineSeries.Fill>
-                </lvc:LineSeries>
+                <lvc:LineSeries Title="Tokio" Values="{Binding ViewModel.Tokio}" StrokeThickness="4" PointRadius="0" Fill="Transparent"/>
+                <lvc:LineSeries Title="New York" Values="{Binding ViewModel.NewYork}" StrokeThickness="4" PointRadius="0" Fill="Transparent"/>
             </lvc:LineChart.Series>
             <lvc:LineChart.AxisY>
                 <lvc:Axis IsEnabled="False" ShowLabels="False">

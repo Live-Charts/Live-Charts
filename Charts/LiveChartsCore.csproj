@@ -106,6 +106,7 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Components\ChartPoint.cs" />
     <Compile Include="Components\SeriesConfiguration.cs" />
     <Compile Include="Interfaces\ISeriesConfiguration.cs" />
     <Compile Include="Components\Axis.cs" />

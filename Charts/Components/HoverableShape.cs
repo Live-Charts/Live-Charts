@@ -22,6 +22,7 @@
 
 using System.Windows;
 using System.Windows.Shapes;
+using LiveCharts.Components;
 
 namespace lvc
 {
@@ -30,7 +31,7 @@ namespace lvc
         /// <summary>
         /// Point of this area
         /// </summary>
-        public Point Value { get; set; }
+        public ChartPoint Value { get; set; }
         /// <summary>
         /// Shape that fires hover
         /// </summary>

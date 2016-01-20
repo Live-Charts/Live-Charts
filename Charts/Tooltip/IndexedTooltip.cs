@@ -50,14 +50,5 @@ namespace lvc.Tooltip
             get { return (IndexedTooltipData[])GetValue(DataProperty); }
             set { SetValue(DataProperty, value); }
         }
-
-        public static readonly DependencyProperty ExtraDataProperty = DependencyProperty.Register(
-            "ExtraData", typeof(IEnumerable), typeof(IndexedTooltip), new PropertyMetadata(default(IEnumerable)));
-
-        public IEnumerable ExtraData
-        {
-            get { return (IEnumerable)GetValue(ExtraDataProperty); }
-            set { SetValue(ExtraDataProperty, value); }
-        }
     }
 }

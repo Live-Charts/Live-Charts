@@ -30,6 +30,7 @@ using System.Windows.Media;
 using System.Windows.Shapes;
 using lvc.Charts;
 using lvc.TypeConverters;
+using LiveCharts.Components;
 
 namespace lvc
 {
@@ -187,6 +188,11 @@ namespace lvc
         protected Point ToPlotArea(Point value)
         {
             return new Point(ToPlotArea(value.X, AxisTags.X), ToPlotArea(value.Y, AxisTags.Y));
+        }
+
+        protected Point ToPlotArea(ChartPoint point)
+        {
+            return new Point(ToPlotArea(point.X, AxisTags.X), ToPlotArea(point.Y, AxisTags.Y));
         }
         #endregion
     }

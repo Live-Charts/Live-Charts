@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿
+using System.Windows;
 
 namespace ChartsTest.Line_Examples
 {

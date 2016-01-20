@@ -22,6 +22,7 @@
 
 using System.Windows;
 using System.Windows.Media;
+using LiveCharts.Components;
 
 namespace lvc.Tooltip
 {
@@ -44,7 +45,7 @@ namespace lvc.Tooltip
         public int Index { get; set; }
         public Brush Stroke { get; set; }
         public Brush Fill { get; set; }
-        public Point Point { get; set; }
+        public ChartPoint Point { get; set; }
         public string Value { get; set; }
     }
 

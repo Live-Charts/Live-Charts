@@ -13,25 +13,17 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="*"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"></ColumnDefinition>
             <ColumnDefinition Width="Auto"></ColumnDefinition>
         </Grid.ColumnDefinitions>
-        <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" TextWrapping="Wrap" HorizontalAlignment="Center">
-            MVVM example, click on the buttons below to update chart
+        <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" TextWrapping="Wrap" HorizontalAlignment="Center" >
+            <Bold>Plot Types, not Values</Bold>: By default series values are double, but live charts allows you to plot any type you need, in this case we plot a collection of SalesData class. click on the buttons bellow to see how live charts track your data changes, also chart will follow if you resize window, notice this chart implements a custom tooltip for this data model.
         </TextBlock>
-        <liveCharts:LineChart Name="Chart" Grid.Row="1" Grid.Column="0" Series="{Binding Sales.SalesmenSeries}" >
-            <liveCharts:LineChart.AxisY>
-                <liveCharts:Axis Title="Sold Items"></liveCharts:Axis>
-            </liveCharts:LineChart.AxisY>
-            <liveCharts:LineChart.AxisX>
-                <liveCharts:Axis Name="SecondaryAxis" Title="Month" Labels="{Binding Sales.AvailableMonths}"></liveCharts:Axis>
-            </liveCharts:LineChart.AxisX>
-        </liveCharts:LineChart>
-        <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Center">
+        <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center">
             <StackPanel.Resources>
                 <Style TargetType="Button">
                     <Setter Property="Height" Value="25"></Setter>
@@ -50,7 +42,15 @@
             <Button Click="AddMonthOnClick">+</Button>
             <Button Click="RemoveMonthOnClick">-</Button>
         </StackPanel>
-        <liveCharts:SeriesViewer Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" 
+        <liveCharts:LineChart Name="Chart" Grid.Row="2" Grid.Column="0" Series="{Binding Sales.SalesmenSeries}" >
+            <liveCharts:LineChart.AxisY>
+                <liveCharts:Axis Title="Sold Items"></liveCharts:Axis>
+            </liveCharts:LineChart.AxisY>
+            <liveCharts:LineChart.AxisX>
+                <liveCharts:Axis Name="SecondaryAxis" Title="Month" Labels="{Binding Sales.AvailableMonths}"></liveCharts:Axis>
+            </liveCharts:LineChart.AxisX>
+        </liveCharts:LineChart>
+        <liveCharts:SeriesViewer Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" 
                                  Series="{Binding ElementName=Chart, Path=Series}"></liveCharts:SeriesViewer>
     </Grid>
 </UserControl>
