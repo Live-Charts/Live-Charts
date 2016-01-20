@@ -23,7 +23,7 @@
         <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" TextWrapping="Wrap" HorizontalAlignment="Center">
             MVVM example, click on the buttons below to update chart
         </TextBlock>
-        <liveCharts:LineChart Name="Chart" Grid.Row="1" Grid.Column="0" Series="{Binding Sales.Salesmen}" >
+        <liveCharts:LineChart Name="Chart" Grid.Row="1" Grid.Column="0" Series="{Binding Sales.SalesmenSeries}" >
             <liveCharts:LineChart.AxisY>
                 <liveCharts:Axis Title="Sold Items"></liveCharts:Axis>
             </liveCharts:LineChart.AxisY>

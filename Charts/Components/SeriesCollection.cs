@@ -62,7 +62,7 @@ namespace lvc
             }
         }
 
-        public SeriesCollection For<T>(SeriesConfiguration<T> config)
+        public SeriesCollection Setup<T>(SeriesConfiguration<T> config)
         {
             Configuration = config;
             return this;

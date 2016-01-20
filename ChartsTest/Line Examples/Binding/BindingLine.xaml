@@ -36,9 +36,8 @@
         </StackPanel>
         <lvc:LineChart Name="Chart" Grid.Row="1" Grid.Column="0">
             <lvc:LineChart.Series>
-                <lvc:LineSeries Title="Tokio" 
-                                           Values="{Binding ViewModel.Tokio}" 
-                                           StrokeThickness="4" PointRadius="6" Stroke="IndianRed">
+                <lvc:LineSeries Title="Tokio" Values="{Binding ViewModel.Tokio, PresentationTraceSources.TraceLevel=High}" 
+                                StrokeThickness="4" PointRadius="6" Stroke="IndianRed">
                         <lvc:LineSeries.Fill>
                             <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
                                 <GradientStop Color="IndianRed" Offset="0"/>
@@ -46,9 +45,7 @@
                             </LinearGradientBrush>
                         </lvc:LineSeries.Fill>
                     </lvc:LineSeries>
-                <lvc:LineSeries Title="New York" 
-                                           Values="{Binding ViewModel.NewYork}" 
-                                           StrokeThickness="4" PointRadius="6" Stroke="CornflowerBlue">
+                <lvc:LineSeries Title="New York" Values="{Binding ViewModel.NewYork}" StrokeThickness="4" PointRadius="6" Stroke="CornflowerBlue">
                     <lvc:LineSeries.Fill>
                         <LinearGradientBrush StartPoint="0,0" EndPoint=".0,1">
                             <GradientStop Color="CornflowerBlue" Offset="0"/>

@@ -13,62 +13,10 @@ namespace ChartsTest.Line_Examples
         {
             InitializeComponent();
 
-            Func<int, DateTime> buildADate = x =>
-            {
-                return DateTime.Now + TimeSpan.FromDays(x);
-            };
-
-            var tok = new LineSeries
-            {
-                Values = new ChartValues<WeatherDay>()
-                    .AddRange(new[]
-                    {
-                        new WeatherDay {DateTime = buildADate(-5), Temperature = 15},
-                        new WeatherDay {DateTime = buildADate(-4), Temperature = 18},
-                        new WeatherDay {DateTime = buildADate(-3), Temperature = 20},
-                        new WeatherDay {DateTime = buildADate(-2), Temperature = 25},
-                        new WeatherDay {DateTime = buildADate(-1), Temperature = 22},
-                        new WeatherDay {DateTime = buildADate(0), Temperature = 19}
-                    })
-            };
-
-            var series = new SeriesCollection
-            {
-                new LineSeries
-                {
-                    Values = new ChartValues<WeatherDay> {new WeatherDay {DateTime = buildADate(-5), Temperature = 15}}
-                },
-                new LineSeries(),
-                new LineSeries()
-            }.For(new SeriesConfiguration<WeatherDay>()
-                .X((day, index) => index)
-                .Y(day => day.Temperature));
-
-            var tokio = new ChartValues<WeatherDay>()
-                .AddRange(new[]             // Add some initial values
-                {
-                    new WeatherDay {DateTime = buildADate(-5), Temperature = 15},
-                    new WeatherDay {DateTime = buildADate(-4), Temperature = 18},
-                    new WeatherDay {DateTime = buildADate(-3), Temperature = 20},
-                    new WeatherDay {DateTime = buildADate(-2), Temperature = 25},
-                    new WeatherDay {DateTime = buildADate(-1), Temperature = 22},
-                    new WeatherDay {DateTime = buildADate(0), Temperature = 19}
-                });
-            var newYork = new ChartValues<WeatherDay>()
-                .AddRange(new[]
-                {
-                    new WeatherDay {DateTime = buildADate(-5), Temperature = 9},
-                    new WeatherDay {DateTime = buildADate(-4), Temperature = 13},
-                    new WeatherDay {DateTime = buildADate(-3), Temperature = 15},
-                    new WeatherDay {DateTime = buildADate(-2), Temperature = 16},
-                    new WeatherDay {DateTime = buildADate(-1), Temperature = 15},
-                    new WeatherDay {DateTime = buildADate(0), Temperature = 13}
-                });
-
             ViewModel = new WeatherViewModel
             {
-                Tokio = tokio,
-                NewYork = newYork
+                Tokio = new ChartValues<double> {15, 25, 29, 32, 16, 10},
+                NewYork = new ChartValues<double> {12, 10, 9, 8, 5, -10 }
             };
 
             DataContext = this;
@@ -117,35 +65,19 @@ namespace ChartsTest.Line_Examples
             _timer.Tick += (sender, args) =>
             {
                 Tokio.RemoveAt(0);
-                Tokio.Add(new WeatherDay
-                {
-                    DateTime = Tokio.Last().DateTime + TimeSpan.FromDays(1),
-                    Temperature = _random.Next(-10, 39)
-                });
+                Tokio.Add(_random.Next(-10, 39));
                 NewYork.RemoveAt(0);
-                NewYork.Add(new WeatherDay
-                {
-                    DateTime = NewYork.Last().DateTime + TimeSpan.FromDays(1),
-                    Temperature = _random.Next(-10, 39)
-                });
+                NewYork.Add(_random.Next(-10, 39));
             };
         }
 
-        public ChartValues<WeatherDay> Tokio { get; set; }
-        public ChartValues<WeatherDay> NewYork { get; set; }
+        public ChartValues<double> Tokio { get; set; }
+        public ChartValues<double> NewYork { get; set; }
 
         public void AddValue()
         {
-            Tokio.Add(new WeatherDay
-            {
-                DateTime = Tokio.Last().DateTime + TimeSpan.FromDays(1),
-                Temperature = _random.Next(-10, 39)
-            });
-            NewYork.Add(new WeatherDay
-            {
-                DateTime = Tokio.Last().DateTime + TimeSpan.FromDays(1),
-                Temperature = _random.Next(-10, 39)
-            });
+            Tokio.Add(_random.Next(-10, 39));
+            NewYork.Add(_random.Next(-10, 39));
         }
 
         public void RemoveValue()

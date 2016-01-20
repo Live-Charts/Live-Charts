@@ -431,6 +431,7 @@ namespace lvc.Charts
         #region Virtual Methods
         protected virtual void DrawAxes()
         {
+            foreach (var l in Shapes) Canvas.Children.Remove(l);
             //draw axes titles
             var titleY = 0d;
             if (!string.IsNullOrWhiteSpace(AxisY.Title))
@@ -696,7 +697,7 @@ namespace lvc.Charts
             return x => labels == null
                 ? (axis.LabelFormatter == null
                     ? x.ToString(CultureInfo.InvariantCulture)
-                    : AxisX.LabelFormatter(x))
+                    : axis.LabelFormatter(x))
                 : (labels.Count > x && x >= 0
                     ? labels[(int) x]
                     : "");
@@ -724,12 +725,12 @@ namespace lvc.Charts
             foreach (var series in Series)
             {
                 series.Collection = Series;
+                Canvas.Children.Add(series);
                 if (series.Values != null)
                 {
                     series.Values.Series = series;
                     series.Values.Evaluate();
                 }
-                Canvas.Children.Add(series);
                 EraseSerieBuffer.Add(series);
                 series.RequiresAnimation = animate;
                 series.RequiresPlot = true;
@@ -811,7 +812,7 @@ namespace lvc.Charts
             Trace.WriteLine("Chart was initialized (" + DateTime.Now.ToLongTimeString() + ")");
 #endif
             chart.SeriesInitialized = true;
-            foreach (var series in chart.Series.Cast<Series>())
+            foreach (var series in chart.Series)
             {
                 var index = _colorIndexer++;
                 series.Chart = chart;
@@ -855,7 +856,7 @@ namespace lvc.Charts
                 var newElements = args.NewItems != null ? args.NewItems.Cast<Series>() : new List<Series>();
 
                 chart.RequiresScale = true;
-                foreach (var serie in chart.Series.Where(x => !newElements.Contains(x)).Cast<Series>())
+                foreach (var serie in chart.Series.Where(x => !newElements.Contains(x)))
                 {
                     chart.EraseSerieBuffer.Add(serie);
                     serie.RequiresPlot = true;
@@ -905,7 +906,7 @@ namespace lvc.Charts
                 serie.First().Erase();
             }
             EraseSerieBuffer.Clear();
-            var toPlot = Series.Cast<Series>().Where(x => x.RequiresPlot);
+            var toPlot = Series.Where(x => x.RequiresPlot);
             foreach (var serie in toPlot)
             {
                 serie.Plot(serie.RequiresAnimation);
@@ -932,9 +933,10 @@ namespace lvc.Charts
             //this could be a future improvemnt,
             //by now this is perfectly fine and should not impact in performance.
             Scale();
-            foreach (var serie in Series.Cast<Series>())
+            foreach (var serie in Series)
             {
                 serie.Erase();
+                serie.Values.Evaluate();
                 serie.Plot(AnimatesNewPoints);
             }
         }

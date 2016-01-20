@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Windows;
 using lvc;
 
@@ -48,6 +49,14 @@ namespace ChartsTest.Line_Examples
         }
     }
 
+    public class SalesData
+    {
+        public int ItemsSold { get; set; }
+        public decimal ItemsAverageSellPrice { get; set; }
+        public double ItemsAverageCost { get; set; }
+        public bool IsAboveAverage { get; set; }
+    }
+
     public class SalesViewModel
     {
         private readonly string[] _names =
@@ -66,27 +75,42 @@ namespace ChartsTest.Line_Examples
         public SalesViewModel()
         {
             AvailableMonths = _months;
-            Salesmen = new ObservableCollection<Series>
+            SalesmenSeries = new SeriesCollection
             {
                 new LineSeries
                 {
-                    Title = "John",
-                    Values = new ChartValues<double>() {2d, 4, 7, 1, 5}
+                    Title = "Charles",
+                    Values = new ChartValues<SalesData>
+                    {
+                        new SalesData {ItemsSold = 15, ItemsAverageCost = .15, ItemsAverageSellPrice = 5000, IsAboveAverage = true},
+                        new SalesData {ItemsSold = 16, ItemsAverageCost = .15, ItemsAverageSellPrice = 5000, IsAboveAverage = true},
+                        new SalesData {ItemsSold = 22, ItemsAverageCost = .15, ItemsAverageSellPrice = 5000, IsAboveAverage = true},
+                        new SalesData {ItemsSold = 25, ItemsAverageCost = .15, ItemsAverageSellPrice = 5000, IsAboveAverage = true},
+                        new SalesData {ItemsSold = 20, ItemsAverageCost = .15, ItemsAverageSellPrice = 5000, IsAboveAverage = true},
+                        new SalesData {ItemsSold = 10, ItemsAverageCost = .15, ItemsAverageSellPrice = 5000, IsAboveAverage = true},
+                        new SalesData {ItemsSold = 12, ItemsAverageCost = .15, ItemsAverageSellPrice = 5000, IsAboveAverage = true}
+                    }
                 }
-            };
+            }.Setup(new SeriesConfiguration<SalesData>().Y(x => x.ItemsSold));
         }
 
-        public ObservableCollection<Series> Salesmen { get; set; }
+        public SeriesCollection SalesmenSeries { get; set; }
         public string[] AvailableMonths { get; set; }
 
         public void AddRandomSalesman()
         {
             var r = new Random();
 
-            var values = new ChartValues<double>();
-            for (var i = 0; i < Salesmen[0].Values.Count; i++) values.Add(r.Next(0, 10));
+            var values = new ChartValues<SalesData>();
+            for (var i = 0; i < SalesmenSeries[0].Values.Count; i++) values.Add(new SalesData
+            {
+                ItemsSold = r.Next(5,20),
+                ItemsAverageCost = .15,
+                ItemsAverageSellPrice = 5000,
+                IsAboveAverage = true
+            });
 
-            Salesmen.Add(new LineSeries
+            SalesmenSeries.Add(new LineSeries
             {
                 Title = _names[r.Next(0, _names.Count() - 1)],
                 Values = values
@@ -95,27 +119,34 @@ namespace ChartsTest.Line_Examples
 
         public void RemoveLastSalesman()
         {
-            if (Salesmen.Count == 1) return;
-            Salesmen.RemoveAt(Salesmen.Count-1);
+            if (SalesmenSeries.Count == 1) return;
+            SalesmenSeries.RemoveAt(SalesmenSeries.Count-1);
         }
 
         public void AddOneMonth()
         {
             var r = new Random();
-            if (Salesmen[0].Values.Count >= _months.Count()) return; 
-            foreach (var salesman in Salesmen)
+            if (SalesmenSeries[0].Values.Count >= _months.Count()) return; 
+            foreach (var salesman in SalesmenSeries)
             {
-                salesman.Values.Add(r.Next(0, 10));
+                salesman.Values.Add(new SalesData
+                {
+                    ItemsSold = r.Next(5,20),
+                    ItemsAverageCost = .15,
+                    ItemsAverageSellPrice = 5000,
+                    IsAboveAverage = true
+                });
             }
         }
 
         public void RemoveLastMonth()
         {
-            if (Salesmen[0].Values.Count == 2) return;
-            foreach (var salesman in Salesmen)
+            if (SalesmenSeries[0].Values.Count == 2) return;
+            foreach (var salesman in SalesmenSeries)
             {
                 salesman.Values.RemoveAt(salesman.Values.Count - 1);
             }
         }
     }
+   
 }

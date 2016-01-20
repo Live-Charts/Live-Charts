@@ -142,7 +142,7 @@ namespace lvc
                 Chart.Canvas.Children.Remove(s);
             Shapes.Clear();
 
-            var hoverableShapes = Chart.HoverableShapes.Where(x => x.Series == this).ToList();
+            var hoverableShapes = Chart.HoverableShapes.Where(x => Equals(x.Series, this)).ToList();
             foreach (var hs in hoverableShapes)
             {
                 Chart.Canvas.Children.Remove(hs.Shape);

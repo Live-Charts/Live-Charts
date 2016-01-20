@@ -1,10 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Windows.Controls;
-using ChartsTest.BarExamples;
 using ChartsTest.Line_Examples;
-using ChartsTest.Pie_Examples;
-using ChartsTest.Scatter_Examples;
-using ChartsTest.StackedBarExamples;
 
 namespace ChartsTest
 {
@@ -18,12 +14,12 @@ namespace ChartsTest
         {
             LineAndAreaAexamples = new List<UserControl>
             {
-                new BasicLine(),
+                //new BasicLine(),
                 //new CustomLine(),
                 //new ZoomableLine(),
                 //new BindingLine(),
                 //new UiElementsLine(),
-                //new MvvmLine(),
+                new MvvmLine(),
                 //new LazyDataLine(),
                 //new PerformanceLine()
             };
