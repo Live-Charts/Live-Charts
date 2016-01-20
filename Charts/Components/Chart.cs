@@ -410,6 +410,14 @@ namespace lvc.Charts
 
         protected virtual void Scale()
         {
+            foreach (var series in Series)
+            {
+                series.Collection = Series;
+                if (series.Values == null) continue;
+                series.Values.Series = series;
+                series.Values.Evaluate();
+            }
+
             var max = new Point(Series.Select(x => x.Values.MaxChartPoint.X).DefaultIfEmpty(0).Max(),
                 Series.Select(x => x.Values.MaxChartPoint.Y).DefaultIfEmpty(0).Max());
 
@@ -724,13 +732,7 @@ namespace lvc.Charts
             Shapes = new List<FrameworkElement>();
             foreach (var series in Series)
             {
-                series.Collection = Series;
                 Canvas.Children.Add(series);
-                if (series.Values != null)
-                {
-                    series.Values.Series = series;
-                    series.Values.Evaluate();
-                }
                 EraseSerieBuffer.Add(series);
                 series.RequiresAnimation = animate;
                 series.RequiresPlot = true;
@@ -798,6 +800,14 @@ namespace lvc.Charts
             chart.InitializeSeries(chart);
 
             if (chart.Series.Any(x => x == null)) return;
+
+            foreach (var series in chart.Series)
+            {
+                series.Collection = chart.Series;
+                if (series.Values == null) continue;
+                series.Values.Series = series;
+                series.Values.Evaluate();
+            }
 
             var xs = chart.Series.SelectMany(x => x.Values.Points.Select(pt => pt.X)).DefaultIfEmpty(0).ToArray();
             var ys = chart.Series.SelectMany(x => x.Values.Points.Select(pt => pt.Y)).DefaultIfEmpty(0).ToArray();
@@ -901,17 +911,16 @@ namespace lvc.Charts
                 Scale();
                 RequiresScale = false;
             }
-            foreach (var serie in EraseSerieBuffer.GroupBy(x => x))
-            {
-                serie.First().Erase();
-            }
+            foreach (var serie in EraseSerieBuffer.GroupBy(x => x)) serie.First().Erase();
+            
             EraseSerieBuffer.Clear();
+
             var toPlot = Series.Where(x => x.RequiresPlot);
-            foreach (var serie in toPlot)
+            foreach (var series in toPlot)
             {
-                serie.Plot(serie.RequiresAnimation);
-                serie.RequiresPlot = false;
-                serie.RequiresAnimation = false;
+                series.Plot(series.RequiresAnimation);
+                series.RequiresPlot = false;
+                series.RequiresAnimation = false;
             }
 
             if (Plot != null) Plot(this);
@@ -936,7 +945,6 @@ namespace lvc.Charts
             foreach (var serie in Series)
             {
                 serie.Erase();
-                serie.Values.Evaluate();
                 serie.Plot(AnimatesNewPoints);
             }
         }
