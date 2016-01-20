@@ -14,14 +14,14 @@ namespace ChartsTest
         {
             LineAndAreaAexamples = new List<UserControl>
             {
-                //new BasicLine(),
-                //new CustomLine(),
-                //new ZoomableLine(),
-                //new BindingLine(),
-                //new UiElementsLine(),
+                new BasicLine(),
+                new CustomLine(),
+                new ZoomableLine(),
+                new BindingLine(),
+                new UiElementsLine(),
                 new MvvmLine(),
-                //new LazyDataLine(),
-                //new PerformanceLine()
+                new LazyDataLine(),
+                new PerformanceLine()
             };
             BarExamples = new List<UserControl>
             {

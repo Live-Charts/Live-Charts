@@ -39,28 +39,6 @@ namespace lvc
         public Chart Chart { get; set; }
 
         public ISeriesConfiguration Configuration { get; set; }
-        /// <summary>
-        /// Gets X labels
-        /// </summary>
-        public IEnumerable<KeyValuePair<double, string>> XLabels
-        {
-            get
-            {
-                for (var i = MinChartPoint.X; i <= MaxChartPoint.X; i += Chart.S.X)
-                    yield return new KeyValuePair<double, string>(1,""); // new KeyValuePair<double, string>(i, Configuration.XLabelMapper(i));
-            }
-        }
-        /// <summary>
-        /// Gets Y labels
-        /// </summary>
-        public IEnumerable<KeyValuePair<double, string>> YLabels
-        {
-            get
-            {
-                for (var i = MinChartPoint.Y; i <= MaxChartPoint.Y; i += Chart.S.Y)
-                    yield return new KeyValuePair<double, string>(1,""); //new KeyValuePair<double, string>(i, Configuration.YLabelMapper(i));
-            }
-        }
 
         public SeriesCollection Setup<T>(SeriesConfiguration<T> config)
         {

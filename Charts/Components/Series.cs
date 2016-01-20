@@ -40,6 +40,16 @@ namespace lvc
 	    internal bool RequiresAnimation;
 	    internal bool RequiresPlot;
 
+        protected Series()
+        {
+            
+        }
+
+        protected Series(ISeriesConfiguration configutration)
+        {
+            Configuration = configutration;
+        }
+
         #region Dependency Properties
 	    public static readonly DependencyProperty ValuesProperty = DependencyProperty.Register(
 	        "Values", typeof (IChartValues), typeof (Series), 
@@ -108,12 +118,19 @@ namespace lvc
                 _chart = value;
             }
         }
+
+        public ISeriesConfiguration Configuration { get; set; }
         #endregion
 
         #region PublicMethods
         public static Color GetColorByIndex(int index)
         {
             return Chart.Colors[(int) (index - Chart.Colors.Count*Math.Truncate(index/(decimal) Chart.Colors.Count))];
+        }
+        public Series Setup<T>(SeriesConfiguration<T> config)
+        {
+            Configuration = config;
+            return this;
         }
         #endregion
 

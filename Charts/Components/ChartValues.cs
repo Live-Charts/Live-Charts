@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
@@ -89,17 +88,13 @@ namespace lvc
 
         private void EvalueateValues()
         {
-            var c1 = Series.Collection;
-            var c2 = c1.Configuration as SeriesConfiguration<T>;
-
-            var e = this.AsEnumerable();
-
-            //var a = c2.OptimizationMethod().ToArray();
+            var config = (Series.Configuration ?? Series.Collection.Configuration) as SeriesConfiguration<T>;
+            if (config == null) return;
 
             var collection = Series == null ? null : Series.Collection;
             _points = collection == null
                 ? new Point[] {}
-                : c2.OptimizationMethod(this).ToArray();
+                : config.OptimizationMethod(this).ToArray();
 
             var xs = _points.Select(x => x.X).DefaultIfEmpty(0).ToArray();
 

@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
@@ -35,11 +34,6 @@ namespace lvc
         /// Gets or sets the current function that pulls Y value from T
         /// </summary>
         private Func<T, int, double> YValueMapper { get; set; }
-
-        public Func<double, string> YLabelFormatter { get; internal set; }
-        public Func<double, string> XLabelFormatter { get; internal set; }
-
-        private SeriesCollection Collection { get; set; } 
 
         /// <summary>
         /// Maps X value
@@ -82,28 +76,6 @@ namespace lvc
         public SeriesConfiguration<T> Y(Func<T, int, double> predicate)
         {
             YValueMapper = predicate;
-            return this;
-        }
-
-        /// <summary>
-        /// Maps X Labels
-        /// </summary>
-        /// <param name="predicate"></param>
-        /// <returns></returns>
-        public SeriesConfiguration<T> XFormat(Func<double, string> predicate)
-        {
-            XLabelFormatter = predicate;
-            return this;
-        }
-
-        /// <summary>
-        /// Maps Y labels
-        /// </summary>
-        /// <param name="predicate"></param>
-        /// <returns></returns>
-        public SeriesConfiguration<T> YFormat(Func<double, string> predicate)
-        {
-            YLabelFormatter = predicate;
             return this;
         }
 

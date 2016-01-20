@@ -12,5 +12,6 @@ namespace lvc
         /// Collection that owns the series
         /// </summary>
         SeriesCollection Collection { get; }
+        ISeriesConfiguration Configuration { get; set; }
     }
 }

@@ -125,9 +125,9 @@
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Series\RowSeries.cs" />
     <Compile Include="Components\SeriesCollection.cs" />
-    <Compile Include="ChartValues\IChartValues.cs" />
+    <Compile Include="Interfaces\IChartValues.cs" />
     <Compile Include="LiveChartsExtentions.cs" />
-    <Compile Include="ChartValues\ChartValues.cs" />
+    <Compile Include="Components\ChartValues.cs" />
     <Compile Include="Tooltip\IndexedTooltipData.cs" />
     <Compile Include="Tooltip\Converters.cs" />
     <Compile Include="Tooltip\DefaultIndexedTooltip.xaml.cs">
@@ -141,7 +141,7 @@
     <Compile Include="TypeConverters\ColorCollectionConverter.cs" />
     <Compile Include="TypeConverters\StringCollectionConverter.cs" />
     <Compile Include="TypeConverters\IndexedChartValuesConverter.cs" />
-    <Compile Include="ChartValues\PerformanceConfigurations.cs" />
+    <Compile Include="Components\PerformanceConfigurations.cs" />
     <Compile Include="Viewers\Converters.cs" />
     <Compile Include="Viewers\PieSeriesViewer.xaml.cs">
       <DependentUpon>PieSeriesViewer.xaml</DependentUpon>

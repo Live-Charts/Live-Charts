@@ -105,7 +105,7 @@ namespace lvc.Charts
             DataToolTip = new DefaultIndexedTooltip();
             Shapes = new List<FrameworkElement>();
             HoverableShapes = new List<HoverableShape>();
-            PointHoverColor = System.Windows.Media.Colors.White;
+            PointHoverColor = System.Windows.Media.Colors.White; 
 
             //it requieres a background so it detect mouse down/up events.
             Background = Brushes.Transparent;
