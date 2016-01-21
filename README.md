@@ -69,7 +69,7 @@ ViewModel = new BindedLinesViewModel
 DataContext = this;
 ```
 
-## c) Full Binding 
+## c) Full Binding (Recommended Method)
 
 Useful when you need to change the number of series and the values of each serie, in this example also we are not ploting just a column of dobule, we are ploting `ChartValues<SalesData>` then we specify wich property to use for X and Y.
 
@@ -147,6 +147,17 @@ xmlns:lvc="clr-namespace:LiveCharts;assembly=LiveCharts"
 **3**. Thats it. You are ready.
 
 **Note:** Since this is a pre-release version, some names, properties or namespaces might vary, we highly recommend to clone this repo and see included examples since they all are always up to date.
+
+Or take a look to this exmaples too
+
+* **[Plot Types not Values! (Mvvm Recommended method)](https://github.com/beto-rodriguez/Live-Charts/tree/master/ChartsTest/Line%20Examples/Mvvm)** By default series values are double, but live charts allows you to plot any type you need, in this case we plot a collection of SalesData class. click on the buttons bellow to see how live charts track your data changes, also chart will follow if you resize window, notice this chart implements a custom tooltip to display Rentability property too.
+* **[In line Charting](https://github.com/beto-rodriguez/Live-Charts/tree/master/ChartsTest/Line%20Examples/Basic)** when you only need to plot easy and now!
+* **[Partial Binding](https://github.com/beto-rodriguez/Live-Charts/tree/master/ChartsTest/Line%20Examples/Binding)** if you have a static number of series and need to change their Values this might help you, click on the buttons bellow to see how charts update automatically with their data
+* **[Mvvm Lazy Data](https://github.com/beto-rodriguez/Live-Charts/tree/master/ChartsTest/Line%20Examples/LazyData)** this example shows a dynamic number of charts and dynamic values, click on the buttons of each chart to see how the change, click add new chart to add a new one.
+* **[Zoomable Chart](https://github.com/beto-rodriguez/Live-Charts/tree/master/ChartsTest/Line%20Examples/Zoomable)** this examples shows how easly it is to support zooming and panning in a chart.
+* **[Add Ui Elements](https://github.com/beto-rodriguez/Live-Charts/tree/master/ChartsTest/Line%20Examples/UiElements)** you can also add any UI element to a chart.
+* **[Custom Style](https://github.com/beto-rodriguez/Live-Charts/tree/master/ChartsTest/Line%20Examples/Custom)** this is an example of how to change the default style of live charts
+   * [See Custom Tooltip too](https://github.com/beto-rodriguez/Live-Charts/tree/master/ChartsTest/z.CustomTooltips)
 
 # How to Contribute
 
