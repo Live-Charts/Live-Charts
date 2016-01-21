@@ -11,6 +11,8 @@
   <img src="https://dl.dropboxusercontent.com/u/40165535/LiveCharts/ScatterChart.gif" />
 </p>
 
+# Right now docs might have broken links and examples might vary from last nuget package, we are just about to publish 0.6, this will be fixed as soon as possible
+
 Live charts is an easy way to build useful charts, all charts are animated, they update every time you change your data, or when you rezise the chart, also since 0.5 we are working to support huge amounts of data, right now this is on test and only implemented in line chart, but in the included examples it is able to draw 1'000,000 points in a really short period of time.
 
  - MVVM Charting, Support for WPF Binding, All charts update when data changes.
@@ -19,7 +21,7 @@ Live charts is an easy way to build useful charts, all charts are animated, they
  - Supports zooming and panning.
  - MIT License, permissive licensing.
  
-This is the logic you use in every chart, there are just some litle properties or rules that change from each type of chart. Use the sintax that better fits your needs.
+This is the logic you use in every chart, there are just some litle properties or rules that change from each type of chart. Use the syntax that better fits your needs.
 
 ## a) In Line Charting 
 
