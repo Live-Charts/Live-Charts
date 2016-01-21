@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
+using ChartsTest.BarExamples.Mvvm;
 using lvc;
-using SalesTooltip = ChartsTest.StackedBarExamples.Mvvm.SalesTooltip;
 
 namespace ChartsTest.BarExamples
 {

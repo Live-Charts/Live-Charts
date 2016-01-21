@@ -67,6 +67,9 @@
     <Compile Include="BarExamples\Custom\CustomBar.xaml.cs">
       <DependentUpon>CustomBar.xaml</DependentUpon>
     </Compile>
+    <Compile Include="BarExamples\Mvvm\SalesTooltip.xaml.cs">
+      <DependentUpon>SalesTooltip.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Line Examples\LazyData\LazyDataLine.xaml.cs">
       <DependentUpon>LazyDataLine.xaml</DependentUpon>
     </Compile>
@@ -136,6 +139,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="BarExamples\Custom\CustomBar.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="BarExamples\Mvvm\SalesTooltip.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
