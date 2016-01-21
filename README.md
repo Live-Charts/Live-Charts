@@ -144,7 +144,7 @@ Chart.Series.Add(new LineSeries
 
 **2**. Add name space to your `XAML` 
 ```
-xmlns:lvc="clr-namespace:LiveCharts;assembly=LiveCharts"
+xmlns:lvc="clr-namespace:lvc;assembly=LiveCharts
 ```
 **3**. Thats it. You are ready.
 
