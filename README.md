@@ -11,9 +11,9 @@
   <img src="https://dl.dropboxusercontent.com/u/40165535/LiveCharts/ScatterChart.gif" />
 </p>
 
-# Right now docs might have broken links and examples might vary from last nuget package, we are just about to publish 0.6, this will be fixed as soon as possible
+### 0.6.0 is here, If you come from an older verison concider reading this https://github.com/beto-rodriguez/Live-Charts/releases/tag/0.6.0
 
-Live charts is an easy way to build useful charts, all charts are animated, they update every time you change your data, or when you rezise the chart, also since 0.5 we are working to support huge amounts of data, right now this is on test and only implemented in line chart, but in the included examples it is able to draw 1'000,000 points in a really short period of time.
+Live charts is an easy way to build useful charts, all charts are animated, they update every time you change your data, or when you rezise the chart, also since 0.5 we are working to support huge amounts of data, right now this is on test and only implemented in line chart, but in the included examples it is able to draw 1,000,000 points in a really short period of time.
 
  - MVVM Charting, Support for WPF Binding, All charts update when data changes.
  - Good looking, animated and easy to customize charts, you can practically change all properties.
@@ -25,64 +25,61 @@ This is the logic you use in every chart, there are just some litle properties o
 
 ## a) In Line Charting 
 
-Useful when you need to plot easly static series and static values.
+Useful when you just a chart now! with static number of series and values.
 
-**XAML** [see full file](https://github.com/beto-rodriguez/Live-Charts/blob/master/ChartsTest/Line%20Examples/BasicLine.xaml)
+**XAML** [see full file](https://github.com/beto-rodriguez/Live-Charts/blob/master/ChartsTest/Line%20Examples/Basic/BasicLine.xaml)
 ```xml
- <liveCharts:LineChart Name="Chart">
-  <liveCharts:LineChart.Series>
-    <liveCharts:SeriesCollection>
-      <liveCharts:LineSeries Title="Maria" PrimaryValues="20, 40, 45, 60, 55, 60, 65, 70" />
-      <liveCharts:LineSeries Title="John" PrimaryValues="30, 35, 43, 68, 65 ,70, 55, 60" />
-    </liveCharts:SeriesCollection>
-  </liveCharts:LineChart.Series>
-</liveCharts:LineChart>
+ <lvc:LineChart>
+    <lvc:LineChart.Series>
+      <lvc:LineSeries Title="Maria" Values="20, 40, 45, 60, 55, 60, 65, 70" />
+      <lvc:LineSeries Title="John" Values="30, 35, 43, 68, 65 ,70, 55, 60" />
+    </lvc:LineChart.Series>
+</lvc:LineChart>
 ```
 
 ## b) Partial Binding
 
 Useful to keep your view models simple and when you have a static number of series.
 
-**XAML** [see full file](https://github.com/beto-rodriguez/Live-Charts/blob/master/ChartsTest/Line%20Examples/BindingLine.xaml)
+**XAML** [see full file](https://github.com/beto-rodriguez/Live-Charts/blob/master/ChartsTest/Line%20Examples/Binding/BindingLine.xaml)
 ```xml
-<liveCharts:LineChart>
-  <liveCharts:LineChart.Series>
-   <liveCharts:SeriesCollection>
-      <liveCharts:LineSeries PrimaryValues="{Binding ViewModel.FirstSeries}" />
-      <liveCharts:LineSeries PrimaryValues="{Binding ViewModel.SecondSeries}" />
-    </liveCharts:SeriesCollection>
-  </liveCharts:LineChart.Series>
-</liveCharts:LineChart>
+<lvc:LineChart>
+  <lvc:LineChart.Series>
+    <lvc:LineSeries Title="Series 1" Values="{Binding ViewModel.Series1}" />
+    <lvc:LineSeries Title="Series 2" Values="{Binding ViewModel.Series2}" />
+  </lvc:LineChart.Series>
+</lvc:LineChart>
 ```
-**CodeBehind** [see full file](https://github.com/beto-rodriguez/Live-Charts/blob/master/ChartsTest/Line%20Examples/BindingLine.xaml.cs)
+**CodeBehind** [see full file](https://github.com/beto-rodriguez/Live-Charts/blob/master/ChartsTest/Line%20Examples/Binding/BindingLine.xaml.cs)
 
 *view model*
 ```c#
 public class BindingLineViewModel
 {
-  public ObservableCollection<double> FirstSeries { get; set; }
-  public ObservableCollection<double> SecondSeries { get; set; }
+  public ChartValues<double> Series1 { get; set; }
+  public ChartValues<double> Series2 { get; set; }
 }
 ```
 *view constructor*
 ```c#
-ViewModel = new BindingLineViewModel
+ViewModel = new BindedLinesViewModel
 {
-  FirstSeries = new ObservableCollection<double> { 2, 4, double.NaN, 7, 8, 6, 2, 4, 2, 5 },
-  SecondSeries = new ObservableCollection<double> { 7, 3, 4, 1, 5, 6, 8, 5, 1, 3 }
+  Series1 = new ChartValues<double> {15, 25, 29, 32, 16, 10},
+  Series2 = new ChartValues<double> {12, 10, 9, 8, 5, -10 }
 };
+
 DataContext = this;
 ```
 
-## c) Full Binding
+## c) Full Binding (Recommended Method)
 
-Useful when you need to change the number of series and the values of each serie.
+Useful when you need to change the number of series and the values of each serie, in this example also we are not ploting just a column of dobule, we are ploting `ChartValues<SalesData>` then we specify wich property to use for X and Y.
 
-**XAML** [see full file](https://github.com/beto-rodriguez/Live-Charts/blob/master/ChartsTest/Line%20Examples/MvvmLine.xaml)
+**XAML** [see full file](https://github.com/beto-rodriguez/Live-Charts/blob/master/ChartsTest/Line%20Examples/Mvvm/MvvmLine.xaml)
 ```xml
-<liveCharts:LineChart Series="{Binding Sales.Salesmen}" />
+<lvc:LineChart Series="{Binding Sales.SalesmenSeries}" ></lvc:LineChart>
 ```
-**Code Behind** [see full file](https://github.com/beto-rodriguez/Live-Charts/blob/master/ChartsTest/Line%20Examples/MvvmLine.xaml.cs)
+**Code Behind** [see full file](https://github.com/beto-rodriguez/Live-Charts/blob/master/ChartsTest/Line%20Examples/Mvvm/MvvmLine.xaml.cs)
 
 *view model*
 ```c#
@@ -90,22 +87,32 @@ public class SalesViewModel
 {
   public SalesViewModel()
   {
-    Salesmen = new ObservableCollection<Series>
+    //Specify a setup for SeriesCollection class, so LiveCharts know which property use as Y, 
+    //you can also specify X, but in this case, It will use a zero based index (default config)
+    SalesmenSeries = new SeriesCollection (new SeriesConfiguration<SalesData>().Y(data => data.ItemsSold))
     {
       new LineSeries
       {
-        Title = "John",
-        PrimaryValues = new ObservableCollection<double>(new[] {2d, 4, 7, 1, 5})
+        Title = "Charles",
+        Values = new ChartValues<SalesData> { new SalesData {ItemsSold = 15, ... }, ... }
       },
       new LineSeries
       {
-        Title = "Maria",
-        PrimaryValues = new ObservableCollection<double>(new[] {5d, 3, 2, 4, 7})
+        Title = "Frida",
+        Values = new ChartValues<SalesData> { new SalesData {ItemsSold = 25, ...  } ... }
+      },
+      
+      // This series is ploting another type, you can also override configuration only for a Series
+      // to map to another property or Type
+      new LineSeries (new SeriesConfiguration<AverageSalesData>().Y(data => data.AverageItemsSold))
+      {
+        Title = "Average Series",
+        Values = new ChartValues<AverageSalesData> { new AverageSalesData {AverageItemsSold = 22} ... }
       }
-    };
- }
+    }
+  }
 
- public ObservableCollection<Series> Salesmen { get; set; }
+  public SeriesCollection SalesmenSeries { get; set; }
 
 }
 ```
@@ -121,12 +128,12 @@ DataContext = this;
 Chart.Series.Add(new LineSeries
 {
     Title = "Charles",
-    PrimaryValues = new ObservableCollection<double> { 5, 8, 1, 9}
+    Values = new ChartValues<double> { 5, 8, 1, 9}
 });
 Chart.Series.Add(new LineSeries
 {
     Title = "Maria",
-    PrimaryValues = new ObservableCollection<double> { 4, 1, 2, 7}
+    Values = new ChartValues<double> { 4, 1, 2, 7}
 });
 ```
 
@@ -137,15 +144,26 @@ Chart.Series.Add(new LineSeries
 
 **2**. Add name space to your `XAML` 
 ```
-xmlns:liveCharts="clr-namespace:LiveCharts;assembly=LiveCharts"
+xmlns:lvc="clr-namespace:lvc;assembly=LiveCharts
 ```
 **3**. Thats it. You are ready.
 
 **Note:** Since this is a pre-release version, some names, properties or namespaces might vary, we highly recommend to clone this repo and see included examples since they all are always up to date.
 
+Or take a look to this exmaples too
+
+* **[Plot Types not Values! (Mvvm Recommended method)](https://github.com/beto-rodriguez/Live-Charts/tree/master/ChartsTest/Line%20Examples/Mvvm)** By default series values are double, but live charts allows you to plot any type you need, in this case we plot a collection of SalesData class. click on the buttons bellow to see how live charts track your data changes, also chart will follow if you resize window, notice this chart implements a custom tooltip to display Rentability property too.
+* **[In line Charting](https://github.com/beto-rodriguez/Live-Charts/tree/master/ChartsTest/Line%20Examples/Basic)** when you only need to plot easy and now!
+* **[Partial Binding](https://github.com/beto-rodriguez/Live-Charts/tree/master/ChartsTest/Line%20Examples/Binding)** if you have a static number of series and need to change their Values this might help you, click on the buttons bellow to see how charts update automatically with their data
+* **[Mvvm Lazy Data](https://github.com/beto-rodriguez/Live-Charts/tree/master/ChartsTest/Line%20Examples/LazyData)** this example shows a dynamic number of charts and dynamic values, click on the buttons of each chart to see how the change, click add new chart to add a new one.
+* **[Zoomable Chart](https://github.com/beto-rodriguez/Live-Charts/tree/master/ChartsTest/Line%20Examples/Zoomable)** this examples shows how easly it is to support zooming and panning in a chart.
+* **[Add Ui Elements](https://github.com/beto-rodriguez/Live-Charts/tree/master/ChartsTest/Line%20Examples/UiElements)** you can also add any UI element to a chart.
+* **[Custom Style](https://github.com/beto-rodriguez/Live-Charts/tree/master/ChartsTest/Line%20Examples/Custom)** this is an example of how to change the default style of live charts
+   * [See Custom Tooltip too](https://github.com/beto-rodriguez/Live-Charts/tree/master/ChartsTest/z.CustomTooltips)
+
 # How to Contribute
 
-* Star this repo
+* **Star** this repo
 * Try it
 * Report Issues and Improvements
 * Pull request are well received
