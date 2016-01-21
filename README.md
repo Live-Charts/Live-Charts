@@ -11,9 +11,7 @@
   <img src="https://dl.dropboxusercontent.com/u/40165535/LiveCharts/ScatterChart.gif" />
 </p>
 
-# Right now docs might have broken links and examples might vary from last nuget package, we are just about to publish 0.6, this will be fixed as soon as possible
-
-Live charts is an easy way to build useful charts, all charts are animated, they update every time you change your data, or when you rezise the chart, also since 0.5 we are working to support huge amounts of data, right now this is on test and only implemented in line chart, but in the included examples it is able to draw 1'000,000 points in a really short period of time.
+Live charts is an easy way to build useful charts, all charts are animated, they update every time you change your data, or when you rezise the chart, also since 0.5 we are working to support huge amounts of data, right now this is on test and only implemented in line chart, but in the included examples it is able to draw 1,000,000 points in a really short period of time.
 
  - MVVM Charting, Support for WPF Binding, All charts update when data changes.
  - Good looking, animated and easy to customize charts, you can practically change all properties.
@@ -25,64 +23,61 @@ This is the logic you use in every chart, there are just some litle properties o
 
 ## a) In Line Charting 
 
-Useful when you need to plot easly static series and static values.
+Useful when you just a chart now! with static number of series and values.
 
-**XAML** [see full file](https://github.com/beto-rodriguez/Live-Charts/blob/master/ChartsTest/Line%20Examples/BasicLine.xaml)
+**XAML** [see full file](https://github.com/beto-rodriguez/Live-Charts/blob/master/ChartsTest/Line%20Examples/Basic/BasicLine.xaml)
 ```xml
- <liveCharts:LineChart Name="Chart">
-  <liveCharts:LineChart.Series>
-    <liveCharts:SeriesCollection>
-      <liveCharts:LineSeries Title="Maria" PrimaryValues="20, 40, 45, 60, 55, 60, 65, 70" />
-      <liveCharts:LineSeries Title="John" PrimaryValues="30, 35, 43, 68, 65 ,70, 55, 60" />
-    </liveCharts:SeriesCollection>
-  </liveCharts:LineChart.Series>
-</liveCharts:LineChart>
+ <lvc:LineChart>
+    <lvc:LineChart.Series>
+      <lvc:LineSeries Title="Maria" Values="20, 40, 45, 60, 55, 60, 65, 70" />
+      <lvc:LineSeries Title="John" Values="30, 35, 43, 68, 65 ,70, 55, 60" />
+    </lvc:LineChart.Series>
+</lvc:LineChart>
 ```
 
 ## b) Partial Binding
 
 Useful to keep your view models simple and when you have a static number of series.
 
-**XAML** [see full file](https://github.com/beto-rodriguez/Live-Charts/blob/master/ChartsTest/Line%20Examples/BindingLine.xaml)
+**XAML** [see full file](https://github.com/beto-rodriguez/Live-Charts/blob/master/ChartsTest/Line%20Examples/Binding/BindingLine.xaml)
 ```xml
-<liveCharts:LineChart>
-  <liveCharts:LineChart.Series>
-   <liveCharts:SeriesCollection>
-      <liveCharts:LineSeries PrimaryValues="{Binding ViewModel.FirstSeries}" />
-      <liveCharts:LineSeries PrimaryValues="{Binding ViewModel.SecondSeries}" />
-    </liveCharts:SeriesCollection>
-  </liveCharts:LineChart.Series>
-</liveCharts:LineChart>
+<lvc:LineChart>
+  <lvc:LineChart.Series>
+    <lvc:LineSeries Title="Series 1" Values="{Binding ViewModel.Series1}" />
+    <lvc:LineSeries Title="Series 2" Values="{Binding ViewModel.Series2}" />
+  </lvc:LineChart.Series>
+</lvc:LineChart>
 ```
-**CodeBehind** [see full file](https://github.com/beto-rodriguez/Live-Charts/blob/master/ChartsTest/Line%20Examples/BindingLine.xaml.cs)
+**CodeBehind** [see full file](https://github.com/beto-rodriguez/Live-Charts/blob/master/ChartsTest/Line%20Examples/Binding/BindingLine.xaml.cs)
 
 *view model*
 ```c#
 public class BindingLineViewModel
 {
-  public ObservableCollection<double> FirstSeries { get; set; }
-  public ObservableCollection<double> SecondSeries { get; set; }
+  public ChartValues<double> Series1 { get; set; }
+  public ChartValues<double> Series2 { get; set; }
 }
 ```
 *view constructor*
 ```c#
-ViewModel = new BindingLineViewModel
+ViewModel = new BindedLinesViewModel
 {
-  FirstSeries = new ObservableCollection<double> { 2, 4, double.NaN, 7, 8, 6, 2, 4, 2, 5 },
-  SecondSeries = new ObservableCollection<double> { 7, 3, 4, 1, 5, 6, 8, 5, 1, 3 }
+  Series1 = new ChartValues<double> {15, 25, 29, 32, 16, 10},
+  Series2 = new ChartValues<double> {12, 10, 9, 8, 5, -10 }
 };
+
 DataContext = this;
 ```
 
-## c) Full Binding
+## c) Full Binding with 
 
 Useful when you need to change the number of series and the values of each serie.
 
-**XAML** [see full file](https://github.com/beto-rodriguez/Live-Charts/blob/master/ChartsTest/Line%20Examples/MvvmLine.xaml)
+**XAML** [see full file](https://github.com/beto-rodriguez/Live-Charts/blob/master/ChartsTest/Line%20Examples/Mvvm/MvvmLine.xaml)
 ```xml
-<liveCharts:LineChart Series="{Binding Sales.Salesmen}" />
+<lvc:LineChart Series="{Binding Sales.SalesmenSeries}" ></lvc:LineChart>
 ```
-**Code Behind** [see full file](https://github.com/beto-rodriguez/Live-Charts/blob/master/ChartsTest/Line%20Examples/MvvmLine.xaml.cs)
+**Code Behind** [see full file](https://github.com/beto-rodriguez/Live-Charts/blob/master/ChartsTest/Line%20Examples/Mvvm/MvvmLine.xaml.cs)
 
 *view model*
 ```c#
@@ -90,22 +85,46 @@ public class SalesViewModel
 {
   public SalesViewModel()
   {
-    Salesmen = new ObservableCollection<Series>
+    SalesmenSeries = new SeriesCollection
     {
+      //will use SeriesCollection Setup
       new LineSeries
       {
-        Title = "John",
-        PrimaryValues = new ObservableCollection<double>(new[] {2d, 4, 7, 1, 5})
+        Title = "Charles",
+        Values = new ChartValues<SalesData>
+        {
+          new SalesData {ItemsSold = 15, Rentability = .15, ItemsAverageSellPrice = 5000},
+          new SalesData {ItemsSold = 16, Rentability = .12, ItemsAverageSellPrice = 5200},
+          new SalesData {ItemsSold = 22, Rentability = .11, ItemsAverageSellPrice = 5100}
+        }
       },
+      //Will use series collection Setup too
       new LineSeries
       {
-        Title = "Maria",
-        PrimaryValues = new ObservableCollection<double>(new[] {5d, 3, 2, 4, 7})
-      }
-    };
- }
+        Title = "Frida",
+        Values = new ChartValues<SalesData>
+        {
+          new SalesData {ItemsSold = 25, Rentability = .12, ItemsAverageSellPrice = 5200},
+          new SalesData {ItemsSold = 12, Rentability = .19, ItemsAverageSellPrice = 5100},
+          new SalesData {ItemsSold = 24, Rentability = .12, ItemsAverageSellPrice = 5400}
+        }
+      },
+      //Override Setup for this series to plot another property or even another type
+      new LineSeries
+      {
+        Title = "Average Series",
+        Values = new ChartValues<AverageSalesData>
+        {
+          new AverageSalesData {AverageItemsSold = 22},
+          new AverageSalesData {AverageItemsSold = 23},
+          new AverageSalesData {AverageItemsSold = 21}
+        }
+      }.Setup(new SeriesConfiguration<AverageSalesData>().Y(data => data.AverageItemsSold)) // this is the line that overrides SeriesCollection Setup
 
- public ObservableCollection<Series> Salesmen { get; set; }
+    }.Setup(new SeriesConfiguration<SalesData>().Y(data => data.ItemsSold)); // Setup a default configuration for all series in this collection.
+  }
+
+  public SeriesCollection SalesmenSeries { get; set; }
 
 }
 ```
@@ -121,12 +140,12 @@ DataContext = this;
 Chart.Series.Add(new LineSeries
 {
     Title = "Charles",
-    PrimaryValues = new ObservableCollection<double> { 5, 8, 1, 9}
+    Values = new ChartValues<double> { 5, 8, 1, 9}
 });
 Chart.Series.Add(new LineSeries
 {
     Title = "Maria",
-    PrimaryValues = new ObservableCollection<double> { 4, 1, 2, 7}
+    Values = new ChartValues<double> { 4, 1, 2, 7}
 });
 ```
 
@@ -137,7 +156,7 @@ Chart.Series.Add(new LineSeries
 
 **2**. Add name space to your `XAML` 
 ```
-xmlns:liveCharts="clr-namespace:LiveCharts;assembly=LiveCharts"
+xmlns:lvc="clr-namespace:LiveCharts;assembly=LiveCharts"
 ```
 **3**. Thats it. You are ready.
 
@@ -145,7 +164,7 @@ xmlns:liveCharts="clr-namespace:LiveCharts;assembly=LiveCharts"
 
 # How to Contribute
 
-* Star this repo
+* **Star** this repo
 * Try it
 * Report Issues and Improvements
 * Pull request are well received
