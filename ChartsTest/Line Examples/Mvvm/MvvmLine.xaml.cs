@@ -140,7 +140,7 @@ namespace ChartsTest.Line_Examples
             for (var i = 0; i < SalesmenSeries[0].Values.Count; i++) values.Add(new SalesData
             {
                 ItemsSold = r.Next(5,30),
-                Rentability = .15,
+                Rentability = r.NextDouble()*.2,
                 ItemsAverageSellPrice = 5000
             });
 
@@ -166,7 +166,7 @@ namespace ChartsTest.Line_Examples
                 salesman.Values.Add(new SalesData
                 {
                     ItemsSold = r.Next(5,30),
-                    Rentability = .15,
+                    Rentability = r.NextDouble()*.2,
                     ItemsAverageSellPrice = 5000
                 });
             }

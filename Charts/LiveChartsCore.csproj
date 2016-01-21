@@ -89,6 +89,12 @@
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>Live Charts.pfx</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -106,10 +112,10 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Components\ChartPoint.cs" />
-    <Compile Include="Components\SeriesConfiguration.cs" />
+    <Compile Include="CoreComponents\ChartPoint.cs" />
+    <Compile Include="CoreComponents\SeriesConfiguration.cs" />
     <Compile Include="Interfaces\ISeriesConfiguration.cs" />
-    <Compile Include="Components\Axis.cs" />
+    <Compile Include="CoreComponents\Axis.cs" />
     <Compile Include="AxisTags.cs" />
     <Compile Include="BezierSpline.cs" />
     <Compile Include="Charts\BarChart.cs" />
@@ -125,10 +131,10 @@
     <Compile Include="PerformanceConfiguration.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Series\RowSeries.cs" />
-    <Compile Include="Components\SeriesCollection.cs" />
+    <Compile Include="CoreComponents\SeriesCollection.cs" />
     <Compile Include="Interfaces\IChartValues.cs" />
     <Compile Include="LiveChartsExtentions.cs" />
-    <Compile Include="Components\ChartValues.cs" />
+    <Compile Include="CoreComponents\ChartValues.cs" />
     <Compile Include="Tooltip\IndexedTooltipData.cs" />
     <Compile Include="Tooltip\Converters.cs" />
     <Compile Include="Tooltip\DefaultIndexedTooltip.xaml.cs">
@@ -142,7 +148,7 @@
     <Compile Include="TypeConverters\ColorCollectionConverter.cs" />
     <Compile Include="TypeConverters\StringCollectionConverter.cs" />
     <Compile Include="TypeConverters\IndexedChartValuesConverter.cs" />
-    <Compile Include="Components\PerformanceConfigurations.cs" />
+    <Compile Include="CoreComponents\PerformanceConfigurations.cs" />
     <Compile Include="Viewers\Converters.cs" />
     <Compile Include="Viewers\PieSeriesViewer.xaml.cs">
       <DependentUpon>PieSeriesViewer.xaml</DependentUpon>
@@ -157,11 +163,11 @@
     <Compile Include="Series\RadarSeries.cs" />
     <Compile Include="Series\StackedBarSeries.cs" />
     <Compile Include="ShapeHoverBehavior.cs" />
-    <Compile Include="Components\Chart.cs" />
-    <Compile Include="Components\HoverableShape.cs" />
+    <Compile Include="CoreComponents\Chart.cs" />
+    <Compile Include="CoreComponents\HoverableShape.cs" />
     <Compile Include="LineChartLineType.cs" />
     <Compile Include="Methods.cs" />
-    <Compile Include="Components\Separator.cs" />
+    <Compile Include="CoreComponents\Separator.cs" />
     <Compile Include="Series\BarSeries.cs" />
     <Compile Include="Series\LineSeries.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -179,12 +185,13 @@
     </Compile>
     <Compile Include="Series\PieSeries.cs" />
     <Compile Include="Series\ScatterSeries.cs" />
-    <Compile Include="Components\Series.cs" />
+    <Compile Include="CoreComponents\Series.cs" />
     <Compile Include="Shapes\PieSlice.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="Live Charts.pfx" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

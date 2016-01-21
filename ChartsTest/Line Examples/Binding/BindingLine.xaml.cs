@@ -8,15 +8,15 @@ namespace ChartsTest.Line_Examples
 {
     public partial class BindingLine
     {
-        public WeatherViewModel ViewModel { get; set; }
+        public BindedLinesViewModel ViewModel { get; set; }
         public BindingLine()
         {
             InitializeComponent();
 
-            ViewModel = new WeatherViewModel
+            ViewModel = new BindedLinesViewModel
             {
-                Tokio = new ChartValues<double> {15, 25, 29, 32, 16, 10},
-                NewYork = new ChartValues<double> {12, 10, 9, 8, 5, -10 }
+                Series1 = new ChartValues<double> {15, 25, 29, 32, 16, 10},
+                Series2 = new ChartValues<double> {12, 10, 9, 8, 5, -10 }
             };
 
             DataContext = this;
@@ -44,13 +44,7 @@ namespace ChartsTest.Line_Examples
         }
     }
 
-    public class WeatherDay
-    {
-        public DateTime DateTime { get; set; }
-        public double Temperature { get; set; }
-    }
-
-    public class WeatherViewModel
+    public class BindedLinesViewModel
     {
         private Random _random = new Random();
         //live charts requires at least 100 ms without changes to update the chart
@@ -60,31 +54,31 @@ namespace ChartsTest.Line_Examples
         private DispatcherTimer _timer = new DispatcherTimer {Interval = TimeSpan.FromMilliseconds(150)};
         private bool _isWild;
 
-        public WeatherViewModel()
+        public BindedLinesViewModel()
         {
             _timer.Tick += (sender, args) =>
             {
-                Tokio.RemoveAt(0);
-                Tokio.Add(_random.Next(-10, 39));
-                NewYork.RemoveAt(0);
-                NewYork.Add(_random.Next(-10, 39));
+                Series1.RemoveAt(0);
+                Series1.Add(_random.Next(-10, 39));
+                Series2.RemoveAt(0);
+                Series2.Add(_random.Next(-10, 39));
             };
         }
 
-        public ChartValues<double> Tokio { get; set; }
-        public ChartValues<double> NewYork { get; set; }
+        public ChartValues<double> Series1 { get; set; }
+        public ChartValues<double> Series2 { get; set; }
 
         public void AddValue()
         {
-            Tokio.Add(_random.Next(-10, 39));
-            NewYork.Add(_random.Next(-10, 39));
+            Series1.Add(_random.Next(-10, 39));
+            Series2.Add(_random.Next(-10, 39));
         }
 
         public void RemoveValue()
         {
-            if (Tokio.Count < 3) return;
-            Tokio.RemoveAt(0);
-            NewYork.RemoveAt(0);
+            if (Series1.Count < 3) return;
+            Series1.RemoveAt(0);
+            Series2.RemoveAt(0);
         }
 
         public void GoWild()

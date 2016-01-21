@@ -21,7 +21,7 @@
             <ColumnDefinition Width="Auto"></ColumnDefinition>
         </Grid.ColumnDefinitions>
         <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" TextWrapping="Wrap" HorizontalAlignment="Center" >
-            <Bold>Plot Types, not Values</Bold>: By default series values are double, but live charts allows you to plot any type you need, in this case we plot a collection of SalesData class. click on the buttons bellow to see how live charts track your data changes, also chart will follow if you resize window, notice this chart implements a custom tooltip for this data model.
+            <Bold>Plot Types, not Values</Bold>: By default series values are double, but live charts allows you to plot any type you need, in this case we plot a collection of SalesData class. click on the buttons bellow to see how live charts track your data changes, also chart will follow if you resize window, notice this chart implements a custom tooltip to display Rentability property too.
         </TextBlock>
         <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center">
             <StackPanel.Resources>

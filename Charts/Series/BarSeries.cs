@@ -81,7 +81,7 @@ namespace lvc
                 {
                     Fill = Brushes.Transparent,
                     StrokeThickness = 0,
-                    Width = Width = Math.Max(0, barW - seriesPadding),
+                    Width = Math.Max(0, barW - seriesPadding),
                     Height = rh
                 };
 
@@ -101,13 +101,13 @@ namespace lvc
                 var hAnim = new DoubleAnimation
                 {
                     To = rh,
-                    Duration = TimeSpan.FromMilliseconds(300)
+                    Duration = TimeSpan.FromMilliseconds(500)
                 };
                 var rAnim = new DoubleAnimation
                 {
                     From = ToPlotArea(barStart, AxisTags.Y),
-                    To =h,
-                    Duration = TimeSpan.FromMilliseconds(300)
+                    To = h,
+                    Duration = TimeSpan.FromMilliseconds(500)
                 };
 
                 var animated = false;
@@ -124,7 +124,7 @@ namespace lvc
                 if (!animated)
                 {
                     r.Height = rh;
-                    t.Y = ToPlotArea(Chart.Min.Y, AxisTags.Y) - rh;
+                    t.Y = h;
                 }
 
                 if (!Chart.Hoverable) continue;

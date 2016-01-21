@@ -33,9 +33,10 @@ namespace lvc
             AxisY = new Axis();
             AxisX = new Axis
             {
-                Separator = {IsEnabled = false, Step = 1},
+                Separator = new Separator {IsEnabled = false, Step = 1},
                 IsEnabled = false
             };
+
             LineType = LineChartLineType.Bezier;
             Hoverable = true;
             ShapeHoverBehavior = ShapeHoverBehavior.Dot;
@@ -53,8 +54,12 @@ namespace lvc
         {
             base.Scale();
 
-            Max.Y = AxisX.MaxValue ?? (Math.Truncate(Max.Y / S.Y) + 1) * S.Y;
-            Min.Y = AxisX.MinValue ?? (Math.Truncate(Min.Y / S.Y) - 1) * S.Y;
+            S = new Point(
+                AxisX.Separator.Step ?? CalculateSeparator(Max.X - Min.X, AxisTags.X),
+                AxisY.Separator.Step ?? CalculateSeparator(Max.Y - Min.Y, AxisTags.Y));
+
+            if (AxisY.MaxValue == null) Max.Y = (Math.Truncate(Max.Y/S.Y) + 1)*S.Y;
+            if (AxisY.MinValue == null) Min.Y = (Math.Truncate(Min.Y/S.Y) - 1)*S.Y;
 
             DrawAxes();
         }

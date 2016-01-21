@@ -37,7 +37,7 @@ namespace lvc
             Hoverable = true;
             ShapeHoverBehavior = ShapeHoverBehavior.Shape;
             LineType = LineChartLineType.Bezier;
-            MaxColumnWidth = 60;
+            MaxColumnWidth = 30;
             DefaultFillOpacity = 0.75;
         }
 
@@ -74,9 +74,25 @@ namespace lvc
             return new Point(x, y);
         }
 
+        protected override void Scale()
+        {
+            base.Scale();
+
+            Max.X += 1;
+
+            S = new Point(
+                 AxisX.Separator.Step ?? CalculateSeparator(Max.X - Min.X, AxisTags.X),
+                 AxisY.Separator.Step ?? CalculateSeparator(Max.Y - Min.Y, AxisTags.Y));
+
+            if (AxisY.MaxValue == null) Max.Y = (Math.Truncate(Max.Y/S.Y) + 1)*S.Y;
+            if (AxisY.MinValue == null) Min.Y = (Math.Truncate(Min.Y/S.Y) - 1)*S.Y;
+
+            DrawAxes();
+        }
+
         protected override void DrawAxes()
         {
-            AxisX.IgnoresLastLabel = true;
+            //AxisX.IgnoresLastLabel = true;
             ConfigureSmartAxis(AxisX);
 
             //S = GetS();

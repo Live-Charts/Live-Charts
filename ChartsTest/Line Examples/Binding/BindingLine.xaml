@@ -42,8 +42,8 @@
         </Grid>
         <lvc:LineChart Name="Chart" Grid.Row="1" Grid.Column="0">
             <lvc:LineChart.Series>
-                <lvc:LineSeries Title="Tokio" Values="{Binding ViewModel.Tokio}" StrokeThickness="4" PointRadius="0" Fill="Transparent"/>
-                <lvc:LineSeries Title="New York" Values="{Binding ViewModel.NewYork}" StrokeThickness="4" PointRadius="0" Fill="Transparent"/>
+                <lvc:LineSeries Title="Series 1" Values="{Binding ViewModel.Series1}" StrokeThickness="5" PointRadius="0" Fill="Transparent"/>
+                <lvc:LineSeries Title="Series 2" Values="{Binding ViewModel.Series2}" StrokeThickness="5" PointRadius="0" Fill="Transparent"/>
             </lvc:LineChart.Series>
             <lvc:LineChart.AxisY>
                 <lvc:Axis IsEnabled="False" ShowLabels="False">

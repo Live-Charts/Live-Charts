@@ -38,7 +38,7 @@ namespace lvc
             Separator = new Separator
             {
                 IsEnabled = true,
-                Color = Color.FromRgb(205, 205, 205),
+                Color = Color.FromRgb(242, 242, 242),
                 Thickness = 1
             };
         }
@@ -69,7 +69,7 @@ namespace lvc
 		}
 
 		public static readonly DependencyProperty ColorProperty =
-			DependencyProperty.Register("Color", typeof(Color), typeof(Axis), new PropertyMetadata(Color.FromRgb(205, 205, 205)));
+			DependencyProperty.Register("Color", typeof(Color), typeof(Axis), new PropertyMetadata(Color.FromRgb(242, 242, 242)));
 
 		/// <summary>
 		/// Gets or sets axis color.

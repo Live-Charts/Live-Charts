@@ -3,8 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:liveCharts="clr-namespace:lvc;assembly=LiveCharts"
              xmlns:barExamples="clr-namespace:ChartsTest.BarExamples"
+             xmlns:lvc="clr-namespace:lvc;assembly=LiveCharts"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300"
              Loaded="OnLoaded" d:DataContext="{d:DesignInstance barExamples:BindingBar}">
@@ -14,42 +14,51 @@
             <RowDefinition Height="*"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
-        <TextBlock Grid.Row="0" HorizontalAlignment="Center" Grid.ColumnSpan="2" Margin="5" TextWrapping="Wrap">
-            Binded Series
-        </TextBlock>
-        <liveCharts:BarChart Name="Chart" Grid.Row="1" Grid.Column="0" >
-            <liveCharts:BarChart.Series>
-                <liveCharts:BarSeries Name="Serie1" Title="Maria" Values="{Binding ViewModel.FirstSerie}" Stroke="IndianRed">
-                        <liveCharts:BarSeries.Fill>
-                            <LinearGradientBrush EndPoint=".5,1" StartPoint="1,0">
-                                <GradientStop Color="IndianRed" Offset="1"/>
-                                <GradientStop Color="#CD3434" Offset="0.5"/>
-                            </LinearGradientBrush>
-                        </liveCharts:BarSeries.Fill>
-                    </liveCharts:BarSeries>
-                <liveCharts:BarSeries Name="Serie2" Title="John" Values="{Binding ViewModel.SecondSerie}" Stroke="CornflowerBlue">
-                    <liveCharts:BarSeries.Fill>
-                        <LinearGradientBrush EndPoint=".5,1" StartPoint="1,0">
-                            <GradientStop Color="CornflowerBlue" Offset="1"/>
-                            <GradientStop Color="#3174ED" Offset="0.5"/>
-                        </LinearGradientBrush>
-                    </liveCharts:BarSeries.Fill>
-                </liveCharts:BarSeries>
-            </liveCharts:BarChart.Series>
-            <liveCharts:BarChart.AxisY>
-                <liveCharts:Axis IsEnabled="False" ShowLabels="False">
-                    <liveCharts:Axis.Separator>
-                        <liveCharts:Separator IsEnabled="False"></liveCharts:Separator>
-                    </liveCharts:Axis.Separator>
-                </liveCharts:Axis>
-            </liveCharts:BarChart.AxisY>
-            <liveCharts:BarChart.AxisX>
-                <liveCharts:Axis IsEnabled="False" ShowLabels="False">
-                    <liveCharts:Axis.Separator>
-                        <liveCharts:Separator IsEnabled="False"></liveCharts:Separator>
-                    </liveCharts:Axis.Separator>
-                </liveCharts:Axis>
-            </liveCharts:BarChart.AxisX>
-        </liveCharts:BarChart>
+        <Grid Grid.Row="0" HorizontalAlignment="Center" Grid.ColumnSpan="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+            </Grid.RowDefinitions>
+            <TextBlock Margin="5" TextWrapping="Wrap">
+                <Bold>Live Changes</Bold>: if you have a static number of series and need to change their Values this might help you, click on the buttons bellow to see how charts update automatically with their data
+            </TextBlock>
+            <StackPanel Grid.Row="1" Orientation="Horizontal">
+                <Button Margin="10 0" Background="Transparent" 
+                    BorderBrush="#505050" BorderThickness="3" Foreground="#505050"
+                    Click="GoWildOnClick" Padding="10 3">
+                    Real Time
+                </Button>
+                <Button Margin="10 0" Background="Transparent" 
+                    BorderBrush="#505050" BorderThickness="3" Foreground="#505050"
+                    Click="AddValueOnClick" Padding="10 3">
+                    +
+                </Button>
+                <Button Margin="10 0" Background="Transparent" 
+                    BorderBrush="#505050" BorderThickness="3" Foreground="#505050"
+                    Click="RemoveValueOnClick" Padding="10 3">
+                    -
+                </Button>
+            </StackPanel>
+        </Grid>
+        <lvc:BarChart Name="Chart" Grid.Row="1" Grid.Column="0">
+            <lvc:BarChart.Series>
+                <lvc:BarSeries Title="Series 1" Values="{Binding ViewModel.Series1}"/>
+                <lvc:BarSeries Title="Series 2" Values="{Binding ViewModel.Series2}"/>
+            </lvc:BarChart.Series>
+            <lvc:BarChart.AxisY>
+                <lvc:Axis IsEnabled="False" ShowLabels="False">
+                    <lvc:Axis.Separator>
+                        <lvc:Separator IsEnabled="False"></lvc:Separator>
+                    </lvc:Axis.Separator>
+                </lvc:Axis>
+            </lvc:BarChart.AxisY>
+            <lvc:BarChart.AxisX>
+                <lvc:Axis IsEnabled="False" ShowLabels="False">
+                    <lvc:Axis.Separator>
+                        <lvc:Separator IsEnabled="False" ></lvc:Separator>
+                    </lvc:Axis.Separator>
+                </lvc:Axis>
+            </lvc:BarChart.AxisX>
+        </lvc:BarChart>
     </Grid>
 </UserControl>

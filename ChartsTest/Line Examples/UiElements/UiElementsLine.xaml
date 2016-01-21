@@ -8,7 +8,14 @@
              d:DesignHeight="300" d:DesignWidth="300"
              Loaded="UiElementsLine_OnLoaded">
     <Grid>
-        <liveCharts:LineChart Name="Chart" Plot="Chart_OnPlot">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <TextBlock Grid.Row="0" TextWrapping="Wrap">
+            <Bold>UI Elements</Bold>: you can also add any UI element to a chart.
+        </TextBlock>
+        <liveCharts:LineChart Grid.Row="1" Name="Chart" Plot="Chart_OnPlot">
             <liveCharts:LineChart.Series>
                 <liveCharts:LineSeries Values="10, 5, 20, 30, 35, 30, 10, 5, -3, 10"/>
             </liveCharts:LineChart.Series>

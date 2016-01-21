@@ -218,11 +218,13 @@ namespace lvc.Charts
         /// <summary>
         /// Gets collection of shapes that fires tooltip on hover
         /// </summary>
-        public List<HoverableShape> HoverableShapes { get; internal set; } 
+        public List<HoverableShape> HoverableShapes { get; internal set; }
+
         /// <summary>
         /// Gets or sets X Axis
         /// </summary>
         public Axis AxisY { get; set; }
+
         /// <summary>
         /// Gets or sets Y Axis
         /// </summary>
@@ -418,25 +420,17 @@ namespace lvc.Charts
                 series.Values.Evaluate();
             }
 
-            var max =
-                new Point(
-                    Series.Where(x => x.Values != null).Select(x => x.Values.MaxChartPoint.X).DefaultIfEmpty(0).Max(),
-                    Series.Where(x => x.Values != null).Select(x => x.Values.MaxChartPoint.Y).DefaultIfEmpty(0).Max());
+            Max = new Point(
+                AxisX.MaxValue ??
+                Series.Where(x => x.Values != null).Select(x => x.Values.MaxChartPoint.X).DefaultIfEmpty(0).Max(),
+                AxisY.MaxValue ??
+                Series.Where(x => x.Values != null).Select(x => x.Values.MaxChartPoint.Y).DefaultIfEmpty(0).Max());
 
-            var min =
-                new Point(
-                    Series.Where(x => x.Values != null).Select(x => x.Values.MinChartPoint.X).DefaultIfEmpty(0).Min(),
-                    Series.Where(x => x.Values != null).Select(x => x.Values.MinChartPoint.Y).DefaultIfEmpty(0).Min());
-
-            Min.X = AxisY.MinValue ?? min.X;
-            Max.X = AxisY.MaxValue ?? max.X;
-
-            Min.Y = AxisX.MinValue ?? min.Y;
-            Max.Y = AxisX.MaxValue ?? max.Y;
-
-            S = new Point(
-                AxisX.Separator.Step ?? CalculateSeparator(Max.X - Min.X, AxisTags.X),
-                AxisY.Separator.Step ?? CalculateSeparator(Max.Y - Min.Y, AxisTags.Y));
+            Min = new Point(
+                AxisX.MinValue ??
+                Series.Where(x => x.Values != null).Select(x => x.Values.MinChartPoint.X).DefaultIfEmpty(0).Min(),
+                AxisY.MinValue ??
+                Series.Where(x => x.Values != null).Select(x => x.Values.MinChartPoint.Y).DefaultIfEmpty(0).Min());
         }
         #endregion
 
@@ -673,7 +667,7 @@ namespace lvc.Charts
                     Shapes.Add(l);
                 }
 
-                if (AxisX.ShowLabels)
+                if (axis.ShowLabels)
                 {
                     var text = formatter(i);
                     var label = axis.BuildATextBlock(0);

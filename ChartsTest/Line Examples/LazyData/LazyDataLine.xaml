@@ -15,7 +15,9 @@
             <RowDefinition Height="*"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
-        <TextBlock Grid.Row="0">This example show how to handle "lazy data" and MVVM.</TextBlock>
+        <TextBlock Grid.Row="0" TextWrapping="Wrap">
+            <Bold>Dynamic charts and data</Bold>: this example shows a dynamic number of charts and dynamic values, click on the buttons of each chart to see how the change, click add new chart to add a new one.
+        </TextBlock>
         <ScrollViewer Grid.Row="1" MaxHeight="300">
             <StackPanel>
                 <ItemsControl ItemsSource="{Binding Charts}">

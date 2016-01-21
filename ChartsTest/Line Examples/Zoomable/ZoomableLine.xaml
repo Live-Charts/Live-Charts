@@ -14,13 +14,13 @@
             <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
         <TextBlock Grid.Row="0" HorizontalAlignment="Center" Grid.ColumnSpan="2" Margin="5" TextWrapping="Wrap">
-            Just Areas and Zoomable, use mouse wheel to zoom in/out, click and drag to pan.
+            <Bold>Zoom and Pan</Bold>: this examples shows how easly it is to support zooming and panning in a chart.
         </TextBlock>
         <liveCharts:LineChart Name="Chart" Grid.Row="1" Grid.Column="0" Zooming="True" Hoverable="False">
             <liveCharts:LineChart.Series>
-                <liveCharts:LineSeries Title="Maria" Values="20, 40, 48, 60, 55, 60, 65, 70" PointRadius="0" StrokeThickness="0"></liveCharts:LineSeries>
-                    <liveCharts:LineSeries Title="John" Values="30, 35, 41, 68, 65 ,70, 55, 60" PointRadius="0" StrokeThickness="0"></liveCharts:LineSeries>
-                <liveCharts:LineSeries Title="Erick" Values="40, 42, 65, 70, 50, 55, 44, 73" PointRadius="0" StrokeThickness="0"></liveCharts:LineSeries>
+                <liveCharts:LineSeries Title="Maria" Values="20, 40, 48, 60, 55, 60, 65, 70" PointRadius="0" StrokeThickness="1"></liveCharts:LineSeries>
+                    <liveCharts:LineSeries Title="John" Values="30, 35, 41, 68, 65 ,70, 55, 60" PointRadius="0" StrokeThickness="1"></liveCharts:LineSeries>
+                <liveCharts:LineSeries Title="Erick" Values="40, 42, 65, 70, 50, 55, 44, 73" PointRadius="0" StrokeThickness="1"></liveCharts:LineSeries>
             </liveCharts:LineChart.Series>
         </liveCharts:LineChart>
     </Grid>

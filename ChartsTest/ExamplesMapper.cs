@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Windows.Controls;
+using ChartsTest.BarExamples;
 using ChartsTest.Line_Examples;
 
 namespace ChartsTest
@@ -14,21 +15,21 @@ namespace ChartsTest
         {
             LineAndAreaAexamples = new List<UserControl>
             {
-                new BasicLine(),
-                new BindingLine(),
-                new MvvmLine(),
-                new LazyDataLine(),
-                new CustomLine(),
-                new ZoomableLine(),
-                new UiElementsLine(),
-                //new PerformanceLine() // disabled mean while
+                //new BasicLine(),
+                //new BindingLine(),
+                //new MvvmLine(),
+                //new LazyDataLine(),
+                //new CustomLine(),
+                //new ZoomableLine(),
+                //new UiElementsLine(),
+                //new PerformanceLine() // disabled by now
             };
             BarExamples = new List<UserControl>
             {
-                //new BasicBar(),
+                new BasicBar(),
+                new BindingBar(),
                 //new CustomBar(),
                 //new ZoomableBar(),
-                //new BindingBar(),
                 //new MvvmBar()
                 ////new Performance()
             };
