@@ -69,9 +69,9 @@ ViewModel = new BindedLinesViewModel
 DataContext = this;
 ```
 
-## c) Full Binding with 
+## c) Full Binding 
 
-Useful when you need to change the number of series and the values of each serie.
+Useful when you need to change the number of series and the values of each serie, in this example also we are not ploting just a column of dobule, we are ploting `ChartValues<SalesData>` then we specify wich property to use for X and Y.
 
 **XAML** [see full file](https://github.com/beto-rodriguez/Live-Charts/blob/master/ChartsTest/Line%20Examples/Mvvm/MvvmLine.xaml)
 ```xml
@@ -85,43 +85,29 @@ public class SalesViewModel
 {
   public SalesViewModel()
   {
-    SalesmenSeries = new SeriesCollection
+    //Specify a setup for SeriesCollection class, so LiveCharts know which property use as Y, 
+    //you can also specify X, but in this case, It will use a zero based index (default config)
+    SalesmenSeries = new SeriesCollection (new SeriesConfiguration<SalesData>().Y(data => data.ItemsSold))
     {
-      //will use SeriesCollection Setup
       new LineSeries
       {
         Title = "Charles",
-        Values = new ChartValues<SalesData>
-        {
-          new SalesData {ItemsSold = 15, Rentability = .15, ItemsAverageSellPrice = 5000},
-          new SalesData {ItemsSold = 16, Rentability = .12, ItemsAverageSellPrice = 5200},
-          new SalesData {ItemsSold = 22, Rentability = .11, ItemsAverageSellPrice = 5100}
-        }
+        Values = new ChartValues<SalesData> { new SalesData {ItemsSold = 15, ... }, ... }
       },
-      //Will use series collection Setup too
       new LineSeries
       {
         Title = "Frida",
-        Values = new ChartValues<SalesData>
-        {
-          new SalesData {ItemsSold = 25, Rentability = .12, ItemsAverageSellPrice = 5200},
-          new SalesData {ItemsSold = 12, Rentability = .19, ItemsAverageSellPrice = 5100},
-          new SalesData {ItemsSold = 24, Rentability = .12, ItemsAverageSellPrice = 5400}
-        }
+        Values = new ChartValues<SalesData> { new SalesData {ItemsSold = 25, ...  } ... }
       },
-      //Override Setup for this series to plot another property or even another type
-      new LineSeries
+      
+      // This series is ploting another type, you can also override configuration only for a Series
+      // to map to another property or Type
+      new LineSeries (new SeriesConfiguration<AverageSalesData>().Y(data => data.AverageItemsSold))
       {
         Title = "Average Series",
-        Values = new ChartValues<AverageSalesData>
-        {
-          new AverageSalesData {AverageItemsSold = 22},
-          new AverageSalesData {AverageItemsSold = 23},
-          new AverageSalesData {AverageItemsSold = 21}
-        }
-      }.Setup(new SeriesConfiguration<AverageSalesData>().Y(data => data.AverageItemsSold)) // this is the line that overrides SeriesCollection Setup
-
-    }.Setup(new SeriesConfiguration<SalesData>().Y(data => data.ItemsSold)); // Setup a default configuration for all series in this collection.
+        Values = new ChartValues<AverageSalesData> { new AverageSalesData {AverageItemsSold = 22} ... }
+      }
+    }
   }
 
   public SeriesCollection SalesmenSeries { get; set; }
