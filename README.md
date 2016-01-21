@@ -11,6 +11,8 @@
   <img src="https://dl.dropboxusercontent.com/u/40165535/LiveCharts/ScatterChart.gif" />
 </p>
 
+### If you come from an older verison concider reading this https://github.com/beto-rodriguez/Live-Charts/releases/tag/0.6.0
+
 Live charts is an easy way to build useful charts, all charts are animated, they update every time you change your data, or when you rezise the chart, also since 0.5 we are working to support huge amounts of data, right now this is on test and only implemented in line chart, but in the included examples it is able to draw 1,000,000 points in a really short period of time.
 
  - MVVM Charting, Support for WPF Binding, All charts update when data changes.
