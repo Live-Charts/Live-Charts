@@ -3,8 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:liveCharts="clr-namespace:lvc;assembly=LiveCharts"
              xmlns:lineExamples="clr-namespace:ChartsTest.Line_Examples"
+             xmlns:lvc="clr-namespace:lvc;assembly=LiveCharts"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="500"
              Loaded="MvvmExample_OnLoaded"
@@ -42,15 +42,15 @@
             <Button Click="AddMonthOnClick">+</Button>
             <Button Click="RemoveMonthOnClick">-</Button>
         </StackPanel>
-        <liveCharts:LineChart Name="Chart" Grid.Row="2" Grid.Column="0" Series="{Binding Sales.SalesmenSeries}" >
-            <liveCharts:LineChart.AxisY>
-                <liveCharts:Axis Title="Sold Items"></liveCharts:Axis>
-            </liveCharts:LineChart.AxisY>
-            <liveCharts:LineChart.AxisX>
-                <liveCharts:Axis Name="SecondaryAxis" Title="Month" Labels="{Binding Sales.AvailableMonths}"></liveCharts:Axis>
-            </liveCharts:LineChart.AxisX>
-        </liveCharts:LineChart>
-        <liveCharts:SeriesViewer Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" 
-                                 Series="{Binding ElementName=Chart, Path=Series}"></liveCharts:SeriesViewer>
+        <lvc:LineChart Name="Chart" Grid.Row="2" Grid.Column="0" Series="{Binding Sales.SalesmenSeries}" >
+            <lvc:LineChart.AxisY>
+                <lvc:Axis Title="Sold Items"></lvc:Axis>
+            </lvc:LineChart.AxisY>
+            <lvc:LineChart.AxisX>
+                <lvc:Axis Name="SecondaryAxis" Title="Month" Labels="{Binding Sales.AvailableMonths}"></lvc:Axis>
+            </lvc:LineChart.AxisX>
+        </lvc:LineChart>
+        <lvc:SeriesViewer Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" 
+                                 Series="{Binding ElementName=Chart, Path=Series}"></lvc:SeriesViewer>
     </Grid>
 </UserControl>
