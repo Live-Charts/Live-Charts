@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:ChartsTest.Line_Examples"
-             xmlns:liveCharts="clr-namespace:lvc;assembly=LiveCharts"
+             xmlns:lvc="clr-namespace:lvc;assembly=LiveCharts"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300"
              d:DataContext="{d:DesignInstance local:ViewModel}"
@@ -17,16 +17,16 @@
         <TextBlock Name="OutPut" Grid.Row="0" HorizontalAlignment="Center" Grid.ColumnSpan="2" Margin="5" TextWrapping="Wrap">
             
         </TextBlock>
-        <liveCharts:LineChart Name="Chart" Grid.Row="1" Grid.Column="0" Zooming="True">
-            <liveCharts:LineChart.Series>
-                <liveCharts:LineSeries Title="{Binding Name}" Values="{Binding Values}" StrokeThickness="4" PointRadius="0"></liveCharts:LineSeries>
-            </liveCharts:LineChart.Series>
-            <liveCharts:LineChart.AxisY>
-                <liveCharts:Axis></liveCharts:Axis>
-            </liveCharts:LineChart.AxisY>
-            <liveCharts:LineChart.AxisX>
-                <liveCharts:Axis></liveCharts:Axis>
-            </liveCharts:LineChart.AxisX>
-        </liveCharts:LineChart>
+        <lvc:LineChart Name="Chart" Grid.Row="1" Grid.Column="0" Zooming="True">
+            <lvc:LineChart.Series>
+                <lvc:LineSeries Title="{Binding Name}" Values="{Binding Values}" StrokeThickness="4" PointRadius="0"></lvc:LineSeries>
+            </lvc:LineChart.Series>
+            <lvc:LineChart.AxisY>
+                <lvc:Axis></lvc:Axis>
+            </lvc:LineChart.AxisY>
+            <lvc:LineChart.AxisX>
+                <lvc:Axis></lvc:Axis>
+            </lvc:LineChart.AxisX>
+        </lvc:LineChart>
     </Grid>
 </UserControl>

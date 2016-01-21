@@ -70,6 +70,9 @@
     <Compile Include="Line Examples\LazyData\LazyDataLine.xaml.cs">
       <DependentUpon>LazyDataLine.xaml</DependentUpon>
     </Compile>
+    <Compile Include="BarExamples\Mvvm\SalesTooltip.xaml.cs">
+      <DependentUpon>SalesTooltip.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Line Examples\Mvvm\SalesTooltip.xaml.cs">
       <DependentUpon>SalesTooltip.xaml</DependentUpon>
     </Compile>
@@ -137,9 +140,13 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Line Examples\Mvvm\SalesTooltip.xaml">
+    <Page Include="BarExamples\Mvvm\SalesTooltip.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Line Examples\Mvvm\SalesTooltip.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="z.CustomTooltips\CustomIndexedTooltip.xaml">
       <SubType>Designer</SubType>

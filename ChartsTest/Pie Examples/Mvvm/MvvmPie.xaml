@@ -3,8 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:liveCharts="clr-namespace:lvc;assembly=LiveCharts"
              xmlns:pieExamples="clr-namespace:ChartsTest.Pie_Examples"
+             xmlns:lvc="clr-namespace:lvc;assembly=LiveCharts"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300"
              Loaded="OnLoaded">
@@ -21,14 +21,14 @@
         <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" TextWrapping="Wrap" HorizontalAlignment="Center">
             MVVM example, click on the buttons below to update chart
         </TextBlock>
-        <liveCharts:PieChart Name="Chart" Grid.Row="1" Grid.Column="0" Series="{Binding Salesmen}" >
-            <liveCharts:PieChart.AxisY>
-                <liveCharts:Axis Title="Sold Items" LabelFormatter="{x:Static liveCharts:LabelFormatters.Number}"></liveCharts:Axis>
-            </liveCharts:PieChart.AxisY>
-            <liveCharts:PieChart.AxisX>
-                <liveCharts:Axis Name="SecondaryAxis" Title="Month" Labels="{Binding AvailableMonths}"></liveCharts:Axis>
-            </liveCharts:PieChart.AxisX>
-        </liveCharts:PieChart>
+        <lvc:PieChart Name="Chart" Grid.Row="1" Grid.Column="0" Series="{Binding Salesmen}" >
+            <lvc:PieChart.AxisY>
+                <lvc:Axis Title="Sold Items" LabelFormatter="{x:Static lvc:LabelFormatters.Number}"></lvc:Axis>
+            </lvc:PieChart.AxisY>
+            <lvc:PieChart.AxisX>
+                <lvc:Axis Name="SecondaryAxis" Title="Month" Labels="{Binding AvailableMonths}"></lvc:Axis>
+            </lvc:PieChart.AxisX>
+        </lvc:PieChart>
         <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Center">
             <StackPanel.Resources>
                 <Style TargetType="Button">
@@ -45,7 +45,7 @@
             <Button Click="AddMonthOnClick">+</Button>
             <Button Click="RemoveMonthOnClick">-</Button>
         </StackPanel>
-        <liveCharts:PieSeriesViewer Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" 
-									Series="{Binding ElementName=Chart, Path=Series}"></liveCharts:PieSeriesViewer>
+        <lvc:PieSeriesViewer Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" 
+									Series="{Binding ElementName=Chart, Path=Series}"></lvc:PieSeriesViewer>
     </Grid>
 </UserControl>

@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Linq;
 using System.Windows;
-using ChartsTest.Line_Examples.Mvvm;
 using lvc;
+using SalesTooltip = ChartsTest.BarExamples.Mvvm.SalesTooltip;
 
 namespace ChartsTest.Line_Examples
 {

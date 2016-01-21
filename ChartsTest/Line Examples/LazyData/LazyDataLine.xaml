@@ -4,8 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:ChartsTest.Line_Examples"
-             xmlns:liveCharts="clr-namespace:lvc;assembly=LiveCharts"
-             xmlns:chartsTest="clr-namespace:ChartsTest"
+             xmlns:lvc="clr-namespace:lvc;assembly=LiveCharts"
              mc:Ignorable="d"  
              d:DesignWidth="600"
              d:DataContext="{d:DesignInstance local:LazyDataLine}">
@@ -47,11 +46,11 @@
                                         Real Time
                                     </Button>
                                 </StackPanel>
-                                <liveCharts:LineChart Height="100" Series="{Binding Series}">
-                                    <liveCharts:LineChart.AxisX>
-                                        <liveCharts:Axis Labels="{Binding Labels}"></liveCharts:Axis>
-                                    </liveCharts:LineChart.AxisX>
-                                </liveCharts:LineChart>
+                                <lvc:LineChart Height="100" Series="{Binding Series}">
+                                    <lvc:LineChart.AxisX>
+                                        <lvc:Axis Labels="{Binding Labels}"></lvc:Axis>
+                                    </lvc:LineChart.AxisX>
+                                </lvc:LineChart>
                             </StackPanel>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>

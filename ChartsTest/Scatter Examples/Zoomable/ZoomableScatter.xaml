@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:liveCharts="clr-namespace:lvc;assembly=LiveCharts"
+             xmlns:lvc="clr-namespace:lvc;assembly=LiveCharts"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300" 
              Loaded="JustAreasAndZoomable_OnLoaded">
@@ -16,10 +16,10 @@
         <TextBlock Grid.Row="0" HorizontalAlignment="Center" Grid.ColumnSpan="2" Margin="5" TextWrapping="Wrap">
             Just Areas and Zoomable, use mouse wheel to zoom in/out, click and drag to pan.
         </TextBlock>
-        <liveCharts:ScatterChart Name="Chart" Grid.Row="1" Grid.Column="0" Zooming="True">
-            <liveCharts:ScatterChart.Series>
-                <liveCharts:ScatterSeries Name="Serie1" Title="Sin"/>
-            </liveCharts:ScatterChart.Series>
-        </liveCharts:ScatterChart>
+        <lvc:ScatterChart Name="Chart" Grid.Row="1" Grid.Column="0" Zooming="True">
+            <lvc:ScatterChart.Series>
+                <lvc:ScatterSeries Name="Serie1" Title="Sin"/>
+            </lvc:ScatterChart.Series>
+        </lvc:ScatterChart>
     </Grid>
 </UserControl>

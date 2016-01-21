@@ -28,9 +28,9 @@ namespace ChartsTest
             {
                 new BasicBar(),
                 new BindingBar(),
-                //new CustomBar(),
+                new MvvmBar(),
+                new CustomBar()
                 //new ZoomableBar(),
-                //new MvvmBar()
                 ////new Performance()
             };
             StackedBarExamples = new List<UserControl>

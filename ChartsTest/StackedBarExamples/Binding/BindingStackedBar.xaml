@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:liveCharts="clr-namespace:lvc;assembly=LiveCharts"
+             xmlns:lvc="clr-namespace:lvc;assembly=LiveCharts"
              xmlns:stackedBarExamples="clr-namespace:ChartsTest.StackedBarExamples"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300"
@@ -17,39 +17,39 @@
         <TextBlock Grid.Row="0" HorizontalAlignment="Center" Grid.ColumnSpan="2" Margin="5" TextWrapping="Wrap">
             Series with bindings
         </TextBlock>
-        <liveCharts:StackedBarChart Name="Chart" Grid.Row="1" Grid.Column="0">
-            <liveCharts:StackedBarChart.Series>
-                <liveCharts:StackedBarSeries Name="Serie1" Title="Maria" Values="{Binding ViewModel.FirstSeries}" Stroke="IndianRed">
-                        <liveCharts:StackedBarSeries.Fill>
+        <lvc:StackedBarChart Name="Chart" Grid.Row="1" Grid.Column="0">
+            <lvc:StackedBarChart.Series>
+                <lvc:StackedBarSeries Name="Serie1" Title="Maria" Values="{Binding ViewModel.FirstSeries}" Stroke="IndianRed">
+                        <lvc:StackedBarSeries.Fill>
                             <LinearGradientBrush EndPoint=".5,1" StartPoint="1,0">
                                 <GradientStop Color="IndianRed" Offset="1"/>
                                 <GradientStop Color="#CD3434" Offset="0.5"/>
                             </LinearGradientBrush>
-                        </liveCharts:StackedBarSeries.Fill>
-                    </liveCharts:StackedBarSeries>
-                <liveCharts:StackedBarSeries Name="Serie2" Title="John" Values="{Binding ViewModel.SecondSeries}" Stroke="CornflowerBlue">
-                    <liveCharts:StackedBarSeries.Fill>
+                        </lvc:StackedBarSeries.Fill>
+                    </lvc:StackedBarSeries>
+                <lvc:StackedBarSeries Name="Serie2" Title="John" Values="{Binding ViewModel.SecondSeries}" Stroke="CornflowerBlue">
+                    <lvc:StackedBarSeries.Fill>
                         <LinearGradientBrush EndPoint=".5,1" StartPoint="1,0">
                             <GradientStop Color="CornflowerBlue" Offset="1"/>
                             <GradientStop Color="#3174ED" Offset="0.5"/>
                         </LinearGradientBrush>
-                    </liveCharts:StackedBarSeries.Fill>
-                </liveCharts:StackedBarSeries>
-            </liveCharts:StackedBarChart.Series>
-            <liveCharts:StackedBarChart.AxisY>
-                <liveCharts:Axis IsEnabled="False" ShowLabels="False">
-                    <liveCharts:Axis.Separator>
-                        <liveCharts:Separator IsEnabled="False"></liveCharts:Separator>
-                    </liveCharts:Axis.Separator>
-                </liveCharts:Axis>
-            </liveCharts:StackedBarChart.AxisY>
-            <liveCharts:StackedBarChart.AxisX>
-                <liveCharts:Axis IsEnabled="False" ShowLabels="False">
-                    <liveCharts:Axis.Separator>
-                        <liveCharts:Separator IsEnabled="False"></liveCharts:Separator>
-                    </liveCharts:Axis.Separator>
-                </liveCharts:Axis>
-            </liveCharts:StackedBarChart.AxisX>
-        </liveCharts:StackedBarChart>
+                    </lvc:StackedBarSeries.Fill>
+                </lvc:StackedBarSeries>
+            </lvc:StackedBarChart.Series>
+            <lvc:StackedBarChart.AxisY>
+                <lvc:Axis IsEnabled="False" ShowLabels="False">
+                    <lvc:Axis.Separator>
+                        <lvc:Separator IsEnabled="False"></lvc:Separator>
+                    </lvc:Axis.Separator>
+                </lvc:Axis>
+            </lvc:StackedBarChart.AxisY>
+            <lvc:StackedBarChart.AxisX>
+                <lvc:Axis IsEnabled="False" ShowLabels="False">
+                    <lvc:Axis.Separator>
+                        <lvc:Separator IsEnabled="False"></lvc:Separator>
+                    </lvc:Axis.Separator>
+                </lvc:Axis>
+            </lvc:StackedBarChart.AxisX>
+        </lvc:StackedBarChart>
     </Grid>
 </UserControl>

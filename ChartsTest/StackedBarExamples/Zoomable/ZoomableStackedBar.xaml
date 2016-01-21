@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:liveCharts="clr-namespace:lvc;assembly=LiveCharts"
+             xmlns:lvc="clr-namespace:lvc;assembly=LiveCharts"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300"
              Loaded="ZoomableBar_OnLoaded">
@@ -16,12 +16,12 @@
         <TextBlock Grid.Row="0" HorizontalAlignment="Center" Grid.ColumnSpan="2" Margin="5" TextWrapping="Wrap">
             Zoomable chart, use mouse wheel to zoom in/out, click and drag to pan.
         </TextBlock>
-        <liveCharts:StackedBarChart Name="Chart" Grid.Row="1" Grid.Column="0" Zooming="True" Hoverable="False">
-            <liveCharts:StackedBarChart.Series>
-                <liveCharts:StackedBarSeries Title="Maria" Values="20, 40, 48, 60, 55, 60, 65, 70"></liveCharts:StackedBarSeries>
-                    <liveCharts:StackedBarSeries Title="John" Values="30, 35, 41, 68, 65 ,70, 55, 60"></liveCharts:StackedBarSeries>
-                <liveCharts:StackedBarSeries Title="Erick" Values="40, 42, 65, 70, 50, 55, 44, 73"></liveCharts:StackedBarSeries>
-            </liveCharts:StackedBarChart.Series>
-        </liveCharts:StackedBarChart>
+        <lvc:StackedBarChart Name="Chart" Grid.Row="1" Grid.Column="0" Zooming="True" Hoverable="False">
+            <lvc:StackedBarChart.Series>
+                <lvc:StackedBarSeries Title="Maria" Values="20, 40, 48, 60, 55, 60, 65, 70"></lvc:StackedBarSeries>
+                    <lvc:StackedBarSeries Title="John" Values="30, 35, 41, 68, 65 ,70, 55, 60"></lvc:StackedBarSeries>
+                <lvc:StackedBarSeries Title="Erick" Values="40, 42, 65, 70, 50, 55, 44, 73"></lvc:StackedBarSeries>
+            </lvc:StackedBarChart.Series>
+        </lvc:StackedBarChart>
     </Grid>
 </UserControl>

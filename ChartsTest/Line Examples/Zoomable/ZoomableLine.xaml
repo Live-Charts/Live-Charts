@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:liveCharts="clr-namespace:lvc;assembly=LiveCharts"
+             xmlns:lvc="clr-namespace:lvc;assembly=LiveCharts"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300" 
              Loaded="JustAreasAndZoomable_OnLoaded">
@@ -16,12 +16,12 @@
         <TextBlock Grid.Row="0" HorizontalAlignment="Center" Grid.ColumnSpan="2" Margin="5" TextWrapping="Wrap">
             <Bold>Zoom and Pan</Bold>: this examples shows how easly it is to support zooming and panning in a chart.
         </TextBlock>
-        <liveCharts:LineChart Name="Chart" Grid.Row="1" Grid.Column="0" Zooming="True" Hoverable="False">
-            <liveCharts:LineChart.Series>
-                <liveCharts:LineSeries Title="Maria" Values="20, 40, 48, 60, 55, 60, 65, 70" PointRadius="0" StrokeThickness="1"></liveCharts:LineSeries>
-                    <liveCharts:LineSeries Title="John" Values="30, 35, 41, 68, 65 ,70, 55, 60" PointRadius="0" StrokeThickness="1"></liveCharts:LineSeries>
-                <liveCharts:LineSeries Title="Erick" Values="40, 42, 65, 70, 50, 55, 44, 73" PointRadius="0" StrokeThickness="1"></liveCharts:LineSeries>
-            </liveCharts:LineChart.Series>
-        </liveCharts:LineChart>
+        <lvc:LineChart Name="Chart" Grid.Row="1" Grid.Column="0" Zooming="True" Hoverable="False">
+            <lvc:LineChart.Series>
+                <lvc:LineSeries Title="Maria" Values="20, 40, 48, 60, 55, 60, 65, 70" PointRadius="0" StrokeThickness="1"></lvc:LineSeries>
+                    <lvc:LineSeries Title="John" Values="30, 35, 41, 68, 65 ,70, 55, 60" PointRadius="0" StrokeThickness="1"></lvc:LineSeries>
+                <lvc:LineSeries Title="Erick" Values="40, 42, 65, 70, 50, 55, 44, 73" PointRadius="0" StrokeThickness="1"></lvc:LineSeries>
+            </lvc:LineChart.Series>
+        </lvc:LineChart>
     </Grid>
 </UserControl>

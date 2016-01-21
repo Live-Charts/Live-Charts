@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:liveCharts="clr-namespace:lvc;assembly=LiveCharts"
+             xmlns:lvc="clr-namespace:lvc;assembly=LiveCharts"
              xmlns:lineExamples="clr-namespace:ChartsTest.Line_Examples"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="500"
@@ -22,14 +22,14 @@
         <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" TextWrapping="Wrap" HorizontalAlignment="Center">
             MVVM example, click on the buttons below to update chart
         </TextBlock>
-        <liveCharts:ScatterChart Name="Chart" Grid.Row="1" Grid.Column="0" Series="{Binding}" >
-            <liveCharts:ScatterChart.AxisY>
-                <liveCharts:Axis Title="Sold Items"></liveCharts:Axis>
-            </liveCharts:ScatterChart.AxisY>
-            <liveCharts:ScatterChart.AxisX>
-                <liveCharts:Axis Name="SecondaryAxis" Title="Month" Labels="{Binding}"></liveCharts:Axis>
-            </liveCharts:ScatterChart.AxisX>
-        </liveCharts:ScatterChart>
+        <lvc:ScatterChart Name="Chart" Grid.Row="1" Grid.Column="0" Series="{Binding}" >
+            <lvc:ScatterChart.AxisY>
+                <lvc:Axis Title="Sold Items"></lvc:Axis>
+            </lvc:ScatterChart.AxisY>
+            <lvc:ScatterChart.AxisX>
+                <lvc:Axis Name="SecondaryAxis" Title="Month" Labels="{Binding}"></lvc:Axis>
+            </lvc:ScatterChart.AxisX>
+        </lvc:ScatterChart>
         <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Center">
             <StackPanel.Resources>
                 <Style TargetType="Button">
@@ -49,7 +49,7 @@
             <Button Click="AddPointOnClick">+</Button>
             <Button Click="RemovePointOnClick">-</Button>
         </StackPanel>
-        <liveCharts:SeriesViewer Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" 
-                                 Series="{Binding ElementName=Chart, Path=Series}"></liveCharts:SeriesViewer>
+        <lvc:SeriesViewer Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" 
+                                 Series="{Binding ElementName=Chart, Path=Series}"></lvc:SeriesViewer>
     </Grid>
 </UserControl>
