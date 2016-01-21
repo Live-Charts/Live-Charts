@@ -28,19 +28,7 @@ namespace lvc.Tooltip
 {
     public class IndexedTooltipData
     {
-        private Series _series;
-
-        public Series Series
-        {
-            get { return _series; }
-            set
-            {
-                _series = value;
-                //I really dont know why this is needed. but I cant make the binding work without this...
-                Stroke = value.Stroke;
-                Fill = value.Fill;
-            }
-        }
+        public Series Series { get; set; }
 
         public int Index { get; set; }
         public Brush Stroke { get; set; }
@@ -48,5 +36,4 @@ namespace lvc.Tooltip
         public ChartPoint Point { get; set; }
         public string Value { get; set; }
     }
-
 }

@@ -2,7 +2,9 @@
 using System.Windows.Controls;
 using ChartsTest.BarExamples;
 using ChartsTest.Line_Examples;
+using ChartsTest.Pie_Examples;
 using ChartsTest.StackedBarExamples;
+using MvvmPie = ChartsTest.Pie_Examples.Mvvm.MvvmPie;
 using MvvmStackedBar = ChartsTest.StackedBarExamples.Mvvm.MvvmStackedBar;
 
 namespace ChartsTest
@@ -37,20 +39,20 @@ namespace ChartsTest
             };
             StackedBarExamples = new List<UserControl>
             {
-                new BasicStackedBar(),
-                new BindingStackedBar(),
-                new MvvmStackedBar(),
-                new CustomStackedBar(),
-                //new ZoomableStackedBar(),
+                //new BasicStackedBar(),
+                //new BindingStackedBar(),
+                //new MvvmStackedBar(),
+                //new CustomStackedBar(),
+                ////new ZoomableStackedBar(),
                 ////new PerformanceBar()
             };
             PieExamples = new List<UserControl>
             {
-                //new BasicPie(),
-                //new CustomPie(),
+                new BasicPie(),
+                new BindingPie(),
+                new MvvmPie(),
+                new CustomPie(),
                 ////new ZoomablePie(),
-                //new BindingPie(),
-                //new MvvmPie(),
                 ////new PerformanceBar()
             };
             ScatterExamples = new List<UserControl>

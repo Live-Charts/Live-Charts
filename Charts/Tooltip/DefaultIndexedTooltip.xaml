@@ -26,14 +26,10 @@
 			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
 			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 			 xmlns:tooltip="clr-namespace:lvc.Tooltip"
-			 xmlns:viewers="clr-namespace:lvc.Viewers"
 			 mc:Ignorable="d" d:DataContext="{d:DesignInstance tooltip:DefaultIndexedTooltip}"
 			 Foreground="WhiteSmoke"
 			 FontFamily="Calibri"
 			 FontSize="11" >
-    <tooltip:IndexedTooltip.Resources>
-        <viewers:TestConverter x:Key="TestConverter"></viewers:TestConverter>
-    </tooltip:IndexedTooltip.Resources>
     <Border CornerRadius="2">
         <Border.Background>
             <SolidColorBrush Color="#303030" Opacity=".85"/>

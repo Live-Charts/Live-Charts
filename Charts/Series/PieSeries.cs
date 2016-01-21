@@ -136,7 +136,7 @@ namespace lvc
 
                 Canvas.SetTop(valueBlock, Chart.ActualHeight / 2 - cp.Y - valueBlock.DesiredSize.Height * .5);
                 Canvas.SetLeft(valueBlock, cp.X + Chart.ActualWidth / 2 - valueBlock.DesiredSize.Width * .5);
-                Panel.SetZIndex(valueBlock, int.MaxValue);
+                Panel.SetZIndex(valueBlock, int.MaxValue -1);
                 //because math is kind of complex to detetrmine if label fits inside the slide, by now we 
                 //will just add it if participation > 5% ToDo: the math!
                 if (participation > .05 && Chart.AxisY.ShowLabels)

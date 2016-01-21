@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Globalization;
 using System.Windows.Data;
-using ChartsTest.Line_Examples;
 using LiveCharts.Components;
 
-namespace ChartsTest.BarExamples.Mvvm
+namespace ChartsTest.Pie_Examples.Mvvm
 {
     /// <summary>
     /// Interaction logic for SalesTooltip.xaml

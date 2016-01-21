@@ -4,8 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:tooltip="clr-namespace:lvc.Tooltip;assembly=LiveCharts"
-             xmlns:mvvm1="clr-namespace:ChartsTest.BarExamples.Mvvm"
-             xmlns:mvvm="clr-namespace:ChartsTest.StackedBarExamples.Mvvm"
+                        xmlns:mvvm="clr-namespace:ChartsTest.StackedBarExamples.Mvvm"
              mc:Ignorable="d" 
              d:DataContext="{d:DesignInstance tooltip:DefaultIndexedTooltip}">
     <tooltip:IndexedTooltip.Resources>

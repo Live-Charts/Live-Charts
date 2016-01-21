@@ -551,6 +551,8 @@ namespace lvc.Charts
                 {
                     Index = Series.IndexOf(x.Series),
                     Series = x.Series,
+                    Stroke = x.Series.Stroke,
+                    Fill = x.Series.Fill,
                     Point = x.Value,
                     Value = AxisY.LabelFormatter == null
                         ? x.Value.Y.ToString(CultureInfo.InvariantCulture)

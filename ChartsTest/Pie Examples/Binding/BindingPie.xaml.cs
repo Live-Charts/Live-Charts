@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.Windows;
+using lvc;
 
 namespace ChartsTest.Pie_Examples
 {
@@ -13,7 +14,7 @@ namespace ChartsTest.Pie_Examples
             InitializeComponent();
             ViewModel = new BindingPieViewModel
             {
-                FirstSeries = new ObservableCollection<double> { 2, 3, 5, 7 }
+                FirstSeries = new ChartValues<double> { 2, 3, 5, 7 }
             };
             DataContext = this;
         }
@@ -30,6 +31,5 @@ namespace ChartsTest.Pie_Examples
     public class BindingPieViewModel
     {
         public ObservableCollection<double> FirstSeries { get; set; }
-        public ObservableCollection<double> SecondSeries { get; set; }
     }
 }

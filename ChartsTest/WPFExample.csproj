@@ -70,7 +70,7 @@
     <Compile Include="Line Examples\LazyData\LazyDataLine.xaml.cs">
       <DependentUpon>LazyDataLine.xaml</DependentUpon>
     </Compile>
-    <Compile Include="BarExamples\Mvvm\SalesTooltip.xaml.cs">
+    <Compile Include="Pie Examples\Mvvm\SalesTooltip.xaml.cs">
       <DependentUpon>SalesTooltip.xaml</DependentUpon>
     </Compile>
     <Compile Include="Line Examples\Mvvm\SalesTooltip.xaml.cs">
@@ -143,7 +143,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="BarExamples\Mvvm\SalesTooltip.xaml">
+    <Page Include="Pie Examples\Mvvm\SalesTooltip.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Collections.ObjectModel;
 using System.Windows;
 using lvc;
 
-namespace ChartsTest.Pie_Examples
+namespace ChartsTest.Pie_Examples.Mvvm
 {
     /// <summary>
     /// Interaction logic for MvvmBar.xaml
@@ -13,7 +12,9 @@ namespace ChartsTest.Pie_Examples
         public MvvmPie()
         {
             InitializeComponent();
-            DataContext = Sales = new SalesViewModel();
+            Sales = new SalesViewModel();
+            Chart.DataToolTip = new SalesTooltip();
+            DataContext = this;
         }
 
         public SalesViewModel Sales { get; set; }
@@ -33,6 +34,14 @@ namespace ChartsTest.Pie_Examples
             Chart.ClearAndPlot();
         }
     }
+
+    public class SalesData
+    {
+        public int ItemsSold { get; set; }
+        public decimal ItemsAverageSellPrice { get; set; }
+        public double Rentability { get; set; }
+    }
+
     public class SalesViewModel
     {
         private readonly string[] _months =
@@ -45,18 +54,26 @@ namespace ChartsTest.Pie_Examples
         public SalesViewModel()
         {
             AvailableMonths = _months;
-            Salesmen = new ObservableCollection<Series>
+            Salesmen = new SeriesCollection
             {
                 new PieSeries
                 {
-                    Title = "John",
-                    Values = new ChartValues<double>() { 2d, 4, 7, 1, 5 },
-                    Labels = _months
-                }
+                    Title = "Charles",
+                    Values = new ChartValues<SalesData>
+                    {
+                        new SalesData {ItemsSold = 15, Rentability = .15, ItemsAverageSellPrice = 5000},
+                        new SalesData {ItemsSold = 16, Rentability = .12, ItemsAverageSellPrice = 5200},
+                        new SalesData {ItemsSold = 22, Rentability = .11, ItemsAverageSellPrice = 5100},
+                        new SalesData {ItemsSold = 25, Rentability = .13, ItemsAverageSellPrice = 5400},
+                        new SalesData {ItemsSold = 20, Rentability = .12, ItemsAverageSellPrice = 5100},
+                        new SalesData {ItemsSold = 10, Rentability = .11, ItemsAverageSellPrice = 5200},
+                        new SalesData {ItemsSold = 12, Rentability = .13, ItemsAverageSellPrice = 5400}
+                    }
+                }.Setup(new SeriesConfiguration<SalesData>().Y(data => data.ItemsSold))
             };
         }
 
-        public ObservableCollection<Series> Salesmen { get; set; }
+        public SeriesCollection Salesmen { get; set; }
         public string[] AvailableMonths { get; set; }
 
 		public void AddOneMonth()
@@ -65,7 +82,12 @@ namespace ChartsTest.Pie_Examples
             if (Salesmen[0].Values.Count >= _months.Length) return;
             foreach (var salesman in Salesmen)
             {
-                salesman.Values.Add(r.Next(0, 10));
+                salesman.Values.Add(new SalesData
+                {
+                    ItemsSold = r.Next(5, 30),
+                    Rentability = .15,
+                    ItemsAverageSellPrice = 5000
+                });
             }
         }
 
