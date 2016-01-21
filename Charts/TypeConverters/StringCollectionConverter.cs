@@ -25,7 +25,7 @@ using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
 
-namespace lvc.TypeConverters
+namespace LiveCharts.TypeConverters
 {
     public class StringCollectionConverter : TypeConverter
     {

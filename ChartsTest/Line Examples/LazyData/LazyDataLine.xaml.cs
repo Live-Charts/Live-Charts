@@ -6,8 +6,8 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Threading;
-using lvc;
-using lvc.Annotations;
+using LiveCharts;
+using LiveCharts.Annotations;
 
 namespace ChartsTest.Line_Examples
 {

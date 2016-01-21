@@ -24,9 +24,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
-using lvc.Charts;
+using LiveCharts.Charts;
 
-namespace lvc
+namespace LiveCharts
 {
     public class BarChart : Chart, IBar, ILine
     {
@@ -92,10 +92,7 @@ namespace lvc
 
         protected override void DrawAxes()
         {
-            //AxisX.IgnoresLastLabel = true;
             ConfigureSmartAxis(AxisX);
-
-            //S = GetS();
 
             Canvas.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
 
@@ -107,7 +104,7 @@ namespace lvc
             const int padding = 5;
 
             var unitW = ToPlotArea(1, AxisTags.X) - PlotArea.X + 5;
-            unitW = unitW > MaxColumnWidth*3 ? MaxColumnWidth*3 : unitW;
+            //unitW = unitW > MaxColumnWidth*3 ? MaxColumnWidth*3 : unitW;
             XOffset = unitW/2;
 
             PlotArea.X = padding*2 +
@@ -125,7 +122,7 @@ namespace lvc
 
             //calculate it again to get a better result
             unitW = ToPlotArea(1, AxisTags.X) - PlotArea.X + 5;
-            unitW = unitW > MaxColumnWidth*3 ? MaxColumnWidth*3 : unitW;
+            //unitW = unitW > MaxColumnWidth*3 ? MaxColumnWidth*3 : unitW;
             XOffset = unitW/2;
 
             base.DrawAxes();

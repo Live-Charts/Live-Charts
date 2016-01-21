@@ -23,7 +23,7 @@
 using System.Windows;
 using System.Windows.Controls;
 
-namespace lvc.Tooltip
+namespace LiveCharts.Tooltip
 {
     public class IndexedTooltip : UserControl
     {

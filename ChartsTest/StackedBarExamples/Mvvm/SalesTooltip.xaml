@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:tooltip="clr-namespace:lvc.Tooltip;assembly=LiveCharts"
+             xmlns:tooltip="clr-namespace:LiveCharts.Tooltip;assembly=LiveCharts"
                         xmlns:mvvm="clr-namespace:ChartsTest.StackedBarExamples.Mvvm"
              mc:Ignorable="d" 
              d:DataContext="{d:DesignInstance tooltip:DefaultIndexedTooltip}">

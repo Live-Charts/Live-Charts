@@ -24,10 +24,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
-using lvc.Charts;
-using LiveCharts.Components;
+using LiveCharts.Charts;
 
-namespace lvc
+namespace LiveCharts
 {
     public class StackedBarChart : Chart, IStackedBar, ILine
     {

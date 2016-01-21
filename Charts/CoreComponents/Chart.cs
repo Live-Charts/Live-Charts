@@ -34,9 +34,9 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
-using lvc.Tooltip;
+using LiveCharts.Tooltip;
 
-namespace lvc.Charts
+namespace LiveCharts.Charts
 {
     public abstract class Chart : UserControl
     {
@@ -357,6 +357,7 @@ namespace lvc.Charts
             axis.Separator.Step = (longestYLabel.Width * Max.X) * 1.25 > PlotArea.Width
                 ? null
                 : (int?)1;
+            if (AxisX.Separator.Step != null) S.X = (int)AxisX.Separator.Step;
         }
 
         protected Point GetLongestLabelSize(Axis axis)
@@ -412,6 +413,7 @@ namespace lvc.Charts
 
         protected virtual void Scale()
         {
+            Series.Chart = this;
             foreach (var series in Series)
             {
                 series.Collection = Series;
@@ -725,18 +727,15 @@ namespace lvc.Charts
             if (AxisY.Parent == null) Canvas.Children.Add(AxisY);
             if (AxisX.Parent == null) Canvas.Children.Add(AxisX);
 
-            foreach (var shape in Shapes) Canvas.Children.Remove(shape);
-            foreach (var shape in HoverableShapes.Select(x => x.Shape).ToList()) Canvas.Children.Remove(shape);
-            foreach (var serie in Series) Canvas.Children.Remove(serie);
-            HoverableShapes = new List<HoverableShape>();
-            Shapes = new List<FrameworkElement>();
             foreach (var series in Series)
             {
+                Canvas.Children.Remove(series);
                 Canvas.Children.Add(series);
                 EraseSerieBuffer.Add(series);
                 series.RequiresAnimation = animate;
                 series.RequiresPlot = true;
             }
+
             Canvas.Width = ActualWidth * CurrentScale;
             Canvas.Height = ActualHeight * CurrentScale;
             PlotArea = new Rect(0, 0, ActualWidth * CurrentScale, ActualHeight * CurrentScale);
@@ -905,6 +904,11 @@ namespace lvc.Charts
 
             if (Series == null) return;
             if (PlotArea.Width < 15 || PlotArea.Height < 15) return;
+
+            foreach (var shape in Shapes) Canvas.Children.Remove(shape);
+            foreach (var shape in HoverableShapes.Select(x => x.Shape).ToList()) Canvas.Children.Remove(shape);
+            HoverableShapes = new List<HoverableShape>();
+            Shapes = new List<FrameworkElement>();
 
             if (RequiresScale)
             {

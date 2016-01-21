@@ -30,9 +30,9 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
-using lvc.TypeConverters;
+using LiveCharts.TypeConverters;
 
-namespace lvc
+namespace LiveCharts
 {
     public class ScatterSeries : Series
     {

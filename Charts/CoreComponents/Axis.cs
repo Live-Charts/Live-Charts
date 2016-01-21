@@ -26,9 +26,9 @@ using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using lvc.TypeConverters;
+using LiveCharts.TypeConverters;
 
-namespace lvc
+namespace LiveCharts
 {
     public class Axis : FrameworkElement
     {

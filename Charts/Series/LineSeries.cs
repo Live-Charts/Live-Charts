@@ -29,7 +29,7 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 
-namespace lvc
+namespace LiveCharts
 {
 	public class LineSeries : Series
 	{

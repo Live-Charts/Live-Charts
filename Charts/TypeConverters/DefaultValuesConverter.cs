@@ -30,7 +30,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows;
 
-namespace lvc.TypeConverters
+namespace LiveCharts.TypeConverters
 {
 	internal class DefaultValuesConverter : TypeConverter
 	{

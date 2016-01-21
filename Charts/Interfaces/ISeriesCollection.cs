@@ -1,8 +1,8 @@
 using System;
 using System.Windows;
-using lvc.Charts;
+using LiveCharts.Charts;
 
-namespace lvc
+namespace LiveCharts
 {
     public interface ISeriesCollection
     {

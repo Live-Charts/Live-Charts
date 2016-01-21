@@ -20,11 +20,9 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-using System.Windows;
 using System.Windows.Media;
-using LiveCharts.Components;
 
-namespace lvc.Tooltip
+namespace LiveCharts.Tooltip
 {
     public class IndexedTooltipData
     {

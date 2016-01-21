@@ -24,7 +24,7 @@ using System;
 using System.Globalization;
 using System.Windows.Data;
 
-namespace lvc.Tooltip
+namespace LiveCharts.Tooltip
 {
 	public class DefaultIfNullConverter : IValueConverter
 	{

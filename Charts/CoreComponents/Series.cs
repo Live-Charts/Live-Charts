@@ -28,11 +28,10 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Shapes;
-using lvc.Charts;
-using lvc.TypeConverters;
-using LiveCharts.Components;
+using LiveCharts.Charts;
+using LiveCharts.TypeConverters;
 
-namespace lvc
+namespace LiveCharts
 {
     public abstract class Series : FrameworkElement, IChartSeries
 	{
@@ -64,7 +63,7 @@ namespace lvc
 	            var values = (IChartValues) GetValue(ValuesProperty);
 #if DEBUG
                 if (DesignerProperties.GetIsInDesignMode(this))
-                    if (values == null) values = new ChartValues<double>();
+                    if (values == null) values = new ChartValues<double> {10, 5, 20, 5};
 #endif
 	            return values;
 	        }

@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace lvc.Properties {
+namespace LiveCharts.Properties {
     using System;
     
     

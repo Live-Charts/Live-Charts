@@ -28,11 +28,11 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
-using lvc.Charts;
-using lvc.Shapes;
-using lvc.Tooltip;
+using LiveCharts.Charts;
+using LiveCharts.Shapes;
+using LiveCharts.Tooltip;
 
-namespace lvc
+namespace LiveCharts
 {
     public class PieChart : Chart
     {

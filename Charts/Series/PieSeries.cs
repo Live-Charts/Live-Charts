@@ -29,10 +29,10 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Collections.Generic;
 using System.ComponentModel;
-using lvc.Shapes;
-using lvc.TypeConverters;
+using LiveCharts.Shapes;
+using LiveCharts.TypeConverters;
 
-namespace lvc
+namespace LiveCharts
 {
     public class PieSeries : Series
     {

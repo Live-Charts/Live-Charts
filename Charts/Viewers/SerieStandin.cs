@@ -1,8 +1,8 @@
 using System.ComponentModel;
 using System.Windows.Media;
-using lvc.Annotations;
+using LiveCharts.Annotations;
 
-namespace lvc.Viewers
+namespace LiveCharts.Viewers
 {
 	public class SerieStandin : INotifyPropertyChanged
 	{

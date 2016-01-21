@@ -4,7 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using ChartsTest.BarExamples.Mvvm;
-using lvc;
+using LiveCharts;
 
 namespace ChartsTest.BarExamples
 {

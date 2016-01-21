@@ -2,7 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Threading;
-using lvc;
+using LiveCharts;
 
 namespace ChartsTest.BarExamples
 {

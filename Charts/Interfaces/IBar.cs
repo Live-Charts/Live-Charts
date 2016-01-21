@@ -1,4 +1,4 @@
-﻿namespace lvc
+﻿namespace LiveCharts
 {
     public interface IBar
     {

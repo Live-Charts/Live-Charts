@@ -70,6 +70,9 @@
     <Compile Include="BarExamples\Mvvm\SalesTooltip.xaml.cs">
       <DependentUpon>SalesTooltip.xaml</DependentUpon>
     </Compile>
+    <Compile Include="BarExamples\UsingObservableChartPoint\PointPropertyChangedBar.xaml.cs">
+      <DependentUpon>PointPropertyChangedBar.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Line Examples\LazyData\LazyDataLine.xaml.cs">
       <DependentUpon>LazyDataLine.xaml</DependentUpon>
     </Compile>
@@ -145,6 +148,10 @@
     <Page Include="BarExamples\Mvvm\SalesTooltip.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="BarExamples\UsingObservableChartPoint\PointPropertyChangedBar.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Line Examples\LazyData\LazyDataLine.xaml">
       <SubType>Designer</SubType>

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Windows.Controls;
 using ChartsTest.BarExamples;
+using ChartsTest.BarExamples.UsingObservableChartPoint;
 using ChartsTest.Line_Examples;
 using ChartsTest.Pie_Examples;
 using ChartsTest.Scatter_Examples;
@@ -20,49 +21,50 @@ namespace ChartsTest
         {
             LineAndAreaAexamples = new List<UserControl>
             {
-                new BasicLine(),
-                new BindingLine(),
-                new MvvmLine(),
-                new LazyDataLine(),
-                new CustomLine(),
-                new ZoomableLine(),
-                new UiElementsLine(),
+                //new BasicLine(),
+                //new BindingLine(),
+                //new MvvmLine(),
+                //new LazyDataLine(),
+                //new CustomLine(),
+                //new ZoomableLine(),
+                //new UiElementsLine(),
                 ////new PerformanceLine() // disabled by now
             };
             BarExamples = new List<UserControl>
             {
-                new BasicBar(),
-                new BindingBar(),
-                new MvvmBar(),
-                new CustomBar(),
-                //new ZoomableBar(),
-                //new Performance()
+                //new BasicBar(),
+                //new BindingBar(),
+                //new MvvmBar(),
+                new PointPropertyChangedBar(),
+                //new CustomBar(),
+                ////new ZoomableBar(),
+                ////new Performance()
             };
             StackedBarExamples = new List<UserControl>
             {
-                new BasicStackedBar(),
-                new BindingStackedBar(),
-                new MvvmStackedBar(),
-                new CustomStackedBar(),
-                //new ZoomableStackedBar(),
-                //new PerformanceBar()
+                //new BasicStackedBar(),
+                //new BindingStackedBar(),
+                //new MvvmStackedBar(),
+                //new CustomStackedBar(),
+                ////new ZoomableStackedBar(),
+                ////new PerformanceBar()
             };
             PieExamples = new List<UserControl>
             {
-                new BasicPie(),
-                new BindingPie(),
-                new MvvmPie(),
-                new CustomPie(),
-                //new ZoomablePie(),
-                //new PerformanceBar()
+                //new BasicPie(),
+                //new BindingPie(),
+                //new MvvmPie(),
+                //new CustomPie(),
+                ////new ZoomablePie(),
+                ////new PerformanceBar()
             };
             ScatterExamples = new List<UserControl>
             {
-                new BasicScatter(),
-                new BindingScatter(),
-                new MvvmScatter(),
-                new CustomScatter(),
-                //new ZoomableScatter(),
+                //new BasicScatter(),
+                //new BindingScatter(),
+                //new MvvmScatter(),
+                //new CustomScatter(),
+                ////new ZoomableScatter(),
                 ////new PerformanceScatter()
             };
             window.LineControl.Content = LineAndAreaAexamples.Count > 0 ? LineAndAreaAexamples[0] : null;

@@ -1,6 +1,6 @@
 using System.Collections;
 
-namespace lvc
+namespace LiveCharts
 {
     public interface IChartSeries
     {

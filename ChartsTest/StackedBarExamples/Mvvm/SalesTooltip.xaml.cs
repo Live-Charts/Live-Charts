@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using System.Windows.Data;
-using LiveCharts.Components;
+using LiveCharts;
 
 namespace ChartsTest.StackedBarExamples.Mvvm
 {

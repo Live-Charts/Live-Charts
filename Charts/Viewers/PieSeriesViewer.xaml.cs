@@ -2,7 +2,7 @@
 using System.Windows;
 using System.Windows.Controls;
 
-namespace lvc
+namespace LiveCharts
 {
     /// <summary>
     /// Interaction logic for PieSeriesViewer.xaml

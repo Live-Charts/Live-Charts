@@ -30,10 +30,10 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
-using lvc.Charts;
-using lvc.Tooltip;
+using LiveCharts.Charts;
+using LiveCharts.Tooltip;
 
-namespace lvc
+namespace LiveCharts
 {
     public class ScatterChart : Chart, ILine
     {

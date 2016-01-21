@@ -1,13 +1,34 @@
+//The MIT License(MIT)
+
+//Copyright(c) 2015 Alberto Rodriguez
+
+//Permission is hereby granted, free of charge, to any person obtaining a copy
+//of this software and associated documentation files (the "Software"), to deal
+//in the Software without restriction, including without limitation the rights
+//to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+//copies of the Software, and to permit persons to whom the Software is
+//furnished to do so, subject to the following conditions:
+
+//The above copyright notice and this permission notice shall be included in all
+//copies or substantial portions of the Software.
+
+//THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+//OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+//SOFTWARE.
+
+
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows;
-using lvc.Charts;
-using LiveCharts.Components;
-
-namespace lvc
+using LiveCharts.Charts;
+namespace LiveCharts
 {
     /// <summary>
     /// Creates a collection of values ready to plot
@@ -18,13 +39,12 @@ namespace lvc
         private Point _min = new Point(double.MaxValue, double.MaxValue);
         private Point _max = new Point(double.MinValue, double.MinValue);
         private ChartPoint[] _points;
-        private bool _requiresEvaluation;
 
         public ChartValues()
         {
             CollectionChanged += (sender, args) =>
             {
-                _requiresEvaluation = true;
+                RequiresEvaluation = true;
             };
         }
 
@@ -60,7 +80,8 @@ namespace lvc
         {
             get { return _min; }
         }
-        public bool RequiresEvaluation { get { return _requiresEvaluation; } }
+        public bool RequiresEvaluation { get; set; }
+
         #endregion
 
         #region Public Methods
@@ -76,10 +97,10 @@ namespace lvc
         }
         public void Evaluate()
         {
-            if (_requiresEvaluation)
+            if (RequiresEvaluation)
             {
                 EvalueateValues();
-                _requiresEvaluation = false;
+                RequiresEvaluation = false;
             }
         }
 

@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Windows;
 using ChartsTest.Line_Examples.Mvvm;
-using lvc;
+using LiveCharts;
 
 namespace ChartsTest.Line_Examples
 {

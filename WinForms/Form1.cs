@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Windows.Forms;
-using lvc;
+using LiveCharts;
 
 namespace WinForms
 {

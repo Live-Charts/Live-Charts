@@ -1,6 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.Windows;
-using lvc;
+using LiveCharts;
 
 namespace ChartsTest.Pie_Examples
 {

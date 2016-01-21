@@ -28,9 +28,9 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Shapes;
-using lvc.Charts;
+using LiveCharts.Charts;
 
-namespace lvc
+namespace LiveCharts
 {
     public class RadarChart : Chart
     {

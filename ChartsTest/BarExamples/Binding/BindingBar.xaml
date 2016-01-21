@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:barExamples="clr-namespace:ChartsTest.BarExamples"
-             xmlns:lvc="clr-namespace:lvc;assembly=LiveCharts"
+             xmlns:lvc="clr-namespace:LiveCharts;assembly=LiveCharts"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300"
              Loaded="OnLoaded" d:DataContext="{d:DesignInstance barExamples:BindingBar}">

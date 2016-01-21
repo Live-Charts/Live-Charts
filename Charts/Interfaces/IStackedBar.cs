@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace lvc
+namespace LiveCharts
 {
     public interface IStackedBar
     {

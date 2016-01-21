@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using System.Windows.Data;
-using lvc.Tooltip;
+using LiveCharts.Tooltip;
 
 namespace ChartsTest.z.CustomTooltips
 {

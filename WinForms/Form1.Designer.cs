@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.Host = new System.Windows.Forms.Integration.ElementHost();
-            this.lineChart1 = new lvc.LineChart();
+            this.lineChart1 = new LiveCharts.LineChart();
             this.button1 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
@@ -69,7 +69,7 @@
         #endregion
 
         private System.Windows.Forms.Integration.ElementHost Host;
-        private lvc.LineChart lineChart1;
+        private LiveCharts.LineChart lineChart1;
         private System.Windows.Forms.Button button1;
     }
 }

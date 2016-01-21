@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Threading;
-using lvc;
+using LiveCharts;
 
 namespace ChartsTest.StackedBarExamples
 {

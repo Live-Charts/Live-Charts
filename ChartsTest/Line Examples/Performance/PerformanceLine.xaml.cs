@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows;
-using lvc;
+using LiveCharts;
 
 namespace ChartsTest.Line_Examples
 {

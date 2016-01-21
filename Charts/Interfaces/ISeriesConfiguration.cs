@@ -1,7 +1,7 @@
 using System;
 using System.Collections;
 
-namespace lvc
+namespace LiveCharts
 {
     public interface ISeriesConfiguration
     {

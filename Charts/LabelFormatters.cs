@@ -23,7 +23,7 @@
 using System;
 using System.Globalization;
 
-namespace lvc
+namespace LiveCharts
 {
     public static class LabelFormatters
     {

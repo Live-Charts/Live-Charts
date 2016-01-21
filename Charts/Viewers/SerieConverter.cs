@@ -4,7 +4,7 @@ using System.Globalization;
 using System.Linq;
 using System.Windows.Data;
 
-namespace lvc.Viewers
+namespace LiveCharts.Viewers
 {
 	internal class SerieConverter : IValueConverter
 	{

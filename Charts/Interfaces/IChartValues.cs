@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Windows;
-using lvc.Charts;
-using LiveCharts.Components;
+using LiveCharts.Charts;
 
-namespace lvc
+namespace LiveCharts
 {
     public interface IChartValues : IList, INotifyCollectionChanged, INotifyPropertyChanged
     {
@@ -16,6 +15,6 @@ namespace lvc
         Chart Chart { get; set; }
         IChartSeries Series { get; set; }
         void Evaluate();
-        bool RequiresEvaluation { get; }
+        bool RequiresEvaluation { get; set; }
     }
 }

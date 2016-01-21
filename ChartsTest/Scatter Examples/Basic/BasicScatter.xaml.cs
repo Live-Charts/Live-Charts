@@ -1,5 +1,5 @@
 ﻿using System.Windows;
-using lvc;
+using LiveCharts;
 
 namespace ChartsTest.Scatter_Examples
 {
