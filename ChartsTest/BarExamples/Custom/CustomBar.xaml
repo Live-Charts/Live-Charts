@@ -41,12 +41,12 @@
                 </lvc:Axis>
             </lvc:BarChart.AxisX>
         </lvc:BarChart>
-        <liveCharts:SeriesViewer Grid.Row="2"
+        <lvc:SeriesViewer Grid.Row="2"
                                  Series="{Binding ElementName=Chart, Path=Series}"
                                  HorizontalAlignment="Center"
                                  Orientation="Horizontal"
                                  Foreground="White"
                                  Margin="5">
-        </liveCharts:SeriesViewer>
+        </lvc:SeriesViewer>
     </Grid>
 </UserControl>

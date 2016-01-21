@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Windows;
 using lvc;
-using SalesTooltip = ChartsTest.BarExamples.Mvvm.SalesTooltip;
+using SalesTooltip = ChartsTest.StackedBarExamples.Mvvm.SalesTooltip;
 
 namespace ChartsTest.Line_Examples
 {

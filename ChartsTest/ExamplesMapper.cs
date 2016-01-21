@@ -2,6 +2,8 @@
 using System.Windows.Controls;
 using ChartsTest.BarExamples;
 using ChartsTest.Line_Examples;
+using ChartsTest.StackedBarExamples;
+using MvvmStackedBar = ChartsTest.StackedBarExamples.Mvvm.MvvmStackedBar;
 
 namespace ChartsTest
 {
@@ -22,24 +24,24 @@ namespace ChartsTest
                 //new CustomLine(),
                 //new ZoomableLine(),
                 //new UiElementsLine(),
-                //new PerformanceLine() // disabled by now
+                ////new PerformanceLine() // disabled by now
             };
             BarExamples = new List<UserControl>
             {
-                new BasicBar(),
-                new BindingBar(),
-                new MvvmBar(),
-                new CustomBar()
+                //new BasicBar(),
+                //new BindingBar(),
+                //new MvvmBar(),
+                //new CustomBar()
                 //new ZoomableBar(),
                 ////new Performance()
             };
             StackedBarExamples = new List<UserControl>
             {
-                //new BasicStackedBar(),
-                //new CustomStackedBar(),
+                new BasicStackedBar(),
+                new BindingStackedBar(),
+                new MvvmStackedBar(),
+                new CustomStackedBar(),
                 //new ZoomableStackedBar(),
-                //new BindingStackedBar(),
-                //new MvvmStackedBar(),
                 ////new PerformanceBar()
             };
             PieExamples = new List<UserControl>

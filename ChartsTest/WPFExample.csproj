@@ -76,6 +76,9 @@
     <Compile Include="Line Examples\Mvvm\SalesTooltip.xaml.cs">
       <DependentUpon>SalesTooltip.xaml</DependentUpon>
     </Compile>
+    <Compile Include="StackedBarExamples\Mvvm\SalesTooltip.xaml.cs">
+      <DependentUpon>SalesTooltip.xaml</DependentUpon>
+    </Compile>
     <Compile Include="z.CustomTooltips\CustomIndexedTooltip.xaml.cs">
       <DependentUpon>CustomIndexedTooltip.xaml</DependentUpon>
     </Compile>
@@ -145,6 +148,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Line Examples\Mvvm\SalesTooltip.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="StackedBarExamples\Mvvm\SalesTooltip.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

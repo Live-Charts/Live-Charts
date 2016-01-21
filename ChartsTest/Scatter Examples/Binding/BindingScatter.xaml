@@ -29,11 +29,11 @@
                                               StrokeThickness="4" PointRadius="6"/>
             </lvc:ScatterChart.Series>
             <lvc:ScatterChart.AxisY>
-                <liveCharts:Axis IsEnabled="False" ShowLabels="False">
-                    <liveCharts:Axis.Separator>
-                        <liveCharts:Separator IsEnabled="False"></liveCharts:Separator>
-                    </liveCharts:Axis.Separator>
-                </liveCharts:Axis>
+                <lvc:Axis IsEnabled="False" ShowLabels="False">
+                    <lvc:Axis.Separator>
+                        <lvc:Separator IsEnabled="False"></lvc:Separator>
+                    </lvc:Axis.Separator>
+                </lvc:Axis>
             </lvc:ScatterChart.AxisY>
             <lvc:ScatterChart.AxisX>
                 <lvc:Axis IsEnabled="False" ShowLabels="False" MinValue="1" MaxValue="15">

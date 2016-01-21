@@ -16,7 +16,9 @@
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
-        <TextBlock Grid.Row="0" HorizontalAlignment="Center" Grid.ColumnSpan="2" Margin="5">Basic Line</TextBlock>
+        <TextBlock Grid.Row="0" HorizontalAlignment="Center" Grid.ColumnSpan="2" Margin="5" TextWrapping="Wrap">
+            <Bold>In Line Charting</Bold>: I just want a chart now!
+        </TextBlock>
         <lvc:StackedBarChart Name="Chart" Grid.Row="1" Grid.Column="0">
             <lvc:StackedBarChart.Series>
                 <lvc:StackedBarSeries Title="Maria" Values="20, 40, 45, 60, 55, 60, 65, 70"/>
@@ -27,7 +29,11 @@
                 <lvc:Axis Title="Sold Items"></lvc:Axis>
             </lvc:StackedBarChart.AxisY>
             <lvc:StackedBarChart.AxisX>
-                <lvc:Axis Title="Month" Labels="Jan, Feb, Mar, Apr, May, Jun, Ago, Sep, Oct, Nov, Dec"></lvc:Axis>
+                <lvc:Axis Title="Month" Labels="Jan, Feb, Mar, Apr, May, Jun, Ago, Sep, Oct, Nov, Dec">
+                    <lvc:Axis.Separator>
+                        <lvc:Separator IsEnabled="False"></lvc:Separator>
+                    </lvc:Axis.Separator>
+                </lvc:Axis>
             </lvc:StackedBarChart.AxisX>
         </lvc:StackedBarChart>
         <lvc:SeriesViewer Grid.Row="1" Grid.Column="1" 

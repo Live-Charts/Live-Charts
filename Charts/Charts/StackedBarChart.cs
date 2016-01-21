@@ -25,6 +25,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using lvc.Charts;
+using LiveCharts.Components;
 
 namespace lvc
 {
@@ -39,7 +40,7 @@ namespace lvc
             ShapeHoverBehavior = ShapeHoverBehavior.Shape;
             LineType = LineChartLineType.Bezier;
             IndexTotals = new Dictionary<int, StackedBarHelper>();
-            MaxColumnWidth = 60;
+            MaxColumnWidth = 40;
             DefaultFillOpacity = 0.75;
         }
 
@@ -66,7 +67,7 @@ namespace lvc
                 Series.Select(x => x.Values.Count).DefaultIfEmpty(0).Max(),
                 s.Values.Points.Select(
                     (t, i) => Series.OfType<StackedBarSeries>().Sum(serie => serie.Values.Points.Any()
-                        ? (serie.Values.Points as IList<Point>)[i].Y
+                        ? (serie.Values.Points as IList<ChartPoint>)[i].Y
                         : double.MinValue))
                     .Concat(new[] {double.MinValue}).Max());
 
@@ -89,7 +90,7 @@ namespace lvc
             var p = new Point(0,
                 s.Values.Points.Select(
                     (t, i) => Series.OfType<StackedBarSeries>().Sum(serie => serie.Values.Points.Any()
-                        ? (serie.Values.Points as IList<Point>)[i].Y
+                        ? (serie.Values.Points as IList<ChartPoint>)[i].Y
                         : double.MinValue))
                     .Concat(new[] {double.MaxValue}).Min());
 
@@ -114,6 +115,14 @@ namespace lvc
 
         protected override void Scale()
         {
+            foreach (var series in Series)
+            {
+                series.Collection = Series;
+                if (series.Values == null) continue;
+                series.Values.Series = series;
+                series.Values.Evaluate();
+            }
+
             AxisY.MinValue = 0;
 
             var stackedSeries = Series.OfType<StackedBarSeries>().ToList();
@@ -127,7 +136,7 @@ namespace lvc
                 {
                     var serie = stackedSeries[index];
                     var value = serie.Values.Points.Any()
-                        ? (serie.Values.Points as IList<Point>)[i].Y
+                        ? (serie.Values.Points as IList<ChartPoint>)[i].Y
                         : double.MinValue;
                     helper.Stacked[index] = new StackedItem
                     {
@@ -171,7 +180,7 @@ namespace lvc
             AxisX.IgnoresLastLabel = true;
             ConfigureSmartAxis(AxisX);
 
-            //S = GetS();
+            S = GetS();
 
             Canvas.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
 

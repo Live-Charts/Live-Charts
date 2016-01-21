@@ -15,7 +15,7 @@
             <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
         <TextBlock Grid.Row="0" HorizontalAlignment="Center" Grid.ColumnSpan="2" Margin="5" Foreground="White">
-            Custom Style
+            <Bold>Custom Style</Bold>: live charts is easy to customize.
         </TextBlock>
         <lvc:StackedBarChart Name="Chart" Grid.Row="1" Grid.Column="0">
             <lvc:StackedBarChart.DataToolTip>

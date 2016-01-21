@@ -14,7 +14,7 @@ namespace ChartsTest.BarExamples
         public BindingBar()
         {
             InitializeComponent();
-            ViewModel = new BindedLinesViewModel
+            ViewModel = new BindedBarsViewModel
             {
                 Series1 = new ChartValues<double> { 2, 3, 5, 7, 2, 3, 5, 7, 2, 3, 5, 7 },
                 Series2 = new ChartValues<double> { 7, 3, 4, 1, 7, 3, 4, 1, 7, 3, 4, 1 }
@@ -22,7 +22,7 @@ namespace ChartsTest.BarExamples
             DataContext = this;
         }
 
-        public BindedLinesViewModel ViewModel { get; set; }
+        public BindedBarsViewModel ViewModel { get; set; }
 
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
@@ -46,7 +46,7 @@ namespace ChartsTest.BarExamples
         }
     }
 
-    public class BindedLinesViewModel
+    public class BindedBarsViewModel
     {
         private Random _random = new Random();
         //live charts requires at least 100 ms without changes to update the chart
@@ -56,7 +56,7 @@ namespace ChartsTest.BarExamples
         private DispatcherTimer _timer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(150) };
         private bool _isWild;
 
-        public BindedLinesViewModel()
+        public BindedBarsViewModel()
         {
             _timer.Tick += (sender, args) =>
             {

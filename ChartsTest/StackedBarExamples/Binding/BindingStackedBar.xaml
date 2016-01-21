@@ -7,34 +7,43 @@
              xmlns:stackedBarExamples="clr-namespace:ChartsTest.StackedBarExamples"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300"
-             Loaded="BindingStackedBar_OnLoaded" d:DataContext="{d:DesignInstance  stackedBarExamples:BindingStackedBar}">
+             Loaded="OnLoaded" d:DataContext="{d:DesignInstance  stackedBarExamples:BindingStackedBar}">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
-        <TextBlock Grid.Row="0" HorizontalAlignment="Center" Grid.ColumnSpan="2" Margin="5" TextWrapping="Wrap">
-            Series with bindings
-        </TextBlock>
+        <Grid Grid.Row="0" HorizontalAlignment="Center" Grid.ColumnSpan="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+            </Grid.RowDefinitions>
+            <TextBlock Margin="5" TextWrapping="Wrap">
+                <Bold>Live Changes</Bold>: if you have a static number of series and need to change their Values this might help you, click on the buttons bellow to see how charts update automatically with their data
+            </TextBlock>
+            <StackPanel Grid.Row="1" Orientation="Horizontal">
+                <Button Margin="10 0" Background="Transparent" 
+                    BorderBrush="#505050" BorderThickness="3" Foreground="#505050"
+                    Click="GoWildOnClick" Padding="10 3">
+                    Real Time
+                </Button>
+                <Button Margin="10 0" Background="Transparent" 
+                    BorderBrush="#505050" BorderThickness="3" Foreground="#505050"
+                    Click="AddValueOnClick" Padding="10 3">
+                    +
+                </Button>
+                <Button Margin="10 0" Background="Transparent" 
+                    BorderBrush="#505050" BorderThickness="3" Foreground="#505050"
+                    Click="RemoveValueOnClick" Padding="10 3">
+                    -
+                </Button>
+            </StackPanel>
+        </Grid>
         <lvc:StackedBarChart Name="Chart" Grid.Row="1" Grid.Column="0">
             <lvc:StackedBarChart.Series>
-                <lvc:StackedBarSeries Name="Serie1" Title="Maria" Values="{Binding ViewModel.FirstSeries}" Stroke="IndianRed">
-                        <lvc:StackedBarSeries.Fill>
-                            <LinearGradientBrush EndPoint=".5,1" StartPoint="1,0">
-                                <GradientStop Color="IndianRed" Offset="1"/>
-                                <GradientStop Color="#CD3434" Offset="0.5"/>
-                            </LinearGradientBrush>
-                        </lvc:StackedBarSeries.Fill>
-                    </lvc:StackedBarSeries>
-                <lvc:StackedBarSeries Name="Serie2" Title="John" Values="{Binding ViewModel.SecondSeries}" Stroke="CornflowerBlue">
-                    <lvc:StackedBarSeries.Fill>
-                        <LinearGradientBrush EndPoint=".5,1" StartPoint="1,0">
-                            <GradientStop Color="CornflowerBlue" Offset="1"/>
-                            <GradientStop Color="#3174ED" Offset="0.5"/>
-                        </LinearGradientBrush>
-                    </lvc:StackedBarSeries.Fill>
-                </lvc:StackedBarSeries>
+                <lvc:StackedBarSeries Title="Series 1" Values="{Binding ViewModel.Series1}"/>
+                <lvc:StackedBarSeries Title="Series 2" Values="{Binding ViewModel.Series2}"/>
             </lvc:StackedBarChart.Series>
             <lvc:StackedBarChart.AxisY>
                 <lvc:Axis IsEnabled="False" ShowLabels="False">
@@ -46,7 +55,7 @@
             <lvc:StackedBarChart.AxisX>
                 <lvc:Axis IsEnabled="False" ShowLabels="False">
                     <lvc:Axis.Separator>
-                        <lvc:Separator IsEnabled="False"></lvc:Separator>
+                        <lvc:Separator IsEnabled="False" ></lvc:Separator>
                     </lvc:Axis.Separator>
                 </lvc:Axis>
             </lvc:StackedBarChart.AxisX>
