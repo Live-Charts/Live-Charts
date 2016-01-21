@@ -94,13 +94,13 @@ namespace lvc
                 var hAnim = new DoubleAnimation
                 {
                     To = rh,
-                    Duration = TimeSpan.FromMilliseconds(300)
+                    Duration = TimeSpan.FromMilliseconds(500)
                 };
                 var rAnim = new DoubleAnimation
                 {
                     From = ToPlotArea(Chart.Min.Y, AxisTags.Y),
                     To = ToPlotArea(Chart.Min.Y, AxisTags.Y) - rh - stackedH,
-                    Duration = TimeSpan.FromMilliseconds(300)
+                    Duration = TimeSpan.FromMilliseconds(500)
                 };
 
                 var animated = false;

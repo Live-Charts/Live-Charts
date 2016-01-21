@@ -19,7 +19,7 @@
         <TextBlock Grid.Row="0" HorizontalAlignment="Center" Grid.ColumnSpan="2" Margin="5">
             <Bold>In Line Charting</Bold>: I want a pie now!
         </TextBlock>
-        <lvc:PieChart Name="Chart" Grid.Row="1" Grid.Column="0" DisableAnimation="True">
+        <lvc:PieChart Name="Chart" Grid.Row="1" Grid.Column="0">
             <lvc:PieChart.Series>
                 <lvc:PieSeries Title="Maria" Values="15, 10, 40, 55" 
                                Labels="Day 1, Day 2, Day 3, Day 4"/>

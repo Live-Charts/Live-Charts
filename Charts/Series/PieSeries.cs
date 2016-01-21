@@ -100,13 +100,13 @@ namespace lvc
                 {
                     From = 0,
                     To = slice.WedgeAngle,
-                    Duration = TimeSpan.FromMilliseconds(300)
+                    Duration = TimeSpan.FromMilliseconds(500)
                 };
                 var ra = new DoubleAnimation
                 {
                     From = 0,
                     To = slice.RotationAngle,
-                    Duration = TimeSpan.FromMilliseconds(300)
+                    Duration = TimeSpan.FromMilliseconds(500)
                 };
 
                 Canvas.SetTop(slice, Chart.ActualHeight / 2);

@@ -11,14 +11,12 @@ namespace ChartsTest.Scatter_Examples
         public CustomScatter()
         {
             InitializeComponent();
-            var secondaryValues = new List<double>();
-            for (double i = 0; i < 1; i+= 0.01d) secondaryValues.Add(i);
-            var s1 = secondaryValues.Select(Math.Asin).ToList();
-            var s2 = secondaryValues.Select(Math.Acos).ToList();
-            Serie1.Values = s1.AsChartValues();
-            Serie1.SecondaryValues = secondaryValues;
-            Serie2.Values = s2.AsChartValues();
-            Serie2.SecondaryValues = secondaryValues;
+
+            var plotRange = new List<double>();
+            for (double i = 0; i < 1; i+= 0.01d) plotRange.Add(i);
+
+            Serie1.Values = plotRange.Select(x => new Point(x, Math.Asin(x))).AsChartValues();
+            Serie2.Values = plotRange.Select(x => new Point(x, Math.Acos(x))).AsChartValues();
         }
 
         private void OnLoaded(object sender, RoutedEventArgs e)

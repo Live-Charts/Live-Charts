@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows;
+using lvc;
 
 namespace ChartsTest.Scatter_Examples
 {
@@ -12,10 +13,8 @@ namespace ChartsTest.Scatter_Examples
 
             ViewModel = new BindingScatterViewModel
             {
-                FirstPrimaryValues = new ObservableCollection<double> { 2, 4, double.NaN, 7, 6, 4, 5, 2, 7, 9, 1, 4, 4, 5, 6 },
-                FirstSecondaryValues = new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, double.NaN, 14, 15 },
-                SecondPrimaryValues = new ObservableCollection<double> { 7, 3, 4, 1, 4, 7, 2, 7, 3, 8, 9, 2, 7, 9, 3 },
-                SecondSecondaryValues = new[] { 1d, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 }
+                FirstPrimaryValues = new ChartValues<Point>{ new Point(5, 2), new Point(12, 3), new Point(26, 10), new Point(30, 3), new Point(35, 4) },
+                SecondPrimaryValues = new ChartValues<Point> { new Point(5, 3), new Point(8, 7), new Point(22, 14), new Point(28, 8), new Point(40, 8) }
             };
 
             DataContext = this;
@@ -32,9 +31,7 @@ namespace ChartsTest.Scatter_Examples
 
     public class BindingScatterViewModel
     {
-        public ObservableCollection<double> FirstPrimaryValues { get; set; }
-        public IEnumerable<double> FirstSecondaryValues { get; set; } 
-        public ObservableCollection<double> SecondPrimaryValues { get; set; }
-        public IEnumerable<double> SecondSecondaryValues { get; set; } 
+        public ObservableCollection<Point> FirstPrimaryValues { get; set; }
+        public ObservableCollection<Point> SecondPrimaryValues { get; set; }
     }
 }

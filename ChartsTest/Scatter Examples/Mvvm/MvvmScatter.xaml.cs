@@ -51,9 +51,9 @@ namespace ChartsTest.Scatter_Examples
 
     public class MathViewModel
     {
-        private readonly Func<double, int, double> baseFunc = (val, offset) => Math.Pow(val, 2) + offset*20;
+        private readonly Func<double, int, double> _baseFunc = (val, offset) => Math.Pow(val, 2) + offset*20;
 
-        private readonly List<double> _secondaryValues = new List<double>
+        private readonly List<double> _evaluateAt = new List<double>
         {
             1,
             2,
@@ -74,26 +74,24 @@ namespace ChartsTest.Scatter_Examples
 
         public MathViewModel()
         {
-            Functions = new ObservableCollection<Series>
+            Functions = new SeriesCollection(new SeriesConfiguration<Point>().X(pt => pt.X).Y(pt => pt.Y))
             {
                 new ScatterSeries
                 {
-                    Values = _secondaryValues.Select(x => baseFunc(x, 0)).AsChartValues(),
-                    SecondaryValues = _secondaryValues,
+                    Values = _evaluateAt.Select(x => new Point(x, _baseFunc(x,0))).AsChartValues(),
                     PointRadius = 0,
                     StrokeThickness = 4
                 }
             };
         }
 
-        public ObservableCollection<Series> Functions { get; set; }
+        public SeriesCollection Functions { get; set; }
 
         public void AddRandomFunction()
         {
             Functions.Add(new ScatterSeries
             {
-                Values = _secondaryValues.Select(x => baseFunc(x, Functions.Count)).AsChartValues(),
-                SecondaryValues = _secondaryValues,
+                Values = _evaluateAt.Select(x => new Point(x, _baseFunc(x, Functions.Count))).AsChartValues(),
                 PointRadius = 0,
                 StrokeThickness = 4
             });
@@ -107,14 +105,13 @@ namespace ChartsTest.Scatter_Examples
 
         public void AddPoint()
         {
-            var nextVal = _secondaryValues[_secondaryValues.Count - 1] + 1;
-            _secondaryValues.Add(nextVal);
+            var nextVal = _evaluateAt[_evaluateAt.Count - 1] + 1;
+            _evaluateAt.Add(nextVal);
 
-            foreach (var func in Functions.Cast<ScatterSeries>())
+            foreach (var func in Functions)
             {
-                var evaluation = baseFunc(nextVal, Functions.IndexOf(func));
-                func.Values.Add(evaluation);
-                func.SecondaryValues = _secondaryValues;
+                var evaluation = _baseFunc(nextVal, Functions.IndexOf(func));
+                func.Values.Add(new Point(nextVal, evaluation));
             }
         }
 

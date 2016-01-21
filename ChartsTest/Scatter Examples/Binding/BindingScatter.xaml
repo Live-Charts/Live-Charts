@@ -21,11 +21,9 @@
             <lvc:ScatterChart.Series>
                 <lvc:ScatterSeries Title="f(x1)" 
                                               Values="{Binding ViewModel.FirstPrimaryValues}"
-                                              SecondaryValues="{Binding ViewModel.FirstSecondaryValues}"
                                               StrokeThickness="4" PointRadius="6" />
                 <lvc:ScatterSeries Title="f(x2)" 
                                               Values="{Binding ViewModel.SecondPrimaryValues}" 
-                                              SecondaryValues="{Binding ViewModel.SecondPrimaryValues}"
                                               StrokeThickness="4" PointRadius="6"/>
             </lvc:ScatterChart.Series>
             <lvc:ScatterChart.AxisY>
@@ -36,7 +34,7 @@
                 </lvc:Axis>
             </lvc:ScatterChart.AxisY>
             <lvc:ScatterChart.AxisX>
-                <lvc:Axis IsEnabled="False" ShowLabels="False" MinValue="1" MaxValue="15">
+                <lvc:Axis IsEnabled="False" ShowLabels="False">
                     <lvc:Axis.Separator>
                         <lvc:Separator IsEnabled="False"></lvc:Separator>
                     </lvc:Axis.Separator>

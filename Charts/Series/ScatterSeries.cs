@@ -42,16 +42,6 @@ namespace lvc
             PointRadius = 6;
         }
 
-		public static readonly DependencyProperty SecondaryValuesProperty =
-			DependencyProperty.Register("SecondaryValues", typeof(IList<double>), typeof(ScatterSeries), new PropertyMetadata(new ObservableCollection<double>()));
-
-		[TypeConverter(typeof(IndexedChartValuesConverter))]
-		public IList<double> SecondaryValues
-		{
-			get { return (IList<double>)GetValue(SecondaryValuesProperty); }
-			set { SetValue(SecondaryValuesProperty, value); }
-		}
-
         public double StrokeThickness { get; set; }
         public double PointRadius { get; set; }
 

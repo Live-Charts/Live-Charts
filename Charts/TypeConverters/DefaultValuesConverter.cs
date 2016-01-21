@@ -21,13 +21,18 @@
 //SOFTWARE.
 
 using System;
+using System.CodeDom;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
+using System.Text;
+using System.Text.RegularExpressions;
+using System.Windows;
 
 namespace lvc.TypeConverters
 {
-	internal class IndexedChartValuesConverter : TypeConverter
+	internal class DefaultValuesConverter : TypeConverter
 	{
 		public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
 		{
@@ -37,7 +42,9 @@ namespace lvc.TypeConverters
 		public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
 		{
 			var valueString = value as string;
-			if (valueString != null)
+            
+            //for arrays like "2,4,7,2" pharses as double
+			if (valueString != null && Regex.IsMatch(valueString, @"^\s*-?\d*(\.\d*)?\s*(,\s*-?\d*(\.\d*)?\s*)*$"))
 			{
 			    var v = valueString
 			        .Split(new[] {',', ' '}, StringSplitOptions.RemoveEmptyEntries)
@@ -45,7 +52,33 @@ namespace lvc.TypeConverters
 			        .AsChartValues();
                 return v;
 			}
-			return base.ConvertFrom(context, culture, value);
+
+            //arrays like "[0,1], [5,2]" pharses as point
+		    if (valueString != null &&
+		        Regex.IsMatch(valueString,
+		            @"\s*\[\s*-?\d*(\.\d*)?\s*,\s*-?\d*(\.\d*)?\s*\](,\s*\[\s*-?\d*(\.\d*)?\s*,\s*-?\d*(\.\d*)?\s*\]\s*)*$"))
+		    {
+                var sb = new StringBuilder();
+		        var isOpen = false;
+                var points = new List<Point>();
+		        foreach (var s in valueString)
+		        {
+                    if (isOpen && s != ']') sb.Append(s);
+		            if (s == '[') isOpen = true;
+		            if (s == ']')
+		            {
+		                isOpen = false;
+		                var xy = sb.ToString().Split(new[] {","}, StringSplitOptions.None);
+		                points.Add(new Point(double.Parse(xy[0], CultureInfo.InvariantCulture),
+		                    double.Parse(xy[1], CultureInfo.InvariantCulture)));
+		                sb.Clear();
+		            }
+		        }
+                
+                return points.AsChartValues();
+            }
+
+		    throw new FormatException("The Values pattern contains an error.");
 		}
 	}
 }

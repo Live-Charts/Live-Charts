@@ -56,7 +56,7 @@ namespace lvc
 	        "Values", typeof (IChartValues), typeof (Series), 
             new PropertyMetadata(default(IChartValues), ValuesCallBack));
 
-        [TypeConverter(typeof(IndexedChartValuesConverter))]
+        [TypeConverter(typeof(DefaultValuesConverter))]
         public IChartValues Values
 	    {
 	        get

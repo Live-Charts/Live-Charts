@@ -147,7 +147,7 @@
     <Compile Include="Tooltip\ScatterTooltip.cs" />
     <Compile Include="TypeConverters\ColorCollectionConverter.cs" />
     <Compile Include="TypeConverters\StringCollectionConverter.cs" />
-    <Compile Include="TypeConverters\IndexedChartValuesConverter.cs" />
+    <Compile Include="TypeConverters\DefaultValuesConverter.cs" />
     <Compile Include="CoreComponents\PerformanceConfigurations.cs" />
     <Compile Include="Viewers\Converters.cs" />
     <Compile Include="Viewers\PieSeriesViewer.xaml.cs">

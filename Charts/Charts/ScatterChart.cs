@@ -43,9 +43,11 @@ namespace lvc
             AxisX = new Axis();
             Hoverable = true;
             ShapeHoverBehavior = ShapeHoverBehavior.Dot;
-            AnimatesNewPoints = true;
             LineType = LineChartLineType.Bezier;
             DataToolTip = new DefaultScatterTooltip();
+
+            var defaultConfig = new SeriesConfiguration<Point>().X(pt => pt.X).Y(pt => pt.Y);
+            SetCurrentValue(SeriesProperty, new SeriesCollection(defaultConfig));
         }
 
         #region Properties
@@ -60,10 +62,25 @@ namespace lvc
 
         #region Overriden Methods
 
+        protected override void Scale()
+        {
+            base.Scale();
+
+            S = new Point(
+                AxisX.Separator.Step ?? CalculateSeparator(Max.X - Min.X, AxisTags.X),
+                AxisY.Separator.Step ?? CalculateSeparator(Max.Y - Min.Y, AxisTags.Y));
+
+            if (AxisY.MaxValue == null) Max.Y = (Math.Truncate(Max.Y/S.Y) + 1)*S.Y;
+            if (AxisY.MinValue == null) Min.Y = (Math.Truncate(Min.Y/S.Y) - 1)*S.Y;
+
+            if (AxisX.MaxValue == null) Max.X = (Math.Truncate(Max.X/S.X) + 1)*S.X;
+            if (AxisX.MinValue == null) Min.X = (Math.Truncate(Min.X/S.X) - 1)*S.X;
+
+            DrawAxes();
+        }
+
         protected override void DrawAxes()
         {
-            //S = GetS();
-
             Canvas.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
             var lastLabelX = Math.Truncate((Max.X - Min.X)/S.X)*S.X;
             var longestYLabelSize = GetLongestLabelSize(AxisY);
