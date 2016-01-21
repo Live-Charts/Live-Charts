@@ -76,7 +76,7 @@ namespace ChartsTest.BarExamples.UsingObservableChartPoint
             if (Collection.Chart == null) return;
             
             //In this case we force all values to evaluate,
-            //you can implement a smarther logic
+            //you can implement a smarter logic
             //according to your needs
             foreach (var values in Collection.Select(x => x.Values))
                 values.RequiresEvaluation = true;
