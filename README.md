@@ -13,6 +13,8 @@
 
 ### 0.6.0 is here, If you come from an older verison concider reading this https://github.com/beto-rodriguez/Live-Charts/releases/tag/0.6.0
 
+[![Join the chat at https://gitter.im/beto-rodriguez/Live-Charts](https://badges.gitter.im/beto-rodriguez/Live-Charts.svg)](https://gitter.im/beto-rodriguez/Live-Charts?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 Live charts is an easy way to build useful charts, all charts are animated, they update every time you change your data, or when you rezise the chart, also since 0.5 we are working to support huge amounts of data, right now this is on test and only implemented in line chart, but in the included examples it is able to draw 1,000,000 points in a really short period of time.
 
  - MVVM Charting, Support for WPF Binding, All charts update when data changes.
