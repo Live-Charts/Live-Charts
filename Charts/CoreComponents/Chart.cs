@@ -861,10 +861,17 @@ namespace LiveCharts.CoreComponents
                 chart._seriesChanged.Stop();
                 chart._seriesChanged.Start();
 
+                if (args.Action == NotifyCollectionChangedAction.Reset)
+                {
+                    chart.Canvas.Children.Clear();
+                    chart.Shapes.Clear();
+                    chart.HoverableShapes.Clear();
+                }
+
                 if (args.OldItems != null)
-                    foreach (var serie in args.OldItems.Cast<Series>())
+                    foreach (var series in args.OldItems.Cast<Series>())
                     {
-                        chart.EraseSerieBuffer.Add(serie);
+                        chart.EraseSerieBuffer.Add(series);
                     }
 
                 var newElements = args.NewItems != null ? args.NewItems.Cast<Series>() : new List<Series>();

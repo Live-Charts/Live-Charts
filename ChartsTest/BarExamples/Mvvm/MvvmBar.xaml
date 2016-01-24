@@ -36,6 +36,7 @@
             <TextBlock>Salesmen</TextBlock>
             <Button Click="AddSalesmanOnClick">+</Button>
             <Button Click="RemoveSalesmanOnClick">-</Button>
+            <Button Click="ClearSeriesOnClick" Width="Auto" Padding="5 0">Clear Series</Button>
             <TextBlock>Months</TextBlock>
             <Button Click="AddMonthOnClick">+</Button>
             <Button Click="RemoveMonthOnClick">-</Button>

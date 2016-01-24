@@ -27,7 +27,7 @@ namespace ChartsTest.BarExamples
 
         private void AddSalesmanOnClick(object sender, RoutedEventArgs e)
         {
-            Sales.AddRandomSalesData();
+            Sales.AddRandomSeries();
         }
 
         private void RemoveSalesmanOnClick(object sender, RoutedEventArgs e)
@@ -42,6 +42,11 @@ namespace ChartsTest.BarExamples
         private void RemoveMonthOnClick(object sender, RoutedEventArgs e)
         {
             Sales.RemoveLastMonth();
+        }
+
+        private void ClearSeriesOnClick(object sender, RoutedEventArgs e)
+        {
+            Sales.SalesmenSeries.Clear();
         }
 
         private void MvvmExample_OnLoaded(object sender, RoutedEventArgs e)
@@ -134,12 +139,13 @@ namespace ChartsTest.BarExamples
         public SeriesCollection SalesmenSeries { get; set; }
         public string[] AvailableMonths { get; set; }
 
-        public void AddRandomSalesData()
+        public void AddRandomSeries()
         {
             var r = new Random();
 
             var values = new ChartValues<SalesData>();
-            for (var i = 0; i < SalesmenSeries[0].Values.Count; i++) values.Add(new SalesData
+            var numberOfVals = SalesmenSeries.Count == 0 ? 5 : SalesmenSeries[0].Values.Count;
+            for (var i = 0; i < numberOfVals; i++) values.Add(new SalesData
             {
                 ItemsSold = r.Next(5, 30),
                 Rentability = r.NextDouble() * .2,
@@ -155,12 +161,14 @@ namespace ChartsTest.BarExamples
 
         public void RemoveLastSalesData()
         {
-            if (SalesmenSeries.Count == 1) return;
+            if (SalesmenSeries.Count <= 1) return;
             SalesmenSeries.RemoveAt(SalesmenSeries.Count - 1);
         }
 
         public void AddOneMonth()
         {
+            if (SalesmenSeries.Count == 0) return;
+            
             var r = new Random();
             if (SalesmenSeries[0].Values.Count >= _months.Count()) return;
             foreach (var salesman in SalesmenSeries.Where(x => x.Title != "Average Series"))
@@ -181,6 +189,7 @@ namespace ChartsTest.BarExamples
 
         public void RemoveLastMonth()
         {
+            if (SalesmenSeries.Count == 0) return;
             if (SalesmenSeries[0].Values.Count == 2) return;
             foreach (var salesman in SalesmenSeries)
             {
