@@ -21,6 +21,7 @@
 //SOFTWARE.
 
 using System.Windows.Media;
+using LiveCharts.CoreComponents;
 
 namespace LiveCharts.Tooltip
 {

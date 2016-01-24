@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Windows.Forms;
 using LiveCharts;
+using LiveCharts.CoreComponents;
 
 namespace WinForms
 {

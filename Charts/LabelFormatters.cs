@@ -44,7 +44,7 @@ namespace LiveCharts
                     if (a < 10000000) return x.ToString("$#,##0,,.00M", CultureInfo.InvariantCulture);
                     if (a < 100000000) return x.ToString("$#,##0,,.0M", CultureInfo.InvariantCulture);
                     return x.ToString("$#,##0,,M", CultureInfo.InvariantCulture);
-                    //since billions means a diferent number according to location, this is only build to millions.
+                    //since billions means a diferent number according to location, this is only built to millions.
                 };
             }
         }

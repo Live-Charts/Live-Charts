@@ -22,8 +22,7 @@
 
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
+using LiveCharts.CoreComponents;
 
 namespace LiveCharts
 {
@@ -34,34 +33,28 @@ namespace LiveCharts
         public SeriesConfiguration()
         {
             XValueMapper = (value, index) => index;
-            OptimizationMethod = values =>
-            {
-                _xIndexer = 0;
-                _yIndexer = 0;
-
-                return values.Select(v => new ChartPoint
-                {
-                    X = XValueMapper(v, _xIndexer++),
-                    Y = YValueMapper(v, _yIndexer++),
-                    Instance = v
-                });
-            };
+            YValueMapper = (value, index) => index;
         }
+
+        /// <summary>
+        /// Gets or Sets the chart 
+        /// </summary>
+        public Chart Chart { get; set; }
 
         /// <summary>
         /// Gets or sets optimization method
         /// </summary>
-        internal Func<IEnumerable<T>, IEnumerable<ChartPoint>> OptimizationMethod { get; set; }
-       
+        public IDataOptimization<T> DataOptimization { get; set; }
+        
         /// <summary>
         /// Gets or sets the current function that pulls X value from T
         /// </summary>
-        private Func<T, int, double> XValueMapper { get; set; }
+        internal Func<T, int, double> XValueMapper { get; set; }
 
         /// <summary>
         /// Gets or sets the current function that pulls Y value from T
         /// </summary>
-        private Func<T, int, double> YValueMapper { get; set; }
+        internal Func<T, int, double> YValueMapper { get; set; }
 
         /// <summary>
         /// Maps X value
@@ -107,9 +100,9 @@ namespace LiveCharts
             return this;
         }
 
-        public SeriesConfiguration<T> HasOptimization(Func<IEnumerable<T>, IEnumerable<ChartPoint>> predicate)
+        public SeriesConfiguration<T> HasHighPerformanceMethod(IDataOptimization<T> optimization)
         {
-            OptimizationMethod = predicate;
+            DataOptimization = optimization;
             return this;
         }
     }

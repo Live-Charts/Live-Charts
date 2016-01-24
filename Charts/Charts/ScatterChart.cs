@@ -30,7 +30,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
-using LiveCharts.Charts;
+using LiveCharts.CoreComponents;
 using LiveCharts.Tooltip;
 
 namespace LiveCharts

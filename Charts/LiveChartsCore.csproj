@@ -129,7 +129,7 @@
     <Compile Include="Interfaces\ILine.cs" />
     <Compile Include="Interfaces\IStackedBar.cs" />
     <Compile Include="Interfaces\ISeriesCollection.cs" />
-    <Compile Include="PerformanceConfiguration.cs" />
+    <Compile Include="IDataOptimization.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Series\RowSeries.cs" />
     <Compile Include="CoreComponents\SeriesCollection.cs" />
@@ -149,7 +149,6 @@
     <Compile Include="TypeConverters\ColorCollectionConverter.cs" />
     <Compile Include="TypeConverters\StringCollectionConverter.cs" />
     <Compile Include="TypeConverters\DefaultValuesConverter.cs" />
-    <Compile Include="CoreComponents\PerformanceConfigurations.cs" />
     <Compile Include="Viewers\Converters.cs" />
     <Compile Include="Viewers\PieSeriesViewer.xaml.cs">
       <DependentUpon>PieSeriesViewer.xaml</DependentUpon>
@@ -217,7 +216,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

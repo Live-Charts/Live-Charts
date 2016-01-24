@@ -36,7 +36,7 @@ using System.Windows.Shapes;
 using System.Windows.Threading;
 using LiveCharts.Tooltip;
 
-namespace LiveCharts.Charts
+namespace LiveCharts.CoreComponents
 {
     public abstract class Chart : UserControl
     {
@@ -254,6 +254,12 @@ namespace LiveCharts.Charts
 
         #region ProtectedProperties
         protected bool AnimatesNewPoints { get; set; }
+
+        internal bool HasInvalidArea
+        {
+            get { return PlotArea.Width < 15 || PlotArea.Height < 15; }
+        }
+
         #endregion
 
         #region Public Methods
@@ -299,6 +305,11 @@ namespace LiveCharts.Charts
         public Point ToPlotArea(Point value)
         {
             return new Point(ToPlotArea(value.X, AxisTags.X), ToPlotArea(value.Y, AxisTags.Y));
+        }
+
+        public double LenghtOf(double value, AxisTags axis)
+        {
+            return Methods.ToPlotArea(value, axis, this) - (axis == AxisTags.X ? PlotArea.X : PlotArea.Y);
         }
         #endregion
 
@@ -413,18 +424,13 @@ namespace LiveCharts.Charts
 
         protected virtual void Scale()
         {
-            Series.Chart = this;
-            foreach (var series in Series)
-            {
-                series.Collection = Series;
-                if (series.Values == null) continue;
-                series.Values.Series = series;
-                series.Values.Evaluate();
-            }
+
+
+            InitializeComponents();
 
             Max = new Point(
                 AxisX.MaxValue ??
-                Series.Where(x => x.Values != null).Select(x => x.Values.MaxChartPoint.X).DefaultIfEmpty(0).Max(),
+                Series.Where(x => x.Values != null).DefaultIfEmpty(new LineSeries()).Select(x => x.Values.MaxChartPoint.X).DefaultIfEmpty(0).Max(),
                 AxisY.MaxValue ??
                 Series.Where(x => x.Values != null).Select(x => x.Values.MaxChartPoint.Y).DefaultIfEmpty(0).Max());
 
@@ -742,6 +748,20 @@ namespace LiveCharts.Charts
             RequiresScale = true;
         }
 
+        protected void InitializeComponents()
+        {
+            Series.Chart = this;
+            Series.Configuration.Chart = this;
+            foreach (var series in Series)
+            {
+                series.Collection = Series;
+                if (series.Values == null) continue;
+                if (series.Configuration != null) series.Configuration.Chart = this;
+                series.Values.Series = series;
+                series.Values.GetLimits();
+            }
+        }
+
         private void PreventPlotAreaToBeVisible()
         {
             var tt = Canvas.RenderTransform as TranslateTransform;
@@ -795,24 +815,9 @@ namespace LiveCharts.Charts
             var chart = o as Chart;
             
             if (chart == null || chart.Series == null) return;
-
-            chart.InitializeSeries(chart);
-
             if (chart.Series.Any(x => x == null)) return;
 
-            foreach (var series in chart.Series)
-            {
-                series.Collection = chart.Series;
-                if (series.Values == null) continue;
-                series.Values.Series = series;
-                series.Values.Evaluate();
-            }
-
-            var xs = chart.Series.SelectMany(x => x.Values.Points.Select(pt => pt.X)).DefaultIfEmpty(0).ToArray();
-            var ys = chart.Series.SelectMany(x => x.Values.Points.Select(pt => pt.Y)).DefaultIfEmpty(0).ToArray();
-
-            chart.Min = new Point(xs.Min(), ys.Min());
-            chart.Max = new Point(xs.Max(), ys.Max());
+            if (chart.Series.Count > 0 && !chart.HasInvalidArea) chart.Scale();
         }
 
         private void InitializeSeries(Chart chart)
@@ -902,8 +907,8 @@ namespace LiveCharts.Charts
         {
             _seriesChanged.Stop();
 
-            if (Series == null) return;
-            if (PlotArea.Width < 15 || PlotArea.Height < 15) return;
+            if (Series == null || Series.Count == 0) return;
+            if (HasInvalidArea) return;
 
             foreach (var shape in Shapes) Canvas.Children.Remove(shape);
             foreach (var shape in HoverableShapes.Select(x => x.Shape).ToList()) Canvas.Children.Remove(shape);
@@ -912,7 +917,7 @@ namespace LiveCharts.Charts
 
             if (RequiresScale)
             {
-                Scale();
+                 Scale();
                 RequiresScale = false;
             }
             foreach (var serie in EraseSerieBuffer.GroupBy(x => x)) serie.First().Erase();
@@ -939,12 +944,6 @@ namespace LiveCharts.Charts
             Trace.WriteLine("Primary Values Updated (" + DateTime.Now.ToLongTimeString() + ")");
 #endif
             _serieValuesChanged.Stop();
-            //if (ScaleChanged) Scale();
-            //this if can be safely removed without making this library to redraw multiple times
-            //because now implemented a buffer, and performance optimizations, so it should be fine 
-            //if we force redraw everytime we make a change.
-            //this could be a future improvemnt,
-            //by now this is perfectly fine and should not impact in performance.
             Scale();
             foreach (var serie in Series)
             {

@@ -27,8 +27,8 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows;
-using LiveCharts.Charts;
-namespace LiveCharts
+
+namespace LiveCharts.CoreComponents
 {
     /// <summary>
     /// Creates a collection of values ready to plot
@@ -39,6 +39,7 @@ namespace LiveCharts
         private Point _min = new Point(double.MaxValue, double.MaxValue);
         private Point _max = new Point(double.MinValue, double.MinValue);
         private ChartPoint[] _points;
+        private bool _limitsChanged = true;
 
         public ChartValues()
         {
@@ -50,11 +51,6 @@ namespace LiveCharts
 
         #region Properties
 
-        /// <summary>
-        /// Chart that owns the values
-        /// </summary>
-        public Chart Chart { get; set; }
-
         public IChartSeries Series { get; set; }
        
         /// <summary>
@@ -62,7 +58,39 @@ namespace LiveCharts
         /// </summary>
         public IEnumerable<ChartPoint> Points
         {
-            get { return _points; }
+            get
+            {
+                if (_limitsChanged)
+                {
+                    _limitsChanged = false;
+                    var config = (Series.Configuration ?? Series.Collection.Configuration) as SeriesConfiguration<T>;
+
+                    if (config == null) return Enumerable.Empty<ChartPoint>();
+
+                    if (config.DataOptimization == null)
+                    {
+                        var ix = 0;
+                        var iy = 0;
+                        _points = this.Select(i => new ChartPoint
+                        {
+                            X = config.XValueMapper(i, ix++),
+                            Y = config.YValueMapper(i, iy++),
+                            Instance = i
+                        }).ToArray();
+                        return _points;
+                    }
+
+                    config.DataOptimization.Chart = config.Chart;
+                    config.DataOptimization.XMapper = config.XValueMapper;
+                    config.DataOptimization.YMapper = config.YValueMapper;
+                    var collection = Series == null ? null : Series.Collection;
+                    _points = collection == null
+                        ? new ChartPoint[] {}
+                        : config.DataOptimization.Run(this).ToArray();
+                    return _points.DefaultIfEmpty(new ChartPoint());
+                }
+                return _points;
+            }
         }
 
         /// <summary>
@@ -95,11 +123,13 @@ namespace LiveCharts
             OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
             return this;
         }
-        public void Evaluate()
+
+        public void GetLimits()
         {
             if (RequiresEvaluation)
             {
-                EvalueateValues();
+                EvaluateLimits();
+                _limitsChanged = true;
                 RequiresEvaluation = false;
             }
         }
@@ -108,26 +138,26 @@ namespace LiveCharts
 
         #region Private Methods
 
-        private void EvalueateValues()
+        private void EvaluateLimits()
         {
             var config = (Series.Configuration ?? Series.Collection.Configuration) as SeriesConfiguration<T>;
             if (config == null) return;
+            if (config.DataOptimization != null)
+            {
+                config.DataOptimization.Chart = config.Chart;
+                config.DataOptimization.XMapper = config.XValueMapper;
+                config.DataOptimization.YMapper = config.YValueMapper;
+            }
 
-            var collection = Series == null ? null : Series.Collection;
-            _points = collection == null
-                ? new ChartPoint[] {}
-                : config.OptimizationMethod(this).ToArray();
-
-            var xs = _points.Select(x => x.X).DefaultIfEmpty(0).ToArray();
-
+            var ix = 0;
+            var xs = this.Select(t => config.XValueMapper(t, ix++)).DefaultIfEmpty(0).ToArray();
             var xMax = xs.Max();
             var xMin = xs.Min();
-
             _min.X = xMin;
             _max.X = xMax;
 
-            var ys = _points.Select(x => x.Y).DefaultIfEmpty(0).ToArray();
-
+            var iy = 0;
+            var ys = this.Select(t => config.YValueMapper(t, iy++)).DefaultIfEmpty(0).ToArray();
             var yMax = ys.Max();
             var yMin = ys.Min();
 

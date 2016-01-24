@@ -24,7 +24,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
-using LiveCharts.Charts;
+using LiveCharts.CoreComponents;
 
 namespace LiveCharts
 {

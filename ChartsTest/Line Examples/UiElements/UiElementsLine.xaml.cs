@@ -2,7 +2,7 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
-using LiveCharts.Charts;
+using LiveCharts.CoreComponents;
 
 namespace ChartsTest.Line_Examples
 {

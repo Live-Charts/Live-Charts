@@ -5,6 +5,7 @@ using System.Linq;
 using System.Windows;
 using ChartsTest.BarExamples.Mvvm;
 using LiveCharts;
+using LiveCharts.CoreComponents;
 
 namespace ChartsTest.BarExamples
 {

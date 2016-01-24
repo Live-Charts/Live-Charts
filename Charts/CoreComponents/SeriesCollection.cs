@@ -25,7 +25,7 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
 using System.Windows;
-using LiveCharts.Charts;
+using LiveCharts.CoreComponents;
 
 namespace LiveCharts
 {

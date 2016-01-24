@@ -28,6 +28,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
+using LiveCharts.CoreComponents;
 
 namespace LiveCharts
 {
@@ -66,6 +67,8 @@ namespace LiveCharts
                 {
                     foreach (var point in segment)
                     {
+                        if (point.IsMocked) continue;
+
                         var plotPoint = ToPlotArea(point);
                         plotPoint.X += Chart.XOffset;
                         var e = new Ellipse

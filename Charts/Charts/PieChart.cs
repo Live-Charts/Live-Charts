@@ -28,7 +28,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
-using LiveCharts.Charts;
+using LiveCharts.CoreComponents;
 using LiveCharts.Shapes;
 using LiveCharts.Tooltip;
 

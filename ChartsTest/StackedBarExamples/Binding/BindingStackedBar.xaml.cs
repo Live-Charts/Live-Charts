@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Windows.Threading;
 using LiveCharts;
+using LiveCharts.CoreComponents;
 
 namespace ChartsTest.StackedBarExamples
 {

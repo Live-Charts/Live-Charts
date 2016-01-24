@@ -24,7 +24,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
-using LiveCharts.Charts;
+using LiveCharts.CoreComponents;
 
 namespace LiveCharts
 {
@@ -114,13 +114,7 @@ namespace LiveCharts
 
         protected override void Scale()
         {
-            foreach (var series in Series)
-            {
-                series.Collection = Series;
-                if (series.Values == null) continue;
-                series.Values.Series = series;
-                series.Values.Evaluate();
-            }
+            InitializeComponents();
 
             AxisY.MinValue = 0;
 

@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Windows;
 using LiveCharts;
+using LiveCharts.CoreComponents;
 
 namespace ChartsTest.Scatter_Examples
 {

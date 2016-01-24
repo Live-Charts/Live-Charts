@@ -22,7 +22,7 @@
 
 using System.Windows.Shapes;
 
-namespace LiveCharts
+namespace LiveCharts.CoreComponents
 {
     public class HoverableShape
     {

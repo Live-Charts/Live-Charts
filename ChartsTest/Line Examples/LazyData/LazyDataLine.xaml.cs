@@ -8,6 +8,7 @@ using System.Windows;
 using System.Windows.Threading;
 using LiveCharts;
 using LiveCharts.Annotations;
+using LiveCharts.CoreComponents;
 
 namespace ChartsTest.Line_Examples
 {

@@ -3,6 +3,7 @@ using System.Linq;
 using System.Windows;
 using ChartsTest.Line_Examples.Mvvm;
 using LiveCharts;
+using LiveCharts.CoreComponents;
 
 namespace ChartsTest.Line_Examples
 {

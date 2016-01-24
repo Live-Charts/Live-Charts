@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows;
 using LiveCharts;
+using LiveCharts.CoreComponents;
 
 namespace ChartsTest.Pie_Examples.Mvvm
 {
