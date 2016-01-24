@@ -11,15 +11,18 @@
   <img src="https://dl.dropboxusercontent.com/u/40165535/LiveCharts/ScatterChart.gif" />
 </p>
 
-### 0.6.0 is here, If you come from an older verison concider reading this https://github.com/beto-rodriguez/Live-Charts/releases/tag/0.6.0
+### 0.6.0 is here, If you come from an older verison concider reading [this](https://github.com/beto-rodriguez/Live-Charts/releases/tag/0.6.0)
 
-Live charts is an easy way to build useful charts, all charts are animated, they update every time you change your data, or when you rezise the chart, also since 0.5 we are working to support huge amounts of data, right now this is on test and only implemented in line chart, but in the included examples it is able to draw 1,000,000 points in a really short period of time.
+[![Join the chat at https://gitter.im/beto-rodriguez/Live-Charts](https://badges.gitter.im/beto-rodriguez/Live-Charts.svg)](https://gitter.im/beto-rodriguez/Live-Charts?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
- - MVVM Charting, Support for WPF Binding, All charts update when data changes.
- - Good looking, animated and easy to customize charts, you can practically change all properties.
- - Easy to maintain and create new charts, as you can see in the source code, some charts have almost no code.
- - Supports zooming and panning.
- - MIT License, permissive licensing.
+Live charts is an easy way to build useful charts, all charts are animated, they update every time you change your data, or when you rezise the chart, it also has an awesome performance.
+
+ - **3,000,000 points in 1 second, (coming soon in next release, almost ready!)**
+ - **MVVM Charting, Support for WPF Binding, All charts update when data changes.**
+ - **Good looking, animated and easy to customize charts, you can practically change all properties.**
+ - **Easy to maintain and create new charts, as you can see in the source code, some charts have almost no code.**
+ - **Supports zooming and panning.**
+ - **MIT License, permissive licensing.**
  
 This is the logic you use in every chart, there are just some litle properties or rules that change from each type of chart. Use the syntax that better fits your needs.
 
@@ -185,4 +188,10 @@ git-client://clone?repo=https%3A%2F%2Fgithub.com%2Fbeto-rodriguez%2FLive-Charts
 </p>
 <p align="center">
 <img src="https://dl.dropboxusercontent.com/u/40165535/LiveCharts/UiElements.png" />
+</p>
+
+# Perfomance Test
+
+<p align="center">
+<img src="https://dl.dropboxusercontent.com/u/40165535/livecharts%20perfomance.png" />
 </p>
