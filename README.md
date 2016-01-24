@@ -193,5 +193,5 @@ git-client://clone?repo=https%3A%2F%2Fgithub.com%2Fbeto-rodriguez%2FLive-Charts
 # Perfomance Test
 
 <p align="center">
-<img src="https://www.dropbox.com/s/39dnshhserxl5zy/livecharts%20perfomance.png?dl=0" />
+<img src="https://dl.dropboxusercontent.com/u/40165535/livecharts%20perfomance.png" />
 </p>
