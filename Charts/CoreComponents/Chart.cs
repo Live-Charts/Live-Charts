@@ -50,6 +50,8 @@ namespace LiveCharts.CoreComponents
         internal bool RequiresScale;
         internal List<Series> EraseSerieBuffer = new List<Series>();
         internal bool SeriesInitialized;
+        internal double From = double.MinValue;
+        internal double To = double.MaxValue;
 
         protected double CurrentScale;
         protected ShapeHoverBehavior ShapeHoverBehavior;
@@ -70,20 +72,20 @@ namespace LiveCharts.CoreComponents
         {
             Colors = new List<Color>
             {
-                Color.FromRgb(41, 127, 184),
-                Color.FromRgb(230, 76, 60),
-                Color.FromRgb(240, 195, 15),
-                Color.FromRgb(26, 187, 155),
-                Color.FromRgb(87, 213, 140),
-                Color.FromRgb(154, 89, 181),
-                Color.FromRgb(92, 109, 126),
-                Color.FromRgb(22, 159, 132),
-                Color.FromRgb(39, 173, 96),
-                Color.FromRgb(92, 171, 225),
-                Color.FromRgb(141, 68, 172),
-                Color.FromRgb(229, 126, 34),
-                Color.FromRgb(210, 84, 0),
-                Color.FromRgb(191, 57, 43)
+                Color.FromRgb(33, 149, 242),
+                Color.FromRgb(243, 67, 54),
+                Color.FromRgb(254, 192, 7),
+                Color.FromRgb(96, 125, 138),
+                Color.FromRgb(155, 39, 175),
+                Color.FromRgb(0, 149, 135),
+                Color.FromRgb(76, 174, 80),
+                Color.FromRgb(121, 85, 72),
+                Color.FromRgb(157, 157, 157),
+                Color.FromRgb(232, 30, 99),
+                Color.FromRgb(63, 81, 180),
+                Color.FromRgb(0, 187, 211),
+                Color.FromRgb(254, 234, 59),
+                Color.FromRgb(254, 87, 34)
             };
             Randomizer = new Random();
         }
@@ -250,6 +252,8 @@ namespace LiveCharts.CoreComponents
         /// Gets or sets if chart allows zooming or not
         /// </summary>
         public bool Zooming { get; set; }
+
+        public AxisTags ZoomingAxis { get; set; }
         #endregion
 
         #region ProtectedProperties
@@ -271,19 +275,48 @@ namespace LiveCharts.CoreComponents
             PrepareCanvas(animate);
         }
 
-        public void ZoomIn()
+        public void ZoomIn(Point pivot)
         {
-            CurrentScale += .1;
+            var mid = ZoomingAxis == AxisTags.X ? (Max.X - Min.X)*.5 : (Max.Y - Min.Y)*.5;
+            mid = ToPlotArea(mid, ZoomingAxis);
+
+            var s = ZoomingAxis == AxisTags.X ? S.X : S.Y;
+
+            if (mid < (ZoomingAxis == AxisTags.X ? pivot.X : pivot.Y))
+            {
+                From += s;
+            }
+            else
+            {
+                To -= s;
+            }
+
+            foreach (var series in Series)
+                series.Values.RequiresEvaluation = true;
+
             ForceRedrawNow();
-            PreventPlotAreaToBeVisible();
         }
 
-        public void ZoomOut()
+        public void ZoomOut(Point pivot)
         {
-            CurrentScale -= .1;
-            if (CurrentScale <= 1) CurrentScale = 1;
+            var mid = ZoomingAxis == AxisTags.X ? (Max.X - Min.X) * .5 : (Max.Y - Min.Y) * .5;
+            mid = ToPlotArea(mid, ZoomingAxis);
+
+            var s = ZoomingAxis == AxisTags.X ? S.X : S.Y;
+
+            if (mid < (ZoomingAxis == AxisTags.X ? pivot.X : pivot.Y))
+            {
+                From -= s;
+            }
+            else
+            {
+                To += s;
+            }
+
+            foreach (var series in Series)
+                series.Values.RequiresEvaluation = true;
+
             ForceRedrawNow();
-            PreventPlotAreaToBeVisible();
         }
 
         /// <summary>
@@ -424,8 +457,6 @@ namespace LiveCharts.CoreComponents
 
         protected virtual void Scale()
         {
-
-
             InitializeComponents();
 
             Max = new Point(
@@ -439,6 +470,17 @@ namespace LiveCharts.CoreComponents
                 Series.Where(x => x.Values != null).Select(x => x.Values.MinChartPoint.X).DefaultIfEmpty(0).Min(),
                 AxisY.MinValue ??
                 Series.Where(x => x.Values != null).Select(x => x.Values.MinChartPoint.Y).DefaultIfEmpty(0).Min());
+
+            if (ZoomingAxis == AxisTags.X)
+            {
+                From = Min.X;
+                To = Max.X;
+            }
+            else
+            {
+                From = Min.Y;
+                To = Max.Y;
+            }
         }
         #endregion
 
@@ -963,8 +1005,8 @@ namespace LiveCharts.CoreComponents
         {
             if (!Zooming) return;
             e.Handled = true;
-            if (e.Delta > 0) ZoomIn();
-            else ZoomOut();
+            if (e.Delta > 0) ZoomIn(e.GetPosition(this));
+            else ZoomOut(e.GetPosition(this));
         }
 
         private void MouseDownForPan(object sender, MouseEventArgs e)

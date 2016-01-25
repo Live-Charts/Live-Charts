@@ -20,18 +20,17 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
+using System;
+using System.Collections.Generic;
+using LiveCharts.CoreComponents;
+
 namespace LiveCharts
 {
-    public enum AxisTags
+    public interface IDataOptimization<T>
     {
-        X ,Y, None
-    }
-
-    public static class AxisExtentions
-    {
-        public static AxisTags Invert(this AxisTags axis)
-        {
-            return axis == AxisTags.X ? AxisTags.Y : AxisTags.X;
-        }
+        Chart Chart { get; set; }
+        Func<T, int, double> XMapper { get; set; }
+        Func<T, int, double> YMapper { get; set; }
+        IEnumerable<ChartPoint> Run(IEnumerable<KeyValuePair<int, T>> data);
     }
 }

@@ -20,7 +20,6 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
@@ -67,15 +66,15 @@ namespace LiveCharts.CoreComponents
 
                     if (config == null) return Enumerable.Empty<ChartPoint>();
 
+                    var q = IndexData(config);
+
                     if (config.DataOptimization == null)
                     {
-                        var ix = 0;
-                        var iy = 0;
-                        _points = this.Select(i => new ChartPoint
+                        _points = q.Select(t => new ChartPoint
                         {
-                            X = config.XValueMapper(i, ix++),
-                            Y = config.YValueMapper(i, iy++),
-                            Instance = i
+                            X = config.XValueMapper(t.Value, t.Key),
+                            Y = config.YValueMapper(t.Value, t.Key),
+                            Instance = t
                         }).ToArray();
                         return _points;
                     }
@@ -86,7 +85,7 @@ namespace LiveCharts.CoreComponents
                     var collection = Series == null ? null : Series.Collection;
                     _points = collection == null
                         ? new ChartPoint[] {}
-                        : config.DataOptimization.Run(this).ToArray();
+                        : config.DataOptimization.Run(q).ToArray();
                     return _points.DefaultIfEmpty(new ChartPoint());
                 }
                 return _points;
@@ -148,21 +147,36 @@ namespace LiveCharts.CoreComponents
                 config.DataOptimization.XMapper = config.XValueMapper;
                 config.DataOptimization.YMapper = config.YValueMapper;
             }
+            
+            var q = IndexData(config).ToArray();
 
-            var ix = 0;
-            var xs = this.Select(t => config.XValueMapper(t, ix++)).DefaultIfEmpty(0).ToArray();
+            var xs = q.Select(t => config.XValueMapper(t.Value, t.Key)).DefaultIfEmpty(0).ToArray();
             var xMax = xs.Max();
             var xMin = xs.Min();
             _min.X = xMin;
             _max.X = xMax;
 
-            var iy = 0;
-            var ys = this.Select(t => config.YValueMapper(t, iy++)).DefaultIfEmpty(0).ToArray();
+            var ys = q.Select(t => config.YValueMapper(t.Value, t.Key)).DefaultIfEmpty(0).ToArray();
             var yMax = ys.Max();
             var yMin = ys.Min();
 
             _min.Y = yMin;
             _max.Y = yMax;
+        }
+
+        private IEnumerable<KeyValuePair<int, T>> IndexData(SeriesConfiguration<T> config)
+        {
+            var f = config.Chart.ZoomingAxis == AxisTags.X
+                        ? config.XValueMapper
+                        : config.YValueMapper;
+
+            var i = 0;
+            foreach (var t in this)
+            {
+                if (f(t, i) >= config.Chart.From && f(t, i) <= config.Chart.To)
+                    yield return new KeyValuePair<int, T>(i, t);
+                i++;
+            }
         }
 
         #endregion
