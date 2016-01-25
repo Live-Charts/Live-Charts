@@ -19,7 +19,7 @@
         <TextBlock Grid.Row="0" HorizontalAlignment="Center" Grid.ColumnSpan="2" Margin="5">
             <Bold>In Line Charting</Bold>: when you only need to plot easy and now!
         </TextBlock>
-        <lvc:LineChart Name="Chart" Grid.Row="1" Grid.Column="0" Zooming="True">
+        <lvc:LineChart Name="Chart" Grid.Row="1" Grid.Column="0">
             <lvc:LineChart.Series>
                 <lvc:LineSeries Title="Maria" Values="20, 40, 45, 60, 55, 60, 65, 70"></lvc:LineSeries>
                 <lvc:LineSeries Title="John" Values="30, 35, 43, 68, 65 ,70, 55, 60"></lvc:LineSeries>

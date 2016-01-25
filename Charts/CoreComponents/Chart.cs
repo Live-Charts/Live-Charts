@@ -109,7 +109,6 @@ namespace LiveCharts.CoreComponents
             HoverableShapes = new List<HoverableShape>();
             PointHoverColor = System.Windows.Media.Colors.White; 
 
-            //it requieres a background so it detect mouse down/up events.
             Background = Brushes.Transparent;
 
             SizeChanged += Chart_OnsizeChanged;
@@ -248,10 +247,6 @@ namespace LiveCharts.CoreComponents
                 Canvas.Children.Add(_dataToolTip);
             }
         }
-        /// <summary>
-        /// Gets or sets if chart allows zooming or not
-        /// </summary>
-        public bool Zooming { get; set; }
 
         public AxisTags ZoomingAxis { get; set; }
         #endregion
@@ -277,18 +272,23 @@ namespace LiveCharts.CoreComponents
 
         public void ZoomIn(Point pivot)
         {
-            var mid = ZoomingAxis == AxisTags.X ? (Max.X - Min.X)*.5 : (Max.Y - Min.Y)*.5;
+            if (DataToolTip != null) DataToolTip.Visibility = Visibility.Hidden;
+
+            var mid = ZoomingAxis == AxisTags.X ? (Max.X + Min.X)*.5 : (Max.Y + Min.Y)*.5;
             mid = ToPlotArea(mid, ZoomingAxis);
 
             var s = ZoomingAxis == AxisTags.X ? S.X : S.Y;
-
+            var max = ZoomingAxis == AxisTags.X ? Max.X : Max.Y;
+            var min = ZoomingAxis == AxisTags.X ? Min.X : Min.Y;
+            var hasMorePoints = max - min > s*1.01;
+            
             if (mid < (ZoomingAxis == AxisTags.X ? pivot.X : pivot.Y))
             {
-                From += s;
+                if (hasMorePoints) From += s;
             }
             else
             {
-                To -= s;
+                if (hasMorePoints) To -= s;
             }
 
             foreach (var series in Series)
@@ -299,19 +299,12 @@ namespace LiveCharts.CoreComponents
 
         public void ZoomOut(Point pivot)
         {
-            var mid = ZoomingAxis == AxisTags.X ? (Max.X - Min.X) * .5 : (Max.Y - Min.Y) * .5;
-            mid = ToPlotArea(mid, ZoomingAxis);
+            if (DataToolTip != null) DataToolTip.Visibility = Visibility.Hidden;
 
             var s = ZoomingAxis == AxisTags.X ? S.X : S.Y;
 
-            if (mid < (ZoomingAxis == AxisTags.X ? pivot.X : pivot.Y))
-            {
-                From -= s;
-            }
-            else
-            {
-                To += s;
-            }
+            From -= s;
+            To += s;
 
             foreach (var series in Series)
                 series.Values.RequiresEvaluation = true;
@@ -969,9 +962,8 @@ namespace LiveCharts.CoreComponents
                  Scale();
                 RequiresScale = false;
             }
-            foreach (var serie in EraseSerieBuffer.GroupBy(x => x)) serie.First().Erase();
-            
-            EraseSerieBuffer.Clear();
+
+            EreaseSeries();
 
             var toPlot = Series.Where(x => x.RequiresPlot);
             foreach (var series in toPlot)
@@ -985,6 +977,12 @@ namespace LiveCharts.CoreComponents
 #if DEBUG
             Trace.WriteLine("Series Updated (" + DateTime.Now.ToLongTimeString() + ")");
 #endif
+        }
+
+        private void EreaseSeries()
+        {
+            foreach (var serie in EraseSerieBuffer.GroupBy(x => x)) serie.First().Erase();
+            EraseSerieBuffer.Clear();
         }
 
         private void UpdateModifiedDataSeries(object sender, EventArgs e)
@@ -1003,7 +1001,7 @@ namespace LiveCharts.CoreComponents
 
         private void MouseWheelOnRoll(object sender, MouseWheelEventArgs e)
         {
-            if (!Zooming) return;
+            if (ZoomingAxis == AxisTags.None) return;
             e.Handled = true;
             if (e.Delta > 0) ZoomIn(e.GetPosition(this));
             else ZoomOut(e.GetPosition(this));
@@ -1011,29 +1009,34 @@ namespace LiveCharts.CoreComponents
 
         private void MouseDownForPan(object sender, MouseEventArgs e)
         {
-            if (!Zooming) return;
+            if (ZoomingAxis == AxisTags.None) return;
             _panOrigin = e.GetPosition(this);
             _isDragging = true;
         }
 
         private void MouseMoveForPan(object sender, MouseEventArgs e)
         {
-            if (!_isDragging) return;
-            var tt = Canvas.RenderTransform as TranslateTransform;
-            if (tt == null) return;
+            //Panning is disabled for now
 
-            var movePoint = e.GetPosition(this);
-            var dif = _panOrigin - movePoint;
+            //if (!_isDragging) return;
+          
+            //var movePoint = e.GetPosition(this);
+            //var dif = _panOrigin - movePoint;
 
-            tt.X = tt.X - dif.X;
-            tt.Y = tt.Y - dif.Y;
+            //Min.X = Min.X - dif.X;
+            //Min.Y = Min.Y - dif.Y;
 
-            _panOrigin = movePoint;
+            //foreach (var series in Series)
+            //    series.Values.RequiresEvaluation = true;
+
+            //UpdateSeries(null, null);
+
+            //_panOrigin = movePoint;
         }
 
         private void MouseUpForPan(object sender, MouseEventArgs e)
         {
-            if (!Zooming) return;
+            if (ZoomingAxis == AxisTags.None) return;
             _isDragging = false;
             PreventPlotAreaToBeVisible();
         }

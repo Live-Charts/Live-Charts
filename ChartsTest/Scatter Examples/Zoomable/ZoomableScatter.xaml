@@ -16,7 +16,7 @@
         <TextBlock Grid.Row="0" HorizontalAlignment="Center" Grid.ColumnSpan="2" Margin="5" TextWrapping="Wrap">
             Just Areas and Zoomable, use mouse wheel to zoom in/out, click and drag to pan.
         </TextBlock>
-        <lvc:ScatterChart Name="Chart" Grid.Row="1" Grid.Column="0" Zooming="True">
+        <lvc:ScatterChart Name="Chart" Grid.Row="1" Grid.Column="0">
             <lvc:ScatterChart.Series>
                 <lvc:ScatterSeries Name="Serie1" Title="Sin"/>
             </lvc:ScatterChart.Series>

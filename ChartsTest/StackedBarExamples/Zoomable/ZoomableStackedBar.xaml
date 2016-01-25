@@ -16,7 +16,7 @@
         <TextBlock Grid.Row="0" HorizontalAlignment="Center" Grid.ColumnSpan="2" Margin="5" TextWrapping="Wrap">
             Zoomable chart, use mouse wheel to zoom in/out, click and drag to pan.
         </TextBlock>
-        <lvc:StackedBarChart Name="Chart" Grid.Row="1" Grid.Column="0" Zooming="True" Hoverable="False">
+        <lvc:StackedBarChart Name="Chart" Grid.Row="1" Grid.Column="0" Hoverable="False">
             <lvc:StackedBarChart.Series>
                 <lvc:StackedBarSeries Title="Maria" Values="20, 40, 48, 60, 55, 60, 65, 70"></lvc:StackedBarSeries>
                     <lvc:StackedBarSeries Title="John" Values="30, 35, 41, 68, 65 ,70, 55, 60"></lvc:StackedBarSeries>

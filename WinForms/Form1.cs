@@ -17,7 +17,6 @@ namespace WinForms
         {
             var lineChart = Host.Child as LineChart;
             if (lineChart == null) return;
-            lineChart.Zooming = true;
             lineChart.AxisY.LabelFormatter = d => d.ToString("C");
             lineChart.AxisY.Labels = new []
             {
