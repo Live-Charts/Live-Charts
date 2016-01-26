@@ -3,6 +3,7 @@ using System.Windows.Controls;
 using ChartsTest.BarExamples;
 using ChartsTest.BarExamples.UsingObservableChartPoint;
 using ChartsTest.Line_Examples;
+using ChartsTest.Line_Examples.RotadedLine;
 using ChartsTest.Pie_Examples;
 using ChartsTest.Scatter_Examples;
 using ChartsTest.StackedBarExamples;
@@ -26,6 +27,7 @@ namespace ChartsTest
                 new MvvmLine(),
                 new LazyDataLine(),
                 new CustomLine(),
+                new RotatedLine(),
                 new ZoomableLine(),
                 new UiElementsLine(),
                 ////new PerformanceLine() // disabled by now

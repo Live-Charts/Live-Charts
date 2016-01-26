@@ -170,8 +170,11 @@ namespace LiveCharts
 
         protected override void DrawAxes()
         {
-            AxisX.IgnoresLastLabel = true;
-            ConfigureSmartAxis(AxisX);
+            if (Invert) AxisY.IgnoresLastLabel = true;
+            else AxisX.IgnoresLastLabel = true;
+
+            if (Invert) ConfigureYAsIndexed();
+            else ConfigureXAsIndexed();
 
             S = GetS();
 

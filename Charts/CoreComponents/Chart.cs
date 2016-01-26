@@ -154,6 +154,15 @@ namespace LiveCharts.CoreComponents
 
         #region Dependency Properties
 
+        public static readonly DependencyProperty InvertProperty = DependencyProperty.Register(
+            "Invert", typeof (bool), typeof (Chart), new PropertyMetadata(default(bool)));
+
+        public bool Invert
+        {
+            get { return (bool) GetValue(InvertProperty); }
+            set { SetValue(InvertProperty, value); }
+        }
+
         public static readonly DependencyProperty HoverableProperty = DependencyProperty.Register(
             "Hoverable", typeof (bool), typeof (Chart));
 
@@ -284,11 +293,19 @@ namespace LiveCharts.CoreComponents
             
             if (mid < (ZoomingAxis == AxisTags.X ? pivot.X : pivot.Y))
             {
-                if (hasMorePoints) From += s;
+                if (hasMorePoints)
+                {
+                    if (Invert) To -= s;
+                    else From += s;
+                }
             }
             else
             {
-                if (hasMorePoints) To -= s;
+                if (hasMorePoints)
+                {
+                    if (Invert) From += s;
+                    else To -= s;
+                }
             }
 
             foreach (var series in Series)
@@ -383,18 +400,30 @@ namespace LiveCharts.CoreComponents
             return tick;
         }
 
-        protected void ConfigureSmartAxis(Axis axis)
+        protected void ConfigureXAsIndexed()
         {
-            axis.ShowLabels = axis.Labels != null;
-            if (axis.Labels == null || !axis.Labels.Any() || !axis.ShowLabels) return;
-            var m = axis.Labels.OrderByDescending(x => x.Length);
+            AxisX.ShowLabels = AxisX.Labels != null;
+            var m = (AxisX.Labels ?? new List<string> {""}).OrderByDescending(x => x.Length);
             var longestYLabel = new FormattedText(m.First(), CultureInfo.CurrentUICulture, FlowDirection.LeftToRight,
-                new Typeface(axis.FontFamily, axis.FontStyle, axis.FontWeight, axis.FontStretch), axis.FontSize,
+                new Typeface(AxisX.FontFamily, AxisX.FontStyle, AxisX.FontWeight, AxisX.FontStretch), AxisX.FontSize,
                 Brushes.Black);
-            axis.Separator.Step = (longestYLabel.Width * Max.X) * 1.25 > PlotArea.Width
+            AxisX.Separator.Step = (longestYLabel.Width*Max.X)*1.25 > PlotArea.Width
                 ? null
-                : (int?)1;
-            if (AxisX.Separator.Step != null) S.X = (int)AxisX.Separator.Step;
+                : (int?) 1;
+            if (AxisX.Separator.Step != null) S.X = (int) AxisX.Separator.Step;
+        }
+
+        protected void ConfigureYAsIndexed()
+        {
+            AxisY.ShowLabels = AxisY.Labels != null;
+            var m = (AxisY.Labels ?? new List<string> {""}).OrderByDescending(x => x.Length);
+            var longestYLabel = new FormattedText(m.First(), CultureInfo.CurrentUICulture, FlowDirection.LeftToRight,
+                new Typeface(AxisY.FontFamily, AxisY.FontStyle, AxisY.FontWeight, AxisY.FontStretch), AxisY.FontSize,
+                Brushes.Black);
+            AxisY.Separator.Step = (longestYLabel.Width*Max.Y)*1.25 > PlotArea.Width
+                ? null
+                : (int?) 1;
+            if (AxisY.Separator.Step != null) S.Y = (int) AxisY.Separator.Step;
         }
 
         protected Point GetLongestLabelSize(Axis axis)
@@ -404,11 +433,10 @@ namespace LiveCharts.CoreComponents
             var from = Equals(axis, AxisY) ? Min.Y : Min.X;
             var to = Equals(axis, AxisY) ? Max.Y : Max.X;
             var s = Equals(axis, AxisY) ? S.Y : S.X;
+            var f = GetFormatter(axis);
             for (var i = from; i <= to; i += s)
             {
-                var iL = axis.LabelFormatter == null
-                    ? i.ToString(CultureInfo.InvariantCulture)
-                    : axis.LabelFormatter(i);
+                var iL = f(i);
                 if (label.Length < iL.Length)
                 {
                     label = iL;

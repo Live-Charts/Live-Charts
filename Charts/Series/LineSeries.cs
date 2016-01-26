@@ -150,16 +150,16 @@ namespace LiveCharts
             return p;
         }
 
-        private double GetBezierLength(Point[] points)
+        private static double GetBezierLength(Point[] points)
         {
-            const int STEPS = 5;
+            const int steps = 5;
             double length = 0;
-            Point last = GetPoint(0, points);
-            for (int i = 1; i <= STEPS; i++)
+            var last = GetPoint(0, points);
+            for (var i = 1; i <= steps; i++)
             {
-                Point p = GetPoint((1.0 / STEPS) * i, points);
-                double dx = p.X - last.X;
-                double dy = p.Y - last.Y;
+                var p = GetPoint((1.0 / steps) * i, points);
+                var dx = p.X - last.X;
+                var dy = p.Y - last.Y;
                 length += Math.Sqrt(dx * dx + dy * dy);
                 last = p;
             }
@@ -184,9 +184,15 @@ namespace LiveCharts
                 l += GetBezierLength(new [] { points[i], cp1[i], cp2[i], points[i + 1] });
             }
             l /= StrokeThickness;
-            areaLines.Add(new LineSegment(new Point(points.Max(x => x.X), ToPlotArea(Chart.Min.Y, AxisTags.Y)), true));
+            var lastP = Chart.Invert
+                ? new Point(ToPlotArea(Chart.Min.X, AxisTags.X), points.Min(x => x.Y))
+                : new Point(points.Max(x => x.X), ToPlotArea(Chart.Min.Y, AxisTags.Y));
+            areaLines.Add(new LineSegment(lastP, true));
             var f = new PathFigure(points[0], lines, false);
-            var fa = new PathFigure(new Point(points.Min(x => x.X), ToPlotArea(Chart.Min.Y, AxisTags.Y)), areaLines, false);
+            var aOrigin = Chart.Invert
+                ? new Point(ToPlotArea(Chart.Min.X, AxisTags.X), points.Max(x => x.Y))
+                : new Point(points.Min(x => x.X), ToPlotArea(Chart.Min.Y, AxisTags.Y));
+            var fa = new PathFigure(aOrigin, areaLines, false);
             var g = new PathGeometry(new[] { f });
             var ga = new PathGeometry(new[] { fa });
 

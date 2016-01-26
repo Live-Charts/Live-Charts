@@ -92,7 +92,8 @@ namespace LiveCharts
 
         protected override void DrawAxes()
         {
-            ConfigureSmartAxis(AxisX);
+            if (Invert) ConfigureYAsIndexed();
+            else ConfigureXAsIndexed();
 
             Canvas.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
 
