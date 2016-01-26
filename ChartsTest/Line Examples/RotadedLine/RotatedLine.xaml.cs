@@ -18,7 +18,7 @@ namespace ChartsTest.Line_Examples.RotadedLine
                     new LineSeries
                     {
                         Title = "inverted series",
-                        Values = new double[] {10, 15, 18, 20, 15, 13}.AsChartValues()
+                        Values = new double[] {10, 15, 18, 20, 15, 0, -3, -2}.AsChartValues()
                     }
                 };
 

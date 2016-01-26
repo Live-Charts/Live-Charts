@@ -6,9 +6,11 @@ using ChartsTest.Line_Examples;
 using ChartsTest.Line_Examples.RotadedLine;
 using ChartsTest.Pie_Examples;
 using ChartsTest.Scatter_Examples;
+using ChartsTest.Scatter_Examples.logarithmicScatter;
 using ChartsTest.StackedBarExamples;
 using MvvmPie = ChartsTest.Pie_Examples.Mvvm.MvvmPie;
 using MvvmStackedBar = ChartsTest.StackedBarExamples.Mvvm.MvvmStackedBar;
+using RotatedBar = ChartsTest.BarExamples.RotatedBar.RotatedBar;
 
 namespace ChartsTest
 {
@@ -27,7 +29,6 @@ namespace ChartsTest
                 new MvvmLine(),
                 new LazyDataLine(),
                 new CustomLine(),
-                new RotatedLine(),
                 new ZoomableLine(),
                 new UiElementsLine(),
                 ////new PerformanceLine() // disabled by now
@@ -37,6 +38,7 @@ namespace ChartsTest
                 new BasicBar(),
                 new BindingBar(),
                 new MvvmBar(),
+                new RotatedBar(),
                 new PointPropertyChangedBar(),
                 new CustomBar(),
                 ////new ZoomableBar(),
@@ -65,6 +67,7 @@ namespace ChartsTest
                 new BasicScatter(),
                 new BindingScatter(),
                 new MvvmScatter(),
+                new Logarithmic(),
                 new CustomScatter(),
                 //new ZoomableScatter(),
                 //new PerformanceScatter()

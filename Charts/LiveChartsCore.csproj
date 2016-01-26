@@ -131,7 +131,6 @@
     <Compile Include="Interfaces\ISeriesCollection.cs" />
     <Compile Include="IDataOptimization.cs" />
     <Compile Include="Properties\Annotations.cs" />
-    <Compile Include="Series\RowSeries.cs" />
     <Compile Include="CoreComponents\SeriesCollection.cs" />
     <Compile Include="Interfaces\IChartValues.cs" />
     <Compile Include="LiveChartsExtentions.cs" />

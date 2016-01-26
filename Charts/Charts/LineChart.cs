@@ -79,8 +79,6 @@ namespace LiveCharts
             if (Invert) ConfigureYAsIndexed();
             else ConfigureXAsIndexed();
 
-            //S = GetS();
-
             Canvas.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
             var lastLabelX = Math.Truncate((Max.X - Min.X)/S.X)*S.X;
             var longestYLabelSize = GetLongestLabelSize(AxisY);

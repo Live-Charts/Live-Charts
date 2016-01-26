@@ -1,12 +1,12 @@
-﻿<UserControl x:Class="ChartsTest.Line_Examples.RotadedLine.RotatedLine"
+﻿<UserControl x:Class="ChartsTest.BarExamples.RotatedBar.RotatedBar"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:lvc="clr-namespace:LiveCharts;assembly=LiveCharts"
-             xmlns:rotadedLine="clr-namespace:ChartsTest.Line_Examples.RotadedLine"
+             xmlns:rotatedBar="clr-namespace:ChartsTest.BarExamples.RotatedBar"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300" d:DataContext="{d:DesignInstance rotadedLine:RotatedLine}"
+             d:DesignHeight="300" d:DesignWidth="300" d:DataContext="{d:DesignInstance rotatedBar:RotatedBar}"
              Loaded="OnLoaded">
     <Grid>
         <Grid.RowDefinitions>
@@ -14,12 +14,12 @@
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
         <TextBlock Grid.Row="0">
-            <Bold>Rotated Line Chart</Bold>: this example shows a rotate a line chart, it is really easy with live charts.
+            <Bold>Rotated Bar Chart</Bold>: this example shows a rotated line chart, it is really easy with live charts.
         </TextBlock>
-        <lvc:LineChart Name="Chart" Grid.Row="1" Invert="True" Series="{Binding SeriesCollection}" Zooming="True">
-            <lvc:LineChart.AxisY >
-                <lvc:Axis Labels="Day 1, Day 2, Day 3, day 4, day5, day6, day 7, day 8"></lvc:Axis>
-            </lvc:LineChart.AxisY>
-        </lvc:LineChart>
+        <lvc:BarChart Name="Chart" Grid.Row="1" Invert="True" Series="{Binding SeriesCollection}" Zooming="True">
+            <lvc:BarChart.AxisY >
+                <lvc:Axis Labels="Day 1, Day 2, Day 3, day 4, day5, day6"></lvc:Axis>
+            </lvc:BarChart.AxisY>
+        </lvc:BarChart>
     </Grid>
 </UserControl>

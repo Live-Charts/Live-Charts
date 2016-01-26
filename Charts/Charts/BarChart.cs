@@ -84,8 +84,16 @@ namespace LiveCharts
                  AxisX.Separator.Step ?? CalculateSeparator(Max.X - Min.X, AxisTags.X),
                  AxisY.Separator.Step ?? CalculateSeparator(Max.Y - Min.Y, AxisTags.Y));
 
-            if (AxisY.MaxValue == null) Max.Y = (Math.Truncate(Max.Y/S.Y) + 1)*S.Y;
-            if (AxisY.MinValue == null) Min.Y = (Math.Truncate(Min.Y/S.Y) - 1)*S.Y;
+            if (Invert)
+            {
+                if (AxisX.MaxValue == null) Max.X = (Math.Truncate(Max.X / S.X) + 1) * S.X;
+                if (AxisX.MinValue == null) Min.X = (Math.Truncate(Min.X / S.X) - 1) * S.X;
+            }
+            else
+            {
+                if (AxisY.MaxValue == null) Max.Y = (Math.Truncate(Max.Y / S.Y) + 1) * S.Y;
+                if (AxisY.MinValue == null) Min.Y = (Math.Truncate(Min.Y / S.Y) - 1) * S.Y;
+            }
 
             DrawAxes();
         }
