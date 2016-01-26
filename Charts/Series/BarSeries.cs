@@ -54,7 +54,7 @@ namespace LiveCharts
             var barSeries = Chart.Series.OfType<BarSeries>().ToList();
             var pos = barSeries.IndexOf(this);
             var count = barSeries.Count;
-            var unitW = ToPlotArea(1, AxisTags.X) - Chart.PlotArea.X + 5;
+            var unitW = ToPlotArea(Chart.Max.Y - 1, AxisTags.Y) - Chart.PlotArea.Y + 5;
             var overflow = unitW - chart.MaxColumnWidth * 3 > 0 ? unitW - chart.MaxColumnWidth * 3 : 0;
             unitW = unitW > chart.MaxColumnWidth * 3 ? chart.MaxColumnWidth * 3 : unitW;
 
@@ -62,8 +62,8 @@ namespace LiveCharts
             const int seriesPadding = 2;
             var barW = (unitW - 2 * pointPadding) / count;
 
-            var bothLimitsPositive = Chart.Max.Y > 0 && Chart.Min.Y > 0 - Chart.S.Y * .01;
-            var bothLimitsNegative = Chart.Max.Y < 0 + Chart.S.Y * .01 && Chart.Min.Y < 0;
+            var bothLimitsPositive = Chart.Max.X > 0 && Chart.Min.X > 0 - Chart.S.X * .01;
+            var bothLimitsNegative = Chart.Max.X < 0 + Chart.S.X * .01 && Chart.Min.X < 0;
 
             foreach (var point in Values.Points)
             {
@@ -73,33 +73,33 @@ namespace LiveCharts
                     StrokeThickness = StrokeThickness,
                     Stroke = Stroke,
                     Fill = Fill,
-                    Width = Math.Max(0, barW - seriesPadding),
-                    Height = 0,
+                    Width = 0,
+                    Height = Math.Max(0, barW - seriesPadding),
                     RenderTransform = t
                 };
 
                 var barStart = bothLimitsPositive
-                    ? Chart.Min.Y
-                    : (bothLimitsNegative ? Chart.Max.Y : 0);
-                var direction = point.Y > 0 ? 1 : -1;
+                    ? Chart.Min.X
+                    : (bothLimitsNegative ? Chart.Max.X : 0);
+                var direction = point.X > 0 ? 1 : -1;
 
-                var rh = bothLimitsNegative
-                    ? ToPlotArea(point.Y, AxisTags.Y)
-                    : ToPlotArea(barStart, AxisTags.Y) - ToPlotArea(point.Y * direction, AxisTags.Y);
+                var rw = bothLimitsNegative
+                    ? ToPlotArea(point.X, AxisTags.X)
+                    : ToPlotArea(point.X*direction, AxisTags.X) - ToPlotArea(barStart, AxisTags.X);
                 var hr = new Rectangle
                 {
                     Fill = Brushes.Transparent,
                     StrokeThickness = 0,
-                    Width = Math.Max(0, barW - seriesPadding),
-                    Height = rh
+                    Width = rw,
+                    Height = Math.Max(0, barW - seriesPadding)
                 };
 
-                Canvas.SetLeft(r, ToPlotArea(point.X, AxisTags.X) + barW * pos + pointPadding + overflow / 2);
-                Canvas.SetLeft(hr, ToPlotArea(point.X, AxisTags.X) + barW * pos + pointPadding + overflow / 2);
+                Canvas.SetTop(r, ToPlotArea(point.Y, AxisTags.Y) + barW * pos + pointPadding + overflow / 2);
+                Canvas.SetTop(hr, ToPlotArea(point.Y, AxisTags.Y) + barW * pos + pointPadding + overflow / 2);
 
-                var h = direction > 0 ? ToPlotArea(barStart, AxisTags.Y) - rh : ToPlotArea(barStart, AxisTags.Y);
+                var l = direction > 0 ? ToPlotArea(barStart, AxisTags.X) : ToPlotArea(barStart, AxisTags.X) - rw;
 
-                Canvas.SetTop(hr, h);
+                Canvas.SetLeft(hr, l);
                 Panel.SetZIndex(hr, int.MaxValue);
 
                 Chart.Canvas.Children.Add(r);
@@ -109,13 +109,13 @@ namespace LiveCharts
 
                 var hAnim = new DoubleAnimation
                 {
-                    To = rh,
+                    To = rw,
                     Duration = TimeSpan.FromMilliseconds(500)
                 };
                 var rAnim = new DoubleAnimation
                 {
-                    From = ToPlotArea(barStart, AxisTags.Y),
-                    To = h,
+                    From = ToPlotArea(barStart, AxisTags.X),
+                    To = l,
                     Duration = TimeSpan.FromMilliseconds(500)
                 };
 
@@ -124,16 +124,16 @@ namespace LiveCharts
                 {
                     if (animate)
                     {
-                        r.BeginAnimation(HeightProperty, hAnim);
-                        t.BeginAnimation(TranslateTransform.YProperty, rAnim);
+                        r.BeginAnimation(WidthProperty, hAnim);
+                        t.BeginAnimation(TranslateTransform.XProperty, rAnim);
                         animated = true;
                     }
                 }
 
                 if (!animated)
                 {
-                    r.Height = rh;
-                    t.Y = h;
+                    r.Width = rw;
+                    t.X = l;
                 }
 
                 hr.MouseDown += Chart.DataMouseDown;

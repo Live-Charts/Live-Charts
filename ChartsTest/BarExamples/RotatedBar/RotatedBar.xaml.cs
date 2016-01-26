@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using System.Windows.Media;
 using LiveCharts;
 
 namespace ChartsTest.BarExamples.RotatedBar
@@ -28,7 +29,8 @@ namespace ChartsTest.BarExamples.RotatedBar
                     new LineSeries
                     {
                         Title = "inverted line series",
-                        Values = new double[] {10, 15, 18, 20, 15, 13}.AsChartValues()
+                        Values = new double[] {10, 15, 18, 20, 15, 13}.AsChartValues(),
+                        Fill = Brushes.Transparent
                     }
                 };
 

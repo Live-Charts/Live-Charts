@@ -37,7 +37,7 @@ namespace LiveCharts
             Hoverable = true;
             ShapeHoverBehavior = ShapeHoverBehavior.Shape;
             LineType = LineChartLineType.Bezier;
-            MaxColumnWidth = 30;
+            MaxColumnWidth = 60;
             DefaultFillOpacity = 0.75;
         }
 

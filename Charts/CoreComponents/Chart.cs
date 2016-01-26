@@ -778,7 +778,7 @@ namespace LiveCharts.CoreComponents
                     else
                     {
                         Canvas.SetLeft(label, offsetY + (5 + longestY.X) - fl.Width);
-                        Canvas.SetTop(label, ToPlotArea(i, AxisTags.Y) - longestY.Y * .5);
+                        Canvas.SetTop(label, ToPlotArea(i, AxisTags.Y) - longestY.Y * .5 + YOffset);
                     }
                 }
             }
