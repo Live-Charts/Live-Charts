@@ -16,7 +16,7 @@
         <TextBlock Grid.Row="0" HorizontalAlignment="Center" Grid.ColumnSpan="2" Margin="5" TextWrapping="Wrap">
             <Bold>Zoom and Pan</Bold>: this examples shows how easly it is to support zooming and panning in a chart.
         </TextBlock>
-        <lvc:LineChart Name="Chart" Grid.Row="1" Grid.Column="0" Hoverable="False">
+        <lvc:LineChart Name="Chart" Grid.Row="1" Grid.Column="0" Hoverable="False" Zooming="True">
             <lvc:LineChart.Series>
                 <lvc:LineSeries Title="Maria" Values="20, 40, 48, 60, 55, 60, 65, 70" PointRadius="0" StrokeThickness="1"></lvc:LineSeries>
                     <lvc:LineSeries Title="John" Values="30, 35, 41, 68, 65 ,70, 55, 60" PointRadius="0" StrokeThickness="1"></lvc:LineSeries>

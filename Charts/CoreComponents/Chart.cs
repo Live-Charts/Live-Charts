@@ -52,6 +52,7 @@ namespace LiveCharts.CoreComponents
         internal bool SeriesInitialized;
         internal double From = double.MinValue;
         internal double To = double.MaxValue;
+        internal AxisTags ZoomingAxis = AxisTags.None;
 
         protected double CurrentScale;
         protected ShapeHoverBehavior ShapeHoverBehavior;
@@ -257,7 +258,7 @@ namespace LiveCharts.CoreComponents
             }
         }
 
-        public AxisTags ZoomingAxis { get; set; }
+        public bool Zooming { get; set; }
         #endregion
 
         #region ProtectedProperties
@@ -411,6 +412,7 @@ namespace LiveCharts.CoreComponents
                 ? null
                 : (int?) 1;
             if (AxisX.Separator.Step != null) S.X = (int) AxisX.Separator.Step;
+            if (Zooming) ZoomingAxis = AxisTags.X;
         }
 
         protected void ConfigureYAsIndexed()
@@ -424,6 +426,7 @@ namespace LiveCharts.CoreComponents
                 ? null
                 : (int?) 1;
             if (AxisY.Separator.Step != null) S.Y = (int) AxisY.Separator.Step;
+            if (Zooming) ZoomingAxis = AxisTags.Y;
         }
 
         protected Point GetLongestLabelSize(Axis axis)
@@ -497,7 +500,7 @@ namespace LiveCharts.CoreComponents
                 From = Min.X;
                 To = Max.X;
             }
-            else
+            if (ZoomingAxis == AxisTags.Y)
             {
                 From = Min.Y;
                 To = Max.Y;

@@ -16,7 +16,7 @@
         <TextBlock Grid.Row="0">
             <Bold>Rotated Line</Bold>: this example shows a rotated line chart, it is really easy with live charts.
         </TextBlock>
-        <lvc:LineChart Name="Chart" Grid.Row="1" Invert="True" Series="{Binding SeriesCollection}" ZoomingAxis="Y">
+        <lvc:LineChart Name="Chart" Grid.Row="1" Invert="True" Series="{Binding SeriesCollection}" Zooming="True">
             <lvc:LineChart.AxisY >
                 <lvc:Axis Labels="Day 1, Day 2, Day 3, day 4, day5, day6"></lvc:Axis>
             </lvc:LineChart.AxisY>
