@@ -55,46 +55,45 @@ namespace LiveCharts
 
                     var e = new Ellipse
                     {
-                        Width = PointRadius * 2,
-                        Height = PointRadius * 2,
+                        Width = PointRadius*2,
+                        Height = PointRadius*2,
                         Fill = Stroke,
-                        Stroke = new SolidColorBrush { Color = Chart.PointHoverColor },
+                        Stroke = new SolidColorBrush {Color = Chart.PointHoverColor},
                         StrokeThickness = 2
                     };
 
                     Panel.SetZIndex(e, int.MaxValue - 2);
-                    Canvas.SetLeft(e, point.X - e.Width * .5);
-                    Canvas.SetTop(e, point.Y - e.Height * .5);
+                    Canvas.SetLeft(e, point.X - e.Width*.5);
+                    Canvas.SetTop(e, point.Y - e.Height*.5);
                     Chart.Canvas.Children.Add(e);
 
-                    if (Chart.Hoverable)
+
+                    var r = new Rectangle
                     {
-                        var r = new Rectangle
-                        {
-                            Fill = Brushes.Transparent,
-                            Width = 40,
-                            Height = 40,
-                            StrokeThickness = 0
-                        };
+                        Fill = Brushes.Transparent,
+                        Width = 40,
+                        Height = 40,
+                        StrokeThickness = 0
+                    };
 
-                        r.MouseEnter += Chart.DataMouseEnter;
-                        r.MouseLeave += Chart.DataMouseLeave;
-                        r.MouseDown += Chart.DataMouseDown;
+                    r.MouseEnter += Chart.DataMouseEnter;
+                    r.MouseLeave += Chart.DataMouseLeave;
+                    r.MouseDown += Chart.DataMouseDown;
 
-                        Canvas.SetLeft(r, point.X - r.Width / 2);
-                        Canvas.SetTop(r, point.Y - r.Height / 2);
-                        Panel.SetZIndex(r, int.MaxValue);
+                    Canvas.SetLeft(r, point.X - r.Width/2);
+                    Canvas.SetTop(r, point.Y - r.Height/2);
+                    Panel.SetZIndex(r, int.MaxValue);
 
-                        if (Chart.Hoverable) Chart.Canvas.Children.Add(r);
+                    Chart.Canvas.Children.Add(r);
 
-                        Chart.HoverableShapes.Add(new HoverableShape
-                        {
-                            Series = this,
-                            Shape = r,
-                            Target = e,
-                            Value = datapoint
-                        });
-                    }
+                    Chart.HoverableShapes.Add(new HoverableShape
+                    {
+                        Series = this,
+                        Shape = r,
+                        Target = e,
+                        Value = datapoint
+                    });
+
                     Shapes.Add(e);
                 }
 

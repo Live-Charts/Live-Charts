@@ -156,8 +156,6 @@ namespace LiveCharts
 
                 slice.MouseDown += Chart.DataMouseDown;
 
-                if (Chart.Hoverable)
-                {
                     slice.MouseEnter += Chart.DataMouseEnter;
                     slice.MouseLeave += Chart.DataMouseLeave;
                     
@@ -169,7 +167,7 @@ namespace LiveCharts
                         Value = point,
                         Label = Labels != null && Labels.Count > point.X ? Labels[(int) point.X] : ""
                     });
-                }
+                
 
                 sliceId++;
                 rotated += participation;

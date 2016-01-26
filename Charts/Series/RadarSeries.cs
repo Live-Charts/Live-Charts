@@ -65,91 +65,89 @@ namespace LiveCharts
                     : chart.ToChartRadius(fisrtPoint.Y);
                 if (point == fisrtPoint)
                     pf.StartPoint = new Point(
-                        chart.ActualWidth / 2 + Math.Sin(alpha * point.X * (Math.PI / 180)) * r1,
-                        chart.ActualHeight / 2 - Math.Cos(alpha * point.X * (Math.PI / 180)) * r1);
+                        chart.ActualWidth/2 + Math.Sin(alpha*point.X*(Math.PI/180))*r1,
+                        chart.ActualHeight/2 - Math.Cos(alpha*point.X*(Math.PI/180))*r1);
                 else
                     segments.Add(new LineSegment
                     {
                         Point = new Point
                         {
-                            X = chart.ActualWidth / 2 + Math.Sin(alpha * point.X * (Math.PI / 180)) * r1,
-                            Y = chart.ActualHeight / 2 - Math.Cos(alpha * point.X * (Math.PI / 180)) * r1
+                            X = chart.ActualWidth/2 + Math.Sin(alpha*point.X*(Math.PI/180))*r1,
+                            Y = chart.ActualHeight/2 - Math.Cos(alpha*point.X*(Math.PI/180))*r1
                         }
                     });
 
-                var p1 = new Point(chart.ActualWidth / 2 + Math.Sin(alpha * point.X * (Math.PI / 180)) * r1,
-                    chart.ActualHeight / 2 - Math.Cos(alpha * point.X * (Math.PI / 180)) * r1);
+                var p1 = new Point(chart.ActualWidth/2 + Math.Sin(alpha*point.X*(Math.PI/180))*r1,
+                    chart.ActualHeight/2 - Math.Cos(alpha*point.X*(Math.PI/180))*r1);
                 if (p2 != null)
                 {
                     l += Math.Sqrt(
-                    Math.Pow(Math.Abs(p1.X - p2.Value.X), 2) +
-                    Math.Pow(Math.Abs(p1.Y - p2.Value.Y), 2)
-                    );
+                        Math.Pow(Math.Abs(p1.X - p2.Value.X), 2) +
+                        Math.Pow(Math.Abs(p1.Y - p2.Value.Y), 2)
+                        );
                 }
                 p2 = p1;
 
                 if (point == lastPoint) continue;
 
-                if (chart.Hoverable)
+                var r = new Rectangle
                 {
-                    var r = new Rectangle
+                    Fill = Brushes.Transparent,
+                    Width = 40,
+                    Height = 40
+                };
+                var e = new Ellipse
+                {
+                    Width = PointRadius*2,
+                    Height = PointRadius*2,
+                    Fill = Stroke,
+                    Stroke = new SolidColorBrush {Color = Chart.PointHoverColor},
+                    StrokeThickness = 2
+                };
+
+                r.MouseEnter += chart.DataMouseEnter;
+                r.MouseLeave += chart.DataMouseLeave;
+                r.MouseDown += chart.DataMouseDown;
+                chart.Canvas.Children.Add(r);
+                Shapes.Add(r);
+                chart.HoverableShapes.Add(new HoverableShape
+                {
+                    Series = this,
+                    Shape = r,
+                    Value = point,
+                    Target = e
+                });
+
+                Shapes.Add(e);
+                chart.Canvas.Children.Add(e);
+                Panel.SetZIndex(r, int.MaxValue);
+
+                Canvas.SetLeft(e, p1.X - e.Width/2);
+                Canvas.SetTop(e, p1.Y - e.Height/2);
+                Panel.SetZIndex(e, 2);
+
+                Canvas.SetLeft(r, p1.X - r.Width/2);
+                Canvas.SetTop(r, p1.Y - r.Height/2);
+                Panel.SetZIndex(r, int.MaxValue);
+
+                if (!chart.DisableAnimation && animate)
+                {
+                    var topAnim = new DoubleAnimation
                     {
-                        Fill = Brushes.Transparent,
-                        Width = 40,
-                        Height = 40
+                        From = chart.ActualHeight/2,
+                        To = p1.Y - e.Height/2,
+                        Duration = TimeSpan.FromMilliseconds(300)
                     };
-                    var e = new Ellipse
+                    e.BeginAnimation(Canvas.TopProperty, topAnim);
+                    var leftAnim = new DoubleAnimation
                     {
-                        Width = PointRadius * 2,
-                        Height = PointRadius * 2,
-                        Fill = Stroke,
-                        Stroke = new SolidColorBrush { Color = Chart.PointHoverColor },
-                        StrokeThickness = 2
+                        From = chart.ActualWidth/2,
+                        To = p1.X - e.Width/2,
+                        Duration = TimeSpan.FromMilliseconds(300)
                     };
-
-                    r.MouseEnter += chart.DataMouseEnter;
-                    r.MouseLeave += chart.DataMouseLeave;
-                    r.MouseDown += chart.DataMouseDown;
-                    if (Chart.Hoverable) chart.Canvas.Children.Add(r);
-                    Shapes.Add(r);
-                    chart.HoverableShapes.Add(new HoverableShape
-                    {
-                        Series = this,
-                        Shape = r,
-                        Value = point,
-                        Target = e
-                    });
-
-                    Shapes.Add(e);
-                    chart.Canvas.Children.Add(e);
-                    Panel.SetZIndex(r, int.MaxValue);
-
-                    Canvas.SetLeft(e, p1.X - e.Width / 2);
-                    Canvas.SetTop(e, p1.Y - e.Height / 2);
-                    Panel.SetZIndex(e, 2);
-
-                    Canvas.SetLeft(r, p1.X - r.Width / 2);
-                    Canvas.SetTop(r, p1.Y - r.Height / 2);
-                    Panel.SetZIndex(r, int.MaxValue);
-
-                    if (!chart.DisableAnimation && animate)
-                    {
-                        var topAnim = new DoubleAnimation
-                        {
-                            From = chart.ActualHeight / 2,
-                            To = p1.Y - e.Height / 2,
-                            Duration = TimeSpan.FromMilliseconds(300)
-                        };
-                        e.BeginAnimation(Canvas.TopProperty, topAnim);
-                        var leftAnim = new DoubleAnimation
-                        {
-                            From = chart.ActualWidth / 2,
-                            To = p1.X - e.Width / 2,
-                            Duration = TimeSpan.FromMilliseconds(300)
-                        };
-                        e.BeginAnimation(Canvas.LeftProperty, leftAnim);
-                    }
+                    e.BeginAnimation(Canvas.LeftProperty, leftAnim);
                 }
+
             }
 
             pf.Segments = segments;

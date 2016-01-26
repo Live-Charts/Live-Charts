@@ -127,8 +127,6 @@ namespace LiveCharts
                 }
 
                 hr.MouseDown += Chart.DataMouseDown;
-
-                if (!Chart.Hoverable) continue;
                 hr.MouseEnter += Chart.DataMouseEnter;
                 hr.MouseLeave += Chart.DataMouseLeave;
 

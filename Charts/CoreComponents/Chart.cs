@@ -588,20 +588,22 @@ namespace LiveCharts.CoreComponents
 
         internal virtual void DataMouseEnter(object sender, MouseEventArgs e)
         {
-            if (DataToolTip == null) return;
+            if (DataToolTip == null || !Hoverable) return;
 
             DataToolTip.Visibility = Visibility.Visible;
             TooltipTimer.Stop();
 
             var senderShape = HoverableShapes.FirstOrDefault(s => Equals(s.Shape, sender));
             if (senderShape == null) return;
-            var sibilings = HoverableShapes
-                .Where(s => Math.Abs(s.Value.X - senderShape.Value.X) < S.X*.001).ToList();
+            var sibilings = Invert
+                ? HoverableShapes.Where(s => Math.Abs(s.Value.Y - senderShape.Value.Y) < S.Y*.01).ToList()
+                : HoverableShapes.Where(s => Math.Abs(s.Value.X - senderShape.Value.X) < S.X*.01).ToList();
 
             var first = sibilings.Count > 0 ? sibilings[0] : null;
-            var labels = AxisX.Labels != null ? AxisX.Labels.ToArray() : null;
-            var vx = first != null ? first.Value.X : 0;
-            vx = AlphaLabel ? (int) (vx/(360d/Series.First().Values.Count)) : vx;
+            var labels = Invert
+                ? (AxisY.Labels != null ? AxisY.Labels.ToArray() : null)
+                : (AxisX.Labels != null ? AxisX.Labels.ToArray() : null);
+            var vx = first != null ? (Invert ? first.Value.Y : first.Value.X) : 0;
 
             foreach (var sibiling in sibilings)
             {
@@ -610,22 +612,15 @@ namespace LiveCharts.CoreComponents
                     sibiling.Target.Stroke = sibiling.Series.Stroke;
                     sibiling.Target.Fill = new SolidColorBrush {Color = PointHoverColor};
                 }
-                else
-                {
-                    sibiling.Target.Opacity = .8;
-                }
+                else sibiling.Target.Opacity = .8;
             }
 
             var indexedToolTip = DataToolTip as IndexedTooltip;
             if (indexedToolTip != null)
             {
-                indexedToolTip.Header = labels == null
-                        ? (AxisX.LabelFormatter == null
-                            ? vx.ToString(CultureInfo.InvariantCulture)
-                            : AxisX.LabelFormatter(vx))
-                        : (labels.Length > vx
-                            ? labels[(int) vx]
-                            : "");
+                var fh = GetFormatter(Invert ? AxisY : AxisX);
+                var fs = GetFormatter(Invert ? AxisX : AxisY);
+                indexedToolTip.Header = fh(vx);
                 indexedToolTip.Data = sibilings.Select(x => new IndexedTooltipData
                 {
                     Index = Series.IndexOf(x.Series),
@@ -633,9 +628,7 @@ namespace LiveCharts.CoreComponents
                     Stroke = x.Series.Stroke,
                     Fill = x.Series.Fill,
                     Point = x.Value,
-                    Value = AxisY.LabelFormatter == null
-                        ? x.Value.Y.ToString(CultureInfo.InvariantCulture)
-                        : AxisY.LabelFormatter(x.Value.Y)
+                    Value = fs(Invert ? x.Value.X : x.Value.Y)
                 }).ToArray();
             }
 
@@ -655,6 +648,8 @@ namespace LiveCharts.CoreComponents
 
         internal virtual void DataMouseLeave(object sender, MouseEventArgs e)
         {
+            if (!Hoverable) return;
+
             var s = sender as Shape;
             if (s == null) return;
 
