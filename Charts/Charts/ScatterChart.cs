@@ -102,7 +102,7 @@ namespace LiveCharts
             base.DrawAxes();
         }
 
-        public override void DataMouseEnter(object sender, MouseEventArgs e)
+        internal override void DataMouseEnter(object sender, MouseEventArgs e)
         {
             if (DataToolTip == null) return;
 
@@ -142,7 +142,7 @@ namespace LiveCharts
             });
         }
 
-        public override void DataMouseLeave(object sender, MouseEventArgs e)
+        internal override void DataMouseLeave(object sender, MouseEventArgs e)
         {
             var s = sender as Shape;
             if (s == null) return;

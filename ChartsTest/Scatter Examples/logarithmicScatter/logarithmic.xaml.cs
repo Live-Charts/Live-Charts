@@ -13,9 +13,11 @@ namespace ChartsTest.Scatter_Examples.logarithmicScatter
         {
             InitializeComponent();
 
-            Series = new SeriesCollection(new SeriesConfiguration<Point>()
+            var map = new SeriesConfiguration<Point>()
                 .X(point => Math.Log(point.X, 10)) // Map X value to Log(X)
-                .Y(point => point.Y)) // Use Y without Log
+                .Y(point => point.Y);              // Use Y without Log
+
+            Series = new SeriesCollection(map) 
             {
                 new ScatterSeries
                 {

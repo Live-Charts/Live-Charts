@@ -109,7 +109,8 @@ namespace LiveCharts
 
                     r.MouseEnter += chart.DataMouseEnter;
                     r.MouseLeave += chart.DataMouseLeave;
-                    chart.Canvas.Children.Add(r);
+                    r.MouseDown += chart.DataMouseDown;
+                    if (Chart.Hoverable) chart.Canvas.Children.Add(r);
                     Shapes.Add(r);
                     chart.HoverableShapes.Add(new HoverableShape
                     {

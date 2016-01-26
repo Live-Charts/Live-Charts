@@ -109,7 +109,7 @@ namespace LiveCharts
             foreach (var l in Shapes) Canvas.Children.Remove(l);
         }
 
-        public override void DataMouseEnter(object sender, MouseEventArgs e)
+        internal override void DataMouseEnter(object sender, MouseEventArgs e)
         {
             if (DataToolTip == null) return;
 
@@ -185,7 +185,7 @@ namespace LiveCharts
             pieSlice.BeginAnimation(PieSlice.PushOutProperty, anim);
         }
 
-        public override void DataMouseLeave(object sender, MouseEventArgs e)
+        internal override void DataMouseLeave(object sender, MouseEventArgs e)
         {
             base.DataMouseLeave(sender, e);
             var senderShape = HoverableShapes.FirstOrDefault(s => Equals(s.Shape, sender));

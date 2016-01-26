@@ -88,6 +88,7 @@ namespace LiveCharts
 
                         r.MouseEnter += Chart.DataMouseEnter;
                         r.MouseLeave += Chart.DataMouseLeave;
+                        r.MouseDown += Chart.DataMouseDown;
 
                         Canvas.SetLeft(r, ToPlotArea(point.X, AxisTags.X) - r.Width / 2);
                         Canvas.SetTop(r, ToPlotArea(point.Y, AxisTags.Y) - r.Height / 2);
@@ -95,7 +96,7 @@ namespace LiveCharts
                         Canvas.SetLeft(e, plotPoint.X - e.Width * .5);
                         Canvas.SetTop(e, plotPoint.Y - e.Height * .5);
 
-                        Chart.Canvas.Children.Add(r);
+                        if (Chart.Hoverable) Chart.Canvas.Children.Add(r);
                         Chart.Canvas.Children.Add(e);
 
                         s.Add(e);

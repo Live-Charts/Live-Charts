@@ -154,10 +154,13 @@ namespace LiveCharts
                     }
                 }
 
+                slice.MouseDown += Chart.DataMouseDown;
+
                 if (Chart.Hoverable)
                 {
                     slice.MouseEnter += Chart.DataMouseEnter;
                     slice.MouseLeave += Chart.DataMouseLeave;
+                    
                     Chart.HoverableShapes.Add(new HoverableShape
                     {
                         Series = this,

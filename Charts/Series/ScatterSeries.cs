@@ -22,8 +22,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -31,7 +29,6 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using LiveCharts.CoreComponents;
-using LiveCharts.TypeConverters;
 
 namespace LiveCharts
 {
@@ -82,12 +79,13 @@ namespace LiveCharts
 
                         r.MouseEnter += Chart.DataMouseEnter;
                         r.MouseLeave += Chart.DataMouseLeave;
+                        r.MouseDown += Chart.DataMouseDown;
 
                         Canvas.SetLeft(r, point.X - r.Width / 2);
                         Canvas.SetTop(r, point.Y - r.Height / 2);
                         Panel.SetZIndex(r, int.MaxValue);
 
-                        Chart.Canvas.Children.Add(r);
+                        if (Chart.Hoverable) Chart.Canvas.Children.Add(r);
 
                         Chart.HoverableShapes.Add(new HoverableShape
                         {

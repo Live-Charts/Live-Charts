@@ -128,9 +128,12 @@ namespace LiveCharts
                     t.Y = h;
                 }
 
+                hr.MouseDown += Chart.DataMouseDown;
+
                 if (!Chart.Hoverable) continue;
                 hr.MouseEnter += Chart.DataMouseEnter;
                 hr.MouseLeave += Chart.DataMouseLeave;
+                
                 Chart.HoverableShapes.Add(new HoverableShape
                 {
                     Series = this,

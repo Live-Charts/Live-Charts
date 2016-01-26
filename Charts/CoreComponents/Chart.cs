@@ -41,6 +41,7 @@ namespace LiveCharts.CoreComponents
     public abstract class Chart : UserControl
     {
         public event Action<Chart> Plot;
+        public event Action<ChartPoint> DataClick;
 
         internal Rect PlotArea;
         internal Point Max;
@@ -581,7 +582,7 @@ namespace LiveCharts.CoreComponents
             }
         }
 
-        public virtual void DataMouseEnter(object sender, MouseEventArgs e)
+        internal virtual void DataMouseEnter(object sender, MouseEventArgs e)
         {
             if (DataToolTip == null) return;
 
@@ -648,7 +649,7 @@ namespace LiveCharts.CoreComponents
             });
         }
 
-        public virtual void DataMouseLeave(object sender, MouseEventArgs e)
+        internal virtual void DataMouseLeave(object sender, MouseEventArgs e)
         {
             var s = sender as Shape;
             if (s == null) return;
@@ -673,6 +674,13 @@ namespace LiveCharts.CoreComponents
             }
             TooltipTimer.Stop();
             TooltipTimer.Start();
+        }
+
+        internal virtual void DataMouseDown(object sender, MouseEventArgs e)
+        {
+            var shape = HoverableShapes.FirstOrDefault(s => Equals(s.Shape, sender));
+            if (shape == null) return;
+            if (DataClick != null) DataClick.Invoke(shape.Value);
         }
 
         protected virtual Point GetToolTipPosition(HoverableShape sender, List<HoverableShape> sibilings)
