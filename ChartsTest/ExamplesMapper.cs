@@ -28,6 +28,7 @@ namespace ChartsTest
                 new BindingLine(),
                 new MvvmLine(),
                 new LazyDataLine(),
+                new RotatedLine(),
                 new CustomLine(),
                 new ZoomableLine(),
                 new UiElementsLine(),

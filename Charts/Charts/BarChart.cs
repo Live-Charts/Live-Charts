@@ -78,7 +78,8 @@ namespace LiveCharts
         {
             base.Scale();
 
-            Max.X += 1;
+            if (Invert) Min.Y -= 1;
+            else Max.X += 1;
 
             S = new Point(
                  AxisX.Separator.Step ?? CalculateSeparator(Max.X - Min.X, AxisTags.X),
@@ -112,9 +113,15 @@ namespace LiveCharts
 
             const int padding = 5;
 
-            var unitW = ToPlotArea(1, AxisTags.X) - PlotArea.X + 5;
-            //unitW = unitW > MaxColumnWidth*3 ? MaxColumnWidth*3 : unitW;
-            XOffset = unitW/2;
+            var unitW = Invert
+                ? ToPlotArea(Max.Y - 1, AxisTags.Y) - PlotArea.Y +5
+                : ToPlotArea(1, AxisTags.X) - PlotArea.X + 5;
+
+            XOffset = 0;
+            YOffset = 0;
+
+            if (Invert) YOffset = unitW/2;
+            else XOffset = unitW/2;
 
             PlotArea.X = padding*2 +
                          (fistXLabelSize.X*0.5 - XOffset > longestYLabelSize.X
@@ -130,9 +137,12 @@ namespace LiveCharts
                 PlotArea.Width -= change;
 
             //calculate it again to get a better result
-            unitW = ToPlotArea(1, AxisTags.X) - PlotArea.X + 5;
-            //unitW = unitW > MaxColumnWidth*3 ? MaxColumnWidth*3 : unitW;
-            XOffset = unitW/2;
+            unitW = Invert
+                ? ToPlotArea(Max.Y - 1, AxisTags.Y) - PlotArea.Y + 5
+                : ToPlotArea(1, AxisTags.X) - PlotArea.X + 5;
+
+            if (Invert) YOffset = unitW / 2;
+            else XOffset = unitW / 2;
 
             base.DrawAxes();
         }

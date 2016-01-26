@@ -55,11 +55,11 @@ namespace LiveCharts
                 var s = new List<Shape>();
                 if (LineChart.LineType == LineChartLineType.Bezier)
                     s.AddRange(_addSerieAsBezier(segment.Select(x => new Point(
-                        ToPlotArea(x.X, AxisTags.X) + Chart.XOffset, ToPlotArea(x.Y, AxisTags.Y))).ToArray(), animate));
+                        ToPlotArea(x.X, AxisTags.X) + Chart.XOffset, ToPlotArea(x.Y, AxisTags.Y) + Chart.YOffset)).ToArray(), animate));
 
                 if (LineChart.LineType == LineChartLineType.Polyline)
                     s.AddRange(_addSeriesAsPolyline(segment.Select(x => new Point(
-                        ToPlotArea(x.X, AxisTags.X) + Chart.XOffset, ToPlotArea(x.Y, AxisTags.Y))).ToArray(), animate));
+                        ToPlotArea(x.X, AxisTags.X) + Chart.XOffset, ToPlotArea(x.Y, AxisTags.Y) + Chart.YOffset)).ToArray(), animate));
 
                 var hoverableAreas = new List<HoverableShape>();
 
@@ -69,6 +69,7 @@ namespace LiveCharts
                     {
                         var plotPoint = ToPlotArea(point);
                         plotPoint.X += Chart.XOffset;
+                        plotPoint.Y += Chart.YOffset;
                         var e = new Ellipse
                         {
                             Width = PointRadius * 2,

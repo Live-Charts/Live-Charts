@@ -224,6 +224,10 @@ namespace LiveCharts.CoreComponents
         /// </summary>
         public double XOffset { get; internal set; }
         /// <summary>
+        /// Gets charts point offset
+        /// </summary>
+        public double YOffset { get; set; }
+        /// <summary>
         /// Gets current set of shapes added to canvas by LiveCharts
         /// </summary>
         public List<FrameworkElement> Shapes { get; internal set; }

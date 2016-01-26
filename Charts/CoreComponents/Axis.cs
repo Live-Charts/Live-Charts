@@ -81,7 +81,7 @@ namespace LiveCharts
 		}
 
 		public static readonly DependencyProperty ThicknessProperty =
-			DependencyProperty.Register("Thickness", typeof(int), typeof(Axis), new PropertyMetadata(3));
+			DependencyProperty.Register("Thickness", typeof(int), typeof(Axis), new PropertyMetadata(1));
 
 		/// <summary>
 		/// Gets or sets axis thickness.
