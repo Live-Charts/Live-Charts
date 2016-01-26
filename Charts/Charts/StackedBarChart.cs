@@ -62,23 +62,41 @@ namespace LiveCharts
         {
             var s = Series.FirstOrDefault();
             if (s == null) return new Point(0,0);
-            var p = new Point(
-                Series.Select(x => x.Values.Count).DefaultIfEmpty(0).Max(),
-                s.Values.Points.Select(
+            var p = Invert
+                ? new Point(s.Values.Points.Select(
                     (t, i) => Series.OfType<StackedBarSeries>().Sum(serie => serie.Values.Points.Any()
-                        ? (serie.Values.Points as IList<ChartPoint>)[i].Y
+                        ? (serie.Values.Points as IList<ChartPoint>)[i].X
                         : double.MinValue))
-                    .Concat(new[] {double.MinValue}).Max());
-
+                    .Concat(new[] {double.MinValue}).Max(),
+                    Series.Select(x => x.Values.MaxChartPoint.Y).DefaultIfEmpty(0).Max() )
+                : new Point(Series.Select(x => x.Values.MaxChartPoint.X).DefaultIfEmpty(0).Max() +1,
+                    s.Values.Points.Select(
+                        (t, i) => Series.OfType<StackedBarSeries>().Sum(serie => serie.Values.Points.Any()
+                            ? (serie.Values.Points as IList<ChartPoint>)[i].Y
+                            : double.MinValue))
+                        .Concat(new[] {double.MinValue}).Max());
             //correction for lineSeries
-            var maxLineSeries =
+            if (Invert)
+            {
+                var maxLineSeries =
+                Series.OfType<LineSeries>()
+                    .Select(series => series.Values.Points.Select(x => x.X).DefaultIfEmpty(0).Max())
+                    .DefaultIfEmpty(0)
+                    .Max();
+                p.X = p.X > maxLineSeries ? p.X : maxLineSeries;
+                p.X = AxisX.MaxValue ?? p.X;
+            }
+            else
+            {
+                var maxLineSeries =
                 Series.OfType<LineSeries>()
                     .Select(series => series.Values.Points.Select(x => x.Y).DefaultIfEmpty(0).Max())
                     .DefaultIfEmpty(0)
                     .Max();
-            p.Y = p.Y > maxLineSeries ? p.Y : maxLineSeries;
+                p.Y = p.Y > maxLineSeries ? p.Y : maxLineSeries;
+                p.Y = AxisY.MaxValue ?? p.Y;
+            }
 
-            p.Y = AxisY.MaxValue ?? p.Y;
             return p;
         }
 
@@ -86,22 +104,45 @@ namespace LiveCharts
         {
             var s = Series.FirstOrDefault();
             if (s==null) return new Point(0,0);
-            var p = new Point(0,
-                s.Values.Points.Select(
-                    (t, i) => Series.OfType<StackedBarSeries>().Sum(serie => serie.Values.Points.Any()
-                        ? (serie.Values.Points as IList<ChartPoint>)[i].Y
-                        : double.MinValue))
-                    .Concat(new[] {double.MaxValue}).Min());
+            var p = Invert
+                ? new Point(
+                    s.Values.Points.Select(
+                        (t, i) => Series.OfType<StackedBarSeries>().Sum(serie => serie.Values.Points.Any()
+                            ? (serie.Values.Points as IList<ChartPoint>)[i].X
+                            : double.MinValue))
+                        .Concat(new[] { double.MaxValue }).Min(),
+                    Series.Select(x => x.Values.MinChartPoint.Y).DefaultIfEmpty(0).Min() -1)
+                : new Point(
+                    Series.Select(x => x.Values.MinChartPoint.X).DefaultIfEmpty(0).Min(),
+                    s.Values.Points.Select(
+                        (t, i) => Series.OfType<StackedBarSeries>().Sum(serie => serie.Values.Points.Any()
+                            ? (serie.Values.Points as IList<ChartPoint>)[i].Y
+                            : double.MinValue))
+                        .Concat(new[] {double.MaxValue}).Min());
 
             //correction for lineSeries
-            var minLineSeries =
+            if (Invert)
+            {
+                var minLineSeries =
+                Series.OfType<LineSeries>()
+                    .Select(series => series.Values.Points.Select(x => x.X).DefaultIfEmpty(0).Min())
+                    .DefaultIfEmpty(0)
+                    .Min();
+                p.X = p.X < minLineSeries ? p.X : minLineSeries;
+
+                p.X = AxisX.MinValue ?? p.X;
+            }
+            else
+            {
+                var minLineSeries =
                 Series.OfType<LineSeries>()
                     .Select(series => series.Values.Points.Select(x => x.Y).DefaultIfEmpty(0).Min())
                     .DefaultIfEmpty(0)
                     .Min();
-            p.Y = p.Y < minLineSeries ? p.Y : minLineSeries;
+                p.Y = p.Y < minLineSeries ? p.Y : minLineSeries;
 
-            p.Y = AxisY.MinValue ?? p.Y;
+                p.Y = AxisY.MinValue ?? p.Y;
+            }
             return p;
         }
 
@@ -116,9 +157,11 @@ namespace LiveCharts
         {
             InitializeComponents();
 
-            AxisY.MinValue = 0;
+            if (Invert) AxisX.MinValue = 0;
+            else AxisY.MinValue = 0;
 
             var stackedSeries = Series.OfType<StackedBarSeries>().ToList();
+            //All series must have the same number of items.
             var fSerie = stackedSeries.FirstOrDefault();
             if (fSerie == null) return;
             for (var i = 0; i < fSerie.Values.Count; i++)
@@ -128,8 +171,9 @@ namespace LiveCharts
                 for (int index = 0; index < stackedSeries.Count; index++)
                 {
                     var serie = stackedSeries[index];
+                    var p = (serie.Values.Points as IList<ChartPoint>)[i];
                     var value = serie.Values.Points.Any()
-                        ? (serie.Values.Points as IList<ChartPoint>)[i].Y
+                        ? (Invert ? p.X : p.Y)
                         : double.MinValue;
                     helper.Stacked[index] = new StackedItem
                     {
@@ -146,8 +190,16 @@ namespace LiveCharts
             Min = GetMin();
             S = GetS();
 
-            Max.Y = AxisY.MaxValue ?? (Math.Truncate(Max.Y / S.Y) + 1) * S.Y;
-            Min.Y = AxisY.MinValue ?? (Math.Truncate(Min.Y / S.Y) - 1) * S.Y;
+            if (Invert)
+            {
+                Max.X = AxisX.MaxValue ?? (Math.Truncate(Max.X / S.X) + 1) * S.X;
+                Min.X = AxisX.MinValue ?? (Math.Truncate(Min.X / S.X) - 1) * S.X;
+            }
+            else
+            {
+                Max.Y = AxisY.MaxValue ?? (Math.Truncate(Max.Y / S.Y) + 1) * S.Y;
+                Min.Y = AxisY.MinValue ?? (Math.Truncate(Min.Y / S.Y) - 1) * S.Y;
+            }
 
             DrawAxes();
         }
@@ -170,7 +222,9 @@ namespace LiveCharts
 
         protected override void DrawAxes()
         {
-            if (Invert) AxisY.IgnoresLastLabel = true;
+            if (Invert)
+            {
+            } //AxisY.IgnoresLastLabel = true;
             else AxisX.IgnoresLastLabel = true;
 
             if (Invert) ConfigureYAsIndexed();
@@ -187,9 +241,13 @@ namespace LiveCharts
 
             const int padding = 5;
 
-            var unitW = ToPlotArea(1, AxisTags.X) - PlotArea.X + 5;
+            var unitW = Invert
+                 ? ToPlotArea(Max.Y - 1, AxisTags.Y) - PlotArea.Y + 5
+                 : ToPlotArea(1, AxisTags.X) - PlotArea.X + 5;
             unitW = unitW > MaxColumnWidth * 3 ? MaxColumnWidth * 3 : unitW;
-            XOffset = unitW / 2;
+
+            if (Invert) YOffset = unitW / 2;
+            else XOffset = unitW / 2;
 
             PlotArea.X = padding * 2 +
                          (fistXLabelSize.X * 0.5 - XOffset > longestYLabelSize.X
@@ -205,9 +263,13 @@ namespace LiveCharts
 	            PlotArea.Width -= change;
 
             //calculate it again to get a better result
-            unitW = ToPlotArea(1, AxisTags.X) - PlotArea.X + 5;
+            unitW = Invert
+                ? ToPlotArea(Max.Y - 1, AxisTags.Y) - PlotArea.Y + 5
+                : ToPlotArea(1, AxisTags.X) - PlotArea.X + 5;
             unitW = unitW > MaxColumnWidth * 3 ? MaxColumnWidth * 3 : unitW;
-            XOffset = unitW / 2;
+
+            if (Invert) YOffset = unitW / 2;
+            else XOffset = unitW / 2;
 
             base.DrawAxes();
         }

@@ -8,6 +8,7 @@ using ChartsTest.Pie_Examples;
 using ChartsTest.Scatter_Examples;
 using ChartsTest.Scatter_Examples.logarithmicScatter;
 using ChartsTest.StackedBarExamples;
+using ChartsTest.StackedBarExamples.StackedBarRotated;
 using MvvmPie = ChartsTest.Pie_Examples.Mvvm.MvvmPie;
 using MvvmStackedBar = ChartsTest.StackedBarExamples.Mvvm.MvvmStackedBar;
 using RotatedBar = ChartsTest.BarExamples.RotatedBar.RotatedBar;
@@ -50,6 +51,7 @@ namespace ChartsTest
                 new BasicStackedBar(),
                 new BindingStackedBar(),
                 new MvvmStackedBar(),
+                new RotatedStackedBar(),
                 new CustomStackedBar(),
                 //new ZoomableStackedBar(),
                 //new PerformanceBar()

@@ -22,7 +22,6 @@
 
 using System;
 using System.Linq;
-using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
@@ -42,15 +41,118 @@ namespace LiveCharts
 
         public override void Plot(bool animate = true)
         {
-            var chart = Chart as IStackedBar;
-            if (chart == null) return;
+            if (Chart.Invert) PlotRow(animate);
+            else PlotColumn(animate);
+        }
+
+        private void PlotRow(bool animate)
+        {
+            var stackedChart = Chart as IStackedBar;
+            if (stackedChart == null) return;
+
+            var stackedSeries = Chart.Series.OfType<StackedBarSeries>().ToList();
+
+            var serieIndex = stackedSeries.IndexOf(this);
+            var unitW = ToPlotArea(Chart.Max.Y - 1, AxisTags.Y) - Chart.PlotArea.Y + 5;
+            var overflow = unitW - stackedChart.MaxColumnWidth > 0 ? unitW - stackedChart.MaxColumnWidth : 0;
+            unitW = unitW > stackedChart.MaxColumnWidth ? stackedChart.MaxColumnWidth : unitW;
+            var pointPadding = .1 * unitW;
+            const int seriesPadding = 2;
+            var h = unitW - 2 * pointPadding;
+
+            foreach (var point in Values.Points)
+            {
+                var t = new TranslateTransform();
+
+                var helper = stackedChart.IndexTotals[(int) point.Y];
+                var w = ToPlotArea(helper.Total, AxisTags.X) - ToPlotArea(Chart.Min.X, AxisTags.X);
+                var rh = w * (point.X / helper.Total);
+                if (double.IsNaN(rh)) return;
+                var stackedW = w * (helper.Stacked.ContainsKey(serieIndex) ? (helper.Stacked[serieIndex].Stacked / helper.Total) : 0);
+
+                var r = new Rectangle
+                {
+                    StrokeThickness = StrokeThickness,
+                    Stroke = Stroke,
+                    Fill = Fill,
+                    Width = 0,
+                    Height = Math.Max(0, h - seriesPadding),
+                    RenderTransform = t
+                };
+                var hr = new Rectangle
+                {
+                    StrokeThickness = 0,
+                    Fill = Brushes.Transparent,
+                    Width = rh,
+                    Height = Math.Max(0, h - seriesPadding)
+                };
+
+                Canvas.SetTop(r, ToPlotArea(point.Y, AxisTags.Y) + pointPadding + overflow / 2);
+                Canvas.SetTop(hr, ToPlotArea(point.Y, AxisTags.Y) + pointPadding + overflow / 2);
+                Canvas.SetLeft(hr, ToPlotArea(Chart.Min.X, AxisTags.X) + stackedW);
+                Panel.SetZIndex(hr, int.MaxValue);
+
+                Chart.Canvas.Children.Add(r);
+                Chart.Canvas.Children.Add(hr);
+                Shapes.Add(r);
+                Shapes.Add(hr);
+
+                var hAnim = new DoubleAnimation
+                {
+                    To = rh,
+                    Duration = TimeSpan.FromMilliseconds(500)
+                };
+                var rAnim = new DoubleAnimation
+                {
+                    From = ToPlotArea(Chart.Min.X, AxisTags.X),
+                    To = ToPlotArea(Chart.Min.X, AxisTags.X) + stackedW,
+                    Duration = TimeSpan.FromMilliseconds(500)
+                };
+
+                var animated = false;
+                if (!Chart.DisableAnimation)
+                {
+                    if (animate)
+                    {
+                        r.BeginAnimation(WidthProperty, hAnim);
+                        t.BeginAnimation(TranslateTransform.XProperty, rAnim);
+                        animated = true;
+                    }
+                }
+
+                if (!animated)
+                {
+                    r.Width = rh;
+                    if (rAnim.To != null) t.X = (double)rAnim.To;
+                }
+
+                hr.MouseDown += Chart.DataMouseDown;
+
+                if (!Chart.Hoverable) continue;
+                hr.MouseEnter += Chart.DataMouseEnter;
+                hr.MouseLeave += Chart.DataMouseLeave;
+
+                Chart.HoverableShapes.Add(new HoverableShape
+                {
+                    Series = this,
+                    Shape = hr,
+                    Target = r,
+                    Value = point
+                });
+            }
+        }
+
+        private void PlotColumn(bool animate)
+        {
+            var stackedChart = Chart as IStackedBar;
+            if (stackedChart == null) return;
 
             var stackedSeries = Chart.Series.OfType<StackedBarSeries>().ToList();
 
             var serieIndex = stackedSeries.IndexOf(this);
             var unitW = ToPlotArea(1, AxisTags.X) - Chart.PlotArea.X + 5;
-            var overflow = unitW - chart.MaxColumnWidth > 0 ? unitW - chart.MaxColumnWidth : 0;
-            unitW = unitW > chart.MaxColumnWidth ? chart.MaxColumnWidth : unitW;
+            var overflow = unitW - stackedChart.MaxColumnWidth > 0 ? unitW - stackedChart.MaxColumnWidth : 0;
+            unitW = unitW > stackedChart.MaxColumnWidth ? stackedChart.MaxColumnWidth : unitW;
             var pointPadding = .1 * unitW;
             const int seriesPadding = 2;
             var barW = unitW - 2 * pointPadding;
@@ -59,7 +161,7 @@ namespace LiveCharts
             {
                 var t = new TranslateTransform();
 
-                var helper = chart.IndexTotals[(int) point.X];
+                var helper = stackedChart.IndexTotals[(int)point.X];
                 var barH = ToPlotArea(Chart.Min.Y, AxisTags.Y) - ToPlotArea(helper.Total, AxisTags.Y);
                 var rh = barH * (point.Y / helper.Total);
                 if (double.IsNaN(rh)) return;
@@ -126,7 +228,7 @@ namespace LiveCharts
                 if (!Chart.Hoverable) continue;
                 hr.MouseEnter += Chart.DataMouseEnter;
                 hr.MouseLeave += Chart.DataMouseLeave;
-                
+
                 Chart.HoverableShapes.Add(new HoverableShape
                 {
                     Series = this,
