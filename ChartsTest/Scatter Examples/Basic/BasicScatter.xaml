@@ -19,7 +19,7 @@
         <TextBlock Grid.Row="0" HorizontalAlignment="Center" Grid.ColumnSpan="2" Margin="5">
             <Bold>In Line Charting</Bold>: easy and fast charting
         </TextBlock>
-        <lvc:ScatterChart Name="Chart" Grid.Row="1" Grid.Column="0">
+        <lvc:ScatterChart Name="Chart" Grid.Row="1" Grid.Column="0" LegendLocation="Bottom">
             <lvc:ScatterChart.Series>
                 <lvc:ScatterSeries Title="Sin" 
                                    Values="[0, 0], [45, .7071], [90, 1], [135, .7071], [180, 0], [225, -0.7071], [270, -1], [315, -0.7071], [360, 0]"/>
@@ -33,10 +33,5 @@
                 <lvc:Axis Title="Degrees" MinValue="0" MaxValue="360"></lvc:Axis>
             </lvc:ScatterChart.AxisX>
         </lvc:ScatterChart>
-        <lvc:SeriesViewer Grid.Row="1" Grid.Column="1" 
-                                 Series="{Binding ElementName=Chart, Path=Series}"
-                                 VerticalAlignment="Center"
-                                 Margin="5">
-        </lvc:SeriesViewer>
     </Grid>
 </UserControl>

@@ -41,7 +41,7 @@ namespace LiveCharts.Viewers
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             var v = value as int?;
-            return v == null ? Colors.Transparent : Series.GetColorByIndex(v.Value);
+            return v == null ? Colors.Transparent : Colors.Blue;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
@@ -82,20 +82,6 @@ namespace LiveCharts.Viewers
         }
 
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
-        {
-            throw new NotImplementedException();
-        }
-    }
-
-    public class TestConverter : IValueConverter
-    {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            var v = value;
-            return null;
-        }
-
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             throw new NotImplementedException();
         }

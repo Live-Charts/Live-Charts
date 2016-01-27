@@ -19,7 +19,7 @@
         <TextBlock Grid.Row="0" HorizontalAlignment="Center" Grid.ColumnSpan="2" Margin="5">
             <Bold>In Line Charting</Bold>: when you only need to plot easy and now!
         </TextBlock>
-        <lvc:LineChart Name="Chart" Grid.Row="1" Grid.Column="0">
+        <lvc:LineChart Name="Chart" Grid.Row="1" Grid.Column="0" LegendLocation="Right">
             <lvc:LineChart.Series>
                 <lvc:LineSeries Title="Maria" Values="20, 40, 45, 60, 55, 60, 65, 70"></lvc:LineSeries>
                 <lvc:LineSeries Title="John" Values="30, 35, 43, 68, 65 ,70, 55, 60"></lvc:LineSeries>
@@ -28,17 +28,12 @@
                 <lvc:Axis Title="Sold Items"></lvc:Axis>
             </lvc:LineChart.AxisY>
             <lvc:LineChart.AxisX>
-                <lvc:Axis Title="Month" Labels="j,f,m,a,m,j,j,a,s,o,n,d" IsEnabled="False">
+                <lvc:Axis Title="hh" Labels="j,f,m,a,m,j,j,a,s,o,n,d" IsEnabled="False">
                     <lvc:Axis.Separator>
                         <lvc:Separator IsEnabled="False" />
                     </lvc:Axis.Separator>
                 </lvc:Axis>
             </lvc:LineChart.AxisX>
         </lvc:LineChart>
-        <lvc:SeriesViewer Grid.Row="1" Grid.Column="1" 
-                                 Series="{Binding ElementName=Chart, Path=Series}"
-                                 VerticalAlignment="Center"
-                                 Margin="5">
-        </lvc:SeriesViewer>
     </Grid>
 </UserControl>

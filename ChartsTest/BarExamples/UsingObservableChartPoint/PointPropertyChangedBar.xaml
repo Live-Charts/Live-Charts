@@ -36,7 +36,5 @@
                 <lvc:Axis Name="SecondaryAxis" Title="Month" Labels="January"></lvc:Axis>
             </lvc:BarChart.AxisX>
         </lvc:BarChart>
-        <lvc:SeriesViewer Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" 
-                                 Series="{Binding ElementName=Chart, Path=Series}"/>
     </Grid>
 </UserControl>

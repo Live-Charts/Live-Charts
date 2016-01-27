@@ -35,6 +35,7 @@ using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 using LiveCharts.Tooltip;
+using LiveCharts.Viewers;
 
 namespace LiveCharts.CoreComponents
 {
@@ -54,6 +55,7 @@ namespace LiveCharts.CoreComponents
         internal double From = double.MinValue;
         internal double To = double.MaxValue;
         internal AxisTags ZoomingAxis = AxisTags.None;
+        internal bool SupportsMultipleSeries = true;
 
         protected double CurrentScale;
         protected ShapeHoverBehavior ShapeHoverBehavior;
@@ -155,6 +157,24 @@ namespace LiveCharts.CoreComponents
         #endregion
 
         #region Dependency Properties
+
+        public static readonly DependencyProperty LegendProperty = DependencyProperty.Register(
+            "Legend", typeof (ChartLegend), typeof (Chart), new PropertyMetadata(null));
+
+        public ChartLegend Legend
+        {
+            get { return (ChartLegend) GetValue(LegendProperty); }
+            set { SetValue(LegendProperty, value); }
+        }
+
+        public static readonly DependencyProperty LegendLocationProperty = DependencyProperty.Register(
+            "LegendLocation", typeof (LegendLocation), typeof (Chart), new PropertyMetadata(LegendLocation.None));
+
+        public LegendLocation LegendLocation
+        {
+            get { return (LegendLocation) GetValue(LegendLocationProperty); }
+            set { SetValue(LegendLocationProperty, value); }
+        }
 
         public static readonly DependencyProperty InvertProperty = DependencyProperty.Register(
             "Invert", typeof (bool), typeof (Chart), new PropertyMetadata(default(bool)));
@@ -518,8 +538,54 @@ namespace LiveCharts.CoreComponents
         {
             foreach (var l in Shapes) Canvas.Children.Remove(l);
 
+            //legend
+            var legend = Legend ?? new ChartLegend();
+            LoadLegend(legend);
+
+            if (LegendLocation != LegendLocation.None)
+            {
+                Canvas.Children.Add(legend);
+                Shapes.Add(legend);
+                legend.UpdateLayout();
+                legend.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+            }
+
+            switch (LegendLocation)
+            {
+                case LegendLocation.None:
+                    break;
+                case LegendLocation.Top:
+                    var top = new Point(ActualWidth*.5 - legend.DesiredSize.Width*.5, 0);
+                    PlotArea.Y += top.Y + legend.DesiredSize.Height;
+                    PlotArea.Height -= legend.DesiredSize.Height;
+                    Canvas.SetTop(legend, top.Y);
+                    Canvas.SetLeft(legend, top.X);
+                    break;
+                case LegendLocation.Bottom:
+                    var bot = new Point(ActualWidth*.5 - legend.DesiredSize.Width*.5, ActualHeight - legend.DesiredSize.Height);
+                    PlotArea.Height -= legend.DesiredSize.Height;
+                    Canvas.SetTop(legend, Canvas.ActualHeight - legend.DesiredSize.Height);
+                    Canvas.SetLeft(legend, bot.X);
+                    break;
+                case LegendLocation.Left:
+                    PlotArea.X += legend.DesiredSize.Width;
+                    PlotArea.Width -= legend.DesiredSize.Width;
+                    Canvas.SetTop(legend, Canvas.ActualHeight * .5 - legend.DesiredSize.Height * .5);
+                    Canvas.SetLeft(legend, 0);
+                    break;
+                case LegendLocation.Right:
+                    PlotArea.Width -= legend.DesiredSize.Width;
+                    Canvas.SetTop(legend, Canvas.ActualHeight*.5 - legend.DesiredSize.Height*.5);
+                    Canvas.SetLeft(legend, ActualWidth - legend.DesiredSize.Width);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+
             //draw axes titles
-            var titleY = 0d;
+            var longestY = GetLongestLabelSize(AxisY);
+            var longestX = GetLongestLabelSize(AxisX);
+
             if (!string.IsNullOrWhiteSpace(AxisY.Title))
             {
                 var ty = GetLabelSize(AxisY, AxisY.Title);
@@ -528,11 +594,14 @@ namespace LiveCharts.CoreComponents
                 BindingOperations.SetBinding(yLabel, TextBlock.TextProperty, binding);
                 Shapes.Add(yLabel);
                 Canvas.Children.Add(yLabel);
-                Canvas.SetLeft(yLabel, 5);
+                if (AxisY.Title.Trim().Length > 0)
+                {
+                    PlotArea.X += ty.Y;
+                    PlotArea.Width -= ty.Y;
+                }
+                Canvas.SetLeft(yLabel, PlotArea.X - ty.Y -(AxisY.ShowLabels ? longestY.X +5 : 0) -5);
                 Canvas.SetTop(yLabel, Canvas.DesiredSize.Height * .5 + ty.X * .5);
-                titleY += ty.Y + 5;
             }
-            var titleX = 0d;
             if (!string.IsNullOrWhiteSpace(AxisX.Title))
             {
                 var tx = GetLabelSize(AxisX, AxisX.Title);
@@ -541,32 +610,21 @@ namespace LiveCharts.CoreComponents
                 BindingOperations.SetBinding(yLabel, TextBlock.TextProperty, binding);
                 Shapes.Add(yLabel);
                 Canvas.Children.Add(yLabel);
+                if (AxisX.Title.Trim().Length > 0) PlotArea.Height -= tx.Y;
                 Canvas.SetLeft(yLabel, Canvas.DesiredSize.Width*.5 - tx.X*.5);
-                Canvas.SetTop(yLabel, Canvas.DesiredSize.Height - tx.Y - 5);
-                titleX += tx.Y;
+                Canvas.SetTop(yLabel, PlotArea.Y + PlotArea.Height + (AxisX.ShowLabels ? tx.Y +5 : 0));
             }
-            PlotArea.X += titleY;
-            PlotArea.Width -= titleY;
-            PlotArea.Height -= titleX;
 
-            //now lets draw axis
-            var longestY = GetLongestLabelSize(AxisY);
-            var longestX = GetLongestLabelSize(AxisX);
             //YAxis
-            DrawAxis(AxisY, longestY, longestX, titleY, 0);
+            DrawAxis(AxisY, longestY);
             //XAxis
-            DrawAxis(AxisX, longestX, longestX, 0, 0);
+            DrawAxis(AxisX, longestX);
             //drawing ceros.
             if (Max.Y >= 0 && Min.Y <= 0 && AxisY.IsEnabled)
             {
                 var l = new Line
                 {
-                    Stroke = new SolidColorBrush { Color = AxisY.Color },
-                    StrokeThickness = AxisY.Thickness,
-                    X1 = ToPlotArea(Min.X, AxisTags.X),
-                    Y1 = ToPlotArea(0, AxisTags.Y),
-                    X2 = ToPlotArea(Max.X, AxisTags.X),
-                    Y2 = ToPlotArea(0, AxisTags.Y)
+                    Stroke = new SolidColorBrush {Color = AxisY.Color}, StrokeThickness = AxisY.Thickness, X1 = ToPlotArea(Min.X, AxisTags.X), Y1 = ToPlotArea(0, AxisTags.Y), X2 = ToPlotArea(Max.X, AxisTags.X), Y2 = ToPlotArea(0, AxisTags.Y)
                 };
                 Canvas.Children.Add(l);
                 Shapes.Add(l);
@@ -575,16 +633,24 @@ namespace LiveCharts.CoreComponents
             {
                 var l = new Line
                 {
-                    Stroke = new SolidColorBrush { Color = AxisX.Color },
-                    StrokeThickness = AxisX.Thickness,
-                    X1 = ToPlotArea(0, AxisTags.X),
-                    Y1 = ToPlotArea(Min.Y, AxisTags.Y),
-                    X2 = ToPlotArea(0, AxisTags.X),
-                    Y2 = ToPlotArea(Max.Y, AxisTags.Y)
+                    Stroke = new SolidColorBrush {Color = AxisX.Color}, StrokeThickness = AxisX.Thickness, X1 = ToPlotArea(0, AxisTags.X), Y1 = ToPlotArea(Min.Y, AxisTags.Y), X2 = ToPlotArea(0, AxisTags.X), Y2 = ToPlotArea(Max.Y, AxisTags.Y)
                 };
                 Canvas.Children.Add(l);
                 Shapes.Add(l);
             }
+        }
+
+        protected virtual void LoadLegend(ChartLegend legend)
+        {
+            legend.Series = Series.Select(x => new SeriesStandin
+            {
+                Fill = x.Fill,
+                Stroke = x.Stroke,
+                Title = x.Title
+            });
+            legend.Orientation = LegendLocation == LegendLocation.Bottom || LegendLocation == LegendLocation.Top
+                ? Orientation.Horizontal
+                : Orientation.Vertical;
         }
 
         internal virtual void DataMouseEnter(object sender, MouseEventArgs e)
@@ -596,14 +662,10 @@ namespace LiveCharts.CoreComponents
 
             var senderShape = HoverableShapes.FirstOrDefault(s => Equals(s.Shape, sender));
             if (senderShape == null) return;
-            var sibilings = Invert
-                ? HoverableShapes.Where(s => Math.Abs(s.Value.Y - senderShape.Value.Y) < S.Y*.01).ToList()
-                : HoverableShapes.Where(s => Math.Abs(s.Value.X - senderShape.Value.X) < S.X*.01).ToList();
+            var sibilings = Invert ? HoverableShapes.Where(s => Math.Abs(s.Value.Y - senderShape.Value.Y) < S.Y*.01).ToList() : HoverableShapes.Where(s => Math.Abs(s.Value.X - senderShape.Value.X) < S.X*.01).ToList();
 
             var first = sibilings.Count > 0 ? sibilings[0] : null;
-            var labels = Invert
-                ? (AxisY.Labels != null ? AxisY.Labels.ToArray() : null)
-                : (AxisX.Labels != null ? AxisX.Labels.ToArray() : null);
+            var labels = Invert ? (AxisY.Labels != null ? AxisY.Labels.ToArray() : null) : (AxisX.Labels != null ? AxisX.Labels.ToArray() : null);
             var vx = first != null ? (Invert ? first.Value.Y : first.Value.X) : 0;
 
             foreach (var sibiling in sibilings)
@@ -624,12 +686,7 @@ namespace LiveCharts.CoreComponents
                 indexedToolTip.Header = fh(vx);
                 indexedToolTip.Data = sibilings.Select(x => new IndexedTooltipData
                 {
-                    Index = Series.IndexOf(x.Series),
-                    Series = x.Series,
-                    Stroke = x.Series.Stroke,
-                    Fill = x.Series.Fill,
-                    Point = x.Value,
-                    Value = fs(Invert ? x.Value.X : x.Value.Y)
+                    Index = Series.IndexOf(x.Series), Series = x.Series, Stroke = x.Series.Stroke, Fill = x.Series.Fill, Point = x.Value, Value = fs(Invert ? x.Value.X : x.Value.Y)
                 }).ToArray();
             }
 
@@ -637,13 +694,11 @@ namespace LiveCharts.CoreComponents
 
             DataToolTip.BeginAnimation(Canvas.LeftProperty, new DoubleAnimation
             {
-                To = p.X,
-                Duration = TimeSpan.FromMilliseconds(200)
+                To = p.X, Duration = TimeSpan.FromMilliseconds(200)
             });
             DataToolTip.BeginAnimation(Canvas.TopProperty, new DoubleAnimation
             {
-                To = p.Y,
-                Duration = TimeSpan.FromMilliseconds(200)
+                To = p.Y, Duration = TimeSpan.FromMilliseconds(200)
             });
         }
 
@@ -657,15 +712,14 @@ namespace LiveCharts.CoreComponents
             var shape = HoverableShapes.FirstOrDefault(x => Equals(x.Shape, s));
             if (shape == null) return;
 
-            var sibilings = HoverableShapes
-                .Where(x => Math.Abs(x.Value.X - shape.Value.X) < .001 * S.X).ToList();
+            var sibilings = HoverableShapes.Where(x => Math.Abs(x.Value.X - shape.Value.X) < .001*S.X).ToList();
 
             foreach (var p in sibilings)
             {
                 if (ShapeHoverBehavior == ShapeHoverBehavior.Dot)
                 {
                     p.Target.Fill = p.Series.Stroke;
-                    p.Target.Stroke = new SolidColorBrush { Color = PointHoverColor };
+                    p.Target.Stroke = new SolidColorBrush {Color = PointHoverColor};
                 }
                 else
                 {
@@ -686,38 +740,34 @@ namespace LiveCharts.CoreComponents
         protected virtual Point GetToolTipPosition(HoverableShape sender, List<HoverableShape> sibilings)
         {
             DataToolTip.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
-            var x = sender.Value.X > (Min.X + Max.X) / 2
-                ? ToPlotArea(sender.Value.X, AxisTags.X) - 10 - DataToolTip.DesiredSize.Width
-                : ToPlotArea(sender.Value.X, AxisTags.X) + 10;
-            var y = ToPlotArea(sibilings.Select(s => s.Value.Y).DefaultIfEmpty(0).Sum()
-                               / sibilings.Count, AxisTags.Y);
-            y = y + DataToolTip.DesiredSize.Height > ActualHeight
-                ? y - (y + DataToolTip.DesiredSize.Height - ActualHeight) - 5
-                : y;
+            var x = sender.Value.X > (Min.X + Max.X)/2 ? ToPlotArea(sender.Value.X, AxisTags.X) - 10 - DataToolTip.DesiredSize.Width : ToPlotArea(sender.Value.X, AxisTags.X) + 10;
+            var y = ToPlotArea(sibilings.Select(s => s.Value.Y).DefaultIfEmpty(0).Sum()/sibilings.Count, AxisTags.Y);
+            y = y + DataToolTip.DesiredSize.Height > ActualHeight ? y - (y + DataToolTip.DesiredSize.Height - ActualHeight) - 5 : y;
             return new Point(x, y);
         }
+
         #endregion
 
         #region Internal Methods
+
         internal void OnDataSeriesChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             _serieValuesChanged.Stop();
             _serieValuesChanged.Start();
         }
+
         #endregion
 
         #region Private Methods
 
-        private void DrawAxis(Axis axis, Point longestY, Point longestX, double offsetY, double offsetX)
+        private void DrawAxis(Axis axis, Point longestLabel)
         {
             var isX = Equals(axis, AxisX);
             var max = isX ? Max.X : Max.Y;
             var min = isX ? Min.X : Min.Y;
             var s = isX ? S.X : S.Y;
 
-            var maxval = axis.Separator.IsEnabled || axis.ShowLabels
-                ? max + (axis.IgnoresLastLabel ? -1 : 0)
-                : min - 1;
+            var maxval = axis.Separator.IsEnabled || axis.ShowLabels ? max + (axis.IgnoresLastLabel ? -1 : 0) : min - 1;
 
             var formatter = GetFormatter(axis);
 
@@ -727,8 +777,7 @@ namespace LiveCharts.CoreComponents
                 {
                     var l = new Line
                     {
-                        Stroke = new SolidColorBrush { Color = axis.Separator.Color },
-                        StrokeThickness = axis.Separator.Thickness
+                        Stroke = new SolidColorBrush {Color = axis.Separator.Color}, StrokeThickness = axis.Separator.Thickness
                     };
                     if (isX)
                     {
@@ -756,15 +805,12 @@ namespace LiveCharts.CoreComponents
                     var text = formatter(i);
                     var label = axis.BuildATextBlock(0);
                     label.Text = text;
-                    var fl = new FormattedText(text, CultureInfo.CurrentUICulture, FlowDirection.LeftToRight,
-                        new Typeface(axis.FontFamily, axis.FontStyle, axis.FontWeight,
-                            axis.FontStretch), axis.FontSize, Brushes.Black);
+                    var fl = new FormattedText(text, CultureInfo.CurrentUICulture, FlowDirection.LeftToRight, new Typeface(axis.FontFamily, axis.FontStyle, axis.FontWeight, axis.FontStretch), axis.FontSize, Brushes.Black);
                     Canvas.Children.Add(label);
                     Shapes.Add(label);
 
                     var top = 0;
                     var left = 0;
-
 
                     if (isX)
                     {
@@ -773,25 +819,19 @@ namespace LiveCharts.CoreComponents
                     }
                     else
                     {
-                        Canvas.SetLeft(label, offsetY + (5 + longestY.X) - fl.Width);
-                        Canvas.SetTop(label, ToPlotArea(i, AxisTags.Y) - longestY.Y * .5 + YOffset);
+                        Canvas.SetLeft(label, PlotArea.X - fl.Width -5);
+                        Canvas.SetTop(label, ToPlotArea(i, AxisTags.Y) - longestLabel.Y*.5 + YOffset);
                     }
                 }
             }
         }
 
-        private Func<double, string> GetFormatter(Axis axis)
+        protected Func<double, string> GetFormatter(Axis axis)
         {
             var labels = axis.Labels != null ? axis.Labels : null;
 
-            return x => labels == null
-                ? (axis.LabelFormatter == null
-                    ? x.ToString(CultureInfo.InvariantCulture)
-                    : axis.LabelFormatter(x))
-                : (labels.Count > x && x >= 0
-                    ? labels[(int) x]
-                    : "");
-        } 
+            return x => labels == null ? (axis.LabelFormatter == null ? x.ToString(CultureInfo.InvariantCulture) : axis.LabelFormatter(x)) : (labels.Count > x && x >= 0 ? labels[(int) x] : "");
+        }
 
         private void ForceRedrawNow()
         {
@@ -816,9 +856,9 @@ namespace LiveCharts.CoreComponents
                 series.RequiresPlot = true;
             }
 
-            Canvas.Width = ActualWidth * CurrentScale;
-            Canvas.Height = ActualHeight * CurrentScale;
-            PlotArea = new Rect(0, 0, ActualWidth * CurrentScale, ActualHeight * CurrentScale);
+            Canvas.Width = ActualWidth*CurrentScale;
+            Canvas.Height = ActualHeight*CurrentScale;
+            PlotArea = new Rect(0, 0, ActualWidth*CurrentScale, ActualHeight*CurrentScale);
             RequiresScale = true;
         }
 
@@ -887,7 +927,7 @@ namespace LiveCharts.CoreComponents
         private static void SeriesChangedCallback(DependencyObject o, DependencyPropertyChangedEventArgs eventArgs)
         {
             var chart = o as Chart;
-            
+
             if (chart == null || chart.Series == null) return;
             if (chart.Series.Any(x => x == null)) return;
 
@@ -905,15 +945,11 @@ namespace LiveCharts.CoreComponents
                 var index = _colorIndexer++;
                 series.Chart = chart;
                 series.Collection = Series;
-                series.Stroke = series.Stroke ??
-                                new SolidColorBrush(
-                                    Colors[(int) (index - Colors.Count*Math.Truncate(index/(decimal) Colors.Count))]);
-                series.Fill = series.Fill ??
-                              new SolidColorBrush(
-                                  Colors[(int) (index - Colors.Count*Math.Truncate(index/(decimal) Colors.Count))])
-                              {
-                                  Opacity = DefaultFillOpacity
-                              };
+                series.Stroke = series.Stroke ?? new SolidColorBrush(Colors[(int) (index - Colors.Count*Math.Truncate(index/(decimal) Colors.Count))]);
+                series.Fill = series.Fill ?? new SolidColorBrush(Colors[(int) (index - Colors.Count*Math.Truncate(index/(decimal) Colors.Count))])
+                {
+                    Opacity = DefaultFillOpacity
+                };
                 series.RequiresPlot = true;
                 series.RequiresAnimation = true;
                 var observable = series.Values as INotifyCollectionChanged;
@@ -924,9 +960,7 @@ namespace LiveCharts.CoreComponents
             chart.ClearAndPlot();
             var anim = new DoubleAnimation
             {
-                From = 0,
-                To = 1,
-                Duration = TimeSpan.FromMilliseconds(1000)
+                From = 0, To = 1, Duration = TimeSpan.FromMilliseconds(1000)
             };
             if (!chart.DisableAnimation) chart.Canvas.BeginAnimation(OpacityProperty, anim);
 
@@ -963,15 +997,11 @@ namespace LiveCharts.CoreComponents
                         var index = _colorIndexer++;
                         series.Chart = chart;
                         series.Collection = Series;
-                        series.Stroke = series.Stroke ??
-                                new SolidColorBrush(
-                                    Colors[(int)(index - Colors.Count * Math.Truncate(index / (decimal)Colors.Count))]);
-                        series.Fill = series.Fill ??
-                                      new SolidColorBrush(
-                                          Colors[(int)(index - Colors.Count * Math.Truncate(index / (decimal)Colors.Count))])
-                                      {
-                                          Opacity = DefaultFillOpacity
-                                      };
+                        series.Stroke = series.Stroke ?? new SolidColorBrush(Colors[(int) (index - Colors.Count*Math.Truncate(index/(decimal) Colors.Count))]);
+                        series.Fill = series.Fill ?? new SolidColorBrush(Colors[(int) (index - Colors.Count*Math.Truncate(index/(decimal) Colors.Count))])
+                        {
+                            Opacity = DefaultFillOpacity
+                        };
                         series.RequiresPlot = true;
                         series.RequiresAnimation = true;
                         var observable = series.Values as INotifyCollectionChanged;
@@ -998,7 +1028,7 @@ namespace LiveCharts.CoreComponents
 
             if (RequiresScale)
             {
-                 Scale();
+                Scale();
                 RequiresScale = false;
             }
 
@@ -1058,7 +1088,7 @@ namespace LiveCharts.CoreComponents
             //Panning is disabled for now
 
             //if (!_isDragging) return;
-          
+
             //var movePoint = e.GetPosition(this);
             //var dif = _panOrigin - movePoint;
 
@@ -1084,6 +1114,7 @@ namespace LiveCharts.CoreComponents
         {
             DataToolTip.Visibility = Visibility.Hidden;
         }
+
         #endregion
     }
 }

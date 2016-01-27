@@ -5,13 +5,9 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:lvc="clr-namespace:LiveCharts;assembly=LiveCharts"
              xmlns:mvvm="clr-namespace:ChartsTest.Pie_Examples.Mvvm"
-             xmlns:viewers="clr-namespace:LiveCharts.Viewers;assembly=LiveCharts"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300"
              Loaded="OnLoaded">
-    <UserControl.Resources>
-        <viewers:TestConverter x:Key="TestConverter"></viewers:TestConverter>
-    </UserControl.Resources>
     <Grid d:DataContext="{d:DesignInstance mvvm:MvvmPie}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
@@ -25,7 +21,7 @@
         <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" TextWrapping="Wrap" HorizontalAlignment="Center">
             MVVM example, click on the buttons below to update chart
         </TextBlock>
-        <lvc:PieChart Name="Chart" Grid.Row="1" Grid.Column="0" Series="{Binding Sales.Salesmen}" >
+        <lvc:PieChart Name="Chart" Grid.Row="1" Grid.Column="0" Series="{Binding Sales.Salesmen}" LegendLocation="Right">
             <lvc:PieChart.AxisY>
                 <lvc:Axis Title="Sold Items" LabelFormatter="{x:Static lvc:LabelFormatters.Number}"></lvc:Axis>
             </lvc:PieChart.AxisY>
@@ -49,7 +45,5 @@
             <Button Click="AddMonthOnClick">+</Button>
             <Button Click="RemoveMonthOnClick">-</Button>
         </StackPanel>
-        <lvc:PieSeriesViewer Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" 
-						     Series="{Binding ElementName=Chart, Path=Series}"/>
     </Grid>
 </UserControl>

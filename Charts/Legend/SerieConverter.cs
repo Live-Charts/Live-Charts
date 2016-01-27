@@ -44,25 +44,10 @@ namespace LiveCharts.Viewers
 		{
 			var series = value as IEnumerable<Series>;
 		    if (series != null)
-		    {
-                var results = new ObservableCollection<SeriesStandin>();
-                var obc = (value as ObservableCollection<Series>);
-                if (obc == null) return value;
-                obc.CollectionChanged += (s, e) =>
-                {
-                    if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Add)
-                    {
-                        foreach (Series item in e.NewItems)
-                            results.Add(new SeriesStandin
-                            {
-                                Title = item.Title,
-                                Stroke = item.Stroke,
-                                Fill = item.Fill
-                            });
-                    }
-                };
-		        return results;
-		    }
+		        return series.Select(x => new SeriesStandin
+		        {
+
+		        });
 
 			var serie = value as Series;
 			if (serie != null)

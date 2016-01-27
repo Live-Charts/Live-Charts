@@ -130,6 +130,7 @@
     <Compile Include="Interfaces\IStackedBar.cs" />
     <Compile Include="Interfaces\ISeriesCollection.cs" />
     <Compile Include="IDataOptimization.cs" />
+    <Compile Include="Legend\LegendLocation.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="CoreComponents\SeriesCollection.cs" />
     <Compile Include="Interfaces\IChartValues.cs" />
@@ -148,14 +149,14 @@
     <Compile Include="TypeConverters\ColorCollectionConverter.cs" />
     <Compile Include="TypeConverters\StringCollectionConverter.cs" />
     <Compile Include="TypeConverters\DefaultValuesConverter.cs" />
-    <Compile Include="Viewers\Converters.cs" />
-    <Compile Include="Viewers\PieSeriesViewer.xaml.cs">
+    <Compile Include="Legend\Converters.cs" />
+    <Compile Include="Legend\PieSeriesViewer.xaml.cs">
       <DependentUpon>PieSeriesViewer.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Viewers\SerieConverter.cs" />
-    <Compile Include="Viewers\SeriesStandin.cs" />
-    <Compile Include="Viewers\SeriesViewer.xaml.cs">
-      <DependentUpon>SeriesViewer.xaml</DependentUpon>
+    <Compile Include="Legend\SerieConverter.cs" />
+    <Compile Include="Legend\SeriesStandin.cs" />
+    <Compile Include="Legend\ChartLegend.xaml.cs">
+      <DependentUpon>ChartLegend.xaml</DependentUpon>
     </Compile>
     <Compile Include="Charts\StackedBarChart.cs" />
     <Compile Include="LabelFormatters.cs" />
@@ -206,11 +207,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Viewers\PieSeriesViewer.xaml">
+    <Page Include="Legend\PieSeriesViewer.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Viewers\SeriesViewer.xaml">
+    <Page Include="Legend\ChartLegend.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

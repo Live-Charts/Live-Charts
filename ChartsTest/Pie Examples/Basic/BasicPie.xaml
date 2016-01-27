@@ -28,10 +28,5 @@
                 <lvc:Axis Title="Sold Items"></lvc:Axis>
             </lvc:PieChart.AxisY>
         </lvc:PieChart>
-        <lvc:PieSeriesViewer Grid.Row="1" Grid.Column="1" 
-                                 Series="{Binding ElementName=Chart, Path=Series}"
-                                 VerticalAlignment="Center"
-                                 Margin="5">
-        </lvc:PieSeriesViewer>
     </Grid>
 </UserControl>

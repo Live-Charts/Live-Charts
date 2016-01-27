@@ -122,7 +122,7 @@ namespace LiveCharts.CoreComponents
         #endregion
 
         #region PublicMethods
-        public static Color GetColorByIndex(int index)
+        public Color GetColorByIndex(int index)
         {
             return Chart.Colors[(int) (index - Chart.Colors.Count*Math.Truncate(index/(decimal) Chart.Colors.Count))];
         }

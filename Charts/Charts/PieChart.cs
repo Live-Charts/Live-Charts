@@ -21,6 +21,7 @@
 //SOFTWARE.
 
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Windows;
@@ -31,6 +32,7 @@ using System.Windows.Media.Animation;
 using LiveCharts.CoreComponents;
 using LiveCharts.Shapes;
 using LiveCharts.Tooltip;
+using LiveCharts.Viewers;
 
 namespace LiveCharts
 {
@@ -47,6 +49,7 @@ namespace LiveCharts
             DrawPadding = 20;
             Background = Brushes.White;
             AnimatesNewPoints = true;
+            SupportsMultipleSeries = false;
         }
 
         #region Dependency Properties
@@ -107,6 +110,76 @@ namespace LiveCharts
         protected override void DrawAxes()
         {
             foreach (var l in Shapes) Canvas.Children.Remove(l);
+            var legend = Legend ?? new ChartLegend();
+
+            LoadLegend(legend);
+
+            if (LegendLocation != LegendLocation.None)
+            {
+                Canvas.Children.Add(legend);
+                Shapes.Add(legend);
+                legend.UpdateLayout();
+                legend.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+            }
+
+            switch (LegendLocation)
+            {
+                case LegendLocation.None:
+                    break;
+                case LegendLocation.Top:
+                    var top = new Point(ActualWidth * .5 - legend.DesiredSize.Width * .5, 0);
+                    PlotArea.Y += top.Y + legend.DesiredSize.Height;
+                    PlotArea.Height -= legend.DesiredSize.Height;
+                    Canvas.SetTop(legend, top.Y);
+                    Canvas.SetLeft(legend, top.X);
+                    break;
+                case LegendLocation.Bottom:
+                    var bot = new Point(ActualWidth * .5 - legend.DesiredSize.Width * .5, ActualHeight - legend.DesiredSize.Height);
+                    PlotArea.Height -= legend.DesiredSize.Height;
+                    Canvas.SetTop(legend, Canvas.ActualHeight - legend.DesiredSize.Height);
+                    Canvas.SetLeft(legend, bot.X);
+                    break;
+                case LegendLocation.Left:
+                    PlotArea.X += legend.DesiredSize.Width;
+                    PlotArea.Width -= legend.DesiredSize.Width;
+                    Canvas.SetTop(legend, Canvas.ActualHeight * .5 - legend.DesiredSize.Height * .5);
+                    Canvas.SetLeft(legend, 0);
+                    break;
+                case LegendLocation.Right:
+                    PlotArea.Width -= legend.DesiredSize.Width;
+                    Canvas.SetTop(legend, Canvas.ActualHeight * .5 - legend.DesiredSize.Height * .5);
+                    Canvas.SetLeft(legend, ActualWidth - legend.DesiredSize.Width);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+        }
+
+        protected override void LoadLegend(ChartLegend legend)
+        {
+            var series = Series.FirstOrDefault() as PieSeries;
+            if (series == null) return;
+
+            var l = new List<SeriesStandin>();
+            var f = GetFormatter(AxisX);
+
+            for (var index = 0; index < series.Values.Count; index++)
+            {
+                l.Add(new SeriesStandin
+                {
+                    Fill = series.Brushes != null && index > series.Brushes.Length 
+                     ? series.Brushes[index]
+                     : new SolidColorBrush(series.GetColorByIndex(index)),
+                    Stroke = Background,
+                    Title = f(index)
+                });
+            }
+
+            legend.Series = l;
+
+            legend.Orientation = LegendLocation == LegendLocation.Bottom || LegendLocation == LegendLocation.Top
+                ? Orientation.Horizontal
+                : Orientation.Vertical;
         }
 
         internal override void DataMouseEnter(object sender, MouseEventArgs e)

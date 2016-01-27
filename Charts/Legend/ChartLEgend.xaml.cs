@@ -20,35 +20,35 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-using System.Collections.ObjectModel;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
-using LiveCharts.CoreComponents;
+using LiveCharts.Viewers;
 
 namespace LiveCharts
 {
     /// <summary>
     /// Interaction logic for SeriesViewer.xaml
     /// </summary>
-    public partial class SeriesViewer
+    public partial class ChartLegend
     {
-        public SeriesViewer()
+        public ChartLegend()
         {
             InitializeComponent();
             DataContext = this;
         }
 
         public static readonly DependencyProperty SeriesProperty = DependencyProperty.Register(
-            "Series", typeof (ObservableCollection<Series>), typeof (SeriesViewer), new PropertyMetadata(null));
+            "Series", typeof (IEnumerable<SeriesStandin>), typeof (ChartLegend), new PropertyMetadata(null));
 
-        public ObservableCollection<Series> Series
+        public IEnumerable<SeriesStandin> Series
         {
-            get { return (ObservableCollection<Series>) GetValue(SeriesProperty); }
+            get { return (IEnumerable<SeriesStandin>) GetValue(SeriesProperty); }
             set { SetValue(SeriesProperty, value); }
         }
 
         public static readonly DependencyProperty OrientationProperty = DependencyProperty.Register(
-            "Orientation", typeof (Orientation), typeof (SeriesViewer), new PropertyMetadata(Orientation.Vertical));
+            "Orientation", typeof (Orientation), typeof (ChartLegend), new PropertyMetadata(Orientation.Vertical));
 
         public Orientation Orientation
         {

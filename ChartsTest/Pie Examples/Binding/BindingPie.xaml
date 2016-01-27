@@ -19,7 +19,7 @@
         </TextBlock>
         <lvc:PieChart Name="Chart" Grid.Row="1" Grid.Column="0" InnerRadius="150" >
             <lvc:PieChart.Series>
-                <lvc:PieSeries Name="Serie1" Title="Maria" Values="{Binding ViewModel.FirstSeries}"></lvc:PieSeries>
+                <lvc:PieSeries Name="Serie1" Title="Maria" Values="{Binding ViewModel.FirstSeries}"/>
             </lvc:PieChart.Series>
             <lvc:PieChart.AxisY>
                 <lvc:Axis IsEnabled="False" ShowLabels="False">

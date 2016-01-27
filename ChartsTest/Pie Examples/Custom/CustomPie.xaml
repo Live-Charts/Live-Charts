@@ -39,12 +39,5 @@
                 </lvc:Axis>
             </lvc:PieChart.AxisX>
         </lvc:PieChart>
-        <lvc:PieSeriesViewer Grid.Row="2" 
-                                 Series="{Binding ElementName=Chart, Path=Series}"
-                                 HorizontalAlignment="Center"
-                                 Orientation="Horizontal"
-                                 Foreground="White"
-                                 Margin="5">
-        </lvc:PieSeriesViewer>
     </Grid>
 </UserControl>

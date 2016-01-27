@@ -19,10 +19,10 @@
         <TextBlock Grid.Row="0" HorizontalAlignment="Center" Grid.ColumnSpan="2" Margin="5" TextWrapping="Wrap">
             <Bold>In Line Charting</Bold>: I just want a chart now!
         </TextBlock>
-        <lvc:StackedBarChart Name="Chart" Grid.Row="1" Grid.Column="0">
+        <lvc:StackedBarChart Name="Chart" Grid.Row="1" Grid.Column="0" LegendLocation="Left">
             <lvc:StackedBarChart.Series>
                 <lvc:StackedBarSeries Title="Maria" Values="20, 40, 45, 60, 55, 60, 65, 70"/>
-                    <lvc:StackedBarSeries Title="John" Values="30, 35, 43, 68, 65 ,70, 55, 60"/>
+                <lvc:StackedBarSeries Title="John" Values="30, 35, 43, 68, 65 ,70, 55, 60"/>
                 <lvc:LineSeries Title="Expected Sales"  Values="10, 70, 80, 110,120, 140,120, 120" Fill="Transparent"/>
             </lvc:StackedBarChart.Series>
             <lvc:StackedBarChart.AxisY>
@@ -36,10 +36,5 @@
                 </lvc:Axis>
             </lvc:StackedBarChart.AxisX>
         </lvc:StackedBarChart>
-        <lvc:SeriesViewer Grid.Row="1" Grid.Column="1" 
-                                 Series="{Binding ElementName=Chart, Path=Series}"
-                                 VerticalAlignment="Center"
-                                 Margin="5">
-        </lvc:SeriesViewer>
     </Grid>
 </UserControl>

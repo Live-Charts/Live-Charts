@@ -19,7 +19,7 @@
         <TextBlock Grid.Row="0" HorizontalAlignment="Center" Grid.ColumnSpan="2" Margin="5">
             <Bold>In Line Charting</Bold>: I just want a chart now!
         </TextBlock>
-        <lvc:BarChart Name="Chart" Grid.Row="1" Grid.Column="0">
+        <lvc:BarChart Name="Chart" Grid.Row="1" Grid.Column="0" LegendLocation="Bottom">
             <lvc:BarChart.Series>
                 <lvc:BarSeries Title="Maria"    Values="20, 40, 45, 60, 55, 60, 65, 70"/>
                 <lvc:BarSeries Title="John"     Values="30, 35, 43, 68, 65 ,70, 55, 60"/>
@@ -36,10 +36,5 @@
                 </lvc:Axis>
             </lvc:BarChart.AxisX>
         </lvc:BarChart>
-        <lvc:SeriesViewer Grid.Row="1" Grid.Column="1" 
-                                 Series="{Binding ElementName=Chart, Path=Series}"
-                                 VerticalAlignment="Center"
-                                 Margin="5">
-        </lvc:SeriesViewer>
     </Grid>
 </UserControl>

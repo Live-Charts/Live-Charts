@@ -17,13 +17,13 @@
         <TextBlock Grid.Row="0" HorizontalAlignment="Center" Grid.ColumnSpan="2" Margin="5" Foreground="White">
             <Bold>Custom Style</Bold>: live charts is easy to customize.
         </TextBlock>
-        <lvc:StackedBarChart Name="Chart" Grid.Row="1" Grid.Column="0">
+        <lvc:StackedBarChart Name="Chart" Grid.Row="1" Grid.Column="0" LegendLocation="Bottom">
             <lvc:StackedBarChart.DataToolTip>
                 <customTooltips:CustomIndexedTooltip x:Name="CustomTooltip"/>
             </lvc:StackedBarChart.DataToolTip>
             <lvc:StackedBarChart.Series>
                 <lvc:StackedBarSeries Title="Maria" Values="20, 40, 45, 60, 55, 60, 65, 70" Stroke="#FFB300" Fill="#AAFFB300" StrokeThickness="4"/>
-                    <lvc:StackedBarSeries Title="John" Values="30, 35, 43, 68, 65 ,70, 55, 60" Stroke="#FFA000" Fill="#AAFFA000" StrokeThickness="4"/>
+                <lvc:StackedBarSeries Title="John" Values="30, 35, 43, 68, 65 ,70, 55, 60" Stroke="#FFA000" Fill="#AAFFA000" StrokeThickness="4"/>
                 <lvc:StackedBarSeries Title="Erick" Values="40, 42, 50, 70, 50, 55, 44, 73" Stroke="#FF8F00" Fill="#AAFF8F00" StrokeThickness="4"/>
             </lvc:StackedBarChart.Series>
             <lvc:StackedBarChart.AxisY>
@@ -41,12 +41,5 @@
                 </lvc:Axis>
             </lvc:StackedBarChart.AxisX>
         </lvc:StackedBarChart>
-        <lvc:SeriesViewer Grid.Row="2"
-                                 Series="{Binding ElementName=Chart, Path=Series}"
-                                 HorizontalAlignment="Center"
-                                 Orientation="Horizontal"
-                                 Foreground="White"
-                                 Margin="5">
-        </lvc:SeriesViewer>
     </Grid>
 </UserControl>

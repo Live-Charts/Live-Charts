@@ -15,6 +15,6 @@
         <TextBlock Grid.Row="0">
             <Bold>logarithmic Axis</Bold>: you can map anything as your chart values, in this case use a logarithmic function.
         </TextBlock>
-        <lvc:ScatterChart Grid.Row="1" Series="{Binding Series}"></lvc:ScatterChart>
+        <lvc:ScatterChart Grid.Row="1" Series="{Binding Series}" LegendLocation="Left"></lvc:ScatterChart>
     </Grid>
 </UserControl>

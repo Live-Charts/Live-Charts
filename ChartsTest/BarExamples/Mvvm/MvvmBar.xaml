@@ -41,7 +41,7 @@
             <Button Click="AddMonthOnClick">+</Button>
             <Button Click="RemoveMonthOnClick">-</Button>
         </StackPanel>
-        <lvc:BarChart Name="Chart" Grid.Row="2" Grid.Column="0" Series="{Binding Sales.SalesmenSeries}" >
+        <lvc:BarChart Name="Chart" Grid.Row="2" Grid.Column="0" Series="{Binding Sales.SalesmenSeries}" LegendLocation="Right">
             <lvc:BarChart.AxisY>
                 <lvc:Axis Title="Sold Items"></lvc:Axis>
             </lvc:BarChart.AxisY>
@@ -49,7 +49,5 @@
                 <lvc:Axis Name="SecondaryAxis" Title="Month" Labels="{Binding Sales.AvailableMonths}"></lvc:Axis>
             </lvc:BarChart.AxisX>
         </lvc:BarChart>
-        <lvc:SeriesViewer Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" 
-                                 Series="{Binding ElementName=Chart, Path=Series}"/>
     </Grid>
 </UserControl>

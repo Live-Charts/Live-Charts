@@ -22,7 +22,7 @@
         <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" TextWrapping="Wrap" HorizontalAlignment="Center">
             MVVM example, click on the buttons below to update chart
         </TextBlock>
-        <lvc:ScatterChart Name="Chart" Grid.Row="1" Grid.Column="0" Series="{Binding}" >
+        <lvc:ScatterChart Name="Chart" Grid.Row="1" Grid.Column="0" Series="{Binding}" LegendLocation="Left">
             <lvc:ScatterChart.AxisY>
                 <lvc:Axis Title="Sold Items"></lvc:Axis>
             </lvc:ScatterChart.AxisY>
@@ -49,7 +49,5 @@
             <Button Click="AddPointOnClick">+</Button>
             <Button Click="RemovePointOnClick">-</Button>
         </StackPanel>
-        <lvc:SeriesViewer Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" 
-                                 Series="{Binding ElementName=Chart, Path=Series}"></lvc:SeriesViewer>
     </Grid>
 </UserControl>
