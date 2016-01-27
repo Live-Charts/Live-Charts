@@ -22,6 +22,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
 using System.Windows.Data;
@@ -42,17 +43,30 @@ namespace LiveCharts.Viewers
 		public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
 		{
 			var series = value as IEnumerable<Series>;
-			if (series != null)
-				return series.Select(s => new SerieStandin
-					{
-						Title = s.Title,
-						Stroke = s.Stroke,
-						Fill = s.Fill
-					});
+		    if (series != null)
+		    {
+                var results = new ObservableCollection<SeriesStandin>();
+                var obc = (value as ObservableCollection<Series>);
+                if (obc == null) return value;
+                obc.CollectionChanged += (s, e) =>
+                {
+                    if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Add)
+                    {
+                        foreach (Series item in e.NewItems)
+                            results.Add(new SeriesStandin
+                            {
+                                Title = item.Title,
+                                Stroke = item.Stroke,
+                                Fill = item.Fill
+                            });
+                    }
+                };
+		        return results;
+		    }
 
 			var serie = value as Series;
 			if (serie != null)
-				return new SerieStandin
+				return new SeriesStandin
 					{
 						Title = serie.Title,
 						Stroke = serie.Stroke,

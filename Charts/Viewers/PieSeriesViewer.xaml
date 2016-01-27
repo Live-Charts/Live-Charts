@@ -38,7 +38,7 @@
                 </ItemsPanelTemplate>
             </ItemsControl.ItemsPanel>
             <ItemsControl.ItemTemplate>
-                <DataTemplate d:DataContext="{d:DesignInstance local:SerieStandin}">
+                <DataTemplate d:DataContext="{d:DesignInstance local:SeriesStandin}">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"></ColumnDefinition>

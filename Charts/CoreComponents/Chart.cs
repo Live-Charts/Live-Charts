@@ -517,6 +517,7 @@ namespace LiveCharts.CoreComponents
         protected virtual void DrawAxes()
         {
             foreach (var l in Shapes) Canvas.Children.Remove(l);
+
             //draw axes titles
             var titleY = 0d;
             if (!string.IsNullOrWhiteSpace(AxisY.Title))
@@ -540,7 +541,7 @@ namespace LiveCharts.CoreComponents
                 BindingOperations.SetBinding(yLabel, TextBlock.TextProperty, binding);
                 Shapes.Add(yLabel);
                 Canvas.Children.Add(yLabel);
-                Canvas.SetLeft(yLabel, Canvas.DesiredSize.Width * .5 - tx.X * .5);
+                Canvas.SetLeft(yLabel, Canvas.DesiredSize.Width*.5 - tx.X*.5);
                 Canvas.SetTop(yLabel, Canvas.DesiredSize.Height - tx.Y - 5);
                 titleX += tx.Y;
             }

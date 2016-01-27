@@ -45,13 +45,13 @@ namespace LiveCharts
 			set { SetValue(LabelsProperty, value); }
 		}
 
-        public static readonly DependencyProperty ColorsProperty = DependencyProperty.Register(
-            "Colors", typeof (Color[]), typeof (PieSeries), new PropertyMetadata(default(Color[])));
+        public static readonly DependencyProperty BrushesProperty = DependencyProperty.Register(
+            "Brushes", typeof (Brush[]), typeof (PieSeries), new PropertyMetadata(default(Brush[])));
         [TypeConverter(typeof(ColorCollectionConverter))]
-        public Color[] Colors
+        public Brush[] Brushes
         {
-            get { return (Color[]) GetValue(ColorsProperty); }
-            set { SetValue(ColorsProperty, value); }
+            get { return (Brush[]) GetValue(BrushesProperty); }
+            set { SetValue(BrushesProperty, value); }
         }
 
         public override void Plot(bool animate = true)
@@ -78,21 +78,18 @@ namespace LiveCharts
                     rotated = participation * -.5;
                     isFist = false;
                 }
+
                 var slice = new PieSlice
                 {
                     CentreX = 0,
                     CentreY = 0,
-                    RotationAngle = 360 * rotated,
-                    WedgeAngle = 360 * participation,
-                    Radius = minDimension / 2,
+                    RotationAngle = 360*rotated,
+                    WedgeAngle = 360*participation,
+                    Radius = minDimension/2,
                     InnerRadius = pChart.InnerRadius,
-                    Fill = new SolidColorBrush
-                    {
-                        Color = Colors != null && Colors.Length > sliceId
-                            ? Colors[sliceId]
-                            : GetColorByIndex(sliceId),
-                        Opacity = 1
-                    },
+                    Fill = Brushes != null && Brushes.Length > sliceId
+                        ? Brushes[sliceId]
+                        : new SolidColorBrush(GetColorByIndex(sliceId)),
                     Stroke = Chart.Background,
                     StrokeThickness = pChart.SlicePadding
                 };
@@ -125,7 +122,7 @@ namespace LiveCharts
                     FontStretch = Chart.AxisY.FontStretch,
                     FontStyle = Chart.AxisY.FontStyle,
                     FontWeight = Chart.AxisY.FontWeight,
-                    Foreground = Brushes.White
+                    Foreground = System.Windows.Media.Brushes.White
                 };
 
                 var hypo = ((minDimension / 2) + (pChart.InnerRadius > 10 ? pChart.InnerRadius : 10)) / 2;

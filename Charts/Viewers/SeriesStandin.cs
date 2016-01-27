@@ -26,7 +26,7 @@ using LiveCharts.Annotations;
 
 namespace LiveCharts.Viewers
 {
-	public class SerieStandin : INotifyPropertyChanged
+	public class SeriesStandin : INotifyPropertyChanged
 	{
 	    private Brush _stroke;
 	    private Brush _fill;

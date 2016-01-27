@@ -21,10 +21,13 @@
 //SOFTWARE.
 
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 namespace LiveCharts.TypeConverters
 {
@@ -41,10 +44,22 @@ namespace LiveCharts.TypeConverters
             if (valueString != null)
             {
                 var values = valueString.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
-                return values
-                    .Select(x => (Color) (ColorConverter.ConvertFromString(x.Trim())
-                                          ?? Colors.Transparent))
-                    .ToArray();
+
+                var l = new List<Brush>();
+
+                foreach (var s in values.Select(x => x.Trim()))
+                {
+                    if (Regex.IsMatch(s, @"^#[0-9a-fA-F]+"))
+                    {
+                        l.Add(
+                            new SolidColorBrush((Color) (ColorConverter.ConvertFromString(s) ??
+                                                         Colors.Transparent)));
+                        continue;
+                    }
+                    l.Add(new ImageBrush(new BitmapImage(new Uri(s, UriKind.Relative))));
+                }
+
+                return l.ToArray();
             }
             return base.ConvertFrom(context, culture, value);
         }

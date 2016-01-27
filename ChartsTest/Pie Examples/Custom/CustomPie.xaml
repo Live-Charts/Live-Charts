@@ -22,7 +22,7 @@
                 <lvc:PieSeries Title="Maria"
                                      Values="20, 40, 45"
                                      Labels="Jan, Feb, Mar"
-                                     Colors="#FFB300, #FFA000, #FF8F00"/>
+                                     Brushes="#FFB300, #FFA000, ../../imagefill.jpg"/>
             </lvc:PieChart.Series>
             <lvc:PieChart.AxisY>
                 <lvc:Axis Title="Sold Items" IsEnabled="False" Foreground="White" FontSize="13" FontFamily="Arial">

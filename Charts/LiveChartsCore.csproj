@@ -153,7 +153,7 @@
       <DependentUpon>PieSeriesViewer.xaml</DependentUpon>
     </Compile>
     <Compile Include="Viewers\SerieConverter.cs" />
-    <Compile Include="Viewers\SerieStandin.cs" />
+    <Compile Include="Viewers\SeriesStandin.cs" />
     <Compile Include="Viewers\SeriesViewer.xaml.cs">
       <DependentUpon>SeriesViewer.xaml</DependentUpon>
     </Compile>

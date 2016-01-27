@@ -24,7 +24,12 @@
             <lvc:BarChart.Series>
                 <lvc:BarSeries Title="Maria" Values="1, -4, -4, 6, -5.5, 6, 6, -7" Stroke="#FFB300" Fill="#AAFFB300" StrokeThickness="4" />
                     <lvc:BarSeries Title="John" Values="-3.0, 3.5, -4.3, 6.8, 6.5 ,-7, -5.5, -6" Stroke="#FFA000" Fill="#AAFFA000" StrokeThickness="4" />
-                <lvc:BarSeries Title="Erick" Values="-4.0, 4.2, -5.0, 7.0, -5.0, 5.5, -4.4, -7.3" Stroke="#FF8F00" Fill="#AAFF8F00" StrokeThickness="4"/>
+                <lvc:BarSeries Title="Erick" Values="-4.0, 4.2, -5.0, 7.0, -5.0, 5.5, -4.4, -7.3" Stroke="#FF8F00"
+                               StrokeThickness="4">
+                    <lvc:BarSeries.Fill>
+                        <ImageBrush ImageSource="../../imagefill.jpg"></ImageBrush>
+                    </lvc:BarSeries.Fill>
+                </lvc:BarSeries>
             </lvc:BarChart.Series>
             <lvc:BarChart.AxisY>
                 <lvc:Axis Title="Sold Items Change" IsEnabled="True" Color="#909090" Thickness="4" Foreground="White" FontSize="13" FontFamily="Arial">
