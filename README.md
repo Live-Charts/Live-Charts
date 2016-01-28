@@ -76,7 +76,7 @@ DataContext = this;
 
 ## c) Full Binding (Recommended Method)
 
-Useful when you need to change the number of series and the values of each serie, in this example also we are not ploting just a column of dobule, we are ploting `ChartValues<SalesData>` then we specify wich property to use for X and Y.
+Useful when you need to change the number of series and the values of each serie, in this example also we are not ploting just a column of dobule, we are ploting `ChartValues<SalesData>` then we specify wich property to use for X and Y. [For more info read this](https://github.com/beto-rodriguez/Live-Charts/wiki/0.3-Mapping-X-and-Y)
 
 **XAML** [see full file](https://github.com/beto-rodriguez/Live-Charts/blob/master/ChartsTest/Line%20Examples/Mvvm/MvvmLine.xaml)
 ```xml
