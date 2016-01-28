@@ -15,7 +15,7 @@
 
 [![Join the chat at https://gitter.im/beto-rodriguez/Live-Charts](https://badges.gitter.im/beto-rodriguez/Live-Charts.svg)](https://gitter.im/beto-rodriguez/Live-Charts?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-Live charts is an easy way to build useful charts, all charts are animated, they update every time you change your data, or when you rezise the chart, it also has an awesome performance.
+Live charts is an easy way to build useful charts, all charts are animated, they update every time you change your data, or when you rezise the chart, it also has an awesome performance. 
 
  - **3,000,000 points in 1 second, (coming soon in next release, almost ready!)**
  - **MVVM Charting, Support for WPF Binding, All charts update when data changes.**
@@ -24,7 +24,7 @@ Live charts is an easy way to build useful charts, all charts are animated, they
  - **Supports zooming and panning.**
  - **MIT License, permissive licensing.**
  
-This is the logic you use in every chart, there are just some litle properties or rules that change from each type of chart. Use the syntax that better fits your needs.
+This is the logic you use in every chart, there are just some litle properties or rules that change from each type of chart. Use the syntax that better fits your needs, you can also see examples here: [Winforms](https://github.com/beto-rodriguez/Live-Charts/tree/master/WinForms), [WPF](https://github.com/beto-rodriguez/Live-Charts/tree/master/ChartsTest)
 
 ## a) In Line Charting 
 
