@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Globalization;
 using System.Windows.Data;
-using LiveCharts;
 using LiveCharts.CoreComponents;
 
 namespace ChartsTest.BarExamples.Mvvm

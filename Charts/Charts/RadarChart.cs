@@ -151,11 +151,9 @@ namespace LiveCharts
 
         protected override void Scale()
         {
-            this.Max = this.GetMax();
-            this.Min = this.GetMin();
-            this.S = this.GetS();
-            this.Measure();
-            this.DrawAxes();
+            base.Scale();
+
+            DrawAxes();
         }
 
         protected override Point GetToolTipPosition(HoverableShape sender, List<HoverableShape> sibilings)

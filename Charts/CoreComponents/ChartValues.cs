@@ -74,7 +74,7 @@ namespace LiveCharts.CoreComponents
                         {
                             X = config.XValueMapper(t.Value, t.Key),
                             Y = config.YValueMapper(t.Value, t.Key),
-                            Instance = t
+                            Instance = t.Value
                         }).ToArray();
                         return _points;
                     }

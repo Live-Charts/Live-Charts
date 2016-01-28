@@ -4,11 +4,13 @@ using ChartsTest.BarExamples;
 using ChartsTest.BarExamples.UsingObservableChartPoint;
 using ChartsTest.Line_Examples;
 using ChartsTest.Line_Examples.RotadedLine;
+using ChartsTest.MoreCharts.RadarChart;
 using ChartsTest.Pie_Examples;
 using ChartsTest.Scatter_Examples;
 using ChartsTest.Scatter_Examples.logarithmicScatter;
 using ChartsTest.StackedBarExamples;
 using ChartsTest.StackedBarExamples.StackedBarRotated;
+using LiveCharts;
 using MvvmPie = ChartsTest.Pie_Examples.Mvvm.MvvmPie;
 using MvvmStackedBar = ChartsTest.StackedBarExamples.Mvvm.MvvmStackedBar;
 using RotatedBar = ChartsTest.BarExamples.RotatedBar.RotatedBar;
@@ -75,17 +77,23 @@ namespace ChartsTest
                 //new ZoomableScatter(),
                 //new PerformanceScatter()
             };
-            window.LineControl.Content = LineAndAreaAexamples.Count > 0 ? LineAndAreaAexamples[0] : null;
-            window.BarControl.Content = BarExamples.Count > 0 ? BarExamples[0] : null;
-            window.StackedBarControl.Content = StackedBarExamples.Count > 0 ? StackedBarExamples[0] : null;
-            window.PieControl.Content = PieExamples.Count > 0 ? PieExamples[0] : null;
-            window.ScatterControl.Content = ScatterExamples.Count > 0 ? ScatterExamples[0] : null;
+            //MoreExamples = new List<UserControl>
+            //{
+            //    new RadarChartExample()
+            //};
+            window.LineControl.Content = LineAndAreaAexamples != null && LineAndAreaAexamples.Count > 0 ? LineAndAreaAexamples[0] : null;
+            window.BarControl.Content = BarExamples != null && BarExamples.Count > 0 ? BarExamples[0] : null;
+            window.StackedBarControl.Content =StackedBarExamples != null && StackedBarExamples.Count > 0 ? StackedBarExamples[0] : null;
+            window.PieControl.Content = PieExamples != null && PieExamples.Count > 0 ? PieExamples[0] : null;
+            window.ScatterControl.Content = ScatterExamples != null && ScatterExamples.Count > 0 ? ScatterExamples[0] : null;
+            window.MoreControl.Content = MoreExamples != null && MoreExamples.Count > 0 ? MoreExamples[0] : null;
         }
         public static List<UserControl> LineAndAreaAexamples { get; set; }
         public static List<UserControl> BarExamples { get; set; }
         public static List<UserControl> StackedBarExamples { get; set; }
         public static List<UserControl> PieExamples { get; set; }
         public static List<UserControl> ScatterExamples { get; set; }
+        public static List<UserControl> MoreExamples { get; set; } 
 
         public static void Next(this ContentControl control, List<UserControl> list)
         {

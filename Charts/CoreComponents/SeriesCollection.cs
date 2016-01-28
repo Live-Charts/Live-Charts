@@ -31,6 +31,9 @@ namespace LiveCharts
 {
     public class SeriesCollection : ObservableCollection<Series>
     {
+        private readonly Point _maxChartPoint;
+        private readonly Point _minChartPoint;
+
         public SeriesCollection()
         {
             Configuration = new SeriesConfiguration<double>();
@@ -50,11 +53,19 @@ namespace LiveCharts
         /// <summary>
         /// Gets max chart point
         /// </summary>
-        public Point MaxChartPoint { get; }
+        public Point MaxChartPoint
+        {
+            get { return _maxChartPoint; }
+        }
+
         /// <summary>
         /// Gets min chart point
         /// </summary>
-        public Point MinChartPoint { get; }
+        public Point MinChartPoint
+        {
+            get { return _minChartPoint; }
+        }
+
         /// <summary>
         /// Gets or sets chart
         /// </summary>

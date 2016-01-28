@@ -67,7 +67,16 @@ namespace ChartsTest
         {
             ScatterControl.Next(ExamplesMapper.ScatterExamples);
         }
+
+        private void MorePrevious(object sender, MouseButtonEventArgs e)
+        {
+            MoreControl.Previous(ExamplesMapper.ScatterExamples);
+        }
+        private void MoreNext(object sender, MouseButtonEventArgs e)
+        {
+            MoreControl.Next(ExamplesMapper.ScatterExamples);
+        }
         #endregion
-      
+
     }
 }

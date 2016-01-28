@@ -53,6 +53,7 @@ namespace ChartsTest.BarExamples
             Chart.ClearAndPlot();
         }
     }
+
     public class SalesData
     {
         public int ItemsSold { get; set; }

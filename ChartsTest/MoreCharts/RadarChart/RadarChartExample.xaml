@@ -1,0 +1,26 @@
+﻿<UserControl x:Class="ChartsTest.MoreCharts.RadarChart.RadarChartExample"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:lvc="clr-namespace:LiveCharts;assembly=LiveCharts"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <TextBlock Grid.Row="0" Margin="10" HorizontalAlignment="Center">
+            <Bold>Radar Chart</Bold>
+        </TextBlock>
+        <lvc:RadarChart Grid.Row="0">
+            <lvc:RadarChart.Series>
+                <lvc:RadarSeries Values="10, 5, 11, 15, 20"></lvc:RadarSeries>
+            </lvc:RadarChart.Series>
+            <lvc:RadarChart.AxisX>
+                <lvc:Axis ></lvc:Axis>
+            </lvc:RadarChart.AxisX>
+        </lvc:RadarChart>
+    </Grid>
+</UserControl>

@@ -82,6 +82,9 @@
     <Compile Include="Line Examples\RotadedLine\RotatedLine.xaml.cs">
       <DependentUpon>RotatedLine.xaml</DependentUpon>
     </Compile>
+    <Compile Include="MoreCharts\RadarChart\RadarChartExample.xaml.cs">
+      <DependentUpon>RadarChartExample.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pie Examples\Mvvm\SalesTooltip.xaml.cs">
       <DependentUpon>SalesTooltip.xaml</DependentUpon>
     </Compile>
@@ -174,6 +177,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Line Examples\RotadedLine\RotatedLine.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MoreCharts\RadarChart\RadarChartExample.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -398,6 +405,7 @@
   <ItemGroup>
     <Resource Include="imagefill.jpg" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
