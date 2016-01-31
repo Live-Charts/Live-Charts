@@ -23,7 +23,7 @@ Live charts is an easy way to build useful charts, all charts are animated, they
  
 This is the logic you use in every chart, there are just some litle properties or rules that change from each type of chart. You can also see examples here: [Winforms](https://github.com/beto-rodriguez/Live-Charts/tree/master/WinForms), [WPF](https://github.com/beto-rodriguez/Live-Charts/tree/master/ChartsTest)
 
-Add as many series and values as you need, they can also change dynamically, dont worry, LiveCharts handle it.
+Add as many series and values as you need, they can also change dynamically, don't worry, LiveCharts handle it.
 
 ```c#
 var series = new SeriesCollection();
@@ -47,7 +47,7 @@ Now just set `Series` property of your chart to this `SeriesCollection` you just
 
 Use *WPF* bindings [see full example here](https://github.com/beto-rodriguez/Live-Charts/tree/master/ChartsTest/Line%20Examples/Basic)
 ```xml
-<lvc:LineChart Series{Binding Series}>
+<lvc:LineChart Series="{Binding Series}">
 ```
 
 *WinForms* [see full example here](https://github.com/beto-rodriguez/Live-Charts/tree/master/WinForms/LineExamples/Basic)
