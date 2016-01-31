@@ -26,8 +26,9 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows;
+using LiveCharts.CoreComponents;
 
-namespace LiveCharts.CoreComponents
+namespace LiveCharts
 {
     /// <summary>
     /// Creates a collection of values ready to plot
@@ -62,6 +63,8 @@ namespace LiveCharts.CoreComponents
                 if (_limitsChanged)
                 {
                     _limitsChanged = false;
+                    if (Series == null) return Enumerable.Empty<ChartPoint>();
+
                     var config = (Series.Configuration ?? Series.Collection.Configuration) as SeriesConfiguration<T>;
 
                     if (config == null) return Enumerable.Empty<ChartPoint>();

@@ -9,7 +9,6 @@ using WinForms.LineExamples.Mvvm;
 using WinForms.LineExamples.Simple;
 using WinForms.PieExamples.Doughnut;
 using WinForms.PieExamples.Pie;
-using WinForms.Scatter.Simple;
 using WinForms.StackedBar.Simle;
 
 namespace WinForms
@@ -70,15 +69,10 @@ namespace WinForms
             sample.ShowDialog();
         }
 
-        private void button10_Click(object sender, EventArgs e)
-        {
-            var sample = new ScatterSample();
-            sample.ShowDialog();
-        }
-
         private void button12_Click(object sender, EventArgs e)
         {
             var sample = new StackedSample();
+            var config = new SeriesConfiguration<double>();
             sample.ShowDialog();
         }
     }

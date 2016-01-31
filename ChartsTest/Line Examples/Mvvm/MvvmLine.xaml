@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="ChartsTest.Line_Examples.MvvmLine"
+﻿<UserControl x:Class="ChartsTest.Line_Examples.Mvvm.MvvmLine"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -21,7 +21,7 @@
             <ColumnDefinition Width="Auto"></ColumnDefinition>
         </Grid.ColumnDefinitions>
         <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" TextWrapping="Wrap" HorizontalAlignment="Center" >
-            <Bold>Plot Types, not Values</Bold>: By default series values are double, but live charts allows you to plot any type you need, in this case we plot a collection of SalesData class. click on the buttons bellow to see how live charts track your data changes, also chart will follow if you resize window, notice this chart implements a custom tooltip to display Rentability property too.
+            <Bold>Mvvm Example, and clickable points.</Bold>: in this case we plot a collection of SalesData class. click on the buttons bellow to see how live charts track your data changes, also chart will follow if you resize window, notice this chart implements a custom tooltip to display Rentability property too.
         </TextBlock>
         <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center">
             <StackPanel.Resources>
@@ -42,7 +42,7 @@
             <Button Click="AddMonthOnClick">+</Button>
             <Button Click="RemoveMonthOnClick">-</Button>
         </StackPanel>
-        <lvc:LineChart Name="Chart" Grid.Row="2" Grid.Column="0" Series="{Binding Sales.SalesmenSeries}" LegendLocation="Right">
+        <lvc:LineChart Name="Chart" Grid.Row="2" Grid.Column="0" Series="{Binding Sales.SalesmenSeries}" DataClick="Chart_OnDataClick" LegendLocation="Right">
             <lvc:LineChart.AxisY>
                 <lvc:Axis Title="Sold Items"></lvc:Axis>
             </lvc:LineChart.AxisY>

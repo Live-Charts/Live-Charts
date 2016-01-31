@@ -36,7 +36,7 @@ namespace LiveCharts
 
         public SeriesCollection()
         {
-            Configuration = new SeriesConfiguration<double>();
+            Configuration = new SeriesConfiguration<double>().X((v, i) => i).Y(v => v);
             CollectionChanged += (sender, args) =>
             {
                 if (args.NewItems != null)

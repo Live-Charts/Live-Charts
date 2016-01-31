@@ -22,6 +22,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -64,6 +65,7 @@ namespace LiveCharts
                         .ToArray(), animate));
 
                 var hoverableAreas = new List<HoverableShape>();
+                var f = Chart.GetFormatter(Chart.Invert ? Chart.AxisX : Chart.AxisY);
 
                 foreach (var point in segment)
                 {
@@ -86,6 +88,22 @@ namespace LiveCharts
                         Height = 40,
                         StrokeThickness = 0
                     };
+
+                    if (DataLabels)
+                    {
+                        var tb = BuildATextBlock(0);
+                        var t = f(Chart.Invert ? point.X : point.Y);
+                        var ft = new FormattedText(
+                            t,
+                            CultureInfo.CurrentUICulture,
+                            FlowDirection.LeftToRight,
+                            new Typeface(FontFamily, FontStyle, FontWeight, FontStretch), FontSize, Brushes.Black);
+                        tb.Text = t;
+                        Chart.Canvas.Children.Add(tb);
+                        Chart.Shapes.Add(tb);
+                        Canvas.SetLeft(tb, plotPoint.X - ft.Width*.5);
+                        Canvas.SetTop(tb, plotPoint.Y - ft.Height - 5);
+                    }
 
                     r.MouseEnter += Chart.DataMouseEnter;
                     r.MouseLeave += Chart.DataMouseLeave;
@@ -185,6 +203,7 @@ namespace LiveCharts
                 areaLines.Add(new BezierSegment(cp1[i], cp2[i], points[i + 1], true));
                 l += GetBezierLength(new [] { points[i], cp1[i], cp2[i], points[i + 1] });
             }
+            l *= 1.05;
             l /= StrokeThickness;
             var lastP = Chart.Invert
                 ? new Point(ToPlotArea(Chart.Min.X, AxisTags.X), points.Min(x => x.Y))

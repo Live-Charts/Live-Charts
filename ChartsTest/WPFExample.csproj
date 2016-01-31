@@ -76,8 +76,15 @@
     <Compile Include="BarExamples\UsingObservableChartPoint\PointPropertyChangedBar.xaml.cs">
       <DependentUpon>PointPropertyChangedBar.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Line Examples\LazyData\LazyDataLine.xaml.cs">
-      <DependentUpon>LazyDataLine.xaml</DependentUpon>
+    <Compile Include="Line Examples\DynamicLine\DynamicLine.xaml.cs">
+      <DependentUpon>DynamicLine.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Line Examples\DynamicLine\WeatherViewModel.cs" />
+    <Compile Include="Line Examples\IrregularIntervals\IrregularLine.xaml.cs">
+      <DependentUpon>IrregularLine.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Line Examples\LogarithmicLine\LogarithmicAxis.xaml.cs">
+      <DependentUpon>LogarithmicAxis.xaml</DependentUpon>
     </Compile>
     <Compile Include="Line Examples\RotadedLine\RotatedLine.xaml.cs">
       <DependentUpon>RotatedLine.xaml</DependentUpon>
@@ -90,9 +97,6 @@
     </Compile>
     <Compile Include="Line Examples\Mvvm\SalesTooltip.xaml.cs">
       <DependentUpon>SalesTooltip.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Scatter Examples\logarithmicScatter\logarithmic.xaml.cs">
-      <DependentUpon>logarithmic.xaml</DependentUpon>
     </Compile>
     <Compile Include="StackedBarExamples\Mvvm\SalesTooltip.xaml.cs">
       <DependentUpon>SalesTooltip.xaml</DependentUpon>
@@ -111,24 +115,6 @@
     </Compile>
     <Compile Include="Line Examples\UiElements\UiElementsLine.xaml.cs">
       <DependentUpon>UiElementsLine.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Scatter Examples\Basic\BasicScatter.xaml.cs">
-      <DependentUpon>BasicScatter.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Scatter Examples\Binding\BindingScatter.xaml.cs">
-      <DependentUpon>BindingScatter.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Scatter Examples\Custom\CustomScatter.xaml.cs">
-      <DependentUpon>CustomScatter.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Scatter Examples\Mvvm\MvvmScatter.xaml.cs">
-      <DependentUpon>MvvmScatter.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Scatter Examples\Performance\PerformanceScatter.xaml.cs">
-      <DependentUpon>PerformanceScatter.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Scatter Examples\Zoomable\ZoomableScatter.xaml.cs">
-      <DependentUpon>ZoomableScatter.xaml</DependentUpon>
     </Compile>
     <Compile Include="StackedBarExamples\Basic\BasicStackedBar.xaml.cs">
       <DependentUpon>BasicStackedBar.xaml</DependentUpon>
@@ -172,7 +158,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Line Examples\LazyData\LazyDataLine.xaml">
+    <Page Include="Line Examples\DynamicLine\DynamicLine.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Line Examples\IrregularIntervals\IrregularLine.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Line Examples\LogarithmicLine\LogarithmicAxis.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -191,10 +185,6 @@
     <Page Include="Line Examples\Mvvm\SalesTooltip.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Scatter Examples\logarithmicScatter\logarithmic.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="StackedBarExamples\Mvvm\SalesTooltip.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -240,19 +230,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Line Examples\Binding\BindingLine.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Line Examples\Custom\CustomLine.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Line Examples\Zoomable\ZoomableLine.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Line Examples\Performance\PerformanceLine.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -284,17 +266,11 @@
     <Compile Include="Line Examples\Basic\BasicLine.xaml.cs">
       <DependentUpon>BasicLine.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Line Examples\Binding\BindingLine.xaml.cs">
-      <DependentUpon>BindingLine.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Line Examples\Custom\CustomLine.xaml.cs">
       <DependentUpon>CustomLine.xaml</DependentUpon>
     </Compile>
     <Compile Include="Line Examples\Zoomable\ZoomableLine.xaml.cs">
       <DependentUpon>ZoomableLine.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Line Examples\Performance\PerformanceLine.xaml.cs">
-      <DependentUpon>PerformanceLine.xaml</DependentUpon>
     </Compile>
     <Compile Include="Line Examples\Mvvm\MvvmLine.xaml.cs">
       <DependentUpon>MvvmLine.xaml</DependentUpon>
@@ -303,30 +279,6 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Scatter Examples\Basic\BasicScatter.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Scatter Examples\Binding\BindingScatter.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Scatter Examples\Custom\CustomScatter.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Scatter Examples\Mvvm\MvvmScatter.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Scatter Examples\Performance\PerformanceScatter.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Scatter Examples\Zoomable\ZoomableScatter.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="StackedBarExamples\Basic\BasicStackedBar.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

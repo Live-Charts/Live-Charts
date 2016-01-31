@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Linq;
 using System.Windows;
-using ChartsTest.Line_Examples.Mvvm;
 using LiveCharts;
 using LiveCharts.CoreComponents;
 
-namespace ChartsTest.Line_Examples
+namespace ChartsTest.Line_Examples.Mvvm
 {
     /// <summary>
     /// Interaction logic for MvvmExample.xaml
@@ -16,12 +15,13 @@ namespace ChartsTest.Line_Examples
         {
             InitializeComponent();
             Sales = new SalesViewModel();
+            YFormatter = y => y + ".00k items";
             DataContext = this;
-            Chart.AxisY.LabelFormatter = x => x + ".00k items";
             Chart.DataToolTip = new SalesTooltip();
         }
 
         public SalesViewModel Sales { get; set; }
+        public Func<double, string> YFormatter { get; set; }
 
         private void AddSalesmanOnClick(object sender, RoutedEventArgs e)
         {
@@ -46,6 +46,13 @@ namespace ChartsTest.Line_Examples
         {
             //this is just to see animation everytime you click next
             Chart.ClearAndPlot();
+        }
+
+        private void Chart_OnDataClick(ChartPoint point)
+        {
+            //point.Instance contains the model
+            var salesData = point.Instance as SalesData;
+            MessageBox.Show("You clicked on (" + point.X + ", " + point.Y);
         }
     }
 
@@ -79,9 +86,15 @@ namespace ChartsTest.Line_Examples
         public SalesViewModel()
         {
             AvailableMonths = _months;
-            SalesmenSeries = new SeriesCollection
+
+            // We create a configuration to map X and Y values
+            // in this case we only map Y, X by defualt will be a zero based index.
+            var config = new SeriesConfiguration<SalesData>().Y(data => data.ItemsSold);
+
+            //we specify the config to the SeriesCollection
+            SalesmenSeries = new SeriesCollection(config)
             {
-                //will use SeriesCollection Setup
+                //will use SeriesCollection config
                 new LineSeries
                 {
                     Title = "Charles",
@@ -96,7 +109,7 @@ namespace ChartsTest.Line_Examples
                         new SalesData {ItemsSold = 12, Rentability = .13, ItemsAverageSellPrice = 5400}
                     }
                 },
-                //Will use series collection Setup too
+                //Will use series collection config too
                 new LineSeries
                 {
                     Title = "Frida",
@@ -111,7 +124,8 @@ namespace ChartsTest.Line_Examples
                         new SalesData {ItemsSold = 14, Rentability = .11, ItemsAverageSellPrice = 4900}
                     }
                 },
-                //Override Setup for this series to plot another property or even another type
+
+                //Override config for this series to plot another property or even another type
                 new LineSeries
                 {
                     Title = "Average Series",
@@ -127,7 +141,7 @@ namespace ChartsTest.Line_Examples
                     }
                 }.Setup(new SeriesConfiguration<AverageSalesData>().Y(data => data.AverageItemsSold)) // this is the line that overrides SeriesCollection Setup
 
-            }.Setup(new SeriesConfiguration<SalesData>().Y(data => data.ItemsSold)); // Setup a default configuration for all series in this collection.
+            };
         }
 
         public SeriesCollection SalesmenSeries { get; set; }

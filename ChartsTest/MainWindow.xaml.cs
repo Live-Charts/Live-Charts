@@ -55,17 +55,10 @@ namespace ChartsTest
         {
             PieControl.Previous(ExamplesMapper.PieExamples);
         }
+
         private void PieNext(object sender, MouseButtonEventArgs e)
         {
             PieControl.Next(ExamplesMapper.PieExamples);
-        }
-        private void ScatterPrevious(object sender, MouseButtonEventArgs e)
-        {
-            ScatterControl.Previous(ExamplesMapper.ScatterExamples);
-        }
-        private void ScatterNext(object sender, MouseButtonEventArgs e)
-        {
-            ScatterControl.Next(ExamplesMapper.ScatterExamples);
         }
 
         private void MorePrevious(object sender, MouseButtonEventArgs e)

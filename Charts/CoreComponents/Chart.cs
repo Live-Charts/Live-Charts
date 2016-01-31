@@ -294,6 +294,11 @@ namespace LiveCharts.CoreComponents
             get { return PlotArea.Width < 15 || PlotArea.Height < 15; }
         }
 
+        internal bool HasValidRange
+        {
+            get { return Math.Abs(Max.X - Min.X) > S.X*.01 || Math.Abs(Max.Y - Min.Y) > S.Y*.01; }
+        }
+
         #endregion
 
         #region Public Methods
@@ -388,9 +393,6 @@ namespace LiveCharts.CoreComponents
             //based on:
             //http://stackoverflow.com/questions/361681/algorithm-for-nice-grid-line-intervals-on-a-graph
 
-            var m = axis == AxisTags.Y ? Min.Y : Min.X;
-            if (Math.Abs(range) < m * .01) range = m;
-
             var ft = axis == AxisTags.Y
                 ? new FormattedText(
                     "A label",
@@ -428,9 +430,13 @@ namespace LiveCharts.CoreComponents
 
         protected void ConfigureXAsIndexed()
         {
-            AxisX.ShowLabels = AxisX.Labels != null;
-            var m = (AxisX.Labels ?? new List<string> {""}).OrderByDescending(x => x.Length);
-            var longestYLabel = new FormattedText(m.First(), CultureInfo.CurrentUICulture, FlowDirection.LeftToRight,
+            if (AxisX.Labels == null && AxisX.LabelFormatter == null) AxisX.ShowLabels = false;
+            var f = GetFormatter(AxisX);
+            var d = AxisX.Labels == null
+                ? Max.X
+                : AxisX.Labels.IndexOf(AxisX.Labels.OrderBy(x => x.Length).Reverse().First());
+            var longestYLabel = new FormattedText(HasValidRange ? f(d) : "", CultureInfo.CurrentUICulture,
+                FlowDirection.LeftToRight,
                 new Typeface(AxisX.FontFamily, AxisX.FontStyle, AxisX.FontWeight, AxisX.FontStretch), AxisX.FontSize,
                 Brushes.Black);
             AxisX.Separator.Step = (longestYLabel.Width*Max.X)*1.25 > PlotArea.Width
@@ -442,9 +448,13 @@ namespace LiveCharts.CoreComponents
 
         protected void ConfigureYAsIndexed()
         {
-            AxisY.ShowLabels = AxisY.Labels != null;
-            var m = (AxisY.Labels ?? new List<string> {""}).OrderByDescending(x => x.Length);
-            var longestYLabel = new FormattedText(m.First(), CultureInfo.CurrentUICulture, FlowDirection.LeftToRight,
+            if (AxisY.Labels == null && AxisY.LabelFormatter == null) AxisY.ShowLabels = false;
+            var f = GetFormatter(AxisY);
+            var d = AxisY.Labels == null
+                ? Max.Y
+                : AxisY.Labels.IndexOf(AxisY.Labels.OrderBy(x => x.Length).Reverse().First());
+            var longestYLabel = new FormattedText(HasValidRange ? f(d) : "", CultureInfo.CurrentUICulture,
+                FlowDirection.LeftToRight,
                 new Typeface(AxisY.FontFamily, AxisY.FontStyle, AxisY.FontWeight, AxisY.FontStretch), AxisY.FontSize,
                 Brushes.Black);
             AxisY.Separator.Step = (longestYLabel.Width*Max.Y)*1.25 > PlotArea.Width
@@ -510,7 +520,7 @@ namespace LiveCharts.CoreComponents
 
             Max = new Point(
                 AxisX.MaxValue ??
-                Series.Where(x => x.Values != null).DefaultIfEmpty(new LineSeries()).Select(x => x.Values.MaxChartPoint.X).DefaultIfEmpty(0).Max(),
+                Series.Where(x => x.Values != null).Select(x => x.Values.MaxChartPoint.X).DefaultIfEmpty(0).Max(),
                 AxisY.MaxValue ??
                 Series.Where(x => x.Values != null).Select(x => x.Values.MaxChartPoint.Y).DefaultIfEmpty(0).Max());
 
@@ -536,6 +546,7 @@ namespace LiveCharts.CoreComponents
         #region Virtual Methods
         protected virtual void DrawAxes()
         {
+            if (!HasValidRange) return;
             foreach (var l in Shapes) Canvas.Children.Remove(l);
 
             //legend
@@ -826,11 +837,13 @@ namespace LiveCharts.CoreComponents
             }
         }
 
-        protected Func<double, string> GetFormatter(Axis axis)
+        internal Func<double, string> GetFormatter(Axis axis)
         {
             var labels = axis.Labels != null ? axis.Labels : null;
 
-            return x => labels == null ? (axis.LabelFormatter == null ? x.ToString(CultureInfo.InvariantCulture) : axis.LabelFormatter(x)) : (labels.Count > x && x >= 0 ? labels[(int) x] : "");
+            return x => labels == null
+                ? (axis.LabelFormatter == null ? x.ToString(CultureInfo.InvariantCulture) : axis.LabelFormatter(x))
+                : (labels.Count > x && x >= 0 ? labels[(int) x] : "");
         }
 
         private void ForceRedrawNow()
@@ -1018,6 +1031,8 @@ namespace LiveCharts.CoreComponents
         {
             _seriesChanged.Stop();
 
+            EreaseSeries();
+
             if (Series == null || Series.Count == 0) return;
             if (HasInvalidArea) return;
 
@@ -1032,12 +1047,10 @@ namespace LiveCharts.CoreComponents
                 RequiresScale = false;
             }
 
-            EreaseSeries();
-
             var toPlot = Series.Where(x => x.RequiresPlot);
             foreach (var series in toPlot)
             {
-                series.Plot(series.RequiresAnimation);
+                if (series.Values.Count > 0) series.Plot(series.RequiresAnimation);
                 series.RequiresPlot = false;
                 series.RequiresAnimation = false;
             }

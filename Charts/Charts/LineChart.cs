@@ -21,6 +21,7 @@
 //SOFTWARE.
 
 using System;
+using System.Linq;
 using System.Windows;
 using LiveCharts.CoreComponents;
 
@@ -52,6 +53,7 @@ namespace LiveCharts
 
         protected override void Scale()
         {
+            if (!Series.Any(x => x.Values.Count > 1)) return;
             base.Scale();
 
             S = new Point(
@@ -74,7 +76,7 @@ namespace LiveCharts
 
         protected override void DrawAxes()
         {
-            if (Math.Abs(S.X) <= Min.X*.01 || Math.Abs(S.Y) <= Min.Y*.01) return;
+            //if (Math.Abs(S.X) <= Min.X*.01 || Math.Abs(S.Y) <= Min.Y*.01) return;
 
             if (Invert) ConfigureYAsIndexed();
             else ConfigureXAsIndexed();

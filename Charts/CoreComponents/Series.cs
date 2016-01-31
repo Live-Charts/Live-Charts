@@ -26,6 +26,7 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using LiveCharts.TypeConverters;
@@ -52,7 +53,7 @@ namespace LiveCharts.CoreComponents
         #region Dependency Properties
 	    public static readonly DependencyProperty ValuesProperty = DependencyProperty.Register(
 	        "Values", typeof (IChartValues), typeof (Series), 
-            new PropertyMetadata(default(IChartValues), ValuesCallBack));
+            new PropertyMetadata(null, ValuesCallBack));
 
         [TypeConverter(typeof(DefaultValuesConverter))]
         public IChartValues Values
@@ -105,9 +106,90 @@ namespace LiveCharts.CoreComponents
 			}
 			set { SetValue(FillProperty, value); }
 		}
-		#endregion
 
-		#region Properties
+        public static readonly DependencyProperty DataLabelsProperty = DependencyProperty.Register(
+            "DataLabels", typeof (bool), typeof (Series), new PropertyMetadata(default(bool)));
+
+        public bool DataLabels
+        {
+            get { return (bool) GetValue(DataLabelsProperty); }
+            set { SetValue(DataLabelsProperty, value); }
+        }
+
+        public static readonly DependencyProperty FontFamilyProperty =
+            DependencyProperty.Register("FontFamily", typeof(FontFamily), typeof(Series), new PropertyMetadata(new FontFamily("Calibri")));
+
+        /// <summary>
+        /// Gets or sets labels font family
+        /// </summary>
+        public FontFamily FontFamily
+        {
+            get { return (FontFamily)GetValue(FontFamilyProperty); }
+            set { SetValue(FontFamilyProperty, value); }
+        }
+
+        public static readonly DependencyProperty FontSizeProperty =
+            DependencyProperty.Register("FontSize", typeof(double), typeof(Series), new PropertyMetadata(11.0));
+
+        /// <summary>
+        /// Gets or sets labels font size
+        /// </summary>
+        public double FontSize
+        {
+            get { return (double)GetValue(FontSizeProperty); }
+            set { SetValue(FontSizeProperty, value); }
+        }
+
+        public static readonly DependencyProperty FontWeightProperty =
+            DependencyProperty.Register("FontWeight", typeof(FontWeight), typeof(Series), new PropertyMetadata(FontWeights.Normal));
+
+        /// <summary>
+        /// Gets or sets labels font weight
+        /// </summary>
+        public FontWeight FontWeight
+        {
+            get { return (FontWeight)GetValue(FontWeightProperty); }
+            set { SetValue(FontWeightProperty, value); }
+        }
+
+        public static readonly DependencyProperty FontStyleProperty =
+            DependencyProperty.Register("FontStyle", typeof(FontStyle), typeof(Series), new PropertyMetadata(FontStyles.Normal));
+
+        /// <summary>
+        /// Gets or sets labels font style
+        /// </summary>
+		public FontStyle FontStyle
+        {
+            get { return (FontStyle)GetValue(FontStyleProperty); }
+            set { SetValue(FontStyleProperty, value); }
+        }
+
+        public static readonly DependencyProperty FontStretchProperty =
+            DependencyProperty.Register("FontStretch", typeof(FontStretch), typeof(Series), new PropertyMetadata(FontStretches.Normal));
+
+        /// <summary>
+        /// Gets or sets labels font strech
+        /// </summary>
+		public FontStretch FontStretch
+        {
+            get { return (FontStretch)GetValue(FontStretchProperty); }
+            set { SetValue(FontStretchProperty, value); }
+        }
+
+        public static readonly DependencyProperty ForegroundProperty =
+            DependencyProperty.Register("Foreground", typeof(Brush), typeof(Series), new PropertyMetadata(new SolidColorBrush(Color.FromRgb(150, 150, 150))));
+
+        /// <summary>
+        /// Gets or sets labels text color.
+        /// </summary>
+		public Brush Foreground
+        {
+            get { return (Brush)GetValue(ForegroundProperty); }
+            set { SetValue(ForegroundProperty, value); }
+        }
+        #endregion
+
+        #region Properties
         public Chart Chart
         {
             get { return _chart; }
@@ -193,5 +275,19 @@ namespace LiveCharts.CoreComponents
             return new Point(ToPlotArea(point.X, AxisTags.X), ToPlotArea(point.Y, AxisTags.Y));
         }
         #endregion
+
+        internal TextBlock BuildATextBlock(int rotate)
+        {
+            return new TextBlock
+            {
+                FontFamily = FontFamily,
+                FontSize = FontSize,
+                FontStretch = FontStretch,
+                FontStyle = FontStyle,
+                FontWeight = FontWeight,
+                Foreground = Foreground,
+                RenderTransform = new RotateTransform(rotate)
+            };
+        }
     }
 }

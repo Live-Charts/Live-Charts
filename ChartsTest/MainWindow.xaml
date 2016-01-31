@@ -82,18 +82,6 @@
                 <Image Grid.Column="2" Source="Right.png" MouseDown="PieNext"/>
             </Grid>
 
-            <TextBlock Style="{StaticResource Title}">Scatter Chart Examples</TextBlock>
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"></ColumnDefinition>
-                    <ColumnDefinition Width="*"></ColumnDefinition>
-                    <ColumnDefinition Width="Auto"></ColumnDefinition>
-                </Grid.ColumnDefinitions>
-                <Image Grid.Column="0" Source="Left.png" MouseDown="ScatterPrevious"/>
-                <ContentControl Name="ScatterControl" Grid.Column="1" Height="500" Width="Auto"></ContentControl>
-                <Image Grid.Column="2" Source="Right.png" MouseDown="ScatterNext"/>
-            </Grid>
-
             <TextBlock Style="{StaticResource Title}">More Charts</TextBlock>
             <Grid>
                 <Grid.ColumnDefinitions>

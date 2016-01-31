@@ -123,7 +123,6 @@
     <Compile Include="Charts\LineChart.cs" />
     <Compile Include="Charts\PieChart.cs" />
     <Compile Include="Charts\RadarChart.cs" />
-    <Compile Include="Charts\ScatterChart.cs" />
     <Compile Include="Interfaces\IBar.cs" />
     <Compile Include="Interfaces\IChartSeries.cs" />
     <Compile Include="Interfaces\ILine.cs" />
