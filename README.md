@@ -43,7 +43,7 @@ var jamesSeries = new LineSeries
 series.Add(charlesSeries);
 series.Add(jamesSeries);
 ```
-Now just Set Series property of your chart to this `SeriesCollection` you just created
+Now just set `Series` property of your chart to this `SeriesCollection` you just created
 
 Use *WPF* bindings [see full example here](https://github.com/beto-rodriguez/Live-Charts/tree/master/ChartsTest/Line%20Examples/Basic)
 ```xml
