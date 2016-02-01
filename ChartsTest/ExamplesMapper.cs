@@ -4,6 +4,7 @@ using ChartsTest.BarExamples;
 using ChartsTest.BarExamples.UsingObservableChartPoint;
 using ChartsTest.Line_Examples;
 using ChartsTest.Line_Examples.DynamicLine;
+using ChartsTest.Line_Examples.HighPerformance;
 using ChartsTest.Line_Examples.IrregularIntervals;
 using ChartsTest.Line_Examples.LogarithmicLine;
 using ChartsTest.Line_Examples.RotadedLine;
@@ -33,6 +34,7 @@ namespace ChartsTest
                 new BasicLine(),
                 new DynamicLine(),
                 new MvvmLine(),
+                new HighPerformanceLine(),
                 new RotatedLine(),
                 new CustomLine(),
                 new ZoomableLine(),

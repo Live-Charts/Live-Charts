@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using System.Windows.Media;
 using LiveCharts;
 
 namespace ChartsTest.Line_Examples.IrregularIntervals
@@ -33,7 +34,8 @@ namespace ChartsTest.Line_Examples.IrregularIntervals
                         new Point(64, 62),
                         new Point(128, 76),
                         new Point(256, 95)
-                    }
+                    },
+                    Fill = Brushes.Transparent
                 }
             };
             
@@ -41,5 +43,11 @@ namespace ChartsTest.Line_Examples.IrregularIntervals
         }
 
         public SeriesCollection Series { get; set; }
+
+        private void IrregularLine_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            //this is only too see animation everytime you change the view.
+            Chart.ClearAndPlot();
+        }
     }
 }

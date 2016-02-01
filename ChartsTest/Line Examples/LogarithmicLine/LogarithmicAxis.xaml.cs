@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using System.Windows;
+using System.Windows.Media;
 using LiveCharts;
 
 namespace ChartsTest.Line_Examples.LogarithmicLine
@@ -32,7 +33,8 @@ namespace ChartsTest.Line_Examples.LogarithmicLine
                         new Point(1000, 38),
                         new Point(10000, 45),
                         new Point(100000, 55)
-                    }
+                    },
+                    Fill = Brushes.Transparent
                 }
             };
 
@@ -47,6 +49,12 @@ namespace ChartsTest.Line_Examples.LogarithmicLine
         }
 
         public SeriesCollection Series { get; set; }
-        public Func<double, string> XFormatter { get; set; }    
+        public Func<double, string> XFormatter { get; set; }
+
+        private void LogarithmicAxis_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            //this is only to see animation everytime you load this view.
+            Chart.ClearAndPlot();
+        }
     }
 }

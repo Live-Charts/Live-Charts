@@ -6,7 +6,8 @@
              xmlns:local="clr-namespace:ChartsTest.Line_Examples.LogarithmicLine"
              xmlns:lvc="clr-namespace:LiveCharts;assembly=LiveCharts"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="300" d:DesignWidth="300"
+             Loaded="LogarithmicAxis_OnLoaded">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
@@ -15,7 +16,7 @@
         <TextBlock Grid.Row="0" TextWrapping="Wrap">
             <Bold>Logarithmic Axis</Bold>
         </TextBlock>
-        <lvc:LineChart Grid.Row="1" Series="{Binding Series}">
+        <lvc:LineChart Name="Chart" Grid.Row="1" Series="{Binding Series}">
             <lvc:LineChart.AxisX>
                 <lvc:Axis LabelFormatter="{Binding XFormatter}"></lvc:Axis>
             </lvc:LineChart.AxisX>

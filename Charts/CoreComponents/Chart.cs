@@ -318,9 +318,7 @@ namespace LiveCharts.CoreComponents
             mid = ToPlotArea(mid, ZoomingAxis);
 
             var s = ZoomingAxis == AxisTags.X ? S.X : S.Y;
-            var max = ZoomingAxis == AxisTags.X ? Max.X : Max.Y;
-            var min = ZoomingAxis == AxisTags.X ? Min.X : Min.Y;
-            var hasMorePoints = max - min > s*1.01;
+            var hasMorePoints = Series.Any(series => series.Values.Points.Count() > 2);
             
             if (mid < (ZoomingAxis == AxisTags.X ? pivot.X : pivot.Y))
             {
@@ -350,6 +348,8 @@ namespace LiveCharts.CoreComponents
             if (DataToolTip != null) DataToolTip.Visibility = Visibility.Hidden;
 
             var s = ZoomingAxis == AxisTags.X ? S.X : S.Y;
+
+            s = s < 1 ? 1 : s;
 
             From -= s;
             To += s;
@@ -383,7 +383,10 @@ namespace LiveCharts.CoreComponents
 
         public double LenghtOf(double value, AxisTags axis)
         {
-            return Methods.ToPlotArea(value, axis, this) - (axis == AxisTags.X ? PlotArea.X : PlotArea.Y);
+            var isX = axis == AxisTags.X;
+            var m = isX ? Min.X : Min.Y;
+            var o = isX ? PlotArea.X : PlotArea.Y;
+            return Methods.ToPlotArea(m + value, axis, this) - o;
         }
         #endregion
 
@@ -676,7 +679,6 @@ namespace LiveCharts.CoreComponents
             var sibilings = Invert ? HoverableShapes.Where(s => Math.Abs(s.Value.Y - senderShape.Value.Y) < S.Y*.01).ToList() : HoverableShapes.Where(s => Math.Abs(s.Value.X - senderShape.Value.X) < S.X*.01).ToList();
 
             var first = sibilings.Count > 0 ? sibilings[0] : null;
-            var labels = Invert ? (AxisY.Labels != null ? AxisY.Labels.ToArray() : null) : (AxisX.Labels != null ? AxisX.Labels.ToArray() : null);
             var vx = first != null ? (Invert ? first.Value.Y : first.Value.X) : 0;
 
             foreach (var sibiling in sibilings)
@@ -750,6 +752,7 @@ namespace LiveCharts.CoreComponents
 
         protected virtual Point GetToolTipPosition(HoverableShape sender, List<HoverableShape> sibilings)
         {
+            DataToolTip.UpdateLayout();
             DataToolTip.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
             var x = sender.Value.X > (Min.X + Max.X)/2 ? ToPlotArea(sender.Value.X, AxisTags.X) - 10 - DataToolTip.DesiredSize.Width : ToPlotArea(sender.Value.X, AxisTags.X) + 10;
             var y = ToPlotArea(sibilings.Select(s => s.Value.Y).DefaultIfEmpty(0).Sum()/sibilings.Count, AxisTags.Y);

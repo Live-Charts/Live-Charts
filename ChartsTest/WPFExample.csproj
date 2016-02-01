@@ -80,6 +80,9 @@
       <DependentUpon>DynamicLine.xaml</DependentUpon>
     </Compile>
     <Compile Include="Line Examples\DynamicLine\WeatherViewModel.cs" />
+    <Compile Include="Line Examples\HighPerformance\HighPerformanceLine.xaml.cs">
+      <DependentUpon>HighPerformanceLine.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Line Examples\IrregularIntervals\IrregularLine.xaml.cs">
       <DependentUpon>IrregularLine.xaml</DependentUpon>
     </Compile>
@@ -159,6 +162,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Line Examples\DynamicLine\DynamicLine.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Line Examples\HighPerformance\HighPerformanceLine.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -339,12 +346,6 @@
     <Resource Include="parabolic4.png" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Charts\LiveChartsCore.csproj">
-      <Project>{ef235236-364d-4df8-a222-1e74ca0cbad9}</Project>
-      <Name>LiveChartsCore</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Left.png" />
     <Resource Include="Right.png" />
   </ItemGroup>
@@ -357,7 +358,16 @@
   <ItemGroup>
     <Resource Include="imagefill.jpg" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\..\LiveChartOptimizations\LiveChartOptimizations\LiveChartsOptimizations.csproj">
+      <Project>{b62bfa1d-2b68-46cf-86b4-5ae85a92c65e}</Project>
+      <Name>LiveChartsOptimizations</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Charts\LiveChartsCore.csproj">
+      <Project>{ef235236-364d-4df8-a222-1e74ca0cbad9}</Project>
+      <Name>LiveChartsCore</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
