@@ -51,6 +51,7 @@ namespace LiveCharts
 
         public override void Plot(bool animate = true)
         {
+            if (Visibility != Visibility.Visible) return;
             var rr = PointRadius < 2.5 ? 2.5 : PointRadius;
             foreach (var segment in Values.Points.AsSegments())
             {

@@ -1,4 +1,6 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
+using System.Windows.Threading;
 using LiveCharts;
 
 namespace ChartsTest.Line_Examples.Basic
@@ -22,8 +24,7 @@ namespace ChartsTest.Line_Examples.Basic
             var jamesSeries = new LineSeries
             {
                 Title = "James",
-                Values = new ChartValues<double> {5, 6, 9, 10, 11, 9},
-                Visibility = Visibility.Hidden
+                Values = new ChartValues<double> { 5, 6, 9, 10, 11, 9 }
             };
 
             //add our series to our SeriesCollection

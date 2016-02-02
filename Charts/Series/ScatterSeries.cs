@@ -45,6 +45,7 @@ namespace LiveCharts
 
         public override void Plot(bool animate = true)
         {
+            if (Visibility != Visibility.Visible) return;
             foreach (var segment in Values.Points.AsSegments())
             {
                 var points = new List<Point>();

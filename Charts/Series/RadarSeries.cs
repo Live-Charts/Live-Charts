@@ -45,6 +45,7 @@ namespace LiveCharts
 
         public override void Plot(bool animate = true)
         {
+            if (Visibility != Visibility.Visible) return;
             var chart = Chart as RadarChart;
             if (chart == null) return;
             var alpha = 360 / chart.Max.X;

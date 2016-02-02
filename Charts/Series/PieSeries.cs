@@ -58,6 +58,7 @@ namespace LiveCharts
 
         public override void Plot(bool animate = true)
         {
+            if (Visibility != Visibility.Visible) return;
             var pChart = Chart as PieChart;
             if (pChart == null) return;
             if (pChart.PieTotalSum <= 0) return;

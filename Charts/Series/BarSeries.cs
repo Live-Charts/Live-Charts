@@ -42,6 +42,7 @@ namespace LiveCharts
 
         public override void Plot(bool animate = true)
         {
+            if (Visibility != Visibility.Visible) return;
             if (Chart.Invert)
                 PlotRows(animate);
             else

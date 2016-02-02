@@ -36,12 +36,22 @@ namespace LiveCharts.CoreComponents
 	{
 		internal List<FrameworkElement> Shapes = new List<FrameworkElement>();
 	    private Chart _chart;
+        private bool _visibleInitialized ;
 	    internal bool RequiresAnimation;
 	    internal bool RequiresPlot;
 
+
         protected Series()
         {
-            
+            IsVisibleChanged += (sender, args) =>
+            {
+                if (_visibleInitialized)
+                {
+                    if (Visibility == Visibility.Visible) Plot();
+                    else Erase();
+                }
+                _visibleInitialized = true;
+            };
         }
 
         protected Series(ISeriesConfiguration configutration)
