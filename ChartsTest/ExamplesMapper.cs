@@ -33,7 +33,7 @@ namespace ChartsTest
             {
                 new BasicLine(),
                 //new DynamicLine(),
-                //new MvvmLine(),
+                new MvvmLine(),
                 //new HighPerformanceLine(),
                 //new RotatedLine(),
                 //new CustomLine(),
@@ -43,12 +43,12 @@ namespace ChartsTest
             };
             BarExamples = new List<UserControl>
             {
-                //new BasicBar(),
-                //new BindingBar(),
-                //new MvvmBar(),
-                //new RotatedBar(),
-                //new PointPropertyChangedBar(),
-                //new CustomBar(),
+                new BasicBar(),
+                new BindingBar(),
+                new MvvmBar(),
+                new RotatedBar(),
+                new PointPropertyChangedBar(),
+                new CustomBar(),
                 //////new ZoomableBar(),
                 //////new Performance()
             };

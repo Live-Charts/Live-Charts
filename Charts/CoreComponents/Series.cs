@@ -36,22 +36,12 @@ namespace LiveCharts.CoreComponents
 	{
 		internal List<FrameworkElement> Shapes = new List<FrameworkElement>();
 	    private Chart _chart;
-        private bool _visibleInitialized ;
 	    internal bool RequiresAnimation;
 	    internal bool RequiresPlot;
 
 
         protected Series()
         {
-            IsVisibleChanged += (sender, args) =>
-            {
-                if (_visibleInitialized)
-                {
-                    if (Visibility == Visibility.Visible) Plot();
-                    else Erase();
-                }
-                _visibleInitialized = true;
-            };
         }
 
         protected Series(ISeriesConfiguration configutration)
@@ -60,6 +50,21 @@ namespace LiveCharts.CoreComponents
         }
 
         #region Dependency Properties
+
+        public new static readonly DependencyProperty VisibilityProperty = DependencyProperty.Register(
+            "Visibility", typeof (Visibility), typeof (Series), new PropertyMetadata(default(Visibility)));
+
+        public new Visibility Visibility
+        {
+            get { return (Visibility) GetValue(VisibilityProperty); }
+            set
+            {
+                SetValue(VisibilityProperty, value);
+                if (Visibility != Visibility.Visible) Erase();
+                if (Visibility == Visibility.Visible) Plot();
+            }
+        }
+
 	    public static readonly DependencyProperty ValuesProperty = DependencyProperty.Register(
 	        "Values", typeof (IChartValues), typeof (Series), 
             new PropertyMetadata(null, ValuesCallBack));

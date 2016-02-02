@@ -72,8 +72,6 @@ namespace LiveCharts
                 foreach (var point in segment)
                 {
                     var plotPoint = new Point(ToDrawMargin(point.X, AxisTags.X), ToDrawMargin(point.Y, AxisTags.Y));
-                    plotPoint.X += Chart.XOffset;
-                    plotPoint.Y += Chart.YOffset;
                     var e = new Ellipse
                     {
                         Width = PointRadius*2,
