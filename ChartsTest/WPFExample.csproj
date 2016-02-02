@@ -80,7 +80,7 @@
       <DependentUpon>DynamicLine.xaml</DependentUpon>
     </Compile>
     <Compile Include="Line Examples\DynamicLine\WeatherViewModel.cs" />
-    <Compile Include="Line Examples\HighPerformance\HighPerformanceLine.xaml.cs">
+    <Compile Include="HighPerformance\HighPerformanceLine.xaml.cs">
       <DependentUpon>HighPerformanceLine.xaml</DependentUpon>
     </Compile>
     <Compile Include="Line Examples\IrregularIntervals\IrregularLine.xaml.cs">
@@ -165,7 +165,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Line Examples\HighPerformance\HighPerformanceLine.xaml">
+    <Page Include="HighPerformance\HighPerformanceLine.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -241,10 +241,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Line Examples\Zoomable\ZoomableLine.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Line Examples\Mvvm\MvvmLine.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -275,9 +271,6 @@
     </Compile>
     <Compile Include="Line Examples\Custom\CustomLine.xaml.cs">
       <DependentUpon>CustomLine.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Line Examples\Zoomable\ZoomableLine.xaml.cs">
-      <DependentUpon>ZoomableLine.xaml</DependentUpon>
     </Compile>
     <Compile Include="Line Examples\Mvvm\MvvmLine.xaml.cs">
       <DependentUpon>MvvmLine.xaml</DependentUpon>

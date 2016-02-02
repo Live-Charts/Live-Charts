@@ -12,8 +12,13 @@ namespace ChartsTest.Line_Examples.RotadedLine
         {
             InitializeComponent();
 
+            //we just need to create a configuration to map X, and Y
+            var config = new SeriesConfiguration<double>()
+                .X(value => value) // use stored value
+                .Y((value, index) => index); //this line is not necessary, this is the default config, it is just to explain how LiveCharts works
+
             SeriesCollection =
-                new SeriesCollection(new SeriesConfiguration<double>().X(value => value))
+                new SeriesCollection(config)
                 {
                     new LineSeries
                     {

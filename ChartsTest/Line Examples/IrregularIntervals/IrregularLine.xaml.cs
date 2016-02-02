@@ -16,7 +16,7 @@ namespace ChartsTest.Line_Examples.IrregularIntervals
             //we create a configuration to map our values type, in this case System.Windows.Point
             var config = new SeriesConfiguration<Point>()
                 .X(point => point.X) // we use point.X as the X of our chart (you don't say!)
-                .Y(point => point.Y); // we use point.Y as the Y of our chart (omg we are geniuses)
+                .Y(point => point.Y); // we use point.Y as the Y of our chart -.-"
 
             //we pass the config to the SeriesCollection constructor, or you can use Series.Setup(config)
             Series = new SeriesCollection(config)

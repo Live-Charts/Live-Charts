@@ -9,8 +9,10 @@ namespace ChartsTest.Line_Examples.Basic
         {
             InitializeComponent();
 
+            //we create a new SeriesCollection
             Series = new SeriesCollection();
 
+            //create some LineSeries
             var charlesSeries = new LineSeries
             {
                 Title = "Charles",
@@ -20,12 +22,15 @@ namespace ChartsTest.Line_Examples.Basic
             var jamesSeries = new LineSeries
             {
                 Title = "James",
-                Values = new ChartValues<double> {5, 6, 9, 10, 11, 9}
+                Values = new ChartValues<double> {5, 6, 9, 10, 11, 9},
+                Visibility = Visibility.Hidden
             };
 
+            //add our series to our SeriesCollection
             Series.Add(charlesSeries);
             Series.Add(jamesSeries);
 
+            //that's it, LiveCharts is ready and listening for your data changes.
             DataContext = this;
         }
 

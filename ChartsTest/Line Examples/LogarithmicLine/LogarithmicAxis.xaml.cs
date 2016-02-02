@@ -18,7 +18,7 @@ namespace ChartsTest.Line_Examples.LogarithmicLine
             //we create a configuration to map our values type, in this case System.Windows.Point
             var config = new SeriesConfiguration<Point>()
                 .X(point => Math.Log(point.X, 10)) // we use log10(point.X) as X
-                .Y(point => point.Y); // we use point.Y as the Y of our chart (amm.... yes, we are so f* smart!)
+                .Y(point => point.Y); // we use point.Y as the Y of our chart :)
 
             //we pass the config to the SeriesCollection constructor, or you can use Series.Setup(config)
             Series = new SeriesCollection(config)

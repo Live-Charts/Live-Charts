@@ -7,7 +7,7 @@ using LiveCharts.Annotations;
 using LiveCharts.CoreComponents;
 using LiveCharts.Optimizations;
 
-namespace ChartsTest.Line_Examples.HighPerformance
+namespace ChartsTest.HighPerformance
 {
     /// <summary>
     /// Interaction logic for HighPerformanceLine.xaml
@@ -25,20 +25,31 @@ namespace ChartsTest.Line_Examples.HighPerformance
             //from Nuget:
             //Install-Package LiveCharts.Optimizations
 
-            //low quality is actually really accurate
-            //it could only have a +-3 pixels error
-            //default is low quality.
-            var highPerformanceMethod = new IndexedXAlgorithm<double>().WithQuality(DataQuality.Low);
+            //LiveCharts.Optimization contains a class called ChartOptimizations where you can find 
+            //algorithms according to your chart type, they also have a good description, indicating 
+            //which is the best according to your case, using a wrong algorithm could not display data
+            //to an optimized quality.
 
+            var algorithm = ChartOptimizations.Lines.RegularX<double>()
+                // low quality is the default, but it is really accurate, it could fail only for +-3 pixels
+                .WithQuality(DataQuality.Low);
+
+            //create a configuration in this case we will use X as a zero based index,
+            //and Y as the stored value in Series.Values
+            //we will also attach the algorithm we just selected.
             var config = new SeriesConfiguration<double>()
                 .X((val, index) => index)
                 .Y(val => val)
-                .HasHighPerformanceMethod(highPerformanceMethod);
+                .HasHighPerformanceMethod(algorithm);
 
+            //create a SeriesCollection with this configuration
             Series = new SeriesCollection(config);
 
+            //create a new line series
             var line = new LineSeries {Values = new ChartValues<double>()};
 
+
+            //add some random values to test
             var r = new Random();
             var trend = 0d;
 
@@ -50,10 +61,12 @@ namespace ChartsTest.Line_Examples.HighPerformance
 
             Series.Add(line);
 
+            //some format
             var now = DateTime.Now.ToOADate();
             XFormat = val => DateTime.FromOADate(now + val/100).ToShortDateString();
             YFormat = val => Math.Round(val) + " ms";
 
+            //set zooming if needed.
             ZoomingMode = ZoomingOptions.XY;
 
             DataContext = this;
