@@ -957,48 +957,6 @@ namespace LiveCharts.CoreComponents
             }
         }
 
-        private void PreventPlotAreaToBeVisible()
-        {
-            var tt = Canvas.RenderTransform as TranslateTransform;
-            if (tt == null) return;
-            var eX = tt.X;
-            var eY = tt.Y;
-            var xOverflow = -tt.X + ActualWidth - Canvas.Width;
-            var yOverflow = -tt.Y + ActualHeight - Canvas.Height;
-
-            if (eX > 0)
-            {
-                //Cant understand why with I cant animate this...
-                //Pan stops working when I do animation on overflow
-
-                //var y = new DoubleAnimation(tt.Y, 0, TimeSpan.FromMilliseconds(150));
-                //var x = new DoubleAnimation(tt.X, 0, TimeSpan.FromMilliseconds(150));
-
-                //I even try this... but nope
-                //y.Completed += (o, args) => { tt.Y = 0; };
-                //x.Completed += (o, args) => { tt.X = 0; };
-
-                //Canvas.RenderTransform.BeginAnimation(TranslateTransform.YProperty, y);
-                //Canvas.RenderTransform.BeginAnimation(TranslateTransform.XProperty, x);
-                tt.X = 0;
-            }
-
-            if (eY > 0)
-            {
-                tt.Y = 0;
-            }
-
-            if (xOverflow > 0)
-            {
-                tt.X = tt.X + xOverflow;
-            }
-
-            if (yOverflow > 0)
-            {
-                tt.Y = tt.Y + yOverflow;
-            }
-        }
-
         private void Chart_OnsizeChanged(object sender, SizeChangedEventArgs e)
         {
             _resizeTimer.Stop();
@@ -1164,26 +1122,33 @@ namespace LiveCharts.CoreComponents
         private void MouseDownForPan(object sender, MouseEventArgs e)
         {
             if (ZoomingAxis == AxisTags.None) return;
-            _panOrigin = e.GetPosition(this);
+            var p = e.GetPosition(this);
+            _panOrigin = new Point(FromDrawMargin(p.X, AxisTags.X), FromDrawMargin(p.Y, AxisTags.Y));
             _isDragging = true;
         }
 
         private void MouseMoveForPan(object sender, MouseEventArgs e)
         {
-            //Panning is disabled for now
+            if (!_isDragging) return;
 
-            //if (!_isDragging) return;
-
-            //var movePoint = e.GetPosition(this);
+            //var p = e.GetPosition(this);
+            //var movePoint = new Point(FromDrawMargin(p.X, AxisTags.X), FromDrawMargin(p.Y, AxisTags.Y));
             //var dif = _panOrigin - movePoint;
 
-            //Min.X = Min.X - dif.X;
-            //Min.Y = Min.Y - dif.Y;
+            //var maxX = AxisX.MaxValue ?? Max.X;
+            //var minX = AxisX.MinValue ?? Min.X;
+            //var maxY = AxisY.MaxValue ?? Max.Y;
+            //var minY = AxisY.MinValue ?? Min.Y;
 
-            //foreach (var series in Series)
-            //    series.Values.RequiresEvaluation = true;
+            //var dx =dif.X;
+            //var dy = dif.Y;
 
-            //UpdateSeries(null, null);
+            //AxisX.MaxValue = maxX + dx;
+            //AxisX.MinValue = minX - dx;
+
+            //foreach (var series in Series) series.Values.RequiresEvaluation = true;
+
+            //ForceRedrawNow();
 
             //_panOrigin = movePoint;
         }
@@ -1191,8 +1156,28 @@ namespace LiveCharts.CoreComponents
         private void MouseUpForPan(object sender, MouseEventArgs e)
         {
             if (ZoomingAxis == AxisTags.None) return;
+            var p = e.GetPosition(this);
+            var movePoint = new Point(FromDrawMargin(p.X, AxisTags.X), FromDrawMargin(p.Y, AxisTags.Y));
+            var dif = _panOrigin - movePoint;
+
+            var maxX = AxisX.MaxValue ?? Max.X;
+            var minX = AxisX.MinValue ?? Min.X;
+            var maxY = AxisY.MaxValue ?? Max.Y;
+            var minY = AxisY.MinValue ?? Min.Y;
+
+            var dx = dif.X;
+            var dy = dif.Y;
+
+            AxisX.MaxValue = maxX + dx;
+            AxisX.MinValue = minX + dx;
+
+            AxisY.MaxValue = maxY + dy;
+            AxisY.MinValue = minY + dy;
+
+            foreach (var series in Series) series.Values.RequiresEvaluation = true;
+
+            ForceRedrawNow();
             _isDragging = false;
-            PreventPlotAreaToBeVisible();
         }
 
         private void TooltipTimerOnTick(object sender, EventArgs e)
