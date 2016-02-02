@@ -26,11 +26,8 @@
                 <lvc:Axis Title="Sold Items"></lvc:Axis>
             </lvc:LineChart.AxisY>
             <lvc:LineChart.AxisX>
-                <lvc:Axis Title="Month" Labels="Jan, Feb , Mar, Apr, May, Jun, Jul, Ago, Sep, Oct, Nov, Dic" IsEnabled="False">
-                    <lvc:Axis.Separator>
-                        <lvc:Separator IsEnabled="False" />
-                    </lvc:Axis.Separator>
-                </lvc:Axis>
+                <lvc:Axis Title="Month" Separator="{x:Static lvc:DefaultAxes.CleanSeparator}"
+                          Labels="Jan, Feb , Mar, Apr, May, Jun, Jul, Ago, Sep, Oct, Nov, Dic" IsEnabled="False" />
             </lvc:LineChart.AxisX>
         </lvc:LineChart>
     </Grid>

@@ -59,17 +59,17 @@ namespace LiveCharts
 
         protected override Point GetToolTipPosition(HoverableShape sender, List<HoverableShape> sibilings)
         {
-            DataToolTip.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+            DataTooltip.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
             var unitW = ToPlotArea(1, AxisTags.X) - PlotArea.X + 5;
             var overflow = unitW - MaxColumnWidth*3 > 0 ? unitW - MaxColumnWidth*3 : 0;
             unitW = unitW > MaxColumnWidth*3 ? MaxColumnWidth*3 : unitW;
             var x = sender.Value.X + 1 > (Min.X + Max.X)/2
-                ? ToPlotArea(sender.Value.X, AxisTags.X) + overflow*.5 - DataToolTip.DesiredSize.Width
+                ? ToPlotArea(sender.Value.X, AxisTags.X) + overflow*.5 - DataTooltip.DesiredSize.Width
                 : ToPlotArea(sender.Value.X, AxisTags.X) + unitW + overflow*.5;
             var y = ToPlotArea(sibilings.Select(s => s.Value.Y).DefaultIfEmpty(0).Sum()
                                /sibilings.Count, AxisTags.Y);
-            y = y + DataToolTip.DesiredSize.Height > ActualHeight
-                ? y - (y + DataToolTip.DesiredSize.Height - ActualHeight) - 5
+            y = y + DataTooltip.DesiredSize.Height > ActualHeight
+                ? y - (y + DataTooltip.DesiredSize.Height - ActualHeight) - 5
                 : y;
             return new Point(x, y);
         }

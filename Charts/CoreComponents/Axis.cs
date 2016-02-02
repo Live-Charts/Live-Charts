@@ -209,10 +209,17 @@ namespace LiveCharts
 			set { SetValue(ForegroundProperty, value); }
 		}
 
-		/// <summary>
-		/// Get or sets configuration for parallel lines to axis.
-		/// </summary>
-		public Separator Separator { get; set; }
+        public static readonly DependencyProperty SeparatorProperty = DependencyProperty.Register(
+            "Separator", typeof (Separator), typeof (Axis), new PropertyMetadata(default(Separator)));
+        /// <summary>
+        /// Get or sets configuration for parallel lines to axis.
+        /// </summary>
+        public Separator Separator
+        {
+            get { return (Separator) GetValue(SeparatorProperty); }
+            set { SetValue(SeparatorProperty, value); }
+        }
+
         /// <summary>
         /// Factor used to calculate label separations. default is 3. increase it to make it 'cleaner'
         /// initialSeparations = Graph.Heigth / (label.Height * cleanFactor)

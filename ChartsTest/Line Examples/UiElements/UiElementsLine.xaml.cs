@@ -4,7 +4,7 @@ using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 using LiveCharts.CoreComponents;
 
-namespace ChartsTest.Line_Examples
+namespace ChartsTest.Line_Examples.UiElements
 {
     /// <summary>
     /// Interaction logic for UiElementsLine.xaml
@@ -25,8 +25,8 @@ namespace ChartsTest.Line_Examples
         };
         private readonly TextBlock _note = new TextBlock
         {
-            Text = "This is a test note, you can any UIElement to a chart, " +
-                   "and use the Plot event to place then at a certain location",
+            Text = "This is a test note, you can place any UIElement in a chart, " +
+                   "and use the Plot event to move them to a certain location",
             MaxWidth = 120,
             TextWrapping = TextWrapping.Wrap
         };

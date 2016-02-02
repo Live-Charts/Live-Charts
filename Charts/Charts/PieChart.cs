@@ -184,9 +184,9 @@ namespace LiveCharts
 
         internal override void DataMouseEnter(object sender, MouseEventArgs e)
         {
-            if (DataToolTip == null) return;
+            if (DataTooltip == null) return;
 
-            DataToolTip.Visibility = Visibility.Visible;
+            DataTooltip.Visibility = Visibility.Visible;
             TooltipTimer.Stop();
 
             var senderShape = HoverableShapes.FirstOrDefault(s => Equals(s.Shape, sender));
@@ -199,7 +199,7 @@ namespace LiveCharts
             senderShape.Target.Opacity = .8;
             var vx = senderShape.Value.X;
 
-            var indexedToolTip = DataToolTip as IndexedTooltip;
+            var indexedToolTip = DataTooltip as IndexedTooltip;
             if (indexedToolTip != null)
             {
                 indexedToolTip.Header = labels == null
@@ -229,19 +229,19 @@ namespace LiveCharts
             var alphaRad = alpha*Math.PI/180;
             var sliceMidAngle = alpha - 180;
 
-            DataToolTip.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+            DataTooltip.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
 
-            var y = Canvas.ActualHeight*.5 + (sliceMidAngle > 90 && sliceMidAngle < 270 ? -1 : 0)*DataToolTip.DesiredSize.Height - Math.Cos(alphaRad)*15;
-            var x = Canvas.ActualWidth*.5 + (sliceMidAngle > 0 && sliceMidAngle < 180 ? -1 : 0) * DataToolTip.DesiredSize.Width + Math.Sin(alphaRad)*15;
+            var y = Canvas.ActualHeight*.5 + (sliceMidAngle > 90 && sliceMidAngle < 270 ? -1 : 0)* DataTooltip.DesiredSize.Height - Math.Cos(alphaRad)*15;
+            var x = Canvas.ActualWidth*.5 + (sliceMidAngle > 0 && sliceMidAngle < 180 ? -1 : 0) * DataTooltip.DesiredSize.Width + Math.Sin(alphaRad)*15;
 
             var p = new Point(x, y);
 
-            DataToolTip.BeginAnimation(Canvas.LeftProperty, new DoubleAnimation
+            DataTooltip.BeginAnimation(Canvas.LeftProperty, new DoubleAnimation
             {
                 To = p.X,
                 Duration = TimeSpan.FromMilliseconds(200)
             });
-            DataToolTip.BeginAnimation(Canvas.TopProperty, new DoubleAnimation
+            DataTooltip.BeginAnimation(Canvas.TopProperty, new DoubleAnimation
             {
                 To = p.Y,
                 Duration = TimeSpan.FromMilliseconds(200)

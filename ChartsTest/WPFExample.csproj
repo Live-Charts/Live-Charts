@@ -113,9 +113,6 @@
     <Compile Include="BarExamples\Mvvm\MvvmBar.xaml.cs">
       <DependentUpon>MvvmBar.xaml</DependentUpon>
     </Compile>
-    <Compile Include="BarExamples\Zoomable\ZoomableBar.xaml.cs">
-      <DependentUpon>ZoomableBar.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Line Examples\UiElements\UiElementsLine.xaml.cs">
       <DependentUpon>UiElementsLine.xaml</DependentUpon>
     </Compile>
@@ -206,10 +203,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="BarExamples\Mvvm\MvvmBar.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="BarExamples\Zoomable\ZoomableBar.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

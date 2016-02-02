@@ -114,6 +114,7 @@
   <ItemGroup>
     <Compile Include="CoreComponents\ChartPoint.cs" />
     <Compile Include="CoreComponents\SeriesConfiguration.cs" />
+    <Compile Include="DefaultAxes.cs" />
     <Compile Include="Interfaces\IObservableChartPoint.cs" />
     <Compile Include="Interfaces\ISeriesConfiguration.cs" />
     <Compile Include="CoreComponents\Axis.cs" />

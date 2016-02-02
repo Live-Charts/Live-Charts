@@ -15,13 +15,16 @@ namespace ChartsTest.BarExamples.UsingObservableChartPoint
         {
             InitializeComponent();
 
-            StoresCollection = new SeriesCollection(new SeriesConfiguration<StoreViewModel>().Y(y => y.Income));
+            var config = new SeriesConfiguration<StoreViewModel>().Y(y => y.Income);
+
+            StoresCollection = new SeriesCollection(config);
+
             StoresCollection.Add(new BarSeries
             {
                 Title = "Apple Store",
                 Values = new ChartValues<StoreViewModel>
                 {
-                    new StoreViewModel {Income = 15, Collection = StoresCollection}
+                    new StoreViewModel {Income = 15}
                 }
             });
             StoresCollection.Add(new BarSeries
@@ -29,7 +32,7 @@ namespace ChartsTest.BarExamples.UsingObservableChartPoint
                 Title = "Google Play",
                 Values = new ChartValues<StoreViewModel>
                 {
-                    new StoreViewModel {Income = 5, Collection = StoresCollection}
+                    new StoreViewModel {Income = 5}
                 }
             });
 
@@ -64,28 +67,10 @@ namespace ChartsTest.BarExamples.UsingObservableChartPoint
             set
             {
                 _income = value;
-                UpdateChart();
+               if (ValueChanged != null) ValueChanged.Invoke();
             }
         }
 
-        public SeriesCollection Collection { get; set; }
-        public void UpdateChart()
-        {
-            //when you create the object there is no Collection or chart properties assigned
-            //live charts will assign them when ploting.
-            if (Collection == null) return;
-            if (Collection.Chart == null) return;
-            
-            //In this case we force all values to evaluate,
-            //you can implement a smarter logic
-            //according to your needs
-            foreach (var values in Collection.Select(x => x.Values))
-                values.RequiresEvaluation = true;
-
-            //by now disable animations with the false parameter,
-            //series are not ready to plot partial changes
-            //and you could get undesired animation
-            Collection.Chart.ClearAndPlot(false);
-        }
+        public event Action ValueChanged;
     }
 }

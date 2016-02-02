@@ -17,7 +17,7 @@ namespace ChartsTest.StackedBarExamples.Mvvm
             Sales = new SalesViewModel();
             DataContext = this;
             Chart.AxisY.LabelFormatter = x => x + ".00k items";
-            Chart.DataToolTip = new SalesTooltip();
+            Chart.DataTooltip = new SalesTooltip();
         }
 
         public SalesViewModel Sales { get; set; }

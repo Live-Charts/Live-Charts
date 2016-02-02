@@ -14,7 +14,7 @@ namespace ChartsTest.Pie_Examples.Mvvm
         {
             InitializeComponent();
             Sales = new SalesViewModel();
-            Chart.DataToolTip = new SalesTooltip();
+            Chart.DataTooltip = new SalesTooltip();
             DataContext = this;
         }
 

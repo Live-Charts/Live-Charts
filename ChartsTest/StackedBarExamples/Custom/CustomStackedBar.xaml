@@ -18,9 +18,9 @@
             <Bold>Custom Style</Bold>: live charts is easy to customize.
         </TextBlock>
         <lvc:StackedBarChart Name="Chart" Grid.Row="1" Grid.Column="0" LegendLocation="Bottom">
-            <lvc:StackedBarChart.DataToolTip>
+            <lvc:StackedBarChart.DataTooltip>
                 <customTooltips:CustomIndexedTooltip x:Name="CustomTooltip"/>
-            </lvc:StackedBarChart.DataToolTip>
+            </lvc:StackedBarChart.DataTooltip>
             <lvc:StackedBarChart.Series>
                 <lvc:StackedBarSeries Title="Maria" Values="20, 40, 45, 60, 55, 60, 65, 70" Stroke="#FFB300" Fill="#AAFFB300" StrokeThickness="4"/>
                 <lvc:StackedBarSeries Title="John" Values="30, 35, 43, 68, 65 ,70, 55, 60" Stroke="#FFA000" Fill="#AAFFA000" StrokeThickness="4"/>

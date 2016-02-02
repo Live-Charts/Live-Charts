@@ -18,9 +18,9 @@
            <Bold>Custom Style</Bold>: live charts are easy to customize!
         </TextBlock>
         <lvc:BarChart Name="Chart" Grid.Row="1" Grid.Column="0" LegendLocation="Left">
-            <lvc:BarChart.DataToolTip>
+            <lvc:BarChart.DataTooltip>
                 <customTooltips:CustomIndexedTooltip x:Name="CustomTooltip"/>
-            </lvc:BarChart.DataToolTip>
+            </lvc:BarChart.DataTooltip>
             <lvc:BarChart.Series>
                 <lvc:BarSeries Title="Maria" Values="1, -4, -4, 6, -5.5, 6, 6, -7" Stroke="#FFB300" Fill="#AAFFB300" StrokeThickness="4" />
                 <lvc:BarSeries Title="John" Values="-3.0, 3.5, -4.3, 6.8, 6.5 ,-7, -5.5, -6" Stroke="#FFA000" Fill="#AAFFA000" StrokeThickness="4" />
@@ -39,11 +39,10 @@
                 </lvc:Axis>
             </lvc:BarChart.AxisY>
             <lvc:BarChart.AxisX>
-                <lvc:Axis Title="Month" Labels="Jan, Feb, Mar, Apr, May, Jun, Ago, Sep, Oct, Nov, Dec" IsEnabled="False">
-                    <lvc:Axis.Separator>
-                        <lvc:Separator IsEnabled="False"></lvc:Separator>
-                    </lvc:Axis.Separator>
-                </lvc:Axis>
+                <lvc:Axis Title="Month" 
+                          Labels="Jan, Feb, Mar, Apr, May, Jun, Ago, Sep, Oct, Nov, Dec" 
+                          IsEnabled="False"
+                          Separator="{x:Static lvc:DefaultAxes.CleanSeparator}"/>
             </lvc:BarChart.AxisX>
         </lvc:BarChart>
     </Grid>

@@ -29,11 +29,10 @@
                 <lvc:Axis Name="PrimaryAxis" Title="Sold Items"></lvc:Axis>
             </lvc:BarChart.AxisY>
             <lvc:BarChart.AxisX>
-                <lvc:Axis Title="Month" Labels="Jan, Feb, Mar, Apr, May, Jun, Ago, Sep, Oct, Nov, Dec" IsEnabled="False">
-                    <lvc:Axis.Separator>
-                        <lvc:Separator IsEnabled="False"></lvc:Separator>
-                    </lvc:Axis.Separator>
-                </lvc:Axis>
+                <lvc:Axis Title="Month" 
+                          Labels="Jan, Feb, Mar, Apr, May, Jun, Ago, Sep, Oct, Nov, Dec" 
+                          Separator="{x:Static lvc:DefaultAxes.CleanSeparator}"
+                          IsEnabled="False"/>
             </lvc:BarChart.AxisX>
         </lvc:BarChart>
     </Grid>

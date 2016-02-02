@@ -72,6 +72,7 @@ namespace LiveCharts.CoreComponents
         private bool _isDragging;
         private UIElement _dataToolTip;
         private int _colorIndexer;
+        private UIElement _dataTooltip;
 
         static Chart()
         {
@@ -109,7 +110,7 @@ namespace LiveCharts.CoreComponents
 
             var defaultConfig = new SeriesConfiguration<double>().Y(x => x);
             SetCurrentValue(SeriesProperty, new SeriesCollection(defaultConfig));
-            DataToolTip = new DefaultIndexedTooltip();
+            DataTooltip = new DefaultIndexedTooltip();
             Shapes = new List<FrameworkElement>();
             HoverableShapes = new List<HoverableShape>();
             PointHoverColor = System.Windows.Media.Colors.White; 
@@ -158,6 +159,24 @@ namespace LiveCharts.CoreComponents
         #endregion
 
         #region Dependency Properties
+
+        public static readonly DependencyProperty AxisYProperty = DependencyProperty.Register(
+            "AxisY", typeof (Axis), typeof (Chart), new PropertyMetadata(default(Axis)));
+
+        public Axis AxisY
+        {
+            get { return (Axis) GetValue(AxisYProperty); }
+            set { SetValue(AxisYProperty, value); }
+        }
+
+        public static readonly DependencyProperty AxisXProperty = DependencyProperty.Register(
+            "AxisX", typeof (Axis), typeof (Chart), new PropertyMetadata(default(Axis)));
+
+        public Axis AxisX
+        {
+            get { return (Axis) GetValue(AxisXProperty); }
+            set { SetValue(AxisXProperty, value); }
+        }
 
         public static readonly DependencyProperty ZoomProperty = DependencyProperty.Register(
             "Zoom", typeof (ZoomingOptions), typeof (Chart), new PropertyMetadata(default(ZoomingOptions)));
@@ -245,6 +264,25 @@ namespace LiveCharts.CoreComponents
         #endregion
 
         #region Properties
+
+        /// <summary>
+        /// Gets or sets current DataTooltip
+        /// </summary>
+        public UIElement DataTooltip
+        {
+            get { return _dataTooltip; }
+            set
+            {
+                _dataTooltip = value;
+                if (value == null) return;
+                Panel.SetZIndex(DataTooltip, int.MaxValue);
+                Canvas.SetLeft(DataTooltip, 0);
+                Canvas.SetTop(DataTooltip, 0);
+                DataTooltip.Visibility = Visibility.Hidden;
+                Canvas.Children.Add(DataTooltip);
+            }
+        }
+
         /// <summary>
         /// Gets chart canvas
         /// </summary>
@@ -265,33 +303,6 @@ namespace LiveCharts.CoreComponents
         /// Gets collection of shapes that fires tooltip on hover
         /// </summary>
         public List<HoverableShape> HoverableShapes { get; internal set; }
-
-        /// <summary>
-        /// Gets or sets X Axis
-        /// </summary>
-        public Axis AxisY { get; set; }
-
-        /// <summary>
-        /// Gets or sets Y Axis
-        /// </summary>
-        public Axis AxisX { get; set; }
-        /// <summary>
-        /// Gets or sets current tooltip when mouse is over a hoverable shape
-        /// </summary>
-        public UIElement DataToolTip
-        {
-            get { return _dataToolTip; }
-            set
-            {
-                _dataToolTip = value;
-                if (value == null) return;
-                Panel.SetZIndex(_dataToolTip, int.MaxValue);
-                Canvas.SetLeft(_dataToolTip,0);
-                Canvas.SetTop(_dataToolTip, 0);
-                _dataToolTip.Visibility = Visibility.Hidden;
-                Canvas.Children.Add(_dataToolTip);
-            }
-        }
         #endregion
 
         #region ProtectedProperties
@@ -320,7 +331,7 @@ namespace LiveCharts.CoreComponents
 
         public void ZoomIn(Point pivot)
         {
-            if (DataToolTip != null) DataToolTip.Visibility = Visibility.Hidden;
+            if (DataTooltip != null) DataTooltip.Visibility = Visibility.Hidden;
 
             var dataPivot = new Point(FromDrawMargin(pivot.X, AxisTags.X), FromDrawMargin(pivot.Y, AxisTags.Y));
 
@@ -365,7 +376,7 @@ namespace LiveCharts.CoreComponents
 
         public void ZoomOut(Point pivot)
         {
-            if (DataToolTip != null) DataToolTip.Visibility = Visibility.Hidden;
+            if (DataTooltip != null) DataTooltip.Visibility = Visibility.Hidden;
 
             var dataPivot = new Point(FromDrawMargin(pivot.X, AxisTags.X), FromDrawMargin(pivot.Y, AxisTags.Y));
 
@@ -736,9 +747,9 @@ namespace LiveCharts.CoreComponents
 
         internal virtual void DataMouseEnter(object sender, MouseEventArgs e)
         {
-            if (DataToolTip == null || !Hoverable) return;
+            if (DataTooltip == null || !Hoverable) return;
 
-            DataToolTip.Visibility = Visibility.Visible;
+            DataTooltip.Visibility = Visibility.Visible;
             TooltipTimer.Stop();
 
             var senderShape = HoverableShapes.FirstOrDefault(s => Equals(s.Shape, sender));
@@ -758,7 +769,7 @@ namespace LiveCharts.CoreComponents
                 else sibiling.Target.Opacity = .8;
             }
 
-            var indexedToolTip = DataToolTip as IndexedTooltip;
+            var indexedToolTip = DataTooltip as IndexedTooltip;
             if (indexedToolTip != null)
             {
                 var fh = GetFormatter(Invert ? AxisY : AxisX);
@@ -772,11 +783,11 @@ namespace LiveCharts.CoreComponents
 
             var p = GetToolTipPosition(senderShape, sibilings);
 
-            DataToolTip.BeginAnimation(Canvas.LeftProperty, new DoubleAnimation
+            DataTooltip.BeginAnimation(Canvas.LeftProperty, new DoubleAnimation
             {
                 To = p.X, Duration = TimeSpan.FromMilliseconds(200)
             });
-            DataToolTip.BeginAnimation(Canvas.TopProperty, new DoubleAnimation
+            DataTooltip.BeginAnimation(Canvas.TopProperty, new DoubleAnimation
             {
                 To = p.Y, Duration = TimeSpan.FromMilliseconds(200)
             });
@@ -819,11 +830,11 @@ namespace LiveCharts.CoreComponents
 
         protected virtual Point GetToolTipPosition(HoverableShape sender, List<HoverableShape> sibilings)
         {
-            DataToolTip.UpdateLayout();
-            DataToolTip.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
-            var x = sender.Value.X > (Min.X + Max.X)/2 ? ToPlotArea(sender.Value.X, AxisTags.X) - 10 - DataToolTip.DesiredSize.Width : ToPlotArea(sender.Value.X, AxisTags.X) + 10;
+            DataTooltip.UpdateLayout();
+            DataTooltip.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+            var x = sender.Value.X > (Min.X + Max.X)/2 ? ToPlotArea(sender.Value.X, AxisTags.X) - 10 - DataTooltip.DesiredSize.Width : ToPlotArea(sender.Value.X, AxisTags.X) + 10;
             var y = ToPlotArea(sibilings.Select(s => s.Value.Y).DefaultIfEmpty(0).Sum()/sibilings.Count, AxisTags.Y);
-            y = y + DataToolTip.DesiredSize.Height > ActualHeight ? y - (y + DataToolTip.DesiredSize.Height - ActualHeight) - 5 : y;
+            y = y + DataTooltip.DesiredSize.Height > ActualHeight ? y - (y + DataTooltip.DesiredSize.Height - ActualHeight) - 5 : y;
             return new Point(x, y);
         }
 
@@ -1197,7 +1208,7 @@ namespace LiveCharts.CoreComponents
 
         private void TooltipTimerOnTick(object sender, EventArgs e)
         {
-            DataToolTip.Visibility = Visibility.Hidden;
+            DataTooltip.Visibility = Visibility.Hidden;
         }
 
         #endregion

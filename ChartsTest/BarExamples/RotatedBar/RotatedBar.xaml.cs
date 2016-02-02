@@ -13,8 +13,10 @@ namespace ChartsTest.BarExamples.RotatedBar
         {
             InitializeComponent();
 
+            var config = new SeriesConfiguration<double>().X(value => value);
+
             SeriesCollection =
-                new SeriesCollection(new SeriesConfiguration<double>().X(value => value))
+                new SeriesCollection(config)
                 {
                     new BarSeries
                     {

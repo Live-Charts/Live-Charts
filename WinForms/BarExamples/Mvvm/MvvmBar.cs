@@ -20,7 +20,7 @@ namespace WinForms.BarExamples.Mvvm
             barChart1.Series = Model;
             barChart1.LegendLocation = LegendLocation.Left;
             //if you need a custom tooltip dasly you need to use wpf for now
-            barChart1.DataToolTip = new LineCustomTooltip();
+            barChart1.DataTooltip = new LineCustomTooltip();
         }
 
         private void button1_Click(object sender, EventArgs e)

@@ -18,10 +18,11 @@ namespace ChartsTest.BarExamples
             Sales = new SalesViewModel();
             DataContext = this;
             Chart.AxisY.LabelFormatter = x => x + ".00k items";
-            Chart.DataToolTip = new SalesTooltip();
+            Chart.DataTooltip = new SalesTooltip();
         }
 
         public SalesViewModel Sales { get; set; }
+        public Func<double, string> YFormatter { get; set; }
 
         private void AddSalesmanOnClick(object sender, RoutedEventArgs e)
         {

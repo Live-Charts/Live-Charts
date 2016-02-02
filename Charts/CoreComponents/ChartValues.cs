@@ -20,6 +20,7 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
@@ -173,13 +174,29 @@ namespace LiveCharts
                         ? config.XValueMapper
                         : config.YValueMapper;
 
+            var isObservalbe = typeof (IObservableChartPoint).IsAssignableFrom(typeof (T));
+
             var i = 0;
             foreach (var t in this)
             {
+                // this is why you only use IObservalbe if really needed, 
+                // or when you have a small amouth of points
+                if (isObservalbe)
+                {
+                    var observable = t as IObservableChartPoint;
+                    if (observable != null)
+                        observable.ValueChanged += ObservableOnValueChanged;
+                }
                 if (f(t, i) >= config.Chart.From && f(t, i) <= config.Chart.To)
                     yield return new KeyValuePair<int, T>(i, t);
                 i++;
             }
+        }
+
+        private void ObservableOnValueChanged()
+        {
+            RequiresEvaluation = true;
+            Series.Collection.Chart.ClearAndPlot(false);
         }
 
         #endregion

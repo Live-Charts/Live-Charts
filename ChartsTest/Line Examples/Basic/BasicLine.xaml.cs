@@ -33,16 +33,6 @@ namespace ChartsTest.Line_Examples.Basic
 
             //that's it, LiveCharts is ready and listening for your data changes.
             DataContext = this;
-
-            var t = new DispatcherTimer {Interval = TimeSpan.FromMilliseconds(1500)};
-            t.Tick +=
-                (sender, args) =>
-                {
-                    jamesSeries.Visibility = jamesSeries.Visibility == Visibility.Visible
-                        ? Visibility.Hidden
-                        : Visibility.Visible;
-                };
-            t.Start();
         }
 
         public SeriesCollection Series { get; set; }

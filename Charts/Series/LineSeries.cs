@@ -101,7 +101,13 @@ namespace LiveCharts
                         tb.Text = t;
                         Chart.DrawMargin.Children.Add(tb);
                         Chart.Shapes.Add(tb);
-                        Canvas.SetLeft(tb, plotPoint.X - ft.Width*.5);
+                        var l = plotPoint.X - ft.Width*.5;
+                        l = l < 0
+                            ? 0
+                            : (l + ft.Width > Chart.DrawMargin.Width
+                                ? Chart.DrawMargin.Width - ft.Width
+                                : l);
+                        Canvas.SetLeft(tb, l);
                         Canvas.SetTop(tb, plotPoint.Y - ft.Height - 5);
                         s.Add(tb);
                     }

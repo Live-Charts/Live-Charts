@@ -5,11 +5,12 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:lineExamples="clr-namespace:ChartsTest.Line_Examples"
              xmlns:lvc="clr-namespace:LiveCharts;assembly=LiveCharts"
+             xmlns:mvvm="clr-namespace:ChartsTest.Line_Examples.Mvvm"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="500"
              Loaded="MvvmExample_OnLoaded"
              Name="Control"
-              d:DataContext="{d:DesignInstance lineExamples:MvvmLine}">
+              d:DataContext="{d:DesignInstance mvvm:MvvmLine}">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
@@ -44,10 +45,11 @@
         </StackPanel>
         <lvc:LineChart Name="Chart" Grid.Row="2" Grid.Column="0" Series="{Binding Sales.SalesmenSeries}" DataClick="Chart_OnDataClick" LegendLocation="Right">
             <lvc:LineChart.AxisY>
-                <lvc:Axis Title="Sold Items"></lvc:Axis>
+                <lvc:Axis Title="Sold Items"/>
             </lvc:LineChart.AxisY>
             <lvc:LineChart.AxisX>
-                <lvc:Axis Name="SecondaryAxis" Title="Month" Labels="{Binding Sales.AvailableMonths}"></lvc:Axis>
+                <lvc:Axis Name="SecondaryAxis" Title="Month" Labels="{Binding Sales.AvailableMonths}" 
+                          Separator="{x:Static lvc:DefaultAxes.CleanSeparator}"/>
             </lvc:LineChart.AxisX>
         </lvc:LineChart>
     </Grid>

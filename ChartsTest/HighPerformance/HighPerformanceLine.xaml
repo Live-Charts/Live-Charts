@@ -22,9 +22,9 @@
             <Button Margin="5" Padding="5" Click="XOnClick">X (notice how all Y values are always in chart)</Button>
             <Button Margin="5" Padding="5" Click="YOnClick">Y (it works much better for inverted charts)</Button>
         </StackPanel>
-        <lvc:LineChart Name="Chart" Grid.Row="2" Series="{Binding Series}" Zoom="{Binding ZoomingMode}" LegendLocation="Left" Plot="Chart_OnPlot" >
+        <lvc:LineChart Name="Chart" Grid.Row="2" Series="{Binding Series}" Zoom="{Binding ZoomingMode}" >
             <lvc:LineChart.AxisX>
-                <lvc:Axis LabelFormatter="{Binding XFormat}" Color="Violet"></lvc:Axis>
+                <lvc:Axis LabelFormatter="{Binding XFormat}" Color="Violet" Separator="{x:Static lvc:DefaultAxes.CleanSeparator}"></lvc:Axis>
             </lvc:LineChart.AxisX>
             <lvc:LineChart.AxisY>
                 <lvc:Axis LabelFormatter="{Binding YFormat}" Color="Violet"></lvc:Axis>

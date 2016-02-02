@@ -18,7 +18,7 @@ namespace WinForms.LineExamples.Mvvm
             lineChart1.Series = Model;
             lineChart1.LegendLocation = LegendLocation.Right;
             //if you need a custom tooltip dasly you need to use wpf for now
-            lineChart1.DataToolTip = new LineCustomTooltip();
+            lineChart1.DataTooltip = new LineCustomTooltip();
         }
 
         private void button1_Click(object sender, System.EventArgs e)

@@ -18,6 +18,7 @@ using MvvmLine = ChartsTest.Line_Examples.Mvvm.MvvmLine;
 using MvvmPie = ChartsTest.Pie_Examples.Mvvm.MvvmPie;
 using MvvmStackedBar = ChartsTest.StackedBarExamples.Mvvm.MvvmStackedBar;
 using RotatedBar = ChartsTest.BarExamples.RotatedBar.RotatedBar;
+using UiElementsLine = ChartsTest.Line_Examples.UiElements.UiElementsLine;
 
 namespace ChartsTest
 {
@@ -32,14 +33,14 @@ namespace ChartsTest
             LineAndAreaAexamples = new List<UserControl>
             {
                 new BasicLine(),
-                //new DynamicLine(),
+                new DynamicLine(),
                 new MvvmLine(),
-                //new HighPerformanceLine(),
-                //new RotatedLine(),
-                //new CustomLine(),
-                //new IrregularLine(),
-                //new LogarithmicAxis(),
-                //new UiElementsLine(),
+                new HighPerformanceLine(),
+                new RotatedLine(),
+                new CustomLine(),
+                new IrregularLine(),
+                new LogarithmicAxis(),
+                new UiElementsLine(),
             };
             BarExamples = new List<UserControl>
             {

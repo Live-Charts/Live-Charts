@@ -20,11 +20,12 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
+using System;
+
 namespace LiveCharts
 {
     public interface IObservableChartPoint
     {
-        SeriesCollection Collection { get; set; }
-        void UpdateChart();
+        event Action ValueChanged;
     }
 }

@@ -18,9 +18,9 @@
             <Bold>Custom Style</Bold>: this is an example of how to change the default style of live charts, also it fires DataClick event when you click on any point.
         </TextBlock>
         <lvc:LineChart Name="Chart" Grid.Row="1" Grid.Column="0" LineType="Polyline" DataClick="Chart_OnDataClick" LegendLocation="Bottom">
-            <lvc:LineChart.DataToolTip>
+            <lvc:LineChart.DataTooltip>
                 <customTooltips:CustomIndexedTooltip x:Name="CustomTooltip"/>
-            </lvc:LineChart.DataToolTip>
+            </lvc:LineChart.DataTooltip>
             <lvc:LineChart.Series>
                 <lvc:LineSeries Title="Maria" Values="20, 40, 45, 60, 55, 60, 65, 70" Stroke="#FFB300" Fill="#33FFB300" PointRadius="0" StrokeThickness="4"></lvc:LineSeries>
                 <lvc:LineSeries Title="John" Values="30, 35, 43, 68, 65 ,70, 55, 60" Stroke="#FFA000" Fill="#33FFA000" PointRadius="0" StrokeThickness="4"></lvc:LineSeries>
@@ -34,10 +34,7 @@
                 </lvc:Axis>
             </lvc:LineChart.AxisY>
             <lvc:LineChart.AxisX>
-                <lvc:Axis Title="Month" Labels="Jan, Feb, Mar, Apr, May, Jun, Ago, Sep, Oct, Nov, Dec" IsEnabled="False">
-                    <lvc:Axis.Separator>
-                        <lvc:Separator IsEnabled="False"></lvc:Separator>
-                    </lvc:Axis.Separator>
+                <lvc:Axis Title="Month" Separator="{x:Static lvc:DefaultAxes.CleanSeparator}" Labels="Jan, Feb, Mar, Apr, May, Jun, Ago, Sep, Oct, Nov, Dec" IsEnabled="False">
                 </lvc:Axis>
             </lvc:LineChart.AxisX>
         </lvc:LineChart>

@@ -17,7 +17,7 @@ namespace ChartsTest.Line_Examples.Mvvm
             Sales = new SalesViewModel();
             YFormatter = y => y + ".00k items";
             DataContext = this;
-            Chart.DataToolTip = new SalesTooltip();
+            Chart.DataTooltip = new SalesTooltip();
         }
 
         public SalesViewModel Sales { get; set; }
