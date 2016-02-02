@@ -11,12 +11,18 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
         <TextBlock Grid.Row="0" TextWrapping="Wrap">
-            <Bold>High Performance And Zooming</Bold>: LiveCharts uses smarter algorithms when you need to handle a considerable amount of points. in this case we have 1,000,000 points, use mouse scroll wheel to zoom in/out. This chart user <Bold>LiveCharts.Optimizations</Bold> assembly, this is the first release of the package. 
+            <Bold>High Performance, Zooming and Panning</Bold>: in this case we have 1,000,000 points, this charts uses <Bold>LiveCharts.Optimizations</Bold> assembly, it is an independient package you can install it from NuGet too.
         </TextBlock>
-        <lvc:LineChart Name="Chart" Grid.Row="1" Series="{Binding Series}" Zooming="True" >
+        <StackPanel Grid.Row="1" Orientation="Horizontal">
+            <TextBlock Text="X" /><TextBox Name="XMin" Width="30"/><TextBox Name="XMax" Width="30"/>
+            <TextBlock Text="Y" /><TextBox Name="YMin" Width="30"/><TextBox Name="YMax" Width="30"/>
+            <Button Click="ButtonBase_OnClick">Go</Button>
+        </StackPanel>
+        <lvc:LineChart Name="Chart" Grid.Row="2" Series="{Binding Series}" Zooming="True" LegendLocation="Left" >
             <lvc:LineChart.AxisX>
                 <lvc:Axis LabelFormatter="{Binding XFormat}"></lvc:Axis>
             </lvc:LineChart.AxisX>

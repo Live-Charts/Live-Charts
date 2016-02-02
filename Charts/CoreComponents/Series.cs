@@ -237,7 +237,10 @@ namespace LiveCharts.CoreComponents
         public virtual void Erase()
         {
             foreach (var s in Shapes)
-                Chart.Canvas.Children.Remove(s);
+            {
+                var p = s.Parent as Canvas;
+                if (p!= null) p.Children.Remove(s);
+            }
             Shapes.Clear();
 
             var hoverableShapes = Chart.HoverableShapes.Where(x => Equals(x.Series, this)).ToList();
@@ -273,6 +276,11 @@ namespace LiveCharts.CoreComponents
         protected Point ToPlotArea(ChartPoint point)
         {
             return new Point(ToPlotArea(point.X, AxisTags.X), ToPlotArea(point.Y, AxisTags.Y));
+        }
+
+        protected double ToDrawMargin(double value, AxisTags axis)
+        {
+            return Methods.ToDrawMargin(value, axis, Chart);
         }
         #endregion
 

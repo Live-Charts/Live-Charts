@@ -21,7 +21,7 @@ namespace ChartsTest.Line_Examples.HighPerformance
             //low quality is actually really accurate
             //it could only have a +-3 pixels error
             //default is low quality.
-            var highPerformanceMethod = new RegularX<double>().WithQuality(DataQuality.Low);
+            var highPerformanceMethod = new IndexedXAlgorithm<double>().WithQuality(DataQuality.Low);
 
             var config = new SeriesConfiguration<double>()
                 .X((val, index) => index)
@@ -30,7 +30,7 @@ namespace ChartsTest.Line_Examples.HighPerformance
 
             Series = new SeriesCollection(config);
 
-            var line = new LineSeries {Values = new ChartValues<double>(), PointRadius = 0};
+            var line = new LineSeries {Values = new ChartValues<double>()};
 
             var r = new Random();
             var trend = 0d;
@@ -57,6 +57,21 @@ namespace ChartsTest.Line_Examples.HighPerformance
         private void HighPerformanceLine_OnLoaded(object sender, RoutedEventArgs e)
         {
             //this is only to force animation everytime you change the current view.
+            Chart.ClearAndPlot();
+        }
+
+        private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
+        {
+            var minX = 0d;
+            var minY = 0d;
+            var maxX = 0d;
+            var maxY = 0d;
+
+            Chart.AxisX.MinValue = double.TryParse(XMin.Text, out minX) ? (double?) minX : null;
+            Chart.AxisX.MaxValue = double.TryParse(XMax.Text, out maxX) ? (double?) maxX : null;
+            Chart.AxisY.MinValue = double.TryParse(YMin.Text, out minY) ? (double?) minY : null;
+            Chart.AxisY.MaxValue = double.TryParse(YMax.Text, out maxY) ? (double?) maxY : null;
+
             Chart.ClearAndPlot();
         }
     }

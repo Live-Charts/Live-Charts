@@ -56,12 +56,12 @@ namespace LiveCharts
                 var s = new List<Shape>();
                 if (LineChart.LineType == LineChartLineType.Bezier)
                     s.AddRange(_addSerieAsBezier(segment.Select(x => new Point(
-                        ToPlotArea(x.X, AxisTags.X) + Chart.XOffset, ToPlotArea(x.Y, AxisTags.Y) + Chart.YOffset))
+                        ToDrawMargin(x.X, AxisTags.X), ToDrawMargin(x.Y, AxisTags.Y)))
                         .ToArray(), animate));
 
                 if (LineChart.LineType == LineChartLineType.Polyline)
                     s.AddRange(_addSeriesAsPolyline(segment.Select(x => new Point(
-                        ToPlotArea(x.X, AxisTags.X) + Chart.XOffset, ToPlotArea(x.Y, AxisTags.Y) + Chart.YOffset))
+                        ToDrawMargin(x.X, AxisTags.X), ToDrawMargin(x.Y, AxisTags.Y)))
                         .ToArray(), animate));
 
                 var hoverableAreas = new List<HoverableShape>();
@@ -69,7 +69,7 @@ namespace LiveCharts
 
                 foreach (var point in segment)
                 {
-                    var plotPoint = ToPlotArea(point);
+                    var plotPoint = new Point(ToDrawMargin(point.X, AxisTags.X), ToDrawMargin(point.Y, AxisTags.Y));
                     plotPoint.X += Chart.XOffset;
                     plotPoint.Y += Chart.YOffset;
                     var e = new Ellipse
@@ -99,7 +99,7 @@ namespace LiveCharts
                             FlowDirection.LeftToRight,
                             new Typeface(FontFamily, FontStyle, FontWeight, FontStretch), FontSize, Brushes.Black);
                         tb.Text = t;
-                        Chart.Canvas.Children.Add(tb);
+                        Chart.DrawMargin.Children.Add(tb);
                         Chart.Shapes.Add(tb);
                         Canvas.SetLeft(tb, plotPoint.X - ft.Width*.5);
                         Canvas.SetTop(tb, plotPoint.Y - ft.Height - 5);
@@ -109,14 +109,14 @@ namespace LiveCharts
                     r.MouseLeave += Chart.DataMouseLeave;
                     r.MouseDown += Chart.DataMouseDown;
 
-                    Canvas.SetLeft(r, ToPlotArea(point.X, AxisTags.X) - r.Width/2);
-                    Canvas.SetTop(r, ToPlotArea(point.Y, AxisTags.Y) - r.Height/2);
+                    Canvas.SetLeft(r, plotPoint.X - r.Width/2);
+                    Canvas.SetTop(r, plotPoint.Y - r.Height/2);
                     Panel.SetZIndex(r, int.MaxValue);
                     Canvas.SetLeft(e, plotPoint.X - e.Width*.5);
                     Canvas.SetTop(e, plotPoint.Y - e.Height*.5);
 
-                    Chart.Canvas.Children.Add(r);
-                    Chart.Canvas.Children.Add(e);
+                    Chart.DrawMargin.Children.Add(r);
+                    Chart.DrawMargin.Children.Add(e);
 
                     s.Add(e);
                     hoverableAreas.Add(new HoverableShape
@@ -206,13 +206,13 @@ namespace LiveCharts
             l *= 1.05;
             l /= StrokeThickness;
             var lastP = Chart.Invert
-                ? new Point(ToPlotArea(Chart.Min.X, AxisTags.X), points.Min(x => x.Y))
-                : new Point(points.Max(x => x.X), ToPlotArea(Chart.Min.Y, AxisTags.Y));
+                ? new Point(ToDrawMargin(Chart.Min.X, AxisTags.X), points.Min(x => x.Y))
+                : new Point(points.Max(x => x.X), ToDrawMargin(Chart.Min.Y, AxisTags.Y));
             areaLines.Add(new LineSegment(lastP, true));
             var f = new PathFigure(points[0], lines, false);
             var aOrigin = Chart.Invert
-                ? new Point(ToPlotArea(Chart.Min.X, AxisTags.X), points.Max(x => x.Y))
-                : new Point(points.Min(x => x.X), ToPlotArea(Chart.Min.Y, AxisTags.Y));
+                ? new Point(ToDrawMargin(Chart.Min.X, AxisTags.X), points.Max(x => x.Y))
+                : new Point(points.Min(x => x.X), ToDrawMargin(Chart.Min.Y, AxisTags.Y));
             var fa = new PathFigure(aOrigin, areaLines, false);
             var g = new PathGeometry(new[] { f });
             var ga = new PathGeometry(new[] { fa });
@@ -236,10 +236,10 @@ namespace LiveCharts
                 ClipToBounds = true
             };
 
-            Chart.Canvas.Children.Add(path);
+            Chart.DrawMargin.Children.Add(path);
             addedFigures.Add(path);
 
-            Chart.Canvas.Children.Add(patha);
+            Chart.DrawMargin.Children.Add(patha);
             addedFigures.Add(patha);
 
             var draw = new DoubleAnimationUsingKeyFrames
@@ -321,14 +321,14 @@ namespace LiveCharts
             };
 
             var sp = points.ToList();
-            sp.Add(new Point(points.Max(x => x.X), ToPlotArea(Chart.Min.Y, AxisTags.Y)));
+            sp.Add(new Point(points.Max(x => x.X), ToDrawMargin(Chart.Min.Y, AxisTags.Y)));
             var sg = new PathGeometry
             {
                 Figures = new PathFigureCollection(new List<PathFigure>
                 {
                     new PathFigure
                     {
-                        StartPoint = ToPlotArea(new Point(Chart.Min.X, Chart.Min.Y)),
+                        StartPoint = new Point(ToDrawMargin( Chart.Min.X, AxisTags.X),ToDrawMargin (Chart.Min.Y, AxisTags.Y)),
                         Segments = new PathSegmentCollection(
                             sp.Select(x => new LineSegment {Point = new Point(x.X, x.Y)}))
                     }
@@ -343,10 +343,10 @@ namespace LiveCharts
                 ClipToBounds = true
             };
 
-            Chart.Canvas.Children.Add(path);
+            Chart.DrawMargin.Children.Add(path);
             addedFigures.Add(path);
 
-            Chart.Canvas.Children.Add(spath);
+            Chart.DrawMargin.Children.Add(spath);
             addedFigures.Add(spath);
 
             var draw = new DoubleAnimationUsingKeyFrames

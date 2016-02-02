@@ -60,5 +60,13 @@ namespace LiveCharts
         {
             return new Point(ToPlotArea(value.X, AxisTags.X, chart), ToPlotArea(value.Y, AxisTags.Y, chart));
         }
+
+        public static double ToDrawMargin(double value, AxisTags axis, Chart chart)
+        {
+            var o = axis == AxisTags.X ? chart.PlotArea.X : chart.PlotArea.Y;
+            var of = axis == AxisTags.X ? chart.XOffset : chart.YOffset;
+
+            return ToPlotArea(value, axis, chart) - o + of;
+        }
     }
 }

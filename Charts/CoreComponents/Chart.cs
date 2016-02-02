@@ -45,6 +45,7 @@ namespace LiveCharts.CoreComponents
         public event Action<ChartPoint> DataClick;
 
         internal Rect PlotArea;
+        internal Canvas DrawMargin;
         internal Point Max;
         internal Point Min;
         internal Point S;
@@ -62,7 +63,7 @@ namespace LiveCharts.CoreComponents
         protected bool AlphaLabel;
         protected readonly DispatcherTimer TooltipTimer;
         protected double DefaultFillOpacity = 0.35;
-
+        
         private static readonly Random Randomizer;
         private readonly DispatcherTimer _resizeTimer;
         private readonly DispatcherTimer _serieValuesChanged;
@@ -96,8 +97,8 @@ namespace LiveCharts.CoreComponents
 
         protected Chart()
         {
-            var b = new Border {ClipToBounds = true};
-            Canvas = new Canvas {RenderTransform = new TranslateTransform(0, 0)};
+            var b = new Border();
+            Canvas = new Canvas();
             b.Child = Canvas;
             Content = b;
 
@@ -242,11 +243,11 @@ namespace LiveCharts.CoreComponents
         /// <summary>
         /// Gets chart point offset
         /// </summary>
-        public double XOffset { get; internal set; }
+        internal double XOffset { get; set; }
         /// <summary>
         /// Gets charts point offset
         /// </summary>
-        public double YOffset { get; set; }
+        internal double YOffset { get; set; }
         /// <summary>
         /// Gets current set of shapes added to canvas by LiveCharts
         /// </summary>
@@ -550,6 +551,7 @@ namespace LiveCharts.CoreComponents
         protected virtual void DrawAxes()
         {
             if (!HasValidRange) return;
+
             foreach (var l in Shapes) Canvas.Children.Remove(l);
 
             //legend
@@ -652,6 +654,12 @@ namespace LiveCharts.CoreComponents
                 Canvas.Children.Add(l);
                 Shapes.Add(l);
             }
+
+            if (DrawMargin.Parent == null) Canvas.Children.Add(DrawMargin);
+            Canvas.SetLeft(DrawMargin, PlotArea.X);
+            Canvas.SetTop(DrawMargin, PlotArea.Y);
+            DrawMargin.Height = PlotArea.Height;
+            DrawMargin.Width = PlotArea.Width;
         }
 
         protected virtual void LoadLegend(ChartLegend legend)
@@ -863,10 +871,17 @@ namespace LiveCharts.CoreComponents
             if (AxisY.Parent == null) Canvas.Children.Add(AxisY);
             if (AxisX.Parent == null) Canvas.Children.Add(AxisX);
 
+            if (DrawMargin == null)
+            {
+                DrawMargin = new Canvas {ClipToBounds = true};
+                Panel.SetZIndex(DrawMargin, 1);
+            }
+
             foreach (var series in Series)
             {
-                Canvas.Children.Remove(series);
-                Canvas.Children.Add(series);
+                var p = series.Parent as Canvas;
+                if (p != null) p.Children.Remove(series);
+                DrawMargin.Children.Add(series);
                 EraseSerieBuffer.Add(series);
                 series.RequiresAnimation = animate;
                 series.RequiresPlot = true;
