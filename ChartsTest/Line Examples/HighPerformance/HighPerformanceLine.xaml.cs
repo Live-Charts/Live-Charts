@@ -1,6 +1,9 @@
 ﻿using System;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using System.Windows;
 using LiveCharts;
+using LiveCharts.Annotations;
 using LiveCharts.CoreComponents;
 using LiveCharts.Optimizations;
 
@@ -9,14 +12,16 @@ namespace ChartsTest.Line_Examples.HighPerformance
     /// <summary>
     /// Interaction logic for HighPerformanceLine.xaml
     /// </summary>
-    public partial class HighPerformanceLine
+    public partial class HighPerformanceLine : INotifyPropertyChanged
     {
         private DateTime _time;
+        private ZoomingOptions _zoomingMode;
+
         public HighPerformanceLine()
         {
             InitializeComponent();
 
-            //first you need to install LiveCharts.Optimizations
+            //First you need to install LiveCharts.Optimizations
             //from Nuget:
             //Install-Package LiveCharts.Optimizations
 
@@ -46,8 +51,10 @@ namespace ChartsTest.Line_Examples.HighPerformance
             Series.Add(line);
 
             var now = DateTime.Now.ToOADate();
-            XFormat = val => Math.Round(val).ToString("N0");//DateTime.FromOADate(now + val/100).ToShortDateString();
+            XFormat = val => DateTime.FromOADate(now + val/100).ToShortDateString();
             YFormat = val => Math.Round(val) + " ms";
+
+            ZoomingMode = ZoomingOptions.XY;
 
             DataContext = this;
         }
@@ -56,32 +63,48 @@ namespace ChartsTest.Line_Examples.HighPerformance
         public Func<double, string> XFormat { get; set; }
         public Func<double, string> YFormat { get; set; }
 
+        public ZoomingOptions ZoomingMode
+        {
+            get { return _zoomingMode; }
+            set
+            {
+                _zoomingMode = value;
+                OnPropertyChanged();
+            }
+        }
+
         private void HighPerformanceLine_OnLoaded(object sender, RoutedEventArgs e)
         {
             //this is only to force animation everytime you change the current view.
             Chart.ClearAndPlot();
         }
 
-        private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
-        {
-            var minX = 0d;
-            var minY = 0d;
-            var maxX = 0d;
-            var maxY = 0d;
-
-            Chart.AxisX.MinValue = double.TryParse(XMin.Text, out minX) ? (double?) minX : null;
-            Chart.AxisX.MaxValue = double.TryParse(XMax.Text, out maxX) ? (double?) maxX : null;
-            Chart.AxisY.MinValue = double.TryParse(YMin.Text, out minY) ? (double?) minY : null;
-            Chart.AxisY.MaxValue = double.TryParse(YMax.Text, out maxY) ? (double?) maxY : null;
-
-            _time = DateTime.Now;
-
-            Chart.ClearAndPlot();
-        }
-
         private void Chart_OnPlot(Chart obj)
         {
             //MessageBox.Show((DateTime.Now - _time).TotalMilliseconds.ToString("N0"));
+        }
+
+        private void XyOnClick(object sender, RoutedEventArgs e)
+        {
+            ZoomingMode = ZoomingOptions.XY;
+        }
+
+        private void XOnClick(object sender, RoutedEventArgs e)
+        {
+            ZoomingMode = ZoomingOptions.X;
+        }
+
+        private void YOnClick(object sender, RoutedEventArgs e)
+        {
+            ZoomingMode = ZoomingOptions.Y;
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        [NotifyPropertyChangedInvocator]
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

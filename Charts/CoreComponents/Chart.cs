@@ -26,7 +26,6 @@ using System.Collections.Specialized;
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
-using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -330,23 +329,33 @@ namespace LiveCharts.CoreComponents
                 var max = AxisX.MaxValue ?? Max.X;
                 var min = AxisX.MinValue ?? Min.X;
                 var l = max - min;
-                var rMin = (dataPivot.X - min) / l;
+                var rMin = (dataPivot.X - min)/l;
                 var rMax = 1 - rMin;
 
-                AxisX.MinValue = min + rMin * S.X;
-                AxisX.MaxValue = max - rMax * S.X;
+                AxisX.MinValue = min + rMin*S.X;
+                AxisX.MaxValue = max - rMax*S.X;
+            }
+            else
+            {
+                AxisX.MinValue = null;
+                AxisX.MaxValue = null;
             }
 
-            if (Zoom == ZoomingOptions.X || Zoom == ZoomingOptions.XY)
+            if (Zoom == ZoomingOptions.Y || Zoom == ZoomingOptions.XY)
             {
                 var max = AxisY.MaxValue ?? Max.Y;
                 var min = AxisY.MinValue ?? Min.Y;
                 var l = max - min;
-                var rMin = (dataPivot.Y - min) / l;
+                var rMin = (dataPivot.Y - min)/l;
                 var rMax = 1 - rMin;
 
-                AxisY.MinValue = min + rMin * S.Y;
-                AxisY.MaxValue = max - rMax * S.Y;
+                AxisY.MinValue = min + rMin*S.Y;
+                AxisY.MaxValue = max - rMax*S.Y;
+            }
+            else
+            {
+                AxisY.MinValue = null;
+                AxisY.MaxValue = null;
             }
 
             foreach (var series in Series) series.Values.RequiresEvaluation = true;
@@ -372,7 +381,7 @@ namespace LiveCharts.CoreComponents
                 AxisX.MaxValue = max + rMax * S.X;
             }
 
-            if (Zoom == ZoomingOptions.X || Zoom == ZoomingOptions.XY)
+            if (Zoom == ZoomingOptions.Y || Zoom == ZoomingOptions.XY)
             {
                 var max = AxisY.MaxValue ?? Max.Y;
                 var min = AxisY.MinValue ?? Min.Y;
@@ -1168,11 +1177,17 @@ namespace LiveCharts.CoreComponents
             var dx = dif.X;
             var dy = dif.Y;
 
-            AxisX.MaxValue = maxX + dx;
-            AxisX.MinValue = minX + dx;
+            if (Zoom == ZoomingOptions.X || Zoom == ZoomingOptions.XY)
+            {
+                AxisX.MaxValue = maxX + dx;
+                AxisX.MinValue = minX + dx;
+            }
 
-            AxisY.MaxValue = maxY + dy;
-            AxisY.MinValue = minY + dy;
+            if (Zoom == ZoomingOptions.Y || Zoom == ZoomingOptions.XY)
+            {
+                AxisY.MaxValue = maxY + dy;
+                AxisY.MinValue = minY + dy;
+            }
 
             foreach (var series in Series) series.Values.RequiresEvaluation = true;
 
