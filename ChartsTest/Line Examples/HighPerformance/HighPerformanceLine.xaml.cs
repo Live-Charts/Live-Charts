@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows;
 using LiveCharts;
+using LiveCharts.CoreComponents;
 using LiveCharts.Optimizations;
 
 namespace ChartsTest.Line_Examples.HighPerformance
@@ -10,6 +11,7 @@ namespace ChartsTest.Line_Examples.HighPerformance
     /// </summary>
     public partial class HighPerformanceLine
     {
+        private DateTime _time;
         public HighPerformanceLine()
         {
             InitializeComponent();
@@ -72,7 +74,14 @@ namespace ChartsTest.Line_Examples.HighPerformance
             Chart.AxisY.MinValue = double.TryParse(YMin.Text, out minY) ? (double?) minY : null;
             Chart.AxisY.MaxValue = double.TryParse(YMax.Text, out maxY) ? (double?) maxY : null;
 
+            _time = DateTime.Now;
+
             Chart.ClearAndPlot();
+        }
+
+        private void Chart_OnPlot(Chart obj)
+        {
+            //MessageBox.Show((DateTime.Now - _time).TotalMilliseconds.ToString("N0"));
         }
     }
 }

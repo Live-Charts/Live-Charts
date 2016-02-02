@@ -22,7 +22,7 @@
             <TextBlock Text="Y" /><TextBox Name="YMin" Width="30"/><TextBox Name="YMax" Width="30"/>
             <Button Click="ButtonBase_OnClick">Go</Button>
         </StackPanel>
-        <lvc:LineChart Name="Chart" Grid.Row="2" Series="{Binding Series}" Zooming="True" LegendLocation="Left" >
+        <lvc:LineChart Name="Chart" Grid.Row="2" Series="{Binding Series}" Zoom="XY" LegendLocation="Left" Plot="Chart_OnPlot" >
             <lvc:LineChart.AxisX>
                 <lvc:Axis LabelFormatter="{Binding XFormat}"></lvc:Axis>
             </lvc:LineChart.AxisX>

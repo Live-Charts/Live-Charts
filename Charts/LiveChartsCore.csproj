@@ -186,6 +186,7 @@
     <Compile Include="Series\ScatterSeries.cs" />
     <Compile Include="CoreComponents\Series.cs" />
     <Compile Include="Shapes\PieSlice.cs" />
+    <Compile Include="ZoomingOptions.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

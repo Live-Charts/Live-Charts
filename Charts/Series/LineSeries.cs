@@ -51,9 +51,10 @@ namespace LiveCharts
 
         public override void Plot(bool animate = true)
         {
+            var rr = PointRadius < 2.5 ? 2.5 : PointRadius;
             foreach (var segment in Values.Points.AsSegments())
             {
-                var s = new List<Shape>();
+                var s = new List<FrameworkElement>();
                 if (LineChart.LineType == LineChartLineType.Bezier)
                     s.AddRange(_addSerieAsBezier(segment.Select(x => new Point(
                         ToDrawMargin(x.X, AxisTags.X), ToDrawMargin(x.Y, AxisTags.Y)))
@@ -84,8 +85,8 @@ namespace LiveCharts
                     var r = new Rectangle
                     {
                         Fill = Brushes.Transparent,
-                        Width = 40,
-                        Height = 40,
+                        Width = rr*2,
+                        Height = rr*2,
                         StrokeThickness = 0
                     };
 
@@ -103,6 +104,7 @@ namespace LiveCharts
                         Chart.Shapes.Add(tb);
                         Canvas.SetLeft(tb, plotPoint.X - ft.Width*.5);
                         Canvas.SetTop(tb, plotPoint.Y - ft.Height - 5);
+                        s.Add(tb);
                     }
 
                     r.MouseEnter += Chart.DataMouseEnter;
@@ -119,6 +121,7 @@ namespace LiveCharts
                     Chart.DrawMargin.Children.Add(e);
 
                     s.Add(e);
+                    s.Add(r);
                     hoverableAreas.Add(new HoverableShape
                     {
                         Series = this,

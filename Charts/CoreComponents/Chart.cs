@@ -26,6 +26,7 @@ using System.Collections.Specialized;
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
+using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -159,6 +160,15 @@ namespace LiveCharts.CoreComponents
 
         #region Dependency Properties
 
+        public static readonly DependencyProperty ZoomProperty = DependencyProperty.Register(
+            "Zoom", typeof (ZoomingOptions), typeof (Chart), new PropertyMetadata(default(ZoomingOptions)));
+
+        public ZoomingOptions Zoom
+        {
+            get { return (ZoomingOptions) GetValue(ZoomProperty); }
+            set { SetValue(ZoomProperty, value); }
+        }
+
         public static readonly DependencyProperty LegendProperty = DependencyProperty.Register(
             "Legend", typeof (ChartLegend), typeof (Chart), new PropertyMetadata(null));
 
@@ -283,8 +293,6 @@ namespace LiveCharts.CoreComponents
                 Canvas.Children.Add(_dataToolTip);
             }
         }
-
-        public bool Zooming { get; set; }
         #endregion
 
         #region ProtectedProperties
@@ -315,31 +323,33 @@ namespace LiveCharts.CoreComponents
         {
             if (DataToolTip != null) DataToolTip.Visibility = Visibility.Hidden;
 
-            var mid = ZoomingAxis == AxisTags.X ? (Max.X + Min.X)*.5 : (Max.Y + Min.Y)*.5;
-            mid = ToPlotArea(mid, ZoomingAxis);
+            var dataPivot = new Point(FromDrawMargin(pivot.X, AxisTags.X), FromDrawMargin(pivot.Y, AxisTags.Y));
 
-            var s = ZoomingAxis == AxisTags.X ? S.X : S.Y;
-            var hasMorePoints = Series.Any(series => series.Values.Points.Count() > 2);
-            
-            if (mid < (ZoomingAxis == AxisTags.X ? pivot.X : pivot.Y))
+            if (Zoom == ZoomingOptions.X || Zoom == ZoomingOptions.XY)
             {
-                if (hasMorePoints)
-                {
-                    if (Invert) To -= s;
-                    else From += s;
-                }
-            }
-            else
-            {
-                if (hasMorePoints)
-                {
-                    if (Invert) From += s;
-                    else To -= s;
-                }
+                var max = AxisX.MaxValue ?? Max.X;
+                var min = AxisX.MinValue ?? Min.X;
+                var l = max - min;
+                var rMin = (dataPivot.X - min) / l;
+                var rMax = 1 - rMin;
+
+                AxisX.MinValue = min + rMin * S.X;
+                AxisX.MaxValue = max - rMax * S.X;
             }
 
-            foreach (var series in Series)
-                series.Values.RequiresEvaluation = true;
+            if (Zoom == ZoomingOptions.X || Zoom == ZoomingOptions.XY)
+            {
+                var max = AxisY.MaxValue ?? Max.Y;
+                var min = AxisY.MinValue ?? Min.Y;
+                var l = max - min;
+                var rMin = (dataPivot.Y - min) / l;
+                var rMax = 1 - rMin;
+
+                AxisY.MinValue = min + rMin * S.Y;
+                AxisY.MaxValue = max - rMax * S.Y;
+            }
+
+            foreach (var series in Series) series.Values.RequiresEvaluation = true;
 
             ForceRedrawNow();
         }
@@ -348,16 +358,44 @@ namespace LiveCharts.CoreComponents
         {
             if (DataToolTip != null) DataToolTip.Visibility = Visibility.Hidden;
 
-            var s = ZoomingAxis == AxisTags.X ? S.X : S.Y;
+            var dataPivot = new Point(FromDrawMargin(pivot.X, AxisTags.X), FromDrawMargin(pivot.Y, AxisTags.Y));
 
-            s = s < 1 ? 1 : s;
+            if (Zoom == ZoomingOptions.X || Zoom == ZoomingOptions.XY)
+            {
+                var max = AxisX.MaxValue ?? Max.X;
+                var min = AxisX.MinValue ?? Min.X;
+                var l = max - min;
+                var rMin = (dataPivot.X - min) / l;
+                var rMax = 1 - rMin;
 
-            From -= s;
-            To += s;
+                AxisX.MinValue = min - rMin * S.X;
+                AxisX.MaxValue = max + rMax * S.X;
+            }
+
+            if (Zoom == ZoomingOptions.X || Zoom == ZoomingOptions.XY)
+            {
+                var max = AxisY.MaxValue ?? Max.Y;
+                var min = AxisY.MinValue ?? Min.Y;
+                var l = max - min;
+                var rMin = (dataPivot.Y - min) / l;
+                var rMax = 1 - rMin;
+
+                AxisY.MinValue = min - rMin * S.Y;
+                AxisY.MaxValue = max + rMax * S.Y;
+            }
 
             foreach (var series in Series)
                 series.Values.RequiresEvaluation = true;
 
+            ForceRedrawNow();
+        }
+
+        public void ClearZoom()
+        {
+            AxisX.MinValue = null;
+            AxisX.MaxValue = null;
+            AxisY.MinValue = null;
+            AxisY.MaxValue = null;
             ForceRedrawNow();
         }
 
@@ -380,6 +418,16 @@ namespace LiveCharts.CoreComponents
         public Point ToPlotArea(Point value)
         {
             return new Point(ToPlotArea(value.X, AxisTags.X), ToPlotArea(value.Y, AxisTags.Y));
+        }
+
+        public double FromPlotArea(double value, AxisTags axis)
+        {
+            return Methods.FromPlotArea(value, axis, this);
+        }
+
+        public double FromDrawMargin(double value, AxisTags axis)
+        {
+            return Methods.FromDrawMargin(value, axis, this);
         }
 
         public double LenghtOf(double value, AxisTags axis)
@@ -447,7 +495,7 @@ namespace LiveCharts.CoreComponents
                 ? null
                 : (int?) 1;
             if (AxisX.Separator.Step != null) S.X = (int) AxisX.Separator.Step;
-            if (Zooming) ZoomingAxis = AxisTags.X;
+            if (Zoom != ZoomingOptions.None) ZoomingAxis = AxisTags.X;
         }
 
         protected void ConfigureYAsIndexed()
@@ -465,7 +513,7 @@ namespace LiveCharts.CoreComponents
                 ? null
                 : (int?) 1;
             if (AxisY.Separator.Step != null) S.Y = (int) AxisY.Separator.Step;
-            if (Zooming) ZoomingAxis = AxisTags.Y;
+            if (Zoom != ZoomingOptions.None) ZoomingAxis = AxisTags.Y;
         }
 
         protected Point GetLongestLabelSize(Axis axis)
@@ -552,7 +600,9 @@ namespace LiveCharts.CoreComponents
         {
             if (!HasValidRange) return;
 
+            var c = Canvas.Children.Count;
             foreach (var l in Shapes) Canvas.Children.Remove(l);
+            var c1 = Canvas.Children.Count;
 
             //legend
             var legend = Legend ?? new ChartLegend();
@@ -1055,7 +1105,7 @@ namespace LiveCharts.CoreComponents
             if (HasInvalidArea) return;
 
             foreach (var shape in Shapes) Canvas.Children.Remove(shape);
-            foreach (var shape in HoverableShapes.Select(x => x.Shape).ToList()) Canvas.Children.Remove(shape);
+            
             HoverableShapes = new List<HoverableShape>();
             Shapes = new List<FrameworkElement>();
 
@@ -1076,6 +1126,10 @@ namespace LiveCharts.CoreComponents
             if (Plot != null) Plot(this);
 #if DEBUG
             Trace.WriteLine("Series Updated (" + DateTime.Now.ToLongTimeString() + ")");
+            if (DrawMargin != null) Trace.WriteLine("Draw Margin Objects " + DrawMargin.Children.Count);
+            Trace.WriteLine("Canvas Children " + Canvas.Children.Count);
+            Trace.WriteLine("Shapes " +Shapes.Count);
+            Trace.WriteLine("Hoverable Shapes " + HoverableShapes.Count);
 #endif
         }
 

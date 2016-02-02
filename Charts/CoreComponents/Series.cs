@@ -28,14 +28,13 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using System.Windows.Shapes;
 using LiveCharts.TypeConverters;
 
 namespace LiveCharts.CoreComponents
 {
     public abstract class Series : FrameworkElement, IChartSeries
 	{
-		protected List<Shape> Shapes = new List<Shape>();
+		internal List<FrameworkElement> Shapes = new List<FrameworkElement>();
 	    private Chart _chart;
 	    internal bool RequiresAnimation;
 	    internal bool RequiresPlot;
@@ -239,7 +238,7 @@ namespace LiveCharts.CoreComponents
             foreach (var s in Shapes)
             {
                 var p = s.Parent as Canvas;
-                if (p!= null) p.Children.Remove(s);
+                if (p != null) p.Children.Remove(s);
             }
             Shapes.Clear();
 

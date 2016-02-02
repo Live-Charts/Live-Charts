@@ -31,47 +31,46 @@ namespace ChartsTest
         {
             LineAndAreaAexamples = new List<UserControl>
             {
-                new BasicLine(),
-                new DynamicLine(),
-                new MvvmLine(),
+                //new BasicLine(),
+                //new DynamicLine(),
+                //new MvvmLine(),
                 new HighPerformanceLine(),
-                new RotatedLine(),
-                new CustomLine(),
-                new ZoomableLine(),
-                new IrregularLine(),
-                new LogarithmicAxis(),
-                new UiElementsLine(),
-                ////new PerformanceLine() // disabled by now
+                //new RotatedLine(),
+                //new CustomLine(),
+                //new ZoomableLine(),
+                //new IrregularLine(),
+                //new LogarithmicAxis(),
+                //new UiElementsLine(),
             };
             BarExamples = new List<UserControl>
             {
-                new BasicBar(),
-                new BindingBar(),
-                new MvvmBar(),
-                new RotatedBar(),
-                new PointPropertyChangedBar(),
-                new CustomBar(),
-                ////new ZoomableBar(),
-                ////new Performance()
+                //new BasicBar(),
+                //new BindingBar(),
+                //new MvvmBar(),
+                //new RotatedBar(),
+                //new PointPropertyChangedBar(),
+                //new CustomBar(),
+                //////new ZoomableBar(),
+                //////new Performance()
             };
             StackedBarExamples = new List<UserControl>
             {
-                new BasicStackedBar(),
-                new BindingStackedBar(),
-                new MvvmStackedBar(),
-                new RotatedStackedBar(),
-                new CustomStackedBar(),
-                //new ZoomableStackedBar(),
-                //new PerformanceBar()
+                //new BasicStackedBar(),
+                //new BindingStackedBar(),
+                //new MvvmStackedBar(),
+                //new RotatedStackedBar(),
+                //new CustomStackedBar(),
+                ////new ZoomableStackedBar(),
+                ////new PerformanceBar()
             };
             PieExamples = new List<UserControl>
             {
-                new BasicPie(),
-                new BindingPie(),
-                new MvvmPie(),
-                new CustomPie(),
-                //new ZoomablePie(),
-                //new PerformanceBar()
+                //new BasicPie(),
+                //new BindingPie(),
+                //new MvvmPie(),
+                //new CustomPie(),
+                ////new ZoomablePie(),
+                ////new PerformanceBar()
             };
             //MoreExamples = new List<UserControl>
             //{

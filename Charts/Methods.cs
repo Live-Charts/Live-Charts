@@ -21,6 +21,7 @@
 //SOFTWARE.
 
 using System.Windows;
+using System.Windows.Controls;
 using LiveCharts.CoreComponents;
 
 namespace LiveCharts
@@ -50,6 +51,18 @@ namespace LiveCharts
             return m * (value - p1.X) + p1.Y;
         }
 
+        public static double FromPlotArea(double value, AxisTags axis, Chart chart)
+        {
+            var p1 = axis == AxisTags.X
+                ? new Point(chart.Max.X, chart.PlotArea.Width + chart.PlotArea.X)
+                : new Point(chart.Max.Y, chart.PlotArea.Y);
+            var p2 = axis == AxisTags.X
+                ? new Point(chart.Min.X, chart.PlotArea.X)
+                : new Point(chart.Min.Y, chart.PlotArea.Y + chart.PlotArea.Height);
+            var m = (p2.Y - p1.Y) / (p2.X - p1.X);
+            return (value + m*p1.X - p1.Y)/m;
+        }
+
         /// <summary>
         /// Scales a graph point to screen.
         /// </summary>
@@ -67,6 +80,14 @@ namespace LiveCharts
             var of = axis == AxisTags.X ? chart.XOffset : chart.YOffset;
 
             return ToPlotArea(value, axis, chart) - o + of;
+        }
+
+        public static double FromDrawMargin(double value, AxisTags axis, Chart chart)
+        {
+            var o = axis == AxisTags.X ? chart.PlotArea.X : chart.PlotArea.Y;
+            var of = axis == AxisTags.X ? chart.XOffset : chart.YOffset;
+
+            return FromPlotArea(value, axis, chart) - o + of;
         }
     }
 }
