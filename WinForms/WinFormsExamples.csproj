@@ -181,9 +181,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Charts\LiveChartsCore.csproj">
+    <ProjectReference Include="..\Charts\LiveCharts.csproj">
       <Project>{EF235236-364D-4DF8-A222-1E74CA0CBAD9}</Project>
-      <Name>LiveChartsCore</Name>
+      <Name>LiveCharts</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
