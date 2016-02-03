@@ -16,7 +16,7 @@ namespace ChartsTest.Pie_Examples
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
             //this is just to see animation everytime you click next
-            Chart.ClearAndPlot();
+            Chart.Redraw();
         }
     }
 }

@@ -44,7 +44,7 @@ namespace ChartsTest.StackedBarExamples.Mvvm
         private void MvvmExample_OnLoaded(object sender, RoutedEventArgs e)
         {
             //this is just to see animation everytime you click next
-            Chart.ClearAndPlot();
+            Chart.Redraw();
         }
     }
     public class SalesData

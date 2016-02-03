@@ -54,7 +54,7 @@ namespace ChartsTest.Line_Examples.LogarithmicLine
         private void LogarithmicAxis_OnLoaded(object sender, RoutedEventArgs e)
         {
             //this is only to see animation everytime you load this view.
-            Chart.ClearAndPlot();
+            Chart.Redraw();
         }
     }
 }

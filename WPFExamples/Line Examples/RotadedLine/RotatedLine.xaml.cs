@@ -35,7 +35,7 @@ namespace ChartsTest.Line_Examples.RotadedLine
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
             //this is just to force redraw everytime this view loads
-            Chart.ClearAndPlot();
+            Chart.Redraw();
         }
     }
 }

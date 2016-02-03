@@ -61,7 +61,7 @@ namespace ChartsTest.Line_Examples.UiElements
         private void UiElementsLine_OnLoaded(object sender, RoutedEventArgs e)
         {
             //this is only to force animation everytime you change view.
-            Chart.ClearAndPlot();
+            Chart.Redraw();
         }
     }
 }

@@ -47,7 +47,7 @@ namespace ChartsTest.Line_Examples.IrregularIntervals
         private void IrregularLine_OnLoaded(object sender, RoutedEventArgs e)
         {
             //this is only too see animation everytime you change the view.
-            Chart.ClearAndPlot();
+            Chart.Redraw();
         }
     }
 }

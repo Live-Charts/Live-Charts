@@ -15,7 +15,7 @@ namespace ChartsTest.StackedBarExamples
         private void ZoomableBar_OnLoaded(object sender, RoutedEventArgs e)
         {
             //this is just to see animation everytime you click next
-            Chart.ClearAndPlot();
+            Chart.Redraw();
         }
     }
 }

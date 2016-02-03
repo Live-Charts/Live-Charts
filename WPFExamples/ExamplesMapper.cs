@@ -35,7 +35,7 @@ namespace ChartsTest
                 new BasicLine(),
                 new DynamicLine(),
                 new MvvmLine(),
-                new HighPerformanceLine(),
+                //new HighPerformanceLine(),
                 new RotatedLine(),
                 new CustomLine(),
                 new IrregularLine(),

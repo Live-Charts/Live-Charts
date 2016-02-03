@@ -5,7 +5,6 @@ using System.Windows;
 using LiveCharts;
 using LiveCharts.Annotations;
 using LiveCharts.CoreComponents;
-using LiveCharts.Optimizations;
 
 namespace ChartsTest.HighPerformance
 {
@@ -30,17 +29,17 @@ namespace ChartsTest.HighPerformance
             //which is the best according to your case, using a wrong algorithm could not display data
             //to an optimized quality.
 
-            var algorithm = ChartOptimizations.Lines.RegularX<double>()
-                // low quality is the default, but it is really accurate, it could fail only for +-3 pixels
-                .WithQuality(DataQuality.Low);
+            //var algorithm = ChartOptimizations.Lines.RegularX<double>()
+            //    // low quality is the default, but it is really accurate, it could fail only for +-3 pixels
+            //    .WithQuality(DataQuality.Low);
 
             //create a configuration in this case we will use X as a zero based index,
             //and Y as the stored value in Series.Values
             //we will also attach the algorithm we just selected.
             var config = new SeriesConfiguration<double>()
                 .X((val, index) => index)
-                .Y(val => val)
-                .HasHighPerformanceMethod(algorithm);
+                .Y(val => val);
+                //.HasHighPerformanceMethod(algorithm);
 
             //create a SeriesCollection with this configuration
             Series = new SeriesCollection(config);
@@ -89,7 +88,7 @@ namespace ChartsTest.HighPerformance
         private void HighPerformanceLine_OnLoaded(object sender, RoutedEventArgs e)
         {
             //this is only to force animation everytime you change the current view.
-            Chart.ClearAndPlot();
+            Chart.Redraw();
         }
 
         private void Chart_OnPlot(Chart obj)

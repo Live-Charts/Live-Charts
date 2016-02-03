@@ -58,7 +58,6 @@ namespace LiveCharts.CoreComponents
         internal AxisTags ZoomingAxis = AxisTags.None;
         internal bool SupportsMultipleSeries = true;
 
-        protected double CurrentScale;
         protected ShapeHoverBehavior ShapeHoverBehavior;
         protected bool AlphaLabel;
         protected readonly DispatcherTimer TooltipTimer;
@@ -106,7 +105,6 @@ namespace LiveCharts.CoreComponents
             if (RandomizeStartingColor) ColorStartIndex = Randomizer.Next(0, Colors.Count - 1);
 
             AnimatesNewPoints = false;
-            CurrentScale = 1;
 
             var defaultConfig = new SeriesConfiguration<double>().Y(x => x);
             SetCurrentValue(SeriesProperty, new SeriesCollection(defaultConfig));
@@ -130,7 +128,7 @@ namespace LiveCharts.CoreComponents
             _resizeTimer.Tick += (sender, e) =>
             {
                 _resizeTimer.Stop();
-                ClearAndPlot();
+                Redraw();
             };
             TooltipTimer = new DispatcherTimer
             {
@@ -146,6 +144,11 @@ namespace LiveCharts.CoreComponents
         }
 
         #region StaticProperties
+        /// <summary>
+        /// Gets or sets a custom area for unit testing, unit test will not run correctly if you do not set this property. widht and heigth must be greather than 15;
+        /// </summary>
+        public static Rect? MockedArea { get; set; }
+
         /// <summary>
         /// List of Colors series will use, yu can change this list to your own colors.
         /// </summary>
@@ -310,7 +313,10 @@ namespace LiveCharts.CoreComponents
 
         internal bool HasInvalidArea
         {
-            get { return PlotArea.Width < 15 || PlotArea.Height < 15; }
+            get
+            {
+                return PlotArea.Width < 15 || PlotArea.Height < 15;
+            }
         }
 
         internal bool HasValidRange
@@ -328,12 +334,26 @@ namespace LiveCharts.CoreComponents
         #endregion
 
         #region Public Methods
-        public void ClearAndPlot(bool animate = true)
+
+        /// <summary>
+        /// Forces redraw.
+        /// </summary>
+        /// <param name="animate"></param>
+        public void Redraw(bool animate = true)
         {
             if (_seriesChanged == null) return;
             _seriesChanged.Stop();
             _seriesChanged.Start();
             PrepareCanvas(animate);
+        }
+
+        /// <summary>
+        /// Forces chart redraw without waiting for changes. if this method is not used correctly thi might cause chart to plot multiple times in short periods of time.
+        /// </summary>
+        public void UnsafeRedraw()
+        {
+            PrepareCanvas();
+            UpdateSeries(null, null);
         }
 
         public void ZoomIn(Point pivot)
@@ -378,7 +398,7 @@ namespace LiveCharts.CoreComponents
 
             foreach (var series in Series) series.Values.RequiresEvaluation = true;
 
-            ForceRedrawNow();
+            UnsafeRedraw();
         }
 
         public void ZoomOut(Point pivot)
@@ -414,7 +434,7 @@ namespace LiveCharts.CoreComponents
             foreach (var series in Series)
                 series.Values.RequiresEvaluation = true;
 
-            ForceRedrawNow();
+            UnsafeRedraw();
         }
 
         public void ClearZoom()
@@ -423,7 +443,7 @@ namespace LiveCharts.CoreComponents
             AxisX.MaxValue = null;
             AxisY.MinValue = null;
             AxisY.MaxValue = null;
-            ForceRedrawNow();
+            UnsafeRedraw();
         }
 
         /// <summary>
@@ -933,12 +953,6 @@ namespace LiveCharts.CoreComponents
                 : (labels.Count > x && x >= 0 ? labels[(int) x] : "");
         }
 
-        private void ForceRedrawNow()
-        {
-            PrepareCanvas();
-            UpdateSeries(null, null);
-        }
-
         private void PrepareCanvas(bool animate = false)
         {
             if (Series == null) return;
@@ -964,9 +978,12 @@ namespace LiveCharts.CoreComponents
                 series.RequiresPlot = true;
             }
 
-            Canvas.Width = ActualWidth*CurrentScale;
-            Canvas.Height = ActualHeight*CurrentScale;
-            PlotArea = new Rect(0, 0, ActualWidth*CurrentScale, ActualHeight*CurrentScale);
+            var w = MockedArea != null ? MockedArea.Value.Width : ActualWidth;
+            var h = MockedArea != null ? MockedArea.Value.Height : ActualHeight;
+
+            Canvas.Width = w;
+            Canvas.Height = h;
+            PlotArea = new Rect(0, 0, w, h);
             RequiresScale = true;
         }
 
@@ -1023,7 +1040,7 @@ namespace LiveCharts.CoreComponents
                     observable.CollectionChanged += chart.OnDataSeriesChanged;
             }
 
-            chart.ClearAndPlot();
+            chart.Redraw();
             var anim = new DoubleAnimation
             {
                 From = 0, To = 1, Duration = TimeSpan.FromMilliseconds(1000)
@@ -1210,7 +1227,7 @@ namespace LiveCharts.CoreComponents
 
             foreach (var series in Series) series.Values.RequiresEvaluation = true;
 
-            ForceRedrawNow();
+            UnsafeRedraw();
             _isDragging = false;
         }
 
