@@ -244,6 +244,7 @@ namespace LiveCharts.CoreComponents
 
             observable.CollectionChanged += series.Chart.OnDataSeriesChanged;
 
+            series.Chart.Redraw();
             //series.Chart.InitializeComponents();
         }
         #endregion

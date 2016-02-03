@@ -4,12 +4,12 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:chartsTest="clr-namespace:ChartsTest"
-        xmlns:system="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d" 
         Title="Live Charts" Width="900" Height="650"
         FontFamily="Calibri"
         FontSize="14"
         Foreground="#404040"
+        Background="#F9F9F9"
         WindowStartupLocation="CenterScreen">
     <Window.Resources>
         <chartsTest:TestConverter x:Key="TestConverter"></chartsTest:TestConverter>
@@ -20,18 +20,19 @@
             <Setter Property="Padding" Value="10 5"></Setter>
         </Style>
         <Style x:Key="Title" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="#3F51B4"></Setter>
             <Setter Property="FontSize" Value="20"></Setter>
             <Setter Property="FontWeight" Value="SemiBold"></Setter>
             <Setter Property="HorizontalAlignment" Value="Center"></Setter>
-            <Setter Property="Margin" Value="10"></Setter>
+            <Setter Property="Margin" Value="15"></Setter>
         </Style>
     </Window.Resources>
-    <ScrollViewer Padding="15">
+    <ScrollViewer >
         <StackPanel>
-            <Image Source="live.png" Stretch="None" Margin="0 0 0 20"></Image>
-            <TextBlock TextWrapping="Wrap">
-                            Here is a list of examples scroll down to check them out, resize window, 
-                            charts will follow too. Click on left or right arrows to navigate through different examples
+            <Image Source="live.png" Stretch="None" Margin="20"></Image>
+            <TextBlock TextWrapping="Wrap" Margin="20">
+                Here is a list of examples scroll down to check them out, click on left or right arrows to navigate through different examples,
+                also see how livecharts tracks your data in live examples.
             </TextBlock>
 
             <TextBlock Style="{StaticResource Title}">Line &amp; Area Chart Examples</TextBlock>

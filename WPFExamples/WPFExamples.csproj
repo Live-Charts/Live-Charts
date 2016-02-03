@@ -67,6 +67,11 @@
     <Compile Include="BarExamples\Custom\CustomBar.xaml.cs">
       <DependentUpon>CustomBar.xaml</DependentUpon>
     </Compile>
+    <Compile Include="BarExamples\FilterChart\City.cs" />
+    <Compile Include="BarExamples\FilterChart\DataBase.cs" />
+    <Compile Include="BarExamples\FilterChart\FilterChart.xaml.cs">
+      <DependentUpon>FilterChart.xaml</DependentUpon>
+    </Compile>
     <Compile Include="BarExamples\Mvvm\SalesTooltip.xaml.cs">
       <DependentUpon>SalesTooltip.xaml</DependentUpon>
     </Compile>
@@ -145,6 +150,10 @@
     <Page Include="BarExamples\Custom\CustomBar.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="BarExamples\FilterChart\FilterChart.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="BarExamples\Mvvm\SalesTooltip.xaml">
       <Generator>MSBuild:Compile</Generator>

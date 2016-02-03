@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Windows.Controls;
 using ChartsTest.BarExamples;
+using ChartsTest.BarExamples.FilterChart;
 using ChartsTest.BarExamples.UsingObservableChartPoint;
 using ChartsTest.HighPerformance;
 using ChartsTest.Line_Examples;
@@ -44,6 +45,7 @@ namespace ChartsTest
             };
             BarExamples = new List<UserControl>
             {
+                new FilterChart(),
                 new BasicBar(),
                 new BindingBar(),
                 new MvvmBar(),
