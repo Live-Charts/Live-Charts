@@ -6,7 +6,7 @@ namespace UnitTesting.General
     public partial class GeneralTest
     {
         [TestMethod, TestCategory("General")]
-        public void SharedSeriesValues()
+        public void SharedSeries()
         {
             var sharedSeries = new LineSeries {Values = new ChartValues<double> {1, 2, 3}};
 
