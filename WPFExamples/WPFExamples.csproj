@@ -349,9 +349,9 @@
       <Project>{b62bfa1d-2b68-46cf-86b4-5ae85a92c65e}</Project>
       <Name>LiveChartsOptimizations</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Charts\LiveCharts.csproj">
+    <ProjectReference Include="..\LiveChartsCore\LiveChartsCore.csproj">
       <Project>{ef235236-364d-4df8-a222-1e74ca0cbad9}</Project>
-      <Name>LiveCharts</Name>
+      <Name>LiveChartsCore</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
