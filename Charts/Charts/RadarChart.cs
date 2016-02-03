@@ -151,6 +151,8 @@ namespace LiveCharts
 
         protected override void Scale()
         {
+            if (!HasValidSeriesAndValues) return;
+            
             base.Scale();
 
             DrawAxes();

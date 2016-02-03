@@ -171,6 +171,8 @@ namespace LiveCharts
             var bothLimitsPositive = Chart.Max.Y > 0 && Chart.Min.Y > 0 - Chart.S.Y * .01;
             var bothLimitsNegative = Chart.Max.Y < 0 + Chart.S.Y * .01 && Chart.Min.Y < 0;
 
+            if (!Chart.HasValidRange) return;
+
             foreach (var point in Values.Points)
             {
                 var t = new TranslateTransform();

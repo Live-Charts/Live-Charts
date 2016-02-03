@@ -315,9 +315,16 @@ namespace LiveCharts.CoreComponents
 
         internal bool HasValidRange
         {
-            get { return Math.Abs(Max.X - Min.X) > S.X*.01 || Math.Abs(Max.Y - Min.Y) > S.Y*.01; }
+            get
+            {
+                return Math.Abs(Max.X - Min.X) > S.X*.01 || Math.Abs(Max.Y - Min.Y) > S.Y*.01;
+            }
         }
 
+        internal bool HasValidSeriesAndValues
+        {
+            get { return Series.Any(x => x.Values != null && x.Values.Count > 1); }
+        }
         #endregion
 
         #region Public Methods
@@ -464,6 +471,8 @@ namespace LiveCharts.CoreComponents
         {
             //based on:
             //http://stackoverflow.com/questions/361681/algorithm-for-nice-grid-line-intervals-on-a-graph
+
+            range =  range <= 0 ? 1 : range;
 
             var ft = axis == AxisTags.Y
                 ? new FormattedText(
@@ -620,9 +629,7 @@ namespace LiveCharts.CoreComponents
         {
             if (!HasValidRange) return;
 
-            var c = Canvas.Children.Count;
             foreach (var l in Shapes) Canvas.Children.Remove(l);
-            var c1 = Canvas.Children.Count;
 
             //legend
             var legend = Legend ?? new ChartLegend();
@@ -725,7 +732,6 @@ namespace LiveCharts.CoreComponents
                 Shapes.Add(l);
             }
 
-            if (DrawMargin.Parent == null) Canvas.Children.Add(DrawMargin);
             Canvas.SetLeft(DrawMargin, PlotArea.X);
             Canvas.SetTop(DrawMargin, PlotArea.Y);
             DrawMargin.Height = PlotArea.Height;
@@ -944,6 +950,7 @@ namespace LiveCharts.CoreComponents
             if (DrawMargin == null)
             {
                 DrawMargin = new Canvas {ClipToBounds = true};
+                Canvas.Children.Add(DrawMargin);
                 Panel.SetZIndex(DrawMargin, 1);
             }
 
@@ -963,7 +970,7 @@ namespace LiveCharts.CoreComponents
             RequiresScale = true;
         }
 
-        protected void InitializeComponents()
+        internal void InitializeComponents()
         {
             Series.Chart = this;
             Series.Configuration.Chart = this;
@@ -1096,7 +1103,8 @@ namespace LiveCharts.CoreComponents
             var toPlot = Series.Where(x => x.RequiresPlot);
             foreach (var series in toPlot)
             {
-                if (series.Values.Count > 0) series.Plot(series.RequiresAnimation);
+                if (series.Values != null && series.Values.Count > 0 )
+                    series.Plot(series.RequiresAnimation);
                 series.RequiresPlot = false;
                 series.RequiresAnimation = false;
             }

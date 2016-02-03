@@ -92,12 +92,17 @@ namespace LiveCharts
         /// </summary>
         public double DrawPadding { get; set; }
 
+        internal new bool HasValidSeriesAndValues
+        {
+            get { return Series.Any(x => x.Values != null && x.Values.Count > 0); }
+        }
         #endregion
 
         #region Overriden Methods
 
         protected override void Scale()
         {
+            if (!HasValidSeriesAndValues) return;
             base.Scale();
             DrawAxes();
             //rest of the series are ignored by now, we only plot the firt one

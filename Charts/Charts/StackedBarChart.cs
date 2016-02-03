@@ -54,9 +54,14 @@ namespace LiveCharts
         public LineChartLineType LineType { get; set; }
         /// <summary>
         /// Gets a dictinary that groups every bar proportion
-        /// </summary>
+        /// </summary> 
         public Dictionary<int, StackedBarHelper> IndexTotals { get; internal set; }
-#endregion
+
+        internal new bool HasValidSeriesAndValues
+        {
+            get { return Series.Any(x => x.Values != null && x.Values.Count > 0); }
+        }
+        #endregion
 
         private Point GetMax()
         {
@@ -156,6 +161,8 @@ namespace LiveCharts
         protected override void Scale()
         {
             InitializeComponents();
+
+            if (!HasValidSeriesAndValues) return;
 
             if (Invert) AxisX.MinValue = 0;
             else AxisY.MinValue = 0;

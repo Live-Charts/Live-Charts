@@ -38,8 +38,7 @@ namespace LiveCharts.CoreComponents
 	    private Chart _chart;
 	    internal bool RequiresAnimation;
 	    internal bool RequiresPlot;
-
-
+        
         protected Series()
         {
         }
@@ -244,6 +243,8 @@ namespace LiveCharts.CoreComponents
             if (series.Chart == null) return;
 
             observable.CollectionChanged += series.Chart.OnDataSeriesChanged;
+
+            //series.Chart.InitializeComponents();
         }
         #endregion
 

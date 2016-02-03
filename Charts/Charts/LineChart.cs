@@ -21,7 +21,6 @@
 //SOFTWARE.
 
 using System;
-using System.Linq;
 using System.Windows;
 using LiveCharts.CoreComponents;
 
@@ -53,7 +52,7 @@ namespace LiveCharts
 
         protected override void Scale()
         {
-            if (!Series.Any(x => x.Values.Count > 1)) return;
+            if (!HasValidSeriesAndValues) return;
             base.Scale();
 
             S = new Point(
@@ -62,12 +61,12 @@ namespace LiveCharts
 
             if (Invert)
             {
-                if (AxisX.MaxValue == null) Max.X = (Math.Truncate(Max.X / S.X) + 1) * S.X;
+                if (AxisX.MaxValue == null) Max.X = (Math.Round(Max.X / S.X) + 1) * S.X;
                 if (AxisX.MinValue == null) Min.X = (Math.Truncate(Min.X / S.X) - 1) * S.X;
             }
             else
             {
-                if (AxisY.MaxValue == null) Max.Y = (Math.Truncate(Max.Y / S.Y) + 1) * S.Y;
+                if (AxisY.MaxValue == null) Max.Y = (Math.Round(Max.Y / S.Y) + 1) * S.Y;
                 if (AxisY.MinValue == null) Min.Y = (Math.Truncate(Min.Y / S.Y) - 1) * S.Y;
             }
 
@@ -76,8 +75,6 @@ namespace LiveCharts
 
         protected override void DrawAxes()
         {
-            //if (Math.Abs(S.X) <= Min.X*.01 || Math.Abs(S.Y) <= Min.Y*.01) return;
-
             if (Invert) ConfigureYAsIndexed();
             else ConfigureXAsIndexed();
 
