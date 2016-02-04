@@ -17,15 +17,17 @@
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
         <TextBlock Grid.Row="0" HorizontalAlignment="Center" Grid.ColumnSpan="2" Margin="5">
-            <Bold>In Line Charting</Bold>: I want a pie now!
+            <Bold>In Line Charting</Bold>: Using DataLabels and a formatter to show percentage
         </TextBlock>
-        <lvc:PieChart Name="Chart" Grid.Row="1" Grid.Column="0">
+        <lvc:PieChart Name="Chart" Grid.Row="1" Grid.Column="0" LegendLocation="Right">
             <lvc:PieChart.Series>
-                <lvc:PieSeries Title="Maria" Values="15, 10, 40, 55" 
-                               Labels="Day 1, Day 2, Day 3, Day 4"/>
+                <lvc:PieSeries Title="Web Browser Usage" Values="15, 10, 40, 55" DataLabels="True"/>
             </lvc:PieChart.Series>
+            <lvc:PieChart.AxisX>
+                <lvc:Axis Labels="Explorer, Opera, Mozilla, Chrome"></lvc:Axis>
+            </lvc:PieChart.AxisX>
             <lvc:PieChart.AxisY>
-                <lvc:Axis Title="Sold Items"></lvc:Axis>
+                <lvc:Axis LabelFormatter="{Binding Formatter}"></lvc:Axis>
             </lvc:PieChart.AxisY>
         </lvc:PieChart>
     </Grid>

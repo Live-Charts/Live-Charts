@@ -82,6 +82,11 @@ namespace LiveCharts
         #region Properties
 
         /// <summary>
+        /// Angle in degrees that indicates pie rotation, form 0 to 360, default is 0
+        /// </summary>
+        public double PieRotation { get; set; }
+
+        /// <summary>
         /// Gets the total sum of the values in the chart.
         /// </summary>
         public double PieTotalSum { get; private set; }
@@ -101,6 +106,14 @@ namespace LiveCharts
 
         protected override void Scale()
         {
+            var w = MockedArea != null ? MockedArea.Value.Width : ActualWidth;
+            var h = MockedArea != null ? MockedArea.Value.Height : ActualHeight;
+
+            Canvas.Width = w;
+            Canvas.Height = h;
+            PlotArea = new Rect(0, 0, w, h);
+            RequiresScale = true;
+
             if (!HasValidSeriesAndValues) return;
             base.Scale();
             DrawAxes();

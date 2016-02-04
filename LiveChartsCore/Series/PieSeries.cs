@@ -21,12 +21,10 @@
 //SOFTWARE.
 
 using System;
-using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
-using System.Collections.Generic;
 using System.ComponentModel;
 using LiveCharts.CoreComponents;
 using LiveCharts.Shapes;
@@ -39,16 +37,7 @@ namespace LiveCharts
         public PieSeries()
         {
             SetValue(StrokeProperty, new SolidColorBrush(Colors.White));
-        }
-
-        public static readonly DependencyProperty LabelsProperty =
-            DependencyProperty.Register("Labels", typeof (IList<string>), typeof (PieSeries), new PropertyMetadata(null));
-
-        [TypeConverter(typeof (StringCollectionConverter))]
-        public IList<string> Labels
-        {
-            get { return (IList<string>) GetValue(LabelsProperty); }
-            set { SetValue(LabelsProperty, value); }
+            SetValue(ForegroundProperty, new SolidColorBrush(Colors.White));
         }
 
         public static readonly DependencyProperty BrushesProperty = DependencyProperty.Register(
@@ -79,12 +68,16 @@ namespace LiveCharts
 
             var sliceId = 0;
             var isFist = true;
+
+            var f = Chart.GetFormatter(Chart.AxisY);
+            var pie = (PieChart) Chart;
+
             foreach (var point in Values.Points)
             {
                 var participation = point.Y/pChart.PieTotalSum;
                 if (isFist)
                 {
-                    rotated = participation*-.5;
+                    rotated = participation*-.5  + (pie.PieRotation/360);
                     isFist = false;
                 }
 
@@ -121,34 +114,27 @@ namespace LiveCharts
                 Chart.Canvas.Children.Add(slice);
                 Shapes.Add(slice);
 
-                var valueBlock = new TextBlock
+                if (DataLabels)
                 {
-                    Text = Chart.AxisY.LabelFormatter == null
-                        ? point.Y.ToString(CultureInfo.InvariantCulture)
-                        : Chart.AxisY.LabelFormatter(point.Y),
-                    FontFamily = Chart.AxisY.FontFamily,
-                    FontSize = Chart.AxisY.FontSize,
-                    FontStretch = Chart.AxisY.FontStretch,
-                    FontStyle = Chart.AxisY.FontStyle,
-                    FontWeight = Chart.AxisY.FontWeight,
-                    Foreground = System.Windows.Media.Brushes.White
-                };
+                    var valueBlock = BuildATextBlock(0);
+                    valueBlock.Text = f(point.Y);
 
-                var hypo = ((minDimension/2) + (pChart.InnerRadius > 10 ? pChart.InnerRadius : 10))/2;
-                var gamma = participation*360/2 + rotated*360;
-                var cp = new Point(hypo*Math.Sin(gamma*(Math.PI/180)), hypo*Math.Cos(gamma*(Math.PI/180)));
+                    var hypo = ((minDimension / 2) + (pChart.InnerRadius > 10 ? pChart.InnerRadius : 10)) / 2;
+                    var gamma = participation * 360 / 2 + rotated * 360;
+                    var cp = new Point(hypo * Math.Sin(gamma * (Math.PI / 180)), hypo * Math.Cos(gamma * (Math.PI / 180)));
 
-                valueBlock.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+                    valueBlock.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
 
-                Canvas.SetTop(valueBlock, Chart.PlotArea.Height/2 - cp.Y - valueBlock.DesiredSize.Height*.5);
-                Canvas.SetLeft(valueBlock, cp.X + Chart.PlotArea.Width/2 - valueBlock.DesiredSize.Width*.5);
-                Panel.SetZIndex(valueBlock, int.MaxValue - 1);
-                //because math is kind of complex to detetrmine if label fits inside the slide, by now we 
-                //will just add it if participation > 5% ToDo: the math!
-                if (participation > .05 && Chart.AxisY.ShowLabels)
-                {
-                    Chart.Canvas.Children.Add(valueBlock);
-                    Chart.Shapes.Add(valueBlock);
+                    Canvas.SetTop(valueBlock, Chart.PlotArea.Height / 2 - cp.Y - valueBlock.DesiredSize.Height * .5);
+                    Canvas.SetLeft(valueBlock, cp.X + Chart.PlotArea.Width / 2 - valueBlock.DesiredSize.Width * .5);
+                    Panel.SetZIndex(valueBlock, int.MaxValue - 1);
+                    //because math is kind of complex to detetrmine if label fits inside the slide, by now we 
+                    //will just add it if participation > 5% ToDo: the math!
+                    if (participation > .05 && Chart.AxisY.ShowLabels)
+                    {
+                        Chart.Canvas.Children.Add(valueBlock);
+                        Chart.Shapes.Add(valueBlock);
+                    }
                 }
 
                 if (!Chart.DisableAnimation)
@@ -170,8 +156,7 @@ namespace LiveCharts
                     Series = this,
                     Shape = slice,
                     Target = slice,
-                    Value = point,
-                    Label = Labels != null && Labels.Count > point.X ? Labels[(int) point.X] : ""
+                    Value = point
                 });
 
 

@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 
 namespace ChartsTest.Pie_Examples
 {
@@ -10,7 +11,13 @@ namespace ChartsTest.Pie_Examples
         public BasicPie()
         {
             InitializeComponent();
+
+            Formatter = val => val.ToString("N1") + " (" + (val/Chart.PieTotalSum).ToString("P1") + ")";
+
+            DataContext = this;
         }
+
+        public Func<double, string> Formatter { get; set; }
 
         private void OnLoaded(object sender, RoutedEventArgs e)
         {

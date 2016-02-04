@@ -220,10 +220,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Pie Examples\Binding\BindingPie.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Pie Examples\Custom\CustomPie.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -254,9 +250,6 @@
     </Compile>
     <Compile Include="Pie Examples\Basic\BasicPie.xaml.cs">
       <DependentUpon>BasicPie.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Pie Examples\Binding\BindingPie.xaml.cs">
-      <DependentUpon>BindingPie.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pie Examples\Custom\CustomPie.xaml.cs">
       <DependentUpon>CustomPie.xaml</DependentUpon>

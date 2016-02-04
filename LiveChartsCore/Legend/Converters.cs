@@ -64,20 +64,6 @@ namespace LiveCharts.Viewers
         {
             if (values == null || values.Length < 2) return null;
 
-            var index = values[0] as int?;
-		    var pieSeriesViewer = values[1] as PieSeriesViewer;
-		    if (pieSeriesViewer != null)
-		    {
-		        var pieSeries = (pieSeriesViewer.Series)[0] as PieSeries;
-		        if (pieSeries != null)
-		        {
-		            var context = pieSeries.Labels;
-
-		            if (index == null || context == null) return null;
-
-		            return context.Count  > index ? context[index.Value] : null;
-		        }
-		    }
             return null;
         }
 

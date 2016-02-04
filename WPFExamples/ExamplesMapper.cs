@@ -63,11 +63,8 @@ namespace ChartsTest
             PieExamples = new List<UserControl>
             {
                 new BasicPie(),
-                new BindingPie(),
                 new MvvmPie(),
                 new CustomPie(),
-                //new ZoomablePie(),
-                //new PerformanceBar()
             };
             //MoreExamples = new List<UserControl>
             //{
