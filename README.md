@@ -10,7 +10,12 @@
   <img src="https://dl.dropboxusercontent.com/u/40165535/LiveCharts/PieChart.gif" width="200"/>
 </p>
 
-[![Join the chat at https://gitter.im/beto-rodriguez/Live-Charts](https://badges.gitter.im/beto-rodriguez/Live-Charts.svg)](https://gitter.im/beto-rodriguez/Live-Charts?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![GitHub license](https://img.shields.io/github/license/beto-rodriguez/Live-Charts.svg?style=flat-square)](https://github.com/beto-rodriguez/Live-Charts/blob/master/LICENSE.TXT)
+[![GitHub issues](https://img.shields.io/github/issues/beto-rodriguez/Live-Charts.svg?style=flat-square)](https://github.com/beto-rodriguez/Live-Charts/issues)
+[![NuGet](https://img.shields.io/nuget/dt/LiveCharts.svg?style=flat-square)](https://www.nuget.org/packages/LiveCharts/)
+[![Gitter](https://img.shields.io/gitter/room/beto-rodriguez/Live-Charts.svg?style=flat-square)](https://gitter.im/beto-rodriguez/Live-Charts?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
+
 
 Live charts is an easy way to build poweful charts, all charts are animated, they update every time you change your data, it also has an awesome performance. 
 
@@ -52,22 +57,29 @@ var labels = new string[] {"Jan", "Feb" , "Mar", "Apr", "May", "Jun", "Jul", "Ag
 myChart.AxixX.Labels = labels;
 ```
 
+## Is live charts what you are looking for? see these interesting examples.
+
+* **[Live Data](https://github.com/beto-rodriguez/Live-Charts/wiki/91-Live-Data)**: a charts that adds new data each second, DateTime as X Axis.
+* **[Filter records from a data base](https://github.com/beto-rodriguez/Live-Charts/wiki/92-Filtered-Data)**: a chart that pulls data from a data base according to a simple user filter.
+* **[IObservableChartPoint](https://github.com/beto-rodriguez/Live-Charts/wiki/93-IObservableChartPoint)**: this chart uses a view model that implements `IObservableChartPoint`, this will update chart every time a desired property changes.
+* There are much more examples in this solution, go to examples folder up here ^^^
+* High performance charts are almost ready, current test can draw 3 million points in only 1 second
+
 # Installation
 
 **1**. Install package from [**Nuget**](https://www.nuget.org/packages/LiveCharts) `Install-Package LiveCharts`
 
-**2**. Add name space to your `XAML` 
+**2**. Add name space
+
+To your `XAML` if using wpf
 ```xml
 xmlns:lvc="clr-namespace:LiveCharts;assembly=LiveCharts"
 ```
+Or WinForms and WPF code behind
+```
+using LiveCharts;
+```
 **3**. Thats it. You are ready.
-
-# Interesting examples
-
-* **[Live Data](https://github.com/beto-rodriguez/Live-Charts/wiki/91-Live-Data)**: a charts that adds new data each second, DateTime as X Axis.
-* **[Filter records from a data base]**: a chart that pulls data from a data base according to a simple user filter.
-* **[IObservableChartPoint]**: this chart uses a view model that implements `IObservableChartPoint`, this will update chart every time a desired property changes.
-* There are much more examples in this solution, go to examples folder up here ^^^
 
 # How to Contribute
 
