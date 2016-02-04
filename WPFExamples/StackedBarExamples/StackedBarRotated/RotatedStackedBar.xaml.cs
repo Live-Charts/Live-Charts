@@ -20,12 +20,14 @@ namespace ChartsTest.StackedBarExamples.StackedBarRotated
                 new StackedBarSeries
                 {
                     Title = "Stacked Serie 1",
-                    Values = new double[] {3,6,2,7}.AsChartValues()
+                    Values = new double[] {3,6,2,7}.AsChartValues(),
+                    DataLabels = true
                 },
                 new StackedBarSeries
                 {
                     Title = "Stacked Serie 1",
-                    Values = new double[] {6,3,5,2}.AsChartValues()
+                    Values = new double[] {6,3,5,2}.AsChartValues(),
+                    DataLabels = true
                 },
                 new LineSeries
                 {

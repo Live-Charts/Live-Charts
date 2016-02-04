@@ -36,6 +36,11 @@ namespace LiveCharts
 {
     public class PieSeries : Series
     {
+        public PieSeries()
+        {
+            SetValue(StrokeProperty, new SolidColorBrush(Colors.White));
+        }
+
         public static readonly DependencyProperty LabelsProperty =
             DependencyProperty.Register("Labels", typeof (IList<string>), typeof (PieSeries), new PropertyMetadata(null));
 
@@ -94,7 +99,7 @@ namespace LiveCharts
                     Fill = Brushes != null && Brushes.Length > sliceId
                         ? Brushes[sliceId]
                         : new SolidColorBrush(GetColorByIndex(sliceId)),
-                    Stroke = Chart.Background,
+                    Stroke = Stroke,
                     StrokeThickness = pChart.SlicePadding
                 };
                 var wa = new DoubleAnimation

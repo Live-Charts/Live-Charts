@@ -47,7 +47,6 @@ namespace LiveCharts
             InnerRadius = 0;
             SlicePadding = 5;
             DrawPadding = 20;
-            Background = Brushes.White;
             AnimatesNewPoints = true;
             SupportsMultipleSeries = false;
         }

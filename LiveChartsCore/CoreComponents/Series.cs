@@ -40,7 +40,7 @@ namespace LiveCharts.CoreComponents
 	    internal bool RequiresPlot;
         
         protected Series()
-        {
+        {           
         }
 
         protected Series(ISeriesConfiguration configutration)
@@ -142,7 +142,7 @@ namespace LiveCharts.CoreComponents
         }
 
         public static readonly DependencyProperty FontSizeProperty =
-            DependencyProperty.Register("FontSize", typeof(double), typeof(Series), new PropertyMetadata(11.0));
+            DependencyProperty.Register("FontSize", typeof(double), typeof(Series), new PropertyMetadata(13.0));
 
         /// <summary>
         /// Gets or sets labels font size
@@ -154,7 +154,7 @@ namespace LiveCharts.CoreComponents
         }
 
         public static readonly DependencyProperty FontWeightProperty =
-            DependencyProperty.Register("FontWeight", typeof(FontWeight), typeof(Series), new PropertyMetadata(FontWeights.Normal));
+            DependencyProperty.Register("FontWeight", typeof(FontWeight), typeof(Series), new PropertyMetadata(FontWeights.Bold));
 
         /// <summary>
         /// Gets or sets labels font weight
@@ -190,7 +190,7 @@ namespace LiveCharts.CoreComponents
         }
 
         public static readonly DependencyProperty ForegroundProperty =
-            DependencyProperty.Register("Foreground", typeof(Brush), typeof(Series), new PropertyMetadata(new SolidColorBrush(Color.FromRgb(150, 150, 150))));
+            DependencyProperty.Register("Foreground", typeof(Brush), typeof(Series), new PropertyMetadata(new SolidColorBrush(Color.FromRgb(55, 71, 79))));
 
         /// <summary>
         /// Gets or sets labels text color.
@@ -244,8 +244,12 @@ namespace LiveCharts.CoreComponents
 
             observable.CollectionChanged += series.Chart.OnDataSeriesChanged;
 
-            series.Chart.Redraw();
-            //series.Chart.InitializeComponents();
+            series.RequiresPlot = true;
+            series.RequiresAnimation = true;
+            series.Chart.RequiresScale = true;
+            series.Chart.EraseSerieBuffer.Add(series);
+            series.Chart._seriesChanged.Stop();
+            series.Chart._seriesChanged.Start();
         }
         #endregion
 

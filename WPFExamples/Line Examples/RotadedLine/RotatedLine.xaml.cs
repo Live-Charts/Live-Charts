@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using LiveCharts;
 
 namespace ChartsTest.Line_Examples.RotadedLine
@@ -23,14 +24,18 @@ namespace ChartsTest.Line_Examples.RotadedLine
                     new LineSeries
                     {
                         Title = "inverted series",
-                        Values = new double[] {10, 15, 18, 20, 15, 0, -3, -2}.AsChartValues()
+                        Values = new [] {10, 15, 18, 20, 15, double.NaN, -3, -2, -1, 2, 3, 6}.AsChartValues(),
+                        DataLabels = true
                     }
                 };
+
+            Formatter = val => "Day " + (val + 1);
 
             DataContext = this;
         }
 
         public SeriesCollection SeriesCollection { get; set; }
+        public Func<double, string> Formatter { get; set; }
 
         private void OnLoaded(object sender, RoutedEventArgs e)
         {

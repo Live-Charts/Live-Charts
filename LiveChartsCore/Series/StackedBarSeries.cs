@@ -21,6 +21,7 @@
 //SOFTWARE.
 
 using System;
+using System.Globalization;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -36,6 +37,7 @@ namespace LiveCharts
         public StackedBarSeries()
         {
             StrokeThickness = 2.5;
+            SetValue(ForegroundProperty, Brushes.WhiteSmoke);
         }
 
         public double StrokeThickness { get; set; }
@@ -61,6 +63,8 @@ namespace LiveCharts
             var pointPadding = .1 * unitW;
             const int seriesPadding = 2;
             var h = unitW - 2 * pointPadding;
+
+            var f = Chart.GetFormatter(Chart.Invert ? Chart.AxisX : Chart.AxisY);
 
             foreach (var point in Values.Points)
             {
@@ -111,6 +115,22 @@ namespace LiveCharts
                     Duration = TimeSpan.FromMilliseconds(500)
                 };
 
+                if (DataLabels)
+                {
+                    var tb = BuildATextBlock(0);
+                    var te = f(Chart.Invert ? point.X : point.Y);
+                    var ft = new FormattedText(
+                        te,
+                        CultureInfo.CurrentCulture,
+                        FlowDirection.LeftToRight,
+                        new Typeface(FontFamily, FontStyle, FontWeight, FontStretch), FontSize, Brushes.Black);
+                    tb.Text = te;
+                    Chart.Canvas.Children.Add(tb);
+                    Chart.Shapes.Add(tb);
+                    Canvas.SetLeft(tb, Canvas.GetLeft(hr) + hr.Width*.5 - ft.Width*.5);
+                    Canvas.SetTop(tb, Canvas.GetTop(hr) + hr.Height*.5 - ft.Height*.5);
+                }
+
                 var animated = false;
                 if (!Chart.DisableAnimation)
                 {
@@ -157,6 +177,8 @@ namespace LiveCharts
             const int seriesPadding = 2;
             var barW = unitW - 2 * pointPadding;
 
+            var f = Chart.GetFormatter(Chart.Invert ? Chart.AxisX : Chart.AxisY);
+
             foreach (var point in Values.Points)
             {
                 var t = new TranslateTransform();
@@ -184,7 +206,7 @@ namespace LiveCharts
                     Height = rh
                 };
 
-                Canvas.SetLeft(r, ToPlotArea(point.X, AxisTags.X) + pointPadding + overflow / 2);
+                Canvas.SetLeft(r, ToPlotArea(point.X, AxisTags.X) + pointPadding + overflow/2);
                 Canvas.SetLeft(hr, ToPlotArea(point.X, AxisTags.X) + pointPadding + overflow / 2);
                 Canvas.SetTop(hr, ToPlotArea(Chart.Min.Y, AxisTags.Y) - rh - stackedH);
                 Panel.SetZIndex(hr, int.MaxValue);
@@ -215,6 +237,22 @@ namespace LiveCharts
                         t.BeginAnimation(TranslateTransform.YProperty, rAnim);
                         animated = true;
                     }
+                }
+
+                if (DataLabels)
+                {
+                    var tb = BuildATextBlock(-90);
+                    var te = f(Chart.Invert ? point.X : point.Y);
+                    var ft = new FormattedText(
+                        te,
+                        CultureInfo.CurrentCulture,
+                        FlowDirection.LeftToRight,
+                        new Typeface(FontFamily, FontStyle, FontWeight, FontStretch), FontSize, Brushes.Black);
+                    tb.Text = te;
+                    Chart.Canvas.Children.Add(tb);
+                    Chart.Shapes.Add(tb);
+                    Canvas.SetLeft(tb, Canvas.GetLeft(hr) + hr.Width*.5 - ft.Height*.5);
+                    Canvas.SetTop(tb, Canvas.GetTop(hr) + hr.Height*.5 + ft.Width*.5);
                 }
 
                 if (!animated)

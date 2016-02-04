@@ -21,12 +21,14 @@ namespace ChartsTest.BarExamples.RotatedBar
                     new BarSeries
                     {
                         Title = "inverted series",
-                        Values = new double[] {10, 15, 18, 20, 15, 13}.AsChartValues()
+                        Values = new double[] {10, 15, 18, 20, 15, 13}.AsChartValues(),
+                        DataLabels = true
                     },
                     new BarSeries
                     {
                         Title = "inverted series 2",
-                        Values = new double[] {4, 8, 19, 19, 16, 12}.AsChartValues()
+                        Values = new double[] {4, 8, 19, 19, 16, 12}.AsChartValues(),
+                        DataLabels = true
                     },
                     new LineSeries
                     {

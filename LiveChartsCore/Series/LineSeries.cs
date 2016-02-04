@@ -107,8 +107,10 @@ namespace LiveCharts
                             : (l + ft.Width > Chart.DrawMargin.Width
                                 ? Chart.DrawMargin.Width - ft.Width
                                 : l);
+                        var tp = plotPoint.Y - ft.Height - 5;
+                        tp = tp < 0 ? 0 : tp;
                         Canvas.SetLeft(tb, l);
-                        Canvas.SetTop(tb, plotPoint.Y - ft.Height - 5);
+                        Canvas.SetTop(tb, tp);
                         s.Add(tb);
                     }
 

@@ -66,7 +66,7 @@ namespace LiveCharts.CoreComponents
         private static readonly Random Randomizer;
         private readonly DispatcherTimer _resizeTimer;
         private readonly DispatcherTimer _serieValuesChanged;
-        private readonly DispatcherTimer _seriesChanged;
+        internal readonly DispatcherTimer _seriesChanged;
         private Point _panOrigin;
         private bool _isDragging;
         private UIElement _dataToolTip;
@@ -1117,8 +1117,7 @@ namespace LiveCharts.CoreComponents
                 RequiresScale = false;
             }
 
-            var toPlot = Series.Where(x => x.RequiresPlot);
-            foreach (var series in toPlot)
+            foreach (var series in Series.Where(x => x.RequiresPlot))
             {
                 if (series.Values != null && series.Values.Count > 0 )
                     series.Plot(series.RequiresAnimation);

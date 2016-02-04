@@ -21,6 +21,7 @@
 //SOFTWARE.
 
 using System;
+using System.Globalization;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -66,6 +67,8 @@ namespace LiveCharts
 
             var bothLimitsPositive = Chart.Max.X > 0 && Chart.Min.X > 0 - Chart.S.X * .01;
             var bothLimitsNegative = Chart.Max.X < 0 + Chart.S.X * .01 && Chart.Min.X < 0;
+
+            var f = Chart.GetFormatter(Chart.Invert ? Chart.AxisX : Chart.AxisY);
 
             foreach (var point in Values.Points)
             {
@@ -121,6 +124,22 @@ namespace LiveCharts
                     Duration = TimeSpan.FromMilliseconds(500)
                 };
 
+                if (DataLabels)
+                {
+                    var tb = BuildATextBlock(0);
+                    var te = f(Chart.Invert ? point.X : point.Y);
+                    var ft = new FormattedText(
+                        te,
+                        CultureInfo.CurrentCulture,
+                        FlowDirection.LeftToRight,
+                        new Typeface(FontFamily, FontStyle, FontWeight, FontStretch), FontSize, Brushes.Black);
+                    tb.Text = te;
+                    Chart.Canvas.Children.Add(tb);
+                    Chart.Shapes.Add(tb);
+                    Canvas.SetLeft(tb, direction > 0 ? Canvas.GetLeft(hr) + hr.Width + 5 : Canvas.GetLeft(hr) - 5 - ft.Width);
+                    Canvas.SetTop(tb, Canvas.GetTop(hr) + hr.Height * .5 - ft.Height * .5);
+                }
+
                 var animated = false;
                 if (!Chart.DisableAnimation)
                 {
@@ -171,7 +190,7 @@ namespace LiveCharts
             var bothLimitsPositive = Chart.Max.Y > 0 && Chart.Min.Y > 0 - Chart.S.Y * .01;
             var bothLimitsNegative = Chart.Max.Y < 0 + Chart.S.Y * .01 && Chart.Min.Y < 0;
 
-            if (!Chart.HasValidRange) return;
+            var f = Chart.GetFormatter(Chart.Invert ? Chart.AxisX : Chart.AxisY);
 
             foreach (var point in Values.Points)
             {
@@ -214,6 +233,22 @@ namespace LiveCharts
                 Chart.Canvas.Children.Add(hr);
                 Shapes.Add(r);
                 Shapes.Add(hr);
+
+                if (DataLabels)
+                {
+                    var tb = BuildATextBlock(0);
+                    var te = f(Chart.Invert ? point.X : point.Y);
+                    var ft = new FormattedText(
+                        te,
+                        CultureInfo.CurrentCulture,
+                        FlowDirection.LeftToRight,
+                        new Typeface(FontFamily, FontStyle, FontWeight, FontStretch), FontSize, Brushes.Black);
+                    tb.Text = te;
+                    Chart.Canvas.Children.Add(tb);
+                    Chart.Shapes.Add(tb);
+                    Canvas.SetLeft(tb, Canvas.GetLeft(hr) + hr.Width*.5 - ft.Width*.5);
+                    Canvas.SetTop(tb, direction > 0 ? Canvas.GetTop(hr) - ft.Height - 5 : Canvas.GetTop(hr) + hr.Height + 5);
+                }
 
                 var hAnim = new DoubleAnimation
                 {

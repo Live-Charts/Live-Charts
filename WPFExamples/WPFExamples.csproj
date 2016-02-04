@@ -133,9 +133,6 @@
     <Compile Include="StackedBarExamples\Mvvm\MvvmStackedBar.xaml.cs">
       <DependentUpon>MvvmStackedBar.xaml</DependentUpon>
     </Compile>
-    <Compile Include="StackedBarExamples\Zoomable\ZoomableStackedBar.xaml.cs">
-      <DependentUpon>ZoomableStackedBar.xaml</DependentUpon>
-    </Compile>
     <Compile Include="z.CustomTooltips\CustomScatterTooltip.xaml.cs">
       <DependentUpon>CustomScatterTooltip.xaml</DependentUpon>
     </Compile>
@@ -294,10 +291,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="StackedBarExamples\Mvvm\MvvmStackedBar.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="StackedBarExamples\Zoomable\ZoomableStackedBar.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

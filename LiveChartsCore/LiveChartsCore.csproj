@@ -184,7 +184,6 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="Series\PieSeries.cs" />
-    <Compile Include="Series\ScatterSeries.cs" />
     <Compile Include="CoreComponents\Series.cs" />
     <Compile Include="Shapes\PieSlice.cs" />
     <Compile Include="ZoomingOptions.cs" />

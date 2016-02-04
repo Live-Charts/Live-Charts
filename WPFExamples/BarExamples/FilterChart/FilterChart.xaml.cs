@@ -1,7 +1,9 @@
 ﻿using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using LiveCharts;
 using LiveCharts.Annotations;
 
@@ -28,7 +30,8 @@ namespace ChartsTest.BarExamples.FilterChart
             PopulationSeries = new BarSeries
             {
                 Title = "Population by city 2015",
-                Values = results.AsChartValues()
+                Values = results.AsChartValues(),
+                DataLabels = true
             };
 
             Labels = results.Select(city => city.Name).ToArray();

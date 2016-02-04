@@ -21,8 +21,8 @@
         </TextBlock>
         <lvc:StackedBarChart Name="Chart" Grid.Row="1" Grid.Column="0" LegendLocation="Left">
             <lvc:StackedBarChart.Series>
-                <lvc:StackedBarSeries Title="Maria" Values="20, 40, 45, 60, 55, 60, 65, 70"/>
-                <lvc:StackedBarSeries Title="John" Values="30, 35, 43, 68, 65 ,70, 55, 60"/>
+                <lvc:StackedBarSeries Title="Maria" Values="20, 40, 45, 60, 55, 60, 65, 70" DataLabels="True"/>
+                <lvc:StackedBarSeries Title="John" Values="30, 35, 43, 68, 65 ,70, 55, 60" DataLabels="True"/>
                 <lvc:LineSeries Title="Expected Sales"  Values="10, 70, 80, 110,120, 140,120, 120" Fill="Transparent"/>
             </lvc:StackedBarChart.Series>
             <lvc:StackedBarChart.AxisY>

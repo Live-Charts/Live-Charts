@@ -155,14 +155,14 @@ namespace LiveCharts
             var q = IndexData(config).ToArray();
 
             var xs = q.Select(t => config.XValueMapper(t.Value, t.Key)).DefaultIfEmpty(0).ToArray();
-            var xMax = xs.Max();
-            var xMin = xs.Min();
+            var xMax = xs.Where(x => !double.IsNaN(x)).Max();
+            var xMin = xs.Where(x => !double.IsNaN(x)).Min();
             _min.X = xMin;
             _max.X = xMax;
 
             var ys = q.Select(t => config.YValueMapper(t.Value, t.Key)).DefaultIfEmpty(0).ToArray();
-            var yMax = ys.Max();
-            var yMin = ys.Min();
+            var yMax = ys.Where(x => !double.IsNaN(x)).Max();
+            var yMin = ys.Where(x => !double.IsNaN(x)).Min();
 
             _min.Y = yMin;
             _max.Y = yMax;
