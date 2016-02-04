@@ -52,6 +52,14 @@ var labels = new string[] {"Jan", "Feb" , "Mar", "Apr", "May", "Jun", "Jul", "Ag
 myChart.AxixX.Labels = labels;
 ```
 
+## Is live charts what you are looking for? see these interesting examples.
+
+* **[Live Data](https://github.com/beto-rodriguez/Live-Charts/wiki/91-Live-Data)**: a charts that adds new data each second, DateTime as X Axis.
+* **[Filter records from a data base](https://github.com/beto-rodriguez/Live-Charts/wiki/92-Filtered-Data)**: a chart that pulls data from a data base according to a simple user filter.
+* **[IObservableChartPoint](https://github.com/beto-rodriguez/Live-Charts/wiki/93-IObservableChartPoint)**: this chart uses a view model that implements `IObservableChartPoint`, this will update chart every time a desired property changes.
+* There are much more examples in this solution, go to examples folder up here ^^^
+* High performance charts are almost ready, current test can draw 3 million points in only 1 second
+
 # Installation
 
 **1**. Install package from [**Nuget**](https://www.nuget.org/packages/LiveCharts) `Install-Package LiveCharts`
@@ -61,13 +69,6 @@ myChart.AxixX.Labels = labels;
 xmlns:lvc="clr-namespace:LiveCharts;assembly=LiveCharts"
 ```
 **3**. Thats it. You are ready.
-
-# Interesting examples
-
-* **[Live Data](https://github.com/beto-rodriguez/Live-Charts/wiki/91-Live-Data)**: a charts that adds new data each second, DateTime as X Axis.
-* **[Filter records from a data base]**: a chart that pulls data from a data base according to a simple user filter.
-* **[IObservableChartPoint]**: this chart uses a view model that implements `IObservableChartPoint`, this will update chart every time a desired property changes.
-* There are much more examples in this solution, go to examples folder up here ^^^
 
 # How to Contribute
 
