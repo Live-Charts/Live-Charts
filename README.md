@@ -10,7 +10,11 @@
   <img src="https://dl.dropboxusercontent.com/u/40165535/LiveCharts/PieChart.gif" width="200"/>
 </p>
 
-[![Join the chat at https://gitter.im/beto-rodriguez/Live-Charts](https://badges.gitter.im/beto-rodriguez/Live-Charts.svg)](https://gitter.im/beto-rodriguez/Live-Charts?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![GitHub license](https://img.shields.io/github/license/mashape/apistatus.svg?style=flat-square)](https://github.com/beto-rodriguez/Live-Charts/blob/master/LICENSE.TXT)
+[![NuGet](https://img.shields.io/nuget/dt/LiveCharts.svg?style=flat-square)](https://www.nuget.org/packages/LiveCharts/)
+[![Gitter](https://img.shields.io/gitter/room/nwjs/nw.js.svg?style=flat-square)](https://gitter.im/beto-rodriguez/Live-Charts?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
+
 
 Live charts is an easy way to build poweful charts, all charts are animated, they update every time you change your data, it also has an awesome performance. 
 
