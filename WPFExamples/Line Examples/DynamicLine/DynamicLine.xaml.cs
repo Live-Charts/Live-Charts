@@ -46,7 +46,7 @@ namespace ChartsTest.Line_Examples.DynamicLine
             //Don't forget DataContext so we can bind these properties.
             DataContext = this;
 
-            _timer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(200) };
+            _timer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
             _timer.Tick += TimerOnTick;
         }
 

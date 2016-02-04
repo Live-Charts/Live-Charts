@@ -34,6 +34,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="LiveCharts, Version=0.6.4.0, Culture=neutral, PublicKeyToken=bc51a8d89213f1fa, processorArchitecture=MSIL">
+      <HintPath>..\packages\LiveCharts.0.6.4.0\lib\net45\LiveCharts.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
@@ -167,6 +171,7 @@
     <EmbeddedResource Include="StackedBar\Simle\StackedSample.resx">
       <DependentUpon>StackedSample.cs</DependentUpon>
     </EmbeddedResource>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -179,12 +184,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\LiveChartsCore\LiveChartsCore.csproj">
-      <Project>{EF235236-364D-4DF8-A222-1E74CA0CBAD9}</Project>
-      <Name>LiveChartsCore</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Page Include="BarExamples\Mvvm\BarCustomTooltip.xaml">

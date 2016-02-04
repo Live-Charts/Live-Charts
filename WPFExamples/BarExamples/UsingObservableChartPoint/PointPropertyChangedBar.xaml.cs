@@ -15,10 +15,16 @@ namespace ChartsTest.BarExamples.UsingObservableChartPoint
         {
             InitializeComponent();
 
-            var config = new SeriesConfiguration<StoreViewModel>().Y(y => y.Income);
+            //create a config for StoreViewModel
+            var config = new SeriesConfiguration<StoreViewModel>()
+                .Y(y => y.Income); //use Income property as Y
+                                   //do not configure X
+                                   //this will pull a zero based index as X
 
+            //create a SeriesCollection with this config
             StoresCollection = new SeriesCollection(config);
 
+            //add some Series with ChartValues<StoreViewModel>
             StoresCollection.Add(new BarSeries
             {
                 Title = "Apple Store",

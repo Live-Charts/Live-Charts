@@ -20,11 +20,15 @@ namespace ChartsTest.BarExamples.FilterChart
         {
             InitializeComponent();
 
+            //create a configuration for City class
             var config = new SeriesConfiguration<City>()
-                .Y(city => city.Population);
+                .Y(city => city.Population); // use Population an Y
+                                             // X will use default config, a zero based index
             
+            //create a series collection with this config
             Series = new SeriesCollection(config);
 
+            //lets pull some initials results
             var results = DataBase.Cities.OrderByDescending(city => city.Population).Take(15).ToArray();
 
             PopulationSeries = new BarSeries
@@ -34,6 +38,10 @@ namespace ChartsTest.BarExamples.FilterChart
                 DataLabels = true
             };
 
+            //there are 2 types of labels, when we use a formatter, and a strong array mapping
+            //in this case instead of a label formatter we use a strong array labels
+            //since X is a zero based index LiveCharts automatically maps this array with X
+            //so when X = 0 label will be labels[0], when X = 1 labels[1], X = 2 labels[2], X = n labels[n]
             Labels = results.Select(city => city.Name).ToArray();
 
             Series.Add(PopulationSeries);
