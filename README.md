@@ -65,6 +65,7 @@ myChart.AxixX.Labels = labels;
 **1**. Install package from [**Nuget**](https://www.nuget.org/packages/LiveCharts) `Install-Package LiveCharts`
 
 **2**. Add name space
+
 To your `XAML` if using wpf
 ```xml
 xmlns:lvc="clr-namespace:LiveCharts;assembly=LiveCharts"
