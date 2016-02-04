@@ -10,10 +10,10 @@
   <img src="https://dl.dropboxusercontent.com/u/40165535/LiveCharts/PieChart.gif" width="200"/>
 </p>
 
-[![GitHub license](https://img.shields.io/github/license/beto-rodriguez/Live-Charts.svg)](https://github.com/beto-rodriguez/Live-Charts/blob/master/LICENSE.TXT)
-[![GitHub issues](https://img.shields.io/github/issues/beto-rodriguez/Live-Charts.svg)](https://img.shields.io/github/issues/beto-rodriguez/Live-Charts.svg)
-[![NuGet](https://img.shields.io/nuget/dt/LiveCharts.svg)](https://www.nuget.org/packages/LiveCharts/)
-[![Gitter](https://img.shields.io/gitter/room/beto-rodriguez/Live-Charts.svg)](https://gitter.im/beto-rodriguez/Live-Charts?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![GitHub license](https://img.shields.io/github/license/beto-rodriguez/Live-Charts.svg?style=flat-square)](https://github.com/beto-rodriguez/Live-Charts/blob/master/LICENSE.TXT)
+[![GitHub issues](https://img.shields.io/github/issues/beto-rodriguez/Live-Charts.svg?style=flat-square)](https://img.shields.io/github/issues/beto-rodriguez/Live-Charts.svg)
+[![NuGet](https://img.shields.io/nuget/dt/LiveCharts.svg?style=flat-square)](https://www.nuget.org/packages/LiveCharts/)
+[![Gitter](https://img.shields.io/gitter/room/beto-rodriguez/Live-Charts.svg?style=flat-square)](https://gitter.im/beto-rodriguez/Live-Charts?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 
 
