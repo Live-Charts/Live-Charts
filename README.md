@@ -12,47 +12,44 @@
 
 [![Join the chat at https://gitter.im/beto-rodriguez/Live-Charts](https://badges.gitter.im/beto-rodriguez/Live-Charts.svg)](https://gitter.im/beto-rodriguez/Live-Charts?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-Live charts is an easy way to build useful charts, all charts are animated, they update every time you change your data, or when you rezise the chart, it also has an awesome performance. 
+Live charts is an easy way to build poweful charts, all charts are animated, they update every time you change your data, it also has an awesome performance. 
 
- - **Good looking, animated and easy to customize charts, you can practically change all properties.**
- - **3,000,000 points in 1 second, (coming soon, its practically finished)**
- - **MVVM Charting, Support for WPF Binding, All charts update when data changes.**
- - **Easy to maintain and create new charts, as you can see in the source code, some charts have almost no code.**
- - **Supports zooming and panning. (right now we have made some changes here, so be patient)**
- - **MIT License, permissive licensing.**
+ - Good looking, animated and easy to customize charts, you can practically change all properties.
+ - Autoupdate UI, you just create a SeriesCollection, then LiveCharts will handle everything.
+ - MVVM Charting, Support for WPF Bindings.
+ - Easy to maintain and create new charts, as you can see in the source code, some charts have almost no code.
+ - Supports zooming and panning.
+ - MIT License, permissive licensing.
  
-This is the logic you use in every chart, there are just some litle properties or rules that change from each type of chart. You can also see examples here: [Winforms](https://github.com/beto-rodriguez/Live-Charts/tree/master/WinForms), [WPF](https://github.com/beto-rodriguez/Live-Charts/tree/master/ChartsTest)
-
-Add as many series and values as you need, they can also change dynamically, don't worry, LiveCharts handle it.
+This is the logic you use in every chart, there are just some litle properties or rules that change from each type of chart
 
 ```c#
-var series = new SeriesCollection();
+//create a new SeriesCollection
+var seriesCollection = new SeriesCollection();
 
+//create some LineSeries if ypu need so
 var charlesSeries = new LineSeries
 {
   Title = "Charles",
   Values = new ChartValues<double> {10, 5, 7, 5, 7, 8}
 };
-
 var jamesSeries = new LineSeries
 {
   Title = "James",
-  Values = new ChartValues<double> {5, 6, 9, 10, 11, 9}
+  Values = new ChartValues<double> { 5, 6, 9, 10, 11, 9 }
 };
 
-series.Add(charlesSeries);
-series.Add(jamesSeries);
-```
-Now just set `Series` property of your chart to this `SeriesCollection` you just created
+//add series to seriesCollection
+seriesCollection.Add(charlesSeries);
+seriesCollection.Add(jamesSeries);
 
-Use *WPF* bindings [see full example here](https://github.com/beto-rodriguez/Live-Charts/tree/master/ChartsTest/Line%20Examples/Basic)
-```xml
-<lvc:LineChart Series="{Binding Series}">
-```
+//now just assing this seriesCollectionto your chart
+//you can use wpf bindings if you need it
+myChart.Series = seriesCollection
 
-*WinForms* [see full example here](https://github.com/beto-rodriguez/Live-Charts/tree/master/WinForms/LineExamples/Basic)
-```c#
-linechart1.Series = series;
+//create some labels if necessary
+var labels = new string[] {"Jan", "Feb" , "Mar", "Apr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dec"};
+myChart.AxixX.Labels = labels;
 ```
 
 # Installation
@@ -65,12 +62,12 @@ xmlns:lvc="clr-namespace:LiveCharts;assembly=LiveCharts"
 ```
 **3**. Thats it. You are ready.
 
-**Note:** Since this is a pre-release version, some names, properties or namespaces might vary, we highly recommend to clone this repo and see included examples since they all are always up to date.
+# Interesting examples
 
-Or take a look to this exmaples too
-
- * [Winforms](https://github.com/beto-rodriguez/Live-Charts/tree/master/WinForms)
- * [WPF](https://github.com/beto-rodriguez/Live-Charts/tree/master/ChartsTest)
+* **[Live Data](https://github.com/beto-rodriguez/Live-Charts/wiki/91-Live-Data)**: a charts that adds new data each second, DateTime as X Axis.
+* **[Filter records from a data base]**: a chart that pulls data from a data base according to a simple user filter.
+* **[IObservableChartPoint]**: this chart uses a view model that implements `IObservableChartPoint`, this will update chart every time a desired property changes.
+* There are much more examples in this solution, go to examples folder up here ^^^
 
 # How to Contribute
 
@@ -81,10 +78,7 @@ Or take a look to this exmaples too
 
 # Need examples?
 
-Try [Live Charts Wiki](https://github.com/beto-rodriguez/Live-Charts/wiki), or cloning this repo, test project includes a lot of examples, copy and paste this link in your browser for a cloning shortcut
-```
-git-client://clone?repo=https%3A%2F%2Fgithub.com%2Fbeto-rodriguez%2FLive-Charts
-```
+Go to examples folder up there ^^^ or even better clone this repo and see included examples.
 
 # More Images
 
