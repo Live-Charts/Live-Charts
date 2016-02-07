@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WPFExamples", "WPFExamples\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WinFormsExamples", "WinFormsExamples\WinFormsExamples.csproj", "{276302F1-0617-4AF9-80F6-62A4033518F7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LiveChartsOptimizations", "..\LiveChartOptimizations\LiveChartOptimizations\LiveChartsOptimizations.csproj", "{B62BFA1D-2B68-46CF-86B4-5AE85A92C65E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Brain", "..\LiveChartOptimizations\LiveChartOptimizations\Brain.csproj", "{B62BFA1D-2B68-46CF-86B4-5AE85A92C65E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTesting", "UnitTesting\UnitTesting.csproj", "{23D912E3-6F46-4193-95E3-44C3063821F3}"
 EndProject

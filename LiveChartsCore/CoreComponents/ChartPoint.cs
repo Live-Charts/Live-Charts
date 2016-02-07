@@ -20,6 +20,8 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
+using System;
+
 namespace LiveCharts.CoreComponents
 {
     public class ChartPoint 
@@ -27,6 +29,7 @@ namespace LiveCharts.CoreComponents
         public double X { get; set; }
         public double Y { get; set; }
         public object Instance { get; set; }
+        public Guid Key { get; set; }
         public bool IsMocked { get; set; }
     }
 }

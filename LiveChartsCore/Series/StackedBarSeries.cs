@@ -152,12 +152,12 @@ namespace LiveCharts
                 hr.MouseEnter += Chart.DataMouseEnter;
                 hr.MouseLeave += Chart.DataMouseLeave;
 
-                Chart.HoverableShapes.Add(new HoverableShape
+                Chart.ShapesMapper.Add(new ShapeMap
                 {
                     Series = this,
-                    Shape = hr,
-                    Target = r,
-                    Value = point
+                    HoverShape = hr,
+                    Shape = r,
+                    ChartPoint = point
                 });
             }
         }
@@ -267,12 +267,12 @@ namespace LiveCharts
                 hr.MouseEnter += Chart.DataMouseEnter;
                 hr.MouseLeave += Chart.DataMouseLeave;
 
-                Chart.HoverableShapes.Add(new HoverableShape
+                Chart.ShapesMapper.Add(new ShapeMap
                 {
                     Series = this,
-                    Shape = hr,
-                    Target = r,
-                    Value = point
+                    HoverShape = hr,
+                    Shape = r,
+                    ChartPoint = point
                 });
             }
         }

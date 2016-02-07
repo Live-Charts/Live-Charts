@@ -211,16 +211,16 @@ namespace LiveCharts
             DrawAxes();
         }
 
-        protected override Point GetToolTipPosition(HoverableShape sender, List<HoverableShape> sibilings)
+        protected override Point GetToolTipPosition(ShapeMap sender, List<ShapeMap> sibilings)
         {
             DataTooltip.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
             var unitW = ToPlotArea(1, AxisTags.X) - PlotArea.X + 5;
             var overflow = unitW - MaxColumnWidth > 0 ? unitW - MaxColumnWidth : 0;
             unitW = unitW > MaxColumnWidth ? MaxColumnWidth : unitW;
-            var x = sender.Value.X + 1 > (Min.X + Max.X) / 2
-                ? ToPlotArea(sender.Value.X, AxisTags.X) + overflow * .5 - DataTooltip.DesiredSize.Width
-                : ToPlotArea(sender.Value.X, AxisTags.X) + unitW + overflow * .5;
-            var y = ToPlotArea(sibilings.Where(s => s.Series is StackedBarSeries).Select(s => s.Value.Y).DefaultIfEmpty(0).Sum()*0.5, AxisTags.Y);
+            var x = sender.ChartPoint.X + 1 > (Min.X + Max.X) / 2
+                ? ToPlotArea(sender.ChartPoint.X, AxisTags.X) + overflow * .5 - DataTooltip.DesiredSize.Width
+                : ToPlotArea(sender.ChartPoint.X, AxisTags.X) + unitW + overflow * .5;
+            var y = ToPlotArea(sibilings.Where(s => s.Series is StackedBarSeries).Select(s => s.ChartPoint.Y).DefaultIfEmpty(0).Sum()*0.5, AxisTags.Y);
             y = y + DataTooltip.DesiredSize.Height > ActualHeight
                 ? y - (y + DataTooltip.DesiredSize.Height - ActualHeight) - 5
                 : y;

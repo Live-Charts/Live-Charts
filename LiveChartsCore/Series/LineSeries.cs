@@ -52,6 +52,7 @@ namespace LiveCharts
         public override void Plot(bool animate = true)
         {
             if (Visibility != Visibility.Visible) return;
+
             var rr = PointRadius < 2.5 ? 2.5 : PointRadius;
             foreach (var segment in Values.Points.AsSegments())
             {
@@ -66,80 +67,35 @@ namespace LiveCharts
                         ToDrawMargin(x.X, AxisTags.X), ToDrawMargin(x.Y, AxisTags.Y)))
                         .ToArray(), animate));
 
-                var hoverableAreas = new List<HoverableShape>();
                 var f = Chart.GetFormatter(Chart.Invert ? Chart.AxisX : Chart.AxisY);
 
-                foreach (var point in segment)
+                for (int index = 0; index < segment.Count - 1; index++)
                 {
-                    var plotPoint = new Point(ToDrawMargin(point.X, AxisTags.X), ToDrawMargin(point.Y, AxisTags.Y));
-                    var e = new Ellipse
-                    {
-                        Width = PointRadius*2,
-                        Height = PointRadius*2,
-                        Fill = Stroke,
-                        Stroke = new SolidColorBrush {Color = Chart.PointHoverColor},
-                        StrokeThickness = 1,
-                        ClipToBounds = true
-                    };
-                    var r = new Rectangle
-                    {
-                        Fill = Brushes.Transparent,
-                        Width = rr*2,
-                        Height = rr*2,
-                        StrokeThickness = 0
-                    };
+                    var chrtP1 = segment[index];
+                    var chrtP2 = segment[index + 1];
 
-                    if (DataLabels)
-                    {
-                        var tb = BuildATextBlock(0);
-                        var t = f(Chart.Invert ? point.X : point.Y);
-                        var ft = new FormattedText(
-                            t,
-                            CultureInfo.CurrentUICulture,
-                            FlowDirection.LeftToRight,
-                            new Typeface(FontFamily, FontStyle, FontWeight, FontStretch), FontSize, Brushes.Black);
-                        tb.Text = t;
-                        Chart.DrawMargin.Children.Add(tb);
-                        Chart.Shapes.Add(tb);
-                        var l = plotPoint.X - ft.Width*.5;
-                        l = l < 0
-                            ? 0
-                            : (l + ft.Width > Chart.DrawMargin.Width
-                                ? Chart.DrawMargin.Width - ft.Width
-                                : l);
-                        var tp = plotPoint.Y - ft.Height - 5;
-                        tp = tp < 0 ? 0 : tp;
-                        Canvas.SetLeft(tb, l);
-                        Canvas.SetTop(tb, tp);
-                        s.Add(tb);
-                    }
+                    var p1 = new Point(ToDrawMargin(chrtP1.X, AxisTags.X), ToDrawMargin(chrtP1.Y, AxisTags.Y));
+                    var p2 = new Point(ToDrawMargin(chrtP2.X, AxisTags.X), ToDrawMargin(chrtP2.Y, AxisTags.Y));
 
-                    r.MouseEnter += Chart.DataMouseEnter;
-                    r.MouseLeave += Chart.DataMouseLeave;
-                    r.MouseDown += Chart.DataMouseDown;
+                    //if (LineChart.LineType == LineChartLineType.Polyline)
+                    //    AddLine(p1, p2, animate);
 
-                    Canvas.SetLeft(r, plotPoint.X - r.Width/2);
-                    Canvas.SetTop(r, plotPoint.Y - r.Height/2);
-                    Panel.SetZIndex(r, int.MaxValue);
-                    Canvas.SetLeft(e, plotPoint.X - e.Width*.5);
-                    Canvas.SetTop(e, plotPoint.Y - e.Height*.5);
+                    if (DataLabels) AddDataLabel(p1, chrtP1, f);
+                    var mark = AddPointMarkup(p1);
+                    AddHoverAndClickShape(rr, p1, chrtP1, mark);
+                }
 
-                    Chart.DrawMargin.Children.Add(r);
-                    Chart.DrawMargin.Children.Add(e);
+                if (segment.Count > 0)
+                {
+                    var lastP = segment[segment.Count - 1];
+                    var lastPp = new Point(ToDrawMargin(lastP.X, AxisTags.X), ToDrawMargin(lastP.Y, AxisTags.Y));
 
-                    s.Add(e);
-                    s.Add(r);
-                    hoverableAreas.Add(new HoverableShape
-                    {
-                        Series = this,
-                        Shape = r,
-                        Value = point,
-                        Target = e
-                    });
+                    if (DataLabels) AddDataLabel(lastPp, lastP, f);
+                    var lastmark = AddPointMarkup(lastPp);
+                    AddHoverAndClickShape(rr, lastPp, lastP, lastmark);
                 }
 
                 Shapes.AddRange(s);
-                Chart.HoverableShapes.AddRange(hoverableAreas);
             }
         }
 
@@ -391,6 +347,90 @@ namespace LiveCharts
             }
             if (!animated) path.StrokeDashOffset = 0;
             return addedFigures;
+        }
+
+        private void AddLine(Point p1, Point p2, bool animate)
+        {
+            var l = new Line
+            {
+                Stroke = Stroke,
+                StrokeThickness = StrokeThickness,
+                X1 = p1.X,
+                Y1 = p1.Y,
+                X2 = p2.X,
+                Y2 = p2.Y,
+                StrokeEndLineCap = PenLineCap.Round,
+                StrokeStartLineCap = PenLineCap.Round
+            };
+            Shapes.Add(l);
+            Chart.DrawMargin.Children.Add(l);
+        }
+
+        private void AddHoverAndClickShape(double minRadius, Point plotPoint, ChartPoint point, Shape e)
+        {
+            var r = new Rectangle
+            {
+                Fill = Brushes.Transparent,
+                Width = minRadius*2,
+                Height = minRadius*2,
+                StrokeThickness = 0
+            };
+
+            r.MouseEnter += Chart.DataMouseEnter;
+            r.MouseLeave += Chart.DataMouseLeave;
+            r.MouseDown += Chart.DataMouseDown;
+
+            Canvas.SetLeft(r, plotPoint.X - r.Width / 2);
+            Canvas.SetTop(r, plotPoint.Y - r.Height / 2);
+            Panel.SetZIndex(r, int.MaxValue);
+
+            Chart.DrawMargin.Children.Add(r);
+
+            Shapes.Add(r);
+            Chart.ShapesMapper.Add(new ShapeMap { Series = this, HoverShape = r, ChartPoint = point, Shape = e });
+        }
+
+        private Shape AddPointMarkup(Point plotPoint)
+        {
+            var e = new Ellipse
+            {
+                Width = PointRadius * 2,
+                Height = PointRadius * 2,
+                Fill = Stroke,
+                Stroke = new SolidColorBrush { Color = Chart.PointHoverColor },
+                StrokeThickness = 1,
+                ClipToBounds = true
+            };
+
+            Canvas.SetLeft(e, plotPoint.X - e.Width * .5);
+            Canvas.SetTop(e, plotPoint.Y - e.Height * .5);
+
+            Chart.DrawMargin.Children.Add(e);
+
+            Shapes.Add(e);
+
+            return e;
+        }
+
+        private void AddDataLabel(Point plotPoint, ChartPoint point, Func<double, string> f)
+        {
+            var tb = BuildATextBlock(0);
+            var t = f(Chart.Invert ? point.X : point.Y);
+            var ft = new FormattedText(t, CultureInfo.CurrentUICulture, FlowDirection.LeftToRight,
+                new Typeface(FontFamily, FontStyle, FontWeight, FontStretch), FontSize, Brushes.Black);
+            tb.Text = t;
+            var l = plotPoint.X - ft.Width * .5;
+            l = l < 0
+                ? 0
+                : (l + ft.Width > Chart.DrawMargin.Width
+                    ? Chart.DrawMargin.Width - ft.Width
+                    : l);
+            var tp = plotPoint.Y - ft.Height - 5;
+            tp = tp < 0 ? 0 : tp;
+            Canvas.SetLeft(tb, l);
+            Canvas.SetTop(tb, tp);
+            Chart.DrawMargin.Children.Add(tb);
+            Shapes.Add(tb);
         }
     }
 }

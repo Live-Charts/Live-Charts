@@ -158,7 +158,7 @@ namespace LiveCharts
             DrawAxes();
         }
 
-        protected override Point GetToolTipPosition(HoverableShape sender, List<HoverableShape> sibilings)
+        protected override Point GetToolTipPosition(ShapeMap sender, List<ShapeMap> sibilings)
         {
             Size desiredSize1 = this.DesiredSize;
             double width = desiredSize1.Width;

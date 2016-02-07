@@ -34,6 +34,7 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
+using LiveCharts.Interfaces;
 using LiveCharts.Tooltip;
 using LiveCharts.Viewers;
 
@@ -57,19 +58,19 @@ namespace LiveCharts.CoreComponents
         internal double To = double.MaxValue;
         internal AxisTags ZoomingAxis = AxisTags.None;
         internal bool SupportsMultipleSeries = true;
+        internal bool TrackByKey;
 
         protected ShapeHoverBehavior ShapeHoverBehavior;
         protected bool AlphaLabel;
         protected readonly DispatcherTimer TooltipTimer;
         protected double DefaultFillOpacity = 0.35;
-        
+
         private static readonly Random Randomizer;
         private readonly DispatcherTimer _resizeTimer;
         private readonly DispatcherTimer _serieValuesChanged;
-        internal readonly DispatcherTimer _seriesChanged;
+        internal readonly DispatcherTimer SeriesChanged;
         private Point _panOrigin;
         private bool _isDragging;
-        private UIElement _dataToolTip;
         private int _colorIndexer;
         private UIElement _dataTooltip;
 
@@ -110,7 +111,7 @@ namespace LiveCharts.CoreComponents
             SetCurrentValue(SeriesProperty, new SeriesCollection(defaultConfig));
             DataTooltip = new DefaultIndexedTooltip();
             Shapes = new List<FrameworkElement>();
-            HoverableShapes = new List<HoverableShape>();
+            ShapesMapper = new List<ShapeMap>();
             PointHoverColor = System.Windows.Media.Colors.White; 
 
             Background = Brushes.Transparent;
@@ -139,8 +140,8 @@ namespace LiveCharts.CoreComponents
             _serieValuesChanged = new DispatcherTimer {Interval = TimeSpan.FromMilliseconds(100)};
             _serieValuesChanged.Tick += UpdateModifiedDataSeries;
 
-            _seriesChanged = new DispatcherTimer {Interval = TimeSpan.FromMilliseconds(100)};
-            _seriesChanged.Tick += UpdateSeries;
+            SeriesChanged = new DispatcherTimer {Interval = TimeSpan.FromMilliseconds(100)};
+            SeriesChanged.Tick += UpdateSeries;
         }
 
         #region StaticProperties
@@ -148,6 +149,8 @@ namespace LiveCharts.CoreComponents
         /// Gets or sets a custom area for unit testing, unit test will not run correctly if you do not set this property. widht and heigth must be greather than 15;
         /// </summary>
         public static Rect? MockedArea { get; set; }
+
+        public static IBrain Brain { get; set; }
 
         /// <summary>
         /// List of Colors series will use, yu can change this list to your own colors.
@@ -305,7 +308,7 @@ namespace LiveCharts.CoreComponents
         /// <summary>
         /// Gets collection of shapes that fires tooltip on hover
         /// </summary>
-        public List<HoverableShape> HoverableShapes { get; internal set; }
+        public List<ShapeMap> ShapesMapper { get; internal set; }
         #endregion
 
         #region ProtectedProperties
@@ -341,9 +344,9 @@ namespace LiveCharts.CoreComponents
         /// <param name="animate"></param>
         public void Redraw(bool animate = true)
         {
-            if (_seriesChanged == null) return;
-            _seriesChanged.Stop();
-            _seriesChanged.Start();
+            if (SeriesChanged == null) return;
+            SeriesChanged.Stop();
+            SeriesChanged.Start();
             PrepareCanvas(animate);
         }
 
@@ -778,21 +781,21 @@ namespace LiveCharts.CoreComponents
             DataTooltip.Visibility = Visibility.Visible;
             TooltipTimer.Stop();
 
-            var senderShape = HoverableShapes.FirstOrDefault(s => Equals(s.Shape, sender));
+            var senderShape = ShapesMapper.FirstOrDefault(s => Equals(s.HoverShape, sender));
             if (senderShape == null) return;
-            var sibilings = Invert ? HoverableShapes.Where(s => Math.Abs(s.Value.Y - senderShape.Value.Y) < S.Y*.01).ToList() : HoverableShapes.Where(s => Math.Abs(s.Value.X - senderShape.Value.X) < S.X*.01).ToList();
+            var sibilings = Invert ? ShapesMapper.Where(s => Math.Abs(s.ChartPoint.Y - senderShape.ChartPoint.Y) < S.Y*.01).ToList() : ShapesMapper.Where(s => Math.Abs(s.ChartPoint.X - senderShape.ChartPoint.X) < S.X*.01).ToList();
 
             var first = sibilings.Count > 0 ? sibilings[0] : null;
-            var vx = first != null ? (Invert ? first.Value.Y : first.Value.X) : 0;
+            var vx = first != null ? (Invert ? first.ChartPoint.Y : first.ChartPoint.X) : 0;
 
             foreach (var sibiling in sibilings)
             {
                 if (ShapeHoverBehavior == ShapeHoverBehavior.Dot)
                 {
-                    sibiling.Target.Stroke = sibiling.Series.Stroke;
-                    sibiling.Target.Fill = new SolidColorBrush {Color = PointHoverColor};
+                    sibiling.Shape.Stroke = sibiling.Series.Stroke;
+                    sibiling.Shape.Fill = new SolidColorBrush {Color = PointHoverColor};
                 }
-                else sibiling.Target.Opacity = .8;
+                else sibiling.Shape.Opacity = .8;
             }
 
             var indexedToolTip = DataTooltip as IndexedTooltip;
@@ -803,7 +806,7 @@ namespace LiveCharts.CoreComponents
                 indexedToolTip.Header = fh(vx);
                 indexedToolTip.Data = sibilings.Select(x => new IndexedTooltipData
                 {
-                    Index = Series.IndexOf(x.Series), Series = x.Series, Stroke = x.Series.Stroke, Fill = x.Series.Fill, Point = x.Value, Value = fs(Invert ? x.Value.X : x.Value.Y)
+                    Index = Series.IndexOf(x.Series), Series = x.Series, Stroke = x.Series.Stroke, Fill = x.Series.Fill, Point = x.ChartPoint, Value = fs(Invert ? x.ChartPoint.X : x.ChartPoint.Y)
                 }).ToArray();
             }
 
@@ -826,21 +829,21 @@ namespace LiveCharts.CoreComponents
             var s = sender as Shape;
             if (s == null) return;
 
-            var shape = HoverableShapes.FirstOrDefault(x => Equals(x.Shape, s));
+            var shape = ShapesMapper.FirstOrDefault(x => Equals(x.HoverShape, s));
             if (shape == null) return;
 
-            var sibilings = HoverableShapes.Where(x => Math.Abs(x.Value.X - shape.Value.X) < .001*S.X).ToList();
+            var sibilings = ShapesMapper.Where(x => Math.Abs(x.ChartPoint.X - shape.ChartPoint.X) < .001*S.X).ToList();
 
             foreach (var p in sibilings)
             {
                 if (ShapeHoverBehavior == ShapeHoverBehavior.Dot)
                 {
-                    p.Target.Fill = p.Series.Stroke;
-                    p.Target.Stroke = new SolidColorBrush {Color = PointHoverColor};
+                    p.Shape.Fill = p.Series.Stroke;
+                    p.Shape.Stroke = new SolidColorBrush {Color = PointHoverColor};
                 }
                 else
                 {
-                    p.Target.Opacity = 1;
+                    p.Shape.Opacity = 1;
                 }
             }
             TooltipTimer.Stop();
@@ -849,17 +852,17 @@ namespace LiveCharts.CoreComponents
 
         internal virtual void DataMouseDown(object sender, MouseEventArgs e)
         {
-            var shape = HoverableShapes.FirstOrDefault(s => Equals(s.Shape, sender));
+            var shape = ShapesMapper.FirstOrDefault(s => Equals(s.HoverShape, sender));
             if (shape == null) return;
-            if (DataClick != null) DataClick.Invoke(shape.Value);
+            if (DataClick != null) DataClick.Invoke(shape.ChartPoint);
         }
 
-        protected virtual Point GetToolTipPosition(HoverableShape sender, List<HoverableShape> sibilings)
+        protected virtual Point GetToolTipPosition(ShapeMap sender, List<ShapeMap> sibilings)
         {
             DataTooltip.UpdateLayout();
             DataTooltip.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
-            var x = sender.Value.X > (Min.X + Max.X)/2 ? ToPlotArea(sender.Value.X, AxisTags.X) - 10 - DataTooltip.DesiredSize.Width : ToPlotArea(sender.Value.X, AxisTags.X) + 10;
-            var y = ToPlotArea(sibilings.Select(s => s.Value.Y).DefaultIfEmpty(0).Sum()/sibilings.Count, AxisTags.Y);
+            var x = sender.ChartPoint.X > (Min.X + Max.X)/2 ? ToPlotArea(sender.ChartPoint.X, AxisTags.X) - 10 - DataTooltip.DesiredSize.Width : ToPlotArea(sender.ChartPoint.X, AxisTags.X) + 10;
+            var y = ToPlotArea(sibilings.Select(s => s.ChartPoint.Y).DefaultIfEmpty(0).Sum()/sibilings.Count, AxisTags.Y);
             y = y + DataTooltip.DesiredSize.Height > ActualHeight ? y - (y + DataTooltip.DesiredSize.Height - ActualHeight) - 5 : y;
             return new Point(x, y);
         }
@@ -1049,14 +1052,14 @@ namespace LiveCharts.CoreComponents
 
             chart.Series.CollectionChanged += (sender, args) =>
             {
-                chart._seriesChanged.Stop();
-                chart._seriesChanged.Start();
+                chart.SeriesChanged.Stop();
+                chart.SeriesChanged.Start();
 
                 if (args.Action == NotifyCollectionChangedAction.Reset)
                 {
                     chart.Canvas.Children.Clear();
                     chart.Shapes.Clear();
-                    chart.HoverableShapes.Clear();
+                    chart.ShapesMapper.Clear();
                 }
 
                 if (args.OldItems != null)
@@ -1099,7 +1102,7 @@ namespace LiveCharts.CoreComponents
 
         private void UpdateSeries(object sender, EventArgs e)
         {
-            _seriesChanged.Stop();
+            SeriesChanged.Stop();
 
             EreaseSeries();
 
@@ -1108,7 +1111,7 @@ namespace LiveCharts.CoreComponents
 
             foreach (var shape in Shapes) Canvas.Children.Remove(shape);
             
-            HoverableShapes = new List<HoverableShape>();
+            ShapesMapper = new List<ShapeMap>();
             Shapes = new List<FrameworkElement>();
 
             if (RequiresScale)
@@ -1131,7 +1134,7 @@ namespace LiveCharts.CoreComponents
             if (DrawMargin != null) Trace.WriteLine("Draw Margin Objects " + DrawMargin.Children.Count);
             Trace.WriteLine("Canvas Children " + Canvas.Children.Count);
             Trace.WriteLine("Shapes " +Shapes.Count);
-            Trace.WriteLine("Hoverable Shapes " + HoverableShapes.Count);
+            Trace.WriteLine("Series Shapes " + ShapesMapper.Count);
 #endif
         }
 

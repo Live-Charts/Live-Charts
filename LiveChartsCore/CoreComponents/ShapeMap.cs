@@ -24,20 +24,20 @@ using System.Windows.Shapes;
 
 namespace LiveCharts.CoreComponents
 {
-    public class HoverableShape
+    public class ShapeMap
     {
         /// <summary>
         /// Point of this area
         /// </summary>
-        public ChartPoint Value { get; set; }
+        public ChartPoint ChartPoint { get; set; }
         /// <summary>
         /// Shape that fires hover
         /// </summary>
-        public Shape Shape { get; set; }
+        public Shape HoverShape { get; set; }
         /// <summary>
         /// Shape that that changes style on hover
         /// </summary>
-        public Shape Target { get; set; }
+        public Shape Shape { get; set; }
         /// <summary>
         /// serie that contains thos point
         /// </summary>

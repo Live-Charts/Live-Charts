@@ -115,6 +115,7 @@
     <Compile Include="CoreComponents\ChartPoint.cs" />
     <Compile Include="CoreComponents\SeriesConfiguration.cs" />
     <Compile Include="DefaultAxes.cs" />
+    <Compile Include="Interfaces\IBrain.cs" />
     <Compile Include="Interfaces\IObservableChartPoint.cs" />
     <Compile Include="Interfaces\ISeriesConfiguration.cs" />
     <Compile Include="CoreComponents\Axis.cs" />
@@ -164,7 +165,7 @@
     <Compile Include="Series\StackedBarSeries.cs" />
     <Compile Include="ShapeHoverBehavior.cs" />
     <Compile Include="CoreComponents\Chart.cs" />
-    <Compile Include="CoreComponents\HoverableShape.cs" />
+    <Compile Include="CoreComponents\ShapeMap.cs" />
     <Compile Include="LineChartLineType.cs" />
     <Compile Include="Methods.cs" />
     <Compile Include="CoreComponents\Separator.cs" />

@@ -151,12 +151,12 @@ namespace LiveCharts
                 slice.MouseEnter += Chart.DataMouseEnter;
                 slice.MouseLeave += Chart.DataMouseLeave;
 
-                Chart.HoverableShapes.Add(new HoverableShape
+                Chart.ShapesMapper.Add(new ShapeMap
                 {
                     Series = this,
+                    HoverShape = slice,
                     Shape = slice,
-                    Target = slice,
-                    Value = point
+                    ChartPoint = point
                 });
 
 

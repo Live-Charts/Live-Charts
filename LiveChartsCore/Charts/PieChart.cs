@@ -206,15 +206,15 @@ namespace LiveCharts
             DataTooltip.Visibility = Visibility.Visible;
             TooltipTimer.Stop();
 
-            var senderShape = HoverableShapes.FirstOrDefault(s => Equals(s.Shape, sender));
+            var senderShape = ShapesMapper.FirstOrDefault(s => Equals(s.HoverShape, sender));
             if (senderShape == null) return;
-            var pieSlice = senderShape.Shape as PieSlice;
+            var pieSlice = senderShape.HoverShape as PieSlice;
             if (pieSlice == null) return;
 
             var labels = AxisX.Labels != null ? AxisX.Labels.ToArray() : null;
 
-            senderShape.Target.Opacity = .8;
-            var vx = senderShape.Value.X;
+            senderShape.Shape.Opacity = .8;
+            var vx = senderShape.ChartPoint.X;
 
             var indexedToolTip = DataTooltip as IndexedTooltip;
             if (indexedToolTip != null)
@@ -231,13 +231,13 @@ namespace LiveCharts
                     new IndexedTooltipData
                     {
                         Index = (int) vx,
-                        Stroke = senderShape.Shape.Stroke,
-                        Fill = senderShape.Shape.Fill,
+                        Stroke = senderShape.HoverShape.Stroke,
+                        Fill = senderShape.HoverShape.Fill,
                         Series = senderShape.Series,
-                        Point = senderShape.Value,
+                        Point = senderShape.ChartPoint,
                         Value = AxisY.LabelFormatter == null
-                            ? senderShape.Value.Y.ToString(CultureInfo.InvariantCulture)
-                            : AxisY.LabelFormatter(senderShape.Value.Y)
+                            ? senderShape.ChartPoint.Y.ToString(CultureInfo.InvariantCulture)
+                            : AxisY.LabelFormatter(senderShape.ChartPoint.Y)
                     }
                 };
             }
@@ -278,8 +278,8 @@ namespace LiveCharts
         internal override void DataMouseLeave(object sender, MouseEventArgs e)
         {
             base.DataMouseLeave(sender, e);
-            var senderShape = HoverableShapes.FirstOrDefault(s => Equals(s.Shape, sender));
-            var pieSlice = senderShape != null ? senderShape.Shape as PieSlice : null;
+            var senderShape = ShapesMapper.FirstOrDefault(s => Equals(s.HoverShape, sender));
+            var pieSlice = senderShape != null ? senderShape.HoverShape as PieSlice : null;
             if (pieSlice == null) return;
             pieSlice.Opacity = 1;
 

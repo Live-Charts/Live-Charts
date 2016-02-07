@@ -78,7 +78,8 @@ namespace LiveCharts
                         {
                             X = config.XValueMapper(t.Value, t.Key),
                             Y = config.YValueMapper(t.Value, t.Key),
-                            Instance = t.Value
+                            Instance = t.Value,
+                            Key = config.Chart.TrackByKey ? Guid.NewGuid() : Guid.Empty
                         }).ToArray();
                         return _points;
                     }
@@ -179,13 +180,14 @@ namespace LiveCharts
             var i = 0;
             foreach (var t in this)
             {
-                // this is why you only use IObservalbe if really needed, 
-                // or when you have a small amouth of points
                 if (isObservalbe)
                 {
                     var observable = t as IObservableChartPoint;
                     if (observable != null)
+                    {
+                        observable.ValueChanged -= ObservableOnValueChanged;
                         observable.ValueChanged += ObservableOnValueChanged;
+                    }
                 }
                 if (f(t, i) >= config.Chart.From && f(t, i) <= config.Chart.To)
                     yield return new KeyValuePair<int, T>(i, t);

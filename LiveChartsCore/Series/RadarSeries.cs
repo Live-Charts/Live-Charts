@@ -111,12 +111,12 @@ namespace LiveCharts
                 r.MouseDown += chart.DataMouseDown;
                 chart.Canvas.Children.Add(r);
                 Shapes.Add(r);
-                chart.HoverableShapes.Add(new HoverableShape
+                chart.ShapesMapper.Add(new ShapeMap
                 {
                     Series = this,
-                    Shape = r,
-                    Value = point,
-                    Target = e
+                    HoverShape = r,
+                    ChartPoint = point,
+                    Shape = e
                 });
 
                 Shapes.Add(e);

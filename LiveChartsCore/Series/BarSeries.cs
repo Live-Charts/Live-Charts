@@ -162,12 +162,12 @@ namespace LiveCharts
                 hr.MouseEnter += Chart.DataMouseEnter;
                 hr.MouseLeave += Chart.DataMouseLeave;
 
-                Chart.HoverableShapes.Add(new HoverableShape
+                Chart.ShapesMapper.Add(new ShapeMap
                 {
                     Series = this,
-                    Shape = hr,
-                    Target = r,
-                    Value = point
+                    HoverShape = hr,
+                    Shape = r,
+                    ChartPoint = point
                 });
             }
         }
@@ -283,13 +283,31 @@ namespace LiveCharts
                 hr.MouseEnter += Chart.DataMouseEnter;
                 hr.MouseLeave += Chart.DataMouseLeave;
 
-                Chart.HoverableShapes.Add(new HoverableShape
+                Chart.ShapesMapper.Add(new ShapeMap
                 {
                     Series = this,
-                    Shape = hr,
-                    Target = r,
-                    Value = point
+                    HoverShape = hr,
+                    Shape = r,
+                    ChartPoint = point
                 });
+            }
+        }
+
+        public override void Erase()
+        {
+            //shi should fail if intance is a promitive type. instead we should track by key.
+            var instances = Values.Points.Select(x => x.Instance).ToArray();
+
+            foreach (var s in Chart.ShapesMapper.Where(x =>
+                !instances.Contains(x.ChartPoint.Instance)).ToArray())
+            {
+                var p = s.Shape.Parent as Canvas;
+                if (p != null)
+                {
+                    p.Children.Remove(s.HoverShape);
+                    p.Children.Remove(s.Shape);
+                    Chart.ShapesMapper.Remove(s);
+                }                
             }
         }
     }

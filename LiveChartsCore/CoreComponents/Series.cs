@@ -248,8 +248,8 @@ namespace LiveCharts.CoreComponents
             series.RequiresAnimation = true;
             series.Chart.RequiresScale = true;
             series.Chart.EraseSerieBuffer.Add(series);
-            series.Chart._seriesChanged.Stop();
-            series.Chart._seriesChanged.Start();
+            series.Chart.SeriesChanged.Stop();
+            series.Chart.SeriesChanged.Start();
         }
         #endregion
 
@@ -263,11 +263,11 @@ namespace LiveCharts.CoreComponents
             }
             Shapes.Clear();
 
-            var hoverableShapes = Chart.HoverableShapes.Where(x => Equals(x.Series, this)).ToList();
+            var hoverableShapes = Chart.ShapesMapper.Where(x => Equals(x.Series, this)).ToList();
             foreach (var hs in hoverableShapes)
             {
-                Chart.Canvas.Children.Remove(hs.Shape);
-                Chart.HoverableShapes.Remove(hs);
+                Chart.Canvas.Children.Remove(hs.HoverShape);
+                Chart.ShapesMapper.Remove(hs);
             }
         }
         #endregion
