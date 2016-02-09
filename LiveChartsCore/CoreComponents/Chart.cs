@@ -1063,9 +1063,7 @@ namespace LiveCharts.CoreComponents
 
                 if (args.OldItems != null)
                     foreach (var series in args.OldItems.Cast<Series>())
-                    {
                         chart.EraseSerieBuffer.Add(new DeleteBufferItem {Series = series, Force = true});
-                    }
 
                 var newElements = args.NewItems != null ? args.NewItems.Cast<Series>() : new List<Series>();
 

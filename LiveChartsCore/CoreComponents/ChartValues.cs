@@ -76,7 +76,7 @@ namespace LiveCharts
                             X = config.XValueMapper(t.Value, t.Key),
                             Y = config.YValueMapper(t.Value, t.Key),
                             Instance = t.Value,
-                            Key = Guid.NewGuid()
+                            Key = t.Key
                         }).ToArray();
                         return _points;
                     }

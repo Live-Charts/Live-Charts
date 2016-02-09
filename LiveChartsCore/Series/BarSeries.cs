@@ -35,6 +35,7 @@ namespace LiveCharts
     public class BarSeries : Series
     {
         private int animationSpeed = 500;
+        private bool _isPrimitive;
 
         public BarSeries()
         {
@@ -45,6 +46,8 @@ namespace LiveCharts
 
         public override void Plot(bool animate = true)
         {
+            _isPrimitive = Values == null || (Values.Count >= 1 && Values[0].GetType().IsPrimitive);
+
             if (Visibility != Visibility.Visible) return;
             if (Chart.Invert)
                 PlotRows(animate);
@@ -292,31 +295,55 @@ namespace LiveCharts
 
         internal override void Erase(bool force = false)
         {
-            var activeInstances = Values.Points.Select(x => x.Instance).ToArray();
-
-            if (force) activeInstances = new object[] {};
-
-            var notActive = Chart.ShapesMapper
-                .Where(m => Equals(m.Series, this) &&
-                            !activeInstances.Contains(m.ChartPoint.Instance))
-                .ToArray();
-
-            foreach (var s in notActive)
+            if (_isPrimitive)    //track by index
             {
-                var p = s.Shape.Parent as Canvas;
-                if (p != null)
+                var activeIndexes = force || Values == null
+                    ? new int[] {}
+                    : Values.Points.Select(x => x.Key).ToArray();
+
+                var inactiveIndexes = Chart.ShapesMapper
+                    .Where(m => Equals(m.Series, this) &&
+                                !activeIndexes.Contains(m.ChartPoint.Key))
+                    .ToArray();
+                foreach (var s in inactiveIndexes)
                 {
-                    p.Children.Remove(s.HoverShape);
-                    p.Children.Remove(s.Shape);
-                    Chart.ShapesMapper.Remove(s);
-                    Shapes.Remove(s.Shape);
+                    var p = s.Shape.Parent as Canvas;
+                    if (p != null)
+                    {
+                        p.Children.Remove(s.HoverShape);
+                        p.Children.Remove(s.Shape);
+                        Chart.ShapesMapper.Remove(s);
+                        Shapes.Remove(s.Shape);
+                    }
+                }
+            }
+            else                //track by instance reference
+            {
+                var activeInstances = force ? new object[] {} : Values.Points.Select(x => x.Instance).ToArray();
+                var inactiveIntances = Chart.ShapesMapper
+                    .Where(m => Equals(m.Series, this) &&
+                                !activeInstances.Contains(m.ChartPoint.Instance))
+                    .ToArray();
+                
+                foreach (var s in inactiveIntances)
+                {
+                    var p = s.Shape.Parent as Canvas;
+                    if (p != null)
+                    {
+                        p.Children.Remove(s.HoverShape);
+                        p.Children.Remove(s.Shape);
+                        Chart.ShapesMapper.Remove(s);
+                        Shapes.Remove(s.Shape);
+                    }
                 }
             }
         }
 
         private BarVisualHelper GetVisual(ChartPoint point)
         {
-            var map = Chart.ShapesMapper.FirstOrDefault(x => x.ChartPoint.Instance == point.Instance);
+            var map = _isPrimitive
+                ? Chart.ShapesMapper.FirstOrDefault(x => x.ChartPoint.Key == point.Key)
+                : Chart.ShapesMapper.FirstOrDefault(x => x.ChartPoint.Instance == point.Instance);
 
             return map == null
                 ? new BarVisualHelper
@@ -331,8 +358,7 @@ namespace LiveCharts
                     HoverShape = new Rectangle
                     {
                         Fill = Brushes.Transparent,
-                        StrokeThickness = 0,
-                        Stroke = Brushes.Red //to test...
+                        StrokeThickness = 0
                     },
                     IsNew = true
                 }

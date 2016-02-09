@@ -48,10 +48,10 @@ namespace ChartsTest
             {
                 //new FilterChart(),
                 //new RotatedBar(),
-                new MvvmBar(),
-                new PointPropertyChangedBar(),
+                //new MvvmBar(),
+                //new PointPropertyChangedBar(),
                 //new BasicBar(),
-                //new BindingBar(),
+                new BindingBar(),
                 //new CustomBar()
             };
             //StackedBarExamples = new List<UserControl>

@@ -29,7 +29,7 @@ namespace LiveCharts.CoreComponents
         public double X { get; set; }
         public double Y { get; set; }
         public object Instance { get; set; }
-        public Guid Key { get; set; }
+        public int Key { get; set; }
         public bool IsMocked { get; set; }
     }
 }

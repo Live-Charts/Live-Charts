@@ -15,8 +15,8 @@ namespace ChartsTest.BarExamples
             InitializeComponent();
             ViewModel = new BindedBarsViewModel
             {
-                Series1 = new ChartValues<double> { 2, 3, 5, 7, 2, 3, 5, 7, 2, 3, 5, 7 },
-                Series2 = new ChartValues<double> { 7, 3, 4, 1, 7, 3, 4, 1, 7, 3, 4, 1 }
+                Series1 = new ChartValues<double> { 2, 3, }//5, 7, 2, 3, 5, 7, 2, 3, 5, 7 },
+                //Series2 = new ChartValues<double> { 7, 3, 4, 1, 7, 3, 4, 1, 7, 3, 4, 1 }
             };
             DataContext = this;
         }
@@ -52,7 +52,7 @@ namespace ChartsTest.BarExamples
         //livecharts waits for the data to stop changing within 100ms, and then draws all the changes
         //if you set this timer interval to less than 100ms chart should not update because it will be waiting
         //for data to stop changing, this is to prevent multiple chart redraw.
-        private DispatcherTimer _timer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(150) };
+        private DispatcherTimer _timer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(1000) };
         private bool _isWild;
 
         public BindedBarsViewModel()
@@ -60,9 +60,9 @@ namespace ChartsTest.BarExamples
             _timer.Tick += (sender, args) =>
             {
                 Series1.RemoveAt(0);
-                Series1.Add(_random.Next(-10, 39));
-                Series2.RemoveAt(0);
-                Series2.Add(_random.Next(-10, 39));
+                Series1.Add(_random.Next(-50, 50));
+                //Series2.RemoveAt(0); todo: unmark this
+                //Series2.Add(_random.Next(-10, 39)); todo: unmark this
             };
         }
 
@@ -72,14 +72,14 @@ namespace ChartsTest.BarExamples
         public void AddValue()
         {
             Series1.Add(_random.Next(-10, 39));
-            Series2.Add(_random.Next(-10, 39));
+            //Series2.Add(_random.Next(-10, 39)); Todo: unmark this
         }
 
         public void RemoveValue()
         {
             if (Series1.Count < 3) return;
             Series1.RemoveAt(0);
-            Series2.RemoveAt(0);
+            //Series2.RemoveAt(0); todo: unmark
         }
 
         public void GoWild()
