@@ -3,7 +3,6 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
 using LiveCharts;
 using LiveCharts.Annotations;
 
@@ -83,6 +82,12 @@ namespace ChartsTest.BarExamples.FilterChart
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             if (PropertyChanged != null) PropertyChanged.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        private void FilterChart_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            //this line is only to display animation every time you change view in this example
+            Chart.Redraw();
         }
     }
 }

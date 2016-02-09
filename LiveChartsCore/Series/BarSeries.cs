@@ -77,57 +77,61 @@ namespace LiveCharts
 
             foreach (var point in Values.Points)
             {
-                var t = new TranslateTransform();
-                var r = new Rectangle
-                {
-                    StrokeThickness = StrokeThickness,
-                    Stroke = Stroke,
-                    Fill = Fill,
-                    Width = 0,
-                    Height = Math.Max(0, barW - seriesPadding),
-                    RenderTransform = t
-                };
+                var visual = GetVisual(point);
+                var height = Math.Max(0, barW - seriesPadding);
 
                 var barStart = bothLimitsPositive
                     ? Chart.Min.X
                     : (bothLimitsNegative ? Chart.Max.X : 0);
+
                 var direction = point.X > 0 ? 1 : -1;
 
                 var rw = bothLimitsNegative
                     ? ToPlotArea(point.X, AxisTags.X)
                     : ToPlotArea(point.X*direction, AxisTags.X) - ToPlotArea(barStart, AxisTags.X);
-                var hr = new Rectangle
+
+                var w = direction > 0 ? ToPlotArea(barStart, AxisTags.X) : ToPlotArea(barStart, AxisTags.X) - rw;
+
+                var top = ToPlotArea(point.Y, AxisTags.Y) + barW*pos + pointPadding + overflow/2;
+
+                Canvas.SetTop(visual.HoverShape, top);
+                Canvas.SetLeft(visual.HoverShape, w);
+                visual.HoverShape.Width = rw;
+                visual.HoverShape.Height = height;
+                visual.PointShape.Height = height;
+
+                Canvas.SetTop(visual.PointShape, top);
+
+                if (!Chart.DisableAnimation)
                 {
-                    Fill = Brushes.Transparent,
-                    StrokeThickness = 0,
-                    Width = rw,
-                    Height = Math.Max(0, barW - seriesPadding)
-                };
-
-                Canvas.SetTop(r, ToPlotArea(point.Y, AxisTags.Y) + barW * pos + pointPadding + overflow / 2);
-                Canvas.SetTop(hr, ToPlotArea(point.Y, AxisTags.Y) + barW * pos + pointPadding + overflow / 2);
-
-                var l = direction > 0 ? ToPlotArea(barStart, AxisTags.X) : ToPlotArea(barStart, AxisTags.X) - rw;
-
-                Canvas.SetLeft(hr, l);
-                Panel.SetZIndex(hr, int.MaxValue);
-
-                Chart.Canvas.Children.Add(r);
-                Chart.Canvas.Children.Add(hr);
-                Shapes.Add(r);
-                Shapes.Add(hr);
-
-                var hAnim = new DoubleAnimation
+                    var wAnim = new DoubleAnimation
+                    {
+                        From = visual.IsNew
+                            ? 0
+                            : visual.PointShape.Width,
+                        To = rw,
+                        Duration = TimeSpan.FromMilliseconds(animationSpeed)
+                    };
+                    var leftAnim = new DoubleAnimation
+                    {
+                        From = visual.IsNew
+                            ? ToPlotArea(barStart, AxisTags.X)
+                            : Canvas.GetLeft(visual.PointShape),
+                        To = w,
+                        Duration = TimeSpan.FromMilliseconds(animationSpeed)
+                    };
+                    visual.PointShape.BeginAnimation(HeightProperty, wAnim);
+                    visual.PointShape.BeginAnimation(Canvas.TopProperty, leftAnim);
+                }
+                else
                 {
-                    To = rw,
-                    Duration = TimeSpan.FromMilliseconds(500)
-                };
-                var rAnim = new DoubleAnimation
-                {
-                    From = ToPlotArea(barStart, AxisTags.X),
-                    To = l,
-                    Duration = TimeSpan.FromMilliseconds(500)
-                };
+                    Canvas.SetLeft(visual.PointShape, w);
+                    visual.PointShape.Width = rw;
+                }
+
+                visual.HoverShape.MouseDown += Chart.DataMouseDown;
+                visual.HoverShape.MouseEnter += Chart.DataMouseEnter;
+                visual.HoverShape.MouseLeave += Chart.DataMouseLeave;
 
                 if (DataLabels)
                 {
@@ -141,39 +145,29 @@ namespace LiveCharts
                     tb.Text = te;
                     Chart.Canvas.Children.Add(tb);
                     Chart.Shapes.Add(tb);
-                    Canvas.SetLeft(tb, direction > 0 ? Canvas.GetLeft(hr) + hr.Width + 5 : Canvas.GetLeft(hr) - 5 - ft.Width);
-                    Canvas.SetTop(tb, Canvas.GetTop(hr) + hr.Height * .5 - ft.Height * .5);
+                    Canvas.SetLeft(tb,
+                        direction > 0
+                            ? Canvas.GetLeft(visual.HoverShape) + visual.HoverShape.Width + 5
+                            : Canvas.GetLeft(visual.HoverShape) - 5 - ft.Width);
+                    Canvas.SetTop(tb, Canvas.GetTop(visual.HoverShape) + visual.HoverShape.Height*.5 - ft.Height*.5);
                 }
 
-                var animated = false;
-                if (!Chart.DisableAnimation)
+                if (visual.IsNew)
                 {
-                    if (animate)
+                    Chart.ShapesMapper.Add(new ShapeMap
                     {
-                        r.BeginAnimation(WidthProperty, hAnim);
-                        t.BeginAnimation(TranslateTransform.XProperty, rAnim);
-                        animated = true;
-                    }
+                        Series = this,
+                        HoverShape = visual.HoverShape,
+                        Shape = visual.PointShape,
+                        ChartPoint = point
+                    });
+                    Chart.Canvas.Children.Add(visual.PointShape);
+                    Chart.Canvas.Children.Add(visual.HoverShape);
+                    Shapes.Add(visual.PointShape);
+                    Shapes.Add(visual.HoverShape);
+                    Panel.SetZIndex(visual.HoverShape, int.MaxValue);
+                    Panel.SetZIndex(visual.PointShape, int.MaxValue - 1);
                 }
-
-                if (!animated)
-                {
-                    r.Width = rw;
-                    t.X = l;
-                }
-
-                hr.MouseDown += Chart.DataMouseDown;
-
-                hr.MouseEnter += Chart.DataMouseEnter;
-                hr.MouseLeave += Chart.DataMouseLeave;
-
-                Chart.ShapesMapper.Add(new ShapeMap
-                {
-                    Series = this,
-                    HoverShape = hr,
-                    Shape = r,
-                    ChartPoint = point
-                });
             }
         }
 

@@ -30,6 +30,9 @@
     <ScrollViewer >
         <StackPanel>
             <Image Source="live.png" Stretch="None" Margin="20"></Image>
+            <TextBlock TextWrapping="Wrap" Margin="5" FontSize="16" FontWeight="Bold" Background="YellowGreen" Padding="10 5">
+                Right Now examples could not be running correctly because we are working to publish 0.6.5 wich will be an awesome release, we are adding animation when series changes, animation when axis sxales changes, please be patient, examples included must work for 0.6.4, so pelase remove reference to LiveChartsCore project and install it from nuget 0.6.4 then go to ExamplesMapper class and delete the code its commented so you can see this form running with 0.6.4 Thanks! 
+            </TextBlock>
             <TextBlock TextWrapping="Wrap" Margin="20">
                 Here is a list of examples scroll down to check them out, click on left or right arrows to navigate through different examples,
                 also see how livecharts tracks your data in live examples.

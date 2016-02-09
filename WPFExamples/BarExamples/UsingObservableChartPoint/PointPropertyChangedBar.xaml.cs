@@ -60,6 +60,12 @@ namespace ChartsTest.BarExamples.UsingObservableChartPoint
                 }
             }
         }
+
+        private void PointPropertyChangedBar_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            //this line is only to display animation every time you change view in this examples.
+            Chart.Redraw();
+        }
     }
 
     //Implement ObservableChartPoint and specify the logic to follow when data Changes

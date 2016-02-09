@@ -6,7 +6,8 @@
              xmlns:local="clr-namespace:ChartsTest.BarExamples.FilterChart"
              xmlns:lvc="clr-namespace:LiveCharts;assembly=LiveCharts"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300" d:DataContext="{d:DesignInstance local:FilterChart}">
+             d:DesignHeight="300" d:DesignWidth="300" d:DataContext="{d:DesignInstance local:FilterChart}"
+             Loaded="FilterChart_OnLoaded">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
@@ -20,7 +21,7 @@
             <TextBlock Margin="5">Criteria</TextBlock>
             <TextBox Width="200" Margin="5" Text="{Binding Criteria, UpdateSourceTrigger=PropertyChanged}" TextChanged="TextBoxBase_OnTextChanged"></TextBox>
         </StackPanel>
-        <lvc:BarChart Grid.Row="2" Series="{Binding Series}" >
+        <lvc:BarChart Name="Chart" Grid.Row="2" Series="{Binding Series}" >
             <lvc:BarChart.AxisY >
                 <lvc:Axis Title="Population" LabelFormatter="{x:Static lvc:LabelFormatters.Number}"></lvc:Axis>
             </lvc:BarChart.AxisY>
