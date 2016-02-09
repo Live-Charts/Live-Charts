@@ -229,15 +229,16 @@ namespace LiveCharts
                     {
                         From = visual.IsNew
                             ? 0
-                            : visual.PointShape.Height,
+                            : double.IsNaN(visual.PointShape.Height) ? 0 : visual.PointShape.Height,
                         To = rh,
                         Duration = TimeSpan.FromMilliseconds(animationSpeed)
                     };
+                    var t = Canvas.GetTop(visual.PointShape);
                     var topAnim = new DoubleAnimation
                     {
                         From = visual.IsNew
                             ? ToPlotArea(barStart, AxisTags.Y)
-                            : Canvas.GetTop(visual.PointShape),
+                            : double.IsNaN(t) ? ToPlotArea(barStart, AxisTags.Y) : t,
                         To = h,
                         Duration = TimeSpan.FromMilliseconds(animationSpeed)
                     };
@@ -342,8 +343,10 @@ namespace LiveCharts
         private BarVisualHelper GetVisual(ChartPoint point)
         {
             var map = _isPrimitive
-                ? Chart.ShapesMapper.FirstOrDefault(x => x.ChartPoint.Key == point.Key)
-                : Chart.ShapesMapper.FirstOrDefault(x => x.ChartPoint.Instance == point.Instance);
+                ? Chart.ShapesMapper.FirstOrDefault(x => x.Series.Equals(this) &&
+                                                         x.ChartPoint.Key == point.Key)
+                : Chart.ShapesMapper.FirstOrDefault(x => x.Series.Equals(this) &&
+                                                         x.ChartPoint.Instance == point.Instance);
 
             return map == null
                 ? new BarVisualHelper
