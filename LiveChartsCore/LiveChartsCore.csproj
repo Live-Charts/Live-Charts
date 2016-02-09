@@ -113,6 +113,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CoreComponents\ChartPoint.cs" />
+    <Compile Include="CoreComponents\DeleteBufferItem.cs" />
     <Compile Include="CoreComponents\SeriesConfiguration.cs" />
     <Compile Include="DefaultAxes.cs" />
     <Compile Include="Interfaces\IBrain.cs" />

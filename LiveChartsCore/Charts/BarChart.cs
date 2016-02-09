@@ -39,7 +39,6 @@ namespace LiveCharts
             LineType = LineChartLineType.Bezier;
             MaxColumnWidth = 60;
             DefaultFillOpacity = 0.75;
-            TrackByKey = true;
         }
 
         #region Properties

@@ -103,35 +103,35 @@ namespace ChartsTest.BarExamples
                     }
                 },
                 //Will use series collection Setup too
-                new BarSeries
-                {
-                    Title = "Frida",
-                    Values = new ChartValues<SalesData>
-                    {
-                        new SalesData {ItemsSold = 25, Rentability = .12, ItemsAverageSellPrice = 5200},
-                        new SalesData {ItemsSold = 12, Rentability = .19, ItemsAverageSellPrice = 5100},
-                        new SalesData {ItemsSold = 24, Rentability = .12, ItemsAverageSellPrice = 5400},
-                        new SalesData {ItemsSold = 15, Rentability = .13, ItemsAverageSellPrice = 5200},
-                        new SalesData {ItemsSold = 14, Rentability = .14, ItemsAverageSellPrice = 5100},
-                        new SalesData {ItemsSold = 15, Rentability = .13, ItemsAverageSellPrice = 5600},
-                        new SalesData {ItemsSold = 14, Rentability = .11, ItemsAverageSellPrice = 4900}
-                    }
-                },
-                //Override Setup for this series to plot another property or even another type
-                new BarSeries
-                {
-                    Title = "Average Series",
-                    Values = new ChartValues<AverageSalesData>
-                    {
-                        new AverageSalesData {AverageItemsSold = 22},
-                        new AverageSalesData {AverageItemsSold = 23},
-                        new AverageSalesData {AverageItemsSold = 21},
-                        new AverageSalesData {AverageItemsSold = 22},
-                        new AverageSalesData {AverageItemsSold = 23},
-                        new AverageSalesData {AverageItemsSold = 24},
-                        new AverageSalesData {AverageItemsSold = 22}
-                    }
-                }.Setup(new SeriesConfiguration<AverageSalesData>().Y(data => data.AverageItemsSold)) // this is the line that overrides SeriesCollection Setup
+                //new BarSeries
+                //{
+                //    Title = "Frida",
+                //    Values = new ChartValues<SalesData>
+                //    {
+                //        new SalesData {ItemsSold = 25, Rentability = .12, ItemsAverageSellPrice = 5200},
+                //        new SalesData {ItemsSold = 12, Rentability = .19, ItemsAverageSellPrice = 5100},
+                //        new SalesData {ItemsSold = 24, Rentability = .12, ItemsAverageSellPrice = 5400},
+                //        new SalesData {ItemsSold = 15, Rentability = .13, ItemsAverageSellPrice = 5200},
+                //        new SalesData {ItemsSold = 14, Rentability = .14, ItemsAverageSellPrice = 5100},
+                //        new SalesData {ItemsSold = 15, Rentability = .13, ItemsAverageSellPrice = 5600},
+                //        new SalesData {ItemsSold = 14, Rentability = .11, ItemsAverageSellPrice = 4900}
+                //    }
+                //},
+                ////Override Setup for this series to plot another property or even another type
+                //new BarSeries
+                //{
+                //    Title = "Average Series",
+                //    Values = new ChartValues<AverageSalesData>
+                //    {
+                //        new AverageSalesData {AverageItemsSold = 22},
+                //        new AverageSalesData {AverageItemsSold = 23},
+                //        new AverageSalesData {AverageItemsSold = 21},
+                //        new AverageSalesData {AverageItemsSold = 22},
+                //        new AverageSalesData {AverageItemsSold = 23},
+                //        new AverageSalesData {AverageItemsSold = 24},
+                //        new AverageSalesData {AverageItemsSold = 22}
+                //    }
+                //}.Setup(new SeriesConfiguration<AverageSalesData>().Y(data => data.AverageItemsSold)) // this is the line that overrides SeriesCollection Setup
 
             }.Setup(new SeriesConfiguration<SalesData>().Y(data => data.ItemsSold)); // Setup a default configuration for all series in this collection.
         }
@@ -190,7 +190,7 @@ namespace ChartsTest.BarExamples
         public void RemoveLastMonth()
         {
             if (SalesmenSeries.Count == 0) return;
-            if (SalesmenSeries[0].Values.Count == 2) return;
+            if (SalesmenSeries[0].Values.Count == 1) return;
             foreach (var salesman in SalesmenSeries)
             {
                 salesman.Values.RemoveAt(salesman.Values.Count - 1);

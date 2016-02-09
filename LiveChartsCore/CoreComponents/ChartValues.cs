@@ -39,15 +39,12 @@ namespace LiveCharts
     {
         private Point _min = new Point(double.MaxValue, double.MaxValue);
         private Point _max = new Point(double.MinValue, double.MinValue);
-        private ChartPoint[] _points;
+        private ChartPoint[] _points = {};
         private bool _limitsChanged = true;
 
         public ChartValues()
         {
-            CollectionChanged += (sender, args) =>
-            {
-                RequiresEvaluation = true;
-            };
+            CollectionChanged += OnChanged;
         }
 
         #region Properties
@@ -79,7 +76,7 @@ namespace LiveCharts
                             X = config.XValueMapper(t.Value, t.Key),
                             Y = config.YValueMapper(t.Value, t.Key),
                             Instance = t.Value,
-                            Key = config.Chart.TrackByKey ? Guid.NewGuid() : Guid.Empty
+                            Key = Guid.NewGuid()
                         }).ToArray();
                         return _points;
                     }
@@ -169,18 +166,23 @@ namespace LiveCharts
             _max.Y = yMax;
         }
 
+        private void OnChanged(object sender, NotifyCollectionChangedEventArgs args)
+        {
+            RequiresEvaluation = true;
+        }
+
         private IEnumerable<KeyValuePair<int, T>> IndexData(SeriesConfiguration<T> config)
         {
             var f = config.Chart.ZoomingAxis == AxisTags.X
                         ? config.XValueMapper
                         : config.YValueMapper;
 
-            var isObservalbe = typeof (IObservableChartPoint).IsAssignableFrom(typeof (T));
+            var isObservable = typeof (IObservableChartPoint).IsAssignableFrom(typeof (T));
 
             var i = 0;
             foreach (var t in this)
             {
-                if (isObservalbe)
+                if (isObservable)
                 {
                     var observable = t as IObservableChartPoint;
                     if (observable != null)
@@ -198,7 +200,7 @@ namespace LiveCharts
         private void ObservableOnValueChanged()
         {
             RequiresEvaluation = true;
-            Series.Collection.Chart.Redraw(false);
+            Series.Collection.Chart.Redraw();
         }
 
         #endregion

@@ -247,14 +247,14 @@ namespace LiveCharts.CoreComponents
             series.RequiresPlot = true;
             series.RequiresAnimation = true;
             series.Chart.RequiresScale = true;
-            series.Chart.EraseSerieBuffer.Add(series);
+            series.Chart.EraseSerieBuffer.Add(new DeleteBufferItem {Series = series, Force = true});
             series.Chart.SeriesChanged.Stop();
             series.Chart.SeriesChanged.Start();
         }
         #endregion
 
         #region Virtual Methods
-        public virtual void Erase()
+        internal virtual void Erase(bool force = false)
         {
             foreach (var s in Shapes)
             {

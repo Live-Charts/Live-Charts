@@ -52,13 +52,12 @@ namespace LiveCharts.CoreComponents
         internal Point S;
         internal int ColorStartIndex;
         internal bool RequiresScale;
-        internal List<Series> EraseSerieBuffer = new List<Series>();
+        internal List<DeleteBufferItem> EraseSerieBuffer = new List<DeleteBufferItem>();
         internal bool SeriesInitialized;
         internal double From = double.MinValue;
         internal double To = double.MaxValue;
         internal AxisTags ZoomingAxis = AxisTags.None;
         internal bool SupportsMultipleSeries = true;
-        internal bool TrackByKey;
 
         protected ShapeHoverBehavior ShapeHoverBehavior;
         protected bool AlphaLabel;
@@ -976,7 +975,7 @@ namespace LiveCharts.CoreComponents
                 var p = series.Parent as Canvas;
                 if (p != null) p.Children.Remove(series);
                 DrawMargin.Children.Add(series);
-                EraseSerieBuffer.Add(series);
+                EraseSerieBuffer.Add(new DeleteBufferItem {Series = series});
                 series.RequiresAnimation = animate;
                 series.RequiresPlot = true;
             }
@@ -1065,16 +1064,16 @@ namespace LiveCharts.CoreComponents
                 if (args.OldItems != null)
                     foreach (var series in args.OldItems.Cast<Series>())
                     {
-                        chart.EraseSerieBuffer.Add(series);
+                        chart.EraseSerieBuffer.Add(new DeleteBufferItem {Series = series, Force = true});
                     }
 
                 var newElements = args.NewItems != null ? args.NewItems.Cast<Series>() : new List<Series>();
 
                 chart.RequiresScale = true;
-                foreach (var serie in chart.Series.Where(x => !newElements.Contains(x)))
+                foreach (var series in chart.Series.Where(x => !newElements.Contains(x)))
                 {
-                    chart.EraseSerieBuffer.Add(serie);
-                    serie.RequiresPlot = true;
+                    chart.EraseSerieBuffer.Add(new DeleteBufferItem {Series = series});
+                    series.RequiresPlot = true;
                 }
 
                 if (args.NewItems != null)
@@ -1111,7 +1110,6 @@ namespace LiveCharts.CoreComponents
 
             foreach (var shape in Shapes) Canvas.Children.Remove(shape);
             
-            ShapesMapper = new List<ShapeMap>();
             Shapes = new List<FrameworkElement>();
 
             if (RequiresScale)
@@ -1140,7 +1138,7 @@ namespace LiveCharts.CoreComponents
 
         private void EreaseSeries()
         {
-            foreach (var serie in EraseSerieBuffer.GroupBy(x => x)) serie.First().Erase();
+            foreach (var deleteItem in EraseSerieBuffer) deleteItem.Series.Erase(deleteItem.Force);
             EraseSerieBuffer.Clear();
         }
 
