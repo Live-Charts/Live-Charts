@@ -80,16 +80,16 @@ namespace LiveCharts
 			set { SetValue(ColorProperty, value); }
 		}
 
-		public static readonly DependencyProperty ThicknessProperty =
-			DependencyProperty.Register("Thickness", typeof(int), typeof(Axis), new PropertyMetadata(1));
+		public static readonly DependencyProperty StrokeThicknessProperty =
+			DependencyProperty.Register("StrokeThickness", typeof(int), typeof(Axis), new PropertyMetadata(1));
 
 		/// <summary>
 		/// Gets or sets axis thickness.
 		/// </summary>
-		public int Thickness
+		public int StrokeThickness
 		{
-			get { return (int)GetValue(ThicknessProperty); }
-			set { SetValue(ThicknessProperty, value); }
+			get { return (int)GetValue(StrokeThicknessProperty); }
+			set { SetValue(StrokeThicknessProperty, value); }
 		}
 
 		public static readonly DependencyProperty ShowLabelsProperty =

@@ -58,7 +58,7 @@ namespace LiveCharts
                 return new Axis
                 {
                     IsEnabled = false,
-                    Thickness = 3,
+                    StrokeThickness = 3,
                     Color = Color.FromRgb(218, 218, 218),
                     Separator = CleanSeparator
                 };

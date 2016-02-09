@@ -229,16 +229,15 @@ namespace LiveCharts
                     {
                         From = visual.IsNew
                             ? 0
-                            : double.IsNaN(visual.PointShape.Height) ? 0 : visual.PointShape.Height,
+                            : visual.PointShape.Height,
                         To = rh,
                         Duration = TimeSpan.FromMilliseconds(animationSpeed)
                     };
-                    var t = Canvas.GetTop(visual.PointShape);
                     var topAnim = new DoubleAnimation
                     {
                         From = visual.IsNew
                             ? ToPlotArea(barStart, AxisTags.Y)
-                            : double.IsNaN(t) ? ToPlotArea(barStart, AxisTags.Y) : t,
+                            : Canvas.GetTop(visual.PointShape),
                         To = h,
                         Duration = TimeSpan.FromMilliseconds(animationSpeed)
                     };

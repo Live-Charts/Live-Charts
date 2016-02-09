@@ -46,7 +46,7 @@
                 <lvc:BarSeries Title="Series 2" Values="{Binding ViewModel.Series2}"/>
             </lvc:BarChart.Series>
             <lvc:BarChart.AxisY>
-                <lvc:Axis IsEnabled="true" ShowLabels="False" Thickness="4"
+                <lvc:Axis IsEnabled="true" ShowLabels="False" StrokeThickness="4" Color="#505050"
                           Separator="{x:Static lvc:DefaultAxes.CleanSeparator}"/>
             </lvc:BarChart.AxisY>
             <lvc:BarChart.AxisX>

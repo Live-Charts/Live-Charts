@@ -739,7 +739,7 @@ namespace LiveCharts.CoreComponents
             {
                 var l = new Line
                 {
-                    Stroke = new SolidColorBrush {Color = AxisY.Color}, StrokeThickness = AxisY.Thickness, X1 = ToPlotArea(Min.X, AxisTags.X), Y1 = ToPlotArea(0, AxisTags.Y), X2 = ToPlotArea(Max.X, AxisTags.X), Y2 = ToPlotArea(0, AxisTags.Y)
+                    Stroke = new SolidColorBrush {Color = AxisY.Color}, StrokeThickness = AxisY.StrokeThickness, X1 = ToPlotArea(Min.X, AxisTags.X), Y1 = ToPlotArea(0, AxisTags.Y), X2 = ToPlotArea(Max.X, AxisTags.X), Y2 = ToPlotArea(0, AxisTags.Y)
                 };
                 Canvas.Children.Add(l);
                 Shapes.Add(l);
@@ -748,7 +748,7 @@ namespace LiveCharts.CoreComponents
             {
                 var l = new Line
                 {
-                    Stroke = new SolidColorBrush {Color = AxisX.Color}, StrokeThickness = AxisX.Thickness, X1 = ToPlotArea(0, AxisTags.X), Y1 = ToPlotArea(Min.Y, AxisTags.Y), X2 = ToPlotArea(0, AxisTags.X), Y2 = ToPlotArea(Max.Y, AxisTags.Y)
+                    Stroke = new SolidColorBrush {Color = AxisX.Color}, StrokeThickness = AxisX.StrokeThickness, X1 = ToPlotArea(0, AxisTags.X), Y1 = ToPlotArea(Min.Y, AxisTags.Y), X2 = ToPlotArea(0, AxisTags.X), Y2 = ToPlotArea(Max.Y, AxisTags.Y)
                 };
                 Canvas.Children.Add(l);
                 Shapes.Add(l);
