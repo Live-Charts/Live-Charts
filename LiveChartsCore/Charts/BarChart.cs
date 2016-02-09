@@ -94,23 +94,14 @@ namespace LiveCharts
 
             if (Invert)
             {
-                if (AxisX.MaxValue == null) Max.X = (Math.Round(Max.X / S.X) + 1) * S.X;
-                if (AxisX.MinValue == null) Min.X = (Math.Truncate(Min.X / S.X) - 1) * S.X;
+                if (AxisX.MaxValue == null) Max.X = (Math.Round(Max.X/S.X) + 1)*S.X;
+                if (AxisX.MinValue == null) Min.X = (Math.Truncate(Min.X/S.X) - 1)*S.X;
             }
             else
             {
-                if (AxisY.MaxValue == null) Max.Y = (Math.Round(Max.Y / S.Y) + 1) * S.Y;
-                if (AxisY.MinValue == null) Min.Y = (Math.Truncate(Min.Y / S.Y) - 1) * S.Y;
+                if (AxisY.MaxValue == null) Max.Y = (Math.Round(Max.Y/S.Y) + 1)*S.Y;
+                if (AxisY.MinValue == null) Min.Y = (Math.Truncate(Min.Y/S.Y) - 1)*S.Y;
             }
-
-            //if (double.IsNaN(Max.X))
-            //    Max.X = 1;
-            //if (double.IsNaN(Min.X))
-            //    Min.X = 0;
-            //if (double.IsNaN(Max.Y))
-            //    Max.Y = 1;
-            //if (double.IsNaN(Min.Y))
-            //    Min.Y = 0;
 
             DrawAxes();
         }

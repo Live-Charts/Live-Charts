@@ -53,10 +53,10 @@ namespace ChartsTest.Line_Examples.AnimationImprovement
             set
             {
                 _yValue = value;
-                if (ValueChanged!= null) ValueChanged.Invoke();
+                if (PointChanged != null) PointChanged.Invoke(this);
             }
         }
 
-        public event Action ValueChanged;
+        public event Action<object> PointChanged;
     }
 }

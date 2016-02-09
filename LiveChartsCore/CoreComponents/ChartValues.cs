@@ -187,8 +187,8 @@ namespace LiveCharts
                     var observable = t as IObservableChartPoint;
                     if (observable != null)
                     {
-                        observable.ValueChanged -= ObservableOnValueChanged;
-                        observable.ValueChanged += ObservableOnValueChanged;
+                        observable.PointChanged -= ObservableOnPointChanged;
+                        observable.PointChanged += ObservableOnPointChanged;
                     }
                 }
                 if (f(t, i) >= config.Chart.From && f(t, i) <= config.Chart.To)
@@ -197,9 +197,24 @@ namespace LiveCharts
             }
         }
 
-        private void ObservableOnValueChanged()
+        private void ObservableOnPointChanged(object caller)
         {
             RequiresEvaluation = true;
+            var mapper = Series.Collection.Chart.ShapesMapper;
+            var updatedPoint = mapper.FirstOrDefault(x => x.ChartPoint.Instance == caller);
+            if (updatedPoint != null)
+            {
+                var config = (Series.Configuration ?? Series.Collection.Configuration) as SeriesConfiguration<T>;
+                if (config != null)
+                {
+                    updatedPoint.ChartPoint.X = config.XValueMapper((T) caller, updatedPoint.ChartPoint.Key);
+                    updatedPoint.ChartPoint.Y = config.YValueMapper((T) caller, updatedPoint.ChartPoint.Key);
+
+                    //test
+                    var mapedPoint = Series.Collection.Chart.ShapesMapper
+                        .FirstOrDefault(x => updatedPoint.ChartPoint == x.ChartPoint);
+                }
+            }
             Series.Collection.Chart.Update(false);
         }
 

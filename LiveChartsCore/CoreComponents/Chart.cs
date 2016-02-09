@@ -786,7 +786,7 @@ namespace LiveCharts.CoreComponents
                 ? ShapesMapper.Where(s => Math.Abs(s.ChartPoint.Y - senderShape.ChartPoint.Y) < S.Y*.01).ToList()
                 : ShapesMapper.Where(s => Math.Abs(s.ChartPoint.X - senderShape.ChartPoint.X) < S.X*.01).ToList();
 
-            var test = sibilings.Select(x => x.ChartPoint).ToList();
+            var test = sibilings.Select(x => x.ChartPoint.Y).ToList();
 
             var first = sibilings.Count > 0 ? sibilings[0] : null;
             var vx = first != null ? (Invert ? first.ChartPoint.Y : first.ChartPoint.X) : 0;

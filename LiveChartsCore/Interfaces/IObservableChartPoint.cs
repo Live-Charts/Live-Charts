@@ -26,6 +26,6 @@ namespace LiveCharts
 {
     public interface IObservableChartPoint
     {
-        event Action ValueChanged;
+        event Action<object> PointChanged;
     }
 }

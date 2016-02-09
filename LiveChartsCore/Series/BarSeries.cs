@@ -130,10 +130,6 @@ namespace LiveCharts
                     visual.PointShape.Width = rw;
                 }
 
-                visual.HoverShape.MouseDown += Chart.DataMouseDown;
-                visual.HoverShape.MouseEnter += Chart.DataMouseEnter;
-                visual.HoverShape.MouseLeave += Chart.DataMouseLeave;
-
                 if (DataLabels)
                 {
                     var tb = BuildATextBlock(0);
@@ -190,6 +186,9 @@ namespace LiveCharts
                     Shapes.Add(visual.HoverShape);
                     Panel.SetZIndex(visual.HoverShape, int.MaxValue);
                     Panel.SetZIndex(visual.PointShape, int.MaxValue - 1);
+                    visual.HoverShape.MouseDown += Chart.DataMouseDown;
+                    visual.HoverShape.MouseEnter += Chart.DataMouseEnter;
+                    visual.HoverShape.MouseLeave += Chart.DataMouseLeave;
                 }
             }
         }
@@ -268,10 +267,6 @@ namespace LiveCharts
                     visual.PointShape.Height = rh;
                 }
 
-                visual.HoverShape.MouseDown += Chart.DataMouseDown;
-                visual.HoverShape.MouseEnter += Chart.DataMouseEnter;
-                visual.HoverShape.MouseLeave += Chart.DataMouseLeave;
-
                 if (DataLabels)
                 {
                     var tb = BuildATextBlock(0);
@@ -328,13 +323,11 @@ namespace LiveCharts
                     Shapes.Add(visual.HoverShape);
                     Panel.SetZIndex(visual.HoverShape, int.MaxValue);
                     Panel.SetZIndex(visual.PointShape, int.MaxValue - 1);
+                    visual.HoverShape.MouseDown += Chart.DataMouseDown;
+                    visual.HoverShape.MouseEnter += Chart.DataMouseEnter;
+                    visual.HoverShape.MouseLeave += Chart.DataMouseLeave;
                 }
             }
-        }
-
-        private void T_Tick(object sender, EventArgs e)
-        {
-            throw new NotImplementedException();
         }
 
         internal override void Erase(bool force = false)
