@@ -51,7 +51,7 @@ namespace ChartsTest.BarExamples
         private void MvvmExample_OnLoaded(object sender, RoutedEventArgs e)
         {
             //this is just to see animation everytime you click next
-            Chart.Redraw();
+            Chart.Update();
         }
     }
 

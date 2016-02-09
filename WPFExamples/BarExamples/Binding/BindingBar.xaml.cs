@@ -26,7 +26,7 @@ namespace ChartsTest.BarExamples
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
             //this is just to see animation everytime you click next
-            Chart.Redraw();
+            Chart.Update();
         }
 
         private void GoWildOnClick(object sender, RoutedEventArgs e)

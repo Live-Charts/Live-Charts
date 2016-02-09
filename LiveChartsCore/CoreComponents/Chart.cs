@@ -128,7 +128,7 @@ namespace LiveCharts.CoreComponents
             _resizeTimer.Tick += (sender, e) =>
             {
                 _resizeTimer.Stop();
-                Redraw();
+                Update();
             };
             TooltipTimer = new DispatcherTimer
             {
@@ -340,13 +340,13 @@ namespace LiveCharts.CoreComponents
         /// <summary>
         /// Forces redraw.
         /// </summary>
-        /// <param name="animate"></param>
-        public void Redraw(bool animate = true)
+        /// <param name="ereaseAll"></param>
+        public void Update(bool ereaseAll = true)
         {
             if (SeriesChanged == null) return;
             SeriesChanged.Stop();
             SeriesChanged.Start();
-            PrepareCanvas(animate);
+            PrepareCanvas(ereaseAll);
         }
 
         /// <summary>
@@ -782,7 +782,11 @@ namespace LiveCharts.CoreComponents
 
             var senderShape = ShapesMapper.FirstOrDefault(s => Equals(s.HoverShape, sender));
             if (senderShape == null) return;
-            var sibilings = Invert ? ShapesMapper.Where(s => Math.Abs(s.ChartPoint.Y - senderShape.ChartPoint.Y) < S.Y*.01).ToList() : ShapesMapper.Where(s => Math.Abs(s.ChartPoint.X - senderShape.ChartPoint.X) < S.X*.01).ToList();
+            var sibilings = Invert
+                ? ShapesMapper.Where(s => Math.Abs(s.ChartPoint.Y - senderShape.ChartPoint.Y) < S.Y*.01).ToList()
+                : ShapesMapper.Where(s => Math.Abs(s.ChartPoint.X - senderShape.ChartPoint.X) < S.X*.01).ToList();
+
+            var test = sibilings.Select(x => x.ChartPoint).ToList();
 
             var first = sibilings.Count > 0 ? sibilings[0] : null;
             var vx = first != null ? (Invert ? first.ChartPoint.Y : first.ChartPoint.X) : 0;
@@ -805,7 +809,12 @@ namespace LiveCharts.CoreComponents
                 indexedToolTip.Header = fh(vx);
                 indexedToolTip.Data = sibilings.Select(x => new IndexedTooltipData
                 {
-                    Index = Series.IndexOf(x.Series), Series = x.Series, Stroke = x.Series.Stroke, Fill = x.Series.Fill, Point = x.ChartPoint, Value = fs(Invert ? x.ChartPoint.X : x.ChartPoint.Y)
+                    Index = Series.IndexOf(x.Series),
+                    Series = x.Series,
+                    Stroke = x.Series.Stroke,
+                    Fill = x.Series.Fill,
+                    Point = x.ChartPoint,
+                    Value = fs(Invert ? x.ChartPoint.X : x.ChartPoint.Y)
                 }).ToArray();
             }
 
@@ -955,7 +964,7 @@ namespace LiveCharts.CoreComponents
                 : (labels.Count > x && x >= 0 ? labels[(int) x] : "");
         }
 
-        private void PrepareCanvas(bool animate = false)
+        private void PrepareCanvas(bool ereaseAll = false)
         {
             if (Series == null) return;
             if (!SeriesInitialized) InitializeSeries(this);
@@ -975,8 +984,8 @@ namespace LiveCharts.CoreComponents
                 var p = series.Parent as Canvas;
                 if (p != null) p.Children.Remove(series);
                 DrawMargin.Children.Add(series);
-                EraseSerieBuffer.Add(new DeleteBufferItem {Series = series});
-                series.RequiresAnimation = animate;
+                EraseSerieBuffer.Add(new DeleteBufferItem {Series = series, Force = ereaseAll});
+                series.RequiresAnimation = ereaseAll;
                 series.RequiresPlot = true;
             }
 
@@ -1042,7 +1051,7 @@ namespace LiveCharts.CoreComponents
                     observable.CollectionChanged += chart.OnDataSeriesChanged;
             }
 
-            chart.Redraw();
+            chart.Update();
             var anim = new DoubleAnimation
             {
                 From = 0, To = 1, Duration = TimeSpan.FromMilliseconds(1000)
@@ -1127,10 +1136,10 @@ namespace LiveCharts.CoreComponents
             if (Plot != null) Plot(this);
 #if DEBUG
             Trace.WriteLine("Series Updated (" + DateTime.Now.ToLongTimeString() + ")");
-            if (DrawMargin != null) Trace.WriteLine("Draw Margin Objects " + DrawMargin.Children.Count);
-            Trace.WriteLine("Canvas Children " + Canvas.Children.Count);
-            Trace.WriteLine("Shapes " +Shapes.Count);
-            Trace.WriteLine("Series Shapes " + ShapesMapper.Count);
+            if (DrawMargin != null) Trace.WriteLine("Draw Margin Objects \t" + DrawMargin.Children.Count);
+            Trace.WriteLine("Canvas Children \t\t" + Canvas.Children.Count);
+            Trace.WriteLine("Chart Shapes \t\t\t" + Shapes.Count);
+            Trace.WriteLine("Shapes Mapper Items \t" + ShapesMapper.Count);
 #endif
         }
 

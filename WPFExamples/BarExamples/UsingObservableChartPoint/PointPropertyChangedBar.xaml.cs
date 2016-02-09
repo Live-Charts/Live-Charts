@@ -30,16 +30,20 @@ namespace ChartsTest.BarExamples.UsingObservableChartPoint
                 Title = "Apple Store",
                 Values = new ChartValues<StoreViewModel>
                 {
-                    new StoreViewModel {Income = 15}
-                }
+                    new StoreViewModel {Income = 15},
+                    new StoreViewModel {Income = 18}
+                },
+                DataLabels = true
             });
             StoresCollection.Add(new BarSeries
             {
                 Title = "Google Play",
                 Values = new ChartValues<StoreViewModel>
                 {
-                    new StoreViewModel {Income = 5}
-                }
+                    new StoreViewModel {Income = 5},
+                    new StoreViewModel {Income = 7}
+                },
+                DataLabels = true
             });
 
             DataContext = this;
@@ -64,7 +68,7 @@ namespace ChartsTest.BarExamples.UsingObservableChartPoint
         private void PointPropertyChangedBar_OnLoaded(object sender, RoutedEventArgs e)
         {
             //this line is only to display animation every time you change view in this examples.
-            Chart.Redraw();
+            Chart.Update();
         }
     }
 

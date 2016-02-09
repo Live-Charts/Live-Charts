@@ -87,7 +87,7 @@ namespace ChartsTest.BarExamples.FilterChart
         private void FilterChart_OnLoaded(object sender, RoutedEventArgs e)
         {
             //this line is only to display animation every time you change view in this example
-            Chart.Redraw();
+            Chart.Update();
         }
     }
 }

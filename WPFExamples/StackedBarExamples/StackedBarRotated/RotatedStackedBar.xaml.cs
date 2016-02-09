@@ -45,7 +45,7 @@ namespace ChartsTest.StackedBarExamples.StackedBarRotated
         private void RotatedStackedBar_OnLoaded(object sender, RoutedEventArgs e)
         {
             //this line is only to animate the chart everytime view changes its content.
-            Chart.Redraw();
+            Chart.Update();
         }
     }
 }

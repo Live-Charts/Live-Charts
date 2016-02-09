@@ -88,7 +88,7 @@ namespace ChartsTest.HighPerformance
         private void HighPerformanceLine_OnLoaded(object sender, RoutedEventArgs e)
         {
             //this is only to force animation everytime you change the current view.
-            Chart.Redraw();
+            Chart.Update();
         }
 
         private void Chart_OnPlot(Chart obj)

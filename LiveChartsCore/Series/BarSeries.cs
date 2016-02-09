@@ -28,6 +28,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 using LiveCharts.CoreComponents;
 
 namespace LiveCharts
@@ -50,12 +51,12 @@ namespace LiveCharts
 
             if (Visibility != Visibility.Visible) return;
             if (Chart.Invert)
-                PlotRows(animate);
+                PlotRows();
             else
-                PlotColumns(animate);
+                PlotColumns();
         }
 
-        private void PlotRows(bool animate)
+        private void PlotRows()
         {
             var chart = Chart as IBar;
             if (chart == null) return;
@@ -120,8 +121,8 @@ namespace LiveCharts
                         To = w,
                         Duration = TimeSpan.FromMilliseconds(animationSpeed)
                     };
-                    visual.PointShape.BeginAnimation(HeightProperty, wAnim);
-                    visual.PointShape.BeginAnimation(Canvas.TopProperty, leftAnim);
+                    visual.PointShape.BeginAnimation(WidthProperty, wAnim);
+                    visual.PointShape.BeginAnimation(Canvas.LeftProperty, leftAnim);
                 }
                 else
                 {
@@ -143,6 +144,7 @@ namespace LiveCharts
                         FlowDirection.LeftToRight,
                         new Typeface(FontFamily, FontStyle, FontWeight, FontStretch), FontSize, Brushes.Black);
                     tb.Text = te;
+                    tb.Visibility = Visibility.Hidden;
                     Chart.Canvas.Children.Add(tb);
                     Chart.Shapes.Add(tb);
                     Canvas.SetLeft(tb,
@@ -150,6 +152,27 @@ namespace LiveCharts
                             ? Canvas.GetLeft(visual.HoverShape) + visual.HoverShape.Width + 5
                             : Canvas.GetLeft(visual.HoverShape) - 5 - ft.Width);
                     Canvas.SetTop(tb, Canvas.GetTop(visual.HoverShape) + visual.HoverShape.Height*.5 - ft.Height*.5);
+                    if (!Chart.DisableAnimation)
+                    {
+                        var t = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(animationSpeed) };
+                        t.Tick += (sender, args) =>
+                        {
+                            tb.Visibility = Visibility.Visible;
+                            var fadeIn = new DoubleAnimation
+                            {
+                                From = 0,
+                                To = 1,
+                                Duration = TimeSpan.FromMilliseconds(animationSpeed)
+                            };
+                            tb.BeginAnimation(OpacityProperty, fadeIn);
+                            t.Stop();
+                        };
+                        t.Start();
+                    }
+                    else
+                    {
+                        tb.Visibility = Visibility.Visible;
+                    }
                 }
 
                 if (visual.IsNew)
@@ -171,7 +194,7 @@ namespace LiveCharts
             }
         }
 
-        private void PlotColumns(bool animate)
+        private void PlotColumns()
         {
             var chart = Chart as IBar;
             if (chart == null) return;
@@ -259,6 +282,7 @@ namespace LiveCharts
                         FlowDirection.LeftToRight,
                         new Typeface(FontFamily, FontStyle, FontWeight, FontStretch), FontSize, Brushes.Black);
                     tb.Text = te;
+                    tb.Visibility = Visibility.Hidden;
                     Chart.Canvas.Children.Add(tb);
                     Chart.Shapes.Add(tb);
                     Canvas.SetLeft(tb, Canvas.GetLeft(visual.HoverShape) + visual.HoverShape.Width * .5 - ft.Width * .5);
@@ -266,6 +290,27 @@ namespace LiveCharts
                         direction > 0
                             ? Canvas.GetTop(visual.HoverShape) - ft.Height - 5
                             : Canvas.GetTop(visual.HoverShape) + visual.HoverShape.Height + 5);
+                    if (!Chart.DisableAnimation)
+                    {
+                        var t = new DispatcherTimer {Interval = TimeSpan.FromMilliseconds(animationSpeed) };
+                        t.Tick += (sender, args) =>
+                        {
+                            tb.Visibility = Visibility.Visible;
+                            var fadeIn = new DoubleAnimation
+                            {
+                                From = 0,
+                                To = 1,
+                                Duration = TimeSpan.FromMilliseconds(animationSpeed)
+                            };
+                            tb.BeginAnimation(OpacityProperty, fadeIn);
+                            t.Stop();
+                        };
+                        t.Start();
+                    }
+                    else
+                    {
+                        tb.Visibility = Visibility.Visible;
+                    }
                 }
 
                 if (visual.IsNew)
@@ -285,6 +330,11 @@ namespace LiveCharts
                     Panel.SetZIndex(visual.PointShape, int.MaxValue - 1);
                 }
             }
+        }
+
+        private void T_Tick(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
         }
 
         internal override void Erase(bool force = false)

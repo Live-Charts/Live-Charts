@@ -45,7 +45,7 @@ namespace ChartsTest.Line_Examples.Mvvm
         private void MvvmExample_OnLoaded(object sender, RoutedEventArgs e)
         {
             //this is just to see animation everytime you click next
-            Chart.Redraw();
+            Chart.Update();
         }
 
         private void Chart_OnDataClick(ChartPoint point)

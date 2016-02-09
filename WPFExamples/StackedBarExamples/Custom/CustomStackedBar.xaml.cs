@@ -16,7 +16,7 @@ namespace ChartsTest.StackedBarExamples
         private void CustomStackedBar_OnLoaded(object sender, RoutedEventArgs e)
         {
             //this is just to see animation everytime you click next
-            Chart.Redraw();
+            Chart.Update();
         }
     }
 }

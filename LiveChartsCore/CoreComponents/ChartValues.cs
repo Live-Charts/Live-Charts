@@ -200,7 +200,7 @@ namespace LiveCharts
         private void ObservableOnValueChanged()
         {
             RequiresEvaluation = true;
-            Series.Collection.Chart.Redraw();
+            Series.Collection.Chart.Update(false);
         }
 
         #endregion

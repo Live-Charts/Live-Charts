@@ -34,7 +34,7 @@
                 <lvc:Axis Title="Sold Apps"></lvc:Axis>
             </lvc:BarChart.AxisY>
             <lvc:BarChart.AxisX>
-                <lvc:Axis Name="SecondaryAxis" Title="Month" Labels="January"></lvc:Axis>
+                <lvc:Axis Name="SecondaryAxis" Title="Month" Labels="January, February"></lvc:Axis>
             </lvc:BarChart.AxisX>
         </lvc:BarChart>
     </Grid>
