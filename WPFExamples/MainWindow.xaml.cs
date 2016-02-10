@@ -2,6 +2,8 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
+using System.Windows.Navigation;
+using LiveCharts;
 using LiveCharts.Annotations;
 
 namespace ChartsTest
@@ -23,7 +25,6 @@ namespace ChartsTest
             TestProperty = new ObservableCollection<string> { "bye!" };
 
             DataContext = this;
-
         }
 
         #region NavigationButtons
@@ -71,5 +72,9 @@ namespace ChartsTest
         }
         #endregion
 
+        private void Hyperlink_OnRequestNavigate(object sender, RequestNavigateEventArgs e)
+        {
+            System.Diagnostics.Process.Start(e.Uri.ToString());
+        }
     }
 }

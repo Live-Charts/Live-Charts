@@ -4,6 +4,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:chartsTest="clr-namespace:ChartsTest"
+        xmlns:system="clr-namespace:System;assembly=mscorlib"
+        xmlns:lvc="clr-namespace:LiveCharts;assembly=LiveCharts"
         mc:Ignorable="d" 
         Title="Live Charts" Width="900" Height="650"
         FontFamily="Calibri"
@@ -31,7 +33,10 @@
         <StackPanel>
             <Image Source="live.png" Stretch="None" Margin="20"></Image>
             <TextBlock TextWrapping="Wrap" Margin="5" FontSize="16" FontWeight="Bold" Background="YellowGreen" Padding="10 5">
-                Right Now examples could not be running correctly because we are working to publish 0.6.5 wich will be an awesome release, we are adding animation when series changes, animation when axis sxales changes, please be patient, examples included must work for 0.6.4, so pelase remove reference to LiveChartsCore project and install it from nuget 0.6.4 then go to ExamplesMapper class and delete the code its commented so you can see this form running with 0.6.4 Thanks! 
+                Right Now examples could not be running correctly because we are working to publish 0.6.5, it will be an awesome release, 
+                we are adding animations from current state please see <Hyperlink NavigateUri="https://github.com/beto-rodriguez/Live-Charts/issues/49" RequestNavigate="Hyperlink_OnRequestNavigate">#49</Hyperlink>, 
+                also animations when axis scales changes, please be patient, examples included must work for 0.6.4, 
+                so pelase remove reference to LiveChartsCore project and install 0.6.4 from nuget then go to ExamplesMapper class and remove the commented code Thanks! 
             </TextBlock>
             <TextBlock TextWrapping="Wrap" Margin="20">
                 Here is a list of examples scroll down to check them out, click on left or right arrows to navigate through different examples,
@@ -97,6 +102,16 @@
                 <ContentControl Name="MoreControl" Grid.Column="1" Height="500" Width="Auto"></ContentControl>
                 <Image Grid.Column="2" Source="Right.png" MouseDown="MoreNext"/>
             </Grid>
+            <StackPanel>
+                <!--<lvc:PieChart Height="300" Width="300" LegendLocation="Right">
+                    <lvc:PieChart.Series>
+                        <lvc:PieSeries Title="Web Browser Usage" Values="15, 10, 40, 55" DataLabels="True"/>
+                    </lvc:PieChart.Series>
+                    <lvc:PieChart.AxisX>
+                        <lvc:Axis Labels="Explorer, Opera, Mozilla, Chrome"></lvc:Axis>
+                    </lvc:PieChart.AxisX>
+                </lvc:PieChart>-->
+            </StackPanel>
         </StackPanel>
     </ScrollViewer>
 </Window>

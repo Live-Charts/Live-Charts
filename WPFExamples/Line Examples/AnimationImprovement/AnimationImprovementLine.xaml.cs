@@ -24,7 +24,8 @@ namespace ChartsTest.Line_Examples.AnimationImprovement
                         new ViewModel {YValue = 0},
                         new ViewModel {YValue = 1},
                         new ViewModel {YValue = 0}
-                    }
+                    },
+                    DataLabels = true
                 }
             }.Setup(new SeriesConfiguration<ViewModel>().Y(vm => vm.YValue));
 
@@ -36,9 +37,34 @@ namespace ChartsTest.Line_Examples.AnimationImprovement
         private void MoveOnClick(object sender, RoutedEventArgs e)
         {
             var r = new Random();
-            foreach (var val in Series[0].Values.Cast<ViewModel>())
+            foreach (var series in Series)
             {
-                val.YValue = r.Next(0, 2);
+                foreach (var val in series.Values.Cast<ViewModel>())
+                {
+                    val.YValue = r.Next(0, 11);
+                }
+            }
+        }
+
+        private void AddSeriesOnClick(object sender, RoutedEventArgs e)
+        {
+            var vals = new ChartValues<ViewModel>();
+            var r = new Random();
+
+            for (int i = 0; i < Series[0].Values.Count; i++)
+            {
+                vals.Add(new ViewModel {YValue = r.Next(0, 11)});
+            }
+
+            Series.Add(new LineSeries {Values = vals, DataLabels = true});
+        }
+
+        private void AddPointOnClick(object sender, RoutedEventArgs e)
+        {
+            var r = new Random();
+            foreach (var series in Series)
+            {
+                series.Values.Add(new ViewModel {YValue = r.Next(0, 11)});
             }
         }
     }

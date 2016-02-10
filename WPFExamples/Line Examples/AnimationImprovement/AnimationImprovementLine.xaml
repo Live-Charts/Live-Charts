@@ -12,7 +12,12 @@
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
-        <Button Grid.Row="1" Width="100" Click="MoveOnClick">Move</Button>
+        <TextBlock>See how line dances and moves with you!</TextBlock>
+        <StackPanel Orientation="Horizontal" Grid.Row="1">
+            <Button Width="100" Click="MoveOnClick">Move All</Button>
+            <Button Width="100" Click="AddSeriesOnClick">Add Series</Button>
+            <Button Width="100" Click="AddPointOnClick">Add Point</Button>
+        </StackPanel>
         <lvc:LineChart Grid.Row="2" LineType="Polyline" Series="{Binding Series}" />
     </Grid>
 </UserControl>

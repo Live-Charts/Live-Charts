@@ -35,6 +35,11 @@ namespace LiveCharts
 {
     public class LineSeries : Series
     {
+        private int animationSpeed = 500;
+        private bool _isPrimitive;
+        private Dictionary<int, Line> _primitiveDictionary = new Dictionary<int, Line>();
+        private Dictionary<object, Line> _dictionary = new Dictionary<object, Line>();
+
         public LineSeries()
         {
             StrokeThickness = 2.5;
@@ -47,55 +52,62 @@ namespace LiveCharts
         }
 
         public double StrokeThickness { get; set; }
+
         public double PointRadius { get; set; }
 
         public override void Plot(bool animate = true)
         {
+            _isPrimitive = Values.Count >= 1 && Values[0].GetType().IsPrimitive;
+
             if (Visibility != Visibility.Visible) return;
 
+            if(LineChart.LineType == LineChartLineType.Polyline)
+                PlotLines();
+            
+        }
+
+        private void PlotLines()
+        {
             var rr = PointRadius < 2.5 ? 2.5 : PointRadius;
+            var pCount = Values.Points.Count();
+            var segSpeed = animationSpeed/pCount;
+            
             foreach (var segment in Values.Points.AsSegments())
             {
-                var s = new List<FrameworkElement>();
-                if (LineChart.LineType == LineChartLineType.Bezier)
-                    s.AddRange(_addSerieAsBezier(segment.Select(x => new Point(
-                        ToDrawMargin(x.X, AxisTags.X), ToDrawMargin(x.Y, AxisTags.Y)))
-                        .ToArray(), animate));
-
-                if (LineChart.LineType == LineChartLineType.Polyline)
-                    s.AddRange(_addSeriesAsPolyline(segment.Select(x => new Point(
-                        ToDrawMargin(x.X, AxisTags.X), ToDrawMargin(x.Y, AxisTags.Y)))
-                        .ToArray(), animate));
-
                 var f = Chart.GetFormatter(Chart.Invert ? Chart.AxisX : Chart.AxisY);
+                Point? lastPoint = null;
 
                 for (int index = 0; index < segment.Count - 1; index++)
                 {
                     var chrtP1 = segment[index];
                     var chrtP2 = segment[index + 1];
 
+                    var v1 = GetVisual(chrtP1);
+                    var v2 = GetVisual(chrtP2);
+                    var l = GetLine(index, chrtP1.Instance);
+
                     var p1 = new Point(ToDrawMargin(chrtP1.X, AxisTags.X), ToDrawMargin(chrtP1.Y, AxisTags.Y));
                     var p2 = new Point(ToDrawMargin(chrtP2.X, AxisTags.X), ToDrawMargin(chrtP2.Y, AxisTags.Y));
 
-                    //if (LineChart.LineType == LineChartLineType.Polyline)
-                    //    AddLine(p1, p2, animate);
+                    var ox = lastPoint == null ? p1.X : lastPoint.Value.X;
+                    var oy = lastPoint == null ? p1.Y : lastPoint.Value.Y;
 
-                    if (DataLabels) AddDataLabel(p1, chrtP1, f);
-                    var mark = AddPointMarkup(p1);
-                    AddHoverAndClickShape(rr, p1, chrtP1, mark);
+                    var x1Anim = new DoubleAnimation(l.IsNew ? ox : l.Line.X1, p1.X, TimeSpan.FromMilliseconds(segSpeed));
+                    var x2Anim = new DoubleAnimation(l.IsNew ? ox : l.Line.X2, p2.X, TimeSpan.FromMilliseconds(segSpeed));
+                    var y1Anim = new DoubleAnimation(l.IsNew ? oy : l.Line.Y1, p1.Y, TimeSpan.FromMilliseconds(segSpeed));
+                    var y2Anim = new DoubleAnimation(l.IsNew ? oy : l.Line.Y2, p2.Y, TimeSpan.FromMilliseconds(segSpeed));
+
+                    l.Line.BeginAnimation(Line.X1Property, x1Anim);
+                    l.Line.BeginAnimation(Line.X2Property, x2Anim);
+                    l.Line.BeginAnimation(Line.Y1Property, y1Anim);
+                    l.Line.BeginAnimation(Line.Y2Property, y2Anim);
+
+                    lastPoint = p2;
+
+                    //if (DataLabels) AddDataLabel(p1, chrtP1, f);
+                    //var mark = AddPointMarkup(p1);
+                    //AddHoverAndClickShape(rr, p1, chrtP1, mark);
                 }
-
-                if (segment.Count > 0)
-                {
-                    var lastP = segment[segment.Count - 1];
-                    var lastPp = new Point(ToDrawMargin(lastP.X, AxisTags.X), ToDrawMargin(lastP.Y, AxisTags.Y));
-
-                    if (DataLabels) AddDataLabel(lastPp, lastP, f);
-                    var lastmark = AddPointMarkup(lastPp);
-                    AddHoverAndClickShape(rr, lastPp, lastP, lastmark);
-                }
-
-                Shapes.AddRange(s);
             }
         }
 
@@ -349,7 +361,7 @@ namespace LiveCharts
             return addedFigures;
         }
 
-        private void AddLine(Point p1, Point p2, bool animate)
+        private void AddLine(Point p1, Point p2, VisualHelper v1, VisualHelper v2, bool animate)
         {
             var l = new Line
             {
@@ -431,6 +443,160 @@ namespace LiveCharts
             Canvas.SetTop(tb, tp);
             Chart.DrawMargin.Children.Add(tb);
             Shapes.Add(tb);
+        }
+
+        internal override void Erase(bool force = false)
+        {
+            if (_isPrimitive)    //track by index
+            {
+                var activeIndexes = force || Values == null
+                    ? new int[] { }
+                    : Values.Points.Select(x => x.Key).ToArray();
+
+                var inactiveIndexes = Chart.ShapesMapper
+                    .Where(m => Equals(m.Series, this) &&
+                                !activeIndexes.Contains(m.ChartPoint.Key))
+                    .ToArray();
+                foreach (var s in inactiveIndexes)
+                {
+                    var p = s.Shape.Parent as Canvas;
+                    if (p != null)
+                    {
+                        p.Children.Remove(s.HoverShape);
+                        p.Children.Remove(s.Shape);
+                        Chart.ShapesMapper.Remove(s);
+                        Shapes.Remove(s.Shape);
+                    }
+                }
+            }
+            else                //track by instance reference
+            {
+                var activeInstances = force ? new object[] { } : Values.Points.Select(x => x.Instance).ToArray();
+                var inactiveIntances = Chart.ShapesMapper
+                    .Where(m => Equals(m.Series, this) &&
+                                !activeInstances.Contains(m.ChartPoint.Instance))
+                    .ToArray();
+
+                foreach (var s in inactiveIntances)
+                {
+                    var p = s.Shape.Parent as Canvas;
+                    if (p != null)
+                    {
+                        p.Children.Remove(s.HoverShape);
+                        p.Children.Remove(s.Shape);
+                        Chart.ShapesMapper.Remove(s);
+                        Shapes.Remove(s.Shape);
+                    }
+                }
+            }
+        }
+
+        private LineVisualHelper GetLine(int index, object instance)
+        {
+            if (_isPrimitive)
+            {
+                if (_primitiveDictionary.ContainsKey(index))
+                    return new LineVisualHelper
+                    {
+                        Line = _primitiveDictionary[index],
+                        IsNew = false
+                    };
+
+                var l = new Line
+                {
+                    Stroke = Stroke,
+                    StrokeThickness = StrokeThickness,
+                    StrokeEndLineCap = PenLineCap.Round,
+                    StrokeStartLineCap = PenLineCap.Round
+                };
+
+                Shapes.Add(l);
+                Chart.DrawMargin.Children.Add(l);
+
+                _primitiveDictionary[index] = l;
+                return new LineVisualHelper
+                {
+                    Line = l,
+                    IsNew = true
+                };
+            }
+
+            if (_dictionary.ContainsKey(instance))
+                return new LineVisualHelper
+                {
+                    Line = _dictionary[instance],
+                    IsNew = false
+                };
+
+            var li = new Line
+            {
+                Stroke = Stroke,
+                StrokeThickness = StrokeThickness,
+                StrokeEndLineCap = PenLineCap.Round,
+                StrokeStartLineCap = PenLineCap.Round
+            };
+            Shapes.Add(li);
+            Chart.DrawMargin.Children.Add(li);
+
+            _dictionary[instance] = li;
+            return new LineVisualHelper
+            {
+                Line = li,
+                IsNew = true
+            };
+        }
+
+        private VisualHelper GetVisual(ChartPoint point)
+        {
+            var map = _isPrimitive
+                ? Chart.ShapesMapper.FirstOrDefault(x => x.Series.Equals(this) &&
+                                                         x.ChartPoint.Key == point.Key)
+                : Chart.ShapesMapper.FirstOrDefault(x => x.Series.Equals(this) &&
+                                                         x.ChartPoint.Instance == point.Instance);
+
+            return map == null
+                ? new VisualHelper
+                {
+                    PointShape = new Rectangle
+                    {
+                        StrokeThickness = StrokeThickness,
+                        Stroke = Stroke,
+                        Fill = Fill,
+                        RenderTransform = new TranslateTransform()
+                    },
+                    HoverShape = new Rectangle
+                    {
+                        Fill = Brushes.Transparent,
+                        StrokeThickness = 0
+                    },
+                    IsNew = true
+                }
+                : new VisualHelper
+                {
+                    PointShape = map.Shape,
+                    HoverShape = map.HoverShape,
+                    IsNew = false
+                };
+        }
+
+        private struct LineVisualHelper
+        {
+            public bool IsNew { get; set; }
+            public Line Line { get; set; }
+        }
+
+        private struct VisualHelper
+        {
+            public bool IsNew { get; set; }
+            public Shape PointShape { get; set; }
+            public Shape HoverShape { get; set; }
+            public PointLines Lines { get; set; }
+        }
+
+        private struct PointLines
+        {
+            public Shape Left { get; set; }
+            public Shape Right { get; set; }
         }
     }
 }
