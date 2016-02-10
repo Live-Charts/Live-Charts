@@ -56,18 +56,18 @@ namespace ChartsTest
             };
             StackedBarExamples = new List<UserControl>
             {
-                new BasicStackedBar(),
-                new RotatedStackedBar(),
-                new BindingStackedBar(),
-                new MvvmStackedBar(),
-                new CustomStackedBar(),
+                //new BasicStackedBar(),
+                //new RotatedStackedBar(),
+                //new BindingStackedBar(),
+                //new MvvmStackedBar(),
+                //new CustomStackedBar(),
             };
-            //PieExamples = new List<UserControl>
-            //{
-            //    new BasicPie(),
-            //    new MvvmPie(),
-            //    new CustomPie(),
-            //};
+            PieExamples = new List<UserControl>
+            {
+                new BasicPie(),
+                new MvvmPie(),
+                new CustomPie(),
+            };
             //MoreExamples = new List<UserControl>
             //{
             //    new RadarChartExample()

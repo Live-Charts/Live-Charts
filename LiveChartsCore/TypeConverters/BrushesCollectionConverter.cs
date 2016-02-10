@@ -31,7 +31,7 @@ using System.Windows.Media.Imaging;
 
 namespace LiveCharts.TypeConverters
 {
-    public class ColorCollectionConverter : TypeConverter
+    public class BrushesCollectionConverter : TypeConverter
     {
         public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
         {

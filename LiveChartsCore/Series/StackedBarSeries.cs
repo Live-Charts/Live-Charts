@@ -138,12 +138,7 @@ namespace LiveCharts
                         t.Tick += (sender, args) =>
                         {
                             tb.Visibility = Visibility.Visible;
-                            var fadeIn = new DoubleAnimation
-                            {
-                                From = 0,
-                                To = 1,
-                                Duration = TimeSpan.FromMilliseconds(animationSpeed)
-                            };
+                            var fadeIn = new DoubleAnimation(0, 1, TimeSpan.FromMilliseconds(animationSpeed));
                             tb.BeginAnimation(OpacityProperty, fadeIn);
                             t.Stop();
                         };
@@ -261,12 +256,7 @@ namespace LiveCharts
                         t.Tick += (sender, args) =>
                         {
                             tb.Visibility = Visibility.Visible;
-                            var fadeIn = new DoubleAnimation
-                            {
-                                From = 0,
-                                To = 1,
-                                Duration = TimeSpan.FromMilliseconds(animationSpeed)
-                            };
+                            var fadeIn = new DoubleAnimation(0, 1, TimeSpan.FromMilliseconds(animationSpeed));
                             tb.BeginAnimation(OpacityProperty, fadeIn);
                             t.Stop();
                         };
@@ -346,7 +336,7 @@ namespace LiveCharts
             }
         }
 
-        private BarVisualHelper GetVisual(ChartPoint point)
+        private VisualHelper GetVisual(ChartPoint point)
         {
             var map = _isPrimitive
                 ? Chart.ShapesMapper.FirstOrDefault(x => x.Series.Equals(this) &&
@@ -355,7 +345,7 @@ namespace LiveCharts
                                                          x.ChartPoint.Instance == point.Instance);
 
             return map == null
-                ? new BarVisualHelper
+                ? new VisualHelper
                 {
                     PointShape = new Rectangle
                     {
@@ -367,12 +357,11 @@ namespace LiveCharts
                     HoverShape = new Rectangle
                     {
                         Fill = Brushes.Transparent,
-                        StrokeThickness = 1,
-                        Stroke = Brushes.Red
+                        StrokeThickness = 0
                     },
                     IsNew = true
                 }
-                : new BarVisualHelper
+                : new VisualHelper
                 {
                     PointShape = map.Shape,
                     HoverShape = map.HoverShape,
@@ -380,7 +369,7 @@ namespace LiveCharts
                 };
         }
 
-        private struct BarVisualHelper
+        private struct VisualHelper
         {
             public bool IsNew { get; set; }
             public Shape PointShape { get; set; }
