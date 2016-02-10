@@ -715,7 +715,7 @@ namespace LiveCharts.CoreComponents
                     PlotArea.Width -= ty.Y;
                 }
                 Canvas.SetLeft(yLabel, PlotArea.X - ty.Y -(AxisY.ShowLabels ? longestY.X +5 : 0) -5);
-                Canvas.SetTop(yLabel, Canvas.DesiredSize.Height * .5 + ty.X * .5);
+                Canvas.SetTop(yLabel, PlotArea.Y*.5 + PlotArea.Height*.5 + ty.X*.5);
             }
             if (!string.IsNullOrWhiteSpace(AxisX.Title))
             {
@@ -726,7 +726,7 @@ namespace LiveCharts.CoreComponents
                 Shapes.Add(yLabel);
                 Canvas.Children.Add(yLabel);
                 if (AxisX.Title.Trim().Length > 0) PlotArea.Height -= tx.Y;
-                Canvas.SetLeft(yLabel, Canvas.DesiredSize.Width*.5 - tx.X*.5);
+                Canvas.SetLeft(yLabel, PlotArea.X + PlotArea.Width*.5 - tx.X*.5);
                 Canvas.SetTop(yLabel, PlotArea.Y + PlotArea.Height + (AxisX.ShowLabels ? tx.Y +5 : 0));
             }
 

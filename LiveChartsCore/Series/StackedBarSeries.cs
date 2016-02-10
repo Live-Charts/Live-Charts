@@ -28,12 +28,15 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 using LiveCharts.CoreComponents;
 
 namespace LiveCharts
 {
     public class StackedBarSeries : Series
     {
+        private int animationSpeed = 500;
+        private bool _isPrimitive;
         public StackedBarSeries()
         {
             StrokeThickness = 2.5;
@@ -44,12 +47,14 @@ namespace LiveCharts
 
         public override void Plot(bool animate = true)
         {
+            _isPrimitive = Values == null || (Values.Count >= 1 && Values[0].GetType().IsPrimitive);
+
             if (Visibility != Visibility.Visible) return;
-            if (Chart.Invert) PlotRow(animate);
-            else PlotColumn(animate);
+            if (Chart.Invert) PlotRow();
+            else PlotColumn();
         }
 
-        private void PlotRow(bool animate)
+        private void PlotRow()
         {
             var stackedChart = Chart as IStackedBar;
             if (stackedChart == null) return;
@@ -68,7 +73,7 @@ namespace LiveCharts
 
             foreach (var point in Values.Points)
             {
-                var t = new TranslateTransform();
+                var visual = GetVisual(point);
 
                 var helper = stackedChart.IndexTotals[(int) point.Y];
                 var w = ToPlotArea(helper.Total, AxisTags.X) - ToPlotArea(Chart.Min.X, AxisTags.X);
@@ -76,44 +81,39 @@ namespace LiveCharts
                 if (double.IsNaN(rh)) return;
                 var stackedW = w * (helper.Stacked.ContainsKey(serieIndex) ? (helper.Stacked[serieIndex].Stacked / helper.Total) : 0);
 
-                var r = new Rectangle
-                {
-                    StrokeThickness = StrokeThickness,
-                    Stroke = Stroke,
-                    Fill = Fill,
-                    Width = 0,
-                    Height = Math.Max(0, h - seriesPadding),
-                    RenderTransform = t
-                };
-                var hr = new Rectangle
-                {
-                    StrokeThickness = 0,
-                    Fill = Brushes.Transparent,
-                    Width = rh,
-                    Height = Math.Max(0, h - seriesPadding)
-                };
+                var height = Math.Max(0, h - seriesPadding);
 
-                Canvas.SetTop(r, ToPlotArea(point.Y, AxisTags.Y) + pointPadding + overflow / 2);
-                Canvas.SetTop(hr, ToPlotArea(point.Y, AxisTags.Y) + pointPadding + overflow / 2);
-                Canvas.SetLeft(hr, ToPlotArea(Chart.Min.X, AxisTags.X) + stackedW);
-                Panel.SetZIndex(hr, int.MaxValue);
+                visual.PointShape.Height = height;
+                visual.HoverShape.Height = height;
+                visual.HoverShape.Width = rh;
 
-                Chart.Canvas.Children.Add(r);
-                Chart.Canvas.Children.Add(hr);
-                Shapes.Add(r);
-                Shapes.Add(hr);
+                Canvas.SetTop(visual.PointShape, ToPlotArea(point.Y, AxisTags.Y) + pointPadding + overflow / 2);
+                Canvas.SetTop(visual.HoverShape, ToPlotArea(point.Y, AxisTags.Y) + pointPadding + overflow / 2);
+                Canvas.SetLeft(visual.HoverShape, ToPlotArea(Chart.Min.X, AxisTags.X) + stackedW);
+                Panel.SetZIndex(visual.HoverShape, int.MaxValue);
 
-                var hAnim = new DoubleAnimation
+                if (!Chart.DisableAnimation)
                 {
-                    To = rh,
-                    Duration = TimeSpan.FromMilliseconds(500)
-                };
-                var rAnim = new DoubleAnimation
+                    var wAnim = new DoubleAnimation
+                    {
+                        From = visual.IsNew ? 0 : visual.PointShape.Width,
+                        To = rh,
+                        Duration = TimeSpan.FromMilliseconds(500)
+                    };
+                    var leftAnim = new DoubleAnimation
+                    {
+                        From = visual.IsNew ? ToPlotArea(Chart.Min.X, AxisTags.X) : Canvas.GetLeft(visual.PointShape),
+                        To = ToPlotArea(Chart.Min.X, AxisTags.X) + stackedW,
+                        Duration = TimeSpan.FromMilliseconds(500)
+                    };
+                    visual.PointShape.BeginAnimation(WidthProperty, wAnim);
+                    visual.PointShape.BeginAnimation(Canvas.LeftProperty, leftAnim);
+                }
+                else
                 {
-                    From = ToPlotArea(Chart.Min.X, AxisTags.X),
-                    To = ToPlotArea(Chart.Min.X, AxisTags.X) + stackedW,
-                    Duration = TimeSpan.FromMilliseconds(500)
-                };
+                    visual.PointShape.Width = rh;
+                    Canvas.SetLeft(visual.PointShape, ToPlotArea(Chart.Min.X, AxisTags.X) + stackedW);
+                }
 
                 if (DataLabels)
                 {
@@ -124,45 +124,60 @@ namespace LiveCharts
                         CultureInfo.CurrentCulture,
                         FlowDirection.LeftToRight,
                         new Typeface(FontFamily, FontStyle, FontWeight, FontStretch), FontSize, Brushes.Black);
+                    Canvas.SetLeft(tb, Canvas.GetLeft(visual.HoverShape) + visual.HoverShape.Width * .5 - ft.Width * .5);
+                    Canvas.SetTop(tb, Canvas.GetTop(visual.HoverShape) + visual.HoverShape.Height * .5 - ft.Height * .5);
+                    Panel.SetZIndex(tb, int.MaxValue - 1);
+
                     tb.Text = te;
+                    tb.Visibility = Visibility.Hidden;
                     Chart.Canvas.Children.Add(tb);
                     Chart.Shapes.Add(tb);
-                    Canvas.SetLeft(tb, Canvas.GetLeft(hr) + hr.Width*.5 - ft.Width*.5);
-                    Canvas.SetTop(tb, Canvas.GetTop(hr) + hr.Height*.5 - ft.Height*.5);
-                }
-
-                var animated = false;
-                if (!Chart.DisableAnimation)
-                {
-                    if (animate)
+                    if (!Chart.DisableAnimation)
                     {
-                        r.BeginAnimation(WidthProperty, hAnim);
-                        t.BeginAnimation(TranslateTransform.XProperty, rAnim);
-                        animated = true;
+                        var t = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(animationSpeed) };
+                        t.Tick += (sender, args) =>
+                        {
+                            tb.Visibility = Visibility.Visible;
+                            var fadeIn = new DoubleAnimation
+                            {
+                                From = 0,
+                                To = 1,
+                                Duration = TimeSpan.FromMilliseconds(animationSpeed)
+                            };
+                            tb.BeginAnimation(OpacityProperty, fadeIn);
+                            t.Stop();
+                        };
+                        t.Start();
+                    }
+                    else
+                    {
+                        tb.Visibility = Visibility.Visible;
                     }
                 }
 
-                if (!animated)
+                if (visual.IsNew)
                 {
-                    r.Width = rh;
-                    if (rAnim.To != null) t.X = (double)rAnim.To;
+                    Chart.ShapesMapper.Add(new ShapeMap
+                    {
+                        Series = this,
+                        HoverShape = visual.HoverShape,
+                        Shape = visual.PointShape,
+                        ChartPoint = point
+                    });
+                    Chart.Canvas.Children.Add(visual.PointShape);
+                    Chart.Canvas.Children.Add(visual.HoverShape);
+                    Shapes.Add(visual.PointShape);
+                    Shapes.Add(visual.HoverShape);
+                    Panel.SetZIndex(visual.HoverShape, int.MaxValue);
+                    Panel.SetZIndex(visual.PointShape, int.MaxValue - 2);
+                    visual.HoverShape.MouseDown += Chart.DataMouseDown;
+                    visual.HoverShape.MouseEnter += Chart.DataMouseEnter;
+                    visual.HoverShape.MouseLeave += Chart.DataMouseLeave;
                 }
-
-                hr.MouseDown += Chart.DataMouseDown;
-                hr.MouseEnter += Chart.DataMouseEnter;
-                hr.MouseLeave += Chart.DataMouseLeave;
-
-                Chart.ShapesMapper.Add(new ShapeMap
-                {
-                    Series = this,
-                    HoverShape = hr,
-                    Shape = r,
-                    ChartPoint = point
-                });
             }
         }
 
-        private void PlotColumn(bool animate)
+        private void PlotColumn()
         {
             var stackedChart = Chart as IStackedBar;
             if (stackedChart == null) return;
@@ -181,7 +196,7 @@ namespace LiveCharts
 
             foreach (var point in Values.Points)
             {
-                var t = new TranslateTransform();
+                var visual = GetVisual(point);
 
                 var helper = stackedChart.IndexTotals[(int)point.X];
                 var barH = ToPlotArea(Chart.Min.Y, AxisTags.Y) - ToPlotArea(helper.Total, AxisTags.Y);
@@ -189,54 +204,38 @@ namespace LiveCharts
                 if (double.IsNaN(rh)) return;
                 var stackedH = barH * (helper.Stacked.ContainsKey(serieIndex) ? (helper.Stacked[serieIndex].Stacked / helper.Total) : 0);
 
-                var r = new Rectangle
-                {
-                    StrokeThickness = StrokeThickness,
-                    Stroke = Stroke,
-                    Fill = Fill,
-                    Width = Math.Max(0, barW - seriesPadding),
-                    Height = 0,
-                    RenderTransform = t
-                };
-                var hr = new Rectangle
-                {
-                    StrokeThickness = 0,
-                    Fill = Brushes.Transparent,
-                    Width = Math.Max(0, barW - seriesPadding),
-                    Height = rh
-                };
+                var width = Math.Max(0, barW - seriesPadding);
 
-                Canvas.SetLeft(r, ToPlotArea(point.X, AxisTags.X) + pointPadding + overflow/2);
-                Canvas.SetLeft(hr, ToPlotArea(point.X, AxisTags.X) + pointPadding + overflow / 2);
-                Canvas.SetTop(hr, ToPlotArea(Chart.Min.Y, AxisTags.Y) - rh - stackedH);
-                Panel.SetZIndex(hr, int.MaxValue);
+                visual.PointShape.Width = width;
+                visual.HoverShape.Width = width;
+                visual.HoverShape.Height = rh;
 
-                Chart.Canvas.Children.Add(r);
-                Chart.Canvas.Children.Add(hr);
-                Shapes.Add(r);
-                Shapes.Add(hr);
+                Canvas.SetLeft(visual.PointShape, ToPlotArea(point.X, AxisTags.X) + pointPadding + overflow/2);
+                Canvas.SetLeft(visual.HoverShape, ToPlotArea(point.X, AxisTags.X) + pointPadding + overflow / 2);
+                Canvas.SetTop(visual.HoverShape, ToPlotArea(Chart.Min.Y, AxisTags.Y) - rh - stackedH);
+                Panel.SetZIndex(visual.HoverShape, int.MaxValue);
 
-                var hAnim = new DoubleAnimation
-                {
-                    To = rh,
-                    Duration = TimeSpan.FromMilliseconds(500)
-                };
-                var rAnim = new DoubleAnimation
-                {
-                    From = ToPlotArea(Chart.Min.Y, AxisTags.Y),
-                    To = ToPlotArea(Chart.Min.Y, AxisTags.Y) - rh - stackedH,
-                    Duration = TimeSpan.FromMilliseconds(500)
-                };
-
-                var animated = false;
                 if (!Chart.DisableAnimation)
                 {
-                    if (animate)
+                    var hAnim = new DoubleAnimation
                     {
-                        r.BeginAnimation(HeightProperty, hAnim);
-                        t.BeginAnimation(TranslateTransform.YProperty, rAnim);
-                        animated = true;
-                    }
+                        From = visual.IsNew ? 0 : visual.PointShape.Height,
+                        To = rh,
+                        Duration = TimeSpan.FromMilliseconds(500)
+                    };
+                    var topAnim = new DoubleAnimation
+                    {
+                        From = visual.IsNew ? ToPlotArea(Chart.Min.Y, AxisTags.Y) : Canvas.GetTop(visual.PointShape),
+                        To = ToPlotArea(Chart.Min.Y, AxisTags.Y) - rh - stackedH,
+                        Duration = TimeSpan.FromMilliseconds(500)
+                    };
+                    visual.PointShape.BeginAnimation(HeightProperty, hAnim);
+                    visual.PointShape.BeginAnimation(Canvas.TopProperty, topAnim);
+                }
+                else
+                {
+                    visual.PointShape.Height = rh;
+                    Canvas.SetTop(visual.PointShape, ToPlotArea(Chart.Min.Y, AxisTags.Y) - rh - stackedH);
                 }
 
                 if (DataLabels)
@@ -248,33 +247,144 @@ namespace LiveCharts
                         CultureInfo.CurrentCulture,
                         FlowDirection.LeftToRight,
                         new Typeface(FontFamily, FontStyle, FontWeight, FontStretch), FontSize, Brushes.Black);
+                    Canvas.SetLeft(tb, Canvas.GetLeft(visual.HoverShape) + visual.HoverShape.Width * .5 - ft.Height * .5);
+                    Canvas.SetTop(tb, Canvas.GetTop(visual.HoverShape) + visual.HoverShape.Height * .5 + ft.Width * .5);
+                    Panel.SetZIndex(tb, int.MaxValue -1);
+
                     tb.Text = te;
+                    tb.Visibility = Visibility.Hidden;
                     Chart.Canvas.Children.Add(tb);
                     Chart.Shapes.Add(tb);
-                    Canvas.SetLeft(tb, Canvas.GetLeft(hr) + hr.Width*.5 - ft.Height*.5);
-                    Canvas.SetTop(tb, Canvas.GetTop(hr) + hr.Height*.5 + ft.Width*.5);
+                    if (!Chart.DisableAnimation)
+                    {
+                        var t = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(animationSpeed) };
+                        t.Tick += (sender, args) =>
+                        {
+                            tb.Visibility = Visibility.Visible;
+                            var fadeIn = new DoubleAnimation
+                            {
+                                From = 0,
+                                To = 1,
+                                Duration = TimeSpan.FromMilliseconds(animationSpeed)
+                            };
+                            tb.BeginAnimation(OpacityProperty, fadeIn);
+                            t.Stop();
+                        };
+                        t.Start();
+                    }
+                    else
+                    {
+                        tb.Visibility = Visibility.Visible;
+                    }
                 }
 
-                if (!animated)
+                if (visual.IsNew)
                 {
-                    r.Height = rh;
-                    if (rAnim.To != null) t.Y = (double)rAnim.To;
+                    Chart.ShapesMapper.Add(new ShapeMap
+                    {
+                        Series = this,
+                        HoverShape = visual.HoverShape,
+                        Shape = visual.PointShape,
+                        ChartPoint = point
+                    });
+                    Chart.Canvas.Children.Add(visual.PointShape);
+                    Chart.Canvas.Children.Add(visual.HoverShape);
+                    Shapes.Add(visual.PointShape);
+                    Shapes.Add(visual.HoverShape);
+                    Panel.SetZIndex(visual.HoverShape, int.MaxValue);
+                    Panel.SetZIndex(visual.PointShape, int.MaxValue - 2);
+                    visual.HoverShape.MouseDown += Chart.DataMouseDown;
+                    visual.HoverShape.MouseEnter += Chart.DataMouseEnter;
+                    visual.HoverShape.MouseLeave += Chart.DataMouseLeave;
                 }
-
-                hr.MouseDown += Chart.DataMouseDown;
-
-                if (!Chart.Hoverable) continue;
-                hr.MouseEnter += Chart.DataMouseEnter;
-                hr.MouseLeave += Chart.DataMouseLeave;
-
-                Chart.ShapesMapper.Add(new ShapeMap
-                {
-                    Series = this,
-                    HoverShape = hr,
-                    Shape = r,
-                    ChartPoint = point
-                });
             }
+        }
+
+        internal override void Erase(bool force = false)
+        {
+            if (_isPrimitive)    //track by index
+            {
+                var activeIndexes = force || Values == null
+                    ? new int[] { }
+                    : Values.Points.Select(x => x.Key).ToArray();
+
+                var inactiveIndexes = Chart.ShapesMapper
+                    .Where(m => Equals(m.Series, this) &&
+                                !activeIndexes.Contains(m.ChartPoint.Key))
+                    .ToArray();
+                foreach (var s in inactiveIndexes)
+                {
+                    var p = s.Shape.Parent as Canvas;
+                    if (p != null)
+                    {
+                        p.Children.Remove(s.HoverShape);
+                        p.Children.Remove(s.Shape);
+                        Chart.ShapesMapper.Remove(s);
+                        Shapes.Remove(s.Shape);
+                    }
+                }
+            }
+            else                //track by instance reference
+            {
+                var activeInstances = force ? new object[] { } : Values.Points.Select(x => x.Instance).ToArray();
+                var inactiveIntances = Chart.ShapesMapper
+                    .Where(m => Equals(m.Series, this) &&
+                                !activeInstances.Contains(m.ChartPoint.Instance))
+                    .ToArray();
+
+                foreach (var s in inactiveIntances)
+                {
+                    var p = s.Shape.Parent as Canvas;
+                    if (p != null)
+                    {
+                        p.Children.Remove(s.HoverShape);
+                        p.Children.Remove(s.Shape);
+                        Chart.ShapesMapper.Remove(s);
+                        Shapes.Remove(s.Shape);
+                    }
+                }
+            }
+        }
+
+        private BarVisualHelper GetVisual(ChartPoint point)
+        {
+            var map = _isPrimitive
+                ? Chart.ShapesMapper.FirstOrDefault(x => x.Series.Equals(this) &&
+                                                         x.ChartPoint.Key == point.Key)
+                : Chart.ShapesMapper.FirstOrDefault(x => x.Series.Equals(this) &&
+                                                         x.ChartPoint.Instance == point.Instance);
+
+            return map == null
+                ? new BarVisualHelper
+                {
+                    PointShape = new Rectangle
+                    {
+                        StrokeThickness = StrokeThickness,
+                        Stroke = Stroke,
+                        Fill = Fill,
+                        RenderTransform = new TranslateTransform()
+                    },
+                    HoverShape = new Rectangle
+                    {
+                        Fill = Brushes.Transparent,
+                        StrokeThickness = 1,
+                        Stroke = Brushes.Red
+                    },
+                    IsNew = true
+                }
+                : new BarVisualHelper
+                {
+                    PointShape = map.Shape,
+                    HoverShape = map.HoverShape,
+                    IsNew = false
+                };
+        }
+
+        private struct BarVisualHelper
+        {
+            public bool IsNew { get; set; }
+            public Shape PointShape { get; set; }
+            public Shape HoverShape { get; set; }
         }
     }
 }

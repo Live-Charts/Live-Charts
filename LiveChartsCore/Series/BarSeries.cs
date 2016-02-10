@@ -148,6 +148,7 @@ namespace LiveCharts
                             ? Canvas.GetLeft(visual.HoverShape) + visual.HoverShape.Width + 5
                             : Canvas.GetLeft(visual.HoverShape) - 5 - ft.Width);
                     Canvas.SetTop(tb, Canvas.GetTop(visual.HoverShape) + visual.HoverShape.Height*.5 - ft.Height*.5);
+                    Panel.SetZIndex(tb, int.MaxValue - 1);
                     if (!Chart.DisableAnimation)
                     {
                         var t = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(animationSpeed) };
@@ -185,7 +186,7 @@ namespace LiveCharts
                     Shapes.Add(visual.PointShape);
                     Shapes.Add(visual.HoverShape);
                     Panel.SetZIndex(visual.HoverShape, int.MaxValue);
-                    Panel.SetZIndex(visual.PointShape, int.MaxValue - 1);
+                    Panel.SetZIndex(visual.PointShape, int.MaxValue - 2);
                     visual.HoverShape.MouseDown += Chart.DataMouseDown;
                     visual.HoverShape.MouseEnter += Chart.DataMouseEnter;
                     visual.HoverShape.MouseLeave += Chart.DataMouseLeave;
@@ -285,6 +286,7 @@ namespace LiveCharts
                         direction > 0
                             ? Canvas.GetTop(visual.HoverShape) - ft.Height - 5
                             : Canvas.GetTop(visual.HoverShape) + visual.HoverShape.Height + 5);
+                    Panel.SetZIndex(tb, int.MaxValue - 1);
                     if (!Chart.DisableAnimation)
                     {
                         var t = new DispatcherTimer {Interval = TimeSpan.FromMilliseconds(animationSpeed) };
@@ -322,7 +324,7 @@ namespace LiveCharts
                     Shapes.Add(visual.PointShape);
                     Shapes.Add(visual.HoverShape);
                     Panel.SetZIndex(visual.HoverShape, int.MaxValue);
-                    Panel.SetZIndex(visual.PointShape, int.MaxValue - 1);
+                    Panel.SetZIndex(visual.PointShape, int.MaxValue - 2);
                     visual.HoverShape.MouseDown += Chart.DataMouseDown;
                     visual.HoverShape.MouseEnter += Chart.DataMouseEnter;
                     visual.HoverShape.MouseLeave += Chart.DataMouseLeave;
