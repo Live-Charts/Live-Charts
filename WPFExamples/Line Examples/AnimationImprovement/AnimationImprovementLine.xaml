@@ -14,9 +14,14 @@
         </Grid.RowDefinitions>
         <TextBlock>See how line dances and moves with you!</TextBlock>
         <StackPanel Orientation="Horizontal" Grid.Row="1">
-            <Button Width="100" Click="MoveOnClick">Move All</Button>
-            <Button Width="100" Click="AddSeriesOnClick">Add Series</Button>
-            <Button Width="100" Click="AddPointOnClick">Add Point</Button>
+            <Button Click="MoveOnClick">Move All</Button>
+            <TextBlock>Series</TextBlock>
+            <Button Click="AddSeriesOnClick">+</Button>
+            <Button Click="RemoveSeriesOnClick">-</Button>
+            <TextBlock>Points</TextBlock>
+            <Button Click="AddPointOnClick">+</Button>
+            <Button Click="InsertOnClick">/</Button>
+            <Button Click="RemoveOnClick">-</Button>
         </StackPanel>
         <lvc:LineChart Grid.Row="2" LineType="Polyline" Series="{Binding Series}" />
     </Grid>

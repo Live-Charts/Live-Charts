@@ -23,6 +23,8 @@ namespace ChartsTest.Line_Examples.AnimationImprovement
                     {
                         new ViewModel {YValue = 0},
                         new ViewModel {YValue = 1},
+                        new ViewModel {YValue = 0},
+                        new ViewModel {YValue = 1},
                         new ViewModel {YValue = 0}
                     },
                     DataLabels = true
@@ -65,6 +67,34 @@ namespace ChartsTest.Line_Examples.AnimationImprovement
             foreach (var series in Series)
             {
                 series.Values.Add(new ViewModel {YValue = r.Next(0, 11)});
+            }
+        }
+
+        private void RemoveSeriesOnClick(object sender, RoutedEventArgs e)
+        {
+            if (Series.Count == 1) return;
+            Series.RemoveAt(0);
+        }
+
+        private void InsertOnClick(object sender, RoutedEventArgs e)
+        {
+            var r = new Random();
+            foreach (var series in Series)
+            {
+                if (series.Values.Count > 3)
+                    series.Values.Insert(2, new ViewModel
+                    {
+                        YValue = r.Next(0, 11)
+                    });
+            }
+        }
+
+        private void RemoveOnClick(object sender, RoutedEventArgs e)
+        {
+            foreach (var series in Series)
+            {
+                if(series.Values.Count == 1) continue;
+                series.Values.RemoveAt(0);
             }
         }
     }

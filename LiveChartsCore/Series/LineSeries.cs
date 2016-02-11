@@ -24,6 +24,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -35,7 +36,7 @@ namespace LiveCharts
 {
     public class LineSeries : Series
     {
-        private int animationSpeed = 500;
+        private TimeSpan d = TimeSpan.FromMilliseconds(500);
         private bool _isPrimitive;
         private Dictionary<int, Line> _primitiveDictionary = new Dictionary<int, Line>();
         private Dictionary<object, Line> _dictionary = new Dictionary<object, Line>();
@@ -70,39 +71,48 @@ namespace LiveCharts
         {
             var rr = PointRadius < 2.5 ? 2.5 : PointRadius;
             var pCount = Values.Points.Count();
-            var segSpeed = animationSpeed/pCount;
-            
+
+            var f = Chart.GetFormatter(Chart.Invert ? Chart.AxisX : Chart.AxisY);
+
             foreach (var segment in Values.Points.AsSegments())
             {
-                var f = Chart.GetFormatter(Chart.Invert ? Chart.AxisX : Chart.AxisY);
-                Point? lastPoint = null;
-
-                for (int index = 0; index < segment.Count - 1; index++)
+                var point = segment[0];
+                var l = GetLine(0, point.Instance);
+                var p = new Point(ToDrawMargin(point.X, AxisTags.X), ToDrawMargin(point.Y, AxisTags.Y));
+                if (l.IsNew)
                 {
-                    var chrtP1 = segment[index];
-                    var chrtP2 = segment[index + 1];
+                    l.Line.X1 = p.X;
+                    l.Line.Y1 = p.Y;
+                }
+                else
+                {
+                    l.Line.BeginAnimation(Line.X1Property, new DoubleAnimation(l.Line.X1, p.X, d));
+                    l.Line.BeginAnimation(Line.Y1Property, new DoubleAnimation(l.Line.Y1, p.Y, d));
+                }
+                
+                var previousLine = l.Line;
 
-                    var v1 = GetVisual(chrtP1);
-                    var v2 = GetVisual(chrtP2);
-                    var l = GetLine(index, chrtP1.Instance);
+                for (int index = 1; index < segment.Count; index++)
+                {
+                    point = segment[index];
+                    if (index != segment.Count -1) l = GetLine(index, point.Instance);
+                    p = new Point(ToDrawMargin(point.X, AxisTags.X), ToDrawMargin(point.Y, AxisTags.Y));
 
-                    var p1 = new Point(ToDrawMargin(chrtP1.X, AxisTags.X), ToDrawMargin(chrtP1.Y, AxisTags.Y));
-                    var p2 = new Point(ToDrawMargin(chrtP2.X, AxisTags.X), ToDrawMargin(chrtP2.Y, AxisTags.Y));
+                    var x = previousLine == null ? p.X : previousLine.X2;
+                    var y = previousLine == null ? p.Y : previousLine.Y2;
 
-                    var ox = lastPoint == null ? p1.X : lastPoint.Value.X;
-                    var oy = lastPoint == null ? p1.Y : lastPoint.Value.Y;
+                    if (previousLine != null)
+                    {
+                        if (index != segment.Count - 1)
+                        {
+                            l.Line.BeginAnimation(Line.X1Property, new DoubleAnimation(previousLine.X2, p.X, d));
+                            l.Line.BeginAnimation(Line.Y1Property, new DoubleAnimation(previousLine.Y2, p.Y, d));
+                        }
+                        previousLine.BeginAnimation(Line.X2Property, new DoubleAnimation(x, p.X, d));
+                        previousLine.BeginAnimation(Line.Y2Property, new DoubleAnimation(y, p.Y, d));
+                    }
 
-                    var x1Anim = new DoubleAnimation(l.IsNew ? ox : l.Line.X1, p1.X, TimeSpan.FromMilliseconds(segSpeed));
-                    var x2Anim = new DoubleAnimation(l.IsNew ? ox : l.Line.X2, p2.X, TimeSpan.FromMilliseconds(segSpeed));
-                    var y1Anim = new DoubleAnimation(l.IsNew ? oy : l.Line.Y1, p1.Y, TimeSpan.FromMilliseconds(segSpeed));
-                    var y2Anim = new DoubleAnimation(l.IsNew ? oy : l.Line.Y2, p2.Y, TimeSpan.FromMilliseconds(segSpeed));
-
-                    l.Line.BeginAnimation(Line.X1Property, x1Anim);
-                    l.Line.BeginAnimation(Line.X2Property, x2Anim);
-                    l.Line.BeginAnimation(Line.Y1Property, y1Anim);
-                    l.Line.BeginAnimation(Line.Y2Property, y2Anim);
-
-                    lastPoint = p2;
+                    previousLine = l.Line;
 
                     //if (DataLabels) AddDataLabel(p1, chrtP1, f);
                     //var mark = AddPointMarkup(p1);
@@ -491,6 +501,12 @@ namespace LiveCharts
             }
         }
 
+        /// <summary>
+        /// Gets the next line of an instance or index
+        /// </summary>
+        /// <param name="index"></param>
+        /// <param name="instance"></param>
+        /// <returns></returns>
         private LineVisualHelper GetLine(int index, object instance)
         {
             if (_isPrimitive)
