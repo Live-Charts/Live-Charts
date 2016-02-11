@@ -91,6 +91,7 @@ namespace LiveCharts
                 }
                 
                 var previousLine = l.Line;
+                var isPreviousNew = false;
 
                 for (int index = 1; index < segment.Count; index++)
                 {
@@ -105,14 +106,19 @@ namespace LiveCharts
                     {
                         if (index != segment.Count - 1)
                         {
-                            l.Line.BeginAnimation(Line.X1Property, new DoubleAnimation(previousLine.X2, p.X, d));
-                            l.Line.BeginAnimation(Line.Y1Property, new DoubleAnimation(previousLine.Y2, p.Y, d));
+                            var px = isPreviousNew ? p.X : previousLine.X2;
+                            var py = isPreviousNew ? p.Y : previousLine.Y2;
+                            l.Line.BeginAnimation(Line.X1Property, new DoubleAnimation(px, p.X, d));
+                            l.Line.BeginAnimation(Line.Y1Property, new DoubleAnimation(py, p.Y, d));
                         }
-                        previousLine.BeginAnimation(Line.X2Property, new DoubleAnimation(x, p.X, d));
-                        previousLine.BeginAnimation(Line.Y2Property, new DoubleAnimation(y, p.Y, d));
+                        var cx = isPreviousNew ? p.X : x;
+                        var cy = isPreviousNew ? p.Y : y;
+                        previousLine.BeginAnimation(Line.X2Property, new DoubleAnimation(cx, p.X, d));
+                        previousLine.BeginAnimation(Line.Y2Property, new DoubleAnimation(cy, p.Y, d));
                     }
 
                     previousLine = l.Line;
+                    isPreviousNew = l.IsNew;
 
                     //if (DataLabels) AddDataLabel(p1, chrtP1, f);
                     //var mark = AddPointMarkup(p1);
