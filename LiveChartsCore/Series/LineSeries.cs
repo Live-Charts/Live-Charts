@@ -492,6 +492,12 @@ namespace LiveCharts
                                 Shapes.Remove(l);
                                 _primitiveDictionary.Remove(i);
                             }
+                            else
+                            {
+#if DEBUG
+                                System.Diagnostics.Trace.TraceWarning("Could not find ChartPoint with key '{0}' in primitives dictionary", i);
+#endif
+                            }
                         }
                         else
                         {
@@ -502,6 +508,12 @@ namespace LiveCharts
                                 Chart.DrawMargin.Children.Remove(l);
                                 Shapes.Remove(l);
                                 _dictionary.Remove(i);
+                            }
+                            else
+                            {
+#if DEBUG
+                                System.Diagnostics.Trace.TraceWarning("Could not find ChartPoint instance '{0}' in dictionary", i);
+#endif
                             }
                         }
                     }
