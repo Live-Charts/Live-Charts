@@ -485,18 +485,36 @@ namespace LiveCharts
                         if (_isPrimitive)
                         {
                             var i = s.ChartPoint.Key;
-                            var l = _primitiveDictionary[i];
-                            Chart.DrawMargin.Children.Remove(l);
-                            Shapes.Remove(l);
-                            _dictionary.Remove(i);
+                            Line l;
+                            if (_primitiveDictionary.TryGetValue(i, out l))
+                            {
+                                Chart.DrawMargin.Children.Remove(l);
+                                Shapes.Remove(l);
+                                _primitiveDictionary.Remove(i);
+                            }
+                            else
+                            {
+#if DEBUG
+                                System.Diagnostics.Trace.TraceWarning("Could not find ChartPoint with key '{0}' in primitives dictionary", i);
+#endif
+                            }
                         }
                         else
                         {
                             var i = s.ChartPoint.Instance;
-                            var l = _dictionary[i];
-                            Chart.DrawMargin.Children.Remove(l);
-                            Shapes.Remove(l);
-                            _dictionary.Remove(i);
+                            Line l;
+                            if (_dictionary.TryGetValue(i, out l))
+                            {
+                                Chart.DrawMargin.Children.Remove(l);
+                                Shapes.Remove(l);
+                                _dictionary.Remove(i);
+                            }
+                            else
+                            {
+#if DEBUG
+                                System.Diagnostics.Trace.TraceWarning("Could not find ChartPoint instance '{0}' in dictionary", i);
+#endif
+                            }
                         }
                     }
                 }
