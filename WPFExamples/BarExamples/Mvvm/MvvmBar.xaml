@@ -39,6 +39,7 @@
             <Button Click="ClearSeriesOnClick" Width="Auto" Padding="5 0">Clear Series</Button>
             <TextBlock>Months</TextBlock>
             <Button Click="AddMonthOnClick">+</Button>
+            <Button Click="InsertOnClick">/</Button>
             <Button Click="RemoveMonthOnClick">-</Button>
         </StackPanel>
         <lvc:BarChart Name="Chart" Grid.Row="2" Grid.Column="0" Series="{Binding Sales.SalesmenSeries}" LegendLocation="Right">

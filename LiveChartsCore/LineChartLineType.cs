@@ -1,6 +1,6 @@
 ﻿//The MIT License(MIT)
 
-//Copyright(c) 2015 Alberto Rodriguez
+//copyright(c) 2016 Alberto Rodriguez
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -24,10 +24,6 @@ namespace LiveCharts
 {
     public enum LineChartLineType
     {
-        /// <summary>
-        /// Use no line
-        /// </summary>
-        None,
         /// <summary>
         /// Uses an aproximation algorithm to make soft curves that passes by all points in serie.
         /// </summary>

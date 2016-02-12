@@ -53,6 +53,11 @@ namespace ChartsTest.BarExamples
             //this is just to see animation everytime you click next
             Chart.Update();
         }
+
+        private void InsertOnClick(object sender, RoutedEventArgs e)
+        {
+            Sales.InstertAMiddleVal();
+        }
     }
 
     public class SalesData
@@ -184,6 +189,26 @@ namespace ChartsTest.BarExamples
             if (averageSeries != null)
             {
                 averageSeries.Values.Add(new AverageSalesData { AverageItemsSold = r.Next(20, 25) });
+            }
+        }
+
+        public void InstertAMiddleVal()
+        {
+            var r = new Random();
+            foreach (var salesman in SalesmenSeries.Where(x => x.Title != "Average Series"))
+            {
+                if (salesman.Values.Count > 2) 
+                    salesman.Values.Insert(2, new SalesData
+                    {
+                        ItemsSold = r.Next(5,30),
+                        Rentability = r.NextDouble()*.2,
+                        ItemsAverageSellPrice = 5000m + ((decimal) r.NextDouble()*1000)
+                    });
+            }
+            var averageSeries = SalesmenSeries.FirstOrDefault(x => x.Title == "Average Series");
+            if (averageSeries != null)
+            {
+                averageSeries.Values.Insert(2, new AverageSalesData {AverageItemsSold = r.Next(20, 25)});
             }
         }
 

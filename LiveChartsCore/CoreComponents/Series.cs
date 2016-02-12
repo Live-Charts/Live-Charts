@@ -1,6 +1,6 @@
 //The MIT License(MIT)
 
-//Copyright(c) 2015 Alberto Rodriguez
+//copyright(c) 2016 Alberto Rodriguez
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -301,6 +301,18 @@ namespace LiveCharts.CoreComponents
         protected double ToDrawMargin(double value, AxisTags axis)
         {
             return Methods.ToDrawMargin(value, axis, Chart);
+        }
+
+        protected ChartPoint ToDrawMargin(ChartPoint point)
+        {
+            return new ChartPoint
+            {
+                X = ToDrawMargin(point.X, AxisTags.X),
+                Y = ToDrawMargin(point.Y, AxisTags.Y),
+                Instance = point.Instance,
+                IsMocked = point.IsMocked,
+                Key = point.Key
+            };
         }
         #endregion
 

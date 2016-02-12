@@ -138,6 +138,9 @@
     <Compile Include="Interfaces\IChartValues.cs" />
     <Compile Include="LiveChartsExtentions.cs" />
     <Compile Include="CoreComponents\ChartValues.cs" />
+    <Compile Include="Shapes\InterpolationUtils.cs" />
+    <Compile Include="Shapes\LandmarkControl.xaml.cs" />
+    <Compile Include="Shapes\ViewUtils.cs" />
     <Compile Include="Tooltip\IndexedTooltipData.cs" />
     <Compile Include="Tooltip\Converters.cs" />
     <Compile Include="Tooltip\DefaultIndexedTooltip.xaml.cs">
@@ -201,6 +204,10 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Shapes\LandmarkControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Tooltip\DefaultIndexedTooltip.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
