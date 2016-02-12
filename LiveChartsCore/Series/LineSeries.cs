@@ -772,66 +772,6 @@ namespace LiveCharts
             };
         }
 
-        /// <summary>
-        /// Get the bezier of a point
-        /// </summary>
-        /// <param name="index"></param>
-        /// <param name="instance"></param>
-        /// <returns></returns>
-        private BezierVisualHelper GetBezier(int index, object instance)
-        {
-            if (_isPrimitive)
-            {
-                if (_dictionaries.PrimitiveBeziers.ContainsKey(index))
-                    return new BezierVisualHelper
-                    {
-                        Bezier = _dictionaries.PrimitiveBeziers[index],
-                        IsNew = false
-                    };
-
-                var l = new BezierSegment
-                {
-                    Stroke = Stroke,
-                    StrokeThickness = StrokeThickness,
-                    StrokeEndLineCap = PenLineCap.Round,
-                    StrokeStartLineCap = PenLineCap.Round
-                };
-
-                Shapes.Add(l);
-                Chart.DrawMargin.Children.Add(l);
-
-                _dictionaries.PrimitiveLines[index] = l;
-                return new LineVisualHelper
-                {
-                    Line = l,
-                    IsNew = true
-                };
-            }
-
-            if (_dictionaries.Lines.ContainsKey(instance))
-                return new LineVisualHelper
-                {
-                    Line = _dictionaries.Lines[instance],
-                    IsNew = false
-                };
-
-            var li = new Line
-            {
-                Stroke = Stroke,
-                StrokeThickness = StrokeThickness,
-                StrokeEndLineCap = PenLineCap.Round,
-                StrokeStartLineCap = PenLineCap.Round
-            };
-            Shapes.Add(li);
-            Chart.DrawMargin.Children.Add(li);
-
-            _dictionaries.Lines[instance] = li;
-            return new LineVisualHelper
-            {
-                Line = li,
-                IsNew = true
-            };
-        }
 
         private VisualHelper GetVisual(ChartPoint point)
         {
