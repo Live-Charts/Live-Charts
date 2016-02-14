@@ -36,9 +36,9 @@ namespace LiveCharts
             AxisX = new Axis {Separator = new Separator {Step = 1}};
             Hoverable = true;
             ShapeHoverBehavior = ShapeHoverBehavior.Shape;
-            LineType = LineChartLineType.Bezier;
             MaxColumnWidth = 60;
             DefaultFillOpacity = 0.75;
+            LineSmoothness = 0.8;
         }
 
         #region Properties
@@ -49,9 +49,9 @@ namespace LiveCharts
         public double MaxColumnWidth { get; set; }
 
         /// <summary>
-        /// Gets or sets Line Type
+        /// Gets or sets Line Smoothness
         /// </summary>
-        public LineChartLineType LineType { get; set; }
+        public double LineSmoothness { get; set; }
 
         internal new bool HasValidSeriesAndValues
         {

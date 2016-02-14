@@ -97,6 +97,11 @@ namespace ChartsTest.Line_Examples.AnimationImprovement
                 series.Values.RemoveAt(0);
             }
         }
+
+        private void ToggleLineTypeOnClick(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 
     public class ViewModel : IObservableChartPoint

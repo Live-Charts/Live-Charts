@@ -7,6 +7,7 @@ namespace LiveCharts.Shapes
 {
     //http://www.codeproject.com/Articles/28098/A-WPF-Pie-Chart-with-Data-Binding-Support
     //special thanks to Colin Eberhardt for the article.
+
     public class PieSlice : Shape
     {
         #region dependency properties
@@ -158,17 +159,17 @@ namespace LiveCharts.Shapes
         /// </summary>
         private void DrawGeometry(StreamGeometryContext context)
         {
-            var innerArcStartPoint = Utils.ComputeCartesianCoordinate(RotationAngle, InnerRadius);
+            var innerArcStartPoint = PieUtils.ComputeCartesianCoordinate(RotationAngle, InnerRadius);
             innerArcStartPoint.Offset(CentreX, CentreY);
-            var innerArcEndPoint = Utils.ComputeCartesianCoordinate(RotationAngle + WedgeAngle, InnerRadius);
+            var innerArcEndPoint = PieUtils.ComputeCartesianCoordinate(RotationAngle + WedgeAngle, InnerRadius);
             innerArcEndPoint.Offset(CentreX, CentreY);
-            var outerArcStartPoint = Utils.ComputeCartesianCoordinate(RotationAngle, Radius);
+            var outerArcStartPoint = PieUtils.ComputeCartesianCoordinate(RotationAngle, Radius);
             outerArcStartPoint.Offset(CentreX, CentreY);
-            var outerArcEndPoint = Utils.ComputeCartesianCoordinate(RotationAngle + WedgeAngle, Radius);
+            var outerArcEndPoint = PieUtils.ComputeCartesianCoordinate(RotationAngle + WedgeAngle, Radius);
             outerArcEndPoint.Offset(CentreX, CentreY);
-            var innerArcMidPoint = Utils.ComputeCartesianCoordinate(RotationAngle + WedgeAngle * .5, InnerRadius);
+            var innerArcMidPoint = PieUtils.ComputeCartesianCoordinate(RotationAngle + WedgeAngle * .5, InnerRadius);
             innerArcMidPoint.Offset(CentreX, CentreY);
-            var outerArcMidPoint = Utils.ComputeCartesianCoordinate(RotationAngle + WedgeAngle * .5, Radius);
+            var outerArcMidPoint = PieUtils.ComputeCartesianCoordinate(RotationAngle + WedgeAngle * .5, Radius);
             outerArcMidPoint.Offset(CentreX, CentreY);
 
             var largeArc = WedgeAngle > 180.0d;
@@ -176,7 +177,7 @@ namespace LiveCharts.Shapes
 
             if (PushOut > 0 && !requiresMidPoint)
             {
-                var offset = Utils.ComputeCartesianCoordinate(RotationAngle + WedgeAngle / 2, PushOut);
+                var offset = PieUtils.ComputeCartesianCoordinate(RotationAngle + WedgeAngle / 2, PushOut);
                 innerArcStartPoint.Offset(offset.X, offset.Y);
                 innerArcEndPoint.Offset(offset.X, offset.Y);
                 outerArcStartPoint.Offset(offset.X, offset.Y);
@@ -205,7 +206,7 @@ namespace LiveCharts.Shapes
         }
     }
 
-    public static class Utils
+    public static class PieUtils
     {
         /// <summary>
         /// Converts a coordinate from the polar coordinate system to the cartesian coordinate system.

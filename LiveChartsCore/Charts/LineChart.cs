@@ -36,15 +36,13 @@ namespace LiveCharts
                 Separator = new Separator {IsEnabled = false, Step = 1},
                 IsEnabled = false
             };
-
-            LineType = LineChartLineType.Bezier;
             Hoverable = true;
             ShapeHoverBehavior = ShapeHoverBehavior.Dot;
+            LineSmoothness = 0.8;
         }
 
         #region Properties
-
-        public LineChartLineType LineType { get; set; }
+        public double LineSmoothness { get; set; }
 
         #endregion
 

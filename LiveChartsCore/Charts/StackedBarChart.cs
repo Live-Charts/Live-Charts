@@ -37,10 +37,10 @@ namespace LiveCharts
             Hoverable = true;
             AxisY.MinValue = 0d;
             ShapeHoverBehavior = ShapeHoverBehavior.Shape;
-            LineType = LineChartLineType.Bezier;
             IndexTotals = new Dictionary<int, StackedBarHelper>();
             MaxColumnWidth = 40;
             DefaultFillOpacity = 0.75;
+            LineSmoothness = 0.8;
         }
 
         #region Properties
@@ -49,9 +49,9 @@ namespace LiveCharts
         /// </summary>
         public double MaxColumnWidth { get; set; }
         /// <summary>
-        /// Gets or sets Line Type
+        /// Gets or sets Line Smoothness
         /// </summary>
-        public LineChartLineType LineType { get; set; }
+        public double LineSmoothness { get; set; }
         /// <summary>
         /// Gets a dictinary that groups every bar proportion
         /// </summary> 

@@ -21,6 +21,7 @@
 //SOFTWARE.
 
 using System.Collections.Generic;
+using System.Windows;
 using LiveCharts.CoreComponents;
 
 namespace LiveCharts
@@ -51,6 +52,11 @@ namespace LiveCharts
                 }
             }
             yield return buffer;
+        }
+
+        internal static Point AsPoint(this ChartPoint chartPoint)
+        {
+            return new Point(chartPoint.X, chartPoint.Y);
         }
     }
 }

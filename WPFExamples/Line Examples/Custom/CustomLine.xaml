@@ -17,7 +17,7 @@
         <TextBlock Grid.Row="0" HorizontalAlignment="Center" Grid.ColumnSpan="2" Margin="5" Foreground="White" TextWrapping="Wrap">
             <Bold>Custom Style</Bold>: this is an example of how to change the default style of live charts, also it fires DataClick event when you click on any point.
         </TextBlock>
-        <lvc:LineChart Name="Chart" Grid.Row="1" Grid.Column="0" LineType="Polyline" DataClick="Chart_OnDataClick" LegendLocation="Bottom">
+        <lvc:LineChart Name="Chart" Grid.Row="1" Grid.Column="0" LineSmoothness="0" DataClick="Chart_OnDataClick" LegendLocation="Bottom">
             <lvc:LineChart.DataTooltip>
                 <customTooltips:CustomIndexedTooltip x:Name="CustomTooltip"/>
             </lvc:LineChart.DataTooltip>
