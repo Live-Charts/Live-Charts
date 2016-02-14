@@ -36,7 +36,7 @@ namespace LiveCharts
 {
     public class LineSeries : Series
     {
-        private TimeSpan d = TimeSpan.FromMilliseconds(300);
+        private TimeSpan d = TimeSpan.FromMilliseconds(500);
         private bool _isPrimitive;
         private LineSeriesDictionaries _dictionaries = new LineSeriesDictionaries();
         private PathFigure _figure;
@@ -80,10 +80,12 @@ namespace LiveCharts
 
             var rr = PointRadius < 5 ? 5 : PointRadius;
             var f = Chart.GetFormatter(Chart.Invert ? Chart.AxisX : Chart.AxisY);
+            BezierSegment previousSegment = null;
 
             foreach (var segment in Values.Points.AsSegments())
             {
-                _figure.StartPoint = segment.Count > 0 ? ToDrawMargin(segment[0]).AsPoint() : new Point();
+                _figure.BeginAnimation(PathFigure.StartPointProperty, new PointAnimation(_figure.StartPoint,
+                    segment.Count > 0 ? ToDrawMargin(segment[0]).AsPoint() : new Point(), d));
                 for (var i = 0; i < segment.Count - 1; i++)
                 {
                     var point = segment[i];
@@ -97,7 +99,7 @@ namespace LiveCharts
                     Canvas.SetLeft(visual.HoverShape, pointLocation.X - visual.HoverShape.Width * .5);
                     Canvas.SetTop(visual.HoverShape, pointLocation.Y - visual.HoverShape.Height * .5);
 
-                    visual.PointShape.Opacity = 0;
+                    visual.PointShape.BeginAnimation(OpacityProperty, new DoubleAnimation(0, 0, TimeSpan.FromMilliseconds(1)));
                     if (!Chart.DisableAnimation)
                     {
                         var pt = new DispatcherTimer {Interval = d};
@@ -113,7 +115,7 @@ namespace LiveCharts
                     }
                     else
                     {
-                        visual.PointShape.Visibility = Visibility.Visible;
+                        visual.PointShape.BeginAnimation(OpacityProperty, new DoubleAnimation(0, 1, TimeSpan.FromMilliseconds(1)));
                     }
 
                     if (DataLabels)
@@ -182,17 +184,24 @@ namespace LiveCharts
                     var helper = GetSegmentHelper(i, segment[i].Instance);
 
                     helper.Segment.BeginAnimation(BezierSegment.Point1Property,
-                        new PointAnimation(helper.Segment.Point1, data.P1, d));
+                        new PointAnimation(
+                            helper.IsNew && previousSegment != null ? previousSegment.Point3 : helper.Segment.Point1,
+                            data.P1, d));
                     helper.Segment.BeginAnimation(BezierSegment.Point2Property,
-                        new PointAnimation(helper.Segment.Point2, data.P2, d));
+                        new PointAnimation(
+                            helper.IsNew && previousSegment != null ? previousSegment.Point3 : helper.Segment.Point2,
+                            data.P2, d));
                     helper.Segment.BeginAnimation(BezierSegment.Point3Property,
-                        new PointAnimation(helper.Segment.Point3, data.P3, d));
+                        new PointAnimation(
+                            helper.IsNew && previousSegment != null ? previousSegment.Point3 : helper.Segment.Point3,
+                            data.P3, d));
+
+                    previousSegment = helper.Segment;
 
                     if (helper.IsNew) _figure.Segments.Add(data.AssignTo(helper.Segment));
                 }
             }
         }
-
 
         private BezierData CalculateBezier(int index, IList<ChartPoint> source)
         {

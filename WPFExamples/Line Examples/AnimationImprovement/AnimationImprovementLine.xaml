@@ -16,7 +16,7 @@
             <Bold>0.6.5 New Feature</Bold> Watch how line dances with you! 
             now all series do not redraw everytime you change your model, they transform the ui, 
             all charts support this feature. 
-            Also there is a new property for Line Series, change Smoothness property and see what happens 
+            Also there is a new property for Line Series, change LineSmoothness property and see what happens 
             (default is 0.8 and it goes from 0 to 1)
         </TextBlock>
         <StackPanel Orientation="Horizontal" Grid.Row="1">
@@ -28,8 +28,7 @@
             <Button Click="AddPointOnClick">+</Button>
             <Button Click="InsertOnClick">/</Button>
             <Button Click="RemoveOnClick">-</Button>
-            <Button Margin="10 0" Click="ToggleLineTypeOnClick">Bezier/Polyline</Button>
         </StackPanel>
-        <lvc:LineChart Name="Chart" Grid.Row="2" Series="{Binding Series}" />
+        <lvc:LineChart Name="Chart" Grid.Row="2" Series="{Binding Series}" LineSmoothness="1" />
     </Grid>
 </UserControl>
