@@ -36,17 +36,18 @@ namespace LiveCharts
 {
     public class LineSeries : Series
     {
-        private TimeSpan d = TimeSpan.FromMilliseconds(500);
+        internal static readonly TimeSpan AnimSpeed = TimeSpan.FromMilliseconds(500);
         private bool _isPrimitive;
-        private LineSeriesDictionaries _dictionaries = new LineSeriesDictionaries();
-        private PathFigure _figure;
-        private Path _path;
+        private readonly LineSeriesDictionaries _dictionaries = new LineSeriesDictionaries();
+        private readonly PathFigure _figure;
+        private readonly Path _path;
 
         public LineSeries()
         {
             StrokeThickness = 2.5;
             PointRadius = 4;
-            _path = new Path() ;
+
+            _path = new Path();
             var geometry = new PathGeometry();
             _figure = new PathFigure();
             geometry.Figures.Add(_figure);
@@ -80,12 +81,13 @@ namespace LiveCharts
 
             var rr = PointRadius < 5 ? 5 : PointRadius;
             var f = Chart.GetFormatter(Chart.Invert ? Chart.AxisX : Chart.AxisY);
-            BezierSegment previousSegment = null;
 
             foreach (var segment in Values.Points.AsSegments())
             {
+                var p0 = ToDrawMargin(segment[0]).AsPoint();
                 _figure.BeginAnimation(PathFigure.StartPointProperty, new PointAnimation(_figure.StartPoint,
-                    segment.Count > 0 ? ToDrawMargin(segment[0]).AsPoint() : new Point(), d));
+                    segment.Count > 0 ? p0 : new Point(), AnimSpeed));
+                BezierSegment previous = null;
                 for (var i = 0; i < segment.Count - 1; i++)
                 {
                     var point = segment[i];
@@ -102,13 +104,13 @@ namespace LiveCharts
                     visual.PointShape.BeginAnimation(OpacityProperty, new DoubleAnimation(0, 0, TimeSpan.FromMilliseconds(1)));
                     if (!Chart.DisableAnimation)
                     {
-                        var pt = new DispatcherTimer {Interval = d};
+                        var pt = new DispatcherTimer {Interval = AnimSpeed};
                         pt.Tick += (sender, args) =>
                         {
                             //instead we can ad everything to a labels panel, and only animaty opacity of the panel
                             //this runs alot of unecesary animations.
                             //ToDo: ^
-                            visual.PointShape.BeginAnimation(OpacityProperty, new DoubleAnimation(0, 1, d));
+                            visual.PointShape.BeginAnimation(OpacityProperty, new DoubleAnimation(0, 1, AnimSpeed));
                             pt.Stop();
                         };
                         pt.Start();
@@ -144,11 +146,11 @@ namespace LiveCharts
                         Panel.SetZIndex(tb, int.MaxValue - 1);
                         if (!Chart.DisableAnimation)
                         {
-                            var t = new DispatcherTimer {Interval = d};
+                            var t = new DispatcherTimer {Interval = AnimSpeed};
                             t.Tick += (sender, args) =>
                             {
                                 tb.Visibility = Visibility.Visible;
-                                var fadeIn = new DoubleAnimation(0, 1, d);
+                                var fadeIn = new DoubleAnimation(0, 1, AnimSpeed);
                                 tb.BeginAnimation(OpacityProperty, fadeIn);
                                 t.Stop();
                             };
@@ -180,25 +182,14 @@ namespace LiveCharts
                         visual.HoverShape.MouseLeave += Chart.DataMouseLeave;
                     }
 
-                    var data = CalculateBezier(i, segment);
                     var helper = GetSegmentHelper(i, segment[i].Instance);
+                    helper.Data = CalculateBezier(i, segment);
+                    helper.Previous = previous;
+                    helper.Animate(_figure.StartPoint);
+                    previous = helper.Segment;
+                    //nope, you have to insert it at its position...
+                    if (helper.IsNew) _figure.Segments.Insert(i, helper.Data.AssignTo(helper.Segment));
 
-                    helper.Segment.BeginAnimation(BezierSegment.Point1Property,
-                        new PointAnimation(
-                            helper.IsNew && previousSegment != null ? previousSegment.Point3 : helper.Segment.Point1,
-                            data.P1, d));
-                    helper.Segment.BeginAnimation(BezierSegment.Point2Property,
-                        new PointAnimation(
-                            helper.IsNew && previousSegment != null ? previousSegment.Point3 : helper.Segment.Point2,
-                            data.P2, d));
-                    helper.Segment.BeginAnimation(BezierSegment.Point3Property,
-                        new PointAnimation(
-                            helper.IsNew && previousSegment != null ? previousSegment.Point3 : helper.Segment.Point3,
-                            data.P3, d));
-
-                    previousSegment = helper.Segment;
-
-                    if (helper.IsNew) _figure.Segments.Add(data.AssignTo(helper.Segment));
                 }
             }
         }
@@ -422,27 +413,6 @@ namespace LiveCharts
                 };
         }
 
-        private struct PathSegmentHelper
-        {
-            public bool IsNew { get; set; }
-            public BezierSegment Segment { get; set; }
-        }
-
-        private struct BezierData
-        {
-            public Point P1 { get; set; }
-            public Point P2 { get; set; }
-            public Point P3 { get; set; }
-
-            public BezierSegment AssignTo(BezierSegment segment)
-            {
-                segment.Point1 = P1;
-                segment.Point2 = P2;
-                segment.Point3 = P3;
-                return segment;
-            }
-        }
-
         private struct VisualHelper
         {
             public bool IsNew { get; set; }
@@ -459,6 +429,40 @@ namespace LiveCharts
             }
             public Dictionary<int, BezierSegment> Primitives { get; set; }
             public Dictionary<object, BezierSegment> Instances { get; set; }
+        }
+    }
+
+    internal struct BezierData
+    {
+        public Point P1 { get; set; }
+        public Point P2 { get; set; }
+        public Point P3 { get; set; }
+        public Point StartPoint { get; set; }
+
+        public BezierSegment AssignTo(BezierSegment segment)
+        {
+            segment.Point1 = P1;
+            segment.Point2 = P2;
+            segment.Point3 = P3;
+            return segment;
+        }
+    }
+
+    internal class PathSegmentHelper
+    {
+        public bool IsNew { get; set; }
+        public BezierSegment Segment { get; set; }
+        public BezierData Data { get; set; }
+        public BezierSegment Previous { get; set; }
+        public void Animate(Point defaultPoint)
+        {
+            var p1 = Previous == null ? defaultPoint : (IsNew ? Previous.Point3 : Segment.Point1);
+            var p2 = Previous == null ? defaultPoint :(IsNew ? Previous.Point3 : Segment.Point2);
+            var p3 = Previous == null ? defaultPoint : (IsNew ? Previous.Point3 : Segment.Point3);
+
+            Segment.BeginAnimation(BezierSegment.Point1Property, new PointAnimation(p1, Data.P1, LineSeries.AnimSpeed));
+            Segment.BeginAnimation(BezierSegment.Point2Property, new PointAnimation(p2, Data.P2, LineSeries.AnimSpeed));
+            Segment.BeginAnimation(BezierSegment.Point3Property, new PointAnimation(p3, Data.P3, LineSeries.AnimSpeed));
         }
     }
 }
