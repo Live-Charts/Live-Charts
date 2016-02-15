@@ -22,6 +22,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Windows;
@@ -36,7 +37,9 @@ namespace LiveCharts
 {
     public class LineSeries : Series
     {
-        internal static readonly TimeSpan AnimSpeed = TimeSpan.FromMilliseconds(500);
+        public static DateTime TestTimer = DateTime.Now;
+
+        internal static readonly TimeSpan AnimSpeed = TimeSpan.FromMilliseconds(500*6);
         private bool _isPrimitive;
         private readonly LineSeriesDictionaries _dictionaries = new LineSeriesDictionaries();
         private readonly PathFigure _figure;
@@ -82,12 +85,20 @@ namespace LiveCharts
             var rr = PointRadius < 5 ? 5 : PointRadius;
             var f = Chart.GetFormatter(Chart.Invert ? Chart.AxisX : Chart.AxisY);
 
+#if DEBUG
+            TestTimer = DateTime.Now;
+            Trace.WriteLine("Line Series Plotting, animation scheduled to last " + AnimSpeed.TotalMilliseconds + "ms");
+#endif
+
             foreach (var segment in Values.Points.AsSegments())
             {
                 var p0 = ToDrawMargin(segment[0]).AsPoint();
+                _figure.StartPoint = p0;
                 _figure.BeginAnimation(PathFigure.StartPointProperty, new PointAnimation(_figure.StartPoint,
                     segment.Count > 0 ? p0 : new Point(), AnimSpeed));
                 BezierSegment previous = null;
+                double waitStack = 0;
+                var newSegments = 0;
                 for (var i = 0; i < segment.Count - 1; i++)
                 {
                     var point = segment[i];
@@ -182,14 +193,23 @@ namespace LiveCharts
                         visual.HoverShape.MouseLeave += Chart.DataMouseLeave;
                     }
 
+#if DEBUG
+                    Trace.WriteLine("Segment animation in:" + waitStack + "ms");
+#endif
+
                     var helper = GetSegmentHelper(i, segment[i].Instance);
                     helper.Data = CalculateBezier(i, segment);
                     helper.Previous = previous;
-                    helper.Animate(_figure.StartPoint);
+                    helper.Animate(i, _figure, waitStack, !Chart.DisableAnimation);
                     previous = helper.Segment;
-                    //nope, you have to insert it at its position...
-                    if (helper.IsNew) _figure.Segments.Insert(i, helper.Data.AssignTo(helper.Segment));
-
+                    if (helper.IsNew)
+                    {
+                        waitStack = (AnimSpeed.TotalMilliseconds/(segment.Count - 1))*(i+1);
+                    }
+                    else
+                    {
+                        waitStack = 0;
+                    }
                 }
             }
         }
@@ -454,15 +474,39 @@ namespace LiveCharts
         public BezierSegment Segment { get; set; }
         public BezierData Data { get; set; }
         public BezierSegment Previous { get; set; }
-        public void Animate(Point defaultPoint)
-        {
-            var p1 = Previous == null ? defaultPoint : (IsNew ? Previous.Point3 : Segment.Point1);
-            var p2 = Previous == null ? defaultPoint :(IsNew ? Previous.Point3 : Segment.Point2);
-            var p3 = Previous == null ? defaultPoint : (IsNew ? Previous.Point3 : Segment.Point3);
 
-            Segment.BeginAnimation(BezierSegment.Point1Property, new PointAnimation(p1, Data.P1, LineSeries.AnimSpeed));
-            Segment.BeginAnimation(BezierSegment.Point2Property, new PointAnimation(p2, Data.P2, LineSeries.AnimSpeed));
-            Segment.BeginAnimation(BezierSegment.Point3Property, new PointAnimation(p3, Data.P3, LineSeries.AnimSpeed));
+        public void Animate(int index, PathFigure figure, double wait, bool enabled)
+        {
+            var t = new DispatcherTimer {Interval = TimeSpan.FromMilliseconds(wait)};
+            t.Tick += (sender, args) =>
+            {
+                if (IsNew) figure.Segments.Insert(index, Data.AssignTo(Segment));
+                var p1 = IsNew ? (Previous == null ? figure.StartPoint : Previous.Point3) : Segment.Point1;
+                var p2 = IsNew ? (Previous == null ? figure.StartPoint : Previous.Point3) : Segment.Point2;
+                var p3 = IsNew ? (Previous == null ? figure.StartPoint : Previous.Point3) : Segment.Point3;
+
+                if (!enabled)
+                {
+                    p1 = Data.P1;
+                    p2 = Data.P2;
+                    p3 = Data.P3;
+                }
+
+                Segment.BeginAnimation(BezierSegment.Point1Property,
+                    new PointAnimation(p1, Data.P1, LineSeries.AnimSpeed));
+                Segment.BeginAnimation(BezierSegment.Point2Property,
+                    new PointAnimation(p2, Data.P2, LineSeries.AnimSpeed));
+                Segment.BeginAnimation(BezierSegment.Point3Property,
+                    new PointAnimation(p3, Data.P3, LineSeries.AnimSpeed));
+
+                t.Stop();
+#if DEBUG
+                Trace.WriteLine("Time elapsed when animation started: " +
+                                (DateTime.Now - LineSeries.TestTimer).TotalMilliseconds + "ms");
+                Trace.WriteLine("Segment animation scheduled to end in " );
+#endif
+            };
+            t.Start();
         }
     }
 }
