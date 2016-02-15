@@ -93,6 +93,7 @@ namespace LiveCharts
 
             foreach (var segment in Values.Points.AsSegments())
             {
+                if (segment.Count == 0) return;
                 var p0 = ToDrawMargin(segment[0]).AsPoint();
                 _figure.StartPoint = p0;
                 _figure.BeginAnimation(PathFigure.StartPointProperty, new PointAnimation(_figure.StartPoint,
