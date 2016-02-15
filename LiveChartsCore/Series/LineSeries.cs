@@ -39,7 +39,7 @@ namespace LiveCharts
     {
         public static DateTime TestTimer = DateTime.Now;
 
-        internal static readonly TimeSpan AnimSpeed = TimeSpan.FromMilliseconds(500*6);
+        internal static readonly TimeSpan AnimSpeed = TimeSpan.FromMilliseconds(500);
         private bool _isPrimitive;
         private readonly LineSeriesDictionaries _dictionaries = new LineSeriesDictionaries();
         private readonly PathFigure _figure;
@@ -97,6 +97,9 @@ namespace LiveCharts
                 _figure.StartPoint = p0;
                 _figure.BeginAnimation(PathFigure.StartPointProperty, new PointAnimation(_figure.StartPoint,
                     segment.Count > 0 ? p0 : new Point(), AnimSpeed));
+
+                PathSegmentHelper previous = null;
+                PathSegmentHelper next = null;
 
                 for (var i = 0; i < segment.Count - 1; i++)
                 {
@@ -194,7 +197,9 @@ namespace LiveCharts
 
                     var helper = GetSegmentHelper(i, segment[i].Instance);
                     helper.Data = CalculateBezier(i, segment);
+                    helper.Previous = previous != null && previous.IsNew ? previous.Previous : previous;
                     helper.Animate(i, _figure, Chart);
+                    previous = helper;
                 }
             }
         }
@@ -458,6 +463,8 @@ namespace LiveCharts
         public bool IsNew { get; set; }
         public BezierSegment Segment { get; set; }
         public BezierData Data { get; set; }
+        public PathSegmentHelper Previous { get; set; }
+        public PathSegmentHelper Next { get; set; }
 
         public void Animate(int index, PathFigure figure, Chart chart)
         {
@@ -482,9 +489,9 @@ namespace LiveCharts
                 }
             }
 
-            var p1 = IsNew ? s1 : Segment.Point1;
-            var p2 = IsNew ? s2 : Segment.Point2;
-            var p3 = IsNew ? s3 : Segment.Point3;
+            var p1 = IsNew ? (Previous != null && !Previous.IsNew ? Previous.Segment.Point3 : s1) : Segment.Point1;
+            var p2 = IsNew ? (Previous != null && !Previous.IsNew ? Previous.Segment.Point3 : s2) : Segment.Point2;
+            var p3 = IsNew ? (Previous != null && !Previous.IsNew ? Previous.Segment.Point3 : s3) : Segment.Point3;
 
             if (chart.DisableAnimation)
             {
