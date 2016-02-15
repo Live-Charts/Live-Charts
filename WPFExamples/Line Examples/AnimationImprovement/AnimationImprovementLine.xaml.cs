@@ -27,7 +27,7 @@ namespace ChartsTest.Line_Examples.AnimationImprovement
                         new ViewModel {YValue = 1},
                         new ViewModel {YValue = 0}
                     },
-                    DataLabels = true
+                    //DataLabels = true
                 }
             }.Setup(new SeriesConfiguration<ViewModel>().Y(vm => vm.YValue));
 
@@ -58,7 +58,11 @@ namespace ChartsTest.Line_Examples.AnimationImprovement
                 vals.Add(new ViewModel {YValue = r.Next(0, 11)});
             }
 
-            Series.Add(new LineSeries {Values = vals, DataLabels = true});
+            Series.Add(new LineSeries
+            {
+                Values = vals,
+                //DataLabels = true
+            });
         }
 
         private void AddPointOnClick(object sender, RoutedEventArgs e)
@@ -66,6 +70,11 @@ namespace ChartsTest.Line_Examples.AnimationImprovement
             var r = new Random();
             foreach (var series in Series)
             {
+                series.Values.Add(new ViewModel {YValue = r.Next(0, 11)});
+                series.Values.Add(new ViewModel {YValue = r.Next(0, 11)});
+                series.Values.Add(new ViewModel {YValue = r.Next(0, 11)});
+                series.Values.Add(new ViewModel {YValue = r.Next(0, 11)});
+                series.Values.Add(new ViewModel {YValue = r.Next(0, 11)});
                 series.Values.Add(new ViewModel {YValue = r.Next(0, 11)});
             }
         }

@@ -479,6 +479,16 @@ namespace LiveCharts.CoreComponents
             return Methods.FromDrawMargin(value, axis, this);
         }
 
+        public double ToDrawMargin(double value, AxisTags axis)
+        {
+            return Methods.ToDrawMargin(value, axis, this);
+        }
+
+        public Point ToDrawMargin(Point point)
+        {
+            return new Point(ToDrawMargin(point.X, AxisTags.X), ToDrawMargin(point.Y, AxisTags.Y));
+        }
+
         public double LenghtOf(double value, AxisTags axis)
         {
             var isX = axis == AxisTags.X;
