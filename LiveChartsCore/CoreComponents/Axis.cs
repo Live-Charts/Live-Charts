@@ -45,7 +45,9 @@ namespace LiveCharts
 
         public static readonly DependencyProperty LabelsProperty = DependencyProperty.Register(
             "Labels", typeof (IList<string>), typeof (Axis), new PropertyMetadata(default(IList<string>)));
-
+        /// <summary>
+        /// Gets or sets axis labels, labels property stores the array to map for each index and value, for example if axis value is 0 then label will be labels[0], when value 1 then labels[1], value 2 then labels[2], ..., value n labels[n], use this property instead of a formatter when there is no conversion between value and label for example names, if you are ploting sales vs salesman name.
+        /// </summary>
         [TypeConverter(typeof (StringCollectionConverter))]
         public IList<string> Labels
         {
@@ -62,6 +64,9 @@ namespace LiveCharts
 		public static readonly DependencyProperty LabelFormatterProperty =
 			DependencyProperty.Register("LabelFormatter", typeof(Func<double, string>), typeof(Axis), new PropertyMetadata(null));
 
+        /// <summary>
+        /// Gets or sets the function to convet a value to label, for example when you need to display your chart as curency ($1.00) or as degrees (10°), if Labels property is not null then formatter is ignored, and label will be pulled from Labels prop.
+        /// </summary>
 		public Func<double, string> LabelFormatter
 		{
 			get { return (Func<double, string>)GetValue(LabelFormatterProperty); }
@@ -72,7 +77,7 @@ namespace LiveCharts
 			DependencyProperty.Register("Color", typeof(Color), typeof(Axis), new PropertyMetadata(Color.FromRgb(242, 242, 242)));
 
 		/// <summary>
-		/// Gets or sets axis color.
+		/// Gets or sets axis color, axis means only the zero value, if you need to highlight where zero is. to change separators color, see Axis.Separator
 		/// </summary>
 		public Color Color
 		{
@@ -81,14 +86,14 @@ namespace LiveCharts
 		}
 
 		public static readonly DependencyProperty StrokeThicknessProperty =
-			DependencyProperty.Register("StrokeThickness", typeof(int), typeof(Axis), new PropertyMetadata(1));
+			DependencyProperty.Register("StrokeThickness", typeof(double), typeof(Axis), new PropertyMetadata(1d));
 
 		/// <summary>
 		/// Gets or sets axis thickness.
 		/// </summary>
-		public int StrokeThickness
+		public double StrokeThickness
 		{
-			get { return (int)GetValue(StrokeThicknessProperty); }
+			get { return (double)GetValue(StrokeThicknessProperty); }
 			set { SetValue(StrokeThicknessProperty, value); }
 		}
 
@@ -96,7 +101,7 @@ namespace LiveCharts
 			DependencyProperty.Register("ShowLabels", typeof(bool), typeof(Axis), new PropertyMetadata(true));
 
 		/// <summary>
-		/// Gets or sets if labels should be printed.
+		/// Gets or sets if labels are visible.
 		/// </summary>
 		public bool ShowLabels
 		{
@@ -130,7 +135,9 @@ namespace LiveCharts
 
 		public static readonly DependencyProperty TitleProperty =
 			DependencyProperty.Register("Title", typeof(string), typeof(Axis), new PropertyMetadata(null));
-
+        /// <summary>
+        /// 
+        /// </summary>
 		public string Title
 		{
 			get { return (string)GetValue(TitleProperty); }
@@ -141,7 +148,7 @@ namespace LiveCharts
 			DependencyProperty.Register("FontFamily", typeof(FontFamily), typeof(Axis), new PropertyMetadata(new FontFamily("Calibri")));
 
 		/// <summary>
-		/// Gets or sets labels font family
+		/// Gets or sets labels font family, font to use for labels in this axis
 		/// </summary>
 		public FontFamily FontFamily
 		{

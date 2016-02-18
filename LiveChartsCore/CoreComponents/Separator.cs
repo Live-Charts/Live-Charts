@@ -29,15 +29,16 @@ namespace LiveCharts
         public Separator()
         {
             Step = null;
+            IsEnabled = true;
         }
 
         /// <summary>
-        /// Indicates weather to draw separators or not.
+        /// Gets or sets if separators are enabled (will be drawn)
         /// </summary>
         public bool IsEnabled { get; set; }
 
         /// <summary>
-        /// Gets or sets color separators color 
+        /// Gets or sets separators color 
         /// </summary>
         public Color Color { get; set; }
 
@@ -47,7 +48,7 @@ namespace LiveCharts
         public int Thickness { get; set; }
 
         /// <summary>
-        /// Gets or sets sepator step, use null to make it auto
+        /// Gets or sets sepator step, this means the value between each line, use null for auto.
         /// </summary>
         public double? Step { get; set; }
     }

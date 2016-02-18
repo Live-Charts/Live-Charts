@@ -40,7 +40,6 @@ namespace LiveCharts
 
         public static readonly DependencyProperty SeriesProperty = DependencyProperty.Register(
             "Series", typeof (IEnumerable<SeriesStandin>), typeof (ChartLegend), new PropertyMetadata(null));
-
         public IEnumerable<SeriesStandin> Series
         {
             get { return (IEnumerable<SeriesStandin>) GetValue(SeriesProperty); }

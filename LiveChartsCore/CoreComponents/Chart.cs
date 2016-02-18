@@ -145,19 +145,19 @@ namespace LiveCharts.CoreComponents
 
         #region StaticProperties
         /// <summary>
-        /// Gets or sets a custom area for unit testing, unit test will not run correctly if you do not set this property. widht and heigth must be greather than 15;
+        /// Gets or sets an area for unit testing, since normally for unit testing you don´t have an UI and LiveCharts refuses to draw a chart if there is no a valid UI area, then you need to set this property to run unit test, width and hegiht must be grather than 15px, this property must be null if you are not unit testing.
         /// </summary>
         public static Rect? MockedArea { get; set; }
 
         public static IBrain Brain { get; set; }
 
         /// <summary>
-        /// List of Colors series will use, yu can change this list to your own colors.
+        /// Gets or sets the default series colors.
         /// </summary>
         public static List<Color> Colors { get; set; }
 
         /// <summary>
-        /// indicates wether each instance of chart you create needs to randomize starting color
+        /// Gets or sets if a each new instance of a chart should initialize with a random color index
         /// </summary>
         public static bool RandomizeStartingColor { get; set; }
 
@@ -167,7 +167,9 @@ namespace LiveCharts.CoreComponents
 
         public static readonly DependencyProperty AxisYProperty = DependencyProperty.Register(
             "AxisY", typeof (Axis), typeof (Chart), new PropertyMetadata(default(Axis)));
-
+        /// <summary>
+        /// Gets or sets vertical axis
+        /// </summary>
         public Axis AxisY
         {
             get { return (Axis) GetValue(AxisYProperty); }
@@ -177,15 +179,21 @@ namespace LiveCharts.CoreComponents
         public static readonly DependencyProperty AxisXProperty = DependencyProperty.Register(
             "AxisX", typeof (Axis), typeof (Chart), new PropertyMetadata(default(Axis)));
 
+        /// <summary>
+        /// Gets or sets horizontal axis
+        /// </summary>
         public Axis AxisX
         {
             get { return (Axis) GetValue(AxisXProperty); }
             set { SetValue(AxisXProperty, value); }
         }
 
+        
         public static readonly DependencyProperty ZoomProperty = DependencyProperty.Register(
             "Zoom", typeof (ZoomingOptions), typeof (Chart), new PropertyMetadata(default(ZoomingOptions)));
-
+        /// <summary>
+        /// Gets or sets chart zoom behavior
+        /// </summary>
         public ZoomingOptions Zoom
         {
             get { return (ZoomingOptions) GetValue(ZoomProperty); }
@@ -194,7 +202,9 @@ namespace LiveCharts.CoreComponents
 
         public static readonly DependencyProperty LegendProperty = DependencyProperty.Register(
             "Legend", typeof (ChartLegend), typeof (Chart), new PropertyMetadata(null));
-
+        /// <summary>
+        /// Gets or sets legend location, a legend is a small control that displays series titles and its colors.
+        /// </summary>
         public ChartLegend Legend
         {
             get { return (ChartLegend) GetValue(LegendProperty); }
@@ -203,7 +213,9 @@ namespace LiveCharts.CoreComponents
 
         public static readonly DependencyProperty LegendLocationProperty = DependencyProperty.Register(
             "LegendLocation", typeof (LegendLocation), typeof (Chart), new PropertyMetadata(LegendLocation.None));
-
+        /// <summary>
+        /// Gets or sets where legend is located
+        /// </summary>
         public LegendLocation LegendLocation
         {
             get { return (LegendLocation) GetValue(LegendLocationProperty); }
@@ -212,7 +224,9 @@ namespace LiveCharts.CoreComponents
 
         public static readonly DependencyProperty InvertProperty = DependencyProperty.Register(
             "Invert", typeof (bool), typeof (Chart), new PropertyMetadata(default(bool)));
-
+        /// <summary>
+        /// Gets or sets if series in this chart should be inverted, even this is a dependency property, it is only to support bidings, this property won't invert the chart when it changes, if you need so then call Chart.Redraw() mathod after you cahnge this property.
+        /// </summary>
         public bool Invert
         {
             get { return (bool) GetValue(InvertProperty); }
@@ -233,9 +247,9 @@ namespace LiveCharts.CoreComponents
 
         public static readonly DependencyProperty PointHoverColorProperty = DependencyProperty.Register(
             "PointHoverColor", typeof (Color), typeof (Chart));
-
+        
         /// <summary>
-        /// Indicates Point hover color.
+        /// Gets or sets data point color when mouse is over it. Todo: this seems to be in a wrong place, this property does not works for bar, stacked bar or pie chart.
         /// </summary>
         public Color PointHoverColor
         {
