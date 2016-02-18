@@ -105,7 +105,7 @@ namespace LiveCharts.CoreComponents
             if (RandomizeStartingColor) ColorStartIndex = Randomizer.Next(0, Colors.Count - 1);
 
             AnimatesNewPoints = false;
-
+            
             var defaultConfig = new SeriesConfiguration<double>().Y(x => x);
             SetCurrentValue(SeriesProperty, new SeriesCollection(defaultConfig));
             DataTooltip = new DefaultIndexedTooltip();
@@ -273,7 +273,7 @@ namespace LiveCharts.CoreComponents
             "Series", typeof (SeriesCollection), typeof (Chart),
             new PropertyMetadata(null, SeriesChangedCallback ));
         /// <summary>
-        /// Gets or sets chart series to plot
+        /// Gets or sets chart series collection to plot.
         /// </summary>
         public SeriesCollection Series
         {

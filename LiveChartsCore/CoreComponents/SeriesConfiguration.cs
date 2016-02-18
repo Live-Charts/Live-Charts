@@ -20,7 +20,6 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-
 using System;
 using LiveCharts.CoreComponents;
 
@@ -28,8 +27,6 @@ namespace LiveCharts
 {
     public class SeriesConfiguration<T> : ISeriesConfiguration
     {
-        private int _xIndexer;
-        private int _yIndexer;
         public SeriesConfiguration()
         {
             XValueMapper = (value, index) => index;

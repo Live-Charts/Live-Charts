@@ -31,9 +31,6 @@ namespace LiveCharts
 {
     public class SeriesCollection : ObservableCollection<Series>
     {
-        private readonly Point _maxChartPoint;
-        private readonly Point _minChartPoint;
-
         public SeriesCollection()
         {
             Configuration = new SeriesConfiguration<double>().X((v, i) => i).Y(v => v);
@@ -51,28 +48,18 @@ namespace LiveCharts
         }
 
         /// <summary>
-        /// Gets max chart point
+        /// Gets owner chart.
         /// </summary>
-        public Point MaxChartPoint
-        {
-            get { return _maxChartPoint; }
-        }
-
-        /// <summary>
-        /// Gets min chart point
-        /// </summary>
-        public Point MinChartPoint
-        {
-            get { return _minChartPoint; }
-        }
-
-        /// <summary>
-        /// Gets or sets chart
-        /// </summary>
-        public Chart Chart { get; set; }
+        public Chart Chart { get;  internal set; }
 
         public ISeriesConfiguration Configuration { get; set; }
 
+        /// <summary>
+        /// Setup a configuration for this collection
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="config"></param>
+        /// <returns></returns>
         public SeriesCollection Setup<T>(SeriesConfiguration<T> config)
         {
             Configuration = config;

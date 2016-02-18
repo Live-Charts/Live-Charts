@@ -130,7 +130,6 @@
     <Compile Include="Interfaces\IChartSeries.cs" />
     <Compile Include="Interfaces\ILine.cs" />
     <Compile Include="Interfaces\IStackedBar.cs" />
-    <Compile Include="Interfaces\ISeriesCollection.cs" />
     <Compile Include="IDataOptimization.cs" />
     <Compile Include="Legend\LegendLocation.cs" />
     <Compile Include="Properties\Annotations.cs" />
