@@ -52,7 +52,9 @@ namespace LiveCharts.CoreComponents
 
         public new static readonly DependencyProperty VisibilityProperty = DependencyProperty.Register(
             "Visibility", typeof (Visibility), typeof (Series), new PropertyMetadata(default(Visibility)));
-
+        /// <summary>
+        /// Gets or sets series visibility
+        /// </summary>
         public new Visibility Visibility
         {
             get { return (Visibility) GetValue(VisibilityProperty); }
@@ -67,7 +69,9 @@ namespace LiveCharts.CoreComponents
 	    public static readonly DependencyProperty ValuesProperty = DependencyProperty.Register(
 	        "Values", typeof (IChartValues), typeof (Series), 
             new PropertyMetadata(null, ValuesCallBack));
-
+        /// <summary>
+        /// Gets or sets chart values.
+        /// </summary>
         [TypeConverter(typeof(DefaultValuesConverter))]
         public IChartValues Values
 	    {
@@ -83,6 +87,9 @@ namespace LiveCharts.CoreComponents
             set { SetValue(ValuesProperty, value); }
 	    }
 
+        /// <summary>
+        /// Gets collection that owns this series.
+        /// </summary>
         public SeriesCollection Collection { get; internal set; }
 
         public static readonly DependencyProperty TitleProperty =
@@ -101,7 +108,9 @@ namespace LiveCharts.CoreComponents
 
 		public static readonly DependencyProperty StrokeProperty =
 			DependencyProperty.Register("Stroke", typeof(Brush), typeof(Series), new PropertyMetadata(null));
-
+        /// <summary>
+        /// Gets or sets series stroke, if this property is null then a SolidColorBrush will be assigned according to series position in collection and Chart.Colors property
+        /// </summary>
 		public Brush Stroke
 		{
 		    get { return ((Brush) GetValue(StrokeProperty)); }
@@ -110,7 +119,9 @@ namespace LiveCharts.CoreComponents
 
 		public static readonly DependencyProperty FillProperty =
 			DependencyProperty.Register("Fill", typeof(Brush), typeof(Series), new PropertyMetadata(null));
-
+        /// <summary>
+        /// Gets or sets series fill color, if this property is null then a SolidColorBrush will be assigned according to series position in collection and Chart.Colors property, also Fill property has a default opacity according to chart type.
+        /// </summary>
 		public Brush Fill
 		{
 			get
@@ -122,7 +133,9 @@ namespace LiveCharts.CoreComponents
 
         public static readonly DependencyProperty DataLabelsProperty = DependencyProperty.Register(
             "DataLabels", typeof (bool), typeof (Series), new PropertyMetadata(default(bool)));
-
+        /// <summary>
+        /// Gets or sets if series should include a label over each data point.
+        /// </summary>
         public bool DataLabels
         {
             get { return (bool) GetValue(DataLabelsProperty); }
@@ -217,10 +230,21 @@ namespace LiveCharts.CoreComponents
         #endregion
 
         #region PublicMethods
+        /// <summary>
+        /// Returns a Color according to an index and Chart.Colors property.
+        /// </summary>
+        /// <param name="index"></param>
+        /// <returns></returns>
         public Color GetColorByIndex(int index)
         {
             return Chart.Colors[(int) (index - Chart.Colors.Count*Math.Truncate(index/(decimal) Chart.Colors.Count))];
         }
+        /// <summary>
+        /// Setup a configuration for this collection, notice this method returns the current instance to support fleunt syntax. if Series.Cofiguration is not null then SeriesCollection.Configuration will be ignored.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="config"></param>
+        /// <returns></returns>
         public Series Setup<T>(SeriesConfiguration<T> config)
         {
             Configuration = config;
