@@ -121,7 +121,6 @@
     <Compile Include="Interfaces\ISeriesConfiguration.cs" />
     <Compile Include="CoreComponents\Axis.cs" />
     <Compile Include="AxisTags.cs" />
-    <Compile Include="BezierSpline.cs" />
     <Compile Include="Charts\BarChart.cs" />
     <Compile Include="Charts\LineChart.cs" />
     <Compile Include="Charts\PieChart.cs" />

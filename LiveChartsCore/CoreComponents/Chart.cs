@@ -366,12 +366,16 @@ namespace LiveCharts.CoreComponents
         /// <summary>
         /// Forces chart redraw without waiting for changes. if this method is not used correctly thi might cause chart to plot multiple times in short periods of time.
         /// </summary>
-        public void UnsafeRedraw()
+        public void UnsafeUpdate()
         {
             PrepareCanvas();
             UpdateSeries(null, null);
         }
 
+        /// <summary>
+        /// Zooms a unit in according to a pivot, the unit is determined by LiveCharts depending on chart scale, values range and zooming mode.
+        /// </summary>
+        /// <param name="pivot"></param>
         public void ZoomIn(Point pivot)
         {
             if (DataTooltip != null) DataTooltip.Visibility = Visibility.Hidden;
@@ -414,9 +418,13 @@ namespace LiveCharts.CoreComponents
 
             foreach (var series in Series) series.Values.RequiresEvaluation = true;
 
-            UnsafeRedraw();
+            UnsafeUpdate();
         }
 
+        /// <summary>
+        /// Zooms a unit in according to a pivot, the unit is determined by LiveCharts depending on chart scale, values range and zooming mode.
+        /// </summary>
+        /// <param name="pivot"></param>
         public void ZoomOut(Point pivot)
         {
             if (DataTooltip != null) DataTooltip.Visibility = Visibility.Hidden;
@@ -450,20 +458,23 @@ namespace LiveCharts.CoreComponents
             foreach (var series in Series)
                 series.Values.RequiresEvaluation = true;
 
-            UnsafeRedraw();
+            UnsafeUpdate();
         }
 
+        /// <summary>
+        /// Clears zoom
+        /// </summary>
         public void ClearZoom()
         {
             AxisX.MinValue = null;
             AxisX.MaxValue = null;
             AxisY.MinValue = null;
             AxisY.MaxValue = null;
-            UnsafeRedraw();
+            UnsafeUpdate();
         }
 
         /// <summary>
-        /// Scales a graph value to screen according to an axis. 
+        /// Scales a graph value to screen pixels according to an axis.
         /// </summary>
         /// <param name="value"></param>
         /// <param name="axis"></param>
@@ -474,7 +485,7 @@ namespace LiveCharts.CoreComponents
         }
 
         /// <summary>
-        /// Scales a graph point to screen.
+        /// Scales a graph value to screen.
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
@@ -483,16 +494,34 @@ namespace LiveCharts.CoreComponents
             return new Point(ToPlotArea(value.X, AxisTags.X), ToPlotArea(value.Y, AxisTags.Y));
         }
 
+        /// <summary>
+        /// Scales a graph point to screen.
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="axis"></param>
+        /// <returns></returns>
         public double FromPlotArea(double value, AxisTags axis)
         {
             return Methods.FromPlotArea(value, axis, this);
         }
 
+        /// <summary>
+        /// Scales from screen pixels graph value according to an axis.
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="axis"></param>
+        /// <returns></returns>
         public double FromDrawMargin(double value, AxisTags axis)
         {
             return Methods.FromDrawMargin(value, axis, this);
         }
 
+        /// <summary>
+        /// Scales from screen pixels graph value according to an axis.
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="axis"></param>
+        /// <returns></returns>
         public double ToDrawMargin(double value, AxisTags axis)
         {
             return Methods.ToDrawMargin(value, axis, this);
@@ -1258,7 +1287,7 @@ namespace LiveCharts.CoreComponents
 
             foreach (var series in Series) series.Values.RequiresEvaluation = true;
 
-            UnsafeRedraw();
+            UnsafeUpdate();
             _isDragging = false;
         }
 

@@ -17,7 +17,7 @@ namespace UnitTesting.General
                     sharedSeries
                 }
             };
-            lineChart1.UnsafeRedraw();
+            lineChart1.UnsafeUpdate();
 
             var lineChart2 = new LineChart
             {
@@ -27,7 +27,7 @@ namespace UnitTesting.General
                 }
             };
 
-            lineChart2.UnsafeRedraw();
+            lineChart2.UnsafeUpdate();
         }
     }
 }

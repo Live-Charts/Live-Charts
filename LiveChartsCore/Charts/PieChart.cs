@@ -67,7 +67,6 @@ namespace LiveCharts
 
         public static readonly DependencyProperty SlicePaddingProperty = DependencyProperty.Register(
             "SlicePadding", typeof (double), typeof (Chart));
-
         /// <summary>
         /// Gets or sets padding between slices.
         /// </summary>
@@ -82,7 +81,7 @@ namespace LiveCharts
         #region Properties
 
         /// <summary>
-        /// Angle in degrees that indicates pie rotation, form 0 to 360, default is 0
+        /// Gets or sets angle in degrees that indicates pie rotation, form 0 to 360, default is 0
         /// </summary>
         public double PieRotation { get; set; }
 

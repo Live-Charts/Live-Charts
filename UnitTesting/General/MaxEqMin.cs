@@ -20,7 +20,7 @@ namespace UnitTesting.General
                     new LineSeries {Values = vals}
                 }
             };
-            barChart.UnsafeRedraw();
+            barChart.UnsafeUpdate();
 
             var lineChart = new LineChart
             {
@@ -29,7 +29,7 @@ namespace UnitTesting.General
                     new LineSeries {Values = vals}
                 }
             };
-            lineChart.UnsafeRedraw();
+            lineChart.UnsafeUpdate();
 
             var pieChart = new PieChart
             {
@@ -38,7 +38,7 @@ namespace UnitTesting.General
                     new PieSeries {Values = vals}
                 }
             };
-            pieChart.UnsafeRedraw();
+            pieChart.UnsafeUpdate();
 
             var stackedChart = new StackedBarChart
             {
@@ -47,7 +47,7 @@ namespace UnitTesting.General
                     new StackedBarSeries {Values = vals}
                 }
             };
-            stackedChart.UnsafeRedraw();
+            stackedChart.UnsafeUpdate();
         }
     }
 }

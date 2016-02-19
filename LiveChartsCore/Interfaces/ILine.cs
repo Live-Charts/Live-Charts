@@ -22,6 +22,9 @@
 
 namespace LiveCharts
 {
+    /// <summary>
+    /// Gets or sets line smoothness, this value goes from 0 to 1, default. is 0.8, zero will plot rect lines, 1 really curved beziers.
+    /// </summary>
     public interface ILine
     {
         double LineSmoothness { get; set; }
