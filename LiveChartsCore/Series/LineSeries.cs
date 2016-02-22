@@ -100,30 +100,29 @@ namespace LiveCharts
                     segment.Count > 0 ? p0 : new Point(), AnimSpeed));
 
                 PathSegmentHelper previous = null;
-                PathSegmentHelper next = null;
 
-                for (var i = 0; i < segment.Count - 1; i++)
+                for (var i = 0; i < segment.Count; i++)
                 {
                     var point = segment[i];
                     var pointLocation = ToDrawMargin(point).AsPoint();
 
                     var visual = GetVisual(segment[i]);
-                    visual.HoverShape.Width = rr * 2;
-                    visual.HoverShape.Height = rr * 2;
-                    Canvas.SetLeft(visual.PointShape, pointLocation.X - visual.PointShape.Width * .5);
-                    Canvas.SetTop(visual.PointShape, pointLocation.Y - visual.PointShape.Height * .5);
-                    Canvas.SetLeft(visual.HoverShape, pointLocation.X - visual.HoverShape.Width * .5);
-                    Canvas.SetTop(visual.HoverShape, pointLocation.Y - visual.HoverShape.Height * .5);
+                    visual.HoverShape.Width = rr*2;
+                    visual.HoverShape.Height = rr*2;
+                    Canvas.SetLeft(visual.PointShape, pointLocation.X - visual.PointShape.Width*.5);
+                    Canvas.SetTop(visual.PointShape, pointLocation.Y - visual.PointShape.Height*.5);
+                    Canvas.SetLeft(visual.HoverShape, pointLocation.X - visual.HoverShape.Width*.5);
+                    Canvas.SetTop(visual.HoverShape, pointLocation.Y - visual.HoverShape.Height*.5);
 
-                    visual.PointShape.BeginAnimation(OpacityProperty, new DoubleAnimation(0, 0, TimeSpan.FromMilliseconds(1)));
+                    visual.PointShape.BeginAnimation(OpacityProperty,
+                        new DoubleAnimation(0, 0, TimeSpan.FromMilliseconds(1)));
                     if (!Chart.DisableAnimation)
                     {
+                        #region PointAnimation
+
                         var pt = new DispatcherTimer {Interval = AnimSpeed};
                         pt.Tick += (sender, args) =>
                         {
-                            //instead we can ad everything to a labels panel, and only animaty opacity of the panel
-                            //this runs alot of unecesary animations.
-                            //ToDo: ^
                             visual.PointShape.BeginAnimation(OpacityProperty, new DoubleAnimation(0, 1, AnimSpeed));
                             pt.Stop();
                         };
@@ -131,13 +130,16 @@ namespace LiveCharts
                     }
                     else
                     {
-                        visual.PointShape.BeginAnimation(OpacityProperty, new DoubleAnimation(0, 1, TimeSpan.FromMilliseconds(1)));
+                        visual.PointShape.BeginAnimation(OpacityProperty,
+                            new DoubleAnimation(0, 1, TimeSpan.FromMilliseconds(1)));
+
+                        #endregion
                     }
 
                     if (DataLabels)
                     {
-                        //this could be cleaner too
-                        //Another ToDo
+                        #region DataLabels
+
                         var tb = BuildATextBlock(0);
                         var te = f(Chart.Invert ? point.X : point.Y);
                         var ft = new FormattedText(te, CultureInfo.CurrentUICulture, FlowDirection.LeftToRight,
@@ -174,10 +176,14 @@ namespace LiveCharts
                         {
                             tb.Visibility = Visibility.Visible;
                         }
+
+                        #endregion
                     }
 
                     if (visual.IsNew)
                     {
+                        #region AddToChart
+
                         Chart.ShapesMapper.Add(new ShapeMap
                         {
                             Series = this,
@@ -194,13 +200,27 @@ namespace LiveCharts
                         visual.HoverShape.MouseDown += Chart.DataMouseDown;
                         visual.HoverShape.MouseEnter += Chart.DataMouseEnter;
                         visual.HoverShape.MouseLeave += Chart.DataMouseLeave;
+
+                        #endregion
                     }
 
+                    //if (i == segment.Count - 1)
+                    //{
+                    //    var c = _isPrimitive ? _dictionaries.Primitives.Count : _dictionaries.Instances.Count;
+                    //    Trace.WriteLine("Segments" + segment.Count);
+                    //    Trace.WriteLine("Dictionaries Counts" + c);
+                    //    //_figure.Segments.Remove(previous.Segment);
+                    //    //_dictionaries.Instances.Remove(i);
+                    //    continue;
+                    //}
                     var helper = GetSegmentHelper(i, segment[i].Instance);
-                    helper.Data = CalculateBezier(i, segment);
+                    helper.Data = i == segment.Count - 1
+                        ? new BezierData (previous.Data.P3)
+                        : CalculateBezier(i, segment);
                     helper.Previous = previous != null && previous.IsNew ? previous.Previous : previous;
                     helper.Animate(i, _figure, Chart);
                     previous = helper;
+
                 }
             }
         }
@@ -257,6 +277,13 @@ namespace LiveCharts
             //track by instance reference
             if (!_isPrimitive)
                 EreaseInstances(force);
+
+#if DEBUG
+            if (_isPrimitive)
+                Trace.WriteLine("Primitive dictionary count: " + _dictionaries.Primitives.Count);
+            else
+                Trace.WriteLine("Instance dictionary count: " + _dictionaries.Instances.Count);
+#endif
         }
 
         private void EreasePrimitives(bool force)
@@ -269,6 +296,7 @@ namespace LiveCharts
                 .Where(m => Equals(m.Series, this) &&
                             !activeIndexes.Contains(m.ChartPoint.Key))
                 .ToArray();
+
             foreach (var s in inactiveIndexes)
             {
                 var p = s.Shape.Parent as Canvas;
@@ -332,11 +360,11 @@ namespace LiveCharts
                     else
                     {
 #if DEBUG
-                        //this means a shape was erased but it is not in the dictionary, how could this be possible?
-                        //this normally throws when you call Chart.Update, it should never fail unless you call that method, why??
-                        //ToDo: find this issue, Priority Low, since it is not common to happen, only occurs when you need to force redraw.
-                        System.Diagnostics.Trace.TraceWarning(
-                            "Could not find ChartPoint instance '{0}' in dictionary", i);
+                        //Found the issue, the problem is that the dictionary maps a point with next line,
+                        //so when you delete last point there is no next line, here is when this fails
+                        //but how do we detect this efficiently???
+                        //by now TryGetValueWorks
+                        Trace.TraceWarning("Could not find ChartPoint instance '{0}' in dictionary", i);
 #endif
                     }
                 }
@@ -348,6 +376,7 @@ namespace LiveCharts
         /// </summary>
         /// <param name="index"></param>
         /// <param name="instance"></param>
+        /// <param name="previous"></param>
         /// <returns></returns>
         private PathSegmentHelper GetSegmentHelper(int index, object instance)
         {
@@ -389,9 +418,6 @@ namespace LiveCharts
 
         private VisualHelper GetVisual(ChartPoint point)
         {
-            //could we implement a dictionary here? 
-            //when we have large amounts of sata this should run slowly
-            //ToDo: check if ShapesMapper could be a dictionary so we can access values faster.
             var map = _isPrimitive
                 ? Chart.ShapesMapper.FirstOrDefault(x => x.Series.Equals(this) &&
                                                          x.ChartPoint.Key == point.Key)
@@ -443,8 +469,20 @@ namespace LiveCharts
         }
     }
 
-    internal struct BezierData
+    internal class BezierData
     {
+        public BezierData()
+        {
+            
+        }
+
+        public BezierData(Point point)
+        {
+            P1 = point;
+            P2 = point;
+            P3 = point;
+        }
+
         public Point P1 { get; set; }
         public Point P2 { get; set; }
         public Point P3 { get; set; }

@@ -107,9 +107,12 @@ namespace ChartsTest.Line_Examples.AnimationImprovement
             }
         }
 
-        private void ToggleLineTypeOnClick(object sender, RoutedEventArgs e)
+        private void RemoveMiddleOnClick(object sender, RoutedEventArgs e)
         {
-
+            foreach (var series in Series)
+            {
+                if (series.Values.Count > 3) series.Values.RemoveAt(2);
+            }
         }
     }
 

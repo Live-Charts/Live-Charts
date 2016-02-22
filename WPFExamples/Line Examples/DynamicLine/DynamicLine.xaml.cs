@@ -33,7 +33,7 @@ namespace ChartsTest.Line_Examples.DynamicLine
             config.X(model => model.DateTime.ToOADate());
 
             //now we create our series with this configuration
-            Series = new SeriesCollection(config) {new LineSeries {Values = new ChartValues<WeatherViewModel>()}};
+            Series = new SeriesCollection(config) {new LineSeries {Values = new ChartValues<WeatherViewModel>(), PointRadius = 0}};
 
             //to display a custom label we will use a formatter,
             //formatters are just functions that take a double value as parameter
@@ -85,7 +85,7 @@ namespace ChartsTest.Line_Examples.DynamicLine
 
         private void AddSeriesOnClick(object sender, RoutedEventArgs e)
         {
-            Series.Add(new LineSeries {Values = new ChartValues<WeatherViewModel>()});
+            Series.Add(new LineSeries {Values = new ChartValues<WeatherViewModel>(), PointRadius = 0});
         }
 
         private void RemoveSeriesOnClick(object sender, RoutedEventArgs e)
