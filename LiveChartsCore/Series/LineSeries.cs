@@ -215,7 +215,7 @@ namespace LiveCharts
                     //}
                     var helper = GetSegmentHelper(i, segment[i].Instance);
                     helper.Data = i == segment.Count - 1
-                        ? new BezierData (previous.Data.P3)
+                        ? new BezierData (previous != null ? previous.Data.P3 : _figure.StartPoint)
                         : CalculateBezier(i, segment);
                     helper.Previous = previous != null && previous.IsNew ? previous.Previous : previous;
                     helper.Animate(i, _figure, Chart);
@@ -424,15 +424,16 @@ namespace LiveCharts
                 : Chart.ShapesMapper.FirstOrDefault(x => x.Series.Equals(this) &&
                                                          x.ChartPoint.Instance == point.Instance);
 
-            return map == null
-                ? new VisualHelper
+            if (map == null)
+            {
+                return new VisualHelper
                 {
                     PointShape = new Ellipse
                     {
-                        Width = PointRadius * 2,
-                        Height = PointRadius * 2,
+                        Width = PointRadius*2,
+                        Height = PointRadius*2,
                         Fill = Stroke,
-                        Stroke = new SolidColorBrush { Color = Chart.PointHoverColor },
+                        Stroke = new SolidColorBrush {Color = Chart.PointHoverColor},
                         StrokeThickness = 1
                     },
                     HoverShape = new Rectangle
@@ -441,13 +442,17 @@ namespace LiveCharts
                         StrokeThickness = 0
                     },
                     IsNew = true
-                }
-                : new VisualHelper
-                {
-                    PointShape = map.Shape,
-                    HoverShape = map.HoverShape,
-                    IsNew = false
                 };
+            }
+            
+            map.ChartPoint.X = point.X;
+            map.ChartPoint.Y = point.Y;
+            return new VisualHelper
+            {
+                PointShape = map.Shape,
+                HoverShape = map.HoverShape,
+                IsNew = false
+            };
         }
 
         private struct VisualHelper

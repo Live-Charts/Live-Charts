@@ -65,10 +65,10 @@ namespace ChartsTest
                 new MvvmPie(),
                 new CustomPie(),
             };
-            //MoreExamples = new List<UserControl>
-            //{
-            //    new RadarChartExample()
-            //};
+            MoreExamples = new List<UserControl>
+            {
+                //new RadarChartExample()
+            };
             window.LineControl.Content = LineAndAreaAexamples != null && LineAndAreaAexamples.Count > 0 ? LineAndAreaAexamples[0] : null;
             window.BarControl.Content = BarExamples != null && BarExamples.Count > 0 ? BarExamples[0] : null;
             window.StackedBarControl.Content =StackedBarExamples != null && StackedBarExamples.Count > 0 ? StackedBarExamples[0] : null;

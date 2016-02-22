@@ -27,7 +27,6 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.ComponentModel;
 using System.Linq;
-using System.Windows.Shapes;
 using System.Windows.Threading;
 using LiveCharts.CoreComponents;
 using LiveCharts.Shapes;
@@ -258,6 +257,9 @@ namespace LiveCharts
                     IsNew = true
                 };
             }
+
+            map.ChartPoint.X = point.X;
+            map.ChartPoint.Y = point.Y;
 
             return new VisualHelper
             {

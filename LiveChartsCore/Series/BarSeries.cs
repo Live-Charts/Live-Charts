@@ -376,8 +376,9 @@ namespace LiveCharts
                 : Chart.ShapesMapper.FirstOrDefault(x => x.Series.Equals(this) &&
                                                          x.ChartPoint.Instance == point.Instance);
 
-            return map == null
-                ? new VisualHelper
+            if (map == null)
+            {
+                return new VisualHelper
                 {
                     PointShape = new Rectangle
                     {
@@ -392,13 +393,18 @@ namespace LiveCharts
                         StrokeThickness = 0
                     },
                     IsNew = true
-                }
-                : new VisualHelper
-                {
-                    PointShape = map.Shape,
-                    HoverShape = map.HoverShape,
-                    IsNew = false
                 };
+            }
+
+            map.ChartPoint.X = point.X;
+            map.ChartPoint.Y = point.Y;
+
+            return new VisualHelper
+            {
+                PointShape = map.Shape,
+                HoverShape = map.HoverShape,
+                IsNew = false
+            };
         }
 
         private struct VisualHelper
