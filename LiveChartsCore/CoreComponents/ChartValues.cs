@@ -190,8 +190,13 @@ namespace LiveCharts
                         observable.PointChanged += ObservableOnPointChanged;
                     }
                 }
-                if (f(t, i) >= config.Chart.From && f(t, i) <= config.Chart.To)
-                    yield return new KeyValuePair<int, T>(i, t);
+                //I think this config.chart.from and config.chart.to is not anymor useful
+                //this is causing an issue with double.nan values.
+                //becase double.nan is not in the range chart.From-chart.To
+                //for now this is disabled and will be rivewed with Highperformance Release
+                //var pulled = f(t, i);
+                //if (pulled >= config.Chart.From && pulled <= config.Chart.To)
+                yield return new KeyValuePair<int, T>(i, t);
                 i++;
             }
         }
