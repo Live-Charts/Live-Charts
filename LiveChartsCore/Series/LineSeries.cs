@@ -1,6 +1,6 @@
 //The MIT License(MIT)
 
-//Copyright(c) 2016 Alberto Rodriguez and Raul Otaño Hurtado
+//Copyright(c) 2016 Alberto Rodriguez, algorithm based on Raul Otaño Hurtado article.
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -32,18 +32,18 @@ using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 using LiveCharts.CoreComponents;
+using LiveCharts.Helpers;
 
 namespace LiveCharts
 {
-    public class LineSeries : Series
+    public class LineSeries : CoreComponents.Series
     {
         public static DateTime TestTimer = DateTime.Now;
 
         internal static readonly TimeSpan AnimSpeed = TimeSpan.FromMilliseconds(500);
         private bool _isPrimitive;
-        private readonly LineSeriesDictionaries _dictionaries = new LineSeriesDictionaries();
-        private readonly List<PathFigure> _figures = new List<PathFigure>();
-        private readonly List<PathFigure> _areaFigures = new List<PathFigure>(); 
+        private readonly LineSeriesTracker _tracker = new LineSeriesTracker();
+        private readonly List<LineAndAreaShape> _areas = new List<LineAndAreaShape>();
 
         public LineSeries()
         {
@@ -78,46 +78,44 @@ namespace LiveCharts
                 if (segment.Count == 0) continue;
 
                 PathFigure figure;
-                PathFigure areaFigure;
-                if (_figures.Count <= s)
+                LineAndAreaShape clfh = null;
+
+                if (_areas.Count <= s)
                 {
-                    //line
-                    var path = new Path {Stroke = Stroke, StrokeThickness = StrokeThickness};
+                    var path = new Path {Stroke = Stroke, StrokeThickness = StrokeThickness, Fill = Fill};
                     var geometry = new PathGeometry();
                     figure = new PathFigure();
                     geometry.Figures.Add(figure);
                     path.Data = geometry;
-                    _figures.Add(figure);
+                    clfh = new LineAndAreaShape(figure);
+                    _areas.Add(clfh);
                     Chart.DrawMargin.Children.Add(path);
-                    //area
-                    var pathA = new Path { Stroke = Stroke, StrokeThickness = StrokeThickness };
-                    var geometryA = new PathGeometry();
-                    areaFigure = new PathFigure();
-                    geometryA.Figures.Add(areaFigure);
-                    path.Data = geometry;
-                    _areaFigures.Add(figure);
-                    Chart.DrawMargin.Children.Add(pathA);
                 }
                 else
                 {
-                    figure = _figures[s];
-                    areaFigure = _areaFigures[s];
+                    figure = _areas[s].Figure;
                 }
 
                 var p0 = ToDrawMargin(segment[0]).AsPoint();
                 figure.StartPoint = p0;
-                areaFigure.StartPoint = p0;
                 figure.BeginAnimation(PathFigure.StartPointProperty, new PointAnimation(figure.StartPoint,
                     segment.Count > 0 ? p0 : new Point(), AnimSpeed));
-                areaFigure.BeginAnimation(PathFigure.StartPointProperty, new PointAnimation(figure.StartPoint,
-                    segment.Count > 0 ? p0 : new Point(), AnimSpeed));
 
-                PathSegmentHelper previous = null;
+                AnimatableSegments previous = null;
+                var isVirgin = true;
+                var first = new Point();
+                var last = new Point();
 
                 for (var i = 0; i < segment.Count; i++)
                 {
                     var point = segment[i];
                     var pointLocation = ToDrawMargin(point).AsPoint();
+
+                    if (isVirgin)
+                    {
+                        isVirgin = false;
+                        first = pointLocation;
+                    }
 
                     var visual = GetVisual(segment[i]);
 
@@ -129,12 +127,24 @@ namespace LiveCharts
 
                     var helper = GetSegmentHelper(point.Key, segment[i].Instance, figure);
                     helper.Data = i == segment.Count - 1
-                        ? new BezierData (previous != null ? previous.Data.P3 : figure.StartPoint) //last line is a dummy line, just to keep algorithm simple.
+                        ? new BezierData(previous != null ? previous.Data.P3 : figure.StartPoint)
+                        //last line is a dummy line, just to keep algorithm simple.
                         : CalculateBezier(i, segment);
                     helper.Previous = previous != null && previous.IsNew ? previous.Previous : previous;
-                    helper.Animate(i + so, figure, Chart, so);
+                    helper.Animate(i + so, Chart, so);
                     previous = helper;
+                    last = pointLocation;
                 }
+
+                if (clfh != null)
+                    clfh.DrawLimits(first, last,
+                        new Point(ToDrawMargin(Chart.Min.X, AxisTags.X), ToDrawMargin(Chart.Min.Y, AxisTags.Y)),
+                        Chart.Invert);
+
+#if DEBUG
+                Trace.WriteLine("Segments count: " + figure.Segments.Count);
+#endif
+
                 s++;
                 so += segment.Count;
             }
@@ -284,9 +294,9 @@ namespace LiveCharts
 
 #if DEBUG
             if (_isPrimitive)
-                Trace.WriteLine("Primitive dictionary count: " + _dictionaries.Primitives.Count);
+                Trace.WriteLine("Primitive dictionary count: " + _tracker.Primitives.Count);
             else
-                Trace.WriteLine("Instance dictionary count: " + _dictionaries.Instances.Count);
+                Trace.WriteLine("Instance dictionary count: " + _tracker.Instances.Count);
 #endif
         }
 
@@ -311,9 +321,9 @@ namespace LiveCharts
                     Chart.ShapesMapper.Remove(s);
                     Shapes.Remove(s.Shape);
                     var i = s.ChartPoint.Key;
-                    var bezier = _dictionaries.Primitives[s.ChartPoint.Key];
+                    var bezier = _tracker.Primitives[s.ChartPoint.Key];
                     bezier.Owner.Segments.Remove(bezier.Segment);
-                    _dictionaries.Primitives.Remove(i);
+                    _tracker.Primitives.Remove(i);
                 }
             }
         }
@@ -336,9 +346,10 @@ namespace LiveCharts
                     Chart.ShapesMapper.Remove(s);
                     Shapes.Remove(s.Shape);
                     var i = s.ChartPoint.Instance;
-                    var bezier = _dictionaries.Instances[s.ChartPoint.Instance];
+                    var bezier = _tracker.Instances[s.ChartPoint.Instance];
                     bezier.Owner.Segments.Remove(bezier.Segment);
-                    _dictionaries.Instances.Remove(i);
+                    bezier.Owner.Segments.Remove(bezier.Segment);
+                    _tracker.Instances.Remove(i);
                 }
             }
         }
@@ -348,42 +359,49 @@ namespace LiveCharts
         /// </summary>
         /// <param name="index"></param>
         /// <param name="instance"></param>
-        /// <param name="currentSegment"></param>
+        /// <param name="lineFigure"></param>
         /// <returns></returns>
-        private PathSegmentHelper GetSegmentHelper(int index, object instance, PathFigure currentSegment)
+        private AnimatableSegments GetSegmentHelper(int index, object instance, PathFigure lineFigure)
         {
             if (_isPrimitive)
             {
-                if (_dictionaries.Primitives.ContainsKey(index))
-                    return new PathSegmentHelper
+                if (_tracker.Primitives.ContainsKey(index))
+                {
+                    var primitive = _tracker.Primitives[index];
+                    return new AnimatableSegments
                     {
-                        Bezier = _dictionaries.Primitives[index],
+                        Bezier = primitive,
                         IsNew = false
                     };
+                }
 
-                var primitiveBezier = new TrackableBezier(currentSegment) {Segment = new BezierSegment()};
-                _dictionaries.Primitives[index] = primitiveBezier;
+                var primitiveBeziers = new TrackableBezier(lineFigure) {Segment = new BezierSegment()};
 
-                return new PathSegmentHelper
+                _tracker.Primitives[index] = primitiveBeziers;
+
+                return new AnimatableSegments
                 {
-                    Bezier = primitiveBezier,
+                    Bezier = primitiveBeziers,
                     IsNew = true
                 };
             }
 
-            if (_dictionaries.Instances.ContainsKey(instance))
-                return new PathSegmentHelper
+            if (_tracker.Instances.ContainsKey(instance))
+            {
+                var instanceVal = _tracker.Instances[instance];
+                return new AnimatableSegments
                 {
-                    Bezier = _dictionaries.Instances[instance],
+                    Bezier = instanceVal,
                     IsNew = false
                 };
+            }
 
-            var instanceBezier = new TrackableBezier(currentSegment) {Segment = new BezierSegment()};
-            _dictionaries.Instances[instance] = instanceBezier;
+            var instanceBeziers = new TrackableBezier(lineFigure) {Segment = new BezierSegment()};
+            _tracker.Instances[instance] = instanceBeziers;
 
-            return new PathSegmentHelper
+            return new AnimatableSegments
             {
-                Bezier = instanceBezier,
+                Bezier = instanceBeziers,
                 IsNew = true
             };
         }
@@ -433,106 +451,5 @@ namespace LiveCharts
             public Shape PointShape { get; set; }
             public Shape HoverShape { get; set; }
         }
-
-        private class LineSeriesDictionaries
-        {
-            public LineSeriesDictionaries()
-            {
-                Primitives = new Dictionary<int, TrackableBezier>();
-                Instances = new Dictionary<object, TrackableBezier>();
-            }
-            public Dictionary<int, TrackableBezier> Primitives { get; set; }
-            public Dictionary<object, TrackableBezier> Instances { get; set; }
-        }
-    }
-
-    internal class BezierData
-    {
-        public BezierData()
-        {
-            
-        }
-
-        public BezierData(Point point)
-        {
-            P1 = point;
-            P2 = point;
-            P3 = point;
-        }
-
-        public Point P1 { get; set; }
-        public Point P2 { get; set; }
-        public Point P3 { get; set; }
-        public Point StartPoint { get; set; }
-
-        public BezierSegment AssignTo(BezierSegment segment)
-        {
-            segment.Point1 = P1;
-            segment.Point2 = P2;
-            segment.Point3 = P3;
-            return segment;
-        }
-    }
-
-    internal class PathSegmentHelper
-    {
-        public bool IsNew { get; set; }
-        public TrackableBezier Bezier { get; set; }
-        public BezierData Data { get; set; }
-        public PathSegmentHelper Previous { get; set; }
-        public PathSegmentHelper Next { get; set; }
-
-        public void Animate(int index, PathFigure figure, Chart chart, int pathOffset)
-        {
-            var s1 = new Point();
-            var s2 = new Point();
-            var s3 = new Point();
-
-            if (IsNew)
-            {
-                figure.Segments.Insert(index - pathOffset, Data.AssignTo(Bezier.Segment));
-                if (chart.Invert)
-                {
-                    s1 = new Point(chart.ToDrawMargin(chart.Min.X, AxisTags.X), Data.P1.Y);
-                    s2 = new Point(chart.ToDrawMargin(chart.Min.X, AxisTags.X), Data.P2.Y);
-                    s3 = new Point(chart.ToDrawMargin(chart.Min.X, AxisTags.X), Data.P3.Y);
-                }
-                else
-                {
-                    s1 = new Point(Data.P1.X, chart.ToDrawMargin(chart.Min.Y, AxisTags.Y));
-                    s2 = new Point(Data.P2.X, chart.ToDrawMargin(chart.Min.Y, AxisTags.Y));
-                    s3 = new Point(Data.P3.X, chart.ToDrawMargin(chart.Min.Y, AxisTags.Y));
-                }
-            }
-
-            var p1 = IsNew ? (Previous != null && !Previous.IsNew ? Previous.Bezier.Segment.Point3 : s1) : Bezier.Segment.Point1;
-            var p2 = IsNew ? (Previous != null && !Previous.IsNew ? Previous.Bezier.Segment.Point3 : s2) : Bezier.Segment.Point2;
-            var p3 = IsNew ? (Previous != null && !Previous.IsNew ? Previous.Bezier.Segment.Point3 : s3) : Bezier.Segment.Point3;
-
-            if (chart.DisableAnimation)
-            {
-                Bezier.Segment.Point1 = Data.P1;
-                Bezier.Segment.Point2 = Data.P2;
-                Bezier.Segment.Point3 = Data.P3;
-                return;
-            }
-
-            Bezier.Segment.BeginAnimation(BezierSegment.Point1Property,
-                new PointAnimation(p1, Data.P1, LineSeries.AnimSpeed));
-            Bezier.Segment.BeginAnimation(BezierSegment.Point2Property,
-                new PointAnimation(p2, Data.P2, LineSeries.AnimSpeed));
-            Bezier.Segment.BeginAnimation(BezierSegment.Point3Property,
-                new PointAnimation(p3, Data.P3, LineSeries.AnimSpeed));
-        }
-    }
-
-    internal class TrackableBezier
-    {
-        public TrackableBezier(PathFigure ownerFigure)
-        {
-            Owner = ownerFigure;
-        }
-        public BezierSegment Segment { get; set; }
-        public PathFigure Owner { get; set; }
     }
 }

@@ -136,6 +136,11 @@
     <Compile Include="Interfaces\IChartValues.cs" />
     <Compile Include="LiveChartsExtentions.cs" />
     <Compile Include="CoreComponents\ChartValues.cs" />
+    <Compile Include="Series\Helpers\BezierData.cs" />
+    <Compile Include="Series\Helpers\LineAndAreaShape.cs" />
+    <Compile Include="Series\Helpers\TrackableBezier.cs" />
+    <Compile Include="Series\Helpers\AnimatableSegments.cs" />
+    <Compile Include="Series\Helpers\LineSeriesTracker.cs" />
     <Compile Include="Tooltip\IndexedTooltipData.cs" />
     <Compile Include="Tooltip\Converters.cs" />
     <Compile Include="Tooltip\DefaultIndexedTooltip.xaml.cs">
