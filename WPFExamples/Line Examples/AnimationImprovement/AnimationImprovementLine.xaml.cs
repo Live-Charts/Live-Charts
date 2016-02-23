@@ -23,7 +23,7 @@ namespace ChartsTest.Line_Examples.AnimationImprovement
                     {
                         new ViewModel {YValue = 0},
                         new ViewModel {YValue = 1},
-                        new ViewModel {YValue = double.NaN},
+                        new ViewModel {YValue = 0},
                         new ViewModel {YValue = 1},
                         new ViewModel {YValue = 0}
                     },

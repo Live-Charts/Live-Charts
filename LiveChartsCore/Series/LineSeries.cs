@@ -42,7 +42,8 @@ namespace LiveCharts
         internal static readonly TimeSpan AnimSpeed = TimeSpan.FromMilliseconds(500);
         private bool _isPrimitive;
         private readonly LineSeriesDictionaries _dictionaries = new LineSeriesDictionaries();
-        private readonly List<PathFigure> _figures = new List<PathFigure>(); 
+        private readonly List<PathFigure> _figures = new List<PathFigure>();
+        private readonly List<PathFigure> _areaFigures = new List<PathFigure>(); 
 
         public LineSeries()
         {
@@ -77,8 +78,10 @@ namespace LiveCharts
                 if (segment.Count == 0) continue;
 
                 PathFigure figure;
+                PathFigure areaFigure;
                 if (_figures.Count <= s)
                 {
+                    //line
                     var path = new Path {Stroke = Stroke, StrokeThickness = StrokeThickness};
                     var geometry = new PathGeometry();
                     figure = new PathFigure();
@@ -86,10 +89,13 @@ namespace LiveCharts
                     path.Data = geometry;
                     _figures.Add(figure);
                     Chart.DrawMargin.Children.Add(path);
+                    //area
+
                 }
                 else
                 {
                     figure = _figures[s];
+                    areaFigure = _areaFigures[s];
                 }
 
                 var p0 = ToDrawMargin(segment[0]).AsPoint();
@@ -117,8 +123,6 @@ namespace LiveCharts
 
                     if (!Chart.DisableAnimation)
                     {
-                        #region PointAnimation
-
                         var pt = new DispatcherTimer {Interval = AnimSpeed};
                         pt.Tick += (sender, args) =>
                         {
@@ -131,77 +135,11 @@ namespace LiveCharts
                     {
                         visual.PointShape.BeginAnimation(OpacityProperty,
                             new DoubleAnimation(0, 1, TimeSpan.FromMilliseconds(1)));
-
-                        #endregion
                     }
 
-                    if (DataLabels)
-                    {
-                        #region DataLabels
+                    if (DataLabels) Label(point, f, pointLocation);
 
-                        var tb = BuildATextBlock(0);
-                        var te = f(Chart.Invert ? point.X : point.Y);
-                        var ft = new FormattedText(te, CultureInfo.CurrentUICulture, FlowDirection.LeftToRight,
-                            new Typeface(FontFamily, FontStyle, FontWeight, FontStretch), FontSize, Brushes.Black);
-                        tb.Text = te;
-                        var length = pointLocation.X - ft.Width*.5;
-                        length = length < 0
-                            ? 0
-                            : (length + ft.Width > Chart.DrawMargin.Width
-                                ? Chart.DrawMargin.Width - ft.Width
-                                : length);
-                        var tp = pointLocation.Y - ft.Height - 5;
-                        tp = tp < 0 ? 0 : tp;
-                        tb.Text = te;
-                        tb.Visibility = Visibility.Hidden;
-                        Chart.Canvas.Children.Add(tb);
-                        Chart.Shapes.Add(tb);
-                        Canvas.SetLeft(tb, length + Canvas.GetLeft(Chart.DrawMargin));
-                        Canvas.SetTop(tb, tp + Canvas.GetTop(Chart.DrawMargin));
-                        Panel.SetZIndex(tb, int.MaxValue - 1);
-                        if (!Chart.DisableAnimation)
-                        {
-                            var t = new DispatcherTimer {Interval = AnimSpeed};
-                            t.Tick += (sender, args) =>
-                            {
-                                tb.Visibility = Visibility.Visible;
-                                var fadeIn = new DoubleAnimation(0, 1, AnimSpeed);
-                                tb.BeginAnimation(OpacityProperty, fadeIn);
-                                t.Stop();
-                            };
-                            t.Start();
-                        }
-                        else
-                        {
-                            tb.Visibility = Visibility.Visible;
-                        }
-
-                        #endregion
-                    }
-
-                    if (visual.IsNew)
-                    {
-                        #region AddToChart
-
-                        Chart.ShapesMapper.Add(new ShapeMap
-                        {
-                            Series = this,
-                            HoverShape = visual.HoverShape,
-                            Shape = visual.PointShape,
-                            ChartPoint = point
-                        });
-                        Chart.DrawMargin.Children.Add(visual.PointShape);
-                        Chart.DrawMargin.Children.Add(visual.HoverShape);
-                        Shapes.Add(visual.PointShape);
-                        Shapes.Add(visual.HoverShape);
-                        Panel.SetZIndex(visual.HoverShape, int.MaxValue);
-                        Panel.SetZIndex(visual.PointShape, int.MaxValue - 2);
-                        visual.HoverShape.MouseDown += Chart.DataMouseDown;
-                        visual.HoverShape.MouseEnter += Chart.DataMouseEnter;
-                        visual.HoverShape.MouseLeave += Chart.DataMouseLeave;
-
-                        #endregion
-                    }
+                    if (visual.IsNew) AddToCanvas(visual, point);
 
                     var helper = GetSegmentHelper(point.Key, segment[i].Instance, figure);
                     helper.Data = i == segment.Count - 1
@@ -214,6 +152,66 @@ namespace LiveCharts
                 s++;
                 so += segment.Count;
             }
+        }
+
+        private void Label(ChartPoint point, Func<double, string> f, Point pointLocation)
+        {
+            var tb = BuildATextBlock(0);
+            var te = f(Chart.Invert ? point.X : point.Y);
+            var ft = new FormattedText(te, CultureInfo.CurrentUICulture, FlowDirection.LeftToRight,
+                new Typeface(FontFamily, FontStyle, FontWeight, FontStretch), FontSize, Brushes.Black);
+            tb.Text = te;
+            var length = pointLocation.X - ft.Width * .5;
+            length = length < 0
+                ? 0
+                : (length + ft.Width > Chart.DrawMargin.Width
+                    ? Chart.DrawMargin.Width - ft.Width
+                    : length);
+            var tp = pointLocation.Y - ft.Height - 5;
+            tp = tp < 0 ? 0 : tp;
+            tb.Text = te;
+            tb.Visibility = Visibility.Hidden;
+            Chart.Canvas.Children.Add(tb);
+            Chart.Shapes.Add(tb);
+            Canvas.SetLeft(tb, length + Canvas.GetLeft(Chart.DrawMargin));
+            Canvas.SetTop(tb, tp + Canvas.GetTop(Chart.DrawMargin));
+            Panel.SetZIndex(tb, int.MaxValue - 1);
+            if (!Chart.DisableAnimation)
+            {
+                var t = new DispatcherTimer { Interval = AnimSpeed };
+                t.Tick += (sender, args) =>
+                {
+                    tb.Visibility = Visibility.Visible;
+                    var fadeIn = new DoubleAnimation(0, 1, AnimSpeed);
+                    tb.BeginAnimation(OpacityProperty, fadeIn);
+                    t.Stop();
+                };
+                t.Start();
+            }
+            else
+            {
+                tb.Visibility = Visibility.Visible;
+            }
+        }
+
+        private void AddToCanvas(VisualHelper visual, ChartPoint point)
+        {
+            Chart.ShapesMapper.Add(new ShapeMap
+            {
+                Series = this,
+                HoverShape = visual.HoverShape,
+                Shape = visual.PointShape,
+                ChartPoint = point
+            });
+            Chart.DrawMargin.Children.Add(visual.PointShape);
+            Chart.DrawMargin.Children.Add(visual.HoverShape);
+            Shapes.Add(visual.PointShape);
+            Shapes.Add(visual.HoverShape);
+            Panel.SetZIndex(visual.HoverShape, int.MaxValue);
+            Panel.SetZIndex(visual.PointShape, int.MaxValue - 2);
+            visual.HoverShape.MouseDown += Chart.DataMouseDown;
+            visual.HoverShape.MouseEnter += Chart.DataMouseEnter;
+            visual.HoverShape.MouseLeave += Chart.DataMouseLeave;
         }
 
         private BezierData CalculateBezier(int index, IList<ChartPoint> source)
