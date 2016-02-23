@@ -42,19 +42,12 @@ namespace LiveCharts
         internal static readonly TimeSpan AnimSpeed = TimeSpan.FromMilliseconds(500);
         private bool _isPrimitive;
         private readonly LineSeriesDictionaries _dictionaries = new LineSeriesDictionaries();
-        private readonly PathFigure _figure;
-        private readonly Path _path;
+        private readonly List<PathFigure> _figures = new List<PathFigure>(); 
 
         public LineSeries()
         {
             StrokeThickness = 2.5;
             PointRadius = 4;
-
-            _path = new Path();
-            var geometry = new PathGeometry();
-            _figure = new PathFigure();
-            geometry.Figures.Add(_figure);
-            _path.Data = geometry;
         }
 
         private ILine LineChart
@@ -69,15 +62,6 @@ namespace LiveCharts
 
         public override void Plot(bool animate = true)
         {
-            if (_path.Parent == null) Chart.DrawMargin.Children.Add(_path);
-
-            _path.Stroke = Stroke;
-            _path.StrokeThickness = StrokeThickness;
-            //previous lines feels bad, this should not be pulled this ugly
-            //both properties should be binded, and taking all wpf power.
-            //also with visibiliy property.
-            //ToDo: do this as it should!
-
             _isPrimitive = Values.Count >= 1 && Values[0].GetType().IsPrimitive;
 
             //This is so ugly now and will not work for 0.6.5 //Todo: Fix this.
@@ -86,17 +70,31 @@ namespace LiveCharts
             var rr = PointRadius < 5 ? 5 : PointRadius;
             var f = Chart.GetFormatter(Chart.Invert ? Chart.AxisX : Chart.AxisY);
 
-#if DEBUG
-            TestTimer = DateTime.Now;
-            Trace.WriteLine("Line Series Plotting, animation scheduled to last " + AnimSpeed.TotalMilliseconds + "ms");
-#endif
-
+            var s = 0;
+            var so = 0;
             foreach (var segment in Values.Points.AsSegments())
             {
                 if (segment.Count == 0) return;
+
+                PathFigure figure;
+                if (_figures.Count <= s)
+                {
+                    var path = new Path {Stroke = Stroke, StrokeThickness = StrokeThickness};
+                    var geometry = new PathGeometry();
+                    figure = new PathFigure();
+                    geometry.Figures.Add(figure);
+                    path.Data = geometry;
+                    _figures.Add(figure);
+                    Chart.DrawMargin.Children.Add(path);
+                }
+                else
+                {
+                    figure = _figures[s];
+                }
+
                 var p0 = ToDrawMargin(segment[0]).AsPoint();
-                _figure.StartPoint = p0;
-                _figure.BeginAnimation(PathFigure.StartPointProperty, new PointAnimation(_figure.StartPoint,
+                figure.StartPoint = p0;
+                figure.BeginAnimation(PathFigure.StartPointProperty, new PointAnimation(figure.StartPoint,
                     segment.Count > 0 ? p0 : new Point(), AnimSpeed));
 
                 PathSegmentHelper previous = null;
@@ -116,6 +114,7 @@ namespace LiveCharts
 
                     visual.PointShape.BeginAnimation(OpacityProperty,
                         new DoubleAnimation(0, 0, TimeSpan.FromMilliseconds(1)));
+
                     if (!Chart.DisableAnimation)
                     {
                         #region PointAnimation
@@ -204,24 +203,16 @@ namespace LiveCharts
                         #endregion
                     }
 
-                    //if (i == segment.Count - 1)
-                    //{
-                    //    var c = _isPrimitive ? _dictionaries.Primitives.Count : _dictionaries.Instances.Count;
-                    //    Trace.WriteLine("Segments" + segment.Count);
-                    //    Trace.WriteLine("Dictionaries Counts" + c);
-                    //    //_figure.Segments.Remove(previous.Segment);
-                    //    //_dictionaries.Instances.Remove(i);
-                    //    continue;
-                    //}
-                    var helper = GetSegmentHelper(i, segment[i].Instance);
+                    var helper = GetSegmentHelper(i + so, segment[i].Instance, figure);
                     helper.Data = i == segment.Count - 1
-                        ? new BezierData (previous != null ? previous.Data.P3 : _figure.StartPoint)
+                        ? new BezierData (previous != null ? previous.Data.P3 : figure.StartPoint) //last line is a dummy line, just to keep algorithm simple.
                         : CalculateBezier(i, segment);
                     helper.Previous = previous != null && previous.IsNew ? previous.Previous : previous;
-                    helper.Animate(i, _figure, Chart);
+                    helper.Animate(i + so, figure, Chart, so);
                     previous = helper;
-
                 }
+                s++;
+                so += segment.Count;
             }
         }
 
@@ -307,25 +298,10 @@ namespace LiveCharts
                     Chart.ShapesMapper.Remove(s);
                     Shapes.Remove(s.Shape);
                     var i = s.ChartPoint.Key;
-                    BezierSegment bezier;
-                    if (_dictionaries.Primitives.TryGetValue(i, out bezier))
-                    {
-                        //WARNING this could cause memory leaks
-                        //because we do only remove bezier, but we never remove Path from canvas
-                        //ToDo: delete this memory leak, maybe asking at the end of this method if: !figure.Segments.Any() then remove _path from canvas
-                        _figure.Segments.Remove(bezier);
-                        _dictionaries.Primitives.Remove(i);
-                    }
-                    else
-                    {
-#if DEBUG
-                        //this means a shape was erased but it is not in the dictionary, how could this be possible?
-                        //this normally throws when you call Chart.Update, it should never fail unless you call that method, why??
-                        //ToDo: find this issue, Priority Low, since it is not common to happen, only occurs when you need to force redraw.
-                        System.Diagnostics.Trace.TraceWarning(
-                            "Could not find ChartPoint instance '{0}' in dictionary", i);
-#endif
-                    }
+                    var bezier = _dictionaries.Primitives[s.ChartPoint.Key];
+                    bezier.Owner.Segments.Remove(bezier.Segment);
+                    //_figure.Segments.Remove(bezier.Segment);
+                    _dictionaries.Primitives.Remove(i);
                 }
             }
         }
@@ -348,25 +324,10 @@ namespace LiveCharts
                     Chart.ShapesMapper.Remove(s);
                     Shapes.Remove(s.Shape);
                     var i = s.ChartPoint.Instance;
-                    BezierSegment bezier;
-                    if (_dictionaries.Instances.TryGetValue(i, out bezier))
-                    {
-                        //WARNING this could cause memory leaks
-                        //because we do only remove bezier, but we never remove Path from canvas
-                        //ToDo: delete this memory leak, maybe asking at the end of this method if: !figure.Segments.Any() then remove _path from canvas
-                        _figure.Segments.Remove(bezier);
-                        _dictionaries.Instances.Remove(i);
-                    }
-                    else
-                    {
-#if DEBUG
-                        //Found the issue, the problem is that the dictionary maps a point with next line,
-                        //so when you delete last point there is no next line, here is when this fails
-                        //but how do we detect this efficiently???
-                        //by now TryGetValueWorks
-                        Trace.TraceWarning("Could not find ChartPoint instance '{0}' in dictionary", i);
-#endif
-                    }
+                    var bezier = _dictionaries.Instances[s.ChartPoint.Instance];
+                    bezier.Owner.Segments.Remove(bezier.Segment);
+                    //_figure.Segments.Remove(bezier.Segment);
+                    _dictionaries.Instances.Remove(i);
                 }
             }
         }
@@ -376,25 +337,25 @@ namespace LiveCharts
         /// </summary>
         /// <param name="index"></param>
         /// <param name="instance"></param>
-        /// <param name="previous"></param>
+        /// <param name="currentSegment"></param>
         /// <returns></returns>
-        private PathSegmentHelper GetSegmentHelper(int index, object instance)
+        private PathSegmentHelper GetSegmentHelper(int index, object instance, PathFigure currentSegment)
         {
             if (_isPrimitive)
             {
                 if (_dictionaries.Primitives.ContainsKey(index))
                     return new PathSegmentHelper
                     {
-                        Segment = _dictionaries.Primitives[index],
+                        Bezier = _dictionaries.Primitives[index],
                         IsNew = false
                     };
 
-                var primitiveBezier = new BezierSegment();
+                var primitiveBezier = new TrackableBezier(currentSegment) {Segment = new BezierSegment()};
                 _dictionaries.Primitives[index] = primitiveBezier;
 
                 return new PathSegmentHelper
                 {
-                    Segment = primitiveBezier,
+                    Bezier = primitiveBezier,
                     IsNew = true
                 };
             }
@@ -402,16 +363,16 @@ namespace LiveCharts
             if (_dictionaries.Instances.ContainsKey(instance))
                 return new PathSegmentHelper
                 {
-                    Segment = _dictionaries.Instances[instance],
+                    Bezier = _dictionaries.Instances[instance],
                     IsNew = false
                 };
 
-            var instanceBezier = new BezierSegment();
+            var instanceBezier = new TrackableBezier(currentSegment) {Segment = new BezierSegment()};
             _dictionaries.Instances[instance] = instanceBezier;
 
             return new PathSegmentHelper
             {
-                Segment = instanceBezier,
+                Bezier = instanceBezier,
                 IsNew = true
             };
         }
@@ -466,11 +427,11 @@ namespace LiveCharts
         {
             public LineSeriesDictionaries()
             {
-                Primitives = new Dictionary<int, BezierSegment>();
-                Instances = new Dictionary<object, BezierSegment>();
+                Primitives = new Dictionary<int, TrackableBezier>();
+                Instances = new Dictionary<object, TrackableBezier>();
             }
-            public Dictionary<int, BezierSegment> Primitives { get; set; }
-            public Dictionary<object, BezierSegment> Instances { get; set; }
+            public Dictionary<int, TrackableBezier> Primitives { get; set; }
+            public Dictionary<object, TrackableBezier> Instances { get; set; }
         }
     }
 
@@ -505,12 +466,12 @@ namespace LiveCharts
     internal class PathSegmentHelper
     {
         public bool IsNew { get; set; }
-        public BezierSegment Segment { get; set; }
+        public TrackableBezier Bezier { get; set; }
         public BezierData Data { get; set; }
         public PathSegmentHelper Previous { get; set; }
         public PathSegmentHelper Next { get; set; }
 
-        public void Animate(int index, PathFigure figure, Chart chart)
+        public void Animate(int index, PathFigure figure, Chart chart, int pathOffset)
         {
             var s1 = new Point();
             var s2 = new Point();
@@ -518,7 +479,7 @@ namespace LiveCharts
 
             if (IsNew)
             {
-                figure.Segments.Insert(index, Data.AssignTo(Segment));
+                figure.Segments.Insert(index - pathOffset, Data.AssignTo(Bezier.Segment));
                 if (chart.Invert)
                 {
                     s1 = new Point(chart.ToDrawMargin(chart.Min.X, AxisTags.X), Data.P1.Y);
@@ -533,24 +494,34 @@ namespace LiveCharts
                 }
             }
 
-            var p1 = IsNew ? (Previous != null && !Previous.IsNew ? Previous.Segment.Point3 : s1) : Segment.Point1;
-            var p2 = IsNew ? (Previous != null && !Previous.IsNew ? Previous.Segment.Point3 : s2) : Segment.Point2;
-            var p3 = IsNew ? (Previous != null && !Previous.IsNew ? Previous.Segment.Point3 : s3) : Segment.Point3;
+            var p1 = IsNew ? (Previous != null && !Previous.IsNew ? Previous.Bezier.Segment.Point3 : s1) : Bezier.Segment.Point1;
+            var p2 = IsNew ? (Previous != null && !Previous.IsNew ? Previous.Bezier.Segment.Point3 : s2) : Bezier.Segment.Point2;
+            var p3 = IsNew ? (Previous != null && !Previous.IsNew ? Previous.Bezier.Segment.Point3 : s3) : Bezier.Segment.Point3;
 
             if (chart.DisableAnimation)
             {
-                Segment.Point1 = Data.P1;
-                Segment.Point2 = Data.P2;
-                Segment.Point3 = Data.P3;
+                Bezier.Segment.Point1 = Data.P1;
+                Bezier.Segment.Point2 = Data.P2;
+                Bezier.Segment.Point3 = Data.P3;
                 return;
             }
 
-            Segment.BeginAnimation(BezierSegment.Point1Property,
+            Bezier.Segment.BeginAnimation(BezierSegment.Point1Property,
                 new PointAnimation(p1, Data.P1, LineSeries.AnimSpeed));
-            Segment.BeginAnimation(BezierSegment.Point2Property,
+            Bezier.Segment.BeginAnimation(BezierSegment.Point2Property,
                 new PointAnimation(p2, Data.P2, LineSeries.AnimSpeed));
-            Segment.BeginAnimation(BezierSegment.Point3Property,
+            Bezier.Segment.BeginAnimation(BezierSegment.Point3Property,
                 new PointAnimation(p3, Data.P3, LineSeries.AnimSpeed));
         }
+    }
+
+    internal class TrackableBezier
+    {
+        public TrackableBezier(PathFigure ownerFigure)
+        {
+            Owner = ownerFigure;
+        }
+        public BezierSegment Segment { get; set; }
+        public PathFigure Owner { get; set; }
     }
 }

@@ -27,7 +27,7 @@
                 Remove Series
             </Button>
         </StackPanel>
-        <lvc:LineChart Grid.Row="2" Series="{Binding Series}" Hoverable="False">
+        <lvc:LineChart Grid.Row="2" Series="{Binding Series}">
             <lvc:LineChart.AxisX>
                 <lvc:Axis LabelFormatter="{Binding XFormatter}" Separator="{x:Static lvc:DefaultAxes.CleanSeparator}"/>
             </lvc:LineChart.AxisX>
