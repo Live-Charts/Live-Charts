@@ -31,7 +31,7 @@ namespace ChartsTest
         {
             LineAndAreaAexamples = new List<UserControl>
             {
-                //new AnimationImprovementLine(),
+                new AnimationImprovementLine(),
                 //new BasicLine(),
                 //new DynamicLine(),
                 //new MvvmLine(),

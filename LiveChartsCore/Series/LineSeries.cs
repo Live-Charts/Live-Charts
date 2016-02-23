@@ -74,7 +74,7 @@ namespace LiveCharts
             var so = 0;
             foreach (var segment in Values.Points.AsSegments())
             {
-                if (segment.Count == 0) return;
+                if (segment.Count == 0) continue;
 
                 PathFigure figure;
                 if (_figures.Count <= s)
@@ -203,7 +203,7 @@ namespace LiveCharts
                         #endregion
                     }
 
-                    var helper = GetSegmentHelper(i + so, segment[i].Instance, figure);
+                    var helper = GetSegmentHelper(point.Key, segment[i].Instance, figure);
                     helper.Data = i == segment.Count - 1
                         ? new BezierData (previous != null ? previous.Data.P3 : figure.StartPoint) //last line is a dummy line, just to keep algorithm simple.
                         : CalculateBezier(i, segment);
@@ -300,7 +300,6 @@ namespace LiveCharts
                     var i = s.ChartPoint.Key;
                     var bezier = _dictionaries.Primitives[s.ChartPoint.Key];
                     bezier.Owner.Segments.Remove(bezier.Segment);
-                    //_figure.Segments.Remove(bezier.Segment);
                     _dictionaries.Primitives.Remove(i);
                 }
             }
@@ -326,7 +325,6 @@ namespace LiveCharts
                     var i = s.ChartPoint.Instance;
                     var bezier = _dictionaries.Instances[s.ChartPoint.Instance];
                     bezier.Owner.Segments.Remove(bezier.Segment);
-                    //_figure.Segments.Remove(bezier.Segment);
                     _dictionaries.Instances.Remove(i);
                 }
             }

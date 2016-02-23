@@ -24,7 +24,7 @@ namespace ChartsTest.Line_Examples.RotadedLine
                     new LineSeries
                     {
                         Title = "inverted series",
-                        Values = new [] {10, 15, 18, 20, 15, double.NaN, -3, -2, -1, 2, 3, 6}.AsChartValues(),
+                        Values = new [] {10, 15, 18, 20, 15, double.NaN, double.NaN, -2, -1, 2, 3, 6}.AsChartValues(),
                         DataLabels = true
                     }
                 };

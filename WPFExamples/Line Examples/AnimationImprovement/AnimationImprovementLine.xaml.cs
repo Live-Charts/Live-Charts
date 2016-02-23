@@ -23,7 +23,7 @@ namespace ChartsTest.Line_Examples.AnimationImprovement
                     {
                         new ViewModel {YValue = 0},
                         new ViewModel {YValue = 1},
-                        new ViewModel {YValue = 0},
+                        new ViewModel {YValue = double.NaN},
                         new ViewModel {YValue = 1},
                         new ViewModel {YValue = 0}
                     },
@@ -113,6 +113,12 @@ namespace ChartsTest.Line_Examples.AnimationImprovement
             {
                 if (series.Values.Count > 3) series.Values.RemoveAt(2);
             }
+        }
+
+        private void AnimationImprovementLine_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            //This is only to display animation everytime you change the view
+            Chart.Update();
         }
     }
 
