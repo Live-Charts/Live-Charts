@@ -90,7 +90,13 @@ namespace LiveCharts
                     _figures.Add(figure);
                     Chart.DrawMargin.Children.Add(path);
                     //area
-
+                    var pathA = new Path { Stroke = Stroke, StrokeThickness = StrokeThickness };
+                    var geometryA = new PathGeometry();
+                    areaFigure = new PathFigure();
+                    geometryA.Figures.Add(areaFigure);
+                    path.Data = geometry;
+                    _areaFigures.Add(figure);
+                    Chart.DrawMargin.Children.Add(pathA);
                 }
                 else
                 {
@@ -100,7 +106,10 @@ namespace LiveCharts
 
                 var p0 = ToDrawMargin(segment[0]).AsPoint();
                 figure.StartPoint = p0;
+                areaFigure.StartPoint = p0;
                 figure.BeginAnimation(PathFigure.StartPointProperty, new PointAnimation(figure.StartPoint,
+                    segment.Count > 0 ? p0 : new Point(), AnimSpeed));
+                areaFigure.BeginAnimation(PathFigure.StartPointProperty, new PointAnimation(figure.StartPoint,
                     segment.Count > 0 ? p0 : new Point(), AnimSpeed));
 
                 PathSegmentHelper previous = null;
@@ -111,31 +120,8 @@ namespace LiveCharts
                     var pointLocation = ToDrawMargin(point).AsPoint();
 
                     var visual = GetVisual(segment[i]);
-                    visual.HoverShape.Width = rr*2;
-                    visual.HoverShape.Height = rr*2;
-                    Canvas.SetLeft(visual.PointShape, pointLocation.X - visual.PointShape.Width*.5);
-                    Canvas.SetTop(visual.PointShape, pointLocation.Y - visual.PointShape.Height*.5);
-                    Canvas.SetLeft(visual.HoverShape, pointLocation.X - visual.HoverShape.Width*.5);
-                    Canvas.SetTop(visual.HoverShape, pointLocation.Y - visual.HoverShape.Height*.5);
 
-                    visual.PointShape.BeginAnimation(OpacityProperty,
-                        new DoubleAnimation(0, 0, TimeSpan.FromMilliseconds(1)));
-
-                    if (!Chart.DisableAnimation)
-                    {
-                        var pt = new DispatcherTimer {Interval = AnimSpeed};
-                        pt.Tick += (sender, args) =>
-                        {
-                            visual.PointShape.BeginAnimation(OpacityProperty, new DoubleAnimation(0, 1, AnimSpeed));
-                            pt.Stop();
-                        };
-                        pt.Start();
-                    }
-                    else
-                    {
-                        visual.PointShape.BeginAnimation(OpacityProperty,
-                            new DoubleAnimation(0, 1, TimeSpan.FromMilliseconds(1)));
-                    }
+                    PlaceVisual(visual, pointLocation, rr);
 
                     if (DataLabels) Label(point, f, pointLocation);
 
@@ -151,6 +137,35 @@ namespace LiveCharts
                 }
                 s++;
                 so += segment.Count;
+            }
+        }
+
+        private void PlaceVisual(VisualHelper visual, Point pointLocation, double radius)
+        {
+            visual.HoverShape.Width = radius * 2;
+            visual.HoverShape.Height = radius * 2;
+            Canvas.SetLeft(visual.PointShape, pointLocation.X - visual.PointShape.Width * .5);
+            Canvas.SetTop(visual.PointShape, pointLocation.Y - visual.PointShape.Height * .5);
+            Canvas.SetLeft(visual.HoverShape, pointLocation.X - visual.HoverShape.Width * .5);
+            Canvas.SetTop(visual.HoverShape, pointLocation.Y - visual.HoverShape.Height * .5);
+
+            visual.PointShape.BeginAnimation(OpacityProperty,
+                new DoubleAnimation(0, 0, TimeSpan.FromMilliseconds(1)));
+
+            if (!Chart.DisableAnimation)
+            {
+                var pt = new DispatcherTimer { Interval = AnimSpeed };
+                pt.Tick += (sender, args) =>
+                {
+                    visual.PointShape.BeginAnimation(OpacityProperty, new DoubleAnimation(0, 1, AnimSpeed));
+                    pt.Stop();
+                };
+                pt.Start();
+            }
+            else
+            {
+                visual.PointShape.BeginAnimation(OpacityProperty,
+                    new DoubleAnimation(0, 1, TimeSpan.FromMilliseconds(1)));
             }
         }
 
