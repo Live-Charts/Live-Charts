@@ -73,32 +73,28 @@ namespace LiveCharts
 
             var s = 0;
             var so = 0;
-            foreach (var segment in Values.Points.AsSegments())
+            foreach (var segment in Values.Points.AsSegments().Where(segment => segment.Count != 0))
             {
-                if (segment.Count == 0) continue;
-
-                PathFigure figure;
-                LineAndAreaShape clfh = null;
+                LineAndAreaShape area;
 
                 if (_areas.Count <= s)
                 {
                     var path = new Path {Stroke = Stroke, StrokeThickness = StrokeThickness, Fill = Fill};
                     var geometry = new PathGeometry();
-                    figure = new PathFigure();
-                    geometry.Figures.Add(figure);
+                    area = new LineAndAreaShape(new PathFigure());
+                    geometry.Figures.Add(area.Figure);
                     path.Data = geometry;
-                    clfh = new LineAndAreaShape(figure);
-                    _areas.Add(clfh);
+                    _areas.Add(area);
                     Chart.DrawMargin.Children.Add(path);
                 }
                 else
                 {
-                    figure = _areas[s].Figure;
+                    area = _areas[s];
                 }
 
                 var p0 = ToDrawMargin(segment[0]).AsPoint();
-                figure.StartPoint = p0;
-                figure.BeginAnimation(PathFigure.StartPointProperty, new PointAnimation(figure.StartPoint,
+                area.Figure.StartPoint = p0;
+                area.Figure.BeginAnimation(PathFigure.StartPointProperty, new PointAnimation(area.Figure.StartPoint,
                     segment.Count > 0 ? p0 : new Point(), AnimSpeed));
 
                 AnimatableSegments previous = null;
@@ -125,9 +121,9 @@ namespace LiveCharts
 
                     if (visual.IsNew) AddToCanvas(visual, point);
 
-                    var helper = GetSegmentHelper(point.Key, segment[i].Instance, figure);
+                    var helper = GetSegmentHelper(point.Key, segment[i].Instance, area.Figure);
                     helper.Data = i == segment.Count - 1
-                        ? new BezierData(previous != null ? previous.Data.P3 : figure.StartPoint)
+                        ? new BezierData(previous != null ? previous.Data.P3 : area.Figure.StartPoint)
                         //last line is a dummy line, just to keep algorithm simple.
                         : CalculateBezier(i, segment);
                     helper.Previous = previous != null && previous.IsNew ? previous.Previous : previous;
@@ -136,13 +132,13 @@ namespace LiveCharts
                     last = pointLocation;
                 }
 
-                if (clfh != null)
-                    clfh.DrawLimits(first, last,
+                if (area != null)
+                    area.DrawLimits(first, last,
                         new Point(ToDrawMargin(Chart.Min.X, AxisTags.X), ToDrawMargin(Chart.Min.Y, AxisTags.Y)),
                         Chart.Invert);
 
 #if DEBUG
-                Trace.WriteLine("Segments count: " + figure.Segments.Count);
+                Trace.WriteLine("Segments count: " + area.Figure.Segments.Count);
 #endif
 
                 s++;
