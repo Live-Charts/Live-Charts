@@ -27,6 +27,7 @@ using System.Globalization;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
@@ -65,9 +66,6 @@ namespace LiveCharts
         {
             _isPrimitive = Values.Count >= 1 && Values[0].GetType().IsPrimitive;
 
-            //This is so ugly now and will not work for 0.6.5 //Todo: Fix this.
-            if (Visibility != Visibility.Visible) return;
-
             var rr = PointRadius < 5 ? 5 : PointRadius;
             var f = Chart.GetFormatter(Chart.Invert ? Chart.AxisX : Chart.AxisY);
 
@@ -79,7 +77,18 @@ namespace LiveCharts
 
                 if (_areas.Count <= s)
                 {
-                    var path = new Path {Stroke = Stroke, StrokeThickness = StrokeThickness, Fill = Fill};
+                    var path = new Path
+                    {
+                        Stroke = Stroke, StrokeThickness = StrokeThickness, Fill = Fill
+                    };
+                    BindingOperations.SetBinding(path, Shape.StrokeProperty,
+                    new Binding { Path = new PropertyPath("Stroke"), Source = this });
+                    BindingOperations.SetBinding(path, Shape.FillProperty,
+                        new Binding { Path = new PropertyPath("Fill"), Source = this });
+                    BindingOperations.SetBinding(path, Shape.StrokeThicknessProperty,
+                        new Binding { Path = new PropertyPath("StrokeThickness"), Source = this });
+                    BindingOperations.SetBinding(path, VisibilityProperty,
+                        new Binding { Path = new PropertyPath("Visibility"), Source = this });
                     var geometry = new PathGeometry();
                     area = new LineAndAreaShape(new PathFigure());
                     geometry.Figures.Add(area.Figure);
@@ -412,21 +421,28 @@ namespace LiveCharts
 
             if (map == null)
             {
+                var e = new Ellipse
+                {
+                    Width = PointRadius*2,
+                    Height = PointRadius*2,
+                    Stroke = new SolidColorBrush {Color = Chart.PointHoverColor},
+                    StrokeThickness = 1
+                };
+                var hs = new Rectangle
+                {
+                    Fill = Brushes.Transparent,
+                    StrokeThickness = 0
+                };
+                BindingOperations.SetBinding(e, Shape.FillProperty,
+                    new Binding { Path = new PropertyPath("Fill"), Source = this });
+                BindingOperations.SetBinding(e, VisibilityProperty,
+                    new Binding { Path = new PropertyPath("Visibility"), Source = this });
+                BindingOperations.SetBinding(hs, VisibilityProperty,
+                    new Binding { Path = new PropertyPath("Visibility"), Source = this });
                 return new VisualHelper
                 {
-                    PointShape = new Ellipse
-                    {
-                        Width = PointRadius*2,
-                        Height = PointRadius*2,
-                        Fill = Stroke,
-                        Stroke = new SolidColorBrush {Color = Chart.PointHoverColor},
-                        StrokeThickness = 1
-                    },
-                    HoverShape = new Rectangle
-                    {
-                        Fill = Brushes.Transparent,
-                        StrokeThickness = 0
-                    },
+                    PointShape = e,
+                    HoverShape = hs,
                     IsNew = true
                 };
             }

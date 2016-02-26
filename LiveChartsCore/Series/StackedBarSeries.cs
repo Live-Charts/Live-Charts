@@ -25,6 +25,7 @@ using System.Globalization;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
@@ -49,7 +50,6 @@ namespace LiveCharts
         {
             _isPrimitive = Values == null || (Values.Count >= 1 && Values[0].GetType().IsPrimitive);
 
-            if (Visibility != Visibility.Visible) return;
             if (Chart.Invert) PlotRow();
             else PlotColumn();
         }
@@ -346,20 +346,31 @@ namespace LiveCharts
 
             if (map == null)
             {
+                var r = new Rectangle
+                {
+                    RenderTransform = new TranslateTransform()
+                };
+                var hs = new Rectangle
+                {
+                    Fill = Brushes.Transparent,
+                    StrokeThickness = 0
+                };
+
+                BindingOperations.SetBinding(r, Shape.StrokeProperty,
+                    new Binding { Path = new PropertyPath("Stroke"), Source = this });
+                BindingOperations.SetBinding(r, Shape.FillProperty,
+                    new Binding { Path = new PropertyPath("Fill"), Source = this });
+                BindingOperations.SetBinding(r, Shape.StrokeThicknessProperty,
+                    new Binding { Path = new PropertyPath("StrokeThickness"), Source = this });
+                BindingOperations.SetBinding(r, VisibilityProperty,
+                    new Binding { Path = new PropertyPath("Visibility"), Source = this });
+                BindingOperations.SetBinding(hs, VisibilityProperty,
+                    new Binding { Path = new PropertyPath("Visibility"), Source = this });
+
                 return new VisualHelper
                 {
-                    PointShape = new Rectangle
-                    {
-                        StrokeThickness = StrokeThickness,
-                        Stroke = Stroke,
-                        Fill = Fill,
-                        RenderTransform = new TranslateTransform()
-                    },
-                    HoverShape = new Rectangle
-                    {
-                        Fill = Brushes.Transparent,
-                        StrokeThickness = 0
-                    },
+                    PointShape = r,
+                    HoverShape = hs,
                     IsNew = true
                 };
             }

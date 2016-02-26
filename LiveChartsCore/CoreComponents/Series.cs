@@ -50,22 +50,6 @@ namespace LiveCharts.CoreComponents
 
         #region Dependency Properties
 
-        public new static readonly DependencyProperty VisibilityProperty = DependencyProperty.Register(
-            "Visibility", typeof (Visibility), typeof (Series), new PropertyMetadata(default(Visibility)));
-        /// <summary>
-        /// Gets or sets series visibility
-        /// </summary>
-        public new Visibility Visibility
-        {
-            get { return (Visibility) GetValue(VisibilityProperty); }
-            set
-            {
-                SetValue(VisibilityProperty, value);
-                if (Visibility != Visibility.Visible) Erase();
-                if (Visibility == Visibility.Visible) Plot();
-            }
-        }
-
 	    public static readonly DependencyProperty ValuesProperty = DependencyProperty.Register(
 	        "Values", typeof (IChartValues), typeof (Series), 
             new PropertyMetadata(null, ValuesCallBack));
