@@ -20,7 +20,6 @@
             <lvc:PieChart.Series>
                 <lvc:PieSeries Title="Maria"
                                      Values="20, 40, 45"
-                                     Brushes="#FFB300, #FFA000, ../../imagefill.jpg"
                                Stroke="#303030" />
             </lvc:PieChart.Series>
             <lvc:PieChart.AxisY>

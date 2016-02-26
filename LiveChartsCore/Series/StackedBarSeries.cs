@@ -40,11 +40,8 @@ namespace LiveCharts
         private bool _isPrimitive;
         public StackedBarSeries()
         {
-            StrokeThickness = 2.5;
             SetValue(ForegroundProperty, Brushes.WhiteSmoke);
         }
-
-        public double StrokeThickness { get; set; }
 
         public override void Plot(bool animate = true)
         {

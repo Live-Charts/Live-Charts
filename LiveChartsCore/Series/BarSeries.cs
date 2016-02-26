@@ -42,16 +42,7 @@ namespace LiveCharts
         public BarSeries()
         {
         }
-
-        public static readonly DependencyProperty StrokeThicknessProperty = DependencyProperty.Register(
-            "StrokeThickness", typeof (double), typeof (BarSeries), new PropertyMetadata(2.5));
-
-        public double StrokeThickness
-        {
-            get { return (double) GetValue(StrokeThicknessProperty); }
-            set { SetValue(StrokeThicknessProperty, value); }
-        }
-
+        
         public override void Plot(bool animate = true)
         {
             _isPrimitive = Values == null || (Values.Count >= 1 && Values[0].GetType().IsPrimitive);

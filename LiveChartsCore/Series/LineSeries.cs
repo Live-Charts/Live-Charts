@@ -58,7 +58,6 @@ namespace LiveCharts
         }
 
         public double? LineSmoothness { get; set; }
-        public double StrokeThickness { get; set; }
 
         public double PointRadius { get; set; }
 

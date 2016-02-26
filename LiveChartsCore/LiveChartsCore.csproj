@@ -151,7 +151,6 @@
     </Compile>
     <Compile Include="Tooltip\IndexedTooltip.cs" />
     <Compile Include="Tooltip\ScatterTooltip.cs" />
-    <Compile Include="TypeConverters\BrushesCollectionConverter.cs" />
     <Compile Include="TypeConverters\StringCollectionConverter.cs" />
     <Compile Include="TypeConverters\DefaultValuesConverter.cs" />
     <Compile Include="Legend\Converters.cs" />

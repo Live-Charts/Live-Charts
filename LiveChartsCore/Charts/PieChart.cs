@@ -40,12 +40,10 @@ namespace LiveCharts
     {
         public PieChart()
         {
-            AxisY = new Axis {FontWeight = FontWeights.Bold, FontSize = 11, FontFamily = new FontFamily("Calibri")};
-            AxisX = new Axis();
-            Hoverable = true;
+            SetValue(AxisXProperty, new Axis());
+            SetValue(AxisYProperty,
+                new Axis {FontWeight = FontWeights.Bold, FontSize = 11, FontFamily = new FontFamily("Calibri")});
             ShapeHoverBehavior = ShapeHoverBehavior.Shape;
-            InnerRadius = 0;
-            SlicePadding = 5;
             DrawPadding = 20;
             AnimatesNewPoints = true;
             SupportsMultipleSeries = false;
@@ -54,26 +52,12 @@ namespace LiveCharts
         #region Dependency Properties
 
         public static readonly DependencyProperty InnerRadiusProperty = DependencyProperty.Register(
-            "InnerRadius", typeof (double), typeof (PieChart));
+            "InnerRadius", typeof (double), typeof (PieChart), new PropertyMetadata(0d));
 
-        /// <summary>
-        /// Gets or sets chart inner radius, set this property to transform a pie chart into a doughnut!
-        /// </summary>
         public double InnerRadius
         {
             get { return (double) GetValue(InnerRadiusProperty); }
             set { SetValue(InnerRadiusProperty, value); }
-        }
-
-        public static readonly DependencyProperty SlicePaddingProperty = DependencyProperty.Register(
-            "SlicePadding", typeof (double), typeof (Chart));
-        /// <summary>
-        /// Gets or sets padding between slices.
-        /// </summary>
-        public double SlicePadding
-        {
-            get { return (double) GetValue(SlicePaddingProperty); }
-            set { SetValue(SlicePaddingProperty, value); }
         }
 
         #endregion
@@ -88,7 +72,7 @@ namespace LiveCharts
         /// <summary>
         /// Gets the total sum of the values in the chart.
         /// </summary>
-        public double PieTotalSum { get; private set; }
+        public double[] PieTotalSums { get; private set; }
 
         /// <summary>
         /// Gets or sets the distance between pie and shortest chart dimnsion.
@@ -117,10 +101,11 @@ namespace LiveCharts
             base.Scale();
             DrawAxes();
             //rest of the series are ignored by now, we only plot the firt one
-            var serie = Series.FirstOrDefault();
-            var pieSerie = serie as PieSeries;
-            if (pieSerie == null) return;
-            PieTotalSum = GetPieSum();
+            var hasInvalidSeries = Series.Cast<PieSeries>().Any(x => x == null);
+            if (hasInvalidSeries)
+                return;
+            
+            PieTotalSums = GetPieSum();
         }
 
         protected override void DrawAxes()
@@ -183,10 +168,8 @@ namespace LiveCharts
             {
                 l.Add(new SeriesStandin
                 {
-                    Fill = series.Brushes != null && index > series.Brushes.Length 
-                     ? series.Brushes[index]
-                     : new SolidColorBrush(series.GetColorByIndex(index)),
-                    Stroke = Background,
+                    Fill = series.Fill,
+                    Stroke = series.Stroke,
                     Title = f(index)
                 });
             }
@@ -295,11 +278,25 @@ namespace LiveCharts
 
         #region Private Methods
 
-        private double GetPieSum()
+        private double[] GetPieSum()
         {
-            var serie = Series.FirstOrDefault();
-            var pieSerie = serie as PieSeries;
-            return pieSerie != null ? pieSerie.Values.Points.Select(pt => pt.Y).DefaultIfEmpty(0).Sum() : 0;
+            var l = new List<double>();
+
+            var fSeries = Series.First();
+
+            var pts = Series.Select(x => x.Values.Points.ToList()).ToList();
+
+            for (var i = 0; i < fSeries.Values.Count; i++)
+            {
+                l.Add(0);
+                foreach (var series in pts)
+                {
+                    if (series.Count - 1 >= i)
+                        l[i] += series[i].Y;
+                }
+            }
+
+            return l.ToArray();
         }
 
         #endregion

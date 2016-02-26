@@ -21,7 +21,9 @@
         </TextBlock>
         <lvc:PieChart Name="Chart" Grid.Row="1" Grid.Column="0" LegendLocation="Right">
             <lvc:PieChart.Series>
-                <lvc:PieSeries Title="Web Browser Usage" Values="15, 10, 40, 55" DataLabels="True"/>
+                <lvc:PieSeries Title="Chrome" Values="15" DataLabels="True"/>
+                <lvc:PieSeries Title="Explorer" Values="10" DataLabels="True"/>
+                <lvc:PieSeries Title="Mozilla" Values="40" DataLabels="True"/>
             </lvc:PieChart.Series>
             <lvc:PieChart.AxisX>
                 <lvc:Axis Labels="Explorer, Opera, Mozilla, Chrome"></lvc:Axis>

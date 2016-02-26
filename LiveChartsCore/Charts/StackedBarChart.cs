@@ -32,10 +32,12 @@ namespace LiveCharts
     {
         public StackedBarChart()
         {
-            AxisY = new Axis();
-            AxisX = new Axis {Separator = new Separator {Step = 1}};
-            Hoverable = true;
-            AxisY.MinValue = 0d;
+            SetValue(AxisYProperty, new Axis());
+            SetValue(AxisXProperty, new Axis
+            {
+                MinValue = 0,
+                Separator = new Separator {Step = 1}
+            });
             ShapeHoverBehavior = ShapeHoverBehavior.Shape;
             IndexTotals = new Dictionary<int, StackedBarHelper>();
             MaxColumnWidth = 40;

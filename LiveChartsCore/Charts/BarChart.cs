@@ -32,9 +32,8 @@ namespace LiveCharts
     {
         public BarChart()
         {
-            AxisY = new Axis();
-            AxisX = new Axis {Separator = new Separator {Step = 1}};
-            Hoverable = true;
+            SetValue(AxisYProperty, new Axis());
+            SetValue(AxisXProperty, new Axis { Separator = new Separator { Step = 1 } });
             ShapeHoverBehavior = ShapeHoverBehavior.Shape;
             MaxColumnWidth = 60;
             DefaultFillOpacity = 0.75;

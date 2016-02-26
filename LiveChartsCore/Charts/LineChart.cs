@@ -30,13 +30,12 @@ namespace LiveCharts
     {
         public LineChart()
         {
-            AxisY = new Axis();
-            AxisX = new Axis
+            SetValue(AxisYProperty, new Axis());
+            SetValue(AxisXProperty, new Axis
             {
                 Separator = new Separator {IsEnabled = false, Step = 1},
                 IsEnabled = false
-            };
-            Hoverable = true;
+            });
             ShapeHoverBehavior = ShapeHoverBehavior.Dot;
             LineSmoothness = 0.8;
         }

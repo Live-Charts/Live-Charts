@@ -234,11 +234,8 @@ namespace LiveCharts.CoreComponents
         }
 
         public static readonly DependencyProperty HoverableProperty = DependencyProperty.Register(
-            "Hoverable", typeof (bool), typeof (Chart));
+            "Hoverable", typeof (bool), typeof (Chart), new PropertyMetadata(true));
 
-        /// <summary>
-        /// Indicates weather chart is hoverable or not
-        /// </summary>
         public bool Hoverable
         {
             get { return (bool) GetValue(HoverableProperty); }

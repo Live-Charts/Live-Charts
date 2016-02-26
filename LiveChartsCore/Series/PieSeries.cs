@@ -25,12 +25,12 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
-using System.ComponentModel;
 using System.Linq;
+using System.Windows.Data;
+using System.Windows.Shapes;
 using System.Windows.Threading;
 using LiveCharts.CoreComponents;
 using LiveCharts.Shapes;
-using LiveCharts.TypeConverters;
 
 namespace LiveCharts
 {
@@ -41,26 +41,17 @@ namespace LiveCharts
 
         public PieSeries()
         {
-            SetValue(StrokeProperty, new SolidColorBrush(Colors.White));
-            SetValue(ForegroundProperty, new SolidColorBrush(Colors.White));
-        }
-
-        public static readonly DependencyProperty BrushesProperty = DependencyProperty.Register(
-            "Brushes", typeof (Brush[]), typeof (PieSeries), new PropertyMetadata(default(Brush[])));
-
-        [TypeConverter(typeof (BrushesCollectionConverter))]
-        public Brush[] Brushes
-        {
-            get { return (Brush[]) GetValue(BrushesProperty); }
-            set { SetValue(BrushesProperty, value); }
+            SetValue(StrokeProperty, Brushes.White);
         }
 
         public override void Plot(bool animate = true)
         {
+            _isPrimitive = Values == null || (Values.Count >= 1 && Values[0].GetType().IsPrimitive);
+
             if (Visibility != Visibility.Visible) return;
+            var index = Chart.Series.IndexOf(this);
             var pChart = Chart as PieChart;
             if (pChart == null) return;
-            if (pChart.PieTotalSum <= 0) return;
             var rotated = 0d;
 
             Chart.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
@@ -81,7 +72,7 @@ namespace LiveCharts
 
             foreach (var point in Values.Points)
             {
-                var participation = point.Y/pChart.PieTotalSum;
+                var participation = point.Y/pChart.PieTotalSums[point.Key];
                 if (isFist)
                 {
                     rotated = participation*-.5  + (pie.PieRotation/360);
@@ -95,12 +86,14 @@ namespace LiveCharts
                 Canvas.SetTop(visual.PointShape, Chart.PlotArea.Height / 2);
                 Canvas.SetLeft(visual.PointShape, Chart.PlotArea.Width / 2);
 
+                #region labels, animation, and add to canvas
+
                 if (!Chart.DisableAnimation)
                 {
                     var wa = new DoubleAnimation
                     {
                         From = visual.IsNew ? 0 : visual.PointShape.WedgeAngle,
-                        To = 360 * participation,
+                        To = 360*participation,
                         Duration = TimeSpan.FromMilliseconds(animationSpeed)
                     };
                     var ra = new DoubleAnimation
@@ -121,14 +114,14 @@ namespace LiveCharts
                     var tb = BuildATextBlock(0);
                     tb.Text = f(point.Y);
 
-                    var hypo = ((minDimension / 2) + (pChart.InnerRadius > 10 ? pChart.InnerRadius : 10)) / 2;
-                    var gamma = participation * 360 / 2 + rotated * 360;
-                    var cp = new Point(hypo * Math.Sin(gamma * (Math.PI / 180)), hypo * Math.Cos(gamma * (Math.PI / 180)));
+                    var hypo = ((minDimension/2) + (pChart.InnerRadius > 10 ? pChart.InnerRadius : 10))/2;
+                    var gamma = participation*360/2 + rotated*360;
+                    var cp = new Point(hypo*Math.Sin(gamma*(Math.PI/180)), hypo*Math.Cos(gamma*(Math.PI/180)));
 
                     tb.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
 
-                    Canvas.SetTop(tb, Chart.PlotArea.Height / 2 - cp.Y - tb.DesiredSize.Height * .5);
-                    Canvas.SetLeft(tb, cp.X + Chart.PlotArea.Width / 2 - tb.DesiredSize.Width * .5);
+                    Canvas.SetTop(tb, Chart.PlotArea.Height/2 - cp.Y - tb.DesiredSize.Height*.5);
+                    Canvas.SetLeft(tb, cp.X + Chart.PlotArea.Width/2 - tb.DesiredSize.Width*.5);
                     Panel.SetZIndex(tb, int.MaxValue - 1);
                     //because math is kind of complex to detetrmine if label fits inside the slide, by now we 
                     //will just add it if participation > 5% ToDo: the math!
@@ -166,15 +159,15 @@ namespace LiveCharts
                         ChartPoint = point
                     });
                     Chart.Canvas.Children.Add(visual.PointShape);
-                    //Chart.Canvas.Children.Add(visual.HoverShape);
                     Shapes.Add(visual.PointShape);
-                    //Shapes.Add(visual.HoverShape);
-                    //Panel.SetZIndex(visual.HoverShape, int.MaxValue);
                     Panel.SetZIndex(visual.PointShape, int.MaxValue - 2);
                     visual.PointShape.MouseDown += Chart.DataMouseDown;
                     visual.PointShape.MouseEnter += Chart.DataMouseEnter;
                     visual.PointShape.MouseLeave += Chart.DataMouseLeave;
                 }
+
+                #endregion
+
                 rotated += participation;
             }
         }
@@ -241,15 +234,20 @@ namespace LiveCharts
             {
                 var newSlice = new PieSlice
                 {
-                    Fill = Brushes != null && Brushes.Length > point.X
-                        ? Brushes[(int) point.X]
-                        : new SolidColorBrush(GetColorByIndex((int) point.X)),
-                    Stroke = Stroke,
-                    StrokeThickness = pChart.SlicePadding,
                     CentreX = 0,
                     CentreY = 0,
                     InnerRadius = pChart.InnerRadius
                 };
+
+                BindingOperations.SetBinding(newSlice, Shape.StrokeProperty,
+                    new Binding { Path = new PropertyPath("Stroke"), Source = this });
+                BindingOperations.SetBinding(newSlice, Shape.FillProperty,
+                    new Binding { Path = new PropertyPath("Fill"), Source = this });
+                BindingOperations.SetBinding(newSlice, Shape.StrokeThicknessProperty,
+                    new Binding { Path = new PropertyPath("StrokeThickness"), Source = this });
+                BindingOperations.SetBinding(newSlice, VisibilityProperty,
+                    new Binding { Path = new PropertyPath("Visibility"), Source = this });
+
                 return new VisualHelper
                 {
                     HoverShape = newSlice,
