@@ -12,7 +12,7 @@ namespace ChartsTest.Pie_Examples
         {
             InitializeComponent();
 
-            Formatter = val => val.ToString("N1") + " (" + (val/Chart.PieTotalSums[0]).ToString("P1") + ")";
+            Formatter = val => val.ToString("N1") + " (" + (val/Chart.PieTotalSums[0].TotalSum).ToString("P1") + ")";
 
             DataContext = this;
         }

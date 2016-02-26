@@ -72,7 +72,7 @@ namespace LiveCharts
         /// <summary>
         /// Gets the total sum of the values in the chart.
         /// </summary>
-        public double[] PieTotalSums { get; private set; }
+        public List<PieResult> PieTotalSums { get; private set; }
 
         /// <summary>
         /// Gets or sets the distance between pie and shortest chart dimnsion.
@@ -83,6 +83,7 @@ namespace LiveCharts
         {
             get { return Series.Any(x => x.Values != null && x.Values.Count > 0); }
         }
+
         #endregion
 
         #region Overriden Methods
@@ -277,10 +278,10 @@ namespace LiveCharts
         #endregion
 
         #region Private Methods
-
-        private double[] GetPieSum()
+        
+        private List<PieResult> GetPieSum()
         {
-            var l = new List<double>();
+            var l = new List<PieResult>();
 
             var fSeries = Series.First();
 
@@ -288,17 +289,50 @@ namespace LiveCharts
 
             for (var i = 0; i < fSeries.Values.Count; i++)
             {
-                l.Add(0);
+                l.Add(new PieResult());
                 foreach (var series in pts)
                 {
                     if (series.Count - 1 >= i)
-                        l[i] += series[i].Y;
+                    {
+                        var thisVal = series[i].Y;
+                        l[i].Stack.Add(thisVal);
+                        l[i].TotalSum += thisVal;
+                    }
+                        
                 }
             }
 
-            return l.ToArray();
+            foreach (var pieResult in l)
+            {
+                var stack = 0d;
+                for (var i = 0; i < pieResult.Stack.Count; i++)
+                {
+                    pieResult.Participation.Add(pieResult.Stack[i]/pieResult.TotalSum);
+                    pieResult.Rotation.Add(i > 0
+                        ? pieResult.Rotation[i - 1] + pieResult.Participation[i - 1]
+                        : 0);
+                    stack = pieResult.Rotation[i];
+                }
+            }
+
+            return l;
         }
 
         #endregion
+    }
+
+    public class PieResult
+    {
+        public PieResult()
+        {
+            TotalSum = 0;
+            Rotation = new List<double>();
+            Stack = new List<double>();
+            Participation = new List<double>();
+        }
+        public double TotalSum { get; set; }
+        public List<double> Stack { get; set; }
+        public List<double> Participation { get; set; }
+        public List<double> Rotation { get; set; }
     }
 }

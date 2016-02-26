@@ -72,10 +72,10 @@ namespace LiveCharts
 
             foreach (var point in Values.Points)
             {
-                var participation = point.Y/pChart.PieTotalSums[point.Key];
+                var participation = pChart.PieTotalSums[point.Key].Participation[index];
                 if (isFist)
                 {
-                    rotated = participation*-.5  + (pie.PieRotation/360);
+                    rotated = pChart.PieTotalSums[point.Key].Rotation[index];
                     isFist = false;
                 }
 
