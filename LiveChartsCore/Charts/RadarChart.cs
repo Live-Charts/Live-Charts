@@ -117,7 +117,7 @@ namespace LiveCharts
                     {
                         Color = this.AxisY.Separator.Color
                     };
-                    line1.StrokeThickness = (double) this.AxisY.Separator.Thickness;
+                    line1.StrokeThickness = (double) this.AxisY.Separator.StrokeThickness;
                     line1.X1 = this.ActualWidth/2.0;
                     line1.Y1 = this.ActualHeight/2.0;
                     line1.X2 = this.ActualWidth/2.0 + Math.Sin(num1*(Math.PI/180.0))*this.Radius;
@@ -135,7 +135,7 @@ namespace LiveCharts
                     {
                         Color = this.AxisY.Separator.Color
                     };
-                    line1.StrokeThickness = (double) this.AxisY.Separator.Thickness;
+                    line1.StrokeThickness = (double) this.AxisY.Separator.StrokeThickness;
                     line1.X1 = this.ActualWidth/2.0 + Math.Sin(num1*(Math.PI/180.0))*this.ToChartRadius(y);
                     line1.Y1 = this.ActualHeight/2.0 - Math.Cos(num1*(Math.PI/180.0))*this.ToChartRadius(y);
                     line1.X2 = this.ActualWidth/2.0 + Math.Sin(num2*(Math.PI/180.0))*this.ToChartRadius(y);

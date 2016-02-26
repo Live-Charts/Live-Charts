@@ -29,7 +29,7 @@
             <lvc:StackedBarChart.AxisY>
                 <lvc:Axis Title="Sold Items" IsEnabled="False" Foreground="White" FontSize="13" FontFamily="Arial">
                     <lvc:Axis.Separator>
-                        <lvc:Separator Color="#404040" Thickness="2" IsEnabled="True"></lvc:Separator>
+                        <lvc:Separator Color="#404040" StrokeThickness="2" IsEnabled="True"></lvc:Separator>
                     </lvc:Axis.Separator>
                 </lvc:Axis>
             </lvc:StackedBarChart.AxisY>

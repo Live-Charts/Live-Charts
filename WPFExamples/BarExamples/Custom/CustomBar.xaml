@@ -32,17 +32,24 @@
                 </lvc:BarSeries>
             </lvc:BarChart.Series>
             <lvc:BarChart.AxisY>
-                <lvc:Axis Title="Sold Items Change" IsEnabled="True" Color="#909090" StrokeThickness="4" Foreground="White" FontSize="13" FontFamily="Arial">
+                <lvc:Axis Title="Sold Items Change" IsEnabled="True" Color="LimeGreen" 
+                          StrokeThickness="4" Foreground="MediumSeaGreen" FontSize="13" FontFamily="Arial">
                     <lvc:Axis.Separator>
-                        <lvc:Separator Color="#404040" Thickness="2" IsEnabled="True"></lvc:Separator>
+                        <lvc:Separator Color="ForestGreen" StrokeThickness="2" IsEnabled="True"></lvc:Separator>
                     </lvc:Axis.Separator>
                 </lvc:Axis>
             </lvc:BarChart.AxisY>
             <lvc:BarChart.AxisX>
                 <lvc:Axis Title="Month" 
                           Labels="Jan, Feb, Mar, Apr, May, Jun, Ago, Sep, Oct, Nov, Dec" 
-                          IsEnabled="False"
-                          Separator="{x:Static lvc:DefaultAxes.CleanSeparator}"/>
+                          IsEnabled="True"
+                          Color="CornflowerBlue"
+                          Foreground="DeepSkyBlue"
+                          StrokeThickness="4">
+                    <lvc:Axis.Separator>
+                        <lvc:Separator Color="DodgerBlue" StrokeThickness="2" IsEnabled="True" ></lvc:Separator>
+                    </lvc:Axis.Separator>
+                </lvc:Axis>
             </lvc:BarChart.AxisX>
         </lvc:BarChart>
     </Grid>

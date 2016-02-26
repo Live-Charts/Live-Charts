@@ -45,7 +45,7 @@ namespace LiveCharts
         /// <summary>
         /// Gets or sets separatos thickness
         /// </summary>
-        public int Thickness { get; set; }
+        public int StrokeThickness { get; set; }
 
         /// <summary>
         /// Gets or sets sepator step, this means the value between each line, use null for auto.

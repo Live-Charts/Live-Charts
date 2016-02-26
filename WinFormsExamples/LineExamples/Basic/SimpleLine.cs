@@ -7,8 +7,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Windows.Media;
 using LiveCharts;
 using LiveCharts.CoreComponents;
+using Color = System.Windows.Media.Color;
 
 namespace WinForms.LineExamples.Simple
 {
@@ -34,8 +36,7 @@ namespace WinForms.LineExamples.Simple
                 Title = "A Series",
                 Values = new ChartValues<double> { 4, 2, 10, 11, 9, 4 }
             });
-
-
+            
             lineChart1.AxisX.Labels = new List<string>
             {
                 "Day 1",
@@ -45,6 +46,8 @@ namespace WinForms.LineExamples.Simple
                 "Day 5",
                 "Day 6"
             };
+
+            lineChart1.Background = new SolidColorBrush(Color.FromRgb(55, 55, 55));
         }
     }
 }

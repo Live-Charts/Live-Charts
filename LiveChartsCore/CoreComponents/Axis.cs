@@ -39,7 +39,7 @@ namespace LiveCharts
             {
                 IsEnabled = true,
                 Color = Color.FromRgb(242, 242, 242),
-                Thickness = 1
+                StrokeThickness = 1
             };
         }
 

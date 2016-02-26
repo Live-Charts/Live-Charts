@@ -17,31 +17,57 @@ namespace WinForms.BarExamples.BasicLine
             barChart1.Series.Add(new BarSeries
             {
                 Title = "A Series",
-                Values = new ChartValues<double> { 3, 5, 8, 12, 8 ,3}
+                Values = new ChartValues<double> {3, 5, 8, 12, 8, 3}
             });
 
             barChart1.Series.Add(new BarSeries
             {
                 Title = "A Series",
-                Values = new ChartValues<double> { 4, 2, 10, 11, 9, 4 }
+                Values = new ChartValues<double> {4, 2, 10, 11, 9, 4}
             });
 
             //It supports line series too!
             barChart1.Series.Add(new LineSeries
             {
                 Title = "A Line Series",
-                Values = new ChartValues<double> { 4, 2, 10, 11, 9, 4 },
+                Values = new ChartValues<double> {4, 2, 10, 11, 9, 4},
                 Fill = Brushes.Transparent
             });
 
-            barChart1.AxisX.Labels = new List<string>
+            //Styling
+            barChart1.AxisY = new Axis
             {
-                "Day 1",
-                "Day 2",
-                "Day 3",
-                "Day 4",
-                "Day 5",
-                "Day 6"
+                Title = "Sold Items Change",
+                IsEnabled = true,
+                Color = Colors.LimeGreen,
+                StrokeThickness = 4,
+                Foreground = Brushes.MediumSeaGreen,
+                FontSize = 13,
+                FontFamily = new FontFamily("Arial"),
+                Separator = new Separator
+                {
+                    Color = Colors.ForestGreen,
+                    StrokeThickness = 2,
+                    IsEnabled = true
+                }
+            };
+            barChart1.AxisX = new Axis
+            {
+                Title = "Month",
+                Labels = new List<string>
+                {
+                    "Jan","Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"
+                },
+                IsEnabled = true,
+                Color = Colors.CornflowerBlue,
+                StrokeThickness = 4,
+                Foreground = Brushes.DeepSkyBlue,
+                Separator = new Separator
+                {
+                    Color = Colors.DodgerBlue,
+                    StrokeThickness = 2,
+                    IsEnabled = true
+                }
             };
         }
 
