@@ -44,6 +44,7 @@ namespace LiveCharts
             SetValue(AxisYProperty,
                 new Axis {FontWeight = FontWeights.Bold, FontSize = 11, FontFamily = new FontFamily("Calibri")});
             ShapeHoverBehavior = ShapeHoverBehavior.Shape;
+            //DefaultFillOpacity = .85;
             DrawPadding = 20;
             AnimatesNewPoints = true;
             SupportsMultipleSeries = false;
@@ -157,30 +158,30 @@ namespace LiveCharts
             }
         }
 
-        protected override void LoadLegend(ChartLegend legend)
-        {
-            var series = Series.FirstOrDefault() as PieSeries;
-            if (series == null) return;
+        //protected override void LoadLegend(ChartLegend legend)
+        //{
+        //    var series = Series.FirstOrDefault() as PieSeries;
+        //    if (series == null) return;
 
-            var l = new List<SeriesStandin>();
-            var f = GetFormatter(AxisX);
+        //    var l = new List<SeriesStandin>();
+        //    var f = GetFormatter(AxisX);
 
-            for (var index = 0; index < series.Values.Count; index++)
-            {
-                l.Add(new SeriesStandin
-                {
-                    Fill = series.Fill,
-                    Stroke = series.Stroke,
-                    Title = f(index)
-                });
-            }
+        //    for (var index = 0; index < series.Values.Count; index++)
+        //    {
+        //        l.Add(new SeriesStandin
+        //        {
+        //            Fill = series.Fill,
+        //            Stroke = series.Stroke,
+        //            Title = f(index)
+        //        });
+        //    }
 
-            legend.Series = l;
+        //    legend.Series = l;
 
-            legend.Orientation = LegendLocation == LegendLocation.Bottom || LegendLocation == LegendLocation.Top
-                ? Orientation.Horizontal
-                : Orientation.Vertical;
-        }
+        //    legend.Orientation = LegendLocation == LegendLocation.Bottom || LegendLocation == LegendLocation.Top
+        //        ? Orientation.Horizontal
+        //        : Orientation.Vertical;
+        //}
 
         internal override void DataMouseEnter(object sender, MouseEventArgs e)
         {
@@ -304,14 +305,12 @@ namespace LiveCharts
 
             foreach (var pieResult in l)
             {
-                var stack = 0d;
                 for (var i = 0; i < pieResult.Stack.Count; i++)
                 {
                     pieResult.Participation.Add(pieResult.Stack[i]/pieResult.TotalSum);
                     pieResult.Rotation.Add(i > 0
                         ? pieResult.Rotation[i - 1] + pieResult.Participation[i - 1]
                         : 0);
-                    stack = pieResult.Rotation[i];
                 }
             }
 

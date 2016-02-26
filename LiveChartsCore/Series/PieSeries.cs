@@ -42,6 +42,7 @@ namespace LiveCharts
         public PieSeries()
         {
             SetValue(StrokeProperty, Brushes.White);
+            SetValue(StrokeThicknessProperty, 4d);
         }
 
         public override void Plot(bool animate = true)
@@ -62,10 +63,7 @@ namespace LiveCharts
             minDimension -= pChart.DrawPadding;
             minDimension = minDimension < pChart.DrawPadding ? pChart.DrawPadding : minDimension;
 
-            var isFist = true;
-
             var f = Chart.GetFormatter(Chart.AxisY);
-            var pie = (PieChart) Chart;
 
             var visuals = Values.Points.ToDictionary(x => (int) x.X, GetVisual);
             var allNew = visuals.All(x => x.Value.IsNew);
@@ -73,15 +71,13 @@ namespace LiveCharts
             foreach (var point in Values.Points)
             {
                 var participation = pChart.PieTotalSums[point.Key].Participation[index];
-                if (isFist)
-                {
-                    rotated = pChart.PieTotalSums[point.Key].Rotation[index];
-                    isFist = false;
-                }
+                rotated = pChart.PieTotalSums[point.Key].Rotation[index];
 
                 var visual = visuals[(int) point.X];
 
-                visual.PointShape.Radius = minDimension/2;
+                var space = ((minDimension/2) - pChart.InnerRadius)*((point.Key + 1)/(double) Values.Count);
+                visual.PointShape.Radius = space;
+                visual.PointShape.InnerRadius = pChart.InnerRadius + point.Key*(space/Values.Count);
 
                 Canvas.SetTop(visual.PointShape, Chart.PlotArea.Height / 2);
                 Canvas.SetLeft(visual.PointShape, Chart.PlotArea.Width / 2);
@@ -235,8 +231,7 @@ namespace LiveCharts
                 var newSlice = new PieSlice
                 {
                     CentreX = 0,
-                    CentreY = 0,
-                    InnerRadius = pChart.InnerRadius
+                    CentreY = 0
                 };
 
                 BindingOperations.SetBinding(newSlice, Shape.StrokeProperty,
