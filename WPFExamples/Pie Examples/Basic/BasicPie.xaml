@@ -19,7 +19,7 @@
         <TextBlock Grid.Row="0" HorizontalAlignment="Center" Grid.ColumnSpan="2" Margin="5">
             <Bold>In Line Charting</Bold>: Using DataLabels and a formatter to show percentage
         </TextBlock>
-        <lvc:PieChart Name="Chart" Grid.Row="1" Grid.Column="0" LegendLocation="Right">
+        <lvc:PieChart Name="Chart" Grid.Row="1" Grid.Column="0" LegendLocation="Right" InnerRadius="130">
             <lvc:PieChart.Series>
                 <lvc:PieSeries Title="Chrome" Values="15, 1" DataLabels="True"/>
                 <lvc:PieSeries Title="Explorer" Values="10, 2" DataLabels="True"/>

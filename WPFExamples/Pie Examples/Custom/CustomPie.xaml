@@ -18,9 +18,9 @@
         </TextBlock>
         <lvc:PieChart Name="Chart" Grid.Row="1" Grid.Column="0" Background="#505050" PieRotation="90">
             <lvc:PieChart.Series>
-                <lvc:PieSeries Title="Maria"
-                                     Values="20, 40, 45"
-                               Stroke="#303030" />
+                <lvc:PieSeries Values="20" Stroke="White" Fill="Transparent" />
+                <lvc:PieSeries Values="40" Stroke="Blue" Fill="CadetBlue" />
+                <lvc:PieSeries Values="60" Stroke="#303030" Fill="Black" />
             </lvc:PieChart.Series>
             <lvc:PieChart.AxisY>
                 <lvc:Axis Title="Sold Items" IsEnabled="False" Foreground="White" FontSize="13" FontFamily="Arial">

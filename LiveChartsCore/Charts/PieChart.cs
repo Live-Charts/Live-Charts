@@ -44,7 +44,7 @@ namespace LiveCharts
             SetValue(AxisYProperty,
                 new Axis {FontWeight = FontWeights.Bold, FontSize = 11, FontFamily = new FontFamily("Calibri")});
             ShapeHoverBehavior = ShapeHoverBehavior.Shape;
-            //DefaultFillOpacity = .85;
+            DefaultFillOpacity = .85;
             DrawPadding = 20;
             AnimatesNewPoints = true;
             SupportsMultipleSeries = false;
@@ -54,6 +54,8 @@ namespace LiveCharts
 
         public static readonly DependencyProperty InnerRadiusProperty = DependencyProperty.Register(
             "InnerRadius", typeof (double), typeof (PieChart), new PropertyMetadata(0d));
+
+        private double _pieRotation;
 
         public double InnerRadius
         {
@@ -66,9 +68,16 @@ namespace LiveCharts
         #region Properties
 
         /// <summary>
-        /// Gets or sets angle in degrees that indicates pie rotation, form 0 to 360, default is 0
+        /// Gets or sets angle in degrees that indicates pie rotation, default is 0
         /// </summary>
-        public double PieRotation { get; set; }
+        public double PieRotation
+        {
+            get { return _pieRotation; }
+            set
+            {
+                _pieRotation = value;
+            }
+        }
 
         /// <summary>
         /// Gets the total sum of the values in the chart.
@@ -203,13 +212,14 @@ namespace LiveCharts
             var indexedToolTip = DataTooltip as IndexedTooltip;
             if (indexedToolTip != null)
             {
-                indexedToolTip.Header = labels == null
-                        ? (AxisX.LabelFormatter == null
-                            ? vx.ToString(CultureInfo.InvariantCulture)
-                            : AxisX.LabelFormatter(vx))
-                        : (labels.Length > vx
-                            ? labels[(int)vx]
-                            : "");
+                indexedToolTip.Header = null;
+                    //labels == null
+                    //    ? (AxisX.LabelFormatter == null
+                    //        ? vx.ToString(CultureInfo.InvariantCulture)
+                    //        : AxisX.LabelFormatter(vx))
+                    //    : (labels.Length > vx
+                    //        ? labels[(int)vx]
+                    //        : "");
                 indexedToolTip.Data = new[]
                 {
                     new IndexedTooltipData
@@ -310,7 +320,7 @@ namespace LiveCharts
                     pieResult.Participation.Add(pieResult.Stack[i]/pieResult.TotalSum);
                     pieResult.Rotation.Add(i > 0
                         ? pieResult.Rotation[i - 1] + pieResult.Participation[i - 1]
-                        : 0);
+                        : PieRotation/360d);
                 }
             }
 

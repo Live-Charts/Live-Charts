@@ -68,6 +68,8 @@ namespace LiveCharts
             var visuals = Values.Points.ToDictionary(x => (int) x.X, GetVisual);
             var allNew = visuals.All(x => x.Value.IsNew);
 
+            var inner = pChart.InnerRadius;
+
             foreach (var point in Values.Points)
             {
                 var participation = pChart.PieTotalSums[point.Key].Participation[index];
@@ -75,9 +77,9 @@ namespace LiveCharts
 
                 var visual = visuals[(int) point.X];
 
-                var space = ((minDimension/2) - pChart.InnerRadius)*((point.Key + 1)/(double) Values.Count);
+                var space = pChart.InnerRadius + ((minDimension/2) - pChart.InnerRadius)*((point.Key + 1)/(double) Values.Count);
                 visual.PointShape.Radius = space;
-                visual.PointShape.InnerRadius = pChart.InnerRadius + point.Key*(space/Values.Count);
+                visual.PointShape.InnerRadius =  inner;
 
                 Canvas.SetTop(visual.PointShape, Chart.PlotArea.Height / 2);
                 Canvas.SetLeft(visual.PointShape, Chart.PlotArea.Width / 2);
@@ -110,7 +112,7 @@ namespace LiveCharts
                     var tb = BuildATextBlock(0);
                     tb.Text = f(point.Y);
 
-                    var hypo = ((minDimension/2) + (pChart.InnerRadius > 10 ? pChart.InnerRadius : 10))/2;
+                    var hypo = (space+inner)/2;
                     var gamma = participation*360/2 + rotated*360;
                     var cp = new Point(hypo*Math.Sin(gamma*(Math.PI/180)), hypo*Math.Cos(gamma*(Math.PI/180)));
 
@@ -163,8 +165,7 @@ namespace LiveCharts
                 }
 
                 #endregion
-
-                rotated += participation;
+                inner = space;
             }
         }
 
