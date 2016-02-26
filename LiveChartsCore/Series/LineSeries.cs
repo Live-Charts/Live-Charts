@@ -77,10 +77,7 @@ namespace LiveCharts
 
                 if (_areas.Count <= s)
                 {
-                    var path = new Path
-                    {
-                        Stroke = Stroke, StrokeThickness = StrokeThickness, Fill = Fill
-                    };
+                    var path = new Path();
                     BindingOperations.SetBinding(path, Shape.StrokeProperty,
                     new Binding { Path = new PropertyPath("Stroke"), Source = this });
                     BindingOperations.SetBinding(path, Shape.FillProperty,
