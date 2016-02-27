@@ -44,7 +44,7 @@
         </StackPanel>
         <lvc:BarChart Name="Chart" Grid.Row="2" Grid.Column="0" Series="{Binding Sales.SalesmenSeries}" LegendLocation="Right">
             <lvc:BarChart.AxisY>
-                <lvc:Axis Title="Sold Items"></lvc:Axis>
+                <lvc:Axis Title="Sold Items" LabelFormatter="{Binding YFormatter}"></lvc:Axis>
             </lvc:BarChart.AxisY>
             <lvc:BarChart.AxisX>
                 <lvc:Axis Name="SecondaryAxis" Title="Month" Labels="{Binding Sales.AvailableMonths}"></lvc:Axis>

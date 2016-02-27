@@ -73,6 +73,7 @@ namespace LiveCharts
             foreach (var segment in Values.Points.AsSegments().Where(segment => segment.Count != 0))
             {
                 LineAndAreaShape area;
+                bool isNew = false;
 
                 if (_areas.Count <= s)
                 {
@@ -91,6 +92,7 @@ namespace LiveCharts
                     path.Data = geometry;
                     _areas.Add(area);
                     Chart.DrawMargin.Children.Add(path);
+                    isNew = true;
                 }
                 else
                 {
@@ -98,9 +100,14 @@ namespace LiveCharts
                 }
 
                 var p0 = ToDrawMargin(segment[0]).AsPoint();
-                area.Figure.StartPoint = p0;
-                area.Figure.BeginAnimation(PathFigure.StartPointProperty, new PointAnimation(area.Figure.StartPoint,
-                    segment.Count > 0 ? p0 : new Point(), AnimSpeed));
+                area.Figure.StartPoint = isNew
+                    ? (Chart.Invert
+                        ? new Point(ToPlotArea(Chart.Min.X, AxisTags.X), p0.X)
+                        : new Point(p0.X, ToPlotArea(Chart.Min.Y, AxisTags.Y)))
+                    : p0;
+                area.Figure.BeginAnimation(PathFigure.StartPointProperty,
+                    new PointAnimation(area.Figure.StartPoint,
+                        segment.Count > 0 ? p0 : new Point(), AnimSpeed));
 
                 AnimatableSegments previous = null;
                 var isVirgin = true;

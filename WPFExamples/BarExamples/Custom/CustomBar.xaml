@@ -22,9 +22,19 @@
                 <customTooltips:CustomIndexedTooltip x:Name="CustomTooltip"/>
             </lvc:BarChart.DataTooltip>
             <lvc:BarChart.Series>
-                <lvc:BarSeries Title="Maria" Values="1, -4, -4, 6, -5.5, 6, 6, -7" Stroke="#FFB300" Fill="#AAFFB300" StrokeThickness="4" />
-                <lvc:BarSeries Title="John" Values="-3.0, 3.5, -4.3, 6.8, 6.5 ,-7, -5.5, -6" Stroke="#FFA000" Fill="#AAFFA000" StrokeThickness="4" />
-                <lvc:BarSeries Title="Erick" Values="-4.0, 4.2, -5.0, 7.0, -5.0, 5.5, -4.4, -7.3" Stroke="#FF8F00"
+                <lvc:BarSeries Title="Maria" Values="1, -4, -4, 6, -5.5, 6, 6, -7" 
+                               Stroke="#FFB300" Fill="#AAFFB300" StrokeThickness="4" />
+                <lvc:BarSeries Title="John" Values="-3.0, 3.5, -4.3, 6.8, 6.5 ,-7, -5.5, -6" 
+                               Stroke="#FFA000" StrokeThickness="4">
+                    <lvc:BarSeries.Fill>
+                        <LinearGradientBrush>
+                            <GradientStop Color="#FFB30000" Offset="0"/>
+                            <GradientStop Color="#FF8F00" Offset="1"/>
+                        </LinearGradientBrush>
+                    </lvc:BarSeries.Fill>
+                </lvc:BarSeries>
+	            <lvc:BarSeries Title="Erick" Values="-4.0, 4.2, -5.0, 7.0, -5.0, 5.5, -4.4, -7.3" 
+                               Stroke="#FF8F00"
                                StrokeThickness="4">
                     <lvc:BarSeries.Fill>
                         <ImageBrush ImageSource="../../imagefill.jpg"></ImageBrush>
@@ -32,10 +42,10 @@
                 </lvc:BarSeries>
             </lvc:BarChart.Series>
             <lvc:BarChart.AxisY>
-                <lvc:Axis Title="Sold Items Change" IsEnabled="True" Color="LimeGreen" 
-                          StrokeThickness="4" Foreground="MediumSeaGreen" FontSize="13" FontFamily="Arial">
+                <lvc:Axis Title="Sold Items Change" IsEnabled="True" Color="#707070" 
+                          StrokeThickness="4" Foreground="White" FontSize="13" FontFamily="Arial">
                     <lvc:Axis.Separator>
-                        <lvc:Separator Color="ForestGreen" StrokeThickness="2" IsEnabled="True"></lvc:Separator>
+                        <lvc:Separator Color="#707070" StrokeThickness="2" IsEnabled="True"></lvc:Separator>
                     </lvc:Axis.Separator>
                 </lvc:Axis>
             </lvc:BarChart.AxisY>
@@ -43,11 +53,11 @@
                 <lvc:Axis Title="Month" 
                           Labels="Jan, Feb, Mar, Apr, May, Jun, Ago, Sep, Oct, Nov, Dec" 
                           IsEnabled="True"
-                          Color="CornflowerBlue"
-                          Foreground="DeepSkyBlue"
+                          Color="#303030"
+                          Foreground="White"
                           StrokeThickness="4">
                     <lvc:Axis.Separator>
-                        <lvc:Separator Color="DodgerBlue" StrokeThickness="2" IsEnabled="True" ></lvc:Separator>
+                        <lvc:Separator Color="#303030" StrokeThickness="2" IsEnabled="True" ></lvc:Separator>
                     </lvc:Axis.Separator>
                 </lvc:Axis>
             </lvc:BarChart.AxisX>

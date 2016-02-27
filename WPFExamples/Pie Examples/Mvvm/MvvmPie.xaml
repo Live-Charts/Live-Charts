@@ -21,7 +21,7 @@
         <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" TextWrapping="Wrap" HorizontalAlignment="Center">
             MVVM example, click on the buttons below to update chart, also notice InnerRadius property
         </TextBlock>
-        <lvc:PieChart Name="Chart" Grid.Row="1" Grid.Column="0" Series="{Binding Sales.Salesmen}" LegendLocation="Right" InnerRadius="150">
+        <lvc:PieChart Name="Chart" Grid.Row="1" Grid.Column="0" Series="{Binding Sales.Salesmen}" LegendLocation="Right" InnerRadius="30">
             <lvc:PieChart.AxisY>
                 <lvc:Axis Title="Sold Items" LabelFormatter="{x:Static lvc:LabelFormatters.Number}"></lvc:Axis>
             </lvc:PieChart.AxisY>

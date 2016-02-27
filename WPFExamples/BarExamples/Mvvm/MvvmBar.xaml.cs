@@ -17,7 +17,7 @@ namespace ChartsTest.BarExamples
             InitializeComponent();
             Sales = new SalesViewModel();
             DataContext = this;
-            Chart.AxisY.LabelFormatter = x => x + ".00k items";
+            YFormatter = x => x + ".00k items";
             Chart.DataTooltip = new SalesTooltip();
         }
 
