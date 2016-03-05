@@ -106,6 +106,11 @@ namespace LiveCharts
                     visual.PointShape.BeginAnimation(PieSlice.WedgeAngleProperty, wa);
                     visual.PointShape.BeginAnimation(PieSlice.RotationAngleProperty, ra);
                 }
+                else
+                {
+                    visual.PointShape.WedgeAngle = 360 * participation;
+                    visual.PointShape.RotationAngle = 360 * rotated;
+                }
 
                 if (DataLabels)
                 {
