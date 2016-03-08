@@ -102,15 +102,8 @@
                 <ContentControl Name="MoreControl" Grid.Column="1" Height="500" Width="Auto"></ContentControl>
                 <Image Grid.Column="2" Source="Right.png" MouseDown="MoreNext"/>
             </Grid>
-            <StackPanel>
-                <!--<lvc:PieChart Height="300" Width="300" LegendLocation="Right">
-                    <lvc:PieChart.Series>
-                        <lvc:PieSeries Title="Web Browser Usage" Values="15, 10, 40, 55" DataLabels="True"/>
-                    </lvc:PieChart.Series>
-                    <lvc:PieChart.AxisX>
-                        <lvc:Axis Labels="Explorer, Opera, Mozilla, Chrome"></lvc:Axis>
-                    </lvc:PieChart.AxisX>
-                </lvc:PieChart>-->
+            <StackPanel Orientation="Horizontal">
+               
             </StackPanel>
         </StackPanel>
     </ScrollViewer>

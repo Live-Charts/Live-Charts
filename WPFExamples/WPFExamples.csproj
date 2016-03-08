@@ -91,6 +91,9 @@
     <Compile Include="HighPerformance\HighPerformanceLine.xaml.cs">
       <DependentUpon>HighPerformanceLine.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Line Examples\InLine\InLineBar.xaml.cs">
+      <DependentUpon>InLineBar.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Line Examples\IrregularIntervals\IrregularLine.xaml.cs">
       <DependentUpon>IrregularLine.xaml</DependentUpon>
     </Compile>
@@ -176,6 +179,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="HighPerformance\HighPerformanceLine.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Line Examples\InLine\InLineBar.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

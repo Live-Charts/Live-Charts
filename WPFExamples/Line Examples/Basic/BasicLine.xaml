@@ -9,25 +9,30 @@
              d:DesignHeight="300" d:DesignWidth="500"
              Loaded="BasicLine_OnLoaded" d:DataContext="{d:DesignInstance basic:BasicLine }">
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"></ColumnDefinition>
-            <ColumnDefinition Width="Auto"></ColumnDefinition>
-        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
-        <TextBlock Grid.Row="0" HorizontalAlignment="Center" Grid.ColumnSpan="2" Margin="5">
+        <TextBlock Grid.Row="0" HorizontalAlignment="Center" Margin="5">
             <Bold>Basic Line</Bold>: line charts using default configuration.
         </TextBlock>
-        <lvc:LineChart Name="Chart" Grid.Row="1" Grid.Column="0" LegendLocation="Right"
+        <StackPanel Orientation="Horizontal" Grid.Row="1">
+            <TextBlock VerticalAlignment="Center">Points</TextBlock>
+            <Button Margin="5" Click="RemovePointsOnClick">-</Button>
+            <Button Margin="5" Click="AddPointsOnClick">+</Button>
+            <TextBlock VerticalAlignment="Center">Series</TextBlock>
+            <Button Margin="5" Click="RemoveSeriesOnClick">-</Button>
+            <Button Margin="5" Click="AddSeriesOnClick">+</Button>
+        </StackPanel>
+        <lvc:LineChart Name="Chart" Grid.Row="2" LegendLocation="Right"
                        Series="{Binding Series}">
             <lvc:LineChart.AxisY>
                 <lvc:Axis Title="Sold Items"></lvc:Axis>
             </lvc:LineChart.AxisY>
             <lvc:LineChart.AxisX>
                 <lvc:Axis Title="Month" Separator="{x:Static lvc:DefaultAxes.CleanSeparator}"
-                          Labels="Jan, Feb , Mar, Apr, May, Jun, Jul, Ago, Sep, Oct, Nov, Dic" IsEnabled="False" />
+                          Labels="Jan, Feb , Mar, Apr, May, Jun" />
             </lvc:LineChart.AxisX>
         </lvc:LineChart>
     </Grid>

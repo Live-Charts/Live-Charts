@@ -101,9 +101,11 @@ namespace LiveCharts.CoreComponents
             Canvas = new Canvas();
             b.Child = Canvas;
             Content = b;
+            MinHeight = 125;
+            MinWidth = 125;
 
             if (RandomizeStartingColor) ColorStartIndex = Randomizer.Next(0, Colors.Count - 1);
-
+            
             AnimatesNewPoints = false;
             
             var defaultConfig = new SeriesConfiguration<double>().Y(x => x);
