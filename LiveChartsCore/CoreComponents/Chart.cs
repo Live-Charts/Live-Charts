@@ -1026,7 +1026,7 @@ namespace LiveCharts.CoreComponents
 
         private void PrepareCanvas(bool ereaseAll = false)
         {
-            if (Series == null) return;
+            if (Series == null || Series.Count==0) return;
             if (!SeriesInitialized) InitializeSeries(this);
 
             if (AxisY.Parent == null) Canvas.Children.Add(AxisY);
@@ -1082,7 +1082,7 @@ namespace LiveCharts.CoreComponents
         {
             var chart = o as Chart;
 
-            if (chart == null || chart.Series == null) return;
+            if (chart == null || chart.Series == null || chart.Series.Count == 0) return;
             if (chart.Series.Any(x => x == null)) return;
 
             if (chart.Series.Count > 0 && !chart.HasInvalidArea) chart.Scale();
