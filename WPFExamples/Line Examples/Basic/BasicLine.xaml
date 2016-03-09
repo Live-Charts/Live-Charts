@@ -15,7 +15,7 @@
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
         <TextBlock Grid.Row="0" HorizontalAlignment="Center" Margin="5">
-            <Bold>Basic Line</Bold>: line charts using default configuration.
+            <Bold>Basic Example</Bold>: A chart using default configuration.
         </TextBlock>
         <StackPanel Orientation="Horizontal" Grid.Row="1">
             <TextBlock VerticalAlignment="Center">Points</TextBlock>

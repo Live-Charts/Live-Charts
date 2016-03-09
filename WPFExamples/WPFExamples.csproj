@@ -72,6 +72,9 @@
     <Compile Include="BarExamples\FilterChart\FilterChart.xaml.cs">
       <DependentUpon>FilterChart.xaml</DependentUpon>
     </Compile>
+    <Compile Include="BarExamples\InLine\InLineBar.xaml.cs">
+      <DependentUpon>InLineBar.xaml</DependentUpon>
+    </Compile>
     <Compile Include="BarExamples\Mvvm\SalesTooltip.xaml.cs">
       <DependentUpon>SalesTooltip.xaml</DependentUpon>
     </Compile>
@@ -91,8 +94,8 @@
     <Compile Include="HighPerformance\HighPerformanceLine.xaml.cs">
       <DependentUpon>HighPerformanceLine.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Line Examples\InLine\InLineBar.xaml.cs">
-      <DependentUpon>InLineBar.xaml</DependentUpon>
+    <Compile Include="Line Examples\InLine\InLineLine.xaml.cs">
+      <DependentUpon>InLineLine.xaml</DependentUpon>
     </Compile>
     <Compile Include="Line Examples\IrregularIntervals\IrregularLine.xaml.cs">
       <DependentUpon>IrregularLine.xaml</DependentUpon>
@@ -106,11 +109,17 @@
     <Compile Include="MoreCharts\RadarChart\RadarChartExample.xaml.cs">
       <DependentUpon>RadarChartExample.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pie Examples\InLine\InLinePie.xaml.cs">
+      <DependentUpon>InLinePie.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pie Examples\Mvvm\SalesTooltip.xaml.cs">
       <DependentUpon>SalesTooltip.xaml</DependentUpon>
     </Compile>
     <Compile Include="Line Examples\Mvvm\SalesTooltip.xaml.cs">
       <DependentUpon>SalesTooltip.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="StackedBarExamples\InLine\InLineStackedBar.xaml.cs">
+      <DependentUpon>InLineStackedBar.xaml</DependentUpon>
     </Compile>
     <Compile Include="StackedBarExamples\Mvvm\SalesTooltip.xaml.cs">
       <DependentUpon>SalesTooltip.xaml</DependentUpon>
@@ -158,6 +167,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="BarExamples\InLine\InLineBar.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="BarExamples\Mvvm\SalesTooltip.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -182,7 +195,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Line Examples\InLine\InLineBar.xaml">
+    <Page Include="Line Examples\InLine\InLineLine.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -202,6 +215,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Pie Examples\InLine\InLinePie.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Pie Examples\Mvvm\SalesTooltip.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -209,6 +226,10 @@
     <Page Include="Line Examples\Mvvm\SalesTooltip.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="StackedBarExamples\InLine\InLineStackedBar.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="StackedBarExamples\Mvvm\SalesTooltip.xaml">
       <Generator>MSBuild:Compile</Generator>

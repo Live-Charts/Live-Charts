@@ -43,6 +43,7 @@ namespace LiveCharts
         {
             SetValue(StrokeProperty, Brushes.White);
             SetValue(StrokeThicknessProperty, 4d);
+            SetValue(ForegroundProperty, Brushes.WhiteSmoke);
         }
 
         public override void Plot(bool animate = true)

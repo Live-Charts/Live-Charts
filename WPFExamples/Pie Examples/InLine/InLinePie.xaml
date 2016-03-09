@@ -1,0 +1,33 @@
+﻿<UserControl x:Class="ChartsTest.Pie_Examples.InLine.InLinePie"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:ChartsTest.Pie_Examples.InLine"
+             xmlns:lvc="clr-namespace:LiveCharts;assembly=LiveCharts"
+             mc:Ignorable="d" 
+             d:DesignHeight="500" d:DesignWidth="500">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="Auto"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <TextBlock Grid.Row="0" HorizontalAlignment="Center" Grid.ColumnSpan="2" Margin="5">
+            <Bold>In Line Charting</Bold>
+        </TextBlock>
+        <lvc:PieChart Name="Chart" Grid.Row="1" Grid.Column="0" LegendLocation="Right" InnerRadius="130">
+            <lvc:PieChart.Series>
+                <lvc:PieSeries Title="Chrome" Values="15, 1" DataLabels="True"/>
+                <lvc:PieSeries Title="Explorer" Values="10, 2" DataLabels="True"/>
+                <lvc:PieSeries Title="Mozilla" Values="40, 3" DataLabels="True"/>
+            </lvc:PieChart.Series>
+            <lvc:PieChart.AxisX>
+                <lvc:Axis Labels="Explorer, Opera, Mozilla, Chrome"></lvc:Axis>
+            </lvc:PieChart.AxisX>
+        </lvc:PieChart>
+    </Grid>
+</UserControl>
