@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows;
+using System.Windows.Media;
 using LiveCharts;
 
 namespace ChartsTest.StackedBarExamples.Basic
@@ -31,7 +32,8 @@ namespace ChartsTest.StackedBarExamples.Basic
             var averageSeries = new LineSeries
             {
                 Title = "Average Series",
-                Values = new ChartValues<double> {7.5, 5.5, 8}
+                Values = new ChartValues<double> {7.5, 5.5, 8},
+                Fill = Brushes.Transparent
             };
 
             //add our series to our SeriesCollection

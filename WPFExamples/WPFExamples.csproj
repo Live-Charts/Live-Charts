@@ -103,6 +103,8 @@
     <Compile Include="Line Examples\LogarithmicLine\LogarithmicAxis.xaml.cs">
       <DependentUpon>LogarithmicAxis.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Line Examples\Mvvm\MonthSalesData.cs" />
+    <Compile Include="Line Examples\Mvvm\BestSellersConverter.cs" />
     <Compile Include="Line Examples\RotadedLine\RotatedLine.xaml.cs">
       <DependentUpon>RotatedLine.xaml</DependentUpon>
     </Compile>

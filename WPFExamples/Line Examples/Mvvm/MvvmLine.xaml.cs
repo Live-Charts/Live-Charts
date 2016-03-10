@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using LiveCharts;
@@ -14,33 +15,49 @@ namespace ChartsTest.Line_Examples.Mvvm
         public MvvmLine()
         {
             InitializeComponent();
-            Sales = new SalesViewModel();
+
+            //In this case we are not only plotting double values,
+            //instead each point is an instance of MonthSalesData class.
+
+            //We need to let LiveCharts know how to use MonthSalesData class.
+            //you can specify wich property to use as X or Y in chart.
+            //in this case we are going to use the SoldItems property as Y
+            //we are going to use an indexed X 
+            //this means first point is 0, second 1, third 2 and so on.
+            //X and Y are indexed by default, and it is not necessary to specify it
+            //we are doing it just to exmplain how LiveCharts works.
+            var config = new SeriesConfiguration<MonthSalesData>()
+                .Y(point => point.SoldItems)
+                .X((point, index) => index);
+
+            //now we create a new SeriesCollection with this configuration
+            Sales = new SeriesCollection(config);
+
+            //we add some default series
+            Sales.Add(new LineSeries
+            {
+                Title = "Charles",
+                Values = new ChartValues<MonthSalesData>
+                {
+                    new MonthSalesData {SoldItems = 15, BestSellers = new[] {"Apple", "Grape"}},
+                    new MonthSalesData {SoldItems = 8, BestSellers = new[] {"Orange", "Tomate"}},
+                    new MonthSalesData {SoldItems = 8, BestSellers = new[] {"Banana"}}
+                }
+            });
+            
+            //Some labels for X axis
+            Labels = new List<string> {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Agu", "Sep", "Oct", "Nov", "Dec"};
+            //Specify a custom format for Y values.
             YFormatter = y => y + ".00k items";
-            DataContext = this;
+            //And a custom tooltip
             Chart.DataTooltip = new SalesTooltip();
+
+            DataContext = this;
         }
 
-        public SalesViewModel Sales { get; set; }
+        public SeriesCollection Sales { get; set; }
         public Func<double, string> YFormatter { get; set; }
-
-        private void AddSalesmanOnClick(object sender, RoutedEventArgs e)
-        {
-            Sales.AddRandomSalesData();
-        }
-
-        private void RemoveSalesmanOnClick(object sender, RoutedEventArgs e)
-        {
-            Sales.RemoveLastSalesData();
-        }
-
-        private void AddMonthOnClick(object sender, RoutedEventArgs e)
-        {
-            Sales.AddOneMonth();
-        }
-        private void RemoveMonthOnClick(object sender, RoutedEventArgs e)
-        {
-            Sales.RemoveLastMonth();
-        }
+        public List<string> Labels { get; set; }
 
         private void MvvmExample_OnLoaded(object sender, RoutedEventArgs e)
         {
@@ -48,158 +65,57 @@ namespace ChartsTest.Line_Examples.Mvvm
             Chart.Update();
         }
 
-        private void Chart_OnDataClick(ChartPoint point)
-        {
-            //point.Instance contains the model
-            var salesData = point.Instance as SalesData;
-            MessageBox.Show("You clicked on (" + point.X + ", " + point.Y);
-        }
-    }
-
-    public class SalesData
-    {
-        public int ItemsSold { get; set; }
-        public decimal ItemsAverageSellPrice { get; set; }
-        public double Rentability { get; set; }
-    }
-
-    public class AverageSalesData
-    {
-        public int AverageItemsSold { get; set; }
-    }
-
-    public class SalesViewModel
-    {
-        private readonly string[] _names =
-        {
-            "Charles", "Susan", "Edit", "Roger", "Peter", "James", "Ana", "Alice", "Maria",
-            "Jesus", "Jose", "Miriam", "Aristoteles", "Socrates", "Isaac", "Thomas", "Nicholas"
-        };
-
-        private readonly string[] _months =
-        {
-            "Jan 65", "Feb 65", "Mar 65", "Apr 65", "May 65", "Jun 65", "Jul 65", "Ago 65", "Sep 65", "Oct 65", "Nov 65", "Dec 65",
-            "Jan 66", "Feb 66", "Mar 66", "Apr 66", "May 66", "Jun 66", "Jul 66", "Ago 66", "Sep 66", "Oct 66", "Nov 66", "Dec 66",
-            "Jan 67", "Feb 67", "Mar 67", "Apr 67", "May 67", "Jun 67", "Jul 67", "Ago 67", "Sep 67", "Oct 67", "Nov 67", "Dec 67"
-        };
-
-        public SalesViewModel()
-        {
-            AvailableMonths = _months;
-
-            // We create a configuration to map X and Y values
-            // in this case we only map Y, X by defualt will be a zero based index.
-            var config = new SeriesConfiguration<SalesData>().Y(data => data.ItemsSold);
-
-            //we specify the config to the SeriesCollection
-            SalesmenSeries = new SeriesCollection(config)
-            {
-                //will use SeriesCollection config
-                new LineSeries
-                {
-                    Title = "Charles",
-                    Values = new ChartValues<SalesData>
-                    {
-                        new SalesData {ItemsSold = 15, Rentability = .15, ItemsAverageSellPrice = 5000},
-                        new SalesData {ItemsSold = 16, Rentability = .12, ItemsAverageSellPrice = 5200},
-                        new SalesData {ItemsSold = 22, Rentability = .11, ItemsAverageSellPrice = 5100},
-                        new SalesData {ItemsSold = 25, Rentability = .13, ItemsAverageSellPrice = 5400},
-                        new SalesData {ItemsSold = 20, Rentability = .12, ItemsAverageSellPrice = 5100},
-                        new SalesData {ItemsSold = 10, Rentability = .11, ItemsAverageSellPrice = 5200},
-                        new SalesData {ItemsSold = 12, Rentability = .13, ItemsAverageSellPrice = 5400}
-                    }
-                },
-                //Will use series collection config too
-                new LineSeries
-                {
-                    Title = "Frida",
-                    Values = new ChartValues<SalesData>
-                    {
-                        new SalesData {ItemsSold = 25, Rentability = .12, ItemsAverageSellPrice = 5200},
-                        new SalesData {ItemsSold = 12, Rentability = .19, ItemsAverageSellPrice = 5100},
-                        new SalesData {ItemsSold = 24, Rentability = .12, ItemsAverageSellPrice = 5400},
-                        new SalesData {ItemsSold = 15, Rentability = .13, ItemsAverageSellPrice = 5200},
-                        new SalesData {ItemsSold = 14, Rentability = .14, ItemsAverageSellPrice = 5100},
-                        new SalesData {ItemsSold = 15, Rentability = .13, ItemsAverageSellPrice = 5600},
-                        new SalesData {ItemsSold = 14, Rentability = .11, ItemsAverageSellPrice = 4900}
-                    }
-                },
-
-                //Override config for this series to plot another property or even another type
-                new LineSeries
-                {
-                    Title = "Average Series",
-                    Values = new ChartValues<AverageSalesData>
-                    {
-                        new AverageSalesData {AverageItemsSold = 22},
-                        new AverageSalesData {AverageItemsSold = 23},
-                        new AverageSalesData {AverageItemsSold = 21},
-                        new AverageSalesData {AverageItemsSold = 22},
-                        new AverageSalesData {AverageItemsSold = 23},
-                        new AverageSalesData {AverageItemsSold = 24},
-                        new AverageSalesData {AverageItemsSold = 22}
-                    }
-                }.Setup(new SeriesConfiguration<AverageSalesData>().Y(data => data.AverageItemsSold)) // this is the line that overrides SeriesCollection Setup
-
-            };
-        }
-
-        public SeriesCollection SalesmenSeries { get; set; }
-        public string[] AvailableMonths { get; set; }
-
-        public void AddRandomSalesData()
+        private void AddSalesManOnClick(object sender, RoutedEventArgs e)
         {
             var r = new Random();
 
-            var values = new ChartValues<SalesData>();
-            for (var i = 0; i < SalesmenSeries[0].Values.Count; i++) values.Add(new SalesData
-            {
-                ItemsSold = r.Next(5,30),
-                Rentability = r.NextDouble()*.2,
-                ItemsAverageSellPrice = 5000
-            });
+            var c = Sales.Count > 0 ? Sales[0].Values.Count : 3;
 
-            SalesmenSeries.Add(new LineSeries
+            var values = new ChartValues<MonthSalesData>();
+            for (int i = 0; i < c; i++)
             {
-                Title = _names[r.Next(0, _names.Count() - 1)],
-                Values = values
-            });
-        }
-
-        public void RemoveLastSalesData()
-        {
-            if (SalesmenSeries.Count == 1) return;
-            SalesmenSeries.RemoveAt(SalesmenSeries.Count-1);
-        }
-
-        public void AddOneMonth()
-        {
-            var r = new Random();
-            if (SalesmenSeries[0].Values.Count >= _months.Count()) return; 
-            foreach (var salesman in SalesmenSeries.Where(x => x.Title != "Average Series"))
-            {
-                salesman.Values.Add(new SalesData
+                values.Add(new MonthSalesData
                 {
-                    ItemsSold = r.Next(5,30),
-                    Rentability = r.NextDouble()*.2,
-                    ItemsAverageSellPrice = 5000
+                    SoldItems = r.Next(0, 20),
+                    BestSellers = new[] { "A random fruit" }
                 });
             }
-            var averageSeries = SalesmenSeries.FirstOrDefault(x => x.Title == "Average Series");
-            if (averageSeries != null)
+            Sales.Add(new LineSeries { Values = values });
+        }
+
+        private void RemoveSalesManOnClick(object sender, RoutedEventArgs e)
+        {
+            if (Sales.Count > 0) Sales.RemoveAt(0);
+        }
+
+        private void AddPointsOnClick(object sender, RoutedEventArgs e)
+        {
+            var r = new Random();
+            foreach (var salesSeries in Sales)
             {
-                averageSeries.Values.Add(new AverageSalesData {AverageItemsSold = r.Next(20, 25)});
+                salesSeries.Values.Add(new MonthSalesData
+                {
+                    SoldItems = r.Next(0, 20),
+                    BestSellers = new[] {"A random fruit"}
+                });
             }
         }
 
-        public void RemoveLastMonth()
+        private void RemovePointsOnClick(object sender, RoutedEventArgs e)
         {
-            if (SalesmenSeries[0].Values.Count == 2) return;
-            foreach (var salesman in SalesmenSeries)
+            foreach (var salesSeries in Sales)
             {
-                salesman.Values.RemoveAt(salesman.Values.Count - 1);
+                if (salesSeries.Values.Count > 0) salesSeries.Values.RemoveAt(0);
             }
         }
+
+        private void Chart_OnDataClick(ChartPoint point)
+        {
+            var salesData = point.Instance as MonthSalesData;
+            if (salesData == null) return;
+            MessageBox.Show("You clicked on: (" + point.X + ", " + point.Y + "), " +
+                            "sold items:" + salesData.SoldItems + ", " +
+                            "best sellers: " + salesData.BestSellers.Aggregate((x, y) => x + y));
+        }
     }
-   
 }

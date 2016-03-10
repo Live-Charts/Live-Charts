@@ -9,7 +9,7 @@
              mc:Ignorable="d" 
              d:DataContext="{d:DesignInstance tooltip:DefaultIndexedTooltip}">
     <tooltip:IndexedTooltip.Resources>
-        <mvvm:RentabilityConverter x:Key="RentConverter"></mvvm:RentabilityConverter>
+        <mvvm:BestSellersConverter x:Key="BestSellersConverter"></mvvm:BestSellersConverter>
     </tooltip:IndexedTooltip.Resources>
     <Border CornerRadius="2">
         <Border.Background>
@@ -27,9 +27,15 @@
                                 <ColumnDefinition Width="Auto" SharedSizeGroup="Highest"/>
                             </Grid.ColumnDefinitions>
                             <Ellipse Width="11" Height="11" StrokeThickness="1" Stroke="{Binding Stroke}" Fill="{Binding Fill}"/>
-                            <TextBlock Grid.Column="1" Text="{Binding Series.Title}" Margin="4 0" VerticalAlignment="Center" Foreground="#404040"/>
-                            <TextBlock Grid.Column="2" Text="{Binding Value}" Margin="4 0" VerticalAlignment="Center" Foreground="#404040"/>
-                            <TextBlock Grid.Column="3" Text="{Binding Point, Converter={StaticResource RentConverter}}" Margin="4 0" VerticalAlignment="Center" Foreground="#404040"></TextBlock>
+                            <TextBlock Grid.Column="1" 
+                                       Text="{Binding Series.Title}" 
+                                       Margin="4 0" VerticalAlignment="Center" Foreground="#404040"/>
+                            <TextBlock Grid.Column="2" 
+                                       Text="{Binding Value}" 
+                                       Margin="4 0" VerticalAlignment="Center" Foreground="#404040"/>
+                            <TextBlock Grid.Column="3" 
+                                       Text="{Binding Point.Instance, Converter={StaticResource BestSellersConverter}}" 
+                                       Margin="4 0" VerticalAlignment="Center" Foreground="#404040">/</TextBlock>
                         </Grid>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>

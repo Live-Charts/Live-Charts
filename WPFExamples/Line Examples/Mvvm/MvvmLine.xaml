@@ -2,15 +2,14 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:lineExamples="clr-namespace:ChartsTest.Line_Examples"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:lvc="clr-namespace:LiveCharts;assembly=LiveCharts"
              xmlns:mvvm="clr-namespace:ChartsTest.Line_Examples.Mvvm"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="500"
              Loaded="MvvmExample_OnLoaded"
              Name="Control"
-              d:DataContext="{d:DesignInstance mvvm:MvvmLine}">
+             d:DataContext="{d:DesignInstance mvvm:MvvmLine}">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
@@ -22,7 +21,10 @@
             <ColumnDefinition Width="Auto"></ColumnDefinition>
         </Grid.ColumnDefinitions>
         <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" TextWrapping="Wrap" HorizontalAlignment="Center" >
-            <Bold>Mvvm Example, and clickable points.</Bold>: in this case we plot a collection of SalesData class. click on the buttons bellow to see how live charts track your data changes, also chart will follow if you resize window, notice this chart implements a custom tooltip to display Rentability property too.
+            <Bold>Mvvm Example, and clickable points.</Bold>: in this case we plot a collection of 
+            MonthSalesData class. click on the buttons bellow to see how live charts track your 
+            data changes, also chart will follow if you resize window, 
+            notice this chart implements a custom tooltip.
         </TextBlock>
         <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center">
             <StackPanel.Resources>
@@ -37,18 +39,19 @@
                 </Style>
             </StackPanel.Resources>
             <TextBlock>Salesmen</TextBlock>
-            <Button Click="AddSalesmanOnClick">+</Button>
-            <Button Click="RemoveSalesmanOnClick">-</Button>
+            <Button Click="AddSalesManOnClick">+</Button>
+            <Button Click="RemoveSalesManOnClick">-</Button>
             <TextBlock>Months</TextBlock>
-            <Button Click="AddMonthOnClick">+</Button>
-            <Button Click="RemoveMonthOnClick">-</Button>
+            <Button Click="AddPointsOnClick">+</Button>
+            <Button Click="RemovePointsOnClick">-</Button>
         </StackPanel>
-        <lvc:LineChart Name="Chart" Grid.Row="2" Grid.Column="0" Series="{Binding Sales.SalesmenSeries}" DataClick="Chart_OnDataClick" LegendLocation="Right">
+        <lvc:LineChart Name="Chart" Grid.Row="2" Grid.Column="0" Series="{Binding Sales}" LegendLocation="Right" DataClick="Chart_OnDataClick">
             <lvc:LineChart.AxisY>
                 <lvc:Axis Title="Sold Items"/>
             </lvc:LineChart.AxisY>
             <lvc:LineChart.AxisX>
-                <lvc:Axis Name="SecondaryAxis" Title="Month" Labels="{Binding Sales.AvailableMonths}" 
+                <lvc:Axis Name="SecondaryAxis" Title="Month" 
+                          Labels="{Binding Labels}" 
                           Separator="{x:Static lvc:DefaultAxes.CleanSeparator}"/>
             </lvc:LineChart.AxisX>
         </lvc:LineChart>
