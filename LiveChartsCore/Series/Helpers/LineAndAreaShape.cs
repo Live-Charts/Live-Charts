@@ -22,14 +22,16 @@
 
 using System.Windows;
 using System.Windows.Media;
+using System.Windows.Shapes;
 
 namespace LiveCharts.Helpers
 {
     internal class LineAndAreaShape
     {
-        public LineAndAreaShape(PathFigure figure)
+        public LineAndAreaShape(PathFigure figure, Path path)
         {
             Figure = figure;
+            Path = path;
             Right = new LineSegment(new Point(), false);
             Bottom = new LineSegment(new Point(), false);
             Left = new LineSegment(new Point(), false);
@@ -40,6 +42,7 @@ namespace LiveCharts.Helpers
         }
 
         public PathFigure Figure { get; set; }
+        public Path Path { get; set; }
         public LineSegment Right { get; set; }
         public LineSegment Bottom { get; set; }
         public LineSegment Left { get; set; }

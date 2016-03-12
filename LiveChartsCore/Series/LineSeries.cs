@@ -37,7 +37,7 @@ using LiveCharts.Helpers;
 
 namespace LiveCharts
 {
-    public class LineSeries : CoreComponents.Series
+    public class LineSeries : Series
     {
         public static DateTime TestTimer = DateTime.Now;
 
@@ -87,7 +87,7 @@ namespace LiveCharts
                     BindingOperations.SetBinding(path, VisibilityProperty,
                         new Binding { Path = new PropertyPath("Visibility"), Source = this });
                     var geometry = new PathGeometry();
-                    area = new LineAndAreaShape(new PathFigure());
+                    area = new LineAndAreaShape(new PathFigure(), path);
                     geometry.Figures.Add(area.Figure);
                     path.Data = geometry;
                     _areas.Add(area);
@@ -299,6 +299,12 @@ namespace LiveCharts
             //track by instance reference
             if (!_isPrimitive)
                 EreaseInstances(force);
+
+            foreach (var emptyArea in _areas.Where(a => !a.Figure.Segments.OfType<BezierSegment>().Any()).ToList())
+            {
+                Chart.DrawMargin.Children.Remove(emptyArea.Path);
+                _areas.Remove(emptyArea);
+            }
 
 #if DEBUG
             if (_isPrimitive)

@@ -1,6 +1,4 @@
-﻿using LiveCharts;
-
-namespace ChartsTest.Line_Examples.Mvvm
+﻿namespace ChartsTest.Line_Examples.Generic
 {
     /// <summary>
     /// Interaction logic for SalesTooltip.xaml

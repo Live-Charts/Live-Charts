@@ -6,6 +6,7 @@ using ChartsTest.BarExamples.UsingObservableChartPoint;
 using ChartsTest.Line_Examples;
 using ChartsTest.Line_Examples.AnimationImprovement;
 using ChartsTest.Line_Examples.DynamicLine;
+using ChartsTest.Line_Examples.Generic;
 using ChartsTest.Line_Examples.IrregularIntervals;
 using ChartsTest.Line_Examples.LogarithmicLine;
 using ChartsTest.Line_Examples.RotadedLine;
@@ -16,7 +17,6 @@ using BasicBar = ChartsTest.BarExamples.Basic.BasicBar;
 using BasicLine = ChartsTest.Line_Examples.Basic.BasicLine;
 using BasicPie = ChartsTest.Pie_Examples.Basic.BasicPie;
 using BasicStackedBar = ChartsTest.StackedBarExamples.Basic.BasicStackedBar;
-using MvvmLine = ChartsTest.Line_Examples.Mvvm.MvvmLine;
 using MvvmPie = ChartsTest.Pie_Examples.Mvvm.MvvmPie;
 using MvvmStackedBar = ChartsTest.StackedBarExamples.Mvvm.MvvmStackedBar;
 using RotatedBar = ChartsTest.BarExamples.RotatedBar.RotatedBar;
@@ -37,7 +37,7 @@ namespace ChartsTest
                 new AnimationImprovementLine(),
                 new BasicLine(),
                 new DynamicLine(),
-                new MvvmLine(),
+                new GenericLine(),
                 new RotatedLine(),
                 new CustomLine(),
                 new IrregularLine(),

@@ -1,4 +1,4 @@
-namespace ChartsTest.Line_Examples.Mvvm
+namespace ChartsTest.Line_Examples.Generic
 {
     public class MonthSalesData
     {

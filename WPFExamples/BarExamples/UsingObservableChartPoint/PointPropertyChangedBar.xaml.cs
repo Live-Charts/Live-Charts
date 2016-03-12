@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Linq;
 using System.Windows;
 using LiveCharts;
-using LiveCharts.CoreComponents;
 
 namespace ChartsTest.BarExamples.UsingObservableChartPoint
 {
@@ -70,23 +68,5 @@ namespace ChartsTest.BarExamples.UsingObservableChartPoint
             //this line is only to display animation every time you change view in this examples.
             Chart.Update();
         }
-    }
-
-    //Implement ObservableChartPoint and specify the logic to follow when data Changes
-    public class StoreViewModel : IObservableChartPoint
-    {
-        private double _income;
-
-        public double Income
-        {
-            get { return _income; }
-            set
-            {
-                _income = value;
-               if (PointChanged != null) PointChanged.Invoke(this);
-            }
-        }
-
-        public event Action<object> PointChanged;
     }
 }

@@ -5,14 +5,14 @@ using System.Windows;
 using LiveCharts;
 using LiveCharts.CoreComponents;
 
-namespace ChartsTest.Line_Examples.Mvvm
+namespace ChartsTest.Line_Examples.Generic
 {
     /// <summary>
     /// Interaction logic for MvvmExample.xaml
     /// </summary>
-    public partial class MvvmLine
+    public partial class GenericLine
     {
-        public MvvmLine()
+        public GenericLine()
         {
             InitializeComponent();
 
@@ -44,9 +44,13 @@ namespace ChartsTest.Line_Examples.Mvvm
                     new MonthSalesData {SoldItems = 8, BestSellers = new[] {"Banana"}}
                 }
             });
-            
+
             //Some labels for X axis
-            Labels = new List<string> {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Agu", "Sep", "Oct", "Nov", "Dec"};
+            Labels = new List<string>
+            {
+                "Jan","Feb","Mar","Apr","May","Jun",
+                "Jul","Agu","Sep","Oct","Nov","Dec"
+            };
             //Specify a custom format for Y values.
             YFormatter = y => y + ".00k items";
             //And a custom tooltip
@@ -77,10 +81,10 @@ namespace ChartsTest.Line_Examples.Mvvm
                 values.Add(new MonthSalesData
                 {
                     SoldItems = r.Next(0, 20),
-                    BestSellers = new[] { "A random fruit" }
+                    BestSellers = new[] {"A random fruit"}
                 });
             }
-            Sales.Add(new LineSeries { Values = values });
+            Sales.Add(new LineSeries {Values = values});
         }
 
         private void RemoveSalesManOnClick(object sender, RoutedEventArgs e)
@@ -111,11 +115,13 @@ namespace ChartsTest.Line_Examples.Mvvm
 
         private void Chart_OnDataClick(ChartPoint point)
         {
+            //DataClick event will be called when a user clicks on a data point.
+            
             var salesData = point.Instance as MonthSalesData;
             if (salesData == null) return;
             MessageBox.Show("You clicked on: (" + point.X + ", " + point.Y + "), " +
                             "sold items:" + salesData.SoldItems + ", " +
-                            "best sellers: " + salesData.BestSellers.Aggregate((x, y) => x + y));
+                            "best sellers: " + salesData.BestSellers.Aggregate((x, y) => x + ", " + y));
         }
     }
 }
