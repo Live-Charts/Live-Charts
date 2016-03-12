@@ -1,13 +1,11 @@
-
 <p align="center">
-  <img src="https://dl.dropboxusercontent.com/u/40165535/LiveCharts/live.png" />
+  <img src="http://lvcharts.net/Content/Images/Logos/LiveChartsLogo.png" />
 </p>
 
 <p align="center">
-  <img src="https://dl.dropboxusercontent.com/u/40165535/LiveCharts/LineChart.gif" width="200" />
-  <img src="https://dl.dropboxusercontent.com/u/40165535/LiveCharts/BarChart.gif" width="200"/>
-  <img src="https://dl.dropboxusercontent.com/u/40165535/LiveCharts/StackedBarChart.gif" width="200"/>
-  <img src="https://dl.dropboxusercontent.com/u/40165535/LiveCharts/PieChart.gif" width="200"/>
+  <img src="http://lvcharts.net/Content/Images/Samples/linemove.gif" width="300" />
+  <img src="http://lvcharts.net/Content/Images/Samples/pie.gif" width="300"/>
+  <img src="http://lvcharts.net/Content/Images/Samples/barsmove.gif" width="300"/>
 </p>
 
 [![GitHub license](https://img.shields.io/github/license/beto-rodriguez/Live-Charts.svg?style=flat-square)](https://github.com/beto-rodriguez/Live-Charts/blob/master/LICENSE.TXT)
@@ -15,8 +13,6 @@
 [![GitHub issues](https://img.shields.io/github/issues/beto-rodriguez/Live-Charts.svg?style=flat-square)](https://github.com/beto-rodriguez/Live-Charts/issues)
 [![NuGet](https://img.shields.io/nuget/dt/LiveCharts.svg?style=flat-square)](https://www.nuget.org/packages/LiveCharts/)
 [![Gitter](https://img.shields.io/gitter/room/beto-rodriguez/Live-Charts.svg?style=flat-square)](https://gitter.im/beto-rodriguez/Live-Charts?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-
-### Find more at http://lvcharts.net/
 
 Live charts is an easy way to build poweful charts, all charts are animated, they update every time you change your data, it also has an awesome performance. 
 
@@ -65,6 +61,8 @@ myChart.AxixX.Labels = labels;
 * **[IObservableChartPoint](https://github.com/beto-rodriguez/Live-Charts/wiki/93-IObservableChartPoint)**: this chart uses a view model that implements `IObservableChartPoint`, this will update chart every time a desired property changes.
 * There are much more examples in this solution, go to examples folder up here ^^^
 * High performance charts are almost ready, current test can draw 3 million points in only 1 second
+
+## Find more at http://lvcharts.net/
 
 # Installation
 
