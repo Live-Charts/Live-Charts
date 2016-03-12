@@ -300,7 +300,9 @@ namespace LiveCharts
             if (!_isPrimitive)
                 EreaseInstances(force);
 
-            foreach (var emptyArea in _areas.Where(a => !a.Figure.Segments.OfType<BezierSegment>().Any()).ToList())
+            foreach (var emptyArea in _areas
+                .Where(a => !a.Figure.Segments.OfType<BezierSegment>().Any())
+                .ToList())
             {
                 Chart.DrawMargin.Children.Remove(emptyArea.Path);
                 _areas.Remove(emptyArea);
