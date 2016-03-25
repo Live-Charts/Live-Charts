@@ -20,11 +20,9 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-using System.Windows;
-
 namespace LiveCharts.CoreComponents
 {
-    internal struct ComplementaryAxesData
+    internal class ComplementaryAxesData
     {
         public double Max { get; set; }
         public double Min { get; set; }

@@ -65,6 +65,24 @@ namespace LiveCharts
             {
                 if (AxisY.MaxValue == null) Max.Y = (Math.Round(Max.Y / S.Y) + 1) * S.Y;
                 if (AxisY.MinValue == null) Min.Y = (Math.Truncate(Min.Y / S.Y) - 1) * S.Y;
+
+                for (var index = 0; index < AxisX.ComplementaryAxes.Count; index++)
+                {
+                    var axis = AxisX.ComplementaryAxes[index];
+                    var comp = ComplementaryX[index];
+                    comp.S = axis.Separator.Step ?? CalculateSeparator(comp.Max - comp.Min, AxisTags.Y);
+                    if (axis.MaxValue == null) comp.Max = (Math.Round(comp.Max / comp.S) + 1) * comp.S;
+                    if (axis.MinValue == null) comp.Min = (Math.Truncate(comp.Min / comp.S) - 1) * comp.S;
+                }
+
+                for (var index = 0; index < AxisY.ComplementaryAxes.Count; index++)
+                {
+                    var axis = AxisY.ComplementaryAxes[index];
+                    var comp = ComplementaryY[index];
+                    comp.S = axis.Separator.Step ?? CalculateSeparator(comp.Max - comp.Min, AxisTags.Y);
+                    if (axis.MaxValue == null) comp.Max = (Math.Round(comp.Max / comp.S) + 1) * comp.S;
+                    if (axis.MinValue == null) comp.Min = (Math.Truncate(comp.Min / comp.S) - 1) * comp.S;
+                }
             }
 
             DrawAxes();

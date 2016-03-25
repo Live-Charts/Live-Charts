@@ -9,11 +9,11 @@
     <Grid>
         <lvc:LineChart>
             <lvc:LineChart.Series>
-                <lvc:LineSeries Values="1, 5, 8" />
-                <lvc:LineSeries Values="300, 600, 200" ScalesYAt="0" />
+                <lvc:LineSeries Values="1, 5, 8" ScalesYAt="0" />
+                <lvc:LineSeries Values="300, 600, 200"  />
             </lvc:LineChart.Series>
             <lvc:LineChart.AxisY>
-                <lvc:Axis>
+                <lvc:Axis Title="YAxis">
                     <lvc:Axis.ComplementaryAxes>
                         <lvc:Axis Position="TopRight"></lvc:Axis>
                     </lvc:Axis.ComplementaryAxes>

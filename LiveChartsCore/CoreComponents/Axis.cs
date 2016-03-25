@@ -41,6 +41,7 @@ namespace LiveCharts
                 Color = Color.FromRgb(242, 242, 242),
                 StrokeThickness = 1
             };
+            SetValue(ComplementaryAxesProperty, new List<Axis>());
         }
 
         public static readonly DependencyProperty LabelsProperty = DependencyProperty.Register(
@@ -84,7 +85,7 @@ namespace LiveCharts
         }
 
         public static readonly DependencyProperty ComplementaryAxesProperty = DependencyProperty.Register(
-            "ComplementaryAxes", typeof(List<Axis>), typeof(Axis), new PropertyMetadata(new List<Axis>()));
+            "ComplementaryAxes", typeof(List<Axis>), typeof(Axis), new PropertyMetadata(null));
         /// <summary>
         /// Gets or sets a collection of extra axes for the chart
         /// </summary>

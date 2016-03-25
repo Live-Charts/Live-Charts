@@ -182,7 +182,6 @@ namespace LiveCharts.CoreComponents
 
         public static readonly DependencyProperty AxisXProperty = DependencyProperty.Register(
             "AxisX", typeof (Axis), typeof (Chart), new PropertyMetadata(default(Axis)));
-
         /// <summary>
         /// Gets or sets horizontal axis
         /// </summary>
@@ -706,8 +705,7 @@ namespace LiveCharts.CoreComponents
                     Max = g.Select(x => x.Values.MaxChartPoint.Y).DefaultIfEmpty(0).Max(),
                     Min = g.Select(x => x.Values.MinChartPoint.Y).DefaultIfEmpty(0).Min()
                 });
-
-
+            
             if (ZoomingAxis == AxisTags.X)
             {
                 From = Min.X;
