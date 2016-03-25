@@ -113,7 +113,7 @@ namespace LiveCharts
             Canvas.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
 
             var lastLabelX = Math.Truncate((Max.X - Min.X)/S.X)*S.X;
-            var longestYLabelSize = GetLongestLabelSize(AxisY);
+            var longestYLabelSize = GetLongestLabelSize(AxisY, AxisTags.Y);
             var fistXLabelSize = GetLabelSize(AxisX, Min.X);
             var lastXLabelSize = GetLabelSize(AxisX, lastLabelX);
 

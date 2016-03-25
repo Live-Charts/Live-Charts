@@ -224,12 +224,12 @@ namespace LiveCharts.CoreComponents
         /// <summary>
         /// Gets or sets the complementary axis index to use to plot this series on X, use null to use chart main axis.
         /// </summary>
-        public int? ScalesXAt { get; set; }
+        public int? FromComplementaryX { get; set; }
 
         /// <summary>
         /// Gets or sets the complementary axis index to use to plot this series on Y, use null to use chart main axis.
         /// </summary>
-        public int? ScalesYAt { get; set; }
+        public int? FromComplementaryY { get; set; }
 
         public ISeriesConfiguration Configuration { get; set; }
         #endregion
@@ -337,7 +337,7 @@ namespace LiveCharts.CoreComponents
             return new ChartPoint
             {
                 X = ToDrawMargin(point.X, AxisTags.X, scalesAtX),
-                Y = ToDrawMargin(point.Y, AxisTags.Y, ScalesYAt),
+                Y = ToDrawMargin(point.Y, AxisTags.Y, FromComplementaryY),
                 Instance = point.Instance,
                 IsMocked = point.IsMocked,
                 Key = point.Key

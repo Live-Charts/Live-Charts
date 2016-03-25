@@ -160,17 +160,6 @@ namespace LiveCharts
 			get { return (string)GetValue(TitleProperty); }
 			set { SetValue(TitleProperty, value); }
 		}
-
-        public static readonly DependencyProperty PositionProperty = DependencyProperty.Register(
-            "Position", typeof (AxisPosition), typeof (Axis), new PropertyMetadata(default(AxisPosition)));
-        /// <summary>
-        /// Gets or sets the position to place the axis.
-        /// </summary>
-        public AxisPosition Position
-        {
-            get { return (AxisPosition) GetValue(PositionProperty); }
-            set { SetValue(PositionProperty, value); }
-        }
         
         #region Font Properties
 

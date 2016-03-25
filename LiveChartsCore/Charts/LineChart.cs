@@ -30,10 +30,10 @@ namespace LiveCharts
     {
         public LineChart()
         {
-            SetValue(AxisYProperty, new Axis());
-            SetValue(AxisXProperty, new Axis
+            SetCurrentValue(AxisYProperty, new Axis());
+            SetCurrentValue(AxisXProperty, new Axis
             {
-                Separator = new Separator {IsEnabled = false, Step = 1},
+                Separator = new Separator { IsEnabled = false, Step = 1 },
                 IsEnabled = false
             });
             ShapeHoverBehavior = ShapeHoverBehavior.Dot;
@@ -69,7 +69,11 @@ namespace LiveCharts
                 for (var index = 0; index < AxisX.ComplementaryAxes.Count; index++)
                 {
                     var axis = AxisX.ComplementaryAxes[index];
-                    var comp = ComplementaryX[index];
+                    ComplementaryAxesData comp;
+                    if (!ComplementaryY.TryGetValue(index, out comp))
+                        throw new ArgumentException(
+                            "There is no a valid complementary axis for X at position " + index
+                            + ", ensure that AxisX.ComplementaryAxes[" + index + "] exists.");
                     comp.S = axis.Separator.Step ?? CalculateSeparator(comp.Max - comp.Min, AxisTags.Y);
                     if (axis.MaxValue == null) comp.Max = (Math.Round(comp.Max / comp.S) + 1) * comp.S;
                     if (axis.MinValue == null) comp.Min = (Math.Truncate(comp.Min / comp.S) - 1) * comp.S;
@@ -78,7 +82,11 @@ namespace LiveCharts
                 for (var index = 0; index < AxisY.ComplementaryAxes.Count; index++)
                 {
                     var axis = AxisY.ComplementaryAxes[index];
-                    var comp = ComplementaryY[index];
+                    ComplementaryAxesData comp;
+                    if (!ComplementaryY.TryGetValue(index, out comp))
+                        throw new ArgumentException(
+                            "There is no a valid complementary axis for Y at position " + index
+                            + ", ensure that AxisY.ComplementaryAxes[" + index + "] exists.");
                     comp.S = axis.Separator.Step ?? CalculateSeparator(comp.Max - comp.Min, AxisTags.Y);
                     if (axis.MaxValue == null) comp.Max = (Math.Round(comp.Max / comp.S) + 1) * comp.S;
                     if (axis.MinValue == null) comp.Min = (Math.Truncate(comp.Min / comp.S) - 1) * comp.S;
@@ -95,7 +103,7 @@ namespace LiveCharts
 
             Canvas.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
             var lastLabelX = Math.Truncate((Max.X - Min.X)/S.X)*S.X;
-            var longestYLabelSize = GetLongestLabelSize(AxisY);
+            var longestYLabelSize = GetLongestLabelSize(AxisY, AxisTags.Y);
             var firstXLabelSize = GetLabelSize(AxisX, Min.X);
             var lastXLabelSize = GetLabelSize(AxisX, lastLabelX);
 

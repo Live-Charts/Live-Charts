@@ -26,9 +26,6 @@ using LiveCharts.CoreComponents;
 
 namespace LiveCharts
 {
-    /// <summary>
-    /// Dont repeat yourself!
-    /// </summary>
     public static class Methods
     {
         /// <summary>
@@ -50,10 +47,12 @@ namespace LiveCharts
 
             if (!isMainX && axis == AxisTags.X)
                 if (!chart.ComplementaryX.TryGetValue((int) scalesAt, out compX))
-                    throw new ArgumentException("There is not a valid complementary axis for X at position " + scalesAt);
+                    throw new ArgumentException("There is not a valid complementary axis " +
+                                                "for X at position " + scalesAt);
             if (!isMainY && axis == AxisTags.Y)
                 if (!chart.ComplementaryY.TryGetValue((int) scalesAt, out compY))
-                    throw new ArgumentException("There is not a valid complementary axis for Y at position " + scalesAt);
+                    throw new ArgumentException("There is not a valid complementary axis " +
+                                                "for Y at position " + scalesAt);
 
             var p1 = axis == AxisTags.X
                 ? new Point(isMainX ? chart.Max.X : compX.Max, chart.PlotArea.Width + chart.PlotArea.X)
