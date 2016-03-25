@@ -9,13 +9,16 @@
     <Grid>
         <lvc:LineChart>
             <lvc:LineChart.Series>
-                <lvc:LineSeries Values="1, 5, 8" ScalesYAt="0" />
-                <lvc:LineSeries Values="300, 600, 200"  />
+                <lvc:LineSeries Values="300, 600, 200" />
+                <lvc:LineSeries Values="0, 0, 0" Fill="Transparent" Stroke="Purple" StrokeThickness="1" ScalesYAt="0" />
+                <lvc:LineSeries Values="10, 10, 10" Fill="Transparent" Stroke="Purple" StrokeThickness="1" ScalesYAt="0" />
+                <lvc:LineSeries Values="20000, 20000, 20000" Fill="Transparent" ScalesYAt="1" />
             </lvc:LineChart.Series>
             <lvc:LineChart.AxisY>
                 <lvc:Axis Title="YAxis">
                     <lvc:Axis.ComplementaryAxes>
-                        <lvc:Axis Position="TopRight"></lvc:Axis>
+                        <lvc:Axis />
+                        <lvc:Axis />
                     </lvc:Axis.ComplementaryAxes>
                 </lvc:Axis>
             </lvc:LineChart.AxisY>

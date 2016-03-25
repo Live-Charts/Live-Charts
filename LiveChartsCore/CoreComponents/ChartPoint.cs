@@ -21,15 +21,35 @@
 //SOFTWARE.
 
 using System;
+using System.Windows;
 
 namespace LiveCharts.CoreComponents
 {
     public class ChartPoint 
     {
+        /// <summary>
+        /// Gets the X point value
+        /// </summary>
         public double X { get; set; }
+        /// <summary>
+        /// Gets the Y point value
+        /// </summary>
         public double Y { get; set; }
+        /// <summary>
+        /// Gets the coordinate where the value is placed at chart
+        /// </summary>
+        public Point ChartLocation { get; set; }
+        /// <summary>
+        /// Gets the object where the chart pulled the point
+        /// </summary>
         public object Instance { get; set; }
+        /// <summary>
+        /// Gets the index of this point in the chart
+        /// </summary>
         public int Key { get; set; }
+        /// <summary>
+        /// Gets is point is mocked
+        /// </summary>
         public bool IsMocked { get; set; }
     }
 }

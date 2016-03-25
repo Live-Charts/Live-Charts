@@ -117,19 +117,19 @@ namespace LiveCharts
                 for (var i = 0; i < segment.Count; i++)
                 {
                     var point = segment[i];
-                    var pointLocation = ToDrawMargin(point, ScalesXAt, ScalesYAt).AsPoint();
+                    point.ChartLocation = ToDrawMargin(point, ScalesXAt, ScalesYAt).AsPoint();
 
                     if (isVirgin)
                     {
                         isVirgin = false;
-                        first = pointLocation;
+                        first = point.ChartLocation;
                     }
 
                     var visual = GetVisual(segment[i]);
 
-                    PlaceVisual(visual, pointLocation, rr);
+                    PlaceVisual(visual, point.ChartLocation, rr);
 
-                    if (DataLabels) Label(point, f, pointLocation);
+                    if (DataLabels) Label(point, f, point.ChartLocation);
 
                     if (visual.IsNew) AddToCanvas(visual, point);
 
@@ -141,7 +141,7 @@ namespace LiveCharts
                     helper.Previous = previous != null && previous.IsNew ? previous.Previous : previous;
                     helper.Animate(i + so, Chart, so);
                     previous = helper;
-                    last = pointLocation;
+                    last = point.ChartLocation;
                 }
 
                 if (area != null)

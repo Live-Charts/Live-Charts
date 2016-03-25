@@ -950,8 +950,12 @@ namespace LiveCharts.CoreComponents
         {
             DataTooltip.UpdateLayout();
             DataTooltip.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
-            var x = sender.ChartPoint.X > (Min.X + Max.X)/2 ? ToPlotArea(sender.ChartPoint.X, AxisTags.X) - 10 - DataTooltip.DesiredSize.Width : ToPlotArea(sender.ChartPoint.X, AxisTags.X) + 10;
-            var y = ToPlotArea(sibilings.Select(s => s.ChartPoint.Y).DefaultIfEmpty(0).Sum()/sibilings.Count, AxisTags.Y);
+
+            var x = sender.ChartPoint.X > (Min.X + Max.X)/2
+                ? sender.ChartPoint.ChartLocation.X - 10 - DataTooltip.DesiredSize.Width
+                : sender.ChartPoint.ChartLocation.X + 10;
+
+            var y = sibilings.Select(s => s.ChartPoint.ChartLocation.Y).DefaultIfEmpty(0).Sum()/sibilings.Count;
             y = y + DataTooltip.DesiredSize.Height > ActualHeight ? y - (y + DataTooltip.DesiredSize.Height - ActualHeight) - 5 : y;
             return new Point(x, y);
         }
