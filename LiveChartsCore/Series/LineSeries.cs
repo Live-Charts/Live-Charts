@@ -117,7 +117,7 @@ namespace LiveCharts
                 for (var i = 0; i < segment.Count; i++)
                 {
                     var point = segment[i];
-                    var pointLocation = ToDrawMargin(point).AsPoint();
+                    var pointLocation = ToDrawMargin(point, ScalesXAt, ScalesYAt).AsPoint();
 
                     if (isVirgin)
                     {

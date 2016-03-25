@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="ChartsTest.Line_Examples.InLine.InLineBar"
+﻿<UserControl x:Class="ChartsTest.Line_Examples.InLine.InLineLine"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -9,9 +9,16 @@
     <Grid>
         <lvc:LineChart>
             <lvc:LineChart.Series>
-                <lvc:LineSeries Values="1, 5, 8"/>
-                <lvc:LineSeries Values="3, 6, 2" />
+                <lvc:LineSeries Values="1, 5, 8" />
+                <lvc:LineSeries Values="300, 600, 200" ScalesYAt="0" />
             </lvc:LineChart.Series>
+            <lvc:LineChart.AxisY>
+                <lvc:Axis>
+                    <lvc:Axis.ComplementaryAxes>
+                        <lvc:Axis Position="TopRight"></lvc:Axis>
+                    </lvc:Axis.ComplementaryAxes>
+                </lvc:Axis>
+            </lvc:LineChart.AxisY>
         </lvc:LineChart>
     </Grid>
 </UserControl>

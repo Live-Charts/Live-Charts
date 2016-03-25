@@ -112,7 +112,9 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CoreComponents\AxisPosition.cs" />
     <Compile Include="CoreComponents\ChartPoint.cs" />
+    <Compile Include="CoreComponents\ComplementaryAxesData.cs" />
     <Compile Include="CoreComponents\DeleteBufferItem.cs" />
     <Compile Include="CoreComponents\SeriesConfiguration.cs" />
     <Compile Include="DefaultAxes.cs" />

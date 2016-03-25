@@ -221,6 +221,16 @@ namespace LiveCharts.CoreComponents
             }
         }
 
+        /// <summary>
+        /// Gets or sets the complementary axis index to use to plot this series on X, use null to use chart main axis.
+        /// </summary>
+        public int? ScalesXAt { get; set; }
+
+        /// <summary>
+        /// Gets or sets the complementary axis index to use to plot this series on Y, use null to use chart main axis.
+        /// </summary>
+        public int? ScalesYAt { get; set; }
+
         public ISeriesConfiguration Configuration { get; set; }
         #endregion
 
@@ -317,17 +327,17 @@ namespace LiveCharts.CoreComponents
             return new Point(ToPlotArea(point.X, AxisTags.X), ToPlotArea(point.Y, AxisTags.Y));
         }
 
-        protected double ToDrawMargin(double value, AxisTags axis)
+        protected double ToDrawMargin(double value, AxisTags axis, int? scalesAt = null)
         {
-            return Methods.ToDrawMargin(value, axis, Chart);
+            return Methods.ToDrawMargin(value, axis, Chart, scalesAt);
         }
 
-        protected ChartPoint ToDrawMargin(ChartPoint point)
+        protected ChartPoint ToDrawMargin(ChartPoint point, int? scalesAtX = null, int? scalesAtY = null)
         {
             return new ChartPoint
             {
-                X = ToDrawMargin(point.X, AxisTags.X),
-                Y = ToDrawMargin(point.Y, AxisTags.Y),
+                X = ToDrawMargin(point.X, AxisTags.X, scalesAtX),
+                Y = ToDrawMargin(point.Y, AxisTags.Y, ScalesYAt),
                 Instance = point.Instance,
                 IsMocked = point.IsMocked,
                 Key = point.Key

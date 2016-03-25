@@ -50,6 +50,8 @@ namespace LiveCharts.CoreComponents
         internal Point Max;
         internal Point Min;
         internal Point S;
+        internal Dictionary<int, ComplementaryAxesData> ComplementaryX;
+        internal Dictionary<int, ComplementaryAxesData> ComplementaryY;
         internal int ColorStartIndex;
         internal bool RequiresScale;
         internal List<DeleteBufferItem> EraseSerieBuffer = new List<DeleteBufferItem>();
@@ -675,15 +677,36 @@ namespace LiveCharts.CoreComponents
 
             Max = new Point(
                 AxisX.MaxValue ??
-                Series.Where(x => x.Values != null).Select(x => x.Values.MaxChartPoint.X).DefaultIfEmpty(0).Max(),
+                Series.Where(x => x.Values != null && x.ScalesXAt == null)
+                    .Select(x => x.Values.MaxChartPoint.X).DefaultIfEmpty(0).Max(),
                 AxisY.MaxValue ??
-                Series.Where(x => x.Values != null).Select(x => x.Values.MaxChartPoint.Y).DefaultIfEmpty(0).Max());
+                Series.Where(x => x.Values != null && x.ScalesYAt == null)
+                    .Select(x => x.Values.MaxChartPoint.Y).DefaultIfEmpty(0).Max());
 
             Min = new Point(
                 AxisX.MinValue ??
-                Series.Where(x => x.Values != null).Select(x => x.Values.MinChartPoint.X).DefaultIfEmpty(0).Min(),
+                Series.Where(x => x.Values != null && x.ScalesXAt == null)
+                    .Select(x => x.Values.MinChartPoint.X).DefaultIfEmpty(0).Min(),
                 AxisY.MinValue ??
-                Series.Where(x => x.Values != null).Select(x => x.Values.MinChartPoint.Y).DefaultIfEmpty(0).Min());
+                Series.Where(x => x.Values != null && x.ScalesYAt == null)
+                    .Select(x => x.Values.MinChartPoint.Y).DefaultIfEmpty(0).Min());
+
+            ComplementaryX = Series.Where(x => x.ScalesXAt != null)
+                .GroupBy(x => (int) x.ScalesXAt)
+                .ToDictionary(g => g.Key, g => new ComplementaryAxesData
+                {
+                    Max = g.Select(x => x.Values.MaxChartPoint.X).DefaultIfEmpty(0).Max(),
+                    Min = g.Select(x => x.Values.MinChartPoint.X).DefaultIfEmpty(0).Min()
+                });
+
+            ComplementaryY = Series.Where(x => x.ScalesYAt != null)
+                .GroupBy(x => (int) x.ScalesYAt)
+                .ToDictionary(g => g.Key, g => new ComplementaryAxesData
+                {
+                    Max = g.Select(x => x.Values.MaxChartPoint.Y).DefaultIfEmpty(0).Max(),
+                    Min = g.Select(x => x.Values.MinChartPoint.Y).DefaultIfEmpty(0).Min()
+                });
+
 
             if (ZoomingAxis == AxisTags.X)
             {

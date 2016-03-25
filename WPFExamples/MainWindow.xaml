@@ -102,9 +102,6 @@
                 <ContentControl Name="MoreControl" Grid.Column="1" Height="500" Width="Auto"></ContentControl>
                 <Image Grid.Column="2" Source="Right.png" MouseDown="MoreNext"/>
             </Grid>
-            <StackPanel Orientation="Horizontal">
-               
-            </StackPanel>
         </StackPanel>
     </ScrollViewer>
 </Window>

@@ -63,7 +63,6 @@ namespace LiveCharts
 
 		public static readonly DependencyProperty LabelFormatterProperty =
 			DependencyProperty.Register("LabelFormatter", typeof(Func<double, string>), typeof(Axis), new PropertyMetadata(null));
-
         /// <summary>
         /// Gets or sets the function to convet a value to label, for example when you need to display your chart as curency ($1.00) or as degrees (10°), if Labels property is not null then formatter is ignored, and label will be pulled from Labels prop.
         /// </summary>
@@ -73,9 +72,30 @@ namespace LiveCharts
 			set { SetValue(LabelFormatterProperty, value); }
 		}
 
-		public static readonly DependencyProperty ColorProperty =
-			DependencyProperty.Register("Color", typeof(Color), typeof(Axis), new PropertyMetadata(Color.FromRgb(242, 242, 242)));
+        public static readonly DependencyProperty SeparatorProperty = DependencyProperty.Register(
+            "Separator", typeof(Separator), typeof(Axis), new PropertyMetadata(default(Separator)));
+        /// <summary>
+        /// Get or sets configuration for parallel lines to axis.
+        /// </summary>
+        public Separator Separator
+        {
+            get { return (Separator)GetValue(SeparatorProperty); }
+            set { SetValue(SeparatorProperty, value); }
+        }
 
+        public static readonly DependencyProperty ComplementaryAxesProperty = DependencyProperty.Register(
+            "ComplementaryAxes", typeof(List<Axis>), typeof(Axis), new PropertyMetadata(new List<Axis>()));
+        /// <summary>
+        /// Gets or sets a collection of extra axes for the chart
+        /// </summary>
+        public List<Axis> ComplementaryAxes
+        {
+            get { return (List<Axis>)GetValue(ComplementaryAxesProperty); }
+            set { SetValue(ComplementaryAxesProperty, value); }
+        }
+
+        public static readonly DependencyProperty ColorProperty =
+			DependencyProperty.Register("Color", typeof(Color), typeof(Axis), new PropertyMetadata(Color.FromRgb(242, 242, 242)));
 		/// <summary>
 		/// Gets or sets axis color, axis means only the zero value, if you need to highlight where zero is. to change separators color, see Axis.Separator
 		/// </summary>
@@ -87,7 +107,6 @@ namespace LiveCharts
 
 		public static readonly DependencyProperty StrokeThicknessProperty =
 			DependencyProperty.Register("StrokeThickness", typeof(double), typeof(Axis), new PropertyMetadata(1d));
-
 		/// <summary>
 		/// Gets or sets axis thickness.
 		/// </summary>
@@ -99,8 +118,7 @@ namespace LiveCharts
 
 		public static readonly DependencyProperty ShowLabelsProperty =
 			DependencyProperty.Register("ShowLabels", typeof(bool), typeof(Axis), new PropertyMetadata(true));
-
-		/// <summary>
+        /// <summary>
 		/// Gets or sets if labels are visible.
 		/// </summary>
 		public bool ShowLabels
@@ -111,8 +129,7 @@ namespace LiveCharts
 
 		public static readonly DependencyProperty MaxValueProperty =
 			DependencyProperty.Register("MaxValue", typeof(double?), typeof(Axis), new PropertyMetadata(null));
-
-		/// <summary>
+        /// <summary>
 		/// Gets or sets chart max value, set it to null to make this property Auto, default value is null
 		/// </summary>
 		public double? MaxValue
@@ -123,8 +140,7 @@ namespace LiveCharts
 
 		public static readonly DependencyProperty MinValueProperty =
 			DependencyProperty.Register("MinValue", typeof(double?), typeof(Axis), new PropertyMetadata(null));
-
-		/// <summary>
+        /// <summary>
 		/// Gets or sets chart min value, set it to null to make this property Auto, default value is null
 		/// </summary>
 		public double? MinValue
@@ -136,7 +152,7 @@ namespace LiveCharts
 		public static readonly DependencyProperty TitleProperty =
 			DependencyProperty.Register("Title", typeof(string), typeof(Axis), new PropertyMetadata(null));
         /// <summary>
-        /// 
+        /// Gets or sets axis title
         /// </summary>
 		public string Title
 		{
@@ -144,88 +160,97 @@ namespace LiveCharts
 			set { SetValue(TitleProperty, value); }
 		}
 
-		public static readonly DependencyProperty FontFamilyProperty =
-			DependencyProperty.Register("FontFamily", typeof(FontFamily), typeof(Axis), new PropertyMetadata(new FontFamily("Calibri")));
+        public static readonly DependencyProperty PositionProperty = DependencyProperty.Register(
+            "Position", typeof (AxisPosition), typeof (Axis), new PropertyMetadata(default(AxisPosition)));
+        /// <summary>
+        /// Gets or sets the position to place the axis.
+        /// </summary>
+        public AxisPosition Position
+        {
+            get { return (AxisPosition) GetValue(PositionProperty); }
+            set { SetValue(PositionProperty, value); }
+        }
+        
+        #region Font Properties
 
-		/// <summary>
-		/// Gets or sets labels font family, font to use for labels in this axis
-		/// </summary>
-		public FontFamily FontFamily
-		{
-			get { return (FontFamily)GetValue(FontFamilyProperty); }
-			set { SetValue(FontFamilyProperty, value); }
-		}
+        public static readonly DependencyProperty FontFamilyProperty =
+            DependencyProperty.Register("FontFamily", typeof (FontFamily), typeof (Axis),
+                new PropertyMetadata(new FontFamily("Calibri")));
 
-		public static readonly DependencyProperty FontSizeProperty =
-			DependencyProperty.Register("FontSize", typeof(double), typeof(Axis), new PropertyMetadata(11.0));
+        /// <summary>
+        /// Gets or sets labels font family, font to use for labels in this axis
+        /// </summary>
+        public FontFamily FontFamily
+        {
+            get { return (FontFamily) GetValue(FontFamilyProperty); }
+            set { SetValue(FontFamilyProperty, value); }
+        }
 
-		/// <summary>
-		/// Gets or sets labels font size
-		/// </summary>
-		public double FontSize
-		{
-			get { return (double)GetValue(FontSizeProperty); }
-			set { SetValue(FontSizeProperty, value); }
-		}
+        public static readonly DependencyProperty FontSizeProperty =
+            DependencyProperty.Register("FontSize", typeof (double), typeof (Axis), new PropertyMetadata(11.0));
 
-		public static readonly DependencyProperty FontWeightProperty =
-			DependencyProperty.Register("FontWeight", typeof(FontWeight), typeof(Axis), new PropertyMetadata(FontWeights.Normal));
+        /// <summary>
+        /// Gets or sets labels font size
+        /// </summary>
+        public double FontSize
+        {
+            get { return (double) GetValue(FontSizeProperty); }
+            set { SetValue(FontSizeProperty, value); }
+        }
 
-		/// <summary>
-		/// Gets or sets labels font weight
-		/// </summary>
-		public FontWeight FontWeight
-		{
-			get { return (FontWeight)GetValue(FontWeightProperty); }
-			set { SetValue(FontWeightProperty, value); }
-		}
+        public static readonly DependencyProperty FontWeightProperty =
+            DependencyProperty.Register("FontWeight", typeof (FontWeight), typeof (Axis),
+                new PropertyMetadata(FontWeights.Normal));
 
-		public static readonly DependencyProperty FontStyleProperty =
-			DependencyProperty.Register("FontStyle", typeof(FontStyle), typeof(Axis), new PropertyMetadata(FontStyles.Normal));
+        /// <summary>
+        /// Gets or sets labels font weight
+        /// </summary>
+        public FontWeight FontWeight
+        {
+            get { return (FontWeight) GetValue(FontWeightProperty); }
+            set { SetValue(FontWeightProperty, value); }
+        }
+
+        public static readonly DependencyProperty FontStyleProperty =
+            DependencyProperty.Register("FontStyle", typeof (FontStyle), typeof (Axis),
+                new PropertyMetadata(FontStyles.Normal));
 
         /// <summary>
         /// Gets or sets labels font style
         /// </summary>
-		public FontStyle FontStyle
-		{
-			get { return (FontStyle)GetValue(FontStyleProperty); }
-			set { SetValue(FontStyleProperty, value); }
-		}
+        public FontStyle FontStyle
+        {
+            get { return (FontStyle) GetValue(FontStyleProperty); }
+            set { SetValue(FontStyleProperty, value); }
+        }
 
-		public static readonly DependencyProperty FontStretchProperty =
-			DependencyProperty.Register("FontStretch", typeof(FontStretch), typeof(Axis), new PropertyMetadata(FontStretches.Normal));
+        public static readonly DependencyProperty FontStretchProperty =
+            DependencyProperty.Register("FontStretch", typeof (FontStretch), typeof (Axis),
+                new PropertyMetadata(FontStretches.Normal));
 
         /// <summary>
         /// Gets or sets labels font strech
         /// </summary>
-		public FontStretch FontStretch
-		{
-			get { return (FontStretch)GetValue(FontStretchProperty); }
-			set { SetValue(FontStretchProperty, value); }
-		}
+        public FontStretch FontStretch
+        {
+            get { return (FontStretch) GetValue(FontStretchProperty); }
+            set { SetValue(FontStretchProperty, value); }
+        }
 
-	    public static readonly DependencyProperty ForegroundProperty =
-		    DependencyProperty.Register("Foreground", typeof (Brush), typeof (Axis), new PropertyMetadata(new SolidColorBrush(Color.FromRgb(150, 150, 150))));
+        public static readonly DependencyProperty ForegroundProperty =
+            DependencyProperty.Register("Foreground", typeof (Brush), typeof (Axis),
+                new PropertyMetadata(new SolidColorBrush(Color.FromRgb(150, 150, 150))));
 
         /// <summary>
         /// Gets or sets labels text color.
         /// </summary>
-		public Brush Foreground
-		{
-			get { return (Brush)GetValue(ForegroundProperty); }
-			set { SetValue(ForegroundProperty, value); }
-		}
-
-        public static readonly DependencyProperty SeparatorProperty = DependencyProperty.Register(
-            "Separator", typeof (Separator), typeof (Axis), new PropertyMetadata(default(Separator)));
-        /// <summary>
-        /// Get or sets configuration for parallel lines to axis.
-        /// </summary>
-        public Separator Separator
+        public Brush Foreground
         {
-            get { return (Separator) GetValue(SeparatorProperty); }
-            set { SetValue(SeparatorProperty, value); }
+            get { return (Brush) GetValue(ForegroundProperty); }
+            set { SetValue(ForegroundProperty, value); }
         }
+
+        #endregion
 
         /// <summary>
         /// Factor used to calculate label separations. default is 3. increase it to make it 'cleaner'

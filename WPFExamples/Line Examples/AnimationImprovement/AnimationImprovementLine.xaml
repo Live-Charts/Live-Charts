@@ -31,6 +31,9 @@
             <Button Click="RemoveMiddleOnClick">/-</Button>
             <Button Click="RemoveOnClick">-</Button>
         </StackPanel>
-        <lvc:LineChart Name="Chart" Grid.Row="2" Series="{Binding Series}" LineSmoothness=".5" AxisX="{x:Static lvc:DefaultAxes.DefaultAxis}" />
+        <lvc:LineChart Name="Chart" Grid.Row="2" Series="{Binding Series}" 
+                       LineSmoothness=".5" 
+                       AxisX="{x:Static lvc:DefaultAxes.DefaultAxis}" >
+        </lvc:LineChart>
     </Grid>
 </UserControl>
