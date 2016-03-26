@@ -86,6 +86,8 @@ namespace LiveCharts
                         new Binding { Path = new PropertyPath("StrokeThickness"), Source = this });
                     BindingOperations.SetBinding(path, VisibilityProperty,
                         new Binding { Path = new PropertyPath("Visibility"), Source = this });
+                    BindingOperations.SetBinding(path, Panel.ZIndexProperty,
+                    new Binding { Path = new PropertyPath(Panel.ZIndexProperty), Source = this });
                     var geometry = new PathGeometry();
                     area = new LineAndAreaShape(new PathFigure(), path);
                     geometry.Figures.Add(area.Figure);
