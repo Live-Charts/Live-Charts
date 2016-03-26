@@ -839,10 +839,34 @@ namespace LiveCharts.CoreComponents
 
                 DrawComplementaryAxis(complementary, longest, AxisTags.Y, index);
             }
-
             //YAxis Main
             DrawAxis(AxisY, longestY);
 
+            //ToDo: Test multiple inverted axes
+            //Complementary X
+            for (var index = 0; index < AxisX.ComplementaryAxes.Count; index++)
+            {
+                var complementary = AxisX.ComplementaryAxes[index];
+
+                var ty = GetLabelSize(complementary, complementary.Title);
+                var yLabel = complementary.BuildATextBlock(0);
+                var binding = new Binding { Path = new PropertyPath("Title"), Source = complementary };
+                BindingOperations.SetBinding(yLabel, TextBlock.TextProperty, binding);
+                Shapes.Add(yLabel);
+                Canvas.Children.Add(yLabel);
+                if (complementary.Title != null && complementary.Title.Trim().Length > 0)
+                {
+                    PlotArea.Y += ty.Y;
+                    PlotArea.Height -= ty.Y;
+                }
+                Canvas.SetLeft(yLabel, PlotArea.X + PlotArea.Width * .5 - ty.X * .5);
+                Canvas.SetTop(yLabel, PlotArea.Y - ty.Y + (AxisX.ShowLabels ? ty.Y + 5 : 0));
+
+                var longest = GetLongestLabelSize(complementary, AxisTags.X, index);
+                PlotArea.Height -= longest.Y + 10;
+
+                DrawComplementaryAxis(complementary, longest, AxisTags.X, index);
+            }
             //XAxis
             DrawAxis(AxisX, longestX);
 
@@ -1106,7 +1130,7 @@ namespace LiveCharts.CoreComponents
                     if (belongsX)
                     {
                         Canvas.SetLeft(label, ToPlotArea(i, AxisTags.X, from) * .5 + XOffset);
-                        Canvas.SetTop(label, PlotArea.Y + PlotArea.Height + 5);
+                        Canvas.SetTop(label, PlotArea.Y - fl.Height - 5);
                     }
                     else
                     {
