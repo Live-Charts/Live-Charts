@@ -35,44 +35,44 @@ namespace ChartsTest
         {
             LineAndAreaAexamples = new List<UserControl>
             {
-                //new AnimationImprovementLine(),
-                //new BasicLine(),
-                //new DynamicLine(),
-                //new GenericLine(),
-                //new RotatedLine(),
-                //new CustomLine(),
-                //new IrregularLine(),
-                //new LogarithmicAxis(),
-                //new UiElementsLine(),
+                new AnimationImprovementLine(),
+                new BasicLine(),
+                new DynamicLine(),
+                new GenericLine(),
+                new RotatedLine(),
+                new CustomLine(),
+                new IrregularLine(),
+                new LogarithmicAxis(),
+                new UiElementsLine(),
                 new InLineLine()
             };
-            //BarExamples = new List<UserControl>
-            //{
-            //    new FilterChart(),
-            //    new RotatedBar(),
-            //    new MvvmBar(),
-            //    new PointPropertyChangedBar(),
-            //    new BasicBar(),
-            //    new BindingBar(),
-            //    new CustomBar()
-            //};
-            //StackedBarExamples = new List<UserControl>
-            //{
-            //    new BasicStackedBar(),
-            //    new RotatedStackedBar(),
-            //    new BindingStackedBar(),
-            //    new MvvmStackedBar(),
-            //    new CustomStackedBar(),
-            //};
-            //PieExamples = new List<UserControl>
-            //{
-            //    new BasicPie(),
-            //    new MvvmPie(),
-            //    new CustomPie(),
-            //};
+            BarExamples = new List<UserControl>
+            {
+                new FilterChart(),
+                new RotatedBar(),
+                new MvvmBar(),
+                new PointPropertyChangedBar(),
+                new BasicBar(),
+                new BindingBar(),
+                new CustomBar()
+            };
+            StackedBarExamples = new List<UserControl>
+            {
+                new BasicStackedBar(),
+                new RotatedStackedBar(),
+                new BindingStackedBar(),
+                new MvvmStackedBar(),
+                new CustomStackedBar(),
+            };
+            PieExamples = new List<UserControl>
+            {
+                new BasicPie(),
+                new MvvmPie(),
+                new CustomPie(),
+            };
             //MoreExamples = new List<UserControl>
             //{
-                //new RadarChartExample()
+            //    new RadarChartExample()
             //};
             window.LineControl.Content = LineAndAreaAexamples != null && LineAndAreaAexamples.Count > 0 ? LineAndAreaAexamples[0] : null;
             window.BarControl.Content = BarExamples != null && BarExamples.Count > 0 ? BarExamples[0] : null;

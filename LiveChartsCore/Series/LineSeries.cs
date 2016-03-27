@@ -294,6 +294,8 @@ namespace LiveCharts
 
         internal override void Erase(bool force = false)
         {
+            if (Values == null) return;
+
             //track by index
             if (_isPrimitive)
                 EreasePrimitives(force);

@@ -176,6 +176,8 @@ namespace LiveCharts
 
         internal override void Erase(bool force = false)
         {
+            if (Values == null) return;
+
             if (_isPrimitive)    //track by index
             {
                 var activeIndexes = force || Values == null
