@@ -315,6 +315,9 @@ namespace LiveCharts
 
             foreach (var pieResult in l)
             {
+                //Only when it is exactly zero.
+                // ReSharper disable once CompareOfFloatsByEqualityOperator
+                if (pieResult.TotalSum == 0) pieResult.TotalSum = double.MaxValue;
                 for (var i = 0; i < pieResult.Stack.Count; i++)
                 {
                     pieResult.Participation.Add(pieResult.Stack[i]/pieResult.TotalSum);

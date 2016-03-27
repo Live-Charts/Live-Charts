@@ -14,16 +14,9 @@ namespace UnitTesting.PieChartTest
             {
                 Series = new SeriesCollection
                 {
-                    new PieSeries
-                    {
-                        Values = new ChartValues<double>
-                        {
-                            0,
-                            0,
-                            0,
-                            0
-                        }
-                    }
+                    new PieSeries {Values = new ChartValues<double> {0}},
+                    new PieSeries {Values = new ChartValues<double> {0}},
+                    new PieSeries {Values = new ChartValues<double> {0}}
                 }
             };
             pieChart.UnsafeUpdate();
