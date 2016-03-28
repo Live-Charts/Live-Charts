@@ -39,16 +39,19 @@ namespace LiveCharts
         internal static IEnumerable<List<ChartPoint>> AsSegments(this IEnumerable<ChartPoint> source)
         {
             var buffer = new List<ChartPoint>();
-            foreach (var item in source)
+            if (source != null)
             {
-                if (double.IsNaN(item.Y) || double.IsNaN(item.X))
+                foreach (var item in source)
                 {
-                    yield return buffer;
-                    buffer = new List<ChartPoint>();
-                }
-                else
-                {
-                    buffer.Add(item);
+                    if (double.IsNaN(item.Y) || double.IsNaN(item.X))
+                    {
+                        yield return buffer;
+                        buffer = new List<ChartPoint>();
+                    }
+                    else
+                    {
+                        buffer.Add(item);
+                    }
                 }
             }
             yield return buffer;

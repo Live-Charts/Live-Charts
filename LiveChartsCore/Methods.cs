@@ -61,7 +61,9 @@ namespace LiveCharts
                 ? new Point(isMainX ? chart.Min.X : compX.Min, chart.PlotArea.X)
                 : new Point(isMainY ? chart.Min.Y : compY.Min, chart.PlotArea.Y + chart.PlotArea.Height);
 
-            var m = (p2.Y - p1.Y) / (p2.X - p1.X);
+            // ReSharper disable once CompareOfFloatsByEqualityOperator
+            var div = p2.X - p1.X == 0 ? double.MinValue : p2.X - p1.X;
+            var m = (p2.Y - p1.Y) / div;
             return m * (value - p1.X) + p1.Y;
         }
 
