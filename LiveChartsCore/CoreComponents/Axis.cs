@@ -363,24 +363,28 @@ namespace LiveCharts
                 {
                     separation = new Separation
                     {
-                        Label = BuildATextBlock(0),
-                        Line = new Line()
+                        TextBlock = BuildATextBlock(0),
+                        Line = new Line
+                        {
+                            Stroke = new SolidColorBrush(Colors.Gray),
+                            StrokeThickness = Separator.StrokeThickness
+                        }
                     };
-                    chart.Canvas.Children.Add(separation.Label);
+                    chart.Canvas.Children.Add(separation.TextBlock);
                     chart.Canvas.Children.Add(separation.Line);
                     Separations[key] = separation;
                     isNew = true;
                 }
 
                 separation.Value = key;
-                separation.Label.Text = f(i);
-                separation.Label.UpdateLayout();
+                separation.TextBlock.Text = f(i);
+                separation.TextBlock.UpdateLayout();
 
-                biggest.Width = separation.Label.ActualWidth > biggest.Width
-                    ? separation.Label.ActualWidth
+                biggest.Width = separation.TextBlock.ActualWidth > biggest.Width
+                    ? separation.TextBlock.ActualWidth
                     : biggest.Width;
-                biggest.Height = separation.Label.ActualHeight > biggest.Height
-                    ? separation.Label.ActualHeight
+                biggest.Height = separation.TextBlock.ActualHeight > biggest.Height
+                    ? separation.TextBlock.ActualHeight
                     : biggest.Height;
 
                 if (LastAxisMax == null || chart.DisableAnimation) 
@@ -452,7 +456,7 @@ namespace LiveCharts
         internal void UpdateSeparations(AxisTags direction, Chart chart, int axisPosition)
         {
             foreach (var separation in Separations.Values)
-                separation.Draw(chart, direction, axisPosition);
+                separation.Place(chart, direction, axisPosition);
         }
 
         private void PlaceTitle(AxisTags direction, Chart chart)

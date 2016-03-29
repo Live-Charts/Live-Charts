@@ -52,7 +52,7 @@ namespace ChartsTest
                 //    new RotatedBar(),
                 //    new MvvmBar(),
                 //    new PointPropertyChangedBar(),
-                    new BasicBar(),
+                    //new BasicBar(),
                 //    new BindingBar(),
                 //    new CustomBar()
             };
@@ -66,7 +66,7 @@ namespace ChartsTest
             //};
             PieExamples = new List<UserControl>
             {
-                    new BasicPie(),
+                    //new BasicPie(),
                 //    new MvvmPie(),
                 //    new CustomPie(),
             };

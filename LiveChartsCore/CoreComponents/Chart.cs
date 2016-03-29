@@ -28,7 +28,6 @@ using System.Globalization;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
@@ -104,8 +103,8 @@ namespace LiveCharts.CoreComponents
             SetCurrentValue(MinHeightProperty, 125d);
             SetCurrentValue(MinWidthProperty, 125d);
 
-            SetCurrentValue(AxisYProperty, new List<Axis> {new Axis()});
-            SetCurrentValue(AxisYProperty, new List<Axis> {new Axis()});
+            //SetCurrentValue(AxisYProperty, new List<Axis> {new Axis()});
+            //SetCurrentValue(AxisYProperty, new List<Axis> {new Axis()});
 
             if (RandomizeStartingColor) ColorStartIndex = Randomizer.Next(0, Colors.Count - 1);
             
@@ -630,7 +629,11 @@ namespace LiveCharts.CoreComponents
         #region Virtual Methods
         protected virtual void DrawComponents()
         {
-            foreach (var l in Shapes) Canvas.Children.Remove(l);
+            if (PlotArea.Height < 10 || PlotArea.Width < 10) return;
+
+            //foreach (var l in Shapes) Canvas.Children.Remove(l);
+
+            SetPlotArea();
 
             PlaceLegend();
 
@@ -901,12 +904,8 @@ namespace LiveCharts.CoreComponents
                 series.RequiresPlot = true;
             }
 
-            var w = MockedArea != null ? MockedArea.Value.Width : ActualWidth;
-            var h = MockedArea != null ? MockedArea.Value.Height : ActualHeight;
+            SetPlotArea();
 
-            Canvas.Width = w;
-            Canvas.Height = h;
-            PlotArea = new Rect(0, 0, w, h);
             RequiresScale = true;
         }
 
@@ -1072,6 +1071,15 @@ namespace LiveCharts.CoreComponents
                 serie.Erase();
                 serie.Plot(AnimatesNewPoints);
             }
+        }
+
+        private void SetPlotArea()
+        {
+            var w = MockedArea != null ? MockedArea.Value.Width : ActualWidth;
+            var h = MockedArea != null ? MockedArea.Value.Height : ActualHeight;
+            Canvas.Width = w;
+            Canvas.Height = h;
+            PlotArea = new Rect(0, 0, w, h);
         }
 
         private void MouseWheelOnRoll(object sender, MouseWheelEventArgs e)

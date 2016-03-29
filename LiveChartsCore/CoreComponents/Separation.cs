@@ -33,15 +33,15 @@ namespace LiveCharts
 {
     internal class Separation
     {
-        private readonly TimeSpan _anSpeed = TimeSpan.FromMilliseconds(200);
+        private readonly TimeSpan _anSpeed = TimeSpan.FromMilliseconds(300);
 
-        internal TextBlock Label { get; set; }
+        internal TextBlock TextBlock { get; set; }
         internal Line Line { get; set; }
         internal double Value { get; set; }
         internal SeparationAnimation State { get; set; }
         internal int AxisPosition { get; set; }
 
-        public void Draw(Chart chart, AxisTags direction, int axisIndex)
+        public void Place(Chart chart, AxisTags direction, int axisIndex)
         {
             switch (State)
             {
@@ -85,6 +85,15 @@ namespace LiveCharts
             Line.Y2 = direction == AxisTags.Y
                 ? i
                 : chart.PlotArea.Y + chart.PlotArea.Height;
+
+            if (direction == AxisTags.Y)
+            {
+                Canvas.SetTop(TextBlock, i);
+            }
+            else
+            {
+                Canvas.SetLeft(TextBlock, i);
+            }
         }
 
         private void FadeOut(Chart chart, AxisTags direction, int axisIndex)
@@ -100,12 +109,12 @@ namespace LiveCharts
             {
                 Application.Current.Dispatcher.Invoke(new Action(() =>
                 {
-                    chart.Canvas.Children.Remove(Label);
+                    chart.Canvas.Children.Remove(TextBlock);
                     chart.Canvas.Children.Remove(Line);
                 }));
             };
 
-            Label.BeginAnimation(UIElement.OpacityProperty, anim);
+            TextBlock.BeginAnimation(UIElement.OpacityProperty, anim);
             Line.BeginAnimation(UIElement.OpacityProperty, new DoubleAnimation(1, 0, _anSpeed));
         }
 
@@ -113,7 +122,7 @@ namespace LiveCharts
         {
             None(chart, direction, axisIndex);
 
-            Label.BeginAnimation(UIElement.OpacityProperty, new DoubleAnimation(0, 1, _anSpeed));
+            TextBlock.BeginAnimation(UIElement.OpacityProperty, new DoubleAnimation(0, 1, _anSpeed));
             Line.BeginAnimation(UIElement.OpacityProperty, new DoubleAnimation(0, 1, _anSpeed));
         }
 
