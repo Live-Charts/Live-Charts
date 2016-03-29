@@ -38,8 +38,6 @@ namespace LiveCharts
 
         public RadarChart()
         {
-            AxisY = new Axis();
-            AxisX = new Axis();
             Hoverable = true;
             ShapeHoverBehavior = ShapeHoverBehavior.Dot;
             AlphaLabel = true;
@@ -69,93 +67,96 @@ namespace LiveCharts
         }
         private Point GetMax()
         {
-            var fSerie = Series.FirstOrDefault();
-            if (fSerie == null) return new Point(0, 0);
-            var point =
-                new Point(fSerie.Values.Count,
-                    Series.Select(x => x.Values.Points.Select(pt => pt.Y).Max())
-                        .DefaultIfEmpty(0.0).Max());
-            point.Y = AxisY.MaxValue ?? point.Y;
-            return point;
+            //var fSerie = Series.FirstOrDefault();
+            //if (fSerie == null) return new Point(0, 0);
+            //var point =
+            //    new Point(fSerie.Values.Count,
+            //        Series.Select(x => x.Values.Points.Select(pt => pt.Y).Max())
+            //            .DefaultIfEmpty(0.0).Max());
+            //point.Y = AxisY.MaxValue ?? point.Y;
+            //return point;
+            return new Point();
         }
         private Point GetS()
         {
-            double? step = this.AxisX.Separator.Step;
-            double x = step ?? this.CalculateSeparator(this.Max.X - this.Min.X, AxisTags.X);
-            step = this.AxisY.Separator.Step;
-            double y = step ?? this.CalculateSeparator(this.Max.Y - this.Min.Y, AxisTags.Y);
-            return new Point(x, y);
+            //double? step = this.AxisX.Separator.Step;
+            //double x = step ?? this.CalculateSeparator(this.Max.X - this.Min.X, AxisTags.X);
+            //step = this.AxisY.Separator.Step;
+            //double y = step ?? this.CalculateSeparator(this.Max.Y - this.Min.Y, AxisTags.Y);
+            //return new Point(x, y);
+            return new Point();
         }
 
         private Point GetMin()
         {
-            var point = new Point(0,
-                Series.Select((x => x.Values.Points.Select(pt => pt.Y).Min())).DefaultIfEmpty(0.0).Min());
-            point.Y = AxisY.MinValue ?? point.Y;
-            return point;
+            //var point = new Point(0,
+            //    Series.Select((x => x.Values.Points.Select(pt => pt.Y).Min())).DefaultIfEmpty(0.0).Min());
+            //point.Y = AxisY.MinValue ?? point.Y;
+            //return point;
+            return new Point();
         }
         #endregion
 
-        protected override void DrawAxes()
+        protected override void DrawComponents()
         {
-            if (Series == null || Series.Count == 0) return;
-            this.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
-            this.Measure();
-            foreach (UIElement element in this.Shapes)
-                this.Canvas.Children.Remove(element);
-            foreach (UIElement element in this.Shapes)
-                this.Canvas.Children.Remove(element);
-            this.Shapes.Clear();
-            this.Shapes.Clear();
-            double num1 = 0.0;
-            while (num1 < 360.0)
-            {
-                if (this.AxisY.Separator.IsEnabled)
-                {
-                    Line line1 = new Line();
-                    line1.Stroke = (Brush) new SolidColorBrush()
-                    {
-                        Color = this.AxisY.Separator.Color
-                    };
-                    line1.StrokeThickness = (double) this.AxisY.Separator.StrokeThickness;
-                    line1.X1 = this.ActualWidth/2.0;
-                    line1.Y1 = this.ActualHeight/2.0;
-                    line1.X2 = this.ActualWidth/2.0 + Math.Sin(num1*(Math.PI/180.0))*this.Radius;
-                    line1.Y2 = this.ActualHeight/2.0 - Math.Cos(num1*(Math.PI/180.0))*this.Radius;
-                    Line line2 = line1;
-                    this.Canvas.Children.Add((UIElement) line2);
-                    this.Shapes.Add((Shape) line2);
-                }
-                double num2 = num1 + 360.0/this.Max.X;
-                double y = this.Max.Y;
-                while (y >= this.Min.Y)
-                {
-                    Line line1 = new Line();
-                    line1.Stroke = (Brush) new SolidColorBrush()
-                    {
-                        Color = this.AxisY.Separator.Color
-                    };
-                    line1.StrokeThickness = (double) this.AxisY.Separator.StrokeThickness;
-                    line1.X1 = this.ActualWidth/2.0 + Math.Sin(num1*(Math.PI/180.0))*this.ToChartRadius(y);
-                    line1.Y1 = this.ActualHeight/2.0 - Math.Cos(num1*(Math.PI/180.0))*this.ToChartRadius(y);
-                    line1.X2 = this.ActualWidth/2.0 + Math.Sin(num2*(Math.PI/180.0))*this.ToChartRadius(y);
-                    line1.Y2 = this.ActualHeight/2.0 - Math.Cos(num2*(Math.PI/180.0))*this.ToChartRadius(y);
-                    Line line2 = line1;
-                    this.Canvas.Children.Add((UIElement) line2);
-                    this.Shapes.Add((Shape) line2);
-                    y -= this.S.Y;
-                }
-                num1 += 360.0/this.Max.X;
-            }
+            //if (Series == null || Series.Count == 0) return;
+            //this.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+            //this.Measure();
+            //foreach (UIElement element in this.Shapes)
+            //    this.Canvas.Children.Remove(element);
+            //foreach (UIElement element in this.Shapes)
+            //    this.Canvas.Children.Remove(element);
+            //this.Shapes.Clear();
+            //this.Shapes.Clear();
+            //double num1 = 0.0;
+            //while (num1 < 360.0)
+            //{
+            //    if (this.AxisY.Separator.IsEnabled)
+            //    {
+            //        Line line1 = new Line();
+            //        line1.Stroke = (Brush) new SolidColorBrush()
+            //        {
+            //            Color = this.AxisY.Separator.Color
+            //        };
+            //        line1.StrokeThickness = (double) this.AxisY.Separator.StrokeThickness;
+            //        line1.X1 = this.ActualWidth/2.0;
+            //        line1.Y1 = this.ActualHeight/2.0;
+            //        line1.X2 = this.ActualWidth/2.0 + Math.Sin(num1*(Math.PI/180.0))*this.Radius;
+            //        line1.Y2 = this.ActualHeight/2.0 - Math.Cos(num1*(Math.PI/180.0))*this.Radius;
+            //        Line line2 = line1;
+            //        this.Canvas.Children.Add((UIElement) line2);
+            //        this.Shapes.Add((Shape) line2);
+            //    }
+            //    double num2 = num1 + 360.0/this.Max.X;
+            //    double y = this.Max.Y;
+            //    while (y >= this.Min.Y)
+            //    {
+            //        Line line1 = new Line();
+            //        line1.Stroke = (Brush) new SolidColorBrush()
+            //        {
+            //            Color = this.AxisY.Separator.Color
+            //        };
+            //        line1.StrokeThickness = (double) this.AxisY.Separator.StrokeThickness;
+            //        line1.X1 = this.ActualWidth/2.0 + Math.Sin(num1*(Math.PI/180.0))*this.ToChartRadius(y);
+            //        line1.Y1 = this.ActualHeight/2.0 - Math.Cos(num1*(Math.PI/180.0))*this.ToChartRadius(y);
+            //        line1.X2 = this.ActualWidth/2.0 + Math.Sin(num2*(Math.PI/180.0))*this.ToChartRadius(y);
+            //        line1.Y2 = this.ActualHeight/2.0 - Math.Cos(num2*(Math.PI/180.0))*this.ToChartRadius(y);
+            //        Line line2 = line1;
+            //        this.Canvas.Children.Add((UIElement) line2);
+            //        this.Shapes.Add((Shape) line2);
+            //        y -= this.S.Y;
+            //    }
+            //    num1 += 360.0/this.Max.X;
+            //}
         }
 
-        protected override void Scale()
+        protected override void PrepareAxes()
         {
             if (!HasValidSeriesAndValues) return;
             
-            base.Scale();
+            base.PrepareAxes();
 
-            DrawAxes();
+            DrawComponents();
         }
 
         protected override Point GetToolTipPosition(ShapeMap sender, List<ShapeMap> sibilings)
@@ -186,7 +187,8 @@ namespace LiveCharts
 
         public double ToChartRadius(double value)
         {
-            return (this.MinInnerRadius - this.Radius)/(this.Min.Y - this.Max.Y)*(value - this.Min.Y) + this.MinInnerRadius;
+            //return (this.MinInnerRadius - this.Radius)/(this.Min.Y - this.Max.Y)*(value - this.Min.Y) + this.MinInnerRadius;
+            return 0;
         }
     }
 }

@@ -57,10 +57,11 @@ namespace LiveCharts
         {
             var chart = Chart as IBar;
             if (chart == null) return;
-            var barSeries = Chart.Series.OfType<BarSeries>().ToList();
+            
+                        var barSeries = Chart.Series.OfType<BarSeries>().ToList();
             var pos = barSeries.IndexOf(this);
             var count = barSeries.Count;
-            var unitW = ToPlotArea(Chart.Max.Y - 1, AxisTags.Y) - Chart.PlotArea.Y + 5;
+            var unitW = ToPlotArea(CurrentYAxis.MaxLimit - 1, AxisTags.Y) - Chart.PlotArea.Y + 5;
             var overflow = unitW - chart.MaxColumnWidth * 3 > 0 ? unitW - chart.MaxColumnWidth * 3 : 0;
             unitW = unitW > chart.MaxColumnWidth * 3 ? chart.MaxColumnWidth * 3 : unitW;
 
@@ -68,10 +69,10 @@ namespace LiveCharts
             const int seriesPadding = 2;
             var barW = (unitW - 2 * pointPadding) / count;
 
-            var bothLimitsPositive = Chart.Max.X > 0 && Chart.Min.X > 0 - Chart.S.X * .01;
-            var bothLimitsNegative = Chart.Max.X < 0 + Chart.S.X * .01 && Chart.Min.X < 0;
+            var bothLimitsPositive = CurrentXAxis.MaxLimit > 0 && CurrentXAxis.MinLimit > 0 - CurrentXAxis.S * .01;
+            var bothLimitsNegative = CurrentXAxis.MaxLimit < 0 + CurrentXAxis.S * .01 && CurrentXAxis.MinLimit < 0;
 
-            var f = Chart.GetFormatter(Chart.Invert ? Chart.AxisX : Chart.AxisY);
+            var f = (Chart.Invert ? CurrentXAxis : CurrentYAxis).GetFormatter();
 
             foreach (var point in Values.Points)
             {
@@ -79,8 +80,8 @@ namespace LiveCharts
                 var height = Math.Max(0, barW - seriesPadding);
 
                 var barStart = bothLimitsPositive
-                    ? Chart.Min.X
-                    : (bothLimitsNegative ? Chart.Max.X : 0);
+                    ? CurrentXAxis.MinLimit
+                    : (bothLimitsNegative ? CurrentXAxis.MaxLimit : 0);
 
                 var direction = point.X > 0 ? 1 : -1;
 
@@ -201,10 +202,10 @@ namespace LiveCharts
             const int seriesPadding = 2;
             var barW = (unitW - 2 * pointPadding) / count;
 
-            var bothLimitsPositive = Chart.Max.Y > 0 && Chart.Min.Y > 0 - Chart.S.Y * .01;
-            var bothLimitsNegative = Chart.Max.Y < 0 + Chart.S.Y * .01 && Chart.Min.Y < 0;
+            var bothLimitsPositive = CurrentYAxis.MaxLimit > 0 && CurrentYAxis.MinLimit > 0 - CurrentYAxis.S*.01;
+            var bothLimitsNegative = CurrentYAxis.MaxLimit < 0 + CurrentYAxis.S*.01 && CurrentYAxis.MinLimit < 0;
 
-            var f = Chart.GetFormatter(Chart.Invert ? Chart.AxisX : Chart.AxisY);
+            var f = (Chart.Invert ? CurrentXAxis : CurrentYAxis).GetFormatter();
 
             foreach (var point in Values.Points)
             {
@@ -212,8 +213,8 @@ namespace LiveCharts
                 var width = Math.Max(0, barW - seriesPadding);
 
                 var barStart = bothLimitsPositive
-                    ? Chart.Min.Y
-                    : (bothLimitsNegative ? Chart.Max.Y : 0);
+                    ? CurrentYAxis.MinLimit
+                    : (bothLimitsNegative ? CurrentYAxis.MinLimit : 0);
 
                 var direction = point.Y > 0 ? 1 : -1;
 

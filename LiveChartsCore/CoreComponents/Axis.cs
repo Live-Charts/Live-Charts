@@ -23,9 +23,13 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Media;
+using System.Windows.Shapes;
+using LiveCharts.CoreComponents;
 using LiveCharts.TypeConverters;
 
 namespace LiveCharts
@@ -41,126 +45,130 @@ namespace LiveCharts
                 Color = Color.FromRgb(242, 242, 242),
                 StrokeThickness = 1
             };
-            SetValue(ComplementaryAxesProperty, new List<Axis>());
+
+            TitleLabel = new Label();
+
+            var binding = new Binding { Path = new PropertyPath(TitleProperty), Source = this };
+            BindingOperations.SetBinding(TitleLabel, TextBlock.TextProperty, binding);
         }
+
+        #region Public Properties
 
         public static readonly DependencyProperty LabelsProperty = DependencyProperty.Register(
             "Labels", typeof (IList<string>), typeof (Axis), new PropertyMetadata(default(IList<string>)));
+
         /// <summary>
         /// Gets or sets axis labels, labels property stores the array to map for each index and value, for example if axis value is 0 then label will be labels[0], when value 1 then labels[1], value 2 then labels[2], ..., value n labels[n], use this property instead of a formatter when there is no conversion between value and label for example names, if you are ploting sales vs salesman name.
         /// </summary>
         [TypeConverter(typeof (StringCollectionConverter))]
         public IList<string> Labels
         {
-            get
-            {
-                return (IList<string>) GetValue(LabelsProperty);
-            }
-            set
-            {
-                SetValue(LabelsProperty, value);
-            }
+            get { return (IList<string>) GetValue(LabelsProperty); }
+            set { SetValue(LabelsProperty, value); }
         }
 
-		public static readonly DependencyProperty LabelFormatterProperty =
-			DependencyProperty.Register("LabelFormatter", typeof(Func<double, string>), typeof(Axis), new PropertyMetadata(null));
+        public static readonly DependencyProperty LabelFormatterProperty =
+            DependencyProperty.Register("LabelFormatter", typeof (Func<double, string>), typeof (Axis),
+                new PropertyMetadata(null));
+
         /// <summary>
         /// Gets or sets the function to convet a value to label, for example when you need to display your chart as curency ($1.00) or as degrees (10°), if Labels property is not null then formatter is ignored, and label will be pulled from Labels prop.
         /// </summary>
-		public Func<double, string> LabelFormatter
-		{
-			get { return (Func<double, string>)GetValue(LabelFormatterProperty); }
-			set { SetValue(LabelFormatterProperty, value); }
-		}
+        public Func<double, string> LabelFormatter
+        {
+            get { return (Func<double, string>) GetValue(LabelFormatterProperty); }
+            set { SetValue(LabelFormatterProperty, value); }
+        }
 
         public static readonly DependencyProperty SeparatorProperty = DependencyProperty.Register(
-            "Separator", typeof(Separator), typeof(Axis), new PropertyMetadata(default(Separator)));
+            "Separator", typeof (Separator), typeof (Axis), new PropertyMetadata(default(Separator)));
+
         /// <summary>
         /// Get or sets configuration for parallel lines to axis.
         /// </summary>
         public Separator Separator
         {
-            get { return (Separator)GetValue(SeparatorProperty); }
+            get { return (Separator) GetValue(SeparatorProperty); }
             set { SetValue(SeparatorProperty, value); }
         }
 
-        public static readonly DependencyProperty ComplementaryAxesProperty = DependencyProperty.Register(
-            "ComplementaryAxes", typeof(List<Axis>), typeof(Axis), new PropertyMetadata(null));
+        public static readonly DependencyProperty ColorProperty =
+            DependencyProperty.Register("Color", typeof (Color), typeof (Axis),
+                new PropertyMetadata(Color.FromRgb(242, 242, 242)));
+
         /// <summary>
-        /// Gets or sets a collection of extra axes for the chart
+        /// Gets or sets axis color, axis means only the zero value, if you need to highlight where zero is. to change separators color, see Axis.Separator
         /// </summary>
-        public List<Axis> ComplementaryAxes
+        public Color Color
         {
-            get { return (List<Axis>)GetValue(ComplementaryAxesProperty); }
-            set { SetValue(ComplementaryAxesProperty, value); }
+            get { return (Color) GetValue(ColorProperty); }
+            set { SetValue(ColorProperty, value); }
         }
 
-        public static readonly DependencyProperty ColorProperty =
-			DependencyProperty.Register("Color", typeof(Color), typeof(Axis), new PropertyMetadata(Color.FromRgb(242, 242, 242)));
-		/// <summary>
-		/// Gets or sets axis color, axis means only the zero value, if you need to highlight where zero is. to change separators color, see Axis.Separator
-		/// </summary>
-		public Color Color
-		{
-			get { return (Color)GetValue(ColorProperty); }
-			set { SetValue(ColorProperty, value); }
-		}
+        public static readonly DependencyProperty StrokeThicknessProperty =
+            DependencyProperty.Register("StrokeThickness", typeof (double), typeof (Axis), new PropertyMetadata(1d));
 
-		public static readonly DependencyProperty StrokeThicknessProperty =
-			DependencyProperty.Register("StrokeThickness", typeof(double), typeof(Axis), new PropertyMetadata(1d));
-		/// <summary>
-		/// Gets or sets axis thickness.
-		/// </summary>
-		public double StrokeThickness
-		{
-			get { return (double)GetValue(StrokeThicknessProperty); }
-			set { SetValue(StrokeThicknessProperty, value); }
-		}
-
-		public static readonly DependencyProperty ShowLabelsProperty =
-			DependencyProperty.Register("ShowLabels", typeof(bool), typeof(Axis), new PropertyMetadata(true));
         /// <summary>
-		/// Gets or sets if labels are visible.
-		/// </summary>
-		public bool ShowLabels
-		{
-			get { return (bool)GetValue(ShowLabelsProperty); }
-			set { SetValue(ShowLabelsProperty, value); }
-		}
+        /// Gets or sets axis thickness.
+        /// </summary>
+        public double StrokeThickness
+        {
+            get { return (double) GetValue(StrokeThicknessProperty); }
+            set { SetValue(StrokeThicknessProperty, value); }
+        }
 
-		public static readonly DependencyProperty MaxValueProperty =
-			DependencyProperty.Register("MaxValue", typeof(double?), typeof(Axis), new PropertyMetadata(null));
+        public static readonly DependencyProperty ShowLabelsProperty =
+            DependencyProperty.Register("ShowLabels", typeof (bool), typeof (Axis), new PropertyMetadata(true));
+
         /// <summary>
-		/// Gets or sets chart max value, set it to null to make this property Auto, default value is null
-		/// </summary>
-		public double? MaxValue
-		{
-			get { return (double?)GetValue(MaxValueProperty); }
-			set { SetValue(MaxValueProperty, value); }
-		}
+        /// Gets or sets if labels are visible.
+        /// </summary>
+        public bool ShowLabels
+        {
+            get { return (bool) GetValue(ShowLabelsProperty); }
+            set { SetValue(ShowLabelsProperty, value); }
+        }
 
-		public static readonly DependencyProperty MinValueProperty =
-			DependencyProperty.Register("MinValue", typeof(double?), typeof(Axis), new PropertyMetadata(null));
+        public static readonly DependencyProperty MaxValueProperty =
+            DependencyProperty.Register("MaxValue", typeof (double?), typeof (Axis), new PropertyMetadata(null));
+
         /// <summary>
-		/// Gets or sets chart min value, set it to null to make this property Auto, default value is null
-		/// </summary>
-		public double? MinValue
-		{
-			get { return (double?)GetValue(MinValueProperty); }
-			set { SetValue(MinValueProperty, value); }
-		}
+        /// Gets or sets chart max value, set it to null to make this property Auto, default value is null
+        /// </summary>
+        public double? MaxValue
+        {
+            get { return (double?) GetValue(MaxValueProperty); }
+            set { SetValue(MaxValueProperty, value); }
+        }
 
-		public static readonly DependencyProperty TitleProperty =
-			DependencyProperty.Register("Title", typeof(string), typeof(Axis), new PropertyMetadata(null));
+        public static readonly DependencyProperty MinValueProperty =
+            DependencyProperty.Register("MinValue", typeof (double?), typeof (Axis), new PropertyMetadata(null));
+
+        /// <summary>
+        /// Gets or sets chart min value, set it to null to make this property Auto, default value is null
+        /// </summary>
+        public double? MinValue
+        {
+            get { return (double?) GetValue(MinValueProperty); }
+            set { SetValue(MinValueProperty, value); }
+        }
+
+        public static readonly DependencyProperty TitleProperty =
+            DependencyProperty.Register("Title", typeof (string), typeof (Axis), new PropertyMetadata(null));
+
         /// <summary>
         /// Gets or sets axis title
         /// </summary>
-		public string Title
-		{
-			get { return (string)GetValue(TitleProperty); }
-			set { SetValue(TitleProperty, value); }
-		}
-        
+        public string Title
+        {
+            get { return (string) GetValue(TitleProperty); }
+            set { SetValue(TitleProperty, value); }
+        }
+
+        public AxisPosition Position { get; set; }
+
+        #endregion
+
         #region Font Properties
 
         public static readonly DependencyProperty FontFamilyProperty =
@@ -263,5 +271,234 @@ namespace LiveCharts
                 RenderTransform = new RotateTransform(rotate)
             };
         }
-	}
+
+        internal double MaxLimit { get; set; }
+        internal double MinLimit { get; set; }
+        internal double S { get; set; }
+
+        internal bool HasValidRange
+        {
+            get { return Math.Abs(MaxLimit - MinLimit) > S*.01; }
+        }
+
+        internal void CalculateSeparator(Chart chart, AxisTags source)
+        {
+            var range = MaxLimit - MinLimit;
+            range = range <= 0 ? 1 : range;
+
+            var ft = new FormattedText(
+                "A label",
+                CultureInfo.CurrentCulture,
+                FlowDirection.LeftToRight,
+                new Typeface(FontFamily, FontStyle, FontWeight,
+                    FontStretch), FontSize, Brushes.Black);
+
+            var separations = source == AxisTags.Y
+                ? Math.Round(chart.PlotArea.Height/((ft.Height)*CleanFactor), 0)
+                : Math.Round(chart.PlotArea.Width/((ft.Width)*CleanFactor), 0);
+
+            separations = separations < 2 ? 2 : separations;
+
+            var minimum = range/separations;
+            var magnitude = Math.Pow(10, Math.Floor(Math.Log(minimum)/Math.Log(10)));
+            var residual = minimum/magnitude;
+            double tick;
+            if (residual > 5)
+                tick = 10*magnitude;
+            else if (residual > 2)
+                tick = 5*magnitude;
+            else if (residual > 1)
+                tick = 2*magnitude;
+            else
+                tick = magnitude;
+
+            S = tick;
+        }
+
+        internal Size GetLabelSize(double value)
+        {
+            if (!ShowLabels) return new Size(0, 0);
+
+            var fomattedValue = Labels == null
+                ? (LabelFormatter == null
+                    ? MinLimit.ToString(CultureInfo.InvariantCulture)
+                    : LabelFormatter(value))
+                : (Labels.Count > value && value >= 0
+                    ? Labels[(int) value]
+                    : "");
+
+            var labelSize =
+                new FormattedText(fomattedValue, CultureInfo.CurrentUICulture, FlowDirection.LeftToRight,
+                    new Typeface(FontFamily, FontStyle, FontWeight, FontStretch),
+                    FontSize, Brushes.Black);
+
+            return new Size(labelSize.Width, labelSize.Height);
+        }
+
+        internal Label TitleLabel;
+        internal double? LastAxisMax;
+        internal double? LastAxisMin;
+        internal Dictionary<double, Separation> Separations = new Dictionary<double, Separation>();
+
+        internal void PreparePlotArea(AxisTags direction, Chart chart)
+        {
+            if (!HasValidRange) return;
+            if (chart.PlotArea.Width < 15 || chart.PlotArea.Height < 15) return;
+
+            CalculateSeparator(chart, direction);
+
+            var f = GetFormatter();
+            foreach (var separation in Separations)
+                separation.Value.State = SeparationAnimation.FadeOut;
+
+            var biggest = new Size(0, 0);
+
+            for (var i = MinLimit; i < MaxLimit; i += S)
+            {
+                Separation separation;
+                
+                var key = (i/S)*S;
+                var isNew = false;
+                if (!Separations.TryGetValue(key, out separation))
+                {
+                    separation = new Separation
+                    {
+                        Label = BuildATextBlock(0),
+                        Line = new Line()
+                    };
+                    chart.Canvas.Children.Add(separation.Label);
+                    chart.Canvas.Children.Add(separation.Line);
+                    Separations[key] = separation;
+                    isNew = true;
+                }
+
+                separation.Value = key;
+                separation.Label.Text = f(i);
+                separation.Label.UpdateLayout();
+
+                biggest.Width = separation.Label.ActualWidth > biggest.Width
+                    ? separation.Label.ActualWidth
+                    : biggest.Width;
+                biggest.Height = separation.Label.ActualHeight > biggest.Height
+                    ? separation.Label.ActualHeight
+                    : biggest.Height;
+
+                if (LastAxisMax == null || chart.DisableAnimation) 
+                    separation.State = SeparationAnimation.None;
+
+                if (i < LastAxisMin)
+                    separation.State = SeparationAnimation.FromLeft;
+               
+                if (i > LastAxisMax)
+                    separation.State = SeparationAnimation.FromRight;
+
+                if (i >= LastAxisMin && i <= LastAxisMax)
+                    separation.State = isNew
+                        ? SeparationAnimation.FadeIn
+                        : SeparationAnimation.Move;
+            }
+
+            LastAxisMax = MaxLimit;
+            LastAxisMin = MinLimit;
+
+            PlaceTitle(direction, chart);
+            MeasuereSeparators(direction, chart, biggest);
+        }
+
+        internal Func<double, string> GetFormatter()
+        {
+            return x => Labels == null
+                ? (LabelFormatter == null
+                    ? x.ToString(CultureInfo.InvariantCulture)
+                    : LabelFormatter(x))
+                : (Labels.Count > x && x >= 0
+                    ? Labels[(int) x]
+                    : "");
+        }
+
+        private void MeasuereSeparators(AxisTags direction, Chart chart, Size biggest)
+        {
+            //Set enough margin to place all labels.
+            if (direction == AxisTags.Y)
+            {
+                if (Position == AxisPosition.RightTop)
+                {
+                    //Top
+                    chart.PlotArea.Y += biggest.Height;
+                    chart.PlotArea.Height -= biggest.Height;
+                }
+                else
+                {
+                    //Bottom
+                    chart.PlotArea.Height -= biggest.Height;
+                }
+            }
+            else
+            {
+                if (Position == AxisPosition.RightTop)
+                {
+                    //Right
+                    chart.PlotArea.Width -= biggest.Height;
+                }
+                else
+                {
+                    //Left
+                    chart.PlotArea.X += biggest.Height;
+                    chart.PlotArea.Width -= biggest.Height;
+                }
+            }
+        }
+
+        internal void UpdateSeparations(AxisTags direction, Chart chart, int axisPosition)
+        {
+            foreach (var separation in Separations.Values)
+                separation.Draw(chart, direction, axisPosition);
+        }
+
+        private void PlaceTitle(AxisTags direction, Chart chart)
+        {
+            if (TitleLabel.Parent == null)
+            {
+                TitleLabel.RenderTransform = new RotateTransform(direction == AxisTags.Y ? -90 : 0);
+                chart.Canvas.Children.Add(TitleLabel);
+            }
+
+            TitleLabel.UpdateLayout();
+
+            if (direction == AxisTags.Y)
+            {
+                Canvas.SetLeft(TitleLabel, chart.PlotArea.X + chart.PlotArea.Width*-5 - TitleLabel.ActualWidth*.5);
+                if (Position == AxisPosition.RightTop)
+                {
+                    //Top
+                    chart.PlotArea.Y += TitleLabel.ActualHeight;
+                    chart.PlotArea.Height -= TitleLabel.ActualHeight;
+                    Canvas.SetTop(TitleLabel, chart.PlotArea.Y - TitleLabel.ActualHeight);
+                }
+                else
+                {
+                    //Bottom
+                    chart.PlotArea.Height -= TitleLabel.ActualHeight;
+                    Canvas.SetTop(TitleLabel, chart.PlotArea.Y + chart.PlotArea.Height - TitleLabel.ActualHeight);
+                }
+            }
+            else
+            {
+                Canvas.SetTop(TitleLabel, chart.PlotArea.Y + chart.PlotArea.Height*.5 - TitleLabel.ActualHeight*.5);
+                if (Position == AxisPosition.RightTop)
+                {
+                    //Right
+                    chart.PlotArea.Width -= TitleLabel.ActualHeight;
+                    Canvas.SetLeft(TitleLabel, chart.PlotArea.X + chart.PlotArea.Width);
+                }
+                else
+                {
+                    //Left
+                    chart.PlotArea.X += TitleLabel.ActualHeight;
+                    chart.PlotArea.Width -= TitleLabel.ActualHeight;
+                    Canvas.SetLeft(TitleLabel, chart.PlotArea.X - TitleLabel.ActualHeight);
+                }
+            }
+        }
+    }
 }

@@ -40,9 +40,6 @@ namespace LiveCharts
     {
         public PieChart()
         {
-            SetValue(AxisXProperty, new Axis());
-            SetValue(AxisYProperty,
-                new Axis {FontWeight = FontWeights.Bold, FontSize = 11, FontFamily = new FontFamily("Calibri")});
             ShapeHoverBehavior = ShapeHoverBehavior.Shape;
             DefaultFillOpacity = .85;
             DrawPadding = 20;
@@ -98,7 +95,7 @@ namespace LiveCharts
 
         #region Overriden Methods
 
-        protected override void Scale()
+        protected override void PrepareAxes()
         {
             var w = MockedArea != null ? MockedArea.Value.Width : ActualWidth;
             var h = MockedArea != null ? MockedArea.Value.Height : ActualHeight;
@@ -109,8 +106,8 @@ namespace LiveCharts
             RequiresScale = true;
 
             if (!HasValidSeriesAndValues) return;
-            base.Scale();
-            DrawAxes();
+            base.PrepareAxes();
+            DrawComponents();
             //rest of the series are ignored by now, we only plot the firt one
             var hasInvalidSeries = Series.Cast<PieSeries>().Any(x => x == null);
             if (hasInvalidSeries)
@@ -119,7 +116,7 @@ namespace LiveCharts
             PieTotalSums = GetPieSum();
         }
 
-        protected override void DrawAxes()
+        protected override void DrawComponents()
         {
             foreach (var l in Shapes) Canvas.Children.Remove(l);
             var legend = Legend ?? new ChartLegend();
@@ -167,31 +164,6 @@ namespace LiveCharts
             }
         }
 
-        //protected override void LoadLegend(ChartLegend legend)
-        //{
-        //    var series = Series.FirstOrDefault() as PieSeries;
-        //    if (series == null) return;
-
-        //    var l = new List<SeriesStandin>();
-        //    var f = GetFormatter(AxisX);
-
-        //    for (var index = 0; index < series.Values.Count; index++)
-        //    {
-        //        l.Add(new SeriesStandin
-        //        {
-        //            Fill = series.Fill,
-        //            Stroke = series.Stroke,
-        //            Title = f(index)
-        //        });
-        //    }
-
-        //    legend.Series = l;
-
-        //    legend.Orientation = LegendLocation == LegendLocation.Bottom || LegendLocation == LegendLocation.Top
-        //        ? Orientation.Horizontal
-        //        : Orientation.Vertical;
-        //}
-
         internal override void DataMouseEnter(object sender, MouseEventArgs e)
         {
             if (DataTooltip == null) return;
@@ -204,7 +176,10 @@ namespace LiveCharts
             var pieSlice = senderShape.HoverShape as PieSlice;
             if (pieSlice == null) return;
 
-            var labels = AxisX.Labels != null ? AxisX.Labels.ToArray() : null;
+            var xi = senderShape.Series.UsesXAxis;
+            var yi = senderShape.Series.UsesYAxis;
+
+            var labels = AxisX[xi].Labels != null ? AxisX[xi].Labels.ToArray() : null;
 
             senderShape.Shape.Opacity = .8;
             var vx = senderShape.ChartPoint.X;
@@ -229,9 +204,9 @@ namespace LiveCharts
                         Fill = senderShape.HoverShape.Fill,
                         Series = senderShape.Series,
                         Point = senderShape.ChartPoint,
-                        Value = AxisY.LabelFormatter == null
+                        Value = AxisY[yi].LabelFormatter == null
                             ? senderShape.ChartPoint.Y.ToString(CultureInfo.InvariantCulture)
-                            : AxisY.LabelFormatter(senderShape.ChartPoint.Y)
+                            : AxisY[yi].LabelFormatter(senderShape.ChartPoint.Y)
                     }
                 };
             }

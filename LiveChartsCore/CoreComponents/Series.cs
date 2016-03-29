@@ -38,7 +38,7 @@ namespace LiveCharts.CoreComponents
 	    private Chart _chart;
 	    internal bool RequiresAnimation;
 	    internal bool RequiresPlot;
-        
+
         protected Series()
         {           
         }
@@ -221,17 +221,21 @@ namespace LiveCharts.CoreComponents
             }
         }
 
-        /// <summary>
-        /// Gets or sets the complementary axis index to use to plot this series on X, use null to use chart main axis.
-        /// </summary>
-        public int? FromComplementaryX { get; set; }
-
-        /// <summary>
-        /// Gets or sets the complementary axis index to use to plot this series on Y, use null to use chart main axis.
-        /// </summary>
-        public int? FromComplementaryY { get; set; }
-
         public ISeriesConfiguration Configuration { get; set; }
+
+        public int UsesXAxis { get; set; }
+        public int UsesYAxis { get; set; }
+
+        public Axis CurrentXAxis
+        {
+            get { return Chart.AxisX[UsesXAxis]; }
+        }
+
+        public Axis CurrentYAxis
+        {
+            get { return Chart.AxisY[UsesYAxis]; }
+        }
+
         #endregion
 
         #region PublicMethods
@@ -327,17 +331,17 @@ namespace LiveCharts.CoreComponents
             return new Point(ToPlotArea(point.X, AxisTags.X), ToPlotArea(point.Y, AxisTags.Y));
         }
 
-        protected double ToDrawMargin(double value, AxisTags axis, int? scalesAt = null)
+        protected double ToDrawMargin(double value, AxisTags source, int axis = 0)
         {
-            return Methods.ToDrawMargin(value, axis, Chart, scalesAt);
+            return Methods.ToDrawMargin(value, source, Chart, axis);
         }
 
-        protected ChartPoint ToDrawMargin(ChartPoint point, int? scalesAtX = null, int? scalesAtY = null)
+        protected ChartPoint ToDrawMargin(ChartPoint point, int axisX = 0, int axisY = 0)
         {
             return new ChartPoint
             {
-                X = ToDrawMargin(point.X, AxisTags.X, scalesAtX),
-                Y = ToDrawMargin(point.Y, AxisTags.Y, FromComplementaryY),
+                X = ToDrawMargin(point.X, AxisTags.X, axisX),
+                Y = ToDrawMargin(point.Y, AxisTags.Y, axisY),
                 Instance = point.Instance,
                 IsMocked = point.IsMocked,
                 Key = point.Key

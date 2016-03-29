@@ -47,11 +47,7 @@ namespace LiveCharts.CoreComponents
 
         internal Rect PlotArea;
         internal Canvas DrawMargin;
-        internal Point Max;
-        internal Point Min;
-        internal Point S;
-        internal Dictionary<int, ComplementaryAxesData> ComplementaryX;
-        internal Dictionary<int, ComplementaryAxesData> ComplementaryY;
+
         internal int ColorStartIndex;
         internal bool RequiresScale;
         internal List<DeleteBufferItem> EraseSerieBuffer = new List<DeleteBufferItem>();
@@ -74,6 +70,7 @@ namespace LiveCharts.CoreComponents
         private bool _isDragging;
         private int _colorIndexer;
         private UIElement _dataTooltip;
+        private Rect _plotArea;
 
         static Chart()
         {
@@ -103,8 +100,12 @@ namespace LiveCharts.CoreComponents
             Canvas = new Canvas();
             b.Child = Canvas;
             Content = b;
-            MinHeight = 125;
-            MinWidth = 125;
+
+            SetCurrentValue(MinHeightProperty, 125d);
+            SetCurrentValue(MinWidthProperty, 125d);
+
+            SetCurrentValue(AxisYProperty, new List<Axis> {new Axis()});
+            SetCurrentValue(AxisYProperty, new List<Axis> {new Axis()});
 
             if (RandomizeStartingColor) ColorStartIndex = Randomizer.Next(0, Colors.Count - 1);
             
@@ -170,24 +171,24 @@ namespace LiveCharts.CoreComponents
         #region Dependency Properties
 
         public static readonly DependencyProperty AxisYProperty = DependencyProperty.Register(
-            "AxisY", typeof (Axis), typeof (Chart), new PropertyMetadata(default(Axis)));
+            "AxisY", typeof (List<Axis>), typeof (Chart), new PropertyMetadata(new List<Axis>()));
         /// <summary>
         /// Gets or sets vertical axis
         /// </summary>
-        public Axis AxisY
+        public List<Axis> AxisY
         {
-            get { return (Axis) GetValue(AxisYProperty); }
+            get { return (List<Axis>) GetValue(AxisYProperty); }
             set { SetValue(AxisYProperty, value); }
         }
 
         public static readonly DependencyProperty AxisXProperty = DependencyProperty.Register(
-            "AxisX", typeof (Axis), typeof (Chart), new PropertyMetadata(default(Axis)));
+            "AxisX", typeof (List<Axis>), typeof (Chart), new PropertyMetadata(new List<Axis>()));
         /// <summary>
         /// Gets or sets horizontal axis
         /// </summary>
-        public Axis AxisX
+        public List<Axis> AxisX
         {
-            get { return (Axis) GetValue(AxisXProperty); }
+            get { return (List<Axis>) GetValue(AxisXProperty); }
             set { SetValue(AxisXProperty, value); }
         }
 
@@ -327,22 +328,6 @@ namespace LiveCharts.CoreComponents
         #region ProtectedProperties
         protected bool AnimatesNewPoints { get; set; }
 
-        internal bool HasInvalidArea
-        {
-            get
-            {
-                return PlotArea.Width < 15 || PlotArea.Height < 15;
-            }
-        }
-
-        internal bool HasValidRange
-        {
-            get
-            {
-                return Math.Abs(Max.X - Min.X) > S.X*.01 || Math.Abs(Max.Y - Min.Y) > S.Y*.01;
-            }
-        }
-
         internal bool HasValidSeriesAndValues
         {
             get { return Series.Any(x => x.Values != null && x.Values.Count > 1); }
@@ -384,36 +369,48 @@ namespace LiveCharts.CoreComponents
 
             if (Zoom == ZoomingOptions.X || Zoom == ZoomingOptions.XY)
             {
-                var max = AxisX.MaxValue ?? Max.X;
-                var min = AxisX.MinValue ?? Min.X;
-                var l = max - min;
-                var rMin = (dataPivot.X - min)/l;
-                var rMax = 1 - rMin;
+                foreach (var xi in AxisX)
+                {
+                    var max = xi.MaxValue ?? xi.MaxLimit;
+                    var min = xi.MinValue ?? xi.MinLimit;
+                    var l = max - min;
+                    var rMin = (dataPivot.X - min) / l;
+                    var rMax = 1 - rMin;
 
-                AxisX.MinValue = min + rMin*S.X;
-                AxisX.MaxValue = max - rMax*S.X;
+                    xi.MinValue = min + rMin * xi.S;
+                    xi.MaxValue = max - rMax * xi.S;
+                }
             }
             else
             {
-                AxisX.MinValue = null;
-                AxisX.MaxValue = null;
+                foreach (var xi in AxisX)
+                {
+                    xi.MinValue = null;
+                    xi.MaxValue = null;
+                }
             }
 
             if (Zoom == ZoomingOptions.Y || Zoom == ZoomingOptions.XY)
             {
-                var max = AxisY.MaxValue ?? Max.Y;
-                var min = AxisY.MinValue ?? Min.Y;
-                var l = max - min;
-                var rMin = (dataPivot.Y - min)/l;
-                var rMax = 1 - rMin;
+                foreach (var yi in AxisY)
+                {
+                    var max = yi.MaxValue ?? yi.MaxLimit;
+                    var min = yi.MinValue ?? yi.MinLimit;
+                    var l = max - min;
+                    var rMin = (dataPivot.Y - min) / l;
+                    var rMax = 1 - rMin;
 
-                AxisY.MinValue = min + rMin*S.Y;
-                AxisY.MaxValue = max - rMax*S.Y;
+                    yi.MinValue = min + rMin * yi.S;
+                    yi.MaxValue = max - rMax * yi.S;
+                }
             }
             else
             {
-                AxisY.MinValue = null;
-                AxisY.MaxValue = null;
+                foreach (var yi in AxisY)
+                {
+                    yi.MinValue = null;
+                    yi.MaxValue = null;
+                }
             }
 
             foreach (var series in Series) series.Values.RequiresEvaluation = true;
@@ -433,26 +430,32 @@ namespace LiveCharts.CoreComponents
 
             if (Zoom == ZoomingOptions.X || Zoom == ZoomingOptions.XY)
             {
-                var max = AxisX.MaxValue ?? Max.X;
-                var min = AxisX.MinValue ?? Min.X;
-                var l = max - min;
-                var rMin = (dataPivot.X - min) / l;
-                var rMax = 1 - rMin;
+                foreach (var xi in AxisX)
+                {
+                    var max = xi.MaxValue ?? xi.MaxLimit;
+                    var min = xi.MinValue ?? xi.MinLimit;
+                    var l = max - min;
+                    var rMin = (dataPivot.X - min) / l;
+                    var rMax = 1 - rMin;
 
-                AxisX.MinValue = min - rMin * S.X;
-                AxisX.MaxValue = max + rMax * S.X;
+                    xi.MinValue = min - rMin * xi.S;
+                    xi.MaxValue = max + rMax * xi.S;
+                }
             }
 
             if (Zoom == ZoomingOptions.Y || Zoom == ZoomingOptions.XY)
             {
-                var max = AxisY.MaxValue ?? Max.Y;
-                var min = AxisY.MinValue ?? Min.Y;
-                var l = max - min;
-                var rMin = (dataPivot.Y - min) / l;
-                var rMax = 1 - rMin;
+                foreach (var yi in AxisY)
+                {
+                    var max = yi.MaxValue ?? yi.MaxLimit;
+                    var min = yi.MinValue ?? yi.MinLimit;
+                    var l = max - min;
+                    var rMin = (dataPivot.Y - min) / l;
+                    var rMax = 1 - rMin;
 
-                AxisY.MinValue = min - rMin * S.Y;
-                AxisY.MaxValue = max + rMax * S.Y;
+                    yi.MinValue = min - rMin * yi.S;
+                    yi.MaxValue = max + rMax * yi.S;
+                }
             }
 
             foreach (var series in Series)
@@ -466,10 +469,18 @@ namespace LiveCharts.CoreComponents
         /// </summary>
         public void ClearZoom()
         {
-            AxisX.MinValue = null;
-            AxisX.MaxValue = null;
-            AxisY.MinValue = null;
-            AxisY.MaxValue = null;
+            foreach (var xi in AxisX)
+            {
+                xi.MinValue = null;
+                xi.MaxValue = null;
+            }
+
+            foreach (var yi in AxisY)
+            {
+                yi.MinValue = null;
+                yi.MaxValue = null;
+            }
+
             UnsafeUpdate();
         }
 
@@ -477,22 +488,23 @@ namespace LiveCharts.CoreComponents
         /// Scales a graph value to screen pixels according to an axis.
         /// </summary>
         /// <param name="value"></param>
+        /// <param name="source"></param>
         /// <param name="axis"></param>
-        /// <param name="scalesAt"></param>
         /// <returns></returns>
-        public double ToPlotArea(double value, AxisTags axis, int? scalesAt = null)
+        public double ToPlotArea(double value, AxisTags source, int axis = 0)
         {
-            return Methods.ToPlotArea(value, axis, this, scalesAt);
+            return Methods.ToPlotArea(value, source, this, axis);
         }
 
         /// <summary>
         /// Scales a graph value to screen.
         /// </summary>
         /// <param name="value"></param>
+        /// <param name="axis"></param>
         /// <returns></returns>
-        public Point ToPlotArea(Point value)
+        public Point ToPlotArea(Point value, int axis = 0)
         {
-            return new Point(ToPlotArea(value.X, AxisTags.X), ToPlotArea(value.Y, AxisTags.Y));
+            return new Point(ToPlotArea(value.X, AxisTags.X, axis), ToPlotArea(value.Y, AxisTags.Y, axis));
         }
 
         /// <summary>
@@ -532,146 +544,50 @@ namespace LiveCharts.CoreComponents
         {
             return new Point(ToDrawMargin(point.X, AxisTags.X), ToDrawMargin(point.Y, AxisTags.Y));
         }
-
-        public double LenghtOf(double value, AxisTags axis)
-        {
-            var isX = axis == AxisTags.X;
-            var m = isX ? Min.X : Min.Y;
-            var o = isX ? PlotArea.X : PlotArea.Y;
-            return Methods.ToPlotArea(m + value, axis, this) - o;
-        }
         #endregion
 
         #region ProtectedMethods
-        internal double CalculateSeparator(double range, AxisTags axis)
-        {
-            //based on:
-            //http://stackoverflow.com/questions/361681/algorithm-for-nice-grid-line-intervals-on-a-graph
-
-            range =  range <= 0 ? 1 : range;
-
-            var ft = axis == AxisTags.Y
-                ? new FormattedText(
-                    "A label",
-                    CultureInfo.CurrentUICulture,
-                    FlowDirection.LeftToRight,
-                    new Typeface(AxisY.FontFamily, AxisY.FontStyle, AxisY.FontWeight,
-                        AxisY.FontStretch), AxisY.FontSize, Brushes.Black)
-                : new FormattedText(
-                    "A label",
-                    CultureInfo.CurrentUICulture,
-                    FlowDirection.LeftToRight,
-                    new Typeface(AxisX.FontFamily, AxisX.FontStyle, AxisX.FontWeight,
-                        AxisX.FontStretch), AxisX.FontSize, Brushes.Black);
-
-            var separations = axis == AxisTags.Y
-                ? Math.Round(PlotArea.Height / ((ft.Height) * AxisY.CleanFactor), 0)
-                : Math.Round(PlotArea.Width / ((ft.Width) * AxisX.CleanFactor), 0);
-
-            separations = separations < 2 ? 2 : separations;
-
-            var minimum = range / separations;
-            var magnitude = Math.Pow(10, Math.Floor(Math.Log(minimum) / Math.Log(10)));
-            var residual = minimum / magnitude;
-            double tick;
-            if (residual > 5)
-                tick = 10 * magnitude;
-            else if (residual > 2)
-                tick = 5 * magnitude;
-            else if (residual > 1)
-                tick = 2 * magnitude;
-            else
-                tick = magnitude;
-            return tick;
-        }
 
         protected void ConfigureXAsIndexed()
         {
-            if (AxisX.Labels == null && AxisX.LabelFormatter == null) AxisX.ShowLabels = false;
-            var f = GetFormatter(AxisX);
-            var d = AxisX.Labels == null
-                ? Max.X
-                : AxisX.Labels.IndexOf(AxisX.Labels.OrderBy(x => x.Length).Reverse().First());
-            var longestYLabel = new FormattedText(HasValidRange ? f(d) : "", CultureInfo.CurrentUICulture,
-                FlowDirection.LeftToRight,
-                new Typeface(AxisX.FontFamily, AxisX.FontStyle, AxisX.FontWeight, AxisX.FontStretch), AxisX.FontSize,
-                Brushes.Black);
-            AxisX.Separator.Step = (longestYLabel.Width*Max.X)*1.25 > PlotArea.Width
-                ? null
-                : (int?) 1;
-            if (AxisX.Separator.Step != null) S.X = (int) AxisX.Separator.Step;
-            if (Zoom != ZoomingOptions.None) ZoomingAxis = AxisTags.X;
+            foreach (var xi in AxisX)
+            {
+                if (xi.Labels == null && xi.LabelFormatter == null) xi.ShowLabels = false;
+                var f = xi.GetFormatter();
+                var d = xi.Labels == null
+                    ? xi.MaxLimit
+                    : xi.Labels.IndexOf(xi.Labels.OrderBy(x => x.Length).Reverse().First());
+                var longestYLabel = new FormattedText(xi.HasValidRange ? f(d) : "", CultureInfo.CurrentUICulture,
+                    FlowDirection.LeftToRight,
+                    new Typeface(xi.FontFamily, xi.FontStyle, xi.FontWeight, xi.FontStretch), xi.FontSize,
+                    Brushes.Black);
+                xi.Separator.Step = (longestYLabel.Width * xi.MaxLimit) * 1.25 > PlotArea.Width
+                    ? null
+                    : (int?)1;
+                if (xi.Separator.Step != null) xi.S = (int)xi.Separator.Step;
+                if (Zoom != ZoomingOptions.None) ZoomingAxis = AxisTags.X;
+            }
         }
 
         protected void ConfigureYAsIndexed()
         {
-            if (AxisY.Labels == null && AxisY.LabelFormatter == null) AxisY.ShowLabels = false;
-            var f = GetFormatter(AxisY);
-            var d = AxisY.Labels == null
-                ? Max.Y
-                : AxisY.Labels.IndexOf(AxisY.Labels.OrderBy(x => x.Length).Reverse().First());
-            var longestYLabel = new FormattedText(HasValidRange ? f(d) : "", CultureInfo.CurrentUICulture,
-                FlowDirection.LeftToRight,
-                new Typeface(AxisY.FontFamily, AxisY.FontStyle, AxisY.FontWeight, AxisY.FontStretch), AxisY.FontSize,
-                Brushes.Black);
-            AxisY.Separator.Step = (longestYLabel.Width*Max.Y)*1.25 > PlotArea.Width
-                ? null
-                : (int?) 1;
-            if (AxisY.Separator.Step != null) S.Y = (int) AxisY.Separator.Step;
-            if (Zoom != ZoomingOptions.None) ZoomingAxis = AxisTags.Y;
-        }
-
-        protected Point GetLongestLabelSize(Axis axis, AxisTags tag, int? complementary = null)
-        {
-            if (!axis.ShowLabels) return new Point(0, 0);
-            var label = "";
-
-            var isY = tag == AxisTags.Y;
-
-            var from = isY ? Min.Y : Min.X;
-            var to = isY ? Max.Y : Max.X;
-            var s = isY ? S.Y : S.X;
-            var f = GetFormatter(axis);
-
-            if (complementary != null)
+            foreach (var yi in AxisY)
             {
-                from = isY ? ComplementaryY[(int) complementary].Min : ComplementaryX[(int) complementary].Min;
-                to = isY ? ComplementaryY[(int) complementary].Max : ComplementaryX[(int) complementary].Max;
-                s = isY ? ComplementaryY[(int) complementary].S : ComplementaryX[(int) complementary].S;
+                if (yi.Labels == null && yi.LabelFormatter == null) yi.ShowLabels = false;
+                var f = yi.GetFormatter();
+                var d = yi.Labels == null
+                    ? yi.MaxLimit
+                    : yi.Labels.IndexOf(yi.Labels.OrderBy(x => x.Length).Reverse().First());
+                var longestYLabel = new FormattedText(yi.HasValidRange ? f(d) : "", CultureInfo.CurrentUICulture,
+                    FlowDirection.LeftToRight,
+                    new Typeface(yi.FontFamily, yi.FontStyle, yi.FontWeight, yi.FontStretch), yi.FontSize,
+                    Brushes.Black);
+                yi.Separator.Step = (longestYLabel.Width*yi.MaxLimit)*1.25 > PlotArea.Width
+                    ? null
+                    : (int?) 1;
+                if (yi.Separator.Step != null) yi.S = (int) yi.Separator.Step;
+                if (Zoom != ZoomingOptions.None) ZoomingAxis = AxisTags.Y;
             }
-
-            for (var i = from; i <= to; i += s)
-            {
-                var iL = f(i);
-                if (label.Length < iL.Length)
-                {
-                    label = iL;
-                }
-            }
-
-            var longestLabel = new FormattedText(label, CultureInfo.CurrentUICulture, FlowDirection.LeftToRight,
-                new Typeface(axis.FontFamily, axis.FontStyle, axis.FontWeight,
-                axis.FontStretch), axis.FontSize, Brushes.Black);
-
-            return new Point(longestLabel.Width, longestLabel.Height);
-        }
-
-        protected Point GetLabelSize(Axis axis, double value)
-        {
-            if (!axis.ShowLabels) return new Point(0, 0);
-
-            var labels = axis.Labels != null ? axis.Labels.ToArray() : null;
-            var fomattedValue = labels == null
-                ? (AxisX.LabelFormatter == null
-                    ? Min.X.ToString(CultureInfo.InvariantCulture)
-                    : AxisX.LabelFormatter(value))
-                : (labels.Length > value && value>=0
-                    ? labels[(int)value]
-                    : "");
-            var uiLabelSize = new FormattedText(fomattedValue, CultureInfo.CurrentUICulture, FlowDirection.LeftToRight,
-                new Typeface(axis.FontFamily, axis.FontStyle, axis.FontWeight, axis.FontStretch),
-                axis.FontSize, Brushes.Black);
-            return new Point(uiLabelSize.Width, uiLabelSize.Height);
         }
 
         protected Point GetLabelSize(Axis axis, string value)
@@ -683,222 +599,84 @@ namespace LiveCharts.CoreComponents
             return new Point(uiLabelSize.Width, uiLabelSize.Height);
         }
 
-        protected virtual void Scale()
+        protected virtual void PrepareAxes()
         {
             InitializeComponents();
 
-            Max = new Point(
-                AxisX.MaxValue ??
-                Series.Where(x => x.Values != null && x.FromComplementaryX == null)
-                    .Select(x => x.Values.MaxChartPoint.X).DefaultIfEmpty(0).Max(),
-                AxisY.MaxValue ??
-                Series.Where(x => x.Values != null && x.FromComplementaryY == null)
-                    .Select(x => x.Values.MaxChartPoint.Y).DefaultIfEmpty(0).Max());
-
-            Min = new Point(
-                AxisX.MinValue ??
-                Series.Where(x => x.Values != null && x.FromComplementaryX == null)
-                    .Select(x => x.Values.MinChartPoint.X).DefaultIfEmpty(0).Min(),
-                AxisY.MinValue ??
-                Series.Where(x => x.Values != null && x.FromComplementaryY == null)
-                    .Select(x => x.Values.MinChartPoint.Y).DefaultIfEmpty(0).Min());
-
-            ComplementaryX = Series.Where(x => x.FromComplementaryX != null)
-                .GroupBy(x => (int) x.FromComplementaryX)
-                .ToDictionary(g => g.Key, g => new ComplementaryAxesData
-                {
-                    Max = g.Select(x => x.Values.MaxChartPoint.X).DefaultIfEmpty(0).Max(),
-                    Min = g.Select(x => x.Values.MinChartPoint.X).DefaultIfEmpty(0).Min()
-                });
-
-            ComplementaryY = Series.Where(x => x.FromComplementaryY != null)
-                .GroupBy(x => (int) x.FromComplementaryY)
-                .ToDictionary(g => g.Key, g => new ComplementaryAxesData
-                {
-                    Max = g.Select(x => x.Values.MaxChartPoint.Y).DefaultIfEmpty(0).Max(),
-                    Min = g.Select(x => x.Values.MinChartPoint.Y).DefaultIfEmpty(0).Min()
-                });
-            
-            if (ZoomingAxis == AxisTags.X)
+            for (var index = 0; index < AxisX.Count; index++)
             {
-                From = Min.X;
-                To = Max.X;
+                var xi = AxisX[index];
+                xi.MaxLimit = xi.MaxValue ??
+                              Series.Where(series => series.Values != null && series.UsesXAxis == index)
+                                  .Select(series => series.Values.MaxChartPoint.X).DefaultIfEmpty(0).Max();
+                xi.MinLimit = xi.MinValue ??
+                              Series.Where(series => series.Values != null && series.UsesXAxis == index)
+                                  .Select(series => series.Values.MinChartPoint.X).DefaultIfEmpty(0).Min();
             }
-            if (ZoomingAxis == AxisTags.Y)
+
+            for (var index = 0; index < AxisY.Count; index++)
             {
-                From = Min.Y;
-                To = Max.Y;
+                var yi = AxisY[index];
+                yi.MaxLimit = yi.MaxValue ??
+                              Series.Where(series => series.Values != null && series.UsesYAxis == index)
+                                  .Select(series => series.Values.MaxChartPoint.Y).DefaultIfEmpty(0).Max();
+                yi.MinLimit = yi.MinValue ??
+                              Series.Where(series => series.Values != null && series.UsesYAxis == index)
+                                  .Select(series => series.Values.MinChartPoint.Y).DefaultIfEmpty(0).Min();
             }
         }
         #endregion
 
         #region Virtual Methods
-        protected virtual void DrawAxes()
+        protected virtual void DrawComponents()
         {
-            if (!HasValidRange) return;
-
             foreach (var l in Shapes) Canvas.Children.Remove(l);
 
-            //legend
-            var legend = Legend ?? new ChartLegend();
-            LoadLegend(legend);
+            PlaceLegend();
 
-            if (LegendLocation != LegendLocation.None)
+            foreach (var xi in AxisX) xi.PreparePlotArea(AxisTags.X, this);
+            foreach (var yi in AxisY) yi.PreparePlotArea(AxisTags.Y, this);
+
+            for (var index = 0; index < AxisX.Count; index++)
             {
-                Canvas.Children.Add(legend);
-                Shapes.Add(legend);
-                legend.UpdateLayout();
-                legend.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+                var xi = AxisX[index];
+                xi.UpdateSeparations(AxisTags.X, this, index);
             }
-
-            switch (LegendLocation)
+            for (var index = 0; index < AxisY.Count; index++)
             {
-                case LegendLocation.None:
-                    break;
-                case LegendLocation.Top:
-                    var top = new Point(ActualWidth*.5 - legend.DesiredSize.Width*.5, 0);
-                    PlotArea.Y += top.Y + legend.DesiredSize.Height;
-                    PlotArea.Height -= legend.DesiredSize.Height;
-                    Canvas.SetTop(legend, top.Y);
-                    Canvas.SetLeft(legend, top.X);
-                    break;
-                case LegendLocation.Bottom:
-                    var bot = new Point(ActualWidth*.5 - legend.DesiredSize.Width*.5, ActualHeight - legend.DesiredSize.Height);
-                    PlotArea.Height -= legend.DesiredSize.Height;
-                    Canvas.SetTop(legend, Canvas.ActualHeight - legend.DesiredSize.Height);
-                    Canvas.SetLeft(legend, bot.X);
-                    break;
-                case LegendLocation.Left:
-                    PlotArea.X += legend.DesiredSize.Width;
-                    PlotArea.Width -= legend.DesiredSize.Width;
-                    Canvas.SetTop(legend, Canvas.ActualHeight * .5 - legend.DesiredSize.Height * .5);
-                    Canvas.SetLeft(legend, 0);
-                    break;
-                case LegendLocation.Right:
-                    PlotArea.Width -= legend.DesiredSize.Width;
-                    Canvas.SetTop(legend, Canvas.ActualHeight*.5 - legend.DesiredSize.Height*.5);
-                    Canvas.SetLeft(legend, ActualWidth - legend.DesiredSize.Width);
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
+                var yi = AxisY[index];
+                yi.UpdateSeparations(AxisTags.Y, this, index);
             }
-
-            //draw axes titles
-            var longestY = GetLongestLabelSize(AxisY, AxisTags.Y);
-            var longestX = GetLongestLabelSize(AxisX, AxisTags.X);
-
-            if (!string.IsNullOrWhiteSpace(AxisY.Title))
-            {
-                var ty = GetLabelSize(AxisY, AxisY.Title);
-                var yLabel = AxisY.BuildATextBlock(-90);
-                var binding = new Binding {Path = new PropertyPath("Title"), Source = AxisY};
-                BindingOperations.SetBinding(yLabel, TextBlock.TextProperty, binding);
-                Shapes.Add(yLabel);
-                Canvas.Children.Add(yLabel);
-                if (AxisY.Title.Trim().Length > 0)
-                {
-                    PlotArea.X += ty.Y;
-                    PlotArea.Width -= ty.Y;
-                }
-                Canvas.SetLeft(yLabel, PlotArea.X - ty.Y - (AxisY.ShowLabels ? longestY.X + 5 : 0) - 5);
-                Canvas.SetTop(yLabel, PlotArea.Y*.5 + PlotArea.Height*.5 + ty.X*.5);
-            }
-            if (!string.IsNullOrWhiteSpace(AxisX.Title))
-            {
-                var tx = GetLabelSize(AxisX, AxisX.Title);
-                var yLabel = AxisX.BuildATextBlock(0);
-                var binding = new Binding {Path = new PropertyPath("Title"), Source = AxisX};
-                BindingOperations.SetBinding(yLabel, TextBlock.TextProperty, binding);
-                Shapes.Add(yLabel);
-                Canvas.Children.Add(yLabel);
-                if (AxisX.Title.Trim().Length > 0) PlotArea.Height -= tx.Y;
-                Canvas.SetLeft(yLabel, PlotArea.X + PlotArea.Width*.5 - tx.X*.5);
-                Canvas.SetTop(yLabel, PlotArea.Y + PlotArea.Height + (AxisX.ShowLabels ? tx.Y +5 : 0));
-            }
-
-            //Complementary Y
-            for (var index = 0; index < AxisY.ComplementaryAxes.Count; index++)
-            {
-                var complementary = AxisY.ComplementaryAxes[index];
-
-                var ty = GetLabelSize(complementary, complementary.Title);
-                var yLabel = complementary.BuildATextBlock(-90);
-                var binding = new Binding { Path = new PropertyPath("Title"), Source = complementary };
-                BindingOperations.SetBinding(yLabel, TextBlock.TextProperty, binding);
-                Shapes.Add(yLabel);
-                Canvas.Children.Add(yLabel);
-                if (complementary.Title != null && complementary.Title.Trim().Length > 0)
-                {
-                    PlotArea.Width -= ty.Y;
-                }
-                Canvas.SetLeft(yLabel, PlotArea.X + PlotArea.Width - 5);
-                Canvas.SetTop(yLabel, PlotArea.Y * .5 + PlotArea.Height * .5 + ty.X * .5);
-
-                var longest = GetLongestLabelSize(complementary, AxisTags.Y, index);
-                PlotArea.Width -= longest.X +10;
-
-                DrawComplementaryAxis(complementary, longest, AxisTags.Y, index);
-            }
-            //YAxis Main
-            DrawAxis(AxisY, longestY);
-
-            //ToDo: Test multiple inverted axes
-            //Complementary X
-            for (var index = 0; index < AxisX.ComplementaryAxes.Count; index++)
-            {
-                var complementary = AxisX.ComplementaryAxes[index];
-
-                var ty = GetLabelSize(complementary, complementary.Title);
-                var yLabel = complementary.BuildATextBlock(0);
-                var binding = new Binding { Path = new PropertyPath("Title"), Source = complementary };
-                BindingOperations.SetBinding(yLabel, TextBlock.TextProperty, binding);
-                Shapes.Add(yLabel);
-                Canvas.Children.Add(yLabel);
-                if (complementary.Title != null && complementary.Title.Trim().Length > 0)
-                {
-                    PlotArea.Y += ty.Y;
-                    PlotArea.Height -= ty.Y;
-                }
-                Canvas.SetLeft(yLabel, PlotArea.X + PlotArea.Width * .5 - ty.X * .5);
-                Canvas.SetTop(yLabel, PlotArea.Y - ty.Y + (AxisX.ShowLabels ? ty.Y + 5 : 0));
-
-                var longest = GetLongestLabelSize(complementary, AxisTags.X, index);
-                PlotArea.Height -= longest.Y + 10;
-
-                DrawComplementaryAxis(complementary, longest, AxisTags.X, index);
-            }
-            //XAxis
-            DrawAxis(AxisX, longestX);
 
             //drawing ceros.
-            if (Max.Y >= 0 && Min.Y <= 0 && AxisX.IsEnabled)
-            {
-                var l = new Line
-                {
-                    Stroke = new SolidColorBrush {Color = AxisX.Color},
-                    StrokeThickness = AxisX.StrokeThickness,
-                    X1 = ToPlotArea(Min.X, AxisTags.X),
-                    Y1 = ToPlotArea(0, AxisTags.Y),
-                    X2 = ToPlotArea(Max.X, AxisTags.X),
-                    Y2 = ToPlotArea(0, AxisTags.Y)
-                };
-                Canvas.Children.Add(l);
-                Shapes.Add(l);
-            }
-            if (Max.X >= 0 && Min.X <= 0 && AxisY.IsEnabled)
-            {
-                var l = new Line
-                {
-                    Stroke = new SolidColorBrush {Color = AxisY.Color},
-                    StrokeThickness = AxisY.StrokeThickness,
-                    X1 = ToPlotArea(0, AxisTags.X),
-                    Y1 = ToPlotArea(Min.Y, AxisTags.Y),
-                    X2 = ToPlotArea(0, AxisTags.X),
-                    Y2 = ToPlotArea(Max.Y, AxisTags.Y)
-                };
-                Canvas.Children.Add(l);
-                Shapes.Add(l);
-            }
+            //if (Max.Y >= 0 &&AxisY.MinLimit <= 0 && AxisX.IsEnabled)
+            //{
+            //    var l = new Line
+            //    {
+            //        Stroke = new SolidColorBrush {Color = AxisX.Color},
+            //        StrokeThickness = AxisX.StrokeThickness,
+            //        X1 = ToPlotArea(Min.X, AxisTags.X),
+            //        Y1 = ToPlotArea(0, AxisTags.Y),
+            //        X2 = ToPlotArea(Max.X, AxisTags.X),
+            //        Y2 = ToPlotArea(0, AxisTags.Y)
+            //    };
+            //    Canvas.Children.Add(l);
+            //    Shapes.Add(l);
+            //}
+            //if (Max.X >= 0 &&AxisX.MinLimit <= 0 && AxisY.IsEnabled)
+            //{
+            //    var l = new Line
+            //    {
+            //        Stroke = new SolidColorBrush {Color = AxisY.Color},
+            //        StrokeThickness = AxisY.StrokeThickness,
+            //        X1 = ToPlotArea(0, AxisTags.X),
+            //        Y1 = ToPlotArea(Min.Y, AxisTags.Y),
+            //        X2 = ToPlotArea(0, AxisTags.X),
+            //        Y2 = ToPlotArea(Max.Y, AxisTags.Y)
+            //    };
+            //    Canvas.Children.Add(l);
+            //    Shapes.Add(l);
+            //}
 
             Canvas.SetLeft(DrawMargin, PlotArea.X);
             Canvas.SetTop(DrawMargin, PlotArea.Y);
@@ -928,9 +706,14 @@ namespace LiveCharts.CoreComponents
 
             var senderShape = ShapesMapper.FirstOrDefault(s => Equals(s.HoverShape, sender));
             if (senderShape == null) return;
+
+            var targetAxis = Invert ? senderShape.Series.UsesYAxis : senderShape.Series.UsesXAxis;
+
             var sibilings = Invert
-                ? ShapesMapper.Where(s => Math.Abs(s.ChartPoint.Y - senderShape.ChartPoint.Y) < S.Y*.01).ToList()
-                : ShapesMapper.Where(s => Math.Abs(s.ChartPoint.X - senderShape.ChartPoint.X) < S.X*.01).ToList();
+                ? ShapesMapper.Where(s => Math.Abs(s.ChartPoint.Y - senderShape.ChartPoint.Y) < AxisY[targetAxis].S*.01)
+                    .ToList()
+                : ShapesMapper.Where(s => Math.Abs(s.ChartPoint.X - senderShape.ChartPoint.X) < AxisX[targetAxis].S*.01)
+                    .ToList();
 
             var first = sibilings.Count > 0 ? sibilings[0] : null;
             var vx = first != null ? (Invert ? first.ChartPoint.Y : first.ChartPoint.X) : 0;
@@ -943,13 +726,15 @@ namespace LiveCharts.CoreComponents
                     sibiling.Shape.Fill = new SolidColorBrush {Color = PointHoverColor};
                 }
                 else sibiling.Shape.Opacity = .8;
+                sibiling.Active = true;
             }
 
             var indexedToolTip = DataTooltip as IndexedTooltip;
             if (indexedToolTip != null)
             {
-                var fh = GetFormatter(Invert ? AxisY : AxisX);
-                var fs = GetFormatter(Invert ? AxisX : AxisY);
+                var fh = (Invert ? AxisY[targetAxis] : AxisX[targetAxis]).GetFormatter();
+                var fs = (Invert ? AxisX[targetAxis] : AxisY[targetAxis]).GetFormatter();
+
                 indexedToolTip.Header = fh(vx);
                 indexedToolTip.Data = sibilings.Select(x => new IndexedTooltipData
                 {
@@ -984,7 +769,7 @@ namespace LiveCharts.CoreComponents
             var shape = ShapesMapper.FirstOrDefault(x => Equals(x.HoverShape, s));
             if (shape == null) return;
 
-            var sibilings = ShapesMapper.Where(x => Math.Abs(x.ChartPoint.X - shape.ChartPoint.X) < .001*S.X).ToList();
+            var sibilings = ShapesMapper.Where(x => x.Active).ToList();
 
             foreach (var p in sibilings)
             {
@@ -1014,7 +799,9 @@ namespace LiveCharts.CoreComponents
             DataTooltip.UpdateLayout();
             DataTooltip.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
 
-            var x = sender.ChartPoint.X > (Min.X + Max.X)/2
+            var targetAxis = Invert ? sender.Series.UsesYAxis : sender.Series.UsesXAxis;
+
+            var x = sender.ChartPoint.X > (AxisX[targetAxis].MinLimit + AxisX[targetAxis].MaxLimit)/2
                 ? sender.ChartPoint.ChartLocation.X - 10 - DataTooltip.DesiredSize.Width
                 : sender.ChartPoint.ChartLocation.X + 10;
 
@@ -1039,125 +826,64 @@ namespace LiveCharts.CoreComponents
 
         #region Private Methods
 
-        private void DrawAxis(Axis axis, Point longestLabel)
+        private void PlaceLegend()
         {
-            var isX = Equals(axis, AxisX);
-            var max = isX ? Max.X : Max.Y;
-            var min = isX ? Min.X : Min.Y;
-            var s = isX ? S.X : S.Y;
+            //legend
+            var legend = Legend ?? new ChartLegend();
+            LoadLegend(legend);
 
-            var maxval = axis.Separator.IsEnabled || axis.ShowLabels ? max + (axis.IgnoresLastLabel ? -1 : 0) : min - 1;
-
-            var formatter = GetFormatter(axis);
-
-            for (var i = min; i <= maxval; i += s)
+            if (LegendLocation != LegendLocation.None)
             {
-                if (axis.Separator.IsEnabled)
-                {
-                    var l = new Line
-                    {
-                        Stroke = new SolidColorBrush {Color = axis.Separator.Color},
-                        StrokeThickness = axis.Separator.StrokeThickness
-                    };
+                Canvas.Children.Add(legend);
+                Shapes.Add(legend);
+                legend.UpdateLayout();
+                legend.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+            }
 
-                    if (isX)
-                    {
-                        var x = ToPlotArea(i, AxisTags.X);
-                        l.X1 = x;
-                        l.X2 = x;
-                        l.Y1 = ToPlotArea(Max.Y, AxisTags.Y);
-                        l.Y2 = ToPlotArea(Min.Y, AxisTags.Y);
-                    }
-                    else
-                    {
-                        var y = ToPlotArea(i, AxisTags.Y);
-                        l.X1 = ToPlotArea(Min.X, AxisTags.X);
-                        l.X2 = ToPlotArea(Max.X, AxisTags.X);
-                        l.Y1 = y;
-                        l.Y2 = y;
-                    }
-
-                    Canvas.Children.Add(l);
-                    Shapes.Add(l);
-                }
-
-                if (axis.ShowLabels)
-                {
-                    var text = formatter(i);
-                    var label = axis.BuildATextBlock(0);
-                    label.Text = text;
-                    var fl = new FormattedText(text, CultureInfo.CurrentUICulture, FlowDirection.LeftToRight, new Typeface(axis.FontFamily, axis.FontStyle, axis.FontWeight, axis.FontStretch), axis.FontSize, Brushes.Black);
-                    Canvas.Children.Add(label);
-                    Shapes.Add(label);
-
-                    if (isX)
-                    {
-                        Canvas.SetLeft(label, ToPlotArea(i, AxisTags.X) - fl.Width*.5 + XOffset);
-                        Canvas.SetTop(label, PlotArea.Y + PlotArea.Height + 5);
-                    }
-                    else
-                    {
-                        Canvas.SetLeft(label, PlotArea.X - fl.Width -5);
-                        Canvas.SetTop(label, ToPlotArea(i, AxisTags.Y) - longestLabel.Y*.5 + YOffset);
-                    }
-                }
+            switch (LegendLocation)
+            {
+                case LegendLocation.None:
+                    break;
+                case LegendLocation.Top:
+                    var top = new Point(ActualWidth * .5 - legend.DesiredSize.Width * .5, 0);
+                    PlotArea.Y += top.Y + legend.DesiredSize.Height;
+                    PlotArea.Height -= legend.DesiredSize.Height;
+                    Canvas.SetTop(legend, top.Y);
+                    Canvas.SetLeft(legend, top.X);
+                    break;
+                case LegendLocation.Bottom:
+                    var bot = new Point(ActualWidth * .5 - legend.DesiredSize.Width * .5, ActualHeight - legend.DesiredSize.Height);
+                    PlotArea.Height -= legend.DesiredSize.Height;
+                    Canvas.SetTop(legend, Canvas.ActualHeight - legend.DesiredSize.Height);
+                    Canvas.SetLeft(legend, bot.X);
+                    break;
+                case LegendLocation.Left:
+                    PlotArea.X += legend.DesiredSize.Width;
+                    PlotArea.Width -= legend.DesiredSize.Width;
+                    Canvas.SetTop(legend, Canvas.ActualHeight * .5 - legend.DesiredSize.Height * .5);
+                    Canvas.SetLeft(legend, 0);
+                    break;
+                case LegendLocation.Right:
+                    PlotArea.Width -= legend.DesiredSize.Width;
+                    Canvas.SetTop(legend, Canvas.ActualHeight * .5 - legend.DesiredSize.Height * .5);
+                    Canvas.SetLeft(legend, ActualWidth - legend.DesiredSize.Width);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
         }
 
-        private void DrawComplementaryAxis(Axis axis, Point longestLabel, AxisTags axisDirection, int from)
-        {
-            var belongsX = axisDirection == AxisTags.X;
-
-            var comp = belongsX ? ComplementaryX[from] : ComplementaryY[from];
-
-            var maxval = axis.Separator.IsEnabled || axis.ShowLabels
-                ? comp.Max + (axis.IgnoresLastLabel ? -1 : 0)
-                : comp.Min - 1;
-
-            var formatter = GetFormatter(axis);
-
-            for (var i = comp.Min; i <= maxval; i += comp.S)
-            {
-                if (axis.ShowLabels)
-                {
-                    var text = formatter(i);
-                    var label = axis.BuildATextBlock(0);
-                    label.Text = text;
-                    var fl = new FormattedText(text, CultureInfo.CurrentUICulture, FlowDirection.LeftToRight, new Typeface(axis.FontFamily, axis.FontStyle, axis.FontWeight, axis.FontStretch), axis.FontSize, Brushes.Black);
-                    Canvas.Children.Add(label);
-                    Shapes.Add(label);
-
-                    if (belongsX)
-                    {
-                        Canvas.SetLeft(label, ToPlotArea(i, AxisTags.X, from) * .5 + XOffset);
-                        Canvas.SetTop(label, PlotArea.Y - fl.Height - 5);
-                    }
-                    else
-                    {
-                        Canvas.SetLeft(label, PlotArea.X + PlotArea.Width + 5);
-                        Canvas.SetTop(label, ToPlotArea(i, AxisTags.Y, from) - longestLabel.Y * .5 + YOffset);
-                    }
-                }
-            }
-        }
-
-        internal Func<double, string> GetFormatter(Axis axis)
-        {
-            var labels = axis.Labels != null ? axis.Labels : null;
-
-            return x => labels == null
-                ? (axis.LabelFormatter == null ? x.ToString(CultureInfo.InvariantCulture) : axis.LabelFormatter(x))
-                : (labels.Count > x && x >= 0 ? labels[(int) x] : "");
-        }
 
         private void PrepareCanvas(bool ereaseAll = false)
         {
-            if (Series == null || Series.Count==0) return;
+            if (Series == null || Series.Count == 0) return;
             if (!SeriesInitialized) InitializeSeries(this);
 
-            if (AxisY.Parent == null) Canvas.Children.Add(AxisY);
-            if (AxisX.Parent == null) Canvas.Children.Add(AxisX);
-
+            foreach (var xi in AxisX.Where(xi => xi.Parent == null))
+                Canvas.Children.Add(xi);
+            foreach (var yi in AxisY.Where(yi => yi.Parent == null))
+                Canvas.Children.Add(yi);
+            
             if (DrawMargin == null)
             {
                 DrawMargin = new Canvas {ClipToBounds = true};
@@ -1211,7 +937,7 @@ namespace LiveCharts.CoreComponents
             if (chart == null || chart.Series == null || chart.Series.Count == 0) return;
             if (chart.Series.Any(x => x == null)) return;
 
-            if (chart.Series.Count > 0 && !chart.HasInvalidArea) chart.Scale();
+            if (chart.Series.Count > 0) chart.PrepareAxes();
         }
 
         private void InitializeSeries(Chart chart)
@@ -1299,7 +1025,6 @@ namespace LiveCharts.CoreComponents
             EreaseSeries();
 
             if (Series == null || Series.Count == 0) return;
-            if (HasInvalidArea) return;
 
             foreach (var shape in Shapes) Canvas.Children.Remove(shape);
             
@@ -1307,7 +1032,7 @@ namespace LiveCharts.CoreComponents
 
             if (RequiresScale)
             {
-                Scale();
+                PrepareAxes();
                 RequiresScale = false;
             }
 
@@ -1341,7 +1066,7 @@ namespace LiveCharts.CoreComponents
             Trace.WriteLine("Primary Values Updated (" + DateTime.Now.ToLongTimeString() + ")");
 #endif
             _serieValuesChanged.Stop();
-            Scale();
+            PrepareAxes();
             foreach (var serie in Series)
             {
                 serie.Erase();
@@ -1373,10 +1098,10 @@ namespace LiveCharts.CoreComponents
             //var movePoint = new Point(FromDrawMargin(p.X, AxisTags.X), FromDrawMargin(p.Y, AxisTags.Y));
             //var dif = _panOrigin - movePoint;
 
-            //var maxX = AxisX.MaxValue ?? Max.X;
-            //var minX = AxisX.MinValue ?? Min.X;
-            //var maxY = AxisY.MaxValue ?? Max.Y;
-            //var minY = AxisY.MinValue ?? Min.Y;
+            //var maxX = AxisX.MaxValue ??AxisX.Max;
+            //var minX = AxisX.MinValue ??AxisX.Min;
+            //var maxY = AxisY.MaxValue ??AxisY.Max;
+            //var minY = AxisY.MinValue ??AxisY.Min;
 
             //var dx =dif.X;
             //var dy = dif.Y;
@@ -1394,28 +1119,34 @@ namespace LiveCharts.CoreComponents
         private void MouseUpForPan(object sender, MouseEventArgs e)
         {
             if (ZoomingAxis == AxisTags.None) return;
+
             var p = e.GetPosition(this);
             var movePoint = new Point(FromDrawMargin(p.X, AxisTags.X), FromDrawMargin(p.Y, AxisTags.Y));
             var dif = _panOrigin - movePoint;
-
-            var maxX = AxisX.MaxValue ?? Max.X;
-            var minX = AxisX.MinValue ?? Min.X;
-            var maxY = AxisY.MaxValue ?? Max.Y;
-            var minY = AxisY.MinValue ?? Min.Y;
-
             var dx = dif.X;
             var dy = dif.Y;
 
             if (Zoom == ZoomingOptions.X || Zoom == ZoomingOptions.XY)
             {
-                AxisX.MaxValue = maxX + dx;
-                AxisX.MinValue = minX + dx;
+                foreach (var xi in AxisX)
+                {
+                    var maxX = xi.MaxValue ?? xi.MaxLimit;
+                    var minX = xi.MinValue ?? xi.MinLimit;
+                    xi.MaxValue = maxX + dx;
+                    xi.MinValue = minX + dx;
+                }
             }
 
             if (Zoom == ZoomingOptions.Y || Zoom == ZoomingOptions.XY)
             {
-                AxisY.MaxValue = maxY + dy;
-                AxisY.MinValue = minY + dy;
+                foreach (var yi in AxisY)
+                {
+                    var maxY = yi.MaxValue ?? yi.MaxLimit;
+                    var minY = yi.MinValue ?? yi.MinLimit;
+
+                    yi.MaxValue = maxY + dy;
+                    yi.MinValue = minY + dy;
+                }
             }
 
             foreach (var series in Series) series.Values.RequiresEvaluation = true;
