@@ -15,10 +15,9 @@
         <TextBlock Grid.Row="0" TextWrapping="Wrap">
             <Bold>Logarithmic Axis</Bold>
         </TextBlock>
-        <lvc:LineChart Name="Chart" Grid.Row="1" Series="{Binding Series}" 
-                       AxisY="{x:Static lvc:DefaultAxes.CleanAxis}">
+        <lvc:LineChart Name="Chart" Grid.Row="1" Series="{Binding Series}" >
             <lvc:LineChart.AxisX>
-                <lvc:Axis LabelFormatter="{Binding XFormatter}" Separator="{x:Static lvc:DefaultAxes.CleanSeparator}"/>
+                <lvc:Axis LabelFormatter="{Binding XFormatter}" />
             </lvc:LineChart.AxisX>
         </lvc:LineChart>
     </Grid>

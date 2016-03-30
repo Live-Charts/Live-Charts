@@ -36,6 +36,7 @@ namespace LiveCharts
 
         internal TextBlock TextBlock { get; set; }
         internal Line Line { get; set; }
+        internal double Key { get; set; }
         internal double Value { get; set; }
         internal SeparationState State { get; set; }
         internal bool IsNew { get; set; }
@@ -49,7 +50,7 @@ namespace LiveCharts
                     MoveFromCurrentAx(chart, direction, axisIndex, axis);
                     FadeOutAndRemove(chart);
                     break;
-                case SeparationState.DrawOrKeep:
+                case SeparationState.Keep:
                     Place(chart, direction, axisIndex);
                     MoveFromPreviousAx(chart, direction, axisIndex, axis);
                     if (IsNew) FadeIn();
@@ -139,6 +140,10 @@ namespace LiveCharts
                     new DoubleAnimation(Line.Y1, i, _anSpeed));
                 Line.BeginAnimation(Line.Y2Property,
                     new DoubleAnimation(Line.Y2, i, _anSpeed));
+
+                var hh = TextBlock.ActualHeight*.5;
+                TextBlock.BeginAnimation(Canvas.TopProperty,
+                    new DoubleAnimation(Line.Y1 - hh, i - hh, _anSpeed));
             }
             else
             {
@@ -150,17 +155,10 @@ namespace LiveCharts
                     new DoubleAnimation(Line.Y1, chart.PlotArea.Y, _anSpeed));
                 Line.BeginAnimation(Line.Y2Property,
                     new DoubleAnimation(Line.Y2, chart.PlotArea.Y + chart.PlotArea.Height, _anSpeed));
-            }
 
-            if (direction == AxisTags.Y)
-            {
-                TextBlock.BeginAnimation(Canvas.TopProperty,
-                    new DoubleAnimation(i - TextBlock.ActualHeight * .5, _anSpeed));
-            }
-            else
-            {
+                var hw = TextBlock.ActualWidth*.5;
                 TextBlock.BeginAnimation(Canvas.LeftProperty,
-                    new DoubleAnimation(i - TextBlock.ActualWidth * .5, _anSpeed));
+                    new DoubleAnimation(Line.X1 - hw, i - hw, _anSpeed));
             }
         }
 
@@ -181,6 +179,10 @@ namespace LiveCharts
                     new DoubleAnimation(y1, i, _anSpeed));
                 Line.BeginAnimation(Line.Y2Property,
                     new DoubleAnimation(y2, i, _anSpeed));
+
+                var hh = TextBlock.ActualHeight*.5;
+                TextBlock.BeginAnimation(Canvas.TopProperty,
+                    new DoubleAnimation(Line.Y1 - hh, i - hh, _anSpeed));
             }
             else
             {
@@ -195,17 +197,10 @@ namespace LiveCharts
                     new DoubleAnimation(Line.Y1, chart.PlotArea.Y, _anSpeed));
                 Line.BeginAnimation(Line.Y2Property,
                     new DoubleAnimation(Line.Y2, chart.PlotArea.Y + chart.PlotArea.Height, _anSpeed));
-            }
 
-            if (direction == AxisTags.Y)
-            {
-                TextBlock.BeginAnimation(Canvas.TopProperty,
-                    new DoubleAnimation(i - TextBlock.ActualHeight*.5, _anSpeed));
-            }
-            else
-            {
+                var hw = TextBlock.ActualWidth*.5;
                 TextBlock.BeginAnimation(Canvas.LeftProperty,
-                    new DoubleAnimation(i - TextBlock.ActualWidth*.5, _anSpeed));
+                    new DoubleAnimation(Line.X1 - hw, i - hw, _anSpeed));
             }
         }
     }
@@ -213,7 +208,7 @@ namespace LiveCharts
     internal enum SeparationState
     {
         Remove,
-        DrawOrKeep,
+        Keep,
         InitialAdd
     }
 }

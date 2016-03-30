@@ -23,6 +23,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Windows;
@@ -383,16 +384,14 @@ namespace LiveCharts
 
             var f = GetFormatter();
 
-            foreach (var separation in Separations)
-                separation.Value.State = SeparationState.Remove;
-
             var biggest = new Size(0, 0);
 
             for (var i = MinLimit; i <= MaxLimit; i += S)
             {
                 Separation separation;
-                
-                var key = (i/S)*S;
+
+                var key = Math.Round(i / S) * S;
+                //Trace.WriteLine(key + "," + key*S);
                 if (!Separations.TryGetValue(key, out separation))
                 {
                     separation = new Separation
@@ -414,7 +413,8 @@ namespace LiveCharts
                     separation.IsNew = false;
                 }
 
-                separation.Value = key;
+                separation.Key = key;
+                separation.Value = i;
                 separation.TextBlock.Text = f(i);
                 separation.TextBlock.UpdateLayout();
 
@@ -427,13 +427,11 @@ namespace LiveCharts
 
                 if (LastAxisMax == null)
                 {
-                    //No axis animation on first draw, 
-                    //because too much animations when chart starts.
                     separation.State = SeparationState.InitialAdd;
                     continue;
                 }
 
-                separation.State = SeparationState.DrawOrKeep;
+                separation.State = SeparationState.Keep;
             }
 
             LastAxisMax = MaxLimit;
@@ -442,6 +440,11 @@ namespace LiveCharts
 
             PlaceTitle(direction, chart);
             MeasuereSeparators(direction, chart, biggest);
+
+
+#if DEBUG
+            Trace.WriteLine("Axis.Separations: " + Separations.Count);
+#endif
         }
 
         internal Func<double, string> GetFormatter()
@@ -492,9 +495,12 @@ namespace LiveCharts
         {
             foreach (var separation in Separations.Values.ToArray())
             {
+                if (separation.Value < MinLimit || separation.Value > MaxLimit)
+                {
+                    separation.State = SeparationState.Remove;
+                    Separations.Remove(separation.Key);
+                }
                 separation.Place(chart, direction, axisPosition, this);
-                if (separation.State == SeparationState.Remove)
-                    Separations.Remove(separation.Value);
             }
         }
 

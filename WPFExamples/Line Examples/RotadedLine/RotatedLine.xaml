@@ -18,8 +18,7 @@
         </TextBlock>
         <lvc:LineChart Name="Chart" Grid.Row="1" Invert="True"
                        Series="{Binding SeriesCollection}" 
-                       LegendLocation="Right"
-                       AxisX="{x:Static lvc:DefaultAxes.CleanAxis}">
+                       LegendLocation="Right">
             <lvc:LineChart.AxisY >
                 <lvc:Axis LabelFormatter="{Binding Formatter}"></lvc:Axis>
             </lvc:LineChart.AxisY>

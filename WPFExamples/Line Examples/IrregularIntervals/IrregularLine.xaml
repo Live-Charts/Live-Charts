@@ -16,8 +16,6 @@
         <TextBlock Grid.Row="0">
             <Bold>Irregular Intervals</Bold>
         </TextBlock>
-        <liveCharts:LineChart Name="Chart" Grid.Row="1" Series="{Binding Series}"
-                              AxisY="{x:Static liveCharts:DefaultAxes.HighlightZerosAxis}"
-                              AxisX="{x:Static liveCharts:DefaultAxes.CleanAxis}"/>
+        <liveCharts:LineChart Name="Chart" Grid.Row="1" Series="{Binding Series}"/>
     </Grid>
 </UserControl>
