@@ -24,6 +24,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -338,7 +339,40 @@ namespace LiveCharts
         internal Label TitleLabel;
         internal double? LastAxisMax;
         internal double? LastAxisMin;
+        internal Rect LastPlotArea;
         internal Dictionary<double, Separation> Separations = new Dictionary<double, Separation>();
+
+        internal double FromLastAxis(double value, AxisTags direction, Chart chart)
+        {
+            //y = m * (x - x1) + y1
+
+            if (LastAxisMax == null) return 0;
+
+            var p1 = new Point();
+            var p2 = new Point();
+
+            if (direction == AxisTags.Y)
+            {
+                p1.X = LastAxisMax ?? 0;
+                p1.Y = LastPlotArea.Y;
+
+                p2.X = LastAxisMin ?? 0;
+                p2.Y = LastPlotArea.Y + LastPlotArea.Height;
+            }
+            else
+            {
+                p1.X = LastAxisMax ?? 0;
+                p1.Y = LastPlotArea.Width + LastPlotArea.X;
+
+                p2.X = LastAxisMin ?? 0;
+                p2.Y = LastPlotArea.X;
+            }
+
+            var deltaX = p2.X - p1.X;
+            // ReSharper disable once CompareOfFloatsByEqualityOperator
+            var m = (p2.Y - p1.Y) / (deltaX == 0 ? double.MinValue : deltaX);
+            return m * (value - p1.X) + p1.Y;
+        }
 
         internal void PreparePlotArea(AxisTags direction, Chart chart)
         {
@@ -348,17 +382,17 @@ namespace LiveCharts
             CalculateSeparator(chart, direction);
 
             var f = GetFormatter();
+
             foreach (var separation in Separations)
-                separation.Value.State = SeparationAnimation.FadeOut;
+                separation.Value.State = SeparationState.Remove;
 
             var biggest = new Size(0, 0);
 
-            for (var i = MinLimit; i < MaxLimit; i += S)
+            for (var i = MinLimit; i <= MaxLimit; i += S)
             {
                 Separation separation;
                 
                 var key = (i/S)*S;
-                var isNew = false;
                 if (!Separations.TryGetValue(key, out separation))
                 {
                     separation = new Separation
@@ -367,13 +401,17 @@ namespace LiveCharts
                         Line = new Line
                         {
                             Stroke = new SolidColorBrush(Colors.Gray),
-                            StrokeThickness = Separator.StrokeThickness
-                        }
+                            StrokeThickness = 1
+                        },
+                        IsNew = true
                     };
                     chart.Canvas.Children.Add(separation.TextBlock);
                     chart.Canvas.Children.Add(separation.Line);
                     Separations[key] = separation;
-                    isNew = true;
+                }
+                else
+                {
+                    separation.IsNew = false;
                 }
 
                 separation.Value = key;
@@ -387,23 +425,20 @@ namespace LiveCharts
                     ? separation.TextBlock.ActualHeight
                     : biggest.Height;
 
-                if (LastAxisMax == null || chart.DisableAnimation) 
-                    separation.State = SeparationAnimation.None;
+                if (LastAxisMax == null)
+                {
+                    //No axis animation on first draw, 
+                    //because too much animations when chart starts.
+                    separation.State = SeparationState.InitialAdd;
+                    continue;
+                }
 
-                if (i < LastAxisMin)
-                    separation.State = SeparationAnimation.FromLeft;
-               
-                if (i > LastAxisMax)
-                    separation.State = SeparationAnimation.FromRight;
-
-                if (i >= LastAxisMin && i <= LastAxisMax)
-                    separation.State = isNew
-                        ? SeparationAnimation.FadeIn
-                        : SeparationAnimation.Move;
+                separation.State = SeparationState.DrawOrKeep;
             }
 
             LastAxisMax = MaxLimit;
             LastAxisMin = MinLimit;
+            LastPlotArea = chart.PlotArea;
 
             PlaceTitle(direction, chart);
             MeasuereSeparators(direction, chart, biggest);
@@ -455,8 +490,12 @@ namespace LiveCharts
 
         internal void UpdateSeparations(AxisTags direction, Chart chart, int axisPosition)
         {
-            foreach (var separation in Separations.Values)
-                separation.Place(chart, direction, axisPosition);
+            foreach (var separation in Separations.Values.ToArray())
+            {
+                separation.Place(chart, direction, axisPosition, this);
+                if (separation.State == SeparationState.Remove)
+                    Separations.Remove(separation.Value);
+            }
         }
 
         private void PlaceTitle(AxisTags direction, Chart chart)

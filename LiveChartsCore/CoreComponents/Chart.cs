@@ -132,7 +132,7 @@ namespace LiveCharts.CoreComponents
             _resizeTimer.Tick += (sender, e) =>
             {
                 _resizeTimer.Stop();
-                Update();
+                Update(false);
             };
             TooltipTimer = new DispatcherTimer
             {

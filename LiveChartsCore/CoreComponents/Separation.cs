@@ -1,10 +1,9 @@
 using System;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Documents;
 using System.Windows.Media.Animation;
-using System.Windows.Media.Media3D;
 using System.Windows.Shapes;
-using System.Xaml;
 using LiveCharts.CoreComponents;
 
 //The MIT License(MIT)
@@ -33,42 +32,37 @@ namespace LiveCharts
 {
     internal class Separation
     {
-        private readonly TimeSpan _anSpeed = TimeSpan.FromMilliseconds(300);
+        private readonly TimeSpan _anSpeed = TimeSpan.FromMilliseconds(500);
 
         internal TextBlock TextBlock { get; set; }
         internal Line Line { get; set; }
         internal double Value { get; set; }
-        internal SeparationAnimation State { get; set; }
+        internal SeparationState State { get; set; }
+        internal bool IsNew { get; set; }
         internal int AxisPosition { get; set; }
 
-        public void Place(Chart chart, AxisTags direction, int axisIndex)
+        public void Place(Chart chart, AxisTags direction, int axisIndex, Axis axis)
         {
             switch (State)
             {
-                case SeparationAnimation.FadeOut:
-                    FadeOut(chart, direction, axisIndex);
+                case SeparationState.Remove:
+                    MoveFromCurrentAx(chart, direction, axisIndex, axis);
+                    FadeOutAndRemove(chart);
                     break;
-                case SeparationAnimation.FadeIn:
-                    FadeIn(chart, direction, axisIndex);
+                case SeparationState.DrawOrKeep:
+                    Place(chart, direction, axisIndex);
+                    MoveFromPreviousAx(chart, direction, axisIndex, axis);
+                    if (IsNew) FadeIn();
                     break;
-                case SeparationAnimation.FromLeft:
-                    FromLeft(chart, direction, axisIndex);
-                    break;
-                case SeparationAnimation.FromRight:
-                    FromRight(chart, direction, axisIndex);
-                    break;
-                case SeparationAnimation.None:
-                    None(chart, direction, axisIndex);
-                    break;
-                case SeparationAnimation.Move:
-                    Move(chart, direction, axisIndex);
+                case SeparationState.InitialAdd:
+                    Place(chart, direction, axisIndex);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
         }
 
-        private void None(Chart chart, AxisTags direction, int axisIndex)
+        private void Place(Chart chart, AxisTags direction, int axisIndex)
         {
             var i = chart.ToPlotArea(Value, direction, axisIndex);
 
@@ -88,16 +82,23 @@ namespace LiveCharts
 
             if (direction == AxisTags.Y)
             {
-                Canvas.SetTop(TextBlock, i);
+                Canvas.SetTop(TextBlock, i - TextBlock.ActualHeight*.5);
             }
             else
             {
-                Canvas.SetLeft(TextBlock, i);
+                Canvas.SetLeft(TextBlock, i - TextBlock.ActualWidth*.5);
             }
         }
 
-        private void FadeOut(Chart chart, AxisTags direction, int axisIndex)
+        private void FadeOutAndRemove(Chart chart)
         {
+            if (chart.DisableAnimation)
+            {
+                chart.Canvas.Children.Remove(TextBlock);
+                chart.Canvas.Children.Remove(Line);
+                return;
+            }
+
             var anim = new DoubleAnimation
             {
                 From = 1,
@@ -118,80 +119,101 @@ namespace LiveCharts
             Line.BeginAnimation(UIElement.OpacityProperty, new DoubleAnimation(1, 0, _anSpeed));
         }
 
-        private void FadeIn(Chart chart, AxisTags direction, int axisIndex)
+        private void FadeIn()
         {
-            None(chart, direction, axisIndex);
-
             TextBlock.BeginAnimation(UIElement.OpacityProperty, new DoubleAnimation(0, 1, _anSpeed));
-            Line.BeginAnimation(UIElement.OpacityProperty, new DoubleAnimation(0, 1, _anSpeed));
+            Line.BeginAnimation(UIElement.OpacityProperty, new DoubleAnimation(0, 1, TimeSpan.FromMilliseconds(1000)));
         }
 
-        private void FromLeft(Chart chart, AxisTags direction, int axisIndex)
-        {
-            var i = chart.ToPlotArea(Value, direction, axisIndex);
-
-            None(chart, direction, axisIndex);
-
-            if (direction == AxisTags.Y)
-            {
-                Line.BeginAnimation(Line.Y1Property, new DoubleAnimation(0, i, _anSpeed));
-                Line.BeginAnimation(Line.Y2Property, new DoubleAnimation(0, i, _anSpeed));
-            }
-            else
-            {
-                Line.BeginAnimation(Line.X1Property, new DoubleAnimation(0, i, _anSpeed));
-                Line.BeginAnimation(Line.X2Property, new DoubleAnimation(0, i, _anSpeed));
-            }
-        }
-
-        private void FromRight(Chart chart, AxisTags direction, int axisIndex)
-        {
-            var i = chart.ToPlotArea(Value, direction, axisIndex);
-
-            None(chart, direction, axisIndex);
-
-            if (direction == AxisTags.Y)
-            {
-                Line.BeginAnimation(Line.Y1Property, new DoubleAnimation(chart.ActualHeight, i, _anSpeed));
-                Line.BeginAnimation(Line.Y2Property, new DoubleAnimation(chart.ActualHeight, i, _anSpeed));
-            }
-            else
-            {
-                Line.BeginAnimation(Line.X1Property, new DoubleAnimation(chart.ActualWidth, i, _anSpeed));
-                Line.BeginAnimation(Line.X2Property, new DoubleAnimation(chart.ActualWidth, i, _anSpeed));
-            }
-        }
-
-        private void Move(Chart chart, AxisTags direction, int axisIndex)
+        private void MoveFromCurrentAx(Chart chart, AxisTags direction, int axisIndex, Axis axis)
         {
             var i = chart.ToPlotArea(Value, direction, axisIndex);
 
             if (direction == AxisTags.Y)
             {
-                Line.BeginAnimation(Line.X1Property, new DoubleAnimation(Line.X1, chart.PlotArea.X, _anSpeed));
+                Line.BeginAnimation(Line.X1Property,
+                    new DoubleAnimation(Line.X1, chart.PlotArea.X, _anSpeed));
                 Line.BeginAnimation(Line.X2Property,
                     new DoubleAnimation(Line.X2, chart.PlotArea.X + chart.PlotArea.Width, _anSpeed));
-                Line.BeginAnimation(Line.Y1Property, new DoubleAnimation(Line.Y1, i, _anSpeed));
-                Line.BeginAnimation(Line.Y2Property, new DoubleAnimation(Line.Y2, i, _anSpeed));
+                Line.BeginAnimation(Line.Y1Property,
+                    new DoubleAnimation(Line.Y1, i, _anSpeed));
+                Line.BeginAnimation(Line.Y2Property,
+                    new DoubleAnimation(Line.Y2, i, _anSpeed));
             }
             else
             {
-                Line.BeginAnimation(Line.X1Property, new DoubleAnimation(Line.X1, i, _anSpeed));
-                Line.BeginAnimation(Line.X2Property, new DoubleAnimation(Line.X2, i, _anSpeed));
-                Line.BeginAnimation(Line.Y1Property, new DoubleAnimation(Line.Y1, chart.PlotArea.Y, _anSpeed));
+                Line.BeginAnimation(Line.X1Property,
+                    new DoubleAnimation(Line.X1, i, _anSpeed));
+                Line.BeginAnimation(Line.X2Property,
+                    new DoubleAnimation(Line.X2, i, _anSpeed));
+                Line.BeginAnimation(Line.Y1Property,
+                    new DoubleAnimation(Line.Y1, chart.PlotArea.Y, _anSpeed));
                 Line.BeginAnimation(Line.Y2Property,
                     new DoubleAnimation(Line.Y2, chart.PlotArea.Y + chart.PlotArea.Height, _anSpeed));
+            }
+
+            if (direction == AxisTags.Y)
+            {
+                TextBlock.BeginAnimation(Canvas.TopProperty,
+                    new DoubleAnimation(i - TextBlock.ActualHeight * .5, _anSpeed));
+            }
+            else
+            {
+                TextBlock.BeginAnimation(Canvas.LeftProperty,
+                    new DoubleAnimation(i - TextBlock.ActualWidth * .5, _anSpeed));
+            }
+        }
+
+        private void MoveFromPreviousAx(Chart chart, AxisTags direction, int axisIndex, Axis axis)
+        {
+            var i = chart.ToPlotArea(Value, direction, axisIndex);
+
+            if (direction == AxisTags.Y)
+            {
+                var y1 = IsNew ? axis.FromLastAxis(Value, direction, chart) : Line.Y1;
+                var y2 = IsNew ? axis.FromLastAxis(Value, direction, chart) : Line.Y2;
+
+                Line.BeginAnimation(Line.X1Property,
+                    new DoubleAnimation(Line.X1, chart.PlotArea.X, _anSpeed));
+                Line.BeginAnimation(Line.X2Property,
+                    new DoubleAnimation(Line.X2, chart.PlotArea.X + chart.PlotArea.Width, _anSpeed));
+                Line.BeginAnimation(Line.Y1Property,
+                    new DoubleAnimation(y1, i, _anSpeed));
+                Line.BeginAnimation(Line.Y2Property,
+                    new DoubleAnimation(y2, i, _anSpeed));
+            }
+            else
+            {
+                var x1 = IsNew ? axis.FromLastAxis(Value, direction, chart) : Line.X1;
+                var x2 = IsNew ? axis.FromLastAxis(Value, direction, chart) : Line.X2;
+
+                Line.BeginAnimation(Line.X1Property,
+                    new DoubleAnimation(x1, i, _anSpeed));
+                Line.BeginAnimation(Line.X2Property,
+                    new DoubleAnimation(x2, i, _anSpeed));
+                Line.BeginAnimation(Line.Y1Property, 
+                    new DoubleAnimation(Line.Y1, chart.PlotArea.Y, _anSpeed));
+                Line.BeginAnimation(Line.Y2Property,
+                    new DoubleAnimation(Line.Y2, chart.PlotArea.Y + chart.PlotArea.Height, _anSpeed));
+            }
+
+            if (direction == AxisTags.Y)
+            {
+                TextBlock.BeginAnimation(Canvas.TopProperty,
+                    new DoubleAnimation(i - TextBlock.ActualHeight*.5, _anSpeed));
+            }
+            else
+            {
+                TextBlock.BeginAnimation(Canvas.LeftProperty,
+                    new DoubleAnimation(i - TextBlock.ActualWidth*.5, _anSpeed));
             }
         }
     }
 
-    internal enum SeparationAnimation
+    internal enum SeparationState
     {
-        FadeOut,
-        FadeIn,
-        Move,
-        FromLeft,
-        FromRight,
-        None
+        Remove,
+        DrawOrKeep,
+        InitialAdd
     }
 }
