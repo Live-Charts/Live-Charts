@@ -37,7 +37,7 @@ namespace WinForms.LineExamples.Simple
                 Values = new ChartValues<double> { 4, 2, 10, 11, 9, 4 }
             });
             
-            lineChart1.AxisX.Labels = new List<string>
+            lineChart1.AxisX[0].Labels = new List<string>
             {
                 "Day 1",
                 "Day 2",

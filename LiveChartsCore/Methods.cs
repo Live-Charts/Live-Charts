@@ -32,50 +32,85 @@ namespace LiveCharts
         /// Scales a graph value to screen according to an axis. 
         /// </summary>
         /// <param name="value"></param>
-        /// <param name="axis"></param>
+        /// <param name="source"></param>
         /// <param name="chart"></param>
-        /// <param name="scalesAt"></param>
+        /// <param name="axis"></param>
         /// <returns></returns>
-        public static double ToPlotArea(double value, AxisTags axis, Chart chart, int? scalesAt = null)
+        public static double ToPlotArea(double value, AxisTags source, Chart chart, int axis = 0)
         {
             //y = m * (x - x1) + y1
-            var isMainX = scalesAt == null;
-            var isMainY = scalesAt == null;
 
-            var compX = new ComplementaryAxesData();
-            var compY = new ComplementaryAxesData();
+            var p1 = new Point();
+            var p2 = new Point();
 
-            if (!isMainX && axis == AxisTags.X)
-                if (!chart.ComplementaryX.TryGetValue((int) scalesAt, out compX))
-                    throw new ArgumentException("There is not a valid complementary axis " +
-                                                "for X at position " + scalesAt);
-            if (!isMainY && axis == AxisTags.Y)
-                if (!chart.ComplementaryY.TryGetValue((int) scalesAt, out compY))
-                    throw new ArgumentException("There is not a valid complementary axis " +
-                                                "for Y at position " + scalesAt);
+            if (source == AxisTags.Y)
+            {
+                if (axis >= chart.AxisY.Count)
+                    throw new Exception("There is not a valid Y axis at position " + axis);
 
-            var p1 = axis == AxisTags.X
-                ? new Point(isMainX ? chart.Max.X : compX.Max, chart.PlotArea.Width + chart.PlotArea.X)
-                : new Point(isMainY ? chart.Max.Y : compY.Max, chart.PlotArea.Y);
-            var p2 = axis == AxisTags.X
-                ? new Point(isMainX ? chart.Min.X : compX.Min, chart.PlotArea.X)
-                : new Point(isMainY ? chart.Min.Y : compY.Min, chart.PlotArea.Y + chart.PlotArea.Height);
+                var ax = chart.AxisY[axis];
 
+                p1.X = ax.MaxLimit;
+                p1.Y = chart.PlotArea.Y;
+
+                p2.X = ax.MinLimit;
+                p2.Y = chart.PlotArea.Y + chart.PlotArea.Height;
+            }
+            else
+            {
+                if (axis >= chart.AxisX.Count)
+                    throw new Exception("There is not a valid X axis at position " + axis);
+
+                var ax = chart.AxisX[axis];
+
+                p1.X = ax.MaxLimit;
+                p1.Y = chart.PlotArea.Width + chart.PlotArea.X;
+
+                p2.X = ax.MinLimit;
+                p2.Y = chart.PlotArea.X;
+            }
+
+            var deltaX = p2.X - p1.X;
             // ReSharper disable once CompareOfFloatsByEqualityOperator
-            var div = p2.X - p1.X == 0 ? double.MinValue : p2.X - p1.X;
-            var m = (p2.Y - p1.Y) / div;
+            var m = (p2.Y - p1.Y)/(deltaX == 0 ? double.MinValue : deltaX);
             return m * (value - p1.X) + p1.Y;
         }
 
-        public static double FromPlotArea(double value, AxisTags axis, Chart chart)
+        public static double FromPlotArea(double value, AxisTags source, Chart chart, int axis = 0)
         {
-            var p1 = axis == AxisTags.X
-                ? new Point(chart.Max.X, chart.PlotArea.Width + chart.PlotArea.X)
-                : new Point(chart.Max.Y, chart.PlotArea.Y);
-            var p2 = axis == AxisTags.X
-                ? new Point(chart.Min.X, chart.PlotArea.X)
-                : new Point(chart.Min.Y, chart.PlotArea.Y + chart.PlotArea.Height);
-            var m = (p2.Y - p1.Y) / (p2.X - p1.X);
+            var p1 = new Point();
+            var p2 = new Point();
+
+            if (source == AxisTags.Y)
+            {
+                if (axis >= chart.AxisY.Count)
+                    throw new Exception("There is not a valid Y axis at position " + axis);
+
+                var ax = chart.AxisY[axis];
+
+                p1.X = ax.MaxLimit;
+                p1.Y = chart.PlotArea.Y;
+
+                p2.X = ax.MinLimit;
+                p2.Y = chart.PlotArea.Y + chart.PlotArea.Height;
+            }
+            else
+            {
+                if (axis >= chart.AxisX.Count)
+                    throw new Exception("There is not a valid X axis at position " + axis);
+
+                var ax = chart.AxisX[axis];
+
+                p1.X = ax.MaxLimit;
+                p1.Y = chart.PlotArea.Width + chart.PlotArea.X;
+
+                p2.X = ax.MinLimit;
+                p2.Y = chart.PlotArea.X;
+            }
+
+            var deltaX = p2.X - p1.X;
+            // ReSharper disable once CompareOfFloatsByEqualityOperator
+            var m = (p2.Y - p1.Y)/(deltaX == 0 ? double.MinValue : deltaX);
             return (value + m*p1.X - p1.Y)/m;
         }
 
@@ -84,18 +119,21 @@ namespace LiveCharts
         /// </summary>
         /// <param name="value"></param>
         /// <param name="chart"></param>
+        /// <param name="axis"></param>
         /// <returns></returns>
-        public static Point ToPlotArea(Point value, Chart chart)
+        public static Point ToPlotArea(Point value, Chart chart, int axis = 0)
         {
-            return new Point(ToPlotArea(value.X, AxisTags.X, chart), ToPlotArea(value.Y, AxisTags.Y, chart));
+            return new Point(
+                ToPlotArea(value.X, AxisTags.X, chart, axis),
+                ToPlotArea(value.Y, AxisTags.Y, chart, axis));
         }
 
-        public static double ToDrawMargin(double value, AxisTags axis, Chart chart, int? scalesAt = null)
+        public static double ToDrawMargin(double value, AxisTags source, Chart chart, int axis = 0)
         {
-            var o = axis == AxisTags.X ? chart.PlotArea.X : chart.PlotArea.Y;
-            var of = axis == AxisTags.X ? chart.XOffset : chart.YOffset;
+            var o = source == AxisTags.X ? chart.PlotArea.X : chart.PlotArea.Y;
+            var of = source == AxisTags.X ? chart.XOffset : chart.YOffset;
 
-            return ToPlotArea(value, axis, chart, scalesAt) - o + of;
+            return ToPlotArea(value, source, chart, axis) - o + of;
         }
 
         public static double FromDrawMargin(double value, AxisTags axis, Chart chart)

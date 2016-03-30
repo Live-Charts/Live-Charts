@@ -40,7 +40,6 @@ namespace LiveCharts
             PointRadius = 4;
         }
 
-        public double StrokeThickness { get; set; }
         public double PointRadius { get; set; }
 
         public override void Plot(bool animate = true)
@@ -48,7 +47,7 @@ namespace LiveCharts
             if (Visibility != Visibility.Visible) return;
             var chart = Chart as RadarChart;
             if (chart == null) return;
-            var alpha = 360 / chart.Max.X;
+            var alpha = 360/CurrentXAxis.MaxLimit;
 
             var pf = new PathFigure();
             var segments = new PathSegmentCollection();

@@ -66,7 +66,7 @@ namespace LiveCharts
             _isPrimitive = Values.Count >= 1 && Values[0].GetType().IsPrimitive;
 
             var rr = PointRadius < 5 ? 5 : PointRadius;
-            var f = Chart.GetFormatter(Chart.Invert ? Chart.AxisX : Chart.AxisY);
+            var f = (Chart.Invert ? CurrentXAxis : CurrentYAxis).GetFormatter();
 
             var s = 0;
             var so = 0;
@@ -104,8 +104,8 @@ namespace LiveCharts
                 var p0 = ToDrawMargin(segment[0]).AsPoint();
                 area.Figure.StartPoint = isNew
                     ? (Chart.Invert
-                        ? new Point(ToPlotArea(Chart.Min.X, AxisTags.X), p0.X)
-                        : new Point(p0.X, ToPlotArea(Chart.Min.Y, AxisTags.Y)))
+                        ? new Point(ToPlotArea(CurrentXAxis.MinLimit, AxisTags.X), p0.X)
+                        : new Point(p0.X, ToPlotArea(CurrentYAxis.MinLimit, AxisTags.Y)))
                     : p0;
                 area.Figure.BeginAnimation(PathFigure.StartPointProperty,
                     new PointAnimation(area.Figure.StartPoint,
@@ -119,7 +119,7 @@ namespace LiveCharts
                 for (var i = 0; i < segment.Count; i++)
                 {
                     var point = segment[i];
-                    point.ChartLocation = ToDrawMargin(point, FromComplementaryX, FromComplementaryY).AsPoint();
+                    point.ChartLocation = ToDrawMargin(point, UsesXAxis, UsesYAxis).AsPoint();
 
                     if (isVirgin)
                     {
@@ -148,7 +148,7 @@ namespace LiveCharts
 
                 if (area != null)
                     area.DrawLimits(first, last,
-                        new Point(ToDrawMargin(Chart.Min.X, AxisTags.X), ToDrawMargin(Chart.Min.Y, AxisTags.Y)),
+                        new Point(ToDrawMargin(CurrentXAxis.MinLimit, AxisTags.X), ToDrawMargin(CurrentYAxis.MinLimit, AxisTags.Y)),
                         Chart.Invert);
 
 #if DEBUG

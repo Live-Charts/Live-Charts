@@ -33,7 +33,7 @@ namespace WinForms.BarExamples.Rotated
                 Values = new ChartValues<double> { 4, 2, 10, 11, 9, 4 }
             });
 
-            barChart1.AxisY.Labels = new List<string>
+            barChart1.AxisY[0].Labels = new List<string>
             {
                 "Day 1",
                 "Day 2",
