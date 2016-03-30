@@ -30,12 +30,6 @@ namespace LiveCharts
     {
         public LineChart()
         {
-            SetCurrentValue(AxisYProperty, new Axis());
-            SetCurrentValue(AxisXProperty, new Axis
-            {
-                Separator = new Separator { IsEnabled = false, Step = 1 },
-                IsEnabled = false
-            });
             ShapeHoverBehavior = ShapeHoverBehavior.Dot;
             LineSmoothness = 0.8;
         }
@@ -47,79 +41,69 @@ namespace LiveCharts
 
         #region Overriden Methods
 
-        protected override void Scale()
+        protected override void PrepareAxes()
         {
             if (!HasValidSeriesAndValues) return;
-            base.Scale();
 
-            S = new Point(
-                AxisX.Separator.Step ?? CalculateSeparator(Max.X - Min.X, AxisTags.X),
-                AxisY.Separator.Step ?? CalculateSeparator(Max.Y - Min.Y, AxisTags.Y));
+            base.PrepareAxes();
 
-            if (Invert)
+            foreach (var xi in AxisX)
             {
-                if (AxisX.MaxValue == null) Max.X = (Math.Round(Max.X / S.X) + 1) * S.X;
-                if (AxisX.MinValue == null) Min.X = (Math.Truncate(Min.X / S.X) - 1) * S.X;
-            }
-            else
-            {
-                if (AxisY.MaxValue == null) Max.Y = (Math.Round(Max.Y / S.Y) + 1) * S.Y;
-                if (AxisY.MinValue == null) Min.Y = (Math.Truncate(Min.Y / S.Y) - 1) * S.Y;
-
-                for (var index = 0; index < AxisX.ComplementaryAxes.Count; index++)
-                {
-                    var axis = AxisX.ComplementaryAxes[index];
-                    ComplementaryAxesData comp;
-                    if (!ComplementaryY.TryGetValue(index, out comp))
-                        throw new ArgumentException(
-                            "There is no a valid complementary axis for X at position " + index
-                            + ", ensure that AxisX.ComplementaryAxes[" + index + "] exists.");
-                    comp.S = axis.Separator.Step ?? CalculateSeparator(comp.Max - comp.Min, AxisTags.Y);
-                    if (axis.MaxValue == null) comp.Max = (Math.Round(comp.Max / comp.S) + 1) * comp.S;
-                    if (axis.MinValue == null) comp.Min = (Math.Truncate(comp.Min / comp.S) - 1) * comp.S;
-                }
-
-                for (var index = 0; index < AxisY.ComplementaryAxes.Count; index++)
-                {
-                    var axis = AxisY.ComplementaryAxes[index];
-                    ComplementaryAxesData comp;
-                    if (!ComplementaryY.TryGetValue(index, out comp))
-                        throw new ArgumentException(
-                            "There is no a valid complementary axis for Y at position " + index
-                            + ", ensure that AxisY.ComplementaryAxes[" + index + "] exists.");
-                    comp.S = axis.Separator.Step ?? CalculateSeparator(comp.Max - comp.Min, AxisTags.Y);
-                    if (axis.MaxValue == null) comp.Max = (Math.Round(comp.Max / comp.S) + 1) * comp.S;
-                    if (axis.MinValue == null) comp.Min = (Math.Truncate(comp.Min / comp.S) - 1) * comp.S;
-                }
+                xi.CalculateSeparator(this, AxisTags.X);
+                if (!Invert) continue;
+                if (xi.MaxValue == null) xi.MaxLimit = (Math.Round(xi.MaxLimit/xi.S) + 1)*xi.S;
+                if (xi.MinValue == null) xi.MinLimit = (Math.Truncate(xi.MinLimit/xi.S) - 1)*xi.S;
             }
 
-            DrawAxes();
+            foreach (var yi in AxisY)
+            {
+                yi.CalculateSeparator(this, AxisTags.Y);
+                if (Invert) continue;
+                if (yi.MaxValue == null) yi.MaxLimit = (Math.Round(yi.MaxLimit/yi.S) + 1)*yi.S;
+                if (yi.MinValue == null) yi.MinLimit = (Math.Truncate(yi.MinLimit/yi.S) - 1)*yi.S;
+            }
+
+            DrawComponents();
         }
 
-        protected override void DrawAxes()
+        protected override void DrawComponents()
         {
             if (Invert) ConfigureYAsIndexed();
             else ConfigureXAsIndexed();
 
-            Canvas.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
-            var lastLabelX = Math.Truncate((Max.X - Min.X)/S.X)*S.X;
-            var longestYLabelSize = GetLongestLabelSize(AxisY, AxisTags.Y);
-            var firstXLabelSize = GetLabelSize(AxisX, Min.X);
-            var lastXLabelSize = GetLabelSize(AxisX, lastLabelX);
+            //This calculation should be done by eaxh axis, not by the chart, to keep this clean...
 
-            const int padding = 5;
+            //Canvas.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+            //var lastLabelX = Math.Truncate((Max.X - AxisX.MinLimit) / S.X) * S.X;
+            //var longestYLabelSize = GetLongestLabelSize(AxisY, AxisTags.Y);
+            //var firstXLabelSize = GetLabelSize(AxisX, AxisX.MinLimit);
+            //var lastXLabelSize = GetLabelSize(AxisX, lastLabelX);
 
-            PlotArea.X = padding*2 +
-                         (longestYLabelSize.X > firstXLabelSize.X*.5 ? longestYLabelSize.X : firstXLabelSize.X*.5);
-            PlotArea.Y = longestYLabelSize.Y*.5 + padding;
-            PlotArea.Height = Math.Max(0, Canvas.DesiredSize.Height - (padding*2 + firstXLabelSize.Y) - PlotArea.Y);
-            PlotArea.Width = Math.Max(0, Canvas.DesiredSize.Width - PlotArea.X - padding);
-            var distanceToEnd = ToPlotArea(Max.X - lastLabelX, AxisTags.X) - PlotArea.X;
-            var change = lastXLabelSize.X*.5 - distanceToEnd > 0 ? lastXLabelSize.X*.5 - distanceToEnd : 0;
-            if (change <= PlotArea.Width)
-                PlotArea.Width -= change;
+            //const int padding = 5;
 
-            base.DrawAxes();
+            //var xCorrectionForLabels = AxisX.ShowLabels
+            //    ? (longestYLabelSize.X > firstXLabelSize.X * .5
+            //        ? longestYLabelSize.X
+            //        : firstXLabelSize.X * .5)
+            //    : 0;
+
+            //var yCorrectionForLabels = AxisX.ShowLabels
+            //    ? longestYLabelSize.Y * .5
+            //    : 0;
+
+            //PlotArea.X = padding * 2 + xCorrectionForLabels;
+
+            //PlotArea.Y = yCorrectionForLabels + padding;
+
+            //PlotArea.Height = Math.Max(0, Canvas.DesiredSize.Height - (padding * 2 + firstXLabelSize.Y) - PlotArea.Y);
+            //PlotArea.Width = Math.Max(0, Canvas.DesiredSize.Width - PlotArea.X - padding);
+
+            //var distanceToEnd = ToPlotArea(Max.X - lastLabelX, AxisTags.X) - PlotArea.X;
+            //var change = lastXLabelSize.X * .5 - distanceToEnd > 0 ? lastXLabelSize.X * .5 - distanceToEnd : 0;
+            //if (change <= PlotArea.Width)
+            //    PlotArea.Width -= change;
+
+            base.DrawComponents();
         }
 
         #endregion

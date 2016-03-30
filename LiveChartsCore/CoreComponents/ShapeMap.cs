@@ -46,5 +46,9 @@ namespace LiveCharts.CoreComponents
         /// Point label
         /// </summary>
         public string Label { get; set; }
+        /// <summary>
+        /// Get or sets if the point is highlighted
+        /// </summary>
+        public bool Active { get; set; }
     }
 }

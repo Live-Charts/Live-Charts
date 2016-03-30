@@ -7,28 +7,29 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
-        <lvc:LineChart>
+        <lvc:LineChart Background="BurlyWood">
             <lvc:LineChart.Series>
                 
                 <!--using default axis-->
                 <lvc:LineSeries Values="300, 600, 200" Stroke="Violet" Fill="Transparent" />
                 
                 <!--using ComplementaryAxis[0]-->
-                <lvc:LineSeries Values="0, 0, 0" Stroke="Chocolate" Fill="Transparent" FromComplementaryY="0" />
-                <lvc:LineSeries Values="10, 10, 10" Stroke="Chocolate" Fill="Transparent" FromComplementaryY="0" />
+                <lvc:LineSeries Values="0, 0, 0" Stroke="Chocolate" Fill="Transparent" UsesYAxis="1" />
+                <lvc:LineSeries Values="10, 10, 10" Stroke="Chocolate" Fill="Transparent" UsesYAxis="1" />
                 
                 <!--using ComplementaryAxes[1]-->
-                <lvc:LineSeries Values="20000, 20000, 20000" Stroke="Navy" Fill="Transparent" FromComplementaryY="1" />
+                <lvc:LineSeries Values="20000, 20000, 20000" Stroke="Navy" Fill="Transparent" UsesYAxis="2" />
                 
             </lvc:LineChart.Series>
             <lvc:LineChart.AxisY>
-                <lvc:Axis Foreground="Violet" Title="Violet Axis">
-                    <lvc:Axis.ComplementaryAxes>
-                        <lvc:Axis Title="Chocolate Axis" Foreground="Chocolate" />
-                        <lvc:Axis Title="Navy Axis" Foreground="Navy" />
-                    </lvc:Axis.ComplementaryAxes>
-                </lvc:Axis>
+                <lvc:Axis Foreground="Violet" Title="Violet Axis" />
             </lvc:LineChart.AxisY>
+            <lvc:LineChart.AxisX>
+                <lvc:Axis 
+                    Title="Multi Line Axis"
+                    Labels="Multi &#x0a; Line 1, Multi &#x0a; Line 2, Multi &#x0a; Line 3, Multi &#x0a; Line 4, Multi &#x0a; Line 5, Multi &#x0a; Line 6">
+                </lvc:Axis>
+            </lvc:LineChart.AxisX>
         </lvc:LineChart>
     </Grid>
 </UserControl>

@@ -103,7 +103,6 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Net.Http" />
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
@@ -112,8 +111,9 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CoreComponents\Separation.cs" />
+    <Compile Include="CoreComponents\AxisPosition.cs" />
     <Compile Include="CoreComponents\ChartPoint.cs" />
-    <Compile Include="CoreComponents\ComplementaryAxesData.cs" />
     <Compile Include="CoreComponents\DeleteBufferItem.cs" />
     <Compile Include="CoreComponents\SeriesConfiguration.cs" />
     <Compile Include="DefaultAxes.cs" />

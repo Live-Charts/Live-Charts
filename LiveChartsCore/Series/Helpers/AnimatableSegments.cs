@@ -46,15 +46,19 @@ namespace LiveCharts.Helpers
                 Bezier.Owner.Segments.Insert(index - pathOffset, Data.AssignTo(Bezier.Segment));
                 if (chart.Invert)
                 {
-                    s1 = new Point(chart.ToDrawMargin(chart.Min.X, AxisTags.X), Data.P1.Y);
-                    s2 = new Point(chart.ToDrawMargin(chart.Min.X, AxisTags.X), Data.P2.Y);
-                    s3 = new Point(chart.ToDrawMargin(chart.Min.X, AxisTags.X), Data.P3.Y);
+                    //var x = chart.ToDrawMargin(chart.Min.X, AxisTags.X);
+                    var x = chart.PlotArea.X;
+                    s1 = new Point(x, Data.P1.Y);
+                    s2 = new Point(x, Data.P2.Y);
+                    s3 = new Point(x, Data.P3.Y);
                 }
                 else
                 {
-                    s1 = new Point(Data.P1.X, chart.ToDrawMargin(chart.Min.Y, AxisTags.Y));
-                    s2 = new Point(Data.P2.X, chart.ToDrawMargin(chart.Min.Y, AxisTags.Y));
-                    s3 = new Point(Data.P3.X, chart.ToDrawMargin(chart.Min.Y, AxisTags.Y));
+                    //var y = chart.ToDrawMargin(chart.Min.Y, AxisTags.Y);
+                    var y = chart.PlotArea.Y + chart.PlotArea.Height;
+                    s1 = new Point(Data.P1.X, y);
+                    s2 = new Point(Data.P2.X, y);
+                    s3 = new Point(Data.P3.X, y);
                 }
             }
 

@@ -63,7 +63,7 @@ namespace LiveCharts
             minDimension -= pChart.DrawPadding;
             minDimension = minDimension < pChart.DrawPadding ? pChart.DrawPadding : minDimension;
 
-            var f = Chart.GetFormatter(Chart.AxisY);
+            var f = CurrentYAxis.GetFormatter();
 
             var visuals = Values.Points.ToDictionary(x => (int) x.X, GetVisual);
             var allNew = visuals.All(x => x.Value.IsNew);
@@ -128,7 +128,7 @@ namespace LiveCharts
                     Panel.SetZIndex(tb, int.MaxValue - 1);
                     //because math is kind of complex to detetrmine if label fits inside the slide, by now we 
                     //will just add it if participation > 5% ToDo: the math!
-                    if (participation > .05 && Chart.AxisY.ShowLabels)
+                    if (participation > .05 && CurrentYAxis.ShowLabels)
                     {
                         Chart.Canvas.Children.Add(tb);
                         Chart.Shapes.Add(tb);

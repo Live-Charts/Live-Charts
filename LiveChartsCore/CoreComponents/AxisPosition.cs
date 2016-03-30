@@ -1,4 +1,4 @@
-//The MIT License(MIT)
+﻿//The MIT License(MIT)
 
 //copyright(c) 2016 Alberto Rodriguez
 
@@ -22,10 +22,8 @@
 
 namespace LiveCharts.CoreComponents
 {
-    internal class ComplementaryAxesData
+    public enum AxisPosition
     {
-        public double Max { get; set; }
-        public double Min { get; set; }
-        public double S { get; set; }
+        LeftBottom, RightTop
     }
 }
