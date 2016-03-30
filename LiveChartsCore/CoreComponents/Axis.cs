@@ -415,6 +415,7 @@ namespace LiveCharts
 
                 separation.Key = key;
                 separation.Value = i;
+                separation.IsActive = true;
                 separation.TextBlock.Text = f(i);
                 separation.TextBlock.UpdateLayout();
 
@@ -495,12 +496,13 @@ namespace LiveCharts
         {
             foreach (var separation in Separations.Values.ToArray())
             {
-                if (separation.Value < MinLimit || separation.Value > MaxLimit)
+                if (!separation.IsActive)
                 {
                     separation.State = SeparationState.Remove;
                     Separations.Remove(separation.Key);
                 }
                 separation.Place(chart, direction, axisPosition, this);
+                separation.IsActive = false;
             }
         }
 

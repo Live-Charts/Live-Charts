@@ -40,6 +40,7 @@ namespace LiveCharts
         internal double Value { get; set; }
         internal SeparationState State { get; set; }
         internal bool IsNew { get; set; }
+        internal bool IsActive { get; set; }
         internal int AxisPosition { get; set; }
 
         public void Place(Chart chart, AxisTags direction, int axisIndex, Axis axis)
