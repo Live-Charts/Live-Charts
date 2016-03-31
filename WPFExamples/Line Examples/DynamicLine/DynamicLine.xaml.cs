@@ -14,7 +14,7 @@ namespace ChartsTest.Line_Examples.DynamicLine
         private bool _isAlive;
         private readonly DispatcherTimer _timer;
         private DateTime _currentDate = DateTime.Now;
-        private int test = 0;
+        private int tester;
 
         public DynamicLine()
         {
@@ -32,7 +32,7 @@ namespace ChartsTest.Line_Examples.DynamicLine
             config.Y(model => model.Temperature);
             //and DateTime as X, we convert to OADate so we can plot it easly.
             //config.X(model => model.DateTime.ToOADate());
-            config.X(model => model.Test);
+            config.X(x => x.Test);
 
             //now we create our series with this configuration
             Series = new SeriesCollection(config) {new LineSeries {Values = new ChartValues<WeatherViewModel>(), PointRadius = 0}};
@@ -81,7 +81,7 @@ namespace ChartsTest.Line_Examples.DynamicLine
                 {
                     Temperature = _r.NextDouble()*30,
                     DateTime = _currentDate,
-                    Test = test++
+                    Test = tester++
                 });
             }
         }

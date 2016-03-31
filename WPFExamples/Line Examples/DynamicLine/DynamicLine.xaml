@@ -29,7 +29,11 @@
         </StackPanel>
         <lvc:LineChart Grid.Row="2" Series="{Binding Series}">
             <lvc:LineChart.AxisX>
-                <lvc:Axis LabelFormatter="{Binding XFormatter}" Separator="{x:Static lvc:DefaultAxes.CleanSeparator}"/>
+                <lvc:Axis LabelFormatter="{Binding XFormatter}">
+                    <lvc:Axis.Separator>
+                        <lvc:Separator Step="1"/>
+                    </lvc:Axis.Separator>
+                </lvc:Axis>
             </lvc:LineChart.AxisX>
             <lvc:LineChart.AxisY>
                 <lvc:Axis LabelFormatter="{Binding YFormatter}"></lvc:Axis>

@@ -399,8 +399,8 @@ namespace LiveCharts
                         TextBlock = BuildATextBlock(0),
                         Line = new Line
                         {
-                            Stroke = new SolidColorBrush(Separator.Color),
-                            StrokeThickness = Separator.StrokeThickness
+                            Stroke = new SolidColorBrush(Colors.DarkGray),
+                            StrokeThickness = 1
                         },
                         IsNew = true
                     };
@@ -417,10 +417,6 @@ namespace LiveCharts
                 separation.Key = key;
                 separation.Value = i;
                 separation.IsActive = true;
-                if (f(i) != separation.TextBlock.Text && separation.TextBlock.Text != string.Empty)
-                {
-                    var stop = 1;
-                }
                 separation.TextBlock.Text = f(i);
                 separation.TextBlock.UpdateLayout();
 
@@ -440,13 +436,8 @@ namespace LiveCharts
                 separation.State = SeparationState.Keep;
             }
 
-            LastAxisMax = MaxLimit;
-            LastAxisMin = MinLimit;
-            LastPlotArea = chart.PlotArea;
-
             PlaceTitle(direction, chart);
             MeasuereSeparators(direction, chart, biggest);
-
 
 #if DEBUG
             Trace.WriteLine("Axis.Separations: " + Separations.Count);
@@ -509,6 +500,10 @@ namespace LiveCharts
                 separation.Place(chart, direction, axisPosition, this);
                 separation.IsActive = false;
             }
+
+            LastAxisMax = MaxLimit;
+            LastAxisMin = MinLimit;
+            LastPlotArea = chart.PlotArea;
         }
 
         private void PlaceTitle(AxisTags direction, Chart chart)

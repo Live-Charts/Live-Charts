@@ -168,31 +168,29 @@ namespace LiveCharts
 
             if (direction == AxisTags.Y)
             {
-                var y1 = IsNew ? axis.FromLastAxis(Value, direction, chart) : Line.Y1;
-                var y2 = IsNew ? axis.FromLastAxis(Value, direction, chart) : Line.Y2;
+                var y = IsNew ? axis.FromLastAxis(Value, direction, chart) : Line.Y1;
 
                 Line.BeginAnimation(Line.X1Property,
                     new DoubleAnimation(Line.X1, chart.PlotArea.X, _anSpeed));
                 Line.BeginAnimation(Line.X2Property,
                     new DoubleAnimation(Line.X2, chart.PlotArea.X + chart.PlotArea.Width, _anSpeed));
                 Line.BeginAnimation(Line.Y1Property,
-                    new DoubleAnimation(y1, i, _anSpeed));
+                    new DoubleAnimation(y, i, _anSpeed));
                 Line.BeginAnimation(Line.Y2Property,
-                    new DoubleAnimation(y2, i, _anSpeed));
+                    new DoubleAnimation(y, i, _anSpeed));
 
                 var hh = TextBlock.ActualHeight*.5;
                 TextBlock.BeginAnimation(Canvas.TopProperty,
-                    new DoubleAnimation(Line.Y1 - hh, i - hh, _anSpeed));
+                    new DoubleAnimation(y - hh, i - hh, _anSpeed));
             }
             else
             {
-                var x1 = IsNew ? axis.FromLastAxis(Value, direction, chart) : Line.X1;
-                var x2 = IsNew ? axis.FromLastAxis(Value, direction, chart) : Line.X2;
+                var x = IsNew ? axis.FromLastAxis(Value, direction, chart) : Line.X1;
 
                 Line.BeginAnimation(Line.X1Property,
-                    new DoubleAnimation(x1, i, _anSpeed));
+                    new DoubleAnimation(x, i, _anSpeed));
                 Line.BeginAnimation(Line.X2Property,
-                    new DoubleAnimation(x2, i, _anSpeed));
+                    new DoubleAnimation(x, i, _anSpeed));
                 Line.BeginAnimation(Line.Y1Property, 
                     new DoubleAnimation(Line.Y1, chart.PlotArea.Y, _anSpeed));
                 Line.BeginAnimation(Line.Y2Property,
@@ -200,7 +198,7 @@ namespace LiveCharts
 
                 var hw = TextBlock.ActualWidth*.5;
                 TextBlock.BeginAnimation(Canvas.LeftProperty,
-                    new DoubleAnimation(Line.X1 - hw, i - hw, _anSpeed));
+                    new DoubleAnimation(x - hw, i - hw, _anSpeed));
             }
         }
     }
