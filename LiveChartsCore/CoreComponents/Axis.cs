@@ -285,6 +285,12 @@ namespace LiveCharts
 
         internal void CalculateSeparator(Chart chart, AxisTags source)
         {
+            if (Separator.Step != null)
+            {
+                S = Separator.Step ?? 1;
+                return;
+            }
+
             var range = MaxLimit - MinLimit;
             range = range <= 0 ? 1 : range;
 
