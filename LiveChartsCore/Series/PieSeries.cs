@@ -149,6 +149,11 @@ namespace LiveCharts
                         {
                             tb.Visibility = Visibility.Visible;
                         }
+
+                        // Forward mouse events from the TextBlock to the PointShape so they are not lost
+                        tb.MouseDown += (sender, e) => visual.PointShape.RaiseEvent(e);
+                        tb.MouseEnter += (sender, e) => visual.PointShape.RaiseEvent(e);
+                        tb.MouseLeave += (sender, e) => visual.PointShape.RaiseEvent(e);
                     }
                 }
 
