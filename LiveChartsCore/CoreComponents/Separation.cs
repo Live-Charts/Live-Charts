@@ -1,11 +1,3 @@
-using System;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Media.Animation;
-using System.Windows.Shapes;
-using LiveCharts.CoreComponents;
-
 //The MIT License(MIT)
 
 //copyright(c) 2016 Alberto Rodriguez
@@ -27,6 +19,13 @@ using LiveCharts.CoreComponents;
 //LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
+
+using System;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Media.Animation;
+using System.Windows.Shapes;
+using LiveCharts.CoreComponents;
 
 namespace LiveCharts
 {

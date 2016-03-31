@@ -385,13 +385,13 @@ namespace LiveCharts
             var f = GetFormatter();
 
             var biggest = new Size(0, 0);
+            var tolerance = S / 10;
 
             for (var i = MinLimit; i <= MaxLimit; i += S)
             {
                 Separation separation;
 
-                var key = Math.Round(i / S) * S;
-                //Trace.WriteLine(key + "," + key*S);
+                var key = Math.Round(i/tolerance)*tolerance;
                 if (!Separations.TryGetValue(key, out separation))
                 {
                     separation = new Separation
@@ -399,11 +399,12 @@ namespace LiveCharts
                         TextBlock = BuildATextBlock(0),
                         Line = new Line
                         {
-                            Stroke = new SolidColorBrush(Colors.Gray),
-                            StrokeThickness = 1
+                            Stroke = new SolidColorBrush(Separator.Color),
+                            StrokeThickness = Separator.StrokeThickness
                         },
                         IsNew = true
                     };
+                    Panel.SetZIndex(separation.Line, -1);
                     chart.Canvas.Children.Add(separation.TextBlock);
                     chart.Canvas.Children.Add(separation.Line);
                     Separations[key] = separation;
@@ -416,6 +417,10 @@ namespace LiveCharts
                 separation.Key = key;
                 separation.Value = i;
                 separation.IsActive = true;
+                if (f(i) != separation.TextBlock.Text && separation.TextBlock.Text != string.Empty)
+                {
+                    var stop = 1;
+                }
                 separation.TextBlock.Text = f(i);
                 separation.TextBlock.UpdateLayout();
 

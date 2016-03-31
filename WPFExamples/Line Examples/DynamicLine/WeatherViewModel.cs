@@ -6,5 +6,6 @@ namespace ChartsTest.Line_Examples.DynamicLine
     {
         public double Temperature { get; set; }
         public DateTime DateTime { get; set; }
+        public int Test { get; set; }
     }
 }

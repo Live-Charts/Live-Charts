@@ -14,6 +14,7 @@ namespace ChartsTest.Line_Examples.DynamicLine
         private bool _isAlive;
         private readonly DispatcherTimer _timer;
         private DateTime _currentDate = DateTime.Now;
+        private int test = 0;
 
         public DynamicLine()
         {
@@ -30,7 +31,8 @@ namespace ChartsTest.Line_Examples.DynamicLine
             //we will use Temperature as Y
             config.Y(model => model.Temperature);
             //and DateTime as X, we convert to OADate so we can plot it easly.
-            config.X(model => model.DateTime.ToOADate());
+            //config.X(model => model.DateTime.ToOADate());
+            config.X(model => model.Test);
 
             //now we create our series with this configuration
             Series = new SeriesCollection(config) {new LineSeries {Values = new ChartValues<WeatherViewModel>(), PointRadius = 0}};
@@ -39,7 +41,7 @@ namespace ChartsTest.Line_Examples.DynamicLine
             //formatters are just functions that take a double value as parameter
             //and return a string, in this case we will convert the OADate to DateTime
             //and then use a custom date format
-            XFormatter = val => DateTime.FromOADate(val).ToString("hh:mm:ss tt");
+            //XFormatter = val => DateTime.FromOADate(val).ToString("hh:mm:ss tt");
             //now for Y we are rounding and adding ° for degrees
             YFormatter = val => Math.Round(val) + " °";
 
@@ -78,7 +80,8 @@ namespace ChartsTest.Line_Examples.DynamicLine
                 series.Values.Add(new WeatherViewModel
                 {
                     Temperature = _r.NextDouble()*30,
-                    DateTime = _currentDate
+                    DateTime = _currentDate,
+                    Test = test++
                 });
             }
         }
