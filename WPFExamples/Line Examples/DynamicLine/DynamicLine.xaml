@@ -31,7 +31,7 @@
             <lvc:LineChart.AxisX>
                 <lvc:Axis LabelFormatter="{Binding XFormatter}">
                     <lvc:Axis.Separator>
-                        <lvc:Separator Step="1"/>
+                        <lvc:Separator Step="1" Color="Red" StrokeThickness="2"/>
                     </lvc:Axis.Separator>
                 </lvc:Axis>
             </lvc:LineChart.AxisX>

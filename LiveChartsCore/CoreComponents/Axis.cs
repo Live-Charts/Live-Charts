@@ -405,8 +405,8 @@ namespace LiveCharts
                         TextBlock = BuildATextBlock(0),
                         Line = new Line
                         {
-                            Stroke = new SolidColorBrush(Colors.DarkGray),
-                            StrokeThickness = 1
+                            Stroke = new SolidColorBrush(Separator.Color),
+                            StrokeThickness = Separator.StrokeThickness
                         },
                         IsNew = true
                     };
