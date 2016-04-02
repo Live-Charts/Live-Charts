@@ -266,7 +266,7 @@ namespace LiveCharts
         internal double? LastAxisMax;
         internal double? LastAxisMin;
         internal Rect LastPlotArea;
-        internal Rect PlotArea;
+        internal double LabelsReference;
         internal Dictionary<double, AxisSeparation> Separations = new Dictionary<double, AxisSeparation>();
 
         /// <summary>
@@ -394,10 +394,10 @@ namespace LiveCharts
             return m * (value - p1.X) + p1.Y;
         }
 
-        internal void PreparePlotArea(AxisTags direction, Chart chart, int position)
+        internal Size PreparePlotArea(AxisTags direction, Chart chart)
         {
-            if (!HasValidRange) return;
-            if (chart.PlotArea.Width < 5 || chart.PlotArea.Height < 5) return;
+            if (!HasValidRange) return new Size();
+            if (chart.PlotArea.Width < 5 || chart.PlotArea.Height < 5) return new Size();
 
             CalculateSeparator(chart, direction);
 
@@ -462,6 +462,7 @@ namespace LiveCharts
 #if DEBUG
             Trace.WriteLine("Axis.Separations: " + Separations.Count);
 #endif
+            return biggest;
         }
 
         internal Func<double, string> GetFormatter()

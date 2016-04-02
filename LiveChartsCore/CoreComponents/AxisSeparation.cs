@@ -51,19 +51,19 @@ namespace LiveCharts
                     FadeOutAndRemove(chart);
                     break;
                 case SeparationState.Keep:
-                    Place(chart, direction, axisIndex);
+                    UnanimatedPlace(chart, direction, axisIndex, axis);
                     MoveFromPreviousAx(chart, direction, axisIndex, axis);
                     if (IsNew) FadeIn();
                     break;
                 case SeparationState.InitialAdd:
-                    Place(chart, direction, axisIndex);
+                    UnanimatedPlace(chart, direction, axisIndex, axis);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
         }
 
-        private void Place(Chart chart, AxisTags direction, int axisIndex)
+        private void UnanimatedPlace(Chart chart, AxisTags direction, int axisIndex, Axis axis)
         {
             var i = chart.ToPlotArea(Value, direction, axisIndex);
 
@@ -84,10 +84,18 @@ namespace LiveCharts
             if (direction == AxisTags.Y)
             {
                 Canvas.SetTop(TextBlock, i - TextBlock.ActualHeight*.5);
+
+                Canvas.SetLeft(TextBlock, axis.Position == CoreComponents.AxisPosition.LeftBottom
+                    ? axis.LabelsReference - TextBlock.ActualWidth
+                    : 0);
             }
             else
             {
                 Canvas.SetLeft(TextBlock, i - TextBlock.ActualWidth*.5);
+                Canvas.SetTop(TextBlock,
+                    axis.Position == CoreComponents.AxisPosition.LeftBottom
+                        ? axis.LabelsReference
+                        : 0d);
             }
         }
 
@@ -144,15 +152,6 @@ namespace LiveCharts
                 var hh = TextBlock.ActualHeight*.5;
                 TextBlock.BeginAnimation(Canvas.TopProperty,
                     new DoubleAnimation(Line.Y1 - hh, i - hh, _anSpeed));
-
-                if (axis.Position == CoreComponents.AxisPosition.LeftBottom)
-                {
-                    //TextBlock.BeginAnimation(Canvas.LeftProperty, new DoubleAnimation(left, _anSpeed));
-                }
-                else
-                {
-                    
-                }
             }
             else
             {

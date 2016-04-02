@@ -638,11 +638,19 @@ namespace LiveCharts.CoreComponents
             int top = 0, left = 0, bot = 0, right = 0;
 
             foreach (var xi in AxisX)
-                xi.PreparePlotArea(AxisTags.X, this,
-                    xi.Position == AxisPosition.LeftBottom ? left++ : right++);
+            {
+                var biggest = xi.PreparePlotArea(AxisTags.X, this);
+                xi.LabelsReference = xi.Position == AxisPosition.LeftBottom
+                    ? Canvas.GetTop(xi.TitleLabel) - biggest.Height
+                    : 0;
+            }
             foreach (var yi in AxisY)
-                yi.PreparePlotArea(AxisTags.Y, this,
-                    yi.Position == AxisPosition.RightTop ? top++ : bot++);
+            {
+                var biggest = yi.PreparePlotArea(AxisTags.Y, this);
+                yi.LabelsReference = yi.Position == AxisPosition.LeftBottom
+                    ? Canvas.GetLeft(yi.TitleLabel) + yi.TitleLabel.ActualHeight + biggest.Width
+                    : 0;
+            }
 
             for (var index = 0; index < AxisX.Count; index++)
             {
