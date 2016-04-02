@@ -223,17 +223,17 @@ namespace LiveCharts.CoreComponents
 
         public ISeriesConfiguration Configuration { get; set; }
 
-        public int UsesXAxis { get; set; }
-        public int UsesYAxis { get; set; }
+        public int ScalesXAt { get; set; }
+        public int ScalesYAt { get; set; }
 
         public Axis CurrentXAxis
         {
-            get { return Chart.AxisX[UsesXAxis]; }
+            get { return Chart.AxisX[ScalesXAt]; }
         }
 
         public Axis CurrentYAxis
         {
-            get { return Chart.AxisY[UsesYAxis]; }
+            get { return Chart.AxisY[ScalesYAt]; }
         }
 
         #endregion

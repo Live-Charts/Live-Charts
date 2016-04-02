@@ -45,7 +45,6 @@ namespace LiveCharts.CoreComponents
 
         internal Rect PlotArea;
         internal Canvas DrawMargin;
-
         internal int ColorStartIndex;
         internal bool RequiresScale;
         internal List<DeleteBufferItem> EraseSerieBuffer = new List<DeleteBufferItem>();
@@ -605,10 +604,10 @@ namespace LiveCharts.CoreComponents
             {
                 var xi = AxisX[index];
                 xi.MaxLimit = xi.MaxValue ??
-                              Series.Where(series => series.Values != null && series.UsesXAxis == index)
+                              Series.Where(series => series.Values != null && series.ScalesXAt == index)
                                   .Select(series => series.Values.MaxChartPoint.X).DefaultIfEmpty(0).Max();
                 xi.MinLimit = xi.MinValue ??
-                              Series.Where(series => series.Values != null && series.UsesXAxis == index)
+                              Series.Where(series => series.Values != null && series.ScalesXAt == index)
                                   .Select(series => series.Values.MinChartPoint.X).DefaultIfEmpty(0).Min();
             }
 
@@ -616,10 +615,10 @@ namespace LiveCharts.CoreComponents
             {
                 var yi = AxisY[index];
                 yi.MaxLimit = yi.MaxValue ??
-                              Series.Where(series => series.Values != null && series.UsesYAxis == index)
+                              Series.Where(series => series.Values != null && series.ScalesYAt == index)
                                   .Select(series => series.Values.MaxChartPoint.Y).DefaultIfEmpty(0).Max();
                 yi.MinLimit = yi.MinValue ??
-                              Series.Where(series => series.Values != null && series.UsesYAxis == index)
+                              Series.Where(series => series.Values != null && series.ScalesYAt == index)
                                   .Select(series => series.Values.MinChartPoint.Y).DefaultIfEmpty(0).Min();
             }
         }
@@ -636,8 +635,14 @@ namespace LiveCharts.CoreComponents
 
             PlaceLegend();
 
-            foreach (var xi in AxisX) xi.PreparePlotArea(AxisTags.X, this);
-            foreach (var yi in AxisY) yi.PreparePlotArea(AxisTags.Y, this);
+            int top = 0, left = 0, bot = 0, right = 0;
+
+            foreach (var xi in AxisX)
+                xi.PreparePlotArea(AxisTags.X, this,
+                    xi.Position == AxisPosition.LeftBottom ? left++ : right++);
+            foreach (var yi in AxisY)
+                yi.PreparePlotArea(AxisTags.Y, this,
+                    yi.Position == AxisPosition.RightTop ? top++ : bot++);
 
             for (var index = 0; index < AxisX.Count; index++)
             {
@@ -709,7 +714,7 @@ namespace LiveCharts.CoreComponents
             var senderShape = ShapesMapper.FirstOrDefault(s => Equals(s.HoverShape, sender));
             if (senderShape == null) return;
 
-            var targetAxis = Invert ? senderShape.Series.UsesYAxis : senderShape.Series.UsesXAxis;
+            var targetAxis = Invert ? senderShape.Series.ScalesYAt : senderShape.Series.ScalesXAt;
 
             var sibilings = Invert
                 ? ShapesMapper.Where(s => Math.Abs(s.ChartPoint.Y - senderShape.ChartPoint.Y) < AxisY[targetAxis].S*.01)
@@ -801,7 +806,7 @@ namespace LiveCharts.CoreComponents
             DataTooltip.UpdateLayout();
             DataTooltip.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
 
-            var targetAxis = Invert ? sender.Series.UsesYAxis : sender.Series.UsesXAxis;
+            var targetAxis = Invert ? sender.Series.ScalesYAt : sender.Series.ScalesXAt;
 
             var x = sender.ChartPoint.X > (AxisX[targetAxis].MinLimit + AxisX[targetAxis].MaxLimit)/2
                 ? sender.ChartPoint.ChartLocation.X - 10 - DataTooltip.DesiredSize.Width

@@ -65,7 +65,7 @@ namespace LiveCharts
             var unitW = ToPlotArea(1, AxisTags.X) - PlotArea.X + 5;
             var overflow = unitW - MaxColumnWidth*3 > 0 ? unitW - MaxColumnWidth*3 : 0;
             unitW = unitW > MaxColumnWidth*3 ? MaxColumnWidth*3 : unitW;
-            var targetAxis = Invert ? sender.Series.UsesYAxis : sender.Series.UsesXAxis;
+            var targetAxis = Invert ? sender.Series.ScalesYAt : sender.Series.ScalesXAt;
             var x = sender.ChartPoint.X + 1 > (AxisX[targetAxis].MaxLimit +AxisX[targetAxis].MaxLimit)/2
                 ? ToPlotArea(sender.ChartPoint.X, AxisTags.X) + overflow*.5 - DataTooltip.DesiredSize.Width
                 : ToPlotArea(sender.ChartPoint.X, AxisTags.X) + unitW + overflow*.5;

@@ -176,8 +176,8 @@ namespace LiveCharts
             var pieSlice = senderShape.HoverShape as PieSlice;
             if (pieSlice == null) return;
 
-            var xi = senderShape.Series.UsesXAxis;
-            var yi = senderShape.Series.UsesYAxis;
+            var xi = senderShape.Series.ScalesXAt;
+            var yi = senderShape.Series.ScalesYAt;
 
             var labels = AxisX[xi].Labels != null ? AxisX[xi].Labels.ToArray() : null;
 

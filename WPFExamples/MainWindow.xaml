@@ -35,9 +35,12 @@
             <TextBlock TextWrapping="Wrap" Margin="5" FontSize="16" FontWeight="Bold" Background="YellowGreen" Padding="10 5">
                 Right Now examples could not be running correctly because we are working to publish 0.6.6, 
                 we are making a full review to axis class: cleaning the axis code to make it run faster and
-                easier to read, adding axis animations, also allow chart to have multiple axes.
-                , please be patient, examples included must work for 0.6.5, 
-                so pelase remove reference to LiveChartsCore project and install 0.6.4 from nuget then go to ExamplesMapper class and remove the commented code Thanks! 
+                easier to read, adding axis animations, also allow chart to have multiple axes, 
+                please be patient, examples included must work for 0.6.5, 
+                so pelase remove reference to LiveChartsCore project and install 0.6.5 from nuget 
+                then go to ExamplesMapper class and remove the commented code Thanks!
+                0.6.6 includes multiple axes support, then to make it work you must delete all charts that 
+                uses more than 1 axis, also remove the UsesAxesX and UsesAxesY properties.
             </TextBlock>
             <TextBlock TextWrapping="Wrap" Margin="20">
                 Here is a list of examples scroll down to check them out, click on left or right arrows to navigate through different examples,

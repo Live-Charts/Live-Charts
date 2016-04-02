@@ -26,13 +26,14 @@
             <Button Margin="5" Click="AddSeriesOnClick">+</Button>
         </StackPanel>
         <lvc:LineChart Name="Chart" Grid.Row="2" LegendLocation="Right"
-                       Series="{Binding Series}">
+                       Series="{Binding Series}" Background="White">
             <lvc:LineChart.AxisY>
-                <lvc:Axis Title="Sold Items" />
+                <lvc:Axis Title="Sold Items dhkasjhl j lajs kljl jaslkj lkj" Position="RightTop" />
             </lvc:LineChart.AxisY>
             <lvc:LineChart.AxisX>
-                <lvc:Axis Title="Month" Separator="{x:Static lvc:DefaultAxes.CleanSeparator}"
-                          Labels="Jan, Feb , Mar, Apr, May, Jun" />
+                <lvc:Axis Title="Month 9ihahskjhc kuhkj h aljh saljal j lka s" Separator="{x:Static lvc:DefaultAxes.CleanSeparator}"
+                          Labels="Jan, Feb , Mar, Apr, May, Jun, Jul, Agu, Sep, Oct, Nov, Dec"
+                          Position="RightTop"/>
             </lvc:LineChart.AxisX>
         </lvc:LineChart>
     </Grid>

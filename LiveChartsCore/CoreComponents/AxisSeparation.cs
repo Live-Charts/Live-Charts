@@ -29,7 +29,7 @@ using LiveCharts.CoreComponents;
 
 namespace LiveCharts
 {
-    internal class Separation
+    internal class AxisSeparation
     {
         private readonly TimeSpan _anSpeed = TimeSpan.FromMilliseconds(500);
 
@@ -144,6 +144,15 @@ namespace LiveCharts
                 var hh = TextBlock.ActualHeight*.5;
                 TextBlock.BeginAnimation(Canvas.TopProperty,
                     new DoubleAnimation(Line.Y1 - hh, i - hh, _anSpeed));
+
+                if (axis.Position == CoreComponents.AxisPosition.LeftBottom)
+                {
+                    //TextBlock.BeginAnimation(Canvas.LeftProperty, new DoubleAnimation(left, _anSpeed));
+                }
+                else
+                {
+                    
+                }
             }
             else
             {
@@ -168,7 +177,7 @@ namespace LiveCharts
 
             if (direction == AxisTags.Y)
             {
-                var y = IsNew ? axis.FromLastAxis(Value, direction, chart) : Line.Y1;
+                var y = IsNew ? axis.FromPreviousAxisState(Value, direction, chart) : Line.Y1;
 
                 Line.BeginAnimation(Line.X1Property,
                     new DoubleAnimation(Line.X1, chart.PlotArea.X, _anSpeed));
@@ -185,7 +194,7 @@ namespace LiveCharts
             }
             else
             {
-                var x = IsNew ? axis.FromLastAxis(Value, direction, chart) : Line.X1;
+                var x = IsNew ? axis.FromPreviousAxisState(Value, direction, chart) : Line.X1;
 
                 Line.BeginAnimation(Line.X1Property,
                     new DoubleAnimation(x, i, _anSpeed));
