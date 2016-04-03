@@ -100,9 +100,6 @@ namespace LiveCharts
             var w = MockedArea != null ? MockedArea.Value.Width : ActualWidth;
             var h = MockedArea != null ? MockedArea.Value.Height : ActualHeight;
 
-            Canvas.Width = w;
-            Canvas.Height = h;
-            PlotArea = new Rect(0, 0, w, h);
             RequiresScale = true;
 
             if (!HasValidSeriesAndValues) return;
@@ -137,25 +134,25 @@ namespace LiveCharts
                     break;
                 case LegendLocation.Top:
                     var top = new Point(ActualWidth * .5 - legend.DesiredSize.Width * .5, 0);
-                    PlotArea.Y += top.Y + legend.DesiredSize.Height;
-                    PlotArea.Height -= legend.DesiredSize.Height;
+                    Canvas.SetTop(DrawMargin, Canvas.GetTop(DrawMargin) + top.Y + legend.DesiredSize.Height);
+                    DrawMargin.Height -= legend.DesiredSize.Height;
                     Canvas.SetTop(legend, top.Y);
                     Canvas.SetLeft(legend, top.X);
                     break;
                 case LegendLocation.Bottom:
                     var bot = new Point(ActualWidth * .5 - legend.DesiredSize.Width * .5, ActualHeight - legend.DesiredSize.Height);
-                    PlotArea.Height -= legend.DesiredSize.Height;
+                    DrawMargin.Height -= legend.DesiredSize.Height;
                     Canvas.SetTop(legend, Canvas.ActualHeight - legend.DesiredSize.Height);
                     Canvas.SetLeft(legend, bot.X);
                     break;
                 case LegendLocation.Left:
-                    PlotArea.X += legend.DesiredSize.Width;
-                    PlotArea.Width -= legend.DesiredSize.Width;
+                    Canvas.SetLeft(DrawMargin, Canvas.GetLeft(DrawMargin) + legend.DesiredSize.Width);
+                    DrawMargin.Width -= legend.DesiredSize.Width;
                     Canvas.SetTop(legend, Canvas.ActualHeight * .5 - legend.DesiredSize.Height * .5);
                     Canvas.SetLeft(legend, 0);
                     break;
                 case LegendLocation.Right:
-                    PlotArea.Width -= legend.DesiredSize.Width;
+                    DrawMargin.Width -= legend.DesiredSize.Width;
                     Canvas.SetTop(legend, Canvas.ActualHeight * .5 - legend.DesiredSize.Height * .5);
                     Canvas.SetLeft(legend, ActualWidth - legend.DesiredSize.Width);
                     break;

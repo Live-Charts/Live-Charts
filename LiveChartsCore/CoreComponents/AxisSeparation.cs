@@ -68,23 +68,22 @@ namespace LiveCharts
             var i = chart.ToPlotArea(Value, direction, axisIndex);
 
             Line.X1 = direction == AxisTags.Y
-                ? chart.PlotArea.X
+                ? Canvas.GetLeft(chart.DrawMargin)
                 : i;
             Line.X2 = direction == AxisTags.Y
-                ? chart.PlotArea.X + chart.PlotArea.Width
+                ? Canvas.GetLeft(chart.DrawMargin) + chart.DrawMargin.Width
                 : i;
 
             Line.Y1 = direction == AxisTags.Y
                 ? i
-                : chart.PlotArea.Y;
+                : Canvas.GetTop(chart.DrawMargin);
             Line.Y2 = direction == AxisTags.Y
                 ? i
-                : chart.PlotArea.Y + chart.PlotArea.Height;
+                : Canvas.GetTop(chart.DrawMargin) + chart.DrawMargin.Height;
 
             if (direction == AxisTags.Y)
             {
                 Canvas.SetTop(TextBlock, i - TextBlock.ActualHeight*.5);
-
                 Canvas.SetLeft(TextBlock, axis.Position == CoreComponents.AxisPosition.LeftBottom
                     ? axis.LabelsReference - TextBlock.ActualWidth
                     : 0);
@@ -141,9 +140,9 @@ namespace LiveCharts
             if (direction == AxisTags.Y)
             {
                 Line.BeginAnimation(Line.X1Property,
-                    new DoubleAnimation(Line.X1, chart.PlotArea.X, _anSpeed));
+                    new DoubleAnimation(Line.X1, Canvas.GetLeft(chart.DrawMargin), _anSpeed));
                 Line.BeginAnimation(Line.X2Property,
-                    new DoubleAnimation(Line.X2, chart.PlotArea.X + chart.PlotArea.Width, _anSpeed));
+                    new DoubleAnimation(Line.X2, Canvas.GetLeft(chart.DrawMargin) + chart.DrawMargin.Width, _anSpeed));
                 Line.BeginAnimation(Line.Y1Property,
                     new DoubleAnimation(Line.Y1, i, _anSpeed));
                 Line.BeginAnimation(Line.Y2Property,
@@ -160,9 +159,9 @@ namespace LiveCharts
                 Line.BeginAnimation(Line.X2Property,
                     new DoubleAnimation(Line.X2, i, _anSpeed));
                 Line.BeginAnimation(Line.Y1Property,
-                    new DoubleAnimation(Line.Y1, chart.PlotArea.Y, _anSpeed));
+                    new DoubleAnimation(Line.Y1, Canvas.GetTop(chart.DrawMargin), _anSpeed));
                 Line.BeginAnimation(Line.Y2Property,
-                    new DoubleAnimation(Line.Y2, chart.PlotArea.Y + chart.PlotArea.Height, _anSpeed));
+                    new DoubleAnimation(Line.Y2, Canvas.GetTop(chart.DrawMargin) + chart.DrawMargin.Height, _anSpeed));
 
                 var hw = TextBlock.ActualWidth*.5;
                 TextBlock.BeginAnimation(Canvas.LeftProperty,
@@ -179,9 +178,9 @@ namespace LiveCharts
                 var y = IsNew ? axis.FromPreviousAxisState(Value, direction, chart) : Line.Y1;
 
                 Line.BeginAnimation(Line.X1Property,
-                    new DoubleAnimation(Line.X1, chart.PlotArea.X, _anSpeed));
+                    new DoubleAnimation(Line.X1, Canvas.GetLeft(chart.DrawMargin), _anSpeed));
                 Line.BeginAnimation(Line.X2Property,
-                    new DoubleAnimation(Line.X2, chart.PlotArea.X + chart.PlotArea.Width, _anSpeed));
+                    new DoubleAnimation(Line.X2, Canvas.GetLeft(chart.DrawMargin) + chart.DrawMargin.Width, _anSpeed));
                 Line.BeginAnimation(Line.Y1Property,
                     new DoubleAnimation(y, i, _anSpeed));
                 Line.BeginAnimation(Line.Y2Property,
@@ -200,9 +199,9 @@ namespace LiveCharts
                 Line.BeginAnimation(Line.X2Property,
                     new DoubleAnimation(x, i, _anSpeed));
                 Line.BeginAnimation(Line.Y1Property, 
-                    new DoubleAnimation(Line.Y1, chart.PlotArea.Y, _anSpeed));
+                    new DoubleAnimation(Line.Y1, Canvas.GetTop(chart.DrawMargin), _anSpeed));
                 Line.BeginAnimation(Line.Y2Property,
-                    new DoubleAnimation(Line.Y2, chart.PlotArea.Y + chart.PlotArea.Height, _anSpeed));
+                    new DoubleAnimation(Line.Y2, Canvas.GetTop(chart.DrawMargin) + chart.DrawMargin.Height, _anSpeed));
 
                 var hw = TextBlock.ActualWidth*.5;
                 TextBlock.BeginAnimation(Canvas.LeftProperty,

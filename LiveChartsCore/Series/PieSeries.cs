@@ -57,9 +57,9 @@ namespace LiveCharts
 
             Chart.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
 
-            var minDimension = Chart.PlotArea.Width < Chart.PlotArea.Height
-                ? Chart.PlotArea.Width
-                : Chart.PlotArea.Height;
+            var minDimension = Chart.DrawMargin.Width < Chart.DrawMargin.Height
+                ? Chart.DrawMargin.Width
+                : Chart.DrawMargin.Height;
             minDimension -= pChart.DrawPadding;
             minDimension = minDimension < pChart.DrawPadding ? pChart.DrawPadding : minDimension;
 
@@ -81,8 +81,8 @@ namespace LiveCharts
                 visual.PointShape.Radius = space;
                 visual.PointShape.InnerRadius =  inner;
 
-                Canvas.SetTop(visual.PointShape, Chart.PlotArea.Height / 2);
-                Canvas.SetLeft(visual.PointShape, Chart.PlotArea.Width / 2);
+                Canvas.SetTop(visual.PointShape, Chart.DrawMargin.Height / 2);
+                Canvas.SetLeft(visual.PointShape, Chart.DrawMargin.Width / 2);
 
                 #region labels, animation, and add to canvas
 
@@ -123,8 +123,8 @@ namespace LiveCharts
 
                     tb.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
 
-                    Canvas.SetTop(tb, Chart.PlotArea.Height/2 - cp.Y - tb.DesiredSize.Height*.5);
-                    Canvas.SetLeft(tb, cp.X + Chart.PlotArea.Width/2 - tb.DesiredSize.Width*.5);
+                    Canvas.SetTop(tb, Chart.DrawMargin.Height/2 - cp.Y - tb.DesiredSize.Height*.5);
+                    Canvas.SetLeft(tb, cp.X + Chart.DrawMargin.Width/2 - tb.DesiredSize.Width*.5);
                     Panel.SetZIndex(tb, int.MaxValue - 1);
                     //because math is kind of complex to detetrmine if label fits inside the slide, by now we 
                     //will just add it if participation > 5% ToDo: the math!

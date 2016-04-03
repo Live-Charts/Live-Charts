@@ -7,23 +7,23 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
-        <lvc:LineChart Background="BurlyWood">
+        <lvc:LineChart Background="BlueViolet">
             <lvc:LineChart.Series>
                 
                 <!--using default axis-->
-                <lvc:LineSeries Values="300, 600, 200" Stroke="Violet" Fill="Transparent" />
+                <!--<lvc:LineSeries Values="300, 600, 200" Stroke="Violet" Fill="Transparent" />
                 
-                <!--using ComplementaryAxis[0]-->
+                --><!--using ComplementaryAxis[0]--><!--
                 <lvc:LineSeries Values="0, 0, 0" Stroke="Chocolate" Fill="Transparent" ScalesYAt="1" />
-                <lvc:LineSeries Values="10, 10, 10" Stroke="Chocolate" Fill="Transparent" ScalesYAt="1" />
+                <lvc:LineSeries Values="10, 10, 10" Stroke="Chocolate" Fill="Transparent" ScalesYAt="1" />-->
                 
                 <!--using ComplementaryAxes[1]-->
-                <lvc:LineSeries Values="20000, 20000, 20000" Stroke="Navy" Fill="Transparent" ScalesYAt="2" />
+                <lvc:LineSeries Values="20000, 25000, 20000" LineSmoothness="0" Stroke="Navy" Fill="Transparent" ScalesYAt="0" />
                 
             </lvc:LineChart.Series>
             <lvc:LineChart.AxisY>
-                <lvc:Axis Foreground="Violet" Title="Violet Axis" />
-                <lvc:Axis Foreground="Chocolate" Title="Chocolate Axis" />
+                <!--<lvc:Axis Foreground="Violet" Title="Violet Axis" />
+                <lvc:Axis Foreground="Chocolate" Title="Chocolate Axis" />-->
                 <lvc:Axis Foreground="Navy" Title="Navy Axis" />
             </lvc:LineChart.AxisY>
             <lvc:LineChart.AxisX>

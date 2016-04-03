@@ -62,7 +62,7 @@ namespace LiveCharts
         protected override Point GetToolTipPosition(ShapeMap sender, List<ShapeMap> sibilings)
         {
             DataTooltip.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
-            var unitW = ToPlotArea(1, AxisTags.X) - PlotArea.X + 5;
+            var unitW = ToPlotArea(1, AxisTags.X) - System.Windows.Controls.Canvas.GetLeft(DrawMargin) + 5;
             var overflow = unitW - MaxColumnWidth*3 > 0 ? unitW - MaxColumnWidth*3 : 0;
             unitW = unitW > MaxColumnWidth*3 ? MaxColumnWidth*3 : unitW;
             var targetAxis = Invert ? sender.Series.ScalesYAt : sender.Series.ScalesXAt;

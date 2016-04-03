@@ -59,7 +59,7 @@ namespace LiveCharts
             var stackedSeries = Chart.Series.OfType<StackedBarSeries>().ToList();
 
             var serieIndex = stackedSeries.IndexOf(this);
-            var unitW = ToPlotArea(CurrentYAxis.MaxLimit - 1, AxisTags.Y) - Chart.PlotArea.Y + 5;
+            var unitW = ToPlotArea(CurrentYAxis.MaxLimit - 1, AxisTags.Y) - Canvas  .GetTop(Chart.DrawMargin) + 5;
             var overflow = unitW - stackedChart.MaxColumnWidth > 0 ? unitW - stackedChart.MaxColumnWidth : 0;
             unitW = unitW > stackedChart.MaxColumnWidth ? stackedChart.MaxColumnWidth : unitW;
             var pointPadding = .1 * unitW;
@@ -177,7 +177,7 @@ namespace LiveCharts
             var stackedSeries = Chart.Series.OfType<StackedBarSeries>().ToList();
 
             var serieIndex = stackedSeries.IndexOf(this);
-            var unitW = ToPlotArea(1, AxisTags.X) - Chart.PlotArea.X + 5;
+            var unitW = ToPlotArea(1, AxisTags.X) - Canvas.GetLeft(Chart.DrawMargin) + 5;
             var overflow = unitW - stackedChart.MaxColumnWidth > 0 ? unitW - stackedChart.MaxColumnWidth : 0;
             unitW = unitW > stackedChart.MaxColumnWidth ? stackedChart.MaxColumnWidth : unitW;
             var pointPadding = .1 * unitW;

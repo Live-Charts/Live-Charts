@@ -21,6 +21,7 @@
 //SOFTWARE.
 
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using LiveCharts.CoreComponents;
@@ -47,7 +48,7 @@ namespace LiveCharts.Helpers
                 if (chart.Invert)
                 {
                     //var x = chart.ToDrawMargin(chart.Min.X, AxisTags.X);
-                    var x = chart.PlotArea.X;
+                    var x = Canvas.GetLeft(chart.DrawMargin);
                     s1 = new Point(x, Data.P1.Y);
                     s2 = new Point(x, Data.P2.Y);
                     s3 = new Point(x, Data.P3.Y);
@@ -55,7 +56,7 @@ namespace LiveCharts.Helpers
                 else
                 {
                     //var y = chart.ToDrawMargin(chart.Min.Y, AxisTags.Y);
-                    var y = chart.PlotArea.Y + chart.PlotArea.Height;
+                    var y = Canvas.GetLeft(chart.DrawMargin) + chart.DrawMargin.Height;
                     s1 = new Point(Data.P1.X, y);
                     s2 = new Point(Data.P2.X, y);
                     s3 = new Point(Data.P3.X, y);

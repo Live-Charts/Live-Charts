@@ -279,16 +279,22 @@ namespace LiveCharts
 
         internal TextBlock BuildATextBlock(int rotate)
         {
-            return new TextBlock
-            {
-                FontFamily = FontFamily,
-                FontSize = FontSize,
-                FontStretch = FontStretch,
-                FontStyle = FontStyle,
-                FontWeight = FontWeight,
-                Foreground = Foreground,
-                RenderTransform = new RotateTransform(rotate)
-            };
+            var tb = new TextBlock();
+
+            tb.SetBinding(TextBlock.FontFamilyProperty,
+                new Binding {Path = new PropertyPath(FontFamilyProperty), Source = this});
+            tb.SetBinding(FontSizeProperty,
+                new Binding { Path = new PropertyPath(FontSizeProperty), Source = this });
+            tb.SetBinding(TextBlock.FontStretchProperty,
+                new Binding { Path = new PropertyPath(FontStretchProperty), Source = this });
+            tb.SetBinding(TextBlock.FontStyleProperty,
+                new Binding { Path = new PropertyPath(FontStyleProperty), Source = this });
+            tb.SetBinding(TextBlock.FontWeightProperty,
+                new Binding { Path = new PropertyPath(FontWeightProperty), Source = this });
+            tb.SetBinding(TextBlock.ForegroundProperty,
+                 new Binding { Path = new PropertyPath(ForegroundProperty), Source = this });
+
+            return tb;
         }
 
         internal double MaxLimit { get; set; }
@@ -319,8 +325,8 @@ namespace LiveCharts
                     FontStretch), FontSize, Brushes.Black);
 
             var separations = source == AxisTags.Y
-                ? Math.Round(chart.PlotArea.Height/((ft.Height)*CleanFactor), 0)
-                : Math.Round(chart.PlotArea.Width/((ft.Width)*CleanFactor), 0);
+                ? Math.Round(chart.DrawMargin.Height/((ft.Height)*CleanFactor), 0)
+                : Math.Round(chart.DrawMargin.Width/((ft.Width)*CleanFactor), 0);
 
             separations = separations < 2 ? 2 : separations;
 
@@ -397,14 +403,15 @@ namespace LiveCharts
         internal Size PreparePlotArea(AxisTags direction, Chart chart)
         {
             if (!HasValidRange) return new Size();
-            if (chart.PlotArea.Width < 5 || chart.PlotArea.Height < 5) return new Size();
+            if (chart.DrawMargin.Width < 5 || chart.DrawMargin.Height < 5) return new Size();
+            if (!ShowLabels) return new Size();
 
             CalculateSeparator(chart, direction);
 
             var f = GetFormatter();
 
             var biggest = new Size(0, 0);
-            var tolerance = S / 10;
+            var tolerance = S/10;
 
             for (var i = MinLimit; i <= MaxLimit; i += S)
             {
@@ -455,10 +462,8 @@ namespace LiveCharts
                 axisSeparation.State = SeparationState.Keep;
             }
 
-            chart.DrawMargin.Background = Brushes.LightGreen;
-
-            PlaceTitle(direction, chart);
-            MeasureLabels(direction, chart, biggest);
+            //PlaceTitle(direction, chart);
+            //MeasureLabels(direction, chart, biggest);
 #if DEBUG
             Trace.WriteLine("Axis.Separations: " + Separations.Count);
 #endif
@@ -476,33 +481,6 @@ namespace LiveCharts
                     : "");
         }
 
-        private void MeasureLabels(AxisTags direction, Chart chart, Size biggest)
-        {
-            //Set enough margin to place all labels.
-            if (direction == AxisTags.Y)
-            {
-                if (Position == AxisPosition.RightTop)
-                {
-                    //Right
-                    chart.PlotArea.Width -= biggest.Width;
-                    return;
-                }
-                //Left
-                chart.PlotArea.X += biggest.Width;
-                chart.PlotArea.Width -= biggest.Width;
-                return;
-            }
-            if (Position == AxisPosition.RightTop)
-            {
-                //Top
-                chart.PlotArea.Y -= biggest.Height;
-                chart.PlotArea.Height -= biggest.Height;
-                return;
-            }
-            //Bot
-            chart.PlotArea.Height -= biggest.Height;
-        }
-
         internal void UpdateSeparations(AxisTags direction, Chart chart, int axisPosition)
         {
             foreach (var separation in Separations.Values.ToArray())
@@ -518,53 +496,8 @@ namespace LiveCharts
 
             LastAxisMax = MaxLimit;
             LastAxisMin = MinLimit;
-            LastPlotArea = chart.PlotArea;
-        }
-
-        private void PlaceTitle(AxisTags direction, Chart chart)
-        {
-            if (TitleLabel.Parent == null)
-            {
-                TitleLabel.RenderTransform = new RotateTransform(direction == AxisTags.Y ? -90 : 0);
-                chart.Canvas.Children.Add(TitleLabel);
-            }
-
-            TitleLabel.UpdateLayout();
-
-            if (direction == AxisTags.Y)
-            {
-                Canvas.SetTop(TitleLabel, chart.PlotArea.Y + chart.PlotArea.Height*.5 + TitleLabel.ActualWidth*.5);
-
-                if (Position == AxisPosition.RightTop)
-                {
-                    //Right
-                    chart.PlotArea.Width -= TitleLabel.ActualHeight;
-                    Canvas.SetLeft(TitleLabel, chart.PlotArea.X + chart.PlotArea.Width);
-
-                    return; //yes the inverted size, since it is rotated.
-                }
-                //Left
-                chart.PlotArea.X += TitleLabel.ActualHeight;
-                chart.PlotArea.Width -= TitleLabel.ActualHeight;
-                Canvas.SetLeft(TitleLabel, chart.PlotArea.X - TitleLabel.ActualHeight);
-
-                return;
-            }
-
-            Canvas.SetLeft(TitleLabel, chart.PlotArea.X + chart.PlotArea.Width *.5 - TitleLabel.ActualWidth * .5);
-
-            if (Position == AxisPosition.RightTop)
-            {
-                //Top
-                chart.PlotArea.Y += TitleLabel.ActualHeight;
-                chart.PlotArea.Height -= TitleLabel.ActualHeight;
-                Canvas.SetTop(TitleLabel, chart.PlotArea.Y - TitleLabel.ActualHeight);
-
-                return;
-            }
-            //Bot
-            chart.PlotArea.Height -= TitleLabel.ActualHeight;
-            Canvas.SetTop(TitleLabel, chart.PlotArea.Y + chart.PlotArea.Height);
+            LastPlotArea = new Rect(Canvas.GetLeft(chart.DrawMargin), Canvas.GetTop(chart.DrawMargin),
+                chart.DrawMargin.Width, chart.DrawMargin.Height);
         }
     }
 }

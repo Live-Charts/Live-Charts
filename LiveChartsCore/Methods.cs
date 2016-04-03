@@ -22,6 +22,7 @@
 
 using System;
 using System.Windows;
+using System.Windows.Controls;
 using LiveCharts.CoreComponents;
 
 namespace LiveCharts
@@ -51,10 +52,10 @@ namespace LiveCharts
                 var ax = chart.AxisY[axis];
 
                 p1.X = ax.MaxLimit;
-                p1.Y = chart.PlotArea.Y;
+                p1.Y = Canvas.GetTop(chart.DrawMargin);
 
                 p2.X = ax.MinLimit;
-                p2.Y = chart.PlotArea.Y + chart.PlotArea.Height;
+                p2.Y = Canvas.GetTop(chart.DrawMargin) + chart.DrawMargin.Height;
             }
             else
             {
@@ -64,10 +65,10 @@ namespace LiveCharts
                 var ax = chart.AxisX[axis];
 
                 p1.X = ax.MaxLimit;
-                p1.Y = chart.PlotArea.Width + chart.PlotArea.X;
+                p1.Y = chart.DrawMargin.Width + Canvas.GetLeft(chart.DrawMargin);
 
                 p2.X = ax.MinLimit;
-                p2.Y = chart.PlotArea.X;
+                p2.Y = Canvas.GetLeft(chart.DrawMargin);
             }
 
             var deltaX = p2.X - p1.X;
@@ -89,10 +90,10 @@ namespace LiveCharts
                 var ax = chart.AxisY[axis];
 
                 p1.X = ax.MaxLimit;
-                p1.Y = chart.PlotArea.Y;
+                p1.Y = Canvas.GetTop(chart.DrawMargin);
 
                 p2.X = ax.MinLimit;
-                p2.Y = chart.PlotArea.Y + chart.PlotArea.Height;
+                p2.Y = Canvas.GetTop(chart.DrawMargin) + chart.DrawMargin.Height;
             }
             else
             {
@@ -102,10 +103,10 @@ namespace LiveCharts
                 var ax = chart.AxisX[axis];
 
                 p1.X = ax.MaxLimit;
-                p1.Y = chart.PlotArea.Width + chart.PlotArea.X;
+                p1.Y = chart.DrawMargin.Width + Canvas.GetLeft(chart.DrawMargin);
 
                 p2.X = ax.MinLimit;
-                p2.Y = chart.PlotArea.X;
+                p2.Y = Canvas.GetLeft(chart.DrawMargin);
             }
 
             var deltaX = p2.X - p1.X;
@@ -130,15 +131,22 @@ namespace LiveCharts
 
         public static double ToDrawMargin(double value, AxisTags source, Chart chart, int axis = 0)
         {
-            var o = source == AxisTags.X ? chart.PlotArea.X : chart.PlotArea.Y;
-            var of = source == AxisTags.X ? chart.XOffset : chart.YOffset;
+            var o = source == AxisTags.X
+                ? Canvas.GetLeft(chart.DrawMargin)
+                : Canvas.GetTop(chart.DrawMargin);
+
+            var of = source == AxisTags.X
+                ? chart.XOffset
+                : chart.YOffset;
 
             return ToPlotArea(value, source, chart, axis) - o + of;
         }
 
         public static double FromDrawMargin(double value, AxisTags axis, Chart chart)
         {
-            var o = axis == AxisTags.X ? chart.PlotArea.X : chart.PlotArea.Y;
+            var o = axis == AxisTags.X
+                ? Canvas.GetLeft(chart.DrawMargin)
+                : Canvas.GetTop(chart.DrawMargin);
             var of = axis == AxisTags.X ? chart.XOffset : chart.YOffset;
 
             return FromPlotArea(value, axis, chart) - o + of;

@@ -43,7 +43,6 @@ namespace LiveCharts.CoreComponents
         public event Action<Chart> Plot;
         public event Action<ChartPoint> DataClick;
 
-        internal Rect PlotArea;
         internal Canvas DrawMargin;
         internal int ColorStartIndex;
         internal bool RequiresScale;
@@ -627,40 +626,65 @@ namespace LiveCharts.CoreComponents
         #region Virtual Methods
         protected virtual void DrawComponents()
         {
-            if (PlotArea.Height < 10 || PlotArea.Width < 10) return;
+            if (DrawMargin.Height < 10 || DrawMargin.Width < 10) return;
 
-            //foreach (var l in Shapes) Canvas.Children.Remove(l);
+            DrawMargin.Background = Brushes.LightGreen;
 
             SetPlotArea();
 
             PlaceLegend();
 
-            int top = 0, left = 0, bot = 0, right = 0;
-
-            foreach (var xi in AxisX)
-            {
-                var biggest = xi.PreparePlotArea(AxisTags.X, this);
-                xi.LabelsReference = xi.Position == AxisPosition.LeftBottom
-                    ? Canvas.GetTop(xi.TitleLabel) - biggest.Height
-                    : 0;
-            }
+            //Evaluating max limits...
             foreach (var yi in AxisY)
             {
+                if (yi.TitleLabel.Parent == null)
+                {
+                    yi.TitleLabel.RenderTransform = new RotateTransform(-90);
+                    Canvas.Children.Add(yi.TitleLabel);
+                }
+                yi.TitleLabel.UpdateLayout();
                 var biggest = yi.PreparePlotArea(AxisTags.Y, this);
-                yi.LabelsReference = yi.Position == AxisPosition.LeftBottom
-                    ? Canvas.GetLeft(yi.TitleLabel) + yi.TitleLabel.ActualHeight + biggest.Width
-                    : 0;
+                var x = Canvas.GetLeft(DrawMargin);
+                if (yi.Position == AxisPosition.LeftBottom)
+                {
+                    Canvas.SetLeft(yi.TitleLabel, x);
+                    yi.LabelsReference = x + yi.TitleLabel.ActualHeight + biggest.Width;
+                    DrawMargin.Width -= (yi.TitleLabel.ActualHeight - biggest.Width);
+                }
+                else
+                {
+                    Canvas.SetLeft(yi.TitleLabel, x + DrawMargin.Width - yi.TitleLabel.ActualHeight);
+                    yi.LabelsReference = x + DrawMargin.Width - yi.TitleLabel.ActualHeight - biggest.Width;
+                    DrawMargin.Width -= (yi.TitleLabel.ActualHeight + biggest.Width);
+                }
+            }
+
+            //foreach (var xi in AxisX)
+            //{
+            //    var biggest = xi.PreparePlotArea(AxisTags.X, this);
+
+            //    if (xi.Position == AxisPosition.LeftBottom)
+            //    {
+            //        xi.LabelsReference = Canvas.GetTop(xi.TitleLabel) - biggest.Height;
+            //    }
+            //    else
+            //    {
+
+            //    }
+            //}
+
+            for (var index = 0; index < AxisY.Count; index++)
+            {
+                var yi = AxisY[index];
+                yi.UpdateSeparations(AxisTags.Y, this, index);
+                var y = Canvas.GetTop(yi);
+                Canvas.SetTop(yi.TitleLabel, y + DrawMargin.Height*.5 + yi.TitleLabel.ActualWidth*.5);
             }
 
             for (var index = 0; index < AxisX.Count; index++)
             {
                 var xi = AxisX[index];
                 xi.UpdateSeparations(AxisTags.X, this, index);
-            }
-            for (var index = 0; index < AxisY.Count; index++)
-            {
-                var yi = AxisY[index];
-                yi.UpdateSeparations(AxisTags.Y, this, index);
             }
 
             //drawing ceros.
@@ -692,11 +716,6 @@ namespace LiveCharts.CoreComponents
             //    Canvas.Children.Add(l);
             //    Shapes.Add(l);
             //}
-
-            Canvas.SetLeft(DrawMargin, PlotArea.X);
-            Canvas.SetTop(DrawMargin, PlotArea.Y);
-            DrawMargin.Height = PlotArea.Height;
-            DrawMargin.Width = PlotArea.Width;
         }
 
         protected virtual void LoadLegend(ChartLegend legend)
@@ -820,7 +839,7 @@ namespace LiveCharts.CoreComponents
                 ? sender.ChartPoint.ChartLocation.X - 10 - DataTooltip.DesiredSize.Width
                 : sender.ChartPoint.ChartLocation.X + 10;
 
-            x += PlotArea.X;
+            x += Canvas.GetLeft(DrawMargin);
 
             var y = sibilings.Select(s => s.ChartPoint.ChartLocation.Y).DefaultIfEmpty(0).Sum()/sibilings.Count;
             y = y + DataTooltip.DesiredSize.Height > ActualHeight ? y - (y + DataTooltip.DesiredSize.Height - ActualHeight) - 5 : y;
@@ -861,25 +880,25 @@ namespace LiveCharts.CoreComponents
                     break;
                 case LegendLocation.Top:
                     var top = new Point(ActualWidth * .5 - legend.DesiredSize.Width * .5, 0);
-                    PlotArea.Y += top.Y + legend.DesiredSize.Height;
-                    PlotArea.Height -= legend.DesiredSize.Height;
+                    var y = Canvas.GetTop(DrawMargin);
+                    Canvas.SetTop(DrawMargin, y + top.Y + legend.DesiredSize.Height);
+                    DrawMargin.Height -= legend.DesiredSize.Height;
                     Canvas.SetTop(legend, top.Y);
                     Canvas.SetLeft(legend, top.X);
                     break;
                 case LegendLocation.Bottom:
                     var bot = new Point(ActualWidth * .5 - legend.DesiredSize.Width * .5, ActualHeight - legend.DesiredSize.Height);
-                    PlotArea.Height -= legend.DesiredSize.Height;
+                    DrawMargin.Height -= legend.DesiredSize.Height;
                     Canvas.SetTop(legend, Canvas.ActualHeight - legend.DesiredSize.Height);
                     Canvas.SetLeft(legend, bot.X);
                     break;
                 case LegendLocation.Left:
-                    PlotArea.X += legend.DesiredSize.Width;
-                    PlotArea.Width -= legend.DesiredSize.Width;
+                    Canvas.SetLeft(DrawMargin, Canvas.GetLeft(DrawMargin) + legend.DesiredSize.Width);
                     Canvas.SetTop(legend, Canvas.ActualHeight * .5 - legend.DesiredSize.Height * .5);
                     Canvas.SetLeft(legend, 0);
                     break;
                 case LegendLocation.Right:
-                    PlotArea.Width -= legend.DesiredSize.Width;
+                    DrawMargin.Width -= legend.DesiredSize.Width;
                     Canvas.SetTop(legend, Canvas.ActualHeight * .5 - legend.DesiredSize.Height * .5);
                     Canvas.SetLeft(legend, ActualWidth - legend.DesiredSize.Width);
                     break;
@@ -1091,7 +1110,10 @@ namespace LiveCharts.CoreComponents
             var h = MockedArea != null ? MockedArea.Value.Height : ActualHeight;
             Canvas.Width = w;
             Canvas.Height = h;
-            PlotArea = new Rect(0, 0, w, h);
+            Canvas.SetLeft(DrawMargin, 0);
+            Canvas.SetTop(DrawMargin, 0);
+            DrawMargin.Width = w;
+            DrawMargin.Height = h;
         }
 
         private void MouseWheelOnRoll(object sender, MouseWheelEventArgs e)

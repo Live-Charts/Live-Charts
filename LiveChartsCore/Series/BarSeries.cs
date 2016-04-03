@@ -61,7 +61,7 @@ namespace LiveCharts
                         var barSeries = Chart.Series.OfType<BarSeries>().ToList();
             var pos = barSeries.IndexOf(this);
             var count = barSeries.Count;
-            var unitW = ToPlotArea(CurrentYAxis.MaxLimit - 1, AxisTags.Y) - Chart.PlotArea.Y + 5;
+            var unitW = ToPlotArea(CurrentYAxis.MaxLimit - 1, AxisTags.Y) - Canvas.GetTop(Chart.DrawMargin) + 5;
             var overflow = unitW - chart.MaxColumnWidth * 3 > 0 ? unitW - chart.MaxColumnWidth * 3 : 0;
             unitW = unitW > chart.MaxColumnWidth * 3 ? chart.MaxColumnWidth * 3 : unitW;
 
@@ -194,7 +194,7 @@ namespace LiveCharts
             var barSeries = Chart.Series.OfType<BarSeries>().ToList();
             var pos = barSeries.IndexOf(this);
             var count = barSeries.Count;
-            var unitW = ToPlotArea(1, AxisTags.X) - Chart.PlotArea.X + 5;
+            var unitW = ToPlotArea(1, AxisTags.X) - Canvas.GetLeft(Chart.DrawMargin) + 5;
             var overflow = unitW - chart.MaxColumnWidth * 3 > 0 ? unitW - chart.MaxColumnWidth * 3 : 0;
             unitW = unitW > chart.MaxColumnWidth * 3 ? chart.MaxColumnWidth * 3 : unitW;
 
