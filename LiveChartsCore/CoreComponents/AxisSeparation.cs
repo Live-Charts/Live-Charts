@@ -83,17 +83,21 @@ namespace LiveCharts
 
             if (direction == AxisTags.Y)
             {
-                Canvas.SetTop(TextBlock, i - TextBlock.ActualHeight*.5);
+                var topM = axis.IsMerged ? 0 : TextBlock.ActualHeight*.5;
+                var leftM = axis.IsMerged ? TextBlock.ActualWidth : 0;
+                Canvas.SetTop(TextBlock, i - topM);
                 Canvas.SetLeft(TextBlock, axis.Position == CoreComponents.AxisPosition.LeftBottom
-                    ? axis.LabelsReference - TextBlock.ActualWidth
-                    : 0);
+                    ? axis.LabelsReference - TextBlock.ActualWidth + leftM
+                    : axis.LabelsReference - leftM);
             }
             else
             {
-                Canvas.SetLeft(TextBlock, i - TextBlock.ActualWidth*.5);
+                var topM = axis.IsMerged ? 0 : TextBlock.ActualWidth*.5;
+                var leftM = axis.IsMerged ? TextBlock.ActualHeight : 0;
+                Canvas.SetLeft(TextBlock, i - topM);
                 Canvas.SetTop(TextBlock,
                     axis.Position == CoreComponents.AxisPosition.LeftBottom
-                        ? axis.LabelsReference
+                        ? axis.LabelsReference 
                         : 0d);
             }
         }
@@ -148,7 +152,7 @@ namespace LiveCharts
                 Line.BeginAnimation(Line.Y2Property,
                     new DoubleAnimation(Line.Y2, i, _anSpeed));
 
-                var hh = TextBlock.ActualHeight*.5;
+                var hh = axis.IsMerged ? 0 : TextBlock.ActualHeight*.5;
                 TextBlock.BeginAnimation(Canvas.TopProperty,
                     new DoubleAnimation(Line.Y1 - hh, i - hh, _anSpeed));
             }
@@ -163,7 +167,7 @@ namespace LiveCharts
                 Line.BeginAnimation(Line.Y2Property,
                     new DoubleAnimation(Line.Y2, Canvas.GetTop(chart.DrawMargin) + chart.DrawMargin.Height, _anSpeed));
 
-                var hw = TextBlock.ActualWidth*.5;
+                var hw = axis.IsMerged ? 0 : TextBlock.ActualWidth*.5;
                 TextBlock.BeginAnimation(Canvas.LeftProperty,
                     new DoubleAnimation(Line.X1 - hw, i - hw, _anSpeed));
             }
@@ -186,7 +190,7 @@ namespace LiveCharts
                 Line.BeginAnimation(Line.Y2Property,
                     new DoubleAnimation(y, i, _anSpeed));
 
-                var hh = TextBlock.ActualHeight*.5;
+                var hh = axis.IsMerged ? 0 : TextBlock.ActualHeight*.5;
                 TextBlock.BeginAnimation(Canvas.TopProperty,
                     new DoubleAnimation(y - hh, i - hh, _anSpeed));
             }
@@ -203,7 +207,7 @@ namespace LiveCharts
                 Line.BeginAnimation(Line.Y2Property,
                     new DoubleAnimation(Line.Y2, Canvas.GetTop(chart.DrawMargin) + chart.DrawMargin.Height, _anSpeed));
 
-                var hw = TextBlock.ActualWidth*.5;
+                var hw = axis.IsMerged ? 0 : TextBlock.ActualWidth*.5;
                 TextBlock.BeginAnimation(Canvas.LeftProperty,
                     new DoubleAnimation(x - hw, i - hw, _anSpeed));
             }

@@ -177,8 +177,15 @@ namespace LiveCharts
             set { SetValue(TitleProperty, value); }
         }
 
+        /// <summary>
+        /// Gets or sets the axis position
+        /// </summary>
         public AxisPosition Position { get; set; }
 
+        /// <summary>
+        /// Gets or sets if the axis labels should me placed inside the chart.
+        /// </summary>
+        public bool IsMerged { get; set; }
         #endregion
 
         #region Font Properties
@@ -277,7 +284,7 @@ namespace LiveCharts
 
         internal bool IgnoresLastLabel { get; set; }
 
-        internal TextBlock BuildATextBlock(int rotate)
+        internal TextBlock BindATextBlock(int rotate)
         {
             var tb = new TextBlock();
 
@@ -422,7 +429,7 @@ namespace LiveCharts
                 {
                     axisSeparation = new AxisSeparation
                     {
-                        TextBlock = BuildATextBlock(0),
+                        TextBlock = BindATextBlock(0),
                         Line = new Line
                         {
                             Stroke = new SolidColorBrush(Separator.Color),
@@ -430,6 +437,7 @@ namespace LiveCharts
                         },
                         IsNew = true
                     };
+                    Panel.SetZIndex(axisSeparation.TextBlock, -1);
                     Panel.SetZIndex(axisSeparation.Line, -1);
                     chart.Canvas.Children.Add(axisSeparation.TextBlock);
                     chart.Canvas.Children.Add(axisSeparation.Line);
@@ -461,9 +469,6 @@ namespace LiveCharts
 
                 axisSeparation.State = SeparationState.Keep;
             }
-
-            //PlaceTitle(direction, chart);
-            //MeasureLabels(direction, chart, biggest);
 #if DEBUG
             Trace.WriteLine("Axis.Separations: " + Separations.Count);
 #endif

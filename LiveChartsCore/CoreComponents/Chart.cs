@@ -628,13 +628,12 @@ namespace LiveCharts.CoreComponents
         {
             if (DrawMargin.Height < 10 || DrawMargin.Width < 10) return;
 
-            DrawMargin.Background = Brushes.LightGreen;
+            DrawMargin.Background = new SolidColorBrush(System.Windows.Media.Colors.White) {Opacity = .3};
 
             SetPlotArea();
 
             PlaceLegend();
 
-            //Evaluating max limits...
             foreach (var yi in AxisY)
             {
                 if (yi.TitleLabel.Parent == null)
@@ -645,17 +644,25 @@ namespace LiveCharts.CoreComponents
                 yi.TitleLabel.UpdateLayout();
                 var biggest = yi.PreparePlotArea(AxisTags.Y, this);
                 var x = Canvas.GetLeft(DrawMargin);
+                var merged = yi.IsMerged ? 0 : biggest.Width;
                 if (yi.Position == AxisPosition.LeftBottom)
                 {
                     Canvas.SetLeft(yi.TitleLabel, x);
-                    yi.LabelsReference = x + yi.TitleLabel.ActualHeight + biggest.Width;
-                    DrawMargin.Width -= (yi.TitleLabel.ActualHeight - biggest.Width);
+                    yi.LabelsReference = x + yi.TitleLabel.ActualHeight + merged;
+                    Canvas.SetLeft(DrawMargin,
+                        Canvas.GetLeft(DrawMargin) + yi.TitleLabel.ActualHeight + merged);
+                    DrawMargin.Width -= (yi.TitleLabel.ActualHeight + merged);
                 }
                 else
                 {
                     Canvas.SetLeft(yi.TitleLabel, x + DrawMargin.Width - yi.TitleLabel.ActualHeight);
-                    yi.LabelsReference = x + DrawMargin.Width - yi.TitleLabel.ActualHeight - biggest.Width;
-                    DrawMargin.Width -= (yi.TitleLabel.ActualHeight + biggest.Width);
+                    yi.LabelsReference = x + DrawMargin.Width - yi.TitleLabel.ActualHeight - merged;
+                    DrawMargin.Width -= (yi.TitleLabel.ActualHeight + merged);
+                }
+                if (biggest.Height*.5 > Canvas.GetTop(DrawMargin))
+                {
+                    Canvas.SetTop(DrawMargin, biggest.Height*.5);
+                    DrawMargin.Height -= biggest.Height;
                 }
             }
 
@@ -677,8 +684,8 @@ namespace LiveCharts.CoreComponents
             {
                 var yi = AxisY[index];
                 yi.UpdateSeparations(AxisTags.Y, this, index);
-                var y = Canvas.GetTop(yi);
-                Canvas.SetTop(yi.TitleLabel, y + DrawMargin.Height*.5 + yi.TitleLabel.ActualWidth*.5);
+                Canvas.SetTop(yi.TitleLabel,
+                    Canvas.GetTop(DrawMargin) + DrawMargin.Height*.5 + yi.TitleLabel.ActualWidth*.5);
             }
 
             for (var index = 0; index < AxisX.Count; index++)
