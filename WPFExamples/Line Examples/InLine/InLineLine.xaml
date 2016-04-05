@@ -14,24 +14,26 @@
                 <lvc:LineSeries Values="300, 600, 200" Stroke="Violet" Fill="Transparent" />
                 
                 <!--using ComplementaryAxis[0]-->
-                <lvc:LineSeries Values="0, 0, 0" Stroke="Chocolate" Fill="Transparent" ScalesYAt="1" />
-                <lvc:LineSeries Values="10, 10, 10" Stroke="Chocolate" Fill="Transparent" ScalesYAt="1" />
+                <lvc:LineSeries Values="0, 0, 0" Stroke="Chocolate" Fill="Transparent" ScalesYAt="1" ScalesXAt="1" />
+                <lvc:LineSeries Values="10, 10, 10" Stroke="Chocolate" Fill="Transparent" ScalesYAt="1" ScalesXAt="1" />
                 
                 <!--using ComplementaryAxes[1]-->
-                <lvc:LineSeries Values="20000, 25000, 20000" LineSmoothness="0" Stroke="Navy" Fill="Transparent" ScalesYAt="2" />
+                <lvc:LineSeries Values="20000, 25000, 20000" LineSmoothness="0" Stroke="Navy" Fill="Transparent" ScalesYAt="2" ScalesXAt="1" />
                 
             </lvc:LineChart.Series>
             <lvc:LineChart.AxisY>
-                <lvc:Axis Foreground="Violet" Title="Violet Axis" IsMerged="True"/>
+                <lvc:Axis Foreground="Violet" Title="Violet Axis" IsMerged="True" Position="LeftBottom"/>
                 <lvc:Axis Foreground="Chocolate" Title="Chocolate Axis" Position="RightTop" />
                 <lvc:Axis Foreground="Navy" Title="Navy Axis" Position="RightTop" />
             </lvc:LineChart.AxisY>
             <lvc:LineChart.AxisX>
                 <lvc:Axis 
                     Title="Multi Line Axis"
-                    Labels="Multi &#x0a; Line 1, Multi &#x0a; Line 2, Multi &#x0a; Line 3, Multi &#x0a; Line 4, Multi &#x0a; Line 5, Multi &#x0a; Line 6">
-                </lvc:Axis>
-                <lvc:Axis Title="Another dummy axis"/>
+                    Labels="MultiLine&#x0a;1, MultiLine&#x0a;2, MultiLine&#x0a;3, MultiLine&#x0a;4, Multi&#x0a;Line&#x0a;5,Multi&#x0a;Line&#x0a;6"
+                    Position="LeftBottom"
+                    IsMerged="True"/>
+                <lvc:Axis Title="Another dummy axis" Position="RightTop" IsMerged="True"/>
+                <!--<lvc:Axis Title="Just another one" Position="RightTop"/>-->
             </lvc:LineChart.AxisX>
         </lvc:LineChart>
     </Grid>

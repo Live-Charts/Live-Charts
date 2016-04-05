@@ -634,6 +634,8 @@ namespace LiveCharts.CoreComponents
 
             PlaceLegend();
 
+            double t = 0d, b = 0d;
+
             foreach (var yi in AxisY)
             {
                 if (yi.TitleLabel.Parent == null)
@@ -659,26 +661,51 @@ namespace LiveCharts.CoreComponents
                     yi.LabelsReference = x + DrawMargin.Width - yi.TitleLabel.ActualHeight - merged;
                     DrawMargin.Width -= (yi.TitleLabel.ActualHeight + merged);
                 }
-                if (biggest.Height*.5 > Canvas.GetTop(DrawMargin))
-                {
-                    Canvas.SetTop(DrawMargin, biggest.Height*.5);
-                    DrawMargin.Height -= biggest.Height;
-                }
+
+                var top = yi.IsMerged ? 0 : biggest.Height*.5;
+                if (t < top) t = top;
+
+                var bot = yi.IsMerged ? biggest.Height : biggest.Height*.5;
+                if (b < bot) b = bot;
             }
 
-            //foreach (var xi in AxisX)
-            //{
-            //    var biggest = xi.PreparePlotArea(AxisTags.X, this);
+            Canvas.SetTop(DrawMargin, t);
+            DrawMargin.Height = DrawMargin.Height - b;
 
-            //    if (xi.Position == AxisPosition.LeftBottom)
-            //    {
-            //        xi.LabelsReference = Canvas.GetTop(xi.TitleLabel) - biggest.Height;
-            //    }
-            //    else
-            //    {
+            foreach (var xi in AxisX)
+            {
+                if (xi.TitleLabel.Parent == null) Canvas.Children.Add(xi.TitleLabel);
 
-            //    }
-            //}
+                xi.TitleLabel.UpdateLayout();
+                var biggest = xi.PreparePlotArea(AxisTags.X, this);
+                var y = Canvas.GetTop(DrawMargin);
+                var merged = xi.IsMerged ? 0 : biggest.Height;
+                if (xi.Position == AxisPosition.LeftBottom)
+                {
+                    Canvas.SetTop(xi.TitleLabel, y + DrawMargin.Height - (b - t));
+                    xi.LabelsReference = y +
+                                         (DrawMargin.Height -
+                                          (xi.IsMerged
+                                              ? (xi.TitleLabel.ActualHeight + merged)
+                                              : 0))
+                                         - merged - (b - t);
+                    DrawMargin.Height -= (xi.TitleLabel.ActualHeight + merged + (b-t));
+                }
+                else
+                {
+                    Canvas.SetTop(xi.TitleLabel, y - t);
+                    xi.LabelsReference = y + xi.TitleLabel.ActualHeight + merged - (xi.IsMerged ? 0 : t);
+                    Canvas.SetTop(DrawMargin,
+                        Canvas.GetTop(DrawMargin) + xi.TitleLabel.ActualHeight + merged);
+                    DrawMargin.Height -= (xi.TitleLabel.ActualHeight + merged);
+                }
+
+                //var left = xi.IsMerged ? 0 : biggest.Height * .5;
+                //if (Canvas.GetTop(DrawMargin) < left) Canvas.SetTop(DrawMargin, left);
+                //var bot = xi.IsMerged ? biggest.Height : biggest.Height * .5;
+                //if (Canvas.GetTop(DrawMargin) + DrawMargin.Height + bot > ActualHeight)
+                //    DrawMargin.Height = DrawMargin.Height - bot;
+            }
 
             for (var index = 0; index < AxisY.Count; index++)
             {
@@ -692,6 +719,8 @@ namespace LiveCharts.CoreComponents
             {
                 var xi = AxisX[index];
                 xi.UpdateSeparations(AxisTags.X, this, index);
+                Canvas.SetLeft(xi.TitleLabel,
+                    Canvas.GetLeft(DrawMargin) + DrawMargin.Width*.5 - xi.TitleLabel.ActualWidth*.5);
             }
 
             //drawing ceros.

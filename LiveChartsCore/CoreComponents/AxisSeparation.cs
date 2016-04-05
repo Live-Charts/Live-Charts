@@ -97,8 +97,8 @@ namespace LiveCharts
                 Canvas.SetLeft(TextBlock, i - topM);
                 Canvas.SetTop(TextBlock,
                     axis.Position == CoreComponents.AxisPosition.LeftBottom
-                        ? axis.LabelsReference 
-                        : 0d);
+                        ? axis.LabelsReference - TextBlock.ActualHeight
+                        : axis.LabelsReference);
             }
         }
 

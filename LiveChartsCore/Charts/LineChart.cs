@@ -21,7 +21,6 @@
 //SOFTWARE.
 
 using System;
-using System.Windows;
 using LiveCharts.CoreComponents;
 
 namespace LiveCharts
