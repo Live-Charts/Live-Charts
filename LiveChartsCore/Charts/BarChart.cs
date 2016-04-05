@@ -101,10 +101,10 @@ namespace LiveCharts
                 if (yi.MinValue == null) yi.MinLimit = (Math.Truncate(yi.MinLimit/yi.S) - 1)*yi.S;
             }
 
-            DrawComponents();
+            CalculateComponentsAndMargin();
         }
 
-        protected override void DrawComponents()
+        protected override void CalculateComponentsAndMargin()
         {
             if (Invert) ConfigureYAsIndexed();
             else ConfigureXAsIndexed();
@@ -149,7 +149,7 @@ namespace LiveCharts
             //if (Invert) YOffset = unitW / 2;
             //else XOffset = unitW / 2;
 
-            base.DrawComponents();
+            base.CalculateComponentsAndMargin();
         }
 
         #endregion

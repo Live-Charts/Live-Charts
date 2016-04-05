@@ -624,7 +624,7 @@ namespace LiveCharts.CoreComponents
         #endregion
 
         #region Virtual Methods
-        protected virtual void DrawComponents()
+        protected virtual void CalculateComponentsAndMargin()
         {
             if (DrawMargin.Height < 10 || DrawMargin.Width < 10) return;
 
@@ -634,7 +634,7 @@ namespace LiveCharts.CoreComponents
 
             PlaceLegend();
 
-            double t = 0d, b = 0d;
+            double t = 0d, b = 0d, bm = 0;
 
             foreach (var yi in AxisY)
             {
@@ -665,8 +665,11 @@ namespace LiveCharts.CoreComponents
                 var top = yi.IsMerged ? 0 : biggest.Height*.5;
                 if (t < top) t = top;
 
-                var bot = yi.IsMerged ? biggest.Height : biggest.Height*.5;
+                var bot = yi.IsMerged ? 0 : biggest.Height*.5;
                 if (b < bot) b = bot;
+
+                if (yi.IsMerged && bm < biggest.Height)
+                    bm = biggest.Height;
             }
 
             Canvas.SetTop(DrawMargin, t);
@@ -678,23 +681,20 @@ namespace LiveCharts.CoreComponents
 
                 xi.TitleLabel.UpdateLayout();
                 var biggest = xi.PreparePlotArea(AxisTags.X, this);
-                var y = Canvas.GetTop(DrawMargin);
+                var top = Canvas.GetTop(DrawMargin);
                 var merged = xi.IsMerged ? 0 : biggest.Height;
                 if (xi.Position == AxisPosition.LeftBottom)
                 {
-                    Canvas.SetTop(xi.TitleLabel, y + DrawMargin.Height - (b - t));
-                    xi.LabelsReference = y +
-                                         (DrawMargin.Height -
-                                          (xi.IsMerged
-                                              ? (xi.TitleLabel.ActualHeight + merged)
-                                              : 0))
-                                         - merged - (b - t);
-                    DrawMargin.Height -= (xi.TitleLabel.ActualHeight + merged + (b-t));
+                    Canvas.SetTop(xi.TitleLabel, top + DrawMargin.Height - xi.TitleLabel.ActualHeight);
+                    xi.LabelsReference = top + b - (xi.IsMerged ? bm : 0) +
+                        (DrawMargin.Height - (xi.TitleLabel.ActualHeight + merged + b)) -
+                        (xi.IsMerged ? b : 0);
+                    DrawMargin.Height -= (xi.TitleLabel.ActualHeight + merged + b);
                 }
                 else
                 {
-                    Canvas.SetTop(xi.TitleLabel, y - t);
-                    xi.LabelsReference = y + xi.TitleLabel.ActualHeight + merged - (xi.IsMerged ? 0 : t);
+                    Canvas.SetTop(xi.TitleLabel, top - t);
+                    xi.LabelsReference = (top - t) + xi.TitleLabel.ActualHeight + (xi.IsMerged ? bm : 0);
                     Canvas.SetTop(DrawMargin,
                         Canvas.GetTop(DrawMargin) + xi.TitleLabel.ActualHeight + merged);
                     DrawMargin.Height -= (xi.TitleLabel.ActualHeight + merged);

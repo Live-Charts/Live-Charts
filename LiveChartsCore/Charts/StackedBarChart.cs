@@ -227,7 +227,7 @@ namespace LiveCharts
             //   AxisY.MinLimit = AxisY.MinValue ?? (Math.Truncate(Min.Y /AxisY.S) - 1) *AxisY.S;
             //}
 
-            DrawComponents();
+            CalculateComponentsAndMargin();
         }
 
         protected override Point GetToolTipPosition(ShapeMap sender, List<ShapeMap> sibilings)
@@ -249,7 +249,7 @@ namespace LiveCharts
             return new Point();
         }
 
-        protected override void DrawComponents()
+        protected override void CalculateComponentsAndMargin()
         {
    //         if (Invert)
    //         {
@@ -300,7 +300,7 @@ namespace LiveCharts
    //         if (Invert) YOffset = unitW / 2;
    //         else XOffset = unitW / 2;
 
-            base.DrawComponents();
+            base.CalculateComponentsAndMargin();
         }
     }
 

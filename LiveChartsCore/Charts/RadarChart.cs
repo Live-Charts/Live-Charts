@@ -97,7 +97,7 @@ namespace LiveCharts
         }
         #endregion
 
-        protected override void DrawComponents()
+        protected override void CalculateComponentsAndMargin()
         {
             //if (Series == null || Series.Count == 0) return;
             //this.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
@@ -156,7 +156,7 @@ namespace LiveCharts
             
             base.PrepareAxes();
 
-            DrawComponents();
+            CalculateComponentsAndMargin();
         }
 
         protected override Point GetToolTipPosition(ShapeMap sender, List<ShapeMap> sibilings)

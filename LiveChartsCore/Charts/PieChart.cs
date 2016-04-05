@@ -104,7 +104,7 @@ namespace LiveCharts
 
             if (!HasValidSeriesAndValues) return;
             base.PrepareAxes();
-            DrawComponents();
+            CalculateComponentsAndMargin();
             //rest of the series are ignored by now, we only plot the firt one
             var hasInvalidSeries = Series.Cast<PieSeries>().Any(x => x == null);
             if (hasInvalidSeries)
@@ -113,7 +113,7 @@ namespace LiveCharts
             PieTotalSums = GetPieSum();
         }
 
-        protected override void DrawComponents()
+        protected override void CalculateComponentsAndMargin()
         {
             foreach (var l in Shapes) Canvas.Children.Remove(l);
             var legend = Legend ?? new ChartLegend();
