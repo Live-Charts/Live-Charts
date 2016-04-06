@@ -628,8 +628,6 @@ namespace LiveCharts.CoreComponents
         {
             if (DrawMargin.Height < 10 || DrawMargin.Width < 10) return;
 
-            DrawMargin.Background = new SolidColorBrush(System.Windows.Media.Colors.White) {Opacity = .3};
-
             SetPlotArea();
 
             PlaceLegend();

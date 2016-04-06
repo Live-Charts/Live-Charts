@@ -7,24 +7,21 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
-        <lvc:LineChart Background="BlueViolet">
+        <lvc:LineChart>
             <lvc:LineChart.Series>
                 
-                <!--using default axis-->
-                <lvc:LineSeries Values="300, 600, 200" Stroke="Violet" Fill="Transparent" />
+                <lvc:LineSeries Values="300, 600, 200" Stroke="Violet" Fill="Transparent" ScalesYAt="0" />
                 
-                <!--using ComplementaryAxis[0]-->
-                <lvc:LineSeries Values="0, 0, 0" Stroke="Chocolate" Fill="Transparent" ScalesYAt="1" ScalesXAt="1" />
-                <lvc:LineSeries Values="10, 10, 10" Stroke="Chocolate" Fill="Transparent" ScalesYAt="1" ScalesXAt="1" />
+                <lvc:LineSeries Values="0, 0, 0" Stroke="Chocolate" Fill="Transparent" ScalesYAt="1" />
+                <lvc:LineSeries Values="10, 10, 10" Stroke="Chocolate" Fill="Transparent" ScalesYAt="1" />
                 
-                <!--using ComplementaryAxes[1]-->
-                <lvc:LineSeries Values="20000, 25000, 20000" LineSmoothness="0" Stroke="Navy" Fill="Transparent" ScalesYAt="1" ScalesXAt="1" />
+                <lvc:LineSeries Values="20000, 25000, 20000" LineSmoothness="0" Stroke="Navy" Fill="Transparent" ScalesYAt="2" />
                 
             </lvc:LineChart.Series>
             <lvc:LineChart.AxisY>
-                <lvc:Axis Foreground="Violet" Title="Violete Ax" ShowLabels="True" IsMerged="False" Position="RightTop"/>
-                <lvc:Axis Foreground="Chocolate" Title="Chocolate Ax" IsMerged="False" Position="RightTop" />
-                <!--<lvc:Axis Foreground="Navy" Title="Navy Axis" Position="RightTop" />-->
+                <lvc:Axis Foreground="Violet" Title="Violete Ax" ShowLabels="True" IsMerged="False" Position="LeftBottom"/>
+                <lvc:Axis Foreground="Chocolate" Title="Chocolate Ax" IsMerged="False" Position="RightTop" Separator="{x:Static lvc:DefaultAxes.CleanSeparator}" />
+                <lvc:Axis Foreground="Navy" Title="Navy Ax" Position="RightTop" Separator="{x:Static lvc:DefaultAxes.CleanSeparator}" />
             </lvc:LineChart.AxisY>
             <lvc:LineChart.AxisX>
                 <lvc:Axis 
@@ -33,8 +30,6 @@
                     Position="LeftBottom"
                     IsMerged="False"
                     ShowLabels="True"/>
-                <lvc:Axis Title="Dummy Ax" Position="LeftBottom" IsMerged="False" ShowLabels="True"/>
-                <!--<lvc:Axis Title="Just another one" Position="RightTop" IsMerged="False"/>-->
             </lvc:LineChart.AxisX>
         </lvc:LineChart>
     </Grid>

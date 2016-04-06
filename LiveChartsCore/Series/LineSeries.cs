@@ -101,11 +101,11 @@ namespace LiveCharts
                     area = _areas[s];
                 }
 
-                var p0 = ToDrawMargin(segment[0]).AsPoint();
+                var p0 = ToDrawMargin(segment[0], ScalesXAt, ScalesYAt).AsPoint();
                 area.Figure.StartPoint = isNew
                     ? (Chart.Invert
-                        ? new Point(ToPlotArea(CurrentXAxis.MinLimit, AxisTags.X), p0.X)
-                        : new Point(p0.X, ToPlotArea(CurrentYAxis.MinLimit, AxisTags.Y)))
+                        ? new Point(ToPlotArea(CurrentXAxis.MinLimit, AxisTags.X, ScalesXAt), p0.X)
+                        : new Point(p0.X, ToPlotArea(CurrentYAxis.MinLimit, AxisTags.Y, ScalesYAt)))
                     : p0;
                 area.Figure.BeginAnimation(PathFigure.StartPointProperty,
                     new PointAnimation(area.Figure.StartPoint,
@@ -148,7 +148,8 @@ namespace LiveCharts
 
                 if (area != null)
                     area.DrawLimits(first, last,
-                        new Point(ToDrawMargin(CurrentXAxis.MinLimit, AxisTags.X), ToDrawMargin(CurrentYAxis.MinLimit, AxisTags.Y)),
+                        new Point(ToDrawMargin(CurrentXAxis.MinLimit, AxisTags.X, ScalesXAt),
+                            ToDrawMargin(CurrentYAxis.MinLimit, AxisTags.Y, ScalesYAt)),
                         Chart.Invert);
 
 #if DEBUG
@@ -251,10 +252,10 @@ namespace LiveCharts
 
         private BezierData CalculateBezier(int index, IList<ChartPoint> source)
         {
-            var p1 = ToDrawMargin(source[index]);
-            var p2 = ToDrawMargin(source[index + 1]);
-            var p0 = index == 0 ? p1 : ToDrawMargin(source[index - 1]);
-            var p3 = index == source.Count - 2 ? p2 : ToDrawMargin(source[index + 2]);
+            var p1 = ToDrawMargin(source[index], ScalesXAt, ScalesYAt);
+            var p2 = ToDrawMargin(source[index + 1], ScalesXAt, ScalesYAt);
+            var p0 = index == 0 ? p1 : ToDrawMargin(source[index - 1], ScalesXAt, ScalesYAt);
+            var p3 = index == source.Count - 2 ? p2 : ToDrawMargin(source[index + 2], ScalesXAt, ScalesYAt);
 
             var xc1 = (p0.X + p1.X) / 2.0;
             var yc1 = (p0.Y + p1.Y) / 2.0;
@@ -449,11 +450,11 @@ namespace LiveCharts
                     StrokeThickness = 0
                 };
                 BindingOperations.SetBinding(e, Shape.FillProperty,
-                    new Binding { Path = new PropertyPath("Fill"), Source = this });
+                    new Binding { Path = new PropertyPath(StrokeProperty), Source = this });
                 BindingOperations.SetBinding(e, VisibilityProperty,
-                    new Binding { Path = new PropertyPath("Visibility"), Source = this });
+                    new Binding { Path = new PropertyPath(VisibilityProperty), Source = this });
                 BindingOperations.SetBinding(hs, VisibilityProperty,
-                    new Binding { Path = new PropertyPath("Visibility"), Source = this });
+                    new Binding { Path = new PropertyPath(VisibilityProperty), Source = this });
                 return new VisualHelper
                 {
                     PointShape = e,

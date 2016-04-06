@@ -306,29 +306,36 @@ namespace LiveCharts.CoreComponents
         #endregion
 
         #region ProtectedMethods
+
         /// <summary>
         /// Scales a graph value to screen according to an axis. 
         /// </summary>
         /// <param name="value"></param>
         /// <param name="axis"></param>
+        /// <param name="axIndex"></param>
         /// <returns></returns>
-        protected double ToPlotArea(double value, AxisTags axis)
+        protected double ToPlotArea(double value, AxisTags axis, int axIndex = 0)
         {
-            return Methods.ToPlotArea(value, axis, Chart);
+            return Methods.ToPlotArea(value, axis, Chart, axIndex);
         }
+
         /// <summary>
         /// Scales a graph point to screen.
         /// </summary>
         /// <param name="value"></param>
+        /// <param name="xIndex"></param>
+        /// <param name="yIndex"></param>
         /// <returns></returns>
-        protected Point ToPlotArea(Point value)
+        protected Point ToPlotArea(Point value, int xIndex = 0, int yIndex = 0)
         {
-            return new Point(ToPlotArea(value.X, AxisTags.X), ToPlotArea(value.Y, AxisTags.Y));
+            return new Point(ToPlotArea(value.X, AxisTags.X, xIndex),
+                ToPlotArea(value.Y, AxisTags.Y, yIndex));
         }
 
-        protected Point ToPlotArea(ChartPoint point)
+        protected Point ToPlotArea(ChartPoint point, int xIndex = 0, int yIndex = 0)
         {
-            return new Point(ToPlotArea(point.X, AxisTags.X), ToPlotArea(point.Y, AxisTags.Y));
+            return new Point(ToPlotArea(point.X, AxisTags.X, xIndex),
+                ToPlotArea(point.Y, AxisTags.Y, yIndex));
         }
 
         protected double ToDrawMargin(double value, AxisTags source, int axis = 0)
