@@ -22,17 +22,18 @@
                 
             </lvc:LineChart.Series>
             <lvc:LineChart.AxisY>
-                <lvc:Axis Foreground="Violet" Title="Violet Axis" IsMerged="True" Position="LeftBottom"/>
+                <lvc:Axis Foreground="Violet" Title="" ShowLabels="False" IsMerged="False" Position="LeftBottom"/>
                 <lvc:Axis Foreground="Chocolate" Title="Chocolate Axis" IsMerged="True" Position="RightTop" />
                 <!--<lvc:Axis Foreground="Navy" Title="Navy Axis" Position="RightTop" />-->
             </lvc:LineChart.AxisY>
             <lvc:LineChart.AxisX>
                 <lvc:Axis 
-                    Title="Multi Line Axis"
+                    Title=""
                     Labels="MultiLine&#x0a;1, MultiLine&#x0a;2, MultiLine&#x0a;3, MultiLine&#x0a;4, Multi&#x0a;Line&#x0a;5,Multi&#x0a;Line&#x0a;6"
-                    Position="RightTop"
-                    IsMerged="False"/>
-                <lvc:Axis Title="Another dummy axis" Position="LeftBottom" IsMerged="True"/>
+                    Position="LeftBottom"
+                    IsMerged="False"
+                    ShowLabels="False"/>
+                <lvc:Axis Title="" Position="LeftBottom" IsMerged="False" ShowLabels="False"/>
                 <!--<lvc:Axis Title="Just another one" Position="RightTop" IsMerged="False"/>-->
             </lvc:LineChart.AxisX>
         </lvc:LineChart>

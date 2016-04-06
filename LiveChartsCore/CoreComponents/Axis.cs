@@ -409,9 +409,8 @@ namespace LiveCharts
 
         internal Size PreparePlotArea(AxisTags direction, Chart chart)
         {
-            if (!HasValidRange) return new Size();
+            if (!HasValidRange || !ShowLabels) return new Size();
             if (chart.DrawMargin.Width < 5 || chart.DrawMargin.Height < 5) return new Size();
-            if (!ShowLabels) return new Size();
 
             CalculateSeparator(chart, direction);
 
