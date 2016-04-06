@@ -88,7 +88,7 @@ namespace LiveCharts
                         ? + TextBlock.ActualHeight
                         : 0)
                     : TextBlock.ActualHeight*.5;
-                var leftM = axis.IsMerged ? TextBlock.ActualWidth + 2 : 0;
+                var leftM = axis.IsMerged ? TextBlock.ActualWidth + 10 : 0;
                 Canvas.SetTop(TextBlock, i - topM);
                 Canvas.SetLeft(TextBlock, axis.Position == CoreComponents.AxisPosition.LeftBottom
                     ? axis.LabelsReference - TextBlock.ActualWidth + leftM

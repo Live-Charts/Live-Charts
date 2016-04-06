@@ -634,7 +634,8 @@ namespace LiveCharts.CoreComponents
 
             PlaceLegend();
 
-            double t = 0d, b = 0d, bm = 0;
+            //left, bot, botMerged, left, right margins
+            double t = 0d, b = 0d, bm = 0d, l = 0d, r = 0d;
 
             foreach (var yi in AxisY)
             {
@@ -646,11 +647,11 @@ namespace LiveCharts.CoreComponents
                 yi.TitleLabel.UpdateLayout();
                 var biggest = yi.PreparePlotArea(AxisTags.Y, this);
                 var x = Canvas.GetLeft(DrawMargin);
-                var merged = yi.IsMerged ? 0 : biggest.Width;
+                var merged = yi.IsMerged ? 0 : biggest.Width + 2;
                 if (yi.Position == AxisPosition.LeftBottom)
                 {
                     Canvas.SetLeft(yi.TitleLabel, x);
-                    yi.LabelsReference = x + yi.TitleLabel.ActualHeight + merged;
+                    yi.LabelsReference = x + yi.TitleLabel.ActualHeight + merged - 2;
                     Canvas.SetLeft(DrawMargin,
                         Canvas.GetLeft(DrawMargin) + yi.TitleLabel.ActualHeight + merged);
                     DrawMargin.Width -= (yi.TitleLabel.ActualHeight + merged);
@@ -700,12 +701,20 @@ namespace LiveCharts.CoreComponents
                     DrawMargin.Height -= (xi.TitleLabel.ActualHeight + merged);
                 }
 
-                //var left = xi.IsMerged ? 0 : biggest.Height * .5;
-                //if (Canvas.GetTop(DrawMargin) < left) Canvas.SetTop(DrawMargin, left);
-                //var bot = xi.IsMerged ? biggest.Height : biggest.Height * .5;
-                //if (Canvas.GetTop(DrawMargin) + DrawMargin.Height + bot > ActualHeight)
-                //    DrawMargin.Height = DrawMargin.Height - bot;
+                var left = xi.IsMerged ? 0 : biggest.Width * .5;
+                if (l < left) l = left;
+
+                var right = xi.IsMerged ? 0 : biggest.Width * .5;
+                if (r < right) r = right;
             }
+
+            //if (Canvas.GetLeft(DrawMargin) < l)
+            //{
+            //    Canvas.SetLeft(DrawMargin, l);
+            //    DrawMargin.Width -= l;
+            //}
+            //if (ActualWidth - Canvas.GetLeft(DrawMargin) - DrawMargin.Width < r)
+            //    DrawMargin.Width = r;
 
             for (var index = 0; index < AxisY.Count; index++)
             {

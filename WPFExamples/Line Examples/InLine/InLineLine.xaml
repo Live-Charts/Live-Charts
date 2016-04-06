@@ -27,13 +27,13 @@
                 <!--<lvc:Axis Foreground="Navy" Title="Navy Axis" Position="RightTop" />-->
             </lvc:LineChart.AxisY>
             <lvc:LineChart.AxisX>
-                <!--<lvc:Axis 
+                <lvc:Axis 
                     Title="Multi Line Axis"
                     Labels="MultiLine&#x0a;1, MultiLine&#x0a;2, MultiLine&#x0a;3, MultiLine&#x0a;4, Multi&#x0a;Line&#x0a;5,Multi&#x0a;Line&#x0a;6"
                     Position="RightTop"
-                    IsMerged="False"/>-->
+                    IsMerged="False"/>
                 <lvc:Axis Title="Another dummy axis" Position="LeftBottom" IsMerged="True"/>
-                <lvc:Axis Title="Just another one" Position="RightTop" IsMerged="True"/>
+                <!--<lvc:Axis Title="Just another one" Position="RightTop" IsMerged="False"/>-->
             </lvc:LineChart.AxisX>
         </lvc:LineChart>
     </Grid>
