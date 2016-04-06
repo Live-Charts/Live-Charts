@@ -708,13 +708,28 @@ namespace LiveCharts.CoreComponents
                 if (r < right) r = right;
             }
 
-            //if (Canvas.GetLeft(DrawMargin) < l)
-            //{
-            //    Canvas.SetLeft(DrawMargin, l);
-            //    DrawMargin.Width -= l;
-            //}
-            //if (ActualWidth - Canvas.GetLeft(DrawMargin) - DrawMargin.Width < r)
-            //    DrawMargin.Width = r;
+            if (Canvas.GetLeft(DrawMargin) < l)
+            {
+                var cor = l - Canvas.GetLeft(DrawMargin);
+                Canvas.SetLeft(DrawMargin, l);
+                DrawMargin.Width -= cor;
+                foreach (var yi in AxisY.Where(x => x.Position == AxisPosition.LeftBottom))
+                {
+                    Canvas.SetLeft(yi.TitleLabel, Canvas.GetLeft(yi.TitleLabel) + cor);
+                    yi.LabelsReference += cor;
+                }
+            }
+            var rp = ActualWidth - Canvas.GetLeft(DrawMargin) - DrawMargin.Width;
+            if (r > rp)
+            {
+                var cor = r - rp;
+                DrawMargin.Width -= cor;
+                foreach (var yi in AxisY.Where(x => x.Position == AxisPosition.RightTop))
+                {
+                    Canvas.SetLeft(yi.TitleLabel, Canvas.GetLeft(yi.TitleLabel) - cor);
+                    yi.LabelsReference -= cor;
+                }
+            }
 
             for (var index = 0; index < AxisY.Count; index++)
             {
