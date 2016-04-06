@@ -681,10 +681,8 @@ namespace LiveCharts.CoreComponents
                 Canvas.SetTop(DrawMargin, t);
                 DrawMargin.Height -= t;
             }
-            if (b > 0)
-            {
+            if (b > 0 && !AxisX.Any())
                 DrawMargin.Height = DrawMargin.Height - b;
-            }
 
             foreach (var xi in AxisX)
             {
