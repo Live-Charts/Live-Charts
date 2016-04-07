@@ -285,6 +285,11 @@ namespace LiveCharts
 
         internal bool IgnoresLastLabel { get; set; }
 
+        internal void Reset()
+        {
+            Separations.Clear();
+        }
+
         internal TextBlock BindATextBlock(int rotate)
         {
             var tb = new TextBlock();

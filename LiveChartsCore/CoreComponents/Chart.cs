@@ -1053,6 +1053,8 @@ namespace LiveCharts.CoreComponents
 
                 if (args.Action == NotifyCollectionChangedAction.Reset)
                 {
+                    foreach (var yi in AxisY) yi.Reset();
+                    foreach (var xi in AxisX) xi.Reset();
                     chart.DrawMargin.Children.Clear();
                     chart.Canvas.Children.Clear();
                     chart.Shapes.Clear();
