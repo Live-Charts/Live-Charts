@@ -88,6 +88,11 @@ namespace ChartsTest.Line_Examples.Basic
 
             Series.Add(someNewSeries);
         }
+
+        private void TestOnClick(object sender, RoutedEventArgs e)
+        {
+            Series.Clear();
+        }
     }
 
 }

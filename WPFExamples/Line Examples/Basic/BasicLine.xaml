@@ -24,6 +24,7 @@
             <TextBlock VerticalAlignment="Center">Series</TextBlock>
             <Button Margin="5" Click="RemoveSeriesOnClick">-</Button>
             <Button Margin="5" Click="AddSeriesOnClick">+</Button>
+            <Button Margin="5" Click="TestOnClick">Reset</Button>
         </StackPanel>
         <lvc:LineChart Name="Chart" Grid.Row="2" LegendLocation="Right"
                        Series="{Binding Series}" Background="White">

@@ -147,7 +147,11 @@ namespace LiveCharts.CoreComponents
             _serieValuesChanged.Tick += UpdateModifiedDataSeries;
 
             SeriesChanged = new DispatcherTimer {Interval = TimeSpan.FromMilliseconds(100)};
-            SeriesChanged.Tick += UpdateSeries;
+            SeriesChanged.Tick += (sender, args) =>
+            {
+                PrepareCanvas();
+                UpdateSeries(sender, args);
+            };
         }
 
         #region StaticProperties
@@ -1049,6 +1053,7 @@ namespace LiveCharts.CoreComponents
 
                 if (args.Action == NotifyCollectionChangedAction.Reset)
                 {
+                    chart.DrawMargin.Children.Clear();
                     chart.Canvas.Children.Clear();
                     chart.Shapes.Clear();
                     chart.ShapesMapper.Clear();
