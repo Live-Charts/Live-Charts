@@ -253,6 +253,8 @@ namespace LiveCharts
                     new Binding { Path = new PropertyPath("Fill"), Source = this });
                 BindingOperations.SetBinding(newSlice, Shape.StrokeThicknessProperty,
                     new Binding { Path = new PropertyPath("StrokeThickness"), Source = this });
+                BindingOperations.SetBinding(newSlice, Shape.StrokeDashArrayProperty,
+                        new Binding { Path = new PropertyPath(StrokeDashArrayProperty), Source = this });
                 BindingOperations.SetBinding(newSlice, VisibilityProperty,
                     new Binding { Path = new PropertyPath("Visibility"), Source = this });
 

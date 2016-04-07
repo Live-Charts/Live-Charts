@@ -208,6 +208,15 @@ namespace LiveCharts.CoreComponents
             get { return (Brush)GetValue(ForegroundProperty); }
             set { SetValue(ForegroundProperty, value); }
         }
+
+        public static readonly DependencyProperty StrokeDashArrayProperty = DependencyProperty.Register(
+            "StrokeDashArray", typeof(DoubleCollection), typeof(Series), new PropertyMetadata(default(DoubleCollection)));
+
+        public DoubleCollection StrokeDashArray
+        {
+            get { return (DoubleCollection)GetValue(StrokeDashArrayProperty); }
+            set { SetValue(StrokeDashArrayProperty, value); }
+        }
         #endregion
 
         #region Properties

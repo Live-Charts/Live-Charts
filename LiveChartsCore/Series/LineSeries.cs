@@ -50,7 +50,6 @@ namespace LiveCharts
         {
             StrokeThickness = 2.5;
             PointRadius = 4;
-            SetValue(StrokeDashArrayProperty, new DoubleCollection());
         }
 
         private ILine LineChart
@@ -61,15 +60,6 @@ namespace LiveCharts
         public double? LineSmoothness { get; set; }
 
         public double PointRadius { get; set; }
-
-        public static readonly DependencyProperty StrokeDashArrayProperty = DependencyProperty.Register(
-            "StrokeDashArray", typeof (DoubleCollection), typeof (LineSeries), new PropertyMetadata(default(DoubleCollection)));
-
-        public DoubleCollection StrokeDashArray
-        {
-            get { return (DoubleCollection) GetValue(StrokeDashArrayProperty); }
-            set { SetValue(StrokeDashArrayProperty, value); }
-        }
 
         public override void Plot(bool animate = true)
         {
