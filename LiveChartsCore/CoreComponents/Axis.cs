@@ -41,12 +41,13 @@ namespace LiveCharts
         public Axis()
         {
             CleanFactor = 3;
-            Separator = new Separator
+
+            SetValue(SeparatorProperty, new Separator
             {
                 IsEnabled = true,
                 Color = Color.FromRgb(242, 242, 242),
                 StrokeThickness = 1
-            };
+            });
 
             TitleLabel = new TextBlock();
 

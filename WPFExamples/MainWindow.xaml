@@ -55,7 +55,7 @@
                     <ColumnDefinition Width="Auto"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
                 <Image Grid.Column="0" Source="Left.png" MouseDown="LinePrevious"/>
-                <ContentControl Name="LineControl" Grid.Column="1" Height="500" Width="Auto"></ContentControl>
+                <ContentControl Name="LineControl" Grid.Column="1" Height="500" Width="Auto"/>
                 <Image Grid.Column="2" Source="Right.png" MouseDown="LineNext"/>
             </Grid>
 

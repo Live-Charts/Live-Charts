@@ -106,9 +106,6 @@ namespace LiveCharts
 
         protected override void CalculateComponentsAndMargin()
         {
-            if (Invert) ConfigureYAsIndexed();
-            else ConfigureXAsIndexed();
-
             Canvas.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
 
             //var lastLabelX = Math.Truncate((Max.X -AxisX.MinLimit)/S.X)*S.X;

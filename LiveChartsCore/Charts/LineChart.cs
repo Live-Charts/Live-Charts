@@ -32,9 +32,6 @@ namespace LiveCharts
         {
             ShapeHoverBehavior = ShapeHoverBehavior.Dot;
             LineSmoothness = 0.8;
-
-            SetCurrentValue(AxisXProperty, new List<Axis> {DefaultAxes.CleanAxis});
-            SetCurrentValue(AxisYProperty, new List<Axis> {DefaultAxes.DefaultAxis});
         }
 
         #region Properties
@@ -71,9 +68,6 @@ namespace LiveCharts
 
         protected override void CalculateComponentsAndMargin()
         {
-            if (Invert) ConfigureYAsIndexed();
-            else ConfigureXAsIndexed();
-
             //This calculation should be done by eaxh axis, not by the chart, to keep this clean...
 
             //Canvas.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));

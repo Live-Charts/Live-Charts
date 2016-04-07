@@ -101,11 +101,11 @@ namespace LiveCharts.CoreComponents
             Canvas.SetLeft(DrawMargin, 0d);
             Canvas.SetTop(DrawMargin, 0d);
 
-            SetCurrentValue(MinHeightProperty, 125d);
-            SetCurrentValue(MinWidthProperty, 125d);
+            SetValue(MinHeightProperty, 125d);
+            SetValue(MinWidthProperty, 125d);
 
-            SetCurrentValue(AxisYProperty, new List<Axis>());
-            SetCurrentValue(AxisXProperty, new List<Axis>());
+            SetValue(AxisYProperty, new List<Axis>());
+            SetValue(AxisXProperty, new List<Axis>());
 
             if (RandomizeStartingColor) ColorStartIndex = Randomizer.Next(0, Colors.Count - 1);
             
@@ -548,47 +548,14 @@ namespace LiveCharts.CoreComponents
 
         #region ProtectedMethods
 
-        protected void ConfigureXAsIndexed()
+        protected void ValidateAxes()
         {
-            //foreach (var xi in AxisX)
-            //{
-            //    if (xi.Labels == null && xi.LabelFormatter == null) xi.ShowLabels = false;
-            //    var f = xi.GetFormatter();
-            //    var d = xi.Labels == null
-            //        ? xi.MaxLimit
-            //        : xi.Labels.IndexOf(xi.Labels.OrderBy(x => x.Length).Reverse().First());
-            //    var longestYLabel = new FormattedText(xi.HasValidRange ? f(d) : "", CultureInfo.CurrentUICulture,
-            //        FlowDirection.LeftToRight,
-            //        new Typeface(xi.FontFamily, xi.FontStyle, xi.FontWeight, xi.FontStretch), xi.FontSize,
-            //        Brushes.Black);
-            //    xi.Separator.Step = (longestYLabel.Width * xi.MaxLimit) * 1.25 > PlotArea.Width
-            //        ? null
-            //        : (int?)1;
-            //    if (xi.Separator.Step != null) xi.S = (int)xi.Separator.Step;
-            //    if (Zoom != ZoomingOptions.None) ZoomingAxis = AxisTags.X;
-            //}
+            if (AxisX.Count == 0)
+                SetValue(AxisXProperty, new List<Axis> {DefaultAxes.DefaultAxis});
+            if (AxisY.Count == 0)
+                SetValue(AxisYProperty, new List<Axis> {DefaultAxes.DefaultAxis});
         }
 
-        protected void ConfigureYAsIndexed()
-        {
-            //foreach (var yi in AxisY)
-            //{
-            //    if (yi.Labels == null && yi.LabelFormatter == null) yi.ShowLabels = false;
-            //    var f = yi.GetFormatter();
-            //    var d = yi.Labels == null
-            //        ? yi.MaxLimit
-            //        : yi.Labels.IndexOf(yi.Labels.OrderBy(x => x.Length).Reverse().First());
-            //    var longestYLabel = new FormattedText(yi.HasValidRange ? f(d) : "", CultureInfo.CurrentUICulture,
-            //        FlowDirection.LeftToRight,
-            //        new Typeface(yi.FontFamily, yi.FontStyle, yi.FontWeight, yi.FontStretch), yi.FontSize,
-            //        Brushes.Black);
-            //    yi.Separator.Step = (longestYLabel.Width*yi.MaxLimit)*1.25 > PlotArea.Width
-            //        ? null
-            //        : (int?) 1;
-            //    if (yi.Separator.Step != null) yi.S = (int) yi.Separator.Step;
-            //    if (Zoom != ZoomingOptions.None) ZoomingAxis = AxisTags.Y;
-            //}
-        }
 
         protected Point GetLabelSize(Axis axis, string value)
         {
@@ -1128,6 +1095,8 @@ namespace LiveCharts.CoreComponents
             SeriesChanged.Stop();
 
             EreaseSeries();
+
+            ValidateAxes();
 
             if (Series == null || Series.Count == 0) return;
 

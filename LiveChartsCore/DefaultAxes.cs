@@ -11,10 +11,7 @@ namespace LiveCharts
         {
             get
             {
-                return new Axis
-                {
-                    Separator = new Separator()
-                };
+                return new Axis();
             }
         }
 
