@@ -116,16 +116,13 @@ namespace LiveCharts
         protected override void CalculateComponentsAndMargin()
         {
             foreach (var l in Shapes) Canvas.Children.Remove(l);
-            var legend = Legend ?? new ChartLegend();
 
-            LoadLegend(legend);
+            LoadLegend();
 
             if (LegendLocation != LegendLocation.None)
             {
-                Canvas.Children.Add(legend);
-                Shapes.Add(legend);
-                legend.UpdateLayout();
-                legend.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+                Legend.UpdateLayout();
+                Legend.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
             }
 
             switch (LegendLocation)
@@ -133,28 +130,28 @@ namespace LiveCharts
                 case LegendLocation.None:
                     break;
                 case LegendLocation.Top:
-                    var top = new Point(ActualWidth * .5 - legend.DesiredSize.Width * .5, 0);
-                    Canvas.SetTop(DrawMargin, Canvas.GetTop(DrawMargin) + top.Y + legend.DesiredSize.Height);
-                    DrawMargin.Height -= legend.DesiredSize.Height;
-                    Canvas.SetTop(legend, top.Y);
-                    Canvas.SetLeft(legend, top.X);
+                    var top = new Point(ActualWidth * .5 - Legend.DesiredSize.Width * .5, 0);
+                    Canvas.SetTop(DrawMargin, Canvas.GetTop(DrawMargin) + top.Y + Legend.DesiredSize.Height);
+                    DrawMargin.Height -= Legend.DesiredSize.Height;
+                    Canvas.SetTop(Legend, top.Y);
+                    Canvas.SetLeft(Legend, top.X);
                     break;
                 case LegendLocation.Bottom:
-                    var bot = new Point(ActualWidth * .5 - legend.DesiredSize.Width * .5, ActualHeight - legend.DesiredSize.Height);
-                    DrawMargin.Height -= legend.DesiredSize.Height;
-                    Canvas.SetTop(legend, Canvas.ActualHeight - legend.DesiredSize.Height);
-                    Canvas.SetLeft(legend, bot.X);
+                    var bot = new Point(ActualWidth * .5 - Legend.DesiredSize.Width * .5, ActualHeight - Legend.DesiredSize.Height);
+                    DrawMargin.Height -= Legend.DesiredSize.Height;
+                    Canvas.SetTop(Legend, Canvas.ActualHeight - Legend.DesiredSize.Height);
+                    Canvas.SetLeft(Legend, bot.X);
                     break;
                 case LegendLocation.Left:
-                    Canvas.SetLeft(DrawMargin, Canvas.GetLeft(DrawMargin) + legend.DesiredSize.Width);
-                    DrawMargin.Width -= legend.DesiredSize.Width;
-                    Canvas.SetTop(legend, Canvas.ActualHeight * .5 - legend.DesiredSize.Height * .5);
-                    Canvas.SetLeft(legend, 0);
+                    Canvas.SetLeft(DrawMargin, Canvas.GetLeft(DrawMargin) + Legend.DesiredSize.Width);
+                    DrawMargin.Width -= Legend.DesiredSize.Width;
+                    Canvas.SetTop(Legend, Canvas.ActualHeight * .5 - Legend.DesiredSize.Height * .5);
+                    Canvas.SetLeft(Legend, 0);
                     break;
                 case LegendLocation.Right:
-                    DrawMargin.Width -= legend.DesiredSize.Width;
-                    Canvas.SetTop(legend, Canvas.ActualHeight * .5 - legend.DesiredSize.Height * .5);
-                    Canvas.SetLeft(legend, ActualWidth - legend.DesiredSize.Width);
+                    DrawMargin.Width -= Legend.DesiredSize.Width;
+                    Canvas.SetTop(Legend, Canvas.ActualHeight * .5 - Legend.DesiredSize.Height * .5);
+                    Canvas.SetLeft(Legend, ActualWidth - Legend.DesiredSize.Width);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
