@@ -95,7 +95,7 @@
                 <Image Grid.Column="2" Source="Right.png" MouseDown="PieNext"/>
             </Grid>
 
-            <TextBlock Style="{StaticResource Title}">More Charts</TextBlock>
+            <TextBlock Style="{StaticResource Title}">Debug Cases</TextBlock>
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"></ColumnDefinition>

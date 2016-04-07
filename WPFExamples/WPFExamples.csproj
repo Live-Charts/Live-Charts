@@ -157,6 +157,9 @@
     <Compile Include="z.CustomTooltips\CustomScatterTooltip.xaml.cs">
       <DependentUpon>CustomScatterTooltip.xaml</DependentUpon>
     </Compile>
+    <Compile Include="z.DebugCases\Issue102.xaml.cs">
+      <DependentUpon>Issue102.xaml</DependentUpon>
+    </Compile>
     <Page Include="BarExamples\Basic\BasicBar.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -328,6 +331,10 @@
     <Page Include="z.CustomTooltips\CustomScatterTooltip.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="z.DebugCases\Issue102.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>

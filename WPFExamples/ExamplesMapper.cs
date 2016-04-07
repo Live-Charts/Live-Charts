@@ -14,6 +14,7 @@ using ChartsTest.Line_Examples.RotadedLine;
 using ChartsTest.Pie_Examples;
 using ChartsTest.StackedBarExamples;
 using ChartsTest.StackedBarExamples.StackedBarRotated;
+using ChartsTest.z.DebugCases;
 using BasicBar = ChartsTest.BarExamples.Basic.BasicBar;
 using BasicLine = ChartsTest.Line_Examples.Basic.BasicLine;
 using BasicPie = ChartsTest.Pie_Examples.Basic.BasicPie;
@@ -36,7 +37,7 @@ namespace ChartsTest
             LineAndAreaAexamples = new List<UserControl>
             {
                 //new AnimationImprovementLine(),
-                new BasicLine(),
+                //new BasicLine(),
                 //new DynamicLine(),
                 //new GenericLine(),
                 //new RotatedLine(),
@@ -70,10 +71,10 @@ namespace ChartsTest
                 //    new MvvmPie(),
                 //    new CustomPie(),
             };
-            //MoreExamples = new List<UserControl>
-            //{
-            //    new RadarChartExample()
-            //};
+            MoreExamples = new List<UserControl>
+            {
+                new Issue102()
+            };
             window.LineControl.Content = LineAndAreaAexamples != null && LineAndAreaAexamples.Count > 0 ? LineAndAreaAexamples[0] : null;
             window.BarControl.Content = BarExamples != null && BarExamples.Count > 0 ? BarExamples[0] : null;
             window.StackedBarControl.Content =StackedBarExamples != null && StackedBarExamples.Count > 0 ? StackedBarExamples[0] : null;

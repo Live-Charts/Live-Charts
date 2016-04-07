@@ -957,7 +957,7 @@ namespace LiveCharts.CoreComponents
 
         private void PrepareCanvas(bool ereaseAll = false)
         {
-            if (Series == null || Series.Count == 0) return;
+            if (Series == null) return;
             if (!SeriesInitialized) InitializeSeries(this);
 
             foreach (var xi in AxisX.Where(xi => xi.Parent == null))

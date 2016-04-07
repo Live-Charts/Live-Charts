@@ -67,10 +67,5 @@ namespace ChartsTest
             MoreControl.Next(ExamplesMapper.ScatterExamples);
         }
         #endregion
-
-        private void Hyperlink_OnRequestNavigate(object sender, RequestNavigateEventArgs e)
-        {
-            System.Diagnostics.Process.Start(e.Uri.ToString());
-        }
     }
 }
