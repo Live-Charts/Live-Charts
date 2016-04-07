@@ -36,16 +36,16 @@ namespace ChartsTest
         {
             LineAndAreaAexamples = new List<UserControl>
             {
-                //new AnimationImprovementLine(),
-                //new BasicLine(),
-                //new DynamicLine(),
-                //new GenericLine(),
-                //new RotatedLine(),
-                //new CustomLine(),
-                //new IrregularLine(),
-                //new LogarithmicAxis(),
-                //new UiElementsLine(),
-                //new InLineLine()
+                new AnimationImprovementLine(),
+                new BasicLine(),
+                new DynamicLine(),
+                new GenericLine(),
+                new RotatedLine(),
+                new CustomLine(),
+                new IrregularLine(),
+                new LogarithmicAxis(),
+                new UiElementsLine(),
+                new InLineLine()
             };
             BarExamples = new List<UserControl>
             {
