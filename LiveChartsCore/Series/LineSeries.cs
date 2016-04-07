@@ -50,6 +50,7 @@ namespace LiveCharts
         {
             StrokeThickness = 2.5;
             PointRadius = 4;
+            SetValue(StrokeDashArrayProperty, new DoubleCollection());
         }
 
         private ILine LineChart
@@ -60,6 +61,15 @@ namespace LiveCharts
         public double? LineSmoothness { get; set; }
 
         public double PointRadius { get; set; }
+
+        public static readonly DependencyProperty StrokeDashArrayProperty = DependencyProperty.Register(
+            "StrokeDashArray", typeof (DoubleCollection), typeof (LineSeries), new PropertyMetadata(default(DoubleCollection)));
+
+        public DoubleCollection StrokeDashArray
+        {
+            get { return (DoubleCollection) GetValue(StrokeDashArrayProperty); }
+            set { SetValue(StrokeDashArrayProperty, value); }
+        }
 
         public override void Plot(bool animate = true)
         {
@@ -87,7 +97,9 @@ namespace LiveCharts
                     BindingOperations.SetBinding(path, VisibilityProperty,
                         new Binding { Path = new PropertyPath("Visibility"), Source = this });
                     BindingOperations.SetBinding(path, Panel.ZIndexProperty,
-                    new Binding { Path = new PropertyPath(Panel.ZIndexProperty), Source = this });
+                        new Binding {Path = new PropertyPath(Panel.ZIndexProperty), Source = this});
+                    BindingOperations.SetBinding(path, Shape.StrokeDashArrayProperty,
+                        new Binding {Path = new PropertyPath(StrokeDashArrayProperty), Source = this});
                     var geometry = new PathGeometry();
                     area = new LineAndAreaShape(new PathFigure(), path);
                     geometry.Figures.Add(area.Figure);

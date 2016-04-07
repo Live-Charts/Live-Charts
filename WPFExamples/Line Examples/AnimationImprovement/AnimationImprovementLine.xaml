@@ -25,7 +25,7 @@
             <Button Click="RemoveOnClick">-</Button>
         </StackPanel>
         <lvc:LineChart Name="Chart" Grid.Row="2" Series="{Binding Series}" 
-                       LineSmoothness=".5" >
+                       LineSmoothness=".5">
         </lvc:LineChart>
     </Grid>
 </UserControl>
