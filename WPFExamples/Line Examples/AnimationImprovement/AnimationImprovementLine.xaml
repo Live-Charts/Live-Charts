@@ -13,13 +13,6 @@
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
-        <TextBlock Margin="5" TextWrapping="Wrap">
-            <Bold>0.6.5 New Feature</Bold> Watch how line dances with you! 
-            now all series do not redraw everytime you change your model, they transform the ui, 
-            all charts support this feature. 
-            Also there is a new property for Line Series, change LineSmoothness property and see what happens 
-            (default is 0.8 and it goes from 0 to 1)
-        </TextBlock>
         <StackPanel Orientation="Horizontal" Grid.Row="1">
             <Button Click="MoveOnClick">Move All</Button>
             <TextBlock VerticalAlignment="Center">Series</TextBlock>

@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
+﻿using System.Collections.ObjectModel;
 using System.Windows.Input;
 using System.Windows.Navigation;
-using System.Windows.Threading;
-using LiveCharts;
-using LiveCharts.Annotations;
 
 namespace ChartsTest
 {

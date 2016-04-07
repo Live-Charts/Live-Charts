@@ -97,6 +97,10 @@ namespace LiveCharts.CoreComponents
             b.Child = Canvas;
             Content = b;
 
+            DrawMargin = new Canvas { ClipToBounds = true };
+            Canvas.SetLeft(DrawMargin, 0d);
+            Canvas.SetTop(DrawMargin, 0d);
+
             SetCurrentValue(MinHeightProperty, 125d);
             SetCurrentValue(MinWidthProperty, 125d);
 
@@ -626,7 +630,7 @@ namespace LiveCharts.CoreComponents
         #region Virtual Methods
         protected virtual void CalculateComponentsAndMargin()
         {
-            if (DrawMargin.Height < 10 || DrawMargin.Width < 10) return;
+            if (DrawMargin.ActualHeight < 10 || DrawMargin.ActualWidth < 10) return;
 
             SetPlotArea();
 
@@ -634,6 +638,9 @@ namespace LiveCharts.CoreComponents
 
             //left, bot, botMerged, left, right margins
             double t = 0d, b = 0d, bm = 0d, l = 0d, r = 0d;
+
+            Canvas.SetLeft(DrawMargin, 0d);
+            Canvas.SetRight(DrawMargin, 0d);
 
             foreach (var yi in AxisY)
             {
@@ -987,9 +994,8 @@ namespace LiveCharts.CoreComponents
             foreach (var yi in AxisY.Where(yi => yi.Parent == null))
                 Canvas.Children.Add(yi);
             
-            if (DrawMargin == null)
+            if (DrawMargin.Parent == null)
             {
-                DrawMargin = new Canvas {ClipToBounds = true};
                 Canvas.Children.Add(DrawMargin);
                 Panel.SetZIndex(DrawMargin, 1);
             }
@@ -1179,8 +1185,6 @@ namespace LiveCharts.CoreComponents
             var h = MockedArea != null ? MockedArea.Value.Height : ActualHeight;
             Canvas.Width = w;
             Canvas.Height = h;
-            Canvas.SetLeft(DrawMargin, 0);
-            Canvas.SetTop(DrawMargin, 0);
             DrawMargin.Width = w;
             DrawMargin.Height = h;
         }

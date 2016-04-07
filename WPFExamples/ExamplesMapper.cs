@@ -35,7 +35,7 @@ namespace ChartsTest
         {
             LineAndAreaAexamples = new List<UserControl>
             {
-                //new AnimationImprovementLine(),
+                new AnimationImprovementLine(),
                 //new BasicLine(),
                 //new DynamicLine(),
                 //new GenericLine(),
@@ -44,7 +44,7 @@ namespace ChartsTest
                 //new IrregularLine(),
                 //new LogarithmicAxis(),
                 //new UiElementsLine(),
-                new InLineLine()
+                //new InLineLine()
             };
             BarExamples = new List<UserControl>
             {

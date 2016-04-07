@@ -21,6 +21,7 @@
 //SOFTWARE.
 
 using System;
+using System.Collections.Generic;
 using LiveCharts.CoreComponents;
 
 namespace LiveCharts
@@ -31,6 +32,9 @@ namespace LiveCharts
         {
             ShapeHoverBehavior = ShapeHoverBehavior.Dot;
             LineSmoothness = 0.8;
+
+            SetCurrentValue(AxisXProperty, new List<Axis> {DefaultAxes.CleanAxis});
+            SetCurrentValue(AxisYProperty, new List<Axis> {DefaultAxes.DefaultAxis});
         }
 
         #region Properties
