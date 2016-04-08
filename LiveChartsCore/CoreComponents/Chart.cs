@@ -1026,7 +1026,22 @@ namespace LiveCharts.CoreComponents
             if (chart == null || chart.Series == null || chart.Series.Count == 0) return;
             if (chart.Series.Any(x => x == null)) return;
 
-            if (chart.Series.Count > 0) chart.PrepareAxes();
+            if (chart.Series.Count > 0)
+            {
+                //we need to kill everything in the canvas if the seriesCollection changes
+                chart.RemoveAllVisualElements();
+
+                chart.PrepareAxes();
+
+                //Todo: Initialize chart size correctly, this works but fo course is not correct.
+                //This means: if chart is initialized then update the chart.
+                if (chart.ActualHeight > 10)
+                {
+                    chart.InitializeSeries(chart);
+                    chart.InitializeComponents();
+                    chart.Update();
+                }
+            }
         }
 
         private void InitializeSeries(Chart chart)
@@ -1066,12 +1081,7 @@ namespace LiveCharts.CoreComponents
 
                 if (args.Action == NotifyCollectionChangedAction.Reset)
                 {
-                    foreach (var yi in AxisY) yi.Reset();
-                    foreach (var xi in AxisX) xi.Reset();
-                    chart.DrawMargin.Children.Clear();
-                    chart.Canvas.Children.Clear();
-                    chart.Shapes.Clear();
-                    chart.ShapesMapper.Clear();
+                    chart.RemoveAllVisualElements();
                 }
 
                 if (args.OldItems != null)
@@ -1108,6 +1118,20 @@ namespace LiveCharts.CoreComponents
 #endif
                     }
             };
+        }
+
+        private void RemoveAllVisualElements()
+        {
+            foreach (var yi in AxisY) yi.Reset();
+            foreach (var xi in AxisX) xi.Reset();
+            foreach (var series in Series)
+            {
+                
+            }
+            DrawMargin.Children.Clear();
+            Canvas.Children.Clear();
+            Shapes.Clear();
+            ShapesMapper.Clear();
         }
 
         private void UpdateSeries(object sender, EventArgs e)

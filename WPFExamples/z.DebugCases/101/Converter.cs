@@ -7,6 +7,7 @@ namespace ChartsTest.z.DebugCases._101
 {
     public class Converter : IValueConverter
     {
+        internal static int tester;
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             var v = value as double[];
@@ -15,9 +16,9 @@ namespace ChartsTest.z.DebugCases._101
 
             return new SeriesCollection
             {
-                new PieSeries {Values = new ChartValues<double> {v[0]} },
-                new PieSeries {Values = new ChartValues<double> {v[1]} },
-                new PieSeries {Values = new ChartValues<double> {v[2]} }
+                new PieSeries {Values = new ChartValues<double> {v[0]}, Title = tester++.ToString()},
+                new PieSeries {Values = new ChartValues<double> {v[1]}, Title = tester++.ToString()},
+                new PieSeries {Values = new ChartValues<double> {v[2]}, Title = tester++.ToString()}
             };
         }
 
