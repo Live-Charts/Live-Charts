@@ -118,15 +118,18 @@ namespace LiveCharts
                 else
                 {
                     area = _areas[s];
-                    if (Chart.Invert)
+                    if (isUp)
                     {
-                        ofPt = new Point(0, Methods.GetUnitWidth(AxisTags.Y, Chart, ScalesYAt) * .5);
-                        Canvas.SetTop(area.Path, ofPt.Y);
-                    }
-                    else
-                    {
-                        ofPt = new Point(Methods.GetUnitWidth(AxisTags.X, Chart, ScalesYAt) * .5, 0);
-                        Canvas.SetLeft(area.Path, ofPt.X);
+                        if (Chart.Invert)
+                        {
+                            ofPt = new Point(0, Methods.GetUnitWidth(AxisTags.Y, Chart, ScalesYAt) * .5);
+                            Canvas.SetTop(area.Path, ofPt.Y);
+                        }
+                        else
+                        {
+                            ofPt = new Point(Methods.GetUnitWidth(AxisTags.X, Chart, ScalesYAt) * .5, 0);
+                            Canvas.SetLeft(area.Path, ofPt.X);
+                        }
                     }
                 }
 

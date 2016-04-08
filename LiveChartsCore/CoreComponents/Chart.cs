@@ -610,7 +610,6 @@ namespace LiveCharts.CoreComponents
             DrawMargin.Width = ActualWidth;
             DrawMargin.Height = ActualHeight;
 
-            DrawMargin.Background = new SolidColorBrush(System.Windows.Media.Colors.BlueViolet) {Opacity = .3};
             PlaceLegend();
 
             //left, bot, botMerged, left, right margins
