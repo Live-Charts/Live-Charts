@@ -49,13 +49,13 @@ namespace ChartsTest
             };
             BarExamples = new List<UserControl>
             {
-                //    new FilterChart(),
-                //    new RotatedBar(),
-                //    new MvvmBar(),
-                //    new PointPropertyChangedBar(),
-                new BasicBar(),
-                //    new BindingBar(),
-                //    new CustomBar()
+                //new FilterChart(),
+                new RotatedBar(),
+                //new MvvmBar(),
+                //new PointPropertyChangedBar(),
+                //new BasicBar(),
+                //new BindingBar(),
+                //new CustomBar()
             };
             //StackedBarExamples = new List<UserControl>
             //{

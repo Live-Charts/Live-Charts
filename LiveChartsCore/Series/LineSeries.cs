@@ -105,7 +105,7 @@ namespace LiveCharts
                     {
                         if (Chart.Invert)
                         {
-                            ofPt = new Point(0, -Methods.GetUnitWidth(AxisTags.Y, Chart, ScalesYAt)*.5);
+                            ofPt = new Point(0, Methods.GetUnitWidth(AxisTags.Y, Chart, ScalesYAt)*.5);
                             Canvas.SetTop(path, ofPt.Y);
                         }
                         else
@@ -120,7 +120,7 @@ namespace LiveCharts
                     area = _areas[s];
                     if (Chart.Invert)
                     {
-                        ofPt = new Point(0, -Methods.GetUnitWidth(AxisTags.Y, Chart, ScalesYAt) * .5);
+                        ofPt = new Point(0, Methods.GetUnitWidth(AxisTags.Y, Chart, ScalesYAt) * .5);
                         Canvas.SetTop(area.Path, ofPt.Y);
                     }
                     else
