@@ -37,6 +37,8 @@ namespace LiveCharts
             MaxColumnWidth = 40;
             DefaultFillOpacity = 0.75;
             LineSmoothness = 0.8;
+
+            throw new Exception("StackedBar Charts are currently disabled");
         }
 
         #region Properties
@@ -153,60 +155,113 @@ namespace LiveCharts
             return new Point();
         }
 
-        private Point GetS()
-        {
-            //return new Point(
-            //    AxisX.Separator.Step ?? CalculateSeparator(Max.X -AxisX.MinLimit, AxisTags.X),
-            //    AxisY.Separator.Step ?? CalculateSeparator(Max.Y -AxisY.MinLimit, AxisTags.Y));
-            return new Point();
-        }
-
         protected override void PrepareAxes()
         {
-            InitializeComponents();
+            //InitializeComponents();
 
-            if (!HasValidSeriesAndValues) return;
+            //if (!HasValidSeriesAndValues) return;
 
-            if (Invert)
-                foreach (var xi in AxisX) xi.MinValue = 0;
-            else
-                foreach (var yi in AxisY) yi.MinValue = 0;
+            //if (Invert)
+            //    foreach (var xi in AxisX) xi.MinValue = 0;
+            //else
+            //    foreach (var yi in AxisY) yi.MinValue = 0;
 
-            var stackedSeries = Series.OfType<StackedBarSeries>().ToList();
+            //var stackedSeries = Series.OfType<StackedBarSeries>().ToList();
 
-            //All series must have the same number of items.
-            //This chart should be kinf of buggy when adding mutiple axes.
-            //ToDo: Review stacked bar chart and multiple axes
-            //since the chart has only a StackedBarHelper,
-            //then the escale of all axis mut be shared by this class,
-            //one possible solution is to add a StackedBarHelper for each axis.
-            //For now it is not safe to use multiple axis with stackedbar chart
-            //unless the other axis do not contain StackedBarSeries.
-            var fSerie = stackedSeries.FirstOrDefault();
-            if (fSerie == null) return;
-            for (var i = 0; i < fSerie.Values.Count; i++)
-            {
-                var helper = new StackedBarHelper();
-                var sum = 0d;
-                for (int index = 0; index < stackedSeries.Count; index++)
-                {
-                    var serie = stackedSeries[index];
-                    var p = (serie.Values.Points as IList<ChartPoint>)[i];
-                    var value = serie.Values.Points.Any()
-                        ? (Invert ? p.X : p.Y)
-                        : double.MinValue;
-                    helper.Stacked[index] = new StackedItem
-                    {
-                        Value = value,
-                        Stacked = sum
-                    };
-                    sum += value;
-                }
-                helper.Total = sum;
-                IndexTotals[i] = helper;
-            }
+            ////All series must have the same number of items.
+            ////This chart should be kinf of buggy when adding mutiple axes.
+            ////ToDo: Review stacked bar chart and multiple axes
+            ////since the chart has only a StackedBarHelper,
+            ////then the escale of all axis mut be shared by this class,
+            ////one possible solution is to add a StackedBarHelper for each axis.
+            ////For now it is not safe to use multiple axis with stackedbar chart
+            ////unless the other axis do not contain StackedBarSeries.
+            //var fSerie = stackedSeries.FirstOrDefault();
+            //if (fSerie == null) return;
+            //for (var i = 0; i < fSerie.Values.Count; i++)
+            //{
+            //    var helper = new StackedBarHelper();
+            //    var sum = 0d;
+            //    for (int index = 0; index < stackedSeries.Count; index++)
+            //    {
+            //        var serie = stackedSeries[index];
+            //        var p = (serie.Values.Points as IList<ChartPoint>)[i];
+            //        var value = serie.Values.Points.Any()
+            //            ? (Invert ? p.X : p.Y)
+            //            : double.MinValue;
+            //        helper.Stacked[index] = new StackedItem
+            //        {
+            //            Value = value,
+            //            Stacked = sum
+            //        };
+            //        sum += value;
+            //    }
+            //    helper.Total = sum;
+            //    IndexTotals[i] = helper;
+            //}
 
-            base.PrepareAxes();
+            ////InitializeComponents();
+
+            //var s = Series.FirstOrDefault();
+
+            //var p = Invert
+            //    ? new Point(s.Values.Points.Select(
+            //        (t, i) => Series.OfType<StackedBarSeries>().Sum(serie => serie.Values.Points.Any()
+            //            ? (serie.Values.Points as IList<ChartPoint>)[i].X
+            //            : double.MinValue))
+            //        .Concat(new[] { double.MinValue }).Max(),
+            //        Series.Select(x => x.Values.MaxChartPoint.Y).DefaultIfEmpty(0).Max())
+            //    : new Point(Series.Select(x => x.Values.MaxChartPoint.X).DefaultIfEmpty(0).Max() + 1,
+            //        s.Values.Points.Select(
+            //            (t, i) => Series.OfType<StackedBarSeries>().Sum(serie => serie.Values.Points.Any()
+            //                ? (serie.Values.Points as IList<ChartPoint>)[i].Y
+            //                : double.MinValue))
+            //            .Concat(new[] { double.MinValue }).Max());
+
+
+            ////correction for lineSeries
+            //if (Invert)
+            //{
+            //    var maxLineSeries =
+            //    Series.OfType<LineSeries>()
+            //        .Select(series => series.Values.Points.Select(x => x.X).DefaultIfEmpty(0).Max())
+            //        .DefaultIfEmpty(0)
+            //        .Max();
+            //    p.X = p.X > maxLineSeries ? p.X : maxLineSeries;
+            //    p.X = AxisX.MaxValue ?? p.X;
+            //}
+            //else
+            //{
+            //    var maxLineSeries =
+            //    Series.OfType<LineSeries>()
+            //        .Select(series => series.Values.Points.Select(x => x.Y).DefaultIfEmpty(0).Max())
+            //        .DefaultIfEmpty(0)
+            //        .Max();
+            //    p.Y = p.Y > maxLineSeries ? p.Y : maxLineSeries;
+            //    p.Y = AxisY.MaxValue ?? p.Y;
+            //}
+
+            //for (var index = 0; index < AxisX.Count; index++)
+            //{
+            //    var xi = AxisX[index];
+            //    xi.MaxLimit = xi.MaxValue ??
+            //                  Series.Where(series => series.Values != null && series.ScalesXAt == index)
+            //                      .Select(series => series.Values.MaxChartPoint.X).DefaultIfEmpty(0).Max();
+            //    xi.MinLimit = xi.MinValue ??
+            //                  Series.Where(series => series.Values != null && series.ScalesXAt == index)
+            //                      .Select(series => series.Values.MinChartPoint.X).DefaultIfEmpty(0).Min();
+            //}
+
+            //for (var index = 0; index < AxisY.Count; index++)
+            //{
+            //    var yi = AxisY[index];
+            //    yi.MaxLimit = yi.MaxValue ??
+            //                  Series.Where(series => series.Values != null && series.ScalesYAt == index)
+            //                      .Select(series => series.Values.MaxChartPoint.Y).DefaultIfEmpty(0).Max();
+            //    yi.MinLimit = yi.MinValue ??
+            //                  Series.Where(series => series.Values != null && series.ScalesYAt == index)
+            //                      .Select(series => series.Values.MinChartPoint.Y).DefaultIfEmpty(0).Min();
+            //}
 
             foreach (var xi in AxisX)
             {
