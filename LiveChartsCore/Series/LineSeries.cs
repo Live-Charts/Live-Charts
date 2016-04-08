@@ -70,10 +70,14 @@ namespace LiveCharts
 
             var s = 0;
             var so = 0;
+
+            var isUp = Chart is IUnitaryPoints;
+
             foreach (var segment in Values.Points.AsSegments().Where(segment => segment.Count != 0))
             {
                 LineAndAreaShape area;
                 bool isNew = false;
+                var ofPt = new Point();
 
                 if (_areas.Count <= s)
                 {
@@ -97,10 +101,33 @@ namespace LiveCharts
                     _areas.Add(area);
                     Chart.DrawMargin.Children.Add(path);
                     isNew = true;
+                    if (isUp)
+                    {
+                        if (Chart.Invert)
+                        {
+                            ofPt = new Point(0, -Methods.GetUnitWidth(AxisTags.Y, Chart, ScalesYAt)*.5);
+                            Canvas.SetTop(path, ofPt.Y);
+                        }
+                        else
+                        {
+                            ofPt = new Point(Methods.GetUnitWidth(AxisTags.X, Chart, ScalesYAt)*.5, 0);
+                            Canvas.SetLeft(path, ofPt.X);
+                        }
+                    }
                 }
                 else
                 {
                     area = _areas[s];
+                    if (Chart.Invert)
+                    {
+                        ofPt = new Point(0, -Methods.GetUnitWidth(AxisTags.Y, Chart, ScalesYAt) * .5);
+                        Canvas.SetTop(area.Path, ofPt.Y);
+                    }
+                    else
+                    {
+                        ofPt = new Point(Methods.GetUnitWidth(AxisTags.X, Chart, ScalesYAt) * .5, 0);
+                        Canvas.SetLeft(area.Path, ofPt.X);
+                    }
                 }
 
                 var p0 = ToDrawMargin(segment[0], ScalesXAt, ScalesYAt).AsPoint();
@@ -122,6 +149,9 @@ namespace LiveCharts
                 {
                     var point = segment[i];
                     point.ChartLocation = ToDrawMargin(point, ScalesXAt, ScalesYAt).AsPoint();
+                    if (isUp)
+                        point.ChartLocation =
+                            new Point(point.ChartLocation.X + ofPt.X, point.ChartLocation.Y + ofPt.Y);
 
                     if (isVirgin)
                     {
@@ -165,6 +195,8 @@ namespace LiveCharts
 
         private void PlaceVisual(VisualHelper visual, Point pointLocation, double radius)
         {
+
+
             visual.HoverShape.Width = radius * 2;
             visual.HoverShape.Height = radius * 2;
             Canvas.SetLeft(visual.PointShape, pointLocation.X - visual.PointShape.Width * .5);
