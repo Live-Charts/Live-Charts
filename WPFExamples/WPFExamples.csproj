@@ -75,6 +75,9 @@
     <Compile Include="BarExamples\InLine\InLineBar.xaml.cs">
       <DependentUpon>InLineBar.xaml</DependentUpon>
     </Compile>
+    <Compile Include="BarExamples\MultiAxesBarChart\MultiAxChart.xaml.cs">
+      <DependentUpon>MultiAxChart.xaml</DependentUpon>
+    </Compile>
     <Compile Include="BarExamples\Mvvm\SalesTooltip.xaml.cs">
       <DependentUpon>SalesTooltip.xaml</DependentUpon>
     </Compile>
@@ -182,6 +185,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="BarExamples\InLine\InLineBar.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="BarExamples\MultiAxesBarChart\MultiAxChart.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
