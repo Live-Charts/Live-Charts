@@ -430,7 +430,7 @@ namespace LiveCharts
 
             if (chart is IUnitaryPoints)
             {
-                if (direction == AxisTags.Y && chart.Invert) uwc = 1;
+                //if (direction == AxisTags.Y && chart.Invert) uwc = 1; //this is not necessary.
                 if (direction == AxisTags.X && !chart.Invert) uwc = 1;
             }
 
