@@ -1006,7 +1006,6 @@ namespace LiveCharts.CoreComponents
             foreach (var series in Series)
             {
                 series.Collection = Series;
-                series.Chart = this;
                 if (series.Values == null) continue;
                 if (series.Configuration != null) series.Configuration.Chart = this;
                 series.Values.Series = series;
@@ -1038,7 +1037,7 @@ namespace LiveCharts.CoreComponents
                 //This means: if chart is initialized then update the chart.
                 if (chart.ActualHeight > 10)
                 {
-                    var s = chart.Series;
+                    chart.InitializeSeries(chart);
                     chart.InitializeComponents();
                     chart.Update();
                 }
@@ -1125,6 +1124,10 @@ namespace LiveCharts.CoreComponents
         {
             foreach (var yi in AxisY) yi.Reset();
             foreach (var xi in AxisX) xi.Reset();
+            foreach (var series in Series)
+            {
+                
+            }
             DrawMargin.Children.Clear();
             Canvas.Children.Clear();
             Shapes.Clear();
