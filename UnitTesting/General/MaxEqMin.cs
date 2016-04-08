@@ -7,6 +7,10 @@ namespace UnitTesting.General
 {
     public partial class GeneralTest
     {
+
+        //Charts should be able to scale correclty even when the scale range is zero
+        //max - min == 0
+
         [TestMethod, TestCategory("General")]
         public void MaxEqMinValues()
         {

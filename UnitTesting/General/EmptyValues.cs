@@ -5,6 +5,10 @@ namespace UnitTesting.General
 {
     public partial class GeneralTest
     {
+
+        //charts should not throw any error when Chart values is empty
+
+
         [TestMethod, TestCategory("General")]
         public void EmptyValues()
         {

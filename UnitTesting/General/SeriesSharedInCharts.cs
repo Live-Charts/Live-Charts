@@ -5,6 +5,10 @@ namespace UnitTesting.General
 {
     public partial class GeneralTest
     {
+
+        //Charts should be able to handle when 
+        //a series exists in more than one visual tree
+
         [TestMethod, TestCategory("General")]
         public void SharedSeries()
         {

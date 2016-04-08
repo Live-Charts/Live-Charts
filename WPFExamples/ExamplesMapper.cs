@@ -15,6 +15,7 @@ using ChartsTest.Pie_Examples;
 using ChartsTest.StackedBarExamples;
 using ChartsTest.StackedBarExamples.StackedBarRotated;
 using ChartsTest.z.DebugCases;
+using ChartsTest.z.DebugCases._101;
 using BasicBar = ChartsTest.BarExamples.Basic.BasicBar;
 using BasicLine = ChartsTest.Line_Examples.Basic.BasicLine;
 using BasicPie = ChartsTest.Pie_Examples.Basic.BasicPie;
@@ -73,7 +74,7 @@ namespace ChartsTest
             };
             MoreExamples = new List<UserControl>
             {
-               new Issue102()
+               new Issue101()
             };
             window.LineControl.Content = LineAndAreaAexamples != null && LineAndAreaAexamples.Count > 0 ? LineAndAreaAexamples[0] : null;
             window.BarControl.Content = BarExamples != null && BarExamples.Count > 0 ? BarExamples[0] : null;

@@ -5,6 +5,9 @@ namespace UnitTesting.General
 {
     public partial class GeneralTest
     {
+
+        //Charts should not throw an error when series are null
+
         [TestMethod, TestCategory("General")]
         public void NullSeries ()
         {

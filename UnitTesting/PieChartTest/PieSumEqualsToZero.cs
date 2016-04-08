@@ -7,6 +7,9 @@ namespace UnitTesting.PieChartTest
     [TestClass]
     public class PieSumEqualsToZero
     {
+
+        //Pie charts should be able to handle when the pieSum == 0
+
         [TestMethod, TestCategory("PieChart")]
         public void SumsZero()
         {
