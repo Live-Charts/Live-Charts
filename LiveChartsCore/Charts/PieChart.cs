@@ -128,6 +128,7 @@ namespace LiveCharts
             switch (LegendLocation)
             {
                 case LegendLocation.None:
+                    Legend.Visibility = Visibility.Hidden;
                     break;
                 case LegendLocation.Top:
                     var top = new Point(ActualWidth * .5 - Legend.DesiredSize.Width * .5, 0);

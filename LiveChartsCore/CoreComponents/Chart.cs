@@ -66,7 +66,6 @@ namespace LiveCharts.CoreComponents
         private bool _isDragging;
         private int _colorIndexer;
         private UIElement _dataTooltip;
-        private Rect _plotArea;
 
         static Chart()
         {
@@ -308,7 +307,6 @@ namespace LiveCharts.CoreComponents
                 Canvas.Children.Add(DataTooltip);
             }
         }
-
         /// <summary>
         /// Gets chart canvas
         /// </summary>
@@ -540,16 +538,18 @@ namespace LiveCharts.CoreComponents
         /// </summary>
         /// <param name="value"></param>
         /// <param name="axis"></param>
+        /// <param name="index"></param>
         /// <returns></returns>
-        public double ToDrawMargin(double value, AxisTags axis)
+        public double ToDrawMargin(double value, AxisTags axis, int index = 0)
         {
-            return Methods.ToDrawMargin(value, axis, this);
+            return Methods.ToDrawMargin(value, axis, this, index);
         }
 
         public Point ToDrawMargin(Point point)
         {
             return new Point(ToDrawMargin(point.X, AxisTags.X), ToDrawMargin(point.Y, AxisTags.Y));
         }
+
         #endregion
 
         #region ProtectedMethods
@@ -720,9 +720,13 @@ namespace LiveCharts.CoreComponents
                 }
             }
 
+            var isUp = this is IUnitaryPoints;
+
             for (var index = 0; index < AxisY.Count; index++)
             {
                 var yi = AxisY[index];
+                if (isUp && Invert)
+                    yi.UnitWidth = Methods.GetUnitWidth(AxisTags.Y, this, index);
                 yi.UpdateSeparations(AxisTags.Y, this, index);
                 Canvas.SetTop(yi.TitleLabel,
                     Canvas.GetTop(DrawMargin) + DrawMargin.Height*.5 + yi.TitleLabel.ActualWidth*.5);
@@ -731,6 +735,8 @@ namespace LiveCharts.CoreComponents
             for (var index = 0; index < AxisX.Count; index++)
             {
                 var xi = AxisX[index];
+                if (isUp && !Invert)
+                    xi.UnitWidth = Methods.GetUnitWidth(AxisTags.X, this, index);
                 xi.UpdateSeparations(AxisTags.X, this, index);
                 Canvas.SetLeft(xi.TitleLabel,
                     Canvas.GetLeft(DrawMargin) + DrawMargin.Width*.5 - xi.TitleLabel.ActualWidth*.5);

@@ -20,13 +20,9 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-using System.Collections.Generic;
-
 namespace LiveCharts
 {
-    public interface IStackedBar: IUnitaryPoints
-    {
-        double MaxColumnWidth { get; set; }
-        Dictionary<int, StackedBarHelper> IndexTotals { get; }
+    public interface IUnitaryPoints
+    { 
     }
 }

@@ -151,5 +151,19 @@ namespace LiveCharts
 
             return FromPlotArea(value, axis, chart) - o + of;
         }
+
+        public static double GetUnitWidth(AxisTags source, Chart chart, int axis = 0)
+        {
+            double min;
+
+            if (source == AxisTags.Y)
+            {
+                min = chart.AxisY[axis].MinLimit;
+                return ToDrawMargin(min, AxisTags.Y, chart, axis) - ToDrawMargin(min + 1, AxisTags.Y, chart, axis);
+            }
+
+            min = chart.AxisX[axis].MinLimit;
+            return ToDrawMargin(min + 1, AxisTags.X, chart, axis) - ToDrawMargin(min, AxisTags.X, chart, axis);
+        }
     }
 }

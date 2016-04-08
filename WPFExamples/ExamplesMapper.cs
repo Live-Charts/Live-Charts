@@ -37,7 +37,7 @@ namespace ChartsTest
             LineAndAreaAexamples = new List<UserControl>
             {
                 //new AnimationImprovementLine(),
-                new BasicLine(),
+                //new BasicLine(),
                 //new DynamicLine(),
                 //new GenericLine(),
                 //new RotatedLine(),
@@ -53,7 +53,7 @@ namespace ChartsTest
                 //    new RotatedBar(),
                 //    new MvvmBar(),
                 //    new PointPropertyChangedBar(),
-                    //new BasicBar(),
+                new BasicBar(),
                 //    new BindingBar(),
                 //    new CustomBar()
             };
@@ -73,7 +73,7 @@ namespace ChartsTest
             };
             MoreExamples = new List<UserControl>
             {
-                new Issue102()
+               // new Issue102()
             };
             window.LineControl.Content = LineAndAreaAexamples != null && LineAndAreaAexamples.Count > 0 ? LineAndAreaAexamples[0] : null;
             window.BarControl.Content = BarExamples != null && BarExamples.Count > 0 ? BarExamples[0] : null;

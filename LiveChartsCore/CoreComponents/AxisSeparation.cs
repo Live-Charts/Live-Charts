@@ -67,42 +67,38 @@ namespace LiveCharts
         {
             var i = chart.ToPlotArea(Value, direction, axisIndex);
 
-            Line.X1 = direction == AxisTags.Y
-                ? Canvas.GetLeft(chart.DrawMargin)
-                : i;
-            Line.X2 = direction == AxisTags.Y
-                ? Canvas.GetLeft(chart.DrawMargin) + chart.DrawMargin.Width
-                : i;
-
-            Line.Y1 = direction == AxisTags.Y
-                ? i
-                : Canvas.GetTop(chart.DrawMargin);
-            Line.Y2 = direction == AxisTags.Y
-                ? i
-                : Canvas.GetTop(chart.DrawMargin) + chart.DrawMargin.Height;
-
             if (direction == AxisTags.Y)
             {
+                Line.X1 = Canvas.GetLeft(chart.DrawMargin);
+                Line.X2 = Canvas.GetLeft(chart.DrawMargin) + chart.DrawMargin.Width;
+                Line.Y1 = i;
+                Line.Y2 = i;
+
                 var topM = axis.IsMerged
                     ? (i + TextBlock.ActualHeight > Canvas.GetTop(chart.DrawMargin) + chart.DrawMargin.Height
                         ? + TextBlock.ActualHeight
                         : 0)
                     : TextBlock.ActualHeight*.5;
                 var leftM = axis.IsMerged ? TextBlock.ActualWidth + 10 : -2;
-                Canvas.SetTop(TextBlock, i - topM);
+                Canvas.SetTop(TextBlock, i - topM + axis.UnitWidth*.5);
                 Canvas.SetLeft(TextBlock, axis.Position == CoreComponents.AxisPosition.LeftBottom
                     ? axis.LabelsReference - TextBlock.ActualWidth + leftM
                     : axis.LabelsReference - leftM);
             }
             else
             {
+                Line.X1 = i;
+                Line.X2 = i;
+                Line.Y1 = Canvas.GetTop(chart.DrawMargin);
+                Line.Y2 = Canvas.GetTop(chart.DrawMargin) + chart.DrawMargin.Height;
+
                 var left = axis.IsMerged
                     ? (i + TextBlock.ActualWidth > Canvas.GetLeft(chart.DrawMargin) + chart.DrawMargin.Width
                         ? TextBlock.ActualWidth + 2
                         : -2)
                     : TextBlock.ActualWidth*.5;
                 var top = axis.IsMerged ? TextBlock.ActualHeight : 0;
-                Canvas.SetLeft(TextBlock,i - left);
+                Canvas.SetLeft(TextBlock, i - left + axis.UnitWidth*.5);
                 Canvas.SetTop(TextBlock,
                     axis.Position == CoreComponents.AxisPosition.LeftBottom
                         ? axis.LabelsReference - top
@@ -166,7 +162,7 @@ namespace LiveCharts
                         : 0)
                     : TextBlock.ActualHeight * .5;
                 TextBlock.BeginAnimation(Canvas.TopProperty,
-                    new DoubleAnimation(Line.Y1 - hh, i - hh, _anSpeed));
+                    new DoubleAnimation(Line.Y1 - hh + axis.UnitWidth*.5, i - hh + axis.UnitWidth*.5, _anSpeed));
             }
             else
             {
@@ -185,7 +181,7 @@ namespace LiveCharts
                         : -2)
                     : TextBlock.ActualWidth * .5;
                 TextBlock.BeginAnimation(Canvas.LeftProperty,
-                    new DoubleAnimation(Line.X1 - hw, i - hw, _anSpeed));
+                    new DoubleAnimation(Line.X1 - hw + axis.UnitWidth*.5, i - hw + axis.UnitWidth*.5, _anSpeed));
             }
         }
 
@@ -212,7 +208,7 @@ namespace LiveCharts
                         : 0)
                     : TextBlock.ActualHeight*.5;
                 TextBlock.BeginAnimation(Canvas.TopProperty,
-                    new DoubleAnimation(y - hh, i - hh, _anSpeed));
+                    new DoubleAnimation(y - hh + axis.UnitWidth*.5, i - hh + axis.UnitWidth*.5, _anSpeed));
             }
             else
             {
@@ -233,7 +229,7 @@ namespace LiveCharts
                         : -2)
                     : TextBlock.ActualWidth * .5;
                 TextBlock.BeginAnimation(Canvas.LeftProperty,
-                    new DoubleAnimation(x - hw, i - hw, _anSpeed));
+                    new DoubleAnimation(x - hw + axis.UnitWidth * .5, i - hw + axis.UnitWidth*.5, _anSpeed));
             }
         }
     }

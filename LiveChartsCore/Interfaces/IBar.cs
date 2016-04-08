@@ -22,7 +22,7 @@
 
 namespace LiveCharts
 {
-    public interface IBar
+    public interface IBar: IUnitaryPoints
     {
         double MaxColumnWidth { get; set; }
     }

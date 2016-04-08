@@ -131,6 +131,7 @@
     <Compile Include="Interfaces\ILine.cs" />
     <Compile Include="Interfaces\IStackedBar.cs" />
     <Compile Include="IDataOptimization.cs" />
+    <Compile Include="Interfaces\IUnitaryPoints.cs" />
     <Compile Include="Legend\LegendLocation.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="CoreComponents\SeriesCollection.cs" />

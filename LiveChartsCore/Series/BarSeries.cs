@@ -57,8 +57,8 @@ namespace LiveCharts
         {
             var chart = Chart as IBar;
             if (chart == null) return;
-            
-                        var barSeries = Chart.Series.OfType<BarSeries>().ToList();
+
+            var barSeries = Chart.Series.OfType<BarSeries>().ToList();
             var pos = barSeries.IndexOf(this);
             var count = barSeries.Count;
             var unitW = ToPlotArea(CurrentYAxis.MaxLimit - 1, AxisTags.Y) - Canvas.GetTop(Chart.DrawMargin) + 5;

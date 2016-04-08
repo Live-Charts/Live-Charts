@@ -276,6 +276,7 @@ namespace LiveCharts
         internal Rect LastPlotArea;
         internal double LabelsReference;
         internal Dictionary<double, AxisSeparation> Separations = new Dictionary<double, AxisSeparation>();
+        internal double UnitWidth;
 
         /// <summary>
         /// Factor used to calculate label separations. default is 3. increase it to make it 'cleaner'
