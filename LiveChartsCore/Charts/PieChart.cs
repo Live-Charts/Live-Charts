@@ -113,9 +113,12 @@ namespace LiveCharts
 
         protected override void CalculateComponentsAndMargin()
         {
-            foreach (var l in Shapes) Canvas.Children.Remove(l);
+            if (DrawMargin.ActualHeight < 10 || DrawMargin.ActualWidth < 10) return;
 
-            LoadLegend();
+            Canvas.SetLeft(DrawMargin, 0);
+            Canvas.SetTop(DrawMargin, 0);
+            DrawMargin.Width = ActualWidth;
+            DrawMargin.Height = ActualHeight;
 
             if (LegendLocation != LegendLocation.None)
             {
