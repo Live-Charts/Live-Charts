@@ -3,9 +3,9 @@
 </p>
 
 <p align="center">
-  <img src="http://lvcharts.net/Content/Images/Samples/linemove.gif" width="300" />
-  <img src="http://lvcharts.net/Content/Images/Samples/pie.gif" width="300"/>
-  <img src="http://lvcharts.net/Content/Images/Samples/barsmove.gif" width="300"/>
+  <img src="http://lvcharts.net/Content/Images/Samples/linemove.gif" width="400" />
+  <img src="http://lvcharts.net/Content/Images/Samples/pie.gif" width="400"/>
+  <img src="http://lvcharts.net/Content/Images/Samples/barsmove.gif" width="400"/>
 </p>
 
 [![GitHub license](https://img.shields.io/github/license/beto-rodriguez/Live-Charts.svg?style=flat-square)](https://github.com/beto-rodriguez/Live-Charts/blob/master/LICENSE.TXT)
@@ -15,6 +15,8 @@
 [![Gitter](https://img.shields.io/gitter/room/beto-rodriguez/Live-Charts.svg?style=flat-square)](https://gitter.im/beto-rodriguez/Live-Charts?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 ### Find more at http://lvcharts.net/
+### Chat https://gitter.im/beto-rodriguez/Live-Charts
+### Questions, try [Stack Overflow](http://stackoverflow.com/), tag your question as LiveCharts
 
 Live charts is an easy way to build poweful charts, all charts are animated, they update every time you change your data, it also has an awesome performance. 
 
