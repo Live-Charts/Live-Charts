@@ -2,6 +2,7 @@
 using System.Windows.Controls;
 using ChartsTest.BarExamples;
 using ChartsTest.BarExamples.FilterChart;
+using ChartsTest.BarExamples.MultiAxesBarChart;
 using ChartsTest.BarExamples.UsingObservableChartPoint;
 using ChartsTest.Line_Examples;
 using ChartsTest.Line_Examples.AnimationImprovement;
@@ -37,33 +38,34 @@ namespace ChartsTest
         {
             LineAndAreaAexamples = new List<UserControl>
             {
-            //    new AnimationImprovementLine(),
+                new AnimationImprovementLine(),
                 new BasicLine(),
-            //    new DynamicLine(),
-            //    new GenericLine(),
-            //    new RotatedLine(),
-            //    new CustomLine(),
-            //    new IrregularLine(),
-            //    new LogarithmicAxis(),
-            //    new UiElementsLine(),
-            //    new InLineLine()
+                new DynamicLine(),
+                new GenericLine(),
+                new RotatedLine(),
+                new CustomLine(),
+                new IrregularLine(),
+                new LogarithmicAxis(),
+                new UiElementsLine(),
+                new InLineLine()
             };
-            //BarExamples = new List<UserControl>
-            //{
-            //    new FilterChart(),
-            //    new RotatedBar(),
-            //    new MvvmBar(),
-            //    new PointPropertyChangedBar(),
-            //    new BasicBar(),
-            //    new BindingBar(),
-            //    new CustomBar()
-            //};
-            //PieExamples = new List<UserControl>
-            //{
-            //    new BasicPie(),
-            //    new MvvmPie(),
-            //    new CustomPie(),
-            //};
+            BarExamples = new List<UserControl>
+            {
+                new FilterChart(),
+                new MultiAxChart(),
+                new RotatedBar(),
+                new MvvmBar(),
+                new PointPropertyChangedBar(),
+                new BasicBar(),
+                new BindingBar(),
+                new CustomBar()
+            };
+            PieExamples = new List<UserControl>
+            {
+                new BasicPie(),
+                new MvvmPie(),
+                new CustomPie(),
+            };
 
             //currently disabled chart type
             //StackedBarExamples = new List<UserControl>
@@ -76,7 +78,7 @@ namespace ChartsTest
             //};
             MoreExamples = new List<UserControl>
             {
-               new Issue101(),
+               //new Issue101(),
                //new Issue102()
             };
             window.LineControl.Content = LineAndAreaAexamples != null && LineAndAreaAexamples.Count > 0 ? LineAndAreaAexamples[0] : null;

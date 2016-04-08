@@ -110,7 +110,7 @@ namespace LiveCharts
                         }
                         else
                         {
-                            ofPt = new Point(Methods.GetUnitWidth(AxisTags.X, Chart, ScalesYAt)*.5, 0);
+                            ofPt = new Point(Methods.GetUnitWidth(AxisTags.X, Chart, ScalesXAt)*.5, 0);
                             Canvas.SetLeft(path, ofPt.X);
                         }
                     }
@@ -127,7 +127,7 @@ namespace LiveCharts
                         }
                         else
                         {
-                            ofPt = new Point(Methods.GetUnitWidth(AxisTags.X, Chart, ScalesYAt) * .5, 0);
+                            ofPt = new Point(Methods.GetUnitWidth(AxisTags.X, Chart, ScalesXAt) * .5, 0);
                             Canvas.SetLeft(area.Path, ofPt.X);
                         }
                     }
