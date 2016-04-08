@@ -15,7 +15,8 @@
             <RowDefinition Height="*"></RowDefinition>
             <RowDefinition Height="40"></RowDefinition>
         </Grid.RowDefinitions>
-        <liveCharts:PieChart Series="{Binding RawData.ChartData, Converter={StaticResource Converter}}"/>
+        <liveCharts:PieChart Series="{Binding RawData.ChartData, Converter={StaticResource Converter}}"
+                             TooltipTimeout="10"/>
         <Button Grid.Row="1" Click="ButtonBase_OnClick">Update!</Button>
     </Grid>
 </UserControl>
