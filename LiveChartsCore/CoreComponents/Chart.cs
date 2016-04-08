@@ -605,15 +605,20 @@ namespace LiveCharts.CoreComponents
         {
             if (DrawMargin.ActualHeight < 10 || DrawMargin.ActualWidth < 10) return;
 
-            SetPlotArea();
+            Canvas.SetLeft(DrawMargin, 0);
+            Canvas.SetTop(DrawMargin, 0);
+            DrawMargin.Width = ActualWidth;
+            DrawMargin.Height = ActualHeight;
 
+            DrawMargin.Background = new SolidColorBrush(System.Windows.Media.Colors.BlueViolet) {Opacity = .3};
             PlaceLegend();
 
             //left, bot, botMerged, left, right margins
-            double t = 0d, b = 0d, bm = 0d, l = 0d, r = 0d;
-
-            Canvas.SetLeft(DrawMargin, 0d);
-            Canvas.SetRight(DrawMargin, 0d);
+            double t = Canvas.GetTop(DrawMargin),
+                b = 0d,
+                bm = 0d,
+                l = Canvas.GetLeft(DrawMargin),
+                r = 0d;
 
             foreach (var yi in AxisY)
             {
@@ -924,8 +929,6 @@ namespace LiveCharts.CoreComponents
 
             if (LegendLocation != LegendLocation.None)
             {
-                //Canvas.Children.Add(legend);
-                //Shapes.Add(legend);
                 Legend.UpdateLayout();
                 Legend.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
             }
@@ -936,27 +939,28 @@ namespace LiveCharts.CoreComponents
                     Legend.Visibility = Visibility.Hidden;
                     break;
                 case LegendLocation.Top:
-                    var top = new Point(ActualWidth * .5 - Legend.DesiredSize.Width * .5, 0);
+                    var top = new Point(ActualWidth*.5 - Legend.DesiredSize.Width*.5, 0);
                     var y = Canvas.GetTop(DrawMargin);
-                    Canvas.SetTop(DrawMargin, y + top.Y + Legend.DesiredSize.Height);
-                    DrawMargin.Height -= Legend.DesiredSize.Height;
+                    Canvas.SetTop(DrawMargin, y + top.Y + Legend.DesiredSize.Height + 10);
+                    DrawMargin.Height -= Legend.DesiredSize.Height -10;
                     Canvas.SetTop(Legend, top.Y);
                     Canvas.SetLeft(Legend, top.X);
                     break;
                 case LegendLocation.Bottom:
-                    var bot = new Point(ActualWidth * .5 - Legend.DesiredSize.Width * .5, ActualHeight - Legend.DesiredSize.Height);
+                    var bot = new Point(ActualWidth*.5 - Legend.DesiredSize.Width*.5,
+                        ActualHeight - Legend.DesiredSize.Height);
                     DrawMargin.Height -= Legend.DesiredSize.Height;
                     Canvas.SetTop(Legend, Canvas.ActualHeight - Legend.DesiredSize.Height);
                     Canvas.SetLeft(Legend, bot.X);
                     break;
                 case LegendLocation.Left:
                     Canvas.SetLeft(DrawMargin, Canvas.GetLeft(DrawMargin) + Legend.DesiredSize.Width);
-                    Canvas.SetTop(Legend, Canvas.ActualHeight * .5 - Legend.DesiredSize.Height * .5);
+                    Canvas.SetTop(Legend, Canvas.ActualHeight*.5 - Legend.DesiredSize.Height*.5);
                     Canvas.SetLeft(Legend, 0);
                     break;
                 case LegendLocation.Right:
-                    DrawMargin.Width -= Legend.DesiredSize.Width;
-                    Canvas.SetTop(Legend, Canvas.ActualHeight * .5 - Legend.DesiredSize.Height * .5);
+                    DrawMargin.Width -= Legend.DesiredSize.Width + 10;
+                    Canvas.SetTop(Legend, Canvas.ActualHeight*.5 - Legend.DesiredSize.Height*.5);
                     Canvas.SetLeft(Legend, ActualWidth - Legend.DesiredSize.Width);
                     break;
                 default:
