@@ -59,7 +59,7 @@ namespace LiveCharts
             var stackedSeries = Chart.Series.OfType<StackedBarSeries>().ToList();
 
             var serieIndex = stackedSeries.IndexOf(this);
-            var unitW = ToPlotArea(CurrentYAxis.MaxLimit - 1, AxisTags.Y) - Canvas  .GetTop(Chart.DrawMargin) + 5;
+            var unitW = Methods.GetUnitWidth(AxisTags.Y, Chart, ScalesYAt);
             var overflow = unitW - stackedChart.MaxColumnWidth > 0 ? unitW - stackedChart.MaxColumnWidth : 0;
             unitW = unitW > stackedChart.MaxColumnWidth ? stackedChart.MaxColumnWidth : unitW;
             var pointPadding = .1 * unitW;
@@ -73,7 +73,7 @@ namespace LiveCharts
                 var visual = GetVisual(point);
 
                 var helper = stackedChart.IndexTotals[(int) point.Y];
-                var w = ToPlotArea(helper.Total, AxisTags.X) - ToPlotArea(CurrentXAxis.MinLimit, AxisTags.X);
+                var w = ToPlotArea(helper.Total, AxisTags.X, ScalesXAt) - ToPlotArea(CurrentXAxis.MinLimit, AxisTags.X, ScalesXAt);
                 var rh = w * (point.X / helper.Total);
                 if (double.IsNaN(rh)) return;
                 var stackedW = w * (helper.Stacked.ContainsKey(serieIndex) ? (helper.Stacked[serieIndex].Stacked / helper.Total) : 0);
@@ -84,9 +84,9 @@ namespace LiveCharts
                 visual.HoverShape.Height = height;
                 visual.HoverShape.Width = rh;
 
-                Canvas.SetTop(visual.PointShape, ToPlotArea(point.Y, AxisTags.Y) + pointPadding + overflow / 2);
-                Canvas.SetTop(visual.HoverShape, ToPlotArea(point.Y, AxisTags.Y) + pointPadding + overflow / 2);
-                Canvas.SetLeft(visual.HoverShape, ToPlotArea(CurrentXAxis.MinLimit, AxisTags.X) + stackedW);
+                Canvas.SetTop(visual.PointShape, ToPlotArea(point.Y, AxisTags.Y, ScalesYAt) + pointPadding + overflow / 2);
+                Canvas.SetTop(visual.HoverShape, ToPlotArea(point.Y, AxisTags.Y, ScalesYAt) + pointPadding + overflow / 2);
+                Canvas.SetLeft(visual.HoverShape, ToPlotArea(CurrentXAxis.MinLimit, AxisTags.X, ScalesXAt) + stackedW);
                 Panel.SetZIndex(visual.HoverShape, int.MaxValue);
 
                 if (!Chart.DisableAnimation)
@@ -99,8 +99,8 @@ namespace LiveCharts
                     };
                     var leftAnim = new DoubleAnimation
                     {
-                        From = visual.IsNew ? ToPlotArea(CurrentXAxis.MinLimit, AxisTags.X) : Canvas.GetLeft(visual.PointShape),
-                        To = ToPlotArea(CurrentXAxis.MinLimit, AxisTags.X) + stackedW,
+                        From = visual.IsNew ? ToPlotArea(CurrentXAxis.MinLimit, AxisTags.X, ScalesXAt) : Canvas.GetLeft(visual.PointShape),
+                        To = ToPlotArea(CurrentXAxis.MinLimit, AxisTags.X, ScalesXAt) + stackedW,
                         Duration = TimeSpan.FromMilliseconds(500)
                     };
                     visual.PointShape.BeginAnimation(WidthProperty, wAnim);
@@ -109,7 +109,7 @@ namespace LiveCharts
                 else
                 {
                     visual.PointShape.Width = rh;
-                    Canvas.SetLeft(visual.PointShape, ToPlotArea(CurrentXAxis.MinLimit, AxisTags.X) + stackedW);
+                    Canvas.SetLeft(visual.PointShape, ToPlotArea(CurrentXAxis.MinLimit, AxisTags.X,ScalesXAt) + stackedW);
                 }
 
                 if (DataLabels)
@@ -177,7 +177,7 @@ namespace LiveCharts
             var stackedSeries = Chart.Series.OfType<StackedBarSeries>().ToList();
 
             var serieIndex = stackedSeries.IndexOf(this);
-            var unitW = ToPlotArea(1, AxisTags.X) - Canvas.GetLeft(Chart.DrawMargin) + 5;
+            var unitW = Methods.GetUnitWidth(AxisTags.X, Chart, ScalesXAt);
             var overflow = unitW - stackedChart.MaxColumnWidth > 0 ? unitW - stackedChart.MaxColumnWidth : 0;
             unitW = unitW > stackedChart.MaxColumnWidth ? stackedChart.MaxColumnWidth : unitW;
             var pointPadding = .1 * unitW;
@@ -191,7 +191,7 @@ namespace LiveCharts
                 var visual = GetVisual(point);
 
                 var helper = stackedChart.IndexTotals[(int)point.X];
-                var barH = ToPlotArea(CurrentYAxis.MinLimit, AxisTags.Y) - ToPlotArea(helper.Total, AxisTags.Y);
+                var barH = ToPlotArea(CurrentYAxis.MinLimit, AxisTags.Y, ScalesYAt) - ToPlotArea(helper.Total, AxisTags.Y,ScalesYAt);
                 var rh = barH * (point.Y / helper.Total);
                 if (double.IsNaN(rh)) return;
                 var stackedH = barH * (helper.Stacked.ContainsKey(serieIndex) ? (helper.Stacked[serieIndex].Stacked / helper.Total) : 0);
@@ -202,9 +202,9 @@ namespace LiveCharts
                 visual.HoverShape.Width = width;
                 visual.HoverShape.Height = rh;
 
-                Canvas.SetLeft(visual.PointShape, ToPlotArea(point.X, AxisTags.X) + pointPadding + overflow/2);
-                Canvas.SetLeft(visual.HoverShape, ToPlotArea(point.X, AxisTags.X) + pointPadding + overflow / 2);
-                Canvas.SetTop(visual.HoverShape, ToPlotArea(CurrentYAxis.MinLimit, AxisTags.Y) - rh - stackedH);
+                Canvas.SetLeft(visual.PointShape, ToPlotArea(point.X, AxisTags.X, ScalesXAt) + pointPadding + overflow/2);
+                Canvas.SetLeft(visual.HoverShape, ToPlotArea(point.X, AxisTags.X, ScalesXAt) + pointPadding + overflow / 2);
+                Canvas.SetTop(visual.HoverShape, ToPlotArea(CurrentYAxis.MinLimit, AxisTags.Y, ScalesYAt) - rh - stackedH);
                 Panel.SetZIndex(visual.HoverShape, int.MaxValue);
 
                 if (!Chart.DisableAnimation)
@@ -217,8 +217,8 @@ namespace LiveCharts
                     };
                     var topAnim = new DoubleAnimation
                     {
-                        From = visual.IsNew ? ToPlotArea(CurrentYAxis.MinLimit, AxisTags.Y) : Canvas.GetTop(visual.PointShape),
-                        To = ToPlotArea(CurrentYAxis.MinLimit, AxisTags.Y) - rh - stackedH,
+                        From = visual.IsNew ? ToPlotArea(CurrentYAxis.MinLimit, AxisTags.Y, ScalesYAt) : Canvas.GetTop(visual.PointShape),
+                        To = ToPlotArea(CurrentYAxis.MinLimit, AxisTags.Y, ScalesYAt) - rh - stackedH,
                         Duration = TimeSpan.FromMilliseconds(500)
                     };
                     visual.PointShape.BeginAnimation(HeightProperty, hAnim);
@@ -227,7 +227,7 @@ namespace LiveCharts
                 else
                 {
                     visual.PointShape.Height = rh;
-                    Canvas.SetTop(visual.PointShape, ToPlotArea(CurrentYAxis.MinLimit, AxisTags.Y) - rh - stackedH);
+                    Canvas.SetTop(visual.PointShape, ToPlotArea(CurrentYAxis.MinLimit, AxisTags.Y, ScalesYAt) - rh - stackedH);
                 }
 
                 if (DataLabels)

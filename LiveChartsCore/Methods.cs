@@ -152,7 +152,7 @@ namespace LiveCharts
             return FromPlotArea(value, axis, chart) - o + of;
         }
 
-        public static double GetUnitWidth(AxisTags source, Chart chart, int axis = 0)
+        internal static double GetUnitWidth(AxisTags source, Chart chart, int axis = 0)
         {
             double min;
 

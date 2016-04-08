@@ -32,12 +32,6 @@ namespace LiveCharts
     {
         public StackedBarChart()
         {
-            SetValue(AxisYProperty, new Axis());
-            SetValue(AxisXProperty, new Axis
-            {
-                MinValue = 0,
-                Separator = new Separator {Step = 1}
-            });
             ShapeHoverBehavior = ShapeHoverBehavior.Shape;
             IndexTotals = new Dictionary<int, StackedBarHelper>();
             MaxColumnWidth = 40;
@@ -212,20 +206,25 @@ namespace LiveCharts
                 IndexTotals[i] = helper;
             }
 
-            //Max = GetMax();
-            //Min = GetMin();
-            //S = GetS();
+            base.PrepareAxes();
 
-            //if (Invert)
-            //{
-            //   AxisX.MaxLimit = AxisX.MaxValue ?? (Math.Truncate(Max.X /AxisX.S) + 1) *AxisX.S;
-            //   AxisX.MinLimit = AxisX.MinValue ?? (Math.Truncate(Min.X /AxisX.S) - 1) *AxisX.S;
-            //}
-            //else
-            //{
-            //   AxisY.MaxLimit = AxisY.MaxValue ?? (Math.Truncate(Max.Y /AxisY.S) + 1) *AxisY.S;
-            //   AxisY.MinLimit = AxisY.MinValue ?? (Math.Truncate(Min.Y /AxisY.S) - 1) *AxisY.S;
-            //}
+            foreach (var xi in AxisX)
+            {
+                if (!Invert) xi.MaxLimit += 1;
+                xi.CalculateSeparator(this, AxisTags.X);
+                if (!Invert) continue;
+                if (xi.MaxValue == null) xi.MaxLimit = (Math.Round(xi.MaxLimit / xi.S) + 1) * xi.S;
+                if (xi.MinValue == null) xi.MinLimit = (Math.Truncate(xi.MinLimit / xi.S) - 1) * xi.S;
+            }
+
+            foreach (var yi in AxisY)
+            {
+                if (Invert) yi.MinLimit -= 1;
+                yi.CalculateSeparator(this, AxisTags.X);
+                if (Invert) continue;
+                if (yi.MaxValue == null) yi.MaxLimit = (Math.Round(yi.MaxLimit / yi.S) + 1) * yi.S;
+                if (yi.MinValue == null) yi.MinLimit = (Math.Truncate(yi.MinLimit / yi.S) - 1) * yi.S;
+            }
 
             CalculateComponentsAndMargin();
         }

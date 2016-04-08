@@ -61,7 +61,7 @@ namespace LiveCharts
             var barSeries = Chart.Series.OfType<BarSeries>().ToList();
             var pos = barSeries.IndexOf(this);
             var count = barSeries.Count;
-            var unitW = ToPlotArea(CurrentYAxis.MaxLimit - 1, AxisTags.Y) - Canvas.GetTop(Chart.DrawMargin) + 5;
+            var unitW = ToPlotArea(CurrentYAxis.MaxLimit - 1, AxisTags.Y, ScalesYAt) - Canvas.GetTop(Chart.DrawMargin) + 5;
             var overflow = unitW - chart.MaxColumnWidth * 3 > 0 ? unitW - chart.MaxColumnWidth * 3 : 0;
             unitW = unitW > chart.MaxColumnWidth * 3 ? chart.MaxColumnWidth * 3 : unitW;
 
@@ -86,12 +86,12 @@ namespace LiveCharts
                 var direction = point.X > 0 ? 1 : -1;
 
                 var rw = bothLimitsNegative
-                    ? ToPlotArea(point.X, AxisTags.X)
-                    : ToPlotArea(point.X*direction, AxisTags.X) - ToPlotArea(barStart, AxisTags.X);
+                    ? ToPlotArea(point.X, AxisTags.X, ScalesXAt)
+                    : ToPlotArea(point.X*direction, AxisTags.X, ScalesXAt) - ToPlotArea(barStart, AxisTags.X, ScalesXAt);
 
-                var w = direction > 0 ? ToPlotArea(barStart, AxisTags.X) : ToPlotArea(barStart, AxisTags.X) - rw;
+                var w = direction > 0 ? ToPlotArea(barStart, AxisTags.X, ScalesXAt) : ToPlotArea(barStart, AxisTags.X, ScalesXAt) - rw;
 
-                var top = ToPlotArea(point.Y, AxisTags.Y) + barW*pos + pointPadding + overflow/2;
+                var top = ToPlotArea(point.Y, AxisTags.Y, ScalesYAt) + barW*pos + pointPadding + overflow/2;
 
                 Canvas.SetTop(visual.HoverShape, top);
                 Canvas.SetLeft(visual.HoverShape, w);
@@ -114,7 +114,7 @@ namespace LiveCharts
                     var leftAnim = new DoubleAnimation
                     {
                         From = visual.IsNew
-                            ? ToPlotArea(barStart, AxisTags.X)
+                            ? ToPlotArea(barStart, AxisTags.X, ScalesXAt)
                             : Canvas.GetLeft(visual.PointShape),
                         To = w,
                         Duration = TimeSpan.FromMilliseconds(animationSpeed)
@@ -194,7 +194,7 @@ namespace LiveCharts
             var barSeries = Chart.Series.OfType<BarSeries>().ToList();
             var pos = barSeries.IndexOf(this);
             var count = barSeries.Count;
-            var unitW = ToPlotArea(1, AxisTags.X) - Canvas.GetLeft(Chart.DrawMargin) + 5;
+            var unitW = ToPlotArea(1, AxisTags.X, ScalesXAt) - Canvas.GetLeft(Chart.DrawMargin) + 5;
             var overflow = unitW - chart.MaxColumnWidth * 3 > 0 ? unitW - chart.MaxColumnWidth * 3 : 0;
             unitW = unitW > chart.MaxColumnWidth * 3 ? chart.MaxColumnWidth * 3 : unitW;
 
@@ -219,11 +219,11 @@ namespace LiveCharts
                 var direction = point.Y > 0 ? 1 : -1;
 
                 var rh = bothLimitsNegative
-                    ? ToPlotArea(point.Y, AxisTags.Y)
-                    : ToPlotArea(barStart, AxisTags.Y) - ToPlotArea(point.Y * direction, AxisTags.Y);
-                var h = direction > 0 ? ToPlotArea(barStart, AxisTags.Y) - rh : ToPlotArea(barStart, AxisTags.Y);
+                    ? ToPlotArea(point.Y, AxisTags.Y, ScalesYAt)
+                    : ToPlotArea(barStart, AxisTags.Y, ScalesYAt) - ToPlotArea(point.Y * direction, AxisTags.Y, ScalesYAt);
+                var h = direction > 0 ? ToPlotArea(barStart, AxisTags.Y, ScalesYAt) - rh : ToPlotArea(barStart, AxisTags.Y, ScalesYAt);
 
-                var left = ToPlotArea(point.X, AxisTags.X) + barW*pos + pointPadding + overflow/2;
+                var left = ToPlotArea(point.X, AxisTags.X, ScalesXAt) + barW*pos + pointPadding + overflow/2;
 
                 Canvas.SetLeft(visual.HoverShape, left);
                 Canvas.SetTop(visual.HoverShape, h);
@@ -246,7 +246,7 @@ namespace LiveCharts
                     var topAnim = new DoubleAnimation
                     {
                         From = visual.IsNew
-                            ? ToPlotArea(barStart, AxisTags.Y)
+                            ? ToPlotArea(barStart, AxisTags.Y, ScalesYAt)
                             : Canvas.GetTop(visual.PointShape),
                         To = h,
                         Duration = TimeSpan.FromMilliseconds(animationSpeed)
