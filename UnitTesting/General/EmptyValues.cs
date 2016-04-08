@@ -38,14 +38,15 @@ namespace UnitTesting.General
             };
             pieChart.UnsafeUpdate();
 
-            var stackedChart = new StackedBarChart
-            {
-                Series = new SeriesCollection
-                {
-                    new StackedBarSeries {Values = vals}
-                }
-            };
-            stackedChart.UnsafeUpdate();
+            //Currently disabled
+            //var stackedChart = new StackedBarChart
+            //{
+            //    Series = new SeriesCollection
+            //    {
+            //        new StackedBarSeries {Values = vals}
+            //    }
+            //};
+            //stackedChart.UnsafeUpdate();
         }
     }
 }

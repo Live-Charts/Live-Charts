@@ -71,18 +71,6 @@
                 <Image Grid.Column="2" Source="Right.png" MouseDown="BarNext"/>
             </Grid>
 
-            <TextBlock Style="{StaticResource Title}">Stacked Bar Chart Examples</TextBlock>
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"></ColumnDefinition>
-                    <ColumnDefinition Width="*"></ColumnDefinition>
-                    <ColumnDefinition Width="Auto"></ColumnDefinition>
-                </Grid.ColumnDefinitions>
-                <Image Grid.Column="0" Source="Left.png" MouseDown="StackedBarPrevious"/>
-                <ContentControl Name="StackedBarControl" Grid.Column="1" Height="500" Width="Auto"></ContentControl>
-                <Image Grid.Column="2" Source="Right.png" MouseDown="StackedBarNext"/>
-            </Grid>
-
             <TextBlock Style="{StaticResource Title}">Pie &amp; Doughnut Chart Examples</TextBlock>
             <Grid>
                 <Grid.ColumnDefinitions>
@@ -93,6 +81,18 @@
                 <Image Grid.Column="0" Source="Left.png" MouseDown="PiePrevious"/>
                 <ContentControl Name="PieControl" Grid.Column="1" Height="500" Width="Auto"></ContentControl>
                 <Image Grid.Column="2" Source="Right.png" MouseDown="PieNext"/>
+            </Grid>
+            
+            <TextBlock Style="{StaticResource Title}">Stacked Bar Chart Examples</TextBlock>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Image Grid.Column="0" Source="Left.png" MouseDown="StackedBarPrevious"/>
+                <ContentControl Name="StackedBarControl" Grid.Column="1" Height="500" Width="Auto"></ContentControl>
+                <Image Grid.Column="2" Source="Right.png" MouseDown="StackedBarNext"/>
             </Grid>
 
             <TextBlock Style="{StaticResource Title}">Debug Cases</TextBlock>

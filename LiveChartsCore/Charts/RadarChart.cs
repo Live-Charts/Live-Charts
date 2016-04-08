@@ -42,7 +42,7 @@ namespace LiveCharts
             ShapeHoverBehavior = ShapeHoverBehavior.Dot;
             AlphaLabel = true;
             MinInnerRadius = 10;
-            throw new Exception("StackedBar Charts are currently disabled");
+            throw new Exception("Radar Charts are currently disabled");
         }
 
         #region Properties

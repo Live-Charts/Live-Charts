@@ -426,7 +426,15 @@ namespace LiveCharts
             var biggest = new Size(0, 0);
             var tolerance = S/10;
 
-            for (var i = MinLimit; i <= MaxLimit; i += S)
+            var uwc = 0;
+
+            if (chart is IUnitaryPoints)
+            {
+                if (direction == AxisTags.Y && chart.Invert) uwc = 1;
+                if (direction == AxisTags.X && !chart.Invert) uwc = 1;
+            }
+
+            for (var i = MinLimit; i <= MaxLimit - uwc; i += S)
             {
                 AxisSeparation axisSeparation;
 
