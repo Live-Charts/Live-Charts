@@ -27,12 +27,10 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Animation;
 using LiveCharts.CoreComponents;
 using LiveCharts.Shapes;
 using LiveCharts.Tooltip;
-using LiveCharts.Viewers;
 
 namespace LiveCharts
 {
@@ -161,7 +159,7 @@ namespace LiveCharts
 
         internal override void DataMouseEnter(object sender, MouseEventArgs e)
         {
-            if (DataTooltip == null) return;
+            if (DataTooltip == null || !Hoverable) return;
 
             DataTooltip.Visibility = Visibility.Visible;
             TooltipTimer.Stop();

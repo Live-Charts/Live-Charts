@@ -35,10 +35,10 @@ namespace ChartsTest
     {
         public static void Initialize(MainWindow window)
         {
-            //LineAndAreaAexamples = new List<UserControl>
-            //{
+            LineAndAreaAexamples = new List<UserControl>
+            {
             //    new AnimationImprovementLine(),
-            //    new BasicLine(),
+                new BasicLine(),
             //    new DynamicLine(),
             //    new GenericLine(),
             //    new RotatedLine(),
@@ -47,7 +47,7 @@ namespace ChartsTest
             //    new LogarithmicAxis(),
             //    new UiElementsLine(),
             //    new InLineLine()
-            //};
+            };
             //BarExamples = new List<UserControl>
             //{
             //    new FilterChart(),
@@ -64,6 +64,8 @@ namespace ChartsTest
             //    new MvvmPie(),
             //    new CustomPie(),
             //};
+
+            //currently disabled chart type
             //StackedBarExamples = new List<UserControl>
             //{
             //    //new BasicStackedBar(),
@@ -74,7 +76,8 @@ namespace ChartsTest
             //};
             MoreExamples = new List<UserControl>
             {
-               new Issue101()
+               new Issue101(),
+               //new Issue102()
             };
             window.LineControl.Content = LineAndAreaAexamples != null && LineAndAreaAexamples.Count > 0 ? LineAndAreaAexamples[0] : null;
             window.BarControl.Content = BarExamples != null && BarExamples.Count > 0 ? BarExamples[0] : null;

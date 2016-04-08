@@ -23,6 +23,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
@@ -34,6 +35,7 @@ using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 using LiveCharts.Tooltip;
+using LiveCharts.TypeConverters;
 using LiveCharts.Viewers;
 
 namespace LiveCharts.CoreComponents
@@ -65,7 +67,7 @@ namespace LiveCharts.CoreComponents
         private Point _panOrigin;
         private bool _isDragging;
         private int _colorIndexer;
-        private UIElement _dataTooltip;
+        private FrameworkElement _dataTooltip;
 
         static Chart()
         {
@@ -107,6 +109,7 @@ namespace LiveCharts.CoreComponents
             SetValue(AxisXProperty, new List<Axis>());
 
             SetValue(LegendProperty, new ChartLegend());
+            
 
             if (RandomizeStartingColor) ColorStartIndex = Randomizer.Next(0, Colors.Count - 1);
             
@@ -138,11 +141,10 @@ namespace LiveCharts.CoreComponents
                 _resizeTimer.Stop();
                 Update(false);
             };
-            TooltipTimer = new DispatcherTimer
-            {
-                Interval = TimeSpan.FromMilliseconds(1000)
-            };
+            var defTt = TimeSpan.FromMilliseconds(800);
+            TooltipTimer = new DispatcherTimer();
             TooltipTimer.Tick += TooltipTimerOnTick;
+            SetValue(TooltipTimeoutProperty, defTt);
 
             _serieValuesChanged = new DispatcherTimer {Interval = TimeSpan.FromMilliseconds(100)};
             _serieValuesChanged.Tick += UpdateModifiedDataSeries;
@@ -286,6 +288,20 @@ namespace LiveCharts.CoreComponents
             get { return (SeriesCollection)  GetValue(SeriesProperty); }
             set { SetValue(SeriesProperty, value); }
         }
+
+        public static readonly DependencyProperty TooltipTimeoutProperty = DependencyProperty.Register(
+            "TooltipTimeout", typeof (TimeSpan), typeof (Chart), new PropertyMetadata(default(TimeSpan), (o, args) =>
+            {
+                var chart = o as Chart;
+                if (chart == null) return;
+                chart.TooltipTimer.Interval = chart.TooltipTimeout;
+            }));
+        [TypeConverter(typeof(TooltipTimeoutConverter))]
+        public TimeSpan TooltipTimeout
+        {
+            get { return (TimeSpan) GetValue(TooltipTimeoutProperty); }
+            set { SetValue(TooltipTimeoutProperty, value); }
+        }   
         #endregion
 
         #region Properties
@@ -293,7 +309,7 @@ namespace LiveCharts.CoreComponents
         /// <summary>
         /// Gets or sets current DataTooltip
         /// </summary>
-        public UIElement DataTooltip
+        public FrameworkElement DataTooltip
         {
             get { return _dataTooltip; }
             set
@@ -303,8 +319,6 @@ namespace LiveCharts.CoreComponents
                 Panel.SetZIndex(DataTooltip, int.MaxValue);
                 Canvas.SetLeft(DataTooltip, 0);
                 Canvas.SetTop(DataTooltip, 0);
-                DataTooltip.Visibility = Visibility.Hidden;
-                Canvas.Children.Add(DataTooltip);
             }
         }
         /// <summary>
@@ -314,10 +328,12 @@ namespace LiveCharts.CoreComponents
         /// <summary>
         /// Gets chart point offset
         /// </summary>
+        [Obsolete]
         internal double XOffset { get; set; }
         /// <summary>
         /// Gets charts point offset
         /// </summary>
+        [Obsolete]
         internal double YOffset { get; set; }
         /// <summary>
         /// Gets current set of shapes added to canvas by LiveCharts
@@ -1003,6 +1019,11 @@ namespace LiveCharts.CoreComponents
         {
             Series.Chart = this;
             Series.Configuration.Chart = this;
+            if (DataTooltip.Parent == null)
+            {
+                DataTooltip.Visibility = Visibility.Hidden;
+                Canvas.Children.Add(DataTooltip);
+            }
             foreach (var series in Series)
             {
                 series.Collection = Series;
@@ -1124,10 +1145,6 @@ namespace LiveCharts.CoreComponents
         {
             foreach (var yi in AxisY) yi.Reset();
             foreach (var xi in AxisX) xi.Reset();
-            foreach (var series in Series)
-            {
-                
-            }
             DrawMargin.Children.Clear();
             Canvas.Children.Clear();
             Shapes.Clear();
@@ -1286,6 +1303,7 @@ namespace LiveCharts.CoreComponents
         private void TooltipTimerOnTick(object sender, EventArgs e)
         {
             DataTooltip.Visibility = Visibility.Hidden;
+            TooltipTimer.Stop();
         }
 
         #endregion
