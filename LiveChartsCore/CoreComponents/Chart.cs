@@ -113,7 +113,8 @@ namespace LiveCharts.CoreComponents
             if (RandomizeStartingColor) ColorStartIndex = Randomizer.Next(0, Colors.Count - 1);
             
             AnimatesNewPoints = false;
-            
+            AnimationsSpeed = TimeSpan.FromMilliseconds(500);
+
             var defaultConfig = new SeriesConfiguration<double>().Y(x => x);
             SetCurrentValue(SeriesProperty, new SeriesCollection(defaultConfig));
 
@@ -264,16 +265,16 @@ namespace LiveCharts.CoreComponents
             set { SetValue(PointHoverColorProperty, value); }
         }
 
-        public static readonly DependencyProperty DisableAnimationProperty = DependencyProperty.Register(
-            "DisableAnimation", typeof (bool), typeof (Chart));
+        public static readonly DependencyProperty DisableAnimationsProperty = DependencyProperty.Register(
+            "DisableAnimations", typeof (bool), typeof (Chart));
 
         /// <summary>
         /// Indicates weather to show animation or not.
         /// </summary>
-        public bool DisableAnimation
+        public bool DisableAnimations
         {
-            get { return (bool) GetValue(DisableAnimationProperty); }
-            set { SetValue(DisableAnimationProperty, value); }
+            get { return (bool) GetValue(DisableAnimationsProperty); }
+            set { SetValue(DisableAnimationsProperty, value); }
         }
 
         public static readonly DependencyProperty SeriesProperty = DependencyProperty.Register(
@@ -324,6 +325,8 @@ namespace LiveCharts.CoreComponents
         /// Gets chart canvas
         /// </summary>
         public Canvas Canvas { get; internal set; }
+
+        public TimeSpan AnimationsSpeed { get; set; }
         /// <summary>
         /// Gets chart point offset
         /// </summary>
@@ -337,6 +340,7 @@ namespace LiveCharts.CoreComponents
         /// <summary>
         /// Gets current set of shapes added to canvas by LiveCharts
         /// </summary>
+        [Obsolete]
         public List<FrameworkElement> Shapes { get; internal set; }
         /// <summary>
         /// Gets collection of shapes that fires tooltip on hover
@@ -1092,7 +1096,7 @@ namespace LiveCharts.CoreComponents
             {
                 From = 0, To = 1, Duration = TimeSpan.FromMilliseconds(1000)
             };
-            if (!chart.DisableAnimation) chart.Canvas.BeginAnimation(OpacityProperty, anim);
+            if (!chart.DisableAnimations) chart.Canvas.BeginAnimation(OpacityProperty, anim);
 
             chart.Series.CollectionChanged += (sender, args) =>
             {

@@ -31,6 +31,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using LiveCharts.Cache;
 using LiveCharts.CoreComponents;
 using LiveCharts.TypeConverters;
 
@@ -187,6 +188,9 @@ namespace LiveCharts
         /// Gets or sets if the axis labels should me placed inside the chart.
         /// </summary>
         public bool IsMerged { get; set; }
+
+        public bool DisableAnimations { get; set; }
+        public TimeSpan? AnimationsDuration { get; set; }
         #endregion
 
         #region Font Properties
@@ -275,7 +279,7 @@ namespace LiveCharts
         internal double? LastAxisMin;
         internal Rect LastPlotArea;
         internal double LabelsReference;
-        internal Dictionary<double, AxisSeparation> Separations = new Dictionary<double, AxisSeparation>();
+        internal Dictionary<double, AxisSeparationCache> Separations = new Dictionary<double, AxisSeparationCache>();
         internal double UnitWidth;
 
         /// <summary>
@@ -436,12 +440,12 @@ namespace LiveCharts
 
             for (var i = MinLimit; i <= MaxLimit - uwc; i += S)
             {
-                AxisSeparation axisSeparation;
+                AxisSeparationCache axisSeparationCache;
 
                 var key = Math.Round(i/tolerance)*tolerance;
-                if (!Separations.TryGetValue(key, out axisSeparation))
+                if (!Separations.TryGetValue(key, out axisSeparationCache))
                 {
-                    axisSeparation = new AxisSeparation
+                    axisSeparationCache = new AxisSeparationCache
                     {
                         TextBlock = BindATextBlock(0),
                         Line = new Line
@@ -451,37 +455,37 @@ namespace LiveCharts
                         },
                         IsNew = true
                     };
-                    Panel.SetZIndex(axisSeparation.TextBlock, -1);
-                    Panel.SetZIndex(axisSeparation.Line, -1);
-                    chart.Canvas.Children.Add(axisSeparation.TextBlock);
-                    chart.Canvas.Children.Add(axisSeparation.Line);
-                    Separations[key] = axisSeparation;
+                    Panel.SetZIndex(axisSeparationCache.TextBlock, -1);
+                    Panel.SetZIndex(axisSeparationCache.Line, -1);
+                    chart.Canvas.Children.Add(axisSeparationCache.TextBlock);
+                    chart.Canvas.Children.Add(axisSeparationCache.Line);
+                    Separations[key] = axisSeparationCache;
                 }
                 else
                 {
-                    axisSeparation.IsNew = false;
+                    axisSeparationCache.IsNew = false;
                 }
 
-                axisSeparation.Key = key;
-                axisSeparation.Value = i;
-                axisSeparation.IsActive = true;
-                axisSeparation.TextBlock.Text = f(i);
-                axisSeparation.TextBlock.UpdateLayout();
+                axisSeparationCache.Key = key;
+                axisSeparationCache.Value = i;
+                axisSeparationCache.IsActive = true;
+                axisSeparationCache.TextBlock.Text = f(i);
+                axisSeparationCache.TextBlock.UpdateLayout();
 
-                biggest.Width = axisSeparation.TextBlock.ActualWidth > biggest.Width
-                    ? axisSeparation.TextBlock.ActualWidth
+                biggest.Width = axisSeparationCache.TextBlock.ActualWidth > biggest.Width
+                    ? axisSeparationCache.TextBlock.ActualWidth
                     : biggest.Width;
-                biggest.Height = axisSeparation.TextBlock.ActualHeight > biggest.Height
-                    ? axisSeparation.TextBlock.ActualHeight
+                biggest.Height = axisSeparationCache.TextBlock.ActualHeight > biggest.Height
+                    ? axisSeparationCache.TextBlock.ActualHeight
                     : biggest.Height;
 
                 if (LastAxisMax == null)
                 {
-                    axisSeparation.State = SeparationState.InitialAdd;
+                    axisSeparationCache.State = SeparationState.InitialAdd;
                     continue;
                 }
 
-                axisSeparation.State = SeparationState.Keep;
+                axisSeparationCache.State = SeparationState.Keep;
             }
 #if DEBUG
             Trace.WriteLine("Axis.Separations: " + Separations.Count);

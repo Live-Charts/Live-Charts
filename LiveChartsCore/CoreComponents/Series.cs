@@ -21,12 +21,12 @@
 //SOFTWARE.
 
 using System;
-using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Media;
 using LiveCharts.TypeConverters;
 
@@ -244,6 +244,7 @@ namespace LiveCharts.CoreComponents
             get { return Chart.AxisY[ScalesYAt]; }
         }
 
+        public TimeSpan? AnimationsSpeed { get; set; }
         #endregion
 
         #region PublicMethods
@@ -357,18 +358,24 @@ namespace LiveCharts.CoreComponents
         }
         #endregion
 
-        internal TextBlock BuildATextBlock(int rotate)
+        internal TextBlock BindATextBlock(int rotate)
         {
-            return new TextBlock
-            {
-                FontFamily = FontFamily,
-                FontSize = FontSize,
-                FontStretch = FontStretch,
-                FontStyle = FontStyle,
-                FontWeight = FontWeight,
-                Foreground = Foreground,
-                RenderTransform = new RotateTransform(rotate)
-            };
+            var tb = new TextBlock();
+
+            tb.SetBinding(TextBlock.FontFamilyProperty,
+                new Binding { Path = new PropertyPath(FontFamilyProperty), Source = this });
+            tb.SetBinding(FontSizeProperty,
+                new Binding { Path = new PropertyPath(FontSizeProperty), Source = this });
+            tb.SetBinding(TextBlock.FontStretchProperty,
+                new Binding { Path = new PropertyPath(FontStretchProperty), Source = this });
+            tb.SetBinding(TextBlock.FontStyleProperty,
+                new Binding { Path = new PropertyPath(FontStyleProperty), Source = this });
+            tb.SetBinding(TextBlock.FontWeightProperty,
+                new Binding { Path = new PropertyPath(FontWeightProperty), Source = this });
+            tb.SetBinding(TextBlock.ForegroundProperty,
+                 new Binding { Path = new PropertyPath(ForegroundProperty), Source = this });
+
+            return tb;
         }
     }
 }

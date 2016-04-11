@@ -20,10 +20,12 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
+using System;
 using System.Windows.Shapes;
 
 namespace LiveCharts.CoreComponents
 {
+    [Obsolete("The ShapeMap class should be removed from all charts, instead series shouls be smart enough to know the shapes they have!")]
     public class ShapeMap
     {
         /// <summary>

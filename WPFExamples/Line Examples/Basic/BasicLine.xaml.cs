@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Windows;
 using LiveCharts;
 
@@ -13,23 +14,27 @@ namespace ChartsTest.Line_Examples.Basic
             //we create a new SeriesCollection
             Series = new SeriesCollection();
 
+            var v  = new List<double>();
+            var r = new Random();
+            for (int i = 0; i < 200; i++) v.Add(r.Next(0, 20));
+
             //create some LineSeries
             var charlesSeries = new LineSeries
             {
                 Title = "Charles",
-                Values = new ChartValues<double> {10, 5, 7, 5, 7, 8},
+                Values = v.AsChartValues(),
                 PointRadius = 0
             };
-            var jamesSeries = new LineSeries
-            {
-                Title = "James",
-                Values = new ChartValues<double> {5, 6, 9, 10, 11, 9},
-                PointRadius = 0
-            };
+            //var jamesSeries = new LineSeries
+            //{
+            //    Title = "James",
+            //    Values = new ChartValues<double> {5, 6, 9, 10, 11, 9},
+            //    PointRadius = 0
+            //};
 
             //add our series to our SeriesCollection
             Series.Add(charlesSeries);
-            Series.Add(jamesSeries);
+            //Series.Add(jamesSeries);
 
             //that's it, LiveCharts is ready and listening for your data changes.
             DataContext = this;

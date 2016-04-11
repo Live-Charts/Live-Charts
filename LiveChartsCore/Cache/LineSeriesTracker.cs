@@ -20,36 +20,18 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-using System.Windows;
-using System.Windows.Media;
+using System.Collections.Generic;
 
-namespace LiveCharts.Helpers
+namespace LiveCharts.Cache
 {
-    internal class BezierData
+    internal class LineSeriesTracker
     {
-        public BezierData()
+        public LineSeriesTracker()
         {
-            
+            Primitives = new Dictionary<int, DataPoint>();
+            Instances = new Dictionary<object, DataPoint>();
         }
-
-        public BezierData(Point point)
-        {
-            Point1 = point;
-            Point2 = point;
-            Point3 = point;
-        }
-
-        public Point Point1 { get; set; }
-        public Point Point2 { get; set; }
-        public Point Point3 { get; set; }
-        public Point StartPoint { get; set; }
-
-        public BezierSegment AssignTo(BezierSegment segment)
-        {
-            segment.Point1 = Point1;
-            segment.Point2 = Point2;
-            segment.Point3 = Point3;
-            return segment;
-        }
+        public Dictionary<int, DataPoint> Primitives { get; set; }
+        public Dictionary<object, DataPoint> Instances { get; set; }
     }
 }

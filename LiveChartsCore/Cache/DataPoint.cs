@@ -20,6 +20,7 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
+using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -27,11 +28,11 @@ using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using LiveCharts.CoreComponents;
 
-namespace LiveCharts.Helpers
+namespace LiveCharts.Cache
 {
-    internal class Clue
+    internal class DataPoint
     {
-        public Clue(PathFigure ownerFigure)
+        public DataPoint(PathFigure ownerFigure)
         {
             Owner = ownerFigure;
         }
@@ -41,12 +42,13 @@ namespace LiveCharts.Helpers
 
         public Rectangle HoverShape { get; set; }
         public Ellipse Ellipse { get; set; }
+        public TextBlock TextBlock { get; set; }
         
         public bool IsNew { get; set; }
         public BezierData Data { get; set; }
-        public Clue Previous { get; set; }
+        public DataPoint Previous { get; set; }
 
-        public void Animate(int index, Chart chart, int pathOffset)
+        public void Animate(int index, Chart chart, int pathOffset, TimeSpan speed)
         {
             var s1 = new Point();
             var s2 = new Point();
@@ -83,7 +85,7 @@ namespace LiveCharts.Helpers
                 ? (Previous != null && !Previous.IsNew ? Previous.Segment.Point3 : s3)
                 : Segment.Point3;
 
-            if (chart.DisableAnimation)
+            if (chart.DisableAnimations)
             {
                 Segment.Point1 = Data.Point1;
                 Segment.Point2 = Data.Point2;
@@ -92,11 +94,11 @@ namespace LiveCharts.Helpers
             }
 
             Segment.BeginAnimation(BezierSegment.Point1Property,
-                new PointAnimation(p1, Data.Point1, LineSeries.AnimSpeed));
+                new PointAnimation(p1, Data.Point1, speed));
             Segment.BeginAnimation(BezierSegment.Point2Property,
-                new PointAnimation(p2, Data.Point2, LineSeries.AnimSpeed));
+                new PointAnimation(p2, Data.Point2, speed));
             Segment.BeginAnimation(BezierSegment.Point3Property,
-                new PointAnimation(p3, Data.Point3, LineSeries.AnimSpeed));
+                new PointAnimation(p3, Data.Point3, speed));
         }
     }
 }

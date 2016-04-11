@@ -36,16 +36,14 @@ namespace LiveCharts
 {
     public class BarSeries : Series
     {
-        private int animationSpeed = 500;
+        private TimeSpan _animationSpeed;
         private bool _isPrimitive;
-
-        public BarSeries()
-        {
-        }
         
         public override void Plot(bool animate = true)
         {
             _isPrimitive = Values == null || (Values.Count >= 1 && Values[0].GetType().IsPrimitive);
+
+            _animationSpeed = AnimationsSpeed ?? Chart.AnimationsSpeed;
 
             if (Chart.Invert)
                 PlotRows();
@@ -101,26 +99,16 @@ namespace LiveCharts
 
                 Canvas.SetTop(visual.PointShape, top);
 
-                if (!Chart.DisableAnimation)
+                if (!Chart.DisableAnimations)
                 {
-                    var wAnim = new DoubleAnimation
-                    {
-                        From = visual.IsNew
+                    visual.PointShape.BeginAnimation(WidthProperty,
+                        new DoubleAnimation(visual.IsNew
                             ? 0
-                            : visual.PointShape.Width,
-                        To = rw,
-                        Duration = TimeSpan.FromMilliseconds(animationSpeed)
-                    };
-                    var leftAnim = new DoubleAnimation
-                    {
-                        From = visual.IsNew
+                            : visual.PointShape.Width, rw, _animationSpeed));
+                    visual.PointShape.BeginAnimation(Canvas.LeftProperty,
+                        new DoubleAnimation(visual.IsNew
                             ? ToPlotArea(barStart, AxisTags.X, ScalesXAt)
-                            : Canvas.GetLeft(visual.PointShape),
-                        To = w,
-                        Duration = TimeSpan.FromMilliseconds(animationSpeed)
-                    };
-                    visual.PointShape.BeginAnimation(WidthProperty, wAnim);
-                    visual.PointShape.BeginAnimation(Canvas.LeftProperty, leftAnim);
+                            : Canvas.GetLeft(visual.PointShape), w, _animationSpeed));
                 }
                 else
                 {
@@ -130,7 +118,7 @@ namespace LiveCharts
 
                 if (DataLabels)
                 {
-                    var tb = BuildATextBlock(0);
+                    var tb = BindATextBlock(0);
                     var te = f(Chart.Invert ? point.X : point.Y);
                     var ft = new FormattedText(
                         te,
@@ -147,13 +135,13 @@ namespace LiveCharts
                             : Canvas.GetLeft(visual.HoverShape) - 5 - ft.Width);
                     Canvas.SetTop(tb, Canvas.GetTop(visual.HoverShape) + visual.HoverShape.Height*.5 - ft.Height*.5);
                     Panel.SetZIndex(tb, int.MaxValue - 1);
-                    if (!Chart.DisableAnimation)
+                    if (!Chart.DisableAnimations)
                     {
-                        var t = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(animationSpeed) };
+                        var t = new DispatcherTimer { Interval = _animationSpeed };
                         t.Tick += (sender, args) =>
                         {
                             tb.Visibility = Visibility.Visible;
-                            var fadeIn = new DoubleAnimation(0, 1, TimeSpan.FromMilliseconds(animationSpeed));
+                            var fadeIn = new DoubleAnimation(0, 1, _animationSpeed);
                             tb.BeginAnimation(OpacityProperty, fadeIn);
                             t.Stop();
                         };
@@ -233,7 +221,7 @@ namespace LiveCharts
 
                 Canvas.SetLeft(visual.PointShape, left);
 
-                if (!Chart.DisableAnimation)
+                if (!Chart.DisableAnimations)
                 {
                     var hAnim = new DoubleAnimation
                     {
@@ -241,7 +229,7 @@ namespace LiveCharts
                             ? 0
                             : visual.PointShape.Height,
                         To = rh,
-                        Duration = TimeSpan.FromMilliseconds(animationSpeed)
+                        Duration = _animationSpeed
                     };
                     var topAnim = new DoubleAnimation
                     {
@@ -249,7 +237,7 @@ namespace LiveCharts
                             ? ToPlotArea(barStart, AxisTags.Y, ScalesYAt)
                             : Canvas.GetTop(visual.PointShape),
                         To = h,
-                        Duration = TimeSpan.FromMilliseconds(animationSpeed)
+                        Duration = _animationSpeed
                     };
 
                     visual.PointShape.BeginAnimation(HeightProperty, hAnim);
@@ -263,7 +251,7 @@ namespace LiveCharts
 
                 if (DataLabels)
                 {
-                    var tb = BuildATextBlock(0);
+                    var tb = BindATextBlock(0);
                     var te = f(Chart.Invert ? point.X : point.Y);
                     var ft = new FormattedText(
                         te,
@@ -280,13 +268,13 @@ namespace LiveCharts
                             ? Canvas.GetTop(visual.HoverShape) - ft.Height - 5
                             : Canvas.GetTop(visual.HoverShape) + visual.HoverShape.Height + 5);
                     Panel.SetZIndex(tb, int.MaxValue - 1);
-                    if (!Chart.DisableAnimation)
+                    if (!Chart.DisableAnimations)
                     {
-                        var t = new DispatcherTimer {Interval = TimeSpan.FromMilliseconds(animationSpeed) };
+                        var t = new DispatcherTimer {Interval = _animationSpeed };
                         t.Tick += (sender, args) =>
                         {
                             tb.Visibility = Visibility.Visible;
-                            var fadeIn = new DoubleAnimation(0, 1, TimeSpan.FromMilliseconds(animationSpeed));
+                            var fadeIn = new DoubleAnimation(0, 1, _animationSpeed);
                             tb.BeginAnimation(OpacityProperty, fadeIn);
                             t.Stop();
                         };

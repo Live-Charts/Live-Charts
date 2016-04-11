@@ -130,7 +130,7 @@ namespace LiveCharts
                 Canvas.SetTop(r, p1.Y - r.Height/2);
                 Panel.SetZIndex(r, int.MaxValue);
 
-                if (!chart.DisableAnimation && animate)
+                if (!chart.DisableAnimations && animate)
                 {
                     var topAnim = new DoubleAnimation
                     {
@@ -193,7 +193,7 @@ namespace LiveCharts
             var sbDraw = new Storyboard();
             sbDraw.Children.Add(draw);
             var animated = false;
-            if (!chart.DisableAnimation)
+            if (!chart.DisableAnimations)
             {
                 if (animate)
                 {

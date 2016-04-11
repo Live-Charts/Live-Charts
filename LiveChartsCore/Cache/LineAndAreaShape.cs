@@ -24,7 +24,7 @@ using System.Windows;
 using System.Windows.Media;
 using System.Windows.Shapes;
 
-namespace LiveCharts.Helpers
+namespace LiveCharts.Cache
 {
     internal class LineAndAreaShape
     {
@@ -32,9 +32,9 @@ namespace LiveCharts.Helpers
         {
             Figure = figure;
             Path = path;
-            Right = new System.Windows.Media.LineSegment(new Point(), false);
-            Bottom = new System.Windows.Media.LineSegment(new Point(), false);
-            Left = new System.Windows.Media.LineSegment(new Point(), false);
+            Right = new LineSegment(new Point(), false);
+            Bottom = new LineSegment(new Point(), false);
+            Left = new LineSegment(new Point(), false);
 
             Figure.Segments.Add(Right);
             Figure.Segments.Add(Bottom);
@@ -43,9 +43,9 @@ namespace LiveCharts.Helpers
 
         public PathFigure Figure { get; set; }
         public Path Path { get; set; }
-        public System.Windows.Media.LineSegment Right { get; set; }
-        public System.Windows.Media.LineSegment Bottom { get; set; }
-        public System.Windows.Media.LineSegment Left { get; set; }
+        public LineSegment Right { get; set; }
+        public LineSegment Bottom { get; set; }
+        public LineSegment Left { get; set; }
 
         public void DrawLimits(Point first, Point last, Point minPoint, bool invert)
         {

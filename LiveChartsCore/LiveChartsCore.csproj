@@ -111,7 +111,7 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CoreComponents\AxisSeparation.cs" />
+    <Compile Include="Cache\AxisSeparationCache.cs" />
     <Compile Include="CoreComponents\AxisPosition.cs" />
     <Compile Include="CoreComponents\ChartPoint.cs" />
     <Compile Include="CoreComponents\DeleteBufferItem.cs" />
@@ -138,11 +138,10 @@
     <Compile Include="Interfaces\IChartValues.cs" />
     <Compile Include="LiveChartsExtentions.cs" />
     <Compile Include="CoreComponents\ChartValues.cs" />
-    <Compile Include="Series\Helpers\BezierData.cs" />
-    <Compile Include="Series\Helpers\LineAndAreaShape.cs" />
-    <Compile Include="Series\Helpers\Clue.cs" />
-    <Compile Include="Series\Helpers\LineSegment.cs" />
-    <Compile Include="Series\Helpers\LineSeriesTracker.cs" />
+    <Compile Include="Cache\BezierData.cs" />
+    <Compile Include="Cache\LineAndAreaShape.cs" />
+    <Compile Include="Cache\DataPoint.cs" />
+    <Compile Include="Cache\LineSeriesTracker.cs" />
     <Compile Include="Tooltip\IndexedTooltipData.cs" />
     <Compile Include="Tooltip\Converters.cs" />
     <Compile Include="Tooltip\DefaultIndexedTooltip.xaml.cs">
