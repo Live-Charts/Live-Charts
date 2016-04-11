@@ -20,8 +20,12 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
+using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Shapes;
+using LiveCharts.CoreComponents;
 
 namespace LiveCharts.Helpers
 {
@@ -31,10 +35,68 @@ namespace LiveCharts.Helpers
         {
             Owner = ownerFigure;
         }
+
+        public PathFigure Owner { get; set; }
         public BezierSegment Segment { get; set; }
+
         public Rectangle HoverShape { get; set; }
         public Ellipse Ellipse { get; set; }
-        public PathFigure Owner { get; set; }
+        
         public bool IsNew { get; set; }
+        public BezierData Data { get; set; }
+        public Clue Previous { get; set; }
+
+        public void Animate(int index, Chart chart, int pathOffset)
+        {
+            var s1 = new Point();
+            var s2 = new Point();
+            var s3 = new Point();
+
+            if (IsNew)
+            {
+                Owner.Segments.Insert(index - pathOffset, Data.AssignTo(Segment));
+                if (chart.Invert)
+                {
+                    //var x = chart.ToDrawMargin(chart.Min.X, AxisTags.X);
+                    var x = Canvas.GetLeft(chart.DrawMargin);
+                    s1 = new Point(x, Data.Point1.Y);
+                    s2 = new Point(x, Data.Point2.Y);
+                    s3 = new Point(x, Data.Point3.Y);
+                }
+                else
+                {
+                    //var y = chart.ToDrawMargin(chart.Min.Y, AxisTags.Y);
+                    var y = Canvas.GetLeft(chart.DrawMargin) + chart.DrawMargin.Height;
+                    s1 = new Point(Data.Point1.X, y);
+                    s2 = new Point(Data.Point2.X, y);
+                    s3 = new Point(Data.Point3.X, y);
+                }
+            }
+
+            var p1 = IsNew
+                ? (Previous != null && !Previous.IsNew ? Previous.Segment.Point3 : s1)
+                : Segment.Point1;
+            var p2 = IsNew
+                ? (Previous != null && !Previous.IsNew ? Previous.Segment.Point3 : s2)
+                : Segment.Point2;
+            var p3 = IsNew
+                ? (Previous != null && !Previous.IsNew ? Previous.Segment.Point3 : s3)
+                : Segment.Point3;
+
+            if (chart.DisableAnimation)
+            {
+                Segment.Point1 = Data.Point1;
+                Segment.Point2 = Data.Point2;
+                Segment.Point3 = Data.Point3;
+                return;
+            }
+
+            Segment.BeginAnimation(BezierSegment.Point1Property,
+                new PointAnimation(p1, Data.Point1, LineSeries.AnimSpeed));
+            Segment.BeginAnimation(BezierSegment.Point2Property,
+                new PointAnimation(p2, Data.Point2, LineSeries.AnimSpeed));
+            Segment.BeginAnimation(BezierSegment.Point3Property,
+                new PointAnimation(p3, Data.Point3, LineSeries.AnimSpeed));
+        }
     }
 }

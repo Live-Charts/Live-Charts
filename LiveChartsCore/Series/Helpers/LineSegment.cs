@@ -28,65 +28,64 @@ using LiveCharts.CoreComponents;
 
 namespace LiveCharts.Helpers
 {
-    internal class LineSegment
-    {
-        public bool IsNew { get; set; }
-        public Clue Point { get; set; }
-        public BezierData Data { get; set; }
-        public LineSegment Previous { get; set; }
-        public LineSegment Next { get; set; }
+    //internal class LineSegment
+    //{
+    //    public bool IsNew { get; set; }
+    //    public Clue Point { get; set; }
+    //    public BezierData Data { get; set; }
+    //    public LineSegment Previous { get; set; }
 
-        public void Animate(int index, Chart chart, int pathOffset)
-        {
-            var s1 = new Point();
-            var s2 = new Point();
-            var s3 = new Point();
+    //    public void Animate(int index, Chart chart, int pathOffset)
+    //    {
+    //        var s1 = new Point();
+    //        var s2 = new Point();
+    //        var s3 = new Point();
 
-            if (IsNew)
-            {
-                Point.Owner.Segments.Insert(index - pathOffset, Data.AssignTo(Point.Segment));
-                if (chart.Invert)
-                {
-                    //var x = chart.ToDrawMargin(chart.Min.X, AxisTags.X);
-                    var x = Canvas.GetLeft(chart.DrawMargin);
-                    s1 = new Point(x, Data.P1.Y);
-                    s2 = new Point(x, Data.P2.Y);
-                    s3 = new Point(x, Data.P3.Y);
-                }
-                else
-                {
-                    //var y = chart.ToDrawMargin(chart.Min.Y, AxisTags.Y);
-                    var y = Canvas.GetLeft(chart.DrawMargin) + chart.DrawMargin.Height;
-                    s1 = new Point(Data.P1.X, y);
-                    s2 = new Point(Data.P2.X, y);
-                    s3 = new Point(Data.P3.X, y);
-                }
-            }
+    //        if (IsNew)
+    //        {
+    //            Point.Owner.Segments.Insert(index - pathOffset, Data.AssignTo(Point.Segment));
+    //            if (chart.Invert)
+    //            {
+    //                //var x = chart.ToDrawMargin(chart.Min.X, AxisTags.X);
+    //                var x = Canvas.GetLeft(chart.DrawMargin);
+    //                s1 = new Point(x, Data.Point1.Y);
+    //                s2 = new Point(x, Data.Point2.Y);
+    //                s3 = new Point(x, Data.Point3.Y);
+    //            }
+    //            else
+    //            {
+    //                //var y = chart.ToDrawMargin(chart.Min.Y, AxisTags.Y);
+    //                var y = Canvas.GetLeft(chart.DrawMargin) + chart.DrawMargin.Height;
+    //                s1 = new Point(Data.Point1.X, y);
+    //                s2 = new Point(Data.Point2.X, y);
+    //                s3 = new Point(Data.Point3.X, y);
+    //            }
+    //        }
 
-            var p1 = IsNew
-                ? (Previous != null && !Previous.IsNew ? Previous.Point.Segment.Point3 : s1)
-                : Point.Segment.Point1;
-            var p2 = IsNew
-                ? (Previous != null && !Previous.IsNew ? Previous.Point.Segment.Point3 : s2)
-                : Point.Segment.Point2;
-            var p3 = IsNew
-                ? (Previous != null && !Previous.IsNew ? Previous.Point.Segment.Point3 : s3)
-                : Point.Segment.Point3;
+    //        var p1 = IsNew
+    //            ? (Previous != null && !Previous.IsNew ? Previous.Point.Segment.Point3 : s1)
+    //            : Point.Segment.Point1;
+    //        var p2 = IsNew
+    //            ? (Previous != null && !Previous.IsNew ? Previous.Point.Segment.Point3 : s2)
+    //            : Point.Segment.Point2;
+    //        var p3 = IsNew
+    //            ? (Previous != null && !Previous.IsNew ? Previous.Point.Segment.Point3 : s3)
+    //            : Point.Segment.Point3;
 
-            if (chart.DisableAnimation)
-            {
-                Point.Segment.Point1 = Data.P1;
-                Point.Segment.Point2 = Data.P2;
-                Point.Segment.Point3 = Data.P3;
-                return;
-            }
+    //        if (chart.DisableAnimation)
+    //        {
+    //            Point.Segment.Point1 = Data.Point1;
+    //            Point.Segment.Point2 = Data.Point2;
+    //            Point.Segment.Point3 = Data.Point3;
+    //            return;
+    //        }
 
-            Point.Segment.BeginAnimation(BezierSegment.Point1Property,
-                new PointAnimation(p1, Data.P1, LineSeries.AnimSpeed));
-            Point.Segment.BeginAnimation(BezierSegment.Point2Property,
-                new PointAnimation(p2, Data.P2, LineSeries.AnimSpeed));
-            Point.Segment.BeginAnimation(BezierSegment.Point3Property,
-                new PointAnimation(p3, Data.P3, LineSeries.AnimSpeed));
-        }
-    }
+    //        Point.Segment.BeginAnimation(BezierSegment.Point1Property,
+    //            new PointAnimation(p1, Data.Point1, LineSeries.AnimSpeed));
+    //        Point.Segment.BeginAnimation(BezierSegment.Point2Property,
+    //            new PointAnimation(p2, Data.Point2, LineSeries.AnimSpeed));
+    //        Point.Segment.BeginAnimation(BezierSegment.Point3Property,
+    //            new PointAnimation(p3, Data.Point3, LineSeries.AnimSpeed));
+    //    }
+    //}
 }

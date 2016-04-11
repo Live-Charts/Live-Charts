@@ -34,7 +34,6 @@ using System.Windows.Shapes;
 using System.Windows.Threading;
 using LiveCharts.CoreComponents;
 using LiveCharts.Helpers;
-using LineSegment = LiveCharts.Helpers.LineSegment;
 
 namespace LiveCharts
 {
@@ -103,7 +102,7 @@ namespace LiveCharts
                     new PointAnimation(area.Figure.StartPoint,
                         segment.Count > 0 ? p0 : new Point(), AnimSpeed));
 
-                LineSegment previous = null;
+                Clue previous = null;
                 var isVirgin = true;
                 var first = new Point();
                 var last = new Point();
@@ -131,14 +130,14 @@ namespace LiveCharts
 
                     if (visual.IsNew) AddToCanvas(visual, point);
 
-                    var helper = GetSegmentHelper(point.Key, segment[i].Instance, area.Figure);
-                    helper.Data = i == segment.Count - 1
-                        ? new BezierData(previous != null ? previous.Data.P3 : area.Figure.StartPoint)
+                    //var helper = GetSegmentHelper(point.Key, segment[i].Instance, area.Figure);
+                    visual.Data = i == segment.Count - 1
+                        ? new BezierData(previous != null ? previous.Data.Point3 : area.Figure.StartPoint)
                         //last line is a dummy line, just to keep algorithm simple.
                         : CalculateBezier(i, segment);
-                    helper.Previous = previous != null && previous.IsNew ? previous.Previous : previous;
-                    helper.Animate(i + so, Chart, so);
-                    previous = helper;
+                    visual.Previous = previous != null && previous.IsNew ? previous.Previous : previous;
+                    visual.Animate(i + so, Chart, so);
+                    previous = visual;
                     last = point.ChartLocation;
                 }
 
@@ -347,9 +346,9 @@ namespace LiveCharts
 
             return new BezierData
             {
-                P1 = index == 0 ? new Point(p1.X, p1.Y) : new Point(c1X, c1Y),
-                P2 = index == source.Count ? new Point(p2.X, p2.Y) : new Point(c2X, c2Y),
-                P3 = new Point(p2.X, p2.Y)
+                Point1 = index == 0 ? new Point(p1.X, p1.Y) : new Point(c1X, c1Y),
+                Point2 = index == source.Count ? new Point(p2.X, p2.Y) : new Point(c2X, c2Y),
+                Point3 = new Point(p2.X, p2.Y)
             };
         }
 
@@ -424,49 +423,6 @@ namespace LiveCharts
                     _tracker.Instances.Remove(i);
                 }
             }
-        }
-
-        private LineSegment GetSegmentHelper(int index, object instance, PathFigure lineFigure)
-        {
-            Clue point;
-
-            if (_isPrimitive)
-            {
-                if (_tracker.Primitives.TryGetValue(index, out point))
-                    return new LineSegment
-                    {
-                        Point = point,
-                        IsNew = false
-                    };
-
-                point = new Clue(lineFigure)
-                {
-                    Segment = new BezierSegment(),
-                };
-                _tracker.Primitives[index] = point;
-
-                return new LineSegment
-                {
-                    Point = point,
-                    IsNew = true
-                };
-            }
-
-            if (_tracker.Instances.TryGetValue(instance, out point))
-                return new LineSegment
-                {
-                    Point = point,
-                    IsNew = false
-                };
-
-            var instanceBeziers = new Clue(lineFigure) {Segment = new BezierSegment()};
-            _tracker.Instances[instance] = instanceBeziers;
-
-            return new LineSegment
-            {
-                Point = instanceBeziers,
-                IsNew = true
-            };
         }
 
         private Clue GetVisual(ChartPoint point, PathFigure pathFigure)
