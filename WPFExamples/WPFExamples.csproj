@@ -118,6 +118,10 @@
     <Compile Include="Line Examples\RotadedLine\RotatedLine.xaml.cs">
       <DependentUpon>RotatedLine.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Line Examples\ZoomingAndPanning\MotorTemperatureMeasurement.cs" />
+    <Compile Include="Line Examples\ZoomingAndPanning\ZAndPLine.xaml.cs">
+      <DependentUpon>ZAndPLine.xaml</DependentUpon>
+    </Compile>
     <Compile Include="MoreCharts\RadarChart\RadarChartExample.xaml.cs">
       <DependentUpon>RadarChartExample.xaml</DependentUpon>
     </Compile>
@@ -237,6 +241,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Line Examples\RotadedLine\RotatedLine.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Line Examples\ZoomingAndPanning\ZAndPLine.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

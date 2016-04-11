@@ -176,8 +176,8 @@ namespace LiveCharts
                     });
                     Chart.Canvas.Children.Add(visual.PointShape);
                     Chart.Canvas.Children.Add(visual.HoverShape);
-                    Shapes.Add(visual.PointShape);
-                    Shapes.Add(visual.HoverShape);
+                    //Shapes.Add(visual.PointShape);
+                    //Shapes.Add(visual.HoverShape);
                     Panel.SetZIndex(visual.HoverShape, int.MaxValue);
                     Panel.SetZIndex(visual.PointShape, int.MaxValue - 2);
                     visual.HoverShape.MouseDown += Chart.DataMouseDown;
@@ -309,8 +309,8 @@ namespace LiveCharts
                     });
                     Chart.Canvas.Children.Add(visual.PointShape);
                     Chart.Canvas.Children.Add(visual.HoverShape);
-                    Shapes.Add(visual.PointShape);
-                    Shapes.Add(visual.HoverShape);
+                    //Shapes.Add(visual.PointShape);
+                    //Shapes.Add(visual.HoverShape);
                     Panel.SetZIndex(visual.HoverShape, int.MaxValue);
                     Panel.SetZIndex(visual.PointShape, int.MaxValue - 2);
                     visual.HoverShape.MouseDown += Chart.DataMouseDown;
@@ -341,7 +341,7 @@ namespace LiveCharts
                         p.Children.Remove(s.HoverShape);
                         p.Children.Remove(s.Shape);
                         Chart.ShapesMapper.Remove(s);
-                        Shapes.Remove(s.Shape);
+                        //Shapes.Remove(s.Shape);
                     }
                 }
             }
@@ -361,7 +361,7 @@ namespace LiveCharts
                         p.Children.Remove(s.HoverShape);
                         p.Children.Remove(s.Shape);
                         Chart.ShapesMapper.Remove(s);
-                        Shapes.Remove(s.Shape);
+                        //Shapes.Remove(s.Shape);
                     }
                 }
             }

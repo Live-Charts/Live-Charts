@@ -21,16 +21,20 @@
 //SOFTWARE.
 
 using System.Windows.Media;
+using System.Windows.Shapes;
 
 namespace LiveCharts.Helpers
 {
-    internal class TrackableBezier
+    internal class Clue
     {
-        public TrackableBezier(PathFigure ownerFigure)
+        public Clue(PathFigure ownerFigure)
         {
             Owner = ownerFigure;
         }
         public BezierSegment Segment { get; set; }
+        public Rectangle HoverShape { get; set; }
+        public Ellipse Ellipse { get; set; }
         public PathFigure Owner { get; set; }
+        public bool IsNew { get; set; }
     }
 }

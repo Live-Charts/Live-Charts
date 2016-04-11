@@ -34,6 +34,7 @@ using System.Windows.Shapes;
 using System.Windows.Threading;
 using LiveCharts.CoreComponents;
 using LiveCharts.Helpers;
+using LineSegment = LiveCharts.Helpers.LineSegment;
 
 namespace LiveCharts
 {
@@ -45,6 +46,7 @@ namespace LiveCharts
         private bool _isPrimitive;
         private readonly LineSeriesTracker _tracker = new LineSeriesTracker();
         private readonly List<LineAndAreaShape> _areas = new List<LineAndAreaShape>();
+        private readonly Canvas _extraElementsCanvas = new Canvas();
 
         public LineSeries()
         {
@@ -57,6 +59,11 @@ namespace LiveCharts
             get { return Chart as ILine; }
         }
 
+        private bool RequeriesDataPoint
+        {
+            get { return Math.Abs(PointRadius) > .1; }
+        }
+
         public double? LineSmoothness { get; set; }
 
         public double PointRadius { get; set; }
@@ -65,7 +72,13 @@ namespace LiveCharts
         {
             _isPrimitive = Values.Count >= 1 && Values[0].GetType().IsPrimitive;
 
-            var rr = PointRadius < 5 ? 5 : PointRadius;
+            if (_extraElementsCanvas.Parent == null)
+                Chart.DrawMargin.Children.Add(_extraElementsCanvas);
+
+            _extraElementsCanvas.Width = Chart.DrawMargin.Width;
+            _extraElementsCanvas.Height = Chart.DrawMargin.Height;
+
+            var hoverShapeMinSize = PointRadius < 5 ? 5 : PointRadius;
             var f = (Chart.Invert ? CurrentXAxis : CurrentYAxis).GetFormatter();
 
             var s = 0;
@@ -76,62 +89,9 @@ namespace LiveCharts
             foreach (var segment in Values.Points.AsSegments().Where(segment => segment.Count != 0))
             {
                 LineAndAreaShape area;
-                bool isNew = false;
-                var ofPt = new Point();
+                Point ofPt;
 
-                if (_areas.Count <= s)
-                {
-                    var path = new Path();
-                    BindingOperations.SetBinding(path, Shape.StrokeProperty,
-                    new Binding { Path = new PropertyPath("Stroke"), Source = this });
-                    BindingOperations.SetBinding(path, Shape.FillProperty,
-                        new Binding { Path = new PropertyPath("Fill"), Source = this });
-                    BindingOperations.SetBinding(path, Shape.StrokeThicknessProperty,
-                        new Binding { Path = new PropertyPath("StrokeThickness"), Source = this });
-                    BindingOperations.SetBinding(path, VisibilityProperty,
-                        new Binding { Path = new PropertyPath("Visibility"), Source = this });
-                    BindingOperations.SetBinding(path, Panel.ZIndexProperty,
-                        new Binding {Path = new PropertyPath(Panel.ZIndexProperty), Source = this});
-                    BindingOperations.SetBinding(path, Shape.StrokeDashArrayProperty,
-                        new Binding {Path = new PropertyPath(StrokeDashArrayProperty), Source = this});
-                    var geometry = new PathGeometry();
-                    area = new LineAndAreaShape(new PathFigure(), path);
-                    geometry.Figures.Add(area.Figure);
-                    path.Data = geometry;
-                    _areas.Add(area);
-                    Chart.DrawMargin.Children.Add(path);
-                    isNew = true;
-                    if (isUp)
-                    {
-                        if (Chart.Invert)
-                        {
-                            ofPt = new Point(0, Methods.GetUnitWidth(AxisTags.Y, Chart, ScalesYAt)*.5);
-                            Canvas.SetTop(path, ofPt.Y);
-                        }
-                        else
-                        {
-                            ofPt = new Point(Methods.GetUnitWidth(AxisTags.X, Chart, ScalesXAt)*.5, 0);
-                            Canvas.SetLeft(path, ofPt.X);
-                        }
-                    }
-                }
-                else
-                {
-                    area = _areas[s];
-                    if (isUp)
-                    {
-                        if (Chart.Invert)
-                        {
-                            ofPt = new Point(0, Methods.GetUnitWidth(AxisTags.Y, Chart, ScalesYAt) * .5);
-                            Canvas.SetTop(area.Path, ofPt.Y);
-                        }
-                        else
-                        {
-                            ofPt = new Point(Methods.GetUnitWidth(AxisTags.X, Chart, ScalesXAt) * .5, 0);
-                            Canvas.SetLeft(area.Path, ofPt.X);
-                        }
-                    }
-                }
+                var isNew = GetArea(s, isUp, out area, out ofPt);
 
                 var p0 = ToDrawMargin(segment[0], ScalesXAt, ScalesYAt).AsPoint();
                 area.Figure.StartPoint = isNew
@@ -143,7 +103,7 @@ namespace LiveCharts
                     new PointAnimation(area.Figure.StartPoint,
                         segment.Count > 0 ? p0 : new Point(), AnimSpeed));
 
-                AnimatableSegments previous = null;
+                LineSegment previous = null;
                 var isVirgin = true;
                 var first = new Point();
                 var last = new Point();
@@ -152,9 +112,10 @@ namespace LiveCharts
                 {
                     var point = segment[i];
                     point.ChartLocation = ToDrawMargin(point, ScalesXAt, ScalesYAt).AsPoint();
+
                     if (isUp)
-                        point.ChartLocation =
-                            new Point(point.ChartLocation.X + ofPt.X, point.ChartLocation.Y + ofPt.Y);
+                        point.ChartLocation = new Point(point.ChartLocation.X + ofPt.X,
+                            point.ChartLocation.Y + ofPt.Y);
 
                     if (isVirgin)
                     {
@@ -162,9 +123,9 @@ namespace LiveCharts
                         first = point.ChartLocation;
                     }
 
-                    var visual = GetVisual(segment[i]);
+                    var visual = GetVisual(segment[i], area.Figure);
 
-                    PlaceVisual(visual, point.ChartLocation, rr);
+                    PlaceVisual(visual, point.ChartLocation, hoverShapeMinSize);
 
                     if (DataLabels) Label(point, f, point.ChartLocation);
 
@@ -194,36 +155,88 @@ namespace LiveCharts
                 s++;
                 so += segment.Count;
             }
+
+            //instead of fire 10000 opacity animations for each point
+            //we created a new control to hold all the point, then we wil just animate this Canvas
+            _extraElementsCanvas.BeginAnimation(OpacityProperty,
+                new DoubleAnimation(0, 1, Chart.DisableAnimation ? TimeSpan.MinValue : AnimSpeed));
         }
 
-        private void PlaceVisual(VisualHelper visual, Point pointLocation, double radius)
+        private bool GetArea(int s, bool isUp, out LineAndAreaShape area, out Point ofPt)
         {
+            var isNew = false;
+            ofPt = new Point();
 
-
-            visual.HoverShape.Width = radius * 2;
-            visual.HoverShape.Height = radius * 2;
-            Canvas.SetLeft(visual.PointShape, pointLocation.X - visual.PointShape.Width * .5);
-            Canvas.SetTop(visual.PointShape, pointLocation.Y - visual.PointShape.Height * .5);
-            Canvas.SetLeft(visual.HoverShape, pointLocation.X - visual.HoverShape.Width * .5);
-            Canvas.SetTop(visual.HoverShape, pointLocation.Y - visual.HoverShape.Height * .5);
-
-            visual.PointShape.BeginAnimation(OpacityProperty,
-                new DoubleAnimation(0, 0, TimeSpan.FromMilliseconds(1)));
-
-            if (!Chart.DisableAnimation)
+            if (_areas.Count <= s)
             {
-                var pt = new DispatcherTimer { Interval = AnimSpeed };
-                pt.Tick += (sender, args) =>
+                var path = new Path();
+                BindingOperations.SetBinding(path, Shape.StrokeProperty,
+                    new Binding { Path = new PropertyPath("Stroke"), Source = this });
+                BindingOperations.SetBinding(path, Shape.FillProperty,
+                    new Binding { Path = new PropertyPath("Fill"), Source = this });
+                BindingOperations.SetBinding(path, Shape.StrokeThicknessProperty,
+                    new Binding { Path = new PropertyPath("StrokeThickness"), Source = this });
+                BindingOperations.SetBinding(path, VisibilityProperty,
+                    new Binding { Path = new PropertyPath("Visibility"), Source = this });
+                BindingOperations.SetBinding(path, Panel.ZIndexProperty,
+                    new Binding { Path = new PropertyPath(Panel.ZIndexProperty), Source = this });
+                BindingOperations.SetBinding(path, Shape.StrokeDashArrayProperty,
+                    new Binding { Path = new PropertyPath(StrokeDashArrayProperty), Source = this });
+                var geometry = new PathGeometry();
+                area = new LineAndAreaShape(new PathFigure(), path);
+                geometry.Figures.Add(area.Figure);
+                path.Data = geometry;
+                _areas.Add(area);
+                Chart.DrawMargin.Children.Add(path);
+                isNew = true;
+                if (isUp)
                 {
-                    visual.PointShape.BeginAnimation(OpacityProperty, new DoubleAnimation(0, 1, AnimSpeed));
-                    pt.Stop();
-                };
-                pt.Start();
+                    if (Chart.Invert)
+                    {
+                        ofPt = new Point(0, Methods.GetUnitWidth(AxisTags.Y, Chart, ScalesYAt) * .5);
+                        Canvas.SetTop(path, ofPt.Y);
+                    }
+                    else
+                    {
+                        ofPt = new Point(Methods.GetUnitWidth(AxisTags.X, Chart, ScalesXAt) * .5, 0);
+                        Canvas.SetLeft(path, ofPt.X);
+                    }
+                }
             }
             else
             {
-                visual.PointShape.BeginAnimation(OpacityProperty,
-                    new DoubleAnimation(0, 1, TimeSpan.FromMilliseconds(1)));
+                area = _areas[s];
+                if (isUp)
+                {
+                    if (Chart.Invert)
+                    {
+                        ofPt = new Point(0, Methods.GetUnitWidth(AxisTags.Y, Chart, ScalesYAt) * .5);
+                        Canvas.SetTop(area.Path, ofPt.Y);
+                    }
+                    else
+                    {
+                        ofPt = new Point(Methods.GetUnitWidth(AxisTags.X, Chart, ScalesXAt) * .5, 0);
+                        Canvas.SetLeft(area.Path, ofPt.X);
+                    }
+                }
+            }
+            return isNew;
+        }
+
+        private void PlaceVisual(Clue clue, Point pointLocation, double radius)
+        {
+            if (clue.HoverShape != null)
+            {
+                clue.HoverShape.Width = radius * 2;
+                clue.HoverShape.Height = radius * 2;
+                Canvas.SetLeft(clue.HoverShape, pointLocation.X - clue.HoverShape.Width * .5);
+                Canvas.SetTop(clue.HoverShape, pointLocation.Y - clue.HoverShape.Height*.5);
+            }
+
+            if (clue.Ellipse != null)
+            {
+                Canvas.SetLeft(clue.Ellipse, pointLocation.X - clue.Ellipse.Width*.5);
+                Canvas.SetTop(clue.Ellipse, pointLocation.Y - clue.Ellipse.Height*.5);
             }
         }
 
@@ -267,24 +280,34 @@ namespace LiveCharts
             }
         }
 
-        private void AddToCanvas(VisualHelper visual, ChartPoint point)
+        private void AddToCanvas(Clue clue, ChartPoint point)
         {
-            Chart.ShapesMapper.Add(new ShapeMap
+            //Chart.ShapesMapper.Add(new ShapeMap
+            //{
+            //    Series = this,
+            //    HoverShape = visual.HoverShape,
+            //    Shape = visual.PointShape,
+            //    ChartPoint = point
+            //});
+
+            //Removing the ChartPointReference migh be braking somehting
+            //I think it is necesary for the tooltip
+            //ToDo What is going here??
+
+            if (clue.Ellipse != null)
             {
-                Series = this,
-                HoverShape = visual.HoverShape,
-                Shape = visual.PointShape,
-                ChartPoint = point
-            });
-            Chart.DrawMargin.Children.Add(visual.PointShape);
-            Chart.DrawMargin.Children.Add(visual.HoverShape);
-            Shapes.Add(visual.PointShape);
-            Shapes.Add(visual.HoverShape);
-            Panel.SetZIndex(visual.HoverShape, int.MaxValue);
-            Panel.SetZIndex(visual.PointShape, int.MaxValue - 2);
-            visual.HoverShape.MouseDown += Chart.DataMouseDown;
-            visual.HoverShape.MouseEnter += Chart.DataMouseEnter;
-            visual.HoverShape.MouseLeave += Chart.DataMouseLeave;
+                _extraElementsCanvas.Children.Add(clue.Ellipse);
+                Panel.SetZIndex(clue.Ellipse, int.MaxValue - 2);
+            }
+
+            if (clue.HoverShape != null)
+            {
+                Chart.DrawMargin.Children.Add(clue.HoverShape);
+                Panel.SetZIndex(clue.HoverShape, int.MaxValue);
+                clue.HoverShape.MouseDown += Chart.DataMouseDown;
+                clue.HoverShape.MouseEnter += Chart.DataMouseEnter;
+                clue.HoverShape.MouseLeave += Chart.DataMouseLeave;
+            }
         }
 
         private BezierData CalculateBezier(int index, IList<ChartPoint> source)
@@ -360,29 +383,21 @@ namespace LiveCharts
 
         private void EreasePrimitives(bool force)
         {
-            var activeIndexes = force || Values == null
-                    ? new int[] { }
-                    : Values.Points.Select(x => x.Key).ToArray();
+            var active = force || Values == null
+                ? new int[] {}.AsEnumerable()
+                : Values.Points.Select(x => x.Key);
 
-            var inactiveIndexes = Chart.ShapesMapper
-                .Where(m => Equals(m.Series, this) &&
-                            !activeIndexes.Contains(m.ChartPoint.Key))
-                .ToArray();
-
-            foreach (var s in inactiveIndexes)
+            foreach (var key in _tracker.Primitives.Keys.Except(active))
             {
-                var p = s.Shape.Parent as Canvas;
-                if (p != null)
-                {
-                    p.Children.Remove(s.HoverShape);
-                    p.Children.Remove(s.Shape);
-                    Chart.ShapesMapper.Remove(s);
-                    Shapes.Remove(s.Shape);
-                    var i = s.ChartPoint.Key;
-                    var bezier = _tracker.Primitives[s.ChartPoint.Key];
-                    bezier.Owner.Segments.Remove(bezier.Segment);
-                    _tracker.Primitives.Remove(i);
-                }
+                var value = _tracker.Primitives[key];
+                //var p = key.ChartPoint.Parent as Canvas; //Why This?
+                //if (p != null)
+                //{
+                Chart.DrawMargin.Children.Remove(value.HoverShape);
+                Chart.DrawMargin.Children.Remove(value.Ellipse);
+                value.Owner.Segments.Remove(value.Segment);
+                _tracker.Primitives.Remove(key);
+                //}
             }
         }
 
@@ -402,7 +417,6 @@ namespace LiveCharts
                     p.Children.Remove(s.HoverShape);
                     p.Children.Remove(s.Shape);
                     Chart.ShapesMapper.Remove(s);
-                    Shapes.Remove(s.Shape);
                     var i = s.ChartPoint.Instance;
                     var bezier = _tracker.Instances[s.ChartPoint.Instance];
                     bezier.Owner.Segments.Remove(bezier.Segment);
@@ -412,102 +426,121 @@ namespace LiveCharts
             }
         }
 
-        /// <summary>
-        /// Gets the next line of an instance or index
-        /// </summary>
-        /// <param name="index"></param>
-        /// <param name="instance"></param>
-        /// <param name="lineFigure"></param>
-        /// <returns></returns>
-        private AnimatableSegments GetSegmentHelper(int index, object instance, PathFigure lineFigure)
+        private LineSegment GetSegmentHelper(int index, object instance, PathFigure lineFigure)
         {
+            Clue point;
+
             if (_isPrimitive)
             {
-                if (_tracker.Primitives.ContainsKey(index))
-                {
-                    var primitive = _tracker.Primitives[index];
-                    return new AnimatableSegments
+                if (_tracker.Primitives.TryGetValue(index, out point))
+                    return new LineSegment
                     {
-                        Bezier = primitive,
+                        Point = point,
                         IsNew = false
                     };
-                }
 
-                var primitiveBeziers = new TrackableBezier(lineFigure) {Segment = new BezierSegment()};
-
-                _tracker.Primitives[index] = primitiveBeziers;
-
-                return new AnimatableSegments
+                point = new Clue(lineFigure)
                 {
-                    Bezier = primitiveBeziers,
+                    Segment = new BezierSegment(),
+                };
+                _tracker.Primitives[index] = point;
+
+                return new LineSegment
+                {
+                    Point = point,
                     IsNew = true
                 };
             }
 
-            if (_tracker.Instances.ContainsKey(instance))
-            {
-                var instanceVal = _tracker.Instances[instance];
-                return new AnimatableSegments
+            if (_tracker.Instances.TryGetValue(instance, out point))
+                return new LineSegment
                 {
-                    Bezier = instanceVal,
+                    Point = point,
                     IsNew = false
                 };
-            }
 
-            var instanceBeziers = new TrackableBezier(lineFigure) {Segment = new BezierSegment()};
+            var instanceBeziers = new Clue(lineFigure) {Segment = new BezierSegment()};
             _tracker.Instances[instance] = instanceBeziers;
 
-            return new AnimatableSegments
+            return new LineSegment
             {
-                Bezier = instanceBeziers,
+                Point = instanceBeziers,
                 IsNew = true
             };
         }
 
-        private VisualHelper GetVisual(ChartPoint point)
+        private Clue GetVisual(ChartPoint point, PathFigure pathFigure)
         {
-            var map = _isPrimitive
-                ? Chart.ShapesMapper.FirstOrDefault(x => x.Series.Equals(this) &&
-                                                         x.ChartPoint.Key == point.Key)
-                : Chart.ShapesMapper.FirstOrDefault(x => x.Series.Equals(this) &&
-                                                         x.ChartPoint.Instance == point.Instance);
+            Clue trackable = null;
 
-            if (map == null)
+            if (_isPrimitive)
             {
-                var e = new Ellipse
+                if (_tracker.Primitives.TryGetValue(point.Key, out trackable))
+                {
+                    trackable.IsNew = false;
+                    return trackable;
+                }
+            }
+            else
+            {
+                if (_tracker.Instances.TryGetValue(point.Instance, out trackable))
+                {
+                    trackable.IsNew = false;
+                    return trackable;
+                }
+            }
+
+            Ellipse e = null;
+            Rectangle hs = null;
+
+            if (RequeriesDataPoint)
+            {
+                e = new Ellipse
                 {
                     Width = PointRadius*2,
                     Height = PointRadius*2,
                     Stroke = new SolidColorBrush {Color = Chart.PointHoverColor},
                     StrokeThickness = 1
                 };
-                var hs = new Rectangle
+                BindingOperations.SetBinding(e, Shape.FillProperty,
+                    new Binding {Path = new PropertyPath(StrokeProperty), Source = this});
+                BindingOperations.SetBinding(e, VisibilityProperty,
+                    new Binding {Path = new PropertyPath(VisibilityProperty), Source = this});
+            }
+
+            if (Chart.Hoverable)
+            {
+                hs = new Rectangle
                 {
                     Fill = Brushes.Transparent,
                     StrokeThickness = 0
                 };
-                BindingOperations.SetBinding(e, Shape.FillProperty,
-                    new Binding { Path = new PropertyPath(StrokeProperty), Source = this });
-                BindingOperations.SetBinding(e, VisibilityProperty,
-                    new Binding { Path = new PropertyPath(VisibilityProperty), Source = this });
                 BindingOperations.SetBinding(hs, VisibilityProperty,
-                    new Binding { Path = new PropertyPath(VisibilityProperty), Source = this });
-                return new VisualHelper
-                {
-                    PointShape = e,
-                    HoverShape = hs,
-                    IsNew = true
-                };
+                    new Binding {Path = new PropertyPath(VisibilityProperty), Source = this});
             }
-            
-            map.ChartPoint.X = point.X;
-            map.ChartPoint.Y = point.Y;
-            return new VisualHelper
-            {
-                PointShape = map.Shape,
-                HoverShape = map.HoverShape,
-                IsNew = false
-            };
+
+            trackable = new Clue(pathFigure);
+            _tracker.Primitives[point.Key] = trackable;
+
+            trackable.IsNew = true;
+            trackable.HoverShape = hs;
+            trackable.Ellipse = e;
+            trackable.Segment = new BezierSegment();
+
+            return trackable;
+
+            //Todo: If Hoverable property changes thid could throw a null exception,
+            //When Hoverable property changes, we need to load the shapes again.
+            //or delete then if false, to improve performance.
+
+            //map.ChartPoint.X = point.X; ToDo This might break something!!!
+            //map.ChartPoint.Y = point.Y;
+            //return new VisualHelper
+            //{
+            //    PointShape = map.Shape,
+            //    HoverShape = map.HoverShape,
+            //    IsNew = false
+            //};
         }
 
         private struct VisualHelper

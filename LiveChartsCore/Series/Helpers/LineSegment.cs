@@ -28,13 +28,13 @@ using LiveCharts.CoreComponents;
 
 namespace LiveCharts.Helpers
 {
-    internal class AnimatableSegments
+    internal class LineSegment
     {
         public bool IsNew { get; set; }
-        public TrackableBezier Bezier { get; set; }
+        public Clue Point { get; set; }
         public BezierData Data { get; set; }
-        public AnimatableSegments Previous { get; set; }
-        public AnimatableSegments Next { get; set; }
+        public LineSegment Previous { get; set; }
+        public LineSegment Next { get; set; }
 
         public void Animate(int index, Chart chart, int pathOffset)
         {
@@ -44,7 +44,7 @@ namespace LiveCharts.Helpers
 
             if (IsNew)
             {
-                Bezier.Owner.Segments.Insert(index - pathOffset, Data.AssignTo(Bezier.Segment));
+                Point.Owner.Segments.Insert(index - pathOffset, Data.AssignTo(Point.Segment));
                 if (chart.Invert)
                 {
                     //var x = chart.ToDrawMargin(chart.Min.X, AxisTags.X);
@@ -64,28 +64,28 @@ namespace LiveCharts.Helpers
             }
 
             var p1 = IsNew
-                ? (Previous != null && !Previous.IsNew ? Previous.Bezier.Segment.Point3 : s1)
-                : Bezier.Segment.Point1;
+                ? (Previous != null && !Previous.IsNew ? Previous.Point.Segment.Point3 : s1)
+                : Point.Segment.Point1;
             var p2 = IsNew
-                ? (Previous != null && !Previous.IsNew ? Previous.Bezier.Segment.Point3 : s2)
-                : Bezier.Segment.Point2;
+                ? (Previous != null && !Previous.IsNew ? Previous.Point.Segment.Point3 : s2)
+                : Point.Segment.Point2;
             var p3 = IsNew
-                ? (Previous != null && !Previous.IsNew ? Previous.Bezier.Segment.Point3 : s3)
-                : Bezier.Segment.Point3;
+                ? (Previous != null && !Previous.IsNew ? Previous.Point.Segment.Point3 : s3)
+                : Point.Segment.Point3;
 
             if (chart.DisableAnimation)
             {
-                Bezier.Segment.Point1 = Data.P1;
-                Bezier.Segment.Point2 = Data.P2;
-                Bezier.Segment.Point3 = Data.P3;
+                Point.Segment.Point1 = Data.P1;
+                Point.Segment.Point2 = Data.P2;
+                Point.Segment.Point3 = Data.P3;
                 return;
             }
 
-            Bezier.Segment.BeginAnimation(BezierSegment.Point1Property,
+            Point.Segment.BeginAnimation(BezierSegment.Point1Property,
                 new PointAnimation(p1, Data.P1, LineSeries.AnimSpeed));
-            Bezier.Segment.BeginAnimation(BezierSegment.Point2Property,
+            Point.Segment.BeginAnimation(BezierSegment.Point2Property,
                 new PointAnimation(p2, Data.P2, LineSeries.AnimSpeed));
-            Bezier.Segment.BeginAnimation(BezierSegment.Point3Property,
+            Point.Segment.BeginAnimation(BezierSegment.Point3Property,
                 new PointAnimation(p3, Data.P3, LineSeries.AnimSpeed));
         }
     }

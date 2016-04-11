@@ -17,12 +17,14 @@ namespace ChartsTest.Line_Examples.Basic
             var charlesSeries = new LineSeries
             {
                 Title = "Charles",
-                Values = new ChartValues<double> {10, 5, 7, 5, 7, 8}
+                Values = new ChartValues<double> {10, 5, 7, 5, 7, 8},
+                PointRadius = 0
             };
             var jamesSeries = new LineSeries
             {
                 Title = "James",
-                Values = new ChartValues<double> {5, 6, 9, 10, 11, 9}
+                Values = new ChartValues<double> {5, 6, 9, 10, 11, 9},
+                PointRadius = 0
             };
 
             //add our series to our SeriesCollection
@@ -83,7 +85,8 @@ namespace ChartsTest.Line_Examples.Basic
             var someNewSeries = new LineSeries
             {
                 Title = "Some Random Series",
-                Values = someRandomValues
+                Values = someRandomValues,
+                PointRadius = 0
             };
 
             Series.Add(someNewSeries);

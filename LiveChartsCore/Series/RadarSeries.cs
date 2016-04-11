@@ -109,7 +109,7 @@ namespace LiveCharts
                 r.MouseLeave += chart.DataMouseLeave;
                 r.MouseDown += chart.DataMouseDown;
                 chart.Canvas.Children.Add(r);
-                Shapes.Add(r);
+                //Shapes.Add(r);
                 chart.ShapesMapper.Add(new ShapeMap
                 {
                     Series = this,
@@ -118,7 +118,7 @@ namespace LiveCharts
                     Shape = e
                 });
 
-                Shapes.Add(e);
+                //Shapes.Add(e);
                 chart.Canvas.Children.Add(e);
                 Panel.SetZIndex(r, int.MaxValue);
 
@@ -204,7 +204,7 @@ namespace LiveCharts
             if (!animated) path.StrokeDashOffset = 0;
 
             chart.Canvas.Children.Add(path);
-            Shapes.Add(path);
+            //Shapes.Add(path);
         }
     }
 }

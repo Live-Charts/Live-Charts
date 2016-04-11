@@ -32,6 +32,7 @@ namespace LiveCharts
         {
             Step = null;
             IsEnabled = true;
+            StrokeThickness = 1;
         }
 
         /// <summary>

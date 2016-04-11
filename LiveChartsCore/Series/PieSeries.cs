@@ -167,7 +167,7 @@ namespace LiveCharts
                         ChartPoint = point
                     });
                     Chart.Canvas.Children.Add(visual.PointShape);
-                    Shapes.Add(visual.PointShape);
+                    //Shapes.Add(visual.PointShape);
                     Panel.SetZIndex(visual.PointShape, int.MaxValue - 2);
                     visual.PointShape.MouseDown += Chart.DataMouseDown;
                     visual.PointShape.MouseEnter += Chart.DataMouseEnter;
@@ -202,7 +202,7 @@ namespace LiveCharts
                         p.Children.Remove(s.HoverShape);
                         p.Children.Remove(s.Shape);
                         Chart.ShapesMapper.Remove(s);
-                        Shapes.Remove(s.Shape);
+                        //Shapes.Remove(s.Shape);
                     }
                 }
             }
@@ -222,7 +222,7 @@ namespace LiveCharts
                         p.Children.Remove(s.HoverShape);
                         p.Children.Remove(s.Shape);
                         Chart.ShapesMapper.Remove(s);
-                        Shapes.Remove(s.Shape);
+                        //Shapes.Remove(s.Shape);
                     }
                 }
             }

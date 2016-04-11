@@ -62,7 +62,7 @@ namespace LiveCharts.CoreComponents
 
         private static readonly Random Randomizer;
         private readonly DispatcherTimer _resizeTimer;
-        private readonly DispatcherTimer _serieValuesChanged;
+        private readonly DispatcherTimer _seriesValuesChanged;
         internal readonly DispatcherTimer SeriesChanged;
         private Point _panOrigin;
         private bool _isDragging;
@@ -110,7 +110,6 @@ namespace LiveCharts.CoreComponents
 
             SetValue(LegendProperty, new ChartLegend());
             
-
             if (RandomizeStartingColor) ColorStartIndex = Randomizer.Next(0, Colors.Count - 1);
             
             AnimatesNewPoints = false;
@@ -141,13 +140,13 @@ namespace LiveCharts.CoreComponents
                 _resizeTimer.Stop();
                 Update(false);
             };
-            var defTt = TimeSpan.FromMilliseconds(800);
+
             TooltipTimer = new DispatcherTimer();
             TooltipTimer.Tick += TooltipTimerOnTick;
-            SetValue(TooltipTimeoutProperty, defTt);
+            SetValue(TooltipTimeoutProperty, TimeSpan.FromMilliseconds(800));
 
-            _serieValuesChanged = new DispatcherTimer {Interval = TimeSpan.FromMilliseconds(100)};
-            _serieValuesChanged.Tick += UpdateModifiedDataSeries;
+            _seriesValuesChanged = new DispatcherTimer {Interval = TimeSpan.FromMilliseconds(100)};
+            _seriesValuesChanged.Tick += UpdateModifiedDataSeries;
 
             SeriesChanged = new DispatcherTimer {Interval = TimeSpan.FromMilliseconds(100)};
             SeriesChanged.Tick += (sender, args) =>
@@ -930,8 +929,8 @@ namespace LiveCharts.CoreComponents
 
         internal void OnDataSeriesChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            _serieValuesChanged.Stop();
-            _serieValuesChanged.Start();
+            _seriesValuesChanged.Stop();
+            _seriesValuesChanged.Start();
         }
 
         #endregion
@@ -1200,7 +1199,7 @@ namespace LiveCharts.CoreComponents
 #if DEBUG
             Trace.WriteLine("Primary Values Updated (" + DateTime.Now.ToLongTimeString() + ")");
 #endif
-            _serieValuesChanged.Stop();
+            _seriesValuesChanged.Stop();
             PrepareAxes();
             foreach (var serie in Series)
             {

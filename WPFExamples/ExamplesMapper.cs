@@ -12,6 +12,7 @@ using ChartsTest.Line_Examples.InLine;
 using ChartsTest.Line_Examples.IrregularIntervals;
 using ChartsTest.Line_Examples.LogarithmicLine;
 using ChartsTest.Line_Examples.RotadedLine;
+using ChartsTest.Line_Examples.ZoomingAndPanning;
 using ChartsTest.Pie_Examples;
 using ChartsTest.StackedBarExamples;
 using ChartsTest.StackedBarExamples.StackedBarRotated;
@@ -38,33 +39,34 @@ namespace ChartsTest
         {
             LineAndAreaAexamples = new List<UserControl>
             {
-                new AnimationImprovementLine(),
+                //new ZAndPLine(),
+                //new AnimationImprovementLine(),
                 new BasicLine(),
-                new DynamicLine(),
-                new GenericLine(),
-                new RotatedLine(),
-                new CustomLine(),
-                new IrregularLine(),
-                new LogarithmicAxis(),
-                new UiElementsLine(),
-                new InLineLine()
+                //new DynamicLine(),
+                //new GenericLine(),
+                //new RotatedLine(),
+                //new CustomLine(),
+                //new IrregularLine(),
+                //new LogarithmicAxis(),
+                //new UiElementsLine(),
+                //new InLineLine()
             };
             BarExamples = new List<UserControl>
             {
-                new FilterChart(),
-                new MultiAxChart(),
-                new RotatedBar(),
-                new MvvmBar(),
-                new PointPropertyChangedBar(),
-                new BasicBar(),
-                new BindingBar(),
-                new CustomBar()
+                //new FilterChart(),
+                //new MultiAxChart(),
+                //new RotatedBar(),
+                //new MvvmBar(),
+                //new PointPropertyChangedBar(),
+                //new BasicBar(),
+                //new BindingBar(),
+                //new CustomBar()
             };
             PieExamples = new List<UserControl>
             {
-                new BasicPie(),
-                new MvvmPie(),
-                new CustomPie(),
+                //new BasicPie(),
+                //new MvvmPie(),
+                //new CustomPie(),
             };
 
             //currently disabled chart type

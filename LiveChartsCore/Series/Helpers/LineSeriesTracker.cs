@@ -28,10 +28,10 @@ namespace LiveCharts.Helpers
     {
         public LineSeriesTracker()
         {
-            Primitives = new Dictionary<int, TrackableBezier>();
-            Instances = new Dictionary<object, TrackableBezier>();
+            Primitives = new Dictionary<int, Clue>();
+            Instances = new Dictionary<object, Clue>();
         }
-        public Dictionary<int, TrackableBezier> Primitives { get; set; }
-        public Dictionary<object, TrackableBezier> Instances { get; set; }
+        public Dictionary<int, Clue> Primitives { get; set; }
+        public Dictionary<object, Clue> Instances { get; set; }
     }
 }

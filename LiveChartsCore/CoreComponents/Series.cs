@@ -34,7 +34,6 @@ namespace LiveCharts.CoreComponents
 {
     public abstract class Series : FrameworkElement, IChartSeries
 	{
-		internal List<FrameworkElement> Shapes = new List<FrameworkElement>();
 	    private Chart _chart;
 	    internal bool RequiresAnimation;
 	    internal bool RequiresPlot;
@@ -77,7 +76,7 @@ namespace LiveCharts.CoreComponents
         public SeriesCollection Collection { get; internal set; }
 
         public static readonly DependencyProperty TitleProperty =
-           DependencyProperty.Register("Title", typeof(string), typeof(Series), new PropertyMetadata("An Unnamed Serie"));
+           DependencyProperty.Register("Title", typeof(string), typeof(Series), new PropertyMetadata("An Unnamed Series"));
         /// <summary>
         /// Gets or sets serie name
         /// </summary>
@@ -298,13 +297,6 @@ namespace LiveCharts.CoreComponents
         #region Virtual Methods
         internal virtual void Erase(bool force = false)
         {
-            foreach (var s in Shapes)
-            {
-                var p = s.Parent as Canvas;
-                if (p != null) p.Children.Remove(s);
-            }
-            Shapes.Clear();
-
             var hoverableShapes = Chart.ShapesMapper.Where(x => Equals(x.Series, this)).ToList();
             foreach (var hs in hoverableShapes)
             {
