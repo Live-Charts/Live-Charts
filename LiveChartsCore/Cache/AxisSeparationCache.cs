@@ -25,14 +25,13 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
-using System.Xaml;
 using LiveCharts.CoreComponents;
 
 namespace LiveCharts.Cache
 {
     internal class AxisSeparationCache
     {
-        private readonly TimeSpan _anSpeed = TimeSpan.FromMilliseconds(500);
+        private TimeSpan _anSpeed;
 
         internal TextBlock TextBlock { get; set; }
         internal Line Line { get; set; }
@@ -45,6 +44,8 @@ namespace LiveCharts.Cache
 
         public void Place(Chart chart, AxisTags direction, int axisIndex, Axis axis)
         {
+            _anSpeed = axis.AnimationsSpeed ?? chart.AnimationsSpeed;
+
             switch (State)
             {
                 case SeparationState.Remove:

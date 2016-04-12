@@ -136,6 +136,15 @@ namespace LiveCharts.CoreComponents
             set { SetValue(DataLabelsProperty, value); }
         }
 
+        public static readonly DependencyProperty AnimationsSpeedProperty = DependencyProperty.Register(
+            "AnimationsSpeed", typeof (TimeSpan?), typeof (Series), new PropertyMetadata(null));
+        [TypeConverter(typeof(TooltipTimeoutConverter))]
+        public TimeSpan? AnimationsSpeed
+        {
+            get { return (TimeSpan?) GetValue(AnimationsSpeedProperty); }
+            set { SetValue(AnimationsSpeedProperty, value); }
+        }
+
         public static readonly DependencyProperty FontFamilyProperty =
             DependencyProperty.Register("FontFamily", typeof(FontFamily), typeof(Series), new PropertyMetadata(new FontFamily("Calibri")));
 
@@ -244,7 +253,6 @@ namespace LiveCharts.CoreComponents
             get { return Chart.AxisY[ScalesYAt]; }
         }
 
-        public TimeSpan? AnimationsSpeed { get; set; }
         #endregion
 
         #region PublicMethods

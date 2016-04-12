@@ -179,6 +179,15 @@ namespace LiveCharts
             set { SetValue(TitleProperty, value); }
         }
 
+        public static readonly DependencyProperty AnimationsSpeedProperty = DependencyProperty.Register(
+            "AnimationsSpeed", typeof (TimeSpan?), typeof (Axis), new PropertyMetadata(default(TimeSpan?)));
+
+        public TimeSpan? AnimationsSpeed
+        {
+            get { return (TimeSpan?) GetValue(AnimationsSpeedProperty); }
+            set { SetValue(AnimationsSpeedProperty, value); }
+        }
+
         /// <summary>
         /// Gets or sets the axis position
         /// </summary>
@@ -190,7 +199,6 @@ namespace LiveCharts
         public bool IsMerged { get; set; }
 
         public bool DisableAnimations { get; set; }
-        public TimeSpan? AnimationsDuration { get; set; }
         #endregion
 
         #region Font Properties

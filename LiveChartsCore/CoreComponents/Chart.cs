@@ -301,7 +301,17 @@ namespace LiveCharts.CoreComponents
         {
             get { return (TimeSpan) GetValue(TooltipTimeoutProperty); }
             set { SetValue(TooltipTimeoutProperty, value); }
-        }   
+        }
+
+
+        public static readonly DependencyProperty AnimationsSpeedProperty = DependencyProperty.Register(
+            "AnimationsSpeed", typeof (TimeSpan), typeof (Chart), new PropertyMetadata(default(TimeSpan)));
+        [TypeConverter(typeof(TooltipTimeoutConverter))]
+        public TimeSpan AnimationsSpeed
+        {
+            get { return (TimeSpan) GetValue(AnimationsSpeedProperty); }
+            set { SetValue(AnimationsSpeedProperty, value); }
+        }
         #endregion
 
         #region Properties
@@ -326,7 +336,6 @@ namespace LiveCharts.CoreComponents
         /// </summary>
         public Canvas Canvas { get; internal set; }
 
-        public TimeSpan AnimationsSpeed { get; set; }
         /// <summary>
         /// Gets chart point offset
         /// </summary>

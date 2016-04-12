@@ -117,17 +117,17 @@ namespace LiveCharts
                         first = point.Location;
                     }
 
-                    var visual = GetVisual(segment[i], area.Figure);
-                    PlaceVisuals(visual, point, hoverShapeMinSize, f);
+                    var shapes = GetShapes(segment[i], area.Figure);
+                    PlaceShapes(shapes, point, hoverShapeMinSize, f);
 
-                    visual.Data = i == segment.Count - 1
+                    shapes.Data = i == segment.Count - 1
                         ? new BezierData(previous != null ? previous.Data.Point3 : area.Figure.StartPoint)
                         : CalculateBezier(i, segment);
 
-                    visual.Previous = previous != null && previous.IsNew ? previous.Previous : previous;
-                    visual.Animate(i + so, Chart, so, _animSpeed);
+                    shapes.Previous = previous != null && previous.IsNew ? previous.Previous : previous;
+                    shapes.Animate(i + so, Chart, so, _animSpeed);
 
-                    previous = visual;
+                    previous = shapes;
                     last = point.Location;
                 }
 
@@ -206,7 +206,7 @@ namespace LiveCharts
             return isNew;
         }
 
-        private void PlaceVisuals(DataPoint dataPoint, ChartPoint chartPoint, double radius, Func<double, string> f)
+        private void PlaceShapes(DataPoint dataPoint, ChartPoint chartPoint, double radius, Func<double, string> f)
         {
             if (dataPoint.HoverShape != null)
             {
@@ -418,7 +418,7 @@ namespace LiveCharts
             }
         }
 
-        private DataPoint GetVisual(ChartPoint point, PathFigure pathFigure)
+        private DataPoint GetShapes(ChartPoint point, PathFigure pathFigure)
         {
             DataPoint trackable;
 
@@ -492,7 +492,7 @@ namespace LiveCharts
 
             return trackable;
 
-            //Todo: If Hoverable property changes thid could throw a null exception,
+            //Todo: If Hoverable property changes this could throw a null exception,
             //When Hoverable property changes, we need to load the shapes again.
             //or delete then if false, to improve performance.
 
