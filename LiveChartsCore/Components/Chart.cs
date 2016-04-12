@@ -34,6 +34,7 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
+using LiveCharts.Components;
 using LiveCharts.Tooltip;
 using LiveCharts.TypeConverters;
 using LiveCharts.Viewers;
@@ -111,6 +112,9 @@ namespace LiveCharts.CoreComponents
 
             SetValue(LegendProperty, new ChartLegend());
             
+            CursorX = new ChartCursor(this, AxisTags.X);
+            CursorY = new ChartCursor(this, AxisTags.Y);
+
             if (RandomizeStartingColor) ColorStartIndex = Randomizer.Next(0, Colors.Count - 1);
             
             AnimatesNewPoints = false;
@@ -337,6 +341,9 @@ namespace LiveCharts.CoreComponents
         /// </summary>
         public Canvas Canvas { get; internal set; }
 
+        public ChartCursor CursorX { get; set; }
+        public ChartCursor CursorY { get; set; }
+
         /// <summary>
         /// Gets chart point offset
         /// </summary>
@@ -355,6 +362,7 @@ namespace LiveCharts.CoreComponents
         /// <summary>
         /// Gets collection of shapes that fires tooltip on hover
         /// </summary>
+        [Obsolete]
         public List<ShapeMap> ShapesMapper { get; internal set; }
         #endregion
 

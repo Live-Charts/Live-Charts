@@ -112,15 +112,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Cache\AxisSeparationCache.cs" />
-    <Compile Include="CoreComponents\AxisPosition.cs" />
-    <Compile Include="CoreComponents\ChartPoint.cs" />
-    <Compile Include="CoreComponents\DeleteBufferItem.cs" />
-    <Compile Include="CoreComponents\SeriesConfiguration.cs" />
+    <Compile Include="Components\AxisPosition.cs" />
+    <Compile Include="Components\ChartPoint.cs" />
+    <Compile Include="Components\ChartCursor.cs" />
+    <Compile Include="Components\DeleteBufferItem.cs" />
+    <Compile Include="Components\SeriesConfiguration.cs" />
     <Compile Include="DefaultAxes.cs" />
     <Compile Include="Interfaces\IBrain.cs" />
     <Compile Include="Interfaces\IObservableChartPoint.cs" />
     <Compile Include="Interfaces\ISeriesConfiguration.cs" />
-    <Compile Include="CoreComponents\Axis.cs" />
+    <Compile Include="Components\Axis.cs" />
     <Compile Include="AxisTags.cs" />
     <Compile Include="Charts\BarChart.cs" />
     <Compile Include="Charts\LineChart.cs" />
@@ -134,10 +135,10 @@
     <Compile Include="Interfaces\IUnitaryPoints.cs" />
     <Compile Include="Legend\LegendLocation.cs" />
     <Compile Include="Properties\Annotations.cs" />
-    <Compile Include="CoreComponents\SeriesCollection.cs" />
+    <Compile Include="Components\SeriesCollection.cs" />
     <Compile Include="Interfaces\IChartValues.cs" />
     <Compile Include="LiveChartsExtentions.cs" />
-    <Compile Include="CoreComponents\ChartValues.cs" />
+    <Compile Include="Components\ChartValues.cs" />
     <Compile Include="Cache\BezierData.cs" />
     <Compile Include="Cache\LineAndAreaShape.cs" />
     <Compile Include="Cache\DataPoint.cs" />
@@ -168,10 +169,10 @@
     <Compile Include="Series\RadarSeries.cs" />
     <Compile Include="Series\StackedBarSeries.cs" />
     <Compile Include="ShapeHoverBehavior.cs" />
-    <Compile Include="CoreComponents\Chart.cs" />
-    <Compile Include="CoreComponents\ShapeMap.cs" />
+    <Compile Include="Components\Chart.cs" />
+    <Compile Include="Components\ShapeMap.cs" />
     <Compile Include="Methods.cs" />
-    <Compile Include="CoreComponents\Separator.cs" />
+    <Compile Include="Components\Separator.cs" />
     <Compile Include="Series\BarSeries.cs" />
     <Compile Include="Series\LineSeries.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -188,7 +189,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="Series\PieSeries.cs" />
-    <Compile Include="CoreComponents\Series.cs" />
+    <Compile Include="Components\Series.cs" />
     <Compile Include="Shapes\PieSlice.cs" />
     <Compile Include="TypeConverters\TooltipTimeoutConverter.cs" />
     <Compile Include="ZoomingOptions.cs" />

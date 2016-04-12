@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using LiveCharts;
+using LiveCharts.CoreComponents;
 
 namespace ChartsTest.Line_Examples.ZoomingAndPanning
 {
@@ -53,11 +54,19 @@ namespace ChartsTest.Line_Examples.ZoomingAndPanning
                     .Y(m => m.Temperature));
 
             TempFormat = temp => temp + " C°";
+            XFormatter = index => Math.Round(index).ToString("N");
 
             DataContext = this;
         }
 
         public SeriesCollection Motors { get; set; }
         public Func<double, string> TempFormat { get; set; }
+        public Func<double, string> XFormatter { get; set; }
+
+        private void Chart_OnDataClick(ChartPoint point)
+        {
+            Chart.CursorX.Value = point.X;
+            Chart.CursorY.Value = point.Y;
+        }
     }
 }

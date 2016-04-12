@@ -463,7 +463,8 @@ namespace LiveCharts
                 hs = new Rectangle
                 {
                     Fill = Brushes.Transparent,
-                    StrokeThickness = 0
+                    StrokeThickness = 1,
+                    Stroke = Brushes.Red
                 };
                 BindingOperations.SetBinding(hs, VisibilityProperty,
                     new Binding {Path = new PropertyPath(VisibilityProperty), Source = this});
