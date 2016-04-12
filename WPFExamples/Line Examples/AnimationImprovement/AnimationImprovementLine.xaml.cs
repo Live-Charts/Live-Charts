@@ -28,8 +28,8 @@ namespace ChartsTest.Line_Examples.AnimationImprovement
                         new ViewModel {YValue = 1},
                         new ViewModel {YValue = 0}
                     },
-                    StrokeDashArray = new DoubleCollection { 2 }
-                    //DataLabels = true
+                    StrokeDashArray = new DoubleCollection { 2 },
+                    DataLabels = true
                 }
             }.Setup(new SeriesConfiguration<ViewModel>().Y(vm => vm.YValue));
 

@@ -40,8 +40,8 @@ namespace ChartsTest
             LineAndAreaAexamples = new List<UserControl>
             {
                 //new ZAndPLine(),
-                //new AnimationImprovementLine(),
-                new BasicLine(),
+                new AnimationImprovementLine(),
+                //new BasicLine(),
                 //new DynamicLine(),
                 //new GenericLine(),
                 //new RotatedLine(),

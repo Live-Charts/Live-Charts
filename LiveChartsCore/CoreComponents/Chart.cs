@@ -917,12 +917,12 @@ namespace LiveCharts.CoreComponents
             var targetAxis = Invert ? sender.Series.ScalesYAt : sender.Series.ScalesXAt;
 
             var x = sender.ChartPoint.X > (AxisX[targetAxis].MinLimit + AxisX[targetAxis].MaxLimit)/2
-                ? sender.ChartPoint.ChartLocation.X - 10 - DataTooltip.DesiredSize.Width
-                : sender.ChartPoint.ChartLocation.X + 10;
+                ? sender.ChartPoint.Location.X - 10 - DataTooltip.DesiredSize.Width
+                : sender.ChartPoint.Location.X + 10;
 
             x += Canvas.GetLeft(DrawMargin);
 
-            var y = sibilings.Select(s => s.ChartPoint.ChartLocation.Y).DefaultIfEmpty(0).Sum()/sibilings.Count;
+            var y = sibilings.Select(s => s.ChartPoint.Location.Y).DefaultIfEmpty(0).Sum()/sibilings.Count;
             y = y + DataTooltip.DesiredSize.Height > ActualHeight ? y - (y + DataTooltip.DesiredSize.Height - ActualHeight) - 5 : y;
             return new Point(x, y);
         }

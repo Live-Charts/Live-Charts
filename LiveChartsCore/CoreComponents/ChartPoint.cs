@@ -38,7 +38,7 @@ namespace LiveCharts.CoreComponents
         /// <summary>
         /// Gets the coordinate where the value is placed at chart
         /// </summary>
-        public Point ChartLocation { get; set; }
+        public Point Location { get; set; }
         /// <summary>
         /// Gets the object where the chart pulled the point
         /// </summary>
