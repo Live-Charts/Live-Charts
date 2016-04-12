@@ -172,7 +172,7 @@ namespace LiveCharts
 
         private IEnumerable<KeyValuePair<int, T>> IndexData(SeriesConfiguration<T> config)
         {
-            var f = config.Chart.ZoomingAxis == AxisTags.X
+            var f = config.Chart.PivotZoomingAxis == AxisTags.X
                         ? config.XValueMapper
                         : config.YValueMapper;
 

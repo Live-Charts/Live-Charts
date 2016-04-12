@@ -52,7 +52,7 @@ namespace LiveCharts.CoreComponents
         internal bool SeriesInitialized;
         internal double From = double.MinValue;
         internal double To = double.MaxValue;
-        internal AxisTags ZoomingAxis = AxisTags.None;
+        internal AxisTags PivotZoomingAxis = AxisTags.None;
         internal bool SupportsMultipleSeries = true;
 
         protected ShapeHoverBehavior ShapeHoverBehavior;
@@ -625,6 +625,8 @@ namespace LiveCharts.CoreComponents
                               Series.Where(series => series.Values != null && series.ScalesYAt == index)
                                   .Select(series => series.Values.MinChartPoint.Y).DefaultIfEmpty(0).Min();
             }
+
+            PivotZoomingAxis = Invert ? AxisTags.Y : AxisTags.X;
         }
         #endregion
 
@@ -1233,7 +1235,7 @@ namespace LiveCharts.CoreComponents
 
         private void MouseWheelOnRoll(object sender, MouseWheelEventArgs e)
         {
-            if (ZoomingAxis == AxisTags.None) return;
+            if (PivotZoomingAxis == AxisTags.None) return;
             e.Handled = true;
             if (e.Delta > 0) ZoomIn(e.GetPosition(this));
             else ZoomOut(e.GetPosition(this));
@@ -1241,7 +1243,7 @@ namespace LiveCharts.CoreComponents
 
         private void MouseDownForPan(object sender, MouseEventArgs e)
         {
-            if (ZoomingAxis == AxisTags.None) return;
+            if (PivotZoomingAxis == AxisTags.None) return;
             var p = e.GetPosition(this);
             _panOrigin = new Point(FromDrawMargin(p.X, AxisTags.X), FromDrawMargin(p.Y, AxisTags.Y));
             _isDragging = true;
@@ -1275,7 +1277,7 @@ namespace LiveCharts.CoreComponents
 
         private void MouseUpForPan(object sender, MouseEventArgs e)
         {
-            if (ZoomingAxis == AxisTags.None) return;
+            if (PivotZoomingAxis == AxisTags.None) return;
 
             var p = e.GetPosition(this);
             var movePoint = new Point(FromDrawMargin(p.X, AxisTags.X), FromDrawMargin(p.Y, AxisTags.Y));

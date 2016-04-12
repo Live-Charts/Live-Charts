@@ -28,7 +28,8 @@
         </StackPanel>
         <lvc:LineChart Name="Chart" Grid.Row="2" LegendLocation="Right"
                        Series="{Binding Series}" Background="White"
-                       Hoverable="False" DisableAnimations="True">
+                       Hoverable="False" DisableAnimations="False"
+                       Zoom="X">
             <lvc:LineChart.AxisY>
                 <lvc:Axis Title="Sold Items" Position="RightTop" IsMerged="False">
                     <lvc:Axis.Separator>

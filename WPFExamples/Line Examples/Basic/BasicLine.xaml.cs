@@ -16,15 +16,14 @@ namespace ChartsTest.Line_Examples.Basic
 
             var v  = new List<double>();
             var r = new Random();
-            for (int i = 0; i < 10; i++) v.Add(r.Next(0, 20));
+            for (int i = 0; i < 100; i++) v.Add(r.Next(0, 20));
 
             //create some LineSeries
             var charlesSeries = new LineSeries
             {
                 Title = "Charles",
                 Values = v.AsChartValues(),
-                PointRadius = 0,
-                DataLabels = true
+                PointRadius = 0
             };
             //var jamesSeries = new LineSeries
             //{
