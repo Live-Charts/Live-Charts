@@ -98,7 +98,7 @@ namespace LiveCharts
                             segment.Count > 0 ? p0 : new Point(), _animSpeed));
 
                 DataPoint previous = null;
-                var isVirgin = true;
+                var firstIteration = true;
                 var first = new Point();
                 var last = new Point();
 
@@ -111,9 +111,9 @@ namespace LiveCharts
                         point.Location = new Point(point.Location.X + ofPt.X,
                             point.Location.Y + ofPt.Y);
 
-                    if (isVirgin)
+                    if (firstIteration)
                     {
-                        isVirgin = false;
+                        firstIteration = false;
                         first = point.Location;
                     }
 
@@ -134,7 +134,7 @@ namespace LiveCharts
                 area.DrawLimits(first, last,
                     new Point(ToDrawMargin(CurrentXAxis.MinLimit, AxisTags.X, ScalesXAt),
                         ToDrawMargin(CurrentYAxis.MinLimit, AxisTags.Y, ScalesYAt)),
-                    Chart.Invert);
+                    Chart);
 
 #if DEBUG
                 Trace.WriteLine("Segments count: " + area.Figure.Segments.Count);

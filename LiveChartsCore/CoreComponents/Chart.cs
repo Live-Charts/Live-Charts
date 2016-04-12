@@ -68,6 +68,7 @@ namespace LiveCharts.CoreComponents
         private bool _isDragging;
         private int _colorIndexer;
         private FrameworkElement _dataTooltip;
+        private bool _isZooming = false;
 
         static Chart()
         {
@@ -397,6 +398,17 @@ namespace LiveCharts.CoreComponents
         {
             if (DataTooltip != null) DataTooltip.Visibility = Visibility.Hidden;
 
+            if (_isZooming) return;
+
+            _isZooming = true;
+            var t = new DispatcherTimer {Interval = DisableAnimations ? TimeSpan.Zero : AnimationsSpeed};
+            t.Tick += (sender, args) =>
+            {
+                _isZooming = false;
+                t.Stop();
+            };
+            t.Start();
+
             var dataPivot = new Point(FromDrawMargin(pivot.X, AxisTags.X), FromDrawMargin(pivot.Y, AxisTags.Y));
 
             if (Zoom == ZoomingOptions.X || Zoom == ZoomingOptions.XY)
@@ -457,6 +469,17 @@ namespace LiveCharts.CoreComponents
         public void ZoomOut(Point pivot)
         {
             if (DataTooltip != null) DataTooltip.Visibility = Visibility.Hidden;
+
+            if (_isZooming) return;
+
+            _isZooming = true;
+            var t = new DispatcherTimer { Interval = DisableAnimations ? TimeSpan.Zero : AnimationsSpeed };
+            t.Tick += (sender, args) =>
+            {
+                _isZooming = false;
+                t.Stop();
+            };
+            t.Start();
 
             var dataPivot = new Point(FromDrawMargin(pivot.X, AxisTags.X), FromDrawMargin(pivot.Y, AxisTags.Y));
 
