@@ -27,11 +27,11 @@ using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using LiveCharts.CoreComponents;
 
-namespace LiveCharts
+namespace LiveCharts.Cache
 {
-    internal class AxisSeparation
+    internal class AxisSeparationCache
     {
-        private readonly TimeSpan _anSpeed = TimeSpan.FromMilliseconds(500);
+        private TimeSpan _anSpeed;
 
         internal TextBlock TextBlock { get; set; }
         internal Line Line { get; set; }
@@ -44,16 +44,18 @@ namespace LiveCharts
 
         public void Place(Chart chart, AxisTags direction, int axisIndex, Axis axis)
         {
+            _anSpeed = axis.AnimationsSpeed ?? chart.AnimationsSpeed;
+
             switch (State)
             {
                 case SeparationState.Remove:
                     MoveFromCurrentAx(chart, direction, axisIndex, axis);
-                    FadeOutAndRemove(chart);
+                    Remove(chart, axis);
                     break;
                 case SeparationState.Keep:
                     UnanimatedPlace(chart, direction, axisIndex, axis);
                     MoveFromPreviousAx(chart, direction, axisIndex, axis);
-                    if (IsNew) FadeIn();
+                    if (IsNew) FadeIn(chart, axis);
                     break;
                 case SeparationState.InitialAdd:
                     UnanimatedPlace(chart, direction, axisIndex, axis);
@@ -106,9 +108,9 @@ namespace LiveCharts
             }
         }
 
-        private void FadeOutAndRemove(Chart chart)
+        private void Remove(Chart chart, Axis axis)
         {
-            if (chart.DisableAnimation)
+            if (axis.DisableAnimations || chart.DisableAnimations)
             {
                 chart.Canvas.Children.Remove(TextBlock);
                 chart.Canvas.Children.Remove(Line);
@@ -135,14 +137,18 @@ namespace LiveCharts
             Line.BeginAnimation(UIElement.OpacityProperty, new DoubleAnimation(1, 0, _anSpeed));
         }
 
-        private void FadeIn()
+        private void FadeIn(Chart chart, Axis axis)
         {
+            if (axis.DisableAnimations || chart.DisableAnimations) return;
+
             TextBlock.BeginAnimation(UIElement.OpacityProperty, new DoubleAnimation(0, 1, _anSpeed));
             Line.BeginAnimation(UIElement.OpacityProperty, new DoubleAnimation(0, 1, TimeSpan.FromMilliseconds(1000)));
         }
 
         private void MoveFromCurrentAx(Chart chart, AxisTags direction, int axisIndex, Axis axis)
         {
+            if (axis.DisableAnimations || chart.DisableAnimations) return;
+
             var i = chart.ToPlotArea(Value, direction, axisIndex);
 
             if (direction == AxisTags.Y)
@@ -187,6 +193,8 @@ namespace LiveCharts
 
         private void MoveFromPreviousAx(Chart chart, AxisTags direction, int axisIndex, Axis axis)
         {
+            if (axis.DisableAnimations || chart.DisableAnimations) return;
+
             var i = chart.ToPlotArea(Value, direction, axisIndex);
 
             if (direction == AxisTags.Y)

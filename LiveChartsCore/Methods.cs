@@ -142,14 +142,14 @@ namespace LiveCharts
             return ToPlotArea(value, source, chart, axis) - o + of;
         }
 
-        public static double FromDrawMargin(double value, AxisTags axis, Chart chart)
+        public static double FromDrawMargin(double value, AxisTags source, Chart chart, int axis = 0)
         {
-            var o = axis == AxisTags.X
-                ? Canvas.GetLeft(chart.DrawMargin)
-                : Canvas.GetTop(chart.DrawMargin);
-            var of = axis == AxisTags.X ? chart.XOffset : chart.YOffset;
+            //var o = axis == AxisTags.X
+            //    ? Canvas.GetLeft(chart.DrawMargin)
+            //    : Canvas.GetTop(chart.DrawMargin);
+            //var of = axis == AxisTags.X ? chart.XOffset : chart.YOffset;
 
-            return FromPlotArea(value, axis, chart) - o + of;
+            return FromPlotArea(value, source, chart, axis);//FromPlotArea(value, axis, chart) - o + of;
         }
 
         internal static double GetUnitWidth(AxisTags source, Chart chart, int axis = 0)

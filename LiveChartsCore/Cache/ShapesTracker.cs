@@ -20,17 +20,18 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-using System.Windows.Media;
+using System.Collections.Generic;
 
-namespace LiveCharts.Helpers
+namespace LiveCharts.Cache
 {
-    internal class TrackableBezier
+    internal class ShapesTracker
     {
-        public TrackableBezier(PathFigure ownerFigure)
+        public ShapesTracker()
         {
-            Owner = ownerFigure;
+            Primitives = new Dictionary<int, VisualPoint>();
+            Instances = new Dictionary<object, VisualPoint>();
         }
-        public BezierSegment Segment { get; set; }
-        public PathFigure Owner { get; set; }
+        public Dictionary<int, VisualPoint> Primitives { get; set; }
+        public Dictionary<object, VisualPoint> Instances { get; set; }
     }
 }

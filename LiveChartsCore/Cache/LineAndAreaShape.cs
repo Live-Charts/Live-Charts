@@ -22,12 +22,16 @@
 
 using System.Windows;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Shapes;
+using LiveCharts.CoreComponents;
 
-namespace LiveCharts.Helpers
+namespace LiveCharts.Cache
 {
     internal class LineAndAreaShape
     {
+        private bool _firstRun = true;
+
         public LineAndAreaShape(PathFigure figure, Path path)
         {
             Figure = figure;
@@ -47,7 +51,7 @@ namespace LiveCharts.Helpers
         public LineSegment Bottom { get; set; }
         public LineSegment Left { get; set; }
 
-        public void DrawLimits(Point first, Point last, Point minPoint, bool invert)
+        public void DrawLimits(Point first, Point last, Point minPoint, Chart chart)
         {
             Figure.Segments.Remove(Right);
             Figure.Segments.Remove(Bottom);
@@ -57,13 +61,36 @@ namespace LiveCharts.Helpers
             Figure.Segments.Add(Bottom);
             Figure.Segments.Add(Left);
 
-            Right.Point = invert
-                ? new Point(minPoint.X, last.Y)
-                : new Point(last.X, minPoint.Y);
-            Bottom.Point = invert
-                ? new Point(minPoint.X, first.Y)
-                : new Point(first.X, minPoint.Y);
-            Left.Point = new Point(first.X, first.Y);
+            Point r, b;
+            var l = new Point(first.X, first.Y);
+
+            if (chart.Invert)
+            {
+                r = new Point(minPoint.X, last.Y);
+                b = new Point(minPoint.X, first.Y);
+            }
+            else
+            {
+                r = new Point(last.X, minPoint.Y);
+                b = new Point(first.X, minPoint.Y);
+            }
+
+            if (chart.DisableAnimations || _firstRun)
+            {
+                Right.Point = r;
+                Bottom.Point = b;
+                Left.Point = l;
+            } else
+            {
+                Right.BeginAnimation(LineSegment.PointProperty,
+                    new PointAnimation(r, chart.AnimationsSpeed));
+                Bottom.BeginAnimation(LineSegment.PointProperty,
+                    new PointAnimation(b, chart.AnimationsSpeed));
+                Left.BeginAnimation(LineSegment.PointProperty,
+                    new PointAnimation(l, chart.AnimationsSpeed));
+            }
+
+            _firstRun = false;
         }
     }
 }

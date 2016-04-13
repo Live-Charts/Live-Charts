@@ -23,32 +23,31 @@
 using System.Windows;
 using System.Windows.Media;
 
-namespace LiveCharts.Helpers
+namespace LiveCharts.Cache
 {
     internal class BezierData
     {
         public BezierData()
         {
-            
         }
 
         public BezierData(Point point)
         {
-            P1 = point;
-            P2 = point;
-            P3 = point;
+            Point1 = point;
+            Point2 = point;
+            Point3 = point;
         }
 
-        public Point P1 { get; set; }
-        public Point P2 { get; set; }
-        public Point P3 { get; set; }
+        public Point Point1 { get; set; }
+        public Point Point2 { get; set; }
+        public Point Point3 { get; set; }
         public Point StartPoint { get; set; }
 
         public BezierSegment AssignTo(BezierSegment segment)
         {
-            segment.Point1 = P1;
-            segment.Point2 = P2;
-            segment.Point3 = P3;
+            segment.Point1 = Point1;
+            segment.Point2 = Point2;
+            segment.Point3 = Point3;
             return segment;
         }
     }

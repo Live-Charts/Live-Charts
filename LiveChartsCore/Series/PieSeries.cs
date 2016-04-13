@@ -86,7 +86,7 @@ namespace LiveCharts
 
                 #region labels, animation, and add to canvas
 
-                if (!Chart.DisableAnimation)
+                if (!Chart.DisableAnimations)
                 {
                     var wa = new DoubleAnimation
                     {
@@ -114,7 +114,7 @@ namespace LiveCharts
 
                 if (DataLabels)
                 {
-                    var tb = BuildATextBlock(0);
+                    var tb = BindATextBlock(0);
                     tb.Text = f(point.Y);
 
                     var hypo = (space+inner)/2;
@@ -133,7 +133,7 @@ namespace LiveCharts
                         Chart.Canvas.Children.Add(tb);
                         Chart.Shapes.Add(tb);
                         tb.Visibility = Visibility.Hidden;
-                        if (!Chart.DisableAnimation)
+                        if (!Chart.DisableAnimations)
                         {
                             var t = new DispatcherTimer {Interval = TimeSpan.FromMilliseconds(animationSpeed)};
                             t.Tick += (sender, args) =>
@@ -167,7 +167,7 @@ namespace LiveCharts
                         ChartPoint = point
                     });
                     Chart.Canvas.Children.Add(visual.PointShape);
-                    Shapes.Add(visual.PointShape);
+                    //Shapes.Add(visual.PointShape);
                     Panel.SetZIndex(visual.PointShape, int.MaxValue - 2);
                     visual.PointShape.MouseDown += Chart.DataMouseDown;
                     visual.PointShape.MouseEnter += Chart.DataMouseEnter;
@@ -202,7 +202,7 @@ namespace LiveCharts
                         p.Children.Remove(s.HoverShape);
                         p.Children.Remove(s.Shape);
                         Chart.ShapesMapper.Remove(s);
-                        Shapes.Remove(s.Shape);
+                        //Shapes.Remove(s.Shape);
                     }
                 }
             }
@@ -222,7 +222,7 @@ namespace LiveCharts
                         p.Children.Remove(s.HoverShape);
                         p.Children.Remove(s.Shape);
                         Chart.ShapesMapper.Remove(s);
-                        Shapes.Remove(s.Shape);
+                        //Shapes.Remove(s.Shape);
                     }
                 }
             }

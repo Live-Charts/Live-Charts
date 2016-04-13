@@ -21,23 +21,25 @@
 //SOFTWARE.
 
 using System;
-using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Media;
+using LiveCharts.Cache;
 using LiveCharts.TypeConverters;
 
 namespace LiveCharts.CoreComponents
 {
     public abstract class Series : FrameworkElement, IChartSeries
 	{
-		internal List<FrameworkElement> Shapes = new List<FrameworkElement>();
 	    private Chart _chart;
 	    internal bool RequiresAnimation;
 	    internal bool RequiresPlot;
+        internal bool IsPrimitive;
+        internal readonly ShapesTracker Tracker = new ShapesTracker();
 
         protected Series()
         {           
@@ -77,7 +79,7 @@ namespace LiveCharts.CoreComponents
         public SeriesCollection Collection { get; internal set; }
 
         public static readonly DependencyProperty TitleProperty =
-           DependencyProperty.Register("Title", typeof(string), typeof(Series), new PropertyMetadata("An Unnamed Serie"));
+           DependencyProperty.Register("Title", typeof(string), typeof(Series), new PropertyMetadata("An Unnamed Series"));
         /// <summary>
         /// Gets or sets serie name
         /// </summary>
@@ -135,6 +137,15 @@ namespace LiveCharts.CoreComponents
         {
             get { return (bool) GetValue(DataLabelsProperty); }
             set { SetValue(DataLabelsProperty, value); }
+        }
+
+        public static readonly DependencyProperty AnimationsSpeedProperty = DependencyProperty.Register(
+            "AnimationsSpeed", typeof (TimeSpan?), typeof (Series), new PropertyMetadata(null));
+        [TypeConverter(typeof(TooltipTimeoutConverter))]
+        public TimeSpan? AnimationsSpeed
+        {
+            get { return (TimeSpan?) GetValue(AnimationsSpeedProperty); }
+            set { SetValue(AnimationsSpeedProperty, value); }
         }
 
         public static readonly DependencyProperty FontFamilyProperty =
@@ -298,13 +309,6 @@ namespace LiveCharts.CoreComponents
         #region Virtual Methods
         internal virtual void Erase(bool force = false)
         {
-            foreach (var s in Shapes)
-            {
-                var p = s.Parent as Canvas;
-                if (p != null) p.Children.Remove(s);
-            }
-            Shapes.Clear();
-
             var hoverableShapes = Chart.ShapesMapper.Where(x => Equals(x.Series, this)).ToList();
             foreach (var hs in hoverableShapes)
             {
@@ -365,18 +369,24 @@ namespace LiveCharts.CoreComponents
         }
         #endregion
 
-        internal TextBlock BuildATextBlock(int rotate)
+        internal TextBlock BindATextBlock(int rotate)
         {
-            return new TextBlock
-            {
-                FontFamily = FontFamily,
-                FontSize = FontSize,
-                FontStretch = FontStretch,
-                FontStyle = FontStyle,
-                FontWeight = FontWeight,
-                Foreground = Foreground,
-                RenderTransform = new RotateTransform(rotate)
-            };
+            var tb = new TextBlock();
+
+            tb.SetBinding(TextBlock.FontFamilyProperty,
+                new Binding { Path = new PropertyPath(FontFamilyProperty), Source = this });
+            tb.SetBinding(FontSizeProperty,
+                new Binding { Path = new PropertyPath(FontSizeProperty), Source = this });
+            tb.SetBinding(TextBlock.FontStretchProperty,
+                new Binding { Path = new PropertyPath(FontStretchProperty), Source = this });
+            tb.SetBinding(TextBlock.FontStyleProperty,
+                new Binding { Path = new PropertyPath(FontStyleProperty), Source = this });
+            tb.SetBinding(TextBlock.FontWeightProperty,
+                new Binding { Path = new PropertyPath(FontWeightProperty), Source = this });
+            tb.SetBinding(TextBlock.ForegroundProperty,
+                 new Binding { Path = new PropertyPath(ForegroundProperty), Source = this });
+
+            return tb;
         }
     }
 }

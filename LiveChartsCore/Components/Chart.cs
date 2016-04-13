@@ -34,6 +34,7 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
+using LiveCharts.Components;
 using LiveCharts.Tooltip;
 using LiveCharts.TypeConverters;
 using LiveCharts.Viewers;
@@ -52,7 +53,7 @@ namespace LiveCharts.CoreComponents
         internal bool SeriesInitialized;
         internal double From = double.MinValue;
         internal double To = double.MaxValue;
-        internal AxisTags ZoomingAxis = AxisTags.None;
+        internal AxisTags PivotZoomingAxis = AxisTags.None;
         internal bool SupportsMultipleSeries = true;
 
         protected ShapeHoverBehavior ShapeHoverBehavior;
@@ -62,12 +63,13 @@ namespace LiveCharts.CoreComponents
 
         private static readonly Random Randomizer;
         private readonly DispatcherTimer _resizeTimer;
-        private readonly DispatcherTimer _serieValuesChanged;
+        private readonly DispatcherTimer _seriesValuesChanged;
         internal readonly DispatcherTimer SeriesChanged;
         private Point _panOrigin;
         private bool _isDragging;
         private int _colorIndexer;
         private FrameworkElement _dataTooltip;
+        private bool _isZooming = false;
 
         static Chart()
         {
@@ -110,11 +112,14 @@ namespace LiveCharts.CoreComponents
 
             SetValue(LegendProperty, new ChartLegend());
             
+            CursorX = new ChartCursor(this, AxisTags.X);
+            CursorY = new ChartCursor(this, AxisTags.Y);
 
             if (RandomizeStartingColor) ColorStartIndex = Randomizer.Next(0, Colors.Count - 1);
             
             AnimatesNewPoints = false;
-            
+            AnimationsSpeed = TimeSpan.FromMilliseconds(500);
+
             var defaultConfig = new SeriesConfiguration<double>().Y(x => x);
             SetCurrentValue(SeriesProperty, new SeriesCollection(defaultConfig));
 
@@ -141,13 +146,13 @@ namespace LiveCharts.CoreComponents
                 _resizeTimer.Stop();
                 Update(false);
             };
-            var defTt = TimeSpan.FromMilliseconds(800);
+
             TooltipTimer = new DispatcherTimer();
             TooltipTimer.Tick += TooltipTimerOnTick;
-            SetValue(TooltipTimeoutProperty, defTt);
+            SetValue(TooltipTimeoutProperty, TimeSpan.FromMilliseconds(800));
 
-            _serieValuesChanged = new DispatcherTimer {Interval = TimeSpan.FromMilliseconds(100)};
-            _serieValuesChanged.Tick += UpdateModifiedDataSeries;
+            _seriesValuesChanged = new DispatcherTimer {Interval = TimeSpan.FromMilliseconds(100)};
+            _seriesValuesChanged.Tick += UpdateModifiedDataSeries;
 
             SeriesChanged = new DispatcherTimer {Interval = TimeSpan.FromMilliseconds(100)};
             SeriesChanged.Tick += (sender, args) =>
@@ -265,16 +270,16 @@ namespace LiveCharts.CoreComponents
             set { SetValue(PointHoverColorProperty, value); }
         }
 
-        public static readonly DependencyProperty DisableAnimationProperty = DependencyProperty.Register(
-            "DisableAnimation", typeof (bool), typeof (Chart));
+        public static readonly DependencyProperty DisableAnimationsProperty = DependencyProperty.Register(
+            "DisableAnimations", typeof (bool), typeof (Chart));
 
         /// <summary>
         /// Indicates weather to show animation or not.
         /// </summary>
-        public bool DisableAnimation
+        public bool DisableAnimations
         {
-            get { return (bool) GetValue(DisableAnimationProperty); }
-            set { SetValue(DisableAnimationProperty, value); }
+            get { return (bool) GetValue(DisableAnimationsProperty); }
+            set { SetValue(DisableAnimationsProperty, value); }
         }
 
         public static readonly DependencyProperty SeriesProperty = DependencyProperty.Register(
@@ -301,7 +306,17 @@ namespace LiveCharts.CoreComponents
         {
             get { return (TimeSpan) GetValue(TooltipTimeoutProperty); }
             set { SetValue(TooltipTimeoutProperty, value); }
-        }   
+        }
+
+
+        public static readonly DependencyProperty AnimationsSpeedProperty = DependencyProperty.Register(
+            "AnimationsSpeed", typeof (TimeSpan), typeof (Chart), new PropertyMetadata(default(TimeSpan)));
+        [TypeConverter(typeof(TooltipTimeoutConverter))]
+        public TimeSpan AnimationsSpeed
+        {
+            get { return (TimeSpan) GetValue(AnimationsSpeedProperty); }
+            set { SetValue(AnimationsSpeedProperty, value); }
+        }
         #endregion
 
         #region Properties
@@ -325,6 +340,10 @@ namespace LiveCharts.CoreComponents
         /// Gets chart canvas
         /// </summary>
         public Canvas Canvas { get; internal set; }
+
+        public ChartCursor CursorX { get; set; }
+        public ChartCursor CursorY { get; set; }
+
         /// <summary>
         /// Gets chart point offset
         /// </summary>
@@ -338,10 +357,12 @@ namespace LiveCharts.CoreComponents
         /// <summary>
         /// Gets current set of shapes added to canvas by LiveCharts
         /// </summary>
+        [Obsolete]
         public List<FrameworkElement> Shapes { get; internal set; }
         /// <summary>
         /// Gets collection of shapes that fires tooltip on hover
         /// </summary>
+        [Obsolete]
         public List<ShapeMap> ShapesMapper { get; internal set; }
         #endregion
 
@@ -384,6 +405,17 @@ namespace LiveCharts.CoreComponents
         public void ZoomIn(Point pivot)
         {
             if (DataTooltip != null) DataTooltip.Visibility = Visibility.Hidden;
+
+            if (_isZooming) return;
+
+            _isZooming = true;
+            var t = new DispatcherTimer {Interval = DisableAnimations ? TimeSpan.Zero : AnimationsSpeed};
+            t.Tick += (sender, args) =>
+            {
+                _isZooming = false;
+                t.Stop();
+            };
+            t.Start();
 
             var dataPivot = new Point(FromDrawMargin(pivot.X, AxisTags.X), FromDrawMargin(pivot.Y, AxisTags.Y));
 
@@ -445,6 +477,17 @@ namespace LiveCharts.CoreComponents
         public void ZoomOut(Point pivot)
         {
             if (DataTooltip != null) DataTooltip.Visibility = Visibility.Hidden;
+
+            if (_isZooming) return;
+
+            _isZooming = true;
+            var t = new DispatcherTimer { Interval = DisableAnimations ? TimeSpan.Zero : AnimationsSpeed };
+            t.Tick += (sender, args) =>
+            {
+                _isZooming = false;
+                t.Stop();
+            };
+            t.Start();
 
             var dataPivot = new Point(FromDrawMargin(pivot.X, AxisTags.X), FromDrawMargin(pivot.Y, AxisTags.Y));
 
@@ -613,6 +656,8 @@ namespace LiveCharts.CoreComponents
                               Series.Where(series => series.Values != null && series.ScalesYAt == index)
                                   .Select(series => series.Values.MinChartPoint.Y).DefaultIfEmpty(0).Min();
             }
+
+            PivotZoomingAxis = Invert ? AxisTags.Y : AxisTags.X;
         }
         #endregion
 
@@ -809,7 +854,7 @@ namespace LiveCharts.CoreComponents
                 : Orientation.Vertical;
         }
 
-        internal virtual void DataMouseEnter(object sender, MouseEventArgs e)
+        protected internal virtual void DataMouseEnter(object sender, MouseEventArgs e)
         {
             if (DataTooltip == null || !Hoverable) return;
 
@@ -871,7 +916,7 @@ namespace LiveCharts.CoreComponents
             });
         }
 
-        internal virtual void DataMouseLeave(object sender, MouseEventArgs e)
+        protected internal virtual void DataMouseLeave(object sender, MouseEventArgs e)
         {
             if (!Hoverable) return;
 
@@ -903,7 +948,12 @@ namespace LiveCharts.CoreComponents
         {
             var shape = ShapesMapper.FirstOrDefault(s => Equals(s.HoverShape, sender));
             if (shape == null) return;
-            if (DataClick != null) DataClick.Invoke(shape.ChartPoint);
+            OnDataClick(shape.ChartPoint);
+        }
+
+        protected virtual void OnDataClick(ChartPoint chartPoint)
+        {
+            if (DataClick != null) DataClick.Invoke(chartPoint);
         }
 
         protected virtual Point GetToolTipPosition(ShapeMap sender, List<ShapeMap> sibilings)
@@ -914,12 +964,12 @@ namespace LiveCharts.CoreComponents
             var targetAxis = Invert ? sender.Series.ScalesYAt : sender.Series.ScalesXAt;
 
             var x = sender.ChartPoint.X > (AxisX[targetAxis].MinLimit + AxisX[targetAxis].MaxLimit)/2
-                ? sender.ChartPoint.ChartLocation.X - 10 - DataTooltip.DesiredSize.Width
-                : sender.ChartPoint.ChartLocation.X + 10;
+                ? sender.ChartPoint.Location.X - 10 - DataTooltip.DesiredSize.Width
+                : sender.ChartPoint.Location.X + 10;
 
             x += Canvas.GetLeft(DrawMargin);
 
-            var y = sibilings.Select(s => s.ChartPoint.ChartLocation.Y).DefaultIfEmpty(0).Sum()/sibilings.Count;
+            var y = sibilings.Select(s => s.ChartPoint.Location.Y).DefaultIfEmpty(0).Sum()/sibilings.Count;
             y = y + DataTooltip.DesiredSize.Height > ActualHeight ? y - (y + DataTooltip.DesiredSize.Height - ActualHeight) - 5 : y;
             return new Point(x, y);
         }
@@ -930,8 +980,8 @@ namespace LiveCharts.CoreComponents
 
         internal void OnDataSeriesChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            _serieValuesChanged.Stop();
-            _serieValuesChanged.Start();
+            _seriesValuesChanged.Stop();
+            _seriesValuesChanged.Start();
         }
 
         #endregion
@@ -1093,7 +1143,7 @@ namespace LiveCharts.CoreComponents
             {
                 From = 0, To = 1, Duration = TimeSpan.FromMilliseconds(1000)
             };
-            if (!chart.DisableAnimation) chart.Canvas.BeginAnimation(OpacityProperty, anim);
+            if (!chart.DisableAnimations) chart.Canvas.BeginAnimation(OpacityProperty, anim);
 
             chart.Series.CollectionChanged += (sender, args) =>
             {
@@ -1200,7 +1250,7 @@ namespace LiveCharts.CoreComponents
 #if DEBUG
             Trace.WriteLine("Primary Values Updated (" + DateTime.Now.ToLongTimeString() + ")");
 #endif
-            _serieValuesChanged.Stop();
+            _seriesValuesChanged.Stop();
             PrepareAxes();
             foreach (var serie in Series)
             {
@@ -1221,7 +1271,7 @@ namespace LiveCharts.CoreComponents
 
         private void MouseWheelOnRoll(object sender, MouseWheelEventArgs e)
         {
-            if (ZoomingAxis == AxisTags.None) return;
+            if (PivotZoomingAxis == AxisTags.None) return;
             e.Handled = true;
             if (e.Delta > 0) ZoomIn(e.GetPosition(this));
             else ZoomOut(e.GetPosition(this));
@@ -1229,7 +1279,7 @@ namespace LiveCharts.CoreComponents
 
         private void MouseDownForPan(object sender, MouseEventArgs e)
         {
-            if (ZoomingAxis == AxisTags.None) return;
+            if (PivotZoomingAxis == AxisTags.None) return;
             var p = e.GetPosition(this);
             _panOrigin = new Point(FromDrawMargin(p.X, AxisTags.X), FromDrawMargin(p.Y, AxisTags.Y));
             _isDragging = true;
@@ -1263,7 +1313,7 @@ namespace LiveCharts.CoreComponents
 
         private void MouseUpForPan(object sender, MouseEventArgs e)
         {
-            if (ZoomingAxis == AxisTags.None) return;
+            if (PivotZoomingAxis == AxisTags.None) return;
 
             var p = e.GetPosition(this);
             var movePoint = new Point(FromDrawMargin(p.X, AxisTags.X), FromDrawMargin(p.Y, AxisTags.Y));

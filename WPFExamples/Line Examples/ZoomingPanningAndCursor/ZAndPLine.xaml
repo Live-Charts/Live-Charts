@@ -1,0 +1,31 @@
+﻿<UserControl x:Class="ChartsTest.Line_Examples.ZoomingAndPanning.ZAndPLine"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:ChartsTest.Line_Examples.ZoomingAndPanning"
+             xmlns:lvc="clr-namespace:LiveCharts;assembly=LiveCharts"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300" 
+             d:DataContext="{d:DesignInstance local:ZAndPLine}">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <TextBlock TextWrapping="Wrap">
+            This chart allows zooming and panning, use the mouse wheel to zoom in/out, 
+            click and drag the chart for panning. In this case as you can notice the zoom and pan 
+            only is applied in the X axis, you can custom this in the Chart.Zoom property, Click on any point
+            to use the CusorX and CursorY properties
+        </TextBlock>
+        <lvc:LineChart Name="Chart" Grid.Row="1" Series="{Binding Motors}" Zoom="X" DataClick="Chart_OnDataClick" Hoverable="True">
+            <lvc:LineChart.AxisX>
+                <lvc:Axis LabelFormatter="{Binding XFormatter}"/>
+            </lvc:LineChart.AxisX>
+            <lvc:LineChart.AxisY>
+                <lvc:Axis LabelFormatter="{Binding TempFormat}"/>
+            </lvc:LineChart.AxisY>
+        </lvc:LineChart>
+    </Grid>
+</UserControl>

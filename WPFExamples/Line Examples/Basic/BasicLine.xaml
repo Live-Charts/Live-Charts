@@ -27,14 +27,25 @@
             <Button Margin="5" Click="TestOnClick">Reset</Button>
         </StackPanel>
         <lvc:LineChart Name="Chart" Grid.Row="2" LegendLocation="Right"
-                       Series="{Binding Series}" Background="White">
+                       Series="{Binding Series}" Background="White"
+                       Hoverable="False" DisableAnimations="False"
+                       Zoom="X">
             <lvc:LineChart.AxisY>
-                <lvc:Axis Title="Sold Items dhkasjhl j lajs kljl jaslkj lkj" Position="RightTop" />
+                <lvc:Axis Title="Sold Items" Position="RightTop" IsMerged="False">
+                    <lvc:Axis.Separator>
+                        <lvc:Separator Color="PaleVioletRed"></lvc:Separator>
+                    </lvc:Axis.Separator>
+                </lvc:Axis>
             </lvc:LineChart.AxisY>
             <lvc:LineChart.AxisX>
-                <lvc:Axis Title="Month 9ihahskjhc kuhkj h aljh saljal j lka s" Separator="{x:Static lvc:DefaultAxes.CleanSeparator}"
+                <lvc:Axis Title="Month"
                           Labels="Jan, Feb , Mar, Apr, May, Jun, Jul, Agu, Sep, Oct, Nov, Dec"
-                          Position="RightTop"/>
+                          Position="RightTop"
+                          IsMerged="False">
+                    <lvc:Axis.Separator>
+                        <lvc:Separator Color="Black"></lvc:Separator>
+                    </lvc:Axis.Separator>
+                </lvc:Axis>
             </lvc:LineChart.AxisX>
         </lvc:LineChart>
     </Grid>

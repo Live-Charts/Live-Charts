@@ -89,7 +89,7 @@ namespace LiveCharts
                 Canvas.SetLeft(visual.HoverShape, ToPlotArea(CurrentXAxis.MinLimit, AxisTags.X, ScalesXAt) + stackedW);
                 Panel.SetZIndex(visual.HoverShape, int.MaxValue);
 
-                if (!Chart.DisableAnimation)
+                if (!Chart.DisableAnimations)
                 {
                     var wAnim = new DoubleAnimation
                     {
@@ -114,7 +114,7 @@ namespace LiveCharts
 
                 if (DataLabels)
                 {
-                    var tb = BuildATextBlock(0);
+                    var tb = BindATextBlock(0);
                     var te = f(Chart.Invert ? point.X : point.Y);
                     var ft = new FormattedText(
                         te,
@@ -129,7 +129,7 @@ namespace LiveCharts
                     tb.Visibility = Visibility.Hidden;
                     Chart.Canvas.Children.Add(tb);
                     Chart.Shapes.Add(tb);
-                    if (!Chart.DisableAnimation)
+                    if (!Chart.DisableAnimations)
                     {
                         var t = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(animationSpeed) };
                         t.Tick += (sender, args) =>
@@ -158,8 +158,8 @@ namespace LiveCharts
                     });
                     Chart.Canvas.Children.Add(visual.PointShape);
                     Chart.Canvas.Children.Add(visual.HoverShape);
-                    Shapes.Add(visual.PointShape);
-                    Shapes.Add(visual.HoverShape);
+                    //Shapes.Add(visual.PointShape);
+                    //Shapes.Add(visual.HoverShape);
                     Panel.SetZIndex(visual.HoverShape, int.MaxValue);
                     Panel.SetZIndex(visual.PointShape, int.MaxValue - 2);
                     visual.HoverShape.MouseDown += Chart.DataMouseDown;
@@ -207,7 +207,7 @@ namespace LiveCharts
                 Canvas.SetTop(visual.HoverShape, ToPlotArea(CurrentYAxis.MinLimit, AxisTags.Y, ScalesYAt) - rh - stackedH);
                 Panel.SetZIndex(visual.HoverShape, int.MaxValue);
 
-                if (!Chart.DisableAnimation)
+                if (!Chart.DisableAnimations)
                 {
                     var hAnim = new DoubleAnimation
                     {
@@ -232,7 +232,7 @@ namespace LiveCharts
 
                 if (DataLabels)
                 {
-                    var tb = BuildATextBlock(-90);
+                    var tb = BindATextBlock(-90);
                     var te = f(Chart.Invert ? point.X : point.Y);
                     var ft = new FormattedText(
                         te,
@@ -247,7 +247,7 @@ namespace LiveCharts
                     tb.Visibility = Visibility.Hidden;
                     Chart.Canvas.Children.Add(tb);
                     Chart.Shapes.Add(tb);
-                    if (!Chart.DisableAnimation)
+                    if (!Chart.DisableAnimations)
                     {
                         var t = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(animationSpeed) };
                         t.Tick += (sender, args) =>
@@ -276,8 +276,8 @@ namespace LiveCharts
                     });
                     Chart.Canvas.Children.Add(visual.PointShape);
                     Chart.Canvas.Children.Add(visual.HoverShape);
-                    Shapes.Add(visual.PointShape);
-                    Shapes.Add(visual.HoverShape);
+                    //Shapes.Add(visual.PointShape);
+                    //Shapes.Add(visual.HoverShape);
                     Panel.SetZIndex(visual.HoverShape, int.MaxValue);
                     Panel.SetZIndex(visual.PointShape, int.MaxValue - 2);
                     visual.HoverShape.MouseDown += Chart.DataMouseDown;
@@ -309,7 +309,7 @@ namespace LiveCharts
                         p.Children.Remove(s.HoverShape);
                         p.Children.Remove(s.Shape);
                         Chart.ShapesMapper.Remove(s);
-                        Shapes.Remove(s.Shape);
+                        //Shapes.Remove(s.Shape);
                     }
                 }
             }
@@ -329,7 +329,7 @@ namespace LiveCharts
                         p.Children.Remove(s.HoverShape);
                         p.Children.Remove(s.Shape);
                         Chart.ShapesMapper.Remove(s);
-                        Shapes.Remove(s.Shape);
+                        //Shapes.Remove(s.Shape);
                     }
                 }
             }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Windows;
 using LiveCharts;
 
@@ -13,16 +14,19 @@ namespace ChartsTest.Line_Examples.Basic
             //we create a new SeriesCollection
             Series = new SeriesCollection();
 
+
             //create some LineSeries
             var charlesSeries = new LineSeries
             {
                 Title = "Charles",
-                Values = new ChartValues<double> {10, 5, 7, 5, 7, 8}
+                Values = new ChartValues<double> { 5, 2, 1, 7, 7, 2 },
+                PointRadius = 0
             };
             var jamesSeries = new LineSeries
             {
                 Title = "James",
-                Values = new ChartValues<double> {5, 6, 9, 10, 11, 9}
+                Values = new ChartValues<double> { 5, 6, 9, 10, 11, 9 },
+                PointRadius = 0
             };
 
             //add our series to our SeriesCollection
@@ -83,7 +87,8 @@ namespace ChartsTest.Line_Examples.Basic
             var someNewSeries = new LineSeries
             {
                 Title = "Some Random Series",
-                Values = someRandomValues
+                Values = someRandomValues,
+                PointRadius = 0
             };
 
             Series.Add(someNewSeries);

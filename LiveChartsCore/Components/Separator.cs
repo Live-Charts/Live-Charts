@@ -1,4 +1,4 @@
-﻿//The MIT License(MIT)
+//The MIT License(MIT)
 
 //copyright(c) 2016 Alberto Rodriguez
 
@@ -20,36 +20,46 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-using System;
-using System.Windows;
+using System.Windows.Media;
 
-namespace LiveCharts.CoreComponents
+namespace LiveCharts
 {
-    public class ChartPoint 
+    public class Separator
     {
+        private double? _step;
+
+        public Separator()
+        {
+            Step = null;
+            IsEnabled = true;
+            StrokeThickness = 1;
+        }
+
         /// <summary>
-        /// Gets the X point value
+        /// Gets or sets if separators are enabled (will be drawn)
         /// </summary>
-        public double X { get; set; }
+        public bool IsEnabled { get; set; }
+
         /// <summary>
-        /// Gets the Y point value
+        /// Gets or sets separators color 
         /// </summary>
-        public double Y { get; set; }
+        public Color Color { get; set; }
+
         /// <summary>
-        /// Gets the coordinate where the value is placed at chart
+        /// Gets or sets separatos thickness
         /// </summary>
-        public Point ChartLocation { get; set; }
+        public int StrokeThickness { get; set; }
+
         /// <summary>
-        /// Gets the object where the chart pulled the point
+        /// Gets or sets sepator step, this means the value between each line, use null for auto.
         /// </summary>
-        public object Instance { get; set; }
-        /// <summary>
-        /// Gets the index of this point in the chart
-        /// </summary>
-        public int Key { get; set; }
-        /// <summary>
-        /// Gets is point is mocked
-        /// </summary>
-        public bool IsMocked { get; set; }
+        public double? Step
+        {
+            get { return _step; }
+            set
+            {
+                _step = value;
+            }
+        }
     }
 }

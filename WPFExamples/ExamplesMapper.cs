@@ -12,6 +12,7 @@ using ChartsTest.Line_Examples.InLine;
 using ChartsTest.Line_Examples.IrregularIntervals;
 using ChartsTest.Line_Examples.LogarithmicLine;
 using ChartsTest.Line_Examples.RotadedLine;
+using ChartsTest.Line_Examples.ZoomingAndPanning;
 using ChartsTest.Pie_Examples;
 using ChartsTest.StackedBarExamples;
 using ChartsTest.StackedBarExamples.StackedBarRotated;
@@ -38,6 +39,7 @@ namespace ChartsTest
         {
             LineAndAreaAexamples = new List<UserControl>
             {
+                new ZAndPLine(),
                 new AnimationImprovementLine(),
                 new BasicLine(),
                 new DynamicLine(),

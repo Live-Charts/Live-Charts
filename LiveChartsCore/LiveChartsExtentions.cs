@@ -61,5 +61,6 @@ namespace LiveCharts
         {
             return new Point(chartPoint.X, chartPoint.Y);
         }
+
     }
 }

@@ -109,7 +109,7 @@ namespace LiveCharts
                 r.MouseLeave += chart.DataMouseLeave;
                 r.MouseDown += chart.DataMouseDown;
                 chart.Canvas.Children.Add(r);
-                Shapes.Add(r);
+                //Shapes.Add(r);
                 chart.ShapesMapper.Add(new ShapeMap
                 {
                     Series = this,
@@ -118,7 +118,7 @@ namespace LiveCharts
                     Shape = e
                 });
 
-                Shapes.Add(e);
+                //Shapes.Add(e);
                 chart.Canvas.Children.Add(e);
                 Panel.SetZIndex(r, int.MaxValue);
 
@@ -130,7 +130,7 @@ namespace LiveCharts
                 Canvas.SetTop(r, p1.Y - r.Height/2);
                 Panel.SetZIndex(r, int.MaxValue);
 
-                if (!chart.DisableAnimation && animate)
+                if (!chart.DisableAnimations && animate)
                 {
                     var topAnim = new DoubleAnimation
                     {
@@ -193,7 +193,7 @@ namespace LiveCharts
             var sbDraw = new Storyboard();
             sbDraw.Children.Add(draw);
             var animated = false;
-            if (!chart.DisableAnimation)
+            if (!chart.DisableAnimations)
             {
                 if (animate)
                 {
@@ -204,7 +204,7 @@ namespace LiveCharts
             if (!animated) path.StrokeDashOffset = 0;
 
             chart.Canvas.Children.Add(path);
-            Shapes.Add(path);
+            //Shapes.Add(path);
         }
     }
 }

@@ -21,7 +21,15 @@
 //SOFTWARE.
 
 using System;
+using System.ComponentModel;
+using System.Linq;
+using System.Windows;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Animation;
+using System.Windows.Shapes;
 using LiveCharts.CoreComponents;
+using LiveCharts.Tooltip;
 
 namespace LiveCharts
 {
@@ -65,41 +73,158 @@ namespace LiveCharts
             CalculateComponentsAndMargin();
         }
 
-        protected override void CalculateComponentsAndMargin()
+        protected internal override void DataMouseEnter(object sender, MouseEventArgs e)
         {
-            //This calculation should be done by eaxh axis, not by the chart, to keep this clean...
+            //this is only while we fix PCL try...
+            if (DataTooltip == null || !Hoverable) return;
 
-            //Canvas.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
-            //var lastLabelX = Math.Truncate((Max.X - AxisX.MinLimit) / S.X) * S.X;
-            //var longestYLabelSize = GetLongestLabelSize(AxisY, AxisTags.Y);
-            //var firstXLabelSize = GetLabelSize(AxisX, AxisX.MinLimit);
-            //var lastXLabelSize = GetLabelSize(AxisX, lastLabelX);
+            DataTooltip.Visibility = Visibility.Visible;
+            TooltipTimer.Stop();
 
-            //const int padding = 5;
+            var senderShape = Series.SelectMany(
+                x =>
+                    x.IsPrimitive
+                        ? x.Tracker.Primitives.Select(v => v.Value)
+                        : x.Tracker.Instances.Select(v => v.Value))
+                .FirstOrDefault(x => Equals(x.HoverShape, sender));
+            if (senderShape == null) return;
 
-            //var xCorrectionForLabels = AxisX.ShowLabels
-            //    ? (longestYLabelSize.X > firstXLabelSize.X * .5
-            //        ? longestYLabelSize.X
-            //        : firstXLabelSize.X * .5)
-            //    : 0;
+            var targetAxis = Invert ? senderShape.Series.ScalesYAt : senderShape.Series.ScalesXAt;
 
-            //var yCorrectionForLabels = AxisX.ShowLabels
-            //    ? longestYLabelSize.Y * .5
-            //    : 0;
+            var sibilings = Invert
+                ? Series.SelectMany(
+                    x =>
+                        x.IsPrimitive
+                            ? x.Tracker.Primitives.Select(v => v.Value)
+                            : x.Tracker.Instances.Select(v => v.Value))
+                    .Where(s => Math.Abs(s.ChartPoint.Y - senderShape.ChartPoint.Y) < AxisY[targetAxis].S*.01)
+                    .ToList()
+                : Series.SelectMany(
+                    x =>
+                        x.IsPrimitive
+                            ? x.Tracker.Primitives.Select(v => v.Value)
+                            : x.Tracker.Instances.Select(v => v.Value))
+                    .Where(s => Math.Abs(s.ChartPoint.X - senderShape.ChartPoint.X) < AxisX[targetAxis].S*.01)
+                    .ToList();
 
-            //PlotArea.X = padding * 2 + xCorrectionForLabels;
+            var first = sibilings.Count > 0 ? sibilings[0] : null;
+            var vx = first != null ? (Invert ? first.ChartPoint.Y : first.ChartPoint.X) : 0;
 
-            //PlotArea.Y = yCorrectionForLabels + padding;
+            foreach (var sibiling in sibilings)
+            {
+                if (ShapeHoverBehavior == ShapeHoverBehavior.Dot)
+                {
+                    sibiling.Shape.Stroke = sibiling.Series.Stroke;
+                    sibiling.Shape.Fill = new SolidColorBrush { Color = PointHoverColor };
+                }
+                else sibiling.Shape.Opacity = .8;
+                sibiling.IsHighlighted = true;
+            }
 
-            //PlotArea.Height = Math.Max(0, Canvas.DesiredSize.Height - (padding * 2 + firstXLabelSize.Y) - PlotArea.Y);
-            //PlotArea.Width = Math.Max(0, Canvas.DesiredSize.Width - PlotArea.X - padding);
+            var indexedToolTip = DataTooltip as IndexedTooltip;
+            if (indexedToolTip != null)
+            {
+                var fh = (Invert ? AxisY[targetAxis] : AxisX[targetAxis]).GetFormatter();
+                var fs = (Invert ? AxisX[targetAxis] : AxisY[targetAxis]).GetFormatter();
 
-            //var distanceToEnd = ToPlotArea(Max.X - lastLabelX, AxisTags.X) - PlotArea.X;
-            //var change = lastXLabelSize.X * .5 - distanceToEnd > 0 ? lastXLabelSize.X * .5 - distanceToEnd : 0;
-            //if (change <= PlotArea.Width)
-            //    PlotArea.Width -= change;
+                indexedToolTip.Header = fh(vx);
+                indexedToolTip.Data = sibilings.Select(x => new IndexedTooltipData
+                {
+                    Index = Series.IndexOf(x.Series),
+                    Series = x.Series,
+                    Stroke = x.Series.Stroke,
+                    Fill = x.Series.Fill,
+                    Point = x.ChartPoint,
+                    Value = fs(Invert ? x.ChartPoint.X : x.ChartPoint.Y)
+                }).ToArray();
+            }
 
-            base.CalculateComponentsAndMargin();
+            //var p = GetToolTipPosition(senderShape, sibilings);
+
+            DataTooltip.UpdateLayout();
+            DataTooltip.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+
+            var xt = senderShape.ChartPoint.X > (AxisX[targetAxis].MinLimit + AxisX[targetAxis].MaxLimit) / 2
+                ? senderShape.ChartPoint.Location.X - 10 - DataTooltip.DesiredSize.Width
+                : senderShape.ChartPoint.Location.X + 10;
+
+            xt += System.Windows.Controls.Canvas.GetLeft(DrawMargin);
+
+            var y = sibilings.Select(s => s.ChartPoint.Location.Y).DefaultIfEmpty(0).Sum() / sibilings.Count;
+            y = y + DataTooltip.DesiredSize.Height > ActualHeight ? y - (y + DataTooltip.DesiredSize.Height - ActualHeight) - 5 : y;
+            var p = new Point(xt, y);
+
+            DataTooltip.BeginAnimation(System.Windows.Controls.Canvas.LeftProperty, new DoubleAnimation
+            {
+                To = p.X,
+                Duration = TimeSpan.FromMilliseconds(200)
+            });
+            DataTooltip.BeginAnimation(System.Windows.Controls.Canvas.TopProperty, new DoubleAnimation
+            {
+                To = p.Y,
+                Duration = TimeSpan.FromMilliseconds(200)
+            });
+        }
+
+        protected internal override void DataMouseLeave(object sender, MouseEventArgs e)
+        {
+            if (!Hoverable) return;
+
+            var s = sender as Shape;
+            if (s == null) return;
+
+            var shape = Series.SelectMany(
+                x =>
+                    x.IsPrimitive
+                        ? x.Tracker.Primitives.Select(v => v.Value)
+                        : x.Tracker.Instances.Select(v => v.Value))
+                .FirstOrDefault(x => Equals(x.HoverShape, s));
+            if (shape == null) return;
+
+            var targetAxis = Invert ? shape.Series.ScalesYAt : shape.Series.ScalesXAt;
+
+            var sibilings = Invert
+                ? Series.SelectMany(
+                    x =>
+                        x.IsPrimitive
+                            ? x.Tracker.Primitives.Select(v => v.Value)
+                            : x.Tracker.Instances.Select(v => v.Value))
+                    .Where(se => Math.Abs(se.ChartPoint.Y - shape.ChartPoint.Y) < AxisY[targetAxis].S*.01)
+                    .ToList()
+                : Series.SelectMany(
+                    x =>
+                        x.IsPrimitive
+                            ? x.Tracker.Primitives.Select(v => v.Value)
+                            : x.Tracker.Instances.Select(v => v.Value))
+                    .Where(x => x.IsHighlighted).ToList();
+
+            foreach (var p in sibilings)
+            {
+                if (ShapeHoverBehavior == ShapeHoverBehavior.Dot)
+                {
+                    p.Shape.Fill = p.Series.Stroke;
+                    p.Shape.Stroke = new SolidColorBrush { Color = PointHoverColor };
+                }
+                else
+                {
+                    p.Shape.Opacity = 1;
+                }
+            }
+            TooltipTimer.Stop();
+            TooltipTimer.Start();
+        }
+
+        internal override void DataMouseDown(object sender, MouseEventArgs e)
+        {
+            var shape =
+                Series.SelectMany(
+                    x =>
+                        x.IsPrimitive
+                            ? x.Tracker.Primitives.Select(v => v.Value)
+                            : x.Tracker.Instances.Select(v => v.Value))
+                    .FirstOrDefault(x => Equals(x.HoverShape, sender));
+            if (shape == null) return;
+            OnDataClick(shape.ChartPoint);
         }
 
         #endregion
