@@ -42,9 +42,12 @@ namespace LiveCharts.Components
             Shape = new Rectangle
             {
                 StrokeThickness = 2,
-                Stroke = new SolidColorBrush(Colors.Red),
-                Fill = new SolidColorBrush(Colors.Red) {Opacity = .3}
+                Stroke = new SolidColorBrush(Color.FromRgb(55, 71, 79)),
+                Fill = new SolidColorBrush(Color.FromRgb(55, 71, 79)) {Opacity = .3}
             };
+
+            Canvas.SetLeft(Shape, 0d);
+            Canvas.SetTop(Shape, 0d);
         }
 
         /// <summary>
@@ -76,39 +79,48 @@ namespace LiveCharts.Components
                 if (Shape.Parent == null)
                     _chart.DrawMargin.Children.Add(Shape);
 
-                if (_tag == AxisTags.X)
-                {
-                    //The Chart must be already drawn or this wont work!!!
-                    Canvas.SetTop(Shape, 0d);
-                    Shape.Height = _chart.DrawMargin.Height;
-                    Shape.Width = _chart is IUnitaryPoints && !_chart.Invert
-                        ? Methods.GetUnitWidth(AxisTags.X, _chart, Axis)
-                        : 1;
+                Update();
+            }
+        }
 
-                    var chartValue = Methods.FromDrawMargin((double) _value, AxisTags.X, _chart, Axis);
+        public void Update()
+        {
+            if (Value == null) return;
 
-                    if (_chart.DisableAnimations)
-                        Canvas.SetLeft(Shape, chartValue - Shape.Width);
-                    else
-                        Shape.BeginAnimation(Canvas.LeftProperty,
-                            new DoubleAnimation(chartValue - Shape.Width, _chart.AnimationsSpeed));
-                }
+            if (_tag == AxisTags.X)
+            {
+                //The Chart must be already drawn or this wont work!!!
+                Canvas.SetTop(Shape, 0d);
+                Shape.Height = _chart.DrawMargin.Height;
+
+                Shape.Width = _chart is IUnitaryPoints && !_chart.Invert
+                    ? Methods.GetUnitWidth(AxisTags.X, _chart, Axis)
+                    : 2;
+
+                var chartValue = Methods.ToDrawMargin((double)Value, AxisTags.X, _chart, Axis);
+
+                if (_chart.DisableAnimations)
+                    Canvas.SetLeft(Shape, chartValue - Shape.Width);
                 else
-                {
-                    Canvas.SetLeft(Shape, 0d);
-                    Shape.Width = _chart.DrawMargin.Height;
-                    Shape.Height = _chart is IUnitaryPoints && _chart.Invert
-                        ? Methods.GetUnitWidth(AxisTags.Y, _chart, Axis)
-                        : 1;
+                    Shape.BeginAnimation(Canvas.LeftProperty,
+                        new DoubleAnimation(chartValue - Shape.Width, _chart.AnimationsSpeed));
+            }
+            else
+            {
+                Canvas.SetLeft(Shape, 0d);
+                Shape.Width = _chart.DrawMargin.Width;
 
-                    var chartValue = Methods.FromDrawMargin((double) _value, AxisTags.Y, _chart, Axis);
+                Shape.Height = _chart is IUnitaryPoints && _chart.Invert
+                    ? Methods.GetUnitWidth(AxisTags.Y, _chart, Axis)
+                    : 2;
 
-                    if (_chart.DisableAnimations)
-                        Canvas.SetTop(Shape, chartValue - Shape.Height);
-                    else
-                        Shape.BeginAnimation(Canvas.TopProperty,
-                            new DoubleAnimation(chartValue - Shape.Height, _chart.AnimationsSpeed));
-                }
+                var chartValue = Methods.ToDrawMargin((double)Value, AxisTags.Y, _chart, Axis);
+
+                if (_chart.DisableAnimations)
+                    Canvas.SetTop(Shape, chartValue - Shape.Height);
+                else
+                    Shape.BeginAnimation(Canvas.TopProperty,
+                        new DoubleAnimation(chartValue - Shape.Height, _chart.AnimationsSpeed));
             }
         }
     }

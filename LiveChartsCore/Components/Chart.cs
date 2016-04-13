@@ -946,7 +946,14 @@ namespace LiveCharts.CoreComponents
 
         internal virtual void DataMouseDown(object sender, MouseEventArgs e)
         {
-            var shape = ShapesMapper.FirstOrDefault(s => Equals(s.HoverShape, sender));
+            //var shape = ShapesMapper.FirstOrDefault(s => Equals(s.HoverShape, sender));
+            var shape =
+                Series.SelectMany(
+                    x =>
+                        x.IsPrimitive
+                            ? x.Tracker.Primitives.Select(v => v.Value)
+                            : x.Tracker.Instances.Select(v => v.Value))
+                    .FirstOrDefault(x => Equals(x.HoverShape, sender));
             if (shape == null) return;
             if (DataClick != null) DataClick.Invoke(shape.ChartPoint);
         }

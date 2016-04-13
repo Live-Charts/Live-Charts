@@ -24,14 +24,14 @@ using System.Collections.Generic;
 
 namespace LiveCharts.Cache
 {
-    internal class LineSeriesTracker
+    internal class ShapesTracker
     {
-        public LineSeriesTracker()
+        public ShapesTracker()
         {
-            Primitives = new Dictionary<int, DataPoint>();
-            Instances = new Dictionary<object, DataPoint>();
+            Primitives = new Dictionary<int, VisualPoint>();
+            Instances = new Dictionary<object, VisualPoint>();
         }
-        public Dictionary<int, DataPoint> Primitives { get; set; }
-        public Dictionary<object, DataPoint> Instances { get; set; }
+        public Dictionary<int, VisualPoint> Primitives { get; set; }
+        public Dictionary<object, VisualPoint> Instances { get; set; }
     }
 }

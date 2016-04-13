@@ -141,8 +141,8 @@
     <Compile Include="Components\ChartValues.cs" />
     <Compile Include="Cache\BezierData.cs" />
     <Compile Include="Cache\LineAndAreaShape.cs" />
-    <Compile Include="Cache\DataPoint.cs" />
-    <Compile Include="Cache\LineSeriesTracker.cs" />
+    <Compile Include="Cache\LineDataPoint.cs" />
+    <Compile Include="Cache\ShapesTracker.cs" />
     <Compile Include="Tooltip\IndexedTooltipData.cs" />
     <Compile Include="Tooltip\Converters.cs" />
     <Compile Include="Tooltip\DefaultIndexedTooltip.xaml.cs">

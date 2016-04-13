@@ -30,9 +30,9 @@ using LiveCharts.CoreComponents;
 
 namespace LiveCharts.Cache
 {
-    internal class DataPoint
+    internal class LineVisualPoint : VisualPoint
     {
-        public DataPoint(PathFigure ownerFigure)
+        public LineVisualPoint(PathFigure ownerFigure)
         {
             Owner = ownerFigure;
         }
@@ -40,13 +40,10 @@ namespace LiveCharts.Cache
         public PathFigure Owner { get; set; }
         public BezierSegment Segment { get; set; }
 
-        public Rectangle HoverShape { get; set; }
         public Ellipse Ellipse { get; set; }
-        public TextBlock TextBlock { get; set; }
         
-        public bool IsNew { get; set; }
         public BezierData Data { get; set; }
-        public DataPoint Previous { get; set; }
+        public LineVisualPoint Previous { get; set; }
 
         public void Animate(int index, Chart chart, int pathOffset, TimeSpan speed)
         {
@@ -100,5 +97,13 @@ namespace LiveCharts.Cache
             Segment.BeginAnimation(BezierSegment.Point3Property,
                 new PointAnimation(p3, Data.Point3, speed));
         }
+    }
+
+    internal class VisualPoint
+    {
+        public ChartPoint ChartPoint { get; set; }
+        public Shape HoverShape { get; set; }
+        public TextBlock TextBlock { get; set; }
+        public bool IsNew { get; set; }
     }
 }

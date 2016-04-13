@@ -28,6 +28,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media;
+using LiveCharts.Cache;
 using LiveCharts.TypeConverters;
 
 namespace LiveCharts.CoreComponents
@@ -37,6 +38,8 @@ namespace LiveCharts.CoreComponents
 	    private Chart _chart;
 	    internal bool RequiresAnimation;
 	    internal bool RequiresPlot;
+        internal bool IsPrimitive;
+        internal readonly ShapesTracker Tracker = new ShapesTracker();
 
         protected Series()
         {           
