@@ -124,14 +124,22 @@ namespace LiveCharts.Cache
                 Duration = _anSpeed
             };
 
-            anim.Completed += (sender, args) =>
+            if (Application.Current == null)
             {
-                Application.Current.Dispatcher.Invoke(new Action(() =>
+                chart.Canvas.Children.Remove(TextBlock);
+                chart.Canvas.Children.Remove(Line);
+            }
+            else
+            {
+                anim.Completed += (sender, args) =>
                 {
-                    chart.Canvas.Children.Remove(TextBlock);
-                    chart.Canvas.Children.Remove(Line);
-                }));
-            };
+                    Application.Current.Dispatcher.Invoke(new Action(() =>
+                    {
+                        chart.Canvas.Children.Remove(TextBlock);
+                        chart.Canvas.Children.Remove(Line);
+                    }));
+                };
+            }
 
             TextBlock.BeginAnimation(UIElement.OpacityProperty, anim);
             Line.BeginAnimation(UIElement.OpacityProperty, new DoubleAnimation(1, 0, _anSpeed));
