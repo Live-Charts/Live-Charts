@@ -120,6 +120,7 @@ namespace LiveCharts
                     if (visualPoint == null) continue;
 
                     visualPoint.ChartPoint = point;
+                    visualPoint.Series = this;
 
                     PlaceShapes(visualPoint, point, hoverShapeMinSize, f);
 
@@ -228,34 +229,34 @@ namespace LiveCharts
                 }
             }
 
-            if (lineVisualPoint.Ellipse != null)
+            if (lineVisualPoint.Shape != null)
             {
                 if (lineVisualPoint.IsNew)
                 {
-                    Panel.SetZIndex(lineVisualPoint.Ellipse, int.MaxValue - 2);
+                    Panel.SetZIndex(lineVisualPoint.Shape, int.MaxValue - 2);
                     if (Chart.Invert)
                     {
-                        Canvas.SetLeft(lineVisualPoint.Ellipse, 0d);
-                        Canvas.SetTop(lineVisualPoint.Ellipse, chartPoint.Location.Y - lineVisualPoint.Ellipse.Height*.5);
+                        Canvas.SetLeft(lineVisualPoint.Shape, 0d);
+                        Canvas.SetTop(lineVisualPoint.Shape, chartPoint.Location.Y - lineVisualPoint.Shape.Height*.5);
                     }
                     else
                     {
-                        Canvas.SetLeft(lineVisualPoint.Ellipse, chartPoint.Location.X - lineVisualPoint.Ellipse.Width*.5);
-                        Canvas.SetTop(lineVisualPoint.Ellipse, Chart.DrawMargin.Height);
+                        Canvas.SetLeft(lineVisualPoint.Shape, chartPoint.Location.X - lineVisualPoint.Shape.Width*.5);
+                        Canvas.SetTop(lineVisualPoint.Shape, Chart.DrawMargin.Height);
                     }
-                    Chart.DrawMargin.Children.Add(lineVisualPoint.Ellipse);
+                    Chart.DrawMargin.Children.Add(lineVisualPoint.Shape);
                 }
                 if (Chart.DisableAnimations)
                 {
-                    Canvas.SetTop(lineVisualPoint.Ellipse, chartPoint.Location.Y - lineVisualPoint.Ellipse.Height*.5);
-                    Canvas.SetLeft(lineVisualPoint.Ellipse, chartPoint.Location.X - lineVisualPoint.Ellipse.Width * .5);
+                    Canvas.SetTop(lineVisualPoint.Shape, chartPoint.Location.Y - lineVisualPoint.Shape.Height*.5);
+                    Canvas.SetLeft(lineVisualPoint.Shape, chartPoint.Location.X - lineVisualPoint.Shape.Width * .5);
                 }
                 else
                 {
-                    lineVisualPoint.Ellipse.BeginAnimation(Canvas.LeftProperty,
-                        new DoubleAnimation(chartPoint.Location.X - lineVisualPoint.Ellipse.Width*.5, _animSpeed));
-                    lineVisualPoint.Ellipse.BeginAnimation(Canvas.TopProperty,
-                        new DoubleAnimation(chartPoint.Location.Y - lineVisualPoint.Ellipse.Height*.5, _animSpeed));
+                    lineVisualPoint.Shape.BeginAnimation(Canvas.LeftProperty,
+                        new DoubleAnimation(chartPoint.Location.X - lineVisualPoint.Shape.Width*.5, _animSpeed));
+                    lineVisualPoint.Shape.BeginAnimation(Canvas.TopProperty,
+                        new DoubleAnimation(chartPoint.Location.Y - lineVisualPoint.Shape.Height*.5, _animSpeed));
                 }
             }
 
@@ -393,7 +394,7 @@ namespace LiveCharts
                 //if (p != null)
                 //{
                 Chart.DrawMargin.Children.Remove(value.HoverShape);
-                Chart.DrawMargin.Children.Remove(value.Ellipse);
+                Chart.DrawMargin.Children.Remove(value.Shape);
                 Chart.DrawMargin.Children.Remove(value.TextBlock);
                 value.Owner.Segments.Remove(value.Segment);
                 Tracker.Primitives.Remove(key);
@@ -415,7 +416,7 @@ namespace LiveCharts
                 //if (p != null)
                 //{
                 Chart.DrawMargin.Children.Remove(value.HoverShape);
-                Chart.DrawMargin.Children.Remove(value.Ellipse);
+                Chart.DrawMargin.Children.Remove(value.Shape);
                 Chart.DrawMargin.Children.Remove(value.TextBlock);
                 value.Owner.Segments.Remove(value.Segment);
                 Tracker.Instances.Remove(key);
@@ -481,7 +482,7 @@ namespace LiveCharts
             {
                 IsNew = true,
                 HoverShape = hs,
-                Ellipse = e,
+                Shape = e,
                 TextBlock = tb,
                 Segment = new BezierSegment()
             };

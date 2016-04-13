@@ -39,8 +39,6 @@ namespace LiveCharts.Cache
 
         public PathFigure Owner { get; set; }
         public BezierSegment Segment { get; set; }
-
-        public Ellipse Ellipse { get; set; }
         
         public BezierData Data { get; set; }
         public LineVisualPoint Previous { get; set; }
@@ -102,8 +100,11 @@ namespace LiveCharts.Cache
     internal class VisualPoint
     {
         public ChartPoint ChartPoint { get; set; }
+        public Series Series { get; set; }
+        public Shape Shape { get; set; }
         public Shape HoverShape { get; set; }
         public TextBlock TextBlock { get; set; }
         public bool IsNew { get; set; }
+        public bool IsHighlighted { get; set; }
     }
 }

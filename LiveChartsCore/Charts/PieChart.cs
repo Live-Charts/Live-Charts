@@ -160,7 +160,7 @@ namespace LiveCharts
             }
         }
 
-        internal override void DataMouseEnter(object sender, MouseEventArgs e)
+        protected internal override void DataMouseEnter(object sender, MouseEventArgs e)
         {
             if (DataTooltip == null || !Hoverable) return;
 
@@ -240,7 +240,7 @@ namespace LiveCharts
             pieSlice.BeginAnimation(PieSlice.PushOutProperty, anim);
         }
 
-        internal override void DataMouseLeave(object sender, MouseEventArgs e)
+        protected internal override void DataMouseLeave(object sender, MouseEventArgs e)
         {
             base.DataMouseLeave(sender, e);
             var senderShape = ShapesMapper.FirstOrDefault(s => Equals(s.HoverShape, sender));

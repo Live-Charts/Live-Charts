@@ -854,7 +854,7 @@ namespace LiveCharts.CoreComponents
                 : Orientation.Vertical;
         }
 
-        internal virtual void DataMouseEnter(object sender, MouseEventArgs e)
+        protected internal virtual void DataMouseEnter(object sender, MouseEventArgs e)
         {
             if (DataTooltip == null || !Hoverable) return;
 
@@ -916,7 +916,7 @@ namespace LiveCharts.CoreComponents
             });
         }
 
-        internal virtual void DataMouseLeave(object sender, MouseEventArgs e)
+        protected internal virtual void DataMouseLeave(object sender, MouseEventArgs e)
         {
             if (!Hoverable) return;
 
@@ -946,16 +946,14 @@ namespace LiveCharts.CoreComponents
 
         internal virtual void DataMouseDown(object sender, MouseEventArgs e)
         {
-            //var shape = ShapesMapper.FirstOrDefault(s => Equals(s.HoverShape, sender));
-            var shape =
-                Series.SelectMany(
-                    x =>
-                        x.IsPrimitive
-                            ? x.Tracker.Primitives.Select(v => v.Value)
-                            : x.Tracker.Instances.Select(v => v.Value))
-                    .FirstOrDefault(x => Equals(x.HoverShape, sender));
+            var shape = ShapesMapper.FirstOrDefault(s => Equals(s.HoverShape, sender));
             if (shape == null) return;
-            if (DataClick != null) DataClick.Invoke(shape.ChartPoint);
+            OnDataClick(shape.ChartPoint);
+        }
+
+        protected virtual void OnDataClick(ChartPoint chartPoint)
+        {
+            if (DataClick != null) DataClick.Invoke(chartPoint);
         }
 
         protected virtual Point GetToolTipPosition(ShapeMap sender, List<ShapeMap> sibilings)
