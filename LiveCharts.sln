@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WinFormsExamples", "WinForm
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTesting", "UnitTesting\UnitTesting.csproj", "{23D912E3-6F46-4193-95E3-44C3063821F3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CorePcl", "CorePcl\CorePcl.csproj", "{F6F91B69-0777-4C96-A29B-EB8956CC41FD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -78,6 +80,20 @@ Global
 		{23D912E3-6F46-4193-95E3-44C3063821F3}.r46|Any CPU.Build.0 = Release|Any CPU
 		{23D912E3-6F46-4193-95E3-44C3063821F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{23D912E3-6F46-4193-95E3-44C3063821F3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F6F91B69-0777-4C96-A29B-EB8956CC41FD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F6F91B69-0777-4C96-A29B-EB8956CC41FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F6F91B69-0777-4C96-A29B-EB8956CC41FD}.r40|Any CPU.ActiveCfg = Release|Any CPU
+		{F6F91B69-0777-4C96-A29B-EB8956CC41FD}.r40|Any CPU.Build.0 = Release|Any CPU
+		{F6F91B69-0777-4C96-A29B-EB8956CC41FD}.r45|Any CPU.ActiveCfg = Release|Any CPU
+		{F6F91B69-0777-4C96-A29B-EB8956CC41FD}.r45|Any CPU.Build.0 = Release|Any CPU
+		{F6F91B69-0777-4C96-A29B-EB8956CC41FD}.r451|Any CPU.ActiveCfg = Release|Any CPU
+		{F6F91B69-0777-4C96-A29B-EB8956CC41FD}.r451|Any CPU.Build.0 = Release|Any CPU
+		{F6F91B69-0777-4C96-A29B-EB8956CC41FD}.r452|Any CPU.ActiveCfg = Release|Any CPU
+		{F6F91B69-0777-4C96-A29B-EB8956CC41FD}.r452|Any CPU.Build.0 = Release|Any CPU
+		{F6F91B69-0777-4C96-A29B-EB8956CC41FD}.r46|Any CPU.ActiveCfg = Release|Any CPU
+		{F6F91B69-0777-4C96-A29B-EB8956CC41FD}.r46|Any CPU.Build.0 = Release|Any CPU
+		{F6F91B69-0777-4C96-A29B-EB8956CC41FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F6F91B69-0777-4C96-A29B-EB8956CC41FD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
