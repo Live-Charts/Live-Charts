@@ -16,7 +16,8 @@
         <TextBlock TextWrapping="Wrap">
             This chart allows zooming and panning, use the mouse wheel to zoom in/out, 
             click and drag the chart for panning. In this case as you can notice the zoom and pan 
-            only is applied in the X axis, you can custom this in the Chart.Zoom property
+            only is applied in the X axis, you can custom this in the Chart.Zoom property, Click on any point
+            to use the CusorX and CursorY properties
         </TextBlock>
         <lvc:LineChart Name="Chart" Grid.Row="1" Series="{Binding Motors}" Zoom="X" DataClick="Chart_OnDataClick" Hoverable="True">
             <lvc:LineChart.AxisX>
