@@ -110,10 +110,15 @@ namespace LiveCharts.Cache
 
         private void Remove(Chart chart, Axis axis)
         {
-            if (axis.DisableAnimations || chart.DisableAnimations)
+            Action removeComponents = () =>
             {
                 chart.Canvas.Children.Remove(TextBlock);
                 chart.Canvas.Children.Remove(Line);
+            };
+
+            if (axis.DisableAnimations || chart.DisableAnimations)
+            {
+                removeComponents();
                 return;
             }
 
@@ -123,15 +128,19 @@ namespace LiveCharts.Cache
                 To = 0,
                 Duration = _anSpeed
             };
+            
 
-            anim.Completed += (sender, args) =>
+            if (Application.Current == null)
             {
-                Application.Current.Dispatcher.Invoke(new Action(() =>
+                removeComponents();
+            }
+            else
+            {
+                anim.Completed += (sender, args) =>
                 {
-                    chart.Canvas.Children.Remove(TextBlock);
-                    chart.Canvas.Children.Remove(Line);
-                }));
-            };
+                    Application.Current.Dispatcher.Invoke(removeComponents);
+                };
+            }
 
             TextBlock.BeginAnimation(UIElement.OpacityProperty, anim);
             Line.BeginAnimation(UIElement.OpacityProperty, new DoubleAnimation(1, 0, _anSpeed));
