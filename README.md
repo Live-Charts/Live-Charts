@@ -68,6 +68,10 @@ myChart.AxixX.Labels = labels;
 * High performance charts are almost ready, current test can draw 3 million points in only 1 second
 * Find more at http://lvcharts.net/
 
+#Supported Platforms
+
+Only WPF and WinForms for now, I am playing with the code to find an easy way to extend it as PCL
+
 # Installation
 
 **1**. Install package from [**Nuget**](https://www.nuget.org/packages/LiveCharts) `Install-Package LiveCharts`
@@ -83,6 +87,8 @@ Or WinForms and WPF code behind
 using LiveCharts;
 ```
 **3**. Thats it. You are ready.
+
+**Note:** To install it for windows forms you will need some extra steps, plese see http://lvcharts.net/#/examples/v1/install-wf?path=WF-Install
 
 # How to Contribute
 
