@@ -124,6 +124,10 @@ Go to examples folder up there ^^^ or even better clone this repo and see includ
 
 # Perfomance Test
 
+This test is in progress and is not ready yet, here is the example I made the tests but is not ready yet!
+
+https://github.com/beto-rodriguez/Live-Charts/tree/master/WPFExamples/HighPerformance
+
 <p align="center">
 <img src="https://dl.dropboxusercontent.com/u/40165535/livecharts%20perfomance.png" />
 </p>
