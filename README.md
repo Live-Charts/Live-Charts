@@ -6,6 +6,7 @@
   <img src="http://lvcharts.net/Content/Images/Samples/linemove.gif" width="400" />
   <img src="http://lvcharts.net/Content/Images/Samples/pie.gif" width="400"/>
   <img src="http://lvcharts.net/Content/Images/Samples/barsmove.gif" width="400"/>
+  <img src="https://cloud.githubusercontent.com/assets/10853349/14480111/65c18a98-00eb-11e6-8ce2-bc7cf3d0fdfc.gif" width="400" />
 </p>
 
 [![GitHub license](https://img.shields.io/github/license/beto-rodriguez/Live-Charts.svg?style=flat-square)](https://github.com/beto-rodriguez/Live-Charts/blob/master/LICENSE.TXT)
