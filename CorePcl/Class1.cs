@@ -1,12 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.Diagnostics;
 
-namespace CorePcl
+namespace LvCore
 {
-    public class Class1
+    public abstract class Chart
     {
-
+        protected virtual void MeasureCanvas()
+        {
+            throw new Exception("Canvas not Set!");
+        }
     }
 }
