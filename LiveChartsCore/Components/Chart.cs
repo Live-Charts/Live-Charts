@@ -43,14 +43,15 @@ namespace LiveCharts.CoreComponents
 {
     public abstract class Chart : UserControl
     {
-        public event Action<Chart> Plot;
-        public event Action<ChartPoint> DataClick;
+        public event Action<Chart> Plot;                   
+        public event Action<ChartPoint> DataClick;          
 
-        internal Canvas DrawMargin;
-        internal int ColorStartIndex;
-        internal bool RequiresScale;
-        internal List<DeleteBufferItem> EraseSerieBuffer = new List<DeleteBufferItem>();
-        internal bool SeriesInitialized;
+        internal Canvas DrawMargin;                         //view
+        internal int ColorStartIndex;                       //model
+        internal bool RequiresScale;                        //model
+        internal List<DeleteBufferItem> EraseSerieBuffer = 
+            new List<DeleteBufferItem>();                   
+        internal bool SeriesInitialized;                    //model                
         internal double From = double.MinValue;
         internal double To = double.MaxValue;
         internal AxisTags PivotZoomingAxis = AxisTags.None;
@@ -166,17 +167,17 @@ namespace LiveCharts.CoreComponents
         /// <summary>
         /// Gets or sets an area for unit testing, since normally for unit testing you don´t have an UI and LiveCharts refuses to draw a chart if there is no a valid UI area, then you need to set this property to run unit test, width and hegiht must be grather than 15px, this property must be null if you are not unit testing.
         /// </summary>
-        public static Rect? MockedArea { get; set; }
+        public static Rect? MockedArea { get; set; } //m
 
         /// <summary>
         /// Gets or sets the default series colors.
         /// </summary>
-        public static List<Color> Colors { get; set; }
+        public static List<Color> Colors { get; set; } 
 
         /// <summary>
         /// Gets or sets if a each new instance of a chart should initialize with a random color index
         /// </summary>
-        public static bool RandomizeStartingColor { get; set; }
+        public static bool RandomizeStartingColor { get; set; } //model
 
         #endregion
 
@@ -203,7 +204,6 @@ namespace LiveCharts.CoreComponents
             get { return (List<Axis>) GetValue(AxisXProperty); }
             set { SetValue(AxisXProperty, value); }
         }
-
         
         public static readonly DependencyProperty ZoomProperty = DependencyProperty.Register(
             "Zoom", typeof (ZoomingOptions), typeof (Chart), new PropertyMetadata(default(ZoomingOptions)));
@@ -1037,7 +1037,7 @@ namespace LiveCharts.CoreComponents
         private void PrepareCanvas(bool ereaseAll = false)
         {
             if (Series == null) return;
-            if (!SeriesInitialized) InitializeSeries(this);
+            if (!SeriesInitialized) InitializeSeries();
 
             foreach (var xi in AxisX.Where(xi => xi.Parent == null))
                 Canvas.Children.Add(xi);
@@ -1108,23 +1108,23 @@ namespace LiveCharts.CoreComponents
                 //This means: if chart is initialized then update the chart.
                 if (chart.ActualHeight > 10)
                 {
-                    chart.InitializeSeries(chart);
+                    chart.InitializeSeries();
                     chart.InitializeComponents();
                     chart.Update();
                 }
             }
         }
 
-        private void InitializeSeries(Chart chart)
+        private void InitializeSeries()
         {
 #if DEBUG
             Trace.WriteLine("Chart was initialized (" + DateTime.Now.ToLongTimeString() + ")");
 #endif
-            chart.SeriesInitialized = true;
-            foreach (var series in chart.Series)
+            SeriesInitialized = true;
+            foreach (var series in Series)
             {
                 var index = _colorIndexer++;
-                series.Chart = chart;
+                series.Chart = this;
                 series.Collection = Series;
                 series.Stroke = series.Stroke ?? new SolidColorBrush(Colors[(int) (index - Colors.Count*Math.Truncate(index/(decimal) Colors.Count))]);
                 series.Fill = series.Fill ?? new SolidColorBrush(Colors[(int) (index - Colors.Count*Math.Truncate(index/(decimal) Colors.Count))])
@@ -1135,36 +1135,36 @@ namespace LiveCharts.CoreComponents
                 series.RequiresAnimation = true;
                 var observable = series.Values as INotifyCollectionChanged;
                 if (observable != null)
-                    observable.CollectionChanged += chart.OnDataSeriesChanged;
+                    observable.CollectionChanged += OnDataSeriesChanged;
             }
 
-            chart.Update();
+            Update();
             var anim = new DoubleAnimation
             {
                 From = 0, To = 1, Duration = TimeSpan.FromMilliseconds(1000)
             };
-            if (!chart.DisableAnimations) chart.Canvas.BeginAnimation(OpacityProperty, anim);
+            if (!DisableAnimations) Canvas.BeginAnimation(OpacityProperty, anim);
 
-            chart.Series.CollectionChanged += (sender, args) =>
+            Series.CollectionChanged += (sender, args) =>
             {
-                chart.SeriesChanged.Stop();
-                chart.SeriesChanged.Start();
+                SeriesChanged.Stop();
+                SeriesChanged.Start();
 
                 if (args.Action == NotifyCollectionChangedAction.Reset)
                 {
-                    chart.RemoveAllVisualElements();
+                    RemoveAllVisualElements();
                 }
 
                 if (args.OldItems != null)
                     foreach (var series in args.OldItems.Cast<Series>())
-                        chart.EraseSerieBuffer.Add(new DeleteBufferItem {Series = series, Force = true});
+                       EraseSerieBuffer.Add(new DeleteBufferItem {Series = series, Force = true});
 
                 var newElements = args.NewItems != null ? args.NewItems.Cast<Series>() : new List<Series>();
 
-                chart.RequiresScale = true;
-                foreach (var series in chart.Series.Where(x => !newElements.Contains(x)))
+                RequiresScale = true;
+                foreach (var series in Series.Where(x => !newElements.Contains(x)))
                 {
-                    chart.EraseSerieBuffer.Add(new DeleteBufferItem {Series = series});
+                    EraseSerieBuffer.Add(new DeleteBufferItem {Series = series});
                     series.RequiresPlot = true;
                 }
 
@@ -1172,7 +1172,7 @@ namespace LiveCharts.CoreComponents
                     foreach (var series in newElements)
                     {
                         var index = _colorIndexer++;
-                        series.Chart = chart;
+                        series.Chart = this;
                         series.Collection = Series;
                         series.Stroke = series.Stroke ?? new SolidColorBrush(Colors[(int) (index - Colors.Count*Math.Truncate(index/(decimal) Colors.Count))]);
                         series.Fill = series.Fill ?? new SolidColorBrush(Colors[(int) (index - Colors.Count*Math.Truncate(index/(decimal) Colors.Count))])
@@ -1183,7 +1183,7 @@ namespace LiveCharts.CoreComponents
                         series.RequiresAnimation = true;
                         var observable = series.Values as INotifyCollectionChanged;
                         if (observable != null)
-                            observable.CollectionChanged += chart.OnDataSeriesChanged;
+                            observable.CollectionChanged += OnDataSeriesChanged;
 #if DEBUG
                         if (observable == null) Trace.WriteLine("series do not implements INotifyCollectionChanged");
 #endif

@@ -35,14 +35,15 @@ namespace LiveCharts.CoreComponents
 {
     public abstract class Series : FrameworkElement, IChartSeries
 	{
-	    private Chart _chart;
-	    internal bool RequiresAnimation;
-	    internal bool RequiresPlot;
-        internal bool IsPrimitive;
+	    private Chart _chart;                                           //model
+	    internal bool RequiresAnimation;                                //m
+	    internal bool RequiresPlot;                                     //m
+        internal bool IsPrimitive;                                      //m
         internal readonly ShapesTracker Tracker = new ShapesTracker();
 
         protected Series()
-        {           
+        {
+
         }
 
         protected Series(ISeriesConfiguration configutration)
