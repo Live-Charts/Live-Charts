@@ -43,7 +43,6 @@ namespace LiveCharts.CoreComponents
 
         protected Series()
         {
-
         }
 
         protected Series(ISeriesConfiguration configutration)
@@ -151,7 +150,6 @@ namespace LiveCharts.CoreComponents
 
         public static readonly DependencyProperty FontFamilyProperty =
             DependencyProperty.Register("FontFamily", typeof(FontFamily), typeof(Series), new PropertyMetadata(new FontFamily("Calibri")));
-
         /// <summary>
         /// Gets or sets labels font family
         /// </summary>
@@ -163,7 +161,6 @@ namespace LiveCharts.CoreComponents
 
         public static readonly DependencyProperty FontSizeProperty =
             DependencyProperty.Register("FontSize", typeof(double), typeof(Series), new PropertyMetadata(13.0));
-
         /// <summary>
         /// Gets or sets labels font size
         /// </summary>
