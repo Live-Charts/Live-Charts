@@ -37,11 +37,12 @@
     <!-- A reference to the entire .NET Framework is automatically included -->
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Chart.cs" />
+    <Compile Include="ChartFunctions.cs" />
     <Compile Include="ChartPoint.cs" />
-    <Compile Include="IChartSeries.cs" />
     <Compile Include="IChartValues.cs" />
     <Compile Include="IDataOptimization.cs" />
-    <Compile Include="MVVM.cs" />
+    <Compile Include="ModelsAndViews.cs" />
     <Compile Include="Point.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Series.cs" />

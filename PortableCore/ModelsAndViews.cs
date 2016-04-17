@@ -1,4 +1,4 @@
-﻿//The MIT License(MIT)
+//The MIT License(MIT)
 
 //copyright(c) 2016 Alberto Rodriguez
 
@@ -20,41 +20,44 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-using System;
-
 namespace LiveChartsCore
 {
-    public class ChartPoint : IChartPointView
-    {
-        /// <summary>
-        /// Gets the X point value
-        /// </summary>
-        public double X { get; set; }
-        /// <summary>
-        /// Gets the Y point value
-        /// </summary>
-        public double Y { get; set; }
-        /// <summary>
-        /// Gets the coordinate where the value is placed at chart
-        /// </summary>
-        public Point Location { get; set; }
-        /// <summary>
-        /// Gets the index of this point in the chart
-        /// </summary>
-        public int Key { get; set; }
-        /// <summary>
-        /// Gets the object where the chart pulled the point
-        /// </summary>
-        public object Instance { get; set; }
 
-        public virtual void UpdateView()
-        {
-            throw new NotImplementedException("You must build the view of a chart point before caling this method");
-        }
+    #region Series
+    public interface ISeriesModel
+    {
+        ISeriesView View { get; set; }
+        IChartModel Chart { get; set; }
+        IChartValues Values { get; set; }
+        SeriesConfiguration Configuration { get; set; }
+        SeriesCollection SeriesCollection { get; set; }
+        string Title { get; set; }
+        SeriesCollection Collection { get; }
     }
 
-    public interface IChartPointView
+    public interface ISeriesView
     {
-        void UpdateView();
+        ISeriesModel Model { get; }
     }
+    #endregion
+
+    #region Chart
+    public interface IChartModel
+    {
+        IChartView View { get; set; }
+        SeriesCollection Series { get; set; }
+
+        void Update(bool restartAnimations = true);
+    }
+
+    public interface IChartView
+    {
+        IChartModel Model { get; }
+        void InitializeSeries(ISeriesView series);
+        void Update(bool restartAnimations = true);
+        void Clear()
+    }
+    #endregion
+
+
 }

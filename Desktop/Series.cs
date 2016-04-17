@@ -1,7 +1,31 @@
-﻿using System;
+﻿//The MIT License(MIT)
+
+//copyright(c) 2016 Alberto Rodriguez
+
+//Permission is hereby granted, free of charge, to any person obtaining a copy
+//of this software and associated documentation files (the "Software"), to deal
+//in the Software without restriction, including without limitation the rights
+//to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+//copies of the Software, and to permit persons to whom the Software is
+//furnished to do so, subject to the following conditions:
+
+//The above copyright notice and this permission notice shall be included in all
+//copies or substantial portions of the Software.
+
+//THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+//OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+//SOFTWARE.
+
+using System;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Media;
 using LiveChartsCore;
 
@@ -9,17 +33,35 @@ namespace Desktop
 {
     public abstract class Series : FrameworkElement, ISeriesView
     {
+        private readonly LiveChartsCore.Series _model;
+
         protected Series()
         {
-            Model = new LiveChartsCore.Series
+            _model = new LiveChartsCore.Series
             {
                 View = this
             };
+            DefaultFillOpacity = 0.35;
         }
 
-        public ISeriesModel Model { get; set; }
+        protected Series(SeriesConfiguration configuration)
+        {
+            _model = new LiveChartsCore.Series
+            {
+                View = this,
+                Configuration = configuration
+            };
+            DefaultFillOpacity = 0.35;
+        }
 
-        #region View Properties
+        public ISeriesModel Model
+        {
+            get { return _model; }
+        }
+
+        #region Properties
+
+        public double DefaultFillOpacity { get; set; }
 
         public static readonly DependencyProperty ValuesProperty = DependencyProperty.Register(
             "Values", typeof (IChartValues), typeof (Series),
@@ -192,6 +234,30 @@ namespace Desktop
 
         #endregion
 
+        #region Internal Helpers
+
+        internal TextBlock BindATextBlock(int rotate)
+        {
+            var tb = new TextBlock();
+
+            tb.SetBinding(TextBlock.FontFamilyProperty,
+                new Binding { Path = new PropertyPath(FontFamilyProperty), Source = this });
+            tb.SetBinding(FontSizeProperty,
+                new Binding { Path = new PropertyPath(FontSizeProperty), Source = this });
+            tb.SetBinding(TextBlock.FontStretchProperty,
+                new Binding { Path = new PropertyPath(FontStretchProperty), Source = this });
+            tb.SetBinding(TextBlock.FontStyleProperty,
+                new Binding { Path = new PropertyPath(FontStyleProperty), Source = this });
+            tb.SetBinding(TextBlock.FontWeightProperty,
+                new Binding { Path = new PropertyPath(FontWeightProperty), Source = this });
+            tb.SetBinding(TextBlock.ForegroundProperty,
+                 new Binding { Path = new PropertyPath(ForegroundProperty), Source = this });
+
+            return tb;
+        }
+
+        #endregion
+
         #region Callbacks
 
         private static void OnValuesChanged(DependencyObject o, DependencyPropertyChangedEventArgs args)
@@ -239,7 +305,6 @@ namespace Desktop
                 wpfSeries.Model.Chart.Update(animate);
             };
         }
-
         #endregion
     }
 }
