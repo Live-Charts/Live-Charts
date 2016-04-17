@@ -96,17 +96,17 @@ namespace LiveCharts.CoreComponents
 
         protected Chart()
         {
-            var b = new Border();                           
-            Canvas = new Canvas();
-            b.Child = Canvas;
-            Content = b;    
+            var b = new Border();                           //v                        
+            Canvas = new Canvas();                          //v
+            b.Child = Canvas;                               //v
+            Content = b;                                    //v
 
-            DrawMargin = new  Canvas { ClipToBounds = true };
-            Canvas.SetLeft(DrawMargin, 0d);
-            Canvas.SetTop(DrawMargin, 0d);
+            DrawMargin = new  Canvas { ClipToBounds = true };//v
+            Canvas.SetLeft(DrawMargin, 0d);                 //v
+            Canvas.SetTop(DrawMargin, 0d);                  //v
 
-            SetValue(MinHeightProperty, 125d);
-            SetValue(MinWidthProperty, 125d);
+            SetValue(MinHeightProperty, 125d);              //v
+            SetValue(MinWidthProperty, 125d);               //v
 
             SetValue(AxisYProperty, new List<Axis>());
             SetValue(AxisXProperty, new List<Axis>());

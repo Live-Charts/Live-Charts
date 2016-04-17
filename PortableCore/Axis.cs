@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace LiveChartsCore
 {
@@ -164,6 +162,27 @@ namespace LiveChartsCore
 #endif
             return biggest;
         }
+
+        public void UpdateSeparators(AxisTags source, IChartModel chart, int axisPosition)
+        {
+            foreach (var element in Cache.Values.ToArray())
+            {
+                if (!element.IsActive)
+                {
+                    element.State = SeparationState.Remove;
+                    Cache.Remove(element.Key);
+                }
+                element.UpdateLine(source, chart, axisPosition);
+                element.IsActive = false;
+            }
+
+            LastAxisMax = MaxLimit;
+            LastAxisMin = MinLimit;
+            LastPlotArea =
+                new Rect(chart.DrawMargin.X, chart.DrawMargin.Y,
+                    chart.DrawMargin.Width, chart.DrawMargin.Height);
+        }
+
 
         internal Func<double, string> GetFormatter()
         {

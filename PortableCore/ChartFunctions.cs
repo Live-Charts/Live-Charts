@@ -34,7 +34,7 @@ namespace LiveChartsCore
         /// <param name="chart"></param>
         /// <param name="axis"></param>
         /// <returns></returns>
-        public static double ToPlotArea(double value, AxisTags source, Chart chart, int axis = 0)
+        public static double ToPlotArea(double value, AxisTags source, IChartModel chart, int axis = 0)
         {
             //y = m * (x - x1) + y1
 
@@ -74,7 +74,7 @@ namespace LiveChartsCore
             return m * (value - p1.X) + p1.Y;
         }
 
-        public static double FromPlotArea(double value, AxisTags source, Chart chart, int axis = 0)
+        public static double FromPlotArea(double value, AxisTags source, IChartModel chart, int axis = 0)
         {
             var p1 = new Point();
             var p2 = new Point();
@@ -119,7 +119,7 @@ namespace LiveChartsCore
         /// <param name="chart"></param>
         /// <param name="axis"></param>
         /// <returns></returns>
-        public static Point ToPlotArea(Point value, Chart chart, int axis = 0)
+        public static Point ToPlotArea(Point value, IChartModel chart, int axis = 0)
         {
             return new Point(
                 ToPlotArea(value.X, AxisTags.X, chart, axis),
@@ -139,7 +139,7 @@ namespace LiveChartsCore
             return ToPlotArea(value, source, chart, axis) - o + of;
         }
 
-        public static double FromDrawMargin(double value, AxisTags source, Chart chart, int axis = 0)
+        public static double FromDrawMargin(double value, AxisTags source, IChartModel chart, int axis = 0)
         {
             //var o = axis == AxisTags.X
             //    ? Canvas.GetLeft(chart.DrawMargin)
@@ -149,7 +149,7 @@ namespace LiveChartsCore
             return FromPlotArea(value, source, chart, axis);//FromPlotArea(value, axis, chart) - o + of;
         }
 
-        internal static double GetUnitWidth(AxisTags source, Chart chart, int axis = 0)
+        internal static double GetUnitWidth(AxisTags source, IChartModel chart, int axis = 0)
         {
             double min;
 

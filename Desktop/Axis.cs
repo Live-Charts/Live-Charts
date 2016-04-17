@@ -53,8 +53,8 @@ namespace Desktop
 
             Panel.SetZIndex(asc.TextBlock, -1);
             Panel.SetZIndex(asc.Line, -1);
-            Model.Chart.View.AddVisual(asc.TextBlock);
-            Model.Chart.View.AddVisual(asc.Line);
+            Model.Chart.View.AddToView(asc.TextBlock);
+            Model.Chart.View.AddToView(asc.Line);
 
             return asc;
         }

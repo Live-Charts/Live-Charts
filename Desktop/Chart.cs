@@ -22,6 +22,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -37,6 +38,7 @@ namespace Desktop
         protected Chart()
         {
             _model = new LiveChartsCore.Chart(this);
+
             UpdateLayout();
             Measure(new Size(double.MaxValue, double.MaxValue));
             Canvas.SetTop(Canvas, 0d);
@@ -45,6 +47,13 @@ namespace Desktop
             Canvas.Height = DesiredSize.Height;
             Canvas = new Canvas();
             Content = Canvas;
+
+            DrawMargin = new Canvas {ClipToBounds = true};
+
+            SetValue(MinHeightProperty, 125d);
+            SetValue(MinWidthProperty, 125d);
+
+
         }
 
         static Chart()
@@ -70,12 +79,37 @@ namespace Desktop
         }
 
         private Canvas Canvas { get; set; }
+        private Canvas DrawMargin { get; set; }
 
         private static Random Randomizer { get; set; }
         public static List<Color> Colors { get; set; }
         public int CurrentColorIndex { get; set; }
 
         #region Dependency Properties
+
+        public static readonly DependencyProperty AxisYProperty = DependencyProperty.Register(
+            "AxisY", typeof (List<Axis>), typeof (Chart),
+            new PropertyMetadata(null));
+        /// <summary>
+        /// Gets or sets vertical axis
+        /// </summary>
+        public List<Axis> AxisY
+        {
+            get { return (List<Axis>)GetValue(AxisYProperty); }
+            set { SetValue(AxisYProperty, value); }
+        }
+
+        public static readonly DependencyProperty AxisXProperty = DependencyProperty.Register(
+            "AxisX", typeof(List<Axis>), typeof(Chart), 
+            new PropertyMetadata(null));
+        /// <summary>
+        /// Gets or sets horizontal axis
+        /// </summary>
+        public List<Axis> AxisX
+        {
+            get { return (List<Axis>)GetValue(AxisXProperty); }
+            set { SetValue(AxisXProperty, value); }
+        }
 
         public static readonly DependencyProperty SeriesProperty = DependencyProperty.Register(
             "Series", typeof (SeriesCollection), typeof (Chart),
@@ -85,6 +119,25 @@ namespace Desktop
         {
             get { return (SeriesCollection) GetValue(SeriesProperty); }
             set { SetValue(SeriesProperty, value); }
+        }
+
+        public static readonly DependencyProperty AnimationsSpeedProperty = DependencyProperty.Register(
+            "AnimationsSpeed", typeof (TimeSpan), typeof (Chart), 
+            new PropertyMetadata(default(TimeSpan), OnPropertyChanged(true)));
+
+        public TimeSpan AnimationsSpeed
+        {
+            get { return (TimeSpan) GetValue(AnimationsSpeedProperty); }
+            set { SetValue(AnimationsSpeedProperty, value); }
+        }
+
+        public static readonly DependencyProperty DisableAnimationsProperty = DependencyProperty.Register(
+            "DisableAnimations", typeof (bool), typeof (Chart), new PropertyMetadata(default(bool)));
+
+        public bool DisableAnimations
+        {
+            get { return (bool) GetValue(DisableAnimationsProperty); }
+            set { SetValue(DisableAnimationsProperty, value); }
         }
         #endregion
 
@@ -119,11 +172,18 @@ namespace Desktop
             //ShapesMapper.Clear();
         }
 
-        public void AddVisual(object element)
+        public void AddToView(object element)
         {
             var wpfElement = element as FrameworkElement;
             if (wpfElement == null) return;
             Canvas.Children.Add(wpfElement);
+        }
+
+        public void RemoveFromView(object element)
+        {
+            var wpfElement = element as FrameworkElement;
+            if (wpfElement == null) return;
+            Canvas.Children.Remove(wpfElement);
         }
 
         #region Callbacks

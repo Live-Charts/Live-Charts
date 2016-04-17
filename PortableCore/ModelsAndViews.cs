@@ -22,6 +22,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 
 namespace LiveChartsCore
 {
@@ -69,6 +70,7 @@ namespace LiveChartsCore
         void CalculateSeparator(IChartModel chart, AxisTags source);
         double FromPreviousAxisState(double value, AxisTags source, IChartModel chart);
         Size PrepareChart(AxisTags source, IChartModel chart);
+        void UpdateSeparators(AxisTags source, IChartModel chart, int axisPosition);
     }
 
     public interface IAxisView
@@ -109,6 +111,7 @@ namespace LiveChartsCore
         double Value { get; set; }
 
         Size UpdateLabel(string text);
+        void UpdateLine(AxisTags source, IChartModel chart, int axisIndex, IAxisModel axis);
     }
     #endregion
 
@@ -117,11 +120,13 @@ namespace LiveChartsCore
     {
         IChartView View { get; set; }
         Size ChartSize { get; set; }
-        Size DrawMargin { get; set; }
+        Rect DrawMargin { get; set; }
         SeriesCollection Series { get; set; }
         bool HasUnitaryPoints { get; set; }
         bool Invert { get; set; }
-       
+        List<IAxisView> AxisX { get; set; }
+        List<IAxisView> AxisY { get; set; }
+
         void Update(bool restartAnimations = true);
         void ZoomIn(Point pivot);
         void ZoomOut(Point pivot);
@@ -133,7 +138,8 @@ namespace LiveChartsCore
         void InitializeSeries(ISeriesView series);
         void Update(bool restartAnimations = true);
         void Erase();
-        void AddVisual(object element);
+        void AddToView(object element);
+        void RemoveFromView(object element);
     }
     #endregion
 

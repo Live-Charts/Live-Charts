@@ -21,6 +21,7 @@
 //SOFTWARE.
 
 using System;
+using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
 
@@ -46,10 +47,13 @@ namespace LiveChartsCore
         public bool SeriesInitialized { get; set; }
         public IChartView View { get; set; }
         public Size ChartSize { get; set; }
-        public Size DrawMargin { get; set; }
+        public Rect DrawMargin { get; set; }
         public SeriesCollection Series { get; set; }
         public bool HasUnitaryPoints { get; set; }
         public bool Invert { get; set; }
+        public List<IAxisView> AxisX { get; set; }
+        public List<IAxisView> AxisY { get; set; }
+
         public AxisTags PivotZoomingAxis { get; set; }
         public Timer TooltipTimeoutTimer { get; set; }
         public Timer ResizeTimer { get; set; }
