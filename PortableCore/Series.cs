@@ -24,14 +24,15 @@ namespace LiveChartsCore
 {
     public class Series : ISeriesModel
     {
-        public Series()
+        public Series(ISeriesView view)
         {
-            Intialize();
+            View = view;
         }
 
-        public Series(SeriesConfiguration configuration)
+        public Series(ISeriesView view, SeriesConfiguration configuration)
         {
-            Intialize();
+            View = view;
+            Configuration = configuration;
         }
 
         public ISeriesView View { get; set; }
@@ -51,6 +52,7 @@ namespace LiveChartsCore
         //}
         public SeriesCollection SeriesCollection { get; set; }
         public string Title { get; set; }
+        public SeriesCollection Collection { get; private set; }
 
         /// <summary>
         /// Setup a configuration for this collection, notice this method returns the current instance to support fleunt syntax. if Series.Cofiguration is not null then SeriesCollection.Configuration will be ignored.
@@ -62,11 +64,6 @@ namespace LiveChartsCore
         {
             Configuration = config;
             return this;
-        }
-
-        private void Intialize()
-        {
-            Chart = new Chart();
         }
     }
 }

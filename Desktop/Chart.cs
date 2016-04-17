@@ -23,21 +23,28 @@
 using System;
 using System.Collections.Generic;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media;
 using LiveChartsCore;
+using Size = System.Windows.Size;
 
 namespace Desktop
 {
-    public abstract class Chart : FrameworkElement, IChartView
+    public abstract class Chart : UserControl, IChartView
     {
         private readonly LiveChartsCore.Chart _model;
-        
+
         protected Chart()
         {
-            _model = new LiveChartsCore.Chart
-            {
-                View = this
-            };
+            _model = new LiveChartsCore.Chart(this);
+            UpdateLayout();
+            Measure(new Size(double.MaxValue, double.MaxValue));
+            Canvas.SetTop(Canvas, 0d);
+            Canvas.SetLeft(Canvas, 0d);
+            Canvas.Width = DesiredSize.Width;
+            Canvas.Height = DesiredSize.Height;
+            Canvas = new Canvas();
+            Content = Canvas;
         }
 
         static Chart()
@@ -61,6 +68,8 @@ namespace Desktop
             };
             Randomizer = new Random();
         }
+
+        private Canvas Canvas { get; set; }
 
         private static Random Randomizer { get; set; }
         public static List<Color> Colors { get; set; }
@@ -99,7 +108,7 @@ namespace Desktop
             _model.Update(restartAnimations);
         }
 
-        public void Clear()
+        public void Erase()
         {
             throw new NotImplementedException();
             //foreach (var yi in AxisY) yi.Reset();
@@ -108,6 +117,13 @@ namespace Desktop
             //Canvas.Children.Clear();
             //Shapes.Clear();
             //ShapesMapper.Clear();
+        }
+
+        public void AddVisual(object element)
+        {
+            var wpfElement = element as FrameworkElement;
+            if (wpfElement == null) return;
+            Canvas.Children.Add(wpfElement);
         }
 
         #region Callbacks

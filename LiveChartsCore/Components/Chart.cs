@@ -46,31 +46,31 @@ namespace LiveCharts.CoreComponents
         public event Action<Chart> Plot;                   
         public event Action<ChartPoint> DataClick;          
 
-        internal Canvas DrawMargin;                         //view
-        internal int ColorStartIndex;                       //model
-        internal bool RequiresScale;                        //model
-        internal List<DeleteBufferItem> EraseSerieBuffer = 
+        internal Canvas DrawMargin;                         //
+        internal int ColorStartIndex;                       //m
+        internal bool RequiresScale;                        //d
+        internal List<DeleteBufferItem> EraseSerieBuffer =  //d
             new List<DeleteBufferItem>();                   
-        internal bool SeriesInitialized;                    //model                
-        internal double From = double.MinValue;
-        internal double To = double.MaxValue;
-        internal AxisTags PivotZoomingAxis = AxisTags.None;
-        internal bool SupportsMultipleSeries = true;
+        internal bool SeriesInitialized;                    //m
+        internal double From = double.MinValue;             //d
+        internal double To = double.MaxValue;               //d
+        internal AxisTags PivotZoomingAxis = AxisTags.None; //m
+        internal bool SupportsMultipleSeries = true;        //d
 
-        protected ShapeHoverBehavior ShapeHoverBehavior;
-        protected bool AlphaLabel;
-        protected readonly DispatcherTimer TooltipTimer;
-        protected double DefaultFillOpacity = 0.35;
+        protected ShapeHoverBehavior ShapeHoverBehavior;    //d
+        protected bool AlphaLabel;                          //d
+        protected readonly DispatcherTimer TooltipTimer;    //m
+        protected double DefaultFillOpacity = 0.35;         //d
 
-        private static readonly Random Randomizer;
-        private readonly DispatcherTimer _resizeTimer;
+        private static readonly Random Randomizer;          //d
+        private readonly DispatcherTimer _resizeTimer;      //m
         private readonly DispatcherTimer _seriesValuesChanged;
         internal readonly DispatcherTimer SeriesChanged;
-        private Point _panOrigin;
-        private bool _isDragging;
-        private int _colorIndexer;
-        private FrameworkElement _dataTooltip;
-        private bool _isZooming = false;
+        private Point _panOrigin;                           //m
+        private bool _isDragging;                           //m
+        private int _colorIndexer;                          //d
+        private FrameworkElement _dataTooltip;              
+        private bool _isZooming = false;                    //m
 
         static Chart()
         {
@@ -96,12 +96,12 @@ namespace LiveCharts.CoreComponents
 
         protected Chart()
         {
-            var b = new Border();
+            var b = new Border();                           
             Canvas = new Canvas();
             b.Child = Canvas;
-            Content = b;
+            Content = b;    
 
-            DrawMargin = new Canvas { ClipToBounds = true };
+            DrawMargin = new  Canvas { ClipToBounds = true };
             Canvas.SetLeft(DrawMargin, 0d);
             Canvas.SetTop(DrawMargin, 0d);
 
@@ -125,12 +125,12 @@ namespace LiveCharts.CoreComponents
             SetCurrentValue(SeriesProperty, new SeriesCollection(defaultConfig));
 
             DataTooltip = new DefaultIndexedTooltip();
-            Shapes = new List<FrameworkElement>();
-            ShapesMapper = new List<ShapeMap>();
+            Shapes = new List<FrameworkElement>();                  //d
+            ShapesMapper = new List<ShapeMap>();                    //d
 
-            PointHoverColor = System.Windows.Media.Colors.White; 
+            PointHoverColor = System.Windows.Media.Colors.White;    //d
 
-            Background = Brushes.Transparent;
+            Background = Brushes.Transparent;                       //d
 
             SizeChanged += Chart_OnsizeChanged;
             MouseWheel += MouseWheelOnRoll;

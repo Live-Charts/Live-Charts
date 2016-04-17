@@ -48,6 +48,8 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Axis.cs" />
+    <Compile Include="AxisSeparatorCache.cs" />
     <Compile Include="Chart.cs" />
     <Compile Include="Converters.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -63,6 +65,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="Separator.cs" />
     <Compile Include="Series.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

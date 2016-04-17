@@ -258,6 +258,11 @@ namespace Desktop
 
         #endregion
 
+        public void Erase()
+        {
+            throw new NotImplementedException();
+        }
+
         #region Callbacks
 
         private static void OnValuesChanged(DependencyObject o, DependencyPropertyChangedEventArgs args)

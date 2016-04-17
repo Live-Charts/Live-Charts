@@ -28,9 +28,36 @@ namespace LiveChartsCore
 {
     public class Chart : IChartModel
     {
+        public Chart(IChartView view)
+        {
+            View = view;
+
+            TooltipTimeoutTimer = new Timer
+            {
+                Interval = TimeSpan.FromMilliseconds(300)
+            };
+            ResizeTimer = new Timer
+            {
+                Interval = TimeSpan.FromMilliseconds(100)
+            };
+            ResizeTimer.Tick += () => Update(false);
+        }
+
         public bool SeriesInitialized { get; set; }
         public IChartView View { get; set; }
+        public Size ChartSize { get; set; }
+        public Size DrawMargin { get; set; }
         public SeriesCollection Series { get; set; }
+        public bool HasUnitaryPoints { get; set; }
+        public bool Invert { get; set; }
+        public AxisTags PivotZoomingAxis { get; set; }
+        public Timer TooltipTimeoutTimer { get; set; }
+        public Timer ResizeTimer { get; set; }
+
+        public Point PanOrigin { get; set; }
+
+        public bool IsDragging { get; set; }
+        public bool IsZooming { get; set; }
 
         public void IntializeSeries(bool force = false)
         {
@@ -56,6 +83,11 @@ namespace LiveChartsCore
             observable.CollectionChanged += OnValuesCollectionChanged;
         }
 
+        public void AddVisual(object visual)
+        {
+            throw new NotImplementedException();
+        }
+
         public void Update(bool restartAnimations = true)
         {
             foreach (var point in Series
@@ -63,17 +95,29 @@ namespace LiveChartsCore
                 point.UpdateView();
         }
 
+        public void ZoomIn(Point pivot)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ZoomOut(Point pivot)
+        {
+            throw new NotImplementedException();
+        }
+
+
+
         private void OnSeriesCollectionChanged(object sender, NotifyCollectionChangedEventArgs args)
         {
             if (args.Action == NotifyCollectionChangedAction.Reset)
-                View.Clear();
+                View.Erase();
 
-            var newSeries = args.NewItems != null
-                ? args.NewItems.Cast<ISeriesModel>()
-                : Enumerable.Empty<ISeriesModel>();
+            if (args.OldItems != null)
+                foreach (var series in args.OldItems.Cast<ISeriesModel>())
+                    series.View.Erase();
 
             if (args.NewItems != null)
-                foreach (var series in newSeries)
+                foreach (var series in args.NewItems.Cast<ISeriesModel>())
                     IntializeSeries(series, true);
 
             Update();
