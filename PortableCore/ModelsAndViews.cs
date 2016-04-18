@@ -22,7 +22,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
 
 namespace LiveChartsCore
 {
@@ -69,7 +68,7 @@ namespace LiveChartsCore
         Dictionary<double, ISeparatorCacheView> Cache { get; set; }
         void CalculateSeparator(IChartModel chart, AxisTags source);
         double FromPreviousAxisState(double value, AxisTags source, IChartModel chart);
-        Size PrepareChart(AxisTags source, IChartModel chart);
+        LvcSize PrepareChart(AxisTags source, IChartModel chart);
         void UpdateSeparators(AxisTags source, IChartModel chart, int axisPosition);
     }
 
@@ -110,7 +109,7 @@ namespace LiveChartsCore
         double Key { get; set; }
         double Value { get; set; }
 
-        Size UpdateLabel(string text);
+        LvcSize UpdateLabel(string text);
         void UpdateLine(AxisTags source, IChartModel chart, int axisIndex, IAxisModel axis);
     }
     #endregion
@@ -119,17 +118,20 @@ namespace LiveChartsCore
     public interface IChartModel
     {
         IChartView View { get; set; }
-        Size ChartSize { get; set; }
-        Rect DrawMargin { get; set; }
+        IChartUpdater Updater { get; set; }
+        LvcSize ChartSize { get; set; }
+        LvcRectangle DrawMargin { get; set; }
         SeriesCollection Series { get; set; }
         bool HasUnitaryPoints { get; set; }
         bool Invert { get; set; }
         object AxisX { get; set; }
-      object AxisY { get; set; }
+        object AxisY { get; set; }
+        TimeSpan TooltipTimeout { get; set; }
 
         void Update(bool restartAnimations = true);
-        void ZoomIn(Point pivot);
-        void ZoomOut(Point pivot);
+        void ZoomIn(LvcPoint pivot);
+        void ZoomOut(LvcPoint pivot);
+        void TooltipHideStartCount();
     }
 
     public interface IChartView
@@ -140,6 +142,9 @@ namespace LiveChartsCore
         void Erase();
         void AddToView(object element);
         void RemoveFromView(object element);
+        void ShowTooltip(ChartPoint sender, IEnumerable<ChartPoint> sibilings, LvcPoint at);
+        void HideTooltop();
+
     }
     #endregion
 

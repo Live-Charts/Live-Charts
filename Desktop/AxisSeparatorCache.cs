@@ -4,7 +4,6 @@ using System.Windows.Controls;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using LiveChartsCore;
-using Size = LiveChartsCore.Size;
 
 namespace Desktop
 {
@@ -200,11 +199,11 @@ namespace Desktop
         public double Key { get; set; }
         public double Value { get; set; }
 
-        public Size UpdateLabel(string text)
+        public LvcSize UpdateLabel(string text)
         {
             TextBlock.Text = text;
             TextBlock.UpdateLayout();
-            return new Size(TextBlock.ActualWidth, TextBlock.ActualHeight);
+            return new LvcSize(TextBlock.ActualWidth, TextBlock.ActualHeight);
         }
 
         public void UpdateLine(AxisTags source, IChartModel chart, int axisIndex, IAxisModel axis)

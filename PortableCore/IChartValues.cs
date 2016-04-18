@@ -36,15 +36,15 @@ namespace LiveChartsCore
         /// <summary>
         /// Gets max X and Y values
         /// </summary>
-        Point MaxChartPoint { get; }
+        LvcPoint MaxChartPoint { get; }
         /// <summary>
         /// Gets min X and Y values
         /// </summary>
-        Point MinChartPoint { get; }
+        LvcPoint MinChartPoint { get; }
         /// <summary>
         /// Gets or sets series that owns the values
         /// </summary>
-        IChartSeries Series { get; set; }
+        ISeriesModel Series { get; set; }
         /// <summary>
         /// Forces values to calculate max, min and index data.
         /// </summary>

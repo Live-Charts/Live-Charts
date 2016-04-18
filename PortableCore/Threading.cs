@@ -1,6 +1,4 @@
-//The MIT License(MIT)
-
-//copyright(c) 2016 Alberto Rodriguez
+﻿//copyright(c) 2016 Alberto Rodriguez
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -20,28 +18,43 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
+using System;
+using System.Threading;
+using System.Threading.Tasks;
+
 namespace LiveChartsCore
 {
-    public struct Point
+    public class LvcTimer
     {
-        public Point(double x, double y) : this()
+        public LvcTimer()
         {
-            X = x;
-            Y = y;
+            Interval = TimeSpan.FromMilliseconds(50);
+            _cancellationToken = new CancellationTokenSource();
         }
 
-        public double X { get; set; }
-        public double Y { get; set; }
+        public event Action Tick;
+        public TimeSpan Interval { get; set; }
 
-        public static Point operator +(Point p1, Point p2)
+        private readonly CancellationTokenSource _cancellationToken;
+
+        public void Start()
         {
-            return new Point(p1.X + p2.X, p1.Y + p2.Y);
+            Task.Delay(Interval, _cancellationToken.Token).ContinueWith(t =>
+            {
+                if (t.IsCanceled) return;
+                if (t.IsCompleted && Tick != null) Tick.Invoke();
+            }, _cancellationToken.Token);
         }
 
-        public static Point operator -(Point p1, Point p2)
+        public void Stop()
         {
-            return new Point(p1.X - p2.X, p1.Y - p2.Y);
+            _cancellationToken.Cancel();
+        }
+
+        public void Restart()
+        {
+            Stop();
+            Start();
         }
     }
-
 }

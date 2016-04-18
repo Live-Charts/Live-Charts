@@ -38,8 +38,8 @@ namespace LiveChartsCore
         {
             //y = m * (x - x1) + y1
 
-            var p1 = new Point();
-            var p2 = new Point();
+            var p1 = new LvcPoint();
+            var p2 = new LvcPoint();
 
             if (source == AxisTags.Y)
             {
@@ -76,8 +76,8 @@ namespace LiveChartsCore
 
         public static double FromPlotArea(double value, AxisTags source, IChartModel chart, int axis = 0)
         {
-            var p1 = new Point();
-            var p2 = new Point();
+            var p1 = new LvcPoint();
+            var p2 = new LvcPoint();
 
             if (source == AxisTags.Y)
             {
@@ -119,9 +119,9 @@ namespace LiveChartsCore
         /// <param name="chart"></param>
         /// <param name="axis"></param>
         /// <returns></returns>
-        public static Point ToPlotArea(Point value, IChartModel chart, int axis = 0)
+        public static LvcPoint ToPlotArea(LvcPoint value, IChartModel chart, int axis = 0)
         {
-            return new Point(
+            return new LvcPoint(
                 ToPlotArea(value.X, AxisTags.X, chart, axis),
                 ToPlotArea(value.Y, AxisTags.Y, chart, axis));
         }

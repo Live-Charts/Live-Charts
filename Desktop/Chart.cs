@@ -22,9 +22,12 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
+using System.Windows.Threading;
 using LiveChartsCore;
 using Size = System.Windows.Size;
 
@@ -69,7 +72,16 @@ namespace Desktop
                         .Y(v => v)
                         .X((v, i) => i)));
 
-
+            ResizeTimer = new DispatcherTimer {Interval = TimeSpan.FromMilliseconds(100)};
+            ResizeTimer.Tick += (sender, args) =>
+            {
+                Model.Updater.Run(false);
+            };
+            SizeChanged += (sender, args) =>
+            {
+                ResizeTimer.Stop();
+                ResizeTimer.Start();
+            };
         }
 
         static Chart()
@@ -98,10 +110,12 @@ namespace Desktop
         internal Canvas DrawMargin { get; set; }
 
         private static Random Randomizer { get; set; }
-        private static bool RandomizeStartingColor { get; set; }
+        public static bool RandomizeStartingColor { get; set; }
 
         public static List<Color> Colors { get; set; }
         public int CurrentColorIndex { get; set; }
+
+        public DispatcherTimer ResizeTimer { get; set; }
 
         #region Dependency Properties
 
@@ -140,9 +154,48 @@ namespace Desktop
             set { SetValue(ChartLegendProperty, value); }
         }
 
+        public static readonly DependencyProperty ZoomProperty = DependencyProperty.Register(
+            "Zoom", typeof(ZoomingOptions), typeof(Chart), 
+            new PropertyMetadata(default(ZoomingOptions)));
+        /// <summary>
+        /// Gets or sets chart zoom behavior
+        /// </summary>
+        public ZoomingOptions Zoom
+        {
+            get { return (ZoomingOptions)GetValue(ZoomProperty); }
+            set { SetValue(ZoomProperty, value); }
+        }
+
+        public static readonly DependencyProperty LegendLocationProperty = DependencyProperty.Register(
+            "LegendLocation", typeof(LegendLocation), typeof(Chart), new PropertyMetadata(LegendLocation.None));
+        /// <summary>
+        /// Gets or sets where legend is located
+        /// </summary>
+        public LegendLocation LegendLocation
+        {
+            get { return (LegendLocation)GetValue(LegendLocationProperty); }
+            set { SetValue(LegendLocationProperty, value); }
+        }
+
+        public static readonly DependencyProperty InvertProperty = DependencyProperty.Register(
+            "Invert", typeof(bool), typeof(Chart), 
+            new PropertyMetadata(default(bool), OnPropertyChanged((v, m) => m.Invert = v.Invert)));
+        /// <summary>
+        /// Gets or sets if series in this chart should be inverted, even this is a dependency property, it is only to support bidings, this property won't invert the chart when it changes, if you need so then call Chart.Redraw() mathod after you cahnge this property.
+        /// </summary>
+        public bool Invert
+        {
+            get { return (bool)GetValue(InvertProperty); }
+            set { SetValue(InvertProperty, value); }
+        }
+
+        
+
         public static readonly DependencyProperty CursorXProperty = DependencyProperty.Register(
             "CursorX", typeof (ChartCursor), typeof (Chart), new PropertyMetadata(default(ChartCursor)));
-
+        /// <summary>
+        /// Gets or the current chart cursor
+        /// </summary>
         public ChartCursor CursorX
         {
             get { return (ChartCursor) GetValue(CursorXProperty); }
@@ -151,7 +204,9 @@ namespace Desktop
 
         public static readonly DependencyProperty CursorYProperty = DependencyProperty.Register(
             "CursorY", typeof (ChartCursor), typeof (Chart), new PropertyMetadata(default(ChartCursor)));
-
+        /// <summary>
+        /// Gets or sets the current chart cursor
+        /// </summary>
         public ChartCursor CursorY
         {
             get { return (ChartCursor) GetValue(CursorYProperty); }
@@ -160,18 +215,53 @@ namespace Desktop
 
         public static readonly DependencyProperty SeriesProperty = DependencyProperty.Register(
             "Series", typeof (SeriesCollection), typeof (Chart),
-            new PropertyMetadata(default(SeriesCollection), OnPropertyChanged((v, m) => m.Series = v.Series)));
-
+            new PropertyMetadata(default(SeriesCollection), OnPropertyChanged((v, m) =>
+            {
+                m.Series = v.Series;
+                m.Series.CollectionChanged += (sender, args) =>
+                {
+                    m.Updater.Run(true);
+                };
+            })));
+        /// <summary>
+        /// Gets or sets chart series collection to plot.
+        /// </summary>
         public SeriesCollection Series
         {
             get { return (SeriesCollection) GetValue(SeriesProperty); }
             set { SetValue(SeriesProperty, value); }
         }
 
+        public static readonly DependencyProperty DataTooltipProperty = DependencyProperty.Register(
+            "DataTooltip", typeof (ChartTooltip), typeof (Chart), new PropertyMetadata(default(ChartTooltip)));
+        /// <summary>
+        /// Gets or sets the current control to use as the chart tooltip
+        /// </summary>
+        public ChartTooltip DataTooltip
+        {
+            get { return (ChartTooltip) GetValue(DataTooltipProperty); }
+            set { SetValue(DataTooltipProperty, value); }
+        }
+
+        public static readonly DependencyProperty TooltipTimeoutProperty = DependencyProperty.Register(
+            "TooltipTimeout", typeof (TimeSpan), typeof (Chart),
+            new PropertyMetadata(default(TimeSpan), OnPropertyChanged((v, m) => m.TooltipTimeout = v.TooltipTimeout)));
+        /// <summary>
+        /// Gets or sets the time a tooltip takes to hide when the user leaves the data point.
+        /// </summary>
+        [TypeConverter(typeof(TimespanMillisecondsConverter))]
+        public TimeSpan TooltipTimeout
+        {
+            get { return (TimeSpan) GetValue(TooltipTimeoutProperty); }
+            set { SetValue(TooltipTimeoutProperty, value); }
+        }
+
         public static readonly DependencyProperty AnimationsSpeedProperty = DependencyProperty.Register(
             "AnimationsSpeed", typeof (TimeSpan), typeof (Chart), 
             new PropertyMetadata(default(TimeSpan), OnPropertyChanged(true)));
-
+        /// <summary>
+        /// Gets or sets the default animation speed for this chart, you can override this speed for each element (series and axes)
+        /// </summary>
         public TimeSpan AnimationsSpeed
         {
             get { return (TimeSpan) GetValue(AnimationsSpeedProperty); }
@@ -180,7 +270,9 @@ namespace Desktop
 
         public static readonly DependencyProperty DisableAnimationsProperty = DependencyProperty.Register(
             "DisableAnimations", typeof (bool), typeof (Chart), new PropertyMetadata(default(bool)));
-
+        /// <summary>
+        /// Gets or sets if the chart is animated or not.
+        /// </summary>
         public bool DisableAnimations
         {
             get { return (bool) GetValue(DisableAnimationsProperty); }
@@ -233,6 +325,30 @@ namespace Desktop
             Canvas.Children.Remove(wpfElement);
         }
 
+        public void ShowTooltip(ChartPoint sender, IEnumerable<ChartPoint> sibilings, LvcPoint at)
+        {
+            if (DataTooltip == null) return;
+
+            if (DataTooltip.Parent == null)
+            {
+                AddToView(DataTooltip);
+                Canvas.SetLeft(DataTooltip, 0d);
+                Canvas.SetTop(DataTooltip, 0d);
+                Panel.SetZIndex(DataTooltip, int.MaxValue);
+            }
+
+            DataTooltip.Visibility = Visibility.Visible;
+
+            var ts = TimeSpan.FromMilliseconds(300);
+            DataTooltip.BeginAnimation(Canvas.LeftProperty, new DoubleAnimation(at.X, ts));
+            DataTooltip.BeginAnimation(Canvas.TopProperty, new DoubleAnimation(at.Y, ts));
+        }
+
+        public void HideTooltop()
+        {
+            throw new NotImplementedException();
+        }
+
         #region Callbacks
         private static PropertyChangedCallback OnPropertyChanged(bool animate = false)
         {
@@ -255,6 +371,17 @@ namespace Desktop
 
                 wpfChart.Update(animate);
             };
+        }
+        #endregion
+
+        #region 0.6.7 Obsoletes
+        public static readonly DependencyProperty HoverableProperty = DependencyProperty.Register(
+            "Hoverable", typeof(bool), typeof(Chart), new PropertyMetadata(true));
+        [Obsolete("This property is obsolete, if you need to disable tooltips, set the Chart.DataTooltip to null")]
+        public bool Hoverable
+        {
+            get { return (bool)GetValue(HoverableProperty); }
+            set { SetValue(HoverableProperty, value); }
         }
         #endregion
     }

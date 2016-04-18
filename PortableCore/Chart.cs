@@ -21,7 +21,7 @@
 //SOFTWARE.
 
 using System;
-using System.Collections.Generic;
+
 using System.Collections.Specialized;
 using System.Linq;
 
@@ -33,32 +33,35 @@ namespace LiveChartsCore
         {
             View = view;
 
-            TooltipTimeoutTimer = new Timer
+            TooltipTimeout = TimeSpan.FromMilliseconds(800);
+            TooltipHidder = new LvcTimer
             {
-                Interval = TimeSpan.FromMilliseconds(300)
+                Interval = TooltipTimeout
             };
-            ResizeTimer = new Timer
+            TooltipHidder.Tick += () =>
             {
-                Interval = TimeSpan.FromMilliseconds(100)
+               View.HideTooltop();
             };
-            ResizeTimer.Tick += () => Update(false);
+
+            Updater = Motor.GetUpdater();
         }
 
         public bool SeriesInitialized { get; set; }
         public IChartView View { get; set; }
-        public Size ChartSize { get; set; }
-        public Rect DrawMargin { get; set; }
+        public IChartUpdater Updater { get; set; }
+        public LvcSize ChartSize { get; set; }
+        public LvcRectangle DrawMargin { get; set; }
         public SeriesCollection Series { get; set; }
         public bool HasUnitaryPoints { get; set; }
         public bool Invert { get; set; }
         public object AxisX { get; set; }
         public object AxisY { get; set; }
+        public TimeSpan TooltipTimeout { get; set; }
 
         public AxisTags PivotZoomingAxis { get; set; }
-        public Timer TooltipTimeoutTimer { get; set; }
-        public Timer ResizeTimer { get; set; }
+        public LvcTimer TooltipHidder { get; set; }
 
-        public Point PanOrigin { get; set; }
+        public LvcPoint PanOrigin { get; set; }
 
         public bool IsDragging { get; set; }
         public bool IsZooming { get; set; }
@@ -99,16 +102,21 @@ namespace LiveChartsCore
                 point.UpdateView();
         }
 
-        public void ZoomIn(Point pivot)
+        public void ZoomIn(LvcPoint pivot)
         {
             throw new NotImplementedException();
         }
 
-        public void ZoomOut(Point pivot)
+        public void ZoomOut(LvcPoint pivot)
         {
             throw new NotImplementedException();
         }
 
+        public void TooltipHideStartCount()
+        {
+            TooltipHidder.Stop();
+            TooltipHidder.Start();
+        }
 
 
         private void OnSeriesCollectionChanged(object sender, NotifyCollectionChangedEventArgs args)
@@ -129,7 +137,7 @@ namespace LiveChartsCore
 
         private void OnValuesCollectionChanged(object sender, NotifyCollectionChangedEventArgs args)
         {
-            Update();
+            
         }
     }
 }

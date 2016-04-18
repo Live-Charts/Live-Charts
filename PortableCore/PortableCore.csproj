@@ -38,23 +38,21 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Axis.cs" />
-    <Compile Include="AxisPosition.cs" />
+    <Compile Include="ChartUpdater.cs" />
+    <Compile Include="Declarations.cs" />
     <Compile Include="Chart.cs" />
     <Compile Include="ChartFunctions.cs" />
     <Compile Include="ChartPoint.cs" />
     <Compile Include="IChartValues.cs" />
     <Compile Include="IDataOptimization.cs" />
     <Compile Include="ModelsAndViews.cs" />
-    <Compile Include="Point.cs" />
+    <Compile Include="Motor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Rect.cs" />
-    <Compile Include="SeparationState.cs" />
     <Compile Include="Separator.cs" />
     <Compile Include="Series.cs" />
     <Compile Include="SeriesCollection.cs" />
     <Compile Include="SeriesConfiguration.cs" />
-    <Compile Include="Size.cs" />
-    <Compile Include="Timer.cs" />
+    <Compile Include="Threading.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

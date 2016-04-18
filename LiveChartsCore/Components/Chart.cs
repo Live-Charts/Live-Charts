@@ -133,31 +133,31 @@ namespace LiveCharts.CoreComponents
 
             Background = Brushes.Transparent;                       //d
 
-            SizeChanged += Chart_OnsizeChanged;
+            SizeChanged += Chart_OnsizeChanged;                     //v
             MouseWheel += MouseWheelOnRoll;
             MouseLeftButtonDown += MouseDownForPan;
             MouseLeftButtonUp += MouseUpForPan;
             MouseMove += MouseMoveForPan;
 
-            _resizeTimer = new DispatcherTimer
+            _resizeTimer = new DispatcherTimer                      //v
             {
                 Interval = TimeSpan.FromMilliseconds(100)
             };
-            _resizeTimer.Tick += (sender, e) =>
+            _resizeTimer.Tick += (sender, e) =>                     //v
             {
                 _resizeTimer.Stop();
                 Update(false);
             };
 
-            TooltipTimer = new DispatcherTimer();
-            TooltipTimer.Tick += TooltipTimerOnTick;
-            SetValue(TooltipTimeoutProperty, TimeSpan.FromMilliseconds(800));
+            TooltipTimer = new DispatcherTimer();                   //m
+            TooltipTimer.Tick += TooltipTimerOnTick;                //m
+            SetValue(TooltipTimeoutProperty, TimeSpan.FromMilliseconds(800));//m
 
-            _seriesValuesChanged = new DispatcherTimer {Interval = TimeSpan.FromMilliseconds(100)};
-            _seriesValuesChanged.Tick += UpdateModifiedDataSeries;
+            _seriesValuesChanged = new DispatcherTimer {Interval = TimeSpan.FromMilliseconds(100)};//v
+            _seriesValuesChanged.Tick += UpdateModifiedDataSeries;//V
 
-            SeriesChanged = new DispatcherTimer {Interval = TimeSpan.FromMilliseconds(100)};
-            SeriesChanged.Tick += (sender, args) =>
+            SeriesChanged = new DispatcherTimer {Interval = TimeSpan.FromMilliseconds(100)};//v
+            SeriesChanged.Tick += (sender, args) => //v
             {
                 PrepareCanvas();
                 UpdateSeries(sender, args);
