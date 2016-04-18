@@ -51,7 +51,15 @@
     <Compile Include="Axis.cs" />
     <Compile Include="AxisSeparatorCache.cs" />
     <Compile Include="Chart.cs" />
+    <Compile Include="ChartCursor.cs" />
+    <Compile Include="ChartLegend.xaml.cs">
+      <DependentUpon>ChartLegend.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Converters.cs" />
+    <Compile Include="IndexedTooltipData.cs" />
+    <Compile Include="ChartTooltip.xaml.cs">
+      <DependentUpon>ChartTooltip.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -67,6 +75,7 @@
     </Compile>
     <Compile Include="Separator.cs" />
     <Compile Include="Series.cs" />
+    <Compile Include="SeriesStandin.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -82,6 +91,16 @@
       <Project>{d447642c-a85f-4ab0-96d9-c66cff91aada}</Project>
       <Name>PortableCore</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="ChartLegend.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ChartTooltip.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -51,8 +51,8 @@ namespace LiveChartsCore
         public SeriesCollection Series { get; set; }
         public bool HasUnitaryPoints { get; set; }
         public bool Invert { get; set; }
-        public List<IAxisView> AxisX { get; set; }
-        public List<IAxisView> AxisY { get; set; }
+        public object AxisX { get; set; }
+        public object AxisY { get; set; }
 
         public AxisTags PivotZoomingAxis { get; set; }
         public Timer TooltipTimeoutTimer { get; set; }

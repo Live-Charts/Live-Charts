@@ -46,7 +46,7 @@ namespace LiveCharts.CoreComponents
         public event Action<Chart> Plot;                   
         public event Action<ChartPoint> DataClick;          
 
-        internal Canvas DrawMargin;                         //
+        internal Canvas DrawMargin;                         //v
         internal int ColorStartIndex;                       //m
         internal bool RequiresScale;                        //d
         internal List<DeleteBufferItem> EraseSerieBuffer =  //d
@@ -92,7 +92,7 @@ namespace LiveCharts.CoreComponents
                 Color.FromRgb(254, 87, 34)
             };
             Randomizer = new Random();
-        }
+        }                                   //v
 
         protected Chart()
         {
@@ -108,21 +108,22 @@ namespace LiveCharts.CoreComponents
             SetValue(MinHeightProperty, 125d);              //v
             SetValue(MinWidthProperty, 125d);               //v
 
-            SetValue(AxisYProperty, new List<Axis>());
-            SetValue(AxisXProperty, new List<Axis>());
+            SetValue(AxisYProperty, new List<Axis>());      //v
+            SetValue(AxisXProperty, new List<Axis>());      //v
 
-            SetValue(LegendProperty, new ChartLegend());
+            SetValue(LegendProperty, new ChartLegend());    //v
             
-            CursorX = new ChartCursor(this, AxisTags.X);
-            CursorY = new ChartCursor(this, AxisTags.Y);
+            CursorX = new ChartCursor(this, AxisTags.X);    //v
+            CursorY = new ChartCursor(this, AxisTags.Y);    //v
 
-            if (RandomizeStartingColor) ColorStartIndex = Randomizer.Next(0, Colors.Count - 1);
+            if (RandomizeStartingColor)                     //v
+                ColorStartIndex = Randomizer.Next(0, Colors.Count - 1);
             
-            AnimatesNewPoints = false;
-            AnimationsSpeed = TimeSpan.FromMilliseconds(500);
+            AnimatesNewPoints = false;                      //d
+            AnimationsSpeed = TimeSpan.FromMilliseconds(500);//v
 
-            var defaultConfig = new SeriesConfiguration<double>().Y(x => x);
-            SetCurrentValue(SeriesProperty, new SeriesCollection(defaultConfig));
+            var defaultConfig = new SeriesConfiguration<double>().Y(x => x);//v
+            SetCurrentValue(SeriesProperty, new SeriesCollection(defaultConfig));//v
 
             DataTooltip = new DefaultIndexedTooltip();
             Shapes = new List<FrameworkElement>();                  //d

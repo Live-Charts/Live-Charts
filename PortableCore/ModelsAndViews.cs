@@ -124,8 +124,8 @@ namespace LiveChartsCore
         SeriesCollection Series { get; set; }
         bool HasUnitaryPoints { get; set; }
         bool Invert { get; set; }
-        List<IAxisView> AxisX { get; set; }
-        List<IAxisView> AxisY { get; set; }
+        object AxisX { get; set; }
+      object AxisY { get; set; }
 
         void Update(bool restartAnimations = true);
         void ZoomIn(Point pivot);

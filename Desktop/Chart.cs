@@ -22,7 +22,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -53,6 +52,23 @@ namespace Desktop
             SetValue(MinHeightProperty, 125d);
             SetValue(MinWidthProperty, 125d);
 
+            SetValue(AxisXProperty, new List<Axis>());
+            SetValue(AxisYProperty, new List<Axis>());
+
+            SetValue(ChartLegendProperty, new ChartLegend());
+
+            CursorX = new ChartCursor(this, AxisTags.X);
+            CursorY = new ChartCursor(this, AxisTags.Y);
+
+            if (RandomizeStartingColor) 
+                CurrentColorIndex = Randomizer.Next(0, Colors.Count - 1);
+
+            SetCurrentValue(SeriesProperty,
+                new SeriesCollection()
+                    .Setup(new SeriesConfiguration<double>()
+                        .Y(v => v)
+                        .X((v, i) => i)));
+
 
         }
 
@@ -79,9 +95,11 @@ namespace Desktop
         }
 
         private Canvas Canvas { get; set; }
-        private Canvas DrawMargin { get; set; }
+        internal Canvas DrawMargin { get; set; }
 
         private static Random Randomizer { get; set; }
+        private static bool RandomizeStartingColor { get; set; }
+
         public static List<Color> Colors { get; set; }
         public int CurrentColorIndex { get; set; }
 
@@ -89,7 +107,7 @@ namespace Desktop
 
         public static readonly DependencyProperty AxisYProperty = DependencyProperty.Register(
             "AxisY", typeof (List<Axis>), typeof (Chart),
-            new PropertyMetadata(null));
+            new PropertyMetadata(null, OnPropertyChanged((v, m) => m.AxisY = v.AxisY)));
         /// <summary>
         /// Gets or sets vertical axis
         /// </summary>
@@ -100,8 +118,8 @@ namespace Desktop
         }
 
         public static readonly DependencyProperty AxisXProperty = DependencyProperty.Register(
-            "AxisX", typeof(List<Axis>), typeof(Chart), 
-            new PropertyMetadata(null));
+            "AxisX", typeof (List<Axis>), typeof (Chart),
+            new PropertyMetadata(null, OnPropertyChanged((v, m) => m.AxisX = v.AxisX)));
         /// <summary>
         /// Gets or sets horizontal axis
         /// </summary>
@@ -109,6 +127,35 @@ namespace Desktop
         {
             get { return (List<Axis>)GetValue(AxisXProperty); }
             set { SetValue(AxisXProperty, value); }
+        }
+
+        public static readonly DependencyProperty ChartLegendProperty = DependencyProperty.Register(
+            "ChartLegend", typeof (ChartLegend), typeof (Chart), new PropertyMetadata(default(ChartLegend)));
+        /// <summary>
+        /// Gets or sets the control to use as chart legend fot this chart.
+        /// </summary>
+        public ChartLegend ChartLegend
+        {
+            get { return (ChartLegend) GetValue(ChartLegendProperty); }
+            set { SetValue(ChartLegendProperty, value); }
+        }
+
+        public static readonly DependencyProperty CursorXProperty = DependencyProperty.Register(
+            "CursorX", typeof (ChartCursor), typeof (Chart), new PropertyMetadata(default(ChartCursor)));
+
+        public ChartCursor CursorX
+        {
+            get { return (ChartCursor) GetValue(CursorXProperty); }
+            set { SetValue(CursorXProperty, value); }
+        }
+
+        public static readonly DependencyProperty CursorYProperty = DependencyProperty.Register(
+            "CursorY", typeof (ChartCursor), typeof (Chart), new PropertyMetadata(default(ChartCursor)));
+
+        public ChartCursor CursorY
+        {
+            get { return (ChartCursor) GetValue(CursorYProperty); }
+            set { SetValue(CursorYProperty, value); }
         }
 
         public static readonly DependencyProperty SeriesProperty = DependencyProperty.Register(

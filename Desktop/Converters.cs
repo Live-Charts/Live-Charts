@@ -1,6 +1,6 @@
 ﻿//The MIT License(MIT)
 
-//copyright(c) 2016 Greg Dennis & Beto Rodríguez
+//copyright(c) 2016 Greg Dennis & Alberto Rodriguez
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -21,8 +21,11 @@
 //SOFTWARE.
 
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
+using System.Linq;
+using System.Windows.Data;
 
 namespace Desktop
 {
@@ -36,6 +39,42 @@ namespace Desktop
                 return TimeSpan.FromMilliseconds(double.Parse(valueString));
 
             return base.ConvertFrom(context, culture, value);
+        }
+    }
+
+    internal class SerieConverter : IValueConverter
+    {
+        public static SerieConverter Instance { get; set; }
+
+        static SerieConverter()
+        {
+            Instance = new SerieConverter();
+        }
+        private SerieConverter() { }
+
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            var series = value as IEnumerable<Series>;
+            if (series != null)
+                return series.Select(x => new SeriesStandin
+                {
+
+                });
+
+            var serie = value as Series;
+            if (serie != null)
+                return new SeriesStandin
+                {
+                    Title = serie.Title,
+                    Stroke = serie.Stroke,
+                    Fill = serie.Fill
+                };
+
+            return value;
+        }
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
         }
     }
 }

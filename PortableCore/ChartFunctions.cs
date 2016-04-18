@@ -126,7 +126,7 @@ namespace LiveChartsCore
                 ToPlotArea(value.Y, AxisTags.Y, chart, axis));
         }
 
-        public static double ToDrawMargin(double value, AxisTags source, Chart chart, int axis = 0)
+        public static double ToDrawMargin(double value, AxisTags source, IChartModel chart, int axis = 0)
         {
             var o = source == AxisTags.X
                 ? Canvas.GetLeft(chart.DrawMargin)
@@ -149,7 +149,7 @@ namespace LiveChartsCore
             return FromPlotArea(value, source, chart, axis);//FromPlotArea(value, axis, chart) - o + of;
         }
 
-        internal static double GetUnitWidth(AxisTags source, IChartModel chart, int axis = 0)
+        public static double GetUnitWidth(AxisTags source, IChartModel chart, int axis = 0)
         {
             double min;
 
