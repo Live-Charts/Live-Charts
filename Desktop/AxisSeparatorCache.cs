@@ -20,13 +20,13 @@ namespace Desktop
 
             if (direction == AxisTags.Y)
             {
-                Line.X1 = chart.Model.DrawMargin.X;
-                Line.X2 = chart.Model.DrawMargin.X + chart.Model.DrawMargin.Width;
+                Line.X1 = chart.Model.DrawMargin.Left;
+                Line.X2 = chart.Model.DrawMargin.Left + chart.Model.DrawMargin.Width;
                 Line.Y1 = i;
                 Line.Y2 = i;
 
                 var topM = axis.IsMerged
-                    ? (i + TextBlock.ActualHeight > chart.Model.DrawMargin.Y + chart.Model.DrawMargin.Height
+                    ? (i + TextBlock.ActualHeight > chart.Model.DrawMargin.Top + chart.Model.DrawMargin.Height
                         ? +TextBlock.ActualHeight
                         : 0)
                     : TextBlock.ActualHeight * .5;
@@ -40,11 +40,11 @@ namespace Desktop
             {
                 Line.X1 = i;
                 Line.X2 = i;
-                Line.Y1 = chart.Model.DrawMargin.Y;
-                Line.Y2 = chart.Model.DrawMargin.Y + chart.Model.DrawMargin.Height;
+                Line.Y1 = chart.Model.DrawMargin.Top;
+                Line.Y2 = chart.Model.DrawMargin.Top + chart.Model.DrawMargin.Height;
 
                 var left = axis.IsMerged
-                    ? (i + TextBlock.ActualWidth > chart.Model.DrawMargin.X + chart.Model.DrawMargin.Width
+                    ? (i + TextBlock.ActualWidth > chart.Model.DrawMargin.Left + chart.Model.DrawMargin.Width
                         ? TextBlock.ActualWidth + 2
                         : -2)
                     : TextBlock.ActualWidth * .5;
@@ -104,16 +104,16 @@ namespace Desktop
             if (direction == AxisTags.Y)
             {
                 Line.BeginAnimation(Line.X1Property,
-                    new DoubleAnimation(Line.X1, chart.Model.DrawMargin.X, _anSpeed));
+                    new DoubleAnimation(Line.X1, chart.Model.DrawMargin.Left, _anSpeed));
                 Line.BeginAnimation(Line.X2Property,
-                    new DoubleAnimation(Line.X2, chart.Model.DrawMargin.X + chart.Model.DrawMargin.Width, _anSpeed));
+                    new DoubleAnimation(Line.X2, chart.Model.DrawMargin.Left + chart.Model.DrawMargin.Width, _anSpeed));
                 Line.BeginAnimation(Line.Y1Property,
                     new DoubleAnimation(Line.Y1, i, _anSpeed));
                 Line.BeginAnimation(Line.Y2Property,
                     new DoubleAnimation(Line.Y2, i, _anSpeed));
 
                 var hh = axis.IsMerged
-                    ? (i + TextBlock.ActualHeight > chart.Model.DrawMargin.Y + chart.Model.DrawMargin.Height
+                    ? (i + TextBlock.ActualHeight > chart.Model.DrawMargin.Top + chart.Model.DrawMargin.Height
                         ? +TextBlock.ActualHeight
                         : 0)
                     : TextBlock.ActualHeight * .5;
@@ -127,12 +127,12 @@ namespace Desktop
                 Line.BeginAnimation(Line.X2Property,
                     new DoubleAnimation(Line.X2, i, _anSpeed));
                 Line.BeginAnimation(Line.Y1Property,
-                    new DoubleAnimation(Line.Y1, chart.Model.DrawMargin.Y, _anSpeed));
+                    new DoubleAnimation(Line.Y1, chart.Model.DrawMargin.Top, _anSpeed));
                 Line.BeginAnimation(Line.Y2Property,
-                    new DoubleAnimation(Line.Y2, chart.Model.DrawMargin.Y + chart.Model.DrawMargin.Height, _anSpeed));
+                    new DoubleAnimation(Line.Y2, chart.Model.DrawMargin.Top + chart.Model.DrawMargin.Height, _anSpeed));
 
                 var hw = axis.IsMerged
-                    ? (i + TextBlock.ActualWidth > chart.Model.DrawMargin.X + chart.Model.DrawMargin.Width
+                    ? (i + TextBlock.ActualWidth > chart.Model.DrawMargin.Left + chart.Model.DrawMargin.Width
                         ? TextBlock.ActualWidth + 2
                         : -2)
                     : TextBlock.ActualWidth * .5;
@@ -154,16 +154,16 @@ namespace Desktop
                     : Line.Y1;
 
                 Line.BeginAnimation(Line.X1Property,
-                    new DoubleAnimation(Line.X1, chart.Model.DrawMargin.X, _anSpeed));
+                    new DoubleAnimation(Line.X1, chart.Model.DrawMargin.Left, _anSpeed));
                 Line.BeginAnimation(Line.X2Property,
-                    new DoubleAnimation(Line.X2, chart.Model.DrawMargin.X + chart.Model.DrawMargin.Width, _anSpeed));
+                    new DoubleAnimation(Line.X2, chart.Model.DrawMargin.Left + chart.Model.DrawMargin.Width, _anSpeed));
                 Line.BeginAnimation(Line.Y1Property,
                     new DoubleAnimation(y, i, _anSpeed));
                 Line.BeginAnimation(Line.Y2Property,
                     new DoubleAnimation(y, i, _anSpeed));
 
                 var hh = axis.IsMerged
-                    ? (i + TextBlock.ActualHeight > chart.Model.DrawMargin.Y + chart.Model.DrawMargin.Height
+                    ? (i + TextBlock.ActualHeight > chart.Model.DrawMargin.Top + chart.Model.DrawMargin.Height
                         ? +TextBlock.ActualHeight
                         : 0)
                     : TextBlock.ActualHeight * .5;
@@ -179,12 +179,12 @@ namespace Desktop
                 Line.BeginAnimation(Line.X2Property,
                     new DoubleAnimation(x, i, _anSpeed));
                 Line.BeginAnimation(Line.Y1Property,
-                    new DoubleAnimation(Line.Y1, chart.Model.DrawMargin.Y, _anSpeed));
+                    new DoubleAnimation(Line.Y1, chart.Model.DrawMargin.Top, _anSpeed));
                 Line.BeginAnimation(Line.Y2Property,
-                    new DoubleAnimation(Line.Y2, chart.Model.DrawMargin.Y + chart.Model.DrawMargin.Height, _anSpeed));
+                    new DoubleAnimation(Line.Y2, chart.Model.DrawMargin.Top + chart.Model.DrawMargin.Height, _anSpeed));
 
                 var hw = axis.IsMerged
-                    ? (i + TextBlock.ActualWidth > chart.Model.DrawMargin.X + chart.Model.DrawMargin.Width
+                    ? (i + TextBlock.ActualWidth > chart.Model.DrawMargin.Left + chart.Model.DrawMargin.Width
                         ? TextBlock.ActualWidth + 2
                         : -2)
                     : TextBlock.ActualWidth * .5;

@@ -37,18 +37,14 @@ namespace Desktop
 
         protected Series()
         {
-            _model = new LiveChartsCore.Series
-            {
-                View = this
-            };
+            _model = new LiveChartsCore.Series(this);
             DefaultFillOpacity = 0.35;
         }
 
         protected Series(SeriesConfiguration configuration)
         {
-            _model = new LiveChartsCore.Series
+            _model = new LiveChartsCore.Series(this)
             {
-                View = this,
                 Configuration = configuration
             };
             DefaultFillOpacity = 0.35;

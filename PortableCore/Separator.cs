@@ -29,6 +29,7 @@ namespace LiveChartsCore
             View = view;
         }
 
+        public IChartModel Chart { get; set; }
         public ISeparatorView View { get; set; }
         public bool IsEnabled { get; set; }
         public int StrokeThickness { get; set; }

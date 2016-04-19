@@ -21,6 +21,7 @@
 //SOFTWARE.
 
 using System;
+using System.Collections.Generic;
 
 namespace LiveChartsCore
 {
@@ -41,31 +42,36 @@ namespace LiveChartsCore
             var p1 = new LvcPoint();
             var p2 = new LvcPoint();
 
+            var x = chart.AxisX as List<IAxisView>;
+            var y = chart.AxisY as List<IAxisView>;
+
+            if (x == null || y == null) return 0;
+
             if (source == AxisTags.Y)
             {
-                if (axis >= chart.AxisY.Count)
+                if (axis >= y.Count)
                     throw new Exception("There is not a valid Y axis at position " + axis);
 
-                var ax = chart.AxisY[axis];
+                var ax = y[axis].Model;
 
                 p1.X = ax.MaxLimit;
-                p1.Y = Canvas.GetTop(chart.DrawMargin);
+                p1.Y = chart.DrawMargin.Top;
 
                 p2.X = ax.MinLimit;
-                p2.Y = Canvas.GetTop(chart.DrawMargin) + chart.DrawMargin.Height;
+                p2.Y = chart.DrawMargin.Top + chart.DrawMargin.Height;
             }
             else
             {
-                if (axis >= chart.AxisX.Count)
+                if (axis >= x.Count)
                     throw new Exception("There is not a valid X axis at position " + axis);
 
-                var ax = chart.AxisX[axis];
+                var ax = x[axis].Model;
 
                 p1.X = ax.MaxLimit;
-                p1.Y = chart.DrawMargin.Width + Canvas.GetLeft(chart.DrawMargin);
+                p1.Y = chart.DrawMargin.Width + chart.DrawMargin.Left;
 
                 p2.X = ax.MinLimit;
-                p2.Y = Canvas.GetLeft(chart.DrawMargin);
+                p2.Y = chart.DrawMargin.Left;
             }
 
             var deltaX = p2.X - p1.X;
@@ -79,31 +85,36 @@ namespace LiveChartsCore
             var p1 = new LvcPoint();
             var p2 = new LvcPoint();
 
+            var x = chart.AxisX as List<IAxisView>;
+            var y = chart.AxisY as List<IAxisView>;
+
+            if (x == null || y == null) return 0;
+
             if (source == AxisTags.Y)
             {
-                if (axis >= chart.AxisY.Count)
+                if (axis >= y.Count)
                     throw new Exception("There is not a valid Y axis at position " + axis);
 
-                var ax = chart.AxisY[axis];
+                var ax = y[axis].Model;
 
                 p1.X = ax.MaxLimit;
-                p1.Y = Canvas.GetTop(chart.DrawMargin);
+                p1.Y = chart.DrawMargin.Top;
 
                 p2.X = ax.MinLimit;
-                p2.Y = Canvas.GetTop(chart.DrawMargin) + chart.DrawMargin.Height;
+                p2.Y = chart.DrawMargin.Top + chart.DrawMargin.Height;
             }
             else
             {
-                if (axis >= chart.AxisX.Count)
+                if (axis >= x.Count)
                     throw new Exception("There is not a valid X axis at position " + axis);
 
-                var ax = chart.AxisX[axis];
+                var ax = x[axis].Model;
 
                 p1.X = ax.MaxLimit;
-                p1.Y = chart.DrawMargin.Width + Canvas.GetLeft(chart.DrawMargin);
+                p1.Y = chart.DrawMargin.Width + chart.DrawMargin.Left;
 
                 p2.X = ax.MinLimit;
-                p2.Y = Canvas.GetLeft(chart.DrawMargin);
+                p2.Y = chart.DrawMargin.Left;
             }
 
             var deltaX = p2.X - p1.X;
@@ -129,14 +140,10 @@ namespace LiveChartsCore
         public static double ToDrawMargin(double value, AxisTags source, IChartModel chart, int axis = 0)
         {
             var o = source == AxisTags.X
-                ? Canvas.GetLeft(chart.DrawMargin)
-                : Canvas.GetTop(chart.DrawMargin);
+                ? chart.DrawMargin.Left
+                : chart.DrawMargin.Top;
 
-            var of = source == AxisTags.X
-                ? chart.XOffset
-                : chart.YOffset;
-
-            return ToPlotArea(value, source, chart, axis) - o + of;
+            return ToPlotArea(value, source, chart, axis) - o;
         }
 
         public static double FromDrawMargin(double value, AxisTags source, IChartModel chart, int axis = 0)
@@ -153,13 +160,18 @@ namespace LiveChartsCore
         {
             double min;
 
+            var x = chart.AxisX as List<IAxisView>;
+            var y = chart.AxisY as List<IAxisView>;
+
+            if (x == null || y == null) return 0;
+
             if (source == AxisTags.Y)
             {
-                min = chart.AxisY[axis].MinLimit;
+                min = y[axis].Model.MinLimit;
                 return ToDrawMargin(min, AxisTags.Y, chart, axis) - ToDrawMargin(min + 1, AxisTags.Y, chart, axis);
             }
 
-            min = chart.AxisX[axis].MinLimit;
+            min = x[axis].Model.MinLimit;
             return ToDrawMargin(min + 1, AxisTags.X, chart, axis) - ToDrawMargin(min, AxisTags.X, chart, axis);
         }
     }

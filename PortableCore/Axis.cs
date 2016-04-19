@@ -105,18 +105,18 @@ namespace LiveChartsCore
             if (source == AxisTags.Y)
             {
                 p1.X = LastAxisMax ?? 0;
-                p1.Y = LastPlotArea.Y;
+                p1.Y = LastPlotArea.Top;
 
                 p2.X = LastAxisMin ?? 0;
-                p2.Y = LastPlotArea.Y + LastPlotArea.Height;
+                p2.Y = LastPlotArea.Top + LastPlotArea.Height;
             }
             else
             {
                 p1.X = LastAxisMax ?? 0;
-                p1.Y = LastPlotArea.Width + LastPlotArea.X;
+                p1.Y = LastPlotArea.Width + LastPlotArea.Left;
 
                 p2.X = LastAxisMin ?? 0;
-                p2.Y = LastPlotArea.X;
+                p2.Y = LastPlotArea.Left;
             }
 
             var deltaX = p2.X - p1.X;
@@ -201,7 +201,7 @@ namespace LiveChartsCore
             LastAxisMax = MaxLimit;
             LastAxisMin = MinLimit;
             LastPlotArea =
-                new LvcRectangle(chart.DrawMargin.X, chart.DrawMargin.Y,
+                new LvcRectangle(chart.DrawMargin.Left, chart.DrawMargin.Top,
                     chart.DrawMargin.Width, chart.DrawMargin.Height);
         }
 

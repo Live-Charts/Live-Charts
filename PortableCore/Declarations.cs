@@ -65,23 +65,22 @@ namespace LiveChartsCore
 
     public struct LvcRectangle
     {
-        public LvcRectangle(double x, double y, double width, double height) : this()
+        public LvcRectangle(double left, double top, double width, double height) : this()
         {
-            X = x;
-            Y = y;
+            Left = left;
+            Top = top;
             Width = width;
             Height = height;
         }
 
-        public double X { get; set; }
-        public double Y { get; set; }
+        public double Left { get; set; }
+        public double Top { get; set; }
         public double Width { get; set; }
         public double Height { get; set; }
     }
 
     public interface IChartUpdater
     {
-        IChartModel Chart { get; }
         void Run(bool restartsAnimations = false);
         void Cancel();
     }
