@@ -382,7 +382,7 @@ namespace LiveCharts.CoreComponents
         /// Forces redraw.
         /// </summary>
         /// <param name="ereaseAll"></param>
-        public void Update(bool ereaseAll = true)
+        public void Update(bool ereaseAll = true)   //m
         {
             if (SeriesChanged == null) return;
             SeriesChanged.Stop();
@@ -393,7 +393,7 @@ namespace LiveCharts.CoreComponents
         /// <summary>
         /// Forces chart redraw without waiting for changes. if this method is not used correctly thi might cause chart to plot multiple times in short periods of time.
         /// </summary>
-        public void UnsafeUpdate()
+        public void UnsafeUpdate()                  //d
         {
             PrepareCanvas();
             UpdateSeries(null, null);
@@ -403,7 +403,7 @@ namespace LiveCharts.CoreComponents
         /// Zooms a unit in according to a pivot, the unit is determined by LiveCharts depending on chart scale, values range and zooming mode.
         /// </summary>
         /// <param name="pivot"></param>
-        public void ZoomIn(Point pivot)
+        public void ZoomIn(Point pivot)                 //model
         {
             if (DataTooltip != null) DataTooltip.Visibility = Visibility.Hidden;
 
@@ -475,7 +475,7 @@ namespace LiveCharts.CoreComponents
         /// Zooms a unit in according to a pivot, the unit is determined by LiveCharts depending on chart scale, values range and zooming mode.
         /// </summary>
         /// <param name="pivot"></param>
-        public void ZoomOut(Point pivot)
+        public void ZoomOut(Point pivot)                    //model
         {
             if (DataTooltip != null) DataTooltip.Visibility = Visibility.Hidden;
 
@@ -531,7 +531,7 @@ namespace LiveCharts.CoreComponents
         /// <summary>
         /// Clears zoom
         /// </summary>
-        public void ClearZoom()
+        public void ClearZoom()                             //model
         {
             foreach (var xi in AxisX)
             {
@@ -555,7 +555,7 @@ namespace LiveCharts.CoreComponents
         /// <param name="source"></param>
         /// <param name="axis"></param>
         /// <returns></returns>
-        public double ToPlotArea(double value, AxisTags source, int axis = 0)
+        public double ToPlotArea(double value, AxisTags source, int axis = 0) //depreciated
         {
             return Methods.ToPlotArea(value, source, this, axis);
         }
@@ -566,7 +566,7 @@ namespace LiveCharts.CoreComponents
         /// <param name="value"></param>
         /// <param name="axis"></param>
         /// <returns></returns>
-        public Point ToPlotArea(Point value, int axis = 0)
+        public Point ToPlotArea(Point value, int axis = 0)              //depreciated
         {
             return new Point(ToPlotArea(value.X, AxisTags.X, axis), ToPlotArea(value.Y, AxisTags.Y, axis));
         }
@@ -577,7 +577,7 @@ namespace LiveCharts.CoreComponents
         /// <param name="value"></param>
         /// <param name="axis"></param>
         /// <returns></returns>
-        public double FromPlotArea(double value, AxisTags axis)
+        public double FromPlotArea(double value, AxisTags axis)           //depreciated
         {
             return Methods.FromPlotArea(value, axis, this);
         }
@@ -588,7 +588,7 @@ namespace LiveCharts.CoreComponents
         /// <param name="value"></param>
         /// <param name="axis"></param>
         /// <returns></returns>
-        public double FromDrawMargin(double value, AxisTags axis)
+        public double FromDrawMargin(double value, AxisTags axis)       //depreciated
         {
             return Methods.FromDrawMargin(value, axis, this);
         }
@@ -600,12 +600,12 @@ namespace LiveCharts.CoreComponents
         /// <param name="axis"></param>
         /// <param name="index"></param>
         /// <returns></returns>
-        public double ToDrawMargin(double value, AxisTags axis, int index = 0)
+        public double ToDrawMargin(double value, AxisTags axis, int index = 0)  //depreciated
         {
             return Methods.ToDrawMargin(value, axis, this, index);
         }
 
-        public Point ToDrawMargin(Point point)
+        public Point ToDrawMargin(Point point) //depreciated
         {
             return new Point(ToDrawMargin(point.X, AxisTags.X), ToDrawMargin(point.Y, AxisTags.Y));
         }
@@ -614,16 +614,15 @@ namespace LiveCharts.CoreComponents
 
         #region ProtectedMethods
 
-        protected void ValidateAxes()
+        protected void ValidateAxes()               //view
         {
             if (AxisX.Count == 0)
                 SetValue(AxisXProperty, new List<Axis> {DefaultAxes.DefaultAxis});
             if (AxisY.Count == 0)
                 SetValue(AxisYProperty, new List<Axis> {DefaultAxes.DefaultAxis});
         }
-
-
-        protected Point GetLabelSize(Axis axis, string value)
+        
+        protected Point GetLabelSize(Axis axis, string value)  //depreciated
         {
             if (!axis.ShowLabels || value == null) return new Point(0, 0);
             var uiLabelSize = new FormattedText(value, CultureInfo.CurrentUICulture, FlowDirection.LeftToRight,
@@ -632,7 +631,7 @@ namespace LiveCharts.CoreComponents
             return new Point(uiLabelSize.Width, uiLabelSize.Height);
         }
 
-        protected virtual void PrepareAxes()
+        protected virtual void PrepareAxes()         //model
         {
             InitializeComponents();
 
@@ -663,7 +662,7 @@ namespace LiveCharts.CoreComponents
         #endregion
 
         #region Virtual Methods
-        protected virtual void CalculateComponentsAndMargin()
+        protected virtual void CalculateComponentsAndMargin() //model
         {
             if (DrawMargin.ActualHeight < 10 || DrawMargin.ActualWidth < 10) return;
 
@@ -839,7 +838,7 @@ namespace LiveCharts.CoreComponents
             //}
         }
 
-        protected virtual void LoadLegend()
+        protected virtual void LoadLegend()                     //view
         {
             if (Legend.Parent == null)
                 Canvas.Children.Add(Legend);
@@ -855,7 +854,7 @@ namespace LiveCharts.CoreComponents
                 : Orientation.Vertical;
         }
 
-        protected internal virtual void DataMouseEnter(object sender, MouseEventArgs e)
+        protected internal virtual void DataMouseEnter(object sender, MouseEventArgs e) //model
         {
             if (DataTooltip == null || !Hoverable) return;
 
@@ -915,9 +914,9 @@ namespace LiveCharts.CoreComponents
             {
                 To = p.Y, Duration = TimeSpan.FromMilliseconds(200)
             });
-        }
+        } 
 
-        protected internal virtual void DataMouseLeave(object sender, MouseEventArgs e)
+        protected internal virtual void DataMouseLeave(object sender, MouseEventArgs e) //model
         {
             if (!Hoverable) return;
 
@@ -945,19 +944,19 @@ namespace LiveCharts.CoreComponents
             TooltipTimer.Start();
         }
 
-        internal virtual void DataMouseDown(object sender, MouseEventArgs e)
+        internal virtual void DataMouseDown(object sender, MouseEventArgs e)                //model
         {
             var shape = ShapesMapper.FirstOrDefault(s => Equals(s.HoverShape, sender));
             if (shape == null) return;
             OnDataClick(shape.ChartPoint);
-        }
+        }         
 
-        protected virtual void OnDataClick(ChartPoint chartPoint)
+        protected virtual void OnDataClick(ChartPoint chartPoint)                       //model
         {
             if (DataClick != null) DataClick.Invoke(chartPoint);
-        }
+        }           
 
-        protected virtual Point GetToolTipPosition(ShapeMap sender, List<ShapeMap> sibilings)
+        protected virtual Point GetToolTipPosition(ShapeMap sender, List<ShapeMap> sibilings)  //model
         {
             DataTooltip.UpdateLayout();
             DataTooltip.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
@@ -979,7 +978,7 @@ namespace LiveCharts.CoreComponents
 
         #region Internal Methods
 
-        internal void OnDataSeriesChanged(object sender, NotifyCollectionChangedEventArgs e)
+        internal void OnDataSeriesChanged(object sender, NotifyCollectionChangedEventArgs e)  //depreciated
         {
             _seriesValuesChanged.Stop();
             _seriesValuesChanged.Start();
@@ -989,7 +988,7 @@ namespace LiveCharts.CoreComponents
 
         #region Private Methods
 
-        private void PlaceLegend()
+        private void PlaceLegend()                          //model
         {
             LoadLegend();
 

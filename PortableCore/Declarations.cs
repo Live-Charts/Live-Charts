@@ -1,3 +1,5 @@
+using System;
+
 namespace LiveChartsCore
 {
     public enum AxisPosition
@@ -63,8 +65,18 @@ namespace LiveChartsCore
         public double Height { get; set; }
     }
 
-    public struct LvcRectangle
+    public class LvcRectangle
     {
+        private double _left;
+        private double _top;
+        private double _width;
+        private double _height;
+
+        public LvcRectangle()
+        {
+            
+        }
+
         public LvcRectangle(double left, double top, double width, double height) : this()
         {
             Left = left;
@@ -73,10 +85,50 @@ namespace LiveChartsCore
             Height = height;
         }
 
-        public double Left { get; set; }
-        public double Top { get; set; }
-        public double Width { get; set; }
-        public double Height { get; set; }
+        public event Action<double> SetTop;
+        public event Action<double> SetLeft;
+        public event Action<double> SetWidth;
+        public event Action<double> SetHeight;
+
+        public double Left
+        {
+            get { return _left; }
+            set
+            {
+                _left = value;
+                if (SetLeft != null) SetLeft.Invoke(value);
+            }
+        }
+
+        public double Top
+        {
+            get { return _top; }
+            set
+            {
+                _top = value;
+                if (SetTop != null) SetTop.Invoke(value);
+            }
+        }
+
+        public double Width
+        {
+            get { return _width; }
+            set
+            {
+                _width = value;
+                if (SetWidth != null) SetWidth.Invoke(value);
+            }
+        }
+
+        public double Height
+        {
+            get { return _height; }
+            set
+            {
+                _height = value;
+                if (SetHeight != null) SetHeight.Invoke(value);
+            }
+        }
     }
 
     public interface IChartUpdater

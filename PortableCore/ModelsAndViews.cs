@@ -32,10 +32,11 @@ namespace LiveChartsCore
         ISeriesView View { get; set; }
         IChartModel Chart { get; set; }
         IChartValues Values { get; set; }
+        int ScalesXAt { get; set; }
+        int ScalesYAt { get; set; }
         SeriesConfiguration Configuration { get; set; }
         SeriesCollection SeriesCollection { get; set; }
         string Title { get; set; }
-        SeriesCollection Collection { get; }
     }
 
     public interface ISeriesView
@@ -76,6 +77,14 @@ namespace LiveChartsCore
     {
         IAxisModel Model { get; }
         ISeparatorCacheView NewSeparator();
+        double LabelsReference { get; set; }
+        double UnitWidth { get; set; }
+        LvcSize UpdateTitle(double rotationAngle = 0);
+        void SetTitleTop(double value);
+        void SetTitleLeft(double value);
+        double GetTitleLeft();
+        double GetTileTop();
+        LvcSize GetLabelSize();
     }
 
     public interface ISeparatorModel
@@ -119,7 +128,7 @@ namespace LiveChartsCore
     {
         IChartView View { get; set; }
         IChartUpdater Updater { get; set; }
-        LvcSize ChartSize { get; set; }
+        LvcSize ChartControlSize { get; set; }
         LvcRectangle DrawMargin { get; set; }
         SeriesCollection Series { get; set; }
         bool HasUnitaryPoints { get; set; }
@@ -127,10 +136,17 @@ namespace LiveChartsCore
         object AxisX { get; set; }
         object AxisY { get; set; }
         TimeSpan TooltipTimeout { get; set; }
+        ZoomingOptions Zoom { get; set; }
+        LegendLocation LegendLocation { get; set; }
+
+        void PrepareAxes();
+        void CalculateComponentsAndMargin();
+        LvcRectangle PlaceLegend(LvcRectangle drawMargin);
 
         void Update(bool restartAnimations = true);
         void ZoomIn(LvcPoint pivot);
         void ZoomOut(LvcPoint pivot);
+        void ClearZoom();
         void TooltipHideStartCount();
     }
 
@@ -139,11 +155,22 @@ namespace LiveChartsCore
         IChartModel Model { get; }
         void InitializeSeries(ISeriesView series);
         void Update(bool restartAnimations = true);
+        void SetDrawMarginTop(double value);
+        void SetDrawMarginLeft(double value);
+        void SetDrawMarginHeight(double value);
+        void SetDrawMarginWidth(double value);
         void Erase();
         void AddToView(object element);
         void RemoveFromView(object element);
         void ShowTooltip(ChartPoint sender, IEnumerable<ChartPoint> sibilings, LvcPoint at);
         void HideTooltop();
+        void IntializeAxis();
+        void ShowLegend(LvcPoint at);
+        void HideLegend();
+
+
+        LvcSize LoadLegend();
+        TimeSpan? GetZoomingSpeed();
 
     }
     #endregion

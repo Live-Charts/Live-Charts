@@ -56,6 +56,7 @@
       <DependentUpon>ChartLegend.xaml</DependentUpon>
     </Compile>
     <Compile Include="Converters.cs" />
+    <Compile Include="DefaultAxes.cs" />
     <Compile Include="IndexedTooltipData.cs" />
     <Compile Include="ChartTooltip.xaml.cs">
       <DependentUpon>ChartTooltip.xaml</DependentUpon>

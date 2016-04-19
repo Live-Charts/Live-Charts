@@ -34,9 +34,13 @@ namespace Desktop
         public Axis()
         {
             Model = new LiveChartsCore.Axis(this);
+            TitleBlock = new TextBlock();
         }
 
-        #region IAxisView
+        public TextBlock TitleBlock { get; set; }
+        public double LabelsReference { get; set; }
+        public double UnitWidth { get; set; }
+        public Dictionary<double, AxisSeparatorCache> Cache { get; set; }
         public IAxisModel Model { get; set; }
         public ISeparatorCacheView NewSeparator()
         {
@@ -58,9 +62,44 @@ namespace Desktop
             return asc;
         }
 
-        #endregion
+        public LvcSize UpdateTitle(double rotationAngle = 0)
+        {
+            if (TitleBlock.Parent == null)
+            {
+                if (Math.Abs(rotationAngle) < 0.1)
+                    TitleBlock.RenderTransform = new RotateTransform(rotationAngle);
+                Model.Chart.View.AddToView(TitleBlock);
+            }
+            TitleBlock.UpdateLayout();
+            return string.IsNullOrWhiteSpace(Title)
+                ? new LvcSize()
+                : new LvcSize(TitleBlock.RenderSize.Width, TitleBlock.RenderSize.Height);
+        }
 
+        public void SetTitleTop(double value)
+        {
+            Canvas.SetTop(TitleBlock, value);
+        }
 
+        public void SetTitleLeft(double value)
+        {
+            Canvas.SetLeft(TitleBlock, value);
+        }
+
+        public double GetTitleLeft()
+        {
+            return Canvas.GetLeft(TitleBlock);
+        }
+
+        public double GetTileTop()
+        {
+            return Canvas.GetTop(TitleBlock);
+        }
+
+        public LvcSize GetLabelSize()
+        {
+            return new LvcSize(TitleBlock.DesiredSize.Width, TitleBlock.DesiredSize.Height);
+        }
 
         public static readonly DependencyProperty LabelsProperty = DependencyProperty.Register(
             "Labels", typeof (IList<string>), typeof (Axis), 
@@ -299,12 +338,6 @@ namespace Desktop
             get { return (Brush)GetValue(ForegroundProperty); }
             set { SetValue(ForegroundProperty, value); }
         }
-
-        
-        public TextBlock TitleBlock { get; set; }       
-        public double LabelsReference { get; set; }
-        public Dictionary<double, AxisSeparatorCache> Cache { get; set; }
-        public double UnitWidth { get; set; }
 
 
         public void Clear()

@@ -23,6 +23,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -75,7 +76,7 @@ namespace Desktop
             ResizeTimer = new DispatcherTimer {Interval = TimeSpan.FromMilliseconds(100)};
             ResizeTimer.Tick += (sender, args) =>
             {
-                Model.Updater.Run(false);
+                Model.Updater.Run();
             };
             SizeChanged += (sender, args) =>
             {
@@ -155,8 +156,8 @@ namespace Desktop
         }
 
         public static readonly DependencyProperty ZoomProperty = DependencyProperty.Register(
-            "Zoom", typeof(ZoomingOptions), typeof(Chart), 
-            new PropertyMetadata(default(ZoomingOptions)));
+            "Zoom", typeof (ZoomingOptions), typeof (Chart),
+            new PropertyMetadata(default(ZoomingOptions), OnPropertyChanged((v, m) => m.Zoom = v.Zoom)));
         /// <summary>
         /// Gets or sets chart zoom behavior
         /// </summary>
@@ -167,7 +168,8 @@ namespace Desktop
         }
 
         public static readonly DependencyProperty LegendLocationProperty = DependencyProperty.Register(
-            "LegendLocation", typeof(LegendLocation), typeof(Chart), new PropertyMetadata(LegendLocation.None));
+            "LegendLocation", typeof (LegendLocation), typeof (Chart),
+            new PropertyMetadata(LegendLocation.None, OnPropertyChanged((v, m) => m.LegendLocation = v.LegendLocation)));
         /// <summary>
         /// Gets or sets where legend is located
         /// </summary>
@@ -289,7 +291,7 @@ namespace Desktop
         {
             var index = CurrentColorIndex++;
             var defColor = Colors[(int)(index - Colors.Count * Math.Truncate(index / (decimal)Colors.Count))];
-            var seriesView = series as Desktop.Series;
+            var seriesView = series as Series;
             if (seriesView == null) return;
             seriesView.Stroke = seriesView.Stroke ?? new SolidColorBrush(defColor);
             seriesView.Fill = seriesView.Fill ?? new SolidColorBrush(defColor) { Opacity = seriesView.DefaultFillOpacity };
@@ -298,6 +300,26 @@ namespace Desktop
         public void Update(bool restartAnimations = true)
         {
             _model.Update(restartAnimations);
+        }
+
+        public void SetDrawMarginTop(double value)
+        {
+            Canvas.SetTop(DrawMargin, value);
+        }
+
+        public void SetDrawMarginLeft(double value)
+        {
+            Canvas.SetLeft(DrawMargin, value);
+        }
+
+        public void SetDrawMarginHeight(double value)
+        {
+            DrawMargin.Height = value;
+        }
+
+        public void SetDrawMarginWidth(double value)
+        {
+            DrawMargin.Width = value;
         }
 
         public void Erase()
@@ -346,7 +368,69 @@ namespace Desktop
 
         public void HideTooltop()
         {
-            throw new NotImplementedException();
+            if (DataTooltip != null)
+                DataTooltip.Visibility = Visibility.Hidden;
+        }
+
+        public void IntializeAxis()
+        {
+            if (AxisX.Count == 0)
+                SetValue(AxisXProperty, new List<Axis> { DefaultAxes.DefaultAxis });
+            if (AxisY.Count == 0)
+                SetValue(AxisYProperty, new List<Axis> { DefaultAxes.DefaultAxis });
+        }
+
+        public void ShowLegend(LvcPoint at)
+        {
+            if (ChartLegend == null) return;
+
+            if (ChartLegend.Parent == null)
+            {
+                AddToView(ChartLegend);
+                Canvas.SetLeft(ChartLegend, 0d);
+                Canvas.SetTop(ChartLegend, 0d);
+            }
+
+            ChartLegend.Visibility = Visibility.Visible;
+
+            Canvas.SetLeft(ChartLegend, at.X);
+            Canvas.SetTop(ChartLegend, at.Y);
+        }
+
+        public void HideLegend()
+        {
+            if (ChartLegend != null)
+                ChartLegend.Visibility = Visibility.Hidden;
+        }
+
+        public LvcSize LoadLegend()
+        {
+            if (ChartLegend == null || LegendLocation == LegendLocation.None)
+                return new LvcSize();
+
+            if (ChartLegend.Parent == null)
+                Canvas.Children.Add(ChartLegend);
+
+            ChartLegend.Series = Series.Cast<Series>().Select(x => new SeriesStandin
+            {
+                Fill = x.Fill,
+                Stroke = x.Stroke,
+                Title = x.Title
+            });
+            ChartLegend.Orientation = LegendLocation == LegendLocation.Bottom || LegendLocation == LegendLocation.Top
+                ? Orientation.Horizontal
+                : Orientation.Vertical;
+
+            ChartLegend.UpdateLayout();
+            ChartLegend.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+
+            return new LvcSize(ChartLegend.DesiredSize.Width,
+                ChartLegend.DesiredSize.Height);
+        }
+
+        public TimeSpan? GetZoomingSpeed()
+        {
+            return DisableAnimations ? null : (TimeSpan?) AnimationsSpeed;
         }
 
         #region Callbacks
