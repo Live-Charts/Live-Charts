@@ -1,6 +1,6 @@
 using System.Windows.Media;
 
-namespace Desktop
+namespace LiveChartsDesktop
 {
     public static class DefaultAxes
     {

@@ -22,14 +22,14 @@
 
 namespace LiveChartsCore
 {
-    public class Series : ISeriesModel
+    public abstract class Series : ISeriesModel
     {
-        public Series(ISeriesView view)
+        protected Series(ISeriesView view)
         {
             View = view;
         }
 
-        public Series(ISeriesView view, SeriesConfiguration configuration)
+        protected Series(ISeriesView view, SeriesConfiguration configuration)
         {
             View = view;
             Configuration = configuration;
@@ -65,5 +65,7 @@ namespace LiveChartsCore
             Configuration = config;
             return this;
         }
+
+        public abstract void Update();
     }
 }

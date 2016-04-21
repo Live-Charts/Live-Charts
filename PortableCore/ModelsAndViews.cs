@@ -37,6 +37,7 @@ namespace LiveChartsCore
         SeriesConfiguration Configuration { get; set; }
         SeriesCollection SeriesCollection { get; set; }
         string Title { get; set; }
+        void Update();
     }
 
     public interface ISeriesView

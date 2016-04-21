@@ -262,7 +262,7 @@ namespace LiveCharts.CoreComponents
         /// </summary>
         /// <param name="index"></param>
         /// <returns></returns>
-        public Color GetColorByIndex(int index)
+        public Color GetColorByIndex(int index)    //depreciated
         {
             return Chart.Colors[(int) (index - Chart.Colors.Count*Math.Truncate(index/(decimal) Chart.Colors.Count))];
         }
@@ -272,7 +272,7 @@ namespace LiveCharts.CoreComponents
         /// <typeparam name="T"></typeparam>
         /// <param name="config"></param>
         /// <returns></returns>
-        public Series Setup<T>(SeriesConfiguration<T> config)
+        public Series Setup<T>(SeriesConfiguration<T> config)  //model
         {
             Configuration = config;
             return this;
@@ -280,11 +280,11 @@ namespace LiveCharts.CoreComponents
         #endregion
 
         #region Abstracts
-        public abstract void Plot(bool animate = true);
+        public abstract void Plot(bool animate = true);     //model
         #endregion
 
         #region PrivateMethods
-        private static void ValuesCallBack(DependencyObject o, DependencyPropertyChangedEventArgs args)
+        private static void ValuesCallBack(DependencyObject o, DependencyPropertyChangedEventArgs args) //view 
         {
             var series = o as Series;
             if (series == null) return;
@@ -305,7 +305,7 @@ namespace LiveCharts.CoreComponents
         #endregion
 
         #region Virtual Methods
-        internal virtual void Erase(bool force = false)
+        internal virtual void Erase(bool force = false)     //derpeciated
         {
             var hoverableShapes = Chart.ShapesMapper.Where(x => Equals(x.Series, this)).ToList();
             foreach (var hs in hoverableShapes)
@@ -325,7 +325,7 @@ namespace LiveCharts.CoreComponents
         /// <param name="axis"></param>
         /// <param name="axIndex"></param>
         /// <returns></returns>
-        protected double ToPlotArea(double value, AxisTags axis, int axIndex = 0)
+        protected double ToPlotArea(double value, AxisTags axis, int axIndex = 0)   //depreciated
         {
             return Methods.ToPlotArea(value, axis, Chart, axIndex);
         }
@@ -337,24 +337,24 @@ namespace LiveCharts.CoreComponents
         /// <param name="xIndex"></param>
         /// <param name="yIndex"></param>
         /// <returns></returns>
-        protected Point ToPlotArea(Point value, int xIndex = 0, int yIndex = 0)
+        protected Point ToPlotArea(Point value, int xIndex = 0, int yIndex = 0)     //depreciated
         {
             return new Point(ToPlotArea(value.X, AxisTags.X, xIndex),
                 ToPlotArea(value.Y, AxisTags.Y, yIndex));
         }
 
-        protected Point ToPlotArea(ChartPoint point, int xIndex = 0, int yIndex = 0)
+        protected Point ToPlotArea(ChartPoint point, int xIndex = 0, int yIndex = 0)    //depreciated
         {
             return new Point(ToPlotArea(point.X, AxisTags.X, xIndex),
                 ToPlotArea(point.Y, AxisTags.Y, yIndex));
         }
 
-        protected double ToDrawMargin(double value, AxisTags source, int axis = 0)
+        protected double ToDrawMargin(double value, AxisTags source, int axis = 0)      //depreciated
         {
             return Methods.ToDrawMargin(value, source, Chart, axis);
         }
 
-        protected ChartPoint ToDrawMargin(ChartPoint point, int axisX = 0, int axisY = 0)
+        protected ChartPoint ToDrawMargin(ChartPoint point, int axisX = 0, int axisY = 0)   //depreciated
         {
             return new ChartPoint
             {
@@ -367,7 +367,7 @@ namespace LiveCharts.CoreComponents
         }
         #endregion
 
-        internal TextBlock BindATextBlock(int rotate)
+        internal TextBlock BindATextBlock(int rotate)                       
         {
             var tb = new TextBlock();
 

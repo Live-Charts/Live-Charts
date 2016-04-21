@@ -37,7 +37,7 @@ namespace LiveCharts
 {
     public class LineSeries : Series
     {
-        public static DateTime TestTimer = DateTime.Now;
+        public static DateTime TestTimer = DateTime.Now; //depresiated
 
         private static TimeSpan _animSpeed;
         private readonly List<LineAndAreaShape> _areas = new List<LineAndAreaShape>();

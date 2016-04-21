@@ -7,7 +7,7 @@
     <ProjectGuid>{4D253423-AE05-47F6-A59D-9162EC0BB1F2}</ProjectGuid>
     <OutputType>library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Desktop</RootNamespace>
+    <RootNamespace>LiveChartsDesktop</RootNamespace>
     <AssemblyName>Desktop</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -61,6 +61,8 @@
     <Compile Include="ChartTooltip.xaml.cs">
       <DependentUpon>ChartTooltip.xaml</DependentUpon>
     </Compile>
+    <Compile Include="LineChart.cs" />
+    <Compile Include="LineSeries.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

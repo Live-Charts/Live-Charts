@@ -1,6 +1,6 @@
 ﻿//The MIT License(MIT)
 
-//copyright(c) 2016 Alberto Rodriguez
+//Copyright(c) 2016 Alberto Rodriguez
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -20,37 +20,16 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-using System.Windows;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace LiveChartsDesktop
 {
-    /// <summary>
-    /// Interaction logic for BaseToolTip.xaml
-    /// </summary>
-    public partial class ChartTooltip 
+    public class LineSeries : Series
     {
-        public ChartTooltip()
-        {
-            InitializeComponent();
-            DataContext = this;
-        }
 
-        public static readonly DependencyProperty HeaderProperty =
-            DependencyProperty.Register("Header", typeof(string), typeof(ChartTooltip), new PropertyMetadata(null));
-
-        public string Header
-        {
-            get { return (string)GetValue(HeaderProperty); }
-            set { SetValue(HeaderProperty, value); }
-        }
-
-        public static readonly DependencyProperty DataProperty =
-            DependencyProperty.Register("Data", typeof(IndexedTooltipData[]), typeof(ChartTooltip), new PropertyMetadata(null));
-
-        public IndexedTooltipData[] Data
-        {
-            get { return (IndexedTooltipData[])GetValue(DataProperty); }
-            set { SetValue(DataProperty, value); }
-        }
     }
 }

@@ -27,7 +27,7 @@ using System.Windows.Media;
 using System.Windows.Shapes;
 using LiveChartsCore;
 
-namespace Desktop
+namespace LiveChartsDesktop
 {
     public class Axis : FrameworkElement, IAxisView
     {

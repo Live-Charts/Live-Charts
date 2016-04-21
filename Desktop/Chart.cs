@@ -32,15 +32,15 @@ using System.Windows.Threading;
 using LiveChartsCore;
 using Size = System.Windows.Size;
 
-namespace Desktop
+namespace LiveChartsDesktop
 {
     public abstract class Chart : UserControl, IChartView
     {
-        private readonly LiveChartsCore.Chart _model;
+        protected LiveChartsCore.Chart ChartModel;
 
         protected Chart()
         {
-            _model = new LiveChartsCore.Chart(this);
+            ChartModel = new LiveChartsCore.Chart(this);
 
             UpdateLayout();
             Measure(new Size(double.MaxValue, double.MaxValue));
@@ -284,7 +284,7 @@ namespace Desktop
 
         public IChartModel Model
         {
-            get { return _model; }
+            get { return ChartModel; }
         }
 
         public void InitializeSeries(ISeriesView series)
@@ -299,7 +299,7 @@ namespace Desktop
 
         public void Update(bool restartAnimations = true)
         {
-            _model.Update(restartAnimations);
+            ChartModel.Update(restartAnimations);
         }
 
         public void SetDrawMarginTop(double value)
@@ -433,8 +433,8 @@ namespace Desktop
             return DisableAnimations ? null : (TimeSpan?) AnimationsSpeed;
         }
 
-        #region Callbacks
-        private static PropertyChangedCallback OnPropertyChanged(bool animate = false)
+        #region Property Changed
+        protected static PropertyChangedCallback OnPropertyChanged(bool animate = false)
         {
             return (o, args) =>
             {
@@ -444,7 +444,7 @@ namespace Desktop
             };
         }
 
-        private static PropertyChangedCallback OnPropertyChanged(Action<Chart, IChartModel> map, bool animate = false)
+        protected static PropertyChangedCallback OnPropertyChanged(Action<Chart, IChartModel> map, bool animate = false)
         {
             return (o, args) =>
             {

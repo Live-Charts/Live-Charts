@@ -22,7 +22,7 @@
 
 using System.Windows.Media;
 
-namespace Desktop
+namespace LiveChartsDesktop
 {
 	public class SeriesStandin
 	{

@@ -29,7 +29,7 @@ using System.Windows.Data;
 using System.Windows.Media;
 using LiveChartsCore;
 
-namespace Desktop
+namespace LiveChartsDesktop
 {
     public abstract class Series : FrameworkElement, ISeriesView
     {

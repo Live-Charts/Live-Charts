@@ -21,36 +21,28 @@
 //SOFTWARE.
 
 using System.Windows;
+using LiveChartsCore;
 
 namespace LiveChartsDesktop
 {
-    /// <summary>
-    /// Interaction logic for BaseToolTip.xaml
-    /// </summary>
-    public partial class ChartTooltip 
+    public class LineChart : Chart, ILine
     {
-        public ChartTooltip()
+        public LineChart()
         {
-            InitializeComponent();
-            DataContext = this;
+            LineSmoothness = 0.8;
+            ChartModel = new LineChartModel(this);
         }
 
-        public static readonly DependencyProperty HeaderProperty =
-            DependencyProperty.Register("Header", typeof(string), typeof(ChartTooltip), new PropertyMetadata(null));
+        public static readonly DependencyProperty LineSmoothnessProperty = DependencyProperty.Register(
+            "LineSmoothness", typeof (double), typeof (LineChart),
+            new PropertyMetadata(default(double), OnPropertyChanged()));
 
-        public string Header
+        public double LineSmoothness
         {
-            get { return (string)GetValue(HeaderProperty); }
-            set { SetValue(HeaderProperty, value); }
+            get { return (double) GetValue(LineSmoothnessProperty); }
+            set { SetValue(LineSmoothnessProperty, value); }
         }
 
-        public static readonly DependencyProperty DataProperty =
-            DependencyProperty.Register("Data", typeof(IndexedTooltipData[]), typeof(ChartTooltip), new PropertyMetadata(null));
 
-        public IndexedTooltipData[] Data
-        {
-            get { return (IndexedTooltipData[])GetValue(DataProperty); }
-            set { SetValue(DataProperty, value); }
-        }
     }
 }

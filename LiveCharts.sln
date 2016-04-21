@@ -15,7 +15,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Portable", "Portable", "{D8
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PortableCore", "PortableCore\PortableCore.csproj", "{D447642C-A85F-4AB0-96D9-C66CFF91AADA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Desktop", "Desktop\Desktop.csproj", "{4D253423-AE05-47F6-A59D-9162EC0BB1F2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LiveChartsDesktop", "Desktop\LiveChartsDesktop.csproj", "{4D253423-AE05-47F6-A59D-9162EC0BB1F2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UniversalWindows", "UniversalWindows\UniversalWindows.csproj", "{46A4CF2A-BF26-40F5-B925-5D4DF84D26A0}"
 EndProject

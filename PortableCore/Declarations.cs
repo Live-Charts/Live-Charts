@@ -136,4 +136,9 @@ namespace LiveChartsCore
         void Run(bool restartsAnimations = false);
         void Cancel();
     }
+
+    public interface ILine
+    {
+        double LineSmoothness { get; set; }
+    }
 }

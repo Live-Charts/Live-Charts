@@ -28,9 +28,9 @@ using System.Linq;
 
 namespace LiveChartsCore
 {
-    public class Chart : IChartModel
+    public abstract class Chart : IChartModel
     {
-        public Chart(IChartView view)
+        protected Chart(IChartView view)
         {
             View = view;
 
@@ -41,7 +41,7 @@ namespace LiveChartsCore
             };
             TooltipHidder.Tick += () =>
             {
-               View.HideTooltop();
+                View.HideTooltop();
             };
 
             Updater = Motor.GetUpdater();

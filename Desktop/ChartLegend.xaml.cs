@@ -24,7 +24,7 @@ using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 
-namespace Desktop
+namespace LiveChartsDesktop
 {
     /// <summary>
     /// Interaction logic for SeriesViewer.xaml

@@ -26,7 +26,7 @@ using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using LiveChartsCore;
 
-namespace Desktop
+namespace LiveChartsDesktop
 {
     public class ChartCursor
     {
