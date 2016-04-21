@@ -146,6 +146,13 @@ namespace LiveChartsCore
             return ToPlotArea(value, source, chart, axis) - o;
         }
 
+        public static LvcPoint ToDrawMargin(ChartPoint point, int axisXIndex, int axisYIndex, IChartModel chart)
+        {
+            return new LvcPoint(
+                ToDrawMargin(point.X, AxisTags.X, chart, axisXIndex),
+                ToDrawMargin(point.Y, AxisTags.Y, chart, axisYIndex));
+        }
+
         public static double FromDrawMargin(double value, AxisTags source, IChartModel chart, int axis = 0)
         {
             //var o = axis == AxisTags.X

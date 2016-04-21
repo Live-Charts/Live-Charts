@@ -24,7 +24,7 @@ using System;
 
 namespace LiveChartsCore
 {
-    public class ChartPoint : IChartPointView
+    public class ChartPoint
     {
         /// <summary>
         /// Gets the X point value
@@ -37,7 +37,7 @@ namespace LiveChartsCore
         /// <summary>
         /// Gets the coordinate where the value is placed at chart
         /// </summary>
-        public LvcPoint Location { get; set; }
+        public LvcPoint Coordinates { get; set; }
         /// <summary>
         /// Gets the index of this point in the chart
         /// </summary>
@@ -46,15 +46,15 @@ namespace LiveChartsCore
         /// Gets the object where the chart pulled the point
         /// </summary>
         public object Instance { get; set; }
-
-        public virtual void UpdateView()
-        {
-            throw new NotImplementedException("You must build the view of a chart point before caling this method");
-        }
+        /// <summary>
+        /// Gets or sets the view of this chart point
+        /// </summary>
+        public IChartPointView View { get; set; }
     }
 
     public interface IChartPointView
     {
-        void UpdateView();
+        object View { get; set; }
+        void UpdateView(object point);
     }
 }
