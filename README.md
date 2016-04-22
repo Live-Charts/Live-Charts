@@ -6,6 +6,7 @@
   <img src="http://lvcharts.net/Content/Images/Samples/linemove.gif" width="400" />
   <img src="http://lvcharts.net/Content/Images/Samples/pie.gif" width="400"/>
   <img src="http://lvcharts.net/Content/Images/Samples/barsmove.gif" width="400"/>
+  <img src="https://cloud.githubusercontent.com/assets/10853349/14480111/65c18a98-00eb-11e6-8ce2-bc7cf3d0fdfc.gif" width="400" />
 </p>
 
 [![GitHub license](https://img.shields.io/github/license/beto-rodriguez/Live-Charts.svg?style=flat-square)](https://github.com/beto-rodriguez/Live-Charts/blob/master/LICENSE.TXT)
@@ -67,6 +68,10 @@ myChart.AxixX.Labels = labels;
 * High performance charts are almost ready, current test can draw 3 million points in only 1 second
 * Find more at http://lvcharts.net/
 
+#Supported Platforms
+
+Only WPF and WinForms for now, I am playing with the code to find an easy way to extend it as PCL
+
 # Installation
 
 **1**. Install package from [**Nuget**](https://www.nuget.org/packages/LiveCharts) `Install-Package LiveCharts`
@@ -83,7 +88,18 @@ using LiveCharts;
 ```
 **3**. Thats it. You are ready.
 
+**Note:** To install it for windows forms you will need some extra steps, plese see http://lvcharts.net/#/examples/v1/install-wf?path=WF-Install
+
 # How to Contribute
+
+<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+<input type="hidden" name="cmd" value="_s-xclick">
+<input type="hidden" name="hosted_button_id" value="J86WDLSS9PWGL">
+<input type="image" src="https://www.paypalobjects.com/en_GB/i/btn/btn_donate_LG.gif" border="0" name="submit" alt="PayPal – The safer, easier way to pay online.">
+<img alt="" border="0" src="https://www.paypalobjects.com/es_XC/i/scr/pixel.gif" width="1" height="1">
+</form>
+
+[![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=J86WDLSS9PWGL)
 
 * **Star** this repo
 * Try it
@@ -107,6 +123,10 @@ Go to examples folder up there ^^^ or even better clone this repo and see includ
 </p>
 
 # Perfomance Test
+
+This test is in progress and is not ready yet, here is the example I made the tests but is not ready yet!
+
+https://github.com/beto-rodriguez/Live-Charts/tree/master/WPFExamples/HighPerformance
 
 <p align="center">
 <img src="https://dl.dropboxusercontent.com/u/40165535/livecharts%20perfomance.png" />
