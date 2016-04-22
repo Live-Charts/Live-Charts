@@ -21,15 +21,75 @@
 //SOFTWARE.
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Media;
+using System.Windows.Shapes;
+using LiveChartsCore;
 
 namespace LiveChartsDesktop
 {
     public class LineSeries : Series
     {
+        public LineSeries()
+        {
+            Model = new LiveChartsCore.LineSeries(this);
+        }
 
+        public LineSeries(SeriesConfiguration configuration) : base(configuration)
+        {
+            Model = new LiveChartsCore.LineSeries(this);
+        }
+
+        public static readonly DependencyProperty PointRadiusProperty = DependencyProperty.Register(
+            "PointRadius", typeof (double), typeof (LineSeries), new PropertyMetadata(default(double)));
+
+        public double PointRadius
+        {
+            get { return (double) GetValue(PointRadiusProperty); }
+            set { SetValue(PointRadiusProperty, value); }
+        }
+
+        public override IChartPointView InitializePointView()
+        {
+            var mhr = PointRadius < 5 ? 5 : PointRadius;
+
+            return new PointBezierView
+            {
+                HoverShape = Model.Chart.View.IsHoverable
+                    ? new Rectangle
+                    {
+                        Fill = Brushes.Transparent,
+                        StrokeThickness = 0,
+                        Width = mhr,
+                        Height = mhr
+                    }
+                    : null,
+                Ellipse = Math.Abs(PointRadius) < 0.1 ? null : new Ellipse(),
+                Segment = Math.Abs(StrokeThickness) < 0.1 ? null : new BezierSegment(),
+                IsNew = true,
+                DataLabel = DataLabels ? new TextBlock() : null,
+            };
+        }
+    }
+
+    public class LineVisualPoint : VisualPoint
+    {
+        public PathFigure Owner { get; set; }
+        public BezierSegment Segment { get; set; }
+
+        public BezierData Data { get; set; }
+        public LineVisualPoint Previous { get; set; }
+    }
+
+    public class VisualPoint
+    {
+        public ChartPoint ChartPoint { get; set; }
+        public Series Series { get; set; }
+        public Shape Shape { get; set; }
+        public Shape HoverShape { get; set; }
+        public TextBlock TextBlock { get; set; }
+        public bool IsNew { get; set; }
+        public bool IsHighlighted { get; set; }
     }
 }

@@ -25,24 +25,11 @@ using LiveChartsCore;
 
 namespace LiveChartsDesktop
 {
-    public class LineChart : Chart, ILine
+    public class CartesianChart : Chart
     {
-        public LineChart()
+        public CartesianChart()
         {
-            LineSmoothness = 0.8;
             ChartModel = new LineChartModel(this);
         }
-
-        public static readonly DependencyProperty LineSmoothnessProperty = DependencyProperty.Register(
-            "LineSmoothness", typeof (double), typeof (LineChart),
-            new PropertyMetadata(default(double), OnPropertyChanged()));
-
-        public double LineSmoothness
-        {
-            get { return (double) GetValue(LineSmoothnessProperty); }
-            set { SetValue(LineSmoothnessProperty, value); }
-        }
-
-
     }
 }

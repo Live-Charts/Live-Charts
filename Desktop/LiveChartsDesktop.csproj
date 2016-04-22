@@ -55,13 +55,14 @@
     <Compile Include="ChartLegend.xaml.cs">
       <DependentUpon>ChartLegend.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ChartPointBezier.cs" />
     <Compile Include="Converters.cs" />
     <Compile Include="DefaultAxes.cs" />
     <Compile Include="IndexedTooltipData.cs" />
     <Compile Include="ChartTooltip.xaml.cs">
       <DependentUpon>ChartTooltip.xaml</DependentUpon>
     </Compile>
-    <Compile Include="LineChart.cs" />
+    <Compile Include="CartesianChart.cs" />
     <Compile Include="LineSeries.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>

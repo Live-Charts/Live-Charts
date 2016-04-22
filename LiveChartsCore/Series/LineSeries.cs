@@ -424,7 +424,7 @@ namespace LiveCharts
             }
         }
 
-        private VisualPoint GetShapes(ChartPoint point, PathFigure pathFigure)
+        private VisualPoint GetShapes(ChartPoint point, PathFigure pathFigure)   //depreciated!
         {
             VisualPoint trackable;
 

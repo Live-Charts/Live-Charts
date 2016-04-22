@@ -42,7 +42,8 @@ namespace LiveChartsCore
 
     public interface ISeriesView
     {
-        ISeriesModel Model { get; }
+        ISeriesModel Model { get; set; }
+        IChartPointView InitializePointView();
         void Erase();
     }
     #endregion
@@ -125,6 +126,7 @@ namespace LiveChartsCore
     #endregion
 
     #region Chart
+
     public interface IChartModel
     {
         IChartView View { get; set; }
@@ -139,6 +141,8 @@ namespace LiveChartsCore
         TimeSpan TooltipTimeout { get; set; }
         ZoomingOptions Zoom { get; set; }
         LegendLocation LegendLocation { get; set; }
+        bool DisableAnimatons { get; set; }
+        TimeSpan AnimationsSpeed { get; set; }
 
         void PrepareAxes();
         void CalculateComponentsAndMargin();
@@ -154,6 +158,8 @@ namespace LiveChartsCore
     public interface IChartView
     {
         IChartModel Model { get; }
+        bool IsHoverable { get; }
+
         void InitializeSeries(ISeriesView series);
         void Update(bool restartAnimations = true);
         void SetDrawMarginTop(double value);

@@ -21,6 +21,7 @@
 //SOFTWARE.
 
 using System;
+using System.Xml.Serialization;
 
 namespace LiveChartsCore
 {
@@ -54,7 +55,11 @@ namespace LiveChartsCore
 
     public interface IChartPointView
     {
-        object View { get; set; }
-        void UpdateView(object point);
+        void UpdateView(object previous, object current, IChartModel chart);
+    }
+
+    public enum ChartPointType
+    {
+        Bezier, Bar, PieSlice
     }
 }

@@ -33,27 +33,17 @@ namespace LiveChartsDesktop
 {
     public abstract class Series : FrameworkElement, ISeriesView
     {
-        private readonly LiveChartsCore.Series _model;
-
         protected Series()
         {
-            _model = new LiveChartsCore.Series(this);
             DefaultFillOpacity = 0.35;
         }
 
         protected Series(SeriesConfiguration configuration)
         {
-            _model = new LiveChartsCore.Series(this)
-            {
-                Configuration = configuration
-            };
             DefaultFillOpacity = 0.35;
         }
 
-        public ISeriesModel Model
-        {
-            get { return _model; }
-        }
+        public ISeriesModel Model { get; set; }
 
         #region Properties
 
@@ -254,6 +244,11 @@ namespace LiveChartsDesktop
 
         #endregion
 
+        public virtual IChartPointView InitializePointView()
+        {
+            throw new NotImplementedException();
+        }
+
         public void Erase()
         {
             throw new NotImplementedException();
@@ -284,7 +279,7 @@ namespace LiveChartsDesktop
 #endif
         }
 
-        private static PropertyChangedCallback OnPropertyChanged(bool animate = false)
+        protected static PropertyChangedCallback OnPropertyChanged(bool animate = false)
         {
             return (o, args) =>
             {
@@ -294,7 +289,7 @@ namespace LiveChartsDesktop
             };
         }
 
-        private static PropertyChangedCallback OnPropertyChanged(Action<Series, ISeriesModel> map, bool animate = false)
+        protected static PropertyChangedCallback OnPropertyChanged(Action<Series, ISeriesModel> map, bool animate = false)
         {
             return (o, args) =>
             {

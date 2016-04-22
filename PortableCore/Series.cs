@@ -20,6 +20,8 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
+using System.Collections.Generic;
+
 namespace LiveChartsCore
 {
     public abstract class Series : ISeriesModel
@@ -41,15 +43,26 @@ namespace LiveChartsCore
         public SeriesConfiguration Configuration { get; set; }
         public int ScalesXAt { get; set; }
         public int ScalesYAt { get; set; }
-        //public Axis CurrentXAxis
-        //{
-        //    get { return Chart.AxisX[ScalesXAt]; }
-        //}
-
-        //public Axis CurrentYAxis
-        //{
-        //    get { return Chart.AxisY[ScalesYAt]; }
-        //}
+        public IAxisView CurrentXAxis
+        {
+            get
+            {
+                var ax = Chart.AxisX as IList<IAxisView>;
+                return ax == null 
+                    ? null 
+                    : ax[ScalesXAt];
+            }
+        }
+        public IAxisView CurrentYAxis
+        {
+            get
+            {
+                var ax = Chart.AxisY as IList<IAxisView>;
+                return ax == null
+                    ? null
+                    : ax[ScalesYAt];
+            }
+        }
         public SeriesCollection SeriesCollection { get; set; }
         public string Title { get; set; }
         public SeriesCollection Collection { get; private set; }

@@ -40,8 +40,6 @@ namespace LiveChartsDesktop
 
         protected Chart()
         {
-            ChartModel = new LiveChartsCore.Chart(this);
-
             UpdateLayout();
             Measure(new Size(double.MaxValue, double.MaxValue));
             Canvas.SetTop(Canvas, 0d);
@@ -271,7 +269,8 @@ namespace LiveChartsDesktop
         }
 
         public static readonly DependencyProperty DisableAnimationsProperty = DependencyProperty.Register(
-            "DisableAnimations", typeof (bool), typeof (Chart), new PropertyMetadata(default(bool)));
+            "DisableAnimations", typeof (bool), typeof (Chart),
+            new PropertyMetadata(default(bool), OnPropertyChanged((v, m) => m.DisableAnimatons = v.DisableAnimations)));
         /// <summary>
         /// Gets or sets if the chart is animated or not.
         /// </summary>
@@ -285,6 +284,11 @@ namespace LiveChartsDesktop
         public IChartModel Model
         {
             get { return ChartModel; }
+        }
+
+        public bool IsHoverable
+        {
+            get { return DataTooltip != null; }
         }
 
         public void InitializeSeries(ISeriesView series)
