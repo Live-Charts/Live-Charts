@@ -40,12 +40,6 @@ namespace LiveChartsDesktop
 
         protected Chart()
         {
-            UpdateLayout();
-            Measure(new Size(double.MaxValue, double.MaxValue));
-            Canvas.SetTop(Canvas, 0d);
-            Canvas.SetLeft(Canvas, 0d);
-            Canvas.Width = DesiredSize.Width;
-            Canvas.Height = DesiredSize.Height;
             Canvas = new Canvas();
             Content = Canvas;
 
@@ -54,9 +48,6 @@ namespace LiveChartsDesktop
             SetValue(MinHeightProperty, 125d);
             SetValue(MinWidthProperty, 125d);
 
-            SetValue(AxisXProperty, new List<Axis>());
-            SetValue(AxisYProperty, new List<Axis>());
-
             SetValue(ChartLegendProperty, new ChartLegend());
 
             CursorX = new ChartCursor(this, AxisTags.X);
@@ -64,12 +55,6 @@ namespace LiveChartsDesktop
 
             if (RandomizeStartingColor) 
                 CurrentColorIndex = Randomizer.Next(0, Colors.Count - 1);
-
-            SetCurrentValue(SeriesProperty,
-                new SeriesCollection()
-                    .Setup(new SeriesConfiguration<double>()
-                        .Y(v => v)
-                        .X((v, i) => i)));
 
             ResizeTimer = new DispatcherTimer {Interval = TimeSpan.FromMilliseconds(100)};
             ResizeTimer.Tick += (sender, args) =>
@@ -105,7 +90,7 @@ namespace LiveChartsDesktop
             Randomizer = new Random();
         }
 
-        private Canvas Canvas { get; set; }
+        protected Canvas Canvas { get; set; }
         internal Canvas DrawMargin { get; set; }
 
         private static Random Randomizer { get; set; }

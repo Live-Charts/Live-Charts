@@ -44,7 +44,7 @@ namespace LiveChartsCore
                 View.HideTooltop();
             };
 
-            Updater = Motor.GetUpdater();
+            Updater = Motor.GetUpdater(this);
 
             DrawMargin = new LvcRectangle();
             DrawMargin.SetHeight += view.SetDrawMarginHeight;

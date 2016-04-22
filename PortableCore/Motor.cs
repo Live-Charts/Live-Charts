@@ -23,9 +23,9 @@ namespace LiveChartsCore
             }
         }
 
-        public static IChartUpdater GetUpdater()
+        public static IChartUpdater GetUpdater(IChartModel chart)
         {
-            return (IChartUpdater) Activator.CreateInstance(Updater);
+            return (IChartUpdater) Activator.CreateInstance(Updater, chart);
         }
     }
 }

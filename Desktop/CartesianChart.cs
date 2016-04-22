@@ -20,7 +20,9 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
+using System.Collections.Generic;
 using System.Windows;
+using System.Windows.Controls;
 using LiveChartsCore;
 
 namespace LiveChartsDesktop
@@ -29,7 +31,23 @@ namespace LiveChartsDesktop
     {
         public CartesianChart()
         {
+            UpdateLayout();
+            Measure(new Size(double.MaxValue, double.MaxValue));
+            Canvas.SetTop(Canvas, 0d);
+            Canvas.SetLeft(Canvas, 0d);
+            Canvas.Width = DesiredSize.Width;
+            Canvas.Height = DesiredSize.Height;
+
             ChartModel = new LineChartModel(this);
+
+            SetCurrentValue(SeriesProperty,
+                new SeriesCollection()
+                    .Setup(new SeriesConfiguration<double>()
+                        .Y(v => v)
+                        .X((v, i) => i)));
+
+            SetValue(AxisXProperty, new List<Axis>());
+            SetValue(AxisYProperty, new List<Axis>());
         }
     }
 }
