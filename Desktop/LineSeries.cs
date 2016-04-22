@@ -23,6 +23,7 @@
 using System;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using LiveChartsCore;
@@ -31,14 +32,18 @@ namespace LiveChartsDesktop
 {
     public class LineSeries : Series
     {
+        private PathFigure _pathFigure;
+
         public LineSeries()
         {
             Model = new LiveChartsCore.LineSeries(this);
+            InitializePath();
         }
 
         public LineSeries(SeriesConfiguration configuration) : base(configuration)
         {
             Model = new LiveChartsCore.LineSeries(this);
+            InitializePath();
         }
 
         public static readonly DependencyProperty PointRadiusProperty = DependencyProperty.Register(
@@ -50,26 +55,95 @@ namespace LiveChartsDesktop
             set { SetValue(PointRadiusProperty, value); }
         }
 
+        public static readonly DependencyProperty PointHoverBrushProperty = DependencyProperty.Register(
+            "PointHoverBrush", typeof (Brush), typeof (LineSeries), 
+            new PropertyMetadata(default(Brush), OnPropertyChanged()));
+
+        public Brush PointHoverBrush
+        {
+            get { return (Brush) GetValue(PointHoverBrushProperty); }
+            set { SetValue(PointHoverBrushProperty, value); }
+        }
+
         public override IChartPointView InitializePointView()
         {
             var mhr = PointRadius < 5 ? 5 : PointRadius;
 
+            Ellipse e = null;
+            Rectangle hs = null;
+            TextBlock tb = null;
+
+            if (Model.Chart.View.IsHoverable)
+            {
+                hs = new Rectangle
+                {
+                    Fill = Brushes.Transparent,
+                    StrokeThickness = 0,
+                    Width = mhr,
+                    Height = mhr
+                };
+                Panel.SetZIndex(hs, int.MaxValue);
+                BindingOperations.SetBinding(hs, VisibilityProperty,
+                    new Binding {Path = new PropertyPath(VisibilityProperty), Source = this});
+            }
+
+            if (Math.Abs(PointRadius) > 0.1)
+            {
+                e = new Ellipse
+                {
+                    Width = PointRadius*2,
+                    Height = PointRadius*2,
+                    Stroke = PointHoverBrush,
+                    StrokeThickness = 1
+                };
+                BindingOperations.SetBinding(e, Shape.FillProperty,
+                    new Binding {Path = new PropertyPath(StrokeProperty), Source = this});
+                BindingOperations.SetBinding(e, VisibilityProperty,
+                    new Binding {Path = new PropertyPath(VisibilityProperty), Source = this});
+                BindingOperations.SetBinding(e, Panel.ZIndexProperty,
+                    new Binding {Path = new PropertyPath(Panel.ZIndexProperty), Source = this});
+            }
+
+            if (DataLabels)
+            {
+                tb = BindATextBlock(0);
+                BindingOperations.SetBinding(tb, Panel.ZIndexProperty,
+                    new Binding {Path = new PropertyPath(Panel.ZIndexProperty), Source = this});
+            }
+
+            var bs = new BezierSegment();
+            _pathFigure.Segments.Add(bs);
+
             return new PointBezierView
             {
-                HoverShape = Model.Chart.View.IsHoverable
-                    ? new Rectangle
-                    {
-                        Fill = Brushes.Transparent,
-                        StrokeThickness = 0,
-                        Width = mhr,
-                        Height = mhr
-                    }
-                    : null,
-                Ellipse = Math.Abs(PointRadius) < 0.1 ? null : new Ellipse(),
-                Segment = Math.Abs(StrokeThickness) < 0.1 ? null : new BezierSegment(),
-                IsNew = true,
-                DataLabel = DataLabels ? new TextBlock() : null,
+                HoverShape = hs,
+                Ellipse = e,
+                DataLabel = tb,
+                Segment = new BezierSegment(),
+                IsNew = true
             };
+        }
+
+        private void InitializePath()
+        {
+            var path = new Path();
+            BindingOperations.SetBinding(path, Shape.StrokeProperty,
+                    new Binding { Path = new PropertyPath("Stroke"), Source = this });
+            BindingOperations.SetBinding(path, Shape.FillProperty,
+                new Binding { Path = new PropertyPath("Fill"), Source = this });
+            BindingOperations.SetBinding(path, Shape.StrokeThicknessProperty,
+                new Binding { Path = new PropertyPath("StrokeThickness"), Source = this });
+            BindingOperations.SetBinding(path, VisibilityProperty,
+                new Binding { Path = new PropertyPath("Visibility"), Source = this });
+            BindingOperations.SetBinding(path, Panel.ZIndexProperty,
+                new Binding { Path = new PropertyPath(Panel.ZIndexProperty), Source = this });
+            BindingOperations.SetBinding(path, Shape.StrokeDashArrayProperty,
+                new Binding { Path = new PropertyPath(StrokeDashArrayProperty), Source = this });
+            var geometry = new PathGeometry();
+            _pathFigure = new PathFigure();
+            geometry.Figures.Add(_pathFigure);
+            path.Data = geometry;
+            Model.Chart.View.AddToView(path);
         }
     }
 
@@ -78,7 +152,7 @@ namespace LiveChartsDesktop
         public PathFigure Owner { get; set; }
         public BezierSegment Segment { get; set; }
 
-        public BezierData Data { get; set; }
+        internal BezierData Data { get; set; }
         public LineVisualPoint Previous { get; set; }
     }
 

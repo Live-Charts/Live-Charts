@@ -18,24 +18,17 @@ namespace LiveChartsCore
 
         public override void Update()
         {
-            var unitaryOffset = Chart.HasUnitaryPoints
-                ? (Chart.Invert
-                    ? new LvcPoint(0, ChartFunctions.GetUnitWidth(AxisTags.Y, Chart, ScalesYAt)*.5)
-                    : new LvcPoint(ChartFunctions.GetUnitWidth(AxisTags.X, Chart, ScalesXAt)*.5, 0))
-                : new LvcPoint();
-
             ChartPoint previous = null;
 
             foreach (var chartPoint in Values.Points)
             {
-                chartPoint.Coordinates = ChartFunctions.ToDrawMargin(chartPoint, ScalesXAt, ScalesYAt, Chart) +
-                                         unitaryOffset;
+                chartPoint.Coordinates = ChartFunctions.ToDrawMargin(chartPoint, ScalesXAt, ScalesYAt, Chart);
 
                 if (chartPoint.View == null)
                     chartPoint.View = View.InitializePointView();
 
-                chartPoint.View.UpdateView(previous, chartPoint, Chart);
-                
+                chartPoint.View.Update(previous, chartPoint, Chart);
+
                 previous = chartPoint;
             }
         }

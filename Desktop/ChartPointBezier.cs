@@ -12,9 +12,11 @@ namespace LiveChartsDesktop
     {
         public BezierSegment Segment { get; set; }
         public Ellipse Ellipse { get; set; }
+        public PathFigure Container { get; set; }
         internal BezierData Data { get; set; }
 
-        public override void UpdateView(object previous, object current, IChartModel chart)
+
+        public override void Update(object previous, object current, IChartModel chart)
         {
             var s1 = new Point();
             var s2 = new Point();
@@ -24,7 +26,7 @@ namespace LiveChartsDesktop
 
             if (IsNew)
             {
-                //Owner.Segments.Insert(index - pathOffset, Data.AssignTo(Segment));
+                Container.Segments.Insert(0, Segment);
                 if (chart.Invert)
                 {
                     var x = chart.DrawMargin.Left;
@@ -60,11 +62,11 @@ namespace LiveChartsDesktop
             }
 
             Segment.BeginAnimation(BezierSegment.Point1Property,
-                new PointAnimation(p1, Data.Point1, speed));
+                new PointAnimation(p1, Data.Point1, chart.AnimationsSpeed));
             Segment.BeginAnimation(BezierSegment.Point2Property,
-                new PointAnimation(p2, Data.Point2, speed));
+                new PointAnimation(p2, Data.Point2, chart.AnimationsSpeed));
             Segment.BeginAnimation(BezierSegment.Point3Property,
-                new PointAnimation(p3, Data.Point3, speed));
+                new PointAnimation(p3, Data.Point3, chart.AnimationsSpeed));
         }
     }
 
@@ -93,7 +95,7 @@ namespace LiveChartsDesktop
         public TextBlock DataLabel { get; set; }
         public bool IsNew { get; set; }
 
-        public virtual void UpdateView(object previous, object current, IChartModel chart)
+        public virtual void Update(object previous, object current, IChartModel chart)
         {
             throw new NotImplementedException();
         }

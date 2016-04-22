@@ -148,9 +148,16 @@ namespace LiveChartsCore
 
         public static LvcPoint ToDrawMargin(ChartPoint point, int axisXIndex, int axisYIndex, IChartModel chart)
         {
+            var unitaryOffset = chart.HasUnitaryPoints
+                ? (chart.Invert
+                    ? new LvcPoint(0, GetUnitWidth(AxisTags.Y, chart, axisYIndex)*.5)
+                    : new LvcPoint(GetUnitWidth(AxisTags.X, chart, axisXIndex)*.5, 0))
+                : new LvcPoint();
+
             return new LvcPoint(
                 ToDrawMargin(point.X, AxisTags.X, chart, axisXIndex),
-                ToDrawMargin(point.Y, AxisTags.Y, chart, axisYIndex));
+                ToDrawMargin(point.Y, AxisTags.Y, chart, axisYIndex))
+                   + unitaryOffset;
         }
 
         public static double FromDrawMargin(double value, AxisTags source, IChartModel chart, int axis = 0)

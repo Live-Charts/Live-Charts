@@ -66,6 +66,8 @@ namespace LiveChartsCore
         public TimeSpan TooltipTimeout { get; set; }
         public ZoomingOptions Zoom { get; set; }
         public LegendLocation LegendLocation { get; set; }
+        public bool DisableAnimatons { get; set; }
+        public TimeSpan AnimationsSpeed { get; set; }
 
         public AxisTags PivotZoomingAxis { get; set; }
         public LvcTimer TooltipHidder { get; set; }
@@ -324,9 +326,10 @@ namespace LiveChartsCore
 
         public void Update(bool restartAnimations = true)
         {
-            foreach (var point in Series
-                .SelectMany(series => series.Values.Points))
-                point.UpdateView();
+            foreach (var series in Series)
+            {
+                series.Update();
+            }
         }
 
         public void ZoomIn(LvcPoint pivot)

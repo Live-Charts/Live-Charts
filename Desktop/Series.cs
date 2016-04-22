@@ -227,18 +227,19 @@ namespace LiveChartsDesktop
             var tb = new TextBlock();
 
             tb.SetBinding(TextBlock.FontFamilyProperty,
-                new Binding { Path = new PropertyPath(FontFamilyProperty), Source = this });
+                new Binding {Path = new PropertyPath(FontFamilyProperty), Source = this});
             tb.SetBinding(FontSizeProperty,
-                new Binding { Path = new PropertyPath(FontSizeProperty), Source = this });
+                new Binding {Path = new PropertyPath(FontSizeProperty), Source = this});
             tb.SetBinding(TextBlock.FontStretchProperty,
-                new Binding { Path = new PropertyPath(FontStretchProperty), Source = this });
+                new Binding {Path = new PropertyPath(FontStretchProperty), Source = this});
             tb.SetBinding(TextBlock.FontStyleProperty,
-                new Binding { Path = new PropertyPath(FontStyleProperty), Source = this });
+                new Binding {Path = new PropertyPath(FontStyleProperty), Source = this});
             tb.SetBinding(TextBlock.FontWeightProperty,
-                new Binding { Path = new PropertyPath(FontWeightProperty), Source = this });
+                new Binding {Path = new PropertyPath(FontWeightProperty), Source = this});
             tb.SetBinding(TextBlock.ForegroundProperty,
-                 new Binding { Path = new PropertyPath(ForegroundProperty), Source = this });
-
+                new Binding {Path = new PropertyPath(ForegroundProperty), Source = this});
+            tb.SetBinding(TextBlock.VisibilityProperty,
+                new Binding {Path = new PropertyPath(VisibilityProperty), Source = this});
             return tb;
         }
 
