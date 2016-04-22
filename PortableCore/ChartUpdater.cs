@@ -13,7 +13,13 @@ namespace LiveChartsCore
 
         public void Run(bool restartsAnimations = false)
         {
-            Chart.Update(restartsAnimations);
+            foreach (var series in Chart.Series)
+            {
+                series.Model.Update();
+            }
+#if DEBUG
+            Debug.WriteLine("<<Chart UI Updated>>");
+#endif
         }
 
         public void Cancel()

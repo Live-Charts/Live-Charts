@@ -39,6 +39,7 @@
   <ItemGroup>
     <Compile Include="Axis.cs" />
     <Compile Include="ChartUpdater.cs" />
+    <Compile Include="ChartValues.cs" />
     <Compile Include="Declarations.cs" />
     <Compile Include="Chart.cs" />
     <Compile Include="ChartFunctions.cs" />
@@ -46,7 +47,7 @@
     <Compile Include="IChartValues.cs" />
     <Compile Include="IDataOptimization.cs" />
     <Compile Include="LineChart.cs" />
-    <Compile Include="LineSeries.cs" />
+    <Compile Include="LineModel.cs" />
     <Compile Include="ModelsAndViews.cs" />
     <Compile Include="Motor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

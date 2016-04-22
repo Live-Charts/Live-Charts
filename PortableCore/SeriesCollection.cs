@@ -25,7 +25,7 @@ using System.Collections.Specialized;
 
 namespace LiveChartsCore
 {
-    public class SeriesCollection : ObservableCollection<ISeriesModel>
+    public class SeriesCollection : ObservableCollection<ISeriesView>
     {
         public SeriesCollection()
         {
@@ -43,6 +43,7 @@ namespace LiveChartsCore
             Configuration = configuration;
         }
 
+        public IChartModel Chart { get; set; }
         public SeriesConfiguration Configuration { get; set; }
 
         /// <summary>

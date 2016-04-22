@@ -8,6 +8,6 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="350" Width="525">
     <Grid>
-        <lcd:CartesianChart></lcd:CartesianChart>
+        <lcd:CartesianChart Series="{Binding }"></lcd:CartesianChart>
     </Grid>
 </Window>

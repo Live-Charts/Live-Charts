@@ -98,6 +98,6 @@ namespace LiveChartsCore
 
     public class SeriesConfiguration
     {
-        
+        public IChartModel Chart { get; set; }
     }
 }

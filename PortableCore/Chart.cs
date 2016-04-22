@@ -84,7 +84,7 @@ namespace LiveChartsCore
             SeriesInitialized = true;
 
             foreach (var series in Series)
-                IntializeSeries(series, force);
+                IntializeSeries(series.Model, force);
 
             Series.CollectionChanged -= OnSeriesCollectionChanged;
             Series.CollectionChanged += OnSeriesCollectionChanged;
@@ -114,22 +114,22 @@ namespace LiveChartsCore
             {
                 var xi = ax[index].Model;
                 xi.MaxLimit = xi.MaxValue ??
-                              Series.Where(series => series.Values != null && series.ScalesXAt == index)
-                                  .Select(series => series.Values.MaxChartPoint.X).DefaultIfEmpty(0).Max();
+                              Series.Where(series => series.Model.Values != null && series.Model.ScalesXAt == index)
+                                  .Select(series => series.Model.Values.MaxChartPoint.X).DefaultIfEmpty(0).Max();
                 xi.MinLimit = xi.MinValue ??
-                              Series.Where(series => series.Values != null && series.ScalesXAt == index)
-                                  .Select(series => series.Values.MinChartPoint.X).DefaultIfEmpty(0).Min();
+                              Series.Where(series => series.Model.Values != null && series.Model.ScalesXAt == index)
+                                  .Select(series => series.Model.Values.MinChartPoint.X).DefaultIfEmpty(0).Min();
             }
 
             for (var index = 0; index < ay.Count; index++)
             {
                 var yi = ay[index].Model;
                 yi.MaxLimit = yi.MaxValue ??
-                              Series.Where(series => series.Values != null && series.ScalesYAt == index)
-                                  .Select(series => series.Values.MaxChartPoint.Y).DefaultIfEmpty(0).Max();
+                              Series.Where(series => series.Model.Values != null && series.Model.ScalesYAt == index)
+                                  .Select(series => series.Model.Values.MaxChartPoint.Y).DefaultIfEmpty(0).Max();
                 yi.MinLimit = yi.MinValue ??
-                              Series.Where(series => series.Values != null && series.ScalesYAt == index)
-                                  .Select(series => series.Values.MinChartPoint.Y).DefaultIfEmpty(0).Min();
+                              Series.Where(series => series.Model.Values != null && series.Model.ScalesYAt == index)
+                                  .Select(series => series.Model.Values.MinChartPoint.Y).DefaultIfEmpty(0).Min();
             }
 
             PivotZoomingAxis = Invert ? AxisTags.Y : AxisTags.X;
@@ -326,10 +326,7 @@ namespace LiveChartsCore
 
         public void Update(bool restartAnimations = true)
         {
-            foreach (var series in Series)
-            {
-                series.Update();
-            }
+            Updater.Run(restartAnimations);
         }
 
         public void ZoomIn(LvcPoint pivot)

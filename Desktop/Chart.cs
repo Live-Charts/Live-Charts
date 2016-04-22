@@ -23,6 +23,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -59,7 +60,11 @@ namespace LiveChartsDesktop
             ResizeTimer = new DispatcherTimer {Interval = TimeSpan.FromMilliseconds(100)};
             ResizeTimer.Tick += (sender, args) =>
             {
+#if DEBUG
+                Debug.WriteLine("ChartResized");
+#endif
                 Model.Updater.Run();
+                ResizeTimer.Stop();
             };
             SizeChanged += (sender, args) =>
             {

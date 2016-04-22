@@ -1,18 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace LiveChartsCore
 {
-    public class LineSeries : Series
+    public class LineModel : Series
     {
-        public LineSeries(ISeriesView view) : base(view)
+        public LineModel(ISeriesView view) : base(view)
         {
         }
 
-        public LineSeries(ISeriesView view, SeriesConfiguration configuration) : base(view, configuration)
+        public LineModel(ISeriesView view, SeriesConfiguration configuration) : base(view, configuration)
         {
         }
 
@@ -28,9 +23,12 @@ namespace LiveChartsCore
                     chartPoint.View = View.InitializePointView();
 
                 chartPoint.View.Update(previous, chartPoint, Chart);
+                
 
                 previous = chartPoint;
             }
         }
+
+
     }
 }

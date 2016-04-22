@@ -141,6 +141,7 @@ namespace LiveChartsCore
         TimeSpan TooltipTimeout { get; set; }
         ZoomingOptions Zoom { get; set; }
         LegendLocation LegendLocation { get; set; }
+        AxisTags PivotZoomingAxis { get; set; }
         bool DisableAnimatons { get; set; }
         TimeSpan AnimationsSpeed { get; set; }
 

@@ -36,13 +36,13 @@ namespace LiveChartsDesktop
 
         public LineSeries()
         {
-            Model = new LiveChartsCore.LineSeries(this);
+            Model = new LiveChartsCore.LineModel(this);
             InitializePath();
         }
 
         public LineSeries(SeriesConfiguration configuration) : base(configuration)
         {
-            Model = new LiveChartsCore.LineSeries(this);
+            Model = new LiveChartsCore.LineModel(this);
             InitializePath();
         }
 
