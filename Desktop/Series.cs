@@ -250,6 +250,11 @@ namespace LiveChartsDesktop
             throw new NotImplementedException();
         }
 
+        public virtual void InitializeView()
+        {
+            throw new NotImplementedException();
+        }
+
         public void Erase()
         {
             throw new NotImplementedException();
@@ -262,15 +267,17 @@ namespace LiveChartsDesktop
             var series = o as Series;
             if (series == null) return;
 
+            series.Model.Values = series.Values;
+
             var observable = series.Model.Values as INotifyCollectionChanged;
             if (observable == null) return;
 
             observable.CollectionChanged += (sender, eventArgs) =>
             {
-                series.Model.Chart.Update();
+                if (series.Model.Chart != null) series.Model.Chart.Updater.Run();
             };
 
-            OnPropertyChanged((view, model) => model.Values = view.Values);
+            if (series.Model.Chart != null) series.Model.Chart.Updater.Run();
         }
 
         private static void AnimationsSpeedPropertyChanged(DependencyObject o, DependencyPropertyChangedEventArgs args)
@@ -286,7 +293,7 @@ namespace LiveChartsDesktop
             {
                 var wpfSeries = o as Series;
                 if (wpfSeries == null) return;
-                wpfSeries.Model.Chart.Update(animate);
+                wpfSeries.Model.Chart.Updater.Run(animate);
             };
         }
 
@@ -299,7 +306,7 @@ namespace LiveChartsDesktop
 
                 map(wpfSeries, wpfSeries.Model);
 
-                wpfSeries.Model.Chart.Update(animate);
+                wpfSeries.Model.Chart.Updater.Run(animate);
             };
         }
         #endregion

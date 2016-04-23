@@ -50,7 +50,17 @@ namespace LiveChartsCore
 
                 var config = (Series.Configuration ?? Series.SeriesCollection.Configuration) as SeriesConfiguration<T>;
 
-                if (config == null) return Enumerable.Empty<ChartPoint>();
+                if (config == null)
+                {
+                    //this is really ugly, I hate it, but this allows us that by default
+                    //using ChartValues<T> where T not double but primitive (int, decimal, float...)
+                    //will work by default but please be awere that this should not be good at all
+                    //instead configure the series if you are using another type instead of double like:
+                    //mySeries.Setup(new SeriesConfiguration<int>().Y(v => (double) v));
+                    config = Series.Chart.Invert
+                        ? new SeriesConfiguration<T>().X(t => (double) (object) t)
+                        : new SeriesConfiguration<T>().Y(t => (double) (object) t);
+                }
 
                 var q = IndexData(config);
 

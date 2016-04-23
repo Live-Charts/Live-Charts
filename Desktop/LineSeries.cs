@@ -33,17 +33,16 @@ namespace LiveChartsDesktop
     public class LineSeries : Series
     {
         private PathFigure _pathFigure;
+        private bool _isInView;
 
         public LineSeries()
         {
-            Model = new LiveChartsCore.LineModel(this);
-            InitializePath();
+            Model = new LineModel(this);
         }
 
         public LineSeries(SeriesConfiguration configuration) : base(configuration)
         {
-            Model = new LiveChartsCore.LineModel(this);
-            InitializePath();
+            Model = new LineModel(this);
         }
 
         public static readonly DependencyProperty PointRadiusProperty = DependencyProperty.Register(
@@ -63,6 +62,32 @@ namespace LiveChartsDesktop
         {
             get { return (Brush) GetValue(PointHoverBrushProperty); }
             set { SetValue(PointHoverBrushProperty, value); }
+        }
+
+        public override void InitializeView()
+        {
+            if (_isInView) return;
+
+            _isInView = true;
+
+            var path = new Path();
+            BindingOperations.SetBinding(path, Shape.StrokeProperty,
+                    new Binding { Path = new PropertyPath("Stroke"), Source = this });
+            BindingOperations.SetBinding(path, Shape.FillProperty,
+                new Binding { Path = new PropertyPath("Fill"), Source = this });
+            BindingOperations.SetBinding(path, Shape.StrokeThicknessProperty,
+                new Binding { Path = new PropertyPath("StrokeThickness"), Source = this });
+            BindingOperations.SetBinding(path, VisibilityProperty,
+                new Binding { Path = new PropertyPath("Visibility"), Source = this });
+            BindingOperations.SetBinding(path, Panel.ZIndexProperty,
+                new Binding { Path = new PropertyPath(Panel.ZIndexProperty), Source = this });
+            BindingOperations.SetBinding(path, Shape.StrokeDashArrayProperty,
+                new Binding { Path = new PropertyPath(StrokeDashArrayProperty), Source = this });
+            var geometry = new PathGeometry();
+            _pathFigure = new PathFigure();
+            geometry.Figures.Add(_pathFigure);
+            path.Data = geometry;
+            Model.Chart.View.AddToView(path);
         }
 
         public override IChartPointView InitializePointView()
@@ -122,28 +147,6 @@ namespace LiveChartsDesktop
                 Segment = new BezierSegment(),
                 IsNew = true
             };
-        }
-
-        private void InitializePath()
-        {
-            var path = new Path();
-            BindingOperations.SetBinding(path, Shape.StrokeProperty,
-                    new Binding { Path = new PropertyPath("Stroke"), Source = this });
-            BindingOperations.SetBinding(path, Shape.FillProperty,
-                new Binding { Path = new PropertyPath("Fill"), Source = this });
-            BindingOperations.SetBinding(path, Shape.StrokeThicknessProperty,
-                new Binding { Path = new PropertyPath("StrokeThickness"), Source = this });
-            BindingOperations.SetBinding(path, VisibilityProperty,
-                new Binding { Path = new PropertyPath("Visibility"), Source = this });
-            BindingOperations.SetBinding(path, Panel.ZIndexProperty,
-                new Binding { Path = new PropertyPath(Panel.ZIndexProperty), Source = this });
-            BindingOperations.SetBinding(path, Shape.StrokeDashArrayProperty,
-                new Binding { Path = new PropertyPath(StrokeDashArrayProperty), Source = this });
-            var geometry = new PathGeometry();
-            _pathFigure = new PathFigure();
-            geometry.Figures.Add(_pathFigure);
-            path.Data = geometry;
-            Model.Chart.View.AddToView(path);
         }
     }
 

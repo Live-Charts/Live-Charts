@@ -13,13 +13,24 @@ namespace LiveChartsCore
 
         public void Run(bool restartsAnimations = false)
         {
+            if (Chart.Series == null) return;
+
             foreach (var series in Chart.Series)
             {
+                InitializeSeriesParams(series);
+                series.InitializeView();
                 series.Model.Update();
             }
 #if DEBUG
             Debug.WriteLine("<<Chart UI Updated>>");
 #endif
+        }
+
+        private void InitializeSeriesParams(ISeriesView seriesView)
+        {
+            seriesView.Model.Chart = Chart;
+            seriesView.Model.Values.Series = seriesView.Model;
+            seriesView.Model.SeriesCollection = Chart.Series;
         }
 
         public void Cancel()

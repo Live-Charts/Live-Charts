@@ -32,9 +32,7 @@ namespace LiveChartsCore
             Configuration = new SeriesConfiguration<double>().X((v, i) => i).Y(v => v);
             CollectionChanged += (sender, args) =>
             {
-                //if (args.NewItems != null)
-                //    foreach (var series in args.NewItems.Cast<Series>())
-                //        series.Collection = this;
+                if (Chart != null) Chart.Updater.Run();
             };
         }
 
@@ -63,7 +61,6 @@ namespace LiveChartsCore
             add
             {
                 base.CollectionChanged += value;
-
             }
             remove { base.CollectionChanged -= value; }
         }

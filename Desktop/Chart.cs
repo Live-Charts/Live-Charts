@@ -208,10 +208,11 @@ namespace LiveChartsDesktop
             new PropertyMetadata(default(SeriesCollection), OnPropertyChanged((v, m) =>
             {
                 m.Series = v.Series;
-                m.Series.CollectionChanged += (sender, args) =>
-                {
-                    m.Updater.Run(true);
-                };
+                if (m.Series != null)
+                    m.Series.CollectionChanged += (sender, args) =>
+                    {
+                        m.Updater.Run();
+                    };
             })));
         /// <summary>
         /// Gets or sets chart series collection to plot.
