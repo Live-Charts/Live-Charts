@@ -210,5 +210,5 @@ FakesAssemblies/
 GeneratedArtifacts/
 _Pvt_Extensions/
 ModelManifest.xml
+/LiveChartsCore/LiveChartsCore.nuspec
 /LiveChartsCore/nuget.exe
-/ChartsOptimizations/ChartsOptimizations.csproj
