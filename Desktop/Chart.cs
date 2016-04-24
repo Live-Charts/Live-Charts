@@ -38,6 +38,7 @@ namespace LiveChartsDesktop
     public abstract class Chart : UserControl, IChartView
     {
         protected LiveChartsCore.Chart ChartModel;
+       
 
         protected Chart()
         {
@@ -70,6 +71,18 @@ namespace LiveChartsDesktop
             {
                 ResizeTimer.Stop();
                 ResizeTimer.Start();
+            };
+
+            Loaded += (sender, args) =>
+            {
+                IsControlLoaded = true;
+
+                Model.ChartControlSize = new LvcSize(ActualWidth, ActualHeight);
+
+                Model.DrawMargin.Left = 0;
+                Model.DrawMargin.Top = 0;
+                Model.DrawMargin.Width = ActualWidth;
+                Model.DrawMargin.Height = ActualHeight;
             };
         }
 
@@ -179,8 +192,6 @@ namespace LiveChartsDesktop
             set { SetValue(InvertProperty, value); }
         }
 
-        
-
         public static readonly DependencyProperty CursorXProperty = DependencyProperty.Register(
             "CursorX", typeof (ChartCursor), typeof (Chart), new PropertyMetadata(default(ChartCursor)));
         /// <summary>
@@ -281,6 +292,8 @@ namespace LiveChartsDesktop
         {
             get { return DataTooltip != null; }
         }
+
+        public bool IsControlLoaded { get; private set; }
 
         public void InitializeSeries(ISeriesView series)
         {

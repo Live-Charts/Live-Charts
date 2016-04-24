@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace LiveChartsCore
 {
@@ -11,14 +13,12 @@ namespace LiveChartsCore
 
         public override void PrepareAxes()
         {
-            var ax = AxisX as List<IAxisView>;
-            var ay = AxisY as List<IAxisView>;
-
-            if (ax == null || ay == null) return;
+            var ax = AxisX as IList;
+            var ay = AxisY as IList;
 
             base.PrepareAxes();
 
-            foreach (var xi in ax)
+            foreach (var xi in ax.Cast<IAxisView>())
             {
                 xi.Model.CalculateSeparator(this, AxisTags.X);
                 if (!Invert) continue;
@@ -26,7 +26,7 @@ namespace LiveChartsCore
                 if (xi.Model.MinValue == null) xi.Model.MinLimit = (Math.Truncate(xi.Model.MinLimit / xi.Model.S) - 1) * xi.Model.S;
             }
 
-            foreach (var yi in ay)
+            foreach (var yi in ay.Cast<IAxisView>())
             {
                 yi.Model.CalculateSeparator(this, AxisTags.Y);
                 if (Invert) continue;

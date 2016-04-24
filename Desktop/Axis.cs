@@ -127,12 +127,7 @@ namespace LiveChartsDesktop
 
         public static readonly DependencyProperty SeparatorProperty = DependencyProperty.Register(
             "Separator", typeof (Separator), typeof (Axis), 
-            new PropertyMetadata(default(Separator), OnPropertyChanged((v, m) =>
-            {
-                m.Separator.IsEnabled = v.Separator.IsEnabled;
-                m.Separator.Step = v.Separator.Step;
-                m.Separator.StrokeThickness = v.Separator.StrokeThickness;
-            })));
+            new PropertyMetadata(default(Separator), OnPropertyChanged()));
         /// <summary>
         /// Get or sets configuration for parallel lines to axis.
         /// </summary>
@@ -338,7 +333,6 @@ namespace LiveChartsDesktop
             get { return (Brush)GetValue(ForegroundProperty); }
             set { SetValue(ForegroundProperty, value); }
         }
-
 
         public void Clear()
         {

@@ -20,8 +20,6 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
@@ -48,23 +46,9 @@ namespace LiveChartsCore
             {
                 if (Series == null) return Enumerable.Empty<ChartPoint>();
 
-                var config = (Series.Configuration ?? Series.SeriesCollection.Configuration) as SeriesConfiguration<T>;
+                var config = GetConfig();
 
-                if (config == null)
-                {
-                    //this is really ugly, I hate it, but this allows us that by default
-                    //using ChartValues<T> where T not double but primitive (int, decimal, float...)
-                    //will work by default but please be awere that this should not be good at all
-                    //instead configure the series if you are using another type instead of double like:
-                    //mySeries.Setup(new SeriesConfiguration<int>().Y(v => (double) v));
-                    config = Series.Chart.Invert
-                        ? new SeriesConfiguration<T>().X(t => (double) (object) t)
-                        : new SeriesConfiguration<T>().Y(t => (double) (object) t);
-                }
-
-                var q = IndexData(config);
-
-                return q.Select(t => new ChartPoint
+                return IndexData().Select(t => new ChartPoint                                     
                 {
                     X = config.XValueMapper(t.Value, t.Key),
                     Y = config.YValueMapper(t.Value, t.Key),
@@ -95,19 +79,10 @@ namespace LiveChartsCore
 
         public void GetLimits()
         {
-            EvaluateLimits();
-        }
-
-        #endregion
-
-        #region Private Methods
-
-        private void EvaluateLimits()
-        {
-            var config = (Series.Configuration ?? Series.SeriesCollection.Configuration) as SeriesConfiguration<T>;
+            var config = GetConfig();
             if (config == null) return;
 
-            var q = IndexData(config).ToArray();
+            var q = IndexData().ToArray();
 
             var xs = q.Select(t => config.XValueMapper(t.Value, t.Key)).DefaultIfEmpty(0).ToArray();
             var xMax = xs.Where(x => !double.IsNaN(x)).Max();
@@ -117,16 +92,16 @@ namespace LiveChartsCore
             var yMax = ys.Where(x => !double.IsNaN(x)).Max();
             var yMin = ys.Where(x => !double.IsNaN(x)).Min();
 
-            MaxChartPoint = new LvcPoint(xMax, yMin);
+            MaxChartPoint = new LvcPoint(xMax, yMax);
             MinChartPoint = new LvcPoint(xMin, yMin);
         }
 
-        private IEnumerable<KeyValuePair<int, T>> IndexData(SeriesConfiguration<T> config)
-        {
-            var f = config.Chart.PivotZoomingAxis == AxisTags.X
-                ? config.XValueMapper
-                : config.YValueMapper;
+        #endregion
 
+        #region Private Methods
+
+        private IEnumerable<KeyValuePair<int, T>> IndexData()
+        {
             var isObservable = typeof(IObservableChartPoint).GetTypeInfo().IsAssignableFrom(typeof(T).GetTypeInfo());
 
             var i = 0;
@@ -145,6 +120,20 @@ namespace LiveChartsCore
                 yield return new KeyValuePair<int, T>(i, t);
                 i++;
             }
+        }
+
+        private SeriesConfiguration<T> GetConfig()
+        {
+            //the null propagator is ugly but necessary for livecharts starters
+            //this enables any chart by default to support any primitive type
+            //this should run ok if you dont have many points
+            //if you are facing perfomrnace issues then you must configure your type
+            //if you are not using chart values of double ChartValues<double> then you must:
+            //mySeriesConfiguration.Setup(new SeriesConfiguration<int>().Y(v => (double) v));
+            return (Series.Configuration ?? Series.SeriesCollection.Configuration) as SeriesConfiguration<T> ??
+                   (Series.Chart.Invert
+                       ? new SeriesConfiguration<T>().X(t => (double) (object) t)
+                       : new SeriesConfiguration<T>().Y(t => (double) (object) t));
         }
 
         private void ObservableOnPointChanged(object caller)

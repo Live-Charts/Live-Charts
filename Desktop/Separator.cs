@@ -9,13 +9,9 @@ namespace LiveChartsDesktop
     {
         public Separator()
         {
-            Model = new LiveChartsCore.Separator(this);
         }
-        public ISeparatorModel Model { get; private set; }
+        public IChartModel Chart { get; set; }
 
-        public new static readonly DependencyProperty IsEnabledProperty = DependencyProperty.Register(
-            "IsEnabled", typeof (bool), typeof (Separator), 
-            new PropertyMetadata(default(bool), OnPropertyChanged((v,m) => m.IsEnabled = v.IsEnabled)));
         /// <summary>
         /// Gets or sets if separators are enabled (will be drawn)
         /// </summary>
@@ -39,7 +35,7 @@ namespace LiveChartsDesktop
 
         public static readonly DependencyProperty StrokeThicknessProperty = DependencyProperty.Register(
             "StrokeThickness", typeof (int), typeof (Separator), 
-            new PropertyMetadata(default(int), OnPropertyChanged((v, m)=> m.StrokeThickness = v.StrokeThickness)));
+            new PropertyMetadata(default(int), OnPropertyChanged()));
         /// <summary>
         /// Gets or sets separatos thickness
         /// </summary>
@@ -51,7 +47,7 @@ namespace LiveChartsDesktop
 
         public static readonly DependencyProperty StepProperty = DependencyProperty.Register(
             "Step", typeof (double?), typeof (Separator),
-            new PropertyMetadata(default(double?), OnPropertyChanged((v, m) => m.Step = v.Step)));
+            new PropertyMetadata(default(double?), OnPropertyChanged()));
         /// <summary>
         /// Gets or sets sepator step, this means the value between each line, use null for auto.
         /// </summary>

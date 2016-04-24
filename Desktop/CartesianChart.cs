@@ -31,13 +31,6 @@ namespace LiveChartsDesktop
     {
         public CartesianChart()
         {
-            UpdateLayout();
-            Measure(new Size(double.MaxValue, double.MaxValue));
-            Canvas.SetTop(Canvas, 0d);
-            Canvas.SetLeft(Canvas, 0d);
-            Canvas.Width = DesiredSize.Width;
-            Canvas.Height = DesiredSize.Height;
-
             ChartModel = new LineChartModel(this);
 
             SetCurrentValue(SeriesProperty,
@@ -46,8 +39,8 @@ namespace LiveChartsDesktop
                         .Y(v => v)
                         .X((v, i) => i)));
 
-            SetValue(AxisXProperty, new List<Axis>());
-            SetValue(AxisYProperty, new List<Axis>());
+            SetValue(AxisXProperty, new List<Axis> {DefaultAxes.DefaultAxis});
+            SetValue(AxisYProperty, new List<Axis> {DefaultAxes.DefaultAxis});
         }
     }
 }

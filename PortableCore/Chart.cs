@@ -21,6 +21,7 @@
 //SOFTWARE.
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Diagnostics;
@@ -52,7 +53,6 @@ namespace LiveChartsCore
             DrawMargin.SetTop += view.SetDrawMarginTop;
             DrawMargin.SetLeft += view.SetDrawMarginLeft;
         }
-
         public bool SeriesInitialized { get; set; }
         public IChartView View { get; set; }
         public IChartUpdater Updater { get; set; }
@@ -103,8 +103,8 @@ namespace LiveChartsCore
 
         public virtual void PrepareAxes()
         {
-            var ax = AxisX as List<IAxisView>;
-            var ay = AxisY as List<IAxisView>;
+            var ax = AxisX as IList;
+            var ay = AxisY as IList;
 
             if (ax == null || ay == null) return;
 
@@ -112,7 +112,10 @@ namespace LiveChartsCore
 
             for (var index = 0; index < ax.Count; index++)
             {
-                var xi = ax[index].Model;
+                var view = ax[index] as IAxisView;
+                if (view == null) continue;
+                var xi = view.Model;
+
                 xi.MaxLimit = xi.MaxValue ??
                               Series.Where(series => series.Model.Values != null && series.Model.ScalesXAt == index)
                                   .Select(series => series.Model.Values.MaxChartPoint.X).DefaultIfEmpty(0).Max();
@@ -123,7 +126,10 @@ namespace LiveChartsCore
 
             for (var index = 0; index < ay.Count; index++)
             {
-                var yi = ay[index].Model;
+                var view = ay[index] as IAxisView;
+                if (view == null) continue;
+                var yi = view.Model;
+
                 yi.MaxLimit = yi.MaxValue ??
                               Series.Where(series => series.Model.Values != null && series.Model.ScalesYAt == index)
                                   .Select(series => series.Model.Values.MaxChartPoint.Y).DefaultIfEmpty(0).Max();
@@ -137,8 +143,8 @@ namespace LiveChartsCore
 
         public void CalculateComponentsAndMargin()
         {
-            var ax = AxisX as List<IAxisView>;
-            var ay = AxisY as List<IAxisView>;
+            var ax = AxisX as IList;
+            var ay = AxisY as IList;
 
             if (ax == null || ay == null) return;
 
@@ -152,7 +158,7 @@ namespace LiveChartsCore
                 l = curSize.Left,
                 r = 0d;
 
-            foreach (var yi in ay)
+            foreach (var yi in ay.Cast<IAxisView>())
             {
                 var titleSize = yi.UpdateTitle(-90d);
                 var biggest = yi.Model.PrepareChart(AxisTags.Y, this);
@@ -188,10 +194,10 @@ namespace LiveChartsCore
                 curSize.Top = t;
                 curSize.Height -= t;
             }
-            if (b > 0 && !ax.Any())
+            if (b > 0 && !(ax.Count > 0))
                 curSize.Height = curSize.Height - b;
 
-            foreach (var xi in ax)
+            foreach (var xi in ax.Cast<IAxisView>())
             {
                 var titleSize = xi.UpdateTitle();
                 var biggest = xi.Model.PrepareChart(AxisTags.X, this);
@@ -225,7 +231,7 @@ namespace LiveChartsCore
                 var cor = l - curSize.Left;
                 curSize.Left = l;
                 curSize.Width -= cor;
-                foreach (var yi in ay.Where(x => x.Model.Position == AxisPosition.LeftBottom))
+                foreach (var yi in ay.Cast<IAxisView>().Where(x => x.Model.Position == AxisPosition.LeftBottom))
                 {
                     yi.SetTitleLeft(yi.GetTitleLeft() + cor);
                     yi.LabelsReference += cor;
@@ -236,7 +242,7 @@ namespace LiveChartsCore
             {
                 var cor = r - rp;
                 curSize.Width -= cor;
-                foreach (var yi in ay.Where(x => x.Model.Position == AxisPosition.RightTop))
+                foreach (var yi in ay.Cast<IAxisView>().Where(x => x.Model.Position == AxisPosition.RightTop))
                 {
                     yi.SetTitleLeft(yi.GetTitleLeft() - cor);
                     yi.LabelsReference -= cor;
@@ -245,7 +251,7 @@ namespace LiveChartsCore
 
             for (var index = 0; index < ay.Count; index++)
             {
-                var yi = ay[index];
+                var yi = ay[index] as IAxisView;
                 if (HasUnitaryPoints && Invert)
                     yi.UnitWidth = ChartFunctions.GetUnitWidth(AxisTags.Y, this, index);
                 yi.Model.UpdateSeparators(AxisTags.Y, this, index);
@@ -254,7 +260,7 @@ namespace LiveChartsCore
 
             for (var index = 0; index < ax.Count; index++)
             {
-                var xi = ax[index];
+                var xi = ax[index] as IAxisView;
                 if (HasUnitaryPoints && !Invert)
                     xi.UnitWidth = ChartFunctions.GetUnitWidth(AxisTags.X, this, index);
                 xi.Model.UpdateSeparators(AxisTags.X, this, index);

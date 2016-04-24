@@ -57,7 +57,6 @@ namespace LiveChartsCore
         IAxisView View { get; }
         IList<string> Labels { get; set; }
         Func<double, string> LabelFormatter { get; set; }
-        ISeparatorModel Separator { get; set; }
         double StrokeThickness { get; set; }
         bool ShowLabels { get; set; }
         double? MaxValue { get; set; }
@@ -80,6 +79,8 @@ namespace LiveChartsCore
     {
         IAxisModel Model { get; }
         ISeparatorCacheView NewSeparator();
+
+        ISeparatorView Separator { get; set; }
         double LabelsReference { get; set; }
         double UnitWidth { get; set; }
         LvcSize UpdateTitle(double rotationAngle = 0);
@@ -90,10 +91,8 @@ namespace LiveChartsCore
         LvcSize GetLabelSize();
     }
 
-    public interface ISeparatorModel
+    public interface ISeparatorView
     {
-        IChartModel Chart { get; set; }
-        ISeparatorView View { get; }
         /// <summary>
         /// Gets or sets if separators are enabled (will be drawn)
         /// </summary>
@@ -106,11 +105,6 @@ namespace LiveChartsCore
         /// Gets or sets sepator step, this means the value between each line, use null for auto.
         /// </summary>
         double? Step { get; set; }
-    }
-
-    public interface ISeparatorView
-    {
-        ISeparatorModel Model { get; }
     }
 
     public interface ISeparatorCacheView
@@ -161,6 +155,7 @@ namespace LiveChartsCore
     {
         IChartModel Model { get; }
         bool IsHoverable { get; }
+        bool IsControlLoaded { get; }
 
         void InitializeSeries(ISeriesView series);
         void Update(bool restartAnimations = true);

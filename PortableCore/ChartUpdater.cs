@@ -13,12 +13,19 @@ namespace LiveChartsCore
 
         public void Run(bool restartsAnimations = false)
         {
-            if (Chart.Series == null) return;
+            if (!Chart.View.IsControlLoaded || Chart.Series == null) return;
 
             foreach (var series in Chart.Series)
             {
                 InitializeSeriesParams(series);
                 series.InitializeView();
+                series.Model.Values.GetLimits();
+            }
+
+            Chart.PrepareAxes();
+
+            foreach (var series in Chart.Series)
+            {
                 series.Model.Update();
             }
 #if DEBUG
