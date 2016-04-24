@@ -77,13 +77,12 @@ namespace LiveChartsCore
 
     public interface IAxisView
     {
-        IAxisModel Model { get; }
         ISeparatorCacheView NewSeparator();
-
+        IAxisModel Model { get; set; }
         ISeparatorView Separator { get; set; }
         double LabelsReference { get; set; }
         double UnitWidth { get; set; }
-        LvcSize UpdateTitle(double rotationAngle = 0);
+        LvcSize UpdateTitle(IChartModel chart, double rotationAngle = 0);
         void SetTitleTop(double value);
         void SetTitleLeft(double value);
         double GetTitleLeft();
@@ -93,6 +92,7 @@ namespace LiveChartsCore
 
     public interface ISeparatorView
     {
+        IChartModel Chart { get; set; }
         /// <summary>
         /// Gets or sets if separators are enabled (will be drawn)
         /// </summary>

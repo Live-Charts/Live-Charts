@@ -160,7 +160,7 @@ namespace LiveChartsCore
 
             foreach (var yi in ay.Cast<IAxisView>())
             {
-                var titleSize = yi.UpdateTitle(-90d);
+                var titleSize = yi.UpdateTitle(this, -90d);
                 var biggest = yi.Model.PrepareChart(AxisTags.Y, this);
 
                 var x = curSize.Left;
@@ -199,7 +199,7 @@ namespace LiveChartsCore
 
             foreach (var xi in ax.Cast<IAxisView>())
             {
-                var titleSize = xi.UpdateTitle();
+                var titleSize = xi.UpdateTitle(this);
                 var biggest = xi.Model.PrepareChart(AxisTags.X, this);
                 var top = curSize.Top;
                 var merged = xi.Model.IsMerged ? 0 : biggest.Height;
@@ -266,6 +266,11 @@ namespace LiveChartsCore
                 xi.Model.UpdateSeparators(AxisTags.X, this, index);
                 xi.SetTitleLeft(curSize.Left + curSize.Width*.5 - xi.GetLabelSize().Width*.5);
             }
+
+            DrawMargin.Top = curSize.Top;
+            DrawMargin.Left = curSize.Left;
+            DrawMargin.Width = curSize.Width;
+            DrawMargin.Height = curSize.Height;
         }
 
         public LvcRectangle PlaceLegend(LvcRectangle drawMargin)

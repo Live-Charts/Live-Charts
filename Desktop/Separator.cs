@@ -1,4 +1,25 @@
-﻿using System;
+﻿//The MIT License(MIT)
+
+//copyright(c) 2016 Alberto Rodriguez
+
+//Permission is hereby granted, free of charge, to any person obtaining a copy
+//of this software and associated documentation files (the "Software"), to deal
+//in the Software without restriction, including without limitation the rights
+//to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+//copies of the Software, and to permit persons to whom the Software is
+//furnished to do so, subject to the following conditions:
+
+//The above copyright notice and this permission notice shall be included in all
+//copies or substantial portions of the Software.
+
+//THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+//OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+//SOFTWARE.
+
 using System.Windows;
 using System.Windows.Media;
 using LiveChartsCore;
@@ -7,30 +28,27 @@ namespace LiveChartsDesktop
 {
     public class Separator : FrameworkElement, ISeparatorView
     {
-        public Separator()
-        {
-        }
         public IChartModel Chart { get; set; }
 
-        /// <summary>
-        /// Gets or sets if separators are enabled (will be drawn)
-        /// </summary>
+        public static readonly new DependencyProperty IsEnabledProperty = DependencyProperty.Register(
+            "IsEnabled", typeof (bool), typeof (Separator), new PropertyMetadata(default(bool), OnPropertyChanged()));
+
         public new bool IsEnabled
         {
             get { return (bool) GetValue(IsEnabledProperty); }
             set { SetValue(IsEnabledProperty, value); }
         }
 
-        public static readonly DependencyProperty ColorProperty = DependencyProperty.Register(
-            "Color", typeof (Color), typeof (Separator), 
-            new PropertyMetadata(default(Color)));
+        public static readonly DependencyProperty StrokeProperty = DependencyProperty.Register(
+            "Stroke", typeof (Brush), typeof (Separator), 
+            new PropertyMetadata(default(Brush), OnPropertyChanged()));
         /// <summary>
         /// Gets or sets separators color 
         /// </summary>
-        public Color Color
+        public Brush Stroke
         {
-            get { return (Color) GetValue(ColorProperty); }
-            set { SetValue(ColorProperty, value); }
+            get { return (Brush) GetValue(StrokeProperty); }
+            set { SetValue(StrokeProperty, value); }
         }
 
         public static readonly DependencyProperty StrokeThicknessProperty = DependencyProperty.Register(
@@ -43,6 +61,17 @@ namespace LiveChartsDesktop
         {
             get { return (int) GetValue(StrokeThicknessProperty); }
             set { SetValue(StrokeThicknessProperty, value); }
+        }
+
+        public static readonly DependencyProperty StrokeDashArrayProperty = DependencyProperty.Register(
+            "StrokeDashArray", typeof (DoubleCollection), typeof (Separator), new PropertyMetadata(default(DoubleCollection)));
+        /// <summary>
+        /// Gets or sets the stroke dash array for the current separator.
+        /// </summary>
+        public DoubleCollection StrokeDashArray
+        {
+            get { return (DoubleCollection) GetValue(StrokeDashArrayProperty); }
+            set { SetValue(StrokeDashArrayProperty, value); }
         }
 
         public static readonly DependencyProperty StepProperty = DependencyProperty.Register(
@@ -63,20 +92,7 @@ namespace LiveChartsDesktop
             {
                 var wpfSeries = o as Separator;
                 if (wpfSeries == null) return;
-                wpfSeries.Model.Chart.Update(animate);
-            };
-        }
-
-        private static PropertyChangedCallback OnPropertyChanged(Action<Separator, ISeparatorModel> map, bool animate = false)
-        {
-            return (o, args) =>
-            {
-                var wpfSeparator = o as Separator;
-                if (wpfSeparator == null) return;
-
-                map(wpfSeparator, wpfSeparator.Model);
-
-                wpfSeparator.Model.Chart.Update(animate);
+                //wpfSeries.Model.Chart.Update(animate);
             };
         }
     }

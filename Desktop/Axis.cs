@@ -35,6 +35,7 @@ namespace LiveChartsDesktop
         {
             Model = new LiveChartsCore.Axis(this);
             TitleBlock = new TextBlock();
+            SetValue(SeparatorProperty, new Separator());
         }
 
         public TextBlock TitleBlock { get; set; }
@@ -47,11 +48,7 @@ namespace LiveChartsDesktop
             var asc = new AxisSeparatorCache
             {
                 TextBlock = BindATextBlock(),
-                Line = new Line
-                {
-                    Stroke = new SolidColorBrush(Separator.Color),
-                    StrokeThickness = Separator.StrokeThickness
-                }
+                Line = BindALine()
             };
 
             Panel.SetZIndex(asc.TextBlock, -1);
@@ -62,13 +59,13 @@ namespace LiveChartsDesktop
             return asc;
         }
 
-        public LvcSize UpdateTitle(double rotationAngle = 0)
+        public LvcSize UpdateTitle(IChartModel chart, double rotationAngle = 0)
         {
             if (TitleBlock.Parent == null)
             {
                 if (Math.Abs(rotationAngle) < 0.1)
                     TitleBlock.RenderTransform = new RotateTransform(rotationAngle);
-                Model.Chart.View.AddToView(TitleBlock);
+                chart.View.AddToView(TitleBlock);
             }
             TitleBlock.UpdateLayout();
             return string.IsNullOrWhiteSpace(Title)
@@ -126,27 +123,27 @@ namespace LiveChartsDesktop
         }
 
         public static readonly DependencyProperty SeparatorProperty = DependencyProperty.Register(
-            "Separator", typeof (Separator), typeof (Axis), 
-            new PropertyMetadata(default(Separator), OnPropertyChanged()));
+            "Separator", typeof (ISeparatorView), typeof (Axis),
+            new PropertyMetadata(default(ISeparatorView), OnPropertyChanged()));
         /// <summary>
         /// Get or sets configuration for parallel lines to axis.
         /// </summary>
-        public Separator Separator
+        public ISeparatorView Separator
         {
-            get { return (Separator) GetValue(SeparatorProperty); }
+            get { return (ISeparatorView) GetValue(SeparatorProperty); }
             set { SetValue(SeparatorProperty, value); }
         }
 
-        public static readonly DependencyProperty BrushProperty = DependencyProperty.Register(
-            "Brush", typeof (Brush), typeof (Axis), 
+        public static readonly DependencyProperty StrokeProperty = DependencyProperty.Register(
+            "Stroke", typeof (Brush), typeof (Axis), 
             new PropertyMetadata(default(Brush)));
         /// <summary>
         /// Gets or sets axis color, axis means only the zero value, if you need to highlight where zero is. to change separators color, see Axis.Separator
         /// </summary>
-        public Brush Brush
+        public Brush Stroke
         {
-            get { return (Brush) GetValue(BrushProperty); }
-            set { SetValue(BrushProperty, value); }
+            get { return (Brush) GetValue(StrokeProperty); }
+            set { SetValue(StrokeProperty, value); }
         }
 
         public static readonly DependencyProperty StrokeThicknessProperty = DependencyProperty.Register(
@@ -359,13 +356,30 @@ namespace LiveChartsDesktop
             return tb;
         }
 
+        internal Line BindALine()
+        {
+            var l = new Line();
+
+            var s = Separator as Separator;
+            if (s == null) return l;
+
+            l.SetBinding(Shape.StrokeProperty,
+                new Binding {Path = new PropertyPath(LiveChartsDesktop.Separator.StrokeProperty), Source = s});
+            l.SetBinding(Shape.StrokeDashArrayProperty,
+                new Binding {Path = new PropertyPath(LiveChartsDesktop.Separator.StrokeDashArrayProperty), Source = s});
+            l.SetBinding(Shape.StrokeThicknessProperty,
+                new Binding {Path = new PropertyPath(LiveChartsDesktop.Separator.StrokeThicknessProperty), Source = s});
+
+            return l;
+        }
+
         private static PropertyChangedCallback OnPropertyChanged(bool animate = false)
         {
             return (o, args) =>
             {
-                var wpfSeries = o as Axis;
-                if (wpfSeries == null) return;
-                wpfSeries.Model.Chart.Update(animate);
+                var wpfAxis = o as Axis;
+                if (wpfAxis == null) return;
+                if (wpfAxis.Model.Chart != null) wpfAxis.Model.Chart.Update(animate);
             };
         }
 
@@ -378,7 +392,7 @@ namespace LiveChartsDesktop
 
                 map(wpfAxis, wpfAxis.Model);
 
-                wpfAxis.Model.Chart.Update(animate);
+                if (wpfAxis.Model.Chart != null) wpfAxis.Model.Chart.Update(animate);
             };
         }
     }

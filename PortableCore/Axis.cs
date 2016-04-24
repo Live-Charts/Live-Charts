@@ -34,13 +34,13 @@ namespace LiveChartsCore
         {
             View = view;
             CleanFactor = 3;
+            Cache = new Dictionary<double, ISeparatorCacheView>();
         }
 
         public IChartModel Chart { get; set; }
         public IAxisView View { get; set; }
         public IList<string> Labels { get; set; }
         public Func<double, string> LabelFormatter { get; set; }
-        public ISeparatorModel Separator { get; set; }
         public double StrokeThickness { get; set; }
         public bool ShowLabels { get; set; }
         public double? MaxValue { get; set; }
@@ -61,9 +61,9 @@ namespace LiveChartsCore
 
         public void CalculateSeparator(IChartModel chart, AxisTags source)
         {
-            if (Separator.Step != null)
+            if (View.Separator.Step != null)
             {
-                S = Separator.Step ?? 1;
+                S = View.Separator.Step ?? 1;
                 return;
             }
 
