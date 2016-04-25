@@ -126,15 +126,15 @@ namespace LiveChartsCore
         /// <summary>
         /// Scales a graph point to screen.
         /// </summary>
-        /// <param name="value"></param>
+        /// <param name="point"></param>
         /// <param name="chart"></param>
         /// <param name="axis"></param>
         /// <returns></returns>
-        public static LvcPoint ToPlotArea(LvcPoint value, IChartModel chart, int axis = 0)
+        public static LvcPoint ToPlotArea(LvcPoint point, IChartModel chart, int axis = 0)
         {
             return new LvcPoint(
-                ToPlotArea(value.X, AxisTags.X, chart, axis),
-                ToPlotArea(value.Y, AxisTags.Y, chart, axis));
+                ToPlotArea(point.X, AxisTags.X, chart, axis),
+                ToPlotArea(point.Y, AxisTags.Y, chart, axis));
         }
 
         public static double ToDrawMargin(double value, AxisTags source, IChartModel chart, int axis = 0)

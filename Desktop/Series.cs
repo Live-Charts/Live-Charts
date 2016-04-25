@@ -293,7 +293,7 @@ namespace LiveChartsDesktop
             {
                 var wpfSeries = o as Series;
                 if (wpfSeries == null) return;
-                wpfSeries.Model.Chart.Updater.Run(animate);
+                if (wpfSeries.Model.Chart != null) wpfSeries.Model.Chart.Updater.Run(animate);
             };
         }
 
@@ -306,7 +306,7 @@ namespace LiveChartsDesktop
 
                 map(wpfSeries, wpfSeries.Model);
 
-                wpfSeries.Model.Chart.Updater.Run(animate);
+                if (wpfSeries.Model.Chart != null) wpfSeries.Model.Chart.Updater.Run(animate);
             };
         }
         #endregion

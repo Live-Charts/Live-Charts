@@ -30,13 +30,12 @@ using LiveChartsCore;
 
 namespace LiveChartsDesktop
 {
-    public class PointBezierView : PointView
+    public class PointBezierView : PointView, IBezierData
     {
         public BezierSegment Segment { get; set; }
         public Ellipse Ellipse { get; set; }
         public PathFigure Container { get; set; }
-        internal BezierData Data { get; set; }
-
+        public BezierData Data { get; set; }
 
         public override void Update(object previous, object current, IChartModel chart)
         {
@@ -77,38 +76,19 @@ namespace LiveChartsDesktop
 
             if (chart.DisableAnimatons)
             {
-                Segment.Point1 = Data.Point1;
-                Segment.Point2 = Data.Point2;
-                Segment.Point3 = Data.Point3;
+                Segment.Point1 = Data.Point1.AsPoint();
+                Segment.Point2 = Data.Point2.AsPoint();
+                Segment.Point3 = Data.Point3.AsPoint();
                 return;
             }
 
             Segment.BeginAnimation(BezierSegment.Point1Property,
-                new PointAnimation(p1, Data.Point1, chart.AnimationsSpeed));
+                new PointAnimation(p1, Data.Point1.AsPoint(), chart.AnimationsSpeed));
             Segment.BeginAnimation(BezierSegment.Point2Property,
-                new PointAnimation(p2, Data.Point2, chart.AnimationsSpeed));
+                new PointAnimation(p2, Data.Point2.AsPoint(), chart.AnimationsSpeed));
             Segment.BeginAnimation(BezierSegment.Point3Property,
-                new PointAnimation(p3, Data.Point3, chart.AnimationsSpeed));
+                new PointAnimation(p3, Data.Point3.AsPoint(), chart.AnimationsSpeed));
         }
-    }
-
-    internal class BezierData
-    {
-        public BezierData()
-        {
-        }
-
-        public BezierData(Point point)
-        {
-            Point1 = point;
-            Point2 = point;
-            Point3 = point;
-        }
-
-        public Point Point1 { get; set; }
-        public Point Point2 { get; set; }
-        public Point Point3 { get; set; }
-        public Point StartPoint { get; set; }
     }
 
     public class PointView : IChartPointView
@@ -122,4 +102,13 @@ namespace LiveChartsDesktop
             throw new NotImplementedException();
         }
     }
+
+    internal static class DesktopExtentions
+    {
+        public static Point AsPoint(this LvcPoint point)
+        {
+            return new Point(point.X, point.Y);
+        }
+    }
+
 }

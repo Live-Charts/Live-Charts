@@ -37,12 +37,13 @@ namespace LiveChartsDesktop
 
         public LineSeries()
         {
-            Model = new LineModel(this);
+            Model = new LineAlgorithm(this);
+            SetValue(LineSmoothnessProperty, 0.8d);
         }
 
         public LineSeries(SeriesConfiguration configuration) : base(configuration)
         {
-            Model = new LineModel(this);
+            Model = new LineAlgorithm(this);
         }
 
         public static readonly DependencyProperty PointRadiusProperty = DependencyProperty.Register(
@@ -62,6 +63,22 @@ namespace LiveChartsDesktop
         {
             get { return (Brush) GetValue(PointHoverBrushProperty); }
             set { SetValue(PointHoverBrushProperty, value); }
+        }
+
+        public static readonly DependencyProperty LineSmoothnessProperty = DependencyProperty.Register(
+            "LineSmoothness", typeof (double), typeof (LineSeries), 
+            new PropertyMetadata(default(double), OnPropertyChanged((v, m) =>
+            {
+                var lm = m as LineAlgorithm;
+                var lv = v as LineSeries;
+                if (lm == null || lv == null) return;
+                lm.LineSmoothness = lv.LineSmoothness;
+            })));
+
+        public double LineSmoothness
+        {
+            get { return (double) GetValue(LineSmoothnessProperty); }
+            set { SetValue(LineSmoothnessProperty, value); }
         }
 
         public override void InitializeView()
@@ -93,7 +110,7 @@ namespace LiveChartsDesktop
         public override IChartPointView InitializePointView()
         {
             var mhr = PointRadius < 5 ? 5 : PointRadius;
-
+           
             Ellipse e = null;
             Rectangle hs = null;
             TextBlock tb = null;
@@ -145,28 +162,9 @@ namespace LiveChartsDesktop
                 Ellipse = e,
                 DataLabel = tb,
                 Segment = new BezierSegment(),
-                IsNew = true
+                Container = _pathFigure,
+                IsNew = true,
             };
         }
-    }
-
-    public class LineVisualPoint : VisualPoint
-    {
-        public PathFigure Owner { get; set; }
-        public BezierSegment Segment { get; set; }
-
-        internal BezierData Data { get; set; }
-        public LineVisualPoint Previous { get; set; }
-    }
-
-    public class VisualPoint
-    {
-        public ChartPoint ChartPoint { get; set; }
-        public Series Series { get; set; }
-        public Shape Shape { get; set; }
-        public Shape HoverShape { get; set; }
-        public TextBlock TextBlock { get; set; }
-        public bool IsNew { get; set; }
-        public bool IsHighlighted { get; set; }
     }
 }

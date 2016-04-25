@@ -35,7 +35,7 @@ namespace LiveChartsCore
         /// <summary>
         /// Gets the coordinate where the value is placed at chart
         /// </summary>
-        public LvcPoint Coordinates { get; set; }
+        public LvcPoint ChartLocation { get; set; }
         /// <summary>
         /// Gets the index of this point in the chart
         /// </summary>
@@ -48,6 +48,7 @@ namespace LiveChartsCore
         /// Gets or sets the view of this chart point
         /// </summary>
         public IChartPointView View { get; set; }
+
     }
 
     public interface IChartPointView

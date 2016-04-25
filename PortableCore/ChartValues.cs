@@ -48,7 +48,7 @@ namespace LiveChartsCore
 
                 var config = GetConfig();
 
-                return IndexData().Select(t => new ChartPoint                                     
+                return IndexData().Select(t => new ChartPoint
                 {
                     X = config.XValueMapper(t.Value, t.Key),
                     Y = config.YValueMapper(t.Value, t.Key),
