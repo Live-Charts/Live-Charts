@@ -29,6 +29,7 @@ namespace LiveChartsCore
             foreach (var series in Chart.Series)
             {
                 series.Model.Update();
+                series.Model.Values.CollectGarbage();
             }
 #if DEBUG
             Debug.WriteLine("<<Chart UI Updated>>");

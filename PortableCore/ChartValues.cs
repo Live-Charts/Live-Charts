@@ -97,8 +97,13 @@ namespace LiveChartsCore
 
         public void CollectGarbage()
         {
-            foreach (var garbage in GetGarbagePoints())
+            var isPrimitive = typeof (T).GetTypeInfo().IsPrimitive;
+            foreach (var garbage in GetGarbagePoints().ToList())
+            {
                 Series.View.RemovePointView(garbage.View);
+                if (isPrimitive) Primitives.Remove(garbage.Key);
+                else Generics.Remove((T) garbage.Instance);
+            }
         }
 
         #endregion
@@ -152,7 +157,6 @@ namespace LiveChartsCore
                             Y = config.YValueMapper(value, i),
                             Instance = value,
                             Key = i,
-                            GarbageCollectorIndex = garbageCollectorIndex,
                             View = Series.View.InitializePointView()
                         };
                         Primitives[i] = cp;
@@ -168,12 +172,13 @@ namespace LiveChartsCore
                             Y = config.YValueMapper(value, i),
                             Instance = value,
                             Key = i,
-                            GarbageCollectorIndex = garbageCollectorIndex,
                             View = Series.View.InitializePointView()
                         };
                         Generics[value] = cp;
                     }
                 }
+
+                cp.GarbageCollectorIndex = garbageCollectorIndex;
 
                 yield return cp;
                 i++;
@@ -182,8 +187,8 @@ namespace LiveChartsCore
 
         private IEnumerable<ChartPoint> GetGarbagePoints()
         {
-            return Generics.Values.Where(x => x.GarbageCollectorIndex < GarbageCollectorIndex)
-                .Concat(Primitives.Values.Where(y => y.GarbageCollectorIndex < GarbageCollectorIndex));
+            return Generics.Values.Where(x => x.GarbageCollectorIndex < GarbageCollectorIndex - 1.01)
+                .Concat(Primitives.Values.Where(y => y.GarbageCollectorIndex < GarbageCollectorIndex - 1.01));
         }
 
         private SeriesConfiguration<T> GetConfig()
