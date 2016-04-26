@@ -61,7 +61,7 @@ myChart.AxixX.Labels = labels;
 
 ### About Versions
 
-This library has suffared hard changes and it is in a pre-release state, even we are really close now to a 1.0 version documentations might not match with the latest release, examples in this repo are always up-to-date, the safestg version is 0.6.4, the most animated and safe is 0.6.6.
+This library has suffared hard changes and it is in a pre-release state, even we are really close now to a 1.0 version documentations might not match with the latest release, examples in this repo are always up-to-date, the safest version is 0.6.4, the most animated and safe is 0.6.6, 0.7.0 is comming soon, fixing all reported bugs, adding at least 5 more series, and making live charts portable, this means this lbrary will be ready to run in WinForms, Wpf, Uwp and Xamarin.
 
 ## Is live charts what you are looking for? see these interesting examples.
 
