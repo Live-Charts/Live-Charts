@@ -15,9 +15,9 @@
 [![NuGet](https://img.shields.io/nuget/dt/LiveCharts.svg?style=flat-square)](https://www.nuget.org/packages/LiveCharts/)
 [![Gitter](https://img.shields.io/gitter/room/beto-rodriguez/Live-Charts.svg?style=flat-square)](https://gitter.im/beto-rodriguez/Live-Charts?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-### Find more at http://lvcharts.net/
-### Chat https://gitter.im/beto-rodriguez/Live-Charts
-### Questions, try [Stack Overflow](http://stackoverflow.com/), tag your question as LiveCharts
+* **[WebSite](http://lvcharts.net/)**
+* **[Chat](https://gitter.im/beto-rodriguez/Live-Charts)**
+* **Questions, try [Stack Overflow](http://stackoverflow.com/), tag your question as LiveCharts**
 
 Live charts is an easy way to build poweful charts, all charts are animated, they update every time you change your data, it also has an awesome performance. 
 
@@ -58,6 +58,10 @@ myChart.Series = seriesCollection
 var labels = new string[] {"Jan", "Feb" , "Mar", "Apr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dec"};
 myChart.AxixX.Labels = labels;
 ```
+
+### About Versions
+
+This library has suffared hard changes and it is in a pre-release state, even we are really close now to a 1.0 version documentations might not match with the latest release, examples in this repo are always up-to-date, the safestg version is 0.6.4, the most animated and safe is 0.6.6.
 
 ## Is live charts what you are looking for? see these interesting examples.
 
