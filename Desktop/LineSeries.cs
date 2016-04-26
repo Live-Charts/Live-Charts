@@ -166,5 +166,15 @@ namespace LiveChartsDesktop
                 IsNew = true,
             };
         }
+
+        public override void RemovePointView(object view)
+        {
+            var bezierView = view as PointBezierView;
+            if (bezierView == null) return;
+            Model.Chart.View.RemoveFromView(bezierView.HoverShape);
+            Model.Chart.View.RemoveFromView(bezierView.Ellipse);
+            Model.Chart.View.RemoveFromView(bezierView.DataLabel);
+            bezierView.Container.Segments.Remove(bezierView.Segment);
+        }
     }
 }

@@ -6,10 +6,9 @@
         xmlns:local="clr-namespace:Wpf"
         xmlns:lcd="clr-namespace:LiveChartsDesktop;assembly=Desktop"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525"
+        Title="MainWindow" Height="400" Width="525"
         d:DataContext="{d:DesignInstance local:MainWindow}">
     <Grid>
-        <lcd:CartesianChart Margin="10" Background="BlueViolet" 
-                            Series="{Binding SeriesCollection}"/>
+        <lcd:CartesianChart Margin="10" Series="{Binding SeriesCollection}"/>
     </Grid>
 </Window>

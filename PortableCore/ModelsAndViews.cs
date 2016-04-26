@@ -44,6 +44,7 @@ namespace LiveChartsCore
     {
         ISeriesModel Model { get; set; }
         IChartPointView InitializePointView();
+        void RemovePointView(object view);
         void InitializeView();
         void Erase();
     }

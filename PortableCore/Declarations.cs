@@ -39,6 +39,12 @@ namespace LiveChartsCore
             Y = y;
         }
 
+        public LvcPoint(LvcPoint point): this()
+        {
+            X = point.X;
+            Y = point.Y;
+        }
+
         public double X { get; set; }
         public double Y { get; set; }
 

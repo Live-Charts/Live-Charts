@@ -45,7 +45,7 @@ namespace LiveChartsCore
             
             if (source == AxisTags.Y)
             {
-                var y = chart.AxisX as IList;
+                var y = chart.AxisY as IList;
                 if (y == null) return 0;
                 var view = y[axis] as IAxisView;
                 if (view == null) return 0;
@@ -85,17 +85,15 @@ namespace LiveChartsCore
             var p1 = new LvcPoint();
             var p2 = new LvcPoint();
 
-            var x = chart.AxisX as List<IAxisView>;
-            var y = chart.AxisY as List<IAxisView>;
-
-            if (x == null || y == null) return 0;
 
             if (source == AxisTags.Y)
             {
-                if (axis >= y.Count)
-                    throw new Exception("There is not a valid Y axis at position " + axis);
+                var y = chart.AxisY as IList;
+                if (y == null) return 0;
+                var view = y[axis] as IAxisView;
+                if (view == null) return 0;
 
-                var ax = y[axis].Model;
+                var ax = view.Model; 
 
                 p1.X = ax.MaxLimit;
                 p1.Y = chart.DrawMargin.Top;
@@ -105,10 +103,12 @@ namespace LiveChartsCore
             }
             else
             {
-                if (axis >= x.Count)
-                    throw new Exception("There is not a valid X axis at position " + axis);
+                var x = chart.AxisX as IList;
+                if (x == null) return 0;
+                var view = x[axis] as IAxisView;
+                if (view == null) return 0;
 
-                var ax = x[axis].Model;
+                var ax = view.Model;
 
                 p1.X = ax.MaxLimit;
                 p1.Y = chart.DrawMargin.Width + chart.DrawMargin.Left;

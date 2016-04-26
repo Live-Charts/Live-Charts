@@ -49,5 +49,9 @@ namespace LiveChartsCore
         /// Forces values to calculate max, min and index data.
         /// </summary>
         void GetLimits();
+        /// <summary>
+        /// Removes all unecessary points from the view
+        /// </summary>
+        void CollectGarbage();
     }
 }

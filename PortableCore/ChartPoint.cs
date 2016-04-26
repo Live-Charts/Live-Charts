@@ -49,6 +49,7 @@ namespace LiveChartsCore
         /// </summary>
         public IChartPointView View { get; set; }
 
+        internal double GarbageCollectorIndex { get; set; }
     }
 
     public interface IChartPointView

@@ -28,7 +28,7 @@ using System.Linq;
 using System.Reflection;
 
 namespace LiveChartsCore
-{ 
+{
     /// <summary>
     /// Creates a collection of values ready to plot
     /// </summary>
@@ -37,31 +37,30 @@ namespace LiveChartsCore
     {
         #region Properties
 
+        public ChartValues()
+        {
+            //Primitives track shapes by position in the array
+            Primitives = new Dictionary<int, ChartPoint>();
+            //Generics by InstanceId
+            Generics = new Dictionary<T, ChartPoint>();
+        }
+
         /// <summary>
         /// Gets the collection of points displayed in the chart current view
         /// </summary>
         public IEnumerable<ChartPoint> Points
         {
-            get
-            {
-                if (Series == null) return Enumerable.Empty<ChartPoint>();
-
-                var config = GetConfig();
-
-                return IndexData().Select(t => new ChartPoint
-                {
-                    X = config.XValueMapper(t.Value, t.Key),
-                    Y = config.YValueMapper(t.Value, t.Key),
-                    Instance = t.Value,
-                    Key = t.Key
-                });
-            }
+            get { return GetPointsIterator(); }
         }
 
         public LvcPoint MaxChartPoint { get; private set; }
         public LvcPoint MinChartPoint { get; private set; }
         public ISeriesModel Series { get; set; }
         public SeriesConfiguration SeriesConfiguration { get; set; }
+
+        internal double GarbageCollectorIndex { get; set; }
+        internal Dictionary<int, ChartPoint> Primitives { get; set; }
+        internal Dictionary<T, ChartPoint> Generics { get; set; }
 
         #endregion
 
@@ -96,30 +95,95 @@ namespace LiveChartsCore
             MinChartPoint = new LvcPoint(xMin, yMin);
         }
 
+        public void CollectGarbage()
+        {
+            foreach (var garbage in GetGarbagePoints())
+                Series.View.RemovePointView(garbage.View);
+        }
+
         #endregion
 
         #region Private Methods
 
         private IEnumerable<KeyValuePair<int, T>> IndexData()
         {
-            var isObservable = typeof(IObservableChartPoint).GetTypeInfo().IsAssignableFrom(typeof(T).GetTypeInfo());
+            var i = 0;
+            foreach (var t in this)
+            {
+                yield return new KeyValuePair<int, T>(i, t);
+                i++;
+            }
+        }
 
+        private IEnumerable<ChartPoint> GetPointsIterator()
+        {
+            if (Series == null) yield break;
+
+            var config = GetConfig();
+
+            var isPrimitive = typeof (T).GetTypeInfo().IsPrimitive;
+            var isObservable = !isPrimitive &&
+                               typeof (IObservableChartPoint).GetTypeInfo().IsAssignableFrom(typeof (T).GetTypeInfo());
+
+            var garbageCollectorIndex = GarbageCollectorIndex++;
             var i = 0;
 
-            foreach (var t in this)
+            foreach (var value in this)
             {
                 if (isObservable)
                 {
-                    var observable = t as IObservableChartPoint;
+                    var observable = value as IObservableChartPoint;
                     if (observable != null)
                     {
                         observable.PointChanged -= ObservableOnPointChanged;
                         observable.PointChanged += ObservableOnPointChanged;
                     }
                 }
-                yield return new KeyValuePair<int, T>(i, t);
+
+                ChartPoint cp = null;
+
+                if (isPrimitive)
+                {
+                    if (!Primitives.TryGetValue(i, out cp))
+                    {
+                        cp = new ChartPoint
+                        {
+                            X = config.XValueMapper(value, i),
+                            Y = config.YValueMapper(value, i),
+                            Instance = value,
+                            Key = i,
+                            GarbageCollectorIndex = garbageCollectorIndex,
+                            View = Series.View.InitializePointView()
+                        };
+                        Primitives[i] = cp;
+                    }
+                }
+                else
+                {
+                    if (!Generics.TryGetValue(value, out cp))
+                    {
+                        cp = new ChartPoint
+                        {
+                            X = config.XValueMapper(value, i),
+                            Y = config.YValueMapper(value, i),
+                            Instance = value,
+                            Key = i,
+                            GarbageCollectorIndex = garbageCollectorIndex,
+                            View = Series.View.InitializePointView()
+                        };
+                        Generics[value] = cp;
+                    }
+                }
+
+                yield return cp;
                 i++;
             }
+        }
+
+        private IEnumerable<ChartPoint> GetGarbagePoints()
+        {
+            return Generics.Values.Where(x => x.GarbageCollectorIndex < GarbageCollectorIndex)
+                .Concat(Primitives.Values.Where(y => y.GarbageCollectorIndex < GarbageCollectorIndex));
         }
 
         private SeriesConfiguration<T> GetConfig()
@@ -138,22 +202,7 @@ namespace LiveChartsCore
 
         private void ObservableOnPointChanged(object caller)
         {
-            //var mapper = Series.SeriesCollection.Chart.ShapesMapper;
-            //var updatedPoint = mapper.FirstOrDefault(x => x.ChartPoint.Instance == caller);
-            //if (updatedPoint != null)
-            //{
-            //    var config = (Series.Configuration ?? Series.Collection.Configuration) as SeriesConfiguration<T>;
-            //    if (config != null)
-            //    {
-            //        updatedPoint.ChartPoint.X = config.XValueMapper((T)caller, updatedPoint.ChartPoint.Key);
-            //        updatedPoint.ChartPoint.Y = config.YValueMapper((T)caller, updatedPoint.ChartPoint.Key);
-
-            //        //test
-            //        var mapedPoint = Series.Collection.Chart.ShapesMapper
-            //            .FirstOrDefault(x => updatedPoint.ChartPoint == x.ChartPoint);
-            //    }
-            //}
-            Series.Chart.Updater.Run(false);
+            Series.Chart.Updater.Run();
         }
 
         #endregion

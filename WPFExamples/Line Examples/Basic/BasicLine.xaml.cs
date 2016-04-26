@@ -19,19 +19,19 @@ namespace ChartsTest.Line_Examples.Basic
             var charlesSeries = new LineSeries
             {
                 Title = "Charles",
-                Values = new ChartValues<double> { 5, 2, 1, 7, 7, 2 },
+                Values = new ChartValues<double> {1, 2, 3},
                 PointRadius = 0
             };
-            var jamesSeries = new LineSeries
-            {
-                Title = "James",
-                Values = new ChartValues<double> { 5, 6, 9, 10, 11, 9 },
-                PointRadius = 0
-            };
+            //var jamesSeries = new LineSeries
+            //{
+            //    Title = "James",
+            //    Values = new ChartValues<double> { 5, 6, 9, 10, 11, 9 },
+            //    PointRadius = 0
+            //};
 
             //add our series to our SeriesCollection
             Series.Add(charlesSeries);
-            Series.Add(jamesSeries);
+            //Series.Add(jamesSeries);
 
             //that's it, LiveCharts is ready and listening for your data changes.
             DataContext = this;

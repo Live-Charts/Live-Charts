@@ -1,5 +1,7 @@
 ﻿using System.Windows;
+using System.Windows.Media;
 using LiveChartsCore;
+using LiveChartsDesktop;
 
 namespace Wpf
 {
@@ -13,9 +15,12 @@ namespace Wpf
             InitializeComponent();
             SeriesCollection = new SeriesCollection
             {
-                new LiveChartsDesktop.LineSeries
+                new LineSeries
                 {
-                    Values = new ChartValues<double> {1, 2, 3}
+                    Values = new ChartValues<double> {0, 2, 4, 8, 16, 32, 64},
+                    Stroke = Brushes.Green,
+                    StrokeThickness = 2,
+                    Fill = new SolidColorBrush {Color = Colors.Green, Opacity = .3}
                 }
             };
             DataContext = this;

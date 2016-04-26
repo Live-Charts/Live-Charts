@@ -39,16 +39,18 @@ namespace LiveChartsDesktop
     {
         protected LiveChartsCore.Chart ChartModel;
        
-
         protected Chart()
         {
             Canvas = new Canvas();
+            Canvas.Background = new SolidColorBrush(System.Windows.Media.Colors.Blue) {Opacity = .3};
             Content = Canvas;
 
             DrawMargin = new Canvas {ClipToBounds = true};
 
             SetValue(MinHeightProperty, 125d);
             SetValue(MinWidthProperty, 125d);
+
+            SetValue(AnimationsSpeedProperty, TimeSpan.FromMilliseconds(500));
 
             SetValue(ChartLegendProperty, new ChartLegend());
 
@@ -64,6 +66,13 @@ namespace LiveChartsDesktop
 #if DEBUG
                 Debug.WriteLine("ChartResized");
 #endif
+                Model.ChartControlSize = new LvcSize(ActualWidth, ActualHeight);
+
+                Model.DrawMargin.Left = 0;
+                Model.DrawMargin.Top = 0;
+                Model.DrawMargin.Width = ActualWidth;
+                Model.DrawMargin.Height = ActualHeight;
+
                 Model.Updater.Run();
                 ResizeTimer.Stop();
             };

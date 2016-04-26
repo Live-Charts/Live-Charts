@@ -25,14 +25,14 @@ namespace LiveChartsCore
             var p0 = points.Count > 0
                 ? ChartFunctions.ToDrawMargin(points[0], ScalesXAt, ScalesYAt, Chart)
                 : new LvcPoint(0, 0);
-            var p1 = points.Count > 1
-                ? ChartFunctions.ToDrawMargin(points[1], ScalesXAt, ScalesYAt, Chart)
+            var p1 = points.Count > 0
+                ? ChartFunctions.ToDrawMargin(points[0], ScalesXAt, ScalesYAt, Chart)
                 : p0;
-            var p2 = points.Count > 2
-                ? ChartFunctions.ToDrawMargin(points[2], ScalesXAt, ScalesYAt, Chart)
+            var p2 = points.Count > 1
+                ? ChartFunctions.ToDrawMargin(points[1], ScalesXAt, ScalesYAt, Chart)
                 : p1;
-            var p3 = points.Count > 3
-                ? ChartFunctions.ToDrawMargin(points[3], ScalesXAt, ScalesYAt, Chart)
+            var p3 = points.Count > 2
+                ? ChartFunctions.ToDrawMargin(points[2], ScalesXAt, ScalesYAt, Chart)
                 : p2;
 
             var smoothness = LineSmoothness;
@@ -58,6 +58,9 @@ namespace LiveChartsCore
                 var k1 = len1/(len1 + len2);
                 var k2 = len2/(len2 + len3);
 
+                if (double.IsNaN(k1)) k1 = 0d;
+                if (double.IsNaN(k2)) k2 = 0d;
+
                 var xm1 = xc1 + (xc2 - xc1)*k1;
                 var ym1 = yc1 + (yc2 - yc1)*k1;
                 var xm2 = xc2 + (xc3 - xc2)*k2;
@@ -67,9 +70,6 @@ namespace LiveChartsCore
                 var c1Y = ym1 + (yc2 - ym1)*smoothness + p1.Y - ym1;
                 var c2X = xm2 + (xc2 - xm2)*smoothness + p2.X - xm2;
                 var c2Y = ym2 + (yc2 - ym2)*smoothness + p2.Y - ym2;
-
-                if (chartPoint.View == null)
-                    chartPoint.View = View.InitializePointView();
 
                 var bezierView = chartPoint.View as IBezierData;
                 if (bezierView == null) continue;
@@ -84,6 +84,12 @@ namespace LiveChartsCore
                 chartPoint.View.Update(previous, chartPoint, Chart);
 
                 previous = chartPoint;
+                p0 = new LvcPoint(p1);
+                p1 = new LvcPoint(p2);
+                p2 = new LvcPoint(p3);
+                p3 = points.Count > index + 3
+                    ? ChartFunctions.ToDrawMargin(points[index + 3], ScalesXAt, ScalesYAt, Chart)
+                    : p2;
             }
         }
 

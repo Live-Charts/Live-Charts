@@ -250,6 +250,11 @@ namespace LiveChartsDesktop
             throw new NotImplementedException();
         }
 
+        public virtual void RemovePointView(object view)
+        {
+            throw new NotImplementedException();
+        }
+
         public virtual void InitializeView()
         {
             throw new NotImplementedException();
