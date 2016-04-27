@@ -42,7 +42,7 @@ namespace LiveChartsCore
 
             var p1 = new LvcPoint();
             var p2 = new LvcPoint();
-            
+
             if (source == AxisTags.Y)
             {
                 var y = chart.AxisY as IList;
@@ -65,7 +65,7 @@ namespace LiveChartsCore
                 var view = x[axis] as IAxisView;
                 if (view == null) return 0;
 
-                var ax =  view.Model;
+                var ax = view.Model;
 
                 p1.X = ax.MaxLimit;
                 p1.Y = chart.DrawMargin.Width + chart.DrawMargin.Left;

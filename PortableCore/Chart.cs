@@ -66,7 +66,7 @@ namespace LiveChartsCore
         public TimeSpan TooltipTimeout { get; set; }
         public ZoomingOptions Zoom { get; set; }
         public LegendLocation LegendLocation { get; set; }
-        public bool DisableAnimatons { get; set; }
+        public bool DisableAnimations { get; set; }
         public TimeSpan AnimationsSpeed { get; set; }
 
         public AxisTags PivotZoomingAxis { get; set; }
@@ -148,7 +148,7 @@ namespace LiveChartsCore
 
             if (ax == null || ay == null) return;
 
-            var curSize = new LvcRectangle(0, 0, ChartControlSize.Width, ChartControlSize.Width);
+            var curSize = new LvcRectangle(0, 0, ChartControlSize.Width, ChartControlSize.Height);
 
             curSize = PlaceLegend(curSize);
 

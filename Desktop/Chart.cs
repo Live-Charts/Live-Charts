@@ -281,7 +281,7 @@ namespace LiveChartsDesktop
 
         public static readonly DependencyProperty DisableAnimationsProperty = DependencyProperty.Register(
             "DisableAnimations", typeof (bool), typeof (Chart),
-            new PropertyMetadata(default(bool), OnPropertyChanged((v, m) => m.DisableAnimatons = v.DisableAnimations)));
+            new PropertyMetadata(default(bool), OnPropertyChanged((v, m) => m.DisableAnimations = v.DisableAnimations)));
         /// <summary>
         /// Gets or sets if the chart is animated or not.
         /// </summary>
@@ -455,9 +455,9 @@ namespace LiveChartsDesktop
         {
             return (o, args) =>
             {
-                var wpfSeries = o as Series;
-                if (wpfSeries == null) return;
-                wpfSeries.Model.Chart.Update(animate);
+                var wpfChart = o as Chart;
+                if (wpfChart == null) return;
+                if (wpfChart.Model != null) wpfChart.Update(animate);
             };
         }
 
@@ -470,7 +470,7 @@ namespace LiveChartsDesktop
 
                 map(wpfChart, wpfChart.Model);
 
-                wpfChart.Update(animate);
+                if (wpfChart.Model != null) wpfChart.Update(animate);
             };
         }
         #endregion

@@ -138,7 +138,7 @@ namespace LiveChartsCore
         ZoomingOptions Zoom { get; set; }
         LegendLocation LegendLocation { get; set; }
         AxisTags PivotZoomingAxis { get; set; }
-        bool DisableAnimatons { get; set; }
+        bool DisableAnimations { get; set; }
         TimeSpan AnimationsSpeed { get; set; }
 
         void PrepareAxes();
@@ -157,6 +157,8 @@ namespace LiveChartsCore
         IChartModel Model { get; }
         bool IsHoverable { get; }
         bool IsControlLoaded { get; }
+        bool DisableAnimations { get; set; }
+        TimeSpan AnimationsSpeed { get; set; }
 
         void InitializeSeries(ISeriesView series);
         void Update(bool restartAnimations = true);

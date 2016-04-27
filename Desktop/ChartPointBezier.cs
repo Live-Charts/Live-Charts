@@ -37,7 +37,7 @@ namespace LiveChartsDesktop
         public PathFigure Container { get; set; }
         public BezierData Data { get; set; }
 
-        public override void Update(object previous, object current, IChartModel chart)
+        public override void Update(object previous, object current, int index, IChartModel chart)
         {
             var s1 = new Point();
             var s2 = new Point();
@@ -47,7 +47,7 @@ namespace LiveChartsDesktop
 
             if (IsNew)
             {
-                Container.Segments.Insert(0, Segment);
+                Container.Segments.Insert(index, Segment);
                 if (chart.Invert)
                 {
                     var x = chart.DrawMargin.Left;
@@ -74,7 +74,7 @@ namespace LiveChartsDesktop
                 ? (previosPbv != null && !previosPbv.IsNew ? previosPbv.Segment.Point3 : s3)
                 : Segment.Point3;
 
-            if (chart.DisableAnimatons)
+            if (chart.View.DisableAnimations)
             {
                 Segment.Point1 = Data.Point1.AsPoint();
                 Segment.Point2 = Data.Point2.AsPoint();
@@ -83,11 +83,11 @@ namespace LiveChartsDesktop
             }
 
             Segment.BeginAnimation(BezierSegment.Point1Property,
-                new PointAnimation(p1, Data.Point1.AsPoint(), chart.AnimationsSpeed));
+                new PointAnimation(p1, Data.Point1.AsPoint(), chart.View.AnimationsSpeed));
             Segment.BeginAnimation(BezierSegment.Point2Property,
-                new PointAnimation(p2, Data.Point2.AsPoint(), chart.AnimationsSpeed));
+                new PointAnimation(p2, Data.Point2.AsPoint(), chart.View.AnimationsSpeed));
             Segment.BeginAnimation(BezierSegment.Point3Property,
-                new PointAnimation(p3, Data.Point3.AsPoint(), chart.AnimationsSpeed));
+                new PointAnimation(p3, Data.Point3.AsPoint(), chart.View.AnimationsSpeed));
         }
     }
 
@@ -97,7 +97,7 @@ namespace LiveChartsDesktop
         public TextBlock DataLabel { get; set; }
         public bool IsNew { get; set; }
 
-        public virtual void Update(object previous, object current, IChartModel chart)
+        public virtual void Update(object previous, object current, int index, IChartModel chart)
         {
             throw new NotImplementedException();
         }

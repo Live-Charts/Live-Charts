@@ -81,7 +81,7 @@ namespace LiveChartsCore
                     Point3 = new LvcPoint(p2.X, p2.Y)
                 };
 
-                chartPoint.View.Update(previous, chartPoint, Chart);
+                chartPoint.View.Update(previous, chartPoint, index, Chart);
 
                 previous = chartPoint;
                 p0 = new LvcPoint(p1);
@@ -119,7 +119,7 @@ namespace LiveChartsCore
         public LvcPoint StartPoint { get; set; }
     }
 
-    public interface IBezierData
+    public interface IBezierData : IChartPointView
     {
         BezierData Data { get; set; }
     }

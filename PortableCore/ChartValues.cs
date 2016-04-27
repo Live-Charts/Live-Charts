@@ -145,7 +145,7 @@ namespace LiveChartsCore
                     }
                 }
 
-                ChartPoint cp = null;
+                ChartPoint cp;
 
                 if (isPrimitive)
                 {
@@ -161,6 +161,8 @@ namespace LiveChartsCore
                         };
                         Primitives[i] = cp;
                     }
+                    else
+                        cp.View.IsNew = false;
                 }
                 else
                 {
@@ -176,6 +178,8 @@ namespace LiveChartsCore
                         };
                         Generics[value] = cp;
                     }
+                    else
+                        cp.View.IsNew = false;
                 }
 
                 cp.GarbageCollectorIndex = garbageCollectorIndex;

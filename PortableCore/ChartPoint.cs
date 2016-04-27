@@ -54,7 +54,8 @@ namespace LiveChartsCore
 
     public interface IChartPointView
     {
-        void Update(object previous, object current, IChartModel chart);
+        bool IsNew { get; set; }
+        void Update(object previous, object current, int index, IChartModel chart);
     }
 
     public enum ChartPointType

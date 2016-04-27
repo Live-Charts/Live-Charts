@@ -118,7 +118,10 @@ namespace LiveChartsCore
 
         public double Width
         {
-            get { return _width; }
+            get
+            {
+                return _width;
+            }
             set
             {
                 _width = value;
@@ -128,7 +131,10 @@ namespace LiveChartsCore
 
         public double Height
         {
-            get { return _height; }
+            get
+            {
+                return _height;
+            }
             set
             {
                 _height = value;
