@@ -17,10 +17,7 @@ namespace Wpf
             {
                 new LineSeries
                 {
-                    Values = new ChartValues<double> {0, 2, 4, 8, 16, 32, 64},
-                    Stroke = Brushes.Green,
-                    StrokeThickness = 2,
-                    Fill = new SolidColorBrush {Color = Colors.Green, Opacity = .3}
+                    Values = new ChartValues<double> {0, 2, 4, 8, 16, 32, 64}
                 }
             };
             DataContext = this;

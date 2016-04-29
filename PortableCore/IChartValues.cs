@@ -50,6 +50,10 @@ namespace LiveChartsCore
         /// </summary>
         void GetLimits();
         /// <summary>
+        /// Initializes the garbage collector
+        /// </summary>
+        void InitializeGarbageCollector();
+        /// <summary>
         /// Removes all unecessary points from the view
         /// </summary>
         void CollectGarbage();

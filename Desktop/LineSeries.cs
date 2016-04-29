@@ -21,6 +21,7 @@
 //SOFTWARE.
 
 using System;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -33,17 +34,22 @@ namespace LiveChartsDesktop
     public class LineSeries : Series
     {
         private PathFigure _pathFigure;
+        private LineSegment _right = new LineSegment(new Point(), false);
+        private LineSegment _bottom = new LineSegment(new Point(), false);
+        private LineSegment _left = new LineSegment(new Point(), false);
+
         private bool _isInView;
 
         public LineSeries()
         {
             Model = new LineAlgorithm(this);
-            SetValue(LineSmoothnessProperty, 0.8d);
+            InitializeDefuaults();
         }
 
         public LineSeries(SeriesConfiguration configuration) : base(configuration)
         {
             Model = new LineAlgorithm(this);
+            InitializeDefuaults();
         }
 
         public static readonly DependencyProperty PointRadiusProperty = DependencyProperty.Register(
@@ -55,14 +61,14 @@ namespace LiveChartsDesktop
             set { SetValue(PointRadiusProperty, value); }
         }
 
-        public static readonly DependencyProperty PointHoverBrushProperty = DependencyProperty.Register(
-            "PointHoverBrush", typeof (Brush), typeof (LineSeries), 
+        public static readonly DependencyProperty PointForeroundProperty = DependencyProperty.Register(
+            "PointForeround", typeof (Brush), typeof (LineSeries), 
             new PropertyMetadata(default(Brush), OnPropertyChanged()));
 
-        public Brush PointHoverBrush
+        public Brush PointForeround
         {
-            get { return (Brush) GetValue(PointHoverBrushProperty); }
-            set { SetValue(PointHoverBrushProperty, value); }
+            get { return (Brush) GetValue(PointForeroundProperty); }
+            set { SetValue(PointForeroundProperty, value); }
         }
 
         public static readonly DependencyProperty LineSmoothnessProperty = DependencyProperty.Register(
@@ -104,67 +110,90 @@ namespace LiveChartsDesktop
             _pathFigure = new PathFigure();
             geometry.Figures.Add(_pathFigure);
             path.Data = geometry;
-            Model.Chart.View.AddToView(path);
+            Model.Chart.View.AddToDrawMargin(path);
+
+            var wpfChart = Model.Chart.View as Chart;
+            if (wpfChart == null) return;
+
+            if (Stroke == null)
+                SetValue(StrokeProperty, new SolidColorBrush(Chart.GetDefaultColor(wpfChart.Series.IndexOf(this))));
+            if (Fill == null)
+                SetValue(FillProperty,
+                    new SolidColorBrush(Chart.GetDefaultColor(wpfChart.Series.IndexOf(this))) {Opacity = 0.35});
         }
 
-        public override IChartPointView InitializePointView()
+        public override IChartPointView RenderPoint(IChartPointView view)
         {
             var mhr = PointRadius < 5 ? 5 : PointRadius;
-           
-            Ellipse e = null;
-            Rectangle hs = null;
-            TextBlock tb = null;
 
-            if (Model.Chart.View.IsHoverable)
+            var pbv = (view as PointBezierView);
+
+            if (pbv == null)
             {
-                hs = new Rectangle
+                pbv = new PointBezierView
+                {
+                    Segment = new BezierSegment(),
+                    Container = _pathFigure,
+                    IsNew = true
+                };
+            }
+            else
+            {
+                pbv.IsNew = false;
+            }
+
+            if ((Model.Chart.View.HasTooltip || Model.Chart.View.HasDataClickEventAttached) && pbv.HoverShape == null)
+            {
+                pbv.HoverShape = new Rectangle
                 {
                     Fill = Brushes.Transparent,
                     StrokeThickness = 0,
                     Width = mhr,
                     Height = mhr
                 };
-                Panel.SetZIndex(hs, int.MaxValue);
-                BindingOperations.SetBinding(hs, VisibilityProperty,
+
+                Panel.SetZIndex(pbv.HoverShape, int.MaxValue);
+                BindingOperations.SetBinding(pbv.HoverShape, VisibilityProperty,
                     new Binding {Path = new PropertyPath(VisibilityProperty), Source = this});
+
+                if (Model.Chart.View.HasDataClickEventAttached)
+                {
+                    var wpfChart = Model.Chart.View as Chart;
+                    if (wpfChart == null) return null;
+                    pbv.HoverShape.MouseDown += wpfChart.DataMouseDown;
+                }
+
+                Model.Chart.View.AddToDrawMargin(pbv.HoverShape);
             }
 
-            if (Math.Abs(PointRadius) > 0.1)
+            if (Math.Abs(PointRadius) > 0.1 && pbv.Ellipse == null)
             {
-                e = new Ellipse
+                pbv.Ellipse = new Ellipse
                 {
                     Width = PointRadius*2,
                     Height = PointRadius*2,
-                    Stroke = PointHoverBrush,
+                    Stroke = PointForeround,
                     StrokeThickness = 1
                 };
-                BindingOperations.SetBinding(e, Shape.FillProperty,
+                BindingOperations.SetBinding(pbv.Ellipse, Shape.FillProperty,
                     new Binding {Path = new PropertyPath(StrokeProperty), Source = this});
-                BindingOperations.SetBinding(e, VisibilityProperty,
+                BindingOperations.SetBinding(pbv.Ellipse, VisibilityProperty,
                     new Binding {Path = new PropertyPath(VisibilityProperty), Source = this});
-                BindingOperations.SetBinding(e, Panel.ZIndexProperty,
-                    new Binding {Path = new PropertyPath(Panel.ZIndexProperty), Source = this});
+
+                Panel.SetZIndex(pbv.Ellipse, int.MaxValue - 2);
+
+                Model.Chart.View.AddToDrawMargin(pbv.Ellipse);
             }
 
-            if (DataLabels)
+            if (DataLabels && pbv.DataLabel == null)
             {
-                tb = BindATextBlock(0);
-                BindingOperations.SetBinding(tb, Panel.ZIndexProperty,
-                    new Binding {Path = new PropertyPath(Panel.ZIndexProperty), Source = this});
+                pbv.DataLabel = BindATextBlock(0);
+                Panel.SetZIndex(pbv.DataLabel, int.MaxValue - 1);
+
+                Model.Chart.View.AddToDrawMargin(pbv.DataLabel);
             }
 
-            var bs = new BezierSegment();
-            _pathFigure.Segments.Add(bs);
-
-            return new PointBezierView
-            {
-                HoverShape = hs,
-                Ellipse = e,
-                DataLabel = tb,
-                Segment = new BezierSegment(),
-                Container = _pathFigure,
-                IsNew = true,
-            };
+            return pbv;
         }
 
         public override void RemovePointView(object view)
@@ -175,6 +204,35 @@ namespace LiveChartsDesktop
             Model.Chart.View.RemoveFromView(bezierView.Ellipse);
             Model.Chart.View.RemoveFromView(bezierView.DataLabel);
             bezierView.Container.Segments.Remove(bezierView.Segment);
+        }
+
+        public override void CloseView()
+        {
+            _pathFigure.StartPoint = new Point(0, Model.Chart.DrawMargin.Height);
+
+            _pathFigure.Segments.Remove(_right);
+            _pathFigure.Segments.Remove(_bottom);
+            _pathFigure.Segments.Remove(_left);
+
+            var fp = Values.Points.FirstOrDefault() ?? new ChartPoint();
+
+            _right.Point = new Point(Model.Chart.DrawMargin.Width, Model.Chart.DrawMargin.Height);
+            _bottom.Point = new Point(0, Model.Chart.DrawMargin.Height);
+            _left.Point = fp.ChartLocation.AsPoint();
+
+            _left.Point = ChartFunctions.ToDrawMargin(fp, ScalesXAt, ScalesYAt, Model.Chart).AsPoint();
+
+            _pathFigure.Segments.Add(_right);
+            _pathFigure.Segments.Add(_bottom);
+            _pathFigure.Segments.Insert(0, _left);
+        }
+
+        private void InitializeDefuaults()
+        {
+            SetValue(LineSmoothnessProperty, .7d);
+            SetValue(PointRadiusProperty, 3.5d);
+            SetValue(PointForeroundProperty, Brushes.WhiteSmoke);
+            SetValue(StrokeThicknessProperty, 2d);
         }
     }
 }

@@ -37,7 +37,7 @@ namespace LiveChartsDesktop
         public PathFigure Container { get; set; }
         public BezierData Data { get; set; }
 
-        public override void Update(object previous, object current, int index, IChartModel chart)
+        public override void Locate(object previous, object current, int index, IChartModel chart)
         {
             var s1 = new Point();
             var s2 = new Point();
@@ -76,9 +76,30 @@ namespace LiveChartsDesktop
 
             if (chart.View.DisableAnimations)
             {
-                Segment.Point1 = Data.Point1.AsPoint();
+                var l = Data.Point1.AsPoint();
+
+                Segment.Point1 = l;
                 Segment.Point2 = Data.Point2.AsPoint();
-                Segment.Point3 = Data.Point3.AsPoint();
+                Segment.Point3 = Data.Point1.AsPoint();
+
+                if (HoverShape != null)
+                {
+                    Canvas.SetLeft(Ellipse, l.X - Ellipse.Width * .5);
+                    Canvas.SetTop(Ellipse, l.Y - Ellipse.Height * .5);
+                }
+
+                if (Ellipse != null)
+                {
+                    Canvas.SetLeft(Ellipse, l.X - Ellipse.Width*.5);
+                    Canvas.SetTop(Ellipse, l.Y - Ellipse.Height*.5);
+                }
+
+                if (DataLabel != null)
+                {
+                    DataLabel.UpdateLayout();
+                    Canvas.SetLeft(DataLabel, l.X - DataLabel.ActualWidth*.5);
+                    Canvas.SetTop(DataLabel, l.Y - DataLabel.ActualWidth*.5);
+                }
                 return;
             }
 
@@ -88,6 +109,27 @@ namespace LiveChartsDesktop
                 new PointAnimation(p2, Data.Point2.AsPoint(), chart.View.AnimationsSpeed));
             Segment.BeginAnimation(BezierSegment.Point3Property,
                 new PointAnimation(p3, Data.Point3.AsPoint(), chart.View.AnimationsSpeed));
+
+            if (Ellipse != null)
+            {
+                var l = Data.Point3.AsPoint();
+
+                Ellipse.BeginAnimation(Canvas.LeftProperty,
+                    new DoubleAnimation(p3.X, l.X - Ellipse.Width*.5, chart.View.AnimationsSpeed));
+                Ellipse.BeginAnimation(Canvas.TopProperty,
+                    new DoubleAnimation(p3.Y, l.Y - Ellipse.Height*.5, chart.View.AnimationsSpeed));
+            }
+
+            if (DataLabel != null)
+            {
+                DataLabel.UpdateLayout();
+                var l = Data.Point3.AsPoint();
+
+                DataLabel.BeginAnimation(Canvas.LeftProperty,
+                    new DoubleAnimation(p3.X, l.X - DataLabel.ActualWidth*.5, chart.View.AnimationsSpeed));
+                DataLabel.BeginAnimation(Canvas.TopProperty,
+                    new DoubleAnimation(p3.X, l.Y - DataLabel.ActualWidth*.5, chart.View.AnimationsSpeed));
+            }
         }
     }
 
@@ -97,7 +139,7 @@ namespace LiveChartsDesktop
         public TextBlock DataLabel { get; set; }
         public bool IsNew { get; set; }
 
-        public virtual void Update(object previous, object current, int index, IChartModel chart)
+        public virtual void Locate(object previous, object current, int index, IChartModel chart)
         {
             throw new NotImplementedException();
         }

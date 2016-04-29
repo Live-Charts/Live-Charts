@@ -58,7 +58,7 @@ namespace LiveChartsCore
         public ISeriesModel Series { get; set; }
         public SeriesConfiguration SeriesConfiguration { get; set; }
 
-        internal double GarbageCollectorIndex { get; set; }
+        internal int GarbageCollectorIndex { get; set; }
         internal Dictionary<int, ChartPoint> Primitives { get; set; }
         internal Dictionary<T, ChartPoint> Generics { get; set; }
 
@@ -93,6 +93,12 @@ namespace LiveChartsCore
 
             MaxChartPoint = new LvcPoint(xMax, yMax);
             MinChartPoint = new LvcPoint(xMin, yMin);
+        }
+
+        public void InitializeGarbageCollector()
+        {
+            ValidateGarbageCollector();
+            GarbageCollectorIndex++;
         }
 
         public void CollectGarbage()
@@ -130,7 +136,7 @@ namespace LiveChartsCore
             var isObservable = !isPrimitive &&
                                typeof (IObservableChartPoint).GetTypeInfo().IsAssignableFrom(typeof (T).GetTypeInfo());
 
-            var garbageCollectorIndex = GarbageCollectorIndex++;
+            var garbageCollectorIndex = GarbageCollectorIndex;
             var i = 0;
 
             foreach (var value in this)
@@ -156,13 +162,10 @@ namespace LiveChartsCore
                             X = config.XValueMapper(value, i),
                             Y = config.YValueMapper(value, i),
                             Instance = value,
-                            Key = i,
-                            View = Series.View.InitializePointView()
+                            Key = i
                         };
                         Primitives[i] = cp;
                     }
-                    else
-                        cp.View.IsNew = false;
                 }
                 else
                 {
@@ -173,13 +176,10 @@ namespace LiveChartsCore
                             X = config.XValueMapper(value, i),
                             Y = config.YValueMapper(value, i),
                             Instance = value,
-                            Key = i,
-                            View = Series.View.InitializePointView()
+                            Key = i
                         };
                         Generics[value] = cp;
                     }
-                    else
-                        cp.View.IsNew = false;
                 }
 
                 cp.GarbageCollectorIndex = garbageCollectorIndex;
@@ -191,8 +191,8 @@ namespace LiveChartsCore
 
         private IEnumerable<ChartPoint> GetGarbagePoints()
         {
-            return Generics.Values.Where(x => x.GarbageCollectorIndex < GarbageCollectorIndex - 1.01)
-                .Concat(Primitives.Values.Where(y => y.GarbageCollectorIndex < GarbageCollectorIndex - 1.01));
+            return Generics.Values.Where(x => x.GarbageCollectorIndex < GarbageCollectorIndex - 1)
+                .Concat(Primitives.Values.Where(y => y.GarbageCollectorIndex < GarbageCollectorIndex - 1));
         }
 
         private SeriesConfiguration<T> GetConfig()
@@ -207,6 +207,17 @@ namespace LiveChartsCore
                    (Series.Chart.Invert
                        ? new SeriesConfiguration<T>().X(t => (double) (object) t)
                        : new SeriesConfiguration<T>().Y(t => (double) (object) t));
+        }
+
+        private void ValidateGarbageCollector()
+        {
+            //just in case!
+            if (GarbageCollectorIndex != int.MaxValue) return;
+            GarbageCollectorIndex = 0;
+            foreach (var point in Generics.Values.Concat(Primitives.Values))
+            {
+                point.GarbageCollectorIndex = 0;
+            }
         }
 
         private void ObservableOnPointChanged(object caller)

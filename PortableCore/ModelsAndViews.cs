@@ -43,10 +43,15 @@ namespace LiveChartsCore
     public interface ISeriesView
     {
         ISeriesModel Model { get; set; }
-        IChartPointView InitializePointView();
+        IChartValues Values { get; set; }
+        int ScalesXAt { get; set; }
+        int ScalesYAt { get; set; }
+
+        IChartPointView RenderPoint(IChartPointView view);
         void RemovePointView(object view);
         void InitializeView();
         void Erase();
+        void CloseView();
     }
     #endregion
 
@@ -155,7 +160,11 @@ namespace LiveChartsCore
     public interface IChartView
     {
         IChartModel Model { get; }
-        bool IsHoverable { get; }
+
+        event Action<object, ChartPoint> DataClick;
+
+        bool HasTooltip { get; }
+        bool HasDataClickEventAttached { get; }
         bool IsControlLoaded { get; }
         bool DisableAnimations { get; set; }
         TimeSpan AnimationsSpeed { get; set; }
@@ -168,13 +177,14 @@ namespace LiveChartsCore
         void SetDrawMarginWidth(double value);
         void Erase();
         void AddToView(object element);
+        void AddToDrawMargin(object element);
         void RemoveFromView(object element);
+        void RemoveFromDrawMargin(object element);
         void ShowTooltip(ChartPoint sender, IEnumerable<ChartPoint> sibilings, LvcPoint at);
         void HideTooltop();
         void IntializeAxis();
         void ShowLegend(LvcPoint at);
         void HideLegend();
-
 
         LvcSize LoadLegend();
         TimeSpan? GetZoomingSpeed();

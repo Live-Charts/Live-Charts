@@ -218,6 +218,24 @@ namespace LiveChartsDesktop
             set { SetValue(StrokeDashArrayProperty, value); }
         }
 
+        public static readonly DependencyProperty ScalesXAtProperty = DependencyProperty.Register(
+            "ScalesXAt", typeof (int), typeof (Series), new PropertyMetadata(default(int)));
+
+        public int ScalesXAt
+        {
+            get { return (int) GetValue(ScalesXAtProperty); }
+            set { SetValue(ScalesXAtProperty, value); }
+        }
+
+        public static readonly DependencyProperty ScalesYAtProperty = DependencyProperty.Register(
+            "ScalesYAt", typeof (int), typeof (Series), new PropertyMetadata(default(int)));
+
+        public int ScalesYAt
+        {
+            get { return (int) GetValue(ScalesYAtProperty); }
+            set { SetValue(ScalesYAtProperty, value); }
+        }
+
         #endregion
 
         #region Internal Helpers
@@ -245,7 +263,7 @@ namespace LiveChartsDesktop
 
         #endregion
 
-        public virtual IChartPointView InitializePointView()
+        public virtual IChartPointView RenderPoint(IChartPointView view)
         {
             throw new NotImplementedException();
         }
@@ -261,6 +279,15 @@ namespace LiveChartsDesktop
         }
 
         public void Erase()
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual void CloseView()
+        {
+        }
+
+        public virtual void EraseMeIfYOuSeeMe()
         {
             throw new NotImplementedException();
         }

@@ -38,7 +38,7 @@ namespace LiveChartsCore
             var smoothness = LineSmoothness;
             smoothness = smoothness > 1 ? 1 : (smoothness < 0 ? 0 : smoothness);
 
-            for (var index = 0; index < points.Count ; index++)
+            for (var index = 0; index < points.Count; index++)
             {
                 var chartPoint = points[index];
 
@@ -71,17 +71,21 @@ namespace LiveChartsCore
                 var c2X = xm2 + (xc2 - xm2)*smoothness + p2.X - xm2;
                 var c2Y = ym2 + (yc2 - ym2)*smoothness + p2.Y - ym2;
 
+                chartPoint.View = View.RenderPoint(chartPoint.View);
+
                 var bezierView = chartPoint.View as IBezierData;
                 if (bezierView == null) continue;
 
-                bezierView.Data = new BezierData
-                {
-                    Point1 = index == 0 ? new LvcPoint(p1.X, p1.Y) : new LvcPoint(c1X, c1Y),
-                    Point2 = index == points.Count ? new LvcPoint(p2.X, p2.Y) : new LvcPoint(c2X, c2Y),
-                    Point3 = new LvcPoint(p2.X, p2.Y)
-                };
+                bezierView.Data = index == points.Count - 1
+                    ? new BezierData(new LvcPoint(p2.X, p2.Y))
+                    : new BezierData
+                    {
+                        Point1 = index == 0 ? new LvcPoint(p1.X, p1.Y) : new LvcPoint(c1X, c1Y),
+                        Point2 = new LvcPoint(c2X, c2Y),
+                        Point3 = new LvcPoint(p2.X, p2.Y)
+                    };
 
-                chartPoint.View.Update(previous, chartPoint, index, Chart);
+                chartPoint.View.Locate(previous, chartPoint, index, Chart);
 
                 previous = chartPoint;
                 p0 = new LvcPoint(p1);
@@ -92,7 +96,6 @@ namespace LiveChartsCore
                     : p2;
             }
         }
-
 
         public BezierData CalculateBezier()
         {

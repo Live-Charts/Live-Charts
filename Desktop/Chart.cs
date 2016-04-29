@@ -27,6 +27,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Threading;
@@ -42,10 +43,12 @@ namespace LiveChartsDesktop
         protected Chart()
         {
             Canvas = new Canvas();
-            Canvas.Background = new SolidColorBrush(System.Windows.Media.Colors.Blue) {Opacity = .3};
+            //Canvas.Background = new SolidColorBrush(System.Windows.Media.Colors.CadetBlue);
             Content = Canvas;
 
             DrawMargin = new Canvas {ClipToBounds = true};
+            //DrawMargin.Background = new SolidColorBrush(System.Windows.Media.Colors.White) {Opacity = 0.3};
+            Canvas.Children.Add(DrawMargin);
 
             SetValue(MinHeightProperty, 125d);
             SetValue(MinWidthProperty, 125d);
@@ -117,6 +120,7 @@ namespace LiveChartsDesktop
             Randomizer = new Random();
         }
 
+        
         protected Canvas Canvas { get; set; }
         internal Canvas DrawMargin { get; set; }
 
@@ -297,12 +301,24 @@ namespace LiveChartsDesktop
             get { return ChartModel; }
         }
 
-        public bool IsHoverable
+        public event Action<object, ChartPoint> DataClick;
+
+        public bool HasTooltip
         {
             get { return DataTooltip != null; }
         }
 
+        public bool HasDataClickEventAttached
+        {
+            get { return DataClick != null; }
+        }
+
         public bool IsControlLoaded { get; private set; }
+
+        public static Color GetDefaultColor(int index)
+        {
+            return Colors[(int) (index - Colors.Count*Math.Truncate(index/(decimal) Colors.Count))];
+        }
 
         public void InitializeSeries(ISeriesView series)
         {
@@ -357,7 +373,21 @@ namespace LiveChartsDesktop
             Canvas.Children.Add(wpfElement);
         }
 
+        public void AddToDrawMargin(object element)
+        {
+            var wpfElement = element as FrameworkElement;
+            if (wpfElement == null) return;
+            DrawMargin.Children.Add(wpfElement);
+        }
+
         public void RemoveFromView(object element)
+        {
+            var wpfElement = element as FrameworkElement;
+            if (wpfElement == null) return;
+            Canvas.Children.Remove(wpfElement);
+        }
+
+        public void RemoveFromDrawMargin(object element)
         {
             var wpfElement = element as FrameworkElement;
             if (wpfElement == null) return;
@@ -450,6 +480,18 @@ namespace LiveChartsDesktop
             return DisableAnimations ? null : (TimeSpan?) AnimationsSpeed;
         }
 
+        #region Event Handlers
+        internal void DataMouseDown(object sender, MouseEventArgs e)
+        {
+            var result = Series.SelectMany(x => x.Values.Points).FirstOrDefault(x =>
+            {
+                var pointView = x.View as PointView;
+                return pointView != null && Equals(pointView.HoverShape, sender);
+            });
+            if (DataClick != null) DataClick.Invoke(sender, result);
+        }
+        #endregion
+
         #region Property Changed
         protected static PropertyChangedCallback OnPropertyChanged(bool animate = false)
         {
@@ -475,7 +517,7 @@ namespace LiveChartsDesktop
         }
         #endregion
 
-        #region 0.6.7 Obsoletes
+        #region Obsoletes, this properties will dissapear in future versions
         public static readonly DependencyProperty HoverableProperty = DependencyProperty.Register(
             "Hoverable", typeof(bool), typeof(Chart), new PropertyMetadata(true));
         [Obsolete("This property is obsolete, if you need to disable tooltips, set the Chart.DataTooltip to null")]

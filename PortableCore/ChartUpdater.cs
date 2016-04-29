@@ -28,7 +28,9 @@ namespace LiveChartsCore
 
             foreach (var series in Chart.Series)
             {
+                series.Model.Values.InitializeGarbageCollector();
                 series.Model.Update();
+                series.CloseView();
                 series.Model.Values.CollectGarbage();
             }
 #if DEBUG
