@@ -55,7 +55,8 @@ namespace LiveChartsCore
     public interface IChartPointView
     {
         bool IsNew { get; set; }
-        void Locate(object previous, object current, int index, IChartModel chart);
+        LvcPoint Location { get; set; }
+        void Locate(object previous, object current, int index, ChartCore chart);
     }
 
     public enum ChartPointType

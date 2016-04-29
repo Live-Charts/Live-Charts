@@ -24,44 +24,32 @@ using System.Collections.Generic;
 
 namespace LiveChartsCore
 {
-    public abstract class Series : ISeriesModel
+    public abstract class SeriesCore
     {
-        protected Series(ISeriesView view)
+        protected SeriesCore(ISeriesView view)
         {
             View = view;
         }
 
-        protected Series(ISeriesView view, SeriesConfiguration configuration)
+        protected SeriesCore(ISeriesView view, SeriesConfiguration configuration)
         {
             View = view;
             Configuration = configuration;
         }
 
         public ISeriesView View { get; set; }
-        public IChartModel Chart { get; set; }
+        public ChartCore Chart { get; set; }
         public IChartValues Values { get; set; }
         public SeriesConfiguration Configuration { get; set; }
         public int ScalesXAt { get; set; }
         public int ScalesYAt { get; set; }
-        public IAxisView CurrentXAxis
+        public AxisCore CurrentXAxis
         {
-            get
-            {
-                var ax = Chart.AxisX as IList<IAxisView>;
-                return ax == null 
-                    ? null 
-                    : ax[ScalesXAt];
-            }
+            get { return Chart.AxisX[ScalesXAt]; }
         }
-        public IAxisView CurrentYAxis
+        public AxisCore CurrentYAxis
         {
-            get
-            {
-                var ax = Chart.AxisY as IList<IAxisView>;
-                return ax == null
-                    ? null
-                    : ax[ScalesYAt];
-            }
+            get { return Chart.AxisY[ScalesYAt]; }
         }
         public SeriesCollection SeriesCollection { get; set; }
         public string Title { get; set; }
@@ -73,7 +61,7 @@ namespace LiveChartsCore
         /// <typeparam name="T"></typeparam>
         /// <param name="config"></param>
         /// <returns></returns>
-        public Series Setup<T>(SeriesConfiguration<T> config)
+        public SeriesCore Setup<T>(SeriesConfiguration<T> config)
         {
             Configuration = config;
             return this;

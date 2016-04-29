@@ -44,7 +44,7 @@ namespace LiveChartsCore
         /// <summary>
         /// Gets or sets series that owns the values
         /// </summary>
-        ISeriesModel Series { get; set; }
+        SeriesCore Series { get; set; }
         /// <summary>
         /// Forces values to calculate max, min and index data.
         /// </summary>

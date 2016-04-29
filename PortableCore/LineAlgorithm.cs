@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace LiveChartsCore
 {
-    public class LineAlgorithm : Series
+    public class LineAlgorithm : SeriesCore
     {
         public LineAlgorithm(ISeriesView view) : base(view)
         {
@@ -72,6 +72,7 @@ namespace LiveChartsCore
                 var c2Y = ym2 + (yc2 - ym2)*smoothness + p2.Y - ym2;
 
                 chartPoint.View = View.RenderPoint(chartPoint.View);
+                chartPoint.View.Location = p1;
 
                 var bezierView = chartPoint.View as IBezierData;
                 if (bezierView == null) continue;

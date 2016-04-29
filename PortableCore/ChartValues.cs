@@ -39,10 +39,12 @@ namespace LiveChartsCore
 
         public ChartValues()
         {
-            //Primitives track shapes by position in the array
             Primitives = new Dictionary<int, ChartPoint>();
-            //Generics by InstanceId
             Generics = new Dictionary<T, ChartPoint>();
+            CollectionChanged += (sender, eventArgs) =>
+            {
+                if (Series.Chart != null) Series.Chart.Updater.Run();
+            };
         }
 
         /// <summary>
@@ -55,7 +57,7 @@ namespace LiveChartsCore
 
         public LvcPoint MaxChartPoint { get; private set; }
         public LvcPoint MinChartPoint { get; private set; }
-        public ISeriesModel Series { get; set; }
+        public SeriesCore Series { get; set; }
         public SeriesConfiguration SeriesConfiguration { get; set; }
 
         internal int GarbageCollectorIndex { get; set; }
@@ -203,10 +205,8 @@ namespace LiveChartsCore
             //if you are facing perfomrnace issues then you must configure your type
             //if you are not using chart values of double ChartValues<double> then you must:
             //mySeriesConfiguration.Setup(new SeriesConfiguration<int>().Y(v => (double) v));
-            return (Series.Configuration ?? Series.SeriesCollection.Configuration) as SeriesConfiguration<T> ??
-                   (Series.Chart.Invert
-                       ? new SeriesConfiguration<T>().X(t => (double) (object) t)
-                       : new SeriesConfiguration<T>().Y(t => (double) (object) t));
+            return (Series.Configuration ?? Series.SeriesCollection.Configuration) as SeriesConfiguration<T>
+                   ?? new SeriesConfiguration<T>().Y(t => (double) (object) t);
         }
 
         private void ValidateGarbageCollector()

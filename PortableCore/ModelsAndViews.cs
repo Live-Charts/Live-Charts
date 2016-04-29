@@ -25,24 +25,9 @@ using System.Collections.Generic;
 
 namespace LiveChartsCore
 {
-
-    #region Series
-    public interface ISeriesModel
-    {
-        ISeriesView View { get; set; }
-        IChartModel Chart { get; set; }
-        IChartValues Values { get; set; }
-        int ScalesXAt { get; set; }
-        int ScalesYAt { get; set; }
-        SeriesConfiguration Configuration { get; set; }
-        SeriesCollection SeriesCollection { get; set; }
-        string Title { get; set; }
-        void Update();
-    }
-
     public interface ISeriesView
     {
-        ISeriesModel Model { get; set; }
+        SeriesCore Model { get; set; }
         IChartValues Values { get; set; }
         int ScalesXAt { get; set; }
         int ScalesYAt { get; set; }
@@ -53,42 +38,15 @@ namespace LiveChartsCore
         void Erase();
         void CloseView();
     }
-    #endregion
-
-    #region Axis
-
-    public interface IAxisModel
-    {
-        IChartModel Chart { get; set; }
-        IAxisView View { get; }
-        IList<string> Labels { get; set; }
-        Func<double, string> LabelFormatter { get; set; }
-        double StrokeThickness { get; set; }
-        bool ShowLabels { get; set; }
-        double? MaxValue { get; set; }
-        double? MinValue { get; set; }
-        string Title { get; set; }
-        AxisPosition Position { get; set; }
-        bool IsMerged { get; set; }
-        double MaxLimit { get; set; }
-        double MinLimit { get; set; }
-        double S { get; set; }
-        int CleanFactor { get; set; }
-        Dictionary<double, ISeparatorCacheView> Cache { get; set; }
-        void CalculateSeparator(IChartModel chart, AxisTags source);
-        double FromPreviousAxisState(double value, AxisTags source, IChartModel chart);
-        LvcSize PrepareChart(AxisTags source, IChartModel chart);
-        void UpdateSeparators(AxisTags source, IChartModel chart, int axisPosition);
-    }
 
     public interface IAxisView
     {
         ISeparatorCacheView NewSeparator();
-        IAxisModel Model { get; set; }
+        AxisCore Model { get; set; }
         ISeparatorView Separator { get; set; }
         double LabelsReference { get; set; }
         double UnitWidth { get; set; }
-        LvcSize UpdateTitle(IChartModel chart, double rotationAngle = 0);
+        LvcSize UpdateTitle(ChartCore chart, double rotationAngle = 0);
         void SetTitleTop(double value);
         void SetTitleLeft(double value);
         double GetTitleLeft();
@@ -98,7 +56,7 @@ namespace LiveChartsCore
 
     public interface ISeparatorView
     {
-        IChartModel Chart { get; set; }
+        ChartCore Chart { get; set; }
         /// <summary>
         /// Gets or sets if separators are enabled (will be drawn)
         /// </summary>
@@ -122,52 +80,25 @@ namespace LiveChartsCore
         double Value { get; set; }
 
         LvcSize UpdateLabel(string text);
-        void UpdateLine(AxisTags source, IChartModel chart, int axisIndex, IAxisModel axis);
-    }
-    #endregion
-
-    #region Chart
-
-    public interface IChartModel
-    {
-        IChartView View { get; set; }
-        IChartUpdater Updater { get; set; }
-        LvcSize ChartControlSize { get; set; }
-        LvcRectangle DrawMargin { get; set; }
-        SeriesCollection Series { get; set; }
-        bool HasUnitaryPoints { get; set; }
-        bool Invert { get; set; }
-        object AxisX { get; set; }
-        object AxisY { get; set; }
-        TimeSpan TooltipTimeout { get; set; }
-        ZoomingOptions Zoom { get; set; }
-        LegendLocation LegendLocation { get; set; }
-        AxisTags PivotZoomingAxis { get; set; }
-        bool DisableAnimations { get; set; }
-        TimeSpan AnimationsSpeed { get; set; }
-
-        void PrepareAxes();
-        void CalculateComponentsAndMargin();
-        LvcRectangle PlaceLegend(LvcRectangle drawMargin);
-
-        void Update(bool restartAnimations = true);
-        void ZoomIn(LvcPoint pivot);
-        void ZoomOut(LvcPoint pivot);
-        void ClearZoom();
-        void TooltipHideStartCount();
+        void UpdateLine(AxisTags source, ChartCore chart, int axisIndex, AxisCore axisCore);
     }
 
     public interface IChartView
     {
-        IChartModel Model { get; }
+        ChartCore Model { get; }
 
         event Action<object, ChartPoint> DataClick;
+
+        SeriesCollection Series { get; set; }
+        TimeSpan TooltipTimeout { get; set; }
+        ZoomingOptions Zoom { get; set; }
+        LegendLocation LegendLocation { get; set; }
+        bool DisableAnimations { get; set; }
+        TimeSpan AnimationsSpeed { get; set; }
 
         bool HasTooltip { get; }
         bool HasDataClickEventAttached { get; }
         bool IsControlLoaded { get; }
-        bool DisableAnimations { get; set; }
-        TimeSpan AnimationsSpeed { get; set; }
 
         void InitializeSeries(ISeriesView series);
         void Update(bool restartAnimations = true);
@@ -190,7 +121,4 @@ namespace LiveChartsCore
         TimeSpan? GetZoomingSpeed();
 
     }
-    #endregion
-
-
 }

@@ -26,6 +26,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using LiveChartsCore;
 
@@ -34,9 +35,9 @@ namespace LiveChartsDesktop
     public class LineSeries : Series
     {
         private PathFigure _pathFigure;
-        private LineSegment _right = new LineSegment(new Point(), false);
-        private LineSegment _bottom = new LineSegment(new Point(), false);
-        private LineSegment _left = new LineSegment(new Point(), false);
+        private readonly LineSegment _right = new LineSegment(new Point(), false);
+        private readonly LineSegment _bottom = new LineSegment(new Point(), false);
+        private readonly LineSegment _left = new LineSegment(new Point(), false);
 
         private bool _isInView;
 
@@ -46,14 +47,18 @@ namespace LiveChartsDesktop
             InitializeDefuaults();
         }
 
-        public LineSeries(SeriesConfiguration configuration) : base(configuration)
+        public LineSeries(SeriesConfiguration configuration)
         {
-            Model = new LineAlgorithm(this);
+            Model = new LineAlgorithm(this)
+            {
+                Configuration = configuration
+            };
             InitializeDefuaults();
         }
 
         public static readonly DependencyProperty PointRadiusProperty = DependencyProperty.Register(
-            "PointRadius", typeof (double), typeof (LineSeries), new PropertyMetadata(default(double)));
+            "PointRadius", typeof (double), typeof (LineSeries), 
+            new PropertyMetadata(default(double), UpdateChart()));
 
         public double PointRadius
         {
@@ -63,7 +68,7 @@ namespace LiveChartsDesktop
 
         public static readonly DependencyProperty PointForeroundProperty = DependencyProperty.Register(
             "PointForeround", typeof (Brush), typeof (LineSeries), 
-            new PropertyMetadata(default(Brush), OnPropertyChanged()));
+            new PropertyMetadata(default(Brush), UpdateChart()));
 
         public Brush PointForeround
         {
@@ -73,13 +78,7 @@ namespace LiveChartsDesktop
 
         public static readonly DependencyProperty LineSmoothnessProperty = DependencyProperty.Register(
             "LineSmoothness", typeof (double), typeof (LineSeries), 
-            new PropertyMetadata(default(double), OnPropertyChanged((v, m) =>
-            {
-                var lm = m as LineAlgorithm;
-                var lv = v as LineSeries;
-                if (lm == null || lv == null) return;
-                lm.LineSmoothness = lv.LineSmoothness;
-            })));
+            new PropertyMetadata(default(double), UpdateChart()));
 
         public double LineSmoothness
         {
@@ -115,22 +114,24 @@ namespace LiveChartsDesktop
             var wpfChart = Model.Chart.View as Chart;
             if (wpfChart == null) return;
 
-            if (Stroke == null)
-                SetValue(StrokeProperty, new SolidColorBrush(Chart.GetDefaultColor(wpfChart.Series.IndexOf(this))));
-            if (Fill == null)
-                SetValue(FillProperty,
-                    new SolidColorBrush(Chart.GetDefaultColor(wpfChart.Series.IndexOf(this))) {Opacity = 0.35});
+            //if (Stroke == null)
+            //    SetValue(StrokeProperty, new SolidColorBrush(Chart.GetDefaultColor(wpfChart.Series.IndexOf(this))));
+            //if (Fill == null)
+            //    SetValue(FillProperty,
+            //        new SolidColorBrush(Chart.GetDefaultColor(wpfChart.Series.IndexOf(this))) {Opacity = 0.35});
+
+            _pathFigure.StartPoint = new Point(0, Model.Chart.DrawMargin.Height);
         }
 
         public override IChartPointView RenderPoint(IChartPointView view)
         {
             var mhr = PointRadius < 5 ? 5 : PointRadius;
 
-            var pbv = (view as PointBezierView);
+            var pbv = (view as HorizontalBezierView);
 
             if (pbv == null)
             {
-                pbv = new PointBezierView
+                pbv = new HorizontalBezierView
                 {
                     Segment = new BezierSegment(),
                     Container = _pathFigure,
@@ -198,7 +199,7 @@ namespace LiveChartsDesktop
 
         public override void RemovePointView(object view)
         {
-            var bezierView = view as PointBezierView;
+            var bezierView = view as HorizontalBezierView;
             if (bezierView == null) return;
             Model.Chart.View.RemoveFromView(bezierView.HoverShape);
             Model.Chart.View.RemoveFromView(bezierView.Ellipse);
@@ -208,23 +209,39 @@ namespace LiveChartsDesktop
 
         public override void CloseView()
         {
-            _pathFigure.StartPoint = new Point(0, Model.Chart.DrawMargin.Height);
-
             _pathFigure.Segments.Remove(_right);
             _pathFigure.Segments.Remove(_bottom);
             _pathFigure.Segments.Remove(_left);
 
-            var fp = Values.Points.FirstOrDefault() ?? new ChartPoint();
-
-            _right.Point = new Point(Model.Chart.DrawMargin.Width, Model.Chart.DrawMargin.Height);
-            _bottom.Point = new Point(0, Model.Chart.DrawMargin.Height);
-            _left.Point = fp.ChartLocation.AsPoint();
-
-            _left.Point = ChartFunctions.ToDrawMargin(fp, ScalesXAt, ScalesYAt, Model.Chart).AsPoint();
-
             _pathFigure.Segments.Add(_right);
             _pathFigure.Segments.Add(_bottom);
             _pathFigure.Segments.Insert(0, _left);
+
+            var fp = Values.Points.FirstOrDefault() ?? new ChartPoint();
+
+            if (Model.Chart.View.DisableAnimations)
+            {
+                _pathFigure.StartPoint = new Point(0, Model.Chart.DrawMargin.Height);
+                _right.Point = new Point(Model.Chart.DrawMargin.Width, Model.Chart.DrawMargin.Height);
+                _bottom.Point = new Point(0, Model.Chart.DrawMargin.Height);
+                _left.Point = ChartFunctions.ToDrawMargin(fp, ScalesXAt, ScalesYAt, Model.Chart).AsPoint();
+            }
+            else
+            {
+                _pathFigure.BeginAnimation(PathFigure.StartPointProperty,
+                    new PointAnimation(new Point(0, Model.Chart.DrawMargin.Height), Model.Chart.View.AnimationsSpeed));
+
+                _right.BeginAnimation(LineSegment.PointProperty,
+                    new PointAnimation(new Point(Model.Chart.DrawMargin.Width, Model.Chart.DrawMargin.Height),
+                        Model.Chart.View.AnimationsSpeed));
+
+                _bottom.BeginAnimation(LineSegment.PointProperty,
+                    new PointAnimation(new Point(0, Model.Chart.DrawMargin.Height), Model.Chart.View.AnimationsSpeed));
+
+                _left.BeginAnimation(LineSegment.PointProperty,
+                    new PointAnimation(ChartFunctions.ToDrawMargin(fp, ScalesXAt, ScalesYAt, Model.Chart).AsPoint(),
+                        Model.Chart.View.AnimationsSpeed));
+            }
         }
 
         private void InitializeDefuaults()

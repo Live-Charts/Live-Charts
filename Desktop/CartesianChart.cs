@@ -29,7 +29,7 @@ namespace LiveChartsDesktop
     {
         public CartesianChart()
         {
-            ChartModel = new LineChartModel(this);
+            ChartCoreModel = new LineChartCoreModel(this);
 
             SetCurrentValue(SeriesProperty,
                 new SeriesCollection()

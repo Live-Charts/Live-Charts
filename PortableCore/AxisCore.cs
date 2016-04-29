@@ -28,16 +28,16 @@ using System.Linq;
 
 namespace LiveChartsCore
 {
-    public class Axis : IAxisModel
+    public class AxisCore
     {
-        public Axis(IAxisView view)
+        public AxisCore(IAxisView view)
         {
             View = view;
             CleanFactor = 3;
             Cache = new Dictionary<double, ISeparatorCacheView>();
         }
 
-        public IChartModel Chart { get; set; }
+        public ChartCore Chart { get; set; }
         public IAxisView View { get; set; }
         public IList<string> Labels { get; set; }
         public Func<double, string> LabelFormatter { get; set; }
@@ -59,7 +59,7 @@ namespace LiveChartsCore
         public double? LastAxisMin { get; set; }
         public LvcRectangle LastPlotArea { get; set; }
 
-        public void CalculateSeparator(IChartModel chart, AxisTags source)
+        public void CalculateSeparator(ChartCore chart, AxisTags source)
         {
             if (View.Separator.Step != null)
             {
@@ -95,7 +95,7 @@ namespace LiveChartsCore
             if (Labels != null) S = S < 1 ? 1 : S;
         }
 
-        public double FromPreviousAxisState(double value, AxisTags source, IChartModel chart)
+        public double FromPreviousAxisState(double value, AxisTags source, ChartCore chart)
         {
             if (LastAxisMax == null) return 0;
 
@@ -125,7 +125,7 @@ namespace LiveChartsCore
             return m * (value - p1.X) + p1.Y;
         }
 
-        public LvcSize PrepareChart(AxisTags source, IChartModel chart)
+        public LvcSize PrepareChart(AxisTags source, ChartCore chart)
         {
             if (!(Math.Abs(MaxLimit - MinLimit) > S * .01) || !ShowLabels) return new LvcSize();
             if (chart.DrawMargin.Width < 5 || chart.DrawMargin.Height < 5) return new LvcSize();
@@ -139,8 +139,9 @@ namespace LiveChartsCore
 
             var uwc = 0;
 
-            if (chart.HasUnitaryPoints)
-                if (source == AxisTags.X && !chart.Invert) uwc = 1;
+            //Instead each axis will have a unitary width
+            //if (chart.HasUnitaryPoints)
+            //    if (source == AxisTags.X && !chart.Invert) uwc = 1;
 
             for (var i = MinLimit; i <= MaxLimit - uwc; i += S)
             {
@@ -185,7 +186,7 @@ namespace LiveChartsCore
             return biggest;
         }
 
-        public void UpdateSeparators(AxisTags source, IChartModel chart, int axisPosition)
+        public void UpdateSeparators(AxisTags source, ChartCore chart, int axisPosition)
         {
             foreach (var element in Cache.Values.ToArray())
             {

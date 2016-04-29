@@ -28,10 +28,10 @@ namespace LiveChartsDesktop
 {
     public class Separator : FrameworkElement, ISeparatorView
     {
-        public IChartModel Chart { get; set; }
+        public ChartCore Chart { get; set; }
 
         public static readonly new DependencyProperty IsEnabledProperty = DependencyProperty.Register(
-            "IsEnabled", typeof (bool), typeof (Separator), new PropertyMetadata(default(bool), OnPropertyChanged()));
+            "IsEnabled", typeof (bool), typeof (Separator), new PropertyMetadata(default(bool), UpdateChart()));
 
         public new bool IsEnabled
         {
@@ -41,7 +41,7 @@ namespace LiveChartsDesktop
 
         public static readonly DependencyProperty StrokeProperty = DependencyProperty.Register(
             "Stroke", typeof (Brush), typeof (Separator), 
-            new PropertyMetadata(default(Brush), OnPropertyChanged()));
+            new PropertyMetadata(default(Brush), UpdateChart()));
         /// <summary>
         /// Gets or sets separators color 
         /// </summary>
@@ -53,7 +53,7 @@ namespace LiveChartsDesktop
 
         public static readonly DependencyProperty StrokeThicknessProperty = DependencyProperty.Register(
             "StrokeThickness", typeof (int), typeof (Separator), 
-            new PropertyMetadata(default(int), OnPropertyChanged()));
+            new PropertyMetadata(default(int), UpdateChart()));
         /// <summary>
         /// Gets or sets separatos thickness
         /// </summary>
@@ -64,7 +64,8 @@ namespace LiveChartsDesktop
         }
 
         public static readonly DependencyProperty StrokeDashArrayProperty = DependencyProperty.Register(
-            "StrokeDashArray", typeof (DoubleCollection), typeof (Separator), new PropertyMetadata(default(DoubleCollection)));
+            "StrokeDashArray", typeof (DoubleCollection), typeof (Separator), 
+            new PropertyMetadata(default(DoubleCollection), UpdateChart()));
         /// <summary>
         /// Gets or sets the stroke dash array for the current separator.
         /// </summary>
@@ -76,7 +77,7 @@ namespace LiveChartsDesktop
 
         public static readonly DependencyProperty StepProperty = DependencyProperty.Register(
             "Step", typeof (double?), typeof (Separator),
-            new PropertyMetadata(default(double?), OnPropertyChanged()));
+            new PropertyMetadata(default(double?), UpdateChart()));
         /// <summary>
         /// Gets or sets sepator step, this means the value between each line, use null for auto.
         /// </summary>
@@ -86,13 +87,14 @@ namespace LiveChartsDesktop
             set { SetValue(StepProperty, value); }
         }
 
-        private static PropertyChangedCallback OnPropertyChanged(bool animate = false)
+        private static PropertyChangedCallback UpdateChart(bool animate = false)
         {
             return (o, args) =>
             {
-                var wpfSeries = o as Separator;
-                if (wpfSeries == null) return;
-                //wpfSeries.Model.Chart.Update(animate);
+                var wpfSeparator = o as Separator;
+                if (wpfSeparator == null) return;
+
+                if (wpfSeparator.Chart != null) wpfSeparator.Chart.Updater.Run(animate);
             };
         }
     }

@@ -41,7 +41,7 @@ namespace LiveChartsCore
             Configuration = configuration;
         }
 
-        public IChartModel Chart { get; set; }
+        public ChartCore Chart { get; set; }
         public SeriesConfiguration Configuration { get; set; }
 
         /// <summary>

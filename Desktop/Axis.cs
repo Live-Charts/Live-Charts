@@ -33,7 +33,7 @@ namespace LiveChartsDesktop
     {
         public Axis()
         {
-            Model = new LiveChartsCore.Axis(this);
+            Model = new LiveChartsCore.AxisCore(this);
             TitleBlock = new TextBlock();
             SetValue(SeparatorProperty, new Separator());
         }
@@ -42,7 +42,7 @@ namespace LiveChartsDesktop
         public double LabelsReference { get; set; }
         public double UnitWidth { get; set; }
         public Dictionary<double, AxisSeparatorCache> Cache { get; set; }
-        public IAxisModel Model { get; set; }
+        public AxisCore Model { get; set; }
         public ISeparatorCacheView NewSeparator()
         {
             var asc = new AxisSeparatorCache
@@ -59,7 +59,7 @@ namespace LiveChartsDesktop
             return asc;
         }
 
-        public LvcSize UpdateTitle(IChartModel chart, double rotationAngle = 0)
+        public LvcSize UpdateTitle(ChartCore chart, double rotationAngle = 0)
         {
             if (TitleBlock.Parent == null)
             {
@@ -100,7 +100,7 @@ namespace LiveChartsDesktop
 
         public static readonly DependencyProperty LabelsProperty = DependencyProperty.Register(
             "Labels", typeof (IList<string>), typeof (Axis), 
-            new PropertyMetadata(default(IList<string>), OnPropertyChanged((v, m) => m.Labels = v.Labels)));
+            new PropertyMetadata(default(IList<string>), UpdateChart()));
         /// <summary>
         /// Gets or sets axis labels, labels property stores the array to map for each index and value, for example if axis value is 0 then label will be labels[0], when value 1 then labels[1], value 2 then labels[2], ..., value n labels[n], use this property instead of a formatter when there is no conversion between value and label for example names, if you are ploting sales vs salesman name.
         /// </summary>
@@ -111,8 +111,8 @@ namespace LiveChartsDesktop
         }
 
         public static readonly DependencyProperty LabelFormatterProperty = DependencyProperty.Register(
-            "LabelFormatter", typeof (Func<double, string>), 
-            typeof (Axis), new PropertyMetadata(default(Func<double, string>), OnPropertyChanged((v, m) => m.LabelFormatter = v.LabelFormatter)));
+            "LabelFormatter", typeof (Func<double, string>), typeof (Axis),
+            new PropertyMetadata(default(Func<double, string>), UpdateChart()));
         /// <summary>
         /// Gets or sets the function to convet a value to label, for example when you need to display your chart as curency ($1.00) or as degrees (10°), if Labels property is not null then formatter is ignored, and label will be pulled from Labels prop.
         /// </summary>
@@ -124,7 +124,7 @@ namespace LiveChartsDesktop
 
         public static readonly DependencyProperty SeparatorProperty = DependencyProperty.Register(
             "Separator", typeof (ISeparatorView), typeof (Axis),
-            new PropertyMetadata(default(ISeparatorView), OnPropertyChanged()));
+            new PropertyMetadata(default(ISeparatorView), UpdateChart()));
         /// <summary>
         /// Get or sets configuration for parallel lines to axis.
         /// </summary>
@@ -135,8 +135,7 @@ namespace LiveChartsDesktop
         }
 
         public static readonly DependencyProperty StrokeProperty = DependencyProperty.Register(
-            "Stroke", typeof (Brush), typeof (Axis), 
-            new PropertyMetadata(default(Brush)));
+            "Stroke", typeof (Brush), typeof (Axis), new PropertyMetadata(default(Brush)));
         /// <summary>
         /// Gets or sets axis color, axis means only the zero value, if you need to highlight where zero is. to change separators color, see Axis.Separator
         /// </summary>
@@ -148,7 +147,7 @@ namespace LiveChartsDesktop
 
         public static readonly DependencyProperty StrokeThicknessProperty = DependencyProperty.Register(
             "StrokeThickness", typeof (double), typeof (Axis), 
-            new PropertyMetadata(default(double), OnPropertyChanged((v,m) => m.StrokeThickness = v.StrokeThickness)));
+            new PropertyMetadata(default(double), UpdateChart()));
         /// <summary>
         /// Gets or sets axis thickness.
         /// </summary>
@@ -160,7 +159,7 @@ namespace LiveChartsDesktop
 
         public static readonly DependencyProperty ShowLabelsProperty = DependencyProperty.Register(
             "ShowLabels", typeof (bool), typeof (Axis), 
-            new PropertyMetadata(default(bool), OnPropertyChanged((v, m) => m.ShowLabels = v.ShowLabels)));
+            new PropertyMetadata(default(bool), UpdateChart()));
         /// <summary>
         /// Gets or sets if labels are visible.
         /// </summary>
@@ -172,7 +171,7 @@ namespace LiveChartsDesktop
 
         public static readonly DependencyProperty MaxValueProperty = DependencyProperty.Register(
             "MaxValue", typeof (double?), typeof (Axis), 
-            new PropertyMetadata(default(double?), OnPropertyChanged((v, m) => m.MaxValue = v.MaxValue)));
+            new PropertyMetadata(default(double?), UpdateChart()));
         /// <summary>
         /// Gets or sets chart max value, set it to null to make this property Auto, default value is null
         /// </summary>
@@ -184,7 +183,7 @@ namespace LiveChartsDesktop
 
         public static readonly DependencyProperty MinValueProperty = DependencyProperty.Register(
             "MinValue", typeof (double?), typeof (Axis),
-            new PropertyMetadata(null, OnPropertyChanged((v, m) => m.MinValue = v.MinValue)));
+            new PropertyMetadata(null, UpdateChart()));
         /// <summary>
         /// Gets or sets chart min value, set it to null to make this property Auto, default value is null
         /// </summary>
@@ -196,7 +195,7 @@ namespace LiveChartsDesktop
 
         public static readonly DependencyProperty TitleProperty = DependencyProperty.Register(
             "Title", typeof(string), typeof(Axis), 
-            new PropertyMetadata(null, OnPropertyChanged((v,m) => m.Title = v.Title)));
+            new PropertyMetadata(null, UpdateChart()));
         /// <summary>
         /// Gets or sets axis title
         /// </summary>
@@ -208,7 +207,7 @@ namespace LiveChartsDesktop
 
         public static readonly DependencyProperty PositionProperty = DependencyProperty.Register(
             "Position", typeof (AxisPosition), typeof (Axis), 
-            new PropertyMetadata(default(AxisPosition), OnPropertyChanged((v,m) => m.Position = v.Position)));
+            new PropertyMetadata(default(AxisPosition), UpdateChart()));
         /// <summary>
         /// Gets or sets the axis position
         /// </summary>
@@ -221,7 +220,7 @@ namespace LiveChartsDesktop
 
         public static readonly DependencyProperty IsMergedProperty = DependencyProperty.Register(
             "IsMerged", typeof (bool), typeof (Axis), 
-            new PropertyMetadata(default(bool), OnPropertyChanged((v, m) => m.IsMerged = v.IsMerged)));
+            new PropertyMetadata(default(bool), UpdateChart()));
         /// <summary>
         /// Gets or sets if the axis labels should me placed inside the chart.
         /// </summary>
@@ -233,7 +232,7 @@ namespace LiveChartsDesktop
 
         public static readonly DependencyProperty AnimationsSpeedProperty = DependencyProperty.Register(
             "AnimationsSpeed", typeof(TimeSpan?), typeof(Axis),
-            new PropertyMetadata(default(TimeSpan?)));
+            new PropertyMetadata(default(TimeSpan?), UpdateChart(true)));
         /// <summary>
         /// Gets or sets the animations speed of this axis, if this proeprty is null then the Chart.AnimationsSpeed is taken.
         /// </summary>
@@ -244,7 +243,7 @@ namespace LiveChartsDesktop
         }
 
         public static readonly DependencyProperty DisableAnimationsProperty = DependencyProperty.Register(
-            "DisableAnimations", typeof (bool), typeof (Axis), new PropertyMetadata(default(bool)));
+            "DisableAnimations", typeof (bool), typeof (Axis), new PropertyMetadata(default(bool), UpdateChart(true)));
         /// <summary>
         /// Gets or sets if the axis is animated.
         /// </summary>
@@ -269,7 +268,6 @@ namespace LiveChartsDesktop
 
         public static readonly DependencyProperty FontSizeProperty =
             DependencyProperty.Register("FontSize", typeof(double), typeof(Axis), new PropertyMetadata(11.0));
-
         /// <summary>
         /// Gets or sets labels font size
         /// </summary>
@@ -282,7 +280,6 @@ namespace LiveChartsDesktop
         public static readonly DependencyProperty FontWeightProperty =
             DependencyProperty.Register("FontWeight", typeof(FontWeight), typeof(Axis),
                 new PropertyMetadata(FontWeights.Normal));
-
         /// <summary>
         /// Gets or sets labels font weight
         /// </summary>
@@ -373,26 +370,15 @@ namespace LiveChartsDesktop
             return l;
         }
 
-        private static PropertyChangedCallback OnPropertyChanged(bool animate = false)
-        {
-            return (o, args) =>
-            {
-                var wpfAxis = o as Axis;
-                if (wpfAxis == null) return;
-                if (wpfAxis.Model.Chart != null) wpfAxis.Model.Chart.Update(animate);
-            };
-        }
-
-        private static PropertyChangedCallback OnPropertyChanged(Action<Axis, IAxisModel> map, bool animate = false)
+        private static PropertyChangedCallback UpdateChart(bool animate = false)
         {
             return (o, args) =>
             {
                 var wpfAxis = o as Axis;
                 if (wpfAxis == null) return;
 
-                map(wpfAxis, wpfAxis.Model);
-
-                if (wpfAxis.Model.Chart != null) wpfAxis.Model.Chart.Update(animate);
+                if (wpfAxis.Model.Chart != null)
+                    wpfAxis.Model.Chart.Updater.Run(animate);
             };
         }
     }

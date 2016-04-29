@@ -38,7 +38,7 @@ namespace LiveChartsDesktop
 {
     public abstract class Chart : UserControl, IChartView
     {
-        protected LiveChartsCore.Chart ChartModel;
+        protected LiveChartsCore.ChartCore ChartCoreModel;
        
         protected Chart()
         {
@@ -136,7 +136,7 @@ namespace LiveChartsDesktop
 
         public static readonly DependencyProperty AxisYProperty = DependencyProperty.Register(
             "AxisY", typeof (List<Axis>), typeof (Chart),
-            new PropertyMetadata(null, OnPropertyChanged((v, m) => m.AxisY = v.AxisY)));
+            new PropertyMetadata(null, UpdateChart()));
         /// <summary>
         /// Gets or sets vertical axis
         /// </summary>
@@ -148,7 +148,7 @@ namespace LiveChartsDesktop
 
         public static readonly DependencyProperty AxisXProperty = DependencyProperty.Register(
             "AxisX", typeof (List<Axis>), typeof (Chart),
-            new PropertyMetadata(null, OnPropertyChanged((v, m) => m.AxisX = v.AxisX)));
+            new PropertyMetadata(null, UpdateChart()));
         /// <summary>
         /// Gets or sets horizontal axis
         /// </summary>
@@ -159,7 +159,8 @@ namespace LiveChartsDesktop
         }
 
         public static readonly DependencyProperty ChartLegendProperty = DependencyProperty.Register(
-            "ChartLegend", typeof (ChartLegend), typeof (Chart), new PropertyMetadata(default(ChartLegend)));
+            "ChartLegend", typeof (ChartLegend), typeof (Chart), 
+            new PropertyMetadata(default(ChartLegend), UpdateChart()));
         /// <summary>
         /// Gets or sets the control to use as chart legend fot this chart.
         /// </summary>
@@ -171,7 +172,7 @@ namespace LiveChartsDesktop
 
         public static readonly DependencyProperty ZoomProperty = DependencyProperty.Register(
             "Zoom", typeof (ZoomingOptions), typeof (Chart),
-            new PropertyMetadata(default(ZoomingOptions), OnPropertyChanged((v, m) => m.Zoom = v.Zoom)));
+            new PropertyMetadata(default(ZoomingOptions)));
         /// <summary>
         /// Gets or sets chart zoom behavior
         /// </summary>
@@ -183,7 +184,7 @@ namespace LiveChartsDesktop
 
         public static readonly DependencyProperty LegendLocationProperty = DependencyProperty.Register(
             "LegendLocation", typeof (LegendLocation), typeof (Chart),
-            new PropertyMetadata(LegendLocation.None, OnPropertyChanged((v, m) => m.LegendLocation = v.LegendLocation)));
+            new PropertyMetadata(LegendLocation.None, UpdateChart()));
         /// <summary>
         /// Gets or sets where legend is located
         /// </summary>
@@ -193,20 +194,9 @@ namespace LiveChartsDesktop
             set { SetValue(LegendLocationProperty, value); }
         }
 
-        public static readonly DependencyProperty InvertProperty = DependencyProperty.Register(
-            "Invert", typeof(bool), typeof(Chart), 
-            new PropertyMetadata(default(bool), OnPropertyChanged((v, m) => m.Invert = v.Invert)));
-        /// <summary>
-        /// Gets or sets if series in this chart should be inverted, even this is a dependency property, it is only to support bidings, this property won't invert the chart when it changes, if you need so then call Chart.Redraw() mathod after you cahnge this property.
-        /// </summary>
-        public bool Invert
-        {
-            get { return (bool)GetValue(InvertProperty); }
-            set { SetValue(InvertProperty, value); }
-        }
-
         public static readonly DependencyProperty CursorXProperty = DependencyProperty.Register(
-            "CursorX", typeof (ChartCursor), typeof (Chart), new PropertyMetadata(default(ChartCursor)));
+            "CursorX", typeof (ChartCursor), typeof (Chart), 
+            new PropertyMetadata(default(ChartCursor), UpdateChart()));
         /// <summary>
         /// Gets or the current chart cursor
         /// </summary>
@@ -229,15 +219,7 @@ namespace LiveChartsDesktop
 
         public static readonly DependencyProperty SeriesProperty = DependencyProperty.Register(
             "Series", typeof (SeriesCollection), typeof (Chart),
-            new PropertyMetadata(default(SeriesCollection), OnPropertyChanged((v, m) =>
-            {
-                m.Series = v.Series;
-                if (m.Series != null)
-                    m.Series.CollectionChanged += (sender, args) =>
-                    {
-                        m.Updater.Run();
-                    };
-            })));
+            new PropertyMetadata(default(SeriesCollection), UpdateChart()));
         /// <summary>
         /// Gets or sets chart series collection to plot.
         /// </summary>
@@ -248,7 +230,8 @@ namespace LiveChartsDesktop
         }
 
         public static readonly DependencyProperty DataTooltipProperty = DependencyProperty.Register(
-            "DataTooltip", typeof (ChartTooltip), typeof (Chart), new PropertyMetadata(default(ChartTooltip)));
+            "DataTooltip", typeof (ChartTooltip), typeof (Chart),
+            new PropertyMetadata(default(ChartTooltip)));
         /// <summary>
         /// Gets or sets the current control to use as the chart tooltip
         /// </summary>
@@ -260,7 +243,7 @@ namespace LiveChartsDesktop
 
         public static readonly DependencyProperty TooltipTimeoutProperty = DependencyProperty.Register(
             "TooltipTimeout", typeof (TimeSpan), typeof (Chart),
-            new PropertyMetadata(default(TimeSpan), OnPropertyChanged((v, m) => m.TooltipTimeout = v.TooltipTimeout)));
+            new PropertyMetadata(default(TimeSpan)));
         /// <summary>
         /// Gets or sets the time a tooltip takes to hide when the user leaves the data point.
         /// </summary>
@@ -273,7 +256,7 @@ namespace LiveChartsDesktop
 
         public static readonly DependencyProperty AnimationsSpeedProperty = DependencyProperty.Register(
             "AnimationsSpeed", typeof (TimeSpan), typeof (Chart), 
-            new PropertyMetadata(default(TimeSpan), OnPropertyChanged(true)));
+            new PropertyMetadata(default(TimeSpan), UpdateChart(true)));
         /// <summary>
         /// Gets or sets the default animation speed for this chart, you can override this speed for each element (series and axes)
         /// </summary>
@@ -285,7 +268,7 @@ namespace LiveChartsDesktop
 
         public static readonly DependencyProperty DisableAnimationsProperty = DependencyProperty.Register(
             "DisableAnimations", typeof (bool), typeof (Chart),
-            new PropertyMetadata(default(bool), OnPropertyChanged((v, m) => m.DisableAnimations = v.DisableAnimations)));
+            new PropertyMetadata(default(bool), UpdateChart(true)));
         /// <summary>
         /// Gets or sets if the chart is animated or not.
         /// </summary>
@@ -296,9 +279,9 @@ namespace LiveChartsDesktop
         }
         #endregion
 
-        public IChartModel Model
+        public ChartCore Model
         {
-            get { return ChartModel; }
+            get { return ChartCoreModel; }
         }
 
         public event Action<object, ChartPoint> DataClick;
@@ -326,13 +309,14 @@ namespace LiveChartsDesktop
             var defColor = Colors[(int)(index - Colors.Count * Math.Truncate(index / (decimal)Colors.Count))];
             var seriesView = series as Series;
             if (seriesView == null) return;
+
             seriesView.Stroke = seriesView.Stroke ?? new SolidColorBrush(defColor);
-            seriesView.Fill = seriesView.Fill ?? new SolidColorBrush(defColor) { Opacity = seriesView.DefaultFillOpacity };
+            seriesView.Fill = seriesView.Fill ?? new SolidColorBrush(defColor) {Opacity = 0.35};
         }
 
         public void Update(bool restartAnimations = true)
         {
-            ChartModel.Update(restartAnimations);
+            ChartCoreModel.Update(restartAnimations);
         }
 
         public void SetDrawMarginTop(double value)
@@ -493,26 +477,13 @@ namespace LiveChartsDesktop
         #endregion
 
         #region Property Changed
-        protected static PropertyChangedCallback OnPropertyChanged(bool animate = false)
+        protected static PropertyChangedCallback UpdateChart(bool animate = false)
         {
             return (o, args) =>
             {
                 var wpfChart = o as Chart;
                 if (wpfChart == null) return;
-                if (wpfChart.Model != null) wpfChart.Update(animate);
-            };
-        }
-
-        protected static PropertyChangedCallback OnPropertyChanged(Action<Chart, IChartModel> map, bool animate = false)
-        {
-            return (o, args) =>
-            {
-                var wpfChart = o as Chart;
-                if (wpfChart == null) return;
-
-                map(wpfChart, wpfChart.Model);
-
-                if (wpfChart.Model != null) wpfChart.Update(animate);
+                if (wpfChart.Model != null) wpfChart.Model.Updater.Run(animate);
             };
         }
         #endregion

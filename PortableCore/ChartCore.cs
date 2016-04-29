@@ -29,16 +29,15 @@ using System.Linq;
 
 namespace LiveChartsCore
 {
-    public abstract class Chart : IChartModel
+    public abstract class ChartCore
     {
-        protected Chart(IChartView view)
+        protected ChartCore(IChartView view)
         {
             View = view;
 
-            TooltipTimeout = TimeSpan.FromMilliseconds(800);
             TooltipHidder = new LvcTimer
             {
-                Interval = TooltipTimeout
+                Interval = view.TooltipTimeout
             };
             TooltipHidder.Tick += () =>
             {
@@ -60,18 +59,12 @@ namespace LiveChartsCore
         public LvcRectangle DrawMargin { get; set; }
         public SeriesCollection Series { get; set; }
         public bool HasUnitaryPoints { get; set; }
-        public bool Invert { get; set; }
-        public object AxisX { get; set; }
-        public object AxisY { get; set; }
-        public TimeSpan TooltipTimeout { get; set; }
-        public ZoomingOptions Zoom { get; set; }
-        public LegendLocation LegendLocation { get; set; }
-        public bool DisableAnimations { get; set; }
-        public TimeSpan AnimationsSpeed { get; set; }
+        
+        public List<AxisCore> AxisX { get; set; }
+        public List<AxisCore> AxisY { get; set; }
 
         public AxisTags PivotZoomingAxis { get; set; }
         public LvcTimer TooltipHidder { get; set; }
-
         public LvcPoint PanOrigin { get; set; }
 
         public bool IsDragging { get; set; }
@@ -92,7 +85,7 @@ namespace LiveChartsCore
             Updater.Run();
         }
 
-        public void IntializeSeries(ISeriesModel series, bool force = false)
+        public void IntializeSeries(SeriesCore series, bool force = false)
         {
             View.InitializeSeries(series.View);
             var observable = series.Values as INotifyCollectionChanged;
@@ -138,7 +131,7 @@ namespace LiveChartsCore
                                   .Select(series => series.Model.Values.MinChartPoint.Y).DefaultIfEmpty(0).Min();
             }
 
-            PivotZoomingAxis = Invert ? AxisTags.Y : AxisTags.X;
+            PivotZoomingAxis = AxisTags.X;
         }
 
         public void CalculateComponentsAndMargin()
@@ -252,7 +245,7 @@ namespace LiveChartsCore
             for (var index = 0; index < ay.Count; index++)
             {
                 var yi = ay[index] as IAxisView;
-                if (HasUnitaryPoints && Invert)
+                if (HasUnitaryPoints)
                     yi.UnitWidth = ChartFunctions.GetUnitWidth(AxisTags.Y, this, index);
                 yi.Model.UpdateSeparators(AxisTags.Y, this, index);
                 yi.SetTitleTop(curSize.Top + curSize.Height*.5 + yi.GetLabelSize().Width*.5);
@@ -261,7 +254,7 @@ namespace LiveChartsCore
             for (var index = 0; index < ax.Count; index++)
             {
                 var xi = ax[index] as IAxisView;
-                if (HasUnitaryPoints && !Invert)
+                if (HasUnitaryPoints)
                     xi.UnitWidth = ChartFunctions.GetUnitWidth(AxisTags.X, this, index);
                 xi.Model.UpdateSeparators(AxisTags.X, this, index);
                 xi.SetTitleLeft(curSize.Left + curSize.Width*.5 - xi.GetLabelSize().Width*.5);
@@ -279,7 +272,7 @@ namespace LiveChartsCore
 
             const int padding = 10;
 
-            switch (LegendLocation)
+            switch (View.LegendLocation)
             {
                 case LegendLocation.None:
                     View.HideLegend();
@@ -332,8 +325,7 @@ namespace LiveChartsCore
         {
             return new LvcPoint();
         }
-
-
+        
 
         public void Update(bool restartAnimations = true)
         {
@@ -342,11 +334,6 @@ namespace LiveChartsCore
 
         public void ZoomIn(LvcPoint pivot)
         {
-            var ax = AxisX as List<IAxisView>;
-            var ay = AxisY as List<IAxisView>;
-
-            if (ax == null || ay == null) return;
-
             View.HideTooltop();
 
             if (IsZooming) return;
@@ -370,49 +357,49 @@ namespace LiveChartsCore
                 t.Start();
             }
 
-            if (Zoom == ZoomingOptions.X || Zoom == ZoomingOptions.Xy)
+            if (View.Zoom == ZoomingOptions.X || View.Zoom == ZoomingOptions.Xy)
             {
-                foreach (var xi in ax)
+                foreach (var xi in AxisX)
                 {
-                    var max = xi.Model.MaxValue ?? xi.Model.MaxLimit;
-                    var min = xi.Model.MinValue ?? xi.Model.MinLimit;
+                    var max = xi.MaxValue ?? xi.MaxLimit;
+                    var min = xi.MinValue ?? xi.MinLimit;
                     var l = max - min;
                     var rMin = (pivot.X - min) / l;
                     var rMax = 1 - rMin;
 
-                    xi.Model.MinValue = min + rMin * xi.Model.S;
-                    xi.Model.MaxValue = max - rMax * xi.Model.S;
+                    xi.MinValue = min + rMin * xi.S;
+                    xi.MaxValue = max - rMax * xi.S;
                 }
             }
             else
             {
-                foreach (var xi in ax)
+                foreach (var xi in AxisX)
                 {
-                    xi.Model.MinValue = null;
-                    xi.Model.MaxValue = null;
+                    xi.MinValue = null;
+                    xi.MaxValue = null;
                 }
             }
 
-            if (Zoom == ZoomingOptions.Y || Zoom == ZoomingOptions.Xy)
+            if (View.Zoom == ZoomingOptions.Y || View.Zoom == ZoomingOptions.Xy)
             {
-                foreach (var yi in ay)
+                foreach (var yi in AxisY)
                 {
-                    var max = yi.Model.MaxValue ?? yi.Model.MaxLimit;
-                    var min = yi.Model.MinValue ?? yi.Model.MinLimit;
+                    var max = yi.MaxValue ?? yi.MaxLimit;
+                    var min = yi.MinValue ?? yi.MinLimit;
                     var l = max - min;
                     var rMin = (pivot.Y - min) / l;
                     var rMax = 1 - rMin;
 
-                    yi.Model.MinValue = min + rMin * yi.Model.S;
-                    yi.Model.MaxValue = max - rMax * yi.Model.S;
+                    yi.MinValue = min + rMin * yi.S;
+                    yi.MaxValue = max - rMax * yi.S;
                 }
             }
             else
             {
-                foreach (var yi in ay)
+                foreach (var yi in AxisY)
                 {
-                    yi.Model.MinValue = null;
-                    yi.Model.MaxValue = null;
+                    yi.MinValue = null;
+                    yi.MaxValue = null;
                 }
             }
 
@@ -421,11 +408,6 @@ namespace LiveChartsCore
 
         public void ZoomOut(LvcPoint pivot)
         {
-            var ax = AxisX as List<IAxisView>;
-            var ay = AxisY as List<IAxisView>;
-
-            if (ax == null || ay == null) return;
-
             View.HideTooltop();
 
             if (IsZooming) return;
@@ -453,33 +435,33 @@ namespace LiveChartsCore
                 ChartFunctions.FromDrawMargin(pivot.X, AxisTags.X, this),
                 ChartFunctions.FromDrawMargin(pivot.Y, AxisTags.Y, this));
 
-            if (Zoom == ZoomingOptions.X || Zoom == ZoomingOptions.Xy)
+            if (View.Zoom == ZoomingOptions.X || View.Zoom == ZoomingOptions.Xy)
             {
-                foreach (var xi in ax)
+                foreach (var xi in AxisX)
                 {
-                    var max = xi.Model.MaxValue ?? xi.Model.MaxLimit;
-                    var min = xi.Model.MinValue ?? xi.Model.MinLimit;
+                    var max = xi.MaxValue ?? xi.MaxLimit;
+                    var min = xi.MinValue ?? xi.MinLimit;
                     var l = max - min;
                     var rMin = (dataPivot.X - min) / l;
                     var rMax = 1 - rMin;
 
-                    xi.Model.MinValue = min - rMin * xi.Model.S;
-                    xi.Model.MaxValue = max + rMax * xi.Model.S;
+                    xi.MinValue = min - rMin * xi.S;
+                    xi.MaxValue = max + rMax * xi.S;
                 }
             }
 
-            if (Zoom == ZoomingOptions.Y || Zoom == ZoomingOptions.Xy)
+            if (View.Zoom == ZoomingOptions.Y || View.Zoom == ZoomingOptions.Xy)
             {
-                foreach (var yi in ay)
+                foreach (var yi in AxisY)
                 {
-                    var max = yi.Model.MaxValue ?? yi.Model.MaxLimit;
-                    var min = yi.Model.MinValue ?? yi.Model.MinLimit;
+                    var max = yi.MaxValue ?? yi.MaxLimit;
+                    var min = yi.MinValue ?? yi.MinLimit;
                     var l = max - min;
                     var rMin = (dataPivot.Y - min) / l;
                     var rMax = 1 - rMin;
 
-                    yi.Model.MinValue = min - rMin * yi.Model.S;
-                    yi.Model.MaxValue = max + rMax * yi.Model.S;
+                    yi.MinValue = min - rMin * yi.S;
+                    yi.MaxValue = max + rMax * yi.S;
                 }
             }
 
@@ -488,21 +470,16 @@ namespace LiveChartsCore
 
         public void ClearZoom()
         {
-            var ax = AxisX as List<IAxisView>;
-            var ay = AxisY as List<IAxisView>;
-
-            if (ax == null || ay == null) return;
-
-            foreach (var xi in ax)
+            foreach (var xi in AxisX)
             {
-                xi.Model.MinValue = null;
-                xi.Model.MaxValue = null;
+                xi.MinValue = null;
+                xi.MaxValue = null;
             }
 
-            foreach (var yi in ay)
+            foreach (var yi in AxisY)
             {
-                yi.Model.MinValue = null;
-                yi.Model.MaxValue = null;
+                yi.MinValue = null;
+                yi.MaxValue = null;
             }
 
             Updater.Run();
@@ -521,11 +498,11 @@ namespace LiveChartsCore
                 View.Erase();
 
             if (args.OldItems != null)
-                foreach (var series in args.OldItems.Cast<ISeriesModel>())
+                foreach (var series in args.OldItems.Cast<SeriesCore>())
                     series.View.Erase();
 
             if (args.NewItems != null)
-                foreach (var series in args.NewItems.Cast<ISeriesModel>())
+                foreach (var series in args.NewItems.Cast<SeriesCore>())
                     IntializeSeries(series, true);
 
             Updater.Run();

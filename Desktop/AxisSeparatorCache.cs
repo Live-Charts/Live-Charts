@@ -228,7 +228,7 @@ namespace LiveChartsDesktop
             return new LvcSize(TextBlock.ActualWidth, TextBlock.ActualHeight);
         }
 
-        public void UpdateLine(AxisTags source, IChartModel chart, int axisIndex, IAxisModel axis)
+        public void UpdateLine(AxisTags source, ChartCore chart, int axisIndex, AxisCore axis)
         {
             var wpfChart = chart.View as Chart;
             var wpfAxis = axis.View as Axis;

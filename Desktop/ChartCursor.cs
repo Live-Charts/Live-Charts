@@ -93,7 +93,7 @@ namespace LiveChartsDesktop
                 Canvas.SetTop(Shape, 0d);
                 Shape.Height = _chart.DrawMargin.Height;
 
-                Shape.Width = _chart.Model.HasUnitaryPoints && !_chart.Model.Invert
+                Shape.Width = _chart.Model.HasUnitaryPoints //&& !_chart.Model.Invert, No No instead each axis will hav ea unitary w
                     ? ChartFunctions.GetUnitWidth(AxisTags.X, _chart.Model, Axis)
                     : 2;
 
@@ -110,7 +110,7 @@ namespace LiveChartsDesktop
                 Canvas.SetLeft(Shape, 0d);
                 Shape.Width = _chart.DrawMargin.Width;
 
-                Shape.Height = _chart.Model.HasUnitaryPoints && _chart.Model.Invert
+                Shape.Height = _chart.Model.HasUnitaryPoints //&& _chart.Model.Invert No no, see note avobe
                     ? ChartFunctions.GetUnitWidth(AxisTags.Y, _chart.Model, Axis)
                     : 2;
 

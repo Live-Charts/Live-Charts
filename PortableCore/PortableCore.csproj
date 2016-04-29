@@ -37,11 +37,11 @@
     <!-- A reference to the entire .NET Framework is automatically included -->
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Axis.cs" />
+    <Compile Include="AxisCore.cs" />
     <Compile Include="ChartUpdater.cs" />
     <Compile Include="ChartValues.cs" />
     <Compile Include="Declarations.cs" />
-    <Compile Include="Chart.cs" />
+    <Compile Include="ChartCore.cs" />
     <Compile Include="ChartFunctions.cs" />
     <Compile Include="ChartPoint.cs" />
     <Compile Include="IChartValues.cs" />
@@ -51,7 +51,7 @@
     <Compile Include="ModelsAndViews.cs" />
     <Compile Include="Motor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Series.cs" />
+    <Compile Include="SeriesCore.cs" />
     <Compile Include="SeriesCollection.cs" />
     <Compile Include="SeriesConfiguration.cs" />
     <Compile Include="Threading.cs" />
