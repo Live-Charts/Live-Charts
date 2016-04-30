@@ -1,4 +1,4 @@
-﻿//The MIT License(MIT)
+//The MIT License(MIT)
 
 //copyright(c) 2016 Alberto Rodriguez
 
@@ -20,25 +20,15 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-using System.Collections.Generic;
-using LiveChartsCore;
-
-namespace LiveChartsDesktop
+namespace LiveChartsCore
 {
-    public class CartesianChart : Chart
+    public class SeparatorElementCore
     {
-        public CartesianChart()
-        {
-            ChartCoreModel = new CartesianChartCore(this);
-
-            SetCurrentValue(SeriesProperty,
-                new SeriesCollection()
-                    .Setup(new SeriesConfiguration<double>()
-                        .Y(v => v)
-                        .X((v, i) => i)));
-
-            SetValue(AxisXProperty, new List<Axis> {DefaultAxes.DefaultAxis});
-            SetValue(AxisYProperty, new List<Axis> {DefaultAxes.DefaultAxis});
-        }
+        public bool IsNew { get; set; }
+        public SeparationState State { get; set; }
+        public bool IsActive { get; set; }
+        public double Key { get; set; }
+        public double Value { get; set; }
+        public ISeparatorElementView View { get; set; }
     }
 }

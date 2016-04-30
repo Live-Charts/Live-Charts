@@ -41,9 +41,7 @@ namespace LiveChartsCore
 
     public interface IAxisView
     {
-        ISeparatorCacheView NewSeparator();
         AxisCore Model { get; set; }
-        ISeparatorView Separator { get; set; }
         double LabelsReference { get; set; }
         double UnitWidth { get; set; }
         LvcSize UpdateTitle(ChartCore chart, double rotationAngle = 0);
@@ -52,33 +50,24 @@ namespace LiveChartsCore
         double GetTitleLeft();
         double GetTileTop();
         LvcSize GetLabelSize();
+        AxisCore AsCoreElement();
+        ISeparatorElementView RenderSeparator(SeparatorElementCore model);
     }
 
     public interface ISeparatorView
     {
-        ChartCore Chart { get; set; }
-        /// <summary>
-        /// Gets or sets if separators are enabled (will be drawn)
-        /// </summary>
         bool IsEnabled { get; set; }
-        /// <summary>
-        /// Gets or sets separators thickness
-        /// </summary>
-        int StrokeThickness { get; set; }
         /// <summary>
         /// Gets or sets sepator step, this means the value between each line, use null for auto.
         /// </summary>
         double? Step { get; set; }
+
+        SeparatorConfigurationCore AsCoreElement();
     }
 
-    public interface ISeparatorCacheView
-    {
-        bool IsNew { get; set; }
-        SeparationState State { get; set; }
-        bool IsActive { get;set; }
-        double Key { get; set; }
-        double Value { get; set; }
-
+    public interface ISeparatorElementView
+    { 
+        SeparatorElementCore Model { get; }
         LvcSize UpdateLabel(string text);
         void UpdateLine(AxisTags source, ChartCore chart, int axisIndex, AxisCore axisCore);
     }
@@ -119,6 +108,7 @@ namespace LiveChartsCore
 
         LvcSize LoadLegend();
         TimeSpan? GetZoomingSpeed();
-
+        List<AxisCore> MapXAxes();
+        List<AxisCore> MapYAxes();
     }
 }

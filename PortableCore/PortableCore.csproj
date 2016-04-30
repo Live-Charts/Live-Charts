@@ -51,6 +51,8 @@
     <Compile Include="ModelsAndViews.cs" />
     <Compile Include="Motor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SeparatorConfigurationCore.cs" />
+    <Compile Include="SeparatorElementCore.cs" />
     <Compile Include="SeriesCore.cs" />
     <Compile Include="SeriesCollection.cs" />
     <Compile Include="SeriesConfiguration.cs" />

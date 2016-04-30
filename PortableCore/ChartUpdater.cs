@@ -37,6 +37,16 @@ namespace LiveChartsCore
         {
             if (!Chart.View.IsControlLoaded || Chart.Series == null) return;
 
+            //lets map view to model, in this case it is only necessary to map the axis
+            //I am not sure what is the best for ChartFunctions class
+            //ChartFucntions class is called every time at least 1 time per point
+            //1) cast the axis as IAxisView everytime we call ChartFunctions
+            //2) map IAxisView to AxisCore, I feel this is better for performance
+            //ToDo: Test both cases!
+
+            Chart.AxisX = Chart.View.MapXAxes();
+            Chart.AxisY = Chart.View.MapYAxes();
+
             foreach (var series in Chart.Series)
             {
                 InitializeSeriesParams(series);

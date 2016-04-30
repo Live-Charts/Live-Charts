@@ -87,11 +87,12 @@ namespace LiveChartsCore
 
         public void IntializeSeries(SeriesCore series, bool force = false)
         {
-            View.InitializeSeries(series.View);
-            var observable = series.Values as INotifyCollectionChanged;
-            if (observable == null) return;
-            observable.CollectionChanged -= OnValuesCollectionChanged;
-            observable.CollectionChanged += OnValuesCollectionChanged;
+            //This should not be necessary anymore.
+            //View.InitializeSeries(series.View);
+            //var observable = series.Values as INotifyCollectionChanged;
+            //if (observable == null) return;
+            //observable.CollectionChanged -= OnValuesCollectionChanged;
+            //observable.CollectionChanged += OnValuesCollectionChanged;
         }
 
         public virtual void PrepareAxes()
@@ -136,11 +137,6 @@ namespace LiveChartsCore
 
         public void CalculateComponentsAndMargin()
         {
-            var ax = AxisX as IList;
-            var ay = AxisY as IList;
-
-            if (ax == null || ay == null) return;
-
             var curSize = new LvcRectangle(0, 0, ChartControlSize.Width, ChartControlSize.Height);
 
             curSize = PlaceLegend(curSize);
@@ -151,34 +147,34 @@ namespace LiveChartsCore
                 l = curSize.Left,
                 r = 0d;
 
-            foreach (var yi in ay.Cast<IAxisView>())
+            foreach (var yi in AxisY)
             {
-                var titleSize = yi.UpdateTitle(this, -90d);
-                var biggest = yi.Model.PrepareChart(AxisTags.Y, this);
+                var titleSize = yi.View.UpdateTitle(this, -90d);
+                var biggest = yi.PrepareChart(AxisTags.Y, this);
 
                 var x = curSize.Left;
-                var merged = yi.Model.IsMerged ? 0 : biggest.Width + 2;
-                if (yi.Model.Position == AxisPosition.LeftBottom)
+                var merged = yi.IsMerged ? 0 : biggest.Width + 2;
+                if (yi.Position == AxisPosition.LeftBottom)
                 {
-                    yi.SetTitleLeft(x);
-                    yi.LabelsReference = x + titleSize.Height + merged;
+                    yi.View.SetTitleLeft(x);
+                    yi.View.LabelsReference = x + titleSize.Height + merged;
                     curSize.Left = curSize.Left + titleSize.Height + merged;
                     curSize.Width -= (titleSize.Height + merged);
                 }
                 else
                 {
-                    yi.SetTitleLeft(x + curSize.Width - titleSize.Height);
-                    yi.LabelsReference = x + curSize.Width - titleSize.Height - merged;
+                    yi.View.SetTitleLeft(x + curSize.Width - titleSize.Height);
+                    yi.View.LabelsReference = x + curSize.Width - titleSize.Height - merged;
                     curSize.Width -= (titleSize.Height + merged);
                 }
 
-                var top = yi.Model.IsMerged ? 0 : biggest.Height*.5;
+                var top = yi.IsMerged ? 0 : biggest.Height*.5;
                 if (t < top) t = top;
 
-                var bot = yi.Model.IsMerged ? 0 : biggest.Height*.5;
+                var bot = yi.IsMerged ? 0 : biggest.Height*.5;
                 if (b < bot) b = bot;
 
-                if (yi.Model.IsMerged && bm < biggest.Height)
+                if (yi.IsMerged && bm < biggest.Height)
                     bm = biggest.Height;
             }
 
@@ -187,35 +183,35 @@ namespace LiveChartsCore
                 curSize.Top = t;
                 curSize.Height -= t;
             }
-            if (b > 0 && !(ax.Count > 0))
+            if (b > 0 && !(AxisX.Count > 0))
                 curSize.Height = curSize.Height - b;
 
-            foreach (var xi in ax.Cast<IAxisView>())
+            foreach (var xi in AxisX)
             {
-                var titleSize = xi.UpdateTitle(this);
-                var biggest = xi.Model.PrepareChart(AxisTags.X, this);
+                var titleSize = xi.View.UpdateTitle(this);
+                var biggest = xi.PrepareChart(AxisTags.X, this);
                 var top = curSize.Top;
-                var merged = xi.Model.IsMerged ? 0 : biggest.Height;
-                if (xi.Model.Position == AxisPosition.LeftBottom)
+                var merged = xi.IsMerged ? 0 : biggest.Height;
+                if (xi.Position == AxisPosition.LeftBottom)
                 {
-                    xi.SetTitleTop(top + curSize.Height - titleSize.Height);
-                    xi.LabelsReference = top + b - (xi.Model.IsMerged ? bm : 0) +
+                    xi.View.SetTitleTop(top + curSize.Height - titleSize.Height);
+                    xi.View.LabelsReference = top + b - (xi.IsMerged ? bm : 0) +
                                          (curSize.Height - (titleSize.Height + merged + b)) -
-                                         (xi.Model.IsMerged ? b : 0);
+                                         (xi.IsMerged ? b : 0);
                     curSize.Height -= (titleSize.Height + merged + b);
                 }
                 else
                 {
-                    xi.SetTitleTop(top - t);
-                    xi.LabelsReference = (top - t) + titleSize.Height + (xi.Model.IsMerged ? bm : 0);
+                    xi.View.SetTitleTop(top - t);
+                    xi.View.LabelsReference = (top - t) + titleSize.Height + (xi.IsMerged ? bm : 0);
                     curSize.Top = curSize.Top + titleSize.Height + merged;
                     curSize.Height -= (titleSize.Height + merged);
                 }
 
-                var left = xi.Model.IsMerged ? 0 : biggest.Width*.5;
+                var left = xi.IsMerged ? 0 : biggest.Width*.5;
                 if (l < left) l = left;
 
-                var right = xi.Model.IsMerged ? 0 : biggest.Width*.5;
+                var right = xi.IsMerged ? 0 : biggest.Width*.5;
                 if (r < right) r = right;
             }
 
@@ -224,10 +220,10 @@ namespace LiveChartsCore
                 var cor = l - curSize.Left;
                 curSize.Left = l;
                 curSize.Width -= cor;
-                foreach (var yi in ay.Cast<IAxisView>().Where(x => x.Model.Position == AxisPosition.LeftBottom))
+                foreach (var yi in AxisY.Where(x => x.Position == AxisPosition.LeftBottom))
                 {
-                    yi.SetTitleLeft(yi.GetTitleLeft() + cor);
-                    yi.LabelsReference += cor;
+                    yi.View.SetTitleLeft(yi.View.GetTitleLeft() + cor);
+                    yi.View.LabelsReference += cor;
                 }
             }
             var rp = ChartControlSize.Width - curSize.Left - curSize.Width;
@@ -235,29 +231,29 @@ namespace LiveChartsCore
             {
                 var cor = r - rp;
                 curSize.Width -= cor;
-                foreach (var yi in ay.Cast<IAxisView>().Where(x => x.Model.Position == AxisPosition.RightTop))
+                foreach (var yi in AxisY.Where(x => x.Position == AxisPosition.RightTop))
                 {
-                    yi.SetTitleLeft(yi.GetTitleLeft() - cor);
-                    yi.LabelsReference -= cor;
+                    yi.View.SetTitleLeft(yi.View.GetTitleLeft() - cor);
+                    yi.View.LabelsReference -= cor;
                 }
             }
 
-            for (var index = 0; index < ay.Count; index++)
+            for (var index = 0; index < AxisY.Count; index++)
             {
-                var yi = ay[index] as IAxisView;
+                var yi = AxisY[index];
                 if (HasUnitaryPoints)
-                    yi.UnitWidth = ChartFunctions.GetUnitWidth(AxisTags.Y, this, index);
-                yi.Model.UpdateSeparators(AxisTags.Y, this, index);
-                yi.SetTitleTop(curSize.Top + curSize.Height*.5 + yi.GetLabelSize().Width*.5);
+                    yi.View.UnitWidth = ChartFunctions.GetUnitWidth(AxisTags.Y, this, index);
+                yi.UpdateSeparators(AxisTags.Y, this, index);
+                yi.View.SetTitleTop(curSize.Top + curSize.Height*.5 + yi.View.GetLabelSize().Width*.5);
             }
 
-            for (var index = 0; index < ax.Count; index++)
+            for (var index = 0; index < AxisX.Count; index++)
             {
-                var xi = ax[index] as IAxisView;
+                var xi = AxisX[index];
                 if (HasUnitaryPoints)
-                    xi.UnitWidth = ChartFunctions.GetUnitWidth(AxisTags.X, this, index);
-                xi.Model.UpdateSeparators(AxisTags.X, this, index);
-                xi.SetTitleLeft(curSize.Left + curSize.Width*.5 - xi.GetLabelSize().Width*.5);
+                    xi.View.UnitWidth = ChartFunctions.GetUnitWidth(AxisTags.X, this, index);
+                xi.UpdateSeparators(AxisTags.X, this, index);
+                xi.View.SetTitleLeft(curSize.Left + curSize.Width*.5 - xi.View.GetLabelSize().Width*.5);
             }
 
             DrawMargin.Top = curSize.Top;

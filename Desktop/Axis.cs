@@ -41,11 +41,12 @@ namespace LiveChartsDesktop
         public TextBlock TitleBlock { get; set; }
         public double LabelsReference { get; set; }
         public double UnitWidth { get; set; }
-        public Dictionary<double, AxisSeparatorCache> Cache { get; set; }
+        public Dictionary<double, AxisSeparatorElement> Cache { get; set; }
+
         public AxisCore Model { get; set; }
-        public ISeparatorCacheView NewSeparator()
+        public ISeparatorElementView RenderSeparator(SeparatorElementCore model)
         {
-            var asc = new AxisSeparatorCache
+            var asc = new AxisSeparatorElement(model)
             {
                 TextBlock = BindATextBlock(),
                 Line = BindALine()
@@ -55,6 +56,9 @@ namespace LiveChartsDesktop
             Panel.SetZIndex(asc.Line, -1);
             Model.Chart.View.AddToView(asc.TextBlock);
             Model.Chart.View.AddToView(asc.Line);
+
+            Model.Chart.View.AddToDrawMargin(asc.TextBlock);
+            Model.Chart.View.AddToDrawMargin(asc.Line);
 
             return asc;
         }
@@ -96,6 +100,23 @@ namespace LiveChartsDesktop
         public LvcSize GetLabelSize()
         {
             return new LvcSize(TitleBlock.DesiredSize.Width, TitleBlock.DesiredSize.Height);
+        }
+
+        public AxisCore AsCoreElement()
+        {
+            return new AxisCore(this)
+            {
+                ShowLabels = ShowLabels,
+                Chart = Model.Chart,
+                IsMerged = IsMerged,
+                Labels = Labels,
+                LabelFormatter = LabelFormatter,
+                MaxValue = MaxValue,
+                MinValue = MinValue,
+                Title = Title,
+                Position = Position,
+                Separator = Separator.AsCoreElement()
+            };
         }
 
         public static readonly DependencyProperty LabelsProperty = DependencyProperty.Register(
@@ -230,17 +251,6 @@ namespace LiveChartsDesktop
             set { SetValue(IsMergedProperty, value); }
         }
 
-        public static readonly DependencyProperty AnimationsSpeedProperty = DependencyProperty.Register(
-            "AnimationsSpeed", typeof(TimeSpan?), typeof(Axis),
-            new PropertyMetadata(default(TimeSpan?), UpdateChart(true)));
-        /// <summary>
-        /// Gets or sets the animations speed of this axis, if this proeprty is null then the Chart.AnimationsSpeed is taken.
-        /// </summary>
-        public TimeSpan? AnimationsSpeed
-        {
-            get { return (TimeSpan?)GetValue(AnimationsSpeedProperty); }
-            set { SetValue(AnimationsSpeedProperty, value); }
-        }
 
         public static readonly DependencyProperty DisableAnimationsProperty = DependencyProperty.Register(
             "DisableAnimations", typeof (bool), typeof (Axis), new PropertyMetadata(default(bool), UpdateChart(true)));

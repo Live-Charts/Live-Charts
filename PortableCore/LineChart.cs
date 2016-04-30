@@ -26,9 +26,9 @@ using System.Linq;
 
 namespace LiveChartsCore
 {
-    public class LineChartCoreModel : ChartCore
+    public class CartesianChartCore : ChartCore
     {
-        public LineChartCoreModel(IChartView view) : base(view)
+        public CartesianChartCore(IChartView view) : base(view)
         {
         }
 

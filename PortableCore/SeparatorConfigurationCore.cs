@@ -1,4 +1,4 @@
-﻿//The MIT License(MIT)
+//The MIT License(MIT)
 
 //copyright(c) 2016 Alberto Rodriguez
 
@@ -20,25 +20,18 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-using System.Collections.Generic;
-using LiveChartsCore;
-
-namespace LiveChartsDesktop
+namespace LiveChartsCore
 {
-    public class CartesianChart : Chart
+    public class SeparatorConfigurationCore
     {
-        public CartesianChart()
-        {
-            ChartCoreModel = new CartesianChartCore(this);
-
-            SetCurrentValue(SeriesProperty,
-                new SeriesCollection()
-                    .Setup(new SeriesConfiguration<double>()
-                        .Y(v => v)
-                        .X((v, i) => i)));
-
-            SetValue(AxisXProperty, new List<Axis> {DefaultAxes.DefaultAxis});
-            SetValue(AxisYProperty, new List<Axis> {DefaultAxes.DefaultAxis});
-        }
+        public ChartCore Chart { get; set; }
+        /// <summary>
+        /// Gets or sets if separators are enabled (will be drawn)
+        /// </summary>
+        public bool IsEnabled { get; set; }
+        /// <summary>
+        /// Gets or sets sepator step, this means the value between each line, use null for auto.
+        /// </summary>
+        public double? Step { get; set; }
     }
 }

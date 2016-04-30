@@ -87,6 +87,16 @@ namespace LiveChartsDesktop
             set { SetValue(StepProperty, value); }
         }
 
+        public SeparatorConfigurationCore AsCoreElement()
+        {
+            return new SeparatorConfigurationCore
+            {
+                Chart = Chart,
+                IsEnabled = IsEnabled,
+                Step = Step
+            };
+        }
+
         private static PropertyChangedCallback UpdateChart(bool animate = false)
         {
             return (o, args) =>

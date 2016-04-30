@@ -34,7 +34,7 @@ namespace LiveChartsCore
         {
             View = view;
             CleanFactor = 3;
-            Cache = new Dictionary<double, ISeparatorCacheView>();
+            Cache = new Dictionary<double, SeparatorElementCore>();
         }
 
         public ChartCore Chart { get; set; }
@@ -48,22 +48,24 @@ namespace LiveChartsCore
         public string Title { get; set; }
         public AxisPosition Position { get; set; }
         public bool IsMerged { get; set; }
+        
+        public SeparatorConfigurationCore Separator { get; set; }
 
-        public double MaxLimit { get; set; }
-        public double MinLimit { get; set; }
-        public double S { get; set; }
+        internal double MaxLimit { get; set; }
+        internal double MinLimit { get; set; }
+        internal double S { get; set; }
 
-        public int CleanFactor { get; set; }
-        public Dictionary<double, ISeparatorCacheView> Cache { get; set; }
-        public double? LastAxisMax { get; set; }
-        public double? LastAxisMin { get; set; }
-        public LvcRectangle LastPlotArea { get; set; }
+        internal int CleanFactor { get; set; }
+        internal Dictionary<double, SeparatorElementCore> Cache { get; set; }
+        internal double? LastAxisMax { get; set; }
+        internal double? LastAxisMin { get; set; }
+        internal LvcRectangle LastPlotArea { get; set; }
 
-        public void CalculateSeparator(ChartCore chart, AxisTags source)
+        internal void CalculateSeparator(ChartCore chart, AxisTags source)
         {
-            if (View.Separator.Step != null)
+            if (Separator.Step != null)
             {
-                S = View.Separator.Step ?? 1;
+                S = Separator.Step ?? 1;
                 return;
             }
 
@@ -125,7 +127,7 @@ namespace LiveChartsCore
             return m * (value - p1.X) + p1.Y;
         }
 
-        public LvcSize PrepareChart(AxisTags source, ChartCore chart)
+        internal LvcSize PrepareChart(AxisTags source, ChartCore chart)
         {
             if (!(Math.Abs(MaxLimit - MinLimit) > S * .01) || !ShowLabels) return new LvcSize();
             if (chart.DrawMargin.Width < 5 || chart.DrawMargin.Height < 5) return new LvcSize();
@@ -145,13 +147,13 @@ namespace LiveChartsCore
 
             for (var i = MinLimit; i <= MaxLimit - uwc; i += S)
             {
-                ISeparatorCacheView asc;
+                SeparatorElementCore asc;
 
                 var key = Math.Round(i / tolerance) * tolerance;
                 if (!Cache.TryGetValue(key, out asc))
                 {
-                    asc = View.NewSeparator();
-                    asc.IsNew = true;
+                    asc = new SeparatorElementCore {IsNew = true};
+                    asc.View = View.RenderSeparator(asc);
                     Cache[key] = asc;
                 }
                 else
@@ -163,7 +165,7 @@ namespace LiveChartsCore
                 asc.Value = i;
                 asc.IsActive = true;
 
-                var labelsSize = asc.UpdateLabel(f(i));
+                var labelsSize = asc.View.UpdateLabel(f(i));
 
                 biggest.Width = labelsSize.Width > biggest.Width
                     ? labelsSize.Width
@@ -186,7 +188,7 @@ namespace LiveChartsCore
             return biggest;
         }
 
-        public void UpdateSeparators(AxisTags source, ChartCore chart, int axisPosition)
+        internal void UpdateSeparators(AxisTags source, ChartCore chart, int axisPosition)
         {
             foreach (var element in Cache.Values.ToArray())
             {
@@ -195,17 +197,15 @@ namespace LiveChartsCore
                     element.State = SeparationState.Remove;
                     Cache.Remove(element.Key);
                 }
-                element.UpdateLine(source, chart,axisPosition, this);
+                element.View.UpdateLine(source, chart, axisPosition, this);
                 element.IsActive = false;
             }
 
             LastAxisMax = MaxLimit;
             LastAxisMin = MinLimit;
-            LastPlotArea =
-                new LvcRectangle(chart.DrawMargin.Left, chart.DrawMargin.Top,
-                    chart.DrawMargin.Width, chart.DrawMargin.Height);
+            LastPlotArea = new LvcRectangle(chart.DrawMargin.Left, chart.DrawMargin.Top,
+                chart.DrawMargin.Width, chart.DrawMargin.Height);
         }
-
 
         internal Func<double, string> GetFormatter()
         {

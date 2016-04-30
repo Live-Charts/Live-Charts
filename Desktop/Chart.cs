@@ -464,6 +464,16 @@ namespace LiveChartsDesktop
             return DisableAnimations ? null : (TimeSpan?) AnimationsSpeed;
         }
 
+        public List<AxisCore> MapXAxes()
+        {
+            return AxisX.Select(x => x.AsCoreElement()).ToList();
+        }
+
+        public List<AxisCore> MapYAxes()
+        {
+            return AxisY.Select(x => x.AsCoreElement()).ToList();
+        }
+
         #region Event Handlers
         internal void DataMouseDown(object sender, MouseEventArgs e)
         {
