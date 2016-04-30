@@ -43,7 +43,7 @@ namespace LiveChartsCore
             Generics = new Dictionary<T, ChartPoint>();
             CollectionChanged += (sender, eventArgs) =>
             {
-                if (Series.Chart != null) Series.Chart.Updater.Run();
+                if (Series != null && Series.Chart != null) Series.Chart.Updater.Run();
             };
         }
 
@@ -205,7 +205,7 @@ namespace LiveChartsCore
             //if you are facing perfomrnace issues then you must configure your type
             //if you are not using chart values of double ChartValues<double> then you must:
             //mySeriesConfiguration.Setup(new SeriesConfiguration<int>().Y(v => (double) v));
-            return (Series.Configuration ?? Series.SeriesCollection.Configuration) as SeriesConfiguration<T>
+            return (Series.View.Configuration ?? Series.SeriesCollection.Configuration) as SeriesConfiguration<T>
                    ?? new SeriesConfiguration<T>().Y(t => (double) (object) t);
         }
 

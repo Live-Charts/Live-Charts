@@ -25,18 +25,62 @@ using System.Collections.Generic;
 
 namespace LiveChartsCore
 {
+    public interface IChartView
+    {
+        ChartCore Model { get; }
+
+        event Action<object, ChartPoint> DataClick;
+
+        SeriesCollection Series { get; set; }
+        TimeSpan TooltipTimeout { get; set; }
+        ZoomingOptions Zoom { get; set; }
+        LegendLocation LegendLocation { get; set; }
+        bool DisableAnimations { get; set; }
+        TimeSpan AnimationsSpeed { get; set; }
+
+        bool HasTooltip { get; }
+        bool HasDataClickEventAttached { get; }
+        bool IsControlLoaded { get; }
+
+        void SetDrawMarginTop(double value);
+        void SetDrawMarginLeft(double value);
+        void SetDrawMarginHeight(double value);
+        void SetDrawMarginWidth(double value);
+        void Erase();
+        void AddToView(object element);
+        void AddToDrawMargin(object element);
+        void RemoveFromView(object element);
+        void RemoveFromDrawMargin(object element);
+        void ShowTooltip(ChartPoint sender, IEnumerable<ChartPoint> sibilings, LvcPoint at);
+        void HideTooltop();
+        void IntializeAxis();
+        void ShowLegend(LvcPoint at);
+        void HideLegend();
+
+        LvcSize LoadLegend();
+        TimeSpan? GetZoomingSpeed();
+        List<AxisCore> MapXAxes();
+        List<AxisCore> MapYAxes();
+    }
+
     public interface ISeriesView
     {
         SeriesCore Model { get; set; }
         IChartValues Values { get; set; }
         int ScalesXAt { get; set; }
         int ScalesYAt { get; set; }
+        SeriesConfiguration Configuration { get; set; }
 
         IChartPointView RenderPoint(IChartPointView view);
         void RemovePointView(object view);
         void InitializeView();
         void Erase();
         void CloseView();
+    }
+
+    public interface ILineSeriesView : ISeriesView
+    {
+        double LineSmoothness { get; set; }
     }
 
     public interface IAxisView
@@ -72,43 +116,4 @@ namespace LiveChartsCore
         void UpdateLine(AxisTags source, ChartCore chart, int axisIndex, AxisCore axisCore);
     }
 
-    public interface IChartView
-    {
-        ChartCore Model { get; }
-
-        event Action<object, ChartPoint> DataClick;
-
-        SeriesCollection Series { get; set; }
-        TimeSpan TooltipTimeout { get; set; }
-        ZoomingOptions Zoom { get; set; }
-        LegendLocation LegendLocation { get; set; }
-        bool DisableAnimations { get; set; }
-        TimeSpan AnimationsSpeed { get; set; }
-
-        bool HasTooltip { get; }
-        bool HasDataClickEventAttached { get; }
-        bool IsControlLoaded { get; }
-
-        void InitializeSeries(ISeriesView series);
-        void Update(bool restartAnimations = true);
-        void SetDrawMarginTop(double value);
-        void SetDrawMarginLeft(double value);
-        void SetDrawMarginHeight(double value);
-        void SetDrawMarginWidth(double value);
-        void Erase();
-        void AddToView(object element);
-        void AddToDrawMargin(object element);
-        void RemoveFromView(object element);
-        void RemoveFromDrawMargin(object element);
-        void ShowTooltip(ChartPoint sender, IEnumerable<ChartPoint> sibilings, LvcPoint at);
-        void HideTooltop();
-        void IntializeAxis();
-        void ShowLegend(LvcPoint at);
-        void HideLegend();
-
-        LvcSize LoadLegend();
-        TimeSpan? GetZoomingSpeed();
-        List<AxisCore> MapXAxes();
-        List<AxisCore> MapYAxes();
-    }
 }

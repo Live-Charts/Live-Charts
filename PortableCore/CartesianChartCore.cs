@@ -21,8 +21,6 @@
 //SOFTWARE.
 
 using System;
-using System.Collections;
-using System.Linq;
 
 namespace LiveChartsCore
 {
@@ -34,25 +32,22 @@ namespace LiveChartsCore
 
         public override void PrepareAxes()
         {
-            var ax = AxisX as IList;
-            var ay = AxisY as IList;
-
             base.PrepareAxes();
 
-            foreach (var xi in ax.Cast<IAxisView>())
+            foreach (var xi in AxisX)
             {
-                xi.Model.CalculateSeparator(this, AxisTags.X);
+                xi.CalculateSeparator(this, AxisTags.X);
                 //if (!Invert) continue;
-                if (xi.Model.MaxValue == null) xi.Model.MaxLimit = (Math.Round(xi.Model.MaxLimit / xi.Model.S) + 1) * xi.Model.S;
-                if (xi.Model.MinValue == null) xi.Model.MinLimit = (Math.Truncate(xi.Model.MinLimit / xi.Model.S) - 1) * xi.Model.S;
+                if (xi.MaxValue == null) xi.MaxLimit = (Math.Round(xi.MaxLimit / xi.S) + 1) * xi.S;
+                if (xi.MinValue == null) xi.MinLimit = (Math.Truncate(xi.MinLimit / xi.S) - 1) * xi.S;
             }
 
-            foreach (var yi in ay.Cast<IAxisView>())
+            foreach (var yi in AxisY)
             {
-                yi.Model.CalculateSeparator(this, AxisTags.Y);
+                yi.CalculateSeparator(this, AxisTags.Y);
                 //if (Invert) continue;
-                if (yi.Model.MaxValue == null) yi.Model.MaxLimit = (Math.Round(yi.Model.MaxLimit / yi.Model.S) + 1) * yi.Model.S;
-                if (yi.Model.MinValue == null) yi.Model.MinLimit = (Math.Truncate(yi.Model.MinLimit / yi.Model.S) - 1) * yi.Model.S;
+                if (yi.MaxValue == null) yi.MaxLimit = (Math.Round(yi.MaxLimit / yi.S) + 1) * yi.S;
+                if (yi.MinValue == null) yi.MinLimit = (Math.Truncate(yi.MinLimit / yi.S) - 1) * yi.S;
             }
 
             CalculateComponentsAndMargin();

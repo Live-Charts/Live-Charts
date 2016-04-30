@@ -21,9 +21,7 @@
 //SOFTWARE.
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.Diagnostics;
 using System.Linq;
 
@@ -57,11 +55,12 @@ namespace LiveChartsCore
         public IChartUpdater Updater { get; set; }
         public LvcSize ChartControlSize { get; set; }
         public LvcRectangle DrawMargin { get; set; }
-        public SeriesCollection Series { get; set; }
         public bool HasUnitaryPoints { get; set; }
         
         public List<AxisCore> AxisX { get; set; }
         public List<AxisCore> AxisY { get; set; }
+
+        public int CurrentColorIndex { get; set; }
 
         public AxisTags PivotZoomingAxis { get; set; }
         public LvcTimer TooltipHidder { get; set; }
@@ -70,66 +69,31 @@ namespace LiveChartsCore
         public bool IsDragging { get; set; }
         public bool IsZooming { get; set; }
 
-        public void IntializeSeries(bool force = false)
-        {
-            if (SeriesInitialized & !force) return;
-
-            SeriesInitialized = true;
-
-            foreach (var series in Series)
-                IntializeSeries(series.Model, force);
-
-            Series.CollectionChanged -= OnSeriesCollectionChanged;
-            Series.CollectionChanged += OnSeriesCollectionChanged;
-
-            Updater.Run();
-        }
-
-        public void IntializeSeries(SeriesCore series, bool force = false)
-        {
-            //This should not be necessary anymore.
-            //View.InitializeSeries(series.View);
-            //var observable = series.Values as INotifyCollectionChanged;
-            //if (observable == null) return;
-            //observable.CollectionChanged -= OnValuesCollectionChanged;
-            //observable.CollectionChanged += OnValuesCollectionChanged;
-        }
-
         public virtual void PrepareAxes()
         {
-            var ax = AxisX as IList;
-            var ay = AxisY as IList;
 
-            if (ax == null || ay == null) return;
-
-            InitializeComponents();
-
-            for (var index = 0; index < ax.Count; index++)
+            for (var index = 0; index < AxisX.Count; index++)
             {
-                var view = ax[index] as IAxisView;
-                if (view == null) continue;
-                var xi = view.Model;
+                var xi = AxisX[index];
 
                 xi.MaxLimit = xi.MaxValue ??
-                              Series.Where(series => series.Model.Values != null && series.Model.ScalesXAt == index)
-                                  .Select(series => series.Model.Values.MaxChartPoint.X).DefaultIfEmpty(0).Max();
+                              View.Series.Where(series => series.Values != null && series.ScalesXAt == index)
+                                  .Select(series => series.Values.MaxChartPoint.X).DefaultIfEmpty(0).Max();
                 xi.MinLimit = xi.MinValue ??
-                              Series.Where(series => series.Model.Values != null && series.Model.ScalesXAt == index)
-                                  .Select(series => series.Model.Values.MinChartPoint.X).DefaultIfEmpty(0).Min();
+                              View.Series.Where(series => series.Values != null && series.ScalesXAt == index)
+                                  .Select(series => series.Values.MinChartPoint.X).DefaultIfEmpty(0).Min();
             }
 
-            for (var index = 0; index < ay.Count; index++)
+            for (var index = 0; index < AxisY.Count; index++)
             {
-                var view = ay[index] as IAxisView;
-                if (view == null) continue;
-                var yi = view.Model;
+                var yi = AxisY[index];
 
                 yi.MaxLimit = yi.MaxValue ??
-                              Series.Where(series => series.Model.Values != null && series.Model.ScalesYAt == index)
-                                  .Select(series => series.Model.Values.MaxChartPoint.Y).DefaultIfEmpty(0).Max();
+                             View.Series.Where(series => series.Values != null && series.ScalesYAt == index)
+                                  .Select(series => series.Values.MaxChartPoint.Y).DefaultIfEmpty(0).Max();
                 yi.MinLimit = yi.MinValue ??
-                              Series.Where(series => series.Model.Values != null && series.Model.ScalesYAt == index)
-                                  .Select(series => series.Model.Values.MinChartPoint.Y).DefaultIfEmpty(0).Min();
+                              View.Series.Where(series => series.Values != null && series.ScalesYAt == index)
+                                  .Select(series => series.Values.MinChartPoint.Y).DefaultIfEmpty(0).Min();
             }
 
             PivotZoomingAxis = AxisTags.X;
@@ -485,47 +449,6 @@ namespace LiveChartsCore
         {
             TooltipHidder.Stop();
             TooltipHidder.Start();
-        }
-
-
-        private void OnSeriesCollectionChanged(object sender, NotifyCollectionChangedEventArgs args)
-        {
-            if (args.Action == NotifyCollectionChangedAction.Reset)
-                View.Erase();
-
-            if (args.OldItems != null)
-                foreach (var series in args.OldItems.Cast<SeriesCore>())
-                    series.View.Erase();
-
-            if (args.NewItems != null)
-                foreach (var series in args.NewItems.Cast<SeriesCore>())
-                    IntializeSeries(series, true);
-
-            Updater.Run();
-        }
-
-        private void OnValuesCollectionChanged(object sender, NotifyCollectionChangedEventArgs args)
-        {
-            Updater.Run();
-        }
-
-
-        private void InitializeComponents()
-        {
-            //sets the chart of each component, 
-            //adds tooltip to chart
-            //Calculates the limit of each chart.
-        }
-
-        private void InitializeSeries()
-        {
-            
-        }
-
-        private void PrepareCanvas()
-        {
-            //intialize series, add elements to visual tree to support bidings...
-            //set the plot area...   
         }
     }
 }

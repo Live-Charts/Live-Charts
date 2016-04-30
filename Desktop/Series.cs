@@ -21,8 +21,6 @@
 //SOFTWARE.
 
 using System;
-using System.Collections.Specialized;
-using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -210,6 +208,8 @@ namespace LiveChartsDesktop
             get { return (int) GetValue(ScalesYAtProperty); }
             set { SetValue(ScalesYAtProperty, value); }
         }
+
+        public SeriesConfiguration Configuration { get; set; }
 
         #endregion
 

@@ -9,6 +9,6 @@
         Title="MainWindow" Height="400" Width="525"
         d:DataContext="{d:DesignInstance local:MainWindow}">
     <Grid>
-        <lcd:CartesianChart Margin="10" Series="{Binding SeriesCollection}" />
+        <lcd:CartesianChart Margin="10" Series="{Binding SeriesCollection, PresentationTraceSources.TraceLevel=High}" />
     </Grid>
 </Window>

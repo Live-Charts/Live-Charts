@@ -32,7 +32,7 @@ using LiveChartsCore;
 
 namespace LiveChartsDesktop
 {
-    public class LineSeries : Series
+    public class LineSeries : Series, ILineSeriesView
     {
         private PathFigure _pathFigure;
         private readonly LineSegment _right = new LineSegment(new Point(), false);
@@ -49,10 +49,8 @@ namespace LiveChartsDesktop
 
         public LineSeries(SeriesConfiguration configuration)
         {
-            Model = new LineAlgorithm(this)
-            {
-                Configuration = configuration
-            };
+            Model = new LineAlgorithm(this);
+            Configuration = configuration;
             InitializeDefuaults();
         }
 
@@ -114,11 +112,11 @@ namespace LiveChartsDesktop
             var wpfChart = Model.Chart.View as Chart;
             if (wpfChart == null) return;
 
-            //if (Stroke == null)
-            //    SetValue(StrokeProperty, new SolidColorBrush(Chart.GetDefaultColor(wpfChart.Series.IndexOf(this))));
-            //if (Fill == null)
-            //    SetValue(FillProperty,
-            //        new SolidColorBrush(Chart.GetDefaultColor(wpfChart.Series.IndexOf(this))) {Opacity = 0.35});
+            if (Stroke == null)
+                SetValue(StrokeProperty, new SolidColorBrush(Chart.GetDefaultColor(wpfChart.Series.IndexOf(this))));
+            if (Fill == null)
+                SetValue(FillProperty,
+                    new SolidColorBrush(Chart.GetDefaultColor(wpfChart.Series.IndexOf(this))) { Opacity = 0.35 });
 
             _pathFigure.StartPoint = new Point(0, Model.Chart.DrawMargin.Height);
         }

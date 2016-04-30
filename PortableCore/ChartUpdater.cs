@@ -35,7 +35,7 @@ namespace LiveChartsCore
 
         public void Run(bool restartsAnimations = false)
         {
-            if (!Chart.View.IsControlLoaded || Chart.Series == null) return;
+            if (!Chart.View.IsControlLoaded || Chart.View.Series == null) return;
 
             //lets map view to model, in this case it is only necessary to map the axis
             //I am not sure what is the best for ChartFunctions class
@@ -47,21 +47,21 @@ namespace LiveChartsCore
             Chart.AxisX = Chart.View.MapXAxes();
             Chart.AxisY = Chart.View.MapYAxes();
 
-            foreach (var series in Chart.Series)
+            foreach (var series in Chart.View.Series)
             {
                 InitializeSeriesParams(series);
                 series.InitializeView();
-                series.Model.Values.GetLimits();
+                series.Values.GetLimits();
             }
 
             Chart.PrepareAxes();
 
-            foreach (var series in Chart.Series)
+            foreach (var series in Chart.View.Series)
             {
-                series.Model.Values.InitializeGarbageCollector();
+                series.Values.InitializeGarbageCollector();
                 series.Model.Update();
                 series.CloseView();
-                series.Model.Values.CollectGarbage();
+                series.Values.CollectGarbage();
             }
 #if DEBUG
             Debug.WriteLine("<<Chart UI Updated>>");
@@ -71,8 +71,8 @@ namespace LiveChartsCore
         private void InitializeSeriesParams(ISeriesView seriesView)
         {
             seriesView.Model.Chart = Chart;
-            seriesView.Model.Values.Series = seriesView.Model;
-            seriesView.Model.SeriesCollection = Chart.Series;
+            seriesView.Values.Series = seriesView.Model;
+            seriesView.Model.SeriesCollection = Chart.View.Series;
         }
 
         public void Cancel()

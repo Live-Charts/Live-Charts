@@ -31,41 +31,10 @@ namespace LiveChartsCore
             View = view;
         }
 
-        protected SeriesCore(ISeriesView view, SeriesConfiguration configuration)
-        {
-            View = view;
-            Configuration = configuration;
-        }
-
         public ISeriesView View { get; set; }
         public ChartCore Chart { get; set; }
-        public IChartValues Values { get; set; }
-        public SeriesConfiguration Configuration { get; set; }
-        public int ScalesXAt { get; set; }
-        public int ScalesYAt { get; set; }
-        public AxisCore CurrentXAxis
-        {
-            get { return Chart.AxisX[ScalesXAt]; }
-        }
-        public AxisCore CurrentYAxis
-        {
-            get { return Chart.AxisY[ScalesYAt]; }
-        }
         public SeriesCollection SeriesCollection { get; set; }
         public string Title { get; set; }
-        public SeriesCollection Collection { get; private set; }
-
-        /// <summary>
-        /// Setup a configuration for this collection, notice this method returns the current instance to support fleunt syntax. if Series.Cofiguration is not null then SeriesCollection.Configuration will be ignored.
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="config"></param>
-        /// <returns></returns>
-        public SeriesCore Setup<T>(SeriesConfiguration<T> config)
-        {
-            Configuration = config;
-            return this;
-        }
 
         public abstract void Update();
     }

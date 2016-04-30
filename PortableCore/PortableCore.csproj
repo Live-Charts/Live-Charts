@@ -46,7 +46,7 @@
     <Compile Include="ChartPoint.cs" />
     <Compile Include="IChartValues.cs" />
     <Compile Include="IDataOptimization.cs" />
-    <Compile Include="LineChart.cs" />
+    <Compile Include="CartesianChartCore.cs" />
     <Compile Include="LineAlgorithm.cs" />
     <Compile Include="ModelsAndViews.cs" />
     <Compile Include="Motor.cs" />

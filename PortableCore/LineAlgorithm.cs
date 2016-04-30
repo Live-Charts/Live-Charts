@@ -10,32 +10,29 @@ namespace LiveChartsCore
         {
         }
 
-        public LineAlgorithm(ISeriesView view, SeriesConfiguration configuration) : base(view, configuration)
-        {
-        }
-
-        public double LineSmoothness { get; set; }
-
         public override void Update()
         {
             ChartPoint previous = null;
 
-            var points = Values.Points.ToList();
+            var points = View.Values.Points.ToList();
 
             var p0 = points.Count > 0
-                ? ChartFunctions.ToDrawMargin(points[0], ScalesXAt, ScalesYAt, Chart)
+                ? ChartFunctions.ToDrawMargin(points[0], View.ScalesXAt, View.ScalesYAt, Chart)
                 : new LvcPoint(0, 0);
             var p1 = points.Count > 0
-                ? ChartFunctions.ToDrawMargin(points[0], ScalesXAt, ScalesYAt, Chart)
+                ? ChartFunctions.ToDrawMargin(points[0], View.ScalesXAt, View.ScalesYAt, Chart)
                 : p0;
             var p2 = points.Count > 1
-                ? ChartFunctions.ToDrawMargin(points[1], ScalesXAt, ScalesYAt, Chart)
+                ? ChartFunctions.ToDrawMargin(points[1], View.ScalesXAt, View.ScalesYAt, Chart)
                 : p1;
             var p3 = points.Count > 2
-                ? ChartFunctions.ToDrawMargin(points[2], ScalesXAt, ScalesYAt, Chart)
+                ? ChartFunctions.ToDrawMargin(points[2], View.ScalesXAt, View.ScalesYAt, Chart)
                 : p2;
 
-            var smoothness = LineSmoothness;
+            var lineView = View as ILineSeriesView;
+            if (lineView == null) return;
+
+            var smoothness = lineView.LineSmoothness;
             smoothness = smoothness > 1 ? 1 : (smoothness < 0 ? 0 : smoothness);
 
             for (var index = 0; index < points.Count; index++)
@@ -93,7 +90,7 @@ namespace LiveChartsCore
                 p1 = new LvcPoint(p2);
                 p2 = new LvcPoint(p3);
                 p3 = points.Count > index + 3
-                    ? ChartFunctions.ToDrawMargin(points[index + 3], ScalesXAt, ScalesYAt, Chart)
+                    ? ChartFunctions.ToDrawMargin(points[index + 3], View.ScalesXAt, View.ScalesYAt, Chart)
                     : p2;
             }
         }

@@ -38,7 +38,7 @@ namespace LiveChartsDesktop
 {
     public abstract class Chart : UserControl, IChartView
     {
-        protected LiveChartsCore.ChartCore ChartCoreModel;
+        protected ChartCore ChartCoreModel;
        
         protected Chart()
         {
@@ -303,15 +303,9 @@ namespace LiveChartsDesktop
             return Colors[(int) (index - Colors.Count*Math.Truncate(index/(decimal) Colors.Count))];
         }
 
-        public void InitializeSeries(ISeriesView series)
+        public void InitializeSeriesView(ISeriesView series)
         {
-            var index = CurrentColorIndex++;
-            var defColor = Colors[(int)(index - Colors.Count * Math.Truncate(index / (decimal)Colors.Count))];
-            var seriesView = series as Series;
-            if (seriesView == null) return;
-
-            seriesView.Stroke = seriesView.Stroke ?? new SolidColorBrush(defColor);
-            seriesView.Fill = seriesView.Fill ?? new SolidColorBrush(defColor) {Opacity = 0.35};
+            
         }
 
         public void Update(bool restartAnimations = true)
