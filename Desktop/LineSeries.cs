@@ -216,25 +216,26 @@ namespace LiveChartsDesktop
             _pathFigure.Segments.Insert(0, _left);
 
             var fp = Values.Points.FirstOrDefault() ?? new ChartPoint();
+            var lp = Values.Points.Reverse().FirstOrDefault() ?? new ChartPoint();
 
             if (Model.Chart.View.DisableAnimations)
             {
-                _pathFigure.StartPoint = new Point(0, Model.Chart.DrawMargin.Height);
-                _right.Point = new Point(Model.Chart.DrawMargin.Width, Model.Chart.DrawMargin.Height);
-                _bottom.Point = new Point(0, Model.Chart.DrawMargin.Height);
+                _pathFigure.StartPoint = new Point(fp.ChartLocation.X, Model.Chart.DrawMargin.Height);
+                _right.Point = new Point(lp.ChartLocation.X, Model.Chart.DrawMargin.Height);
+                _bottom.Point = new Point(fp.ChartLocation.X, Model.Chart.DrawMargin.Height);   
                 _left.Point = ChartFunctions.ToDrawMargin(fp, ScalesXAt, ScalesYAt, Model.Chart).AsPoint();
             }
             else
             {
                 _pathFigure.BeginAnimation(PathFigure.StartPointProperty,
-                    new PointAnimation(new Point(0, Model.Chart.DrawMargin.Height), Model.Chart.View.AnimationsSpeed));
+                    new PointAnimation(new Point(fp.ChartLocation.X, Model.Chart.DrawMargin.Height), Model.Chart.View.AnimationsSpeed));
 
                 _right.BeginAnimation(LineSegment.PointProperty,
-                    new PointAnimation(new Point(Model.Chart.DrawMargin.Width, Model.Chart.DrawMargin.Height),
+                    new PointAnimation(new Point(lp.ChartLocation.X, Model.Chart.DrawMargin.Height),
                         Model.Chart.View.AnimationsSpeed));
 
                 _bottom.BeginAnimation(LineSegment.PointProperty,
-                    new PointAnimation(new Point(0, Model.Chart.DrawMargin.Height), Model.Chart.View.AnimationsSpeed));
+                    new PointAnimation(new Point(fp.ChartLocation.X, Model.Chart.DrawMargin.Height), Model.Chart.View.AnimationsSpeed));
 
                 _left.BeginAnimation(LineSegment.PointProperty,
                     new PointAnimation(ChartFunctions.ToDrawMargin(fp, ScalesXAt, ScalesYAt, Model.Chart).AsPoint(),

@@ -202,6 +202,11 @@ namespace LiveChartsCore
                 }
             }
 
+            DrawMargin.Top = curSize.Top;
+            DrawMargin.Left = curSize.Left;
+            DrawMargin.Width = curSize.Width;
+            DrawMargin.Height = curSize.Height;
+
             for (var index = 0; index < AxisY.Count; index++)
             {
                 var yi = AxisY[index];
@@ -219,11 +224,6 @@ namespace LiveChartsCore
                 xi.UpdateSeparators(AxisTags.X, this, index);
                 xi.View.SetTitleLeft(curSize.Left + curSize.Width*.5 - xi.View.GetLabelSize().Width*.5);
             }
-
-            DrawMargin.Top = curSize.Top;
-            DrawMargin.Left = curSize.Left;
-            DrawMargin.Width = curSize.Width;
-            DrawMargin.Height = curSize.Height;
         }
 
         public LvcRectangle PlaceLegend(LvcRectangle drawMargin)

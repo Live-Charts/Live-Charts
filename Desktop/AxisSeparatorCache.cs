@@ -248,7 +248,7 @@ namespace LiveChartsDesktop
                     break;
                 case SeparationState.Keep:
                     UnanimatedPlace(wpfChart, source, axisIndex, wpfAxis);
-                    MoveFromPreviousAx(wpfChart, source, axisIndex, wpfAxis);
+                    //MoveFromPreviousAx(wpfChart, source, axisIndex, wpfAxis);
                     if (Model.IsNew) FadeIn(wpfChart, wpfAxis);
                     break;
                 case SeparationState.InitialAdd:
