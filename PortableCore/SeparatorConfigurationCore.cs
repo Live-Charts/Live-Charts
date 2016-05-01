@@ -24,7 +24,13 @@ namespace LiveChartsCore
 {
     public class SeparatorConfigurationCore
     {
-        public ChartCore Chart { get; set; }
+        public SeparatorConfigurationCore(AxisCore axis)
+        {
+            Axis = axis;
+        }
+
+        public AxisCore Axis { get; set; }
+
         /// <summary>
         /// Gets or sets if separators are enabled (will be drawn)
         /// </summary>

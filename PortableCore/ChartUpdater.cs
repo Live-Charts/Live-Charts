@@ -44,8 +44,8 @@ namespace LiveChartsCore
             //2) map IAxisView to AxisCore, I feel this is better for performance
             //ToDo: Test both cases!
 
-            Chart.AxisX = Chart.View.MapXAxes();
-            Chart.AxisY = Chart.View.MapYAxes();
+            Chart.AxisX = Chart.View.MapXAxes(Chart);
+            Chart.AxisY = Chart.View.MapYAxes(Chart);
 
             foreach (var series in Chart.View.Series)
             {
@@ -65,6 +65,7 @@ namespace LiveChartsCore
             }
 #if DEBUG
             Debug.WriteLine("<<Chart UI Updated>>");
+            Chart.View.CountElements();
 #endif
         }
 

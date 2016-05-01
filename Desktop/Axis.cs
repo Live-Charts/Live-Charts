@@ -33,18 +33,18 @@ namespace LiveChartsDesktop
     {
         public Axis()
         {
-            Model = new LiveChartsCore.AxisCore(this);
             TitleBlock = new TextBlock();
             SetValue(SeparatorProperty, new Separator());
+            SetValue(ShowLabelsProperty, true);
         }
 
+        public AxisCore Model { get; set; }
         public TextBlock TitleBlock { get; set; }
         public double LabelsReference { get; set; }
         public double UnitWidth { get; set; }
         public Dictionary<double, AxisSeparatorElement> Cache { get; set; }
 
-        public AxisCore Model { get; set; }
-        public ISeparatorElementView RenderSeparator(SeparatorElementCore model)
+        public ISeparatorElementView RenderSeparator(SeparatorElementCore model, ChartCore chart)
         {
             var asc = new AxisSeparatorElement(model)
             {
@@ -54,11 +54,8 @@ namespace LiveChartsDesktop
 
             Panel.SetZIndex(asc.TextBlock, -1);
             Panel.SetZIndex(asc.Line, -1);
-            Model.Chart.View.AddToView(asc.TextBlock);
-            Model.Chart.View.AddToView(asc.Line);
-
-            Model.Chart.View.AddToDrawMargin(asc.TextBlock);
-            Model.Chart.View.AddToDrawMargin(asc.Line);
+            chart.View.AddToView(asc.TextBlock);
+            chart.View.AddToView(asc.Line);
 
             return asc;
         }
@@ -100,23 +97,6 @@ namespace LiveChartsDesktop
         public LvcSize GetLabelSize()
         {
             return new LvcSize(TitleBlock.DesiredSize.Width, TitleBlock.DesiredSize.Height);
-        }
-
-        public AxisCore AsCoreElement()
-        {
-            return new AxisCore(this)
-            {
-                ShowLabels = ShowLabels,
-                Chart = Model.Chart,
-                IsMerged = IsMerged,
-                Labels = Labels,
-                LabelFormatter = LabelFormatter,
-                MaxValue = MaxValue,
-                MinValue = MinValue,
-                Title = Title,
-                Position = Position,
-                Separator = Separator.AsCoreElement()
-            };
         }
 
         public static readonly DependencyProperty LabelsProperty = DependencyProperty.Register(
@@ -380,6 +360,24 @@ namespace LiveChartsDesktop
             return l;
         }
 
+        public AxisCore AsCoreElement(ChartCore chart)
+        {
+            if (Model == null) Model = new AxisCore(this);
+
+            Model.ShowLabels = ShowLabels;
+            Model.Chart = chart;
+            Model.IsMerged = IsMerged;
+            Model.Labels = Labels;
+            Model.LabelFormatter = LabelFormatter;
+            Model.MaxValue = MaxValue;
+            Model.MinValue = MinValue;
+            Model.Title = Title;
+            Model.Position = Position;
+            Model.Separator = Separator.AsCoreElement(Model);
+
+            return Model;
+        }
+
         private static PropertyChangedCallback UpdateChart(bool animate = false)
         {
             return (o, args) =>
@@ -387,7 +385,7 @@ namespace LiveChartsDesktop
                 var wpfAxis = o as Axis;
                 if (wpfAxis == null) return;
 
-                if (wpfAxis.Model.Chart != null)
+                if (wpfAxis.Model != null)
                     wpfAxis.Model.Chart.Updater.Run(animate);
             };
         }

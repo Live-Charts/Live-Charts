@@ -59,8 +59,12 @@ namespace LiveChartsCore
 
         LvcSize LoadLegend();
         TimeSpan? GetZoomingSpeed();
-        List<AxisCore> MapXAxes();
-        List<AxisCore> MapYAxes();
+        List<AxisCore> MapXAxes(ChartCore chart);
+        List<AxisCore> MapYAxes(ChartCore chart);
+
+#if DEBUG
+        void CountElements();
+#endif
     }
 
     public interface ISeriesView
@@ -88,14 +92,15 @@ namespace LiveChartsCore
         AxisCore Model { get; set; }
         double LabelsReference { get; set; }
         double UnitWidth { get; set; }
+        bool ShowLabels { get; set; }
         LvcSize UpdateTitle(ChartCore chart, double rotationAngle = 0);
         void SetTitleTop(double value);
         void SetTitleLeft(double value);
         double GetTitleLeft();
         double GetTileTop();
         LvcSize GetLabelSize();
-        AxisCore AsCoreElement();
-        ISeparatorElementView RenderSeparator(SeparatorElementCore model);
+        AxisCore AsCoreElement(ChartCore chart);
+        ISeparatorElementView RenderSeparator(SeparatorElementCore model, ChartCore chart);
     }
 
     public interface ISeparatorView
@@ -106,7 +111,7 @@ namespace LiveChartsCore
         /// </summary>
         double? Step { get; set; }
 
-        SeparatorConfigurationCore AsCoreElement();
+        SeparatorConfigurationCore AsCoreElement(AxisCore axis);
     }
 
     public interface ISeparatorElementView

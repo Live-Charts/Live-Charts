@@ -28,6 +28,13 @@ namespace LiveChartsDesktop
 {
     public class Separator : FrameworkElement, ISeparatorView
     {
+        public Separator()
+        {
+            SetValue(IsEnabledProperty, true);
+            SetValue(StrokeProperty, new SolidColorBrush(Color.FromRgb(200, 200, 200)));
+            SetCurrentValue(StrokeThicknessProperty, 1d);
+        }
+
         public ChartCore Chart { get; set; }
 
         public static readonly new DependencyProperty IsEnabledProperty = DependencyProperty.Register(
@@ -52,14 +59,14 @@ namespace LiveChartsDesktop
         }
 
         public static readonly DependencyProperty StrokeThicknessProperty = DependencyProperty.Register(
-            "StrokeThickness", typeof (int), typeof (Separator), 
-            new PropertyMetadata(default(int), UpdateChart()));
+            "StrokeThickness", typeof (double), typeof (Separator), 
+            new PropertyMetadata(default(double), UpdateChart()));
         /// <summary>
         /// Gets or sets separatos thickness
         /// </summary>
-        public int StrokeThickness
+        public double StrokeThickness
         {
-            get { return (int) GetValue(StrokeThicknessProperty); }
+            get { return (double) GetValue(StrokeThicknessProperty); }
             set { SetValue(StrokeThicknessProperty, value); }
         }
 
@@ -87,11 +94,10 @@ namespace LiveChartsDesktop
             set { SetValue(StepProperty, value); }
         }
 
-        public SeparatorConfigurationCore AsCoreElement()
+        public SeparatorConfigurationCore AsCoreElement(AxisCore axis)
         {
-            return new SeparatorConfigurationCore
+            return new SeparatorConfigurationCore(axis)
             {
-                Chart = Chart,
                 IsEnabled = IsEnabled,
                 Step = Step
             };

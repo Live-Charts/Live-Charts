@@ -458,14 +458,14 @@ namespace LiveChartsDesktop
             return DisableAnimations ? null : (TimeSpan?) AnimationsSpeed;
         }
 
-        public List<AxisCore> MapXAxes()
+        public List<AxisCore> MapXAxes(ChartCore chart)
         {
-            return AxisX.Select(x => x.AsCoreElement()).ToList();
+            return AxisX.Select(x => x.AsCoreElement(Model)).ToList();
         }
 
-        public List<AxisCore> MapYAxes()
+        public List<AxisCore> MapYAxes(ChartCore chart)
         {
-            return AxisY.Select(x => x.AsCoreElement()).ToList();
+            return AxisY.Select(x => x.AsCoreElement(Model)).ToList();
         }
 
         #region Event Handlers
@@ -502,5 +502,14 @@ namespace LiveChartsDesktop
             set { SetValue(HoverableProperty, value); }
         }
         #endregion
+
+#if DEBUG
+        public void CountElements()
+        {
+            //Trying to avoid memory leaks
+            Debug.WriteLine("Canvas Elements -> " + Canvas.Children.Count);
+            Debug.WriteLine("Draw Margin Elements ->" + DrawMargin.Children.Count);
+        }
+#endif
     }
 }

@@ -48,7 +48,7 @@
     <Compile Include="IDataOptimization.cs" />
     <Compile Include="CartesianChartCore.cs" />
     <Compile Include="LineAlgorithm.cs" />
-    <Compile Include="ModelsAndViews.cs" />
+    <Compile Include="Views.cs" />
     <Compile Include="Motor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SeparatorConfigurationCore.cs" />
