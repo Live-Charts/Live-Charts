@@ -60,6 +60,9 @@ namespace LiveChartsDesktop
             CursorX = new ChartCursor(this, AxisTags.X);
             CursorY = new ChartCursor(this, AxisTags.Y);
 
+            SetValue(AxisXProperty, new List<Axis>());
+            SetValue(AxisYProperty, new List<Axis>());
+
             if (RandomizeStartingColor) 
                 CurrentColorIndex = Randomizer.Next(0, Colors.Count - 1);
 
@@ -460,11 +463,13 @@ namespace LiveChartsDesktop
 
         public List<AxisCore> MapXAxes(ChartCore chart)
         {
+            if (AxisX.Count == 0) AxisX.Add(DefaultAxes.DefaultAxis);
             return AxisX.Select(x => x.AsCoreElement(Model)).ToList();
         }
 
         public List<AxisCore> MapYAxes(ChartCore chart)
         {
+            if (AxisY.Count == 0) AxisY.Add(DefaultAxes.DefaultAxis);
             return AxisY.Select(x => x.AsCoreElement(Model)).ToList();
         }
 
@@ -487,6 +492,14 @@ namespace LiveChartsDesktop
             {
                 var wpfChart = o as Chart;
                 if (wpfChart == null) return;
+                if (wpfChart.AxisY != null && wpfChart.AxisY.Count > 1)
+                {
+                    var a = 1;
+                }
+                if (wpfChart.AxisX != null && wpfChart.AxisX.Count > 1)
+                {
+                    var a = 1;
+                }
                 if (wpfChart.Model != null) wpfChart.Model.Updater.Run(animate);
             };
         }

@@ -36,9 +36,6 @@ namespace LiveChartsDesktop
                     .Setup(new SeriesConfiguration<double>()
                         .Y(v => v)
                         .X((v, i) => i)));
-
-            SetValue(AxisXProperty, new List<Axis> {DefaultAxes.DefaultAxis});
-            SetValue(AxisYProperty, new List<Axis> {DefaultAxes.DefaultAxis});
         }
     }
 }

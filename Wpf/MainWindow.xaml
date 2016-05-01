@@ -9,10 +9,6 @@
         Title="MainWindow" Height="400" Width="525"
         d:DataContext="{d:DesignInstance local:MainWindow}">
     <Grid>
-        <lcd:CartesianChart Margin="10" Series="{Binding SeriesCollection, PresentationTraceSources.TraceLevel=High}" >
-            <lcd:CartesianChart.AxisY>
-                <lcd:Axis Title="Hello World"></lcd:Axis>
-            </lcd:CartesianChart.AxisY>
-        </lcd:CartesianChart>
+        <lcd:CartesianChart Margin="10" Series="{Binding SeriesCollection, PresentationTraceSources.TraceLevel=High}" />
     </Grid>
 </Window>
