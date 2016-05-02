@@ -3,11 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PortableCore", "PortableCore\PortableCore.csproj", "{D447642C-A85F-4AB0-96D9-C66CFF91AADA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "Core\Core.csproj", "{D447642C-A85F-4AB0-96D9-C66CFF91AADA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Desktop", "Desktop\Desktop.csproj", "{4D253423-AE05-47F6-A59D-9162EC0BB1F2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfView", "WpfView\WpfView.csproj", "{4D253423-AE05-47F6-A59D-9162EC0BB1F2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wpf", "Wpf\Wpf.csproj", "{537FF5D4-19FB-415E-B3D2-B83CB93E968B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wpf", "Examples\Wpf\Wpf.csproj", "{537FF5D4-19FB-415E-B3D2-B83CB93E968B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{97443C01-BC03-4580-A3E5-0AD6260BF716}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -212,5 +214,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{537FF5D4-19FB-415E-B3D2-B83CB93E968B} = {97443C01-BC03-4580-A3E5-0AD6260BF716}
 	EndGlobalSection
 EndGlobal

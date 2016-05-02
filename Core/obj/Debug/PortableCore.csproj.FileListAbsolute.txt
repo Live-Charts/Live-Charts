@@ -1,0 +1,5 @@
+C:\Users\btord\Source\Repos\Live-Charts\PortableCore\bin\Debug\LiveChartsCore.dll
+C:\Users\btord\Source\Repos\Live-Charts\PortableCore\bin\Debug\LiveChartsCore.pdb
+C:\Users\btord\Source\Repos\Live-Charts\PortableCore\obj\Debug\LiveChartsCore.dll
+C:\Users\btord\Source\Repos\Live-Charts\PortableCore\obj\Debug\LiveChartsCore.pdb
+C:\Users\btord\Source\Repos\Live-Charts\PortableCore\obj\Debug\PortableCore.csprojResolveAssemblyReference.cache
