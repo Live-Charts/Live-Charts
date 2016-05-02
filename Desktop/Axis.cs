@@ -33,9 +33,12 @@ namespace LiveChartsDesktop
     {
         public Axis()
         {
-            TitleBlock = new TextBlock();
+            TitleBlock = BindATextBlock();
             SetValue(SeparatorProperty, new Separator());
             SetValue(ShowLabelsProperty, true);
+
+            TitleBlock.SetBinding(TextBlock.TextProperty,
+                new Binding {Path = new PropertyPath(TitleProperty), Source = this});
         }
 
         public AxisCore Model { get; set; }
@@ -64,10 +67,12 @@ namespace LiveChartsDesktop
         {
             if (TitleBlock.Parent == null)
             {
-                if (Math.Abs(rotationAngle) < 0.1)
+                if (Math.Abs(rotationAngle) > 1)
                     TitleBlock.RenderTransform = new RotateTransform(rotationAngle);
+
                 chart.View.AddToView(TitleBlock);
             }
+
             TitleBlock.UpdateLayout();
             return string.IsNullOrWhiteSpace(Title)
                 ? new LvcSize()
@@ -96,7 +101,7 @@ namespace LiveChartsDesktop
 
         public LvcSize GetLabelSize()
         {
-            return new LvcSize(TitleBlock.DesiredSize.Width, TitleBlock.DesiredSize.Height);
+            return new LvcSize(TitleBlock.RenderSize.Width, TitleBlock.RenderSize.Height);
         }
 
         public static readonly DependencyProperty LabelsProperty = DependencyProperty.Register(

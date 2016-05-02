@@ -469,7 +469,7 @@ namespace LiveChartsDesktop
 
         public List<AxisCore> MapYAxes(ChartCore chart)
         {
-            if (AxisY.Count == 0) AxisY.Add(DefaultAxes.DefaultAxis);
+            if (AxisY.Count == 0) AxisY.Add(DefaultAxes.CleanAxis);
             return AxisY.Select(x => x.AsCoreElement(Model)).ToList();
         }
 
@@ -492,14 +492,6 @@ namespace LiveChartsDesktop
             {
                 var wpfChart = o as Chart;
                 if (wpfChart == null) return;
-                if (wpfChart.AxisY != null && wpfChart.AxisY.Count > 1)
-                {
-                    var a = 1;
-                }
-                if (wpfChart.AxisX != null && wpfChart.AxisX.Count > 1)
-                {
-                    var a = 1;
-                }
                 if (wpfChart.Model != null) wpfChart.Model.Updater.Run(animate);
             };
         }

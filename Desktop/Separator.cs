@@ -31,7 +31,7 @@ namespace LiveChartsDesktop
         public Separator()
         {
             SetValue(IsEnabledProperty, true);
-            SetValue(StrokeProperty, new SolidColorBrush(Color.FromRgb(200, 200, 200)));
+            SetValue(StrokeProperty, new SolidColorBrush(Color.FromRgb(240, 240, 240)));
             SetCurrentValue(StrokeThicknessProperty, 1d);
         }
 
