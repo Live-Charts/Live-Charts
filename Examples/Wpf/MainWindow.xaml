@@ -9,7 +9,7 @@
         Title="MainWindow" Height="400" Width="525"
         d:DataContext="{d:DesignInstance local:MainWindow}">
     <Grid>
-        <lc:CartesianChart Margin="10" Series="{Binding SeriesCollection}" >
+        <lc:CartesianChart Margin="10" Series="{Binding SeriesCollection}" DataClick="Chart_OnDataClick" >
             <lc:CartesianChart.AxisY>
                 <lc:Axis Title="Hello World"/>
             </lc:CartesianChart.AxisY>

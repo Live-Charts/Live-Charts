@@ -22,7 +22,7 @@
 
 using System.Diagnostics;
 
-namespace LiveChartsCore
+namespace LiveCharts
 {
     public class ChartUpdater : IChartUpdater
     {

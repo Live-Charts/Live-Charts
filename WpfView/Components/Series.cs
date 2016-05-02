@@ -25,9 +25,8 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media;
-using LiveChartsCore;
 
-namespace LiveChartsDesktop
+namespace LiveCharts.Wpf.Components
 {
     public abstract class Series : FrameworkElement, ISeriesView
     {

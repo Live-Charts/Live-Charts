@@ -25,7 +25,7 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
 
-namespace LiveChartsCore
+namespace LiveCharts
 {
     public interface IChartValues : IList, INotifyCollectionChanged, INotifyPropertyChanged
     {

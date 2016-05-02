@@ -22,7 +22,7 @@
 
 using System;
 
-namespace LiveChartsCore
+namespace LiveCharts
 {
     public class CartesianChartCore : ChartCore
     {

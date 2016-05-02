@@ -22,9 +22,8 @@
 
 using System.Windows;
 using System.Windows.Media;
-using LiveChartsCore;
 
-namespace LiveChartsDesktop
+namespace LiveCharts.Wpf
 {
     public class Separator : FrameworkElement, ISeparatorView
     {

@@ -20,15 +20,14 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
-using LiveChartsCore;
+using LiveCharts.Wpf.Components;
 
-namespace LiveChartsDesktop
+namespace LiveCharts.Wpf.Points
 {
     public class HorizontalBezierView : PointView, IBezierData
     {
@@ -123,26 +122,4 @@ namespace LiveChartsDesktop
             }
         }
     }
-
-    public class PointView : IChartPointView
-    {
-        public Shape HoverShape { get; set; }
-        public TextBlock DataLabel { get; set; }
-        public bool IsNew { get; set; }
-        public LvcPoint Location { get; set; }
-
-        public virtual void Locate(object previous, object current, int index, ChartCore chart)
-        {
-            throw new NotImplementedException();
-        }
-    }
-
-    internal static class DesktopExtentions
-    {
-        public static Point AsPoint(this LvcPoint point)
-        {
-            return new Point(point.X, point.Y);
-        }
-    }
-
 }

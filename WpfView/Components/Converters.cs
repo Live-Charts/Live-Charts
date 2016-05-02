@@ -27,7 +27,7 @@ using System.Globalization;
 using System.Linq;
 using System.Windows.Data;
 
-namespace LiveChartsDesktop
+namespace LiveCharts.Wpf.Components
 {
     public class TimespanMillisecondsConverter : TypeConverter
     {
@@ -56,14 +56,14 @@ namespace LiveChartsDesktop
         {
             var series = value as IEnumerable<Series>;
             if (series != null)
-                return series.Select(x => new SeriesStandin
+                return series.Select(x => new SeriesViewModel
                 {
 
                 });
 
             var serie = value as Series;
             if (serie != null)
-                return new SeriesStandin
+                return new SeriesViewModel
                 {
                     Title = serie.Title,
                     Stroke = serie.Stroke,

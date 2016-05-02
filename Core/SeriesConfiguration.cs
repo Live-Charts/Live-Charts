@@ -20,7 +20,7 @@
 
 using System;
 
-namespace LiveChartsCore
+namespace LiveCharts
 {
     public class SeriesConfiguration<T> : SeriesConfiguration
     {

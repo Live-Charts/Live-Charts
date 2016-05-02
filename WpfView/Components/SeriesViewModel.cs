@@ -1,6 +1,6 @@
 //The MIT License(MIT)
 
-//copyright(c) 2016 Alberto Rodriguez
+//copyright(c) 2016 Greg Dennis
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -20,24 +20,16 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-namespace LiveCharts
+using System.Windows.Media;
+
+namespace LiveCharts.Wpf.Components
 {
-    public class SeparatorConfigurationCore
-    {
-        public SeparatorConfigurationCore(AxisCore axis)
-        {
-            Axis = axis;
-        }
+	public class SeriesViewModel
+	{
+	    public string Title { get; set; }
 
-        public AxisCore Axis { get; set; }
+	    public Brush Stroke { get; set; }
 
-        /// <summary>
-        /// Gets or sets if separators are enabled (will be drawn)
-        /// </summary>
-        public bool IsEnabled { get; set; }
-        /// <summary>
-        /// Gets or sets sepator step, this means the value between each line, use null for auto.
-        /// </summary>
-        public double? Step { get; set; }
-    }
+	    public Brush Fill { get; set; }
+	}
 }

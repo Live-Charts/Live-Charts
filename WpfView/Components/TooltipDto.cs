@@ -1,6 +1,6 @@
-//The MIT License(MIT)
+﻿//The MIT License(MIT)
 
-//copyright(c) 2016 Greg Dennis
+//copyright(c) 2016 Alberto Rodriguez
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -22,14 +22,16 @@
 
 using System.Windows.Media;
 
-namespace LiveChartsDesktop
+namespace LiveCharts.Wpf.Components
 {
-	public class SeriesStandin
-	{
-	    public string Title { get; set; }
+    public class TooltipDto
+    {
+        public Series Series { get; set; }
 
-	    public Brush Stroke { get; set; }
-
-	    public Brush Fill { get; set; }
-	}
+        public int Index { get; set; }
+        public Brush Stroke { get; set; }
+        public Brush Fill { get; set; }
+        public ChartPoint Point { get; set; }
+        public string Value { get; set; }
+    }
 }

@@ -23,7 +23,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace LiveChartsCore
+namespace LiveCharts
 {
     public interface IChartView
     {

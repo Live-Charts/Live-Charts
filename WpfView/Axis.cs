@@ -24,11 +24,11 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media;
-using System.Windows.Media.Animation;
 using System.Windows.Shapes;
-using LiveChartsCore;
+using LiveCharts.Wpf.Components;
+using Separator = LiveCharts.Wpf.Separator;
 
-namespace LiveChartsDesktop
+namespace LiveCharts.Wpf
 {
     public class Axis : FrameworkElement, IAxisView
     {
@@ -357,11 +357,11 @@ namespace LiveChartsDesktop
             if (s == null) return l;
 
             l.SetBinding(Shape.StrokeProperty,
-                new Binding {Path = new PropertyPath(LiveChartsDesktop.Separator.StrokeProperty), Source = s});
+                new Binding {Path = new PropertyPath(Wpf.Separator.StrokeProperty), Source = s});
             l.SetBinding(Shape.StrokeDashArrayProperty,
-                new Binding {Path = new PropertyPath(LiveChartsDesktop.Separator.StrokeDashArrayProperty), Source = s});
+                new Binding {Path = new PropertyPath(Wpf.Separator.StrokeDashArrayProperty), Source = s});
             l.SetBinding(Shape.StrokeThicknessProperty,
-                new Binding {Path = new PropertyPath(LiveChartsDesktop.Separator.StrokeThicknessProperty), Source = s});
+                new Binding {Path = new PropertyPath(Wpf.Separator.StrokeThicknessProperty), Source = s});
 
             return l;
         }

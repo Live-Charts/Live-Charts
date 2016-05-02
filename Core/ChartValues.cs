@@ -27,7 +27,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 
-namespace LiveChartsCore
+namespace LiveCharts
 {
     /// <summary>
     /// Creates a collection of values ready to plot

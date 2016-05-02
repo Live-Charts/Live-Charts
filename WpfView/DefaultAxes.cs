@@ -22,7 +22,7 @@
 
 using System.Windows.Media;
 
-namespace LiveChartsDesktop
+namespace LiveCharts.Wpf
 {
     public static class DefaultAxes
     {
@@ -44,7 +44,6 @@ namespace LiveChartsDesktop
         {
             get
             {
-                var a = new Separator();
                 return new Axis
                 {
                     IsEnabled = false,

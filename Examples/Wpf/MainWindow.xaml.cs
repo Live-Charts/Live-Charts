@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Media;
-using LiveChartsCore;
-using LiveChartsDesktop;
+using LiveCharts;
+using LiveCharts.Wpf;
 
 namespace Wpf
 {
@@ -24,5 +24,10 @@ namespace Wpf
         }
 
         public SeriesCollection SeriesCollection { get; set; }
+
+        private void Chart_OnDataClick(object sender, ChartPoint chartPoint)
+        {
+            MessageBox.Show("Hello!");
+        }
     }
 }

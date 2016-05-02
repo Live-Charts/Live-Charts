@@ -23,8 +23,9 @@
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
+using LiveCharts.Wpf.Components;
 
-namespace LiveChartsDesktop
+namespace LiveCharts.Wpf
 {
     /// <summary>
     /// Interaction logic for SeriesViewer.xaml
@@ -38,10 +39,10 @@ namespace LiveChartsDesktop
         }
 
         public static readonly DependencyProperty SeriesProperty = DependencyProperty.Register(
-            "Series", typeof (IEnumerable<SeriesStandin>), typeof (ChartLegend), new PropertyMetadata(null));
-        public IEnumerable<SeriesStandin> Series
+            "Series", typeof (IEnumerable<SeriesViewModel>), typeof (ChartLegend), new PropertyMetadata(null));
+        public IEnumerable<SeriesViewModel> Series
         {
-            get { return (IEnumerable<SeriesStandin>) GetValue(SeriesProperty); }
+            get { return (IEnumerable<SeriesViewModel>) GetValue(SeriesProperty); }
             set { SetValue(SeriesProperty, value); }
         }
 

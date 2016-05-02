@@ -22,10 +22,9 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 
-namespace LiveChartsCore
+namespace LiveCharts
 {
     public abstract class ChartCore
     {
@@ -264,32 +263,6 @@ namespace LiveChartsCore
             }
 
             return drawMargin;
-        }
-
-        protected virtual void OnDataMouseEnter()
-        {
-            Debug.WriteLine("Data mouse entered!");
-        }
-
-        protected virtual void OnDataMouseLeave()
-        {
-            Debug.WriteLine("Data Mouse Leaved! bye bye");
-        }
-
-        protected virtual void OnDataMouseDown()
-        {
-            Debug.WriteLine("Data Mouse Down!");
-        }
-
-        protected virtual LvcPoint GetTooltipPosition()
-        {
-            return new LvcPoint();
-        }
-        
-
-        public void Update(bool restartAnimations = true)
-        {
-            Updater.Run(restartAnimations);
         }
 
         public void ZoomIn(LvcPoint pivot)

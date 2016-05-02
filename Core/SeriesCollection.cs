@@ -23,7 +23,7 @@
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 
-namespace LiveChartsCore
+namespace LiveCharts
 {
     public class SeriesCollection : ObservableCollection<ISeriesView>
     {

@@ -28,9 +28,10 @@ using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
-using LiveChartsCore;
+using LiveCharts.Wpf.Components;
+using LiveCharts.Wpf.Points;
 
-namespace LiveChartsDesktop
+namespace LiveCharts.Wpf
 {
     public class LineSeries : Series, ILineSeriesView
     {
@@ -54,14 +55,14 @@ namespace LiveChartsDesktop
             InitializeDefuaults();
         }
 
-        public static readonly DependencyProperty PointRadiusProperty = DependencyProperty.Register(
-            "PointRadius", typeof (double), typeof (LineSeries), 
+        public static readonly DependencyProperty PointDiameterProperty = DependencyProperty.Register(
+            "PointDiameter", typeof (double), typeof (LineSeries), 
             new PropertyMetadata(default(double), UpdateChart()));
 
-        public double PointRadius
+        public double PointDiameter
         {
-            get { return (double) GetValue(PointRadiusProperty); }
-            set { SetValue(PointRadiusProperty, value); }
+            get { return (double) GetValue(PointDiameterProperty); }
+            set { SetValue(PointDiameterProperty, value); }
         }
 
         public static readonly DependencyProperty PointForeroundProperty = DependencyProperty.Register(
@@ -123,7 +124,7 @@ namespace LiveChartsDesktop
 
         public override IChartPointView RenderPoint(IChartPointView view)
         {
-            var mhr = PointRadius < 5 ? 5 : PointRadius;
+            var mhr = PointDiameter < 5 ? 5 : PointDiameter;
 
             var pbv = (view as HorizontalBezierView);
 
@@ -165,17 +166,21 @@ namespace LiveChartsDesktop
                 Model.Chart.View.AddToDrawMargin(pbv.HoverShape);
             }
 
-            if (Math.Abs(PointRadius) > 0.1 && pbv.Ellipse == null)
+            if (Math.Abs(PointDiameter) > 0.1 && pbv.Ellipse == null)
             {
-                pbv.Ellipse = new Ellipse
-                {
-                    Width = PointRadius*2,
-                    Height = PointRadius*2,
-                    Stroke = PointForeround,
-                    StrokeThickness = 1
-                };
+                pbv.Ellipse = new Ellipse();
+
                 BindingOperations.SetBinding(pbv.Ellipse, Shape.FillProperty,
+                    new Binding {Path = new PropertyPath(PointForeroundProperty), Source = this});
+                BindingOperations.SetBinding(pbv.Ellipse, Shape.StrokeProperty,
                     new Binding {Path = new PropertyPath(StrokeProperty), Source = this});
+                BindingOperations.SetBinding(pbv.Ellipse, Shape.StrokeThicknessProperty,
+                    new Binding { Path = new PropertyPath(StrokeThicknessProperty), Source = this });
+                BindingOperations.SetBinding(pbv.Ellipse, WidthProperty,
+                    new Binding {Path = new PropertyPath(PointDiameterProperty), Source = this});
+                BindingOperations.SetBinding(pbv.Ellipse, HeightProperty,
+                    new Binding {Path = new PropertyPath(PointDiameterProperty), Source = this});
+
                 BindingOperations.SetBinding(pbv.Ellipse, VisibilityProperty,
                     new Binding {Path = new PropertyPath(VisibilityProperty), Source = this});
 
@@ -246,8 +251,8 @@ namespace LiveChartsDesktop
         private void InitializeDefuaults()
         {
             SetValue(LineSmoothnessProperty, .7d);
-            SetValue(PointRadiusProperty, 3.5d);
-            SetValue(PointForeroundProperty, Brushes.WhiteSmoke);
+            SetValue(PointDiameterProperty, 8d);
+            SetValue(PointForeroundProperty, Brushes.White);
             SetValue(StrokeThicknessProperty, 2d);
         }
     }

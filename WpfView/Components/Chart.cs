@@ -31,10 +31,10 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Threading;
-using LiveChartsCore;
+using LiveCharts.Wpf.Points;
 using Size = System.Windows.Size;
 
-namespace LiveChartsDesktop
+namespace LiveCharts.Wpf.Components
 {
     public abstract class Chart : UserControl, IChartView
     {
@@ -43,11 +43,9 @@ namespace LiveChartsDesktop
         protected Chart()
         {
             Canvas = new Canvas();
-            //Canvas.Background = new SolidColorBrush(System.Windows.Media.Colors.CadetBlue);
             Content = Canvas;
 
             DrawMargin = new Canvas {ClipToBounds = true};
-            //DrawMargin.Background = new SolidColorBrush(System.Windows.Media.Colors.White) {Opacity = 0.3};
             Canvas.Children.Add(DrawMargin);
 
             SetValue(MinHeightProperty, 125d);
@@ -306,16 +304,6 @@ namespace LiveChartsDesktop
             return Colors[(int) (index - Colors.Count*Math.Truncate(index/(decimal) Colors.Count))];
         }
 
-        public void InitializeSeriesView(ISeriesView series)
-        {
-            
-        }
-
-        public void Update(bool restartAnimations = true)
-        {
-            ChartCoreModel.Update(restartAnimations);
-        }
-
         public void SetDrawMarginTop(double value)
         {
             Canvas.SetTop(DrawMargin, value);
@@ -507,6 +495,7 @@ namespace LiveChartsDesktop
             set { SetValue(HoverableProperty, value); }
         }
         #endregion
+
 
 #if DEBUG
         public void CountElements()

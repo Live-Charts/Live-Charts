@@ -25,9 +25,8 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
-using LiveChartsCore;
 
-namespace LiveChartsDesktop
+namespace LiveCharts.Wpf.Components
 {
     public class AxisSeparatorElement : ISeparatorElementView
     {
@@ -40,7 +39,11 @@ namespace LiveChartsDesktop
 
         internal TextBlock TextBlock { get; set; }
         internal Line Line { get; set; }
-        public SeparatorElementCore Model { get { return _model; } }
+
+        public SeparatorElementCore Model
+        {
+            get { return _model; }
+        }
 
         private void UnanimatedPlace(IChartView chart, AxisTags direction, int axisIndex, Axis axis)
         {

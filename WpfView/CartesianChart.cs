@@ -20,10 +20,9 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-using System.Collections.Generic;
-using LiveChartsCore;
+using LiveCharts.Wpf.Components;
 
-namespace LiveChartsDesktop
+namespace LiveCharts.Wpf
 {
     public class CartesianChart : Chart
     {

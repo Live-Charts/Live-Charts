@@ -21,8 +21,9 @@
 //SOFTWARE.
 
 using System.Windows;
+using LiveCharts.Wpf.Components;
 
-namespace LiveChartsDesktop
+namespace LiveCharts.Wpf
 {
     /// <summary>
     /// Interaction logic for BaseToolTip.xaml
@@ -44,13 +45,13 @@ namespace LiveChartsDesktop
             set { SetValue(HeaderProperty, value); }
         }
 
-        public static readonly DependencyProperty DataProperty =
-            DependencyProperty.Register("Data", typeof(IndexedTooltipData[]), typeof(ChartTooltip), new PropertyMetadata(null));
+        public static readonly DependencyProperty DtoProperty =
+            DependencyProperty.Register("Dto", typeof(TooltipDto[]), typeof(ChartTooltip), new PropertyMetadata(null));
 
-        public IndexedTooltipData[] Data
+        public TooltipDto[] Dto
         {
-            get { return (IndexedTooltipData[])GetValue(DataProperty); }
-            set { SetValue(DataProperty, value); }
+            get { return (TooltipDto[])GetValue(DtoProperty); }
+            set { SetValue(DtoProperty, value); }
         }
     }
 }

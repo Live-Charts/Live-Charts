@@ -7,8 +7,8 @@
     <ProjectGuid>{4D253423-AE05-47F6-A59D-9162EC0BB1F2}</ProjectGuid>
     <OutputType>library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>LiveChartsDesktop</RootNamespace>
-    <AssemblyName>Desktop</AssemblyName>
+    <RootNamespace>LiveCharts.Wpf</RootNamespace>
+    <AssemblyName>LiveCharts.Wpf</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -50,21 +50,23 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Axis.cs" />
-    <Compile Include="AxisSeparatorCache.cs" />
-    <Compile Include="Chart.cs" />
+    <Compile Include="Components\AxisSeparatorCache.cs" />
+    <Compile Include="Components\Chart.cs" />
     <Compile Include="ChartCursor.cs" />
     <Compile Include="ChartLegend.xaml.cs">
       <DependentUpon>ChartLegend.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ChartPointBezier.cs" />
-    <Compile Include="Converters.cs" />
+    <Compile Include="Points\ChartPointBezier.cs" />
+    <Compile Include="Components\Converters.cs" />
     <Compile Include="DefaultAxes.cs" />
-    <Compile Include="IndexedTooltipData.cs" />
+    <Compile Include="Components\TooltipDto.cs" />
     <Compile Include="ChartTooltip.xaml.cs">
       <DependentUpon>ChartTooltip.xaml</DependentUpon>
     </Compile>
     <Compile Include="CartesianChart.cs" />
     <Compile Include="LineSeries.cs" />
+    <Compile Include="Components\DesktopExtentions.cs" />
+    <Compile Include="Points\PointView.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -79,8 +81,8 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="Separator.cs" />
-    <Compile Include="Series.cs" />
-    <Compile Include="SeriesStandin.cs" />
+    <Compile Include="Components\Series.cs" />
+    <Compile Include="Components\SeriesViewModel.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -107,6 +109,7 @@
       <Name>Core</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
