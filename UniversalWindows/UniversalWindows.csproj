@@ -111,9 +111,9 @@
     <EmbeddedResource Include="Properties\UniversalWindows.rd.xml" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\PortableCore\PortableCore.csproj">
+    <ProjectReference Include="..\PortableCore\Core.csproj">
       <Project>{d447642c-a85f-4ab0-96d9-c66cff91aada}</Project>
-      <Name>PortableCore</Name>
+      <Name>Core</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">

@@ -191,12 +191,6 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\LiveChartsCore\LiveChartsCore.csproj">
-      <Project>{ef235236-364d-4df8-a222-1e74ca0cbad9}</Project>
-      <Name>LiveChartsCore</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="imagefill.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
