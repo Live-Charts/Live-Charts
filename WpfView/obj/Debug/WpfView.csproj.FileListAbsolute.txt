@@ -1,0 +1,17 @@
+C:\Users\btord\Source\Repos\Live-Charts\WpfView\bin\Debug\Desktop.dll
+C:\Users\btord\Source\Repos\Live-Charts\WpfView\bin\Debug\Desktop.pdb
+C:\Users\btord\Source\Repos\Live-Charts\WpfView\bin\Debug\LiveChartsCore.dll
+C:\Users\btord\Source\Repos\Live-Charts\WpfView\bin\Debug\LiveChartsCore.pdb
+C:\Users\btord\Source\Repos\Live-Charts\WpfView\obj\Debug\WpfView.csprojResolveAssemblyReference.cache
+C:\Users\btord\Source\Repos\Live-Charts\WpfView\obj\Debug\ChartLegend.g.cs
+C:\Users\btord\Source\Repos\Live-Charts\WpfView\obj\Debug\ChartTooltip.g.cs
+C:\Users\btord\Source\Repos\Live-Charts\WpfView\obj\Debug\GeneratedInternalTypeHelper.g.cs
+C:\Users\btord\Source\Repos\Live-Charts\WpfView\obj\Debug\Desktop_MarkupCompile.cache
+C:\Users\btord\Source\Repos\Live-Charts\WpfView\obj\Debug\Desktop_MarkupCompile.lref
+C:\Users\btord\Source\Repos\Live-Charts\WpfView\obj\Debug\ChartLegend.baml
+C:\Users\btord\Source\Repos\Live-Charts\WpfView\obj\Debug\ChartTooltip.baml
+C:\Users\btord\Source\Repos\Live-Charts\WpfView\obj\Debug\Desktop.g.resources
+C:\Users\btord\Source\Repos\Live-Charts\WpfView\obj\Debug\LiveChartsDesktop.Properties.Resources.resources
+C:\Users\btord\Source\Repos\Live-Charts\WpfView\obj\Debug\WpfView.csproj.GenerateResource.Cache
+C:\Users\btord\Source\Repos\Live-Charts\WpfView\obj\Debug\Desktop.dll
+C:\Users\btord\Source\Repos\Live-Charts\WpfView\obj\Debug\Desktop.pdb
