@@ -97,13 +97,13 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Desktop\LiveChartsWPF.csproj">
+    <ProjectReference Include="..\Desktop\Desktop.csproj">
       <Project>{4d253423-ae05-47f6-a59d-9162ec0bb1f2}</Project>
-      <Name>LiveChartsWPF</Name>
+      <Name>Desktop</Name>
     </ProjectReference>
-    <ProjectReference Include="..\PortableCore\Core.csproj">
+    <ProjectReference Include="..\PortableCore\PortableCore.csproj">
       <Project>{d447642c-a85f-4ab0-96d9-c66cff91aada}</Project>
-      <Name>Core</Name>
+      <Name>PortableCore</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

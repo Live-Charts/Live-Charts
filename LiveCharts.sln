@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "PortableCore\Core.csproj", "{D447642C-A85F-4AB0-96D9-C66CFF91AADA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PortableCore", "PortableCore\PortableCore.csproj", "{D447642C-A85F-4AB0-96D9-C66CFF91AADA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LiveChartsWPF", "Desktop\LiveChartsWPF.csproj", "{4D253423-AE05-47F6-A59D-9162EC0BB1F2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Desktop", "Desktop\Desktop.csproj", "{4D253423-AE05-47F6-A59D-9162EC0BB1F2}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{8C82CE49-F2CA-43AE-B8AB-3B2D0A146F0F}"
 EndProject
