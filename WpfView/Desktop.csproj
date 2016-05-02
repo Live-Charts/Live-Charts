@@ -102,9 +102,9 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Core\Core.csproj">
+    <ProjectReference Include="..\PortableCore\PortableCore.csproj">
       <Project>{d447642c-a85f-4ab0-96d9-c66cff91aada}</Project>
-      <Name>Core</Name>
+      <Name>PortableCore</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
