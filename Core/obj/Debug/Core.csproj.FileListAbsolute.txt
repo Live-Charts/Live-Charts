@@ -3,3 +3,8 @@ C:\Users\btord\Source\Repos\Live-Charts\PortableCore\bin\Debug\LiveChartsCore.pd
 C:\Users\btord\Source\Repos\Live-Charts\PortableCore\obj\Debug\Core.csprojResolveAssemblyReference.cache
 C:\Users\btord\Source\Repos\Live-Charts\PortableCore\obj\Debug\LiveChartsCore.dll
 C:\Users\btord\Source\Repos\Live-Charts\PortableCore\obj\Debug\LiveChartsCore.pdb
+C:\Users\btord\Source\Repos\Live-Charts\Core\bin\Debug\LiveChartsCore.dll
+C:\Users\btord\Source\Repos\Live-Charts\Core\bin\Debug\LiveChartsCore.pdb
+C:\Users\btord\Source\Repos\Live-Charts\Core\obj\Debug\Core.csprojResolveAssemblyReference.cache
+C:\Users\btord\Source\Repos\Live-Charts\Core\obj\Debug\LiveChartsCore.dll
+C:\Users\btord\Source\Repos\Live-Charts\Core\obj\Debug\LiveChartsCore.pdb
