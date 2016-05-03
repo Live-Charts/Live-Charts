@@ -247,9 +247,8 @@ namespace LiveCharts.Wpf.Components
             throw new NotImplementedException();
         }
 
-        public virtual void InitializeView()
+        public virtual void OnSeriesUpdateStart()
         {
-            throw new NotImplementedException();
         }
 
         public void Erase()
@@ -257,7 +256,7 @@ namespace LiveCharts.Wpf.Components
             throw new NotImplementedException();
         }
 
-        public virtual void CloseView()
+        public virtual void OnSeriesUpdatedFinish()
         {
         }
 

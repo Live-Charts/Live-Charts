@@ -77,9 +77,9 @@ namespace LiveCharts
 
         IChartPointView RenderPoint(IChartPointView view);
         void RemovePointView(object view);
-        void InitializeView();
+        void OnSeriesUpdateStart();
         void Erase();
-        void CloseView();
+        void OnSeriesUpdatedFinish();
     }
 
     public interface ILineSeriesView : ISeriesView
@@ -100,7 +100,7 @@ namespace LiveCharts
         double GetTileTop();
         LvcSize GetLabelSize();
         AxisCore AsCoreElement(ChartCore chart);
-        ISeparatorElementView RenderSeparator(SeparatorElementCore model, ChartCore chart);
+        void RenderSeparator(SeparatorElementCore model, ChartCore chart);
     }
 
     public interface ISeparatorView

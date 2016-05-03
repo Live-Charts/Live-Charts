@@ -427,7 +427,7 @@ namespace LiveCharts.Wpf.Components
             if (ChartLegend.Parent == null)
                 Canvas.Children.Add(ChartLegend);
 
-            ChartLegend.Series = Series.Cast<Series>().Select(x => new SeriesStandin
+            ChartLegend.Series = Series.Cast<Series>().Select(x => new SeriesViewModel
             {
                 Fill = x.Fill,
                 Stroke = x.Stroke,

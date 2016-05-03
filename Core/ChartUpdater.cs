@@ -50,7 +50,6 @@ namespace LiveCharts
             foreach (var series in Chart.View.Series)
             {
                 InitializeSeriesParams(series);
-                series.InitializeView();
                 series.Values.GetLimits();
             }
 
@@ -58,10 +57,11 @@ namespace LiveCharts
 
             foreach (var series in Chart.View.Series)
             {
+                series.OnSeriesUpdateStart();
                 series.Values.InitializeGarbageCollector();
                 series.Model.Update();
-                series.CloseView();
                 series.Values.CollectGarbage();
+                series.OnSeriesUpdatedFinish();
             }
 #if DEBUG
             Debug.WriteLine("<<Chart UI Updated>>");

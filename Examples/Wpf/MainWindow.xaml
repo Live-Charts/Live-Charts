@@ -4,18 +4,18 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Wpf"
-        xmlns:lc="clr-namespace:LiveChartsDesktop;assembly=Desktop"
+        xmlns:wpf="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
         mc:Ignorable="d"
         Title="MainWindow" Height="400" Width="525"
         d:DataContext="{d:DesignInstance local:MainWindow}">
     <Grid>
-        <lc:CartesianChart Margin="10" Series="{Binding SeriesCollection}" DataClick="Chart_OnDataClick" >
-            <lc:CartesianChart.AxisY>
-                <lc:Axis Title="Hello World"/>
-            </lc:CartesianChart.AxisY>
-            <lc:CartesianChart.AxisX>
-                <lc:Axis Title="X Axis Title"/>
-            </lc:CartesianChart.AxisX>
-        </lc:CartesianChart>
+        <wpf:CartesianChart Margin="10" Series="{Binding SeriesCollection}" DataClick="Chart_OnDataClick" >
+            <wpf:CartesianChart.AxisY>
+                <wpf:Axis Title="Hello World"/>
+            </wpf:CartesianChart.AxisY>
+            <wpf:CartesianChart.AxisX>
+                <wpf:Axis Title="X Axis Title"/>
+            </wpf:CartesianChart.AxisX>
+        </wpf:CartesianChart>
     </Grid>
 </Window>

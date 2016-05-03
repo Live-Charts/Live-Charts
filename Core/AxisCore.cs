@@ -153,13 +153,14 @@ namespace LiveCharts
                 if (!Cache.TryGetValue(key, out asc))
                 {
                     asc = new SeparatorElementCore {IsNew = true};
-                    asc.View = View.RenderSeparator(asc, Chart);
                     Cache[key] = asc;
                 }
                 else
                 {
                     asc.IsNew = false;
                 }
+
+                View.RenderSeparator(asc, Chart);
 
                 asc.Key = key;
                 asc.Value = i;

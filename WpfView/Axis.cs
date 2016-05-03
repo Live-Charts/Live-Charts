@@ -26,7 +26,6 @@ using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using LiveCharts.Wpf.Components;
-using Separator = LiveCharts.Wpf.Separator;
 
 namespace LiveCharts.Wpf
 {
@@ -48,20 +47,39 @@ namespace LiveCharts.Wpf
         public double UnitWidth { get; set; }
         public Dictionary<double, AxisSeparatorElement> Cache { get; set; }
 
-        public ISeparatorElementView RenderSeparator(SeparatorElementCore model, ChartCore chart)
+        public void RenderSeparator(SeparatorElementCore model, ChartCore chart)
         {
-            var asc = new AxisSeparatorElement(model)
+            AxisSeparatorElement ase;
+
+            if (model.View == null)
             {
-                TextBlock = BindATextBlock(),
-                Line = BindALine()
-            };
+                ase = new AxisSeparatorElement(model);
+                model.View = ase;
+            }
+            else
+            {
+                ase = (AxisSeparatorElement) model.View;
+            }
 
-            Panel.SetZIndex(asc.TextBlock, -1);
-            Panel.SetZIndex(asc.Line, -1);
-            chart.View.AddToView(asc.TextBlock);
-            chart.View.AddToView(asc.Line);
+            if (Separator.IsEnabled && ase.Line == null)
+            {
+                ase.Line = BindALine();
+                chart.View.AddToView(ase.Line);
+            }
+            else
+            {
+                ase.Line = null;
+            }
 
-            return asc;
+            if (ShowLabels && ase.TextBlock == null)
+            {
+                ase.TextBlock = BindATextBlock();
+                chart.View.AddToView(ase.TextBlock);
+            }
+            else
+            {
+                ase.TextBlock = null;
+            }
         }
 
         public LvcSize UpdateTitle(ChartCore chart, double rotationAngle = 0)

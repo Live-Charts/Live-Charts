@@ -61,6 +61,13 @@ namespace LiveCharts
             return m * (value - p1.X) + p1.Y;
         }
 
+        public static LvcPoint ToPlotArea(LvcPoint point, ChartCore chart, int axis = 0)
+        {
+            return new LvcPoint(
+                ToPlotArea(point.X, AxisTags.X, chart, axis),
+                ToPlotArea(point.Y, AxisTags.Y, chart, axis));
+        }
+
         public static double FromPlotArea(double value, AxisTags source, ChartCore chart, int axis = 0)
         {
             var p1 = new LvcPoint();
@@ -88,21 +95,7 @@ namespace LiveCharts
             var m = (p2.Y - p1.Y) / (deltaX == 0 ? double.MinValue : deltaX);
             return (value + m * p1.X - p1.Y) / m;
         }
-
-        /// <summary>
-        /// Scales a graph point to screen.
-        /// </summary>
-        /// <param name="point"></param>
-        /// <param name="chart"></param>
-        /// <param name="axis"></param>
-        /// <returns></returns>
-        public static LvcPoint ToPlotArea(LvcPoint point, ChartCore chart, int axis = 0)
-        {
-            return new LvcPoint(
-                ToPlotArea(point.X, AxisTags.X, chart, axis),
-                ToPlotArea(point.Y, AxisTags.Y, chart, axis));
-        }
-
+        
         public static double ToDrawMargin(double value, AxisTags source, ChartCore chart, int axis = 0)
         {
             var o = source == AxisTags.X
@@ -120,11 +113,12 @@ namespace LiveCharts
             //        ? new LvcPoint(0, GetUnitWidth(AxisTags.Y, chart, axisYIndex)*.5)
             //        : new LvcPoint(GetUnitWidth(AxisTags.X, chart, axisXIndex)*.5, 0))
             //    : new LvcPoint();
-
+           
             return new LvcPoint(
                 ToDrawMargin(point.X, AxisTags.X, chart, axisXIndex),
                 ToDrawMargin(point.Y, AxisTags.Y, chart, axisYIndex)); //+ unitaryOffset;
         }
+
 
         public static double FromDrawMargin(double value, AxisTags source, ChartCore chart, int axis = 0)
         {
