@@ -36,10 +36,5 @@ namespace LiveCharts.Wpf.Points
         {
             throw new NotImplementedException();
         }
-
-        public virtual void Delete()
-        {
-            throw new NotImplementedException();
-        }
     }
 }

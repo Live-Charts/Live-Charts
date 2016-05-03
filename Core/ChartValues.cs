@@ -161,8 +161,6 @@ namespace LiveCharts
                     {
                         cp = new ChartPoint
                         {
-                            X = config.XValueMapper(value, i),
-                            Y = config.YValueMapper(value, i),
                             Instance = value,
                             Key = i
                         };
@@ -175,8 +173,6 @@ namespace LiveCharts
                     {
                         cp = new ChartPoint
                         {
-                            X = config.XValueMapper(value, i),
-                            Y = config.YValueMapper(value, i),
                             Instance = value,
                             Key = i
                         };
@@ -185,7 +181,8 @@ namespace LiveCharts
                 }
 
                 cp.GarbageCollectorIndex = garbageCollectorIndex;
-                var pv = Primitives.Values.Select(x => x.GarbageCollectorIndex).ToList();
+                cp.X = config.XValueMapper(value, i);
+                cp.Y = config.YValueMapper(value, i);
 
                 yield return cp;
                 i++;

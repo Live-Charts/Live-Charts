@@ -38,7 +38,8 @@ namespace LiveCharts.Wpf.Points
 
         public override void DrawOrMove(object previous, object current, int index, ChartCore chart)
         {
-            var previosPbv = previous as HorizontalBezierView;
+            var previosCp = (ChartPoint) previous;
+            var previosPbv = previosCp == null ? null : (HorizontalBezierView) previosCp.View;
 
             var y = chart.DrawMargin.Left + chart.DrawMargin.Width;
 
@@ -115,11 +116,11 @@ namespace LiveCharts.Wpf.Points
             #endregion
 
             Segment.BeginAnimation(BezierSegment.Point1Property,
-                new PointAnimation(Data.Point1.AsPoint(), chart.View.AnimationsSpeed));
+                new PointAnimation(Segment.Point1, Data.Point1.AsPoint(), chart.View.AnimationsSpeed));
             Segment.BeginAnimation(BezierSegment.Point2Property,
-                new PointAnimation(Data.Point2.AsPoint(), chart.View.AnimationsSpeed));
+                new PointAnimation(Segment.Point2, Data.Point2.AsPoint(), chart.View.AnimationsSpeed));
             Segment.BeginAnimation(BezierSegment.Point3Property,
-                new PointAnimation(Data.Point3.AsPoint(), chart.View.AnimationsSpeed));
+                new PointAnimation(Segment.Point3, Data.Point3.AsPoint(), chart.View.AnimationsSpeed));
 
             if (Ellipse != null)
             {
