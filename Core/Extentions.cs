@@ -1,3 +1,5 @@
+﻿//The MIT License(MIT)
+
 //copyright(c) 2016 Alberto Rodriguez
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -18,28 +20,17 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-using System;
-using System.CodeDom;
-using System.Windows.Controls;
-using System.Windows.Shapes;
+using System.Collections.Generic;
 
-namespace LiveCharts.Wpf.Points
+namespace LiveCharts
 {
-    public class PointView : IChartPointView
+    public static class Extentions
     {
-        public Shape HoverShape { get; set; }
-        public TextBlock DataLabel { get; set; }
-        public bool IsNew { get; set; }
-        public LvcPoint Location { get; set; }
-
-        public virtual void DrawOrMove(object previous, object current, int index, ChartCore chart)
+        public static ChartValues<T> AsChartValues<T>(this IEnumerable<T> values)
         {
-            throw new NotImplementedException();
-        }
-
-        public virtual void Delete()
-        {
-            throw new NotImplementedException();
+            var l = new ChartValues<T>();
+            l.AddRange(values);
+            return l;
         }
     }
 }

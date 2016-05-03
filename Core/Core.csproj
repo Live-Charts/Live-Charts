@@ -44,6 +44,7 @@
     <Compile Include="ChartCore.cs" />
     <Compile Include="ChartFunctions.cs" />
     <Compile Include="ChartPoint.cs" />
+    <Compile Include="Extentions.cs" />
     <Compile Include="IChartValues.cs" />
     <Compile Include="IDataOptimization.cs" />
     <Compile Include="CartesianChartCore.cs" />

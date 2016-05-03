@@ -36,7 +36,7 @@ namespace LiveCharts.Wpf.Points
         public PathFigure Container { get; set; }
         public BezierData Data { get; set; }
 
-        public override void Locate(object previous, object current, int index, ChartCore chart)
+        public override void DrawOrMove(object previous, object current, int index, ChartCore chart)
         {
             var previosPbv = previous as HorizontalBezierView;
 

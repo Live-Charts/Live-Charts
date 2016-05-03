@@ -104,7 +104,7 @@ namespace LiveCharts
                         Point3 = new LvcPoint(p2.X, p2.Y)
                     };
 
-                chartPoint.View.Locate(previous, chartPoint, index, Chart);
+                chartPoint.View.DrawOrMove(previous, chartPoint, index, Chart);
 
                 previous = chartPoint;
                 p0 = new LvcPoint(p1);

@@ -185,6 +185,7 @@ namespace LiveCharts
                 }
 
                 cp.GarbageCollectorIndex = garbageCollectorIndex;
+                var pv = Primitives.Values.Select(x => x.GarbageCollectorIndex).ToList();
 
                 yield return cp;
                 i++;
@@ -193,8 +194,8 @@ namespace LiveCharts
 
         private IEnumerable<ChartPoint> GetGarbagePoints()
         {
-            return Generics.Values.Where(x => x.GarbageCollectorIndex < GarbageCollectorIndex - 1)
-                .Concat(Primitives.Values.Where(y => y.GarbageCollectorIndex < GarbageCollectorIndex - 1));
+            return Generics.Values.Where(x => x.GarbageCollectorIndex < GarbageCollectorIndex)
+                .Concat(Primitives.Values.Where(y => y.GarbageCollectorIndex < GarbageCollectorIndex ));
         }
 
         private SeriesConfiguration<T> GetConfig()

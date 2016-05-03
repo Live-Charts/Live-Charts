@@ -227,7 +227,37 @@ namespace LiveCharts.Wpf.Components
         public SeriesCollection Series
         {
             get { return (SeriesCollection) GetValue(SeriesProperty); }
-            set { SetValue(SeriesProperty, value); }
+            set
+            {
+#if DEBUG
+                if (DesignerProperties.GetIsInDesignMode(this))
+                {
+                    if (value == null || value.Count == 0)
+                    {
+                        var r = new Random();
+                        SetValue(SeriesProperty,
+                            new SeriesCollection(new SeriesConfiguration<double>().Y(val => val))
+                            {
+                                new LineSeries
+                                {
+                                    Values =
+                                        new ChartValues<double>
+                                        {
+                                            r.NextDouble()*10,
+                                            r.NextDouble()*10,
+                                            r.NextDouble()*10,
+                                            r.NextDouble()*10,
+                                            r.NextDouble()*10
+                                        }
+                                }
+                            });
+                        return;
+                    }
+                    return;
+                }
+#endif
+                SetValue(SeriesProperty, value);
+            }
         }
 
         public static readonly DependencyProperty DataTooltipProperty = DependencyProperty.Register(
@@ -360,7 +390,7 @@ namespace LiveCharts.Wpf.Components
         {
             var wpfElement = element as FrameworkElement;
             if (wpfElement == null) return;
-            Canvas.Children.Remove(wpfElement);
+            DrawMargin.Children.Remove(wpfElement);
         }
 
         public void ShowTooltip(ChartPoint sender, IEnumerable<ChartPoint> sibilings, LvcPoint at)

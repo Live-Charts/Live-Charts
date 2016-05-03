@@ -210,9 +210,9 @@ namespace LiveCharts.Wpf
         {
             var bezierView = view as HorizontalBezierView;
             if (bezierView == null) return;
-            Model.Chart.View.RemoveFromView(bezierView.HoverShape);
-            Model.Chart.View.RemoveFromView(bezierView.Ellipse);
-            Model.Chart.View.RemoveFromView(bezierView.DataLabel);
+            Model.Chart.View.RemoveFromDrawMargin(bezierView.HoverShape);
+            Model.Chart.View.RemoveFromDrawMargin(bezierView.Ellipse);
+            Model.Chart.View.RemoveFromDrawMargin(bezierView.DataLabel);
             bezierView.Container.Segments.Remove(bezierView.Segment);
         }
 

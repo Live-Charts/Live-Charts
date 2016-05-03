@@ -56,7 +56,8 @@ namespace LiveCharts
     {
         bool IsNew { get; set; }
         LvcPoint Location { get; set; }
-        void Locate(object previous, object current, int index, ChartCore chart);
+        void DrawOrMove(object previous, object current, int index, ChartCore chart);
+        void Delete();
     }
 
     public enum ChartPointType
