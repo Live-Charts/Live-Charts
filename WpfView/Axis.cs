@@ -53,33 +53,25 @@ namespace LiveCharts.Wpf
 
             if (model.View == null)
             {
-                ase = new AxisSeparatorElement(model);
+                ase = new AxisSeparatorElement(model)
+                {
+                    Line = BindALine(),
+                    TextBlock = BindATextBlock()
+                };
                 model.View = ase;
+                chart.View.AddToView(ase.Line);
+                chart.View.AddToView(ase.TextBlock);
+                Panel.SetZIndex(ase.Line, -1);
             }
             else
             {
                 ase = (AxisSeparatorElement) model.View;
             }
 
-            if (Separator.IsEnabled && ase.Line == null)
-            {
-                ase.Line = BindALine();
-                chart.View.AddToView(ase.Line);
-            }
-            else
-            {
-                ase.Line = null;
-            }
-
-            if (ShowLabels && ase.TextBlock == null)
-            {
-                ase.TextBlock = BindATextBlock();
-                chart.View.AddToView(ase.TextBlock);
-            }
-            else
-            {
-                ase.TextBlock = null;
-            }
+            if (!Separator.IsEnabled)
+                ase.Line.Visibility = Visibility.Collapsed;
+            if (!ShowLabels)
+                ase.TextBlock.Visibility = Visibility.Collapsed;
         }
 
         public LvcSize UpdateTitle(ChartCore chart, double rotationAngle = 0)
@@ -380,6 +372,8 @@ namespace LiveCharts.Wpf
                 new Binding {Path = new PropertyPath(Wpf.Separator.StrokeDashArrayProperty), Source = s});
             l.SetBinding(Shape.StrokeThicknessProperty,
                 new Binding {Path = new PropertyPath(Wpf.Separator.StrokeThicknessProperty), Source = s});
+            l.SetBinding(VisibilityProperty,
+                new Binding {Path = new PropertyPath(VisibilityProperty), Source = s});
 
             return l;
         }

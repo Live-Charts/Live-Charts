@@ -388,14 +388,6 @@ namespace LiveCharts.Wpf.Components
                 DataTooltip.Visibility = Visibility.Hidden;
         }
 
-        public void IntializeAxis()
-        {
-            if (AxisX.Count == 0)
-                SetValue(AxisXProperty, new List<Axis> { DefaultAxes.DefaultAxis });
-            if (AxisY.Count == 0)
-                SetValue(AxisYProperty, new List<Axis> { DefaultAxes.DefaultAxis });
-        }
-
         public void ShowLegend(LvcPoint at)
         {
             if (ChartLegend == null) return;
@@ -451,13 +443,13 @@ namespace LiveCharts.Wpf.Components
 
         public List<AxisCore> MapXAxes(ChartCore chart)
         {
-            if (AxisX.Count == 0) AxisX.Add(DefaultAxes.DefaultAxis);
+            if (AxisX.Count == 0) AxisX.Add(DefaultAxes.CleanAxis);
             return AxisX.Select(x => x.AsCoreElement(Model)).ToList();
         }
 
         public List<AxisCore> MapYAxes(ChartCore chart)
         {
-            if (AxisY.Count == 0) AxisY.Add(DefaultAxes.CleanAxis);
+            if (AxisY.Count == 0) AxisY.Add(DefaultAxes.DefaultAxis);
             return AxisY.Select(x => x.AsCoreElement(Model)).ToList();
         }
 

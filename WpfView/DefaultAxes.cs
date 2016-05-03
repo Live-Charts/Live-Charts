@@ -20,6 +20,7 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
+using System.Windows;
 using System.Windows.Media;
 
 namespace LiveCharts.Wpf
@@ -91,7 +92,7 @@ namespace LiveCharts.Wpf
             {
                 return new Separator
                 {
-                    IsEnabled = false
+                    Visibility = Visibility.Collapsed
                 };
             }
         }

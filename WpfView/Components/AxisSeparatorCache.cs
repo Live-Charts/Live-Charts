@@ -97,6 +97,9 @@ namespace LiveCharts.Wpf.Components
                 return;
             }
 
+            if (TextBlock.Visibility == Visibility.Collapsed &&
+                Line.Visibility == Visibility.Collapsed) return;
+
             var anim = new DoubleAnimation
             {
                 From = 1,
@@ -128,8 +131,11 @@ namespace LiveCharts.Wpf.Components
         {
             if (axis.DisableAnimations || chart.DisableAnimations) return;
 
-            TextBlock.BeginAnimation(UIElement.OpacityProperty, new DoubleAnimation(0, 1, chart.AnimationsSpeed));
-            Line.BeginAnimation(UIElement.OpacityProperty, new DoubleAnimation(0, 1, TimeSpan.FromMilliseconds(1000)));
+            if (TextBlock.Visibility != Visibility.Collapsed)
+                TextBlock.BeginAnimation(UIElement.OpacityProperty, new DoubleAnimation(0, 1, chart.AnimationsSpeed));
+
+            if (Line.Visibility != Visibility.Collapsed)
+                Line.BeginAnimation(UIElement.OpacityProperty, new DoubleAnimation(0, 1, TimeSpan.FromMilliseconds(1000)));
         }
 
         private void MoveFromCurrentAx(IChartView chart, AxisTags direction, int axisPosition, Axis axis)
@@ -140,41 +146,55 @@ namespace LiveCharts.Wpf.Components
 
             if (direction == AxisTags.Y)
             {
-                Line.BeginAnimation(Line.X1Property,
+                if (Line.Visibility != Visibility.Collapsed)
+                {
+                    Line.BeginAnimation(Line.X1Property,
                     new DoubleAnimation(Line.X1, chart.Model.DrawMargin.Left, chart.AnimationsSpeed));
-                Line.BeginAnimation(Line.X2Property,
-                    new DoubleAnimation(Line.X2, chart.Model.DrawMargin.Left + chart.Model.DrawMargin.Width, chart.AnimationsSpeed));
-                Line.BeginAnimation(Line.Y1Property,
-                    new DoubleAnimation(Line.Y1, i, chart.AnimationsSpeed));
-                Line.BeginAnimation(Line.Y2Property,
-                    new DoubleAnimation(Line.Y2, i, chart.AnimationsSpeed));
+                    Line.BeginAnimation(Line.X2Property,
+                        new DoubleAnimation(Line.X2, chart.Model.DrawMargin.Left + chart.Model.DrawMargin.Width, chart.AnimationsSpeed));
+                    Line.BeginAnimation(Line.Y1Property,
+                        new DoubleAnimation(Line.Y1, i, chart.AnimationsSpeed));
+                    Line.BeginAnimation(Line.Y2Property,
+                        new DoubleAnimation(Line.Y2, i, chart.AnimationsSpeed));
+                }
 
                 var hh = axis.IsMerged
                     ? (i + TextBlock.ActualHeight > chart.Model.DrawMargin.Top + chart.Model.DrawMargin.Height
                         ? +TextBlock.ActualHeight
                         : 0)
                     : TextBlock.ActualHeight * .5;
-                TextBlock.BeginAnimation(Canvas.TopProperty,
+
+                if (TextBlock.Visibility != Visibility.Collapsed)
+                {
+                    TextBlock.BeginAnimation(Canvas.TopProperty,
                     new DoubleAnimation(Line.Y1 - hh + axis.UnitWidth * .5, i - hh + axis.UnitWidth * .5, chart.AnimationsSpeed));
+
+                }
             }
             else
             {
-                Line.BeginAnimation(Line.X1Property,
+                if (Line.Visibility != Visibility.Collapsed)
+                {
+                    Line.BeginAnimation(Line.X1Property,
                     new DoubleAnimation(Line.X1, i, chart.AnimationsSpeed));
-                Line.BeginAnimation(Line.X2Property,
-                    new DoubleAnimation(Line.X2, i, chart.AnimationsSpeed));
-                Line.BeginAnimation(Line.Y1Property,
-                    new DoubleAnimation(Line.Y1, chart.Model.DrawMargin.Top, chart.AnimationsSpeed));
-                Line.BeginAnimation(Line.Y2Property,
-                    new DoubleAnimation(Line.Y2, chart.Model.DrawMargin.Top + chart.Model.DrawMargin.Height, chart.AnimationsSpeed));
+                    Line.BeginAnimation(Line.X2Property,
+                        new DoubleAnimation(Line.X2, i, chart.AnimationsSpeed));
+                    Line.BeginAnimation(Line.Y1Property,
+                        new DoubleAnimation(Line.Y1, chart.Model.DrawMargin.Top, chart.AnimationsSpeed));
+                    Line.BeginAnimation(Line.Y2Property,
+                        new DoubleAnimation(Line.Y2, chart.Model.DrawMargin.Top + chart.Model.DrawMargin.Height, chart.AnimationsSpeed));
+                }
 
                 var hw = axis.IsMerged
                     ? (i + TextBlock.ActualWidth > chart.Model.DrawMargin.Left + chart.Model.DrawMargin.Width
                         ? TextBlock.ActualWidth + 2
                         : -2)
                     : TextBlock.ActualWidth * .5;
-                TextBlock.BeginAnimation(Canvas.LeftProperty,
-                    new DoubleAnimation(Line.X1 - hw + axis.UnitWidth * .5, i - hw + axis.UnitWidth * .5, chart.AnimationsSpeed));
+
+                if (TextBlock.Visibility != Visibility.Collapsed)
+                    TextBlock.BeginAnimation(Canvas.LeftProperty,
+                        new DoubleAnimation(Line.X1 - hw + axis.UnitWidth*.5, i - hw + axis.UnitWidth*.5,
+                            chart.AnimationsSpeed));
             }
         }
 
@@ -190,43 +210,55 @@ namespace LiveCharts.Wpf.Components
                     ? axis.Model.FromPreviousAxisState(Model.Value, direction, chart.Model)
                     : Line.Y1;
 
-                Line.BeginAnimation(Line.X1Property,
-                    new DoubleAnimation(Line.X1, chart.Model.DrawMargin.Left, chart.AnimationsSpeed));
-                Line.BeginAnimation(Line.X2Property,
-                    new DoubleAnimation(Line.X2, chart.Model.DrawMargin.Left + chart.Model.DrawMargin.Width, chart.AnimationsSpeed));
-                Line.BeginAnimation(Line.Y1Property,
-                    new DoubleAnimation(y, i, chart.AnimationsSpeed));
-                Line.BeginAnimation(Line.Y2Property,
-                    new DoubleAnimation(y, i, chart.AnimationsSpeed));
+                if (Line.Visibility != Visibility.Collapsed)
+                {
+                    Line.BeginAnimation(Line.X1Property,
+                   new DoubleAnimation(Line.X1, chart.Model.DrawMargin.Left, chart.AnimationsSpeed));
+                    Line.BeginAnimation(Line.X2Property,
+                        new DoubleAnimation(Line.X2, chart.Model.DrawMargin.Left + chart.Model.DrawMargin.Width, chart.AnimationsSpeed));
+                    Line.BeginAnimation(Line.Y1Property,
+                        new DoubleAnimation(y, i, chart.AnimationsSpeed));
+                    Line.BeginAnimation(Line.Y2Property,
+                        new DoubleAnimation(y, i, chart.AnimationsSpeed));
+                }
 
                 var hh = axis.IsMerged
                     ? (i + TextBlock.ActualHeight > chart.Model.DrawMargin.Top + chart.Model.DrawMargin.Height
                         ? +TextBlock.ActualHeight
                         : 0)
                     : TextBlock.ActualHeight * .5;
-                TextBlock.BeginAnimation(Canvas.TopProperty,
-                    new DoubleAnimation(y - hh + axis.UnitWidth * .5, i - hh + axis.UnitWidth * .5, chart.AnimationsSpeed));
+
+                if (TextBlock.Visibility != Visibility.Collapsed)
+                    TextBlock.BeginAnimation(Canvas.TopProperty,
+                        new DoubleAnimation(y - hh + axis.UnitWidth*.5, i - hh + axis.UnitWidth*.5,
+                            chart.AnimationsSpeed));
             }
             else
             {
                 var x = Model.IsNew ? axis.Model.FromPreviousAxisState(Model.Value, direction, chart.Model) : Line.X1;
 
-                Line.BeginAnimation(Line.X1Property,
-                    new DoubleAnimation(x, i, chart.AnimationsSpeed));
-                Line.BeginAnimation(Line.X2Property,
-                    new DoubleAnimation(x, i, chart.AnimationsSpeed));
-                Line.BeginAnimation(Line.Y1Property,
-                    new DoubleAnimation(Line.Y1, chart.Model.DrawMargin.Top, chart.AnimationsSpeed));
-                Line.BeginAnimation(Line.Y2Property,
-                    new DoubleAnimation(Line.Y2, chart.Model.DrawMargin.Top + chart.Model.DrawMargin.Height, chart.AnimationsSpeed));
+                if (Line.Visibility != Visibility.Collapsed)
+                {
+                    Line.BeginAnimation(Line.X1Property,
+                   new DoubleAnimation(x, i, chart.AnimationsSpeed));
+                    Line.BeginAnimation(Line.X2Property,
+                        new DoubleAnimation(x, i, chart.AnimationsSpeed));
+                    Line.BeginAnimation(Line.Y1Property,
+                        new DoubleAnimation(Line.Y1, chart.Model.DrawMargin.Top, chart.AnimationsSpeed));
+                    Line.BeginAnimation(Line.Y2Property,
+                        new DoubleAnimation(Line.Y2, chart.Model.DrawMargin.Top + chart.Model.DrawMargin.Height, chart.AnimationsSpeed));
+                }
 
                 var hw = axis.IsMerged
                     ? (i + TextBlock.ActualWidth > chart.Model.DrawMargin.Left + chart.Model.DrawMargin.Width
                         ? TextBlock.ActualWidth + 2
                         : -2)
                     : TextBlock.ActualWidth * .5;
-                TextBlock.BeginAnimation(Canvas.LeftProperty,
-                    new DoubleAnimation(x - hw + axis.UnitWidth*.5, i - hw + axis.UnitWidth*.5, chart.AnimationsSpeed));
+
+                if (TextBlock.Visibility != Visibility.Collapsed)
+                    TextBlock.BeginAnimation(Canvas.LeftProperty,
+                        new DoubleAnimation(x - hw + axis.UnitWidth*.5, i - hw + axis.UnitWidth*.5,
+                            chart.AnimationsSpeed));
             }
         }
 

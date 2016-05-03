@@ -36,15 +36,6 @@ namespace LiveCharts.Wpf
 
         public ChartCore Chart { get; set; }
 
-        public static readonly new DependencyProperty IsEnabledProperty = DependencyProperty.Register(
-            "IsEnabled", typeof (bool), typeof (Separator), new PropertyMetadata(default(bool), UpdateChart()));
-
-        public new bool IsEnabled
-        {
-            get { return (bool) GetValue(IsEnabledProperty); }
-            set { SetValue(IsEnabledProperty, value); }
-        }
-
         public static readonly DependencyProperty StrokeProperty = DependencyProperty.Register(
             "Stroke", typeof (Brush), typeof (Separator), 
             new PropertyMetadata(default(Brush), UpdateChart()));

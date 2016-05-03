@@ -53,7 +53,6 @@ namespace LiveCharts
         void RemoveFromDrawMargin(object element);
         void ShowTooltip(ChartPoint sender, IEnumerable<ChartPoint> sibilings, LvcPoint at);
         void HideTooltop();
-        void IntializeAxis();
         void ShowLegend(LvcPoint at);
         void HideLegend();
 
