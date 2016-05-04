@@ -50,6 +50,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Axis.cs" />
+    <Compile Include="ChartUpdater.cs" />
     <Compile Include="Components\AxisSeparatorCache.cs" />
     <Compile Include="Components\Chart.cs" />
     <Compile Include="ChartCursor.cs" />

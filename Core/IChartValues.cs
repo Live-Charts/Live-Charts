@@ -22,12 +22,10 @@
 
 using System.Collections;
 using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.ComponentModel;
 
 namespace LiveCharts
 {
-    public interface IChartValues : IList, INotifyCollectionChanged, INotifyPropertyChanged
+    public interface IChartValues : IList
     {
         /// <summary>
         /// Gets series points to draw.

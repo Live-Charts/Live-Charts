@@ -33,6 +33,7 @@ namespace LiveCharts
 
         SeriesCollection Series { get; set; }
         TimeSpan TooltipTimeout { get; set; }
+        TimeSpan? UpdaterFrequency { get; set; }
         ZoomingOptions Zoom { get; set; }
         LegendLocation LegendLocation { get; set; }
         bool DisableAnimations { get; set; }
@@ -57,7 +58,6 @@ namespace LiveCharts
         void HideLegend();
 
         LvcSize LoadLegend();
-        TimeSpan? GetZoomingSpeed();
         List<AxisCore> MapXAxes(ChartCore chart);
         List<AxisCore> MapYAxes(ChartCore chart);
 
@@ -75,7 +75,6 @@ namespace LiveCharts
         SeriesConfiguration Configuration { get; set; }
 
         IChartPointView RenderPoint(IChartPointView view);
-        void RemovePointView(object view);
         void OnSeriesUpdateStart();
         void Erase();
         void OnSeriesUpdatedFinish();
@@ -120,4 +119,11 @@ namespace LiveCharts
         void UpdateLine(AxisTags source, ChartCore chart, int axisIndex, AxisCore axisCore);
     }
 
+    public interface IChartPointView
+    {
+        bool IsNew { get; set; }
+        LvcPoint Location { get; set; }
+        void DrawOrMove(object previous, object current, int index, ChartCore chart);
+        void RemoveFromView(ChartCore chart);
+    }
 }

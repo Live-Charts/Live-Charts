@@ -167,8 +167,10 @@ namespace LiveCharts
 
     public interface IChartUpdater
     {
-        void Run(bool restartsAnimations = false);
+        ChartCore Chart { get; set; }
+        void Run(bool restartView = false);
         void Cancel();
+        void UpdateFrequency();
     }
 
     public interface IObservableChartPoint

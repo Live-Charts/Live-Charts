@@ -57,7 +57,7 @@ namespace LiveCharts.Wpf
 
         public static readonly DependencyProperty PointDiameterProperty = DependencyProperty.Register(
             "PointDiameter", typeof (double), typeof (LineSeries), 
-            new PropertyMetadata(default(double), UpdateChart()));
+            new PropertyMetadata(default(double), CalChartUpdater()));
 
         public double PointDiameter
         {
@@ -67,7 +67,7 @@ namespace LiveCharts.Wpf
 
         public static readonly DependencyProperty PointForeroundProperty = DependencyProperty.Register(
             "PointForeround", typeof (Brush), typeof (LineSeries), 
-            new PropertyMetadata(default(Brush), UpdateChart()));
+            new PropertyMetadata(default(Brush), CalChartUpdater()));
 
         public Brush PointForeround
         {
@@ -77,7 +77,7 @@ namespace LiveCharts.Wpf
 
         public static readonly DependencyProperty LineSmoothnessProperty = DependencyProperty.Register(
             "LineSmoothness", typeof (double), typeof (LineSeries), 
-            new PropertyMetadata(default(double), UpdateChart()));
+            new PropertyMetadata(default(double), CalChartUpdater()));
 
         public double LineSmoothness
         {
@@ -204,16 +204,6 @@ namespace LiveCharts.Wpf
             }
 
             return pbv;
-        }
-
-        public override void RemovePointView(object view)
-        {
-            var bezierView = view as HorizontalBezierView;
-            if (bezierView == null) return;
-            Model.Chart.View.RemoveFromDrawMargin(bezierView.HoverShape);
-            Model.Chart.View.RemoveFromDrawMargin(bezierView.Ellipse);
-            Model.Chart.View.RemoveFromDrawMargin(bezierView.DataLabel);
-            bezierView.Container.Segments.Remove(bezierView.Segment);
         }
 
         public override void OnSeriesUpdatedFinish()

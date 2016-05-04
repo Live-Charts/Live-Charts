@@ -20,29 +20,39 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-using System.Diagnostics;
+using System;
+using LiveCharts.CrossNet;
 
 namespace LiveCharts
 {
     public class ChartUpdater : IChartUpdater
     {
-        public ChartUpdater(ChartCore chart)
+        public event Action FrecuencyUpdate;
+
+        public ChartCore Chart { get; set; }
+        public TimeSpan Frequency { get; set; }
+        public bool IsUpdating { get; set; }
+        public bool RestartViewRequested { get; set; }
+
+        private void InitializeSeriesParams(ISeriesView seriesView)
         {
-            Chart = chart;
+            seriesView.Model.Chart = Chart;
+            seriesView.Values.Series = seriesView.Model;
+            seriesView.Model.SeriesCollection = Chart.View.Series;
+            seriesView.Model.SeriesCollection.Chart = Chart;
         }
 
-        public ChartCore Chart { get; private set; }
+        public virtual void Run(bool restartView = false)
+        {
+            throw new NotImplementedException();
+        }
 
-        public void Run(bool restartsAnimations = false)
+        protected void Update(bool restartsAnimations = false)
         {
             if (!Chart.View.IsControlLoaded || Chart.View.Series == null) return;
 
-            //lets map view to model, in this case it is only necessary to map the axis
-            //I am not sure what is the best for ChartFunctions class
-            //ChartFucntions class is called every time at least 1 time per point
-            //1) cast the axis as IAxisView everytime we call ChartFunctions
-            //2) map IAxisView to AxisCore, I feel this is better for performance
-            //ToDo: Test both cases!
+            if (restartsAnimations)
+                Chart.View.Series.ForEach(s => s.Values.Points.ForEach(p => p.View.RemoveFromView(Chart)));
 
             Chart.AxisX = Chart.View.MapXAxes(Chart);
             Chart.AxisY = Chart.View.MapYAxes(Chart);
@@ -69,18 +79,35 @@ namespace LiveCharts
 #endif
         }
 
-        private void InitializeSeriesParams(ISeriesView seriesView)
-        {
-            seriesView.Model.Chart = Chart;
-            seriesView.Values.Series = seriesView.Model;
-            seriesView.Model.SeriesCollection = Chart.View.Series;
-        }
-
         public void Cancel()
         {
 #if DEBUG
             Debug.WriteLine("Chart update cancelation requested!");
 #endif
+        }
+
+        public void UpdateFrequency()
+        {
+            if (Chart == null) return;
+
+            if (Chart.View.UpdaterFrequency == null)
+            {
+                //by defualt the chart will update according to animations speed
+                //if you need to force the update in a shorter interval then use the 
+                //Chart.UpdateFrequency property
+
+                var ms = Chart.View.DisableAnimations ? 0 : Chart.View.AnimationsSpeed.TotalMilliseconds;
+
+                if (ms < 100) ms = 100;
+
+                Frequency = TimeSpan.FromMilliseconds(ms);
+
+                return;
+            }
+
+            Frequency = Chart.View.UpdaterFrequency.Value;
+
+            if (FrecuencyUpdate != null) FrecuencyUpdate.Invoke();
         }
     }
 }

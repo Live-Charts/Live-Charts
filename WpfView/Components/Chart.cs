@@ -137,7 +137,7 @@ namespace LiveCharts.Wpf.Components
 
         public static readonly DependencyProperty AxisYProperty = DependencyProperty.Register(
             "AxisY", typeof (List<Axis>), typeof (Chart),
-            new PropertyMetadata(null, UpdateChart()));
+            new PropertyMetadata(null, CallChartUpdater()));
         /// <summary>
         /// Gets or sets vertical axis
         /// </summary>
@@ -149,7 +149,7 @@ namespace LiveCharts.Wpf.Components
 
         public static readonly DependencyProperty AxisXProperty = DependencyProperty.Register(
             "AxisX", typeof (List<Axis>), typeof (Chart),
-            new PropertyMetadata(null, UpdateChart()));
+            new PropertyMetadata(null, CallChartUpdater()));
         /// <summary>
         /// Gets or sets horizontal axis
         /// </summary>
@@ -161,7 +161,7 @@ namespace LiveCharts.Wpf.Components
 
         public static readonly DependencyProperty ChartLegendProperty = DependencyProperty.Register(
             "ChartLegend", typeof (ChartLegend), typeof (Chart), 
-            new PropertyMetadata(default(ChartLegend), UpdateChart()));
+            new PropertyMetadata(default(ChartLegend), CallChartUpdater()));
         /// <summary>
         /// Gets or sets the control to use as chart legend fot this chart.
         /// </summary>
@@ -185,7 +185,7 @@ namespace LiveCharts.Wpf.Components
 
         public static readonly DependencyProperty LegendLocationProperty = DependencyProperty.Register(
             "LegendLocation", typeof (LegendLocation), typeof (Chart),
-            new PropertyMetadata(LegendLocation.None, UpdateChart()));
+            new PropertyMetadata(LegendLocation.None, CallChartUpdater()));
         /// <summary>
         /// Gets or sets where legend is located
         /// </summary>
@@ -197,7 +197,7 @@ namespace LiveCharts.Wpf.Components
 
         public static readonly DependencyProperty CursorXProperty = DependencyProperty.Register(
             "CursorX", typeof (ChartCursor), typeof (Chart), 
-            new PropertyMetadata(default(ChartCursor), UpdateChart()));
+            new PropertyMetadata(default(ChartCursor), CallChartUpdater()));
         /// <summary>
         /// Gets or the current chart cursor
         /// </summary>
@@ -220,7 +220,7 @@ namespace LiveCharts.Wpf.Components
 
         public static readonly DependencyProperty SeriesProperty = DependencyProperty.Register(
             "Series", typeof (SeriesCollection), typeof (Chart),
-            new PropertyMetadata(default(SeriesCollection), UpdateChart()));
+            new PropertyMetadata(default(SeriesCollection), CallChartUpdater()));
         /// <summary>
         /// Gets or sets chart series collection to plot.
         /// </summary>
@@ -285,9 +285,18 @@ namespace LiveCharts.Wpf.Components
             set { SetValue(TooltipTimeoutProperty, value); }
         }
 
+        public static readonly DependencyProperty UpdaterFrequencyProperty = DependencyProperty.Register(
+            "UpdaterFrequency", typeof (TimeSpan?), typeof (Chart), new PropertyMetadata(default(TimeSpan?)));
+
+        public TimeSpan? UpdaterFrequency
+        {
+            get { return (TimeSpan?) GetValue(UpdaterFrequencyProperty); }
+            set { SetValue(UpdaterFrequencyProperty, value); }
+        }
+
         public static readonly DependencyProperty AnimationsSpeedProperty = DependencyProperty.Register(
             "AnimationsSpeed", typeof (TimeSpan), typeof (Chart), 
-            new PropertyMetadata(default(TimeSpan), UpdateChart(true)));
+            new PropertyMetadata(default(TimeSpan), CallChartUpdater(true)));
         /// <summary>
         /// Gets or sets the default animation speed for this chart, you can override this speed for each element (series and axes)
         /// </summary>
@@ -299,7 +308,7 @@ namespace LiveCharts.Wpf.Components
 
         public static readonly DependencyProperty DisableAnimationsProperty = DependencyProperty.Register(
             "DisableAnimations", typeof (bool), typeof (Chart),
-            new PropertyMetadata(default(bool), UpdateChart(true)));
+            new PropertyMetadata(default(bool), CallChartUpdater(true)));
         /// <summary>
         /// Gets or sets if the chart is animated or not.
         /// </summary>
@@ -466,11 +475,6 @@ namespace LiveCharts.Wpf.Components
                 ChartLegend.DesiredSize.Height);
         }
 
-        public TimeSpan? GetZoomingSpeed()
-        {
-            return DisableAnimations ? null : (TimeSpan?) AnimationsSpeed;
-        }
-
         public List<AxisCore> MapXAxes(ChartCore chart)
         {
             if (AxisX.Count == 0) AxisX.Add(DefaultAxes.CleanAxis);
@@ -496,7 +500,7 @@ namespace LiveCharts.Wpf.Components
         #endregion
 
         #region Property Changed
-        protected static PropertyChangedCallback UpdateChart(bool animate = false)
+        protected static PropertyChangedCallback CallChartUpdater(bool animate = false)
         {
             return (o, args) =>
             {

@@ -38,7 +38,7 @@ namespace LiveCharts.Wpf
 
         public static readonly DependencyProperty StrokeProperty = DependencyProperty.Register(
             "Stroke", typeof (Brush), typeof (Separator), 
-            new PropertyMetadata(default(Brush), UpdateChart()));
+            new PropertyMetadata(default(Brush), CallChartUpdater()));
         /// <summary>
         /// Gets or sets separators color 
         /// </summary>
@@ -50,7 +50,7 @@ namespace LiveCharts.Wpf
 
         public static readonly DependencyProperty StrokeThicknessProperty = DependencyProperty.Register(
             "StrokeThickness", typeof (double), typeof (Separator), 
-            new PropertyMetadata(default(double), UpdateChart()));
+            new PropertyMetadata(default(double), CallChartUpdater()));
         /// <summary>
         /// Gets or sets separatos thickness
         /// </summary>
@@ -62,7 +62,7 @@ namespace LiveCharts.Wpf
 
         public static readonly DependencyProperty StrokeDashArrayProperty = DependencyProperty.Register(
             "StrokeDashArray", typeof (DoubleCollection), typeof (Separator), 
-            new PropertyMetadata(default(DoubleCollection), UpdateChart()));
+            new PropertyMetadata(default(DoubleCollection), CallChartUpdater()));
         /// <summary>
         /// Gets or sets the stroke dash array for the current separator.
         /// </summary>
@@ -74,7 +74,7 @@ namespace LiveCharts.Wpf
 
         public static readonly DependencyProperty StepProperty = DependencyProperty.Register(
             "Step", typeof (double?), typeof (Separator),
-            new PropertyMetadata(default(double?), UpdateChart()));
+            new PropertyMetadata(default(double?), CallChartUpdater()));
         /// <summary>
         /// Gets or sets sepator step, this means the value between each line, use null for auto.
         /// </summary>
@@ -93,7 +93,7 @@ namespace LiveCharts.Wpf
             };
         }
 
-        private static PropertyChangedCallback UpdateChart(bool animate = false)
+        private static PropertyChangedCallback CallChartUpdater(bool animate = false)
         {
             return (o, args) =>
             {

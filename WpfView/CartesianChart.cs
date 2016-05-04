@@ -28,7 +28,8 @@ namespace LiveCharts.Wpf
     {
         public CartesianChart()
         {
-            ChartCoreModel = new CartesianChartCore(this);
+            var updater = new ChartUpdater();
+            ChartCoreModel = new CartesianChartCore(this, updater);
 
             SetCurrentValue(SeriesProperty,
                 new SeriesCollection()

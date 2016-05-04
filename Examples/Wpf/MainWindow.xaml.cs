@@ -55,7 +55,7 @@ namespace Wpf
 
         private void AddSeriesOnClick(object sender, RoutedEventArgs e)
         {
-            var c = SeriesCollection.Count > 1 ? SeriesCollection.Count : 5;
+            var c = SeriesCollection.Count > 1 ? SeriesCollection[0].Values.Count : 5;
 
             var values = new List<double>();
             var r = new Random();

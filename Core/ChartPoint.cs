@@ -52,13 +52,6 @@ namespace LiveCharts
         internal double GarbageCollectorIndex { get; set; }
     }
 
-    public interface IChartPointView
-    {
-        bool IsNew { get; set; }
-        LvcPoint Location { get; set; }
-        void DrawOrMove(object previous, object current, int index, ChartCore chart);
-    }
-
     public enum ChartPointType
     {
         Bezier, Bar, PieSlice

@@ -1,4 +1,6 @@
-﻿//copyright(c) 2016 Alberto Rodriguez
+﻿//The MIT License(MIT)
+
+//copyright(c) 2016 Alberto Rodriguez
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -19,42 +21,46 @@
 //SOFTWARE.
 
 using System;
-using System.Threading;
-using System.Threading.Tasks;
+using System.Collections.Generic;
 
-namespace LiveCharts
+namespace LiveCharts.CrossNet
 {
-    public class LvcTimer
+    public class CrossNet
     {
-        public LvcTimer()
+        public Type Type { get; set; }
+    }
+
+    public static class Extentions
+    {
+
+        public static CrossNet AsCrossNet(this Type type)
         {
-            Interval = TimeSpan.FromMilliseconds(50);
-            _cancellationToken = new CancellationTokenSource();
+            return new CrossNet {Type = type};
         }
 
-        public event Action Tick;
-        public TimeSpan Interval { get; set; }
-
-        private readonly CancellationTokenSource _cancellationToken;
-
-        public void Start()
+        public static bool IsAssignableFrom(this CrossNet cn, Type from)
         {
-            Task.Delay(Interval, _cancellationToken.Token).ContinueWith(t =>
-            {
-                if (t.IsCanceled) return;
-                if (t.IsCompleted && Tick != null) Tick.Invoke();
-            }, _cancellationToken.Token);
+#if RUNNING_ON_4
+            return cn.Type.IsAssignableFrom(from);
+#endif
+#if NOT_RUNNING_ON_4
+            return typeof (IObservableChartPoint).GetTypeInfo().IsAssignableFrom(typeof (T).GetType());
+#endif
         }
 
-        public void Stop()
+        public static bool IsPrimitive(this CrossNet cn)
         {
-            _cancellationToken.Cancel();
+#if RUNNING_ON_4
+            return cn.Type.IsPrimitive;
+#endif
+#if NOT_RUNNING_ON_4
+            return ...;
+#endif
         }
 
-        public void Restart()
+        public static void ForEach<T>(this IEnumerable<T> source, Action<T> predicate)
         {
-            Stop();
-            Start();
+            foreach (var item in source) predicate(item);
         }
     }
 }

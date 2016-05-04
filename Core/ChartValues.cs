@@ -20,12 +20,10 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
+using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Collections.Specialized;
-using System.ComponentModel;
 using System.Linq;
-using System.Reflection;
+using LiveCharts.CrossNet;
 
 namespace LiveCharts
 {
@@ -33,7 +31,7 @@ namespace LiveCharts
     /// Creates a collection of values ready to plot
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class ChartValues<T> : ObservableCollection<T>, IChartValues
+    public class ChartValues<T> : GossipCollection<T>, IChartValues
     {
         #region Properties
 
@@ -41,9 +39,9 @@ namespace LiveCharts
         {
             Primitives = new Dictionary<int, ChartPoint>();
             Generics = new Dictionary<T, ChartPoint>();
-            CollectionChanged += (sender, eventArgs) =>
+            CollectionChanged += () =>
             {
-                if (Series != null && Series.Chart != null) Series.Chart.Updater.Run();
+                if (Series != null && Series.Chart != null) Series.Chart.Updater.Run(); 
             };
         }
 
@@ -67,16 +65,6 @@ namespace LiveCharts
         #endregion
 
         #region Public Methods
-
-        public ChartValues<T> AddRange(IEnumerable<T> collection)
-        {
-            CheckReentrancy();
-            foreach (var item in collection) Items.Add(item);
-            OnPropertyChanged(new PropertyChangedEventArgs("Count"));
-            OnPropertyChanged(new PropertyChangedEventArgs("Item[]"));
-            OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
-            return this;
-        }
 
         public void GetLimits()
         {
@@ -105,10 +93,10 @@ namespace LiveCharts
 
         public void CollectGarbage()
         {
-            var isPrimitive = typeof (T).GetTypeInfo().IsPrimitive;
+            var isPrimitive = typeof (T).AsCrossNet().IsPrimitive();
             foreach (var garbage in GetGarbagePoints().ToList())
             {
-                Series.View.RemovePointView(garbage.View);
+                garbage.View.RemoveFromView(Series.Chart);
                 if (isPrimitive) Primitives.Remove(garbage.Key);
                 else Generics.Remove((T) garbage.Instance);
             }
@@ -134,9 +122,13 @@ namespace LiveCharts
 
             var config = GetConfig();
 
-            var isPrimitive = typeof (T).GetTypeInfo().IsPrimitive;
+            var isPrimitive = typeof (T).AsCrossNet().IsPrimitive();
             var isObservable = !isPrimitive &&
-                               typeof (IObservableChartPoint).GetTypeInfo().IsAssignableFrom(typeof (T).GetTypeInfo());
+                               typeof (IObservableChartPoint).AsCrossNet().IsAssignableFrom(typeof (T));
+
+            //var isPrimitive = typeof(T).GetType().IsPrimitive;
+            //var isObservable = !isPrimitive &&
+            //                   typeof(IObservableChartPoint).GetType().IsAssignableFrom(typeof(T).GetType());
 
             var garbageCollectorIndex = GarbageCollectorIndex;
             var i = 0;
@@ -224,11 +216,5 @@ namespace LiveCharts
         }
 
         #endregion
-
-        public override sealed event NotifyCollectionChangedEventHandler CollectionChanged
-        {
-            add { base.CollectionChanged += value; }
-            remove { base.CollectionChanged -= value; }
-        }
     }
 }

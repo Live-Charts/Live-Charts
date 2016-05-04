@@ -19,7 +19,6 @@
 //SOFTWARE.
 
 using System;
-using System.CodeDom;
 using System.Windows.Controls;
 using System.Windows.Shapes;
 
@@ -33,6 +32,11 @@ namespace LiveCharts.Wpf.Points
         public LvcPoint Location { get; set; }
 
         public virtual void DrawOrMove(object previous, object current, int index, ChartCore chart)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual void RemoveFromView(ChartCore chart)
         {
             throw new NotImplementedException();
         }

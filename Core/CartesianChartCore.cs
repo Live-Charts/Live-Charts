@@ -26,8 +26,10 @@ namespace LiveCharts
 {
     public class CartesianChartCore : ChartCore
     {
-        public CartesianChartCore(IChartView view) : base(view)
+        public CartesianChartCore(IChartView view, IChartUpdater updater) : base(view, updater)
         {
+            updater.Chart = this;
+            updater.UpdateFrequency();
         }
 
         public override void PrepareAxes()

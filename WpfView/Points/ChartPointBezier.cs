@@ -146,5 +146,13 @@ namespace LiveCharts.Wpf.Points
                 Canvas.SetTop(HoverShape, Location.Y - HoverShape.Height*.5);
             }
         }
+
+        public override void RemoveFromView(ChartCore chart)
+        {
+            chart.View.RemoveFromDrawMargin(HoverShape);
+            chart.View.RemoveFromDrawMargin(Ellipse);
+            chart.View.RemoveFromDrawMargin(DataLabel);
+            Container.Segments.Remove(Segment);
+        }
     }
 }

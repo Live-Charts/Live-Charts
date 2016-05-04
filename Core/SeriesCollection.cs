@@ -20,17 +20,17 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-using System.Collections.ObjectModel;
-using System.Collections.Specialized;
+using LiveCharts.CrossNet;
 
 namespace LiveCharts
 {
-    public class SeriesCollection : ObservableCollection<ISeriesView>
+    public class SeriesCollection : GossipCollection<ISeriesView>
     {
         public SeriesCollection()
         {
             Configuration = new SeriesConfiguration<double>().X((v, i) => i).Y(v => v);
-            CollectionChanged += (sender, args) =>
+
+            CollectionChanged += () =>
             {
                 if (Chart != null) Chart.Updater.Run();
             };
@@ -54,15 +54,6 @@ namespace LiveCharts
         {
             Configuration = config;
             return this;
-        }
-
-        public override sealed event NotifyCollectionChangedEventHandler CollectionChanged
-        {
-            add
-            {
-                base.CollectionChanged += value;
-            }
-            remove { base.CollectionChanged -= value; }
         }
     }
 }

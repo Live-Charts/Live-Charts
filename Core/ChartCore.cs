@@ -28,21 +28,10 @@ namespace LiveCharts
 {
     public abstract class ChartCore
     {
-        protected ChartCore(IChartView view)
+        protected ChartCore(IChartView view, IChartUpdater updater)
         {
             View = view;
-
-            TooltipHidder = new LvcTimer
-            {
-                Interval = view.TooltipTimeout
-            };
-            TooltipHidder.Tick += () =>
-            {
-                View.HideTooltop();
-            };
-
-            Updater = Motor.GetUpdater(this);
-
+            Updater = updater;
             DrawMargin = new LvcRectangle();
             DrawMargin.SetHeight += view.SetDrawMarginHeight;
             DrawMargin.SetWidth += view.SetDrawMarginWidth;
@@ -62,11 +51,20 @@ namespace LiveCharts
         public int CurrentColorIndex { get; set; }
 
         public AxisTags PivotZoomingAxis { get; set; }
-        public LvcTimer TooltipHidder { get; set; }
         public LvcPoint PanOrigin { get; set; }
 
-        public bool IsDragging { get; set; }
-        public bool IsZooming { get; set; }
+        private bool IsDragging { get; set; }
+
+        private bool IsZooming
+        {
+            get
+            {
+                var animationsSpeed = View.DisableAnimations ? 0 : View.AnimationsSpeed.TotalMilliseconds;
+                return (DateTime.Now - RequestedZoomAt).TotalMilliseconds < animationsSpeed;
+            }
+        }
+
+        private DateTime RequestedZoomAt { get; set; }
 
         public virtual void PrepareAxes()
         {
@@ -271,24 +269,7 @@ namespace LiveCharts
 
             if (IsZooming) return;
 
-            IsZooming = true;
-
-            var zoomingSpeed = View.GetZoomingSpeed();
-
-            if (zoomingSpeed == null)
-            {
-                IsZooming = false;
-            }
-            else
-            {
-                var t = new LvcTimer { Interval = zoomingSpeed.Value };
-                t.Tick += () =>
-                {
-                    IsZooming = false;
-                    t.Stop();
-                };
-                t.Start();
-            }
+            RequestedZoomAt = DateTime.Now;
 
             if (View.Zoom == ZoomingOptions.X || View.Zoom == ZoomingOptions.Xy)
             {
@@ -345,24 +326,7 @@ namespace LiveCharts
 
             if (IsZooming) return;
 
-            IsZooming = true;
-
-            var zoomingSpeed = View.GetZoomingSpeed();
-
-            if (zoomingSpeed == null)
-            {
-                IsZooming = false;
-            }
-            else
-            {
-                var t = new LvcTimer { Interval = zoomingSpeed.Value };
-                t.Tick += () =>
-                {
-                    IsZooming = false;
-                    t.Stop();
-                };
-                t.Start();
-            }
+            RequestedZoomAt = DateTime.Now;
 
             var dataPivot = new LvcPoint(
                 ChartFunctions.FromDrawMargin(pivot.X, AxisTags.X, this),
@@ -416,12 +380,6 @@ namespace LiveCharts
             }
 
             Updater.Run();
-        }
-
-        public void TooltipHideStartCount()
-        {
-            TooltipHidder.Stop();
-            TooltipHidder.Start();
         }
     }
 }
