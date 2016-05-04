@@ -20,34 +20,31 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using LiveCharts.CrossNet;
 
 namespace LiveCharts
 {
+
     /// <summary>
     /// Creates a collection of values ready to plot
     /// </summary>
     /// <typeparam name="T"></typeparam>
     public class ChartValues<T> : GossipCollection<T>, IChartValues
     {
-        #region Properties
-
         public ChartValues()
         {
             Primitives = new Dictionary<int, ChartPoint>();
             Generics = new Dictionary<T, ChartPoint>();
             CollectionChanged += () =>
             {
-                if (Series != null && Series.Chart != null) Series.Chart.Updater.Run(); 
+                if (Series != null && Series.Chart != null) Series.Chart.Updater.Run();
             };
         }
 
-        /// <summary>
-        /// Gets the collection of points displayed in the chart current view
-        /// </summary>
+        #region Properties
+
         public IEnumerable<ChartPoint> Points
         {
             get { return GetPointsIterator(); }

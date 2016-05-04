@@ -240,8 +240,7 @@ namespace LiveCharts.Wpf.Components
                             {
                                 new LineSeries
                                 {
-                                    Values =
-                                        new ChartValues<double>
+                                    Values = new ChartValues<double>
                                         {
                                             r.NextDouble()*10,
                                             r.NextDouble()*10,

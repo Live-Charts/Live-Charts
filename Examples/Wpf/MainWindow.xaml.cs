@@ -1,7 +1,7 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Windows;
-using System.Windows.Media;
 using LiveCharts;
 using LiveCharts.Wpf;
 
@@ -15,6 +15,7 @@ namespace Wpf
         public MainWindow()
         {
             InitializeComponent();
+
             SeriesCollection = new SeriesCollection
             {
                 new LineSeries
@@ -64,6 +65,8 @@ namespace Wpf
             {
                 values.Add(r.NextDouble()*128);
             }
+
+            var vals = SeriesCollection[0].Values;
 
             SeriesCollection.Add(new LineSeries
             {

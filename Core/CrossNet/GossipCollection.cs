@@ -21,71 +21,198 @@
 //SOFTWARE.
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace LiveCharts.CrossNet
 {
-    public class GossipCollection<T> : List<T>
+    //To support multuple .net versions and platforms, lets create our "own" specialized observablecollection
+    public interface IGossipCollection
     {
+        event Action CollectionChanged;
+
+        object this[int index] { get; set; }
+        int Count { get; }
+
+        int Add(object item);
+        int AddRange(IEnumerable<object> items);
+        int Insert(int index, object item);
+        int InsertRange(int index, IEnumerable<object> items);
+        int Remove(object item);
+        int RemoveAt(int index);
+        int RemoveRange(int index, int count);
+        void Clear();
+
+        bool Contains(object item);
+        int IndexOf(object item);
+    }
+
+    public class GossipCollection<T> : IGossipCollection, IEnumerable<T>
+    {
+        private readonly List<T> _source;
+
+#region Constrctors
+        public GossipCollection()
+        {
+            _source = new List<T>();
+        }
+
+        public GossipCollection(int capacity)
+        {
+            _source = new List<T>(capacity);
+        }
+
+        public GossipCollection(IEnumerable<T> source)
+        {
+            _source = new List<T>(source);
+        }
+#endregion
+
         public event Action CollectionChanged;
 
-        public new void Add(T item)
+        public T this[int index]
         {
-            base.Add(item);
-            OnCollectionChanged();
+            get { return _source[index]; }
+            set { _source[index] = value; }
+        }
+        object IGossipCollection.this[int index]
+        {
+            get { return _source[index]; }
+            set { _source[index] = (T) value; }
         }
 
-        public new void AddRange(IEnumerable<T> items)
+        public int Count { get { return _source.Count; } }
+
+        public int Add(T item)
         {
-            base.AddRange(items);
-            OnCollectionChanged();
+            _source.Add(item);
+            NotifyCollectionChanged();
+            return _source.Count;
         }
 
-        public new void Insert(int index, T item)
+        int IGossipCollection.Add(object item)
         {
-            base.Insert(index, item);
-            OnCollectionChanged();
-        }
-        
-        public new void InsertRange(int index, IEnumerable<T> items)
-        {
-            base.InsertRange(index, items);
-            OnCollectionChanged();
+            _source.Add((T) item);
+            NotifyCollectionChanged();
+            return _source.Count;
         }
 
-        public new void Remove(T item)
+
+        public int AddRange(IEnumerable<T> items)
         {
-            base.Remove(item);
-            OnCollectionChanged();
+           _source.AddRange(items);
+            NotifyCollectionChanged();
+            return _source.Count;
         }
 
-        public new void RemoveAt(int index)
+        int IGossipCollection.AddRange(IEnumerable<object> items)
         {
-            base.RemoveAt(index);
-            OnCollectionChanged();
+            _source.AddRange(items.Cast<T>());
+            NotifyCollectionChanged();
+            return _source.Count;
         }
 
-        public new void RemoveRange(int index, int count)
+        public int Insert(int index, T item)
         {
-            base.RemoveRange(index, count);
-            OnCollectionChanged();
+            _source.Insert(index, item);
+            NotifyCollectionChanged();
+            return _source.Count;
         }
 
-        public new void RemoveAll(Predicate<T> predicate)
+        int IGossipCollection.Insert(int index, object item)
         {
-            base.RemoveAll(predicate);
-            OnCollectionChanged();
+            _source.Insert(index, (T) item);
+            NotifyCollectionChanged();
+            return _source.Count;
         }
 
-        public new void Clear()
+        public int InsertRange(int index, IEnumerable<T> items)
         {
-            base.Clear();
-            OnCollectionChanged();
+            _source.InsertRange(index, items);
+            NotifyCollectionChanged();
+            return _source.Count;
+        }
+        int IGossipCollection.InsertRange(int index, IEnumerable<object> items)
+        {
+            _source.InsertRange(index, items.Cast<T>());
+            NotifyCollectionChanged();
+            return _source.Count;
         }
 
-        private void OnCollectionChanged()
+        public int Remove(T item)
         {
-            if (CollectionChanged != null) CollectionChanged.Invoke();
+            _source.Remove(item);
+            NotifyCollectionChanged();
+            return _source.Count;
+        }
+
+        int IGossipCollection.Remove(object item)
+        {
+            _source.Remove((T) item);
+            NotifyCollectionChanged();
+            return _source.Count;
+        }
+
+        public int RemoveAt(int index)
+        {
+            _source.RemoveAt(index);
+            NotifyCollectionChanged();
+            return _source.Count;
+        }
+
+        public int RemoveRange(int index, int count)
+        {
+            _source.RemoveRange(index, count);
+            NotifyCollectionChanged();
+            return _source.Count;
+        }
+
+        public int RemoveAll(Predicate<T> preicate)
+        {
+            _source.RemoveAll(preicate);
+            NotifyCollectionChanged();
+            return _source.Count;
+        }
+
+        public void Clear()
+        {
+            _source.Clear();
+            NotifyCollectionChanged();
+        }
+
+        public bool Contains(T item)
+        {
+            return _source.Contains(item);
+        }
+        bool IGossipCollection.Contains(object item)
+        {
+            return _source.Contains((T) item);
+        }
+
+        public int IndexOf(T item)
+        {
+            return _source.IndexOf(item);
+        }
+        int IGossipCollection.IndexOf(object item)
+        {
+            return _source.IndexOf((T) item);
+        }
+
+        private void NotifyCollectionChanged()
+        {
+            if (CollectionChanged != null)
+                CollectionChanged.Invoke();
+        }
+
+        public IEnumerator<T> GetEnumerator()
+        {
+            return _source.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
         }
     }
 }
