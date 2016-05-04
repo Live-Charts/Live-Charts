@@ -77,15 +77,15 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Core\Core.csproj">
+    <ProjectReference Include="..\..\Core\Core.csproj">
       <Project>{d447642c-a85f-4ab0-96d9-c66cff91aada}</Project>
       <Name>Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\WinFormsView\WinFormsView.csproj">
+    <ProjectReference Include="..\..\WinFormsView\WinFormsView.csproj">
       <Project>{45e67c4f-88df-4617-acb1-b54c5dbf8390}</Project>
       <Name>WinFormsView</Name>
     </ProjectReference>
-    <ProjectReference Include="..\WpfView\WpfView.csproj">
+    <ProjectReference Include="..\..\WpfView\WpfView.csproj">
       <Project>{4d253423-ae05-47f6-a59d-9162ec0bb1f2}</Project>
       <Name>WpfView</Name>
     </ProjectReference>

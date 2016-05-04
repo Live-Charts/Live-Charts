@@ -22,6 +22,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 
 namespace LiveCharts.CrossNet
 {
@@ -44,7 +45,7 @@ namespace LiveCharts.CrossNet
             return cn.Type.IsAssignableFrom(from);
 #endif
 #if NOT_RUNNING_ON_4
-            return typeof (IObservableChartPoint).GetTypeInfo().IsAssignableFrom(typeof (T).GetType());
+            return cn.Type.GetTypeInfo().IsAssignableFrom(from.GetTypeInfo());
 #endif
         }
 
@@ -54,7 +55,7 @@ namespace LiveCharts.CrossNet
             return cn.Type.IsPrimitive;
 #endif
 #if NOT_RUNNING_ON_4
-            return ...;
+            return cn.Type.GetTypeInfo().IsPrimitive;
 #endif
         }
 
