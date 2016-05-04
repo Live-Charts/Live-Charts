@@ -130,14 +130,7 @@ namespace LiveCharts.Wpf
             BottomSegment.Point = new Point(xIni, Model.Chart.DrawMargin.Height);
             LeftSegment.Point = new Point(xIni, Model.Chart.DrawMargin.Height);
 
-            var wpfChart = Model.Chart.View as Chart;
-            if (wpfChart == null) return;
-
-            if (Stroke == null)
-                SetValue(StrokeProperty, new SolidColorBrush(Chart.GetDefaultColor(wpfChart.Series.IndexOf(this))));
-            if (Fill == null)
-                SetValue(FillProperty,
-                    new SolidColorBrush(Chart.GetDefaultColor(wpfChart.Series.IndexOf(this))) {Opacity = 0.35});
+            base.OnSeriesUpdateStart();
         }
 
         public override IChartPointView RenderPoint(IChartPointView view)
@@ -279,6 +272,7 @@ namespace LiveCharts.Wpf
             RightSegment = new LineSegment(new Point(), false);
             LeftSegment = new LineSegment(new Point(), false);
             BottomSegment = new LineSegment(new Point(), false);
+            DefaultFillOpacity = 0.15;
         }
 
         #endregion

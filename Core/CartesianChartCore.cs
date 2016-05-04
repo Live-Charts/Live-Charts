@@ -21,6 +21,7 @@
 //SOFTWARE.
 
 using System;
+using System.Linq;
 
 namespace LiveCharts
 {
@@ -36,20 +37,56 @@ namespace LiveCharts
         {
             base.PrepareAxes();
 
+            if (View.Series.Any(x => !(x.Model is ICartesianSeries)))
+                throw new Exception("There is a no cartesian series in SeriesCollection");
+
+            var xMode = AxisLimitsMode.Stretch;
+            var yMode = AxisLimitsMode.Stretch;
+
+            foreach (var cartesianSeries in View.Series.Select(x => x.Model).Cast<ICartesianSeries>())
+            {
+                xMode = cartesianSeries.XAxisMode < xMode ? xMode : cartesianSeries.XAxisMode;
+                yMode = cartesianSeries.YAxisMode < yMode ? yMode : cartesianSeries.YAxisMode;
+            }
+
             foreach (var xi in AxisX)
             {
                 xi.CalculateSeparator(this, AxisTags.X);
-                //if (!Invert) continue;
-                if (xi.MaxValue == null) xi.MaxLimit = (Math.Round(xi.MaxLimit / xi.S) + 1) * xi.S;
-                if (xi.MinValue == null) xi.MinLimit = (Math.Truncate(xi.MinLimit / xi.S) - 1) * xi.S;
+                switch (xMode)
+                {
+                    case AxisLimitsMode.Stretch:
+                        break;
+                    case AxisLimitsMode.HalfSparator:
+                        if (xi.MaxValue == null) xi.MaxLimit = (Math.Round(xi.MaxLimit/xi.S) + .5)*xi.S;
+                        if (xi.MinValue == null) xi.MinLimit = (Math.Truncate(xi.MinLimit/xi.S) - .5)*xi.S;
+                        break;
+                    case AxisLimitsMode.OneSeparator:
+                        if (xi.MaxValue == null) xi.MaxLimit = (Math.Round(xi.MaxLimit/xi.S) + 1)*xi.S;
+                        if (xi.MinValue == null) xi.MinLimit = (Math.Truncate(xi.MinLimit/xi.S) - 1)*xi.S;
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
             }
 
             foreach (var yi in AxisY)
             {
                 yi.CalculateSeparator(this, AxisTags.Y);
-                //if (Invert) continue;
-                if (yi.MaxValue == null) yi.MaxLimit = (Math.Round(yi.MaxLimit / yi.S) + 1) * yi.S;
-                if (yi.MinValue == null) yi.MinLimit = (Math.Truncate(yi.MinLimit / yi.S) - 1) * yi.S;
+                switch (yMode)
+                {
+                    case AxisLimitsMode.Stretch:
+                        break;
+                    case AxisLimitsMode.HalfSparator:
+                        if (yi.MaxValue == null) yi.MaxLimit = (Math.Round(yi.MaxLimit/yi.S) + .5)*yi.S;
+                        if (yi.MinValue == null) yi.MinLimit = (Math.Truncate(yi.MinLimit/yi.S) - .5)*yi.S;
+                        break;
+                    case AxisLimitsMode.OneSeparator:
+                        if (yi.MaxValue == null) yi.MaxLimit = (Math.Round(yi.MaxLimit/yi.S) + 1)*yi.S;
+                        if (yi.MinValue == null) yi.MinLimit = (Math.Truncate(yi.MinLimit/yi.S) - 1)*yi.S;
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
             }
 
             CalculateComponentsAndMargin();

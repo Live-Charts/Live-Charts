@@ -25,11 +25,16 @@ using System.Linq;
 
 namespace LiveCharts
 {
-    public class LineAlgorithm : SeriesCore
+    public class LineAlgorithm : SeriesCore, ICartesianSeries
     {
         public LineAlgorithm(ISeriesView view) : base(view)
         {
+            XAxisMode = AxisLimitsMode.Stretch;
+            YAxisMode = AxisLimitsMode.OneSeparator;
         }
+
+        public AxisLimitsMode XAxisMode { get; set; }
+        public AxisLimitsMode YAxisMode { get; set; }
 
         public override void Update()
         {

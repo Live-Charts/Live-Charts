@@ -24,6 +24,11 @@ using System;
 
 namespace LiveCharts
 {
+    public enum AxisLimitsMode
+    {
+        Stretch, HalfSparator, OneSeparator
+    }
+
     public enum AxisPosition
     {
         LeftBottom, RightTop
@@ -176,5 +181,11 @@ namespace LiveCharts
     public interface IObservableChartPoint
     {
         event Action<object> PointChanged;
+    }
+
+    public interface ICartesianSeries
+    {
+        AxisLimitsMode XAxisMode { get; set; }
+        AxisLimitsMode YAxisMode { get; set; }
     }
 }

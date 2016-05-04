@@ -39,7 +39,9 @@ namespace LiveCharts.Wpf.Components
     public abstract class Chart : UserControl, IChartView
     {
         protected ChartCore ChartCoreModel;
-       
+
+        #region Contructors
+
         protected Chart()
         {
             Canvas = new Canvas();
@@ -61,8 +63,8 @@ namespace LiveCharts.Wpf.Components
             SetValue(AxisXProperty, new List<Axis>());
             SetValue(AxisYProperty, new List<Axis>());
 
-            if (RandomizeStartingColor) 
-                CurrentColorIndex = Randomizer.Next(0, Colors.Count - 1);
+            if (RandomizeStartingColor)
+                SeriesIndexCount = Randomizer.Next(0, Colors.Count);
 
             ResizeTimer = new DispatcherTimer {Interval = TimeSpan.FromMilliseconds(100)};
             ResizeTimer.Tick += (sender, args) =>
@@ -121,17 +123,22 @@ namespace LiveCharts.Wpf.Components
             Randomizer = new Random();
         }
 
-        
+        #endregion
+
+        #region Properties
+
         protected Canvas Canvas { get; set; }
         internal Canvas DrawMargin { get; set; }
+        internal int SeriesIndexCount { get; set; }
 
         private static Random Randomizer { get; set; }
         public static bool RandomizeStartingColor { get; set; }
 
         public static List<Color> Colors { get; set; }
-        public int CurrentColorIndex { get; set; }
 
         public DispatcherTimer ResizeTimer { get; set; }
+
+        #endregion
 
         #region Dependency Properties
 

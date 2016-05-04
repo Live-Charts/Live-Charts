@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Windows;
+using System.Windows.Media;
 using LiveCharts;
 using LiveCharts.Wpf;
 
@@ -56,7 +57,7 @@ namespace Wpf
 
         private void AddSeriesOnClick(object sender, RoutedEventArgs e)
         {
-            var c = SeriesCollection.Count > 1 ? SeriesCollection[0].Values.Count : 5;
+            var c = SeriesCollection.Count > 0 ? SeriesCollection[0].Values.Count : 5;
 
             var values = new List<double>();
             var r = new Random();
@@ -65,8 +66,6 @@ namespace Wpf
             {
                 values.Add(r.NextDouble()*128);
             }
-
-            var vals = SeriesCollection[0].Values;
 
             SeriesCollection.Add(new LineSeries
             {

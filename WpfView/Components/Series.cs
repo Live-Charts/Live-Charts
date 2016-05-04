@@ -31,9 +31,18 @@ namespace LiveCharts.Wpf.Components
 {
     public abstract class Series : FrameworkElement, ISeriesView
     {
-        public SeriesCore Model { get; set; }
+
+        #region Contructors
+        protected Series()
+        {
+            DefaultFillOpacity = 0.35;
+        }
+        #endregion
 
         #region Properties
+        internal double DefaultFillOpacity { get; set; }
+
+        public SeriesCore Model { get; set; }
 
         public static readonly DependencyProperty ValuesProperty = DependencyProperty.Register(
             "Values", typeof (IChartValues), typeof (Series),
@@ -245,9 +254,16 @@ namespace LiveCharts.Wpf.Components
 
         public virtual void OnSeriesUpdateStart()
         {
-#if DEBUG
-            Debug.WriteLine("Series Update Started, concider override this method");
-#endif
+            var wpfChart = Model.Chart.View as Chart;
+            if (wpfChart == null) return;
+
+            var index = Stroke == null || Fill == null ? wpfChart.SeriesIndexCount++ : 0;
+
+            if (Stroke == null)
+                SetValue(StrokeProperty, new SolidColorBrush(Chart.GetDefaultColor(index)));
+            if (Fill == null)
+                SetValue(FillProperty,
+                    new SolidColorBrush(Chart.GetDefaultColor(index)) {Opacity = DefaultFillOpacity});
         }
 
         public virtual void Erase()
