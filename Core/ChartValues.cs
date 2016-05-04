@@ -35,11 +35,13 @@ namespace LiveCharts
     {
         public ChartValues()
         {
+            ReportOldItems = false;
             Primitives = new Dictionary<int, ChartPoint>();
             Generics = new Dictionary<T, ChartPoint>();
-            CollectionChanged += () =>
+            CollectionChanged += oldItems =>
             {
-                if (Series != null && Series.Chart != null) Series.Chart.Updater.Run();
+                if (Series != null && Series.Chart != null)
+                    Series.Chart.Updater.Run();
             };
         }
 
@@ -181,7 +183,7 @@ namespace LiveCharts
         private IEnumerable<ChartPoint> GetGarbagePoints()
         {
             return Generics.Values.Where(x => x.GarbageCollectorIndex < GarbageCollectorIndex)
-                .Concat(Primitives.Values.Where(y => y.GarbageCollectorIndex < GarbageCollectorIndex ));
+                .Concat(Primitives.Values.Where(y => y.GarbageCollectorIndex < GarbageCollectorIndex));
         }
 
         private SeriesConfiguration<T> GetConfig()

@@ -21,11 +21,11 @@
 //SOFTWARE.
 
 using System;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media;
-using LiveCharts.CrossNet;
 
 namespace LiveCharts.Wpf.Components
 {
@@ -245,20 +245,21 @@ namespace LiveCharts.Wpf.Components
 
         public virtual void OnSeriesUpdateStart()
         {
+#if DEBUG
+            Debug.WriteLine("Series Update Started, concider override this method");
+#endif
         }
 
-        public void Erase()
+        public virtual void Erase()
         {
             throw new NotImplementedException();
         }
 
         public virtual void OnSeriesUpdatedFinish()
         {
-        }
-
-        public virtual void EraseMeIfYOuSeeMe()
-        {
-            throw new NotImplementedException();
+#if DEBUG
+            Debug.WriteLine("Series Update Finished, concider override tuis method");
+#endif
         }
 
         protected static PropertyChangedCallback CalChartUpdater(bool animate = false)

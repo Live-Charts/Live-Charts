@@ -20,20 +20,22 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
+using System.Collections;
+using System.Linq;
 using LiveCharts.CrossNet;
 
 namespace LiveCharts
 {
     public class SeriesCollection : GossipCollection<ISeriesView>
     {
+        #region Contructors
+
         public SeriesCollection()
         {
+            ReportOldItems = true;
             Configuration = new SeriesConfiguration<double>().X((v, i) => i).Y(v => v);
 
-            CollectionChanged += () =>
-            {
-                if (Chart != null) Chart.Updater.Run();
-            };
+            CollectionChanged += OnCollectionChanged;
         }
 
         public SeriesCollection(SeriesConfiguration configuration)
@@ -41,6 +43,8 @@ namespace LiveCharts
             Configuration = configuration;
         }
 
+        #endregion
+        
         public ChartCore Chart { get; set; }
         public SeriesConfiguration Configuration { get; set; }
 
@@ -55,5 +59,16 @@ namespace LiveCharts
             Configuration = config;
             return this;
         }
+
+        private void OnCollectionChanged(object oldItems)
+        {
+            var oldSeresView = oldItems as IList;
+
+            if (oldSeresView != null)
+                foreach (var seriesView in oldSeresView.Cast<ISeriesView>()) seriesView.Erase();
+
+            if (Chart != null) Chart.Updater.Run();
+        }
+
     }
 }

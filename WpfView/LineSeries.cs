@@ -28,6 +28,7 @@ using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
+using LiveCharts.CrossNet;
 using LiveCharts.Wpf.Components;
 using LiveCharts.Wpf.Points;
 
@@ -35,12 +36,7 @@ namespace LiveCharts.Wpf
 {
     public class LineSeries : Series, ILineSeriesView
     {
-        private PathFigure _pathFigure;
-        private readonly LineSegment _right = new LineSegment(new Point(), false);
-        private readonly LineSegment _bottom = new LineSegment(new Point(), false);
-        private readonly LineSegment _left = new LineSegment(new Point(), false);
-
-        private bool _isInView;
+        #region Contructors
 
         public LineSeries()
         {
@@ -54,6 +50,19 @@ namespace LiveCharts.Wpf
             Configuration = configuration;
             InitializeDefuaults();
         }
+
+        #endregion
+
+        #region Private Properties
+        private PathFigure Figure { get; set; }
+        private LineSegment RightSegment { get; set; }
+        private LineSegment BottomSegment { get; set; }
+        private LineSegment LeftSegment { get; set; }
+        private Path Path { get; set; }
+        private bool IsInView { get; set; }
+        #endregion
+
+#region Properties
 
         public static readonly DependencyProperty PointDiameterProperty = DependencyProperty.Register(
             "PointDiameter", typeof (double), typeof (LineSeries), 
@@ -84,39 +93,42 @@ namespace LiveCharts.Wpf
             get { return (double) GetValue(LineSmoothnessProperty); }
             set { SetValue(LineSmoothnessProperty, value); }
         }
+        #endregion
+
+#region Overriden Methods
 
         public override void OnSeriesUpdateStart()
         {
-            if (_isInView) return;
+            if (IsInView) return;
 
-            _isInView = true;
+            IsInView = true;
 
-            var path = new Path();
-            BindingOperations.SetBinding(path, Shape.StrokeProperty,
+            Path = new Path();
+            BindingOperations.SetBinding(Path, Shape.StrokeProperty,
                     new Binding { Path = new PropertyPath("Stroke"), Source = this });
-            BindingOperations.SetBinding(path, Shape.FillProperty,
+            BindingOperations.SetBinding(Path, Shape.FillProperty,
                 new Binding { Path = new PropertyPath("Fill"), Source = this });
-            BindingOperations.SetBinding(path, Shape.StrokeThicknessProperty,
+            BindingOperations.SetBinding(Path, Shape.StrokeThicknessProperty,
                 new Binding { Path = new PropertyPath("StrokeThickness"), Source = this });
-            BindingOperations.SetBinding(path, VisibilityProperty,
+            BindingOperations.SetBinding(Path, VisibilityProperty,
                 new Binding { Path = new PropertyPath("Visibility"), Source = this });
-            BindingOperations.SetBinding(path, Panel.ZIndexProperty,
+            BindingOperations.SetBinding(Path, Panel.ZIndexProperty,
                 new Binding { Path = new PropertyPath(Panel.ZIndexProperty), Source = this });
-            BindingOperations.SetBinding(path, Shape.StrokeDashArrayProperty,
+            BindingOperations.SetBinding(Path, Shape.StrokeDashArrayProperty,
                 new Binding { Path = new PropertyPath(StrokeDashArrayProperty), Source = this });
             var geometry = new PathGeometry();
-            _pathFigure = new PathFigure();
-            geometry.Figures.Add(_pathFigure);
-            path.Data = geometry;
-            Model.Chart.View.AddToDrawMargin(path);
+            Figure = new PathFigure();
+            geometry.Figures.Add(Figure);
+            Path.Data = geometry;
+            Model.Chart.View.AddToDrawMargin(Path);
 
             var xIni = ChartFunctions.ToDrawMargin(Values.MinChartPoint.X, AxisTags.X, Model.Chart, ScalesXAt);
             var xEnd = ChartFunctions.ToDrawMargin(Values.MaxChartPoint.X, AxisTags.X, Model.Chart, ScalesXAt);
 
-            _pathFigure.StartPoint = new Point(xIni, Model.Chart.DrawMargin.Height);
-            _right.Point = new Point(xEnd, Model.Chart.DrawMargin.Height);
-            _bottom.Point = new Point(xIni, Model.Chart.DrawMargin.Height);
-            _left.Point = new Point(xIni, Model.Chart.DrawMargin.Height);
+            Figure.StartPoint = new Point(xIni, Model.Chart.DrawMargin.Height);
+            RightSegment.Point = new Point(xEnd, Model.Chart.DrawMargin.Height);
+            BottomSegment.Point = new Point(xIni, Model.Chart.DrawMargin.Height);
+            LeftSegment.Point = new Point(xIni, Model.Chart.DrawMargin.Height);
 
             var wpfChart = Model.Chart.View as Chart;
             if (wpfChart == null) return;
@@ -125,7 +137,7 @@ namespace LiveCharts.Wpf
                 SetValue(StrokeProperty, new SolidColorBrush(Chart.GetDefaultColor(wpfChart.Series.IndexOf(this))));
             if (Fill == null)
                 SetValue(FillProperty,
-                    new SolidColorBrush(Chart.GetDefaultColor(wpfChart.Series.IndexOf(this))) { Opacity = 0.35 });
+                    new SolidColorBrush(Chart.GetDefaultColor(wpfChart.Series.IndexOf(this))) {Opacity = 0.35});
         }
 
         public override IChartPointView RenderPoint(IChartPointView view)
@@ -139,7 +151,7 @@ namespace LiveCharts.Wpf
                 pbv = new HorizontalBezierView
                 {
                     Segment = new BezierSegment(),
-                    Container = _pathFigure,
+                    Container = Figure,
                     IsNew = true
                 };
             }
@@ -208,23 +220,23 @@ namespace LiveCharts.Wpf
 
         public override void OnSeriesUpdatedFinish()
         {
-            _pathFigure.Segments.Remove(_right);
-            _pathFigure.Segments.Remove(_bottom);
-            _pathFigure.Segments.Remove(_left);
+            Figure.Segments.Remove(RightSegment);
+            Figure.Segments.Remove(BottomSegment);
+            Figure.Segments.Remove(LeftSegment);
 
-            _pathFigure.Segments.Add(_right);
-            _pathFigure.Segments.Add(_bottom);
-            _pathFigure.Segments.Insert(0, _left);
+            Figure.Segments.Add(RightSegment);
+            Figure.Segments.Add(BottomSegment);
+            Figure.Segments.Insert(0, LeftSegment);
 
             var xIni = ChartFunctions.ToDrawMargin(Values.MinChartPoint.X, AxisTags.X, Model.Chart, ScalesXAt);
             var xEnd = ChartFunctions.ToDrawMargin(Values.MaxChartPoint.X, AxisTags.X, Model.Chart, ScalesXAt);
 
             if (Model.Chart.View.DisableAnimations)
             {
-                _pathFigure.StartPoint = new Point(xIni, Model.Chart.DrawMargin.Height);
-                _right.Point = new Point(xEnd, Model.Chart.DrawMargin.Height);
-                _bottom.Point = new Point(xIni, Model.Chart.DrawMargin.Height);
-                _left.Point =
+                Figure.StartPoint = new Point(xIni, Model.Chart.DrawMargin.Height);
+                RightSegment.Point = new Point(xEnd, Model.Chart.DrawMargin.Height);
+                BottomSegment.Point = new Point(xIni, Model.Chart.DrawMargin.Height);
+                LeftSegment.Point =
                     ChartFunctions.ToDrawMargin(Values.Points.FirstOrDefault(), ScalesXAt, ScalesYAt, Model.Chart)
                         .AsPoint();
             }
@@ -232,21 +244,31 @@ namespace LiveCharts.Wpf
             {
                 var ansp = Model.Chart.View.AnimationsSpeed;
 
-                _pathFigure.BeginAnimation(PathFigure.StartPointProperty,
+                Figure.BeginAnimation(PathFigure.StartPointProperty,
                     new PointAnimation(new Point(xIni, Model.Chart.DrawMargin.Height), ansp));
 
-                _right.BeginAnimation(LineSegment.PointProperty,
+                RightSegment.BeginAnimation(LineSegment.PointProperty,
                     new PointAnimation(new Point(xEnd, Model.Chart.DrawMargin.Height), ansp));
 
-                _bottom.BeginAnimation(LineSegment.PointProperty,
+                BottomSegment.BeginAnimation(LineSegment.PointProperty,
                     new PointAnimation(new Point(xIni, Model.Chart.DrawMargin.Height), ansp));
 
-                _left.BeginAnimation(LineSegment.PointProperty,
+                LeftSegment.BeginAnimation(LineSegment.PointProperty,
                     new PointAnimation(
                         ChartFunctions.ToDrawMargin(Values.Points.FirstOrDefault(), ScalesXAt, ScalesYAt, Model.Chart)
                             .AsPoint(), ansp));
             }
         }
+
+        public override void Erase()
+        {
+            Values.Points.ForEach(p => p.View.RemoveFromView(Model.Chart));
+            Model.Chart.View.RemoveFromDrawMargin(Path);
+        }
+
+        #endregion
+
+        #region Private Methods
 
         private void InitializeDefuaults()
         {
@@ -254,6 +276,11 @@ namespace LiveCharts.Wpf
             SetValue(PointDiameterProperty, 8d);
             SetValue(PointForeroundProperty, Brushes.White);
             SetValue(StrokeThicknessProperty, 2d);
+            RightSegment = new LineSegment(new Point(), false);
+            LeftSegment = new LineSegment(new Point(), false);
+            BottomSegment = new LineSegment(new Point(), false);
         }
+
+        #endregion
     }
 }

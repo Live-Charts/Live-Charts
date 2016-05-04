@@ -27,13 +27,16 @@ using System.Linq;
 
 namespace LiveCharts.CrossNet
 {
+    public delegate void GossipCollectionCollectionChanged(object oldItems);
+
     //To support multuple .net versions and platforms, lets create our "own" specialized observablecollection
-    public interface IGossipCollection
+    public interface IGossipCollection : IEnumerable
     {
-        event Action CollectionChanged;
+        event GossipCollectionCollectionChanged CollectionChanged;
 
         object this[int index] { get; set; }
         int Count { get; }
+        bool ReportOldItems { get; }
 
         int Add(object item);
         int AddRange(IEnumerable<object> items);
@@ -45,8 +48,7 @@ namespace LiveCharts.CrossNet
         void Clear();
 
         bool Contains(object item);
-        int IndexOf(object item);
-    }
+        int IndexOf(object item);}
 
     public class GossipCollection<T> : IGossipCollection, IEnumerable<T>
     {
@@ -67,9 +69,19 @@ namespace LiveCharts.CrossNet
         {
             _source = new List<T>(source);
         }
-#endregion
+        #endregion
 
-        public event Action CollectionChanged;
+#region Events
+
+        event GossipCollectionCollectionChanged IGossipCollection.CollectionChanged
+        {
+            add { CollectionChanged += value; }
+            remove { CollectionChanged -= value; }
+        }
+
+        public event GossipCollectionCollectionChanged CollectionChanged;
+
+#endregion
 
         public T this[int index]
         {
@@ -83,103 +95,115 @@ namespace LiveCharts.CrossNet
         }
 
         public int Count { get { return _source.Count; } }
+        public bool ReportOldItems { get; protected set; }
+
+#region Add
 
         public int Add(T item)
         {
             _source.Add(item);
-            NotifyCollectionChanged();
+            OnCollectionChanged();
             return _source.Count;
         }
 
         int IGossipCollection.Add(object item)
         {
             _source.Add((T) item);
-            NotifyCollectionChanged();
+            OnCollectionChanged();
             return _source.Count;
         }
-
 
         public int AddRange(IEnumerable<T> items)
         {
            _source.AddRange(items);
-            NotifyCollectionChanged();
+            OnCollectionChanged();
             return _source.Count;
         }
 
         int IGossipCollection.AddRange(IEnumerable<object> items)
         {
             _source.AddRange(items.Cast<T>());
-            NotifyCollectionChanged();
+            OnCollectionChanged();
             return _source.Count;
         }
 
         public int Insert(int index, T item)
         {
             _source.Insert(index, item);
-            NotifyCollectionChanged();
+            OnCollectionChanged();
             return _source.Count;
         }
 
         int IGossipCollection.Insert(int index, object item)
         {
             _source.Insert(index, (T) item);
-            NotifyCollectionChanged();
+            OnCollectionChanged();
             return _source.Count;
         }
 
         public int InsertRange(int index, IEnumerable<T> items)
         {
             _source.InsertRange(index, items);
-            NotifyCollectionChanged();
+            OnCollectionChanged();
             return _source.Count;
         }
         int IGossipCollection.InsertRange(int index, IEnumerable<object> items)
         {
             _source.InsertRange(index, items.Cast<T>());
-            NotifyCollectionChanged();
+            OnCollectionChanged();
             return _source.Count;
         }
+
+#endregion
+
+#region Remove
 
         public int Remove(T item)
         {
             _source.Remove(item);
-            NotifyCollectionChanged();
+            OnCollectionChanged(ReportOldItems ? new List<T> {item} : null);
             return _source.Count;
         }
 
         int IGossipCollection.Remove(object item)
         {
             _source.Remove((T) item);
-            NotifyCollectionChanged();
+            OnCollectionChanged(ReportOldItems ? new List<T> {(T) item} : null);
             return _source.Count;
         }
 
         public int RemoveAt(int index)
         {
+            var removedItem = ReportOldItems ? new List<T> {_source[index]} : null;
             _source.RemoveAt(index);
-            NotifyCollectionChanged();
+            OnCollectionChanged(removedItem);
             return _source.Count;
         }
 
         public int RemoveRange(int index, int count)
         {
+            var range = ReportOldItems ? _source.Skip(index).Take(count).ToList() : null;
             _source.RemoveRange(index, count);
-            NotifyCollectionChanged();
+            OnCollectionChanged(range);
             return _source.Count;
         }
 
-        public int RemoveAll(Predicate<T> preicate)
+        public int RemoveAll(Predicate<T> predicate)
         {
-            _source.RemoveAll(preicate);
-            NotifyCollectionChanged();
+            var matches = ReportOldItems ? _source.Where(x => predicate(x)).ToList() : null;
+            _source.RemoveAll(predicate);
+            OnCollectionChanged(matches);
             return _source.Count;
         }
 
         public void Clear()
         {
+            var removed = ReportOldItems ? _source.Select(x => x).ToList() : null;
             _source.Clear();
-            NotifyCollectionChanged();
+            OnCollectionChanged(removed);
         }
+
+#endregion
 
         public bool Contains(T item)
         {
@@ -199,12 +223,6 @@ namespace LiveCharts.CrossNet
             return _source.IndexOf((T) item);
         }
 
-        private void NotifyCollectionChanged()
-        {
-            if (CollectionChanged != null)
-                CollectionChanged.Invoke();
-        }
-
         public IEnumerator<T> GetEnumerator()
         {
             return _source.GetEnumerator();
@@ -213,6 +231,11 @@ namespace LiveCharts.CrossNet
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
+        }
+
+        private void OnCollectionChanged(object olditems = null)
+        {
+            if (CollectionChanged != null) CollectionChanged.Invoke(olditems);
         }
     }
 }
