@@ -38,9 +38,11 @@ namespace LiveCharts
 
         public override void Update()
         {
-            ChartPoint previous = null;
+            ChartPoint previousDrawn = null;
 
             var points = View.Values.Points.ToList();
+            var fx = CurentXAxis.GetFormatter();
+            var fy = CurrentYAxis.GetFormatter();
 
             var p0 = points.Count > 0
                 ? ChartFunctions.ToDrawMargin(points[0], View.ScalesXAt, View.ScalesYAt, Chart)
@@ -94,14 +96,15 @@ namespace LiveCharts
                 var c2X = xm2 + (xc2 - xm2)*smoothness + p2.X - xm2;
                 var c2Y = ym2 + (yc2 - ym2)*smoothness + p2.Y - ym2;
 
-                chartPoint.View = View.RenderPoint(chartPoint.View);
+                chartPoint.View = View.RenderPoint(chartPoint.View,
+                    View.DataLabels ? fx(chartPoint.X) + ", " + fy(chartPoint.Y) : null);
                 chartPoint.View.Location = p1;
 
                 var bezierView = chartPoint.View as IBezierData;
                 if (bezierView == null) continue;
 
                 bezierView.Data = index == points.Count - 1
-                    ? new BezierData(new LvcPoint(p2.X, p2.Y))
+                    ? new BezierData(new LvcPoint(p1.X, p1.Y))
                     : new BezierData
                     {
                         Point1 = index == 0 ? new LvcPoint(p1.X, p1.Y) : new LvcPoint(c1X, c1Y),
@@ -109,9 +112,12 @@ namespace LiveCharts
                         Point3 = new LvcPoint(p2.X, p2.Y)
                     };
 
-                chartPoint.View.DrawOrMove(previous, chartPoint, index, Chart);
+                chartPoint.View.DrawOrMove(previousDrawn, chartPoint, index, Chart);
 
-                previous = chartPoint;
+                previousDrawn = chartPoint.View.IsNew
+                    ? previousDrawn
+                    : chartPoint;
+
                 p0 = new LvcPoint(p1);
                 p1 = new LvcPoint(p2);
                 p2 = new LvcPoint(p3);

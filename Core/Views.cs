@@ -70,11 +70,12 @@ namespace LiveCharts
     {
         SeriesCore Model { get; set; }
         IChartValues Values { get; set; }
+        bool DataLabels { get; }
         int ScalesXAt { get; set; }
         int ScalesYAt { get; set; }
         SeriesConfiguration Configuration { get; set; }
 
-        IChartPointView RenderPoint(IChartPointView view);
+        IChartPointView RenderPoint(IChartPointView view, string label);
         void OnSeriesUpdateStart();
         void Erase();
         void OnSeriesUpdatedFinish();
@@ -123,7 +124,7 @@ namespace LiveCharts
     {
         bool IsNew { get; set; }
         LvcPoint Location { get; set; }
-        void DrawOrMove(object previous, object current, int index, ChartCore chart);
+        void DrawOrMove(object previousDrawn, object current, int index, ChartCore chart);
         void RemoveFromView(ChartCore chart);
     }
 }

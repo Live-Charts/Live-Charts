@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Windows;
-using System.Windows.Media;
 using LiveCharts;
 using LiveCharts.Wpf;
 
@@ -21,7 +19,8 @@ namespace Wpf
             {
                 new LineSeries
                 {
-                    Values = new ChartValues<double> {0, 2, 4, 8, 16, 32, 64}
+                    Values = new ChartValues<double> {3},
+                    DataLabels = true
                 }
             };
             DataContext = this;

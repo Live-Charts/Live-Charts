@@ -33,6 +33,14 @@ namespace LiveCharts
         public ChartCore Chart { get; set; }
         public SeriesCollection SeriesCollection { get; set; }
         public string Title { get; set; }
+        public AxisCore CurentXAxis
+        {
+            get { return Chart.AxisX[View.ScalesXAt]; }
+        }
+        public AxisCore CurrentYAxis
+        {
+            get { return Chart.AxisY[View.ScalesYAt]; }
+        }
 
         public abstract void Update();
     }

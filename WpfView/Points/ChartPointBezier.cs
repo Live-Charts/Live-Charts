@@ -36,35 +36,17 @@ namespace LiveCharts.Wpf.Points
         public PathFigure Container { get; set; }
         public BezierData Data { get; set; }
 
-        public override void DrawOrMove(object previous, object current, int index, ChartCore chart)
+        public override void DrawOrMove(object previousDrawn, object current, int index, ChartCore chart)
         {
-            var previosCp = (ChartPoint) previous;
+            var previosCp = (ChartPoint) previousDrawn;
             var previosPbv = previosCp == null ? null : (HorizontalBezierView) previosCp.View;
 
-            var y = chart.DrawMargin.Left + chart.DrawMargin.Width;
+            var y = chart.DrawMargin.Top + chart.DrawMargin.Height;
 
             Container.Segments.Remove(Segment);
             Container.Segments.Insert(index, Segment);
 
             if (IsNew)
-            {
-                Segment.Point1 = new Point(Data.Point1.X, y);
-                Segment.Point2 = new Point(Data.Point2.X, y);
-                Segment.Point3 = new Point(Data.Point3.X, y);
-
-                if (DataLabel != null)
-                {
-                    Canvas.SetTop(DataLabel, y);
-                    Canvas.SetLeft(DataLabel, Location.X - DataLabel.ActualWidth*.5);
-                }
-
-                if (Ellipse != null)
-                {
-                    Canvas.SetTop(Ellipse, y);
-                    Canvas.SetLeft(Ellipse, Location.X - Ellipse.Width*.5);
-                }
-            }
-            else
             {
                 if (previosPbv != null && !previosPbv.IsNew)
                 {
@@ -74,19 +56,38 @@ namespace LiveCharts.Wpf.Points
 
                     if (DataLabel != null)
                     {
+                        Canvas.SetTop(DataLabel, Canvas.GetTop(previosPbv.DataLabel));
+                        Canvas.SetLeft(DataLabel, Canvas.GetLeft(previosPbv.DataLabel));
+                    }
+
+                    if (Ellipse != null)
+                    {
+                        Canvas.SetTop(Ellipse, Canvas.GetTop(previosPbv.Ellipse));
+                        Canvas.SetLeft(Ellipse, Canvas.GetLeft(previosPbv.Ellipse));
+                    }
+                }
+                else
+                {
+                    Segment.Point1 = new Point(Data.Point1.X, y);
+                    Segment.Point2 = new Point(Data.Point2.X, y);
+                    Segment.Point3 = new Point(Data.Point3.X, y);
+
+                    if (DataLabel != null)
+                    {
                         Canvas.SetTop(DataLabel, y);
-                        Canvas.SetLeft(DataLabel, Location.X - DataLabel.ActualWidth * .5);
+                        Canvas.SetLeft(DataLabel, Location.X - DataLabel.ActualWidth*.5);
                     }
 
                     if (Ellipse != null)
                     {
                         Canvas.SetTop(Ellipse, y);
-                        Canvas.SetLeft(Ellipse, Location.X - Ellipse.Width * .5);
+                        Canvas.SetLeft(Ellipse, Location.X - Ellipse.Width*.5);
                     }
                 }
             }
 
-            #region No-Animated
+            #region No Animated
+
             if (chart.View.DisableAnimations)
             {
                 Segment.Point1 = Data.Point1.AsPoint();
@@ -113,6 +114,7 @@ namespace LiveCharts.Wpf.Points
                 }
                 return;
             }
+
             #endregion
 
             Segment.BeginAnimation(BezierSegment.Point1Property,
@@ -133,11 +135,14 @@ namespace LiveCharts.Wpf.Points
             if (DataLabel != null)
             {
                 DataLabel.UpdateLayout();
-                
+
+                var xl = CorrectXLabel(Location.X - DataLabel.ActualWidth*.5, chart);
+                var yl = CorrectYLabel(Location.Y - DataLabel.ActualHeight*.5, chart);
+
                 DataLabel.BeginAnimation(Canvas.LeftProperty,
-                    new DoubleAnimation(Location.X - DataLabel.ActualWidth*.5, chart.View.AnimationsSpeed));
+                    new DoubleAnimation(xl, chart.View.AnimationsSpeed));
                 DataLabel.BeginAnimation(Canvas.TopProperty,
-                    new DoubleAnimation(Location.Y - DataLabel.ActualWidth*.5, chart.View.AnimationsSpeed));
+                    new DoubleAnimation(yl, chart.View.AnimationsSpeed));
             }
 
             if (HoverShape != null)
@@ -153,6 +158,28 @@ namespace LiveCharts.Wpf.Points
             chart.View.RemoveFromDrawMargin(Ellipse);
             chart.View.RemoveFromDrawMargin(DataLabel);
             Container.Segments.Remove(Segment);
+        }
+
+        private double CorrectXLabel(double desiredPosition, ChartCore chart)
+        {
+            if (desiredPosition + DataLabel.ActualWidth > chart.DrawMargin.Width)
+                desiredPosition -= desiredPosition + DataLabel.ActualWidth - chart.DrawMargin.Width + 2;
+
+            if (desiredPosition < 0) desiredPosition = 0;
+
+            return desiredPosition;
+        }
+
+        private double CorrectYLabel(double desiredPosition, ChartCore chart)
+        {
+            desiredPosition -= Ellipse.ActualHeight*.5 + DataLabel.ActualHeight*.5 + 2;
+
+            if (desiredPosition + DataLabel.ActualHeight > chart.DrawMargin.Height)
+                desiredPosition -= desiredPosition + DataLabel.ActualHeight - chart.DrawMargin.Height + 2;
+
+            if (desiredPosition < 0) desiredPosition = 0;
+
+            return desiredPosition;
         }
     }
 }

@@ -133,7 +133,7 @@ namespace LiveCharts.Wpf
             base.OnSeriesUpdateStart();
         }
 
-        public override IChartPointView RenderPoint(IChartPointView view)
+        public override IChartPointView RenderPoint(IChartPointView view, string label)
         {
             var mhr = PointDiameter < 5 ? 5 : PointDiameter;
 
@@ -207,6 +207,8 @@ namespace LiveCharts.Wpf
 
                 Model.Chart.View.AddToDrawMargin(pbv.DataLabel);
             }
+
+            if (pbv.DataLabel != null) pbv.DataLabel.Text = label;
 
             return pbv;
         }

@@ -21,7 +21,9 @@
             <Button Margin="10" Padding="5" Width="30" Click="AddSeriesOnClick">+</Button>
             <Button Margin="0 10 10 10" Padding="5" Width="30" Click="RemoveSeriesOnClick">-</Button>
         </StackPanel>
-        <wpf:CartesianChart Grid.Row="1" Margin="10" Series="{Binding SeriesCollection}" DataClick="Chart_OnDataClick" >
+        <wpf:CartesianChart Grid.Row="1" Margin="10" Series="{Binding SeriesCollection}" 
+                            DataClick="Chart_OnDataClick"
+                            AnimationsSpeed="0:0:02">
             <wpf:CartesianChart.AxisY>
                 <wpf:Axis Title="Y Axis">
                     <wpf:Axis.Separator>
