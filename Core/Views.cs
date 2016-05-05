@@ -89,6 +89,7 @@ namespace LiveCharts
     public interface IAxisView
     {
         AxisCore Model { get; set; }
+        bool DisableAnimations { get; set; }
         double LabelsReference { get; set; }
         double UnitWidth { get; set; }
         bool ShowLabels { get; set; }

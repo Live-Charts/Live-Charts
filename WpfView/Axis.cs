@@ -31,6 +31,8 @@ namespace LiveCharts.Wpf
 {
     public class Axis : FrameworkElement, IAxisView
     {
+
+        #region Contructors
         public Axis()
         {
             TitleBlock = BindATextBlock();
@@ -40,6 +42,9 @@ namespace LiveCharts.Wpf
             TitleBlock.SetBinding(TextBlock.TextProperty,
                 new Binding {Path = new PropertyPath(TitleProperty), Source = this});
         }
+        #endregion
+
+        #region properties
 
         public AxisCore Model { get; set; }
         public TextBlock TitleBlock { get; set; }
@@ -47,73 +52,9 @@ namespace LiveCharts.Wpf
         public double UnitWidth { get; set; }
         public Dictionary<double, AxisSeparatorElement> Cache { get; set; }
 
-        public void RenderSeparator(SeparatorElementCore model, ChartCore chart)
-        {
-            AxisSeparatorElement ase;
+        #endregion
 
-            if (model.View == null)
-            {
-                ase = new AxisSeparatorElement(model)
-                {
-                    Line = BindALine(),
-                    TextBlock = BindATextBlock()
-                };
-                model.View = ase;
-                chart.View.AddToView(ase.Line);
-                chart.View.AddToView(ase.TextBlock);
-                Panel.SetZIndex(ase.Line, -1);
-            }
-            else
-            {
-                ase = (AxisSeparatorElement) model.View;
-            }
-
-            if (!Separator.IsEnabled)
-                ase.Line.Visibility = Visibility.Collapsed;
-            if (!ShowLabels)
-                ase.TextBlock.Visibility = Visibility.Collapsed;
-        }
-
-        public LvcSize UpdateTitle(ChartCore chart, double rotationAngle = 0)
-        {
-            if (TitleBlock.Parent == null)
-            {
-                if (Math.Abs(rotationAngle) > 1)
-                    TitleBlock.RenderTransform = new RotateTransform(rotationAngle);
-
-                chart.View.AddToView(TitleBlock);
-            }
-
-            TitleBlock.UpdateLayout();
-            return string.IsNullOrWhiteSpace(Title)
-                ? new LvcSize()
-                : new LvcSize(TitleBlock.RenderSize.Width, TitleBlock.RenderSize.Height);
-        }
-
-        public void SetTitleTop(double value)
-        {
-            Canvas.SetTop(TitleBlock, value);
-        }
-
-        public void SetTitleLeft(double value)
-        {
-            Canvas.SetLeft(TitleBlock, value);
-        }
-
-        public double GetTitleLeft()
-        {
-            return Canvas.GetLeft(TitleBlock);
-        }
-
-        public double GetTileTop()
-        {
-            return Canvas.GetTop(TitleBlock);
-        }
-
-        public LvcSize GetLabelSize()
-        {
-            return new LvcSize(TitleBlock.RenderSize.Width, TitleBlock.RenderSize.Height);
-        }
+        #region Dependency Properties
 
         public static readonly DependencyProperty LabelsProperty = DependencyProperty.Register(
             "Labels", typeof (IList<string>), typeof (Axis), 
@@ -334,10 +275,103 @@ namespace LiveCharts.Wpf
             set { SetValue(ForegroundProperty, value); }
         }
 
+        #endregion
+
+        #region Public Methods
+
         public void Clear()
         {
             Cache.Clear();
         }
+
+        public void RenderSeparator(SeparatorElementCore model, ChartCore chart)
+        {
+            AxisSeparatorElement ase;
+
+            if (model.View == null)
+            {
+                ase = new AxisSeparatorElement(model)
+                {
+                    Line = BindALine(),
+                    TextBlock = BindATextBlock()
+                };
+                model.View = ase;
+                chart.View.AddToView(ase.Line);
+                chart.View.AddToView(ase.TextBlock);
+                Panel.SetZIndex(ase.Line, -1);
+            }
+            else
+            {
+                ase = (AxisSeparatorElement)model.View;
+            }
+
+            if (!Separator.IsEnabled)
+                ase.Line.Visibility = Visibility.Collapsed;
+            if (!ShowLabels)
+                ase.TextBlock.Visibility = Visibility.Collapsed;
+        }
+
+        public LvcSize UpdateTitle(ChartCore chart, double rotationAngle = 0)
+        {
+            if (TitleBlock.Parent == null)
+            {
+                if (Math.Abs(rotationAngle) > 1)
+                    TitleBlock.RenderTransform = new RotateTransform(rotationAngle);
+
+                chart.View.AddToView(TitleBlock);
+            }
+
+            TitleBlock.UpdateLayout();
+            return string.IsNullOrWhiteSpace(Title)
+                ? new LvcSize()
+                : new LvcSize(TitleBlock.RenderSize.Width, TitleBlock.RenderSize.Height);
+        }
+
+        public void SetTitleTop(double value)
+        {
+            Canvas.SetTop(TitleBlock, value);
+        }
+
+        public void SetTitleLeft(double value)
+        {
+            Canvas.SetLeft(TitleBlock, value);
+        }
+
+        public double GetTitleLeft()
+        {
+            return Canvas.GetLeft(TitleBlock);
+        }
+
+        public double GetTileTop()
+        {
+            return Canvas.GetTop(TitleBlock);
+        }
+
+        public LvcSize GetLabelSize()
+        {
+            return new LvcSize(TitleBlock.RenderSize.Width, TitleBlock.RenderSize.Height);
+        }
+
+        public AxisCore AsCoreElement(ChartCore chart)
+        {
+            if (Model == null) Model = new AxisCore(this);
+
+            Model.ShowLabels = ShowLabels;
+            Model.Chart = chart;
+            Model.IsMerged = IsMerged;
+            Model.Labels = Labels;
+            Model.LabelFormatter = LabelFormatter;
+            Model.MaxValue = MaxValue;
+            Model.MinValue = MinValue;
+            Model.Title = Title;
+            Model.Position = Position;
+            Model.Separator = Separator.AsCoreElement(Model);
+            Model.DisableAnimations = DisableAnimations;
+
+            return Model;
+        }
+
+        #endregion
 
         internal TextBlock BindATextBlock()
         {
@@ -376,24 +410,6 @@ namespace LiveCharts.Wpf
                 new Binding {Path = new PropertyPath(VisibilityProperty), Source = s});
 
             return l;
-        }
-
-        public AxisCore AsCoreElement(ChartCore chart)
-        {
-            if (Model == null) Model = new AxisCore(this);
-
-            Model.ShowLabels = ShowLabels;
-            Model.Chart = chart;
-            Model.IsMerged = IsMerged;
-            Model.Labels = Labels;
-            Model.LabelFormatter = LabelFormatter;
-            Model.MaxValue = MaxValue;
-            Model.MinValue = MinValue;
-            Model.Title = Title;
-            Model.Position = Position;
-            Model.Separator = Separator.AsCoreElement(Model);
-
-            return Model;
         }
 
         private static PropertyChangedCallback UpdateChart(bool animate = false)

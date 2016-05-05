@@ -45,6 +45,7 @@ namespace LiveCharts
         public double? MaxValue { get; set; }
         public double? MinValue { get; set; }
         public string Title { get; set; }
+        public bool DisableAnimations { get; set; }
         public AxisPosition Position { get; set; }
         public bool IsMerged { get; set; }
         
