@@ -55,6 +55,11 @@ namespace LiveCharts
                 switch (xMode)
                 {
                     case AxisLimitsMode.Stretch:
+                        if (Math.Abs(xi.MaxLimit - xi.MinLimit) < xi.S*0.01)
+                        {
+                            xi.MinLimit = (Math.Round(xi.MaxLimit / xi.S) - 1) * xi.S;
+                            xi.MaxLimit = (Math.Round(xi.MaxLimit/xi.S) + 1)*xi.S;
+                        }
                         break;
                     case AxisLimitsMode.HalfSparator:
                         if (xi.MaxValue == null) xi.MaxLimit = (Math.Round(xi.MaxLimit/xi.S) + .5)*xi.S;
@@ -75,6 +80,11 @@ namespace LiveCharts
                 switch (yMode)
                 {
                     case AxisLimitsMode.Stretch:
+                        if (Math.Abs(yi.MaxLimit - yi.MinLimit) < yi.S*0.01)
+                        {
+                            yi.MinLimit = (Math.Round(yi.MaxLimit / yi.S) - 1) * yi.S;
+                            yi.MaxLimit = (Math.Round(yi.MaxLimit/yi.S) + 1)*yi.S;
+                        }
                         break;
                     case AxisLimitsMode.HalfSparator:
                         if (yi.MaxValue == null) yi.MaxLimit = (Math.Round(yi.MaxLimit/yi.S) + .5)*yi.S;

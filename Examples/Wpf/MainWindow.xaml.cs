@@ -50,7 +50,7 @@ namespace Wpf
 
             foreach (var series in SeriesCollection)
             {
-                if (series.Values.Count > 1)
+                if (series.Values.Count > 0)
                     series.Values.RemoveAt(r.Next(0, series.Values.Count));
             }
         }

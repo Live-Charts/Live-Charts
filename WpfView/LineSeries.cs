@@ -248,7 +248,7 @@ namespace LiveCharts.Wpf
 
                 LeftSegment.BeginAnimation(LineSegment.PointProperty,
                     new PointAnimation(
-                        ChartFunctions.ToDrawMargin(Values.Points.FirstOrDefault(), ScalesXAt, ScalesYAt, Model.Chart)
+                        ChartFunctions.ToDrawMargin(Values.Points.FirstOrDefault() ?? new ChartPoint(), ScalesXAt, ScalesYAt, Model.Chart)
                             .AsPoint(), ansp));
             }
         }
