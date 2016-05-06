@@ -498,7 +498,7 @@ namespace LiveCharts.Wpf.Components
         {
             var result = Series.SelectMany(x => x.Values.Points).FirstOrDefault(x =>
             {
-                var pointView = x.View as PointView;
+                var pointView = x.View as Points.PointView;
                 return pointView != null && Equals(pointView.HoverShape, sender);
             });
             if (DataClick != null) DataClick.Invoke(sender, result);

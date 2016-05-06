@@ -30,7 +30,7 @@ using LiveCharts.Wpf.Components;
 
 namespace LiveCharts.Wpf.Points
 {
-    public class HorizontalBezierView : PointView, IBezierData
+    public class HBezierPointView : PointView, IBezierData
     {
         public BezierSegment Segment { get; set; }
         public Ellipse Ellipse { get; set; }
@@ -40,7 +40,7 @@ namespace LiveCharts.Wpf.Points
         public override void DrawOrMove(object previousDrawn, object current, int index, ChartCore chart)
         {
             var previosCp = (ChartPoint) previousDrawn;
-            var previosPbv = previosCp == null ? null : (HorizontalBezierView) previosCp.View;
+            var previosPbv = previosCp == null ? null : (HBezierPointView) previosCp.View;
 
             var y = chart.DrawMargin.Top + chart.DrawMargin.Height;
 

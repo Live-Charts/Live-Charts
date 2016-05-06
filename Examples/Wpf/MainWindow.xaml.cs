@@ -19,8 +19,7 @@ namespace Wpf
             {
                 new LineSeries
                 {
-                    Values = new ChartValues<double> {double.NaN, 8, 16, double.NaN, 3, 2, double.NaN, 5, double.NaN},
-                    DataLabels = true
+                    Values = new ChartValues<double> {2, 3, 5, 2, double.NaN}
                 }
             };
             DataContext = this;
@@ -39,6 +38,8 @@ namespace Wpf
 
             foreach (var series in SeriesCollection)
             {
+                var next = r.NextDouble();
+                //series.Values.Add((next > .85 ? double.NaN : next*128));
                 series.Values.Add(r.NextDouble()*128);
             }
         }

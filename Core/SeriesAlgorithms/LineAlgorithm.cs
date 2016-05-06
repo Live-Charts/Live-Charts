@@ -39,8 +39,6 @@ namespace LiveCharts.SeriesAlgorithms
 
         public override void Update()
         {
-            ChartPoint previousDrawn = null;
-
             var points = View.Values.Points.ToList();
             var fx = CurentXAxis.GetFormatter();
             var fy = CurrentYAxis.GetFormatter();
@@ -69,6 +67,8 @@ namespace LiveCharts.SeriesAlgorithms
 
                 lineView.StartSegment(segmentPosition, p1);
                 segmentPosition += segmentPosition == 0 ? 1 : 2;
+
+                ChartPoint previousDrawn = null;
 
                 for (var index = 0; index < segment.Count; index++)
                 {

@@ -27,6 +27,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using LiveCharts.Helpers;
 using LiveCharts.SeriesAlgorithms;
@@ -118,7 +119,13 @@ namespace LiveCharts.Wpf
             if (Figure != null)
             {
                 var xIni = ChartFunctions.ToDrawMargin(Values.MinChartPoint.X, AxisTags.X, Model.Chart, ScalesXAt);
-                Figure.StartPoint = new Point(xIni, Model.Chart.DrawMargin.Height);
+
+                if (Model.Chart.View.DisableAnimations)
+                    Figure.StartPoint = new Point(xIni, Model.Chart.DrawMargin.Height);
+                else
+                    Figure.BeginAnimation(PathFigure.StartPointProperty,
+                        new PointAnimation(new Point(xIni, Model.Chart.DrawMargin.Height),
+                            Model.Chart.View.AnimationsSpeed));
             }
 
             if (IsInView) return;
@@ -154,11 +161,11 @@ namespace LiveCharts.Wpf
         {
             var mhr = PointDiameter < 5 ? 5 : PointDiameter;
 
-            var pbv = (view as HorizontalBezierView);
+            var pbv = (view as HBezierPointView);
 
             if (pbv == null)
             {
-                pbv = new HorizontalBezierView
+                pbv = new HBezierPointView
                 {
                     Segment = new BezierSegment(),
                     Container = Figure,
@@ -255,28 +262,55 @@ namespace LiveCharts.Wpf
         public void StartSegment(int atIndex, LvcPoint location)
         {
             if (Splitters.Count <= ActiveSplitters)
-                Splitters.Add(new Splitter());
+                Splitters.Add(new Splitter {IsNew = true});
 
             var splitter = Splitters[ActiveSplitters];
             splitter.SplitterCollectorIndex = SplittersCollector;
 
             ActiveSplitters++;
+            var animSpeed = Model.Chart.View.AnimationsSpeed;
+            var noAnim = Model.Chart.View.DisableAnimations;
 
             if (atIndex != 0)
             {
                 Figure.Segments.Remove(splitter.Bottom);
-                splitter.Bottom.Point = new Point(location.X, Model.Chart.DrawMargin.Height);
+
+                if (splitter.IsNew)
+                {
+                    splitter.Bottom.Point = new Point(location.X, Model.Chart.DrawMargin.Height);
+                    splitter.Left.Point = new Point(location.X, Model.Chart.DrawMargin.Height);
+                }
+
+                if (noAnim)
+                    splitter.Bottom.Point = new Point(location.X, Model.Chart.DrawMargin.Height);
+                else
+                    splitter.Bottom.BeginAnimation(LineSegment.PointProperty,
+                        new PointAnimation(new Point(location.X, Model.Chart.DrawMargin.Height), animSpeed));
                 Figure.Segments.Insert(atIndex, splitter.Bottom);
 
                 Figure.Segments.Remove(splitter.Left);
-                splitter.Left.Point = location.AsPoint();
+                if (noAnim)
+                    splitter.Left.Point = location.AsPoint();
+                else
+                    splitter.Left.BeginAnimation(LineSegment.PointProperty,
+                        new PointAnimation(location.AsPoint(), animSpeed));
                 Figure.Segments.Insert(atIndex + 1, splitter.Left);
 
                 return;
             }
 
+            if (splitter.IsNew)
+            {
+                splitter.Bottom.Point = new Point(location.X, Model.Chart.DrawMargin.Height);
+                splitter.Left.Point = new Point(location.X, Model.Chart.DrawMargin.Height);
+            }
+
             Figure.Segments.Remove(splitter.Left);
-            splitter.Left.Point = location.AsPoint();
+            if (Model.Chart.View.DisableAnimations)
+                splitter.Left.Point = location.AsPoint();
+            else
+                splitter.Left.BeginAnimation(LineSegment.PointProperty,
+                    new PointAnimation(location.AsPoint(), animSpeed));
             Figure.Segments.Insert(atIndex, splitter.Left);
         }
 
@@ -284,9 +318,23 @@ namespace LiveCharts.Wpf
         {
             var splitter = Splitters[ActiveSplitters-1];
 
+            var animSpeed = Model.Chart.View.AnimationsSpeed;
+            var noAnim = Model.Chart.View.DisableAnimations;
+
+            if (splitter.IsNew)
+            {
+                splitter.Right.Point = new Point(location.X, Model.Chart.DrawMargin.Height);
+            }
+
             Figure.Segments.Remove(splitter.Right);
-            splitter.Right.Point = new Point(location.X, Model.Chart.DrawMargin.Height);
+            if (noAnim)
+                splitter.Right.Point = new Point(location.X, Model.Chart.DrawMargin.Height);
+            else
+                splitter.Right.BeginAnimation(LineSegment.PointProperty,
+                    new PointAnimation(new Point(location.X, Model.Chart.DrawMargin.Height), animSpeed));
             Figure.Segments.Insert(atIndex, splitter.Right);
+
+            splitter.IsNew = false;
         }
         #endregion
 
@@ -320,6 +368,7 @@ namespace LiveCharts.Wpf
             public LineSegment Left { get; private set; }
             public LineSegment Right { get; private set; }
             public int SplitterCollectorIndex { get; set; }
+            public bool IsNew { get; set; }
         }
     }
 }
