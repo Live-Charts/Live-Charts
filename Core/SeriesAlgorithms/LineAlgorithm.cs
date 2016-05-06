@@ -103,7 +103,7 @@ namespace LiveCharts.SeriesAlgorithms
                     var c2X = xm2 + (xc2 - xm2)*smoothness + p2.X - xm2;
                     var c2Y = ym2 + (yc2 - ym2)*smoothness + p2.Y - ym2;
 
-                    chartPoint.View = View.RenderPoint(chartPoint.View,
+                    chartPoint.View = View.GetView(chartPoint.View,
                         View.DataLabels ? fx(chartPoint.X) + ", " + fy(chartPoint.Y) : null);
                     chartPoint.View.Location = p1;
 

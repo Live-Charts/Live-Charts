@@ -57,7 +57,9 @@
     <Compile Include="ChartLegend.xaml.cs">
       <DependentUpon>ChartLegend.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Points\Bubble.cs" />
     <Compile Include="Points\VBezierPointView.cs" />
+    <Compile Include="Serie\ScatterSeries.cs" />
     <Compile Include="Serie\VerticalLineSeries.cs" />
     <Compile Include="Points\HBezierPointView.cs" />
     <Compile Include="Components\Converters.cs" />

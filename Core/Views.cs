@@ -75,7 +75,7 @@ namespace LiveCharts
         int ScalesYAt { get; set; }
         ConfigurableElement Configuration { get; set; }
 
-        IChartPointView RenderPoint(IChartPointView view, string label);
+        IChartPointView GetView(IChartPointView view, string label);
         void OnSeriesUpdateStart();
         void Erase();
         void OnSeriesUpdatedFinish();

@@ -15,9 +15,11 @@ namespace Wpf
         {
             InitializeComponent();
 
-            SeriesCollection = new SeriesCollection(new SeriesConfiguration<double>().X((v, i) => v).Y((v, i) => i))
+            var config = new SeriesConfiguration<Point>();
+
+            SeriesCollection = new SeriesCollection(new SeriesConfiguration<double>().X((v, i) => v).Y((v, i) => v))
             {
-                new LineSeries
+                new ScatterSeries
                 {
                     Values = new ChartValues<double> {2, 3, 5, 2, 7}
                 }
