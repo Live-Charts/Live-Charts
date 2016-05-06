@@ -34,6 +34,7 @@ using LiveCharts.SeriesAlgorithms;
 using LiveCharts.Wpf.Components;
 using LiveCharts.Wpf.Points;
 
+// ReSharper disable once CheckNamespace
 namespace LiveCharts.Wpf
 {
     public class LineSeries : Series, ILineSeriesView
@@ -46,7 +47,7 @@ namespace LiveCharts.Wpf
             InitializeDefuaults();
         }
 
-        public LineSeries(SeriesConfiguration configuration)
+        public LineSeries(ConfigurableElement configuration)
         {
             Model = new LineAlgorithm(this);
             Configuration = configuration;
@@ -56,15 +57,12 @@ namespace LiveCharts.Wpf
         #endregion
 
         #region Private Properties
-        private PathFigure Figure { get; set; }
-        private LineSegment RightSegment { get; set; }
-        private LineSegment BottomSegment { get; set; }
-        private LineSegment LeftSegment { get; set; }
-        private Path Path { get; set; }
-        private bool IsInView { get; set; }
-        private List<Splitter> Splitters { get; set; }
-        private int ActiveSplitters { get; set; }
-        private int SplittersCollector { get; set; }
+        protected PathFigure Figure { get; set; }
+        protected Path Path { get; set; }
+        protected bool IsInView { get; set; }
+        internal List<Splitter> Splitters { get; set; }
+        protected int ActiveSplitters { get; set; }
+        protected int SplittersCollector { get; set; }
         #endregion
 
         #region Properties
@@ -251,15 +249,20 @@ namespace LiveCharts.Wpf
 
         public override void Erase()
         {
-            Values.Points.ForEach(p => p.View.RemoveFromView(Model.Chart));
+            Values.Points.ForEach(p =>
+            {
+                if (p.View != null)
+                    p.View.RemoveFromView(Model.Chart);
+            });
             Model.Chart.View.RemoveFromDrawMargin(Path);
+            Model.Chart.View.RemoveFromView(this);
         }
 
         #endregion
 
         #region Public Methods 
 
-        public void StartSegment(int atIndex, LvcPoint location)
+        public virtual void StartSegment(int atIndex, LvcPoint location)
         {
             if (Splitters.Count <= ActiveSplitters)
                 Splitters.Add(new Splitter {IsNew = true});
@@ -314,7 +317,7 @@ namespace LiveCharts.Wpf
             Figure.Segments.Insert(atIndex, splitter.Left);
         }
 
-        public void EndSegment(int atIndex, LvcPoint location)
+        public virtual void EndSegment(int atIndex, LvcPoint location)
         {
             var splitter = Splitters[ActiveSplitters-1];
 
@@ -346,29 +349,26 @@ namespace LiveCharts.Wpf
             SetValue(PointDiameterProperty, 8d);
             SetValue(PointForeroundProperty, Brushes.White);
             SetValue(StrokeThicknessProperty, 2d);
-            RightSegment = new LineSegment(new Point(), false);
-            LeftSegment = new LineSegment(new Point(), false);
-            BottomSegment = new LineSegment(new Point(), false);
             DefaultFillOpacity = 0.15;
             Splitters = new List<Splitter>();
         }
 
         #endregion
+    }
 
-        private class Splitter
+    internal class Splitter
+    {
+        public Splitter()
         {
-            public Splitter()
-            {
-                Bottom = new LineSegment {IsStroked = false};
-                Left = new LineSegment {IsStroked = false};
-                Right = new LineSegment {IsStroked = false};
-            }
-
-            public LineSegment Bottom { get; private set; }
-            public LineSegment Left { get; private set; }
-            public LineSegment Right { get; private set; }
-            public int SplitterCollectorIndex { get; set; }
-            public bool IsNew { get; set; }
+            Bottom = new LineSegment {IsStroked = false};
+            Left = new LineSegment {IsStroked = false};
+            Right = new LineSegment {IsStroked = false};
         }
+
+        public LineSegment Bottom { get; private set; }
+        public LineSegment Left { get; private set; }
+        public LineSegment Right { get; private set; }
+        public int SplitterCollectorIndex { get; set; }
+        public bool IsNew { get; set; }
     }
 }

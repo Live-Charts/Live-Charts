@@ -38,15 +38,18 @@ namespace LiveCharts
             CollectionChanged += OnCollectionChanged;
         }
 
-        public SeriesCollection(SeriesConfiguration configuration)
+        public SeriesCollection(ConfigurableElement configuration)
         {
+            ReportOldItems = true;
             Configuration = configuration;
+
+            CollectionChanged += OnCollectionChanged;
         }
 
         #endregion
         
         public ChartCore Chart { get; set; }
-        public SeriesConfiguration Configuration { get; set; }
+        public ConfigurableElement Configuration { get; set; }
 
         /// <summary>
         /// Setup a configuration for this collection

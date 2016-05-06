@@ -57,6 +57,8 @@
     <Compile Include="ChartLegend.xaml.cs">
       <DependentUpon>ChartLegend.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Points\VBezierPointView.cs" />
+    <Compile Include="Serie\VerticalLineSeries.cs" />
     <Compile Include="Points\HBezierPointView.cs" />
     <Compile Include="Components\Converters.cs" />
     <Compile Include="DefaultAxes.cs" />
@@ -65,7 +67,7 @@
       <DependentUpon>ChartTooltip.xaml</DependentUpon>
     </Compile>
     <Compile Include="CartesianChart.cs" />
-    <Compile Include="LineSeries.cs" />
+    <Compile Include="Serie\LineSeries.cs" />
     <Compile Include="Components\DesktopExtentions.cs" />
     <Compile Include="Points\PointView.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">

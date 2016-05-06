@@ -22,7 +22,7 @@ using System;
 
 namespace LiveCharts
 {
-    public class SeriesConfiguration<T> : SeriesConfiguration
+    public class SeriesConfiguration<T> : ConfigurableElement
     {
         public SeriesConfiguration()
         {
@@ -96,7 +96,7 @@ namespace LiveCharts
         }
     }
 
-    public class SeriesConfiguration
+    public class ConfigurableElement
     {
         public ChartCore Chart { get; set; }
     }

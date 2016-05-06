@@ -218,7 +218,7 @@ namespace LiveCharts.Wpf.Components
             set { SetValue(ScalesYAtProperty, value); }
         }
 
-        public SeriesConfiguration Configuration { get; set; }
+        public ConfigurableElement Configuration { get; set; }
 
         #endregion
 

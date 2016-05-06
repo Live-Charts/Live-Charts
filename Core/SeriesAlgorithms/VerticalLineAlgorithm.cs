@@ -1,3 +1,5 @@
+﻿//The MIT License(MIT)
+
 //copyright(c) 2016 Alberto Rodriguez
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -18,27 +20,14 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-using System;
-using System.Windows.Controls;
-using System.Windows.Shapes;
-
-namespace LiveCharts.Wpf.Points
+namespace LiveCharts.SeriesAlgorithms
 {
-    internal class PointView : IChartPointView
+    public class VerticalLineAlgorithm : LineAlgorithm
     {
-        public Shape HoverShape { get; set; }
-        public TextBlock DataLabel { get; set; }
-        public bool IsNew { get; set; }
-        public LvcPoint Location { get; set; }
-
-        public virtual void DrawOrMove(object previousDrawn, object current, int index, ChartCore chart)
+        public VerticalLineAlgorithm(ISeriesView view) : base(view)
         {
-            throw new NotImplementedException();
-        }
-
-        public virtual void RemoveFromView(ChartCore chart)
-        {
-            throw new NotImplementedException();
+            XAxisMode = AxisLimitsMode.HalfSparator;
+            YAxisMode = AxisLimitsMode.Stretch;
         }
     }
 }

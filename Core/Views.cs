@@ -73,7 +73,7 @@ namespace LiveCharts
         bool DataLabels { get; }
         int ScalesXAt { get; set; }
         int ScalesYAt { get; set; }
-        SeriesConfiguration Configuration { get; set; }
+        ConfigurableElement Configuration { get; set; }
 
         IChartPointView RenderPoint(IChartPointView view, string label);
         void OnSeriesUpdateStart();

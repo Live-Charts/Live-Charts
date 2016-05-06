@@ -50,6 +50,7 @@
     <Compile Include="IChartValues.cs" />
     <Compile Include="IDataOptimization.cs" />
     <Compile Include="CartesianChartCore.cs" />
+    <Compile Include="SeriesAlgorithms\VerticalLineAlgorithm.cs" />
     <Compile Include="SeriesAlgorithms\LineAlgorithm.cs" />
     <Compile Include="Helpers\Extentions.cs" />
     <Compile Include="Helpers\GossipCollection.cs" />
@@ -59,7 +60,7 @@
     <Compile Include="SeparatorElementCore.cs" />
     <Compile Include="SeriesCore.cs" />
     <Compile Include="SeriesCollection.cs" />
-    <Compile Include="SeriesConfiguration.cs" />
+    <Compile Include="ConfigurableElement.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

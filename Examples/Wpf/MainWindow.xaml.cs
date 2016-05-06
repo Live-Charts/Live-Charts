@@ -15,11 +15,11 @@ namespace Wpf
         {
             InitializeComponent();
 
-            SeriesCollection = new SeriesCollection
+            SeriesCollection = new SeriesCollection(new SeriesConfiguration<double>().X((v, i) => v).Y((v, i) => i))
             {
                 new LineSeries
                 {
-                    Values = new ChartValues<double> {2, 3, 5, 2, double.NaN}
+                    Values = new ChartValues<double> {2, 3, 5, 2, 7}
                 }
             };
             DataContext = this;

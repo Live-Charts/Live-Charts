@@ -202,7 +202,7 @@ namespace LiveCharts
 
     public interface IBezierData : IChartPointView
     {
-        LineAlgorithm.BezierData Data { get; set; }
+        BezierData Data { get; set; }
     }
     #endregion
 }

@@ -24,25 +24,16 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
-using System.Windows.Shapes;
-using LiveCharts.SeriesAlgorithms;
 using LiveCharts.Wpf.Components;
 
 namespace LiveCharts.Wpf.Points
 {
-    internal class HBezierPointView : PointView, IBezierData
+    internal class VBezierPointView : HBezierPointView
     {
-        public BezierSegment Segment { get; set; }
-        public Ellipse Ellipse { get; set; }
-        public PathFigure Container { get; set; }
-        public BezierData Data { get; set; }
-
         public override void DrawOrMove(object previousDrawn, object current, int index, ChartCore chart)
         {
-            var previosCp = (ChartPoint) previousDrawn;
-            var previosPbv = previosCp == null ? null : (HBezierPointView) previosCp.View;
-
-            var y = chart.DrawMargin.Top + chart.DrawMargin.Height;
+            var previosCp = (ChartPoint)previousDrawn;
+            var previosPbv = previosCp == null ? null : (VBezierPointView)previosCp.View;
 
             Container.Segments.Remove(Segment);
             Container.Segments.Insert(index, Segment);
@@ -69,20 +60,20 @@ namespace LiveCharts.Wpf.Points
                 }
                 else
                 {
-                    Segment.Point1 = new Point(Data.Point1.X, y);
-                    Segment.Point2 = new Point(Data.Point2.X, y);
-                    Segment.Point3 = new Point(Data.Point3.X, y);
+                    Segment.Point1 = new Point(0, Data.Point1.Y);
+                    Segment.Point2 = new Point(0, Data.Point2.Y);
+                    Segment.Point3 = new Point(0, Data.Point3.Y);
 
                     if (DataLabel != null)
                     {
-                        Canvas.SetTop(DataLabel, y);
-                        Canvas.SetLeft(DataLabel, Location.X - DataLabel.ActualWidth*.5);
+                        Canvas.SetTop(DataLabel, Location.Y - DataLabel.ActualHeight * .5);
+                        Canvas.SetLeft(DataLabel, 0);
                     }
 
                     if (Ellipse != null)
                     {
-                        Canvas.SetTop(Ellipse, y);
-                        Canvas.SetLeft(Ellipse, Location.X - Ellipse.Width*.5);
+                        Canvas.SetTop(Ellipse, Location.Y - Ellipse.Height * .5);
+                        Canvas.SetLeft(Ellipse, 0);
                     }
                 }
             }
@@ -97,14 +88,14 @@ namespace LiveCharts.Wpf.Points
 
                 if (HoverShape != null)
                 {
-                    Canvas.SetLeft(HoverShape, Location.X - HoverShape.Width*.5);
-                    Canvas.SetTop(HoverShape, Location.Y - HoverShape.Height*.5);
+                    Canvas.SetLeft(HoverShape, Location.X - HoverShape.Width * .5);
+                    Canvas.SetTop(HoverShape, Location.Y - HoverShape.Height * .5);
                 }
 
                 if (Ellipse != null)
                 {
-                    Canvas.SetLeft(Ellipse, Location.X - Ellipse.Width*.5);
-                    Canvas.SetTop(Ellipse, Location.Y - Ellipse.Height*.5);
+                    Canvas.SetLeft(Ellipse, Location.X - Ellipse.Width * .5);
+                    Canvas.SetTop(Ellipse, Location.Y - Ellipse.Height * .5);
                 }
 
                 if (DataLabel != null)
@@ -130,17 +121,17 @@ namespace LiveCharts.Wpf.Points
             if (Ellipse != null)
             {
                 Ellipse.BeginAnimation(Canvas.LeftProperty,
-                    new DoubleAnimation(Location.X - Ellipse.Width*.5, chart.View.AnimationsSpeed));
+                    new DoubleAnimation(Location.X - Ellipse.Width * .5, chart.View.AnimationsSpeed));
                 Ellipse.BeginAnimation(Canvas.TopProperty,
-                    new DoubleAnimation(Location.Y - Ellipse.Height*.5, chart.View.AnimationsSpeed));
+                    new DoubleAnimation(Location.Y - Ellipse.Height * .5, chart.View.AnimationsSpeed));
             }
 
             if (DataLabel != null)
             {
                 DataLabel.UpdateLayout();
 
-                var xl = CorrectXLabel(Location.X - DataLabel.ActualWidth*.5, chart);
-                var yl = CorrectYLabel(Location.Y - DataLabel.ActualHeight*.5, chart);
+                var xl = CorrectXLabel(Location.X - DataLabel.ActualWidth * .5, chart);
+                var yl = CorrectYLabel(Location.Y - DataLabel.ActualHeight * .5, chart);
 
                 DataLabel.BeginAnimation(Canvas.LeftProperty,
                     new DoubleAnimation(xl, chart.View.AnimationsSpeed));
@@ -150,39 +141,9 @@ namespace LiveCharts.Wpf.Points
 
             if (HoverShape != null)
             {
-                Canvas.SetLeft(HoverShape, Location.X - HoverShape.Width*.5);
-                Canvas.SetTop(HoverShape, Location.Y - HoverShape.Height*.5);
+                Canvas.SetLeft(HoverShape, Location.X - HoverShape.Width * .5);
+                Canvas.SetTop(HoverShape, Location.Y - HoverShape.Height * .5);
             }
-        }
-
-        public override void RemoveFromView(ChartCore chart)
-        {
-            chart.View.RemoveFromDrawMargin(HoverShape);
-            chart.View.RemoveFromDrawMargin(Ellipse);
-            chart.View.RemoveFromDrawMargin(DataLabel);
-            Container.Segments.Remove(Segment);
-        }
-
-        protected double CorrectXLabel(double desiredPosition, ChartCore chart)
-        {
-            if (desiredPosition + DataLabel.ActualWidth > chart.DrawMargin.Width)
-                desiredPosition -= desiredPosition + DataLabel.ActualWidth - chart.DrawMargin.Width + 2;
-
-            if (desiredPosition < 0) desiredPosition = 0;
-
-            return desiredPosition;
-        }
-
-        protected double CorrectYLabel(double desiredPosition, ChartCore chart)
-        {
-            desiredPosition -= Ellipse.ActualHeight*.5 + DataLabel.ActualHeight*.5 + 2;
-
-            if (desiredPosition + DataLabel.ActualHeight > chart.DrawMargin.Height)
-                desiredPosition -= desiredPosition + DataLabel.ActualHeight - chart.DrawMargin.Height + 2;
-
-            if (desiredPosition < 0) desiredPosition = 0;
-
-            return desiredPosition;
         }
     }
 }

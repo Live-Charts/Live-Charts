@@ -57,7 +57,7 @@ namespace LiveCharts
         public LvcPoint MaxChartPoint { get; private set; }
         public LvcPoint MinChartPoint { get; private set; }
         public SeriesCore Series { get; set; }
-        public SeriesConfiguration SeriesConfiguration { get; set; }
+        public ConfigurableElement ConfigurableElement { get; set; }
 
         internal int GarbageCollectorIndex { get; set; }
         internal Dictionary<int, ChartPoint> Primitives { get; set; }
