@@ -21,14 +21,15 @@
 //SOFTWARE.
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media;
-using System.Windows.Media.Animation;
 using System.Windows.Shapes;
-using LiveCharts.CrossNet;
+using LiveCharts.Helpers;
+using LiveCharts.SeriesAlgorithms;
 using LiveCharts.Wpf.Components;
 using LiveCharts.Wpf.Points;
 
@@ -60,9 +61,12 @@ namespace LiveCharts.Wpf
         private LineSegment LeftSegment { get; set; }
         private Path Path { get; set; }
         private bool IsInView { get; set; }
+        private List<Splitter> Splitters { get; set; }
+        private int ActiveSplitters { get; set; }
+        private int SplittersCollector { get; set; }
         #endregion
 
-#region Properties
+        #region Properties
 
         public static readonly DependencyProperty PointDiameterProperty = DependencyProperty.Register(
             "PointDiameter", typeof (double), typeof (LineSeries), 
@@ -93,12 +97,30 @@ namespace LiveCharts.Wpf
             get { return (double) GetValue(LineSmoothnessProperty); }
             set { SetValue(LineSmoothnessProperty, value); }
         }
+
         #endregion
 
-#region Overriden Methods
+        #region Overriden Methods
 
         public override void OnSeriesUpdateStart()
         {
+            ActiveSplitters = 0;
+
+            if (SplittersCollector == int.MaxValue - 1)
+            {
+                //just in case!
+                Splitters.ForEach(s => s.SplitterCollectorIndex = 0);
+                SplittersCollector = 0;
+            }
+
+            SplittersCollector++;
+
+            if (Figure != null)
+            {
+                var xIni = ChartFunctions.ToDrawMargin(Values.MinChartPoint.X, AxisTags.X, Model.Chart, ScalesXAt);
+                Figure.StartPoint = new Point(xIni, Model.Chart.DrawMargin.Height);
+            }
+
             if (IsInView) return;
 
             IsInView = true;
@@ -122,13 +144,8 @@ namespace LiveCharts.Wpf
             Path.Data = geometry;
             Model.Chart.View.AddToDrawMargin(Path);
 
-            var xIni = ChartFunctions.ToDrawMargin(Values.MinChartPoint.X, AxisTags.X, Model.Chart, ScalesXAt);
-            var xEnd = ChartFunctions.ToDrawMargin(Values.MaxChartPoint.X, AxisTags.X, Model.Chart, ScalesXAt);
-
-            Figure.StartPoint = new Point(xIni, Model.Chart.DrawMargin.Height);
-            RightSegment.Point = new Point(xEnd, Model.Chart.DrawMargin.Height);
-            BottomSegment.Point = new Point(xIni, Model.Chart.DrawMargin.Height);
-            LeftSegment.Point = new Point(xIni, Model.Chart.DrawMargin.Height);
+            var x = ChartFunctions.ToDrawMargin(Values.MinChartPoint.X, AxisTags.X, Model.Chart, ScalesXAt);
+            Figure.StartPoint = new Point(x, Model.Chart.DrawMargin.Height);
 
             base.OnSeriesUpdateStart();
         }
@@ -215,43 +232,13 @@ namespace LiveCharts.Wpf
 
         public override void OnSeriesUpdatedFinish()
         {
-            Figure.Segments.Remove(RightSegment);
-            Figure.Segments.Remove(BottomSegment);
-            Figure.Segments.Remove(LeftSegment);
-
-            Figure.Segments.Add(RightSegment);
-            Figure.Segments.Add(BottomSegment);
-            Figure.Segments.Insert(0, LeftSegment);
-
-            var xIni = ChartFunctions.ToDrawMargin(Values.MinChartPoint.X, AxisTags.X, Model.Chart, ScalesXAt);
-            var xEnd = ChartFunctions.ToDrawMargin(Values.MaxChartPoint.X, AxisTags.X, Model.Chart, ScalesXAt);
-
-            if (Model.Chart.View.DisableAnimations)
+            foreach (var inactive in Splitters
+                .Where(s => s.SplitterCollectorIndex < SplittersCollector).ToList())
             {
-                Figure.StartPoint = new Point(xIni, Model.Chart.DrawMargin.Height);
-                RightSegment.Point = new Point(xEnd, Model.Chart.DrawMargin.Height);
-                BottomSegment.Point = new Point(xIni, Model.Chart.DrawMargin.Height);
-                LeftSegment.Point =
-                    ChartFunctions.ToDrawMargin(Values.Points.FirstOrDefault(), ScalesXAt, ScalesYAt, Model.Chart)
-                        .AsPoint();
-            }
-            else
-            {
-                var ansp = Model.Chart.View.AnimationsSpeed;
-
-                Figure.BeginAnimation(PathFigure.StartPointProperty,
-                    new PointAnimation(new Point(xIni, Model.Chart.DrawMargin.Height), ansp));
-
-                RightSegment.BeginAnimation(LineSegment.PointProperty,
-                    new PointAnimation(new Point(xEnd, Model.Chart.DrawMargin.Height), ansp));
-
-                BottomSegment.BeginAnimation(LineSegment.PointProperty,
-                    new PointAnimation(new Point(xIni, Model.Chart.DrawMargin.Height), ansp));
-
-                LeftSegment.BeginAnimation(LineSegment.PointProperty,
-                    new PointAnimation(
-                        ChartFunctions.ToDrawMargin(Values.Points.FirstOrDefault() ?? new ChartPoint(), ScalesXAt, ScalesYAt, Model.Chart)
-                            .AsPoint(), ansp));
+                Figure.Segments.Remove(inactive.Left);
+                Figure.Segments.Remove(inactive.Bottom);
+                Figure.Segments.Remove(inactive.Right);
+                Splitters.Remove(inactive);
             }
         }
 
@@ -261,6 +248,46 @@ namespace LiveCharts.Wpf
             Model.Chart.View.RemoveFromDrawMargin(Path);
         }
 
+        #endregion
+
+        #region Public Methods 
+
+        public void StartSegment(int atIndex, LvcPoint location)
+        {
+            if (Splitters.Count <= ActiveSplitters)
+                Splitters.Add(new Splitter());
+
+            var splitter = Splitters[ActiveSplitters];
+            splitter.SplitterCollectorIndex = SplittersCollector;
+
+            ActiveSplitters++;
+
+            if (atIndex != 0)
+            {
+                Figure.Segments.Remove(splitter.Bottom);
+                splitter.Bottom.Point = new Point(location.X, Model.Chart.DrawMargin.Height);
+                Figure.Segments.Insert(atIndex, splitter.Bottom);
+
+                Figure.Segments.Remove(splitter.Left);
+                splitter.Left.Point = location.AsPoint();
+                Figure.Segments.Insert(atIndex + 1, splitter.Left);
+
+                return;
+            }
+
+            Figure.Segments.Remove(splitter.Left);
+            splitter.Left.Point = location.AsPoint();
+            Figure.Segments.Insert(atIndex, splitter.Left);
+        }
+
+        public void EndSegment(int atIndex, LvcPoint location)
+        {
+            var splitter = Splitters[ActiveSplitters-1];
+
+            Figure.Segments.Remove(splitter.Right);
+            splitter.Right.Point = new Point(location.X, Model.Chart.DrawMargin.Height);
+            Figure.Segments.Insert(atIndex, splitter.Right);
+        }
         #endregion
 
         #region Private Methods
@@ -275,8 +302,24 @@ namespace LiveCharts.Wpf
             LeftSegment = new LineSegment(new Point(), false);
             BottomSegment = new LineSegment(new Point(), false);
             DefaultFillOpacity = 0.15;
+            Splitters = new List<Splitter>();
         }
 
         #endregion
+
+        private class Splitter
+        {
+            public Splitter()
+            {
+                Bottom = new LineSegment {IsStroked = false};
+                Left = new LineSegment {IsStroked = false};
+                Right = new LineSegment {IsStroked = false};
+            }
+
+            public LineSegment Bottom { get; private set; }
+            public LineSegment Left { get; private set; }
+            public LineSegment Right { get; private set; }
+            public int SplitterCollectorIndex { get; set; }
+        }
     }
 }

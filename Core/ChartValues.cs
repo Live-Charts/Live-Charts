@@ -20,9 +20,11 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using LiveCharts.CrossNet;
+using LiveCharts.Helpers;
 
 namespace LiveCharts
 {
@@ -60,7 +62,6 @@ namespace LiveCharts
         internal int GarbageCollectorIndex { get; set; }
         internal Dictionary<int, ChartPoint> Primitives { get; set; }
         internal Dictionary<T, ChartPoint> Generics { get; set; }
-
         #endregion
 
         #region Public Methods
@@ -73,12 +74,12 @@ namespace LiveCharts
             var q = IndexData().ToArray();
 
             var xs = q.Select(t => config.XValueMapper(t.Value, t.Key)).DefaultIfEmpty(0).ToArray();
-            var xMax = xs.Where(x => !double.IsNaN(x)).Max();
-            var xMin = xs.Where(x => !double.IsNaN(x)).Min();
+            var xMax = xs.Where(x => !double.IsNaN(x)).DefaultIfEmpty(0).Max();
+            var xMin = xs.Where(x => !double.IsNaN(x)).DefaultIfEmpty(0).Min();
 
             var ys = q.Select(t => config.YValueMapper(t.Value, t.Key)).DefaultIfEmpty(0).ToArray();
-            var yMax = ys.Where(x => !double.IsNaN(x)).Max();
-            var yMin = ys.Where(x => !double.IsNaN(x)).Min();
+            var yMax = ys.Where(x => !double.IsNaN(x)).DefaultIfEmpty(0).Max();
+            var yMin = ys.Where(x => !double.IsNaN(x)).DefaultIfEmpty(0).Min();
 
             MaxChartPoint = new LvcPoint(xMax, yMax);
             MinChartPoint = new LvcPoint(xMin, yMin);
@@ -95,7 +96,8 @@ namespace LiveCharts
             var isPrimitive = typeof (T).AsCrossNet().IsPrimitive();
             foreach (var garbage in GetGarbagePoints().ToList())
             {
-                garbage.View.RemoveFromView(Series.Chart);
+                if (garbage.View != null) //yes null, double.Nan Values, will generate null views.
+                    garbage.View.RemoveFromView(Series.Chart);
                 if (isPrimitive) Primitives.Remove(garbage.Key);
                 else Generics.Remove((T) garbage.Instance);
             }
@@ -174,6 +176,7 @@ namespace LiveCharts
                 cp.GarbageCollectorIndex = garbageCollectorIndex;
                 cp.X = config.XValueMapper(value, i);
                 cp.Y = config.YValueMapper(value, i);
+                cp.Instance = value;
 
                 yield return cp;
                 i++;
@@ -182,8 +185,8 @@ namespace LiveCharts
 
         private IEnumerable<ChartPoint> GetGarbagePoints()
         {
-            return Generics.Values.Where(x => x.GarbageCollectorIndex < GarbageCollectorIndex)
-                .Concat(Primitives.Values.Where(y => y.GarbageCollectorIndex < GarbageCollectorIndex));
+            return Generics.Values.Where(IsGarbage)
+                .Concat(Primitives.Values.Where(IsGarbage));
         }
 
         private SeriesConfiguration<T> GetConfig()
@@ -212,6 +215,12 @@ namespace LiveCharts
         private void ObservableOnPointChanged(object caller)
         {
             Series.Chart.Updater.Run();
+        }
+
+        private bool IsGarbage(ChartPoint point)
+        {
+            return point.GarbageCollectorIndex < GarbageCollectorIndex
+                   || double.IsNaN(point.X) || double.IsNaN(point.Y);
         }
 
         #endregion

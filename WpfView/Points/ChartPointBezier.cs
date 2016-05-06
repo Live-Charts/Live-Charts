@@ -25,6 +25,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
+using LiveCharts.SeriesAlgorithms;
 using LiveCharts.Wpf.Components;
 
 namespace LiveCharts.Wpf.Points
@@ -34,7 +35,7 @@ namespace LiveCharts.Wpf.Points
         public BezierSegment Segment { get; set; }
         public Ellipse Ellipse { get; set; }
         public PathFigure Container { get; set; }
-        public BezierData Data { get; set; }
+        public LineAlgorithm.BezierData Data { get; set; }
 
         public override void DrawOrMove(object previousDrawn, object current, int index, ChartCore chart)
         {

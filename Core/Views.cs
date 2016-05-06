@@ -84,6 +84,8 @@ namespace LiveCharts
     public interface ILineSeriesView : ISeriesView
     {
         double LineSmoothness { get; set; }
+        void StartSegment(int atIndex, LvcPoint location);
+        void EndSegment(int atIndex, LvcPoint location);
     }
 
     public interface IAxisView

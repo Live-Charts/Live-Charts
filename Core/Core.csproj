@@ -50,9 +50,9 @@
     <Compile Include="IChartValues.cs" />
     <Compile Include="IDataOptimization.cs" />
     <Compile Include="CartesianChartCore.cs" />
-    <Compile Include="LineAlgorithm.cs" />
-    <Compile Include="CrossNet\Extentions.cs" />
-    <Compile Include="CrossNet\GossipCollection.cs" />
+    <Compile Include="SeriesAlgorithms\LineAlgorithm.cs" />
+    <Compile Include="Helpers\Extentions.cs" />
+    <Compile Include="Helpers\GossipCollection.cs" />
     <Compile Include="Views.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SeparatorConfigurationCore.cs" />

@@ -22,9 +22,8 @@
 
 using System;
 using System.Collections.Generic;
-using System.Reflection;
 
-namespace LiveCharts.CrossNet
+namespace LiveCharts.Helpers
 {
     public class CrossNet
     {
@@ -62,6 +61,28 @@ namespace LiveCharts.CrossNet
         public static void ForEach<T>(this IEnumerable<T> source, Action<T> predicate)
         {
             foreach (var item in source) predicate(item);
+        }
+
+        public static IEnumerable<List<ChartPoint>> SplitEachNaN(this List<ChartPoint> toSplit)
+        {
+            var l = new List<ChartPoint>(toSplit.Count);
+            var acum = -1;
+
+            foreach (var point in toSplit)
+            {
+                if (double.IsNaN(point.X) || double.IsNaN(point.Y))
+                {
+                    yield return l;
+                    acum += l.Count;
+                    l = new List<ChartPoint>(toSplit.Count - acum);
+                }
+                else
+                {
+                    l.Add(point);
+                }
+            }
+
+            yield return l;
         }
     }
 }

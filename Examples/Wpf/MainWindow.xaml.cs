@@ -19,7 +19,7 @@ namespace Wpf
             {
                 new LineSeries
                 {
-                    Values = new ChartValues<double> {3},
+                    Values = new ChartValues<double> {double.NaN, 8, 16, double.NaN, 3, 2, double.NaN, 5, double.NaN},
                     DataLabels = true
                 }
             };
@@ -50,7 +50,7 @@ namespace Wpf
             foreach (var series in SeriesCollection)
             {
                 if (series.Values.Count > 0)
-                    series.Values.RemoveAt(r.Next(0, series.Values.Count));
+                    series.Values.RemoveAt(0);
             }
         }
 

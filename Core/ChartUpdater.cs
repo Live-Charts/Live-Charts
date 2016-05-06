@@ -22,6 +22,7 @@
 
 using System;
 using LiveCharts.CrossNet;
+using LiveCharts.Helpers;
 
 namespace LiveCharts
 {

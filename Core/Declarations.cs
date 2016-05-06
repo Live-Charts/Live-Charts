@@ -21,9 +21,12 @@
 //SOFTWARE.
 
 using System;
+using LiveCharts.SeriesAlgorithms;
 
 namespace LiveCharts
 {
+    #region Enumerators
+
     public enum AxisLimitsMode
     {
         Stretch, HalfSparator, OneSeparator
@@ -57,6 +60,11 @@ namespace LiveCharts
         Left,
         Right
     }
+
+    #endregion
+
+
+    #region Structs
 
     public struct LvcPoint
     {
@@ -169,6 +177,9 @@ namespace LiveCharts
             }
         }
     }
+    #endregion
+
+#region Interfaces
 
     public interface IChartUpdater
     {
@@ -188,4 +199,10 @@ namespace LiveCharts
         AxisLimitsMode XAxisMode { get; set; }
         AxisLimitsMode YAxisMode { get; set; }
     }
+
+    public interface IBezierData : IChartPointView
+    {
+        LineAlgorithm.BezierData Data { get; set; }
+    }
+    #endregion
 }
