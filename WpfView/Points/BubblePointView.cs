@@ -20,45 +20,64 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-using System;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
+using LiveCharts.Charts;
 
 namespace LiveCharts.Wpf.Points
 {
-    internal class Bubble : PointView
+    internal class BubblePointView : PointView
     {
         public Ellipse Ellipse { get; set; }
 
-        public override void DrawOrMove(object previousDrawn, object current, int index, ChartCore chart)
+        public override void DrawOrMove(ChartPoint previousDrawn, ChartPoint current, int index, ChartCore chart, ISeriesView series)
         {
             if (IsNew)
             {
-                var r = new Random();
+                Canvas.SetTop(Ellipse, current.ChartLocation.Y);
+                Canvas.SetLeft(Ellipse, current.ChartLocation.X);
 
-                var p = new LvcPoint(r.NextDouble()*chart.DrawMargin.Width,
-                    r.NextDouble()*chart.DrawMargin.Height);
-
-                Canvas.SetTop(Ellipse, p.Y);
-                Canvas.SetLeft(Ellipse, p.X);
+                Ellipse.Width = 0;
+                Ellipse.Height = 0;
 
                 if (DataLabel != null)
                 {
-                    Canvas.SetTop(DataLabel, p.Y);
-                    Canvas.SetLeft(DataLabel, p.X);
+                    Canvas.SetTop(DataLabel, current.ChartLocation.Y);
+                    Canvas.SetLeft(DataLabel, current.ChartLocation.X);
                 }
             }
 
+            var p1 = new LvcPoint();
+            var p2 = new LvcPoint();
+
+            var bubbleSeries = (IBubbleSeries) series;
+
+            p1.X = chart.Value3Limit.Max;
+            p1.Y = bubbleSeries.MaxBubbleDiameter;
+
+            p2.X = chart.Value3Limit.Min;
+            p2.Y = bubbleSeries.MinBubbleDiameter;
+
+            var deltaX = p2.X - p1.X;
+            // ReSharper disable once CompareOfFloatsByEqualityOperator
+            var m = (p2.Y - p1.Y)/(deltaX == 0 ? double.MinValue : deltaX);
+
+            var diameter = m*(current.Weight - p1.X) + p1.Y;
+
             if (chart.View.DisableAnimations)
             {
-                Canvas.SetTop(Ellipse, Location.Y - Ellipse.Width*.5);
-                Canvas.SetLeft(Ellipse, Location.X - Ellipse.Height*.5);
+                Ellipse.Width = diameter;
+                Ellipse.Height = diameter;
+
+                Canvas.SetTop(Ellipse, current.ChartLocation.Y - Ellipse.Width*.5);
+                Canvas.SetLeft(Ellipse, current.ChartLocation.X - Ellipse.Height*.5);
 
                 if (DataLabel != null)
                 {
-                    var cx = CorrectXLabel(Location.X - DataLabel.Height*.5, chart);
-                    var cy = CorrectYLabel(Location.Y - DataLabel.Width*.5, chart);
+                    var cx = CorrectXLabel(current.ChartLocation.X - DataLabel.Height*.5, chart);
+                    var cy = CorrectYLabel(current.ChartLocation.Y - DataLabel.Width*.5, chart);
                     
                     Canvas.SetTop(DataLabel, cy);
                     Canvas.SetLeft(DataLabel, cx);
@@ -71,17 +90,22 @@ namespace LiveCharts.Wpf.Points
 
             if (DataLabel != null)
             {
-                var cx = CorrectXLabel(Location.X - DataLabel.Height * .5, chart);
-                var cy = CorrectYLabel(Location.Y - DataLabel.Width * .5, chart);
+                var cx = CorrectXLabel(current.ChartLocation.X - DataLabel.Height*.5, chart);
+                var cy = CorrectYLabel(current.ChartLocation.Y - DataLabel.Width*.5, chart);
 
                 DataLabel.BeginAnimation(Canvas.LeftProperty, new DoubleAnimation(cx, animSpeed));
                 DataLabel.BeginAnimation(Canvas.TopProperty, new DoubleAnimation(cy, animSpeed));
             }
 
-            Ellipse.BeginAnimation(Canvas.TopProperty, 
-                new DoubleAnimation(Location.Y - Ellipse.Height*.5, animSpeed));
+            Ellipse.BeginAnimation(FrameworkElement.WidthProperty,
+                new DoubleAnimation(diameter, animSpeed));
+            Ellipse.BeginAnimation(FrameworkElement.HeightProperty,
+                new DoubleAnimation(diameter, animSpeed));
+
+            Ellipse.BeginAnimation(Canvas.TopProperty,
+                new DoubleAnimation(current.ChartLocation.Y - diameter * .5, animSpeed));
             Ellipse.BeginAnimation(Canvas.LeftProperty,
-                new DoubleAnimation(Location.X - Ellipse.Width, animSpeed));
+                new DoubleAnimation(current.ChartLocation.X - diameter * .5, animSpeed));
         }
 
         public override void RemoveFromView(ChartCore chart)

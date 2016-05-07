@@ -23,14 +23,7 @@
         </StackPanel>
         <wpf:CartesianChart Grid.Row="1" Margin="10" Series="{Binding SeriesCollection}" 
                             DataClick="Chart_OnDataClick"
-                            AnimationsSpeed="0:0:02">
-            <wpf:CartesianChart.AxisY>
-                <wpf:Axis Title="Y Axis">
-                    <wpf:Axis.Separator>
-                        <wpf:Separator StrokeDashArray="5"></wpf:Separator>
-                    </wpf:Axis.Separator>
-                </wpf:Axis>
-            </wpf:CartesianChart.AxisY>
+                            AnimationsSpeed="0:0:00.3">
         </wpf:CartesianChart>
     </Grid>
 </Window>

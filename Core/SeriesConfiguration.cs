@@ -19,85 +19,75 @@
 //SOFTWARE.
 
 using System;
+using LiveCharts.Charts;
 
 namespace LiveCharts
 {
-    public class SeriesConfiguration<T> : ConfigurableElement
+    public class SeriesConfiguration<T> : ISeriesConfiguration
     {
-        public SeriesConfiguration()
-        {
-            XValueMapper = (value, index) => index;
-            YValueMapper = (value, index) => index;
-        }
+        #region Properties
 
-        /// <summary>
-        /// Gets or sets optimization method
-        /// </summary>
-        public IDataOptimization<T> DataOptimization { get; set; }
+        public ChartCore Chart { get; set; }
 
-        /// <summary>
-        /// Gets or sets the current function that pulls X value from T
-        /// </summary>
-        internal Func<T, int, double> XValueMapper { get; set; }
+        internal Func<T, int, double> Value1 { get; set; }
 
-        /// <summary>
-        /// Gets or sets the current function that pulls Y value from T
-        /// </summary>
-        internal Func<T, int, double> YValueMapper { get; set; }
+        internal Func<T, int, double> Value2 { get; set; }
 
+        internal Func<T, int, double> Value3 { get; set; } 
+
+        internal Func<T, int, double> Value4 { get; set; }
+
+        #endregion
+        
         /// <summary>
-        /// Maps X value
+        /// Maps X value in cartesian charts
         /// </summary>
         /// <param name="predicate"></param>
         /// <returns></returns>
         public SeriesConfiguration<T> X(Func<T, double> predicate)
         {
-            XValueMapper = (x, i) => predicate(x);
-            return this;
+            return X((t, i) => predicate(t));
         }
-
-        /// <summary>
-        /// Maps Y Value
-        /// </summary>
-        /// <param name="predicate"></param>
-        /// <returns></returns>
         public SeriesConfiguration<T> X(Func<T, int, double> predicate)
         {
-            XValueMapper = predicate;
+            Value1 = predicate;
             return this;
         }
 
         /// <summary>
-        /// Maps Y Value
+        /// Maps Y Value in cartesian charts
         /// </summary>
         /// <param name="predicate"></param>
         /// <returns></returns>
         public SeriesConfiguration<T> Y(Func<T, double> predicate)
         {
-            YValueMapper = (x, i) => predicate(x);
+            return Y((t, i) => predicate(t));
+        }
+        public SeriesConfiguration<T> Y(Func<T, int, double> predicate)
+        {
+            Value2 = predicate;
             return this;
         }
 
         /// <summary>
-        /// Max X Value
+        /// Maps weight in cartesian charts
         /// </summary>
         /// <param name="predicate"></param>
         /// <returns></returns>
-        public SeriesConfiguration<T> Y(Func<T, int, double> predicate)
+        public SeriesConfiguration<T> Weight(Func<T, double> predicate)
         {
-            YValueMapper = predicate;
-            return this;
+            return Weight((t, i) => predicate(t));
         }
 
-        public SeriesConfiguration<T> HasHighPerformanceMethod(IDataOptimization<T> optimization)
+        public SeriesConfiguration<T> Weight(Func<T, int, double> predicate)
         {
-            DataOptimization = optimization;
+            Value3 = predicate;
             return this;
         }
     }
 
-    public class ConfigurableElement
+    public interface ISeriesConfiguration
     {
-        public ChartCore Chart { get; set; }
+        ChartCore Chart { get; set; }
     }
 }

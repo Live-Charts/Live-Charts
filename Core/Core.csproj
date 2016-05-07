@@ -42,15 +42,16 @@
     <Compile Include="AxisCore.cs" />
     <Compile Include="ChartUpdater.cs" />
     <Compile Include="ChartValues.cs" />
-    <Compile Include="Declarations.cs" />
-    <Compile Include="ChartCore.cs" />
+    <Compile Include="Definitions.cs" />
+    <Compile Include="Charts\ChartCore.cs" />
     <Compile Include="ChartFunctions.cs" />
     <Compile Include="ChartPoint.cs" />
+    <Compile Include="DefaultViewModels.cs" />
     <Compile Include="Extentions.cs" />
     <Compile Include="IChartValues.cs" />
     <Compile Include="IDataOptimization.cs" />
-    <Compile Include="CartesianChartCore.cs" />
-    <Compile Include="SeriesAlgorithms\ScatterAndBubbleAlgorthm.cs" />
+    <Compile Include="Charts\CartesianChartCore.cs" />
+    <Compile Include="SeriesAlgorithms\ScatterAlgorithm.cs" />
     <Compile Include="SeriesAlgorithms\VerticalLineAlgorithm.cs" />
     <Compile Include="SeriesAlgorithms\LineAlgorithm.cs" />
     <Compile Include="Helpers\Extentions.cs" />
@@ -59,9 +60,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SeparatorConfigurationCore.cs" />
     <Compile Include="SeparatorElementCore.cs" />
-    <Compile Include="SeriesCore.cs" />
+    <Compile Include="Seriesalgorithm.cs" />
     <Compile Include="SeriesCollection.cs" />
-    <Compile Include="ConfigurableElement.cs" />
+    <Compile Include="SeriesConfiguration.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

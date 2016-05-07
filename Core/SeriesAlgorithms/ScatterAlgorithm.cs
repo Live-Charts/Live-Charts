@@ -1,4 +1,4 @@
-//The MIT License(MIT)
+﻿//The MIT License(MIT)
 
 //copyright(c) 2016 Alberto Rodriguez
 
@@ -20,35 +20,34 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-using System.Collections.Generic;
-using LiveCharts.CrossNet;
-
-namespace LiveCharts
+namespace LiveCharts.SeriesAlgorithms
 {
-    public interface IChartValues : IGossipCollection
+    public class ScatterAlgorithm : SeriesAlgorithm, ICartesianSeries
     {
-        /// <summary>
-        /// Gets series points to draw.
-        /// </summary>
-        IEnumerable<ChartPoint> Points { get; }
-        /// <summary>
-        /// Gets or sets series that owns the values
-        /// </summary>
-        SeriesAlgorithm Series { get; set; }
-        Limit Value1Limit { get; }
-        Limit Value2Limit { get; }
-        Limit Value3Limit { get; }
-        /// <summary>
-        /// Forces values to calculate max, min and index data.
-        /// </summary>
-        void GetLimits();
-        /// <summary>
-        /// Initializes the garbage collector
-        /// </summary>
-        void InitializeGarbageCollector();
-        /// <summary>
-        /// Removes all unecessary points from the view
-        /// </summary>
-        void CollectGarbage();
+        public ScatterAlgorithm(ISeriesView view) : base(view)
+        {
+            XAxisMode = AxisLimitsMode.OneSeparator;
+            YAxisMode = AxisLimitsMode.OneSeparator;
+            DefaultConfiguration = DefaultConfigurations.Bubble;
+        }
+
+        public AxisLimitsMode XAxisMode { get; set; }
+        public AxisLimitsMode YAxisMode { get; set; }
+
+        public override void Update()
+        {
+            var fx = CurentXAxis.GetFormatter();
+            var fy = CurrentYAxis.GetFormatter();
+
+            foreach (var chartPoint in View.Values.Points)
+            {
+                chartPoint.ChartLocation = ChartFunctions.ToDrawMargin(chartPoint, View.ScalesXAt, View.ScalesYAt, Chart);
+
+                chartPoint.View = View.GetPointView(chartPoint.View,
+                    View.DataLabels ? fx(chartPoint.X) + ", " + fy(chartPoint.Y) : null);
+
+                chartPoint.View.DrawOrMove(null, chartPoint, 0, Chart, View);
+            }
+        }
     }
 }

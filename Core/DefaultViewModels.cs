@@ -22,26 +22,28 @@
 
 namespace LiveCharts
 {
-    public abstract class SeriesCore
+    public class BubblePoint
     {
-        protected SeriesCore(ISeriesView view)
+        public BubblePoint()
         {
-            View = view;
+            
         }
 
-        public ISeriesView View { get; set; }
-        public ChartCore Chart { get; set; }
-        public SeriesCollection SeriesCollection { get; set; }
-        public string Title { get; set; }
-        public AxisCore CurentXAxis
+        public BubblePoint(double x, double y)
         {
-            get { return Chart.AxisX[View.ScalesXAt]; }
-        }
-        public AxisCore CurrentYAxis
-        {
-            get { return Chart.AxisY[View.ScalesYAt]; }
+            X = x;
+            Y = y;
         }
 
-        public abstract void Update();
+        public BubblePoint(double x, double y, double weight)
+        {
+            X = x;
+            Y = y;
+            Weight = weight;
+        }
+
+        public double X { get; set; }
+        public double Y { get; set; }
+        public double Weight { get; set; }
     }
 }

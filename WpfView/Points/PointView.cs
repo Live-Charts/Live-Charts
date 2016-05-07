@@ -21,6 +21,7 @@
 using System;
 using System.Windows.Controls;
 using System.Windows.Shapes;
+using LiveCharts.Charts;
 
 namespace LiveCharts.Wpf.Points
 {
@@ -29,9 +30,8 @@ namespace LiveCharts.Wpf.Points
         public Shape HoverShape { get; set; }
         public TextBlock DataLabel { get; set; }
         public bool IsNew { get; set; }
-        public LvcPoint Location { get; set; }
 
-        public virtual void DrawOrMove(object previousDrawn, object current, int index, ChartCore chart)
+        public virtual void DrawOrMove(ChartPoint previousDrawn, ChartPoint current, int index, ChartCore chart, ISeriesView series)
         {
             throw new NotImplementedException();
         }

@@ -50,17 +50,17 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Axis.cs" />
-    <Compile Include="ChartUpdater.cs" />
+    <Compile Include="Components\ChartUpdater.cs" />
     <Compile Include="Components\AxisSeparatorCache.cs" />
     <Compile Include="Components\Chart.cs" />
     <Compile Include="ChartCursor.cs" />
     <Compile Include="ChartLegend.xaml.cs">
       <DependentUpon>ChartLegend.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Points\Bubble.cs" />
+    <Compile Include="Points\BubblePointView.cs" />
     <Compile Include="Points\VBezierPointView.cs" />
-    <Compile Include="Serie\ScatterSeries.cs" />
-    <Compile Include="Serie\VerticalLineSeries.cs" />
+    <Compile Include="Series\ScatterSeries.cs" />
+    <Compile Include="Series\VerticalLineSeries.cs" />
     <Compile Include="Points\HBezierPointView.cs" />
     <Compile Include="Components\Converters.cs" />
     <Compile Include="DefaultAxes.cs" />
@@ -69,7 +69,7 @@
       <DependentUpon>ChartTooltip.xaml</DependentUpon>
     </Compile>
     <Compile Include="CartesianChart.cs" />
-    <Compile Include="Serie\LineSeries.cs" />
+    <Compile Include="Series\LineSeries.cs" />
     <Compile Include="Components\DesktopExtentions.cs" />
     <Compile Include="Points\PointView.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">

@@ -22,6 +22,7 @@
 
 using System.Windows;
 using System.Windows.Media;
+using LiveCharts.Charts;
 
 namespace LiveCharts.Wpf
 {

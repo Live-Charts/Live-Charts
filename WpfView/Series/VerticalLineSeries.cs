@@ -47,7 +47,7 @@ namespace LiveCharts.Wpf
             InitializeDefuaults();
         }
 
-        public VerticalLineSeries(ConfigurableElement configuration)
+        public VerticalLineSeries(ISeriesConfiguration configuration)
         {
             Model = new VerticalLineAlgorithm(this);
             Configuration = configuration;
@@ -73,7 +73,7 @@ namespace LiveCharts.Wpf
 
             if (Figure != null)
             {
-                var yIni = ChartFunctions.ToDrawMargin(Values.MinChartPoint.Y, AxisTags.Y, Model.Chart, ScalesYAt);
+                var yIni = ChartFunctions.ToDrawMargin(Values.Value2Limit.Min, AxisTags.Y, Model.Chart, ScalesYAt);
 
                 if (Model.Chart.View.DisableAnimations)
                     Figure.StartPoint = new Point(0, yIni);
@@ -106,7 +106,7 @@ namespace LiveCharts.Wpf
             Path.Data = geometry;
             Model.Chart.View.AddToDrawMargin(Path);
 
-            var y = ChartFunctions.ToDrawMargin(Values.MinChartPoint.Y, AxisTags.Y, Model.Chart, ScalesYAt);
+            var y = ChartFunctions.ToDrawMargin(Values.Value2Limit.Min, AxisTags.Y, Model.Chart, ScalesYAt);
             Figure.StartPoint = new Point(0, y);
 
             var wpfChart = Model.Chart.View as Chart;
@@ -121,7 +121,7 @@ namespace LiveCharts.Wpf
                     new SolidColorBrush(Chart.GetDefaultColor(index)) { Opacity = DefaultFillOpacity });
         }
 
-        public override IChartPointView GetView(IChartPointView view, string label)
+        public override IChartPointView GetPointView(IChartPointView view, string label)
         {
             var mhr = PointDiameter < 5 ? 5 : PointDiameter;
 

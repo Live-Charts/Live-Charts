@@ -25,6 +25,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using LiveCharts.Charts;
 using LiveCharts.Wpf.Components;
 
 namespace LiveCharts.Wpf

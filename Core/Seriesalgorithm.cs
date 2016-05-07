@@ -1,4 +1,4 @@
-//The MIT License(MIT)
+﻿//The MIT License(MIT)
 
 //copyright(c) 2016 Alberto Rodriguez
 
@@ -20,35 +20,31 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-using System.Collections.Generic;
-using LiveCharts.CrossNet;
+using LiveCharts.Charts;
 
 namespace LiveCharts
 {
-    public interface IChartValues : IGossipCollection
+    public abstract class SeriesAlgorithm
     {
-        /// <summary>
-        /// Gets series points to draw.
-        /// </summary>
-        IEnumerable<ChartPoint> Points { get; }
-        /// <summary>
-        /// Gets or sets series that owns the values
-        /// </summary>
-        SeriesAlgorithm Series { get; set; }
-        Limit Value1Limit { get; }
-        Limit Value2Limit { get; }
-        Limit Value3Limit { get; }
-        /// <summary>
-        /// Forces values to calculate max, min and index data.
-        /// </summary>
-        void GetLimits();
-        /// <summary>
-        /// Initializes the garbage collector
-        /// </summary>
-        void InitializeGarbageCollector();
-        /// <summary>
-        /// Removes all unecessary points from the view
-        /// </summary>
-        void CollectGarbage();
+        protected SeriesAlgorithm(ISeriesView view)
+        {
+            View = view;
+        }
+
+        public ISeriesView View { get; set; }
+        public ChartCore Chart { get; set; }
+        public SeriesCollection SeriesCollection { get; set; }
+        public DefaultConfigurations DefaultConfiguration { get; set; }
+        public string Title { get; set; }
+        public AxisCore CurentXAxis
+        {
+            get { return Chart.AxisX[View.ScalesXAt]; }
+        }
+        public AxisCore CurrentYAxis
+        {
+            get { return Chart.AxisY[View.ScalesYAt]; }
+        }
+
+        public abstract void Update();
     }
 }

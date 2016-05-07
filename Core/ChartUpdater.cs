@@ -21,7 +21,7 @@
 //SOFTWARE.
 
 using System;
-using LiveCharts.CrossNet;
+using LiveCharts.Charts;
 using LiveCharts.Helpers;
 
 namespace LiveCharts
@@ -57,6 +57,20 @@ namespace LiveCharts
 
             Chart.AxisX = Chart.View.MapXAxes(Chart);
             Chart.AxisY = Chart.View.MapYAxes(Chart);
+
+            if (Chart.View.Series.Configuration == null)
+            {
+                DefaultConfigurations? def = null;
+                foreach (var series in Chart.View.Series)
+                {
+                    def = def == null
+                        ? series.Model.DefaultConfiguration
+                        : (def == series.Model.DefaultConfiguration
+                            ? def
+                            : DefaultConfigurations.Undefined);
+                }
+                SetDefaultConfiguration(def);
+            }
 
             foreach (var series in Chart.View.Series)
             {
@@ -110,5 +124,35 @@ namespace LiveCharts
 
             if (FrecuencyUpdate != null) FrecuencyUpdate.Invoke();
         }
+
+        private void SetDefaultConfiguration(DefaultConfigurations? configuration)
+        {
+            if (configuration == null) return;
+
+            switch (configuration)
+            {
+                case DefaultConfigurations.Undefined:
+                    throw new Exception("Live-Charts could not set a default configuration for the current series, try configuring it manually");
+                case DefaultConfigurations.IndexedX:
+                    Chart.View.Series.Configuration = new SeriesConfiguration<double>()
+                        .X((d, i) => i)
+                        .Y(d => d);
+                    break;
+                case DefaultConfigurations.IndexedY:
+                    Chart.View.Series.Configuration = new SeriesConfiguration<double>()
+                        .X(d => d)
+                        .Y((d, i) => i);
+                    break;
+                case DefaultConfigurations.Bubble:
+                    Chart.View.Series.Configuration = new SeriesConfiguration<BubblePoint>()
+                        .X(bubble => bubble.X)
+                        .Y(bubble => bubble.Y)
+                        .Weight(bubble => bubble.Weight);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException("configuration", configuration, null);
+            }
+        }
+
     }
 }

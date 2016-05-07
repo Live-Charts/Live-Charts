@@ -23,7 +23,7 @@
 using System;
 using System.Linq;
 
-namespace LiveCharts
+namespace LiveCharts.Charts
 {
     public class CartesianChartCore : ChartCore
     {
@@ -38,7 +38,9 @@ namespace LiveCharts
             base.PrepareAxes();
 
             if (View.Series.Any(x => !(x.Model is ICartesianSeries)))
-                throw new Exception("There is a no cartesian series in SeriesCollection");
+                throw new Exception(
+                    "There is a invalid series in the series collection, " +
+                    "verify that all the series are desiged to be plotted in a cartesian chart.");
 
             var xMode = AxisLimitsMode.Stretch;
             var yMode = AxisLimitsMode.Stretch;
@@ -47,6 +49,13 @@ namespace LiveCharts
             {
                 xMode = cartesianSeries.XAxisMode < xMode ? xMode : cartesianSeries.XAxisMode;
                 yMode = cartesianSeries.YAxisMode < yMode ? yMode : cartesianSeries.YAxisMode;
+            }
+
+            if (View.Series.Any(x => x is IBubbleSeries))
+            {
+                var vs = View.Series.Select(x => x.Values.Value3Limit).ToArray();
+                Value3Limit = new Limit(vs.Select(x => x.Min).DefaultIfEmpty(0).Min(),
+                    vs.Select(x => x.Max).DefaultIfEmpty(0).Max());
             }
 
             foreach (var xi in AxisX)

@@ -20,6 +20,8 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
+using LiveCharts.Charts;
+
 namespace LiveCharts
 {
     public static class ChartFunctions
@@ -39,7 +41,6 @@ namespace LiveCharts
 
             if (source == AxisTags.Y)
             {
-
                 p1.X = chart.AxisY[axis].MaxLimit;
                 p1.Y = chart.DrawMargin.Top;
 
@@ -57,7 +58,7 @@ namespace LiveCharts
 
             var deltaX = p2.X - p1.X;
             // ReSharper disable once CompareOfFloatsByEqualityOperator
-            var m = (p2.Y - p1.Y) / (deltaX == 0 ? double.MinValue : deltaX);
+            var m = (p2.Y - p1.Y)/(deltaX == 0 ? double.MinValue : deltaX);
             return m * (value - p1.X) + p1.Y;
         }
 

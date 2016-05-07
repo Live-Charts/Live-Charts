@@ -22,6 +22,7 @@
 
 using System;
 using System.Collections.Generic;
+using LiveCharts.Charts;
 
 namespace LiveCharts
 {
@@ -68,14 +69,14 @@ namespace LiveCharts
 
     public interface ISeriesView
     {
-        SeriesCore Model { get; set; }
+        SeriesAlgorithm Model { get; set; }
         IChartValues Values { get; set; }
         bool DataLabels { get; }
         int ScalesXAt { get; set; }
         int ScalesYAt { get; set; }
-        ConfigurableElement Configuration { get; set; }
+        ISeriesConfiguration Configuration { get; set; }        
 
-        IChartPointView GetView(IChartPointView view, string label);
+        IChartPointView GetPointView(IChartPointView view, string label);
         void OnSeriesUpdateStart();
         void Erase();
         void OnSeriesUpdatedFinish();
@@ -126,8 +127,7 @@ namespace LiveCharts
     public interface IChartPointView
     {
         bool IsNew { get; set; }
-        LvcPoint Location { get; set; }
-        void DrawOrMove(object previousDrawn, object current, int index, ChartCore chart);
+        void DrawOrMove(ChartPoint previousDrawn, ChartPoint current, int index, ChartCore chart, ISeriesView series);
         void RemoveFromView(ChartCore chart);
     }
 }

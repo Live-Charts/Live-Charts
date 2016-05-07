@@ -37,12 +37,17 @@ namespace LiveCharts.Wpf.Components
         {
             DefaultFillOpacity = 0.35;
         }
+
+        protected Series(ISeriesConfiguration configuration)
+        {
+            Configuration = configuration;
+        }
         #endregion
 
         #region Properties
         internal double DefaultFillOpacity { get; set; }
 
-        public SeriesCore Model { get; set; }
+        public SeriesAlgorithm Model { get; set; }
 
         public static readonly DependencyProperty ValuesProperty = DependencyProperty.Register(
             "Values", typeof (IChartValues), typeof (Series),
@@ -218,7 +223,14 @@ namespace LiveCharts.Wpf.Components
             set { SetValue(ScalesYAtProperty, value); }
         }
 
-        public ConfigurableElement Configuration { get; set; }
+        public static readonly DependencyProperty ConfigurationProperty = DependencyProperty.Register(
+            "Configuration", typeof (ISeriesConfiguration), typeof (Series), new PropertyMetadata(default(ISeriesConfiguration)));
+
+        public ISeriesConfiguration Configuration
+        {
+            get { return (ISeriesConfiguration) GetValue(ConfigurationProperty); }
+            set { SetValue(ConfigurationProperty, value); }
+        }
 
         #endregion
 
@@ -247,7 +259,7 @@ namespace LiveCharts.Wpf.Components
 
         #endregion
 
-        public virtual IChartPointView GetView(IChartPointView view, string label)
+        public virtual IChartPointView GetPointView(IChartPointView view, string label)
         {
             throw new NotImplementedException();
         }
@@ -288,5 +300,9 @@ namespace LiveCharts.Wpf.Components
                 if (wpfSeries.Model.Chart != null) wpfSeries.Model.Chart.Updater.Run(animate);
             };
         }
+
+        #region Obsoletes
+
+        #endregion
     }
 }

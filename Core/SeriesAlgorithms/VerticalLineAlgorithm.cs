@@ -28,6 +28,7 @@ namespace LiveCharts.SeriesAlgorithms
         {
             XAxisMode = AxisLimitsMode.HalfSparator;
             YAxisMode = AxisLimitsMode.Stretch;
+            DefaultConfiguration = DefaultConfigurations.IndexedY;
         }
     }
 }

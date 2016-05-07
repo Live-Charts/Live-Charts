@@ -15,15 +15,20 @@ namespace Wpf
         {
             InitializeComponent();
 
-            var config = new SeriesConfiguration<Point>();
-
-            SeriesCollection = new SeriesCollection(new SeriesConfiguration<double>().X((v, i) => v).Y((v, i) => v))
+            SeriesCollection = new SeriesCollection()
             {
                 new ScatterSeries
                 {
-                    Values = new ChartValues<double> {2, 3, 5, 2, 7}
+                    Values = new ChartValues<BubblePoint>
+                    {
+                        new BubblePoint(10, 5, 4),
+                        new BubblePoint(13, 5, 8),
+                        new BubblePoint(12, 3, 7),
+                        new BubblePoint(8, 8, 8)
+                    }
                 }
             };
+
             DataContext = this;
         }
 
@@ -41,8 +46,7 @@ namespace Wpf
             foreach (var series in SeriesCollection)
             {
                 var next = r.NextDouble();
-                //series.Values.Add((next > .85 ? double.NaN : next*128));
-                series.Values.Add(r.NextDouble()*128);
+                series.Values.Add(new BubblePoint(r.NextDouble()*15, r.NextDouble()*15, r.NextDouble()*15));
             }
         }
 

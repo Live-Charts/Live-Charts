@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Threading;
 
-namespace LiveCharts.Wpf
+namespace LiveCharts.Wpf.Components
 {
     public class ChartUpdater : LiveCharts.ChartUpdater
     {

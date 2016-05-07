@@ -20,7 +20,6 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using LiveCharts.CrossNet;
@@ -54,10 +53,11 @@ namespace LiveCharts
             get { return GetPointsIterator(); }
         }
 
-        public LvcPoint MaxChartPoint { get; private set; }
-        public LvcPoint MinChartPoint { get; private set; }
-        public SeriesCore Series { get; set; }
-        public ConfigurableElement ConfigurableElement { get; set; }
+        public Limit Value1Limit { get; private set; }
+        public Limit Value2Limit { get; private set; }
+        public Limit Value3Limit { get; private set; }
+        public SeriesAlgorithm Series { get; set; }
+        public ISeriesConfiguration ConfigurableElement { get; set; }
 
         internal int GarbageCollectorIndex { get; set; }
         internal Dictionary<int, ChartPoint> Primitives { get; set; }
@@ -73,16 +73,32 @@ namespace LiveCharts
 
             var q = IndexData().ToArray();
 
-            var xs = q.Select(t => config.XValueMapper(t.Value, t.Key)).DefaultIfEmpty(0).ToArray();
-            var xMax = xs.Where(x => !double.IsNaN(x)).DefaultIfEmpty(0).Max();
-            var xMin = xs.Where(x => !double.IsNaN(x)).DefaultIfEmpty(0).Min();
+            if (config.Value1 != null)
+            {
+                var v1 = q.Select(t => config.Value1(t.Value, t.Key)).DefaultIfEmpty(0).ToArray();
+                var max = v1.Where(x => !double.IsNaN(x)).DefaultIfEmpty(0).Max();
+                var min = v1.Where(x => !double.IsNaN(x)).DefaultIfEmpty(0).Min();
 
-            var ys = q.Select(t => config.YValueMapper(t.Value, t.Key)).DefaultIfEmpty(0).ToArray();
-            var yMax = ys.Where(x => !double.IsNaN(x)).DefaultIfEmpty(0).Max();
-            var yMin = ys.Where(x => !double.IsNaN(x)).DefaultIfEmpty(0).Min();
+                Value1Limit = new Limit(min, max);
+            }
 
-            MaxChartPoint = new LvcPoint(xMax, yMax);
-            MinChartPoint = new LvcPoint(xMin, yMin);
+            if (config.Value2 != null)
+            {
+                var v1 = q.Select(t => config.Value2(t.Value, t.Key)).DefaultIfEmpty(0).ToArray();
+                var max = v1.Where(x => !double.IsNaN(x)).DefaultIfEmpty(0).Max();
+                var min = v1.Where(x => !double.IsNaN(x)).DefaultIfEmpty(0).Min();
+
+                Value2Limit = new Limit(min, max);
+            }
+
+            if (config.Value3 != null)
+            {
+                var v3 = q.Select(t => config.Value2(t.Value, t.Key)).DefaultIfEmpty(0).ToArray();
+                var max = v3.Where(x => !double.IsNaN(x)).DefaultIfEmpty(0).Max();
+                var min = v3.Where(x => !double.IsNaN(x)).DefaultIfEmpty(0).Min();
+
+                Value3Limit = new Limit(min, max);
+            }
         }
 
         public void InitializeGarbageCollector()
@@ -127,10 +143,6 @@ namespace LiveCharts
             var isObservable = !isPrimitive &&
                                typeof (IObservableChartPoint).AsCrossNet().IsAssignableFrom(typeof (T));
 
-            //var isPrimitive = typeof(T).GetType().IsPrimitive;
-            //var isObservable = !isPrimitive &&
-            //                   typeof(IObservableChartPoint).GetType().IsAssignableFrom(typeof(T).GetType());
-
             var garbageCollectorIndex = GarbageCollectorIndex;
             var i = 0;
 
@@ -174,9 +186,11 @@ namespace LiveCharts
                 }
 
                 cp.GarbageCollectorIndex = garbageCollectorIndex;
-                cp.X = config.XValueMapper(value, i);
-                cp.Y = config.YValueMapper(value, i);
                 cp.Instance = value;
+                cp.X = config.Value1(value, i);
+                cp.Y = config.Value2(value, i);
+                if (config.Value3 != null)
+                    cp.Weight = config.Value3(value, i);
 
                 yield return cp;
                 i++;
@@ -191,12 +205,6 @@ namespace LiveCharts
 
         private SeriesConfiguration<T> GetConfig()
         {
-            //the null propagator is ugly but necessary for livecharts starters
-            //this enables any chart by default to support any primitive type
-            //this should run ok if you dont have many points
-            //if you are facing perfomrnace issues then you must configure your type
-            //if you are not using chart values of double ChartValues<double> then you must:
-            //mySeriesConfiguration.Setup(new SeriesConfiguration<int>().Y(v => (double) v));
             return (Series.View.Configuration ?? Series.SeriesCollection.Configuration) as SeriesConfiguration<T>
                    ?? new SeriesConfiguration<T>().Y(t => (double) (object) t);
         }

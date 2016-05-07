@@ -31,6 +31,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Threading;
+using LiveCharts.Charts;
 using LiveCharts.Wpf.Points;
 using Size = System.Windows.Size;
 

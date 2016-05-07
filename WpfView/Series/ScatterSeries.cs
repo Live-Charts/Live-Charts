@@ -20,14 +20,10 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media;
-using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using LiveCharts.Helpers;
 using LiveCharts.SeriesAlgorithms;
@@ -37,19 +33,19 @@ using LiveCharts.Wpf.Points;
 // ReSharper disable once CheckNamespace
 namespace LiveCharts.Wpf
 {
-    public class ScatterSeries : Series
+    public class ScatterSeries : Series, IBubbleSeries
     {
         #region Contructors
 
         public ScatterSeries()
         {
-            Model = new LineAlgorithm(this);
+            Model = new ScatterAlgorithm(this);
             InitializeDefuaults();
         }
 
-        public ScatterSeries(ConfigurableElement configuration)
+        public ScatterSeries(ISeriesConfiguration configuration)
         {
-            Model = new LineAlgorithm(this);
+            Model = new ScatterAlgorithm(this);
             Configuration = configuration;
             InitializeDefuaults();
         }
@@ -62,16 +58,6 @@ namespace LiveCharts.Wpf
 
         #region Properties
 
-        public static readonly DependencyProperty PointDiameterProperty = DependencyProperty.Register(
-            "PointDiameter", typeof (double?), typeof (LineSeries), 
-            new PropertyMetadata(default(double?), CalChartUpdater()));
-
-        public double? PointDiameter
-        {
-            get { return (double?) GetValue(PointDiameterProperty); }
-            set { SetValue(PointDiameterProperty, value); }
-        }
-
         public static readonly DependencyProperty MaxBubbleDiameterProperty = DependencyProperty.Register(
             "MaxBubbleDiameter", typeof (double), typeof (ScatterSeries), new PropertyMetadata(default(double)));
 
@@ -81,26 +67,44 @@ namespace LiveCharts.Wpf
             set { SetValue(MaxBubbleDiameterProperty, value); }
         }
 
-        public static readonly DependencyProperty MinDoubleDiameterProperty = DependencyProperty.Register(
-            "MinDoubleDiameter", typeof (double), typeof (ScatterSeries), new PropertyMetadata(default(double)));
+        public static readonly DependencyProperty MinBubbleDiameterProperty = DependencyProperty.Register(
+            "MinBubbleDiameter", typeof (double), typeof (ScatterSeries), new PropertyMetadata(default(double)));
 
-        public double MinDoubleDiameter
+        public double MinBubbleDiameter
         {
-            get { return (double) GetValue(MinDoubleDiameterProperty); }
-            set { SetValue(MinDoubleDiameterProperty, value); }
+            get { return (double) GetValue(MinBubbleDiameterProperty); }
+            set { SetValue(MinBubbleDiameterProperty, value); }
         }
 
         #endregion
 
         #region Overriden Methods
 
-        public override IChartPointView GetView(IChartPointView view, string label)
+        public override IChartPointView GetPointView(IChartPointView view, string label)
         {
-            var pbv = (view as Bubble);
+            var pbv = (view as BubblePointView);
 
             if (pbv == null)
             {
-                pbv = new Bubble {IsNew = true};
+                pbv = new BubblePointView
+                {
+                    IsNew = true,
+                    Ellipse = new Ellipse()
+                };
+
+                BindingOperations.SetBinding(pbv.Ellipse, Shape.FillProperty,
+                    new Binding { Path = new PropertyPath(FillProperty), Source = this });
+                BindingOperations.SetBinding(pbv.Ellipse, Shape.StrokeProperty,
+                    new Binding { Path = new PropertyPath(StrokeProperty), Source = this });
+                BindingOperations.SetBinding(pbv.Ellipse, Shape.StrokeThicknessProperty,
+                    new Binding { Path = new PropertyPath(StrokeThicknessProperty), Source = this });
+
+                BindingOperations.SetBinding(pbv.Ellipse, VisibilityProperty,
+                    new Binding { Path = new PropertyPath(VisibilityProperty), Source = this });
+
+                Panel.SetZIndex(pbv.Ellipse, int.MaxValue - 2);
+
+                Model.Chart.View.AddToDrawMargin(pbv.Ellipse);
             }
             else
             {
@@ -128,27 +132,6 @@ namespace LiveCharts.Wpf
 
                 Model.Chart.View.AddToDrawMargin(pbv.HoverShape);
             }
-
-                pbv.Ellipse = new Ellipse();
-
-            BindingOperations.SetBinding(pbv.Ellipse, Shape.FillProperty,
-                new Binding {Path = new PropertyPath(FillProperty), Source = this});
-                BindingOperations.SetBinding(pbv.Ellipse, Shape.StrokeProperty,
-                    new Binding {Path = new PropertyPath(StrokeProperty), Source = this});
-                BindingOperations.SetBinding(pbv.Ellipse, Shape.StrokeThicknessProperty,
-                    new Binding { Path = new PropertyPath(StrokeThicknessProperty), Source = this });
-                BindingOperations.SetBinding(pbv.Ellipse, WidthProperty,
-                    new Binding {Path = new PropertyPath(PointDiameterProperty), Source = this});
-                BindingOperations.SetBinding(pbv.Ellipse, HeightProperty,
-                    new Binding {Path = new PropertyPath(PointDiameterProperty), Source = this});
-
-                BindingOperations.SetBinding(pbv.Ellipse, VisibilityProperty,
-                    new Binding {Path = new PropertyPath(VisibilityProperty), Source = this});
-
-                Panel.SetZIndex(pbv.Ellipse, int.MaxValue - 2);
-
-                Model.Chart.View.AddToDrawMargin(pbv.Ellipse);
-            
 
             if (DataLabels && pbv.DataLabel == null)
             {
@@ -179,10 +162,9 @@ namespace LiveCharts.Wpf
 
         private void InitializeDefuaults()
         {
-            SetValue(PointDiameterProperty, 12d);
             SetValue(StrokeThicknessProperty, 0d);
             SetValue(MaxBubbleDiameterProperty, 30d);
-            SetValue(MinDoubleDiameterProperty, 6d);
+            SetValue(MinBubbleDiameterProperty, 6d);
             DefaultFillOpacity = 0.7;
         }
 

@@ -26,12 +26,13 @@ using LiveCharts.Helpers;
 
 namespace LiveCharts.SeriesAlgorithms
 {
-    public class LineAlgorithm : SeriesCore, ICartesianSeries
+    public class LineAlgorithm : SeriesAlgorithm, ICartesianSeries
     {
         public LineAlgorithm(ISeriesView view) : base(view)
         {
             XAxisMode = AxisLimitsMode.Stretch;
             YAxisMode = AxisLimitsMode.HalfSparator;
+            DefaultConfiguration = DefaultConfigurations.IndexedX;
         }
 
         public AxisLimitsMode XAxisMode { get; set; }
@@ -103,9 +104,8 @@ namespace LiveCharts.SeriesAlgorithms
                     var c2X = xm2 + (xc2 - xm2)*smoothness + p2.X - xm2;
                     var c2Y = ym2 + (yc2 - ym2)*smoothness + p2.Y - ym2;
 
-                    chartPoint.View = View.GetView(chartPoint.View,
+                    chartPoint.View = View.GetPointView(chartPoint.View,
                         View.DataLabels ? fx(chartPoint.X) + ", " + fy(chartPoint.Y) : null);
-                    chartPoint.View.Location = p1;
 
                     var bezierView = chartPoint.View as IBezierData;
                     if (bezierView == null) continue;
@@ -119,7 +119,7 @@ namespace LiveCharts.SeriesAlgorithms
                             Point3 = new LvcPoint(p2.X, p2.Y)
                         };
 
-                    chartPoint.View.DrawOrMove(previousDrawn, chartPoint, segmentPosition, Chart);
+                    chartPoint.View.DrawOrMove(previousDrawn, chartPoint, segmentPosition, Chart, View);
                     segmentPosition++;
 
                     previousDrawn = chartPoint.View.IsNew

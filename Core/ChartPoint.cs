@@ -27,11 +27,15 @@ namespace LiveCharts
         /// <summary>
         /// Gets the X point value
         /// </summary>
-        public double X { get; set; }
+        public double X { get; internal set; }
         /// <summary>
         /// Gets the Y point value
         /// </summary>
-        public double Y { get; set; }
+        public double Y { get; internal set; }
+        /// <summary>
+        /// Gets the Weight of the point
+        /// </summary>
+        public double Weight { get; internal set; }
         /// <summary>
         /// Gets the coordinate where the value is placed at chart
         /// </summary>

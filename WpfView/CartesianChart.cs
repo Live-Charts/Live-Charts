@@ -20,6 +20,7 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
+using LiveCharts.Charts;
 using LiveCharts.Wpf.Components;
 
 namespace LiveCharts.Wpf
@@ -28,14 +29,8 @@ namespace LiveCharts.Wpf
     {
         public CartesianChart()
         {
-            var updater = new ChartUpdater();
+            var updater = new Components.ChartUpdater();
             ChartCoreModel = new CartesianChartCore(this, updater);
-
-            SetCurrentValue(SeriesProperty,
-                new SeriesCollection()
-                    .Setup(new SeriesConfiguration<double>()
-                        .Y(v => v)
-                        .X((v, i) => i)));
         }
     }
 }

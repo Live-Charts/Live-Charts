@@ -21,11 +21,17 @@
 //SOFTWARE.
 
 using System;
+using LiveCharts.Charts;
 using LiveCharts.SeriesAlgorithms;
 
 namespace LiveCharts
 {
     #region Enumerators
+
+    public enum DefaultConfigurations
+    {
+        Undefined, IndexedX, IndexedY, Bubble
+    }
 
     public enum AxisLimitsMode
     {
@@ -64,7 +70,7 @@ namespace LiveCharts
     #endregion
 
 
-    #region Structs
+    #region Structs And Classes
 
     public struct LvcPoint
     {
@@ -104,6 +110,18 @@ namespace LiveCharts
 
         public double Width { get; set; }
         public double Height { get; set; }
+    }
+
+    public struct Limit
+    {
+        public Limit(double min, double max) : this()
+        {
+            Max = max;
+            Min = min;
+        }
+
+        public double Max { get; set; }
+        public double Min { get; set; }
     }
 
     public class LvcRectangle
@@ -177,9 +195,10 @@ namespace LiveCharts
             }
         }
     }
+
     #endregion
 
-#region Interfaces
+    #region Interfaces
 
     public interface IChartUpdater
     {
@@ -198,6 +217,12 @@ namespace LiveCharts
     {
         AxisLimitsMode XAxisMode { get; set; }
         AxisLimitsMode YAxisMode { get; set; }
+    }
+
+    public interface IBubbleSeries
+    {
+        double MaxBubbleDiameter { get; set; }
+        double MinBubbleDiameter { get; set; }
     }
 
     public interface IBezierData : IChartPointView

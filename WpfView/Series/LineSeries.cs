@@ -41,13 +41,13 @@ namespace LiveCharts.Wpf
     {
         #region Contructors
 
-        public LineSeries()
+        public LineSeries() : base()
         {
             Model = new LineAlgorithm(this);
             InitializeDefuaults();
         }
 
-        public LineSeries(ConfigurableElement configuration)
+        public LineSeries(ISeriesConfiguration configuration)
         {
             Model = new LineAlgorithm(this);
             Configuration = configuration;
@@ -116,7 +116,7 @@ namespace LiveCharts.Wpf
 
             if (Figure != null)
             {
-                var xIni = ChartFunctions.ToDrawMargin(Values.MinChartPoint.X, AxisTags.X, Model.Chart, ScalesXAt);
+                var xIni = ChartFunctions.ToDrawMargin(Values.Value1Limit.Min, AxisTags.X, Model.Chart, ScalesXAt);
 
                 if (Model.Chart.View.DisableAnimations)
                     Figure.StartPoint = new Point(xIni, Model.Chart.DrawMargin.Height);
@@ -149,13 +149,13 @@ namespace LiveCharts.Wpf
             Path.Data = geometry;
             Model.Chart.View.AddToDrawMargin(Path);
 
-            var x = ChartFunctions.ToDrawMargin(Values.MinChartPoint.X, AxisTags.X, Model.Chart, ScalesXAt);
+            var x = ChartFunctions.ToDrawMargin(Values.Value1Limit.Min, AxisTags.X, Model.Chart, ScalesXAt);
             Figure.StartPoint = new Point(x, Model.Chart.DrawMargin.Height);
 
             base.OnSeriesUpdateStart();
         }
 
-        public override IChartPointView GetView(IChartPointView view, string label)
+        public override IChartPointView GetPointView(IChartPointView view, string label)
         {
             var mhr = PointDiameter < 5 ? 5 : PointDiameter;
 

@@ -20,8 +20,10 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
+using System;
 using System.Collections;
 using System.Linq;
+using LiveCharts.Charts;
 using LiveCharts.CrossNet;
 
 namespace LiveCharts
@@ -33,12 +35,10 @@ namespace LiveCharts
         public SeriesCollection()
         {
             ReportOldItems = true;
-            Configuration = new SeriesConfiguration<double>().X((v, i) => i).Y(v => v);
-
             CollectionChanged += OnCollectionChanged;
         }
 
-        public SeriesCollection(ConfigurableElement configuration)
+        public SeriesCollection(ISeriesConfiguration configuration)
         {
             ReportOldItems = true;
             Configuration = configuration;
@@ -49,19 +49,28 @@ namespace LiveCharts
         #endregion
         
         public ChartCore Chart { get; set; }
-        public ConfigurableElement Configuration { get; set; }
+        public ISeriesConfiguration Configuration { get; set; }
 
+        public SeriesCollection WithConfig<T>(SeriesConfiguration<T> configuration)
+        {
+            Configuration = configuration;
+            return this;
+        }
+
+        #region Obsoletes
         /// <summary>
         /// Setup a configuration for this collection
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="config"></param>
         /// <returns></returns>
+        [Obsolete]
         public SeriesCollection Setup<T>(SeriesConfiguration<T> config)
         {
             Configuration = config;
             return this;
         }
+        #endregion
 
         private void OnCollectionChanged(object oldItems)
         {

@@ -24,16 +24,16 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
+using LiveCharts.Charts;
 using LiveCharts.Wpf.Components;
 
 namespace LiveCharts.Wpf.Points
 {
     internal class VBezierPointView : HBezierPointView
     {
-        public override void DrawOrMove(object previousDrawn, object current, int index, ChartCore chart)
+        public override void DrawOrMove(ChartPoint previousDrawn, ChartPoint current, int index, ChartCore chart, ISeriesView series)
         {
-            var previosCp = (ChartPoint)previousDrawn;
-            var previosPbv = previosCp == null ? null : (VBezierPointView)previosCp.View;
+            var previosPbv = previousDrawn == null ? null : (VBezierPointView) previousDrawn.View;
 
             Container.Segments.Remove(Segment);
             Container.Segments.Insert(index, Segment);
@@ -66,13 +66,13 @@ namespace LiveCharts.Wpf.Points
 
                     if (DataLabel != null)
                     {
-                        Canvas.SetTop(DataLabel, Location.Y - DataLabel.ActualHeight * .5);
+                        Canvas.SetTop(DataLabel, current.ChartLocation.Y - DataLabel.ActualHeight * .5);
                         Canvas.SetLeft(DataLabel, 0);
                     }
 
                     if (Ellipse != null)
                     {
-                        Canvas.SetTop(Ellipse, Location.Y - Ellipse.Height * .5);
+                        Canvas.SetTop(Ellipse, current.ChartLocation.Y - Ellipse.Height * .5);
                         Canvas.SetLeft(Ellipse, 0);
                     }
                 }
@@ -88,21 +88,21 @@ namespace LiveCharts.Wpf.Points
 
                 if (HoverShape != null)
                 {
-                    Canvas.SetLeft(HoverShape, Location.X - HoverShape.Width * .5);
-                    Canvas.SetTop(HoverShape, Location.Y - HoverShape.Height * .5);
+                    Canvas.SetLeft(HoverShape, current.ChartLocation.X - HoverShape.Width * .5);
+                    Canvas.SetTop(HoverShape, current.ChartLocation.Y - HoverShape.Height * .5);
                 }
 
                 if (Ellipse != null)
                 {
-                    Canvas.SetLeft(Ellipse, Location.X - Ellipse.Width * .5);
-                    Canvas.SetTop(Ellipse, Location.Y - Ellipse.Height * .5);
+                    Canvas.SetLeft(Ellipse, current.ChartLocation.X - Ellipse.Width * .5);
+                    Canvas.SetTop(Ellipse, current.ChartLocation.Y - Ellipse.Height * .5);
                 }
 
                 if (DataLabel != null)
                 {
                     DataLabel.UpdateLayout();
-                    var xl = CorrectXLabel(Location.X - DataLabel.ActualWidth * .5, chart);
-                    var yl = CorrectYLabel(Location.Y - DataLabel.ActualHeight * .5, chart);
+                    var xl = CorrectXLabel(current.ChartLocation.X - DataLabel.ActualWidth * .5, chart);
+                    var yl = CorrectYLabel(current.ChartLocation.Y - DataLabel.ActualHeight * .5, chart);
                     Canvas.SetLeft(DataLabel, xl);
                     Canvas.SetTop(DataLabel, yl);
                 }
@@ -121,17 +121,17 @@ namespace LiveCharts.Wpf.Points
             if (Ellipse != null)
             {
                 Ellipse.BeginAnimation(Canvas.LeftProperty,
-                    new DoubleAnimation(Location.X - Ellipse.Width * .5, chart.View.AnimationsSpeed));
+                    new DoubleAnimation(current.ChartLocation.X - Ellipse.Width * .5, chart.View.AnimationsSpeed));
                 Ellipse.BeginAnimation(Canvas.TopProperty,
-                    new DoubleAnimation(Location.Y - Ellipse.Height * .5, chart.View.AnimationsSpeed));
+                    new DoubleAnimation(current.ChartLocation.Y - Ellipse.Height * .5, chart.View.AnimationsSpeed));
             }
 
             if (DataLabel != null)
             {
                 DataLabel.UpdateLayout();
 
-                var xl = CorrectXLabel(Location.X - DataLabel.ActualWidth * .5, chart);
-                var yl = CorrectYLabel(Location.Y - DataLabel.ActualHeight * .5, chart);
+                var xl = CorrectXLabel(current.ChartLocation.X - DataLabel.ActualWidth * .5, chart);
+                var yl = CorrectYLabel(current.ChartLocation.Y - DataLabel.ActualHeight * .5, chart);
 
                 DataLabel.BeginAnimation(Canvas.LeftProperty,
                     new DoubleAnimation(xl, chart.View.AnimationsSpeed));
@@ -141,8 +141,8 @@ namespace LiveCharts.Wpf.Points
 
             if (HoverShape != null)
             {
-                Canvas.SetLeft(HoverShape, Location.X - HoverShape.Width * .5);
-                Canvas.SetTop(HoverShape, Location.Y - HoverShape.Height * .5);
+                Canvas.SetLeft(HoverShape, current.ChartLocation.X - HoverShape.Width * .5);
+                Canvas.SetTop(HoverShape, current.ChartLocation.Y - HoverShape.Height * .5);
             }
         }
     }

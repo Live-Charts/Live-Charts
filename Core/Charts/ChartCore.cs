@@ -24,10 +24,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace LiveCharts
+namespace LiveCharts.Charts
 {
     public abstract class ChartCore
     {
+
+        #region Contructors
         protected ChartCore(IChartView view, IChartUpdater updater)
         {
             View = view;
@@ -38,6 +40,10 @@ namespace LiveCharts
             DrawMargin.SetTop += view.SetDrawMarginTop;
             DrawMargin.SetLeft += view.SetDrawMarginLeft;
         }
+
+        #endregion
+
+        #region Properties 
         public bool SeriesInitialized { get; set; }
         public IChartView View { get; set; }
         public IChartUpdater Updater { get; set; }
@@ -47,6 +53,10 @@ namespace LiveCharts
         
         public List<AxisCore> AxisX { get; set; }
         public List<AxisCore> AxisY { get; set; }
+
+        public Limit Value1Limit { get; set; }
+        public Limit Value2Limit { get; set; }
+        public Limit Value3Limit { get; set; }
 
         public int CurrentColorIndex { get; set; }
 
@@ -66,6 +76,10 @@ namespace LiveCharts
 
         private DateTime RequestedZoomAt { get; set; }
 
+        #endregion
+
+        #region Public Methods
+
         public virtual void PrepareAxes()
         {
 
@@ -75,10 +89,10 @@ namespace LiveCharts
 
                 xi.MaxLimit = xi.MaxValue ??
                               View.Series.Where(series => series.Values != null && series.ScalesXAt == index)
-                                  .Select(series => series.Values.MaxChartPoint.X).DefaultIfEmpty(0).Max();
+                                  .Select(series => series.Values.Value1Limit.Max).DefaultIfEmpty(0).Max();
                 xi.MinLimit = xi.MinValue ??
                               View.Series.Where(series => series.Values != null && series.ScalesXAt == index)
-                                  .Select(series => series.Values.MinChartPoint.X).DefaultIfEmpty(0).Min();
+                                  .Select(series => series.Values.Value1Limit.Min).DefaultIfEmpty(0).Min();
             }
 
             for (var index = 0; index < AxisY.Count; index++)
@@ -87,10 +101,10 @@ namespace LiveCharts
 
                 yi.MaxLimit = yi.MaxValue ??
                              View.Series.Where(series => series.Values != null && series.ScalesYAt == index)
-                                  .Select(series => series.Values.MaxChartPoint.Y).DefaultIfEmpty(0).Max();
+                                  .Select(series => series.Values.Value2Limit.Max).DefaultIfEmpty(0).Max();
                 yi.MinLimit = yi.MinValue ??
                               View.Series.Where(series => series.Values != null && series.ScalesYAt == index)
-                                  .Select(series => series.Values.MinChartPoint.Y).DefaultIfEmpty(0).Min();
+                                  .Select(series => series.Values.Value3Limit.Min).DefaultIfEmpty(0).Min();
             }
 
             PivotZoomingAxis = AxisTags.X;
@@ -381,5 +395,6 @@ namespace LiveCharts
 
             Updater.Run();
         }
+        #endregion
     }
 }
