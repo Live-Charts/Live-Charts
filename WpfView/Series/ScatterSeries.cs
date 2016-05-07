@@ -163,8 +163,8 @@ namespace LiveCharts.Wpf
         private void InitializeDefuaults()
         {
             SetValue(StrokeThicknessProperty, 0d);
-            SetValue(MaxBubbleDiameterProperty, 30d);
-            SetValue(MinBubbleDiameterProperty, 6d);
+            SetValue(MaxBubbleDiameterProperty, 50d);
+            SetValue(MinBubbleDiameterProperty, 10d);
             DefaultFillOpacity = 0.7;
         }
 

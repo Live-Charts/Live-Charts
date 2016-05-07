@@ -93,7 +93,7 @@ namespace LiveCharts
 
             if (config.Value3 != null)
             {
-                var v3 = q.Select(t => config.Value2(t.Value, t.Key)).DefaultIfEmpty(0).ToArray();
+                var v3 = q.Select(t => config.Value3(t.Value, t.Key)).DefaultIfEmpty(0).ToArray();
                 var max = v3.Where(x => !double.IsNaN(x)).DefaultIfEmpty(0).Max();
                 var min = v3.Where(x => !double.IsNaN(x)).DefaultIfEmpty(0).Min();
 
@@ -220,7 +220,7 @@ namespace LiveCharts
             }
         }
 
-        private void ObservableOnPointChanged(object caller)
+        protected void ObservableOnPointChanged()
         {
             Series.Chart.Updater.Run();
         }

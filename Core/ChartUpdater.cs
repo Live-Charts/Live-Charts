@@ -144,7 +144,7 @@ namespace LiveCharts
                         .Y((d, i) => i);
                     break;
                 case DefaultConfigurations.Bubble:
-                    Chart.View.Series.Configuration = new SeriesConfiguration<BubblePoint>()
+                    Chart.View.Series.Configuration = new SeriesConfiguration<ScatterPoint>()
                         .X(bubble => bubble.X)
                         .Y(bubble => bubble.Y)
                         .Weight(bubble => bubble.Weight);

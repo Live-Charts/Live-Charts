@@ -210,7 +210,7 @@ namespace LiveCharts
 
     public interface IObservableChartPoint
     {
-        event Action<object> PointChanged;
+        event Action PointChanged;
     }
 
     public interface ICartesianSeries

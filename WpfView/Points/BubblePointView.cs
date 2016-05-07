@@ -20,6 +20,7 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
+using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Animation;
@@ -65,6 +66,11 @@ namespace LiveCharts.Wpf.Points
             var m = (p2.Y - p1.Y)/(deltaX == 0 ? double.MinValue : deltaX);
 
             var diameter = m*(current.Weight - p1.X) + p1.Y;
+
+            if (diameter < bubbleSeries.MinBubbleDiameter || diameter > bubbleSeries.MaxBubbleDiameter)
+            {
+                var a = 1;
+            }
 
             if (chart.View.DisableAnimations)
             {

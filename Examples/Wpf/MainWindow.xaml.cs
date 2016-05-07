@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using LiveCharts;
 using LiveCharts.Wpf;
@@ -19,12 +20,32 @@ namespace Wpf
             {
                 new ScatterSeries
                 {
-                    Values = new ChartValues<BubblePoint>
+                    Values = new ChartValues<ScatterPoint>
                     {
-                        new BubblePoint(10, 5, 4),
-                        new BubblePoint(13, 5, 8),
-                        new BubblePoint(12, 3, 7),
-                        new BubblePoint(8, 8, 8)
+                        new ScatterPoint(10, 5, 4),
+                        new ScatterPoint(13, 5, 8),
+                        new ScatterPoint(12, 3, 7),
+                        new ScatterPoint(8, 8, 8)
+                    }
+                },
+                new ScatterSeries
+                {
+                    Values = new ChartValues<ScatterPoint>
+                    {
+                        new ScatterPoint(10, 5, 4),
+                        new ScatterPoint(13, 5, 8),
+                        new ScatterPoint(12, 3, 7),
+                        new ScatterPoint(8, 8, 8)
+                    }
+                },
+                new ScatterSeries
+                {
+                    Values = new ChartValues<ScatterPoint>
+                    {
+                        new ScatterPoint(10, 5, 4),
+                        new ScatterPoint(13, 5, 8),
+                        new ScatterPoint(12, 3, 7),
+                        new ScatterPoint(8, 8, 8)
                     }
                 }
             };
@@ -46,7 +67,7 @@ namespace Wpf
             foreach (var series in SeriesCollection)
             {
                 var next = r.NextDouble();
-                series.Values.Add(new BubblePoint(r.NextDouble()*15, r.NextDouble()*15, r.NextDouble()*15));
+                series.Values.Add(new ScatterPoint(r.NextDouble()*15, r.NextDouble()*15, r.NextDouble()*15));
             }
         }
 
@@ -85,6 +106,20 @@ namespace Wpf
 
             if (SeriesCollection.Count > 0)
                 SeriesCollection.RemoveAt(r.Next(0, SeriesCollection.Count));
+        }
+
+        private void RandomizeOnClick(object sender, RoutedEventArgs e)
+        {
+            var r = new Random();
+            foreach (var series in SeriesCollection)
+            {
+                foreach (var value in series.Values.Cast<ScatterPoint>())
+                {
+                    value.X = r.NextDouble()*20;
+                    value.Y = r.NextDouble()*20;
+                    value.Weight = r.NextDouble()*20;
+                }
+            }
         }
     }
 }

@@ -20,30 +20,69 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
+using System;
+
 namespace LiveCharts
 {
-    public class BubblePoint
+    public class ScatterPoint : IObservableChartPoint
     {
-        public BubblePoint()
+        private double _x;
+        private double _y;
+        private double _weight;
+
+        public ScatterPoint()
         {
             
         }
 
-        public BubblePoint(double x, double y)
+        public ScatterPoint(double x, double y)
         {
             X = x;
             Y = y;
         }
 
-        public BubblePoint(double x, double y, double weight)
+        public ScatterPoint(double x, double y, double weight)
         {
             X = x;
             Y = y;
             Weight = weight;
         }
 
-        public double X { get; set; }
-        public double Y { get; set; }
-        public double Weight { get; set; }
+        public double X
+        {
+            get { return _x; }
+            set
+            {
+                _x = value;
+                OnPointChanged();
+            }
+        }
+
+        public double Y
+        {
+            get { return _y; }
+            set
+            {
+                _y = value;
+                OnPointChanged();
+            }
+        }
+
+        public double Weight
+        {
+            get { return _weight; }
+            set
+            {
+                _weight = value;
+                OnPointChanged();
+            }
+        }
+
+        public event Action PointChanged;
+
+        protected void OnPointChanged()
+        {
+            if (PointChanged != null) PointChanged.Invoke();
+        }
     }
 }
