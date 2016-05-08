@@ -41,7 +41,7 @@ namespace LiveCharts.SeriesAlgorithms
         public override void Update()
         {
             var points = View.Values.Points.ToList();
-            var fx = CurentXAxis.GetFormatter();
+            var fx = CurrentXAxis.GetFormatter();
             var fy = CurrentYAxis.GetFormatter();
             var segmentPosition = 0;
 
@@ -67,7 +67,7 @@ namespace LiveCharts.SeriesAlgorithms
                     : p2;
 
                 var uw = new LvcPoint(
-                    CurentXAxis.EvaluatesUnitWidth
+                    CurrentXAxis.EvaluatesUnitWidth
                         ? ChartFunctions.GetUnitWidth(AxisTags.X, Chart, View.ScalesXAt)/2
                         : 0,
                     CurrentYAxis.EvaluatesUnitWidth

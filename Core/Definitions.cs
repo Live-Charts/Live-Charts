@@ -230,6 +230,11 @@ namespace LiveCharts
         double MaxColumnWidth { get; set; }
     }
 
+    public interface IRowSeries
+    {
+        double MaxRowWidth { get; set; }
+    }
+
     public interface IBezierData : IChartPointView
     {
         BezierData Data { get; set; }

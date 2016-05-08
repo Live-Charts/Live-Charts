@@ -35,7 +35,7 @@ namespace LiveCharts.SeriesAlgorithms
 
         public override void Update()
         {
-            var fx = CurentXAxis.GetFormatter();
+            var fx = CurrentXAxis.GetFormatter();
             var fy = CurrentYAxis.GetFormatter();
 
             var buubleSeries = (IBubbleSeries) View;
@@ -54,7 +54,7 @@ namespace LiveCharts.SeriesAlgorithms
             var m = (p2.Y - p1.Y) / (deltaX == 0 ? double.MinValue : deltaX);
 
             var uw = new LvcPoint(
-                    CurentXAxis.EvaluatesUnitWidth
+                    CurrentXAxis.EvaluatesUnitWidth
                         ? ChartFunctions.GetUnitWidth(AxisTags.X, Chart, View.ScalesXAt) / 2
                         : 0,
                     CurrentYAxis.EvaluatesUnitWidth

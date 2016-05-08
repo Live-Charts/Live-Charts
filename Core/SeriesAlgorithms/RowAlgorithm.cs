@@ -25,13 +25,13 @@ using System.Linq;
 
 namespace LiveCharts.SeriesAlgorithms
 {
-    public class ColumnAlgorithm : SeriesAlgorithm , ICartesianSeries
+    public class RowAlgorithm : SeriesAlgorithm, ICartesianSeries
     {
-        public ColumnAlgorithm(ISeriesView view) : base(view)
+        public RowAlgorithm(ISeriesView view) : base(view)
         {
-            XAxisMode = AxisLimitsMode.UnitWidth;
-            YAxisMode = AxisLimitsMode.Separator;
-            SeriesConfigurationType = SeriesConfigurationType.IndexedX;
+            XAxisMode = AxisLimitsMode.Separator;
+            YAxisMode = AxisLimitsMode.UnitWidth;
+            SeriesConfigurationType = SeriesConfigurationType.IndexedY;
         }
 
         public AxisLimitsMode XAxisMode { get; set; }
@@ -39,36 +39,38 @@ namespace LiveCharts.SeriesAlgorithms
 
         public override void Update()
         {
-            var fy = CurrentYAxis.GetFormatter();
+            var fx = CurrentYAxis.GetFormatter();
 
-            var columnSeries = (IColumnSeries) View;
+            var columnSeries = (IRowSeries) View;
 
             const double padding = 5;
+            
+            var totalSpace = ChartFunctions.GetUnitWidth(AxisTags.Y, Chart, View.ScalesYAt) - padding;
+            var columnSeriesCount = Chart.View.Series.OfType<IRowSeries>().Count();
 
-            var totalSpace = ChartFunctions.GetUnitWidth(AxisTags.X, Chart, View.ScalesXAt) - padding;
-            var columnSeriesCount = Chart.View.Series.OfType<IColumnSeries>().Count();
-
-            var singleColWidth = totalSpace/columnSeriesCount;
+            var singleRowHeight = totalSpace/columnSeriesCount;
 
             double exceed = 0;
 
             var seriesPosition = Chart.View.Series.IndexOf(View);
 
-            if (singleColWidth > columnSeries.MaxColumnWidth)
+            if (singleRowHeight > columnSeries.MaxRowWidth)
             {
-                exceed = (singleColWidth - columnSeries.MaxColumnWidth)*columnSeriesCount/2;
-                singleColWidth = columnSeries.MaxColumnWidth;
+                exceed = (singleRowHeight - columnSeries.MaxRowWidth) * columnSeriesCount / 2;
+                singleRowHeight = columnSeries.MaxRowWidth;
             }
 
-            var relativeLeft = padding + exceed + singleColWidth*(seriesPosition);
+            var relativeTop = padding + exceed + singleRowHeight * (seriesPosition);
 
-            var startAt = CurrentYAxis.MinLimit >= 0 && CurrentYAxis.MaxLimit > 0   //both positive
-                ? CurrentYAxis.MinLimit                                             //then use axisYMin
-                : (CurrentYAxis.MinLimit <= 0 && CurrentYAxis.MaxLimit < 0          //both negative
-                    ? CurrentYAxis.MaxLimit                                         //then use axisYMax
+            var startAt = CurrentXAxis.MinLimit >= 0 && CurrentXAxis.MaxLimit > 0   //both positive
+                ? CurrentXAxis.MinLimit                                             //then use Min
+                : (CurrentXAxis.MinLimit <= 0 && CurrentXAxis.MaxLimit < 0          //both negative
+                    ? CurrentXAxis.MaxLimit                                         //then use Max
                     : 0);                                                           //if mixed then use 0
 
-            var zero = ChartFunctions.ToDrawMargin(startAt, AxisTags.Y, Chart, View.ScalesYAt);
+            var zero = ChartFunctions.ToDrawMargin(startAt, AxisTags.X, Chart, View.ScalesXAt);
+
+            var correction = ChartFunctions.GetUnitWidth(AxisTags.Y, Chart, View.ScalesYAt);
 
             foreach (var chartPoint in View.Values.Points)
             {
@@ -76,25 +78,25 @@ namespace LiveCharts.SeriesAlgorithms
                     ChartFunctions.ToDrawMargin(chartPoint, View.ScalesXAt, View.ScalesYAt, Chart);
 
                 chartPoint.View = View.GetPointView(chartPoint.View,
-                    View.DataLabels ? fy(chartPoint.Y) : null);
+                    View.DataLabels ? fx(chartPoint.X) : null);
 
                 var rectangleView = (IRectangleData) chartPoint.View;
 
-                var h = Math.Abs(reference.Y - zero);
-                var t = reference.Y < zero
-                    ? reference.Y
+                var w = Math.Abs(reference.X - zero);
+                var l = reference.X < zero
+                    ? reference.X
                     : zero;
 
-                rectangleView.Data.Height = h > 0 ? h : 0;
-                rectangleView.Data.Top = t;
+                rectangleView.Data.Height = singleRowHeight - padding;
+                rectangleView.Data.Top = reference.Y + relativeTop - correction;
 
-                rectangleView.Data.Left = reference.X + relativeLeft;
-                rectangleView.Data.Width = singleColWidth - padding;
+                rectangleView.Data.Left = l;
+                rectangleView.Data.Width = w > 0 ? w : 0;
 
                 rectangleView.ZeroReference = zero;
 
-                chartPoint.ChartLocation = new LvcPoint(rectangleView.Data.Left + singleColWidth/2 - padding/2,
-                    t);
+                chartPoint.ChartLocation = new LvcPoint(rectangleView.Data.Left + singleRowHeight / 2 - padding / 2,
+                    l);
 
                 chartPoint.View.DrawOrMove(null, chartPoint, 0, Chart);
             }

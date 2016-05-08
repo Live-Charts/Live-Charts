@@ -19,15 +19,27 @@ namespace Wpf
 
             SeriesCollection = new SeriesCollection
             {
-                new ColumnSeries
+                new RowSeries
                 {
                     Values = new ChartValues<ObservableValue>
                     {
-                        new ObservableValue(1),
-                        new ObservableValue(2),
-                        new ObservableValue(-3),
-                        new ObservableValue(4),
-                        new ObservableValue(5)
+                        new ObservableValue(10),
+                        new ObservableValue(20),
+                        new ObservableValue(30),
+                        new ObservableValue(40),
+                        new ObservableValue(50)
+                    },
+                    DataLabels = true
+                },
+                new RowSeries
+                {
+                    Values = new ChartValues<ObservableValue>
+                    {
+                        new ObservableValue(10),
+                        new ObservableValue(20),
+                        new ObservableValue(30),
+                        new ObservableValue(40),
+                        new ObservableValue(50)
                     },
                     DataLabels = true
                 }

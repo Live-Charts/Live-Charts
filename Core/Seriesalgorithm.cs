@@ -36,7 +36,7 @@ namespace LiveCharts
         public SeriesCollection SeriesCollection { get; set; }
         public SeriesConfigurationType SeriesConfigurationType { get; set; }
         public string Title { get; set; }
-        public AxisCore CurentXAxis
+        public AxisCore CurrentXAxis
         {
             get { return Chart.AxisX[View.ScalesXAt]; }
         }
