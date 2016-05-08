@@ -156,7 +156,7 @@ namespace LiveCharts.Wpf
         private void InitializeDefuaults()
         {
             SetValue(StrokeThicknessProperty, 0d);
-            SetValue(MaxColumnWidthProperty, 30d);
+            SetValue(MaxColumnWidthProperty, 35d);
             DefaultFillOpacity = 1;
         }
 

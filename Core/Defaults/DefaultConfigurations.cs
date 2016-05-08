@@ -80,17 +80,29 @@ namespace LiveCharts.Defaults
                 IndexedY = new SeriesConfiguration<long>().X(v => v).Y((v, i) => i)
             };
 
+            var bpic = new SeriesConfiguration<BubblePoint>()
+                .X(bubble => bubble.X)
+                .Y(bubble => bubble.Y)
+                .Weight(bubble => bubble.Weight);
+
             Configurations[typeof (BubblePoint)] = new SeriesConfigurationWrapper
             {
-                IndexedX = new SeriesConfiguration<BubblePoint>()
-                    .X(bubble => bubble.X)
-                    .Y(bubble => bubble.Y)
-                    .Weight(bubble => bubble.Weight)
+                IndexedX = bpic,
+                IndexedY = bpic
             };
+
+            var opic = new SeriesConfiguration<ObservablePoint>().X(p => p.X).Y(p => p.Y);
 
             Configurations[typeof (ObservablePoint)] = new SeriesConfigurationWrapper
             {
-                IndexedX = new SeriesConfiguration<ObservablePoint>().X(p => p.X).Y(p => p.Y)
+                IndexedX = opic,
+                IndexedY = opic
+            };
+
+            Configurations[typeof (ObservableValue)] = new SeriesConfigurationWrapper
+            {
+                IndexedX = new SeriesConfiguration<ObservableValue>().X((v, i) => i).Y(v => v.Value),
+                IndexedY = new SeriesConfiguration<ObservableValue>().X(v => v.Value).Y((v, i) => i)
             };
         }
 

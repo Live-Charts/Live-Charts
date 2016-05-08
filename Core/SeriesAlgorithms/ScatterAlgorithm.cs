@@ -53,9 +53,18 @@ namespace LiveCharts.SeriesAlgorithms
             // ReSharper disable once CompareOfFloatsByEqualityOperator
             var m = (p2.Y - p1.Y) / (deltaX == 0 ? double.MinValue : deltaX);
 
+            var uw = new LvcPoint(
+                    CurentXAxis.EvaluatesUnitWidth
+                        ? ChartFunctions.GetUnitWidth(AxisTags.X, Chart, View.ScalesXAt) / 2
+                        : 0,
+                    CurrentYAxis.EvaluatesUnitWidth
+                        ? ChartFunctions.GetUnitWidth(AxisTags.Y, Chart, View.ScalesYAt) / 2
+                        : 0);
+
             foreach (var chartPoint in View.Values.Points)
             {
-                chartPoint.ChartLocation = ChartFunctions.ToDrawMargin(chartPoint, View.ScalesXAt, View.ScalesYAt, Chart);
+                chartPoint.ChartLocation = ChartFunctions.ToDrawMargin(
+                    chartPoint, View.ScalesXAt, View.ScalesYAt, Chart) + uw;
 
                 chartPoint.View = View.GetPointView(chartPoint.View,
                     View.DataLabels ? fx(chartPoint.X) + ", " + fy(chartPoint.Y) : null);

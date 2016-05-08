@@ -49,14 +49,14 @@ namespace LiveCharts
         public bool DisableAnimations { get; set; }
         public AxisPosition Position { get; set; }
         public bool IsMerged { get; set; }
-        
+
         public SeparatorConfigurationCore Separator { get; set; }
 
         internal double MaxLimit { get; set; }
         internal double MinLimit { get; set; }
         internal double S { get; set; }
         internal double Magnitude { get; set; }
-
+        internal bool EvaluatesUnitWidth { get; set; }
         internal int CleanFactor { get; set; }
         internal Dictionary<double, SeparatorElementCore> Cache { get; set; }
         internal double? LastAxisMax { get; set; }

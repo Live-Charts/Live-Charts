@@ -21,6 +21,7 @@
 //SOFTWARE.
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace LiveCharts.Charts
@@ -42,14 +43,7 @@ namespace LiveCharts.Charts
                     "There is a invalid series in the series collection, " +
                     "verify that all the series are desiged to be plotted in a cartesian chart.");
 
-            var xMode = AxisLimitsMode.Stretch;
-            var yMode = AxisLimitsMode.Stretch;
-
-            foreach (var cartesianSeries in View.Series.Select(x => x.Model).Cast<ICartesianSeries>())
-            {
-                xMode = cartesianSeries.XAxisMode < xMode ? xMode : cartesianSeries.XAxisMode;
-                yMode = cartesianSeries.YAxisMode < yMode ? yMode : cartesianSeries.YAxisMode;
-            }
+            var cartesianSeries = View.Series.Select(x => x.Model).Cast<ICartesianSeries>().ToArray();
 
             if (View.Series.Any(x => x is IBubbleSeries))
             {
@@ -58,73 +52,70 @@ namespace LiveCharts.Charts
                     vs.Select(x => x.Max).DefaultIfEmpty(0).Max());
             }
 
-            for (int index = 0; index < AxisX.Count; index++)
+            for (var index = 0; index < AxisX.Count; index++)
             {
                 var xi = AxisX[index];
                 xi.CalculateSeparator(this, AxisTags.X);
-                switch (xMode)
-                {
-                    case AxisLimitsMode.Stretch:
-                        xi.MaxLimit = Math.Ceiling(xi.MaxLimit/xi.Magnitude)*xi.Magnitude;
-                        xi.MinLimit = Math.Floor(xi.MinLimit/xi.Magnitude)*xi.Magnitude;
-                        if (Math.Abs(xi.MaxLimit - xi.MinLimit) < xi.S*0.01)
-                        {
-                            xi.MinLimit = (Math.Round(xi.MaxLimit/xi.S) - 1)*xi.S;
-                            xi.MaxLimit = (Math.Round(xi.MaxLimit/xi.S) + 1)*xi.S;
-                        }
-                        break;
-                    case AxisLimitsMode.Separator:
-                        if (xi.MaxValue == null) xi.MaxLimit = (Math.Round(xi.MaxLimit/xi.S) + 1)*xi.S;
-                        if (xi.MinValue == null) xi.MinLimit = (Math.Truncate(xi.MinLimit/xi.S) - 1)*xi.S;
-                        break;
-                    case AxisLimitsMode.Bubble:
-                        var maxRadius = View.Series.Where(x => x.ScalesXAt == index)
-                            .OfType<IBubbleSeries>()
-                            .Select(x => x.MaxBubbleDiameter)
-                            .DefaultIfEmpty(0).Max()/2;
-                        var pxRadius = Math.Round(ChartFunctions.FromDrawMargin(maxRadius, AxisTags.X, this, index));
-                        if (xi.MaxValue == null) xi.MaxLimit = (Math.Round(xi.MaxLimit/pxRadius) + 1)*pxRadius;
-                        if (xi.MinValue == null) xi.MinLimit = (Math.Truncate(xi.MinLimit/pxRadius) - 1)*pxRadius;
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException();
-                }
+                SetAxisMode(cartesianSeries.Select(x => x.XAxisMode), xi, index, AxisTags.X);
             }
 
-            for (int index = 0; index < AxisY.Count; index++)
+            for (var index = 0; index < AxisY.Count; index++)
             {
                 var yi = AxisY[index];
                 yi.CalculateSeparator(this, AxisTags.Y);
-                switch (yMode)
-                {
-                    case AxisLimitsMode.Stretch:
-                        yi.MaxLimit = Math.Ceiling(yi.MaxLimit/yi.Magnitude)*yi.Magnitude;
-                        yi.MinLimit = Math.Floor((yi.MinLimit/yi.Magnitude))*yi.Magnitude;
-                        if (Math.Abs(yi.MaxLimit - yi.MinLimit) < yi.S*0.01)
-                        {
-                            yi.MinLimit = (Math.Round(yi.MaxLimit/yi.S) - 1)*yi.S;
-                            yi.MaxLimit = (Math.Round(yi.MaxLimit/yi.S) + 1)*yi.S;
-                        }
-                        break;
-                    case AxisLimitsMode.Separator:
-                        if (yi.MaxValue == null) yi.MaxLimit = (Math.Round(yi.MaxLimit/yi.S) + 1)*yi.S;
-                        if (yi.MinValue == null) yi.MinLimit = (Math.Truncate(yi.MinLimit/yi.S) - 1)*yi.S;
-                        break;
-                    case AxisLimitsMode.Bubble:
-                        var maxRadius = View.Series.Where(x => x.ScalesYAt == index)
-                            .OfType<IBubbleSeries>()
-                            .Select(x => x.MaxBubbleDiameter)
-                            .DefaultIfEmpty(0).Max()/2;
-                        var pxRadius = Math.Round(ChartFunctions.FromDrawMargin(maxRadius, AxisTags.Y, this, index));
-                        if (yi.MaxValue == null) yi.MaxLimit = (Math.Round(yi.MaxLimit/pxRadius) + 1)*pxRadius;
-                        if (yi.MinValue == null) yi.MinLimit = (Math.Truncate(yi.MinLimit/pxRadius) - 1)*pxRadius;
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException();
-                }
+                SetAxisMode(cartesianSeries.Select(x => x.YAxisMode), yi, index, AxisTags.Y);
             }
 
             CalculateComponentsAndMargin();
+        }
+    
+        private void SetAxisMode(IEnumerable<AxisLimitsMode> modes, AxisCore axis, int index, AxisTags source)
+        {
+            var mode = EvaluateModes(modes);
+
+            var rMax = axis.MaxLimit / axis.Magnitude;
+            var rMin = axis.MinLimit/axis.Magnitude;
+
+            switch (mode)
+            {
+                case AxisLimitsMode.Stretch:
+                    axis.EvaluatesUnitWidth = false;
+                    axis.MaxLimit = Math.Ceiling(rMax)*axis.Magnitude;
+                    axis.MinLimit = Math.Floor(rMin)*axis.Magnitude;
+                    break;
+                case AxisLimitsMode.UnitWidth:
+                    axis.EvaluatesUnitWidth = true;
+                    axis.MaxLimit = Math.Ceiling(rMax)*axis.Magnitude + 1;
+                    axis.MinLimit = Math.Floor(rMin)*axis.Magnitude;
+                    break;
+                case AxisLimitsMode.Separator:
+                    axis.EvaluatesUnitWidth = false;
+                    var sMax = axis.MaxLimit/axis.S;
+                    var sMin = axis.MinLimit/axis.S;
+                    axis.MaxLimit = Math.Truncate(sMax + 1)*axis.S;
+                    axis.MinLimit = Math.Truncate(sMin - 1)*axis.S;
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+
+            if (!(Math.Abs(axis.MaxLimit - axis.MinLimit) < axis.S*0.01)) return;
+
+            axis.MinLimit = (Math.Round(rMax) - 1) * axis.S;
+            axis.MaxLimit = (Math.Round(rMax) + 1) * axis.S;
+        }
+
+        private static AxisLimitsMode EvaluateModes(IEnumerable<AxisLimitsMode> modes)
+        {
+            var g = modes.GroupBy(x => x).Select(x => x.Key).ToList();
+
+            if (g.Any(x => x == AxisLimitsMode.Separator))
+                return AxisLimitsMode.Separator;
+
+            if (g.Any(x => x == AxisLimitsMode.UnitWidth))
+                return AxisLimitsMode.UnitWidth;
+
+            return AxisLimitsMode.Stretch;
         }
     }
 }

@@ -20,6 +20,7 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
+using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Animation;
@@ -32,12 +33,13 @@ namespace LiveCharts.Wpf.Points
     {
         public Rectangle Rectangle { get; set; }
         public LvcRectangle Data { get; set; }
+        public double ZeroReference  { get; set; }
 
         public override void DrawOrMove(ChartPoint previousDrawn, ChartPoint current, int index, ChartCore chart)
         {
             if (IsNew)
             {
-                Canvas.SetTop(Rectangle, Data.Top);
+                Canvas.SetTop(Rectangle, ZeroReference);
                 Canvas.SetLeft(Rectangle, Data.Left);
 
                 Rectangle.Width = Data.Width;
@@ -45,11 +47,41 @@ namespace LiveCharts.Wpf.Points
 
                 if (DataLabel != null)
                 {
-                    Canvas.SetTop(DataLabel, current.ChartLocation.Y);
+                    Canvas.SetTop(DataLabel, ZeroReference);
                     Canvas.SetLeft(DataLabel, current.ChartLocation.X);
                 }
             }
           
+            Func<double> getY = () =>
+            {
+                double r;
+
+                if (ZeroReference > Data.Top)
+                {
+                    r = Data.Top - DataLabel.ActualHeight;
+                    if (r < 0) r = Data.Top;
+                }
+                else
+                {
+                    r = Data.Top + Data.Height;
+                    if (r + DataLabel.ActualHeight > chart.DrawMargin.Height) r -= DataLabel.ActualHeight;
+                }
+
+                return r;
+            };
+
+            Func<double> getX = () =>
+            {
+                var r = Data.Left + Data.Width/2 - DataLabel.ActualWidth/2;
+
+                if (r < 0)
+                    r = 2;
+                if (r + DataLabel.ActualWidth > chart.DrawMargin.Width)
+                    r -= r + DataLabel.ActualWidth - chart.DrawMargin.Width + 2;
+
+                return r;
+            };
+
             if (chart.View.DisableAnimations)
             {
                 Rectangle.Width = Data.Width;
@@ -62,11 +94,16 @@ namespace LiveCharts.Wpf.Points
                 {
                     DataLabel.UpdateLayout();
 
-                    var cx = CorrectXLabel(current.ChartLocation.X - DataLabel.ActualHeight * .5, chart);
-                    var cy = CorrectYLabel(current.ChartLocation.Y - DataLabel.ActualWidth * .5, chart);
+                    Canvas.SetTop(DataLabel, getY());
+                    Canvas.SetLeft(DataLabel, getX());
+                }
 
-                    Canvas.SetTop(DataLabel, cy);
-                    Canvas.SetLeft(DataLabel, cx);
+                if (HoverShape != null)
+                {
+                    Canvas.SetTop(HoverShape, Data.Top);
+                    Canvas.SetLeft(HoverShape, Data.Left);
+                    HoverShape.Height = Data.Height;
+                    HoverShape.Width = Data.Width;
                 }
 
                 return;
@@ -78,19 +115,25 @@ namespace LiveCharts.Wpf.Points
             {
                 DataLabel.UpdateLayout();
 
-                var cx = CorrectXLabel(current.ChartLocation.X - DataLabel.ActualWidth * .5, chart);
-                var cy = CorrectYLabel(current.ChartLocation.Y - DataLabel.ActualHeight * .5, chart);
-
-                DataLabel.BeginAnimation(Canvas.LeftProperty, new DoubleAnimation(cx, animSpeed));
-                DataLabel.BeginAnimation(Canvas.TopProperty, new DoubleAnimation(cy, animSpeed));
+                DataLabel.BeginAnimation(Canvas.LeftProperty, new DoubleAnimation(getX(), animSpeed));
+                DataLabel.BeginAnimation(Canvas.TopProperty, new DoubleAnimation(getY(), animSpeed));
             }
 
             Canvas.SetLeft(Rectangle, Data.Left);
-            Canvas.SetTop(Rectangle, Data.Top);
+            Rectangle.BeginAnimation(Canvas.TopProperty,
+                new DoubleAnimation(Data.Top, animSpeed));
 
             Rectangle.Width = Data.Width;
             Rectangle.BeginAnimation(FrameworkElement.HeightProperty,
                 new DoubleAnimation(Data.Height, animSpeed));
+
+            if (HoverShape != null)
+            {
+                Canvas.SetTop(HoverShape, Data.Top);
+                Canvas.SetLeft(HoverShape, Data.Left);
+                HoverShape.Height = Data.Height;
+                HoverShape.Width = Data.Width;
+            }
         }
 
         public override void RemoveFromView(ChartCore chart)
@@ -98,28 +141,6 @@ namespace LiveCharts.Wpf.Points
             chart.View.RemoveFromDrawMargin(HoverShape);
             chart.View.RemoveFromDrawMargin(Rectangle);
             chart.View.RemoveFromDrawMargin(DataLabel);
-        }
-
-        protected double CorrectXLabel(double desiredPosition, ChartCore chart)
-        {
-            if (desiredPosition + DataLabel.ActualWidth > chart.DrawMargin.Width)
-                desiredPosition -= desiredPosition + DataLabel.ActualWidth - chart.DrawMargin.Width + 2;
-
-            if (desiredPosition < 0) desiredPosition = 0;
-
-            return desiredPosition;
-        }
-
-        protected double CorrectYLabel(double desiredPosition, ChartCore chart)
-        {
-            desiredPosition -= Rectangle.ActualHeight * .5 + DataLabel.ActualHeight * .5 + 2;
-
-            if (desiredPosition + DataLabel.ActualHeight > chart.DrawMargin.Height)
-                desiredPosition -= desiredPosition + DataLabel.ActualHeight - chart.DrawMargin.Height + 2;
-
-            if (desiredPosition < 0) desiredPosition = 0;
-
-            return desiredPosition;
         }
     }
 }

@@ -21,13 +21,13 @@ namespace Wpf
             {
                 new ColumnSeries
                 {
-                    Values = new ChartValues<ObservablePoint>
+                    Values = new ChartValues<ObservableValue>
                     {
-                        new ObservablePoint(0, 5),
-                        new ObservablePoint(1, 2),
-                        new ObservablePoint(2, 4),
-                        new ObservablePoint(3, 4),
-                        new ObservablePoint(4, 2)
+                        new ObservableValue(1),
+                        new ObservableValue(2),
+                        new ObservableValue(-3),
+                        new ObservableValue(4),
+                        new ObservableValue(5)
                     },
                     DataLabels = true
                 }
@@ -49,15 +49,12 @@ namespace Wpf
 
             foreach (var series in SeriesCollection)
             {
-                var next = r.NextDouble();
-                series.Values.Add(new ObservablePoint(series.Values.Count - 1, r.NextDouble()*15));
+                series.Values.Add(new ObservableValue(r.Next(-20, 20)));
             }
         }
 
         private void RemoveButtonOnClick(object sender, RoutedEventArgs e)
         {
-            var r = new Random();
-
             foreach (var series in SeriesCollection)
             {
                 if (series.Values.Count > 0)
@@ -69,12 +66,12 @@ namespace Wpf
         {
             var c = SeriesCollection.Count > 0 ? SeriesCollection[0].Values.Count : 5;
 
-            var values = new List<double>();
+            var values = new List<ObservableValue>();
             var r = new Random();
 
             for (var i = 0; i < c; i++)
             {
-                values.Add(r.NextDouble()*128);
+                values.Add(new ObservableValue(r.Next(-20,20)));
             }
 
             SeriesCollection.Add(new LineSeries
@@ -96,10 +93,10 @@ namespace Wpf
             var r = new Random();
             foreach (var series in SeriesCollection)
             {
-                foreach (var value in series.Values.Cast<ObservablePoint>())
+                foreach (var value in series.Values.Cast<ObservableValue>())
                 {
                     //value.X = r.NextDouble()*20;
-                    value.Y = r.NextDouble()*20;
+                    value.Value = r.Next(-20, 20);
                 }
             }
         }

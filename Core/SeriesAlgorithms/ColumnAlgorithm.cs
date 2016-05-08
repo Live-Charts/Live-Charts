@@ -29,8 +29,8 @@ namespace LiveCharts.SeriesAlgorithms
     {
         public ColumnAlgorithm(ISeriesView view) : base(view)
         {
-            XAxisMode = AxisLimitsMode.Stretch;
-            YAxisMode = AxisLimitsMode.Stretch;
+            XAxisMode = AxisLimitsMode.UnitWidth;
+            YAxisMode = AxisLimitsMode.Separator;
         }
 
         public AxisLimitsMode XAxisMode { get; set; }
@@ -42,22 +42,24 @@ namespace LiveCharts.SeriesAlgorithms
 
             var columnSeries = (IColumnSeries) View;
 
-            const double padding = 2.5;
+            const double padding = 5;
 
-            var totalSpace = ChartFunctions.GetUnitWidth(AxisTags.X, Chart, View.ScalesXAt);
+            var totalSpace = ChartFunctions.GetUnitWidth(AxisTags.X, Chart, View.ScalesXAt) - padding;
             var columnSeriesCount = Chart.View.Series.OfType<IColumnSeries>().Count();
 
             var singleColWidth = totalSpace/columnSeriesCount;
 
             double exceed = 0;
 
+            var seriesPosition = Chart.View.Series.IndexOf(View);
+
             if (singleColWidth > columnSeries.MaxColumnWidth)
             {
-                exceed = singleColWidth - columnSeries.MaxColumnWidth;
-                singleColWidth -= exceed;
+                exceed = (singleColWidth - columnSeries.MaxColumnWidth)*columnSeriesCount/2;
+                singleColWidth = columnSeries.MaxColumnWidth;
             }
 
-            var relativeLeft = padding + exceed/2 + singleColWidth*(Chart.View.Series.IndexOf(View));
+            var relativeLeft = padding + exceed + singleColWidth*(seriesPosition);
 
             var startAt = CurrentYAxis.MinLimit >= 0 && CurrentYAxis.MaxLimit > 0   //both positive
                 ? CurrentYAxis.MinLimit                                             //then use axisYMin
@@ -69,17 +71,29 @@ namespace LiveCharts.SeriesAlgorithms
 
             foreach (var chartPoint in View.Values.Points)
             {
-                chartPoint.ChartLocation = ChartFunctions.ToDrawMargin(chartPoint, View.ScalesXAt, View.ScalesYAt, Chart);
+                var reference =
+                    ChartFunctions.ToDrawMargin(chartPoint, View.ScalesXAt, View.ScalesYAt, Chart);
 
                 chartPoint.View = View.GetPointView(chartPoint.View,
                     View.DataLabels ? fy(chartPoint.Y) : null);
 
                 var rectangleView = (IRectangleData) chartPoint.View;
 
-                rectangleView.Data.Height = chartPoint.ChartLocation.Y > 0 ? chartPoint.ChartLocation.Y : 0;
-                rectangleView.Data.Top = zero - rectangleView.Data.Height;
-                rectangleView.Data.Left = chartPoint.ChartLocation.X + relativeLeft;
-                rectangleView.Data.Width = relativeLeft - padding > 0 ? relativeLeft - padding : 0;
+                var h = Math.Abs(reference.Y - zero);
+                var t = reference.Y < zero
+                    ? reference.Y
+                    : zero;
+
+                rectangleView.Data.Height = h > 0 ? h : 0;
+                rectangleView.Data.Top = t;
+
+                rectangleView.Data.Left = reference.X + relativeLeft;
+                rectangleView.Data.Width = singleColWidth - padding;
+
+                rectangleView.ZeroReference = zero;
+
+                chartPoint.ChartLocation = new LvcPoint(rectangleView.Data.Left + singleColWidth/2 - padding/2,
+                    t);
 
                 chartPoint.View.DrawOrMove(null, chartPoint, 0, Chart);
             }

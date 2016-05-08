@@ -66,6 +66,19 @@ namespace LiveCharts.SeriesAlgorithms
                     ? ChartFunctions.ToDrawMargin(segment[2], View.ScalesXAt, View.ScalesYAt, Chart)
                     : p2;
 
+                var uw = new LvcPoint(
+                    CurentXAxis.EvaluatesUnitWidth
+                        ? ChartFunctions.GetUnitWidth(AxisTags.X, Chart, View.ScalesXAt)/2
+                        : 0,
+                    CurrentYAxis.EvaluatesUnitWidth
+                        ? ChartFunctions.GetUnitWidth(AxisTags.Y, Chart, View.ScalesYAt)/2
+                        : 0);
+
+                p0 += uw;
+                p1 += uw;
+                p2 += uw;
+                p3+= uw;
+                
                 lineView.StartSegment(segmentPosition, p1);
                 segmentPosition += segmentPosition == 0 ? 1 : 2;
 
@@ -132,6 +145,8 @@ namespace LiveCharts.SeriesAlgorithms
                     p3 = segment.Count > index + 3
                         ? ChartFunctions.ToDrawMargin(segment[index + 3], View.ScalesXAt, View.ScalesYAt, Chart)
                         : p2;
+
+                    p3 += uw;
                 }
                 lineView.EndSegment(segmentPosition, p1);
                 segmentPosition++;

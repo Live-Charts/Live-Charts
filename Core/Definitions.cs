@@ -35,7 +35,7 @@ namespace LiveCharts
 
     public enum AxisLimitsMode
     {
-        Stretch, Separator, Bubble
+        Stretch, UnitWidth, Separator
     }
 
     public enum AxisPosition
@@ -238,6 +238,7 @@ namespace LiveCharts
     public interface IRectangleData : IChartPointView
     {
         LvcRectangle Data { get; set; }
+        double ZeroReference { get; set; }
     }
 
     public interface IDiameterData : IChartPointView

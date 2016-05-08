@@ -44,6 +44,7 @@
     <Compile Include="ChartValues.cs" />
     <Compile Include="Defaults\ObservablePoint.cs" />
     <Compile Include="Defaults\DefaultConfigurations.cs" />
+    <Compile Include="Defaults\ObservableValue.cs" />
     <Compile Include="Definitions.cs" />
     <Compile Include="Charts\ChartCore.cs" />
     <Compile Include="ChartFunctions.cs" />
