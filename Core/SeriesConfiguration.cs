@@ -25,6 +25,7 @@ namespace LiveCharts
 {
     public class SeriesConfiguration<T> : ISeriesConfiguration
     {
+        
         #region Properties
 
         public ChartCore Chart { get; set; }
@@ -36,6 +37,7 @@ namespace LiveCharts
         internal Func<T, int, double> Value3 { get; set; } 
 
         internal Func<T, int, double> Value4 { get; set; }
+
 
         #endregion
         

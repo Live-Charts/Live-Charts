@@ -31,8 +31,8 @@ namespace LiveCharts.SeriesAlgorithms
         public LineAlgorithm(ISeriesView view) : base(view)
         {
             XAxisMode = AxisLimitsMode.Stretch;
-            YAxisMode = AxisLimitsMode.HalfSparator;
-            DefaultConfiguration = DefaultConfigurations.IndexedX;
+            YAxisMode = AxisLimitsMode.Separator;
+            SeriesConfigurationType = SeriesConfigurationType.IndexedX;
         }
 
         public AxisLimitsMode XAxisMode { get; set; }

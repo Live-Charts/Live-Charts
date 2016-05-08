@@ -23,6 +23,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using LiveCharts.Defaults;
 
 namespace LiveCharts.Charts
 {
@@ -41,9 +42,16 @@ namespace LiveCharts.Charts
             DrawMargin.SetLeft += view.SetDrawMarginLeft;
         }
 
+        static ChartCore()
+        {
+            Configurations = new DefaultConfigurations();
+        }
+
         #endregion
 
         #region Properties 
+
+        public static DefaultConfigurations Configurations { get; set; }
         public bool SeriesInitialized { get; set; }
         public IChartView View { get; set; }
         public IChartUpdater Updater { get; set; }
@@ -104,7 +112,7 @@ namespace LiveCharts.Charts
                                   .Select(series => series.Values.Value2Limit.Max).DefaultIfEmpty(0).Max();
                 yi.MinLimit = yi.MinValue ??
                               View.Series.Where(series => series.Values != null && series.ScalesYAt == index)
-                                  .Select(series => series.Values.Value3Limit.Min).DefaultIfEmpty(0).Min();
+                                  .Select(series => series.Values.Value2Limit.Min).DefaultIfEmpty(0).Min();
             }
 
             PivotZoomingAxis = AxisTags.X;

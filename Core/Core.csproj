@@ -42,11 +42,13 @@
     <Compile Include="AxisCore.cs" />
     <Compile Include="ChartUpdater.cs" />
     <Compile Include="ChartValues.cs" />
+    <Compile Include="Defaults\ObservablePoint.cs" />
+    <Compile Include="Defaults\DefaultConfigurations.cs" />
     <Compile Include="Definitions.cs" />
     <Compile Include="Charts\ChartCore.cs" />
     <Compile Include="ChartFunctions.cs" />
     <Compile Include="ChartPoint.cs" />
-    <Compile Include="DefaultViewModels.cs" />
+    <Compile Include="Defaults\BubblePoint.cs" />
     <Compile Include="Extentions.cs" />
     <Compile Include="IChartValues.cs" />
     <Compile Include="IDataOptimization.cs" />

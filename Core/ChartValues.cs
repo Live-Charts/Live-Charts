@@ -21,8 +21,11 @@
 //SOFTWARE.
 
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using LiveCharts.Charts;
 using LiveCharts.CrossNet;
+using LiveCharts.Defaults;
 using LiveCharts.Helpers;
 
 namespace LiveCharts
@@ -75,27 +78,27 @@ namespace LiveCharts
 
             if (config.Value1 != null)
             {
-                var v1 = q.Select(t => config.Value1(t.Value, t.Key)).DefaultIfEmpty(0).ToArray();
-                var max = v1.Where(x => !double.IsNaN(x)).DefaultIfEmpty(0).Max();
-                var min = v1.Where(x => !double.IsNaN(x)).DefaultIfEmpty(0).Min();
+                var v = q.Select(t => config.Value1(t.Value, t.Key)).DefaultIfEmpty(0).ToArray();
+                var max = v.Where(x => !double.IsNaN(x)).DefaultIfEmpty(0).Max();
+                var min = v.Where(x => !double.IsNaN(x)).DefaultIfEmpty(0).Min();
 
                 Value1Limit = new Limit(min, max);
             }
 
             if (config.Value2 != null)
             {
-                var v1 = q.Select(t => config.Value2(t.Value, t.Key)).DefaultIfEmpty(0).ToArray();
-                var max = v1.Where(x => !double.IsNaN(x)).DefaultIfEmpty(0).Max();
-                var min = v1.Where(x => !double.IsNaN(x)).DefaultIfEmpty(0).Min();
+                var v = q.Select(t => config.Value2(t.Value, t.Key)).DefaultIfEmpty(0).ToArray();
+                var max = v.Where(x => !double.IsNaN(x)).DefaultIfEmpty(0).Max();
+                var min = v.Where(x => !double.IsNaN(x)).DefaultIfEmpty(0).Min();
 
                 Value2Limit = new Limit(min, max);
             }
 
             if (config.Value3 != null)
             {
-                var v3 = q.Select(t => config.Value3(t.Value, t.Key)).DefaultIfEmpty(0).ToArray();
-                var max = v3.Where(x => !double.IsNaN(x)).DefaultIfEmpty(0).Max();
-                var min = v3.Where(x => !double.IsNaN(x)).DefaultIfEmpty(0).Min();
+                var v = q.Select(t => config.Value3(t.Value, t.Key)).DefaultIfEmpty(0).ToArray();
+                var max = v.Where(x => !double.IsNaN(x)).DefaultIfEmpty(0).Max();
+                var min = v.Where(x => !double.IsNaN(x)).DefaultIfEmpty(0).Min();
 
                 Value3Limit = new Limit(min, max);
             }
@@ -205,8 +208,24 @@ namespace LiveCharts
 
         private SeriesConfiguration<T> GetConfig()
         {
-            return (Series.View.Configuration ?? Series.SeriesCollection.Configuration) as SeriesConfiguration<T>
-                   ?? new SeriesConfiguration<T>().Y(t => (double) (object) t);
+            //Trying to ge the user defined configuration...
+            var config =
+                (Series.View.Configuration ?? Series.SeriesCollection.Configuration) as SeriesConfiguration<T>;
+
+#if DEBUG
+            Debug.WriteLine("Series Configuration not found, trying to get one from the defaults configurations...");
+#endif
+
+            return config
+                   ?? (ChartCore.Configurations[typeof (T), Series.SeriesConfigurationType] as SeriesConfiguration<T>
+                       ?? ForceConfiguration(Series.SeriesConfigurationType));
+        }
+
+        private static SeriesConfiguration<T> ForceConfiguration(SeriesConfigurationType type)
+        {
+            return type == SeriesConfigurationType.IndexedX
+                ? new SeriesConfiguration<T>().X((v, i) => i).Y(v => (double) (object) v)
+                : new SeriesConfiguration<T>().X(v => (double) (object) v).Y((v, i) => i);
         }
 
         private void ValidateGarbageCollector()
@@ -231,6 +250,6 @@ namespace LiveCharts
                    || double.IsNaN(point.X) || double.IsNaN(point.Y);
         }
 
-        #endregion
+#endregion
     }
 }

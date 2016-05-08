@@ -34,7 +34,7 @@ namespace LiveCharts
         public ISeriesView View { get; set; }
         public ChartCore Chart { get; set; }
         public SeriesCollection SeriesCollection { get; set; }
-        public DefaultConfigurations DefaultConfiguration { get; set; }
+        public SeriesConfigurationType SeriesConfigurationType { get; set; }
         public string Title { get; set; }
         public AxisCore CurentXAxis
         {

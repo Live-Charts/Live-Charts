@@ -28,14 +28,14 @@ namespace LiveCharts
 {
     #region Enumerators
 
-    public enum DefaultConfigurations
+    public enum SeriesConfigurationType
     {
-        Undefined, IndexedX, IndexedY, Bubble
+        IndexedX, IndexedY
     }
 
     public enum AxisLimitsMode
     {
-        Stretch, HalfSparator, OneSeparator
+        Stretch, Separator, Bubble
     }
 
     public enum AxisPosition

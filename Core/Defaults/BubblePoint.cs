@@ -20,33 +20,69 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-namespace LiveCharts.SeriesAlgorithms
+using System;
+
+namespace LiveCharts.Defaults
 {
-    public class ScatterAlgorithm : SeriesAlgorithm, ICartesianSeries
+    public class BubblePoint : IObservableChartPoint
     {
-        public ScatterAlgorithm(ISeriesView view) : base(view)
+        private double _x;
+        private double _y;
+        private double _weight;
+
+        public BubblePoint()
         {
-            XAxisMode = AxisLimitsMode.Stretch;
-            YAxisMode = AxisLimitsMode.Stretch;
+            
         }
 
-        public AxisLimitsMode XAxisMode { get; set; }
-        public AxisLimitsMode YAxisMode { get; set; }
-
-        public override void Update()
+        public BubblePoint(double x, double y)
         {
-            var fx = CurentXAxis.GetFormatter();
-            var fy = CurrentYAxis.GetFormatter();
+            X = x;
+            Y = y;
+        }
 
-            foreach (var chartPoint in View.Values.Points)
+        public BubblePoint(double x, double y, double weight)
+        {
+            X = x;
+            Y = y;
+            Weight = weight;
+        }
+
+        public double X
+        {
+            get { return _x; }
+            set
             {
-                chartPoint.ChartLocation = ChartFunctions.ToDrawMargin(chartPoint, View.ScalesXAt, View.ScalesYAt, Chart);
-
-                chartPoint.View = View.GetPointView(chartPoint.View,
-                    View.DataLabels ? fx(chartPoint.X) + ", " + fy(chartPoint.Y) : null);
-
-                chartPoint.View.DrawOrMove(null, chartPoint, 0, Chart, View);
+                _x = value;
+                OnPointChanged();
             }
+        }
+
+        public double Y
+        {
+            get { return _y; }
+            set
+            {
+                _y = value;
+                OnPointChanged();
+            }
+        }
+
+        public double Weight
+        {
+            get { return _weight; }
+            set
+            {
+                _weight = value;
+                OnPointChanged();
+            }
+        }
+
+        public event Action PointChanged;
+
+        protected void OnPointChanged()
+        {
+            if (PointChanged != null) PointChanged.Invoke();
         }
     }
 }

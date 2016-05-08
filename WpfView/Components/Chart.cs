@@ -244,7 +244,7 @@ namespace LiveCharts.Wpf.Components
                     {
                         var r = new Random();
                         SetValue(SeriesProperty,
-                            new SeriesCollection(new SeriesConfiguration<double>().Y(val => val))
+                            new SeriesCollection
                             {
                                 new LineSeries
                                 {

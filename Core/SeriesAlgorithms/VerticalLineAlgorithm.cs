@@ -26,9 +26,9 @@ namespace LiveCharts.SeriesAlgorithms
     {
         public VerticalLineAlgorithm(ISeriesView view) : base(view)
         {
-            XAxisMode = AxisLimitsMode.HalfSparator;
+            XAxisMode = AxisLimitsMode.Separator;
             YAxisMode = AxisLimitsMode.Stretch;
-            DefaultConfiguration = DefaultConfigurations.IndexedY;
+            SeriesConfigurationType = SeriesConfigurationType.IndexedY;
         }
     }
 }

@@ -22,30 +22,23 @@
 
 using System;
 
-namespace LiveCharts
+namespace LiveCharts.Defaults
 {
-    public class ScatterPoint : IObservableChartPoint
+    public class ObservablePoint : IObservableChartPoint
     {
         private double _x;
         private double _y;
-        private double _weight;
+        public event Action PointChanged;
 
-        public ScatterPoint()
+        public ObservablePoint()
         {
             
         }
 
-        public ScatterPoint(double x, double y)
+        public ObservablePoint(double x, double y)
         {
             X = x;
             Y = y;
-        }
-
-        public ScatterPoint(double x, double y, double weight)
-        {
-            X = x;
-            Y = y;
-            Weight = weight;
         }
 
         public double X
@@ -68,21 +61,10 @@ namespace LiveCharts
             }
         }
 
-        public double Weight
-        {
-            get { return _weight; }
-            set
-            {
-                _weight = value;
-                OnPointChanged();
-            }
-        }
-
-        public event Action PointChanged;
-
         protected void OnPointChanged()
         {
-            if (PointChanged != null) PointChanged.Invoke();
+            if (PointChanged != null)
+                PointChanged.Invoke();
         }
     }
 }

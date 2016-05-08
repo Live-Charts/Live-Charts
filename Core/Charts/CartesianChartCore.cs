@@ -58,50 +58,66 @@ namespace LiveCharts.Charts
                     vs.Select(x => x.Max).DefaultIfEmpty(0).Max());
             }
 
-            foreach (var xi in AxisX)
+            for (int index = 0; index < AxisX.Count; index++)
             {
+                var xi = AxisX[index];
                 xi.CalculateSeparator(this, AxisTags.X);
                 switch (xMode)
                 {
                     case AxisLimitsMode.Stretch:
+                        xi.MaxLimit = Math.Ceiling(xi.MaxLimit/xi.Magnitude)*xi.Magnitude;
+                        xi.MinLimit = Math.Floor(xi.MinLimit/xi.Magnitude)*xi.Magnitude;
                         if (Math.Abs(xi.MaxLimit - xi.MinLimit) < xi.S*0.01)
                         {
-                            xi.MinLimit = (Math.Round(xi.MaxLimit / xi.S) - 1) * xi.S;
+                            xi.MinLimit = (Math.Round(xi.MaxLimit/xi.S) - 1)*xi.S;
                             xi.MaxLimit = (Math.Round(xi.MaxLimit/xi.S) + 1)*xi.S;
                         }
                         break;
-                    case AxisLimitsMode.HalfSparator:
-                        if (xi.MaxValue == null) xi.MaxLimit = (Math.Round(xi.MaxLimit/xi.S) + .5)*xi.S;
-                        if (xi.MinValue == null) xi.MinLimit = (Math.Truncate(xi.MinLimit/xi.S) - .5)*xi.S;
-                        break;
-                    case AxisLimitsMode.OneSeparator:
+                    case AxisLimitsMode.Separator:
                         if (xi.MaxValue == null) xi.MaxLimit = (Math.Round(xi.MaxLimit/xi.S) + 1)*xi.S;
                         if (xi.MinValue == null) xi.MinLimit = (Math.Truncate(xi.MinLimit/xi.S) - 1)*xi.S;
+                        break;
+                    case AxisLimitsMode.Bubble:
+                        var maxRadius = View.Series.Where(x => x.ScalesXAt == index)
+                            .OfType<IBubbleSeries>()
+                            .Select(x => x.MaxBubbleDiameter)
+                            .DefaultIfEmpty(0).Max()/2;
+                        var pxRadius = Math.Round(ChartFunctions.FromDrawMargin(maxRadius, AxisTags.X, this, index));
+                        if (xi.MaxValue == null) xi.MaxLimit = (Math.Round(xi.MaxLimit/pxRadius) + 1)*pxRadius;
+                        if (xi.MinValue == null) xi.MinLimit = (Math.Truncate(xi.MinLimit/pxRadius) - 1)*pxRadius;
                         break;
                     default:
                         throw new ArgumentOutOfRangeException();
                 }
             }
 
-            foreach (var yi in AxisY)
+            for (int index = 0; index < AxisY.Count; index++)
             {
+                var yi = AxisY[index];
                 yi.CalculateSeparator(this, AxisTags.Y);
                 switch (yMode)
                 {
                     case AxisLimitsMode.Stretch:
+                        yi.MaxLimit = Math.Ceiling(yi.MaxLimit/yi.Magnitude)*yi.Magnitude;
+                        yi.MinLimit = Math.Floor((yi.MinLimit/yi.Magnitude))*yi.Magnitude;
                         if (Math.Abs(yi.MaxLimit - yi.MinLimit) < yi.S*0.01)
                         {
-                            yi.MinLimit = (Math.Round(yi.MaxLimit / yi.S) - 1) * yi.S;
+                            yi.MinLimit = (Math.Round(yi.MaxLimit/yi.S) - 1)*yi.S;
                             yi.MaxLimit = (Math.Round(yi.MaxLimit/yi.S) + 1)*yi.S;
                         }
                         break;
-                    case AxisLimitsMode.HalfSparator:
-                        if (yi.MaxValue == null) yi.MaxLimit = (Math.Round(yi.MaxLimit/yi.S) + .5)*yi.S;
-                        if (yi.MinValue == null) yi.MinLimit = (Math.Truncate(yi.MinLimit/yi.S) - .5)*yi.S;
-                        break;
-                    case AxisLimitsMode.OneSeparator:
+                    case AxisLimitsMode.Separator:
                         if (yi.MaxValue == null) yi.MaxLimit = (Math.Round(yi.MaxLimit/yi.S) + 1)*yi.S;
                         if (yi.MinValue == null) yi.MinLimit = (Math.Truncate(yi.MinLimit/yi.S) - 1)*yi.S;
+                        break;
+                    case AxisLimitsMode.Bubble:
+                        var maxRadius = View.Series.Where(x => x.ScalesYAt == index)
+                            .OfType<IBubbleSeries>()
+                            .Select(x => x.MaxBubbleDiameter)
+                            .DefaultIfEmpty(0).Max()/2;
+                        var pxRadius = Math.Round(ChartFunctions.FromDrawMargin(maxRadius, AxisTags.Y, this, index));
+                        if (yi.MaxValue == null) yi.MaxLimit = (Math.Round(yi.MaxLimit/pxRadius) + 1)*pxRadius;
+                        if (yi.MinValue == null) yi.MinLimit = (Math.Truncate(yi.MinLimit/pxRadius) - 1)*pxRadius;
                         break;
                     default:
                         throw new ArgumentOutOfRangeException();

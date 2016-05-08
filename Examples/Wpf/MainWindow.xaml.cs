@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using LiveCharts;
+using LiveCharts.Defaults;
 using LiveCharts.Wpf;
 
 namespace Wpf
@@ -20,32 +21,32 @@ namespace Wpf
             {
                 new ScatterSeries
                 {
-                    Values = new ChartValues<ScatterPoint>
+                    Values = new ChartValues<BubblePoint>
                     {
-                        new ScatterPoint(10, 5, 4),
-                        new ScatterPoint(13, 5, 8),
-                        new ScatterPoint(12, 3, 7),
-                        new ScatterPoint(8, 8, 8)
+                        new BubblePoint(10, 5, 4),
+                        new BubblePoint(13, 5, 8),
+                        new BubblePoint(12, 3, 7),
+                        new BubblePoint(8, 8, 8)
                     }
                 },
                 new ScatterSeries
                 {
-                    Values = new ChartValues<ScatterPoint>
+                    Values = new ChartValues<BubblePoint>
                     {
-                        new ScatterPoint(10, 5, 4),
-                        new ScatterPoint(13, 5, 8),
-                        new ScatterPoint(12, 3, 7),
-                        new ScatterPoint(8, 8, 8)
+                        new BubblePoint(10, 5, 4),
+                        new BubblePoint(13, 5, 8),
+                        new BubblePoint(12, 3, 7),
+                        new BubblePoint(8, 8, 8)
                     }
                 },
                 new ScatterSeries
                 {
-                    Values = new ChartValues<ScatterPoint>
+                    Values = new ChartValues<BubblePoint>
                     {
-                        new ScatterPoint(10, 5, 4),
-                        new ScatterPoint(13, 5, 8),
-                        new ScatterPoint(12, 3, 7),
-                        new ScatterPoint(8, 8, 8)
+                        new BubblePoint(10, 5, 4),
+                        new BubblePoint(13, 5, 8),
+                        new BubblePoint(12, 3, 7),
+                        new BubblePoint(8, 8, 8)
                     }
                 }
             };
@@ -67,7 +68,7 @@ namespace Wpf
             foreach (var series in SeriesCollection)
             {
                 var next = r.NextDouble();
-                series.Values.Add(new ScatterPoint(r.NextDouble()*15, r.NextDouble()*15, r.NextDouble()*15));
+                series.Values.Add(new BubblePoint(r.NextDouble()*15, r.NextDouble()*15, r.NextDouble()*15));
             }
         }
 
@@ -113,7 +114,7 @@ namespace Wpf
             var r = new Random();
             foreach (var series in SeriesCollection)
             {
-                foreach (var value in series.Values.Cast<ScatterPoint>())
+                foreach (var value in series.Values.Cast<BubblePoint>())
                 {
                     value.X = r.NextDouble()*20;
                     value.Y = r.NextDouble()*20;

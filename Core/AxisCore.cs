@@ -55,6 +55,7 @@ namespace LiveCharts
         internal double MaxLimit { get; set; }
         internal double MinLimit { get; set; }
         internal double S { get; set; }
+        internal double Magnitude { get; set; }
 
         internal int CleanFactor { get; set; }
         internal Dictionary<double, SeparatorElementCore> Cache { get; set; }
@@ -81,21 +82,21 @@ namespace LiveCharts
             separations = separations < 2 ? 2 : separations;
 
             var minimum = range / separations;
-            var magnitude = Math.Pow(10, Math.Floor(Math.Log(minimum) / Math.Log(10)));
-            var residual = minimum / magnitude;
+            Magnitude = Math.Pow(10, Math.Floor(Math.Log(minimum) / Math.Log(10)));
+            var residual = minimum / Magnitude;
             double tick;
             if (residual > 5)
-                tick = 10 * magnitude;
+                tick = 10*Magnitude;
             else if (residual > 2)
-                tick = 5 * magnitude;
+                tick = 5 * Magnitude;
             else if (residual > 1)
-                tick = 2 * magnitude;
+                tick = 2 * Magnitude;
             else
-                tick = magnitude;
+                tick = Magnitude;
 
             S = tick;
 
-            if (Labels != null) S = S < 1 ? 1 : S;
+            if (Labels != null) S = S < 1 ? 1 : S; //Todo: Check this , this should be wrong
         }
 
         public double FromPreviousAxisState(double value, AxisTags source, ChartCore chart)

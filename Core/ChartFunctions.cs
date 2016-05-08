@@ -123,12 +123,13 @@ namespace LiveCharts
 
         public static double FromDrawMargin(double value, AxisTags source, ChartCore chart, int axis = 0)
         {
-            //var o = axis == AxisTags.X
-            //    ? Canvas.GetLeft(chart.DrawMargin)
-            //    : Canvas.GetTop(chart.DrawMargin);
+            var o = source == AxisTags.X
+                ? chart.DrawMargin.Left
+                : chart.DrawMargin.Top;
+
             //var of = axis == AxisTags.X ? chart.XOffset : chart.YOffset;
 
-            return FromPlotArea(value, source, chart, axis);//FromPlotArea(value, axis, chart) - o + of;
+            return FromPlotArea(value, source, chart, axis) - o; //FromPlotArea(value, axis, chart) - o + of;
         }
 
         public static double GetUnitWidth(AxisTags source, ChartCore chart, int axis = 0)
