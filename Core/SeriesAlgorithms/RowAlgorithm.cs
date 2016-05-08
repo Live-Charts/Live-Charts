@@ -87,7 +87,7 @@ namespace LiveCharts.SeriesAlgorithms
                     ? reference.X
                     : zero;
 
-                rectangleView.Data.Height = singleRowHeight - padding;
+                rectangleView.Data.Height = singleRowHeight - padding > 0 ? singleRowHeight - padding : 0;
                 rectangleView.Data.Top = reference.Y + relativeTop - correction;
 
                 rectangleView.Data.Left = l;
