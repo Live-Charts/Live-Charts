@@ -127,7 +127,7 @@ namespace LiveCharts
     public interface IChartPointView
     {
         bool IsNew { get; set; }
-        void DrawOrMove(ChartPoint previousDrawn, ChartPoint current, int index, ChartCore chart, ISeriesView series);
+        void DrawOrMove(ChartPoint previousDrawn, ChartPoint current, int index, ChartCore chart);
         void RemoveFromView(ChartCore chart);
     }
 }

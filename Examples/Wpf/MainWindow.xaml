@@ -23,8 +23,7 @@
             <Button Margin="30 10 10 10" Padding="5" Click="RandomizeOnClick">Randomize</Button>
         </StackPanel>
         <wpf:CartesianChart Grid.Row="1" Margin="10" Series="{Binding SeriesCollection}" 
-                            DataClick="Chart_OnDataClick"
-                            AnimationsSpeed="0:0:00.3">
+                            DataClick="Chart_OnDataClick">
         </wpf:CartesianChart>
     </Grid>
 </Window>

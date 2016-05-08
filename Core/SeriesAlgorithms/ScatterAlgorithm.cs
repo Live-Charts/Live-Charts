@@ -38,6 +38,21 @@ namespace LiveCharts.SeriesAlgorithms
             var fx = CurentXAxis.GetFormatter();
             var fy = CurrentYAxis.GetFormatter();
 
+            var buubleSeries = (IBubbleSeries) View;
+
+            var p1 = new LvcPoint();
+            var p2 = new LvcPoint();
+
+            p1.X = Chart.Value3Limit.Max;
+            p1.Y = buubleSeries.MaxBubbleDiameter;
+
+            p2.X = Chart.Value3Limit.Min;
+            p2.Y = buubleSeries.MinBubbleDiameter;
+
+            var deltaX = p2.X - p1.X;
+            // ReSharper disable once CompareOfFloatsByEqualityOperator
+            var m = (p2.Y - p1.Y) / (deltaX == 0 ? double.MinValue : deltaX);
+
             foreach (var chartPoint in View.Values.Points)
             {
                 chartPoint.ChartLocation = ChartFunctions.ToDrawMargin(chartPoint, View.ScalesXAt, View.ScalesYAt, Chart);
@@ -45,7 +60,11 @@ namespace LiveCharts.SeriesAlgorithms
                 chartPoint.View = View.GetPointView(chartPoint.View,
                     View.DataLabels ? fx(chartPoint.X) + ", " + fy(chartPoint.Y) : null);
 
-                chartPoint.View.DrawOrMove(null, chartPoint, 0, Chart, View);
+                var bubbleView = (IDiameterData) chartPoint.View;
+
+                bubbleView.Diameter = m*(chartPoint.Weight - p1.X) + p1.Y;
+
+                chartPoint.View.DrawOrMove(null, chartPoint, 0, Chart);
             }
         }
     }

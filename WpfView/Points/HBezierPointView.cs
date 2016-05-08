@@ -38,7 +38,7 @@ namespace LiveCharts.Wpf.Points
         public PathFigure Container { get; set; }
         public BezierData Data { get; set; }
 
-        public override void DrawOrMove(ChartPoint previousDrawn, ChartPoint current, int index, ChartCore chart, ISeriesView series)
+        public override void DrawOrMove(ChartPoint previousDrawn, ChartPoint current, int index, ChartCore chart)
         {
             var previosPbv = previousDrawn == null
                 ? null

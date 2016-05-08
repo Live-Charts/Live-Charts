@@ -31,7 +31,7 @@ namespace LiveCharts.Wpf.Points
 {
     internal class VBezierPointView : HBezierPointView
     {
-        public override void DrawOrMove(ChartPoint previousDrawn, ChartPoint current, int index, ChartCore chart, ISeriesView series)
+        public override void DrawOrMove(ChartPoint previousDrawn, ChartPoint current, int index, ChartCore chart)
         {
             var previosPbv = previousDrawn == null ? null : (VBezierPointView) previousDrawn.View;
 

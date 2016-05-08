@@ -98,11 +98,12 @@ namespace LiveCharts.Wpf
                     new Binding { Path = new PropertyPath(StrokeProperty), Source = this });
                 BindingOperations.SetBinding(pbv.Ellipse, Shape.StrokeThicknessProperty,
                     new Binding { Path = new PropertyPath(StrokeThicknessProperty), Source = this });
-
                 BindingOperations.SetBinding(pbv.Ellipse, VisibilityProperty,
                     new Binding { Path = new PropertyPath(VisibilityProperty), Source = this });
-
-                Panel.SetZIndex(pbv.Ellipse, int.MaxValue - 2);
+                BindingOperations.SetBinding(pbv.Ellipse, Panel.ZIndexProperty,
+                    new Binding {Path = new PropertyPath(Panel.ZIndexProperty), Source = this});
+                BindingOperations.SetBinding(pbv.Ellipse, Shape.StrokeDashArrayProperty,
+                    new Binding {Path = new PropertyPath(StrokeDashArrayProperty), Source = this});
 
                 Model.Chart.View.AddToDrawMargin(pbv.Ellipse);
             }

@@ -225,9 +225,24 @@ namespace LiveCharts
         double MinBubbleDiameter { get; set; }
     }
 
+    public interface IColumnSeries
+    {
+        double MaxColumnWidth { get; set; }
+    }
+
     public interface IBezierData : IChartPointView
     {
         BezierData Data { get; set; }
+    }
+
+    public interface IRectangleData : IChartPointView
+    {
+        LvcRectangle Data { get; set; }
+    }
+
+    public interface IDiameterData : IChartPointView
+    {
+        double Diameter { get; set; }
     }
     #endregion
 }

@@ -31,7 +31,7 @@ namespace LiveCharts.Wpf.Points
         public TextBlock DataLabel { get; set; }
         public bool IsNew { get; set; }
 
-        public virtual void DrawOrMove(ChartPoint previousDrawn, ChartPoint current, int index, ChartCore chart, ISeriesView series)
+        public virtual void DrawOrMove(ChartPoint previousDrawn, ChartPoint current, int index, ChartCore chart)
         {
             throw new NotImplementedException();
         }

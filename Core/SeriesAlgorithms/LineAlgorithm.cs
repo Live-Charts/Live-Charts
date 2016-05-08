@@ -119,7 +119,7 @@ namespace LiveCharts.SeriesAlgorithms
                             Point3 = new LvcPoint(p2.X, p2.Y)
                         };
 
-                    chartPoint.View.DrawOrMove(previousDrawn, chartPoint, segmentPosition, Chart, View);
+                    chartPoint.View.DrawOrMove(previousDrawn, chartPoint, segmentPosition, Chart);
                     segmentPosition++;
 
                     previousDrawn = chartPoint.View.IsNew

@@ -17,37 +17,19 @@ namespace Wpf
         {
             InitializeComponent();
 
-            SeriesCollection = new SeriesCollection()
+            SeriesCollection = new SeriesCollection
             {
-                new ScatterSeries
+                new ColumnSeries
                 {
-                    Values = new ChartValues<BubblePoint>
+                    Values = new ChartValues<ObservablePoint>
                     {
-                        new BubblePoint(10, 5, 4),
-                        new BubblePoint(13, 5, 8),
-                        new BubblePoint(12, 3, 7),
-                        new BubblePoint(8, 8, 8)
-                    }
-                },
-                new ScatterSeries
-                {
-                    Values = new ChartValues<BubblePoint>
-                    {
-                        new BubblePoint(10, 5, 4),
-                        new BubblePoint(13, 5, 8),
-                        new BubblePoint(12, 3, 7),
-                        new BubblePoint(8, 8, 8)
-                    }
-                },
-                new ScatterSeries
-                {
-                    Values = new ChartValues<BubblePoint>
-                    {
-                        new BubblePoint(10, 5, 4),
-                        new BubblePoint(13, 5, 8),
-                        new BubblePoint(12, 3, 7),
-                        new BubblePoint(8, 8, 8)
-                    }
+                        new ObservablePoint(0, 5),
+                        new ObservablePoint(1, 2),
+                        new ObservablePoint(2, 4),
+                        new ObservablePoint(3, 4),
+                        new ObservablePoint(4, 2)
+                    },
+                    DataLabels = true
                 }
             };
 
@@ -68,7 +50,7 @@ namespace Wpf
             foreach (var series in SeriesCollection)
             {
                 var next = r.NextDouble();
-                series.Values.Add(new BubblePoint(r.NextDouble()*15, r.NextDouble()*15, r.NextDouble()*15));
+                series.Values.Add(new ObservablePoint(series.Values.Count - 1, r.NextDouble()*15));
             }
         }
 
@@ -114,11 +96,10 @@ namespace Wpf
             var r = new Random();
             foreach (var series in SeriesCollection)
             {
-                foreach (var value in series.Values.Cast<BubblePoint>())
+                foreach (var value in series.Values.Cast<ObservablePoint>())
                 {
-                    value.X = r.NextDouble()*20;
+                    //value.X = r.NextDouble()*20;
                     value.Y = r.NextDouble()*20;
-                    value.Weight = r.NextDouble()*20;
                 }
             }
         }

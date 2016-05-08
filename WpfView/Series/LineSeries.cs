@@ -132,13 +132,13 @@ namespace LiveCharts.Wpf
 
             Path = new Path();
             BindingOperations.SetBinding(Path, Shape.StrokeProperty,
-                    new Binding { Path = new PropertyPath("Stroke"), Source = this });
+                    new Binding { Path = new PropertyPath(StrokeProperty), Source = this });
             BindingOperations.SetBinding(Path, Shape.FillProperty,
-                new Binding { Path = new PropertyPath("Fill"), Source = this });
+                new Binding { Path = new PropertyPath(FillProperty), Source = this });
             BindingOperations.SetBinding(Path, Shape.StrokeThicknessProperty,
-                new Binding { Path = new PropertyPath("StrokeThickness"), Source = this });
+                new Binding { Path = new PropertyPath(StrokeThicknessProperty), Source = this });
             BindingOperations.SetBinding(Path, VisibilityProperty,
-                new Binding { Path = new PropertyPath("Visibility"), Source = this });
+                new Binding { Path = new PropertyPath(VisibilityProperty), Source = this });
             BindingOperations.SetBinding(Path, Panel.ZIndexProperty,
                 new Binding { Path = new PropertyPath(Panel.ZIndexProperty), Source = this });
             BindingOperations.SetBinding(Path, Shape.StrokeDashArrayProperty,

@@ -28,20 +28,20 @@ using LiveCharts.Charts;
 
 namespace LiveCharts.Wpf.Points
 {
-    internal class BubblePointView : PointView, IDiameterData
+    internal class ColumnPointView : PointView, IRectangleData
     {
-        public Ellipse Ellipse { get; set; }
-        public double Diameter { get; set; }
+        public Rectangle Rectangle { get; set; }
+        public LvcRectangle Data { get; set; }
 
         public override void DrawOrMove(ChartPoint previousDrawn, ChartPoint current, int index, ChartCore chart)
         {
             if (IsNew)
             {
-                Canvas.SetTop(Ellipse, current.ChartLocation.Y);
-                Canvas.SetLeft(Ellipse, current.ChartLocation.X);
+                Canvas.SetTop(Rectangle, Data.Top);
+                Canvas.SetLeft(Rectangle, Data.Left);
 
-                Ellipse.Width = 0;
-                Ellipse.Height = 0;
+                Rectangle.Width = Data.Width;
+                Rectangle.Height = 0;
 
                 if (DataLabel != null)
                 {
@@ -49,27 +49,22 @@ namespace LiveCharts.Wpf.Points
                     Canvas.SetLeft(DataLabel, current.ChartLocation.X);
                 }
             }
-
-            HoverShape.Width = Diameter;
-            HoverShape.Height = Diameter;
-            Canvas.SetLeft(HoverShape, current.ChartLocation.X - Diameter/2);
-            Canvas.SetTop(HoverShape, current.ChartLocation.Y - Diameter/2);
-
+          
             if (chart.View.DisableAnimations)
             {
-                Ellipse.Width = Diameter;
-                Ellipse.Height = Diameter;
+                Rectangle.Width = Data.Width;
+                Rectangle.Height = Data.Height;
 
-                Canvas.SetTop(Ellipse, current.ChartLocation.Y - Ellipse.Width*.5);
-                Canvas.SetLeft(Ellipse, current.ChartLocation.X - Ellipse.Height*.5);
+                Canvas.SetTop(Rectangle, Data.Top);
+                Canvas.SetLeft(Rectangle, Data.Left);
 
                 if (DataLabel != null)
                 {
                     DataLabel.UpdateLayout();
 
-                    var cx = CorrectXLabel(current.ChartLocation.X - DataLabel.ActualHeight*.5, chart);
-                    var cy = CorrectYLabel(current.ChartLocation.Y - DataLabel.ActualWidth*.5, chart);
-                    
+                    var cx = CorrectXLabel(current.ChartLocation.X - DataLabel.ActualHeight * .5, chart);
+                    var cy = CorrectYLabel(current.ChartLocation.Y - DataLabel.ActualWidth * .5, chart);
+
                     Canvas.SetTop(DataLabel, cy);
                     Canvas.SetLeft(DataLabel, cx);
                 }
@@ -83,28 +78,25 @@ namespace LiveCharts.Wpf.Points
             {
                 DataLabel.UpdateLayout();
 
-                var cx = CorrectXLabel(current.ChartLocation.X - DataLabel.ActualWidth*.5, chart);
-                var cy = CorrectYLabel(current.ChartLocation.Y - DataLabel.ActualHeight*.5, chart);
+                var cx = CorrectXLabel(current.ChartLocation.X - DataLabel.ActualWidth * .5, chart);
+                var cy = CorrectYLabel(current.ChartLocation.Y - DataLabel.ActualHeight * .5, chart);
 
                 DataLabel.BeginAnimation(Canvas.LeftProperty, new DoubleAnimation(cx, animSpeed));
                 DataLabel.BeginAnimation(Canvas.TopProperty, new DoubleAnimation(cy, animSpeed));
             }
 
-            Ellipse.BeginAnimation(FrameworkElement.WidthProperty,
-                new DoubleAnimation(Diameter, animSpeed));
-            Ellipse.BeginAnimation(FrameworkElement.HeightProperty,
-                new DoubleAnimation(Diameter, animSpeed));
+            Canvas.SetLeft(Rectangle, Data.Left);
+            Canvas.SetTop(Rectangle, Data.Top);
 
-            Ellipse.BeginAnimation(Canvas.TopProperty,
-                new DoubleAnimation(current.ChartLocation.Y - Diameter*.5, animSpeed));
-            Ellipse.BeginAnimation(Canvas.LeftProperty,
-                new DoubleAnimation(current.ChartLocation.X - Diameter*.5, animSpeed));
+            Rectangle.Width = Data.Width;
+            Rectangle.BeginAnimation(FrameworkElement.HeightProperty,
+                new DoubleAnimation(Data.Height, animSpeed));
         }
 
         public override void RemoveFromView(ChartCore chart)
         {
             chart.View.RemoveFromDrawMargin(HoverShape);
-            chart.View.RemoveFromDrawMargin(Ellipse);
+            chart.View.RemoveFromDrawMargin(Rectangle);
             chart.View.RemoveFromDrawMargin(DataLabel);
         }
 
@@ -120,7 +112,7 @@ namespace LiveCharts.Wpf.Points
 
         protected double CorrectYLabel(double desiredPosition, ChartCore chart)
         {
-            desiredPosition -= Ellipse.ActualHeight * .5 + DataLabel.ActualHeight * .5 + 2;
+            desiredPosition -= Rectangle.ActualHeight * .5 + DataLabel.ActualHeight * .5 + 2;
 
             if (desiredPosition + DataLabel.ActualHeight > chart.DrawMargin.Height)
                 desiredPosition -= desiredPosition + DataLabel.ActualHeight - chart.DrawMargin.Height + 2;
