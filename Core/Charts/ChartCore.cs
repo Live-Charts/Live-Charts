@@ -35,7 +35,7 @@ namespace LiveCharts.Charts
         {
             View = view;
             Updater = updater;
-            DrawMargin = new LvcRectangle();
+            DrawMargin = new CoreRectangle();
             DrawMargin.SetHeight += view.SetDrawMarginHeight;
             DrawMargin.SetWidth += view.SetDrawMarginWidth;
             DrawMargin.SetTop += view.SetDrawMarginTop;
@@ -55,21 +55,21 @@ namespace LiveCharts.Charts
         public bool SeriesInitialized { get; set; }
         public IChartView View { get; set; }
         public IChartUpdater Updater { get; set; }
-        public LvcSize ChartControlSize { get; set; }
-        public LvcRectangle DrawMargin { get; set; }
+        public CoreSize ChartControlSize { get; set; }
+        public CoreRectangle DrawMargin { get; set; }
         public bool HasUnitaryPoints { get; set; }
         
         public List<AxisCore> AxisX { get; set; }
         public List<AxisCore> AxisY { get; set; }
 
-        public Limit Value1Limit { get; set; }
-        public Limit Value2Limit { get; set; }
-        public Limit Value3Limit { get; set; }
+        public CoreLimit Value1CoreLimit { get; set; }
+        public CoreLimit Value2CoreLimit { get; set; }
+        public CoreLimit Value3CoreLimit { get; set; }
 
         public int CurrentColorIndex { get; set; }
 
         public AxisTags PivotZoomingAxis { get; set; }
-        public LvcPoint PanOrigin { get; set; }
+        public CorePoint PanOrigin { get; set; }
 
         private bool IsDragging { get; set; }
 
@@ -97,10 +97,10 @@ namespace LiveCharts.Charts
 
                 xi.MaxLimit = xi.MaxValue ??
                               View.Series.Where(series => series.Values != null && series.ScalesXAt == index)
-                                  .Select(series => series.Values.Value1Limit.Max).DefaultIfEmpty(0).Max();
+                                  .Select(series => series.Values.Value1CoreLimit.Max).DefaultIfEmpty(0).Max();
                 xi.MinLimit = xi.MinValue ??
                               View.Series.Where(series => series.Values != null && series.ScalesXAt == index)
-                                  .Select(series => series.Values.Value1Limit.Min).DefaultIfEmpty(0).Min();
+                                  .Select(series => series.Values.Value1CoreLimit.Min).DefaultIfEmpty(0).Min();
             }
 
             for (var index = 0; index < AxisY.Count; index++)
@@ -109,10 +109,10 @@ namespace LiveCharts.Charts
 
                 yi.MaxLimit = yi.MaxValue ??
                              View.Series.Where(series => series.Values != null && series.ScalesYAt == index)
-                                  .Select(series => series.Values.Value2Limit.Max).DefaultIfEmpty(0).Max();
+                                  .Select(series => series.Values.Value2CoreLimit.Max).DefaultIfEmpty(0).Max();
                 yi.MinLimit = yi.MinValue ??
                               View.Series.Where(series => series.Values != null && series.ScalesYAt == index)
-                                  .Select(series => series.Values.Value2Limit.Min).DefaultIfEmpty(0).Min();
+                                  .Select(series => series.Values.Value2CoreLimit.Min).DefaultIfEmpty(0).Min();
             }
 
             PivotZoomingAxis = AxisTags.X;
@@ -120,7 +120,7 @@ namespace LiveCharts.Charts
 
         public void CalculateComponentsAndMargin()
         {
-            var curSize = new LvcRectangle(0, 0, ChartControlSize.Width, ChartControlSize.Height);
+            var curSize = new CoreRectangle(0, 0, ChartControlSize.Width, ChartControlSize.Height);
 
             curSize = PlaceLegend(curSize);
 
@@ -245,7 +245,7 @@ namespace LiveCharts.Charts
             }
         }
 
-        public LvcRectangle PlaceLegend(LvcRectangle drawMargin)
+        public CoreRectangle PlaceLegend(CoreRectangle drawMargin)
         {
             var legendSize = View.LoadLegend();
 
@@ -257,25 +257,25 @@ namespace LiveCharts.Charts
                     View.HideLegend();
                     break;
                 case LegendLocation.Top:
-                    var top = new LvcPoint(ChartControlSize.Width * .5 - legendSize.Width * .5, 0);
+                    var top = new CorePoint(ChartControlSize.Width * .5 - legendSize.Width * .5, 0);
                     var y = drawMargin.Top;
                     drawMargin.Top = y + top.Y + legendSize.Height + padding;
                     drawMargin.Height -= legendSize.Height - padding;
                     View.ShowLegend(top);
                     break;
                 case LegendLocation.Bottom:
-                    var bot = new LvcPoint(ChartControlSize.Width*.5 - legendSize.Width*.5,
+                    var bot = new CorePoint(ChartControlSize.Width*.5 - legendSize.Width*.5,
                         ChartControlSize.Height - legendSize.Height);
                     drawMargin.Height -= legendSize.Height;
-                    View.ShowLegend(new LvcPoint(bot.X, ChartControlSize.Height - legendSize.Height));
+                    View.ShowLegend(new CorePoint(bot.X, ChartControlSize.Height - legendSize.Height));
                     break;
                 case LegendLocation.Left:
                     drawMargin.Left = drawMargin.Left + legendSize.Width;
-                    View.ShowLegend(new LvcPoint(0, ChartControlSize.Height*.5 - legendSize.Height*.5));
+                    View.ShowLegend(new CorePoint(0, ChartControlSize.Height*.5 - legendSize.Height*.5));
                     break;
                 case LegendLocation.Right:
                     drawMargin.Width -= legendSize.Width + padding;
-                    View.ShowLegend(new LvcPoint(ChartControlSize.Width - legendSize.Width,
+                    View.ShowLegend(new CorePoint(ChartControlSize.Width - legendSize.Width,
                         ChartControlSize.Height*.5 - legendSize.Height*.5));
                     break;
                 default:
@@ -285,7 +285,7 @@ namespace LiveCharts.Charts
             return drawMargin;
         }
 
-        public void ZoomIn(LvcPoint pivot)
+        public void ZoomIn(CorePoint pivot)
         {
             View.HideTooltop();
 
@@ -342,7 +342,7 @@ namespace LiveCharts.Charts
             Updater.Run();
         }
 
-        public void ZoomOut(LvcPoint pivot)
+        public void ZoomOut(CorePoint pivot)
         {
             View.HideTooltop();
 
@@ -350,7 +350,7 @@ namespace LiveCharts.Charts
 
             RequestedZoomAt = DateTime.Now;
 
-            var dataPivot = new LvcPoint(
+            var dataPivot = new CorePoint(
                 ChartFunctions.FromDrawMargin(pivot.X, AxisTags.X, this),
                 ChartFunctions.FromDrawMargin(pivot.Y, AxisTags.Y, this));
 

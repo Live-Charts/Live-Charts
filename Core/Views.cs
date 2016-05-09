@@ -53,12 +53,12 @@ namespace LiveCharts
         void AddToDrawMargin(object element);
         void RemoveFromView(object element);
         void RemoveFromDrawMargin(object element);
-        void ShowTooltip(ChartPoint sender, IEnumerable<ChartPoint> sibilings, LvcPoint at);
+        void ShowTooltip(ChartPoint sender, IEnumerable<ChartPoint> sibilings, CorePoint at);
         void HideTooltop();
-        void ShowLegend(LvcPoint at);
+        void ShowLegend(CorePoint at);
         void HideLegend();
 
-        LvcSize LoadLegend();
+        CoreSize LoadLegend();
         List<AxisCore> MapXAxes(ChartCore chart);
         List<AxisCore> MapYAxes(ChartCore chart);
 
@@ -74,7 +74,8 @@ namespace LiveCharts
         bool DataLabels { get; }
         int ScalesXAt { get; set; }
         int ScalesYAt { get; set; }
-        ISeriesConfiguration Configuration { get; set; }        
+        ISeriesConfiguration Configuration { get; set; }
+        bool IsSeriesVisible { get; }
 
         IChartPointView GetPointView(IChartPointView view, string label);
         void OnSeriesUpdateStart();
@@ -85,8 +86,8 @@ namespace LiveCharts
     public interface ILineSeriesView : ISeriesView
     {
         double LineSmoothness { get; set; }
-        void StartSegment(int atIndex, LvcPoint location);
-        void EndSegment(int atIndex, LvcPoint location);
+        void StartSegment(int atIndex, CorePoint location);
+        void EndSegment(int atIndex, CorePoint location);
     }
 
     public interface IAxisView
@@ -96,12 +97,12 @@ namespace LiveCharts
         double LabelsReference { get; set; }
         double UnitWidth { get; set; }
         bool ShowLabels { get; set; }
-        LvcSize UpdateTitle(ChartCore chart, double rotationAngle = 0);
+        CoreSize UpdateTitle(ChartCore chart, double rotationAngle = 0);
         void SetTitleTop(double value);
         void SetTitleLeft(double value);
         double GetTitleLeft();
         double GetTileTop();
-        LvcSize GetLabelSize();
+        CoreSize GetLabelSize();
         AxisCore AsCoreElement(ChartCore chart);
         void RenderSeparator(SeparatorElementCore model, ChartCore chart);
     }
@@ -120,7 +121,7 @@ namespace LiveCharts
     public interface ISeparatorElementView
     { 
         SeparatorElementCore Model { get; }
-        LvcSize UpdateLabel(string text);
+        CoreSize UpdateLabel(string text);
         void UpdateLine(AxisTags source, ChartCore chart, int axisIndex, AxisCore axisCore);
     }
 

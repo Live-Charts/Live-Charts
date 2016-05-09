@@ -33,19 +33,19 @@ using LiveCharts.Wpf.Points;
 // ReSharper disable once CheckNamespace
 namespace LiveCharts.Wpf
 {
-    public class RowSeries : Series.Series, IRowSeries
+    public class StackedColumnSeries : Series.Series, IStackedColumnSeries
     {
         #region Contructors
 
-        public RowSeries()
+        public StackedColumnSeries()
         {
-            Model = new RowAlgorithm(this);
+            Model = new StackedColumnAlgorithm(this);
             InitializeDefuaults();
         }
 
-        public RowSeries(ISeriesConfiguration configuration)
+        public StackedColumnSeries(ISeriesConfiguration configuration)
         {
-            Model = new RowAlgorithm(this);
+            Model = new StackedColumnAlgorithm(this);
             Configuration = configuration;
             InitializeDefuaults();
         }
@@ -58,13 +58,22 @@ namespace LiveCharts.Wpf
 
         #region Properties
 
-        public static readonly DependencyProperty MaxRowWidthProperty = DependencyProperty.Register(
-            "MaxRowWidth", typeof (double), typeof (ColumnSeries), new PropertyMetadata(default(double)));
+        public static readonly DependencyProperty MaxColumnWidthProperty = DependencyProperty.Register(
+            "MaxColumnWidth", typeof (double), typeof (ColumnSeries), new PropertyMetadata(default(double)));
 
-        public double MaxRowWidth
+        public double MaxColumnWidth
         {
-            get { return (double) GetValue(MaxRowWidthProperty); }
-            set { SetValue(MaxRowWidthProperty, value); }
+            get { return (double) GetValue(MaxColumnWidthProperty); }
+            set { SetValue(MaxColumnWidthProperty, value); }
+        }
+
+        public static readonly DependencyProperty StackDirectionProperty = DependencyProperty.Register(
+            "StackDirection", typeof (StackDirection), typeof (StackedColumnSeries), new PropertyMetadata(default(StackDirection)));
+
+        public StackDirection StackDirection
+        {
+            get { return (StackDirection) GetValue(StackDirectionProperty); }
+            set { SetValue(StackDirectionProperty, value); }
         }
 
         #endregion
@@ -73,11 +82,11 @@ namespace LiveCharts.Wpf
 
         public override IChartPointView GetPointView(IChartPointView view, string label)
         {
-            var pbv = (view as RowPointView);
+            var pbv = (view as ColumnPointView);
 
             if (pbv == null)
             {
-                pbv = new RowPointView
+                pbv = new ColumnPointView
                 {
                     IsNew = true,
                     Rectangle = new Rectangle(),
@@ -156,7 +165,7 @@ namespace LiveCharts.Wpf
         private void InitializeDefuaults()
         {
             SetValue(StrokeThicknessProperty, 0d);
-            SetValue(MaxRowWidthProperty, 35d);
+            SetValue(MaxColumnWidthProperty, 35d);
             DefaultFillOpacity = 1;
         }
 

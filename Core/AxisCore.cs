@@ -61,7 +61,7 @@ namespace LiveCharts
         internal Dictionary<double, SeparatorElementCore> Cache { get; set; }
         internal double? LastAxisMax { get; set; }
         internal double? LastAxisMin { get; set; }
-        internal LvcRectangle LastPlotArea { get; set; }
+        internal CoreRectangle LastPlotArea { get; set; }
 
         internal void CalculateSeparator(ChartCore chart, AxisTags source)
         {
@@ -103,8 +103,8 @@ namespace LiveCharts
         {
             if (LastAxisMax == null) return 0;
 
-            var p1 = new LvcPoint();
-            var p2 = new LvcPoint();
+            var p1 = new CorePoint();
+            var p2 = new CorePoint();
 
             if (source == AxisTags.Y)
             {
@@ -129,16 +129,16 @@ namespace LiveCharts
             return m * (value - p1.X) + p1.Y;
         }
 
-        internal LvcSize PrepareChart(AxisTags source, ChartCore chart)
+        internal CoreSize PrepareChart(AxisTags source, ChartCore chart)
         {
-            if (!(Math.Abs(MaxLimit - MinLimit) > S * .01) || !ShowLabels) return new LvcSize();
-            if (chart.DrawMargin.Width < 5 || chart.DrawMargin.Height < 5) return new LvcSize();
+            if (!(Math.Abs(MaxLimit - MinLimit) > S * .01) || !ShowLabels) return new CoreSize();
+            if (chart.DrawMargin.Width < 5 || chart.DrawMargin.Height < 5) return new CoreSize();
 
             CalculateSeparator(chart, source);
 
             var f = GetFormatter();
 
-            var biggest = new LvcSize(0, 0);
+            var biggest = new CoreSize(0, 0);
             var tolerance = S / 10;
 
             var uwc = 0;
@@ -206,7 +206,7 @@ namespace LiveCharts
 
             LastAxisMax = MaxLimit;
             LastAxisMin = MinLimit;
-            LastPlotArea = new LvcRectangle(chart.DrawMargin.Left, chart.DrawMargin.Top,
+            LastPlotArea = new CoreRectangle(chart.DrawMargin.Left, chart.DrawMargin.Top,
                 chart.DrawMargin.Width, chart.DrawMargin.Height);
         }
 

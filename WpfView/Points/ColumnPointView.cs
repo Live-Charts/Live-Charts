@@ -32,7 +32,7 @@ namespace LiveCharts.Wpf.Points
     internal class ColumnPointView : PointView, IRectangleData
     {
         public Rectangle Rectangle { get; set; }
-        public LvcRectangle Data { get; set; }
+        public CoreRectangle Data { get; set; }
         public double ZeroReference  { get; set; }
 
         public override void DrawOrMove(ChartPoint previousDrawn, ChartPoint current, int index, ChartCore chart)

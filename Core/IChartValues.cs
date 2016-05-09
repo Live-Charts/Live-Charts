@@ -35,9 +35,9 @@ namespace LiveCharts
         /// Gets or sets series that owns the values
         /// </summary>
         SeriesAlgorithm Series { get; set; }
-        Limit Value1Limit { get; }
-        Limit Value2Limit { get; }
-        Limit Value3Limit { get; }
+        CoreLimit Value1CoreLimit { get; }
+        CoreLimit Value2CoreLimit { get; }
+        CoreLimit Value3CoreLimit { get; }
         /// <summary>
         /// Forces values to calculate max, min and index data.
         /// </summary>

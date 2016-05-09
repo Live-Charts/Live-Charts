@@ -36,8 +36,8 @@ namespace LiveCharts
         /// <returns></returns>
         public static double ToPlotArea(double value, AxisTags source, ChartCore chart, int axis = 0)
         {
-            var p1 = new LvcPoint();
-            var p2 = new LvcPoint();
+            var p1 = new CorePoint();
+            var p2 = new CorePoint();
 
             if (source == AxisTags.Y)
             {
@@ -62,17 +62,17 @@ namespace LiveCharts
             return m * (value - p1.X) + p1.Y;
         }
 
-        public static LvcPoint ToPlotArea(LvcPoint point, ChartCore chart, int axis = 0)
+        public static CorePoint ToPlotArea(CorePoint point, ChartCore chart, int axis = 0)
         {
-            return new LvcPoint(
+            return new CorePoint(
                 ToPlotArea(point.X, AxisTags.X, chart, axis),
                 ToPlotArea(point.Y, AxisTags.Y, chart, axis));
         }
 
         public static double FromPlotArea(double value, AxisTags source, ChartCore chart, int axis = 0)
         {
-            var p1 = new LvcPoint();
-            var p2 = new LvcPoint();
+            var p1 = new CorePoint();
+            var p2 = new CorePoint();
             
             if (source == AxisTags.Y)
             {
@@ -106,7 +106,7 @@ namespace LiveCharts
             return ToPlotArea(value, source, chart, axis) - o;
         }
 
-        public static LvcPoint ToDrawMargin(ChartPoint point, int axisXIndex, int axisYIndex, ChartCore chart)
+        public static CorePoint ToDrawMargin(ChartPoint point, int axisXIndex, int axisYIndex, ChartCore chart)
         {
             //Disabled for now, instead each axis will have a unitary width according to the series it holds!
             //var unitaryOffset = chart.HasUnitaryPoints
@@ -115,7 +115,7 @@ namespace LiveCharts
             //        : new LvcPoint(GetUnitWidth(AxisTags.X, chart, axisXIndex)*.5, 0))
             //    : new LvcPoint();
            
-            return new LvcPoint(
+            return new CorePoint(
                 ToDrawMargin(point.X, AxisTags.X, chart, axisXIndex),
                 ToDrawMargin(point.Y, AxisTags.Y, chart, axisYIndex)); //+ unitaryOffset;
         }

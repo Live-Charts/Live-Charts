@@ -37,9 +37,25 @@ namespace LiveCharts
         /// </summary>
         public double Weight { get; internal set; }
         /// <summary>
+        /// Gets where the stacked value started from
+        /// </summary>
+        public double From { get; internal set; }
+        /// <summary>
+        /// Gets where the stacked value finishes
+        /// </summary>
+        public double To { get; internal set; }
+        /// <summary>
+        /// Get the total sum of the stacked elements
+        /// </summary>
+        public double Sum { get; internal set; }
+        /// <summary>
+        /// Get the participation of the point in the stacked elements
+        /// </summary>
+        public double Participation { get; set; }
+        /// <summary>
         /// Gets the coordinate where the value is placed at chart
         /// </summary>
-        public LvcPoint ChartLocation { get; set; }
+        public CorePoint ChartLocation { get; set; }
         /// <summary>
         /// Gets the index of this point in the chart
         /// </summary>

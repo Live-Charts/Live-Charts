@@ -312,7 +312,7 @@ namespace LiveCharts.Wpf
                 ase.TextBlock.Visibility = Visibility.Collapsed;
         }
 
-        public LvcSize UpdateTitle(ChartCore chart, double rotationAngle = 0)
+        public CoreSize UpdateTitle(ChartCore chart, double rotationAngle = 0)
         {
             if (TitleBlock.Parent == null)
             {
@@ -324,8 +324,8 @@ namespace LiveCharts.Wpf
 
             TitleBlock.UpdateLayout();
             return string.IsNullOrWhiteSpace(Title)
-                ? new LvcSize()
-                : new LvcSize(TitleBlock.RenderSize.Width, TitleBlock.RenderSize.Height);
+                ? new CoreSize()
+                : new CoreSize(TitleBlock.RenderSize.Width, TitleBlock.RenderSize.Height);
         }
 
         public void SetTitleTop(double value)
@@ -348,9 +348,9 @@ namespace LiveCharts.Wpf
             return Canvas.GetTop(TitleBlock);
         }
 
-        public LvcSize GetLabelSize()
+        public CoreSize GetLabelSize()
         {
-            return new LvcSize(TitleBlock.RenderSize.Width, TitleBlock.RenderSize.Height);
+            return new CoreSize(TitleBlock.RenderSize.Width, TitleBlock.RenderSize.Height);
         }
 
         public AxisCore AsCoreElement(ChartCore chart)

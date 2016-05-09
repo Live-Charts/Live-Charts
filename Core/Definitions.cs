@@ -28,6 +28,11 @@ namespace LiveCharts
 {
     #region Enumerators
 
+    public enum StackDirection
+    {
+        UpRight, DownLeft
+    }
+
     public enum SeriesConfigurationType
     {
         IndexedX, IndexedY
@@ -72,15 +77,15 @@ namespace LiveCharts
 
     #region Structs And Classes
 
-    public struct LvcPoint
+    public struct CorePoint
     {
-        public LvcPoint(double x, double y) : this()
+        public CorePoint(double x, double y) : this()
         {
             X = x;
             Y = y;
         }
 
-        public LvcPoint(LvcPoint point): this()
+        public CorePoint(CorePoint point): this()
         {
             X = point.X;
             Y = point.Y;
@@ -89,20 +94,20 @@ namespace LiveCharts
         public double X { get; set; }
         public double Y { get; set; }
 
-        public static LvcPoint operator +(LvcPoint p1, LvcPoint p2)
+        public static CorePoint operator +(CorePoint p1, CorePoint p2)
         {
-            return new LvcPoint(p1.X + p2.X, p1.Y + p2.Y);
+            return new CorePoint(p1.X + p2.X, p1.Y + p2.Y);
         }
 
-        public static LvcPoint operator -(LvcPoint p1, LvcPoint p2)
+        public static CorePoint operator -(CorePoint p1, CorePoint p2)
         {
-            return new LvcPoint(p1.X - p2.X, p1.Y - p2.Y);
+            return new CorePoint(p1.X - p2.X, p1.Y - p2.Y);
         }
     }
 
-    public struct LvcSize
+    public struct CoreSize
     {
-        public LvcSize(double width, double heigth) : this()
+        public CoreSize(double width, double heigth) : this()
         {
             Width = width;
             Height = heigth;
@@ -112,9 +117,9 @@ namespace LiveCharts
         public double Height { get; set; }
     }
 
-    public struct Limit
+    public struct CoreLimit
     {
-        public Limit(double min, double max) : this()
+        public CoreLimit(double min, double max) : this()
         {
             Max = max;
             Min = min;
@@ -124,19 +129,43 @@ namespace LiveCharts
         public double Min { get; set; }
     }
 
-    public class LvcRectangle
+    public struct StackedHelper
+    {
+        public ChartPoint[] Points { get; set; }
+        public StackDirection Direction { get; set; }
+    }
+
+    internal struct StackedSum
+    {
+        public StackedSum(StackDirection direction, double value): this()
+        {
+            if (direction == StackDirection.DownLeft)
+            {
+                Left = value;
+            }
+            else
+            {
+                Right = value;
+            }
+        }
+
+        public double Left { get; set; }
+        public double Right { get; set; }
+    }
+
+    public class CoreRectangle
     {
         private double _left;
         private double _top;
         private double _width;
         private double _height;
 
-        public LvcRectangle()
+        public CoreRectangle()
         {
             
         }
 
-        public LvcRectangle(double left, double top, double width, double height) : this()
+        public CoreRectangle(double left, double top, double width, double height) : this()
         {
             Left = left;
             Top = top;
@@ -219,18 +248,28 @@ namespace LiveCharts
         AxisLimitsMode YAxisMode { get; set; }
     }
 
-    public interface IBubbleSeries
+    public interface IBubbleSeries : ISeriesView
     {
         double MaxBubbleDiameter { get; set; }
         double MinBubbleDiameter { get; set; }
     }
 
-    public interface IColumnSeries
+    public interface IColumnSeries: ISeriesView
     {
         double MaxColumnWidth { get; set; }
     }
 
-    public interface IRowSeries
+    public interface IStackableSeriesView : ISeriesView
+    {
+        StackDirection StackDirection { get; set; }
+    }
+
+    public interface IStackedColumnSeries : IStackableSeriesView
+    {
+        double MaxColumnWidth { get; set; }
+    }
+
+    public interface IRowSeries : ISeriesView
     {
         double MaxRowWidth { get; set; }
     }
@@ -242,7 +281,7 @@ namespace LiveCharts
 
     public interface IRectangleData : IChartPointView
     {
-        LvcRectangle Data { get; set; }
+        CoreRectangle Data { get; set; }
         double ZeroReference { get; set; }
     }
 

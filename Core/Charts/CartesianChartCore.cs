@@ -28,11 +28,17 @@ namespace LiveCharts.Charts
 {
     public class CartesianChartCore : ChartCore
     {
+        #region Contructors
+
         public CartesianChartCore(IChartView view, IChartUpdater updater) : base(view, updater)
         {
             updater.Chart = this;
             updater.UpdateFrequency();
         }
+
+        #endregion
+
+        #region Publics
 
         public override void PrepareAxes()
         {
@@ -45,12 +51,8 @@ namespace LiveCharts.Charts
 
             var cartesianSeries = View.Series.Select(x => x.Model).Cast<ICartesianSeries>().ToArray();
 
-            if (View.Series.Any(x => x is IBubbleSeries))
-            {
-                var vs = View.Series.Select(x => x.Values.Value3Limit).ToArray();
-                Value3Limit = new Limit(vs.Select(x => x.Min).DefaultIfEmpty(0).Min(),
-                    vs.Select(x => x.Max).DefaultIfEmpty(0).Max());
-            }
+            PrepareBubbles();
+            PrepareStackedColumns();
 
             for (var index = 0; index < AxisX.Count; index++)
             {
@@ -68,7 +70,11 @@ namespace LiveCharts.Charts
 
             CalculateComponentsAndMargin();
         }
-    
+
+        #endregion
+
+        #region Privates
+
         private void SetAxisMode(IEnumerable<AxisLimitsMode> modes, AxisCore axis, int index, AxisTags source)
         {
             var mode = EvaluateModes(modes);
@@ -117,5 +123,84 @@ namespace LiveCharts.Charts
 
             return AxisLimitsMode.Stretch;
         }
+
+        private void PrepareBubbles()
+        {
+            if (!View.Series.Any(x => x is IBubbleSeries)) return;
+
+            var vs = View.Series.Select(x => x.Values.Value3CoreLimit).ToArray();
+            Value3CoreLimit = new CoreLimit(vs.Select(x => x.Min).DefaultIfEmpty(0).Min(),
+                vs.Select(x => x.Max).DefaultIfEmpty(0).Max());
+        }
+
+        private void PrepareStackedColumns()
+        {
+            if (!View.Series.Any(x => x is IStackedColumnSeries)) return;
+
+            StackPoints(View.Series.OfType<IStackedColumnSeries>(), AxisTags.Y);
+        }
+
+        private static void StackPoints(IEnumerable<IStackableSeriesView> stackables, AxisTags stackAt)
+        {
+            var stackedColumns = stackables.Select(x => new StackedHelper
+            {
+                Direction = x.StackDirection,
+                Points = x.Values.Points.ToArray()
+            }).ToArray();
+
+            var maxI = stackedColumns.Select(x => x.Points.Length).DefaultIfEmpty(0).Max();
+
+            for (var i = 0; i < maxI; i++)
+            {
+                var cols = stackedColumns
+                    .Select(x => x.Points.Length > i
+                        ? new StackedSum(x.Direction, Pull(x.Points[i], stackAt))
+                        : new StackedSum()).ToArray();
+
+                var sum = new StackedSum
+                {
+                    Left = cols.Select(x => x.Left).DefaultIfEmpty(0).Sum(),
+                    Right = cols.Select(x => x.Right).DefaultIfEmpty(0).Sum()
+                };
+
+                var lastLeft = 0d;
+                var lastRight = 0d;
+
+                for (var j = 0; j < stackedColumns.Length; j++)
+                {
+                    if (stackedColumns.Length <= i) continue;
+
+                    var col = stackedColumns[i];
+                    var point = col.Points[j];
+
+                    if (col.Direction == StackDirection.DownLeft)
+                    {
+                        point.From = lastLeft;
+                        point.To = lastLeft + Pull(point, stackAt);
+                        point.Sum = sum.Left;
+                        point.Participation = (point.To - point.From)/point.Sum;
+                        
+                        lastLeft = point.To;
+                    }
+                    else
+                    {
+                        point.From = lastRight;
+                        point.To = lastRight + Pull(point, stackAt);
+                        point.Sum = sum.Right;
+                        point.Participation = (point.To - point.From) / point.Sum;
+
+                        lastRight = point.To;
+                    }
+                }
+            }
+        }
+
+        private static double Pull(ChartPoint point, AxisTags source)
+        {
+            var v = source == AxisTags.Y ? point.Y : point.X;
+            return v > 0 ? v : 0;
+        }
+
+        #endregion
     }
 }

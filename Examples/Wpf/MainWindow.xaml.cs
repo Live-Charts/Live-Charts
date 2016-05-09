@@ -17,31 +17,20 @@ namespace Wpf
         {
             InitializeComponent();
 
+            var l = new List<ObservableValue>();
+            var r = new Random();
+
+            for (int i = 0; i < 10; i++)
+            {
+                l.Add(new ObservableValue(r.Next(-20, 20)));
+            }
+
             SeriesCollection = new SeriesCollection
             {
-                new RowSeries
+                new LineSeries
                 {
-                    Values = new ChartValues<ObservableValue>
-                    {
-                        new ObservableValue(10),
-                        new ObservableValue(20),
-                        new ObservableValue(30),
-                        new ObservableValue(40),
-                        new ObservableValue(50)
-                    },
-                    DataLabels = true
-                },
-                new RowSeries
-                {
-                    Values = new ChartValues<ObservableValue>
-                    {
-                        new ObservableValue(10),
-                        new ObservableValue(20),
-                        new ObservableValue(30),
-                        new ObservableValue(40),
-                        new ObservableValue(50)
-                    },
-                    DataLabels = true
+                    Values = l.AsChartValues(),
+                    PointDiameter = 0
                 }
             };
 

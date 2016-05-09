@@ -71,7 +71,7 @@ namespace LiveCharts.Wpf
 
             if (Figure != null)
             {
-                var yIni = ChartFunctions.ToDrawMargin(Values.Value2Limit.Min, AxisTags.Y, Model.Chart, ScalesYAt);
+                var yIni = ChartFunctions.ToDrawMargin(Values.Value2CoreLimit.Min, AxisTags.Y, Model.Chart, ScalesYAt);
 
                 if (Model.Chart.View.DisableAnimations)
                     Figure.StartPoint = new Point(0, yIni);
@@ -104,7 +104,7 @@ namespace LiveCharts.Wpf
             Path.Data = geometry;
             Model.Chart.View.AddToDrawMargin(Path);
 
-            var y = ChartFunctions.ToDrawMargin(Values.Value2Limit.Min, AxisTags.Y, Model.Chart, ScalesYAt);
+            var y = ChartFunctions.ToDrawMargin(Values.Value2CoreLimit.Min, AxisTags.Y, Model.Chart, ScalesYAt);
             Figure.StartPoint = new Point(0, y);
 
             var wpfChart = Model.Chart.View as Chart;
@@ -202,7 +202,7 @@ namespace LiveCharts.Wpf
 
         #region Public Methods 
 
-        public override void StartSegment(int atIndex, LvcPoint location)
+        public override void StartSegment(int atIndex, CorePoint location)
         {
             if (Splitters.Count <= ActiveSplitters)
                 Splitters.Add(new Splitter { IsNew = true });
@@ -257,7 +257,7 @@ namespace LiveCharts.Wpf
             Figure.Segments.Insert(atIndex, splitter.Left);
         }
 
-        public override void EndSegment(int atIndex, LvcPoint location)
+        public override void EndSegment(int atIndex, CorePoint location)
         {
             var splitter = Splitters[ActiveSplitters - 1];
 

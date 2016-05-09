@@ -26,7 +26,7 @@ namespace LiveCharts.Wpf.Components
 {
     public class TooltipDto
     {
-        public Series Series { get; set; }
+        public Series.Series Series { get; set; }
 
         public int Index { get; set; }
         public Brush Stroke { get; set; }

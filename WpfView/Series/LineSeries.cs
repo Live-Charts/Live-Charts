@@ -37,7 +37,7 @@ using LiveCharts.Wpf.Points;
 // ReSharper disable once CheckNamespace
 namespace LiveCharts.Wpf
 {
-    public class LineSeries : Series, ILineSeriesView
+    public class LineSeries : Series.Series, ILineSeriesView
     {
         #region Contructors
 
@@ -116,7 +116,7 @@ namespace LiveCharts.Wpf
 
             if (Figure != null)
             {
-                var xIni = ChartFunctions.ToDrawMargin(Values.Value1Limit.Min, AxisTags.X, Model.Chart, ScalesXAt);
+                var xIni = ChartFunctions.ToDrawMargin(Values.Value1CoreLimit.Min, AxisTags.X, Model.Chart, ScalesXAt);
 
                 if (Model.Chart.View.DisableAnimations)
                     Figure.StartPoint = new Point(xIni, Model.Chart.DrawMargin.Height);
@@ -149,7 +149,7 @@ namespace LiveCharts.Wpf
             Path.Data = geometry;
             Model.Chart.View.AddToDrawMargin(Path);
 
-            var x = ChartFunctions.ToDrawMargin(Values.Value1Limit.Min, AxisTags.X, Model.Chart, ScalesXAt);
+            var x = ChartFunctions.ToDrawMargin(Values.Value1CoreLimit.Min, AxisTags.X, Model.Chart, ScalesXAt);
             Figure.StartPoint = new Point(x, Model.Chart.DrawMargin.Height);
 
             base.OnSeriesUpdateStart();
@@ -262,7 +262,7 @@ namespace LiveCharts.Wpf
 
         #region Public Methods 
 
-        public virtual void StartSegment(int atIndex, LvcPoint location)
+        public virtual void StartSegment(int atIndex, CorePoint location)
         {
             if (Splitters.Count <= ActiveSplitters)
                 Splitters.Add(new Splitter {IsNew = true});
@@ -317,7 +317,7 @@ namespace LiveCharts.Wpf
             Figure.Segments.Insert(atIndex, splitter.Left);
         }
 
-        public virtual void EndSegment(int atIndex, LvcPoint location)
+        public virtual void EndSegment(int atIndex, CorePoint location)
         {
             var splitter = Splitters[ActiveSplitters-1];
 

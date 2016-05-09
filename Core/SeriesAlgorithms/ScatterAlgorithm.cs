@@ -40,20 +40,20 @@ namespace LiveCharts.SeriesAlgorithms
 
             var buubleSeries = (IBubbleSeries) View;
 
-            var p1 = new LvcPoint();
-            var p2 = new LvcPoint();
+            var p1 = new CorePoint();
+            var p2 = new CorePoint();
 
-            p1.X = Chart.Value3Limit.Max;
+            p1.X = Chart.Value3CoreLimit.Max;
             p1.Y = buubleSeries.MaxBubbleDiameter;
 
-            p2.X = Chart.Value3Limit.Min;
+            p2.X = Chart.Value3CoreLimit.Min;
             p2.Y = buubleSeries.MinBubbleDiameter;
 
             var deltaX = p2.X - p1.X;
             // ReSharper disable once CompareOfFloatsByEqualityOperator
             var m = (p2.Y - p1.Y) / (deltaX == 0 ? double.MinValue : deltaX);
 
-            var uw = new LvcPoint(
+            var uw = new CorePoint(
                     CurrentXAxis.EvaluatesUnitWidth
                         ? ChartFunctions.GetUnitWidth(AxisTags.X, Chart, View.ScalesXAt) / 2
                         : 0,

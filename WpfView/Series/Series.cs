@@ -26,8 +26,9 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media;
+using LiveCharts.Wpf.Components;
 
-namespace LiveCharts.Wpf.Components
+namespace LiveCharts.Wpf.Series
 {
     public abstract class Series : FrameworkElement, ISeriesView
     {
@@ -48,6 +49,11 @@ namespace LiveCharts.Wpf.Components
         internal double DefaultFillOpacity { get; set; }
 
         public SeriesAlgorithm Model { get; set; }
+
+        public bool IsSeriesVisible
+        {
+            get { return Visibility == Visibility.Visible; }
+        }
 
         public static readonly DependencyProperty ValuesProperty = DependencyProperty.Register(
             "Values", typeof (IChartValues), typeof (Series),

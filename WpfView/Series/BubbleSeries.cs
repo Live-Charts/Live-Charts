@@ -33,7 +33,7 @@ using LiveCharts.Wpf.Points;
 // ReSharper disable once CheckNamespace
 namespace LiveCharts.Wpf
 {
-    public class ScatterSeries : Series, IBubbleSeries
+    public class ScatterSeries : Series.Series, IBubbleSeries
     {
         #region Contructors
 

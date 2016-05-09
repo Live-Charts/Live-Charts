@@ -54,14 +54,14 @@ namespace LiveCharts.Wpf.Components
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var series = value as IEnumerable<Series>;
+            var series = value as IEnumerable<Series.Series>;
             if (series != null)
                 return series.Select(x => new SeriesViewModel
                 {
 
                 });
 
-            var serie = value as Series;
+            var serie = value as Series.Series;
             if (serie != null)
                 return new SeriesViewModel
                 {

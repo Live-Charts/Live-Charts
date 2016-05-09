@@ -93,7 +93,7 @@ namespace LiveCharts.SeriesAlgorithms
 
                 rectangleView.ZeroReference = zero;
 
-                chartPoint.ChartLocation = new LvcPoint(rectangleView.Data.Left + singleColWidth/2 - padding/2,
+                chartPoint.ChartLocation = new CorePoint(rectangleView.Data.Left + singleColWidth/2 - padding/2,
                     t);
 
                 chartPoint.View.DrawOrMove(null, chartPoint, 0, Chart);

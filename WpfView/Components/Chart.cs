@@ -73,7 +73,7 @@ namespace LiveCharts.Wpf.Components
 #if DEBUG
                 Debug.WriteLine("ChartResized");
 #endif
-                Model.ChartControlSize = new LvcSize(ActualWidth, ActualHeight);
+                Model.ChartControlSize = new CoreSize(ActualWidth, ActualHeight);
 
                 Model.DrawMargin.Left = 0;
                 Model.DrawMargin.Top = 0;
@@ -93,7 +93,7 @@ namespace LiveCharts.Wpf.Components
             {
                 IsControlLoaded = true;
 
-                Model.ChartControlSize = new LvcSize(ActualWidth, ActualHeight);
+                Model.ChartControlSize = new CoreSize(ActualWidth, ActualHeight);
 
                 Model.DrawMargin.Left = 0;
                 Model.DrawMargin.Top = 0;
@@ -409,7 +409,7 @@ namespace LiveCharts.Wpf.Components
             DrawMargin.Children.Remove(wpfElement);
         }
 
-        public void ShowTooltip(ChartPoint sender, IEnumerable<ChartPoint> sibilings, LvcPoint at)
+        public void ShowTooltip(ChartPoint sender, IEnumerable<ChartPoint> sibilings, CorePoint at)
         {
             if (DataTooltip == null) return;
 
@@ -434,7 +434,7 @@ namespace LiveCharts.Wpf.Components
                 DataTooltip.Visibility = Visibility.Hidden;
         }
 
-        public void ShowLegend(LvcPoint at)
+        public void ShowLegend(CorePoint at)
         {
             if (ChartLegend == null) return;
 
@@ -457,15 +457,15 @@ namespace LiveCharts.Wpf.Components
                 ChartLegend.Visibility = Visibility.Hidden;
         }
 
-        public LvcSize LoadLegend()
+        public CoreSize LoadLegend()
         {
             if (ChartLegend == null || LegendLocation == LegendLocation.None)
-                return new LvcSize();
+                return new CoreSize();
 
             if (ChartLegend.Parent == null)
                 Canvas.Children.Add(ChartLegend);
 
-            ChartLegend.Series = Series.Cast<Series>().Select(x => new SeriesViewModel
+            ChartLegend.Series = Series.Cast<Series.Series>().Select(x => new SeriesViewModel
             {
                 Fill = x.Fill,
                 Stroke = x.Stroke,
@@ -478,7 +478,7 @@ namespace LiveCharts.Wpf.Components
             ChartLegend.UpdateLayout();
             ChartLegend.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
 
-            return new LvcSize(ChartLegend.DesiredSize.Width,
+            return new CoreSize(ChartLegend.DesiredSize.Width,
                 ChartLegend.DesiredSize.Height);
         }
 

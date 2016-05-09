@@ -249,11 +249,11 @@ namespace LiveCharts.Wpf.Components
             }
         }
 
-        public LvcSize UpdateLabel(string text)
+        public CoreSize UpdateLabel(string text)
         {
             TextBlock.Text = text;
             TextBlock.UpdateLayout();
-            return new LvcSize(TextBlock.ActualWidth, TextBlock.ActualHeight);
+            return new CoreSize(TextBlock.ActualWidth, TextBlock.ActualHeight);
         }
 
         public void UpdateLine(AxisTags source, ChartCore chart, int axisIndex, AxisCore axis)

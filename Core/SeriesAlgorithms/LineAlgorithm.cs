@@ -55,7 +55,7 @@ namespace LiveCharts.SeriesAlgorithms
             {
                 var p0 = segment.Count > 0
                     ? ChartFunctions.ToDrawMargin(segment[0], View.ScalesXAt, View.ScalesYAt, Chart)
-                    : new LvcPoint(0, 0);
+                    : new CorePoint(0, 0);
                 var p1 = segment.Count > 0
                     ? ChartFunctions.ToDrawMargin(segment[0], View.ScalesXAt, View.ScalesYAt, Chart)
                     : p0;
@@ -66,7 +66,7 @@ namespace LiveCharts.SeriesAlgorithms
                     ? ChartFunctions.ToDrawMargin(segment[2], View.ScalesXAt, View.ScalesYAt, Chart)
                     : p2;
 
-                var uw = new LvcPoint(
+                var uw = new CorePoint(
                     CurrentXAxis.EvaluatesUnitWidth
                         ? ChartFunctions.GetUnitWidth(AxisTags.X, Chart, View.ScalesXAt)/2
                         : 0,
@@ -124,12 +124,12 @@ namespace LiveCharts.SeriesAlgorithms
                     if (bezierView == null) continue;
 
                     bezierView.Data = index == segment.Count - 1
-                        ? new BezierData(new LvcPoint(p1.X, p1.Y))
+                        ? new BezierData(new CorePoint(p1.X, p1.Y))
                         : new BezierData
                         {
-                            Point1 = index == 0 ? new LvcPoint(p1.X, p1.Y) : new LvcPoint(c1X, c1Y),
-                            Point2 = new LvcPoint(c2X, c2Y),
-                            Point3 = new LvcPoint(p2.X, p2.Y)
+                            Point1 = index == 0 ? new CorePoint(p1.X, p1.Y) : new CorePoint(c1X, c1Y),
+                            Point2 = new CorePoint(c2X, c2Y),
+                            Point3 = new CorePoint(p2.X, p2.Y)
                         };
 
                     chartPoint.View.DrawOrMove(previousDrawn, chartPoint, segmentPosition, Chart);
@@ -139,9 +139,9 @@ namespace LiveCharts.SeriesAlgorithms
                         ? previousDrawn
                         : chartPoint;
 
-                    p0 = new LvcPoint(p1);
-                    p1 = new LvcPoint(p2);
-                    p2 = new LvcPoint(p3);
+                    p0 = new CorePoint(p1);
+                    p1 = new CorePoint(p2);
+                    p2 = new CorePoint(p3);
                     p3 = segment.Count > index + 3
                         ? ChartFunctions.ToDrawMargin(segment[index + 3], View.ScalesXAt, View.ScalesYAt, Chart)
                         : p2;
@@ -160,16 +160,16 @@ namespace LiveCharts.SeriesAlgorithms
         {
         }
 
-        public BezierData(LvcPoint point)
+        public BezierData(CorePoint point)
         {
             Point1 = point;
             Point2 = point;
             Point3 = point;
         }
 
-        public LvcPoint Point1 { get; set; }
-        public LvcPoint Point2 { get; set; }
-        public LvcPoint Point3 { get; set; }
-        public LvcPoint StartPoint { get; set; }
+        public CorePoint Point1 { get; set; }
+        public CorePoint Point2 { get; set; }
+        public CorePoint Point3 { get; set; }
+        public CorePoint StartPoint { get; set; }
     }
 }
