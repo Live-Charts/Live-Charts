@@ -99,16 +99,15 @@ namespace LiveCharts.Charts
         {
             if (!View.Series.Any(x => x is IStackedColumnSeries)) return;
 
-            StackPoints(View.Series.OfType<IStackedColumnSeries>(), AxisTags.Y);
+            foreach (var group in View.Series.OfType<IStackedColumnSeries>().GroupBy(x => x.ScalesYAt))
+            {
+                StackPoints(group, AxisTags.Y, group.Key);
+                AxisX[group.First().ScalesXAt].EvaluatesUnitWidth = true;
+            }
         }
 
-        private void StackPoints(IEnumerable<ISeriesView> stackables, AxisTags stackAt)
+        private void StackPoints(IEnumerable<ISeriesView> stackables, AxisTags stackAt, int stackIndex)
         {
-            //No problem resharper, it is just once...
-            // ReSharper disable once PossibleMultipleEnumeration
-            var f = stackables.FirstOrDefault();
-            var stackIndex = f == null ? 0 : (stackAt == AxisTags.X ? f.ScalesXAt : f.ScalesYAt);
-            // ReSharper disable once PossibleMultipleEnumeration
             var stackedColumns = stackables.Select(x => x.Values.Points.ToArray()).ToArray();
 
             var maxI = stackedColumns.Select(x => x.Length).DefaultIfEmpty(0).Max();
@@ -139,11 +138,13 @@ namespace LiveCharts.Charts
                 if (stackAt == AxisTags.Y)
                 {
                     if (sum.Left < AxisY[stackIndex].MinLimit)
-                        AxisY[stackIndex].MinLimit =
-                            (Math.Truncate(sum.Left / AxisY[stackIndex].S) - 1) * AxisY[stackIndex].S;
+                        AxisY[stackIndex].MinLimit = sum.Left == 0
+                            ? 0
+                            : (Math.Truncate(sum.Left/AxisY[stackIndex].S) - 1)*AxisY[stackIndex].S;
                     if (sum.Right > AxisY[stackIndex].MaxLimit)
-                        AxisY[stackIndex].MaxLimit =
-                            (Math.Truncate(sum.Right / AxisY[stackIndex].S) + 1) * AxisY[stackIndex].S;
+                        AxisY[stackIndex].MaxLimit = sum.Right == 0
+                            ? 0
+                            : (Math.Truncate(sum.Right / AxisY[stackIndex].S) + 1) * AxisY[stackIndex].S;
                 }
 
                 var lastLeft = 0d;
