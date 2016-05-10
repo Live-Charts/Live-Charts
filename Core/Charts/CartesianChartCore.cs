@@ -68,16 +68,17 @@ namespace LiveCharts.Charts
             {
                 var yi = AxisY[index];
                 yi.CalculateSeparator(this, AxisTags.Y);
-                yi.MinLimit = cartesianSeries.Where(x => x.View.ScalesXAt == index)
+                yi.MinLimit = cartesianSeries.Where(x => x.View.ScalesYAt == index)
                     .Select(x => x.GetMinY(yi))
                     .DefaultIfEmpty(0).Min();
-                yi.MaxLimit = cartesianSeries.Where(x => x.View.ScalesXAt == index)
-                    .Select(x => x.GetMaxX(yi))
+                yi.MaxLimit = cartesianSeries.Where(x => x.View.ScalesYAt == index)
+                    .Select(x => x.GetMaxY(yi))
                     .DefaultIfEmpty(0).Max();
             }
 
             PrepareBubbles();
             PrepareStackedColumns();
+            PrepareStackedRows();
 
             CalculateComponentsAndMargin();
         }
@@ -106,6 +107,17 @@ namespace LiveCharts.Charts
             }
         }
 
+        private void PrepareStackedRows()
+        {
+            if (!View.Series.Any(x => x is IStackedRowSeries)) return;
+
+            foreach (var group in View.Series.OfType<IStackedRowSeries>().GroupBy(x => x.ScalesXAt))
+            {
+                StackPoints(group, AxisTags.X, group.Key);
+                AxisY[group.First().ScalesYAt].EvaluatesUnitWidth = true;
+            }
+        }
+
         private void StackPoints(IEnumerable<ISeriesView> stackables, AxisTags stackAt, int stackIndex)
         {
             var stackedColumns = stackables.Select(x => x.Values.Points.ToArray()).ToArray();
@@ -128,11 +140,13 @@ namespace LiveCharts.Charts
                 if (stackAt == AxisTags.X)
                 {
                     if (sum.Left < AxisX[stackIndex].MinLimit)
-                        AxisX[stackIndex].MinLimit =
-                            (Math.Truncate(sum.Left/AxisX[stackIndex].S) - 1)*AxisX[stackIndex].S;
+                        AxisX[stackIndex].MinLimit = sum.Left == 0 
+                            ? 0 
+                            : (Math.Truncate(sum.Left / AxisX[stackIndex].S) - 1) * AxisX[stackIndex].S;
                     if (sum.Right > AxisX[stackIndex].MaxLimit)
-                        AxisX[stackIndex].MaxLimit =
-                            (Math.Truncate(sum.Right/AxisX[stackIndex].S) + 1)*AxisX[stackIndex].S;
+                        AxisX[stackIndex].MaxLimit = sum.Right == 0
+                            ? 0
+                            : (Math.Truncate(sum.Right/AxisX[stackIndex].S) + 1)*AxisX[stackIndex].S;
                 }
 
                 if (stackAt == AxisTags.Y)

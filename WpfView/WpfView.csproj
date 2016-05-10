@@ -61,6 +61,7 @@
     <Compile Include="Points\RowPointView.cs" />
     <Compile Include="Points\ColumnPointView.cs" />
     <Compile Include="Points\VBezierPointView.cs" />
+    <Compile Include="Series\StackedRowSeries.cs" />
     <Compile Include="Series\StackedColumnSeries.cs" />
     <Compile Include="Series\RowSeries.cs" />
     <Compile Include="Series\ColumnSeries.cs" />

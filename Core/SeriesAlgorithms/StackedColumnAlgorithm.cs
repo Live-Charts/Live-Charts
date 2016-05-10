@@ -21,7 +21,6 @@
 //SOFTWARE.
 
 using System;
-using System.Linq;
 using LiveCharts.Defaults;
 
 namespace LiveCharts.SeriesAlgorithms

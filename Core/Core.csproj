@@ -55,6 +55,7 @@
     <Compile Include="IChartValues.cs" />
     <Compile Include="IDataOptimization.cs" />
     <Compile Include="Charts\CartesianChartCore.cs" />
+    <Compile Include="SeriesAlgorithms\StackedRowAlgorithm.cs" />
     <Compile Include="SeriesAlgorithms\StackedColumnAlgorithm.cs" />
     <Compile Include="SeriesAlgorithms\ColumnAlgorithm.cs" />
     <Compile Include="SeriesAlgorithms\RowAlgorithm.cs" />

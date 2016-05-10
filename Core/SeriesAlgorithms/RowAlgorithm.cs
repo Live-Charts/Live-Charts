@@ -50,10 +50,10 @@ namespace LiveCharts.SeriesAlgorithms
 
             var seriesPosition = Chart.View.Series.IndexOf(View);
 
-            if (singleRowHeight > castedSeries.MaxRowWidth)
+            if (singleRowHeight > castedSeries.MaxRowHeigth)
             {
-                exceed = (singleRowHeight - castedSeries.MaxRowWidth)*typeSeries.Count/2;
-                singleRowHeight = castedSeries.MaxRowWidth;
+                exceed = (singleRowHeight - castedSeries.MaxRowHeigth)*typeSeries.Count/2;
+                singleRowHeight = castedSeries.MaxRowHeigth;
             }
 
             var relativeTop = padding + exceed + singleRowHeight * (seriesPosition);

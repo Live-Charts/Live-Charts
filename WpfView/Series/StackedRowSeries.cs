@@ -33,19 +33,19 @@ using LiveCharts.Wpf.Points;
 // ReSharper disable once CheckNamespace
 namespace LiveCharts.Wpf
 {
-    public class RowSeries : Series.Series, IRowSeries
+    public class StackedRowSeries : Series.Series, IStackedRowSeries
     {
         #region Contructors
 
-        public RowSeries()
+        public StackedRowSeries()
         {
-            Model = new RowAlgorithm(this);
+            Model = new StackedRowAlgorithm(this);
             InitializeDefuaults();
         }
 
-        public RowSeries(ISeriesConfiguration configuration)
+        public StackedRowSeries(ISeriesConfiguration configuration)
         {
-            Model = new RowAlgorithm(this);
+            Model = new StackedRowAlgorithm(this);
             Configuration = configuration;
             InitializeDefuaults();
         }

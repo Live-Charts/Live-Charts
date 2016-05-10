@@ -19,7 +19,7 @@ namespace Wpf
 
             SeriesCollection = new SeriesCollection
             {
-                new StackedColumnSeries
+                new StackedRowSeries
                 {
                     Values = new ChartValues<ObservableValue>
                     {
@@ -28,7 +28,7 @@ namespace Wpf
                         new ObservableValue(7)
                     }
                 },
-                new StackedColumnSeries()
+                new StackedRowSeries
                 {
                     Values = new ChartValues<ObservableValue>
                     {
@@ -37,7 +37,7 @@ namespace Wpf
                         new ObservableValue(9)
                     }
                 },
-                new StackedColumnSeries()
+                new StackedRowSeries
                 {
                     Values = new ChartValues<ObservableValue>
                     {

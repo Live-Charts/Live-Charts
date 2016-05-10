@@ -293,9 +293,14 @@ namespace LiveCharts
         double MaxColumnWidth { get; set; }
     }
 
+    public interface IStackedRowSeries : ISeriesView
+    {
+        double MaxRowHeigth { get; set; }
+    }
+
     public interface IRowSeries : ISeriesView
     {
-        double MaxRowWidth { get; set; }
+        double MaxRowHeigth { get; set; }
     }
 
     public interface IBezierData : IChartPointView
