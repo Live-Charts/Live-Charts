@@ -24,15 +24,23 @@ namespace LiveCharts.SeriesAlgorithms
 {
     public class VerticalStackedAreaAlgorithm : StackedAreaAlgorithm
     {
+        private readonly IStackModelableSeries _stackModelable;
+
         public VerticalStackedAreaAlgorithm(ISeriesView view) : base(view)
         {
             SeriesConfigurationType = SeriesConfigurationType.IndexedY;
+            _stackModelable = (IStackModelableSeries) view;
         }
 
         protected override CorePoint GetStackedPoint(ChartPoint chartPoint)
         {
+            if (_stackModelable.StackMode == StackMode.Values)
+                return new CorePoint(
+                    ChartFunctions.ToDrawMargin(chartPoint.To, AxisTags.X, Chart, View.ScalesXAt),
+                    ChartFunctions.ToDrawMargin(chartPoint.Y, AxisTags.Y, Chart, View.ScalesYAt));
+
             return new CorePoint(
-                ChartFunctions.ToDrawMargin(chartPoint.To, AxisTags.X, Chart, View.ScalesXAt),
+                ChartFunctions.ToDrawMargin(chartPoint.StackedParticipation, AxisTags.X, Chart, View.ScalesXAt),
                 ChartFunctions.ToDrawMargin(chartPoint.Y, AxisTags.Y, Chart, View.ScalesYAt));
         }
     }

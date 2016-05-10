@@ -52,6 +52,18 @@ namespace LiveCharts.Wpf
 
         #endregion
 
+        #region Properties
+
+        public static readonly DependencyProperty StackModeProperty = DependencyProperty.Register(
+            "StackMode", typeof (StackMode), typeof (VerticalStackedAreaSeries), new PropertyMetadata(default(StackMode)));
+
+        public StackMode StackMode
+        {
+            get { return (StackMode) GetValue(StackModeProperty); }
+            set { SetValue(StackModeProperty, value); }
+        }
+        #endregion
+
         #region Overriden Methods
 
         public override void OnSeriesUpdateStart()
@@ -134,6 +146,7 @@ namespace LiveCharts.Wpf
             SetValue(PointDiameterProperty, 0d);
             SetValue(PointForeroundProperty, Brushes.White);
             SetValue(StrokeThicknessProperty, 0d);
+            SetValue(StackModeProperty, StackMode.Values);
             DefaultFillOpacity = 1;
             Splitters = new List<LineSegmentSplitter>();
         }

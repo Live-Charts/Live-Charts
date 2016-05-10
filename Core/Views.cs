@@ -83,23 +83,6 @@ namespace LiveCharts
         void OnSeriesUpdatedFinish();
     }
 
-    public interface ILineSeriesView : ISeriesView
-    {
-        double LineSmoothness { get; set; }
-        void StartSegment(int atIndex, CorePoint location);
-        void EndSegment(int atIndex, CorePoint location);
-    }
-
-    public interface IStackedAreaView : ILineSeriesView
-    {
-        
-    }
-
-    public interface IVerticalStackedAreaView : ILineSeriesView
-    {
-        
-    }
-
     public interface IAxisView
     {
         AxisCore Model { get; set; }

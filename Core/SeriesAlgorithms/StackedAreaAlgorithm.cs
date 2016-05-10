@@ -29,9 +29,12 @@ namespace LiveCharts.SeriesAlgorithms
 {
     public class StackedAreaAlgorithm : SeriesAlgorithm, ICartesianSeries
     {
+        private readonly IStackModelableSeries _stackModelable;
+
         public StackedAreaAlgorithm(ISeriesView view) : base(view)
         {
             SeriesConfigurationType = SeriesConfigurationType.IndexedX;
+            _stackModelable = (IStackModelableSeries)view;
         }
 
         public override void Update()
@@ -151,9 +154,13 @@ namespace LiveCharts.SeriesAlgorithms
 
         protected virtual CorePoint GetStackedPoint(ChartPoint chartPoint)
         {
+            if (_stackModelable.StackMode == StackMode.Values)
+                return new CorePoint(
+                    ChartFunctions.ToDrawMargin(chartPoint.X, AxisTags.X, Chart, View.ScalesXAt),
+                    ChartFunctions.ToDrawMargin(chartPoint.To, AxisTags.Y, Chart, View.ScalesYAt));
             return new CorePoint(
                 ChartFunctions.ToDrawMargin(chartPoint.X, AxisTags.X, Chart, View.ScalesXAt),
-                ChartFunctions.ToDrawMargin(chartPoint.To, AxisTags.Y, Chart, View.ScalesYAt));
+                ChartFunctions.ToDrawMargin(chartPoint.StackedParticipation, AxisTags.Y, Chart, View.ScalesYAt));
         }
 
         double ICartesianSeries.GetMinX(AxisCore axis)

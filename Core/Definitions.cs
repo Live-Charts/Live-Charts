@@ -61,6 +61,11 @@ namespace LiveCharts
         Right
     }
 
+    public enum StackMode
+    {
+        Values, Percentage
+    }
+
     #endregion
 
 
@@ -222,6 +227,7 @@ namespace LiveCharts
         }
 
         public CorePoint Point1 { get; set; }
+
         public CorePoint Point2 { get; set; }
         public CorePoint Point3 { get; set; }
         public CorePoint StartPoint { get; set; }
@@ -259,6 +265,11 @@ namespace LiveCharts
         double MinBubbleDiameter { get; set; }
     }
 
+    public interface IStackModelableSeries
+    {
+        StackMode StackMode { get; set; }
+    }
+
     public interface IColumnSeries: ISeriesView
     {
         double MaxColumnWidth { get; set; }
@@ -277,6 +288,23 @@ namespace LiveCharts
     public interface IRowSeries : ISeriesView
     {
         double MaxRowHeigth { get; set; }
+    }
+
+    public interface ILineSeriesView : ISeriesView
+    {
+        double LineSmoothness { get; set; }
+        void StartSegment(int atIndex, CorePoint location);
+        void EndSegment(int atIndex, CorePoint location);
+    }
+
+    public interface IStackedAreaView : ILineSeriesView, IStackModelableSeries
+    {
+
+    }
+
+    public interface IVerticalStackedAreaView : ILineSeriesView, IStackModelableSeries
+    {
+
     }
 
     public interface IBezierData : IChartPointView

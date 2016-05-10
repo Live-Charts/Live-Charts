@@ -57,6 +57,14 @@ namespace LiveCharts.Wpf
 
         #region Properties
 
+        public static readonly DependencyProperty StackModeProperty = DependencyProperty.Register(
+            "StackMode", typeof (StackMode), typeof (StackedAreaSeries), new PropertyMetadata(default(StackMode)));
+
+        public StackMode StackMode
+        {
+            get { return (StackMode) GetValue(StackModeProperty); }
+            set { SetValue(StackModeProperty, value); }
+        }
         #endregion
 
         #region Overriden Methods
