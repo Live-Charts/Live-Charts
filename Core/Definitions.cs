@@ -213,7 +213,7 @@ namespace LiveCharts
             }
             set
             {
-                _width = value;
+                _width = value < 0 ? 0 : value;
                 if (SetWidth != null) SetWidth.Invoke(value);
             }
         }
@@ -226,7 +226,7 @@ namespace LiveCharts
             }
             set
             {
-                _height = value;
+                _height = value < 0 ? 0 : value;
                 if (SetHeight != null) SetHeight.Invoke(value);
             }
         }

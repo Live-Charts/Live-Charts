@@ -81,7 +81,7 @@ namespace LiveCharts.SeriesAlgorithms
                 rectangleView.Data.Top = y + relativeTop;
 
                 rectangleView.Data.Left = l;
-                rectangleView.Data.Width = w > 0 ? w : 0;
+                rectangleView.Data.Width = w;
 
                 rectangleView.ZeroReference = zero;
 

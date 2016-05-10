@@ -96,7 +96,7 @@ namespace LiveCharts
 
             S = tick;
 
-            if (Labels != null) S = S < 1 ? 1 : S; //Todo: Check this , this should be wrong
+            if (Labels != null) S = S < 1 ? 1 : S;
         }
 
         public double FromPreviousAxisState(double value, AxisTags source, ChartCore chart)

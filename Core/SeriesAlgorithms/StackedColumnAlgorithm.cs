@@ -77,7 +77,7 @@ namespace LiveCharts.SeriesAlgorithms
                     ? to
                     : from;
 
-                rectangleView.Data.Height = h > 0 ? h : 0;
+                rectangleView.Data.Height = h;
                 rectangleView.Data.Top = t;
 
                 rectangleView.Data.Left = x + relativeLeft;
