@@ -20,18 +20,15 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
+using LiveCharts.Defaults;
+
 namespace LiveCharts.SeriesAlgorithms
 {
     public class ScatterAlgorithm : SeriesAlgorithm, ICartesianSeries
     {
         public ScatterAlgorithm(ISeriesView view) : base(view)
         {
-            XAxisMode = AxisLimitsMode.Stretch;
-            YAxisMode = AxisLimitsMode.Stretch;
         }
-
-        public AxisLimitsMode XAxisMode { get; set; }
-        public AxisLimitsMode YAxisMode { get; set; }
 
         public override void Update()
         {
@@ -75,6 +72,26 @@ namespace LiveCharts.SeriesAlgorithms
 
                 chartPoint.View.DrawOrMove(null, chartPoint, 0, Chart);
             }
+        }
+
+        double ICartesianSeries.GetMinX(AxisCore axis)
+        {
+            return AxisLimits.StretchMin(axis);
+        }
+
+        double ICartesianSeries.GetMaxX(AxisCore axis)
+        {
+            return AxisLimits.StretchMax(axis);
+        }
+
+        double ICartesianSeries.GetMinY(AxisCore axis)
+        {
+            return AxisLimits.StretchMin(axis);
+        }
+
+        double ICartesianSeries.GetMaxY(AxisCore axis)
+        {
+            return AxisLimits.StretchMax(axis);
         }
     }
 }

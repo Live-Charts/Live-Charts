@@ -22,16 +22,10 @@
 
 using System;
 using LiveCharts.Charts;
-using LiveCharts.SeriesAlgorithms;
 
 namespace LiveCharts
 {
     #region Enumerators
-
-    public enum StackDirection
-    {
-        UpRight, DownLeft
-    }
 
     public enum SeriesConfigurationType
     {
@@ -40,7 +34,26 @@ namespace LiveCharts
 
     public enum AxisLimitsMode
     {
-        Stretch, UnitWidth, Separator
+        /// <summary>
+        /// Axis is displayed from min to max
+        /// </summary>
+        Stretch,
+        /// <summary>
+        /// Axis unit is greather than 0px, displayed from min to max+unitWidth
+        /// </summary>
+        UnitWidth,
+        /// <summary>
+        /// Axis is displayed from min-separator to max
+        /// </summary>
+        SeparatorLeft,
+        /// <summary>
+        /// Axis is displayed from min to max+separator
+        /// </summary>
+        SeparatorRight,
+        /// <summary>
+        /// Axis is displayed from min-separator to max+separator
+        /// </summary>
+        SeparatorBoth
     }
 
     public enum AxisPosition
@@ -129,17 +142,11 @@ namespace LiveCharts
         public double Min { get; set; }
     }
 
-    public struct StackedHelper
-    {
-        public ChartPoint[] Points { get; set; }
-        public StackDirection Direction { get; set; }
-    }
-
     internal struct StackedSum
     {
-        public StackedSum(StackDirection direction, double value): this()
+        public StackedSum(double value): this()
         {
-            if (direction == StackDirection.DownLeft)
+            if (value < 0)
             {
                 Left = value;
             }
@@ -225,6 +232,24 @@ namespace LiveCharts
         }
     }
 
+    public class BezierData
+    {
+        public BezierData()
+        {
+        }
+
+        public BezierData(CorePoint point)
+        {
+            Point1 = point;
+            Point2 = point;
+            Point3 = point;
+        }
+
+        public CorePoint Point1 { get; set; }
+        public CorePoint Point2 { get; set; }
+        public CorePoint Point3 { get; set; }
+        public CorePoint StartPoint { get; set; }
+    }
     #endregion
 
     #region Interfaces
@@ -244,8 +269,12 @@ namespace LiveCharts
 
     public interface ICartesianSeries
     {
-        AxisLimitsMode XAxisMode { get; set; }
-        AxisLimitsMode YAxisMode { get; set; }
+        ISeriesView View { get; }
+
+        double GetMinX(AxisCore axis);
+        double GetMaxX(AxisCore axis);
+        double GetMinY(AxisCore axis);
+        double GetMaxY(AxisCore axis);
     }
 
     public interface IBubbleSeries : ISeriesView
@@ -259,12 +288,7 @@ namespace LiveCharts
         double MaxColumnWidth { get; set; }
     }
 
-    public interface IStackableSeriesView : ISeriesView
-    {
-        StackDirection StackDirection { get; set; }
-    }
-
-    public interface IStackedColumnSeries : IStackableSeriesView
+    public interface IStackedColumnSeries : ISeriesView
     {
         double MaxColumnWidth { get; set; }
     }

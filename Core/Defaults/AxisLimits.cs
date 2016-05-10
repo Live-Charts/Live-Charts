@@ -20,35 +20,35 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-using LiveCharts.Defaults;
+using System;
 
-namespace LiveCharts.SeriesAlgorithms
+namespace LiveCharts.Defaults
 {
-    public class VerticalLineAlgorithm : LineAlgorithm, ICartesianSeries
+    internal static class AxisLimits
     {
-        public VerticalLineAlgorithm(ISeriesView view) : base(view)
+        internal static double StretchMax(AxisCore axis)
         {
-            SeriesConfigurationType = SeriesConfigurationType.IndexedY;
+            return Math.Ceiling(axis.MaxLimit/axis.Magnitude)*axis.Magnitude;
         }
 
-        double ICartesianSeries.GetMinX(AxisCore axis)
+        internal static double StretchMin(AxisCore axis)
         {
-            return AxisLimits.SeparatorMin(axis);
+            return Math.Floor(axis.MinLimit/axis.Magnitude)*axis.Magnitude;
         }
 
-        double ICartesianSeries.GetMaxX(AxisCore axis)
+        internal static double UnitRight(AxisCore axis)
         {
-            return AxisLimits.SeparatorMax(axis);
+            return Math.Ceiling(axis.MaxLimit/axis.Magnitude)*axis.Magnitude + 1;
         }
 
-        double ICartesianSeries.GetMinY(AxisCore axis)
+        internal static double SeparatorMax(AxisCore axis)
         {
-            return AxisLimits.StretchMin(axis);
+            return Math.Truncate(axis.MaxLimit/axis.S)*axis.S;
         }
 
-        double ICartesianSeries.GetMaxY(AxisCore axis)
+        internal static double SeparatorMin(AxisCore axis)
         {
-            return AxisLimits.StretchMax(axis);
+            return Math.Truncate(axis.MinLimit/axis.S)*axis.S;
         }
     }
 }

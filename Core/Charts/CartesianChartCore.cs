@@ -23,6 +23,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using LiveCharts.Defaults;
 
 namespace LiveCharts.Charts
 {
@@ -50,23 +51,33 @@ namespace LiveCharts.Charts
                     "verify that all the series are desiged to be plotted in a cartesian chart.");
 
             var cartesianSeries = View.Series.Select(x => x.Model).Cast<ICartesianSeries>().ToArray();
-
-            PrepareBubbles();
-            PrepareStackedColumns();
-
+            
             for (var index = 0; index < AxisX.Count; index++)
             {
                 var xi = AxisX[index];
                 xi.CalculateSeparator(this, AxisTags.X);
-                SetAxisMode(cartesianSeries.Select(x => x.XAxisMode), xi, index, AxisTags.X);
+                xi.MinLimit = cartesianSeries.Where(x => x.View.ScalesXAt == index)
+                    .Select(x => x.GetMinX(xi))
+                    .DefaultIfEmpty(0).Min();
+                xi.MaxLimit = cartesianSeries.Where(x => x.View.ScalesXAt == index)
+                    .Select(x => x.GetMaxX(xi))
+                    .DefaultIfEmpty(0).Max();
             }
 
             for (var index = 0; index < AxisY.Count; index++)
             {
                 var yi = AxisY[index];
                 yi.CalculateSeparator(this, AxisTags.Y);
-                SetAxisMode(cartesianSeries.Select(x => x.YAxisMode), yi, index, AxisTags.Y);
+                yi.MinLimit = cartesianSeries.Where(x => x.View.ScalesXAt == index)
+                    .Select(x => x.GetMinY(yi))
+                    .DefaultIfEmpty(0).Min();
+                yi.MaxLimit = cartesianSeries.Where(x => x.View.ScalesXAt == index)
+                    .Select(x => x.GetMaxX(yi))
+                    .DefaultIfEmpty(0).Max();
             }
+
+            PrepareBubbles();
+            PrepareStackedColumns();
 
             CalculateComponentsAndMargin();
         }
@@ -74,55 +85,6 @@ namespace LiveCharts.Charts
         #endregion
 
         #region Privates
-
-        private void SetAxisMode(IEnumerable<AxisLimitsMode> modes, AxisCore axis, int index, AxisTags source)
-        {
-            var mode = EvaluateModes(modes);
-
-            var rMax = axis.MaxLimit / axis.Magnitude;
-            var rMin = axis.MinLimit/axis.Magnitude;
-
-            switch (mode)
-            {
-                case AxisLimitsMode.Stretch:
-                    axis.EvaluatesUnitWidth = false;
-                    axis.MaxLimit = Math.Ceiling(rMax)*axis.Magnitude;
-                    axis.MinLimit = Math.Floor(rMin)*axis.Magnitude;
-                    break;
-                case AxisLimitsMode.UnitWidth:
-                    axis.EvaluatesUnitWidth = true;
-                    axis.MaxLimit = Math.Ceiling(rMax)*axis.Magnitude + 1;
-                    axis.MinLimit = Math.Floor(rMin)*axis.Magnitude;
-                    break;
-                case AxisLimitsMode.Separator:
-                    axis.EvaluatesUnitWidth = false;
-                    var sMax = axis.MaxLimit/axis.S;
-                    var sMin = axis.MinLimit/axis.S;
-                    axis.MaxLimit = Math.Truncate(sMax + 1)*axis.S;
-                    axis.MinLimit = Math.Truncate(sMin - 1)*axis.S;
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
-
-            if (!(Math.Abs(axis.MaxLimit - axis.MinLimit) < axis.S*0.01)) return;
-
-            axis.MinLimit = (Math.Round(rMax) - 1) * axis.S;
-            axis.MaxLimit = (Math.Round(rMax) + 1) * axis.S;
-        }
-
-        private static AxisLimitsMode EvaluateModes(IEnumerable<AxisLimitsMode> modes)
-        {
-            var g = modes.GroupBy(x => x).Select(x => x.Key).ToList();
-
-            if (g.Any(x => x == AxisLimitsMode.Separator))
-                return AxisLimitsMode.Separator;
-
-            if (g.Any(x => x == AxisLimitsMode.UnitWidth))
-                return AxisLimitsMode.UnitWidth;
-
-            return AxisLimitsMode.Stretch;
-        }
 
         private void PrepareBubbles()
         {
@@ -140,21 +102,22 @@ namespace LiveCharts.Charts
             StackPoints(View.Series.OfType<IStackedColumnSeries>(), AxisTags.Y);
         }
 
-        private static void StackPoints(IEnumerable<IStackableSeriesView> stackables, AxisTags stackAt)
+        private void StackPoints(IEnumerable<ISeriesView> stackables, AxisTags stackAt)
         {
-            var stackedColumns = stackables.Select(x => new StackedHelper
-            {
-                Direction = x.StackDirection,
-                Points = x.Values.Points.ToArray()
-            }).ToArray();
+            //No problem resharper, it is just once...
+            // ReSharper disable once PossibleMultipleEnumeration
+            var f = stackables.FirstOrDefault();
+            var stackIndex = f == null ? 0 : (stackAt == AxisTags.X ? f.ScalesXAt : f.ScalesYAt);
+            // ReSharper disable once PossibleMultipleEnumeration
+            var stackedColumns = stackables.Select(x => x.Values.Points.ToArray()).ToArray();
 
-            var maxI = stackedColumns.Select(x => x.Points.Length).DefaultIfEmpty(0).Max();
+            var maxI = stackedColumns.Select(x => x.Length).DefaultIfEmpty(0).Max();
 
             for (var i = 0; i < maxI; i++)
             {
                 var cols = stackedColumns
-                    .Select(x => x.Points.Length > i
-                        ? new StackedSum(x.Direction, Pull(x.Points[i], stackAt))
+                    .Select(x => x.Length > i
+                        ? new StackedSum(Pull(x[i], stackAt))
                         : new StackedSum()).ToArray();
 
                 var sum = new StackedSum
@@ -163,20 +126,39 @@ namespace LiveCharts.Charts
                     Right = cols.Select(x => x.Right).DefaultIfEmpty(0).Sum()
                 };
 
+                if (stackAt == AxisTags.X)
+                {
+                    if (sum.Left < AxisX[stackIndex].MinLimit)
+                        AxisX[stackIndex].MinLimit =
+                            (Math.Truncate(sum.Left/AxisX[stackIndex].S) - 1)*AxisX[stackIndex].S;
+                    if (sum.Right > AxisX[stackIndex].MaxLimit)
+                        AxisX[stackIndex].MaxLimit =
+                            (Math.Truncate(sum.Right/AxisX[stackIndex].S) + 1)*AxisX[stackIndex].S;
+                }
+
+                if (stackAt == AxisTags.Y)
+                {
+                    if (sum.Left < AxisY[stackIndex].MinLimit)
+                        AxisY[stackIndex].MinLimit =
+                            (Math.Truncate(sum.Left / AxisY[stackIndex].S) - 1) * AxisY[stackIndex].S;
+                    if (sum.Right > AxisY[stackIndex].MaxLimit)
+                        AxisY[stackIndex].MaxLimit =
+                            (Math.Truncate(sum.Right / AxisY[stackIndex].S) + 1) * AxisY[stackIndex].S;
+                }
+
                 var lastLeft = 0d;
                 var lastRight = 0d;
 
-                for (var j = 0; j < stackedColumns.Length; j++)
+                foreach (var col in stackedColumns)
                 {
-                    if (stackedColumns.Length <= i) continue;
+                    if (i >= col.Length) continue;
+                    var point = col[i];
+                    var pulled = Pull(point, stackAt);
 
-                    var col = stackedColumns[i];
-                    var point = col.Points[j];
-
-                    if (col.Direction == StackDirection.DownLeft)
+                    if (pulled <= 0)
                     {
                         point.From = lastLeft;
-                        point.To = lastLeft + Pull(point, stackAt);
+                        point.To = lastLeft + pulled;
                         point.Sum = sum.Left;
                         point.Participation = (point.To - point.From)/point.Sum;
                         
@@ -185,7 +167,7 @@ namespace LiveCharts.Charts
                     else
                     {
                         point.From = lastRight;
-                        point.To = lastRight + Pull(point, stackAt);
+                        point.To = lastRight + pulled;
                         point.Sum = sum.Right;
                         point.Participation = (point.To - point.From) / point.Sum;
 
@@ -197,8 +179,7 @@ namespace LiveCharts.Charts
 
         private static double Pull(ChartPoint point, AxisTags source)
         {
-            var v = source == AxisTags.Y ? point.Y : point.X;
-            return v > 0 ? v : 0;
+            return source == AxisTags.Y ? point.Y : point.X;
         }
 
         #endregion

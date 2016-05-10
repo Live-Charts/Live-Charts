@@ -42,6 +42,7 @@
     <Compile Include="AxisCore.cs" />
     <Compile Include="ChartUpdater.cs" />
     <Compile Include="ChartValues.cs" />
+    <Compile Include="Defaults\AxisLimits.cs" />
     <Compile Include="Defaults\ObservablePoint.cs" />
     <Compile Include="Defaults\DefaultConfigurations.cs" />
     <Compile Include="Defaults\ObservableValue.cs" />

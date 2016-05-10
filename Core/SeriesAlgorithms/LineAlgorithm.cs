@@ -22,6 +22,7 @@
 
 using System;
 using System.Linq;
+using LiveCharts.Defaults;
 using LiveCharts.Helpers;
 
 namespace LiveCharts.SeriesAlgorithms
@@ -30,13 +31,8 @@ namespace LiveCharts.SeriesAlgorithms
     {
         public LineAlgorithm(ISeriesView view) : base(view)
         {
-            XAxisMode = AxisLimitsMode.Stretch;
-            YAxisMode = AxisLimitsMode.Separator;
             SeriesConfigurationType = SeriesConfigurationType.IndexedX;
         }
-
-        public AxisLimitsMode XAxisMode { get; set; }
-        public AxisLimitsMode YAxisMode { get; set; }
 
         public override void Update()
         {
@@ -152,24 +148,25 @@ namespace LiveCharts.SeriesAlgorithms
                 segmentPosition++;
             }
         }
-    }
 
-    public class BezierData
-    {
-        public BezierData()
+        double ICartesianSeries.GetMinX(AxisCore axis)
         {
+            return AxisLimits.StretchMin(axis);
         }
 
-        public BezierData(CorePoint point)
+        double ICartesianSeries.GetMaxX(AxisCore axis)
         {
-            Point1 = point;
-            Point2 = point;
-            Point3 = point;
+            return AxisLimits.StretchMax(axis);
         }
 
-        public CorePoint Point1 { get; set; }
-        public CorePoint Point2 { get; set; }
-        public CorePoint Point3 { get; set; }
-        public CorePoint StartPoint { get; set; }
+        double ICartesianSeries.GetMinY(AxisCore axis)
+        {
+            return AxisLimits.SeparatorMin(axis);
+        }
+
+        double ICartesianSeries.GetMaxY(AxisCore axis)
+        {
+            return  AxisLimits.SeparatorMax(axis);
+        }
     }
 }

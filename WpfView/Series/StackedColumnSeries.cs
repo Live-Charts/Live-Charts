@@ -67,15 +67,6 @@ namespace LiveCharts.Wpf
             set { SetValue(MaxColumnWidthProperty, value); }
         }
 
-        public static readonly DependencyProperty StackDirectionProperty = DependencyProperty.Register(
-            "StackDirection", typeof (StackDirection), typeof (StackedColumnSeries), new PropertyMetadata(default(StackDirection)));
-
-        public StackDirection StackDirection
-        {
-            get { return (StackDirection) GetValue(StackDirectionProperty); }
-            set { SetValue(StackDirectionProperty, value); }
-        }
-
         #endregion
 
         #region Overriden Methods

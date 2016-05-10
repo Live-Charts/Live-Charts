@@ -51,23 +51,23 @@ namespace LiveCharts
         /// <summary>
         /// Get the participation of the point in the stacked elements
         /// </summary>
-        public double Participation { get; set; }
+        public double Participation { get; internal set; }
         /// <summary>
         /// Gets the coordinate where the value is placed at chart
         /// </summary>
-        public CorePoint ChartLocation { get; set; }
+        public CorePoint ChartLocation { get; internal set; }
         /// <summary>
         /// Gets the index of this point in the chart
         /// </summary>
-        public int Key { get; set; }
+        public int Key { get; internal set; }
         /// <summary>
         /// Gets the object where the chart pulled the point
         /// </summary>
-        public object Instance { get; set; }
-        /// <summary>
+        public object Instance { get; internal set; }
+        /// <summary >
         /// Gets or sets the view of this chart point
         /// </summary>
-        public IChartPointView View { get; set; }
+        public IChartPointView View { get; internal set; }
 
         internal double GarbageCollectorIndex { get; set; }
     }

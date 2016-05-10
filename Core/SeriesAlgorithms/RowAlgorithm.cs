@@ -22,6 +22,7 @@
 
 using System;
 using System.Linq;
+using LiveCharts.Defaults;
 
 namespace LiveCharts.SeriesAlgorithms
 {
@@ -29,42 +30,37 @@ namespace LiveCharts.SeriesAlgorithms
     {
         public RowAlgorithm(ISeriesView view) : base(view)
         {
-            XAxisMode = AxisLimitsMode.Separator;
-            YAxisMode = AxisLimitsMode.UnitWidth;
             SeriesConfigurationType = SeriesConfigurationType.IndexedY;
         }
-
-        public AxisLimitsMode XAxisMode { get; set; }
-        public AxisLimitsMode YAxisMode { get; set; }
 
         public override void Update()
         {
             var fx = CurrentYAxis.GetFormatter();
 
-            var columnSeries = (IRowSeries) View;
+            var castedSeries = (IRowSeries) View;
 
             const double padding = 5;
             
             var totalSpace = ChartFunctions.GetUnitWidth(AxisTags.Y, Chart, View.ScalesYAt) - padding;
-            var columnSeriesCount = Chart.View.Series.OfType<IRowSeries>().Count();
+            var typeSeries = Chart.View.Series.OfType<IRowSeries>().ToList();
 
-            var singleRowHeight = totalSpace/columnSeriesCount;
+            var singleRowHeight = totalSpace/typeSeries.Count;
 
             double exceed = 0;
 
             var seriesPosition = Chart.View.Series.IndexOf(View);
 
-            if (singleRowHeight > columnSeries.MaxRowWidth)
+            if (singleRowHeight > castedSeries.MaxRowWidth)
             {
-                exceed = (singleRowHeight - columnSeries.MaxRowWidth) * columnSeriesCount / 2;
-                singleRowHeight = columnSeries.MaxRowWidth;
+                exceed = (singleRowHeight - castedSeries.MaxRowWidth)*typeSeries.Count/2;
+                singleRowHeight = castedSeries.MaxRowWidth;
             }
 
             var relativeTop = padding + exceed + singleRowHeight * (seriesPosition);
 
             var startAt = CurrentXAxis.MinLimit >= 0 && CurrentXAxis.MaxLimit > 0   //both positive
                 ? CurrentXAxis.MinLimit                                             //then use Min
-                : (CurrentXAxis.MinLimit <= 0 && CurrentXAxis.MaxLimit < 0          //both negative
+                : (CurrentXAxis.MinLimit < 0 && CurrentXAxis.MaxLimit <= 0          //both negative
                     ? CurrentXAxis.MaxLimit                                         //then use Max
                     : 0);                                                           //if mixed then use 0
 
@@ -100,6 +96,32 @@ namespace LiveCharts.SeriesAlgorithms
 
                 chartPoint.View.DrawOrMove(null, chartPoint, 0, Chart);
             }
+        }
+
+        double ICartesianSeries.GetMinX(AxisCore axis)
+        {
+            var f = AxisLimits.SeparatorMin(axis);
+            return CurrentYAxis.MinLimit >= 0 && CurrentYAxis.MaxLimit > 0
+                ? (f >= 0 ? f : 0)
+                : f;
+        }
+
+        double ICartesianSeries.GetMaxX(AxisCore axis)
+        {
+            var f = AxisLimits.SeparatorMax(axis);
+            return CurrentYAxis.MinLimit < 0 && CurrentYAxis.MaxLimit <= 0
+                ? (f >= 0 ? f : 0)
+                : f;
+        }
+
+        double ICartesianSeries.GetMinY(AxisCore axis)
+        {
+            return AxisLimits.SeparatorMin(axis);
+        }
+
+        double ICartesianSeries.GetMaxY(AxisCore axis)
+        {
+            return AxisLimits.SeparatorMin(axis);
         }
     }
 }
