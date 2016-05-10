@@ -90,6 +90,11 @@ namespace LiveCharts
         void EndSegment(int atIndex, CorePoint location);
     }
 
+    public interface IStackedAreaView : ILineSeriesView
+    {
+        
+    }
+
     public interface IAxisView
     {
         AxisCore Model { get; set; }

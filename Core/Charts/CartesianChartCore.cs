@@ -23,7 +23,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using LiveCharts.Defaults;
 
 namespace LiveCharts.Charts
 {
@@ -80,6 +79,7 @@ namespace LiveCharts.Charts
             PrepareBubbles();
             PrepareStackedColumns();
             PrepareStackedRows();
+            PrepareStackedAreas();
 
             CalculateComponentsAndMargin();
         }
@@ -129,6 +129,16 @@ namespace LiveCharts.Charts
             foreach (var group in View.Series.OfType<IStackedRowSeries>().GroupBy(x => x.ScalesXAt))
             {
                 StackPoints(group, AxisTags.X, group.Key);
+            }
+        }
+
+        private void PrepareStackedAreas()
+        {
+            if (!View.Series.Any(x => x is IStackedAreaView)) return;
+
+            foreach (var group in View.Series.OfType<IStackedAreaView>().GroupBy(x => x.ScalesYAt))
+            {
+                StackPoints(group, AxisTags.Y, group.Key);
             }
         }
 

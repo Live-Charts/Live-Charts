@@ -60,7 +60,7 @@ namespace LiveCharts.Wpf
         protected PathFigure Figure { get; set; }
         protected Path Path { get; set; }
         protected bool IsInView { get; set; }
-        internal List<Splitter> Splitters { get; set; }
+        internal List<LineSegmentSplitter> Splitters { get; set; }
         protected int ActiveSplitters { get; set; }
         protected int SplittersCollector { get; set; }
         #endregion
@@ -265,7 +265,7 @@ namespace LiveCharts.Wpf
         public virtual void StartSegment(int atIndex, CorePoint location)
         {
             if (Splitters.Count <= ActiveSplitters)
-                Splitters.Add(new Splitter {IsNew = true});
+                Splitters.Add(new LineSegmentSplitter {IsNew = true});
 
             var splitter = Splitters[ActiveSplitters];
             splitter.SplitterCollectorIndex = SplittersCollector;
@@ -350,25 +350,9 @@ namespace LiveCharts.Wpf
             SetValue(PointForeroundProperty, Brushes.White);
             SetValue(StrokeThicknessProperty, 2d);
             DefaultFillOpacity = 0.15;
-            Splitters = new List<Splitter>();
+            Splitters = new List<LineSegmentSplitter>();
         }
 
         #endregion
-    }
-
-    internal class Splitter
-    {
-        public Splitter()
-        {
-            Bottom = new LineSegment {IsStroked = false};
-            Left = new LineSegment {IsStroked = false};
-            Right = new LineSegment {IsStroked = false};
-        }
-
-        public LineSegment Bottom { get; private set; }
-        public LineSegment Left { get; private set; }
-        public LineSegment Right { get; private set; }
-        public int SplitterCollectorIndex { get; set; }
-        public bool IsNew { get; set; }
     }
 }

@@ -22,11 +22,23 @@ namespace Wpf.CartesianChart
             MyValues.Add(3);
 
 
-            var lineSeries = new LineSeries();
+            var lineSeries = new StackedAreaSeries();
             lineSeries.Values = MyValues;
 
             SeriesCollection = new SeriesCollection();
             SeriesCollection.Add(lineSeries);
+
+            var stacked = new StackedAreaSeries
+            {
+                Values = new ChartValues<double> { 4,5,7,8}
+            };
+            var stacked2 = new StackedAreaSeries
+            {
+                Values = new ChartValues<double> { 4,7,3,1 }
+            };
+
+            SeriesCollection.Add(stacked);
+            SeriesCollection.Add(stacked2);
 
             DataContext = this;
         }

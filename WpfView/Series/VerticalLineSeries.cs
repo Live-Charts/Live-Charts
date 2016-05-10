@@ -205,7 +205,7 @@ namespace LiveCharts.Wpf
         public override void StartSegment(int atIndex, CorePoint location)
         {
             if (Splitters.Count <= ActiveSplitters)
-                Splitters.Add(new Splitter { IsNew = true });
+                Splitters.Add(new LineSegmentSplitter { IsNew = true });
 
             var splitter = Splitters[ActiveSplitters];
             splitter.SplitterCollectorIndex = SplittersCollector;
@@ -290,7 +290,7 @@ namespace LiveCharts.Wpf
             SetValue(PointForeroundProperty, Brushes.White);
             SetValue(StrokeThicknessProperty, 2d);
             DefaultFillOpacity = 0.15;
-            Splitters = new List<Splitter>();
+            Splitters = new List<LineSegmentSplitter>();
         }
 
         #endregion
