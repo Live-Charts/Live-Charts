@@ -67,6 +67,7 @@
     <Compile Include="Series\RowSeries.cs" />
     <Compile Include="Series\ColumnSeries.cs" />
     <Compile Include="Series\BubbleSeries.cs" />
+    <Compile Include="Series\VerticalStackedAreaSeries.cs" />
     <Compile Include="Series\VerticalLineSeries.cs" />
     <Compile Include="Points\HBezierPointView.cs" />
     <Compile Include="Components\Converters.cs" />

@@ -80,6 +80,7 @@ namespace LiveCharts.Charts
             PrepareStackedColumns();
             PrepareStackedRows();
             PrepareStackedAreas();
+            PrepareVerticalStackedAreas();
 
             CalculateComponentsAndMargin();
         }
@@ -139,6 +140,16 @@ namespace LiveCharts.Charts
             foreach (var group in View.Series.OfType<IStackedAreaView>().GroupBy(x => x.ScalesYAt))
             {
                 StackPoints(group, AxisTags.Y, group.Key);
+            }
+        }
+
+        private void PrepareVerticalStackedAreas()
+        {
+            if (!View.Series.Any(x => x is IVerticalStackedAreaView)) return;
+
+            foreach (var group in View.Series.OfType<IVerticalStackedAreaView>().GroupBy(x => x.ScalesXAt))
+            {
+                StackPoints(group, AxisTags.X, group.Key);
             }
         }
 

@@ -95,6 +95,11 @@ namespace LiveCharts
         
     }
 
+    public interface IVerticalStackedAreaView : ILineSeriesView
+    {
+        
+    }
+
     public interface IAxisView
     {
         AxisCore Model { get; set; }
