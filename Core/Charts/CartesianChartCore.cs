@@ -76,6 +76,7 @@ namespace LiveCharts.Charts
                     .DefaultIfEmpty(0).Max();
             }
 
+            PrepareUnitWidthColumns();
             PrepareBubbles();
             PrepareStackedColumns();
             PrepareStackedRows();
@@ -96,6 +97,21 @@ namespace LiveCharts.Charts
                 vs.Select(x => x.Max).DefaultIfEmpty(0).Max());
         }
 
+        private void PrepareUnitWidthColumns()
+        {
+            foreach (var series in View.Series)
+            {
+                if (series is IStackedColumnSeries || series is IColumnSeries)
+                {
+                    AxisX[series.ScalesXAt].EvaluatesUnitWidth = true;
+                }
+                if (series is IStackedRowSeries || series is IRowSeries)
+                {
+                    AxisY[series.ScalesYAt].EvaluatesUnitWidth = true;
+                }
+            }
+        }
+
         private void PrepareStackedColumns()
         {
             if (!View.Series.Any(x => x is IStackedColumnSeries)) return;
@@ -103,7 +119,6 @@ namespace LiveCharts.Charts
             foreach (var group in View.Series.OfType<IStackedColumnSeries>().GroupBy(x => x.ScalesYAt))
             {
                 StackPoints(group, AxisTags.Y, group.Key);
-                AxisX[group.First().ScalesXAt].EvaluatesUnitWidth = true;
             }
         }
 
@@ -114,7 +129,6 @@ namespace LiveCharts.Charts
             foreach (var group in View.Series.OfType<IStackedRowSeries>().GroupBy(x => x.ScalesXAt))
             {
                 StackPoints(group, AxisTags.X, group.Key);
-                AxisY[group.First().ScalesYAt].EvaluatesUnitWidth = true;
             }
         }
 

@@ -43,12 +43,12 @@ namespace LiveCharts.Defaults
 
         internal static double SeparatorMax(AxisCore axis)
         {
-            return Math.Truncate(axis.MaxLimit/axis.S)*axis.S;
+            return (Math.Truncate(axis.MaxLimit/axis.S) + 1)*axis.S;
         }
 
         internal static double SeparatorMin(AxisCore axis)
         {
-            return Math.Truncate(axis.MinLimit/axis.S)*axis.S;
+            return (Math.Truncate(axis.MinLimit/axis.S) - 1)*axis.S;
         }
     }
 }

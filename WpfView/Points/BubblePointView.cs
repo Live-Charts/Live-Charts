@@ -50,10 +50,13 @@ namespace LiveCharts.Wpf.Points
                 }
             }
 
-            HoverShape.Width = Diameter;
-            HoverShape.Height = Diameter;
-            Canvas.SetLeft(HoverShape, current.ChartLocation.X - Diameter/2);
-            Canvas.SetTop(HoverShape, current.ChartLocation.Y - Diameter/2);
+            if (HoverShape != null)
+            {
+                HoverShape.Width = Diameter;
+                HoverShape.Height = Diameter;
+                Canvas.SetLeft(HoverShape, current.ChartLocation.X - Diameter / 2);
+                Canvas.SetTop(HoverShape, current.ChartLocation.Y - Diameter / 2);
+            }
 
             if (chart.View.DisableAnimations)
             {

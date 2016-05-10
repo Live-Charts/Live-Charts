@@ -1,119 +1,82 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
+using System.Windows.Navigation;
 using LiveCharts;
 using LiveCharts.Defaults;
 using LiveCharts.Wpf;
+using Wpf.Annotations;
+using Wpf.CartesianChart;
 
 namespace Wpf
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow
+    public partial class MainWindow : INotifyPropertyChanged
     {
+        private UserControl _cartesianView;
+
         public MainWindow()
         {
             InitializeComponent();
 
-            SeriesCollection = new SeriesCollection
+            CartesianExamples = new List<UserControl>
             {
-                new StackedRowSeries
-                {
-                    Values = new ChartValues<ObservableValue>
-                    {
-                        new ObservableValue(2),
-                        new ObservableValue(5),
-                        new ObservableValue(7)
-                    }
-                },
-                new StackedRowSeries
-                {
-                    Values = new ChartValues<ObservableValue>
-                    {
-                        new ObservableValue(3),
-                        new ObservableValue(2),
-                        new ObservableValue(9)
-                    }
-                },
-                new StackedRowSeries
-                {
-                    Values = new ChartValues<ObservableValue>
-                    {
-                        new ObservableValue(1),
-                        new ObservableValue(9),
-                        new ObservableValue(6)
-                    }
-                }
+                new Welcome(), new ResponsiveExample(), new CustomTypesPlotting(), new MixingTypes()
             };
+
+            CartesianView = CartesianExamples != null && CartesianExamples.Count > 0 ? CartesianExamples[0] : null;
 
             DataContext = this;
         }
 
-        public SeriesCollection SeriesCollection { get; set; }
-
-        private void Chart_OnDataClick(object sender, ChartPoint chartPoint)
+        private void Hyperlink_OnRequestNavigate(object sender, RequestNavigateEventArgs e)
         {
-            MessageBox.Show("Hello!");
+            Process.Start(new ProcessStartInfo(e.Uri.AbsoluteUri));
+            e.Handled = true;
         }
 
-        private void AddButtonOnClick(object sender, RoutedEventArgs e)
+        private void NextCartesianOnClick(object sender, MouseButtonEventArgs e)
         {
-            var r = new Random();
+            if (CartesianView == null) return;
+            var current = CartesianExamples.IndexOf(CartesianView);
+            current++;
+            CartesianView = CartesianExamples.Count > current ? CartesianExamples[current] : CartesianExamples[0];
+        }
 
-            foreach (var series in SeriesCollection)
+        private void PreviousCartesianOnClick(object sender, MouseButtonEventArgs e)
+        {
+            if (CartesianView == null) return;
+            var current = CartesianExamples.IndexOf(CartesianView);
+            current--;
+            CartesianView = current >= 0 ? CartesianExamples[current] : CartesianExamples[CartesianExamples.Count-1];
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public UserControl CartesianView
+        {
+            get { return _cartesianView; }
+            set
             {
-                series.Values.Add(new ObservableValue(r.Next(-20, 20)));
+                _cartesianView = value;
+                OnPropertyChanged();
             }
         }
 
-        private void RemoveButtonOnClick(object sender, RoutedEventArgs e)
+        public List<UserControl> CartesianExamples { get; set; }
+
+        [NotifyPropertyChangedInvocator]
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
-            foreach (var series in SeriesCollection)
-            {
-                if (series.Values.Count > 0)
-                    series.Values.RemoveAt(0);
-            }
-        }
-
-        private void AddSeriesOnClick(object sender, RoutedEventArgs e)
-        {
-            var c = SeriesCollection.Count > 0 ? SeriesCollection[0].Values.Count : 5;
-
-            var values = new List<ObservableValue>();
-            var r = new Random();
-
-            for (var i = 0; i < c; i++)
-            {
-                values.Add(new ObservableValue(r.Next(-20,20)));
-            }
-
-            SeriesCollection.Add(new LineSeries
-            {
-                Values = values.AsChartValues()
-            });
-        }
-
-        private void RemoveSeriesOnClick(object sender, RoutedEventArgs e)
-        {
-            var r = new Random();
-
-            if (SeriesCollection.Count > 0)
-                SeriesCollection.RemoveAt(r.Next(0, SeriesCollection.Count));
-        }
-
-        private void RandomizeOnClick(object sender, RoutedEventArgs e)
-        {
-            var r = new Random();
-            foreach (var series in SeriesCollection)
-            {
-                foreach (var value in series.Values.Cast<ObservableValue>())
-                {
-                    //value.X = r.NextDouble()*20;
-                    value.Value = r.Next(-20, 20);
-                }
-            }
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

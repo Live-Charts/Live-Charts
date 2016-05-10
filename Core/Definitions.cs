@@ -32,30 +32,6 @@ namespace LiveCharts
         IndexedX, IndexedY
     }
 
-    public enum AxisLimitsMode
-    {
-        /// <summary>
-        /// Axis is displayed from min to max
-        /// </summary>
-        Stretch,
-        /// <summary>
-        /// Axis unit is greather than 0px, displayed from min to max+unitWidth
-        /// </summary>
-        UnitWidth,
-        /// <summary>
-        /// Axis is displayed from min-separator to max
-        /// </summary>
-        SeparatorLeft,
-        /// <summary>
-        /// Axis is displayed from min to max+separator
-        /// </summary>
-        SeparatorRight,
-        /// <summary>
-        /// Axis is displayed from min-separator to max+separator
-        /// </summary>
-        SeparatorBoth
-    }
-
     public enum AxisPosition
     {
         LeftBottom, RightTop
