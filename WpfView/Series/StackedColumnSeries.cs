@@ -43,7 +43,7 @@ namespace LiveCharts.Wpf
             InitializeDefuaults();
         }
 
-        public StackedColumnSeries(ISeriesConfiguration configuration)
+        public StackedColumnSeries(object configuration)
         {
             Model = new StackedColumnAlgorithm(this);
             Configuration = configuration;

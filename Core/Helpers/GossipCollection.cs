@@ -25,11 +25,10 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace LiveCharts.CrossNet
+namespace LiveCharts.Helpers
 {
-    public delegate void GossipCollectionCollectionChanged(object oldItems);
-
-    //To support multuple .net versions and platforms, lets create our "own" specialized observablecollection
+    public delegate void GossipCollectionCollectionChanged(object oldItems, object newItems);
+    
     public interface IGossipCollection : IEnumerable
     {
         event GossipCollectionCollectionChanged CollectionChanged;
@@ -102,55 +101,57 @@ namespace LiveCharts.CrossNet
         public int Add(T item)
         {
             _source.Add(item);
-            OnCollectionChanged();
+            OnCollectionChanged(null, new List<T> {item});
             return _source.Count;
         }
 
         int IGossipCollection.Add(object item)
         {
             _source.Add((T) item);
-            OnCollectionChanged();
+            OnCollectionChanged(null, new List<T> {(T) item}.AsEnumerable());
             return _source.Count;
         }
 
         public int AddRange(IEnumerable<T> items)
         {
-           _source.AddRange(items);
-            OnCollectionChanged();
+            _source.AddRange(items);
+            OnCollectionChanged(null, items);
             return _source.Count;
         }
 
         int IGossipCollection.AddRange(IEnumerable<object> items)
         {
-            _source.AddRange(items.Cast<T>());
-            OnCollectionChanged();
+            var enumerable = items.Cast<T>();
+            _source.AddRange(enumerable);
+            OnCollectionChanged(null, enumerable);
             return _source.Count;
         }
 
         public int Insert(int index, T item)
         {
             _source.Insert(index, item);
-            OnCollectionChanged();
+            OnCollectionChanged(null, new List<T> {item}.AsEnumerable());
             return _source.Count;
         }
 
         int IGossipCollection.Insert(int index, object item)
         {
             _source.Insert(index, (T) item);
-            OnCollectionChanged();
+            OnCollectionChanged(null, new List<T> {(T) item}.AsEnumerable());
             return _source.Count;
         }
 
         public int InsertRange(int index, IEnumerable<T> items)
         {
             _source.InsertRange(index, items);
-            OnCollectionChanged();
+            OnCollectionChanged(null, items);
             return _source.Count;
         }
         int IGossipCollection.InsertRange(int index, IEnumerable<object> items)
         {
-            _source.InsertRange(index, items.Cast<T>());
-            OnCollectionChanged();
+            var enumerable = items.Cast<T>();
+            _source.InsertRange(index, enumerable);
+            OnCollectionChanged(null, enumerable);
             return _source.Count;
         }
 
@@ -233,9 +234,9 @@ namespace LiveCharts.CrossNet
             return GetEnumerator();
         }
 
-        private void OnCollectionChanged(object olditems = null)
+        private void OnCollectionChanged(object olditems = null, object newItems = null)
         {
-            if (CollectionChanged != null) CollectionChanged.Invoke(olditems);
+            if (CollectionChanged != null) CollectionChanged.Invoke(olditems, newItems);
         }
     }
 }

@@ -74,7 +74,7 @@ namespace LiveCharts
         bool DataLabels { get; }
         int ScalesXAt { get; set; }
         int ScalesYAt { get; set; }
-        ISeriesConfiguration Configuration { get; set; }
+        object Configuration { get; set; }
         bool IsSeriesVisible { get; }
 
         IChartPointView GetPointView(IChartPointView view, string label);

@@ -93,7 +93,7 @@ namespace LiveCharts.Charts
         {
             if (!View.Series.Any(x => x is IBubbleSeries)) return;
 
-            var vs = View.Series.Select(x => x.Values.Value3CoreLimit).ToArray();
+            var vs = View.Series.Select(x => x.Values.WeigthLimit).ToArray();
             Value3CoreLimit = new CoreLimit(vs.Select(x => x.Min).DefaultIfEmpty(0).Min(),
                 vs.Select(x => x.Max).DefaultIfEmpty(0).Max());
         }

@@ -28,7 +28,7 @@ namespace LiveCharts.SeriesAlgorithms
 
         public VerticalStackedAreaAlgorithm(ISeriesView view) : base(view)
         {
-            SeriesConfigurationType = SeriesConfigurationType.IndexedY;
+            SeriesOrientation = SeriesOrientation.Vertical;
             _stackModelable = (IStackModelableSeries) view;
         }
 

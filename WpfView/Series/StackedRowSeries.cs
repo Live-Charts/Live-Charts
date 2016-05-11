@@ -43,7 +43,7 @@ namespace LiveCharts.Wpf
             InitializeDefuaults();
         }
 
-        public StackedRowSeries(ISeriesConfiguration configuration)
+        public StackedRowSeries(object configuration)
         {
             Model = new StackedRowAlgorithm(this);
             Configuration = configuration;

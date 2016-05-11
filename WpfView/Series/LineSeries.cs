@@ -47,7 +47,7 @@ namespace LiveCharts.Wpf
             InitializeDefuaults();
         }
 
-        public LineSeries(ISeriesConfiguration configuration)
+        public LineSeries(object configuration)
         {
             Model = new LineAlgorithm(this);
             Configuration = configuration;
@@ -116,7 +116,7 @@ namespace LiveCharts.Wpf
 
             if (Figure != null)
             {
-                var xIni = ChartFunctions.ToDrawMargin(Values.Value1CoreLimit.Min, AxisTags.X, Model.Chart, ScalesXAt);
+                var xIni = ChartFunctions.ToDrawMargin(Values.XLimit.Min, AxisTags.X, Model.Chart, ScalesXAt);
 
                 if (Model.Chart.View.DisableAnimations)
                     Figure.StartPoint = new Point(xIni, Model.Chart.DrawMargin.Height);
@@ -149,7 +149,7 @@ namespace LiveCharts.Wpf
             Path.Data = geometry;
             Model.Chart.View.AddToDrawMargin(Path);
 
-            var x = ChartFunctions.ToDrawMargin(Values.Value1CoreLimit.Min, AxisTags.X, Model.Chart, ScalesXAt);
+            var x = ChartFunctions.ToDrawMargin(Values.XLimit.Min, AxisTags.X, Model.Chart, ScalesXAt);
             Figure.StartPoint = new Point(x, Model.Chart.DrawMargin.Height);
 
             base.OnSeriesUpdateStart();

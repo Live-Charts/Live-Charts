@@ -1,4 +1,4 @@
-﻿//The MIT License(MIT)
+//The MIT License(MIT)
 
 //copyright(c) 2016 Alberto Rodriguez
 
@@ -20,31 +20,23 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-using LiveCharts.Charts;
-
-namespace LiveCharts
+namespace LiveCharts.Configurations
 {
-    public abstract class SeriesAlgorithm
+    public static class SeriesMappers
     {
-        protected SeriesAlgorithm(ISeriesView view)
+        public static CartesianMapper<T> Xy<T>()
         {
-            View = view;
+            return new CartesianMapper<T>();
         }
 
-        public ISeriesView View { get; set; }
-        public ChartCore Chart { get; set; }
-        public SeriesCollection SeriesCollection { get; set; }
-        public SeriesOrientation SeriesOrientation { get; set; }
-        public string Title { get; set; }
-        public AxisCore CurrentXAxis
+        public static FinancialMapper<T> Financial<T>()
         {
-            get { return Chart.AxisX[View.ScalesXAt]; }
-        }
-        public AxisCore CurrentYAxis
-        {
-            get { return Chart.AxisY[View.ScalesYAt]; }
+            return new FinancialMapper<T>();
         }
 
-        public abstract void Update();
+        public static BubbleMapper<T> Bubble<T>()
+        {
+            return new BubbleMapper<T>();
+        }
     }
 }

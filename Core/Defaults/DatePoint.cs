@@ -20,31 +20,51 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-using LiveCharts.Charts;
+using System;
 
-namespace LiveCharts
+namespace LiveCharts.Defaults
 {
-    public abstract class SeriesAlgorithm
+    public class DatePoint : IObservableChartPoint
     {
-        protected SeriesAlgorithm(ISeriesView view)
+        private DateTime _dateTime;
+        private double _value;
+
+        public DatePoint()
         {
-            View = view;
+            
         }
 
-        public ISeriesView View { get; set; }
-        public ChartCore Chart { get; set; }
-        public SeriesCollection SeriesCollection { get; set; }
-        public SeriesOrientation SeriesOrientation { get; set; }
-        public string Title { get; set; }
-        public AxisCore CurrentXAxis
+        public DatePoint(DateTime dateTime, double value)
         {
-            get { return Chart.AxisX[View.ScalesXAt]; }
-        }
-        public AxisCore CurrentYAxis
-        {
-            get { return Chart.AxisY[View.ScalesYAt]; }
+            _dateTime = dateTime;
+            _value = value;
         }
 
-        public abstract void Update();
+        public DateTime DateTime
+        {
+            get { return _dateTime; }
+            set
+            {
+                _dateTime = value;
+                OnPointChanged();
+            }
+        }
+
+        public double Value
+        {
+            get { return _value; }
+            set
+            {
+                _value = value;
+                OnPointChanged();
+            }
+        }
+
+        public event Action PointChanged;
+
+        protected virtual void OnPointChanged()
+        {
+            if (PointChanged != null) PointChanged.Invoke();
+        }
     }
 }

@@ -1,16 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Navigation;
-using LiveCharts;
-using LiveCharts.Defaults;
-using LiveCharts.Wpf;
 using Wpf.Annotations;
 using Wpf.CartesianChart;
 

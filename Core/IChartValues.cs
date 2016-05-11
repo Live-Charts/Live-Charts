@@ -21,7 +21,7 @@
 //SOFTWARE.
 
 using System.Collections.Generic;
-using LiveCharts.CrossNet;
+using LiveCharts.Helpers;
 
 namespace LiveCharts
 {
@@ -35,9 +35,9 @@ namespace LiveCharts
         /// Gets or sets series that owns the values
         /// </summary>
         SeriesAlgorithm Series { get; set; }
-        CoreLimit Value1CoreLimit { get; }
-        CoreLimit Value2CoreLimit { get; }
-        CoreLimit Value3CoreLimit { get; }
+        CoreLimit XLimit { get; }
+        CoreLimit YLimit { get; }
+        CoreLimit WeigthLimit { get; }
         /// <summary>
         /// Forces values to calculate max, min and index data.
         /// </summary>

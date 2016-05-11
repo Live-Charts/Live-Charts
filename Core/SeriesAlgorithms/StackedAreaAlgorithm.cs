@@ -33,7 +33,7 @@ namespace LiveCharts.SeriesAlgorithms
 
         public StackedAreaAlgorithm(ISeriesView view) : base(view)
         {
-            SeriesConfigurationType = SeriesConfigurationType.IndexedX;
+            SeriesOrientation = SeriesOrientation.Horizontal;
             _stackModelable = (IStackModelableSeries)view;
         }
 

@@ -31,7 +31,7 @@ namespace LiveCharts.SeriesAlgorithms
     {
         public LineAlgorithm(ISeriesView view) : base(view)
         {
-            SeriesConfigurationType = SeriesConfigurationType.IndexedX;
+            SeriesOrientation = SeriesOrientation.Horizontal;
         }
 
         public override void Update()

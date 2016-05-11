@@ -39,7 +39,7 @@ namespace LiveCharts.Wpf.Series
             DefaultFillOpacity = 0.35;
         }
 
-        protected Series(ISeriesConfiguration configuration)
+        protected Series(object configuration)
         {
             Configuration = configuration;
         }
@@ -230,11 +230,11 @@ namespace LiveCharts.Wpf.Series
         }
 
         public static readonly DependencyProperty ConfigurationProperty = DependencyProperty.Register(
-            "Configuration", typeof (ISeriesConfiguration), typeof (Series), new PropertyMetadata(default(ISeriesConfiguration)));
+            "Configuration", typeof (object), typeof (Series), new PropertyMetadata(default(object)));
 
-        public ISeriesConfiguration Configuration
+        public object Configuration
         {
-            get { return (ISeriesConfiguration) GetValue(ConfigurationProperty); }
+            get { return GetValue(ConfigurationProperty); }
             set { SetValue(ConfigurationProperty, value); }
         }
 

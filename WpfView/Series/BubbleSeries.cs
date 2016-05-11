@@ -43,7 +43,7 @@ namespace LiveCharts.Wpf
             InitializeDefuaults();
         }
 
-        public ScatterSeries(ISeriesConfiguration configuration)
+        public ScatterSeries(object configuration)
         {
             Model = new ScatterAlgorithm(this);
             Configuration = configuration;

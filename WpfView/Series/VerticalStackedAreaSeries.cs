@@ -43,7 +43,7 @@ namespace LiveCharts.Wpf
             InitializeDefuaults();
         }
 
-        public VerticalStackedAreaSeries(ISeriesConfiguration configuration)
+        public VerticalStackedAreaSeries(object configuration)
         {
             Model = new VerticalStackedAreaAlgorithm(this);
             Configuration = configuration;
@@ -81,7 +81,7 @@ namespace LiveCharts.Wpf
 
             if (Figure != null)
             {
-                var yIni = ChartFunctions.ToDrawMargin(Values.Value2CoreLimit.Min, AxisTags.Y, Model.Chart, ScalesYAt);
+                var yIni = ChartFunctions.ToDrawMargin(Values.YLimit.Min, AxisTags.Y, Model.Chart, ScalesYAt);
 
                 if (Model.Chart.View.DisableAnimations)
                     Figure.StartPoint = new Point(0, yIni);
@@ -114,7 +114,7 @@ namespace LiveCharts.Wpf
             Path.Data = geometry;
             Model.Chart.View.AddToDrawMargin(Path);
 
-            var y = ChartFunctions.ToDrawMargin(Values.Value2CoreLimit.Min, AxisTags.Y, Model.Chart, ScalesYAt);
+            var y = ChartFunctions.ToDrawMargin(Values.YLimit.Min, AxisTags.Y, Model.Chart, ScalesYAt);
             Figure.StartPoint = new Point(0, y);
 
             var wpfChart = Model.Chart.View as Chart;

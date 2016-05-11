@@ -27,9 +27,9 @@ namespace LiveCharts
 {
     #region Enumerators
 
-    public enum SeriesConfigurationType
+    public enum SeriesOrientation
     {
-        IndexedX, IndexedY
+        Horizontal, Vertical
     }
 
     public enum AxisPosition
@@ -121,6 +121,20 @@ namespace LiveCharts
 
         public double Max { get; set; }
         public double Min { get; set; }
+    }
+
+    public struct Xyw
+    {
+        public Xyw(double x, double y, double w) : this()
+        {
+            X = x;
+            Y = y;
+            W = w;
+        }
+
+        public double X { get; set; }
+        public double Y { get; set; }
+        public double W { get; set; }
     }
 
     internal struct StackedSum

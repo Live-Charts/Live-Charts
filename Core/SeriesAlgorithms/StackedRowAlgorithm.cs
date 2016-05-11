@@ -29,7 +29,7 @@ namespace LiveCharts.SeriesAlgorithms
     {
         public StackedRowAlgorithm(ISeriesView view) : base(view)
         {
-            SeriesConfigurationType = SeriesConfigurationType.IndexedY;
+            SeriesOrientation = SeriesOrientation.Vertical;
         }
 
         public override void Update()

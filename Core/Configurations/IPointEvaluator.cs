@@ -20,31 +20,24 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-using LiveCharts.Charts;
+using System.Collections.Generic;
 
-namespace LiveCharts
+namespace LiveCharts.Configurations
 {
-    public abstract class SeriesAlgorithm
+    public interface IPointEvaluator<T>
     {
-        protected SeriesAlgorithm(ISeriesView view)
-        {
-            View = view;
-        }
+        /// <summary>
+        /// Sets the evaluation to a chart point
+        /// </summary>
+        /// <param name="valuePair"></param>
+        /// <param name="point"></param>
+        void SetAll(KeyValuePair<int, T> valuePair, ChartPoint point);
 
-        public ISeriesView View { get; set; }
-        public ChartCore Chart { get; set; }
-        public SeriesCollection SeriesCollection { get; set; }
-        public SeriesOrientation SeriesOrientation { get; set; }
-        public string Title { get; set; }
-        public AxisCore CurrentXAxis
-        {
-            get { return Chart.AxisX[View.ScalesXAt]; }
-        }
-        public AxisCore CurrentYAxis
-        {
-            get { return Chart.AxisY[View.ScalesYAt]; }
-        }
-
-        public abstract void Update();
+        /// <summary>
+        /// Returns X, Y and W of with a given key and value
+        /// </summary>
+        /// <param name="valuePair"></param>
+        /// <returns></returns>
+        Xyw GetEvaluation(KeyValuePair<int, T> valuePair);
     }
 }

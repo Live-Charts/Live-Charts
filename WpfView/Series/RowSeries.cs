@@ -43,7 +43,7 @@ namespace LiveCharts.Wpf
             InitializeDefuaults();
         }
 
-        public RowSeries(ISeriesConfiguration configuration)
+        public RowSeries(object configuration)
         {
             Model = new RowAlgorithm(this);
             Configuration = configuration;
