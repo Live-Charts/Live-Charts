@@ -37,12 +37,12 @@ namespace LiveCharts.SeriesAlgorithms
         {
             var fx = CurrentYAxis.GetFormatter();
 
-            var castedSeries = (IRowSeries) View;
+            var castedSeries = (IRowSeriesView) View;
 
             const double padding = 5;
             
             var totalSpace = ChartFunctions.GetUnitWidth(AxisTags.Y, Chart, View.ScalesYAt) - padding;
-            var typeSeries = Chart.View.Series.OfType<IRowSeries>().ToList();
+            var typeSeries = Chart.View.Series.OfType<IRowSeriesView>().ToList();
 
             var singleRowHeight = totalSpace/typeSeries.Count;
 
@@ -76,7 +76,7 @@ namespace LiveCharts.SeriesAlgorithms
                 chartPoint.View = View.GetPointView(chartPoint.View,
                     View.DataLabels ? fx(chartPoint.X) : null);
 
-                var rectangleView = (IRectangleData) chartPoint.View;
+                var rectangleView = (IRectanglePointView) chartPoint.View;
 
                 var w = Math.Abs(reference.X - zero);
                 var l = reference.X < zero

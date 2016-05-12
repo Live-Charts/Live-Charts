@@ -59,7 +59,7 @@ namespace LiveCharts.Wpf
         #region Properties
 
         public static readonly DependencyProperty MaxRowHeigthProperty = DependencyProperty.Register(
-            "MaxRowHeigth", typeof (double), typeof (ColumnSeries), new PropertyMetadata(default(double)));
+            "MaxRowHeigth", typeof (double), typeof (StackedRowSeries), new PropertyMetadata(default(double)));
 
         public double MaxRowHeigth
         {

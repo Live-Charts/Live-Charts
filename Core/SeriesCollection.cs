@@ -49,7 +49,7 @@ namespace LiveCharts
 
         #endregion
         
-        public ChartCore Chart { get; set; }
+        public ChartCore Chart { get; internal set; }
         public object Configuration { get; set; }
 
         public SeriesCollection WithConfig<T>(IPointEvaluator<T> configuration)

@@ -83,14 +83,14 @@ namespace LiveCharts
             
             foreach (var xyw in IndexData().Select(data => config.GetEvaluation(data)))
             {
-                if (xyw.X < xMin) xMin = xyw.X;
-                if (xyw.X > xMax) xMax = xyw.X;
+                if (xyw[0].X < xMin) xMin = xyw[0].X;
+                if (xyw[1].X > xMax) xMax = xyw[1].X;
 
-                if (xyw.Y < yMin) yMin = xyw.Y;
-                if (xyw.Y > yMax) yMax = xyw.Y;
+                if (xyw[0].Y < yMin) yMin = xyw[0].Y;
+                if (xyw[1].Y > yMax) yMax = xyw[1].Y;
 
-                if (xyw.W < wMin) wMin = xyw.W;
-                if (xyw.W > wMax) wMax = xyw.W;
+                if (xyw[0].W < wMin) wMin = xyw[0].W;
+                if (xyw[1].W > wMax) wMax = xyw[1].W;
             }
 
             XLimit = new CoreLimit(xMin, xMax);
@@ -185,9 +185,11 @@ namespace LiveCharts
                 cp.GarbageCollectorIndex = garbageCollectorIndex;
 
                 cp.Instance = value;
-                config.SetAll(new KeyValuePair<int, T>(i, value), cp); 
+                cp.Key = i;
+
+                config.SetAll(new KeyValuePair<int, T>(i, value), cp);
                 //ToDo: this feels bad, when indexing the data, this is already done...
-                //Also the index will breack every run...
+                //Also the index will break every run...
 
                 yield return cp;
                 i++;
@@ -241,10 +243,6 @@ namespace LiveCharts
 
         private void OnChanged(object oldItems, object newItems)
         {
-            var newVals = ((IEnumerable<T>) newItems).ToArray();
-
-            var max = newVals;
-
             if (Series != null && Series.Chart != null) Series.Chart.Updater.Run();
         }
 

@@ -29,7 +29,7 @@ using LiveCharts.Charts;
 
 namespace LiveCharts.Wpf.Points
 {
-    internal class RowPointView : PointView, IRectangleData
+    internal class RowPointView : PointView, IRectanglePointView
     {
         public Rectangle Rectangle { get; set; }
         public CoreRectangle Data { get; set; }

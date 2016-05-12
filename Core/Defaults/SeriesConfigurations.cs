@@ -82,17 +82,11 @@ namespace LiveCharts.Defaults
                 SeriesOrientation.Vertical);
 
             For<OhlcPoint>(SeriesMappers.Financial<OhlcPoint>()
-                .X(v => v.DateTime.Ticks)
+                .X(v => v.DateTime)
                 .Open(v => v.Open)
                 .High(v => v.High)
                 .Low(v => v.Low)
                 .Close(v => v.Close), SeriesOrientation.Horizontal);
-            For<OhlcPoint>(SeriesMappers.Financial<OhlcPoint>()
-                .Y(v => v.DateTime.Ticks)
-                .Open(v => v.Open)
-                .High(v => v.High)
-                .Low(v => v.Low)
-                .Close(v => v.Close), SeriesOrientation.Vertical);
         }
 
         static void For<T>(object config, SeriesOrientation orientation)

@@ -38,6 +38,6 @@ namespace LiveCharts.Configurations
         /// </summary>
         /// <param name="valuePair"></param>
         /// <returns></returns>
-        Xyw GetEvaluation(KeyValuePair<int, T> valuePair);
+        Xyw[] GetEvaluation(KeyValuePair<int, T> valuePair);
     }
 }

@@ -273,23 +273,30 @@ namespace LiveCharts
         double GetMaxY(AxisCore axis);
     }
 
-    public interface IBubbleSeries : ISeriesView
-    {
-        double MaxBubbleDiameter { get; set; }
-        double MinBubbleDiameter { get; set; }
-    }
-
     public interface IStackModelableSeries
     {
         StackMode StackMode { get; set; }
     }
 
-    public interface IColumnSeries: ISeriesView
+    #region Series Views
+
+    public interface IBubbleSeriesView : ISeriesView
+    {
+        double MaxBubbleDiameter { get; set; }
+        double MinBubbleDiameter { get; set; }
+    }
+
+    public interface IColumnSerieView : ISeriesView
     {
         double MaxColumnWidth { get; set; }
     }
 
-    public interface IStackedColumnSeries : ISeriesView
+    public interface IOhlcSeriesView : ISeriesView
+    {
+        double MaxColumnWidth { get; set; }
+    }
+
+    public interface IStackedColumnSeriesView : ISeriesView
     {
         double MaxColumnWidth { get; set; }
     }
@@ -299,7 +306,7 @@ namespace LiveCharts
         double MaxRowHeigth { get; set; }
     }
 
-    public interface IRowSeries : ISeriesView
+    public interface IRowSeriesView : ISeriesView
     {
         double MaxRowHeigth { get; set; }
     }
@@ -311,30 +318,47 @@ namespace LiveCharts
         void EndSegment(int atIndex, CorePoint location);
     }
 
-    public interface IStackedAreaView : ILineSeriesView, IStackModelableSeries
+    public interface IStackedAreaSeriesView : ILineSeriesView, IStackModelableSeries
     {
 
     }
 
-    public interface IVerticalStackedAreaView : ILineSeriesView, IStackModelableSeries
+    public interface IVerticalStackedAreaSeriesView : ILineSeriesView, IStackModelableSeries
     {
 
     }
 
-    public interface IBezierData : IChartPointView
+    #endregion
+
+    #region Point Views
+    public interface IBezierPointView : IChartPointView
     {
         BezierData Data { get; set; }
     }
 
-    public interface IRectangleData : IChartPointView
+    public interface IRectanglePointView : IChartPointView
     {
         CoreRectangle Data { get; set; }
         double ZeroReference { get; set; }
     }
 
-    public interface IDiameterData : IChartPointView
+    public interface IBubblePointView : IChartPointView
     {
         double Diameter { get; set; }
     }
+
+    public interface IOhlcPointView : IChartPointView
+    {
+        double Open { get; set; }
+        double High { get; set; }
+        double Close { get; set; }
+        double Low { get; set; }
+        double Width { get; set; }
+        double Left { get; set; }
+        double StartReference { get; set; }
+    }
+    #endregion
+
+
     #endregion
 }

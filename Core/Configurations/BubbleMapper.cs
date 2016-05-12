@@ -38,12 +38,14 @@ namespace LiveCharts.Configurations
             point.Weight = _x(valuePair.Value, valuePair.Key);
         }
 
-        public Xyw GetEvaluation(KeyValuePair<int, T> valuePair)
+        public Xyw[] GetEvaluation(KeyValuePair<int, T> valuePair)
         {
-            return new Xyw(
+            var xyw = new Xyw(
                 _x(valuePair.Value, valuePair.Key),
                 _y(valuePair.Value, valuePair.Key),
                 _weight(valuePair.Value, valuePair.Key));
+
+            return new[] {xyw, xyw};
         }
 
         /// <summary>

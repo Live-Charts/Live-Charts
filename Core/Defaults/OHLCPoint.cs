@@ -26,7 +26,7 @@ namespace LiveCharts.Defaults
 {
     public class OhlcPoint : IObservableChartPoint
     {
-        private DateTime _dateTime;
+        private int _dateTime;
         private double _open;
         private double _high;
         private double _low;
@@ -37,7 +37,7 @@ namespace LiveCharts.Defaults
             
         }
 
-        public OhlcPoint(DateTime dateTime, double open, double high, double low, double close)
+        public OhlcPoint(int dateTime, double open, double high, double low, double close)
         {
             DateTime = dateTime;
             Open = open;
@@ -46,7 +46,7 @@ namespace LiveCharts.Defaults
             Close = close;
         }
 
-        public DateTime DateTime
+        public int DateTime
         {
             get { return _dateTime; }
             set

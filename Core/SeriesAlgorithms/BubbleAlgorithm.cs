@@ -24,9 +24,9 @@ using LiveCharts.Defaults;
 
 namespace LiveCharts.SeriesAlgorithms
 {
-    public class ScatterAlgorithm : SeriesAlgorithm, ICartesianSeries
+    public class BubbleAlgorithm : SeriesAlgorithm, ICartesianSeries
     {
-        public ScatterAlgorithm(ISeriesView view) : base(view)
+        public BubbleAlgorithm(ISeriesView view) : base(view)
         {
         }
 
@@ -35,7 +35,7 @@ namespace LiveCharts.SeriesAlgorithms
             var fx = CurrentXAxis.GetFormatter();
             var fy = CurrentYAxis.GetFormatter();
 
-            var buubleSeries = (IBubbleSeries) View;
+            var buubleSeries = (IBubbleSeriesView) View;
 
             var p1 = new CorePoint();
             var p2 = new CorePoint();
@@ -66,7 +66,7 @@ namespace LiveCharts.SeriesAlgorithms
                 chartPoint.View = View.GetPointView(chartPoint.View,
                     View.DataLabels ? fx(chartPoint.X) + ", " + fy(chartPoint.Y) : null);
 
-                var bubbleView = (IDiameterData) chartPoint.View;
+                var bubbleView = (IBubblePointView) chartPoint.View;
 
                 bubbleView.Diameter = m*(chartPoint.Weight - p1.X) + p1.Y;
 

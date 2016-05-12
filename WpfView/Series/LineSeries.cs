@@ -69,7 +69,7 @@ namespace LiveCharts.Wpf
 
         public static readonly DependencyProperty PointDiameterProperty = DependencyProperty.Register(
             "PointDiameter", typeof (double), typeof (LineSeries), 
-            new PropertyMetadata(default(double), CalChartUpdater()));
+            new PropertyMetadata(default(double), CallChartUpdater()));
 
         public double PointDiameter
         {
@@ -79,7 +79,7 @@ namespace LiveCharts.Wpf
 
         public static readonly DependencyProperty PointForeroundProperty = DependencyProperty.Register(
             "PointForeround", typeof (Brush), typeof (LineSeries), 
-            new PropertyMetadata(default(Brush), CalChartUpdater()));
+            new PropertyMetadata(default(Brush), CallChartUpdater()));
 
         public Brush PointForeround
         {
@@ -89,7 +89,7 @@ namespace LiveCharts.Wpf
 
         public static readonly DependencyProperty LineSmoothnessProperty = DependencyProperty.Register(
             "LineSmoothness", typeof (double), typeof (LineSeries), 
-            new PropertyMetadata(default(double), CalChartUpdater()));
+            new PropertyMetadata(default(double), CallChartUpdater()));
 
         public double LineSmoothness
         {

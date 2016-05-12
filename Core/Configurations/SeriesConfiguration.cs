@@ -41,9 +41,10 @@ namespace LiveCharts.Configurations
             point.Y = YMapper(valuePair);
         }
 
-        public Xyw GetEvaluation(KeyValuePair<int, T> valuePair)
+        public Xyw[] GetEvaluation(KeyValuePair<int, T> valuePair)
         {
-            return new Xyw(XMapper(valuePair), YMapper(valuePair), 0);
+            var xyw = new Xyw(XMapper(valuePair), YMapper(valuePair), 0);
+            return new[] {xyw, xyw};
         }
 
         /// <summary>

@@ -21,25 +21,11 @@ namespace Wpf.CartesianChart
             MyValues.Add(1);
             MyValues.Add(3);
 
-            var lineSeries = new VerticalStackedAreaSeries {StackMode = StackMode.Percentage};
+            var lineSeries = new LineSeries();
             lineSeries.Values = MyValues;
 
             SeriesCollection = new SeriesCollection();
             SeriesCollection.Add(lineSeries);
-
-            var stacked = new VerticalStackedAreaSeries()
-            {
-                Values = new ChartValues<double> { 4,5,7,8},
-                StackMode = StackMode.Percentage
-            };
-            var stacked2 = new VerticalStackedAreaSeries
-            {
-                Values = new ChartValues<double> { 4,7,3,1 },
-                StackMode = StackMode.Percentage
-            };
-
-            SeriesCollection.Add(stacked);
-            SeriesCollection.Add(stacked2);
 
             DataContext = this;
         }

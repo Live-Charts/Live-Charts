@@ -62,13 +62,14 @@
     <Compile Include="IChartValues.cs" />
     <Compile Include="IDataOptimization.cs" />
     <Compile Include="Charts\CartesianChartCore.cs" />
+    <Compile Include="SeriesAlgorithms\OhlcAlgorithm.cs" />
     <Compile Include="SeriesAlgorithms\VerticalStackedAreaAlgorithm.cs" />
     <Compile Include="SeriesAlgorithms\StackedAreaAlgorithm.cs" />
     <Compile Include="SeriesAlgorithms\StackedRowAlgorithm.cs" />
     <Compile Include="SeriesAlgorithms\StackedColumnAlgorithm.cs" />
     <Compile Include="SeriesAlgorithms\ColumnAlgorithm.cs" />
     <Compile Include="SeriesAlgorithms\RowAlgorithm.cs" />
-    <Compile Include="SeriesAlgorithms\ScatterAlgorithm.cs" />
+    <Compile Include="SeriesAlgorithms\BubbleAlgorithm.cs" />
     <Compile Include="SeriesAlgorithms\VerticalLineAlgorithm.cs" />
     <Compile Include="SeriesAlgorithms\LineAlgorithm.cs" />
     <Compile Include="Helpers\Extentions.cs" />

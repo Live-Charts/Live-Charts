@@ -5,6 +5,7 @@ using System.Runtime.CompilerServices;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Navigation;
+using LiveCharts.Wpf;
 using Wpf.Annotations;
 using Wpf.CartesianChart;
 
@@ -23,7 +24,10 @@ namespace Wpf
 
             CartesianExamples = new List<UserControl>
             {
-                new Welcome(), new ResponsiveExample(), new CustomTypesPlotting(), new MixingTypes()
+                new Welcome(), new ResponsiveExample(), new CustomTypesPlotting(),
+                new LineExample(), new BarExample(), new BubblesExample(),
+                new StackedAreaExample(), new FinancialExample(), new StackedBarExample(), 
+                new MixingTypes()
             };
 
             CartesianView = CartesianExamples != null && CartesianExamples.Count > 0 ? CartesianExamples[0] : null;

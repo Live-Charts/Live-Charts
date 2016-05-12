@@ -57,7 +57,7 @@ namespace LiveCharts.Wpf.Series
 
         public static readonly DependencyProperty ValuesProperty = DependencyProperty.Register(
             "Values", typeof (IChartValues), typeof (Series),
-            new PropertyMetadata(default(IChartValues), CalChartUpdater(true)));
+            new PropertyMetadata(default(IChartValues), CallChartUpdater(true)));
         /// <summary>
         /// Gets or sets chart values.
         /// </summary>
@@ -69,7 +69,7 @@ namespace LiveCharts.Wpf.Series
 
         public static readonly DependencyProperty TitleProperty = DependencyProperty.Register(
             "Title", typeof (string), typeof (Series),
-            new PropertyMetadata(default(string), CalChartUpdater()));
+            new PropertyMetadata(default(string), CallChartUpdater()));
         /// <summary>
         /// Gets or sets serie title
         /// </summary>
@@ -81,7 +81,7 @@ namespace LiveCharts.Wpf.Series
 
         public static readonly DependencyProperty StrokeProperty = DependencyProperty.Register(
             "Stroke", typeof (Brush), typeof (Series), 
-            new PropertyMetadata(default(Brush), CalChartUpdater()));
+            new PropertyMetadata(default(Brush), CallChartUpdater()));
         /// <summary>
         /// Gets or sets series stroke, if this property is null then a SolidColorBrush will be assigned according to series position in collection and Chart.Colors property
         /// </summary>
@@ -93,7 +93,7 @@ namespace LiveCharts.Wpf.Series
 
         public static readonly DependencyProperty StrokeThicknessProperty = DependencyProperty.Register(
             "StrokeThickness", typeof (double), typeof (Series), 
-            new PropertyMetadata(default(double), CalChartUpdater()));
+            new PropertyMetadata(default(double), CallChartUpdater()));
         /// <summary>
         /// Gets or sets the series stroke thickness.
         /// </summary>
@@ -105,7 +105,7 @@ namespace LiveCharts.Wpf.Series
 
         public static readonly DependencyProperty FillProperty = DependencyProperty.Register(
             "Fill", typeof (Brush), typeof (Series), 
-            new PropertyMetadata(default(Brush), CalChartUpdater()));
+            new PropertyMetadata(default(Brush), CallChartUpdater()));
         /// <summary>
         /// Gets or sets series fill color, if this property is null then a SolidColorBrush will be assigned according to series position in collection and Chart.Colors property, also Fill property has a default opacity according to chart type.
         /// </summary>
@@ -117,7 +117,7 @@ namespace LiveCharts.Wpf.Series
 
         public static readonly DependencyProperty DataLabelsProperty = DependencyProperty.Register(
             "DataLabels", typeof (bool), typeof (Series), 
-            new PropertyMetadata(default(bool), CalChartUpdater()));
+            new PropertyMetadata(default(bool), CallChartUpdater()));
         /// <summary>
         /// Gets or sets if series should include a label over each data point.
         /// </summary>
@@ -129,7 +129,7 @@ namespace LiveCharts.Wpf.Series
 
         public static readonly DependencyProperty FontFamilyProperty = DependencyProperty.Register(
             "FontFamily", typeof (FontFamily), typeof (Series), 
-            new PropertyMetadata(default(FontFamily), CalChartUpdater()));
+            new PropertyMetadata(default(FontFamily), CallChartUpdater()));
         /// <summary>
         /// Gets or sets labels font family
         /// </summary>
@@ -141,7 +141,7 @@ namespace LiveCharts.Wpf.Series
 
         public static readonly DependencyProperty FontSizeProperty = DependencyProperty.Register(
             "FontSize", typeof (double),
-            typeof (Series), new PropertyMetadata(10d, CalChartUpdater()));
+            typeof (Series), new PropertyMetadata(10d, CallChartUpdater()));
         /// <summary>
         /// Gets or sets labels font size
         /// </summary>
@@ -153,7 +153,7 @@ namespace LiveCharts.Wpf.Series
 
         public static readonly DependencyProperty FontWeightProperty = DependencyProperty.Register(
             "FontWeight", typeof (FontWeight), typeof (Series),
-            new PropertyMetadata(FontWeights.Bold, CalChartUpdater()));
+            new PropertyMetadata(FontWeights.Bold, CallChartUpdater()));
         /// <summary>
         /// Gets or sets labels font weight
         /// </summary>
@@ -165,7 +165,7 @@ namespace LiveCharts.Wpf.Series
 
         public static readonly DependencyProperty FontStyleProperty = DependencyProperty.Register(
             "FontStyle", typeof (FontStyle),
-            typeof (Series), new PropertyMetadata(FontStyles.Normal, CalChartUpdater()));
+            typeof (Series), new PropertyMetadata(FontStyles.Normal, CallChartUpdater()));
         /// <summary>
         /// Gets or sets labels font style
         /// </summary>
@@ -177,7 +177,7 @@ namespace LiveCharts.Wpf.Series
 
         public static readonly DependencyProperty FontStretchProperty = DependencyProperty.Register(
             "FontStretch", typeof (FontStretch),
-            typeof (Series), new PropertyMetadata(FontStretches.Normal, CalChartUpdater()));
+            typeof (Series), new PropertyMetadata(FontStretches.Normal, CallChartUpdater()));
         /// <summary>
         /// Gets or sets labels font strech
         /// </summary>
@@ -189,7 +189,7 @@ namespace LiveCharts.Wpf.Series
 
         public static readonly DependencyProperty ForegroundProperty = DependencyProperty.Register(
             "Foreground", typeof (Brush),
-            typeof (Series), new PropertyMetadata(new SolidColorBrush(Color.FromRgb(55, 71, 79)), CalChartUpdater()));
+            typeof (Series), new PropertyMetadata(new SolidColorBrush(Color.FromRgb(55, 71, 79)), CallChartUpdater()));
         /// <summary>
         /// Gets or sets labels text color.
         /// </summary>
@@ -201,7 +201,7 @@ namespace LiveCharts.Wpf.Series
 
         public static readonly DependencyProperty StrokeDashArrayProperty = DependencyProperty.Register(
             "StrokeDashArray", typeof(DoubleCollection), typeof(Series), 
-            new PropertyMetadata(default(DoubleCollection), CalChartUpdater()));
+            new PropertyMetadata(default(DoubleCollection), CallChartUpdater()));
         /// <summary>
         /// Gets or sets the stroke dash array of a series
         /// </summary>
@@ -296,7 +296,7 @@ namespace LiveCharts.Wpf.Series
 #endif
         }
 
-        protected static PropertyChangedCallback CalChartUpdater(bool animate = false)
+        protected static PropertyChangedCallback CallChartUpdater(bool animate = false)
         {
             return (o, args) =>
             {

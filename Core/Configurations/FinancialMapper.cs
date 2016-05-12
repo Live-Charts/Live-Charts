@@ -44,9 +44,14 @@ namespace LiveCharts.Configurations
             point.Low = _low(valuePair.Value, valuePair.Key);
         }
 
-        public Xyw GetEvaluation(KeyValuePair<int, T> valuePair)
+        public Xyw[] GetEvaluation(KeyValuePair<int, T> valuePair)
         {
-            return new Xyw(_x(valuePair.Value, valuePair.Key), _y(valuePair.Value, valuePair.Key), 0);
+            var x = _x(valuePair.Value, valuePair.Key);
+            return new[]
+            {
+                new Xyw(x, _low(valuePair.Value, valuePair.Key), 0),
+                new Xyw(x, _high(valuePair.Value, valuePair.Key), 0)
+            };
         }
 
         /// <summary>

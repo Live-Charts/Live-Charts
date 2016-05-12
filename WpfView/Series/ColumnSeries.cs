@@ -33,7 +33,7 @@ using LiveCharts.Wpf.Points;
 // ReSharper disable once CheckNamespace
 namespace LiveCharts.Wpf
 {
-    public class ColumnSeries : Series.Series, IColumnSeries
+    public class ColumnSeries : Series.Series, IColumnSerieView
     {
         #region Contructors
 

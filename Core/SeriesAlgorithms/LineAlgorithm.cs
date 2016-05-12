@@ -116,7 +116,7 @@ namespace LiveCharts.SeriesAlgorithms
                     chartPoint.View = View.GetPointView(chartPoint.View,
                         View.DataLabels ? fx(chartPoint.X) + ", " + fy(chartPoint.Y) : null);
 
-                    var bezierView = chartPoint.View as IBezierData;
+                    var bezierView = chartPoint.View as IBezierPointView;
                     if (bezierView == null) continue;
 
                     bezierView.Data = index == segment.Count - 1

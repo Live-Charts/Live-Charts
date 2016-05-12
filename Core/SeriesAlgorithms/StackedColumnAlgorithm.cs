@@ -36,7 +36,7 @@ namespace LiveCharts.SeriesAlgorithms
         {
             var fy = CurrentYAxis.GetFormatter();
 
-            var castedSeries = (IStackedColumnSeries) View;
+            var castedSeries = (IStackedColumnSeriesView) View;
 
             const double padding = 5;
 
@@ -70,7 +70,7 @@ namespace LiveCharts.SeriesAlgorithms
                 chartPoint.View = View.GetPointView(chartPoint.View,
                     View.DataLabels ? fy(chartPoint.Y) : null);
 
-                var rectangleView = (IRectangleData) chartPoint.View;
+                var rectangleView = (IRectanglePointView) chartPoint.View;
 
                 var h = Math.Abs(to - zero) - Math.Abs(from - zero);
                 var t = to < zero

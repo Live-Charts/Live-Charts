@@ -70,7 +70,7 @@ namespace LiveCharts.SeriesAlgorithms
                 chartPoint.View = View.GetPointView(chartPoint.View,
                     View.DataLabels ? x(chartPoint.X) : null);
 
-                var rectangleView = (IRectangleData) chartPoint.View;
+                var rectangleView = (IRectanglePointView) chartPoint.View;
 
                 var w = Math.Abs(to - zero) - Math.Abs(from - zero);
                 var l = to < zero
