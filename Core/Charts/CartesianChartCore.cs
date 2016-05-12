@@ -23,7 +23,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using LiveCharts.Defaults;
 
 namespace LiveCharts.Charts
 {
@@ -80,6 +79,8 @@ namespace LiveCharts.Charts
             PrepareBubbles();
             PrepareStackedColumns();
             PrepareStackedRows();
+            PrepareStackedAreas();
+            PrepareVerticalStackedAreas();
 
             CalculateComponentsAndMargin();
         }
@@ -90,9 +91,9 @@ namespace LiveCharts.Charts
 
         private void PrepareBubbles()
         {
-            if (!View.Series.Any(x => x is IBubbleSeries)) return;
+            if (!View.Series.Any(x => x is IBubbleSeriesView)) return;
 
-            var vs = View.Series.Select(x => x.Values.Value3CoreLimit).ToArray();
+            var vs = View.Series.Select(x => x.Values.WeigthLimit).ToArray();
             Value3CoreLimit = new CoreLimit(vs.Select(x => x.Min).DefaultIfEmpty(0).Min(),
                 vs.Select(x => x.Max).DefaultIfEmpty(0).Max());
         }
@@ -101,11 +102,11 @@ namespace LiveCharts.Charts
         {
             foreach (var series in View.Series)
             {
-                if (series is IStackedColumnSeries || series is IColumnSeries)
+                if (series is IStackedColumnSeriesView || series is IColumnSerieView  || series is IOhlcSeriesView)
                 {
                     AxisX[series.ScalesXAt].EvaluatesUnitWidth = true;
                 }
-                if (series is IStackedRowSeries || series is IRowSeries)
+                if (series is IStackedRowSeries || series is IRowSeriesView)
                 {
                     AxisY[series.ScalesYAt].EvaluatesUnitWidth = true;
                 }
@@ -114,9 +115,9 @@ namespace LiveCharts.Charts
 
         private void PrepareStackedColumns()
         {
-            if (!View.Series.Any(x => x is IStackedColumnSeries)) return;
+            if (!View.Series.Any(x => x is IStackedColumnSeriesView)) return;
 
-            foreach (var group in View.Series.OfType<IStackedColumnSeries>().GroupBy(x => x.ScalesYAt))
+            foreach (var group in View.Series.OfType<IStackedColumnSeriesView>().GroupBy(x => x.ScalesYAt))
             {
                 StackPoints(group, AxisTags.Y, group.Key);
             }
@@ -132,7 +133,35 @@ namespace LiveCharts.Charts
             }
         }
 
-        private void StackPoints(IEnumerable<ISeriesView> stackables, AxisTags stackAt, int stackIndex)
+        private void PrepareStackedAreas()
+        {
+            if (!View.Series.Any(x => x is IStackedAreaSeriesView)) return;
+
+            var isPercentage =
+                View.Series.Any(x => x is IStackModelableSeries && x is IStackedAreaSeriesView &&
+                                     ((IStackModelableSeries) x).StackMode == StackMode.Percentage);
+
+            foreach (var group in View.Series.OfType<IStackedAreaSeriesView>().GroupBy(x => x.ScalesYAt))
+            {
+                StackPoints(group, AxisTags.Y, group.Key, isPercentage ? StackMode.Percentage : StackMode.Values);
+            }
+        }
+
+        private void PrepareVerticalStackedAreas()
+        {
+            if (!View.Series.Any(x => x is IVerticalStackedAreaSeriesView)) return;
+
+            var isPercentage =
+                View.Series.Any(x => x is IStackModelableSeries && x is IVerticalStackedAreaSeriesView &&
+                                     ((IStackModelableSeries)x).StackMode == StackMode.Percentage);
+
+            foreach (var group in View.Series.OfType<IVerticalStackedAreaSeriesView>().GroupBy(x => x.ScalesXAt))
+            {
+                StackPoints(group, AxisTags.X, group.Key, isPercentage ? StackMode.Percentage : StackMode.Values);
+            }
+        }
+
+        private void StackPoints(IEnumerable<ISeriesView> stackables, AxisTags stackAt, int stackIndex, StackMode mode = StackMode.Values)
         {
             var stackedColumns = stackables.Select(x => x.Values.Points.ToArray()).ToArray();
 
@@ -153,30 +182,48 @@ namespace LiveCharts.Charts
 
                 if (stackAt == AxisTags.X)
                 {
-                    if (sum.Left < AxisX[stackIndex].MinLimit)
-                        AxisX[stackIndex].MinLimit = sum.Left == 0 
-                            ? 0 
-                            : (Math.Truncate(sum.Left / AxisX[stackIndex].S) - 1) * AxisX[stackIndex].S;
-                    if (sum.Right > AxisX[stackIndex].MaxLimit)
-                        AxisX[stackIndex].MaxLimit = sum.Right == 0
-                            ? 0
-                            : (Math.Truncate(sum.Right/AxisX[stackIndex].S) + 1)*AxisX[stackIndex].S;
+                    if (mode == StackMode.Percentage)
+                    {
+                        AxisX[stackIndex].MinLimit = 0;
+                        AxisX[stackIndex].MaxLimit = 1;
+                    }
+                    else
+                    {
+                        if (sum.Left < AxisX[stackIndex].MinLimit)
+                            AxisX[stackIndex].MinLimit = sum.Left == 0
+                                ? 0
+                                : (Math.Truncate(sum.Left / AxisX[stackIndex].S) - 1) * AxisX[stackIndex].S;
+                        if (sum.Right > AxisX[stackIndex].MaxLimit)
+                            AxisX[stackIndex].MaxLimit = sum.Right == 0
+                                ? 0
+                                : (Math.Truncate(sum.Right / AxisX[stackIndex].S) + 1) * AxisX[stackIndex].S;
+                    }
                 }
 
                 if (stackAt == AxisTags.Y)
                 {
-                    if (sum.Left < AxisY[stackIndex].MinLimit)
-                        AxisY[stackIndex].MinLimit = sum.Left == 0
-                            ? 0
-                            : (Math.Truncate(sum.Left/AxisY[stackIndex].S) - 1)*AxisY[stackIndex].S;
-                    if (sum.Right > AxisY[stackIndex].MaxLimit)
-                        AxisY[stackIndex].MaxLimit = sum.Right == 0
-                            ? 0
-                            : (Math.Truncate(sum.Right / AxisY[stackIndex].S) + 1) * AxisY[stackIndex].S;
+                    if (mode == StackMode.Percentage)
+                    {
+                        AxisY[stackIndex].MinLimit = 0;
+                        AxisY[stackIndex].MaxLimit = 1;
+                    }
+                    else
+                    {
+                        if (sum.Left < AxisY[stackIndex].MinLimit)
+                            AxisY[stackIndex].MinLimit = sum.Left == 0
+                                ? 0
+                                : (Math.Truncate(sum.Left / AxisY[stackIndex].S) - 1) * AxisY[stackIndex].S;
+                        if (sum.Right > AxisY[stackIndex].MaxLimit)
+                            AxisY[stackIndex].MaxLimit = sum.Right == 0
+                                ? 0
+                                : (Math.Truncate(sum.Right / AxisY[stackIndex].S) + 1) * AxisY[stackIndex].S;
+                    }
                 }
 
                 var lastLeft = 0d;
                 var lastRight = 0d;
+                var leftPart = 0d;
+                var rightPart = 0d;
 
                 foreach (var col in stackedColumns)
                 {
@@ -190,7 +237,9 @@ namespace LiveCharts.Charts
                         point.To = lastLeft + pulled;
                         point.Sum = sum.Left;
                         point.Participation = (point.To - point.From)/point.Sum;
-                        
+                        leftPart += point.Participation;
+                        point.StackedParticipation = leftPart;
+
                         lastLeft = point.To;
                     }
                     else
@@ -198,7 +247,9 @@ namespace LiveCharts.Charts
                         point.From = lastRight;
                         point.To = lastRight + pulled;
                         point.Sum = sum.Right;
-                        point.Participation = (point.To - point.From) / point.Sum;
+                        point.Participation = (point.To - point.From)/point.Sum;
+                        rightPart += point.Participation;
+                        point.StackedParticipation = rightPart;
 
                         lastRight = point.To;
                     }

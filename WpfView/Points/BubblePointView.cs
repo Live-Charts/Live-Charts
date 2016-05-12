@@ -28,7 +28,7 @@ using LiveCharts.Charts;
 
 namespace LiveCharts.Wpf.Points
 {
-    internal class BubblePointView : PointView, IDiameterData
+    internal class BubblePointView : PointView, IBubblePointView
     {
         public Ellipse Ellipse { get; set; }
         public double Diameter { get; set; }

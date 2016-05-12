@@ -24,7 +24,8 @@ using System;
 using System.Collections;
 using System.Linq;
 using LiveCharts.Charts;
-using LiveCharts.CrossNet;
+using LiveCharts.Configurations;
+using LiveCharts.Helpers;
 
 namespace LiveCharts
 {
@@ -38,7 +39,7 @@ namespace LiveCharts
             CollectionChanged += OnCollectionChanged;
         }
 
-        public SeriesCollection(ISeriesConfiguration configuration)
+        public SeriesCollection(object configuration)
         {
             ReportOldItems = true;
             Configuration = configuration;
@@ -48,10 +49,10 @@ namespace LiveCharts
 
         #endregion
         
-        public ChartCore Chart { get; set; }
-        public ISeriesConfiguration Configuration { get; set; }
+        public ChartCore Chart { get; internal set; }
+        public object Configuration { get; set; }
 
-        public SeriesCollection WithConfig<T>(SeriesConfiguration<T> configuration)
+        public SeriesCollection WithConfig<T>(IPointEvaluator<T> configuration)
         {
             Configuration = configuration;
             return this;
@@ -72,7 +73,7 @@ namespace LiveCharts
         }
         #endregion
 
-        private void OnCollectionChanged(object oldItems)
+        private void OnCollectionChanged(object oldItems, object newItems)
         {
             var oldSeresView = oldItems as IList;
 

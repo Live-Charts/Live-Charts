@@ -33,7 +33,7 @@ using LiveCharts.Wpf.Points;
 // ReSharper disable once CheckNamespace
 namespace LiveCharts.Wpf
 {
-    public class RowSeries : Series.Series, IRowSeries
+    public class RowSeries : Series.Series, IRowSeriesView
     {
         #region Contructors
 
@@ -43,7 +43,7 @@ namespace LiveCharts.Wpf
             InitializeDefuaults();
         }
 
-        public RowSeries(ISeriesConfiguration configuration)
+        public RowSeries(object configuration)
         {
             Model = new RowAlgorithm(this);
             Configuration = configuration;
@@ -59,7 +59,7 @@ namespace LiveCharts.Wpf
         #region Properties
 
         public static readonly DependencyProperty MaxRowHeigthProperty = DependencyProperty.Register(
-            "MaxRowHeigth", typeof (double), typeof (ColumnSeries), new PropertyMetadata(default(double)));
+            "MaxRowHeigth", typeof (double), typeof (RowSeries), new PropertyMetadata(default(double)));
 
         public double MaxRowHeigth
         {

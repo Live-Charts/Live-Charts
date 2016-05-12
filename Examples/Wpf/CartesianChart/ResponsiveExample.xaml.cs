@@ -21,7 +21,6 @@ namespace Wpf.CartesianChart
             MyValues.Add(1);
             MyValues.Add(3);
 
-
             var lineSeries = new LineSeries();
             lineSeries.Values = MyValues;
 

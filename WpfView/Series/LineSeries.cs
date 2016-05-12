@@ -47,7 +47,7 @@ namespace LiveCharts.Wpf
             InitializeDefuaults();
         }
 
-        public LineSeries(ISeriesConfiguration configuration)
+        public LineSeries(object configuration)
         {
             Model = new LineAlgorithm(this);
             Configuration = configuration;
@@ -60,7 +60,7 @@ namespace LiveCharts.Wpf
         protected PathFigure Figure { get; set; }
         protected Path Path { get; set; }
         protected bool IsInView { get; set; }
-        internal List<Splitter> Splitters { get; set; }
+        internal List<LineSegmentSplitter> Splitters { get; set; }
         protected int ActiveSplitters { get; set; }
         protected int SplittersCollector { get; set; }
         #endregion
@@ -69,7 +69,7 @@ namespace LiveCharts.Wpf
 
         public static readonly DependencyProperty PointDiameterProperty = DependencyProperty.Register(
             "PointDiameter", typeof (double), typeof (LineSeries), 
-            new PropertyMetadata(default(double), CalChartUpdater()));
+            new PropertyMetadata(default(double), CallChartUpdater()));
 
         public double PointDiameter
         {
@@ -79,7 +79,7 @@ namespace LiveCharts.Wpf
 
         public static readonly DependencyProperty PointForeroundProperty = DependencyProperty.Register(
             "PointForeround", typeof (Brush), typeof (LineSeries), 
-            new PropertyMetadata(default(Brush), CalChartUpdater()));
+            new PropertyMetadata(default(Brush), CallChartUpdater()));
 
         public Brush PointForeround
         {
@@ -89,7 +89,7 @@ namespace LiveCharts.Wpf
 
         public static readonly DependencyProperty LineSmoothnessProperty = DependencyProperty.Register(
             "LineSmoothness", typeof (double), typeof (LineSeries), 
-            new PropertyMetadata(default(double), CalChartUpdater()));
+            new PropertyMetadata(default(double), CallChartUpdater()));
 
         public double LineSmoothness
         {
@@ -116,7 +116,7 @@ namespace LiveCharts.Wpf
 
             if (Figure != null)
             {
-                var xIni = ChartFunctions.ToDrawMargin(Values.Value1CoreLimit.Min, AxisTags.X, Model.Chart, ScalesXAt);
+                var xIni = ChartFunctions.ToDrawMargin(Values.XLimit.Min, AxisTags.X, Model.Chart, ScalesXAt);
 
                 if (Model.Chart.View.DisableAnimations)
                     Figure.StartPoint = new Point(xIni, Model.Chart.DrawMargin.Height);
@@ -149,7 +149,7 @@ namespace LiveCharts.Wpf
             Path.Data = geometry;
             Model.Chart.View.AddToDrawMargin(Path);
 
-            var x = ChartFunctions.ToDrawMargin(Values.Value1CoreLimit.Min, AxisTags.X, Model.Chart, ScalesXAt);
+            var x = ChartFunctions.ToDrawMargin(Values.XLimit.Min, AxisTags.X, Model.Chart, ScalesXAt);
             Figure.StartPoint = new Point(x, Model.Chart.DrawMargin.Height);
 
             base.OnSeriesUpdateStart();
@@ -265,7 +265,7 @@ namespace LiveCharts.Wpf
         public virtual void StartSegment(int atIndex, CorePoint location)
         {
             if (Splitters.Count <= ActiveSplitters)
-                Splitters.Add(new Splitter {IsNew = true});
+                Splitters.Add(new LineSegmentSplitter {IsNew = true});
 
             var splitter = Splitters[ActiveSplitters];
             splitter.SplitterCollectorIndex = SplittersCollector;
@@ -350,25 +350,9 @@ namespace LiveCharts.Wpf
             SetValue(PointForeroundProperty, Brushes.White);
             SetValue(StrokeThicknessProperty, 2d);
             DefaultFillOpacity = 0.15;
-            Splitters = new List<Splitter>();
+            Splitters = new List<LineSegmentSplitter>();
         }
 
         #endregion
-    }
-
-    internal class Splitter
-    {
-        public Splitter()
-        {
-            Bottom = new LineSegment {IsStroked = false};
-            Left = new LineSegment {IsStroked = false};
-            Right = new LineSegment {IsStroked = false};
-        }
-
-        public LineSegment Bottom { get; private set; }
-        public LineSegment Left { get; private set; }
-        public LineSegment Right { get; private set; }
-        public int SplitterCollectorIndex { get; set; }
-        public bool IsNew { get; set; }
     }
 }

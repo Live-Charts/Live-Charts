@@ -27,9 +27,9 @@ namespace LiveCharts
 {
     #region Enumerators
 
-    public enum SeriesConfigurationType
+    public enum SeriesOrientation
     {
-        IndexedX, IndexedY
+        Horizontal, Vertical
     }
 
     public enum AxisPosition
@@ -59,6 +59,11 @@ namespace LiveCharts
         Bottom,
         Left,
         Right
+    }
+
+    public enum StackMode
+    {
+        Values, Percentage
     }
 
     #endregion
@@ -116,6 +121,20 @@ namespace LiveCharts
 
         public double Max { get; set; }
         public double Min { get; set; }
+    }
+
+    public struct Xyw
+    {
+        public Xyw(double x, double y, double w) : this()
+        {
+            X = x;
+            Y = y;
+            W = w;
+        }
+
+        public double X { get; set; }
+        public double Y { get; set; }
+        public double W { get; set; }
     }
 
     internal struct StackedSum
@@ -222,6 +241,7 @@ namespace LiveCharts
         }
 
         public CorePoint Point1 { get; set; }
+
         public CorePoint Point2 { get; set; }
         public CorePoint Point3 { get; set; }
         public CorePoint StartPoint { get; set; }
@@ -253,18 +273,30 @@ namespace LiveCharts
         double GetMaxY(AxisCore axis);
     }
 
-    public interface IBubbleSeries : ISeriesView
+    public interface IStackModelableSeries
+    {
+        StackMode StackMode { get; set; }
+    }
+
+    #region Series Views
+
+    public interface IBubbleSeriesView : ISeriesView
     {
         double MaxBubbleDiameter { get; set; }
         double MinBubbleDiameter { get; set; }
     }
 
-    public interface IColumnSeries: ISeriesView
+    public interface IColumnSerieView : ISeriesView
     {
         double MaxColumnWidth { get; set; }
     }
 
-    public interface IStackedColumnSeries : ISeriesView
+    public interface IOhlcSeriesView : ISeriesView
+    {
+        double MaxColumnWidth { get; set; }
+    }
+
+    public interface IStackedColumnSeriesView : ISeriesView
     {
         double MaxColumnWidth { get; set; }
     }
@@ -274,25 +306,59 @@ namespace LiveCharts
         double MaxRowHeigth { get; set; }
     }
 
-    public interface IRowSeries : ISeriesView
+    public interface IRowSeriesView : ISeriesView
     {
         double MaxRowHeigth { get; set; }
     }
 
-    public interface IBezierData : IChartPointView
+    public interface ILineSeriesView : ISeriesView
+    {
+        double LineSmoothness { get; set; }
+        void StartSegment(int atIndex, CorePoint location);
+        void EndSegment(int atIndex, CorePoint location);
+    }
+
+    public interface IStackedAreaSeriesView : ILineSeriesView, IStackModelableSeries
+    {
+
+    }
+
+    public interface IVerticalStackedAreaSeriesView : ILineSeriesView, IStackModelableSeries
+    {
+
+    }
+
+    #endregion
+
+    #region Point Views
+    public interface IBezierPointView : IChartPointView
     {
         BezierData Data { get; set; }
     }
 
-    public interface IRectangleData : IChartPointView
+    public interface IRectanglePointView : IChartPointView
     {
         CoreRectangle Data { get; set; }
         double ZeroReference { get; set; }
     }
 
-    public interface IDiameterData : IChartPointView
+    public interface IBubblePointView : IChartPointView
     {
         double Diameter { get; set; }
     }
+
+    public interface IOhlcPointView : IChartPointView
+    {
+        double Open { get; set; }
+        double High { get; set; }
+        double Close { get; set; }
+        double Low { get; set; }
+        double Width { get; set; }
+        double Left { get; set; }
+        double StartReference { get; set; }
+    }
+    #endregion
+
+
     #endregion
 }

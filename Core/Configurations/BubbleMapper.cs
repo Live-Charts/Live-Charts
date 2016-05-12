@@ -1,3 +1,5 @@
+//The MIT License(MIT)
+
 //copyright(c) 2016 Alberto Rodriguez
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -19,77 +21,76 @@
 //SOFTWARE.
 
 using System;
-using LiveCharts.Charts;
+using System.Collections.Generic;
 
-namespace LiveCharts
+namespace LiveCharts.Configurations
 {
-    public class SeriesConfiguration<T> : ISeriesConfiguration
+    public class BubbleMapper<T> : IPointEvaluator<T>
     {
+        private Func<T, int, double> _x;
+        private Func<T, int, double> _y;
+        private Func<T, int, double> _weight;
         
-        #region Properties
+        public void SetAll(KeyValuePair<int, T> valuePair, ChartPoint point)
+        {
+            point.X = _x(valuePair.Value, valuePair.Key);
+            point.Y = _y(valuePair.Value, valuePair.Key);
+            point.Weight = _x(valuePair.Value, valuePair.Key);
+        }
 
-        public ChartCore Chart { get; set; }
+        public Xyw[] GetEvaluation(KeyValuePair<int, T> valuePair)
+        {
+            var xyw = new Xyw(
+                _x(valuePair.Value, valuePair.Key),
+                _y(valuePair.Value, valuePair.Key),
+                _weight(valuePair.Value, valuePair.Key));
 
-        internal Func<T, int, double> Value1 { get; set; }
+            return new[] {xyw, xyw};
+        }
 
-        internal Func<T, int, double> Value2 { get; set; }
-
-        internal Func<T, int, double> Value3 { get; set; } 
-
-        internal Func<T, int, double> Value4 { get; set; }
-
-
-        #endregion
-        
         /// <summary>
-        /// Maps X value in cartesian charts
+        /// Maps X value
         /// </summary>
         /// <param name="predicate"></param>
         /// <returns></returns>
-        public SeriesConfiguration<T> X(Func<T, double> predicate)
+        public BubbleMapper<T> X(Func<T, double> predicate)
         {
             return X((t, i) => predicate(t));
         }
-        public SeriesConfiguration<T> X(Func<T, int, double> predicate)
+        public BubbleMapper<T> X(Func<T, int, double> predicate)
         {
-            Value1 = predicate;
+            _x = predicate;
             return this;
         }
 
         /// <summary>
-        /// Maps Y Value in cartesian charts
+        /// Maps Y value
         /// </summary>
         /// <param name="predicate"></param>
         /// <returns></returns>
-        public SeriesConfiguration<T> Y(Func<T, double> predicate)
+        public BubbleMapper<T> Y(Func<T, double> predicate)
         {
             return Y((t, i) => predicate(t));
         }
-        public SeriesConfiguration<T> Y(Func<T, int, double> predicate)
+        public BubbleMapper<T> Y(Func<T, int, double> predicate)
         {
-            Value2 = predicate;
+            _y = predicate;
             return this;
         }
 
         /// <summary>
-        /// Maps weight in cartesian charts
+        /// Maps Weight value
         /// </summary>
         /// <param name="predicate"></param>
         /// <returns></returns>
-        public SeriesConfiguration<T> Weight(Func<T, double> predicate)
+        public BubbleMapper<T> Weight(Func<T, double> predicate)
         {
             return Weight((t, i) => predicate(t));
         }
-
-        public SeriesConfiguration<T> Weight(Func<T, int, double> predicate)
+        public BubbleMapper<T> Weight(Func<T, int, double> predicate)
         {
-            Value3 = predicate;
+            _weight = predicate;
             return this;
         }
-    }
-
-    public interface ISeriesConfiguration
-    {
-        ChartCore Chart { get; set; }
     }
 }

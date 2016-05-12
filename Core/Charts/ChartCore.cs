@@ -44,14 +44,14 @@ namespace LiveCharts.Charts
 
         static ChartCore()
         {
-            Configurations = new DefaultConfigurations();
+            Configurations = new SeriesConfigurations();
         }
 
         #endregion
 
         #region Properties 
 
-        public static DefaultConfigurations Configurations { get; set; }
+        public static SeriesConfigurations Configurations { get; set; }
         public bool SeriesInitialized { get; set; }
         public IChartView View { get; set; }
         public IChartUpdater Updater { get; set; }
@@ -97,10 +97,10 @@ namespace LiveCharts.Charts
 
                 xi.MaxLimit = xi.MaxValue ??
                               View.Series.Where(series => series.Values != null && series.ScalesXAt == index)
-                                  .Select(series => series.Values.Value1CoreLimit.Max).DefaultIfEmpty(0).Max();
+                                  .Select(series => series.Values.XLimit.Max).DefaultIfEmpty(0).Max();
                 xi.MinLimit = xi.MinValue ??
                               View.Series.Where(series => series.Values != null && series.ScalesXAt == index)
-                                  .Select(series => series.Values.Value1CoreLimit.Min).DefaultIfEmpty(0).Min();
+                                  .Select(series => series.Values.XLimit.Min).DefaultIfEmpty(0).Min();
             }
 
             for (var index = 0; index < AxisY.Count; index++)
@@ -109,10 +109,10 @@ namespace LiveCharts.Charts
 
                 yi.MaxLimit = yi.MaxValue ??
                              View.Series.Where(series => series.Values != null && series.ScalesYAt == index)
-                                  .Select(series => series.Values.Value2CoreLimit.Max).DefaultIfEmpty(0).Max();
+                                  .Select(series => series.Values.YLimit.Max).DefaultIfEmpty(0).Max();
                 yi.MinLimit = yi.MinValue ??
                               View.Series.Where(series => series.Values != null && series.ScalesYAt == index)
-                                  .Select(series => series.Values.Value2CoreLimit.Min).DefaultIfEmpty(0).Min();
+                                  .Select(series => series.Values.YLimit.Min).DefaultIfEmpty(0).Min();
             }
 
             PivotZoomingAxis = AxisTags.X;

@@ -30,19 +30,19 @@ namespace LiveCharts.SeriesAlgorithms
     {
         public ColumnAlgorithm(ISeriesView view) : base(view)
         {
-            SeriesConfigurationType = SeriesConfigurationType.IndexedX;
+            SeriesOrientation = SeriesOrientation.Horizontal;
         }
 
         public override void Update()
         {
             var fy = CurrentYAxis.GetFormatter();
 
-            var castedSeries = (IColumnSeries) View;
+            var castedSeries = (IColumnSerieView) View;
 
             const double padding = 5;
 
             var totalSpace = ChartFunctions.GetUnitWidth(AxisTags.X, Chart, View.ScalesXAt) - padding;
-            var typeSeries = Chart.View.Series.OfType<IColumnSeries>().ToList();
+            var typeSeries = Chart.View.Series.OfType<IColumnSerieView>().ToList();
 
             var singleColWidth = totalSpace/typeSeries.Count;
 
@@ -74,7 +74,7 @@ namespace LiveCharts.SeriesAlgorithms
                 chartPoint.View = View.GetPointView(chartPoint.View,
                     View.DataLabels ? fy(chartPoint.Y) : null);
 
-                var rectangleView = (IRectangleData) chartPoint.View;
+                var rectangleView = (IRectanglePointView) chartPoint.View;
 
                 var h = Math.Abs(reference.Y - zero);
                 var t = reference.Y < zero

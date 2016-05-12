@@ -42,10 +42,17 @@
     <Compile Include="AxisCore.cs" />
     <Compile Include="ChartUpdater.cs" />
     <Compile Include="ChartValues.cs" />
+    <Compile Include="Configurations\BubbleMapper.cs" />
+    <Compile Include="Configurations\CartesianMapper.cs" />
+    <Compile Include="Configurations\FinancialMapper.cs" />
+    <Compile Include="Configurations\IPointEvaluator.cs" />
+    <Compile Include="Configurations\SeriesMappers.cs" />
     <Compile Include="Defaults\AxisLimits.cs" />
     <Compile Include="Defaults\ObservablePoint.cs" />
-    <Compile Include="Defaults\DefaultConfigurations.cs" />
+    <Compile Include="Defaults\SeriesConfigurations.cs" />
     <Compile Include="Defaults\ObservableValue.cs" />
+    <Compile Include="Defaults\DatePoint.cs" />
+    <Compile Include="Defaults\OHLCPoint.cs" />
     <Compile Include="Definitions.cs" />
     <Compile Include="Charts\ChartCore.cs" />
     <Compile Include="ChartFunctions.cs" />
@@ -55,11 +62,14 @@
     <Compile Include="IChartValues.cs" />
     <Compile Include="IDataOptimization.cs" />
     <Compile Include="Charts\CartesianChartCore.cs" />
+    <Compile Include="SeriesAlgorithms\OhlcAlgorithm.cs" />
+    <Compile Include="SeriesAlgorithms\VerticalStackedAreaAlgorithm.cs" />
+    <Compile Include="SeriesAlgorithms\StackedAreaAlgorithm.cs" />
     <Compile Include="SeriesAlgorithms\StackedRowAlgorithm.cs" />
     <Compile Include="SeriesAlgorithms\StackedColumnAlgorithm.cs" />
     <Compile Include="SeriesAlgorithms\ColumnAlgorithm.cs" />
     <Compile Include="SeriesAlgorithms\RowAlgorithm.cs" />
-    <Compile Include="SeriesAlgorithms\ScatterAlgorithm.cs" />
+    <Compile Include="SeriesAlgorithms\BubbleAlgorithm.cs" />
     <Compile Include="SeriesAlgorithms\VerticalLineAlgorithm.cs" />
     <Compile Include="SeriesAlgorithms\LineAlgorithm.cs" />
     <Compile Include="Helpers\Extentions.cs" />
@@ -70,7 +80,7 @@
     <Compile Include="SeparatorElementCore.cs" />
     <Compile Include="Seriesalgorithm.cs" />
     <Compile Include="SeriesCollection.cs" />
-    <Compile Include="SeriesConfiguration.cs" />
+    <Compile Include="Configurations\SeriesConfiguration.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -33,19 +33,19 @@ using LiveCharts.Wpf.Points;
 // ReSharper disable once CheckNamespace
 namespace LiveCharts.Wpf
 {
-    public class ScatterSeries : Series.Series, IBubbleSeries
+    public class BubbleSeries : Series.Series, IBubbleSeriesView
     {
         #region Contructors
 
-        public ScatterSeries()
+        public BubbleSeries()
         {
-            Model = new ScatterAlgorithm(this);
+            Model = new BubbleAlgorithm(this);
             InitializeDefuaults();
         }
 
-        public ScatterSeries(ISeriesConfiguration configuration)
+        public BubbleSeries(object configuration)
         {
-            Model = new ScatterAlgorithm(this);
+            Model = new BubbleAlgorithm(this);
             Configuration = configuration;
             InitializeDefuaults();
         }
@@ -59,7 +59,7 @@ namespace LiveCharts.Wpf
         #region Properties
 
         public static readonly DependencyProperty MaxBubbleDiameterProperty = DependencyProperty.Register(
-            "MaxBubbleDiameter", typeof (double), typeof (ScatterSeries), new PropertyMetadata(default(double)));
+            "MaxBubbleDiameter", typeof (double), typeof (BubbleSeries), new PropertyMetadata(default(double)));
 
         public double MaxBubbleDiameter
         {
@@ -68,7 +68,7 @@ namespace LiveCharts.Wpf
         }
 
         public static readonly DependencyProperty MinBubbleDiameterProperty = DependencyProperty.Register(
-            "MinBubbleDiameter", typeof (double), typeof (ScatterSeries), new PropertyMetadata(default(double)));
+            "MinBubbleDiameter", typeof (double), typeof (BubbleSeries), new PropertyMetadata(default(double)));
 
         public double MinBubbleDiameter
         {

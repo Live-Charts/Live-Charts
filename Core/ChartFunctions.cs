@@ -20,6 +20,7 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
+using System;
 using LiveCharts.Charts;
 
 namespace LiveCharts
@@ -135,15 +136,17 @@ namespace LiveCharts
         public static double GetUnitWidth(AxisTags source, ChartCore chart, int axis = 0)
         {
             double min;
+            var unit = 1;
 
             if (source == AxisTags.Y)
             {
                 min = chart.AxisY[axis].MinLimit;
-                return ToDrawMargin(min, AxisTags.Y, chart, axis) - ToDrawMargin(min + 1, AxisTags.Y, chart, axis);
+                return ToDrawMargin(min, AxisTags.Y, chart, axis) - ToDrawMargin(min + unit, AxisTags.Y, chart, axis);
             }
 
             min = chart.AxisX[axis].MinLimit;
-            return ToDrawMargin(min + 1, AxisTags.X, chart, axis) - ToDrawMargin(min, AxisTags.X, chart, axis);
+
+            return ToDrawMargin(min + unit, AxisTags.X, chart, axis) - ToDrawMargin(min, AxisTags.X, chart, axis);
         }
     }
 

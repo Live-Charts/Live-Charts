@@ -31,7 +31,7 @@ using LiveCharts.Wpf.Components;
 
 namespace LiveCharts.Wpf.Points
 {
-    internal class HBezierPointView : PointView, IBezierData
+    internal class HBezierPointView : PointView, IBezierPointView
     {
         public BezierSegment Segment { get; set; }
         public Ellipse Ellipse { get; set; }

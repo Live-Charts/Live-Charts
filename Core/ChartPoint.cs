@@ -53,6 +53,26 @@ namespace LiveCharts
         /// </summary>
         public double Participation { get; internal set; }
         /// <summary>
+        /// gets the stacked participation of a point
+        /// </summary>
+        public double StackedParticipation { get; internal set; }
+        /// <summary>
+        /// Gets the Open value of the point
+        /// </summary>
+        public double Open { get; internal set; }
+        /// <summary>
+        /// Gets the High value of the point
+        /// </summary>
+        public double High { get; internal set; }
+        /// <summary>
+        /// Gets the Low value of the point
+        /// </summary>
+        public double Low { get; internal set; }
+        /// <summary>
+        /// Gets the Close value of the point
+        /// </summary>
+        public double Close { get; internal set; }
+        /// <summary>
         /// Gets the coordinate where the value is placed at chart
         /// </summary>
         public CorePoint ChartLocation { get; internal set; }

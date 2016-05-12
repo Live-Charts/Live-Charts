@@ -23,7 +23,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using LiveCharts.Charts;
-using LiveCharts.CrossNet;
+using LiveCharts.Configurations;
 using LiveCharts.Helpers;
 
 namespace LiveCharts
@@ -34,6 +34,8 @@ namespace LiveCharts
     /// <typeparam name="T"></typeparam>
     public class ChartValues<T> : GossipCollection<T>, IChartValues
     {
+        private IPointEvaluator<T> DefaultConfiguration { get; set; }
+
         #region Contructors
 
         public ChartValues()
@@ -41,11 +43,7 @@ namespace LiveCharts
             ReportOldItems = false;
             Primitives = new Dictionary<int, ChartPoint>();
             Generics = new Dictionary<T, ChartPoint>();
-            CollectionChanged += oldItems =>
-            {
-                if (Series != null && Series.Chart != null)
-                    Series.Chart.Updater.Run();
-            };
+            CollectionChanged += OnChanged;
         }
 
         #endregion
@@ -57,11 +55,12 @@ namespace LiveCharts
             get { return GetPointsIterator(); }
         }
 
-        public CoreLimit Value1CoreLimit { get; private set; }
-        public CoreLimit Value2CoreLimit { get; private set; }
-        public CoreLimit Value3CoreLimit { get; private set; }
+        public CoreLimit XLimit { get; private set; }
+        public CoreLimit YLimit { get; private set; }
+        public CoreLimit WeigthLimit { get; private set; }
+
         public SeriesAlgorithm Series { get; set; }
-        public ISeriesConfiguration ConfigurableElement { get; set; }
+        public object ConfigurableElement { get; set; }
 
         internal int GarbageCollectorIndex { get; set; }
         internal Dictionary<int, ChartPoint> Primitives { get; set; }
@@ -75,34 +74,28 @@ namespace LiveCharts
             var config = GetConfig();
             if (config == null) return;
 
-            var q = IndexData().ToArray();
-
-            if (config.Value1 != null)
+            var xMin = double.MaxValue;
+            var xMax = double.MinValue;
+            var yMin = double.MaxValue;
+            var yMax = double.MinValue;
+            var wMin = double.MaxValue;
+            var wMax = double.MinValue;
+            
+            foreach (var xyw in IndexData().Select(data => config.GetEvaluation(data)))
             {
-                var v = q.Select(t => config.Value1(t.Value, t.Key)).DefaultIfEmpty(0).ToArray();
-                var max = v.Where(x => !double.IsNaN(x)).DefaultIfEmpty(0).Max();
-                var min = v.Where(x => !double.IsNaN(x)).DefaultIfEmpty(0).Min();
+                if (xyw[0].X < xMin) xMin = xyw[0].X;
+                if (xyw[1].X > xMax) xMax = xyw[1].X;
 
-                Value1CoreLimit = new CoreLimit(min, max);
+                if (xyw[0].Y < yMin) yMin = xyw[0].Y;
+                if (xyw[1].Y > yMax) yMax = xyw[1].Y;
+
+                if (xyw[0].W < wMin) wMin = xyw[0].W;
+                if (xyw[1].W > wMax) wMax = xyw[1].W;
             }
 
-            if (config.Value2 != null)
-            {
-                var v = q.Select(t => config.Value2(t.Value, t.Key)).DefaultIfEmpty(0).ToArray();
-                var max = v.Where(x => !double.IsNaN(x)).DefaultIfEmpty(0).Max();
-                var min = v.Where(x => !double.IsNaN(x)).DefaultIfEmpty(0).Min();
-
-                Value2CoreLimit = new CoreLimit(min, max);
-            }
-
-            if (config.Value3 != null)
-            {
-                var v = q.Select(t => config.Value3(t.Value, t.Key)).DefaultIfEmpty(0).ToArray();
-                var max = v.Where(x => !double.IsNaN(x)).DefaultIfEmpty(0).Max();
-                var min = v.Where(x => !double.IsNaN(x)).DefaultIfEmpty(0).Min();
-
-                Value3CoreLimit = new CoreLimit(min, max);
-            }
+            XLimit = new CoreLimit(xMin, xMax);
+            YLimit = new CoreLimit(yMin, yMax);
+            WeigthLimit = new CoreLimit(wMin, wMax);
         }
 
         public void InitializeGarbageCollector()
@@ -154,7 +147,7 @@ namespace LiveCharts
             {
                 if (isObservable)
                 {
-                    var observable = value as IObservableChartPoint;
+                    var observable = (IObservableChartPoint) value;
                     if (observable != null)
                     {
                         observable.PointChanged -= ObservableOnPointChanged;
@@ -190,11 +183,13 @@ namespace LiveCharts
                 }
 
                 cp.GarbageCollectorIndex = garbageCollectorIndex;
+
                 cp.Instance = value;
-                cp.X = config.Value1(value, i);
-                cp.Y = config.Value2(value, i);
-                if (config.Value3 != null)
-                    cp.Weight = config.Value3(value, i);
+                cp.Key = i;
+
+                config.SetAll(new KeyValuePair<int, T>(i, value), cp);
+                //ToDo: this feels bad, when indexing the data, this is already done...
+                //Also the index will break every run...
 
                 yield return cp;
                 i++;
@@ -207,26 +202,21 @@ namespace LiveCharts
                 .Concat(Primitives.Values.Where(IsGarbage));
         }
 
-        private SeriesConfiguration<T> GetConfig()
+        private IPointEvaluator<T> GetConfig()
         {
             //Trying to ge the user defined configuration...
             var config =
-                (Series.View.Configuration ?? Series.SeriesCollection.Configuration) as SeriesConfiguration<T>;
+                (Series.View.Configuration ?? Series.SeriesCollection.Configuration) as IPointEvaluator<T>;
 
 #if DEBUG
             Debug.WriteLine("Series Configuration not found, trying to get one from the defaults configurations...");
 #endif
 
-            return config
-                   ?? (ChartCore.Configurations[typeof (T), Series.SeriesConfigurationType] as SeriesConfiguration<T>
-                       ?? ForceConfiguration(Series.SeriesConfigurationType));
-        }
+            if (config != null) return config;
 
-        private static SeriesConfiguration<T> ForceConfiguration(SeriesConfigurationType type)
-        {
-            return type == SeriesConfigurationType.IndexedX
-                ? new SeriesConfiguration<T>().X((v, i) => i).Y(v => (double) (object) v)
-                : new SeriesConfiguration<T>().X(v => (double) (object) v).Y((v, i) => i);
+            return DefaultConfiguration ??
+                   (DefaultConfiguration =
+                       ChartCore.Configurations.GetConfig<T>(Series.SeriesOrientation) as IPointEvaluator<T>);
         }
 
         private void ValidateGarbageCollector()
@@ -249,6 +239,11 @@ namespace LiveCharts
         {
             return point.GarbageCollectorIndex < GarbageCollectorIndex
                    || double.IsNaN(point.X) || double.IsNaN(point.Y);
+        }
+
+        private void OnChanged(object oldItems, object newItems)
+        {
+            if (Series != null && Series.Chart != null) Series.Chart.Updater.Run();
         }
 
         #endregion

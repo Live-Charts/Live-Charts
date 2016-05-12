@@ -74,20 +74,13 @@ namespace LiveCharts
         bool DataLabels { get; }
         int ScalesXAt { get; set; }
         int ScalesYAt { get; set; }
-        ISeriesConfiguration Configuration { get; set; }
+        object Configuration { get; set; }
         bool IsSeriesVisible { get; }
 
         IChartPointView GetPointView(IChartPointView view, string label);
         void OnSeriesUpdateStart();
         void Erase();
         void OnSeriesUpdatedFinish();
-    }
-
-    public interface ILineSeriesView : ISeriesView
-    {
-        double LineSmoothness { get; set; }
-        void StartSegment(int atIndex, CorePoint location);
-        void EndSegment(int atIndex, CorePoint location);
     }
 
     public interface IAxisView
