@@ -54,7 +54,8 @@ namespace LiveCharts.SeriesAlgorithms
             {
                 chartPoint.ChartLocation = ChartFunctions.ToDrawMargin(chartPoint, View.ScalesXAt, View.ScalesYAt, Chart);
 
-                chartPoint.View = View.GetPointView(chartPoint.View, View.DataLabels ? fy(chartPoint.Y) : null);
+                chartPoint.View = View.GetPointView(chartPoint.View, chartPoint,
+                    View.DataLabels ? fy(chartPoint.Y) : null);
 
                 var ohclView = (IOhlcPointView) chartPoint.View;
 

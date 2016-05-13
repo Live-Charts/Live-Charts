@@ -485,13 +485,13 @@ namespace LiveCharts.Wpf.Components
         public List<AxisCore> MapXAxes(ChartCore chart)
         {
             if (AxisX.Count == 0) AxisX.Add(DefaultAxes.CleanAxis);
-            return AxisX.Select(x => x.AsCoreElement(Model)).ToList();
+            return AxisX.Select(x => x.AsCoreElement(Model, AxisTags.X)).ToList();
         }
 
         public List<AxisCore> MapYAxes(ChartCore chart)
         {
             if (AxisY.Count == 0) AxisY.Add(DefaultAxes.DefaultAxis);
-            return AxisY.Select(x => x.AsCoreElement(Model)).ToList();
+            return AxisY.Select(x => x.AsCoreElement(Model, AxisTags.Y)).ToList();
         }
 
         #region Event Handlers

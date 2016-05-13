@@ -21,6 +21,7 @@
 //SOFTWARE.
 
 using System;
+using System.Collections.Generic;
 using LiveCharts.Charts;
 
 namespace LiveCharts
@@ -67,7 +68,6 @@ namespace LiveCharts
     }
 
     #endregion
-
 
     #region Structs And Classes
 
@@ -360,5 +360,119 @@ namespace LiveCharts
     #endregion
 
 
+    #endregion
+
+    #region Views
+    public interface IChartView
+    {
+        ChartCore Model { get; }
+
+        event Action<object, ChartPoint> DataClick;
+
+        SeriesCollection Series { get; set; }
+        TimeSpan TooltipTimeout { get; set; }
+        TimeSpan? UpdaterFrequency { get; set; }
+        ZoomingOptions Zoom { get; set; }
+        LegendLocation LegendLocation { get; set; }
+        bool DisableAnimations { get; set; }
+        TimeSpan AnimationsSpeed { get; set; }
+
+        bool HasTooltip { get; }
+        bool HasDataClickEventAttached { get; }
+        bool IsControlLoaded { get; }
+
+        void SetDrawMarginTop(double value);
+        void SetDrawMarginLeft(double value);
+        void SetDrawMarginHeight(double value);
+        void SetDrawMarginWidth(double value);
+        void Erase();
+        void AddToView(object element);
+        void AddToDrawMargin(object element);
+        void RemoveFromView(object element);
+        void RemoveFromDrawMargin(object element);
+        void ShowTooltip(ChartPoint sender, IEnumerable<ChartPoint> sibilings, CorePoint at);
+        void HideTooltop();
+        void ShowLegend(CorePoint at);
+        void HideLegend();
+
+        CoreSize LoadLegend();
+        List<AxisCore> MapXAxes(ChartCore chart);
+        List<AxisCore> MapYAxes(ChartCore chart);
+
+#if DEBUG
+        void CountElements();
+#endif
+    }
+
+    public interface ISeriesView
+    {
+        SeriesAlgorithm Model { get; set; }
+        IChartValues Values { get; set; }
+        bool DataLabels { get; }
+        int ScalesXAt { get; set; }
+        int ScalesYAt { get; set; }
+        object Configuration { get; set; }
+        bool IsSeriesVisible { get; }
+
+        IChartPointView GetPointView(IChartPointView view, ChartPoint point ,string label);
+        void OnSeriesUpdateStart();
+        void Erase();
+        void OnSeriesUpdatedFinish();
+    }
+
+    public interface IAxisView
+    {
+        AxisCore Model { get; set; }
+        bool DisableAnimations { get; set; }
+        double LabelsReference { get; set; }
+        double UnitWidth { get; set; }
+        bool ShowLabels { get; set; }
+        List<IAxisSectionView> Sections { get; set; }
+        AxisTags Source { get; set; }
+
+        CoreSize UpdateTitle(ChartCore chart, double rotationAngle = 0);
+        void SetTitleTop(double value);
+        void SetTitleLeft(double value);
+        double GetTitleLeft();
+        double GetTileTop();
+        CoreSize GetLabelSize();
+        AxisCore AsCoreElement(ChartCore chart, AxisTags source);
+        void RenderSeparator(SeparatorElementCore model, ChartCore chart);
+    }
+
+    public interface IAxisSectionView
+    {
+        AxisSectionCore Model { get; set; }
+        double FromValue { get; set; }
+        double ToValue { get; set; }
+        void DrawOrMove(AxisTags source, int axis);
+
+        AxisSectionCore AsCoreElement(AxisCore axis, AxisTags source);
+    }
+
+    public interface ISeparatorView
+    {
+        bool IsEnabled { get; set; }
+        /// <summary>
+        /// Gets or sets sepator step, this means the value between each line, use null for auto.
+        /// </summary>
+        double? Step { get; set; }
+
+        SeparatorConfigurationCore AsCoreElement(AxisCore axis);
+    }
+
+    public interface ISeparatorElementView
+    {
+        SeparatorElementCore Model { get; }
+        CoreSize UpdateLabel(string text);
+        void UpdateLine(AxisTags source, ChartCore chart, int axisIndex, AxisCore axisCore);
+    }
+
+    public interface IChartPointView
+    {
+        bool IsNew { get; set; }
+        void DrawOrMove(ChartPoint previousDrawn, ChartPoint current, int index, ChartCore chart);
+        void RemoveFromView(ChartCore chart);
+    }
     #endregion
 }

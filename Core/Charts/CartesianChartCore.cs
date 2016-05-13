@@ -50,7 +50,7 @@ namespace LiveCharts.Charts
                     "verify that all the series are desiged to be plotted in a cartesian chart.");
 
             var cartesianSeries = View.Series.Select(x => x.Model).Cast<ICartesianSeries>().ToArray();
-            
+
             for (var index = 0; index < AxisX.Count; index++)
             {
                 var xi = AxisX[index];
@@ -83,6 +83,24 @@ namespace LiveCharts.Charts
             PrepareVerticalStackedAreas();
 
             CalculateComponentsAndMargin();
+
+            for (var index = 0; index < AxisX.Count; index++)
+            {
+                var xi = AxisX[index];
+                foreach (var section in xi.Sections)
+                {
+                    section.View.DrawOrMove(AxisTags.X, index);
+                }
+            }
+
+            for (var index = 0; index < AxisY.Count; index++)
+            {
+                var yi = AxisY[index];
+                foreach (var section in yi.Sections)
+                {
+                    section.View.DrawOrMove(AxisTags.Y, index);
+                }
+            }
         }
 
         #endregion
@@ -102,7 +120,7 @@ namespace LiveCharts.Charts
         {
             foreach (var series in View.Series)
             {
-                if (series is IStackedColumnSeriesView || series is IColumnSerieView  || series is IOhlcSeriesView)
+                if (series is IStackedColumnSeriesView || series is IColumnSerieView || series is IOhlcSeriesView)
                 {
                     AxisX[series.ScalesXAt].EvaluatesUnitWidth = true;
                 }
@@ -153,7 +171,7 @@ namespace LiveCharts.Charts
 
             var isPercentage =
                 View.Series.Any(x => x is IStackModelableSeries && x is IVerticalStackedAreaSeriesView &&
-                                     ((IStackModelableSeries)x).StackMode == StackMode.Percentage);
+                                     ((IStackModelableSeries) x).StackMode == StackMode.Percentage);
 
             foreach (var group in View.Series.OfType<IVerticalStackedAreaSeriesView>().GroupBy(x => x.ScalesXAt))
             {
@@ -161,7 +179,8 @@ namespace LiveCharts.Charts
             }
         }
 
-        private void StackPoints(IEnumerable<ISeriesView> stackables, AxisTags stackAt, int stackIndex, StackMode mode = StackMode.Values)
+        private void StackPoints(IEnumerable<ISeriesView> stackables, AxisTags stackAt, int stackIndex,
+            StackMode mode = StackMode.Values)
         {
             var stackedColumns = stackables.Select(x => x.Values.Points.ToArray()).ToArray();
 
@@ -192,11 +211,11 @@ namespace LiveCharts.Charts
                         if (sum.Left < AxisX[stackIndex].MinLimit)
                             AxisX[stackIndex].MinLimit = sum.Left == 0
                                 ? 0
-                                : (Math.Truncate(sum.Left / AxisX[stackIndex].S) - 1) * AxisX[stackIndex].S;
+                                : (Math.Truncate(sum.Left/AxisX[stackIndex].S) - 1)*AxisX[stackIndex].S;
                         if (sum.Right > AxisX[stackIndex].MaxLimit)
                             AxisX[stackIndex].MaxLimit = sum.Right == 0
                                 ? 0
-                                : (Math.Truncate(sum.Right / AxisX[stackIndex].S) + 1) * AxisX[stackIndex].S;
+                                : (Math.Truncate(sum.Right/AxisX[stackIndex].S) + 1)*AxisX[stackIndex].S;
                     }
                 }
 
@@ -212,11 +231,11 @@ namespace LiveCharts.Charts
                         if (sum.Left < AxisY[stackIndex].MinLimit)
                             AxisY[stackIndex].MinLimit = sum.Left == 0
                                 ? 0
-                                : (Math.Truncate(sum.Left / AxisY[stackIndex].S) - 1) * AxisY[stackIndex].S;
+                                : (Math.Truncate(sum.Left/AxisY[stackIndex].S) - 1)*AxisY[stackIndex].S;
                         if (sum.Right > AxisY[stackIndex].MaxLimit)
                             AxisY[stackIndex].MaxLimit = sum.Right == 0
                                 ? 0
-                                : (Math.Truncate(sum.Right / AxisY[stackIndex].S) + 1) * AxisY[stackIndex].S;
+                                : (Math.Truncate(sum.Right/AxisY[stackIndex].S) + 1)*AxisY[stackIndex].S;
                     }
                 }
 

@@ -1,0 +1,46 @@
+﻿<UserControl x:Class="Wpf.CartesianChart.SectionsExample"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Wpf.CartesianChart"
+             xmlns:wpf="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300" d:DataContext="{d:DesignInstance local:SectionsExample}"> 
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <TextBlock Grid.Row="0" TextWrapping="Wrap">
+            <Bold>New in 0.7.0</Bold> You can now have axis sections to highlight a range of values
+        </TextBlock>
+        <Button Grid.Row="1" Height="30" Click="UpdateAllOnClick">
+            Move All
+        </Button>
+        <wpf:CartesianChart Grid.Row="2" Series="{Binding SeriesCollection}" >
+            <wpf:CartesianChart.AxisY>
+                <wpf:Axis>
+                    <wpf:Axis.Sections>
+                        <wpf:AxisSection FromValue="8" ToValue="9" Label="Awesome!">
+                            <wpf:AxisSection.Fill>
+                                <SolidColorBrush Color="#A3A3FF" Opacity=".4"></SolidColorBrush>
+                            </wpf:AxisSection.Fill>
+                        </wpf:AxisSection>
+                        <wpf:AxisSection FromValue="4" ToValue="8" Label="Good">
+                            <wpf:AxisSection.Fill>
+                                <SolidColorBrush Color="#CDCDCD" Opacity=".4"></SolidColorBrush>
+                            </wpf:AxisSection.Fill>
+                        </wpf:AxisSection>
+                        <wpf:AxisSection FromValue="0" ToValue="4" Label="Bad">
+                            <wpf:AxisSection.Fill>
+                                <SolidColorBrush Color="#FF8585" Opacity=".4"></SolidColorBrush>
+                            </wpf:AxisSection.Fill>
+                        </wpf:AxisSection>
+                    </wpf:Axis.Sections>
+                </wpf:Axis>
+            </wpf:CartesianChart.AxisY>
+        </wpf:CartesianChart>
+    </Grid>
+</UserControl>

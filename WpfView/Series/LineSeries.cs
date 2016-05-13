@@ -155,7 +155,7 @@ namespace LiveCharts.Wpf
             base.OnSeriesUpdateStart();
         }
 
-        public override IChartPointView GetPointView(IChartPointView view, string label)
+        public override IChartPointView GetPointView(IChartPointView view, ChartPoint point, string label)
         {
             var mhr = PointDiameter < 5 ? 5 : PointDiameter;
 

@@ -40,6 +40,7 @@ namespace LiveCharts
         public ChartCore Chart { get; set; }
         public IAxisView View { get; set; }
         public IList<string> Labels { get; set; }
+        public List<AxisSectionCore> Sections { get; set; }
         public Func<double, string> LabelFormatter { get; set; }
         public double StrokeThickness { get; set; }
         public bool ShowLabels { get; set; }

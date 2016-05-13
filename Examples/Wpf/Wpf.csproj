@@ -86,6 +86,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="CartesianChart\SectionsExample.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="CartesianChart\StackedBarExample.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -126,6 +130,9 @@
     </Compile>
     <Compile Include="CartesianChart\CustomTypesPlotting.xaml.cs">
       <DependentUpon>CustomTypesPlotting.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CartesianChart\SectionsExample.xaml.cs">
+      <DependentUpon>SectionsExample.xaml</DependentUpon>
     </Compile>
     <Compile Include="CartesianChart\StackedBarExample.xaml.cs">
       <DependentUpon>StackedBarExample.xaml</DependentUpon>

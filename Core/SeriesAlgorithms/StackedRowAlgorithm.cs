@@ -67,7 +67,7 @@ namespace LiveCharts.SeriesAlgorithms
                 var from = ChartFunctions.ToDrawMargin(chartPoint.From, AxisTags.X, Chart, View.ScalesXAt);
                 var to = ChartFunctions.ToDrawMargin(chartPoint.To, AxisTags.X, Chart, View.ScalesXAt);
 
-                chartPoint.View = View.GetPointView(chartPoint.View,
+                chartPoint.View = View.GetPointView(chartPoint.View, chartPoint,
                     View.DataLabels ? x(chartPoint.X) : null);
 
                 var rectangleView = (IRectanglePointView) chartPoint.View;

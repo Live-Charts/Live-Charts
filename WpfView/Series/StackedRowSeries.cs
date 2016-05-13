@@ -71,7 +71,7 @@ namespace LiveCharts.Wpf
 
         #region Overriden Methods
 
-        public override IChartPointView GetPointView(IChartPointView view, string label)
+        public override IChartPointView GetPointView(IChartPointView view, ChartPoint point, string label)
         {
             var pbv = (view as RowPointView);
 

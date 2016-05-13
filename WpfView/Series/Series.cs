@@ -265,7 +265,7 @@ namespace LiveCharts.Wpf.Series
 
         #endregion
 
-        public virtual IChartPointView GetPointView(IChartPointView view, string label)
+        public virtual IChartPointView GetPointView(IChartPointView view, ChartPoint point, string label)
         {
             throw new NotImplementedException();
         }

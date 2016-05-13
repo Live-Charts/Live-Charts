@@ -20,6 +20,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -39,6 +40,7 @@ namespace LiveCharts.Wpf
             TitleBlock = BindATextBlock();
             SetValue(SeparatorProperty, new Separator());
             SetValue(ShowLabelsProperty, true);
+            SetValue(SectionsProperty, new List<IAxisSectionView>());
 
             TitleBlock.SetBinding(TextBlock.TextProperty,
                 new Binding {Path = new PropertyPath(TitleProperty), Source = this});
@@ -52,6 +54,8 @@ namespace LiveCharts.Wpf
         public double LabelsReference { get; set; }
         public double UnitWidth { get; set; }
         public Dictionary<double, AxisSeparatorElement> Cache { get; set; }
+
+        public AxisTags Source { get; set; }
 
         #endregion
 
@@ -67,6 +71,15 @@ namespace LiveCharts.Wpf
         {
             get { return (IList<string>) GetValue(LabelsProperty); }
             set { SetValue(LabelsProperty, value); }
+        }
+
+        public static readonly DependencyProperty SectionsProperty = DependencyProperty.Register(
+            "Sections", typeof (List<IAxisSectionView>), typeof (Axis), new PropertyMetadata(default(List<IAxisSectionView>)));
+
+        public List<IAxisSectionView> Sections
+        {
+            get { return (List<IAxisSectionView>) GetValue(SectionsProperty); }
+            set { SetValue(SectionsProperty, value); }
         }
 
         public static readonly DependencyProperty LabelFormatterProperty = DependencyProperty.Register(
@@ -353,7 +366,7 @@ namespace LiveCharts.Wpf
             return new CoreSize(TitleBlock.RenderSize.Width, TitleBlock.RenderSize.Height);
         }
 
-        public AxisCore AsCoreElement(ChartCore chart)
+        public AxisCore AsCoreElement(ChartCore chart, AxisTags source)
         {
             if (Model == null) Model = new AxisCore(this);
 
@@ -368,6 +381,7 @@ namespace LiveCharts.Wpf
             Model.Position = Position;
             Model.Separator = Separator.AsCoreElement(Model);
             Model.DisableAnimations = DisableAnimations;
+            Model.Sections = Sections.Select(x => x.AsCoreElement(Model, source)).ToList();
 
             return Model;
         }

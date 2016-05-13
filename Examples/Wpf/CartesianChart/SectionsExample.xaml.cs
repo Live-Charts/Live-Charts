@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,28 +20,45 @@ using LiveCharts.Wpf;
 namespace Wpf.CartesianChart
 {
     /// <summary>
-    /// Interaction logic for BarExample.xaml
+    /// Interaction logic for SectionsExample.xaml
     /// </summary>
-    public partial class BarExample : UserControl
+    public partial class SectionsExample : UserControl
     {
-        public BarExample()
+        public SectionsExample()
         {
             InitializeComponent();
 
             SeriesCollection = new SeriesCollection
             {
-                new ColumnSeries
+                new LineSeries
                 {
                     Values = new ChartValues<ObservableValue>
                     {
-                        new ObservableValue(4),
-                        new ObservableValue(2),
-                        new ObservableValue(8),
-                        new ObservableValue(2),
                         new ObservableValue(3),
-                        new ObservableValue(0),
-                        new ObservableValue(1),
-                    }
+                        new ObservableValue(5),
+                        new ObservableValue(2),
+                        new ObservableValue(7),
+                        new ObservableValue(7),
+                        new ObservableValue(4)
+                    },
+                    PointDiameter = 0,
+                    StrokeThickness = 4,
+                    Fill = Brushes.Transparent
+                },
+                new LineSeries
+                {
+                    Values = new ChartValues<ObservableValue>
+                    {
+                        new ObservableValue(2),
+                        new ObservableValue(4),
+                        new ObservableValue(6),
+                        new ObservableValue(8),
+                        new ObservableValue(7),
+                        new ObservableValue(5)
+                    },
+                    PointDiameter = 0,
+                    StrokeThickness = 4,
+                    Fill = Brushes.Transparent
                 }
             };
 
