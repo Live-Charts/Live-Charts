@@ -414,7 +414,7 @@ namespace LiveCharts
         object Configuration { get; set; }
         bool IsSeriesVisible { get; }
 
-        IChartPointView GetPointView(IChartPointView view, string label);
+        IChartPointView GetPointView(IChartPointView view, ChartPoint point ,string label);
         void OnSeriesUpdateStart();
         void Erase();
         void OnSeriesUpdatedFinish();
