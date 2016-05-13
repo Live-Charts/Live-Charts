@@ -22,7 +22,6 @@
 
 using System;
 using LiveCharts.Charts;
-using LiveCharts.Defaults;
 using LiveCharts.Helpers;
 
 namespace LiveCharts
