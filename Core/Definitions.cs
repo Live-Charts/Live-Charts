@@ -28,6 +28,11 @@ namespace LiveCharts
 {
     #region Enumerators
 
+    public enum TooltipSelectionMode
+    {
+        OnlySender, SharedXValues, SharedYValues
+    }
+
     public enum SeriesOrientation
     {
         Horizontal, Vertical

@@ -74,6 +74,8 @@ namespace LiveCharts.SeriesAlgorithms
                 chartPoint.View = View.GetPointView(chartPoint.View, chartPoint,
                     View.DataLabels ? fy(chartPoint.Y) : null);
 
+                chartPoint.SeriesView = View;
+
                 var rectangleView = (IRectanglePointView) chartPoint.View;
 
                 var h = Math.Abs(reference.Y - zero);

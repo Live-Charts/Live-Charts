@@ -1,4 +1,6 @@
-﻿//The MIT License(MIT)
+﻿<!--
+    
+//The MIT License(MIT)
 
 //copyright(c) 2016 Alberto Rodriguez
 
@@ -19,39 +21,18 @@
 //LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
-
-using System.Windows;
-using LiveCharts.Wpf.Components;
-
-namespace LiveCharts.Wpf
-{
-    /// <summary>
-    /// Interaction logic for BaseToolTip.xaml
-    /// </summary>
-    public partial class ChartTooltip 
-    {
-        public ChartTooltip()
-        {
-            InitializeComponent();
-            DataContext = this;
-        }
-
-        public static readonly DependencyProperty HeaderProperty =
-            DependencyProperty.Register("Header", typeof(string), typeof(ChartTooltip), new PropertyMetadata(null));
-
-        public string Header
-        {
-            get { return (string)GetValue(HeaderProperty); }
-            set { SetValue(HeaderProperty, value); }
-        }
-
-        public static readonly DependencyProperty DtoProperty =
-            DependencyProperty.Register("Dto", typeof(TooltipDto[]), typeof(ChartTooltip), new PropertyMetadata(null));
-
-        public TooltipDto[] Dto
-        {
-            get { return (TooltipDto[])GetValue(DtoProperty); }
-            set { SetValue(DtoProperty, value); }
-        }
-    }
-}
+    
+-->
+     
+    <UserControl x:Class="LiveCharts.Wpf.DefaultLegend"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:LiveCharts.Wpf"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <Grid>
+            
+    </Grid>
+</UserControl>

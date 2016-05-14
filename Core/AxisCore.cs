@@ -53,9 +53,9 @@ namespace LiveCharts
 
         public SeparatorConfigurationCore Separator { get; set; }
 
+        public double S { get; internal set; }
         internal double MaxLimit { get; set; }
         internal double MinLimit { get; set; }
-        internal double S { get; set; }
         internal double Magnitude { get; set; }
         internal bool EvaluatesUnitWidth { get; set; }
         internal int CleanFactor { get; set; }

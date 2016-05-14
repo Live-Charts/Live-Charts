@@ -56,7 +56,8 @@ namespace LiveCharts.Wpf.Components
 
             SetValue(AnimationsSpeedProperty, TimeSpan.FromMilliseconds(500));
 
-            SetValue(ChartLegendProperty, new ChartLegend());
+            SetValue(ChartLegendProperty, new DefaultLegend());
+            SetValue(DataTooltipProperty, new DefaultTooltip());
 
             CursorX = new ChartCursor(this, AxisTags.X);
             CursorY = new ChartCursor(this, AxisTags.Y);
@@ -168,14 +169,14 @@ namespace LiveCharts.Wpf.Components
         }
 
         public static readonly DependencyProperty ChartLegendProperty = DependencyProperty.Register(
-            "ChartLegend", typeof (ChartLegend), typeof (Chart), 
-            new PropertyMetadata(default(ChartLegend), CallChartUpdater()));
+            "ChartLegend", typeof (DefaultLegend), typeof (Chart), 
+            new PropertyMetadata(default(DefaultLegend), CallChartUpdater()));
         /// <summary>
         /// Gets or sets the control to use as chart legend fot this chart.
         /// </summary>
-        public ChartLegend ChartLegend
+        public DefaultLegend ChartLegend
         {
-            get { return (ChartLegend) GetValue(ChartLegendProperty); }
+            get { return (DefaultLegend) GetValue(ChartLegendProperty); }
             set { SetValue(ChartLegendProperty, value); }
         }
 
@@ -267,18 +268,6 @@ namespace LiveCharts.Wpf.Components
             }
         }
 
-        public static readonly DependencyProperty DataTooltipProperty = DependencyProperty.Register(
-            "DataTooltip", typeof (ChartTooltip), typeof (Chart),
-            new PropertyMetadata(default(ChartTooltip)));
-        /// <summary>
-        /// Gets or sets the current control to use as the chart tooltip
-        /// </summary>
-        public ChartTooltip DataTooltip
-        {
-            get { return (ChartTooltip) GetValue(DataTooltipProperty); }
-            set { SetValue(DataTooltipProperty, value); }
-        }
-
         public static readonly DependencyProperty TooltipTimeoutProperty = DependencyProperty.Register(
             "TooltipTimeout", typeof (TimeSpan), typeof (Chart),
             new PropertyMetadata(default(TimeSpan)));
@@ -324,6 +313,16 @@ namespace LiveCharts.Wpf.Components
             get { return (bool) GetValue(DisableAnimationsProperty); }
             set { SetValue(DisableAnimationsProperty, value); }
         }
+
+        public static readonly DependencyProperty DataTooltipProperty = DependencyProperty.Register(
+            "DataTooltip", typeof (DefaultTooltip), typeof (Chart), new PropertyMetadata(default(DefaultTooltip)));
+
+        public DefaultTooltip DataTooltip
+        {
+            get { return (DefaultTooltip) GetValue(DataTooltipProperty); }
+            set { SetValue(DataTooltipProperty, value); }
+        }
+
         #endregion
 
         public ChartCore Model
@@ -465,15 +464,15 @@ namespace LiveCharts.Wpf.Components
             if (ChartLegend.Parent == null)
                 Canvas.Children.Add(ChartLegend);
 
-            ChartLegend.Series = Series.Cast<Series.Series>().Select(x => new SeriesViewModel
-            {
-                Fill = x.Fill,
-                Stroke = x.Stroke,
-                Title = x.Title
-            });
-            ChartLegend.Orientation = LegendLocation == LegendLocation.Bottom || LegendLocation == LegendLocation.Top
-                ? Orientation.Horizontal
-                : Orientation.Vertical;
+            //ChartLegend.Series = Series.Cast<Series.Series>().Select(x => new SeriesViewModel
+            //{
+            //    Fill = x.Fill,
+            //    Stroke = x.Stroke,
+            //    Title = x.Title
+            //});
+            //ChartLegend.Orientation = LegendLocation == LegendLocation.Bottom || LegendLocation == LegendLocation.Top
+            //    ? Orientation.Horizontal
+            //    : Orientation.Vertical;
 
             ChartLegend.UpdateLayout();
             ChartLegend.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
@@ -495,18 +494,97 @@ namespace LiveCharts.Wpf.Components
         }
 
         #region Event Handlers
-        internal void DataMouseDown(object sender, MouseEventArgs e)
+
+        internal void AttachEventsTo(FrameworkElement element)
+        {
+            element.MouseDown -= DataMouseDown;
+            element.MouseEnter -= DataMouseEnter;
+            element.MouseLeave -= DataMouseLeave;
+
+            element.MouseDown += DataMouseDown;
+            element.MouseEnter += DataMouseEnter;
+            element.MouseLeave += DataMouseLeave;
+        }
+
+        private void DataMouseDown(object sender, MouseEventArgs e)
         {
             var result = Series.SelectMany(x => x.Values.Points).FirstOrDefault(x =>
             {
-                var pointView = x.View as Points.PointView;
+                var pointView = x.View as PointView;
                 return pointView != null && Equals(pointView.HoverShape, sender);
             });
             if (DataClick != null) DataClick.Invoke(sender, result);
         }
+
+        private void DataMouseEnter(object sender, EventArgs e)
+        {
+            if (DataTooltip == null) return;
+            if (DataTooltip.Parent == null)
+            {
+                AddToView(DataTooltip);
+                Canvas.SetTop(DataTooltip, 0d);
+                Canvas.SetLeft(DataTooltip, 0d);
+            }
+            
+            var source = Series.SelectMany(x => x.Values.Points);
+            var senderPoint = source.FirstOrDefault(x => Equals(((PointView) x.View).HoverShape, sender));
+
+            if (senderPoint == null) return;
+
+            var ax = AxisX[senderPoint.SeriesView.ScalesXAt];
+            var ay = AxisY[senderPoint.SeriesView.ScalesYAt];
+
+            var pointsToHighlight = Enumerable.Empty<ChartPoint>();
+
+            switch (DataTooltip.SelectionMode)
+            {
+                case TooltipSelectionMode.OnlySender:
+                    pointsToHighlight = new List<ChartPoint> {senderPoint};
+                    break;
+                case TooltipSelectionMode.SharedXValues:
+                    pointsToHighlight = Series.Where(x => x.ScalesXAt == senderPoint.SeriesView.ScalesXAt)
+                        .SelectMany(x => x.Values.Points)
+                        .Where(x => Math.Abs(x.X - senderPoint.X) < ax.Model.S*.01);
+                    break;
+                case TooltipSelectionMode.SharedYValues:
+                    pointsToHighlight = Series.Where(x => x.ScalesYAt == senderPoint.SeriesView.ScalesYAt)
+                        .SelectMany(x => x.Values.Points)
+                        .Where(x => Math.Abs(x.Y - senderPoint.Y) < ay.Model.S*.01);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+
+            DataTooltip.Data = pointsToHighlight.Select(x => new DataPointViewModel
+            {
+                Series = new Wpf.SeriesViewModel
+                {
+                    Fill = ((Series.Series) x.SeriesView).Fill,
+                    Stroke = ((Series.Series) x.SeriesView).Stroke,
+                    StrokeThickness = ((Series.Series) x.SeriesView).StrokeThickness,
+                    Title = ((Series.Series) x.SeriesView).Title,
+                },
+                ChartPoint = x
+            }).ToList();
+
+            DataTooltip.Visibility = Visibility.Visible;
+            DataTooltip.UpdateLayout();
+
+            DataTooltip.BeginAnimation(Canvas.TopProperty,
+                new DoubleAnimation(senderPoint.ChartLocation.Y, TimeSpan.FromMilliseconds(200)));
+            DataTooltip.BeginAnimation(Canvas.LeftProperty,
+                new DoubleAnimation(senderPoint.ChartLocation.X, TimeSpan.FromMilliseconds(200)));
+        }
+
+        private void DataMouseLeave(object sender, EventArgs e)
+        {
+            if (DataTooltip == null) return;
+        }
+
         #endregion
 
         #region Property Changed
+
         protected static PropertyChangedCallback CallChartUpdater(bool animate = false)
         {
             return (o, args) =>
@@ -516,19 +594,21 @@ namespace LiveCharts.Wpf.Components
                 if (wpfChart.Model != null) wpfChart.Model.Updater.Run(animate);
             };
         }
+
         #endregion
 
         #region Obsoletes, this properties will dissapear in future versions
-        public static readonly DependencyProperty HoverableProperty = DependencyProperty.Register(
-            "Hoverable", typeof(bool), typeof(Chart), new PropertyMetadata(true));
+
+        public static readonly DependencyProperty HoverableProperty = DependencyProperty.Register("Hoverable", typeof (bool), typeof (Chart), new PropertyMetadata(true));
+
         [Obsolete("This property is obsolete, if you need to disable tooltips, set the Chart.DataTooltip to null")]
         public bool Hoverable
         {
-            get { return (bool)GetValue(HoverableProperty); }
+            get { return (bool) GetValue(HoverableProperty); }
             set { SetValue(HoverableProperty, value); }
         }
-        #endregion
 
+        #endregion
 
 #if DEBUG
         public void CountElements()
