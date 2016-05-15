@@ -55,9 +55,6 @@ namespace LiveCharts.Wpf.Components.Chart
             SetValue(ChartLegendProperty, new DefaultLegend());
             SetValue(DataTooltipProperty, new DefaultTooltip());
             SetValue(TooltipTimeoutProperty, TimeSpan.FromMilliseconds(800));
-            
-            CursorX = new ChartCursor(this, AxisTags.X);
-            CursorY = new ChartCursor(this, AxisTags.Y);
 
             SetValue(AxisXProperty, new List<Axis>());
             SetValue(AxisYProperty, new List<Axis>());
@@ -67,6 +64,7 @@ namespace LiveCharts.Wpf.Components.Chart
 
             ResizeTimer.Tick += OnResizeTimerOnTick ;
             SizeChanged += OnSizeChanged;
+            MouseWheel += MouseWheelOnRoll;
             Loaded += OnLoaded;
             TooltipTimeoutTimer.Tick += TooltipTimeoutTimerOnTick;
         }
