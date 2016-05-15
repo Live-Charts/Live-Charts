@@ -78,6 +78,7 @@ namespace LiveCharts.Wpf.Components.Chart
 
             if (DataTooltip.Parent == null)
             {
+                Panel.SetZIndex(DataTooltip, int.MaxValue);
                 AddToDrawMargin(DataTooltip);
                 Canvas.SetTop(DataTooltip, 0d);
                 Canvas.SetLeft(DataTooltip, 0d);

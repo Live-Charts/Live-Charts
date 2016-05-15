@@ -26,7 +26,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media;
-using LiveCharts.Wpf.Components;
 using LiveCharts.Wpf.Components.Chart;
 
 namespace LiveCharts.Wpf.Series
@@ -38,11 +37,15 @@ namespace LiveCharts.Wpf.Series
         protected Series()
         {
             DefaultFillOpacity = 0.35;
+
+            SetValue(TitleProperty, "Some Series");
         }
 
         protected Series(object configuration)
         {
             Configuration = configuration;
+
+            SetValue(TitleProperty, "Some Series");
         }
         #endregion
 
@@ -302,7 +305,9 @@ namespace LiveCharts.Wpf.Series
             return (o, args) =>
             {
                 var wpfSeries = o as Series;
+
                 if (wpfSeries == null) return;
+                if (wpfSeries.Model == null) return;
 
                 if (wpfSeries.Model.Chart != null) wpfSeries.Model.Chart.Updater.Run(animate);
             };

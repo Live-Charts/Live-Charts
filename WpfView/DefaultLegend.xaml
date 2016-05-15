@@ -30,9 +30,42 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:LiveCharts.Wpf"
-             mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
-    <Grid>
-            
-    </Grid>
+             mc:Ignorable="d"
+             d:DataContext="{d:DesignInstance local:DefaultLegend}">
+        <UserControl.Resources>
+            <local:OrientationConverter x:Key="OrientationConverter"></local:OrientationConverter>
+        </UserControl.Resources>
+    <UserControl.Template>
+        <ControlTemplate>
+            <Border>
+                <ItemsControl ItemsSource="{Binding Series}" Grid.IsSharedSizeScope="True">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel>
+                                <StackPanel.Orientation>
+                                    <MultiBinding Converter="{StaticResource OrientationConverter}">
+                                        <Binding Path="Orientation"/>
+                                        <Binding Path="InternalOrientation"/>
+                                    </MultiBinding>
+                                </StackPanel.Orientation>
+                            </StackPanel>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate DataType="{x:Type local:SeriesViewModel}">
+                            <Grid Margin="2">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto" SharedSizeGroup="Title"/>
+                                </Grid.ColumnDefinitions>
+                                <Ellipse Width="11" Height="11" StrokeThickness="{Binding StrokeThickness}" 
+                                             Stroke="{Binding Stroke}" Fill="{Binding Fill}"/>
+                                <TextBlock Grid.Column="1" Margin="4 0" Text="{Binding Title}" />
+                            </Grid>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </Border>
+        </ControlTemplate>
+    </UserControl.Template>
 </UserControl>
