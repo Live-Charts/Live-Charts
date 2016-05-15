@@ -15,6 +15,8 @@ namespace Wpf.CartesianChart
     /// </summary>
     public partial class ZoomingAndPanning : INotifyPropertyChanged
     {
+        private ZoomingOptions _zoomingMode;
+
         public ZoomingAndPanning()
         {
             InitializeComponent();
@@ -32,7 +34,16 @@ namespace Wpf.CartesianChart
         }
 
         public SeriesCollection SeriesCollection { get; set; }
-        public ZoomingOptions ZoomingMode { get; set; }
+
+        public ZoomingOptions ZoomingMode
+        {
+            get { return _zoomingMode; }
+            set
+            {
+                _zoomingMode = value;
+                OnPropertyChanged();
+            }
+        }
 
         private void ToogleZoomingMode(object sender, RoutedEventArgs e)
         {

@@ -20,12 +20,17 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
+using System;
+using System.Diagnostics;
+using System.Windows;
 using System.Windows.Input;
 
 namespace LiveCharts.Wpf.Components.Chart
 {
     public abstract partial class Chart
     {
+        private Point DragOrigin { get; set; }
+
         private void MouseWheelOnRoll(object sender, MouseWheelEventArgs e)
         {
             if (Model.PivotZoomingAxis == AxisTags.None) return;
@@ -40,6 +45,28 @@ namespace LiveCharts.Wpf.Components.Chart
                 Model.ZoomIn(corePoint);
             else
                 Model.ZoomOut(corePoint);
+        }
+
+        private void OnDraggingStart(object sender, MouseButtonEventArgs e)
+        {
+            DragOrigin = e.GetPosition(this);
+            DragOrigin = new Point(
+                ChartFunctions.FromDrawMargin(DragOrigin.X, AxisTags.X, Model),
+                ChartFunctions.FromDrawMargin(DragOrigin.Y, AxisTags.Y, Model));
+            Debug.WriteLine("drag started at " + DragOrigin.X + ", " + DragOrigin.Y);
+        }
+
+        private void OnDraggingEnd(object sender, MouseButtonEventArgs e)
+        {
+            if (Zoom == ZoomingOptions.None) return;
+
+            var end = e.GetPosition(this);
+
+            end = new Point(
+                ChartFunctions.FromDrawMargin(end.X, AxisTags.X, Model),
+                ChartFunctions.FromDrawMargin(end.Y, AxisTags.Y, Model));
+
+            Model.Drag(new CorePoint(end.X - DragOrigin.X, end.Y - DragOrigin.Y));
         }
     }
 }

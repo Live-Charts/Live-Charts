@@ -25,6 +25,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
 using LiveCharts.Charts;
@@ -67,6 +68,10 @@ namespace LiveCharts.Wpf.Components.Chart
             MouseWheel += MouseWheelOnRoll;
             Loaded += OnLoaded;
             TooltipTimeoutTimer.Tick += TooltipTimeoutTimerOnTick;
+
+            DrawMargin.Background = Brushes.Transparent; // if this line is not set, then it does not detect mouse down event...
+            DrawMargin.MouseDown += OnDraggingStart;
+            DrawMargin.MouseUp += OnDraggingEnd;
         }
 
         static Chart()

@@ -71,8 +71,6 @@ namespace LiveCharts.Charts
         public AxisTags PivotZoomingAxis { get; set; }
         public CorePoint PanOrigin { get; set; }
 
-        private bool IsDragging { get; set; }
-
         private bool IsZooming
         {
             get
@@ -406,6 +404,37 @@ namespace LiveCharts.Charts
 
             Updater.Run();
         }
+
+        public void Drag(CorePoint delta)
+        {
+            if (PivotZoomingAxis == AxisTags.None) return;
+
+            if (View.Zoom == ZoomingOptions.X || View.Zoom == ZoomingOptions.Xy)
+            {
+                foreach (var xi in AxisX)
+                {
+                    var maxX = xi.MaxValue ?? xi.MaxLimit;
+                    var minX = xi.MinValue ?? xi.MinLimit;
+                    xi.View.MaxValue = maxX + delta.X;
+                    xi.View.MinValue = minX + delta.X;
+                }
+            }
+
+            if (View.Zoom == ZoomingOptions.Y || View.Zoom == ZoomingOptions.Xy)
+            {
+                foreach (var yi in AxisY)
+                {
+                    var maxY = yi.MaxValue ?? yi.MaxLimit;
+                    var minY = yi.MinValue ?? yi.MinLimit;
+
+                    yi.View.MaxValue = maxY + delta.Y;
+                    yi.View.MinValue = minY + delta.Y;
+                }
+            }
+            
+            Updater.Run();
+        }
+
         #endregion
     }
 }
