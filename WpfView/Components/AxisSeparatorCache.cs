@@ -258,7 +258,7 @@ namespace LiveCharts.Wpf.Components
 
         public void UpdateLine(AxisTags source, ChartCore chart, int axisIndex, AxisCore axis)
         {
-            var wpfChart = chart.View as Chart;
+            var wpfChart = chart.View as Chart.Chart;
             var wpfAxis = axis.View as Axis;
             if (wpfChart == null || wpfAxis == null) return;
 

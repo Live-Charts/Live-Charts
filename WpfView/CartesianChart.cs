@@ -22,6 +22,7 @@
 
 using LiveCharts.Charts;
 using LiveCharts.Wpf.Components;
+using LiveCharts.Wpf.Components.Chart;
 
 namespace LiveCharts.Wpf
 {

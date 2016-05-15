@@ -29,6 +29,7 @@ using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using LiveCharts.SeriesAlgorithms;
 using LiveCharts.Wpf.Components;
+using LiveCharts.Wpf.Components.Chart;
 
 // ReSharper disable once CheckNamespace
 namespace LiveCharts.Wpf

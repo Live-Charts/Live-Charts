@@ -30,12 +30,18 @@ namespace LiveCharts
 {
     public class AxisCore
     {
+        #region Constructors
+
         public AxisCore(IAxisView view)
         {
             View = view;
             CleanFactor = 3;
             Cache = new Dictionary<double, SeparatorElementCore>();
         }
+
+        #endregion
+
+        #region Public Properties
 
         public ChartCore Chart { get; set; }
         public IAxisView View { get; set; }
@@ -54,6 +60,11 @@ namespace LiveCharts
         public SeparatorConfigurationCore Separator { get; set; }
 
         public double S { get; internal set; }
+
+        #endregion
+
+        #region Internal Properties
+
         internal double MaxLimit { get; set; }
         internal double MinLimit { get; set; }
         internal double Magnitude { get; set; }
@@ -63,6 +74,8 @@ namespace LiveCharts
         internal double? LastAxisMax { get; set; }
         internal double? LastAxisMin { get; set; }
         internal CoreRectangle LastPlotArea { get; set; }
+
+        #endregion
 
         internal void CalculateSeparator(ChartCore chart, AxisTags source)
         {
@@ -211,7 +224,7 @@ namespace LiveCharts
                 chart.DrawMargin.Width, chart.DrawMargin.Height);
         }
 
-        internal Func<double, string> GetFormatter()
+        public Func<double, string> GetFormatter()
         {
             return x => Labels == null
                 ? (LabelFormatter == null

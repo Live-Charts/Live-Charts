@@ -20,10 +20,14 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Globalization;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
+using System.Windows.Data;
 using System.Windows.Media;
 
 namespace LiveCharts.Wpf
@@ -33,14 +37,15 @@ namespace LiveCharts.Wpf
     /// </summary>
     public partial class DefaultTooltip : INotifyPropertyChanged
     {
-        private List<DataPointViewModel> _data;
+        private TooltipData _data;
 
         public DefaultTooltip()
         {
             InitializeComponent();
 
             SetValue(ForegroundProperty, Brushes.White);
-            SetValue(CornerRadiusProperty, 3d);
+            SetValue(CornerRadiusProperty, 4d);
+            SetValue(SelectionModeProperty, TooltipSelectionMode.SharedXValues);
 
             DataContext = this;
         }
@@ -64,7 +69,7 @@ namespace LiveCharts.Wpf
             set { SetValue(SelectionModeProperty, value); }
         }
 
-        public List<DataPointViewModel> Data
+        public TooltipData Data
         {
             get { return _data; }
             set
@@ -81,6 +86,109 @@ namespace LiveCharts.Wpf
             if (PropertyChanged != null)
                 PropertyChanged.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+    }
+
+    public class SharedConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            var v = (TooltipData) value;
+
+            if (v.SelectionMode == TooltipSelectionMode.OnlySender) return string.Empty;
+
+            return v.SelectionMode == TooltipSelectionMode.SharedXValues
+                ? v.XFormatter(v.SharedValue ?? 0)
+                : v.YFormatter(v.SharedValue ?? 0);
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    public class XVisibilityConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            var v = (TooltipData)value;
+
+            return v.SelectionMode == TooltipSelectionMode.SharedXValues ? Visibility.Collapsed : Visibility.Visible;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    public class YVisibilityConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            var v = (TooltipData) value;
+
+            return v.SelectionMode == TooltipSelectionMode.SharedYValues ? Visibility.Collapsed : Visibility.Visible;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    public class ParticipationVisibilityConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            var v = (TooltipData) value;
+
+            return v.Points.Any(x => x.ChartPoint.Participation > 0) ? Visibility.Visible : Visibility.Collapsed;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    public class SharedVisibilityConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            var v = (TooltipData) value;
+
+            if (v.SelectionMode == TooltipSelectionMode.OnlySender) return Visibility.Collapsed;
+
+            return v.SharedValue == null ? Visibility.Collapsed : Visibility.Visible;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    public class ApplyFormatterConverter : IMultiValueConverter
+    {
+        public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
+        {
+            return ((Func<double, string>) values[0])((double) values[1]);
+        }
+
+        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    public class TooltipData
+    {
+        public Func<double, string> XFormatter { get; set; }
+        public Func<double, string> YFormatter { get; set; }
+        public double? SharedValue { get; set; }
+        public TooltipSelectionMode SelectionMode { get; set; }
+        public List<DataPointViewModel> Points { get; set; }
     }
 
     public class DataPointViewModel 

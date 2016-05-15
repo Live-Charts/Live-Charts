@@ -53,8 +53,10 @@
     <Compile Include="AxisSection.cs" />
     <Compile Include="Components\ChartUpdater.cs" />
     <Compile Include="Components\AxisSeparatorCache.cs" />
-    <Compile Include="Components\Chart.cs" />
+    <Compile Include="Components\Chart\Chart.Properties.cs" />
+    <Compile Include="Components\Chart\Chart.cs" />
     <Compile Include="ChartCursor.cs" />
+    <Compile Include="Components\Chart\Chart.TooltipAndLegend.cs" />
     <Compile Include="DefaultLegend.xaml.cs">
       <DependentUpon>DefaultLegend.xaml</DependentUpon>
     </Compile>
@@ -104,6 +106,8 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <Compile Include="Components\Chart\Chart.PublicMethods.cs" />
+    <Compile Include="Components\Chart\Chart.LoadedAndResize.cs" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
