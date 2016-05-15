@@ -129,7 +129,7 @@ namespace LiveCharts
 
             //var of = axis == AxisTags.X ? chart.XOffset : chart.YOffset;
 
-            return FromPlotArea(value, source, chart, axis) - o; //FromPlotArea(value, axis, chart) - o + of;
+            return FromPlotArea(value, source, chart, axis); //- o; //FromPlotArea(value, axis, chart) - o + of;
         }
 
         public static double GetUnitWidth(AxisTags source, ChartCore chart, int axis = 0)

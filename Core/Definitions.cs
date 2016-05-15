@@ -434,6 +434,8 @@ namespace LiveCharts
         bool ShowLabels { get; set; }
         List<IAxisSectionView> Sections { get; set; }
         AxisTags Source { get; set; }
+        double? MaxValue { get; set; }
+        double? MinValue { get; set; }
 
         CoreSize UpdateTitle(ChartCore chart, double rotationAngle = 0);
         void SetTitleTop(double value);

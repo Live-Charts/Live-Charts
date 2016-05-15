@@ -55,10 +55,10 @@ namespace LiveCharts.Charts
             {
                 var xi = AxisX[index];
                 xi.CalculateSeparator(this, AxisTags.X);
-                xi.MinLimit = cartesianSeries.Where(x => x.View.ScalesXAt == index)
+                xi.MinLimit = xi.MinValue ?? cartesianSeries.Where(x => x.View.ScalesXAt == index)
                     .Select(x => x.GetMinX(xi))
                     .DefaultIfEmpty(0).Min();
-                xi.MaxLimit = cartesianSeries.Where(x => x.View.ScalesXAt == index)
+                xi.MaxLimit = xi.MaxValue ?? cartesianSeries.Where(x => x.View.ScalesXAt == index)
                     .Select(x => x.GetMaxX(xi))
                     .DefaultIfEmpty(0).Max();
             }
@@ -67,10 +67,10 @@ namespace LiveCharts.Charts
             {
                 var yi = AxisY[index];
                 yi.CalculateSeparator(this, AxisTags.Y);
-                yi.MinLimit = cartesianSeries.Where(x => x.View.ScalesYAt == index)
+                yi.MinLimit = yi.MinValue ?? cartesianSeries.Where(x => x.View.ScalesYAt == index)
                     .Select(x => x.GetMinY(yi))
                     .DefaultIfEmpty(0).Min();
-                yi.MaxLimit = cartesianSeries.Where(x => x.View.ScalesYAt == index)
+                yi.MaxLimit = yi.MaxValue ?? cartesianSeries.Where(x => x.View.ScalesYAt == index)
                     .Select(x => x.GetMaxY(yi))
                     .DefaultIfEmpty(0).Max();
             }

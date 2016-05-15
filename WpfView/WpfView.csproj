@@ -55,8 +55,8 @@
     <Compile Include="Components\AxisSeparatorCache.cs" />
     <Compile Include="Components\Chart\Chart.Properties.cs" />
     <Compile Include="Components\Chart\Chart.cs" />
-    <Compile Include="ChartCursor.cs" />
     <Compile Include="Components\Chart\Chart.TooltipAndLegend.cs" />
+    <Compile Include="Components\Chart\Chart.ZoomPan.cs" />
     <Compile Include="DefaultLegend.xaml.cs">
       <DependentUpon>DefaultLegend.xaml</DependentUpon>
     </Compile>

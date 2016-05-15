@@ -25,6 +25,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
 using LiveCharts.Charts;
@@ -55,9 +56,6 @@ namespace LiveCharts.Wpf.Components.Chart
             SetValue(ChartLegendProperty, new DefaultLegend());
             SetValue(DataTooltipProperty, new DefaultTooltip());
             SetValue(TooltipTimeoutProperty, TimeSpan.FromMilliseconds(800));
-            
-            CursorX = new ChartCursor(this, AxisTags.X);
-            CursorY = new ChartCursor(this, AxisTags.Y);
 
             SetValue(AxisXProperty, new List<Axis>());
             SetValue(AxisYProperty, new List<Axis>());
@@ -67,8 +65,13 @@ namespace LiveCharts.Wpf.Components.Chart
 
             ResizeTimer.Tick += OnResizeTimerOnTick ;
             SizeChanged += OnSizeChanged;
+            MouseWheel += MouseWheelOnRoll;
             Loaded += OnLoaded;
             TooltipTimeoutTimer.Tick += TooltipTimeoutTimerOnTick;
+
+            DrawMargin.Background = Brushes.Transparent; // if this line is not set, then it does not detect mouse down event...
+            DrawMargin.MouseDown += OnDraggingStart;
+            DrawMargin.MouseUp += OnDraggingEnd;
         }
 
         static Chart()

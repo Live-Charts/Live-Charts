@@ -71,8 +71,6 @@ namespace LiveCharts.Charts
         public AxisTags PivotZoomingAxis { get; set; }
         public CorePoint PanOrigin { get; set; }
 
-        private bool IsDragging { get; set; }
-
         private bool IsZooming
         {
             get
@@ -292,6 +290,10 @@ namespace LiveCharts.Charts
 
             RequestedZoomAt = DateTime.Now;
 
+            pivot = new CorePoint(
+                ChartFunctions.FromDrawMargin(pivot.X, AxisTags.X, this),
+                ChartFunctions.FromDrawMargin(pivot.Y, AxisTags.Y, this));
+
             if (View.Zoom == ZoomingOptions.X || View.Zoom == ZoomingOptions.Xy)
             {
                 foreach (var xi in AxisX)
@@ -302,16 +304,16 @@ namespace LiveCharts.Charts
                     var rMin = (pivot.X - min) / l;
                     var rMax = 1 - rMin;
 
-                    xi.MinValue = min + rMin * xi.S;
-                    xi.MaxValue = max - rMax * xi.S;
+                    xi.View.MinValue = min + rMin * xi.S;
+                    xi.View.MaxValue = max - rMax * xi.S;
                 }
             }
             else
             {
                 foreach (var xi in AxisX)
                 {
-                    xi.MinValue = null;
-                    xi.MaxValue = null;
+                    xi.View.MinValue = null;
+                    xi.View.MaxValue = null;
                 }
             }
 
@@ -325,16 +327,16 @@ namespace LiveCharts.Charts
                     var rMin = (pivot.Y - min) / l;
                     var rMax = 1 - rMin;
 
-                    yi.MinValue = min + rMin * yi.S;
-                    yi.MaxValue = max - rMax * yi.S;
+                    yi.View.MinValue = min + rMin * yi.S;
+                    yi.View.MaxValue = max - rMax * yi.S;
                 }
             }
             else
             {
                 foreach (var yi in AxisY)
                 {
-                    yi.MinValue = null;
-                    yi.MaxValue = null;
+                    yi.View.MinValue = null;
+                    yi.View.MaxValue = null;
                 }
             }
 
@@ -363,8 +365,8 @@ namespace LiveCharts.Charts
                     var rMin = (dataPivot.X - min) / l;
                     var rMax = 1 - rMin;
 
-                    xi.MinValue = min - rMin * xi.S;
-                    xi.MaxValue = max + rMax * xi.S;
+                    xi.View.MinValue = min - rMin * xi.S;
+                    xi.View.MaxValue = max + rMax * xi.S;
                 }
             }
 
@@ -378,8 +380,8 @@ namespace LiveCharts.Charts
                     var rMin = (dataPivot.Y - min) / l;
                     var rMax = 1 - rMin;
 
-                    yi.MinValue = min - rMin * yi.S;
-                    yi.MaxValue = max + rMax * yi.S;
+                    yi.View.MinValue = min - rMin * yi.S;
+                    yi.View.MaxValue = max + rMax * yi.S;
                 }
             }
 
@@ -390,18 +392,49 @@ namespace LiveCharts.Charts
         {
             foreach (var xi in AxisX)
             {
-                xi.MinValue = null;
-                xi.MaxValue = null;
+                xi.View.MinValue = null;
+                xi.View.MaxValue = null;
             }
 
             foreach (var yi in AxisY)
             {
-                yi.MinValue = null;
-                yi.MaxValue = null;
+                yi.View.MinValue = null;
+                yi.View.MaxValue = null;
             }
 
             Updater.Run();
         }
+
+        public void Drag(CorePoint delta)
+        {
+            if (PivotZoomingAxis == AxisTags.None) return;
+
+            if (View.Zoom == ZoomingOptions.X || View.Zoom == ZoomingOptions.Xy)
+            {
+                foreach (var xi in AxisX)
+                {
+                    var maxX = xi.MaxValue ?? xi.MaxLimit;
+                    var minX = xi.MinValue ?? xi.MinLimit;
+                    xi.View.MaxValue = maxX + delta.X;
+                    xi.View.MinValue = minX + delta.X;
+                }
+            }
+
+            if (View.Zoom == ZoomingOptions.Y || View.Zoom == ZoomingOptions.Xy)
+            {
+                foreach (var yi in AxisY)
+                {
+                    var maxY = yi.MaxValue ?? yi.MaxLimit;
+                    var minY = yi.MinValue ?? yi.MinLimit;
+
+                    yi.View.MaxValue = maxY + delta.Y;
+                    yi.View.MinValue = minY + delta.Y;
+                }
+            }
+            
+            Updater.Run();
+        }
+
         #endregion
     }
 }

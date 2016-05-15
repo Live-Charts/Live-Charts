@@ -27,7 +27,6 @@ using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using System.Windows.Threading;
 using LiveCharts.Charts;
 
 namespace LiveCharts.Wpf.Components.Chart
@@ -105,29 +104,6 @@ namespace LiveCharts.Wpf.Components.Chart
         {
             get { return (LegendLocation)GetValue(LegendLocationProperty); }
             set { SetValue(LegendLocationProperty, value); }
-        }
-
-        public static readonly DependencyProperty CursorXProperty = DependencyProperty.Register(
-            "CursorX", typeof(ChartCursor), typeof(Chart),
-            new PropertyMetadata(default(ChartCursor), CallChartUpdater()));
-        /// <summary>
-        /// Gets or the current chart cursor
-        /// </summary>
-        public ChartCursor CursorX
-        {
-            get { return (ChartCursor)GetValue(CursorXProperty); }
-            set { SetValue(CursorXProperty, value); }
-        }
-
-        public static readonly DependencyProperty CursorYProperty = DependencyProperty.Register(
-            "CursorY", typeof(ChartCursor), typeof(Chart), new PropertyMetadata(default(ChartCursor)));
-        /// <summary>
-        /// Gets or sets the current chart cursor
-        /// </summary>
-        public ChartCursor CursorY
-        {
-            get { return (ChartCursor)GetValue(CursorYProperty); }
-            set { SetValue(CursorYProperty, value); }
         }
 
         public static readonly DependencyProperty SeriesProperty = DependencyProperty.Register(
