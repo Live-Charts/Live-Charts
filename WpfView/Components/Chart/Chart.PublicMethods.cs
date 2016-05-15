@@ -24,6 +24,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using LiveCharts.Charts;
 
 namespace LiveCharts.Wpf.Components.Chart
@@ -110,15 +111,28 @@ namespace LiveCharts.Wpf.Components.Chart
             if (ChartLegend.Parent == null)
                 Canvas.Children.Add(ChartLegend);
 
-            //ChartLegend.Series = Series.Cast<Series.Series>().Select(x => new SeriesViewModel
-            //{
-            //    Fill = x.Fill,
-            //    Stroke = x.Stroke,
-            //    Title = x.Title
-            //});
-            //ChartLegend.Orientation = LegendLocation == LegendLocation.Bottom || LegendLocation == LegendLocation.Top
-            //    ? Orientation.Horizontal
-            //    : Orientation.Vertical;
+            var l = new List<SeriesViewModel>();
+
+            for (var i = 0; i < Series.Count; i++)
+            {
+                var item = new SeriesViewModel();
+
+                var series = (Series.Series) Series[i];
+
+                item.Title = series.Title;
+                item.StrokeThickness = series.StrokeThickness;
+                item.Stroke = series.Stroke ?? new SolidColorBrush(GetDefaultColor(i));
+                item.Fill = series.Fill ?? new SolidColorBrush(GetDefaultColor(i)) {Opacity = series.DefaultFillOpacity};
+
+                l.Add(item);
+            }
+
+            ChartLegend.Series = l;
+
+            ChartLegend.InternalOrientation = LegendLocation == LegendLocation.Bottom ||
+                                              LegendLocation == LegendLocation.Top
+                ? Orientation.Horizontal
+                : Orientation.Vertical;
 
             ChartLegend.UpdateLayout();
             ChartLegend.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
