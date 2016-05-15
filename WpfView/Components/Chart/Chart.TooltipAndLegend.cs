@@ -73,9 +73,12 @@ namespace LiveCharts.Wpf.Components.Chart
         private void DataMouseEnter(object sender, EventArgs e)
         {
             if (DataTooltip == null) return;
+
+            TooltipTimeoutTimer.Stop();
+
             if (DataTooltip.Parent == null)
             {
-                AddToView(DataTooltip);
+                AddToDrawMargin(DataTooltip);
                 Canvas.SetTop(DataTooltip, 0d);
                 Canvas.SetLeft(DataTooltip, 0d);
             }
@@ -135,10 +138,16 @@ namespace LiveCharts.Wpf.Components.Chart
             DataTooltip.Visibility = Visibility.Visible;
             DataTooltip.UpdateLayout();
 
-            DataTooltip.BeginAnimation(Canvas.TopProperty,
-                new DoubleAnimation(senderPoint.ChartLocation.Y, TimeSpan.FromMilliseconds(200)));
+            var xt = senderPoint.ChartLocation.X;
+            var yt = senderPoint.ChartLocation.Y;
+
+            xt = xt > DrawMargin.Width/2 ? xt - DataTooltip.ActualWidth - 5 : xt + 5;
+            yt = yt > DrawMargin.Height/2 ? yt - DataTooltip.ActualHeight - 5 : yt + 5;
+
             DataTooltip.BeginAnimation(Canvas.LeftProperty,
-                new DoubleAnimation(senderPoint.ChartLocation.X, TimeSpan.FromMilliseconds(200)));
+                new DoubleAnimation(xt, TimeSpan.FromMilliseconds(200)));
+            DataTooltip.BeginAnimation(Canvas.TopProperty,
+                new DoubleAnimation(yt, TimeSpan.FromMilliseconds(200)));
         }
 
         private void DataMouseLeave(object sender, EventArgs e)
