@@ -53,10 +53,15 @@
     <Compile Include="AxisSection.cs" />
     <Compile Include="Components\ChartUpdater.cs" />
     <Compile Include="Components\AxisSeparatorCache.cs" />
-    <Compile Include="Components\Chart.cs" />
+    <Compile Include="Components\Chart\Chart.Properties.cs" />
+    <Compile Include="Components\Chart\Chart.cs" />
     <Compile Include="ChartCursor.cs" />
-    <Compile Include="ChartLegend.xaml.cs">
-      <DependentUpon>ChartLegend.xaml</DependentUpon>
+    <Compile Include="Components\Chart\Chart.TooltipAndLegend.cs" />
+    <Compile Include="DefaultLegend.xaml.cs">
+      <DependentUpon>DefaultLegend.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DefaultTooltip.xaml.cs">
+      <DependentUpon>DefaultTooltip.xaml</DependentUpon>
     </Compile>
     <Compile Include="Points\OhlcPointView.cs" />
     <Compile Include="Points\BubblePointView.cs" />
@@ -76,9 +81,6 @@
     <Compile Include="Components\Converters.cs" />
     <Compile Include="DefaultAxes.cs" />
     <Compile Include="Components\TooltipDto.cs" />
-    <Compile Include="ChartTooltip.xaml.cs">
-      <DependentUpon>ChartTooltip.xaml</DependentUpon>
-    </Compile>
     <Compile Include="CartesianChart.cs" />
     <Compile Include="Series\LineSeries.cs" />
     <Compile Include="Components\DesktopExtentions.cs" />
@@ -104,6 +106,8 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <Compile Include="Components\Chart\Chart.PublicMethods.cs" />
+    <Compile Include="Components\Chart\Chart.LoadedAndResize.cs" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -111,13 +115,13 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="ChartLegend.xaml">
-      <Generator>MSBuild:Compile</Generator>
+    <Page Include="DefaultLegend.xaml">
       <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ChartTooltip.xaml">
-      <Generator>MSBuild:Compile</Generator>
+    <Page Include="DefaultTooltip.xaml">
       <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>

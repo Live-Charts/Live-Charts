@@ -439,4 +439,7 @@ namespace LiveCharts.Wpf
             };
         }
     }
+
+    
+
 }

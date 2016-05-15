@@ -20,38 +20,49 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
+using System;
+using System.Diagnostics;
 using System.Windows;
-using LiveCharts.Wpf.Components;
+using System.Windows.Threading;
 
-namespace LiveCharts.Wpf
+namespace LiveCharts.Wpf.Components.Chart
 {
-    /// <summary>
-    /// Interaction logic for BaseToolTip.xaml
-    /// </summary>
-    public partial class ChartTooltip 
+    public abstract partial class Chart
     {
-        public ChartTooltip()
+        private DispatcherTimer ResizeTimer { get; set; }
+
+        private void OnLoaded(object sender, RoutedEventArgs args)
         {
-            InitializeComponent();
-            DataContext = this;
+            IsControlLoaded = true;
+
+            Model.ChartControlSize = new CoreSize(ActualWidth, ActualHeight);
+
+            Model.DrawMargin.Left = 0;
+            Model.DrawMargin.Top = 0;
+            Model.DrawMargin.Width = ActualWidth;
+            Model.DrawMargin.Height = ActualHeight;
         }
 
-        public static readonly DependencyProperty HeaderProperty =
-            DependencyProperty.Register("Header", typeof(string), typeof(ChartTooltip), new PropertyMetadata(null));
-
-        public string Header
+        private void OnSizeChanged(object sender, SizeChangedEventArgs args)
         {
-            get { return (string)GetValue(HeaderProperty); }
-            set { SetValue(HeaderProperty, value); }
+            ResizeTimer.Stop();
+            ResizeTimer.Start();
         }
 
-        public static readonly DependencyProperty DtoProperty =
-            DependencyProperty.Register("Dto", typeof(TooltipDto[]), typeof(ChartTooltip), new PropertyMetadata(null));
-
-        public TooltipDto[] Dto
+        private void OnResizeTimerOnTick(object sender, EventArgs args)
         {
-            get { return (TooltipDto[])GetValue(DtoProperty); }
-            set { SetValue(DtoProperty, value); }
+#if DEBUG
+            Debug.WriteLine("ChartResized");
+#endif
+            Model.ChartControlSize = new CoreSize(ActualWidth, ActualHeight);
+
+            Model.DrawMargin.Left = 0;
+            Model.DrawMargin.Top = 0;
+            Model.DrawMargin.Width = ActualWidth;
+            Model.DrawMargin.Height = ActualHeight;
+
+            Model.Updater.Run();
+            ResizeTimer.Stop();
         }
     }
 }

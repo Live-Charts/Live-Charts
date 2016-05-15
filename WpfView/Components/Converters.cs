@@ -22,26 +22,12 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
 using System.Windows.Data;
 
 namespace LiveCharts.Wpf.Components
 {
-    public class TimespanMillisecondsConverter : TypeConverter
-    {
-        public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
-        {
-            var valueString = value as string;
-
-            if (valueString != null)
-                return TimeSpan.FromMilliseconds(double.Parse(valueString));
-
-            return base.ConvertFrom(context, culture, value);
-        }
-    }
-
     internal class SerieConverter : IValueConverter
     {
         public static SerieConverter Instance { get; set; }

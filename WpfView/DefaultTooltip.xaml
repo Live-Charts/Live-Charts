@@ -1,0 +1,91 @@
+﻿<!--
+    
+//The MIT License(MIT)
+
+//copyright(c) 2016 Alberto Rodriguez
+
+//Permission is hereby granted, free of charge, to any person obtaining a copy
+//of this software and associated documentation files (the "Software"), to deal
+//in the Software without restriction, including without limitation the rights
+//to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+//copies of the Software, and to permit persons to whom the Software is
+//furnished to do so, subject to the following conditions:
+
+//The above copyright notice and this permission notice shall be included in all
+//copies or substantial portions of the Software.
+
+//THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+//OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+//SOFTWARE.
+    
+-->
+
+<UserControl x:Class="LiveCharts.Wpf.DefaultTooltip"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:wpf="clr-namespace:LiveCharts.Wpf"
+             mc:Ignorable="d" 
+             d:DataContext="{d:DesignInstance wpf:DefaultTooltip}"
+             BorderThickness="1.3">
+    <UserControl.Background>
+        <SolidColorBrush Color="#202020" Opacity=".8" />
+    </UserControl.Background>
+    <UserControl.Resources>
+        <Style TargetType="TextBlock">
+            <Setter Property="Foreground" Value="{Binding Foreground}"></Setter>
+        </Style>
+        <wpf:SharedConverter x:Key="SharedConverter"/>
+        <wpf:SharedVisibilityConverter x:Key="SharedVisibilityConverter"/>
+        <wpf:XVisibilityConverter x:Key="XVisibilityConverter"/>
+        <wpf:YVisibilityConverter x:Key="YVisibilityConverter"/>
+        <wpf:ParticipationVisibilityConverter x:Key="ParticipationVisibilityConverter"/>
+    </UserControl.Resources>
+    <UserControl.Template>
+        <ControlTemplate>
+            <Border Background="{Binding Background}" CornerRadius="{Binding CornerRadius}"
+                    BorderThickness="{Binding BorderThickness}" Padding="10 5">
+                <StackPanel Orientation="Vertical">
+                    <TextBlock Text="{Binding Data, Converter={StaticResource SharedConverter}}" HorizontalAlignment="Center" FontWeight="Bold"
+                               Visibility="{Binding Data, Converter={StaticResource SharedVisibilityConverter}}" />
+                    <ItemsControl ItemsSource="{Binding Data.Points}" Grid.IsSharedSizeScope="True">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate DataType="{x:Type wpf:DataPointViewModel}">
+                                <Grid Margin="2">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto" SharedSizeGroup="Title"/>
+                                        <ColumnDefinition Width="Auto" SharedSizeGroup="X"/>
+                                        <ColumnDefinition Width="Auto" SharedSizeGroup="Y"/>
+                                        <ColumnDefinition Width="Auto" SharedSizeGroup="Participation"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Ellipse Width="11" Height="11" StrokeThickness="{Binding Series.StrokeThickness}" 
+                                             Stroke="{Binding Series.Stroke}" Fill="{Binding Series.Fill}"/>
+                                    <TextBlock Grid.Column="1" Text="{Binding Series.Title}" VerticalAlignment="Center" Margin="5 0 0 0"/>
+                                    <TextBlock Grid.Column="2" Text="{Binding ChartPoint.X}" VerticalAlignment="Center" Margin="5 0 0 0"
+                                               Visibility="{Binding DataContext.Data, RelativeSource={RelativeSource  FindAncestor, 
+                                                                                                    AncestorType={x:Type StackPanel}}, 
+                                                                    Converter={StaticResource XVisibilityConverter} }" />
+                                    <TextBlock Grid.Column="3" Text="{Binding ChartPoint.Y}" VerticalAlignment="Center" Margin="5 0 0 0"
+                                               Visibility="{Binding DataContext.Data, RelativeSource={RelativeSource  FindAncestor, 
+                                                                                                    AncestorType={x:Type StackPanel}}, 
+                                                                    Converter={StaticResource YVisibilityConverter} }"/>
+                                    <TextBlock Grid.Column="4" Text="{Binding ChartPoint.Participation, StringFormat={}{0:P}}" 
+                                               VerticalAlignment="Center" Margin="5 0 0 0"
+                                               Visibility="{Binding DataContext.Data, RelativeSource={RelativeSource  FindAncestor, 
+                                                                                                    AncestorType={x:Type StackPanel}}, 
+                                                                    Converter={StaticResource ParticipationVisibilityConverter} }"/>
+                                </Grid>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+            </Border>
+        </ControlTemplate>
+    </UserControl.Template>
+</UserControl>

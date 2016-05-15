@@ -1,4 +1,6 @@
-﻿//The MIT License(MIT)
+﻿<!--
+    
+//The MIT License(MIT)
 
 //copyright(c) 2016 Alberto Rodriguez
 
@@ -19,19 +21,18 @@
 //LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
-
-using LiveCharts.Charts;
-using LiveCharts.Wpf.Components;
-using LiveCharts.Wpf.Components.Chart;
-
-namespace LiveCharts.Wpf
-{
-    public class CartesianChart : Chart
-    {
-        public CartesianChart()
-        {
-            var updater = new Components.ChartUpdater();
-            ChartCoreModel = new CartesianChartCore(this, updater);
-        }
-    }
-}
+    
+-->
+     
+    <UserControl x:Class="LiveCharts.Wpf.DefaultLegend"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:LiveCharts.Wpf"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <Grid>
+            
+    </Grid>
+</UserControl>

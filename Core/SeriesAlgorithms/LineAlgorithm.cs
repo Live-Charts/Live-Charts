@@ -86,6 +86,8 @@ namespace LiveCharts.SeriesAlgorithms
 
                     chartPoint.ChartLocation = p1;
 
+                    chartPoint.SeriesView = View;
+
                     var xc1 = (p0.X + p1.X)/2.0;
                     var yc1 = (p0.Y + p1.Y)/2.0;
                     var xc2 = (p1.X + p2.X)/2.0;

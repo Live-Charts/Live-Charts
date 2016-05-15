@@ -28,6 +28,7 @@ using System.Windows.Shapes;
 using LiveCharts.Helpers;
 using LiveCharts.SeriesAlgorithms;
 using LiveCharts.Wpf.Components;
+using LiveCharts.Wpf.Components.Chart;
 using LiveCharts.Wpf.Points;
 
 // ReSharper disable once CheckNamespace
@@ -124,12 +125,9 @@ namespace LiveCharts.Wpf
                 BindingOperations.SetBinding(pbv.HoverShape, VisibilityProperty,
                     new Binding {Path = new PropertyPath(VisibilityProperty), Source = this});
 
-                if (Model.Chart.View.HasDataClickEventAttached)
-                {
-                    var wpfChart = Model.Chart.View as Chart;
-                    if (wpfChart == null) return null;
-                    pbv.HoverShape.MouseDown += wpfChart.DataMouseDown;
-                }
+                var wpfChart = Model.Chart.View as Chart;
+                if (wpfChart == null) return null;
+                wpfChart.AttachEventsTo(pbv.HoverShape);
 
                 Model.Chart.View.AddToDrawMargin(pbv.HoverShape);
             }

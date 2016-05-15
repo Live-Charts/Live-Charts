@@ -28,6 +28,11 @@ namespace LiveCharts
 {
     #region Enumerators
 
+    public enum TooltipSelectionMode
+    {
+        OnlySender, SharedXValues, SharedYValues
+    }
+
     public enum SeriesOrientation
     {
         Horizontal, Vertical
@@ -385,12 +390,12 @@ namespace LiveCharts
         void SetDrawMarginLeft(double value);
         void SetDrawMarginHeight(double value);
         void SetDrawMarginWidth(double value);
-        void Erase();
+
         void AddToView(object element);
         void AddToDrawMargin(object element);
         void RemoveFromView(object element);
         void RemoveFromDrawMargin(object element);
-        void ShowTooltip(ChartPoint sender, IEnumerable<ChartPoint> sibilings, CorePoint at);
+
         void HideTooltop();
         void ShowLegend(CorePoint at);
         void HideLegend();

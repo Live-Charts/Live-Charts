@@ -63,6 +63,8 @@ namespace LiveCharts.SeriesAlgorithms
                 chartPoint.ChartLocation = ChartFunctions.ToDrawMargin(
                     chartPoint, View.ScalesXAt, View.ScalesYAt, Chart) + uw;
 
+                chartPoint.SeriesView = View;
+
                 chartPoint.View = View.GetPointView(chartPoint.View, chartPoint,
                     View.DataLabels ? fx(chartPoint.X) + ", " + fy(chartPoint.Y) : null);
 

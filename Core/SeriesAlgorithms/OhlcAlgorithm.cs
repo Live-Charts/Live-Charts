@@ -57,6 +57,8 @@ namespace LiveCharts.SeriesAlgorithms
                 chartPoint.View = View.GetPointView(chartPoint.View, chartPoint,
                     View.DataLabels ? fy(chartPoint.Y) : null);
 
+                chartPoint.SeriesView = View;
+
                 var ohclView = (IOhlcPointView) chartPoint.View;
 
                 ohclView.Open = ChartFunctions.ToDrawMargin(chartPoint.Open, AxisTags.Y, Chart, View.ScalesYAt);
