@@ -23,19 +23,19 @@ namespace Wpf
 
             CartesianExamples = new List<UserControl>
             {
-                //new Welcome(),
-                //new ResponsiveExample(),
-                //new CustomTypesPlotting(),
-                //new LineExample(),
-                //new BarExample(),
-                //new BubblesExample(),
-                //new StackedAreaExample(),
-                //new FinancialExample(),
-                //new StackedBarExample(),
-                //new SectionsExample(),
-                //new ZoomingAndPanning(),
+                new Welcome(),
+                new ResponsiveExample(),
+                new CustomTypesPlotting(),
+                new LineExample(),
+                new BarExample(),
+                new BubblesExample(),
+                new StackedAreaExample(),
+                new FinancialExample(),
+                new StackedBarExample(),
+                new SectionsExample(),
+                new ZoomingAndPanning(),
                 new ConstantChangesChart(),
-                //new MixingTypes()
+                new MixingTypes()
             };
 
             CartesianView = CartesianExamples != null && CartesianExamples.Count > 0 ? CartesianExamples[0] : null;
