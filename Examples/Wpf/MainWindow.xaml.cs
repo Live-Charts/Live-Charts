@@ -5,7 +5,6 @@ using System.Runtime.CompilerServices;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Navigation;
-using LiveCharts.Wpf;
 using Wpf.Annotations;
 using Wpf.CartesianChart;
 
@@ -35,6 +34,7 @@ namespace Wpf
                 new StackedBarExample(),
                 new SectionsExample(),
                 new ZoomingAndPanning(),
+                new ConstantChangesChart(),
                 new MixingTypes()
             };
 

@@ -20,8 +20,8 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
+using System;
 using LiveCharts.Charts;
-using LiveCharts.Wpf.Components;
 using LiveCharts.Wpf.Components.Chart;
 
 namespace LiveCharts.Wpf
@@ -30,7 +30,8 @@ namespace LiveCharts.Wpf
     {
         public CartesianChart()
         {
-            var updater = new Components.ChartUpdater();
+            var freq = DisableAnimations ? TimeSpan.FromMilliseconds(10) : AnimationsSpeed;
+            var updater = new Components.ChartUpdater(freq);
             ChartCoreModel = new CartesianChartCore(this, updater);
         }
     }

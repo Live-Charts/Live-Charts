@@ -37,6 +37,8 @@ namespace LiveCharts
             View = view;
             CleanFactor = 3;
             Cache = new Dictionary<double, SeparatorElementCore>();
+            LastAxisMax = null;
+            LastAxisMin = null;
         }
 
         #endregion
@@ -140,7 +142,9 @@ namespace LiveCharts
             var deltaX = p2.X - p1.X;
             // ReSharper disable once CompareOfFloatsByEqualityOperator
             var m = (p2.Y - p1.Y) / (deltaX == 0 ? double.MinValue : deltaX);
-            return m * (value - p1.X) + p1.Y;
+            var d = m*(value - p1.X) + p1.Y;
+
+            return d;
         }
 
         internal CoreSize PrepareChart(AxisTags source, ChartCore chart)

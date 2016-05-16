@@ -115,50 +115,13 @@ namespace LiveCharts.Wpf.Components.Chart
         public SeriesCollection Series
         {
             get { return (SeriesCollection)GetValue(SeriesProperty); }
-            set
-            {
-#if DEBUG
-                if (DesignerProperties.GetIsInDesignMode(this))
-                {
-                    if (value == null || value.Count == 0)
-                    {
-                        var r = new Random();
-                        SetValue(SeriesProperty,
-                            new SeriesCollection
-                            {
-                                new LineSeries
-                                {
-                                    Values = new ChartValues<double>
-                                        {
-                                            r.NextDouble()*10,
-                                            r.NextDouble()*10,
-                                            r.NextDouble()*10,
-                                            r.NextDouble()*10,
-                                            r.NextDouble()*10
-                                        }
-                                }
-                            });
-                        return;
-                    }
-                    return;
-                }
-#endif
-                SetValue(SeriesProperty, value);
-            }
-        }
-
-        public static readonly DependencyProperty UpdaterFrequencyProperty = DependencyProperty.Register(
-            "UpdaterFrequency", typeof(TimeSpan?), typeof(Chart), new PropertyMetadata(default(TimeSpan?)));
-
-        public TimeSpan? UpdaterFrequency
-        {
-            get { return (TimeSpan?)GetValue(UpdaterFrequencyProperty); }
-            set { SetValue(UpdaterFrequencyProperty, value); }
+            set { SetValue(SeriesProperty, value);}
         }
 
         public static readonly DependencyProperty AnimationsSpeedProperty = DependencyProperty.Register(
             "AnimationsSpeed", typeof(TimeSpan), typeof(Chart),
-            new PropertyMetadata(default(TimeSpan), CallChartUpdater(true)));
+            new PropertyMetadata(default(TimeSpan), UpdateChartFrequency));
+
         /// <summary>
         /// Gets or sets the default animation speed for this chart, you can override this speed for each element (series and axes)
         /// </summary>
@@ -169,8 +132,8 @@ namespace LiveCharts.Wpf.Components.Chart
         }
 
         public static readonly DependencyProperty DisableAnimationsProperty = DependencyProperty.Register(
-            "DisableAnimations", typeof(bool), typeof(Chart),
-            new PropertyMetadata(default(bool), CallChartUpdater(true)));
+            "DisableAnimations", typeof (bool), typeof (Chart),
+            new PropertyMetadata(default(bool), UpdateChartFrequency));
         /// <summary>
         /// Gets or sets if the chart is animated or not.
         /// </summary>
