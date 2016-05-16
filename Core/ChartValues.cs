@@ -20,6 +20,7 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using LiveCharts.Charts;
@@ -74,12 +75,12 @@ namespace LiveCharts
             var config = GetConfig();
             if (config == null) return;
 
-            var xMin = double.MaxValue;
-            var xMax = double.MinValue;
-            var yMin = double.MaxValue;
-            var yMax = double.MinValue;
-            var wMin = double.MaxValue;
-            var wMax = double.MinValue;
+            var xMin = double.PositiveInfinity;
+            var xMax = double.NegativeInfinity;
+            var yMin = double.PositiveInfinity;
+            var yMax = double.NegativeInfinity;
+            var wMin = double.PositiveInfinity;
+            var wMax = double.NegativeInfinity;
             
             foreach (var xyw in IndexData().Select(data => config.GetEvaluation(data)))
             {
@@ -93,9 +94,9 @@ namespace LiveCharts
                 if (xyw[1].W > wMax) wMax = xyw[1].W;
             }
 
-            XLimit = new CoreLimit(xMin, xMax);
-            YLimit = new CoreLimit(yMin, yMax);
-            WeigthLimit = new CoreLimit(wMin, wMax);
+            XLimit = new CoreLimit(double.IsInfinity(xMin) ? 0 : xMin, double.IsInfinity(yMin) ? 1 : xMax);
+            YLimit = new CoreLimit(double.IsInfinity(yMin) ? 0 : yMin, double.IsInfinity(yMax) ? 1 : yMax);
+            WeigthLimit = new CoreLimit(double.IsInfinity(wMin) ? 0 : wMin, double.IsInfinity(wMax) ? 1 : wMax);
         }
 
         public void InitializeGarbageCollector()

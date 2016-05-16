@@ -1,17 +1,15 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Windows.Threading;
 
 namespace LiveCharts.Wpf.Components
 {
     public class ChartUpdater : LiveCharts.ChartUpdater
     {
-        public ChartUpdater()
+        public ChartUpdater(TimeSpan frequency)
         {
-            Timer = new DispatcherTimer {Interval = TimeSpan.FromMilliseconds(50)};
-            FrecuencyUpdate += () =>
-            {
-                Timer.Interval = Frequency;
-            };
+            Timer = new DispatcherTimer {Interval = frequency};
+
             Timer.Tick += (sender, args) =>
             {
                 Update();
@@ -28,6 +26,11 @@ namespace LiveCharts.Wpf.Components
 
             IsUpdating = true;
             Timer.Start();
+        }
+
+        public override void UpdateFrequency(TimeSpan freq)
+        {
+            Timer.Interval = freq;
         }
     }
 }

@@ -259,8 +259,7 @@ namespace LiveCharts
     {
         ChartCore Chart { get; set; }
         void Run(bool restartView = false);
-        void Cancel();
-        void UpdateFrequency();
+        void UpdateFrequency(TimeSpan freq);
     }
 
     public interface IObservableChartPoint
@@ -376,7 +375,6 @@ namespace LiveCharts
 
         SeriesCollection Series { get; set; }
         TimeSpan TooltipTimeout { get; set; }
-        TimeSpan? UpdaterFrequency { get; set; }
         ZoomingOptions Zoom { get; set; }
         LegendLocation LegendLocation { get; set; }
         bool DisableAnimations { get; set; }

@@ -33,7 +33,6 @@ namespace LiveCharts.Charts
         public CartesianChartCore(IChartView view, IChartUpdater updater) : base(view, updater)
         {
             updater.Chart = this;
-            updater.UpdateFrequency();
         }
 
         #endregion
@@ -61,6 +60,12 @@ namespace LiveCharts.Charts
                 xi.MaxLimit = xi.MaxValue ?? cartesianSeries.Where(x => x.View.ScalesXAt == index)
                     .Select(x => x.GetMaxX(xi))
                     .DefaultIfEmpty(0).Max();
+
+                if (Math.Abs(xi.MinLimit - xi.MaxLimit) < xi.S*.01)
+                {
+                    xi.MinLimit -= xi.S;
+                    xi.MaxLimit += xi.S;
+                }
             }
 
             for (var index = 0; index < AxisY.Count; index++)
@@ -73,6 +78,12 @@ namespace LiveCharts.Charts
                 yi.MaxLimit = yi.MaxValue ?? cartesianSeries.Where(x => x.View.ScalesYAt == index)
                     .Select(x => x.GetMaxY(yi))
                     .DefaultIfEmpty(0).Max();
+
+                if (Math.Abs(yi.MinLimit - yi.MaxLimit) < yi.S * .01)
+                {
+                    yi.MinLimit -= yi.S;
+                    yi.MaxLimit += yi.S;
+                }
             }
 
             PrepareUnitWidthColumns();

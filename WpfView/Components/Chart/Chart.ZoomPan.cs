@@ -33,7 +33,7 @@ namespace LiveCharts.Wpf.Components.Chart
 
         private void MouseWheelOnRoll(object sender, MouseWheelEventArgs e)
         {
-            if (Model.PivotZoomingAxis == AxisTags.None) return;
+            if (Zoom == ZoomingOptions.None) return;
 
             var p = e.GetPosition(this);
 
@@ -53,7 +53,6 @@ namespace LiveCharts.Wpf.Components.Chart
             DragOrigin = new Point(
                 ChartFunctions.FromDrawMargin(DragOrigin.X, AxisTags.X, Model),
                 ChartFunctions.FromDrawMargin(DragOrigin.Y, AxisTags.Y, Model));
-            Debug.WriteLine("drag started at " + DragOrigin.X + ", " + DragOrigin.Y);
         }
 
         private void OnDraggingEnd(object sender, MouseButtonEventArgs e)

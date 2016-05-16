@@ -28,10 +28,7 @@ namespace LiveCharts
 {
     public class ChartUpdater : IChartUpdater
     {
-        public event Action FrecuencyUpdate;
-
         public ChartCore Chart { get; set; }
-        public TimeSpan Frequency { get; set; }
         public bool IsUpdating { get; set; }
         public bool RestartViewRequested { get; set; }
 
@@ -44,6 +41,11 @@ namespace LiveCharts
         }
 
         public virtual void Run(bool restartView = false)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual void UpdateFrequency(TimeSpan freq)
         {
             throw new NotImplementedException();
         }
@@ -79,36 +81,6 @@ namespace LiveCharts
             Chart.View.CountElements();
 #endif
         }
-
-        public void Cancel()
-        {
-#if DEBUG
-            Debug.WriteLine("Chart update cancelation requested!");
-#endif
-        }
-
-        public void UpdateFrequency()
-        {
-            if (Chart == null) return;
-
-            if (Chart.View.UpdaterFrequency == null)
-            {
-                //by defualt the chart will update according to animations speed
-                //if you need to force the update in a shorter interval then use the 
-                //Chart.UpdateFrequency property
-
-                var ms = Chart.View.DisableAnimations ? 0 : Chart.View.AnimationsSpeed.TotalMilliseconds;
-
-                if (ms < 100) ms = 100;
-
-                Frequency = TimeSpan.FromMilliseconds(ms);
-
-                return;
-            }
-
-            Frequency = Chart.View.UpdaterFrequency.Value;
-
-            if (FrecuencyUpdate != null) FrecuencyUpdate.Invoke();
-        }
+       
     }
 }

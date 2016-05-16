@@ -66,6 +66,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="CartesianChart\ConstantChangesChart.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="CartesianChart\FinancialExample.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -119,6 +123,9 @@
     </Compile>
     <Compile Include="CartesianChart\BubblesExample.xaml.cs">
       <DependentUpon>BubblesExample.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CartesianChart\ConstantChangesChart.xaml.cs">
+      <DependentUpon>ConstantChangesChart.xaml</DependentUpon>
     </Compile>
     <Compile Include="CartesianChart\FinancialExample.xaml.cs">
       <DependentUpon>FinancialExample.xaml</DependentUpon>

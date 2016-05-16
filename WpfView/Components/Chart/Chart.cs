@@ -110,6 +110,19 @@ namespace LiveCharts.Wpf.Components.Chart
             };
         }
 
+        private static void UpdateChartFrequency(DependencyObject o, DependencyPropertyChangedEventArgs e)
+        {
+            var wpfChart = (Chart) o;
+
+            var freq = wpfChart.DisableAnimations ? TimeSpan.FromMilliseconds(10) : wpfChart.AnimationsSpeed;
+
+            if (wpfChart.Model == null || wpfChart.Model.Updater == null) return;
+
+            wpfChart.Model.Updater.UpdateFrequency(freq);
+
+            CallChartUpdater(true)(o, e);
+        }
+
         #endregion
 
         #region Obsoletes, this properties will dissapear in future versions
