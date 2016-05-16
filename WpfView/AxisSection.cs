@@ -156,6 +156,7 @@ namespace LiveCharts.Wpf
             if (source == AxisTags.X)
             {
                 var w = to - from;
+                w = StrokeThickness > w ? StrokeThickness : w;
 
                 Canvas.SetTop(_rectangle, 0);
                 _rectangle.Height = Model.Chart.DrawMargin.Height;
@@ -177,6 +178,7 @@ namespace LiveCharts.Wpf
             }
 
             var h = to - from;
+            h = StrokeThickness > h ? StrokeThickness : h;
 
             Canvas.SetLeft(_rectangle, 0d);
             _rectangle.Width = Model.Chart.DrawMargin.Width;

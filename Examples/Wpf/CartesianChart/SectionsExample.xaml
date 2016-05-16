@@ -23,7 +23,7 @@
             <wpf:CartesianChart.AxisY>
                 <wpf:Axis>
                     <wpf:Axis.Sections>
-                        <wpf:AxisSection FromValue="8" ToValue="9" Label="Awesome!">
+                        <wpf:AxisSection FromValue="8" ToValue="8" StrokeThickness="3" Stroke="red">
                             <wpf:AxisSection.Fill>
                                 <SolidColorBrush Color="#A3A3FF" Opacity=".4"></SolidColorBrush>
                             </wpf:AxisSection.Fill>
