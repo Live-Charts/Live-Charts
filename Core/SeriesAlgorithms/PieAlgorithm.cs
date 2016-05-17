@@ -42,6 +42,12 @@ namespace LiveCharts.SeriesAlgorithms
             
             var inner = pieChart.InnerRadius;
 
+            var startAt = pieChart.StartingRotationAngle > 360
+                ? 360
+                : (pieChart.StartingRotationAngle < 0
+                    ? 0
+                    : pieChart.StartingRotationAngle);
+
             foreach (var chartPoint in View.Values.Points)
             {
                 chartPoint.View = View.GetPointView(chartPoint.View, chartPoint,
@@ -56,12 +62,12 @@ namespace LiveCharts.SeriesAlgorithms
 
                 pieSlice.Radius = space;
                 pieSlice.InnerRadius = inner;
-                pieSlice.Rotation = (chartPoint.StackedParticipation - chartPoint.Participation)*360;
+                pieSlice.Rotation = startAt + (chartPoint.StackedParticipation - chartPoint.Participation)*360;
                 pieSlice.Wedge = chartPoint.Participation*360 > 0 ? chartPoint.Participation*360 : 0;
 
                 chartPoint.View.DrawOrMove(null, chartPoint, 0, Chart);
 
-                inner += space;
+                inner = pieSlice.Radius;
             }
         }
     }

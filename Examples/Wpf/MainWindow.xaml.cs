@@ -8,6 +8,7 @@ using System.Windows.Input;
 using System.Windows.Navigation;
 using Wpf.Annotations;
 using Wpf.CartesianChart;
+using Wpf.Gauges;
 using Wpf.PieChart;
 
 namespace Wpf
@@ -19,6 +20,7 @@ namespace Wpf
     {
         private UserControl _cartesianView;
         private UserControl _pieView;
+        private UserControl _gaugeView;
 
         public MainWindow()
         {
@@ -28,24 +30,29 @@ namespace Wpf
 
             CartesianExamples = new List<UserControl>
             {
-                //new WelcomeCartesian(),
-                //new ResponsiveExample(),
-                //new CustomTypesPlotting(),
-                //new LineExample(),
-                //new BarExample(),
-                //new BubblesExample(),
-                //new StackedAreaExample(),
-                //new FinancialExample(),
-                //new StackedBarExample(),
-                //new SectionsExample(),
-                //new ZoomingAndPanning(),
-                //new ConstantChangesChart(),
-                //new MixingTypes()
+                new WelcomeCartesian(),
+                new ResponsiveExample(),
+                new CustomTypesPlotting(),
+                new LineExample(),
+                new BarExample(),
+                new BubblesExample(),
+                new StackedAreaExample(),
+                new FinancialExample(),
+                new StackedBarExample(),
+                new SectionsExample(),
+                new ZoomingAndPanning(),
+                new ConstantChangesChart(),
+                new MixingTypes()
             };
 
             PieExamples = new List<UserControl>
             {
                 new PieExample()
+            };
+
+            GaugeExamples = new List<UserControl>
+            {
+                new Gauge180(), new Gauge360()
             };
 
             #endregion
@@ -54,6 +61,7 @@ namespace Wpf
 
             CartesianView = getView(CartesianExamples);
             PieView = getView(PieExamples);
+            GaugeView = getView(GaugeExamples);
 
             DataContext = this;
         }
@@ -78,9 +86,19 @@ namespace Wpf
                 OnPropertyChanged();
             }
         }
+        public UserControl GaugeView
+        {
+            get { return _gaugeView; }
+            set
+            {
+                _gaugeView = value;
+                OnPropertyChanged();
+            }
+        }
 
         public List<UserControl> CartesianExamples { get; set; }
         public List<UserControl> PieExamples { get; set; }
+        public List<UserControl> GaugeExamples { get; set; }
 
         private void Hyperlink_OnRequestNavigate(object sender, RequestNavigateEventArgs e)
         {
@@ -120,11 +138,27 @@ namespace Wpf
             PieView = current >= 0 ? PieExamples[current] : PieExamples[PieExamples.Count - 1];
         }
 
+        private void NextGaugeOnClick(object sender, MouseButtonEventArgs e)
+        {
+            if (GaugeView == null) return;
+            var current = GaugeExamples.IndexOf(GaugeView);
+            current++;
+            GaugeView = GaugeExamples.Count > current ? GaugeExamples[current] : GaugeExamples[0];
+        }
+
+        private void PreviousGaugeOnClick(object sender, MouseButtonEventArgs e)
+        {
+            if (GaugeView == null) return;
+            var current = GaugeExamples.IndexOf(GaugeView);
+            current--;
+            GaugeView = current >= 0 ? GaugeExamples[current] : GaugeExamples[GaugeExamples.Count - 1];
+        }
+
 
         [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            if (PropertyChanged != null) PropertyChanged.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

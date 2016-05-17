@@ -38,12 +38,21 @@ namespace LiveCharts.Wpf
         }
 
         public static readonly DependencyProperty InnerRadiusProperty = DependencyProperty.Register(
-            "InnerRadius", typeof (double), typeof (PieChart), new PropertyMetadata(default(double)));
+            "InnerRadius", typeof (double), typeof (PieChart), new PropertyMetadata(0d, CallChartUpdater()));
 
         public double InnerRadius
         {
             get { return (double) GetValue(InnerRadiusProperty); }
             set { SetValue(InnerRadiusProperty, value); }
+        }
+
+        public static readonly DependencyProperty StartingRotationAngleProperty = DependencyProperty.Register(
+            "StartingRotationAngle", typeof (double), typeof (PieChart), new PropertyMetadata(45d, CallChartUpdater()));
+
+        public double StartingRotationAngle
+        {
+            get { return (double) GetValue(StartingRotationAngleProperty); }
+            set { SetValue(StartingRotationAngleProperty, value); }
         }
     }
 }

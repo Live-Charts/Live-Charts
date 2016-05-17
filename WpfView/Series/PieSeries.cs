@@ -144,6 +144,7 @@ namespace LiveCharts.Wpf
         {
             SetValue(StrokeThicknessProperty, 2d);
             SetValue(StrokeProperty, Brushes.White);
+
             DefaultFillOpacity = 1;
         }
 

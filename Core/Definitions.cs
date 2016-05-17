@@ -270,6 +270,7 @@ namespace LiveCharts
     public interface IPieSeries
     {
         ISeriesView View { get; }
+
     }
 
     public interface ICartesianSeries
@@ -292,6 +293,7 @@ namespace LiveCharts
     public interface IPieChart
     {
         double InnerRadius { get; set; }
+        double StartingRotationAngle { get; set; }
     }
 
     #endregion
