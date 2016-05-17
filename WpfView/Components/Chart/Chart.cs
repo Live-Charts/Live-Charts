@@ -52,7 +52,7 @@ namespace LiveCharts.Wpf.Components.Chart
             SetValue(MinHeightProperty, 125d);
             SetValue(MinWidthProperty, 125d);
 
-            SetValue(AnimationsSpeedProperty, TimeSpan.FromMilliseconds(450));
+            SetValue(AnimationsSpeedProperty, TimeSpan.FromMilliseconds(300));
             SetValue(ChartLegendProperty, new DefaultLegend());
             SetValue(DataTooltipProperty, new DefaultTooltip());
             SetValue(TooltipTimeoutProperty, TimeSpan.FromMilliseconds(800));

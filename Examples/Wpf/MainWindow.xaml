@@ -56,6 +56,17 @@
                 <ContentControl Grid.Column="1" Content="{Binding CartesianView}"/>
                 <Image Grid.Column="2" Source="Right.png" Height="30" MouseDown="NextCartesianOnClick"></Image>
             </Grid>
+            <Separator Margin="10" ></Separator>
+            <Grid Height="500">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Image Grid.Column="0" Source="Left.png" Height="30" MouseDown="PreviousPieOnClick"></Image>
+                <ContentControl Grid.Column="1" Content="{Binding PieView}"/>
+                <Image Grid.Column="2" Source="Right.png" Height="30" MouseDown="NextPieOnClick"></Image>
+            </Grid>
         </StackPanel>
     </ScrollViewer>
 </Window>

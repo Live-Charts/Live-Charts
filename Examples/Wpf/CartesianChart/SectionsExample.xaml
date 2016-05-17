@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Wpf.CartesianChart"
-             xmlns:wpf="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+             xmlns:lc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300" d:DataContext="{d:DesignInstance local:SectionsExample}"> 
     <Grid>
@@ -19,28 +19,28 @@
         <Button Grid.Row="1" Height="30" Click="UpdateAllOnClick">
             Move All
         </Button>
-        <wpf:CartesianChart Grid.Row="2" Series="{Binding SeriesCollection}" >
-            <wpf:CartesianChart.AxisY>
-                <wpf:Axis>
-                    <wpf:Axis.Sections>
-                        <wpf:AxisSection FromValue="8" ToValue="8" StrokeThickness="3" Stroke="red">
-                            <wpf:AxisSection.Fill>
+        <lc:CartesianChart Grid.Row="2" Series="{Binding SeriesCollection}" >
+            <lc:CartesianChart.AxisY>
+                <lc:Axis>
+                    <lc:Axis.Sections>
+                        <lc:AxisSection FromValue="8" ToValue="8" StrokeThickness="3" Stroke="red">
+                            <lc:AxisSection.Fill>
                                 <SolidColorBrush Color="#A3A3FF" Opacity=".4"></SolidColorBrush>
-                            </wpf:AxisSection.Fill>
-                        </wpf:AxisSection>
-                        <wpf:AxisSection FromValue="4" ToValue="8" Label="Good">
-                            <wpf:AxisSection.Fill>
+                            </lc:AxisSection.Fill>
+                        </lc:AxisSection>
+                        <lc:AxisSection FromValue="4" ToValue="8" Label="Good">
+                            <lc:AxisSection.Fill>
                                 <SolidColorBrush Color="#CDCDCD" Opacity=".4"></SolidColorBrush>
-                            </wpf:AxisSection.Fill>
-                        </wpf:AxisSection>
-                        <wpf:AxisSection FromValue="0" ToValue="4" Label="Bad">
-                            <wpf:AxisSection.Fill>
+                            </lc:AxisSection.Fill>
+                        </lc:AxisSection>
+                        <lc:AxisSection FromValue="0" ToValue="4" Label="Bad">
+                            <lc:AxisSection.Fill>
                                 <SolidColorBrush Color="#FF8585" Opacity=".4"></SolidColorBrush>
-                            </wpf:AxisSection.Fill>
-                        </wpf:AxisSection>
-                    </wpf:Axis.Sections>
-                </wpf:Axis>
-            </wpf:CartesianChart.AxisY>
-        </wpf:CartesianChart>
+                            </lc:AxisSection.Fill>
+                        </lc:AxisSection>
+                    </lc:Axis.Sections>
+                </lc:Axis>
+            </lc:CartesianChart.AxisY>
+        </lc:CartesianChart>
     </Grid>
 </UserControl>

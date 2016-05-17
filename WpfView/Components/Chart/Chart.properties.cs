@@ -23,7 +23,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -171,7 +170,7 @@ namespace LiveCharts.Wpf.Components.Chart
 
         public static Color GetDefaultColor(int index)
         {
-            return Colors[(int)(index - Colors.Count * Math.Truncate(index / (decimal)Colors.Count))];
+            return Colors[(int) (index - Colors.Count*Math.Truncate(index/(double) Colors.Count))];
         }
     }
 }

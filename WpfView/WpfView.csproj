@@ -51,6 +51,7 @@
   <ItemGroup>
     <Compile Include="Axis.cs" />
     <Compile Include="AxisSection.cs" />
+    <Compile Include="Charts\PieChart.cs" />
     <Compile Include="Components\ChartUpdater.cs" />
     <Compile Include="Components\AxisSeparatorCache.cs" />
     <Compile Include="Components\Chart\Chart.Properties.cs" />
@@ -63,11 +64,14 @@
     <Compile Include="DefaultTooltip.xaml.cs">
       <DependentUpon>DefaultTooltip.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Points\PiePointView.cs" />
     <Compile Include="Points\OhlcPointView.cs" />
     <Compile Include="Points\BubblePointView.cs" />
+    <Compile Include="Points\PieSlice.cs" />
     <Compile Include="Points\RowPointView.cs" />
     <Compile Include="Points\ColumnPointView.cs" />
     <Compile Include="Points\VBezierPointView.cs" />
+    <Compile Include="Series\PieSeries.cs" />
     <Compile Include="Series\OhlcSeries.cs" />
     <Compile Include="Series\StackedAreaSeries.cs" />
     <Compile Include="Series\StackedRowSeries.cs" />
@@ -81,7 +85,7 @@
     <Compile Include="Components\Converters.cs" />
     <Compile Include="DefaultAxes.cs" />
     <Compile Include="Components\TooltipDto.cs" />
-    <Compile Include="CartesianChart.cs" />
+    <Compile Include="Charts\CartesianChart.cs" />
     <Compile Include="Series\LineSeries.cs" />
     <Compile Include="Components\DesktopExtentions.cs" />
     <Compile Include="Points\PointView.cs" />

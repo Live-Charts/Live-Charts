@@ -111,8 +111,6 @@ namespace LiveCharts.Charts
                               View.Series.Where(series => series.Values != null && series.ScalesYAt == index)
                                   .Select(series => series.Values.YLimit.Min).DefaultIfEmpty(0).Min();
             }
-
-            PivotZoomingAxis = AxisTags.X;
         }
 
         public void CalculateComponentsAndMargin()
@@ -433,6 +431,118 @@ namespace LiveCharts.Charts
             }
             
             Updater.Run();
+        }
+
+        #endregion
+
+        #region Protecteds
+
+        protected void StackPoints(IEnumerable<ISeriesView> stackables, AxisTags stackAt, int stackIndex,
+            StackMode mode = StackMode.Values)
+        {
+            var stackedColumns = stackables.Select(x => x.Values.Points.ToArray()).ToArray();
+
+            var maxI = stackedColumns.Select(x => x.Length).DefaultIfEmpty(0).Max();
+
+            for (var i = 0; i < maxI; i++)
+            {
+                var cols = stackedColumns
+                    .Select(x => x.Length > i
+                        ? new StackedSum(Pull(x[i], stackAt))
+                        : new StackedSum()).ToArray();
+
+                var sum = new StackedSum
+                {
+                    Left = cols.Select(x => x.Left).DefaultIfEmpty(0).Sum(),
+                    Right = cols.Select(x => x.Right).DefaultIfEmpty(0).Sum()
+                };
+
+                if (stackAt == AxisTags.X)
+                {
+                    if (mode == StackMode.Percentage)
+                    {
+                        AxisX[stackIndex].MinLimit = 0;
+                        AxisX[stackIndex].MaxLimit = 1;
+                    }
+                    else
+                    {
+                        if (sum.Left < AxisX[stackIndex].MinLimit)
+                            AxisX[stackIndex].MinLimit = sum.Left == 0
+                                ? 0
+                                : (Math.Truncate(sum.Left / AxisX[stackIndex].S) - 1) * AxisX[stackIndex].S;
+                        if (sum.Right > AxisX[stackIndex].MaxLimit)
+                            AxisX[stackIndex].MaxLimit = sum.Right == 0
+                                ? 0
+                                : (Math.Truncate(sum.Right / AxisX[stackIndex].S) + 1) * AxisX[stackIndex].S;
+                    }
+                }
+
+                if (stackAt == AxisTags.Y)
+                {
+                    if (mode == StackMode.Percentage)
+                    {
+                        AxisY[stackIndex].MinLimit = 0;
+                        AxisY[stackIndex].MaxLimit = 1;
+                    }
+                    else
+                    {
+                        if (sum.Left < AxisY[stackIndex].MinLimit)
+                            AxisY[stackIndex].MinLimit = sum.Left == 0
+                                ? 0
+                                : (Math.Truncate(sum.Left / AxisY[stackIndex].S) - 1) * AxisY[stackIndex].S;
+                        if (sum.Right > AxisY[stackIndex].MaxLimit)
+                            AxisY[stackIndex].MaxLimit = sum.Right == 0
+                                ? 0
+                                : (Math.Truncate(sum.Right / AxisY[stackIndex].S) + 1) * AxisY[stackIndex].S;
+                    }
+                }
+
+                var lastLeft = 0d;
+                var lastRight = 0d;
+                var leftPart = 0d;
+                var rightPart = 0d;
+
+                foreach (var col in stackedColumns)
+                {
+                    if (i >= col.Length) continue;
+                    var point = col[i];
+                    var pulled = Pull(point, stackAt);
+
+                    if (pulled <= 0)
+                    {
+                        point.From = lastLeft;
+                        point.To = lastLeft + pulled;
+                        point.Sum = sum.Left;
+                        point.Participation = (point.To - point.From) / point.Sum;
+                        point.Participation = double.IsNaN(point.Participation)
+                            ? 0
+                            : point.Participation;
+                        leftPart += point.Participation;
+                        point.StackedParticipation = leftPart;
+
+                        lastLeft = point.To;
+                    }
+                    else
+                    {
+                        point.From = lastRight;
+                        point.To = lastRight + pulled;
+                        point.Sum = sum.Right;
+                        point.Participation = (point.To - point.From)/point.Sum;
+                        point.Participation = double.IsNaN(point.Participation)
+                            ? 0
+                            : point.Participation;
+                        rightPart += point.Participation;
+                        point.StackedParticipation = rightPart;
+
+                        lastRight = point.To;
+                    }
+                }
+            }
+        }
+
+        protected static double Pull(ChartPoint point, AxisTags source)
+        {
+            return source == AxisTags.Y ? point.Y : point.X;
         }
 
         #endregion

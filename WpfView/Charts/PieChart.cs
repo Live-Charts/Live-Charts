@@ -21,18 +21,29 @@
 //SOFTWARE.
 
 using System;
+using System.Windows;
 using LiveCharts.Charts;
 using LiveCharts.Wpf.Components.Chart;
 
+// ReSharper disable once CheckNamespace
 namespace LiveCharts.Wpf
 {
-    public class CartesianChart : Chart
+    public class PieChart : Chart, IPieChart
     {
-        public CartesianChart()
+        public PieChart()
         {
             var freq = DisableAnimations ? TimeSpan.FromMilliseconds(10) : AnimationsSpeed;
             var updater = new Components.ChartUpdater(freq);
-            ChartCoreModel = new CartesianChartCore(this, updater);
+            ChartCoreModel = new PieChartCore(this, updater);
+        }
+
+        public static readonly DependencyProperty InnerRadiusProperty = DependencyProperty.Register(
+            "InnerRadius", typeof (double), typeof (PieChart), new PropertyMetadata(default(double)));
+
+        public double InnerRadius
+        {
+            get { return (double) GetValue(InnerRadiusProperty); }
+            set { SetValue(InnerRadiusProperty, value); }
         }
     }
 }

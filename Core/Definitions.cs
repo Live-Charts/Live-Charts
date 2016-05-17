@@ -267,6 +267,11 @@ namespace LiveCharts
         event Action PointChanged;
     }
 
+    public interface IPieSeries
+    {
+        ISeriesView View { get; }
+    }
+
     public interface ICartesianSeries
     {
         ISeriesView View { get; }
@@ -282,6 +287,15 @@ namespace LiveCharts
         StackMode StackMode { get; set; }
     }
 
+    #region ChartViews
+
+    public interface IPieChart
+    {
+        double InnerRadius { get; set; }
+    }
+
+    #endregion
+
     #region Series Views
 
     public interface IBubbleSeriesView : ISeriesView
@@ -293,6 +307,11 @@ namespace LiveCharts
     public interface IColumnSerieView : ISeriesView
     {
         double MaxColumnWidth { get; set; }
+    }
+
+    public interface IPieSeriesView : ISeriesView
+    {
+        
     }
 
     public interface IOhlcSeriesView : ISeriesView
@@ -360,6 +379,14 @@ namespace LiveCharts
         double Width { get; set; }
         double Left { get; set; }
         double StartReference { get; set; }
+    }
+
+    public interface IPieSlicePointView : IChartPointView
+    {
+        double Rotation { get; set; }
+        double Wedge { get; set; }
+        double InnerRadius { get; set; }
+        double Radius { get; set; }
     }
     #endregion
 

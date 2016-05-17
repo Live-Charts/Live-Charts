@@ -33,19 +33,19 @@ using LiveCharts.Wpf.Points;
 // ReSharper disable once CheckNamespace
 namespace LiveCharts.Wpf
 {
-    public class BubbleSeries : Series.Series, IBubbleSeriesView
+    public class PieSeries : Series.Series, IPieSeriesView
     {
         #region Contructors
 
-        public BubbleSeries()
+        public PieSeries()
         {
-            Model = new BubbleAlgorithm(this);
+            Model = new PieAlgorithm(this);
             InitializeDefuaults();
         }
 
-        public BubbleSeries(object configuration)
+        public PieSeries(object configuration)
         {
-            Model = new BubbleAlgorithm(this);
+            Model = new PieAlgorithm(this);
             Configuration = configuration;
             InitializeDefuaults();
         }
@@ -58,54 +58,36 @@ namespace LiveCharts.Wpf
 
         #region Properties
 
-        public static readonly DependencyProperty MaxBubbleDiameterProperty = DependencyProperty.Register(
-            "MaxBubbleDiameter", typeof (double), typeof (BubbleSeries), new PropertyMetadata(default(double)));
-
-        public double MaxBubbleDiameter
-        {
-            get { return (double) GetValue(MaxBubbleDiameterProperty); }
-            set { SetValue(MaxBubbleDiameterProperty, value); }
-        }
-
-        public static readonly DependencyProperty MinBubbleDiameterProperty = DependencyProperty.Register(
-            "MinBubbleDiameter", typeof (double), typeof (BubbleSeries), new PropertyMetadata(default(double)));
-
-        public double MinBubbleDiameter
-        {
-            get { return (double) GetValue(MinBubbleDiameterProperty); }
-            set { SetValue(MinBubbleDiameterProperty, value); }
-        }
-
         #endregion
 
         #region Overriden Methods
 
         public override IChartPointView GetPointView(IChartPointView view, ChartPoint point, string label)
         {
-            var pbv = (view as BubblePointView);
+            var pbv = (view as PiePointView);
 
             if (pbv == null)
             {
-                pbv = new BubblePointView
+                pbv = new PiePointView
                 {
                     IsNew = true,
-                    Ellipse = new Ellipse()
+                    Slice = new PieSlice()
                 };
 
-                BindingOperations.SetBinding(pbv.Ellipse, Shape.FillProperty,
+                BindingOperations.SetBinding(pbv.Slice, Shape.FillProperty,
                     new Binding { Path = new PropertyPath(FillProperty), Source = this });
-                BindingOperations.SetBinding(pbv.Ellipse, Shape.StrokeProperty,
+                BindingOperations.SetBinding(pbv.Slice, Shape.StrokeProperty,
                     new Binding { Path = new PropertyPath(StrokeProperty), Source = this });
-                BindingOperations.SetBinding(pbv.Ellipse, Shape.StrokeThicknessProperty,
-                    new Binding { Path = new PropertyPath(StrokeThicknessProperty), Source = this });
-                BindingOperations.SetBinding(pbv.Ellipse, VisibilityProperty,
-                    new Binding { Path = new PropertyPath(VisibilityProperty), Source = this });
-                BindingOperations.SetBinding(pbv.Ellipse, Panel.ZIndexProperty,
-                    new Binding {Path = new PropertyPath(Panel.ZIndexProperty), Source = this});
-                BindingOperations.SetBinding(pbv.Ellipse, Shape.StrokeDashArrayProperty,
+                BindingOperations.SetBinding(pbv.Slice, Shape.StrokeThicknessProperty,
+                    new Binding {Path = new PropertyPath(StrokeThicknessProperty), Source = this});
+                BindingOperations.SetBinding(pbv.Slice, Shape.StrokeDashArrayProperty,
                     new Binding {Path = new PropertyPath(StrokeDashArrayProperty), Source = this});
+                BindingOperations.SetBinding(pbv.Slice, Panel.ZIndexProperty,
+                    new Binding {Path = new PropertyPath(Panel.ZIndexProperty), Source = this});
+                BindingOperations.SetBinding(pbv.Slice, VisibilityProperty,
+                    new Binding {Path = new PropertyPath(VisibilityProperty), Source = this});
 
-                Model.Chart.View.AddToDrawMargin(pbv.Ellipse);
+                Model.Chart.View.AddToDrawMargin(pbv.Slice);
             }
             else
             {
@@ -114,7 +96,7 @@ namespace LiveCharts.Wpf
 
             if ((Model.Chart.View.HasTooltip || Model.Chart.View.HasDataClickEventAttached) && pbv.HoverShape == null)
             {
-                pbv.HoverShape = new Rectangle
+                pbv.HoverShape = new PieSlice
                 {
                     Fill = Brushes.Transparent,
                     StrokeThickness = 0
@@ -160,10 +142,9 @@ namespace LiveCharts.Wpf
 
         private void InitializeDefuaults()
         {
-            SetValue(StrokeThicknessProperty, 0d);
-            SetValue(MaxBubbleDiameterProperty, 50d);
-            SetValue(MinBubbleDiameterProperty, 10d);
-            DefaultFillOpacity = 0.7;
+            SetValue(StrokeThicknessProperty, 2d);
+            SetValue(StrokeProperty, Brushes.White);
+            DefaultFillOpacity = 1;
         }
 
         #endregion

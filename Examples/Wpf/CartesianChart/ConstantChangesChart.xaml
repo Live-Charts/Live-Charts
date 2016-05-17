@@ -15,13 +15,13 @@
         </Grid.RowDefinitions>
         <TextBlock Grid.Row="0" TextWrapping="Wrap">
             <Bold>New in 0.7.0</Bold> High frequency charts updates, just one thing, the chart update frequency is directly releated
-            with the animations speed property, if you need to update the chart fast then reduce the animations speed property to 50-10ms 
+            with the animations speed property, if you need to update the chart fast then reduce the animations speed property to less than 100 ms 
             animations run really well at fast speeds, you can also disable animations, but come on, animations is one of the best things in this library!
         </TextBlock>
         <Button Grid.Row="1" Height="30" Click="RunDataOnClick">
             Inject/Stop Data
         </Button>
-        <!--Notice the animations speed property is at 50 miliseconds.-->
-        <lc:CartesianChart Grid.Row="2" Series="{Binding SeriesCollection}" AnimationsSpeed="0:0:0.05"></lc:CartesianChart>
+        <!--Notice the animations speed property is at 100 miliseconds.-->
+        <lc:CartesianChart Grid.Row="2" Series="{Binding SeriesCollection}" AnimationsSpeed="0:0:0.1"></lc:CartesianChart>
     </Grid>
 </UserControl>

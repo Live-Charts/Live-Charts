@@ -41,6 +41,7 @@
   <ItemGroup>
     <Compile Include="AxisCore.cs" />
     <Compile Include="AxisSectionCore.cs" />
+    <Compile Include="Charts\PieChartCore.cs" />
     <Compile Include="ChartUpdater.cs" />
     <Compile Include="ChartValues.cs" />
     <Compile Include="Configurations\BubbleMapper.cs" />
@@ -63,6 +64,7 @@
     <Compile Include="IChartValues.cs" />
     <Compile Include="IDataOptimization.cs" />
     <Compile Include="Charts\CartesianChartCore.cs" />
+    <Compile Include="SeriesAlgorithms\PieAlgorithm.cs" />
     <Compile Include="SeriesAlgorithms\OhlcAlgorithm.cs" />
     <Compile Include="SeriesAlgorithms\VerticalStackedAreaAlgorithm.cs" />
     <Compile Include="SeriesAlgorithms\StackedAreaAlgorithm.cs" />

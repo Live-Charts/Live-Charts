@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
@@ -7,6 +8,7 @@ using System.Windows.Input;
 using System.Windows.Navigation;
 using Wpf.Annotations;
 using Wpf.CartesianChart;
+using Wpf.PieChart;
 
 namespace Wpf
 {
@@ -16,32 +18,69 @@ namespace Wpf
     public partial class MainWindow : INotifyPropertyChanged
     {
         private UserControl _cartesianView;
+        private UserControl _pieView;
 
         public MainWindow()
         {
             InitializeComponent();
 
+            #region Examples
+
             CartesianExamples = new List<UserControl>
             {
-                new Welcome(),
-                new ResponsiveExample(),
-                new CustomTypesPlotting(),
-                new LineExample(),
-                new BarExample(),
-                new BubblesExample(),
-                new StackedAreaExample(),
-                new FinancialExample(),
-                new StackedBarExample(),
-                new SectionsExample(),
-                new ZoomingAndPanning(),
-                new ConstantChangesChart(),
-                new MixingTypes()
+                //new WelcomeCartesian(),
+                //new ResponsiveExample(),
+                //new CustomTypesPlotting(),
+                //new LineExample(),
+                //new BarExample(),
+                //new BubblesExample(),
+                //new StackedAreaExample(),
+                //new FinancialExample(),
+                //new StackedBarExample(),
+                //new SectionsExample(),
+                //new ZoomingAndPanning(),
+                //new ConstantChangesChart(),
+                //new MixingTypes()
             };
 
-            CartesianView = CartesianExamples != null && CartesianExamples.Count > 0 ? CartesianExamples[0] : null;
+            PieExamples = new List<UserControl>
+            {
+                new PieExample()
+            };
+
+            #endregion
+
+            Func<List<UserControl>, UserControl> getView = x => x != null && x.Count > 0 ? x[0] : null;
+
+            CartesianView = getView(CartesianExamples);
+            PieView = getView(PieExamples);
 
             DataContext = this;
         }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public UserControl CartesianView
+        {
+            get { return _cartesianView; }
+            set
+            {
+                _cartesianView = value;
+                OnPropertyChanged();
+            }
+        }
+        public UserControl PieView
+        {
+            get { return _pieView; }
+            set
+            {
+                _pieView = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public List<UserControl> CartesianExamples { get; set; }
+        public List<UserControl> PieExamples { get; set; }
 
         private void Hyperlink_OnRequestNavigate(object sender, RequestNavigateEventArgs e)
         {
@@ -65,19 +104,22 @@ namespace Wpf
             CartesianView = current >= 0 ? CartesianExamples[current] : CartesianExamples[CartesianExamples.Count-1];
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        public UserControl CartesianView
+        private void NextPieOnClick(object sender, MouseButtonEventArgs e)
         {
-            get { return _cartesianView; }
-            set
-            {
-                _cartesianView = value;
-                OnPropertyChanged();
-            }
+            if (PieView == null) return;
+            var current = PieExamples.IndexOf(CartesianView);
+            current++;
+            PieView = PieExamples.Count > current ? PieExamples[current] : PieExamples[0];
         }
 
-        public List<UserControl> CartesianExamples { get; set; }
+        private void PreviousPieOnClick(object sender, MouseButtonEventArgs e)
+        {
+            if (PieView == null) return;
+            var current = PieExamples.IndexOf(CartesianView);
+            current--;
+            PieView = current >= 0 ? PieExamples[current] : PieExamples[PieExamples.Count - 1];
+        }
+
 
         [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
