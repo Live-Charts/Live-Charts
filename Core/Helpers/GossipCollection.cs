@@ -27,15 +27,15 @@ using System.Linq;
 
 namespace LiveCharts.Helpers
 {
-    public delegate void GossipCollectionCollectionChanged(object oldItems, object newItems);
+    public delegate void GossipCollectionCollectionChanged<in T>(
+        IEnumerable<T> oldItems, IEnumerable<T> newItems);
     
     public interface IGossipCollection : IEnumerable
     {
-        event GossipCollectionCollectionChanged CollectionChanged;
+        event GossipCollectionCollectionChanged<object> CollectionChanged;
 
         object this[int index] { get; set; }
         int Count { get; }
-        bool ReportOldItems { get; }
 
         int Add(object item);
         int AddRange(IEnumerable<object> items);
@@ -53,7 +53,8 @@ namespace LiveCharts.Helpers
     {
         private readonly List<T> _source;
 
-#region Constrctors
+        #region Constrctors
+
         public GossipCollection()
         {
             _source = new List<T>();
@@ -68,17 +69,18 @@ namespace LiveCharts.Helpers
         {
             _source = new List<T>(source);
         }
+
         #endregion
 
-#region Events
+        #region Events
 
-        event GossipCollectionCollectionChanged IGossipCollection.CollectionChanged
+        event GossipCollectionCollectionChanged<object> IGossipCollection.CollectionChanged
         {
-            add { CollectionChanged += value; }
-            remove { CollectionChanged -= value; }
+            add { CollectionChanged += value as GossipCollectionCollectionChanged<T>; }
+            remove { CollectionChanged -= value as GossipCollectionCollectionChanged<T>; }
         }
 
-        public event GossipCollectionCollectionChanged CollectionChanged;
+        public event GossipCollectionCollectionChanged<T> CollectionChanged;
 
 #endregion
 
@@ -94,7 +96,6 @@ namespace LiveCharts.Helpers
         }
 
         public int Count { get { return _source.Count; } }
-        public bool ReportOldItems { get; protected set; }
 
 #region Add
 
@@ -108,12 +109,15 @@ namespace LiveCharts.Helpers
         int IGossipCollection.Add(object item)
         {
             _source.Add((T) item);
-            OnCollectionChanged(null, new List<T> {(T) item}.AsEnumerable());
+            OnCollectionChanged(null, new List<T> {(T) item});
             return _source.Count;
         }
 
         public int AddRange(IEnumerable<T> items)
         {
+            //resharper says possible multiple enumeration, I guess this is what we need
+            //literally a possible multple enumeration, but we could actually discard multiple enumeration
+            //if the derived class does nothing with the new items.
             _source.AddRange(items);
             OnCollectionChanged(null, items);
             return _source.Count;
@@ -130,14 +134,14 @@ namespace LiveCharts.Helpers
         public int Insert(int index, T item)
         {
             _source.Insert(index, item);
-            OnCollectionChanged(null, new List<T> {item}.AsEnumerable());
+            OnCollectionChanged(null, new List<T> {item});
             return _source.Count;
         }
 
         int IGossipCollection.Insert(int index, object item)
         {
             _source.Insert(index, (T) item);
-            OnCollectionChanged(null, new List<T> {(T) item}.AsEnumerable());
+            OnCollectionChanged(null, new List<T> {(T) item});
             return _source.Count;
         }
 
@@ -162,46 +166,46 @@ namespace LiveCharts.Helpers
         public int Remove(T item)
         {
             _source.Remove(item);
-            OnCollectionChanged(ReportOldItems ? new List<T> {item} : null);
+            OnCollectionChanged(new List<T> {item}, null);
             return _source.Count;
         }
 
         int IGossipCollection.Remove(object item)
         {
             _source.Remove((T) item);
-            OnCollectionChanged(ReportOldItems ? new List<T> {(T) item} : null);
+            OnCollectionChanged(new List<T> {(T) item}, null);
             return _source.Count;
         }
 
         public int RemoveAt(int index)
         {
-            var removedItem = ReportOldItems ? new List<T> {_source[index]} : null;
+            var removedItem = new List<T> {_source[index]};
             _source.RemoveAt(index);
-            OnCollectionChanged(removedItem);
+            OnCollectionChanged(removedItem, null);
             return _source.Count;
         }
 
         public int RemoveRange(int index, int count)
         {
-            var range = ReportOldItems ? _source.Skip(index).Take(count).ToList() : null;
+            var range = _source.Skip(index).Take(count).ToList();
             _source.RemoveRange(index, count);
-            OnCollectionChanged(range);
+            OnCollectionChanged(range, null);
             return _source.Count;
         }
 
         public int RemoveAll(Predicate<T> predicate)
         {
-            var matches = ReportOldItems ? _source.Where(x => predicate(x)).ToList() : null;
+            var matches = _source.Where(x => predicate(x)).ToList();
             _source.RemoveAll(predicate);
-            OnCollectionChanged(matches);
+            OnCollectionChanged(matches, null);
             return _source.Count;
         }
 
         public void Clear()
         {
-            var removed = ReportOldItems ? _source.Select(x => x).ToList() : null;
+            var removed = _source.Select(x => x).ToList();
             _source.Clear();
-            OnCollectionChanged(removed);
+            OnCollectionChanged(removed, null);
         }
 
 #endregion
@@ -234,9 +238,10 @@ namespace LiveCharts.Helpers
             return GetEnumerator();
         }
 
-        private void OnCollectionChanged(object olditems = null, object newItems = null)
+        private void OnCollectionChanged(IEnumerable<T> olditems, IEnumerable<T> newItems)
         {
-            if (CollectionChanged != null) CollectionChanged.Invoke(olditems, newItems);
+            if (CollectionChanged != null)
+                CollectionChanged.Invoke(olditems, newItems);
         }
     }
 }

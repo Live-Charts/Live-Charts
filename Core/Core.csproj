@@ -45,13 +45,15 @@
     <Compile Include="ChartUpdater.cs" />
     <Compile Include="ChartValues.cs" />
     <Compile Include="Configurations\BubbleMapper.cs" />
+    <Compile Include="Configurations\PolarMapper.cs" />
     <Compile Include="Configurations\CartesianMapper.cs" />
     <Compile Include="Configurations\FinancialMapper.cs" />
     <Compile Include="Configurations\IPointEvaluator.cs" />
-    <Compile Include="Configurations\SeriesMappers.cs" />
+    <Compile Include="Configurations\Mappers.cs" />
     <Compile Include="Defaults\AxisLimits.cs" />
+    <Compile Include="Defaults\PolarPoint.cs" />
     <Compile Include="Defaults\ObservablePoint.cs" />
-    <Compile Include="Defaults\SeriesConfigurations.cs" />
+    <Compile Include="Defaults\Mapping.cs" />
     <Compile Include="Defaults\ObservableValue.cs" />
     <Compile Include="Defaults\DatePoint.cs" />
     <Compile Include="Defaults\OHLCPoint.cs" />

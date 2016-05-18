@@ -24,6 +24,9 @@ namespace LiveCharts
 {
     public class ChartPoint
     {
+
+        #region Cartesian 
+
         /// <summary>
         /// Gets the X point value
         /// </summary>
@@ -32,10 +35,20 @@ namespace LiveCharts
         /// Gets the Y point value
         /// </summary>
         public double Y { get; internal set; }
+
+        #endregion
+
+        #region bubbles
+
         /// <summary>
         /// Gets the Weight of the point
         /// </summary>
         public double Weight { get; internal set; }
+
+        #endregion
+
+        #region stacked
+
         /// <summary>
         /// Gets where the stacked value started from
         /// </summary>
@@ -56,6 +69,11 @@ namespace LiveCharts
         /// gets the stacked participation of a point
         /// </summary>
         public double StackedParticipation { get; internal set; }
+
+        #endregion
+
+        #region Financial
+
         /// <summary>
         /// Gets the Open value of the point
         /// </summary>
@@ -72,6 +90,16 @@ namespace LiveCharts
         /// Gets the Close value of the point
         /// </summary>
         public double Close { get; internal set; }
+
+        #endregion
+
+        #region Polar
+
+        public double Radius { get; set; }
+        public double Angle { get; set; }
+        
+        #endregion
+
         /// <summary>
         /// Gets the coordinate where the value is placed at chart
         /// </summary>

@@ -38,9 +38,12 @@ namespace LiveCharts
             seriesView.Values.Series = seriesView.Model;
             seriesView.Model.SeriesCollection = Chart.View.Series;
             seriesView.Model.SeriesCollection.Chart = Chart;
+
+            if (!seriesView.IsInVisualTree) Chart.View.AddToView(seriesView);
+
         }
 
-        public virtual void Run(bool restartView = false)
+        public virtual void Run(bool restartView = false, bool updateNow = false)   
         {
             throw new NotImplementedException();
         }
@@ -50,12 +53,16 @@ namespace LiveCharts
             throw new NotImplementedException();
         }
 
-        protected void Update(bool restartsAnimations = false)
+        protected void Update(bool restartsAnimations = false)   
         {
             if (!Chart.View.IsControlLoaded || Chart.View.Series == null) return;
 
             if (restartsAnimations)
-                Chart.View.Series.ForEach(s => s.Values.Points.ForEach(p => p.View.RemoveFromView(Chart)));
+                Chart.View.Series.ForEach(s => s.Values.Points.ForEach(p =>
+                {
+                    p.View.RemoveFromView(Chart);
+                    p.View = null;
+                }));
 
             Chart.AxisX = Chart.View.MapXAxes(Chart);
             Chart.AxisY = Chart.View.MapYAxes(Chart);

@@ -1,3 +1,5 @@
+//The MIT License(MIT)
+
 //copyright(c) 2016 Alberto Rodriguez
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -20,60 +22,53 @@
 
 using System;
 using System.Collections.Generic;
-using LiveCharts.Charts;
 
 namespace LiveCharts.Configurations
 {
-    [Obsolete("Instead use LiveCharts.Configurations.Mappers class")]
-    public class SeriesConfiguration<T> : IPointEvaluator<T>
+    public class PolarMapper<T> : IPointEvaluator<T>
     {
-        #region Properties
-
-        public ChartCore Chart { get; set; }
-        internal Func<KeyValuePair<int, T>, double> XMapper { get; set; }
-        internal Func<KeyValuePair<int, T>, double> YMapper { get; set; }
-
-        #endregion
+        private Func<T, int, double> _r;
+        private Func<T, int, double> _angle;
 
         public void SetAll(KeyValuePair<int, T> valuePair, ChartPoint point)
         {
-            point.X = XMapper(valuePair);
-            point.Y = YMapper(valuePair);
+            point.Radius = _r(valuePair.Value, valuePair.Key);
+            point.Angle = _angle(valuePair.Value, valuePair.Key);
         }
 
         public Xyw[] GetEvaluation(KeyValuePair<int, T> valuePair)
         {
-            var xyw = new Xyw(XMapper(valuePair), YMapper(valuePair), 0);
+            var xyw = new Xyw(_r(valuePair.Value, valuePair.Key), _angle(valuePair.Value, valuePair.Key), 0);
             return new[] {xyw, xyw};
         }
 
         /// <summary>
-        /// Maps X value in cartesian charts
+        /// Maps X value
         /// </summary>
         /// <param name="predicate"></param>
         /// <returns></returns>
-        public SeriesConfiguration<T> X(Func<T, double> predicate)
+        public PolarMapper<T> Radius(Func<T, double> predicate)
         {
-            return X((t, i) => predicate(t));
+            return Radius((t, i) => predicate(t));
         }
-        public SeriesConfiguration<T> X(Func<T, int, double> predicate)
+        public PolarMapper<T> Radius(Func<T, int, double> predicate)
         {
-            XMapper = vp => predicate(vp.Value, vp.Key);
+            _r = predicate;
             return this;
         }
 
         /// <summary>
-        /// Maps Y Value in cartesian charts
+        /// Maps Y value
         /// </summary>
         /// <param name="predicate"></param>
         /// <returns></returns>
-        public SeriesConfiguration<T> Y(Func<T, double> predicate)
+        public PolarMapper<T> Angle(Func<T, double> predicate)
         {
-            return Y((t, i) => predicate(t));
+            return Angle((t, i) => predicate(t));
         }
-        public SeriesConfiguration<T> Y(Func<T, int, double> predicate)
+        public PolarMapper<T> Angle(Func<T, int, double> predicate)
         {
-            YMapper = vp => predicate(vp.Value, vp.Key);
+            _angle = predicate;
             return this;
         }
     }

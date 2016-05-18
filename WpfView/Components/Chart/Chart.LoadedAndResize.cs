@@ -37,10 +37,7 @@ namespace LiveCharts.Wpf.Components.Chart
 
             Model.ChartControlSize = new CoreSize(ActualWidth, ActualHeight);
 
-            Model.DrawMargin.Left = 0;
-            Model.DrawMargin.Top = 0;
-            Model.DrawMargin.Width = ActualWidth;
-            Model.DrawMargin.Height = ActualHeight;
+            Model.Updater.Run(false, true);
         }
 
         private void OnSizeChanged(object sender, SizeChangedEventArgs args)

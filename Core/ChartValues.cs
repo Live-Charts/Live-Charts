@@ -20,7 +20,6 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using LiveCharts.Charts;
@@ -41,7 +40,6 @@ namespace LiveCharts
 
         public ChartValues()
         {
-            ReportOldItems = false;
             Primitives = new Dictionary<int, ChartPoint>();
             Generics = new Dictionary<T, ChartPoint>();
             CollectionChanged += OnChanged;
@@ -56,9 +54,9 @@ namespace LiveCharts
             get { return GetPointsIterator(); }
         }
 
-        public CoreLimit XLimit { get; private set; }
-        public CoreLimit YLimit { get; private set; }
-        public CoreLimit WeigthLimit { get; private set; }
+        public CoreLimit Limit1 { get; private set; }
+        public CoreLimit Limit2 { get; private set; }
+        public CoreLimit Limit3 { get; private set; }
 
         public SeriesAlgorithm Series { get; set; }
         public object ConfigurableElement { get; set; }
@@ -94,9 +92,9 @@ namespace LiveCharts
                 if (xyw[1].W > wMax) wMax = xyw[1].W;
             }
 
-            XLimit = new CoreLimit(double.IsInfinity(xMin) ? 0 : xMin, double.IsInfinity(yMin) ? 1 : xMax);
-            YLimit = new CoreLimit(double.IsInfinity(yMin) ? 0 : yMin, double.IsInfinity(yMax) ? 1 : yMax);
-            WeigthLimit = new CoreLimit(double.IsInfinity(wMin) ? 0 : wMin, double.IsInfinity(wMax) ? 1 : wMax);
+            Limit1 = new CoreLimit(double.IsInfinity(xMin) ? 0 : xMin, double.IsInfinity(yMin) ? 1 : xMax);
+            Limit2 = new CoreLimit(double.IsInfinity(yMin) ? 0 : yMin, double.IsInfinity(yMax) ? 1 : yMax);
+            Limit3 = new CoreLimit(double.IsInfinity(wMin) ? 0 : wMin, double.IsInfinity(wMax) ? 1 : wMax);
         }
 
         public void InitializeGarbageCollector()

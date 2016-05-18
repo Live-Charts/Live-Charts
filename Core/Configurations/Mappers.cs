@@ -22,7 +22,7 @@
 
 namespace LiveCharts.Configurations
 {
-    public static class SeriesMappers
+    public static class Mappers
     {
         public static CartesianMapper<T> Xy<T>()
         {
@@ -37,6 +37,11 @@ namespace LiveCharts.Configurations
         public static BubbleMapper<T> Bubble<T>()
         {
             return new BubbleMapper<T>();
+        }
+
+        public static PolarMapper<T> Polar<T>()
+        {
+            return new PolarMapper<T>();
         }
     }
 }

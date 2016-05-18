@@ -21,8 +21,8 @@
 //SOFTWARE.
 
 using System;
-using System.Collections;
-using System.Linq;
+
+using System.Collections.Generic;
 using LiveCharts.Charts;
 using LiveCharts.Configurations;
 using LiveCharts.Helpers;
@@ -35,13 +35,11 @@ namespace LiveCharts
 
         public SeriesCollection()
         {
-            ReportOldItems = true;
             CollectionChanged += OnCollectionChanged;
         }
 
         public SeriesCollection(object configuration)
         {
-            ReportOldItems = true;
             Configuration = configuration;
 
             CollectionChanged += OnCollectionChanged;
@@ -73,12 +71,15 @@ namespace LiveCharts
         }
         #endregion
 
-        private void OnCollectionChanged(object oldItems, object newItems)
+        private void OnCollectionChanged(IEnumerable<ISeriesView> oldItems, IEnumerable<ISeriesView> newItems)
         {
-            var oldSeresView = oldItems as IList;
-
-            if (oldSeresView != null)
-                foreach (var seriesView in oldSeresView.Cast<ISeriesView>()) seriesView.Erase();
+            if (oldItems != null)
+            {
+                foreach (var view in oldItems)
+                {
+                    view.Erase();
+                }
+            }
 
             if (Chart != null) Chart.Updater.Run();
         }

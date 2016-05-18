@@ -35,7 +35,7 @@ namespace LiveCharts
 
     public enum SeriesOrientation
     {
-        Horizontal, Vertical
+        All, Horizontal, Vertical
     }
 
     public enum AxisPosition
@@ -258,7 +258,7 @@ namespace LiveCharts
     public interface IChartUpdater
     {
         ChartCore Chart { get; set; }
-        void Run(bool restartView = false);
+        void Run(bool restartView = false, bool updateNow = false);
         void UpdateFrequency(TimeSpan freq);
     }
 
@@ -445,6 +445,7 @@ namespace LiveCharts
         int ScalesYAt { get; set; }
         object Configuration { get; set; }
         bool IsSeriesVisible { get; }
+        bool IsInVisualTree { get; }
 
         IChartPointView GetPointView(IChartPointView view, ChartPoint point ,string label);
         void OnSeriesUpdateStart();

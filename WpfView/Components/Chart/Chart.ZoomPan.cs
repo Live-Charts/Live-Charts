@@ -20,8 +20,6 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-using System;
-using System.Diagnostics;
 using System.Windows;
 using System.Windows.Input;
 
@@ -65,7 +63,7 @@ namespace LiveCharts.Wpf.Components.Chart
                 ChartFunctions.FromDrawMargin(end.X, AxisTags.X, Model),
                 ChartFunctions.FromDrawMargin(end.Y, AxisTags.Y, Model));
 
-            Model.Drag(new CorePoint(end.X - DragOrigin.X, end.Y - DragOrigin.Y));
+            Model.Drag(new CorePoint(DragOrigin.X - end.X, DragOrigin.Y - end.Y));
         }
     }
 }

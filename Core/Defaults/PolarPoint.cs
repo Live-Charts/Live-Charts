@@ -21,52 +21,50 @@
 //SOFTWARE.
 
 using System;
-using System.Windows.Threading;
 
-//Todo: this should be in the Core, the only reason why this is here
-//is becuase there is no a multiplatform timer class
-//so we need to build our own.
-//that works in .net 4.0 to newest.
-
-//the alternative now, is using the timer of each platform
-//not a big problem because this class is really easy and small.
-
-namespace LiveCharts.Wpf.Components
+namespace LiveCharts.Defaults
 {
-    public class ChartUpdater : LiveCharts.ChartUpdater
+    public class PolarPoint : IObservableChartPoint
     {
-        public ChartUpdater(TimeSpan frequency)
-        {
-            Timer = new DispatcherTimer {Interval = frequency};
+        private double _radius;
+        private double _angle;
+        public event Action PointChanged;
 
-            Timer.Tick += (sender, args) =>
-            {
-                Update();
-                IsUpdating = false;
-                Timer.Stop();
-            };
+        public PolarPoint()
+        {
+            
         }
 
-        public DispatcherTimer Timer { get; set; }
-
-        public override void Run(bool restartView = false, bool updateNow = false)
+        public PolarPoint(double radius, double angle)
         {
-            if (updateNow)
+            Radius = radius;
+            Angle = angle;
+        }
+
+        public double Radius
+        {
+            get { return _radius; }
+            set
             {
-                Update();
-                IsUpdating = false;
-                Timer.Stop();
+                _radius = value;
+                OnPointChanged();
             }
-
-            if (IsUpdating) return;
-
-            IsUpdating = true;
-            Timer.Start();
         }
 
-        public override void UpdateFrequency(TimeSpan freq)
+        public double Angle
         {
-            Timer.Interval = freq;
+            get { return _angle; }
+            set
+            {
+                _angle = value;
+                OnPointChanged();
+            }
+        }
+
+        protected void OnPointChanged()
+        {
+            if (PointChanged != null)
+                PointChanged.Invoke();
         }
     }
 }

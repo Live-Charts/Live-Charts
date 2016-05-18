@@ -59,6 +59,8 @@ namespace LiveCharts.Wpf.Series
             get { return Visibility == Visibility.Visible; }
         }
 
+        public bool IsInVisualTree { get { return Parent != null; } }
+
         public static readonly DependencyProperty ValuesProperty = DependencyProperty.Register(
             "Values", typeof (IChartValues), typeof (Series),
             new PropertyMetadata(default(IChartValues), CallChartUpdater(true)));
