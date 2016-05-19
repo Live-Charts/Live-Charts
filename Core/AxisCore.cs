@@ -150,7 +150,7 @@ namespace LiveCharts
         internal CoreSize PrepareChart(AxisTags source, ChartCore chart)
         {
             if (!(Math.Abs(MaxLimit - MinLimit) > S * .01) || !ShowLabels) return new CoreSize();
-            if (chart.DrawMargin.Width < 5 || chart.DrawMargin.Height < 5) return new CoreSize();
+            //if (chart.DrawMargin.Width < 5 || chart.DrawMargin.Height < 5) return new CoreSize();
 
             CalculateSeparator(chart, source);
 

@@ -30,7 +30,7 @@ using System.Windows.Media.Animation;
 using System.Windows.Threading;
 using LiveCharts.Wpf.Points;
 
-namespace LiveCharts.Wpf.Components.Chart
+namespace LiveCharts.Wpf.Charts.Chart
 {
     public abstract partial class Chart
     {

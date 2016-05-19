@@ -21,6 +21,7 @@
 //SOFTWARE.
 
 using System;
+using System.Diagnostics;
 using System.Windows.Threading;
 
 //Todo: this should be in the Core, the only reason why this is here
@@ -41,9 +42,7 @@ namespace LiveCharts.Wpf.Components
 
             Timer.Tick += (sender, args) =>
             {
-                Update();
-                IsUpdating = false;
-                Timer.Stop();
+                UpdaterTick();
             };
         }
 
@@ -51,11 +50,16 @@ namespace LiveCharts.Wpf.Components
 
         public override void Run(bool restartView = false, bool updateNow = false)
         {
+#if DEBUG
+            Debug.WriteLine("Updater run requested...");
+#endif
             if (updateNow)
             {
-                Update();
-                IsUpdating = false;
-                Timer.Stop();
+#if DEBUG
+                Debug.WriteLine("Updater was forced.");
+#endif
+                UpdaterTick();
+                return;
             }
 
             if (IsUpdating) return;
@@ -67,6 +71,17 @@ namespace LiveCharts.Wpf.Components
         public override void UpdateFrequency(TimeSpan freq)
         {
             Timer.Interval = freq;
+        }
+
+        private void UpdaterTick()
+        {
+            Timer.Stop();
+            Update();
+            IsUpdating = false;
+
+#if DEBUG
+            Debug.WriteLine("Chart is updated");
+#endif
         }
     }
 }

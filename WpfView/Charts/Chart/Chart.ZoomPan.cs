@@ -23,7 +23,7 @@
 using System.Windows;
 using System.Windows.Input;
 
-namespace LiveCharts.Wpf.Components.Chart
+namespace LiveCharts.Wpf.Charts.Chart
 {
     public abstract partial class Chart
     {

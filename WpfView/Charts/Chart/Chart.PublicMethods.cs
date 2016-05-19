@@ -27,7 +27,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using LiveCharts.Charts;
 
-namespace LiveCharts.Wpf.Components.Chart
+namespace LiveCharts.Wpf.Charts.Chart
 {
     public abstract partial class Chart
     {

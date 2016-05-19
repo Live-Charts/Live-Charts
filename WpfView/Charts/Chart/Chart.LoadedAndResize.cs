@@ -20,46 +20,36 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-using System;
 using System.Diagnostics;
 using System.Windows;
-using System.Windows.Threading;
 
-namespace LiveCharts.Wpf.Components.Chart
+namespace LiveCharts.Wpf.Charts.Chart
 {
     public abstract partial class Chart
     {
-        private DispatcherTimer ResizeTimer { get; set; }
-
         private void OnLoaded(object sender, RoutedEventArgs args)
         {
             IsControlLoaded = true;
 
             Model.ChartControlSize = new CoreSize(ActualWidth, ActualHeight);
 
+            //forcing the update twice make the chart scale better initially
+            //ToDo: scale nicely the first time, with only one call.
+            //this happens because of labels size, canvas size, and many other things that are not
+            //rendered yet!
+
+            Model.Updater.Run(false, true);
             Model.Updater.Run(false, true);
         }
 
         private void OnSizeChanged(object sender, SizeChangedEventArgs args)
-        {
-            ResizeTimer.Stop();
-            ResizeTimer.Start();
-        }
-
-        private void OnResizeTimerOnTick(object sender, EventArgs args)
         {
 #if DEBUG
             Debug.WriteLine("ChartResized");
 #endif
             Model.ChartControlSize = new CoreSize(ActualWidth, ActualHeight);
 
-            Model.DrawMargin.Left = 0;
-            Model.DrawMargin.Top = 0;
-            Model.DrawMargin.Width = ActualWidth;
-            Model.DrawMargin.Height = ActualHeight;
-
             Model.Updater.Run();
-            ResizeTimer.Stop();
         }
     }
 }

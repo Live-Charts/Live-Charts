@@ -338,7 +338,7 @@ namespace LiveCharts.Charts
                 }
             }
 
-            Updater.Run();
+            Updater.Run(false, true);
         }
 
         public void ZoomOut(CorePoint pivot)
@@ -383,7 +383,7 @@ namespace LiveCharts.Charts
                 }
             }
 
-            Updater.Run();
+            Updater.Run(false, true);
         }
 
         public void ClearZoom()
@@ -411,10 +411,8 @@ namespace LiveCharts.Charts
             {
                 foreach (var xi in AxisX)
                 {
-                    var maxX = xi.MaxValue ?? xi.MaxLimit;
-                    var minX = xi.MinValue ?? xi.MinLimit;
-                    xi.View.MaxValue = maxX + delta.X;
-                    xi.View.MinValue = minX + delta.X;
+                    xi.View.MaxValue = (xi.MaxValue ?? xi.MaxLimit) + delta.X;
+                    xi.View.MinValue = (xi.MinValue ?? xi.MinLimit) + delta.X;
                 }
             }
 
@@ -422,15 +420,12 @@ namespace LiveCharts.Charts
             {
                 foreach (var yi in AxisY)
                 {
-                    var maxY = yi.MaxValue ?? yi.MaxLimit;
-                    var minY = yi.MinValue ?? yi.MinLimit;
-
-                    yi.View.MaxValue = maxY + delta.Y;
-                    yi.View.MinValue = minY + delta.Y;
+                    yi.View.MaxValue = (yi.MaxValue ?? yi.MaxLimit) + delta.Y;
+                    yi.View.MinValue = (yi.MinValue ?? yi.MinLimit) + delta.Y;
                 }
             }
             
-            Updater.Run();
+            Updater.Run(false, true);
         }
 
         #endregion

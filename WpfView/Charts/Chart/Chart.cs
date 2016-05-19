@@ -29,7 +29,7 @@ using System.Windows.Media;
 using System.Windows.Threading;
 using LiveCharts.Charts;
 
-namespace LiveCharts.Wpf.Components.Chart
+namespace LiveCharts.Wpf.Charts.Chart
 {
     public abstract partial class Chart : UserControl, IChartView
     {
@@ -45,7 +45,6 @@ namespace LiveCharts.Wpf.Components.Chart
             DrawMargin = new Canvas {ClipToBounds = true};
             Canvas.Children.Add(DrawMargin);
 
-            ResizeTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(100) };
             TooltipTimeoutTimer = new DispatcherTimer();
 
             SetValue(MinHeightProperty, 125d);
@@ -62,7 +61,6 @@ namespace LiveCharts.Wpf.Components.Chart
             if (RandomizeStartingColor)
                 SeriesIndexCount = Randomizer.Next(0, Colors.Count);
 
-            ResizeTimer.Tick += OnResizeTimerOnTick ;
             SizeChanged += OnSizeChanged;
             MouseWheel += MouseWheelOnRoll;
             Loaded += OnLoaded;

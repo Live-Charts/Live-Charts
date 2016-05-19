@@ -23,7 +23,7 @@
 using System;
 using System.Windows;
 using LiveCharts.Charts;
-using LiveCharts.Wpf.Components.Chart;
+using LiveCharts.Wpf.Charts.Chart;
 
 // ReSharper disable once CheckNamespace
 namespace LiveCharts.Wpf

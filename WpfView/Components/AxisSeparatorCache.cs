@@ -26,6 +26,7 @@ using System.Windows.Controls;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using LiveCharts.Charts;
+using LiveCharts.Wpf.Charts.Chart;
 
 namespace LiveCharts.Wpf.Components
 {
@@ -258,7 +259,7 @@ namespace LiveCharts.Wpf.Components
 
         public void UpdateLine(AxisTags source, ChartCore chart, int axisIndex, AxisCore axis)
         {
-            var wpfChart = chart.View as Chart.Chart;
+            var wpfChart = chart.View as Chart;
             var wpfAxis = axis.View as Axis;
             if (wpfChart == null || wpfAxis == null) return;
 

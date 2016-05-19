@@ -26,7 +26,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media;
-using LiveCharts.Wpf.Components.Chart;
+using LiveCharts.Wpf.Charts.Chart;
 
 namespace LiveCharts.Wpf.Series
 {
@@ -297,9 +297,6 @@ namespace LiveCharts.Wpf.Series
 
         public virtual void OnSeriesUpdatedFinish()
         {
-#if DEBUG
-            Debug.WriteLine("Series Update Finished, concider override tuis method");
-#endif
         }
 
         protected static PropertyChangedCallback CallChartUpdater(bool animate = false)
