@@ -48,13 +48,13 @@ namespace LiveCharts.Helpers
 #endif
         }
 
-        public static bool IsPrimitive(this CrossNet cn)
+        public static bool IsClass(this CrossNet cn)
         {
 #if RUNNING_ON_4
-            return cn.Type.IsPrimitive;
+            return cn.Type.IsClass;
 #endif
 #if NOT_RUNNING_ON_4
-            return cn.Type.GetTypeInfo().IsPrimitive;
+            return cn.Type.GetTypeInfo().IsClass;
 #endif
         }
 

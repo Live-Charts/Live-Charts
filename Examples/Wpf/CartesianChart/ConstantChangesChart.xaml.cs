@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows;
+using System.Windows.Media;
 using System.Windows.Threading;
 using LiveCharts;
 using LiveCharts.Defaults;
@@ -20,7 +21,13 @@ namespace Wpf.CartesianChart
 
             SeriesCollection = new SeriesCollection
             {
-                new LineSeries {Values = Buffer, StrokeThickness = 4, PointDiameter = 0}
+                new LineSeries
+                {
+                    Values = Buffer,
+                    StrokeThickness = 0,
+                    PointDiameter = 0,
+                    Fill = new SolidColorBrush(Color.FromRgb(66,164,244))
+                }
             };
 
             Timer = new DispatcherTimer

@@ -40,8 +40,8 @@ namespace LiveCharts
 
         public ChartValues()
         {
-            Primitives = new Dictionary<int, ChartPoint>();
-            Generics = new Dictionary<T, ChartPoint>();
+            IndexedDictionary = new Dictionary<int, ChartPoint>();
+            ClassesDictionary = new Dictionary<T, ChartPoint>();
             CollectionChanged += OnChanged;
         }
 
@@ -51,7 +51,7 @@ namespace LiveCharts
 
         public IEnumerable<ChartPoint> Points
         {
-            get { return GetPointsIterator(); }
+            get { return Iterate(); }
         }
 
         public CoreLimit Limit1 { get; private set; }
@@ -62,8 +62,8 @@ namespace LiveCharts
         public object ConfigurableElement { get; set; }
 
         internal int GarbageCollectorIndex { get; set; }
-        internal Dictionary<int, ChartPoint> Primitives { get; set; }
-        internal Dictionary<T, ChartPoint> Generics { get; set; }
+        internal Dictionary<int, ChartPoint> IndexedDictionary { get; set; }
+        internal Dictionary<T, ChartPoint> ClassesDictionary { get; set; }
         #endregion
 
         #region Public Methods
@@ -105,13 +105,13 @@ namespace LiveCharts
 
         public void CollectGarbage()
         {
-            var isPrimitive = typeof (T).AsCrossNet().IsPrimitive();
+            var isPrimitive = typeof (T).AsCrossNet().IsClass();
             foreach (var garbage in GetGarbagePoints().ToList())
             {
                 if (garbage.View != null) //yes null, double.Nan Values, will generate null views.
                     garbage.View.RemoveFromView(Series.Chart);
-                if (isPrimitive) Primitives.Remove(garbage.Key);
-                else Generics.Remove((T) garbage.Instance);
+                if (isPrimitive) IndexedDictionary.Remove(garbage.Key);
+                else ClassesDictionary.Remove((T) garbage.Instance);
             }
         }
 
@@ -129,14 +129,14 @@ namespace LiveCharts
             }
         }
 
-        private IEnumerable<ChartPoint> GetPointsIterator()
+        private IEnumerable<ChartPoint> Iterate()
         {
             if (Series == null) yield break;
 
             var config = GetConfig();
 
-            var isPrimitive = typeof (T).AsCrossNet().IsPrimitive();
-            var isObservable = !isPrimitive &&
+            var isClass = typeof (T).AsCrossNet().IsClass();
+            var isObservable = isClass &&
                                typeof (IObservableChartPoint).AsCrossNet().IsAssignableFrom(typeof (T));
 
             var garbageCollectorIndex = GarbageCollectorIndex;
@@ -156,28 +156,28 @@ namespace LiveCharts
 
                 ChartPoint cp;
 
-                if (isPrimitive)
+                if (!isClass)
                 {
-                    if (!Primitives.TryGetValue(i, out cp))
+                    if (!IndexedDictionary.TryGetValue(i, out cp))
                     {
                         cp = new ChartPoint
                         {
                             Instance = value,
                             Key = i
                         };
-                        Primitives[i] = cp;
+                        IndexedDictionary[i] = cp;
                     }
                 }
                 else
                 {
-                    if (!Generics.TryGetValue(value, out cp))
+                    if (!ClassesDictionary.TryGetValue(value, out cp))
                     {
                         cp = new ChartPoint
                         {
                             Instance = value,
                             Key = i
                         };
-                        Generics[value] = cp;
+                        ClassesDictionary[value] = cp;
                     }
                 }
 
@@ -197,8 +197,8 @@ namespace LiveCharts
 
         private IEnumerable<ChartPoint> GetGarbagePoints()
         {
-            return Generics.Values.Where(IsGarbage)
-                .Concat(Primitives.Values.Where(IsGarbage));
+            return ClassesDictionary.Values.Where(IsGarbage)
+                .Concat(IndexedDictionary.Values.Where(IsGarbage));
         }
 
         private IPointEvaluator<T> GetConfig()
@@ -223,7 +223,7 @@ namespace LiveCharts
             //just in case!
             if (GarbageCollectorIndex != int.MaxValue) return;
             GarbageCollectorIndex = 0;
-            foreach (var point in Generics.Values.Concat(Primitives.Values))
+            foreach (var point in ClassesDictionary.Values.Concat(IndexedDictionary.Values))
             {
                 point.GarbageCollectorIndex = 0;
             }

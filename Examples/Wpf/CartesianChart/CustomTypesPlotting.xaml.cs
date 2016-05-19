@@ -26,9 +26,9 @@ namespace Wpf.CartesianChart
                         new ChartValues<ObservableValue>
                         {
                             new ObservableValue(3),
+                            new ObservableValue(2),
                             new ObservableValue(3),
-                            new ObservableValue(3),
-                            new ObservableValue(3)
+                            new ObservableValue(2)
                         }
                 }
             };

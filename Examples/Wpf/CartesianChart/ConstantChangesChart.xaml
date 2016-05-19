@@ -22,6 +22,11 @@
             Inject/Stop Data
         </Button>
         <!--Notice the animations speed property is at 100 miliseconds.-->
-        <lc:CartesianChart Grid.Row="2" Series="{Binding SeriesCollection}" AnimationsSpeed="0:0:0.1"></lc:CartesianChart>
+        <lc:CartesianChart Grid.Row="2" Series="{Binding SeriesCollection}" AnimationsSpeed="0:0:0.1">
+            <lc:CartesianChart.AxisX>
+                <!--this hides an ugly effect--> 
+                <lc:Axis MinValue="5"></lc:Axis>
+            </lc:CartesianChart.AxisX>
+        </lc:CartesianChart>
     </Grid>
 </UserControl>
