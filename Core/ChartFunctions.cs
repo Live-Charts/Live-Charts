@@ -20,14 +20,17 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
+using System;
 using LiveCharts.Charts;
 
 namespace LiveCharts
 {
     public static class ChartFunctions
     {
+        private static readonly double Day = TimeSpan.FromDays(1).Ticks;
+
         /// <summary>
-        /// Scales a graph value to screen according to an axis. 
+        /// Scales a chart value to screen value according to an axis. 
         /// </summary>
         /// <param name="value"></param>
         /// <param name="source"></param>
@@ -69,6 +72,14 @@ namespace LiveCharts
                 ToPlotArea(point.Y, AxisTags.Y, chart, axis));
         }
 
+        /// <summary>
+        /// Scales a screen value to chart value accoring to an axis.
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="source"></param>
+        /// <param name="chart"></param>
+        /// <param name="axis"></param>
+        /// <returns></returns>
         public static double FromPlotArea(double value, AxisTags source, ChartCore chart, int axis = 0)
         {
             var p1 = new CorePoint();
@@ -135,17 +146,25 @@ namespace LiveCharts
         public static double GetUnitWidth(AxisTags source, ChartCore chart, int axis = 0)
         {
             double min;
-            var unit = 1;
-
+            
             if (source == AxisTags.Y)
             {
                 min = chart.AxisY[axis].MinLimit;
-                return ToDrawMargin(min, AxisTags.Y, chart, axis) - ToDrawMargin(min + unit, AxisTags.Y, chart, axis);
+                return ToDrawMargin(min, AxisTags.Y, chart, axis) - ToDrawMargin(min + 1, AxisTags.Y, chart, axis);
             }
 
             min = chart.AxisX[axis].MinLimit;
+            return ToDrawMargin(min + 1, AxisTags.X, chart, axis) - ToDrawMargin(min, AxisTags.X, chart, axis);
+        }
 
-            return ToDrawMargin(min + unit, AxisTags.X, chart, axis) - ToDrawMargin(min, AxisTags.X, chart, axis);
+        public static double ToChartDay(DateTime date)
+        {
+            return date.Ticks/Day;
+        }
+
+        public static DateTime FromChartDay(double chartDate) //this feels bad :/
+        {
+            return new DateTime((long) chartDate*(long) Day);
         }
     }
 
@@ -162,3 +181,4 @@ namespace LiveCharts
         }
     }
 }
+ 

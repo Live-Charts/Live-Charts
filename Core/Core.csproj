@@ -42,6 +42,7 @@
     <Compile Include="AxisCore.cs" />
     <Compile Include="AxisSectionCore.cs" />
     <Compile Include="Charts\PieChartCore.cs" />
+    <Compile Include="ChartUnits.cs" />
     <Compile Include="ChartUpdater.cs" />
     <Compile Include="ChartValues.cs" />
     <Compile Include="Configurations\BubbleMapper.cs" />

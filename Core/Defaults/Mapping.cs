@@ -49,21 +49,21 @@ namespace LiveCharts.Defaults
             //the SeriesMappers class is just a reminder of the configurators that we have, it actually just
             //returns a new instance of the related configurator
             //a configurator is only a holder for the mappers.
-            
+
             //lets configure <int>
 
             For<int>(Mappers.Xy<int>()
-                .X((value, index) => index)                                     //use the index of the item in the array as X
-                .Y(value=> value), SeriesOrientation.Horizontal);               //use the value (of type int int this case) as Y
+                .X((value, index) => index) //use the index of the item in the array as X
+                .Y(value => value), SeriesOrientation.Horizontal); //use the value (of type int int this case) as Y
             For<int>(Mappers.Xy<int>()
-                .X(value=> value)                                               //use the value (int) as X
-                .Y((value, index) => index), SeriesOrientation.Vertical);       //use the index of the item in the array as Y
+                .X(value => value) //use the value (int) as X
+                .Y((value, index) => index), SeriesOrientation.Vertical); //use the index of the item in the array as Y
 
             //ok now lets configure a class I defined, the ObservablePoint class, it only has 2 properties, X and Y
 
-            For<ObservablePoint>(Mappers.Xy<ObservablePoint>()                  //in this case value is of type <ObservablePoint>
-                .X(value => value.X)                                            //use the X property as X
-                .Y(value => value.Y));                                          //use the Y property as Y
+            For<ObservablePoint>(Mappers.Xy<ObservablePoint>() //in this case value is of type <ObservablePoint>
+                .X(value => value.X) //use the X property as X
+                .Y(value => value.Y)); //use the Y property as Y
 
             //easy, now live charts know how to plot an ObservablePoint class and integers.
 
@@ -75,8 +75,8 @@ namespace LiveCharts.Defaults
             //so it is realy easy, now value is of type Polar point, becaus we said so when: SeriesMappers.Polar<PolarPoint>()
 
             For<PolarPoint>(Mappers.Polar<PolarPoint>()
-                .Radius(value => value.Radius)                                  //use the radius property as radius for the plotting
-                .Angle(value => value.Angle));                                  //use the angle property as angle for the plotting
+                .Radius(value => value.Radius) //use the radius property as radius for the plotting
+                .Angle(value => value.Angle)); //use the angle property as angle for the plotting
 
             //now a more complex situation
             //the OhclPoint is ready to plot financial points,
@@ -86,8 +86,11 @@ namespace LiveCharts.Defaults
             //and again the OhclPoint class only contains those 4 properties
             //we just mapped them correctly and LiveCharts will know how to handle this class.
 
+            //the DateTime for now its tricky....
+            //I will explain better later if i do not find a better solution...
+
             For<OhlcPoint>(Mappers.Financial<OhlcPoint>()
-                .X(value => value.DateTime)                             
+                .X(value => ChartFunctions.ToChartDay(value.DateTime))
                 .Open(value => value.Open)
                 .High(value => value.High)
                 .Low(value => value.Low)
@@ -95,59 +98,62 @@ namespace LiveCharts.Defaults
 
             For<double>(Mappers.Xy<double>()
                 .X((value, index) => index)
-                .Y(value=> value), SeriesOrientation.Horizontal);
+                .Y(value => value), SeriesOrientation.Horizontal);
             For<double>(Mappers.Xy<double>()
-                .X(value=> value)
+                .X(value => value)
                 .Y((value, index) => index), SeriesOrientation.Vertical);
 
             For<decimal>(Mappers.Xy<decimal>()
                 .X((value, index) => index)
-                .Y(value=> (double) value), SeriesOrientation.Horizontal);
+                .Y(value => (double) value), SeriesOrientation.Horizontal);
             For<decimal>(Mappers.Xy<decimal>()
-                .X(value=> (double) value)
+                .X(value => (double) value)
                 .Y((value, index) => index), SeriesOrientation.Vertical);
 
             For<short>(Mappers.Xy<short>()
                 .X((value, index) => index)
-                .Y(value=> value), SeriesOrientation.Horizontal);
+                .Y(value => value), SeriesOrientation.Horizontal);
             For<short>(Mappers.Xy<short>()
-                .X(value=> value)
+                .X(value => value)
                 .Y((value, index) => index), SeriesOrientation.Vertical);
 
             For<float>(Mappers.Xy<float>()
                 .X((value, index) => index)
-                .Y(value=> value), SeriesOrientation.Horizontal);
+                .Y(value => value), SeriesOrientation.Horizontal);
             For<float>(Mappers.Xy<float>()
-                .X(value=> value)
+                .X(value => value)
                 .Y((value, index) => index), SeriesOrientation.Vertical);
 
             For<long>(Mappers.Xy<long>()
                 .X((value, index) => index)
-                .Y(value=> value), SeriesOrientation.Horizontal);
+                .Y(value => value), SeriesOrientation.Horizontal);
             For<long>(Mappers.Xy<long>()
-                .X(value=> value)
+                .X(value => value)
                 .Y((value, index) => index), SeriesOrientation.Vertical);
 
             For<BubblePoint>(Mappers.Bubble<BubblePoint>()
-                .X(value=> value.X)
-                .Y(value=> value.Y)
-                .Weight(value=> value.Weight));
+                .X(value => value.X)
+                .Y(value => value.Y)
+                .Weight(value => value.Weight));
 
             For<ObservableValue>(Mappers.Xy<ObservableValue>()
-                .X((value,index) => index)
-                .Y(value=> value.Value), 
+                .X((value, index) => index)
+                .Y(value => value.Value),
                 SeriesOrientation.Horizontal);
             For<ObservableValue>(Mappers.Xy<ObservableValue>()
-                .X(value=> value.Value)
+                .X(value => value.Value)
                 .Y((value, index) => index),
                 SeriesOrientation.Vertical);
 
             For<DatePoint>(Mappers.Xy<DatePoint>()
-                .X(x => x.DateTime.Ticks)
-                .Y(x => x.Value));
+                .X(x => ChartFunctions.ToChartDay( x.DateTime))
+                .Y(x => x.Value), SeriesOrientation.Horizontal);
+            For<DatePoint>(Mappers.Xy<DatePoint>()
+                .Y(x => ChartFunctions.ToChartDay(x.DateTime))
+                .X(x => x.Value), SeriesOrientation.Vertical);
 
             For<OhlcPoint>(Mappers.Financial<OhlcPoint>()
-                .X(value => value.DateTime)
+                .X(value => ChartFunctions.ToChartDay(value.DateTime))
                 .Open(value => value.Open)
                 .High(value => value.High)
                 .Low(value => value.Low)

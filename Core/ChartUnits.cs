@@ -21,17 +21,12 @@
 //SOFTWARE.
 
 using System;
-using System.Collections.Generic;
 
 namespace LiveCharts
 {
-    public static class Extentions
+    public static class ChartUnits
     {
-        public static ChartValues<T> AsChartValues<T>(this IEnumerable<T> values)
-        {
-            var l = new ChartValues<T>();
-            l.AddRange(values);
-            return l;
-        }
+        public static double Unitary { get { return 1; } }
+        public static double Day { get { return TimeSpan.FromDays(1).Ticks; } }
     }
 }
