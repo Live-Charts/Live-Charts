@@ -74,5 +74,47 @@ namespace Wpf.PieChart
                 }
             }
         }
+
+        private void AddSeriesOnClick(object sender, RoutedEventArgs e)
+        {
+            var r = new Random();
+            var c = SeriesCollection.Count > 0 ? SeriesCollection[0].Values.Count : 5;
+            
+            var vals = new ChartValues<ObservableValue>();
+
+            for (var i = 0; i < c; i++)
+            {
+                vals.Add(new ObservableValue(r.Next(0, 10)));
+            }
+
+            SeriesCollection.Add(new PieSeries
+            {
+                Values = vals
+            });
+        }
+
+        private void RemoveSeriesOnClick(object sender, RoutedEventArgs e)
+        {
+            if (SeriesCollection.Count > 0)
+                SeriesCollection.RemoveAt(0);
+        }
+
+        private void AddValueOnClick(object sender, RoutedEventArgs e)
+        {
+            var r = new Random();
+            foreach (var series in SeriesCollection)
+            {
+                series.Values.Add(new ObservableValue(r.Next(0, 10)));
+            }
+        }
+
+        private void RemoveValueOnClick(object sender, RoutedEventArgs e)
+        {
+            foreach (var series in SeriesCollection)
+            {
+                if (series.Values.Count > 0)
+                    series.Values.RemoveAt(0);
+            }
+        }
     }
 }

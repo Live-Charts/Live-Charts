@@ -7,11 +7,11 @@ using System.Windows;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Desktop")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("LiveCharts.Wpf")]
+[assembly: AssemblyDescription("LieCharts view for wpf")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Desktop")]
+[assembly: AssemblyProduct("LiveCharts.Wpf")]
 [assembly: AssemblyCopyright("Copyright ©  2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

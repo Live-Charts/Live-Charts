@@ -16,9 +16,25 @@
         <TextBlock Grid.Row="0" TextWrapping="Wrap">
             Use the pie chart to create pies, increase the inner radius property to make it a doughnut, use the PieSeries.PushOut property to highlight a slice.
         </TextBlock>
-        <Button Grid.Row="1" Height="30" Click="UpdateAllOnClick">
-            Move All
-        </Button>
+        <StackPanel Grid.Row="1" Orientation="Horizontal">
+            <Button  Height="30" Click="UpdateAllOnClick" Padding="10 0">
+                Move All
+            </Button>
+            <TextBlock VerticalAlignment="Center" Padding="10 0">Series</TextBlock>
+            <Button Height="30" Click="AddSeriesOnClick" MinWidth="30">
+                +
+            </Button>
+            <Button  Height="30" Click="RemoveSeriesOnClick" MinWidth="30">
+                -
+            </Button>
+            <TextBlock VerticalAlignment="Center" Padding="10 0">Values</TextBlock>
+            <Button Height="30" Click="AddValueOnClick" MinWidth="30">
+                +
+            </Button>
+            <Button  Height="30" Click="RemoveValueOnClick" MinWidth="30">
+                -
+            </Button>
+        </StackPanel>
         <lc:PieChart Grid.Row="2" Series="{Binding SeriesCollection}" LegendLocation="Right" InnerRadius="100"></lc:PieChart>
     </Grid>
 </UserControl>

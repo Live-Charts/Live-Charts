@@ -23,16 +23,13 @@ namespace Wpf.CartesianChart
             {
                 new LineSeries
                 {
-                    Values = Buffer,
-                    StrokeThickness = 0,
-                    PointDiameter = 0,
-                    Fill = new SolidColorBrush(Color.FromRgb(66,164,244))
+                    Values = Buffer
                 }
             };
 
             Timer = new DispatcherTimer
             {
-                Interval = TimeSpan.FromMilliseconds(50)
+                Interval = TimeSpan.FromMilliseconds(500)
             };
 
             Timer.Tick += TimerOnTick;
@@ -67,7 +64,7 @@ namespace Wpf.CartesianChart
         private void TimerOnTick(object sender, EventArgs eventArgs)
         {
             Buffer.Add(new ObservableValue(R.Next(0, 10)));
-            if (Buffer.Count > 50) Buffer.RemoveAt(0);
+            if (Buffer.Count > 10) Buffer.RemoveAt(0);
         }
     }
 }

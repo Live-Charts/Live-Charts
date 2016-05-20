@@ -21,8 +21,8 @@
         <Button Grid.Row="1" Height="30" Click="RunDataOnClick">
             Inject/Stop Data
         </Button>
-        <!--Notice the animations speed property is at 100 miliseconds.-->
-        <lc:CartesianChart Grid.Row="2" Series="{Binding SeriesCollection}" AnimationsSpeed="0:0:0.1">
+        <!--set the animations speed property is at 100 miliseconds. AnimationsSpeed="0:0:0.3, and redice the timer interval, you will notice how the chart updates really fast"-->
+        <lc:CartesianChart Grid.Row="2" Series="{Binding SeriesCollection}" >
             <lc:CartesianChart.AxisX>
                 <!--this hides an ugly effect--> 
                 <lc:Axis MinValue="5"></lc:Axis>

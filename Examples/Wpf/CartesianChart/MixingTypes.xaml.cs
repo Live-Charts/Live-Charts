@@ -36,10 +36,11 @@ namespace Wpf.CartesianChart
                     new ObservableValue(7),
                     new ObservableValue(2),
                     new ObservableValue(3),
-                }
+                },
+                Fill = Brushes.Transparent
             };
 
-            BubbleSeries = new LiveCharts.Wpf.BubbleSeries
+            BubbleSeries = new BubbleSeries
             {
                 Values = new ChartValues<BubblePoint>
                 {
