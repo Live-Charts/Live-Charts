@@ -21,6 +21,7 @@
 //SOFTWARE.
 
 using System;
+using System.ComponentModel;
 using System.Windows;
 using LiveCharts.Charts;
 using LiveCharts.Wpf.Charts.Chart;

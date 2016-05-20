@@ -29,7 +29,7 @@ using LiveCharts.Helpers;
 
 namespace LiveCharts
 {
-    public class SeriesCollection : GossipCollection<ISeriesView>
+    public class SeriesCollection : NoisyCollection<ISeriesView>
     {
         #region Contructors
 

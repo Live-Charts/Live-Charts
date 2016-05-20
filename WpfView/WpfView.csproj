@@ -64,11 +64,15 @@
     <Compile Include="Charts\Chart\Chart.cs" />
     <Compile Include="Charts\Chart\Chart.TooltipAndLegend.cs" />
     <Compile Include="Charts\Chart\Chart.ZoomPan.cs" />
+    <Compile Include="Converters\TypeConverters.cs" />
     <Compile Include="DefaultLegend.xaml.cs">
       <DependentUpon>DefaultLegend.xaml</DependentUpon>
     </Compile>
     <Compile Include="DefaultTooltip.xaml.cs">
       <DependentUpon>DefaultTooltip.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DesignerTest.xaml.cs">
+      <DependentUpon>DesignerTest.xaml</DependentUpon>
     </Compile>
     <Compile Include="Points\PiePointView.cs" />
     <Compile Include="Points\OhlcPointView.cs" />
@@ -116,7 +120,7 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <Compile Include="Charts\Chart\Chart.PublicMethods.cs" />
-    <Compile Include="Charts\Chart\Chart.LoadedAndResize.cs" />
+    <Compile Include="Charts\Chart\Chart.Essentials.cs" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -133,6 +137,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="DefaultTooltip.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="DesignerTest.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -20,6 +20,7 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
+using System;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
@@ -29,7 +30,6 @@ using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using LiveCharts.SeriesAlgorithms;
 using LiveCharts.Wpf.Charts.Chart;
-using LiveCharts.Wpf.Components;
 
 // ReSharper disable once CheckNamespace
 namespace LiveCharts.Wpf
@@ -133,6 +133,22 @@ namespace LiveCharts.Wpf
             if (Fill == null)
                 SetValue(FillProperty,
                     new SolidColorBrush(Chart.GetDefaultColor(index)) { Opacity = DefaultFillOpacity });
+        }
+
+        protected override void OnDesignerModeValues()
+        {
+            var r = new Random();
+
+            Values = new ChartValues<double>
+            {
+                r.Next(0,10),
+                r.Next(0,10),
+                r.Next(0,10),
+                r.Next(0,10),
+                r.Next(0,10),
+                r.Next(0,10),
+                r.Next(0,10),
+            };
         }
 
         #endregion

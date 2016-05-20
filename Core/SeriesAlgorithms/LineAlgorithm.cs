@@ -74,7 +74,7 @@ namespace LiveCharts.SeriesAlgorithms
                 p1 += uw;
                 p2 += uw;
                 p3 += uw;
-                
+
                 lineView.StartSegment(segmentPosition, p1);
                 segmentPosition += segmentPosition == 0 ? 1 : 2;
 

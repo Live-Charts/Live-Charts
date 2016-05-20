@@ -20,11 +20,13 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
+using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using LiveCharts.Defaults;
 using LiveCharts.Helpers;
 using LiveCharts.SeriesAlgorithms;
 using LiveCharts.Wpf.Charts.Chart;
@@ -152,6 +154,21 @@ namespace LiveCharts.Wpf
                     p.View.RemoveFromView(Model.Chart);
             });
             Model.Chart.View.RemoveFromView(this);
+        }
+
+        protected override void OnDesignerModeValues()
+        {
+            var r = new Random();
+
+            Values = new ChartValues<BubblePoint>
+            {
+                new BubblePoint(r.Next(0,10), r.Next(0,10)),
+                new BubblePoint(r.Next(0,10), r.Next(0,10)),
+                new BubblePoint(r.Next(0,10), r.Next(0,10)),
+                new BubblePoint(r.Next(0,10), r.Next(0,10)),
+                new BubblePoint(r.Next(0,10), r.Next(0,10)),
+                new BubblePoint(r.Next(0,10), r.Next(0,10)),
+            };
         }
 
         #endregion

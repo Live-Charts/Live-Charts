@@ -20,6 +20,7 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
+using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -200,6 +201,11 @@ namespace LiveCharts.Wpf
                     p.View.RemoveFromView(Model.Chart);
             });
             Model.Chart.View.RemoveFromView(this);
+        }
+
+        protected override void OnDesignerModeValues()
+        {
+          
         }
 
         #endregion

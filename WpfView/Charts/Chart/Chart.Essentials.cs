@@ -20,6 +20,8 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
+using System;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Windows;
 
@@ -50,6 +52,22 @@ namespace LiveCharts.Wpf.Charts.Chart
             Model.ChartControlSize = new CoreSize(ActualWidth, ActualHeight);
 
             Model.Updater.Run();
+        }
+
+        private static void OnSeriesChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
+        {
+            var chart = (Chart) dependencyObject;
+
+            if (chart.LastKnownSeriesCollection != chart.Series && chart.LastKnownSeriesCollection != null)
+            {
+                foreach (var series in chart.LastKnownSeriesCollection)
+                {
+                    series.Erase();
+                }
+            }
+
+            CallChartUpdater()(dependencyObject, dependencyPropertyChangedEventArgs);
+            chart.LastKnownSeriesCollection = chart.Series;
         }
     }
 }

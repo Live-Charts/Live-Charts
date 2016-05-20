@@ -34,7 +34,8 @@ namespace LiveCharts.Wpf.Charts.Chart
         public event Action<object, ChartPoint> DataClick;
 
         private static Random Randomizer { get; set; }
-        
+        private SeriesCollection LastKnownSeriesCollection { get; set; }
+
         protected Canvas Canvas { get; set; }
         internal Canvas DrawMargin { get; set; }
         internal int SeriesIndexCount { get; set; }
@@ -106,7 +107,8 @@ namespace LiveCharts.Wpf.Charts.Chart
 
         public static readonly DependencyProperty SeriesProperty = DependencyProperty.Register(
             "Series", typeof(SeriesCollection), typeof(Chart),
-            new PropertyMetadata(default(SeriesCollection), CallChartUpdater()));
+            new PropertyMetadata(default(SeriesCollection), OnSeriesChanged));
+
         /// <summary>
         /// Gets or sets chart series collection to plot.
         /// </summary>

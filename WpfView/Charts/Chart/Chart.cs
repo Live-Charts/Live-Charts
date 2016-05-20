@@ -22,6 +22,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
@@ -57,6 +58,8 @@ namespace LiveCharts.Wpf.Charts.Chart
 
             SetValue(AxisXProperty, new List<Axis>());
             SetValue(AxisYProperty, new List<Axis>());
+
+            SetValue(SeriesProperty, new SeriesCollection());
 
             if (RandomizeStartingColor)
                 SeriesIndexCount = Randomizer.Next(0, Colors.Count);

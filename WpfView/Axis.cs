@@ -20,6 +20,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -28,6 +29,7 @@ using System.Windows.Media;
 using System.Windows.Shapes;
 using LiveCharts.Charts;
 using LiveCharts.Wpf.Components;
+using LiveCharts.Wpf.Converters;
 
 namespace LiveCharts.Wpf
 {
@@ -67,6 +69,7 @@ namespace LiveCharts.Wpf
         /// <summary>
         /// Gets or sets axis labels, labels property stores the array to map for each index and value, for example if axis value is 0 then label will be labels[0], when value 1 then labels[1], value 2 then labels[2], ..., value n labels[n], use this property instead of a formatter when there is no conversion between value and label for example names, if you are ploting sales vs salesman name.
         /// </summary>
+        [TypeConverter(typeof(StringCollectionConverter))]
         public IList<string> Labels
         {
             get { return (IList<string>) GetValue(LabelsProperty); }

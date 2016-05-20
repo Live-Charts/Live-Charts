@@ -27,205 +27,50 @@ using System.Linq;
 
 namespace LiveCharts.Helpers
 {
-    public delegate void GossipCollectionCollectionChanged<in T>(
+    public delegate void NoisyCollectionCollectionChanged<in T>(
         IEnumerable<T> oldItems, IEnumerable<T> newItems);
     
-    public interface IGossipCollection : IEnumerable
+    public interface INoisyCollection : IList
     {
-        event GossipCollectionCollectionChanged<object> CollectionChanged;
+        event NoisyCollectionCollectionChanged<object> CollectionChanged;
+    }
 
-        object this[int index] { get; set; }
-        int Count { get; }
-
-        int Add(object item);
-        int AddRange(IEnumerable<object> items);
-        int Insert(int index, object item);
-        int InsertRange(int index, IEnumerable<object> items);
-        int Remove(object item);
-        int RemoveAt(int index);
-        int RemoveRange(int index, int count);
-        void Clear();
-
-        bool Contains(object item);
-        int IndexOf(object item);}
-
-    public class GossipCollection<T> : IGossipCollection, IEnumerable<T>
+    public class NoisyCollection<T> : INoisyCollection, IList<T>
     {
         private readonly List<T> _source;
 
-        #region Constrctors
+        #region Contructors
 
-        public GossipCollection()
+        public NoisyCollection()
         {
             _source = new List<T>();
         }
 
-        public GossipCollection(int capacity)
+        public NoisyCollection(IEnumerable<T> collection)
+        {
+            _source = new List<T>(collection);
+        }
+
+        public NoisyCollection(int capacity)
         {
             _source = new List<T>(capacity);
         }
 
-        public GossipCollection(IEnumerable<T> source)
-        {
-            _source = new List<T>(source);
-        }
-
         #endregion
 
-        #region Events
 
-        event GossipCollectionCollectionChanged<object> IGossipCollection.CollectionChanged
-        {
-            add { CollectionChanged += value as GossipCollectionCollectionChanged<T>; }
-            remove { CollectionChanged -= value as GossipCollectionCollectionChanged<T>; }
-        }
-
-        public event GossipCollectionCollectionChanged<T> CollectionChanged;
-
-#endregion
+        #region Properties
 
         public T this[int index]
         {
             get { return _source[index]; }
             set { _source[index] = value; }
         }
-        object IGossipCollection.this[int index]
+
+        object IList.this[int index]
         {
             get { return _source[index]; }
             set { _source[index] = (T) value; }
-        }
-
-        public int Count { get { return _source.Count; } }
-
-#region Add
-
-        public int Add(T item)
-        {
-            _source.Add(item);
-            OnCollectionChanged(null, new List<T> {item});
-            return _source.Count;
-        }
-
-        int IGossipCollection.Add(object item)
-        {
-            _source.Add((T) item);
-            OnCollectionChanged(null, new List<T> {(T) item});
-            return _source.Count;
-        }
-
-        public int AddRange(IEnumerable<T> items)
-        {
-            //resharper says possible multiple enumeration, I guess this is what we need
-            //literally a possible multple enumeration, but we could actually discard multiple enumeration
-            //if the derived class does nothing with the new items.
-            _source.AddRange(items);
-            OnCollectionChanged(null, items);
-            return _source.Count;
-        }
-
-        int IGossipCollection.AddRange(IEnumerable<object> items)
-        {
-            var enumerable = items.Cast<T>();
-            _source.AddRange(enumerable);
-            OnCollectionChanged(null, enumerable);
-            return _source.Count;
-        }
-
-        public int Insert(int index, T item)
-        {
-            _source.Insert(index, item);
-            OnCollectionChanged(null, new List<T> {item});
-            return _source.Count;
-        }
-
-        int IGossipCollection.Insert(int index, object item)
-        {
-            _source.Insert(index, (T) item);
-            OnCollectionChanged(null, new List<T> {(T) item});
-            return _source.Count;
-        }
-
-        public int InsertRange(int index, IEnumerable<T> items)
-        {
-            _source.InsertRange(index, items);
-            OnCollectionChanged(null, items);
-            return _source.Count;
-        }
-        int IGossipCollection.InsertRange(int index, IEnumerable<object> items)
-        {
-            var enumerable = items.Cast<T>();
-            _source.InsertRange(index, enumerable);
-            OnCollectionChanged(null, enumerable);
-            return _source.Count;
-        }
-
-#endregion
-
-#region Remove
-
-        public int Remove(T item)
-        {
-            _source.Remove(item);
-            OnCollectionChanged(new List<T> {item}, null);
-            return _source.Count;
-        }
-
-        int IGossipCollection.Remove(object item)
-        {
-            _source.Remove((T) item);
-            OnCollectionChanged(new List<T> {(T) item}, null);
-            return _source.Count;
-        }
-
-        public int RemoveAt(int index)
-        {
-            var removedItem = new List<T> {_source[index]};
-            _source.RemoveAt(index);
-            OnCollectionChanged(removedItem, null);
-            return _source.Count;
-        }
-
-        public int RemoveRange(int index, int count)
-        {
-            var range = _source.Skip(index).Take(count).ToList();
-            _source.RemoveRange(index, count);
-            OnCollectionChanged(range, null);
-            return _source.Count;
-        }
-
-        public int RemoveAll(Predicate<T> predicate)
-        {
-            var matches = _source.Where(x => predicate(x)).ToList();
-            _source.RemoveAll(predicate);
-            OnCollectionChanged(matches, null);
-            return _source.Count;
-        }
-
-        public void Clear()
-        {
-            var removed = _source.Select(x => x).ToList();
-            _source.Clear();
-            OnCollectionChanged(removed, null);
-        }
-
-#endregion
-
-        public bool Contains(T item)
-        {
-            return _source.Contains(item);
-        }
-        bool IGossipCollection.Contains(object item)
-        {
-            return _source.Contains((T) item);
-        }
-
-        public int IndexOf(T item)
-        {
-            return _source.IndexOf(item);
-        }
-        int IGossipCollection.IndexOf(object item)
-        {
-            return _source.IndexOf((T) item);
         }
 
         public IEnumerator<T> GetEnumerator()
@@ -237,6 +82,160 @@ namespace LiveCharts.Helpers
         {
             return GetEnumerator();
         }
+
+        public int Count
+        {
+            get { return _source.Count; }
+        }
+
+        bool ICollection<T>.IsReadOnly
+        {
+            get { return ((ICollection<T>) _source).IsReadOnly; }
+        }
+        bool IList.IsReadOnly
+        {
+            get { return ((IList) _source).IsReadOnly; }
+        }
+
+        public bool IsSynchronized
+        {
+            get { return ((ICollection) _source).IsSynchronized; }
+        }
+
+        public object SyncRoot
+        {
+            get { return ((ICollection) _source).SyncRoot; }
+        }
+
+        public bool IsFixedSize { get { return ((IList) _source).IsFixedSize; } }
+
+        #endregion
+
+
+        public int Add(object value)
+        {
+            _source.Add((T)value);
+            OnCollectionChanged(null, new[] {(T) value});
+            return _source.Count;
+        }
+
+        public void Add(T item)
+        {
+            _source.Add(item);
+            OnCollectionChanged(null, new [] {item});
+        }
+
+        public void AddRange(IEnumerable<T> items)
+        {
+            _source.AddRange(items);
+            OnCollectionChanged(null, items);
+        }
+
+        public void Insert(int index, object value)
+        {
+            _source.Insert(index, (T) value);
+            OnCollectionChanged(null, new[] {(T) value});
+        }
+
+        public void Insert(int index, T item)
+        {
+            _source.Insert(index, item);
+            OnCollectionChanged(null, new[] {item});
+        }
+
+        public void InsertRange(int index, IEnumerable<T> collection)
+        {
+            _source.InsertRange(index, collection);
+            OnCollectionChanged(null, collection);
+        }
+
+        public void Remove(object value)
+        {
+            _source.Remove((T) value);
+            OnCollectionChanged(new[] {(T) value}, null);
+        }
+        public bool Remove(T item)
+        {
+            var ans = _source.Remove(item);
+            OnCollectionChanged(new[] { item }, null);
+            return ans;
+        }
+
+        public void RemoveAt(int index)
+        {
+            var i = _source[index];
+            _source.RemoveAt(index);
+            OnCollectionChanged(new[] {i}, null);
+        }
+
+
+        void IList.Clear()
+        {
+            var backup = _source.ToArray();
+            _source.Clear();
+            OnCollectionChanged(backup, null);
+        }
+
+        void ICollection<T>.Clear()
+        {
+            var backup = _source.ToArray();
+            _source.Clear();
+            OnCollectionChanged(backup, null);
+        }
+        
+
+        public bool Contains(object value)
+        {
+            return _source.Contains((T) value);
+        }
+
+        public bool Contains(T item)
+        {
+            return _source.Contains(item);
+        }
+
+
+        public void CopyTo(Array array, int index)
+        {
+            _source.CopyTo(array.Cast<T>().ToArray(), index);
+        }
+
+        public void CopyTo(T[] array, int arrayIndex)
+        {
+            _source.CopyTo(array, arrayIndex);
+        }
+
+
+        public int IndexOf(object value)
+        {
+            return _source.IndexOf((T) value);
+        }
+        
+        public int IndexOf(T item)
+        {
+            return _source.IndexOf(item);
+        }
+
+
+        void IList.RemoveAt(int index)
+        {
+            var i = _source[index];
+            _source.RemoveAt(index);
+            OnCollectionChanged(new[] {i}, null);
+        }
+        void IList<T>.RemoveAt(int index)
+        {
+            var i = _source[index];
+            _source.RemoveAt(index);
+            OnCollectionChanged(new[] {i}, null);
+        }
+
+        event NoisyCollectionCollectionChanged<object> INoisyCollection.CollectionChanged
+        {
+            add { CollectionChanged += value as NoisyCollectionCollectionChanged<T>; }
+            remove { CollectionChanged -= value as NoisyCollectionCollectionChanged<T>; }
+        }
+        public event NoisyCollectionCollectionChanged<T> CollectionChanged;
 
         private void OnCollectionChanged(IEnumerable<T> olditems, IEnumerable<T> newItems)
         {

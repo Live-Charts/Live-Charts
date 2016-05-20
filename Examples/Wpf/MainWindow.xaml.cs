@@ -42,7 +42,8 @@ namespace Wpf
                 new SectionsExample(),
                 new ZoomingAndPanning(),
                 new ConstantChangesChart(),
-                new MixingTypes()
+                new MixingTypes(),
+                new InLineSintaxTest()
             };
 
             PieExamples = new List<UserControl>

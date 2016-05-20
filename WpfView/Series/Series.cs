@@ -1,32 +1,12 @@
-﻿//The MIT License(MIT)
-
-//copyright(c) 2016 Alberto Rodriguez
-
-//Permission is hereby granted, free of charge, to any person obtaining a copy
-//of this software and associated documentation files (the "Software"), to deal
-//in the Software without restriction, including without limitation the rights
-//to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-//copies of the Software, and to permit persons to whom the Software is
-//furnished to do so, subject to the following conditions:
-
-//The above copyright notice and this permission notice shall be included in all
-//copies or substantial portions of the Software.
-
-//THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-//IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-//FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-//AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-//LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-//OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-//SOFTWARE.
-
-using System;
-using System.Diagnostics;
+﻿using System;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media;
+using LiveCharts.Helpers;
 using LiveCharts.Wpf.Charts.Chart;
+using LiveCharts.Wpf.Converters;
 
 namespace LiveCharts.Wpf.Series
 {
@@ -50,23 +30,23 @@ namespace LiveCharts.Wpf.Series
         #endregion
 
         #region Properties
+
+        private IChartValues LastKnownValues { get; set; }
         internal double DefaultFillOpacity { get; set; }
-
         public SeriesAlgorithm Model { get; set; }
-
         public bool IsSeriesVisible
         {
             get { return Visibility == Visibility.Visible; }
         }
-
         public bool IsInVisualTree { get { return Parent != null; } }
 
         public static readonly DependencyProperty ValuesProperty = DependencyProperty.Register(
             "Values", typeof (IChartValues), typeof (Series),
-            new PropertyMetadata(default(IChartValues), CallChartUpdater(true)));
+            new PropertyMetadata(default(IChartValues), OnValuesInstanceChanged));
         /// <summary>
         /// Gets or sets chart values.
         /// </summary>
+        [TypeConverter(typeof(NumericChartValuesConverter))]
         public IChartValues Values
         {
             get { return (IChartValues) GetValue(ValuesProperty); }
@@ -299,6 +279,23 @@ namespace LiveCharts.Wpf.Series
         {
         }
 
+        private static void OnValuesInstanceChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
+        {
+            var series = (Series) dependencyObject;
+
+            if (DesignerProperties.GetIsInDesignMode(series))
+                series.OnDesignerModeValues();
+            
+
+            if (series.Values != series.LastKnownValues && series.LastKnownValues != null)
+            {
+                series.LastKnownValues.Points.ForEach(x => x.View.RemoveFromView(series.Model.Chart));
+            }
+
+            CallChartUpdater()(dependencyObject, dependencyPropertyChangedEventArgs);
+            series.LastKnownValues = series.Values;
+        }
+
         protected static PropertyChangedCallback CallChartUpdater(bool animate = false)
         {
             return (o, args) =>
@@ -310,6 +307,11 @@ namespace LiveCharts.Wpf.Series
 
                 if (wpfSeries.Model.Chart != null) wpfSeries.Model.Chart.Updater.Run(animate);
             };
+        }
+
+        protected virtual void OnDesignerModeValues()
+        {
+            throw new NotImplementedException();
         }
 
         #region Obsoletes

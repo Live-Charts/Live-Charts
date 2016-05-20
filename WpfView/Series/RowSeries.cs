@@ -20,6 +20,7 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
+using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -28,7 +29,6 @@ using System.Windows.Shapes;
 using LiveCharts.Helpers;
 using LiveCharts.SeriesAlgorithms;
 using LiveCharts.Wpf.Charts.Chart;
-using LiveCharts.Wpf.Components;
 using LiveCharts.Wpf.Points;
 
 // ReSharper disable once CheckNamespace
@@ -145,6 +145,22 @@ namespace LiveCharts.Wpf
                     p.View.RemoveFromView(Model.Chart);
             });
             Model.Chart.View.RemoveFromView(this);
+        }
+
+        protected override void OnDesignerModeValues()
+        {
+            var r = new Random();
+
+            Values = new ChartValues<double>
+            {
+                r.Next(0,10),
+                r.Next(0,10),
+                r.Next(0,10),
+                r.Next(0,10),
+                r.Next(0,10),
+                r.Next(0,10),
+                r.Next(0,10),
+            };
         }
 
         #endregion

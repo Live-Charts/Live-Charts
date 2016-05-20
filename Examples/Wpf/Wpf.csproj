@@ -74,6 +74,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="CartesianChart\InLineSintaxTest.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="CartesianChart\LineExample.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -137,6 +141,9 @@
     </Compile>
     <Compile Include="CartesianChart\FinancialExample.xaml.cs">
       <DependentUpon>FinancialExample.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CartesianChart\InLineSintaxTest.xaml.cs">
+      <DependentUpon>InLineSintaxTest.xaml</DependentUpon>
     </Compile>
     <Compile Include="CartesianChart\LineExample.xaml.cs">
       <DependentUpon>LineExample.xaml</DependentUpon>

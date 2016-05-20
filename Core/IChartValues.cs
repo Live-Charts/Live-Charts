@@ -25,7 +25,7 @@ using LiveCharts.Helpers;
 
 namespace LiveCharts
 {
-    public interface IChartValues : IGossipCollection
+    public interface IChartValues : INoisyCollection
     {
         /// <summary>
         /// Gets series points to draw.

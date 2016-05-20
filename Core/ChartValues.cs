@@ -32,7 +32,7 @@ namespace LiveCharts
     /// Creates a collection of values ready to plot
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class ChartValues<T> : GossipCollection<T>, IChartValues
+    public class ChartValues<T> : NoisyCollection<T>, IChartValues
     {
         private IPointEvaluator<T> DefaultConfiguration { get; set; }
 
