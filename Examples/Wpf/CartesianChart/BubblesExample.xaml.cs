@@ -38,7 +38,8 @@ namespace Wpf.CartesianChart
                         new BubblePoint(7, 2, 2),
                         new BubblePoint(2, 6, 6),
                         new BubblePoint(8, 2, 7),
-                    }
+                    },
+                    DataLabels = true
                 },
                 new BubbleSeries
                 {

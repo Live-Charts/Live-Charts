@@ -215,6 +215,9 @@ namespace LiveCharts.Wpf
             SetValue(IncreaseBrushProperty, new SolidColorBrush(Color.FromRgb(254, 178, 0)));
             SetValue(DecreaseBrushProperty, new SolidColorBrush(Color.FromRgb(238, 83, 80)));
 
+            Func<ChartPoint, string> defaultLabel = x => "Not Supported yet!";
+            SetValue(LabelPointProperty, defaultLabel);
+
             DefaultFillOpacity = 1;
         }
 

@@ -23,8 +23,8 @@ namespace Wpf.CartesianChart
                 {
                     Values = new ChartValues<OhlcPoint>
                     {
-                        new OhlcPoint(DateTime.Now, 32, 35, 30, 32), //this is an alpha version, the first param should be date time
-                        new OhlcPoint(DateTime.Now.AddDays(1), 33, 38, 31, 37), //sadly i am having some troubles with datetimes right now...
+                        new OhlcPoint(DateTime.Now, 32, 35, 30, 32), 
+                        new OhlcPoint(DateTime.Now.AddDays(1), 33, 38, 31, 37),
                         new OhlcPoint(DateTime.Now.AddDays(2), 35, 42, 30, 40),
                         new OhlcPoint(DateTime.Now.AddDays(3), 37, 40, 35, 38),
                         new OhlcPoint(DateTime.Now.AddDays(4), 35, 38, 32, 33)

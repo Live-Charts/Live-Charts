@@ -72,7 +72,7 @@ namespace LiveCharts.Wpf.Points
                     DataLabel.UpdateLayout();
 
                     var cx = CorrectXLabel(current.ChartLocation.X - DataLabel.ActualHeight*.5, chart);
-                    var cy = CorrectYLabel(current.ChartLocation.Y - DataLabel.ActualWidth*.5, chart);
+                    var cy = CorrectYLabel(current.ChartLocation.Y - DataLabel.ActualHeight*.5, chart);
                     
                     Canvas.SetTop(DataLabel, cy);
                     Canvas.SetLeft(DataLabel, cx);
@@ -115,7 +115,7 @@ namespace LiveCharts.Wpf.Points
         protected double CorrectXLabel(double desiredPosition, ChartCore chart)
         {
             if (desiredPosition + DataLabel.ActualWidth > chart.DrawMargin.Width)
-                desiredPosition -= desiredPosition + DataLabel.ActualWidth - chart.DrawMargin.Width + 2;
+                desiredPosition -= desiredPosition + DataLabel.ActualWidth - chart.DrawMargin.Width;
 
             if (desiredPosition < 0) desiredPosition = 0;
 
@@ -124,10 +124,8 @@ namespace LiveCharts.Wpf.Points
 
         protected double CorrectYLabel(double desiredPosition, ChartCore chart)
         {
-            desiredPosition -= Ellipse.ActualHeight * .5 + DataLabel.ActualHeight * .5 + 2;
-
             if (desiredPosition + DataLabel.ActualHeight > chart.DrawMargin.Height)
-                desiredPosition -= desiredPosition + DataLabel.ActualHeight - chart.DrawMargin.Height + 2;
+                desiredPosition -= desiredPosition + DataLabel.ActualHeight - chart.DrawMargin.Height;
 
             if (desiredPosition < 0) desiredPosition = 0;
 

@@ -35,8 +35,6 @@ namespace LiveCharts.SeriesAlgorithms
 
         public override void Update()
         {
-            var fx = CurrentYAxis.GetFormatter();
-
             var castedSeries = (IRowSeriesView) View;
 
             const double padding = 5;
@@ -74,7 +72,7 @@ namespace LiveCharts.SeriesAlgorithms
                     ChartFunctions.ToDrawMargin(chartPoint, View.ScalesXAt, View.ScalesYAt, Chart);
 
                 chartPoint.View = View.GetPointView(chartPoint.View, chartPoint,
-                    View.DataLabels ? fx(chartPoint.X) : null);
+                    View.DataLabels ? View.LabelPoint(chartPoint) : null);
 
                 chartPoint.SeriesView = View;
 

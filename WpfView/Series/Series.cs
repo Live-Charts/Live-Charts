@@ -215,6 +215,15 @@ namespace LiveCharts.Wpf.Series
             set { SetValue(ScalesYAtProperty, value); }
         }
 
+        public static readonly DependencyProperty LabelPointProperty = DependencyProperty.Register(
+            "LabelPoint", typeof (Func<ChartPoint, string>), typeof (Series), new PropertyMetadata(default(Func<ChartPoint, string>)));
+
+        public Func<ChartPoint, string> LabelPoint
+        {
+            get { return (Func<ChartPoint, string>) GetValue(LabelPointProperty); }
+            set { SetValue(LabelPointProperty, value); }
+        }
+
         public static readonly DependencyProperty ConfigurationProperty = DependencyProperty.Register(
             "Configuration", typeof (object), typeof (Series), new PropertyMetadata(default(object)));
 

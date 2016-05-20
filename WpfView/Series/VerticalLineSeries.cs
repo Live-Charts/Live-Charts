@@ -288,6 +288,10 @@ namespace LiveCharts.Wpf
             SetValue(PointDiameterProperty, 8d);
             SetValue(PointForeroundProperty, Brushes.White);
             SetValue(StrokeThicknessProperty, 2d);
+
+            Func<ChartPoint, string> defaultLabel = x => Model.CurrentXAxis.GetFormatter()(x.X);
+            SetValue(LabelPointProperty, defaultLabel);
+
             DefaultFillOpacity = 0.15;
             Splitters = new List<LineSegmentSplitter>();
         }

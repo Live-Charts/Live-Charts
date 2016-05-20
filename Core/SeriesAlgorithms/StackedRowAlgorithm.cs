@@ -34,8 +34,6 @@ namespace LiveCharts.SeriesAlgorithms
 
         public override void Update()
         {
-            var x = CurrentYAxis.GetFormatter();
-
             var castedSeries = (IStackedRowSeriesViewView) View;
 
             const double padding = 5;
@@ -68,7 +66,7 @@ namespace LiveCharts.SeriesAlgorithms
                 var to = ChartFunctions.ToDrawMargin(chartPoint.To, AxisTags.X, Chart, View.ScalesXAt);
 
                 chartPoint.View = View.GetPointView(chartPoint.View, chartPoint,
-                    View.DataLabels ? x(chartPoint.X) : null);
+                    View.DataLabels ? View.LabelPoint(chartPoint) : null);
 
                 chartPoint.SeriesView = View;
 

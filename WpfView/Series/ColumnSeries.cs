@@ -21,16 +21,15 @@
 //SOFTWARE.
 
 using System;
+using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Shapes;
-using LiveCharts.Defaults;
 using LiveCharts.Helpers;
 using LiveCharts.SeriesAlgorithms;
 using LiveCharts.Wpf.Charts.Chart;
-using LiveCharts.Wpf.Components;
 using LiveCharts.Wpf.Points;
 
 // ReSharper disable once CheckNamespace
@@ -157,6 +156,10 @@ namespace LiveCharts.Wpf
         {
             SetValue(StrokeThicknessProperty, 0d);
             SetValue(MaxColumnWidthProperty, 35d);
+
+            Func<ChartPoint, string> defaultLabel = x => Model.CurrentYAxis.GetFormatter()(x.Y);
+            SetValue(LabelPointProperty, defaultLabel);
+
             DefaultFillOpacity = 1;
         }
 

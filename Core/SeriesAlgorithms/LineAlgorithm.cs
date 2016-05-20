@@ -37,8 +37,6 @@ namespace LiveCharts.SeriesAlgorithms
         public override void Update()
         {
             var points = View.Values.Points.ToList();
-            var fx = CurrentXAxis.GetFormatter();
-            var fy = CurrentYAxis.GetFormatter();
             var segmentPosition = 0;
 
             var lineView = View as ILineSeriesView;
@@ -116,7 +114,7 @@ namespace LiveCharts.SeriesAlgorithms
                     var c2Y = ym2 + (yc2 - ym2)*smoothness + p2.Y - ym2;
 
                     chartPoint.View = View.GetPointView(chartPoint.View, chartPoint,
-                        View.DataLabels ? fx(chartPoint.X) + ", " + fy(chartPoint.Y) : null);
+                        View.DataLabels ? View.LabelPoint(chartPoint) : null);
 
                     var bezierView = chartPoint.View as IBezierPointView;
                     if (bezierView == null) continue;

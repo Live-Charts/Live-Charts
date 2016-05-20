@@ -26,7 +26,6 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Shapes;
-using LiveCharts.Defaults;
 using LiveCharts.Helpers;
 using LiveCharts.SeriesAlgorithms;
 using LiveCharts.Wpf.Charts.Chart;
@@ -165,6 +164,11 @@ namespace LiveCharts.Wpf
             SetValue(StrokeThicknessProperty, 0d);
             SetValue(MaxBubbleDiameterProperty, 50d);
             SetValue(MinBubbleDiameterProperty, 10d);
+
+            Func<ChartPoint, string> defaultLabel = x => Model.CurrentXAxis.GetFormatter()(x.X) + ", "
+                                                         + Model.CurrentYAxis.GetFormatter()(x.Y);
+            SetValue(LabelPointProperty, defaultLabel);
+
             DefaultFillOpacity = 0.7;
         }
 

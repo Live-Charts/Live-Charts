@@ -41,7 +41,8 @@ namespace Wpf.CartesianChart
                         new ObservableValue(2),
                         new ObservableValue(9),
                         new ObservableValue(3)
-                    }
+                    },
+                    DataLabels = true
                 },
                 new StackedColumnSeries
                 {
@@ -55,7 +56,8 @@ namespace Wpf.CartesianChart
                         new ObservableValue(7),
                         new ObservableValue(0),
                         new ObservableValue(3)
-                    }
+                    },
+                    DataLabels = true
                 },
                 new StackedColumnSeries
                 {
@@ -69,7 +71,8 @@ namespace Wpf.CartesianChart
                         new ObservableValue(2),
                         new ObservableValue(3),
                         new ObservableValue(3)
-                    }
+                    },
+                    DataLabels = true
                 }
             };
 

@@ -15,6 +15,7 @@ using System.Windows.Shapes;
 using LiveCharts;
 using LiveCharts.Defaults;
 using LiveCharts.Wpf;
+using LiveCharts.Wpf.Series;
 
 namespace Wpf.CartesianChart
 {
@@ -39,7 +40,8 @@ namespace Wpf.CartesianChart
                         3,
                         3,
                         3
-                    }
+                    },
+                    DataLabels = true
                 }
             };
 

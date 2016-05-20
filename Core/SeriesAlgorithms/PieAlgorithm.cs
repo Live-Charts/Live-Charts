@@ -32,8 +32,6 @@ namespace LiveCharts.SeriesAlgorithms
 
         public override void Update()
         {
-            var fy = CurrentYAxis.GetFormatter();
-
             var pieChart = (IPieChart) View.Model.Chart.View;
 
             var maxPushOut = View.Model.Chart.View.Series
@@ -58,7 +56,7 @@ namespace LiveCharts.SeriesAlgorithms
             foreach (var chartPoint in View.Values.Points)
             {
                 chartPoint.View = View.GetPointView(chartPoint.View, chartPoint,
-                    View.DataLabels ? fy(chartPoint.Y) : null);
+                    View.DataLabels ? View.LabelPoint(chartPoint) : null);
 
                 var pieSlice = (IPieSlicePointView) chartPoint.View;
 

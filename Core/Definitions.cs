@@ -445,6 +445,7 @@ namespace LiveCharts
         object Configuration { get; set; }
         bool IsSeriesVisible { get; }
         bool IsInVisualTree { get; }
+        Func<ChartPoint, string> LabelPoint { get; set; }
 
         IChartPointView GetPointView(IChartPointView view, ChartPoint point ,string label);
         void OnSeriesUpdateStart();

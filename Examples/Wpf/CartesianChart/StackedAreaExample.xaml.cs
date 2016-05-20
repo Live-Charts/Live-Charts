@@ -37,7 +37,8 @@ namespace Wpf.CartesianChart
                         new ObservableValue(3),
                         new ObservableValue(6),
                         new ObservableValue(2)
-                    }
+                    },
+                    DataLabels = true
                 },
                 new StackedAreaSeries
                 {
@@ -47,9 +48,10 @@ namespace Wpf.CartesianChart
                         new ObservableValue(1),
                         new ObservableValue(7),
                         new ObservableValue(9)
-                    }
+                    },
+                    DataLabels = true
                 },
-                 new StackedAreaSeries
+                new StackedAreaSeries
                 {
                     Values = new ChartValues<ObservableValue>
                     {
@@ -57,7 +59,8 @@ namespace Wpf.CartesianChart
                         new ObservableValue(8),
                         new ObservableValue(2),
                         new ObservableValue(9)
-                    }
+                    },
+                    DataLabels = true
                 }
             };
 

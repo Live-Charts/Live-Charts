@@ -147,8 +147,15 @@ namespace LiveCharts.Wpf
             SetValue(LineSmoothnessProperty, .7d);
             SetValue(PointDiameterProperty, 0d);
             SetValue(PointForeroundProperty, Brushes.White);
+            SetValue(ForegroundProperty, new SolidColorBrush(Color.FromRgb(229, 229, 229)));
             SetValue(StrokeThicknessProperty, 0d);
             SetValue(StackModeProperty, StackMode.Values);
+
+            Func<ChartPoint, string> defaultLabel = x => x.Participation > 0.05
+                ? Model.CurrentXAxis.GetFormatter()(x.X)
+                : string.Empty;
+            SetValue(LabelPointProperty, defaultLabel);
+
             DefaultFillOpacity = 1;
             Splitters = new List<LineSegmentSplitter>();
         }

@@ -177,7 +177,7 @@ namespace LiveCharts.Wpf.Points
 
         protected double CorrectYLabel(double desiredPosition, ChartCore chart)
         {
-            desiredPosition -= Ellipse.ActualHeight*.5 + DataLabel.ActualHeight*.5 + 2;
+            desiredPosition -= (Ellipse == null ? 0 : Ellipse.ActualHeight*.5) + DataLabel.ActualHeight*.5 + 2;
 
             if (desiredPosition + DataLabel.ActualHeight > chart.DrawMargin.Height)
                 desiredPosition -= desiredPosition + DataLabel.ActualHeight - chart.DrawMargin.Height + 2;

@@ -32,9 +32,7 @@ namespace LiveCharts.SeriesAlgorithms
 
         public override void Update()
         {
-            var fx = CurrentXAxis.GetFormatter();
-            var fy = CurrentYAxis.GetFormatter();
-
+            
             var buubleSeries = (IBubbleSeriesView) View;
 
             var p1 = new CorePoint();
@@ -66,7 +64,7 @@ namespace LiveCharts.SeriesAlgorithms
                 chartPoint.SeriesView = View;
 
                 chartPoint.View = View.GetPointView(chartPoint.View, chartPoint,
-                    View.DataLabels ? fx(chartPoint.X) + ", " + fy(chartPoint.Y) : null);
+                    View.DataLabels ? View.LabelPoint(chartPoint) : null);
 
                 var bubbleView = (IBubblePointView) chartPoint.View;
 

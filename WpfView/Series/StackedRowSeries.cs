@@ -20,6 +20,7 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
+using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -163,6 +164,13 @@ namespace LiveCharts.Wpf
         {
             SetValue(StrokeThicknessProperty, 0d);
             SetValue(MaxRowHeigthProperty, 35d);
+            SetValue(ForegroundProperty, new SolidColorBrush(Color.FromRgb(229, 229, 229)));
+
+            Func<ChartPoint, string> defaultLabel = x => x.Participation > 0.05
+                ? Model.CurrentXAxis.GetFormatter()(x.X)
+                : string.Empty;
+            SetValue(LabelPointProperty, defaultLabel);
+
             DefaultFillOpacity = 1;
         }
 

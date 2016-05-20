@@ -40,7 +40,7 @@ namespace Wpf.CartesianChart
                         new ObservableValue(3),
                         new ObservableValue(0),
                         new ObservableValue(1),
-                    }
+                    }, DataLabels = true
                 }
             };
 

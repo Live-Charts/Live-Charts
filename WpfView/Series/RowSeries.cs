@@ -155,6 +155,10 @@ namespace LiveCharts.Wpf
         {
             SetValue(StrokeThicknessProperty, 0d);
             SetValue(MaxRowHeigthProperty, 35d);
+
+            Func<ChartPoint, string> defaultLabel = x => Model.CurrentXAxis.GetFormatter()(x.X);
+            SetValue(LabelPointProperty, defaultLabel);
+
             DefaultFillOpacity = 1;
         }
 

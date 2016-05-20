@@ -20,12 +20,14 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
+using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using LiveCharts.Charts;
+using LiveCharts.Wpf.Charts.Chart;
 
 namespace LiveCharts.Wpf.Points
 {
@@ -72,6 +74,9 @@ namespace LiveCharts.Wpf.Points
             Slice.InnerRadius = InnerRadius;
             Slice.Radius = Radius;
 
+            var hypo = (Slice.Radius + Slice.InnerRadius)/2;
+            var gamma = current.Participation*360/2 + Rotation;
+            var cp = new Point(hypo * Math.Sin(gamma * (Math.PI / 180)), hypo * Math.Cos(gamma * (Math.PI / 180)));
 
             if (chart.View.DisableAnimations)
             {
@@ -82,8 +87,11 @@ namespace LiveCharts.Wpf.Points
                 {
                     DataLabel.UpdateLayout();
 
-                    Canvas.SetTop(DataLabel, 0d);
-                    Canvas.SetLeft(DataLabel, 0d);
+                    var lx = cp.X + chart.DrawMargin.Width / 2 - DataLabel.ActualWidth * .5;
+                    var ly = chart.DrawMargin.Height/2 - cp.Y - DataLabel.ActualHeight*.5;
+
+                    Canvas.SetTop(DataLabel, lx);
+                    Canvas.SetLeft(DataLabel, ly);
                 }
 
                 return;
@@ -95,8 +103,11 @@ namespace LiveCharts.Wpf.Points
             {
                 DataLabel.UpdateLayout();
 
-                DataLabel.BeginAnimation(Canvas.LeftProperty, new DoubleAnimation(0d, animSpeed));
-                DataLabel.BeginAnimation(Canvas.TopProperty, new DoubleAnimation(0d, animSpeed));
+                var lx = cp.X + chart.DrawMargin.Width / 2 - DataLabel.ActualWidth * .5;
+                var ly = chart.DrawMargin.Height / 2 - cp.Y - DataLabel.ActualHeight * .5;
+
+                DataLabel.BeginAnimation(Canvas.LeftProperty, new DoubleAnimation(lx, animSpeed));
+                DataLabel.BeginAnimation(Canvas.TopProperty, new DoubleAnimation(ly, animSpeed));
             }
 
             Slice.BeginAnimation(PieSlice.WedgeAngleProperty, new DoubleAnimation(Wedge, animSpeed));
