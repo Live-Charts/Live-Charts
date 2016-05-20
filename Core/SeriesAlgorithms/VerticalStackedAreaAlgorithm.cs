@@ -24,12 +24,12 @@ namespace LiveCharts.SeriesAlgorithms
 {
     public class VerticalStackedAreaAlgorithm : StackedAreaAlgorithm
     {
-        private readonly IStackModelableSeries _stackModelable;
+        private readonly IStackModelableSeriesView _stackModelable;
 
         public VerticalStackedAreaAlgorithm(ISeriesView view) : base(view)
         {
             SeriesOrientation = SeriesOrientation.Vertical;
-            _stackModelable = (IStackModelableSeries) view;
+            _stackModelable = (IStackModelableSeriesView) view;
         }
 
         protected override CorePoint GetStackedPoint(ChartPoint chartPoint)

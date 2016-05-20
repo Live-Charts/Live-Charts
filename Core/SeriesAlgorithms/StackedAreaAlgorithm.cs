@@ -29,12 +29,12 @@ namespace LiveCharts.SeriesAlgorithms
 {
     public class StackedAreaAlgorithm : SeriesAlgorithm, ICartesianSeries
     {
-        private readonly IStackModelableSeries _stackModelable;
+        private readonly IStackModelableSeriesView _stackModelable;
 
         public StackedAreaAlgorithm(ISeriesView view) : base(view)
         {
             SeriesOrientation = SeriesOrientation.Horizontal;
-            _stackModelable = (IStackModelableSeries)view;
+            _stackModelable = (IStackModelableSeriesView)view;
         }
 
         public override void Update()

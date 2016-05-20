@@ -34,7 +34,7 @@ using LiveCharts.Wpf.Points;
 // ReSharper disable once CheckNamespace
 namespace LiveCharts.Wpf
 {
-    public class StackedColumnSeries : Series.Series, IStackedColumnSeriesView
+    public class StackedColumnSeries : Series.Series, IStackedColumnSeriesViewView
     {
         #region Contructors
 
@@ -66,6 +66,15 @@ namespace LiveCharts.Wpf
         {
             get { return (double) GetValue(MaxColumnWidthProperty); }
             set { SetValue(MaxColumnWidthProperty, value); }
+        }
+
+        public static readonly DependencyProperty StackModeProperty = DependencyProperty.Register(
+            "StackMode", typeof (StackMode), typeof (StackedColumnSeries), new PropertyMetadata(default(StackMode)));
+
+        public StackMode StackMode
+        {
+            get { return (StackMode) GetValue(StackModeProperty); }
+            set { SetValue(StackModeProperty, value); }
         }
 
         #endregion

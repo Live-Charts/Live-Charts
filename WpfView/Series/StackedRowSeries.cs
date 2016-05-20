@@ -20,7 +20,6 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -34,17 +33,17 @@ using LiveCharts.Wpf.Points;
 // ReSharper disable once CheckNamespace
 namespace LiveCharts.Wpf
 {
-    public class StackedRowSeries : Series.Series, IStackedRowSeries
+    public class StackedRowSeriesViewView : Series.Series, IStackedRowSeriesViewView
     {
         #region Contructors
 
-        public StackedRowSeries()
+        public StackedRowSeriesViewView()
         {
             Model = new StackedRowAlgorithm(this);
             InitializeDefuaults();
         }
 
-        public StackedRowSeries(object configuration)
+        public StackedRowSeriesViewView(object configuration)
         {
             Model = new StackedRowAlgorithm(this);
             Configuration = configuration;
@@ -60,12 +59,21 @@ namespace LiveCharts.Wpf
         #region Properties
 
         public static readonly DependencyProperty MaxRowHeigthProperty = DependencyProperty.Register(
-            "MaxRowHeigth", typeof (double), typeof (StackedRowSeries), new PropertyMetadata(default(double)));
+            "MaxRowHeigth", typeof (double), typeof (StackedRowSeriesViewView), new PropertyMetadata(default(double)));
 
         public double MaxRowHeigth
         {
             get { return (double) GetValue(MaxRowHeigthProperty); }
             set { SetValue(MaxRowHeigthProperty, value); }
+        }
+
+        public static readonly DependencyProperty StackModeProperty = DependencyProperty.Register(
+            "StackMode", typeof (StackMode), typeof (StackedRowSeriesViewView), new PropertyMetadata(default(StackMode)));
+
+        public StackMode StackMode
+        {
+            get { return (StackMode) GetValue(StackModeProperty); }
+            set { SetValue(StackModeProperty, value); }
         }
 
         #endregion

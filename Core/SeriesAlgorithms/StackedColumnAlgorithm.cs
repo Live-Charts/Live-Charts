@@ -27,16 +27,18 @@ namespace LiveCharts.SeriesAlgorithms
 {
     public class StackedColumnAlgorithm : SeriesAlgorithm , ICartesianSeries
     {
+        private readonly IStackModelableSeriesView _stackModelable;
         public StackedColumnAlgorithm(ISeriesView view) : base(view)
         {
             SeriesOrientation = SeriesOrientation.Horizontal;
+            _stackModelable = (IStackModelableSeriesView) view;
         }
 
         public override void Update()
         {
             var fy = CurrentYAxis.GetFormatter();
 
-            var castedSeries = (IStackedColumnSeriesView) View;
+            var castedSeries = (IStackedColumnSeriesViewView) View;
 
             const double padding = 5;
 
@@ -64,8 +66,15 @@ namespace LiveCharts.SeriesAlgorithms
             foreach (var chartPoint in View.Values.Points)
             {
                 var x = ChartFunctions.ToDrawMargin(chartPoint.X, AxisTags.X, Chart, View.ScalesXAt);
-                var from = ChartFunctions.ToDrawMargin(chartPoint.From, AxisTags.Y, Chart, View.ScalesYAt);
-                var to = ChartFunctions.ToDrawMargin(chartPoint.To, AxisTags.Y, Chart, View.ScalesYAt);
+                var from = _stackModelable.StackMode == StackMode.Values
+                    ? ChartFunctions.ToDrawMargin(chartPoint.From, AxisTags.Y, Chart, View.ScalesYAt)
+                    : ChartFunctions.ToDrawMargin(chartPoint.From/chartPoint.Sum, AxisTags.Y, Chart, View.ScalesYAt);
+                var to = _stackModelable.StackMode == StackMode.Values
+                    ? ChartFunctions.ToDrawMargin(chartPoint.To, AxisTags.Y, Chart, View.ScalesYAt)
+                    : ChartFunctions.ToDrawMargin(chartPoint.To/chartPoint.Sum, AxisTags.Y, Chart, View.ScalesYAt);
+
+                if (double.IsNaN(from)) from = 0;
+                if (double.IsNaN(to)) to = 0;
 
                 chartPoint.View = View.GetPointView(chartPoint.View, chartPoint,
                     View.DataLabels ? fy(chartPoint.Y) : null);

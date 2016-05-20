@@ -21,7 +21,7 @@ namespace Wpf.CartesianChart
     /// <summary>
     /// Interaction logic for StackedBarSeries.xaml
     /// </summary>
-    public partial class StackedBarExample : UserControl
+    public partial class StackedBarExample
     {
         public StackedBarExample()
         {
@@ -40,7 +40,7 @@ namespace Wpf.CartesianChart
                         new ObservableValue(6),
                         new ObservableValue(2),
                         new ObservableValue(9),
-                        new ObservableValue(3),
+                        new ObservableValue(3)
                     }
                 },
                 new StackedColumnSeries
@@ -54,7 +54,7 @@ namespace Wpf.CartesianChart
                         new ObservableValue(2),
                         new ObservableValue(7),
                         new ObservableValue(0),
-                        new ObservableValue(3),
+                        new ObservableValue(3)
                     }
                 },
                 new StackedColumnSeries
@@ -68,7 +68,7 @@ namespace Wpf.CartesianChart
                         new ObservableValue(9),
                         new ObservableValue(2),
                         new ObservableValue(3),
-                        new ObservableValue(3),
+                        new ObservableValue(3)
                     }
                 }
             };

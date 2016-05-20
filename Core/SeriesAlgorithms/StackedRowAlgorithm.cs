@@ -36,7 +36,7 @@ namespace LiveCharts.SeriesAlgorithms
         {
             var x = CurrentYAxis.GetFormatter();
 
-            var castedSeries = (IStackedRowSeries) View;
+            var castedSeries = (IStackedRowSeriesViewView) View;
 
             const double padding = 5;
 

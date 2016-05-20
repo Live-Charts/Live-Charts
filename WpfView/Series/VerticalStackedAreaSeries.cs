@@ -34,7 +34,7 @@ using LiveCharts.Wpf.Charts.Chart;
 // ReSharper disable once CheckNamespace
 namespace LiveCharts.Wpf
 {
-    public class VerticalStackedAreaSeriesSeries : VerticalLineSeries, IVerticalStackedAreaSeriesView
+    public class VerticalStackedAreaSeriesSeries : VerticalLineSeries, IVerticalStackedAreaSeriesViewView
     {
         #region Contructors
 

@@ -282,7 +282,7 @@ namespace LiveCharts
         double GetMaxY(AxisCore axis);
     }
 
-    public interface IStackModelableSeries
+    public interface IStackModelableSeriesView
     {
         StackMode StackMode { get; set; }
     }
@@ -320,12 +320,12 @@ namespace LiveCharts
         double MaxColumnWidth { get; set; }
     }
 
-    public interface IStackedColumnSeriesView : ISeriesView
+    public interface IStackedColumnSeriesViewView : ISeriesView, IStackModelableSeriesView
     {
         double MaxColumnWidth { get; set; }
     }
 
-    public interface IStackedRowSeries : ISeriesView
+    public interface IStackedRowSeriesViewView : ISeriesView, IStackModelableSeriesView
     {
         double MaxRowHeigth { get; set; }
     }
@@ -342,12 +342,12 @@ namespace LiveCharts
         void EndSegment(int atIndex, CorePoint location);
     }
 
-    public interface IStackedAreaSeriesView : ILineSeriesView, IStackModelableSeries
+    public interface IStackedAreaSeriesViewView : ILineSeriesView, IStackModelableSeriesView
     {
 
     }
 
-    public interface IVerticalStackedAreaSeriesView : ILineSeriesView, IStackModelableSeries
+    public interface IVerticalStackedAreaSeriesViewView : ILineSeriesView, IStackModelableSeriesView
     {
 
     }
