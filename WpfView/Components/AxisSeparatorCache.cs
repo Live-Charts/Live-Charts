@@ -28,6 +28,10 @@ using System.Windows.Shapes;
 using LiveCharts.Charts;
 using LiveCharts.Wpf.Charts.Chart;
 
+//ToDo 
+//Practically everthing ins this calss should not be here, this should be in the core of the library!
+//here only the renderingm and animations, never a math operation!
+
 namespace LiveCharts.Wpf.Components
 {
     public class AxisSeparatorElement : ISeparatorElementView
@@ -51,6 +55,14 @@ namespace LiveCharts.Wpf.Components
         {
             var i = ChartFunctions.ToPlotArea(Model.Value, direction, chart.Model, axisIndex);
 
+            var uw = new CorePoint(
+                axis.Model.EvaluatesUnitWidth
+                    ? ChartFunctions.GetUnitWidth(AxisTags.X, chart.Model, axis.Model)/2
+                    : 0,
+                axis.Model.EvaluatesUnitWidth
+                    ? ChartFunctions.GetUnitWidth(AxisTags.Y, chart.Model, axis.Model)/2
+                    : 0);
+
             if (direction == AxisTags.Y)
             {
                 Line.X1 = chart.Model.DrawMargin.Left;
@@ -64,7 +76,7 @@ namespace LiveCharts.Wpf.Components
                         : 0)
                     : TextBlock.ActualHeight * .5;
                 var leftM = axis.IsMerged ? TextBlock.ActualWidth + 10 : -2;
-                Canvas.SetTop(TextBlock, i - topM + axis.UnitWidth * .5);
+                Canvas.SetTop(TextBlock, i + uw.Y - topM);
                 Canvas.SetLeft(TextBlock, axis.Position == AxisPosition.LeftBottom
                     ? axis.LabelsReference - TextBlock.ActualWidth + leftM
                     : axis.LabelsReference - leftM);
@@ -82,7 +94,7 @@ namespace LiveCharts.Wpf.Components
                         : -2)
                     : TextBlock.ActualWidth * .5;
                 var top = axis.IsMerged ? TextBlock.ActualHeight : 0;
-                Canvas.SetLeft(TextBlock, i - left + axis.UnitWidth * .5);
+                Canvas.SetLeft(TextBlock, i + uw.X - left);
                 Canvas.SetTop(TextBlock,
                     axis.Position == AxisPosition.LeftBottom
                         ? axis.LabelsReference - top
@@ -146,6 +158,14 @@ namespace LiveCharts.Wpf.Components
 
             var i = ChartFunctions.ToPlotArea(Model.Value, direction, chart.Model, axisPosition);
 
+            var uw = new CorePoint(
+                axis.Model.EvaluatesUnitWidth
+                    ? ChartFunctions.GetUnitWidth(AxisTags.X, chart.Model, axis.Model) / 2
+                    : 0,
+                axis.Model.EvaluatesUnitWidth
+                    ? ChartFunctions.GetUnitWidth(AxisTags.Y, chart.Model, axis.Model) / 2
+                    : 0);
+
             if (direction == AxisTags.Y)
             {
                 Line.BeginAnimation(Line.X1Property,
@@ -165,7 +185,7 @@ namespace LiveCharts.Wpf.Components
                     : TextBlock.ActualHeight*.5;
 
                 TextBlock.BeginAnimation(Canvas.TopProperty,
-                    new DoubleAnimation(Line.Y1 - hh + axis.UnitWidth*.5, i - hh + axis.UnitWidth*.5,
+                    new DoubleAnimation(Line.Y1 - hh + axis.UnitWidth*.5, i - hh + uw.Y,
                         chart.AnimationsSpeed));
             }
             else
@@ -187,7 +207,7 @@ namespace LiveCharts.Wpf.Components
                     : TextBlock.ActualWidth*.5;
 
                 TextBlock.BeginAnimation(Canvas.LeftProperty,
-                    new DoubleAnimation(Line.X1 - hw + axis.UnitWidth*.5, i - hw + axis.UnitWidth*.5,
+                    new DoubleAnimation(Line.X1 - hw + axis.UnitWidth*.5, i - hw + uw.X,
                         chart.AnimationsSpeed));
             }
         }
@@ -197,6 +217,14 @@ namespace LiveCharts.Wpf.Components
             if (axis.DisableAnimations || chart.DisableAnimations) return;
 
             var i = ChartFunctions.ToPlotArea(Model.Value, direction, chart.Model, axisIndex);
+
+            var uw = new CorePoint(
+                axis.Model.EvaluatesUnitWidth
+                    ? ChartFunctions.GetUnitWidth(AxisTags.X, chart.Model, axis.Model) / 2
+                    : 0,
+                axis.Model.EvaluatesUnitWidth
+                    ? ChartFunctions.GetUnitWidth(AxisTags.Y, chart.Model, axis.Model) / 2
+                    : 0);
 
             if (direction == AxisTags.Y)
             {
@@ -221,7 +249,7 @@ namespace LiveCharts.Wpf.Components
                     : TextBlock.ActualHeight*.5;
 
                 TextBlock.BeginAnimation(Canvas.TopProperty,
-                    new DoubleAnimation(y - hh + axis.UnitWidth*.5, i - hh + axis.UnitWidth*.5,
+                    new DoubleAnimation(y - hh + axis.UnitWidth*.5, i - hh + uw.Y,
                         chart.AnimationsSpeed));
             }
             else
@@ -245,7 +273,7 @@ namespace LiveCharts.Wpf.Components
                     : TextBlock.ActualWidth*.5;
 
                 TextBlock.BeginAnimation(Canvas.LeftProperty,
-                    new DoubleAnimation(Line.X1 - hw + axis.UnitWidth*.5, i - hw + axis.UnitWidth*.5,
+                    new DoubleAnimation(Line.X1 - hw + axis.UnitWidth*.5, i - hw + uw.X,
                         chart.AnimationsSpeed));
             }
         }

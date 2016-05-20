@@ -65,6 +65,34 @@ namespace LiveCharts
             return m * (value - p1.X) + p1.Y;
         }
 
+        public static double ToPlotArea(double value, AxisTags source, ChartCore chart, AxisCore axis)
+        {
+            var p1 = new CorePoint();
+            var p2 = new CorePoint();
+
+            if (source == AxisTags.Y)
+            {
+                p1.X = axis.MaxLimit;
+                p1.Y = chart.DrawMargin.Top;
+
+                p2.X = axis.MinLimit;
+                p2.Y = chart.DrawMargin.Top + chart.DrawMargin.Height;
+            }
+            else
+            {
+                p1.X = axis.MaxLimit;
+                p1.Y = chart.DrawMargin.Width + chart.DrawMargin.Left;
+
+                p2.X = axis.MinLimit;
+                p2.Y = chart.DrawMargin.Left;
+            }
+
+            var deltaX = p2.X - p1.X;
+            // ReSharper disable once CompareOfFloatsByEqualityOperator
+            var m = (p2.Y - p1.Y) / (deltaX == 0 ? double.MinValue : deltaX);
+            return m * (value - p1.X) + p1.Y;
+        }
+
         public static CorePoint ToPlotArea(CorePoint point, ChartCore chart, int axis = 0)
         {
             return new CorePoint(
@@ -117,6 +145,15 @@ namespace LiveCharts
             return ToPlotArea(value, source, chart, axis) - o;
         }
 
+        public static double ToDrawMargin(double value, AxisTags source, ChartCore chart, AxisCore axis)
+        {
+            var o = source == AxisTags.X
+                ? chart.DrawMargin.Left
+                : chart.DrawMargin.Top;
+
+            return ToPlotArea(value, source, chart, axis) - o;
+        }
+
         public static CorePoint ToDrawMargin(ChartPoint point, int axisXIndex, int axisYIndex, ChartCore chart)
         {
             //Disabled for now, instead each axis will have a unitary width according to the series it holds!
@@ -154,6 +191,20 @@ namespace LiveCharts
             }
 
             min = chart.AxisX[axis].MinLimit;
+            return ToDrawMargin(min + 1, AxisTags.X, chart, axis) - ToDrawMargin(min, AxisTags.X, chart, axis);
+        }
+
+        public static double GetUnitWidth(AxisTags source, ChartCore chart, AxisCore axis)
+        {
+            double min;
+
+            if (source == AxisTags.Y)
+            {
+                min = axis.MinLimit;
+                return ToDrawMargin(min, AxisTags.Y, chart, axis) - ToDrawMargin(min + 1, AxisTags.Y, chart, axis);
+            }
+
+            min = axis.MinLimit;
             return ToDrawMargin(min + 1, AxisTags.X, chart, axis) - ToDrawMargin(min, AxisTags.X, chart, axis);
         }
 

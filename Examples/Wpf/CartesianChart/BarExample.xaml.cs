@@ -61,5 +61,13 @@ namespace Wpf.CartesianChart
                 }
             }
         }
+
+        private void Chart_OnDataClick(object sender, ChartPoint point)
+        {
+            //point instance contains many useful information...
+            //sender is the shape that called the event.
+
+            MessageBox.Show("You clicked " + point.X + ", " + point.Y);
+        }
     }
 }

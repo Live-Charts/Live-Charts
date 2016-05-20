@@ -70,7 +70,7 @@ namespace LiveCharts
         internal double MaxLimit { get; set; }
         internal double MinLimit { get; set; }
         internal double Magnitude { get; set; }
-        internal bool EvaluatesUnitWidth { get; set; }
+        public bool EvaluatesUnitWidth { get; internal set; }
         internal int CleanFactor { get; set; }
         internal Dictionary<double, SeparatorElementCore> Cache { get; set; }
         internal double? LastAxisMax { get; set; }
@@ -150,7 +150,6 @@ namespace LiveCharts
         internal CoreSize PrepareChart(AxisTags source, ChartCore chart)
         {
             if (!(Math.Abs(MaxLimit - MinLimit) > S * .01) || !ShowLabels) return new CoreSize();
-            //if (chart.DrawMargin.Width < 5 || chart.DrawMargin.Height < 5) return new CoreSize();
 
             CalculateSeparator(chart, source);
 
@@ -158,14 +157,8 @@ namespace LiveCharts
 
             var biggest = new CoreSize(0, 0);
             var tolerance = S / 10;
-
-            var uwc = 0;
-
-            //Instead each axis will have a unitary width
-            //if (chart.HasUnitaryPoints)
-            //    if (source == AxisTags.X && !chart.Invert) uwc = 1;
-
-            for (var i = MinLimit; i <= MaxLimit - uwc; i += S)
+            
+            for (var i = MinLimit; i <= MaxLimit - (EvaluatesUnitWidth ? 1 : 0); i += S)
             {
                 SeparatorElementCore asc;
 
