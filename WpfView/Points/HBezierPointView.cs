@@ -22,11 +22,11 @@
 
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using LiveCharts.Charts;
-using LiveCharts.SeriesAlgorithms;
 using LiveCharts.Wpf.Components;
 
 namespace LiveCharts.Wpf.Points
@@ -185,6 +185,20 @@ namespace LiveCharts.Wpf.Points
             if (desiredPosition < 0) desiredPosition = 0;
 
             return desiredPosition;
+        }
+
+        public override void OnHover(ChartPoint point)
+        {
+            var lineSeries = (LineSeries)point.SeriesView;
+            if (Ellipse != null) Ellipse.Fill = Ellipse.Stroke;
+            lineSeries.StrokeThickness = lineSeries.StrokeThickness + 1;
+        }
+
+        public override void OnHoverLeave(ChartPoint point)
+        {
+            var lineSeries = (LineSeries) point.SeriesView;
+            if (Ellipse != null) Ellipse.Fill = lineSeries.PointForeround;
+            lineSeries.StrokeThickness = lineSeries.StrokeThickness - 1;
         }
     }
 }

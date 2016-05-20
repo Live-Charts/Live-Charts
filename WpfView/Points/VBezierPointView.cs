@@ -145,5 +145,19 @@ namespace LiveCharts.Wpf.Points
                 Canvas.SetTop(HoverShape, current.ChartLocation.Y - HoverShape.Height * .5);
             }
         }
+
+        public override void OnHover(ChartPoint point)
+        {
+            var lineSeries = (LineSeries)point.SeriesView;
+            if (Ellipse != null) Ellipse.Fill = Ellipse.Stroke;
+            lineSeries.StrokeThickness = lineSeries.StrokeThickness + 1;
+        }
+
+        public override void OnHoverLeave(ChartPoint point)
+        {
+            var lineSeries = (LineSeries)point.SeriesView;
+            if (Ellipse != null) Ellipse.Fill = lineSeries.PointForeround;
+            lineSeries.StrokeThickness = lineSeries.StrokeThickness - 1;
+        }
     }
 }

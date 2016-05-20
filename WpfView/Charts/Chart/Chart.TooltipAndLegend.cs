@@ -92,6 +92,8 @@ namespace LiveCharts.Wpf.Charts.Chart
             var ax = AxisX[senderPoint.SeriesView.ScalesXAt];
             var ay = AxisY[senderPoint.SeriesView.ScalesYAt];
 
+            senderPoint.View.OnHover(senderPoint);
+
             var pointsToHighlight = Enumerable.Empty<ChartPoint>();
             double? shares = null;
 
@@ -155,6 +157,13 @@ namespace LiveCharts.Wpf.Charts.Chart
         {
             TooltipTimeoutTimer.Stop();
             TooltipTimeoutTimer.Start();
+
+            var source = Series.SelectMany(x => x.Values.Points);
+            var senderPoint = source.FirstOrDefault(x => Equals(((PointView)x.View).HoverShape, sender));
+
+            if (senderPoint == null) return;
+
+            senderPoint.View.OnHoverLeave(senderPoint);
         }
 
         private void TooltipTimeoutTimerOnTick(object sender, EventArgs eventArgs)

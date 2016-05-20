@@ -278,22 +278,6 @@ namespace LiveCharts.Wpf
             splitter.IsNew = false;
         }
 
-        protected override void OnDesignerModeValues()
-        {
-            var r = new Random();
-
-            Values = new ChartValues<double>
-            {
-                r.Next(0,10),
-                r.Next(0,10),
-                r.Next(0,10),
-                r.Next(0,10),
-                r.Next(0,10),
-                r.Next(0,10),
-                r.Next(0,10),
-            };
-        }
-
         #endregion
 
         #region Private Methods

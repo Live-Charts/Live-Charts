@@ -43,7 +43,7 @@ namespace Wpf
                 new ZoomingAndPanning(),
                 new ConstantChangesChart(),
                 new MixingTypes(),
-                new InLineSintaxTest()
+                new InLineSyntaxTest()
             };
 
             PieExamples = new List<UserControl>

@@ -23,6 +23,7 @@
 using System;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using LiveCharts.Charts;
@@ -141,6 +142,23 @@ namespace LiveCharts.Wpf.Points
             chart.View.RemoveFromDrawMargin(HoverShape);
             chart.View.RemoveFromDrawMargin(Rectangle);
             chart.View.RemoveFromDrawMargin(DataLabel);
+        }
+
+        public override void OnHover(ChartPoint point)
+        {
+            var copy = Rectangle.Fill.Clone();
+            copy.Opacity -= .15;
+            Rectangle.Fill = copy;
+        }
+
+        public override void OnHoverLeave(ChartPoint point)
+        {
+            BindingOperations.SetBinding(Rectangle, Shape.FillProperty,
+                new Binding
+                {
+                    Path = new PropertyPath(Series.Series.FillProperty),
+                    Source = ((Series.Series)point.SeriesView)
+                });
         }
     }
 }

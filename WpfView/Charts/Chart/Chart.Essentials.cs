@@ -20,8 +20,6 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-using System;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.Windows;
 
@@ -35,13 +33,8 @@ namespace LiveCharts.Wpf.Charts.Chart
 
             Model.ChartControlSize = new CoreSize(ActualWidth, ActualHeight);
 
-            //forcing the update twice make the chart scale better initially
-            //ToDo: scale nicely the first time, with only one call.
-            //this happens because of labels size, canvas size, and many other things that are not
-            //rendered yet!
-
-            Model.Updater.Run(false, true);
-            Model.Updater.Run(false, true);
+            Model.DrawMargin.Height = Canvas.ActualHeight;
+            Model.DrawMargin.Width = Canvas.ActualWidth;
         }
 
         private void OnSizeChanged(object sender, SizeChangedEventArgs args)

@@ -40,5 +40,15 @@ namespace LiveCharts.Wpf.Points
         {
             throw new NotImplementedException();
         }
+
+        public virtual void OnHover(ChartPoint point)
+        {
+            
+        }
+
+        public virtual void OnHoverLeave(ChartPoint point)
+        {
+            
+        }
     }
 }

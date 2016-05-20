@@ -158,7 +158,7 @@ namespace LiveCharts.Wpf
 
         public override IChartPointView GetPointView(IChartPointView view, ChartPoint point, string label)
         {
-            var mhr = PointDiameter < 5 ? 5 : PointDiameter;
+            var mhr = PointDiameter < 10 ? 10 : PointDiameter;
 
             var pbv = (view as HBezierPointView);
 
@@ -254,22 +254,6 @@ namespace LiveCharts.Wpf
             });
             Model.Chart.View.RemoveFromDrawMargin(Path);
             Model.Chart.View.RemoveFromView(this);
-        }
-
-        protected override void OnDesignerModeValues()
-        {
-            var r = new Random();
-
-            Values = new ChartValues<double>
-            {
-                r.Next(0,10),
-                r.Next(0,10),
-                r.Next(0,10),
-                r.Next(0,10),
-                r.Next(0,10),
-                r.Next(0,10),
-                r.Next(0,10),
-            };
         }
 
         #endregion

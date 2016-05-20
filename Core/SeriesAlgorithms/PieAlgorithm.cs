@@ -20,6 +20,8 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
+using System.Linq;
+
 namespace LiveCharts.SeriesAlgorithms
 {
     public class PieAlgorithm : SeriesAlgorithm, IPieSeries
@@ -34,10 +36,15 @@ namespace LiveCharts.SeriesAlgorithms
 
             var pieChart = (IPieChart) View.Model.Chart.View;
 
+            var maxPushOut = View.Model.Chart.View.Series
+                .OfType<IPieSeriesView>()
+                .Select(x => x.PushOut)
+                .DefaultIfEmpty(0).Max();
+
             var minDimension = Chart.DrawMargin.Width < Chart.DrawMargin.Height
                 ? Chart.DrawMargin.Width
                 : Chart.DrawMargin.Height;
-            minDimension -= 10;
+            minDimension -= 10 + maxPushOut;
             minDimension = minDimension < 10 ? 10 : minDimension;
             
             var inner = pieChart.InnerRadius;

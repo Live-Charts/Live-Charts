@@ -203,11 +203,6 @@ namespace LiveCharts.Wpf
             Model.Chart.View.RemoveFromView(this);
         }
 
-        protected override void OnDesignerModeValues()
-        {
-          
-        }
-
         #endregion
 
         #region Private Methods

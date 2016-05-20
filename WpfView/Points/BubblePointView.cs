@@ -22,6 +22,7 @@
 
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using LiveCharts.Charts;
@@ -131,6 +132,23 @@ namespace LiveCharts.Wpf.Points
             if (desiredPosition < 0) desiredPosition = 0;
 
             return desiredPosition;
+        }
+
+        public override void OnHover(ChartPoint point)
+        {
+            var copy = Ellipse.Fill.Clone();
+            copy.Opacity -= .15;
+            Ellipse.Fill = copy;
+        }
+
+        public override void OnHoverLeave(ChartPoint point)
+        {
+            BindingOperations.SetBinding(Ellipse, Shape.FillProperty,
+                new Binding
+                {
+                    Path = new PropertyPath(Series.Series.FillProperty),
+                    Source = ((Series.Series) point.SeriesView)
+                });
         }
     }
 }

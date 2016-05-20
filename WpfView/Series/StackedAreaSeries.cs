@@ -135,22 +135,6 @@ namespace LiveCharts.Wpf
                     new SolidColorBrush(Chart.GetDefaultColor(index)) { Opacity = DefaultFillOpacity });
         }
 
-        protected override void OnDesignerModeValues()
-        {
-            var r = new Random();
-
-            Values = new ChartValues<double>
-            {
-                r.Next(0,10),
-                r.Next(0,10),
-                r.Next(0,10),
-                r.Next(0,10),
-                r.Next(0,10),
-                r.Next(0,10),
-                r.Next(0,10),
-            };
-        }
-
         #endregion
 
         #region Public Methods 

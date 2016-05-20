@@ -283,10 +283,6 @@ namespace LiveCharts.Wpf.Series
         {
             var series = (Series) dependencyObject;
 
-            if (DesignerProperties.GetIsInDesignMode(series))
-                series.OnDesignerModeValues();
-            
-
             if (series.Values != series.LastKnownValues && series.LastKnownValues != null)
             {
                 series.LastKnownValues.Points.ForEach(x => x.View.RemoveFromView(series.Model.Chart));
@@ -307,11 +303,6 @@ namespace LiveCharts.Wpf.Series
 
                 if (wpfSeries.Model.Chart != null) wpfSeries.Model.Chart.Updater.Run(animate);
             };
-        }
-
-        protected virtual void OnDesignerModeValues()
-        {
-            throw new NotImplementedException();
         }
 
         #region Obsoletes

@@ -31,15 +31,24 @@ namespace Wpf.PieChart
             {
                 new PieSeries
                 {
-                    Values = new ChartValues<ObservableValue> { new ObservableValue(2), new ObservableValue(3) }
+                    Values = new ChartValues<ObservableValue> { new ObservableValue(2) }
                 },
                 new PieSeries
                 {
-                    Values = new ChartValues<ObservableValue> { new ObservableValue(5), new ObservableValue(2) }
+                    Values = new ChartValues<ObservableValue> { new ObservableValue(5) }
                 },
                 new PieSeries
                 {
-                    Values = new ChartValues<ObservableValue> { new ObservableValue(3), new ObservableValue(4) }
+                    Values = new ChartValues<ObservableValue> { new ObservableValue(3) }
+                },
+                new PieSeries
+                {
+                    Values = new ChartValues<ObservableValue> { new ObservableValue(4) }
+                },
+                new PieSeries
+                {
+                    Values = new ChartValues<ObservableValue> { new ObservableValue(2.5) },
+                    PushOut = 10
                 }
             };
 

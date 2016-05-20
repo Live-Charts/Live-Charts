@@ -20,8 +20,11 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
+using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Media.Animation;
+using System.Windows.Shapes;
 using LiveCharts.Charts;
 
 namespace LiveCharts.Wpf.Points
@@ -33,6 +36,7 @@ namespace LiveCharts.Wpf.Points
         public double Radius { get; set; }
         public double Wedge { get; set; }
         public PieSlice Slice { get; set; }
+        private double OriginalPusOut { get; set; }
 
         public override void DrawOrMove(ChartPoint previousDrawn, ChartPoint current, int index, ChartCore chart)
         {
@@ -104,6 +108,29 @@ namespace LiveCharts.Wpf.Points
             chart.View.RemoveFromDrawMargin(HoverShape);
             chart.View.RemoveFromDrawMargin(Slice);
             chart.View.RemoveFromDrawMargin(DataLabel);
+        }
+
+        public override void OnHover(ChartPoint point)
+        {
+            var copy = Slice.Fill.Clone();
+            copy.Opacity -= .15;
+            Slice.Fill = copy;
+            OriginalPusOut = Slice.PushOut;
+            Slice.BeginAnimation(PieSlice.PushOutProperty,
+                new DoubleAnimation(OriginalPusOut, OriginalPusOut + 5,
+                    point.SeriesView.Model.Chart.View.AnimationsSpeed));
+        }
+
+        public override void OnHoverLeave(ChartPoint point)
+        {
+            BindingOperations.SetBinding(Slice, Shape.FillProperty,
+                new Binding
+                {
+                    Path = new PropertyPath(Series.Series.FillProperty),
+                    Source = ((Series.Series) point.SeriesView)
+                });
+            Slice.BeginAnimation(PieSlice.PushOutProperty,
+                new DoubleAnimation(OriginalPusOut, point.SeriesView.Model.Chart.View.AnimationsSpeed));
         }
     }
 }

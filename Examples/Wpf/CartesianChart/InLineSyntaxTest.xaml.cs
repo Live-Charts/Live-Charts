@@ -18,9 +18,9 @@ namespace Wpf.CartesianChart
     /// <summary>
     /// Interaction logic for InLineSintaxTest.xaml
     /// </summary>
-    public partial class InLineSintaxTest : UserControl
+    public partial class InLineSyntaxTest : UserControl
     {
-        public InLineSintaxTest()
+        public InLineSyntaxTest()
         {
             InitializeComponent();
         }

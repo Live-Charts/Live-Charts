@@ -21,9 +21,7 @@
 //SOFTWARE.
 
 using System;
-using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using LiveCharts.Charts;
@@ -162,5 +160,6 @@ namespace LiveCharts.Wpf.Points
 
             return desiredPosition;
         }
+        
     }
 }

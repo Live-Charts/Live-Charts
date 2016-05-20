@@ -270,7 +270,6 @@ namespace LiveCharts
     public interface IPieSeries
     {
         ISeriesView View { get; }
-
     }
 
     public interface ICartesianSeries
@@ -313,7 +312,7 @@ namespace LiveCharts
 
     public interface IPieSeriesView : ISeriesView
     {
-        
+        double PushOut { get; set; }
     }
 
     public interface IOhlcSeriesView : ISeriesView
@@ -508,6 +507,8 @@ namespace LiveCharts
         bool IsNew { get; set; }
         void DrawOrMove(ChartPoint previousDrawn, ChartPoint current, int index, ChartCore chart);
         void RemoveFromView(ChartCore chart);
+        void OnHover(ChartPoint point);
+        void OnHoverLeave(ChartPoint point);
     }
     #endregion
 }

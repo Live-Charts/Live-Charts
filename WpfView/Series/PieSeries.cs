@@ -20,7 +20,6 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -59,6 +58,14 @@ namespace LiveCharts.Wpf
 
         #region Properties
 
+        public static readonly DependencyProperty PushOutProperty = DependencyProperty.Register(
+            "PushOut", typeof (double), typeof (PieSeries), new PropertyMetadata(default(double)));
+
+        public double PushOut
+        {
+            get { return (double) GetValue(PushOutProperty); }
+            set { SetValue(PushOutProperty, value); }
+        }
         #endregion
 
         #region Overriden Methods
@@ -83,6 +90,8 @@ namespace LiveCharts.Wpf
                     new Binding {Path = new PropertyPath(StrokeThicknessProperty), Source = this});
                 BindingOperations.SetBinding(pbv.Slice, Shape.StrokeDashArrayProperty,
                     new Binding {Path = new PropertyPath(StrokeDashArrayProperty), Source = this});
+                BindingOperations.SetBinding(pbv.Slice, PieSlice.PushOutProperty,
+                    new Binding {Path = new PropertyPath(PushOutProperty), Source = this});
                 BindingOperations.SetBinding(pbv.Slice, Panel.ZIndexProperty,
                     new Binding {Path = new PropertyPath(Panel.ZIndexProperty), Source = this});
                 BindingOperations.SetBinding(pbv.Slice, VisibilityProperty,
@@ -135,16 +144,6 @@ namespace LiveCharts.Wpf
                     p.View.RemoveFromView(Model.Chart);
             });
             Model.Chart.View.RemoveFromView(this);
-        }
-
-        protected override void OnDesignerModeValues()
-        {
-            var r = new Random();
-
-            Values = new ChartValues<double>
-            {
-                r.Next(0,10)
-            };
         }
 
         #endregion

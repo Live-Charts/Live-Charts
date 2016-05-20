@@ -137,21 +137,6 @@ namespace LiveCharts.Wpf
 
         #region Public Methods 
 
-        protected override void OnDesignerModeValues()
-        {
-            var r = new Random();
-
-            Values = new ChartValues<double>
-            {
-                r.Next(0,10),
-                r.Next(0,10),
-                r.Next(0,10),
-                r.Next(0,10),
-                r.Next(0,10),
-                r.Next(0,10),
-                r.Next(0,10),
-            };
-        }
 
         #endregion
 
