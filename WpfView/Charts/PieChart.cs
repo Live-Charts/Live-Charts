@@ -21,10 +21,10 @@
 //SOFTWARE.
 
 using System;
-using System.ComponentModel;
 using System.Windows;
 using LiveCharts.Charts;
 using LiveCharts.Wpf.Charts.Chart;
+using LiveCharts.Wpf.Points;
 
 // ReSharper disable once CheckNamespace
 namespace LiveCharts.Wpf
@@ -54,6 +54,26 @@ namespace LiveCharts.Wpf
         {
             get { return (double) GetValue(StartingRotationAngleProperty); }
             set { SetValue(StartingRotationAngleProperty, value); }
+        }
+
+        protected override Point GetTooltipPosition(ChartPoint senderPoint)
+        {
+            var pieSlice = ((PiePointView) senderPoint.View).Slice;
+
+            var alpha = pieSlice.RotationAngle + pieSlice.WedgeAngle * .5 + 180;
+            var alphaRad = alpha * Math.PI / 180;
+            var sliceMidAngle = alpha - 180;
+
+            DataTooltip.UpdateLayout();
+
+            var y = DrawMargin.ActualHeight*.5 +
+                    (sliceMidAngle > 90 && sliceMidAngle < 270 ? -1 : 0)*DataTooltip.ActualHeight -
+                    Math.Cos(alphaRad)*15;
+            var x = DrawMargin.ActualWidth*.5 +
+                    (sliceMidAngle > 0 && sliceMidAngle < 180 ? -1 : 0)*DataTooltip.ActualWidth +
+                    Math.Sin(alphaRad)*15;
+
+            return new Point(x, y);
         }
     }
 }

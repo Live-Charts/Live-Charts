@@ -14,11 +14,11 @@
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
         <TextBlock Grid.Row="0" TextWrapping="Wrap">
-                The bar series have 2 variations, ColumnSeries and RowSeries, the Column series will draw vertical bars, and the Row series horizontal bars. <LineBreak/>
+            Use the pie chart to create pies, increase the inner radius property to make it a doughnut, use the PieSeries.PushOut property to highlight a slice.
         </TextBlock>
         <Button Grid.Row="1" Height="30" Click="UpdateAllOnClick">
             Move All
         </Button>
-        <lc:PieChart Grid.Row="2" Series="{Binding SeriesCollection}" InnerRadius="30"></lc:PieChart>
+        <lc:PieChart Grid.Row="2" Series="{Binding SeriesCollection}" LegendLocation="Right" InnerRadius="100"></lc:PieChart>
     </Grid>
 </UserControl>

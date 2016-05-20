@@ -50,7 +50,7 @@ namespace LiveCharts.Charts
 
             foreach (var xi in AxisX)
             {
-                //xi.CalculateSeparator(this, AxisTags.X);
+                xi.S = 1;
                 xi.MinLimit = View.Series.Select(x => x.Values.Limit1.Min)
                     .DefaultIfEmpty(0).Min();
                 xi.MaxLimit = View.Series.Select(x => x.Values.Limit1.Max)

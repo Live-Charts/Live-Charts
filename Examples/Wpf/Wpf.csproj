@@ -86,6 +86,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="CartesianChart\MultiAxesChart.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="CartesianChart\ResponsiveExample.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -150,6 +154,9 @@
     </Compile>
     <Compile Include="CartesianChart\MixingTypes.xaml.cs">
       <DependentUpon>MixingTypes.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CartesianChart\MultiAxesChart.xaml.cs">
+      <DependentUpon>MultiAxesChart.xaml</DependentUpon>
     </Compile>
     <Compile Include="CartesianChart\ResponsiveExample.xaml.cs">
       <DependentUpon>ResponsiveExample.xaml</DependentUpon>

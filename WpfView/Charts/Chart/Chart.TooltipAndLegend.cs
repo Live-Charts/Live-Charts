@@ -107,13 +107,13 @@ namespace LiveCharts.Wpf.Charts.Chart
                     pointsToHighlight = Series.Where(x => x.ScalesXAt == senderPoint.SeriesView.ScalesXAt)
                         .SelectMany(x => x.Values.Points)
                         .Where(x => Math.Abs(x.X - senderPoint.X) < ax.Model.S * .01);
-                    shares = senderPoint.X;
+                    shares = (this as PieChart) == null ? (double?) senderPoint.X : null;
                     break;
                 case TooltipSelectionMode.SharedYValues:
                     pointsToHighlight = Series.Where(x => x.ScalesYAt == senderPoint.SeriesView.ScalesYAt)
                         .SelectMany(x => x.Values.Points)
                         .Where(x => Math.Abs(x.Y - senderPoint.Y) < ay.Model.S * .01);
-                    shares = senderPoint.X;
+                    shares = senderPoint.Y;
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -141,16 +141,12 @@ namespace LiveCharts.Wpf.Charts.Chart
             DataTooltip.Visibility = Visibility.Visible;
             DataTooltip.UpdateLayout();
 
-            var xt = senderPoint.ChartLocation.X;
-            var yt = senderPoint.ChartLocation.Y;
-
-            xt = xt > DrawMargin.Width/2 ? xt - DataTooltip.ActualWidth - 5 : xt + 5;
-            yt = yt > DrawMargin.Height/2 ? yt - DataTooltip.ActualHeight - 5 : yt + 5;
+            var location = GetTooltipPosition(senderPoint);
 
             DataTooltip.BeginAnimation(Canvas.LeftProperty,
-                new DoubleAnimation(xt, TimeSpan.FromMilliseconds(200)));
+                new DoubleAnimation(location.X, TimeSpan.FromMilliseconds(200)));
             DataTooltip.BeginAnimation(Canvas.TopProperty,
-                new DoubleAnimation(yt, TimeSpan.FromMilliseconds(200)));
+                new DoubleAnimation(location.Y, TimeSpan.FromMilliseconds(200)));
         }
 
         private void DataMouseLeave(object sender, EventArgs e)
@@ -191,7 +187,16 @@ namespace LiveCharts.Wpf.Charts.Chart
             DataTooltip.Visibility = Visibility.Hidden;
         }
 
+        protected virtual Point GetTooltipPosition(ChartPoint senderPoint)
+        {
+            var xt = senderPoint.ChartLocation.X;
+            var yt = senderPoint.ChartLocation.Y;
 
+            xt = xt > DrawMargin.Width / 2 ? xt - DataTooltip.ActualWidth - 5 : xt + 5;
+            yt = yt > DrawMargin.Height / 2 ? yt - DataTooltip.ActualHeight - 5 : yt + 5;
+
+            return new Point(xt, yt);
+        }
 
     }
 }

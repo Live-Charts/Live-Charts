@@ -19,6 +19,11 @@
         <Button Grid.Row="1" Height="30" Click="UpdateAllOnClick">
             Move All
         </Button>
-        <lvc:CartesianChart Grid.Row="2" Series="{Binding SeriesCollection}"></lvc:CartesianChart>
+        <lvc:CartesianChart Grid.Row="2" Series="{Binding SeriesCollection}">
+            <lvc:CartesianChart.DataTooltip>
+                <!--The selection mode property sould be done automaticaly in future versions!-->
+                <lvc:DefaultTooltip SelectionMode="OnlySender"></lvc:DefaultTooltip>
+            </lvc:CartesianChart.DataTooltip>
+        </lvc:CartesianChart>
     </Grid>
 </UserControl>

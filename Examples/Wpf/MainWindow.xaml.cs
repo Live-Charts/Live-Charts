@@ -41,6 +41,7 @@ namespace Wpf
                 new StackedBarExample(),
                 new SectionsExample(),
                 new ZoomingAndPanning(),
+                new MultiAxesChart(),
                 new ConstantChangesChart(),
                 new MixingTypes(),
                 new InLineSyntaxTest()

@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Windows.Media;
 using System.Windows.Navigation;
 using LiveCharts;
 using LiveCharts.Defaults;
@@ -17,7 +18,7 @@ namespace Wpf.CartesianChart
 
             SeriesCollection = new SeriesCollection
             {
-                new LineSeries {Values = new ChartValues<double> {3d, 6d, 2d, 8d}},
+                new LineSeries {Values = new ChartValues<double> {3d, 6d, 2d, 8d}, Fill = Brushes.Transparent},
                 new ColumnSeries {Values = new ChartValues<int> {6, 8, 2, 5}},
                 new ColumnSeries {Values = new ChartValues<decimal> {3m, 2m, 3m, 8m}},
                 new LineSeries
@@ -29,7 +30,8 @@ namespace Wpf.CartesianChart
                             new ObservableValue(2),
                             new ObservableValue(3),
                             new ObservableValue(2)
-                        }
+                        },
+                    Fill = Brushes.Transparent
                 }
             };
 
