@@ -80,7 +80,7 @@ namespace LiveCharts.Wpf
 
         public static readonly DependencyProperty PointForeroundProperty = DependencyProperty.Register(
             "PointForeround", typeof (Brush), typeof (LineSeries), 
-            new PropertyMetadata(default(Brush), CallChartUpdater()));
+            new PropertyMetadata(default(Brush)));
 
         public Brush PointForeround
         {

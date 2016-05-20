@@ -185,7 +185,7 @@ namespace LiveCharts.Wpf.Components
                     : TextBlock.ActualHeight*.5;
 
                 TextBlock.BeginAnimation(Canvas.TopProperty,
-                    new DoubleAnimation(Line.Y1 - hh + axis.UnitWidth*.5, i - hh + uw.Y,
+                    new DoubleAnimation(Line.Y1 - hh + uw.Y, i - hh + uw.Y,
                         chart.AnimationsSpeed));
             }
             else
@@ -207,7 +207,7 @@ namespace LiveCharts.Wpf.Components
                     : TextBlock.ActualWidth*.5;
 
                 TextBlock.BeginAnimation(Canvas.LeftProperty,
-                    new DoubleAnimation(Line.X1 - hw + axis.UnitWidth*.5, i - hw + uw.X,
+                    new DoubleAnimation(Line.X1 - hw + uw.X, i - hw + uw.X,
                         chart.AnimationsSpeed));
             }
         }
@@ -249,7 +249,7 @@ namespace LiveCharts.Wpf.Components
                     : TextBlock.ActualHeight*.5;
 
                 TextBlock.BeginAnimation(Canvas.TopProperty,
-                    new DoubleAnimation(y - hh + axis.UnitWidth*.5, i - hh + uw.Y,
+                    new DoubleAnimation(y - hh + uw.Y, i - hh + uw.Y,
                         chart.AnimationsSpeed));
             }
             else
@@ -273,7 +273,7 @@ namespace LiveCharts.Wpf.Components
                     : TextBlock.ActualWidth*.5;
 
                 TextBlock.BeginAnimation(Canvas.LeftProperty,
-                    new DoubleAnimation(Line.X1 - hw + axis.UnitWidth*.5, i - hw + uw.X,
+                    new DoubleAnimation(Line.X1 - hw + uw.X, i - hw + uw.X,
                         chart.AnimationsSpeed));
             }
         }
