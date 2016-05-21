@@ -1,18 +1,22 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Windows;
 using LiveCharts;
 using LiveCharts.Defaults;
 using LiveCharts.Wpf;
+using Wpf.Annotations;
 
 namespace Wpf.CartesianChart
 {
     /// <summary>
     /// Interaction logic for FinancialSeries.xaml
     /// </summary>
-    public partial class FinancialExample
+    public partial class FinancialExample : INotifyPropertyChanged
     {
-        
+        private string[] _labels;
+
         public FinancialExample()
         {
             InitializeComponent();
@@ -23,22 +27,45 @@ namespace Wpf.CartesianChart
                 {
                     Values = new ChartValues<OhlcPoint>
                     {
-                        new OhlcPoint(DateTime.Now, 32, 35, 30, 32), 
-                        new OhlcPoint(DateTime.Now.AddDays(1), 33, 38, 31, 37),
-                        new OhlcPoint(DateTime.Now.AddDays(2), 35, 42, 30, 40),
-                        new OhlcPoint(DateTime.Now.AddDays(3), 37, 40, 35, 38),
-                        new OhlcPoint(DateTime.Now.AddDays(4), 35, 38, 32, 33)
+                        new OhlcPoint(32, 35, 30, 32),
+                        new OhlcPoint(33, 38, 31, 37),
+                        new OhlcPoint(35, 42, 30, 40),
+                        new OhlcPoint(37, 40, 35, 38),
+                        new OhlcPoint(35, 38, 32, 33)
                     }
                 }
             };
 
-            DateTimeFormatter = x => ChartFunctions.FromChartDay(x).ToString("dd MMM");
+            //based on https://github.com/beto-rodriguez/Live-Charts/issues/166 
+            //The Ohcl point X property is zero based indexed.
+            //this means the first point is 0, second 1, third 2.... and so on
+            //then you can use the Axis.Labels properties to map the chart X with a label in the array.
+            //for more info see (mapped labels section) 
+            //http://lvcharts.net/#/examples/v1/labels-wpf?path=WPF-Components-Labels
+            
+            Labels = new []
+            {
+                DateTime.Now.ToString("dd MMM"),
+                DateTime.Now.AddDays(1).ToString("dd MMM"),
+                DateTime.Now.AddDays(2).ToString("dd MMM"),
+                DateTime.Now.AddDays(3).ToString("dd MMM"),
+                DateTime.Now.AddDays(4).ToString("dd MMM"),
+            };
 
             DataContext = this;
         }
 
         public SeriesCollection SeriesCollection { get; set; }
-        public Func<double, string> DateTimeFormatter { get; set; }
+
+        public string[] Labels
+        {
+            get { return _labels; }
+            set
+            {
+                _labels = value;
+                OnPropertyChanged();
+            }
+        }
 
         private void UpdateAllOnClick(object sender, RoutedEventArgs e)
         {
@@ -49,6 +76,14 @@ namespace Wpf.CartesianChart
                 point.Open = r.Next((int) point.Low, (int) point.High);
                 point.Close = r.Next((int) point.Low, (int) point.High);
             }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        [NotifyPropertyChangedInvocator]
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            if (PropertyChanged != null) PropertyChanged.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

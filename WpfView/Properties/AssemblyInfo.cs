@@ -12,7 +12,7 @@ using System.Windows;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("LiveCharts.Wpf")]
-[assembly: AssemblyCopyright("Copyright ©  2016")]
+[assembly: AssemblyCopyright("Copyright © 2016 Alberto Rodríguez Orozco")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

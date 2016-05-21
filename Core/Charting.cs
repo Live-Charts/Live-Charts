@@ -23,10 +23,11 @@
 using System;
 using System.Collections.Generic;
 using LiveCharts.Configurations;
+using LiveCharts.Defaults;
 
-namespace LiveCharts.Defaults
+namespace LiveCharts
 {
-    public class Mapping
+    public class Charting
     {
         private static readonly Dictionary<Type, ConfigWrapper> Configurations;
 
@@ -35,7 +36,7 @@ namespace LiveCharts.Defaults
         //Lets define some default configurations, all charts should be able to detect any of these types and plot
         //them correclty
 
-        static Mapping()
+        static Charting()
         {
             Configurations = new Dictionary<Type, ConfigWrapper>();
 
@@ -90,7 +91,7 @@ namespace LiveCharts.Defaults
             //I will explain better later if i do not find a better solution...
 
             For<OhlcPoint>(Mappers.Financial<OhlcPoint>()
-                .X(value => ChartFunctions.ToChartDay(value.DateTime))
+                .X((value, index) => index)
                 .Open(value => value.Open)
                 .High(value => value.High)
                 .Low(value => value.Low)
@@ -146,18 +147,11 @@ namespace LiveCharts.Defaults
                 SeriesOrientation.Vertical);
 
             For<DatePoint>(Mappers.Xy<DatePoint>()
-                .X(x => ChartFunctions.ToChartDay( x.DateTime))
+                .X(x => ChartFunctions.ToChartDay(x.DateTime))
                 .Y(x => x.Value), SeriesOrientation.Horizontal);
             For<DatePoint>(Mappers.Xy<DatePoint>()
                 .Y(x => ChartFunctions.ToChartDay(x.DateTime))
                 .X(x => x.Value), SeriesOrientation.Vertical);
-
-            For<OhlcPoint>(Mappers.Financial<OhlcPoint>()
-                .X(value => ChartFunctions.ToChartDay(value.DateTime))
-                .Open(value => value.Open)
-                .High(value => value.High)
-                .Low(value => value.Low)
-                .Close(value => value.Close), SeriesOrientation.Horizontal);
         }
 
         static void For<T>(object config, SeriesOrientation orientation = SeriesOrientation.All)

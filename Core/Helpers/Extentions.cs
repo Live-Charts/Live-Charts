@@ -22,42 +22,13 @@
 
 using System;
 using System.Collections.Generic;
-using System.Reflection;
+// ReSharper disable once RedundantUsingDirective
+using System.Reflection; //DO NOT EVEN THINK ABOUT IT!
 
 namespace LiveCharts.Helpers
 {
-    public class CrossNet
-    {
-        public Type Type { get; set; }
-    }
-
     public static class Extentions
     {
-
-        public static CrossNet AsCrossNet(this Type type)
-        {
-            return new CrossNet {Type = type};
-        }
-
-        public static bool IsAssignableFrom(this CrossNet cn, Type from)
-        {
-#if RUNNING_ON_4
-            return cn.Type.IsAssignableFrom(from);
-#endif
-#if NOT_RUNNING_ON_4
-            return cn.Type.GetTypeInfo().IsAssignableFrom(from.GetTypeInfo());
-#endif
-        }
-
-        public static bool IsClass(this CrossNet cn)
-        {
-#if RUNNING_ON_4
-            return cn.Type.IsClass;
-#endif
-#if NOT_RUNNING_ON_4
-            return cn.Type.GetTypeInfo().IsClass;
-#endif
-        }
 
         public static void ForEach<T>(this IEnumerable<T> source, Action<T> predicate)
         {

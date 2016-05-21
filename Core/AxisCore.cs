@@ -22,6 +22,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using LiveCharts.Charts;
@@ -196,6 +197,7 @@ namespace LiveCharts
 
                 asc.State = SeparationState.Keep;
             }
+
 #if DEBUG
             Debug.WriteLine("Axis.Separations: " + Cache.Count);
 #endif

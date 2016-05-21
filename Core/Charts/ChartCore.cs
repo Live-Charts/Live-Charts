@@ -44,14 +44,14 @@ namespace LiveCharts.Charts
 
         static ChartCore()
         {
-            Configurations = new Mapping();
+            Configurations = new Charting();
         }
 
         #endregion
 
         #region Properties 
 
-        public static Mapping Configurations { get; set; }
+        public static Charting Configurations { get; set; }
         public bool SeriesInitialized { get; set; }
         public IChartView View { get; set; }
         public IChartUpdater Updater { get; set; }
@@ -464,14 +464,13 @@ namespace LiveCharts.Charts
                         if (sum.Left < AxisX[stackIndex].MinLimit)
                             AxisX[stackIndex].MinLimit = sum.Left == 0
                                 ? 0
-                                : (Math.Truncate(sum.Left / AxisX[stackIndex].S) - 1) * AxisX[stackIndex].S;
+                                : ((int)(sum.Left / AxisX[stackIndex].S) - 1) * AxisX[stackIndex].S;
                         if (sum.Right > AxisX[stackIndex].MaxLimit)
                             AxisX[stackIndex].MaxLimit = sum.Right == 0
                                 ? 0
-                                : (Math.Truncate(sum.Right / AxisX[stackIndex].S) + 1) * AxisX[stackIndex].S;
+                                : ((int)(sum.Right / AxisX[stackIndex].S) + 1) * AxisX[stackIndex].S;
                     }
                 }
-
                 if (stackAt == AxisTags.Y)
                 {
                     if (mode == StackMode.Percentage)
@@ -484,11 +483,11 @@ namespace LiveCharts.Charts
                         if (sum.Left < AxisY[stackIndex].MinLimit)
                             AxisY[stackIndex].MinLimit = sum.Left == 0
                                 ? 0
-                                : (Math.Truncate(sum.Left / AxisY[stackIndex].S) - 1) * AxisY[stackIndex].S;
+                                : ((int)(sum.Left / AxisY[stackIndex].S) - 1) * AxisY[stackIndex].S;
                         if (sum.Right > AxisY[stackIndex].MaxLimit)
                             AxisY[stackIndex].MaxLimit = sum.Right == 0
                                 ? 0
-                                : (Math.Truncate(sum.Right / AxisY[stackIndex].S) + 1) * AxisY[stackIndex].S;
+                                : ((int)(sum.Right / AxisY[stackIndex].S) + 1) * AxisY[stackIndex].S;
                     }
                 }
 

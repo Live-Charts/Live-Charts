@@ -19,7 +19,7 @@
         <Button Grid.Row="1" Click="UpdateAllOnClick">Update Open and Close</Button>
         <lvc:CartesianChart Grid.Row="2" Series="{Binding SeriesCollection}">
             <lvc:CartesianChart.AxisX>
-                <lvc:Axis LabelFormatter="{Binding DateTimeFormatter}"/>
+                <lvc:Axis Labels="{Binding Labels}"/>
             </lvc:CartesianChart.AxisX>
         </lvc:CartesianChart>
     </Grid>

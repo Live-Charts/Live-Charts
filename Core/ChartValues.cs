@@ -21,7 +21,9 @@
 //SOFTWARE.
 
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 using LiveCharts.Charts;
 using LiveCharts.Configurations;
 using LiveCharts.Helpers;
@@ -105,7 +107,7 @@ namespace LiveCharts
 
         public void CollectGarbage()
         {
-            var isclass = typeof (T).AsCrossNet().IsClass();
+            var isclass = typeof (T).IsClass;
             foreach (var garbage in GetGarbagePoints().ToList())
             {
                 if (garbage.View != null) //yes null, double.Nan Values, will generate null views.
@@ -142,9 +144,9 @@ namespace LiveCharts
 
             var config = GetConfig();
 
-            var isClass = typeof (T).AsCrossNet().IsClass();
+            var isClass = typeof (T).IsClass;
             var isObservable = isClass &&
-                               typeof (IObservableChartPoint).AsCrossNet().IsAssignableFrom(typeof (T));
+                               typeof (IObservableChartPoint).IsAssignableFrom(typeof (T));
 
             var garbageCollectorIndex = GarbageCollectorIndex;
             var i = 0;
@@ -213,7 +215,7 @@ namespace LiveCharts
             //Trying to ge the user defined configuration...
             var config =
                 (Series.View.Configuration ?? Series.SeriesCollection.Configuration) as IPointEvaluator<T>;
-
+           
 #if DEBUG
             Debug.WriteLine("Series Configuration not found, trying to get one from the defaults configurations...");
 #endif

@@ -21,6 +21,7 @@
 //SOFTWARE.
 
 using System;
+using System.Diagnostics;
 using LiveCharts.Charts;
 using LiveCharts.Helpers;
 

@@ -212,3 +212,5 @@ _Pvt_Extensions/
 ModelManifest.xml
 /LiveChartsCore/LiveChartsCore.nuspec
 /LiveChartsCore/nuget.exe
+/Core/Core.nuspec
+/Core/nuget.exe
