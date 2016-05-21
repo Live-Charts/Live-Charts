@@ -105,13 +105,20 @@ namespace LiveCharts
 
         public void CollectGarbage()
         {
-            var isPrimitive = typeof (T).AsCrossNet().IsClass();
+            var isclass = typeof (T).AsCrossNet().IsClass();
             foreach (var garbage in GetGarbagePoints().ToList())
             {
                 if (garbage.View != null) //yes null, double.Nan Values, will generate null views.
                     garbage.View.RemoveFromView(Series.Chart);
-                if (isPrimitive) IndexedDictionary.Remove(garbage.Key);
-                else ClassesDictionary.Remove((T) garbage.Instance);
+
+                if (!isclass)
+                {
+                    IndexedDictionary.Remove(garbage.Key);
+                }
+                else
+                {
+                    ClassesDictionary.Remove((T) garbage.Instance);
+                }
             }
         }
 
@@ -240,7 +247,7 @@ namespace LiveCharts
                    || double.IsNaN(point.X) || double.IsNaN(point.Y);
         }
 
-        private void OnChanged(object oldItems, object newItems)
+        private void OnChanged(IEnumerable<T> oldItems, IEnumerable<T> newItems)
         {
             if (Series != null && Series.Chart != null) Series.Chart.Updater.Run();
         }
