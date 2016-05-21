@@ -122,9 +122,9 @@ namespace LiveCharts
             }
         }
 
-        #endregion
+#endregion
 
-        #region Private Methods
+#region Private Methods
 
         private IEnumerable<KeyValuePair<int, T>> IndexData()
         {
@@ -252,6 +252,6 @@ namespace LiveCharts
             if (Series != null && Series.Chart != null) Series.Chart.Updater.Run();
         }
 
-        #endregion
+#endregion
     }
 }
