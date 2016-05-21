@@ -56,7 +56,9 @@ namespace LiveCharts.SeriesAlgorithms
             foreach (var chartPoint in View.Values.Points)
             {
                 chartPoint.View = View.GetPointView(chartPoint.View, chartPoint,
-                    View.DataLabels ? View.LabelPoint(chartPoint) : null);
+                    View.DataLabels
+                        ? (chartPoint.Participation > 0.05 ? View.LabelPoint(chartPoint) : string.Empty)
+                        : null);
 
                 var pieSlice = (IPieSlicePointView) chartPoint.View;
 

@@ -29,7 +29,6 @@ using System.Windows.Shapes;
 using LiveCharts.Helpers;
 using LiveCharts.SeriesAlgorithms;
 using LiveCharts.Wpf.Charts.Chart;
-using LiveCharts.Wpf.Components;
 using LiveCharts.Wpf.Points;
 
 // ReSharper disable once CheckNamespace
@@ -90,6 +89,11 @@ namespace LiveCharts.Wpf
         #endregion
 
         #region Overriden Methods
+
+        public override void OnSeriesUpdateStart()
+        {
+            //do nothing on updateStart
+        }
 
         public override IChartPointView GetPointView(IChartPointView view, ChartPoint point, string label)
         {
@@ -215,7 +219,8 @@ namespace LiveCharts.Wpf
             SetValue(IncreaseBrushProperty, new SolidColorBrush(Color.FromRgb(254, 178, 0)));
             SetValue(DecreaseBrushProperty, new SolidColorBrush(Color.FromRgb(238, 83, 80)));
 
-            Func<ChartPoint, string> defaultLabel = x => "Not Supported yet!";
+            Func<ChartPoint, string> defaultLabel = x =>
+                string.Format("O: {0}, H: {1}, C: {2} L: {3}", x.Open, x.High, x.Close, x.Low);
             SetValue(LabelPointProperty, defaultLabel);
 
             DefaultFillOpacity = 1;

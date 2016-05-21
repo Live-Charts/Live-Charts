@@ -107,28 +107,13 @@ namespace LiveCharts.Wpf
         }
     }
 
-    public class XVisibilityConverter : IValueConverter
+    public class ChartPointLabelConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var v = (TooltipData)value;
+            var chartPoint = (ChartPoint) value;
 
-            return v.SelectionMode == TooltipSelectionMode.SharedXValues ? Visibility.Collapsed : Visibility.Visible;
-        }
-
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            throw new NotImplementedException();
-        }
-    }
-
-    public class YVisibilityConverter : IValueConverter
-    {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            var v = (TooltipData) value;
-
-            return v.SelectionMode == TooltipSelectionMode.SharedYValues ? Visibility.Collapsed : Visibility.Visible;
+            return chartPoint.SeriesView.LabelPoint(chartPoint);
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
@@ -164,19 +149,6 @@ namespace LiveCharts.Wpf
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            throw new NotImplementedException();
-        }
-    }
-
-    public class ApplyFormatterConverter : IMultiValueConverter
-    {
-        public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
-        {
-            return ((Func<double, string>) values[0])((double) values[1]);
-        }
-
-        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
         {
             throw new NotImplementedException();
         }

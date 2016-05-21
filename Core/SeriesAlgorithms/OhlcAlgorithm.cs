@@ -50,7 +50,7 @@ namespace LiveCharts.SeriesAlgorithms
 
             foreach (var chartPoint in View.Values.Points)
             {
-                chartPoint.ChartLocation = ChartFunctions.ToDrawMargin(chartPoint, View.ScalesXAt, View.ScalesYAt, Chart);
+                var x = ChartFunctions.ToDrawMargin(chartPoint.X, AxisTags.X, Chart, View.ScalesXAt);
 
                 chartPoint.View = View.GetPointView(chartPoint.View, chartPoint,
                     View.DataLabels ? View.LabelPoint(chartPoint) : null);
@@ -65,8 +65,10 @@ namespace LiveCharts.SeriesAlgorithms
                 ohclView.Low = ChartFunctions.ToDrawMargin(chartPoint.Low, AxisTags.Y, Chart, View.ScalesYAt);
 
                 ohclView.Width = candleWidth - padding > 0 ? candleWidth - padding : 0;
-                ohclView.Left = chartPoint.ChartLocation.X + exceed/2;
+                ohclView.Left = x + exceed/2;
                 ohclView.StartReference = (ohclView.High + ohclView.Low)/2;
+
+                chartPoint.ChartLocation = new CorePoint(x + exceed/2, (ohclView.High + ohclView.Low)/2);
 
                 chartPoint.View.DrawOrMove(null, chartPoint, 0, Chart);
             }

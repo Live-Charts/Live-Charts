@@ -153,9 +153,7 @@ namespace LiveCharts.Wpf
             SetValue(StrokeThicknessProperty, 0d);
             DefaultFillOpacity = 1;
 
-            Func<ChartPoint, string> defaultLabel = x => x.Participation > .05
-                ? Model.CurrentYAxis.GetFormatter()(x.Y)
-                : string.Empty;
+            Func<ChartPoint, string> defaultLabel = x => Model.CurrentYAxis.GetFormatter()(x.Y);
             SetValue(LabelPointProperty, defaultLabel);
 
             Splitters = new List<LineSegmentSplitter>();

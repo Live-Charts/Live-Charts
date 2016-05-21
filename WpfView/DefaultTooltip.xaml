@@ -42,8 +42,7 @@
         </Style>
         <wpf:SharedConverter x:Key="SharedConverter"/>
         <wpf:SharedVisibilityConverter x:Key="SharedVisibilityConverter"/>
-        <wpf:XVisibilityConverter x:Key="XVisibilityConverter"/>
-        <wpf:YVisibilityConverter x:Key="YVisibilityConverter"/>
+        <wpf:ChartPointLabelConverter x:Key="ChartPointLabelConverter"/>
         <wpf:ParticipationVisibilityConverter x:Key="ParticipationVisibilityConverter"/>
     </UserControl.Resources>
     <UserControl.Template>
@@ -60,26 +59,20 @@
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="Auto"/>
                                         <ColumnDefinition Width="Auto" SharedSizeGroup="Title"/>
-                                        <ColumnDefinition Width="Auto" SharedSizeGroup="X"/>
-                                        <ColumnDefinition Width="Auto" SharedSizeGroup="Y"/>
+                                        <ColumnDefinition Width="Auto" SharedSizeGroup="Label"/>
                                         <ColumnDefinition Width="Auto" SharedSizeGroup="Participation"/>
                                     </Grid.ColumnDefinitions>
                                     <Ellipse Width="11" Height="11" StrokeThickness="{Binding Series.StrokeThickness}" 
                                              Stroke="{Binding Series.Stroke}" Fill="{Binding Series.Fill}"/>
                                     <TextBlock Grid.Column="1" Text="{Binding Series.Title}" VerticalAlignment="Center" Margin="5 0 0 0"/>
-                                    <TextBlock Grid.Column="2" Text="{Binding ChartPoint.X}" VerticalAlignment="Center" Margin="5 0 0 0"
-                                               Visibility="{Binding DataContext.Data, RelativeSource={RelativeSource  FindAncestor, 
-                                                                                                    AncestorType={x:Type StackPanel}}, 
-                                                                    Converter={StaticResource XVisibilityConverter} }" />
-                                    <TextBlock Grid.Column="3" Text="{Binding ChartPoint.Y}" VerticalAlignment="Center" Margin="5 0 0 0"
-                                               Visibility="{Binding DataContext.Data, RelativeSource={RelativeSource  FindAncestor, 
-                                                                                                    AncestorType={x:Type StackPanel}}, 
-                                                                    Converter={StaticResource YVisibilityConverter} }"/>
-                                    <TextBlock Grid.Column="4" Text="{Binding ChartPoint.Participation, StringFormat={}{0:P}}" 
+                                    
+                                    <TextBlock Grid.Column="2" Text="{Binding ChartPoint, Converter={StaticResource ChartPointLabelConverter}}" Margin="5 0 0 0"/>
+
+                                    <TextBlock Grid.Column="3" Text="{Binding ChartPoint.Participation, StringFormat={}{0:P}}" 
                                                VerticalAlignment="Center" Margin="5 0 0 0"
                                                Visibility="{Binding DataContext.Data, RelativeSource={RelativeSource  FindAncestor, 
                                                                                                     AncestorType={x:Type StackPanel}}, 
-                                                                    Converter={StaticResource ParticipationVisibilityConverter} }"/>
+                                                                    Converter={StaticResource ParticipationVisibilityConverter}}"/>
                                 </Grid>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>

@@ -166,9 +166,7 @@ namespace LiveCharts.Wpf
             SetValue(MaxRowHeigthProperty, 35d);
             SetValue(ForegroundProperty, new SolidColorBrush(Color.FromRgb(229, 229, 229)));
 
-            Func<ChartPoint, string> defaultLabel = x => x.Participation > 0.05
-                ? Model.CurrentXAxis.GetFormatter()(x.X)
-                : string.Empty;
+            Func<ChartPoint, string> defaultLabel = x =>  Model.CurrentXAxis.GetFormatter()(x.X);
             SetValue(LabelPointProperty, defaultLabel);
 
             DefaultFillOpacity = 1;

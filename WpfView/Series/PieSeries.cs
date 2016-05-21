@@ -157,9 +157,8 @@ namespace LiveCharts.Wpf
             SetValue(StrokeProperty, Brushes.White);
             SetValue(ForegroundProperty, Brushes.White);
 
-            Func<ChartPoint, string> defaultLabel = x => x.StackedParticipation > 0.05
-                ? Model.CurrentYAxis.GetFormatter()(x.Y)
-                : string.Empty;
+            Func<ChartPoint, string> defaultLabel = x => Model.CurrentYAxis.GetFormatter()(x.Y);
+                
             SetValue(LabelPointProperty, defaultLabel);
 
             DefaultFillOpacity = 1;

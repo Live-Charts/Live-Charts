@@ -118,7 +118,9 @@ namespace LiveCharts.SeriesAlgorithms
                     var c2Y = ym2 + (yc2 - ym2) * smoothness + p2.Y - ym2;
 
                     chartPoint.View = View.GetPointView(chartPoint.View, chartPoint,
-                        View.DataLabels ? View.LabelPoint(chartPoint) : null);
+                        View.DataLabels
+                            ? (chartPoint.Participation > 0.05 ? View.LabelPoint(chartPoint) : string.Empty)
+                            : null);
 
                     var bezierView = chartPoint.View as IBezierPointView;
                     if (bezierView == null) continue;

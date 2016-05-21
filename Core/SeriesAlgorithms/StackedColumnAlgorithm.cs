@@ -75,7 +75,9 @@ namespace LiveCharts.SeriesAlgorithms
                 if (double.IsNaN(to)) to = 0;
 
                 chartPoint.View = View.GetPointView(chartPoint.View, chartPoint,
-                    View.DataLabels ? View.LabelPoint(chartPoint) : null);
+                    View.DataLabels
+                        ? (chartPoint.Participation > 0.05 ? View.LabelPoint(chartPoint) : string.Empty)
+                        : null);
 
                 chartPoint.SeriesView = View;
 
