@@ -35,7 +35,7 @@ namespace LiveCharts.Configurations
         {
             point.X = _x(valuePair.Value, valuePair.Key);
             point.Y = _y(valuePair.Value, valuePair.Key);
-            point.Weight = _x(valuePair.Value, valuePair.Key);
+            point.Weight = _weight(valuePair.Value, valuePair.Key);
         }
 
         public Xyw[] GetEvaluation(KeyValuePair<int, T> valuePair)

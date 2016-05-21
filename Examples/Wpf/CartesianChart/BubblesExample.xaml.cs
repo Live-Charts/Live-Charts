@@ -33,23 +33,22 @@ namespace Wpf.CartesianChart
                 {
                     Values = new ChartValues<BubblePoint>
                     {
-                        new BubblePoint(5, 5, 2),
-                        new BubblePoint(3, 4, 8),
-                        new BubblePoint(7, 2, 2),
-                        new BubblePoint(2, 6, 6),
-                        new BubblePoint(8, 2, 7),
-                    },
-                    DataLabels = true
+                        new BubblePoint(5, 5, 20),
+                        new BubblePoint(3, 4, 80),
+                        new BubblePoint(7, 2, 20),
+                        new BubblePoint(2, 6, 60),
+                        new BubblePoint(8, 2, 70),
+                    }
                 },
                 new BubbleSeries
                 {
                     Values = new ChartValues<BubblePoint>
                     {
-                        new BubblePoint(7, 5, 5),
-                        new BubblePoint(2, 2, 4),
-                        new BubblePoint(1, 1, 2),
+                        new BubblePoint(7, 5, 1),
+                        new BubblePoint(2, 2, 1),
+                        new BubblePoint(1, 1, 1),
                         new BubblePoint(6, 3, 1),
-                        new BubblePoint(8, 8, 5),
+                        new BubblePoint(8, 8, 1),
                     }
                 }
             };
