@@ -1,4 +1,6 @@
-IMPORTANT!
+==================================
+<<<<<<<<<<< IMPORTANT >>>>>>>>>>>>
+==================================
 
 LiveCharts is now multipatform (at least the design).
 
@@ -17,3 +19,5 @@ forget about the core, all the platforms packages will have a dependency to core
 ------------------------------------
 > Update-Package LiveCharts.Wpf
 ------------------------------------
+
+Happy coding!

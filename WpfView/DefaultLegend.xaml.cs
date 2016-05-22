@@ -53,7 +53,7 @@ namespace LiveCharts.Wpf
             set
             {
                 _series = value;
-                OnPropertyChanged();
+                OnPropertyChanged("Series");
             }
         }
 
@@ -76,7 +76,7 @@ namespace LiveCharts.Wpf
             set { SetValue(InternalOrientationProperty, value); }
         }
 
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        protected virtual void OnPropertyChanged(string propertyName = null)
         {
             if (PropertyChanged != null) PropertyChanged.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }

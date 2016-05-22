@@ -130,11 +130,11 @@ namespace LiveCharts.Wpf.Components
                     return;
                 }
 
-                Application.Current.Dispatcher.Invoke(() =>
+                Application.Current.Dispatcher.Invoke(new Action(() =>
                 {
                     chart.RemoveFromView(TextBlock);
                     chart.RemoveFromView(Line);
-                });
+                }));
             };
 
             TextBlock.BeginAnimation(UIElement.OpacityProperty, anim);
