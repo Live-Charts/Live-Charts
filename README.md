@@ -7,6 +7,10 @@
   <img src="http://lvcharts.net/Content/Images/Samples/pie.gif" width="400"/>
   <img src="http://lvcharts.net/Content/Images/Samples/barsmove.gif" width="400"/>
   <img src="https://cloud.githubusercontent.com/assets/10853349/14480111/65c18a98-00eb-11e6-8ce2-bc7cf3d0fdfc.gif" width="400" />
+  <img src="https://cloud.githubusercontent.com/assets/10853349/15451982/2041fb7a-1fa3-11e6-9d25-4471c09b3cb2.gif" width="400" />
+  <img src="https://cloud.githubusercontent.com/assets/10853349/15452005/2792e230-1fa4-11e6-8bd3-5aed219d3256.gif" width="400" />
+  <img src="https://cloud.githubusercontent.com/assets/10853349/15451981/1d37d0e4-1fa3-11e6-8c79-825f580f6819.png" width="400" />
+  <img src="https://cloud.githubusercontent.com/assets/10853349/15451980/1bf8b482-1fa3-11e6-8945-e0e08f33a347.gif" width="400" />
 </p>
 
 [![GitHub license](https://img.shields.io/github/license/beto-rodriguez/Live-Charts.svg?style=flat-square)](https://github.com/beto-rodriguez/Live-Charts/blob/master/LICENSE.TXT)
@@ -18,6 +22,8 @@
 * **[WebSite](http://lvcharts.net/)**
 * **[Chat](https://gitter.im/beto-rodriguez/Live-Charts)**
 * **Questions, try [Stack Overflow](http://stackoverflow.com/), tag your question as LiveCharts**
+
+#### 0.7.0 is here, if you come from an older version, its recommended to read [this](https://github.com/beto-rodriguez/Live-Charts/releases/tag/0.7.0) examples in this repo are updated to 0.7.0, web site update is in progress, 0.6.6 examples [here](https://github.com/beto-rodriguez/Live-Charts/tree/12fbb648c93e147dc05fc30b6ed65816db305c70/WPFExamples)
 
 Live charts is an easy way to build poweful charts, all charts are animated, they update every time you change your data, it also has an awesome performance. 
 
@@ -58,10 +64,6 @@ myChart.Series = seriesCollection
 var labels = new string[] {"Jan", "Feb" , "Mar", "Apr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dec"};
 myChart.AxixX.Labels = labels;
 ```
-
-### About Versions
-
-This library has suffared hard changes and it is in a pre-release state, even we are really close now to a 1.0 version documentations might not match with the latest release, examples in this repo are always up-to-date, the safest version is 0.6.4, the most animated and safe is 0.6.6, 0.7.0 is comming soon, fixing all reported bugs, adding at least 5 more series, and making live charts portable, this means this lbrary will be ready to run in WinForms, Wpf, Uwp and Xamarin.
 
 ## Is live charts what you are looking for? see these interesting examples.
 
