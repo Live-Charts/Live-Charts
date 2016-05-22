@@ -80,13 +80,13 @@ Only WPF and WinForms for now, I am playing with the code to find an easy way to
 
 # Installation
 
-**1**. Install package from [**Nuget**](https://www.nuget.org/packages/LiveCharts) `Install-Package LiveCharts`
+**1**. Install package from [**Nuget**](https://www.nuget.org/packages/LiveCharts) `Install-Package LiveCharts.Wpf`
 
 **2**. Add name space
 
 To your `XAML` if using wpf
 ```xml
-xmlns:lvc="clr-namespace:LiveCharts;assembly=LiveCharts"
+xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
 ```
 Or WinForms and WPF code behind
 ```
