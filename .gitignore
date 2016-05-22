@@ -214,3 +214,5 @@ ModelManifest.xml
 /LiveChartsCore/nuget.exe
 /Core/Core.nuspec
 /Core/nuget.exe
+/WpfView/nuget.exe
+/WpfView/WpfView.nuspec
