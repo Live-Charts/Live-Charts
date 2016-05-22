@@ -23,7 +23,7 @@
 * **[Chat](https://gitter.im/beto-rodriguez/Live-Charts)**
 * **Questions, try [Stack Overflow](http://stackoverflow.com/), tag your question as LiveCharts**
 
-#### 0.7.0 is here, if you come from an older version, its recommended to read [this](https://github.com/beto-rodriguez/Live-Charts/releases/tag/0.7.0) examples in this repo are updated to 0.7.0, web site update is in progress, 0.6.6 examples [here](https://github.com/beto-rodriguez/Live-Charts/tree/12fbb648c93e147dc05fc30b6ed65816db305c70/WPFExamples)
+#### 0.7.0 is here, if you come from an older version, its recommended to read [this](https://github.com/beto-rodriguez/Live-Charts/releases/tag/0.7.0), examples in this repo are updated to 0.7.0, web site update is in progress, 0.6.6 examples [here](https://github.com/beto-rodriguez/Live-Charts/tree/12fbb648c93e147dc05fc30b6ed65816db305c70/WPFExamples)
 
 Live charts is an easy way to build poweful charts, all charts are animated, they update every time you change your data, it also has an awesome performance. 
 
