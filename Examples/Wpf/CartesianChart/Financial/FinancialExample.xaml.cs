@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
+using System.Windows.Media;
 using LiveCharts;
 using LiveCharts.Defaults;
 using LiveCharts.Wpf;
@@ -33,6 +34,11 @@ namespace Wpf.CartesianChart
                         new OhlcPoint(37, 40, 35, 38),
                         new OhlcPoint(35, 38, 32, 33)
                     }
+                },
+                new LineSeries
+                {
+                    Values = new ChartValues<double> {30, 32, 35, 30, 28},
+                    Fill = Brushes.Transparent
                 }
             };
 

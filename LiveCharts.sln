@@ -13,7 +13,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{60
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WinFormsView", "WinFormsView\WinFormsView.csproj", "{45E67C4F-88DF-4617-ACB1-B54C5DBF8390}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowsForms", "WindowsForms\WindowsForms.csproj", "{CA7BA22C-ECB7-4930-9981-E9B121588401}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Winforms", "Examples\WinForms\Winforms.csproj", "{CA7BA22C-ECB7-4930-9981-E9B121588401}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

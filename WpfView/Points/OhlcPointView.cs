@@ -71,8 +71,9 @@ namespace LiveCharts.Wpf.Points
 
             if (HoverShape != null)
             {
+                var h = Math.Abs(High - Low);
                 HoverShape.Width = Width;
-                HoverShape.Height = High - Low > 10 ? High - Low : 10;
+                HoverShape.Height = h > 10 ? h : 10;
                 Canvas.SetLeft(HoverShape, Left);
                 Canvas.SetTop(HoverShape, High);
             }
