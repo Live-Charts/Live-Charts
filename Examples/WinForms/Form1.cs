@@ -43,5 +43,10 @@ namespace Winforms
                 observable.Value = r.Next(0, 10);
             }
         }
+
+        private void cartesianChart1_ChildChanged(object sender, System.Windows.Forms.Integration.ChildChangedEventArgs e)
+        {
+
+        }
     }
 }
