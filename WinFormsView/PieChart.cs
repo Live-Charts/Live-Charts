@@ -22,14 +22,17 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.ComponentModel.Design.Serialization;
 using System.Windows.Forms;
 using System.Windows.Forms.Integration;
-using LiveCharts;
 using LiveCharts.Wpf;
 
-namespace WinFormsView
+namespace LiveCharts.WinForms
 {
-    public class PieChart : UserControl
+    [Designer("System.Windows.Forms.Design.ControlDesigner, System.Design")]
+    [DesignerSerializer("System.ComponentModel.Design.Serialization.TypeCodeDomSerializer , System.Design", "System.ComponentModel.Design.Serialization.CodeDomSerializer, System.Design")]
+    public class PieChart : ElementHost
     {
         private readonly LiveCharts.Wpf.PieChart _chart = new LiveCharts.Wpf.PieChart();
 
@@ -45,11 +48,15 @@ namespace WinFormsView
 
         #region ChartProperties
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+
         public List<Axis> AxisY
         {
             get { return _chart.AxisY; }
             set { _chart.AxisY = value; }
         }
+
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 
         public List<Axis> AxisX
         {
@@ -57,11 +64,15 @@ namespace WinFormsView
             set { _chart.AxisX = value; }
         }
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+
         public DefaultLegend DefaultLegend
         {
             get { return _chart.ChartLegend; }
             set { _chart.ChartLegend = value; }
         }
+
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 
         public ZoomingOptions Zoom
         {
@@ -69,31 +80,36 @@ namespace WinFormsView
             set { _chart.Zoom = value; }
         }
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+
         public LegendLocation LegendLocation
         {
             get { return _chart.LegendLocation; }
             set { _chart.LegendLocation = value; }
         }
 
-
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public SeriesCollection Series
         {
             get { return _chart.Series; }
             set { _chart.Series = value; }
         }
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public TimeSpan AnimationsSpeed
         {
             get { return _chart.AnimationsSpeed; }
             set { _chart.AnimationsSpeed = value; }
         }
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool DisableAnimations
         {
             get { return _chart.DisableAnimations; }
             set { _chart.DisableAnimations = value; }
         }
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public DefaultTooltip DataTooltip
         {
             get { return _chart.DataTooltip; }
@@ -102,12 +118,15 @@ namespace WinFormsView
         #endregion
 
         #region ThisChartProperties
+
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public double InnerRadius
         {
             get { return _chart.InnerRadius; }
             set { _chart.InnerRadius = value; }
         }
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public double StartingRotationAngle
         {
             get { return _chart.StartingRotationAngle; }

@@ -1,0 +1,63 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>$id$</id>
+    <version>$version$</version>
+    <title>LiveCharts.Wpf</title>
+    <authors>Beto Rodriguez</authors>
+    <owners>Beto Rodriguez</owners>
+    <licenseUrl>https://github.com/beto-rodriguez/Live-Charts/blob/master/LICENSE.TXT</licenseUrl>
+    <projectUrl>http://lvcharts.net/</projectUrl>
+    <iconUrl>http://lvcharts.net/Content/Images/Logos/lcred.png</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>LiveCharts is a modern chartig library: Responsive, animated and MVVM orientated charts</description>
+    <releaseNotes>See https://github.com/beto-rodriguez/Live-Charts/releases</releaseNotes>
+    <copyright>Copyright 2016</copyright>
+    <tags>Chart Charting Plot Plotting WinForms</tags> 
+    <frameworkAssemblies>
+      <frameworkAssembly assemblyName="PresentationFramework" targetFramework="net40" />
+      <frameworkAssembly assemblyName="PresentationCore" targetFramework="net40"/>
+      <frameworkAssembly assemblyName="WindowsBase" targetFramework="net40" />
+      <frameworkAssembly assemblyName="System.Xaml" targetFramework="net40"/>
+      <frameworkAssembly assemblyName="WindowsFormsIntegration" targetFramework="net40" />
+
+      <frameworkAssembly assemblyName="PresentationFramework" targetFramework="net40" />
+      <frameworkAssembly assemblyName="PresentationCore" targetFramework="net45"/>
+      <frameworkAssembly assemblyName="WindowsBase" targetFramework="net45" />
+      <frameworkAssembly assemblyName="System.Xaml" targetFramework="net45"/>
+      <frameworkAssembly assemblyName="WindowsFormsIntegration" targetFramework="net45" />
+
+      <frameworkAssembly assemblyName="PresentationFramework" targetFramework="net451" />
+      <frameworkAssembly assemblyName="PresentationCore" targetFramework="net451"/>
+      <frameworkAssembly assemblyName="WindowsBase" targetFramework="net451" />
+      <frameworkAssembly assemblyName="System.Xaml" targetFramework="net451"/>
+      <frameworkAssembly assemblyName="WindowsFormsIntegration" targetFramework="net451" />
+
+      <frameworkAssembly assemblyName="PresentationFramework" targetFramework="net452" />
+      <frameworkAssembly assemblyName="PresentationCore" targetFramework="net452"/>
+      <frameworkAssembly assemblyName="WindowsBase" targetFramework="net452" />
+      <frameworkAssembly assemblyName="System.Xaml" targetFramework="net452"/>
+      <frameworkAssembly assemblyName="WindowsFormsIntegration" targetFramework="net452" />
+
+      <frameworkAssembly assemblyName="PresentationFramework" targetFramework="net46" />
+      <frameworkAssembly assemblyName="PresentationCore" targetFramework="net46"/>
+      <frameworkAssembly assemblyName="WindowsBase" targetFramework="net46" />
+      <frameworkAssembly assemblyName="System.Xaml" targetFramework="net46"/>
+      <frameworkAssembly assemblyName="WindowsFormsIntegration" targetFramework="net46" />
+
+      <frameworkAssembly assemblyName="PresentationFramework" targetFramework="net461" />
+      <frameworkAssembly assemblyName="PresentationCore" targetFramework="net461"/>
+      <frameworkAssembly assemblyName="WindowsBase" targetFramework="net461" />
+      <frameworkAssembly assemblyName="System.Xaml" targetFramework="net461"/>
+      <frameworkAssembly assemblyName="WindowsFormsIntegration" targetFramework="net461" />
+    </frameworkAssemblies>
+  </metadata>
+  <files>
+    <file src="bin\net40\LiveCharts.WinForms.dll" target="lib\net40" />
+    <file src="bin\net45\LiveCharts.WinForms.dll" target="lib\net45" />
+    <file src="bin\net451\LiveCharts.WinForms.dll" target="lib\net451" />
+    <file src="bin\net452\LiveCharts.WinForms.dll" target="lib\net452" />
+    <file src="bin\net46\LiveCharts.WinForms.dll" target="lib\net46" />
+    <file src="bin\net461\LiveCharts.WinForms.dll" target="lib\net461" />  
+  </files>
+</package>

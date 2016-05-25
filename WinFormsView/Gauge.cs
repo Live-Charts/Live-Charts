@@ -21,108 +21,121 @@
 //SOFTWARE.
 
 using System;
-using System.Windows.Forms;
+using System.ComponentModel;
+using System.ComponentModel.Design.Serialization;
 using System.Windows.Forms.Integration;
 using System.Windows.Media;
 
-namespace WinFormsView
+namespace LiveCharts.WinForms
 {
-    public class Gauge : UserControl
+    [Designer("System.Windows.Forms.Design.ControlDesigner, System.Design")]
+    [DesignerSerializer("System.ComponentModel.Design.Serialization.TypeCodeDomSerializer , System.Design", "System.ComponentModel.Design.Serialization.CodeDomSerializer, System.Design")]
+
+    public class Gauge : ElementHost
     {
-        private readonly LiveCharts.Wpf.Gauge _gauge = new LiveCharts.Wpf.Gauge();
+        protected readonly Wpf.Gauge WpfBase = new Wpf.Gauge();
 
         public Gauge()
         {
-            var eh = new ElementHost
-            {
-                Dock = DockStyle.Fill,
-                Child = _gauge
-            };
-            Controls.Add(eh);
+            Child = WpfBase;
         }
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool Uses360Mode
         {
-            get { return _gauge.Uses360Mode; }
-            set { _gauge.Uses360Mode = value; }
+            get { return WpfBase.Uses360Mode; }
+            set { WpfBase.Uses360Mode = value; }
         }
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public double From
         {
-            get { return _gauge.From; }
-            set { _gauge.From = value; }
+            get { return WpfBase.From; }
+            set { WpfBase.From = value; }
         }
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public double To
         {
-            get { return _gauge.To; }
-            set { _gauge.To = value; }
+            get { return WpfBase.To; }
+            set { WpfBase.To = value; }
         }
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public double Value
         {
-            get { return _gauge.Value; }
-            set { _gauge.Value = value; }
+            get { return WpfBase.Value; }
+            set { WpfBase.Value = value; }
         }
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public string Title
         {
-            get { return _gauge.Title; }
-            set { _gauge.Title = value; }
+            get { return WpfBase.Title; }
+            set { WpfBase.Title = value; }
         }
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public double? InnerRadius
         {
-            get { return _gauge.InnerRadius; }
-            set { _gauge.InnerRadius = value; }
+            get { return WpfBase.InnerRadius; }
+            set { WpfBase.InnerRadius = value; }
         }
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public Brush Stroke
         {
-            get { return _gauge.Stroke; }
-            set { _gauge.Stroke = value; }
+            get { return WpfBase.Stroke; }
+            set { WpfBase.Stroke = value; }
         }
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public double StrokeThickness
         {
-            get { return _gauge.StrokeThickness; }
-            set { _gauge.StrokeThickness = value; }
+            get { return WpfBase.StrokeThickness; }
+            set { WpfBase.StrokeThickness = value; }
         }
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public Color ToColor
         {
-            get { return _gauge.ToColor; }
-            set { _gauge.ToColor = value; }
+            get { return WpfBase.ToColor; }
+            set { WpfBase.ToColor = value; }
         }
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public Color FromColor
         {
-            get { return _gauge.FromColor; }
-            set { _gauge.FromColor = value; }
+            get { return WpfBase.FromColor; }
+            set { WpfBase.FromColor = value; }
         }
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public Brush GaugeBackground
         {
-            get { return _gauge.GaugeBackground; }
-            set { _gauge.GaugeBackground = value; }
+            get { return WpfBase.GaugeBackground; }
+            set { WpfBase.GaugeBackground = value; }
         }
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public TimeSpan AnimationsSpeed
         {
-            get { return _gauge.AnimationsSpeed; }
-            set { _gauge.AnimationsSpeed = value; }
+            get { return WpfBase.AnimationsSpeed; }
+            set { WpfBase.AnimationsSpeed = value; }
         }
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public Func<double, string> LabelFormatter
         {
-            get { return _gauge.LabelFormatter; }
-            set { _gauge.LabelFormatter = value; }
+            get { return WpfBase.LabelFormatter; }
+            set { WpfBase.LabelFormatter = value; }
         }
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public double? HighFontSize
         {
-            get { return _gauge.HighFontSize; }
-            set { _gauge.HighFontSize = value; }
+            get { return WpfBase.HighFontSize; }
+            set { WpfBase.HighFontSize = value; }
         }
     }
 }

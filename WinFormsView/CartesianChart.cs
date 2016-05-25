@@ -22,82 +22,84 @@
 
 using System;
 using System.Collections.Generic;
-using System.Windows.Forms;
+using System.ComponentModel;
+using System.ComponentModel.Design.Serialization;
 using System.Windows.Forms.Integration;
-using LiveCharts;
 using LiveCharts.Wpf;
 
-namespace WinFormsView
+namespace LiveCharts.WinForms
 {
-    public class CartesianChart : UserControl
+    [Designer("System.Windows.Forms.Design.ControlDesigner, System.Design")]
+    [DesignerSerializer("System.ComponentModel.Design.Serialization.TypeCodeDomSerializer , System.Design", "System.ComponentModel.Design.Serialization.CodeDomSerializer, System.Design")]
+    public class CartesianChart : ElementHost
     {
-        private readonly LiveCharts.Wpf.CartesianChart _chart = new LiveCharts.Wpf.CartesianChart();
-        
+        protected readonly LiveCharts.Wpf.CartesianChart WpfBase = new LiveCharts.Wpf.CartesianChart();
+
         public CartesianChart()
         {
-            var eh = new ElementHost
-            {
-                Dock = DockStyle.Fill,
-                Child = new LiveCharts.Wpf.CartesianChart()
-            };
-            Controls.Add(eh);
+            Child = WpfBase;
         }
 
         #region ChartProperties
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public List<Axis> AxisY
         {
-            get { return _chart.AxisY; }
-            set { _chart.AxisY = value; }
+            get { return WpfBase.AxisY; }
+            set { WpfBase.AxisY = value; }
         }
-
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public List<Axis> AxisX
         {
-            get { return _chart.AxisX; }
-            set { _chart.AxisX = value; }
+            get { return WpfBase.AxisX; }
+            set { WpfBase.AxisX = value; }
         }
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public DefaultLegend DefaultLegend
         {
-            get { return _chart.ChartLegend; }
-            set { _chart.ChartLegend = value; }
+            get { return WpfBase.ChartLegend; }
+            set { WpfBase.ChartLegend = value; }
         }
-
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public ZoomingOptions Zoom
         {
-            get { return _chart.Zoom; }
-            set { _chart.Zoom = value; }
+            get { return WpfBase.Zoom; }
+            set { WpfBase.Zoom = value; }
         }
-
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public LegendLocation LegendLocation
         {
-            get { return _chart.LegendLocation; }
-            set { _chart.LegendLocation = value; }
+            get { return WpfBase.LegendLocation; }
+            set { WpfBase.LegendLocation = value; }
         }
 
-
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public SeriesCollection Series
         {
-            get { return _chart.Series; }
-            set { _chart.Series = value; }
+            get { return WpfBase.Series; }
+            set { WpfBase.Series = value; }
         }
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public TimeSpan AnimationsSpeed
         {
-            get { return _chart.AnimationsSpeed; }
-            set { _chart.AnimationsSpeed = value; }
+            get { return WpfBase.AnimationsSpeed; }
+            set { WpfBase.AnimationsSpeed = value; }
         }
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool DisableAnimations
         {
-            get { return _chart.DisableAnimations; }
-            set { _chart.DisableAnimations = value; }
+            get { return WpfBase.DisableAnimations; }
+            set { WpfBase.DisableAnimations = value; }
         }
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public DefaultTooltip DataTooltip
         {
-            get { return _chart.DataTooltip; }
-            set { _chart.DataTooltip = value; }
+            get { return WpfBase.DataTooltip; }
+            set { WpfBase.DataTooltip = value; }
         }
         #endregion
 
