@@ -27,10 +27,10 @@ namespace LiveCharts.Configurations
 {
     public class BubbleMapper<T> : IPointEvaluator<T>
     {
-        private Func<T, int, double> _x;
-        private Func<T, int, double> _y;
-        private Func<T, int, double> _weight;
-        
+        private Func<T, int, double> _x = (v, i) => i;
+        private Func<T, int, double> _y = (v, i) => i;
+        private Func<T, int, double> _weight = (v, i) => 0;
+
         public void SetAll(KeyValuePair<int, T> valuePair, ChartPoint point)
         {
             point.X = _x(valuePair.Value, valuePair.Key);

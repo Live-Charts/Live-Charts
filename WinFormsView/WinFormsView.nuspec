@@ -3,7 +3,7 @@
   <metadata>
     <id>$id$</id>
     <version>$version$</version>
-    <title>LiveCharts.Wpf</title>
+    <title>LiveCharts.WinForms</title>
     <authors>Beto Rodriguez</authors>
     <owners>Beto Rodriguez</owners>
     <licenseUrl>https://github.com/beto-rodriguez/Live-Charts/blob/master/LICENSE.TXT</licenseUrl>

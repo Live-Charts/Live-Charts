@@ -27,7 +27,7 @@ namespace LiveCharts.Configurations
 {
     public class FinancialMapper<T> : IPointEvaluator<T>
     {
-        private Func<T, int, double> _x = (v, i) => 0;
+        private Func<T, int, double> _x = (v, i) => i;
         private Func<T, int, double> _y = (v, i) => 0;
         private Func<T, int, double> _open;
         private Func<T, int, double> _high;

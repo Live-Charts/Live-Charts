@@ -27,8 +27,8 @@ namespace LiveCharts.Configurations
 {
     public class CartesianMapper<T> : IPointEvaluator<T>
     {
-        private Func<T, int, double> _x;
-        private Func<T, int, double> _y;
+        private Func<T, int, double> _x = (v, i) => i;
+        private Func<T, int, double> _y = (v, i) => i;
 
         public void SetAll(KeyValuePair<int, T> valuePair, ChartPoint point)
         {
