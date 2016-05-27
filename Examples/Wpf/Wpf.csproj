@@ -82,7 +82,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="CartesianChart\MixingTypes\MixingTypes.xaml">
+    <Page Include="CartesianChart\MixingSeries\MixingSeries.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -94,7 +94,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="CartesianChart\CustomTypes\CustomTypesPlotting.xaml">
+    <Page Include="CartesianChart\TypesSupport\TypesPlotting.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -152,8 +152,8 @@
     <Compile Include="CartesianChart\LineExample\LineExample.xaml.cs">
       <DependentUpon>LineExample.xaml</DependentUpon>
     </Compile>
-    <Compile Include="CartesianChart\MixingTypes\MixingTypes.xaml.cs">
-      <DependentUpon>MixingTypes.xaml</DependentUpon>
+    <Compile Include="CartesianChart\MixingSeries\MixingSeries.xaml.cs">
+      <DependentUpon>MixingSeries.xaml</DependentUpon>
     </Compile>
     <Compile Include="CartesianChart\MultiAxes\MultiAxesChart.xaml.cs">
       <DependentUpon>MultiAxesChart.xaml</DependentUpon>
@@ -161,8 +161,8 @@
     <Compile Include="CartesianChart\Responsive\ResponsiveExample.xaml.cs">
       <DependentUpon>ResponsiveExample.xaml</DependentUpon>
     </Compile>
-    <Compile Include="CartesianChart\CustomTypes\CustomTypesPlotting.xaml.cs">
-      <DependentUpon>CustomTypesPlotting.xaml</DependentUpon>
+    <Compile Include="CartesianChart\TypesSupport\TypesPlotting.xaml.cs">
+      <DependentUpon>TypesPlotting.xaml</DependentUpon>
     </Compile>
     <Compile Include="CartesianChart\Sections\SectionsExample.xaml.cs">
       <DependentUpon>SectionsExample.xaml</DependentUpon>

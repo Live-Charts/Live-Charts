@@ -154,7 +154,7 @@ namespace LiveCharts
                 .X(x => x.Value), SeriesOrientation.Vertical);
         }
 
-        static void For<T>(object config, SeriesOrientation orientation = SeriesOrientation.All)
+        public static void For<T>(object config, SeriesOrientation orientation = SeriesOrientation.All)
         {
             ConfigWrapper wrapper;
             var t = typeof (T);

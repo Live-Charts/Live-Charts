@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using LiveCharts;
+using LiveCharts.Configurations;
 using LiveCharts.Defaults;
 using LiveCharts.Wpf;
 
@@ -68,6 +69,7 @@ namespace Wpf.CartesianChart
             //sender is the shape that called the event.
 
             MessageBox.Show("You clicked " + point.X + ", " + point.Y);
+          
         }
     }
 }

@@ -13,8 +13,10 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using LiveCharts;
+using LiveCharts.Configurations;
 using LiveCharts.Defaults;
 using LiveCharts.Wpf;
+using LiveCharts.Wpf.Charts.Chart;
 
 namespace Wpf.PieChart
 {
@@ -89,7 +91,8 @@ namespace Wpf.PieChart
 
             SeriesCollection.Add(new PieSeries
             {
-                Values = vals
+                Values = vals,
+                DataLabels = true
             });
         }
 

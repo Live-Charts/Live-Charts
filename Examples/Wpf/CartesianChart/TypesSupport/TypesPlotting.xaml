@@ -25,6 +25,18 @@
             </Hyperlink>
             might be useful too.
         </TextBlock>
-        <lvc:CartesianChart Grid.Row="1" Series="{Binding SeriesCollection}"></lvc:CartesianChart>
+        <lvc:CartesianChart Grid.Row="1" Series="{Binding SeriesCollection}"
+                            Background="#303030">
+            <lvc:CartesianChart.AxisY>
+                <lvc:Axis>
+                    <lvc:Axis.Separator>
+                        <lvc:Separator Stroke="#606060"></lvc:Separator>
+                    </lvc:Axis.Separator>
+                </lvc:Axis>
+            </lvc:CartesianChart.AxisY>
+            <lvc:CartesianChart.AxisX>
+                <lvc:Axis Labels="Jan, Feb, Mar, Apr, May" Separator="{x:Static lvc:DefaultAxes.CleanSeparator}"></lvc:Axis>
+            </lvc:CartesianChart.AxisX>
+        </lvc:CartesianChart>
     </Grid>
 </UserControl>

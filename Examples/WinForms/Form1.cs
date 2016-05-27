@@ -22,7 +22,7 @@ namespace Winforms
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            cartesianChart1.Series.Add(new LineSeries
+           cartesianChart1.Series.Add(new LineSeries
             {
                 Values = new ChartValues<ObservableValue>
                 {
@@ -42,11 +42,6 @@ namespace Winforms
             {
                 observable.Value = r.Next(0, 10);
             }
-        }
-
-        private void cartesianChart1_ChildChanged(object sender, System.Windows.Forms.Integration.ChildChangedEventArgs e)
-        {
-
         }
     }
 }
