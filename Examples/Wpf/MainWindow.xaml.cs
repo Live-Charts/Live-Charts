@@ -30,21 +30,21 @@ namespace Wpf
 
             CartesianExamples = new List<UserControl>
             {
-                new WelcomeCartesian(),
-                new ResponsiveExample(),
-                new CustomTypesPlotting(),
-                new LineExample(),
+                //new WelcomeCartesian(),
+                //new ResponsiveExample(),
+                //new CustomTypesPlotting(),
+                //new LineExample(),
                 new BarExample(),
-                new BubblesExample(),
-                new StackedAreaExample(),
-                new FinancialExample(),
-                new StackedBarExample(),
-                new SectionsExample(),
-                new ZoomingAndPanning(),
-                new MultiAxesChart(),
-                new ConstantChangesChart(),
-                new MixingTypes(),
-                new InLineSyntaxTest()
+                //new BubblesExample(),
+                //new StackedAreaExample(),
+                //new FinancialExample(),
+                //new StackedBarExample(),
+                //new SectionsExample(),
+                //new ZoomingAndPanning(),
+                //new MultiAxesChart(),
+                //new ConstantChangesChart(),
+                //new MixingTypes(),
+                //new InLineSyntaxTest()
             };
 
             PieExamples = new List<UserControl>

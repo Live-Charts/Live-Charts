@@ -82,12 +82,6 @@ namespace LiveCharts
 
         internal void CalculateSeparator(ChartCore chart, AxisTags source)
         {
-            if (Separator.Step != null)
-            {
-                S = Separator.Step ?? 1;
-                return;
-            }
-
             var range = MaxLimit - MinLimit;
             range = range <= 0 ? 1 : range;
 
@@ -100,6 +94,13 @@ namespace LiveCharts
 
             var minimum = range / separations;
             Magnitude = Math.Pow(10, Math.Floor(Math.Log(minimum) / Math.Log(10)));
+
+            if (Separator.Step != null)
+            {
+                S = Separator.Step ?? 1;
+                return;
+            }
+
             var residual = minimum / Magnitude;
             double tick;
             if (residual > 5)
