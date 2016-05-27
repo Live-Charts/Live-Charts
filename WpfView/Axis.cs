@@ -56,8 +56,11 @@ namespace LiveCharts.Wpf
         public double LabelsReference { get; set; }
         public double UnitWidth { get; set; }
         public Dictionary<double, AxisSeparatorElement> Cache { get; set; }
-
         public AxisTags Source { get; set; }
+        public double LabelsRotation
+        {
+            get { return LabelsRotateTransform == null ? 0 : LabelsRotateTransform.Angle; }
+        }
 
         #endregion
 
@@ -292,6 +295,17 @@ namespace LiveCharts.Wpf
             set { SetValue(ForegroundProperty, value); }
         }
 
+        public static readonly DependencyProperty LabelsRotateTransformProperty = DependencyProperty.Register(
+            "LabelsRotateTransform", typeof (RotateTransform), typeof (Axis), new PropertyMetadata(default(RotateTransform)));
+        /// <summary>
+        /// Gets or sets the labels axis rotate transform
+        /// </summary>
+        public RotateTransform LabelsRotateTransform
+        {
+            get { return (RotateTransform) GetValue(LabelsRotateTransformProperty); }
+            set { SetValue(LabelsRotateTransformProperty, value); }
+        }
+
         #endregion
 
         #region Public Methods
@@ -312,6 +326,11 @@ namespace LiveCharts.Wpf
                     Line = BindALine(),
                     TextBlock = BindATextBlock()
                 };
+
+                if (RenderTransform != null)
+                    ase.TextBlock.SetBinding(RenderTransformProperty,
+                        new Binding {Path = new PropertyPath(LabelsRotateTransformProperty), Source = this});
+
                 model.View = ase;
                 chart.View.AddToView(ase.Line);
                 chart.View.AddToView(ase.TextBlock);
@@ -442,7 +461,4 @@ namespace LiveCharts.Wpf
             };
         }
     }
-
-    
-
 }

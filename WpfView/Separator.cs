@@ -37,9 +37,12 @@ namespace LiveCharts.Wpf
 
         public ChartCore Chart { get; set; }
 
+        #region Dependency Properties
+
         public static readonly DependencyProperty StrokeProperty = DependencyProperty.Register(
-            "Stroke", typeof (Brush), typeof (Separator), 
+            "Stroke", typeof (Brush), typeof (Separator),
             new PropertyMetadata(default(Brush), CallChartUpdater()));
+
         /// <summary>
         /// Gets or sets separators color 
         /// </summary>
@@ -50,8 +53,9 @@ namespace LiveCharts.Wpf
         }
 
         public static readonly DependencyProperty StrokeThicknessProperty = DependencyProperty.Register(
-            "StrokeThickness", typeof (double), typeof (Separator), 
+            "StrokeThickness", typeof (double), typeof (Separator),
             new PropertyMetadata(default(double), CallChartUpdater()));
+
         /// <summary>
         /// Gets or sets separatos thickness
         /// </summary>
@@ -62,8 +66,9 @@ namespace LiveCharts.Wpf
         }
 
         public static readonly DependencyProperty StrokeDashArrayProperty = DependencyProperty.Register(
-            "StrokeDashArray", typeof (DoubleCollection), typeof (Separator), 
+            "StrokeDashArray", typeof (DoubleCollection), typeof (Separator),
             new PropertyMetadata(default(DoubleCollection), CallChartUpdater()));
+
         /// <summary>
         /// Gets or sets the stroke dash array for the current separator.
         /// </summary>
@@ -76,6 +81,7 @@ namespace LiveCharts.Wpf
         public static readonly DependencyProperty StepProperty = DependencyProperty.Register(
             "Step", typeof (double?), typeof (Separator),
             new PropertyMetadata(default(double?), CallChartUpdater()));
+
         /// <summary>
         /// Gets or sets sepator step, this means the value between each line, use null for auto.
         /// </summary>
@@ -84,6 +90,8 @@ namespace LiveCharts.Wpf
             get { return (double?) GetValue(StepProperty); }
             set { SetValue(StepProperty, value); }
         }
+
+        #endregion
 
         public SeparatorConfigurationCore AsCoreElement(AxisCore axis)
         {

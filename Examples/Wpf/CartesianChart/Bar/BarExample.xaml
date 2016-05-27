@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:Wpf.CartesianChart"
              xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="300" d:DesignWidth="300" d:DataContext="{d:DesignInstance local:BarExample}">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
@@ -24,9 +24,9 @@
         <lvc:CartesianChart Grid.Row="2" Series="{Binding SeriesCollection}" 
                             DataClick="Chart_OnDataClick" >
             <lvc:CartesianChart.AxisX>
-                <lvc:Axis>
-                    <lvc:Axis.Separator>
-                        <lvc:Separator Step="1"></lvc:Separator>
+                <lvc:Axis LabelsRotateTransform="{Binding RotateTransform}" Labels="{Binding Labels}">
+                    <lvc:Axis.Separator >
+                        <lvc:Separator IsEnabled="False" Step="1"></lvc:Separator>
                     </lvc:Axis.Separator>
                 </lvc:Axis>
             </lvc:CartesianChart.AxisX>

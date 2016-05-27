@@ -464,6 +464,8 @@ namespace LiveCharts
         AxisTags Source { get; set; }
         double? MaxValue { get; set; }
         double? MinValue { get; set; }
+        double LabelsRotation { get; }
+
 
         CoreSize UpdateTitle(ChartCore chart, double rotationAngle = 0);
         void SetTitleTop(double value);
@@ -499,7 +501,7 @@ namespace LiveCharts
     public interface ISeparatorElementView
     {
         SeparatorElementCore Model { get; }
-        CoreSize UpdateLabel(string text);
+        CoreSize UpdateLabel(string text, AxisCore axis);
         void UpdateLine(AxisTags source, ChartCore chart, int axisIndex, AxisCore axisCore);
     }
 

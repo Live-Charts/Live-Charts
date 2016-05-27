@@ -23,6 +23,7 @@
 using System;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using LiveCharts.Charts;
@@ -278,11 +279,17 @@ namespace LiveCharts.Wpf.Components
             }
         }
 
-        public CoreSize UpdateLabel(string text)
+        public CoreSize UpdateLabel(string text, AxisCore axis)
         {
             TextBlock.Text = text;
             TextBlock.UpdateLayout();
-            return new CoreSize(TextBlock.ActualWidth, TextBlock.ActualHeight);
+
+            var alpha = axis.View.LabelsRotation;
+            alpha *= Math.PI / 180;
+
+            return new CoreSize(Math.Cos(alpha)*TextBlock.ActualWidth,
+                Math.Sin(alpha)*TextBlock.ActualWidth +
+                Math.Sin((90*(Math.PI/180)) - alpha)*TextBlock.ActualHeight);
         }
 
         public void UpdateLine(AxisTags source, ChartCore chart, int axisIndex, AxisCore axis)

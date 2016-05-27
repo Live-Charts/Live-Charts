@@ -181,7 +181,7 @@ namespace LiveCharts
                 asc.Value = i;
                 asc.IsActive = true;
 
-                var labelsSize = asc.View.UpdateLabel(f(i));
+                var labelsSize = asc.View.UpdateLabel(f(i), this);
 
                 biggest.Width = labelsSize.Width > biggest.Width
                     ? labelsSize.Width

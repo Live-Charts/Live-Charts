@@ -45,10 +45,25 @@ namespace Wpf.CartesianChart
                 }
             };
 
+            RotateTransform = new RotateTransform(13);
+            Labels = new[]
+            {
+                "Shea Ferriera",
+                "Maurita Powel",
+                "Scottie Brogdon",
+                "Teresa Kerman",
+                "Nell Venuti",
+                "Anibal Brothers",
+                "Anderson Dillman"
+            };
+
             DataContext = this;
         }
 
         public SeriesCollection SeriesCollection { get; set; }
+        public RotateTransform RotateTransform { get; set; }
+        public string[] Labels { get; set; }
+
 
         private void UpdateAllOnClick(object sender, RoutedEventArgs e)
         {
