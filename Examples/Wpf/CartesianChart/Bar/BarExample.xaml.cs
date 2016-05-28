@@ -41,7 +41,9 @@ namespace Wpf.CartesianChart
                         new ObservableValue(3),
                         new ObservableValue(0),
                         new ObservableValue(1),
-                    }, DataLabels = true
+                    },
+                    DataLabels = true,
+                    LabelPoint = point => point.Y + "K"
                 }
             };
 
@@ -57,12 +59,15 @@ namespace Wpf.CartesianChart
                 "Anderson Dillman"
             };
 
+            Formatter = value => value + ".00K items";
+
             DataContext = this;
         }
 
         public SeriesCollection SeriesCollection { get; set; }
         public RotateTransform RotateTransform { get; set; }
         public string[] Labels { get; set; }
+        public Func<double, string> Formatter { get; set; }
 
 
         private void UpdateAllOnClick(object sender, RoutedEventArgs e)
