@@ -43,8 +43,13 @@ namespace Winforms.Cartesian.Labels
                     "Anibal Brothers",
                     "Anderson Dillman"
                 },
-                Separator = DefaultAxes.CleanSeparator,
+                Separator = new Separator // force the separator step to 1, so it alwasy display all labels
+                {
+                    Step = 1,
+                    IsEnabled = false //disable it to make it invisible.
+                },
                 //ToDo Add the rotate tranform...
+                //LabelsRotateTransform = new System.Windows.Media.RotateTransform(13)
             });
 
             cartesianChart1.AxisY.Add(new Axis
