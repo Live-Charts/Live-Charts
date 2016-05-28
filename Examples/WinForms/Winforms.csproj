@@ -63,10 +63,10 @@
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Labels.cs">
+    <Compile Include="Cartesian\Labels\Labels.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Labels.Designer.cs">
+    <Compile Include="Cartesian\Labels\Labels.Designer.cs">
       <DependentUpon>Labels.cs</DependentUpon>
     </Compile>
     <Compile Include="Main.cs">
@@ -77,7 +77,7 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="Labels.resx">
+    <EmbeddedResource Include="Cartesian\Labels\Labels.resx">
       <DependentUpon>Labels.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Main.resx">

@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using LiveCharts;
 using LiveCharts.Defaults;
 using LiveCharts.Wpf;
+using Winforms.Cartesian.Labels;
 
 namespace Winforms
 {

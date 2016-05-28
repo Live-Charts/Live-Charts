@@ -1,4 +1,4 @@
-﻿namespace Winforms
+﻿namespace Winforms.Cartesian.Labels
 {
     partial class Labels
     {
