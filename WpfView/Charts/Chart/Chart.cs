@@ -138,6 +138,7 @@ namespace LiveCharts.Wpf.Charts.Chart
         #endregion
 
 #if DEBUG
+
         public void CountElements()
         {
             //Trying to avoid memory leaks

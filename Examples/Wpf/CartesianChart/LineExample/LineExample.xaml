@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:Wpf.CartesianChart"
              xmlns:wpf="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="300" d:DesignWidth="300" d:DataContext="{d:DesignInstance local:LineExample }">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
@@ -18,7 +18,10 @@
             <LineBreak></LineBreak>
             <Bold>New in 0.7.0</Bold> The CartesianChart is smart enough to configure itself, in 0.6.x version we introduced SeriesConfiguration class, and it is now the core of this library, but now the charts are smart enough to configure themself, just push a vertical or horizonal series, and it will work, same with generic ChartValues, now the chart already knows how to plot any primitive type and some already defined types.
         </TextBlock>
-        <wpf:CartesianChart Grid.Row="2" Series="{Binding SeriesCollection}">
+        <wpf:CartesianChart Grid.Row="2">
+            <wpf:CartesianChart.Series>
+                <wpf:VerticalLineSeries Values="{Binding Values}" DataLabels="True" />
+            </wpf:CartesianChart.Series>
             <wpf:CartesianChart.DataTooltip>
                 <!--The Selection mode property should be done automatically in future versions-->
                 <wpf:DefaultTooltip SelectionMode="SharedYValues"></wpf:DefaultTooltip>
