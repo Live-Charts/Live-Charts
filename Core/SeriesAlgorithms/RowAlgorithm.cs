@@ -116,12 +116,12 @@ namespace LiveCharts.SeriesAlgorithms
 
         double ICartesianSeries.GetMinY(AxisCore axis)
         {
-            return AxisLimits.SeparatorMin(axis);
+            return AxisLimits.StretchMin(axis);
         }
 
         double ICartesianSeries.GetMaxY(AxisCore axis)
         {
-            return AxisLimits.SeparatorMin(axis);
+            return AxisLimits.UnitRight(axis);
         }
     }
 }

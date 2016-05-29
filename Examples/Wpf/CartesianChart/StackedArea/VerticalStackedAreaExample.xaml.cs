@@ -1,25 +1,36 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
+using System.Windows.Shapes;
 using LiveCharts;
 using LiveCharts.Defaults;
 using LiveCharts.Wpf;
 
-namespace Wpf.CartesianChart
+namespace Wpf.CartesianChart.StackedArea
 {
     /// <summary>
-    /// Interaction logic for StackedLine.xaml
+    /// Interaction logic for VerticalStackedAreaExample.xaml
     /// </summary>
-    public partial class StackedAreaExample : UserControl
+    public partial class VerticalStackedAreaExample : UserControl
     {
-        public StackedAreaExample()
+
+        public VerticalStackedAreaExample()
         {
             InitializeComponent();
 
             SeriesCollection = new SeriesCollection
             {
-                new StackedAreaSeries
+                new VerticalStackedAreaSeries
                 {
                     Values = new ChartValues<ObservableValue>
                     {
@@ -30,7 +41,7 @@ namespace Wpf.CartesianChart
                     },
                     DataLabels = true
                 },
-                new StackedAreaSeries
+                new VerticalStackedAreaSeries
                 {
                     Values = new ChartValues<ObservableValue>
                     {
@@ -41,7 +52,7 @@ namespace Wpf.CartesianChart
                     },
                     DataLabels = true
                 },
-                new StackedAreaSeries
+                new VerticalStackedAreaSeries
                 {
                     Values = new ChartValues<ObservableValue>
                     {

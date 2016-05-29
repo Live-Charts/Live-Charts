@@ -8,6 +8,10 @@ using System.Windows.Input;
 using System.Windows.Navigation;
 using Wpf.Annotations;
 using Wpf.CartesianChart;
+using Wpf.CartesianChart.Customized_Line_Series;
+using Wpf.CartesianChart.Labels;
+using Wpf.CartesianChart.StackedArea;
+using Wpf.CartesianChart.StackedBar;
 using Wpf.Gauges;
 using Wpf.PieChart;
 
@@ -30,15 +34,21 @@ namespace Wpf
 
             CartesianExamples = new List<UserControl>
             {
+                new CustomizedLineSeries(),
+
                 new WelcomeCartesian(),
-                new ResponsiveExample(),
+                new FullyResponsive(),
                 new CustomTypesPlotting(),
                 new LineExample(),
-                new BarExample(),
+                new LabelsExample(),
+                //new LabelsHorizontalExample(),
                 new BubblesExample(),
-                new StackedAreaExample(),
+                //new StackedAreaExample(),
                 new FinancialExample(),
-                new StackedBarExample(),
+                //new StackedColumnExample(),
+                new StackedRowExample(),
+                new StackedAreaExample(),
+                new VerticalStackedAreaExample(),
                 new SectionsExample(),
                 new ZoomingAndPanning(),
                 new MultiAxesChart(),

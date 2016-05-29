@@ -4,25 +4,23 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Wpf.CartesianChart"
-             xmlns:wpf="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+             xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="300" d:DesignWidth="300" d:DataContext="{d:DesignInstance local:LineExample }">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
-        <TextBlock Grid.Row="0" TextWrapping="Wrap">
-            All series have 2 variations, Vertical and horizontal plotting, in this case we are using the vertical variation of a line series
-            <LineBreak></LineBreak>
-            <Bold>New in 0.7.0</Bold> The CartesianChart is smart enough to configure itself, in 0.6.x version we introduced SeriesConfiguration class, and it is now the core of this library, but now the charts are smart enough to configure themself, just push a vertical or horizonal series, and it will work, same with generic ChartValues, now the chart already knows how to plot any primitive type and some already defined types.
-        </TextBlock>
-        <wpf:CartesianChart Grid.Row="2" Series="{Binding SeriesCollection}">
-            <wpf:CartesianChart.DataTooltip>
+        <lvc:CartesianChart Grid.Row="2">
+            <lvc:CartesianChart.Series>
+                <lvc:VerticalLineSeries Values="{Binding Values}" DataLabels="True" />
+            </lvc:CartesianChart.Series>
+            <lvc:CartesianChart.DataTooltip>
                 <!--The Selection mode property should be done automatically in future versions-->
-                <wpf:DefaultTooltip SelectionMode="SharedYValues"></wpf:DefaultTooltip>
-            </wpf:CartesianChart.DataTooltip>
-        </wpf:CartesianChart>
+                <lvc:DefaultTooltip SelectionMode="SharedYValues"></lvc:DefaultTooltip>
+            </lvc:CartesianChart.DataTooltip>
+        </lvc:CartesianChart>
     </Grid>
 </UserControl>

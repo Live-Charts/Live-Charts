@@ -1,6 +1,6 @@
-﻿namespace LiveCharts.WinForms
+﻿namespace Winforms.Cartesian.Labels
 {
-    partial class Form2
+    partial class Labels
     {
         /// <summary>
         /// Required designer variable.
@@ -33,26 +33,29 @@
             // 
             // cartesianChart1
             // 
-            this.cartesianChart1.Location = new System.Drawing.Point(12, 12);
+            this.cartesianChart1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.cartesianChart1.Location = new System.Drawing.Point(0, 0);
             this.cartesianChart1.Name = "cartesianChart1";
-            this.cartesianChart1.Size = new System.Drawing.Size(260, 97);
+            this.cartesianChart1.Size = new System.Drawing.Size(584, 361);
             this.cartesianChart1.TabIndex = 0;
             this.cartesianChart1.Text = "cartesianChart1";
             // 
-            // Form2
+            // Labels
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(284, 261);
+            this.BackColor = System.Drawing.Color.White;
+            this.ClientSize = new System.Drawing.Size(584, 361);
             this.Controls.Add(this.cartesianChart1);
-            this.Name = "Form2";
-            this.Text = "Form2";
+            this.Name = "Labels";
+            this.Text = "Labels";
+            this.Load += new System.EventHandler(this.Labels_Load);
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private CartesianChart cartesianChart1;
+        private LiveCharts.WinForms.CartesianChart cartesianChart1;
     }
 }

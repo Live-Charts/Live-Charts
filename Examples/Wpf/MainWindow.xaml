@@ -35,7 +35,7 @@
             <TextBlock TextWrapping="Wrap">
                 There is a folder in this project with the code behind of each view you see in the next carousel, to reach the code behind, for example in the cartesian chart carousel go to the CartesialChart folder in this project, and then open the desired user view.
             </TextBlock>
-            <TextBlock TextWrapping="Wrap" Margin="15" Padding="10">
+            <!--<TextBlock TextWrapping="Wrap" Margin="15" Padding="10">
                 <TextBlock.Background>
                     <SolidColorBrush Color="YellowGreen" Opacity=".5"></SolidColorBrush>
                 </TextBlock.Background>
@@ -44,7 +44,7 @@
             <Hyperlink NavigateUri="https://github.com/beto-rodriguez/Live-Charts/tree/83d888974fca25161e0b2e9389f0611d91043449/WPFExamples" RequestNavigate="Hyperlink_OnRequestNavigate">
                 here
             </Hyperlink>
-            </TextBlock>
+            </TextBlock>-->
             <Separator Margin="10" ></Separator>
             <Grid Height="500">
                 <Grid.ColumnDefinitions>

@@ -35,6 +35,7 @@ namespace LiveCharts.Wpf.Points
         public Rectangle Rectangle { get; set; }
         public CoreRectangle Data { get; set; }
         public double ZeroReference  { get; set; }
+        public bool LabelInside { get; set; }
 
         public override void DrawOrMove(ChartPoint previousDrawn, ChartPoint current, int index, ChartCore chart)
         {
@@ -68,16 +69,23 @@ namespace LiveCharts.Wpf.Points
             {
                 double r;
 
-                if (Data.Left < ZeroReference)
+                if (LabelInside)
                 {
-                    r = Data.Left - DataLabel.ActualWidth - 5;
-                    if (r < 0) r = Data.Left + 5;
+                    r = Data.Left + Data.Width/2 - DataLabel.ActualWidth/2;
                 }
                 else
                 {
-                    r = Data.Left + Data.Width + 5;
-                    if (r + DataLabel.ActualWidth > chart.DrawMargin.Width)
-                        r -= DataLabel.ActualWidth + 10;
+                    if (Data.Left < ZeroReference)
+                    {
+                        r = Data.Left - DataLabel.ActualWidth - 5;
+                        if (r < 0) r = Data.Left + 5;
+                    }
+                    else
+                    {
+                        r = Data.Left + Data.Width + 5;
+                        if (r + DataLabel.ActualWidth > chart.DrawMargin.Width)
+                            r -= DataLabel.ActualWidth + 10;
+                    }
                 }
 
                 return r;

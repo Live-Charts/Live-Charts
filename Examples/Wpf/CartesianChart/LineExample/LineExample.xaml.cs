@@ -28,27 +28,20 @@ namespace Wpf.CartesianChart
         {
             InitializeComponent();
 
-            SeriesCollection = new SeriesCollection
+            Values = Values = new ChartValues<float>
             {
-                new VerticalLineSeries
-                {
-                    Values = new ChartValues<float>
-                    {
-                        3,
-                        4,
-                        6,
-                        3,
-                        3,
-                        3
-                    },
-                    DataLabels = true
-                }
+                3,
+                4,
+                6,
+                3,
+                2,
+                6
             };
-
+            
             DataContext = this;
         }
 
-        public SeriesCollection SeriesCollection { get; set; }
+        public ChartValues<float> Values { get; set; }
 
     }
 }

@@ -34,17 +34,17 @@ using LiveCharts.Wpf.Charts.Chart;
 // ReSharper disable once CheckNamespace
 namespace LiveCharts.Wpf
 {
-    public class VerticalStackedAreaSeriesSeries : VerticalLineSeries, IVerticalStackedAreaSeriesViewView
+    public class VerticalStackedAreaSeries : VerticalLineSeries, IVerticalStackedAreaSeriesViewView
     {
         #region Contructors
 
-        public VerticalStackedAreaSeriesSeries()
+        public VerticalStackedAreaSeries()
         {
             Model = new VerticalStackedAreaAlgorithm(this);
             InitializeDefuaults();
         }
 
-        public VerticalStackedAreaSeriesSeries(object configuration)
+        public VerticalStackedAreaSeries(object configuration)
         {
             Model = new VerticalStackedAreaAlgorithm(this);
             Configuration = configuration;
@@ -56,7 +56,7 @@ namespace LiveCharts.Wpf
         #region Properties
 
         public static readonly DependencyProperty StackModeProperty = DependencyProperty.Register(
-            "StackMode", typeof (StackMode), typeof (VerticalStackedAreaSeriesSeries), new PropertyMetadata(default(StackMode)));
+            "StackMode", typeof (StackMode), typeof (VerticalStackedAreaSeries), new PropertyMetadata(default(StackMode)));
 
         public StackMode StackMode
         {
