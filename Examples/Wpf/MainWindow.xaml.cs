@@ -8,6 +8,7 @@ using System.Windows.Input;
 using System.Windows.Navigation;
 using Wpf.Annotations;
 using Wpf.CartesianChart;
+using Wpf.CartesianChart.Labels;
 using Wpf.Gauges;
 using Wpf.PieChart;
 
@@ -30,21 +31,22 @@ namespace Wpf
 
             CartesianExamples = new List<UserControl>
             {
-                new WelcomeCartesian(),
-                new ResponsiveExample(),
-                new CustomTypesPlotting(),
-                new LineExample(),
-                new BarExample(),
-                new BubblesExample(),
-                new StackedAreaExample(),
-                new FinancialExample(),
-                new StackedBarExample(),
-                new SectionsExample(),
-                new ZoomingAndPanning(),
-                new MultiAxesChart(),
-                new ConstantChangesChart(),
-                new MixingTypes(),
-                new InLineSyntaxTest()
+                //new WelcomeCartesian(),
+                //new FullyResponsive(),
+                //new CustomTypesPlotting(),
+                //new LineExample(),
+                new LabelsExample(),
+                new LabelsHorizontalExample(),
+                //new BubblesExample(),
+                //new StackedAreaExample(),
+                //new FinancialExample(),
+                //new StackedBarExample(),
+                //new SectionsExample(),
+                //new ZoomingAndPanning(),
+                //new MultiAxesChart(),
+                //new ConstantChangesChart(),
+                //new MixingTypes(),
+                //new InLineSyntaxTest()
             };
 
             PieExamples = new List<UserControl>

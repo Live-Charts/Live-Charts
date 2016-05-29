@@ -1,36 +1,26 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using LiveCharts;
-using LiveCharts.Configurations;
 using LiveCharts.Defaults;
 using LiveCharts.Wpf;
 
-namespace Wpf.CartesianChart
+namespace Wpf.CartesianChart.Labels
 {
     /// <summary>
-    /// Interaction logic for BarExample.xaml
+    /// Interaction logic for LabelsHorizontalExample.xaml
     /// </summary>
-    public partial class BarExample : UserControl
+    public partial class LabelsHorizontalExample : UserControl
     {
-        public BarExample()
+        public LabelsHorizontalExample()
         {
             InitializeComponent();
 
             SeriesCollection = new SeriesCollection
             {
-                new ColumnSeries
+                new RowSeries
                 {
                     Values = new ChartValues<ObservableValue>
                     {
@@ -43,7 +33,20 @@ namespace Wpf.CartesianChart
                         new ObservableValue(1),
                     },
                     DataLabels = true,
-                    LabelPoint = point => point.Y + "K"
+                    LabelPoint = point => point.X + "K ," + point.Y
+                },
+                new VerticalLineSeries
+                {
+                    Values = new ChartValues<ObservableValue>
+                    {
+                        new ObservableValue(4),
+                        new ObservableValue(2),
+                        new ObservableValue(8),
+                        new ObservableValue(2),
+                        new ObservableValue(3),
+                        new ObservableValue(0),
+                        new ObservableValue(1),
+                    }
                 }
             };
 
@@ -69,7 +72,6 @@ namespace Wpf.CartesianChart
         public string[] Labels { get; set; }
         public Func<double, string> Formatter { get; set; }
 
-
         private void UpdateAllOnClick(object sender, RoutedEventArgs e)
         {
             var r = new Random();
@@ -83,13 +85,6 @@ namespace Wpf.CartesianChart
             }
         }
 
-        private void Chart_OnDataClick(object sender, ChartPoint point)
-        {
-            //point instance contains many useful information...
-            //sender is the shape that called the event.
 
-            MessageBox.Show("You clicked " + point.X + ", " + point.Y);
-          
-        }
     }
 }

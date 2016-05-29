@@ -34,8 +34,8 @@ namespace Wpf.CartesianChart
                 4,
                 6,
                 3,
-                3,
-                3
+                2,
+                6
             };
             
             DataContext = this;

@@ -54,7 +54,8 @@ namespace Winforms.Cartesian.Labels
 
             cartesianChart1.AxisY.Add(new Axis
             {
-                LabelFormatter = value => value + ".00K items"
+                LabelFormatter = value => value + ".00K items",
+                Separator = new Separator()
             });
 
         }

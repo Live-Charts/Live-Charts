@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using LiveCharts;
 using LiveCharts.Defaults;
 using LiveCharts.Wpf;
+using Winforms.Cartesian.FullyResponsive;
 using Winforms.Cartesian.Labels;
 
 namespace Winforms
@@ -24,6 +25,11 @@ namespace Winforms
         private void LabelsOnClick(object sender, EventArgs e)
         {
             new Labels().ShowDialog();
+        }
+
+        private void FullyResponsiveOnClick(object sender, EventArgs e)
+        {
+            new FullyResponsive().ShowDialog();
         }
     }
 }
