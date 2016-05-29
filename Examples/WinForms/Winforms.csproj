@@ -63,6 +63,12 @@
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Cartesian\Customized Series\Customized Line Series.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Cartesian\Customized Series\Customized Line Series.Designer.cs">
+      <DependentUpon>Customized Line Series.cs</DependentUpon>
+    </Compile>
     <Compile Include="Cartesian\FullyResponsive\FullyResponsive.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -83,6 +89,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Cartesian\Customized Series\Customized Line Series.resx">
+      <DependentUpon>Customized Line Series.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Cartesian\FullyResponsive\FullyResponsive.resx">
       <DependentUpon>FullyResponsive.cs</DependentUpon>
     </EmbeddedResource>

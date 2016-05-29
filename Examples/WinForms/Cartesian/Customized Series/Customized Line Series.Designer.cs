@@ -1,6 +1,8 @@
-﻿namespace LiveCharts.WinForms
+﻿using LiveCharts.WinForms;
+
+namespace Winforms.Cartesian.Customized_Series
 {
-    partial class Form2
+    partial class CustomizedSeries
     {
         /// <summary>
         /// Required designer variable.
@@ -33,20 +35,22 @@
             // 
             // cartesianChart1
             // 
-            this.cartesianChart1.Location = new System.Drawing.Point(12, 12);
+            this.cartesianChart1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.cartesianChart1.Location = new System.Drawing.Point(0, 0);
             this.cartesianChart1.Name = "cartesianChart1";
-            this.cartesianChart1.Size = new System.Drawing.Size(260, 97);
+            this.cartesianChart1.Size = new System.Drawing.Size(665, 441);
             this.cartesianChart1.TabIndex = 0;
             this.cartesianChart1.Text = "cartesianChart1";
             // 
-            // Form2
+            // CustomizedLineSeries
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(284, 261);
+            this.ClientSize = new System.Drawing.Size(665, 441);
             this.Controls.Add(this.cartesianChart1);
-            this.Name = "Form2";
-            this.Text = "Form2";
+            this.Name = "CustomizedSeries";
+            this.Text = "Customized_Line_Series";
+            this.Load += new System.EventHandler(this.CustomizedLineSeries_Load);
             this.ResumeLayout(false);
 
         }

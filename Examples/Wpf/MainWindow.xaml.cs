@@ -8,6 +8,7 @@ using System.Windows.Input;
 using System.Windows.Navigation;
 using Wpf.Annotations;
 using Wpf.CartesianChart;
+using Wpf.CartesianChart.Customized_Line_Series;
 using Wpf.CartesianChart.Labels;
 using Wpf.CartesianChart.StackedArea;
 using Wpf.CartesianChart.StackedBar;
@@ -33,6 +34,8 @@ namespace Wpf
 
             CartesianExamples = new List<UserControl>
             {
+                new CustomizedLineSeries(),
+
                 new WelcomeCartesian(),
                 new FullyResponsive(),
                 new CustomTypesPlotting(),

@@ -58,6 +58,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="CartesianChart\Customized Series\CustomizedLineSeries.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="CartesianChart\Labels\LabelsExample.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -145,6 +149,9 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="CartesianChart\Customized Series\CustomizedLineSeries.xaml.cs">
+      <DependentUpon>CustomizedLineSeries.xaml</DependentUpon>
     </Compile>
     <Compile Include="CartesianChart\Labels\LabelsExample.xaml.cs">
       <DependentUpon>LabelsExample.xaml</DependentUpon>
