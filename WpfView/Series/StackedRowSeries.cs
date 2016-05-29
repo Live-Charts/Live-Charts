@@ -34,17 +34,17 @@ using LiveCharts.Wpf.Points;
 // ReSharper disable once CheckNamespace
 namespace LiveCharts.Wpf
 {
-    public class StackedRowSeriesViewView : Series.Series, IStackedRowSeriesViewView
+    public class StackedRowSeries : Series.Series, IStackedRowSeriesViewView
     {
         #region Contructors
 
-        public StackedRowSeriesViewView()
+        public StackedRowSeries()
         {
             Model = new StackedRowAlgorithm(this);
             InitializeDefuaults();
         }
 
-        public StackedRowSeriesViewView(object configuration)
+        public StackedRowSeries(object configuration)
         {
             Model = new StackedRowAlgorithm(this);
             Configuration = configuration;
@@ -60,7 +60,7 @@ namespace LiveCharts.Wpf
         #region Properties
 
         public static readonly DependencyProperty MaxRowHeigthProperty = DependencyProperty.Register(
-            "MaxRowHeigth", typeof (double), typeof (StackedRowSeriesViewView), new PropertyMetadata(default(double)));
+            "MaxRowHeigth", typeof (double), typeof (StackedRowSeries), new PropertyMetadata(default(double)));
 
         public double MaxRowHeigth
         {
@@ -69,7 +69,7 @@ namespace LiveCharts.Wpf
         }
 
         public static readonly DependencyProperty StackModeProperty = DependencyProperty.Register(
-            "StackMode", typeof (StackMode), typeof (StackedRowSeriesViewView), new PropertyMetadata(default(StackMode)));
+            "StackMode", typeof (StackMode), typeof (StackedRowSeries), new PropertyMetadata(default(StackMode)));
 
         public StackMode StackMode
         {
@@ -91,7 +91,8 @@ namespace LiveCharts.Wpf
                 {
                     IsNew = true,
                     Rectangle = new Rectangle(),
-                    Data = new CoreRectangle()
+                    Data = new CoreRectangle(),
+                    LabelInside = true
                 };
 
                 BindingOperations.SetBinding(pbv.Rectangle, Shape.FillProperty,
@@ -164,7 +165,7 @@ namespace LiveCharts.Wpf
         {
             SetValue(StrokeThicknessProperty, 0d);
             SetValue(MaxRowHeigthProperty, 35d);
-            SetValue(ForegroundProperty, new SolidColorBrush(Color.FromRgb(229, 229, 229)));
+            SetValue(ForegroundProperty, Brushes.White);
 
             Func<ChartPoint, string> defaultLabel = x =>  Model.CurrentXAxis.GetFormatter()(x.X);
             SetValue(LabelPointProperty, defaultLabel);

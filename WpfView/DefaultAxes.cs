@@ -20,6 +20,7 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Media;
 
@@ -30,25 +31,25 @@ namespace LiveCharts.Wpf
         /// <summary>
         /// Returns default axis
         /// </summary>
-        public static Axis DefaultAxis
+        public static List<Axis> DefaultAxis
         {
-            get
-            {
-                return new Axis();
-            }
+            get { return new List<Axis> {new Axis()}; }
         }
 
         /// <summary>
         /// Return an axis without separators at all
         /// </summary>
-        public static Axis CleanAxis
+        public static List<Axis> CleanAxis
         {
             get
             {
-                return new Axis
+                return new List<Axis>
                 {
-                    IsEnabled = false,
-                    Separator = CleanSeparator
+                    new Axis
+                    {
+                        IsEnabled = false,
+                        Separator = CleanSeparator
+                    }
                 };
             }
         }
@@ -56,14 +57,17 @@ namespace LiveCharts.Wpf
         /// <summary>
         /// Returns an axis that only displays a line for zero
         /// </summary>
-        public static Axis OnlyZerosAxis
+        public static List<Axis> OnlyZerosAxis
         {
             get
             {
-                return new Axis
+                return new List<Axis>
                 {
-                    IsEnabled = true,
-                    Separator = CleanSeparator
+                    new Axis
+                    {
+                        IsEnabled = true,
+                        Separator = CleanSeparator
+                    }
                 };
             }
         }
@@ -71,16 +75,19 @@ namespace LiveCharts.Wpf
         /// <summary>
         /// Returns an axis that highlights zeros.
         /// </summary>
-        public static Axis HighlightZerosAxis
+        public static List<Axis> HighlightZerosAxis
         {
             get
             {
-                return new Axis
+                return new List<Axis>
                 {
-                    IsEnabled = false,
-                    StrokeThickness = 3d,
-                    Stroke = new SolidColorBrush(Color.FromRgb(218, 218, 218)),
-                    Separator = CleanSeparator
+                    new Axis
+                    {
+                        IsEnabled = false,
+                        StrokeThickness = 3d,
+                        Stroke = new SolidColorBrush(Color.FromRgb(218, 218, 218)),
+                        Separator = CleanSeparator
+                    }
                 };
             }
         }

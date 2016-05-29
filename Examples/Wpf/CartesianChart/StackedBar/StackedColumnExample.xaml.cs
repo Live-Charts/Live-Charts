@@ -21,9 +21,9 @@ namespace Wpf.CartesianChart
     /// <summary>
     /// Interaction logic for StackedBarSeries.xaml
     /// </summary>
-    public partial class StackedBarExample
+    public partial class StackedColumnExample
     {
-        public StackedBarExample()
+        public StackedColumnExample()
         {
             InitializeComponent();
 
@@ -76,10 +76,17 @@ namespace Wpf.CartesianChart
                 }
             };
 
+            Labels = new[]
+            {
+                "Jan", "Feb","Mar", "Apr", "May", "Jun", "Jul", "Ago"
+            };
+
             DataContext = this;
         }
 
         public SeriesCollection SeriesCollection { get; set; }
+        public string[] Labels { get; set; }
+
 
         private void UpdateAllOnClick(object sender, RoutedEventArgs e)
         {

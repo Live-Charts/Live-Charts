@@ -9,6 +9,7 @@ using System.Windows.Navigation;
 using Wpf.Annotations;
 using Wpf.CartesianChart;
 using Wpf.CartesianChart.Labels;
+using Wpf.CartesianChart.StackedBar;
 using Wpf.Gauges;
 using Wpf.PieChart;
 
@@ -35,12 +36,13 @@ namespace Wpf
                 //new FullyResponsive(),
                 //new CustomTypesPlotting(),
                 //new LineExample(),
-                new LabelsExample(),
-                new LabelsHorizontalExample(),
+                //new LabelsExample(),
+                //new LabelsHorizontalExample(),
                 //new BubblesExample(),
                 //new StackedAreaExample(),
                 //new FinancialExample(),
-                //new StackedBarExample(),
+                new StackedColumnExample(),
+                new StackedRowExample(),
                 //new SectionsExample(),
                 //new ZoomingAndPanning(),
                 //new MultiAxesChart(),

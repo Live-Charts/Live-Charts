@@ -34,19 +34,6 @@ namespace Wpf.CartesianChart
                     },
                     DataLabels = true,
                     LabelPoint = point => point.X + "K ," + point.Y
-                },
-                new LineSeries
-                {
-                    Values = new ChartValues<ObservableValue>
-                    {
-                        new ObservableValue(4),
-                        new ObservableValue(2),
-                        new ObservableValue(8),
-                        new ObservableValue(2),
-                        new ObservableValue(3),
-                        new ObservableValue(0),
-                        new ObservableValue(1),
-                    },
                 }
             };
 

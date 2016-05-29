@@ -98,6 +98,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="CartesianChart\StackedBar\StackedRowExample.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="CartesianChart\TypesSupport\TypesPlotting.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -106,7 +110,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="CartesianChart\StackedBar\StackedBarExample.xaml">
+    <Page Include="CartesianChart\StackedBar\StackedColumnExample.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -168,14 +172,17 @@
     <Compile Include="CartesianChart\FullyResponsive\FullyResponsive.xaml.cs">
       <DependentUpon>FullyResponsive.xaml</DependentUpon>
     </Compile>
+    <Compile Include="CartesianChart\StackedBar\StackedRowExample.xaml.cs">
+      <DependentUpon>StackedRowExample.xaml</DependentUpon>
+    </Compile>
     <Compile Include="CartesianChart\TypesSupport\TypesPlotting.xaml.cs">
       <DependentUpon>TypesPlotting.xaml</DependentUpon>
     </Compile>
     <Compile Include="CartesianChart\Sections\SectionsExample.xaml.cs">
       <DependentUpon>SectionsExample.xaml</DependentUpon>
     </Compile>
-    <Compile Include="CartesianChart\StackedBar\StackedBarExample.xaml.cs">
-      <DependentUpon>StackedBarExample.xaml</DependentUpon>
+    <Compile Include="CartesianChart\StackedBar\StackedColumnExample.xaml.cs">
+      <DependentUpon>StackedColumnExample.xaml</DependentUpon>
     </Compile>
     <Compile Include="CartesianChart\StackedArea\StackedAreaExample.xaml.cs">
       <DependentUpon>StackedAreaExample.xaml</DependentUpon>
