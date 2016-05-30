@@ -9,11 +9,12 @@ using System.Windows.Navigation;
 using Wpf.Annotations;
 using Wpf.CartesianChart;
 using Wpf.CartesianChart.Customized_Line_Series;
-using Wpf.CartesianChart.Labels;
+using Wpf.CartesianChart.Inverted_Series;
 using Wpf.CartesianChart.StackedArea;
 using Wpf.CartesianChart.StackedBar;
 using Wpf.Gauges;
 using Wpf.PieChart;
+using DateTime = Wpf.CartesianChart.Using_DateTime.DateTime;
 
 namespace Wpf
 {
@@ -33,21 +34,22 @@ namespace Wpf
             #region Examples
 
             CartesianExamples = new List<UserControl>
-            {
-                new CustomizedLineSeries(),
-
+            {            
                 new WelcomeCartesian(),
                 new FullyResponsive(),
                 new CustomTypesPlotting(),
                 new LineExample(),
                 new LabelsExample(),
                 //new LabelsHorizontalExample(),
+                new CustomizedLineSeries(),
+                new InvertedExample(),
                 new BubblesExample(),
                 //new StackedAreaExample(),
                 new FinancialExample(),
                 //new StackedColumnExample(),
                 new StackedRowExample(),
                 new StackedAreaExample(),
+                new DateTime(),
                 new VerticalStackedAreaExample(),
                 new SectionsExample(),
                 new ZoomingAndPanning(),

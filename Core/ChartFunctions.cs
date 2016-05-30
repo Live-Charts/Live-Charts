@@ -208,15 +208,6 @@ namespace LiveCharts
             return ToDrawMargin(min + 1, AxisTags.X, chart, axis) - ToDrawMargin(min, AxisTags.X, chart, axis);
         }
 
-        public static double ToChartDay(DateTime date)
-        {
-            return date.Ticks/Day;
-        }
-
-        public static DateTime FromChartDay(double chartDate) //this feels bad :/
-        {
-            return new DateTime((long) chartDate*(long) Day);
-        }
     }
 
     public enum AxisTags
