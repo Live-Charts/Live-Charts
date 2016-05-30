@@ -62,6 +62,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="CartesianChart\Inverted Series\Inverted Example.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="CartesianChart\Labels\LabelsExample.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -152,6 +156,9 @@
     </Compile>
     <Compile Include="CartesianChart\Customized Series\CustomizedLineSeries.xaml.cs">
       <DependentUpon>CustomizedLineSeries.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CartesianChart\Inverted Series\Inverted Example.xaml.cs">
+      <DependentUpon>Inverted Example.xaml</DependentUpon>
     </Compile>
     <Compile Include="CartesianChart\Labels\LabelsExample.xaml.cs">
       <DependentUpon>LabelsExample.xaml</DependentUpon>

@@ -12,6 +12,7 @@ using LiveCharts.Defaults;
 using LiveCharts.Wpf;
 using Winforms.Cartesian.Customized_Series;
 using Winforms.Cartesian.FullyResponsive;
+using Winforms.Cartesian.Inverted_Series;
 using Winforms.Cartesian.Labels;
 
 namespace Winforms
@@ -36,6 +37,11 @@ namespace Winforms
         private void button3_Click(object sender, EventArgs e)
         {
             new CustomizedSeries().ShowDialog();
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            new InvertedSeries().ShowDialog();
         }
     }
 }

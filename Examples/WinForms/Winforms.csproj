@@ -75,6 +75,12 @@
     <Compile Include="Cartesian\FullyResponsive\FullyResponsive.Designer.cs">
       <DependentUpon>FullyResponsive.cs</DependentUpon>
     </Compile>
+    <Compile Include="Cartesian\Inverted Series\InvertedSeries.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Cartesian\Inverted Series\InvertedSeries.Designer.cs">
+      <DependentUpon>InvertedSeries.cs</DependentUpon>
+    </Compile>
     <Compile Include="Cartesian\Labels\Labels.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -94,6 +100,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Cartesian\FullyResponsive\FullyResponsive.resx">
       <DependentUpon>FullyResponsive.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Cartesian\Inverted Series\InvertedSeries.resx">
+      <DependentUpon>InvertedSeries.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Cartesian\Labels\Labels.resx">
       <DependentUpon>Labels.cs</DependentUpon>

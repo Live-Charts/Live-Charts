@@ -46,7 +46,7 @@ namespace LiveCharts.SeriesAlgorithms
 
             double exceed = 0;
 
-            var seriesPosition = Chart.View.Series.IndexOf(View);
+            var seriesPosition = typeSeries.IndexOf((IRowSeriesView) View);
 
             if (singleRowHeight > castedSeries.MaxRowHeigth)
             {
