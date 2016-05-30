@@ -130,6 +130,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="CartesianChart\Using DateTime\DateTime.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="CartesianChart\WelcomeCartesian.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -208,6 +212,10 @@
     <Compile Include="CartesianChart\StackedArea\StackedAreaExample.xaml.cs">
       <DependentUpon>StackedAreaExample.xaml</DependentUpon>
     </Compile>
+    <Compile Include="CartesianChart\Using DateTime\DateTime.xaml.cs">
+      <DependentUpon>DateTime.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CartesianChart\Using DateTime\DateModel.cs" />
     <Compile Include="CartesianChart\WelcomeCartesian.xaml.cs">
       <DependentUpon>WelcomeCartesian.xaml</DependentUpon>
     </Compile>

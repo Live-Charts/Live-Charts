@@ -1,16 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using LiveCharts;
-using LiveCharts.Defaults;
-using LiveCharts.Wpf;
 using Winforms.Cartesian.Customized_Series;
+using Winforms.Cartesian.DateTime;
 using Winforms.Cartesian.FullyResponsive;
 using Winforms.Cartesian.Inverted_Series;
 using Winforms.Cartesian.Labels;
@@ -42,6 +33,11 @@ namespace Winforms
         private void button4_Click(object sender, EventArgs e)
         {
             new InvertedSeries().ShowDialog();
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            new DateTimeExample().ShowDialog();
         }
     }
 }
