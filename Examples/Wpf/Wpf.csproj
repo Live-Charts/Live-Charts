@@ -94,6 +94,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="CartesianChart\LogarithmScale\LogarithmScaleExample.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="CartesianChart\MixingSeries\MixingSeries.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -184,6 +188,9 @@
     </Compile>
     <Compile Include="CartesianChart\LineExample\LineExample.xaml.cs">
       <DependentUpon>LineExample.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CartesianChart\LogarithmScale\LogarithmScaleExample.xaml.cs">
+      <DependentUpon>LogarithmScaleExample.xaml</DependentUpon>
     </Compile>
     <Compile Include="CartesianChart\MixingSeries\MixingSeries.xaml.cs">
       <DependentUpon>MixingSeries.xaml</DependentUpon>

@@ -69,9 +69,7 @@
     <Compile Include="Cartesian\Customized Series\Customized Line Series.Designer.cs">
       <DependentUpon>Customized Line Series.cs</DependentUpon>
     </Compile>
-    <Compile Include="Cartesian\DateTime\DateTimeExample.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="Cartesian\DateTime\DateTimeExample.cs" />
     <Compile Include="Cartesian\DateTime\DateTimeExample.Designer.cs">
       <DependentUpon>DateTimeExample.cs</DependentUpon>
     </Compile>
@@ -92,6 +90,18 @@
     </Compile>
     <Compile Include="Cartesian\Labels\Labels.Designer.cs">
       <DependentUpon>Labels.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Cartesian\LogarithmScale\LogarithmSacale.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Cartesian\LogarithmScale\LogarithmSacale.Designer.cs">
+      <DependentUpon>LogarithmSacale.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Cartesian\Zooming and Panning\ZoomingAndPanningExample.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Cartesian\Zooming and Panning\ZoomingAndPanningExample.Designer.cs">
+      <DependentUpon>ZoomingAndPanningExample.cs</DependentUpon>
     </Compile>
     <Compile Include="Main.cs">
       <SubType>Form</SubType>
@@ -115,6 +125,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Cartesian\Labels\Labels.resx">
       <DependentUpon>Labels.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Cartesian\LogarithmScale\LogarithmSacale.resx">
+      <DependentUpon>LogarithmSacale.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Cartesian\Zooming and Panning\ZoomingAndPanningExample.resx">
+      <DependentUpon>ZoomingAndPanningExample.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Main.resx">
       <DependentUpon>Main.cs</DependentUpon>

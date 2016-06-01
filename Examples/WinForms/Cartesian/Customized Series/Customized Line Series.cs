@@ -19,7 +19,7 @@ namespace Winforms.Cartesian.Customized_Series
             {
                 Values = new ChartValues<double> { 3, 4, 6, 3, 2, 6 },
                 StrokeThickness = 4,
-                StrokeDashArray = new System.Windows.Media.DoubleCollection(20),
+                StrokeDashArray = new System.Windows.Media.DoubleCollection(new double[] { 2 }),
                 Stroke = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(107, 185, 69)),
                 Fill = System.Windows.Media.Brushes.Transparent,
                 LineSmoothness = 0,
@@ -45,7 +45,7 @@ namespace Winforms.Cartesian.Customized_Series
                 Separator = new Separator
                 {
                     StrokeThickness = 1,
-                    StrokeDashArray = new System.Windows.Media.DoubleCollection(2),
+                    StrokeDashArray = new System.Windows.Media.DoubleCollection(new double[] { 2 }),
                     Stroke = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(64, 79, 86))
                 }
             });
@@ -56,7 +56,7 @@ namespace Winforms.Cartesian.Customized_Series
                 Separator = new Separator
                 {
                     StrokeThickness = 1.5,
-                    StrokeDashArray = new System.Windows.Media.DoubleCollection(4),
+                    StrokeDashArray = new System.Windows.Media.DoubleCollection(new double[] { 4 }),
                     Stroke = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(64, 79, 86))
                 }
             });

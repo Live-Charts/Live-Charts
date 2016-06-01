@@ -7,6 +7,12 @@ using Brushes = System.Windows.Media.Brushes;
 
 namespace Winforms.Cartesian.DateTime
 {
+    public class DateModel
+    {
+        public System.DateTime DateTime { get; set; }
+        public double Value { get; set; }
+    }
+
     public partial class DateTimeExample : Form
     {
         public DateTimeExample()
@@ -68,11 +74,5 @@ namespace Winforms.Cartesian.DateTime
                 LabelFormatter = value => new System.DateTime((long) (value*TimeSpan.FromHours(1).Ticks)).ToString("t")
             });
         }
-    }
-
-    public class DateModel
-    {
-        public System.DateTime DateTime { get; set; }
-        public double Value { get; set; }
     }
 }
