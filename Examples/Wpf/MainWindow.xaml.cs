@@ -8,13 +8,20 @@ using System.Windows.Input;
 using System.Windows.Navigation;
 using Wpf.Annotations;
 using Wpf.CartesianChart;
+using Wpf.CartesianChart.BasicLine;
 using Wpf.CartesianChart.Customized_Line_Series;
 using Wpf.CartesianChart.Inverted_Series;
+using Wpf.CartesianChart.Irregular_Intervals;
+using Wpf.CartesianChart.LogarithmScale;
+using Wpf.CartesianChart.Missing_Line_Points;
 using Wpf.CartesianChart.StackedArea;
 using Wpf.CartesianChart.StackedBar;
 using Wpf.Gauges;
 using Wpf.PieChart;
 using DateTime = Wpf.CartesianChart.Using_DateTime.DateTime;
+using LabelsExample = Wpf.CartesianChart.Labels.LabelsExample;
+using SectionsExample = Wpf.CartesianChart.Sections.SectionsExample;
+using StackedAreaExample = Wpf.CartesianChart.StackedArea.StackedAreaExample;
 
 namespace Wpf
 {
@@ -34,7 +41,9 @@ namespace Wpf
             #region Examples
 
             CartesianExamples = new List<UserControl>
-            {            
+            {
+                new BasicLineExample(),
+                new StackedAreaExample(),
                 new WelcomeCartesian(),
                 new FullyResponsive(),
                 new CustomTypesPlotting(),
@@ -48,8 +57,11 @@ namespace Wpf
                 new FinancialExample(),
                 //new StackedColumnExample(),
                 new StackedRowExample(),
-                new StackedAreaExample(),
+                new MissingPointsExample(),
+                
+                //new IrregularIntervalsExample(),
                 new DateTime(),
+                //new LogarithmScaleExample(),
                 new VerticalStackedAreaExample(),
                 new SectionsExample(),
                 new ZoomingAndPanning(),

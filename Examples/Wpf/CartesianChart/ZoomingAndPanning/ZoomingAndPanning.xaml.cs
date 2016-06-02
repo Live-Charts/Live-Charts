@@ -4,7 +4,9 @@ using System.Globalization;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Data;
+using System.Windows.Media;
 using LiveCharts;
+using LiveCharts.Defaults;
 using LiveCharts.Wpf;
 using Wpf.Annotations;
 
@@ -21,19 +23,33 @@ namespace Wpf.CartesianChart
         {
             InitializeComponent();
 
-            var r = new Random();
-            var values = new ChartValues<double>();
+            var gradientBrush = new LinearGradientBrush {StartPoint = new Point(0, 0),
+                EndPoint = new Point(0, 1)};
+            gradientBrush.GradientStops.Add(new GradientStop(Color.FromRgb(33, 148, 241), 0));
+            gradientBrush.GradientStops.Add(new GradientStop(Colors.Transparent, 1));
 
-            for (var i = 0; i < 100; i++) values.Add(r.Next(0, 100));
-
-            SeriesCollection = new SeriesCollection {new LineSeries {Values = values}};
+            SeriesCollection = new SeriesCollection
+            {
+                new LineSeries
+                {
+                    Values = GetData(),
+                    Fill = gradientBrush,
+                    StrokeThickness = 1,
+                    PointDiameter = 0
+                }
+            };
 
             ZoomingMode = ZoomingOptions.X;
+
+            XFormatter = val => new DateTime((long) val).ToString("dd MMM");
+            YFormatter = val => val.ToString("C");
 
             DataContext = this;
         }
 
         public SeriesCollection SeriesCollection { get; set; }
+        public Func<double, string> XFormatter { get; set; }
+        public Func<double, string> YFormatter { get; set; }
 
         public ZoomingOptions ZoomingMode
         {
@@ -66,12 +82,28 @@ namespace Wpf.CartesianChart
             }
         }
 
+        private ChartValues<DateTimePoint> GetData()
+        {
+            var r = new Random();
+            var trend = 100;
+            var values = new ChartValues<DateTimePoint>();
+
+            for (var i = 0; i < 100; i++)
+            {
+                var seed = r.NextDouble();
+                if (seed > .8) trend += seed > .9 ? 50 : -50;
+                values.Add(new DateTimePoint(DateTime.Now.AddDays(i), trend + r.Next(0, 10)));
+            }
+
+            return values;
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            if (PropertyChanged != null) PropertyChanged.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 
@@ -90,7 +122,7 @@ namespace Wpf.CartesianChart
                 case ZoomingOptions.Xy:
                     return "XY";
                 default:
-                    throw new ArgumentOutOfRangeException(nameof(value), value, null);
+                    throw new ArgumentOutOfRangeException();
             }
         }
 

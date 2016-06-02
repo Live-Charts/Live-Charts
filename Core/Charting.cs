@@ -145,6 +145,14 @@ namespace LiveCharts
                 .X(value => value.Value)
                 .Y((value, index) => index),
                 SeriesOrientation.Vertical);
+
+            For<DateTimePoint>(Mappers.Xy<DateTimePoint>()
+                .X(value => value.DateTime.Ticks)
+                .Y(value => value.Value), SeriesOrientation.Horizontal);
+            For<DateTimePoint>(Mappers.Xy<DateTimePoint>()
+                .X(value => value.Value)
+                .Y(value => value.DateTime.Ticks), SeriesOrientation.Vertical);
+
         }
 
         public static void For<T>(object config, SeriesOrientation orientation = SeriesOrientation.All)

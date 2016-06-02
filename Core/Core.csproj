@@ -57,6 +57,7 @@
     <Compile Include="Configurations\IPointEvaluator.cs" />
     <Compile Include="Configurations\Mappers.cs" />
     <Compile Include="Defaults\AxisLimits.cs" />
+    <Compile Include="Defaults\DateTimePoint.cs" />
     <Compile Include="Defaults\PolarPoint.cs" />
     <Compile Include="Defaults\ObservablePoint.cs" />
     <Compile Include="Charting.cs" />

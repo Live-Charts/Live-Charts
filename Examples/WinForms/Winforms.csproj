@@ -63,15 +63,19 @@
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Cartesian\BasicLine\BasicLineExample.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Cartesian\BasicLine\BasicLineExample.Designer.cs">
+      <DependentUpon>BasicLineExample.cs</DependentUpon>
+    </Compile>
     <Compile Include="Cartesian\Customized Series\Customized Line Series.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Cartesian\Customized Series\Customized Line Series.Designer.cs">
       <DependentUpon>Customized Line Series.cs</DependentUpon>
     </Compile>
-    <Compile Include="Cartesian\DateTime\DateTimeExample.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="Cartesian\DateTime\DateTimeExample.cs" />
     <Compile Include="Cartesian\DateTime\DateTimeExample.Designer.cs">
       <DependentUpon>DateTimeExample.cs</DependentUpon>
     </Compile>
@@ -87,11 +91,53 @@
     <Compile Include="Cartesian\Inverted Series\InvertedSeries.Designer.cs">
       <DependentUpon>InvertedSeries.cs</DependentUpon>
     </Compile>
+    <Compile Include="Cartesian\Irregular Intervals\IrregularIntervalsExample.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Cartesian\Irregular Intervals\IrregularIntervalsExample.Designer.cs">
+      <DependentUpon>IrregularIntervalsExample.cs</DependentUpon>
+    </Compile>
     <Compile Include="Cartesian\Labels\Labels.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Cartesian\Labels\Labels.Designer.cs">
       <DependentUpon>Labels.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Cartesian\LogarithmScale\LogarithmSacale.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Cartesian\LogarithmScale\LogarithmSacale.Designer.cs">
+      <DependentUpon>LogarithmSacale.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Cartesian\MissingPoints\MissingPoint.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Cartesian\MissingPoints\MissingPoint.Designer.cs">
+      <DependentUpon>MissingPoint.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Cartesian\MultiAxes\MultipleAxesExample.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Cartesian\MultiAxes\MultipleAxesExample.Designer.cs">
+      <DependentUpon>MultipleAxesExample.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Cartesian\Sections\SectionsExample.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Cartesian\Sections\SectionsExample.Designer.cs">
+      <DependentUpon>SectionsExample.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Cartesian\StackedArea\StackedAreaExample.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Cartesian\StackedArea\StackedAreaExample.Designer.cs">
+      <DependentUpon>StackedAreaExample.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Cartesian\Zooming and Panning\ZoomingAndPanningExample.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Cartesian\Zooming and Panning\ZoomingAndPanningExample.Designer.cs">
+      <DependentUpon>ZoomingAndPanningExample.cs</DependentUpon>
     </Compile>
     <Compile Include="Main.cs">
       <SubType>Form</SubType>
@@ -101,6 +147,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Cartesian\BasicLine\BasicLineExample.resx">
+      <DependentUpon>BasicLineExample.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Cartesian\Customized Series\Customized Line Series.resx">
       <DependentUpon>Customized Line Series.cs</DependentUpon>
     </EmbeddedResource>
@@ -113,8 +162,29 @@
     <EmbeddedResource Include="Cartesian\Inverted Series\InvertedSeries.resx">
       <DependentUpon>InvertedSeries.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Cartesian\Irregular Intervals\IrregularIntervalsExample.resx">
+      <DependentUpon>IrregularIntervalsExample.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Cartesian\Labels\Labels.resx">
       <DependentUpon>Labels.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Cartesian\LogarithmScale\LogarithmSacale.resx">
+      <DependentUpon>LogarithmSacale.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Cartesian\MissingPoints\MissingPoint.resx">
+      <DependentUpon>MissingPoint.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Cartesian\MultiAxes\MultipleAxesExample.resx">
+      <DependentUpon>MultipleAxesExample.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Cartesian\Sections\SectionsExample.resx">
+      <DependentUpon>SectionsExample.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Cartesian\StackedArea\StackedAreaExample.resx">
+      <DependentUpon>StackedAreaExample.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Cartesian\Zooming and Panning\ZoomingAndPanningExample.resx">
+      <DependentUpon>ZoomingAndPanningExample.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Main.resx">
       <DependentUpon>Main.cs</DependentUpon>
@@ -127,6 +197,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
@@ -141,6 +212,66 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\about labels.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\about axes.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\about labels1.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\about series.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\basic line chart.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\basics.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Date Time.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\fully responsive.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\install.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\inverted series.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\irregular intervals.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\log and custom scales.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Missing Points.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\multiple axes.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\sections.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\stacked area percentage.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\stacked area.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\the cartesian chart.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\types and configuration.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\zooming and panning.gif" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
