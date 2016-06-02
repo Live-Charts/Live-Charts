@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Wpf.CartesianChart"
-             xmlns:lc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+             xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
@@ -16,17 +16,17 @@
         <TextBlock Grid.Row="0" TextWrapping="Wrap">
             You can create multiple axes, just set the Series.ScalesXAt or Series.ScalesYAt properties, you must also add the axis explicitly.
         </TextBlock>
-        <lc:CartesianChart Grid.Row="2">
-            <lc:CartesianChart.AxisY>
-                <lc:Axis Foreground="DodgerBlue" Title="Blue Axis"/>
-                <lc:Axis Foreground="IndianRed" Title="Red Axis" Position="RightTop" Separator="{x:Static lc:DefaultAxes.CleanSeparator}"/>
-                <lc:Axis Foreground="DarkOliveGreen" Title="Green Axis" Position="RightTop" Separator="{x:Static lc:DefaultAxes.CleanSeparator}"/>
-            </lc:CartesianChart.AxisY>
-            <lc:CartesianChart.Series>
-                <lc:LineSeries Values="1,5,3,5,3" ScalesYAt="0"/> <!--Scales at blue axis, Axis[0]-->
-                <lc:LineSeries Values="20,30,70,20,10"  ScalesYAt="1"/> <!--Scales at blue axis, Axis[1]-->
-                <lc:LineSeries Values="600,300,200,600,800"  ScalesYAt="2"/> <!--Scales at blue axis, Axis[2]-->
-            </lc:CartesianChart.Series>
-        </lc:CartesianChart>
+        <lvc:CartesianChart Grid.Row="2">
+            <lvc:CartesianChart.AxisY>
+                <lvc:Axis Foreground="DodgerBlue" Title="Blue Axis"/>
+                <lvc:Axis Foreground="IndianRed" Title="Red Axis" Position="RightTop" Separator="{x:Static lvc:DefaultAxes.CleanSeparator}"/>
+                <lvc:Axis Foreground="DarkOliveGreen" Title="Green Axis" Position="RightTop" Separator="{x:Static lvc:DefaultAxes.CleanSeparator}"/>
+            </lvc:CartesianChart.AxisY>
+            <lvc:CartesianChart.Series>
+                <lvc:LineSeries Values="1,5,3,5,3" ScalesYAt="0"/> <!--Scales at blue axis, Axis[0]-->
+                <lvc:LineSeries Values="20,30,70,20,10"  ScalesYAt="1"/> <!--Scales at blue axis, Axis[1]-->
+                <lvc:LineSeries Values="600,300,200,600,800"  ScalesYAt="2"/> <!--Scales at blue axis, Axis[2]-->
+            </lvc:CartesianChart.Series>
+        </lvc:CartesianChart>
     </Grid>
 </UserControl>

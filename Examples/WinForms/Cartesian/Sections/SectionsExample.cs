@@ -1,21 +1,19 @@
-﻿using System;
-using System.Linq;
-using System.Windows;
-using System.Windows.Controls;
+﻿using System.Collections.Generic;
+using System.Windows.Forms;
 using System.Windows.Media;
 using LiveCharts;
 using LiveCharts.Defaults;
 using LiveCharts.Wpf;
 
-namespace Wpf.CartesianChart.Sections
+namespace Winforms.Cartesian.Sections
 {
-    public partial class SectionsExample : UserControl
+    public partial class SectionsExample : Form
     {
         public SectionsExample()
         {
             InitializeComponent();
 
-            SeriesCollection = new SeriesCollection
+            cartesianChart1.Series = new SeriesCollection
             {
                 new LineSeries
                 {
@@ -49,22 +47,41 @@ namespace Wpf.CartesianChart.Sections
                 }
             };
 
-            DataContext = this;
-        }
-
-        public SeriesCollection SeriesCollection { get; set; }
-
-        private void UpdateAllOnClick(object sender, RoutedEventArgs e)
-        {
-            var r = new Random();
-
-            foreach (var series in SeriesCollection)
+            cartesianChart1.AxisY.Add(new Axis
             {
-                foreach (var observable in series.Values.Cast<ObservableValue>())
+                Sections = new List<IAxisSectionView>
                 {
-                    observable.Value = r.Next(0, 10);
+                    new AxisSection
+                    {
+                        FromValue = 8.5,
+                        ToValue = 8.5,
+                        Stroke = new SolidColorBrush(System.Windows.Media.Color.FromRgb(248, 213, 72))
+                    }, 
+                    new AxisSection
+                    {
+                        Label = "Good",
+                        FromValue = 4,
+                        ToValue = 8,
+                        Fill = new SolidColorBrush
+                        {
+                            Color = System.Windows.Media.Color.FromRgb(204,204,204),
+                            Opacity = .4
+                        }
+                    },
+                    new AxisSection
+                    {
+                        Label = "Bad",
+                        FromValue = 0,
+                        ToValue = 4,
+                        Fill = new SolidColorBrush
+                        {
+                            Color = System.Windows.Media.Color.FromRgb(254,132,132),
+                            Opacity = .4
+                        }
+                    }
                 }
-            }
+            });
+
         }
     }
 }
