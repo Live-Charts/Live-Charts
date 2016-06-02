@@ -36,12 +36,14 @@ namespace Winforms.Cartesian.MultiAxes
             cartesianChart1.AxisY.Add(new Axis
             {
                 Foreground = System.Windows.Media.Brushes.IndianRed,
-                Title = "Red Axis"
+                Title = "Red Axis",
+                Position = AxisPosition.RightTop
             });
             cartesianChart1.AxisY.Add(new Axis
             {
                 Foreground = System.Windows.Media.Brushes.DarkOliveGreen,
-                Title = "Green Axis"
+                Title = "Green Axis",
+                Position = AxisPosition.RightTop
             });
         }
     }

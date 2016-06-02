@@ -37,7 +37,7 @@ namespace Winforms.Cartesian.Customized_Series
                     new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(34, 46, 49))
             });
 
-            //cartesianChart1.Background = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(34, 46, 49));
+            cartesianChart1.Background = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(34, 46, 49));
 
             cartesianChart1.AxisX.Add(new Axis
             {
@@ -60,8 +60,6 @@ namespace Winforms.Cartesian.Customized_Series
                     Stroke = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(64, 79, 86))
                 }
             });
-
-            // cartesianChart1.Background = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(34, 46, 49));
         }
     }
 }

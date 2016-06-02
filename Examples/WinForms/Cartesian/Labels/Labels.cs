@@ -48,8 +48,7 @@ namespace Winforms.Cartesian.Labels
                     Step = 1,
                     IsEnabled = false //disable it to make it invisible.
                 },
-                //ToDo Add the rotate tranform...
-                //LabelsRotateTransform = new System.Windows.Media.RotateTransform(13)
+                LabelsRotateTransform = new System.Windows.Media.RotateTransform(13)
             });
 
             cartesianChart1.AxisY.Add(new Axis

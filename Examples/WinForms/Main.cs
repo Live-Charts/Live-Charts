@@ -8,6 +8,7 @@ using Winforms.Cartesian.Inverted_Series;
 using Winforms.Cartesian.Irregular_Intervals;
 using Winforms.Cartesian.Labels;
 using Winforms.Cartesian.LogarithmScale;
+using Winforms.Cartesian.MissingPoints;
 using Winforms.Cartesian.MultiAxes;
 using Winforms.Cartesian.Sections;
 using Winforms.Cartesian.StackedArea;
@@ -80,6 +81,11 @@ namespace Winforms
         private void button13_Click(object sender, EventArgs e)
         {
             new StackedAreaExample().ShowDialog();
+        }
+
+        private void button11_Click(object sender, EventArgs e)
+        {
+            new MissingPoint().ShowDialog();
         }
     }
 }

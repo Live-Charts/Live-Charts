@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Media;
 using LiveCharts;
@@ -25,7 +26,7 @@ namespace Winforms.Cartesian.Zooming_and_Panning
 
             cartesianChart1.Series.Add(new LineSeries
             {
-                Values = new ChartValues<double>(), //GetData(),
+                Values = GetData(),
                 Fill = gradientBrush,
                 StrokeThickness = 1,
                 PointDiameter = 0
@@ -45,20 +46,20 @@ namespace Winforms.Cartesian.Zooming_and_Panning
 
         }
 
-        //private ChartValues<DateTimePoint> GetData()
-        //{
-        //    var r = new Random();
-        //    var trend = 100;
-        //    var values = new ChartValues<DateTimePoint>();
+        private ChartValues<DateTimePoint> GetData()
+        {
+            var r = new Random();
+            var trend = 100;
+            var values = new ChartValues<DateTimePoint>();
 
-        //    for (var i = 0; i < 100; i++)
-        //    {
-        //        var seed = r.NextDouble();
-        //        if (seed > .8) trend += seed > .9 ? 50 : -50;
-        //        values.Add(new DateTimePoint(DateTime.Now.AddDays(i), trend + r.Next(0, 10)));
-        //    }
+            for (var i = 0; i < 100; i++)
+            {
+                var seed = r.NextDouble();
+                if (seed > .8) trend += seed > .9 ? 50 : -50;
+                values.Add(new DateTimePoint(System.DateTime.Now.AddDays(i), trend + r.Next(0, 10)));
+            }
 
-        //    return values;
-        //}
+            return values;
+        }
     }
 }
