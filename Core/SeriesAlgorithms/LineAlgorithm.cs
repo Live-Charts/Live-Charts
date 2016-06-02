@@ -68,10 +68,20 @@ namespace LiveCharts.SeriesAlgorithms
                         ? ChartFunctions.GetUnitWidth(AxisTags.Y, Chart, View.ScalesYAt)/2
                         : 0);
 
-                p0 += uw;
-                p1 += uw;
-                p2 += uw;
-                p3 += uw;
+                if (SeriesOrientation == SeriesOrientation.Horizontal)
+                {
+                    p0 += uw;
+                    p1 += uw;
+                    p2 += uw;
+                    p3 += uw;
+                }
+                else
+                {
+                    p0 = new CorePoint(p0.X + uw.X, p0.Y - uw.Y);
+                    p1 = new CorePoint(p1.X + uw.X, p1.Y - uw.Y);
+                    p2 = new CorePoint(p2.X + uw.X, p2.Y - uw.Y);
+                    p3 = new CorePoint(p3.X + uw.X, p3.Y - uw.Y);
+                }
 
                 lineView.StartSegment(segmentPosition, p1);
                 segmentPosition += segmentPosition == 0 ? 1 : 2;
@@ -142,7 +152,14 @@ namespace LiveCharts.SeriesAlgorithms
                         ? ChartFunctions.ToDrawMargin(segment[index + 3], View.ScalesXAt, View.ScalesYAt, Chart)
                         : p2;
 
-                    p3 += uw;
+                    if (SeriesOrientation == SeriesOrientation.Horizontal)
+                    {
+                        p3 += uw;
+                    }
+                    else
+                    {
+                        p3 = new CorePoint(p3.X + uw.X, p3.Y - uw.Y);
+                    }
                 }
                 lineView.EndSegment(segmentPosition, p1);
                 segmentPosition++;

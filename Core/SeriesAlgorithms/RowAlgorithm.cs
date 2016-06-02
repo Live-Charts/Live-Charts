@@ -46,7 +46,7 @@ namespace LiveCharts.SeriesAlgorithms
 
             double exceed = 0;
 
-            var seriesPosition = Chart.View.Series.IndexOf(View);
+            var seriesPosition = typeSeries.IndexOf((IRowSeriesView) View);
 
             if (singleRowHeight > castedSeries.MaxRowHeigth)
             {
@@ -116,12 +116,12 @@ namespace LiveCharts.SeriesAlgorithms
 
         double ICartesianSeries.GetMinY(AxisCore axis)
         {
-            return AxisLimits.SeparatorMin(axis);
+            return AxisLimits.StretchMin(axis);
         }
 
         double ICartesianSeries.GetMaxY(AxisCore axis)
         {
-            return AxisLimits.SeparatorMin(axis);
+            return AxisLimits.UnitRight(axis);
         }
     }
 }

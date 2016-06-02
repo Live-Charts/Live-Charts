@@ -146,12 +146,13 @@ namespace LiveCharts
                 .Y((value, index) => index),
                 SeriesOrientation.Vertical);
 
-            For<DatePoint>(Mappers.Xy<DatePoint>()
-                .X(x => ChartFunctions.ToChartDay(x.DateTime))
-                .Y(x => x.Value), SeriesOrientation.Horizontal);
-            For<DatePoint>(Mappers.Xy<DatePoint>()
-                .Y(x => ChartFunctions.ToChartDay(x.DateTime))
-                .X(x => x.Value), SeriesOrientation.Vertical);
+            For<DateTimePoint>(Mappers.Xy<DateTimePoint>()
+                .X(value => value.DateTime.Ticks)
+                .Y(value => value.Value), SeriesOrientation.Horizontal);
+            For<DateTimePoint>(Mappers.Xy<DateTimePoint>()
+                .X(value => value.Value)
+                .Y(value => value.DateTime.Ticks), SeriesOrientation.Vertical);
+
         }
 
         public static void For<T>(object config, SeriesOrientation orientation = SeriesOrientation.All)

@@ -35,13 +35,13 @@ namespace LiveCharts
 
         private void InitializeSeriesParams(ISeriesView seriesView)
         {
+            if (!seriesView.IsInVisualTree)
+                Chart.View.AddToView(seriesView);
+
             seriesView.Model.Chart = Chart;
             seriesView.Values.Series = seriesView.Model;
             seriesView.Model.SeriesCollection = Chart.View.Series;
             seriesView.Model.SeriesCollection.Chart = Chart;
-
-            if (!seriesView.IsInVisualTree) Chart.View.AddToView(seriesView);
-
         }
 
         public virtual void Run(bool restartView = false, bool updateNow = false)   

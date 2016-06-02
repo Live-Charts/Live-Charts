@@ -91,7 +91,8 @@ namespace LiveCharts.Wpf
                 {
                     IsNew = true,
                     Rectangle = new Rectangle(),
-                    Data = new CoreRectangle()
+                    Data = new CoreRectangle(),
+                    LabelInside = true
                 };
 
                 BindingOperations.SetBinding(pbv.Rectangle, Shape.FillProperty,
@@ -164,7 +165,7 @@ namespace LiveCharts.Wpf
         {
             SetValue(StrokeThicknessProperty, 0d);
             SetValue(MaxColumnWidthProperty, 35d);
-            SetValue(ForegroundProperty, new SolidColorBrush(Color.FromRgb(229, 229, 229)));
+            SetValue(ForegroundProperty, Brushes.White);
 
             Func<ChartPoint, string> defaultLabel = x =>  Model.CurrentYAxis.GetFormatter()(x.Y);
             SetValue(LabelPointProperty, defaultLabel);

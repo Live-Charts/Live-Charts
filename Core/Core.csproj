@@ -57,11 +57,11 @@
     <Compile Include="Configurations\IPointEvaluator.cs" />
     <Compile Include="Configurations\Mappers.cs" />
     <Compile Include="Defaults\AxisLimits.cs" />
+    <Compile Include="Defaults\DateTimePoint.cs" />
     <Compile Include="Defaults\PolarPoint.cs" />
     <Compile Include="Defaults\ObservablePoint.cs" />
     <Compile Include="Charting.cs" />
     <Compile Include="Defaults\ObservableValue.cs" />
-    <Compile Include="Defaults\DatePoint.cs" />
     <Compile Include="Defaults\OHLCPoint.cs" />
     <Compile Include="Definitions.cs" />
     <Compile Include="Charts\ChartCore.cs" />

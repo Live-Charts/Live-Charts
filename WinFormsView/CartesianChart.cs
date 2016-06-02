@@ -25,6 +25,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.Design.Serialization;
 using System.Windows.Forms.Integration;
+using System.Windows.Media;
 using LiveCharts.Wpf;
 
 namespace LiveCharts.WinForms
@@ -101,6 +102,14 @@ namespace LiveCharts.WinForms
             get { return WpfBase.DataTooltip; }
             set { WpfBase.DataTooltip = value; }
         }
+
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public Brush Background
+        {
+            get { return WpfBase.Background; }
+            set { WpfBase.Background = value; }
+        }
+
         #endregion
 
         #region ThisChartProperties

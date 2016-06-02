@@ -77,7 +77,7 @@ namespace LiveCharts.Wpf.Components
                         : 0)
                     : TextBlock.ActualHeight * .5;
                 var leftM = axis.IsMerged ? TextBlock.ActualWidth + 10 : -2;
-                Canvas.SetTop(TextBlock, i + uw.Y - topM);
+                Canvas.SetTop(TextBlock, i - uw.Y - topM);
                 Canvas.SetLeft(TextBlock, axis.Position == AxisPosition.LeftBottom
                     ? axis.LabelsReference - TextBlock.ActualWidth + leftM
                     : axis.LabelsReference - leftM);
@@ -186,7 +186,7 @@ namespace LiveCharts.Wpf.Components
                     : TextBlock.ActualHeight*.5;
 
                 TextBlock.BeginAnimation(Canvas.TopProperty,
-                    new DoubleAnimation(Line.Y1 - hh + uw.Y, i - hh + uw.Y,
+                    new DoubleAnimation(Line.Y1 - hh - uw.Y, i - hh - uw.Y,
                         chart.AnimationsSpeed));
             }
             else
@@ -250,7 +250,7 @@ namespace LiveCharts.Wpf.Components
                     : TextBlock.ActualHeight*.5;
 
                 TextBlock.BeginAnimation(Canvas.TopProperty,
-                    new DoubleAnimation(y - hh + uw.Y, i - hh + uw.Y,
+                    new DoubleAnimation(y - hh - uw.Y, i - hh - uw.Y,
                         chart.AnimationsSpeed));
             }
             else

@@ -36,7 +36,8 @@ namespace LiveCharts.Wpf.Points
         public Rectangle Rectangle { get; set; }
         public CoreRectangle Data { get; set; }
         public double ZeroReference  { get; set; }
-        private Brush BackupFill { get; set; }
+        public bool LabelInside { get; set; }
+        public RotateTransform RotateTransform { get; set; }
 
         public override void DrawOrMove(ChartPoint previousDrawn, ChartPoint current, int index, ChartCore chart)
         {
@@ -57,32 +58,52 @@ namespace LiveCharts.Wpf.Points
           
             Func<double> getY = () =>
             {
-                double r;
+                double y;
 
-                if (ZeroReference > Data.Top)
+                if (LabelInside)
                 {
-                    r = Data.Top - DataLabel.ActualHeight;
-                    if (r < 0) r = Data.Top;
+                    if (RotateTransform == null)
+                        RotateTransform = new RotateTransform(90);
+
+                    DataLabel.RenderTransform = RotateTransform;
+
+                    y = Data.Top + Data.Height/2 - DataLabel.ActualWidth*.5;
                 }
                 else
                 {
-                    r = Data.Top + Data.Height;
-                    if (r + DataLabel.ActualHeight > chart.DrawMargin.Height) r -= DataLabel.ActualHeight;
+                    if (ZeroReference > Data.Top)
+                    {
+                        y = Data.Top - DataLabel.ActualHeight;
+                        if (y < 0) y = Data.Top;
+                    }
+                    else
+                    {
+                        y = Data.Top + Data.Height;
+                        if (y + DataLabel.ActualHeight > chart.DrawMargin.Height) y -= DataLabel.ActualHeight;
+                    }
                 }
 
-                return r;
+                return y;
             };
 
             Func<double> getX = () =>
             {
-                var r = Data.Left + Data.Width/2 - DataLabel.ActualWidth/2;
+                double x;
 
-                if (r < 0)
-                    r = 2;
-                if (r + DataLabel.ActualWidth > chart.DrawMargin.Width)
-                    r -= r + DataLabel.ActualWidth - chart.DrawMargin.Width + 2;
+                if (LabelInside)
+                {
+                    x = Data.Left + DataLabel.ActualHeight/2 + Data.Width/2;
+                }
+                else
+                {
+                    x = Data.Left + Data.Width / 2 - DataLabel.ActualWidth / 2;
+                    if (x < 0)
+                        x = 2;
+                    if (x + DataLabel.ActualWidth > chart.DrawMargin.Width)
+                        x -= x + DataLabel.ActualWidth - chart.DrawMargin.Width + 2;
+                }
 
-                return r;
+                return x;
             };
 
             if (chart.View.DisableAnimations)
