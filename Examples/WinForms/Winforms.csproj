@@ -63,6 +63,30 @@
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Cartesian\Basic Stacked Bar\BasicsStackedRowExample.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Cartesian\Basic Stacked Bar\BasicsStackedRowExample.Designer.cs">
+      <DependentUpon>BasicsStackedRowExample.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Cartesian\Basic Stacked Bar\BasicStackedColumnExample.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Cartesian\Basic Stacked Bar\BasicStackedColumnExample.Designer.cs">
+      <DependentUpon>BasicStackedColumnExample.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Cartesian\BasicBar\BasicColumnExample.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Cartesian\BasicBar\BasicColumnExample.Designer.cs">
+      <DependentUpon>BasicColumnExample.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Cartesian\BasicBar\BasicRowExample.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Cartesian\BasicBar\BasicRowExample.Designer.cs">
+      <DependentUpon>BasicRowExample.cs</DependentUpon>
+    </Compile>
     <Compile Include="Cartesian\BasicLine\BasicLineExample.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -121,6 +145,12 @@
     <Compile Include="Cartesian\MultiAxes\MultipleAxesExample.Designer.cs">
       <DependentUpon>MultipleAxesExample.cs</DependentUpon>
     </Compile>
+    <Compile Include="Cartesian\NegativeStackedRow\NegativeStackedRow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Cartesian\NegativeStackedRow\NegativeStackedRow.Designer.cs">
+      <DependentUpon>NegativeStackedRow.cs</DependentUpon>
+    </Compile>
     <Compile Include="Cartesian\Sections\SectionsExample.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -147,6 +177,18 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Cartesian\Basic Stacked Bar\BasicsStackedRowExample.resx">
+      <DependentUpon>BasicsStackedRowExample.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Cartesian\Basic Stacked Bar\BasicStackedColumnExample.resx">
+      <DependentUpon>BasicStackedColumnExample.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Cartesian\BasicBar\BasicColumnExample.resx">
+      <DependentUpon>BasicColumnExample.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Cartesian\BasicBar\BasicRowExample.resx">
+      <DependentUpon>BasicRowExample.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Cartesian\BasicLine\BasicLineExample.resx">
       <DependentUpon>BasicLineExample.cs</DependentUpon>
     </EmbeddedResource>
@@ -176,6 +218,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Cartesian\MultiAxes\MultipleAxesExample.resx">
       <DependentUpon>MultipleAxesExample.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Cartesian\NegativeStackedRow\NegativeStackedRow.resx">
+      <DependentUpon>NegativeStackedRow.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Cartesian\Sections\SectionsExample.resx">
       <DependentUpon>SectionsExample.cs</DependentUpon>

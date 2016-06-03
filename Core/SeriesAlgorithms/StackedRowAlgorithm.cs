@@ -27,9 +27,11 @@ namespace LiveCharts.SeriesAlgorithms
 {
     public class StackedRowAlgorithm : SeriesAlgorithm, ICartesianSeries
     {
+        private readonly IStackModelableSeriesView _stackModelable;
         public StackedRowAlgorithm(ISeriesView view) : base(view)
         {
             SeriesOrientation = SeriesOrientation.Vertical;
+            _stackModelable = (IStackModelableSeriesView) view;
         }
 
         public override void Update()
@@ -62,8 +64,12 @@ namespace LiveCharts.SeriesAlgorithms
             foreach (var chartPoint in View.Values.Points)
             {
                 var y = ChartFunctions.ToDrawMargin(chartPoint.Y, AxisTags.Y, Chart, View.ScalesYAt) - ChartFunctions.GetUnitWidth(AxisTags.Y, Chart, View.ScalesYAt);
-                var from = ChartFunctions.ToDrawMargin(chartPoint.From, AxisTags.X, Chart, View.ScalesXAt);
-                var to = ChartFunctions.ToDrawMargin(chartPoint.To, AxisTags.X, Chart, View.ScalesXAt);
+                var from = _stackModelable.StackMode == StackMode.Values
+                    ? ChartFunctions.ToDrawMargin(chartPoint.From, AxisTags.X, Chart, View.ScalesXAt)
+                    : ChartFunctions.ToDrawMargin(chartPoint.From/chartPoint.Sum, AxisTags.X, Chart, View.ScalesXAt);
+                var to = _stackModelable.StackMode == StackMode.Values
+                    ? ChartFunctions.ToDrawMargin(chartPoint.To, AxisTags.X, Chart, View.ScalesXAt)
+                    : ChartFunctions.ToDrawMargin(chartPoint.To/chartPoint.Sum, AxisTags.X, Chart, View.ScalesXAt);
 
                 chartPoint.View = View.GetPointView(chartPoint.View, chartPoint,
                     View.DataLabels

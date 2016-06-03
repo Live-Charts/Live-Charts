@@ -9,11 +9,14 @@ using System.Windows.Navigation;
 using Wpf.Annotations;
 using Wpf.CartesianChart;
 using Wpf.CartesianChart.BasicLine;
+using Wpf.CartesianChart.Basic_Bars;
+using Wpf.CartesianChart.Basic_Stacked_Bar;
 using Wpf.CartesianChart.Customized_Line_Series;
 using Wpf.CartesianChart.Inverted_Series;
 using Wpf.CartesianChart.Irregular_Intervals;
 using Wpf.CartesianChart.LogarithmScale;
 using Wpf.CartesianChart.Missing_Line_Points;
+using Wpf.CartesianChart.NegativeStackedRow;
 using Wpf.CartesianChart.StackedArea;
 using Wpf.CartesianChart.StackedBar;
 using Wpf.Gauges;
@@ -42,7 +45,13 @@ namespace Wpf
 
             CartesianExamples = new List<UserControl>
             {
+                new BasicStackedRowPercentageExample(),
+                new BasicStackedColumnExample(),
+                new NegativeStackedRowExample(),
+                new BasicRowExample(),
+                new BasicColumn(),
                 new BasicLineExample(),
+
                 new StackedAreaExample(),
                 new WelcomeCartesian(),
                 new FullyResponsive(),

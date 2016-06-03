@@ -5,15 +5,18 @@ using LiveCharts.Wpf;
 
 namespace Wpf.CartesianChart.Basic_Bars
 {
-    public partial class BasicRowExample : UserControl
+    /// <summary>
+    /// Interaction logic for BasicColumn.xaml
+    /// </summary>
+    public partial class BasicColumn : UserControl
     {
-        public BasicRowExample()
+        public BasicColumn()
         {
             InitializeComponent();
 
             SeriesCollection = new SeriesCollection
             {
-                new RowSeries
+                new ColumnSeries
                 {
                     Title = "2015",
                     Values = new ChartValues<double> { 10, 50, 39, 50 }
@@ -21,16 +24,16 @@ namespace Wpf.CartesianChart.Basic_Bars
             };
 
             //adding series will update and animate the chart automatically
-            SeriesCollection.Add(new RowSeries
+            SeriesCollection.Add(new ColumnSeries
             {
                 Title = "2016",
-                Values = new ChartValues<double> { 11, 56, 42}
+                Values = new ChartValues<double> { 11, 56, 42 }
             });
 
             //also adding values updates and animates the chart automatically
             SeriesCollection[1].Values.Add(48d);
 
-            Labels = new[] {"Maria", "Susan", "Charles", "Frida"};
+            Labels = new[] { "Maria", "Susan", "Charles", "Frida" };
             Formatter = value => value.ToString("N");
 
             DataContext = this;
