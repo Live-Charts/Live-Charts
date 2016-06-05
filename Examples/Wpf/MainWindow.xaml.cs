@@ -21,6 +21,7 @@ using Wpf.CartesianChart.StackedArea;
 using Wpf.CartesianChart.StackedBar;
 using Wpf.Gauges;
 using Wpf.PieChart;
+using BubblesExample = Wpf.CartesianChart.Bubbles.BubblesExample;
 using DateTime = Wpf.CartesianChart.Using_DateTime.DateTime;
 using LabelsExample = Wpf.CartesianChart.Labels.LabelsExample;
 using SectionsExample = Wpf.CartesianChart.Sections.SectionsExample;

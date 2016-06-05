@@ -6,9 +6,6 @@ using Wpf.Annotations;
 
 namespace Wpf.Gauges
 {
-    /// <summary>
-    /// Interaction logic for Gauge180.xaml
-    /// </summary>
     public partial class Gauge180 : INotifyPropertyChanged
     {
         private double _value;
@@ -17,7 +14,7 @@ namespace Wpf.Gauges
         {
             InitializeComponent();
 
-            Value = 7;
+            Value = 65;
             Formatter = x => x + " Km/Hr";
 
             DataContext = this;

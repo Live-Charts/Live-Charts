@@ -39,8 +39,8 @@ namespace Winforms.Cartesian.Basic_Stacked_Column
             cartesianChart1.AxisX.Add(new Axis
             {
                 Title = "Browser",
-                Labels = new[] {"Chrome", "Mozilla", "Opera", "IE"}
-            Separator = DefaultAxes.CleanSeparator
+                Labels = new[] {"Chrome", "Mozilla", "Opera", "IE"},
+                Separator = DefaultAxes.CleanSeparator
             });
 
             cartesianChart1.AxisY.Add(new Axis

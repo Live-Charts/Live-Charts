@@ -154,6 +154,7 @@ namespace LiveCharts.Helpers
             _source.Remove((T) value);
             OnCollectionChanged(new[] {(T) value}, null);
         }
+
         public bool Remove(T item)
         {
             var ans = _source.Remove(item);
@@ -161,11 +162,25 @@ namespace LiveCharts.Helpers
             return ans;
         }
 
+        void IList.RemoveAt(int index)
+        {
+            var i = _source[index];
+            _source.RemoveAt(index);
+            OnCollectionChanged(new[] { i }, null);
+        }
+
+        void IList<T>.RemoveAt(int index)
+        {
+            var i = _source[index];
+            _source.RemoveAt(index);
+            OnCollectionChanged(new[] { i }, null);
+        }
+
         public void RemoveAt(int index)
         {
             var i = _source[index];
             _source.RemoveAt(index);
-            OnCollectionChanged(new[] {i}, null);
+            OnCollectionChanged(new[] { i }, null);
         }
 
 
@@ -182,7 +197,13 @@ namespace LiveCharts.Helpers
             _source.Clear();
             OnCollectionChanged(backup, null);
         }
-        
+
+        public void Clear()
+        {
+            var backup = _source.ToArray();
+            _source.Clear();
+            OnCollectionChanged(backup, null);
+        }
 
         public bool Contains(object value)
         {
@@ -214,20 +235,6 @@ namespace LiveCharts.Helpers
         public int IndexOf(T item)
         {
             return _source.IndexOf(item);
-        }
-
-
-        void IList.RemoveAt(int index)
-        {
-            var i = _source[index];
-            _source.RemoveAt(index);
-            OnCollectionChanged(new[] {i}, null);
-        }
-        void IList<T>.RemoveAt(int index)
-        {
-            var i = _source[index];
-            _source.RemoveAt(index);
-            OnCollectionChanged(new[] {i}, null);
         }
 
         event NoisyCollectionCollectionChanged<object> INoisyCollection.CollectionChanged

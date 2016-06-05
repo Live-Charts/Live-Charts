@@ -1,28 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using LiveCharts;
-using LiveCharts.Configurations;
 using LiveCharts.Defaults;
 using LiveCharts.Wpf;
-using LiveCharts.Wpf.Charts.Chart;
 
 namespace Wpf.PieChart
 {
-    /// <summary>
-    /// Interaction logic for PieChart.xaml
-    /// </summary>
     public partial class PieExample
     {
         public PieExample()
@@ -33,31 +17,33 @@ namespace Wpf.PieChart
             {
                 new PieSeries
                 {
-                    Values = new ChartValues<ObservableValue> { new ObservableValue(2) },
+                    Title = "Chrome",
+                    Values = new ChartValues<double> { 8 },
                     DataLabels = true
                 },
                 new PieSeries
                 {
-                    Values = new ChartValues<ObservableValue> { new ObservableValue(5) },
-                    DataLabels = true
-                },
-                new PieSeries
-                {
-                    Values = new ChartValues<ObservableValue> { new ObservableValue(3) },
-                    DataLabels = true
-                },
-                new PieSeries
-                {
-                    Values = new ChartValues<ObservableValue> { new ObservableValue(4) },
-                    DataLabels = true
-                },
-                new PieSeries
-                {
-                    Values = new ChartValues<ObservableValue> { new ObservableValue(2.5) },
+                    Title = "Mozilla",
                     DataLabels = true,
-                    PushOut = 10
+                    Values = new ChartValues<double> { 6 }
+                },
+                new PieSeries
+                {
+                    Title = "Opera",
+                    DataLabels = true,
+                    Values = new ChartValues<double> { 10 }
+                },
+                new PieSeries
+                {
+                    Title = "Explorer",
+                    DataLabels = true,
+                    Values = new ChartValues<double> { 4 }
                 }
             };
+
+            //adding values or series will update and animate the chart automatically
+            //SeriesCollection.Add(new PieSeries());
+            //SeriesCollection[0].Values.Add(5);
 
             DataContext = this;
         }
