@@ -4,12 +4,24 @@
 
 <p align="center">
   
-  <img src="https://cloud.githubusercontent.com/assets/10853349/15808855/3b93ee82-2b48-11e6-946c-b064e7e1d1f2.gif" />
-  <img src="https://cloud.githubusercontent.com/assets/10853349/15808857/3b9f0024-2b48-11e6-87fa-f52f1c2458b4.gif" />
-  <img src="https://cloud.githubusercontent.com/assets/10853349/15808859/3ba1c638-2b48-11e6-830f-822e37b74b91.gif" />
-  <img src="https://cloud.githubusercontent.com/assets/10853349/15808856/3b9499ae-2b48-11e6-91a8-f74f6a1fd6dc.gif" />
-  <img src="https://cloud.githubusercontent.com/assets/10853349/15808858/3ba164cc-2b48-11e6-9390-057b80ed92fb.gif" />
-  <img src="https://cloud.githubusercontent.com/assets/10853349/15808860/3ba2da78-2b48-11e6-9599-aca30ea61ae2.gif" />
+  <a href="http://lvcharts.net/App/examples/wpf/Constant%20Changes">
+    <img src="https://cloud.githubusercontent.com/assets/10853349/15808855/3b93ee82-2b48-11e6-946c-b064e7e1d1f2.gif" />
+  </a>
+  <a href="http://lvcharts.net/App/examples/wpf/Doughnut%20Chart">
+    <img src="https://cloud.githubusercontent.com/assets/10853349/15808857/3b9f0024-2b48-11e6-87fa-f52f1c2458b4.gif" />
+  </a>
+  <a href="http://lvcharts.net/App/examples/wpf/IObservableChartPoint">
+    <img src="https://cloud.githubusercontent.com/assets/10853349/15808859/3ba1c638-2b48-11e6-830f-822e37b74b91.gif" />
+  </a>
+  <a href="http://lvcharts.net/App/examples/wpf/180%20Gauge">
+    <img src="https://cloud.githubusercontent.com/assets/10853349/15808856/3b9499ae-2b48-11e6-91a8-f74f6a1fd6dc.gif" />
+  </a>
+  <a href="http://lvcharts.net/App/examples/wpf/Zooming%20and%20panning">
+    <img src="https://cloud.githubusercontent.com/assets/10853349/15808858/3ba164cc-2b48-11e6-9390-057b80ed92fb.gif" />
+  </a>
+  <a href="http://lvcharts.net/App/examples/wpf/Bubble%20Chart">
+    <img src="https://cloud.githubusercontent.com/assets/10853349/15808860/3ba2da78-2b48-11e6-9599-aca30ea61ae2.gif" />
+  </a>
 </p>
 
 [![GitHub license](https://img.shields.io/github/license/beto-rodriguez/Live-Charts.svg?style=flat-square)](https://github.com/beto-rodriguez/Live-Charts/blob/master/LICENSE.TXT)
