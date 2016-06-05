@@ -224,6 +224,7 @@
     <Compile Include="CartesianChart\BasicLine\BasicLineExample.xaml.cs">
       <DependentUpon>BasicLineExample.xaml</DependentUpon>
     </Compile>
+    <Compile Include="CartesianChart\ConstantChanges\MeasureModel.cs" />
     <Compile Include="CartesianChart\Customized Series\CustomizedLineSeries.xaml.cs">
       <DependentUpon>CustomizedLineSeries.xaml</DependentUpon>
     </Compile>

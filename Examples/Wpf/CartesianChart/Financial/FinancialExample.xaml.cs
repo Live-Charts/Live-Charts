@@ -11,9 +11,6 @@ using Wpf.Annotations;
 
 namespace Wpf.CartesianChart
 {
-    /// <summary>
-    /// Interaction logic for FinancialSeries.xaml
-    /// </summary>
     public partial class FinancialExample : INotifyPropertyChanged
     {
         private string[] _labels;

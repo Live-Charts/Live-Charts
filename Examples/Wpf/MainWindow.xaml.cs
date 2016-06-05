@@ -22,6 +22,7 @@ using Wpf.CartesianChart.StackedBar;
 using Wpf.Gauges;
 using Wpf.PieChart;
 using BubblesExample = Wpf.CartesianChart.Bubbles.BubblesExample;
+using ConstantChangesChart = Wpf.CartesianChart.ConstantChanges.ConstantChangesChart;
 using DateTime = Wpf.CartesianChart.Using_DateTime.DateTime;
 using LabelsExample = Wpf.CartesianChart.Labels.LabelsExample;
 using SectionsExample = Wpf.CartesianChart.Sections.SectionsExample;
@@ -46,6 +47,9 @@ namespace Wpf
 
             CartesianExamples = new List<UserControl>
             {
+
+                new ConstantChangesChart(),
+
                 new BasicStackedRowPercentageExample(),
                 new BasicStackedColumnExample(),
                 new NegativeStackedRowExample(),
@@ -76,7 +80,6 @@ namespace Wpf
                 new SectionsExample(),
                 new ZoomingAndPanning(),
                 new MultiAxesChart(),
-                new ConstantChangesChart(),
                 new MixingTypes(),
                 new InLineSyntaxTest()
             };

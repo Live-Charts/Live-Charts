@@ -128,7 +128,7 @@ namespace LiveCharts.Wpf.Charts.Chart
                 SelectionMode = DataTooltip.SelectionMode,
                 Points = pointsToHighlight.Select(x => new DataPointViewModel
                 {
-                    Series = new Wpf.SeriesViewModel
+                    Series = new SeriesViewModel
                     {
                         Fill = ((Series.Series)x.SeriesView).Fill,
                         Stroke = ((Series.Series)x.SeriesView).Stroke,

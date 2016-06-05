@@ -146,7 +146,11 @@ namespace LiveCharts.Wpf.Charts.Chart
             if (AxisX.Count == 0) AxisX.AddRange(DefaultAxes.CleanAxis);
             return AxisX.Select(x =>
             {
-                if (x.Parent == null) chart.View.AddToView(x);
+                if (x.Parent == null)
+                {
+                    chart.View.AddToView(x);
+                    if (x.Separator != null) chart.View.AddToView(x.Separator);
+                }
                 return x.AsCoreElement(Model, AxisTags.X);
             }).ToList();
         }

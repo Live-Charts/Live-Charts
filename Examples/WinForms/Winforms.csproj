@@ -93,6 +93,13 @@
     <Compile Include="Cartesian\BasicLine\BasicLineExample.Designer.cs">
       <DependentUpon>BasicLineExample.cs</DependentUpon>
     </Compile>
+    <Compile Include="Cartesian\ConstantChanges\ConstantChanges.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Cartesian\ConstantChanges\ConstantChanges.Designer.cs">
+      <DependentUpon>ConstantChanges.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Cartesian\ConstantChanges\MeasureModel.cs" />
     <Compile Include="Cartesian\Customized Series\Customized Line Series.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -102,6 +109,12 @@
     <Compile Include="Cartesian\DateTime\DateTimeExample.cs" />
     <Compile Include="Cartesian\DateTime\DateTimeExample.Designer.cs">
       <DependentUpon>DateTimeExample.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Cartesian\Financial\FinancialExample.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Cartesian\Financial\FinancialExample.Designer.cs">
+      <DependentUpon>FinancialExample.cs</DependentUpon>
     </Compile>
     <Compile Include="Cartesian\FullyResponsive\FullyResponsive.cs">
       <SubType>Form</SubType>
@@ -198,11 +211,17 @@
     <EmbeddedResource Include="Cartesian\BasicLine\BasicLineExample.resx">
       <DependentUpon>BasicLineExample.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Cartesian\ConstantChanges\ConstantChanges.resx">
+      <DependentUpon>ConstantChanges.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Cartesian\Customized Series\Customized Line Series.resx">
       <DependentUpon>Customized Line Series.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Cartesian\DateTime\DateTimeExample.resx">
       <DependentUpon>DateTimeExample.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Cartesian\Financial\FinancialExample.resx">
+      <DependentUpon>FinancialExample.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Cartesian\FullyResponsive\FullyResponsive.resx">
       <DependentUpon>FullyResponsive.cs</DependentUpon>
@@ -344,6 +363,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\pie chart.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ezgif.com-resize.gif" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

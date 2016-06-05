@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 using Winforms.Cartesian.BasicLine;
+using Winforms.Cartesian.ConstantChanges;
 using Winforms.Cartesian.Customized_Series;
 using Winforms.Cartesian.DateTime;
 using Winforms.Cartesian.FullyResponsive;
@@ -92,6 +93,11 @@ namespace Winforms
         private void btnGauge_Click(object sender, EventArgs e)
         {
             new Gauge180Example().ShowDialog();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            new ConstantChanges().ShowDialog();
         }
     }
 }
