@@ -85,7 +85,8 @@ namespace LiveCharts.Wpf.Charts.Chart
             }
 
             var source = Series.SelectMany(x => x.Values.Points);
-            var senderPoint = source.FirstOrDefault(x => Equals(((PointView)x.View).HoverShape, sender));
+            var senderPoint =
+                source.FirstOrDefault(x => x.View != null && Equals(((PointView) x.View).HoverShape, sender));
 
             if (senderPoint == null) return;
 
@@ -155,7 +156,8 @@ namespace LiveCharts.Wpf.Charts.Chart
             TooltipTimeoutTimer.Start();
 
             var source = Series.SelectMany(x => x.Values.Points);
-            var senderPoint = source.FirstOrDefault(x => Equals(((PointView)x.View).HoverShape, sender));
+            var senderPoint =
+                source.FirstOrDefault(x => x.View != null && Equals(((PointView) x.View).HoverShape, sender)); 
 
             if (senderPoint == null) return;
 
