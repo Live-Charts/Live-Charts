@@ -1,36 +1,30 @@
 <p align="center">
-  <img src="http://lvcharts.net/Content/Images/Logos/LiveChartsLogo.png" />
+  <a href="http://lvcharts.net/"><img src="http://lvcharts.net/Content/Images/Logos/LiveChartsLogo.png" /></a>
 </p>
 
 <p align="center">
-  <img src="http://lvcharts.net/Content/Images/Samples/linemove.gif" width="400" />
-  <img src="http://lvcharts.net/Content/Images/Samples/pie.gif" width="400"/>
-  <img src="http://lvcharts.net/Content/Images/Samples/barsmove.gif" width="400"/>
-  <img src="https://cloud.githubusercontent.com/assets/10853349/14480111/65c18a98-00eb-11e6-8ce2-bc7cf3d0fdfc.gif" width="400" />
-  <img src="https://cloud.githubusercontent.com/assets/10853349/15451982/2041fb7a-1fa3-11e6-9d25-4471c09b3cb2.gif" width="400" />
-  <img src="https://cloud.githubusercontent.com/assets/10853349/15452005/2792e230-1fa4-11e6-8bd3-5aed219d3256.gif" width="400" />
-  <img src="https://cloud.githubusercontent.com/assets/10853349/15451981/1d37d0e4-1fa3-11e6-8c79-825f580f6819.png" width="400" />
-  <img src="https://cloud.githubusercontent.com/assets/10853349/15451980/1bf8b482-1fa3-11e6-8945-e0e08f33a347.gif" width="400" />
+  <img src="https://cloud.githubusercontent.com/assets/10853349/15808856/3b9499ae-2b48-11e6-91a8-f74f6a1fd6dc.gif" />
+  <img src="https://cloud.githubusercontent.com/assets/10853349/15808855/3b93ee82-2b48-11e6-946c-b064e7e1d1f2.gif" />
+  <img src="https://cloud.githubusercontent.com/assets/10853349/15808857/3b9f0024-2b48-11e6-87fa-f52f1c2458b4.gif" />
+  <img src="https://cloud.githubusercontent.com/assets/10853349/15808859/3ba1c638-2b48-11e6-830f-822e37b74b91.gif" />
+  <img src="https://cloud.githubusercontent.com/assets/10853349/15808858/3ba164cc-2b48-11e6-9390-057b80ed92fb.gif" />
+  <img scr="https://cloud.githubusercontent.com/assets/10853349/15808860/3ba2da78-2b48-11e6-9599-aca30ea61ae2.gif" />
 </p>
 
 [![GitHub license](https://img.shields.io/github/license/beto-rodriguez/Live-Charts.svg?style=flat-square)](https://github.com/beto-rodriguez/Live-Charts/blob/master/LICENSE.TXT)
 [![AppVeyor](https://ci.appveyor.com/api/projects/status/707m8sye0ggbfrcq)](https://ci.appveyor.com/project/beto-rodriguez/live-charts)
 [![GitHub issues](https://img.shields.io/github/issues/beto-rodriguez/Live-Charts.svg?style=flat-square)](https://github.com/beto-rodriguez/Live-Charts/issues)
-[![NuGet](https://img.shields.io/nuget/dt/LiveCharts.svg?style=flat-square)](https://www.nuget.org/packages/LiveCharts/)
 [![Gitter](https://img.shields.io/gitter/room/beto-rodriguez/Live-Charts.svg?style=flat-square)](https://gitter.im/beto-rodriguez/Live-Charts?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 * **[WebSite](http://lvcharts.net/)**
 * **[Chat](https://gitter.im/beto-rodriguez/Live-Charts)**
 * **Questions, try [Stack Overflow](http://stackoverflow.com/), tag your question as LiveCharts**
 
-#### 0.7.0 is here, if you come from an older version, its recommended to read [this](https://github.com/beto-rodriguez/Live-Charts/releases/tag/0.7.0), examples in this repo are updated to 0.7.0, web site update is in progress, 0.6.6 examples [here](https://github.com/beto-rodriguez/Live-Charts/tree/12fbb648c93e147dc05fc30b6ed65816db305c70/WPFExamples)
-
-Live charts is an easy way to build poweful charts, all charts are animated, they update every time you change your data, it also has an awesome performance. 
+Live charts makes your data alive, as easy as manipulating any .net list, the library animates and updates every time your data changes, don't worry about perfomance, Livecharts also handles it.
 
  - Good looking, animated and easy to customize charts, you can practically change all properties.
  - Autoupdate UI, you just create a SeriesCollection, then LiveCharts will handle everything.
  - MVVM Charting, Support for WPF Bindings.
- - Easy to maintain and create new charts, as you can see in the source code, some charts have almost no code.
  - Supports zooming and panning.
  - MIT License, permissive licensing.
  
@@ -65,38 +59,29 @@ var labels = new string[] {"Jan", "Feb" , "Mar", "Apr", "May", "Jun", "Jul", "Ag
 myChart.AxixX.Labels = labels;
 ```
 
-## Is live charts what you are looking for? see these interesting examples.
+### Is live charts what you are looking for? see these interesting examples.
 
-* **[Live Data](https://github.com/beto-rodriguez/Live-Charts/wiki/91-Live-Data)**: a charts that adds new data each second, DateTime as X Axis.
-* **[Filter records from a data base](https://github.com/beto-rodriguez/Live-Charts/wiki/92-Filtered-Data)**: a chart that pulls data from a data base according to a simple user filter.
-* **[IObservableChartPoint](https://github.com/beto-rodriguez/Live-Charts/wiki/93-IObservableChartPoint)**: this chart uses a view model that implements `IObservableChartPoint`, this will update chart every time a desired property changes.
-* There are much more examples in this solution, go to examples folder up here ^^^
-* High performance charts are almost ready, current test can draw 3 million points in only 1 second
-* Find more at http://lvcharts.net/
+* **[Live Data](http://lvcharts.net/App/examples/wpf/Constant%20Changes)**: a charts that adds new data each 300ms, DateTime as X Axis.
+* **[Observable Points](http://lvcharts.net/App/examples/v1/wpf/IObservableChartPoint)**: notify the chart to update every time a property changes
+* **[Simple Bar Chart](http://lvcharts.net/App/examples/wpf/Basic%20Column)**: a simple bar chart.
 
-#Supported Platforms
+###Supported Platforms
 
-Only WPF and WinForms for now, I am playing with the code to find an easy way to extend it as PCL
+WPF and Winforms, currenlty the library is in the process to become a cross net library...
 
-# Installation
+### Installation
 
-**1**. Install package from [**Nuget**](https://www.nuget.org/packages/LiveCharts) `Install-Package LiveCharts.Wpf`
+* [Wpf](http://lvcharts.net/App/examples/wpf/Install)
+* [WinForms](http://lvcharts.net/App/examples/wf/Install)
 
-**2**. Add name space
+### How to Contribute
 
-To your `XAML` if using wpf
-```xml
-xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
-```
-Or WinForms and WPF code behind
-```
-using LiveCharts;
-```
-**3**. Thats it. You are ready.
+* **Star** this repo
+* Try it
+* Report Issues and Improvements
+* Pull request are well received
 
-**Note:** To install it for windows forms you will need some extra steps, plese see http://lvcharts.net/#/examples/v1/install-wf?path=WF-Install
-
-# How to Contribute
+You can also buy me a beer
 
 <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
 <input type="hidden" name="cmd" value="_s-xclick">
@@ -104,36 +89,12 @@ using LiveCharts;
 <input type="image" src="https://www.paypalobjects.com/en_GB/i/btn/btn_donate_LG.gif" border="0" name="submit" alt="PayPal – The safer, easier way to pay online.">
 <img alt="" border="0" src="https://www.paypalobjects.com/es_XC/i/scr/pixel.gif" width="1" height="1">
 </form>
-
 [![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=J86WDLSS9PWGL)
 
-* **Star** this repo
-* Try it
-* Report Issues and Improvements
-* Pull request are well received
+### Examples?
 
-# Need examples?
+The [web site](http://lvcharts.net/App/examples/wpf/start) has a nice set, they are also built in the examples folder up here ^^^^
 
-Go to examples folder up there ^^^ or even better clone this repo and see included examples.
+### High perfomance?
 
-# More Images
-
-<p align="center">
-<img src="https://dl.dropboxusercontent.com/u/40165535/LiveCharts/Tooltip.gif" />
-</p>
-<p align="center">
-<img src="https://dl.dropboxusercontent.com/u/40165535/LiveCharts/multiseries.png" />
-</p>
-<p align="center">
-<img src="https://dl.dropboxusercontent.com/u/40165535/LiveCharts/UiElements.png" />
-</p>
-
-# Perfomance Test
-
-This test is in progress and is not ready yet, here is the example I made the tests but is not ready yet!
-
-https://github.com/beto-rodriguez/Live-Charts/tree/master/WPFExamples/HighPerformance
-
-<p align="center">
-<img src="https://dl.dropboxusercontent.com/u/40165535/livecharts%20perfomance.png" />
-</p>
+LiveCharts will also handle high performance, it is not ready yet but the current tests allows the library to plot 3,000,000 in 1 second, yes even with aniations.
