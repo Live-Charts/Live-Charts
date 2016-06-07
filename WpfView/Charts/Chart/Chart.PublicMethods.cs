@@ -54,30 +54,48 @@ namespace LiveCharts.Wpf.Charts.Chart
 
         public void AddToView(object element)
         {
-            var wpfElement = element as FrameworkElement;
+            var wpfElement = (FrameworkElement) element;
             if (wpfElement == null) return;
             Canvas.Children.Add(wpfElement);
         }
 
         public void AddToDrawMargin(object element)
         {
-            var wpfElement = element as FrameworkElement;
+            var wpfElement = (FrameworkElement) element;
             if (wpfElement == null) return;
             DrawMargin.Children.Add(wpfElement);
         }
 
         public void RemoveFromView(object element)
         {
-            var wpfElement = element as FrameworkElement;
+            var wpfElement = (FrameworkElement) element;
             if (wpfElement == null) return;
             Canvas.Children.Remove(wpfElement);
         }
 
         public void RemoveFromDrawMargin(object element)
         {
-            var wpfElement = element as FrameworkElement;
+            var wpfElement = (FrameworkElement) element;
             if (wpfElement == null) return;
             DrawMargin.Children.Remove(wpfElement);
+        }
+
+        public void EnsureElementBelongsToCurrentView(object element)
+        {
+            var wpfElement = (FrameworkElement) element;
+            if (wpfElement == null) return;
+            var p = (Canvas) wpfElement.Parent;
+            if (p != null) p.Children.Remove(wpfElement);
+            AddToView(wpfElement);
+        }
+
+        public void EnsureElementBelongsToCurrentDrawMargin(object element)
+        {
+            var wpfElement = (FrameworkElement) element;
+            if (wpfElement == null) return;
+            var p = (Canvas) wpfElement.Parent;
+            if (p != null) p.Children.Remove(wpfElement);
+            AddToDrawMargin(wpfElement);
         }
 
         public void ShowLegend(CorePoint at)

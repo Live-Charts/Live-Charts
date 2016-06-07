@@ -63,11 +63,11 @@ namespace LiveCharts.Wpf.Points
                 if (LabelInside)
                 {
                     if (RotateTransform == null)
-                        RotateTransform = new RotateTransform(90);
+                        RotateTransform = new RotateTransform(270);
 
                     DataLabel.RenderTransform = RotateTransform;
 
-                    y = Data.Top + Data.Height/2 - DataLabel.ActualWidth*.5;
+                    y = Data.Top + Data.Height/2 + DataLabel.ActualWidth*.5;
                 }
                 else
                 {
@@ -92,7 +92,7 @@ namespace LiveCharts.Wpf.Points
 
                 if (LabelInside)
                 {
-                    x = Data.Left + DataLabel.ActualHeight/2 + Data.Width/2;
+                    x = Data.Left + Data.Width/2 - DataLabel.ActualHeight/2;
                 }
                 else
                 {

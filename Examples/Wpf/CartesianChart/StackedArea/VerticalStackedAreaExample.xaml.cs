@@ -86,7 +86,7 @@ namespace Wpf.CartesianChart.StackedArea
 
         private void ChangeStackModeOnClick(object sender, RoutedEventArgs e)
         {
-            foreach (var series in SeriesCollection.Cast<StackedAreaSeries>())
+            foreach (var series in SeriesCollection.Cast<VerticalStackedAreaSeries>())
             {
                 series.StackMode = series.StackMode == StackMode.Percentage
                     ? StackMode.Values

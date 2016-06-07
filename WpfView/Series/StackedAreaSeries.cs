@@ -96,9 +96,9 @@ namespace LiveCharts.Wpf
                             Model.Chart.View.AnimationsSpeed));
             }
 
-            if (IsInView) return;
+            if (IsPathInitialized) return;
 
-            IsInView = true;
+            IsPathInitialized = true;
 
             Path = new Path();
             BindingOperations.SetBinding(Path, Shape.StrokeProperty,

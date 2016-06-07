@@ -421,6 +421,8 @@ namespace LiveCharts
         void AddToDrawMargin(object element);
         void RemoveFromView(object element);
         void RemoveFromDrawMargin(object element);
+        void EnsureElementBelongsToCurrentView(object element);
+        void EnsureElementBelongsToCurrentDrawMargin(object element);
 
         void HideTooltop();
         void ShowLegend(CorePoint at);
@@ -444,7 +446,6 @@ namespace LiveCharts
         int ScalesYAt { get; set; }
         object Configuration { get; set; }
         bool IsSeriesVisible { get; }
-        bool IsInVisualTree { get; }
         Func<ChartPoint, string> LabelPoint { get; set; }
 
         IChartPointView GetPointView(IChartPointView view, ChartPoint point ,string label);

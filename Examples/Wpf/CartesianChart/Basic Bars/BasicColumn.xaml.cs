@@ -33,7 +33,7 @@ namespace Wpf.CartesianChart.Basic_Bars
             //also adding values updates and animates the chart automatically
             SeriesCollection[1].Values.Add(48d);
 
-            Labels = new[] { "Maria", "Susan", "Charles", "Frida" };
+            Labels = new[] {"Maria", "Susan", "Charles", "Frida"};
             Formatter = value => value.ToString("N");
 
             DataContext = this;

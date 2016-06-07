@@ -144,6 +144,16 @@ namespace LiveCharts.Wpf
             else
             {
                 pbv.IsNew = false;
+                point.SeriesView.Model.Chart.View
+                    .EnsureElementBelongsToCurrentDrawMargin(pbv.HighToLowLine);
+                point.SeriesView.Model.Chart.View
+                    .EnsureElementBelongsToCurrentDrawMargin(pbv.OpenLine);
+                point.SeriesView.Model.Chart.View
+                    .EnsureElementBelongsToCurrentDrawMargin(pbv.CloseLine);
+                point.SeriesView.Model.Chart.View
+                    .EnsureElementBelongsToCurrentDrawMargin(pbv.HoverShape);
+                point.SeriesView.Model.Chart.View
+                    .EnsureElementBelongsToCurrentDrawMargin(pbv.DataLabel);
             }
 
             if ((Model.Chart.View.HasTooltip || Model.Chart.View.HasDataClickEventAttached) && pbv.HoverShape == null)

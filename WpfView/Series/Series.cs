@@ -38,7 +38,6 @@ namespace LiveCharts.Wpf.Series
         {
             get { return Visibility == Visibility.Visible; }
         }
-        public bool IsInVisualTree { get { return Parent != null; } }
 
         public static readonly DependencyProperty ValuesProperty = DependencyProperty.Register(
             "Values", typeof (IChartValues), typeof (Series),
@@ -294,7 +293,8 @@ namespace LiveCharts.Wpf.Series
 
             if (series.Values != series.LastKnownValues && series.LastKnownValues != null)
             {
-                series.LastKnownValues.Points.ForEach(x => x.View.RemoveFromView(series.Model.Chart));
+                series.LastKnownValues.Points.ForEach(
+                    x => { if (x.View != null) x.View.RemoveFromView(series.Model.Chart); });
             }
 
             CallChartUpdater()(dependencyObject, dependencyPropertyChangedEventArgs);

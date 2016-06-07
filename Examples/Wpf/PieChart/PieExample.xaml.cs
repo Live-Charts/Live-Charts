@@ -18,26 +18,26 @@ namespace Wpf.PieChart
                 new PieSeries
                 {
                     Title = "Chrome",
-                    Values = new ChartValues<double> { 8 },
+                    Values = new ChartValues<ObservableValue> { new ObservableValue(8) },
                     DataLabels = true
                 },
                 new PieSeries
                 {
                     Title = "Mozilla",
                     DataLabels = true,
-                    Values = new ChartValues<double> { 6 }
+                    Values = new ChartValues<ObservableValue> { new ObservableValue(6) }
                 },
                 new PieSeries
                 {
                     Title = "Opera",
                     DataLabels = true,
-                    Values = new ChartValues<double> { 10 }
+                    Values = new ChartValues<ObservableValue> { new ObservableValue(10) }
                 },
                 new PieSeries
                 {
                     Title = "Explorer",
                     DataLabels = true,
-                    Values = new ChartValues<double> { 4 }
+                    Values = new ChartValues<ObservableValue> { new ObservableValue(4) }
                 }
             };
 

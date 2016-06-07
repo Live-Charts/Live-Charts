@@ -113,6 +113,10 @@ namespace LiveCharts.Wpf
             else
             {
                 pbv.IsNew = false;
+                point.SeriesView.Model.Chart.View
+                    .EnsureElementBelongsToCurrentDrawMargin(pbv.Rectangle);
+                point.SeriesView.Model.Chart.View
+                    .EnsureElementBelongsToCurrentDrawMargin(pbv.HoverShape);
             }
 
             if ((Model.Chart.View.HasTooltip || Model.Chart.View.HasDataClickEventAttached) && pbv.HoverShape == null)

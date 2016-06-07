@@ -60,7 +60,7 @@ namespace LiveCharts.Wpf
         #region Private Properties
         protected PathFigure Figure { get; set; }
         protected Path Path { get; set; }
-        protected bool IsInView { get; set; }
+        protected bool IsPathInitialized { get; set; }
         internal List<LineSegmentSplitter> Splitters { get; set; }
         protected int ActiveSplitters { get; set; }
         protected int SplittersCollector { get; set; }
@@ -127,9 +127,13 @@ namespace LiveCharts.Wpf
                             Model.Chart.View.AnimationsSpeed));
             }
 
-            if (IsInView) return;
+            if (IsPathInitialized)
+            {
+                Model.Chart.View.EnsureElementBelongsToCurrentDrawMargin(Path);
+                return;
+            };
 
-            IsInView = true;
+            IsPathInitialized = true;
 
             Path = new Path();
             BindingOperations.SetBinding(Path, Shape.StrokeProperty,
@@ -148,7 +152,8 @@ namespace LiveCharts.Wpf
             Figure = new PathFigure();
             geometry.Figures.Add(Figure);
             Path.Data = geometry;
-            Model.Chart.View.AddToDrawMargin(Path);
+
+            Model.Chart.View.EnsureElementBelongsToCurrentDrawMargin(Path);
 
             var x = ChartFunctions.ToDrawMargin(Values.Limit1.Min, AxisTags.X, Model.Chart, ScalesXAt);
             Figure.StartPoint = new Point(x, Model.Chart.DrawMargin.Height);
@@ -174,6 +179,12 @@ namespace LiveCharts.Wpf
             else
             {
                 pbv.IsNew = false;
+                point.SeriesView.Model.Chart.View
+                    .EnsureElementBelongsToCurrentDrawMargin(pbv.Ellipse);
+                point.SeriesView.Model.Chart.View
+                    .EnsureElementBelongsToCurrentDrawMargin(pbv.HoverShape);
+                point.SeriesView.Model.Chart.View
+                    .EnsureElementBelongsToCurrentDrawMargin(pbv.DataLabel);
             }
 
             if ((Model.Chart.View.HasTooltip || Model.Chart.View.HasDataClickEventAttached) && pbv.HoverShape == null)

@@ -82,9 +82,9 @@ namespace LiveCharts.Wpf
                             Model.Chart.View.AnimationsSpeed));
             }
 
-            if (IsInView) return;
+            if (IsPathInitialized) return;
 
-            IsInView = true;
+            IsPathInitialized = true;
 
             Path = new Path();
             BindingOperations.SetBinding(Path, Shape.StrokeProperty,
@@ -138,6 +138,12 @@ namespace LiveCharts.Wpf
             else
             {
                 pbv.IsNew = false;
+                point.SeriesView.Model.Chart.View
+                    .EnsureElementBelongsToCurrentDrawMargin(pbv.Ellipse);
+                point.SeriesView.Model.Chart.View
+                    .EnsureElementBelongsToCurrentDrawMargin(pbv.HoverShape);
+                point.SeriesView.Model.Chart.View
+                    .EnsureElementBelongsToCurrentDrawMargin(pbv.DataLabel);
             }
 
             if ((Model.Chart.View.HasTooltip || Model.Chart.View.HasDataClickEventAttached) && pbv.HoverShape == null)

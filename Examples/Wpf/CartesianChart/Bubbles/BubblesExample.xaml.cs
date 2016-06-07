@@ -27,6 +27,16 @@ namespace Wpf.CartesianChart.Bubbles
                         new BubblePoint(3, 4, 80),
                         new BubblePoint(7, 2, 20),
                         new BubblePoint(2, 6, 60),
+                        new BubblePoint(8, 2, 70),
+                        new BubblePoint(5, 5, 20),
+                        new BubblePoint(3, 4, 80),
+                        new BubblePoint(7, 2, 20),
+                        new BubblePoint(2, 6, 60),
+                        new BubblePoint(8, 2, 70),
+                        new BubblePoint(5, 5, 20),
+                        new BubblePoint(3, 4, 80),
+                        new BubblePoint(7, 2, 20),
+                        new BubblePoint(2, 6, 60),
                         new BubblePoint(8, 2, 70)
                     }
                 },
@@ -34,6 +44,16 @@ namespace Wpf.CartesianChart.Bubbles
                 {
                     Values = new ChartValues<BubblePoint>
                     {
+                        new BubblePoint(7, 5, 1),
+                        new BubblePoint(2, 2, 1),
+                        new BubblePoint(1, 1, 1),
+                        new BubblePoint(6, 3, 1),
+                        new BubblePoint(8, 8, 1),
+                        new BubblePoint(7, 5, 1),
+                        new BubblePoint(2, 2, 1),
+                        new BubblePoint(1, 1, 1),
+                        new BubblePoint(6, 3, 1),
+                        new BubblePoint(8, 8, 1),
                         new BubblePoint(7, 5, 1),
                         new BubblePoint(2, 2, 1),
                         new BubblePoint(1, 1, 1),
