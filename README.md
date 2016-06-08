@@ -77,6 +77,7 @@ myChart.AxixX.Labels = labels;
 * **[Live Data](http://lvcharts.net/App/examples/wpf/Constant%20Changes)**: a charts that adds new data each 300ms, DateTime as X Axis.
 * **[Observable Points](http://lvcharts.net/App/examples/v1/wpf/IObservableChartPoint)**: notify the chart to update every time a property changes
 * **[Simple Bar Chart](http://lvcharts.net/App/examples/wpf/Basic%20Column)**: a simple bar chart.
+* Do not need animations? ok disable them, performance will inscrease also, ´Chart.DisableAnimations = true;´
 
 ###Supported Platforms
 
