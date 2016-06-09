@@ -34,16 +34,11 @@ namespace LiveCharts.WinForms
     [DesignerSerializer("System.ComponentModel.Design.Serialization.TypeCodeDomSerializer , System.Design", "System.ComponentModel.Design.Serialization.CodeDomSerializer, System.Design")]
     public class PieChart : ElementHost
     {
-        private readonly LiveCharts.Wpf.PieChart _chart = new LiveCharts.Wpf.PieChart();
+        protected readonly Wpf.PieChart Chart = new Wpf.PieChart();
 
         public PieChart()
         {
-            var eh = new ElementHost
-            {
-                Dock = DockStyle.Fill,
-                Child = _chart
-            };
-            Controls.Add(eh);
+            Child = Chart;
         }
 
         #region ChartProperties
@@ -52,68 +47,68 @@ namespace LiveCharts.WinForms
 
         public List<Axis> AxisY
         {
-            get { return _chart.AxisY; }
-            set { _chart.AxisY = value; }
+            get { return Chart.AxisY; }
+            set { Chart.AxisY = value; }
         }
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 
         public List<Axis> AxisX
         {
-            get { return _chart.AxisX; }
-            set { _chart.AxisX = value; }
+            get { return Chart.AxisX; }
+            set { Chart.AxisX = value; }
         }
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 
         public DefaultLegend DefaultLegend
         {
-            get { return _chart.ChartLegend; }
-            set { _chart.ChartLegend = value; }
+            get { return Chart.ChartLegend; }
+            set { Chart.ChartLegend = value; }
         }
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 
         public ZoomingOptions Zoom
         {
-            get { return _chart.Zoom; }
-            set { _chart.Zoom = value; }
+            get { return Chart.Zoom; }
+            set { Chart.Zoom = value; }
         }
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 
         public LegendLocation LegendLocation
         {
-            get { return _chart.LegendLocation; }
-            set { _chart.LegendLocation = value; }
+            get { return Chart.LegendLocation; }
+            set { Chart.LegendLocation = value; }
         }
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public SeriesCollection Series
         {
-            get { return _chart.Series; }
-            set { _chart.Series = value; }
+            get { return Chart.Series; }
+            set { Chart.Series = value; }
         }
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public TimeSpan AnimationsSpeed
         {
-            get { return _chart.AnimationsSpeed; }
-            set { _chart.AnimationsSpeed = value; }
+            get { return Chart.AnimationsSpeed; }
+            set { Chart.AnimationsSpeed = value; }
         }
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool DisableAnimations
         {
-            get { return _chart.DisableAnimations; }
-            set { _chart.DisableAnimations = value; }
+            get { return Chart.DisableAnimations; }
+            set { Chart.DisableAnimations = value; }
         }
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public DefaultTooltip DataTooltip
         {
-            get { return _chart.DataTooltip; }
-            set { _chart.DataTooltip = value; }
+            get { return Chart.DataTooltip; }
+            set { Chart.DataTooltip = value; }
         }
         #endregion
 
@@ -122,15 +117,15 @@ namespace LiveCharts.WinForms
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public double InnerRadius
         {
-            get { return _chart.InnerRadius; }
-            set { _chart.InnerRadius = value; }
+            get { return Chart.InnerRadius; }
+            set { Chart.InnerRadius = value; }
         }
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public double StartingRotationAngle
         {
-            get { return _chart.StartingRotationAngle; }
-            set { _chart.StartingRotationAngle = value; }
+            get { return Chart.StartingRotationAngle; }
+            set { Chart.StartingRotationAngle = value; }
         }
         #endregion
     }

@@ -34,7 +34,7 @@ namespace LiveCharts.WinForms
     [DesignerSerializer("System.ComponentModel.Design.Serialization.TypeCodeDomSerializer , System.Design", "System.ComponentModel.Design.Serialization.CodeDomSerializer, System.Design")]
     public class CartesianChart : ElementHost
     {
-        protected readonly LiveCharts.Wpf.CartesianChart WpfBase = new LiveCharts.Wpf.CartesianChart();
+        protected readonly Wpf.CartesianChart WpfBase = new Wpf.CartesianChart();
 
         public CartesianChart()
         {

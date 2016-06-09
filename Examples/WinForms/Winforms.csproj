@@ -33,16 +33,16 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="LiveCharts, Version=0.7.1.6, Culture=neutral, PublicKeyToken=c5935629d38af058, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\LiveCharts.0.7.1.6\lib\portable40-net40+sl5+win8+wp8+wpa81\LiveCharts.dll</HintPath>
+    <Reference Include="LiveCharts, Version=0.7.1.7, Culture=neutral, PublicKeyToken=c5935629d38af058, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\LiveCharts.0.7.1.7\lib\portable40-net40+sl5+win8+wp8+wpa81\LiveCharts.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="LiveCharts.WinForms, Version=0.7.1.5, Culture=neutral, PublicKeyToken=1f1e67602fe23622, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\LiveCharts.WinForms.0.7.1.5\lib\net452\LiveCharts.WinForms.dll</HintPath>
+    <Reference Include="LiveCharts.WinForms, Version=0.7.1.7, Culture=neutral, PublicKeyToken=1f1e67602fe23622, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\LiveCharts.WinForms.0.7.1.7\lib\net452\LiveCharts.WinForms.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="LiveCharts.Wpf, Version=0.7.1.6, Culture=neutral, PublicKeyToken=3b585c2a5f1a92c1, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\LiveCharts.Wpf.0.7.1.6\lib\net452\LiveCharts.Wpf.dll</HintPath>
+    <Reference Include="LiveCharts.Wpf, Version=0.7.1.7, Culture=neutral, PublicKeyToken=3b585c2a5f1a92c1, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\LiveCharts.Wpf.0.7.1.7\lib\net452\LiveCharts.Wpf.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="PresentationCore" />
@@ -194,6 +194,12 @@
     <Compile Include="Main.Designer.cs">
       <DependentUpon>Main.cs</DependentUpon>
     </Compile>
+    <Compile Include="PieChart\PieExample.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PieChart\PieExample.Designer.cs">
+      <DependentUpon>PieExample.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Cartesian\Basic Stacked Bar\BasicsStackedRowExample.resx">
@@ -261,6 +267,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Main.resx">
       <DependentUpon>Main.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PieChart\PieExample.resx">
+      <DependentUpon>PieExample.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -346,9 +355,7 @@
   <ItemGroup>
     <None Include="Resources\zooming and panning.gif" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="PieChart\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <None Include="Resources\180 gauge.jpg" />
   </ItemGroup>

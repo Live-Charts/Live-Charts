@@ -15,6 +15,7 @@ using Winforms.Cartesian.Sections;
 using Winforms.Cartesian.StackedArea;
 using Winforms.Cartesian.Zooming_and_Panning;
 using Winforms.Gauge._180;
+using Winforms.PieChart;
 
 namespace Winforms
 {
@@ -98,6 +99,11 @@ namespace Winforms
         private void button1_Click(object sender, EventArgs e)
         {
             new ConstantChanges().ShowDialog();
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            new PieExample().ShowDialog();
         }
     }
 }

@@ -29,11 +29,18 @@
         private void InitializeComponent()
         {
             this.panel1 = new System.Windows.Forms.Panel();
+            this.label15 = new System.Windows.Forms.Label();
+            this.button1 = new System.Windows.Forms.Button();
             this.label14 = new System.Windows.Forms.Label();
+            this.btnGauge = new System.Windows.Forms.Button();
             this.label13 = new System.Windows.Forms.Label();
+            this.btnStackedArea = new System.Windows.Forms.Button();
             this.label12 = new System.Windows.Forms.Label();
+            this.btnMultiAx = new System.Windows.Forms.Button();
             this.label11 = new System.Windows.Forms.Label();
+            this.btnMissingPoints = new System.Windows.Forms.Button();
             this.label10 = new System.Windows.Forms.Label();
+            this.btnLogScale = new System.Windows.Forms.Button();
             this.label9 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
@@ -43,13 +50,6 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.label15 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
-            this.btnGauge = new System.Windows.Forms.Button();
-            this.btnStackedArea = new System.Windows.Forms.Button();
-            this.btnMultiAx = new System.Windows.Forms.Button();
-            this.btnMissingPoints = new System.Windows.Forms.Button();
-            this.btnLogScale = new System.Windows.Forms.Button();
             this.btnBasicLine = new System.Windows.Forms.Button();
             this.btnIrregularIntervals = new System.Windows.Forms.Button();
             this.btnSection = new System.Windows.Forms.Button();
@@ -59,12 +59,16 @@
             this.btnSeries = new System.Windows.Forms.Button();
             this.btnIObservable = new System.Windows.Forms.Button();
             this.btnLabels = new System.Windows.Forms.Button();
+            this.button2 = new System.Windows.Forms.Button();
+            this.label16 = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel1
             // 
             this.panel1.AutoScroll = true;
+            this.panel1.Controls.Add(this.label16);
+            this.panel1.Controls.Add(this.button2);
             this.panel1.Controls.Add(this.label15);
             this.panel1.Controls.Add(this.button1);
             this.panel1.Controls.Add(this.label14);
@@ -101,6 +105,26 @@
             this.panel1.Size = new System.Drawing.Size(847, 733);
             this.panel1.TabIndex = 0;
             // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Font = new System.Drawing.Font("Calibri", 12.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label15.Location = new System.Drawing.Point(686, 270);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(135, 21);
+            this.label15.TabIndex = 56;
+            this.label15.Text = "Constant Changes";
+            // 
+            // button1
+            // 
+            this.button1.Image = global::Winforms.Properties.Resources.ezgif_com_resize;
+            this.button1.Location = new System.Drawing.Point(675, 167);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(160, 100);
+            this.button1.TabIndex = 55;
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
             // label14
             // 
             this.label14.AutoSize = true;
@@ -110,6 +134,16 @@
             this.label14.Size = new System.Drawing.Size(85, 21);
             this.label14.TabIndex = 54;
             this.label14.Text = "180 Gauge";
+            // 
+            // btnGauge
+            // 
+            this.btnGauge.Image = global::Winforms.Properties.Resources._180_gauge;
+            this.btnGauge.Location = new System.Drawing.Point(12, 456);
+            this.btnGauge.Name = "btnGauge";
+            this.btnGauge.Size = new System.Drawing.Size(160, 100);
+            this.btnGauge.TabIndex = 53;
+            this.btnGauge.UseVisualStyleBackColor = true;
+            this.btnGauge.Click += new System.EventHandler(this.btnGauge_Click);
             // 
             // label13
             // 
@@ -121,6 +155,16 @@
             this.label13.TabIndex = 52;
             this.label13.Text = "Stacked Area";
             // 
+            // btnStackedArea
+            // 
+            this.btnStackedArea.Image = global::Winforms.Properties.Resources.stacked_area;
+            this.btnStackedArea.Location = new System.Drawing.Point(675, 17);
+            this.btnStackedArea.Name = "btnStackedArea";
+            this.btnStackedArea.Size = new System.Drawing.Size(160, 100);
+            this.btnStackedArea.TabIndex = 51;
+            this.btnStackedArea.UseVisualStyleBackColor = true;
+            this.btnStackedArea.Click += new System.EventHandler(this.btnStackedArea_Click);
+            // 
             // label12
             // 
             this.label12.AutoSize = true;
@@ -130,6 +174,16 @@
             this.label12.Size = new System.Drawing.Size(79, 21);
             this.label12.TabIndex = 50;
             this.label12.Text = "MultiAxes";
+            // 
+            // btnMultiAx
+            // 
+            this.btnMultiAx.Image = global::Winforms.Properties.Resources.multiple_axes;
+            this.btnMultiAx.Location = new System.Drawing.Point(11, 315);
+            this.btnMultiAx.Name = "btnMultiAx";
+            this.btnMultiAx.Size = new System.Drawing.Size(160, 100);
+            this.btnMultiAx.TabIndex = 49;
+            this.btnMultiAx.UseVisualStyleBackColor = true;
+            this.btnMultiAx.Click += new System.EventHandler(this.btnMultiAx_Click);
             // 
             // label11
             // 
@@ -141,6 +195,16 @@
             this.label11.TabIndex = 48;
             this.label11.Text = "Missing Points";
             // 
+            // btnMissingPoints
+            // 
+            this.btnMissingPoints.Image = global::Winforms.Properties.Resources.Missing_Points;
+            this.btnMissingPoints.Location = new System.Drawing.Point(508, 167);
+            this.btnMissingPoints.Name = "btnMissingPoints";
+            this.btnMissingPoints.Size = new System.Drawing.Size(160, 100);
+            this.btnMissingPoints.TabIndex = 47;
+            this.btnMissingPoints.UseVisualStyleBackColor = true;
+            this.btnMissingPoints.Click += new System.EventHandler(this.btnMissingPoints_Click);
+            // 
             // label10
             // 
             this.label10.AutoSize = true;
@@ -150,6 +214,16 @@
             this.label10.Size = new System.Drawing.Size(112, 21);
             this.label10.TabIndex = 46;
             this.label10.Text = "Logrithm Scale";
+            // 
+            // btnLogScale
+            // 
+            this.btnLogScale.Image = global::Winforms.Properties.Resources.log_and_custom_scales;
+            this.btnLogScale.Location = new System.Drawing.Point(515, 315);
+            this.btnLogScale.Name = "btnLogScale";
+            this.btnLogScale.Size = new System.Drawing.Size(160, 100);
+            this.btnLogScale.TabIndex = 45;
+            this.btnLogScale.UseVisualStyleBackColor = true;
+            this.btnLogScale.Click += new System.EventHandler(this.btnLogScale_Click);
             // 
             // label9
             // 
@@ -241,76 +315,6 @@
             this.label1.TabIndex = 36;
             this.label1.Text = "Labels";
             // 
-            // label15
-            // 
-            this.label15.AutoSize = true;
-            this.label15.Font = new System.Drawing.Font("Calibri", 12.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label15.Location = new System.Drawing.Point(686, 270);
-            this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(135, 21);
-            this.label15.TabIndex = 56;
-            this.label15.Text = "Constant Changes";
-            // 
-            // button1
-            // 
-            this.button1.Image = global::Winforms.Properties.Resources.ezgif_com_resize;
-            this.button1.Location = new System.Drawing.Point(675, 167);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(160, 100);
-            this.button1.TabIndex = 55;
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
-            // btnGauge
-            // 
-            this.btnGauge.Image = global::Winforms.Properties.Resources._180_gauge;
-            this.btnGauge.Location = new System.Drawing.Point(12, 456);
-            this.btnGauge.Name = "btnGauge";
-            this.btnGauge.Size = new System.Drawing.Size(160, 100);
-            this.btnGauge.TabIndex = 53;
-            this.btnGauge.UseVisualStyleBackColor = true;
-            this.btnGauge.Click += new System.EventHandler(this.btnGauge_Click);
-            // 
-            // btnStackedArea
-            // 
-            this.btnStackedArea.Image = global::Winforms.Properties.Resources.stacked_area;
-            this.btnStackedArea.Location = new System.Drawing.Point(675, 17);
-            this.btnStackedArea.Name = "btnStackedArea";
-            this.btnStackedArea.Size = new System.Drawing.Size(160, 100);
-            this.btnStackedArea.TabIndex = 51;
-            this.btnStackedArea.UseVisualStyleBackColor = true;
-            this.btnStackedArea.Click += new System.EventHandler(this.btnStackedArea_Click);
-            // 
-            // btnMultiAx
-            // 
-            this.btnMultiAx.Image = global::Winforms.Properties.Resources.multiple_axes;
-            this.btnMultiAx.Location = new System.Drawing.Point(11, 315);
-            this.btnMultiAx.Name = "btnMultiAx";
-            this.btnMultiAx.Size = new System.Drawing.Size(160, 100);
-            this.btnMultiAx.TabIndex = 49;
-            this.btnMultiAx.UseVisualStyleBackColor = true;
-            this.btnMultiAx.Click += new System.EventHandler(this.btnMultiAx_Click);
-            // 
-            // btnMissingPoints
-            // 
-            this.btnMissingPoints.Image = global::Winforms.Properties.Resources.Missing_Points;
-            this.btnMissingPoints.Location = new System.Drawing.Point(508, 167);
-            this.btnMissingPoints.Name = "btnMissingPoints";
-            this.btnMissingPoints.Size = new System.Drawing.Size(160, 100);
-            this.btnMissingPoints.TabIndex = 47;
-            this.btnMissingPoints.UseVisualStyleBackColor = true;
-            this.btnMissingPoints.Click += new System.EventHandler(this.btnMissingPoints_Click);
-            // 
-            // btnLogScale
-            // 
-            this.btnLogScale.Image = global::Winforms.Properties.Resources.log_and_custom_scales;
-            this.btnLogScale.Location = new System.Drawing.Point(515, 315);
-            this.btnLogScale.Name = "btnLogScale";
-            this.btnLogScale.Size = new System.Drawing.Size(160, 100);
-            this.btnLogScale.TabIndex = 45;
-            this.btnLogScale.UseVisualStyleBackColor = true;
-            this.btnLogScale.Click += new System.EventHandler(this.btnLogScale_Click);
-            // 
             // btnBasicLine
             // 
             this.btnBasicLine.Image = global::Winforms.Properties.Resources.basic_line_chart;
@@ -401,6 +405,26 @@
             this.btnLabels.UseVisualStyleBackColor = true;
             this.btnLabels.Click += new System.EventHandler(this.btnLabels_Click);
             // 
+            // button2
+            // 
+            this.button2.Image = global::Winforms.Properties.Resources.pie_chart;
+            this.button2.Location = new System.Drawing.Point(182, 456);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(160, 100);
+            this.button2.TabIndex = 57;
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Font = new System.Drawing.Font("Calibri", 12.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label16.Location = new System.Drawing.Point(224, 559);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(73, 21);
+            this.label16.TabIndex = 58;
+            this.label16.Text = "Pie Chart";
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -448,6 +472,8 @@
         private System.Windows.Forms.Button btnLabels;
         private System.Windows.Forms.Label label15;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Label label16;
+        private System.Windows.Forms.Button button2;
     }
 }
 
