@@ -335,15 +335,15 @@ namespace LiveCharts.Wpf
 
             var interpolatedColor = new Color
             {
-                R = LinearInterpolation(ToColor.R, FromColor.R),
-                G = LinearInterpolation(ToColor.G, FromColor.G),
-                B = LinearInterpolation(ToColor.B, FromColor.B),
+                R = LinearInterpolation(FromColor.R, ToColor.R),
+                G = LinearInterpolation(FromColor.G, ToColor.G),
+                B = LinearInterpolation(FromColor.B, ToColor.B),
                 A = 255
             };
 
             if (IsNew)
             {
-                Pie.Fill = new SolidColorBrush(ToColor);
+                Pie.Fill = new SolidColorBrush(FromColor);
                 Pie.WedgeAngle = 0;
             }
 
