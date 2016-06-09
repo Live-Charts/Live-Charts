@@ -21,7 +21,6 @@ namespace Wpf.CartesianChart.Basic_Stacked_Bar
                     Values = new ChartValues<double> {4, 5, 6, 8},
                     StackMode = StackMode.Values, // this is not necessary, values is the default stack mode
                     DataLabels = true
-
                 },
                 new StackedColumnSeries
                 {

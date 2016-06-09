@@ -68,6 +68,15 @@ namespace LiveCharts.Wpf
             set { SetValue(MaxRowHeigthProperty, value); }
         }
 
+        public static readonly DependencyProperty RowPaddingProperty = DependencyProperty.Register(
+            "RowPadding", typeof (double), typeof (RowSeries), new PropertyMetadata(default(double)));
+
+        public double RowPadding
+        {
+            get { return (double) GetValue(RowPaddingProperty); }
+            set { SetValue(RowPaddingProperty, value); }
+        }
+
         #endregion
 
         #region Overriden Methods
@@ -161,6 +170,7 @@ namespace LiveCharts.Wpf
         {
             SetValue(StrokeThicknessProperty, 0d);
             SetValue(MaxRowHeigthProperty, 35d);
+            SetValue(RowPaddingProperty, 5d);
 
             Func<ChartPoint, string> defaultLabel = x => Model.CurrentXAxis.GetFormatter()(x.X);
             SetValue(LabelPointProperty, defaultLabel);

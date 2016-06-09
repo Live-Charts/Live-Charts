@@ -37,7 +37,7 @@ namespace LiveCharts.SeriesAlgorithms
         {
             var castedSeries = (IRowSeriesView) View;
 
-            const double padding = 5;
+            var padding = castedSeries.RowPadding;
             
             var totalSpace = ChartFunctions.GetUnitWidth(AxisTags.Y, Chart, View.ScalesYAt) - padding;
             var typeSeries = Chart.View.Series.OfType<IRowSeriesView>().ToList();

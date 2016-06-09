@@ -36,9 +36,9 @@ namespace LiveCharts.SeriesAlgorithms
 
         public override void Update()
         {
-            var castedSeries = (IStackedColumnSeriesViewView) View;
+            var castedSeries = (IStackedColumnSeriesView) View;
 
-            const double padding = 5;
+            var padding = castedSeries.ColumnPadding;
 
             var totalSpace = ChartFunctions.GetUnitWidth(AxisTags.X, Chart, View.ScalesXAt) - padding;
             var singleColWidth = totalSpace;

@@ -34,7 +34,7 @@ using LiveCharts.Wpf.Points;
 // ReSharper disable once CheckNamespace
 namespace LiveCharts.Wpf
 {
-    public class StackedColumnSeries : Series.Series, IStackedColumnSeriesViewView
+    public class StackedColumnSeries : Series.Series, IStackedColumnSeriesView
     {
         #region Contructors
 
@@ -66,6 +66,15 @@ namespace LiveCharts.Wpf
         {
             get { return (double) GetValue(MaxColumnWidthProperty); }
             set { SetValue(MaxColumnWidthProperty, value); }
+        }
+
+        public static readonly DependencyProperty ColumnPaddingProperty = DependencyProperty.Register(
+            "ColumnPadding", typeof (double), typeof (StackedColumnSeries), new PropertyMetadata(default(double)));
+
+        public double ColumnPadding
+        {
+            get { return (double) GetValue(ColumnPaddingProperty); }
+            set { SetValue(ColumnPaddingProperty, value); }
         }
 
         public static readonly DependencyProperty StackModeProperty = DependencyProperty.Register(
@@ -169,6 +178,7 @@ namespace LiveCharts.Wpf
         {
             SetValue(StrokeThicknessProperty, 0d);
             SetValue(MaxColumnWidthProperty, 35d);
+            SetValue(ColumnPaddingProperty, 5d);
             SetValue(ForegroundProperty, Brushes.White);
 
             Func<ChartPoint, string> defaultLabel = x =>  Model.CurrentYAxis.GetFormatter()(x.Y);

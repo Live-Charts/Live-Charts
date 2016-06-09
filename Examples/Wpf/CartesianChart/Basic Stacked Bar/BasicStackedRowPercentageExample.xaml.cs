@@ -14,7 +14,6 @@ namespace Wpf.CartesianChart.Basic_Stacked_Bar
         {
             InitializeComponent();
 
-
             SeriesCollection = new SeriesCollection
             {
                 new StackedRowSeries

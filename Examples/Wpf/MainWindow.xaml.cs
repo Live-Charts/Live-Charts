@@ -47,12 +47,8 @@ namespace Wpf
 
             CartesianExamples = new List<UserControl>
             {
-
-                new ConstantChangesChart(),
-
                 new BasicStackedRowPercentageExample(),
                 new BasicStackedColumnExample(),
-                new NegativeStackedRowExample(),
                 new BasicRowExample(),
                 new BasicColumn(),
                 new BasicLineExample(),
@@ -61,9 +57,11 @@ namespace Wpf
                 new WelcomeCartesian(),
                 new FullyResponsive(),
                 new CustomTypesPlotting(),
+                new NegativeStackedRowExample(),
                 new LineExample(),
                 new LabelsExample(),
                 //new LabelsHorizontalExample(),
+                new ConstantChangesChart(),
                 new CustomizedLineSeries(),
                 new InvertedExample(),
                 new BubblesExample(),
@@ -138,12 +136,6 @@ namespace Wpf
         public List<UserControl> CartesianExamples { get; set; }
         public List<UserControl> PieExamples { get; set; }
         public List<UserControl> GaugeExamples { get; set; }
-
-        private void Hyperlink_OnRequestNavigate(object sender, RequestNavigateEventArgs e)
-        {
-            Process.Start(new ProcessStartInfo(e.Uri.AbsoluteUri));
-            e.Handled = true;
-        }
 
         private void NextCartesianOnClick(object sender, MouseButtonEventArgs e)
         {

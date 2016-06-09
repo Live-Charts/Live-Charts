@@ -305,9 +305,10 @@ namespace LiveCharts
         double MinBubbleDiameter { get; set; }
     }
 
-    public interface IColumnSerieView : ISeriesView
+    public interface IColumnSeriesView : ISeriesView
     {
         double MaxColumnWidth { get; set; }
+        double ColumnPadding { get; set; }
     }
 
     public interface IPieSeriesView : ISeriesView
@@ -320,19 +321,22 @@ namespace LiveCharts
         double MaxColumnWidth { get; set; }
     }
 
-    public interface IStackedColumnSeriesViewView : ISeriesView, IStackModelableSeriesView
+    public interface IStackedColumnSeriesView : ISeriesView, IStackModelableSeriesView
     {
         double MaxColumnWidth { get; set; }
+        double ColumnPadding { get; set; }
     }
 
-    public interface IStackedRowSeriesViewView : ISeriesView, IStackModelableSeriesView
+    public interface IStackedRowSeriesView : ISeriesView, IStackModelableSeriesView
     {
-        double MaxRowHeigth { get; set; }
+        double MaxRowHeight { get; set; }
+        double RowPadding { get; set; }
     }
 
     public interface IRowSeriesView : ISeriesView
     {
         double MaxRowHeigth { get; set; }
+        double RowPadding { get; set; }
     }
 
     public interface ILineSeriesView : ISeriesView

@@ -35,12 +35,12 @@ namespace LiveCharts.SeriesAlgorithms
 
         public override void Update()
         {
-            var castedSeries = (IColumnSerieView) View;
+            var castedSeries = (IColumnSeriesView) View;
 
-            const double padding = 5;
+            var padding = castedSeries.ColumnPadding;
 
             var totalSpace = ChartFunctions.GetUnitWidth(AxisTags.X, Chart, View.ScalesXAt) - padding;
-            var typeSeries = Chart.View.Series.OfType<IColumnSerieView>().ToList();
+            var typeSeries = Chart.View.Series.OfType<IColumnSeriesView>().ToList();
 
             var singleColWidth = totalSpace/typeSeries.Count;
 

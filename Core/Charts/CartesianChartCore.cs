@@ -131,11 +131,11 @@ namespace LiveCharts.Charts
         {
             foreach (var series in View.Series)
             {
-                if (series is IStackedColumnSeriesViewView || series is IColumnSerieView || series is IOhlcSeriesView)
+                if (series is IStackedColumnSeriesView || series is IColumnSeriesView || series is IOhlcSeriesView)
                 {
                     AxisX[series.ScalesXAt].EvaluatesUnitWidth = true;
                 }
-                if (series is IStackedRowSeriesViewView || series is IRowSeriesView)
+                if (series is IStackedRowSeriesView || series is IRowSeriesView)
                 {
                     AxisY[series.ScalesYAt].EvaluatesUnitWidth = true;
                 }
@@ -144,13 +144,13 @@ namespace LiveCharts.Charts
 
         private void PrepareStackedColumns()
         {
-            if (!View.Series.Any(x => x is IStackedColumnSeriesViewView)) return;
+            if (!View.Series.Any(x => x is IStackedColumnSeriesView)) return;
 
             var isPercentage =
-                View.Series.Any(x => x is IStackModelableSeriesView && x is IStackedColumnSeriesViewView &&
+                View.Series.Any(x => x is IStackModelableSeriesView && x is IStackedColumnSeriesView &&
                                      ((IStackModelableSeriesView)x).StackMode == StackMode.Percentage);
 
-            foreach (var group in View.Series.OfType<IStackedColumnSeriesViewView>().GroupBy(x => x.ScalesYAt))
+            foreach (var group in View.Series.OfType<IStackedColumnSeriesView>().GroupBy(x => x.ScalesYAt))
             {
                 StackPoints(group, AxisTags.Y, group.Key, isPercentage ? StackMode.Percentage : StackMode.Values);
             }
@@ -158,13 +158,13 @@ namespace LiveCharts.Charts
 
         private void PrepareStackedRows()
         {
-            if (!View.Series.Any(x => x is IStackedRowSeriesViewView)) return;
+            if (!View.Series.Any(x => x is IStackedRowSeriesView)) return;
 
             var isPercentage =
-                View.Series.Any(x => x is IStackModelableSeriesView && x is IStackedRowSeriesViewView &&
+                View.Series.Any(x => x is IStackModelableSeriesView && x is IStackedRowSeriesView &&
                                      ((IStackModelableSeriesView) x).StackMode == StackMode.Percentage);
 
-            foreach (var group in View.Series.OfType<IStackedRowSeriesViewView>().GroupBy(x => x.ScalesXAt))
+            foreach (var group in View.Series.OfType<IStackedRowSeriesView>().GroupBy(x => x.ScalesXAt))
             {
                 StackPoints(group, AxisTags.X, group.Key, isPercentage ? StackMode.Percentage : StackMode.Values);
             }

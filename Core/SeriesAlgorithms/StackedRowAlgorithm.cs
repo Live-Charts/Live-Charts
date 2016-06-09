@@ -36,19 +36,19 @@ namespace LiveCharts.SeriesAlgorithms
 
         public override void Update()
         {
-            var castedSeries = (IStackedRowSeriesViewView) View;
+            var castedSeries = (IStackedRowSeriesView) View;
 
-            const double padding = 5;
+            var padding = castedSeries.RowPadding;
 
             var totalSpace = ChartFunctions.GetUnitWidth(AxisTags.Y, Chart, View.ScalesYAt) - padding;
             var singleColHeigth = totalSpace;
 
             double exceed = 0;
 
-            if (singleColHeigth > castedSeries.MaxRowHeigth)
+            if (singleColHeigth > castedSeries.MaxRowHeight)
             {
-                exceed = (singleColHeigth - castedSeries.MaxRowHeigth)/2;
-                singleColHeigth = castedSeries.MaxRowHeigth;
+                exceed = (singleColHeigth - castedSeries.MaxRowHeight)/2;
+                singleColHeigth = castedSeries.MaxRowHeight;
             }
 
             var relativeTop = padding + exceed;

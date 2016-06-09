@@ -34,7 +34,7 @@ using LiveCharts.Wpf.Points;
 // ReSharper disable once CheckNamespace
 namespace LiveCharts.Wpf
 {
-    public class StackedRowSeries : Series.Series, IStackedRowSeriesViewView
+    public class StackedRowSeries : Series.Series, IStackedRowSeriesView
     {
         #region Contructors
 
@@ -59,13 +59,22 @@ namespace LiveCharts.Wpf
 
         #region Properties
 
-        public static readonly DependencyProperty MaxRowHeigthProperty = DependencyProperty.Register(
-            "MaxRowHeigth", typeof (double), typeof (StackedRowSeries), new PropertyMetadata(default(double)));
+        public static readonly DependencyProperty MaxRowHeightProperty = DependencyProperty.Register(
+            "MaxRowHeight", typeof (double), typeof (StackedRowSeries), new PropertyMetadata(default(double)));
 
-        public double MaxRowHeigth
+        public double MaxRowHeight
         {
-            get { return (double) GetValue(MaxRowHeigthProperty); }
-            set { SetValue(MaxRowHeigthProperty, value); }
+            get { return (double) GetValue(MaxRowHeightProperty); }
+            set { SetValue(MaxRowHeightProperty, value); }
+        }
+
+        public static readonly DependencyProperty RowPaddingProperty = DependencyProperty.Register(
+            "RowPadding", typeof (double), typeof (StackedRowSeries), new PropertyMetadata(default(double)));
+
+        public double RowPadding
+        {
+            get { return (double) GetValue(RowPaddingProperty); }
+            set { SetValue(RowPaddingProperty, value); }
         }
 
         public static readonly DependencyProperty StackModeProperty = DependencyProperty.Register(
@@ -170,7 +179,8 @@ namespace LiveCharts.Wpf
         private void InitializeDefuaults()
         {
             SetValue(StrokeThicknessProperty, 0d);
-            SetValue(MaxRowHeigthProperty, 35d);
+            SetValue(MaxRowHeightProperty, 35d);
+            SetValue(RowPaddingProperty, 5d);
             SetValue(ForegroundProperty, Brushes.White);
 
             Func<ChartPoint, string> defaultLabel = x =>  Model.CurrentXAxis.GetFormatter()(x.X);
