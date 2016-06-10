@@ -35,6 +35,13 @@
                 -
             </Button>
         </StackPanel>
-        <lvc:PieChart Grid.Row="2" Series="{Binding SeriesCollection}" LegendLocation="Right" InnerRadius="150"/>
+        <lvc:PieChart Grid.Row="2" Series="{Binding SeriesCollection}" LegendLocation="Right" InnerRadius="150" >
+            <lvc:PieChart.ChartLegend>
+                <lvc:DefaultLegend BulletSize="20"></lvc:DefaultLegend>
+            </lvc:PieChart.ChartLegend>
+            <lvc:PieChart.DataTooltip>
+                <lvc:DefaultTooltip BulletSize="20"></lvc:DefaultTooltip>
+            </lvc:PieChart.DataTooltip>
+        </lvc:PieChart>
     </Grid>
 </UserControl>

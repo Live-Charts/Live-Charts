@@ -25,7 +25,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media;
@@ -67,6 +66,15 @@ namespace LiveCharts.Wpf
         {
             get { return (TooltipSelectionMode) GetValue(SelectionModeProperty); }
             set { SetValue(SelectionModeProperty, value); }
+        }
+
+        public static readonly DependencyProperty BulletSizeProperty = DependencyProperty.Register(
+            "BulletSize", typeof (double), typeof (DefaultTooltip), new PropertyMetadata(11d));
+
+        public double BulletSize
+        {
+            get { return (double) GetValue(BulletSizeProperty); }
+            set { SetValue(BulletSizeProperty, value); }
         }
 
         public TooltipData Data

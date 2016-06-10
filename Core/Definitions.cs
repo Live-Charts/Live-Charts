@@ -293,6 +293,7 @@ namespace LiveCharts
     {
         double InnerRadius { get; set; }
         double StartingRotationAngle { get; set; }
+        double HoverPushOut { get; set; }
     }
 
     #endregion

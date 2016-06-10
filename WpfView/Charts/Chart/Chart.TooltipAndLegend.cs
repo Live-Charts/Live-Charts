@@ -72,82 +72,83 @@ namespace LiveCharts.Wpf.Charts.Chart
 
         private void DataMouseEnter(object sender, EventArgs e)
         {
-            if (DataTooltip == null) return;
-
             TooltipTimeoutTimer.Stop();
 
-            if (DataTooltip.Parent == null)
-            {
-                Panel.SetZIndex(DataTooltip, int.MaxValue);
-                AddToDrawMargin(DataTooltip);
-                Canvas.SetTop(DataTooltip, 0d);
-                Canvas.SetLeft(DataTooltip, 0d);
-            }
-
             var source = Series.SelectMany(x => x.Values.Points);
-            var senderPoint =
-                source.FirstOrDefault(x => x.View != null && Equals(((PointView) x.View).HoverShape, sender));
+            var senderPoint = source.FirstOrDefault(x => x.View != null &&
+                                                         Equals(((PointView) x.View).HoverShape, sender));
 
-            if (senderPoint == null) return;
+            if (DataTooltip != null)
+            {
+                if (DataTooltip.Parent == null)
+                {
+                    Panel.SetZIndex(DataTooltip, int.MaxValue);
+                    AddToDrawMargin(DataTooltip);
+                    Canvas.SetTop(DataTooltip, 0d);
+                    Canvas.SetLeft(DataTooltip, 0d);
+                }
 
-            var ax = AxisX[senderPoint.SeriesView.ScalesXAt];
-            var ay = AxisY[senderPoint.SeriesView.ScalesYAt];
+                if (senderPoint == null) return;
+
+                var ax = AxisX[senderPoint.SeriesView.ScalesXAt];
+                var ay = AxisY[senderPoint.SeriesView.ScalesYAt];
+
+                var pointsToHighlight = Enumerable.Empty<ChartPoint>();
+                double? shares = null;
+
+                //ToDo: the tooltip should be smart enough to detect the best SelectionMode
+                switch (DataTooltip.SelectionMode)
+                {
+                    case TooltipSelectionMode.OnlySender:
+                        pointsToHighlight = new List<ChartPoint> { senderPoint };
+                        break;
+                    case TooltipSelectionMode.SharedXValues:
+                        pointsToHighlight = Series.Where(x => x.ScalesXAt == senderPoint.SeriesView.ScalesXAt)
+                            .SelectMany(x => x.Values.Points)
+                            .Where(x => Math.Abs(x.X - senderPoint.X) < ax.Model.S * .01);
+                        shares = (this as PieChart) == null ? (double?)senderPoint.X : null;
+                        break;
+                    case TooltipSelectionMode.SharedYValues:
+                        pointsToHighlight = Series.Where(x => x.ScalesYAt == senderPoint.SeriesView.ScalesYAt)
+                            .SelectMany(x => x.Values.Points)
+                            .Where(x => Math.Abs(x.Y - senderPoint.Y) < ay.Model.S * .01);
+                        shares = senderPoint.Y;
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+
+                DataTooltip.Data = new TooltipData
+                {
+                    XFormatter = ax.Model.GetFormatter(),
+                    YFormatter = ay.Model.GetFormatter(),
+                    SharedValue = shares,
+                    SelectionMode = DataTooltip.SelectionMode,
+                    Points = pointsToHighlight.Select(x => new DataPointViewModel
+                    {
+                        Series = new SeriesViewModel
+                        {
+                            Fill = ((Series.Series)x.SeriesView).Fill,
+                            Stroke = ((Series.Series)x.SeriesView).Stroke,
+                            StrokeThickness = ((Series.Series)x.SeriesView).StrokeThickness,
+                            Title = ((Series.Series)x.SeriesView).Title,
+                        },
+                        ChartPoint = x
+                    }).ToList()
+                };
+
+                DataTooltip.Visibility = Visibility.Visible;
+                DataTooltip.UpdateLayout();
+
+                var location = GetTooltipPosition(senderPoint);
+
+                DataTooltip.BeginAnimation(Canvas.LeftProperty,
+                    new DoubleAnimation(location.X, TimeSpan.FromMilliseconds(200)));
+                DataTooltip.BeginAnimation(Canvas.TopProperty,
+                    new DoubleAnimation(location.Y, TimeSpan.FromMilliseconds(200)));
+            }
 
             senderPoint.View.OnHover(senderPoint);
-
-            var pointsToHighlight = Enumerable.Empty<ChartPoint>();
-            double? shares = null;
-
-            //ToDo: the tooltip should be smart enough to detect the best SelectionMode
-            switch (DataTooltip.SelectionMode)
-            {
-                case TooltipSelectionMode.OnlySender:
-                    pointsToHighlight = new List<ChartPoint> { senderPoint };
-                    break;
-                case TooltipSelectionMode.SharedXValues:
-                    pointsToHighlight = Series.Where(x => x.ScalesXAt == senderPoint.SeriesView.ScalesXAt)
-                        .SelectMany(x => x.Values.Points)
-                        .Where(x => Math.Abs(x.X - senderPoint.X) < ax.Model.S * .01);
-                    shares = (this as PieChart) == null ? (double?) senderPoint.X : null;
-                    break;
-                case TooltipSelectionMode.SharedYValues:
-                    pointsToHighlight = Series.Where(x => x.ScalesYAt == senderPoint.SeriesView.ScalesYAt)
-                        .SelectMany(x => x.Values.Points)
-                        .Where(x => Math.Abs(x.Y - senderPoint.Y) < ay.Model.S * .01);
-                    shares = senderPoint.Y;
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
-
-            DataTooltip.Data = new TooltipData
-            {
-                XFormatter = ax.Model.GetFormatter(),
-                YFormatter = ay.Model.GetFormatter(),
-                SharedValue = shares,
-                SelectionMode = DataTooltip.SelectionMode,
-                Points = pointsToHighlight.Select(x => new DataPointViewModel
-                {
-                    Series = new SeriesViewModel
-                    {
-                        Fill = ((Series.Series)x.SeriesView).Fill,
-                        Stroke = ((Series.Series)x.SeriesView).Stroke,
-                        StrokeThickness = ((Series.Series)x.SeriesView).StrokeThickness,
-                        Title = ((Series.Series)x.SeriesView).Title,
-                    },
-                    ChartPoint = x
-                }).ToList()
-            };
-
-            DataTooltip.Visibility = Visibility.Visible;
-            DataTooltip.UpdateLayout();
-
-            var location = GetTooltipPosition(senderPoint);
-
-            DataTooltip.BeginAnimation(Canvas.LeftProperty,
-                new DoubleAnimation(location.X, TimeSpan.FromMilliseconds(200)));
-            DataTooltip.BeginAnimation(Canvas.TopProperty,
-                new DoubleAnimation(location.Y, TimeSpan.FromMilliseconds(200)));
         }
 
         private void DataMouseLeave(object sender, EventArgs e)

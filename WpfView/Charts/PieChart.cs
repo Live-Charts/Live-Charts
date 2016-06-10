@@ -56,6 +56,15 @@ namespace LiveCharts.Wpf
             set { SetValue(StartingRotationAngleProperty, value); }
         }
 
+        public static readonly DependencyProperty HoverPushOutProperty = DependencyProperty.Register(
+            "HoverPushOut", typeof (double), typeof (PieChart), new PropertyMetadata(5d));
+
+        public double HoverPushOut
+        {
+            get { return (double) GetValue(HoverPushOutProperty); }
+            set { SetValue(HoverPushOutProperty, value); }
+        }
+
         protected override Point GetTooltipPosition(ChartPoint senderPoint)
         {
             var pieSlice = ((PiePointView) senderPoint.View).Slice;

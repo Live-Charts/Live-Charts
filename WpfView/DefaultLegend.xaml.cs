@@ -75,6 +75,15 @@ namespace LiveCharts.Wpf
             set { SetValue(InternalOrientationProperty, value); }
         }
 
+        public static readonly DependencyProperty BulletSizeProperty = DependencyProperty.Register(
+            "BulletSize", typeof(double), typeof(DefaultLegend), new PropertyMetadata(11d));
+
+        public double BulletSize
+        {
+            get { return (double)GetValue(BulletSizeProperty); }
+            set { SetValue(BulletSizeProperty, value); }
+        }
+
         protected virtual void OnPropertyChanged(string propertyName = null)
         {
             if (PropertyChanged != null) PropertyChanged.Invoke(this, new PropertyChangedEventArgs(propertyName));

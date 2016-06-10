@@ -62,7 +62,9 @@
                                         <ColumnDefinition Width="Auto" SharedSizeGroup="Label"/>
                                         <ColumnDefinition Width="Auto" SharedSizeGroup="Participation"/>
                                     </Grid.ColumnDefinitions>
-                                    <Ellipse Width="11" Height="11" StrokeThickness="{Binding Series.StrokeThickness}" 
+                                    <Ellipse Width="{Binding BulletSize, RelativeSource={RelativeSource Mode=FindAncestor, AncestorLevel=1, AncestorType={x:Type UserControl}}}" 
+                                             Height="{Binding BulletSize, RelativeSource={RelativeSource Mode=FindAncestor, AncestorLevel=1, AncestorType={x:Type UserControl}}}" 
+                                             StrokeThickness="{Binding Series.StrokeThickness}" 
                                              Stroke="{Binding Series.Stroke}" Fill="{Binding Series.Fill}"/>
                                     <TextBlock Grid.Column="1" Text="{Binding Series.Title}" VerticalAlignment="Center" Margin="5 0 0 0"/>
                                     
