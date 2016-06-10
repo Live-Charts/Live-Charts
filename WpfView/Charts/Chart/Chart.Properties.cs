@@ -26,6 +26,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using LiveCharts.Charts;
+using LiveCharts.Helpers;
 
 namespace LiveCharts.Wpf.Charts.Chart
 {
@@ -46,26 +47,26 @@ namespace LiveCharts.Wpf.Charts.Chart
        
 
         public static readonly DependencyProperty AxisYProperty = DependencyProperty.Register(
-            "AxisY", typeof(List<Axis>), typeof(Chart),
+            "AxisY", typeof(AxesCollection), typeof(Chart),
             new PropertyMetadata(null, CallChartUpdater()));
         /// <summary>
         /// Gets or sets vertical axis
         /// </summary>
-        public List<Axis> AxisY
+        public AxesCollection AxisY
         {
-            get { return (List<Axis>)GetValue(AxisYProperty); }
+            get { return (AxesCollection)GetValue(AxisYProperty); }
             set { SetValue(AxisYProperty, value); }
         }
 
         public static readonly DependencyProperty AxisXProperty = DependencyProperty.Register(
-            "AxisX", typeof(List<Axis>), typeof(Chart),
+            "AxisX", typeof(AxesCollection), typeof(Chart),
             new PropertyMetadata(null, CallChartUpdater()));
         /// <summary>
         /// Gets or sets horizontal axis
         /// </summary>
-        public List<Axis> AxisX
+        public AxesCollection AxisX
         {
-            get { return (List<Axis>)GetValue(AxisXProperty); }
+            get { return (AxesCollection)GetValue(AxisXProperty); }
             set { SetValue(AxisXProperty, value); }
         }
 

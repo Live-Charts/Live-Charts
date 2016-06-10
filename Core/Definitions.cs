@@ -480,6 +480,7 @@ namespace LiveCharts
         CoreSize GetLabelSize();
         AxisCore AsCoreElement(ChartCore chart, AxisTags source);
         void RenderSeparator(SeparatorElementCore model, ChartCore chart);
+        void Clear();
     }
 
     public interface IAxisSectionView

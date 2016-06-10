@@ -162,7 +162,7 @@ namespace LiveCharts.Wpf.Charts.Chart
         public List<AxisCore> MapXAxes(ChartCore chart)
         {
             if (AxisX.Count == 0) AxisX.AddRange(DefaultAxes.CleanAxis);
-            return AxisX.Select(x =>
+            return AxisX.Cast<Axis>().Select(x =>
             {
                 if (x.Parent == null)
                 {
@@ -176,7 +176,7 @@ namespace LiveCharts.Wpf.Charts.Chart
         public List<AxisCore> MapYAxes(ChartCore chart)
         {
             if (AxisY.Count == 0) AxisY.AddRange(DefaultAxes.DefaultAxis);
-            return AxisY.Select(x =>
+            return AxisY.Cast<Axis>().Select(x =>
             {
                 if (x.Parent == null) chart.View.AddToView(x);
                 return x.AsCoreElement(Model, AxisTags.Y);

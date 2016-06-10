@@ -312,6 +312,14 @@ namespace LiveCharts.Wpf
 
         public void Clear()
         {
+            foreach (var separator in Cache)
+            {
+                Model.Chart.View.RemoveFromView(separator.Value.Line);
+                Model.Chart.View.RemoveFromView(separator.Value.TextBlock);
+                separator.Value.Line = null;
+                separator.Value.TextBlock = null;
+            }
+
             Cache.Clear();
         }
 
