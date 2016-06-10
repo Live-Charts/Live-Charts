@@ -123,6 +123,7 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AxesCollection.cs" />
     <Compile Include="Axis.cs" />
     <Compile Include="AxisSection.cs" />
     <Compile Include="Charts\Gauge.cs" />

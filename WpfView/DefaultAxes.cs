@@ -20,7 +20,6 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Media;
 
@@ -31,19 +30,19 @@ namespace LiveCharts.Wpf
         /// <summary>
         /// Returns default axis
         /// </summary>
-        public static List<Axis> DefaultAxis
+        public static AxesCollection DefaultAxis
         {
-            get { return new List<Axis> {new Axis()}; }
+            get { return new AxesCollection {new Axis()}; }
         }
 
         /// <summary>
         /// Return an axis without separators at all
         /// </summary>
-        public static List<Axis> CleanAxis
+        public static AxesCollection CleanAxis
         {
             get
             {
-                return new List<Axis>
+                return new AxesCollection
                 {
                     new Axis
                     {
@@ -57,11 +56,11 @@ namespace LiveCharts.Wpf
         /// <summary>
         /// Returns an axis that only displays a line for zero
         /// </summary>
-        public static List<Axis> OnlyZerosAxis
+        public static AxesCollection OnlyZerosAxis
         {
             get
             {
-                return new List<Axis>
+                return new AxesCollection
                 {
                     new Axis
                     {
@@ -75,11 +74,11 @@ namespace LiveCharts.Wpf
         /// <summary>
         /// Returns an axis that highlights zeros.
         /// </summary>
-        public static List<Axis> HighlightZerosAxis
+        public static AxesCollection HighlightZerosAxis
         {
             get
             {
-                return new List<Axis>
+                return new AxesCollection
                 {
                     new Axis
                     {

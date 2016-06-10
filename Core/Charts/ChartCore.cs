@@ -461,10 +461,12 @@ namespace LiveCharts.Charts
                     else
                     {
                         if (sum.Left < AxisX[stackIndex].MinLimit)
+                            // ReSharper disable once CompareOfFloatsByEqualityOperator
                             AxisX[stackIndex].MinLimit = sum.Left == 0
                                 ? 0
                                 : ((int)(sum.Left / AxisX[stackIndex].S) - 1) * AxisX[stackIndex].S;
                         if (sum.Right > AxisX[stackIndex].MaxLimit)
+                            // ReSharper disable once CompareOfFloatsByEqualityOperator
                             AxisX[stackIndex].MaxLimit = sum.Right == 0
                                 ? 0
                                 : ((int)(sum.Right / AxisX[stackIndex].S) + 1) * AxisX[stackIndex].S;
@@ -480,10 +482,12 @@ namespace LiveCharts.Charts
                     else
                     {
                         if (sum.Left < AxisY[stackIndex].MinLimit)
+                            // ReSharper disable once CompareOfFloatsByEqualityOperator
                             AxisY[stackIndex].MinLimit = sum.Left == 0
                                 ? 0
                                 : ((int)(sum.Left / AxisY[stackIndex].S) - 1) * AxisY[stackIndex].S;
                         if (sum.Right > AxisY[stackIndex].MaxLimit)
+                            // ReSharper disable once CompareOfFloatsByEqualityOperator
                             AxisY[stackIndex].MaxLimit = sum.Right == 0
                                 ? 0
                                 : ((int)(sum.Right / AxisY[stackIndex].S) + 1) * AxisY[stackIndex].S;

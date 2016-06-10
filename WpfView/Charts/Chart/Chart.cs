@@ -55,8 +55,8 @@ namespace LiveCharts.Wpf.Charts.Chart
             SetValue(DataTooltipProperty, new DefaultTooltip());
             SetValue(TooltipTimeoutProperty, TimeSpan.FromMilliseconds(800));
 
-            SetValue(AxisXProperty, new List<Axis>());
-            SetValue(AxisYProperty, new List<Axis>());
+            SetValue(AxisXProperty, new AxesCollection());
+            SetValue(AxisYProperty, new AxesCollection());
 
             SetValue(SeriesProperty, new SeriesCollection());
 

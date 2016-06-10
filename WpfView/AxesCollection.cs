@@ -21,10 +21,11 @@
 //SOFTWARE.
 
 using System.Collections.Generic;
+using LiveCharts.Helpers;
 
-namespace LiveCharts.Helpers
+namespace LiveCharts.Wpf
 {
-    public class AxesCollection : NoisyCollection<IAxisView>
+    public class AxesCollection : NoisyCollection<Axis>
     {
         public AxesCollection()
         {

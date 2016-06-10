@@ -47,39 +47,41 @@ namespace Wpf
 
             CartesianExamples = new List<UserControl>
             {
-                new BasicStackedRowPercentageExample(),
-                new BasicStackedColumnExample(),
-                new BasicRowExample(),
-                new BasicColumn(),
-                new BasicLineExample(),
-
-                new StackedAreaExample(),
-                new WelcomeCartesian(),
-                new FullyResponsive(),
-                new CustomTypesPlotting(),
-                new NegativeStackedRowExample(),
-                new LineExample(),
-                new LabelsExample(),
-                //new LabelsHorizontalExample(),
-                new ConstantChangesChart(),
-                new CustomizedLineSeries(),
-                new InvertedExample(),
-                new BubblesExample(),
-                //new StackedAreaExample(),
-                new FinancialExample(),
-                //new StackedColumnExample(),
                 new StackedRowExample(),
-                new MissingPointsExample(),
+
+                //new BasicStackedRowPercentageExample(),
+                //new BasicStackedColumnExample(),
+                //new BasicRowExample(),
+                //new BasicColumn(),
+                //new BasicLineExample(),
+
+                //new StackedAreaExample(),
+                //new WelcomeCartesian(),
+                //new FullyResponsive(),
+                //new CustomTypesPlotting(),
+                //new NegativeStackedRowExample(),
+                //new LineExample(),
+                //new LabelsExample(),
+                ////new LabelsHorizontalExample(),
+                //new ConstantChangesChart(),
+                //new CustomizedLineSeries(),
+                //new InvertedExample(),
+                //new BubblesExample(),
+                ////new StackedAreaExample(),
+                //new FinancialExample(),
+                ////new StackedColumnExample(),
                 
-                //new IrregularIntervalsExample(),
-                new DateTime(),
-                //new LogarithmScaleExample(),
-                new VerticalStackedAreaExample(),
-                new SectionsExample(),
-                new ZoomingAndPanning(),
-                new MultiAxesChart(),
-                new MixingTypes(),
-                new InLineSyntaxTest()
+                //new MissingPointsExample(),
+                
+                ////new IrregularIntervalsExample(),
+                //new DateTime(),
+                ////new LogarithmScaleExample(),
+                //new VerticalStackedAreaExample(),
+                //new SectionsExample(),
+                //new ZoomingAndPanning(),
+                //new MultiAxesChart(),
+                //new MixingTypes(),
+                //new InLineSyntaxTest()
             };
 
             PieExamples = new List<UserControl>

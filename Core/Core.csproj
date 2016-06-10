@@ -44,7 +44,6 @@
     <None Include="sign.pfx" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Helpers\AxesCollection.cs" />
     <Compile Include="AxisCore.cs" />
     <Compile Include="AxisSectionCore.cs" />
     <Compile Include="Charts\PieChartCore.cs" />
