@@ -76,7 +76,7 @@ namespace LiveCharts.Wpf
         }
 
         public static readonly DependencyProperty BulletSizeProperty = DependencyProperty.Register(
-            "BulletSize", typeof(double), typeof(DefaultLegend), new PropertyMetadata(11d));
+            "BulletSize", typeof(double), typeof(DefaultLegend), new PropertyMetadata(15d));
 
         public double BulletSize
         {

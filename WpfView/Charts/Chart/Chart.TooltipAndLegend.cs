@@ -83,7 +83,7 @@ namespace LiveCharts.Wpf.Charts.Chart
             if (DataTooltip.Parent == null)
             {
                 Panel.SetZIndex(DataTooltip, int.MaxValue);
-                AddToDrawMargin(DataTooltip);
+                AddToView(DataTooltip);
                 Canvas.SetTop(DataTooltip, 0d);
                 Canvas.SetLeft(DataTooltip, 0d);
             }
@@ -142,11 +142,12 @@ namespace LiveCharts.Wpf.Charts.Chart
 
             var location = GetTooltipPosition(senderPoint);
 
+            location = new Point(Canvas.GetLeft(DrawMargin) + location.X, Canvas.GetTop(DrawMargin) + location.Y);
+
             DataTooltip.BeginAnimation(Canvas.LeftProperty,
                 new DoubleAnimation(location.X, TimeSpan.FromMilliseconds(200)));
             DataTooltip.BeginAnimation(Canvas.TopProperty,
                 new DoubleAnimation(location.Y, TimeSpan.FromMilliseconds(200)));
-
 
             senderPoint.View.OnHover(senderPoint);
         }
