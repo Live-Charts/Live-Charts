@@ -39,7 +39,7 @@ namespace LiveCharts.Wpf.Charts.Chart
 
         protected Chart()
         {
-            Canvas = new Canvas {ClipToBounds = true};
+            Canvas = new Canvas();
             Content = Canvas;
 
             DrawMargin = new Canvas {ClipToBounds = true};

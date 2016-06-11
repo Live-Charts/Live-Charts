@@ -73,6 +73,7 @@ namespace LiveCharts
             }
 
             Chart.PrepareAxes();
+            Chart.RunSpecializedChartComponents();
 
             foreach (var series in Chart.View.Series)
             {

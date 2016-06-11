@@ -91,6 +91,7 @@
     <Compile Include="Seriesalgorithm.cs" />
     <Compile Include="SeriesCollection.cs" />
     <Compile Include="Configurations\SeriesConfiguration.cs" />
+    <Compile Include="VisualElementsCollection.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

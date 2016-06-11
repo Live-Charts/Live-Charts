@@ -28,6 +28,16 @@ namespace LiveCharts
 {
     #region Enumerators
 
+    public enum VisualElementHorizontalAlingment
+    {
+        Center, Right, Left
+    }
+
+    public enum VisualElementVerticalAlingment
+    {
+        Center, Top, Bottom
+    }
+
     public enum TooltipSelectionMode
     {
         OnlySender, SharedXValues, SharedYValues
@@ -267,6 +277,38 @@ namespace LiveCharts
         event Action PointChanged;
     }
 
+    public interface ICartesianVisualElement
+    {
+        IChartView Chart { get; set; }
+        bool RequiresAdd { get; set; }
+        double X { get; set; }
+        double Y { get; set; }
+        int AxisX { get; set; }
+        int AxisY { get; set; }
+        VisualElementVerticalAlingment VerticalAlingment { get; set; }
+        VisualElementHorizontalAlingment HorizontalAlingment { get; set; }
+        void AddOrMove();
+        void Remove();
+    }
+
+    #region ChartViews
+
+    public interface IPieChart : IChartView
+    {
+        double InnerRadius { get; set; }
+        double StartingRotationAngle { get; set; }
+        double HoverPushOut { get; set; }
+    }
+
+    public interface ICartesianChart : IChartView
+    {
+        VisualElementsCollection VisualElements { get; set; }
+    }
+
+    #endregion
+
+    #region Series Views
+
     public interface IPieSeries
     {
         ISeriesView View { get; }
@@ -286,19 +328,6 @@ namespace LiveCharts
     {
         StackMode StackMode { get; set; }
     }
-
-    #region ChartViews
-
-    public interface IPieChart
-    {
-        double InnerRadius { get; set; }
-        double StartingRotationAngle { get; set; }
-        double HoverPushOut { get; set; }
-    }
-
-    #endregion
-
-    #region Series Views
 
     public interface IBubbleSeriesView : ISeriesView
     {
@@ -412,6 +441,7 @@ namespace LiveCharts
         LegendLocation LegendLocation { get; set; }
         bool DisableAnimations { get; set; }
         TimeSpan AnimationsSpeed { get; set; }
+
 
         bool HasTooltip { get; }
         bool HasDataClickEventAttached { get; }

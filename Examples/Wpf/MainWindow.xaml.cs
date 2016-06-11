@@ -19,6 +19,7 @@ using Wpf.CartesianChart.Missing_Line_Points;
 using Wpf.CartesianChart.NegativeStackedRow;
 using Wpf.CartesianChart.StackedArea;
 using Wpf.CartesianChart.StackedBar;
+using Wpf.CartesianChart.UIElements;
 using Wpf.Gauges;
 using Wpf.PieChart;
 using BubblesExample = Wpf.CartesianChart.Bubbles.BubblesExample;
@@ -47,6 +48,8 @@ namespace Wpf
 
             CartesianExamples = new List<UserControl>
             {
+                new UIElementsExample(),
+
                 new StackedRowExample(),
 
                 new BasicStackedRowPercentageExample(),
@@ -56,7 +59,7 @@ namespace Wpf
                 new BasicLineExample(),
 
                 new StackedAreaExample(),
-                new WelcomeCartesian(),
+                //new WelcomeCartesian(),
                 new FullyResponsive(),
                 new CustomTypesPlotting(),
                 new NegativeStackedRowExample(),

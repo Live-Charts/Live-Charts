@@ -21,19 +21,33 @@
 //SOFTWARE.
 
 using System;
+using System.Windows;
 using LiveCharts.Charts;
 using LiveCharts.Wpf.Charts.Chart;
 
 // ReSharper disable once CheckNamespace
 namespace LiveCharts.Wpf
 {
-    public class CartesianChart : Chart
+    public class CartesianChart : Chart, ICartesianChart
     {
         public CartesianChart()
         {
             var freq = DisableAnimations ? TimeSpan.FromMilliseconds(10) : AnimationsSpeed;
             var updater = new Components.ChartUpdater(freq);
             ChartCoreModel = new CartesianChartCore(this, updater);
+
+            SetValue(VisualElementsProperty, new VisualElementsCollection());
+        }
+
+
+        public static readonly DependencyProperty VisualElementsProperty = DependencyProperty.Register(
+            "VisualElements", typeof (VisualElementsCollection), typeof (CartesianChart),
+            new PropertyMetadata(default(VisualElementsCollection)));
+
+        public VisualElementsCollection VisualElements
+        {
+            get { return (VisualElementsCollection) GetValue(VisualElementsProperty); }
+            set { SetValue(VisualElementsProperty, value); }
         }
     }
 }

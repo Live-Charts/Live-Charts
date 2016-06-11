@@ -57,7 +57,7 @@ namespace LiveCharts.Charts
         public CoreSize ChartControlSize { get; set; }
         public CoreRectangle DrawMargin { get; set; }
         public bool HasUnitaryPoints { get; set; }
-        
+
         public List<AxisCore> AxisX { get; set; }
         public List<AxisCore> AxisY { get; set; }
 
@@ -110,6 +110,11 @@ namespace LiveCharts.Charts
                               View.Series.Where(series => series.Values != null && series.ScalesYAt == index)
                                   .Select(series => series.Values.Limit2.Min).DefaultIfEmpty(0).Min();
             }
+        }
+
+        public virtual void RunSpecializedChartComponents()
+        {
+            
         }
 
         public void CalculateComponentsAndMargin()

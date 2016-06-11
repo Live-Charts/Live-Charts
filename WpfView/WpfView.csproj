@@ -188,6 +188,7 @@
     <Compile Include="Separator.cs" />
     <Compile Include="Series\Series.cs" />
     <Compile Include="LineSegmentSplitter.cs" />
+    <Compile Include="VisualElement.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

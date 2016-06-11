@@ -102,5 +102,6 @@ namespace LiveCharts.Wpf
                 };
             }
         }
+
     }
 }

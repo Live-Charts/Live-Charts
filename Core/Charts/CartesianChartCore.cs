@@ -114,6 +114,15 @@ namespace LiveCharts.Charts
             }
         }
 
+        public override void RunSpecializedChartComponents()
+        {
+            foreach (var visualElement in ((ICartesianChart) View).VisualElements)
+            {
+                visualElement.Chart = View;
+                visualElement.AddOrMove();
+            }
+        }
+
         #endregion
 
         #region Privates

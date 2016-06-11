@@ -23,20 +23,19 @@
 using System.Collections.Generic;
 using LiveCharts.Helpers;
 
-namespace LiveCharts.Wpf
+namespace LiveCharts
 {
-    public class AxesCollection : NoisyCollection<Axis>
+    public class VisualElementsCollection : NoisyCollection<ICartesianVisualElement>
     {
-        public AxesCollection()
+        public VisualElementsCollection()
         {
             CollectionChanged += OnCollectionChanged;
         }
 
-        private static void OnCollectionChanged(IEnumerable<Axis> oldItems, IEnumerable<Axis> newItems)
+        private void OnCollectionChanged(IEnumerable<ICartesianVisualElement> oldItems, IEnumerable<ICartesianVisualElement> newItems)
         {
-            if (oldItems == null) return;
-
-            foreach (var oldAxis in oldItems) oldAxis.Clear();
+            if (oldItems != null) foreach (var oltItem in oldItems) oltItem.Remove();
+            if (newItems != null) foreach (var newItem in newItems) newItem.RequiresAdd = true;
         }
     }
 }
