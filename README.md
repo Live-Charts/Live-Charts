@@ -81,9 +81,13 @@ myChart.AxixX.Labels = labels;
 * **[Simple Bar Chart](http://lvcharts.net/App/examples/wpf/Basic%20Column)**: a simple bar chart.
 * *Do not need animations*? ok disable them, performance will be increased also, `Chart.DisableAnimations = true;`
 
-###Supported Platforms
+###Support
 
 WPF and Winforms, currenlty the library is in the process to become a cross net library...
+
+###Net Version
+
+Net 4.0 or greater, if your application is designed to run in Windows XP, then you must use .net 4.0.3 at least.
 
 ### Installation
 
