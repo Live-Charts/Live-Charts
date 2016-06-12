@@ -121,6 +121,16 @@ namespace LiveCharts.Wpf.Charts.Chart
                 ChartLegend.Visibility = Visibility.Hidden;
         }
 
+        /// <summary>
+        /// Forces the chart to update
+        /// </summary>
+        /// <param name="restartView">Indicates if the update should restart the view, animations will run again if true.</param>
+        /// <param name="force">Force the updater to run when called, without wating for the next updater stept.</param>
+        public void Update(bool restartView = false, bool force = false)
+        {
+            if (Model != null) Model.Updater.Run(restartView, force);
+        }
+
         public CoreSize LoadLegend()
         {
             if (ChartLegend == null || LegendLocation == LegendLocation.None)
@@ -158,7 +168,7 @@ namespace LiveCharts.Wpf.Charts.Chart
             return new CoreSize(ChartLegend.DesiredSize.Width,
                 ChartLegend.DesiredSize.Height);
         }
-
+        
         public List<AxisCore> MapXAxes(ChartCore chart)
         {
             if (AxisX.Count == 0) AxisX.AddRange(DefaultAxes.CleanAxis);

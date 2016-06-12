@@ -99,13 +99,13 @@ namespace LiveCharts.Wpf.Charts.Chart
 
         #region Property Changed
 
-        protected static PropertyChangedCallback CallChartUpdater(bool animate = false)
+        protected static PropertyChangedCallback CallChartUpdater(bool animate = false, bool updateNow = false)
         {
             return (o, args) =>
             {
                 var wpfChart = o as Chart;
                 if (wpfChart == null) return;
-                if (wpfChart.Model != null) wpfChart.Model.Updater.Run(animate);
+                if (wpfChart.Model != null) wpfChart.Model.Updater.Run(animate, updateNow);
             };
         }
 

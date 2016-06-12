@@ -216,3 +216,6 @@ ModelManifest.xml
 /Core/nuget.exe
 /WpfView/nuget.exe
 /WpfView/WpfView.nuspec
+/Core/nugetPack.bat
+/WinFormsView/nugetPack.bat
+/WpfView/nugetPack.bat

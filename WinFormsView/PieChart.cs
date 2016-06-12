@@ -21,10 +21,8 @@
 //SOFTWARE.
 
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.Design.Serialization;
-using System.Windows.Forms;
 using System.Windows.Forms.Integration;
 using LiveCharts.Wpf;
 
@@ -45,7 +43,7 @@ namespace LiveCharts.WinForms
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 
-        public List<Axis> AxisY
+        public AxesCollection AxisY
         {
             get { return Chart.AxisY; }
             set { Chart.AxisY = value; }
@@ -53,7 +51,7 @@ namespace LiveCharts.WinForms
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 
-        public List<Axis> AxisX
+        public AxesCollection AxisX
         {
             get { return Chart.AxisX; }
             set { Chart.AxisX = value; }

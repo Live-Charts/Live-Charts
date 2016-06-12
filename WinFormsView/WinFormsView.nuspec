@@ -21,7 +21,7 @@
       <frameworkAssembly assemblyName="System.Xaml" targetFramework="net40"/>
       <frameworkAssembly assemblyName="WindowsFormsIntegration" targetFramework="net40" />
 
-      <frameworkAssembly assemblyName="PresentationFramework" targetFramework="net40" />
+      <frameworkAssembly assemblyName="PresentationFramework" targetFramework="net45" />
       <frameworkAssembly assemblyName="PresentationCore" targetFramework="net45"/>
       <frameworkAssembly assemblyName="WindowsBase" targetFramework="net45" />
       <frameworkAssembly assemblyName="System.Xaml" targetFramework="net45"/>

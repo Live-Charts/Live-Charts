@@ -55,7 +55,6 @@ namespace LiveCharts.Wpf
         public TextBlock TitleBlock { get; set; }
         public double LabelsReference { get; set; }
         public double UnitWidth { get; set; }
-        public Dictionary<double, AxisSeparatorElement> Cache { get; set; }
         public AxisTags Source { get; set; }
         public double LabelsRotation
         {
@@ -312,15 +311,9 @@ namespace LiveCharts.Wpf
 
         public void Clear()
         {
-            foreach (var separator in Cache)
-            {
-                Model.Chart.View.RemoveFromView(separator.Value.Line);
-                Model.Chart.View.RemoveFromView(separator.Value.TextBlock);
-                separator.Value.Line = null;
-                separator.Value.TextBlock = null;
-            }
-
-            Cache.Clear();
+            Model.ClearSeparators();
+            Model.Chart.View.RemoveFromView(TitleBlock);
+            TitleBlock = null;
         }
 
         public void RenderSeparator(SeparatorElementCore model, ChartCore chart)
@@ -346,7 +339,7 @@ namespace LiveCharts.Wpf
             }
             else
             {
-                ase = (AxisSeparatorElement)model.View;
+                ase = (AxisSeparatorElement) model.View;
             }
 
             if (!Separator.IsEnabled)

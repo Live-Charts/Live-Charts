@@ -318,5 +318,14 @@ namespace LiveCharts.Wpf.Components
                     throw new ArgumentOutOfRangeException();
             }
         }
+
+        public void Clear(IChartView chart)
+        {
+            chart.RemoveFromView(TextBlock);
+            chart.RemoveFromView(Line);
+
+            TextBlock = null;
+            Line = null;
+        }
     }
 }

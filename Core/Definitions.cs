@@ -540,6 +540,7 @@ namespace LiveCharts
         SeparatorElementCore Model { get; }
         CoreSize UpdateLabel(string text, AxisCore axis);
         void UpdateLine(AxisTags source, ChartCore chart, int axisIndex, AxisCore axisCore);
+        void Clear(IChartView chart);
     }
 
     public interface IChartPointView

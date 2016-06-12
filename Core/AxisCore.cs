@@ -234,5 +234,14 @@ namespace LiveCharts
                     ? Labels[(int)x]
                     : "");
         }
+
+        public void ClearSeparators()
+        {
+            foreach (var separator in Cache)
+            {
+                separator.Value.View.Clear(Chart.View);
+            }
+            Cache = new Dictionary<double, SeparatorElementCore>();
+        }
     }
 }

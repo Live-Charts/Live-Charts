@@ -21,7 +21,6 @@
 //SOFTWARE.
 
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.Design.Serialization;
 using System.Windows.Forms.Integration;
@@ -44,13 +43,13 @@ namespace LiveCharts.WinForms
         #region ChartProperties
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public List<Axis> AxisY
+        public AxesCollection AxisY
         {
             get { return WpfBase.AxisY; }
             set { WpfBase.AxisY = value; }
         }
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public List<Axis> AxisX
+        public AxesCollection AxisX
         {
             get { return WpfBase.AxisX; }
             set { WpfBase.AxisX = value; }

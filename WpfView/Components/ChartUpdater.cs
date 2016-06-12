@@ -24,14 +24,6 @@ using System;
 using System.Diagnostics;
 using System.Windows.Threading;
 
-//Todo: this should be in the Core, the only reason why this is here
-//is becuase there is no a multiplatform timer class
-//so we need to build our own.
-//that works in .net 4.0 to newest.
-
-//the alternative now, is using the timer of each platform
-//not a big problem because this class is really easy and small.
-
 namespace LiveCharts.Wpf.Components
 {
     public class ChartUpdater : LiveCharts.ChartUpdater
