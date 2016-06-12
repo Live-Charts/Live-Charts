@@ -33,13 +33,15 @@
 * **[Chat](https://gitter.im/beto-rodriguez/Live-Charts)**
 * **Questions, try [Stack Overflow](http://stackoverflow.com/), tag your question as LiveCharts**
 
-Live charts makes your data alive, as easy as manipulating any .net list, the library animates and updates every time your data changes, don't worry about perfomance, Livecharts also handles it.
+Animated, MVVM orientated .Net charts, for WPF, WinForms under MIT Licence, written in C#, LiveCharts listens for any change in your data automatically and updates UI.
+
+Live charts makes your data alive, as easy as manipulating any .net list, the library animates and updates every time your data changes.
 
  - Good looking, animated and easy to customize charts, you can practically change all properties.
  - Autoupdate UI, you just create a SeriesCollection, then LiveCharts will handle everything.
  - MVVM Charting, Support for WPF Bindings.
  - Supports zooming and panning.
- - MIT License, permissive licensing.
+ - MIT License, permissive licensing, yes free.
  
 This is the logic you use in every chart, there are just some litle properties or rules that change from each type of chart
 
