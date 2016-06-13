@@ -87,7 +87,7 @@ WPF and Winforms, currenlty the library is in the process to become a cross net 
 
 ###Net Version
 
-Net 4.0 or greater, if your application is designed to run in Windows XP, then you must use .net 4.0.3 at least.
+Net 4.0 or greater, if your application is designed to run in Windows XP, then you must use .Net 4.0.3
 
 ### Installation
 
