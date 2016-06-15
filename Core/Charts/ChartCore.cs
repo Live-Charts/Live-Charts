@@ -136,6 +136,7 @@ namespace LiveCharts.Charts
 
                 var x = curSize.Left;
                 var merged = yi.IsMerged ? 0 : biggest.Width + 2;
+
                 if (yi.Position == AxisPosition.LeftBottom)
                 {
                     yi.View.SetTitleLeft(x);

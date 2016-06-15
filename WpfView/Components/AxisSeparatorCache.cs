@@ -29,10 +29,6 @@ using System.Windows.Shapes;
 using LiveCharts.Charts;
 using LiveCharts.Wpf.Charts.Chart;
 
-//ToDo 
-//Practically everthing ins this calss should not be here, this should be in the core of the library!
-//here only the renderingm and animations, never a math operation!
-
 namespace LiveCharts.Wpf.Components
 {
     public class AxisSeparatorElement : ISeparatorElementView
@@ -46,6 +42,7 @@ namespace LiveCharts.Wpf.Components
 
         internal TextBlock TextBlock { get; set; }
         internal Line Line { get; set; }
+        internal RotatedSize RotatedSize { get; set; }
 
         public SeparatorElementCore Model
         {
@@ -279,17 +276,21 @@ namespace LiveCharts.Wpf.Components
             }
         }
 
-        public CoreSize UpdateLabel(string text, AxisCore axis)
+        public RotatedSize UpdateLabel(string text, AxisCore axis, AxisTags source)
         {
             TextBlock.Text = text;
             TextBlock.UpdateLayout();
 
-            var alpha = axis.View.LabelsRotation;
-            alpha *= Math.PI / 180;
+            var transform = new RotatedSize(axis.View.LabelsRotation,
+                TextBlock.ActualWidth, TextBlock.ActualHeight, axis);
 
-            return new CoreSize(Math.Cos(alpha)*TextBlock.ActualWidth,
-                Math.Sin(alpha)*TextBlock.ActualWidth +
-                Math.Sin((90*(Math.PI/180)) - alpha)*TextBlock.ActualHeight);
+            TextBlock.RenderTransform = Math.Abs(transform.LabelAngle) > 1
+                ? new RotateTransform(transform.LabelAngle)
+                : null;
+
+            RotatedSize = transform;
+
+            return transform;
         }
 
         public void UpdateLine(AxisTags source, ChartCore chart, int axisIndex, AxisCore axis)

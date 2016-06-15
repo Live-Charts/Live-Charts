@@ -84,7 +84,7 @@ namespace LiveCharts
 
     #endregion
 
-    #region Structs And Classes
+    #region Structures And Classes
 
     public struct CorePoint
     {
@@ -124,6 +124,170 @@ namespace LiveCharts
 
         public double Width { get; set; }
         public double Height { get; set; }
+    }
+
+    public class RotatedSize
+    {
+        public RotatedSize()
+        {
+            
+        }
+
+        public RotatedSize(double angle, double w, double h, AxisCore axis, AxisTags source)
+        {
+            // the rotation angle starts from an horizontal line, yes like this text
+            // - 0°, | 90°, - 180°, | 270°
+            // notice normally rotating a label from 90 to 270° will show the label
+            // in a wrong orientation
+            // we need to fix that angle
+
+            const double toRadians = Math.PI/180;
+
+            // 1. width components
+            // 2. height components
+
+            WFromW = Math.Abs(Math.Cos(angle*toRadians)*w); // W generated from the width of the label
+            WFromH = Math.Abs(Math.Sin(angle*toRadians)*h); // W generated from the height of the label
+
+            HFromW = Math.Abs(Math.Sin(angle*toRadians)*w); // H generated from the width of the label
+            HFromH = Math.Abs(Math.Cos(angle*toRadians)*h); // H generated from the height of the label
+
+            LabelAngle = angle%360;
+            if (LabelAngle < 0) LabelAngle += 360;
+            if (LabelAngle > 90 && LabelAngle < 270)
+                LabelAngle = (LabelAngle + 180)%360;
+
+            //at this points angles should only exist in 1st and 4th quadrant
+            //those are the only quadrants that generates readable labels
+            //the other 2 quadrants display inverted labels
+
+            var quadrant = ((int) (LabelAngle/90))%4 + 1;
+
+            const double padding = 4;
+
+            if (source == AxisTags.Y)
+            {
+                // Y Axis
+                if (quadrant == 1)
+                {
+                    if (axis.Position == AxisPosition.LeftBottom)
+                    {
+                        // 1, L
+                        Top = HFromW + (HFromH/2);      //space taken from separator to top
+                        Bottom = Height - Top;          //space taken from separator to bottom
+                        XOffset = -WFromW - padding;    //distance from separator to label origin in X
+                        YOffset = -Top;                 //distance from separator to label origin in Y
+                    }
+                    else
+                    {
+                        // 1, R
+                        Bottom = HFromW + (HFromH/2);
+                        Top = Height - Bottom;
+                        XOffset = padding + WFromH;
+                        YOffset = -Top;
+                    }
+                }
+                else
+                {
+                    if (axis.Position == AxisPosition.LeftBottom)
+                    {
+                        // 4, L
+                        Bottom = HFromW + (HFromH/2);
+                        Top = Height - Bottom;
+                        XOffset = -Width - padding;
+                        YOffset = -HFromW;
+                    }
+                    else
+                    {
+                        // 4, R
+                        Top = HFromW + (HFromH/2);
+                        Bottom = Height - Top;
+                        XOffset = padding;
+                        YOffset = -Bottom;
+                    }
+                }
+            }
+            else
+            {
+                // X Axis
+
+                //axis x has one exception, if labels rotation eq 0° then the label is centered
+                if (Math.Abs(axis.View.LabelsRotation) < .01)
+                {
+                    Left = Width / 2;
+                    Right = Left;
+                    XOffset = -Left;
+                    YOffset = axis.Position == AxisPosition.LeftBottom
+                        ? padding
+                        : -padding - Height;
+                }
+                else
+                {
+                    if (quadrant == 1)
+                    {
+                        if (axis.Position == AxisPosition.LeftBottom)
+                        {
+                            //1, B
+                            Right = WFromW + (WFromH / 2);  //space taken from separator to right
+                            Left = Width - Right;           //space taken from separator to left
+                            XOffset = Left;                 //distance from separator to label origin in X
+                            YOffset = padding;              //distance from separator to label origin in Y
+                        }
+                        else
+                        {
+                            //1, T
+                            Left = WFromW + (WFromH/2);
+                            Right = Width - Left;
+                            XOffset = -WFromW;
+                            YOffset = -padding - Height;
+                        }
+                    }
+                    else
+                    {
+                        if (axis.Position == AxisPosition.LeftBottom)
+                        {
+                            //4, B
+                            Left = WFromW + (WFromH/2);
+                            Right = Width - Left;
+                            XOffset = -Left;
+                            YOffset = padding + WFromW;
+                        }
+                        else
+                        {
+                            //4, T
+                            Right = WFromW + (WFromH/2);
+                            Left = Width - Right;
+                            XOffset = -Left;
+                            YOffset = -HFromH;
+                        }
+                    }
+                }
+            }
+
+        }
+
+        public double LabelAngle { get; set; }
+        public double WFromW { get; set; }
+        public double WFromH { get; set; }
+        public double HFromW { get; set; }
+        public double HFromH { get; set; }
+        public double Top { get; set; }
+        public double Bottom { get; set; }
+        public double Left { get; set; }
+        public double Right { get; set; }
+        public double XOffset { get; set; }
+        public double YOffset { get; set; }
+
+        public double Width { get { return WFromW + WFromH; } }
+        public double Height { get { return HFromW + HFromH; } }
+    }
+
+    public class CoreMargin
+    {
+        public double Top { get; set; }
+        public double Bottom { get; set; }
+        public double Left { get; set; }
+        public double Right { get; set; }
     }
 
     public struct CoreLimit
@@ -179,7 +343,7 @@ namespace LiveCharts
 
         public CoreRectangle()
         {
-            
+
         }
 
         public CoreRectangle(double left, double top, double width, double height) : this()
@@ -217,10 +381,7 @@ namespace LiveCharts
 
         public double Width
         {
-            get
-            {
-                return _width;
-            }
+            get { return _width; }
             set
             {
                 _width = value < 0 ? 0 : value;
@@ -230,10 +391,7 @@ namespace LiveCharts
 
         public double Height
         {
-            get
-            {
-                return _height;
-            }
+            get { return _height; }
             set
             {
                 _height = value < 0 ? 0 : value;
@@ -528,7 +686,7 @@ namespace LiveCharts
     {
         bool IsEnabled { get; set; }
         /// <summary>
-        /// Gets or sets sepator step, this means the value between each line, use null for auto.
+        /// Gets or sets separator step, this means the value between each line, use null for auto.
         /// </summary>
         double? Step { get; set; }
 
@@ -538,7 +696,7 @@ namespace LiveCharts
     public interface ISeparatorElementView
     {
         SeparatorElementCore Model { get; }
-        CoreSize UpdateLabel(string text, AxisCore axis);
+        RotatedSize UpdateLabel(string text, AxisCore axis, AxisTags source);
         void UpdateLine(AxisTags source, ChartCore chart, int axisIndex, AxisCore axisCore);
         void Clear(IChartView chart);
     }

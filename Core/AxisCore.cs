@@ -157,14 +157,14 @@ namespace LiveCharts
 
             var f = GetFormatter();
 
-            var biggest = new CoreSize(0, 0);
-            var tolerance = S / 10;
-            
+            var biggest = new CoreSize();
+            var tolerance = S/10;
+
             for (var i = MinLimit; i <= MaxLimit - (EvaluatesUnitWidth ? 1 : 0); i += S)
             {
                 SeparatorElementCore asc;
 
-                var key = Math.Round(i / tolerance) * tolerance;
+                var key = Math.Round(i/tolerance)*tolerance;
                 if (!Cache.TryGetValue(key, out asc))
                 {
                     asc = new SeparatorElementCore {IsNew = true};
@@ -181,7 +181,7 @@ namespace LiveCharts
                 asc.Value = i;
                 asc.IsActive = true;
 
-                var labelsSize = asc.View.UpdateLabel(f(i), this);
+                var labelsSize = asc.View.UpdateLabel(f(i), this, TODO);
 
                 biggest.Width = labelsSize.Width > biggest.Width
                     ? labelsSize.Width
