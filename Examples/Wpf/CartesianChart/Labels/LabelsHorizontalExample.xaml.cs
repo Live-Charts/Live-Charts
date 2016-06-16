@@ -37,7 +37,6 @@ namespace Wpf.CartesianChart.Labels
                 }
             };
 
-            RotateTransform = new RotateTransform(13);
             //Labels = new[]
             //{
             //    "Shea Ferriera",
@@ -55,7 +54,6 @@ namespace Wpf.CartesianChart.Labels
         }
 
         public SeriesCollection SeriesCollection { get; set; }
-        public RotateTransform RotateTransform { get; set; }
         public string[] Labels { get; set; }
         public Func<double, string> Formatter { get; set; }
 

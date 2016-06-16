@@ -25,7 +25,7 @@
                 <wpf:Axis Title="Sold Items" LabelFormatter="{Binding Formatter}"></wpf:Axis>
             </wpf:CartesianChart.AxisX>
             <wpf:CartesianChart.AxisY>
-                <wpf:Axis LabelsRotateTransform="{Binding RotateTransform}" Labels="{Binding Labels}">
+                <wpf:Axis Labels="{Binding Labels}">
                     <wpf:Axis.Separator >
                         <wpf:Separator Step="1"></wpf:Separator>
                     </wpf:Axis.Separator>

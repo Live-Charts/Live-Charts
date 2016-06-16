@@ -195,7 +195,7 @@ namespace LiveCharts
                         Bottom = HFromW + (HFromH/2);
                         Top = Height - Bottom;
                         XOffset = -Width - padding;
-                        YOffset = -HFromW;
+                        YOffset = HFromW - (WFromH/2);
                     }
                     else
                     {
@@ -250,7 +250,7 @@ namespace LiveCharts
                             Left = WFromW + (WFromH/2);
                             Right = Width - Left;
                             XOffset = -Left;
-                            YOffset = padding + WFromW;
+                            YOffset = padding + HFromW;
                         }
                         else
                         {
@@ -666,8 +666,7 @@ namespace LiveCharts
         AxisTags Source { get; set; }
         double? MaxValue { get; set; }
         double? MinValue { get; set; }
-        double LabelsRotation { get; }
-
+        double LabelsRotation { get; set; }
 
         CoreSize UpdateTitle(ChartCore chart, double rotationAngle = 0);
         void SetTitleTop(double value);
@@ -711,13 +710,11 @@ namespace LiveCharts
         void Clear(IChartView chart);
 
         //No animated methods
-        void Place(ChartCore chart, AxisCore axis, AxisTags direction, int axisIndex,
-            double toLabel, double toLine);
+        void Place(ChartCore chart, AxisCore axis, AxisTags direction, int axisIndex, double toLabel, double toLine, double tab);
         void Remove(ChartCore chart);
 
         //Animated methods
-        void Move(ChartCore chart, AxisCore axis, AxisTags direction, int axisIndex,
-            double fromLabel, double toLabel, double fromLine, double toLine);
+        void Move(ChartCore chart, AxisCore axis, AxisTags direction, int axisIndex, double toLabel, double toLine);
         void FadeIn(AxisCore axis, ChartCore chart);
         void FadeOutAndRemove(ChartCore chart);
     }

@@ -201,8 +201,24 @@ namespace LiveCharts
 
                 var toLine = ChartFunctions.ToPlotArea(element.Value, source, chart, axisIndex);
                 toLine += EvaluatesUnitWidth ? ChartFunctions.GetUnitWidth(source, chart, this)/2 : 0;
-
                 var toLabel = toLine + element.View.LabelModel.GetOffsetBySource(source);
+
+                double labelTab;
+
+                if (source == AxisTags.Y)
+                {
+                    labelTab = Position == AxisPosition.LeftBottom 
+                        ? chart.DrawMargin.Left                             //Left
+                        : chart.DrawMargin.Left + chart.DrawMargin.Width;   //Right
+                }
+                else
+                {
+                    labelTab = Position == AxisPosition.LeftBottom
+                        ? chart.DrawMargin.Top + chart.DrawMargin.Height    //Bot
+                        : Chart.DrawMargin.Top;                             //Top
+                }
+
+                labelTab += element.View.LabelModel.GetOffsetBySource(source.Invert());
 
                 switch (element.State)
                 {
@@ -213,7 +229,7 @@ namespace LiveCharts
                                 ? FromPreviousState(element.Value, source, chart)
                                 : 0;
                             element.View.Move(chart, this, source, axisIndex,
-                                fr, 0, 0, 0);
+                                fr, 0);
                             element.View.FadeOutAndRemove(chart);
                         }
                         else
@@ -222,22 +238,16 @@ namespace LiveCharts
                         }
                         break;
                     case SeparationState.Keep:
-                        var fromLineKeep = FromPreviousState(element.Value, source, chart);
-                        fromLineKeep += EvaluatesUnitWidth ? ChartFunctions.GetUnitWidth(source, chart, this)/2 : 0;
-                        var fromLabelKeep = fromLineKeep + element.View.LabelModel.GetOffsetBySource(source);
-
                         if (!chart.View.DisableAnimations && !View.DisableAnimations)
                         {
-                            element.View.Move(chart, this, source, axisIndex,  );
+                            element.View.Move(chart, this, source, axisIndex, toLabel, toLine);
                             if (element.IsNew) element.View.FadeIn(this, chart);
                         }
                         else
-                        {
-                            element.View.Place(chart, this, source, axisIndex, toLabel, toLine);
-                        }
+                            element.View.Place(chart, this, source, axisIndex, toLabel, toLine, labelTab);
                         break;
                     case SeparationState.InitialAdd:
-                        element.View.Place(chart, this, source, axisIndex, toLabel, toLine);
+                        element.View.Place(chart, this, source, axisIndex, toLabel, toLine, labelTab);
                         break;
                     default:
                         throw new ArgumentOutOfRangeException();

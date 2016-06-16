@@ -141,13 +141,13 @@ namespace LiveCharts.Charts
                 if (yi.Position == AxisPosition.LeftBottom)
                 {
                     yi.View.SetTitleLeft(x);
-                    curSize.Left = curSize.Left + titleSize.Height + biggest.Top + padding;
-                    curSize.Width -= (titleSize.Height + biggest.Top + padding);
+                    curSize.Left += titleSize.Height + biggest.Width + padding;
+                    curSize.Width -= (titleSize.Height + biggest.Width + padding);
                 }
                 else
                 {
                     yi.View.SetTitleLeft(x + curSize.Width - titleSize.Height);
-                    curSize.Width -= (titleSize.Height + biggest.Top + padding);
+                    curSize.Width -= (titleSize.Height + biggest.Width + padding);
                 }
 
                 var top = biggest.Top;
@@ -182,7 +182,7 @@ namespace LiveCharts.Charts
                 else
                 {
                     xi.View.SetTitleTop(top - t);
-                    curSize.Top = curSize.Top + titleSize.Height + biggest.Height;
+                    curSize.Top += titleSize.Height + biggest.Height;
                     curSize.Height -= (titleSize.Height + biggest.Height);
                 }
 

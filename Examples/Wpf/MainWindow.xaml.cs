@@ -48,6 +48,8 @@ namespace Wpf
 
             CartesianExamples = new List<UserControl>
             {
+                new LabelsExample(),
+
                 new UIElementsExample(),
 
                 new StackedRowExample(),
@@ -64,7 +66,6 @@ namespace Wpf
                 new CustomTypesPlotting(),
                 new NegativeStackedRowExample(),
                 new LineExample(),
-                new LabelsExample(),
                 //new LabelsHorizontalExample(),
                 new ConstantChangesChart(),
                 new CustomizedLineSeries(),
