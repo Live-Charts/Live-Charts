@@ -211,7 +211,7 @@ namespace LiveCharts
             {
                 // X Axis
 
-                //axis x has one exception, if labels rotation eq 0° then the label is centered
+                //axis x has one exception, if labels rotation equals 0° then the label is centered
                 if (Math.Abs(axis.View.LabelsRotation) < .01)
                 {
                     Left = Width / 2;
@@ -280,6 +280,13 @@ namespace LiveCharts
 
         public double Width { get { return WFromW + WFromH; } }
         public double Height { get { return HFromW + HFromH; } }
+
+        public double GetOffsetBySource(AxisTags source)
+        {
+            return source == AxisTags.X
+                ? XOffset
+                : YOffset;
+        }
     }
 
     public class CoreMargin
@@ -288,6 +295,8 @@ namespace LiveCharts
         public double Bottom { get; set; }
         public double Left { get; set; }
         public double Right { get; set; }
+        public double Width { get; set; }
+        public double Height { get; set; }
     }
 
     public struct CoreLimit
@@ -651,7 +660,6 @@ namespace LiveCharts
     {
         AxisCore Model { get; set; }
         bool DisableAnimations { get; set; }
-        double LabelsReference { get; set; }
         double UnitWidth { get; set; }
         bool ShowLabels { get; set; }
         List<IAxisSectionView> Sections { get; set; }
@@ -696,9 +704,22 @@ namespace LiveCharts
     public interface ISeparatorElementView
     {
         SeparatorElementCore Model { get; }
+        RotatedSize LabelModel { get; }
+
         RotatedSize UpdateLabel(string text, AxisCore axis, AxisTags source);
-        void UpdateLine(AxisTags source, ChartCore chart, int axisIndex, AxisCore axisCore);
+
         void Clear(IChartView chart);
+
+        //No animated methods
+        void Place(ChartCore chart, AxisCore axis, AxisTags direction, int axisIndex,
+            double toLabel, double toLine);
+        void Remove(ChartCore chart);
+
+        //Animated methods
+        void Move(ChartCore chart, AxisCore axis, AxisTags direction, int axisIndex,
+            double fromLabel, double toLabel, double fromLine, double toLine);
+        void FadeIn(AxisCore axis, ChartCore chart);
+        void FadeOutAndRemove(ChartCore chart);
     }
 
     public interface IChartPointView

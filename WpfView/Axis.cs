@@ -53,7 +53,7 @@ namespace LiveCharts.Wpf
 
         public AxisCore Model { get; set; }
         public TextBlock TitleBlock { get; set; }
-        public double LabelsReference { get; set; }
+        public double LabelsTab { get; set; }
         public double UnitWidth { get; set; }
         public AxisTags Source { get; set; }
         public double LabelsRotation

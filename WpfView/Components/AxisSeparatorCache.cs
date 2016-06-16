@@ -27,7 +27,6 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using LiveCharts.Charts;
-using LiveCharts.Wpf.Charts.Chart;
 
 namespace LiveCharts.Wpf.Components
 {
@@ -42,7 +41,7 @@ namespace LiveCharts.Wpf.Components
 
         internal TextBlock TextBlock { get; set; }
         internal Line Line { get; set; }
-        internal RotatedSize RotatedSize { get; set; }
+        public RotatedSize LabelModel { get; private set; }
 
         public SeparatorElementCore Model
         {
@@ -76,8 +75,8 @@ namespace LiveCharts.Wpf.Components
                 var leftM = axis.IsMerged ? TextBlock.ActualWidth + 10 : -2;
                 Canvas.SetTop(TextBlock, i - uw.Y - topM);
                 Canvas.SetLeft(TextBlock, axis.Position == AxisPosition.LeftBottom
-                    ? axis.LabelsReference - TextBlock.ActualWidth + leftM
-                    : axis.LabelsReference - leftM);
+                    ? axis.LabelsTab - TextBlock.ActualWidth + leftM
+                    : axis.LabelsTab - leftM);
             }
             else
             {
@@ -95,118 +94,8 @@ namespace LiveCharts.Wpf.Components
                 Canvas.SetLeft(TextBlock, i + uw.X - left);
                 Canvas.SetTop(TextBlock,
                     axis.Position == AxisPosition.LeftBottom
-                        ? axis.LabelsReference - top
-                        : axis.LabelsReference);
-            }
-        }
-
-        private void Remove(IChartView chart, Axis axis)
-        {
-            if (axis.DisableAnimations || chart.DisableAnimations)
-            {
-                chart.RemoveFromView(TextBlock);
-                chart.RemoveFromView(Line);
-                return;
-            }
-
-            if (TextBlock.Visibility == Visibility.Collapsed &&
-                Line.Visibility == Visibility.Collapsed) return;
-
-            var anim = new DoubleAnimation
-            {
-                From = 1,
-                To = 0,
-                Duration = chart.AnimationsSpeed
-            };
-
-            anim.Completed += (sender, args) =>
-            {
-                if (Application.Current == null)
-                {
-                    chart.RemoveFromView(TextBlock);
-                    chart.RemoveFromView(Line);
-                    return;
-                }
-
-                Application.Current.Dispatcher.Invoke(new Action(() =>
-                {
-                    chart.RemoveFromView(TextBlock);
-                    chart.RemoveFromView(Line);
-                }));
-            };
-
-            TextBlock.BeginAnimation(UIElement.OpacityProperty, anim);
-            Line.BeginAnimation(UIElement.OpacityProperty, new DoubleAnimation(1, 0, chart.AnimationsSpeed));
-        }
-
-        private void FadeIn(IChartView chart, Axis axis)
-        {
-            if (axis.DisableAnimations || chart.DisableAnimations) return;
-
-            if (TextBlock.Visibility != Visibility.Collapsed)
-                TextBlock.BeginAnimation(UIElement.OpacityProperty, new DoubleAnimation(0, 1, chart.AnimationsSpeed));
-
-            if (Line.Visibility != Visibility.Collapsed)
-                Line.BeginAnimation(UIElement.OpacityProperty, new DoubleAnimation(0, 1, TimeSpan.FromMilliseconds(1000)));
-        }
-
-        private void MoveFromCurrentAx(IChartView chart, AxisTags direction, int axisPosition, Axis axis)
-        {
-            if (axis.DisableAnimations || chart.DisableAnimations) return;
-
-            var i = ChartFunctions.ToPlotArea(Model.Value, direction, chart.Model, axisPosition);
-
-            var uw = new CorePoint(
-                axis.Model.EvaluatesUnitWidth
-                    ? ChartFunctions.GetUnitWidth(AxisTags.X, chart.Model, axis.Model) / 2
-                    : 0,
-                axis.Model.EvaluatesUnitWidth
-                    ? ChartFunctions.GetUnitWidth(AxisTags.Y, chart.Model, axis.Model) / 2
-                    : 0);
-
-            if (direction == AxisTags.Y)
-            {
-                Line.BeginAnimation(Line.X1Property,
-                    new DoubleAnimation(Line.X1, chart.Model.DrawMargin.Left, chart.AnimationsSpeed));
-                Line.BeginAnimation(Line.X2Property,
-                    new DoubleAnimation(Line.X2, chart.Model.DrawMargin.Left + chart.Model.DrawMargin.Width,
-                        chart.AnimationsSpeed));
-                Line.BeginAnimation(Line.Y1Property,
-                    new DoubleAnimation(Line.Y1, i, chart.AnimationsSpeed));
-                Line.BeginAnimation(Line.Y2Property,
-                    new DoubleAnimation(Line.Y2, i, chart.AnimationsSpeed));
-
-                var hh = axis.IsMerged
-                    ? (i + TextBlock.ActualHeight > chart.Model.DrawMargin.Top + chart.Model.DrawMargin.Height
-                        ? +TextBlock.ActualHeight
-                        : 0)
-                    : TextBlock.ActualHeight*.5;
-
-                TextBlock.BeginAnimation(Canvas.TopProperty,
-                    new DoubleAnimation(Line.Y1 - hh - uw.Y, i - hh - uw.Y,
-                        chart.AnimationsSpeed));
-            }
-            else
-            {
-                Line.BeginAnimation(Line.X1Property,
-                    new DoubleAnimation(Line.X1, i, chart.AnimationsSpeed));
-                Line.BeginAnimation(Line.X2Property,
-                    new DoubleAnimation(Line.X2, i, chart.AnimationsSpeed));
-                Line.BeginAnimation(Line.Y1Property,
-                    new DoubleAnimation(Line.Y1, chart.Model.DrawMargin.Top, chart.AnimationsSpeed));
-                Line.BeginAnimation(Line.Y2Property,
-                    new DoubleAnimation(Line.Y2, chart.Model.DrawMargin.Top + chart.Model.DrawMargin.Height,
-                        chart.AnimationsSpeed));
-
-                var hw = axis.IsMerged
-                    ? (i + TextBlock.ActualWidth > chart.Model.DrawMargin.Left + chart.Model.DrawMargin.Width
-                        ? TextBlock.ActualWidth + 2
-                        : -2)
-                    : TextBlock.ActualWidth*.5;
-
-                TextBlock.BeginAnimation(Canvas.LeftProperty,
-                    new DoubleAnimation(Line.X1 - hw + uw.X, i - hw + uw.X,
-                        chart.AnimationsSpeed));
+                        ? axis.LabelsTab - top
+                        : axis.LabelsTab);
             }
         }
 
@@ -227,7 +116,7 @@ namespace LiveCharts.Wpf.Components
             if (direction == AxisTags.Y)
             {
                 var y = Model.IsNew
-                    ? axis.Model.FromPreviousAxisState(Model.Value, direction, chart.Model)
+                    ? axis.Model.FromPreviousState(Model.Value, direction, chart.Model)
                     : Line.Y1;
 
                 Line.BeginAnimation(Line.X1Property,
@@ -252,7 +141,7 @@ namespace LiveCharts.Wpf.Components
             }
             else
             {
-                var x = Model.IsNew ? axis.Model.FromPreviousAxisState(Model.Value, direction, chart.Model) : Line.X1;
+                var x = Model.IsNew ? axis.Model.FromPreviousState(Model.Value, direction, chart.Model) : Line.X1;
 
                 Line.BeginAnimation(Line.X1Property,
                     new DoubleAnimation(x, i, chart.AnimationsSpeed));
@@ -282,42 +171,15 @@ namespace LiveCharts.Wpf.Components
             TextBlock.UpdateLayout();
 
             var transform = new RotatedSize(axis.View.LabelsRotation,
-                TextBlock.ActualWidth, TextBlock.ActualHeight, axis);
+                TextBlock.ActualWidth, TextBlock.ActualHeight, axis, source);
 
             TextBlock.RenderTransform = Math.Abs(transform.LabelAngle) > 1
                 ? new RotateTransform(transform.LabelAngle)
                 : null;
 
-            RotatedSize = transform;
+            LabelModel = transform;
 
             return transform;
-        }
-
-        public void UpdateLine(AxisTags source, ChartCore chart, int axisIndex, AxisCore axis)
-        {
-            var wpfChart = chart.View as Chart;
-            var wpfAxis = axis.View as Axis;
-            if (wpfChart == null || wpfAxis == null) return;
-
-            switch (Model.State)
-            {
-                case SeparationState.Remove:
-                    if (!chart.View.DisableAnimations && !axis.DisableAnimations)
-                        MoveFromCurrentAx(wpfChart, source, axisIndex, wpfAxis);
-                    Remove(wpfChart, wpfAxis);
-                    break;
-                case SeparationState.Keep:
-                    UnanimatedPlace(wpfChart, source, axisIndex, wpfAxis);
-                    if (!chart.View.DisableAnimations && !axis.DisableAnimations)
-                        MoveFromPreviousAx(wpfChart, source, axisIndex, wpfAxis);
-                    if (Model.IsNew) FadeIn(wpfChart, wpfAxis);
-                    break;
-                case SeparationState.InitialAdd:
-                    UnanimatedPlace(wpfChart, source, axisIndex, wpfAxis);
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
         }
 
         public void Clear(IChartView chart)
@@ -327,6 +189,89 @@ namespace LiveCharts.Wpf.Components
 
             TextBlock = null;
             Line = null;
+        }      
+
+        public void Place(ChartCore chart, AxisCore axis, AxisTags direction, int axisIndex, 
+            double toLabel, double toLine)
+        {
+            if (direction == AxisTags.Y)
+            {
+                Line.X1 = chart.DrawMargin.Left;
+                Line.X2 = chart.DrawMargin.Left + chart.DrawMargin.Width;
+                Line.Y1 = toLine;
+                Line.Y2 = toLine;
+
+                Canvas.SetTop(TextBlock, toLabel);
+                Canvas.SetLeft(TextBlock, toLabel);
+            }
+            else
+            {
+                Line.X1 = toLine;
+                Line.X2 = toLine;
+                Line.Y1 = chart.DrawMargin.Top;
+                Line.Y2 = chart.DrawMargin.Top + chart.DrawMargin.Height;
+
+                Canvas.SetLeft(TextBlock, toLabel);
+                Canvas.SetTop(TextBlock, toLabel);
+            }
+        }
+
+        public void Remove(ChartCore chart)
+        {
+            chart.View.RemoveFromView(TextBlock);
+            chart.View.RemoveFromView(Line);
+            TextBlock = null;
+            Line = null;
+        }
+
+        public void Move(ChartCore chart, AxisCore axis, AxisTags direction, int axisIndex, 
+            double fromLabel, double toLabel, double fromLine, double toLine)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void FadeIn(AxisCore axis, ChartCore chart)
+        {
+            if (TextBlock.Visibility != Visibility.Collapsed)
+                TextBlock.BeginAnimation(UIElement.OpacityProperty,
+                    new DoubleAnimation(0, 1, chart.View.AnimationsSpeed));
+
+            if (Line.Visibility != Visibility.Collapsed)
+                Line.BeginAnimation(UIElement.OpacityProperty,
+                    new DoubleAnimation(0, 1, chart.View.AnimationsSpeed));
+        }
+
+        public void FadeOutAndRemove(ChartCore chart)
+        {
+            if (TextBlock.Visibility == Visibility.Collapsed &&
+                Line.Visibility == Visibility.Collapsed) return;
+
+            var anim = new DoubleAnimation
+            {
+                From = 1,
+                To = 0,
+                Duration = chart.View.AnimationsSpeed
+            };
+
+            anim.Completed += (sender, args) =>
+            {
+                if (Application.Current == null)
+                {
+                    chart.View.RemoveFromView(TextBlock);
+                    chart.View.RemoveFromView(Line);
+                    return;
+                }
+
+                Application.Current.Dispatcher.Invoke(new Action(() =>
+                {
+                    chart.View.RemoveFromView(TextBlock);
+                    chart.View.RemoveFromView(Line);
+                }));
+            };
+
+            TextBlock.BeginAnimation(UIElement.OpacityProperty, anim);
+            Line.BeginAnimation(UIElement.OpacityProperty,
+                new DoubleAnimation(1, 0, chart.View.AnimationsSpeed));
         }
     }
 }

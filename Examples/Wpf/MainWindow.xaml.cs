@@ -48,8 +48,6 @@ namespace Wpf
 
             CartesianExamples = new List<UserControl>
             {
-                new ClearAxTest(),
-
                 new UIElementsExample(),
 
                 new StackedRowExample(),
