@@ -200,7 +200,9 @@ namespace LiveCharts
                 }
 
                 var toLine = ChartFunctions.ToPlotArea(element.Value, source, chart, axisIndex);
-                toLine += EvaluatesUnitWidth ? ChartFunctions.GetUnitWidth(source, chart, this)/2 : 0;
+                toLine += EvaluatesUnitWidth
+                    ? (source == AxisTags.X ? 1 : -1)*ChartFunctions.GetUnitWidth(source, chart, this)/2
+                    : 0;
                 var toLabel = toLine + element.View.LabelModel.GetOffsetBySource(source);
 
                 double labelTab;
