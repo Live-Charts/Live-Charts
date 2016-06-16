@@ -107,7 +107,7 @@ namespace LiveCharts.Wpf.Components
             Line = null;
         }
 
-        public void Move(ChartCore chart, AxisCore axis, AxisTags direction, int axisIndex, double toLabel, double toLine)
+        public void Move(ChartCore chart, AxisCore axis, AxisTags direction, int axisIndex, double toLabel, double toLine, double tab)
         {
             if (direction == AxisTags.Y)
             {
@@ -122,6 +122,8 @@ namespace LiveCharts.Wpf.Components
 
                 TextBlock.BeginAnimation(Canvas.TopProperty,
                     new DoubleAnimation(toLabel, chart.View.AnimationsSpeed));
+                TextBlock.BeginAnimation(Canvas.LeftProperty,
+                    new DoubleAnimation(tab, chart.View.AnimationsSpeed));
             }
             else
             {
@@ -136,6 +138,8 @@ namespace LiveCharts.Wpf.Components
 
                 TextBlock.BeginAnimation(Canvas.LeftProperty,
                     new DoubleAnimation(toLabel, chart.View.AnimationsSpeed));
+                TextBlock.BeginAnimation(Canvas.TopProperty,
+                    new DoubleAnimation(tab, chart.View.AnimationsSpeed));
             }
 
         }

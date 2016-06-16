@@ -225,11 +225,7 @@ namespace LiveCharts
                     case SeparationState.Remove:
                         if (!chart.View.DisableAnimations && !View.DisableAnimations)
                         {
-                            var fr = source == AxisTags.X
-                                ? FromPreviousState(element.Value, source, chart)
-                                : 0;
-                            element.View.Move(chart, this, source, axisIndex,
-                                fr, 0);
+                            element.View.Move(chart, this, source, axisIndex, toLabel, toLine, labelTab);
                             element.View.FadeOutAndRemove(chart);
                         }
                         else
@@ -240,11 +236,21 @@ namespace LiveCharts
                     case SeparationState.Keep:
                         if (!chart.View.DisableAnimations && !View.DisableAnimations)
                         {
-                            element.View.Move(chart, this, source, axisIndex, toLabel, toLine);
-                            if (element.IsNew) element.View.FadeIn(this, chart);
+                            if (element.IsNew)
+                            {
+                                var toLinePrevious = FromPreviousState(element.Value, source, chart);
+                                toLinePrevious += EvaluatesUnitWidth ? ChartFunctions.GetUnitWidth(source, chart, this) / 2 : 0;
+                                var toLabelPrevious = toLinePrevious + element.View.LabelModel.GetOffsetBySource(source);
+                                element.View.Place(chart, this, source, axisIndex, toLabelPrevious, 
+                                    toLinePrevious, labelTab);
+                                element.View.FadeIn(this, chart);
+                            }
+                            element.View.Move(chart, this, source, axisIndex, toLabel, toLine, labelTab);
                         }
                         else
+                        {
                             element.View.Place(chart, this, source, axisIndex, toLabel, toLine, labelTab);
+                        }
                         break;
                     case SeparationState.InitialAdd:
                         element.View.Place(chart, this, source, axisIndex, toLabel, toLine, labelTab);
@@ -262,11 +268,8 @@ namespace LiveCharts
                 chart.DrawMargin.Width, chart.DrawMargin.Height);
         }
 
-        #endregion
 
-        #region Public Methods
-
-        public double FromPreviousState(double value, AxisTags source, ChartCore chart)
+        internal double FromPreviousState(double value, AxisTags source, ChartCore chart)
         {
             if (LastAxisMax == null) return 0;
 
@@ -292,12 +295,15 @@ namespace LiveCharts
 
             var deltaX = p2.X - p1.X;
             // ReSharper disable once CompareOfFloatsByEqualityOperator
-            var m = (p2.Y - p1.Y)/(deltaX == 0 ? double.MinValue : deltaX);
-            var d = m*(value - p1.X) + p1.Y;
+            var m = (p2.Y - p1.Y) / (deltaX == 0 ? double.MinValue : deltaX);
+            var d = m * (value - p1.X) + p1.Y;
 
             return d;
         }
 
+        #endregion
+
+        #region Public Methods
         public Func<double, string> GetFormatter()
         {
             return x => Labels == null

@@ -714,7 +714,7 @@ namespace LiveCharts
         void Remove(ChartCore chart);
 
         //Animated methods
-        void Move(ChartCore chart, AxisCore axis, AxisTags direction, int axisIndex, double toLabel, double toLine);
+        void Move(ChartCore chart, AxisCore axis, AxisTags direction, int axisIndex, double toLabel, double toLine, double tab);
         void FadeIn(AxisCore axis, ChartCore chart);
         void FadeOutAndRemove(ChartCore chart);
     }
