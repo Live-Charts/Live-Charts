@@ -43,6 +43,10 @@ Live charts makes your data alive, as easy as manipulating any .net list, the li
  - Supports zooming and panning.
  - MIT License, permissive licensing, yes free.
  
+**Why is LiveCharts different to another charting libraries?**
+
+First: animations and good looking charts by default, second: responsive charts these charts automatically update when your data changes also when you resize your chart, finally LiveCharts MVVM is different and for me it feels better than other libraries, becuase LiveCharts uses generics and with it strongly typed modeling, others use reflection to get the property value.
+
 This is the logic you use in every chart, there are just some litle properties or rules that change from each type of chart
 
 ```c#
