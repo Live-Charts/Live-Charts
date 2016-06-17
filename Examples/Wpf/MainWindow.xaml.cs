@@ -12,6 +12,7 @@ using Wpf.CartesianChart.BasicLine;
 using Wpf.CartesianChart.Basic_Bars;
 using Wpf.CartesianChart.Basic_Stacked_Bar;
 using Wpf.CartesianChart.Customized_Line_Series;
+using Wpf.CartesianChart.DynamicVisibility;
 using Wpf.CartesianChart.Inverted_Series;
 using Wpf.CartesianChart.Irregular_Intervals;
 using Wpf.CartesianChart.Labels;
@@ -49,6 +50,8 @@ namespace Wpf
 
             CartesianExamples = new List<UserControl>
             {
+                new DynamicVisibilityExample(),
+
                 new TesterGuy(),
 
                 new LabelsExample(),

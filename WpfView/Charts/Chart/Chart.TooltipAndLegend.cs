@@ -62,7 +62,7 @@ namespace LiveCharts.Wpf.Charts.Chart
 
         private void DataMouseDown(object sender, MouseEventArgs e)
         {
-            var result = Series.SelectMany(x => x.Values.Points).FirstOrDefault(x =>
+            var result = Model.ActualSeries.SelectMany(x => x.ActualValues.Points).FirstOrDefault(x =>
             {
                 var pointView = x.View as PointView;
                 return pointView != null && Equals(pointView.HoverShape, sender);
@@ -76,7 +76,7 @@ namespace LiveCharts.Wpf.Charts.Chart
 
             TooltipTimeoutTimer.Stop();
 
-            var source = Series.SelectMany(x => x.Values.Points);
+            var source = Model.ActualSeries.SelectMany(x => x.ActualValues.Points);
             var senderPoint = source.FirstOrDefault(x => x.View != null &&
                                                          Equals(((PointView) x.View).HoverShape, sender));
 
@@ -103,13 +103,13 @@ namespace LiveCharts.Wpf.Charts.Chart
                     pointsToHighlight = new List<ChartPoint> {senderPoint};
                     break;
                 case TooltipSelectionMode.SharedXValues:
-                    pointsToHighlight = Series.Where(x => x.ScalesXAt == senderPoint.SeriesView.ScalesXAt)
+                    pointsToHighlight = Model.ActualSeries.Where(x => x.ScalesXAt == senderPoint.SeriesView.ScalesXAt)
                         .SelectMany(x => x.Values.Points)
                         .Where(x => Math.Abs(x.X - senderPoint.X) < ax.Model.S*.01);
                     shares = (this as PieChart) == null ? (double?) senderPoint.X : null;
                     break;
                 case TooltipSelectionMode.SharedYValues:
-                    pointsToHighlight = Series.Where(x => x.ScalesYAt == senderPoint.SeriesView.ScalesYAt)
+                    pointsToHighlight = Model.ActualSeries.Where(x => x.ScalesYAt == senderPoint.SeriesView.ScalesYAt)
                         .SelectMany(x => x.Values.Points)
                         .Where(x => Math.Abs(x.Y - senderPoint.Y) < ay.Model.S*.01);
                     shares = senderPoint.Y;
@@ -124,17 +124,18 @@ namespace LiveCharts.Wpf.Charts.Chart
                 YFormatter = ay.Model.GetFormatter(),
                 SharedValue = shares,
                 SelectionMode = DataTooltip.SelectionMode,
-                Points = pointsToHighlight.Select(x => new DataPointViewModel
-                {
-                    Series = new SeriesViewModel
+                Points = pointsToHighlight.Where(x => x.SeriesView.IsSeriesVisible)
+                    .Select(x => new DataPointViewModel
                     {
-                        Fill = ((Series.Series) x.SeriesView).Fill,
-                        Stroke = ((Series.Series) x.SeriesView).Stroke,
-                        StrokeThickness = ((Series.Series) x.SeriesView).StrokeThickness,
-                        Title = ((Series.Series) x.SeriesView).Title,
-                    },
-                    ChartPoint = x
-                }).ToList()
+                        Series = new SeriesViewModel
+                        {
+                            Fill = ((Series.Series) x.SeriesView).Fill,
+                            Stroke = ((Series.Series) x.SeriesView).Stroke,
+                            StrokeThickness = ((Series.Series) x.SeriesView).StrokeThickness,
+                            Title = ((Series.Series) x.SeriesView).Title,
+                        },
+                        ChartPoint = x
+                    }).ToList()
             };
 
             DataTooltip.Visibility = Visibility.Visible;
@@ -157,7 +158,7 @@ namespace LiveCharts.Wpf.Charts.Chart
             TooltipTimeoutTimer.Stop();
             TooltipTimeoutTimer.Start();
 
-            var source = Series.SelectMany(x => x.Values.Points);
+            var source = Model.ActualSeries.SelectMany(x => x.ActualValues.Points);
             var senderPoint =
                 source.FirstOrDefault(x => x.View != null && Equals(((PointView) x.View).HoverShape, sender)); 
 
