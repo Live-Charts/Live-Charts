@@ -28,16 +28,6 @@ namespace LiveCharts
 {
     #region Enumerators
 
-    public enum VisualElementHorizontalAlingment
-    {
-        Center, Right, Left
-    }
-
-    public enum VisualElementVerticalAlingment
-    {
-        Center, Top, Bottom
-    }
-
     public enum TooltipSelectionMode
     {
         OnlySender, SharedXValues, SharedYValues
@@ -488,8 +478,6 @@ namespace LiveCharts
         double Y { get; set; }
         int AxisX { get; set; }
         int AxisY { get; set; }
-        VisualElementVerticalAlingment VerticalAlingment { get; set; }
-        VisualElementHorizontalAlingment HorizontalAlingment { get; set; }
         void AddOrMove();
         void Remove();
     }

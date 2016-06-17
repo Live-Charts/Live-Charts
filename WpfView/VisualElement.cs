@@ -36,8 +36,6 @@ namespace LiveCharts.Wpf
         public bool RequiresAdd { get; set; }
         public int AxisX { get; set; }
         public int AxisY { get; set; }
-        public VisualElementVerticalAlingment VerticalAlingment { get; set; }
-        public VisualElementHorizontalAlingment HorizontalAlingment { get; set; }
 
         public static readonly DependencyProperty XProperty = DependencyProperty.Register(
             "X", typeof (double), typeof (VisualElement), 
@@ -84,31 +82,35 @@ namespace LiveCharts.Wpf
 
             UIElement.UpdateLayout();
 
-            switch (VerticalAlingment)
+            switch (VerticalAlignment)
             {
-                case VisualElementVerticalAlingment.Center:
-                    coordinate = new CorePoint(coordinate.X, coordinate.Y - UIElement.ActualHeight/2);
+                case VerticalAlignment.Top:
+                    coordinate = new CorePoint(coordinate.X, coordinate.Y - UIElement.ActualHeight);
                     break;
-                case VisualElementVerticalAlingment.Bottom:
+                case VerticalAlignment.Center:
+                    coordinate = new CorePoint(coordinate.X, coordinate.Y - UIElement.ActualHeight / 2);
+                    break;
+                case VerticalAlignment.Bottom:
                     coordinate = new CorePoint(coordinate.X, coordinate.Y);
                     break;
-                case VisualElementVerticalAlingment.Top:
-                    coordinate = new CorePoint(coordinate.X, coordinate.Y - UIElement.ActualHeight);
+                case VerticalAlignment.Stretch:
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
 
-            switch (HorizontalAlingment)
+            switch (HorizontalAlignment)
             {
-                case VisualElementHorizontalAlingment.Center:
-                    coordinate = new CorePoint(coordinate.X - UIElement.ActualWidth/2, coordinate.Y);
+                case HorizontalAlignment.Left:
+                    coordinate = new CorePoint(coordinate.X - UIElement.ActualWidth, coordinate.Y);
                     break;
-                case VisualElementHorizontalAlingment.Right:
+                case HorizontalAlignment.Center:
+                    coordinate = new CorePoint(coordinate.X - UIElement.ActualWidth / 2, coordinate.Y);
+                    break;
+                case HorizontalAlignment.Right:
                     coordinate = new CorePoint(coordinate.X, coordinate.Y);
                     break;
-                case VisualElementHorizontalAlingment.Left:
-                    coordinate = new CorePoint(coordinate.X - UIElement.ActualWidth, coordinate.Y);
+                case HorizontalAlignment.Stretch:
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -126,10 +128,8 @@ namespace LiveCharts.Wpf
                     Canvas.SetLeft(UIElement, coordinate.X);
                     Canvas.SetTop(UIElement, coordinate.Y);
                 }
-                UIElement.BeginAnimation(Canvas.LeftProperty,
-                    new DoubleAnimation(coordinate.X, wpfChart.AnimationsSpeed));
-                UIElement.BeginAnimation(Canvas.TopProperty,
-                    new DoubleAnimation(coordinate.Y, wpfChart.AnimationsSpeed));
+                UIElement.BeginAnimation(Canvas.LeftProperty, new DoubleAnimation(coordinate.X, wpfChart.AnimationsSpeed));
+                UIElement.BeginAnimation(Canvas.TopProperty, new DoubleAnimation(coordinate.Y, wpfChart.AnimationsSpeed));
             }
         }
 
