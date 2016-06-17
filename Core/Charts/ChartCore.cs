@@ -29,7 +29,7 @@ namespace LiveCharts.Charts
     public abstract class ChartCore
     {
 
-        #region Contructors
+        #region Constructors
         protected ChartCore(IChartView view, IChartUpdater updater)
         {
             View = view;
@@ -125,9 +125,10 @@ namespace LiveCharts.Charts
 
             double t = curSize.Top,
                 b = 0d,
-                bm = 0d,
                 l = curSize.Left,
                 r = 0d;
+
+            const double padding = 4;
 
             foreach (var yi in AxisY)
             {
@@ -135,29 +136,21 @@ namespace LiveCharts.Charts
                 var biggest = yi.PrepareChart(AxisTags.Y, this);
 
                 var x = curSize.Left;
-                var merged = yi.IsMerged ? 0 : biggest.Width + 2;
+
                 if (yi.Position == AxisPosition.LeftBottom)
                 {
                     yi.View.SetTitleLeft(x);
-                    yi.View.LabelsReference = x + titleSize.Height + merged;
-                    curSize.Left = curSize.Left + titleSize.Height + merged;
-                    curSize.Width -= (titleSize.Height + merged);
+                    curSize.Left += titleSize.Height + biggest.Width + padding;
+                    curSize.Width -= (titleSize.Height + biggest.Width + padding);
                 }
                 else
                 {
                     yi.View.SetTitleLeft(x + curSize.Width - titleSize.Height);
-                    yi.View.LabelsReference = x + curSize.Width - titleSize.Height - merged;
-                    curSize.Width -= (titleSize.Height + merged);
+                    curSize.Width -= (titleSize.Height + biggest.Width + padding);
                 }
 
-                var top = yi.IsMerged ? 0 : biggest.Height*.5;
-                if (t < top) t = top;
-
-                var bot = yi.IsMerged ? 0 : biggest.Height*.5;
-                if (b < bot) b = bot;
-
-                if (yi.IsMerged && bm < biggest.Height)
-                    bm = biggest.Height;
+                if (t < biggest.Top) t = biggest.Top;
+                if (b < biggest.Bottom) b = biggest.Bottom;
             }
 
             if (t > 0)
@@ -165,36 +158,31 @@ namespace LiveCharts.Charts
                 curSize.Top = t;
                 curSize.Height -= t;
             }
-            if (b > 0 && !(AxisX.Count > 0))
-                curSize.Height = curSize.Height - b;
+            if (b > 0)
+            {
+                curSize.Height -= b;
+            }
 
             foreach (var xi in AxisX)
             {
                 var titleSize = xi.View.UpdateTitle(this);
                 var biggest = xi.PrepareChart(AxisTags.X, this);
                 var top = curSize.Top;
-                var merged = xi.IsMerged ? 0 : biggest.Height;
+
                 if (xi.Position == AxisPosition.LeftBottom)
                 {
                     xi.View.SetTitleTop(top + curSize.Height - titleSize.Height);
-                    xi.View.LabelsReference = top + b - (xi.IsMerged ? bm : 0) +
-                                         (curSize.Height - (titleSize.Height + merged + b)) -
-                                         (xi.IsMerged ? b : 0);
-                    curSize.Height -= (titleSize.Height + merged + b);
+                    curSize.Height -= (titleSize.Height + biggest.Height);
                 }
                 else
                 {
                     xi.View.SetTitleTop(top - t);
-                    xi.View.LabelsReference = (top - t) + titleSize.Height + (xi.IsMerged ? bm : 0);
-                    curSize.Top = curSize.Top + titleSize.Height + merged;
-                    curSize.Height -= (titleSize.Height + merged);
+                    curSize.Top += titleSize.Height + biggest.Height;
+                    curSize.Height -= (titleSize.Height + biggest.Height);
                 }
 
-                var left = xi.IsMerged ? 0 : biggest.Width*.5;
-                if (l < left) l = left;
-
-                var right = xi.IsMerged ? 0 : biggest.Width*.5;
-                if (r < right) r = right;
+                if (l < biggest.Left) l = biggest.Left;
+                if (r < biggest.Right) r = biggest.Right;
             }
 
             if (curSize.Left < l)
@@ -205,7 +193,6 @@ namespace LiveCharts.Charts
                 foreach (var yi in AxisY.Where(x => x.Position == AxisPosition.LeftBottom))
                 {
                     yi.View.SetTitleLeft(yi.View.GetTitleLeft() + cor);
-                    yi.View.LabelsReference += cor;
                 }
             }
             var rp = ChartControlSize.Width - curSize.Left - curSize.Width;
@@ -216,7 +203,6 @@ namespace LiveCharts.Charts
                 foreach (var yi in AxisY.Where(x => x.Position == AxisPosition.RightTop))
                 {
                     yi.View.SetTitleLeft(yi.View.GetTitleLeft() - cor);
-                    yi.View.LabelsReference -= cor;
                 }
             }
 
@@ -434,7 +420,7 @@ namespace LiveCharts.Charts
 
         #endregion
 
-        #region Protecteds
+        #region Protected
 
         protected void StackPoints(IEnumerable<ISeriesView> stackables, AxisTags stackAt, int stackIndex,
             StackMode mode = StackMode.Values)

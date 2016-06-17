@@ -36,7 +36,7 @@ namespace LiveCharts.Wpf
     public class Axis : FrameworkElement, IAxisView
     {
 
-        #region Contructors
+        #region Constructors
         public Axis()
         {
             TitleBlock = BindATextBlock();
@@ -53,14 +53,9 @@ namespace LiveCharts.Wpf
 
         public AxisCore Model { get; set; }
         public TextBlock TitleBlock { get; set; }
-        public double LabelsReference { get; set; }
+        public double LabelsTab { get; set; }
         public double UnitWidth { get; set; }
         public AxisTags Source { get; set; }
-        public double LabelsRotation
-        {
-            get { return LabelsRotateTransform == null ? 0 : LabelsRotateTransform.Angle; }
-        }
-
         #endregion
 
         #region Dependency Properties
@@ -69,7 +64,7 @@ namespace LiveCharts.Wpf
             "Labels", typeof (IList<string>), typeof (Axis), 
             new PropertyMetadata(default(IList<string>), UpdateChart()));
         /// <summary>
-        /// Gets or sets axis labels, labels property stores the array to map for each index and value, for example if axis value is 0 then label will be labels[0], when value 1 then labels[1], value 2 then labels[2], ..., value n labels[n], use this property instead of a formatter when there is no conversion between value and label for example names, if you are ploting sales vs salesman name.
+        /// Gets or sets axis labels, labels property stores the array to map for each index and value, for example if axis value is 0 then label will be labels[0], when value 1 then labels[1], value 2 then labels[2], ..., value n labels[n], use this property instead of a formatter when there is no conversion between value and label for example names, if you are plotting sales vs salesman name.
         /// </summary>
         [TypeConverter(typeof(StringCollectionConverter))]
         public IList<string> Labels
@@ -91,7 +86,7 @@ namespace LiveCharts.Wpf
             "LabelFormatter", typeof (Func<double, string>), typeof (Axis),
             new PropertyMetadata(default(Func<double, string>), UpdateChart()));
         /// <summary>
-        /// Gets or sets the function to convet a value to label, for example when you need to display your chart as curency ($1.00) or as degrees (10°), if Labels property is not null then formatter is ignored, and label will be pulled from Labels prop.
+        /// Gets or sets the function to convert a value to label, for example when you need to display your chart as currency ($1.00) or as degrees (10°), if Labels property is not null then formatter is ignored, and label will be pulled from Labels prop.
         /// </summary>
         public Func<double, string> LabelFormatter
         {
@@ -273,7 +268,7 @@ namespace LiveCharts.Wpf
                 new PropertyMetadata(FontStretches.Normal));
 
         /// <summary>
-        /// Gets or sets labels font strech
+        /// Gets or sets labels font stretch
         /// </summary>
         public FontStretch FontStretch
         {
@@ -294,15 +289,13 @@ namespace LiveCharts.Wpf
             set { SetValue(ForegroundProperty, value); }
         }
 
-        public static readonly DependencyProperty LabelsRotateTransformProperty = DependencyProperty.Register(
-            "LabelsRotateTransform", typeof (RotateTransform), typeof (Axis), new PropertyMetadata(default(RotateTransform)));
-        /// <summary>
-        /// Gets or sets the labels axis rotate transform
-        /// </summary>
-        public RotateTransform LabelsRotateTransform
+        public static readonly DependencyProperty LabelsRotationProperty = DependencyProperty.Register(
+            "LabelsRotation", typeof (double), typeof (Axis), new PropertyMetadata(default(double), UpdateChart()));
+
+        public double LabelsRotation
         {
-            get { return (RotateTransform) GetValue(LabelsRotateTransformProperty); }
-            set { SetValue(LabelsRotateTransformProperty, value); }
+            get { return (double) GetValue(LabelsRotationProperty); }
+            set { SetValue(LabelsRotationProperty, value); }
         }
 
         #endregion
@@ -327,10 +320,6 @@ namespace LiveCharts.Wpf
                     Line = BindALine(),
                     TextBlock = BindATextBlock()
                 };
-
-                if (RenderTransform != null)
-                    ase.TextBlock.SetBinding(RenderTransformProperty,
-                        new Binding {Path = new PropertyPath(LabelsRotateTransformProperty), Source = this});
 
                 model.View = ase;
                 chart.View.AddToView(ase.Line);

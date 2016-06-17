@@ -20,15 +20,12 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-using System;
 using LiveCharts.Charts;
 
 namespace LiveCharts
 {
     public static class ChartFunctions
     {
-        private static readonly double Day = TimeSpan.FromDays(1).Ticks;
-
         /// <summary>
         /// Scales a chart value to screen value according to an axis. 
         /// </summary>
@@ -219,7 +216,9 @@ namespace LiveCharts
     {
         public static AxisTags Invert(this AxisTags axis)
         {
-            return axis == AxisTags.X ? AxisTags.Y : AxisTags.X;
+            return axis == AxisTags.X
+                ? AxisTags.Y
+                : AxisTags.X;
         }
     }
 }

@@ -132,7 +132,7 @@
       <DependentUpon>test.xaml</DependentUpon>
     </Compile>
     <Compile Include="Components\ChartUpdater.cs" />
-    <Compile Include="Components\AxisSeparatorCache.cs" />
+    <Compile Include="Components\AxisSeparatorElement.cs" />
     <Compile Include="Charts\Chart\Chart.Properties.cs" />
     <Compile Include="Charts\Chart\Chart.cs" />
     <Compile Include="Charts\Chart\Chart.TooltipAndLegend.cs" />

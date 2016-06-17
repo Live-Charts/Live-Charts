@@ -37,17 +37,16 @@ namespace Wpf.CartesianChart.Labels
                 }
             };
 
-            RotateTransform = new RotateTransform(13);
-            //Labels = new[]
-            //{
-            //    "Shea Ferriera",
-            //    "Maurita Powel",
-            //    "Scottie Brogdon",
-            //    "Teresa Kerman",
-            //    "Nell Venuti",
-            //    "Anibal Brothers",
-            //    "Anderson Dillman"
-            //};
+            Labels = new[]
+            {
+                "Shea Ferriera",
+                "Maurita Powel",
+                "Scottie Brogdon",
+                "Teresa Kerman",
+                "Nell Venuti",
+                "Anibal Brothers",
+                "Anderson Dillman"
+            };
 
             Formatter = value => value + ".00K items";
 
@@ -55,7 +54,6 @@ namespace Wpf.CartesianChart.Labels
         }
 
         public SeriesCollection SeriesCollection { get; set; }
-        public RotateTransform RotateTransform { get; set; }
         public string[] Labels { get; set; }
         public Func<double, string> Formatter { get; set; }
 
