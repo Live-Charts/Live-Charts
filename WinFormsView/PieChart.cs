@@ -37,7 +37,10 @@ namespace LiveCharts.WinForms
         public PieChart()
         {
             Child = Chart;
+            Chart.DataClick += DataClick;
         }
+
+        public event Action<object, ChartPoint> DataClick;
 
         #region ChartProperties
 
