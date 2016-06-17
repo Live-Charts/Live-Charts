@@ -49,6 +49,8 @@ namespace Wpf
 
             CartesianExamples = new List<UserControl>
             {
+                new TesterGuy(),
+
                 new LabelsExample(),
                 new LabelsHorizontalExample(),
 

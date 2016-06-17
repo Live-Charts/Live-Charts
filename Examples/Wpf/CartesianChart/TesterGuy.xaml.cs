@@ -12,17 +12,27 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using LiveCharts;
 
 namespace Wpf.CartesianChart
 {
     /// <summary>
     /// Interaction logic for Welcome.xaml
     /// </summary>
-    public partial class WelcomeCartesian : UserControl
+    public partial class TesterGuy : UserControl
     {
-        public WelcomeCartesian()
+        public TesterGuy()
         {
             InitializeComponent();
+
+            ChartValues = new ChartValues<double> {1, 6, 2, 7, 4};
+        }
+
+        public ChartValues<double> ChartValues { get; set; }
+
+        private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
+        {
+            ChartValues.Clear();
         }
     }
 }

@@ -37,7 +37,7 @@ namespace LiveCharts
         {
             Chart.View.EnsureElementBelongsToCurrentView(seriesView);
             seriesView.Model.Chart = Chart;
-            seriesView.Values.Series = seriesView.Model;
+            if (seriesView.Values != null) seriesView.Values.Series = seriesView.Model;
             seriesView.Model.SeriesCollection = Chart.View.Series;
             seriesView.Model.SeriesCollection.Chart = Chart;
         }
@@ -54,7 +54,9 @@ namespace LiveCharts
 
         protected void Update(bool restartsAnimations = false)   
         {
-            if (!Chart.View.IsControlLoaded || Chart.View.Series == null) return;
+            if (!Chart.View.IsMocked)
+                if (!Chart.View.IsControlLoaded || Chart.View.Series == null)
+                    return;
 
             if (restartsAnimations)
                 Chart.View.Series.ForEach(s => s.Values.Points.ForEach(p =>
@@ -66,21 +68,21 @@ namespace LiveCharts
             Chart.AxisX = Chart.View.MapXAxes(Chart);
             Chart.AxisY = Chart.View.MapYAxes(Chart);
 
-            foreach (var series in Chart.View.Series)
+            foreach (var series in Chart.View.Series ?? new SeriesCollection())
             {
                 InitializeSeriesParams(series);
-                series.Values.GetLimits();
+                series.ActualValues.GetLimits();
             }
 
             Chart.PrepareAxes();
             Chart.RunSpecializedChartComponents();
 
-            foreach (var series in Chart.View.Series)
+            foreach (var series in Chart.ActualSeries)
             {
                 series.OnSeriesUpdateStart();
-                series.Values.InitializeGarbageCollector();
+                series.ActualValues.InitializeGarbageCollector();
                 series.Model.Update();
-                series.Values.CollectGarbage();
+                series.ActualValues.CollectGarbage();
                 series.OnSeriesUpdatedFinish();
             }
 #if DEBUG

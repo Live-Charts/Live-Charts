@@ -27,6 +27,17 @@ namespace LiveCharts.Wpf.Charts.Chart
 {
     public abstract partial class Chart
     {
+        public void MockIt(CoreSize size)
+        {
+            IsMocked = true;
+            IsControlLoaded = true;
+
+            Model.ChartControlSize = size;
+
+            Model.DrawMargin.Height = Canvas.ActualHeight;
+            Model.DrawMargin.Width = Canvas.ActualWidth;
+        }
+
         private void OnLoaded(object sender, RoutedEventArgs args)
         {
             IsControlLoaded = true;

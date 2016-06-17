@@ -27,7 +27,7 @@ namespace LiveCharts.Charts
 {
     public class CartesianChartCore : ChartCore
     {
-        #region Contructors
+        #region Constructors
 
         public CartesianChartCore(IChartView view, IChartUpdater updater) : base(view, updater)
         {
@@ -36,6 +36,7 @@ namespace LiveCharts.Charts
 
         #endregion
 
+
         #region Publics
 
         public override void PrepareAxes()
@@ -43,12 +44,12 @@ namespace LiveCharts.Charts
             PivotZoomingAxis = AxisTags.X;
             base.PrepareAxes();
 
-            if (View.Series.Any(x => !(x.Model is ICartesianSeries)))
+            if (ActualSeries.Any(x => !(x.Model is ICartesianSeries)))
                 throw new Exception(
                     "There is a invalid series in the series collection, " +
                     "verify that all the series implement ICartesianSeries.");
 
-            var cartesianSeries = View.Series.Select(x => x.Model).Cast<ICartesianSeries>().ToArray();
+            var cartesianSeries = ActualSeries.Select(x => x.Model).Cast<ICartesianSeries>().ToArray();
 
             for (var index = 0; index < AxisX.Count; index++)
             {
@@ -129,16 +130,16 @@ namespace LiveCharts.Charts
 
         private void PrepareBubbles()
         {
-            if (!View.Series.Any(x => x is IBubbleSeriesView)) return;
+            if (!ActualSeries.Any(x => x is IBubbleSeriesView)) return;
 
-            var vs = View.Series.Select(x => x.Values.Limit3).ToArray();
+            var vs = ActualSeries.Select(x => x.ActualValues.Limit3).ToArray();
             Value3CoreLimit = new CoreLimit(vs.Select(x => x.Min).DefaultIfEmpty(0).Min(),
                 vs.Select(x => x.Max).DefaultIfEmpty(0).Max());
         }
 
         private void PrepareUnitWidthColumns()
         {
-            foreach (var series in View.Series)
+            foreach (var series in ActualSeries)
             {
                 if (series is IStackedColumnSeriesView || series is IColumnSeriesView || series is IOhlcSeriesView)
                 {
@@ -153,13 +154,13 @@ namespace LiveCharts.Charts
 
         private void PrepareStackedColumns()
         {
-            if (!View.Series.Any(x => x is IStackedColumnSeriesView)) return;
+            if (!ActualSeries.Any(x => x is IStackedColumnSeriesView)) return;
 
             var isPercentage =
-                View.Series.Any(x => x is IStackModelableSeriesView && x is IStackedColumnSeriesView &&
+                ActualSeries.Any(x => x is IStackModelableSeriesView && x is IStackedColumnSeriesView &&
                                      ((IStackModelableSeriesView)x).StackMode == StackMode.Percentage);
 
-            foreach (var group in View.Series.OfType<IStackedColumnSeriesView>().GroupBy(x => x.ScalesYAt))
+            foreach (var group in ActualSeries.OfType<IStackedColumnSeriesView>().GroupBy(x => x.ScalesYAt))
             {
                 StackPoints(group, AxisTags.Y, group.Key, isPercentage ? StackMode.Percentage : StackMode.Values);
             }
@@ -167,13 +168,13 @@ namespace LiveCharts.Charts
 
         private void PrepareStackedRows()
         {
-            if (!View.Series.Any(x => x is IStackedRowSeriesView)) return;
+            if (!ActualSeries.Any(x => x is IStackedRowSeriesView)) return;
 
             var isPercentage =
-                View.Series.Any(x => x is IStackModelableSeriesView && x is IStackedRowSeriesView &&
+                ActualSeries.Any(x => x is IStackModelableSeriesView && x is IStackedRowSeriesView &&
                                      ((IStackModelableSeriesView) x).StackMode == StackMode.Percentage);
 
-            foreach (var group in View.Series.OfType<IStackedRowSeriesView>().GroupBy(x => x.ScalesXAt))
+            foreach (var group in ActualSeries.OfType<IStackedRowSeriesView>().GroupBy(x => x.ScalesXAt))
             {
                 StackPoints(group, AxisTags.X, group.Key, isPercentage ? StackMode.Percentage : StackMode.Values);
             }
@@ -181,13 +182,13 @@ namespace LiveCharts.Charts
 
         private void PrepareStackedAreas()
         {
-            if (!View.Series.Any(x => x is IStackedAreaSeriesViewView)) return;
+            if (!ActualSeries.Any(x => x is IStackedAreaSeriesViewView)) return;
 
             var isPercentage =
-                View.Series.Any(x => x is IStackModelableSeriesView && x is IStackedAreaSeriesViewView &&
+                ActualSeries.Any(x => x is IStackModelableSeriesView && x is IStackedAreaSeriesViewView &&
                                      ((IStackModelableSeriesView) x).StackMode == StackMode.Percentage);
 
-            foreach (var group in View.Series.OfType<IStackedAreaSeriesViewView>().GroupBy(x => x.ScalesYAt))
+            foreach (var group in ActualSeries.OfType<IStackedAreaSeriesViewView>().GroupBy(x => x.ScalesYAt))
             {
                 StackPoints(group, AxisTags.Y, group.Key, isPercentage ? StackMode.Percentage : StackMode.Values);
             }
@@ -195,13 +196,13 @@ namespace LiveCharts.Charts
 
         private void PrepareVerticalStackedAreas()
         {
-            if (!View.Series.Any(x => x is IVerticalStackedAreaSeriesViewView)) return;
+            if (!ActualSeries.Any(x => x is IVerticalStackedAreaSeriesViewView)) return;
 
             var isPercentage =
-                View.Series.Any(x => x is IStackModelableSeriesView && x is IVerticalStackedAreaSeriesViewView &&
+                ActualSeries.Any(x => x is IStackModelableSeriesView && x is IVerticalStackedAreaSeriesViewView &&
                                      ((IStackModelableSeriesView) x).StackMode == StackMode.Percentage);
 
-            foreach (var group in View.Series.OfType<IVerticalStackedAreaSeriesViewView>().GroupBy(x => x.ScalesXAt))
+            foreach (var group in ActualSeries.OfType<IVerticalStackedAreaSeriesViewView>().GroupBy(x => x.ScalesXAt))
             {
                 StackPoints(group, AxisTags.X, group.Key, isPercentage ? StackMode.Percentage : StackMode.Values);
             }

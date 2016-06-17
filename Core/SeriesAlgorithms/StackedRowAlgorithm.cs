@@ -61,7 +61,7 @@ namespace LiveCharts.SeriesAlgorithms
 
             var zero = ChartFunctions.ToDrawMargin(startAt, AxisTags.X, Chart, View.ScalesXAt);
 
-            foreach (var chartPoint in View.Values.Points)
+            foreach (var chartPoint in View.ActualValues.Points)
             {
                 var y = ChartFunctions.ToDrawMargin(chartPoint.Y, AxisTags.Y, Chart, View.ScalesYAt) - ChartFunctions.GetUnitWidth(AxisTags.Y, Chart, View.ScalesYAt);
                 var from = _stackModelable.StackMode == StackMode.Values

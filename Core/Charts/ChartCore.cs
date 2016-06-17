@@ -28,6 +28,7 @@ namespace LiveCharts.Charts
 {
     public abstract class ChartCore
     {
+        private readonly SeriesCollection _dummyCollection = new SeriesCollection();
 
         #region Constructors
         protected ChartCore(IChartView view, IChartUpdater updater)
@@ -81,6 +82,11 @@ namespace LiveCharts.Charts
 
         private DateTime RequestedZoomAt { get; set; }
 
+        public SeriesCollection ActualSeries
+        {
+            get { return View.Series ?? _dummyCollection; }
+        }
+
         #endregion
 
         #region Public Methods
@@ -92,10 +98,12 @@ namespace LiveCharts.Charts
                 var xi = AxisX[index];
 
                 xi.MaxLimit = xi.MaxValue ??
-                              View.Series.Where(series => series.Values != null && series.ScalesXAt == index)
+                              (View.Series ?? new SeriesCollection())
+                                  .Where(series => series.Values != null && series.ScalesXAt == index)
                                   .Select(series => series.Values.Limit1.Max).DefaultIfEmpty(0).Max();
                 xi.MinLimit = xi.MinValue ??
-                              View.Series.Where(series => series.Values != null && series.ScalesXAt == index)
+                              (View.Series ?? new SeriesCollection())
+                                  .Where(series => series.Values != null && series.ScalesXAt == index)
                                   .Select(series => series.Values.Limit1.Min).DefaultIfEmpty(0).Min();
             }
 
@@ -104,10 +112,12 @@ namespace LiveCharts.Charts
                 var yi = AxisY[index];
 
                 yi.MaxLimit = yi.MaxValue ??
-                             View.Series.Where(series => series.Values != null && series.ScalesYAt == index)
+                              (View.Series ?? new SeriesCollection())
+                                  .Where(series => series.Values != null && series.ScalesYAt == index)
                                   .Select(series => series.Values.Limit2.Max).DefaultIfEmpty(0).Max();
                 yi.MinLimit = yi.MinValue ??
-                              View.Series.Where(series => series.Values != null && series.ScalesYAt == index)
+                              (View.Series ?? new SeriesCollection())
+                                  .Where(series => series.Values != null && series.ScalesYAt == index)
                                   .Select(series => series.Values.Limit2.Min).DefaultIfEmpty(0).Min();
             }
         }
@@ -425,7 +435,7 @@ namespace LiveCharts.Charts
         protected void StackPoints(IEnumerable<ISeriesView> stackables, AxisTags stackAt, int stackIndex,
             StackMode mode = StackMode.Values)
         {
-            var stackedColumns = stackables.Select(x => x.Values.Points.ToArray()).ToArray();
+            var stackedColumns = stackables.Select(x => x.ActualValues.Points.ToArray()).ToArray();
 
             var maxI = stackedColumns.Select(x => x.Length).DefaultIfEmpty(0).Max();
 

@@ -35,7 +35,7 @@ namespace LiveCharts.Wpf.Charts.Chart
     {
         protected ChartCore ChartCoreModel;
 
-        #region Contructors
+        #region Constructors
 
         protected Chart()
         {
@@ -97,6 +97,15 @@ namespace LiveCharts.Wpf.Charts.Chart
 
         #endregion
 
+        #region
+
+        /// <summary>
+        /// This property need to be true when unit testing
+        /// </summary>
+        public bool IsMocked { get; set; }
+
+        #endregion
+
         #region Property Changed
 
         protected static PropertyChangedCallback CallChartUpdater(bool animate = false, bool updateNow = false)
@@ -124,7 +133,7 @@ namespace LiveCharts.Wpf.Charts.Chart
 
         #endregion
 
-        #region Obsoletes, this properties will dissapear in future versions
+        #region Obsoletes, this properties will disappear in future versions
 
         public static readonly DependencyProperty HoverableProperty = DependencyProperty.Register("Hoverable", typeof (bool), typeof (Chart), new PropertyMetadata(true));
 

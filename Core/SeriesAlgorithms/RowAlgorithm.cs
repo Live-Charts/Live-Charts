@@ -66,7 +66,7 @@ namespace LiveCharts.SeriesAlgorithms
 
             var correction = ChartFunctions.GetUnitWidth(AxisTags.Y, Chart, View.ScalesYAt);
 
-            foreach (var chartPoint in View.Values.Points)
+            foreach (var chartPoint in View.ActualValues.Points)
             {
                 var reference =
                     ChartFunctions.ToDrawMargin(chartPoint, View.ScalesXAt, View.ScalesYAt, Chart);

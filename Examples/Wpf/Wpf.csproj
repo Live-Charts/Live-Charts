@@ -192,7 +192,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="CartesianChart\WelcomeCartesian.xaml">
+    <Page Include="CartesianChart\TesterGuy.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -305,8 +305,8 @@
       <DependentUpon>DateTime.xaml</DependentUpon>
     </Compile>
     <Compile Include="CartesianChart\Using DateTime\DateModel.cs" />
-    <Compile Include="CartesianChart\WelcomeCartesian.xaml.cs">
-      <DependentUpon>WelcomeCartesian.xaml</DependentUpon>
+    <Compile Include="CartesianChart\TesterGuy.xaml.cs">
+      <DependentUpon>TesterGuy.xaml</DependentUpon>
     </Compile>
     <Compile Include="CartesianChart\ZoomingAndPanning\ZoomingAndPanning.xaml.cs">
       <DependentUpon>ZoomingAndPanning.xaml</DependentUpon>

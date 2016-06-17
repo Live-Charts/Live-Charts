@@ -45,7 +45,7 @@ namespace LiveCharts.Wpf.Components
 #if DEBUG
             Debug.WriteLine("Updater run requested...");
 #endif
-            if (updateNow)
+            if (updateNow || Chart.View.IsMocked)
             {
 #if DEBUG
                 Debug.WriteLine("Updater was forced.");

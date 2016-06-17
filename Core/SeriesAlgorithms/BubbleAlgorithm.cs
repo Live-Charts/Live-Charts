@@ -55,7 +55,7 @@ namespace LiveCharts.SeriesAlgorithms
                         ? ChartFunctions.GetUnitWidth(AxisTags.Y, Chart, View.ScalesYAt) / 2
                         : 0);
 
-            foreach (var chartPoint in View.Values.Points)
+            foreach (var chartPoint in View.ActualValues.Points)
             {
                 chartPoint.ChartLocation = ChartFunctions.ToDrawMargin(
                     chartPoint, View.ScalesXAt, View.ScalesYAt, Chart) + uw;

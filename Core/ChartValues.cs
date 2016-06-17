@@ -212,6 +212,11 @@ namespace LiveCharts
         private IPointEvaluator<T> GetConfig()
         {
             //Trying to ge the user defined configuration...
+
+            //series == null means that chart values are null, and LiveCharts
+            //could not set the Series Instance tho the current chart values...
+            if (Series == null) return null;
+
             var config =
                 (Series.View.Configuration ?? Series.SeriesCollection.Configuration) as IPointEvaluator<T>;
            

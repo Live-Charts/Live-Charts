@@ -638,13 +638,13 @@ namespace LiveCharts
 
         event Action<object, ChartPoint> DataClick;
 
+        bool IsMocked { get; set; }
         SeriesCollection Series { get; set; }
         TimeSpan TooltipTimeout { get; set; }
         ZoomingOptions Zoom { get; set; }
         LegendLocation LegendLocation { get; set; }
         bool DisableAnimations { get; set; }
         TimeSpan AnimationsSpeed { get; set; }
-
 
         bool HasTooltip { get; }
         bool HasDataClickEventAttached { get; }
@@ -670,6 +670,8 @@ namespace LiveCharts
         List<AxisCore> MapXAxes(ChartCore chart);
         List<AxisCore> MapYAxes(ChartCore chart);
 
+        void MockIt(CoreSize size);
+
 #if DEBUG
         void CountElements();
 #endif
@@ -685,6 +687,7 @@ namespace LiveCharts
         object Configuration { get; set; }
         bool IsSeriesVisible { get; }
         Func<ChartPoint, string> LabelPoint { get; set; }
+        IChartValues ActualValues { get; }
 
         IChartPointView GetPointView(IChartPointView view, ChartPoint point ,string label);
         void OnSeriesUpdateStart();

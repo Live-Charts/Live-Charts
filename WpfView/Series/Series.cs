@@ -12,8 +12,9 @@ namespace LiveCharts.Wpf.Series
 {
     public abstract class Series : FrameworkElement, ISeriesView
     {
-
-        #region Contructors
+        private readonly IChartValues _dummyValues = new ChartValues<double>();
+        
+        #region Constructors
         protected Series()
         {
             DefaultFillOpacity = 0.35;
@@ -32,8 +33,15 @@ namespace LiveCharts.Wpf.Series
         #region Properties
 
         private IChartValues LastKnownValues { get; set; }
+
         internal double DefaultFillOpacity { get; set; }
         public SeriesAlgorithm Model { get; set; }
+
+        public IChartValues ActualValues
+        {
+            get { return Values ?? _dummyValues; }
+        }
+
         public bool IsSeriesVisible
         {
             get { return Visibility == Visibility.Visible; }
