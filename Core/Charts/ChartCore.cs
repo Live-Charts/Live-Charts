@@ -125,7 +125,6 @@ namespace LiveCharts.Charts
 
             double t = curSize.Top,
                 b = 0d,
-                bm = 0d,
                 l = curSize.Left,
                 r = 0d;
 
@@ -150,14 +149,8 @@ namespace LiveCharts.Charts
                     curSize.Width -= (titleSize.Height + biggest.Width + padding);
                 }
 
-                var top = biggest.Top;
-                if (t < top) t = top;
-
-                var bot = biggest.Bottom;
-                if (b < bot) b = bot;
-
-                if (yi.IsMerged && bm < biggest.Height)
-                    bm = biggest.Height;
+                if (t < biggest.Top) t = biggest.Top;
+                if (b < biggest.Bottom) b = biggest.Bottom;
             }
 
             if (t > 0)
@@ -165,8 +158,10 @@ namespace LiveCharts.Charts
                 curSize.Top = t;
                 curSize.Height -= t;
             }
-            if (b > 0 && !(AxisX.Count > 0))
-                curSize.Height = curSize.Height - b;
+            if (b > 0)
+            {
+                curSize.Height -= b;
+            }
 
             foreach (var xi in AxisX)
             {
@@ -177,7 +172,7 @@ namespace LiveCharts.Charts
                 if (xi.Position == AxisPosition.LeftBottom)
                 {
                     xi.View.SetTitleTop(top + curSize.Height - titleSize.Height);
-                    curSize.Height -= (titleSize.Height + biggest.Height + b);
+                    curSize.Height -= (titleSize.Height + biggest.Height);
                 }
                 else
                 {
@@ -186,11 +181,8 @@ namespace LiveCharts.Charts
                     curSize.Height -= (titleSize.Height + biggest.Height);
                 }
 
-                var left = xi.IsMerged ? 0 : biggest.Left;
-                if (l < left) l = left;
-
-                var right = xi.IsMerged ? 0 : biggest.Right;
-                if (r < right) r = right;
+                if (l < biggest.Left) l = biggest.Left;
+                if (r < biggest.Right) r = biggest.Right;
             }
 
             if (curSize.Left < l)

@@ -37,16 +37,16 @@ namespace Wpf.CartesianChart.Labels
                 }
             };
 
-            //Labels = new[]
-            //{
-            //    "Shea Ferriera",
-            //    "Maurita Powel",
-            //    "Scottie Brogdon",
-            //    "Teresa Kerman",
-            //    "Nell Venuti",
-            //    "Anibal Brothers",
-            //    "Anderson Dillman"
-            //};
+            Labels = new[]
+            {
+                "Shea Ferriera",
+                "Maurita Powel",
+                "Scottie Brogdon",
+                "Teresa Kerman",
+                "Nell Venuti",
+                "Anibal Brothers",
+                "Anderson Dillman"
+            };
 
             Formatter = value => value + ".00K items";
 

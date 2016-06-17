@@ -14,6 +14,7 @@ using Wpf.CartesianChart.Basic_Stacked_Bar;
 using Wpf.CartesianChart.Customized_Line_Series;
 using Wpf.CartesianChart.Inverted_Series;
 using Wpf.CartesianChart.Irregular_Intervals;
+using Wpf.CartesianChart.Labels;
 using Wpf.CartesianChart.LogarithmScale;
 using Wpf.CartesianChart.Missing_Line_Points;
 using Wpf.CartesianChart.NegativeStackedRow;
@@ -49,6 +50,7 @@ namespace Wpf
             CartesianExamples = new List<UserControl>
             {
                 new LabelsExample(),
+                new LabelsHorizontalExample(),
 
                 new UIElementsExample(),
 
@@ -66,7 +68,6 @@ namespace Wpf
                 new CustomTypesPlotting(),
                 new NegativeStackedRowExample(),
                 new LineExample(),
-                //new LabelsHorizontalExample(),
                 new ConstantChangesChart(),
                 new CustomizedLineSeries(),
                 new InvertedExample(),

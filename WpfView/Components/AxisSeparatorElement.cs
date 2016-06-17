@@ -41,19 +41,19 @@ namespace LiveCharts.Wpf.Components
 
         internal TextBlock TextBlock { get; set; }
         internal Line Line { get; set; }
-        public RotatedSize LabelModel { get; private set; }
+        public LabelEvaluation LabelModel { get; private set; }
 
         public SeparatorElementCore Model
         {
             get { return _model; }
         }
         
-        public RotatedSize UpdateLabel(string text, AxisCore axis, AxisTags source)
+        public LabelEvaluation UpdateLabel(string text, AxisCore axis, AxisTags source)
         {
             TextBlock.Text = text;
             TextBlock.UpdateLayout();
 
-            var transform = new RotatedSize(axis.View.LabelsRotation,
+            var transform = new LabelEvaluation(axis.View.LabelsRotation,
                 TextBlock.ActualWidth, TextBlock.ActualHeight, axis, source);
 
             TextBlock.RenderTransform = Math.Abs(transform.LabelAngle) > 1

@@ -126,15 +126,50 @@ namespace LiveCharts
         public double Height { get; set; }
     }
 
-    public class RotatedSize
+    public class LabelEvaluation
     {
-        public RotatedSize()
+        public LabelEvaluation(double angle, double w, double h, AxisCore axis, AxisTags source)
         {
-            
-        }
+            const double padding = 4;
 
-        public RotatedSize(double angle, double w, double h, AxisCore axis, AxisTags source)
-        {
+            ActualWidth = w;
+            ActualHeight = h;
+
+            // for now there is no support for rotated and merged labels.
+            // the labels will be rotated but there is no warranty that they are displayed correctly
+            if (axis.View.IsMerged)
+            {
+                Top = 0;
+                Bottom = 0;
+                Left = 0;
+                Right = 0;
+
+                if (source == AxisTags.Y)
+                {
+                    XOffset = padding;
+                    YOffset = padding;
+                }
+                else
+                {
+                    if (axis.Position == AxisPosition.LeftBottom)
+                    {
+                        //Bot
+                        XOffset = padding;
+                        YOffset = -h*2 - padding;
+                    }
+                    else
+                    {
+                        //Top
+                        XOffset = padding;
+                        YOffset = padding + h*2;
+                    }
+                }
+
+                return;
+            }
+
+            //OK now lets evaluate the rotation angle...
+
             // the rotation angle starts from an horizontal line, yes like this text
             // - 0°, | 90°, - 180°, | 270°
             // notice normally rotating a label from 90 to 270° will show the label
@@ -163,8 +198,6 @@ namespace LiveCharts
 
             var quadrant = ((int) (LabelAngle/90))%4 + 1;
 
-            const double padding = 4;
-
             if (source == AxisTags.Y)
             {
                 // Y Axis
@@ -174,7 +207,7 @@ namespace LiveCharts
                     {
                         // 1, L
                         Top = HFromW + (HFromH/2);      //space taken from separator to top
-                        Bottom = Height - Top;          //space taken from separator to bottom
+                        Bottom = TakenHeight - Top;          //space taken from separator to bottom
                         XOffset = -WFromW - padding;    //distance from separator to label origin in X
                         YOffset = -Top;                 //distance from separator to label origin in Y
                     }
@@ -182,7 +215,7 @@ namespace LiveCharts
                     {
                         // 1, R
                         Bottom = HFromW + (HFromH/2);
-                        Top = Height - Bottom;
+                        Top = TakenHeight - Bottom;
                         XOffset = padding + WFromH;
                         YOffset = -Top;
                     }
@@ -193,15 +226,15 @@ namespace LiveCharts
                     {
                         // 4, L
                         Bottom = HFromW + (HFromH/2);
-                        Top = Height - Bottom;
-                        XOffset = -Width - padding;
+                        Top = TakenHeight - Bottom;
+                        XOffset = -TakenWidth - padding;
                         YOffset = HFromW - (WFromH/2);
                     }
                     else
                     {
                         // 4, R
                         Top = HFromW + (HFromH/2);
-                        Bottom = Height - Top;
+                        Bottom = TakenHeight - Top;
                         XOffset = padding;
                         YOffset = -Bottom;
                     }
@@ -214,12 +247,12 @@ namespace LiveCharts
                 //axis x has one exception, if labels rotation equals 0° then the label is centered
                 if (Math.Abs(axis.View.LabelsRotation) < .01)
                 {
-                    Left = Width / 2;
+                    Left = TakenWidth / 2;
                     Right = Left;
                     XOffset = -Left;
                     YOffset = axis.Position == AxisPosition.LeftBottom
                         ? padding
-                        : -padding - Height;
+                        : -padding - TakenHeight;
                 }
                 else
                 {
@@ -229,7 +262,7 @@ namespace LiveCharts
                         {
                             //1, B
                             Right = WFromW + (WFromH / 2);  //space taken from separator to right
-                            Left = Width - Right;           //space taken from separator to left
+                            Left = TakenWidth - Right;           //space taken from separator to left
                             XOffset = Left;                 //distance from separator to label origin in X
                             YOffset = padding;              //distance from separator to label origin in Y
                         }
@@ -237,9 +270,9 @@ namespace LiveCharts
                         {
                             //1, T
                             Left = WFromW + (WFromH/2);
-                            Right = Width - Left;
+                            Right = TakenWidth - Left;
                             XOffset = -WFromW;
-                            YOffset = -padding - Height;
+                            YOffset = -padding - TakenHeight;
                         }
                     }
                     else
@@ -248,7 +281,7 @@ namespace LiveCharts
                         {
                             //4, B
                             Left = WFromW + (WFromH/2);
-                            Right = Width - Left;
+                            Right = TakenWidth - Left;
                             XOffset = -Left;
                             YOffset = padding + HFromW;
                         }
@@ -256,7 +289,7 @@ namespace LiveCharts
                         {
                             //4, T
                             Right = WFromW + (WFromH/2);
-                            Left = Width - Right;
+                            Left = TakenWidth - Right;
                             XOffset = -Left;
                             YOffset = -HFromH;
                         }
@@ -278,8 +311,11 @@ namespace LiveCharts
         public double XOffset { get; set; }
         public double YOffset { get; set; }
 
-        public double Width { get { return WFromW + WFromH; } }
-        public double Height { get { return HFromW + HFromH; } }
+        public double TakenWidth { get { return WFromW + WFromH; } }
+        public double TakenHeight { get { return HFromW + HFromH; } }
+
+        public double ActualWidth { get; private set; }
+        public double ActualHeight { get; private set; }
 
         public double GetOffsetBySource(AxisTags source)
         {
@@ -667,6 +703,7 @@ namespace LiveCharts
         double? MaxValue { get; set; }
         double? MinValue { get; set; }
         double LabelsRotation { get; set; }
+        bool IsMerged { get; set; }
 
         CoreSize UpdateTitle(ChartCore chart, double rotationAngle = 0);
         void SetTitleTop(double value);
@@ -703,9 +740,9 @@ namespace LiveCharts
     public interface ISeparatorElementView
     {
         SeparatorElementCore Model { get; }
-        RotatedSize LabelModel { get; }
+        LabelEvaluation LabelModel { get; }
 
-        RotatedSize UpdateLabel(string text, AxisCore axis, AxisTags source);
+        LabelEvaluation UpdateLabel(string text, AxisCore axis, AxisTags source);
 
         void Clear(IChartView chart);
 

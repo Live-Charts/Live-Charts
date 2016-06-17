@@ -24,8 +24,11 @@
                     </lvc:VisualElement.UIElement>
                 </lvc:VisualElement>
             </lvc:CartesianChart.VisualElements>
+            <lvc:CartesianChart.AxisY>
+                <lvc:Axis IsMerged="True"></lvc:Axis>
+            </lvc:CartesianChart.AxisY>
             <lvc:CartesianChart.AxisX>
-                <lvc:Axis Labels="Jan, Feb, Mar, Abr, May">
+                <lvc:Axis Labels="Jan, Feb, Mar, Abr, May" IsMerged="True">
                     <lvc:Axis.Separator>
                         <lvc:Separator Step="1"></lvc:Separator>
                     </lvc:Axis.Separator>

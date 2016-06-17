@@ -153,11 +153,11 @@ namespace LiveCharts
 
                 var labelsMargin = asc.View.UpdateLabel(f(i), this, source);
 
-                currentMargin.Width = labelsMargin.Width > currentMargin.Width
-                    ? labelsMargin.Width
+                currentMargin.Width = labelsMargin.TakenWidth > currentMargin.Width
+                    ? labelsMargin.TakenWidth
                     : currentMargin.Width;
-                currentMargin.Height = labelsMargin.Height > currentMargin.Height
-                    ? labelsMargin.Height
+                currentMargin.Height = labelsMargin.TakenHeight > currentMargin.Height
+                    ? labelsMargin.TakenHeight
                     : currentMargin.Height;
 
                 currentMargin.Left = labelsMargin.Left > currentMargin.Left
@@ -200,10 +200,29 @@ namespace LiveCharts
                 }
 
                 var toLine = ChartFunctions.ToPlotArea(element.Value, source, chart, axisIndex);
-                toLine += EvaluatesUnitWidth
-                    ? (source == AxisTags.X ? 1 : -1)*ChartFunctions.GetUnitWidth(source, chart, this)/2
-                    : 0;
+
+                var direction = source == AxisTags.X ? 1 : -1;
+
+                toLine += EvaluatesUnitWidth ? direction*ChartFunctions.GetUnitWidth(source, chart, this)/2 : 0;
                 var toLabel = toLine + element.View.LabelModel.GetOffsetBySource(source);
+
+                if (IsMerged)
+                {
+                    const double padding = 4;
+
+                    if (source == AxisTags.Y)
+                    {
+                        if (toLabel + element.View.LabelModel.ActualHeight >
+                            chart.DrawMargin.Top + chart.DrawMargin.Height)
+                            toLabel -= element.View.LabelModel.ActualHeight + padding;
+                    }
+                    else
+                    {
+                        if (toLabel + element.View.LabelModel.ActualWidth >
+                            chart.DrawMargin.Left + chart.DrawMargin.Width)
+                            toLabel -= element.View.LabelModel.ActualWidth + padding;
+                    }
+                }
 
                 double labelTab;
 

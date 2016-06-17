@@ -19,17 +19,16 @@
             Move All
         </Button>
         <lvc:CartesianChart Grid.Row="2" Series="{Binding SeriesCollection}" 
-                            DataClick="Chart_OnDataClick"
-                            Background="#606060">
+                            DataClick="Chart_OnDataClick">
             <lvc:CartesianChart.AxisX>
-                <lvc:Axis LabelsRotation="35" Labels="{Binding Labels}">
+                <lvc:Axis LabelsRotation="-15" Labels="{Binding Labels}" Position="LeftBottom" >
                     <lvc:Axis.Separator >
                         <lvc:Separator Step="1"></lvc:Separator>
                     </lvc:Axis.Separator>
                 </lvc:Axis>
             </lvc:CartesianChart.AxisX>
             <lvc:CartesianChart.AxisY>
-                <lvc:Axis Title="Sold Items" LabelFormatter="{Binding Formatter}" LabelsRotation="-35" Position="RightTop"></lvc:Axis>
+                <lvc:Axis Title="Sold Items" LabelFormatter="{Binding Formatter}" Position="LeftBottom"></lvc:Axis>
             </lvc:CartesianChart.AxisY>
         </lvc:CartesianChart>
     </Grid>
