@@ -68,7 +68,7 @@ namespace Winforms
 
         private void btnZoomingAndPanning_Click(object sender, EventArgs e)
         {
-            new ZoomingAndPanningExample().ShowDialog();
+            new ZomingAndPanningExample().ShowDialog();
         }
 
         private void btnMissingPoints_Click(object sender, EventArgs e)
