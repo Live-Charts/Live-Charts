@@ -5,11 +5,10 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Wpf"
              xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+             xmlns:missingLinePoints="clr-namespace:Wpf.CartesianChart.Missing_Line_Points"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="300" d:DesignWidth="300" d:DataContext="{d:DesignInstance local:JimmyTheTestsGuy}">    
     <Grid>
-        <lvc:CartesianChart   >
-            
-        </lvc:CartesianChart> 
+        <lvc:CartesianChart Series="{Binding SeriesCollection}" LegendLocation="Right"></lvc:CartesianChart> 
     </Grid>
 </UserControl>

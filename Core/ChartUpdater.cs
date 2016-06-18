@@ -72,6 +72,7 @@ namespace LiveCharts
             {
                 InitializeSeriesParams(series);
                 series.ActualValues.GetLimits();
+                series.InitializeColors();
             }
 
             Chart.PrepareAxes();

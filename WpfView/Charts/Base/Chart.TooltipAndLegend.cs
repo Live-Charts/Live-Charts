@@ -96,7 +96,7 @@ namespace LiveCharts.Wpf.Charts.Base
             var pointsToHighlight = Enumerable.Empty<ChartPoint>();
             double? shares = null;
 
-            //ToDo: the tooltip should be smart enough to detect the best SelectionMode
+            //ToDo: the tooltip should be smart enough to detect a default SelectionMode
             switch (DataTooltip.SelectionMode)
             {
                 case TooltipSelectionMode.OnlySender:
@@ -111,6 +111,16 @@ namespace LiveCharts.Wpf.Charts.Base
                 case TooltipSelectionMode.SharedYValues:
                     pointsToHighlight = Model.ActualSeries.Where(x => x.ScalesYAt == senderPoint.SeriesView.ScalesYAt)
                         .SelectMany(x => x.Values.Points)
+                        .Where(x => Math.Abs(x.Y - senderPoint.Y) < ay.Model.S*.01);
+                    shares = senderPoint.Y;
+                    break;
+                case TooltipSelectionMode.SharedXInSeries:
+                    pointsToHighlight = senderPoint.SeriesView.ActualValues.Points
+                        .Where(x => Math.Abs(x.X - senderPoint.X) < ax.Model.S * .01);
+                    shares = senderPoint.X;
+                    break;
+                case TooltipSelectionMode.SharedYInSeries:
+                    pointsToHighlight = senderPoint.SeriesView.ActualValues.Points
                         .Where(x => Math.Abs(x.Y - senderPoint.Y) < ay.Model.S*.01);
                     shares = senderPoint.Y;
                     break;
@@ -145,10 +155,18 @@ namespace LiveCharts.Wpf.Charts.Base
 
             location = new Point(Canvas.GetLeft(DrawMargin) + location.X, Canvas.GetTop(DrawMargin) + location.Y);
 
-            DataTooltip.BeginAnimation(Canvas.LeftProperty,
-                new DoubleAnimation(location.X, TimeSpan.FromMilliseconds(200)));
-            DataTooltip.BeginAnimation(Canvas.TopProperty,
-                new DoubleAnimation(location.Y, TimeSpan.FromMilliseconds(200)));
+            if (DisableAnimations)
+            {
+                Canvas.SetLeft(DataTooltip, location.X);
+                Canvas.SetTop(DataTooltip, location.Y);
+            }
+            else
+            {
+                DataTooltip.BeginAnimation(Canvas.LeftProperty,
+                    new DoubleAnimation(location.X, TimeSpan.FromMilliseconds(200)));
+                DataTooltip.BeginAnimation(Canvas.TopProperty,
+                    new DoubleAnimation(location.Y, TimeSpan.FromMilliseconds(200)));
+            }
 
             senderPoint.View.OnHover(senderPoint);
         }

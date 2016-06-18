@@ -40,7 +40,7 @@ namespace LiveCharts.Wpf
 {
     public class LineSeries : Series.Series, ILineSeriesView
     {
-        #region Contructors
+        #region Constructors
 
         public LineSeries() 
         {
@@ -100,7 +100,7 @@ namespace LiveCharts.Wpf
 
         #endregion
 
-        #region Overriden Methods
+        #region Overridden Methods
 
         public override void OnSeriesUpdateStart()
         {
@@ -131,7 +131,7 @@ namespace LiveCharts.Wpf
             {
                 Model.Chart.View.EnsureElementBelongsToCurrentDrawMargin(Path);
                 return;
-            };
+            }
 
             IsPathInitialized = true;
 
@@ -157,8 +157,6 @@ namespace LiveCharts.Wpf
 
             var x = ChartFunctions.ToDrawMargin(ActualValues.Limit1.Min, AxisTags.X, Model.Chart, ScalesXAt);
             Figure.StartPoint = new Point(x, Model.Chart.DrawMargin.Height);
-
-            base.OnSeriesUpdateStart();
         }
 
         public override IChartPointView GetPointView(IChartPointView view, ChartPoint point, string label)

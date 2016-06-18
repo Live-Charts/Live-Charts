@@ -36,7 +36,7 @@ namespace LiveCharts.Wpf
 {
     public class StackedColumnSeries : Series.Series, IStackedColumnSeriesView
     {
-        #region Contructors
+        #region Constructors
 
         public StackedColumnSeries()
         {
@@ -88,7 +88,7 @@ namespace LiveCharts.Wpf
 
         #endregion
 
-        #region Overriden Methods
+        #region Overridden Methods
 
         public override IChartPointView GetPointView(IChartPointView view, ChartPoint point, string label)
         {

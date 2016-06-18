@@ -36,7 +36,7 @@ namespace LiveCharts.Wpf
 {
     public class OhlcSeries : Series.Series, IOhlcSeriesView
     {
-        #region Contructors
+        #region Constructors
 
         public OhlcSeries()
         {
@@ -88,7 +88,7 @@ namespace LiveCharts.Wpf
         
         #endregion
 
-        #region Overriden Methods
+        #region Overridden Methods
 
         public override void OnSeriesUpdateStart()
         {

@@ -36,7 +36,7 @@ namespace LiveCharts.Wpf
 {
     public class RowSeries : Series.Series, IRowSeriesView
     {
-        #region Contructors
+        #region Constructors
 
         public RowSeries()
         {
@@ -79,7 +79,7 @@ namespace LiveCharts.Wpf
 
         #endregion
 
-        #region Overriden Methods
+        #region Overridden Methods
 
         public override IChartPointView GetPointView(IChartPointView view, ChartPoint point ,string label)
         {

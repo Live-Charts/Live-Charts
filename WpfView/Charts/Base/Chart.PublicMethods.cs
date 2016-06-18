@@ -141,16 +141,16 @@ namespace LiveCharts.Wpf.Charts.Base
 
             var l = new List<SeriesViewModel>();
 
-            for (var i = 0; i < Series.Count; i++)
+            foreach (var t in Series)
             {
                 var item = new SeriesViewModel();
 
-                var series = (Series.Series) Series[i];
+                var series = (Series.Series) t;
 
                 item.Title = series.Title;
                 item.StrokeThickness = series.StrokeThickness;
-                item.Stroke = series.Stroke ?? new SolidColorBrush(GetDefaultColor(i));
-                item.Fill = series.Fill ?? new SolidColorBrush(GetDefaultColor(i)) {Opacity = series.DefaultFillOpacity};
+                item.Stroke = series.Stroke;
+                item.Fill = series.Fill;
 
                 l.Add(item);
             }

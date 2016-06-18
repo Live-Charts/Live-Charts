@@ -22,7 +22,10 @@
 
 using System;
 using System.Diagnostics;
+using System.Linq;
+using System.Windows.Media;
 using System.Windows.Threading;
+using LiveCharts.Wpf.Charts.Base;
 
 namespace LiveCharts.Wpf.Components
 {

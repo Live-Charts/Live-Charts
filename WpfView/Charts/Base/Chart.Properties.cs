@@ -169,9 +169,10 @@ namespace LiveCharts.Wpf.Charts.Base
 
         public bool IsControlLoaded { get; private set; }
 
-        public static Color GetDefaultColor(int index)
+        public Color GetNextDefaultColor()
         {
-            return Colors[(int) (index - Colors.Count*Math.Truncate(index/(double) Colors.Count))];
+            if (SeriesIndexCount == int.MaxValue) SeriesIndexCount = 0;
+            return Colors[SeriesIndexCount++%Colors.Count];
         }
     }
 }

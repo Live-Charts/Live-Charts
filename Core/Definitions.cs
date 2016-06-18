@@ -31,7 +31,26 @@ namespace LiveCharts
 
     public enum TooltipSelectionMode
     {
-        OnlySender, SharedXValues, SharedYValues
+        /// <summary>
+        /// Gets only the hovered point 
+        /// </summary>
+        OnlySender,
+        /// <summary>
+        /// Gets all the points that shares the value X in the chart
+        /// </summary>
+        SharedXValues,
+        /// <summary>
+        /// Gets all the points that shares the value Y in the chart
+        /// </summary>
+        SharedYValues,
+        /// <summary>
+        /// Gets all the points that shares the value X in the hovered series
+        /// </summary>
+        SharedXInSeries,
+        /// <summary>
+        /// Gets all the points that shares the value Y in the hovered series
+        /// </summary>
+        SharedYInSeries
     }
 
     public enum SeriesOrientation
@@ -683,6 +702,7 @@ namespace LiveCharts
         void OnSeriesUpdateStart();
         void Erase();
         void OnSeriesUpdatedFinish();
+        void InitializeColors();
     }
 
     public interface IAxisView

@@ -274,16 +274,6 @@ namespace LiveCharts.Wpf.Series
 
         public virtual void OnSeriesUpdateStart()
         {
-            var wpfChart = Model.Chart.View as Chart;
-            if (wpfChart == null) return;
-
-            var index = Stroke == null || Fill == null ? wpfChart.SeriesIndexCount++ : 0;
-
-            if (Stroke == null)
-                SetValue(StrokeProperty, new SolidColorBrush(Chart.GetDefaultColor(index)));
-            if (Fill == null)
-                SetValue(FillProperty,
-                    new SolidColorBrush(Chart.GetDefaultColor(index)) {Opacity = DefaultFillOpacity});
         }
 
         public virtual void Erase()
@@ -293,6 +283,17 @@ namespace LiveCharts.Wpf.Series
 
         public virtual void OnSeriesUpdatedFinish()
         {
+        }
+
+        public void InitializeColors()
+        {
+            var wpfChart = (Chart) Model.Chart.View;
+            var nextColor = wpfChart.GetNextDefaultColor();
+
+            if (Stroke == null)
+                SetValue(StrokeProperty, new SolidColorBrush(nextColor));
+            if (Fill == null)
+                SetValue(FillProperty, new SolidColorBrush(nextColor) {Opacity = DefaultFillOpacity});
         }
 
         private static void OnValuesInstanceChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)

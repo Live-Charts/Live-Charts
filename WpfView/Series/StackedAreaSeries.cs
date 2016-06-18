@@ -36,7 +36,7 @@ namespace LiveCharts.Wpf
 {
     public class StackedAreaSeries : LineSeries, IStackedAreaSeriesViewView
     {
-        #region Contructors
+        #region Constructors
 
         public StackedAreaSeries()
         {
@@ -69,7 +69,7 @@ namespace LiveCharts.Wpf
         }
         #endregion
 
-        #region Overriden Methods
+        #region Overridden Methods
 
         public override void OnSeriesUpdateStart()
         {
@@ -120,19 +120,8 @@ namespace LiveCharts.Wpf
             var x = ChartFunctions.ToDrawMargin(ActualValues.Limit1.Min, AxisTags.X, Model.Chart, ScalesXAt);
             Figure.StartPoint = new Point(x, Model.Chart.DrawMargin.Height);
 
-            var wpfChart = Model.Chart.View as Chart;
-            if (wpfChart == null) return;
-
-            var index = Stroke == null || Fill == null ? wpfChart.SeriesIndexCount++ : 0;
-
             var i = Model.Chart.View.Series.IndexOf(this);
             Panel.SetZIndex(Path, Model.Chart.View.Series.Count - i);
-
-            if (Stroke == null)
-                SetValue(StrokeProperty, new SolidColorBrush(Chart.GetDefaultColor(index)));
-            if (Fill == null)
-                SetValue(FillProperty,
-                    new SolidColorBrush(Chart.GetDefaultColor(index)) { Opacity = DefaultFillOpacity });
         }
 
         #endregion
