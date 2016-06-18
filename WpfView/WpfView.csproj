@@ -123,9 +123,11 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="SectionsCollection.cs" />
     <Compile Include="AxesCollection.cs" />
     <Compile Include="Axis.cs" />
     <Compile Include="AxisSection.cs" />
+    <Compile Include="Charts\Base\Chart.Debug.cs" />
     <Compile Include="Charts\Gauge.cs" />
     <Compile Include="Charts\PieChart.cs" />
     <Compile Include="Charts\test.xaml.cs">
@@ -133,10 +135,10 @@
     </Compile>
     <Compile Include="Components\ChartUpdater.cs" />
     <Compile Include="Components\AxisSeparatorElement.cs" />
-    <Compile Include="Charts\Chart\Chart.Properties.cs" />
-    <Compile Include="Charts\Chart\Chart.cs" />
-    <Compile Include="Charts\Chart\Chart.TooltipAndLegend.cs" />
-    <Compile Include="Charts\Chart\Chart.ZoomPan.cs" />
+    <Compile Include="Charts\Base\Chart.Properties.cs" />
+    <Compile Include="Charts\Base\Chart.cs" />
+    <Compile Include="Charts\Base\Chart.TooltipAndLegend.cs" />
+    <Compile Include="Charts\Base\Chart.ZoomPan.cs" />
     <Compile Include="Converters\TypeConverters.cs" />
     <Compile Include="DefaultLegend.xaml.cs">
       <DependentUpon>DefaultLegend.xaml</DependentUpon>
@@ -193,8 +195,8 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <Compile Include="Charts\Chart\Chart.PublicMethods.cs" />
-    <Compile Include="Charts\Chart\Chart.Essentials.cs" />
+    <Compile Include="Charts\Base\Chart.PublicMethods.cs" />
+    <Compile Include="Charts\Base\Chart.Essentials.cs" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

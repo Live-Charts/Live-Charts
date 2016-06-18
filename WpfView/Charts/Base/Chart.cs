@@ -22,14 +22,13 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Threading;
 using LiveCharts.Charts;
 
-namespace LiveCharts.Wpf.Charts.Chart
+namespace LiveCharts.Wpf.Charts.Base
 {
     public abstract partial class Chart : UserControl, IChartView
     {
@@ -145,15 +144,5 @@ namespace LiveCharts.Wpf.Charts.Chart
         }
 
         #endregion
-
-#if DEBUG
-
-        public void CountElements()
-        {
-            //Trying to avoid memory leaks
-            Debug.WriteLine("Canvas Elements -> " + Canvas.Children.Count);
-            Debug.WriteLine("Draw Margin Elements ->" + DrawMargin.Children.Count);
-        }
-#endif
     }
 }

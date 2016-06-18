@@ -5,7 +5,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media;
 using LiveCharts.Helpers;
-using LiveCharts.Wpf.Charts.Chart;
+using LiveCharts.Wpf.Charts.Base;
 using LiveCharts.Wpf.Converters;
 
 namespace LiveCharts.Wpf.Series

@@ -20,15 +20,15 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-using System.Diagnostics;
-using System.Windows;
-
-namespace LiveCharts.Wpf.Charts.Chart
+namespace LiveCharts.Wpf.Charts.Base
 {
-    public abstract partial class Chart
+    public partial class Chart
     {
+#if DEBUG
         public void MockIt(CoreSize size)
         {
+            DisableAnimations = true;
+
             IsMocked = true;
             IsControlLoaded = true;
 
@@ -38,40 +38,20 @@ namespace LiveCharts.Wpf.Charts.Chart
             Model.DrawMargin.Width = Canvas.ActualWidth;
         }
 
-        private void OnLoaded(object sender, RoutedEventArgs args)
+        public int GetCanvasElements()
         {
-            IsControlLoaded = true;
-
-            Model.ChartControlSize = new CoreSize(ActualWidth, ActualHeight);
-
-            Model.DrawMargin.Height = Canvas.ActualHeight;
-            Model.DrawMargin.Width = Canvas.ActualWidth;
+            return Canvas.Children.Count;
         }
 
-        private void OnSizeChanged(object sender, SizeChangedEventArgs args)
+        public int GetDrawMarginElements()
         {
-#if DEBUG
-            Debug.WriteLine("ChartResized");
+            return DrawMargin.Children.Count;
+        }
+
+        public object GetCanvas()
+        {
+            return Canvas;
+        }
 #endif
-            Model.ChartControlSize = new CoreSize(ActualWidth, ActualHeight);
-
-            Model.Updater.Run();
-        }
-
-        private static void OnSeriesChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
-        {
-            var chart = (Chart) dependencyObject;
-
-            if (chart.LastKnownSeriesCollection != chart.Series && chart.LastKnownSeriesCollection != null)
-            {
-                foreach (var series in chart.LastKnownSeriesCollection)
-                {
-                    series.Erase();
-                }
-            }
-
-            CallChartUpdater()(dependencyObject, dependencyPropertyChangedEventArgs);
-            chart.LastKnownSeriesCollection = chart.Series;
-        }
     }
 }

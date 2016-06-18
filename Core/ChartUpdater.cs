@@ -86,8 +86,8 @@ namespace LiveCharts
                 series.OnSeriesUpdatedFinish();
             }
 #if DEBUG
-            Debug.WriteLine("<<Chart UI Updated>>");
-            Chart.View.CountElements();
+            Debug.WriteLine("<< -- Chart UI Updated | Canvas: {0} | DrawMargin: {1} -- >>",
+                Chart.View.GetCanvasElements(), Chart.View.GetDrawMarginElements());
 #endif
         }
        

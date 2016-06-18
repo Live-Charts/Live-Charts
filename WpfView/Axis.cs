@@ -42,7 +42,7 @@ namespace LiveCharts.Wpf
             TitleBlock = BindATextBlock();
             SetValue(SeparatorProperty, new Separator());
             SetValue(ShowLabelsProperty, true);
-            SetValue(SectionsProperty, new List<IAxisSectionView>());
+            SetValue(SectionsProperty, new SectionsCollection());
 
             TitleBlock.SetBinding(TextBlock.TextProperty,
                 new Binding {Path = new PropertyPath(TitleProperty), Source = this});
@@ -74,11 +74,11 @@ namespace LiveCharts.Wpf
         }
 
         public static readonly DependencyProperty SectionsProperty = DependencyProperty.Register(
-            "Sections", typeof (List<IAxisSectionView>), typeof (Axis), new PropertyMetadata(default(List<IAxisSectionView>)));
+            "Sections", typeof (SectionsCollection), typeof (Axis), new PropertyMetadata(default(SectionsCollection)));
 
-        public List<IAxisSectionView> Sections
+        public SectionsCollection Sections
         {
-            get { return (List<IAxisSectionView>) GetValue(SectionsProperty); }
+            get { return (SectionsCollection) GetValue(SectionsProperty); }
             set { SetValue(SectionsProperty, value); }
         }
 
@@ -302,10 +302,11 @@ namespace LiveCharts.Wpf
 
         #region Public Methods
 
-        public void Clear()
+        public void Clean()
         {
             Model.ClearSeparators();
             Model.Chart.View.RemoveFromView(TitleBlock);
+            Sections.Clear();
             TitleBlock = null;
         }
 

@@ -26,7 +26,7 @@ namespace LiveCharts
     {
         public bool IsNew { get; set; }
         public SeparationState State { get; set; }
-        public bool IsActive { get; set; }
+        public int GarbageCollectorIndex { get; set; }
         public double Key { get; set; }
         public double Value { get; set; }
         public ISeparatorElementView View { get; set; }

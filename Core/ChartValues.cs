@@ -37,7 +37,7 @@ namespace LiveCharts
     {
         private IPointEvaluator<T> DefaultConfiguration { get; set; }
 
-        #region Contructors
+        #region Constructors
 
         public ChartValues()
         {

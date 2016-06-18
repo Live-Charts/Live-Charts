@@ -20,9 +20,9 @@
         <Button Grid.Row="1" Height="30" Click="UpdateAllOnClick">
             Move All
         </Button>
-        <lvc:CartesianChart Grid.Row="2" Series="{Binding SeriesCollection}" >
+        <lvc:CartesianChart Name="Chart" Grid.Row="2" Series="{Binding SeriesCollection}" >
             <lvc:CartesianChart.AxisY>
-                <lvc:Axis>
+                <lvc:Axis Name="Axis">
                     <lvc:Axis.Sections>
                         <lvc:AxisSection FromValue="8.5" ToValue="8.5" StrokeThickness="3" Stroke="#F9D648">
                             <lvc:AxisSection.Fill>

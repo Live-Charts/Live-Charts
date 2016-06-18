@@ -21,6 +21,7 @@
 //SOFTWARE.
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using LiveCharts.Charts;
 
@@ -658,10 +659,11 @@ namespace LiveCharts
         List<AxisCore> MapXAxes(ChartCore chart);
         List<AxisCore> MapYAxes(ChartCore chart);
 
-        void MockIt(CoreSize size);
-
 #if DEBUG
-        void CountElements();
+        int GetCanvasElements();
+        int GetDrawMarginElements();
+        object GetCanvas();
+        void MockIt(CoreSize size);
 #endif
     }
 
@@ -689,7 +691,6 @@ namespace LiveCharts
         bool DisableAnimations { get; set; }
         double UnitWidth { get; set; }
         bool ShowLabels { get; set; }
-        List<IAxisSectionView> Sections { get; set; }
         AxisTags Source { get; set; }
         double? MaxValue { get; set; }
         double? MinValue { get; set; }
@@ -704,7 +705,7 @@ namespace LiveCharts
         CoreSize GetLabelSize();
         AxisCore AsCoreElement(ChartCore chart, AxisTags source);
         void RenderSeparator(SeparatorElementCore model, ChartCore chart);
-        void Clear();
+        void Clean();
     }
 
     public interface IAxisSectionView
@@ -712,8 +713,9 @@ namespace LiveCharts
         AxisSectionCore Model { get; set; }
         double FromValue { get; set; }
         double ToValue { get; set; }
-        void DrawOrMove(AxisTags source, int axis);
 
+        void DrawOrMove(AxisTags source, int axis);
+        void Remove();
         AxisSectionCore AsCoreElement(AxisCore axis, AxisTags source);
     }
 

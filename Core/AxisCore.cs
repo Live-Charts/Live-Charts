@@ -77,6 +77,7 @@ namespace LiveCharts
         internal double? LastAxisMax { get; set; }
         internal double? LastAxisMin { get; set; }
         internal CoreRectangle LastPlotArea { get; set; }
+        internal int GarbageCollectorIndex { get; set; }
 
         #endregion
 
@@ -130,6 +131,8 @@ namespace LiveCharts
             var currentMargin = new CoreMargin();
             var tolerance = S/10;
 
+            InitializeGarbageCollector();
+
             for (var i = MinLimit; i <= MaxLimit - (EvaluatesUnitWidth ? 1 : 0); i += S)
             {
                 SeparatorElementCore asc;
@@ -149,7 +152,7 @@ namespace LiveCharts
 
                 asc.Key = key;
                 asc.Value = i;
-                asc.IsActive = true;
+                asc.GarbageCollectorIndex = GarbageCollectorIndex;
 
                 var labelsMargin = asc.View.UpdateLabel(f(i), this, source);
 
@@ -182,10 +185,6 @@ namespace LiveCharts
 
                 asc.State = SeparationState.Keep;
             }
-
-#if DEBUG
-            Debug.WriteLine("Axis.Separations: " + Cache.Count);
-#endif
             return currentMargin;
         }
 
@@ -193,7 +192,7 @@ namespace LiveCharts
         {
             foreach (var element in Cache.Values.ToArray())
             {
-                if (!element.IsActive)
+                if (element.GarbageCollectorIndex < GarbageCollectorIndex)
                 {
                     element.State = SeparationState.Remove;
                     Cache.Remove(element.Key);
@@ -279,14 +278,16 @@ namespace LiveCharts
                     default:
                         throw new ArgumentOutOfRangeException();
                 }
-
-                element.IsActive = false;
             }
 
             LastAxisMax = MaxLimit;
             LastAxisMin = MinLimit;
             LastPlotArea = new CoreRectangle(chart.DrawMargin.Left, chart.DrawMargin.Top,
                 chart.DrawMargin.Width, chart.DrawMargin.Height);
+
+#if DEBUG
+            Debug.WriteLine("Axis.Separations: " + Cache.Count);
+#endif
         }
 
 
@@ -345,6 +346,23 @@ namespace LiveCharts
             Cache = new Dictionary<double, SeparatorElementCore>();
         }
 
+        #endregion
+
+        #region Privates
+
+        private void InitializeGarbageCollector()
+        {
+            if (GarbageCollectorIndex == int.MaxValue)
+            {
+                foreach (var value in Cache.Values)
+                {
+                    value.GarbageCollectorIndex = 0;
+                }
+                GarbageCollectorIndex = 0;
+            }
+
+            GarbageCollectorIndex++;
+        }
         #endregion
     }
 }

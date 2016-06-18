@@ -198,6 +198,13 @@ namespace LiveCharts.Wpf
             }
         }
 
+        public void Remove()
+        {
+            Model.Chart.View.RemoveFromView(this);
+            Model.Chart.View.RemoveFromDrawMargin(_rectangle);
+            Model.Chart.View.RemoveFromDrawMargin(_label);
+        }
+
         public AxisSectionCore AsCoreElement(AxisCore axis, AxisTags source)
         {
             var model = new AxisSectionCore(this, axis.Chart);

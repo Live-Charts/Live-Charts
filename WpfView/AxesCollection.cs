@@ -36,7 +36,14 @@ namespace LiveCharts.Wpf
         {
             if (oldItems == null) return;
 
-            foreach (var oldAxis in oldItems) oldAxis.Clear();
+            foreach (var oldAxis in oldItems)
+            {
+                oldAxis.Clean();
+                var chart = oldAxis.Model.Chart.View;
+                if (chart == null) continue;
+                chart.RemoveFromView(oldAxis);
+                chart.RemoveFromView(oldAxis.Separator);
+            }
         }
     }
 }

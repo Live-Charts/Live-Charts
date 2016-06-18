@@ -27,7 +27,7 @@ namespace LiveCharts.Charts
 {
     public class PieChartCore : ChartCore
     {
-        #region Contructors
+        #region Constructors
 
         public PieChartCore(IChartView view, IChartUpdater updater) : base(view, updater)
         {

@@ -21,6 +21,7 @@
 //SOFTWARE.
 
 using System;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -67,8 +68,16 @@ namespace LiveCharts.Wpf.Components
 
         public void Clear(IChartView chart)
         {
+#if DEBUG
+            Debug.WriteLine(((Canvas)chart.GetCanvas()).Children.Count);
+#endif
+
             chart.RemoveFromView(TextBlock);
             chart.RemoveFromView(Line);
+
+#if DEBUG
+            Debug.WriteLine(((Canvas) chart.GetCanvas()).Children.Count);
+#endif
 
             TextBlock = null;
             Line = null;

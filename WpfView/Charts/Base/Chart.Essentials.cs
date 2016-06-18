@@ -20,50 +20,47 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
+using System.Diagnostics;
 using System.Windows;
-using System.Windows.Input;
 
-namespace LiveCharts.Wpf.Charts.Chart
+namespace LiveCharts.Wpf.Charts.Base
 {
     public abstract partial class Chart
     {
-        private Point DragOrigin { get; set; }
-
-        private void MouseWheelOnRoll(object sender, MouseWheelEventArgs e)
+        private void OnLoaded(object sender, RoutedEventArgs args)
         {
-            if (Zoom == ZoomingOptions.None) return;
+            IsControlLoaded = true;
 
-            var p = e.GetPosition(this);
+            Model.ChartControlSize = new CoreSize(ActualWidth, ActualHeight);
 
-            var corePoint = new CorePoint(p.X, p.Y);
-
-            e.Handled = true;
-
-            if (e.Delta > 0)
-                Model.ZoomIn(corePoint);
-            else
-                Model.ZoomOut(corePoint);
+            Model.DrawMargin.Height = Canvas.ActualHeight;
+            Model.DrawMargin.Width = Canvas.ActualWidth;
         }
 
-        private void OnDraggingStart(object sender, MouseButtonEventArgs e)
+        private void OnSizeChanged(object sender, SizeChangedEventArgs args)
         {
-            DragOrigin = e.GetPosition(this);
-            DragOrigin = new Point(
-                ChartFunctions.FromDrawMargin(DragOrigin.X, AxisTags.X, Model),
-                ChartFunctions.FromDrawMargin(DragOrigin.Y, AxisTags.Y, Model));
+#if DEBUG
+            Debug.WriteLine("ChartResized");
+#endif
+            Model.ChartControlSize = new CoreSize(ActualWidth, ActualHeight);
+
+            Model.Updater.Run();
         }
 
-        private void OnDraggingEnd(object sender, MouseButtonEventArgs e)
+        private static void OnSeriesChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
         {
-            if (Zoom == ZoomingOptions.None) return;
+            var chart = (Chart) dependencyObject;
 
-            var end = e.GetPosition(this);
+            if (chart.LastKnownSeriesCollection != chart.Series && chart.LastKnownSeriesCollection != null)
+            {
+                foreach (var series in chart.LastKnownSeriesCollection)
+                {
+                    series.Erase();
+                }
+            }
 
-            end = new Point(
-                ChartFunctions.FromDrawMargin(end.X, AxisTags.X, Model),
-                ChartFunctions.FromDrawMargin(end.Y, AxisTags.Y, Model));
-
-            Model.Drag(new CorePoint(DragOrigin.X - end.X, DragOrigin.Y - end.Y));
+            CallChartUpdater()(dependencyObject, dependencyPropertyChangedEventArgs);
+            chart.LastKnownSeriesCollection = chart.Series;
         }
     }
 }

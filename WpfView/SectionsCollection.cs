@@ -20,34 +20,26 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-using System;
-using System.Windows;
-using LiveCharts.Charts;
-using LiveCharts.Wpf.Charts.Base;
+using System.Collections.Generic;
+using LiveCharts.Helpers;
 
-// ReSharper disable once CheckNamespace
 namespace LiveCharts.Wpf
 {
-    public class CartesianChart : Chart, ICartesianChart
+    public class SectionsCollection : NoisyCollection<AxisSection>
     {
-        public CartesianChart()
+        public SectionsCollection()
         {
-            var freq = DisableAnimations ? TimeSpan.FromMilliseconds(10) : AnimationsSpeed;
-            var updater = new Components.ChartUpdater(freq);
-            ChartCoreModel = new CartesianChartCore(this, updater);
-
-            SetValue(VisualElementsProperty, new VisualElementsCollection());
+            CollectionChanged += OnCollectionChanged;
         }
 
-
-        public static readonly DependencyProperty VisualElementsProperty = DependencyProperty.Register(
-            "VisualElements", typeof (VisualElementsCollection), typeof (CartesianChart),
-            new PropertyMetadata(default(VisualElementsCollection)));
-
-        public VisualElementsCollection VisualElements
+        private static void OnCollectionChanged(IEnumerable<AxisSection> oldItems, IEnumerable<AxisSection> newItems)
         {
-            get { return (VisualElementsCollection) GetValue(VisualElementsProperty); }
-            set { SetValue(VisualElementsProperty, value); }
+            if (oldItems == null) return;
+
+            foreach (var oldSection in oldItems)
+            {
+                oldSection.Remove();
+            }
         }
     }
 }

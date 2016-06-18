@@ -51,7 +51,11 @@ namespace Wpf
 
             CartesianExamples = new List<UserControl>
             {
-                new Issue179(),
+                new SectionsExample(),
+
+                new JimmyTheTestsGuy(),
+
+                //new Issue179(),
                 new DynamicVisibilityExample(),
 
                 new LabelsExample(),
@@ -87,7 +91,7 @@ namespace Wpf
                 new DateTime(),
                 //new LogarithmScaleExample(),
                 new VerticalStackedAreaExample(),
-                new SectionsExample(),
+                
                 new ZoomingAndPanning(),
                 new MultiAxesChart(),
                 new MixingTypes(),
