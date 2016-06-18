@@ -27,6 +27,7 @@ using Wpf.PieChart;
 using BubblesExample = Wpf.CartesianChart.Bubbles.BubblesExample;
 using ConstantChangesChart = Wpf.CartesianChart.ConstantChanges.ConstantChangesChart;
 using DateTime = Wpf.CartesianChart.Using_DateTime.DateTime;
+using Issue179 = Wpf.CartesianChart.zzIssues.Issue179;
 using LabelsExample = Wpf.CartesianChart.Labels.LabelsExample;
 using SectionsExample = Wpf.CartesianChart.Sections.SectionsExample;
 using StackedAreaExample = Wpf.CartesianChart.StackedArea.StackedAreaExample;
@@ -50,9 +51,8 @@ namespace Wpf
 
             CartesianExamples = new List<UserControl>
             {
+                new Issue179(),
                 new DynamicVisibilityExample(),
-
-                new TesterGuy(),
 
                 new LabelsExample(),
                 new LabelsHorizontalExample(),
