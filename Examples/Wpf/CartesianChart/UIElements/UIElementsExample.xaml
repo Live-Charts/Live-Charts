@@ -14,7 +14,7 @@
                 <lvc:ColumnSeries Values="2,6,8,9, 4" Panel.ZIndex="1"/>
             </lvc:CartesianChart.Series>
             <lvc:CartesianChart.VisualElements>
-                <lvc:VisualElement X=".8" Y="8">
+                <lvc:VisualElement X=".8" Y="8" HorizontalAlignment="Center" VerticalAlignment="Center">
                     <lvc:VisualElement.UIElement>
                         <TextBlock TextWrapping="Wrap" MaxWidth="200px" Background="#50303030" Foreground="White" Padding="10">
                             You can add any control to your chart, even enother chart if you require so, 

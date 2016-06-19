@@ -133,15 +133,11 @@ namespace LiveCharts.Charts
 
             curSize = PlaceLegend(curSize);
 
-            double t = curSize.Top,
-                b = 0d,
-                l = curSize.Left,
-                r = 0d;
-
             const double padding = 4;
 
-            foreach (var yi in AxisY)
+            for (int index = 0; index < AxisY.Count; index++)
             {
+                var yi = AxisY[index];
                 var titleSize = yi.View.UpdateTitle(this, -90d);
                 var biggest = yi.PrepareChart(AxisTags.Y, this);
 
@@ -161,22 +157,27 @@ namespace LiveCharts.Charts
                     yi.Tab = curSize.Left + curSize.Width;
                 }
 
-                if (t < biggest.Top) t = biggest.Top;
-                if (b < biggest.Bottom) b = biggest.Bottom;
+                var uw = yi.EvaluatesUnitWidth ? ChartFunctions.GetUnitWidth(AxisTags.Y, this, index)/2 : 0;
+
+                var topE = biggest.Top - uw;
+                if (topE> curSize.Top)
+                {
+                    var dif = topE - curSize.Top;
+                    curSize.Top += dif;
+                    curSize.Height -= dif;
+                }
+
+                var botE = biggest.Bottom - uw;
+                if (botE > ChartControlSize.Height - (curSize.Top + curSize.Height))
+                {
+                    var dif = botE - (ChartControlSize.Height - (curSize.Top + curSize.Height));
+                    curSize.Height -= dif;
+                }
             }
 
-            if (t > 0)
+            for (var index = 0; index < AxisX.Count; index++)
             {
-                curSize.Top = t;
-                curSize.Height -= t;
-            }
-            if (b > 0)
-            {
-                curSize.Height -= b;
-            }
-
-            foreach (var xi in AxisX)
-            {
+                var xi = AxisX[index];
                 var titleSize = xi.View.UpdateTitle(this);
                 var biggest = xi.PrepareChart(AxisTags.X, this);
                 var top = curSize.Top;
@@ -189,36 +190,62 @@ namespace LiveCharts.Charts
                 }
                 else
                 {
-                    xi.View.SetTitleTop(top - t);
+                    xi.View.SetTitleTop(top);
                     curSize.Top += titleSize.Height + biggest.Height;
                     curSize.Height -= (titleSize.Height + biggest.Height);
                     xi.Tab = curSize.Top;
                 }
 
-                if (l < biggest.Left) l = biggest.Left;
-                if (r < biggest.Right) r = biggest.Right;
+                //Notice the unit width is not exact at this point...
+                var uw = xi.EvaluatesUnitWidth ? ChartFunctions.GetUnitWidth(AxisTags.X, this, index)/2 : 0;
+
+                var leftE = biggest.Left - uw > 0 ? biggest.Left - uw : 0;
+                if (leftE > curSize.Left)
+                {
+                    var dif = leftE - curSize.Left;
+                    curSize.Left += dif;
+                    curSize.Width -= dif;
+                    foreach (var correctedAxis in AxisY
+                        .Where(correctedAxis => correctedAxis.Position == AxisPosition.LeftBottom))
+                    {
+                        correctedAxis.Tab += dif;
+                    }
+                }
+
+                var rightE = biggest.Right - uw > 0 ? biggest.Right - uw : 0;
+                if (rightE > ChartControlSize.Width - (curSize.Left + curSize.Width))
+                {
+                    var dif = rightE - (ChartControlSize.Width - (curSize.Left + curSize.Width));
+                    curSize.Width -= dif;
+                    foreach (var correctedAxis in AxisY
+                        .Where(correctedAxis => correctedAxis.Position == AxisPosition.RightTop))
+                    {
+                        correctedAxis.Tab -= dif;
+                    }
+                }
             }
 
-            if (curSize.Left < l)
-            {
-                var cor = l - curSize.Left;
-                curSize.Left = l;
-                curSize.Width -= cor;
-                foreach (var yi in AxisY.Where(x => x.Position == AxisPosition.LeftBottom))
-                {
-                    yi.View.SetTitleLeft(yi.View.GetTitleLeft() + cor);
-                }
-            }
-            var rp = ChartControlSize.Width - curSize.Left - curSize.Width;
-            if (r > rp)
-            {
-                var cor = r - rp;
-                curSize.Width -= cor;
-                foreach (var yi in AxisY.Where(x => x.Position == AxisPosition.RightTop))
-                {
-                    yi.View.SetTitleLeft(yi.View.GetTitleLeft() - cor);
-                }
-            }
+
+            //if (curSize.Left < l)
+            //{
+            //    var cor = l - curSize.Left;
+            //    curSize.Left = l;
+            //    curSize.Width -= cor;
+            //    foreach (var yi in AxisY.Where(x => x.Position == AxisPosition.LeftBottom))
+            //    {
+            //        yi.View.SetTitleLeft(yi.View.GetTitleLeft() + cor);
+            //    }
+            //}
+            //var rp = ChartControlSize.Width - curSize.Left - curSize.Width;
+            //if (r > rp)
+            //{
+            //    var cor = r - rp;
+            //    curSize.Width -= cor;
+            //    foreach (var yi in AxisY.Where(x => x.Position == AxisPosition.RightTop))
+            //    {
+            //        yi.View.SetTitleLeft(yi.View.GetTitleLeft() - cor);
+            //    }
+            //}
 
             DrawMargin.Top = curSize.Top;
             DrawMargin.Left = curSize.Left;
@@ -256,11 +283,9 @@ namespace LiveCharts.Charts
                     View.HideLegend();
                     break;
                 case LegendLocation.Top:
-                    var top = new CorePoint(ChartControlSize.Width * .5 - legendSize.Width * .5, 0);
-                    var y = drawMargin.Top;
-                    drawMargin.Top = y + top.Y + legendSize.Height + padding;
-                    drawMargin.Height -= legendSize.Height - padding;
-                    View.ShowLegend(top);
+                    drawMargin.Top += legendSize.Height;
+                    drawMargin.Height -= legendSize.Height;
+                    View.ShowLegend(new CorePoint(ChartControlSize.Width * .5 - legendSize.Width * .5, 0));
                     break;
                 case LegendLocation.Bottom:
                     var bot = new CorePoint(ChartControlSize.Width*.5 - legendSize.Width*.5,

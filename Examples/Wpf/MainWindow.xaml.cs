@@ -51,22 +51,19 @@ namespace Wpf
 
             CartesianExamples = new List<UserControl>
             {
-                new MultiAxesChart(),
-
-                //new JimmyTheTestsGuy(),
-                
-                //new Issue179(),
-                new DynamicVisibilityExample(),
                 new LabelsExample(),
                 new LabelsHorizontalExample(),
-                new UIElementsExample(),
-                new StackedRowExample(),
                 new BasicStackedRowPercentageExample(),
                 new BasicStackedColumnExample(),
                 new BasicRowExample(),
+                new MultiAxesChart(),
+                //new JimmyTheTestsGuy(),
+                //new Issue179(),
+                new DynamicVisibilityExample(),
+                new UIElementsExample(),
+                new StackedRowExample(),
                 new BasicColumn(),
                 new BasicLineExample(),
-
                 new StackedAreaExample(),
                 //new WelcomeCartesian(),
                 new FullyResponsive(),
@@ -77,17 +74,16 @@ namespace Wpf
                 new CustomizedLineSeries(),
                 new InvertedExample(),
                 new BubblesExample(),
-                //new StackedAreaExample(),
+                new StackedAreaExample(),
                 new FinancialExample(),
-                //new StackedColumnExample(),
+                new StackedColumnExample(),
                 new SectionsExample(),
                 new MissingPointsExample(),
-                //new IrregularIntervalsExample(),
+                new IrregularIntervalsExample(),
                 new DateTime(),
                 new LogarithmScaleExample(),
                 new VerticalStackedAreaExample(),
                 new ZoomingAndPanning(),
-                
                 new MixingTypes(),
                 new InLineSyntaxTest()
             };

@@ -238,7 +238,7 @@ namespace LiveCharts
                         Bottom = HFromW + (HFromH/2);
                         Top = TakenHeight - Bottom;
                         XOffset = -TakenWidth - padding;
-                        YOffset = HFromW - (WFromH/2);
+                        YOffset = HFromW - (HFromH/2);
                     }
                     else
                     {
