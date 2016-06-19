@@ -51,6 +51,8 @@ namespace Wpf
 
             CartesianExamples = new List<UserControl>
             {
+                new MultiAxesChart(),
+
                 //new JimmyTheTestsGuy(),
                 
                 //new Issue179(),
@@ -85,7 +87,7 @@ namespace Wpf
                 new LogarithmScaleExample(),
                 new VerticalStackedAreaExample(),
                 new ZoomingAndPanning(),
-                new MultiAxesChart(),
+                
                 new MixingTypes(),
                 new InLineSyntaxTest()
             };

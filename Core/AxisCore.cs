@@ -68,6 +68,7 @@ namespace LiveCharts
 
         #region Internal Properties
 
+        internal double Tab { get; set; }
         internal double MaxLimit { get; set; }
         internal double MinLimit { get; set; }
         internal double Magnitude { get; set; }
@@ -223,21 +224,7 @@ namespace LiveCharts
                     }
                 }
 
-                double labelTab;
-
-                if (source == AxisTags.Y)
-                {
-                    labelTab = Position == AxisPosition.LeftBottom 
-                        ? chart.DrawMargin.Left                             //Left
-                        : chart.DrawMargin.Left + chart.DrawMargin.Width;   //Right
-                }
-                else
-                {
-                    labelTab = Position == AxisPosition.LeftBottom
-                        ? chart.DrawMargin.Top + chart.DrawMargin.Height    //Bot
-                        : Chart.DrawMargin.Top;                             //Top
-                }
-
+                var labelTab = Tab;
                 labelTab += element.View.LabelModel.GetOffsetBySource(source.Invert());
 
                 switch (element.State)
