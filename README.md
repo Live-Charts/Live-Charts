@@ -91,7 +91,7 @@ WPF and Winforms, currenlty the library is in the process to become a cross net 
 
 ###Net Version
 
-Net 4.0 or greater, if your application is designed to run in Windows XP, then you must use .Net 4.0.3
+.Net 4.0.3 or greater, Windows XP SP3 at least, .net 4.0 could fail, see #212
 
 ### Installation
 
@@ -122,3 +122,10 @@ The [web site](http://lvcharts.net/App/examples/wpf/start) has a nice set, they 
 ### High perfomance?
 
 LiveCharts will also handle high performance, it is not ready yet but the current tests allows the library to plot 3,000,000 in 1 second, yes even with aniations.
+
+### Road Map
+
+* Build at least all the features any other charting library does, in WPF and WinForms
+* Build High performance algorithms
+* Expand the library to at least Xamarin and UWP (should not be that hard, the code is already designed to support this point)
+* release 1.0 in WPF and WinForms, the other platforms will be beta, in case something went wrong.
