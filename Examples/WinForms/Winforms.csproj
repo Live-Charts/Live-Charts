@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Winforms</RootNamespace>
     <AssemblyName>Winforms</AssemblyName>
-    <TargetFrameworkVersion>v4.0.3</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <TargetFrameworkProfile />
@@ -39,7 +39,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="LiveCharts.WinForms, Version=0.7.3.1, Culture=neutral, PublicKeyToken=1f1e67602fe23622, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\LiveCharts.WinForms.0.7.3.1\lib\net403\LiveCharts.WinForms.dll</HintPath>
+      <HintPath>..\..\packages\LiveCharts.WinForms.0.7.3.1\lib\net45\LiveCharts.WinForms.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="LiveCharts.Wpf, Version=0.7.3.1, Culture=neutral, PublicKeyToken=3b585c2a5f1a92c1, processorArchitecture=MSIL">

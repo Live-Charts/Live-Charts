@@ -38,7 +38,10 @@ namespace LiveCharts.WinForms
         public CartesianChart()
         {
             Child = WpfBase;
-            WpfBase.DataClick += DataClick;
+            WpfBase.DataClick += (o, point) =>
+            {
+                if (DataClick != null) DataClick.Invoke(o, point);
+            };
         }
 
         public event Action<object, ChartPoint> DataClick;
