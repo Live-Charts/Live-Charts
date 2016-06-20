@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>$id$</id>
+    <version>$version$</version>
+    <title>LiveCharts.Wpf</title>
+    <authors>Beto Rodriguez</authors>
+    <owners>Beto Rodriguez</owners>
+    <licenseUrl>https://github.com/beto-rodriguez/Live-Charts/blob/master/LICENSE.TXT</licenseUrl>
+    <projectUrl>http://lvcharts.net/</projectUrl>
+    <iconUrl>http://lvcharts.net/Content/Images/Logos/lcred.png</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>LiveCharts is a modern chartig library: Responsive, animated and MVVM orientated charts</description>
+    <releaseNotes>See https://github.com/beto-rodriguez/Live-Charts/releases</releaseNotes>
+    <copyright>Copyright 2016</copyright>
+    <tags>Chart Charting Plot Plotting Wpf WindowsPresentationFoundation</tags>
+  </metadata>
+  <files>
+    <file src="bin\net403\LiveCharts.Wpf.dll" target="lib\net403" />
+    <file src="bin\net45\LiveCharts.Wpf.dll" target="lib\net45" />
+    <file src="bin\net451\LiveCharts.Wpf.dll" target="lib\net451" />
+    <file src="bin\net452\LiveCharts.Wpf.dll" target="lib\net452" />
+    <file src="bin\net46\LiveCharts.Wpf.dll" target="lib\net46" />
+    <file src="bin\net461\LiveCharts.Wpf.dll" target="lib\net461" />  
+  </files>
+</package>

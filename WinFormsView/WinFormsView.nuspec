@@ -15,11 +15,11 @@
     <copyright>Copyright 2016</copyright>
     <tags>Chart Charting Plot Plotting WinForms</tags> 
     <frameworkAssemblies>
-      <frameworkAssembly assemblyName="PresentationFramework" targetFramework="net40" />
-      <frameworkAssembly assemblyName="PresentationCore" targetFramework="net40"/>
-      <frameworkAssembly assemblyName="WindowsBase" targetFramework="net40" />
-      <frameworkAssembly assemblyName="System.Xaml" targetFramework="net40"/>
-      <frameworkAssembly assemblyName="WindowsFormsIntegration" targetFramework="net40" />
+      <frameworkAssembly assemblyName="PresentationFramework" targetFramework="net403" />
+      <frameworkAssembly assemblyName="PresentationCore" targetFramework="net403"/>
+      <frameworkAssembly assemblyName="WindowsBase" targetFramework="net403" />
+      <frameworkAssembly assemblyName="System.Xaml" targetFramework="net403"/>
+      <frameworkAssembly assemblyName="WindowsFormsIntegration" targetFramework="net403" />
 
       <frameworkAssembly assemblyName="PresentationFramework" targetFramework="net45" />
       <frameworkAssembly assemblyName="PresentationCore" targetFramework="net45"/>
@@ -53,7 +53,7 @@
     </frameworkAssemblies>
   </metadata>
   <files>
-    <file src="bin\net40\LiveCharts.WinForms.dll" target="lib\net40" />
+    <file src="bin\net403\LiveCharts.WinForms.dll" target="lib\net403" />
     <file src="bin\net45\LiveCharts.WinForms.dll" target="lib\net45" />
     <file src="bin\net451\LiveCharts.WinForms.dll" target="lib\net451" />
     <file src="bin\net452\LiveCharts.WinForms.dll" target="lib\net452" />

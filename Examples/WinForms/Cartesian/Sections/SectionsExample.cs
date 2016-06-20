@@ -49,7 +49,7 @@ namespace Winforms.Cartesian.Sections
 
             cartesianChart1.AxisY.Add(new Axis
             {
-                Sections = new List<IAxisSectionView>
+                Sections = new SectionsCollection
                 {
                     new AxisSection
                     {

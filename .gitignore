@@ -210,12 +210,12 @@ FakesAssemblies/
 GeneratedArtifacts/
 _Pvt_Extensions/
 ModelManifest.xml
-/LiveChartsCore/LiveChartsCore.nuspec
 /LiveChartsCore/nuget.exe
-/Core/Core.nuspec
-/Core/nuget.exe
-/WpfView/nuget.exe
-/WpfView/WpfView.nuspec
-/Core/nugetPack.bat
-/WinFormsView/nugetPack.bat
-/WpfView/nugetPack.bat
+/Core/Test/LiveCharts.dll
+/WpfView/lib/net403/LiveCharts.dll
+/WpfView/lib/net403/LiveCharts.Wpf.dll
+/WpfView/lib/net45/LiveCharts.dll
+/WpfView/lib/net45/LiveCharts.Wpf.dll
+/WpfView/Test/LiveCharts.dll
+/WpfView/Test/LiveCharts.Wpf.dll
+/Core/Everything seems fine 

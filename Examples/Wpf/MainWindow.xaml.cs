@@ -117,7 +117,7 @@ namespace Wpf
             set
             {
                 _cartesianView = value;
-                OnPropertyChanged();
+                OnPropertyChanged("CartesianView");
             }
         }
         public UserControl PieView
@@ -126,7 +126,7 @@ namespace Wpf
             set
             {
                 _pieView = value;
-                OnPropertyChanged();
+                OnPropertyChanged("PieView");
             }
         }
         public UserControl GaugeView
@@ -135,7 +135,7 @@ namespace Wpf
             set
             {
                 _gaugeView = value;
-                OnPropertyChanged();
+                OnPropertyChanged("GaugeView");
             }
         }
 
@@ -193,7 +193,7 @@ namespace Wpf
 
 
         [NotifyPropertyChangedInvocator]
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        protected virtual void OnPropertyChanged(string propertyName = null)
         {
             if (PropertyChanged != null) PropertyChanged.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
