@@ -91,7 +91,7 @@ WPF and Winforms, currenlty the library is in the process to become a cross net 
 
 ###Net Version
 
-.Net 4.0.3 or greater, Windows XP SP3 at least, .net 4.0 could fail, see #212
+.Net 4.0.3 or greater, Windows XP SP3 at least, for more info see [#212](https://github.com/beto-rodriguez/Live-Charts/issues/212)
 
 ### Installation
 
