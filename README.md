@@ -99,7 +99,7 @@ Verify your project uses at least .net 4.0.3 then follow these stepts.
 
 * [Wpf](http://lvcharts.net/App/examples/wpf/Install)
 * [WinForms](http://lvcharts.net/App/examples/wf/Install)
-* 
+
 To verify if you are using a supported .net version, go to SolutionExplorer > Right click on your project > Properties > Application, then verify Taret framework is set at least to .net 4.0.3 
 
 ### How to Contribute
