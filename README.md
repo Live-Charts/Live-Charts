@@ -95,7 +95,7 @@ WPF and Winforms, currenlty the library is in the process to become a cross net 
 
 ### Installation
 
-Verify your project uses at least .net 4.0.3 then follow these stepts.
+Verify your project uses .Net 4.0.3 or greater, then follow these stepts.
 
 * [Wpf](http://lvcharts.net/App/examples/wpf/Install)
 * [WinForms](http://lvcharts.net/App/examples/wf/Install)
