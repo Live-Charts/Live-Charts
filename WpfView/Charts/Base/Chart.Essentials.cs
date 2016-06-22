@@ -30,9 +30,6 @@ namespace LiveCharts.Wpf.Charts.Base
         private void OnLoaded(object sender, RoutedEventArgs args)
         {
             IsControlLoaded = true;
-
-            Model.ChartControlSize = new CoreSize(ActualWidth, ActualHeight);
-
             Model.DrawMargin.Height = Canvas.ActualHeight;
             Model.DrawMargin.Width = Canvas.ActualWidth;
         }
@@ -42,7 +39,7 @@ namespace LiveCharts.Wpf.Charts.Base
 #if DEBUG
             Debug.WriteLine("ChartResized");
 #endif
-            Model.ChartControlSize = new CoreSize(ActualWidth, ActualHeight);
+            Model.ControlSize = new CoreSize(ActualWidth, ActualHeight);
 
             Model.Updater.Run();
         }

@@ -85,4 +85,19 @@ namespace LiveCharts.Defaults
             if (PointChanged != null) PointChanged.Invoke();
         }
     }
+
+    public class HeatPoint : BubblePoint
+    {
+        public HeatPoint()
+        {
+
+        }
+        
+        public HeatPoint(double x, double y, double weight)
+        {
+            X = x;
+            Y = y;
+            Weight = weight;
+        }
+    }
 }

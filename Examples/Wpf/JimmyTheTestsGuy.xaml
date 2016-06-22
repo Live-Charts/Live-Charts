@@ -9,6 +9,8 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300" d:DataContext="{d:DesignInstance local:JimmyTheTestsGuy}">    
     <Grid>
-        <lvc:CartesianChart Series="{Binding SeriesCollection}" LegendLocation="Right"></lvc:CartesianChart> 
+        <lvc:CartesianChart Series="{Binding SeriesCollection}" LegendLocation="Right">
+
+        </lvc:CartesianChart> 
     </Grid>
 </UserControl>

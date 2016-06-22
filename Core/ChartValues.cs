@@ -219,11 +219,7 @@ namespace LiveCharts
 
             var config =
                 (Series.View.Configuration ?? Series.SeriesCollection.Configuration) as IPointEvaluator<T>;
-           
-#if DEBUG
-            Debug.WriteLine("Series Configuration not found, trying to get one from the defaults configurations...");
-#endif
-
+            
             if (config != null) return config;
 
             return DefaultConfiguration ??

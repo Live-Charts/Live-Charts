@@ -24,15 +24,15 @@
     </Window.Resources>
     <ScrollViewer>
         <StackPanel Margin="15 0">
-            <Image Source="lvlogo.png" Height="50" Margin="15"></Image>
-            <TextBlock TextWrapping="Wrap">
-            Hey, welcome to LiveCharts examples, LiveCharts is designed to be powerful, customizable, mantainable and easy to use for the user.
+            <Image Source="lvlogo.png" Height="50" Margin="15" Visibility="Collapsed"></Image>
+            <TextBlock TextWrapping="Wrap" Visibility="Collapsed">
+            Hey, welcome to LiveCharts examples, LiveCharts is designed to be powerful, customizable, maintainable and easy to use for the user.
             </TextBlock>
-            <TextBlock TextWrapping="Wrap">
-            All the charts are responsive, what does this means? when you rezise a chart or your data changes the UI will update automatically, this will save you
-            hours, and you will only need to focus in the logic of your bussiness, let LiveCharts handle the plotting.
+            <TextBlock TextWrapping="Wrap" Visibility="Collapsed">
+            All the charts are responsive, what does this means? when you resize a chart or your data changes the UI will update automatically, this will save you
+            hours, and you will only need to focus in the logic of your business, let LiveCharts handle the plotting.
             </TextBlock>
-            <TextBlock TextWrapping="Wrap">
+            <TextBlock TextWrapping="Wrap" Visibility="Collapsed">
                 There is a folder in this project with the code behind of each view you see in the next carousel, to reach the code behind, for example in the cartesian chart carousel go to the CartesialChart folder in this project, and then open the desired user view.
             </TextBlock>
             <!--<TextBlock TextWrapping="Wrap" Margin="15" Padding="10">

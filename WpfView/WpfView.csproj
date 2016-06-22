@@ -125,6 +125,10 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="HeatColorRange.xaml.cs">
+      <DependentUpon>HeatColorRange.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Points\HeatPoint.cs" />
     <Compile Include="SectionsCollection.cs" />
     <Compile Include="AxesCollection.cs" />
     <Compile Include="Axis.cs" />
@@ -148,9 +152,6 @@
     <Compile Include="DefaultTooltip.xaml.cs">
       <DependentUpon>DefaultTooltip.xaml</DependentUpon>
     </Compile>
-    <Compile Include="DesignerTest.xaml.cs">
-      <DependentUpon>DesignerTest.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Points\PiePointView.cs" />
     <Compile Include="Points\OhlcPointView.cs" />
     <Compile Include="Points\BubblePointView.cs" />
@@ -158,6 +159,7 @@
     <Compile Include="Points\RowPointView.cs" />
     <Compile Include="Points\ColumnPointView.cs" />
     <Compile Include="Points\VBezierPointView.cs" />
+    <Compile Include="Series\HeatSeries.cs" />
     <Compile Include="Series\PieSeries.cs" />
     <Compile Include="Series\OhlcSeries.cs" />
     <Compile Include="Series\StackedAreaSeries.cs" />
@@ -219,7 +221,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="DesignerTest.xaml">
+    <Page Include="HeatColorRange.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

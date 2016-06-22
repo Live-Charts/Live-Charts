@@ -55,11 +55,10 @@ namespace LiveCharts
         protected void Update(bool restartsAnimations = false)   
         {
             if (!Chart.View.IsMocked)
-                if (!Chart.View.IsControlLoaded || Chart.View.Series == null)
-                    return;
+                if (!Chart.View.IsControlLoaded) return;
 
             if (restartsAnimations)
-                Chart.View.Series.ForEach(s => s.Values.Points.ForEach(p =>
+                Chart.ActualSeries.ForEach(s => s.Values.Points.ForEach(p =>
                 {
                     p.View.RemoveFromView(Chart);
                     p.View = null;
@@ -68,11 +67,12 @@ namespace LiveCharts
             Chart.AxisX = Chart.View.MapXAxes(Chart);
             Chart.AxisY = Chart.View.MapYAxes(Chart);
 
-            foreach (var series in Chart.View.Series ?? new SeriesCollection())
+            foreach (var series in Chart.ActualSeries)
             {
                 InitializeSeriesParams(series);
                 series.ActualValues.GetLimits();
                 series.InitializeColors();
+                series.DrawSpecializedElements();
             }
 
             Chart.PrepareAxes();
@@ -85,6 +85,7 @@ namespace LiveCharts
                 series.Model.Update();
                 series.ActualValues.CollectGarbage();
                 series.OnSeriesUpdatedFinish();
+                series.PlaceSpecializedElements();
             }
 #if DEBUG
             Debug.WriteLine("<< -- Chart UI Updated | Canvas: {0} | DrawMargin: {1} -- >>",

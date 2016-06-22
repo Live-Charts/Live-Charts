@@ -29,6 +29,7 @@ namespace LiveCharts.SeriesAlgorithms
         public VerticalLineAlgorithm(ISeriesView view) : base(view)
         {
             SeriesOrientation = SeriesOrientation.Vertical;
+            PreferredSelectionMode = TooltipSelectionMode.SharedYValues;
         }
 
         double ICartesianSeries.GetMinX(AxisCore axis)

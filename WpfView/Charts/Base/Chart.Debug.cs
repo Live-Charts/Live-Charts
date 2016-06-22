@@ -32,7 +32,7 @@ namespace LiveCharts.Wpf.Charts.Base
             IsMocked = true;
             IsControlLoaded = true;
 
-            Model.ChartControlSize = size;
+            Model.ControlSize = size;
 
             Model.DrawMargin.Height = Canvas.ActualHeight;
             Model.DrawMargin.Width = Canvas.ActualWidth;

@@ -13,6 +13,7 @@ using Wpf.CartesianChart.Basic_Bars;
 using Wpf.CartesianChart.Basic_Stacked_Bar;
 using Wpf.CartesianChart.Customized_Line_Series;
 using Wpf.CartesianChart.DynamicVisibility;
+using Wpf.CartesianChart.HeatChart;
 using Wpf.CartesianChart.Inverted_Series;
 using Wpf.CartesianChart.Irregular_Intervals;
 using Wpf.CartesianChart.Labels;
@@ -51,6 +52,9 @@ namespace Wpf
 
             CartesianExamples = new List<UserControl>
             {
+                new HeatSeriesExample(),
+
+                new DynamicVisibilityExample(),
                 new LabelsExample(),
                 new LabelsHorizontalExample(),
                 new BasicStackedRowPercentageExample(),
@@ -59,7 +63,6 @@ namespace Wpf
                 new MultiAxesChart(),
                 //new JimmyTheTestsGuy(),
                 //new Issue179(),
-                new DynamicVisibilityExample(),
                 new UIElementsExample(),
                 new StackedRowExample(),
                 new BasicColumn(),
@@ -90,12 +93,12 @@ namespace Wpf
 
             PieExamples = new List<UserControl>
             {
-                new PieExample()
+                //new PieExample()
             };
 
             GaugeExamples = new List<UserControl>
             {
-                new Gauge180(), new Gauge360()
+                //new Gauges.Gauge180(), new Gauge360()
             };
 
             #endregion

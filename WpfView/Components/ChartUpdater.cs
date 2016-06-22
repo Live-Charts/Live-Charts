@@ -22,8 +22,6 @@
 
 using System;
 using System.Diagnostics;
-using System.Linq;
-using System.Windows.Media;
 using System.Windows.Threading;
 using LiveCharts.Wpf.Charts.Base;
 
@@ -70,6 +68,9 @@ namespace LiveCharts.Wpf.Components
 
         private void UpdaterTick()
         {
+            var wpfChart = (Chart) Chart.View;
+
+            Chart.ControlSize = new CoreSize(wpfChart.ActualWidth, wpfChart.ActualHeight);
             Timer.Stop();
             Update();
             IsUpdating = false;

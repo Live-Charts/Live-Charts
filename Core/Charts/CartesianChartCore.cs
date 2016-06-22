@@ -87,13 +87,7 @@ namespace LiveCharts.Charts
                 }
             }
 
-            PrepareUnitWidthColumns();
-            PrepareBubbles();
-            PrepareStackedColumns();
-            PrepareStackedRows();
-            PrepareStackedAreas();
-            PrepareVerticalStackedAreas();
-
+            PrepareSeries();
             CalculateComponentsAndMargin();
 
             for (var index = 0; index < AxisX.Count; index++)
@@ -128,24 +122,35 @@ namespace LiveCharts.Charts
 
         #region Privates
 
-        private void PrepareBubbles()
+        private void PrepareSeries()
         {
-            if (!ActualSeries.Any(x => x is IBubbleSeriesView)) return;
+            PrepareUnitWidth();
+            PrepareWeight();
+            PrepareStackedColumns();
+            PrepareStackedRows();
+            PrepareStackedAreas();
+            PrepareVerticalStackedAreas();
+        }
+
+        private void PrepareWeight()
+        {
+            if (!ActualSeries.Any(x => x is IBubbleSeriesView || x is IHeatSeries)) return;
 
             var vs = ActualSeries.Select(x => x.ActualValues.Limit3).ToArray();
             Value3CoreLimit = new CoreLimit(vs.Select(x => x.Min).DefaultIfEmpty(0).Min(),
                 vs.Select(x => x.Max).DefaultIfEmpty(0).Max());
         }
 
-        private void PrepareUnitWidthColumns()
+        private void PrepareUnitWidth()
         {
             foreach (var series in ActualSeries)
             {
-                if (series is IStackedColumnSeriesView || series is IColumnSeriesView || series is IOhlcSeriesView)
+                if (series is IStackedColumnSeriesView || series is IColumnSeriesView || 
+                    series is IOhlcSeriesView || series is IHeatSeries)
                 {
                     AxisX[series.ScalesXAt].EvaluatesUnitWidth = true;
                 }
-                if (series is IStackedRowSeriesView || series is IRowSeriesView)
+                if (series is IStackedRowSeriesView || series is IRowSeriesView || series is IHeatSeries)
                 {
                     AxisY[series.ScalesYAt].EvaluatesUnitWidth = true;
                 }

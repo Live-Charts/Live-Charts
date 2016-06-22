@@ -18,15 +18,15 @@ namespace LiveCharts.Wpf.Series
         protected Series()
         {
             DefaultFillOpacity = 0.35;
-
-            SetValue(TitleProperty, "Some Series");
+            SetValue(TitleProperty, "Series");
+            IsVisibleChanged += OnIsVisibleChanged;
         }
 
         protected Series(object configuration)
         {
             Configuration = configuration;
-
-            SetValue(TitleProperty, "Some Series");
+            SetValue(TitleProperty, "Series");
+            IsVisibleChanged += OnIsVisibleChanged;
         }
         #endregion
 
@@ -64,7 +64,7 @@ namespace LiveCharts.Wpf.Series
             "Title", typeof (string), typeof (Series),
             new PropertyMetadata(default(string), CallChartUpdater()));
         /// <summary>
-        /// Gets or sets serie title
+        /// Gets or sets series title
         /// </summary>
         public string Title
         {
@@ -172,7 +172,7 @@ namespace LiveCharts.Wpf.Series
             "FontStretch", typeof (FontStretch),
             typeof (Series), new PropertyMetadata(FontStretches.Normal, CallChartUpdater()));
         /// <summary>
-        /// Gets or sets labels font strech
+        /// Gets or sets labels font stretch
         /// </summary>
 		public FontStretch FontStretch
         {
@@ -285,7 +285,7 @@ namespace LiveCharts.Wpf.Series
         {
         }
 
-        public void InitializeColors()
+        public virtual void InitializeColors()
         {
             var wpfChart = (Chart) Model.Chart.View;
             var nextColor = wpfChart.GetNextDefaultColor();
@@ -294,6 +294,16 @@ namespace LiveCharts.Wpf.Series
                 SetValue(StrokeProperty, new SolidColorBrush(nextColor));
             if (Fill == null)
                 SetValue(FillProperty, new SolidColorBrush(nextColor) {Opacity = DefaultFillOpacity});
+        }
+
+        public virtual void DrawSpecializedElements()
+        {
+
+        }
+
+        public virtual void PlaceSpecializedElements()
+        {
+
         }
 
         private static void OnValuesInstanceChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
@@ -321,6 +331,11 @@ namespace LiveCharts.Wpf.Series
 
                 if (wpfSeries.Model.Chart != null) wpfSeries.Model.Chart.Updater.Run(animate);
             };
+        }
+
+        private void OnIsVisibleChanged(object sender, DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
+        {
+            if (Model.Chart != null) Model.Chart.Updater.Run();
         }
 
         #region Obsoletes

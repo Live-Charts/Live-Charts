@@ -72,6 +72,7 @@
     <Compile Include="IChartValues.cs" />
     <Compile Include="IDataOptimization.cs" />
     <Compile Include="Charts\CartesianChartCore.cs" />
+    <Compile Include="SeriesAlgorithms\HeatAlgorithm.cs" />
     <Compile Include="SeriesAlgorithms\PieAlgorithm.cs" />
     <Compile Include="SeriesAlgorithms\OhlcAlgorithm.cs" />
     <Compile Include="SeriesAlgorithms\VerticalStackedAreaAlgorithm.cs" />

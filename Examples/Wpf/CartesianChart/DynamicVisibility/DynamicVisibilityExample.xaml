@@ -28,10 +28,17 @@
         </StackPanel>
         <lvc:CartesianChart Grid.Row="1">
             <lvc:CartesianChart.Series>
-                <lvc:LineSeries Title="Maria" Values="4,7,2,9,3" Visibility="{Binding MariaSeriesVisibility, Converter={StaticResource bvc}}"/>
-                <lvc:LineSeries Title="Charles" Values="6,2,6,3,8" Visibility="{Binding CharlesSeriesVisibility, Converter={StaticResource bvc}}"/>
-                <lvc:LineSeries Title="John" Values="7,2,8,3,9" Visibility="{Binding JohnSeriesVisibility, Converter={StaticResource bvc}}"/>
+                <lvc:ColumnSeries Title="Maria" Values="4,7,2,9,3" Visibility="{Binding MariaSeriesVisibility, Converter={StaticResource bvc}}" MaxWidth="1000" ColumnPadding="0"/>
+                <lvc:ColumnSeries Title="Charles" Values="6,2,6,3,8" Visibility="{Binding CharlesSeriesVisibility, Converter={StaticResource bvc}}" MaxWidth="1000" ColumnPadding="0"/>
+                <lvc:ColumnSeries Title="John" Values="7,2,8,3,9" Visibility="{Binding JohnSeriesVisibility, Converter={StaticResource bvc}}" MaxWidth="1000" ColumnPadding="0"/>
             </lvc:CartesianChart.Series>
+            <lvc:CartesianChart.AxisX>
+                <lvc:Axis Labels="January, February, March, April, May">
+                    <lvc:Axis.Separator>
+                        <lvc:Separator Step="1"></lvc:Separator>
+                    </lvc:Axis.Separator>
+                </lvc:Axis>
+            </lvc:CartesianChart.AxisX>
         </lvc:CartesianChart>
     </Grid>
 </UserControl>

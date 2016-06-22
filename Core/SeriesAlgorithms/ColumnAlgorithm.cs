@@ -31,6 +31,7 @@ namespace LiveCharts.SeriesAlgorithms
         public ColumnAlgorithm(ISeriesView view) : base(view)
         {
             SeriesOrientation = SeriesOrientation.Horizontal;
+            PreferredSelectionMode = TooltipSelectionMode.SharedXValues;
         }
 
         public override void Update()
@@ -40,7 +41,7 @@ namespace LiveCharts.SeriesAlgorithms
             var padding = castedSeries.ColumnPadding;
 
             var totalSpace = ChartFunctions.GetUnitWidth(AxisTags.X, Chart, View.ScalesXAt) - padding;
-            var typeSeries = Chart.View.Series.OfType<IColumnSeriesView>().ToList();
+            var typeSeries = Chart.ActualSeries.OfType<IColumnSeriesView>().ToList();
 
             var singleColWidth = totalSpace/typeSeries.Count;
 

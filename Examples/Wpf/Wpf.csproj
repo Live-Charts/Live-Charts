@@ -100,6 +100,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="CartesianChart\HeatChart\HeatSeriesExample.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="CartesianChart\Inverted Series\Inverted Example.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -242,6 +246,9 @@
     </Compile>
     <Compile Include="CartesianChart\DynamicVisibility\DynamicVisibilityExample.xaml.cs">
       <DependentUpon>DynamicVisibilityExample.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CartesianChart\HeatChart\HeatSeriesExample.xaml.cs">
+      <DependentUpon>HeatSeriesExample.xaml</DependentUpon>
     </Compile>
     <Compile Include="CartesianChart\Inverted Series\Inverted Example.xaml.cs">
       <DependentUpon>Inverted Example.xaml</DependentUpon>

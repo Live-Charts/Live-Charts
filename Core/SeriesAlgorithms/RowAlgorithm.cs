@@ -31,6 +31,7 @@ namespace LiveCharts.SeriesAlgorithms
         public RowAlgorithm(ISeriesView view) : base(view)
         {
             SeriesOrientation = SeriesOrientation.Vertical;
+            PreferredSelectionMode = TooltipSelectionMode.SharedYInSeries;
         }
 
         public override void Update()
@@ -40,7 +41,7 @@ namespace LiveCharts.SeriesAlgorithms
             var padding = castedSeries.RowPadding;
             
             var totalSpace = ChartFunctions.GetUnitWidth(AxisTags.Y, Chart, View.ScalesYAt) - padding;
-            var typeSeries = Chart.View.Series.OfType<IRowSeriesView>().ToList();
+            var typeSeries = Chart.ActualSeries.OfType<IRowSeriesView>().ToList();
 
             var singleRowHeight = totalSpace/typeSeries.Count;
 

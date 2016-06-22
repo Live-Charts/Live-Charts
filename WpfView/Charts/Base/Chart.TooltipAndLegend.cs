@@ -96,7 +96,11 @@ namespace LiveCharts.Wpf.Charts.Base
             var pointsToHighlight = Enumerable.Empty<ChartPoint>();
             double? shares = null;
 
-            //ToDo: the tooltip should be smart enough to detect a default SelectionMode
+            if (DataTooltip.SelectionMode == null)
+            {
+                DataTooltip.SelectionMode = senderPoint.SeriesView.Model.PreferredSelectionMode;
+            }
+
             switch (DataTooltip.SelectionMode)
             {
                 case TooltipSelectionMode.OnlySender:
@@ -133,7 +137,7 @@ namespace LiveCharts.Wpf.Charts.Base
                 XFormatter = ax.Model.GetFormatter(),
                 YFormatter = ay.Model.GetFormatter(),
                 SharedValue = shares,
-                SelectionMode = DataTooltip.SelectionMode,
+                SelectionMode = DataTooltip.SelectionMode ?? TooltipSelectionMode.OnlySender,
                 Points = pointsToHighlight.Where(x => x.SeriesView.IsSeriesVisible)
                     .Select(x => new DataPointViewModel
                     {

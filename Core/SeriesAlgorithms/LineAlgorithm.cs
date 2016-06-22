@@ -32,6 +32,7 @@ namespace LiveCharts.SeriesAlgorithms
         public LineAlgorithm(ISeriesView view) : base(view)
         {
             SeriesOrientation = SeriesOrientation.Horizontal;
+            PreferredSelectionMode = TooltipSelectionMode.SharedXValues;
         }
 
         public override void Update()

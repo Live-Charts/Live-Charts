@@ -137,6 +137,11 @@ namespace LiveCharts
                 .Y(value => value.Y)
                 .Weight(value => value.Weight));
 
+            For<HeatPoint>(Mappers.Bubble<HeatPoint>()
+                .X(value => value.X)
+                .Y(value => value.Y)
+                .Weight(value => value.Weight));
+
             For<ObservableValue>(Mappers.Xy<ObservableValue>()
                 .X((value, index) => index)
                 .Y(value => value.Value),

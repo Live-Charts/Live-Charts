@@ -44,7 +44,6 @@ namespace LiveCharts.Wpf
 
             SetValue(ForegroundProperty, Brushes.White);
             SetValue(CornerRadiusProperty, 4d);
-            SetValue(SelectionModeProperty, TooltipSelectionMode.SharedXValues);
 
             DataContext = this;
         }
@@ -59,12 +58,12 @@ namespace LiveCharts.Wpf
         }
 
         public static readonly DependencyProperty SelectionModeProperty = DependencyProperty.Register(
-            "SelectionMode", typeof (TooltipSelectionMode), typeof (DefaultTooltip),
-            new PropertyMetadata(TooltipSelectionMode.SharedXValues));
+            "SelectionMode", typeof (TooltipSelectionMode?), typeof (DefaultTooltip),
+            new PropertyMetadata(null));
 
-        public TooltipSelectionMode SelectionMode
+        public TooltipSelectionMode? SelectionMode
         {
-            get { return (TooltipSelectionMode) GetValue(SelectionModeProperty); }
+            get { return (TooltipSelectionMode?) GetValue(SelectionModeProperty); }
             set { SetValue(SelectionModeProperty, value); }
         }
 

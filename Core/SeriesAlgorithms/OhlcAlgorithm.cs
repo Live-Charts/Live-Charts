@@ -29,6 +29,7 @@ namespace LiveCharts.SeriesAlgorithms
         public OhlcAlgorithm(ISeriesView view) : base(view)
         {
             SeriesOrientation = SeriesOrientation.Horizontal;
+            PreferredSelectionMode = TooltipSelectionMode.SharedXValues;
         }
 
         public override void Update()

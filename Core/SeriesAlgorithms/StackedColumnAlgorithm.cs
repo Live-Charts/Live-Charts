@@ -32,6 +32,7 @@ namespace LiveCharts.SeriesAlgorithms
         {
             SeriesOrientation = SeriesOrientation.Horizontal;
             _stackModelable = (IStackModelableSeriesView) view;
+            PreferredSelectionMode = TooltipSelectionMode.SharedXValues;
         }
 
         public override void Update()

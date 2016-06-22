@@ -28,20 +28,21 @@ namespace LiveCharts.SeriesAlgorithms
     {
         public BubbleAlgorithm(ISeriesView view) : base(view)
         {
+            PreferredSelectionMode = TooltipSelectionMode.OnlySender;
         }
 
         public override void Update()
         {
-            var buubleSeries = (IBubbleSeriesView) View;
+            var bubbleSeries = (IBubbleSeriesView) View;
 
             var p1 = new CorePoint();
             var p2 = new CorePoint();
 
             p1.X = Chart.Value3CoreLimit.Max;
-            p1.Y = buubleSeries.MaxBubbleDiameter;
+            p1.Y = bubbleSeries.MaxBubbleDiameter;
 
             p2.X = Chart.Value3CoreLimit.Min;
-            p2.Y = buubleSeries.MinBubbleDiameter;
+            p2.Y = bubbleSeries.MinBubbleDiameter;
 
             var deltaX = p2.X - p1.X;
             // ReSharper disable once CompareOfFloatsByEqualityOperator

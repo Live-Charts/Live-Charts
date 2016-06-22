@@ -136,6 +136,22 @@ namespace LiveCharts
         public double Height { get; set; }
     }
 
+    public struct CoreColor
+    {
+        public CoreColor(byte a, byte r, byte g, byte b) : this()
+        {
+            A = a;
+            R = r;
+            G = g;
+            B = b;
+        }
+
+        public byte A { get; set; }
+        public byte R { get; set; }
+        public byte G { get; set; }
+        public byte B { get; set; }   
+    }
+
     public class LabelEvaluation
     {
         public LabelEvaluation(double angle, double w, double h, AxisCore axis, AxisTags source)
@@ -355,6 +371,7 @@ namespace LiveCharts
 
         public double Max { get; set; }
         public double Min { get; set; }
+        public double Range { get { return Max - Min; } }
     }
 
     public struct Xyw
@@ -546,6 +563,13 @@ namespace LiveCharts
         double MinBubbleDiameter { get; set; }
     }
 
+    public interface IHeatSeries : ISeriesView
+    {
+        CoreColor ColdComponents { get; }
+        CoreColor HotComponents { get; }
+        bool DrawsHeatRange { get; }
+    }
+
     public interface IColumnSeriesView : ISeriesView
     {
         double MaxColumnWidth { get; set; }
@@ -615,6 +639,14 @@ namespace LiveCharts
     {
         double Diameter { get; set; }
     }
+
+    public interface IHeatPointView : IChartPointView
+    {
+        CoreColor ColorComponents { get; set; }
+        double Width { get; set; }
+        double  Height { get; set; }
+    }
+   
 
     public interface IOhlcPointView : IChartPointView
     {
@@ -703,6 +735,8 @@ namespace LiveCharts
         void Erase();
         void OnSeriesUpdatedFinish();
         void InitializeColors();
+        void DrawSpecializedElements();
+        void PlaceSpecializedElements();
     }
 
     public interface IAxisView

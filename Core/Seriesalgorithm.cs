@@ -36,6 +36,8 @@ namespace LiveCharts
         public SeriesCollection SeriesCollection { get; set; }
         public SeriesOrientation SeriesOrientation { get; set; }
         public string Title { get; set; }
+        public TooltipSelectionMode PreferredSelectionMode { get; internal set; }
+
         public AxisCore CurrentXAxis
         {
             get { return Chart.AxisX[View.ScalesXAt]; }

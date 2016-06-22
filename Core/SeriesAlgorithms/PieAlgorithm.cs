@@ -28,6 +28,7 @@ namespace LiveCharts.SeriesAlgorithms
     {
         public PieAlgorithm(ISeriesView view) : base(view)
         {
+            PreferredSelectionMode= TooltipSelectionMode.SharedXValues;
         }
 
         public override void Update()
