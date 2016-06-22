@@ -95,8 +95,12 @@ WPF and Winforms, currenlty the library is in the process to become a cross net 
 
 ### Installation
 
+Verify your project uses .Net 4.0.3 or greater, then follow these stepts.
+
 * [Wpf](http://lvcharts.net/App/examples/wpf/Install)
 * [WinForms](http://lvcharts.net/App/examples/wf/Install)
+
+To verify if you are using a supported .net version, go to SolutionExplorer > Right click on your project > Properties > Application, then verify Taret framework is set at least to .net 4.0.3 
 
 ### How to Contribute
 
