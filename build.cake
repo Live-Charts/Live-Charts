@@ -12,19 +12,18 @@ var coreBin = "./bin/";
 var coreSpec = "./Core/Core.nuspec";
 var coreBinary = "./Core/bin/Release/LiveCharts.dll";
 
+var buildTags = new string[] { "Debug", "403", "45", "451", "452", "46", "461" };
+var buildDirectories = new string[] { "./bin/Debug", "./bin/net403", "./bin/net45", "./bin/net451", "./bin/net452", "./bin/net46", "./bin/net461" };
+
 var wpfBinDirectory = "./WpfView/bin";
 var wpfPath = "./WpfView/wpfview.csproj";
-var wpfTag = new string[] { "Debug", "403", "45", "451", "452", "46", "461" };
-var wpfDirectory = new string[] { "./bin/Debug", "./bin/net403", "./bin/net45", "./bin/net451", "./bin/net452", "./bin/net46", "./bin/net461" };
 var wpfSpec = "./WpfView/WpfView.nuspec";
 var wpfBinary = "./WpfView/bin/net403/LiveCharts.Wpf.dll";
 
 var formsBinDirectory = "./WinFormsView/bin";
 var formsPath = "./WinFormsView/WinFormsView.csproj";
-var formsTag = new string[] { "Debug" };
-var formsDirectory = new string[] { "./bin/Debug" };
 var formsSpec = "./WinFormsView/WinFormsView.nuspec";
-var formsBinary = "./WpfView/bin/net403/LiveCharts.WinForms.dll";
+var formsBinary = "./WinFormsView/bin/net403/LiveCharts.WinForms.dll";
 
 //Main Tasks
 
@@ -65,14 +64,14 @@ Task("WPF")
             CreateDirectory(wpfBinDirectory);
         }
 
-        for(var r = 0; r < wpfTag.Length; r++)
+        for(var r = 0; r < buildTags.Length; r++)
         {
-            Information("-- WPF " + wpfTag[r].ToUpper() + " --");
-            if(!DirectoryExists(wpfDirectory[r]))
+            Information("-- WPF " + buildTags[r].ToUpper() + " --");
+            if(!DirectoryExists(buildDirectories[r]))
             {
-                CreateDirectory(wpfDirectory[r]);
+                CreateDirectory(buildDirectories[r]);
             }
-            BuildProject(wpfPath, wpfDirectory[r]);
+            BuildProject(wpfPath, buildDirectories[r]);
         }
 
         if(buildType == "Release")
@@ -90,14 +89,14 @@ Task("WinForms")
             CreateDirectory(formsBinDirectory);
         }
 
-        for(var r = 0; r < wpfTag.Length; r++)
+        for(var r = 0; r < buildTags.Length; r++)
         {
-            Information("-- WinForms " + wpfTag[r].ToUpper() + " --");
-            if(!DirectoryExists(formsDirectory[r]))
+            Information("-- WinForms " + buildTags[r].ToUpper() + " --");
+            if(!DirectoryExists(buildDirectories[r]))
             {
-                CreateDirectory(formsDirectory[r]);
+                CreateDirectory(buildDirectories[r]);
             }
-            BuildProject(formsPath, formsDirectory[r]);
+            BuildProject(formsPath, buildDirectories[r]);
         }
 
         if(buildType == "Release")
@@ -110,7 +109,8 @@ Task("WinForms")
 Task("Default")
     .IsDependentOn("OutputArguments")
 	.IsDependentOn("Core")
-    .IsDependentOn("WPF");
+    .IsDependentOn("WPF")
+    .IsDependentOn("WinForms");
 
 //Entry point for Cake build
 RunTarget (target);
