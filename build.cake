@@ -19,6 +19,13 @@ var wpfDirectory = new string[] { "./bin/Debug", "./bin/net403", "./bin/net45", 
 var wpfSpec = "./WpfView/WpfView.nuspec";
 var wpfBinary = "./WpfView/bin/net403/LiveCharts.Wpf.dll";
 
+var formsBinDirectory = "./WinFormsView/bin";
+var formsPath = "./WinFormsView/WinFormsView.csproj";
+var formsTag = new string[] { "Debug" };
+var formsDirectory = new string[] { "./bin/Debug" };
+var formsSpec = "./WinFormsView/WinFormsView.nuspec";
+var formsBinary = "./WpfView/bin/net403/LiveCharts.WinForms.dll";
+
 //Main Tasks
 
 //Print out configuration
@@ -73,6 +80,31 @@ Task("WPF")
             NugetPack(wpfSpec, wpfBinary);
         }
         Information("-- WPF Packed --");
+    });
+
+Task("WinForms")
+    .Does(() => 
+    {
+        if(!DirectoryExists(formsBinDirectory))
+        {
+            CreateDirectory(formsBinDirectory);
+        }
+
+        for(var r = 0; r < wpfTag.Length; r++)
+        {
+            Information("-- WinForms " + wpfTag[r].ToUpper() + " --");
+            if(!DirectoryExists(formsDirectory[r]))
+            {
+                CreateDirectory(formsDirectory[r]);
+            }
+            BuildProject(formsPath, formsDirectory[r]);
+        }
+
+        if(buildType == "Release")
+        {
+            NugetPack(formsSpec, formsBinary);
+        }
+        Information("-- WinForms Packed --");
     });
 
 Task("Default")
