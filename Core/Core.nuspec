@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>LiveCharts</id>
-    <version>$version$</version>
+    <version>0.0.0</version>
     <title>LiveCharts</title>
     <authors>Beto Rodriguez</authors>
     <owners>Beto Rodriguez</owners>
