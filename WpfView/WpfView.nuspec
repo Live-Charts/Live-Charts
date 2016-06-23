@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>$id$</id>
-    <version>$version$</version>
+    <version>0.0.0</version>
     <title>LiveCharts.Wpf</title>
     <authors>Beto Rodriguez</authors>
     <owners>Beto Rodriguez</owners>
