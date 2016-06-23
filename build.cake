@@ -1,0 +1,2 @@
+//Addins
+#addin Cake.VersionReader
