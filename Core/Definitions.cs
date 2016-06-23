@@ -149,7 +149,13 @@ namespace LiveCharts
         public byte A { get; set; }
         public byte R { get; set; }
         public byte G { get; set; }
-        public byte B { get; set; }   
+        public byte B { get; set; }
+    }
+
+    public struct CoreGradientStop
+    {
+        public double Offset { get; set; }
+        public CoreColor Color { get; set; }
     }
 
     public class LabelEvaluation
@@ -565,8 +571,7 @@ namespace LiveCharts
 
     public interface IHeatSeries : ISeriesView
     {
-        CoreColor ColdComponents { get; }
-        CoreColor HotComponents { get; }
+        IList<CoreGradientStop> Stops { get; }
         bool DrawsHeatRange { get; }
     }
 

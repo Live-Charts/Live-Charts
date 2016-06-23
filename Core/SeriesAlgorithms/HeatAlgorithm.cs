@@ -20,7 +20,8 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-using System.Xml;
+using System.Collections.Generic;
+using System.Linq;
 using LiveCharts.Defaults;
 
 namespace LiveCharts.SeriesAlgorithms
@@ -34,20 +35,35 @@ namespace LiveCharts.SeriesAlgorithms
 
         public override void Update()
         {
-            var heatSeries = (IHeatSeries) View;
+            var heatSeries = (IHeatSeries)View;
 
             var uw = new CorePoint(
-                0*ChartFunctions.GetUnitWidth(AxisTags.X, Chart, View.ScalesXAt)/2,
-                - ChartFunctions.GetUnitWidth(AxisTags.Y, Chart, View.ScalesYAt));
+                0 * ChartFunctions.GetUnitWidth(AxisTags.X, Chart, View.ScalesXAt) / 2,
+                -ChartFunctions.GetUnitWidth(AxisTags.Y, Chart, View.ScalesYAt));
 
+            // ReSharper disable once CompareOfFloatsByEqualityOperator
             var wd = CurrentXAxis.MaxLimit - CurrentXAxis.MinLimit == 0
                 ? double.MaxValue
                 : CurrentXAxis.MaxLimit - CurrentXAxis.MinLimit;
+            // ReSharper disable once CompareOfFloatsByEqualityOperator
             var hd = CurrentYAxis.MaxLimit - CurrentYAxis.MinLimit == 0
                 ? double.MaxValue
                 : CurrentYAxis.MaxLimit - CurrentYAxis.MinLimit;
-            var w = Chart.DrawMargin.Width/wd;
-            var h = Chart.DrawMargin.Height/hd;
+            var w = Chart.DrawMargin.Width / wd;
+            var h = Chart.DrawMargin.Height / hd;
+
+            //lets force the gradients to always have an 'interpolable' model
+            var correctedGradients = heatSeries.Stops.Select(x => new CoreGradientStop
+            {
+                Color = x.Color,
+                Offset = x.Offset < 0 ? 0 : (x.Offset > 1 ? 1 : x.Offset)
+            }).ToList();
+            var min = correctedGradients[0];
+            min.Offset = 0;
+            correctedGradients.Insert(0, min);
+            var max = correctedGradients[correctedGradients.Count - 1];
+            max.Offset = 1;
+            correctedGradients.Add(max);
 
             foreach (var chartPoint in View.ActualValues.Points)
             {
@@ -59,10 +75,10 @@ namespace LiveCharts.SeriesAlgorithms
                 chartPoint.View = View.GetPointView(chartPoint.View, chartPoint,
                     View.DataLabels ? View.LabelPoint(chartPoint) : null);
 
-                var heatView = (IHeatPointView) chartPoint.View;
+                var heatView = (IHeatPointView)chartPoint.View;
 
-                heatView.ColorComponents = ColorInterpolation(
-                    heatSeries.ColdComponents, heatSeries.HotComponents, chartPoint.Weight);
+                heatView.ColorComponents = ColorInterpolation(correctedGradients,
+                    chartPoint.Weight / Chart.Value3CoreLimit.Max);
 
                 heatView.Width = w;
                 heatView.Height = h;
@@ -91,25 +107,45 @@ namespace LiveCharts.SeriesAlgorithms
             return AxisLimits.StretchMax(axis) + 1;
         }
 
-        private CoreColor ColorInterpolation(CoreColor from, CoreColor to, double weight)
+        private CoreColor ColorInterpolation(IList<CoreGradientStop> gradients, double weight)
         {
+            CoreColor from = new CoreColor(0, 0, 0, 0),
+                to = new CoreColor(0, 0, 0, 0);
+            double fromOffset = 0, toOffset = 0;
+
+            for (var i = 0; i < gradients.Count; i++)
+            {
+                // ReSharper disable once InvertIf
+                if (gradients[i].Offset <= weight && gradients[i + 1].Offset >= weight)
+                {
+                    from = gradients[i].Color;
+                    to = gradients[i + 1].Color;
+
+                    fromOffset = gradients[i].Offset;
+                    toOffset = gradients[i + 1].Offset;
+
+                    break;
+                }
+            }
+
             return new CoreColor(
-                LinearInterpolation(from.A, to.A, weight),
-                LinearInterpolation(from.R, from.R, weight),
-                LinearInterpolation(from.G, to.G, weight),
-                LinearInterpolation(from.B, to.B, weight));
+                LinearInterpolation(from.A, to.A, fromOffset, toOffset, weight),
+                LinearInterpolation(from.R, from.R, fromOffset, toOffset, weight),
+                LinearInterpolation(from.G, to.G, fromOffset, toOffset, weight),
+                LinearInterpolation(from.B, to.B, fromOffset, toOffset, weight));
         }
 
-        private byte LinearInterpolation(byte from, byte to, double value)
+        private static byte LinearInterpolation(byte fromComponent, byte toComponent,
+            double fromOffset, double toOffset, double value)
         {
-            var p1 = new CorePoint(Chart.Value3CoreLimit.Min, from);
-            var p2 = new CorePoint(Chart.Value3CoreLimit.Max, to);
+            var p1 = new CorePoint(fromOffset, fromComponent);
+            var p2 = new CorePoint(toOffset, toComponent);
 
             var deltaX = p2.X - p1.X;
             // ReSharper disable once CompareOfFloatsByEqualityOperator
             var m = (p2.Y - p1.Y) / (deltaX == 0 ? double.MinValue : deltaX);
 
-            return (byte) (m*(value - p1.X) + p1.Y);
+            return (byte)(m * (value - p1.X) + p1.Y);
         }
     }
 }

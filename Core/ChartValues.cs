@@ -21,7 +21,6 @@
 //SOFTWARE.
 
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using LiveCharts.Charts;
 using LiveCharts.Configurations;

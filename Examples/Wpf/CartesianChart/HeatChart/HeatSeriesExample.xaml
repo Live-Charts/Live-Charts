@@ -16,7 +16,15 @@
         <Button Grid.Row="0" Height="30" Width="100" Click="ButtonBase_OnClick" Margin="10">Randomize</Button>
         <lvc:CartesianChart Grid.Row="1">
             <lvc:CartesianChart.Series>
-                <lvc:HeatSeries Values="{Binding Values}" DataLabels="True"></lvc:HeatSeries>
+                <lvc:HeatSeries Values="{Binding Values}" DataLabels="True">
+                    <lvc:HeatSeries.GradientStopCollection>
+                        <GradientStop Offset="0" Color="#99FFFF00"></GradientStop>
+                        <GradientStop Offset=".25" Color="#FFFFFF00"></GradientStop>
+                        <GradientStop Offset=".50" Color="#990000FF"></GradientStop>
+                        <GradientStop Offset=".75" Color="#FF0000FF"></GradientStop>
+                        <GradientStop Offset="1" Color="#50505050"></GradientStop>
+                    </lvc:HeatSeries.GradientStopCollection>
+                </lvc:HeatSeries>
             </lvc:CartesianChart.Series>
             <lvc:CartesianChart.AxisX >
                 <lvc:Axis Labels="{Binding SalesMan}" LabelsRotation="-15">

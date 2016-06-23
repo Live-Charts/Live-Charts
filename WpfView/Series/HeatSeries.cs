@@ -21,7 +21,9 @@
 //SOFTWARE.
 
 using System;
+using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -56,56 +58,39 @@ namespace LiveCharts.Wpf
 
         #region Private Properties
 
-        public HeatColorRange ColorRangeControl { get; set; }
+        private HeatColorRange ColorRangeControl { get; set; }
         #endregion
 
         #region Properties
 
         public static readonly DependencyProperty DrawsHeatRangeProperty = DependencyProperty.Register(
-            "DrawsHeatRange", typeof (bool), typeof (HeatSeries), 
+            "DrawsHeatRange", typeof(bool), typeof(HeatSeries),
             new PropertyMetadata(default(bool), CallChartUpdater()));
 
         public bool DrawsHeatRange
         {
-            get { return (bool) GetValue(DrawsHeatRangeProperty); }
+            get { return (bool)GetValue(DrawsHeatRangeProperty); }
             set { SetValue(DrawsHeatRangeProperty, value); }
         }
 
-        public static readonly DependencyProperty ColdColorProperty = DependencyProperty.Register(
-            "ColdColor", typeof (Color?), typeof (HeatSeries), 
-            new PropertyMetadata(null, CallChartUpdater()));
+        public static readonly DependencyProperty GradientStopCollectionProperty = DependencyProperty.Register(
+            "GradientStopCollection", typeof(GradientStopCollection), typeof(HeatSeries), new PropertyMetadata(default(GradientStopCollection)));
 
-        public Color? ColdColor
+        public GradientStopCollection GradientStopCollection
         {
-            get { return (Color?) GetValue(ColdColorProperty); }
-            set { SetValue(ColdColorProperty, value); }
+            get { return (GradientStopCollection)GetValue(GradientStopCollectionProperty); }
+            set { SetValue(GradientStopCollectionProperty, value); }
         }
 
-        public static readonly DependencyProperty HotColorProperty = DependencyProperty.Register(
-            "HotColor", typeof (Color?), typeof (HeatSeries), 
-            new PropertyMetadata(null, CallChartUpdater()));
-
-        public Color? HotColor
-        {
-            get { return (Color?) GetValue(HotColorProperty); }
-            set { SetValue(HotColorProperty, value); }
-        }
-
-        public CoreColor ColdComponents
+        public IList<CoreGradientStop> Stops
         {
             get
             {
-                var actualColor = ColdColor ?? Colors.Transparent;
-                return new CoreColor(actualColor.A, actualColor.R, actualColor.G, actualColor.B);
-            }
-        }
-
-        public CoreColor HotComponents
-        {
-            get 
-            {
-                var actualColor = HotColor ?? Colors.Transparent;
-                return new CoreColor(actualColor.A, actualColor.R, actualColor.G, actualColor.B);
+                return GradientStopCollection.Select(x => new CoreGradientStop
+                {
+                    Offset = x.Offset,
+                    Color = new CoreColor(x.Color.A, x.Color.R, x.Color.G, x.Color.B)
+                }).ToArray();
             }
         }
 
@@ -124,7 +109,7 @@ namespace LiveCharts.Wpf
                     IsNew = true,
                     Rectangle = new Rectangle()
                 };
-                
+
                 BindingOperations.SetBinding(pbv.Rectangle, Shape.StrokeProperty,
                     new Binding { Path = new PropertyPath(StrokeProperty), Source = this });
                 BindingOperations.SetBinding(pbv.Rectangle, Shape.StrokeThicknessProperty,
@@ -200,19 +185,19 @@ namespace LiveCharts.Wpf
                 {
                     ColorRangeControl = new HeatColorRange();
                     ColorRangeControl.SetBinding(TextBlock.FontFamilyProperty,
-                        new Binding {Path = new PropertyPath(FontFamilyProperty), Source = this});
+                        new Binding { Path = new PropertyPath(FontFamilyProperty), Source = this });
                     ColorRangeControl.SetBinding(FontSizeProperty,
-                        new Binding {Path = new PropertyPath(FontSizeProperty), Source = this});
+                        new Binding { Path = new PropertyPath(FontSizeProperty), Source = this });
                     ColorRangeControl.SetBinding(TextBlock.FontStretchProperty,
-                        new Binding {Path = new PropertyPath(FontStretchProperty), Source = this});
+                        new Binding { Path = new PropertyPath(FontStretchProperty), Source = this });
                     ColorRangeControl.SetBinding(TextBlock.FontStyleProperty,
-                        new Binding {Path = new PropertyPath(FontStyleProperty), Source = this});
+                        new Binding { Path = new PropertyPath(FontStyleProperty), Source = this });
                     ColorRangeControl.SetBinding(TextBlock.FontWeightProperty,
-                        new Binding {Path = new PropertyPath(FontWeightProperty), Source = this});
+                        new Binding { Path = new PropertyPath(FontWeightProperty), Source = this });
                     ColorRangeControl.SetBinding(TextBlock.ForegroundProperty,
-                        new Binding {Path = new PropertyPath(ForegroundProperty), Source = this});
+                        new Binding { Path = new PropertyPath(ForegroundProperty), Source = this });
                     ColorRangeControl.SetBinding(VisibilityProperty,
-                        new Binding {Path = new PropertyPath(VisibilityProperty), Source = this});
+                        new Binding { Path = new PropertyPath(VisibilityProperty), Source = this });
                 }
                 if (ColorRangeControl.Parent == null)
                 {
@@ -236,7 +221,7 @@ namespace LiveCharts.Wpf
 
         public override void PlaceSpecializedElements()
         {
-            ColorRangeControl.UpdateFill(ColdComponents, HotComponents);
+            ColorRangeControl.UpdateFill(GradientStopCollection);
 
             ColorRangeControl.Height = Model.Chart.DrawMargin.Height;
 
@@ -254,6 +239,7 @@ namespace LiveCharts.Wpf
             SetValue(ForegroundProperty, Brushes.White);
             SetValue(StrokeProperty, Brushes.White);
             SetValue(DrawsHeatRangeProperty, true);
+            SetValue(GradientStopCollectionProperty, new GradientStopCollection());
 
             Func<ChartPoint, string> defaultLabel = x => x.Weight.ToString(CultureInfo.InvariantCulture);
             SetValue(LabelPointProperty, defaultLabel);
@@ -263,17 +249,17 @@ namespace LiveCharts.Wpf
 
         public override void InitializeColors()
         {
-            var wpfChart = (Chart) Model.Chart.View;
+            var wpfChart = (Chart)Model.Chart.View;
             var nextColor = wpfChart.GetNextDefaultColor();
 
             if (Stroke == null)
                 SetValue(StrokeProperty, new SolidColorBrush(nextColor));
             if (Fill == null)
                 SetValue(FillProperty, new SolidColorBrush(nextColor));
-            
+
             var defaultColdColor = new Color
             {
-                A = (byte) (nextColor.A*(DefaultFillOpacity > 1
+                A = (byte)(nextColor.A * (DefaultFillOpacity > 1
                     ? 1
                     : (DefaultFillOpacity < 0 ? 0 : DefaultFillOpacity))),
                 R = nextColor.R,
@@ -281,10 +267,19 @@ namespace LiveCharts.Wpf
                 B = nextColor.B
             };
 
-            if (ColdColor == null)
-                SetValue(ColdColorProperty, defaultColdColor);
-            if (HotColor == null)
-                SetValue(HotColorProperty, nextColor);
+            if (!GradientStopCollection.Any())
+            {
+                GradientStopCollection.Add(new GradientStop
+                {
+                    Color = defaultColdColor,
+                    Offset = 0
+                });
+                GradientStopCollection.Add(new GradientStop
+                {
+                    Color = nextColor,
+                    Offset = 1
+                });
+            }
         }
 
         #endregion
