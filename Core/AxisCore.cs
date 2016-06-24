@@ -60,6 +60,11 @@ namespace LiveCharts
         public AxisPosition Position { get; set; }
         public bool IsMerged { get; set; }
 
+        public IEnumerable<SeparatorElementCore> CurrentSeparators
+        {
+            get { return Cache.Values; }
+        }
+
         public SeparatorConfigurationCore Separator { get; set; }
 
         public double S { get; internal set; }
@@ -276,7 +281,6 @@ namespace LiveCharts
             Debug.WriteLine("Axis.Separations: " + Cache.Count);
 #endif
         }
-
 
         internal double FromPreviousState(double value, AxisTags source, ChartCore chart)
         {

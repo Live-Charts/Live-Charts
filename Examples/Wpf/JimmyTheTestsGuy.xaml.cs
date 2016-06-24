@@ -34,17 +34,17 @@ namespace Wpf
 
             SeriesCollection = GetSeries();
 
-            Task.Run(() =>
-            {
-                while (true)
-                {
-                    Thread.Sleep(3000);
-                    Application.Current.Dispatcher.Invoke(() =>
-                    {
-                        SeriesCollection = GetSeries();
-                    });
-                }
-            });
+            //Task.Run(() =>
+            //{
+            //    while (true)
+            //    {
+            //        Thread.Sleep(3000);
+            //        Application.Current.Dispatcher.Invoke(() =>
+            //        {
+            //            SeriesCollection[0].Values.Add((double) new Random().Next(0, 10));
+            //        });
+            //    }
+            //});
 
             DataContext = this;
         }
@@ -67,14 +67,6 @@ namespace Wpf
                 new LineSeries
                 {
                     Values = new ChartValues<double> {1, 4, 7, 2, 6}
-                },
-                new LineSeries
-                {
-                    Values = new ChartValues<double> {6, 2, 8, 3, 6}
-                },
-                new LineSeries
-                {
-                    Values = new ChartValues<double> {9, 3, 6, 3, 6}
                 }
             };
         }
@@ -86,6 +78,11 @@ namespace Wpf
         {
             if (PropertyChanged != null)
                 PropertyChanged.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
+        {
+            Chart.AxisY[0].ShowLabels = !Chart.AxisY[0].ShowLabels;
         }
     }
 }

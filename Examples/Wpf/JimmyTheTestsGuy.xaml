@@ -9,8 +9,8 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300" d:DataContext="{d:DesignInstance local:JimmyTheTestsGuy}">    
     <Grid>
-        <lvc:CartesianChart Series="{Binding SeriesCollection}" LegendLocation="Right">
-
+        <Button Height="30" VerticalAlignment="Top" Click="ButtonBase_OnClick">Hola</Button>
+        <lvc:CartesianChart Name="Chart" Series="{Binding SeriesCollection}" LegendLocation="Right">
         </lvc:CartesianChart> 
     </Grid>
 </UserControl>

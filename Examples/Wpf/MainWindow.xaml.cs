@@ -52,6 +52,8 @@ namespace Wpf
 
             CartesianExamples = new List<UserControl>
             {
+                new JimmyTheTestsGuy(),
+
                 new HeatSeriesExample(),
 
                 new DynamicVisibilityExample(),

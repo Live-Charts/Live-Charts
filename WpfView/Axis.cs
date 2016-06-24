@@ -131,7 +131,8 @@ namespace LiveCharts.Wpf
 
         public static readonly DependencyProperty ShowLabelsProperty = DependencyProperty.Register(
             "ShowLabels", typeof (bool), typeof (Axis), 
-            new PropertyMetadata(default(bool), UpdateChart()));
+            new PropertyMetadata(default(bool), LabelsVisibilityChanged));
+
         /// <summary>
         /// Gets or sets if labels are visible.
         /// </summary>
@@ -450,6 +451,22 @@ namespace LiveCharts.Wpf
                 if (wpfAxis.Model != null)
                     wpfAxis.Model.Chart.Updater.Run(animate);
             };
+        }
+
+        private static void LabelsVisibilityChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
+        {
+            var axis = (Axis) dependencyObject;
+            if (axis.Model == null) return;
+            
+            foreach (var separator in axis.Model.CurrentSeparators)
+            {
+                var s = (AxisSeparatorElement) separator.View;
+                s.TextBlock.Visibility = axis.ShowLabels
+                    ? Visibility.Visible
+                    : Visibility.Collapsed;
+            }
+
+            UpdateChart()(dependencyObject, dependencyPropertyChangedEventArgs);
         }
     }
 }
