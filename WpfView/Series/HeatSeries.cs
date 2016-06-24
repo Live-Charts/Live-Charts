@@ -134,7 +134,7 @@ namespace LiveCharts.Wpf
                     .EnsureElementBelongsToCurrentDrawMargin(pbv.DataLabel);
             }
 
-            if ((Model.Chart.View.HasTooltip || Model.Chart.View.HasDataClickEventAttached) && pbv.HoverShape == null)
+            if (Model.Chart.RequiresHoverShape && pbv.HoverShape == null)
             {
                 pbv.HoverShape = new Rectangle
                 {
@@ -146,10 +146,8 @@ namespace LiveCharts.Wpf
                 BindingOperations.SetBinding(pbv.HoverShape, VisibilityProperty,
                     new Binding { Path = new PropertyPath(VisibilityProperty), Source = this });
 
-                var wpfChart = Model.Chart.View as Chart;
-                if (wpfChart == null) return null;
-
-                wpfChart.AttachEventsTo(pbv.HoverShape);
+                var wpfChart = (Chart)Model.Chart.View;
+                wpfChart.AttachHoverableEventTo(pbv.HoverShape);
 
                 Model.Chart.View.AddToDrawMargin(pbv.HoverShape);
             }

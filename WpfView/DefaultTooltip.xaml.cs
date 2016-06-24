@@ -36,7 +36,7 @@ namespace LiveCharts.Wpf
     /// </summary>
     public partial class DefaultTooltip : INotifyPropertyChanged
     {
-        private TooltipData _data;
+        private WpfTooltipViewModel _viewModel;
 
         public DefaultTooltip()
         {
@@ -76,12 +76,12 @@ namespace LiveCharts.Wpf
             set { SetValue(BulletSizeProperty, value); }
         }
 
-        public TooltipData Data
+        public WpfTooltipViewModel ViewModel
         {
-            get { return _data; }
+            get { return _viewModel; }
             set
             {
-                _data = value;
+                _viewModel = value;
                 OnPropertyChanged("Data");
             }
         }
@@ -99,7 +99,9 @@ namespace LiveCharts.Wpf
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var v = (TooltipData) value;
+            var v = value as WpfTooltipViewModel;
+
+            if (v == null) return null;
 
             if (v.SelectionMode == TooltipSelectionMode.OnlySender) return string.Empty;
 
@@ -133,7 +135,7 @@ namespace LiveCharts.Wpf
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var v = (TooltipData) value;
+            var v = (WpfTooltipViewModel) value;
 
             return v.Points.Any(x => x.ChartPoint.Participation > 0) ? Visibility.Visible : Visibility.Collapsed;
         }
@@ -148,7 +150,7 @@ namespace LiveCharts.Wpf
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var v = (TooltipData) value;
+            var v = (WpfTooltipViewModel) value;
 
             if (v.SelectionMode == TooltipSelectionMode.OnlySender) return Visibility.Collapsed;
 
@@ -161,7 +163,7 @@ namespace LiveCharts.Wpf
         }
     }
 
-    public class TooltipData
+    public class WpfTooltipViewModel
     {
         public Func<double, string> XFormatter { get; set; }
         public Func<double, string> YFormatter { get; set; }

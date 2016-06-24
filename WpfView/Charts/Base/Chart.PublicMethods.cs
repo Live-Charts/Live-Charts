@@ -125,7 +125,7 @@ namespace LiveCharts.Wpf.Charts.Base
         /// Forces the chart to update
         /// </summary>
         /// <param name="restartView">Indicates if the update should restart the view, animations will run again if true.</param>
-        /// <param name="force">Force the updater to run when called, without wating for the next updater stept.</param>
+        /// <param name="force">Force the updater to run when called, without waiting for the next updater step.</param>
         public void Update(bool restartView = false, bool force = false)
         {
             if (Model != null) Model.Updater.Run(restartView, force);
@@ -191,6 +191,12 @@ namespace LiveCharts.Wpf.Charts.Base
                 if (x.Parent == null) chart.View.AddToView(x);
                 return x.AsCoreElement(Model, AxisTags.Y);
             }).ToList();
+        }
+
+        public Color GetNextDefaultColor()
+        {
+            if (SeriesIndexCount == int.MaxValue) SeriesIndexCount = 0;
+            return Colors[SeriesIndexCount++ % Colors.Count];
         }
     }
 }

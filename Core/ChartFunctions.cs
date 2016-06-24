@@ -20,6 +20,9 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using LiveCharts.Charts;
 
 namespace LiveCharts
@@ -98,7 +101,7 @@ namespace LiveCharts
         }
 
         /// <summary>
-        /// Scales a screen value to chart value accoring to an axis.
+        /// Scales a screen value to chart value according to an axis.
         /// </summary>
         /// <param name="value"></param>
         /// <param name="source"></param>
@@ -203,6 +206,64 @@ namespace LiveCharts
 
             min = axis.MinLimit;
             return ToDrawMargin(min + 1, AxisTags.X, chart, axis) - ToDrawMargin(min, AxisTags.X, chart, axis);
+        }
+
+        public static TooltipDataViewModel GetTooltipData(ChartPoint senderPoint, ChartCore chart, TooltipSelectionMode selectionMode)
+        {
+            var ax = chart.AxisX[senderPoint.SeriesView.ScalesXAt];
+            var ay = chart.AxisY[senderPoint.SeriesView.ScalesYAt];
+
+            switch (selectionMode)
+            {
+                case TooltipSelectionMode.OnlySender:
+                    return new TooltipDataViewModel
+                    {
+                        XFormatter = ax.GetFormatter(),
+                        YFormatter = ay.GetFormatter(),
+                        Points = new List<ChartPoint> {senderPoint},
+                        Shares = null
+                    };
+                case TooltipSelectionMode.SharedXValues:
+                    return new TooltipDataViewModel
+                    {
+                        XFormatter = ax.GetFormatter(),
+                        YFormatter = ay.GetFormatter(),
+                        Points = chart.ActualSeries.Where(x => x.ScalesXAt == senderPoint.SeriesView.ScalesXAt)
+                            .SelectMany(x => x.Values.Points)
+                            .Where(x => Math.Abs(x.X - senderPoint.X) < ax.S*.01),
+                        Shares = (chart.View is IPieChart) ? (double?) senderPoint.X : null
+                    };
+                case TooltipSelectionMode.SharedYValues:
+                    return new TooltipDataViewModel
+                    {
+                        XFormatter = ax.GetFormatter(),
+                        YFormatter = ay.GetFormatter(),
+                        Points = chart.ActualSeries.Where(x => x.ScalesYAt == senderPoint.SeriesView.ScalesYAt)
+                            .SelectMany(x => x.Values.Points)
+                            .Where(x => Math.Abs(x.Y - senderPoint.Y) < ay.S*.01),
+                        Shares = senderPoint.Y
+                    };
+                case TooltipSelectionMode.SharedXInSeries:
+                    return new TooltipDataViewModel
+                    {
+                        XFormatter = ax.GetFormatter(),
+                        YFormatter = ay.GetFormatter(),
+                        Points = senderPoint.SeriesView.ActualValues.Points
+                            .Where(x => Math.Abs(x.X - senderPoint.X) < ax.S*.01),
+                        Shares = senderPoint.X
+                    };
+                case TooltipSelectionMode.SharedYInSeries:
+                    return new TooltipDataViewModel
+                    {
+                        XFormatter = ax.GetFormatter(),
+                        YFormatter = ay.GetFormatter(),
+                        Points = senderPoint.SeriesView.ActualValues.Points
+                            .Where(x => Math.Abs(x.Y - senderPoint.Y) < ay.S*.01),
+                        Shares = senderPoint.Y
+                    };
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
         }
 
     }

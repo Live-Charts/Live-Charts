@@ -44,7 +44,7 @@ namespace LiveCharts.Charts
             View.Zoom = ZoomingOptions.None;
 
             if (View.Series.Any(x => !(x.Model is IPieSeries)))
-                throw new Exception(
+                throw new LiveChartsException(
                     "There is a invalid series in the series collection, " +
                     "verify that all the series implement IPieSeries.");
 

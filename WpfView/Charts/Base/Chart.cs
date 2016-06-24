@@ -131,18 +131,5 @@ namespace LiveCharts.Wpf.Charts.Base
         }
 
         #endregion
-
-        #region Obsoletes, this properties will disappear in future versions
-
-        public static readonly DependencyProperty HoverableProperty = DependencyProperty.Register("Hoverable", typeof (bool), typeof (Chart), new PropertyMetadata(true));
-
-        [Obsolete("This property is obsolete, if you need to disable tooltips, set the Chart.DataTooltip to null")]
-        public bool Hoverable
-        {
-            get { return (bool) GetValue(HoverableProperty); }
-            set { SetValue(HoverableProperty, value); }
-        }
-
-        #endregion
     }
 }

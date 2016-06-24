@@ -45,7 +45,7 @@ namespace LiveCharts.Charts
             base.PrepareAxes();
 
             if (ActualSeries.Any(x => !(x.Model is ICartesianSeries)))
-                throw new Exception(
+                throw new LiveChartsException(
                     "There is a invalid series in the series collection, " +
                     "verify that all the series implement ICartesianSeries.");
 

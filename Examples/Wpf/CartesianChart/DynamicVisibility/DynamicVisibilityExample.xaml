@@ -26,7 +26,7 @@
                 John Series
             </CheckBox>
         </StackPanel>
-        <lvc:CartesianChart Grid.Row="1">
+        <lvc:CartesianChart Grid.Row="1" Hoverable="False">
             <lvc:CartesianChart.Series>
                 <lvc:ColumnSeries Title="Maria" Values="4,7,2,9,3" Visibility="{Binding MariaSeriesVisibility, Converter={StaticResource bvc}}" MaxWidth="1000" ColumnPadding="0"/>
                 <lvc:ColumnSeries Title="Charles" Values="6,2,6,3,8" Visibility="{Binding CharlesSeriesVisibility, Converter={StaticResource bvc}}" MaxWidth="1000" ColumnPadding="0"/>

@@ -58,6 +58,10 @@ namespace LiveCharts.Charts
         public CoreSize ControlSize { get; set; }
         public CoreRectangle DrawMargin { get; set; }
         public bool HasUnitaryPoints { get; set; }
+        public bool RequiresHoverShape
+        {
+            get { return View != null && (View.HasTooltip || View.HasDataClickEventAttached || View.Hoverable); }
+        }
 
         public List<AxisCore> AxisX { get; set; }
         public List<AxisCore> AxisY { get; set; }

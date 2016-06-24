@@ -394,6 +394,14 @@ namespace LiveCharts
         public double W { get; set; }
     }
 
+    public struct TooltipDataViewModel
+    {
+        public IEnumerable<ChartPoint> Points { get; set; }
+        public double? Shares { get; set; }
+        public Func<double, string> XFormatter { get; set; }
+        public Func<double, string> YFormatter { get; set; }
+    }
+
     internal struct StackedSum
     {
         public StackedSum(double value): this()
@@ -693,6 +701,7 @@ namespace LiveCharts
 
         bool HasTooltip { get; }
         bool HasDataClickEventAttached { get; }
+        bool Hoverable { get; }
         bool IsControlLoaded { get; }
 
         void SetDrawMarginTop(double value);

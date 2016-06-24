@@ -152,6 +152,15 @@ namespace LiveCharts.Wpf.Charts.Base
             set { SetValue(DataTooltipProperty, value); }
         }
 
+        public static readonly DependencyProperty HoverableProperty = DependencyProperty.Register(
+            "Hoverable", typeof(bool), typeof(Chart), new PropertyMetadata(true));
+
+        public bool Hoverable
+        {
+            get { return (bool)GetValue(HoverableProperty); }
+            set { SetValue(HoverableProperty, value); }
+        }
+
         public ChartCore Model
         {
             get { return ChartCoreModel; }
@@ -168,11 +177,6 @@ namespace LiveCharts.Wpf.Charts.Base
         }
 
         public bool IsControlLoaded { get; private set; }
-
-        public Color GetNextDefaultColor()
-        {
-            if (SeriesIndexCount == int.MaxValue) SeriesIndexCount = 0;
-            return Colors[SeriesIndexCount++%Colors.Count];
-        }
+        
     }
 }

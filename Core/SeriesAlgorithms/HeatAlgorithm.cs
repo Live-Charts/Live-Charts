@@ -18,7 +18,7 @@
 //AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 //LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-//SOFTWARE.
+//SOFTWARE.5
 
 using System.Collections.Generic;
 using System.Linq;
@@ -52,7 +52,11 @@ namespace LiveCharts.SeriesAlgorithms
             var w = Chart.DrawMargin.Width / wd;
             var h = Chart.DrawMargin.Height / hd;
 
-            //lets force the gradients to always have an 'interpolable' model
+            //lets force the gradients to always have an 'interpol-able' model
+
+            if (!heatSeries.Stops.Any())
+                throw new LiveChartsException("There is no a valid gradient to create a heat series.");
+
             var correctedGradients = heatSeries.Stops.Select(x => new CoreGradientStop
             {
                 Color = x.Color,
@@ -107,10 +111,9 @@ namespace LiveCharts.SeriesAlgorithms
             return AxisLimits.StretchMax(axis) + 1;
         }
 
-        private CoreColor ColorInterpolation(IList<CoreGradientStop> gradients, double weight)
+        private static CoreColor ColorInterpolation(IList<CoreGradientStop> gradients, double weight)
         {
-            CoreColor from = new CoreColor(0, 0, 0, 0),
-                to = new CoreColor(0, 0, 0, 0);
+            CoreColor from = new CoreColor(0, 0, 0, 0), to = new CoreColor(0, 0, 0, 0);
             double fromOffset = 0, toOffset = 0;
 
             for (var i = 0; i < gradients.Count; i++)
@@ -129,13 +132,13 @@ namespace LiveCharts.SeriesAlgorithms
             }
 
             return new CoreColor(
-                LinearInterpolation(from.A, to.A, fromOffset, toOffset, weight),
-                LinearInterpolation(from.R, from.R, fromOffset, toOffset, weight),
-                LinearInterpolation(from.G, to.G, fromOffset, toOffset, weight),
-                LinearInterpolation(from.B, to.B, fromOffset, toOffset, weight));
+                InterpolateColorComponent(from.A, to.A, fromOffset, toOffset, weight),
+                InterpolateColorComponent(from.R, from.R, fromOffset, toOffset, weight),
+                InterpolateColorComponent(from.G, to.G, fromOffset, toOffset, weight),
+                InterpolateColorComponent(from.B, to.B, fromOffset, toOffset, weight));
         }
 
-        private static byte LinearInterpolation(byte fromComponent, byte toComponent,
+        private static byte InterpolateColorComponent(byte fromComponent, byte toComponent,
             double fromOffset, double toOffset, double value)
         {
             var p1 = new CorePoint(fromOffset, fromComponent);
