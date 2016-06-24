@@ -52,7 +52,7 @@ namespace Wpf
 
             CartesianExamples = new List<UserControl>
             {
-                new JimmyTheTestsGuy(),
+                
 
                 new HeatSeriesExample(),
 
@@ -95,12 +95,12 @@ namespace Wpf
 
             PieExamples = new List<UserControl>
             {
-                //new PieExample()
+                new PieExample()
             };
 
             GaugeExamples = new List<UserControl>
             {
-                //new Gauges.Gauge180(), new Gauge360()
+                new Gauges.Gauge180(), new Gauge360()
             };
 
             #endregion
