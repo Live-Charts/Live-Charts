@@ -164,6 +164,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="CartesianChart\PointShapeLine\PointShapeLineExample.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="CartesianChart\StackedArea\VerticalStackedAreaExample.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -295,6 +299,7 @@
     <Compile Include="CartesianChart\NegativeStackedRow\NEgativeStackedRowExample.xaml.cs">
       <DependentUpon>NEgativeStackedRowExample.xaml</DependentUpon>
     </Compile>
+    <Compile Include="CartesianChart\PointShapeLine\PointShapeLineExample.cs" />
     <Compile Include="CartesianChart\StackedArea\VerticalStackedAreaExample.xaml.cs">
       <DependentUpon>VerticalStackedAreaExample.xaml</DependentUpon>
     </Compile>

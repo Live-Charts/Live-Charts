@@ -151,6 +151,7 @@ namespace LiveCharts.Wpf.Charts.Base
                 item.StrokeThickness = series.StrokeThickness;
                 item.Stroke = series.Stroke;
                 item.Fill = series.Fill;
+                item.Geometry = series.Geometry;
 
                 l.Add(item);
             }

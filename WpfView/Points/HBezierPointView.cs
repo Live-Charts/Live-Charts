@@ -34,7 +34,7 @@ namespace LiveCharts.Wpf.Points
     internal class HBezierPointView : PointView, IBezierPointView
     {
         public BezierSegment Segment { get; set; }
-        public Ellipse Ellipse { get; set; }
+        public Shape Shape { get; set; }
         public PathFigure Container { get; set; }
         public BezierData Data { get; set; }
 
@@ -63,10 +63,10 @@ namespace LiveCharts.Wpf.Points
                         Canvas.SetLeft(DataLabel, Canvas.GetLeft(previosPbv.DataLabel));
                     }
 
-                    if (Ellipse != null)
+                    if (Shape != null)
                     {
-                        Canvas.SetTop(Ellipse, Canvas.GetTop(previosPbv.Ellipse));
-                        Canvas.SetLeft(Ellipse, Canvas.GetLeft(previosPbv.Ellipse));
+                        Canvas.SetTop(Shape, Canvas.GetTop(previosPbv.Shape));
+                        Canvas.SetLeft(Shape, Canvas.GetLeft(previosPbv.Shape));
                     }
                 }
                 else
@@ -81,10 +81,10 @@ namespace LiveCharts.Wpf.Points
                         Canvas.SetLeft(DataLabel, current.ChartLocation.X - DataLabel.ActualWidth*.5);
                     }
 
-                    if (Ellipse != null)
+                    if (Shape != null)
                     {
-                        Canvas.SetTop(Ellipse, y);
-                        Canvas.SetLeft(Ellipse, current.ChartLocation.X - Ellipse.Width*.5);
+                        Canvas.SetTop(Shape, y);
+                        Canvas.SetLeft(Shape, current.ChartLocation.X - Shape.Width*.5);
                     }
                 }
             }
@@ -103,10 +103,10 @@ namespace LiveCharts.Wpf.Points
                     Canvas.SetTop(HoverShape, current.ChartLocation.Y - HoverShape.Height*.5);
                 }
 
-                if (Ellipse != null)
+                if (Shape != null)
                 {
-                    Canvas.SetLeft(Ellipse, current.ChartLocation.X - Ellipse.Width*.5);
-                    Canvas.SetTop(Ellipse, current.ChartLocation.Y - Ellipse.Height*.5);
+                    Canvas.SetLeft(Shape, current.ChartLocation.X - Shape.Width*.5);
+                    Canvas.SetTop(Shape, current.ChartLocation.Y - Shape.Height*.5);
                 }
 
                 if (DataLabel != null)
@@ -129,12 +129,12 @@ namespace LiveCharts.Wpf.Points
             Segment.BeginAnimation(BezierSegment.Point3Property,
                 new PointAnimation(Segment.Point3, Data.Point3.AsPoint(), chart.View.AnimationsSpeed));
 
-            if (Ellipse != null)
+            if (Shape != null)
             {
-                Ellipse.BeginAnimation(Canvas.LeftProperty,
-                    new DoubleAnimation(current.ChartLocation.X - Ellipse.Width*.5, chart.View.AnimationsSpeed));
-                Ellipse.BeginAnimation(Canvas.TopProperty,
-                    new DoubleAnimation(current.ChartLocation.Y - Ellipse.Height*.5, chart.View.AnimationsSpeed));
+                Shape.BeginAnimation(Canvas.LeftProperty,
+                    new DoubleAnimation(current.ChartLocation.X - Shape.Width*.5, chart.View.AnimationsSpeed));
+                Shape.BeginAnimation(Canvas.TopProperty,
+                    new DoubleAnimation(current.ChartLocation.Y - Shape.Height*.5, chart.View.AnimationsSpeed));
             }
 
             if (DataLabel != null)
@@ -160,7 +160,7 @@ namespace LiveCharts.Wpf.Points
         public override void RemoveFromView(ChartCore chart)
         {
             chart.View.RemoveFromDrawMargin(HoverShape);
-            chart.View.RemoveFromDrawMargin(Ellipse);
+            chart.View.RemoveFromDrawMargin(Shape);
             chart.View.RemoveFromDrawMargin(DataLabel);
             Container.Segments.Remove(Segment);
         }
@@ -177,7 +177,7 @@ namespace LiveCharts.Wpf.Points
 
         protected double CorrectYLabel(double desiredPosition, ChartCore chart)
         {
-            desiredPosition -= (Ellipse == null ? 0 : Ellipse.ActualHeight*.5) + DataLabel.ActualHeight*.5 + 2;
+            desiredPosition -= (Shape == null ? 0 : Shape.ActualHeight*.5) + DataLabel.ActualHeight*.5 + 2;
 
             if (desiredPosition + DataLabel.ActualHeight > chart.DrawMargin.Height)
                 desiredPosition -= desiredPosition + DataLabel.ActualHeight - chart.DrawMargin.Height + 2;
@@ -190,14 +190,14 @@ namespace LiveCharts.Wpf.Points
         public override void OnHover(ChartPoint point)
         {
             var lineSeries = (LineSeries)point.SeriesView;
-            if (Ellipse != null) Ellipse.Fill = Ellipse.Stroke;
+            if (Shape != null) Shape.Fill = Shape.Stroke;
             lineSeries.StrokeThickness = lineSeries.StrokeThickness + 1;
         }
 
         public override void OnHoverLeave(ChartPoint point)
         {
             var lineSeries = (LineSeries) point.SeriesView;
-            if (Ellipse != null) Ellipse.Fill = lineSeries.PointForeround;
+            if (Shape != null) Shape.Fill = lineSeries.PointForeround;
             lineSeries.StrokeThickness = lineSeries.StrokeThickness - 1;
         }
     }

@@ -184,6 +184,7 @@ namespace LiveCharts.Wpf
         public Brush Stroke { get; set; }
         public double StrokeThickness { get; set; }
         public Brush Fill { get; set; }
+        public Geometry Geometry { get; set; }
     }
 
 }

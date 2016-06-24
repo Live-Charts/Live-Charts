@@ -125,6 +125,7 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DefaultGeometry.cs" />
     <Compile Include="HeatColorRange.xaml.cs">
       <DependentUpon>HeatColorRange.xaml</DependentUpon>
     </Compile>

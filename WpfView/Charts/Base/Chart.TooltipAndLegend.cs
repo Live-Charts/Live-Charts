@@ -110,6 +110,7 @@ namespace LiveCharts.Wpf.Charts.Base
                         {
                             Series = new SeriesViewModel
                             {
+                                Geometry = ((Series.Series)x.SeriesView).Geometry,
                                 Fill = ((Series.Series) x.SeriesView).Fill,
                                 Stroke = ((Series.Series) x.SeriesView).Stroke,
                                 StrokeThickness = ((Series.Series) x.SeriesView).StrokeThickness,
