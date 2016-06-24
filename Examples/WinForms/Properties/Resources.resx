@@ -124,17 +124,14 @@
   <data name="multiple axes" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\multiple axes.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="Date Time" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Date Time.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="basic line chart" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\basic line chart.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="180 gauge" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\180 gauge.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="basics" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\basics.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="about labels" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\about labels.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="sections" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\sections.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -148,8 +145,8 @@
   <data name="about labels1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\about labels1.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="about labels" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\about labels.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="the cartesian chart" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\the cartesian chart.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="inverted series" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\inverted series.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -163,17 +160,14 @@
   <data name="stacked area" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\stacked area.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="install" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\install.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="gaugefull150" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\gaugefull150.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="irregular intervals" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\irregular intervals.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="doughnut chart" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\doughnut chart.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="the cartesian chart" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\the cartesian chart.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="gaugefull150" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\gaugefull150.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="pie chart" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\pie chart.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -181,19 +175,28 @@
   <data name="buubles150" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\buubles150.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="zooming and panning" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\zooming and panning.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="irregular intervals" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\irregular intervals.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="fully responsive" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\fully responsive.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="about series" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\about series.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="ezgif.com-resize" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ezgif.com-resize.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="zooming and panning" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\zooming and panning.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Date Time" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Date Time.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="basics" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\basics.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="fully responsive" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\fully responsive.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="install" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\install.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="dynamicvisivility" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\dynamicvisivility.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

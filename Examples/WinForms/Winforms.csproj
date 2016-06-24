@@ -107,9 +107,21 @@
     <Compile Include="Cartesian\Customized Series\Customized Line Series.Designer.cs">
       <DependentUpon>Customized Line Series.cs</DependentUpon>
     </Compile>
+    <Compile Include="Cartesian\CustomZAndP\CustomZAndPExample.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Cartesian\CustomZAndP\CustomZAndPExample.Designer.cs">
+      <DependentUpon>CustomZAndPExample.cs</DependentUpon>
+    </Compile>
     <Compile Include="Cartesian\DateTime\DateTimeExample.cs" />
     <Compile Include="Cartesian\DateTime\DateTimeExample.Designer.cs">
       <DependentUpon>DateTimeExample.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Cartesian\DynamicVisibility\DynamicVisiblityExample.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Cartesian\DynamicVisibility\DynamicVisiblityExample.Designer.cs">
+      <DependentUpon>DynamicVisiblityExample.cs</DependentUpon>
     </Compile>
     <Compile Include="Cartesian\Financial\FinancialExample.cs">
       <SubType>Form</SubType>
@@ -224,8 +236,14 @@
     <EmbeddedResource Include="Cartesian\Customized Series\Customized Line Series.resx">
       <DependentUpon>Customized Line Series.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Cartesian\CustomZAndP\CustomZAndPExample.resx">
+      <DependentUpon>CustomZAndPExample.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Cartesian\DateTime\DateTimeExample.resx">
       <DependentUpon>DateTimeExample.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Cartesian\DynamicVisibility\DynamicVisiblityExample.resx">
+      <DependentUpon>DynamicVisiblityExample.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Cartesian\Financial\FinancialExample.resx">
       <DependentUpon>FinancialExample.cs</DependentUpon>
@@ -356,7 +374,9 @@
   <ItemGroup>
     <None Include="Resources\zooming and panning.gif" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="Resources\dynamicvisivility.gif" />
+  </ItemGroup>
   <ItemGroup>
     <None Include="Resources\180 gauge.jpg" />
   </ItemGroup>
