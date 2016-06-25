@@ -136,8 +136,8 @@ public void NugetPack(string nuspecPath, string mainBinaryPath)
 {
     Information("Packing " + nuspecPath);
     var binary = MakeAbsolute(File(mainBinaryPath));
-    var binaryVersion = GetVersionNumber(binary);
-    ReplaceRegexInFiles(nuspecPath, "0.0.0", binaryVersion);
+    var binaryVersion = GetFullVersionNumber(binary);
+    ReplaceRegexInFiles(nuspecPath, "0.0.0.0", binaryVersion);
     
     NuGetPack(nuspecPath, new NuGetPackSettings{
         Verbosity = NuGetVerbosity.Quiet,

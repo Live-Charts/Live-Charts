@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>LiveCharts.WinForms</id>
-    <version>0.0.0</version>
+    <version>0.0.0.0</version>
     <title>LiveCharts.WinForms</title>
     <authors>Beto Rodriguez</authors>
     <owners>Beto Rodriguez</owners>
