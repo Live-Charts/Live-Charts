@@ -14,6 +14,7 @@ var coreBinary = "./Core/bin/Release/LiveCharts.dll";
 
 var buildTags = new string[] { "Debug", "403", "45", "451", "452", "46", "461" };
 var buildDirectories = new string[] { "./bin/Debug", "./bin/net403", "./bin/net45", "./bin/net451", "./bin/net452", "./bin/net46", "./bin/net461" };
+var configurationList = new string[] { "Debug", "net40", "net45", "net451", "net452", "net46", "net461" };
 
 var wpfBinDirectory = "./WpfView/bin";
 var wpfPath = "./WpfView/wpfview.csproj";
@@ -46,7 +47,7 @@ Task("Core")
             CreateDirectory(ouputDirectory);
         }
 
-        BuildProject(corePath, ouputDirectory);
+        BuildProject(corePath, ouputDirectory, buildType);
         
         if(buildType == "Release")
         {
@@ -71,7 +72,7 @@ Task("WPF")
             {
                 CreateDirectory(buildDirectories[r]);
             }
-            BuildProject(wpfPath, buildDirectories[r]);
+            BuildProject(wpfPath, buildDirectories[r], configurationList[r]);
         }
 
         if(buildType == "Release")
@@ -96,7 +97,7 @@ Task("WinForms")
             {
                 CreateDirectory(buildDirectories[r]);
             }
-            BuildProject(formsPath, buildDirectories[r]);
+            BuildProject(formsPath, buildDirectories[r], configurationList[r]);
         }
 
         if(buildType == "Release")
@@ -118,16 +119,24 @@ RunTarget (target);
 //Helper Methods
 
 //Build a project
-public void BuildProject(string path, string outputPath)
+public void BuildProject(string path, string outputPath, string configuration)
 {
     Information("Building " + path);
-    DotNetBuild(path, settings =>
-    settings.SetConfiguration(buildType)
-    .WithProperty("Platform", "AnyCPU")
-    .WithTarget("Clean,Build")
-    .WithProperty("OutputPath", outputPath)
-    .SetVerbosity(Cake.Core.Diagnostics.Verbosity.Minimal)
-    );
+    try
+    {
+        DotNetBuild(path, settings =>
+        settings.SetConfiguration(configuration)
+        .WithProperty("Platform", "AnyCPU")
+        .WithTarget("Clean,Build")
+        .WithProperty("OutputPath", outputPath)
+        .SetVerbosity(Cake.Core.Diagnostics.Verbosity.Minimal)
+        );
+    }
+    catch(Exception ex)
+    {
+        Error("An error occured while trying to build {0} with {1}", path, configuration);
+    }
+
     Information("Build completed");
 }
 
