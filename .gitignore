@@ -29,6 +29,10 @@ bld/
 [Tt]est[Rr]esult*/
 [Bb]uild[Ll]og.*
 
+# Folders for Cake
+tools/
+!tools/packages.config
+
 # NUNIT
 *.VisualState.xml
 TestResult.xml
