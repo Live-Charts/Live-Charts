@@ -1,6 +1,7 @@
-echo loading vcvarsall from VsS2015 installation path
+echo loading vcvarsall from VS2015 installation path
 
-echo if you want to pack the code for VS2013 you must change the path to if VS2013, plase use: "C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\vcvarsall.bat"
+echo if you want to pack the code with VS2013 you must change the path to:
+echo "C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\vcvarsall.bat"
 
 call "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat" 
 echo.

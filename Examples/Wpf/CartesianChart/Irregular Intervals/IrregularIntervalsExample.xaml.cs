@@ -24,7 +24,7 @@ namespace Wpf.CartesianChart.Irregular_Intervals
                         new ObservablePoint(7, 6),
                         new ObservablePoint(10, 8)
                     },
-                    GeometrySize = 15
+                    PointGeometrySize = 15
                 },
                 new LineSeries
                 {
@@ -36,7 +36,7 @@ namespace Wpf.CartesianChart.Irregular_Intervals
                         new ObservablePoint(6, 8),
                         new ObservablePoint(10, 5)
                     },
-                    GeometrySize = 15
+                    PointGeometrySize = 15
                 },
                 new LineSeries
                 {
@@ -48,7 +48,7 @@ namespace Wpf.CartesianChart.Irregular_Intervals
                         new ObservablePoint(9, 10),
                         new ObservablePoint(10, 9)
                     },
-                    GeometrySize = 15
+                    PointGeometrySize = 15
                 }
             };
 

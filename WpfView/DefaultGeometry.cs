@@ -20,18 +20,15 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-using System;
 using System.Windows.Media;
 
 namespace LiveCharts.Wpf
 {
-
-    //geometries
     public static class DefaultGeometries
     {
         public static Geometry None
         {
-            get { return Geometry.Parse("M 0,0 z"); }
+            get { return null; }
         }
 
         public static Geometry Circle
@@ -52,22 +49,6 @@ namespace LiveCharts.Wpf
         public static Geometry Trangle
         {
             get { return Geometry.Parse("M 0,1 l 1,1 h -2 Z"); }
-        }
-    }
-
-
-    public class GeometryAttribute : Attribute
-    {
-        public Geometry Geometry { get; private set; }
-
-        public GeometryAttribute()
-        {
-            Geometry = Geometry.Parse("M 0,0 z");
-        }
-
-        public GeometryAttribute(string source)
-        {
-            Geometry = Geometry.Parse(source);
         }
     }
 }

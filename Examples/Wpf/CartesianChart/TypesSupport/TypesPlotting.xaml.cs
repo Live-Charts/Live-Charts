@@ -22,7 +22,7 @@ namespace Wpf.CartesianChart
                 {
                     Values = new ChartValues<double> {3d, 6d, 2d, 8d},
                     Fill = Brushes.Transparent,
-                    GeometrySize = 0,
+                    PointGeometrySize = 0,
                     LineSmoothness = 1
                 },
                 new ColumnSeries
@@ -47,7 +47,7 @@ namespace Wpf.CartesianChart
                         new ObservableValue(2)
                     },
                     Fill = Brushes.Transparent,
-                    GeometrySize = 0,
+                    PointGeometrySize = 0,
                     LineSmoothness = 1
                 }
             };

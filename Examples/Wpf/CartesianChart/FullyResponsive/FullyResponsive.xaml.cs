@@ -30,7 +30,7 @@ namespace Wpf.CartesianChart
                 Values = MyValues,
                 StrokeThickness = 4,
                 Fill = Brushes.Transparent,
-                GeometrySize = 0,
+                PointGeometrySize = 0,
                 DataLabels = true
             };
 
@@ -79,7 +79,7 @@ namespace Wpf.CartesianChart
                 Values = val,
                 StrokeThickness = 4,
                 Fill = Brushes.Transparent,
-                GeometrySize = 0
+                PointGeometrySize = 0
             });
         }
 

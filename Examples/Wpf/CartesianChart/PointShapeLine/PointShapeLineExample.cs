@@ -18,15 +18,15 @@ namespace Wpf.CartesianChart.PointShapeLine
                 {
                     Title = "Series 1",
                     Values = new ChartValues<double> { 4, 6, 5, 2 ,7 },
-                    GeometrySize = 20,
+                    PointGeometrySize = 20,
                     PointForeround = Brushes.Transparent
                 },
                 new LineSeries
                 {
                     Title = "Series 2",
                     Values = new ChartValues<double> { 6, 7, 3, 4 ,6 },
-                    GeometrySize = 20,
-                    PointGeometry = DefaultGeometries.Trangle
+                    PointGeometrySize = 20,
+                    PointGeometry = DefaultGeometries.None
                 }
             };
 
@@ -39,7 +39,7 @@ namespace Wpf.CartesianChart.PointShapeLine
                 Values = new ChartValues<double> {5, 3, 2, 4},
                 LineSmoothness = 0, //rect lines, 1 really smooth lines
                 PointGeometry = Geometry.Parse("m 25 70.36218 20 -28 -20 22 -8 -6 z"),
-                GeometrySize = 50,
+                PointGeometrySize = 50,
                 PointForeround = Brushes.Gray
             });
 

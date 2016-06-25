@@ -136,7 +136,7 @@ namespace LiveCharts.Wpf
         private void InitializeDefuaults()
         {
             SetValue(LineSmoothnessProperty, .7d);
-            SetValue(GeometrySizeProperty, 0d);
+            SetValue(PointGeometrySizeProperty, 0d);
             SetValue(PointForeroundProperty, Brushes.White);
             SetValue(ForegroundProperty, new SolidColorBrush(Color.FromRgb(229, 229, 229)));
             SetValue(StrokeThicknessProperty, 0d);
