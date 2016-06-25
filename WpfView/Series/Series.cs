@@ -204,12 +204,13 @@ namespace LiveCharts.Wpf.Series
             set { SetValue(StrokeDashArrayProperty, value); }
         }
 
-        public static readonly DependencyProperty GeometryProperty =
-            DependencyProperty.Register("Geometry", typeof(Geometry), typeof(LineSeries), new PropertyMetadata(DefaultGeometry.Circle.ToGeometry()));
-        public Geometry Geometry
+        public static readonly DependencyProperty PointGeometryProperty =
+            DependencyProperty.Register("PointGeometry", typeof(Geometry), typeof(LineSeries), 
+                new PropertyMetadata(DefaultGeometries.Circle));
+        public Geometry PointGeometry
         {
-            get { return ((Geometry)GetValue(GeometryProperty)); }
-            set { SetValue(GeometryProperty, value); }
+            get { return ((Geometry)GetValue(PointGeometryProperty)); }
+            set { SetValue(PointGeometryProperty, value); }
         }
 
         public static readonly DependencyProperty ScalesXAtProperty = DependencyProperty.Register(

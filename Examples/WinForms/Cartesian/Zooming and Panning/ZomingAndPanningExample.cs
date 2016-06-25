@@ -36,7 +36,7 @@ namespace Winforms.Cartesian.Zooming_and_Panning
                 Values = GetData(),
                 Fill = gradientBrush,
                 StrokeThickness = 1,
-                PointDiameter = 0
+                GeometrySize = 0
             });
 
             cartesianChart1.Zoom = ZoomingOptions.X;

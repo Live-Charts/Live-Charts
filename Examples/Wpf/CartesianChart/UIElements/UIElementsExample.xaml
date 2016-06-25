@@ -10,7 +10,7 @@
     <Grid>
         <lvc:CartesianChart>
             <lvc:CartesianChart.Series>
-                <lvc:LineSeries Values="4,6,6,3,5" Fill="Transparent" StrokeThickness="4" Panel.ZIndex="2" PointDiameter="0" />
+                <lvc:LineSeries Values="4,6,6,3,5" Fill="Transparent" StrokeThickness="4" Panel.ZIndex="2" GeometrySize="0" />
                 <lvc:ColumnSeries Values="2,6,8,9, 4" Panel.ZIndex="1"/>
             </lvc:CartesianChart.Series>
             <lvc:CartesianChart.VisualElements>

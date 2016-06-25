@@ -111,7 +111,7 @@ namespace LiveCharts.Wpf
 
         public override IChartPointView GetPointView(IChartPointView view, ChartPoint point, string label)
         {
-            var mhr = PointDiameter < 5 ? 5 : PointDiameter;
+            var mhr = GeometrySize < 5 ? 5 : GeometrySize;
 
             var pbv = (view as VBezierPointView);
 
@@ -155,7 +155,7 @@ namespace LiveCharts.Wpf
                 Model.Chart.View.AddToDrawMargin(pbv.HoverShape);
             }
 
-            if (Math.Abs(PointDiameter) > 0.1 && pbv.Shape == null)
+            if (Math.Abs(GeometrySize) > 0.1 && pbv.Shape == null)
             {
                 pbv.Shape = new Ellipse();
 
@@ -166,9 +166,9 @@ namespace LiveCharts.Wpf
                 BindingOperations.SetBinding(pbv.Shape, Shape.StrokeThicknessProperty,
                     new Binding { Path = new PropertyPath(StrokeThicknessProperty), Source = this });
                 BindingOperations.SetBinding(pbv.Shape, WidthProperty,
-                    new Binding { Path = new PropertyPath(PointDiameterProperty), Source = this });
+                    new Binding { Path = new PropertyPath(GeometrySizeProperty), Source = this });
                 BindingOperations.SetBinding(pbv.Shape, HeightProperty,
-                    new Binding { Path = new PropertyPath(PointDiameterProperty), Source = this });
+                    new Binding { Path = new PropertyPath(GeometrySizeProperty), Source = this });
 
                 BindingOperations.SetBinding(pbv.Shape, VisibilityProperty,
                     new Binding { Path = new PropertyPath(VisibilityProperty), Source = this });
@@ -279,7 +279,7 @@ namespace LiveCharts.Wpf
         private void InitializeDefuaults()
         {
             SetValue(LineSmoothnessProperty, .7d);
-            SetValue(PointDiameterProperty, 8d);
+            SetValue(GeometrySizeProperty, 8d);
             SetValue(PointForeroundProperty, Brushes.White);
             SetValue(StrokeThicknessProperty, 2d);
 

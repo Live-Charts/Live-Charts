@@ -17,28 +17,33 @@ namespace Wpf.CartesianChart.PointShapeLine
                 new LineSeries
                 {
                     Title = "Series 1",
-                    Values = new ChartValues<double> { 4, 6, 5, 2 ,7 }
+                    Values = new ChartValues<double> { 4, 6, 5, 2 ,7 },
+                    GeometrySize = 20,
+                    PointForeround = Brushes.Transparent
                 },
                 new LineSeries
                 {
                     Title = "Series 2",
                     Values = new ChartValues<double> { 6, 7, 3, 4 ,6 },
-                    Geometry = DefaultGeometry.Triangle.ToGeometry()
+                    GeometrySize = 20,
+                    PointGeometry = DefaultGeometries.Trangle
                 }
             };
 
             Labels = new[] {"Jan", "Feb", "Mar", "Apr", "May"};
             YFormatter = value => value.ToString("C");
 
-            //modifing the series collection will animate and update the chart
+            //modifying the series collection will animate and update the chart
             SeriesCollection.Add(new LineSeries
             {
                 Values = new ChartValues<double> {5, 3, 2, 4},
                 LineSmoothness = 0, //rect lines, 1 really smooth lines
-                Geometry = Geometry.Parse("m 25 70.36218 20 -28 -20 22 -8 -6 z")
+                PointGeometry = Geometry.Parse("m 25 70.36218 20 -28 -20 22 -8 -6 z"),
+                GeometrySize = 50,
+                PointForeround = Brushes.Gray
             });
 
-            //modifing any series values will also animate and update the chart
+            //modifying any series values will also animate and update the chart
             SeriesCollection[2].Values.Add(5d);
 
             DataContext = this;

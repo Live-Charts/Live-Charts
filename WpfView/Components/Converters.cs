@@ -54,7 +54,7 @@ namespace LiveCharts.Wpf.Components
                     Title = serie.Title,
                     Stroke = serie.Stroke,
                     Fill = serie.Fill,
-                    Geometry = serie.Geometry
+                    Geometry = serie.PointGeometry
                 };
 
             return value;

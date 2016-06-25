@@ -21,25 +21,40 @@
 //SOFTWARE.
 
 using System;
-using System.ComponentModel;
-using System.Globalization;
 using System.Windows.Media;
 
 namespace LiveCharts.Wpf
 {
-    public enum DefaultGeometry
+
+    //geometries
+    public static class DefaultGeometries
     {
-        [Geometry("M 0,0 z")]
-        None,
-        [Geometry("M 0,0 A 180,180 180 1 1 1,1 Z")]
-        Circle,
-        [Geometry("M 1,1 h -2 v -2 h 2 z")]
-        Square,
-        [Geometry("M 1,0 L 2,1  1,2  0,1 z")]
-        Diamond,
-        [Geometry("M 0,1 l 1,1 h -2 Z")]
-        Triangle,
+        public static Geometry None
+        {
+            get { return Geometry.Parse("M 0,0 z"); }
+        }
+
+        public static Geometry Circle
+        {
+            get { return Geometry.Parse("M 0,0 A 180,180 180 1 1 1,1 Z"); }
+        }
+
+        public static Geometry Square
+        {
+            get { return Geometry.Parse("M 1,1 h -2 v -2 h 2 z"); }
+        }
+
+        public static Geometry Diamond
+        {
+            get { return Geometry.Parse("M 1,0 L 2,1  1,2  0,1 z"); }
+        }
+
+        public static Geometry Trangle
+        {
+            get { return Geometry.Parse("M 0,1 l 1,1 h -2 Z"); }
+        }
     }
+
 
     public class GeometryAttribute : Attribute
     {
@@ -53,29 +68,6 @@ namespace LiveCharts.Wpf
         public GeometryAttribute(string source)
         {
             Geometry = Geometry.Parse(source);
-        }
-    }
-
-    public static class GeometryAttributeExtension
-    {
-        public static Geometry ToGeometry(this DefaultGeometry value)
-        {
-            // Get the Geometry attribute value for the enum value
-            var fi = value.GetType().GetField(value.ToString());
-            var attributes = fi.GetCustomAttributes(typeof(GeometryAttribute), false) as GeometryAttribute[];
-            if (attributes != null && attributes.Length > 0)
-            {
-                return attributes[0].Geometry;
-            }
-
-            // Default to circle
-            return Geometry.Parse("M 0,0 A 180,180 180 1 1 1,1 Z");
-        }
-
-        public static Geometry ToGeometry(this DefaultGeometry? value)
-        {
-            // Default to circle
-            return value.HasValue ? value.Value.ToGeometry() : Geometry.Parse("M 0,0 A 180,180 180 1 1 1,1 Z");
         }
     }
 }

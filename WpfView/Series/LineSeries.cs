@@ -68,14 +68,14 @@ namespace LiveCharts.Wpf
 
         #region Properties
 
-        public static readonly DependencyProperty PointDiameterProperty = DependencyProperty.Register(
-            "PointDiameter", typeof (double), typeof (LineSeries), 
+        public static readonly DependencyProperty GeometrySizeProperty = DependencyProperty.Register(
+            "GeometrySize", typeof (double), typeof (LineSeries), 
             new PropertyMetadata(default(double), CallChartUpdater()));
 
-        public double PointDiameter
+        public double GeometrySize
         {
-            get { return (double) GetValue(PointDiameterProperty); }
-            set { SetValue(PointDiameterProperty, value); }
+            get { return (double) GetValue(GeometrySizeProperty); }
+            set { SetValue(GeometrySizeProperty, value); }
         }
 
         public static readonly DependencyProperty PointForeroundProperty = DependencyProperty.Register(
@@ -161,7 +161,7 @@ namespace LiveCharts.Wpf
 
         public override IChartPointView GetPointView(IChartPointView view, ChartPoint point, string label)
         {
-            var mhr = PointDiameter < 10 ? 10 : PointDiameter;
+            var mhr = GeometrySize < 10 ? 10 : GeometrySize;
 
             var pbv = (view as HBezierPointView);
 
@@ -205,9 +205,9 @@ namespace LiveCharts.Wpf
                 Model.Chart.View.AddToDrawMargin(pbv.HoverShape);
             }
 
-            if (Math.Abs(PointDiameter) > 0.1 && pbv.Shape == null)
+            if (Math.Abs(GeometrySize) > 0.1 && pbv.Shape == null)
             {
-                if (Geometry != null)
+                if (PointGeometry != null)
                 {
                     pbv.Shape = new Path
                     {
@@ -216,7 +216,7 @@ namespace LiveCharts.Wpf
                         StrokeThickness = StrokeThickness
                     };
                     BindingOperations.SetBinding(pbv.Shape, Path.DataProperty,
-                        new Binding { Path = new PropertyPath(GeometryProperty), Source = this });
+                        new Binding { Path = new PropertyPath(PointGeometryProperty), Source = this });
                 }
                 else
                 {
@@ -230,9 +230,9 @@ namespace LiveCharts.Wpf
                 BindingOperations.SetBinding(pbv.Shape, Shape.StrokeThicknessProperty,
                     new Binding { Path = new PropertyPath(StrokeThicknessProperty), Source = this });
                 BindingOperations.SetBinding(pbv.Shape, WidthProperty,
-                    new Binding {Path = new PropertyPath(PointDiameterProperty), Source = this});
+                    new Binding {Path = new PropertyPath(GeometrySizeProperty), Source = this});
                 BindingOperations.SetBinding(pbv.Shape, HeightProperty,
-                    new Binding {Path = new PropertyPath(PointDiameterProperty), Source = this});
+                    new Binding {Path = new PropertyPath(GeometrySizeProperty), Source = this});
 
                 BindingOperations.SetBinding(pbv.Shape, VisibilityProperty,
                     new Binding {Path = new PropertyPath(VisibilityProperty), Source = this});
@@ -366,7 +366,7 @@ namespace LiveCharts.Wpf
         private void InitializeDefuaults()
         {
             SetValue(LineSmoothnessProperty, .7d);
-            SetValue(PointDiameterProperty, 8d);
+            SetValue(GeometrySizeProperty, 8d);
             SetValue(PointForeroundProperty, Brushes.White);
             SetValue(StrokeThicknessProperty, 2d);
 

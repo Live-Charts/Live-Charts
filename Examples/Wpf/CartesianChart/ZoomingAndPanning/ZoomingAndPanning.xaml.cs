@@ -35,7 +35,7 @@ namespace Wpf.CartesianChart
                     Values = GetData(),
                     Fill = gradientBrush,
                     StrokeThickness = 1,
-                    PointDiameter = 0
+                    GeometrySize = 0
                 }
             };
 
