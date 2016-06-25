@@ -26,6 +26,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Threading;
 using LiveCharts.Wpf.Points;
@@ -110,7 +111,7 @@ namespace LiveCharts.Wpf.Charts.Base
                         {
                             Series = new SeriesViewModel
                             {
-                                Geometry = ((Series.Series)x.SeriesView).PointGeometry,
+                                Geometry = ((Series.Series)x.SeriesView).PointGeometry ?? Geometry.Parse("M 0,0.5 h 1,0.5 Z"),
                                 Fill = ((Series.Series) x.SeriesView).Fill,
                                 Stroke = ((Series.Series) x.SeriesView).Stroke,
                                 StrokeThickness = ((Series.Series) x.SeriesView).StrokeThickness,

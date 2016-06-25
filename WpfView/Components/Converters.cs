@@ -25,6 +25,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Windows.Data;
+using System.Windows.Media;
 
 namespace LiveCharts.Wpf.Components
 {
@@ -54,7 +55,7 @@ namespace LiveCharts.Wpf.Components
                     Title = serie.Title,
                     Stroke = serie.Stroke,
                     Fill = serie.Fill,
-                    Geometry = serie.PointGeometry
+                    Geometry = serie.PointGeometry ?? Geometry.Parse("M 0,0.5 h 1,0.5 Z")
                 };
 
             return value;
