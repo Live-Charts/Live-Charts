@@ -144,10 +144,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="CartesianChart\ManualZoomingAndPanning\ManualZAndPExample.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="CartesianChart\Missing Line Points\MissingPointsExample.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -167,6 +163,10 @@
     <Page Include="CartesianChart\NegativeStackedRow\NEgativeStackedRowExample.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CartesianChart\PointShapeLine\PointShapeLineExample.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="CartesianChart\StackedArea\VerticalStackedAreaExample.xaml">
       <SubType>Designer</SubType>
@@ -284,9 +284,6 @@
     <Compile Include="CartesianChart\LogarithmScale\LogarithmScaleExample.xaml.cs">
       <DependentUpon>LogarithmScaleExample.xaml</DependentUpon>
     </Compile>
-    <Compile Include="CartesianChart\ManualZoomingAndPanning\ManualZAndPExample.xaml.cs">
-      <DependentUpon>ManualZAndPExample.xaml</DependentUpon>
-    </Compile>
     <Compile Include="CartesianChart\Missing Line Points\MissingPointsExample.xaml.cs">
       <DependentUpon>MissingPointsExample.xaml</DependentUpon>
     </Compile>
@@ -302,6 +299,7 @@
     <Compile Include="CartesianChart\NegativeStackedRow\NEgativeStackedRowExample.xaml.cs">
       <DependentUpon>NEgativeStackedRowExample.xaml</DependentUpon>
     </Compile>
+    <Compile Include="CartesianChart\PointShapeLine\PointShapeLineExample.cs" />
     <Compile Include="CartesianChart\StackedArea\VerticalStackedAreaExample.xaml.cs">
       <DependentUpon>VerticalStackedAreaExample.xaml</DependentUpon>
     </Compile>

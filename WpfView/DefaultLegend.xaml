@@ -58,10 +58,11 @@
                                     <ColumnDefinition Width="Auto"/>
                                     <ColumnDefinition Width="Auto" SharedSizeGroup="Title"/>
                                 </Grid.ColumnDefinitions>
-                                <Ellipse Width="{Binding BulletSize, RelativeSource={RelativeSource Mode=FindAncestor, AncestorLevel=1, AncestorType={x:Type UserControl}}}" 
+                                <Path Width="{Binding BulletSize, RelativeSource={RelativeSource Mode=FindAncestor, AncestorLevel=1, AncestorType={x:Type UserControl}}}" 
                                          Height="{Binding BulletSize, RelativeSource={RelativeSource Mode=FindAncestor, AncestorLevel=1, AncestorType={x:Type UserControl}}}" 
                                          StrokeThickness="{Binding StrokeThickness}" 
-                                         Stroke="{Binding Stroke}" Fill="{Binding Fill}"/>
+                                         Stroke="{Binding Stroke}" Fill="{Binding Fill}"
+                                         Stretch="Fill" ClipToBounds="True" Data="{Binding Geometry}"/>
                                 <TextBlock Grid.Column="1" Margin="4 0" Text="{Binding Title}" VerticalAlignment="Center" />
                             </Grid>
                         </DataTemplate>

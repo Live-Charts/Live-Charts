@@ -4,7 +4,6 @@ using Winforms.Cartesian.BasicLine;
 using Winforms.Cartesian.ConstantChanges;
 using Winforms.Cartesian.Customized_Series;
 using Winforms.Cartesian.DateTime;
-using Winforms.Cartesian.DynamicVisibility;
 using Winforms.Cartesian.FullyResponsive;
 using Winforms.Cartesian.Inverted_Series;
 using Winforms.Cartesian.Irregular_Intervals;
@@ -105,11 +104,6 @@ namespace Winforms
         private void button2_Click(object sender, EventArgs e)
         {
             new PieExample().ShowDialog();
-        }
-
-        private void button3_Click(object sender, EventArgs e)
-        {
-            new DynamicVisiblityExample().ShowDialog();
         }
     }
 }

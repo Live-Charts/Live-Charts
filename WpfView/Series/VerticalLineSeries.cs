@@ -128,7 +128,7 @@ namespace LiveCharts.Wpf
             {
                 pbv.IsNew = false;
                 point.SeriesView.Model.Chart.View
-                    .EnsureElementBelongsToCurrentDrawMargin(pbv.Ellipse);
+                    .EnsureElementBelongsToCurrentDrawMargin(pbv.Shape);
                 point.SeriesView.Model.Chart.View
                     .EnsureElementBelongsToCurrentDrawMargin(pbv.HoverShape);
                 point.SeriesView.Model.Chart.View
@@ -155,27 +155,27 @@ namespace LiveCharts.Wpf
                 Model.Chart.View.AddToDrawMargin(pbv.HoverShape);
             }
 
-            if (Math.Abs(PointDiameter) > 0.1 && pbv.Ellipse == null)
+            if (Math.Abs(PointDiameter) > 0.1 && pbv.Shape == null)
             {
-                pbv.Ellipse = new Ellipse();
+                pbv.Shape = new Ellipse();
 
-                BindingOperations.SetBinding(pbv.Ellipse, Shape.FillProperty,
+                BindingOperations.SetBinding(pbv.Shape, Shape.FillProperty,
                     new Binding { Path = new PropertyPath(PointForeroundProperty), Source = this });
-                BindingOperations.SetBinding(pbv.Ellipse, Shape.StrokeProperty,
+                BindingOperations.SetBinding(pbv.Shape, Shape.StrokeProperty,
                     new Binding { Path = new PropertyPath(StrokeProperty), Source = this });
-                BindingOperations.SetBinding(pbv.Ellipse, Shape.StrokeThicknessProperty,
+                BindingOperations.SetBinding(pbv.Shape, Shape.StrokeThicknessProperty,
                     new Binding { Path = new PropertyPath(StrokeThicknessProperty), Source = this });
-                BindingOperations.SetBinding(pbv.Ellipse, WidthProperty,
+                BindingOperations.SetBinding(pbv.Shape, WidthProperty,
                     new Binding { Path = new PropertyPath(PointDiameterProperty), Source = this });
-                BindingOperations.SetBinding(pbv.Ellipse, HeightProperty,
+                BindingOperations.SetBinding(pbv.Shape, HeightProperty,
                     new Binding { Path = new PropertyPath(PointDiameterProperty), Source = this });
 
-                BindingOperations.SetBinding(pbv.Ellipse, VisibilityProperty,
+                BindingOperations.SetBinding(pbv.Shape, VisibilityProperty,
                     new Binding { Path = new PropertyPath(VisibilityProperty), Source = this });
 
-                Panel.SetZIndex(pbv.Ellipse, int.MaxValue - 2);
+                Panel.SetZIndex(pbv.Shape, int.MaxValue - 2);
 
-                Model.Chart.View.AddToDrawMargin(pbv.Ellipse);
+                Model.Chart.View.AddToDrawMargin(pbv.Shape);
             }
 
             if (DataLabels && pbv.DataLabel == null)
