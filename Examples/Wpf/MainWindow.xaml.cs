@@ -18,6 +18,7 @@ using Wpf.CartesianChart.Inverted_Series;
 using Wpf.CartesianChart.Irregular_Intervals;
 using Wpf.CartesianChart.Labels;
 using Wpf.CartesianChart.LogarithmScale;
+using Wpf.CartesianChart.ManualZAndP;
 using Wpf.CartesianChart.Missing_Line_Points;
 using Wpf.CartesianChart.NegativeStackedRow;
 using Wpf.CartesianChart.PointShapeLine;
@@ -53,10 +54,9 @@ namespace Wpf
 
             CartesianExamples = new List<UserControl>
             {
-                
                 new PointShapeLineExample(),
                 new HeatSeriesExample(),
-
+                new ManualZAndPExample(),
                 new DynamicVisibilityExample(),
                 new LabelsExample(),
                 new LabelsHorizontalExample(),

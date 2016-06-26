@@ -144,6 +144,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="CartesianChart\ManualZAndP\ManualZAndPExample.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="CartesianChart\Missing Line Points\MissingPointsExample.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -283,6 +287,9 @@
     </Compile>
     <Compile Include="CartesianChart\LogarithmScale\LogarithmScaleExample.xaml.cs">
       <DependentUpon>LogarithmScaleExample.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CartesianChart\ManualZAndP\ManualZAndPExample.xaml.cs">
+      <DependentUpon>ManualZAndPExample.xaml</DependentUpon>
     </Compile>
     <Compile Include="CartesianChart\Missing Line Points\MissingPointsExample.xaml.cs">
       <DependentUpon>MissingPointsExample.xaml</DependentUpon>

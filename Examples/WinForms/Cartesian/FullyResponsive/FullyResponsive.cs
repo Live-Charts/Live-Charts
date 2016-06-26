@@ -32,7 +32,7 @@ namespace Winforms.Cartesian.FullyResponsive
             {
                 Values = Values,
                 StrokeThickness = 4,
-                GeometrySize = 0,
+                PointGeometrySize = 0,
                 DataLabels = true
             });
         }

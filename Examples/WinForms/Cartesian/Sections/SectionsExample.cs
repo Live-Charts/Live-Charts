@@ -26,7 +26,7 @@ namespace Winforms.Cartesian.Sections
                         new ObservableValue(7),
                         new ObservableValue(4)
                     },
-                    GeometrySize = 0,
+                    PointGeometry = DefaultGeometries.None,
                     StrokeThickness = 4,
                     Fill = Brushes.Transparent
                 },
@@ -41,7 +41,7 @@ namespace Winforms.Cartesian.Sections
                         new ObservableValue(7),
                         new ObservableValue(5)
                     },
-                    GeometrySize = 0,
+                    PointGeometry = DefaultGeometries.None,
                     StrokeThickness = 4,
                     Fill = Brushes.Transparent
                 }

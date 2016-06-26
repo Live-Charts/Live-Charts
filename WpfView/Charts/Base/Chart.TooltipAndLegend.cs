@@ -21,7 +21,6 @@
 //SOFTWARE.
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -106,19 +105,18 @@ namespace LiveCharts.Wpf.Charts.Base
                     YFormatter = coreModel.YFormatter,
                     SharedValue = coreModel.Shares,
                     SelectionMode = DataTooltip.SelectionMode ?? TooltipSelectionMode.OnlySender,
-                    Points = coreModel.Points.Where(x => x.SeriesView.IsSeriesVisible)
-                        .Select(x => new DataPointViewModel
+                    Points = coreModel.Points.Select(x => new DataPointViewModel
+                    {
+                        Series = new SeriesViewModel
                         {
-                            Series = new SeriesViewModel
-                            {
-                                Geometry = ((Series.Series)x.SeriesView).PointGeometry ?? Geometry.Parse("M 0,0.5 h 1,0.5 Z"),
-                                Fill = ((Series.Series) x.SeriesView).Fill,
-                                Stroke = ((Series.Series) x.SeriesView).Stroke,
-                                StrokeThickness = ((Series.Series) x.SeriesView).StrokeThickness,
-                                Title = ((Series.Series) x.SeriesView).Title,
-                            },
-                            ChartPoint = x
-                        }).ToList()
+                            Geometry = ((Series.Series) x.SeriesView).PointGeometry ?? Geometry.Parse("M 0,0.5 h 1,0.5 Z"),
+                            Fill = ((Series.Series) x.SeriesView).Fill,
+                            Stroke = ((Series.Series) x.SeriesView).Stroke,
+                            StrokeThickness = ((Series.Series) x.SeriesView).StrokeThickness,
+                            Title = ((Series.Series) x.SeriesView).Title,
+                        },
+                        ChartPoint = x
+                    }).ToList()
                 };
 
                 DataTooltip.Visibility = Visibility.Visible;

@@ -82,7 +82,7 @@ namespace LiveCharts.Wpf
             set
             {
                 _viewModel = value;
-                OnPropertyChanged("Data");
+                OnPropertyChanged("ViewModel");
             }
         }
 

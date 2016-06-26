@@ -143,6 +143,26 @@ namespace Winforms.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap customzoomingandpanning {
+            get {
+                object obj = ResourceManager.GetObject("customzoomingandpanning", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap customzp {
+            get {
+                object obj = ResourceManager.GetObject("customzp", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Date_Time {
             get {
                 object obj = ResourceManager.GetObject("Date Time", resourceCulture);
@@ -156,6 +176,16 @@ namespace Winforms.Properties {
         internal static System.Drawing.Bitmap doughnut_chart {
             get {
                 object obj = ResourceManager.GetObject("doughnut chart", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap dynvis {
+            get {
+                object obj = ResourceManager.GetObject("dynvis", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

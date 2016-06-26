@@ -23,7 +23,7 @@ namespace Winforms.Cartesian.Customized_Series
                 Stroke = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(107, 185, 69)),
                 Fill = System.Windows.Media.Brushes.Transparent,
                 LineSmoothness = 0,
-                GeometrySize = 0
+                PointGeometrySize = 0
             });
             cartesianChart1.Series.Add(new LineSeries
             {
@@ -32,7 +32,7 @@ namespace Winforms.Cartesian.Customized_Series
                 Stroke = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(28, 142, 196)),
                 Fill = System.Windows.Media.Brushes.Transparent,
                 LineSmoothness = 1,
-                GeometrySize = 15,
+                PointGeometrySize = 15,
                 PointForeround =
                     new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(34, 46, 49))
             });
