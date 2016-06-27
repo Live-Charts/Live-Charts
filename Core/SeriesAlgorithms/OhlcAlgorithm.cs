@@ -21,6 +21,9 @@
 //SOFTWARE.
 
 using LiveCharts.Defaults;
+using LiveCharts.Definitions.Points;
+using LiveCharts.Definitions.Series;
+using LiveCharts.Dtos;
 
 namespace LiveCharts.SeriesAlgorithms
 {
@@ -38,7 +41,7 @@ namespace LiveCharts.SeriesAlgorithms
             
             const double padding = 5;
 
-            var totalSpace = ChartFunctions.GetUnitWidth(AxisTags.X, Chart, View.ScalesXAt) - padding;
+            var totalSpace = ChartFunctions.GetUnitWidth(AxisOrientation.X, Chart, View.ScalesXAt) - padding;
 
             double exceed = 0;
             double candleWidth = 0;
@@ -51,7 +54,7 @@ namespace LiveCharts.SeriesAlgorithms
 
             foreach (var chartPoint in View.ActualValues.Points)
             {
-                var x = ChartFunctions.ToDrawMargin(chartPoint.X, AxisTags.X, Chart, View.ScalesXAt);
+                var x = ChartFunctions.ToDrawMargin(chartPoint.X, AxisOrientation.X, Chart, View.ScalesXAt);
 
                 chartPoint.View = View.GetPointView(chartPoint.View, chartPoint,
                     View.DataLabels ? View.LabelPoint(chartPoint) : null);
@@ -60,10 +63,10 @@ namespace LiveCharts.SeriesAlgorithms
 
                 var ohclView = (IOhlcPointView) chartPoint.View;
 
-                ohclView.Open = ChartFunctions.ToDrawMargin(chartPoint.Open, AxisTags.Y, Chart, View.ScalesYAt);
-                ohclView.Close = ChartFunctions.ToDrawMargin(chartPoint.Close, AxisTags.Y, Chart, View.ScalesYAt);
-                ohclView.High = ChartFunctions.ToDrawMargin(chartPoint.High, AxisTags.Y, Chart, View.ScalesYAt);
-                ohclView.Low = ChartFunctions.ToDrawMargin(chartPoint.Low, AxisTags.Y, Chart, View.ScalesYAt);
+                ohclView.Open = ChartFunctions.ToDrawMargin(chartPoint.Open, AxisOrientation.Y, Chart, View.ScalesYAt);
+                ohclView.Close = ChartFunctions.ToDrawMargin(chartPoint.Close, AxisOrientation.Y, Chart, View.ScalesYAt);
+                ohclView.High = ChartFunctions.ToDrawMargin(chartPoint.High, AxisOrientation.Y, Chart, View.ScalesYAt);
+                ohclView.Low = ChartFunctions.ToDrawMargin(chartPoint.Low, AxisOrientation.Y, Chart, View.ScalesYAt);
 
                 ohclView.Width = candleWidth - padding > 0 ? candleWidth - padding : 0;
                 ohclView.Left = x + exceed/2;

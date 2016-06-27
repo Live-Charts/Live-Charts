@@ -20,13 +20,10 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-using System;
-
-namespace LiveCharts
+namespace LiveCharts.Definitions.Points
 {
-    public static class ChartUnits
+    public interface IBubblePointView : IChartPointView
     {
-        public static double Unitary { get { return 1; } }
-        public static double Day { get { return TimeSpan.FromDays(1).Ticks; } }
+        double Diameter { get; set; }
     }
 }

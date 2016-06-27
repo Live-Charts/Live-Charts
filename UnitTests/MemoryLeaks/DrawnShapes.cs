@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Windows.Controls;
 using LiveCharts;
+using LiveCharts.Dtos;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace UnitTests.MemoryLeaks

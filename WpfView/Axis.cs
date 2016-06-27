@@ -28,15 +28,24 @@ using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using LiveCharts.Charts;
+using LiveCharts.Definitions.Charts;
+using LiveCharts.Dtos;
 using LiveCharts.Wpf.Components;
 using LiveCharts.Wpf.Converters;
 
 namespace LiveCharts.Wpf
 {
+    /// <summary>
+    /// An Axis of a chart
+    /// </summary>
     public class Axis : FrameworkElement, IAxisView
     {
 
         #region Constructors
+
+        /// <summary>
+        /// Initializes a new instance of Axis class
+        /// </summary>
         public Axis()
         {
             TitleBlock = BindATextBlock();
@@ -51,11 +60,13 @@ namespace LiveCharts.Wpf
 
         #region properties
 
+        private TextBlock TitleBlock { get; set; }
+
+        /// <summary>
+        /// Gets the Model of the axis, the model is used a DTO to communicate with the core of the library.
+        /// </summary>
         public AxisCore Model { get; set; }
-        public TextBlock TitleBlock { get; set; }
-        public double LabelsTab { get; set; }
-        public double UnitWidth { get; set; }
-        public AxisTags Source { get; set; }
+
         #endregion
 
         #region Dependency Properties
@@ -75,7 +86,9 @@ namespace LiveCharts.Wpf
 
         public static readonly DependencyProperty SectionsProperty = DependencyProperty.Register(
             "Sections", typeof (SectionsCollection), typeof (Axis), new PropertyMetadata(default(SectionsCollection)));
-
+        /// <summary>
+        /// Gets or sets the axis sectionsCollection, a section is useful to highlight ranges or values in a chart.
+        /// </summary>
         public SectionsCollection Sections
         {
             get { return (SectionsCollection) GetValue(SectionsProperty); }
@@ -134,7 +147,7 @@ namespace LiveCharts.Wpf
             new PropertyMetadata(default(bool), LabelsVisibilityChanged));
 
         /// <summary>
-        /// Gets or sets if labels are visible.
+        /// Gets or sets if labels are shown in the axis.
         /// </summary>
         public bool ShowLabels
         {
@@ -146,7 +159,7 @@ namespace LiveCharts.Wpf
             "MaxValue", typeof (double?), typeof (Axis), 
             new PropertyMetadata(default(double?), UpdateChart()));
         /// <summary>
-        /// Gets or sets chart max value, set it to null to make this property Auto, default value is null
+        /// Gets or sets axis max value, set it to null to make this property Auto, default value is null
         /// </summary>
         public double? MaxValue
         {
@@ -158,7 +171,7 @@ namespace LiveCharts.Wpf
             "MinValue", typeof (double?), typeof (Axis),
             new PropertyMetadata(null, UpdateChart()));
         /// <summary>
-        /// Gets or sets chart min value, set it to null to make this property Auto, default value is null
+        /// Gets or sets axis min value, set it to null to make this property Auto, default value is null
         /// </summary>
         public double? MinValue
         {
@@ -170,7 +183,7 @@ namespace LiveCharts.Wpf
             "Title", typeof(string), typeof(Axis), 
             new PropertyMetadata(null, UpdateChart()));
         /// <summary>
-        /// Gets or sets axis title
+        /// Gets or sets axis title, the title will be displayed only if this property is not null, default is null.
         /// </summary>
         public string Title
         {
@@ -182,7 +195,7 @@ namespace LiveCharts.Wpf
             "Position", typeof (AxisPosition), typeof (Axis), 
             new PropertyMetadata(default(AxisPosition), UpdateChart()));
         /// <summary>
-        /// Gets or sets the axis position
+        /// Gets or sets the axis position, default is Axis.Position.LeftBottom, when the axis is at Y and Position is LeftBottom, then axis will be placed at left, RightTop position will place it at Right, when the axis is at X and position LeftBottom, the axis will be placed at bottom, if position is RightTop then it will be placed at top.
         /// </summary>
         public AxisPosition Position
         {
@@ -195,7 +208,7 @@ namespace LiveCharts.Wpf
             "IsMerged", typeof (bool), typeof (Axis), 
             new PropertyMetadata(default(bool), UpdateChart()));
         /// <summary>
-        /// Gets or sets if the axis labels should me placed inside the chart.
+        /// Gets or sets if the axis labels should me placed inside the chart, this is useful to save some space.
         /// </summary>
         public bool IsMerged
         {
@@ -220,7 +233,7 @@ namespace LiveCharts.Wpf
                 new PropertyMetadata(new FontFamily("Calibri")));
 
         /// <summary>
-        /// Gets or sets labels font family, font to use for labels in this axis
+        /// Gets or sets labels font family, font to use for any label in this axis
         /// </summary>
         public FontFamily FontFamily
         {
@@ -292,7 +305,9 @@ namespace LiveCharts.Wpf
 
         public static readonly DependencyProperty LabelsRotationProperty = DependencyProperty.Register(
             "LabelsRotation", typeof (double), typeof (Axis), new PropertyMetadata(default(double), UpdateChart()));
-
+        /// <summary>
+        /// Gets or sets the labels rotation in the axis, the angle starts as a horizontal line, you can use any angle in degrees, even negatives.
+        /// </summary>
         public double LabelsRotation
         {
             get { return (double) GetValue(LabelsRotationProperty); }
@@ -302,7 +317,6 @@ namespace LiveCharts.Wpf
         #endregion
 
         #region Public Methods
-
         public void Clean()
         {
             Model.ClearSeparators();
@@ -380,7 +394,7 @@ namespace LiveCharts.Wpf
             return new CoreSize(TitleBlock.RenderSize.Width, TitleBlock.RenderSize.Height);
         }
 
-        public AxisCore AsCoreElement(ChartCore chart, AxisTags source)
+        public AxisCore AsCoreElement(ChartCore chart, AxisOrientation source)
         {
             if (Model == null) Model = new AxisCore(this);
 

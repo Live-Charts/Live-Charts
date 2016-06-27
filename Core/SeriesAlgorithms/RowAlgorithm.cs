@@ -23,6 +23,9 @@
 using System;
 using System.Linq;
 using LiveCharts.Defaults;
+using LiveCharts.Definitions.Points;
+using LiveCharts.Definitions.Series;
+using LiveCharts.Dtos;
 
 namespace LiveCharts.SeriesAlgorithms
 {
@@ -40,7 +43,7 @@ namespace LiveCharts.SeriesAlgorithms
 
             var padding = castedSeries.RowPadding;
             
-            var totalSpace = ChartFunctions.GetUnitWidth(AxisTags.Y, Chart, View.ScalesYAt) - padding;
+            var totalSpace = ChartFunctions.GetUnitWidth(AxisOrientation.Y, Chart, View.ScalesYAt) - padding;
             var typeSeries = Chart.ActualSeries.OfType<IRowSeriesView>().ToList();
 
             var singleRowHeight = totalSpace/typeSeries.Count;
@@ -63,9 +66,9 @@ namespace LiveCharts.SeriesAlgorithms
                     ? CurrentXAxis.MaxLimit                                         //then use Max
                     : 0);                                                           //if mixed then use 0
 
-            var zero = ChartFunctions.ToDrawMargin(startAt, AxisTags.X, Chart, View.ScalesXAt);
+            var zero = ChartFunctions.ToDrawMargin(startAt, AxisOrientation.X, Chart, View.ScalesXAt);
 
-            var correction = ChartFunctions.GetUnitWidth(AxisTags.Y, Chart, View.ScalesYAt);
+            var correction = ChartFunctions.GetUnitWidth(AxisOrientation.Y, Chart, View.ScalesYAt);
 
             foreach (var chartPoint in View.ActualValues.Points)
             {

@@ -7,6 +7,7 @@ using Winforms.Cartesian.DataPagination;
 using Winforms.Cartesian.DateTime;
 using Winforms.Cartesian.DynamicVisibility;
 using Winforms.Cartesian.FullyResponsive;
+using Winforms.Cartesian.HeatSeriesExample;
 using Winforms.Cartesian.Inverted_Series;
 using Winforms.Cartesian.Irregular_Intervals;
 using Winforms.Cartesian.Labels;
@@ -116,6 +117,11 @@ namespace Winforms
         private void button4_Click(object sender, EventArgs e)
         {
             new DataPaginationExample().ShowDialog();
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            new HeatSeriesExample().ShowDialog();
         }
     }
 }

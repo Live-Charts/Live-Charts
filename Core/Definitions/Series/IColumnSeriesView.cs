@@ -20,15 +20,11 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-using System;
-using System.Collections.Generic;
-
-namespace LiveCharts
+namespace LiveCharts.Definitions.Series
 {
-    public interface IDataOptimization<T>
+    public interface IColumnSeriesView : ISeriesView
     {
-        Func<T, int, double> XMapper { get; set; }
-        Func<T, int, double> YMapper { get; set; }
-        IEnumerable<ChartPoint> Run(IEnumerable<KeyValuePair<int, T>> data);
+        double MaxColumnWidth { get; set; }
+        double ColumnPadding { get; set; }
     }
 }

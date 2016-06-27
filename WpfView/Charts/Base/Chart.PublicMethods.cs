@@ -26,6 +26,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using LiveCharts.Charts;
+using LiveCharts.Dtos;
 
 namespace LiveCharts.Wpf.Charts.Base
 {
@@ -124,7 +125,7 @@ namespace LiveCharts.Wpf.Charts.Base
         /// <summary>
         /// Forces the chart to update
         /// </summary>
-        /// <param name="restartView">Indicates if the update should restart the view, animations will run again if true.</param>
+        /// <param name="restartView">Indicates whether the update should restart the view, animations will run again if true.</param>
         /// <param name="force">Force the updater to run when called, without waiting for the next updater step.</param>
         public void Update(bool restartView = false, bool force = false)
         {
@@ -180,7 +181,7 @@ namespace LiveCharts.Wpf.Charts.Base
                     chart.View.AddToView(x);
                     if (x.Separator != null) chart.View.AddToView(x.Separator);
                 }
-                return x.AsCoreElement(Model, AxisTags.X);
+                return x.AsCoreElement(Model, AxisOrientation.X);
             }).ToList();
         }
 
@@ -190,7 +191,7 @@ namespace LiveCharts.Wpf.Charts.Base
             return AxisY.Select(x =>
             {
                 if (x.Parent == null) chart.View.AddToView(x);
-                return x.AsCoreElement(Model, AxisTags.Y);
+                return x.AsCoreElement(Model, AxisOrientation.Y);
             }).ToList();
         }
 

@@ -26,6 +26,9 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using LiveCharts.Definitions.Points;
+using LiveCharts.Definitions.Series;
+using LiveCharts.Dtos;
 using LiveCharts.Helpers;
 using LiveCharts.SeriesAlgorithms;
 using LiveCharts.Wpf.Charts.Base;
@@ -34,16 +37,24 @@ using LiveCharts.Wpf.Points;
 // ReSharper disable once CheckNamespace
 namespace LiveCharts.Wpf
 {
+    /// <summary>
+    /// Use the column series to plot horizontal bars in a cartesian chart
+    /// </summary>
     public class ColumnSeries : Series.Series, IColumnSeriesView
     {
         #region Constructors
-
+        /// <summary>
+        /// Initializes a new instance of ColumnSeries class
+        /// </summary>
         public ColumnSeries()
         {
             Model = new ColumnAlgorithm(this);
             InitializeDefuaults();
         }
 
+        /// <summary>
+        /// Initializes a new instance of ColumnSeries class, using a given mapper
+        /// </summary>
         public ColumnSeries(object configuration)
         {
             Model = new ColumnAlgorithm(this);
@@ -61,7 +72,9 @@ namespace LiveCharts.Wpf
 
         public static readonly DependencyProperty MaxColumnWidthProperty = DependencyProperty.Register(
             "MaxColumnWidth", typeof (double), typeof (ColumnSeries), new PropertyMetadata(default(double)));
-
+        /// <summary>
+        /// Gets or sets the MaxColumnWidht, the column width will be capped at this value.
+        /// </summary>
         public double MaxColumnWidth
         {
             get { return (double) GetValue(MaxColumnWidthProperty); }
@@ -70,7 +83,9 @@ namespace LiveCharts.Wpf
 
         public static readonly DependencyProperty ColumnPaddingProperty = DependencyProperty.Register(
             "ColumnPadding", typeof (double), typeof (ColumnSeries), new PropertyMetadata(default(double)));
-
+        /// <summary>
+        /// Gets or sets the padding between the columns in the series.
+        /// </summary>
         public double ColumnPadding
         {
             get { return (double) GetValue(ColumnPaddingProperty); }

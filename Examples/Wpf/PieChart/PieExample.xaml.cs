@@ -18,25 +18,21 @@ namespace Wpf.PieChart
                 new PieSeries
                 {
                     Title = "Chrome",
-                    Values = new ChartValues<ObservableValue> { new ObservableValue(8) },
-                    DataLabels = true
+                    Values = new ChartValues<ObservableValue> { new ObservableValue(8) }
                 },
                 new PieSeries
                 {
                     Title = "Mozilla",
-                    DataLabels = true,
                     Values = new ChartValues<ObservableValue> { new ObservableValue(6) }
                 },
                 new PieSeries
                 {
                     Title = "Opera",
-                    DataLabels = true,
                     Values = new ChartValues<ObservableValue> { new ObservableValue(10) }
                 },
                 new PieSeries
                 {
                     Title = "Explorer",
-                    DataLabels = true,
                     Values = new ChartValues<ObservableValue> { new ObservableValue(4) }
                 }
             };
@@ -77,8 +73,7 @@ namespace Wpf.PieChart
 
             SeriesCollection.Add(new PieSeries
             {
-                Values = vals,
-                DataLabels = true
+                Values = vals
             });
         }
 
@@ -104,6 +99,11 @@ namespace Wpf.PieChart
                 if (series.Values.Count > 0)
                     series.Values.RemoveAt(0);
             }
+        }
+
+        private void RestartOnClick(object sender, RoutedEventArgs e)
+        {
+            Chart.Update(true, true);
         }
     }
 }

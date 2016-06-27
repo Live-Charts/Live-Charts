@@ -23,6 +23,9 @@
 using System;
 using System.Linq;
 using LiveCharts.Defaults;
+using LiveCharts.Definitions.Points;
+using LiveCharts.Definitions.Series;
+using LiveCharts.Dtos;
 using LiveCharts.Helpers;
 
 namespace LiveCharts.SeriesAlgorithms
@@ -63,10 +66,10 @@ namespace LiveCharts.SeriesAlgorithms
 
                 var uw = new CorePoint(
                     CurrentXAxis.EvaluatesUnitWidth
-                        ? ChartFunctions.GetUnitWidth(AxisTags.X, Chart, View.ScalesXAt)/2
+                        ? ChartFunctions.GetUnitWidth(AxisOrientation.X, Chart, View.ScalesXAt)/2
                         : 0,
                     CurrentYAxis.EvaluatesUnitWidth
-                        ? ChartFunctions.GetUnitWidth(AxisTags.Y, Chart, View.ScalesYAt)/2
+                        ? ChartFunctions.GetUnitWidth(AxisOrientation.Y, Chart, View.ScalesYAt)/2
                         : 0);
 
                 if (SeriesOrientation == SeriesOrientation.Horizontal)

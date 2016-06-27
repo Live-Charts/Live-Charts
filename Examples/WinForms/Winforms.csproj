@@ -135,6 +135,12 @@
     <Compile Include="Cartesian\FullyResponsive\FullyResponsive.Designer.cs">
       <DependentUpon>FullyResponsive.cs</DependentUpon>
     </Compile>
+    <Compile Include="Cartesian\HeatSeriesExample\HeatSeriesExample.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Cartesian\HeatSeriesExample\HeatSeriesExample.Designer.cs">
+      <DependentUpon>HeatSeriesExample.cs</DependentUpon>
+    </Compile>
     <Compile Include="Cartesian\Inverted Series\InvertedSeries.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -250,6 +256,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Cartesian\FullyResponsive\FullyResponsive.resx">
       <DependentUpon>FullyResponsive.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Cartesian\HeatSeriesExample\HeatSeriesExample.resx">
+      <DependentUpon>HeatSeriesExample.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Cartesian\Inverted Series\InvertedSeries.resx">
       <DependentUpon>InvertedSeries.cs</DependentUpon>
@@ -400,6 +409,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\customzp.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Heat Series.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

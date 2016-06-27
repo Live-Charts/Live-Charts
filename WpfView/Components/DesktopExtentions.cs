@@ -1,4 +1,5 @@
 using System.Windows;
+using LiveCharts.Dtos;
 
 namespace LiveCharts.Wpf.Components
 {

@@ -20,18 +20,11 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-using System;
-using System.Collections.Generic;
-
-namespace LiveCharts
+namespace LiveCharts.Definitions.Series
 {
-    public static class Extentions
+    public interface IStackedColumnSeriesView : ISeriesView, IStackModelableSeriesView
     {
-        public static ChartValues<T> AsChartValues<T>(this IEnumerable<T> values)
-        {
-            var l = new ChartValues<T>();
-            l.AddRange(values);
-            return l;
-        }
+        double MaxColumnWidth { get; set; }
+        double ColumnPadding { get; set; }
     }
 }

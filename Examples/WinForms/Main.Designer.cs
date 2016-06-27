@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.panel1 = new System.Windows.Forms.Panel();
+            this.label18 = new System.Windows.Forms.Label();
             this.label17 = new System.Windows.Forms.Label();
             this.label16 = new System.Windows.Forms.Label();
             this.label15 = new System.Windows.Forms.Label();
@@ -46,7 +47,8 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.label18 = new System.Windows.Forms.Label();
+            this.label19 = new System.Windows.Forms.Label();
+            this.button5 = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
@@ -71,6 +73,8 @@
             // panel1
             // 
             this.panel1.AutoScroll = true;
+            this.panel1.Controls.Add(this.label19);
+            this.panel1.Controls.Add(this.button5);
             this.panel1.Controls.Add(this.label18);
             this.panel1.Controls.Add(this.button4);
             this.panel1.Controls.Add(this.label17);
@@ -112,6 +116,16 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(847, 733);
             this.panel1.TabIndex = 0;
+            // 
+            // label18
+            // 
+            this.label18.AutoSize = true;
+            this.label18.Font = new System.Drawing.Font("Calibri", 12.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label18.Location = new System.Drawing.Point(41, 558);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(83, 21);
+            this.label18.TabIndex = 62;
+            this.label18.Text = "Pagination";
             // 
             // label17
             // 
@@ -283,15 +297,25 @@
             this.label1.TabIndex = 36;
             this.label1.Text = "Labels";
             // 
-            // label18
+            // label19
             // 
-            this.label18.AutoSize = true;
-            this.label18.Font = new System.Drawing.Font("Calibri", 12.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label18.Location = new System.Drawing.Point(41, 558);
-            this.label18.Name = "label18";
-            this.label18.Size = new System.Drawing.Size(83, 21);
-            this.label18.TabIndex = 62;
-            this.label18.Text = "Pagination";
+            this.label19.AutoSize = true;
+            this.label19.Font = new System.Drawing.Font("Calibri", 12.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label19.Location = new System.Drawing.Point(213, 558);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(88, 21);
+            this.label19.TabIndex = 64;
+            this.label19.Text = "Heat Series";
+            // 
+            // button5
+            // 
+            this.button5.Image = global::Winforms.Properties.Resources.Heat_Series;
+            this.button5.Location = new System.Drawing.Point(182, 455);
+            this.button5.Name = "button5";
+            this.button5.Size = new System.Drawing.Size(160, 100);
+            this.button5.TabIndex = 63;
+            this.button5.UseVisualStyleBackColor = true;
+            this.button5.Click += new System.EventHandler(this.button5_Click);
             // 
             // button4
             // 
@@ -526,6 +550,8 @@
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Label label18;
         private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.Label label19;
+        private System.Windows.Forms.Button button5;
     }
 }
 

@@ -24,23 +24,41 @@ using System;
 
 namespace LiveCharts.Defaults
 {
+    /// <summary>
+    /// An already configured chart point, this class notifies the chart to update every time a property changes
+    /// </summary>
     public class PolarPoint : IObservableChartPoint
     {
         private double _radius;
         private double _angle;
+
+        /// <summary>
+        /// The point changed event
+        /// </summary>
         public event Action PointChanged;
 
+        /// <summary>
+        /// Initializes a new instance of PolarPoint class
+        /// </summary>
         public PolarPoint()
         {
             
         }
 
+        /// <summary>
+        /// Initializes a new instance of PolarPoint class, giving angle and radius
+        /// </summary>
+        /// <param name="radius"></param>
+        /// <param name="angle"></param>
         public PolarPoint(double radius, double angle)
         {
             Radius = radius;
             Angle = angle;
         }
 
+        /// <summary>
+        /// The radius of the point
+        /// </summary>
         public double Radius
         {
             get { return _radius; }
@@ -51,6 +69,9 @@ namespace LiveCharts.Defaults
             }
         }
 
+        /// <summary>
+        /// The angle of the point
+        /// </summary>
         public double Angle
         {
             get { return _angle; }
@@ -61,10 +82,12 @@ namespace LiveCharts.Defaults
             }
         }
 
-        protected void OnPointChanged()
+        /// <summary>
+        /// On point property changed method
+        /// </summary>
+        protected virtual void OnPointChanged()
         {
-            if (PointChanged != null)
-                PointChanged.Invoke();
+            if (PointChanged != null)PointChanged.Invoke();
         }
     }
 }

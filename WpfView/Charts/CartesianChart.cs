@@ -23,13 +23,20 @@
 using System;
 using System.Windows;
 using LiveCharts.Charts;
+using LiveCharts.Definitions.Charts;
 using LiveCharts.Wpf.Charts.Base;
 
 // ReSharper disable once CheckNamespace
 namespace LiveCharts.Wpf
 {
+    /// <summary>
+    /// The Cartesian chart can plot any series with x and y coordinates
+    /// </summary>
     public class CartesianChart : Chart, ICartesianChart
     {
+        /// <summary>
+        /// Initializes a new instance of CartesianChart class
+        /// </summary>
         public CartesianChart()
         {
             var freq = DisableAnimations ? TimeSpan.FromMilliseconds(10) : AnimationsSpeed;
@@ -43,7 +50,9 @@ namespace LiveCharts.Wpf
         public static readonly DependencyProperty VisualElementsProperty = DependencyProperty.Register(
             "VisualElements", typeof (VisualElementsCollection), typeof (CartesianChart),
             new PropertyMetadata(default(VisualElementsCollection)));
-
+        /// <summary>
+        /// Gets or sets the collection of visual elements in the chart, a visual element display another UiElement in the chart.
+        /// </summary>
         public VisualElementsCollection VisualElements
         {
             get { return (VisualElementsCollection) GetValue(VisualElementsProperty); }

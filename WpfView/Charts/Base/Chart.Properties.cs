@@ -31,20 +31,30 @@ namespace LiveCharts.Wpf.Charts.Base
 {
     public abstract partial class Chart
     {
+        /// <summary>
+        /// The DataClick event is fired when a user click any data point
+        /// </summary>
         public event Action<object, ChartPoint> DataClick;
 
         private static Random Randomizer { get; set; }
         private SeriesCollection LastKnownSeriesCollection { get; set; }
 
+        /// <summary>
+        /// Gets or sets the chart current canvas
+        /// </summary>
         protected Canvas Canvas { get; set; }
         internal Canvas DrawMargin { get; set; }
         internal int SeriesIndexCount { get; set; }
         
+        /// <summary>
+        /// Gets or sets whether charts must randomize the starting default series color.
+        /// </summary>
         public static bool RandomizeStartingColor { get; set; }
-
+        /// <summary>
+        /// Gets or sets the default series color set.
+        /// </summary>
         public static List<Color> Colors { get; set; }
        
-
         public static readonly DependencyProperty AxisYProperty = DependencyProperty.Register(
             "AxisY", typeof(AxesCollection), typeof(Chart),
             new PropertyMetadata(null, CallChartUpdater()));
@@ -73,7 +83,7 @@ namespace LiveCharts.Wpf.Charts.Base
             "ChartLegend", typeof(DefaultLegend), typeof(Chart),
             new PropertyMetadata(default(DefaultLegend), CallChartUpdater()));
         /// <summary>
-        /// Gets or sets the control to use as chart legend fot this chart.
+        /// Gets or sets the control to use as chart legend for this chart.
         /// </summary>
         public DefaultLegend ChartLegend
         {
@@ -145,7 +155,9 @@ namespace LiveCharts.Wpf.Charts.Base
 
         public static readonly DependencyProperty DataTooltipProperty = DependencyProperty.Register(
             "DataTooltip", typeof(DefaultTooltip), typeof(Chart), new PropertyMetadata(default(DefaultTooltip)));
-
+        /// <summary>
+        /// Gets or sets the chart data tooltip.
+        /// </summary>
         public DefaultTooltip DataTooltip
         {
             get { return (DefaultTooltip)GetValue(DataTooltipProperty); }
@@ -154,28 +166,41 @@ namespace LiveCharts.Wpf.Charts.Base
 
         public static readonly DependencyProperty HoverableProperty = DependencyProperty.Register(
             "Hoverable", typeof(bool), typeof(Chart), new PropertyMetadata(true));
-
+        /// <summary>
+        /// gets or sets whether chart should react when a user moves the mouse over a data point.
+        /// </summary>
         public bool Hoverable
         {
             get { return (bool)GetValue(HoverableProperty); }
             set { SetValue(HoverableProperty, value); }
         }
-
+        /// <summary>
+        /// Gets the chart model, the model is who calculates everything, is the engine of the chart
+        /// </summary>
         public ChartCore Model
         {
             get { return ChartCoreModel; }
         }
 
+        /// <summary>
+        /// Gets whether the chart has an active tooltip.
+        /// </summary>
         public bool HasTooltip
         {
             get { return DataTooltip != null; }
         }
 
+        /// <summary>
+        /// Gets whether the chart has a DataClick event attacked.
+        /// </summary>
         public bool HasDataClickEventAttached
         {
             get { return DataClick != null; }
         }
 
+        /// <summary>
+        /// Gets whether the chart is already loaded in the view.
+        /// </summary>
         public bool IsControlLoaded { get; private set; }
         
     }

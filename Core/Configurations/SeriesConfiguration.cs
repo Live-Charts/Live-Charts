@@ -21,6 +21,7 @@
 using System;
 using System.Collections.Generic;
 using LiveCharts.Charts;
+using LiveCharts.Dtos;
 
 namespace LiveCharts.Configurations
 {

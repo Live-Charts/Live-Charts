@@ -27,15 +27,25 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Threading;
 using LiveCharts.Charts;
+using LiveCharts.Definitions.Charts;
 
 namespace LiveCharts.Wpf.Charts.Base
 {
+    /// <summary>
+    /// Base chart class
+    /// </summary>
     public abstract partial class Chart : UserControl, IChartView
     {
+        /// <summary>
+        /// Chart core model, the model calculates the chart.
+        /// </summary>
         protected ChartCore ChartCoreModel;
 
         #region Constructors
 
+        /// <summary>
+        /// Initializes a new instance of Chart class
+        /// </summary>
         protected Chart()
         {
             Canvas = new Canvas();
@@ -106,7 +116,12 @@ namespace LiveCharts.Wpf.Charts.Base
         #endregion
 
         #region Property Changed
-
+        /// <summary>
+        /// Calls the chart updater
+        /// </summary>
+        /// <param name="animate">if true, the series view will be removed and added again, this restarts animations also.</param>
+        /// <param name="updateNow">forces the updater to run as this function is called.</param>
+        /// <returns></returns>
         protected static PropertyChangedCallback CallChartUpdater(bool animate = false, bool updateNow = false)
         {
             return (o, args) =>

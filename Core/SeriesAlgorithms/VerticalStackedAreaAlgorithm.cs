@@ -20,6 +20,9 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
+using LiveCharts.Definitions.Series;
+using LiveCharts.Dtos;
+
 namespace LiveCharts.SeriesAlgorithms
 {
     public class VerticalStackedAreaAlgorithm : StackedAreaAlgorithm
@@ -37,12 +40,12 @@ namespace LiveCharts.SeriesAlgorithms
         {
             if (_stackModelable.StackMode == StackMode.Values)
                 return new CorePoint(
-                    ChartFunctions.ToDrawMargin(chartPoint.To, AxisTags.X, Chart, View.ScalesXAt),
-                    ChartFunctions.ToDrawMargin(chartPoint.Y, AxisTags.Y, Chart, View.ScalesYAt));
+                    ChartFunctions.ToDrawMargin(chartPoint.To, AxisOrientation.X, Chart, View.ScalesXAt),
+                    ChartFunctions.ToDrawMargin(chartPoint.Y, AxisOrientation.Y, Chart, View.ScalesYAt));
 
             return new CorePoint(
-                ChartFunctions.ToDrawMargin(chartPoint.StackedParticipation, AxisTags.X, Chart, View.ScalesXAt),
-                ChartFunctions.ToDrawMargin(chartPoint.Y, AxisTags.Y, Chart, View.ScalesYAt));
+                ChartFunctions.ToDrawMargin(chartPoint.StackedParticipation, AxisOrientation.X, Chart, View.ScalesXAt),
+                ChartFunctions.ToDrawMargin(chartPoint.Y, AxisOrientation.Y, Chart, View.ScalesYAt));
         }
     }
 }

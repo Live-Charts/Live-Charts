@@ -26,6 +26,9 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using LiveCharts.Charts;
+using LiveCharts.Definitions.Charts;
+using LiveCharts.Dtos;
+using LiveCharts.Helpers;
 
 namespace LiveCharts
 {
@@ -89,13 +92,13 @@ namespace LiveCharts
 
         #region Public Methods
 
-        internal void CalculateSeparator(ChartCore chart, AxisTags source)
+        internal void CalculateSeparator(ChartCore chart, AxisOrientation source)
         {
             var range = MaxLimit - MinLimit;
             range = range <= 0 ? 1 : range;
 
             //ToDO: Improve this according to current labels!
-            var separations = source == AxisTags.Y
+            var separations = source == AxisOrientation.Y
                 ? Math.Round(chart.DrawMargin.Height/((12)*CleanFactor), 0) // at least 3 font 12 labels per separator.
                 : Math.Round(chart.DrawMargin.Width/(50*CleanFactor), 0); // at least 150 pixels per separator.
 
@@ -126,7 +129,7 @@ namespace LiveCharts
             if (Labels != null) S = S < 1 ? 1 : S;
         }
 
-        internal CoreMargin PrepareChart(AxisTags source, ChartCore chart)
+        internal CoreMargin PrepareChart(AxisOrientation source, ChartCore chart)
         {
             if (!(Math.Abs(MaxLimit - MinLimit) > S*.01) || !ShowLabels) return new CoreMargin();
 
@@ -194,7 +197,7 @@ namespace LiveCharts
             return currentMargin;
         }
 
-        internal void UpdateSeparators(AxisTags source, ChartCore chart, int axisIndex)
+        internal void UpdateSeparators(AxisOrientation source, ChartCore chart, int axisIndex)
         {
             foreach (var element in Cache.Values.ToArray())
             {
@@ -206,7 +209,7 @@ namespace LiveCharts
 
                 var toLine = ChartFunctions.ToPlotArea(element.Value, source, chart, axisIndex);
 
-                var direction = source == AxisTags.X ? 1 : -1;
+                var direction = source == AxisOrientation.X ? 1 : -1;
 
                 toLine += EvaluatesUnitWidth ? direction*ChartFunctions.GetUnitWidth(source, chart, this)/2 : 0;
                 var toLabel = toLine + element.View.LabelModel.GetOffsetBySource(source);
@@ -215,7 +218,7 @@ namespace LiveCharts
                 {
                     const double padding = 4;
 
-                    if (source == AxisTags.Y)
+                    if (source == AxisOrientation.Y)
                     {
                         if (toLabel + element.View.LabelModel.ActualHeight >
                             chart.DrawMargin.Top + chart.DrawMargin.Height)
@@ -282,14 +285,14 @@ namespace LiveCharts
 #endif
         }
 
-        internal double FromPreviousState(double value, AxisTags source, ChartCore chart)
+        internal double FromPreviousState(double value, AxisOrientation source, ChartCore chart)
         {
             if (LastAxisMax == null) return 0;
 
             var p1 = new CorePoint();
             var p2 = new CorePoint();
 
-            if (source == AxisTags.Y)
+            if (source == AxisOrientation.Y)
             {
                 p1.X = LastAxisMax ?? 0;
                 p1.Y = LastPlotArea.Top;

@@ -22,6 +22,10 @@
 
 using System;
 using System.Linq;
+using LiveCharts.Definitions.Charts;
+using LiveCharts.Definitions.Series;
+using LiveCharts.Dtos;
+using LiveCharts.Helpers;
 
 namespace LiveCharts.Charts
 {
@@ -40,7 +44,7 @@ namespace LiveCharts.Charts
 
         public override void PrepareAxes()
         {
-            PivotZoomingAxis = AxisTags.None;
+            PivotZoomingAxis = AxisOrientation.None;
             View.Zoom = ZoomingOptions.None;
 
             if (View.Series.Any(x => !(x.Model is IPieSeries)))
@@ -78,7 +82,7 @@ namespace LiveCharts.Charts
                 }
             }
 
-            StackPoints(View.Series, AxisTags.Y, 0);
+            StackPoints(View.Series, AxisOrientation.Y, 0);
 
             var curSize = new CoreRectangle(0, 0, ControlSize.Width, ControlSize.Height);
 

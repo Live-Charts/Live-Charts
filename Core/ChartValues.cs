@@ -24,12 +24,13 @@ using System.Collections.Generic;
 using System.Linq;
 using LiveCharts.Charts;
 using LiveCharts.Configurations;
+using LiveCharts.Dtos;
 using LiveCharts.Helpers;
 
 namespace LiveCharts
 {
     /// <summary>
-    /// Creates a collection of values ready to plot
+    /// Creates a collection of chart values
     /// </summary>
     /// <typeparam name="T"></typeparam>
     public class ChartValues<T> : NoisyCollection<T>, IChartValues
@@ -38,6 +39,9 @@ namespace LiveCharts
 
         #region Constructors
 
+        /// <summary>
+        /// Initializes a new instance of chart values
+        /// </summary>
         public ChartValues()
         {
             IndexedDictionary = new Dictionary<int, ChartPoint>();
@@ -49,17 +53,31 @@ namespace LiveCharts
 
         #region Properties
 
+        /// <summary>
+        /// Gets the current points in the chart values instance
+        /// </summary>
         public IEnumerable<ChartPoint> Points
         {
             get { return Iterate(); }
         }
 
+        /// <summary>
+        /// Get the max and min values of the values 1 (X, Radius)
+        /// </summary>
         public CoreLimit Limit1 { get; private set; }
+        /// <summary>
+        /// Gets the max and min values of the values 2 (Y, Angle)
+        /// </summary>
         public CoreLimit Limit2 { get; private set; }
+        /// <summary>
+        /// Gets the man and min values of the values 3 (weight)
+        /// </summary>
         public CoreLimit Limit3 { get; private set; }
 
+        /// <summary>
+        /// Gets the series that is firing the ChartValus
+        /// </summary>
         public SeriesAlgorithm Series { get; set; }
-        public object ConfigurableElement { get; set; }
 
         internal int GarbageCollectorIndex { get; set; }
         internal Dictionary<int, ChartPoint> IndexedDictionary { get; set; }
@@ -68,6 +86,9 @@ namespace LiveCharts
 
         #region Public Methods
 
+        /// <summary>
+        /// Evaluates the limits in the chart values
+        /// </summary>
         public void GetLimits()
         {
             var config = GetConfig();
@@ -97,12 +118,18 @@ namespace LiveCharts
             Limit3 = new CoreLimit(double.IsInfinity(wMin) ? 0 : wMin, double.IsInfinity(wMax) ? 1 : wMax);
         }
 
+        /// <summary>
+        /// Initializes the garbage collector
+        /// </summary>
         public void InitializeGarbageCollector()
         {
             ValidateGarbageCollector();
             GarbageCollectorIndex++;
         }
 
+        /// <summary>
+        /// Collects the unnecessary values 
+        /// </summary>
         public void CollectGarbage()
         {
             var isclass = typeof (T).IsClass;
@@ -210,7 +237,7 @@ namespace LiveCharts
 
         private IPointEvaluator<T> GetConfig()
         {
-            //Trying to ge the user defined configuration...
+            //Trying to get the user defined configuration...
 
             //series == null means that chart values are null, and LiveCharts
             //could not set the Series Instance tho the current chart values...
@@ -237,6 +264,9 @@ namespace LiveCharts
             }
         }
 
+        /// <summary>
+        /// On Point change handler
+        /// </summary>
         protected void ObservableOnPointChanged()
         {
             Series.Chart.Updater.Run();

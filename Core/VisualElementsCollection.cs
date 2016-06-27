@@ -21,12 +21,19 @@
 //SOFTWARE.
 
 using System.Collections.Generic;
+using LiveCharts.Definitions.Charts;
 using LiveCharts.Helpers;
 
 namespace LiveCharts
 {
+    /// <summary>
+    /// Defines a collection of items to be added in a cartesian chart
+    /// </summary>
     public class VisualElementsCollection : NoisyCollection<ICartesianVisualElement>
     {
+        /// <summary>
+        /// Initializes a new instance of VisualElementsCollection
+        /// </summary>
         public VisualElementsCollection()
         {
             CollectionChanged += OnCollectionChanged;

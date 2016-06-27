@@ -22,6 +22,7 @@
 
 using System.Diagnostics;
 using System.Windows;
+using LiveCharts.Dtos;
 
 namespace LiveCharts.Wpf.Charts.Base
 {

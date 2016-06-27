@@ -23,14 +23,21 @@
 using System;
 using System.Windows;
 using LiveCharts.Charts;
+using LiveCharts.Definitions.Charts;
 using LiveCharts.Wpf.Charts.Base;
 using LiveCharts.Wpf.Points;
 
 // ReSharper disable once CheckNamespace
 namespace LiveCharts.Wpf
 {
+    /// <summary>
+    /// The pie chart compares mainly the distribution of the data according to different series.
+    /// </summary>
     public class PieChart : Chart, IPieChart
     {
+        /// <summary>
+        /// Initializes a new instance of PieChart class
+        /// </summary>
         public PieChart()
         {
             var freq = DisableAnimations ? TimeSpan.FromMilliseconds(10) : AnimationsSpeed;
@@ -40,7 +47,9 @@ namespace LiveCharts.Wpf
 
         public static readonly DependencyProperty InnerRadiusProperty = DependencyProperty.Register(
             "InnerRadius", typeof (double), typeof (PieChart), new PropertyMetadata(0d, CallChartUpdater()));
-
+        /// <summary>
+        /// Gets or sets the pie inner radius, increasing this property will result in a doughnut chart.
+        /// </summary>
         public double InnerRadius
         {
             get { return (double) GetValue(InnerRadiusProperty); }
@@ -49,7 +58,9 @@ namespace LiveCharts.Wpf
 
         public static readonly DependencyProperty StartingRotationAngleProperty = DependencyProperty.Register(
             "StartingRotationAngle", typeof (double), typeof (PieChart), new PropertyMetadata(45d, CallChartUpdater()));
-
+        /// <summary>
+        /// Gets or sets the starting rotation angle in degrees.
+        /// </summary>
         public double StartingRotationAngle
         {
             get { return (double) GetValue(StartingRotationAngleProperty); }
@@ -58,7 +69,9 @@ namespace LiveCharts.Wpf
 
         public static readonly DependencyProperty HoverPushOutProperty = DependencyProperty.Register(
             "HoverPushOut", typeof (double), typeof (PieChart), new PropertyMetadata(5d));
-
+        /// <summary>
+        /// Gets or sets the units that a slice is pushed out when a user moves the mouse over data point.
+        /// </summary>
         public double HoverPushOut
         {
             get { return (double) GetValue(HoverPushOutProperty); }

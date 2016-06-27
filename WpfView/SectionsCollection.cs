@@ -25,8 +25,14 @@ using LiveCharts.Helpers;
 
 namespace LiveCharts.Wpf
 {
+    /// <summary>
+    /// The SectionsCollection class holds a collection of Axis.Sections
+    /// </summary>
     public class SectionsCollection : NoisyCollection<AxisSection>
     {
+        /// <summary>
+        /// Initializes a new instance of SectionsCollection instance
+        /// </summary>
         public SectionsCollection()
         {
             CollectionChanged += OnCollectionChanged;

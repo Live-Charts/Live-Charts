@@ -21,26 +21,44 @@
 //SOFTWARE.
 
 using System;
+using LiveCharts.Definitions.Points;
 
 namespace LiveCharts.Defaults
 {
+    /// <summary>
+    /// An already configured weighted chart point, this class notifies the chart to update every time a property changes
+    /// </summary>
     public class BubblePoint : IObservableChartPoint
     {
         private double _x;
         private double _y;
         private double _weight;
 
+        /// <summary>
+        /// Creates a new instance of BubblePoint class
+        /// </summary>
         public BubblePoint()
         {
             
         }
 
+        /// <summary>
+        /// Create a new instance of BubblePoint class, giving x and y coordinates
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
         public BubblePoint(double x, double y)
         {
             X = x;
             Y = y;
         }
 
+        /// <summary>
+        /// Creates a new instance of BubblePoint class, giving x, y and weight
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <param name="weight"></param>
         public BubblePoint(double x, double y, double weight)
         {
             X = x;
@@ -48,6 +66,9 @@ namespace LiveCharts.Defaults
             Weight = weight;
         }
 
+        /// <summary>
+        /// X coordinate in the chart
+        /// </summary>
         public double X
         {
             get { return _x; }
@@ -58,6 +79,9 @@ namespace LiveCharts.Defaults
             }
         }
 
+        /// <summary>
+        /// Y coordinate in the chart
+        /// </summary>
         public double Y
         {
             get { return _y; }
@@ -68,6 +92,9 @@ namespace LiveCharts.Defaults
             }
         }
 
+        /// <summary>
+        /// Weight of the point
+        /// </summary>
         public double Weight
         {
             get { return _weight; }
@@ -78,21 +105,39 @@ namespace LiveCharts.Defaults
             }
         }
 
+        /// <summary>
+        /// Point changed event
+        /// </summary>
         public event Action PointChanged;
 
-        protected void OnPointChanged()
+        /// <summary>
+        /// On point property changed method
+        /// </summary>
+        protected virtual void OnPointChanged()
         {
             if (PointChanged != null) PointChanged.Invoke();
         }
     }
 
+    /// <summary>
+    /// An already configured weighted chart point, this class notifies the chart to update every time a property changes
+    /// </summary>
     public class HeatPoint : BubblePoint
     {
+        /// <summary>
+        /// Initializes a new instance of HeatPoint class
+        /// </summary>
         public HeatPoint()
         {
 
         }
         
+        /// <summary>
+        /// _initializes a new instance of HeatPoint class, giving x, y and weight
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <param name="weight"></param>
         public HeatPoint(double x, double y, double weight)
         {
             X = x;

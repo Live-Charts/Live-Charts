@@ -32,12 +32,15 @@ using System.Windows.Media;
 namespace LiveCharts.Wpf
 {
     /// <summary>
-    /// Interaction logic for DefaultTooltip.xaml
+    /// The Default Tooltip control, by default any chart that requires a tooltip will create a new instance of this class.
     /// </summary>
     public partial class DefaultTooltip : INotifyPropertyChanged
     {
         private WpfTooltipViewModel _viewModel;
 
+        /// <summary>
+        /// Initializes a new instance of DefaultTooltip class
+        /// </summary>
         public DefaultTooltip()
         {
             InitializeComponent();
@@ -50,7 +53,9 @@ namespace LiveCharts.Wpf
 
         public static readonly DependencyProperty CornerRadiusProperty = DependencyProperty.Register(
             "CornerRadius", typeof (double), typeof (DefaultTooltip), new PropertyMetadata(2d));
-
+        /// <summary>
+        /// Gets or sets the corner radius of the tooltip
+        /// </summary>
         public double CornerRadius
         {
             get { return (double) GetValue(CornerRadiusProperty); }
@@ -60,7 +65,9 @@ namespace LiveCharts.Wpf
         public static readonly DependencyProperty SelectionModeProperty = DependencyProperty.Register(
             "SelectionMode", typeof (TooltipSelectionMode?), typeof (DefaultTooltip),
             new PropertyMetadata(null));
-
+        /// <summary>
+        /// Gets or sets the tooltip selection mode, default is null, if this property is null LiveCharts will decide the selection mode based on the series (that fired the tooltip) preferred section mode
+        /// </summary>
         public TooltipSelectionMode? SelectionMode
         {
             get { return (TooltipSelectionMode?) GetValue(SelectionModeProperty); }
@@ -69,7 +76,9 @@ namespace LiveCharts.Wpf
 
         public static readonly DependencyProperty BulletSizeProperty = DependencyProperty.Register(
             "BulletSize", typeof (double), typeof (DefaultTooltip), new PropertyMetadata(15d));
-
+        /// <summary>
+        /// Gets or sets the bullet size, the bullet size modifies the drawn shape size.
+        /// </summary>
         public double BulletSize
         {
             get { return (double) GetValue(BulletSizeProperty); }

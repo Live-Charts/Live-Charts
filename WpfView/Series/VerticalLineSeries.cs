@@ -28,6 +28,8 @@ using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
+using LiveCharts.Definitions.Points;
+using LiveCharts.Dtos;
 using LiveCharts.SeriesAlgorithms;
 using LiveCharts.Wpf.Charts.Base;
 using LiveCharts.Wpf.Components;
@@ -36,16 +38,24 @@ using LiveCharts.Wpf.Points;
 // ReSharper disable once CheckNamespace
 namespace LiveCharts.Wpf
 {
+    /// <summary>
+    /// The vertical line series is useful to compare trends, this is the inverted version of the LineSeries, this series must be added in a cartesian chart.
+    /// </summary>
     public class VerticalLineSeries : LineSeries
     {
         #region Constructors
-
+        /// <summary>
+        /// Initializes an new instance of VerticalLineSeries class
+        /// </summary>
         public VerticalLineSeries()
         {
             Model = new VerticalLineAlgorithm(this);
             InitializeDefuaults();
         }
 
+        /// <summary>
+        /// Initializes an new instance of VerticalLineSeries class, with a given mapper
+        /// </summary>
         public VerticalLineSeries(object configuration)
         {
             Model = new VerticalLineAlgorithm(this);
@@ -72,7 +82,7 @@ namespace LiveCharts.Wpf
 
             if (Figure != null)
             {
-                var yIni = ChartFunctions.ToDrawMargin(Values.Limit2.Min, AxisTags.Y, Model.Chart, ScalesYAt);
+                var yIni = ChartFunctions.ToDrawMargin(Values.Limit2.Min, AxisOrientation.Y, Model.Chart, ScalesYAt);
 
                 if (Model.Chart.View.DisableAnimations)
                     Figure.StartPoint = new Point(0, yIni);
@@ -105,7 +115,7 @@ namespace LiveCharts.Wpf
             Path.Data = geometry;
             Model.Chart.View.AddToDrawMargin(Path);
 
-            var y = ChartFunctions.ToDrawMargin(ActualValues.Limit2.Min, AxisTags.Y, Model.Chart, ScalesYAt);
+            var y = ChartFunctions.ToDrawMargin(ActualValues.Limit2.Min, AxisOrientation.Y, Model.Chart, ScalesYAt);
             Figure.StartPoint = new Point(0, y);
         }
 

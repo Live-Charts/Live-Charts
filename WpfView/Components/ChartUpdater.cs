@@ -23,6 +23,7 @@
 using System;
 using System.Diagnostics;
 using System.Windows.Threading;
+using LiveCharts.Dtos;
 using LiveCharts.Wpf.Charts.Base;
 
 namespace LiveCharts.Wpf.Components
@@ -35,11 +36,12 @@ namespace LiveCharts.Wpf.Components
 
             Timer.Tick += (sender, args) =>
             {
-                UpdaterTick();
+                UpdaterTick(RequiresRestart);
             };
         }
 
         public DispatcherTimer Timer { get; set; }
+        private bool RequiresRestart { get; set; }
 
         public override void Run(bool restartView = false, bool updateNow = false)
         {
@@ -51,10 +53,11 @@ namespace LiveCharts.Wpf.Components
 #if DEBUG
                 Debug.WriteLine("Updater was forced.");
 #endif
-                UpdaterTick();
+                UpdaterTick(restartView);
                 return;
             }
 
+            RequiresRestart = restartView || RequiresRestart;
             if (IsUpdating) return;
 
             IsUpdating = true;
@@ -66,15 +69,16 @@ namespace LiveCharts.Wpf.Components
             Timer.Interval = freq;
         }
 
-        private void UpdaterTick()
+        private void UpdaterTick(bool restartView)
         {
             var wpfChart = (Chart) Chart.View;
 
             Chart.ControlSize = new CoreSize(wpfChart.ActualWidth, wpfChart.ActualHeight);
             Timer.Stop();
-            Update();
+            Update(restartView);
             IsUpdating = false;
 
+            RequiresRestart = false;
 #if DEBUG
             Debug.WriteLine("Chart is updated");
 #endif

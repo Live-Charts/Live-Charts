@@ -20,24 +20,31 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-using System;
-
 using System.Collections.Generic;
 using LiveCharts.Charts;
-using LiveCharts.Configurations;
+using LiveCharts.Definitions.Series;
 using LiveCharts.Helpers;
 
 namespace LiveCharts
 {
+    /// <summary>
+    /// Stores a collection of series to plot, this collection notifies the changes every time you add/remove any series.
+    /// </summary>
     public class SeriesCollection : NoisyCollection<ISeriesView>
     {
-        #region Contructors
+        #region Constructors
 
+        /// <summary>
+        /// Initializes a new instance of the SeriesCollection class
+        /// </summary>
         public SeriesCollection()
         {
             CollectionChanged += OnCollectionChanged;
         }
 
+        /// <summary>
+        /// Initializes a new instance of the SeriesCollection class, with a given mapper
+        /// </summary>
         public SeriesCollection(object configuration)
         {
             Configuration = configuration;
@@ -47,29 +54,15 @@ namespace LiveCharts
 
         #endregion
         
+        /// <summary>
+        /// Gets the chart that owns the collection
+        /// </summary>
         public ChartCore Chart { get; internal set; }
+        /// <summary>
+        /// Gets or sets then mapper in the collection, this mapper will be used in any series inside the collection, if null then LiveCharts will try to get the value from the global configuration.
+        /// </summary>
         public object Configuration { get; set; }
 
-        public SeriesCollection WithConfig<T>(IPointEvaluator<T> configuration)
-        {
-            Configuration = configuration;
-            return this;
-        }
-
-        #region Obsoletes
-        /// <summary>
-        /// Setup a configuration for this collection
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="config"></param>
-        /// <returns></returns>
-        [Obsolete]
-        public SeriesCollection Setup<T>(SeriesConfiguration<T> config)
-        {
-            Configuration = config;
-            return this;
-        }
-        #endregion
 
         private void OnCollectionChanged(IEnumerable<ISeriesView> oldItems, IEnumerable<ISeriesView> newItems)
         {

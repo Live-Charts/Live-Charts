@@ -21,25 +21,40 @@
 //SOFTWARE.
 
 using System;
+using LiveCharts.Definitions.Points;
 
 namespace LiveCharts.Defaults
 {
+    /// <summary>
+    /// An already configured chart point with a date time and a double properties, this class notifies the chart to tupate every time a property changes
+    /// </summary>
     public class DateTimePoint : IObservableChartPoint
     {
         private DateTime _dateTime;
         private double _value;
 
+        /// <summary>
+        /// Initializes a new instance of DateTimePoint class
+        /// </summary>
         public DateTimePoint()
         {
             
         }
 
+        /// <summary>
+        /// Initializes a new instance of DateTimePoint class, giving date time and value
+        /// </summary>
+        /// <param name="dateTime"></param>
+        /// <param name="value"></param>
         public DateTimePoint(DateTime dateTime, double value)
         {
             _dateTime = dateTime;
             _value = value;
         }
 
+        /// <summary>
+        /// DateTime Property
+        /// </summary>
         public DateTime DateTime
         {
             get { return _dateTime; }
@@ -50,6 +65,9 @@ namespace LiveCharts.Defaults
             }
         }
 
+        /// <summary>
+        /// The Value property
+        /// </summary>
         public double Value
         {
             get { return _value; }
@@ -60,9 +78,15 @@ namespace LiveCharts.Defaults
             }
         }
 
+        /// <summary>
+        /// Point changed event
+        /// </summary>
         public event Action PointChanged;
 
-        protected void OnPointChanged()
+        /// <summary>
+        /// On Point property changed method
+        /// </summary>
+        protected virtual void OnPointChanged()
         {
             if (PointChanged != null) PointChanged.Invoke();
         }

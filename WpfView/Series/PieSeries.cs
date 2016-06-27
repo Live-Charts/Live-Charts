@@ -26,6 +26,8 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using LiveCharts.Definitions.Points;
+using LiveCharts.Definitions.Series;
 using LiveCharts.Helpers;
 using LiveCharts.SeriesAlgorithms;
 using LiveCharts.Wpf.Charts.Base;
@@ -34,16 +36,25 @@ using LiveCharts.Wpf.Points;
 // ReSharper disable once CheckNamespace
 namespace LiveCharts.Wpf
 {
+    /// <summary>
+    /// The pie series should be added only in a pie chart.
+    /// </summary>
     public class PieSeries : Series.Series, IPieSeriesView
     {
         #region Constructors
-
+        /// <summary>
+        /// Initializes a new instance of PieSeries class
+        /// </summary>
         public PieSeries()
         {
             Model = new PieAlgorithm(this);
             InitializeDefuaults();
         }
 
+        /// <summary>
+        /// Initializes a new instance of PieSeries class with a given mapper.
+        /// </summary>
+        /// <param name="configuration"></param>
         public PieSeries(object configuration)
         {
             Model = new PieAlgorithm(this);
@@ -61,7 +72,9 @@ namespace LiveCharts.Wpf
 
         public static readonly DependencyProperty PushOutProperty = DependencyProperty.Register(
             "PushOut", typeof (double), typeof (PieSeries), new PropertyMetadata(default(double)));
-
+        /// <summary>
+        /// Gets or sets the slice push out, this property highlights the slice
+        /// </summary>
         public double PushOut
         {
             get { return (double) GetValue(PushOutProperty); }

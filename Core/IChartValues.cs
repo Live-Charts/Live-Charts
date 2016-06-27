@@ -21,6 +21,7 @@
 //SOFTWARE.
 
 using System.Collections.Generic;
+using LiveCharts.Dtos;
 using LiveCharts.Helpers;
 
 namespace LiveCharts

@@ -24,23 +24,45 @@ using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Animation;
+using LiveCharts.Definitions.Charts;
+using LiveCharts.Dtos;
 using LiveCharts.Wpf.Charts.Base;
 
 namespace LiveCharts.Wpf
 {
+    /// <summary>
+    /// Defines a visual element, a visual element is a UI element that is placed and scaled in the chart.
+    /// </summary>
     public class VisualElement : FrameworkElement, ICartesianVisualElement
     {
         // ReSharper disable once InconsistentNaming
+        /// <summary>
+        /// Gets or sets the user interface element.
+        /// </summary>
         public FrameworkElement UIElement { get; set; }
+        /// <summary>
+        /// Gets the chart that owns the visual element
+        /// </summary>
         public IChartView Chart { get; set; }
+        /// <summary>
+        /// Gets if the elements requires to be added to the chart, this property should normally only be used internally by LiveCharts
+        /// </summary>
         public bool RequiresAdd { get; set; }
+        /// <summary>
+        /// Gets or sets the index of the axis in X that owns the element, the axis position must exist.
+        /// </summary>
         public int AxisX { get; set; }
+        /// <summary>
+        /// Gets or sets the index of the axis in Y that owns the element, the axis position must exist.
+        /// </summary>
         public int AxisY { get; set; }
 
         public static readonly DependencyProperty XProperty = DependencyProperty.Register(
             "X", typeof (double), typeof (VisualElement), 
             new PropertyMetadata(default(double), PropertyChangedCallback));
-
+        /// <summary>
+        /// Gets or sets the X value of the UiElement
+        /// </summary>
         public double X
         {
             get { return (double) GetValue(XProperty); }
@@ -50,7 +72,9 @@ namespace LiveCharts.Wpf
         public static readonly DependencyProperty YProperty = DependencyProperty.Register(
             "Y", typeof (double), typeof (VisualElement), 
             new PropertyMetadata(default(double), PropertyChangedCallback));
-
+        /// <summary>
+        /// Gets or sets the Y value of the UiElement
+        /// </summary>
         public double Y
         {
             get { return (double) GetValue(YProperty); }
@@ -65,17 +89,17 @@ namespace LiveCharts.Wpf
                 Panel.SetZIndex(UIElement, 1000);
             }
 
-            var coordinate = new CorePoint(ChartFunctions.ToDrawMargin(X, AxisTags.X, Chart.Model, AxisX),
-                ChartFunctions.ToDrawMargin(Y, AxisTags.Y, Chart.Model, AxisY));
+            var coordinate = new CorePoint(ChartFunctions.ToDrawMargin(X, AxisOrientation.X, Chart.Model, AxisX),
+                ChartFunctions.ToDrawMargin(Y, AxisOrientation.Y, Chart.Model, AxisY));
 
             var wpfChart = (CartesianChart) Chart;
 
             var uw = new CorePoint(
                 wpfChart.AxisX[AxisX].Model.EvaluatesUnitWidth
-                    ? ChartFunctions.GetUnitWidth(AxisTags.X, Chart.Model, AxisX)/2
+                    ? ChartFunctions.GetUnitWidth(AxisOrientation.X, Chart.Model, AxisX)/2
                     : 0,
                 wpfChart.AxisY[AxisY].Model.EvaluatesUnitWidth
-                    ? ChartFunctions.GetUnitWidth(AxisTags.Y, Chart.Model, AxisY)/2
+                    ? ChartFunctions.GetUnitWidth(AxisOrientation.Y, Chart.Model, AxisY)/2
                     : 0);
 
             coordinate += uw;

@@ -22,9 +22,14 @@
 
 using System;
 using System.Collections.Generic;
+using LiveCharts.Dtos;
 
 namespace LiveCharts.Configurations
 {
+    /// <summary>
+    /// Mapper to configure financial points
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public class FinancialMapper<T> : IPointEvaluator<T>
     {
         private Func<T, int, double> _x = (v, i) => i;
@@ -34,6 +39,11 @@ namespace LiveCharts.Configurations
         private Func<T, int, double> _low;
         private Func<T, int, double> _close;
 
+        /// <summary>
+        /// Sets values for a specific point
+        /// </summary>
+        /// <param name="valuePair">Key and value</param>
+        /// <param name="point">Point to set</param>
         public void SetAll(KeyValuePair<int, T> valuePair, ChartPoint point)
         {
             point.X = _x(valuePair.Value, valuePair.Key);
@@ -44,6 +54,11 @@ namespace LiveCharts.Configurations
             point.Low = _low(valuePair.Value, valuePair.Key);
         }
 
+        /// <summary>
+        /// Evaluates a point with a given value and key
+        /// </summary>
+        /// <param name="valuePair">Value and Key</param>
+        /// <returns></returns>
         public Xyw[] GetEvaluation(KeyValuePair<int, T> valuePair)
         {
             var x = _x(valuePair.Value, valuePair.Key);

@@ -28,21 +28,30 @@ using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
+using LiveCharts.Definitions.Series;
 using LiveCharts.SeriesAlgorithms;
 
 // ReSharper disable once CheckNamespace
 namespace LiveCharts.Wpf
 {
-    public class VerticalStackedAreaSeries : VerticalLineSeries, IVerticalStackedAreaSeriesViewView
+    /// <summary>
+    /// Compares trend and proportion, this series must be added in a cartesian chart.
+    /// </summary>
+    public class VerticalStackedAreaSeries : VerticalLineSeries, IVerticalStackedAreaSeriesView
     {
         #region Constructors
-
+        /// <summary>
+        /// Initializes a new instance of VerticalStackedAreaSeries class
+        /// </summary>
         public VerticalStackedAreaSeries()
         {
             Model = new VerticalStackedAreaAlgorithm(this);
             InitializeDefuaults();
         }
 
+        /// <summary>
+        /// Initializes a new instance of VerticalStackedAreaSeries class, with a given mapper
+        /// </summary>
         public VerticalStackedAreaSeries(object configuration)
         {
             Model = new VerticalStackedAreaAlgorithm(this);
@@ -56,7 +65,9 @@ namespace LiveCharts.Wpf
 
         public static readonly DependencyProperty StackModeProperty = DependencyProperty.Register(
             "StackMode", typeof (StackMode), typeof (VerticalStackedAreaSeries), new PropertyMetadata(default(StackMode)));
-
+        /// <summary>
+        /// Gets or sets the series stack mode, values or percentage
+        /// </summary>
         public StackMode StackMode
         {
             get { return (StackMode) GetValue(StackModeProperty); }
@@ -81,7 +92,7 @@ namespace LiveCharts.Wpf
 
             if (Figure != null)
             {
-                var yIni = ChartFunctions.ToDrawMargin(Values.Limit2.Min, AxisTags.Y, Model.Chart, ScalesYAt);
+                var yIni = ChartFunctions.ToDrawMargin(Values.Limit2.Min, AxisOrientation.Y, Model.Chart, ScalesYAt);
 
                 if (Model.Chart.View.DisableAnimations)
                     Figure.StartPoint = new Point(0, yIni);
@@ -114,7 +125,7 @@ namespace LiveCharts.Wpf
             Path.Data = geometry;
             Model.Chart.View.AddToDrawMargin(Path);
 
-            var y = ChartFunctions.ToDrawMargin(ActualValues.Limit2.Min, AxisTags.Y, Model.Chart, ScalesYAt);
+            var y = ChartFunctions.ToDrawMargin(ActualValues.Limit2.Min, AxisOrientation.Y, Model.Chart, ScalesYAt);
             Figure.StartPoint = new Point(0, y);
 
             var i = Model.Chart.View.Series.IndexOf(this);

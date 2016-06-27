@@ -26,6 +26,9 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using LiveCharts.Definitions.Points;
+using LiveCharts.Definitions.Series;
+using LiveCharts.Dtos;
 using LiveCharts.Helpers;
 using LiveCharts.SeriesAlgorithms;
 using LiveCharts.Wpf.Charts.Base;
@@ -34,16 +37,25 @@ using LiveCharts.Wpf.Points;
 // ReSharper disable once CheckNamespace
 namespace LiveCharts.Wpf
 {
+    /// <summary>
+    /// The Row series plots horizontal bars in a cartesian chart
+    /// </summary>
     public class RowSeries : Series.Series, IRowSeriesView
     {
         #region Constructors
-
+        /// <summary>
+        /// Initializes a new instance of RowSeries class
+        /// </summary>
         public RowSeries()
         {
             Model = new RowAlgorithm(this);
             InitializeDefuaults();
         }
 
+        /// <summary>
+        /// Initializes a new instance of RowSeries class with a given mapper
+        /// </summary>
+        /// <param name="configuration"></param>
         public RowSeries(object configuration)
         {
             Model = new RowAlgorithm(this);
@@ -61,7 +73,9 @@ namespace LiveCharts.Wpf
 
         public static readonly DependencyProperty MaxRowHeigthProperty = DependencyProperty.Register(
             "MaxRowHeigth", typeof (double), typeof (RowSeries), new PropertyMetadata(default(double)));
-
+        /// <summary>
+        /// Gets or sets the maximum row height, the height of a column will be capped at this value
+        /// </summary>
         public double MaxRowHeigth
         {
             get { return (double) GetValue(MaxRowHeigthProperty); }
@@ -70,7 +84,9 @@ namespace LiveCharts.Wpf
 
         public static readonly DependencyProperty RowPaddingProperty = DependencyProperty.Register(
             "RowPadding", typeof (double), typeof (RowSeries), new PropertyMetadata(default(double)));
-
+        /// <summary>
+        /// Gets or sets the padding between rows in this series
+        /// </summary>
         public double RowPadding
         {
             get { return (double) GetValue(RowPaddingProperty); }

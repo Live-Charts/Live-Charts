@@ -25,6 +25,9 @@ using System.Windows.Media;
 
 namespace LiveCharts.Wpf
 {
+    /// <summary>
+    /// Contains a collection of already defined axes.
+    /// </summary>
     public static class DefaultAxes
     {
         /// <summary>

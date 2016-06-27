@@ -22,15 +22,25 @@
 
 using System;
 using System.Collections.Generic;
+using LiveCharts.Dtos;
 
 namespace LiveCharts.Configurations
 {
-    public class BubbleMapper<T> : IPointEvaluator<T>
+    /// <summary>
+    /// Mapper to configure Bubble points
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    public class WeightedMapper<T> : IPointEvaluator<T>
     {
         private Func<T, int, double> _x = (v, i) => i;
         private Func<T, int, double> _y = (v, i) => i;
         private Func<T, int, double> _weight = (v, i) => 0;
 
+        /// <summary>
+        /// Sets values for a specific point
+        /// </summary>
+        /// <param name="valuePair">Key and value</param>
+        /// <param name="point">Point to set</param>
         public void SetAll(KeyValuePair<int, T> valuePair, ChartPoint point)
         {
             point.X = _x(valuePair.Value, valuePair.Key);
@@ -38,6 +48,11 @@ namespace LiveCharts.Configurations
             point.Weight = _weight(valuePair.Value, valuePair.Key);
         }
 
+        /// <summary>
+        /// Evaluates a point with a given value and key
+        /// </summary>
+        /// <param name="valuePair">Value and Key</param>
+        /// <returns></returns>
         public Xyw[] GetEvaluation(KeyValuePair<int, T> valuePair)
         {
             var xyw = new Xyw(
@@ -49,45 +64,63 @@ namespace LiveCharts.Configurations
         }
 
         /// <summary>
-        /// Maps X value
+        /// Sets the X mapper
         /// </summary>
         /// <param name="predicate"></param>
         /// <returns></returns>
-        public BubbleMapper<T> X(Func<T, double> predicate)
+        public WeightedMapper<T> X(Func<T, double> predicate)
         {
             return X((t, i) => predicate(t));
         }
-        public BubbleMapper<T> X(Func<T, int, double> predicate)
+
+        /// <summary>
+        /// Sets the X mapper
+        /// </summary>
+        /// <param name="predicate"></param>
+        /// <returns></returns>
+        public WeightedMapper<T> X(Func<T, int, double> predicate)
         {
             _x = predicate;
             return this;
         }
 
         /// <summary>
-        /// Maps Y value
+        /// Sets the Y mapper
         /// </summary>
         /// <param name="predicate"></param>
         /// <returns></returns>
-        public BubbleMapper<T> Y(Func<T, double> predicate)
+        public WeightedMapper<T> Y(Func<T, double> predicate)
         {
             return Y((t, i) => predicate(t));
         }
-        public BubbleMapper<T> Y(Func<T, int, double> predicate)
+
+        /// <summary>
+        /// Sets the Y mapper
+        /// </summary>
+        /// <param name="predicate"></param>
+        /// <returns></returns>
+        public WeightedMapper<T> Y(Func<T, int, double> predicate)
         {
             _y = predicate;
             return this;
         }
 
         /// <summary>
-        /// Maps Weight value
+        /// Sets Weight mapper
         /// </summary>
         /// <param name="predicate"></param>
         /// <returns></returns>
-        public BubbleMapper<T> Weight(Func<T, double> predicate)
+        public WeightedMapper<T> Weight(Func<T, double> predicate)
         {
             return Weight((t, i) => predicate(t));
         }
-        public BubbleMapper<T> Weight(Func<T, int, double> predicate)
+
+        /// <summary>
+        /// Sets Weight mapper
+        /// </summary>
+        /// <param name="predicate"></param>
+        /// <returns></returns>
+        public WeightedMapper<T> Weight(Func<T, int, double> predicate)
         {
             _weight = predicate;
             return this;

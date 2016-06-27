@@ -21,23 +21,13 @@
 //SOFTWARE.
 
 using System.Collections.Generic;
+using LiveCharts.Dtos;
 
 namespace LiveCharts.Configurations
 {
     public interface IPointEvaluator<T>
     {
-        /// <summary>
-        /// Sets the evaluation to a chart point
-        /// </summary>
-        /// <param name="valuePair"></param>
-        /// <param name="point"></param>
         void SetAll(KeyValuePair<int, T> valuePair, ChartPoint point);
-
-        /// <summary>
-        /// Returns X, Y and W of with a given key and value
-        /// </summary>
-        /// <param name="valuePair"></param>
-        /// <returns></returns>
         Xyw[] GetEvaluation(KeyValuePair<int, T> valuePair);
     }
 }

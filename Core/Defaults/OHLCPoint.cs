@@ -21,9 +21,13 @@
 //SOFTWARE.
 
 using System;
+using LiveCharts.Definitions.Points;
 
 namespace LiveCharts.Defaults
 {
+    /// <summary>
+    /// An already configured chart point, this class notifies the chart to update every time a property changes
+    /// </summary>
     public class OhlcPoint : IObservableChartPoint
     {
         private double _open;
@@ -31,11 +35,21 @@ namespace LiveCharts.Defaults
         private double _low;
         private double _close;
 
+        /// <summary>
+        /// Initializes a new instance of OhclPoint class
+        /// </summary>
         public OhlcPoint()
         {
             
         }
 
+        /// <summary>
+        /// Initializes a new instance o OhclPointc class, giving open, high, low and close values
+        /// </summary>
+        /// <param name="open"></param>
+        /// <param name="high"></param>
+        /// <param name="low"></param>
+        /// <param name="close"></param>
         public OhlcPoint(double open, double high, double low, double close)
         {
             Open = open;
@@ -44,6 +58,9 @@ namespace LiveCharts.Defaults
             Close = close;
         }
 
+        /// <summary>
+        /// The open value i the chart
+        /// </summary>
         public double Open
         {
             get { return _open; }
@@ -54,6 +71,9 @@ namespace LiveCharts.Defaults
             }
         }
 
+        /// <summary>
+        /// The high value in the chart
+        /// </summary>
         public double High
         {
             get { return _high; }
@@ -64,6 +84,9 @@ namespace LiveCharts.Defaults
             }
         }
 
+        /// <summary>
+        /// The low value in the chart
+        /// </summary>
         public double Low
         {
             get { return _low; }
@@ -74,6 +97,9 @@ namespace LiveCharts.Defaults
             }
         }
 
+        /// <summary>
+        /// The close value in the chart
+        /// </summary>
         public double Close
         {
             get { return _close; }
@@ -84,8 +110,14 @@ namespace LiveCharts.Defaults
             }
         }
 
+        /// <summary>
+        /// The Point changed event
+        /// </summary>
         public event Action PointChanged;
 
+        /// <summary>
+        /// On point property changed method
+        /// </summary>
         protected virtual void OnPointChanged()
         {
             if (PointChanged != null) PointChanged.Invoke();

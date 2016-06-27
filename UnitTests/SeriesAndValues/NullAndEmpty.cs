@@ -1,4 +1,5 @@
 ﻿using LiveCharts;
+using LiveCharts.Dtos;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace UnitTests.SeriesAndValues

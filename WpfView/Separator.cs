@@ -23,11 +23,18 @@
 using System.Windows;
 using System.Windows.Media;
 using LiveCharts.Charts;
+using LiveCharts.Definitions.Charts;
 
 namespace LiveCharts.Wpf
 {
+    /// <summary>
+    /// Defines an Axis.Separator, this class customizes the separator of an axis.
+    /// </summary>
     public class Separator : FrameworkElement, ISeparatorView
     {
+        /// <summary>
+        /// Initializes a new instance of Separator class
+        /// </summary>
         public Separator()
         {
             SetValue(IsEnabledProperty, true);
@@ -35,6 +42,9 @@ namespace LiveCharts.Wpf
             SetCurrentValue(StrokeThicknessProperty, 1d);
         }
 
+        /// <summary>
+        /// Gets the chart the own the separator
+        /// </summary>
         public ChartCore Chart { get; set; }
 
         #region Dependency Properties
@@ -57,7 +67,7 @@ namespace LiveCharts.Wpf
             new PropertyMetadata(default(double), CallChartUpdater()));
 
         /// <summary>
-        /// Gets or sets separatos thickness
+        /// Gets or sets separators thickness
         /// </summary>
         public double StrokeThickness
         {
@@ -83,7 +93,7 @@ namespace LiveCharts.Wpf
             new PropertyMetadata(default(double?), CallChartUpdater()));
 
         /// <summary>
-        /// Gets or sets sepator step, this means the value between each line, use null for auto.
+        /// Gets or sets separators step, this means the value between each line, default is null, when null this value is calculated automatically.
         /// </summary>
         public double? Step
         {

@@ -24,28 +24,46 @@ using System.Windows.Media;
 
 namespace LiveCharts.Wpf
 {
+    /// <summary>
+    /// Contains an already defined collection of geometries, useful to set the Series.PointGeomety property
+    /// </summary>
     public static class DefaultGeometries
     {
+        /// <summary>
+        /// Returns a null geometry
+        /// </summary>
         public static Geometry None
         {
             get { return null; }
         }
 
+        /// <summary>
+        /// Returns a circle geometry
+        /// </summary>
         public static Geometry Circle
         {
             get { return Geometry.Parse("M 0,0 A 180,180 180 1 1 1,1 Z"); }
         }
 
+        /// <summary>
+        /// Returns a square geometry
+        /// </summary>
         public static Geometry Square
         {
             get { return Geometry.Parse("M 1,1 h -2 v -2 h 2 z"); }
         }
 
+        /// <summary>
+        /// Returns a diamond property
+        /// </summary>
         public static Geometry Diamond
         {
             get { return Geometry.Parse("M 1,0 L 2,1  1,2  0,1 z"); }
         }
 
+        /// <summary>
+        /// Returns a triangle geometry
+        /// </summary>
         public static Geometry Trangle
         {
             get { return Geometry.Parse("M 0,1 l 1,1 h -2 Z"); }

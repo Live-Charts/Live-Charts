@@ -20,11 +20,14 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
+using LiveCharts.Dtos;
+
 namespace LiveCharts.Wpf.Charts.Base
 {
     public partial class Chart
     {
 #if DEBUG
+
         public void MockIt(CoreSize size)
         {
             DisableAnimations = true;

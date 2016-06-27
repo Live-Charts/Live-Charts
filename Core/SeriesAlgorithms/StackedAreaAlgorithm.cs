@@ -23,6 +23,9 @@
 using System;
 using System.Linq;
 using LiveCharts.Defaults;
+using LiveCharts.Definitions.Points;
+using LiveCharts.Definitions.Series;
+using LiveCharts.Dtos;
 using LiveCharts.Helpers;
 
 namespace LiveCharts.SeriesAlgorithms
@@ -67,10 +70,10 @@ namespace LiveCharts.SeriesAlgorithms
 
                 var uw = new CorePoint(
                     CurrentXAxis.EvaluatesUnitWidth
-                        ? ChartFunctions.GetUnitWidth(AxisTags.X, Chart, View.ScalesXAt) / 2
+                        ? ChartFunctions.GetUnitWidth(AxisOrientation.X, Chart, View.ScalesXAt) / 2
                         : 0,
                     CurrentYAxis.EvaluatesUnitWidth
-                        ? ChartFunctions.GetUnitWidth(AxisTags.Y, Chart, View.ScalesYAt) / 2
+                        ? ChartFunctions.GetUnitWidth(AxisOrientation.Y, Chart, View.ScalesYAt) / 2
                         : 0);
 
                 p0 += uw;
@@ -160,11 +163,11 @@ namespace LiveCharts.SeriesAlgorithms
         {
             if (_stackModelable.StackMode == StackMode.Values)
                 return new CorePoint(
-                    ChartFunctions.ToDrawMargin(chartPoint.X, AxisTags.X, Chart, View.ScalesXAt),
-                    ChartFunctions.ToDrawMargin(chartPoint.To, AxisTags.Y, Chart, View.ScalesYAt));
+                    ChartFunctions.ToDrawMargin(chartPoint.X, AxisOrientation.X, Chart, View.ScalesXAt),
+                    ChartFunctions.ToDrawMargin(chartPoint.To, AxisOrientation.Y, Chart, View.ScalesYAt));
             return new CorePoint(
-                ChartFunctions.ToDrawMargin(chartPoint.X, AxisTags.X, Chart, View.ScalesXAt),
-                ChartFunctions.ToDrawMargin(chartPoint.StackedParticipation, AxisTags.Y, Chart, View.ScalesYAt));
+                ChartFunctions.ToDrawMargin(chartPoint.X, AxisOrientation.X, Chart, View.ScalesXAt),
+                ChartFunctions.ToDrawMargin(chartPoint.StackedParticipation, AxisOrientation.Y, Chart, View.ScalesYAt));
         }
 
         double ICartesianSeries.GetMinX(AxisCore axis)

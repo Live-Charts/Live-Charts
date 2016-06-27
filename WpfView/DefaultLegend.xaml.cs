@@ -31,12 +31,15 @@ using System.Windows.Data;
 namespace LiveCharts.Wpf
 {
     /// <summary>
-    /// Interaction logic for DefaultLegend.xaml
+    /// The default legend control, by default a new instance of this control is created for every chart that requires a legend.
     /// </summary>
     public partial class DefaultLegend : INotifyPropertyChanged
     {
         private List<SeriesViewModel> _series;
 
+        /// <summary>
+        /// Initializes a new instance of DefaultLegend class
+        /// </summary>
         public DefaultLegend()
         {
             InitializeComponent();
@@ -44,8 +47,14 @@ namespace LiveCharts.Wpf
             DataContext = this;
         }
 
+        /// <summary>
+        /// Property changed event
+        /// </summary>
         public event PropertyChangedEventHandler PropertyChanged;
 
+        /// <summary>
+        /// Gets the series displayed in the legend.
+        /// </summary>
         public List<SeriesViewModel> Series
         {
             get { return _series; }
@@ -58,7 +67,9 @@ namespace LiveCharts.Wpf
 
         public static readonly DependencyProperty OrientationProperty = DependencyProperty.Register(
             "Orientation", typeof (Orientation?), typeof (DefaultLegend), new PropertyMetadata(null));
-
+        /// <summary>
+        /// Gets or sets the orientation of the legend, default is null, if null LiveCharts will decide which orientation to use, based on the Chart.Legend location property.
+        /// </summary>
         public Orientation? Orientation
         {
             get { return (Orientation) GetValue(OrientationProperty); }
@@ -77,7 +88,9 @@ namespace LiveCharts.Wpf
 
         public static readonly DependencyProperty BulletSizeProperty = DependencyProperty.Register(
             "BulletSize", typeof(double), typeof(DefaultLegend), new PropertyMetadata(15d));
-
+        /// <summary>
+        /// Gets or sets the bullet size, the bullet size modifies the drawn shape size.
+        /// </summary>
         public double BulletSize
         {
             get { return (double)GetValue(BulletSizeProperty); }

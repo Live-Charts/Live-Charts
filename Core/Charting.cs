@@ -27,14 +27,17 @@ using LiveCharts.Defaults;
 
 namespace LiveCharts
 {
+    /// <summary>
+    /// Global LiveCharts configuration
+    /// </summary>
     public class Charting
     {
         private static readonly Dictionary<Type, ConfigWrapper> Configurations;
 
-        #region Contructors
+        #region Constructors
 
         //Lets define some default configurations, all charts should be able to detect any of these types and plot
-        //them correclty
+        //them correctly
 
         static Charting()
         {
@@ -42,25 +45,25 @@ namespace LiveCharts
 
             // Live.Charts can plot any type, yes even any class defined by yourself.
             // you just need to tell the charts how to plot it.
-            // for example the Xy Mapper expouses an X and Y method,
+            // for example the XY Mapper exposes an X and Y method,
             // for example .X( "mapper" ) asks for the function to get the value of a point in X, same with Y
             // live charts will inject a value and an index
             // the value will be of type <T> and the index is only the value of the point in the array.
 
-            //the SeriesMappers class is just a reminder of the configurators that we have, it actually just
-            //returns a new instance of the related configurator
-            //a configurator is only a holder for the mappers.
+            //the SeriesMappers class is just a reminder of the configurations that we have, it actually just
+            //returns a new instance of the related configuration
+            //a configuration is only a holder for the mappers.
 
             //lets configure <int>
 
             For<int>(Mappers.Xy<int>()
                 .X((value, index) => index) //use the index of the item in the array as X
-                .Y(value => value), SeriesOrientation.Horizontal); //use the value (of type int int this case) as Y
+                .Y(value => value), SeriesOrientation.Horizontal); //use the value (of type int integer this case) as Y
             For<int>(Mappers.Xy<int>()
                 .X(value => value) //use the value (int) as X
                 .Y((value, index) => index), SeriesOrientation.Vertical); //use the index of the item in the array as Y
 
-            //ok now lets configure a class I defined, the ObservablePoint class, it only has 2 properties, X and Y
+            //OK now lets configure a class I defined, the ObservablePoint class, it only has 2 properties, X and Y
 
             For<ObservablePoint>(Mappers.Xy<ObservablePoint>() //in this case value is of type <ObservablePoint>
                 .X(value => value.X) //use the X property as X
@@ -68,12 +71,12 @@ namespace LiveCharts
 
             //easy, now live charts know how to plot an ObservablePoint class and integers.
 
-            //ok, now lets use another mapper, in this case we are going to configre a class for a PolarChart
-            //polar chart requieres a Radius and an Angle instead of X and Y
-            //so we will just pull the Mappers.Polar configurator
+            //OK, now lets use another mapper, in this case we are going to configure a class for a PolarChart
+            //polar chart requires a Radius and an Angle instead of X and Y
+            //so we will just pull the Mappers.Polar configuration
             //and specify which property to use as Radius and which one as Angle
             //in this case the PolarPoint class that I defined only contains these 2 properties.
-            //so it is realy easy, now value is of type Polar point, becaus we said so when: SeriesMappers.Polar<PolarPoint>()
+            //so it is really easy, now value is of type Polar point, because we said so when: SeriesMappers.Polar<PolarPoint>()
 
             For<PolarPoint>(Mappers.Polar<PolarPoint>()
                 .Radius(value => value.Radius) //use the radius property as radius for the plotting
@@ -132,12 +135,12 @@ namespace LiveCharts
                 .X(value => value)
                 .Y((value, index) => index), SeriesOrientation.Vertical);
 
-            For<BubblePoint>(Mappers.Bubble<BubblePoint>()
+            For<BubblePoint>(Mappers.Weighted<BubblePoint>()
                 .X(value => value.X)
                 .Y(value => value.Y)
                 .Weight(value => value.Weight));
 
-            For<HeatPoint>(Mappers.Bubble<HeatPoint>()
+            For<HeatPoint>(Mappers.Weighted<HeatPoint>()
                 .X(value => value.X)
                 .Y(value => value.Y)
                 .Weight(value => value.Weight));
@@ -160,6 +163,12 @@ namespace LiveCharts
 
         }
 
+        /// <summary>
+        /// Saves a type mapper globally.
+        /// </summary>
+        /// <typeparam name="T">Type to configure</typeparam>
+        /// <param name="config">mapper</param>
+        /// <param name="orientation">mapper orientation</param>
         public static void For<T>(object config, SeriesOrientation orientation = SeriesOrientation.All)
         {
             ConfigWrapper wrapper;
@@ -185,6 +194,12 @@ namespace LiveCharts
 
         #endregion
 
+        /// <summary>
+        /// Gets the configuration of a given type and orientation
+        /// </summary>
+        /// <typeparam name="T">type to look for</typeparam>
+        /// <param name="orientation">orientation to look for</param>
+        /// <returns></returns>
         public object GetConfig<T>(SeriesOrientation orientation = SeriesOrientation.Horizontal)
         {
             var wrapper = Configurations[typeof (T)];

@@ -22,6 +22,7 @@
 
 using System.Windows;
 using System.Windows.Input;
+using LiveCharts.Dtos;
 
 namespace LiveCharts.Wpf.Charts.Base
 {
@@ -49,8 +50,8 @@ namespace LiveCharts.Wpf.Charts.Base
         {
             DragOrigin = e.GetPosition(this);
             DragOrigin = new Point(
-                ChartFunctions.FromDrawMargin(DragOrigin.X, AxisTags.X, Model),
-                ChartFunctions.FromDrawMargin(DragOrigin.Y, AxisTags.Y, Model));
+                ChartFunctions.FromDrawMargin(DragOrigin.X, AxisOrientation.X, Model),
+                ChartFunctions.FromDrawMargin(DragOrigin.Y, AxisOrientation.Y, Model));
         }
 
         private void OnDraggingEnd(object sender, MouseButtonEventArgs e)
@@ -60,8 +61,8 @@ namespace LiveCharts.Wpf.Charts.Base
             var end = e.GetPosition(this);
 
             end = new Point(
-                ChartFunctions.FromDrawMargin(end.X, AxisTags.X, Model),
-                ChartFunctions.FromDrawMargin(end.Y, AxisTags.Y, Model));
+                ChartFunctions.FromDrawMargin(end.X, AxisOrientation.X, Model),
+                ChartFunctions.FromDrawMargin(end.Y, AxisOrientation.Y, Model));
 
             Model.Drag(new CorePoint(DragOrigin.X - end.X, DragOrigin.Y - end.Y));
         }

@@ -20,6 +20,7 @@
             <Button  Height="30" Click="UpdateAllOnClick" Padding="10 0">
                 Move All
             </Button>
+            <Button Height="30" Click="RestartOnClick">Restart</Button>
             <TextBlock VerticalAlignment="Center" Padding="10 0">Series</TextBlock>
             <Button Height="30" Click="AddSeriesOnClick" MinWidth="30">
                 +
@@ -34,8 +35,11 @@
             <Button  Height="30" Click="RemoveValueOnClick" MinWidth="30">
                 -
             </Button>
+            
         </StackPanel>
-        <lvc:PieChart Grid.Row="2" Series="{Binding SeriesCollection}" LegendLocation="Right" InnerRadius="150" >
+        <lvc:PieChart Name="Chart" Grid.Row="2" Series="{Binding SeriesCollection}" LegendLocation="Right"
+                      InnerRadius="50"
+                      Margin="0 15">
             <lvc:PieChart.ChartLegend>
                 <lvc:DefaultLegend BulletSize="20"></lvc:DefaultLegend>
             </lvc:PieChart.ChartLegend>

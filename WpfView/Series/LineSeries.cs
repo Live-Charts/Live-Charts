@@ -29,6 +29,9 @@ using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
+using LiveCharts.Definitions.Points;
+using LiveCharts.Definitions.Series;
+using LiveCharts.Dtos;
 using LiveCharts.Helpers;
 using LiveCharts.SeriesAlgorithms;
 using LiveCharts.Wpf.Charts.Base;
@@ -38,16 +41,25 @@ using LiveCharts.Wpf.Points;
 // ReSharper disable once CheckNamespace
 namespace LiveCharts.Wpf
 {
+    /// <summary>
+    /// The line series displays trends between points, you must add this series to a cartesian chart. 
+    /// </summary>
     public class LineSeries : Series.Series, ILineSeriesView
     {
         #region Constructors
-
+        /// <summary>
+        /// Initializes a new instance of LineSeries class
+        /// </summary>
         public LineSeries() 
         {
             Model = new LineAlgorithm(this);
             InitializeDefuaults();
         }
 
+        /// <summary>
+        /// Initializes a new instance of LineSeries class with a given mapper
+        /// </summary>
+        /// <param name="configuration"></param>
         public LineSeries(object configuration)
         {
             Model = new LineAlgorithm(this);
@@ -71,7 +83,9 @@ namespace LiveCharts.Wpf
         public static readonly DependencyProperty PointGeometrySizeProperty = DependencyProperty.Register(
             "PointGeometrySize", typeof (double), typeof (LineSeries), 
             new PropertyMetadata(default(double), CallChartUpdater()));
-
+        /// <summary>
+        /// Gets or sets the point geometry size, increasing this property will make the series points bigger
+        /// </summary>
         public double PointGeometrySize
         {
             get { return (double) GetValue(PointGeometrySizeProperty); }
@@ -81,7 +95,9 @@ namespace LiveCharts.Wpf
         public static readonly DependencyProperty PointForeroundProperty = DependencyProperty.Register(
             "PointForeround", typeof (Brush), typeof (LineSeries), 
             new PropertyMetadata(default(Brush)));
-
+        /// <summary>
+        /// Gets or sets the point shape foreground.
+        /// </summary>
         public Brush PointForeround
         {
             get { return (Brush) GetValue(PointForeroundProperty); }
@@ -91,7 +107,9 @@ namespace LiveCharts.Wpf
         public static readonly DependencyProperty LineSmoothnessProperty = DependencyProperty.Register(
             "LineSmoothness", typeof (double), typeof (LineSeries), 
             new PropertyMetadata(default(double), CallChartUpdater()));
-
+        /// <summary>
+        /// Gets or sets line smoothness, this property goes from 0 to 1, use 0 to draw straight lines, 1 really curved lines.
+        /// </summary>
         public double LineSmoothness
         {
             get { return (double) GetValue(LineSmoothnessProperty); }
@@ -117,7 +135,7 @@ namespace LiveCharts.Wpf
 
             if (Figure != null)
             {
-                var xIni = ChartFunctions.ToDrawMargin(ActualValues.Limit1.Min, AxisTags.X, Model.Chart, ScalesXAt);
+                var xIni = ChartFunctions.ToDrawMargin(ActualValues.Limit1.Min, AxisOrientation.X, Model.Chart, ScalesXAt);
 
                 if (Model.Chart.View.DisableAnimations)
                     Figure.StartPoint = new Point(xIni, Model.Chart.DrawMargin.Height);
@@ -155,7 +173,7 @@ namespace LiveCharts.Wpf
 
             Model.Chart.View.EnsureElementBelongsToCurrentDrawMargin(Path);
 
-            var x = ChartFunctions.ToDrawMargin(ActualValues.Limit1.Min, AxisTags.X, Model.Chart, ScalesXAt);
+            var x = ChartFunctions.ToDrawMargin(ActualValues.Limit1.Min, AxisOrientation.X, Model.Chart, ScalesXAt);
             Figure.StartPoint = new Point(x, Model.Chart.DrawMargin.Height);
         }
 

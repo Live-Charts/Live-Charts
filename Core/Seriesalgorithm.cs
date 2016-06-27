@@ -21,6 +21,7 @@
 //SOFTWARE.
 
 using LiveCharts.Charts;
+using LiveCharts.Definitions.Series;
 
 namespace LiveCharts
 {

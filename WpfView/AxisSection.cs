@@ -24,14 +24,21 @@ using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
+using LiveCharts.Definitions.Charts;
 
 namespace LiveCharts.Wpf
 {
+    /// <summary>
+    /// An Axis section highlights values or ranges in a chart.
+    /// </summary>
     public class AxisSection : FrameworkElement, IAxisSectionView
     {
         private readonly Rectangle _rectangle;
         private readonly TextBlock _label;
 
+        /// <summary>
+        /// Initializes a new instance of AxisSection class
+        /// </summary>
         public AxisSection()
         {
             _rectangle = new Rectangle();
@@ -62,7 +69,9 @@ namespace LiveCharts.Wpf
 
         public static readonly DependencyProperty LabelProperty = DependencyProperty.Register(
             "Label", typeof (string), typeof (AxisSection), new PropertyMetadata(default(string)));
-
+        /// <summary>
+        /// Gets or sets the name, the title of the section, a visual element will be added to the chart if this property is not null.
+        /// </summary>
         public string Label
         {
             get { return (string) GetValue(LabelProperty); }
@@ -72,7 +81,9 @@ namespace LiveCharts.Wpf
         public static readonly DependencyProperty FromValueProperty = DependencyProperty.Register(
             "FromValue", typeof (double), typeof (AxisSection), 
             new PropertyMetadata(default(double), CallChartUpdater));
-        
+        /// <summary>
+        /// Gets or sets the value where the section starts
+        /// </summary>
         public double FromValue
         {
             get { return (double) GetValue(FromValueProperty); }
@@ -82,7 +93,9 @@ namespace LiveCharts.Wpf
         public static readonly DependencyProperty ToValueProperty = DependencyProperty.Register(
             "ToValue", typeof (double), typeof (AxisSection), 
             new PropertyMetadata(default(double), CallChartUpdater));
-
+        /// <summary>
+        /// Gets or sets the value where the section ends
+        /// </summary>
         public double ToValue
         {
             get { return (double) GetValue(ToValueProperty); }
@@ -91,7 +104,9 @@ namespace LiveCharts.Wpf
 
         public static readonly DependencyProperty StrokeProperty = DependencyProperty.Register(
             "Stroke", typeof (Brush), typeof (AxisSection), new PropertyMetadata(default(Brush)));
-
+        /// <summary>
+        /// Gets o sets the section stroke, the stroke brush will be used to draw the border of the section
+        /// </summary>
         public Brush Stroke
         {
             get { return (Brush) GetValue(StrokeProperty); }
@@ -100,7 +115,9 @@ namespace LiveCharts.Wpf
 
         public static readonly DependencyProperty FillProperty = DependencyProperty.Register(
             "Fill", typeof (Brush), typeof (AxisSection), new PropertyMetadata(default(Brush)));
-
+        /// <summary>
+        /// Gets or sets the section fill brush.
+        /// </summary>
         public Brush Fill
         {
             get { return (Brush) GetValue(FillProperty); }
@@ -109,7 +126,9 @@ namespace LiveCharts.Wpf
 
         public static readonly DependencyProperty StrokeThicknessProperty = DependencyProperty.Register(
             "StrokeThickness", typeof (double), typeof (AxisSection), new PropertyMetadata(default(double)));
-
+        /// <summary>
+        /// Gets or sets the stroke thickness.
+        /// </summary>
         public double StrokeThickness
         {
             get { return (double) GetValue(StrokeThicknessProperty); }
@@ -118,14 +137,16 @@ namespace LiveCharts.Wpf
 
         public static readonly DependencyProperty StrokeDashArrayProperty = DependencyProperty.Register(
             "StrokeDashArray", typeof (DoubleCollection), typeof (AxisSection), new PropertyMetadata(default(DoubleCollection)));
-
+        /// <summary>
+        /// Gets or sets the stroke dash array collection, use this property to create dashed stroke sections
+        /// </summary>
         public DoubleCollection StrokeDashArray
         {
             get { return (DoubleCollection) GetValue(StrokeDashArrayProperty); }
             set { SetValue(StrokeDashArrayProperty, value); }
         }
 
-        public void DrawOrMove(AxisTags source, int axis)
+        public void DrawOrMove(AxisOrientation source, int axis)
         {
             if (Parent == null)
             {
@@ -153,7 +174,7 @@ namespace LiveCharts.Wpf
             var anSpeed = Model.Chart.View.AnimationsSpeed;
             _label.UpdateLayout();
 
-            if (source == AxisTags.X)
+            if (source == AxisOrientation.X)
             {
                 var w = to - from;
                 w = StrokeThickness > w ? StrokeThickness : w;
@@ -205,7 +226,7 @@ namespace LiveCharts.Wpf
             Model.Chart.View.RemoveFromDrawMargin(_label);
         }
 
-        public AxisSectionCore AsCoreElement(AxisCore axis, AxisTags source)
+        public AxisSectionCore AsCoreElement(AxisCore axis, AxisOrientation source)
         {
             var model = new AxisSectionCore(this, axis.Chart);
             model.View.Model = model;

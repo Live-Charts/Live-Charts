@@ -26,6 +26,8 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using LiveCharts.Definitions.Points;
+using LiveCharts.Definitions.Series;
 using LiveCharts.Helpers;
 using LiveCharts.SeriesAlgorithms;
 using LiveCharts.Wpf.Charts.Base;
@@ -34,16 +36,25 @@ using LiveCharts.Wpf.Points;
 // ReSharper disable once CheckNamespace
 namespace LiveCharts.Wpf
 {
+    /// <summary>
+    /// The Bubble series, draws scatter series, only using X and Y properties or bubble series, if you also use the weight property, this series should be used in a cartesian chart.
+    /// </summary>
     public class BubbleSeries : Series.Series, IBubbleSeriesView
     {
         #region Constructors
-
+        /// <summary>
+        /// Initializes a new instance of BubbleSeries class
+        /// </summary>
         public BubbleSeries()
         {
             Model = new BubbleAlgorithm(this);
             InitializeDefuaults();
         }
 
+        /// <summary>
+        /// Initializes a new instance of BubbleSeries class using a given mapper
+        /// </summary>
+        /// <param name="configuration"></param>
         public BubbleSeries(object configuration)
         {
             Model = new BubbleAlgorithm(this);
@@ -61,7 +72,9 @@ namespace LiveCharts.Wpf
 
         public static readonly DependencyProperty MaxBubbleDiameterProperty = DependencyProperty.Register(
             "MaxBubbleDiameter", typeof (double), typeof (BubbleSeries), new PropertyMetadata(default(double)));
-
+        /// <summary>
+        /// Gets or sets the max bubble diameter, the bubbles using the max weight in the series will have this radius.
+        /// </summary>
         public double MaxBubbleDiameter
         {
             get { return (double) GetValue(MaxBubbleDiameterProperty); }
@@ -70,7 +83,9 @@ namespace LiveCharts.Wpf
 
         public static readonly DependencyProperty MinBubbleDiameterProperty = DependencyProperty.Register(
             "MinBubbleDiameter", typeof (double), typeof (BubbleSeries), new PropertyMetadata(default(double)));
-
+        /// <summary>
+        /// Gets or sets the min bubble diameter, the bubbles using the min weight in the series will have this radius.
+        /// </summary>
         public double MinBubbleDiameter
         {
             get { return (double) GetValue(MinBubbleDiameterProperty); }

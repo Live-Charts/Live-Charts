@@ -21,25 +21,42 @@
 //SOFTWARE.
 
 using System;
+using LiveCharts.Definitions.Points;
 
 namespace LiveCharts.Defaults
 {
+    /// <summary>
+    /// An already configured chart point, this class notifies the chart to update every time the value property changes
+    /// </summary>
     public class ObservableValue : IObservableChartPoint
     {
         private double _value;
 
+        /// <summary>
+        /// Initializes a new instance of ObservableValue class
+        /// </summary>
         public ObservableValue()
         {
             
         }
 
+        /// <summary>
+        /// Initializes a new instance of ObservableValue class with a given value
+        /// </summary>
+        /// <param name="value"></param>
         public ObservableValue(double value)
         {
             Value = value;
         }
 
+        /// <summary>
+        /// Point changed event
+        /// </summary>
         public event Action PointChanged;
 
+        /// <summary>
+        /// Value in he chart
+        /// </summary>
         public double Value
         {
             get { return _value; }
@@ -50,7 +67,10 @@ namespace LiveCharts.Defaults
             }
         }
 
-        protected void OnPointChanged()
+        /// <summary>
+        /// On point property changed event
+        /// </summary>
+        protected virtual  void OnPointChanged()
         {
             if (PointChanged != null) PointChanged.Invoke();
         }

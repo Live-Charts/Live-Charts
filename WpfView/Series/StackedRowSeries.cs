@@ -26,6 +26,9 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using LiveCharts.Definitions.Points;
+using LiveCharts.Definitions.Series;
+using LiveCharts.Dtos;
 using LiveCharts.Helpers;
 using LiveCharts.SeriesAlgorithms;
 using LiveCharts.Wpf.Charts.Base;
@@ -34,16 +37,25 @@ using LiveCharts.Wpf.Points;
 // ReSharper disable once CheckNamespace
 namespace LiveCharts.Wpf
 {
+    /// <summary>
+    /// The stacked row series compares the proportion of every series in a point
+    /// </summary>
     public class StackedRowSeries : Series.Series, IStackedRowSeriesView
     {
         #region Constructors
 
+        /// <summary>
+        /// Initializes a new instance of StackedRow series class
+        /// </summary>
         public StackedRowSeries()
         {
             Model = new StackedRowAlgorithm(this);
             InitializeDefuaults();
         }
 
+        /// <summary>
+        /// Initializes a new instance of StackedRow series class, with a given mapper
+        /// </summary>
         public StackedRowSeries(object configuration)
         {
             Model = new StackedRowAlgorithm(this);
@@ -61,7 +73,9 @@ namespace LiveCharts.Wpf
 
         public static readonly DependencyProperty MaxRowHeightProperty = DependencyProperty.Register(
             "MaxRowHeight", typeof (double), typeof (StackedRowSeries), new PropertyMetadata(default(double)));
-
+        /// <summary>
+        /// Gets or sets the maximum height of row, any row height will be capped at this value.
+        /// </summary>
         public double MaxRowHeight
         {
             get { return (double) GetValue(MaxRowHeightProperty); }
@@ -70,7 +84,9 @@ namespace LiveCharts.Wpf
 
         public static readonly DependencyProperty RowPaddingProperty = DependencyProperty.Register(
             "RowPadding", typeof (double), typeof (StackedRowSeries), new PropertyMetadata(default(double)));
-
+        /// <summary>
+        /// Gets or sets the padding between each row in the series.
+        /// </summary>
         public double RowPadding
         {
             get { return (double) GetValue(RowPaddingProperty); }
@@ -79,7 +95,9 @@ namespace LiveCharts.Wpf
 
         public static readonly DependencyProperty StackModeProperty = DependencyProperty.Register(
             "StackMode", typeof (StackMode), typeof (StackedRowSeries), new PropertyMetadata(default(StackMode)));
-
+        /// <summary>
+        /// Gets or sets the stacked mode, values or percentage.
+        /// </summary>
         public StackMode StackMode
         {
             get { return (StackMode) GetValue(StackModeProperty); }

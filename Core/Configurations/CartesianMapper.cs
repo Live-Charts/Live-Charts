@@ -22,20 +22,35 @@
 
 using System;
 using System.Collections.Generic;
+using LiveCharts.Dtos;
 
 namespace LiveCharts.Configurations
 {
+    /// <summary>
+    /// Mapper to configure X and Y points
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public class CartesianMapper<T> : IPointEvaluator<T>
     {
         private Func<T, int, double> _x = (v, i) => i;
         private Func<T, int, double> _y = (v, i) => i;
 
+        /// <summary>
+        /// Sets values for a specific point
+        /// </summary>
+        /// <param name="valuePair">Key and value</param>
+        /// <param name="point">Point to set</param>
         public void SetAll(KeyValuePair<int, T> valuePair, ChartPoint point)
         {
             point.X = _x(valuePair.Value, valuePair.Key);
             point.Y = _y(valuePair.Value, valuePair.Key);
         }
 
+        /// <summary>
+        /// Evaluates a point with a given value and key
+        /// </summary>
+        /// <param name="valuePair">Value and Key</param>
+        /// <returns></returns>
         public Xyw[] GetEvaluation(KeyValuePair<int, T> valuePair)
         {
             var xyw = new Xyw(_x(valuePair.Value, valuePair.Key), _y(valuePair.Value, valuePair.Key), 0);
@@ -43,7 +58,7 @@ namespace LiveCharts.Configurations
         }
 
         /// <summary>
-        /// Maps X value
+        /// Sets the X mapper
         /// </summary>
         /// <param name="predicate"></param>
         /// <returns></returns>
@@ -58,7 +73,7 @@ namespace LiveCharts.Configurations
         }
 
         /// <summary>
-        /// Maps Y value
+        /// Sets the Y mapper
         /// </summary>
         /// <param name="predicate"></param>
         /// <returns></returns>
@@ -66,6 +81,12 @@ namespace LiveCharts.Configurations
         {
             return Y((t, i) => predicate(t));
         }
+
+        /// <summary>
+        /// Sets the Y mapper
+        /// </summary>
+        /// <param name="predicate"></param>
+        /// <returns></returns>
         public CartesianMapper<T> Y(Func<T, int, double> predicate)
         {
             _y = predicate;

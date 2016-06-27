@@ -22,23 +22,46 @@
 
 namespace LiveCharts.Configurations
 {
+    /// <summary>
+    /// Gets the already built point mappers
+    /// </summary>
     public static class Mappers
     {
+        /// <summary>
+        /// Gets a mapper to configure X, Y points
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
         public static CartesianMapper<T> Xy<T>()
         {
             return new CartesianMapper<T>();
         }
 
+        /// <summary>
+        /// Gets a mapper to configure financial points
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
         public static FinancialMapper<T> Financial<T>()
         {
             return new FinancialMapper<T>();
         }
 
-        public static BubbleMapper<T> Bubble<T>()
+        /// <summary>
+        /// Gets a mapper to configure X, Y and Weight points
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        public static WeightedMapper<T> Weighted<T>()
         {
-            return new BubbleMapper<T>();
+            return new WeightedMapper<T>();
         }
 
+        /// <summary>
+        /// Gets a mapper to configure Radius and Angle
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
         public static PolarMapper<T> Polar<T>()
         {
             return new PolarMapper<T>();

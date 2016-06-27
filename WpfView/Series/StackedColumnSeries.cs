@@ -26,6 +26,9 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using LiveCharts.Definitions.Points;
+using LiveCharts.Definitions.Series;
+using LiveCharts.Dtos;
 using LiveCharts.Helpers;
 using LiveCharts.SeriesAlgorithms;
 using LiveCharts.Wpf.Charts.Base;
@@ -34,16 +37,24 @@ using LiveCharts.Wpf.Points;
 // ReSharper disable once CheckNamespace
 namespace LiveCharts.Wpf
 {
+    /// <summary>
+    /// The stacked column series compares the proportion of every series in a point
+    /// </summary>
     public class StackedColumnSeries : Series.Series, IStackedColumnSeriesView
     {
         #region Constructors
-
+        /// <summary>
+        /// Initializes a new instance of StackedColumnSeries class
+        /// </summary>
         public StackedColumnSeries()
         {
             Model = new StackedColumnAlgorithm(this);
             InitializeDefuaults();
         }
 
+        /// <summary>
+        /// Initializes a new instance of StackedColumnSeries class, with a given mapper
+        /// </summary>
         public StackedColumnSeries(object configuration)
         {
             Model = new StackedColumnAlgorithm(this);
@@ -61,7 +72,9 @@ namespace LiveCharts.Wpf
 
         public static readonly DependencyProperty MaxColumnWidthProperty = DependencyProperty.Register(
             "MaxColumnWidth", typeof (double), typeof (StackedColumnSeries), new PropertyMetadata(default(double)));
-
+        /// <summary>
+        /// Gets or sets the maximum width of a column, any column will be capped at this value
+        /// </summary>
         public double MaxColumnWidth
         {
             get { return (double) GetValue(MaxColumnWidthProperty); }
@@ -70,7 +83,9 @@ namespace LiveCharts.Wpf
 
         public static readonly DependencyProperty ColumnPaddingProperty = DependencyProperty.Register(
             "ColumnPadding", typeof (double), typeof (StackedColumnSeries), new PropertyMetadata(default(double)));
-
+        /// <summary>
+        /// Gets or sets the padding between every column in this series
+        /// </summary>
         public double ColumnPadding
         {
             get { return (double) GetValue(ColumnPaddingProperty); }
@@ -79,7 +94,9 @@ namespace LiveCharts.Wpf
 
         public static readonly DependencyProperty StackModeProperty = DependencyProperty.Register(
             "StackMode", typeof (StackMode), typeof (StackedColumnSeries), new PropertyMetadata(default(StackMode)));
-
+        /// <summary>
+        /// Gets or sets stacked mode, values or percentage
+        /// </summary>
         public StackMode StackMode
         {
             get { return (StackMode) GetValue(StackModeProperty); }

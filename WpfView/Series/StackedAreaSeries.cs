@@ -28,22 +28,30 @@ using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
+using LiveCharts.Definitions.Series;
 using LiveCharts.SeriesAlgorithms;
-using LiveCharts.Wpf.Charts.Base;
 
 // ReSharper disable once CheckNamespace
 namespace LiveCharts.Wpf
 {
-    public class StackedAreaSeries : LineSeries, IStackedAreaSeriesViewView
+    /// <summary>
+    /// The stacked area compares trends and percentage, add this series to a cartesian chart
+    /// </summary>
+    public class StackedAreaSeries : LineSeries, IStackedAreaSeriesView
     {
         #region Constructors
-
+        /// <summary>
+        /// Initializes a new instance of StackedAreaSeries class
+        /// </summary>
         public StackedAreaSeries()
         {
             Model = new StackedAreaAlgorithm(this);
             InitializeDefuaults();
         }
 
+        /// <summary>
+        /// Initializes a new instance of StackedAreaSeries class, with a given mapper
+        /// </summary>
         public StackedAreaSeries(object configuration)
         {
             Model = new StackedAreaAlgorithm(this);
@@ -61,7 +69,9 @@ namespace LiveCharts.Wpf
         public static readonly DependencyProperty StackModeProperty = DependencyProperty.Register(
             "StackMode", typeof (StackMode), typeof (StackedAreaSeries), 
             new PropertyMetadata(default(StackMode), CallChartUpdater()));
-
+        /// <summary>
+        /// Gets or sets the series stacked mode, values or percentage
+        /// </summary>
         public StackMode StackMode
         {
             get { return (StackMode) GetValue(StackModeProperty); }
@@ -86,7 +96,7 @@ namespace LiveCharts.Wpf
 
             if (Figure != null)
             {
-                var xIni = ChartFunctions.ToDrawMargin(Values.Limit1.Min, AxisTags.X, Model.Chart, ScalesXAt);
+                var xIni = ChartFunctions.ToDrawMargin(Values.Limit1.Min, AxisOrientation.X, Model.Chart, ScalesXAt);
 
                 if (Model.Chart.View.DisableAnimations)
                     Figure.StartPoint = new Point(xIni, Model.Chart.DrawMargin.Height);
@@ -117,7 +127,7 @@ namespace LiveCharts.Wpf
             Path.Data = geometry;
             Model.Chart.View.AddToDrawMargin(Path);
 
-            var x = ChartFunctions.ToDrawMargin(ActualValues.Limit1.Min, AxisTags.X, Model.Chart, ScalesXAt);
+            var x = ChartFunctions.ToDrawMargin(ActualValues.Limit1.Min, AxisOrientation.X, Model.Chart, ScalesXAt);
             Figure.StartPoint = new Point(x, Model.Chart.DrawMargin.Height);
 
             var i = Model.Chart.View.Series.IndexOf(this);

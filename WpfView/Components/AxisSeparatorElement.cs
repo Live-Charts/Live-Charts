@@ -28,6 +28,8 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using LiveCharts.Charts;
+using LiveCharts.Definitions.Charts;
+using LiveCharts.Dtos;
 
 namespace LiveCharts.Wpf.Components
 {
@@ -49,7 +51,7 @@ namespace LiveCharts.Wpf.Components
             get { return _model; }
         }
         
-        public LabelEvaluation UpdateLabel(string text, AxisCore axis, AxisTags source)
+        public LabelEvaluation UpdateLabel(string text, AxisCore axis, AxisOrientation source)
         {
             TextBlock.Text = text;
             TextBlock.UpdateLayout();
@@ -83,10 +85,10 @@ namespace LiveCharts.Wpf.Components
             Line = null;
         }      
 
-        public void Place(ChartCore chart, AxisCore axis, AxisTags direction, int axisIndex, 
+        public void Place(ChartCore chart, AxisCore axis, AxisOrientation direction, int axisIndex, 
             double toLabel, double toLine, double tab)
         {
-            if (direction == AxisTags.Y)
+            if (direction == AxisOrientation.Y)
             {
                 Line.X1 = chart.DrawMargin.Left;
                 Line.X2 = chart.DrawMargin.Left + chart.DrawMargin.Width;
@@ -116,9 +118,9 @@ namespace LiveCharts.Wpf.Components
             Line = null;
         }
 
-        public void Move(ChartCore chart, AxisCore axis, AxisTags direction, int axisIndex, double toLabel, double toLine, double tab)
+        public void Move(ChartCore chart, AxisCore axis, AxisOrientation direction, int axisIndex, double toLabel, double toLine, double tab)
         {
-            if (direction == AxisTags.Y)
+            if (direction == AxisOrientation.Y)
             {
                 Line.BeginAnimation(Line.X1Property,
                     new DoubleAnimation(chart.DrawMargin.Left, chart.View.AnimationsSpeed));

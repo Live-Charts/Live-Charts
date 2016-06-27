@@ -23,6 +23,8 @@
 using System;
 using System.Diagnostics;
 using LiveCharts.Charts;
+using LiveCharts.Definitions.Charts;
+using LiveCharts.Definitions.Series;
 using LiveCharts.Helpers;
 
 namespace LiveCharts

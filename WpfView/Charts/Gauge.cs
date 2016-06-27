@@ -33,6 +33,9 @@ using LiveCharts.Wpf.Points;
 // ReSharper disable once CheckNamespace
 namespace LiveCharts.Wpf
 {
+    /// <summary>
+    /// The gauge chart is useful to display progress or completion.
+    /// </summary>
     public class Gauge : UserControl
     {
         public Gauge()
@@ -113,7 +116,9 @@ namespace LiveCharts.Wpf
 
         public static readonly DependencyProperty Uses360ModeProperty = DependencyProperty.Register(
             "Uses360Mode", typeof (bool), typeof (Gauge), new PropertyMetadata(default(bool), UpdateCallback));
-
+        /// <summary>
+        /// Gets or sets whether the gauge uses 360 mode, 360 mode will plot a full circle instead of a semi circle
+        /// </summary>
         public bool Uses360Mode
         {
             get { return (bool) GetValue(Uses360ModeProperty); }
@@ -122,7 +127,9 @@ namespace LiveCharts.Wpf
 
         public static readonly DependencyProperty FromProperty = DependencyProperty.Register(
             "From", typeof(double), typeof(Gauge), new PropertyMetadata(0d, UpdateCallback));
-
+        /// <summary>
+        /// Gets or sets the value where the gauge starts
+        /// </summary>
         public double From
         {
             get { return (double)GetValue(FromProperty); }
@@ -131,7 +138,9 @@ namespace LiveCharts.Wpf
 
         public static readonly DependencyProperty ToProperty = DependencyProperty.Register(
             "To", typeof(double), typeof(Gauge), new PropertyMetadata(1d, UpdateCallback));
-
+        /// <summary>
+        /// Gets or sets the value where the gauge ends
+        /// </summary>
         public double To
         {
             get { return (double)GetValue(ToProperty); }
@@ -140,7 +149,9 @@ namespace LiveCharts.Wpf
 
         public static readonly DependencyProperty ValueProperty = DependencyProperty.Register(
             "Value", typeof (double), typeof (Gauge), new PropertyMetadata(default(double), UpdateCallback));
-
+        /// <summary>
+        /// Gets or sets the current value of the gauge
+        /// </summary>
         public double Value
         {
             get { return (double) GetValue(ValueProperty); }
@@ -149,7 +160,9 @@ namespace LiveCharts.Wpf
 
         public static readonly DependencyProperty TitleProperty = DependencyProperty.Register(
             "Title", typeof(string), typeof(Gauge), new PropertyMetadata(default(string)));
-
+        /// <summary>
+        /// Gets or sets the gauge title
+        /// </summary>
         public string Title
         {
             get { return (string)GetValue(TitleProperty); }
@@ -158,7 +171,9 @@ namespace LiveCharts.Wpf
 
         public static readonly DependencyProperty InnerRadiusProperty = DependencyProperty.Register(
             "InnerRadius", typeof (double?), typeof (Gauge), new PropertyMetadata(null, UpdateCallback));
-
+        /// <summary>
+        /// Gets o sets inner radius
+        /// </summary>
         public double? InnerRadius
         {
             get { return (double?) GetValue(InnerRadiusProperty); }
@@ -167,7 +182,9 @@ namespace LiveCharts.Wpf
 
         public static readonly DependencyProperty StrokeProperty = DependencyProperty.Register(
             "Stroke", typeof(Brush), typeof(Gauge), new PropertyMetadata(default(Brush)));
-
+        /// <summary>
+        /// Gets or sets stroke, the stroke is the brush used to draw the gauge border.
+        /// </summary>
         public Brush Stroke
         {
             get { return (Brush)GetValue(StrokeProperty); }
@@ -177,7 +194,9 @@ namespace LiveCharts.Wpf
 
         public static readonly DependencyProperty StrokeThicknessProperty = DependencyProperty.Register(
             "StrokeThickness", typeof(double), typeof(Gauge), new PropertyMetadata(default(double)));
-
+        /// <summary>
+        /// Gets or sets stroke brush thickness
+        /// </summary>
         public double StrokeThickness
         {
             get { return (double)GetValue(StrokeThicknessProperty); }
@@ -186,7 +205,9 @@ namespace LiveCharts.Wpf
 
         public static readonly DependencyProperty ToColorProperty = DependencyProperty.Register(
             "ToColor", typeof(Color), typeof(Gauge), new PropertyMetadata(default(Color), UpdateCallback));
-
+        /// <summary>
+        /// Gets or sets the color when the current value equals to min value, any value between min and max will use an interpolated color.
+        /// </summary>
         public Color ToColor
         {
             get { return (Color)GetValue(ToColorProperty); }
@@ -195,7 +216,9 @@ namespace LiveCharts.Wpf
 
         public static readonly DependencyProperty FromColorProperty = DependencyProperty.Register(
             "FromColor", typeof(Color), typeof(Gauge), new PropertyMetadata(default(Color), UpdateCallback));
-
+        /// <summary>
+        /// Gets or sets the color when the current value equals to max value, any value between min and max will use an interpolated color.
+        /// </summary>
         public Color FromColor
         {
             get { return (Color)GetValue(FromColorProperty); }
@@ -204,7 +227,9 @@ namespace LiveCharts.Wpf
 
         public static readonly DependencyProperty GaugeBackgroundProperty = DependencyProperty.Register(
             "GaugeBackground", typeof (Brush), typeof (Gauge), new PropertyMetadata(default(Brush)));
-
+        /// <summary>
+        /// Gets or sets the gauge background
+        /// </summary>
         public Brush GaugeBackground
         {
             get { return (Brush) GetValue(GaugeBackgroundProperty); }
@@ -213,7 +238,9 @@ namespace LiveCharts.Wpf
 
         public static readonly DependencyProperty AnimationsSpeedProperty = DependencyProperty.Register(
             "AnimationsSpeed", typeof (TimeSpan), typeof (Gauge), new PropertyMetadata(default(TimeSpan)));
-
+        /// <summary>
+        /// G3ts or sets the gauge animations speed
+        /// </summary>
         public TimeSpan AnimationsSpeed
         {
             get { return (TimeSpan) GetValue(AnimationsSpeedProperty); }
@@ -222,7 +249,9 @@ namespace LiveCharts.Wpf
 
         public static readonly DependencyProperty LabelFormatterProperty = DependencyProperty.Register(
             "LabelFormatter", typeof (Func<double, string>), typeof (Gauge), new PropertyMetadata(default(Func<double, string>)));
-
+        /// <summary>
+        /// Gets or sets the label formatter, a label formatter takes a double value, and return a string, e.g. val => val.ToString("C");
+        /// </summary>
         public Func<double, string> LabelFormatter
         {
             get { return (Func<double, string>) GetValue(LabelFormatterProperty); }
@@ -231,7 +260,9 @@ namespace LiveCharts.Wpf
 
         public static readonly DependencyProperty HighFontSizeProperty = DependencyProperty.Register(
             "HighFontSize", typeof (double?), typeof (Gauge), new PropertyMetadata(null));
-
+        /// <summary>
+        /// Gets o sets the label size, if this value is null then it will be automatically calculated, default is null.
+        /// </summary>
         public double? HighFontSize
         {
             get { return (double?) GetValue(HighFontSizeProperty); }

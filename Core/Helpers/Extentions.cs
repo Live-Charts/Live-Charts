@@ -22,19 +22,30 @@
 
 using System;
 using System.Collections.Generic;
-// ReSharper disable once RedundantUsingDirective
-using System.Reflection; //DO NOT EVEN THINK ABOUT IT!
 
 namespace LiveCharts.Helpers
 {
+    /// <summary>
+    /// LiveCharts extensions methods
+    /// </summary>
     public static class Extentions
     {
-
+        /// <summary>
+        /// Executes an Action in every item of a collection
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="source"></param>
+        /// <param name="predicate"></param>
         public static void ForEach<T>(this IEnumerable<T> source, Action<T> predicate)
         {
             foreach (var item in source) predicate(item);
         }
 
+        /// <summary>
+        /// Splits a collection of points every double.Nan
+        /// </summary>
+        /// <param name="toSplit"></param>
+        /// <returns></returns>
         public static IEnumerable<List<ChartPoint>> SplitEachNaN(this List<ChartPoint> toSplit)
         {
             var l = new List<ChartPoint>(toSplit.Count);
@@ -42,7 +53,7 @@ namespace LiveCharts.Helpers
 
             foreach (var point in toSplit)
             {
-                if (double.IsNaN(point.X) || double.IsNaN(point.Y))
+                if (Double.IsNaN(point.X) || Double.IsNaN(point.Y))
                 {
                     yield return l;
                     acum += l.Count;
@@ -55,6 +66,31 @@ namespace LiveCharts.Helpers
             }
 
             yield return l;
+        }
+
+        /// <summary>
+        /// Return the inverse axis orientation
+        /// </summary>
+        /// <param name="axis">current orientation</param>
+        /// <returns></returns>
+        public static AxisOrientation Invert(this AxisOrientation axis)
+        {
+            return axis == AxisOrientation.X
+                ? AxisOrientation.Y
+                : AxisOrientation.X;
+        }
+
+        /// <summary>
+        /// Converts any collection to chart values
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="values"></param>
+        /// <returns></returns>
+        public static ChartValues<T> AsChartValues<T>(this IEnumerable<T> values)
+        {
+            var l = new ChartValues<T>();
+            l.AddRange(values);
+            return l;
         }
     }
 }

@@ -23,6 +23,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using LiveCharts.Definitions.Charts;
+using LiveCharts.Definitions.Series;
+using LiveCharts.Dtos;
 
 namespace LiveCharts.Charts
 {
@@ -72,7 +75,7 @@ namespace LiveCharts.Charts
 
         public int CurrentColorIndex { get; set; }
 
-        public AxisTags PivotZoomingAxis { get; set; }
+        public AxisOrientation PivotZoomingAxis { get; set; }
         public CorePoint PanOrigin { get; set; }
 
         private bool IsZooming
@@ -147,7 +150,7 @@ namespace LiveCharts.Charts
             {
                 var yi = AxisY[index];
                 var titleSize = yi.View.UpdateTitle(this, -90d);
-                var biggest = yi.PrepareChart(AxisTags.Y, this);
+                var biggest = yi.PrepareChart(AxisOrientation.Y, this);
 
                 var x = curSize.Left;
 
@@ -165,7 +168,7 @@ namespace LiveCharts.Charts
                     yi.Tab = curSize.Left + curSize.Width;
                 }
 
-                var uw = yi.EvaluatesUnitWidth ? ChartFunctions.GetUnitWidth(AxisTags.Y, this, index)/2 : 0;
+                var uw = yi.EvaluatesUnitWidth ? ChartFunctions.GetUnitWidth(AxisOrientation.Y, this, index)/2 : 0;
 
                 var topE = biggest.Top - uw;
                 if (topE> curSize.Top)
@@ -187,7 +190,7 @@ namespace LiveCharts.Charts
             {
                 var xi = AxisX[index];
                 var titleSize = xi.View.UpdateTitle(this);
-                var biggest = xi.PrepareChart(AxisTags.X, this);
+                var biggest = xi.PrepareChart(AxisOrientation.X, this);
                 var top = curSize.Top;
 
                 if (xi.Position == AxisPosition.LeftBottom)
@@ -205,7 +208,7 @@ namespace LiveCharts.Charts
                 }
 
                 //Notice the unit width is not exact at this point...
-                var uw = xi.EvaluatesUnitWidth ? ChartFunctions.GetUnitWidth(AxisTags.X, this, index)/2 : 0;
+                var uw = xi.EvaluatesUnitWidth ? ChartFunctions.GetUnitWidth(AxisOrientation.X, this, index)/2 : 0;
 
                 var leftE = biggest.Left - uw > 0 ? biggest.Left - uw : 0;
                 if (leftE > curSize.Left)
@@ -263,18 +266,14 @@ namespace LiveCharts.Charts
             for (var index = 0; index < AxisY.Count; index++)
             {
                 var yi = AxisY[index];
-                if (HasUnitaryPoints)
-                    yi.View.UnitWidth = ChartFunctions.GetUnitWidth(AxisTags.Y, this, index);
-                yi.UpdateSeparators(AxisTags.Y, this, index);
+                yi.UpdateSeparators(AxisOrientation.Y, this, index);
                 yi.View.SetTitleTop(curSize.Top + curSize.Height*.5 + yi.View.GetLabelSize().Width*.5);
             }
 
             for (var index = 0; index < AxisX.Count; index++)
             {
                 var xi = AxisX[index];
-                if (HasUnitaryPoints)
-                    xi.View.UnitWidth = ChartFunctions.GetUnitWidth(AxisTags.X, this, index);
-                xi.UpdateSeparators(AxisTags.X, this, index);
+                xi.UpdateSeparators(AxisOrientation.X, this, index);
                 xi.View.SetTitleLeft(curSize.Left + curSize.Width*.5 - xi.View.GetLabelSize().Width*.5);
             }
         }
@@ -326,8 +325,8 @@ namespace LiveCharts.Charts
             RequestedZoomAt = DateTime.Now;
 
             pivot = new CorePoint(
-                ChartFunctions.FromDrawMargin(pivot.X, AxisTags.X, this),
-                ChartFunctions.FromDrawMargin(pivot.Y, AxisTags.Y, this));
+                ChartFunctions.FromDrawMargin(pivot.X, AxisOrientation.X, this),
+                ChartFunctions.FromDrawMargin(pivot.Y, AxisOrientation.Y, this));
 
             if (View.Zoom == ZoomingOptions.X || View.Zoom == ZoomingOptions.Xy)
             {
@@ -387,8 +386,8 @@ namespace LiveCharts.Charts
             RequestedZoomAt = DateTime.Now;
 
             var dataPivot = new CorePoint(
-                ChartFunctions.FromDrawMargin(pivot.X, AxisTags.X, this),
-                ChartFunctions.FromDrawMargin(pivot.Y, AxisTags.Y, this));
+                ChartFunctions.FromDrawMargin(pivot.X, AxisOrientation.X, this),
+                ChartFunctions.FromDrawMargin(pivot.Y, AxisOrientation.Y, this));
 
             if (View.Zoom == ZoomingOptions.X || View.Zoom == ZoomingOptions.Xy)
             {
@@ -442,7 +441,7 @@ namespace LiveCharts.Charts
 
         public void Drag(CorePoint delta)
         {
-            if (PivotZoomingAxis == AxisTags.None) return;
+            if (PivotZoomingAxis == AxisOrientation.None) return;
 
             if (View.Zoom == ZoomingOptions.X || View.Zoom == ZoomingOptions.Xy)
             {
@@ -469,7 +468,7 @@ namespace LiveCharts.Charts
 
         #region Protected
 
-        protected void StackPoints(IEnumerable<ISeriesView> stackables, AxisTags stackAt, int stackIndex,
+        protected void StackPoints(IEnumerable<ISeriesView> stackables, AxisOrientation stackAt, int stackIndex,
             StackMode mode = StackMode.Values)
         {
             var stackedColumns = stackables.Select(x => x.ActualValues.Points.ToArray()).ToArray();
@@ -489,7 +488,7 @@ namespace LiveCharts.Charts
                     Right = cols.Select(x => x.Right).DefaultIfEmpty(0).Sum()
                 };
 
-                if (stackAt == AxisTags.X)
+                if (stackAt == AxisOrientation.X)
                 {
                     if (mode == StackMode.Percentage)
                     {
@@ -510,7 +509,7 @@ namespace LiveCharts.Charts
                                 : ((int)(sum.Right / AxisX[stackIndex].S) + 1) * AxisX[stackIndex].S;
                     }
                 }
-                if (stackAt == AxisTags.Y)
+                if (stackAt == AxisOrientation.Y)
                 {
                     if (mode == StackMode.Percentage)
                     {
@@ -575,9 +574,9 @@ namespace LiveCharts.Charts
             }
         }
 
-        protected static double Pull(ChartPoint point, AxisTags source)
+        protected static double Pull(ChartPoint point, AxisOrientation source)
         {
-            return source == AxisTags.Y ? point.Y : point.X;
+            return source == AxisOrientation.Y ? point.Y : point.X;
         }
 
         #endregion

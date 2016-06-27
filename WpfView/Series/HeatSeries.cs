@@ -29,6 +29,9 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using LiveCharts.Definitions.Points;
+using LiveCharts.Definitions.Series;
+using LiveCharts.Dtos;
 using LiveCharts.Helpers;
 using LiveCharts.SeriesAlgorithms;
 using LiveCharts.Wpf.Charts.Base;
@@ -37,16 +40,26 @@ using LiveCharts.Wpf.Points;
 // ReSharper disable once CheckNamespace
 namespace LiveCharts.Wpf
 {
-    public class HeatSeries : Series.Series, IHeatSeries
+    /// <summary>
+    /// Use a HeatSeries in a cartesian chart to draw heat maps.
+    /// </summary>
+    public class HeatSeries : Series.Series, IHeatSeriesView
     {
         #region Constructors
 
+        /// <summary>
+        /// Initializes a new instance of HeatSeries class
+        /// </summary>
         public HeatSeries()
         {
             Model = new HeatAlgorithm(this);
             InitializeDefuaults();
         }
 
+        /// <summary>
+        /// Initializes a new instance of HeatSries class, using a given mapper
+        /// </summary>
+        /// <param name="configuration"></param>
         public HeatSeries(object configuration)
         {
             Model = new HeatAlgorithm(this);
@@ -66,7 +79,9 @@ namespace LiveCharts.Wpf
         public static readonly DependencyProperty DrawsHeatRangeProperty = DependencyProperty.Register(
             "DrawsHeatRange", typeof(bool), typeof(HeatSeries),
             new PropertyMetadata(default(bool), CallChartUpdater()));
-
+        /// <summary>
+        /// Gets or sets whether the series should draw the heat range control, it is the vertical frame to the right that displays the heat gradient.
+        /// </summary>
         public bool DrawsHeatRange
         {
             get { return (bool)GetValue(DrawsHeatRangeProperty); }
@@ -75,13 +90,18 @@ namespace LiveCharts.Wpf
 
         public static readonly DependencyProperty GradientStopCollectionProperty = DependencyProperty.Register(
             "GradientStopCollection", typeof(GradientStopCollection), typeof(HeatSeries), new PropertyMetadata(default(GradientStopCollection)));
-
+        /// <summary>
+        /// Gets or sets the gradient stop collection, use every gradient offset and color properties to define your gradient.
+        /// </summary>
         public GradientStopCollection GradientStopCollection
         {
             get { return (GradientStopCollection)GetValue(GradientStopCollectionProperty); }
             set { SetValue(GradientStopCollectionProperty, value); }
         }
 
+        /// <summary>
+        /// Gets the gradient stops, this property is normally used internally to communicate with the core of the library.
+        /// </summary>
         public IList<CoreGradientStop> Stops
         {
             get

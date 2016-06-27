@@ -22,6 +22,9 @@
 
 using System;
 using LiveCharts.Defaults;
+using LiveCharts.Definitions.Points;
+using LiveCharts.Definitions.Series;
+using LiveCharts.Dtos;
 
 namespace LiveCharts.SeriesAlgorithms
 {
@@ -41,7 +44,7 @@ namespace LiveCharts.SeriesAlgorithms
 
             var padding = castedSeries.ColumnPadding;
 
-            var totalSpace = ChartFunctions.GetUnitWidth(AxisTags.X, Chart, View.ScalesXAt) - padding;
+            var totalSpace = ChartFunctions.GetUnitWidth(AxisOrientation.X, Chart, View.ScalesXAt) - padding;
             var singleColWidth = totalSpace;
 
             double exceed = 0;
@@ -60,17 +63,17 @@ namespace LiveCharts.SeriesAlgorithms
                 ? CurrentYAxis.MaxLimit                                         
                     : 0);                                                         
 
-            var zero = ChartFunctions.ToDrawMargin(startAt, AxisTags.Y, Chart, View.ScalesYAt);
+            var zero = ChartFunctions.ToDrawMargin(startAt, AxisOrientation.Y, Chart, View.ScalesYAt);
 
             foreach (var chartPoint in View.ActualValues.Points)
             {
-                var x = ChartFunctions.ToDrawMargin(chartPoint.X, AxisTags.X, Chart, View.ScalesXAt);
+                var x = ChartFunctions.ToDrawMargin(chartPoint.X, AxisOrientation.X, Chart, View.ScalesXAt);
                 var from = _stackModelable.StackMode == StackMode.Values
-                    ? ChartFunctions.ToDrawMargin(chartPoint.From, AxisTags.Y, Chart, View.ScalesYAt)
-                    : ChartFunctions.ToDrawMargin(chartPoint.From/chartPoint.Sum, AxisTags.Y, Chart, View.ScalesYAt);
+                    ? ChartFunctions.ToDrawMargin(chartPoint.From, AxisOrientation.Y, Chart, View.ScalesYAt)
+                    : ChartFunctions.ToDrawMargin(chartPoint.From/chartPoint.Sum, AxisOrientation.Y, Chart, View.ScalesYAt);
                 var to = _stackModelable.StackMode == StackMode.Values
-                    ? ChartFunctions.ToDrawMargin(chartPoint.To, AxisTags.Y, Chart, View.ScalesYAt)
-                    : ChartFunctions.ToDrawMargin(chartPoint.To/chartPoint.Sum, AxisTags.Y, Chart, View.ScalesYAt);
+                    ? ChartFunctions.ToDrawMargin(chartPoint.To, AxisOrientation.Y, Chart, View.ScalesYAt)
+                    : ChartFunctions.ToDrawMargin(chartPoint.To/chartPoint.Sum, AxisOrientation.Y, Chart, View.ScalesYAt);
 
                 if (double.IsNaN(from)) from = 0;
                 if (double.IsNaN(to)) to = 0;

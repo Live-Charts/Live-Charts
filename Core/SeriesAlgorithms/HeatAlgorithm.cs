@@ -23,6 +23,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using LiveCharts.Defaults;
+using LiveCharts.Definitions.Points;
+using LiveCharts.Definitions.Series;
+using LiveCharts.Dtos;
+using LiveCharts.Helpers;
 
 namespace LiveCharts.SeriesAlgorithms
 {
@@ -35,11 +39,11 @@ namespace LiveCharts.SeriesAlgorithms
 
         public override void Update()
         {
-            var heatSeries = (IHeatSeries)View;
+            var heatSeries = (IHeatSeriesView)View;
 
             var uw = new CorePoint(
-                0 * ChartFunctions.GetUnitWidth(AxisTags.X, Chart, View.ScalesXAt) / 2,
-                -ChartFunctions.GetUnitWidth(AxisTags.Y, Chart, View.ScalesYAt));
+                0 * ChartFunctions.GetUnitWidth(AxisOrientation.X, Chart, View.ScalesXAt) / 2,
+                -ChartFunctions.GetUnitWidth(AxisOrientation.Y, Chart, View.ScalesYAt));
 
             // ReSharper disable once CompareOfFloatsByEqualityOperator
             var wd = CurrentXAxis.MaxLimit - CurrentXAxis.MinLimit == 0

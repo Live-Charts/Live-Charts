@@ -22,6 +22,9 @@
 
 using System;
 using LiveCharts.Defaults;
+using LiveCharts.Definitions.Points;
+using LiveCharts.Definitions.Series;
+using LiveCharts.Dtos;
 
 namespace LiveCharts.SeriesAlgorithms
 {
@@ -41,7 +44,7 @@ namespace LiveCharts.SeriesAlgorithms
 
             var padding = castedSeries.RowPadding;
 
-            var totalSpace = ChartFunctions.GetUnitWidth(AxisTags.Y, Chart, View.ScalesYAt) - padding;
+            var totalSpace = ChartFunctions.GetUnitWidth(AxisOrientation.Y, Chart, View.ScalesYAt) - padding;
             var singleColHeigth = totalSpace;
 
             double exceed = 0;
@@ -60,17 +63,17 @@ namespace LiveCharts.SeriesAlgorithms
                     ? CurrentXAxis.MaxLimit
                     : 0);
 
-            var zero = ChartFunctions.ToDrawMargin(startAt, AxisTags.X, Chart, View.ScalesXAt);
+            var zero = ChartFunctions.ToDrawMargin(startAt, AxisOrientation.X, Chart, View.ScalesXAt);
 
             foreach (var chartPoint in View.ActualValues.Points)
             {
-                var y = ChartFunctions.ToDrawMargin(chartPoint.Y, AxisTags.Y, Chart, View.ScalesYAt) - ChartFunctions.GetUnitWidth(AxisTags.Y, Chart, View.ScalesYAt);
+                var y = ChartFunctions.ToDrawMargin(chartPoint.Y, AxisOrientation.Y, Chart, View.ScalesYAt) - ChartFunctions.GetUnitWidth(AxisOrientation.Y, Chart, View.ScalesYAt);
                 var from = _stackModelable.StackMode == StackMode.Values
-                    ? ChartFunctions.ToDrawMargin(chartPoint.From, AxisTags.X, Chart, View.ScalesXAt)
-                    : ChartFunctions.ToDrawMargin(chartPoint.From/chartPoint.Sum, AxisTags.X, Chart, View.ScalesXAt);
+                    ? ChartFunctions.ToDrawMargin(chartPoint.From, AxisOrientation.X, Chart, View.ScalesXAt)
+                    : ChartFunctions.ToDrawMargin(chartPoint.From/chartPoint.Sum, AxisOrientation.X, Chart, View.ScalesXAt);
                 var to = _stackModelable.StackMode == StackMode.Values
-                    ? ChartFunctions.ToDrawMargin(chartPoint.To, AxisTags.X, Chart, View.ScalesXAt)
-                    : ChartFunctions.ToDrawMargin(chartPoint.To/chartPoint.Sum, AxisTags.X, Chart, View.ScalesXAt);
+                    ? ChartFunctions.ToDrawMargin(chartPoint.To, AxisOrientation.X, Chart, View.ScalesXAt)
+                    : ChartFunctions.ToDrawMargin(chartPoint.To/chartPoint.Sum, AxisOrientation.X, Chart, View.ScalesXAt);
 
                 chartPoint.View = View.GetPointView(chartPoint.View, chartPoint,
                     View.DataLabels

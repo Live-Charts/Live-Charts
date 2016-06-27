@@ -20,28 +20,11 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-using System;
-
-namespace LiveCharts
+namespace LiveCharts.Definitions.Series
 {
-    public class LiveChartsException : Exception
+    public interface IStackedRowSeriesView : ISeriesView, IStackModelableSeriesView
     {
-        public LiveChartsException()
-        {
-        }
-
-        public LiveChartsException(string message) : base(message)
-        {
-        }
-
-        public LiveChartsException(string message, Exception innerException)
-            : base(message, innerException)
-        {
-        }
-
-        public LiveChartsException(string format, Exception innerException, params object[] args)
-            : base(string.Format(format, args), innerException)
-        {
-        }
+        double MaxRowHeight { get; set; }
+        double RowPadding { get; set; }
     }
 }

@@ -223,6 +223,16 @@ namespace Winforms.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Heat_Series {
+            get {
+                object obj = ResourceManager.GetObject("Heat Series", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap install {
             get {
                 object obj = ResourceManager.GetObject("install", resourceCulture);
