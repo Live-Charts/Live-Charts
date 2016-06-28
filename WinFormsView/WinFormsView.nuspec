@@ -14,6 +14,9 @@
     <releaseNotes>See https://github.com/beto-rodriguez/Live-Charts/releases</releaseNotes>
     <copyright>Copyright 2016</copyright>
     <tags>Chart Charting Plot Plotting WinForms</tags> 
+	<dependencies>
+      <dependency id="LiveCharts" version="0.0.0.0" />
+    </dependencies>
     <frameworkAssemblies>
       <frameworkAssembly assemblyName="PresentationFramework" targetFramework="net403" />
       <frameworkAssembly assemblyName="PresentationCore" targetFramework="net403"/>
