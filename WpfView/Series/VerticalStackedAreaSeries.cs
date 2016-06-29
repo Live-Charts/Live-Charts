@@ -90,7 +90,7 @@ namespace LiveCharts.Wpf
 
             SplittersCollector++;
 
-            if (Figure != null)
+            if (Figure != null && Values != null)
             {
                 var yIni = ChartFunctions.ToDrawMargin(Values.Limit2.Min, AxisOrientation.Y, Model.Chart, ScalesYAt);
 
