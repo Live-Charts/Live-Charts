@@ -1040,7 +1040,7 @@
         </member>
         <member name="P:LiveCharts.SeriesCollection.Configuration">
             <summary>
-            Gets the mapper of the collection
+            Gets or sets then mapper in the collection, this mapper will be used in any series inside the collection, if null then LiveCharts will try to get the value from the global configuration.
             </summary>
         </member>
         <member name="T:LiveCharts.VisualElementsCollection">
