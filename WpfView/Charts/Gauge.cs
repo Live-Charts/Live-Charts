@@ -284,7 +284,7 @@ namespace LiveCharts.Wpf
 
             Func<double, string> defFormatter = x => x.ToString(CultureInfo.InvariantCulture);
 
-            var completed = Value/(To - From);
+            var completed = (Value-From)/(To - From);
 
             var t = 0d;
 
