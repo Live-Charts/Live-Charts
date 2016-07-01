@@ -29,7 +29,7 @@ namespace LiveCharts.Configurations
     /// <summary>
     /// Mapper to configure Bubble points
     /// </summary>
-    /// <typeparam name="T"></typeparam>
+    /// <typeparam name="T">type to configure</typeparam>
     public class WeightedMapper<T> : IPointEvaluator<T>
     {
         private Func<T, int, double> _x = (v, i) => i;
@@ -52,7 +52,7 @@ namespace LiveCharts.Configurations
         /// Evaluates a point with a given value and key
         /// </summary>
         /// <param name="valuePair">Value and Key</param>
-        /// <returns></returns>
+        /// <returns>point evaluation</returns>
         public Xyw[] GetEvaluation(KeyValuePair<int, T> valuePair)
         {
             var xyw = new Xyw(
@@ -66,8 +66,8 @@ namespace LiveCharts.Configurations
         /// <summary>
         /// Sets the X mapper
         /// </summary>
-        /// <param name="predicate"></param>
-        /// <returns></returns>
+        /// <param name="predicate">function that pulls the X coordinate</param>
+        /// <returns>current mapper instance</returns>
         public WeightedMapper<T> X(Func<T, double> predicate)
         {
             return X((t, i) => predicate(t));
@@ -76,8 +76,8 @@ namespace LiveCharts.Configurations
         /// <summary>
         /// Sets the X mapper
         /// </summary>
-        /// <param name="predicate"></param>
-        /// <returns></returns>
+        /// <param name="predicate">function that pulls the X coordinate, value and index as parameters</param>
+        /// <returns>current mapper instance</returns>
         public WeightedMapper<T> X(Func<T, int, double> predicate)
         {
             _x = predicate;
@@ -87,8 +87,8 @@ namespace LiveCharts.Configurations
         /// <summary>
         /// Sets the Y mapper
         /// </summary>
-        /// <param name="predicate"></param>
-        /// <returns></returns>
+        /// <param name="predicate">function that pulls the Y coordinate</param>
+        /// <returns>current mapper instance</returns>
         public WeightedMapper<T> Y(Func<T, double> predicate)
         {
             return Y((t, i) => predicate(t));
@@ -97,8 +97,8 @@ namespace LiveCharts.Configurations
         /// <summary>
         /// Sets the Y mapper
         /// </summary>
-        /// <param name="predicate"></param>
-        /// <returns></returns>
+        /// <param name="predicate">function that pulls the Y coordinate, value and index as parameters</param>
+        /// <returns>current mapper instance</returns>
         public WeightedMapper<T> Y(Func<T, int, double> predicate)
         {
             _y = predicate;
@@ -108,8 +108,8 @@ namespace LiveCharts.Configurations
         /// <summary>
         /// Sets Weight mapper
         /// </summary>
-        /// <param name="predicate"></param>
-        /// <returns></returns>
+        /// <param name="predicate">function that pulls the point's weight</param>
+        /// <returns>current mapper instance</returns>
         public WeightedMapper<T> Weight(Func<T, double> predicate)
         {
             return Weight((t, i) => predicate(t));
@@ -118,8 +118,8 @@ namespace LiveCharts.Configurations
         /// <summary>
         /// Sets Weight mapper
         /// </summary>
-        /// <param name="predicate"></param>
-        /// <returns></returns>
+        /// <param name="predicate">function that pulls the point's weight, value and index as parameters</param>
+        /// <returns>current mapper instance</returns>
         public WeightedMapper<T> Weight(Func<T, int, double> predicate)
         {
             _weight = predicate;

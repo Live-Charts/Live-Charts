@@ -223,3 +223,4 @@ ModelManifest.xml
 /WpfView/Test/LiveCharts.dll
 /WpfView/Test/LiveCharts.Wpf.dll
 /Core/Everything seems fine 
+*.xml

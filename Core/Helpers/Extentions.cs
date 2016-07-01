@@ -33,9 +33,9 @@ namespace LiveCharts.Helpers
         /// <summary>
         /// Executes an Action in every item of a collection
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="source"></param>
-        /// <param name="predicate"></param>
+        /// <typeparam name="T">type to iterate with</typeparam>
+        /// <param name="source">collection to iterate</param>
+        /// <param name="predicate">action to execute</param>
         public static void ForEach<T>(this IEnumerable<T> source, Action<T> predicate)
         {
             foreach (var item in source) predicate(item);
@@ -44,8 +44,8 @@ namespace LiveCharts.Helpers
         /// <summary>
         /// Splits a collection of points every double.Nan
         /// </summary>
-        /// <param name="toSplit"></param>
-        /// <returns></returns>
+        /// <param name="toSplit">collection to split</param>
+        /// <returns>collection of collections</returns>
         public static IEnumerable<List<ChartPoint>> SplitEachNaN(this List<ChartPoint> toSplit)
         {
             var l = new List<ChartPoint>(toSplit.Count);
@@ -53,7 +53,7 @@ namespace LiveCharts.Helpers
 
             foreach (var point in toSplit)
             {
-                if (Double.IsNaN(point.X) || Double.IsNaN(point.Y))
+                if (double.IsNaN(point.X) || double.IsNaN(point.Y))
                 {
                     yield return l;
                     acum += l.Count;
@@ -72,7 +72,7 @@ namespace LiveCharts.Helpers
         /// Return the inverse axis orientation
         /// </summary>
         /// <param name="axis">current orientation</param>
-        /// <returns></returns>
+        /// <returns>inverted axis orientation</returns>
         public static AxisOrientation Invert(this AxisOrientation axis)
         {
             return axis == AxisOrientation.X
@@ -83,9 +83,9 @@ namespace LiveCharts.Helpers
         /// <summary>
         /// Converts any collection to chart values
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="values"></param>
-        /// <returns></returns>
+        /// <typeparam name="T">type to convert</typeparam>
+        /// <param name="values">values to convert</param>
+        /// <returns>a new ChartValues instance containing the passed collection</returns>
         public static ChartValues<T> AsChartValues<T>(this IEnumerable<T> values)
         {
             var l = new ChartValues<T>();

@@ -24,7 +24,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>core.docs</DocumentationFile>
+    <DocumentationFile>../LiveChart.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -128,13 +128,12 @@
     <Compile Include="SeriesAlgorithms\VerticalLineAlgorithm.cs" />
     <Compile Include="SeriesAlgorithms\LineAlgorithm.cs" />
     <Compile Include="Helpers\Extentions.cs" />
-    <Compile Include="Helpers\GossipCollection.cs" />
+    <Compile Include="Helpers\NoisyCollection.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SeparatorConfigurationCore.cs" />
     <Compile Include="SeparatorElementCore.cs" />
     <Compile Include="Seriesalgorithm.cs" />
     <Compile Include="SeriesCollection.cs" />
-    <Compile Include="Configurations\SeriesConfiguration.cs" />
     <Compile Include="VisualElementsCollection.cs" />
   </ItemGroup>
   <ItemGroup />

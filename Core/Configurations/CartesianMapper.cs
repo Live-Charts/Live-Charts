@@ -29,7 +29,7 @@ namespace LiveCharts.Configurations
     /// <summary>
     /// Mapper to configure X and Y points
     /// </summary>
-    /// <typeparam name="T"></typeparam>
+    /// <typeparam name="T">Type to configure</typeparam>
     public class CartesianMapper<T> : IPointEvaluator<T>
     {
         private Func<T, int, double> _x = (v, i) => i;
@@ -50,7 +50,7 @@ namespace LiveCharts.Configurations
         /// Evaluates a point with a given value and key
         /// </summary>
         /// <param name="valuePair">Value and Key</param>
-        /// <returns></returns>
+        /// <returns>evaluated point</returns>
         public Xyw[] GetEvaluation(KeyValuePair<int, T> valuePair)
         {
             var xyw = new Xyw(_x(valuePair.Value, valuePair.Key), _y(valuePair.Value, valuePair.Key), 0);
@@ -60,12 +60,18 @@ namespace LiveCharts.Configurations
         /// <summary>
         /// Sets the X mapper
         /// </summary>
-        /// <param name="predicate"></param>
-        /// <returns></returns>
+        /// <param name="predicate">function that pulls X coordinate</param>
+        /// <returns>current mapper instance</returns>
         public CartesianMapper<T> X(Func<T, double> predicate)
         {
             return X((t, i) => predicate(t));
         }
+
+        /// <summary>
+        /// Sets the X mapper
+        /// </summary>
+        /// <param name="predicate">function that pulls X coordinate, with value and index as parameters</param>
+        /// <returns>current mapper instance</returns>
         public CartesianMapper<T> X(Func<T, int, double> predicate)
         {
             _x = predicate;
@@ -75,8 +81,8 @@ namespace LiveCharts.Configurations
         /// <summary>
         /// Sets the Y mapper
         /// </summary>
-        /// <param name="predicate"></param>
-        /// <returns></returns>
+        /// <param name="predicate">function that pulls Y coordinate</param>
+        /// <returns>current mapper instance</returns>
         public CartesianMapper<T> Y(Func<T, double> predicate)
         {
             return Y((t, i) => predicate(t));
@@ -85,8 +91,8 @@ namespace LiveCharts.Configurations
         /// <summary>
         /// Sets the Y mapper
         /// </summary>
-        /// <param name="predicate"></param>
-        /// <returns></returns>
+        /// <param name="predicate">function that pulls Y coordinate, with value and index as parameters</param>
+        /// <returns>current mapper instance</returns>
         public CartesianMapper<T> Y(Func<T, int, double> predicate)
         {
             _y = predicate;

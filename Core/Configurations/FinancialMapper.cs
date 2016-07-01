@@ -29,7 +29,7 @@ namespace LiveCharts.Configurations
     /// <summary>
     /// Mapper to configure financial points
     /// </summary>
-    /// <typeparam name="T"></typeparam>
+    /// <typeparam name="T">type to configure</typeparam>
     public class FinancialMapper<T> : IPointEvaluator<T>
     {
         private Func<T, int, double> _x = (v, i) => i;
@@ -58,7 +58,7 @@ namespace LiveCharts.Configurations
         /// Evaluates a point with a given value and key
         /// </summary>
         /// <param name="valuePair">Value and Key</param>
-        /// <returns></returns>
+        /// <returns>point evaluation</returns>
         public Xyw[] GetEvaluation(KeyValuePair<int, T> valuePair)
         {
             var x = _x(valuePair.Value, valuePair.Key);
@@ -72,12 +72,17 @@ namespace LiveCharts.Configurations
         /// <summary>
         /// Maps X value
         /// </summary>
-        /// <param name="predicate"></param>
-        /// <returns></returns>
+        /// <param name="predicate">function that pulls X coordinate</param>
+        /// <returns>current mapper instance</returns>
         public FinancialMapper<T> X(Func<T, double> predicate)
         {
             return X((t, i) => predicate(t));
         }
+        /// <summary>
+        /// Maps X value
+        /// </summary>
+        /// <param name="predicate">function that pulls X coordinate, with value and index as parameters</param>
+        /// <returns>current mapper instance</returns>
         public FinancialMapper<T> X(Func<T, int, double> predicate)
         {
             _x = predicate;
@@ -87,12 +92,17 @@ namespace LiveCharts.Configurations
         /// <summary>
         /// Maps Y value
         /// </summary>
-        /// <param name="predicate"></param>
-        /// <returns></returns>
+        /// <param name="predicate">function that pulls Y coordinate</param>
+        /// <returns>current mapper instance</returns>
         public FinancialMapper<T> Y(Func<T, double> predicate)
         {
             return Y((t, i) => predicate(t));
         }
+        /// <summary>
+        /// Maps Y value
+        /// </summary>
+        /// <param name="predicate">function that pulls Y coordinate, with value and index as parameters</param>
+        /// <returns>current mapper instance</returns>
         public FinancialMapper<T> Y(Func<T, int, double> predicate)
         {
             _y = predicate;
@@ -102,12 +112,17 @@ namespace LiveCharts.Configurations
         /// <summary>
         /// Maps Open value
         /// </summary>
-        /// <param name="predicate"></param>
-        /// <returns></returns>
+        /// <param name="predicate">function that pulls open value</param>
+        /// <returns>current mapper instance</returns>
         public FinancialMapper<T> Open(Func<T, double> predicate)
         {
             return Open((t, i) => predicate(t));
         }
+        /// <summary>
+        /// Maps Open value
+        /// </summary>
+        /// <param name="predicate">function that pulls open value, value and index as parameters</param>
+        /// <returns>current mapper instance</returns>
         public FinancialMapper<T> Open(Func<T, int, double> predicate)
         {
             _open = predicate;
@@ -117,12 +132,17 @@ namespace LiveCharts.Configurations
         /// <summary>
         /// Maps High value
         /// </summary>
-        /// <param name="predicate"></param>
-        /// <returns></returns>
+        /// <param name="predicate">function that pulls High value</param>
+        /// <returns>current mapper instance</returns>
         public FinancialMapper<T> High(Func<T, double> predicate)
         {
             return High((t, i) => predicate(t));
         }
+        /// <summary>
+        /// Maps High value
+        /// </summary>
+        /// <param name="predicate">function that pulls High value</param>
+        /// <returns>current mapper instance</returns>
         public FinancialMapper<T> High(Func<T, int, double> predicate)
         {
             _high = predicate;
@@ -132,12 +152,17 @@ namespace LiveCharts.Configurations
         /// <summary>
         /// Maps Close value
         /// </summary>
-        /// <param name="predicate"></param>
-        /// <returns></returns>
+        /// <param name="predicate">function that pulls close value</param>
+        /// <returns>current mapper instance</returns>
         public FinancialMapper<T> Close(Func<T, double> predicate)
         {
             return Close((t, i) => predicate(t));
         }
+        /// <summary>
+        /// Maps Close value
+        /// </summary>
+        /// <param name="predicate">function that pulls close value, value and index as parameters</param>
+        /// <returns>current mapper instance</returns>
         public FinancialMapper<T> Close(Func<T, int, double> predicate)
         {
             _close = predicate;
@@ -147,12 +172,17 @@ namespace LiveCharts.Configurations
         /// <summary>
         /// Maps Low value
         /// </summary>
-        /// <param name="predicate"></param>
-        /// <returns></returns>
+        /// <param name="predicate">function that pulls low value</param>
+        /// <returns>current mapper instance</returns>
         public FinancialMapper<T> Low(Func<T, double> predicate)
         {
             return Low((t, i) => predicate(t));
         }
+        /// <summary>
+        /// Maps Low value
+        /// </summary>
+        /// <param name="predicate">function that pulls low value, index and value as parameters</param>
+        /// <returns>current mapper instance</returns>
         public FinancialMapper<T> Low(Func<T, int, double> predicate)
         {
             _low = predicate;

@@ -30,8 +30,8 @@ namespace LiveCharts.Configurations
         /// <summary>
         /// Gets a mapper to configure X, Y points
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <returns></returns>
+        /// <typeparam name="T">Type to map</typeparam>
+        /// <returns>A new cartesian mapper instance</returns>
         public static CartesianMapper<T> Xy<T>()
         {
             return new CartesianMapper<T>();
@@ -40,8 +40,8 @@ namespace LiveCharts.Configurations
         /// <summary>
         /// Gets a mapper to configure financial points
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <returns></returns>
+        /// <typeparam name="T">type to map</typeparam>
+        /// <returns>a new financial mapper instance</returns>
         public static FinancialMapper<T> Financial<T>()
         {
             return new FinancialMapper<T>();
@@ -50,8 +50,8 @@ namespace LiveCharts.Configurations
         /// <summary>
         /// Gets a mapper to configure X, Y and Weight points
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <returns></returns>
+        /// <typeparam name="T">type to map</typeparam>
+        /// <returns>a new weighted mapper instance</returns>
         public static WeightedMapper<T> Weighted<T>()
         {
             return new WeightedMapper<T>();
@@ -60,8 +60,8 @@ namespace LiveCharts.Configurations
         /// <summary>
         /// Gets a mapper to configure Radius and Angle
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <returns></returns>
+        /// <typeparam name="T">type to amp</typeparam>
+        /// <returns>a new polar mapper insance</returns>
         public static PolarMapper<T> Polar<T>()
         {
             return new PolarMapper<T>();

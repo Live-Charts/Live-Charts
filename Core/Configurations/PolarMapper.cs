@@ -26,17 +26,31 @@ using LiveCharts.Dtos;
 
 namespace LiveCharts.Configurations
 {
+    /// <summary>
+    /// Mapper to configure polar series
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public class PolarMapper<T> : IPointEvaluator<T>
     {
         private Func<T, int, double> _r;
         private Func<T, int, double> _angle;
 
+        /// <summary>
+        /// Sets values for a specific point
+        /// </summary>
+        /// <param name="valuePair">Key and value</param>
+        /// <param name="point">Point to set</param>
         public void SetAll(KeyValuePair<int, T> valuePair, ChartPoint point)
         {
             point.Radius = _r(valuePair.Value, valuePair.Key);
             point.Angle = _angle(valuePair.Value, valuePair.Key);
         }
 
+        /// <summary>
+        /// Evaluates a point with a given value and key
+        /// </summary>
+        /// <param name="valuePair">Value and Key</param>
+        /// <returns>evaluated point</returns>
         public Xyw[] GetEvaluation(KeyValuePair<int, T> valuePair)
         {
             var xyw = new Xyw(_r(valuePair.Value, valuePair.Key), _angle(valuePair.Value, valuePair.Key), 0);
@@ -46,12 +60,17 @@ namespace LiveCharts.Configurations
         /// <summary>
         /// Maps X value
         /// </summary>
-        /// <param name="predicate"></param>
-        /// <returns></returns>
+        /// <param name="predicate">function that pulls the radius value</param>
+        /// <returns>current mapper instance</returns>
         public PolarMapper<T> Radius(Func<T, double> predicate)
         {
             return Radius((t, i) => predicate(t));
         }
+        /// <summary>
+        /// Maps X value
+        /// </summary>
+        /// <param name="predicate">function that pulls the radius value, value and index as parameters</param>
+        /// <returns>current mapper instance</returns>
         public PolarMapper<T> Radius(Func<T, int, double> predicate)
         {
             _r = predicate;
@@ -61,12 +80,17 @@ namespace LiveCharts.Configurations
         /// <summary>
         /// Maps Y value
         /// </summary>
-        /// <param name="predicate"></param>
-        /// <returns></returns>
+        /// <param name="predicate">function that pulls the angle value</param>
+        /// <returns>current mapper instance</returns>
         public PolarMapper<T> Angle(Func<T, double> predicate)
         {
             return Angle((t, i) => predicate(t));
         }
+        /// <summary>
+        /// Maps Y value
+        /// </summary>
+        /// <param name="predicate">function that pulls the angle value, value and index as parameters</param>
+        /// <returns>current mapper instance</returns>
         public PolarMapper<T> Angle(Func<T, int, double> predicate)
         {
             _angle = predicate;

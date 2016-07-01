@@ -21,7 +21,6 @@
 //SOFTWARE.
 
 using System;
-using LiveCharts.Definitions.Points;
 
 namespace LiveCharts.Defaults
 {

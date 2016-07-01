@@ -21,12 +21,11 @@
 //SOFTWARE.
 
 using System;
-using LiveCharts.Definitions.Points;
 
 namespace LiveCharts.Defaults
 {
     /// <summary>
-    /// An already configured chart point with a date time and a double properties, this class notifies the chart to tupate every time a property changes
+    /// An already configured chart point with a date time and a double properties, this class notifies the chart to update every time a property changes
     /// </summary>
     public class DateTimePoint : IObservableChartPoint
     {

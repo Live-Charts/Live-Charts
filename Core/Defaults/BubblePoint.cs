@@ -21,7 +21,6 @@
 //SOFTWARE.
 
 using System;
-using LiveCharts.Definitions.Points;
 
 namespace LiveCharts.Defaults
 {
@@ -93,7 +92,7 @@ namespace LiveCharts.Defaults
         }
 
         /// <summary>
-        /// Weight of the point
+        /// Point's weight
         /// </summary>
         public double Weight
         {
