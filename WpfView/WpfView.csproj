@@ -139,9 +139,6 @@
     <Compile Include="Charts\Base\Chart.Debug.cs" />
     <Compile Include="Charts\Gauge.cs" />
     <Compile Include="Charts\PieChart.cs" />
-    <Compile Include="Charts\test.xaml.cs">
-      <DependentUpon>test.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Components\ChartUpdater.cs" />
     <Compile Include="Components\AxisSeparatorElement.cs" />
     <Compile Include="Charts\Base\Chart.Properties.cs" />
@@ -211,10 +208,6 @@
     <None Include="sign.pfx" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="Charts\test.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="DefaultLegend.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
