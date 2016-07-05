@@ -28,36 +28,35 @@ using System.Windows.Media;
 using System.Windows.Shapes;
 using LiveCharts.Definitions.Points;
 using LiveCharts.Definitions.Series;
-using LiveCharts.Dtos;
 using LiveCharts.Helpers;
 using LiveCharts.SeriesAlgorithms;
 using LiveCharts.Wpf.Charts.Base;
 using LiveCharts.Wpf.Points;
 
-// ReSharper disable once CheckNamespace
 namespace LiveCharts.Wpf
 {
     /// <summary>
-    /// Use the column series to plot horizontal bars in a cartesian chart
+    /// The Bubble series, draws scatter series, only using X and Y properties or bubble series, if you also use the weight property, this series should be used in a cartesian chart.
     /// </summary>
-    public class ColumnSeries : Series.Series, IColumnSeriesView
+    public class BubbleSeries : Series.Series, IBubbleSeriesView
     {
         #region Constructors
         /// <summary>
-        /// Initializes a new instance of ColumnSeries class
+        /// Initializes a new instance of BubbleSeries class
         /// </summary>
-        public ColumnSeries()
+        public BubbleSeries()
         {
-            Model = new ColumnAlgorithm(this);
+            Model = new BubbleAlgorithm(this);
             InitializeDefuaults();
         }
 
         /// <summary>
-        /// Initializes a new instance of ColumnSeries class, using a given mapper
+        /// Initializes a new instance of BubbleSeries class using a given mapper
         /// </summary>
-        public ColumnSeries(object configuration)
+        /// <param name="configuration"></param>
+        public BubbleSeries(object configuration)
         {
-            Model = new ColumnAlgorithm(this);
+            Model = new BubbleAlgorithm(this);
             Configuration = configuration;
             InitializeDefuaults();
         }
@@ -70,26 +69,26 @@ namespace LiveCharts.Wpf
 
         #region Properties
 
-        public static readonly DependencyProperty MaxColumnWidthProperty = DependencyProperty.Register(
-            "MaxColumnWidth", typeof (double), typeof (ColumnSeries), new PropertyMetadata(default(double)));
+        public static readonly DependencyProperty MaxBubbleDiameterProperty = DependencyProperty.Register(
+            "MaxBubbleDiameter", typeof (double), typeof (BubbleSeries), new PropertyMetadata(default(double)));
         /// <summary>
-        /// Gets or sets the MaxColumnWidht, the column width will be capped at this value.
+        /// Gets or sets the max bubble diameter, the bubbles using the max weight in the series will have this radius.
         /// </summary>
-        public double MaxColumnWidth
+        public double MaxBubbleDiameter
         {
-            get { return (double) GetValue(MaxColumnWidthProperty); }
-            set { SetValue(MaxColumnWidthProperty, value); }
+            get { return (double) GetValue(MaxBubbleDiameterProperty); }
+            set { SetValue(MaxBubbleDiameterProperty, value); }
         }
 
-        public static readonly DependencyProperty ColumnPaddingProperty = DependencyProperty.Register(
-            "ColumnPadding", typeof (double), typeof (ColumnSeries), new PropertyMetadata(default(double)));
+        public static readonly DependencyProperty MinBubbleDiameterProperty = DependencyProperty.Register(
+            "MinBubbleDiameter", typeof (double), typeof (BubbleSeries), new PropertyMetadata(default(double)));
         /// <summary>
-        /// Gets or sets the padding between the columns in the series.
+        /// Gets or sets the min bubble diameter, the bubbles using the min weight in the series will have this radius.
         /// </summary>
-        public double ColumnPadding
+        public double MinBubbleDiameter
         {
-            get { return (double) GetValue(ColumnPaddingProperty); }
-            set { SetValue(ColumnPaddingProperty, value); }
+            get { return (double) GetValue(MinBubbleDiameterProperty); }
+            set { SetValue(MinBubbleDiameterProperty, value); }
         }
 
         #endregion
@@ -98,37 +97,36 @@ namespace LiveCharts.Wpf
 
         public override IChartPointView GetPointView(IChartPointView view, ChartPoint point, string label)
         {
-            var pbv = (view as ColumnPointView);
+            var pbv = (view as BubblePointView);
 
             if (pbv == null)
             {
-                pbv = new ColumnPointView
+                pbv = new BubblePointView
                 {
                     IsNew = true,
-                    Rectangle = new Rectangle(),
-                    Data = new CoreRectangle()
+                    Ellipse = new Ellipse()
                 };
 
-                BindingOperations.SetBinding(pbv.Rectangle, Shape.FillProperty,
+                BindingOperations.SetBinding(pbv.Ellipse, Shape.FillProperty,
                     new Binding { Path = new PropertyPath(FillProperty), Source = this });
-                BindingOperations.SetBinding(pbv.Rectangle, Shape.StrokeProperty,
+                BindingOperations.SetBinding(pbv.Ellipse, Shape.StrokeProperty,
                     new Binding { Path = new PropertyPath(StrokeProperty), Source = this });
-                BindingOperations.SetBinding(pbv.Rectangle, Shape.StrokeThicknessProperty,
-                    new Binding {Path = new PropertyPath(StrokeThicknessProperty), Source = this});
-                BindingOperations.SetBinding(pbv.Rectangle, Shape.StrokeDashArrayProperty,
-                    new Binding {Path = new PropertyPath(StrokeDashArrayProperty), Source = this});
-                BindingOperations.SetBinding(pbv.Rectangle, Panel.ZIndexProperty,
-                    new Binding {Path = new PropertyPath(Panel.ZIndexProperty), Source = this});
-                BindingOperations.SetBinding(pbv.Rectangle, VisibilityProperty,
+                BindingOperations.SetBinding(pbv.Ellipse, Shape.StrokeThicknessProperty,
+                    new Binding { Path = new PropertyPath(StrokeThicknessProperty), Source = this });
+                BindingOperations.SetBinding(pbv.Ellipse, VisibilityProperty,
                     new Binding { Path = new PropertyPath(VisibilityProperty), Source = this });
+                BindingOperations.SetBinding(pbv.Ellipse, Panel.ZIndexProperty,
+                    new Binding {Path = new PropertyPath(Panel.ZIndexProperty), Source = this});
+                BindingOperations.SetBinding(pbv.Ellipse, Shape.StrokeDashArrayProperty,
+                    new Binding {Path = new PropertyPath(StrokeDashArrayProperty), Source = this});
 
-                Model.Chart.View.AddToDrawMargin(pbv.Rectangle);
+                Model.Chart.View.AddToDrawMargin(pbv.Ellipse);
             }
             else
             {
                 pbv.IsNew = false;
                 point.SeriesView.Model.Chart.View
-                    .EnsureElementBelongsToCurrentDrawMargin(pbv.Rectangle);
+                    .EnsureElementBelongsToCurrentDrawMargin(pbv.Ellipse);
                 point.SeriesView.Model.Chart.View
                     .EnsureElementBelongsToCurrentDrawMargin(pbv.HoverShape);
                 point.SeriesView.Model.Chart.View
@@ -152,6 +150,8 @@ namespace LiveCharts.Wpf
 
                 Model.Chart.View.AddToDrawMargin(pbv.HoverShape);
             }
+
+            
 
             if (DataLabels && pbv.DataLabel == null)
             {
@@ -183,13 +183,14 @@ namespace LiveCharts.Wpf
         private void InitializeDefuaults()
         {
             SetValue(StrokeThicknessProperty, 0d);
-            SetValue(MaxColumnWidthProperty, 35d);
-            SetValue(ColumnPaddingProperty, 5d);
+            SetValue(MaxBubbleDiameterProperty, 50d);
+            SetValue(MinBubbleDiameterProperty, 10d);
 
-            Func<ChartPoint, string> defaultLabel = x => Model.CurrentYAxis.GetFormatter()(x.Y);
+            Func<ChartPoint, string> defaultLabel = x => Model.CurrentXAxis.GetFormatter()(x.X) + ", "
+                                                         + Model.CurrentYAxis.GetFormatter()(x.Y);
             SetValue(LabelPointProperty, defaultLabel);
 
-            DefaultFillOpacity = 1;
+            DefaultFillOpacity = 0.7;
         }
 
         #endregion

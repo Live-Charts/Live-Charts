@@ -25,8 +25,7 @@
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <DocumentationFile>
-    </DocumentationFile>
+    <DocumentationFile>bin\Debug\LiveCharts.Wpf.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -127,6 +126,7 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BubbleSeries.cs" />
     <Compile Include="DefaultGeometry.cs" />
     <Compile Include="HeatColorRange.xaml.cs">
       <DependentUpon>HeatColorRange.xaml</DependentUpon>
@@ -162,23 +162,22 @@
     <Compile Include="Points\RowPointView.cs" />
     <Compile Include="Points\ColumnPointView.cs" />
     <Compile Include="Points\VBezierPointView.cs" />
-    <Compile Include="Series\HeatSeries.cs" />
-    <Compile Include="Series\PieSeries.cs" />
-    <Compile Include="Series\OhlcSeries.cs" />
-    <Compile Include="Series\StackedAreaSeries.cs" />
-    <Compile Include="Series\StackedRowSeries.cs" />
-    <Compile Include="Series\StackedColumnSeries.cs" />
-    <Compile Include="Series\RowSeries.cs" />
-    <Compile Include="Series\ColumnSeries.cs" />
-    <Compile Include="Series\BubbleSeries.cs" />
-    <Compile Include="Series\VerticalStackedAreaSeries.cs" />
-    <Compile Include="Series\VerticalLineSeries.cs" />
+    <Compile Include="HeatSeries.cs" />
+    <Compile Include="PieSeries.cs" />
+    <Compile Include="OhlcSeries.cs" />
+    <Compile Include="StackedAreaSeries.cs" />
+    <Compile Include="StackedRowSeries.cs" />
+    <Compile Include="StackedColumnSeries.cs" />
+    <Compile Include="RowSeries.cs" />
+    <Compile Include="ColumnSeries.cs" />
+    <Compile Include="VerticalStackedAreaSeries.cs" />
+    <Compile Include="VerticalLineSeries.cs" />
     <Compile Include="Points\HBezierPointView.cs" />
     <Compile Include="Components\Converters.cs" />
     <Compile Include="DefaultAxes.cs" />
     <Compile Include="Components\TooltipDto.cs" />
     <Compile Include="Charts\CartesianChart.cs" />
-    <Compile Include="Series\LineSeries.cs" />
+    <Compile Include="LineSeries.cs" />
     <Compile Include="Components\DesktopExtentions.cs" />
     <Compile Include="Points\PointView.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -195,7 +194,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="Separator.cs" />
-    <Compile Include="Series\Series.cs" />
+    <Compile Include="Series.cs" />
     <Compile Include="LineSegmentSplitter.cs" />
     <Compile Include="VisualElement.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">

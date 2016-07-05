@@ -20,21 +20,20 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-
-namespace LiveCharts.Dtos
+namespace LiveCharts
 {
     /// <summary>
-    /// Portable color gradient stop
+    /// Axis position
     /// </summary>
-    public struct CoreGradientStop
+    public enum AxisPosition
     {
         /// <summary>
-        /// Offset, goes from 0 to 1
+        /// Left for Y axis, Bottom for X axis
         /// </summary>
-        public double Offset { get; set; }
+        LeftBottom,
         /// <summary>
-        /// Color at Offset
+        /// Right for Y axis, Top for X axis
         /// </summary>
-        public CoreColor Color { get; set; }
+        RightTop
     }
 }

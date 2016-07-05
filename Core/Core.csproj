@@ -24,8 +24,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>
-    </DocumentationFile>
+    <DocumentationFile>bin\Debug\LiveCharts.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -47,6 +46,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AxisCore.cs" />
+    <Compile Include="AxisPosition.cs" />
     <Compile Include="AxisSectionCore.cs" />
     <Compile Include="Charts\PieChartCore.cs" />
     <Compile Include="ChartUpdater.cs" />
@@ -95,7 +95,7 @@
     <Compile Include="Definitions\Series\IStackedRowSeriesView.cs" />
     <Compile Include="Definitions\Series\IStackModelableSeriesView.cs" />
     <Compile Include="Definitions\Series\IVerticalStackedAreaSeriesView.cs" />
-    <Compile Include="Enumerators.cs" />
+    <Compile Include="AxisOrientation.cs" />
     <Compile Include="Charts\ChartCore.cs" />
     <Compile Include="ChartFunctions.cs" />
     <Compile Include="ChartPoint.cs" />
@@ -116,6 +116,8 @@
     <Compile Include="IChartValues.cs" />
     <Compile Include="Charts\CartesianChartCore.cs" />
     <Compile Include="Helpers\LiveChartsException.cs" />
+    <Compile Include="LegendLocation.cs" />
+    <Compile Include="SeparationState.cs" />
     <Compile Include="SeriesAlgorithms\HeatAlgorithm.cs" />
     <Compile Include="SeriesAlgorithms\PieAlgorithm.cs" />
     <Compile Include="SeriesAlgorithms\OhlcAlgorithm.cs" />
@@ -135,7 +137,11 @@
     <Compile Include="SeparatorElementCore.cs" />
     <Compile Include="Seriesalgorithm.cs" />
     <Compile Include="SeriesCollection.cs" />
+    <Compile Include="SeriesOrientation.cs" />
+    <Compile Include="StackMode.cs" />
+    <Compile Include="TooltipSelectionMode.cs" />
     <Compile Include="VisualElementsCollection.cs" />
+    <Compile Include="ZoomingOptions.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />

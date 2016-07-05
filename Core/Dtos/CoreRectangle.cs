@@ -24,6 +24,7 @@ using System;
 
 namespace LiveCharts.Dtos
 {
+    
     public class CoreRectangle
     {
         private double _left;

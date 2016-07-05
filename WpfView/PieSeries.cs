@@ -28,37 +28,35 @@ using System.Windows.Media;
 using System.Windows.Shapes;
 using LiveCharts.Definitions.Points;
 using LiveCharts.Definitions.Series;
-using LiveCharts.Dtos;
 using LiveCharts.Helpers;
 using LiveCharts.SeriesAlgorithms;
 using LiveCharts.Wpf.Charts.Base;
 using LiveCharts.Wpf.Points;
 
-// ReSharper disable once CheckNamespace
 namespace LiveCharts.Wpf
 {
     /// <summary>
-    /// The stacked row series compares the proportion of every series in a point
+    /// The pie series should be added only in a pie chart.
     /// </summary>
-    public class StackedRowSeries : Series.Series, IStackedRowSeriesView
+    public class PieSeries : Series.Series, IPieSeriesView
     {
         #region Constructors
-
         /// <summary>
-        /// Initializes a new instance of StackedRow series class
+        /// Initializes a new instance of PieSeries class
         /// </summary>
-        public StackedRowSeries()
+        public PieSeries()
         {
-            Model = new StackedRowAlgorithm(this);
+            Model = new PieAlgorithm(this);
             InitializeDefuaults();
         }
 
         /// <summary>
-        /// Initializes a new instance of StackedRow series class, with a given mapper
+        /// Initializes a new instance of PieSeries class with a given mapper.
         /// </summary>
-        public StackedRowSeries(object configuration)
+        /// <param name="configuration"></param>
+        public PieSeries(object configuration)
         {
-            Model = new StackedRowAlgorithm(this);
+            Model = new PieAlgorithm(this);
             Configuration = configuration;
             InitializeDefuaults();
         }
@@ -71,77 +69,54 @@ namespace LiveCharts.Wpf
 
         #region Properties
 
-        public static readonly DependencyProperty MaxRowHeightProperty = DependencyProperty.Register(
-            "MaxRowHeight", typeof (double), typeof (StackedRowSeries), new PropertyMetadata(default(double)));
+        public static readonly DependencyProperty PushOutProperty = DependencyProperty.Register(
+            "PushOut", typeof (double), typeof (PieSeries), new PropertyMetadata(default(double)));
         /// <summary>
-        /// Gets or sets the maximum height of row, any row height will be capped at this value.
+        /// Gets or sets the slice push out, this property highlights the slice
         /// </summary>
-        public double MaxRowHeight
+        public double PushOut
         {
-            get { return (double) GetValue(MaxRowHeightProperty); }
-            set { SetValue(MaxRowHeightProperty, value); }
+            get { return (double) GetValue(PushOutProperty); }
+            set { SetValue(PushOutProperty, value); }
         }
-
-        public static readonly DependencyProperty RowPaddingProperty = DependencyProperty.Register(
-            "RowPadding", typeof (double), typeof (StackedRowSeries), new PropertyMetadata(default(double)));
-        /// <summary>
-        /// Gets or sets the padding between each row in the series.
-        /// </summary>
-        public double RowPadding
-        {
-            get { return (double) GetValue(RowPaddingProperty); }
-            set { SetValue(RowPaddingProperty, value); }
-        }
-
-        public static readonly DependencyProperty StackModeProperty = DependencyProperty.Register(
-            "StackMode", typeof (StackMode), typeof (StackedRowSeries), new PropertyMetadata(default(StackMode)));
-        /// <summary>
-        /// Gets or sets the stacked mode, values or percentage.
-        /// </summary>
-        public StackMode StackMode
-        {
-            get { return (StackMode) GetValue(StackModeProperty); }
-            set { SetValue(StackModeProperty, value); }
-        }
-
         #endregion
 
         #region Overridden Methods
 
         public override IChartPointView GetPointView(IChartPointView view, ChartPoint point, string label)
         {
-            var pbv = (view as RowPointView);
+            var pbv = (view as PiePointView);
 
             if (pbv == null)
             {
-                pbv = new RowPointView
+                pbv = new PiePointView
                 {
                     IsNew = true,
-                    Rectangle = new Rectangle(),
-                    Data = new CoreRectangle(),
-                    LabelInside = true
+                    Slice = new PieSlice()
                 };
 
-                BindingOperations.SetBinding(pbv.Rectangle, Shape.FillProperty,
+                BindingOperations.SetBinding(pbv.Slice, Shape.FillProperty,
                     new Binding { Path = new PropertyPath(FillProperty), Source = this });
-                BindingOperations.SetBinding(pbv.Rectangle, Shape.StrokeProperty,
+                BindingOperations.SetBinding(pbv.Slice, Shape.StrokeProperty,
                     new Binding { Path = new PropertyPath(StrokeProperty), Source = this });
-                BindingOperations.SetBinding(pbv.Rectangle, Shape.StrokeThicknessProperty,
+                BindingOperations.SetBinding(pbv.Slice, Shape.StrokeThicknessProperty,
                     new Binding {Path = new PropertyPath(StrokeThicknessProperty), Source = this});
-                BindingOperations.SetBinding(pbv.Rectangle, Shape.StrokeDashArrayProperty,
+                BindingOperations.SetBinding(pbv.Slice, Shape.StrokeDashArrayProperty,
                     new Binding {Path = new PropertyPath(StrokeDashArrayProperty), Source = this});
-                BindingOperations.SetBinding(pbv.Rectangle, Panel.ZIndexProperty,
+                BindingOperations.SetBinding(pbv.Slice, PieSlice.PushOutProperty,
+                    new Binding {Path = new PropertyPath(PushOutProperty), Source = this});
+                BindingOperations.SetBinding(pbv.Slice, Panel.ZIndexProperty,
                     new Binding {Path = new PropertyPath(Panel.ZIndexProperty), Source = this});
-                BindingOperations.SetBinding(pbv.Rectangle, VisibilityProperty,
-                    new Binding { Path = new PropertyPath(VisibilityProperty), Source = this });
+                BindingOperations.SetBinding(pbv.Slice, VisibilityProperty,
+                    new Binding {Path = new PropertyPath(VisibilityProperty), Source = this});
 
-                Model.Chart.View.AddToDrawMargin(pbv.Rectangle);
+                Model.Chart.View.AddToDrawMargin(pbv.Slice);
             }
             else
             {
                 pbv.IsNew = false;
                 point.SeriesView.Model.Chart.View
-                    .EnsureElementBelongsToCurrentDrawMargin(pbv.Rectangle);
+                    .EnsureElementBelongsToCurrentDrawMargin(pbv.Slice);
                 point.SeriesView.Model.Chart.View
                     .EnsureElementBelongsToCurrentDrawMargin(pbv.HoverShape);
                 point.SeriesView.Model.Chart.View
@@ -150,7 +125,7 @@ namespace LiveCharts.Wpf
 
             if (Model.Chart.RequiresHoverShape && pbv.HoverShape == null)
             {
-                pbv.HoverShape = new Rectangle
+                pbv.HoverShape = new PieSlice
                 {
                     Fill = Brushes.Transparent,
                     StrokeThickness = 0
@@ -195,12 +170,12 @@ namespace LiveCharts.Wpf
 
         private void InitializeDefuaults()
         {
-            SetValue(StrokeThicknessProperty, 0d);
-            SetValue(MaxRowHeightProperty, 35d);
-            SetValue(RowPaddingProperty, 5d);
+            SetValue(StrokeThicknessProperty, 2d);
+            SetValue(StrokeProperty, Brushes.White);
             SetValue(ForegroundProperty, Brushes.White);
 
-            Func<ChartPoint, string> defaultLabel = x =>  Model.CurrentXAxis.GetFormatter()(x.X);
+            Func<ChartPoint, string> defaultLabel = x => Model.CurrentYAxis.GetFormatter()(x.Y);
+                
             SetValue(LabelPointProperty, defaultLabel);
 
             DefaultFillOpacity = 1;

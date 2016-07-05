@@ -20,21 +20,32 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-
-namespace LiveCharts.Dtos
+namespace LiveCharts
 {
     /// <summary>
-    /// Portable color gradient stop
+    /// Charts legend locations
     /// </summary>
-    public struct CoreGradientStop
+    public enum LegendLocation
     {
         /// <summary>
-        /// Offset, goes from 0 to 1
+        /// Disables legend
         /// </summary>
-        public double Offset { get; set; }
+        None,
         /// <summary>
-        /// Color at Offset
+        /// PLaces legend at top
         /// </summary>
-        public CoreColor Color { get; set; }
+        Top,
+        /// <summary>
+        /// Places legend at bottom
+        /// </summary>
+        Bottom,
+        /// <summary>
+        /// Places legend at left
+        /// </summary>
+        Left,
+        /// <summary>
+        /// Places legend at right
+        /// </summary>
+        Right
     }
 }

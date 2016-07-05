@@ -35,7 +35,6 @@ using LiveCharts.Wpf.Charts.Base;
 using LiveCharts.Wpf.Components;
 using LiveCharts.Wpf.Points;
 
-// ReSharper disable once CheckNamespace
 namespace LiveCharts.Wpf
 {
     /// <summary>

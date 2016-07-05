@@ -20,21 +20,24 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-
-namespace LiveCharts.Dtos
+namespace LiveCharts
 {
     /// <summary>
-    /// Portable color gradient stop
+    /// Separator current state
     /// </summary>
-    public struct CoreGradientStop
+    public enum SeparationState
     {
         /// <summary>
-        /// Offset, goes from 0 to 1
+        /// Remove the separator from the chart
         /// </summary>
-        public double Offset { get; set; }
+        Remove,
         /// <summary>
-        /// Color at Offset
+        /// Kepp the separator in the chart
         /// </summary>
-        public CoreColor Color { get; set; }
+        Keep,
+        /// <summary>
+        /// no animated add
+        /// </summary>
+        InitialAdd
     }
 }

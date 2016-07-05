@@ -20,21 +20,25 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-
-namespace LiveCharts.Dtos
+namespace LiveCharts
 {
     /// <summary>
-    /// Portable color gradient stop
+    /// Cartesian Axis orientation
     /// </summary>
-    public struct CoreGradientStop
+    public enum AxisOrientation
     {
         /// <summary>
-        /// Offset, goes from 0 to 1
+        /// Unknown orientation
         /// </summary>
-        public double Offset { get; set; }
+        None,
         /// <summary>
-        /// Color at Offset
+        /// Horizontal (X)
         /// </summary>
-        public CoreColor Color { get; set; }
+        X,
+        /// <summary>
+        /// Vertical (Y)
+        /// </summary>
+        Y
     }
+
 }

@@ -20,21 +20,28 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-
-namespace LiveCharts.Dtos
+namespace LiveCharts
 {
     /// <summary>
-    /// Portable color gradient stop
+    /// Chart zooming options
     /// </summary>
-    public struct CoreGradientStop
+    public enum ZoomingOptions
     {
         /// <summary>
-        /// Offset, goes from 0 to 1
+        /// Disables zoom
         /// </summary>
-        public double Offset { get; set; }
+        None,
         /// <summary>
-        /// Color at Offset
+        /// Only X axis
         /// </summary>
-        public CoreColor Color { get; set; }
+        X,
+        /// <summary>
+        /// Only Y axis
+        /// </summary>
+        Y,
+        /// <summary>
+        /// Both, X and Y axes
+        /// </summary>
+        Xy
     }
 }

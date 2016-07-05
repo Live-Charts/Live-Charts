@@ -34,30 +34,30 @@ using LiveCharts.SeriesAlgorithms;
 using LiveCharts.Wpf.Charts.Base;
 using LiveCharts.Wpf.Points;
 
-// ReSharper disable once CheckNamespace
 namespace LiveCharts.Wpf
 {
     /// <summary>
-    /// The stacked column series compares the proportion of every series in a point
+    /// The Row series plots horizontal bars in a cartesian chart
     /// </summary>
-    public class StackedColumnSeries : Series.Series, IStackedColumnSeriesView
+    public class RowSeries : Series.Series, IRowSeriesView
     {
         #region Constructors
         /// <summary>
-        /// Initializes a new instance of StackedColumnSeries class
+        /// Initializes a new instance of RowSeries class
         /// </summary>
-        public StackedColumnSeries()
+        public RowSeries()
         {
-            Model = new StackedColumnAlgorithm(this);
+            Model = new RowAlgorithm(this);
             InitializeDefuaults();
         }
 
         /// <summary>
-        /// Initializes a new instance of StackedColumnSeries class, with a given mapper
+        /// Initializes a new instance of RowSeries class with a given mapper
         /// </summary>
-        public StackedColumnSeries(object configuration)
+        /// <param name="configuration"></param>
+        public RowSeries(object configuration)
         {
-            Model = new StackedColumnAlgorithm(this);
+            Model = new RowAlgorithm(this);
             Configuration = configuration;
             InitializeDefuaults();
         }
@@ -70,55 +70,43 @@ namespace LiveCharts.Wpf
 
         #region Properties
 
-        public static readonly DependencyProperty MaxColumnWidthProperty = DependencyProperty.Register(
-            "MaxColumnWidth", typeof (double), typeof (StackedColumnSeries), new PropertyMetadata(default(double)));
+        public static readonly DependencyProperty MaxRowHeigthProperty = DependencyProperty.Register(
+            "MaxRowHeigth", typeof (double), typeof (RowSeries), new PropertyMetadata(default(double)));
         /// <summary>
-        /// Gets or sets the maximum width of a column, any column will be capped at this value
+        /// Gets or sets the maximum row height, the height of a column will be capped at this value
         /// </summary>
-        public double MaxColumnWidth
+        public double MaxRowHeigth
         {
-            get { return (double) GetValue(MaxColumnWidthProperty); }
-            set { SetValue(MaxColumnWidthProperty, value); }
+            get { return (double) GetValue(MaxRowHeigthProperty); }
+            set { SetValue(MaxRowHeigthProperty, value); }
         }
 
-        public static readonly DependencyProperty ColumnPaddingProperty = DependencyProperty.Register(
-            "ColumnPadding", typeof (double), typeof (StackedColumnSeries), new PropertyMetadata(default(double)));
+        public static readonly DependencyProperty RowPaddingProperty = DependencyProperty.Register(
+            "RowPadding", typeof (double), typeof (RowSeries), new PropertyMetadata(default(double)));
         /// <summary>
-        /// Gets or sets the padding between every column in this series
+        /// Gets or sets the padding between rows in this series
         /// </summary>
-        public double ColumnPadding
+        public double RowPadding
         {
-            get { return (double) GetValue(ColumnPaddingProperty); }
-            set { SetValue(ColumnPaddingProperty, value); }
-        }
-
-        public static readonly DependencyProperty StackModeProperty = DependencyProperty.Register(
-            "StackMode", typeof (StackMode), typeof (StackedColumnSeries), new PropertyMetadata(default(StackMode)));
-        /// <summary>
-        /// Gets or sets stacked mode, values or percentage
-        /// </summary>
-        public StackMode StackMode
-        {
-            get { return (StackMode) GetValue(StackModeProperty); }
-            set { SetValue(StackModeProperty, value); }
+            get { return (double) GetValue(RowPaddingProperty); }
+            set { SetValue(RowPaddingProperty, value); }
         }
 
         #endregion
 
         #region Overridden Methods
 
-        public override IChartPointView GetPointView(IChartPointView view, ChartPoint point, string label)
+        public override IChartPointView GetPointView(IChartPointView view, ChartPoint point ,string label)
         {
-            var pbv = (view as ColumnPointView);
+            var pbv = (view as RowPointView);
 
             if (pbv == null)
             {
-                pbv = new ColumnPointView
+                pbv = new RowPointView
                 {
                     IsNew = true,
                     Rectangle = new Rectangle(),
-                    Data = new CoreRectangle(),
-                    LabelInside = true
+                    Data = new CoreRectangle()
                 };
 
                 BindingOperations.SetBinding(pbv.Rectangle, Shape.FillProperty,
@@ -143,6 +131,8 @@ namespace LiveCharts.Wpf
                     .EnsureElementBelongsToCurrentDrawMargin(pbv.Rectangle);
                 point.SeriesView.Model.Chart.View
                     .EnsureElementBelongsToCurrentDrawMargin(pbv.HoverShape);
+                point.SeriesView.Model.Chart.View
+                    .EnsureElementBelongsToCurrentDrawMargin(pbv.DataLabel);
             }
 
             if (Model.Chart.RequiresHoverShape && pbv.HoverShape == null)
@@ -193,11 +183,10 @@ namespace LiveCharts.Wpf
         private void InitializeDefuaults()
         {
             SetValue(StrokeThicknessProperty, 0d);
-            SetValue(MaxColumnWidthProperty, 35d);
-            SetValue(ColumnPaddingProperty, 5d);
-            SetValue(ForegroundProperty, Brushes.White);
+            SetValue(MaxRowHeigthProperty, 35d);
+            SetValue(RowPaddingProperty, 5d);
 
-            Func<ChartPoint, string> defaultLabel = x =>  Model.CurrentYAxis.GetFormatter()(x.Y);
+            Func<ChartPoint, string> defaultLabel = x => Model.CurrentXAxis.GetFormatter()(x.X);
             SetValue(LabelPointProperty, defaultLabel);
 
             DefaultFillOpacity = 1;

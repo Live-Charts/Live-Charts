@@ -31,7 +31,6 @@ using System.Windows.Shapes;
 using LiveCharts.Definitions.Series;
 using LiveCharts.SeriesAlgorithms;
 
-// ReSharper disable once CheckNamespace
 namespace LiveCharts.Wpf
 {
     /// <summary>

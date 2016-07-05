@@ -34,31 +34,29 @@ using LiveCharts.SeriesAlgorithms;
 using LiveCharts.Wpf.Charts.Base;
 using LiveCharts.Wpf.Points;
 
-// ReSharper disable once CheckNamespace
 namespace LiveCharts.Wpf
 {
     /// <summary>
-    /// The Row series plots horizontal bars in a cartesian chart
+    /// Use the column series to plot horizontal bars in a cartesian chart
     /// </summary>
-    public class RowSeries : Series.Series, IRowSeriesView
+    public class ColumnSeries : Series.Series, IColumnSeriesView
     {
         #region Constructors
         /// <summary>
-        /// Initializes a new instance of RowSeries class
+        /// Initializes a new instance of ColumnSeries class
         /// </summary>
-        public RowSeries()
+        public ColumnSeries()
         {
-            Model = new RowAlgorithm(this);
+            Model = new ColumnAlgorithm(this);
             InitializeDefuaults();
         }
 
         /// <summary>
-        /// Initializes a new instance of RowSeries class with a given mapper
+        /// Initializes a new instance of ColumnSeries class, using a given mapper
         /// </summary>
-        /// <param name="configuration"></param>
-        public RowSeries(object configuration)
+        public ColumnSeries(object configuration)
         {
-            Model = new RowAlgorithm(this);
+            Model = new ColumnAlgorithm(this);
             Configuration = configuration;
             InitializeDefuaults();
         }
@@ -71,39 +69,39 @@ namespace LiveCharts.Wpf
 
         #region Properties
 
-        public static readonly DependencyProperty MaxRowHeigthProperty = DependencyProperty.Register(
-            "MaxRowHeigth", typeof (double), typeof (RowSeries), new PropertyMetadata(default(double)));
+        public static readonly DependencyProperty MaxColumnWidthProperty = DependencyProperty.Register(
+            "MaxColumnWidth", typeof (double), typeof (ColumnSeries), new PropertyMetadata(default(double)));
         /// <summary>
-        /// Gets or sets the maximum row height, the height of a column will be capped at this value
+        /// Gets or sets the MaxColumnWidht, the column width will be capped at this value.
         /// </summary>
-        public double MaxRowHeigth
+        public double MaxColumnWidth
         {
-            get { return (double) GetValue(MaxRowHeigthProperty); }
-            set { SetValue(MaxRowHeigthProperty, value); }
+            get { return (double) GetValue(MaxColumnWidthProperty); }
+            set { SetValue(MaxColumnWidthProperty, value); }
         }
 
-        public static readonly DependencyProperty RowPaddingProperty = DependencyProperty.Register(
-            "RowPadding", typeof (double), typeof (RowSeries), new PropertyMetadata(default(double)));
+        public static readonly DependencyProperty ColumnPaddingProperty = DependencyProperty.Register(
+            "ColumnPadding", typeof (double), typeof (ColumnSeries), new PropertyMetadata(default(double)));
         /// <summary>
-        /// Gets or sets the padding between rows in this series
+        /// Gets or sets the padding between the columns in the series.
         /// </summary>
-        public double RowPadding
+        public double ColumnPadding
         {
-            get { return (double) GetValue(RowPaddingProperty); }
-            set { SetValue(RowPaddingProperty, value); }
+            get { return (double) GetValue(ColumnPaddingProperty); }
+            set { SetValue(ColumnPaddingProperty, value); }
         }
 
         #endregion
 
         #region Overridden Methods
 
-        public override IChartPointView GetPointView(IChartPointView view, ChartPoint point ,string label)
+        public override IChartPointView GetPointView(IChartPointView view, ChartPoint point, string label)
         {
-            var pbv = (view as RowPointView);
+            var pbv = (view as ColumnPointView);
 
             if (pbv == null)
             {
-                pbv = new RowPointView
+                pbv = new ColumnPointView
                 {
                     IsNew = true,
                     Rectangle = new Rectangle(),
@@ -184,10 +182,10 @@ namespace LiveCharts.Wpf
         private void InitializeDefuaults()
         {
             SetValue(StrokeThicknessProperty, 0d);
-            SetValue(MaxRowHeigthProperty, 35d);
-            SetValue(RowPaddingProperty, 5d);
+            SetValue(MaxColumnWidthProperty, 35d);
+            SetValue(ColumnPaddingProperty, 5d);
 
-            Func<ChartPoint, string> defaultLabel = x => Model.CurrentXAxis.GetFormatter()(x.X);
+            Func<ChartPoint, string> defaultLabel = x => Model.CurrentYAxis.GetFormatter()(x.Y);
             SetValue(LabelPointProperty, defaultLabel);
 
             DefaultFillOpacity = 1;

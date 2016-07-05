@@ -20,21 +20,20 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-
-namespace LiveCharts.Dtos
+namespace LiveCharts
 {
     /// <summary>
-    /// Portable color gradient stop
+    /// Stacked mode, for stacked series
     /// </summary>
-    public struct CoreGradientStop
+    public enum StackMode
     {
         /// <summary>
-        /// Offset, goes from 0 to 1
+        /// Stacks the values, eg: if values are 1,2,3 the stacked total is 6
         /// </summary>
-        public double Offset { get; set; }
+        Values,
         /// <summary>
-        /// Color at Offset
+        /// Stacks percentage, eg: if values are 1,2,3, they are actually being stacked as (1/6), (2/6), (3/6) [value/totalSum]
         /// </summary>
-        public CoreColor Color { get; set; }
+        Percentage
     }
 }

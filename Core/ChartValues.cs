@@ -32,7 +32,7 @@ namespace LiveCharts
     /// <summary>
     /// Creates a collection of chart values
     /// </summary>
-    /// <typeparam name="T"></typeparam>
+    /// <typeparam name="T">Type to plot, notice you could need to configure the type.</typeparam>
     public class ChartValues<T> : NoisyCollection<T>, IChartValues
     {
         private IPointEvaluator<T> DefaultConfiguration { get; set; }
@@ -151,7 +151,7 @@ namespace LiveCharts
 
 #endregion
 
-#region Private Methods
+        #region Private Methods
 
         private IEnumerable<KeyValuePair<int, T>> IndexData()
         {
@@ -283,6 +283,6 @@ namespace LiveCharts
             if (Series != null && Series.Chart != null) Series.Chart.Updater.Run();
         }
 
-#endregion
+        #endregion
     }
 }
