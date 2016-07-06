@@ -104,7 +104,7 @@ To verify if you are using a supported .net version, go to SolutionExplorer > Ri
 
 ### Migrating from older versions?
 
-PLease see [https://github.com/beto-rodriguez/Live-Charts/releases](https://github.com/beto-rodriguez/Live-Charts/releases)
+Please see [https://github.com/beto-rodriguez/Live-Charts/releases](https://github.com/beto-rodriguez/Live-Charts/releases)
 
 ### How to Contribute
 
