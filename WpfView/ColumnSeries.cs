@@ -39,7 +39,7 @@ namespace LiveCharts.Wpf
     /// <summary>
     /// Use the column series to plot horizontal bars in a cartesian chart
     /// </summary>
-    public class ColumnSeries : Series.Series, IColumnSeriesView
+    public class ColumnSeries : Series, IColumnSeriesView
     {
         #region Constructors
         /// <summary>

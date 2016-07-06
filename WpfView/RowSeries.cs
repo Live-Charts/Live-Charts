@@ -39,7 +39,7 @@ namespace LiveCharts.Wpf
     /// <summary>
     /// The Row series plots horizontal bars in a cartesian chart
     /// </summary>
-    public class RowSeries : Series.Series, IRowSeriesView
+    public class RowSeries : Series, IRowSeriesView
     {
         #region Constructors
         /// <summary>

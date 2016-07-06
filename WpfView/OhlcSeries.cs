@@ -38,7 +38,7 @@ namespace LiveCharts.Wpf
     /// <summary>
     /// The OHCL series defines a financial series, add this series to a cartesian chart
     /// </summary>
-    public class OhlcSeries : Series.Series, IOhlcSeriesView
+    public class OhlcSeries : Series, IOhlcSeriesView
     {
         #region Constructors
         /// <summary>

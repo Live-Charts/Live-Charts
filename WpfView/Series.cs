@@ -32,13 +32,19 @@ using LiveCharts.Helpers;
 using LiveCharts.Wpf.Charts.Base;
 using LiveCharts.Wpf.Converters;
 
-namespace LiveCharts.Wpf.Series
+namespace LiveCharts.Wpf
 {
+    /// <summary>
+    /// Base WPF and WinForms series, this class is abstract
+    /// </summary>
     public abstract class Series : FrameworkElement, ISeriesView
     {
         private readonly IChartValues _dummyValues = new ChartValues<double>();
         
         #region Constructors
+        /// <summary>
+        /// Initializes a new Instance of Series
+        /// </summary>
         protected Series()
         {
             DefaultFillOpacity = 0.35;
@@ -46,6 +52,10 @@ namespace LiveCharts.Wpf.Series
             IsVisibleChanged += OnIsVisibleChanged;
         }
 
+        /// <summary>
+        /// Initializes a new Instance of series, with a given configuration
+        /// </summary>
+        /// <param name="configuration"></param>
         protected Series(object configuration)
         {
             Configuration = configuration;
@@ -59,6 +69,9 @@ namespace LiveCharts.Wpf.Series
         private IChartValues LastKnownValues { get; set; }
 
         internal double DefaultFillOpacity { get; set; }
+        /// <summary>
+        /// THe Model is set by every series type, it is the motor of the series, it is the communication with the core of the library
+        /// </summary>
         public SeriesAlgorithm Model { get; set; }
         /// <summary>
         /// Gets the Actual values in the series, active or visible series only
@@ -316,24 +329,43 @@ namespace LiveCharts.Wpf.Series
 
         #endregion
 
+        /// <summary>
+        /// Gets the view of a given point
+        /// </summary>
+        /// <param name="view"></param>
+        /// <param name="point"></param>
+        /// <param name="label"></param>
+        /// <returns></returns>
         public virtual IChartPointView GetPointView(IChartPointView view, ChartPoint point, string label)
         {
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// This method runs when the update starts
+        /// </summary>
         public virtual void OnSeriesUpdateStart()
         {
         }
 
+        /// <summary>
+        /// Erases series
+        /// </summary>
         public virtual void Erase()
         {
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// This method runs when the update finishes
+        /// </summary>
         public virtual void OnSeriesUpdatedFinish()
         {
         }
 
+        /// <summary>
+        /// Initializes the series colors if they are not set
+        /// </summary>
         public virtual void InitializeColors()
         {
             var wpfChart = (Chart) Model.Chart.View;
@@ -345,11 +377,17 @@ namespace LiveCharts.Wpf.Series
                 SetValue(FillProperty, new SolidColorBrush(nextColor) {Opacity = DefaultFillOpacity});
         }
 
+        /// <summary>
+        /// Defines special elements to draw according to the series type
+        /// </summary>
         public virtual void DrawSpecializedElements()
         {
 
         }
 
+        /// <summary>
+        /// Places specializes items
+        /// </summary>
         public virtual void PlaceSpecializedElements()
         {
 

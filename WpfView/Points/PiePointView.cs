@@ -140,8 +140,8 @@ namespace LiveCharts.Wpf.Points
             BindingOperations.SetBinding(Slice, Shape.FillProperty,
                 new Binding
                 {
-                    Path = new PropertyPath(Series.Series.FillProperty),
-                    Source = ((Series.Series) point.SeriesView)
+                    Path = new PropertyPath(Series.FillProperty),
+                    Source = ((Series) point.SeriesView)
                 });
             Slice.BeginAnimation(PieSlice.PushOutProperty,
                 new DoubleAnimation(OriginalPushOut, point.SeriesView.Model.Chart.View.AnimationsSpeed));

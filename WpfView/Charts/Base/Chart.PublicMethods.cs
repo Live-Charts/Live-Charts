@@ -146,7 +146,7 @@ namespace LiveCharts.Wpf.Charts.Base
             {
                 var item = new SeriesViewModel();
 
-                var series = (Series.Series) t;
+                var series = (Series) t;
 
                 item.Title = series.Title;
                 item.StrokeThickness = series.StrokeThickness;

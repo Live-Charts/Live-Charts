@@ -38,7 +38,7 @@ namespace LiveCharts.Wpf
     /// <summary>
     /// The pie series should be added only in a pie chart.
     /// </summary>
-    public class PieSeries : Series.Series, IPieSeriesView
+    public class PieSeries : Series, IPieSeriesView
     {
         #region Constructors
         /// <summary>

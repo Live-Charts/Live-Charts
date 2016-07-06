@@ -145,8 +145,8 @@ namespace LiveCharts.Wpf.Points
             BindingOperations.SetBinding(Ellipse, Shape.FillProperty,
                 new Binding
                 {
-                    Path = new PropertyPath(Series.Series.FillProperty),
-                    Source = ((Series.Series) point.SeriesView)
+                    Path = new PropertyPath(Series.FillProperty),
+                    Source = ((Series) point.SeriesView)
                 });
         }
     }

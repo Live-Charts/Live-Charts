@@ -39,7 +39,7 @@ namespace LiveCharts.Wpf
     /// <summary>
     /// The stacked column series compares the proportion of every series in a point
     /// </summary>
-    public class StackedColumnSeries : Series.Series, IStackedColumnSeriesView
+    public class StackedColumnSeries : Series, IStackedColumnSeriesView
     {
         #region Constructors
         /// <summary>

@@ -42,7 +42,7 @@ namespace LiveCharts.Wpf
     /// <summary>
     /// Use a HeatSeries in a cartesian chart to draw heat maps.
     /// </summary>
-    public class HeatSeries : Series.Series, IHeatSeriesView
+    public class HeatSeries : Series, IHeatSeriesView
     {
         #region Constructors
 

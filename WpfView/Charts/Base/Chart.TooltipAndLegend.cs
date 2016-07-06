@@ -109,11 +109,11 @@ namespace LiveCharts.Wpf.Charts.Base
                     {
                         Series = new SeriesViewModel
                         {
-                            Geometry = ((Series.Series) x.SeriesView).PointGeometry ?? Geometry.Parse("M 0,0.5 h 1,0.5 Z"),
-                            Fill = ((Series.Series) x.SeriesView).Fill,
-                            Stroke = ((Series.Series) x.SeriesView).Stroke,
-                            StrokeThickness = ((Series.Series) x.SeriesView).StrokeThickness,
-                            Title = ((Series.Series) x.SeriesView).Title,
+                            Geometry = ((Series) x.SeriesView).PointGeometry ?? Geometry.Parse("M 0,0.5 h 1,0.5 Z"),
+                            Fill = ((Series) x.SeriesView).Fill,
+                            Stroke = ((Series) x.SeriesView).Stroke,
+                            StrokeThickness = ((Series) x.SeriesView).StrokeThickness,
+                            Title = ((Series) x.SeriesView).Title,
                         },
                         ChartPoint = x
                     }).ToList()
