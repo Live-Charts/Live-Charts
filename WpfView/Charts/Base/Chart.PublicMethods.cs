@@ -21,6 +21,7 @@
 //SOFTWARE.
 
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -86,8 +87,23 @@ namespace LiveCharts.Wpf.Charts.Base
             var wpfElement = (FrameworkElement) element;
             if (wpfElement == null) return;
             var p = (Canvas) wpfElement.Parent;
+
+            var o = Equals(wpfElement.Parent, Canvas);
+
+            if (wpfElement is ColumnSeries)
+            {
+                Debug.WriteLine(wpfElement.Parent?.GetHashCode());
+            }
+            else
+            {
+                var a = 1;
+            }
+
             if (p != null) p.Children.Remove(wpfElement);
             AddToView(wpfElement);
+
+            Debug.WriteLine(wpfElement.Parent?.GetHashCode());
+            o = Equals(wpfElement.Parent, Canvas);
         }
 
         public void EnsureElementBelongsToCurrentDrawMargin(object element)

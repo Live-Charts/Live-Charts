@@ -60,6 +60,7 @@ namespace LiveCharts.Wpf
         {
             Configuration = configuration;
             SetValue(TitleProperty, "Series");
+            PreviousVisibility = Visibility;
             IsVisibleChanged += OnIsVisibleChanged;
         }
         #endregion
@@ -420,9 +421,15 @@ namespace LiveCharts.Wpf
             };
         }
 
-        private void OnIsVisibleChanged(object sender, DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
+        private Visibility PreviousVisibility { get; set; }
+       
+        private void OnIsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            if (Model.Chart != null) Model.Chart.Updater.Run();
+            if (Model.Chart != null && PreviousVisibility != Visibility)
+            {
+                Model.Chart.Updater.Run();
+                PreviousVisibility = Visibility;
+            }
         }
 
         #region Obsoletes

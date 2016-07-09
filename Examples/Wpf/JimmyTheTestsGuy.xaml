@@ -9,8 +9,14 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300" d:DataContext="{d:DesignInstance local:JimmyTheTestsGuy}">    
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
         <Button Height="30" VerticalAlignment="Top" Click="ButtonBase_OnClick">Hola</Button>
-        <lvc:CartesianChart Name="Chart" Series="{Binding SeriesCollection}" LegendLocation="Right">
-        </lvc:CartesianChart> 
+        <lvc:CartesianChart Grid.Column="0" Name="Chart" Series="{Binding SeriesCollection}">
+        </lvc:CartesianChart>
+        <lvc:CartesianChart Grid.Column="1" Series="{Binding SeriesCollection}">
+        </lvc:CartesianChart>
     </Grid>
 </UserControl>

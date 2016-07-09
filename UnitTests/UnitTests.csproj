@@ -57,6 +57,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="MemoryLeaks\DrawnShapes.cs" />
+    <Compile Include="Other\SharedSeries.cs" />
     <Compile Include="SeriesAndValues\NullAndEmpty.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
