@@ -137,15 +137,11 @@
     <Compile Include="AxesCollection.cs" />
     <Compile Include="Axis.cs" />
     <Compile Include="AxisSection.cs" />
-    <Compile Include="Charts\Base\Chart.Debug.cs" />
     <Compile Include="Charts\Gauge.cs" />
     <Compile Include="Charts\PieChart.cs" />
     <Compile Include="Components\ChartUpdater.cs" />
     <Compile Include="Components\AxisSeparatorElement.cs" />
-    <Compile Include="Charts\Base\Chart.Properties.cs" />
     <Compile Include="Charts\Base\Chart.cs" />
-    <Compile Include="Charts\Base\Chart.TooltipAndLegend.cs" />
-    <Compile Include="Charts\Base\Chart.ZoomPan.cs" />
     <Compile Include="Converters\TypeConverters.cs" />
     <Compile Include="DefaultLegend.xaml.cs">
       <DependentUpon>DefaultLegend.xaml</DependentUpon>
@@ -199,8 +195,6 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <Compile Include="Charts\Base\Chart.PublicMethods.cs" />
-    <Compile Include="Charts\Base\Chart.Essentials.cs" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

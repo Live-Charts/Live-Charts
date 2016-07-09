@@ -22,19 +22,25 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Threading;
 using LiveCharts.Charts;
 using LiveCharts.Definitions.Charts;
+using LiveCharts.Dtos;
+using LiveCharts.Wpf.Points;
 
 namespace LiveCharts.Wpf.Charts.Base
 {
     /// <summary>
     /// Base chart class
     /// </summary>
-    public abstract partial class Chart : UserControl, IChartView
+    public abstract class Chart : UserControl, IChartView
     {
         /// <summary>
         /// Chart core model, the model calculates the chart.
@@ -113,6 +119,619 @@ namespace LiveCharts.Wpf.Charts.Base
         /// </summary>
         public bool IsMocked { get; set; }
 
+        #endregion
+
+        #region Debug
+        public void MockIt(CoreSize size)
+        {
+            DisableAnimations = true;
+
+            IsMocked = true;
+            IsControlLoaded = true;
+
+            Model.ControlSize = size;
+
+            Model.DrawMargin.Height = Canvas.ActualHeight;
+            Model.DrawMargin.Width = Canvas.ActualWidth;
+        }
+
+        public int GetCanvasElements()
+        {
+            return Canvas.Children.Count;
+        }
+
+        public int GetDrawMarginElements()
+        {
+            return DrawMargin.Children.Count;
+        }
+
+        public object GetCanvas()
+        {
+            return Canvas;
+        }
+        #endregion
+
+        #region Essentials
+        private void OnLoaded(object sender, RoutedEventArgs args)
+        {
+            IsControlLoaded = true;
+            Model.DrawMargin.Height = Canvas.ActualHeight;
+            Model.DrawMargin.Width = Canvas.ActualWidth;
+        }
+
+        private void OnSizeChanged(object sender, SizeChangedEventArgs args)
+        {
+#if DEBUG
+            Debug.WriteLine("ChartResized");
+#endif
+            Model.ControlSize = new CoreSize(ActualWidth, ActualHeight);
+
+            Model.Updater.Run();
+        }
+
+        private static void OnSeriesChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
+        {
+            var chart = (Chart)dependencyObject;
+
+            if (chart.LastKnownSeriesCollection != chart.Series && chart.LastKnownSeriesCollection != null)
+            {
+                foreach (var series in chart.LastKnownSeriesCollection)
+                {
+                    series.Erase();
+                }
+            }
+
+            CallChartUpdater()(dependencyObject, dependencyPropertyChangedEventArgs);
+            chart.LastKnownSeriesCollection = chart.Series;
+        }
+        #endregion
+
+        #region Events
+        /// <summary>
+        /// The DataClick event is fired when a user click any data point
+        /// </summary>
+        public event Action<object, ChartPoint> DataClick;
+        #endregion
+
+        #region Properties
+
+        private static Random Randomizer { get; set; }
+        private SeriesCollection LastKnownSeriesCollection { get; set; }
+
+        /// <summary>
+        /// Gets or sets the chart current canvas
+        /// </summary>
+        protected Canvas Canvas { get; set; }
+        internal Canvas DrawMargin { get; set; }
+        internal int SeriesIndexCount { get; set; }
+
+        /// <summary>
+        /// Gets or sets whether charts must randomize the starting default series color.
+        /// </summary>
+        public static bool RandomizeStartingColor { get; set; }
+        /// <summary>
+        /// Gets or sets the default series color set.
+        /// </summary>
+        public static List<Color> Colors { get; set; }
+
+        public static readonly DependencyProperty AxisYProperty = DependencyProperty.Register(
+            "AxisY", typeof(AxesCollection), typeof(Chart),
+            new PropertyMetadata(null, CallChartUpdater()));
+        /// <summary>
+        /// Gets or sets vertical axis
+        /// </summary>
+        public AxesCollection AxisY
+        {
+            get { return (AxesCollection)GetValue(AxisYProperty); }
+            set { SetValue(AxisYProperty, value); }
+        }
+
+        public static readonly DependencyProperty AxisXProperty = DependencyProperty.Register(
+            "AxisX", typeof(AxesCollection), typeof(Chart),
+            new PropertyMetadata(null, CallChartUpdater()));
+        /// <summary>
+        /// Gets or sets horizontal axis
+        /// </summary>
+        public AxesCollection AxisX
+        {
+            get { return (AxesCollection)GetValue(AxisXProperty); }
+            set { SetValue(AxisXProperty, value); }
+        }
+
+        public static readonly DependencyProperty ChartLegendProperty = DependencyProperty.Register(
+            "ChartLegend", typeof(DefaultLegend), typeof(Chart),
+            new PropertyMetadata(default(DefaultLegend), CallChartUpdater()));
+        /// <summary>
+        /// Gets or sets the control to use as chart legend for this chart.
+        /// </summary>
+        public DefaultLegend ChartLegend
+        {
+            get { return (DefaultLegend)GetValue(ChartLegendProperty); }
+            set { SetValue(ChartLegendProperty, value); }
+        }
+
+        public static readonly DependencyProperty ZoomProperty = DependencyProperty.Register(
+            "Zoom", typeof(ZoomingOptions), typeof(Chart),
+            new PropertyMetadata(default(ZoomingOptions)));
+        /// <summary>
+        /// Gets or sets chart zoom behavior
+        /// </summary>
+        public ZoomingOptions Zoom
+        {
+            get { return (ZoomingOptions)GetValue(ZoomProperty); }
+            set { SetValue(ZoomProperty, value); }
+        }
+
+        public static readonly DependencyProperty LegendLocationProperty = DependencyProperty.Register(
+            "LegendLocation", typeof(LegendLocation), typeof(Chart),
+            new PropertyMetadata(LegendLocation.None, CallChartUpdater()));
+        /// <summary>
+        /// Gets or sets where legend is located
+        /// </summary>
+        public LegendLocation LegendLocation
+        {
+            get { return (LegendLocation)GetValue(LegendLocationProperty); }
+            set { SetValue(LegendLocationProperty, value); }
+        }
+
+        public static readonly DependencyProperty SeriesProperty = DependencyProperty.Register(
+            "Series", typeof(SeriesCollection), typeof(Chart),
+            new PropertyMetadata(default(SeriesCollection), OnSeriesChanged));
+
+        /// <summary>
+        /// Gets or sets chart series collection to plot.
+        /// </summary>
+        public SeriesCollection Series
+        {
+            get { return (SeriesCollection)GetValue(SeriesProperty); }
+            set { SetValue(SeriesProperty, value); }
+        }
+
+        public static readonly DependencyProperty AnimationsSpeedProperty = DependencyProperty.Register(
+            "AnimationsSpeed", typeof(TimeSpan), typeof(Chart),
+            new PropertyMetadata(default(TimeSpan), UpdateChartFrequency));
+
+        /// <summary>
+        /// Gets or sets the default animation speed for this chart, you can override this speed for each element (series and axes)
+        /// </summary>
+        public TimeSpan AnimationsSpeed
+        {
+            get { return (TimeSpan)GetValue(AnimationsSpeedProperty); }
+            set { SetValue(AnimationsSpeedProperty, value); }
+        }
+
+        public static readonly DependencyProperty DisableAnimationsProperty = DependencyProperty.Register(
+            "DisableAnimations", typeof(bool), typeof(Chart),
+            new PropertyMetadata(default(bool), UpdateChartFrequency));
+        /// <summary>
+        /// Gets or sets if the chart is animated or not.
+        /// </summary>
+        public bool DisableAnimations
+        {
+            get { return (bool)GetValue(DisableAnimationsProperty); }
+            set { SetValue(DisableAnimationsProperty, value); }
+        }
+
+        public static readonly DependencyProperty DataTooltipProperty = DependencyProperty.Register(
+            "DataTooltip", typeof(DefaultTooltip), typeof(Chart), new PropertyMetadata(default(DefaultTooltip)));
+        /// <summary>
+        /// Gets or sets the chart data tooltip.
+        /// </summary>
+        public DefaultTooltip DataTooltip
+        {
+            get { return (DefaultTooltip)GetValue(DataTooltipProperty); }
+            set { SetValue(DataTooltipProperty, value); }
+        }
+
+        public static readonly DependencyProperty HoverableProperty = DependencyProperty.Register(
+            "Hoverable", typeof(bool), typeof(Chart), new PropertyMetadata(true));
+        /// <summary>
+        /// gets or sets whether chart should react when a user moves the mouse over a data point.
+        /// </summary>
+        public bool Hoverable
+        {
+            get { return (bool)GetValue(HoverableProperty); }
+            set { SetValue(HoverableProperty, value); }
+        }
+        /// <summary>
+        /// Gets the chart model, the model is who calculates everything, is the engine of the chart
+        /// </summary>
+        public ChartCore Model
+        {
+            get { return ChartCoreModel; }
+        }
+
+        /// <summary>
+        /// Gets whether the chart has an active tooltip.
+        /// </summary>
+        public bool HasTooltip
+        {
+            get { return DataTooltip != null; }
+        }
+
+        /// <summary>
+        /// Gets whether the chart has a DataClick event attacked.
+        /// </summary>
+        public bool HasDataClickEventAttached
+        {
+            get { return DataClick != null; }
+        }
+
+        /// <summary>
+        /// Gets whether the chart is already loaded in the view.
+        /// </summary>
+        public bool IsControlLoaded { get; private set; }
+
+        #endregion
+
+        #region Public Methods
+        public void SetDrawMarginTop(double value)
+        {
+            Canvas.SetTop(DrawMargin, value);
+        }
+
+        public void SetDrawMarginLeft(double value)
+        {
+            Canvas.SetLeft(DrawMargin, value);
+        }
+
+        public void SetDrawMarginHeight(double value)
+        {
+            DrawMargin.Height = value;
+        }
+
+        public void SetDrawMarginWidth(double value)
+        {
+            DrawMargin.Width = value;
+        }
+
+        public void AddToView(object element)
+        {
+            var wpfElement = (FrameworkElement)element;
+            if (wpfElement == null) return;
+            Canvas.Children.Add(wpfElement);
+        }
+
+        public void AddToDrawMargin(object element)
+        {
+            var wpfElement = (FrameworkElement)element;
+            if (wpfElement == null) return;
+            DrawMargin.Children.Add(wpfElement);
+        }
+
+        public void RemoveFromView(object element)
+        {
+            var wpfElement = (FrameworkElement)element;
+            if (wpfElement == null) return;
+            Canvas.Children.Remove(wpfElement);
+        }
+
+        public void RemoveFromDrawMargin(object element)
+        {
+            var wpfElement = (FrameworkElement)element;
+            if (wpfElement == null) return;
+            DrawMargin.Children.Remove(wpfElement);
+        }
+
+        public void EnsureElementBelongsToCurrentView(object element)
+        {
+            var wpfElement = (FrameworkElement)element;
+            if (wpfElement == null) return;
+            var p = (Canvas)wpfElement.Parent;
+            if (p != null) p.Children.Remove(wpfElement);
+            AddToView(wpfElement);
+        }
+
+        public void EnsureElementBelongsToCurrentDrawMargin(object element)
+        {
+            var wpfElement = (FrameworkElement)element;
+            if (wpfElement == null) return;
+            var p = (Canvas)wpfElement.Parent;
+            if (p != null) p.Children.Remove(wpfElement);
+            AddToDrawMargin(wpfElement);
+        }
+
+        public void ShowLegend(CorePoint at)
+        {
+            if (ChartLegend == null) return;
+
+            if (ChartLegend.Parent == null)
+            {
+                AddToView(ChartLegend);
+                Canvas.SetLeft(ChartLegend, 0d);
+                Canvas.SetTop(ChartLegend, 0d);
+            }
+
+            ChartLegend.Visibility = Visibility.Visible;
+
+            Canvas.SetLeft(ChartLegend, at.X);
+            Canvas.SetTop(ChartLegend, at.Y);
+        }
+
+        public void HideLegend()
+        {
+            if (ChartLegend != null)
+                ChartLegend.Visibility = Visibility.Hidden;
+        }
+
+        /// <summary>
+        /// Forces the chart to update
+        /// </summary>
+        /// <param name="restartView">Indicates whether the update should restart the view, animations will run again if true.</param>
+        /// <param name="force">Force the updater to run when called, without waiting for the next updater step.</param>
+        public void Update(bool restartView = false, bool force = false)
+        {
+            if (Model != null) Model.Updater.Run(restartView, force);
+        }
+
+        public CoreSize LoadLegend()
+        {
+            if (ChartLegend == null || LegendLocation == LegendLocation.None)
+                return new CoreSize();
+
+            if (ChartLegend.Parent == null)
+                Canvas.Children.Add(ChartLegend);
+
+            var l = new List<SeriesViewModel>();
+
+            foreach (var t in Series)
+            {
+                var item = new SeriesViewModel();
+
+                var series = (Series)t;
+
+                item.Title = series.Title;
+                item.StrokeThickness = series.StrokeThickness;
+                item.Stroke = series.Stroke;
+                item.Fill = series.Fill;
+                item.Geometry = series.PointGeometry ?? Geometry.Parse("M 0,0.5 h 1,0.5 Z");
+
+                l.Add(item);
+            }
+
+            ChartLegend.Series = l;
+
+            ChartLegend.InternalOrientation = LegendLocation == LegendLocation.Bottom ||
+                                              LegendLocation == LegendLocation.Top
+                ? Orientation.Horizontal
+                : Orientation.Vertical;
+
+            ChartLegend.UpdateLayout();
+            ChartLegend.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+
+            return new CoreSize(ChartLegend.DesiredSize.Width,
+                ChartLegend.DesiredSize.Height);
+        }
+
+        public List<AxisCore> MapXAxes(ChartCore chart)
+        {
+            if (AxisX.Count == 0) AxisX.AddRange(DefaultAxes.CleanAxis);
+            return AxisX.Select(x =>
+            {
+                if (x.Parent == null)
+                {
+                    chart.View.AddToView(x);
+                    if (x.Separator != null) chart.View.AddToView(x.Separator);
+                }
+                return x.AsCoreElement(Model, AxisOrientation.X);
+            }).ToList();
+        }
+
+        public List<AxisCore> MapYAxes(ChartCore chart)
+        {
+            if (AxisY.Count == 0) AxisY.AddRange(DefaultAxes.DefaultAxis);
+            return AxisY.Select(x =>
+            {
+                if (x.Parent == null) chart.View.AddToView(x);
+                return x.AsCoreElement(Model, AxisOrientation.Y);
+            }).ToList();
+        }
+
+        public Color GetNextDefaultColor()
+        {
+            if (SeriesIndexCount == int.MaxValue) SeriesIndexCount = 0;
+            return Colors[SeriesIndexCount++ % Colors.Count];
+        }
+        #endregion
+
+        #region Tooltip and legend
+        private DispatcherTimer TooltipTimeoutTimer { get; set; }
+
+        public static readonly DependencyProperty TooltipTimeoutProperty = DependencyProperty.Register(
+            "TooltipTimeout", typeof(TimeSpan), typeof(Chart),
+            new PropertyMetadata(default(TimeSpan), TooltipTimeoutCallback));
+
+        /// <summary>
+        /// Gets or sets the time a tooltip takes to hide when the user leaves the data point.
+        /// </summary>
+        public TimeSpan TooltipTimeout
+        {
+            get { return (TimeSpan)GetValue(TooltipTimeoutProperty); }
+            set { SetValue(TooltipTimeoutProperty, value); }
+        }
+
+        internal void AttachHoverableEventTo(FrameworkElement element)
+        {
+            element.MouseDown -= DataMouseDown;
+            element.MouseEnter -= DataMouseEnter;
+            element.MouseLeave -= DataMouseLeave;
+
+            element.MouseDown += DataMouseDown;
+            element.MouseEnter += DataMouseEnter;
+            element.MouseLeave += DataMouseLeave;
+        }
+
+        private void DataMouseDown(object sender, MouseEventArgs e)
+        {
+            var result = Model.ActualSeries.SelectMany(x => x.ActualValues.Points).FirstOrDefault(x =>
+            {
+                var pointView = x.View as PointView;
+                return pointView != null && Equals(pointView.HoverShape, sender);
+            });
+            if (DataClick != null) DataClick.Invoke(sender, result);
+        }
+
+        private void DataMouseEnter(object sender, EventArgs e)
+        {
+            var source = Model.ActualSeries.SelectMany(x => x.ActualValues.Points);
+            var senderPoint = source.FirstOrDefault(x => x.View != null &&
+                                                         Equals(((PointView)x.View).HoverShape, sender));
+
+            if (senderPoint == null) return;
+
+            if (Hoverable) senderPoint.View.OnHover(senderPoint);
+
+            if (DataTooltip != null)
+            {
+                TooltipTimeoutTimer.Stop();
+
+                if (DataTooltip.Parent == null)
+                {
+                    Panel.SetZIndex(DataTooltip, int.MaxValue);
+                    AddToView(DataTooltip);
+                    Canvas.SetTop(DataTooltip, 0d);
+                    Canvas.SetLeft(DataTooltip, 0d);
+                }
+
+                if (DataTooltip.SelectionMode == null)
+                {
+                    DataTooltip.SelectionMode = senderPoint.SeriesView.Model.PreferredSelectionMode;
+                }
+
+                var coreModel = ChartFunctions.GetTooltipData(senderPoint, Model, DataTooltip.SelectionMode.Value);
+
+                DataTooltip.ViewModel = new WpfTooltipViewModel
+                {
+                    XFormatter = coreModel.XFormatter,
+                    YFormatter = coreModel.YFormatter,
+                    SharedValue = coreModel.Shares,
+                    SelectionMode = DataTooltip.SelectionMode ?? TooltipSelectionMode.OnlySender,
+                    Points = coreModel.Points.Select(x => new DataPointViewModel
+                    {
+                        Series = new SeriesViewModel
+                        {
+                            Geometry = ((Series)x.SeriesView).PointGeometry ?? Geometry.Parse("M 0,0.5 h 1,0.5 Z"),
+                            Fill = ((Series)x.SeriesView).Fill,
+                            Stroke = ((Series)x.SeriesView).Stroke,
+                            StrokeThickness = ((Series)x.SeriesView).StrokeThickness,
+                            Title = ((Series)x.SeriesView).Title,
+                        },
+                        ChartPoint = x
+                    }).ToList()
+                };
+
+                DataTooltip.Visibility = Visibility.Visible;
+                DataTooltip.UpdateLayout();
+
+                var location = GetTooltipPosition(senderPoint);
+
+                location = new Point(Canvas.GetLeft(DrawMargin) + location.X, Canvas.GetTop(DrawMargin) + location.Y);
+
+                if (DisableAnimations)
+                {
+                    Canvas.SetLeft(DataTooltip, location.X);
+                    Canvas.SetTop(DataTooltip, location.Y);
+                }
+                else
+                {
+                    DataTooltip.BeginAnimation(Canvas.LeftProperty,
+                        new DoubleAnimation(location.X, TimeSpan.FromMilliseconds(200)));
+                    DataTooltip.BeginAnimation(Canvas.TopProperty,
+                        new DoubleAnimation(location.Y, TimeSpan.FromMilliseconds(200)));
+                }
+            }
+        }
+
+        private void DataMouseLeave(object sender, EventArgs e)
+        {
+            TooltipTimeoutTimer.Stop();
+            TooltipTimeoutTimer.Start();
+
+            var source = Model.ActualSeries.SelectMany(x => x.ActualValues.Points);
+            var senderPoint =
+                source.FirstOrDefault(x => x.View != null && Equals(((PointView)x.View).HoverShape, sender));
+
+            if (senderPoint == null) return;
+
+            if (Hoverable) senderPoint.View.OnHoverLeave(senderPoint);
+        }
+
+        private void TooltipTimeoutTimerOnTick(object sender, EventArgs eventArgs)
+        {
+            TooltipTimeoutTimer.Stop();
+
+            if (DataTooltip == null) return;
+
+            DataTooltip.Visibility = Visibility.Hidden;
+        }
+
+        private static void TooltipTimeoutCallback(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
+        {
+            var chart = (Chart)dependencyObject;
+
+            if (chart == null) return;
+
+            chart.TooltipTimeoutTimer.Interval = chart.TooltipTimeout;
+        }
+
+        public void HideTooltop()
+        {
+            if (DataTooltip == null) return;
+
+            DataTooltip.Visibility = Visibility.Hidden;
+        }
+
+        protected virtual Point GetTooltipPosition(ChartPoint senderPoint)
+        {
+            var xt = senderPoint.ChartLocation.X;
+            var yt = senderPoint.ChartLocation.Y;
+
+            xt = xt > DrawMargin.Width / 2 ? xt - DataTooltip.ActualWidth - 5 : xt + 5;
+            yt = yt > DrawMargin.Height / 2 ? yt - DataTooltip.ActualHeight - 5 : yt + 5;
+
+            return new Point(xt, yt);
+        }
+        #endregion
+
+        #region Zooming and Panning
+        private Point DragOrigin { get; set; }
+
+        private void MouseWheelOnRoll(object sender, MouseWheelEventArgs e)
+        {
+            if (Zoom == ZoomingOptions.None) return;
+
+            var p = e.GetPosition(this);
+
+            var corePoint = new CorePoint(p.X, p.Y);
+
+            e.Handled = true;
+
+            if (e.Delta > 0)
+                Model.ZoomIn(corePoint);
+            else
+                Model.ZoomOut(corePoint);
+        }
+
+        private void OnDraggingStart(object sender, MouseButtonEventArgs e)
+        {
+            DragOrigin = e.GetPosition(this);
+            DragOrigin = new Point(
+                ChartFunctions.FromDrawMargin(DragOrigin.X, AxisOrientation.X, Model),
+                ChartFunctions.FromDrawMargin(DragOrigin.Y, AxisOrientation.Y, Model));
+        }
+
+        private void OnDraggingEnd(object sender, MouseButtonEventArgs e)
+        {
+            if (Zoom == ZoomingOptions.None) return;
+
+            var end = e.GetPosition(this);
+
+            end = new Point(
+                ChartFunctions.FromDrawMargin(end.X, AxisOrientation.X, Model),
+                ChartFunctions.FromDrawMargin(end.Y, AxisOrientation.Y, Model));
+
+            Model.Drag(new CorePoint(DragOrigin.X - end.X, DragOrigin.Y - end.Y));
+        }
         #endregion
 
         #region Property Changed
