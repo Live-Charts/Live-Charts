@@ -102,6 +102,10 @@ Verify your project uses .Net 4.0.3 or greater, then follow these stepts.
 
 To verify if you are using a supported .net version, go to SolutionExplorer > Right click on your project > Properties > Application, then verify Taret framework is set at least to .net 4.0.3 
 
+### Migrating from older versions?
+
+Please see [https://github.com/beto-rodriguez/Live-Charts/releases](https://github.com/beto-rodriguez/Live-Charts/releases)
+
 ### How to Contribute
 
 * **Star** this repo
