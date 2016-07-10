@@ -88,6 +88,12 @@
     <Compile Include="Cartesian\BasicBar\BasicRowExample.Designer.cs">
       <DependentUpon>BasicRowExample.cs</DependentUpon>
     </Compile>
+    <Compile Include="Cartesian\BasicBubbles\BasicBubblesExample.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Cartesian\BasicBubbles\BasicBubblesExample.Designer.cs">
+      <DependentUpon>BasicBubblesExample.cs</DependentUpon>
+    </Compile>
     <Compile Include="Cartesian\BasicLine\BasicLineExample.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -238,6 +244,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Cartesian\BasicBar\BasicRowExample.resx">
       <DependentUpon>BasicRowExample.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Cartesian\BasicBubbles\BasicBubblesExample.resx">
+      <DependentUpon>BasicBubblesExample.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Cartesian\BasicLine\BasicLineExample.resx">
       <DependentUpon>BasicLineExample.cs</DependentUpon>

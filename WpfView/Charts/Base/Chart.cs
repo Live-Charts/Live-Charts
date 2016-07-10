@@ -241,7 +241,7 @@ namespace LiveCharts.Wpf.Charts.Base
 
         public static readonly DependencyProperty ChartLegendProperty = DependencyProperty.Register(
             "ChartLegend", typeof(UserControl), typeof(Chart),
-            new PropertyMetadata(default(UserControl), CallChartUpdater()));
+            new FrameworkPropertyMetadata(null, CallChartUpdater()));
         /// <summary>
         /// Gets or sets the control to use as chart legend for this chart.
         /// </summary>
@@ -314,7 +314,7 @@ namespace LiveCharts.Wpf.Charts.Base
         }
 
         public static readonly DependencyProperty DataTooltipProperty = DependencyProperty.Register(
-            "DataTooltip", typeof(UserControl), typeof(Chart), new PropertyMetadata(default(UserControl)));
+            "DataTooltip", typeof(UserControl), typeof(Chart), new PropertyMetadata(null));
         /// <summary>
         /// Gets or sets the chart data tooltip.
         /// </summary>
