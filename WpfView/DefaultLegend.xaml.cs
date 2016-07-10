@@ -30,10 +30,15 @@ using System.Windows.Data;
 
 namespace LiveCharts.Wpf
 {
+    public interface IChartLegend : INotifyPropertyChanged
+    {
+        List<SeriesViewModel> Series { get; set; }
+    }
+
     /// <summary>
     /// The default legend control, by default a new instance of this control is created for every chart that requires a legend.
     /// </summary>
-    public partial class DefaultLegend : INotifyPropertyChanged
+    public partial class DefaultLegend : IChartLegend
     {
         private List<SeriesViewModel> _series;
 

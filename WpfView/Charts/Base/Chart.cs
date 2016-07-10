@@ -33,6 +33,7 @@ using System.Windows.Threading;
 using LiveCharts.Charts;
 using LiveCharts.Definitions.Charts;
 using LiveCharts.Dtos;
+using LiveCharts.Helpers;
 using LiveCharts.Wpf.Points;
 
 namespace LiveCharts.Wpf.Charts.Base
@@ -239,14 +240,14 @@ namespace LiveCharts.Wpf.Charts.Base
         }
 
         public static readonly DependencyProperty ChartLegendProperty = DependencyProperty.Register(
-            "ChartLegend", typeof(DefaultLegend), typeof(Chart),
-            new PropertyMetadata(default(DefaultLegend), CallChartUpdater()));
+            "ChartLegend", typeof(UserControl), typeof(Chart),
+            new PropertyMetadata(default(UserControl), CallChartUpdater()));
         /// <summary>
         /// Gets or sets the control to use as chart legend for this chart.
         /// </summary>
-        public DefaultLegend ChartLegend
+        public UserControl ChartLegend
         {
-            get { return (DefaultLegend)GetValue(ChartLegendProperty); }
+            get { return (UserControl)GetValue(ChartLegendProperty); }
             set { SetValue(ChartLegendProperty, value); }
         }
 
@@ -313,13 +314,13 @@ namespace LiveCharts.Wpf.Charts.Base
         }
 
         public static readonly DependencyProperty DataTooltipProperty = DependencyProperty.Register(
-            "DataTooltip", typeof(DefaultTooltip), typeof(Chart), new PropertyMetadata(default(DefaultTooltip)));
+            "DataTooltip", typeof(UserControl), typeof(Chart), new PropertyMetadata(default(UserControl)));
         /// <summary>
         /// Gets or sets the chart data tooltip.
         /// </summary>
-        public DefaultTooltip DataTooltip
+        public UserControl DataTooltip
         {
-            get { return (DefaultTooltip)GetValue(DataTooltipProperty); }
+            get { return (UserControl)GetValue(DataTooltipProperty); }
             set { SetValue(DataTooltipProperty, value); }
         }
 
@@ -464,45 +465,6 @@ namespace LiveCharts.Wpf.Charts.Base
             if (Model != null) Model.Updater.Run(restartView, force);
         }
 
-        public CoreSize LoadLegend()
-        {
-            if (ChartLegend == null || LegendLocation == LegendLocation.None)
-                return new CoreSize();
-
-            if (ChartLegend.Parent == null)
-                Canvas.Children.Add(ChartLegend);
-
-            var l = new List<SeriesViewModel>();
-
-            foreach (var t in Series)
-            {
-                var item = new SeriesViewModel();
-
-                var series = (Series)t;
-
-                item.Title = series.Title;
-                item.StrokeThickness = series.StrokeThickness;
-                item.Stroke = series.Stroke;
-                item.Fill = series.Fill;
-                item.Geometry = series.PointGeometry ?? Geometry.Parse("M 0,0.5 h 1,0.5 Z");
-
-                l.Add(item);
-            }
-
-            ChartLegend.Series = l;
-
-            ChartLegend.InternalOrientation = LegendLocation == LegendLocation.Bottom ||
-                                              LegendLocation == LegendLocation.Top
-                ? Orientation.Horizontal
-                : Orientation.Vertical;
-
-            ChartLegend.UpdateLayout();
-            ChartLegend.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
-
-            return new CoreSize(ChartLegend.DesiredSize.Width,
-                ChartLegend.DesiredSize.Height);
-        }
-
         public List<AxisCore> MapXAxes(ChartCore chart)
         {
             if (AxisX.Count == 0) AxisX.AddRange(DefaultAxes.CleanAxis);
@@ -593,28 +555,31 @@ namespace LiveCharts.Wpf.Charts.Base
                     Canvas.SetLeft(DataTooltip, 0d);
                 }
 
-                if (DataTooltip.SelectionMode == null)
-                {
-                    DataTooltip.SelectionMode = senderPoint.SeriesView.Model.PreferredSelectionMode;
-                }
+                var lcTooltip = DataTooltip as IChartTooltip;
+                if (lcTooltip == null)
+                    throw new LiveChartsException("The current tooltip is not valid, ensure it implements IChartsTooltip");
 
-                var coreModel = ChartFunctions.GetTooltipData(senderPoint, Model, DataTooltip.SelectionMode.Value);
+                if (lcTooltip.SelectionMode == null)
+                    lcTooltip.SelectionMode = senderPoint.SeriesView.Model.PreferredSelectionMode;
+                
+                var coreModel = ChartFunctions.GetTooltipData(senderPoint, Model, lcTooltip.SelectionMode.Value);
 
-                DataTooltip.ViewModel = new WpfTooltipViewModel
+                lcTooltip.Data = new TooltipData
                 {
                     XFormatter = coreModel.XFormatter,
                     YFormatter = coreModel.YFormatter,
                     SharedValue = coreModel.Shares,
-                    SelectionMode = DataTooltip.SelectionMode ?? TooltipSelectionMode.OnlySender,
+                    SelectionMode = lcTooltip.SelectionMode ?? TooltipSelectionMode.OnlySender,
                     Points = coreModel.Points.Select(x => new DataPointViewModel
                     {
                         Series = new SeriesViewModel
                         {
-                            Geometry = ((Series)x.SeriesView).PointGeometry ?? Geometry.Parse("M 0,0.5 h 1,0.5 Z"),
-                            Fill = ((Series)x.SeriesView).Fill,
-                            Stroke = ((Series)x.SeriesView).Stroke,
-                            StrokeThickness = ((Series)x.SeriesView).StrokeThickness,
-                            Title = ((Series)x.SeriesView).Title,
+                            PointGeometry = ((Series) x.SeriesView).PointGeometry ??
+                                       Geometry.Parse("M 0,0.5 h 1,0.5 Z"),
+                            Fill = ((Series) x.SeriesView).Fill,
+                            Stroke = ((Series) x.SeriesView).Stroke,
+                            StrokeThickness = ((Series) x.SeriesView).StrokeThickness,
+                            Title = ((Series) x.SeriesView).Title,
                         },
                         ChartPoint = x
                     }).ToList()
@@ -663,6 +628,51 @@ namespace LiveCharts.Wpf.Charts.Base
             if (DataTooltip == null) return;
 
             DataTooltip.Visibility = Visibility.Hidden;
+        }
+
+        public CoreSize LoadLegend()
+        {
+            if (ChartLegend == null || LegendLocation == LegendLocation.None)
+                return new CoreSize();
+
+            if (ChartLegend.Parent == null)
+                Canvas.Children.Add(ChartLegend);
+
+            var l = new List<SeriesViewModel>();
+
+            foreach (var t in Series)
+            {
+                var item = new SeriesViewModel();
+
+                var series = (Series)t;
+
+                item.Title = series.Title;
+                item.StrokeThickness = series.StrokeThickness;
+                item.Stroke = series.Stroke;
+                item.Fill = series.Fill;
+                item.PointGeometry = series.PointGeometry ?? Geometry.Parse("M 0,0.5 h 1,0.5 Z");
+
+                l.Add(item);
+            }
+
+            var iChartLegend = ChartLegend as IChartLegend;
+            if (iChartLegend == null)
+                throw new LiveChartsException("The current legend is not valid, ensure it implements IChartLegend");
+
+            iChartLegend.Series = l;
+
+            var defaultLegend = ChartLegend as DefaultLegend;
+            if (defaultLegend != null)
+                defaultLegend.InternalOrientation = LegendLocation == LegendLocation.Bottom ||
+                                                    LegendLocation == LegendLocation.Top
+                    ? Orientation.Horizontal
+                    : Orientation.Vertical;
+
+            ChartLegend.UpdateLayout();
+            ChartLegend.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+
+            return new CoreSize(ChartLegend.DesiredSize.Width,
+                ChartLegend.DesiredSize.Height);
         }
 
         private static void TooltipTimeoutCallback(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)

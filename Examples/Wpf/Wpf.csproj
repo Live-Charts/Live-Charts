@@ -96,6 +96,18 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="CartesianChart\CustomTooltipAndLegend\CustomersLegend.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CartesianChart\CustomTooltipAndLegend\CustomersTooltip.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CartesianChart\CustomTooltipAndLegend\CustomTooltipAndLegendExample.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="CartesianChart\DynamicVisibility\DynamicVisibilityExample.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -251,6 +263,16 @@
     <Compile Include="CartesianChart\ConstantChanges\MeasureModel.cs" />
     <Compile Include="CartesianChart\Customized Series\CustomizedLineSeries.xaml.cs">
       <DependentUpon>CustomizedLineSeries.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CartesianChart\CustomTooltipAndLegend\CustomersLegend.xaml.cs">
+      <DependentUpon>CustomersLegend.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CartesianChart\CustomTooltipAndLegend\CustomersTooltip.xaml.cs">
+      <DependentUpon>CustomersTooltip.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CartesianChart\CustomTooltipAndLegend\CustomerVM.cs" />
+    <Compile Include="CartesianChart\CustomTooltipAndLegend\CustomTooltipAndLegendExample.xaml.cs">
+      <DependentUpon>CustomTooltipAndLegendExample.xaml</DependentUpon>
     </Compile>
     <Compile Include="CartesianChart\DynamicVisibility\DynamicVisibilityExample.xaml.cs">
       <DependentUpon>DynamicVisibilityExample.xaml</DependentUpon>

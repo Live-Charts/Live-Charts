@@ -23,6 +23,7 @@
 using System;
 using System.ComponentModel;
 using System.ComponentModel.Design.Serialization;
+using System.Windows.Controls;
 using System.Windows.Forms.Integration;
 using System.Windows.Media;
 using LiveCharts.Wpf;
@@ -62,7 +63,7 @@ namespace LiveCharts.WinForms
         }
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public DefaultLegend DefaultLegend
+        public UserControl DefaultLegend
         {
             get { return WpfBase.ChartLegend; }
             set { WpfBase.ChartLegend = value; }
@@ -102,7 +103,7 @@ namespace LiveCharts.WinForms
         }
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public DefaultTooltip DataTooltip
+        public UserControl DataTooltip
         {
             get { return WpfBase.DataTooltip; }
             set { WpfBase.DataTooltip = value; }

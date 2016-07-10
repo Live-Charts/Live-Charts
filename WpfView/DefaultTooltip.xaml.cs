@@ -31,12 +31,19 @@ using System.Windows.Media;
 
 namespace LiveCharts.Wpf
 {
+
+    public interface IChartTooltip : INotifyPropertyChanged
+    {
+        TooltipData Data { get; set; }
+        TooltipSelectionMode? SelectionMode { get; set; }
+    }
+
     /// <summary>
     /// The Default Tooltip control, by default any chart that requires a tooltip will create a new instance of this class.
     /// </summary>
-    public partial class DefaultTooltip : INotifyPropertyChanged
+    public partial class DefaultTooltip : IChartTooltip
     {
-        private WpfTooltipViewModel _viewModel;
+        private TooltipData _data;
 
         /// <summary>
         /// Initializes a new instance of DefaultTooltip class
@@ -85,13 +92,13 @@ namespace LiveCharts.Wpf
             set { SetValue(BulletSizeProperty, value); }
         }
 
-        public WpfTooltipViewModel ViewModel
+        public TooltipData Data
         {
-            get { return _viewModel; }
+            get { return _data; }
             set
             {
-                _viewModel = value;
-                OnPropertyChanged("ViewModel");
+                _data = value;
+                OnPropertyChanged("Data");
             }
         }
 
@@ -108,7 +115,7 @@ namespace LiveCharts.Wpf
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var v = value as WpfTooltipViewModel;
+            var v = value as TooltipData;
 
             if (v == null) return null;
 
@@ -129,7 +136,9 @@ namespace LiveCharts.Wpf
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var chartPoint = (ChartPoint) value;
+            var chartPoint = value as ChartPoint;
+
+            if (chartPoint == null) return null;
 
             return chartPoint.SeriesView.LabelPoint(chartPoint);
         }
@@ -144,7 +153,8 @@ namespace LiveCharts.Wpf
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var v = (WpfTooltipViewModel) value;
+            var v = value as TooltipData;
+            if (v == null) return null;
 
             return v.Points.Any(x => x.ChartPoint.Participation > 0) ? Visibility.Visible : Visibility.Collapsed;
         }
@@ -159,7 +169,9 @@ namespace LiveCharts.Wpf
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var v = (WpfTooltipViewModel) value;
+            var v = value as TooltipData;
+
+            if (v == null) return null;
 
             if (v.SelectionMode == TooltipSelectionMode.OnlySender) return Visibility.Collapsed;
 
@@ -172,28 +184,73 @@ namespace LiveCharts.Wpf
         }
     }
 
-    public class WpfTooltipViewModel
+    /// <summary>
+    /// Contains information about data in a tooltip
+    /// </summary>
+    public class TooltipData
     {
+        /// <summary>
+        /// The current X formatter
+        /// </summary>
         public Func<double, string> XFormatter { get; set; }
+        /// <summary>
+        /// The current Y formatter
+        /// </summary>
         public Func<double, string> YFormatter { get; set; }
+        /// <summary>
+        /// Shared coordinate value between points
+        /// </summary>
         public double? SharedValue { get; set; }
+        /// <summary>
+        /// Current selection mode
+        /// </summary>
         public TooltipSelectionMode SelectionMode { get; set; }
+        /// <summary>
+        /// collection of points
+        /// </summary>
         public List<DataPointViewModel> Points { get; set; }
     }
 
+    /// <summary>
+    /// Point Data
+    /// </summary>
     public class DataPointViewModel 
     {
+        /// <summary>
+        /// Gets info about the series that owns the point, like stroke and stroke thickness
+        /// </summary>
         public SeriesViewModel Series { get; set; }
+        /// <summary>
+        /// Gets the ChartPoint instance
+        /// </summary>
         public ChartPoint ChartPoint { get; set; }
     }
 
+    /// <summary>
+    /// Series Data
+    /// </summary>
     public class SeriesViewModel
     {
+        /// <summary>
+        /// Series Title
+        /// </summary>
         public string Title { get; set; }
+        /// <summary>
+        /// Series stroke
+        /// </summary>
         public Brush Stroke { get; set; }
+        /// <summary>
+        /// Series Stroke thickness
+        /// </summary>
         public double StrokeThickness { get; set; }
+        /// <summary>
+        /// Series Fill
+        /// </summary>
         public Brush Fill { get; set; }
-        public Geometry Geometry { get; set; }
+        /// <summary>
+        /// Series point Geometry
+        /// </summary>
+        public Geometry PointGeometry { get; set; }
     }
 
 }

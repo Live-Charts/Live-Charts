@@ -12,6 +12,7 @@ using Wpf.CartesianChart.BasicLine;
 using Wpf.CartesianChart.Basic_Bars;
 using Wpf.CartesianChart.Basic_Stacked_Bar;
 using Wpf.CartesianChart.Customized_Line_Series;
+using Wpf.CartesianChart.CustomTooltipAndLegend;
 using Wpf.CartesianChart.DynamicVisibility;
 using Wpf.CartesianChart.HeatChart;
 using Wpf.CartesianChart.Inverted_Series;
@@ -54,8 +55,10 @@ namespace Wpf
 
             CartesianExamples = new List<UserControl>
             {
-                new JimmyTheTestsGuy(),
+                //new JimmyTheTestsGuy(),
 
+
+                new CustomTooltipAndLegendExample(),
                 new PointShapeLineExample(),
                 new HeatSeriesExample(),
                 new ManualZAndPExample(),
@@ -98,12 +101,12 @@ namespace Wpf
 
             PieExamples = new List<UserControl>
             {
-                new PieExample()
+                //new PieExample()
             };
 
             GaugeExamples = new List<UserControl>
             {
-                new Gauges.Gauge180(), new Gauge360()
+                //new Gauges.Gauge180(), new Gauge360()
             };
 
             #endregion

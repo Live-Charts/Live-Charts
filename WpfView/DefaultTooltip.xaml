@@ -50,9 +50,9 @@
             <Border Background="{Binding Background}" CornerRadius="{Binding CornerRadius}"
                     BorderThickness="{Binding BorderThickness}" Padding="10 5">
                 <StackPanel Orientation="Vertical">
-                    <TextBlock Text="{Binding ViewModel, Converter={StaticResource SharedConverter}}" HorizontalAlignment="Center" FontWeight="Bold"
-                               Visibility="{Binding ViewModel, Converter={StaticResource SharedVisibilityConverter}}" />
-                    <ItemsControl ItemsSource="{Binding ViewModel.Points}" Grid.IsSharedSizeScope="True">
+                    <TextBlock Text="{Binding Data, Converter={StaticResource SharedConverter}}" HorizontalAlignment="Center" FontWeight="Bold"
+                               Visibility="{Binding Data, Converter={StaticResource SharedVisibilityConverter}}" />
+                    <ItemsControl ItemsSource="{Binding Data.Points}" Grid.IsSharedSizeScope="True">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate DataType="{x:Type wpf:DataPointViewModel}">
                                 <Grid Margin="2">
@@ -66,14 +66,14 @@
                                              Height="{Binding BulletSize, RelativeSource={RelativeSource Mode=FindAncestor, AncestorLevel=1, AncestorType={x:Type UserControl}}}" 
                                              StrokeThickness="{Binding Series.StrokeThickness}" 
                                              Stroke="{Binding Series.Stroke}" Fill="{Binding Series.Fill}" 
-                                             Stretch="Fill" ClipToBounds="True" Data="{Binding Series.Geometry}"/>
+                                             Stretch="Fill" ClipToBounds="True" Data="{Binding Series.PointGeometry}"/>
                                     <TextBlock Grid.Column="1" Text="{Binding Series.Title}" VerticalAlignment="Center" Margin="5 0 0 0"/>
                                     
                                     <TextBlock Grid.Column="2" Text="{Binding ChartPoint, Converter={StaticResource ChartPointLabelConverter}}" Margin="5 0 0 0" VerticalAlignment="Center"/>
 
                                     <TextBlock Grid.Column="3" Text="{Binding ChartPoint.Participation, StringFormat={}{0:P}}" 
                                                VerticalAlignment="Center" Margin="5 0 0 0"
-                                               Visibility="{Binding DataContext.ViewModel, RelativeSource={RelativeSource  FindAncestor, 
+                                               Visibility="{Binding DataContext.Data, RelativeSource={RelativeSource  FindAncestor, 
                                                                                                     AncestorType={x:Type StackPanel}}, 
                                                                     Converter={StaticResource ParticipationVisibilityConverter}}"/>
                                 </Grid>
