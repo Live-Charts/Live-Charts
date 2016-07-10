@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.panel1 = new System.Windows.Forms.Panel();
+            this.label19 = new System.Windows.Forms.Label();
             this.label18 = new System.Windows.Forms.Label();
             this.label17 = new System.Windows.Forms.Label();
             this.label16 = new System.Windows.Forms.Label();
@@ -47,7 +48,8 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.label19 = new System.Windows.Forms.Label();
+            this.label20 = new System.Windows.Forms.Label();
+            this.button6 = new System.Windows.Forms.Button();
             this.button5 = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
@@ -73,6 +75,8 @@
             // panel1
             // 
             this.panel1.AutoScroll = true;
+            this.panel1.Controls.Add(this.label20);
+            this.panel1.Controls.Add(this.button6);
             this.panel1.Controls.Add(this.label19);
             this.panel1.Controls.Add(this.button5);
             this.panel1.Controls.Add(this.label18);
@@ -116,6 +120,16 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(847, 733);
             this.panel1.TabIndex = 0;
+            // 
+            // label19
+            // 
+            this.label19.AutoSize = true;
+            this.label19.Font = new System.Drawing.Font("Calibri", 12.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label19.Location = new System.Drawing.Point(213, 558);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(88, 21);
+            this.label19.TabIndex = 64;
+            this.label19.Text = "Heat Series";
             // 
             // label18
             // 
@@ -297,15 +311,25 @@
             this.label1.TabIndex = 36;
             this.label1.Text = "Labels";
             // 
-            // label19
+            // label20
             // 
-            this.label19.AutoSize = true;
-            this.label19.Font = new System.Drawing.Font("Calibri", 12.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label19.Location = new System.Drawing.Point(213, 558);
-            this.label19.Name = "label19";
-            this.label19.Size = new System.Drawing.Size(88, 21);
-            this.label19.TabIndex = 64;
-            this.label19.Text = "Heat Series";
+            this.label20.AutoSize = true;
+            this.label20.Font = new System.Drawing.Font("Calibri", 12.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label20.Location = new System.Drawing.Point(382, 697);
+            this.label20.Name = "label20";
+            this.label20.Size = new System.Drawing.Size(85, 21);
+            this.label20.TabIndex = 66;
+            this.label20.Text = "360 Gauge";
+            // 
+            // button6
+            // 
+            this.button6.Image = global::Winforms.Properties.Resources._360_gauge;
+            this.button6.Location = new System.Drawing.Point(349, 594);
+            this.button6.Name = "button6";
+            this.button6.Size = new System.Drawing.Size(160, 100);
+            this.button6.TabIndex = 65;
+            this.button6.UseVisualStyleBackColor = true;
+            this.button6.Click += new System.EventHandler(this.button6_Click);
             // 
             // button5
             // 
@@ -552,6 +576,8 @@
         private System.Windows.Forms.Button button4;
         private System.Windows.Forms.Label label19;
         private System.Windows.Forms.Button button5;
+        private System.Windows.Forms.Label label20;
+        private System.Windows.Forms.Button button6;
     }
 }
 

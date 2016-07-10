@@ -207,6 +207,12 @@
     <Compile Include="Gauge\180\Gauge180Example.Designer.cs">
       <DependentUpon>Gauge180Example.cs</DependentUpon>
     </Compile>
+    <Compile Include="Gauge\360\Gauge360Example.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Gauge\360\Gauge360Example.Designer.cs">
+      <DependentUpon>Gauge360Example.cs</DependentUpon>
+    </Compile>
     <Compile Include="Main.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -292,6 +298,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Gauge\180\Gauge180Example.resx">
       <DependentUpon>Gauge180Example.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Gauge\360\Gauge360Example.resx">
+      <DependentUpon>Gauge360Example.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Main.resx">
       <DependentUpon>Main.cs</DependentUpon>
@@ -412,6 +421,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Heat Series.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\360 gauge.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

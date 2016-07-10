@@ -15,6 +15,12 @@
         </Grid.ColumnDefinitions>
         <Button Height="30" VerticalAlignment="Top" Click="ButtonBase_OnClick">Hola</Button>
         <lvc:CartesianChart Grid.Column="0" Name="Chart" Series="{Binding SeriesCollection}">
+            <lvc:CartesianChart.ChartLegend>
+                <lvc:DefaultLegend BulletSize="20" Background="Red"/>
+            </lvc:CartesianChart.ChartLegend>
+            <lvc:CartesianChart.DataTooltip>
+                <lvc:DefaultTooltip BulletSize="20" Background="Gray"/>
+            </lvc:CartesianChart.DataTooltip>
         </lvc:CartesianChart>
         <lvc:CartesianChart Grid.Column="1" Series="{Binding SeriesCollection}">
         </lvc:CartesianChart>
