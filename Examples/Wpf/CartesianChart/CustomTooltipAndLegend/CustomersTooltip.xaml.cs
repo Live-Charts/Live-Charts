@@ -4,9 +4,6 @@ using LiveCharts.Wpf;
 
 namespace Wpf.CartesianChart.CustomTooltipAndLegend
 {
-    /// <summary>
-    /// Interaction logic for CustomersTooltip.xaml
-    /// </summary>
     public partial class CustomersTooltip : IChartTooltip
     {
         private TooltipData _data;

@@ -7,9 +7,6 @@ using Wpf.Annotations;
 
 namespace Wpf.CartesianChart.ManualZAndP
 {
-    /// <summary>
-    /// Interaction logic for ManualZAndPExample.xaml
-    /// </summary>
     public partial class ManualZAndPExample : UserControl, INotifyPropertyChanged
     {
         private double _to;
