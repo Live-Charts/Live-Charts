@@ -18,6 +18,7 @@ using Winforms.Cartesian.Sections;
 using Winforms.Cartesian.StackedArea;
 using Winforms.Cartesian.Zooming_and_Panning;
 using Winforms.Gauge._180;
+using Winforms.Gauge._360;
 using Winforms.PieChart;
 
 namespace Winforms
@@ -122,6 +123,11 @@ namespace Winforms
         private void button5_Click(object sender, EventArgs e)
         {
             new HeatSeriesExample().ShowDialog();
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            new Gauge360Example().ShowDialog();
         }
     }
 }

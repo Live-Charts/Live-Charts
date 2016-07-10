@@ -49,6 +49,8 @@ namespace Wpf.CartesianChart.CustomTooltipAndLegend
                 }
             };
 
+            Labels = new[] { "Irvin", "Malcolm", "Anne", "Vivian", "Caleb" };
+
             //let create a mapper so LiveCharts know how to plot our CustomerViewModel class
             var customerVmMapper = Mappers.Xy<CustomerVm>()
                 .X((value, index) => index) // lets use the position of the item as X
@@ -61,5 +63,6 @@ namespace Wpf.CartesianChart.CustomTooltipAndLegend
         }
 
         public ChartValues<CustomerVm> Customers { get; set; }
+        public string[] Labels { get; set; }
     }
 }

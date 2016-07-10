@@ -73,6 +73,16 @@ namespace Winforms.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap _360_gauge {
+            get {
+                object obj = ResourceManager.GetObject("360 gauge", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap about_axes {
             get {
                 object obj = ResourceManager.GetObject("about axes", resourceCulture);
