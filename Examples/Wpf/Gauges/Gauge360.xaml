@@ -10,17 +10,12 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
-        
-        <TextBlock Grid.Row="0">
-            <Bold>New in 0.7.0</Bold> Gauges
-        </TextBlock>
-        
-        <Button Grid.Row="1" Click="MoveOnClick">Move</Button>
 
-        <lvc:Gauge Grid.Row="2" Uses360Mode="True" From="0" To="1" Value="{Binding Value}" LabelFormatter="{Binding Formatter}" />
+        <Button Grid.Row="0" Click="MoveOnClick">Move</Button>
+        <lvc:Gauge Grid.Row="1" Uses360Mode="True" From="0" To="1" 
+                   Value="{Binding Value}" LabelFormatter="{Binding Formatter}" />
 
     </Grid>
 </UserControl>

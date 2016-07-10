@@ -1,25 +1,31 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
 using System.Linq;
-using System.Windows;
-using System.Windows.Controls;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
 using LiveCharts;
 using LiveCharts.Defaults;
 using LiveCharts.Wpf;
 
-namespace Wpf.CartesianChart.Bubbles
+namespace Winforms.Cartesian.BasicBubbles
 {
-    public partial class BubblesExample : UserControl
+    public partial class BasicBubblesExample : Form
     {
-        public BubblesExample()
+        public BasicBubblesExample()
         {
             InitializeComponent();
-                
-            SeriesCollection = new SeriesCollection
+
+            cartesianChart1.Series = new SeriesCollection
             {
                 new BubbleSeries
                 {
                     Values = new ChartValues<BubblePoint>
                     {
+                        //X  Y   W
                         new BubblePoint(5, 5, 20),
                         new BubblePoint(3, 4, 80),
                         new BubblePoint(7, 2, 20),
@@ -40,22 +46,6 @@ namespace Wpf.CartesianChart.Bubbles
                 }
             };
 
-            DataContext = this;
-        }
-        public SeriesCollection SeriesCollection { get; set; }
-
-        private void UpdateAllOnClick(object sender, RoutedEventArgs e)
-        {
-            var r = new Random();
-            foreach (var series in SeriesCollection)
-            {
-                foreach (var bubble in series.Values.Cast<BubblePoint>())
-                {
-                    bubble.X = r.NextDouble()*10;
-                    bubble.Y = r.NextDouble()*10;
-                    bubble.Weight = r.NextDouble()*10;
-                }
-            }
         }
     }
 }

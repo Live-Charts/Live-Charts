@@ -5,9 +5,6 @@ using LiveCharts.Wpf;
 
 namespace Wpf.CartesianChart.Basic_Bars
 {
-    /// <summary>
-    /// Interaction logic for BasicColumn.xaml
-    /// </summary>
     public partial class BasicColumn : UserControl
     {
         public BasicColumn()

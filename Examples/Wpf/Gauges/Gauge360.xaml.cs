@@ -1,15 +1,11 @@
 ﻿using System;
 using System.ComponentModel;
-using System.Runtime.CompilerServices;
 using System.Windows;
-using Wpf.Annotations;
+using System.Windows.Controls;
 
 namespace Wpf.Gauges
 {
-    /// <summary>
-    /// Interaction logic for Gauge360.xaml
-    /// </summary>
-    public partial class Gauge360 : INotifyPropertyChanged
+    public partial class Gauge360 : UserControl, INotifyPropertyChanged
     {
         private double _value;
 
@@ -29,7 +25,7 @@ namespace Wpf.Gauges
             set
             {
                 _value = value;
-                OnPropertyChanged();
+                OnPropertyChanged("Value");
             }
         }
 
@@ -42,10 +38,10 @@ namespace Wpf.Gauges
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged(string propertyName = null)
         {
-            if (PropertyChanged != null) PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            if (PropertyChanged != null)
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }
