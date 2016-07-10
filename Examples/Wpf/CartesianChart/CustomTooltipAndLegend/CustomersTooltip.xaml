@@ -6,7 +6,8 @@
              xmlns:wpf="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
              xmlns:local="clr-namespace:Wpf.CartesianChart.CustomTooltipAndLegend"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300" d:DataContext="{d:DesignInstance local:CustomersTooltip}"
+             d:DesignHeight="300" d:DesignWidth="300" 
+             d:DataContext="{d:DesignInstance local:CustomersTooltip}"
              Background="#E4555555" Padding="20 10" BorderThickness="2" BorderBrush="#555555">
     <ItemsControl ItemsSource="{Binding Data.Points}" Grid.IsSharedSizeScope="True">
         <ItemsControl.ItemTemplate>

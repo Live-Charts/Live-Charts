@@ -1,13 +1,14 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Threading;
 using LiveCharts;
 using LiveCharts.Configurations;
 
 namespace Wpf.CartesianChart.ConstantChanges
 {
-    public partial class ConstantChangesChart : INotifyPropertyChanged
+    public partial class ConstantChangesChart : UserControl, INotifyPropertyChanged
     {
         private double _axisMax;
         private double _axisMin;
