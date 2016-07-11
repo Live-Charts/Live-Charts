@@ -16,6 +16,7 @@
     <tags>Chart Charting Plot Plotting WinForms</tags> 
 	<dependencies>
       <dependency id="LiveCharts" version="0.0.0.0" />
+      <dependency id="LiveCharts.Wpf" version="0.0.0.0" />
     </dependencies>
     <frameworkAssemblies>
       <frameworkAssembly assemblyName="PresentationFramework" targetFramework="net403" />
