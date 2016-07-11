@@ -50,7 +50,9 @@ namespace Winforms.Cartesian.Basic_Stacked_Bar
                 LabelFormatter = val => val.ToString("P")
             });
 
-            cartesianChart1.DataTooltip.SelectionMode = TooltipSelectionMode.SharedYValues;
+            var tooltip = new DefaultTooltip {SelectionMode = TooltipSelectionMode.SharedYValues};
+
+            cartesianChart1.DataTooltip = tooltip;
 
         }
     }

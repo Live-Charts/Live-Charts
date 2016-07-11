@@ -193,6 +193,16 @@ namespace Winforms.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap doughnut_chart1 {
+            get {
+                object obj = ResourceManager.GetObject("doughnut chart1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap dynvis {
             get {
                 object obj = ResourceManager.GetObject("dynvis", resourceCulture);

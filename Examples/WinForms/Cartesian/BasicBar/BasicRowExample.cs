@@ -39,7 +39,12 @@ namespace Winforms.Cartesian.BasicBar
                 LabelFormatter = value => value.ToString("N")
             });
 
-            cartesianChart1.DataTooltip.SelectionMode = TooltipSelectionMode.SharedYValues;
+            var tooltip = new DefaultTooltip
+            {
+                SelectionMode = TooltipSelectionMode.SharedYValues
+            };
+
+            cartesianChart1.DataTooltip = tooltip;
 
         }
     }

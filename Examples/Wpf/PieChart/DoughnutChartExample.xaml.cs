@@ -7,9 +7,9 @@ using LiveCharts.Wpf;
 
 namespace Wpf.PieChart
 {
-    public partial class PieExample
+    public partial class DoughnutChartExample
     {
-        public PieExample()
+        public DoughnutChartExample()
         {
             InitializeComponent();
 
@@ -18,22 +18,26 @@ namespace Wpf.PieChart
                 new PieSeries
                 {
                     Title = "Chrome",
-                    Values = new ChartValues<ObservableValue> { new ObservableValue(8) }
+                    Values = new ChartValues<ObservableValue> { new ObservableValue(8) },
+                    DataLabels = true
                 },
                 new PieSeries
                 {
                     Title = "Mozilla",
-                    Values = new ChartValues<ObservableValue> { new ObservableValue(6) }
+                    Values = new ChartValues<ObservableValue> { new ObservableValue(6) },
+                    DataLabels = true
                 },
                 new PieSeries
                 {
                     Title = "Opera",
-                    Values = new ChartValues<ObservableValue> { new ObservableValue(10) }
+                    Values = new ChartValues<ObservableValue> { new ObservableValue(10) },
+                    DataLabels = true
                 },
                 new PieSeries
                 {
                     Title = "Explorer",
-                    Values = new ChartValues<ObservableValue> { new ObservableValue(4) }
+                    Values = new ChartValues<ObservableValue> { new ObservableValue(4) },
+                    DataLabels = true
                 }
             };
 

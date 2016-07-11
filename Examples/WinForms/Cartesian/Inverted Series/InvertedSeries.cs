@@ -31,7 +31,12 @@ namespace Winforms.Cartesian.Inverted_Series
                 MinValue = 0
             });
 
-            cartesianChart1.DataTooltip.SelectionMode = TooltipSelectionMode.SharedYValues;
+            var tooltip = new DefaultTooltip
+            {
+                SelectionMode = TooltipSelectionMode.SharedYValues
+            };
+
+            cartesianChart1.DataTooltip = tooltip;
         }
 
         private void InvertedSeries_Load(object sender, EventArgs e)

@@ -1,6 +1,6 @@
-﻿namespace Winforms.Cartesian.MissingPoints
+﻿namespace Winforms.PieChart
 {
-    partial class MissingPoint
+    partial class DoughnutExample
     {
         /// <summary>
         /// Required designer variable.
@@ -28,33 +28,33 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.cartesianChart1 = new LiveCharts.WinForms.CartesianChart();
+            this.pieChart1 = new LiveCharts.WinForms.PieChart();
             this.SuspendLayout();
             // 
-            // cartesianChart1
+            // pieChart1
             // 
-            this.cartesianChart1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.cartesianChart1.Location = new System.Drawing.Point(0, 0);
-            this.cartesianChart1.Name = "cartesianChart1";
-            this.cartesianChart1.Size = new System.Drawing.Size(688, 455);
-            this.cartesianChart1.TabIndex = 4;
-            this.cartesianChart1.Text = "cartesianChart1";
+            this.pieChart1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pieChart1.Location = new System.Drawing.Point(0, 0);
+            this.pieChart1.Name = "pieChart1";
+            this.pieChart1.Size = new System.Drawing.Size(523, 465);
+            this.pieChart1.TabIndex = 0;
+            this.pieChart1.Text = "pieChart1";
             // 
-            // MissingPoint
+            // DoughnutExample
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(688, 455);
-            this.Controls.Add(this.cartesianChart1);
-            this.Name = "MissingPoint";
-            this.Text = "MissingPoint";
+            this.ClientSize = new System.Drawing.Size(523, 465);
+            this.Controls.Add(this.pieChart1);
+            this.Name = "DoughnutExample";
+            this.Text = "PieExample";
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private LiveCharts.WinForms.CartesianChart cartesianChart1;
+        private LiveCharts.WinForms.PieChart pieChart1;
     }
 }

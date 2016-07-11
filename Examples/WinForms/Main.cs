@@ -107,7 +107,7 @@ namespace Winforms
 
         private void button2_Click(object sender, EventArgs e)
         {
-            new PieExample().ShowDialog();
+            new PieChartExample().ShowDialog();
         }
 
         private void button3_Click(object sender, EventArgs e)
@@ -128,6 +128,11 @@ namespace Winforms
         private void button6_Click(object sender, EventArgs e)
         {
             new Gauge360Example().ShowDialog();
+        }
+
+        private void button7_Click(object sender, EventArgs e)
+        {
+            new DoughnutExample().ShowDialog();
         }
     }
 }

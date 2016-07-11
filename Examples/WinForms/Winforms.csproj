@@ -34,18 +34,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="LiveCharts, Version=0.7.4.0, Culture=neutral, PublicKeyToken=c5935629d38af058, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\LiveCharts.0.7.4\lib\portable-net40+sl5+win8+wp8+wpa81\LiveCharts.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="LiveCharts.WinForms, Version=0.7.4.0, Culture=neutral, PublicKeyToken=1f1e67602fe23622, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\LiveCharts.WinForms.0.7.4\lib\net45\LiveCharts.WinForms.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="LiveCharts.Wpf, Version=0.7.4.0, Culture=neutral, PublicKeyToken=3b585c2a5f1a92c1, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\LiveCharts.Wpf.0.7.4\lib\net45\LiveCharts.Wpf.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
@@ -225,11 +213,17 @@
     <Compile Include="Main.Designer.cs">
       <DependentUpon>Main.cs</DependentUpon>
     </Compile>
-    <Compile Include="PieChart\PieExample.cs">
+    <Compile Include="PieChart\DoughnutExample.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="PieChart\PieExample.Designer.cs">
-      <DependentUpon>PieExample.cs</DependentUpon>
+    <Compile Include="PieChart\DoughnutExample.Designer.cs">
+      <DependentUpon>DoughnutExample.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PieChart\PieChartExample.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PieChart\PieChartExample.Designer.cs">
+      <DependentUpon>PieChartExample.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -314,8 +308,11 @@
     <EmbeddedResource Include="Main.resx">
       <DependentUpon>Main.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="PieChart\PieExample.resx">
-      <DependentUpon>PieExample.cs</DependentUpon>
+    <EmbeddedResource Include="PieChart\DoughnutExample.resx">
+      <DependentUpon>DoughnutExample.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PieChart\PieChartExample.resx">
+      <DependentUpon>PieChartExample.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -327,7 +324,6 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -433,6 +429,23 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\360 gauge.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\Core.csproj">
+      <Project>{d447642c-a85f-4ab0-96d9-c66cff91aada}</Project>
+      <Name>Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\WinFormsView\WinFormsView.csproj">
+      <Project>{45e67c4f-88df-4617-acb1-b54c5dbf8390}</Project>
+      <Name>WinFormsView</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\WpfView\WpfView.csproj">
+      <Project>{4d253423-ae05-47f6-a59d-9162ec0bb1f2}</Project>
+      <Name>WpfView</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\doughnut chart1.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

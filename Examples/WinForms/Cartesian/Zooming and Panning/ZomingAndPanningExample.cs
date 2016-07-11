@@ -68,5 +68,10 @@ namespace Winforms.Cartesian.Zooming_and_Panning
 
             return values;
         }
+
+        private void ZomingAndPanningExample_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

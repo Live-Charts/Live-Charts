@@ -154,8 +154,8 @@
   <data name="install" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\install.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="about axes" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\about axes.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="stacked area percentage" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\stacked area percentage.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="Heat Series" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Heat Series.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -169,8 +169,11 @@
   <data name="irregular intervals" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\irregular intervals.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="stacked area percentage" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\stacked area percentage.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="about axes" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\about axes.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="360 gauge" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\360 gauge.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="basic line chart" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\basic line chart.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -208,7 +211,7 @@
   <data name="about series" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\about series.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="360 gauge" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\360 gauge.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="doughnut chart1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\doughnut chart1.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

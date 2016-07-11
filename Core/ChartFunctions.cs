@@ -289,7 +289,7 @@ namespace LiveCharts
                         Points = chart.ActualSeries.Where(x => x.ScalesXAt == senderPoint.SeriesView.ScalesXAt)
                             .SelectMany(x => x.Values.Points)
                             .Where(x => Math.Abs(x.X - senderPoint.X) < ax.S*.01),
-                        Shares = (chart.View is IPieChart) ? (double?) senderPoint.X : null
+                        Shares = (chart.View is IPieChart) ? null : (double?) senderPoint.X
                     };
                 case TooltipSelectionMode.SharedYValues:
                     return new TooltipDataViewModel

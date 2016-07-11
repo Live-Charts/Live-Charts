@@ -1,6 +1,6 @@
 ﻿namespace Winforms.PieChart
 {
-    partial class PieExample
+    partial class PieChartExample
     {
         /// <summary>
         /// Required designer variable.
@@ -36,18 +36,19 @@
             this.pieChart1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pieChart1.Location = new System.Drawing.Point(0, 0);
             this.pieChart1.Name = "pieChart1";
-            this.pieChart1.Size = new System.Drawing.Size(523, 465);
-            this.pieChart1.TabIndex = 0;
+            this.pieChart1.Size = new System.Drawing.Size(621, 452);
+            this.pieChart1.TabIndex = 1;
             this.pieChart1.Text = "pieChart1";
             // 
-            // PieExample
+            // PieChartExample
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(523, 465);
+            this.BackColor = System.Drawing.Color.White;
+            this.ClientSize = new System.Drawing.Size(621, 452);
             this.Controls.Add(this.pieChart1);
-            this.Name = "PieExample";
-            this.Text = "PieExample";
+            this.Name = "PieChartExample";
+            this.Text = "PieChartExample";
             this.ResumeLayout(false);
 
         }

@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.panel1 = new System.Windows.Forms.Panel();
+            this.label20 = new System.Windows.Forms.Label();
             this.label19 = new System.Windows.Forms.Label();
             this.label18 = new System.Windows.Forms.Label();
             this.label17 = new System.Windows.Forms.Label();
@@ -48,7 +49,8 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.label20 = new System.Windows.Forms.Label();
+            this.label21 = new System.Windows.Forms.Label();
+            this.button7 = new System.Windows.Forms.Button();
             this.button6 = new System.Windows.Forms.Button();
             this.button5 = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();
@@ -75,6 +77,8 @@
             // panel1
             // 
             this.panel1.AutoScroll = true;
+            this.panel1.Controls.Add(this.label21);
+            this.panel1.Controls.Add(this.button7);
             this.panel1.Controls.Add(this.label20);
             this.panel1.Controls.Add(this.button6);
             this.panel1.Controls.Add(this.label19);
@@ -121,6 +125,16 @@
             this.panel1.Size = new System.Drawing.Size(847, 733);
             this.panel1.TabIndex = 0;
             // 
+            // label20
+            // 
+            this.label20.AutoSize = true;
+            this.label20.Font = new System.Drawing.Font("Calibri", 12.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label20.Location = new System.Drawing.Point(215, 697);
+            this.label20.Name = "label20";
+            this.label20.Size = new System.Drawing.Size(85, 21);
+            this.label20.TabIndex = 66;
+            this.label20.Text = "360 Gauge";
+            // 
             // label19
             // 
             this.label19.AutoSize = true;
@@ -155,7 +169,7 @@
             // 
             this.label16.AutoSize = true;
             this.label16.Font = new System.Drawing.Font("Calibri", 12.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label16.Location = new System.Drawing.Point(223, 697);
+            this.label16.Location = new System.Drawing.Point(391, 697);
             this.label16.Name = "label16";
             this.label16.Size = new System.Drawing.Size(73, 21);
             this.label16.TabIndex = 58;
@@ -311,20 +325,30 @@
             this.label1.TabIndex = 36;
             this.label1.Text = "Labels";
             // 
-            // label20
+            // label21
             // 
-            this.label20.AutoSize = true;
-            this.label20.Font = new System.Drawing.Font("Calibri", 12.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label20.Location = new System.Drawing.Point(382, 697);
-            this.label20.Name = "label20";
-            this.label20.Size = new System.Drawing.Size(85, 21);
-            this.label20.TabIndex = 66;
-            this.label20.Text = "360 Gauge";
+            this.label21.AutoSize = true;
+            this.label21.Font = new System.Drawing.Font("Calibri", 12.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label21.Location = new System.Drawing.Point(531, 697);
+            this.label21.Name = "label21";
+            this.label21.Size = new System.Drawing.Size(121, 21);
+            this.label21.TabIndex = 68;
+            this.label21.Text = "Doughnut Chart";
+            // 
+            // button7
+            // 
+            this.button7.Image = global::Winforms.Properties.Resources.doughnut_chart1;
+            this.button7.Location = new System.Drawing.Point(515, 594);
+            this.button7.Name = "button7";
+            this.button7.Size = new System.Drawing.Size(160, 100);
+            this.button7.TabIndex = 67;
+            this.button7.UseVisualStyleBackColor = true;
+            this.button7.Click += new System.EventHandler(this.button7_Click);
             // 
             // button6
             // 
             this.button6.Image = global::Winforms.Properties.Resources._360_gauge;
-            this.button6.Location = new System.Drawing.Point(349, 594);
+            this.button6.Location = new System.Drawing.Point(182, 594);
             this.button6.Name = "button6";
             this.button6.Size = new System.Drawing.Size(160, 100);
             this.button6.TabIndex = 65;
@@ -364,7 +388,7 @@
             // button2
             // 
             this.button2.Image = global::Winforms.Properties.Resources.pie_chart;
-            this.button2.Location = new System.Drawing.Point(181, 594);
+            this.button2.Location = new System.Drawing.Point(349, 594);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(160, 100);
             this.button2.TabIndex = 57;
@@ -578,6 +602,8 @@
         private System.Windows.Forms.Button button5;
         private System.Windows.Forms.Label label20;
         private System.Windows.Forms.Button button6;
+        private System.Windows.Forms.Label label21;
+        private System.Windows.Forms.Button button7;
     }
 }
 

@@ -40,10 +40,11 @@
             this.gauge1.TabIndex = 1;
             this.gauge1.Text = "gauge1";
             // 
-            // Gauge360Exampl
+            // Gauge360Example
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(284, 261);
             this.Controls.Add(this.gauge1);
             this.Name = "Gauge360Example";
