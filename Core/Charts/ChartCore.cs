@@ -542,7 +542,14 @@ namespace LiveCharts.Charts
                     var point = col[i];
                     var pulled = Pull(point, stackAt);
 
-                    if (pulled <= 0)
+                    //notice using (pulled < 0) or (pulled <= 0) could cause an issue similar to
+                    //https://github.com/beto-rodriguez/Live-Charts/issues/231
+                    //from that issue I changed <= to <
+                    //only because it is more common to use positive values than negative
+                    //you could face a similar issue if you are stacking only negative values
+                    //a work around is forcing (pulled < 0) to be true,
+                    //instead of using zero values, use -0.000000001/
+                    if (pulled < 0)
                     {
                         point.From = lastLeft;
                         point.To = lastLeft + pulled;
