@@ -172,7 +172,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="CartesianChart\FullyResponsive\FullyResponsive.xaml">
+    <Page Include="CartesianChart\FullyResponsive\FullyResponsiveExample.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -322,8 +322,8 @@
     <Compile Include="CartesianChart\MultiAxes\MultiAxesChart.xaml.cs">
       <DependentUpon>MultiAxesChart.xaml</DependentUpon>
     </Compile>
-    <Compile Include="CartesianChart\FullyResponsive\FullyResponsive.xaml.cs">
-      <DependentUpon>FullyResponsive.xaml</DependentUpon>
+    <Compile Include="CartesianChart\FullyResponsive\FullyResponsiveExample.xaml.cs">
+      <DependentUpon>FullyResponsiveExample.xaml</DependentUpon>
     </Compile>
     <Compile Include="CartesianChart\NegativeStackedRow\NEgativeStackedRowExample.xaml.cs">
       <DependentUpon>NEgativeStackedRowExample.xaml</DependentUpon>

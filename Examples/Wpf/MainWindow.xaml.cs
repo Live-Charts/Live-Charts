@@ -31,6 +31,7 @@ using Wpf.PieChart;
 using BubblesExample = Wpf.CartesianChart.Bubbles.BubblesExample;
 using ConstantChangesChart = Wpf.CartesianChart.ConstantChanges.ConstantChangesChart;
 using DateTime = Wpf.CartesianChart.Using_DateTime.DateTime;
+using FullyResponsiveExample = Wpf.CartesianChart.FullyResponsive.FullyResponsiveExample;
 using LabelsExample = Wpf.CartesianChart.Labels.LabelsExample;
 using SectionsExample = Wpf.CartesianChart.Sections.SectionsExample;
 using StackedAreaExample = Wpf.CartesianChart.StackedArea.StackedAreaExample;
@@ -75,7 +76,7 @@ namespace Wpf
                 new BasicLineExample(),
                 new StackedAreaExample(),
                 //new WelcomeCartesian(),
-                new FullyResponsive(),
+                new FullyResponsiveExample(),
                 new CustomTypesPlotting(),
                 new NegativeStackedRowExample(),
                 new LineExample(),

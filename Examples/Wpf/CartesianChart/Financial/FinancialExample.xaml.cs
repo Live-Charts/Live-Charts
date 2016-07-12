@@ -1,8 +1,8 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media;
 using LiveCharts;
 using LiveCharts.Defaults;
@@ -11,7 +11,7 @@ using Wpf.Annotations;
 
 namespace Wpf.CartesianChart
 {
-    public partial class FinancialExample : INotifyPropertyChanged
+    public partial class FinancialExample : UserControl, INotifyPropertyChanged
     {
         private string[] _labels;
 

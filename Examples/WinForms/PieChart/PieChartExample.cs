@@ -47,6 +47,7 @@ namespace Winforms.PieChart
                 }
             };
 
+            pieChart1.LegendLocation = LegendLocation.Bottom;
         }
     }
 }

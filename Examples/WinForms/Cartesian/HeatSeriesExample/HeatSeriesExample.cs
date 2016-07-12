@@ -63,6 +63,9 @@ namespace Winforms.Cartesian.HeatSeriesExample
                     new HeatPoint(4, 6, r.Next(0, 10))
                 },
                 DataLabels = true,
+
+                //The GradientStopCollection is optional
+                //If you do not set this property, LiveCharts will set a gradient
                 GradientStopCollection = new GradientStopCollection
                 {
                     new GradientStop(Color.FromRgb(0, 0, 0), 0),

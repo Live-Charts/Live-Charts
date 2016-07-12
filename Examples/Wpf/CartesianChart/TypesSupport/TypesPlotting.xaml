@@ -5,8 +5,9 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Wpf.CartesianChart"
              xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+             xmlns:fullyResponsive="clr-namespace:Wpf.CartesianChart.FullyResponsive"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300" d:DataContext="{d:DesignInstance local:FullyResponsive}">
+             d:DesignHeight="300" d:DesignWidth="300" d:DataContext="{d:DesignInstance fullyResponsive:FullyResponsiveExample}">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>

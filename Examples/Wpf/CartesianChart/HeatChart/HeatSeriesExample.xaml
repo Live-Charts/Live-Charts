@@ -17,6 +17,12 @@
         <lvc:CartesianChart Grid.Row="1" DataTooltip="{x:Null}">
             <lvc:CartesianChart.Series>
                 <lvc:HeatSeries Values="{Binding Values}" DataLabels="True">
+                    
+                    <!--
+                    The GradientStopCollection is optional to define a custom gradient
+                    If this property is not specified, LiveCharts will set a gradient
+                    -->
+                    
                     <lvc:HeatSeries.GradientStopCollection>
                         <GradientStop Offset="0" Color="#99FFFF00"></GradientStop>
                         <GradientStop Offset=".25" Color="#FFFFFF00"></GradientStop>

@@ -11,6 +11,8 @@ namespace Winforms.PieChart
             InitializeComponent();
 
             pieChart1.InnerRadius = 100;
+            pieChart1.LegendLocation = LegendLocation.Right;
+
             pieChart1.Series = new SeriesCollection
             {
                 new PieSeries

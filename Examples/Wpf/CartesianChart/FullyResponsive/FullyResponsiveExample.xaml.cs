@@ -1,19 +1,17 @@
 ﻿using System;
 using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media;
 using LiveCharts;
 using LiveCharts.Defaults;
 using LiveCharts.Wpf;
 
-namespace Wpf.CartesianChart
+namespace Wpf.CartesianChart.FullyResponsive
 {
-    /// <summary>
-    /// Interaction logic for ResponsiveExample.xaml
-    /// </summary>
-    public partial class FullyResponsive
+    public partial class FullyResponsiveExample : UserControl
     {
-        public FullyResponsive()
+        public FullyResponsiveExample()
         {
             InitializeComponent();
 

@@ -6,9 +6,6 @@ using LiveCharts.Defaults;
 
 namespace Wpf.CartesianChart.HeatChart
 {
-    /// <summary>
-    /// Interaction logic for HeatSeries.xaml
-    /// </summary>
     public partial class HeatSeriesExample : UserControl
     {
         public HeatSeriesExample()
