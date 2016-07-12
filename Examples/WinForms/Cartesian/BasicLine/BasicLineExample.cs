@@ -1,4 +1,5 @@
 ﻿using System.Windows.Forms;
+using System.Windows.Media;
 using LiveCharts;
 using LiveCharts.Wpf;
 
@@ -15,12 +16,20 @@ namespace Winforms.Cartesian.BasicLine
                 new LineSeries
                 {
                     Title = "Series 1",
-                    Values = new ChartValues<double> { 4, 6, 5, 2 ,7 }
+                    Values = new ChartValues<double> {4, 6, 5, 2, 7}
                 },
                 new LineSeries
                 {
                     Title = "Series 2",
-                    Values = new ChartValues<double> { 6, 7, 3, 4 ,6 }
+                    Values = new ChartValues<double> {6, 7, 3, 4, 6},
+                    PointGeometry = null
+                },
+                new LineSeries
+                {
+                    Title = "Series 2",
+                    Values = new ChartValues<double> {5, 2, 8, 3},
+                    PointGeometry = DefaultGeometries.Square,
+                    PointGeometrySize = 15
                 }
             };
 
@@ -38,14 +47,17 @@ namespace Winforms.Cartesian.BasicLine
 
             cartesianChart1.LegendLocation = LegendLocation.Right;
 
-            //modifing the series collection will animate and update the chart
+            //modifying the series collection will animate and update the chart
             cartesianChart1.Series.Add(new LineSeries
             {
-                Values = new ChartValues<double> { 5, 3, 2, 4 },
-                LineSmoothness = 0 //rect lines, 1 really smooth lines
+                Values = new ChartValues<double> { 5, 3, 2, 4, 5 },
+                LineSmoothness = 0, //straight lines, 1 really smooth lines
+                PointGeometry = Geometry.Parse("m 25 70.36218 20 -28 -20 22 -8 -6 z"),
+                PointGeometrySize = 50,
+                PointForeround = Brushes.Gray
             });
 
-            //modifing any series values will also animate and update the chart
+            //modifying any series values will also animate and update the chart
             cartesianChart1.Series[2].Values.Add(5d);
 
         }
