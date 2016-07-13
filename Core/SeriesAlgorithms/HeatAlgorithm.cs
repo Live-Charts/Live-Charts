@@ -81,7 +81,7 @@ namespace LiveCharts.SeriesAlgorithms
                 chartPoint.SeriesView = View;
 
                 chartPoint.View = View.GetPointView(chartPoint.View, chartPoint,
-                    View.DataLabels ? View.LabelPoint(chartPoint) : null);
+                    View.DataLabels ? View.GetLabelPointFormatter()(chartPoint) : null);
 
                 var heatView = (IHeatPointView)chartPoint.View;
 

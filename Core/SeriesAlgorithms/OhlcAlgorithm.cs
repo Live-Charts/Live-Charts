@@ -57,7 +57,7 @@ namespace LiveCharts.SeriesAlgorithms
                 var x = ChartFunctions.ToDrawMargin(chartPoint.X, AxisOrientation.X, Chart, View.ScalesXAt);
 
                 chartPoint.View = View.GetPointView(chartPoint.View, chartPoint,
-                    View.DataLabels ? View.LabelPoint(chartPoint) : null);
+                    View.DataLabels ? View.GetLabelPointFormatter()(chartPoint) : null);
 
                 chartPoint.SeriesView = View;
 

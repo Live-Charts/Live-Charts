@@ -67,14 +67,17 @@ namespace LiveCharts.Wpf.Charts.Base
             SetValue(MinWidthProperty, 125d);
 
             SetValue(AnimationsSpeedProperty, TimeSpan.FromMilliseconds(300));
-            SetValue(ChartLegendProperty, new DefaultLegend());
-            SetValue(DataTooltipProperty, new DefaultTooltip());
             SetValue(TooltipTimeoutProperty, TimeSpan.FromMilliseconds(800));
 
             SetValue(AxisXProperty, new AxesCollection());
             SetValue(AxisYProperty, new AxesCollection());
 
             SetValue(SeriesProperty, new SeriesCollection());
+
+            SetValue(ChartLegendProperty, new DefaultLegend());
+            SetValue(DataTooltipProperty, new DefaultTooltip());
+            //ChartLegend = new DefaultLegend();
+            //DataTooltip = new DefaultTooltip();
 
             if (RandomizeStartingColor)
                 SeriesIndexCount = Randomizer.Next(0, Colors.Count);
@@ -241,7 +244,7 @@ namespace LiveCharts.Wpf.Charts.Base
 
         public static readonly DependencyProperty ChartLegendProperty = DependencyProperty.Register(
             "ChartLegend", typeof(UserControl), typeof(Chart),
-            new FrameworkPropertyMetadata(null, CallChartUpdater()));
+            new PropertyMetadata(null, CallChartUpdater()));
         /// <summary>
         /// Gets or sets the control to use as chart legend for this chart.
         /// </summary>
@@ -640,7 +643,7 @@ namespace LiveCharts.Wpf.Charts.Base
 
             var l = new List<SeriesViewModel>();
 
-            foreach (var t in Series)
+            foreach (var t in Model.ActualSeries)
             {
                 var item = new SeriesViewModel();
 

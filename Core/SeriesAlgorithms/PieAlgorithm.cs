@@ -38,7 +38,7 @@ namespace LiveCharts.SeriesAlgorithms
         {
             var pieChart = (IPieChart) View.Model.Chart.View;
 
-            var maxPushOut = View.Model.Chart.View.Series
+            var maxPushOut = View.Model.Chart.ActualSeries
                 .OfType<IPieSeriesView>()
                 .Select(x => x.PushOut)
                 .DefaultIfEmpty(0).Max();
@@ -57,11 +57,13 @@ namespace LiveCharts.SeriesAlgorithms
                     ? 0
                     : pieChart.StartingRotationAngle);
 
-            foreach (var chartPoint in View.Values.Points)
+            foreach (var chartPoint in View.ActualValues.Points)
             {
                 chartPoint.View = View.GetPointView(chartPoint.View, chartPoint,
                     View.DataLabels
-                        ? (chartPoint.Participation > 0.05 ? View.LabelPoint(chartPoint) : string.Empty)
+                        ? (chartPoint.Participation > 0.05
+                            ? View.GetLabelPointFormatter()(chartPoint)
+                            : string.Empty)
                         : null);
 
                 var pieSlice = (IPieSlicePointView) chartPoint.View;

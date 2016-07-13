@@ -123,7 +123,7 @@ namespace LiveCharts.SeriesAlgorithms
 
                     chartPoint.View = View.GetPointView(chartPoint.View, chartPoint,
                         View.DataLabels
-                            ? (chartPoint.Participation > 0.05 ? View.LabelPoint(chartPoint) : string.Empty)
+                            ? (chartPoint.Participation > 0.05 ? View.GetLabelPointFormatter()(chartPoint) : string.Empty)
                             : null);
 
                     var bezierView = chartPoint.View as IBezierPointView;

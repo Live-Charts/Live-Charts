@@ -330,6 +330,8 @@ namespace LiveCharts.Wpf
 
         #endregion
 
+        #region Publics
+
         /// <summary>
         /// Gets the view of a given point
         /// </summary>
@@ -393,6 +395,15 @@ namespace LiveCharts.Wpf
         {
 
         }
+
+        public Func<ChartPoint, string> GetLabelPointFormatter()
+        {
+            if (DesignerProperties.GetIsInDesignMode(this))
+                return x => "Label";
+
+            return LabelPoint;
+        }
+        #endregion
 
         private static void OnValuesInstanceChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
         {

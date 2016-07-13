@@ -44,5 +44,6 @@ namespace LiveCharts.Definitions.Series
         void InitializeColors();
         void DrawSpecializedElements();
         void PlaceSpecializedElements();
+        Func<ChartPoint, string> GetLabelPointFormatter();
     }
 }

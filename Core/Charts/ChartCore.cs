@@ -93,6 +93,7 @@ namespace LiveCharts.Charts
         {
             get
             {
+
                 return (View.Series ?? Enumerable.Empty<ISeriesView>())
                     .Where(x => x.IsSeriesVisible);
             }
