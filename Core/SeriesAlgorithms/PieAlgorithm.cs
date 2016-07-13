@@ -38,7 +38,7 @@ namespace LiveCharts.SeriesAlgorithms
         {
             var pieChart = (IPieChart) View.Model.Chart.View;
 
-            var maxPushOut = View.Model.Chart.ActualSeries
+            var maxPushOut = View.Model.Chart.View.ActualSeries
                 .OfType<IPieSeriesView>()
                 .Select(x => x.PushOut)
                 .DefaultIfEmpty(0).Max();

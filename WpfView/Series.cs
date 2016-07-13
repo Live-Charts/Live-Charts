@@ -26,6 +26,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media;
+using LiveCharts.Defaults;
 using LiveCharts.Definitions.Points;
 using LiveCharts.Definitions.Series;
 using LiveCharts.Helpers;
@@ -39,8 +40,6 @@ namespace LiveCharts.Wpf
     /// </summary>
     public abstract class Series : FrameworkElement, ISeriesView
     {
-        private readonly IChartValues _dummyValues = new ChartValues<double>();
-        
         #region Constructors
         /// <summary>
         /// Initializes a new Instance of Series
@@ -79,7 +78,13 @@ namespace LiveCharts.Wpf
         /// </summary>
         public IChartValues ActualValues
         {
-            get { return Values ?? _dummyValues; }
+            get
+            {
+                if (DesignerProperties.GetIsInDesignMode(this) && (Values == null || Values.Count == 0))
+                    SetValue(ValuesProperty, GetValuesForDesigner());
+
+                return Values;
+            }
         }
 
         /// <summary>
@@ -441,6 +446,20 @@ namespace LiveCharts.Wpf
                 Model.Chart.Updater.Run();
                 PreviousVisibility = Visibility;
             }
+        }
+
+        private static ChartValues<ObservableValue> GetValuesForDesigner()
+        {
+            var r = new Random();
+            return new ChartValues<ObservableValue>
+            {
+                new ObservableValue(r.Next(0, 100)),
+                new ObservableValue(r.Next(0, 100)),
+                new ObservableValue(r.Next(0, 100)),
+                new ObservableValue(r.Next(0, 100)),
+                new ObservableValue(r.Next(0, 100)),
+                new ObservableValue(r.Next(0, 100))
+            };
         }
 
         #region Obsoletes

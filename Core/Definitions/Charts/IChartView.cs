@@ -23,6 +23,7 @@
 using System;
 using System.Collections.Generic;
 using LiveCharts.Charts;
+using LiveCharts.Definitions.Series;
 using LiveCharts.Dtos;
 
 namespace LiveCharts.Definitions.Charts
@@ -35,6 +36,7 @@ namespace LiveCharts.Definitions.Charts
 
         bool IsMocked { get; set; }
         SeriesCollection Series { get; set; }
+        IEnumerable<ISeriesView> ActualSeries { get; }
         TimeSpan TooltipTimeout { get; set; }
         ZoomingOptions Zoom { get; set; }
         LegendLocation LegendLocation { get; set; }

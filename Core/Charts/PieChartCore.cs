@@ -47,7 +47,7 @@ namespace LiveCharts.Charts
             PivotZoomingAxis = AxisOrientation.None;
             View.Zoom = ZoomingOptions.None;
 
-            if (ActualSeries.Any(x => !(x.Model is IPieSeries)))
+            if (View.ActualSeries.Any(x => !(x.Model is IPieSeries)))
                 throw new LiveChartsException(
                     "There is a invalid series in the series collection, " +
                     "verify that all the series implement IPieSeries.");
@@ -55,9 +55,9 @@ namespace LiveCharts.Charts
             foreach (var xi in AxisX)
             {
                 xi.S = 1;
-                xi.MinLimit = ActualSeries.Select(x => x.Values.Limit1.Min)
+                xi.MinLimit = View.ActualSeries.Select(x => x.Values.Limit1.Min)
                     .DefaultIfEmpty(0).Min();
-                xi.MaxLimit = ActualSeries.Select(x => x.Values.Limit1.Max)
+                xi.MaxLimit = View.ActualSeries.Select(x => x.Values.Limit1.Max)
                     .DefaultIfEmpty(0).Max();
 
                 if (Math.Abs(xi.MinLimit - xi.MaxLimit) < xi.S * .01)
@@ -70,9 +70,9 @@ namespace LiveCharts.Charts
             foreach (var yi in AxisY)
             {
                 //yi.CalculateSeparator(this, AxisTags.X);
-                yi.MinLimit = ActualSeries.Select(x => x.Values.Limit2.Min)
+                yi.MinLimit = View.ActualSeries.Select(x => x.Values.Limit2.Min)
                     .DefaultIfEmpty(0).Min();
-                yi.MaxLimit = ActualSeries.Select(x => x.Values.Limit2.Max)
+                yi.MaxLimit = View.ActualSeries.Select(x => x.Values.Limit2.Max)
                     .DefaultIfEmpty(0).Max();
 
                 if (Math.Abs(yi.MinLimit - yi.MaxLimit) < yi.S * .01)
@@ -82,7 +82,7 @@ namespace LiveCharts.Charts
                 }
             }
 
-            StackPoints(ActualSeries, AxisOrientation.Y, 0);
+            StackPoints(View.ActualSeries, AxisOrientation.Y, 0);
 
             var curSize = new CoreRectangle(0, 0, ControlSize.Width, ControlSize.Height);
 

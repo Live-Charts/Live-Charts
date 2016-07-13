@@ -89,16 +89,6 @@ namespace LiveCharts.Charts
 
         private DateTime RequestedZoomAt { get; set; }
 
-        public IEnumerable<ISeriesView> ActualSeries
-        {
-            get
-            {
-
-                return (View.Series ?? Enumerable.Empty<ISeriesView>())
-                    .Where(x => x.IsSeriesVisible);
-            }
-        }
-
         #endregion
 
         #region Public Methods

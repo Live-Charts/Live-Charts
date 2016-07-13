@@ -60,7 +60,7 @@ namespace LiveCharts
                 if (!Chart.View.IsControlLoaded) return;
 
             if (restartsAnimations)
-                Chart.ActualSeries.ForEach(s => s.Values.Points.ForEach(p =>
+                Chart.View.ActualSeries.ForEach(s => s.Values.Points.ForEach(p =>
                 {
                     p.View.RemoveFromView(Chart);
                     p.View = null;
@@ -69,7 +69,7 @@ namespace LiveCharts
             Chart.AxisX = Chart.View.MapXAxes(Chart);
             Chart.AxisY = Chart.View.MapYAxes(Chart);
 
-            foreach (var series in Chart.ActualSeries)
+            foreach (var series in Chart.View.ActualSeries)
             {
                 InitializeSeriesParams(series);
                 series.ActualValues.GetLimits();
@@ -80,7 +80,7 @@ namespace LiveCharts
             Chart.PrepareAxes();
             Chart.RunSpecializedChartComponents();
 
-            foreach (var series in Chart.ActualSeries)
+            foreach (var series in Chart.View.ActualSeries)
             {
                 series.OnSeriesUpdateStart();
                 series.ActualValues.InitializeGarbageCollector();

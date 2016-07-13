@@ -22,6 +22,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Windows;
@@ -31,7 +32,9 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Threading;
 using LiveCharts.Charts;
+using LiveCharts.Defaults;
 using LiveCharts.Definitions.Charts;
+using LiveCharts.Definitions.Series;
 using LiveCharts.Dtos;
 using LiveCharts.Helpers;
 using LiveCharts.Wpf.Points;
@@ -76,8 +79,6 @@ namespace LiveCharts.Wpf.Charts.Base
 
             SetValue(ChartLegendProperty, new DefaultLegend());
             SetValue(DataTooltipProperty, new DefaultTooltip());
-            //ChartLegend = new DefaultLegend();
-            //DataTooltip = new DefaultTooltip();
 
             if (RandomizeStartingColor)
                 SeriesIndexCount = Randomizer.Next(0, Colors.Count);
@@ -366,6 +367,21 @@ namespace LiveCharts.Wpf.Charts.Base
         /// </summary>
         public bool IsControlLoaded { get; private set; }
 
+        /// <summary>
+        /// Gets the visible series in the chart
+        /// </summary>
+        public IEnumerable<ISeriesView> ActualSeries
+        {
+            get
+            {
+                if (DesignerProperties.GetIsInDesignMode(this) && Series == null)
+                    SetValue(SeriesProperty, GetDesignerModeCollection());
+
+                return (Series ?? Enumerable.Empty<ISeriesView>())
+                    .Where(x => x.IsSeriesVisible);
+            }
+        }
+
         #endregion
 
         #region Public Methods
@@ -506,6 +522,7 @@ namespace LiveCharts.Wpf.Charts.Base
             "TooltipTimeout", typeof(TimeSpan), typeof(Chart),
             new PropertyMetadata(default(TimeSpan), TooltipTimeoutCallback));
 
+        
         /// <summary>
         /// Gets or sets the time a tooltip takes to hide when the user leaves the data point.
         /// </summary>
@@ -528,7 +545,7 @@ namespace LiveCharts.Wpf.Charts.Base
 
         private void DataMouseDown(object sender, MouseEventArgs e)
         {
-            var result = Model.ActualSeries.SelectMany(x => x.ActualValues.Points).FirstOrDefault(x =>
+            var result = ActualSeries.SelectMany(x => x.ActualValues.Points).FirstOrDefault(x =>
             {
                 var pointView = x.View as PointView;
                 return pointView != null && Equals(pointView.HoverShape, sender);
@@ -538,7 +555,7 @@ namespace LiveCharts.Wpf.Charts.Base
 
         private void DataMouseEnter(object sender, EventArgs e)
         {
-            var source = Model.ActualSeries.SelectMany(x => x.ActualValues.Points);
+            var source = ActualSeries.SelectMany(x => x.ActualValues.Points);
             var senderPoint = source.FirstOrDefault(x => x.View != null &&
                                                          Equals(((PointView)x.View).HoverShape, sender));
 
@@ -615,7 +632,7 @@ namespace LiveCharts.Wpf.Charts.Base
             TooltipTimeoutTimer.Stop();
             TooltipTimeoutTimer.Start();
 
-            var source = Model.ActualSeries.SelectMany(x => x.ActualValues.Points);
+            var source = ActualSeries.SelectMany(x => x.ActualValues.Points);
             var senderPoint =
                 source.FirstOrDefault(x => x.View != null && Equals(((PointView)x.View).HoverShape, sender));
 
@@ -643,7 +660,7 @@ namespace LiveCharts.Wpf.Charts.Base
 
             var l = new List<SeriesViewModel>();
 
-            foreach (var t in Model.ActualSeries)
+            foreach (var t in ActualSeries)
             {
                 var item = new SeriesViewModel();
 
@@ -703,6 +720,75 @@ namespace LiveCharts.Wpf.Charts.Base
             yt = yt > DrawMargin.Height / 2 ? yt - DataTooltip.ActualHeight - 5 : yt + 5;
 
             return new Point(xt, yt);
+        }
+
+        private SeriesCollection GetDesignerModeCollection()
+        {
+            var r = new Random();
+            SeriesCollection mockedCollection;
+
+
+            if (this is PieChart)
+            {
+
+                mockedCollection = new SeriesCollection
+                {
+                    new PieSeries
+                    {
+                        Values = new ChartValues<ObservableValue> {r.Next(10, 100)}
+                    },
+                    new PieSeries
+                    {
+                        Values = new ChartValues<ObservableValue> {r.Next(10, 100)}
+                    },
+                    new PieSeries
+                    {
+                        Values = new ChartValues<ObservableValue> {r.Next(10, 100)}
+                    },
+                    new PieSeries
+                    {
+                        Values = new ChartValues<ObservableValue> {r.Next(10, 100)}
+                    }
+                };
+            }
+            else
+            {
+                Func<int, int,ChartValues<ObservableValue>> getRandomValues =
+                    (from, to) => new ChartValues<ObservableValue>
+                    {
+                        new ObservableValue(r.Next(from, to)),
+                        new ObservableValue(r.Next(from, to)),
+                        new ObservableValue(r.Next(from, to)),
+                        new ObservableValue(r.Next(from, to)),
+                        new ObservableValue(r.Next(from, to))
+                    };
+
+                mockedCollection = new SeriesCollection
+                {
+                    new LineSeries {Values = getRandomValues(0, 100)},
+                    new LineSeries {Values = getRandomValues(0, 100)},
+                    new LineSeries {Values = getRandomValues(0, 100), Fill = Brushes.Transparent}
+                };
+            }
+
+            var goWild = new DispatcherTimer
+            {
+                Interval = TimeSpan.FromMilliseconds(1000)
+            };
+            goWild.Tick += (sender, args) =>
+            {
+                foreach (var series in mockedCollection)
+                {
+                    foreach (ObservableValue chartValue in series.Values)
+                    {
+                        chartValue.Value = r.Next(10, 100);
+                    }
+                }
+            };
+            //not today... maybe later
+            //goWild.Start();
+
+            return mockedCollection;
         }
         #endregion
 
