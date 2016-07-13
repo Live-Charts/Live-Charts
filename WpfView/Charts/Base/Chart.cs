@@ -735,19 +735,19 @@ namespace LiveCharts.Wpf.Charts.Base
                 {
                     new PieSeries
                     {
-                        Values = new ChartValues<ObservableValue> {r.Next(10, 100)}
+                        Values = new ChartValues<ObservableValue> {new ObservableValue(r.Next(10, 100)) }
                     },
                     new PieSeries
                     {
-                        Values = new ChartValues<ObservableValue> {r.Next(10, 100)}
+                        Values = new ChartValues<ObservableValue> {new ObservableValue(r.Next(10, 100)) }
                     },
                     new PieSeries
                     {
-                        Values = new ChartValues<ObservableValue> {r.Next(10, 100)}
+                        Values = new ChartValues<ObservableValue> {new ObservableValue(r.Next(10, 100)) }
                     },
                     new PieSeries
                     {
-                        Values = new ChartValues<ObservableValue> {r.Next(10, 100)}
+                        Values = new ChartValues<ObservableValue> {new ObservableValue(r.Next(10, 100)) }
                     }
                 };
             }
