@@ -24,6 +24,7 @@ using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using LiveCharts.Charts;
@@ -163,12 +164,21 @@ namespace LiveCharts.Wpf.Points
 
         public override void OnHoverLeave(ChartPoint point)
         {
-            BindingOperations.SetBinding(Rectangle, Shape.FillProperty,
-                new Binding
-                {
-                    Path = new PropertyPath(Series.FillProperty),
-                    Source = ((Series)point.SeriesView)
-                });
+            if (Rectangle == null) return;
+
+            if (point.Fill != null)
+            {
+                Rectangle.Fill = (Brush)point.Fill;
+            }
+            else
+            {
+                BindingOperations.SetBinding(Rectangle, Shape.FillProperty,
+                    new Binding
+                    {
+                        Path = new PropertyPath(Series.FillProperty),
+                        Source = ((Series) point.SeriesView)
+                    });
+            }
         }
     }
 }

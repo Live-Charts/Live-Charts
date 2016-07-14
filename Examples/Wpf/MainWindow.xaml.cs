@@ -23,6 +23,7 @@ using Wpf.CartesianChart.ManualZAndP;
 using Wpf.CartesianChart.Missing_Line_Points;
 using Wpf.CartesianChart.NegativeStackedRow;
 using Wpf.CartesianChart.PointShapeLine;
+using Wpf.CartesianChart.PointState;
 using Wpf.CartesianChart.StackedArea;
 using Wpf.CartesianChart.StackedBar;
 using Wpf.CartesianChart.UIElements;
@@ -56,6 +57,7 @@ namespace Wpf
             CartesianExamples = new List<UserControl>
             {
                 //new JimmyTheTestsGuy(),
+                new PointStateExample(),
 
                 new CustomTooltipAndLegendExample(),
                 new PointShapeLineExample(),

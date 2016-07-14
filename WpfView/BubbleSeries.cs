@@ -163,6 +163,9 @@ namespace LiveCharts.Wpf
 
             if (pbv.DataLabel != null) pbv.DataLabel.Text = label;
 
+            if (point.Stroke != null) pbv.Ellipse.Stroke = (Brush)point.Stroke;
+            if (point.Fill != null) pbv.Ellipse.Fill = (Brush)point.Fill;
+
             return pbv;
         }
 

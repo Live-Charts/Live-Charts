@@ -35,6 +35,8 @@ namespace LiveCharts.Configurations
         private Func<T, int, double> _x = (v, i) => i;
         private Func<T, int, double> _y = (v, i) => i;
         private Func<T, int, double> _weight = (v, i) => 0;
+        private Func<T, int, object> _stroke;
+        private Func<T, int, object> _fill;
 
         /// <summary>
         /// Sets values for a specific point
@@ -46,6 +48,8 @@ namespace LiveCharts.Configurations
             point.X = _x(valuePair.Value, valuePair.Key);
             point.Y = _y(valuePair.Value, valuePair.Key);
             point.Weight = _weight(valuePair.Value, valuePair.Key);
+            if (_stroke != null) point.Stroke = _stroke(valuePair.Value, valuePair.Key);
+            if (_fill != null) point.Fill = _fill(valuePair.Value, valuePair.Key);
         }
 
         /// <summary>
@@ -123,6 +127,48 @@ namespace LiveCharts.Configurations
         public WeightedMapper<T> Weight(Func<T, int, double> predicate)
         {
             _weight = predicate;
+            return this;
+        }
+
+        /// <summary>
+        /// Sets the Stroke of the point
+        /// </summary>
+        /// <param name="predicate"></param>
+        /// <returns></returns>
+        public WeightedMapper<T> Stroke(Func<T, object> predicate)
+        {
+            return Stroke((t, i) => predicate(t));
+        }
+
+        /// <summary>
+        /// Sets the Stroke of the point
+        /// </summary>
+        /// <param name="predicate"></param>
+        /// <returns></returns>
+        public WeightedMapper<T> Stroke(Func<T, int, object> predicate)
+        {
+            _stroke = predicate;
+            return this;
+        }
+
+        /// <summary>
+        /// Sets the Fill of the point
+        /// </summary>
+        /// <param name="predicate"></param>
+        /// <returns></returns>
+        public WeightedMapper<T> Fill(Func<T, object> predicate)
+        {
+            return Fill((t, i) => predicate(t));
+        }
+
+        /// <summary>
+        /// Sets the Fill of the point
+        /// </summary>
+        /// <param name="predicate"></param>
+        /// <returns></returns>
+        public WeightedMapper<T> Fill(Func<T, int, object> predicate)
+        {
+            _fill = predicate;
             return this;
         }
     }

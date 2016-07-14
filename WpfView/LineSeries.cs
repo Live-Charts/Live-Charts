@@ -243,7 +243,7 @@ namespace LiveCharts.Wpf
                 BindingOperations.SetBinding(pbv.Shape, Shape.FillProperty,
                     new Binding {Path = new PropertyPath(PointForeroundProperty), Source = this});
                 BindingOperations.SetBinding(pbv.Shape, Shape.StrokeProperty,
-                    new Binding {Path = new PropertyPath(StrokeProperty), Source = this});
+                        new Binding {Path = new PropertyPath(StrokeProperty), Source = this});
                 BindingOperations.SetBinding(pbv.Shape, Shape.StrokeThicknessProperty,
                     new Binding { Path = new PropertyPath(StrokeThicknessProperty), Source = this });
                 BindingOperations.SetBinding(pbv.Shape, WidthProperty,
@@ -268,6 +268,9 @@ namespace LiveCharts.Wpf
             }
 
             if (pbv.DataLabel != null) pbv.DataLabel.Text = label;
+
+            if (point.Stroke != null) pbv.Shape.Stroke = (Brush) point.Stroke;
+            if (point.Fill != null) pbv.Shape.Fill = (Brush) point.Fill;
 
             return pbv;
         }

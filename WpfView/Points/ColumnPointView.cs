@@ -178,12 +178,21 @@ namespace LiveCharts.Wpf.Points
 
         public override void OnHoverLeave(ChartPoint point)
         {
-            BindingOperations.SetBinding(Rectangle, Shape.FillProperty,
-                new Binding
-                {
-                    Path = new PropertyPath(Series.FillProperty),
-                    Source = ((Series) point.SeriesView)
-                });
+            if (Rectangle == null) return;
+
+            if (point.Fill != null)
+            {
+                Rectangle.Fill = (Brush) point.Fill;
+            }
+            else
+            {
+                BindingOperations.SetBinding(Rectangle, Shape.FillProperty,
+                    new Binding
+                    {
+                        Path = new PropertyPath(Series.FillProperty),
+                        Source = ((Series) point.SeriesView)
+                    });
+            }
         }
     }
 }

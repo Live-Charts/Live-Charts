@@ -197,6 +197,9 @@ namespace LiveCharts.Wpf
 
             if (pbv.DataLabel != null) pbv.DataLabel.Text = label;
 
+            if (point.Stroke != null) pbv.Shape.Stroke = (Brush)point.Stroke;
+            if (point.Fill != null) pbv.Shape.Fill = (Brush)point.Fill;
+
             return pbv;
         }
 #endregion
