@@ -156,7 +156,7 @@ namespace LiveCharts
         private IEnumerable<KeyValuePair<int, T>> IndexData()
         {
             var i = 0;
-            foreach (var t in this)
+            foreach (var t in this.ToList())
             {
                 yield return new KeyValuePair<int, T>(i, t);
                 i++;
