@@ -609,8 +609,24 @@ namespace LiveCharts.Wpf.Charts.Base
                 DataTooltip.UpdateLayout();
 
                 var location = GetTooltipPosition(senderPoint);
-
                 location = new Point(Canvas.GetLeft(DrawMargin) + location.X, Canvas.GetTop(DrawMargin) + location.Y);
+                if (lcTooltip.IsWrapped)
+                {
+                    var container = (FrameworkElement) Parent;
+                    var positionTransform = TransformToAncestor(container);
+                    var pos = positionTransform.Transform(new Point(0, 0));
+
+                    location.X += pos.X;
+                    location.Y += pos.Y;
+
+                    if (location.X < 0) location.X = 0;
+                    if (location.X + DataTooltip.ActualWidth > container.ActualWidth)
+                    {
+                        var dif = container.ActualWidth - (location.X + DataTooltip.ActualWidth);
+                        dif *= container.ActualWidth/2 > senderPoint.ChartLocation.X ? 1 : -1;
+                        location.X += dif;
+                    }
+                }
 
                 if (DisableAnimations)
                 {

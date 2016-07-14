@@ -36,6 +36,7 @@ namespace LiveCharts.Wpf
     {
         TooltipData Data { get; set; }
         TooltipSelectionMode? SelectionMode { get; set; }
+        bool IsWrapped { get; set; }
     }
 
     /// <summary>
@@ -90,6 +91,18 @@ namespace LiveCharts.Wpf
         {
             get { return (double) GetValue(BulletSizeProperty); }
             set { SetValue(BulletSizeProperty, value); }
+        }
+
+        public static readonly DependencyProperty IsWrappedProperty = DependencyProperty.Register(
+            "IsWrapped", typeof (bool), typeof (DefaultTooltip), new PropertyMetadata(default(bool)));
+        /// <summary>
+        /// Gets or sets whether the tooltip is shared in the current view, this property is useful to control
+        /// the z index of a tooltip according to a set of controls in a container.
+        /// </summary>
+        public bool IsWrapped
+        {
+            get { return (bool) GetValue(IsWrappedProperty); }
+            set { SetValue(IsWrappedProperty, value); }
         }
 
         public TooltipData Data

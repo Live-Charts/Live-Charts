@@ -46,8 +46,12 @@ namespace Wpf
             //    }
             //});
 
+            Func = x => "a really long, long, long, long formatter for " + x;
+
             DataContext = this;
         }
+
+        public Func<ChartPoint, string> Func { get; set; }
 
         public SeriesCollection SeriesCollection
         {
@@ -80,9 +84,5 @@ namespace Wpf
                 PropertyChanged.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
-        {
-            Chart.AxisY[0].ShowLabels = !Chart.AxisY[0].ShowLabels;
-        }
     }
 }
