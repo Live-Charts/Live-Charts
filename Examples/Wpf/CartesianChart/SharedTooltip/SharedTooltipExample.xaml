@@ -35,7 +35,7 @@
                 <ColumnDefinition Width="*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
 
-            <lvc:CartesianChart Grid.Column="0" Background="White"
+            <lvc:CartesianChart Grid.Column="0" Background="White" DisableAnimations="True"
                             DataTooltip="{Binding ElementName=CurrentTooltip}">
                 <lvc:CartesianChart.Series>
                     <lvc:LineSeries Values="1,2,3,4,5" LabelPoint="{Binding LabelPoint}"></lvc:LineSeries>
