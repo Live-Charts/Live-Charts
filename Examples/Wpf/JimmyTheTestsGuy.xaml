@@ -9,45 +9,13 @@
              d:DesignHeight="500"
              d:DesignWidth="800"
               d:DataContext="{d:DesignInstance local:JimmyTheTestsGuy}">
-    <Canvas Name="Container">
-        
-        <!-- 
-        the tooltip requires a canvas to move properly, 
-        so lets wrap our view where you need a shared tooltip 
-        with a Canvas container
-        -->
-
-        <lvc:DefaultTooltip Name="Tooltip" Visibility="Hidden" 
-                            Panel.ZIndex="100"
-                            Canvas.Left="0" Canvas.Top="0"> <!--it also needs an initial position-->
-        </lvc:DefaultTooltip>
-
-        <Grid Height="{Binding ActualHeight, ElementName=Container}" 
-              Width="{Binding ActualWidth, ElementName=Container}">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"></ColumnDefinition>
-                <ColumnDefinition Width="*"></ColumnDefinition>
-                <ColumnDefinition Width="*"></ColumnDefinition>
-            </Grid.ColumnDefinitions>
-            
-            <lvc:CartesianChart Grid.Column="0" Panel.ZIndex="3" Background="White"
-                            DataTooltip="{Binding ElementName=Tooltip}">
-                <lvc:CartesianChart.Series>
-                    <lvc:LineSeries Values="1,2,3,4,5" LabelPoint="{Binding Func}"></lvc:LineSeries>
-                </lvc:CartesianChart.Series>
-            </lvc:CartesianChart>
-            <lvc:CartesianChart Grid.Column="1" Panel.ZIndex="2" Background="White"
-                            DataTooltip="{Binding ElementName=Tooltip}">
-                <lvc:CartesianChart.Series>
-                    <lvc:LineSeries Values="1,2,3,4,5" LabelPoint="{Binding Func}"></lvc:LineSeries>
-                </lvc:CartesianChart.Series>
-            </lvc:CartesianChart>
-            <lvc:CartesianChart Grid.Column="2" Panel.ZIndex="1" Background="White"
-                            DataTooltip="{Binding ElementName=Tooltip}">
-                <lvc:CartesianChart.Series>
-                    <lvc:LineSeries Values="1,2,3,4,5" LabelPoint="{Binding Func}" ></lvc:LineSeries>
-                </lvc:CartesianChart.Series>
-            </lvc:CartesianChart>
-        </Grid>
-    </Canvas>
+    <Grid>
+        <lvc:CartesianChart Grid.Column="0" Panel.ZIndex="3" Background="White" LegendLocation="Bottom">
+            <lvc:CartesianChart.Series>
+                <lvc:LineSeries Title="gomasj dkjasnkjas kjasja lashlc" Values="1,2,3,4,5" />
+                <lvc:LineSeries Title="lkjsj kjhs" Values="1,2,3,4,5" />
+                <lvc:LineSeries Title="jaklskj klasjclkaj" Values="1,2,3,4,5" />
+            </lvc:CartesianChart.Series>
+        </lvc:CartesianChart>
+    </Grid>
 </UserControl>

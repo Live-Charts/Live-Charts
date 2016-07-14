@@ -38,7 +38,7 @@
     <UserControl.Template>
         <ControlTemplate>
             <Border>
-                <ItemsControl ItemsSource="{Binding Series}" Grid.IsSharedSizeScope="True">
+                <ItemsControl ItemsSource="{Binding Series}">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
                             <StackPanel>
@@ -56,7 +56,7 @@
                             <Grid Margin="2">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto"/>
-                                    <ColumnDefinition Width="Auto" SharedSizeGroup="Title"/>
+                                    <ColumnDefinition Width="Auto"/>
                                 </Grid.ColumnDefinitions>
                                 <Path Width="{Binding BulletSize, RelativeSource={RelativeSource Mode=FindAncestor, AncestorLevel=1, AncestorType={x:Type UserControl}}}" 
                                          Height="{Binding BulletSize, RelativeSource={RelativeSource Mode=FindAncestor, AncestorLevel=1, AncestorType={x:Type UserControl}}}" 
