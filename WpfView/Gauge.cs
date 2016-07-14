@@ -30,7 +30,6 @@ using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using LiveCharts.Wpf.Points;
 
-// ReSharper disable once CheckNamespace
 namespace LiveCharts.Wpf
 {
     /// <summary>

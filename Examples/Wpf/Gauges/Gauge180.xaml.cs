@@ -13,7 +13,7 @@ namespace Wpf.Gauges
         {
             InitializeComponent();
 
-            Value = 10;
+            Value = 100;
             Formatter = x => x + " Km/Hr";
 
             DataContext = this;
@@ -33,7 +33,7 @@ namespace Wpf.Gauges
 
         private void MoveOnClick(object sender, RoutedEventArgs e)
         {
-            Value = new Random().Next(0, 100);
+            Value = new Random().Next(50, 100);
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
