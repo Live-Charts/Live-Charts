@@ -32,48 +32,62 @@ namespace Wpf
         {
             InitializeComponent();
 
-            SeriesCollection = GetSeries();
+            var r = new Random();
 
-            //Task.Run(() =>
-            //{
-            //    while (true)
-            //    {
-            //        Thread.Sleep(3000);
-            //        Application.Current.Dispatcher.Invoke(() =>
-            //        {
-            //            SeriesCollection[0].Values.Add((double) new Random().Next(0, 10));
-            //        });
-            //    }
-            //});
-
-            Func = x => "a really long, long, long, long formatter for " + x;
+            Source = new List<SeriesCollection>
+            {
+                new SeriesCollection
+                {
+                    new LineSeries
+                    {
+                        Values = new ChartValues<double> { r.Next(0,10), r.Next(0, 10), r.Next(0, 10) }
+                    },
+                    new LineSeries
+                    {
+                        Values = new ChartValues<double> { r.Next(0,10), r.Next(0, 10), r.Next(0, 10) }
+                    },
+                    new LineSeries
+                    {
+                        Values = new ChartValues<double> { r.Next(0,10), r.Next(0, 10), r.Next(0, 10) }
+                    }
+                },
+                new SeriesCollection
+                {
+                    new LineSeries
+                    {
+                        Values = new ChartValues<double> { r.Next(0,10), r.Next(0, 10), r.Next(0, 10) }
+                    },
+                    new LineSeries
+                    {
+                        Values = new ChartValues<double> { r.Next(0,10), r.Next(0, 10), r.Next(0, 10) }
+                    },
+                    new LineSeries
+                    {
+                        Values = new ChartValues<double> { r.Next(0,10), r.Next(0, 10), r.Next(0, 10) }
+                    }
+                },
+                new SeriesCollection
+                {
+                    new LineSeries
+                    {
+                        Values = new ChartValues<double> { r.Next(0,10), r.Next(0, 10), r.Next(0, 10) }
+                    },
+                    new LineSeries
+                    {
+                        Values = new ChartValues<double> { r.Next(0,10), r.Next(0, 10), r.Next(0, 10) }
+                    },
+                    new LineSeries
+                    {
+                        Values = new ChartValues<double> { r.Next(0,10), r.Next(0, 10), r.Next(0, 10) }
+                    }
+                }
+            };
 
             DataContext = this;
         }
 
-        public Func<ChartPoint, string> Func { get; set; }
+        public List<SeriesCollection> Source { get; set; }
 
-        public SeriesCollection SeriesCollection
-        {
-            get { return _seriesCollection; }
-            set
-            {
-                _seriesCollection = value;
-                OnPropertyChanged("SeriesCollection");
-            }
-        }
-
-
-        private SeriesCollection GetSeries()
-        {
-            return new SeriesCollection
-            {
-                new LineSeries
-                {
-                    Values = new ChartValues<double> {1, 4, 7, 2, 6}
-                }
-            };
-        }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -84,5 +98,15 @@ namespace Wpf
                 PropertyChanged.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
+        private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
+        {
+            foreach (var dahCurrentItem in Control.Items)
+            {
+                var container = Control.ItemContainerGenerator.ContainerFromItem(dahCurrentItem) as FrameworkElement;
+                var chart = Control.ItemTemplate.FindName("Chart", container) as LiveCharts.Wpf.CartesianChart;
+                chart.Series = (SeriesCollection) dahCurrentItem;
+
+            }
+        }
     }
 }

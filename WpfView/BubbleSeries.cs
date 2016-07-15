@@ -185,13 +185,13 @@ namespace LiveCharts.Wpf
 
         private void InitializeDefuaults()
         {
-            SetValue(StrokeThicknessProperty, 0d);
-            SetValue(MaxBubbleDiameterProperty, 50d);
-            SetValue(MinBubbleDiameterProperty, 10d);
+            SetCurrentValue(StrokeThicknessProperty, 0d);
+            SetCurrentValue(MaxBubbleDiameterProperty, 50d);
+            SetCurrentValue(MinBubbleDiameterProperty, 10d);
 
             Func<ChartPoint, string> defaultLabel = x => Model.CurrentXAxis.GetFormatter()(x.X) + ", "
                                                          + Model.CurrentYAxis.GetFormatter()(x.Y);
-            SetValue(LabelPointProperty, defaultLabel);
+            SetCurrentValue(LabelPointProperty, defaultLabel);
 
             DefaultFillOpacity = 0.7;
         }

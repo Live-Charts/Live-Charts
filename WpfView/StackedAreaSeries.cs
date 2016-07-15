@@ -144,15 +144,15 @@ namespace LiveCharts.Wpf
 
         private void InitializeDefuaults()
         {
-            SetValue(LineSmoothnessProperty, .7d);
-            SetValue(PointGeometrySizeProperty, 0d);
-            SetValue(PointForeroundProperty, Brushes.White);
-            SetValue(ForegroundProperty, new SolidColorBrush(Color.FromRgb(229, 229, 229)));
-            SetValue(StrokeThicknessProperty, 0d);
+            SetCurrentValue(LineSmoothnessProperty, .7d);
+            SetCurrentValue(PointGeometrySizeProperty, 0d);
+            SetCurrentValue(PointForeroundProperty, Brushes.White);
+            SetCurrentValue(ForegroundProperty, new SolidColorBrush(Color.FromRgb(229, 229, 229)));
+            SetCurrentValue(StrokeThicknessProperty, 0d);
             DefaultFillOpacity = 1;
 
             Func<ChartPoint, string> defaultLabel = x => Model.CurrentYAxis.GetFormatter()(x.Y);
-            SetValue(LabelPointProperty, defaultLabel);
+            SetCurrentValue(LabelPointProperty, defaultLabel);
 
             Splitters = new List<LineSegmentSplitter>();
         }

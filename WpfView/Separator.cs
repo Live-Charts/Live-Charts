@@ -37,8 +37,8 @@ namespace LiveCharts.Wpf
         /// </summary>
         public Separator()
         {
-            SetValue(IsEnabledProperty, true);
-            SetValue(StrokeProperty, new SolidColorBrush(Color.FromRgb(240, 240, 240)));
+            SetCurrentValue(IsEnabledProperty, true);
+            SetCurrentValue(StrokeProperty, new SolidColorBrush(Color.FromRgb(240, 240, 240)));
             SetCurrentValue(StrokeThicknessProperty, 1d);
         }
 

@@ -13,7 +13,7 @@ namespace Wpf.Gauges
         {
             InitializeComponent();
 
-            Value = 100;
+            Value = 65;
             Formatter = x => x + " Km/Hr";
 
             DataContext = this;

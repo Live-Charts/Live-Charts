@@ -66,19 +66,19 @@ namespace LiveCharts.Wpf.Charts.Base
 
             TooltipTimeoutTimer = new DispatcherTimer();
 
-            SetValue(MinHeightProperty, 125d);
-            SetValue(MinWidthProperty, 125d);
+            SetCurrentValue(MinHeightProperty, 125d);
+            SetCurrentValue(MinWidthProperty, 125d);
 
-            SetValue(AnimationsSpeedProperty, TimeSpan.FromMilliseconds(300));
-            SetValue(TooltipTimeoutProperty, TimeSpan.FromMilliseconds(800));
+            SetCurrentValue(AnimationsSpeedProperty, TimeSpan.FromMilliseconds(300));
+            SetCurrentValue(TooltipTimeoutProperty, TimeSpan.FromMilliseconds(800));
 
-            SetValue(AxisXProperty, new AxesCollection());
-            SetValue(AxisYProperty, new AxesCollection());
+            SetCurrentValue(AxisXProperty, new AxesCollection());
+            SetCurrentValue(AxisYProperty, new AxesCollection());
 
-            SetValue(SeriesProperty, new SeriesCollection());
+            SetCurrentValue(SeriesProperty, new SeriesCollection());
 
-            SetValue(ChartLegendProperty, new DefaultLegend());
-            SetValue(DataTooltipProperty, new DefaultTooltip());
+            SetCurrentValue(ChartLegendProperty, new DefaultLegend());
+            SetCurrentValue(DataTooltipProperty, new DefaultTooltip());
 
             if (RandomizeStartingColor)
                 SeriesIndexCount = Randomizer.Next(0, Colors.Count);

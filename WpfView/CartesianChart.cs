@@ -42,7 +42,7 @@ namespace LiveCharts.Wpf
             var updater = new Components.ChartUpdater(freq);
             ChartCoreModel = new CartesianChartCore(this, updater);
 
-            SetValue(VisualElementsProperty, new VisualElementsCollection());
+            SetCurrentValue(VisualElementsProperty, new VisualElementsCollection());
         }
 
 

@@ -252,14 +252,14 @@ namespace LiveCharts.Wpf
 
         private void InitializeDefuaults()
         {
-            SetValue(StrokeThicknessProperty, 0d);
-            SetValue(ForegroundProperty, Brushes.White);
-            SetValue(StrokeProperty, Brushes.White);
-            SetValue(DrawsHeatRangeProperty, true);
-            SetValue(GradientStopCollectionProperty, new GradientStopCollection());
+            SetCurrentValue(StrokeThicknessProperty, 0d);
+            SetCurrentValue(ForegroundProperty, Brushes.White);
+            SetCurrentValue(StrokeProperty, Brushes.White);
+            SetCurrentValue(DrawsHeatRangeProperty, true);
+            SetCurrentValue(GradientStopCollectionProperty, new GradientStopCollection());
 
             Func<ChartPoint, string> defaultLabel = x => x.Weight.ToString(CultureInfo.InvariantCulture);
-            SetValue(LabelPointProperty, defaultLabel);
+            SetCurrentValue(LabelPointProperty, defaultLabel);
 
             DefaultFillOpacity = 0.4;
         }

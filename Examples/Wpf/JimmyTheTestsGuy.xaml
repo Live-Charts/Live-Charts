@@ -9,13 +9,21 @@
              d:DesignHeight="500"
              d:DesignWidth="800"
               d:DataContext="{d:DesignInstance local:JimmyTheTestsGuy}">
+    <UserControl.Resources>
+        <local:TetsConverter x:Key="Converter"></local:TetsConverter>
+    </UserControl.Resources>
     <Grid>
-        <lvc:CartesianChart Grid.Column="0" Panel.ZIndex="3" Background="White" LegendLocation="Bottom">
-            <lvc:CartesianChart.Series>
-                <lvc:LineSeries Title="gomasj dkjasnkjas kjasja lashlc" Values="1,2,3,4,5" />
-                <lvc:LineSeries Title="lkjsj kjhs" Values="1,2,3,4,5" />
-                <lvc:LineSeries Title="jaklskj klasjclkaj" Values="1,2,3,4,5" />
-            </lvc:CartesianChart.Series>
-        </lvc:CartesianChart>
+        <Button Height="50" VerticalAlignment="Top" Click="ButtonBase_OnClick" Panel.ZIndex="1">Que Pedo</Button>
+        <ScrollViewer>
+          
+                <ItemsControl Name="Control" ItemsSource="{Binding Source}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <lvc:CartesianChart Name="Chart" Height="400" 
+                                            Series="{Binding PresentationTraceSources.TraceLevel=High}"/>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
     </Grid>
 </UserControl>
