@@ -9,21 +9,11 @@
              d:DesignHeight="500"
              d:DesignWidth="800"
               d:DataContext="{d:DesignInstance local:JimmyTheTestsGuy}">
-    <UserControl.Resources>
-        <local:TetsConverter x:Key="Converter"></local:TetsConverter>
-    </UserControl.Resources>
     <Grid>
-        <Button Height="50" VerticalAlignment="Top" Click="ButtonBase_OnClick" Panel.ZIndex="1">Que Pedo</Button>
-        <ScrollViewer>
-          
-                <ItemsControl Name="Control" ItemsSource="{Binding Source}">
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <lvc:CartesianChart Name="Chart" Height="400" 
-                                            Series="{Binding PresentationTraceSources.TraceLevel=High}"/>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
-        </ScrollViewer>
+        <lvc:CartesianChart DisableAnimations="True">
+            <lvc:CartesianChart.Series>
+                <lvc:ColumnSeries Values="{Binding TDS}" />
+            </lvc:CartesianChart.Series>
+        </lvc:CartesianChart>
     </Grid>
 </UserControl>

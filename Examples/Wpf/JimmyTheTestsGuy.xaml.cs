@@ -16,6 +16,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using LiveCharts;
+using LiveCharts.Defaults;
 using LiveCharts.Wpf;
 using Wpf.Annotations;
 
@@ -26,65 +27,25 @@ namespace Wpf
 
     public partial class JimmyTheTestsGuy : INotifyPropertyChanged
     {
-        private SeriesCollection _seriesCollection;
-
         public JimmyTheTestsGuy()
         {
             InitializeComponent();
 
-            var r = new Random();
-
-            Source = new List<SeriesCollection>
+            TDS = new ChartValues<ObservableValue>
             {
-                new SeriesCollection
-                {
-                    new LineSeries
-                    {
-                        Values = new ChartValues<double> { r.Next(0,10), r.Next(0, 10), r.Next(0, 10) }
-                    },
-                    new LineSeries
-                    {
-                        Values = new ChartValues<double> { r.Next(0,10), r.Next(0, 10), r.Next(0, 10) }
-                    },
-                    new LineSeries
-                    {
-                        Values = new ChartValues<double> { r.Next(0,10), r.Next(0, 10), r.Next(0, 10) }
-                    }
-                },
-                new SeriesCollection
-                {
-                    new LineSeries
-                    {
-                        Values = new ChartValues<double> { r.Next(0,10), r.Next(0, 10), r.Next(0, 10) }
-                    },
-                    new LineSeries
-                    {
-                        Values = new ChartValues<double> { r.Next(0,10), r.Next(0, 10), r.Next(0, 10) }
-                    },
-                    new LineSeries
-                    {
-                        Values = new ChartValues<double> { r.Next(0,10), r.Next(0, 10), r.Next(0, 10) }
-                    }
-                },
-                new SeriesCollection
-                {
-                    new LineSeries
-                    {
-                        Values = new ChartValues<double> { r.Next(0,10), r.Next(0, 10), r.Next(0, 10) }
-                    },
-                    new LineSeries
-                    {
-                        Values = new ChartValues<double> { r.Next(0,10), r.Next(0, 10), r.Next(0, 10) }
-                    },
-                    new LineSeries
-                    {
-                        Values = new ChartValues<double> { r.Next(0,10), r.Next(0, 10), r.Next(0, 10) }
-                    }
-                }
+                new ObservableValue(30),
+                new ObservableValue(50),
+                new ObservableValue(70),
+                new ObservableValue(80),
+                new ObservableValue(90),
+                new ObservableValue(100)
             };
+
 
             DataContext = this;
         }
+
+        public ChartValues<ObservableValue> TDS { get; set; }
 
         public List<SeriesCollection> Source { get; set; }
 
@@ -96,17 +57,6 @@ namespace Wpf
         {
             if (PropertyChanged != null)
                 PropertyChanged.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
-        {
-            foreach (var dahCurrentItem in Control.Items)
-            {
-                var container = Control.ItemContainerGenerator.ContainerFromItem(dahCurrentItem) as FrameworkElement;
-                var chart = Control.ItemTemplate.FindName("Chart", container) as LiveCharts.Wpf.CartesianChart;
-                chart.Series = (SeriesCollection) dahCurrentItem;
-
-            }
         }
     }
 }

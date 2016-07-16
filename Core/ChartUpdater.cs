@@ -60,11 +60,15 @@ namespace LiveCharts
                 if (!Chart.View.IsControlLoaded) return;
 
             if (restartsAnimations)
-                Chart.View.ActualSeries.ForEach(s => s.Values.Points.ForEach(p =>
+                Chart.View.ActualSeries.ForEach(s =>
                 {
-                    p.View.RemoveFromView(Chart);
-                    p.View = null;
-                }));
+                    if (s.ActualValues == null) return;
+                    s.ActualValues.Points.ForEach(p =>
+                    {
+                        p.View.RemoveFromView(Chart);
+                        p.View = null;
+                    });
+                });
 
             Chart.AxisX = Chart.View.MapXAxes(Chart);
             Chart.AxisY = Chart.View.MapYAxes(Chart);
