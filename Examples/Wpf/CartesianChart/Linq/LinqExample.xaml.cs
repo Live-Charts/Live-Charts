@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Linq;
 using System.Windows.Controls;
 using LiveCharts;
@@ -12,9 +11,8 @@ namespace Wpf.CartesianChart.Linq
     /// <summary>
     /// Interaction logic for LinqExample.xaml
     /// </summary>
-    public partial class LinqExample : UserControl, INotifyPropertyChanged
+    public partial class LinqExample : UserControl
     {
-        private string _searchQuery;
 
         public LinqExample()
         {
@@ -58,13 +56,6 @@ namespace Wpf.CartesianChart.Linq
             Labels.Clear();
             foreach (var record in records) Labels.Add(record.Name);
 
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        
-        protected virtual void OnPropertyChanged(string propertyName = null)
-        {
-            if (PropertyChanged != null) PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }
