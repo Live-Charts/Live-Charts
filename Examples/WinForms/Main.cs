@@ -11,6 +11,7 @@ using Winforms.Cartesian.HeatSeriesExample;
 using Winforms.Cartesian.Inverted_Series;
 using Winforms.Cartesian.Irregular_Intervals;
 using Winforms.Cartesian.Labels;
+using Winforms.Cartesian.Linq;
 using Winforms.Cartesian.LogarithmScale;
 using Winforms.Cartesian.MissingPoints;
 using Winforms.Cartesian.MultiAxes;
@@ -133,6 +134,11 @@ namespace Winforms
         private void button7_Click(object sender, EventArgs e)
         {
             new DoughnutExample().ShowDialog();
+        }
+
+        private void button8_Click(object sender, EventArgs e)
+        {
+            new LinqExample().ShowDialog();
         }
     }
 }

@@ -153,6 +153,14 @@
     <Compile Include="Cartesian\Labels\Labels.Designer.cs">
       <DependentUpon>Labels.cs</DependentUpon>
     </Compile>
+    <Compile Include="Cartesian\Linq\City.cs" />
+    <Compile Include="Cartesian\Linq\DataBase.cs" />
+    <Compile Include="Cartesian\Linq\LinqExample.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Cartesian\Linq\LinqExample.Designer.cs">
+      <DependentUpon>LinqExample.cs</DependentUpon>
+    </Compile>
     <Compile Include="Cartesian\LogarithmScale\LogarithmSacale.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -227,6 +235,7 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <None Include="Resources\ezgif.com-resize1.gif" />
     <EmbeddedResource Include="Cartesian\Basic Stacked Bar\BasicsStackedRowExample.resx">
       <DependentUpon>BasicsStackedRowExample.cs</DependentUpon>
     </EmbeddedResource>
@@ -278,6 +287,9 @@
     <EmbeddedResource Include="Cartesian\Labels\Labels.resx">
       <DependentUpon>Labels.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Cartesian\Linq\LinqExample.resx">
+      <DependentUpon>LinqExample.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Cartesian\LogarithmScale\LogarithmSacale.resx">
       <DependentUpon>LogarithmSacale.cs</DependentUpon>
     </EmbeddedResource>
@@ -324,6 +336,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Content Include="cities.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
