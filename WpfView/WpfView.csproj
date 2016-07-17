@@ -132,7 +132,9 @@
     <Compile Include="HeatColorRange.xaml.cs">
       <DependentUpon>HeatColorRange.xaml</DependentUpon>
     </Compile>
+    <Compile Include="CandleSeries.cs" />
     <Compile Include="Points\HeatPoint.cs" />
+    <Compile Include="Points\CandlePointView.cs" />
     <Compile Include="SectionsCollection.cs" />
     <Compile Include="AxesCollection.cs" />
     <Compile Include="Axis.cs" />

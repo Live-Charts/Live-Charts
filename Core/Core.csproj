@@ -121,6 +121,7 @@
     <Compile Include="LegendLocation.cs" />
     <Compile Include="SeparationState.cs" />
     <Compile Include="SeriesAlgorithms\HeatAlgorithm.cs" />
+    <Compile Include="SeriesAlgorithms\CandleAlgorithm.cs" />
     <Compile Include="SeriesAlgorithms\PieAlgorithm.cs" />
     <Compile Include="SeriesAlgorithms\OhlcAlgorithm.cs" />
     <Compile Include="SeriesAlgorithms\VerticalStackedAreaAlgorithm.cs" />
