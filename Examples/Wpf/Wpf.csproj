@@ -76,6 +76,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="CartesianChart\Financial\CandleStickExample.xaml.cs">
+      <DependentUpon>CandleStickExample.xaml</DependentUpon>
+    </Compile>
     <Compile Include="CartesianChart\Linq\City.cs" />
     <Compile Include="CartesianChart\Linq\DataBase.cs" />
     <Compile Include="CartesianChart\Linq\LinqExample.xaml.cs">
@@ -117,6 +120,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="CartesianChart\Financial\CandleStickExample.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="CartesianChart\HeatChart\HeatSeriesExample.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -141,7 +148,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="CartesianChart\Financial\FinancialExample.xaml">
+    <Page Include="CartesianChart\Financial\OhclExample.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -312,8 +319,8 @@
     <Compile Include="CartesianChart\ConstantChanges\ConstantChangesChart.xaml.cs">
       <DependentUpon>ConstantChangesChart.xaml</DependentUpon>
     </Compile>
-    <Compile Include="CartesianChart\Financial\FinancialExample.xaml.cs">
-      <DependentUpon>FinancialExample.xaml</DependentUpon>
+    <Compile Include="CartesianChart\Financial\OhclExample.xaml.cs">
+      <DependentUpon>OhclExample.xaml</DependentUpon>
     </Compile>
     <Compile Include="CartesianChart\InLineSyntax\InLineSyntaxTest.xaml.cs">
       <DependentUpon>InLineSyntaxTest.xaml</DependentUpon>

@@ -71,7 +71,7 @@ namespace LiveCharts.Wpf
         #region Properties
 
         public static readonly DependencyProperty MaxColumnWidthProperty = DependencyProperty.Register(
-            "MaxColumnWidth", typeof (double), typeof (OhlcSeries), new PropertyMetadata(default(double)));
+            "MaxColumnWidth", typeof (double), typeof (CandleSeries), new PropertyMetadata(default(double)));
         /// <summary>
         /// Gets or sets the maximum with of a point, a point will be capped to this width.
         /// </summary>
@@ -82,7 +82,7 @@ namespace LiveCharts.Wpf
         }
 
         public static readonly DependencyProperty IncreaseBrushProperty = DependencyProperty.Register(
-            "IncreaseBrush", typeof (Brush), typeof (OhlcSeries), new PropertyMetadata(default(Brush)));
+            "IncreaseBrush", typeof (Brush), typeof (CandleSeries), new PropertyMetadata(default(Brush)));
         /// <summary>
         /// Gets or sets the brush of the point when close value is grater than open value
         /// </summary>
@@ -93,7 +93,7 @@ namespace LiveCharts.Wpf
         }
 
         public static readonly DependencyProperty DecreaseBrushProperty = DependencyProperty.Register(
-            "DecreaseBrush", typeof (Brush), typeof (OhlcSeries), new PropertyMetadata(default(Brush)));
+            "DecreaseBrush", typeof (Brush), typeof (CandleSeries), new PropertyMetadata(default(Brush)));
         /// <summary>
         /// Gets or sets the brush of the point when close value is less than open value
         /// </summary>

@@ -7,21 +7,23 @@ using System.Windows.Media;
 using LiveCharts;
 using LiveCharts.Defaults;
 using LiveCharts.Wpf;
-using Wpf.Annotations;
 
-namespace Wpf.CartesianChart
+namespace Wpf.CartesianChart.Financial
 {
-    public partial class FinancialExample : UserControl, INotifyPropertyChanged
+    /// <summary>
+    /// Interaction logic for CandleStickExample.xaml
+    /// </summary>
+    public partial class CandleStickExample : UserControl, INotifyPropertyChanged
     {
         private string[] _labels;
 
-        public FinancialExample()
+        public CandleStickExample()
         {
             InitializeComponent();
 
             SeriesCollection = new SeriesCollection
             {
-                new OhlcSeries
+                new CandleSeries
                 {
                     Values = new ChartValues<OhlcPoint>
                     {
@@ -45,8 +47,8 @@ namespace Wpf.CartesianChart
             //then you can use the Axis.Labels properties to map the chart X with a label in the array.
             //for more info see (mapped labels section) 
             //http://lvcharts.net/#/examples/v1/labels-wpf?path=WPF-Components-Labels
-            
-            Labels = new []
+
+            Labels = new[]
             {
                 DateTime.Now.ToString("dd MMM"),
                 DateTime.Now.AddDays(1).ToString("dd MMM"),
@@ -66,7 +68,7 @@ namespace Wpf.CartesianChart
             set
             {
                 _labels = value;
-                OnPropertyChanged();
+                OnPropertyChanged("Labels");
             }
         }
 
@@ -76,14 +78,13 @@ namespace Wpf.CartesianChart
 
             foreach (var point in SeriesCollection[0].Values.Cast<OhlcPoint>())
             {
-                point.Open = r.Next((int) point.Low, (int) point.High);
-                point.Close = r.Next((int) point.Low, (int) point.High);
+                point.Open = r.Next((int)point.Low, (int)point.High);
+                point.Close = r.Next((int)point.Low, (int)point.High);
             }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged(string propertyName = null)
         {
             if (PropertyChanged != null) PropertyChanged.Invoke(this, new PropertyChangedEventArgs(propertyName));

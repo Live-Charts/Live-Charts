@@ -14,6 +14,7 @@ using Wpf.CartesianChart.Basic_Stacked_Bar;
 using Wpf.CartesianChart.Customized_Line_Series;
 using Wpf.CartesianChart.CustomTooltipAndLegend;
 using Wpf.CartesianChart.DynamicVisibility;
+using Wpf.CartesianChart.Financial;
 using Wpf.CartesianChart.HeatChart;
 using Wpf.CartesianChart.Inverted_Series;
 using Wpf.CartesianChart.Irregular_Intervals;
@@ -91,7 +92,8 @@ namespace Wpf
                 new InvertedExample(),
                 new BubblesExample(),
                 new StackedAreaExample(),
-                new FinancialExample(),
+                new OhclExample(),
+                new CandleStickExample(),
                 new StackedColumnExample(),
                 new SectionsExample(),
                 new MissingPointsExample(),
