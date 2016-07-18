@@ -163,6 +163,9 @@ namespace LiveCharts.Wpf
 
             if (pbv.DataLabel != null) pbv.DataLabel.Text = label;
 
+            if (point.Stroke != null) pbv.Ellipse.Stroke = (Brush)point.Stroke;
+            if (point.Fill != null) pbv.Ellipse.Fill = (Brush)point.Fill;
+
             return pbv;
         }
 
@@ -182,13 +185,13 @@ namespace LiveCharts.Wpf
 
         private void InitializeDefuaults()
         {
-            SetValue(StrokeThicknessProperty, 0d);
-            SetValue(MaxBubbleDiameterProperty, 50d);
-            SetValue(MinBubbleDiameterProperty, 10d);
+            SetCurrentValue(StrokeThicknessProperty, 0d);
+            SetCurrentValue(MaxBubbleDiameterProperty, 50d);
+            SetCurrentValue(MinBubbleDiameterProperty, 10d);
 
             Func<ChartPoint, string> defaultLabel = x => Model.CurrentXAxis.GetFormatter()(x.X) + ", "
                                                          + Model.CurrentYAxis.GetFormatter()(x.Y);
-            SetValue(LabelPointProperty, defaultLabel);
+            SetCurrentValue(LabelPointProperty, defaultLabel);
 
             DefaultFillOpacity = 0.7;
         }

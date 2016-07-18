@@ -170,13 +170,13 @@ namespace LiveCharts.Wpf
 
         private void InitializeDefuaults()
         {
-            SetValue(StrokeThicknessProperty, 2d);
-            SetValue(StrokeProperty, Brushes.White);
-            SetValue(ForegroundProperty, Brushes.White);
+            SetCurrentValue(StrokeThicknessProperty, 2d);
+            SetCurrentValue(StrokeProperty, Brushes.White);
+            SetCurrentValue(ForegroundProperty, Brushes.White);
 
             Func<ChartPoint, string> defaultLabel = x => Model.CurrentYAxis.GetFormatter()(x.Y);
-                
-            SetValue(LabelPointProperty, defaultLabel);
+
+            SetCurrentValue(LabelPointProperty, defaultLabel);
 
             DefaultFillOpacity = 1;
         }

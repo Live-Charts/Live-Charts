@@ -66,19 +66,19 @@ namespace LiveCharts.Wpf.Charts.Base
 
             TooltipTimeoutTimer = new DispatcherTimer();
 
-            SetValue(MinHeightProperty, 125d);
-            SetValue(MinWidthProperty, 125d);
+            SetCurrentValue(MinHeightProperty, 125d);
+            SetCurrentValue(MinWidthProperty, 125d);
 
-            SetValue(AnimationsSpeedProperty, TimeSpan.FromMilliseconds(300));
-            SetValue(TooltipTimeoutProperty, TimeSpan.FromMilliseconds(800));
+            SetCurrentValue(AnimationsSpeedProperty, TimeSpan.FromMilliseconds(300));
+            SetCurrentValue(TooltipTimeoutProperty, TimeSpan.FromMilliseconds(800));
 
-            SetValue(AxisXProperty, new AxesCollection());
-            SetValue(AxisYProperty, new AxesCollection());
+            SetCurrentValue(AxisXProperty, new AxesCollection());
+            SetCurrentValue(AxisYProperty, new AxesCollection());
 
-            SetValue(SeriesProperty, new SeriesCollection());
+            SetCurrentValue(SeriesProperty, new SeriesCollection());
 
-            SetValue(ChartLegendProperty, new DefaultLegend());
-            SetValue(DataTooltipProperty, new DefaultTooltip());
+            SetCurrentValue(ChartLegendProperty, new DefaultLegend());
+            SetCurrentValue(DataTooltipProperty, new DefaultTooltip());
 
             if (RandomizeStartingColor)
                 SeriesIndexCount = Randomizer.Next(0, Colors.Count);
@@ -486,6 +486,9 @@ namespace LiveCharts.Wpf.Charts.Base
 
         public List<AxisCore> MapXAxes(ChartCore chart)
         {
+            if (DesignerProperties.GetIsInDesignMode(this) && AxisX == null)
+                AxisX = DefaultAxes.DefaultAxis;
+
             if (AxisX.Count == 0) AxisX.AddRange(DefaultAxes.CleanAxis);
             return AxisX.Select(x =>
             {
@@ -500,6 +503,9 @@ namespace LiveCharts.Wpf.Charts.Base
 
         public List<AxisCore> MapYAxes(ChartCore chart)
         {
+            if (DesignerProperties.GetIsInDesignMode(this) && AxisY == null)
+                AxisY = DefaultAxes.DefaultAxis;
+
             if (AxisY.Count == 0) AxisY.AddRange(DefaultAxes.DefaultAxis);
             return AxisY.Select(x =>
             {
@@ -609,8 +615,24 @@ namespace LiveCharts.Wpf.Charts.Base
                 DataTooltip.UpdateLayout();
 
                 var location = GetTooltipPosition(senderPoint);
-
                 location = new Point(Canvas.GetLeft(DrawMargin) + location.X, Canvas.GetTop(DrawMargin) + location.Y);
+                if (lcTooltip.IsWrapped)
+                {
+                    var container = (FrameworkElement) Parent;
+                    var positionTransform = TransformToAncestor(container);
+                    var pos = positionTransform.Transform(new Point(0, 0));
+
+                    location.X += pos.X;
+                    location.Y += pos.Y;
+
+                    if (location.X < 0) location.X = 0;
+                    if (location.X + DataTooltip.ActualWidth > container.ActualWidth)
+                    {
+                        var dif = container.ActualWidth - (location.X + DataTooltip.ActualWidth);
+                        dif *= container.ActualWidth/2 > senderPoint.ChartLocation.X ? 1 : -1;
+                        location.X += dif;
+                    }
+                }
 
                 if (DisableAnimations)
                 {

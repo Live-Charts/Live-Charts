@@ -31,6 +31,7 @@ namespace Wpf.CartesianChart.CustomTooltipAndLegend
         }
 
         public TooltipSelectionMode? SelectionMode { get; set; }
+        public bool IsWrapped { get; set; }
 
         protected virtual void OnPropertyChanged(string propertyName = null)
         {

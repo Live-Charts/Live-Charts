@@ -23,6 +23,7 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using LiveCharts.Charts;
@@ -142,12 +143,21 @@ namespace LiveCharts.Wpf.Points
 
         public override void OnHoverLeave(ChartPoint point)
         {
-            BindingOperations.SetBinding(Ellipse, Shape.FillProperty,
+            if (Ellipse == null) return;
+
+            if (point.Fill != null)
+            {
+                Ellipse.Fill = (Brush) point.Fill;
+            }
+            else
+            {
+                BindingOperations.SetBinding(Ellipse, Shape.FillProperty,
                 new Binding
                 {
                     Path = new PropertyPath(Series.FillProperty),
-                    Source = ((Series) point.SeriesView)
+                    Source = ((Series)point.SeriesView)
                 });
+            }
         }
     }
 }

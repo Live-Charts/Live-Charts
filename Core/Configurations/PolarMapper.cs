@@ -34,6 +34,8 @@ namespace LiveCharts.Configurations
     {
         private Func<T, int, double> _r;
         private Func<T, int, double> _angle;
+        private Func<T, int, object> _stroke;
+        private Func<T, int, object> _fill;
 
         /// <summary>
         /// Sets values for a specific point
@@ -44,6 +46,8 @@ namespace LiveCharts.Configurations
         {
             point.Radius = _r(valuePair.Value, valuePair.Key);
             point.Angle = _angle(valuePair.Value, valuePair.Key);
+            if (_stroke != null) point.Stroke = _stroke(valuePair.Value, valuePair.Key);
+            if (_fill != null) point.Fill = _fill(valuePair.Value, valuePair.Key);
         }
 
         /// <summary>
@@ -94,6 +98,48 @@ namespace LiveCharts.Configurations
         public PolarMapper<T> Angle(Func<T, int, double> predicate)
         {
             _angle = predicate;
+            return this;
+        }
+
+        /// <summary>
+        /// Sets the Stroke of the point
+        /// </summary>
+        /// <param name="predicate"></param>
+        /// <returns></returns>
+        public PolarMapper<T> Stroke(Func<T, object> predicate)
+        {
+            return Stroke((t, i) => predicate(t));
+        }
+
+        /// <summary>
+        /// Sets the Stroke of the point
+        /// </summary>
+        /// <param name="predicate"></param>
+        /// <returns></returns>
+        public PolarMapper<T> Stroke(Func<T, int, object> predicate)
+        {
+            _stroke = predicate;
+            return this;
+        }
+
+        /// <summary>
+        /// Sets the Fill of the point
+        /// </summary>
+        /// <param name="predicate"></param>
+        /// <returns></returns>
+        public PolarMapper<T> Fill(Func<T, object> predicate)
+        {
+            return Fill((t, i) => predicate(t));
+        }
+
+        /// <summary>
+        /// Sets the Fill of the point
+        /// </summary>
+        /// <param name="predicate"></param>
+        /// <returns></returns>
+        public PolarMapper<T> Fill(Func<T, int, object> predicate)
+        {
+            _fill = predicate;
             return this;
         }
     }

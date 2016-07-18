@@ -156,7 +156,10 @@ namespace LiveCharts.Wpf.Points
         public override void OnHoverLeave(ChartPoint point)
         {
             var lineSeries = (LineSeries)point.SeriesView;
-            if (Shape != null) Shape.Fill = lineSeries.PointForeround;
+            if (Shape != null)
+                Shape.Fill = point.Fill == null
+                    ? lineSeries.PointForeround
+                    : (Brush) point.Fill;
             lineSeries.StrokeThickness = lineSeries.StrokeThickness - 1;
         }
     }

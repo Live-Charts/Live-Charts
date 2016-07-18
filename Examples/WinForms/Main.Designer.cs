@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.panel1 = new System.Windows.Forms.Panel();
+            this.label21 = new System.Windows.Forms.Label();
             this.label20 = new System.Windows.Forms.Label();
             this.label19 = new System.Windows.Forms.Label();
             this.label18 = new System.Windows.Forms.Label();
@@ -49,7 +50,8 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.label21 = new System.Windows.Forms.Label();
+            this.label22 = new System.Windows.Forms.Label();
+            this.button8 = new System.Windows.Forms.Button();
             this.button7 = new System.Windows.Forms.Button();
             this.button6 = new System.Windows.Forms.Button();
             this.button5 = new System.Windows.Forms.Button();
@@ -77,6 +79,8 @@
             // panel1
             // 
             this.panel1.AutoScroll = true;
+            this.panel1.Controls.Add(this.label22);
+            this.panel1.Controls.Add(this.button8);
             this.panel1.Controls.Add(this.label21);
             this.panel1.Controls.Add(this.button7);
             this.panel1.Controls.Add(this.label20);
@@ -124,6 +128,16 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(847, 733);
             this.panel1.TabIndex = 0;
+            // 
+            // label21
+            // 
+            this.label21.AutoSize = true;
+            this.label21.Font = new System.Drawing.Font("Calibri", 12.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label21.Location = new System.Drawing.Point(531, 697);
+            this.label21.Name = "label21";
+            this.label21.Size = new System.Drawing.Size(121, 21);
+            this.label21.TabIndex = 68;
+            this.label21.Text = "Doughnut Chart";
             // 
             // label20
             // 
@@ -325,15 +339,25 @@
             this.label1.TabIndex = 36;
             this.label1.Text = "Labels";
             // 
-            // label21
+            // label22
             // 
-            this.label21.AutoSize = true;
-            this.label21.Font = new System.Drawing.Font("Calibri", 12.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label21.Location = new System.Drawing.Point(531, 697);
-            this.label21.Name = "label21";
-            this.label21.Size = new System.Drawing.Size(121, 21);
-            this.label21.TabIndex = 68;
-            this.label21.Text = "Doughnut Chart";
+            this.label22.AutoSize = true;
+            this.label22.Font = new System.Drawing.Font("Calibri", 12.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label22.Location = new System.Drawing.Point(379, 558);
+            this.label22.Name = "label22";
+            this.label22.Size = new System.Drawing.Size(97, 21);
+            this.label22.TabIndex = 70;
+            this.label22.Text = "LinqExample";
+            // 
+            // button8
+            // 
+            this.button8.Image = global::Winforms.Properties.Resources.ezgif1;
+            this.button8.Location = new System.Drawing.Point(348, 455);
+            this.button8.Name = "button8";
+            this.button8.Size = new System.Drawing.Size(160, 100);
+            this.button8.TabIndex = 69;
+            this.button8.UseVisualStyleBackColor = true;
+            this.button8.Click += new System.EventHandler(this.button8_Click);
             // 
             // button7
             // 
@@ -604,6 +628,8 @@
         private System.Windows.Forms.Button button6;
         private System.Windows.Forms.Label label21;
         private System.Windows.Forms.Button button7;
+        private System.Windows.Forms.Label label22;
+        private System.Windows.Forms.Button button8;
     }
 }
 

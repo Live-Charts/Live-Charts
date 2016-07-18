@@ -5,24 +5,15 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Wpf"
              xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
-             xmlns:missingLinePoints="clr-namespace:Wpf.CartesianChart.Missing_Line_Points"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300" d:DataContext="{d:DesignInstance local:JimmyTheTestsGuy}">    
+             d:DesignHeight="500"
+             d:DesignWidth="800"
+              d:DataContext="{d:DesignInstance local:JimmyTheTestsGuy}">
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"></ColumnDefinition>
-            <ColumnDefinition Width="*"></ColumnDefinition>
-        </Grid.ColumnDefinitions>
-        <Button Height="30" VerticalAlignment="Top" Click="ButtonBase_OnClick">Hola</Button>
-        <lvc:CartesianChart Grid.Column="0" Name="Chart" Series="{Binding SeriesCollection}">
-            <lvc:CartesianChart.ChartLegend>
-                <lvc:DefaultLegend BulletSize="20" Background="Red"/>
-            </lvc:CartesianChart.ChartLegend>
-            <lvc:CartesianChart.DataTooltip>
-                <lvc:DefaultTooltip BulletSize="20" Background="Gray"/>
-            </lvc:CartesianChart.DataTooltip>
-        </lvc:CartesianChart>
-        <lvc:CartesianChart Grid.Column="1" Series="{Binding SeriesCollection}">
+        <lvc:CartesianChart DisableAnimations="True">
+            <lvc:CartesianChart.Series>
+                <lvc:ColumnSeries Values="{Binding TDS}" />
+            </lvc:CartesianChart.Series>
         </lvc:CartesianChart>
     </Grid>
 </UserControl>

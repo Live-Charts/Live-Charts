@@ -76,6 +76,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="CartesianChart\Linq\City.cs" />
+    <Compile Include="CartesianChart\Linq\DataBase.cs" />
+    <Compile Include="CartesianChart\Linq\LinqExample.xaml.cs">
+      <DependentUpon>LinqExample.xaml</DependentUpon>
+    </Compile>
     <Page Include="CartesianChart\Basic Bars\BasicColumn.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -152,6 +157,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="CartesianChart\Linq\LinqExample.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="CartesianChart\LogarithmScale\LogarithmScaleExample.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -183,6 +192,14 @@
     <Page Include="CartesianChart\PointShapeLine\PointShapeLineExample.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="CartesianChart\PointState\PointStateExample.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CartesianChart\SharedTooltip\SharedTooltipExample.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="CartesianChart\StackedArea\VerticalStackedAreaExample.xaml">
       <SubType>Designer</SubType>
@@ -329,6 +346,12 @@
       <DependentUpon>NEgativeStackedRowExample.xaml</DependentUpon>
     </Compile>
     <Compile Include="CartesianChart\PointShapeLine\PointShapeLineExample.cs" />
+    <Compile Include="CartesianChart\PointState\PointStateExample.xaml.cs">
+      <DependentUpon>PointStateExample.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CartesianChart\SharedTooltip\SharedTooltipExample.xaml.cs">
+      <DependentUpon>SharedTooltipExample.xaml</DependentUpon>
+    </Compile>
     <Compile Include="CartesianChart\StackedArea\VerticalStackedAreaExample.xaml.cs">
       <DependentUpon>VerticalStackedAreaExample.xaml</DependentUpon>
     </Compile>
@@ -410,6 +433,9 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <Content Include="cities.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

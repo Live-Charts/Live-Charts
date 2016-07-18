@@ -18,11 +18,14 @@ using Wpf.CartesianChart.HeatChart;
 using Wpf.CartesianChart.Inverted_Series;
 using Wpf.CartesianChart.Irregular_Intervals;
 using Wpf.CartesianChart.Labels;
+using Wpf.CartesianChart.Linq;
 using Wpf.CartesianChart.LogarithmScale;
 using Wpf.CartesianChart.ManualZAndP;
 using Wpf.CartesianChart.Missing_Line_Points;
 using Wpf.CartesianChart.NegativeStackedRow;
 using Wpf.CartesianChart.PointShapeLine;
+using Wpf.CartesianChart.PointState;
+using Wpf.CartesianChart.SharedTooltip;
 using Wpf.CartesianChart.StackedArea;
 using Wpf.CartesianChart.StackedBar;
 using Wpf.CartesianChart.UIElements;
@@ -56,6 +59,9 @@ namespace Wpf
             CartesianExamples = new List<UserControl>
             {
                 //new JimmyTheTestsGuy(),
+                new LinqExample(),
+                new SharedTooltipExample(),
+                new PointStateExample(),
 
                 new CustomTooltipAndLegendExample(),
                 new PointShapeLineExample(),

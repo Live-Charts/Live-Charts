@@ -194,13 +194,13 @@ namespace LiveCharts.Wpf
 
         private void InitializeDefuaults()
         {
-            SetValue(StrokeThicknessProperty, 0d);
-            SetValue(MaxRowHeightProperty, 35d);
-            SetValue(RowPaddingProperty, 5d);
-            SetValue(ForegroundProperty, Brushes.White);
+            SetCurrentValue(StrokeThicknessProperty, 0d);
+            SetCurrentValue(MaxRowHeightProperty, 35d);
+            SetCurrentValue(RowPaddingProperty, 5d);
+            SetCurrentValue(ForegroundProperty, Brushes.White);
 
             Func<ChartPoint, string> defaultLabel = x =>  Model.CurrentXAxis.GetFormatter()(x.X);
-            SetValue(LabelPointProperty, defaultLabel);
+            SetCurrentValue(LabelPointProperty, defaultLabel);
 
             DefaultFillOpacity = 1;
         }

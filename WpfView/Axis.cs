@@ -49,9 +49,9 @@ namespace LiveCharts.Wpf
         public Axis()
         {
             TitleBlock = BindATextBlock();
-            SetValue(SeparatorProperty, new Separator());
-            SetValue(ShowLabelsProperty, true);
-            SetValue(SectionsProperty, new SectionsCollection());
+            SetCurrentValue(SeparatorProperty, new Separator());
+            SetCurrentValue(ShowLabelsProperty, true);
+            SetCurrentValue(SectionsProperty, new SectionsCollection());
 
             TitleBlock.SetBinding(TextBlock.TextProperty,
                 new Binding {Path = new PropertyPath(TitleProperty), Source = this});

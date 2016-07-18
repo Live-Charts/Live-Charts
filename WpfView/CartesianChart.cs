@@ -26,7 +26,6 @@ using LiveCharts.Charts;
 using LiveCharts.Definitions.Charts;
 using LiveCharts.Wpf.Charts.Base;
 
-// ReSharper disable once CheckNamespace
 namespace LiveCharts.Wpf
 {
     /// <summary>
@@ -43,7 +42,7 @@ namespace LiveCharts.Wpf
             var updater = new Components.ChartUpdater(freq);
             ChartCoreModel = new CartesianChartCore(this, updater);
 
-            SetValue(VisualElementsProperty, new VisualElementsCollection());
+            SetCurrentValue(VisualElementsProperty, new VisualElementsCollection());
         }
 
 

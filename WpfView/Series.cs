@@ -47,7 +47,7 @@ namespace LiveCharts.Wpf
         protected Series()
         {
             DefaultFillOpacity = 0.35;
-            SetValue(TitleProperty, "Series");
+            SetCurrentValue(TitleProperty, "Series");
             IsVisibleChanged += OnIsVisibleChanged;
         }
 

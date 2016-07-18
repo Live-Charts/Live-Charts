@@ -162,6 +162,9 @@ namespace LiveCharts.Wpf
 
             if (pbv.DataLabel != null) pbv.DataLabel.Text = label;
 
+            if (point.Stroke != null) pbv.Rectangle.Stroke = (Brush)point.Stroke;
+            if (point.Fill != null) pbv.Rectangle.Fill = (Brush)point.Fill;
+
             return pbv;
         }
 
@@ -181,12 +184,12 @@ namespace LiveCharts.Wpf
 
         private void InitializeDefuaults()
         {
-            SetValue(StrokeThicknessProperty, 0d);
-            SetValue(MaxColumnWidthProperty, 35d);
-            SetValue(ColumnPaddingProperty, 5d);
+            SetCurrentValue(StrokeThicknessProperty, 0d);
+            SetCurrentValue(MaxColumnWidthProperty, 35d);
+            SetCurrentValue(ColumnPaddingProperty, 5d);
 
             Func<ChartPoint, string> defaultLabel = x => Model.CurrentYAxis.GetFormatter()(x.Y);
-            SetValue(LabelPointProperty, defaultLabel);
+            SetCurrentValue(LabelPointProperty, defaultLabel);
 
             DefaultFillOpacity = 1;
         }

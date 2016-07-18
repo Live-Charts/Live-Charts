@@ -46,7 +46,7 @@ namespace LiveCharts
 
         #endregion
 
-        #region bubbles
+        #region Weighted
 
         /// <summary>
         /// Gets the Weight of the point
@@ -120,6 +120,17 @@ namespace LiveCharts
         /// </summary>
         public double Angle { get; internal set; }
 
+        #endregion
+
+        #region Appearance
+        /// <summary>
+        /// Gets the Fill brush of this point, this property overrides series Fill property 
+        /// </summary>
+        public object Fill { get; internal set; }
+        /// <summary>
+        /// Gets the Stroke brush of this point, this property overrides series Stroke property
+        /// </summary>
+        public object Stroke { get; internal set; }
         #endregion
 
         /// <summary>

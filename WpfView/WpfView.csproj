@@ -139,8 +139,8 @@
     <Compile Include="AxesCollection.cs" />
     <Compile Include="Axis.cs" />
     <Compile Include="AxisSection.cs" />
-    <Compile Include="Charts\Gauge.cs" />
-    <Compile Include="Charts\PieChart.cs" />
+    <Compile Include="Gauge.cs" />
+    <Compile Include="PieChart.cs" />
     <Compile Include="Components\ChartUpdater.cs" />
     <Compile Include="Components\AxisSeparatorElement.cs" />
     <Compile Include="Charts\Base\Chart.cs" />
@@ -172,7 +172,7 @@
     <Compile Include="Components\Converters.cs" />
     <Compile Include="DefaultAxes.cs" />
     <Compile Include="Components\TooltipDto.cs" />
-    <Compile Include="Charts\CartesianChart.cs" />
+    <Compile Include="CartesianChart.cs" />
     <Compile Include="LineSeries.cs" />
     <Compile Include="Components\DesktopExtentions.cs" />
     <Compile Include="Points\PointView.cs" />

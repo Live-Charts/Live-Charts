@@ -44,11 +44,11 @@ namespace LiveCharts.Wpf
             _rectangle = new Rectangle();
             _label = new TextBlock();
 
-            SetValue(StrokeProperty, new SolidColorBrush(Color.FromRgb(131, 172, 191)));
-            SetValue(FillProperty, new SolidColorBrush(Color.FromRgb(131, 172, 191)) {Opacity = .35});
-            SetValue(StrokeThicknessProperty, 0d);
-            SetValue(FromValueProperty, 0d);
-            SetValue(ToValueProperty, 0d);
+            SetCurrentValue(StrokeProperty, new SolidColorBrush(Color.FromRgb(131, 172, 191)));
+            SetCurrentValue(FillProperty, new SolidColorBrush(Color.FromRgb(131, 172, 191)) {Opacity = .35});
+            SetCurrentValue(StrokeThicknessProperty, 0d);
+            SetCurrentValue(FromValueProperty, 0d);
+            SetCurrentValue(ToValueProperty, 0d);
 
             BindingOperations.SetBinding(_rectangle, Shape.FillProperty,
                     new Binding { Path = new PropertyPath(FillProperty), Source = this });

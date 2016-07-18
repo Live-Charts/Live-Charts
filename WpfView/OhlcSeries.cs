@@ -238,15 +238,15 @@ namespace LiveCharts.Wpf
 
         private void InitializeDefuaults()
         {
-            SetValue(StrokeThicknessProperty, 2.5d);
-            SetValue(MaxColumnWidthProperty, 35d);
-            SetValue(MaxWidthProperty, 25d);
-            SetValue(IncreaseBrushProperty, new SolidColorBrush(Color.FromRgb(254, 178, 0)));
-            SetValue(DecreaseBrushProperty, new SolidColorBrush(Color.FromRgb(238, 83, 80)));
+            SetCurrentValue(StrokeThicknessProperty, 2.5d);
+            SetCurrentValue(MaxColumnWidthProperty, 35d);
+            SetCurrentValue(MaxWidthProperty, 25d);
+            SetCurrentValue(IncreaseBrushProperty, new SolidColorBrush(Color.FromRgb(254, 178, 0)));
+            SetCurrentValue(DecreaseBrushProperty, new SolidColorBrush(Color.FromRgb(238, 83, 80)));
 
             Func<ChartPoint, string> defaultLabel = x =>
                 string.Format("O: {0}, H: {1}, C: {2} L: {3}", x.Open, x.High, x.Close, x.Low);
-            SetValue(LabelPointProperty, defaultLabel);
+            SetCurrentValue(LabelPointProperty, defaultLabel);
 
             DefaultFillOpacity = 1;
         }

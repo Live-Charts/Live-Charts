@@ -16,6 +16,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using LiveCharts;
+using LiveCharts.Defaults;
 using LiveCharts.Wpf;
 using Wpf.Annotations;
 
@@ -26,50 +27,28 @@ namespace Wpf
 
     public partial class JimmyTheTestsGuy : INotifyPropertyChanged
     {
-        private SeriesCollection _seriesCollection;
-
         public JimmyTheTestsGuy()
         {
             InitializeComponent();
 
-            SeriesCollection = GetSeries();
+            TDS = new ChartValues<ObservableValue>
+            {
+                new ObservableValue(30),
+                new ObservableValue(50),
+                new ObservableValue(70),
+                new ObservableValue(80),
+                new ObservableValue(90),
+                new ObservableValue(100)
+            };
 
-            //Task.Run(() =>
-            //{
-            //    while (true)
-            //    {
-            //        Thread.Sleep(3000);
-            //        Application.Current.Dispatcher.Invoke(() =>
-            //        {
-            //            SeriesCollection[0].Values.Add((double) new Random().Next(0, 10));
-            //        });
-            //    }
-            //});
 
             DataContext = this;
         }
 
-        public SeriesCollection SeriesCollection
-        {
-            get { return _seriesCollection; }
-            set
-            {
-                _seriesCollection = value;
-                OnPropertyChanged("SeriesCollection");
-            }
-        }
+        public ChartValues<ObservableValue> TDS { get; set; }
 
+        public List<SeriesCollection> Source { get; set; }
 
-        private SeriesCollection GetSeries()
-        {
-            return new SeriesCollection
-            {
-                new LineSeries
-                {
-                    Values = new ChartValues<double> {1, 4, 7, 2, 6}
-                }
-            };
-        }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -78,11 +57,6 @@ namespace Wpf
         {
             if (PropertyChanged != null)
                 PropertyChanged.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
-        {
-            Chart.AxisY[0].ShowLabels = !Chart.AxisY[0].ShowLabels;
         }
     }
 }

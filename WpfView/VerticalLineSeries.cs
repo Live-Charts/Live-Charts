@@ -197,6 +197,9 @@ namespace LiveCharts.Wpf
 
             if (pbv.DataLabel != null) pbv.DataLabel.Text = label;
 
+            if (point.Stroke != null) pbv.Shape.Stroke = (Brush)point.Stroke;
+            if (point.Fill != null) pbv.Shape.Fill = (Brush)point.Fill;
+
             return pbv;
         }
 #endregion
@@ -287,13 +290,13 @@ namespace LiveCharts.Wpf
 
         private void InitializeDefuaults()
         {
-            SetValue(LineSmoothnessProperty, .7d);
-            SetValue(PointGeometrySizeProperty, 8d);
-            SetValue(PointForeroundProperty, Brushes.White);
-            SetValue(StrokeThicknessProperty, 2d);
+            SetCurrentValue(LineSmoothnessProperty, .7d);
+            SetCurrentValue(PointGeometrySizeProperty, 8d);
+            SetCurrentValue(PointForeroundProperty, Brushes.White);
+            SetCurrentValue(StrokeThicknessProperty, 2d);
 
             Func<ChartPoint, string> defaultLabel = x => Model.CurrentXAxis.GetFormatter()(x.X);
-            SetValue(LabelPointProperty, defaultLabel);
+            SetCurrentValue(LabelPointProperty, defaultLabel);
 
             DefaultFillOpacity = 0.15;
             Splitters = new List<LineSegmentSplitter>();

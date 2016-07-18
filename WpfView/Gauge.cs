@@ -30,7 +30,6 @@ using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using LiveCharts.Wpf.Points;
 
-// ReSharper disable once CheckNamespace
 namespace LiveCharts.Wpf
 {
     /// <summary>
@@ -79,17 +78,17 @@ namespace LiveCharts.Wpf
             TitleTextBlock.SetBinding(TextBlock.TextProperty,
                 new Binding { Path = new PropertyPath(TitleProperty), Source = this });
 
-            SetValue(GaugeBackgroundProperty, new SolidColorBrush(Color.FromRgb(21, 101, 191)) {Opacity = .1});
-            SetValue(StrokeThicknessProperty, 0d);
-            SetValue(StrokeProperty, new SolidColorBrush(Color.FromRgb(222, 222, 222)));
+            SetCurrentValue(GaugeBackgroundProperty, new SolidColorBrush(Color.FromRgb(21, 101, 191)) {Opacity = .1});
+            SetCurrentValue(StrokeThicknessProperty, 0d);
+            SetCurrentValue(StrokeProperty, new SolidColorBrush(Color.FromRgb(222, 222, 222)));
 
-            SetValue(ToColorProperty, Color.FromRgb(100, 180, 245));
-            SetValue(FromColorProperty, Color.FromRgb(21, 101, 191));
+            SetCurrentValue(ToColorProperty, Color.FromRgb(100, 180, 245));
+            SetCurrentValue(FromColorProperty, Color.FromRgb(21, 101, 191));
 
-            SetValue(MinHeightProperty, 50d);
-            SetValue(MinWidthProperty, 80d);
+            SetCurrentValue(MinHeightProperty, 50d);
+            SetCurrentValue(MinWidthProperty, 80d);
 
-            SetValue(AnimationsSpeedProperty, TimeSpan.FromMilliseconds(800));
+            SetCurrentValue(AnimationsSpeedProperty, TimeSpan.FromMilliseconds(800));
 
             MeasureTextBlock.FontWeight = FontWeights.Bold;
 
