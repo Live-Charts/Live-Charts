@@ -8,9 +8,7 @@ using LiveCharts.Helpers;
 
 namespace Wpf.CartesianChart.Linq
 {
-    /// <summary>
-    /// Interaction logic for LinqExample.xaml
-    /// </summary>
+
     public partial class LinqExample : UserControl
     {
 

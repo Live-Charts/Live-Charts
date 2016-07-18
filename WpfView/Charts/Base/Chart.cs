@@ -705,10 +705,20 @@ namespace LiveCharts.Wpf.Charts.Base
 
             var defaultLegend = ChartLegend as DefaultLegend;
             if (defaultLegend != null)
+            {
                 defaultLegend.InternalOrientation = LegendLocation == LegendLocation.Bottom ||
                                                     LegendLocation == LegendLocation.Top
                     ? Orientation.Horizontal
                     : Orientation.Vertical;
+
+                defaultLegend.MaxWidth = defaultLegend.InternalOrientation == Orientation.Horizontal
+                    ? ActualWidth
+                    : double.PositiveInfinity;
+
+                defaultLegend.MaxHeight = defaultLegend.InternalOrientation == Orientation.Vertical
+                    ? ActualHeight
+                    : double.PositiveInfinity;
+            }
 
             ChartLegend.UpdateLayout();
             ChartLegend.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
