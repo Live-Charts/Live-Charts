@@ -30,6 +30,7 @@ using System.Windows.Media;
 using System.Windows.Shapes;
 using System.Linq;
 using System.Windows.Media.Animation;
+using System.Windows.Media.Effects;
 using LiveCharts.Wpf.Points;
 
 namespace LiveCharts.Wpf
@@ -62,7 +63,7 @@ namespace LiveCharts.Wpf
                 new Binding { Path = new PropertyPath(HeightProperty), Source = this });
 
             SetCurrentValue(SectionsProperty, new List<AngularSection>());
-            SetCurrentValue(NeedleFillProperty, new SolidColorBrush(Color.FromRgb(66, 164, 244)));
+            SetCurrentValue(NeedleFillProperty, new SolidColorBrush(Color.FromRgb(69, 90, 100)));
 
             Stick.SetBinding(Shape.FillProperty,
                 new Binding {Path = new PropertyPath(NeedleFillProperty), Source = this});
@@ -71,6 +72,8 @@ namespace LiveCharts.Wpf
             SetCurrentValue(TicksForegroundProperty, new SolidColorBrush(Color.FromRgb(210, 210, 210)));
             Func<double, string> defaultFormatter = x => x.ToString(CultureInfo.InvariantCulture);
             SetCurrentValue(LabelFormatterProperty, defaultFormatter);
+            SetCurrentValue(LabelsEffectProperty,
+                new DropShadowEffect {ShadowDepth = 2, RenderingBias = RenderingBias.Performance});
 
             SizeChanged += (sender, args) =>
             {
@@ -237,6 +240,24 @@ namespace LiveCharts.Wpf
             set { SetValue(NeedleFillProperty, value); }
         }
 
+        public static readonly DependencyProperty LabelsEffectProperty = DependencyProperty.Register(
+            "LabelsEffect", typeof (Effect), typeof (AngularGauge), new PropertyMetadata(default(Effect)));
+
+        public Effect LabelsEffect
+        {
+            get { return (Effect) GetValue(LabelsEffectProperty); }
+            set { SetValue(LabelsEffectProperty, value); }
+        }
+
+        public static readonly DependencyProperty TicksStrokeThicknessProperty = DependencyProperty.Register(
+            "TicksStrokeThickness", typeof (double), typeof (AngularGauge), new PropertyMetadata(2d));
+
+        public double TicksStrokeThickness
+        {
+            get { return (double) GetValue(TicksStrokeThicknessProperty); }
+            set { SetValue(TicksStrokeThicknessProperty, value); }
+        }
+
         #endregion
 
         private static void ValueChangedCallback(DependencyObject o, DependencyPropertyChangedEventArgs e)
@@ -332,7 +353,6 @@ namespace LiveCharts.Wpf
 
                 var tick = new Line
                 {
-                    Stroke = Brushes.Red,
                     X1 = ActualWidth*.5 + ticksHi*Math.Cos(alpha*Math.PI/180),
                     X2 = ActualWidth*.5 + ticksHj*Math.Cos(alpha*Math.PI/180),
                     Y1 = ActualHeight*.5 + ticksHi*Math.Sin(alpha*Math.PI/180),
@@ -341,7 +361,8 @@ namespace LiveCharts.Wpf
                 Canvas.Children.Add(tick);
                 tick.SetBinding(Shape.StrokeProperty,
                     new Binding {Path = new PropertyPath(TicksForegroundProperty), Source = this});
-
+                tick.SetBinding(Shape.StrokeThicknessProperty,
+                    new Binding { Path = new PropertyPath(TicksStrokeThicknessProperty), Source = this });
             }
 
             for (var i = FromValue; i <= ToValue; i += LabelsStep)
@@ -350,7 +371,6 @@ namespace LiveCharts.Wpf
 
                 var tick = new Line
                 {
-                    Stroke = Brushes.Red,
                     X1 = ActualWidth*.5 + ticksHi*Math.Cos(alpha*Math.PI/180),
                     X2 = ActualWidth*.5 + labelsHj*Math.Cos(alpha*Math.PI/180),
                     Y1 = ActualHeight*.5 + ticksHi*Math.Sin(alpha*Math.PI/180),
@@ -363,6 +383,9 @@ namespace LiveCharts.Wpf
                     Text = LabelFormatter(i)
                 };
 
+                label.SetBinding(EffectProperty,
+                    new Binding {Path = new PropertyPath(LabelsEffectProperty), Source = this});
+
                 Canvas.Children.Add(label);
                 label.UpdateLayout();
                 Canvas.SetLeft(label, alpha < 270
@@ -373,6 +396,8 @@ namespace LiveCharts.Wpf
                 Canvas.SetTop(label, tick.Y2);
                 tick.SetBinding(Shape.StrokeProperty,
                     new Binding { Path = new PropertyPath(TicksForegroundProperty), Source = this });
+                tick.SetBinding(Shape.StrokeThicknessProperty,
+                    new Binding { Path = new PropertyPath(TicksStrokeThicknessProperty), Source = this });
             }
             MoveStick();
         }
