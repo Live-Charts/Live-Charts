@@ -13,7 +13,7 @@
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
         <Button Grid.Row="0" Click="MoveOnClick">Move</Button>
-        <lvc:Gauge Grid.Row="1" Uses360Mode="False" From="50" To="100" Value="{Binding Value}" 
+        <lvc:SolidGauge Grid.Row="1" Uses360Mode="False" From="50" To="100" Value="{Binding Value}" 
                    LabelFormatter="{Binding Formatter}" />
     </Grid>
 </UserControl>

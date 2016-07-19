@@ -127,6 +127,8 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AngularGauge.cs" />
+    <Compile Include="AngularSection.cs" />
     <Compile Include="BubbleSeries.cs" />
     <Compile Include="DefaultGeometry.cs" />
     <Compile Include="HeatColorRange.xaml.cs">
@@ -139,7 +141,7 @@
     <Compile Include="AxesCollection.cs" />
     <Compile Include="Axis.cs" />
     <Compile Include="AxisSection.cs" />
-    <Compile Include="Gauge.cs" />
+    <Compile Include="SolidGauge.cs" />
     <Compile Include="PieChart.cs" />
     <Compile Include="Components\ChartUpdater.cs" />
     <Compile Include="Components\AxisSeparatorElement.cs" />

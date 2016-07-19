@@ -31,11 +31,11 @@ namespace LiveCharts.WinForms
     [Designer("System.Windows.Forms.Design.ControlDesigner, System.Design")]
     [DesignerSerializer("System.ComponentModel.Design.Serialization.TypeCodeDomSerializer , System.Design", "System.ComponentModel.Design.Serialization.CodeDomSerializer, System.Design")]
 
-    public class Gauge : ElementHost
+    public class SolidGauge : ElementHost
     {
-        protected readonly Wpf.Gauge WpfBase = new Wpf.Gauge();
+        protected readonly Wpf.SolidGauge WpfBase = new Wpf.SolidGauge();
 
-        public Gauge()
+        public SolidGauge()
         {
             Child = WpfBase;
         }
@@ -68,12 +68,6 @@ namespace LiveCharts.WinForms
             set { WpfBase.Value = value; }
         }
 
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public string Title
-        {
-            get { return WpfBase.Title; }
-            set { WpfBase.Title = value; }
-        }
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public double? InnerRadius

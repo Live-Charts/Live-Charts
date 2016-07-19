@@ -6,25 +6,10 @@
              xmlns:local="clr-namespace:Wpf"
              xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
              mc:Ignorable="d" 
-             d:DesignHeight="200"
+             d:DesignHeight="300"
              d:DesignWidth="500"
               d:DataContext="{d:DesignInstance local:JimmyTheTestsGuy}">
     <Grid>
-        <lvc:CartesianChart LegendLocation="Right">
-            <lvc:CartesianChart.Series>
-                <lvc:ColumnSeries Values="1,2,3" />
-                <lvc:ColumnSeries Values="1,2,3" />
-                <lvc:ColumnSeries Values="1,2,3" />
-                <lvc:ColumnSeries Values="1,2,3" />
-                <lvc:ColumnSeries Values="1,2,3" />
-                <lvc:ColumnSeries Values="1,2,3" />
-                <lvc:ColumnSeries Values="1,2,3" />
-                <lvc:ColumnSeries Values="1,2,3" />
-                <lvc:ColumnSeries Values="1,2,3" />
-                <lvc:ColumnSeries Values="1,2,3" />
-                <lvc:ColumnSeries Values="1,2,3" />
-                <lvc:ColumnSeries Values="1,2,3" />
-            </lvc:CartesianChart.Series>
-        </lvc:CartesianChart>
+        
     </Grid>
 </UserControl>

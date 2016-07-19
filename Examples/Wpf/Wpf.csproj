@@ -252,6 +252,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Gauges\AngularGaugeExmple.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Gauges\Gauge360.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -392,6 +396,9 @@
     </Compile>
     <Compile Include="CartesianChart\ZoomingAndPanning\ZoomingAndPanning.xaml.cs">
       <DependentUpon>ZoomingAndPanning.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Gauges\AngularGaugeExmple.xaml.cs">
+      <DependentUpon>AngularGaugeExmple.xaml</DependentUpon>
     </Compile>
     <Compile Include="Gauges\Gauge360.xaml.cs">
       <DependentUpon>Gauge360.xaml</DependentUpon>

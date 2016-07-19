@@ -59,7 +59,8 @@ namespace Wpf
 
             CartesianExamples = new List<UserControl>
             {
-                //new JimmyTheTestsGuy(),
+                new JimmyTheTestsGuy(),
+               
                 new LinqExample(),
                 new SharedTooltipExample(),
                 new PointStateExample(),
@@ -115,7 +116,8 @@ namespace Wpf
             GaugeExamples = new List<UserControl>
             {
                 new Gauge180(),
-                new Gauge360()
+                new Gauge360(),
+                new AngularGaugeExmple()
             };
 
             #endregion

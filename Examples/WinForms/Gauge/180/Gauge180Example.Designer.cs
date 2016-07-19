@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.gauge1 = new LiveCharts.WinForms.Gauge();
+            this.gauge1 = new LiveCharts.WinForms.SolidGauge();
             this.SuspendLayout();
             // 
             // gauge1
@@ -55,6 +55,6 @@
 
         #endregion
 
-        private LiveCharts.WinForms.Gauge gauge1;
+        private LiveCharts.WinForms.SolidGauge gauge1;
     }
 }
