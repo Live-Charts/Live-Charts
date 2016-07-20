@@ -80,7 +80,7 @@ namespace Wpf
             SelectedLand.Stroke = Brushes.CornflowerBlue;
             SelectedLand.StrokeThickness = 2;
 
-            GeoMap.MoveTo(mapData);
+            //GeoMap.MoveTo(mapData);
         }
     }
 }

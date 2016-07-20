@@ -142,7 +142,7 @@
     <Compile Include="AxesCollection.cs" />
     <Compile Include="Axis.cs" />
     <Compile Include="AxisSection.cs" />
-    <Compile Include="SolidGauge.cs" />
+    <Compile Include="Gauge.cs" />
     <Compile Include="PieChart.cs" />
     <Compile Include="Components\ChartUpdater.cs" />
     <Compile Include="Components\AxisSeparatorElement.cs" />

@@ -33,7 +33,7 @@ namespace LiveCharts.WinForms
 
     public class SolidGauge : ElementHost
     {
-        protected readonly Wpf.SolidGauge WpfBase = new Wpf.SolidGauge();
+        protected readonly Wpf.Gauge WpfBase = new Wpf.Gauge();
 
         public SolidGauge()
         {
