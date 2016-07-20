@@ -38,7 +38,7 @@ namespace LiveCharts.Wpf.Points
         public double Radius { get; set; }
         public double Wedge { get; set; }
         public PieSlice Slice { get; set; }
-        private double OriginalPushOut { get; set; }
+        public double OriginalPushOut { get; set; }
 
         public override void DrawOrMove(ChartPoint previousDrawn, ChartPoint current, int index, ChartCore chart)
         {
@@ -126,12 +126,11 @@ namespace LiveCharts.Wpf.Points
             var copy = Slice.Fill.Clone();
             copy.Opacity -= .15;
             Slice.Fill = copy;
-            OriginalPushOut = Slice.PushOut;
 
             var pieChart = (PieChart) point.SeriesView.Model.Chart.View;
 
             Slice.BeginAnimation(PieSlice.PushOutProperty,
-                new DoubleAnimation(OriginalPushOut, OriginalPushOut + pieChart.HoverPushOut,
+                new DoubleAnimation(Slice.PushOut, OriginalPushOut + pieChart.HoverPushOut,
                     point.SeriesView.Model.Chart.View.AnimationsSpeed));
         }
 

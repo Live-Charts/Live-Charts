@@ -151,6 +151,8 @@ namespace LiveCharts.Wpf
 
             if (pbv.DataLabel != null) pbv.DataLabel.Text = label;
 
+            pbv.OriginalPushOut = pbv.Slice.PushOut;
+
             return pbv;
         }
 
