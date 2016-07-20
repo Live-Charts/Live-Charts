@@ -42,7 +42,7 @@ namespace LiveCharts.Wpf
     {
         public AngularGauge()
         {
-            Canvas = new Canvas { ClipToBounds = true };
+            Canvas = new Canvas { ClipToBounds = true};
             Content = Canvas;
 
             StickRotateTransform = new RotateTransform(180);
@@ -58,9 +58,9 @@ namespace LiveCharts.Wpf
             Panel.SetZIndex(Stick, 1);
 
             Canvas.SetBinding(WidthProperty,
-                new Binding { Path = new PropertyPath(WidthProperty), Source = this });
+                new Binding { Path = new PropertyPath(ActualWidthProperty), Source = this });
             Canvas.SetBinding(HeightProperty,
-                new Binding { Path = new PropertyPath(HeightProperty), Source = this });
+                new Binding { Path = new PropertyPath(ActualHeightProperty), Source = this });
 
             SetCurrentValue(SectionsProperty, new List<AngularSection>());
             SetCurrentValue(NeedleFillProperty, new SolidColorBrush(Color.FromRgb(69, 90, 100)));

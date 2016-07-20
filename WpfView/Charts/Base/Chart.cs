@@ -856,7 +856,6 @@ namespace LiveCharts.Wpf.Charts.Base
             if (Zoom == ZoomingOptions.None) return;
 
             var end = e.GetPosition(this);
-
             end = new Point(
                 ChartFunctions.FromDrawMargin(end.X, AxisOrientation.X, Model),
                 ChartFunctions.FromDrawMargin(end.Y, AxisOrientation.Y, Model));

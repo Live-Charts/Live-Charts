@@ -135,6 +135,7 @@
       <DependentUpon>HeatColorRange.xaml</DependentUpon>
     </Compile>
     <Compile Include="CandleSeries.cs" />
+    <Compile Include="Maps\MapResolver.cs" />
     <Compile Include="Points\HeatPoint.cs" />
     <Compile Include="Points\CandlePointView.cs" />
     <Compile Include="SectionsCollection.cs" />
@@ -195,6 +196,7 @@
     <Compile Include="Series.cs" />
     <Compile Include="LineSegmentSplitter.cs" />
     <Compile Include="VisualElement.cs" />
+    <Compile Include="GeoMap.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -225,6 +227,12 @@
       <Project>{d447642c-a85f-4ab0-96d9-c66cff91aada}</Project>
       <Name>Core</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Maps\world.xml">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
