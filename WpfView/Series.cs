@@ -318,7 +318,7 @@ namespace LiveCharts.Wpf
 
             tb.SetBinding(TextBlock.FontFamilyProperty,
                 new Binding {Path = new PropertyPath(FontFamilyProperty), Source = this});
-            tb.SetBinding(FontSizeProperty,
+            tb.SetBinding(TextBlock.FontSizeProperty,
                 new Binding {Path = new PropertyPath(FontSizeProperty), Source = this});
             tb.SetBinding(TextBlock.FontStretchProperty,
                 new Binding {Path = new PropertyPath(FontStretchProperty), Source = this});
