@@ -100,7 +100,7 @@ namespace LiveCharts
             var yMax = double.NegativeInfinity;
             var wMin = double.PositiveInfinity;
             var wMax = double.NegativeInfinity;
-            
+
             foreach (var xyw in IndexData().Select(data => config.GetEvaluation(data)))
             {
                 if (xyw[0].X < xMin) xMin = xyw[0].X;
@@ -156,7 +156,7 @@ namespace LiveCharts
         private IEnumerable<KeyValuePair<int, T>> IndexData()
         {
             var i = 0;
-            foreach (var t in this.ToList())
+            foreach (var t in this)
             {
                 yield return new KeyValuePair<int, T>(i, t);
                 i++;
@@ -170,8 +170,7 @@ namespace LiveCharts
             var config = GetConfig();
 
             var isClass = typeof (T).IsClass;
-            var isObservable = isClass &&
-                               typeof (IObservableChartPoint).IsAssignableFrom(typeof (T));
+            var isObservable = isClass && typeof (IObservableChartPoint).IsAssignableFrom(typeof (T));
 
             var garbageCollectorIndex = GarbageCollectorIndex;
             var i = 0;
@@ -221,8 +220,6 @@ namespace LiveCharts
                 cp.Key = i;
 
                 config.SetAll(new KeyValuePair<int, T>(i, value), cp);
-                //ToDo: this feels bad, when indexing the data, this is already done...
-                //Also the index will break every run...
 
                 yield return cp;
                 i++;

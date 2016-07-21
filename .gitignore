@@ -224,3 +224,6 @@ ModelManifest.xml
 /WpfView/Test/LiveCharts.Wpf.dll
 /Core/Everything seems fine 
 *.xml
+/VirtualizedValues/VirtualizedValues.csproj
+/VirtualizedValues/Class1.cs
+/VirtualizedValues/Properties/AssemblyInfo.cs

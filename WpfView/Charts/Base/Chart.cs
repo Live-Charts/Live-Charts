@@ -618,7 +618,7 @@ namespace LiveCharts.Wpf.Charts.Base
                 location = new Point(Canvas.GetLeft(DrawMargin) + location.X, Canvas.GetTop(DrawMargin) + location.Y);
                 if (lcTooltip.IsWrapped)
                 {
-                    var container = (FrameworkElement) Parent;
+                    var container = (FrameworkElement) DataTooltip.Parent;
                     var positionTransform = TransformToAncestor(container);
                     var pos = positionTransform.Transform(new Point(0, 0));
 
