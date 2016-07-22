@@ -846,6 +846,8 @@ namespace LiveCharts.Wpf.Charts.Base
 
         private void OnDraggingStart(object sender, MouseButtonEventArgs e)
         {
+            if (Model == null || Model.AxisX == null || Model.AxisY == null) return;
+
             DragOrigin = e.GetPosition(this);
             DragOrigin = new Point(
                 ChartFunctions.FromDrawMargin(DragOrigin.X, AxisOrientation.X, Model),
