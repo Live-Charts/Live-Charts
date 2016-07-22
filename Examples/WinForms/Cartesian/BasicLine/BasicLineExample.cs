@@ -1,4 +1,5 @@
-﻿using System.Windows.Forms;
+﻿using System;
+using System.Windows.Forms;
 using System.Windows.Media;
 using LiveCharts;
 using LiveCharts.Wpf;
@@ -60,6 +61,13 @@ namespace Winforms.Cartesian.BasicLine
             //modifying any series values will also animate and update the chart
             cartesianChart1.Series[2].Values.Add(5d);
 
+
+            cartesianChart1.DataClick += CartesianChart1OnDataClick;
+        }
+
+        private void CartesianChart1OnDataClick(object sender, ChartPoint chartPoint)
+        {
+            MessageBox.Show("You clicked (" + chartPoint.X + "," + chartPoint.Y + ")");
         }
     }
 }
