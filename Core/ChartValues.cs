@@ -24,6 +24,7 @@ using System.Collections.Generic;
 using System.Linq;
 using LiveCharts.Charts;
 using LiveCharts.Configurations;
+using LiveCharts.Definitions.Series;
 using LiveCharts.Dtos;
 using LiveCharts.Helpers;
 
@@ -44,8 +45,7 @@ namespace LiveCharts
         /// </summary>
         public ChartValues()
         {
-            IndexedDictionary = new Dictionary<int, ChartPoint>();
-            ClassesDictionary = new Dictionary<T, ChartPoint>();
+            Trackers = new Dictionary<ISeriesView, PointTracker>();
             CollectionChanged += OnChanged;
         }
 
@@ -54,34 +54,10 @@ namespace LiveCharts
         #region Properties
 
         /// <summary>
-        /// Gets the current points in the chart values instance
-        /// </summary>
-        public IEnumerable<ChartPoint> Points
-        {
-            get { return Iterate(); }
-        }
-
-        /// <summary>
-        /// Get the max and min values of the values 1 (X, Radius)
-        /// </summary>
-        public CoreLimit Limit1 { get; private set; }
-        /// <summary>
-        /// Gets the max and min values of the values 2 (Y, Angle)
-        /// </summary>
-        public CoreLimit Limit2 { get; private set; }
-        /// <summary>
-        /// Gets the man and min values of the values 3 (weight)
-        /// </summary>
-        public CoreLimit Limit3 { get; private set; }
-
-        /// <summary>
         /// Gets the series that is firing the ChartValus
         /// </summary>
-        public SeriesAlgorithm Series { get; set; }
+        public Dictionary<ISeriesView, PointTracker> Trackers { get; internal set; }
 
-        internal int GarbageCollectorIndex { get; set; }
-        internal Dictionary<int, ChartPoint> IndexedDictionary { get; set; }
-        internal Dictionary<T, ChartPoint> ClassesDictionary { get; set; }
         #endregion
 
         #region Public Methods
@@ -89,9 +65,9 @@ namespace LiveCharts
         /// <summary>
         /// Evaluates the limits in the chart values
         /// </summary>
-        public void GetLimits()
+        public void GetLimits(ISeriesView seriesView)
         {
-            var config = GetConfig();
+            var config = GetConfig(seriesView);
             if (config == null) return;
 
             var xMin = double.PositiveInfinity;
@@ -101,8 +77,14 @@ namespace LiveCharts
             var wMin = double.PositiveInfinity;
             var wMax = double.NegativeInfinity;
 
-            foreach (var xyw in IndexData().Select(data => config.GetEvaluation(data)))
+            var tracker = GetTracker(seriesView);
+
+            for (var index = 0; index < Count; index++)
             {
+                var item = this[index];
+                var pair = new KeyValuePair<int, T>(index, item);
+                var xyw = config.GetEvaluation(pair);
+
                 if (xyw[0].X < xMin) xMin = xyw[0].X;
                 if (xyw[1].X > xMax) xMax = xyw[1].X;
 
@@ -113,73 +95,40 @@ namespace LiveCharts
                 if (xyw[1].W > wMax) wMax = xyw[1].W;
             }
 
-            Limit1 = new CoreLimit(double.IsInfinity(xMin) ? 0 : xMin, double.IsInfinity(yMin) ? 1 : xMax);
-            Limit2 = new CoreLimit(double.IsInfinity(yMin) ? 0 : yMin, double.IsInfinity(yMax) ? 1 : yMax);
-            Limit3 = new CoreLimit(double.IsInfinity(wMin) ? 0 : wMin, double.IsInfinity(wMax) ? 1 : wMax);
+            tracker.Limit1 = new CoreLimit(double.IsInfinity(xMin)
+                ? 0
+                : xMin, double.IsInfinity(yMin) ? 1 : xMax);
+            tracker.Limit2 = new CoreLimit(double.IsInfinity(yMin)
+                ? 0
+                : yMin, double.IsInfinity(yMax) ? 1 : yMax);
+            tracker.Limit3 = new CoreLimit(double.IsInfinity(wMin)
+                ? 0
+                : wMin, double.IsInfinity(wMax) ? 1 : wMax);
         }
 
         /// <summary>
-        /// Initializes the garbage collector
+        /// Gets the current chart points in the view, the view is required as an argument, because an instance of IChartValues could hold many ISeriesView instances.
         /// </summary>
-        public void InitializeGarbageCollector()
+        /// <param name="seriesView">The series view</param>
+        /// <returns></returns>
+        public IEnumerable<ChartPoint> GetPoints(ISeriesView seriesView)
         {
-            ValidateGarbageCollector();
-            GarbageCollectorIndex++;
-        }
+            if (seriesView == null) yield break;
 
-        /// <summary>
-        /// Collects the unnecessary values 
-        /// </summary>
-        public void CollectGarbage()
-        {
-            var isclass = typeof (T).IsClass;
-            foreach (var garbage in GetGarbagePoints().ToList())
+            var config = GetConfig(seriesView);
+
+            var isClass = typeof(T).IsClass;
+            var isObservable = isClass && typeof(IObservableChartPoint).IsAssignableFrom(typeof(T));
+
+            var tracker = GetTracker(seriesView);
+            var gci = tracker.Gci;
+            
+            for (var index = 0; index < Count; index++)
             {
-                if (garbage.View != null) //yes null, double.Nan Values, will generate null views.
-                    garbage.View.RemoveFromView(Series.Chart);
-
-                if (!isclass)
-                {
-                    IndexedDictionary.Remove(garbage.Key);
-                }
-                else
-                {
-                    ClassesDictionary.Remove((T) garbage.Instance);
-                }
-            }
-        }
-
-#endregion
-
-        #region Private Methods
-
-        private IEnumerable<KeyValuePair<int, T>> IndexData()
-        {
-            var i = 0;
-            foreach (var t in this)
-            {
-                yield return new KeyValuePair<int, T>(i, t);
-                i++;
-            }
-        }
-
-        private IEnumerable<ChartPoint> Iterate()
-        {
-            if (Series == null) yield break;
-
-            var config = GetConfig();
-
-            var isClass = typeof (T).IsClass;
-            var isObservable = isClass && typeof (IObservableChartPoint).IsAssignableFrom(typeof (T));
-
-            var garbageCollectorIndex = GarbageCollectorIndex;
-            var i = 0;
-
-            foreach (var value in this)
-            {
+                var value = this[index];
                 if (isObservable)
                 {
-                    var observable = (IObservableChartPoint) value;
+                    var observable = (IObservableChartPoint)value;
                     if (observable != null)
                     {
                         observable.PointChanged -= ObservableOnPointChanged;
@@ -191,93 +140,144 @@ namespace LiveCharts
 
                 if (!isClass)
                 {
-                    if (!IndexedDictionary.TryGetValue(i, out cp))
+                    if (!tracker.Indexed.TryGetValue(index, out cp))
                     {
                         cp = new ChartPoint
                         {
                             Instance = value,
-                            Key = i
+                            Key = index
                         };
-                        IndexedDictionary[i] = cp;
+                        tracker.Indexed[index] = cp;
                     }
                 }
                 else
                 {
-                    if (!ClassesDictionary.TryGetValue(value, out cp))
+                    if (!tracker.Referenced.TryGetValue(value, out cp))   
                     {
                         cp = new ChartPoint
                         {
                             Instance = value,
-                            Key = i
+                            Key = index
                         };
-                        ClassesDictionary[value] = cp;
+                        tracker.Referenced[value] = cp;
                     }
                 }
 
-                cp.GarbageCollectorIndex = garbageCollectorIndex;
+                cp.Gci = gci;
 
                 cp.Instance = value;
-                cp.Key = i;
+                cp.Key = index;
+                cp.SeriesView = seriesView;
 
-                config.SetAll(new KeyValuePair<int, T>(i, value), cp);
+                config.SetAll(new KeyValuePair<int, T>(index, value), cp);
 
                 yield return cp;
-                i++;
             }
         }
 
-        private IEnumerable<ChartPoint> GetGarbagePoints()
+        /// <summary>
+        /// Initializes the garbage collector
+        /// </summary>
+        public void InitializeGarbageCollector(ISeriesView series)
         {
-            return ClassesDictionary.Values.Where(IsGarbage)
-                .Concat(IndexedDictionary.Values.Where(IsGarbage));
+            ValidateGarbageCollector(series);
+            GetTracker(series).Gci++;
         }
 
-        private IPointEvaluator<T> GetConfig()
+        /// <summary>
+        /// Collects the unnecessary values 
+        /// </summary>
+        public void CollectGarbage(ISeriesView seriesView)
+        {
+            var isclass = typeof (T).IsClass;
+
+            var tracker = GetTracker(seriesView);
+
+            foreach (var garbage in GetGarbagePoints(seriesView).ToList())
+            {
+                if (garbage.View != null) //yes null, double.Nan Values, will generate null views.
+                    garbage.View.RemoveFromView(seriesView.Model.Chart);
+
+                if (!isclass)
+                {
+                    tracker.Indexed.Remove(garbage.Key);
+                }
+                else
+                {
+                    tracker.Referenced.Remove(garbage.Instance);
+                }
+            }
+        }
+
+        #endregion
+
+        #region Private Methods
+
+        private IEnumerable<ChartPoint> GetGarbagePoints(ISeriesView view)
+        {
+            var tracker = GetTracker(view);
+
+            return tracker.Indexed.Values.Where(x => IsGarbage(x, tracker)).Concat(
+                tracker.Referenced.Values.Where(x => IsGarbage(x, tracker)));
+        }
+
+        private IPointEvaluator<T> GetConfig(ISeriesView view)
         {
             //Trying to get the user defined configuration...
 
             //series == null means that chart values are null, and LiveCharts
             //could not set the Series Instance tho the current chart values...
-            if (Series == null) return null;
+            if (view == null) return null;
 
             var config =
-                (Series.View.Configuration ?? Series.SeriesCollection.Configuration) as IPointEvaluator<T>;
+                (view.Configuration ?? view.Model.SeriesCollection.Configuration) as IPointEvaluator<T>;
             
             if (config != null) return config;
 
             return DefaultConfiguration ??
                    (DefaultConfiguration =
-                       ChartCore.Configurations.GetConfig<T>(Series.SeriesOrientation) as IPointEvaluator<T>);
+                       ChartCore.Configurations.GetConfig<T>(view.Model.SeriesOrientation) as IPointEvaluator<T>);
         }
 
-        private void ValidateGarbageCollector()
+        private void ValidateGarbageCollector(ISeriesView view)
         {
-            //just in case!
-            if (GarbageCollectorIndex != int.MaxValue) return;
-            GarbageCollectorIndex = 0;
-            foreach (var point in ClassesDictionary.Values.Concat(IndexedDictionary.Values))
-            {
-                point.GarbageCollectorIndex = 0;
-            }
+            var tracker = GetTracker(view);
+
+            if (tracker.Gci != int.MaxValue) return;
+
+            tracker.Gci = 0;
+
+            foreach (var point in tracker.Indexed.Values.Concat(tracker.Referenced.Values))
+                point.Gci = 0;
         }
 
-        /// <summary>
-        /// On Point change handler
-        /// </summary>
-        protected void ObservableOnPointChanged()
+        private void ObservableOnPointChanged()
         {
-            Series.Chart.Updater.Run();
+            Trackers.Keys.ForEach(x => x.Model.Chart.Updater.Run());
         }
 
-        private bool IsGarbage(ChartPoint point)
+        private bool IsGarbage(ChartPoint point, PointTracker tracker)
         {
-            return point.GarbageCollectorIndex < GarbageCollectorIndex
+            return point.Gci < tracker.Gci
                    || double.IsNaN(point.X) || double.IsNaN(point.Y);
+        }
+
+        private PointTracker GetTracker(ISeriesView view)
+        {
+            PointTracker tracker;
+
+            if (Trackers.TryGetValue(view, out tracker)) return tracker;
+
+            tracker = new PointTracker();
+            Trackers[view] = tracker;
+
+            return tracker;
         }
 
         private void OnChanged(IEnumerable<T> oldItems, IEnumerable<T> newItems)
         {
-            if (Series != null && Series.Chart != null) Series.Chart.Updater.Run();
+            if (Trackers.Keys.All(x => x != null && x.Model.Chart != null))
+                Trackers.Keys.ForEach(x => x.Model.Chart.Updater.Run());
         }
 
         #endregion

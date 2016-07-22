@@ -52,7 +52,7 @@ namespace LiveCharts.SeriesAlgorithms
                 candleWidth = castedSeries.MaxColumnWidth;
             }
 
-            foreach (var chartPoint in View.ActualValues.Points)
+            foreach (var chartPoint in View.ActualValues.GetPoints(View))
             {
                 var x = ChartFunctions.ToDrawMargin(chartPoint.X, AxisOrientation.X, Chart, View.ScalesXAt);
 

@@ -39,7 +39,6 @@ namespace LiveCharts
         {
             Chart.View.EnsureElementBelongsToCurrentView(seriesView);
             seriesView.Model.Chart = Chart;
-            if (seriesView.Values != null) seriesView.Values.Series = seriesView.Model;
             seriesView.Model.SeriesCollection = Chart.View.Series;
             seriesView.Model.SeriesCollection.Chart = Chart;
         }
@@ -63,7 +62,7 @@ namespace LiveCharts
                 Chart.View.ActualSeries.ForEach(s =>
                 {
                     if (s.ActualValues == null) return;
-                    s.ActualValues.Points.ForEach(p =>
+                    s.ActualValues.GetPoints(s).ForEach(p =>
                     {
                         p.View.RemoveFromView(Chart);
                         p.View = null;
@@ -76,7 +75,7 @@ namespace LiveCharts
             foreach (var series in Chart.View.ActualSeries)
             {
                 InitializeSeriesParams(series);
-                series.ActualValues.GetLimits();
+                series.ActualValues.GetLimits(series);
                 series.InitializeColors();
                 series.DrawSpecializedElements();
             }
@@ -86,10 +85,12 @@ namespace LiveCharts
 
             foreach (var series in Chart.View.ActualSeries)
             {
+                Debug.WriteLine("view: " + series.Values.Trackers[series].GetHashCode());
+
                 series.OnSeriesUpdateStart();
-                series.ActualValues.InitializeGarbageCollector();
+                series.ActualValues.InitializeGarbageCollector(series);
                 series.Model.Update();
-                series.ActualValues.CollectGarbage();
+                series.ActualValues.CollectGarbage(series);
                 series.OnSeriesUpdatedFinish();
                 series.PlaceSpecializedElements();
             }

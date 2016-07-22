@@ -158,7 +158,7 @@ namespace LiveCharts.Wpf
 
         public override void Erase()
         {
-            Values.Points.ForEach(p =>
+            Values.GetPoints(this).ForEach(p =>
             {
                 if (p.View != null)
                     p.View.RemoveFromView(Model.Chart);

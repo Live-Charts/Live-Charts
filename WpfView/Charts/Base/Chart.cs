@@ -551,19 +551,20 @@ namespace LiveCharts.Wpf.Charts.Base
 
         private void DataMouseDown(object sender, MouseEventArgs e)
         {
-            var result = ActualSeries.SelectMany(x => x.ActualValues.Points).FirstOrDefault(x =>
-            {
-                var pointView = x.View as PointView;
-                return pointView != null && Equals(pointView.HoverShape, sender);
-            });
+            var result = ActualSeries.SelectMany(x => x.ActualValues.GetPoints(x))
+                .FirstOrDefault(x =>
+                {
+                    var pointView = x.View as PointView;
+                    return pointView != null && Equals(pointView.HoverShape, sender);
+                });
             if (DataClick != null) DataClick.Invoke(sender, result);
         }
 
         private void DataMouseEnter(object sender, EventArgs e)
         {
-            var source = ActualSeries.SelectMany(x => x.ActualValues.Points);
+            var source = ActualSeries.SelectMany(x => x.ActualValues.GetPoints(x)).ToList();
             var senderPoint = source.FirstOrDefault(x => x.View != null &&
-                                                         Equals(((PointView)x.View).HoverShape, sender));
+                                                         Equals(((PointView) x.View).HoverShape, sender));
 
             if (senderPoint == null) return;
 
@@ -587,8 +588,8 @@ namespace LiveCharts.Wpf.Charts.Base
 
                 if (lcTooltip.SelectionMode == null)
                     lcTooltip.SelectionMode = senderPoint.SeriesView.Model.PreferredSelectionMode;
-                
-                var coreModel = ChartFunctions.GetTooltipData(senderPoint, Model, lcTooltip.SelectionMode.Value);
+
+                var coreModel = ChartFunctions.GetTooltipData(senderPoint, Model,lcTooltip.SelectionMode.Value);
 
                 lcTooltip.Data = new TooltipData
                 {
@@ -654,9 +655,9 @@ namespace LiveCharts.Wpf.Charts.Base
             TooltipTimeoutTimer.Stop();
             TooltipTimeoutTimer.Start();
 
-            var source = ActualSeries.SelectMany(x => x.ActualValues.Points);
-            var senderPoint =
-                source.FirstOrDefault(x => x.View != null && Equals(((PointView)x.View).HoverShape, sender));
+            var source = ActualSeries.SelectMany(x => x.ActualValues.GetPoints(x));
+            var senderPoint = source.FirstOrDefault(x => x.View != null &&
+                                                         Equals(((PointView) x.View).HoverShape, sender));
 
             if (senderPoint == null) return;
 

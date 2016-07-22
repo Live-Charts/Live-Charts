@@ -91,7 +91,7 @@ namespace LiveCharts.Wpf
 
             if (Figure != null && Values != null)
             {
-                var yIni = ChartFunctions.ToDrawMargin(Values.Limit2.Min, AxisOrientation.Y, Model.Chart, ScalesYAt);
+                var yIni = ChartFunctions.ToDrawMargin(Values.Trackers[this].Limit2.Min, AxisOrientation.Y, Model.Chart, ScalesYAt);
 
                 if (Model.Chart.View.DisableAnimations)
                     Figure.StartPoint = new Point(0, yIni);
@@ -124,7 +124,7 @@ namespace LiveCharts.Wpf
             Path.Data = geometry;
             Model.Chart.View.AddToDrawMargin(Path);
 
-            var y = ChartFunctions.ToDrawMargin(ActualValues.Limit2.Min, AxisOrientation.Y, Model.Chart, ScalesYAt);
+            var y = ChartFunctions.ToDrawMargin(ActualValues.Trackers[this].Limit2.Min, AxisOrientation.Y, Model.Chart, ScalesYAt);
             Figure.StartPoint = new Point(0, y);
 
             var i = Model.Chart.View.Series.IndexOf(this);

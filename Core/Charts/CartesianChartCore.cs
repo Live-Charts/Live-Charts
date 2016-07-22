@@ -140,7 +140,7 @@ namespace LiveCharts.Charts
         {
             if (!View.ActualSeries.Any(x => x is IBubbleSeriesView || x is IHeatSeriesView)) return;
 
-            var vs = View.ActualSeries.Select(x => x.ActualValues.Limit3).ToArray();
+            var vs = View.ActualSeries.Select(x => x.ActualValues.Trackers[x].Limit3).ToArray();
             Value3CoreLimit = new CoreLimit(vs.Select(x => x.Min).DefaultIfEmpty(0).Min(),
                 vs.Select(x => x.Max).DefaultIfEmpty(0).Max());
         }
@@ -171,7 +171,8 @@ namespace LiveCharts.Charts
 
             foreach (var group in View.ActualSeries.OfType<IStackedColumnSeriesView>().GroupBy(x => x.ScalesYAt))
             {
-                StackPoints(group, AxisOrientation.Y, group.Key, isPercentage ? StackMode.Percentage : StackMode.Values);
+                StackPoints(group, AxisOrientation.Y, group.Key, isPercentage
+                    ? StackMode.Percentage : StackMode.Values);
             }
         }
 

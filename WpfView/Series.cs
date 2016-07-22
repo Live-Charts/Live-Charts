@@ -416,7 +416,7 @@ namespace LiveCharts.Wpf
 
             if (series.Values != series.LastKnownValues && series.LastKnownValues != null)
             {
-                series.LastKnownValues.Points.ForEach(
+                series.LastKnownValues.GetPoints(series).ForEach(
                     x => { if (x.View != null) x.View.RemoveFromView(series.Model.Chart); });
             }
 

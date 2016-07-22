@@ -20,11 +20,24 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-using System;
+using System.Collections.Generic;
+using LiveCharts.Dtos;
+
 namespace LiveCharts
 {
-    public interface IObservableChartPoint
+    public class PointTracker
     {
-        event Action PointChanged;
+        public PointTracker()
+        {
+            Indexed = new Dictionary<int, ChartPoint>();
+            Referenced = new Dictionary<object, ChartPoint>();
+        }
+
+        public CoreLimit Limit1 { get; internal set; }
+        public CoreLimit Limit2 { get; internal set; }
+        public CoreLimit Limit3 { get; internal set; }
+        public int Gci { get; internal set; }
+        public Dictionary<int, ChartPoint> Indexed { get; set; }
+        public Dictionary<object, ChartPoint> Referenced { get; set; }
     }
 }

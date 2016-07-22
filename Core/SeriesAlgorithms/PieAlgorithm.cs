@@ -57,7 +57,7 @@ namespace LiveCharts.SeriesAlgorithms
                     ? 0
                     : pieChart.StartingRotationAngle);
 
-            foreach (var chartPoint in View.ActualValues.Points)
+            foreach (var chartPoint in View.ActualValues.GetPoints(View))
             {
                 chartPoint.View = View.GetPointView(chartPoint.View, chartPoint,
                     View.DataLabels
@@ -69,7 +69,7 @@ namespace LiveCharts.SeriesAlgorithms
                 var pieSlice = (IPieSlicePointView) chartPoint.View;
 
                 var space = pieChart.InnerRadius +
-                            ((minDimension/2) - pieChart.InnerRadius)*((chartPoint.X + 1)/(View.Values.Limit1.Max + 1));
+                            ((minDimension/2) - pieChart.InnerRadius)*((chartPoint.X + 1)/(View.Values.Trackers[View].Limit1.Max + 1));
 
                 chartPoint.SeriesView = View;
 

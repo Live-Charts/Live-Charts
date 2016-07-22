@@ -186,7 +186,7 @@ namespace LiveCharts.Wpf
 
         public override void Erase()
         {
-            Values.Points.ForEach(p =>
+            Values.GetPoints(this).ForEach(p =>
             {
                 if (p.View != null)
                     p.View.RemoveFromView(Model.Chart);
@@ -220,8 +220,8 @@ namespace LiveCharts.Wpf
                 {
                     Model.Chart.View.AddToView(ColorRangeControl);
                 }
-                var max = ColorRangeControl.SetMax(ActualValues.Limit3.Max.ToString(CultureInfo.InvariantCulture));
-                var min = ColorRangeControl.SetMin(ActualValues.Limit3.Min.ToString(CultureInfo.InvariantCulture));
+                var max = ColorRangeControl.SetMax(ActualValues.Trackers[this].Limit3.Max.ToString(CultureInfo.InvariantCulture));
+                var min = ColorRangeControl.SetMin(ActualValues.Trackers[this].Limit3.Min.ToString(CultureInfo.InvariantCulture));
 
                 var m = max > min ? max : min;
 

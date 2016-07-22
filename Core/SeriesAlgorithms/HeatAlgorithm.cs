@@ -73,7 +73,7 @@ namespace LiveCharts.SeriesAlgorithms
             max.Offset = 1;
             correctedGradients.Add(max);
 
-            foreach (var chartPoint in View.ActualValues.Points)
+            foreach (var chartPoint in View.ActualValues.GetPoints(View))
             {
                 chartPoint.ChartLocation = ChartFunctions.ToDrawMargin(
                     chartPoint, View.ScalesXAt, View.ScalesYAt, Chart) + uw;

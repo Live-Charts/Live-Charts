@@ -158,6 +158,6 @@ namespace LiveCharts
         /// </summary>
         public ISeriesView SeriesView { get; internal set; }
 
-        internal double GarbageCollectorIndex { get; set; }
+        internal double Gci { get; set; }
     }
 }

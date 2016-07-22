@@ -21,6 +21,7 @@
 //SOFTWARE.
 
 using System.Collections.Generic;
+using LiveCharts.Definitions.Series;
 using LiveCharts.Dtos;
 using LiveCharts.Helpers;
 
@@ -29,27 +30,28 @@ namespace LiveCharts
     public interface IChartValues : INoisyCollection
     {
         /// <summary>
-        /// Gets series points to draw.
-        /// </summary>
-        IEnumerable<ChartPoint> Points { get; }
-        /// <summary>
         /// Gets or sets series that owns the values
         /// </summary>
-        SeriesAlgorithm Series { get; set; }
-        CoreLimit Limit1 { get; }
-        CoreLimit Limit2 { get; }
-        CoreLimit Limit3 { get; }
+        Dictionary<ISeriesView, PointTracker> Trackers { get; }
+        
         /// <summary>
         /// Forces values to calculate max, min and index data.
         /// </summary>
-        void GetLimits();
+        void GetLimits(ISeriesView seriesView);
+
+        /// <summary>
+        /// Gets the current chart points in the view, the view is required as an argument, because an instance of IChartValues could hold many ISeriesView instances.
+        /// </summary>
+        /// <param name="seriesView">The series view</param>
+        /// <returns></returns>
+        IEnumerable<ChartPoint> GetPoints(ISeriesView seriesView);
         /// <summary>
         /// Initializes the garbage collector
         /// </summary>
-        void InitializeGarbageCollector();
+        void InitializeGarbageCollector(ISeriesView seriesView);
         /// <summary>
-        /// Removes all unecessary points from the view
+        /// Removes all unnecessary points from the view
         /// </summary>
-        void CollectGarbage();
+        void CollectGarbage(ISeriesView seriesView);
     }
 }

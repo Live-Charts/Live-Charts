@@ -55,9 +55,9 @@ namespace LiveCharts.Charts
             foreach (var xi in AxisX)
             {
                 xi.S = 1;
-                xi.MinLimit = View.ActualSeries.Select(x => x.Values.Limit1.Min)
+                xi.MinLimit = View.ActualSeries.Select(x => x.Values.Trackers[x].Limit1.Min)
                     .DefaultIfEmpty(0).Min();
-                xi.MaxLimit = View.ActualSeries.Select(x => x.Values.Limit1.Max)
+                xi.MaxLimit = View.ActualSeries.Select(x => x.Values.Trackers[x].Limit1.Max)
                     .DefaultIfEmpty(0).Max();
 
                 if (Math.Abs(xi.MinLimit - xi.MaxLimit) < xi.S * .01)
@@ -70,9 +70,9 @@ namespace LiveCharts.Charts
             foreach (var yi in AxisY)
             {
                 //yi.CalculateSeparator(this, AxisTags.X);
-                yi.MinLimit = View.ActualSeries.Select(x => x.Values.Limit2.Min)
+                yi.MinLimit = View.ActualSeries.Select(x => x.Values.Trackers[x].Limit2.Min)
                     .DefaultIfEmpty(0).Min();
-                yi.MaxLimit = View.ActualSeries.Select(x => x.Values.Limit2.Max)
+                yi.MaxLimit = View.ActualSeries.Select(x => x.Values.Trackers[x].Limit2.Max)
                     .DefaultIfEmpty(0).Max();
 
                 if (Math.Abs(yi.MinLimit - yi.MaxLimit) < yi.S * .01)

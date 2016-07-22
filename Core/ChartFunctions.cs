@@ -25,6 +25,7 @@ using System.Collections.Generic;
 using System.Linq;
 using LiveCharts.Charts;
 using LiveCharts.Definitions.Charts;
+using LiveCharts.Definitions.Series;
 using LiveCharts.Dtos;
 
 namespace LiveCharts
@@ -208,13 +209,7 @@ namespace LiveCharts
         /// <returns></returns>
         public static double FromDrawMargin(double value, AxisOrientation source, ChartCore chart, int axis = 0)
         {
-            var o = source == AxisOrientation.X
-                ? chart.DrawMargin.Left
-                : chart.DrawMargin.Top;
-
-            //var of = axis == AxisTags.X ? chart.XOffset : chart.YOffset;
-
-            return FromPlotArea(value, source, chart, axis); //- o; //FromPlotArea(value, axis, chart) - o + of;
+            return FromPlotArea(value, source, chart, axis);
         }
 
         /// <summary>
@@ -287,7 +282,7 @@ namespace LiveCharts
                         XFormatter = ax.GetFormatter(),
                         YFormatter = ay.GetFormatter(),
                         Points = chart.View.ActualSeries.Where(x => x.ScalesXAt == senderPoint.SeriesView.ScalesXAt)
-                            .SelectMany(x => x.Values.Points)
+                            .SelectMany(x => x.Values.GetPoints(x))
                             .Where(x => Math.Abs(x.X - senderPoint.X) < ax.S*.01),
                         Shares = (chart.View is IPieChart) ? null : (double?) senderPoint.X
                     };
@@ -297,7 +292,7 @@ namespace LiveCharts
                         XFormatter = ax.GetFormatter(),
                         YFormatter = ay.GetFormatter(),
                         Points = chart.View.ActualSeries.Where(x => x.ScalesYAt == senderPoint.SeriesView.ScalesYAt)
-                            .SelectMany(x => x.Values.Points)
+                            .SelectMany(x => x.Values.GetPoints(x))
                             .Where(x => Math.Abs(x.Y - senderPoint.Y) < ay.S*.01),
                         Shares = senderPoint.Y
                     };
@@ -306,7 +301,7 @@ namespace LiveCharts
                     {
                         XFormatter = ax.GetFormatter(),
                         YFormatter = ay.GetFormatter(),
-                        Points = senderPoint.SeriesView.ActualValues.Points
+                        Points = senderPoint.SeriesView.ActualValues.GetPoints(senderPoint.SeriesView)
                             .Where(x => Math.Abs(x.X - senderPoint.X) < ax.S*.01),
                         Shares = senderPoint.X
                     };
@@ -315,7 +310,7 @@ namespace LiveCharts
                     {
                         XFormatter = ax.GetFormatter(),
                         YFormatter = ay.GetFormatter(),
-                        Points = senderPoint.SeriesView.ActualValues.Points
+                        Points = senderPoint.SeriesView.ActualValues.GetPoints(senderPoint.SeriesView)
                             .Where(x => Math.Abs(x.Y - senderPoint.Y) < ay.S*.01),
                         Shares = senderPoint.Y
                     };
