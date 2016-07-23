@@ -64,7 +64,7 @@ namespace Wpf
 
         private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
         {
-            GeoMap.Restart();
+            //GeoMap.Restart();
         }
 
         private void GeoMap_OnLandClick(object sender, MapData mapData)
@@ -72,8 +72,8 @@ namespace Wpf
             if (SelectedLand != null)
             {
                 //lets clear the selection...
-                SelectedLand.Stroke = GeoMap.LandStroke;
-                SelectedLand.StrokeThickness = GeoMap.LandStrokeThickness;
+                //SelectedLand.Stroke = GeoMap.LandStroke;
+                //SelectedLand.StrokeThickness = GeoMap.LandStrokeThickness;
             }
 
             SelectedLand = (Path) mapData.Shape;

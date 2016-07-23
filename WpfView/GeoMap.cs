@@ -233,7 +233,6 @@ namespace LiveCharts.Wpf
         }
 
         #endregion
-        
 
         #region Privates
 

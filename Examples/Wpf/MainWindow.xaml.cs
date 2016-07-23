@@ -8,7 +8,6 @@ using System.Windows.Input;
 using System.Windows.Navigation;
 using LiveCharts;
 using LiveCharts.Maps;
-using LiveCharts.Wpf.Maps;
 using Wpf.Annotations;
 using Wpf.CartesianChart;
 using Wpf.CartesianChart.BasicLine;
