@@ -75,8 +75,6 @@ namespace LiveCharts.Wpf.Charts.Base
             SetCurrentValue(AxisXProperty, new AxesCollection());
             SetCurrentValue(AxisYProperty, new AxesCollection());
 
-            SetCurrentValue(SeriesProperty, new SeriesCollection());
-
             SetCurrentValue(ChartLegendProperty, new DefaultLegend());
             SetCurrentValue(DataTooltipProperty, new DefaultTooltip());
 
@@ -174,9 +172,15 @@ namespace LiveCharts.Wpf.Charts.Base
             Model.Updater.Run();
         }
 
-        private static void OnSeriesChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
+        private static void OnSeriesChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
         {
-            var chart = (Chart)dependencyObject;
+            var chart = (Chart) o;
+
+            if (chart.Series != null)
+            {
+                chart.Series.Chart = chart.Model;
+                foreach (var series in chart.Series) series.Model.Chart = chart.Model;
+            }
 
             if (chart.LastKnownSeriesCollection != chart.Series && chart.LastKnownSeriesCollection != null)
             {
@@ -186,8 +190,13 @@ namespace LiveCharts.Wpf.Charts.Base
                 }
             }
 
-            CallChartUpdater()(dependencyObject, dependencyPropertyChangedEventArgs);
+            CallChartUpdater()(o, e);
             chart.LastKnownSeriesCollection = chart.Series;
+        }
+
+        internal void ChartUpdated()
+        {
+            if (UpdaterTick != null) UpdaterTick.Invoke();
         }
         #endregion
 
@@ -196,6 +205,11 @@ namespace LiveCharts.Wpf.Charts.Base
         /// The DataClick event is fired when a user click any data point
         /// </summary>
         public event Action<object, ChartPoint> DataClick;
+
+        /// <summary>
+        /// Thi event is fired every time the chart updates.
+        /// </summary>
+        public event Action UpdaterTick;
         #endregion
 
         #region Properties

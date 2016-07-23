@@ -35,12 +35,9 @@ namespace LiveCharts
         public bool IsUpdating { get; set; }
         public bool RestartViewRequested { get; set; }
 
-        private void InitializeSeriesParams(ISeriesView seriesView)
+        private void InitializeSeriesView(ISeriesView seriesView)
         {
             Chart.View.EnsureElementBelongsToCurrentView(seriesView);
-            seriesView.Model.Chart = Chart;
-            seriesView.Model.SeriesCollection = Chart.View.Series;
-            seriesView.Model.SeriesCollection.Chart = Chart;
         }
 
         public virtual void Run(bool restartView = false, bool updateNow = false)   
@@ -74,7 +71,7 @@ namespace LiveCharts
 
             foreach (var series in Chart.View.ActualSeries)
             {
-                InitializeSeriesParams(series);
+                InitializeSeriesView(series);
                 series.ActualValues.GetLimits(series);
                 series.InitializeColors();
                 series.DrawSpecializedElements();

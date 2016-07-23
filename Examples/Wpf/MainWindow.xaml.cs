@@ -63,7 +63,7 @@ namespace Wpf
             CartesianExamples = new List<UserControl>
             {
                 new JimmyTheTestsGuy(),
-               
+
                 new LinqExample(),
                 new SharedTooltipExample(),
                 new PointStateExample(),

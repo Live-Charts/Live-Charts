@@ -42,6 +42,8 @@ namespace LiveCharts.Wpf
             var freq = DisableAnimations ? TimeSpan.FromMilliseconds(10) : AnimationsSpeed;
             var updater = new Components.ChartUpdater(freq);
             ChartCoreModel = new PieChartCore(this, updater);
+
+            SetCurrentValue(SeriesProperty, new SeriesCollection());
         }
 
         public static readonly DependencyProperty InnerRadiusProperty = DependencyProperty.Register(

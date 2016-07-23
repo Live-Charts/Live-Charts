@@ -79,9 +79,12 @@ namespace LiveCharts.Wpf.Components
             IsUpdating = false;
 
             RequiresRestart = false;
+            
 #if DEBUG
             Debug.WriteLine("Chart is updated");
 #endif
+
+            wpfChart.ChartUpdated();
         }
     }
 }

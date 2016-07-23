@@ -227,10 +227,10 @@ namespace LiveCharts
 
             //series == null means that chart values are null, and LiveCharts
             //could not set the Series Instance tho the current chart values...
-            if (view == null) return null;
+            if (view == null || view.Model.SeriesCollection == null) return null;
 
             var config =
-                (view.Configuration ?? view.Model.SeriesCollection.Configuration) as IPointEvaluator<T>;
+                (view.Configuration ??  view.Model.SeriesCollection.Configuration) as IPointEvaluator<T>;
             
             if (config != null) return config;
 

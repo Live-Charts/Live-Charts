@@ -66,6 +66,15 @@ namespace LiveCharts
 
         private void OnCollectionChanged(IEnumerable<ISeriesView> oldItems, IEnumerable<ISeriesView> newItems)
         {
+            if (newItems != null)
+            {
+                foreach (var view in newItems)
+                {
+                    view.Model.SeriesCollection = this;
+                    view.Model.Chart = Chart;
+                }
+            }
+
             if (oldItems != null)
             {
                 foreach (var view in oldItems)
@@ -73,7 +82,7 @@ namespace LiveCharts
                     view.Erase();
                 }
             }
-
+           
             if (Chart != null) Chart.Updater.Run();
         }
 

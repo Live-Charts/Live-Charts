@@ -99,12 +99,12 @@ namespace LiveCharts.Charts
                 var xi = AxisX[index];
 
                 xi.MaxLimit = xi.MaxValue ??
-                              (View.Series ?? new SeriesCollection())
+                              View.ActualSeries
                                   .Where(series => series.Values != null && series.ScalesXAt == index)
                                   .Select(series => series.Values.Trackers[series].Limit1.Max)
                                   .DefaultIfEmpty(0).Max();
                 xi.MinLimit = xi.MinValue ??
-                              (View.Series ?? new SeriesCollection())
+                              View.ActualSeries
                                   .Where(series => series.Values != null && series.ScalesXAt == index)
                                   .Select(series => series.Values.Trackers[series].Limit1.Min)
                                   .DefaultIfEmpty(0).Min();
@@ -115,12 +115,12 @@ namespace LiveCharts.Charts
                 var yi = AxisY[index];
 
                 yi.MaxLimit = yi.MaxValue ??
-                              (View.Series ?? new SeriesCollection())
+                              View.ActualSeries
                                   .Where(series => series.Values != null && series.ScalesYAt == index)
                                   .Select(series => series.Values.Trackers[series].Limit2.Max)
                                   .DefaultIfEmpty(0).Max();
                 yi.MinLimit = yi.MinValue ??
-                              (View.Series ?? new SeriesCollection())
+                              View.ActualSeries
                                   .Where(series => series.Values != null && series.ScalesYAt == index)
                                   .Select(series => series.Values.Trackers[series].Limit2.Min)
                                   .DefaultIfEmpty(0).Min();
