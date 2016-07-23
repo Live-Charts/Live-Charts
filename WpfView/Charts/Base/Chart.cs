@@ -78,9 +78,6 @@ namespace LiveCharts.Wpf.Charts.Base
             SetCurrentValue(ChartLegendProperty, new DefaultLegend());
             SetCurrentValue(DataTooltipProperty, new DefaultTooltip());
 
-            if (RandomizeStartingColor)
-                SeriesIndexCount = Randomizer.Next(0, Colors.Count);
-
             SizeChanged += OnSizeChanged;
             MouseWheel += MouseWheelOnRoll;
             Loaded += OnLoaded;
@@ -222,7 +219,6 @@ namespace LiveCharts.Wpf.Charts.Base
         /// </summary>
         protected Canvas Canvas { get; set; }
         internal Canvas DrawMargin { get; set; }
-        internal int SeriesIndexCount { get; set; }
 
         /// <summary>
         /// Gets or sets whether charts must randomize the starting default series color.
@@ -530,8 +526,10 @@ namespace LiveCharts.Wpf.Charts.Base
 
         public Color GetNextDefaultColor()
         {
-            if (SeriesIndexCount == int.MaxValue) SeriesIndexCount = 0;
-            return Colors[SeriesIndexCount++ % Colors.Count];
+            if (Series.CurrentSeriesIndex == int.MaxValue) Series.CurrentSeriesIndex = 0;
+            Series.CurrentSeriesIndex++;
+            var r = RandomizeStartingColor ? Randomizer.Next(0, Colors.Count) : 0;
+            return Colors[(Series.CurrentSeriesIndex + r)%Series.Count];
         }
         #endregion
 

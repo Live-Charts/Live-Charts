@@ -20,6 +20,7 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
+using System;
 using System.Collections.Generic;
 using LiveCharts.Charts;
 using LiveCharts.Definitions.Series;
@@ -40,6 +41,7 @@ namespace LiveCharts
         public SeriesCollection()
         {
             CollectionChanged += OnCollectionChanged;
+            CollectionReset += OnCollectionReset;
         }
 
         /// <summary>
@@ -50,10 +52,16 @@ namespace LiveCharts
             Configuration = configuration;
 
             CollectionChanged += OnCollectionChanged;
+            CollectionReset += OnCollectionReset;
         }
 
         #endregion
-        
+
+        /// <summary>
+        /// Gets or sets the current series index, this index is used to pull out the automatic color of any series
+        ///  </summary>
+        public int CurrentSeriesIndex { get; set; }
+
         /// <summary>
         /// Gets the chart that owns the collection
         /// </summary>
@@ -62,7 +70,6 @@ namespace LiveCharts
         /// Gets or sets then mapper in the collection, this mapper will be used in any series inside the collection, if null then LiveCharts will try to get the value from the global configuration.
         /// </summary>
         public object Configuration { get; set; }
-
 
         private void OnCollectionChanged(IEnumerable<ISeriesView> oldItems, IEnumerable<ISeriesView> newItems)
         {
@@ -86,5 +93,9 @@ namespace LiveCharts
             if (Chart != null) Chart.Updater.Run();
         }
 
+        private void OnCollectionReset()
+        {
+            CurrentSeriesIndex = 0;
+        }
     }
 }

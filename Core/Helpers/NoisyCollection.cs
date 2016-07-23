@@ -73,6 +73,9 @@ namespace LiveCharts.Helpers
 
         #endregion
 
+        #region Events
+        public event Action CollectionReset;
+        #endregion
 
         #region Properties
 
@@ -294,6 +297,7 @@ namespace LiveCharts.Helpers
             var backup = _source.ToArray();
             _source.Clear();
             OnCollectionChanged(backup, null);
+            if (CollectionReset != null) CollectionReset.Invoke();
         }
 
         /// <summary>
@@ -304,6 +308,7 @@ namespace LiveCharts.Helpers
             var backup = _source.ToArray();
             _source.Clear();
             OnCollectionChanged(backup, null);
+            if (CollectionReset != null) CollectionReset.Invoke();
         }
 
         /// <summary>
@@ -314,6 +319,7 @@ namespace LiveCharts.Helpers
             var backup = _source.ToArray();
             _source.Clear();
             OnCollectionChanged(backup, null);
+            if (CollectionReset != null) CollectionReset.Invoke();
         }
 
         /// <summary>

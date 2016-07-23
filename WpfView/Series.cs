@@ -67,7 +67,6 @@ namespace LiveCharts.Wpf
         #region Properties
 
         private IChartValues LastKnownValues { get; set; }
-
         internal double DefaultFillOpacity { get; set; }
         /// <summary>
         /// THe Model is set by every series type, it is the motor of the series, it is the communication with the core of the library
