@@ -61,65 +61,65 @@ namespace Wpf
 
             CartesianExamples = new List<UserControl>
             {
+                new JimmyTheTestsGuy(),
+
+                new LinqExample(),
+                new SharedTooltipExample(),
+                new PointStateExample(),
+
+                new CustomTooltipAndLegendExample(),
+                new PointShapeLineExample(),
+                new HeatSeriesExample(),
+                new ManualZAndPExample(),
+                new DynamicVisibilityExample(),
+                new LabelsExample(),
+                new LabelsHorizontalExample(),
+                new BasicStackedRowPercentageExample(),
+                new BasicStackedColumnExample(),
+                new BasicRowExample(),
+                new MultiAxesChart(),
                 //new JimmyTheTestsGuy(),
-
-                //new LinqExample(),
-                //new SharedTooltipExample(),
-                //new PointStateExample(),
-
-                //new CustomTooltipAndLegendExample(),
-                //new PointShapeLineExample(),
-                //new HeatSeriesExample(),
-                //new ManualZAndPExample(),
-                //new DynamicVisibilityExample(),
-                //new LabelsExample(),
-                //new LabelsHorizontalExample(),
-                //new BasicStackedRowPercentageExample(),
-                //new BasicStackedColumnExample(),
-                //new BasicRowExample(),
-                //new MultiAxesChart(),
-                ////new JimmyTheTestsGuy(),
-                ////new Issue179(),
-                //new UIElementsExample(),
-                //new StackedRowExample(),
-                //new BasicColumn(),
-                //new BasicLineExample(),
-                //new StackedAreaExample(),
-                ////new WelcomeCartesian(),
-                //new FullyResponsiveExample(),
-                //new CustomTypesPlotting(),
-                //new NegativeStackedRowExample(),
-                //new LineExample(),
-                //new ConstantChangesChart(),
-                //new CustomizedLineSeries(),
-                //new InvertedExample(),
-                //new BubblesExample(),
-                //new StackedAreaExample(),
+                //new Issue179(),
+                new UIElementsExample(),
+                new StackedRowExample(),
+                new BasicColumn(),
+                new BasicLineExample(),
+                new StackedAreaExample(),
+                //new WelcomeCartesian(),
+                new FullyResponsiveExample(),
+                new CustomTypesPlotting(),
+                new NegativeStackedRowExample(),
+                new LineExample(),
+                new ConstantChangesChart(),
+                new CustomizedLineSeries(),
+                new InvertedExample(),
+                new BubblesExample(),
+                new StackedAreaExample(),
                 new OhclExample(),
                 new CandleStickExample(),
-                //new StackedColumnExample(),
-                //new SectionsExample(),
-                //new MissingPointsExample(),
-                //new IrregularIntervalsExample(),
-                //new DateTime(),
-                //new LogarithmScaleExample(),
-                //new VerticalStackedAreaExample(),
-                //new ZoomingAndPanning(),
-                //new MixingTypes(),
-                //new InLineSyntaxTest()
+                new StackedColumnExample(),
+                new SectionsExample(),
+                new MissingPointsExample(),
+                new IrregularIntervalsExample(),
+                new DateTime(),
+                new LogarithmScaleExample(),
+                new VerticalStackedAreaExample(),
+                new ZoomingAndPanning(),
+                new MixingTypes(),
+                new InLineSyntaxTest()
             };
 
             PieExamples = new List<UserControl>
             {
-                //new PieChartExample(),
-                //new DoughnutChartExample()
+                new PieChartExample(),
+                new DoughnutChartExample()
             };
 
             GaugeExamples = new List<UserControl>
             {
-                //new Gauge180(),
-                //new Gauge360(),
-                //new AngularGaugeExmple()
+                new Gauge180(),
+                new Gauge360(),
+                new AngularGaugeExmple()
             };
 
             #endregion

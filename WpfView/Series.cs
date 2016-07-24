@@ -22,6 +22,7 @@
 
 using System;
 using System.ComponentModel;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -82,7 +83,7 @@ namespace LiveCharts.Wpf
                 if (DesignerProperties.GetIsInDesignMode(this) && (Values == null || Values.Count == 0))
                     SetValue(ValuesProperty, GetValuesForDesigner());
 
-                return Values;
+                return Values ?? new ChartValues<double>();
             }
         }
 
@@ -360,7 +361,12 @@ namespace LiveCharts.Wpf
         /// </summary>
         public virtual void Erase()
         {
-            throw new NotImplementedException();
+            Values.GetPoints(this).ForEach(p =>
+            {
+                if (p.View != null)
+                    p.View.RemoveFromView(Model.Chart);
+            });
+            Model.Chart.View.RemoveFromView(this);
         }
 
         /// <summary>

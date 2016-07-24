@@ -178,16 +178,6 @@ namespace LiveCharts.Wpf
             return pbv;
         }
 
-        public override void Erase()
-        {
-            Values.GetPoints(this).ForEach(p =>
-            {
-                if (p.View != null)
-                    p.View.RemoveFromView(Model.Chart);
-            });
-            Model.Chart.View.RemoveFromView(this);
-        }
-
         #endregion
 
         #region Private Methods

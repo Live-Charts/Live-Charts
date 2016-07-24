@@ -22,18 +22,12 @@
 
 using System.Collections.Generic;
 using LiveCharts.Definitions.Series;
-using LiveCharts.Dtos;
 using LiveCharts.Helpers;
 
 namespace LiveCharts
 {
     public interface IChartValues : INoisyCollection
     {
-        /// <summary>
-        /// Gets or sets series that owns the values
-        /// </summary>
-        Dictionary<ISeriesView, PointTracker> Trackers { get; }
-        
         /// <summary>
         /// Forces values to calculate max, min and index data.
         /// </summary>
@@ -53,5 +47,10 @@ namespace LiveCharts
         /// Removes all unnecessary points from the view
         /// </summary>
         void CollectGarbage(ISeriesView seriesView);
+
+        /// <summary>
+        /// Gets series that owns the values
+        /// </summary>
+        PointTracker GetTracker(ISeriesView view);
     }
 }

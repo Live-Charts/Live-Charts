@@ -74,6 +74,7 @@
     <Compile Include="Definitions\Charts\IAxisSectionView.cs" />
     <Compile Include="Definitions\Charts\ISeparatorView.cs" />
     <Compile Include="Definitions\Charts\ISeparatorElementView.cs" />
+    <Compile Include="Definitions\Points\IStepPointView.cs" />
     <Compile Include="Definitions\Series\ISeriesView.cs" />
     <Compile Include="Definitions\Points\IBubblePointView.cs" />
     <Compile Include="Definitions\Points\IHeatPointView.cs" />
@@ -127,6 +128,7 @@
     <Compile Include="SeriesAlgorithms\CandleAlgorithm.cs" />
     <Compile Include="SeriesAlgorithms\PieAlgorithm.cs" />
     <Compile Include="SeriesAlgorithms\OhlcAlgorithm.cs" />
+    <Compile Include="SeriesAlgorithms\StepLineAlgorithm.cs" />
     <Compile Include="SeriesAlgorithms\VerticalStackedAreaAlgorithm.cs" />
     <Compile Include="SeriesAlgorithms\StackedAreaAlgorithm.cs" />
     <Compile Include="SeriesAlgorithms\StackedRowAlgorithm.cs" />

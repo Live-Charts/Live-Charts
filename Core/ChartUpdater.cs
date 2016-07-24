@@ -61,6 +61,7 @@ namespace LiveCharts
                     if (s.ActualValues == null) return;
                     s.ActualValues.GetPoints(s).ForEach(p =>
                     {
+                        if (p == null || p.View == null) return;
                         p.View.RemoveFromView(Chart);
                         p.View = null;
                     });
@@ -82,8 +83,6 @@ namespace LiveCharts
 
             foreach (var series in Chart.View.ActualSeries)
             {
-                Debug.WriteLine("view: " + series.Values.Trackers[series].GetHashCode());
-
                 series.OnSeriesUpdateStart();
                 series.ActualValues.InitializeGarbageCollector(series);
                 series.Model.Update();

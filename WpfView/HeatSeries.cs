@@ -220,8 +220,8 @@ namespace LiveCharts.Wpf
                 {
                     Model.Chart.View.AddToView(ColorRangeControl);
                 }
-                var max = ColorRangeControl.SetMax(ActualValues.Trackers[this].Limit3.Max.ToString(CultureInfo.InvariantCulture));
-                var min = ColorRangeControl.SetMin(ActualValues.Trackers[this].Limit3.Min.ToString(CultureInfo.InvariantCulture));
+                var max = ColorRangeControl.SetMax(ActualValues.GetTracker(this).Limit3.Max.ToString(CultureInfo.InvariantCulture));
+                var min = ColorRangeControl.SetMin(ActualValues.GetTracker(this).Limit3.Min.ToString(CultureInfo.InvariantCulture));
 
                 var m = max > min ? max : min;
 

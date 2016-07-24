@@ -140,7 +140,9 @@ namespace LiveCharts.Charts
         {
             if (!View.ActualSeries.Any(x => x is IBubbleSeriesView || x is IHeatSeriesView)) return;
 
-            var vs = View.ActualSeries.Select(x => x.ActualValues.Trackers[x].Limit3).ToArray();
+            var vs = View.ActualSeries
+                .Select(x => x.ActualValues.GetTracker(x).Limit3)
+                .DefaultIfEmpty(new CoreLimit()).ToArray();
             Value3CoreLimit = new CoreLimit(vs.Select(x => x.Min).DefaultIfEmpty(0).Min(),
                 vs.Select(x => x.Max).DefaultIfEmpty(0).Max());
         }

@@ -53,10 +53,7 @@ namespace LiveCharts
 
         #region Properties
 
-        /// <summary>
-        /// Gets the series that is firing the ChartValus
-        /// </summary>
-        public Dictionary<ISeriesView, PointTracker> Trackers { get; internal set; }
+        private Dictionary<ISeriesView, PointTracker> Trackers { get; set; }
 
         #endregion
 
@@ -209,6 +206,18 @@ namespace LiveCharts
             }
         }
 
+        public PointTracker GetTracker(ISeriesView view)
+        {
+            PointTracker tracker;
+
+            if (Trackers.TryGetValue(view, out tracker)) return tracker;
+
+            tracker = new PointTracker();
+            Trackers[view] = tracker;
+
+            return tracker;
+        }
+
         #endregion
 
         #region Private Methods
@@ -260,18 +269,6 @@ namespace LiveCharts
         {
             return point.Gci < tracker.Gci
                    || double.IsNaN(point.X) || double.IsNaN(point.Y);
-        }
-
-        private PointTracker GetTracker(ISeriesView view)
-        {
-            PointTracker tracker;
-
-            if (Trackers.TryGetValue(view, out tracker)) return tracker;
-
-            tracker = new PointTracker();
-            Trackers[view] = tracker;
-
-            return tracker;
         }
 
         private void OnChanged(IEnumerable<T> oldItems, IEnumerable<T> newItems)
