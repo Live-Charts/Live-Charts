@@ -69,7 +69,7 @@ namespace LiveCharts.SeriesAlgorithms
                 ohclView.Low = ChartFunctions.ToDrawMargin(chartPoint.Low, AxisOrientation.Y, Chart, View.ScalesYAt);
 
                 ohclView.Width = candleWidth - padding > 0 ? candleWidth - padding : 0;
-                ohclView.Left = x + exceed/2;
+                ohclView.Left = x + exceed/2 + padding;
                 ohclView.StartReference = (ohclView.High + ohclView.Low)/2;
 
                 chartPoint.ChartLocation = new CorePoint(x + exceed/2, (ohclView.High + ohclView.Low)/2);

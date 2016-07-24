@@ -61,18 +61,18 @@ namespace LiveCharts.SeriesAlgorithms
 
                 chartPoint.SeriesView = View;
 
-                var CandleView = (IOhlcPointView) chartPoint.View;
+                var candeView = (IOhlcPointView) chartPoint.View;
 
-                CandleView.Open = ChartFunctions.ToDrawMargin(chartPoint.Open, AxisOrientation.Y, Chart, View.ScalesYAt);
-                CandleView.Close = ChartFunctions.ToDrawMargin(chartPoint.Close, AxisOrientation.Y, Chart, View.ScalesYAt);
-                CandleView.High = ChartFunctions.ToDrawMargin(chartPoint.High, AxisOrientation.Y, Chart, View.ScalesYAt);
-                CandleView.Low = ChartFunctions.ToDrawMargin(chartPoint.Low, AxisOrientation.Y, Chart, View.ScalesYAt);
+                candeView.Open = ChartFunctions.ToDrawMargin(chartPoint.Open, AxisOrientation.Y, Chart, View.ScalesYAt);
+                candeView.Close = ChartFunctions.ToDrawMargin(chartPoint.Close, AxisOrientation.Y, Chart, View.ScalesYAt);
+                candeView.High = ChartFunctions.ToDrawMargin(chartPoint.High, AxisOrientation.Y, Chart, View.ScalesYAt);
+                candeView.Low = ChartFunctions.ToDrawMargin(chartPoint.Low, AxisOrientation.Y, Chart, View.ScalesYAt);
 
-                CandleView.Width = candleWidth - padding > 0 ? candleWidth - padding : 0;
-                CandleView.Left = x + exceed/2;
-                CandleView.StartReference = (CandleView.High + CandleView.Low)/2;
+                candeView.Width = candleWidth - padding > 0 ? candleWidth - padding : 0;
+                candeView.Left = x + exceed/2 + padding;
+                candeView.StartReference = (candeView.High + candeView.Low)/2;
 
-                chartPoint.ChartLocation = new CorePoint(x + exceed/2, (CandleView.High + CandleView.Low)/2);
+                chartPoint.ChartLocation = new CorePoint(x + exceed/2, (candeView.High + candeView.Low)/2);
 
                 chartPoint.View.DrawOrMove(null, chartPoint, 0, Chart);
             }
