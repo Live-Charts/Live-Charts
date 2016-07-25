@@ -64,9 +64,7 @@ namespace Wpf
                 new JimmyTheTestsGuy(),
 
                 new LinqExample(),
-                new SharedTooltipExample(),
-                new PointStateExample(),
-
+                //new SharedTooltipExample(),
                 new CustomTooltipAndLegendExample(),
                 new PointShapeLineExample(),
                 new HeatSeriesExample(),
@@ -76,6 +74,7 @@ namespace Wpf
                 new LabelsHorizontalExample(),
                 new BasicStackedRowPercentageExample(),
                 new BasicStackedColumnExample(),
+                new PointStateExample(),
                 new BasicRowExample(),
                 new MultiAxesChart(),
                 //new JimmyTheTestsGuy(),

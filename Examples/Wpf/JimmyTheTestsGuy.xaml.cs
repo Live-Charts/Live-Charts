@@ -32,23 +32,18 @@ namespace Wpf
         {
             InitializeComponent();
 
-            TDS = new ChartValues<ObservableValue>
+            Series = new SeriesCollection
             {
-                new ObservableValue(30),
-                new ObservableValue(50),
-                new ObservableValue(70),
-                new ObservableValue(80),
-                new ObservableValue(90),
-                new ObservableValue(100)
+                new LineSeries {Values = new ChartValues<double> {1, 2, 3, 4, 5}},
+                new LineSeries {Values = new ChartValues<double> {double.NaN, double.NaN, 3, 4, 5}}
             };
-
 
             DataContext = this;
         }
 
         public Path SelectedLand { get; set; }
 
-        public ChartValues<ObservableValue> TDS { get; set; }
+        public SeriesCollection Series { get; set; }
 
         public List<SeriesCollection> Source { get; set; }
 

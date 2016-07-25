@@ -527,9 +527,10 @@ namespace LiveCharts.Wpf.Charts.Base
         public Color GetNextDefaultColor()
         {
             if (Series.CurrentSeriesIndex == int.MaxValue) Series.CurrentSeriesIndex = 0;
+            var i = Series.CurrentSeriesIndex;
             Series.CurrentSeriesIndex++;
             var r = RandomizeStartingColor ? Randomizer.Next(0, Colors.Count) : 0;
-            return Colors[(Series.CurrentSeriesIndex + r)%(Colors.Count)];
+            return Colors[(i + r)%Colors.Count];
         }
         #endregion
 
