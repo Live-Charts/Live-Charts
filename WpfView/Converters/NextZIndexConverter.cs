@@ -1,6 +1,6 @@
-//The MIT License(MIT)
+﻿//The MIT License(MIT)
 
-//copyright(c) 2016 Alberto Rodriguez
+//copyright(c) 2016 Greg Dennis & Alberto Rodríguez
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -20,11 +20,22 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-namespace LiveCharts.Definitions.Points
+using System;
+using System.Globalization;
+using System.Windows.Data;
+
+namespace LiveCharts.Wpf.Converters
 {
-    public interface IStepPointView : IChartPointView
+    public class NextZIndexConverter : IValueConverter
     {
-        double DeltaX { get; set; }   
-        double DeltaY { get; set; }
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return ((int) value) + 1;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

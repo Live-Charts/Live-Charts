@@ -36,6 +36,7 @@ using LiveCharts.Helpers;
 using LiveCharts.SeriesAlgorithms;
 using LiveCharts.Wpf.Charts.Base;
 using LiveCharts.Wpf.Components;
+using LiveCharts.Wpf.Converters;
 using LiveCharts.Wpf.Points;
 
 namespace LiveCharts.Wpf
@@ -250,11 +251,15 @@ namespace LiveCharts.Wpf
                     new Binding {Path = new PropertyPath(PointGeometrySizeProperty), Source = this});
                 BindingOperations.SetBinding(pbv.Shape, HeightProperty,
                     new Binding {Path = new PropertyPath(PointGeometrySizeProperty), Source = this});
-
                 BindingOperations.SetBinding(pbv.Shape, VisibilityProperty,
                     new Binding {Path = new PropertyPath(VisibilityProperty), Source = this});
-
-                Panel.SetZIndex(pbv.Shape, int.MaxValue - 2);
+                BindingOperations.SetBinding(pbv.Shape, Panel.ZIndexProperty,
+                    new Binding
+                    {
+                        Path = new PropertyPath(Panel.ZIndexProperty),
+                        Source = this,
+                        Converter = new NextZIndexConverter()
+                    });
 
                 Model.Chart.View.AddToDrawMargin(pbv.Shape);
             }

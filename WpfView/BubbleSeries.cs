@@ -28,7 +28,6 @@ using System.Windows.Media;
 using System.Windows.Shapes;
 using LiveCharts.Definitions.Points;
 using LiveCharts.Definitions.Series;
-using LiveCharts.Helpers;
 using LiveCharts.SeriesAlgorithms;
 using LiveCharts.Wpf.Charts.Base;
 using LiveCharts.Wpf.Points;

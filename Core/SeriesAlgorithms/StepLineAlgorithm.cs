@@ -39,29 +39,28 @@ namespace LiveCharts.SeriesAlgorithms
         {
             ChartPoint previous = null;
 
-            var width = ChartFunctions.GetUnitWidth(AxisOrientation.X, Chart, View.ScalesXAt);
-
-            foreach (var chartPoint in View.ActualValues.GetPoints(View))
+            foreach (var current in View.ActualValues.GetPoints(View))
             {
-                var x = ChartFunctions.ToDrawMargin(chartPoint.X, AxisOrientation.X, Chart, View.ScalesXAt);
+                current.View = View.GetPointView(current.View, current,
+                    View.DataLabels ? View.GetLabelPointFormatter()(current) : null);
 
-                chartPoint.View = View.GetPointView(chartPoint.View, chartPoint,
-                    View.DataLabels ? View.GetLabelPointFormatter()(chartPoint) : null);
+                current.SeriesView = View;
 
-                chartPoint.SeriesView = View;
+                var stepView = (IStepPointView) current.View;
 
-                var stepView = (IStepPointView) chartPoint.View;
+                current.ChartLocation = new CorePoint(
+                    ChartFunctions.ToDrawMargin(current.X, AxisOrientation.X, Chart, View.ScalesXAt),
+                    ChartFunctions.ToDrawMargin(current.Y, AxisOrientation.Y, Chart, View.ScalesYAt));
 
-                stepView.Value = ChartFunctions.ToDrawMargin(chartPoint.Y, AxisOrientation.Y, Chart,
-                    View.ScalesYAt);
-                stepView.From = previous == null ? null : (double?) previous.Y;
-                stepView.Width = width;
+                if (previous != null)
+                {
+                    stepView.DeltaX = current.ChartLocation.X - previous.ChartLocation.X;
+                    stepView.DeltaY = current.ChartLocation.Y - previous.ChartLocation.Y;
+                }
 
-                chartPoint.ChartLocation = new CorePoint(x, stepView.Value);
+                current.View.DrawOrMove(previous, current, 0, Chart);
 
-                chartPoint.View.DrawOrMove(previous, chartPoint, 0, Chart);
-
-                previous = chartPoint;
+                previous = current;
             }
         }
 
@@ -72,7 +71,7 @@ namespace LiveCharts.SeriesAlgorithms
 
         double ICartesianSeries.GetMaxX(AxisCore axis)
         {
-            return AxisLimits.UnitRight(axis);
+            return AxisLimits.StretchMax(axis);
         }
 
         double ICartesianSeries.GetMinY(AxisCore axis)

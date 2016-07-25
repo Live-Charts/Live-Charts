@@ -41,6 +41,11 @@ namespace LiveCharts.Defaults
             return Math.Ceiling(axis.MaxLimit/axis.Magnitude)*axis.Magnitude + 1;
         }
 
+        internal static double UnitLeft(AxisCore axis)
+        {
+            return Math.Floor(axis.MinLimit/axis.Magnitude)*axis.Magnitude - 1;
+        }
+
         internal static double SeparatorMax(AxisCore axis)
         {
             return (((int) (axis.MaxLimit/axis.S)) + 1)*axis.S;
