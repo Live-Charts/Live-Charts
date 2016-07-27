@@ -8,6 +8,7 @@ using System.Windows.Input;
 using System.Windows.Navigation;
 using LiveCharts;
 using LiveCharts.Maps;
+using LiveCharts.Wpf;
 using Wpf.Annotations;
 using Wpf.CartesianChart;
 using Wpf.CartesianChart.BasicLine;
@@ -33,6 +34,7 @@ using Wpf.CartesianChart.StackedArea;
 using Wpf.CartesianChart.StackedBar;
 using Wpf.CartesianChart.UIElements;
 using Wpf.Gauges;
+using Wpf.Maps;
 using Wpf.PieChart;
 using BubblesExample = Wpf.CartesianChart.Bubbles.BubblesExample;
 using ConstantChangesChart = Wpf.CartesianChart.ConstantChanges.ConstantChangesChart;
@@ -61,7 +63,8 @@ namespace Wpf
 
             CartesianExamples = new List<UserControl>
             {
-                new JimmyTheTestsGuy(),
+                //new JimmyTheTestsGuy(),
+                new GeoMapExample(),
 
                 new LinqExample(),
                 //new SharedTooltipExample(),

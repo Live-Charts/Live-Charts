@@ -1,22 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 using LiveCharts;
-using LiveCharts.Defaults;
 using LiveCharts.Maps;
 using LiveCharts.Wpf;
 using Wpf.Annotations;
@@ -59,7 +46,7 @@ namespace Wpf
 
         private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
         {
-            //GeoMap.Restart();
+            GeoMap.Restart();
         }
 
         private void GeoMap_OnLandClick(object sender, MapData mapData)
@@ -67,8 +54,8 @@ namespace Wpf
             if (SelectedLand != null)
             {
                 //lets clear the selection...
-                //SelectedLand.Stroke = GeoMap.LandStroke;
-                //SelectedLand.StrokeThickness = GeoMap.LandStrokeThickness;
+                SelectedLand.Stroke = GeoMap.LandStroke;
+                SelectedLand.StrokeThickness = GeoMap.LandStrokeThickness;
             }
 
             SelectedLand = (Path) mapData.Shape;

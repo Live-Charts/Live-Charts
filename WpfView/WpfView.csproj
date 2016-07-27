@@ -131,6 +131,9 @@
     <Compile Include="AngularSection.cs" />
     <Compile Include="BubbleSeries.cs" />
     <Compile Include="Converters\NextZIndexConverter.cs" />
+    <Compile Include="DefaultGeoMapTooltip.xaml.cs">
+      <DependentUpon>DefaultGeoMapTooltip.xaml</DependentUpon>
+    </Compile>
     <Compile Include="DefaultGeometry.cs" />
     <Compile Include="HeatColorRange.xaml.cs">
       <DependentUpon>HeatColorRange.xaml</DependentUpon>
@@ -212,6 +215,10 @@
     <None Include="sign.pfx" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="DefaultGeoMapTooltip.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="DefaultLegend.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

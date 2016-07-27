@@ -52,22 +52,32 @@ namespace LiveCharts.Wpf
             Canvas.SetBinding(HeightProperty,
                 new Binding { Path = new PropertyPath(ActualHeightProperty), Source = this });
 
-            Cache = new Dictionary<string, MapData>();
+            Lands = new Dictionary<string, MapData>();
 
-            SetCurrentValue(DefaultLandFillProperty, new SolidColorBrush(Color.FromRgb(247,247,247)));
-            SetCurrentValue(LandStrokeProperty, new SolidColorBrush(Color.FromArgb(0, 0, 0, 0)));
+            SetCurrentValue(DefaultLandFillProperty, new SolidColorBrush(Color.FromArgb(200,255,255,255)));
+            SetCurrentValue(LandStrokeProperty, new SolidColorBrush(Color.FromArgb(15, 55, 55, 55)));
             SetCurrentValue(LandStrokeThicknessProperty, 1d);
             SetCurrentValue(AnimationsSpeedProperty, TimeSpan.FromMilliseconds(500));
-            SetCurrentValue(BackgroundProperty, 
-                new SolidColorBrush(Color.FromRgb(120,143,155)));
+            SetCurrentValue(BackgroundProperty, new SolidColorBrush(Color.FromArgb(70, 96, 125, 138)));
+            SetCurrentValue(GradientStopCollectionProperty, new GradientStopCollection
+            {
+                new GradientStop(Color.FromArgb(38, 13, 71, 160), 0d),
+                new GradientStop(Color.FromRgb(13,71,160), 1d),
+            });
+            SetCurrentValue(HeatMapProperty, new Dictionary<string, double>());
+            SetCurrentValue(LocationProperty, LiveCharts.Maps.Maps.World);
+            SetCurrentValue(GeoMapTooltipProperty, new DefaultGeoMapTooltip {Visibility = Visibility.Hidden});
+            Canvas.Children.Add(GeoMapTooltip);
 
             SizeChanged += (sender, e) =>
             {
-                Update();
+                Draw();
             };
 
             MouseWheel += (sender, e) =>
             {
+                if (!EnableZoomingAndPanning) return;
+
                 e.Handled = true;
                 var rt = Map.RenderTransform as ScaleTransform;
                 var p = rt == null ? 1 : rt.ScaleX;
@@ -80,11 +90,15 @@ namespace LiveCharts.Wpf
 
             MouseDown += (sender, e) =>
             {
+                if (!EnableZoomingAndPanning) return;
+
                 DragOrigin = e.GetPosition(this);
             };
 
             MouseUp += (sender, e) =>
             {
+                if (!EnableZoomingAndPanning) return;
+
                 var end = e.GetPosition(this);
                 var delta = new Point(DragOrigin.X - end.X, DragOrigin.Y - end.Y);
 
@@ -118,12 +132,24 @@ namespace LiveCharts.Wpf
         private Canvas Map { get; set; }
         private Point DragOrigin { get; set; }
         private Point OriginalPosition { get; set; }
+        private bool IsDrawn { get; set; }
         private bool IsWidthDominant { get; set; }
-        private Dictionary<string, MapData> Cache { get; set; }
+        private Dictionary<string, MapData> Lands { get; set; }
+
+        private static readonly DependencyProperty GeoMapTooltipProperty = DependencyProperty.Register(
+            "GeoMapTooltip", typeof (DefaultGeoMapTooltip), typeof (GeoMap), new PropertyMetadata(default(DefaultGeoMapTooltip)));
+
+        private DefaultGeoMapTooltip GeoMapTooltip
+        {
+            get { return (DefaultGeoMapTooltip) GetValue(GeoMapTooltipProperty); }
+            set { SetValue(GeoMapTooltipProperty, value); }
+        }
 
         public static readonly DependencyProperty DefaultLandFillProperty = DependencyProperty.Register(
             "DefaultLandFill", typeof (Brush), typeof (GeoMap), new PropertyMetadata(default(Brush)));
-
+        /// <summary>
+        /// Gets or sets default land fill
+        /// </summary>
         public Brush DefaultLandFill
         {
             get { return (Brush) GetValue(DefaultLandFillProperty); }
@@ -132,7 +158,9 @@ namespace LiveCharts.Wpf
 
         public static readonly DependencyProperty LandStrokeThicknessProperty = DependencyProperty.Register(
             "LandStrokeThickness", typeof (double), typeof (GeoMap), new PropertyMetadata(default(double)));
-
+        /// <summary>
+        /// Gets or sets every land stroke thickness property
+        /// </summary>
         public double LandStrokeThickness
         {
             get { return (double) GetValue(LandStrokeThicknessProperty); }
@@ -141,7 +169,9 @@ namespace LiveCharts.Wpf
 
         public static readonly DependencyProperty LandStrokeProperty = DependencyProperty.Register(
             "LandStroke", typeof (Brush), typeof (GeoMap), new PropertyMetadata(default(Brush)));
-
+        /// <summary>
+        /// Gets or sets every land stroke
+        /// </summary>
         public Brush LandStroke
         {
             get { return (Brush) GetValue(LandStrokeProperty); }
@@ -150,7 +180,9 @@ namespace LiveCharts.Wpf
 
         public static readonly DependencyProperty DisableAnimationsProperty = DependencyProperty.Register(
             "DisableAnimations", typeof (bool), typeof (GeoMap), new PropertyMetadata(default(bool)));
-
+        /// <summary>
+        /// Gets or sets whether the chart is animated
+        /// </summary>
         public bool DisableAnimations
         {
             get { return (bool) GetValue(DisableAnimationsProperty); }
@@ -159,7 +191,9 @@ namespace LiveCharts.Wpf
 
         public static readonly DependencyProperty AnimationsSpeedProperty = DependencyProperty.Register(
             "AnimationsSpeed", typeof (TimeSpan), typeof (GeoMap), new PropertyMetadata(default(TimeSpan)));
-
+        /// <summary>
+        /// Gets or sets animations speed
+        /// </summary>
         public TimeSpan AnimationsSpeed
         {
             get { return (TimeSpan) GetValue(AnimationsSpeedProperty); }
@@ -168,17 +202,69 @@ namespace LiveCharts.Wpf
 
         public static readonly DependencyProperty HoverableProperty = DependencyProperty.Register(
             "Hoverable", typeof (bool), typeof (GeoMap), new PropertyMetadata(default(bool)));
-
+        /// <summary>
+        /// Gets or sets whether the chart reacts when a user moves the mouse over a land
+        /// </summary>
         public bool Hoverable
         {
             get { return (bool) GetValue(HoverableProperty); }
             set { SetValue(HoverableProperty, value); }
         }
 
+        public static readonly DependencyProperty HeatMapProperty = DependencyProperty.Register(
+            "HeatMap", typeof (Dictionary<string, double>), typeof (GeoMap), 
+            new PropertyMetadata(default(Dictionary<string, double>), OnHeapMapChanged));
+        /// <summary>
+        /// Gets or sets the current heat map
+        /// </summary>
+        public Dictionary<string, double> HeatMap
+        {
+            get { return (Dictionary<string, double>) GetValue(HeatMapProperty); }
+            set { SetValue(HeatMapProperty, value); }
+        }
+
+        public static readonly DependencyProperty GradientStopCollectionProperty = DependencyProperty.Register(
+            "GradientStopCollection", typeof(GradientStopCollection), typeof(GeoMap), new PropertyMetadata(default(GradientStopCollection)));
+        /// <summary>
+        /// Gets or sets the gradient stop collection, use every gradient offset and color properties to define your gradient.
+        /// </summary>
+        public GradientStopCollection GradientStopCollection
+        {
+            get { return (GradientStopCollection)GetValue(GradientStopCollectionProperty); }
+            set { SetValue(GradientStopCollectionProperty, value); }
+        }
+
+        public static readonly DependencyProperty LocationProperty = DependencyProperty.Register(
+            "Location", typeof (LiveCharts.Maps.Maps), typeof (GeoMap), 
+            new PropertyMetadata(default(LiveCharts.Maps.Maps), OnLocationChanged));
+        /// <summary>
+        /// Gets or sets the current Map Location
+        /// </summary>
+        public LiveCharts.Maps.Maps Location
+        {
+            get { return (LiveCharts.Maps.Maps) GetValue(LocationProperty); }
+            set { SetValue(LocationProperty, value); }
+        }
+
+        public static readonly DependencyProperty EnableZoomingAndPanningProperty = DependencyProperty.Register(
+            "EnableZoomingAndPanning", typeof (bool), typeof (GeoMap), new PropertyMetadata(default(bool)));
+        /// <summary>
+        /// Gets or sets whether the map allows zooming and panning
+        /// </summary>
+        public bool EnableZoomingAndPanning
+        {
+            get { return (bool) GetValue(EnableZoomingAndPanningProperty); }
+            set { SetValue(EnableZoomingAndPanningProperty, value); }
+        }
+
         #endregion
 
         #region Publics
 
+        /// <summary>
+        /// Moves the map to a specif area
+        /// </summary>
+        /// <param name="data">target area</param>
         public void MoveTo(MapData data)
         {
             var s = (Path) data.Shape;
@@ -217,6 +303,9 @@ namespace LiveCharts.Wpf
             //}
         }
 
+        /// <summary>
+        /// Restarts the current map view
+        /// </summary>
         public void Restart()
         {
             Map.RenderTransform = new ScaleTransform(1, 1);
@@ -232,12 +321,25 @@ namespace LiveCharts.Wpf
             }
         }
 
+        /// <summary>
+        /// Sets a heat map value with a given key, then updates every land heat color
+        /// </summary>
+        /// <param name="key">key</param>
+        /// <param name="value">new value</param>
+        public void UpdateKey(string key, double value)
+        {
+            HeatMap[key] = value;
+            ShowMeSomeHeat();
+        }
+
         #endregion
 
         #region Privates
 
-        private void Update()
+        private void Draw()
         {
+            IsDrawn = true;
+
             Map.Children.Clear();
 
             if (DesignerProperties.GetIsInDesignMode(this))
@@ -298,39 +400,157 @@ namespace LiveCharts.Wpf
                 };
 
                 land.Shape = p;
-                Cache[land.Name] = land;
+                Lands[land.Id] = land;
                 Map.Children.Add(p);
 
                 p.MouseEnter += POnMouseEnter;
                 p.MouseLeave += POnMouseLeave;
+                p.MouseMove += POnMouseMove;
                 p.MouseDown += POnMouseDown;
 
                 p.SetBinding(Shape.StrokeProperty,
                     new Binding {Path = new PropertyPath(LandStrokeProperty), Source = this});
                 p.SetBinding(Shape.StrokeThicknessProperty,
                     new Binding {Path = new PropertyPath(LandStrokeThicknessProperty), Source = this});
-                p.SetBinding(Shape.FillProperty,
-                    new Binding {Path = new PropertyPath(DefaultLandFillProperty), Source = this});
             }      
+
+            ShowMeSomeHeat();
+        }
+
+        private void ShowMeSomeHeat()
+        {
+            var max = double.MinValue;
+            var min = double.MaxValue;
+
+            foreach (var i in HeatMap.Values)
+            {
+                max = i > max ? i : max;
+                min = i < min ? i : min;
+            }
+
+            foreach (var land in Lands)
+            {
+                double temperature;
+                var shape = ((Shape) land.Value.Shape);
+
+                shape.SetBinding(Shape.FillProperty,
+                    new Binding {Path = new PropertyPath(DefaultLandFillProperty), Source = this});
+
+                if (!HeatMap.TryGetValue(land.Key, out temperature)) continue;
+
+                temperature = LinealInterpolation(0, 1, min, max, temperature);
+                var color = ColorInterpolation(temperature);
+
+                if (DisableAnimations)
+                {
+                    shape.Fill = new SolidColorBrush(color);
+                }
+                else
+                {
+                    shape.Fill = new SolidColorBrush();
+                    ((SolidColorBrush) shape.Fill).BeginAnimation(SolidColorBrush.ColorProperty,
+                        new ColorAnimation(color, AnimationsSpeed));
+                }
+            }
         }
 
         private void POnMouseDown(object sender, MouseButtonEventArgs mouseButtonEventArgs)
         {
-            var map = Cache.Values.FirstOrDefault(x => x.Shape == sender);
-            if (map == null) return;
-            if (LandClick != null) LandClick.Invoke(sender, map);
+            var land = Lands.Values.FirstOrDefault(x => x.Shape == sender);
+            if (land == null) return;
+
+            if (LandClick != null) LandClick.Invoke(sender, land);
         }
 
         private void POnMouseLeave(object sender, MouseEventArgs mouseEventArgs)
         {
             var path = (Path)sender;
             path.Opacity = 1;
+
+            GeoMapTooltip.Visibility = Visibility.Hidden;
         }
 
         private void POnMouseEnter(object sender, MouseEventArgs mouseEventArgs)
         {
             var path = (Path) sender;
             path.Opacity = .8;
+
+            var land = Lands.Values.FirstOrDefault(x => x.Shape == sender);
+            if (land == null) return;
+
+            double value;
+
+            if (!HeatMap.TryGetValue(land.Id, out value)) return;
+
+            GeoMapTooltip.Visibility = Visibility.Visible;
+            GeoMapTooltip.GeoData = new GeoData
+            {
+                Name = land.Name,
+                Value = value
+            };
+        }
+
+        private void POnMouseMove(object sender, MouseEventArgs mouseEventArgs)
+        {
+            var location = mouseEventArgs.GetPosition(this);
+            Canvas.SetTop(GeoMapTooltip, location.Y + 5);
+            Canvas.SetLeft(GeoMapTooltip, location.X + 5);
+        }
+
+        private Color ColorInterpolation(double weight)
+        {
+            Color from = Color.FromRgb(0, 0, 0), to = Color.FromRgb(0, 0, 0);
+            double fromOffset = 0, toOffset = 0;
+
+            for (var i = 0; i < GradientStopCollection.Count-1; i++)
+            {
+                // ReSharper disable once InvertIf
+                if (GradientStopCollection[i].Offset <= weight && GradientStopCollection[i + 1].Offset >= weight)
+                {
+                    from = GradientStopCollection[i].Color;
+                    to = GradientStopCollection[i + 1].Color;
+
+                    fromOffset = GradientStopCollection[i].Offset;
+                    toOffset = GradientStopCollection[i + 1].Offset;
+
+                    break;
+                }
+            }
+
+            return Color.FromArgb(
+                (byte) LinealInterpolation(from.A, to.A, fromOffset, toOffset, weight),
+                (byte) LinealInterpolation(from.R, from.R, fromOffset, toOffset, weight),
+                (byte) LinealInterpolation(from.G, to.G, fromOffset, toOffset, weight),
+                (byte) LinealInterpolation(from.B, to.B, fromOffset, toOffset, weight));
+        }
+
+        private static double LinealInterpolation(double fromComponent, double toComponent,
+            double fromOffset, double toOffset, double value)
+        {
+            var p1 = new Point(fromOffset, fromComponent);
+            var p2 = new Point(toOffset, toComponent);
+
+            var deltaX = p2.X - p1.X;
+            // ReSharper disable once CompareOfFloatsByEqualityOperator
+            var m = (p2.Y - p1.Y) / (deltaX == 0 ? double.MinValue : deltaX);
+
+            return m * (value - p1.X) + p1.Y;
+        }
+
+        private static void OnHeapMapChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
+        {
+            var geoMap = (GeoMap)o;
+
+            if (!geoMap.IsDrawn) return;
+
+            geoMap.ShowMeSomeHeat();
+        }
+
+        private static void OnLocationChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
+        {
+            var geoMap = (GeoMap) o;
+
+            geoMap.Draw();
         }
 
         #endregion
