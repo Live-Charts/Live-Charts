@@ -53,7 +53,7 @@ This is the logic you use in every chart, there are just some litle properties o
 //create a new SeriesCollection
 var seriesCollection = new SeriesCollection();
 
-//create some LineSeries if ypu need so
+//create some LineSeries if you need so, there are many supported series
 var charlesSeries = new LineSeries
 {
   Title = "Charles",
@@ -69,13 +69,13 @@ var jamesSeries = new LineSeries
 seriesCollection.Add(charlesSeries);
 seriesCollection.Add(jamesSeries);
 
-//now just assing this seriesCollectionto your chart
+//now just assing this seriesCollection to your chart
 //you can use wpf bindings if you need it
 myChart.Series = seriesCollection
 
 //create some labels if necessary
 var labels = new string[] {"Jan", "Feb" , "Mar", "Apr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dec"};
-myChart.AxixX.Labels = labels;
+myChart.AxisX.Add(new Axis { Labels = labels});
 ```
 
 ### Is live charts what you are looking for? see these interesting examples.
