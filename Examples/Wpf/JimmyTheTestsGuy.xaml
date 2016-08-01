@@ -10,11 +10,6 @@
              d:DesignWidth="500"
               d:DataContext="{d:DesignInstance local:JimmyTheTestsGuy}">
     <Grid>
-        <lvc:CartesianChart LegendLocation="Right" Background="White">
-            <lvc:CartesianChart.Series>
-                <lvc:ColumnSeries Values="0, 12, 54, 59" DataLabels="True" 
-                                  FontSize="15" LabelPosition="Top"/>
-            </lvc:CartesianChart.Series>
-        </lvc:CartesianChart>
+        
     </Grid>
 </UserControl>

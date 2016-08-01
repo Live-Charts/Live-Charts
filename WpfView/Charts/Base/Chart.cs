@@ -536,7 +536,8 @@ namespace LiveCharts.Wpf.Charts.Base
         #endregion
 
         #region Tooltip and legend
-        private DispatcherTimer TooltipTimeoutTimer { get; set; }
+        private static DispatcherTimer TooltipTimeoutTimer { get; set; }
+        private static UserControl ActiveTooltip { get; set; }
 
         public static readonly DependencyProperty TooltipTimeoutProperty = DependencyProperty.Register(
             "TooltipTimeout", typeof(TimeSpan), typeof(Chart),
@@ -576,6 +577,8 @@ namespace LiveCharts.Wpf.Charts.Base
 
         private void DataMouseEnter(object sender, EventArgs e)
         {
+            TooltipTimeoutTimer.Stop();
+
             var source = ActualSeries.SelectMany(x => x.ActualValues.GetPoints(x)).ToList();
             var senderPoint = source.FirstOrDefault(x => x.View != null &&
                                                          Equals(((PointView) x.View).HoverShape, sender));
@@ -586,8 +589,6 @@ namespace LiveCharts.Wpf.Charts.Base
 
             if (DataTooltip != null)
             {
-                TooltipTimeoutTimer.Stop();
-
                 if (DataTooltip.Parent == null)
                 {
                     Panel.SetZIndex(DataTooltip, int.MaxValue);
@@ -595,6 +596,8 @@ namespace LiveCharts.Wpf.Charts.Base
                     Canvas.SetTop(DataTooltip, 0d);
                     Canvas.SetLeft(DataTooltip, 0d);
                 }
+
+                ActiveTooltip = DataTooltip;
 
                 var lcTooltip = DataTooltip as IChartTooltip;
                 if (lcTooltip == null)
@@ -683,10 +686,9 @@ namespace LiveCharts.Wpf.Charts.Base
         private void TooltipTimeoutTimerOnTick(object sender, EventArgs eventArgs)
         {
             TooltipTimeoutTimer.Stop();
-
             if (DataTooltip == null) return;
 
-            DataTooltip.Visibility = Visibility.Hidden;
+            ActiveTooltip.Visibility = Visibility.Hidden;
         }
 
         public CoreSize LoadLegend()
@@ -752,7 +754,7 @@ namespace LiveCharts.Wpf.Charts.Base
 
             if (chart == null) return;
 
-            chart.TooltipTimeoutTimer.Interval = chart.TooltipTimeout;
+            TooltipTimeoutTimer.Interval = chart.TooltipTimeout;
         }
 
         public void HideTooltop()
@@ -777,7 +779,6 @@ namespace LiveCharts.Wpf.Charts.Base
         {
             var r = new Random();
             SeriesCollection mockedCollection;
-
 
             if (this is PieChart)
             {
