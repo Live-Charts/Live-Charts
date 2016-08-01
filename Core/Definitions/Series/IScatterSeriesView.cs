@@ -24,7 +24,7 @@ namespace LiveCharts.Definitions.Series
 {
     public interface IScatterSeriesView : ISeriesView
     {
-        double MaxBubbleDiameter { get; set; }
-        double MinBubbleDiameter { get; set; }
+        double MaxPointShapeDiameter { get; set; }
+        double MinPointShapeDiameter { get; set; }
     }
 }

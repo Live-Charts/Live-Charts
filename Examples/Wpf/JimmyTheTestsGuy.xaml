@@ -22,7 +22,10 @@
                                     PointGeometrySize="20"
                                     Fill="Transparent"
                                     PointForeround="IndianRed"/>
-                
+                <lvc:ScatterSeries Values="2,1,3,4"
+                                   PointGeometry="{x:Static lvc:DefaultGeometries.Trangle}"
+                                   MinPointShapeDiameter="10"
+                                   MaxPointShapeDiameter="35"/>
             </lvc:CartesianChart.Series>
         </lvc:CartesianChart>
     </Grid>

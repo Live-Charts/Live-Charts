@@ -22,7 +22,7 @@
 
 namespace LiveCharts.Definitions.Points
 {
-    public interface IBubblePointView : IChartPointView
+    public interface IScatterPointView : IChartPointView
     {
         double Diameter { get; set; }
     }

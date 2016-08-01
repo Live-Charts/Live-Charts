@@ -42,10 +42,10 @@ namespace LiveCharts.SeriesAlgorithms
             var p2 = new CorePoint();
 
             p1.X = Chart.Value3CoreLimit.Max;
-            p1.Y = bubbleSeries.MaxBubbleDiameter;
+            p1.Y = bubbleSeries.MaxPointShapeDiameter;
 
             p2.X = Chart.Value3CoreLimit.Min;
-            p2.Y = bubbleSeries.MinBubbleDiameter;
+            p2.Y = bubbleSeries.MinPointShapeDiameter;
 
             var deltaX = p2.X - p1.X;
             // ReSharper disable once CompareOfFloatsByEqualityOperator
@@ -69,7 +69,7 @@ namespace LiveCharts.SeriesAlgorithms
                 chartPoint.View = View.GetPointView(chartPoint.View, chartPoint,
                     View.DataLabels ? View.GetLabelPointFormatter()(chartPoint) : null);
 
-                var bubbleView = (IBubblePointView) chartPoint.View;
+                var bubbleView = (IScatterPointView) chartPoint.View;
 
                 bubbleView.Diameter = m*(chartPoint.Weight - p1.X) + p1.Y;
 

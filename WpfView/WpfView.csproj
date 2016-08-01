@@ -162,7 +162,7 @@
     </Compile>
     <Compile Include="Points\PiePointView.cs" />
     <Compile Include="Points\OhlcPointView.cs" />
-    <Compile Include="Points\BubblePointView.cs" />
+    <Compile Include="Points\ScatterPointView.cs" />
     <Compile Include="Points\PieSlice.cs" />
     <Compile Include="Points\RowPointView.cs" />
     <Compile Include="Points\ColumnPointView.cs" />

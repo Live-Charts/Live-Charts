@@ -31,20 +31,20 @@ using LiveCharts.Definitions.Points;
 
 namespace LiveCharts.Wpf.Points
 {
-    internal class BubblePointView : PointView, IBubblePointView
+    internal class ScatterPointView : PointView, IScatterPointView
     {
-        public Ellipse Ellipse { get; set; }
+        public Shape Shape { get; set; }
         public double Diameter { get; set; }
 
         public override void DrawOrMove(ChartPoint previousDrawn, ChartPoint current, int index, ChartCore chart)
         {
             if (IsNew)
             {
-                Canvas.SetTop(Ellipse, current.ChartLocation.Y);
-                Canvas.SetLeft(Ellipse, current.ChartLocation.X);
+                Canvas.SetTop(Shape, current.ChartLocation.Y);
+                Canvas.SetLeft(Shape, current.ChartLocation.X);
 
-                Ellipse.Width = 0;
-                Ellipse.Height = 0;
+                Shape.Width = 0;
+                Shape.Height = 0;
 
                 if (DataLabel != null)
                 {
@@ -63,11 +63,11 @@ namespace LiveCharts.Wpf.Points
 
             if (chart.View.DisableAnimations)
             {
-                Ellipse.Width = Diameter;
-                Ellipse.Height = Diameter;
+                Shape.Width = Diameter;
+                Shape.Height = Diameter;
 
-                Canvas.SetTop(Ellipse, current.ChartLocation.Y - Ellipse.Width*.5);
-                Canvas.SetLeft(Ellipse, current.ChartLocation.X - Ellipse.Height*.5);
+                Canvas.SetTop(Shape, current.ChartLocation.Y - Shape.Width*.5);
+                Canvas.SetLeft(Shape, current.ChartLocation.X - Shape.Height*.5);
 
                 if (DataLabel != null)
                 {
@@ -96,21 +96,21 @@ namespace LiveCharts.Wpf.Points
                 DataLabel.BeginAnimation(Canvas.TopProperty, new DoubleAnimation(cy, animSpeed));
             }
 
-            Ellipse.BeginAnimation(FrameworkElement.WidthProperty,
+            Shape.BeginAnimation(FrameworkElement.WidthProperty,
                 new DoubleAnimation(Diameter, animSpeed));
-            Ellipse.BeginAnimation(FrameworkElement.HeightProperty,
+            Shape.BeginAnimation(FrameworkElement.HeightProperty,
                 new DoubleAnimation(Diameter, animSpeed));
 
-            Ellipse.BeginAnimation(Canvas.TopProperty,
+            Shape.BeginAnimation(Canvas.TopProperty,
                 new DoubleAnimation(current.ChartLocation.Y - Diameter*.5, animSpeed));
-            Ellipse.BeginAnimation(Canvas.LeftProperty,
+            Shape.BeginAnimation(Canvas.LeftProperty,
                 new DoubleAnimation(current.ChartLocation.X - Diameter*.5, animSpeed));
         }
 
         public override void RemoveFromView(ChartCore chart)
         {
             chart.View.RemoveFromDrawMargin(HoverShape);
-            chart.View.RemoveFromDrawMargin(Ellipse);
+            chart.View.RemoveFromDrawMargin(Shape);
             chart.View.RemoveFromDrawMargin(DataLabel);
         }
 
@@ -136,22 +136,22 @@ namespace LiveCharts.Wpf.Points
 
         public override void OnHover(ChartPoint point)
         {
-            var copy = Ellipse.Fill.Clone();
+            var copy = Shape.Fill.Clone();
             copy.Opacity -= .15;
-            Ellipse.Fill = copy;
+            Shape.Fill = copy;
         }
 
         public override void OnHoverLeave(ChartPoint point)
         {
-            if (Ellipse == null) return;
+            if (Shape == null) return;
 
             if (point.Fill != null)
             {
-                Ellipse.Fill = (Brush) point.Fill;
+                Shape.Fill = (Brush) point.Fill;
             }
             else
             {
-                BindingOperations.SetBinding(Ellipse, Shape.FillProperty,
+                BindingOperations.SetBinding(Shape, Shape.FillProperty,
                 new Binding
                 {
                     Path = new PropertyPath(Series.FillProperty),

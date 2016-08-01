@@ -76,7 +76,7 @@
     <Compile Include="Definitions\Charts\ISeparatorElementView.cs" />
     <Compile Include="Definitions\Points\IStepPointView.cs" />
     <Compile Include="Definitions\Series\ISeriesView.cs" />
-    <Compile Include="Definitions\Points\IBubblePointView.cs" />
+    <Compile Include="Definitions\Points\IScatterPointView.cs" />
     <Compile Include="Definitions\Points\IHeatPointView.cs" />
     <Compile Include="Definitions\Points\IOhlcPointView.cs" />
     <Compile Include="Definitions\Points\IPieSlicePointView.cs" />

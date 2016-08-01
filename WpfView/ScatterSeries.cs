@@ -68,26 +68,28 @@ namespace LiveCharts.Wpf
 
         #region Properties
 
-        public static readonly DependencyProperty MaxBubbleDiameterProperty = DependencyProperty.Register(
-            "MaxBubbleDiameter", typeof (double), typeof (ScatterSeries), new PropertyMetadata(default(double)));
+        public static readonly DependencyProperty MaxPointShapeDiameterProperty = DependencyProperty.Register(
+            "MaxPointShapeDiameter", typeof (double), typeof (ScatterSeries), 
+            new PropertyMetadata(default(double), CallChartUpdater()));
         /// <summary>
-        /// Gets or sets the max bubble diameter, the bubbles using the max weight in the series will have this radius.
+        /// Gets or sets the max shape diameter, the points using the max weight in the series will have this radius.
         /// </summary>
-        public double MaxBubbleDiameter
+        public double MaxPointShapeDiameter
         {
-            get { return (double) GetValue(MaxBubbleDiameterProperty); }
-            set { SetValue(MaxBubbleDiameterProperty, value); }
+            get { return (double) GetValue(MaxPointShapeDiameterProperty); }
+            set { SetValue(MaxPointShapeDiameterProperty, value); }
         }
 
-        public static readonly DependencyProperty MinBubbleDiameterProperty = DependencyProperty.Register(
-            "MinBubbleDiameter", typeof (double), typeof (ScatterSeries), new PropertyMetadata(default(double)));
+        public static readonly DependencyProperty MinPointShapeDiameterProperty = DependencyProperty.Register(
+            "MinPointShapeDiameter", typeof (double), typeof (ScatterSeries), 
+            new PropertyMetadata(default(double), CallChartUpdater()));
         /// <summary>
-        /// Gets or sets the min bubble diameter, the bubbles using the min weight in the series will have this radius.
+        /// Gets or sets the min shape diameter, the points using the min weight in the series will have this radius.
         /// </summary>
-        public double MinBubbleDiameter
+        public double MinPointShapeDiameter
         {
-            get { return (double) GetValue(MinBubbleDiameterProperty); }
-            set { SetValue(MinBubbleDiameterProperty, value); }
+            get { return (double) GetValue(MinPointShapeDiameterProperty); }
+            set { SetValue(MinPointShapeDiameterProperty, value); }
         }
 
         #endregion
@@ -96,36 +98,43 @@ namespace LiveCharts.Wpf
 
         public override IChartPointView GetPointView(IChartPointView view, ChartPoint point, string label)
         {
-            var pbv = (view as BubblePointView);
+            var pbv = (view as ScatterPointView);
 
             if (pbv == null)
             {
-                pbv = new BubblePointView
+                pbv = new ScatterPointView
                 {
                     IsNew = true,
-                    Ellipse = new Ellipse()
+                    Shape = new Path
+                    {
+                        Stretch = Stretch.Fill,
+                        ClipToBounds = true,
+                        StrokeThickness = StrokeThickness
+                    }
                 };
+                BindingOperations.SetBinding(pbv.Shape, Path.DataProperty,
+                    new Binding { Path = new PropertyPath(PointGeometryProperty), Source = this });
 
-                BindingOperations.SetBinding(pbv.Ellipse, Shape.FillProperty,
+                BindingOperations.SetBinding(pbv.Shape, Shape.FillProperty,
                     new Binding { Path = new PropertyPath(FillProperty), Source = this });
-                BindingOperations.SetBinding(pbv.Ellipse, Shape.StrokeProperty,
+                BindingOperations.SetBinding(pbv.Shape, Shape.StrokeProperty,
                     new Binding { Path = new PropertyPath(StrokeProperty), Source = this });
-                BindingOperations.SetBinding(pbv.Ellipse, Shape.StrokeThicknessProperty,
+                BindingOperations.SetBinding(pbv.Shape, Shape.StrokeThicknessProperty,
                     new Binding { Path = new PropertyPath(StrokeThicknessProperty), Source = this });
-                BindingOperations.SetBinding(pbv.Ellipse, VisibilityProperty,
+                BindingOperations.SetBinding(pbv.Shape, VisibilityProperty,
                     new Binding { Path = new PropertyPath(VisibilityProperty), Source = this });
-                BindingOperations.SetBinding(pbv.Ellipse, Panel.ZIndexProperty,
+                BindingOperations.SetBinding(pbv.Shape, Panel.ZIndexProperty,
                     new Binding {Path = new PropertyPath(Panel.ZIndexProperty), Source = this});
-                BindingOperations.SetBinding(pbv.Ellipse, Shape.StrokeDashArrayProperty,
+                BindingOperations.SetBinding(pbv.Shape, Shape.StrokeDashArrayProperty,
                     new Binding {Path = new PropertyPath(StrokeDashArrayProperty), Source = this});
 
-                Model.Chart.View.AddToDrawMargin(pbv.Ellipse);
+                Model.Chart.View.AddToDrawMargin(pbv.Shape);
             }
             else
             {
                 pbv.IsNew = false;
                 point.SeriesView.Model.Chart.View
-                    .EnsureElementBelongsToCurrentDrawMargin(pbv.Ellipse);
+                    .EnsureElementBelongsToCurrentDrawMargin(pbv.Shape);
                 point.SeriesView.Model.Chart.View
                     .EnsureElementBelongsToCurrentDrawMargin(pbv.HoverShape);
                 point.SeriesView.Model.Chart.View
@@ -162,8 +171,8 @@ namespace LiveCharts.Wpf
 
             if (pbv.DataLabel != null) pbv.DataLabel.Text = label;
 
-            if (point.Stroke != null) pbv.Ellipse.Stroke = (Brush)point.Stroke;
-            if (point.Fill != null) pbv.Ellipse.Fill = (Brush)point.Fill;
+            if (point.Stroke != null) pbv.Shape.Stroke = (Brush)point.Stroke;
+            if (point.Fill != null) pbv.Shape.Fill = (Brush)point.Fill;
 
             return pbv;
         }
@@ -175,8 +184,8 @@ namespace LiveCharts.Wpf
         private void InitializeDefuaults()
         {
             SetCurrentValue(StrokeThicknessProperty, 0d);
-            SetCurrentValue(MaxBubbleDiameterProperty, 50d);
-            SetCurrentValue(MinBubbleDiameterProperty, 10d);
+            SetCurrentValue(MaxPointShapeDiameterProperty, 50d);
+            SetCurrentValue(MinPointShapeDiameterProperty, 10d);
 
             Func<ChartPoint, string> defaultLabel = x => Model.CurrentXAxis.GetFormatter()(x.X) + ", "
                                                          + Model.CurrentYAxis.GetFormatter()(x.Y);
