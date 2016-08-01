@@ -29,7 +29,6 @@ using System.Windows.Shapes;
 using LiveCharts.Definitions.Points;
 using LiveCharts.Definitions.Series;
 using LiveCharts.Dtos;
-using LiveCharts.Helpers;
 using LiveCharts.SeriesAlgorithms;
 using LiveCharts.Wpf.Charts.Base;
 using LiveCharts.Wpf.Points;
@@ -118,7 +117,7 @@ namespace LiveCharts.Wpf
                     IsNew = true,
                     Rectangle = new Rectangle(),
                     Data = new CoreRectangle(),
-                    LabelInside = true
+                    LabelPosition = BarLabelPosition.Merged
                 };
 
                 BindingOperations.SetBinding(pbv.Rectangle, Shape.FillProperty,

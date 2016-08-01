@@ -29,7 +29,6 @@ using System.Windows.Shapes;
 using LiveCharts.Definitions.Points;
 using LiveCharts.Definitions.Series;
 using LiveCharts.Dtos;
-using LiveCharts.Helpers;
 using LiveCharts.SeriesAlgorithms;
 using LiveCharts.Wpf.Charts.Base;
 using LiveCharts.Wpf.Points;
@@ -91,6 +90,19 @@ namespace LiveCharts.Wpf
             get { return (double) GetValue(RowPaddingProperty); }
             set { SetValue(RowPaddingProperty, value); }
         }
+
+        public static readonly DependencyProperty LabelPositionProperty = DependencyProperty.Register(
+            "LabelPosition", typeof(BarLabelPosition), typeof(RowSeries), 
+            new PropertyMetadata(default(BarLabelPosition), CallChartUpdater()));
+        /// <summary>
+        /// Gets or sets where the label is placed
+        /// </summary>
+        public BarLabelPosition LabelPosition
+        {
+            get { return (BarLabelPosition)GetValue(LabelPositionProperty); }
+            set { SetValue(LabelPositionProperty, value); }
+        }
+
 
         #endregion
 
@@ -166,6 +178,8 @@ namespace LiveCharts.Wpf
             if (point.Stroke != null) pbv.Rectangle.Stroke = (Brush) point.Stroke;
             if (point.Fill != null) pbv.Rectangle.Fill = (Brush) point.Fill;
 
+            pbv.LabelPosition = LabelPosition;
+
             return pbv;
         }
 
@@ -178,6 +192,7 @@ namespace LiveCharts.Wpf
             SetCurrentValue(StrokeThicknessProperty, 0d);
             SetCurrentValue(MaxRowHeigthProperty, 35d);
             SetCurrentValue(RowPaddingProperty, 5d);
+            SetCurrentValue(LabelPositionProperty, BarLabelPosition.Top);
 
             Func<ChartPoint, string> defaultLabel = x => Model.CurrentXAxis.GetFormatter()(x.X);
             SetCurrentValue(LabelPointProperty, defaultLabel);

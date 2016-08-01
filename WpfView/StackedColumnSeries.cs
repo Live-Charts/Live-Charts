@@ -117,7 +117,7 @@ namespace LiveCharts.Wpf
                     IsNew = true,
                     Rectangle = new Rectangle(),
                     Data = new CoreRectangle(),
-                    LabelInside = true
+                    LabelPosition = BarLabelPosition.Merged
                 };
 
                 BindingOperations.SetBinding(pbv.Rectangle, Shape.FillProperty,

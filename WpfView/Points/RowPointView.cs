@@ -38,7 +38,7 @@ namespace LiveCharts.Wpf.Points
         public Rectangle Rectangle { get; set; }
         public CoreRectangle Data { get; set; }
         public double ZeroReference  { get; set; }
-        public bool LabelInside { get; set; }
+        public BarLabelPosition LabelPosition { get; set; }
 
         public override void DrawOrMove(ChartPoint previousDrawn, ChartPoint current, int index, ChartCore chart)
         {
@@ -72,7 +72,7 @@ namespace LiveCharts.Wpf.Points
             {
                 double r;
 
-                if (LabelInside)
+                if (LabelPosition == BarLabelPosition.Merged)
                 {
                     r = Data.Left + Data.Width/2 - DataLabel.ActualWidth/2;
                 }

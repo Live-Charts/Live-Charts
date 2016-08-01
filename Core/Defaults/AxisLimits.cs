@@ -51,6 +51,11 @@ namespace LiveCharts.Defaults
             return (((int) (axis.MaxLimit/axis.S)) + 1)*axis.S;
         }
 
+        internal static double SeparatorMaxRounded(AxisCore axis)
+        {
+            return Math.Round((axis.MaxLimit/axis.S) + 1, 0)*axis.S;
+        }
+
         internal static double SeparatorMin(AxisCore axis)
         {
             return (((int) (axis.MinLimit/axis.S)) - 1)*axis.S;

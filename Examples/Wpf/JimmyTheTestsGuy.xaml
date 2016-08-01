@@ -12,20 +12,8 @@
     <Grid>
         <lvc:CartesianChart LegendLocation="Right" Background="White">
             <lvc:CartesianChart.Series>
-                <lvc:LineSeries Values="1,2,5,4" 
-                                PointGeometry="{x:Static lvc:DefaultGeometries.Diamond}"
-                                PointGeometrySize="20"
-                                Fill="Transparent"
-                                PointForeround="IndianRed"/>
-                <lvc:StepLineSeries Values="3,2,5,6"
-                                    PointGeometry="{x:Static lvc:DefaultGeometries.Square}"
-                                    PointGeometrySize="20"
-                                    Fill="Transparent"
-                                    PointForeround="IndianRed"/>
-                <lvc:ScatterSeries Values="2,1,3,4"
-                                   PointGeometry="{x:Static lvc:DefaultGeometries.Trangle}"
-                                   MinPointShapeDiameter="10"
-                                   MaxPointShapeDiameter="35"/>
+                <lvc:ColumnSeries Values="0, 12, 54, 59" DataLabels="True" 
+                                  FontSize="15" LabelPosition="Top"/>
             </lvc:CartesianChart.Series>
         </lvc:CartesianChart>
     </Grid>

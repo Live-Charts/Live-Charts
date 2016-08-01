@@ -38,7 +38,7 @@ namespace LiveCharts.Wpf.Points
         public Rectangle Rectangle { get; set; }
         public CoreRectangle Data { get; set; }
         public double ZeroReference  { get; set; }
-        public bool LabelInside { get; set; }
+        public BarLabelPosition LabelPosition { get; set; }
         public RotateTransform RotateTransform { get; set; }
 
         public override void DrawOrMove(ChartPoint previousDrawn, ChartPoint current, int index, ChartCore chart)
@@ -62,7 +62,7 @@ namespace LiveCharts.Wpf.Points
             {
                 double y;
 
-                if (LabelInside)
+                if (LabelPosition == BarLabelPosition.Merged)
                 {
                     if (RotateTransform == null)
                         RotateTransform = new RotateTransform(270);
@@ -92,7 +92,7 @@ namespace LiveCharts.Wpf.Points
             {
                 double x;
 
-                if (LabelInside)
+                if (LabelPosition == BarLabelPosition.Merged)
                 {
                     x = Data.Left + Data.Width/2 - DataLabel.ActualHeight/2;
                 }

@@ -1,4 +1,4 @@
-﻿//The MIT License(MIT)
+//The MIT License(MIT)
 
 //copyright(c) 2016 Alberto Rodriguez
 
@@ -20,53 +20,20 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-using System.Windows.Media;
-
-namespace LiveCharts.Wpf
+namespace LiveCharts
 {
     /// <summary>
-    /// Contains an already defined collection of geometries, useful to set the Series.PointGeomety property
+    /// Describes where a label should be placed
     /// </summary>
-    public static class DefaultGeometries
+    public enum BarLabelPosition
     {
         /// <summary>
-        /// Returns a null geometry
+        /// Places a label at the top of a bar
         /// </summary>
-        public static Geometry None
-        {
-            get { return null; }
-        }
-
+        Top,
         /// <summary>
-        /// Returns a circle geometry
+        /// Places a labels inside the bar
         /// </summary>
-        public static Geometry Circle
-        {
-            get { return Geometry.Parse("M 0,0 A 180,180 180 1 1 1,1 Z"); }
-        }
-
-        /// <summary>
-        /// Returns a square geometry
-        /// </summary>
-        public static Geometry Square
-        {
-            get { return Geometry.Parse("M 1,1 h -2 v -2 h 2 z"); }
-        }
-
-        /// <summary>
-        /// Returns a diamond property
-        /// </summary>
-        public static Geometry Diamond
-        {
-            get { return Geometry.Parse("M 1,0 L 2,1  1,2  0,1 z"); }
-        }
-
-        /// <summary>
-        /// Returns a triangle geometry
-        /// </summary>
-        public static Geometry Triangle
-        {
-            get { return Geometry.Parse("M 0,1 l 1,1 h -2 Z"); }
-        }
+        Merged
     }
 }
