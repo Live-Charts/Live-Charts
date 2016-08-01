@@ -138,7 +138,7 @@ namespace LiveCharts.Charts
 
         private void PrepareWeight()
         {
-            if (!View.ActualSeries.Any(x => x is IBubbleSeriesView || x is IHeatSeriesView)) return;
+            if (!View.ActualSeries.Any(x => x is IScatterSeriesView || x is IHeatSeriesView)) return;
 
             var vs = View.ActualSeries
                 .Select(x => x.ActualValues.GetTracker(x).Limit3)

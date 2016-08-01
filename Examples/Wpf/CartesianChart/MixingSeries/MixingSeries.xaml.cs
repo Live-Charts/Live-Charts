@@ -40,7 +40,7 @@ namespace Wpf.CartesianChart
                 Fill = Brushes.Transparent
             };
 
-            BubbleSeries = new BubbleSeries
+            ScatterSeries = new ScatterSeries
             {
                 Values = new ChartValues<BubblePoint>
                 {
@@ -65,14 +65,14 @@ namespace Wpf.CartesianChart
             SeriesCollection = new SeriesCollection
             {
                 LineSeries,
-                BubbleSeries,
+                ScatterSeries,
                 ColumnSeries
             };
 
             DataContext = this;
         }
 
-        public LiveCharts.Wpf.BubbleSeries BubbleSeries { get; set; }
+        public LiveCharts.Wpf.ScatterSeries ScatterSeries { get; set; }
         public LineSeries LineSeries { get; set; }
         public ColumnSeries ColumnSeries { get; set; }
         public SeriesCollection SeriesCollection { get; set; }
@@ -96,7 +96,7 @@ namespace Wpf.CartesianChart
                 value.Value = r.Next(-20, 20);
             }
             var i = 0;
-            foreach (var value in BubbleSeries.Values.Cast<BubblePoint>())
+            foreach (var value in ScatterSeries.Values.Cast<BubblePoint>())
             {
                 value.X = i;
                 value.Y = r.Next(-20, 20);

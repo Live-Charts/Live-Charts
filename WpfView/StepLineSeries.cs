@@ -29,6 +29,7 @@ using System.Windows.Shapes;
 using LiveCharts.Definitions.Points;
 using LiveCharts.SeriesAlgorithms;
 using LiveCharts.Wpf.Charts.Base;
+using LiveCharts.Wpf.Components;
 using LiveCharts.Wpf.Converters;
 using LiveCharts.Wpf.Points;
 
@@ -37,7 +38,7 @@ namespace LiveCharts.Wpf
     /// <summary>
     /// The Bubble series, draws scatter series, only using X and Y properties or bubble series, if you also use the weight property, this series should be used in a cartesian chart.
     /// </summary>
-    public class StepLineSeries : Series
+    public class StepLineSeries : Series, IFondeable
     {
         #region Constructors
         /// <summary>

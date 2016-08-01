@@ -5,7 +5,6 @@ using System.Windows.Media;
 using System.Windows.Shapes;
 using LiveCharts;
 using LiveCharts.Maps;
-using LiveCharts.Wpf;
 using Wpf.Annotations;
 
 namespace Wpf
@@ -18,12 +17,6 @@ namespace Wpf
         public JimmyTheTestsGuy()
         {
             InitializeComponent();
-
-            Series = new SeriesCollection
-            {
-                new LineSeries {Values = new ChartValues<double> {1, 2, 3, 4, 5}},
-                new LineSeries {Values = new ChartValues<double> {double.NaN, double.NaN, 3, 4, 5}}
-            };
 
             DataContext = this;
         }
@@ -42,27 +35,6 @@ namespace Wpf
         {
             if (PropertyChanged != null)
                 PropertyChanged.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
-        {
-            GeoMap.Restart();
-        }
-
-        private void GeoMap_OnLandClick(object sender, MapData mapData)
-        {
-            if (SelectedLand != null)
-            {
-                //lets clear the selection...
-                SelectedLand.Stroke = GeoMap.LandStroke;
-                SelectedLand.StrokeThickness = GeoMap.LandStrokeThickness;
-            }
-
-            SelectedLand = (Path) mapData.Shape;
-            SelectedLand.Stroke = Brushes.CornflowerBlue;
-            SelectedLand.StrokeThickness = 2;
-
-            //GeoMap.MoveTo(mapData);
         }
     }
 }

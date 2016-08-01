@@ -10,14 +10,20 @@
              d:DesignWidth="500"
               d:DataContext="{d:DesignInstance local:JimmyTheTestsGuy}">
     <Grid>
-        <lvc:GeoMap Name="GeoMap" LandClick="GeoMap_OnLandClick"></lvc:GeoMap>
-        <!--<lvc:CartesianChart>
+        <lvc:CartesianChart LegendLocation="Right" Background="White">
             <lvc:CartesianChart.Series>
-                <lvc:StepLineSeries Values="1, 4, 2, 5, 6, 8, 2" />
+                <lvc:LineSeries Values="1,2,5,4" 
+                                PointGeometry="{x:Static lvc:DefaultGeometries.Diamond}"
+                                PointGeometrySize="20"
+                                Fill="Transparent"
+                                PointForeround="IndianRed"/>
+                <lvc:StepLineSeries Values="3,2,5,6"
+                                    PointGeometry="{x:Static lvc:DefaultGeometries.Square}"
+                                    PointGeometrySize="20"
+                                    Fill="Transparent"
+                                    PointForeround="IndianRed"/>
+                
             </lvc:CartesianChart.Series>
-        </lvc:CartesianChart>-->
-        <TextBlock Margin="10 50" VerticalAlignment="Top" HorizontalAlignment="Left">This is only a preview</TextBlock>
-        <Button Background="#55ffffff" Height="30"  Width="80" Margin="10" Foreground="White" FontWeight="Bold"
-                VerticalAlignment="Top" HorizontalAlignment="Left" Click="ButtonBase_OnClick">Restart</Button>
+        </lvc:CartesianChart>
     </Grid>
 </UserControl>

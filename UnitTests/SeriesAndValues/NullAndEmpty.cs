@@ -83,7 +83,7 @@ namespace UnitTests.SeriesAndValues
                     {
                         Values = null
                     },
-                    new LiveCharts.Wpf.BubbleSeries
+                    new LiveCharts.Wpf.ScatterSeries
                     {
                         Values = null
                     }
@@ -146,7 +146,7 @@ namespace UnitTests.SeriesAndValues
                     {
                         Values = new ChartValues<double>()
                     },
-                    new LiveCharts.Wpf.BubbleSeries
+                    new LiveCharts.Wpf.ScatterSeries
                     {
                         Values = new ChartValues<double>()
                     }

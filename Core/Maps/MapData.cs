@@ -24,7 +24,7 @@ using System.Collections.Generic;
 
 namespace LiveCharts.Maps
 {
-    public class SvgMap
+    public class LvcMap
     {
         public double DesiredWidth { get; set; }
         public double DesiredHeight { get; set; }
@@ -37,6 +37,6 @@ namespace LiveCharts.Maps
         public string Name { get; set; }
         public string Data { get; set; }
         public object Shape { get; set; }
-        public SvgMap SvgMap { get; set; }
+        public LvcMap LvcMap { get; set; }
     }
 }

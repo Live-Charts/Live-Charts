@@ -23,6 +23,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Globalization;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -34,6 +35,7 @@ using System.Windows.Media.Effects;
 using System.Windows.Shapes;
 using LiveCharts.Maps;
 using LiveCharts.Wpf.Maps;
+using Path = System.Windows.Shapes.Path;
 
 namespace LiveCharts.Wpf
 {
@@ -55,17 +57,16 @@ namespace LiveCharts.Wpf
             Lands = new Dictionary<string, MapData>();
 
             SetCurrentValue(DefaultLandFillProperty, new SolidColorBrush(Color.FromArgb(200,255,255,255)));
-            SetCurrentValue(LandStrokeProperty, new SolidColorBrush(Color.FromArgb(15, 55, 55, 55)));
-            SetCurrentValue(LandStrokeThicknessProperty, 1d);
+            SetCurrentValue(LandStrokeProperty, new SolidColorBrush(Color.FromArgb(30, 55,55, 55)));
+            SetCurrentValue(LandStrokeThicknessProperty, 1.3d);
             SetCurrentValue(AnimationsSpeedProperty, TimeSpan.FromMilliseconds(500));
-            SetCurrentValue(BackgroundProperty, new SolidColorBrush(Color.FromArgb(70, 96, 125, 138)));
+            SetCurrentValue(BackgroundProperty, new SolidColorBrush(Color.FromArgb(150, 96, 125, 138)));
             SetCurrentValue(GradientStopCollectionProperty, new GradientStopCollection
             {
-                new GradientStop(Color.FromArgb(38, 13, 71, 160), 0d),
-                new GradientStop(Color.FromRgb(13,71,160), 1d),
+                new GradientStop(Color.FromArgb(100,2,119,188), 0d),
+                new GradientStop(Color.FromRgb(2,119,188), 1d),
             });
             SetCurrentValue(HeatMapProperty, new Dictionary<string, double>());
-            SetCurrentValue(LocationProperty, LiveCharts.Maps.Maps.World);
             SetCurrentValue(GeoMapTooltipProperty, new DefaultGeoMapTooltip {Visibility = Visibility.Hidden});
             Canvas.Children.Add(GeoMapTooltip);
 
@@ -234,18 +235,17 @@ namespace LiveCharts.Wpf
             set { SetValue(GradientStopCollectionProperty, value); }
         }
 
-        public static readonly DependencyProperty LocationProperty = DependencyProperty.Register(
-            "Location", typeof (LiveCharts.Maps.Maps), typeof (GeoMap), 
-            new PropertyMetadata(default(LiveCharts.Maps.Maps), OnLocationChanged));
+        public static readonly DependencyProperty SourceProperty = DependencyProperty.Register(
+            "Source", typeof (string), typeof (GeoMap), new PropertyMetadata(default(string)));
         /// <summary>
-        /// Gets or sets the current Map Location
+        /// Gets or sets the image source
         /// </summary>
-        public LiveCharts.Maps.Maps Location
+        public string Source
         {
-            get { return (LiveCharts.Maps.Maps) GetValue(LocationProperty); }
-            set { SetValue(LocationProperty, value); }
+            get { return (string) GetValue(SourceProperty); }
+            set { SetValue(SourceProperty, value); }
         }
-
+        
         public static readonly DependencyProperty EnableZoomingAndPanningProperty = DependencyProperty.Register(
             "EnableZoomingAndPanning", typeof (bool), typeof (GeoMap), new PropertyMetadata(default(bool)));
         /// <summary>
@@ -282,11 +282,11 @@ namespace LiveCharts.Wpf
 
             if (IsWidthDominant)
             {
-                scale = data.SvgMap.DesiredWidth / area.Width;
+                scale = data.LvcMap.DesiredWidth / area.Width;
             }
             else
             {
-                scale = data.SvgMap.DesiredHeight / area.Height;
+                scale = data.LvcMap.DesiredHeight / area.Height;
             }
 
             Map.RenderTransformOrigin = new Point(0, 0);
@@ -359,7 +359,7 @@ namespace LiveCharts.Wpf
                 return;
             }
 
-            var map = MapResolver.Get(LiveCharts.Maps.Maps.World);
+            var map = MapResolver.Get(Source);
 
             var desiredSize = new Size(map.DesiredWidth, map.DesiredHeight);
             var r = desiredSize.Width/desiredSize.Height;
@@ -409,9 +409,18 @@ namespace LiveCharts.Wpf
                 p.MouseDown += POnMouseDown;
 
                 p.SetBinding(Shape.StrokeProperty,
-                    new Binding {Path = new PropertyPath(LandStrokeProperty), Source = this});
+                    new Binding { Path = new PropertyPath(LandStrokeProperty), Source = this });
                 p.SetBinding(Shape.StrokeThicknessProperty,
-                    new Binding {Path = new PropertyPath(LandStrokeThicknessProperty), Source = this});
+                    new MultiBinding
+                    {
+                        Converter = new ScaleStrokeConverter(),
+                        Bindings =
+                        {
+                            new Binding("LandStrokeThickness") {Source = this},
+                            new Binding("ScaleX") {Source = t}
+                        }
+                    });
+
             }      
 
             ShowMeSomeHeat();
@@ -545,14 +554,19 @@ namespace LiveCharts.Wpf
 
             geoMap.ShowMeSomeHeat();
         }
+        #endregion
+    }
 
-        private static void OnLocationChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
+    public class ScaleStrokeConverter : IMultiValueConverter
+    {
+        public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
-            var geoMap = (GeoMap) o;
-
-            geoMap.Draw();
+            return (double) values[0]/(double) values[1];
         }
 
-        #endregion
+        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

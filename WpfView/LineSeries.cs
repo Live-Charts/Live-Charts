@@ -44,7 +44,7 @@ namespace LiveCharts.Wpf
     /// <summary>
     /// The line series displays trends between points, you must add this series to a cartesian chart. 
     /// </summary>
-    public class LineSeries : Series, ILineSeriesView
+    public class LineSeries : Series, ILineSeriesView, IFondeable
     {
         #region Constructors
         /// <summary>

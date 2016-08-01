@@ -20,10 +20,11 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-namespace LiveCharts.Maps
+namespace LiveCharts.Definitions.Series
 {
-    public enum Maps
+    public interface IScatterSeriesView : ISeriesView
     {
-        World
+        double MaxBubbleDiameter { get; set; }
+        double MinBubbleDiameter { get; set; }
     }
 }

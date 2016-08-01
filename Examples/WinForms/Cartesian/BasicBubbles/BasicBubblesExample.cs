@@ -21,7 +21,7 @@ namespace Winforms.Cartesian.BasicBubbles
 
             cartesianChart1.Series = new SeriesCollection
             {
-                new BubbleSeries
+                new ScatterSeries
                 {
                     Values = new ChartValues<BubblePoint>
                     {
@@ -33,7 +33,7 @@ namespace Winforms.Cartesian.BasicBubbles
                         new BubblePoint(8, 2, 70)
                     }
                 },
-                new BubbleSeries
+                new ScatterSeries
                 {
                     Values = new ChartValues<BubblePoint>
                     {

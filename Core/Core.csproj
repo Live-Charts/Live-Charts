@@ -84,7 +84,7 @@
     <Compile Include="IObservableChartPoint.cs" />
     <Compile Include="Definitions\Charts\IPieChart.cs" />
     <Compile Include="Definitions\Points\IBezierPointView.cs" />
-    <Compile Include="Definitions\Series\IBubbleSeriesView.cs" />
+    <Compile Include="Definitions\Series\IScatterSeriesView.cs" />
     <Compile Include="Definitions\Series\ICartesianSeries.cs" />
     <Compile Include="Definitions\Series\IColumnSeriesView.cs" />
     <Compile Include="Definitions\Series\IHeatSeriesView.cs" />
@@ -121,7 +121,6 @@
     <Compile Include="Helpers\LiveChartsException.cs" />
     <Compile Include="LegendLocation.cs" />
     <Compile Include="Maps\MapData.cs" />
-    <Compile Include="Maps\Maps.cs" />
     <Compile Include="PointTracker.cs" />
     <Compile Include="SeparationState.cs" />
     <Compile Include="SeriesAlgorithms\HeatAlgorithm.cs" />

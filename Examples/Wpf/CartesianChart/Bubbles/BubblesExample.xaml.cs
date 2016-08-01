@@ -16,7 +16,7 @@ namespace Wpf.CartesianChart.Bubbles
                 
             SeriesCollection = new SeriesCollection
             {
-                new BubbleSeries
+                new ScatterSeries
                 {
                     Values = new ChartValues<BubblePoint>
                     {
@@ -27,7 +27,7 @@ namespace Wpf.CartesianChart.Bubbles
                         new BubblePoint(8, 2, 70)
                     }
                 },
-                new BubbleSeries
+                new ScatterSeries
                 {
                     Values = new ChartValues<BubblePoint>
                     {

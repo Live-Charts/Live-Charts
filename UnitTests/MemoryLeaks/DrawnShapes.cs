@@ -106,7 +106,7 @@ namespace UnitTests.MemoryLeaks
                     {
                         Values = new ChartValues<double> {2, 4, 5, 2}
                     },
-                    new LiveCharts.Wpf.BubbleSeries
+                    new LiveCharts.Wpf.ScatterSeries
                     {
                         Values = new ChartValues<double> {2, 4, 5, 2}
                     }

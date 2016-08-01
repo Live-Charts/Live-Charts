@@ -20,11 +20,12 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-namespace LiveCharts.Definitions.Series
+using System.Windows.Media;
+
+namespace LiveCharts.Wpf.Components
 {
-    public interface IBubbleSeriesView : ISeriesView
+    public interface IFondeable
     {
-        double MaxBubbleDiameter { get; set; }
-        double MinBubbleDiameter { get; set; }
+        Brush PointForeround { get; }
     }
 }

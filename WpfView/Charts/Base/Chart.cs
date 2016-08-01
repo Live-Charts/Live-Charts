@@ -37,6 +37,7 @@ using LiveCharts.Definitions.Charts;
 using LiveCharts.Definitions.Series;
 using LiveCharts.Dtos;
 using LiveCharts.Helpers;
+using LiveCharts.Wpf.Components;
 using LiveCharts.Wpf.Points;
 
 namespace LiveCharts.Wpf.Charts.Base
@@ -615,8 +616,10 @@ namespace LiveCharts.Wpf.Charts.Base
                         Series = new SeriesViewModel
                         {
                             PointGeometry = ((Series) x.SeriesView).PointGeometry ??
-                                       Geometry.Parse("M 0,0.5 h 1,0.5 Z"),
-                            Fill = ((Series) x.SeriesView).Fill,
+                                            Geometry.Parse("M 0,0.5 h 1,0.5 Z"),
+                            Fill = ((Series) x.SeriesView) is IFondeable
+                                ? ((IFondeable) x.SeriesView).PointForeround
+                                : ((Series) x.SeriesView).Fill,
                             Stroke = ((Series) x.SeriesView).Stroke,
                             StrokeThickness = ((Series) x.SeriesView).StrokeThickness,
                             Title = ((Series) x.SeriesView).Title,
@@ -705,7 +708,9 @@ namespace LiveCharts.Wpf.Charts.Base
                 item.Title = series.Title;
                 item.StrokeThickness = series.StrokeThickness;
                 item.Stroke = series.Stroke;
-                item.Fill = series.Fill;
+                item.Fill = ((Series) t) is IFondeable
+                    ? ((IFondeable) t).PointForeround
+                    : ((Series) t).Fill;
                 item.PointGeometry = series.PointGeometry ?? Geometry.Parse("M 0,0.5 h 1,0.5 Z");
 
                 l.Add(item);

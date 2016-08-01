@@ -129,7 +129,8 @@
   <ItemGroup>
     <Compile Include="AngularGauge.cs" />
     <Compile Include="AngularSection.cs" />
-    <Compile Include="BubbleSeries.cs" />
+    <Compile Include="Components\IFondeable.cs" />
+    <Compile Include="ScatterSeries.cs" />
     <Compile Include="Converters\NextZIndexConverter.cs" />
     <Compile Include="DefaultGeoMapTooltip.xaml.cs">
       <DependentUpon>DefaultGeoMapTooltip.xaml</DependentUpon>
@@ -237,12 +238,6 @@
       <Project>{d447642c-a85f-4ab0-96d9-c66cff91aada}</Project>
       <Name>Core</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Maps\world.xml">
-      <SubType>Designer</SubType>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

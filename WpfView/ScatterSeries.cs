@@ -37,13 +37,13 @@ namespace LiveCharts.Wpf
     /// <summary>
     /// The Bubble series, draws scatter series, only using X and Y properties or bubble series, if you also use the weight property, this series should be used in a cartesian chart.
     /// </summary>
-    public class BubbleSeries : Series, IBubbleSeriesView
+    public class ScatterSeries : Series, IScatterSeriesView
     {
         #region Constructors
         /// <summary>
         /// Initializes a new instance of BubbleSeries class
         /// </summary>
-        public BubbleSeries()
+        public ScatterSeries()
         {
             Model = new BubbleAlgorithm(this);
             InitializeDefuaults();
@@ -53,7 +53,7 @@ namespace LiveCharts.Wpf
         /// Initializes a new instance of BubbleSeries class using a given mapper
         /// </summary>
         /// <param name="configuration"></param>
-        public BubbleSeries(object configuration)
+        public ScatterSeries(object configuration)
         {
             Model = new BubbleAlgorithm(this);
             Configuration = configuration;
@@ -69,7 +69,7 @@ namespace LiveCharts.Wpf
         #region Properties
 
         public static readonly DependencyProperty MaxBubbleDiameterProperty = DependencyProperty.Register(
-            "MaxBubbleDiameter", typeof (double), typeof (BubbleSeries), new PropertyMetadata(default(double)));
+            "MaxBubbleDiameter", typeof (double), typeof (ScatterSeries), new PropertyMetadata(default(double)));
         /// <summary>
         /// Gets or sets the max bubble diameter, the bubbles using the max weight in the series will have this radius.
         /// </summary>
@@ -80,7 +80,7 @@ namespace LiveCharts.Wpf
         }
 
         public static readonly DependencyProperty MinBubbleDiameterProperty = DependencyProperty.Register(
-            "MinBubbleDiameter", typeof (double), typeof (BubbleSeries), new PropertyMetadata(default(double)));
+            "MinBubbleDiameter", typeof (double), typeof (ScatterSeries), new PropertyMetadata(default(double)));
         /// <summary>
         /// Gets or sets the min bubble diameter, the bubbles using the min weight in the series will have this radius.
         /// </summary>

@@ -36,7 +36,7 @@ namespace LiveCharts.SeriesAlgorithms
 
         public override void Update()
         {
-            var bubbleSeries = (IBubbleSeriesView) View;
+            var bubbleSeries = (IScatterSeriesView) View;
 
             var p1 = new CorePoint();
             var p2 = new CorePoint();
