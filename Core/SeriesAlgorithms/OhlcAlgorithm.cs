@@ -91,7 +91,7 @@ namespace LiveCharts.SeriesAlgorithms
         double ICartesianSeries.GetMinY(AxisCore axis)
         {
             var f = AxisLimits.SeparatorMin(axis);
-            return CurrentYAxis.MinLimit >= 0 && CurrentYAxis.MaxLimit > 0
+            return CurrentYAxis.BotLimit >= 0 && CurrentYAxis.TopLimit > 0
                 ? (f >= 0 ? f : 0)
                 : f;
         }
@@ -99,7 +99,7 @@ namespace LiveCharts.SeriesAlgorithms
         double ICartesianSeries.GetMaxY(AxisCore axis)
         {
             var f = AxisLimits.SeparatorMax(axis);
-            return CurrentYAxis.MinLimit < 0 && CurrentYAxis.MaxLimit <= 0
+            return CurrentYAxis.BotLimit < 0 && CurrentYAxis.TopLimit <= 0
                 ? (f >= 0 ? f : 0)
                 : f;
         }

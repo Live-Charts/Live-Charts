@@ -77,8 +77,10 @@ namespace LiveCharts
         #region Internal Properties
 
         internal double Tab { get; set; }
-        internal double MaxLimit { get; set; }
-        internal double MinLimit { get; set; }
+        internal double TopLimit { get; set; }
+
+        internal double BotLimit { get; set; }
+
         internal double Magnitude { get; set; }
         public bool EvaluatesUnitWidth { get; internal set; }
         internal int CleanFactor { get; set; }
@@ -94,7 +96,7 @@ namespace LiveCharts
 
         internal void CalculateSeparator(ChartCore chart, AxisOrientation source)
         {
-            var range = MaxLimit - MinLimit;
+            var range = TopLimit - BotLimit;
             range = range <= 0 ? 1 : range;
 
             //ToDO: Improve this according to current labels!
@@ -131,7 +133,7 @@ namespace LiveCharts
 
         internal CoreMargin PrepareChart(AxisOrientation source, ChartCore chart)
         {
-            if (!(Math.Abs(MaxLimit - MinLimit) > S*.01) || !ShowLabels) return new CoreMargin();
+            if (!(Math.Abs(TopLimit - BotLimit) > S*.01) || !ShowLabels) return new CoreMargin();
 
             CalculateSeparator(chart, source);
 
@@ -142,7 +144,7 @@ namespace LiveCharts
 
             InitializeGarbageCollector();
 
-            for (var i = MinLimit; i <= MaxLimit - (EvaluatesUnitWidth ? 1 : 0); i += S)
+            for (var i = BotLimit; i <= TopLimit - (EvaluatesUnitWidth ? 1 : 0); i += S)
             {
                 SeparatorElementCore asc;
 
@@ -275,8 +277,8 @@ namespace LiveCharts
                 }
             }
 
-            LastAxisMax = MaxLimit;
-            LastAxisMin = MinLimit;
+            LastAxisMax = TopLimit;
+            LastAxisMin = BotLimit;
             LastPlotArea = new CoreRectangle(chart.DrawMargin.Left, chart.DrawMargin.Top,
                 chart.DrawMargin.Width, chart.DrawMargin.Height);
 

@@ -98,12 +98,12 @@ namespace LiveCharts.Charts
             {
                 var xi = AxisX[index];
 
-                xi.MaxLimit = xi.MaxValue ??
+                xi.TopLimit = xi.MaxValue ??
                               View.ActualSeries
                                   .Where(series => series.Values != null && series.ScalesXAt == index)
                                   .Select(series => series.Values.GetTracker(series).Limit1.Max)
                                   .DefaultIfEmpty(0).Max();
-                xi.MinLimit = xi.MinValue ??
+                xi.BotLimit = xi.MinValue ??
                               View.ActualSeries
                                   .Where(series => series.Values != null && series.ScalesXAt == index)
                                   .Select(series => series.Values.GetTracker(series).Limit1.Min)
@@ -114,12 +114,12 @@ namespace LiveCharts.Charts
             {
                 var yi = AxisY[index];
 
-                yi.MaxLimit = yi.MaxValue ??
+                yi.TopLimit = yi.MaxValue ??
                               View.ActualSeries
                                   .Where(series => series.Values != null && series.ScalesYAt == index)
                                   .Select(series => series.Values.GetTracker(series).Limit2.Max)
                                   .DefaultIfEmpty(0).Max();
-                yi.MinLimit = yi.MinValue ??
+                yi.BotLimit = yi.MinValue ??
                               View.ActualSeries
                                   .Where(series => series.Values != null && series.ScalesYAt == index)
                                   .Select(series => series.Values.GetTracker(series).Limit2.Min)
@@ -326,8 +326,8 @@ namespace LiveCharts.Charts
             {
                 foreach (var xi in AxisX)
                 {
-                    var max = xi.MaxValue ?? xi.MaxLimit;
-                    var min = xi.MinValue ?? xi.MinLimit;
+                    var max = xi.MaxValue ?? xi.TopLimit;
+                    var min = xi.MinValue ?? xi.BotLimit;
                     var l = max - min;
                     var rMin = (pivot.X - min) / l;
                     var rMax = 1 - rMin;
@@ -336,35 +336,19 @@ namespace LiveCharts.Charts
                     xi.View.MaxValue = max - rMax * xi.S;
                 }
             }
-            else
-            {
-                foreach (var xi in AxisX)
-                {
-                    xi.View.MinValue = null;
-                    xi.View.MaxValue = null;
-                }
-            }
 
             if (View.Zoom == ZoomingOptions.Y || View.Zoom == ZoomingOptions.Xy)
             {
                 foreach (var yi in AxisY)
                 {
-                    var max = yi.MaxValue ?? yi.MaxLimit;
-                    var min = yi.MinValue ?? yi.MinLimit;
+                    var max = yi.MaxValue ?? yi.TopLimit;
+                    var min = yi.MinValue ?? yi.BotLimit;
                     var l = max - min;
                     var rMin = (pivot.Y - min) / l;
                     var rMax = 1 - rMin;
 
                     yi.View.MinValue = min + rMin * yi.S;
                     yi.View.MaxValue = max - rMax * yi.S;
-                }
-            }
-            else
-            {
-                foreach (var yi in AxisY)
-                {
-                    yi.View.MinValue = null;
-                    yi.View.MaxValue = null;
                 }
             }
 
@@ -387,8 +371,8 @@ namespace LiveCharts.Charts
             {
                 foreach (var xi in AxisX)
                 {
-                    var max = xi.MaxValue ?? xi.MaxLimit;
-                    var min = xi.MinValue ?? xi.MinLimit;
+                    var max = xi.MaxValue ?? xi.TopLimit;
+                    var min = xi.MinValue ?? xi.BotLimit;
                     var l = max - min;
                     var rMin = (dataPivot.X - min) / l;
                     var rMax = 1 - rMin;
@@ -402,8 +386,8 @@ namespace LiveCharts.Charts
             {
                 foreach (var yi in AxisY)
                 {
-                    var max = yi.MaxValue ?? yi.MaxLimit;
-                    var min = yi.MinValue ?? yi.MinLimit;
+                    var max = yi.MaxValue ?? yi.TopLimit;
+                    var min = yi.MinValue ?? yi.BotLimit;
                     var l = max - min;
                     var rMin = (dataPivot.Y - min) / l;
                     var rMax = 1 - rMin;
@@ -441,8 +425,8 @@ namespace LiveCharts.Charts
             {
                 foreach (var xi in AxisX)
                 {
-                    xi.View.MaxValue = (xi.MaxValue ?? xi.MaxLimit) + delta.X;
-                    xi.View.MinValue = (xi.MinValue ?? xi.MinLimit) + delta.X;
+                    xi.View.MaxValue = (xi.MaxValue ?? xi.TopLimit) + delta.X;
+                    xi.View.MinValue = (xi.MinValue ?? xi.BotLimit) + delta.X;
                 }
             }
 
@@ -450,8 +434,8 @@ namespace LiveCharts.Charts
             {
                 foreach (var yi in AxisY)
                 {
-                    yi.View.MaxValue = (yi.MaxValue ?? yi.MaxLimit) + delta.Y;
-                    yi.View.MinValue = (yi.MinValue ?? yi.MinLimit) + delta.Y;
+                    yi.View.MaxValue = (yi.MaxValue ?? yi.TopLimit) + delta.Y;
+                    yi.View.MinValue = (yi.MinValue ?? yi.BotLimit) + delta.Y;
                 }
             }
             
@@ -486,19 +470,19 @@ namespace LiveCharts.Charts
                 {
                     if (mode == StackMode.Percentage)
                     {
-                        AxisX[stackIndex].MinLimit = 0;
-                        AxisX[stackIndex].MaxLimit = 1;
+                        AxisX[stackIndex].BotLimit = 0;
+                        AxisX[stackIndex].TopLimit = 1;
                     }
                     else
                     {
-                        if (sum.Left < AxisX[stackIndex].MinLimit)
+                        if (sum.Left < AxisX[stackIndex].BotLimit)
                             // ReSharper disable once CompareOfFloatsByEqualityOperator
-                            AxisX[stackIndex].MinLimit = sum.Left == 0
+                            AxisX[stackIndex].BotLimit = sum.Left == 0
                                 ? 0
                                 : ((int)(sum.Left / AxisX[stackIndex].S) - 1) * AxisX[stackIndex].S;
-                        if (sum.Right > AxisX[stackIndex].MaxLimit)
+                        if (sum.Right > AxisX[stackIndex].TopLimit)
                             // ReSharper disable once CompareOfFloatsByEqualityOperator
-                            AxisX[stackIndex].MaxLimit = sum.Right == 0
+                            AxisX[stackIndex].TopLimit = sum.Right == 0
                                 ? 0
                                 : ((int)(sum.Right / AxisX[stackIndex].S) + 1) * AxisX[stackIndex].S;
                     }
@@ -507,19 +491,19 @@ namespace LiveCharts.Charts
                 {
                     if (mode == StackMode.Percentage)
                     {
-                        AxisY[stackIndex].MinLimit = 0;
-                        AxisY[stackIndex].MaxLimit = 1;
+                        AxisY[stackIndex].BotLimit = 0;
+                        AxisY[stackIndex].TopLimit = 1;
                     }
                     else
                     {
-                        if (sum.Left < AxisY[stackIndex].MinLimit)
+                        if (sum.Left < AxisY[stackIndex].BotLimit)
                             // ReSharper disable once CompareOfFloatsByEqualityOperator
-                            AxisY[stackIndex].MinLimit = sum.Left == 0
+                            AxisY[stackIndex].BotLimit = sum.Left == 0
                                 ? 0
                                 : ((int)(sum.Left / AxisY[stackIndex].S) - 1) * AxisY[stackIndex].S;
-                        if (sum.Right > AxisY[stackIndex].MaxLimit)
+                        if (sum.Right > AxisY[stackIndex].TopLimit)
                             // ReSharper disable once CompareOfFloatsByEqualityOperator
-                            AxisY[stackIndex].MaxLimit = sum.Right == 0
+                            AxisY[stackIndex].TopLimit = sum.Right == 0
                                 ? 0
                                 : ((int)(sum.Right / AxisY[stackIndex].S) + 1) * AxisY[stackIndex].S;
                     }

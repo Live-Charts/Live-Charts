@@ -50,18 +50,18 @@ namespace LiveCharts
 
             if (source == AxisOrientation.Y)
             {
-                p1.X = chart.AxisY[axis].MaxLimit;
+                p1.X = chart.AxisY[axis].TopLimit;
                 p1.Y = chart.DrawMargin.Top;
 
-                p2.X = chart.AxisY[axis].MinLimit;
+                p2.X = chart.AxisY[axis].BotLimit;
                 p2.Y = chart.DrawMargin.Top + chart.DrawMargin.Height;
             }
             else
             {
-                p1.X = chart.AxisX[axis].MaxLimit;
+                p1.X = chart.AxisX[axis].TopLimit;
                 p1.Y = chart.DrawMargin.Width + chart.DrawMargin.Left;
 
-                p2.X = chart.AxisX[axis].MinLimit;
+                p2.X = chart.AxisX[axis].BotLimit;
                 p2.Y = chart.DrawMargin.Left;
             }
 
@@ -86,18 +86,18 @@ namespace LiveCharts
 
             if (source == AxisOrientation.Y)
             {
-                p1.X = axis.MaxLimit;
+                p1.X = axis.TopLimit;
                 p1.Y = chart.DrawMargin.Top;
 
-                p2.X = axis.MinLimit;
+                p2.X = axis.BotLimit;
                 p2.Y = chart.DrawMargin.Top + chart.DrawMargin.Height;
             }
             else
             {
-                p1.X = axis.MaxLimit;
+                p1.X = axis.TopLimit;
                 p1.Y = chart.DrawMargin.Width + chart.DrawMargin.Left;
 
-                p2.X = axis.MinLimit;
+                p2.X = axis.BotLimit;
                 p2.Y = chart.DrawMargin.Left;
             }
 
@@ -122,18 +122,18 @@ namespace LiveCharts
             
             if (source == AxisOrientation.Y)
             {
-                p1.X = chart.AxisY[axis].MaxLimit;
+                p1.X = chart.AxisY[axis].TopLimit;
                 p1.Y = chart.DrawMargin.Top;
 
-                p2.X = chart.AxisY[axis].MinLimit;
+                p2.X = chart.AxisY[axis].BotLimit;
                 p2.Y = chart.DrawMargin.Top + chart.DrawMargin.Height;
             }
             else
             {
-                p1.X = chart.AxisX[axis].MaxLimit;
+                p1.X = chart.AxisX[axis].TopLimit;
                 p1.Y = chart.DrawMargin.Width + chart.DrawMargin.Left;
 
-                p2.X = chart.AxisX[axis].MinLimit;
+                p2.X = chart.AxisX[axis].BotLimit;
                 p2.Y = chart.DrawMargin.Left;
             }
 
@@ -225,11 +225,11 @@ namespace LiveCharts
             
             if (source == AxisOrientation.Y)
             {
-                min = chart.AxisY[axis].MinLimit;
+                min = chart.AxisY[axis].BotLimit;
                 return ToDrawMargin(min, AxisOrientation.Y, chart, axis) - ToDrawMargin(min + 1, AxisOrientation.Y, chart, axis);
             }
 
-            min = chart.AxisX[axis].MinLimit;
+            min = chart.AxisX[axis].BotLimit;
             return ToDrawMargin(min + 1, AxisOrientation.X, chart, axis) - ToDrawMargin(min, AxisOrientation.X, chart, axis);
         }
 
@@ -246,11 +246,11 @@ namespace LiveCharts
 
             if (source == AxisOrientation.Y)
             {
-                min = axis.MinLimit;
+                min = axis.BotLimit;
                 return ToDrawMargin(min, AxisOrientation.Y, chart, axis) - ToDrawMargin(min + 1, AxisOrientation.Y, chart, axis);
             }
 
-            min = axis.MinLimit;
+            min = axis.BotLimit;
             return ToDrawMargin(min + 1, AxisOrientation.X, chart, axis) - ToDrawMargin(min, AxisOrientation.X, chart, axis);
         }
 

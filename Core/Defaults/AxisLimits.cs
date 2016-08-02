@@ -28,37 +28,37 @@ namespace LiveCharts.Defaults
     {
         internal static double StretchMax(AxisCore axis)
         {
-            return Math.Ceiling(axis.MaxLimit/axis.Magnitude)*axis.Magnitude;
+            return Math.Ceiling(axis.TopLimit/axis.Magnitude)*axis.Magnitude;
         }
 
         internal static double StretchMin(AxisCore axis)
         {
-            return Math.Floor(axis.MinLimit/axis.Magnitude)*axis.Magnitude;
+            return Math.Floor(axis.BotLimit/axis.Magnitude)*axis.Magnitude;
         }
 
         internal static double UnitRight(AxisCore axis)
         {
-            return Math.Ceiling(axis.MaxLimit/axis.Magnitude)*axis.Magnitude + 1;
+            return Math.Ceiling(axis.TopLimit/axis.Magnitude)*axis.Magnitude + 1;
         }
 
         internal static double UnitLeft(AxisCore axis)
         {
-            return Math.Floor(axis.MinLimit/axis.Magnitude)*axis.Magnitude - 1;
+            return Math.Floor(axis.BotLimit/axis.Magnitude)*axis.Magnitude - 1;
         }
 
         internal static double SeparatorMax(AxisCore axis)
         {
-            return (((int) (axis.MaxLimit/axis.S)) + 1)*axis.S;
+            return (((int) (axis.TopLimit/axis.S)) + 1)*axis.S;
         }
 
         internal static double SeparatorMaxRounded(AxisCore axis)
         {
-            return Math.Round((axis.MaxLimit/axis.S) + 1, 0)*axis.S;
+            return Math.Round((axis.TopLimit/axis.S) + 1, 0)*axis.S;
         }
 
         internal static double SeparatorMin(AxisCore axis)
         {
-            return (((int) (axis.MinLimit/axis.S)) - 1)*axis.S;
+            return (((int) (axis.BotLimit/axis.S)) - 1)*axis.S;
         }
     }
 }

@@ -46,13 +46,13 @@ namespace LiveCharts.SeriesAlgorithms
                 -ChartFunctions.GetUnitWidth(AxisOrientation.Y, Chart, View.ScalesYAt));
 
             // ReSharper disable once CompareOfFloatsByEqualityOperator
-            var wd = CurrentXAxis.MaxLimit - CurrentXAxis.MinLimit == 0
+            var wd = CurrentXAxis.TopLimit - CurrentXAxis.BotLimit == 0
                 ? double.MaxValue
-                : CurrentXAxis.MaxLimit - CurrentXAxis.MinLimit;
+                : CurrentXAxis.TopLimit - CurrentXAxis.BotLimit;
             // ReSharper disable once CompareOfFloatsByEqualityOperator
-            var hd = CurrentYAxis.MaxLimit - CurrentYAxis.MinLimit == 0
+            var hd = CurrentYAxis.TopLimit - CurrentYAxis.BotLimit == 0
                 ? double.MaxValue
-                : CurrentYAxis.MaxLimit - CurrentYAxis.MinLimit;
+                : CurrentYAxis.TopLimit - CurrentYAxis.BotLimit;
             var w = Chart.DrawMargin.Width / wd;
             var h = Chart.DrawMargin.Height / hd;
 

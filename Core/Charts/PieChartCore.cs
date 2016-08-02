@@ -55,30 +55,30 @@ namespace LiveCharts.Charts
             foreach (var xi in AxisX)
             {
                 xi.S = 1;
-                xi.MinLimit = View.ActualSeries.Select(x => x.Values.GetTracker(x).Limit1.Min)
+                xi.BotLimit = View.ActualSeries.Select(x => x.Values.GetTracker(x).Limit1.Min)
                     .DefaultIfEmpty(0).Min();
-                xi.MaxLimit = View.ActualSeries.Select(x => x.Values.GetTracker(x).Limit1.Max)
+                xi.TopLimit = View.ActualSeries.Select(x => x.Values.GetTracker(x).Limit1.Max)
                     .DefaultIfEmpty(0).Max();
 
-                if (Math.Abs(xi.MinLimit - xi.MaxLimit) < xi.S * .01)
+                if (Math.Abs(xi.BotLimit - xi.TopLimit) < xi.S * .01)
                 {
-                    xi.MinLimit -= xi.S;
-                    xi.MaxLimit += xi.S;
+                    xi.BotLimit -= xi.S;
+                    xi.TopLimit += xi.S;
                 }
             }
 
             foreach (var yi in AxisY)
             {
                 //yi.CalculateSeparator(this, AxisTags.X);
-                yi.MinLimit = View.ActualSeries.Select(x => x.Values.GetTracker(x).Limit2.Min)
+                yi.BotLimit = View.ActualSeries.Select(x => x.Values.GetTracker(x).Limit2.Min)
                     .DefaultIfEmpty(0).Min();
-                yi.MaxLimit = View.ActualSeries.Select(x => x.Values.GetTracker(x).Limit2.Max)
+                yi.TopLimit = View.ActualSeries.Select(x => x.Values.GetTracker(x).Limit2.Max)
                     .DefaultIfEmpty(0).Max();
 
-                if (Math.Abs(yi.MinLimit - yi.MaxLimit) < yi.S * .01)
+                if (Math.Abs(yi.BotLimit - yi.TopLimit) < yi.S * .01)
                 {
-                    yi.MinLimit -= yi.S;
-                    yi.MaxLimit += yi.S;
+                    yi.BotLimit -= yi.S;
+                    yi.TopLimit += yi.S;
                 }
             }
 

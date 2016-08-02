@@ -60,10 +60,10 @@ namespace LiveCharts.SeriesAlgorithms
 
             var relativeTop = padding + exceed + singleRowHeight * (seriesPosition);
 
-            var startAt = CurrentXAxis.MinLimit >= 0 && CurrentXAxis.MaxLimit > 0   //both positive
-                ? CurrentXAxis.MinLimit                                             //then use Min
-                : (CurrentXAxis.MinLimit < 0 && CurrentXAxis.MaxLimit <= 0          //both negative
-                    ? CurrentXAxis.MaxLimit                                         //then use Max
+            var startAt = CurrentXAxis.BotLimit >= 0 && CurrentXAxis.TopLimit > 0   //both positive
+                ? CurrentXAxis.BotLimit                                             //then use Min
+                : (CurrentXAxis.BotLimit < 0 && CurrentXAxis.TopLimit <= 0          //both negative
+                    ? CurrentXAxis.TopLimit                                         //then use Max
                     : 0);                                                           //if mixed then use 0
 
             var zero = ChartFunctions.ToDrawMargin(startAt, AxisOrientation.X, Chart, View.ScalesXAt);
@@ -105,7 +105,7 @@ namespace LiveCharts.SeriesAlgorithms
         double ICartesianSeries.GetMinX(AxisCore axis)
         {
             var f = AxisLimits.SeparatorMin(axis);
-            return CurrentYAxis.MinLimit >= 0 && CurrentYAxis.MaxLimit > 0
+            return CurrentYAxis.BotLimit >= 0 && CurrentYAxis.TopLimit > 0
                 ? (f >= 0 ? f : 0)
                 : f;
         }
@@ -113,7 +113,7 @@ namespace LiveCharts.SeriesAlgorithms
         double ICartesianSeries.GetMaxX(AxisCore axis)
         {
             var f = AxisLimits.SeparatorMaxRounded(axis);
-            return CurrentYAxis.MinLimit < 0 && CurrentYAxis.MaxLimit <= 0
+            return CurrentYAxis.BotLimit < 0 && CurrentYAxis.TopLimit <= 0
                 ? (f >= 0 ? f : 0)
                 : f;
         }

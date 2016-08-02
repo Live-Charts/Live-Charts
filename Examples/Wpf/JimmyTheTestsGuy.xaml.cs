@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using LiveCharts;
@@ -35,6 +36,13 @@ namespace Wpf
         {
             if (PropertyChanged != null)
                 PropertyChanged.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        private void JimmyTheTestsGuy_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            LineSeries.Visibility = LineSeries.Visibility == Visibility.Visible
+                ? Visibility.Collapsed
+                : Visibility.Visible;
         }
     }
 }

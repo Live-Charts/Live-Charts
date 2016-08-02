@@ -60,10 +60,10 @@ namespace LiveCharts.SeriesAlgorithms
 
             var relativeLeft = padding + exceed + singleColWidth*(seriesPosition);
 
-            var startAt = CurrentYAxis.MinLimit >= 0 && CurrentYAxis.MaxLimit > 0   //both positive
-                ? CurrentYAxis.MinLimit                                             //then use axisYMin
-                : (CurrentYAxis.MinLimit < 0 && CurrentYAxis.MaxLimit <= 0          //both negative
-                    ? CurrentYAxis.MaxLimit                                         //then use axisYMax
+            var startAt = CurrentYAxis.BotLimit >= 0 && CurrentYAxis.TopLimit > 0   //both positive
+                ? CurrentYAxis.BotLimit                                             //then use axisYMin
+                : (CurrentYAxis.BotLimit < 0 && CurrentYAxis.TopLimit <= 0          //both negative
+                    ? CurrentYAxis.TopLimit                                         //then use axisYMax
                     : 0);                                                           //if mixed then use 0
 
             var zero = ChartFunctions.ToDrawMargin(startAt, AxisOrientation.Y, Chart, View.ScalesYAt);
@@ -113,7 +113,7 @@ namespace LiveCharts.SeriesAlgorithms
         double ICartesianSeries.GetMinY(AxisCore axis)
         {
             var f = AxisLimits.SeparatorMin(axis);
-            return CurrentYAxis.MinLimit >= 0 && CurrentYAxis.MaxLimit > 0
+            return CurrentYAxis.BotLimit >= 0 && CurrentYAxis.TopLimit > 0
                 ? (f >= 0 ? f : 0)
                 : f;
         }
@@ -121,7 +121,7 @@ namespace LiveCharts.SeriesAlgorithms
         double ICartesianSeries.GetMaxY(AxisCore axis)
         {
             var f = AxisLimits.SeparatorMaxRounded(axis);
-            return CurrentYAxis.MinLimit < 0 && CurrentYAxis.MaxLimit <= 0
+            return CurrentYAxis.BotLimit < 0 && CurrentYAxis.TopLimit <= 0
                 ? (f >= 0 ? f : 0)
                 : f;
         }
