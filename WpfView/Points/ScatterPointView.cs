@@ -73,9 +73,9 @@ namespace LiveCharts.Wpf.Points
                 {
                     DataLabel.UpdateLayout();
 
-                    var cx = CorrectXLabel(current.ChartLocation.X - DataLabel.ActualHeight*.5, chart);
+                    var cx = CorrectXLabel(current.ChartLocation.X - DataLabel.ActualWidth*.5, chart);
                     var cy = CorrectYLabel(current.ChartLocation.Y - DataLabel.ActualHeight*.5, chart);
-                    
+
                     Canvas.SetTop(DataLabel, cy);
                     Canvas.SetLeft(DataLabel, cx);
                 }
