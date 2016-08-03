@@ -1,10 +1,12 @@
 ﻿using System;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Globalization;
 using System.Runtime.CompilerServices;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
+using System.Windows.Input;
 using LiveCharts;
 using LiveCharts.Defaults;
 using LiveCharts.Wpf;
@@ -36,6 +38,20 @@ namespace Wpf
         {
             ((TestVm) DataContext).Load(); 
         }
+
+        private void Control_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            Chart.Visibility = Visibility.Collapsed;
+
+            Task.Run(() =>
+            {
+                Thread.Sleep(1500);
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    Chart.Visibility = Visibility.Visible;
+                });
+            });
+        }
     }
 
     public class TestVm : INotifyPropertyChanged
@@ -45,11 +61,7 @@ namespace Wpf
         public TestVm()
         {
             ChartSeries = new SeriesCollection();
-            Series = new ObservableCollection<Series>();
         }
-
-        public Func<double, string> YFormatter { get; set; }
-        public Func<double, string> XFormatter { get; set; }
 
         public SeriesCollection ChartSeries
         {
@@ -57,17 +69,12 @@ namespace Wpf
             set
             {
                 _chartSeries = value;
-                OnPropertyChanged("ChartSeries");
+                OnPropertyChanged();
             }
         }
 
-        public ObservableCollection<Series> Series { get; set; } 
-
         public void Load()
         {
-            //ChartSeries.Clear();
-            //Series.Clear();
-
             var series = new SeriesCollection();
 
             var r = new Random();
@@ -80,7 +87,6 @@ namespace Wpf
                     s.Values.Add(new ObservableValue(r.Next(0, 10)));
                 }
                 series.Add(s);
-                //series.Add(s);
             }
 
             ChartSeries = series;

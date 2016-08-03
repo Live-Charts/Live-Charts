@@ -17,13 +17,16 @@
     </UserControl.DataContext>
     <Grid>
 
-        <Button Grid.Row="0" Width="100" Height="25" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10 0" 
+        <Button Grid.Row="0" Width="100" Height="25" HorizontalAlignment="Left" VerticalAlignment="Top" 
+                Margin="10 0" Panel.ZIndex="1"
                 Click="ButtonBase_OnClick">
             Load
         </Button>
 
-        <lvc:CartesianChart></lvc:CartesianChart>
-        
+        <lvc:CartesianChart Name="Chart" Background="AntiqueWhite"
+                            LegendLocation="Top" Series="{Binding ChartSeries}"
+                            MouseDoubleClick="Control_OnMouseDoubleClick"/>
+
     </Grid>
 
 </UserControl>

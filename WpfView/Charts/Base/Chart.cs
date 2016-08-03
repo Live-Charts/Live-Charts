@@ -80,6 +80,7 @@ namespace LiveCharts.Wpf.Charts.Base
             SetCurrentValue(DataTooltipProperty, new DefaultTooltip());
 
             SizeChanged += OnSizeChanged;
+            IsVisibleChanged += OnIsVisibleChanged;
             MouseWheel += MouseWheelOnRoll;
             Loaded += OnLoaded;
             TooltipTimeoutTimer.Tick += TooltipTimeoutTimerOnTick;
@@ -164,6 +165,16 @@ namespace LiveCharts.Wpf.Charts.Base
         {
 #if DEBUG
             Debug.WriteLine("ChartResized");
+#endif
+            Model.ControlSize = new CoreSize(ActualWidth, ActualHeight);
+
+            Model.Updater.Run();
+        }
+
+        private void OnIsVisibleChanged(object sender, DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
+        {
+#if DEBUG
+            Debug.WriteLine("ChartVisibilityChanged");
 #endif
             Model.ControlSize = new CoreSize(ActualWidth, ActualHeight);
 

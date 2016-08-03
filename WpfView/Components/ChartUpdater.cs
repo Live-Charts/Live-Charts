@@ -72,6 +72,7 @@ namespace LiveCharts.Wpf.Components
         private void UpdaterTick(bool restartView)
         {
             var wpfChart = (Chart) Chart.View;
+            if (!wpfChart.IsVisible) return;
 
             Chart.ControlSize = new CoreSize(wpfChart.ActualWidth, wpfChart.ActualHeight);
             Timer.Stop();
