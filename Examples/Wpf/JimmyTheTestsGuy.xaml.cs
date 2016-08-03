@@ -1,11 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Globalization;
+using System.Runtime.CompilerServices;
 using System.Windows;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Shapes;
+using System.Windows.Data;
 using LiveCharts;
-using LiveCharts.Maps;
+using LiveCharts.Defaults;
+using LiveCharts.Wpf;
 using Wpf.Annotations;
 
 namespace Wpf
@@ -18,15 +20,7 @@ namespace Wpf
         public JimmyTheTestsGuy()
         {
             InitializeComponent();
-
-            DataContext = this;
         }
-
-        public Path SelectedLand { get; set; }
-
-        public SeriesCollection Series { get; set; }
-
-        public List<SeriesCollection> Source { get; set; }
 
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -38,11 +32,86 @@ namespace Wpf
                 PropertyChanged.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        private void JimmyTheTestsGuy_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
+        private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
         {
-            LineSeries.Visibility = LineSeries.Visibility == Visibility.Visible
-                ? Visibility.Collapsed
-                : Visibility.Visible;
+            ((TestVm) DataContext).Load(); 
+        }
+    }
+
+    public class TestVm : INotifyPropertyChanged
+    {
+        private SeriesCollection _chartSeries;
+
+        public TestVm()
+        {
+            ChartSeries = new SeriesCollection();
+            Series = new ObservableCollection<Series>();
+        }
+
+        public Func<double, string> YFormatter { get; set; }
+        public Func<double, string> XFormatter { get; set; }
+
+        public SeriesCollection ChartSeries
+        {
+            get { return _chartSeries; }
+            set
+            {
+                _chartSeries = value;
+                OnPropertyChanged("ChartSeries");
+            }
+        }
+
+        public ObservableCollection<Series> Series { get; set; } 
+
+        public void Load()
+        {
+            //ChartSeries.Clear();
+            //Series.Clear();
+
+            var series = new SeriesCollection();
+
+            var r = new Random();
+
+            for (var i = 0; i < 3; i++)
+            {
+                var s = new LineSeries {Title =  "Series" + i, Values = new ChartValues<ObservableValue>()};
+                for (var j = 0; j < 10; j++)
+                {
+                    s.Values.Add(new ObservableValue(r.Next(0, 10)));
+                }
+                series.Add(s);
+                //series.Add(s);
+            }
+
+            ChartSeries = series;
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        [NotifyPropertyChangedInvocator]
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            var handler = PropertyChanged;
+            if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
+        }
+    }
+
+    public class VisibilityToBooleanConverter : IValueConverter
+    {
+        public VisibilityToBooleanConverter()
+        {
+        }
+
+        public virtual object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return (Visibility) value == Visibility.Visible ? true : false;
+        }
+
+        public virtual object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return (bool) value == true ? Visibility.Visible : Visibility.Hidden;
         }
     }
 }
+
+

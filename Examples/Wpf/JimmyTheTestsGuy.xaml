@@ -8,35 +8,22 @@
              mc:Ignorable="d" 
              d:DesignHeight="300"
              d:DesignWidth="500"
-             d:DataContext="{d:DesignInstance local:JimmyTheTestsGuy}"
-             MouseDoubleClick="JimmyTheTestsGuy_OnMouseDoubleClick">
+             d:DataContext="{d:DesignInstance local:JimmyTheTestsGuy}">
+    <UserControl.Resources>
+        <local:VisibilityToBooleanConverter x:Key="Bvc"></local:VisibilityToBooleanConverter>
+    </UserControl.Resources>
+    <UserControl.DataContext>
+        <local:TestVm></local:TestVm>
+    </UserControl.DataContext>
     <Grid>
-        <lvc:CartesianChart x:Name="Plot" Background="#FF161616" Visibility="Visible" Zoom="X">
-            <lvc:CartesianChart.Series>
-                <lvc:LineSeries x:Name="LineSeries" Values="1,4,6,2" />
-            </lvc:CartesianChart.Series>
-            <lvc:CartesianChart.AxisX>
-                <lvc:Axis x:Name="PlotAxisX">
-                    <lvc:Axis.Separator>
-                        <lvc:Separator x:Name="PlotSeparator" StrokeThickness="1" >
-                            <lvc:Separator.Stroke>
-                                <SolidColorBrush Color="#404F56" />
-                            </lvc:Separator.Stroke>
-                        </lvc:Separator>
-                    </lvc:Axis.Separator>
-                </lvc:Axis>
-            </lvc:CartesianChart.AxisX>
-            <lvc:CartesianChart.AxisY>
-                <lvc:Axis x:Name="PlotAxisY" MinValue="0">
-                    <lvc:Axis.Separator>
-                        <lvc:Separator StrokeThickness="1" StrokeDashArray="2">
-                            <lvc:Separator.Stroke>
-                                <SolidColorBrush Color="#404F56" />
-                            </lvc:Separator.Stroke>
-                        </lvc:Separator>
-                    </lvc:Axis.Separator>
-                </lvc:Axis>
-            </lvc:CartesianChart.AxisY>
-        </lvc:CartesianChart>
+
+        <Button Grid.Row="0" Width="100" Height="25" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10 0" 
+                Click="ButtonBase_OnClick">
+            Load
+        </Button>
+
+        <lvc:CartesianChart></lvc:CartesianChart>
+        
     </Grid>
+
 </UserControl>

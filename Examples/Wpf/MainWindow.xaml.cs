@@ -63,8 +63,8 @@ namespace Wpf
 
             CartesianExamples = new List<UserControl>
             {
-                new JimmyTheTestsGuy(),
-                //new SharedTooltipExample(),
+                //new JimmyTheTestsGuy(),
+                new SharedTooltipExample(),
                 new GeoMapExample(),
                 new LinqExample(),
                 new CustomTooltipAndLegendExample(),
