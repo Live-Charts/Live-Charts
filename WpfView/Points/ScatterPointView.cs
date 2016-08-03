@@ -66,8 +66,8 @@ namespace LiveCharts.Wpf.Points
                 Shape.Width = Diameter;
                 Shape.Height = Diameter;
 
-                Canvas.SetTop(Shape, current.ChartLocation.Y - Shape.Width*.5);
-                Canvas.SetLeft(Shape, current.ChartLocation.X - Shape.Height*.5);
+                Canvas.SetTop(Shape, current.ChartLocation.Y - Shape.Height*.5);
+                Canvas.SetLeft(Shape, current.ChartLocation.X - Shape.Width*.5);
 
                 if (DataLabel != null)
                 {
