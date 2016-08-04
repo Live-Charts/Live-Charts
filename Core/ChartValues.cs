@@ -46,7 +46,7 @@ namespace LiveCharts
         public ChartValues()
         {
             Trackers = new Dictionary<ISeriesView, PointTracker>();
-            CollectionChanged += OnChanged;
+            NoisyCollectionChanged += OnChanged;
         }
 
         #endregion

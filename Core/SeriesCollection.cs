@@ -39,7 +39,7 @@ namespace LiveCharts
         /// </summary>
         public SeriesCollection()
         {
-            CollectionChanged += OnCollectionChanged;
+            NoisyCollectionChanged += OnNoisyCollectionChanged;
             CollectionReset += OnCollectionReset;
         }
 
@@ -50,7 +50,7 @@ namespace LiveCharts
         {
             Configuration = configuration;
 
-            CollectionChanged += OnCollectionChanged;
+            NoisyCollectionChanged += OnNoisyCollectionChanged;
             CollectionReset += OnCollectionReset;
         }
 
@@ -70,7 +70,7 @@ namespace LiveCharts
         /// </summary>
         public object Configuration { get; set; }
 
-        private void OnCollectionChanged(IEnumerable<ISeriesView> oldItems, IEnumerable<ISeriesView> newItems)
+        private void OnNoisyCollectionChanged(IEnumerable<ISeriesView> oldItems, IEnumerable<ISeriesView> newItems)
         {
             if (newItems != null)
             {

@@ -2,11 +2,8 @@
 using System.ComponentModel;
 using System.Globalization;
 using System.Runtime.CompilerServices;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
-using System.Windows.Input;
 using LiveCharts;
 using LiveCharts.Defaults;
 using LiveCharts.Wpf;
@@ -36,21 +33,7 @@ namespace Wpf
 
         private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
         {
-            ((TestVm) DataContext).Load(); 
-        }
-
-        private void Control_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-            Chart.Visibility = Visibility.Collapsed;
-
-            Task.Run(() =>
-            {
-                Thread.Sleep(1500);
-                Application.Current.Dispatcher.Invoke(() =>
-                {
-                    Chart.Visibility = Visibility.Visible;
-                });
-            });
+            ((TestVm) DataContext).Load();
         }
     }
 
@@ -75,7 +58,8 @@ namespace Wpf
 
         public void Load()
         {
-            var series = new SeriesCollection();
+            //var series = new SeriesCollection();
+            ChartSeries.Clear();
 
             var r = new Random();
 
@@ -86,10 +70,8 @@ namespace Wpf
                 {
                     s.Values.Add(new ObservableValue(r.Next(0, 10)));
                 }
-                series.Add(s);
+                ChartSeries.Add(s);
             }
-
-            ChartSeries = series;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

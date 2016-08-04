@@ -36,10 +36,10 @@ namespace LiveCharts
         /// </summary>
         public VisualElementsCollection()
         {
-            CollectionChanged += OnCollectionChanged;
+            NoisyCollectionChanged += OnNoisyCollectionChanged;
         }
 
-        private void OnCollectionChanged(IEnumerable<ICartesianVisualElement> oldItems, IEnumerable<ICartesianVisualElement> newItems)
+        private void OnNoisyCollectionChanged(IEnumerable<ICartesianVisualElement> oldItems, IEnumerable<ICartesianVisualElement> newItems)
         {
             if (oldItems != null) foreach (var oltItem in oldItems) oltItem.Remove();
             if (newItems != null) foreach (var newItem in newItems) newItem.RequiresAdd = true;

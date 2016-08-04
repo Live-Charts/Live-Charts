@@ -35,10 +35,10 @@ namespace LiveCharts.Wpf
         /// </summary>
         public AxesCollection()
         {
-            CollectionChanged += OnCollectionChanged;
+            NoisyCollectionChanged += OnNoisyCollectionChanged;
         }
 
-        private static void OnCollectionChanged(IEnumerable<Axis> oldItems, IEnumerable<Axis> newItems)
+        private static void OnNoisyCollectionChanged(IEnumerable<Axis> oldItems, IEnumerable<Axis> newItems)
         {
             if (oldItems == null) return;
 

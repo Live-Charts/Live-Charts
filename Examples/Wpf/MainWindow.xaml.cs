@@ -63,6 +63,7 @@ namespace Wpf
             
             CartesianExamples = new List<UserControl>
             {
+                new VerticalStackedAreaExample(),
                 new JimmyTheTestsGuy(),
                 //new SharedTooltipExample(),
                 new GeoMapExample(),

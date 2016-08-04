@@ -32,7 +32,7 @@ namespace LiveCharts.Helpers
     
     public interface INoisyCollection : IList
     {
-        event NoisyCollectionCollectionChanged<object> CollectionChanged;
+        event NoisyCollectionCollectionChanged<object> NoisyCollectionChanged;
     }
 
     /// <summary>
@@ -382,17 +382,17 @@ namespace LiveCharts.Helpers
             return _source.IndexOf(item);
         }
 
-        event NoisyCollectionCollectionChanged<object> INoisyCollection.CollectionChanged
+        event NoisyCollectionCollectionChanged<object> INoisyCollection.NoisyCollectionChanged
         {
-            add { CollectionChanged += value as NoisyCollectionCollectionChanged<T>; }
-            remove { CollectionChanged -= value as NoisyCollectionCollectionChanged<T>; }
+            add { NoisyCollectionChanged += value as NoisyCollectionCollectionChanged<T>; }
+            remove { NoisyCollectionChanged -= value as NoisyCollectionCollectionChanged<T>; }
         }
-        public event NoisyCollectionCollectionChanged<T> CollectionChanged;
+        public event NoisyCollectionCollectionChanged<T> NoisyCollectionChanged;
 
         private void OnCollectionChanged(IEnumerable<T> olditems, IEnumerable<T> newItems)
         {
-            if (CollectionChanged != null)
-                CollectionChanged.Invoke(olditems, newItems);
+            if (NoisyCollectionChanged != null)
+                NoisyCollectionChanged.Invoke(olditems, newItems);
         }
     }
 }

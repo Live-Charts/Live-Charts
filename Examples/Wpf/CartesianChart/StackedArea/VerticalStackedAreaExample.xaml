@@ -24,6 +24,6 @@
                 Change StackMode
             </Button>
         </StackPanel>
-        <lvc:CartesianChart Grid.Row="2" Series="{Binding SeriesCollection}"></lvc:CartesianChart>
+        <lvc:CartesianChart Grid.Row="2" Series="{Binding SeriesCollection}" LegendLocation="Right"/>
     </Grid>
 </UserControl>

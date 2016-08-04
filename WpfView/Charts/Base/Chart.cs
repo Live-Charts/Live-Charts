@@ -631,7 +631,9 @@ namespace LiveCharts.Wpf.Charts.Base
                         {
                             PointGeometry = ((Series) x.SeriesView).PointGeometry ??
                                             Geometry.Parse("M 0,0.5 h 1,0.5 Z"),
-                            Fill = ((Series) x.SeriesView) is IFondeable
+                            Fill = ((Series) x.SeriesView) is IFondeable &&
+                                   !(x.SeriesView is IVerticalStackedAreaSeriesView ||
+                                     x.SeriesView is IStackedAreaSeriesView)
                                 ? ((IFondeable) x.SeriesView).PointForeround
                                 : ((Series) x.SeriesView).Fill,
                             Stroke = ((Series) x.SeriesView).Stroke,
@@ -721,7 +723,9 @@ namespace LiveCharts.Wpf.Charts.Base
                 item.Title = series.Title;
                 item.StrokeThickness = series.StrokeThickness;
                 item.Stroke = series.Stroke;
-                item.Fill = ((Series) t) is IFondeable
+                item.Fill = ((Series) t) is IFondeable &&
+                            !(t is IVerticalStackedAreaSeriesView ||
+                              t is IStackedAreaSeriesView)
                     ? ((IFondeable) t).PointForeround
                     : ((Series) t).Fill;
                 item.PointGeometry = series.PointGeometry ?? Geometry.Parse("M 0,0.5 h 1,0.5 Z");
