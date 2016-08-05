@@ -86,24 +86,23 @@ namespace Wpf.CartesianChart
 
         private void ToogleZoomingMode(object sender, RoutedEventArgs e)
         {
-
-            //switch (ZoomingMode)
-            //{
-            //    case ZoomingOptions.None:
-            //        ZoomingMode = ZoomingOptions.X;
-            //        break;
-            //    case ZoomingOptions.X:
-            //        ZoomingMode = ZoomingOptions.Y;
-            //        break;
-            //    case ZoomingOptions.Y:
-            //        ZoomingMode = ZoomingOptions.Xy;
-            //        break;
-            //    case ZoomingOptions.Xy:
-            //        ZoomingMode = ZoomingOptions.None;
-            //        break;
-            //    default:
-            //        throw new ArgumentOutOfRangeException();
-            //}
+            switch (ZoomingMode)
+            {
+                case ZoomingOptions.None:
+                    ZoomingMode = ZoomingOptions.X;
+                    break;
+                case ZoomingOptions.X:
+                    ZoomingMode = ZoomingOptions.Y;
+                    break;
+                case ZoomingOptions.Y:
+                    ZoomingMode = ZoomingOptions.Xy;
+                    break;
+                case ZoomingOptions.Xy:
+                    ZoomingMode = ZoomingOptions.None;
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
             this.SeriesCollection[0].Values = GetData();
         }
 
@@ -112,12 +111,12 @@ namespace Wpf.CartesianChart
             var r = new Random();
             var trend = 100;
             var values = new ChartValues<DateTimePoint>();
-
+            var startDate = DateTime.Now - TimeSpan.FromDays(r.Next(0, 100));
             for (var i = 0; i < 100; i++)
             {
                 var seed = r.NextDouble();
                 if (seed > .8) trend += seed > .9 ? 50 : -50;
-                values.Add(new DateTimePoint(DateTime.Now.AddDays(i), trend + r.Next(0, 10)));
+                values.Add(new DateTimePoint(startDate.AddDays(i), trend + r.Next(0, 10)));
             }
             MinValue = values[0].DateTime.Ticks;
             MaxValue = values[values.Count-1].DateTime.Ticks;
