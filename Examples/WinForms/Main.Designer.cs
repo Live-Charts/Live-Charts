@@ -29,6 +29,8 @@
         private void InitializeComponent()
         {
             this.panel1 = new System.Windows.Forms.Panel();
+            this.label23 = new System.Windows.Forms.Label();
+            this.button9 = new System.Windows.Forms.Button();
             this.label22 = new System.Windows.Forms.Label();
             this.button8 = new System.Windows.Forms.Button();
             this.label21 = new System.Windows.Forms.Label();
@@ -73,14 +75,16 @@
             this.btnSeries = new System.Windows.Forms.Button();
             this.btnIObservable = new System.Windows.Forms.Button();
             this.btnLabels = new System.Windows.Forms.Button();
-            this.label23 = new System.Windows.Forms.Label();
-            this.button9 = new System.Windows.Forms.Button();
+            this.label24 = new System.Windows.Forms.Label();
+            this.button10 = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel1
             // 
             this.panel1.AutoScroll = true;
+            this.panel1.Controls.Add(this.label24);
+            this.panel1.Controls.Add(this.button10);
             this.panel1.Controls.Add(this.label23);
             this.panel1.Controls.Add(this.button9);
             this.panel1.Controls.Add(this.label22);
@@ -133,6 +137,25 @@
             this.panel1.Size = new System.Drawing.Size(847, 733);
             this.panel1.TabIndex = 0;
             // 
+            // label23
+            // 
+            this.label23.AutoSize = true;
+            this.label23.Font = new System.Drawing.Font("Calibri", 12.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label23.Location = new System.Drawing.Point(504, 558);
+            this.label23.Name = "label23";
+            this.label23.Size = new System.Drawing.Size(188, 21);
+            this.label23.TabIndex = 72;
+            this.label23.Text = "Events, UiShapes, Utilities";
+            // 
+            // button9
+            // 
+            this.button9.Location = new System.Drawing.Point(515, 455);
+            this.button9.Name = "button9";
+            this.button9.Size = new System.Drawing.Size(160, 100);
+            this.button9.TabIndex = 71;
+            this.button9.UseVisualStyleBackColor = true;
+            this.button9.Click += new System.EventHandler(this.button9_Click);
+            // 
             // label22
             // 
             this.label22.AutoSize = true;
@@ -156,7 +179,7 @@
             // 
             this.label21.AutoSize = true;
             this.label21.Font = new System.Drawing.Font("Calibri", 12.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label21.Location = new System.Drawing.Point(531, 697);
+            this.label21.Location = new System.Drawing.Point(697, 697);
             this.label21.Name = "label21";
             this.label21.Size = new System.Drawing.Size(121, 21);
             this.label21.TabIndex = 68;
@@ -164,7 +187,7 @@
             // 
             // button7
             // 
-            this.button7.Location = new System.Drawing.Point(515, 594);
+            this.button7.Location = new System.Drawing.Point(681, 594);
             this.button7.Name = "button7";
             this.button7.Size = new System.Drawing.Size(160, 100);
             this.button7.TabIndex = 67;
@@ -251,7 +274,7 @@
             // 
             this.label16.AutoSize = true;
             this.label16.Font = new System.Drawing.Font("Calibri", 12.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label16.Location = new System.Drawing.Point(391, 697);
+            this.label16.Location = new System.Drawing.Point(557, 697);
             this.label16.Name = "label16";
             this.label16.Size = new System.Drawing.Size(73, 21);
             this.label16.TabIndex = 58;
@@ -259,7 +282,7 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(349, 594);
+            this.button2.Location = new System.Drawing.Point(515, 594);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(160, 100);
             this.button2.TabIndex = 57;
@@ -551,24 +574,24 @@
             this.btnLabels.UseVisualStyleBackColor = true;
             this.btnLabels.Click += new System.EventHandler(this.btnLabels_Click);
             // 
-            // label23
+            // label24
             // 
-            this.label23.AutoSize = true;
-            this.label23.Font = new System.Drawing.Font("Calibri", 12.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label23.Location = new System.Drawing.Point(504, 558);
-            this.label23.Name = "label23";
-            this.label23.Size = new System.Drawing.Size(188, 21);
-            this.label23.TabIndex = 72;
-            this.label23.Text = "Events, UiShapes, Utilities";
+            this.label24.AutoSize = true;
+            this.label24.Font = new System.Drawing.Font("Calibri", 12.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label24.Location = new System.Drawing.Point(378, 697);
+            this.label24.Name = "label24";
+            this.label24.Size = new System.Drawing.Size(112, 21);
+            this.label24.TabIndex = 74;
+            this.label24.Text = "Angular Gauge";
             // 
-            // button9
+            // button10
             // 
-            this.button9.Location = new System.Drawing.Point(515, 455);
-            this.button9.Name = "button9";
-            this.button9.Size = new System.Drawing.Size(160, 100);
-            this.button9.TabIndex = 71;
-            this.button9.UseVisualStyleBackColor = true;
-            this.button9.Click += new System.EventHandler(this.button9_Click);
+            this.button10.Location = new System.Drawing.Point(349, 594);
+            this.button10.Name = "button10";
+            this.button10.Size = new System.Drawing.Size(160, 100);
+            this.button10.TabIndex = 73;
+            this.button10.UseVisualStyleBackColor = true;
+            this.button10.Click += new System.EventHandler(this.button10_Click);
             // 
             // Main
             // 
@@ -633,6 +656,8 @@
         private System.Windows.Forms.Button button8;
         private System.Windows.Forms.Label label23;
         private System.Windows.Forms.Button button9;
+        private System.Windows.Forms.Label label24;
+        private System.Windows.Forms.Button button10;
     }
 }
 

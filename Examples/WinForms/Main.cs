@@ -19,6 +19,7 @@ using Winforms.Cartesian.Sections;
 using Winforms.Cartesian.StackedArea;
 using Winforms.Cartesian.UielementsExample;
 using Winforms.Cartesian.Zooming_and_Panning;
+using Winforms.Gauge.AngularGauge;
 using Winforms.Gauge._180;
 using Winforms.Gauge._360;
 using Winforms.PieChart;
@@ -145,6 +146,11 @@ namespace Winforms
         private void button9_Click(object sender, EventArgs e)
         {
             new UielementsExample().ShowDialog();
+        }
+
+        private void button10_Click(object sender, EventArgs e)
+        {
+            new AngularGugeForm().ShowDialog();
         }
     }
 }
