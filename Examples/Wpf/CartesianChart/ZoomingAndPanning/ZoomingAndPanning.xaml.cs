@@ -40,7 +40,8 @@ namespace Wpf.CartesianChart
             };
 
             ZoomingMode = ZoomingOptions.X;
-
+            MaxValue = DateTime.Now.Ticks;
+            MinValue = DateTime.Now.Ticks - TimeSpan.FromDays(1).Ticks;
             XFormatter = val => new DateTime((long) val).ToString("dd MMM");
             YFormatter = val => val.ToString("C");
 
@@ -61,25 +62,49 @@ namespace Wpf.CartesianChart
             }
         }
 
+        private double _maxValue;
+        private double _minValue;
+
+        public double MaxValue
+        {
+            get { return _maxValue; }
+            set
+            {
+                _maxValue = value;
+                OnPropertyChanged("MaxValue");
+            }
+        }
+        public double MinValue
+        {
+            get { return _minValue; }
+            set
+            {
+                _minValue = value;
+                OnPropertyChanged("MinValue");
+            }
+        }
+
         private void ToogleZoomingMode(object sender, RoutedEventArgs e)
         {
-            switch (ZoomingMode)
-            {
-                case ZoomingOptions.None:
-                    ZoomingMode = ZoomingOptions.X;
-                    break;
-                case ZoomingOptions.X:
-                    ZoomingMode = ZoomingOptions.Y;
-                    break;
-                case ZoomingOptions.Y:
-                    ZoomingMode = ZoomingOptions.Xy;
-                    break;
-                case ZoomingOptions.Xy:
-                    ZoomingMode = ZoomingOptions.None;
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
+
+            //switch (ZoomingMode)
+            //{
+            //    case ZoomingOptions.None:
+            //        ZoomingMode = ZoomingOptions.X;
+            //        break;
+            //    case ZoomingOptions.X:
+            //        ZoomingMode = ZoomingOptions.Y;
+            //        break;
+            //    case ZoomingOptions.Y:
+            //        ZoomingMode = ZoomingOptions.Xy;
+            //        break;
+            //    case ZoomingOptions.Xy:
+            //        ZoomingMode = ZoomingOptions.None;
+            //        break;
+            //    default:
+            //        throw new ArgumentOutOfRangeException();
+            //}
+            this.SeriesCollection[0].Values = GetData();
         }
 
         private ChartValues<DateTimePoint> GetData()
@@ -94,7 +119,8 @@ namespace Wpf.CartesianChart
                 if (seed > .8) trend += seed > .9 ? 50 : -50;
                 values.Add(new DateTimePoint(DateTime.Now.AddDays(i), trend + r.Next(0, 10)));
             }
-
+            MinValue = values[0].DateTime.Ticks;
+            MaxValue = values[values.Count-1].DateTime.Ticks;
             return values;
         }
 
