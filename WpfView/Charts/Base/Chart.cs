@@ -862,6 +862,11 @@ namespace LiveCharts.Wpf.Charts.Base
         #region Zooming and Panning
         private Point DragOrigin { get; set; }
 
+        public void ClearZoom()
+        {
+            Model.ClearZoom();
+        }
+
         private void MouseWheelOnRoll(object sender, MouseWheelEventArgs e)
         {
             if (Zoom == ZoomingOptions.None) return;

@@ -64,7 +64,7 @@ namespace LiveCharts
         /// <summary>
         /// Gets the chart that owns the collection
         /// </summary>
-        public ChartCore Chart { get; internal set; }
+        public ChartCore Chart { get; set; }
         /// <summary>
         /// Gets or sets then mapper in the collection, this mapper will be used in any series inside the collection, if null then LiveCharts will try to get the value from the global configuration.
         /// </summary>

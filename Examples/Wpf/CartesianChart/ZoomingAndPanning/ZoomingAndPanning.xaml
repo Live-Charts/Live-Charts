@@ -24,7 +24,7 @@
                 <TextBlock Text="{Binding ZoomingMode, Converter={StaticResource ZoomingModeCoverter}}"/>
             </TextBlock>
         </Button>
-        <lvc:CartesianChart Grid.Row="2" Series="{Binding SeriesCollection}" Zoom="{Binding ZoomingMode}" >
+        <lvc:CartesianChart x:Name="Chart" Grid.Row="2" Series="{Binding SeriesCollection}" Zoom="{Binding ZoomingMode}" >
             <lvc:CartesianChart.AxisX>
                 <lvc:Axis LabelFormatter="{Binding XFormatter}" Separator="{x:Static lvc:DefaultAxes.CleanSeparator}" MinValue="{Binding MinValue}" MaxValue="{Binding MaxValue}"/>
             </lvc:CartesianChart.AxisX>

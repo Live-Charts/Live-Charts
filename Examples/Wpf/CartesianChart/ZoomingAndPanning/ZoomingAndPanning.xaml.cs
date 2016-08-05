@@ -103,6 +103,7 @@ namespace Wpf.CartesianChart
                 default:
                     throw new ArgumentOutOfRangeException();
             }
+            this.Chart.ClearZoom();
             this.SeriesCollection[0].Values = GetData();
         }
 

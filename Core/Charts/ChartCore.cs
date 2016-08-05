@@ -94,7 +94,6 @@ namespace LiveCharts.Charts
 
         public virtual void PrepareAxes()
         {
-            ClearZoom();
             for (var index = 0; index < AxisX.Count; index++)
             {
                 var xi = AxisX[index];
