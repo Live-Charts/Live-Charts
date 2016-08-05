@@ -184,7 +184,7 @@
     <Compile Include="Components\TooltipDto.cs" />
     <Compile Include="CartesianChart.cs" />
     <Compile Include="LineSeries.cs" />
-    <Compile Include="Components\DesktopExtentions.cs" />
+    <Compile Include="Extentions.cs" />
     <Compile Include="Points\PointView.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>

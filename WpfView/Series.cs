@@ -21,8 +21,8 @@
 //SOFTWARE.
 
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -95,6 +95,14 @@ namespace LiveCharts.Wpf
             get { return Visibility == Visibility.Visible; }
         }
 
+        /// <summary>
+        /// Gets the current chart points in the series
+        /// </summary>
+        public IEnumerable<ChartPoint> ChartPoints
+        {
+            get { return ActualValues.GetPoints(this); }
+        }
+        
         public static readonly DependencyProperty ValuesProperty = DependencyProperty.Register(
             "Values", typeof (IChartValues), typeof (Series),
             new PropertyMetadata(default(IChartValues), OnValuesInstanceChanged));
@@ -265,7 +273,7 @@ namespace LiveCharts.Wpf
         }
 
         public static readonly DependencyProperty ScalesXAtProperty = DependencyProperty.Register(
-            "ScalesXAt", typeof (int), typeof (Series), new PropertyMetadata(default(int)));
+            "ScalesXAt", typeof (int), typeof (Series), new PropertyMetadata(default(int), CallChartUpdater()));
         /// <summary>
         /// Gets or sets the axis where series is scaled at, the axis must exist in the collection
         /// </summary>
@@ -276,7 +284,7 @@ namespace LiveCharts.Wpf
         }
 
         public static readonly DependencyProperty ScalesYAtProperty = DependencyProperty.Register(
-            "ScalesYAt", typeof (int), typeof (Series), new PropertyMetadata(default(int)));
+            "ScalesYAt", typeof (int), typeof (Series), new PropertyMetadata(default(int), CallChartUpdater()));
         /// <summary>
         /// Gets or sets the axis where series is scaled at, the axis must exist in the collection
         /// </summary>
@@ -298,7 +306,8 @@ namespace LiveCharts.Wpf
         }
 
         public static readonly DependencyProperty ConfigurationProperty = DependencyProperty.Register(
-            "Configuration", typeof (object), typeof (Series), new PropertyMetadata(default(object)));
+            "Configuration", typeof (object), typeof (Series), 
+            new PropertyMetadata(default(object), CallChartUpdater()));
         /// <summary>
         /// Gets or sets series mapper, if this property is set then the library will ignore the SeriesCollection mapper and global mappers.
         /// </summary>

@@ -67,8 +67,8 @@ namespace LiveCharts.Wpf.Charts.Base
 
             TooltipTimeoutTimer = new DispatcherTimer();
 
-            SetCurrentValue(MinHeightProperty, 125d);
-            SetCurrentValue(MinWidthProperty, 125d);
+            SetCurrentValue(MinHeightProperty, 50d);
+            SetCurrentValue(MinWidthProperty, 80d);
 
             SetCurrentValue(AnimationsSpeedProperty, TimeSpan.FromMilliseconds(300));
             SetCurrentValue(TooltipTimeoutProperty, TimeSpan.FromMilliseconds(800));
@@ -884,8 +884,8 @@ namespace LiveCharts.Wpf.Charts.Base
 
             DragOrigin = e.GetPosition(this);
             DragOrigin = new Point(
-                ChartFunctions.FromDrawMargin(DragOrigin.X, AxisOrientation.X, Model),
-                ChartFunctions.FromDrawMargin(DragOrigin.Y, AxisOrientation.Y, Model));
+                ChartFunctions.FromPlotArea(DragOrigin.X, AxisOrientation.X, Model),
+                ChartFunctions.FromPlotArea(DragOrigin.Y, AxisOrientation.Y, Model));
         }
 
         private void OnDraggingEnd(object sender, MouseButtonEventArgs e)
@@ -894,8 +894,8 @@ namespace LiveCharts.Wpf.Charts.Base
 
             var end = e.GetPosition(this);
             end = new Point(
-                ChartFunctions.FromDrawMargin(end.X, AxisOrientation.X, Model),
-                ChartFunctions.FromDrawMargin(end.Y, AxisOrientation.Y, Model));
+                ChartFunctions.FromPlotArea(end.X, AxisOrientation.X, Model),
+                ChartFunctions.FromPlotArea(end.Y, AxisOrientation.Y, Model));
 
             Model.Drag(new CorePoint(DragOrigin.X - end.X, DragOrigin.Y - end.Y));
         }

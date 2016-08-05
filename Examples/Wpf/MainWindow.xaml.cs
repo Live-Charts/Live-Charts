@@ -63,7 +63,9 @@ namespace Wpf
             
             CartesianExamples = new List<UserControl>
             {
-                new VerticalStackedAreaExample(),
+                new UiElementsExample(),
+                //new CustomTooltipAndLegendExample(),
+
                 new JimmyTheTestsGuy(),
                 //new SharedTooltipExample(),
                 new GeoMapExample(),
@@ -82,7 +84,7 @@ namespace Wpf
                 new MultiAxesChart(),
                 //new JimmyTheTestsGuy(),
                 //new Issue179(),
-                new UIElementsExample(),
+                new UiElementsExample(),
                 new StackedRowExample(),
                 new BasicColumn(),
                 new BasicLineExample(),

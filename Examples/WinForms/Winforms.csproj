@@ -197,6 +197,12 @@
     <Compile Include="Cartesian\StackedArea\StackedAreaExample.Designer.cs">
       <DependentUpon>StackedAreaExample.cs</DependentUpon>
     </Compile>
+    <Compile Include="Cartesian\UielementsExample\UielementsExample.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Cartesian\UielementsExample\UielementsExample.Designer.cs">
+      <DependentUpon>UielementsExample.cs</DependentUpon>
+    </Compile>
     <Compile Include="Cartesian\Zooming and Panning\ZomingAndPanningExample.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -214,6 +220,12 @@
     </Compile>
     <Compile Include="Gauge\360\Gauge360Example.Designer.cs">
       <DependentUpon>Gauge360Example.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Gauge\AngularGauge\AngularGugeForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Gauge\AngularGauge\AngularGugeForm.Designer.cs">
+      <DependentUpon>AngularGugeForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Main.cs">
       <SubType>Form</SubType>
@@ -235,7 +247,6 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <None Include="Resources\ezgif.com-resize1.gif" />
     <EmbeddedResource Include="Cartesian\Basic Stacked Bar\BasicsStackedRowExample.resx">
       <DependentUpon>BasicsStackedRowExample.cs</DependentUpon>
     </EmbeddedResource>
@@ -308,6 +319,9 @@
     <EmbeddedResource Include="Cartesian\StackedArea\StackedAreaExample.resx">
       <DependentUpon>StackedAreaExample.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Cartesian\UielementsExample\UielementsExample.resx">
+      <DependentUpon>UielementsExample.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Cartesian\Zooming and Panning\ZomingAndPanningExample.resx">
       <DependentUpon>ZomingAndPanningExample.cs</DependentUpon>
     </EmbeddedResource>
@@ -316,6 +330,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Gauge\360\Gauge360Example.resx">
       <DependentUpon>Gauge360Example.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Gauge\AngularGauge\AngularGugeForm.resx">
+      <DependentUpon>AngularGugeForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Main.resx">
       <DependentUpon>Main.cs</DependentUpon>
@@ -336,6 +353,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Content Include="Cartesian\UielementsExample\warning.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="cities.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -353,99 +373,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\about labels.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\about axes.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\about labels1.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\about series.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\basic line chart.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\basics.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Date Time.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\fully responsive.gif" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\install.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\inverted series.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\irregular intervals.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\log and custom scales.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Missing Points.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\multiple axes.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\sections.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\stacked area percentage.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\stacked area.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\the cartesian chart.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\types and configuration.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\zooming and panning.gif" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\dynvis.gif" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\180 gauge.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\buubles150.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\doughnut chart.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\gaugefull150.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\pie chart.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\ezgif.com-resize.gif" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\customzoomingandpanning.gif" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\customzp.gif" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Heat Series.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\360 gauge.jpg" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\..\Core\Core.csproj">
       <Project>{d447642c-a85f-4ab0-96d9-c66cff91aada}</Project>
       <Name>Core</Name>
@@ -460,7 +387,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\doughnut chart1.jpg" />
+    <Folder Include="Resources\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -17,6 +17,7 @@ using Winforms.Cartesian.MissingPoints;
 using Winforms.Cartesian.MultiAxes;
 using Winforms.Cartesian.Sections;
 using Winforms.Cartesian.StackedArea;
+using Winforms.Cartesian.UielementsExample;
 using Winforms.Cartesian.Zooming_and_Panning;
 using Winforms.Gauge._180;
 using Winforms.Gauge._360;
@@ -139,6 +140,11 @@ namespace Winforms
         private void button8_Click(object sender, EventArgs e)
         {
             new LinqExample().ShowDialog();
+        }
+
+        private void button9_Click(object sender, EventArgs e)
+        {
+            new UielementsExample().ShowDialog();
         }
     }
 }

@@ -319,8 +319,8 @@ namespace LiveCharts.Charts
             RequestedZoomAt = DateTime.Now;
 
             pivot = new CorePoint(
-                ChartFunctions.FromDrawMargin(pivot.X, AxisOrientation.X, this),
-                ChartFunctions.FromDrawMargin(pivot.Y, AxisOrientation.Y, this));
+                ChartFunctions.FromPlotArea(pivot.X, AxisOrientation.X, this),
+                ChartFunctions.FromPlotArea(pivot.Y, AxisOrientation.Y, this));
 
             if (View.Zoom == ZoomingOptions.X || View.Zoom == ZoomingOptions.Xy)
             {
@@ -364,8 +364,8 @@ namespace LiveCharts.Charts
             RequestedZoomAt = DateTime.Now;
 
             var dataPivot = new CorePoint(
-                ChartFunctions.FromDrawMargin(pivot.X, AxisOrientation.X, this),
-                ChartFunctions.FromDrawMargin(pivot.Y, AxisOrientation.Y, this));
+                ChartFunctions.FromPlotArea(pivot.X, AxisOrientation.X, this),
+                ChartFunctions.FromPlotArea(pivot.Y, AxisOrientation.Y, this));
 
             if (View.Zoom == ZoomingOptions.X || View.Zoom == ZoomingOptions.Xy)
             {

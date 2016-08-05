@@ -25,7 +25,6 @@ using System.Collections.Generic;
 using System.Linq;
 using LiveCharts.Charts;
 using LiveCharts.Definitions.Charts;
-using LiveCharts.Definitions.Series;
 using LiveCharts.Dtos;
 
 namespace LiveCharts
@@ -197,19 +196,6 @@ namespace LiveCharts
             return new CorePoint(
                 ToDrawMargin(point.X, AxisOrientation.X, chart, axisXIndex),
                 ToDrawMargin(point.Y, AxisOrientation.Y, chart, axisYIndex)); //+ unitaryOffset;
-        }
-
-        /// <summary>
-        /// Converts from draw margin size to chart values.
-        /// </summary>
-        /// <param name="value">value to scale</param>
-        /// <param name="source">axis orientation</param>
-        /// <param name="chart">chart model to scale the value at</param>
-        /// <param name="axis">axis index in the axes collection</param>
-        /// <returns></returns>
-        public static double FromDrawMargin(double value, AxisOrientation source, ChartCore chart, int axis = 0)
-        {
-            return FromPlotArea(value, source, chart, axis);
         }
 
         /// <summary>

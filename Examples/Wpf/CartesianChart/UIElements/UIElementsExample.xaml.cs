@@ -1,28 +1,32 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using LiveCharts;
+using LiveCharts.Wpf;
+using LiveCharts.Wpf.Components;
 
 namespace Wpf.CartesianChart.UIElements
 {
-    /// <summary>
-    /// Interaction logic for UIElementsExample.xaml
-    /// </summary>
-    public partial class UIElementsExample : UserControl
+    public partial class UiElementsExample : UserControl
     {
-        public UIElementsExample()
+        public UiElementsExample()
         {
             InitializeComponent();
+        }
+
+        private void ChartOnDataClick(object sender, ChartPoint chartPoint)
+        {
+            var asPixels = Chart.ConvertToPixels(chartPoint.AsPoint());
+            MessageBox.Show("You clicked (" + chartPoint.X + ", " + chartPoint.Y + ") in pixels (" +
+                            asPixels.X + ", " + asPixels.Y + ")");
+        }
+
+        private void ChartMouseMove(object sender, MouseEventArgs e)
+        {
+            var point = Chart.ConvertToChartValues(e.GetPosition(Chart));
+
+            X.Text = point.X.ToString("N");
+            Y.Text = point.Y.ToString("N");
         }
     }
 }

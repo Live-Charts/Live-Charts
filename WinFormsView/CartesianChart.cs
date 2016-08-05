@@ -50,6 +50,9 @@ namespace LiveCharts.WinForms
         #region ChartProperties
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public Wpf.CartesianChart Base { get { return WpfBase; } }
+
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public AxesCollection AxisY
         {
             get { return WpfBase.AxisY; }
@@ -114,6 +117,13 @@ namespace LiveCharts.WinForms
         {
             get { return WpfBase.Background; }
             set { WpfBase.Background = value; }
+        }
+
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public VisualElementsCollection VisualElements
+        {
+            get { return WpfBase.VisualElements; }
+            set { WpfBase.VisualElements = value; }
         }
 
         #endregion
