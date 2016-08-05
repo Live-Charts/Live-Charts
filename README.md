@@ -31,7 +31,7 @@
 
 * **[WebSite](http://lvcharts.net/)**
 * **[Chat](https://gitter.im/beto-rodriguez/Live-Charts)**
-* **Questions, try [Stack Overflow](http://stackoverflow.com/), tag your question as LiveCharts**
+* **Questions, try [Stack Overflow](http://stackoverflow.com/questions/tagged/livecharts), tag your question as LiveCharts**, I personally review at least 1 time a day all questions with this tag, posting in SO helps others and also brings more traffic and contributors to the library.
 
 Animated, MVVM orientated .Net charts, for WPF, WinForms under MIT Licence, written in C#, LiveCharts listens for any change in your data automatically and updates UI.
 
