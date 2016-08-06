@@ -204,6 +204,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="CartesianChart\ScatterPlot\ScatterExample.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="CartesianChart\SharedTooltip\SharedTooltipExample.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -359,6 +363,9 @@
     <Compile Include="CartesianChart\PointShapeLine\PointShapeLineExample.cs" />
     <Compile Include="CartesianChart\PointState\PointStateExample.xaml.cs">
       <DependentUpon>PointStateExample.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CartesianChart\ScatterPlot\ScatterExample.xaml.cs">
+      <DependentUpon>ScatterExample.xaml</DependentUpon>
     </Compile>
     <Compile Include="CartesianChart\SharedTooltip\SharedTooltipExample.xaml.cs">
       <DependentUpon>SharedTooltipExample.xaml</DependentUpon>

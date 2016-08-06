@@ -184,7 +184,7 @@ namespace LiveCharts.Wpf
         private void InitializeDefuaults()
         {
             SetCurrentValue(StrokeThicknessProperty, 0d);
-            SetCurrentValue(MaxPointShapeDiameterProperty, 50d);
+            SetCurrentValue(MaxPointShapeDiameterProperty, 15d);
             SetCurrentValue(MinPointShapeDiameterProperty, 10d);
 
             Func<ChartPoint, string> defaultLabel = x => Model.CurrentXAxis.GetFormatter()(x.X) + ", "

@@ -103,7 +103,7 @@
     <Compile Include="Charts\ChartCore.cs" />
     <Compile Include="ChartFunctions.cs" />
     <Compile Include="ChartPoint.cs" />
-    <Compile Include="Defaults\BubblePoint.cs" />
+    <Compile Include="Defaults\ScatterPoint.cs" />
     <Compile Include="Definitions\Points\IChartPointView.cs" />
     <Compile Include="Dtos\CoreColor.cs" />
     <Compile Include="Dtos\CoreGradientStop.cs" />

@@ -135,7 +135,7 @@ namespace LiveCharts
                 .X(value => value)
                 .Y((value, index) => index), SeriesOrientation.Vertical);
 
-            For<BubblePoint>(Mappers.Weighted<BubblePoint>()
+            For<ScatterPoint>(Mappers.Weighted<ScatterPoint>()
                 .X(value => value.X)
                 .Y(value => value.Y)
                 .Weight(value => value.Weight));

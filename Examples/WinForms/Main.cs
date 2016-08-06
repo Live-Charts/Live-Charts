@@ -15,6 +15,7 @@ using Winforms.Cartesian.Linq;
 using Winforms.Cartesian.LogarithmScale;
 using Winforms.Cartesian.MissingPoints;
 using Winforms.Cartesian.MultiAxes;
+using Winforms.Cartesian.ScatterExample;
 using Winforms.Cartesian.Sections;
 using Winforms.Cartesian.StackedArea;
 using Winforms.Cartesian.UielementsExample;
@@ -151,6 +152,11 @@ namespace Winforms
         private void button10_Click(object sender, EventArgs e)
         {
             new AngularGugeForm().ShowDialog();
+        }
+
+        private void button11_Click(object sender, EventArgs e)
+        {
+            new ScatterForm().ShowDialog();
         }
     }
 }

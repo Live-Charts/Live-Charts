@@ -42,12 +42,12 @@ namespace Wpf.CartesianChart
 
             ScatterSeries = new ScatterSeries
             {
-                Values = new ChartValues<BubblePoint>
+                Values = new ChartValues<ScatterPoint>
                 {
-                    new BubblePoint(0, 2, 10),
-                    new BubblePoint(1, 1, 2),
-                    new BubblePoint(2, 3, 7),
-                    new BubblePoint(3, 4, 9)
+                    new ScatterPoint(0, 2, 10),
+                    new ScatterPoint(1, 1, 2),
+                    new ScatterPoint(2, 3, 7),
+                    new ScatterPoint(3, 4, 9)
                 }
             };
 
@@ -96,7 +96,7 @@ namespace Wpf.CartesianChart
                 value.Value = r.Next(-20, 20);
             }
             var i = 0;
-            foreach (var value in ScatterSeries.Values.Cast<BubblePoint>())
+            foreach (var value in ScatterSeries.Values.Cast<ScatterPoint>())
             {
                 value.X = i;
                 value.Y = r.Next(-20, 20);

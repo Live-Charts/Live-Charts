@@ -77,12 +77,16 @@
             this.btnLabels = new System.Windows.Forms.Button();
             this.label24 = new System.Windows.Forms.Label();
             this.button10 = new System.Windows.Forms.Button();
+            this.label25 = new System.Windows.Forms.Label();
+            this.button11 = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel1
             // 
             this.panel1.AutoScroll = true;
+            this.panel1.Controls.Add(this.label25);
+            this.panel1.Controls.Add(this.button11);
             this.panel1.Controls.Add(this.label24);
             this.panel1.Controls.Add(this.button10);
             this.panel1.Controls.Add(this.label23);
@@ -134,7 +138,7 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(847, 733);
+            this.panel1.Size = new System.Drawing.Size(847, 561);
             this.panel1.TabIndex = 0;
             // 
             // label23
@@ -593,11 +597,30 @@
             this.button10.UseVisualStyleBackColor = true;
             this.button10.Click += new System.EventHandler(this.button10_Click);
             // 
+            // label25
+            // 
+            this.label25.AutoSize = true;
+            this.label25.Font = new System.Drawing.Font("Calibri", 12.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label25.Location = new System.Drawing.Point(716, 558);
+            this.label25.Name = "label25";
+            this.label25.Size = new System.Drawing.Size(86, 21);
+            this.label25.TabIndex = 76;
+            this.label25.Text = "ScatterPlot";
+            // 
+            // button11
+            // 
+            this.button11.Location = new System.Drawing.Point(681, 455);
+            this.button11.Name = "button11";
+            this.button11.Size = new System.Drawing.Size(160, 100);
+            this.button11.TabIndex = 75;
+            this.button11.UseVisualStyleBackColor = true;
+            this.button11.Click += new System.EventHandler(this.button11_Click);
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(847, 733);
+            this.ClientSize = new System.Drawing.Size(847, 561);
             this.Controls.Add(this.panel1);
             this.Name = "Main";
             this.Text = "Form1";
@@ -658,6 +681,8 @@
         private System.Windows.Forms.Button button9;
         private System.Windows.Forms.Label label24;
         private System.Windows.Forms.Button button10;
+        private System.Windows.Forms.Label label25;
+        private System.Windows.Forms.Button button11;
     }
 }
 

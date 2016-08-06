@@ -25,7 +25,7 @@ namespace LiveCharts.Defaults
     /// <summary>
     /// An already configured weighted chart point, this class notifies the chart to update every time a property changes
     /// </summary>
-    public class HeatPoint : BubblePoint
+    public class HeatPoint : ScatterPoint
     {
         /// <summary>
         /// Initializes a new instance of HeatPoint class

@@ -27,7 +27,7 @@ namespace LiveCharts.Defaults
     /// <summary>
     /// An already configured weighted chart point, this class notifies the chart to update every time a property changes
     /// </summary>
-    public class BubblePoint : IObservableChartPoint
+    public class ScatterPoint : IObservableChartPoint
     {
         private double _x;
         private double _y;
@@ -36,7 +36,7 @@ namespace LiveCharts.Defaults
         /// <summary>
         /// Creates a new instance of BubblePoint class
         /// </summary>
-        public BubblePoint()
+        public ScatterPoint()
         {
             
         }
@@ -46,7 +46,7 @@ namespace LiveCharts.Defaults
         /// </summary>
         /// <param name="x"></param>
         /// <param name="y"></param>
-        public BubblePoint(double x, double y)
+        public ScatterPoint(double x, double y)
         {
             X = x;
             Y = y;
@@ -58,7 +58,7 @@ namespace LiveCharts.Defaults
         /// <param name="x"></param>
         /// <param name="y"></param>
         /// <param name="weight"></param>
-        public BubblePoint(double x, double y, double weight)
+        public ScatterPoint(double x, double y, double weight)
         {
             X = x;
             Y = y;

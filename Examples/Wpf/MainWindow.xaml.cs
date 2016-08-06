@@ -29,6 +29,7 @@ using Wpf.CartesianChart.Missing_Line_Points;
 using Wpf.CartesianChart.NegativeStackedRow;
 using Wpf.CartesianChart.PointShapeLine;
 using Wpf.CartesianChart.PointState;
+using Wpf.CartesianChart.ScatterPlot;
 using Wpf.CartesianChart.SharedTooltip;
 using Wpf.CartesianChart.StackedArea;
 using Wpf.CartesianChart.StackedBar;
@@ -63,7 +64,7 @@ namespace Wpf
             
             CartesianExamples = new List<UserControl>
             {
-                new UiElementsExample(),
+                new ScatterExample(),
                 //new CustomTooltipAndLegendExample(),
 
                 new JimmyTheTestsGuy(),
