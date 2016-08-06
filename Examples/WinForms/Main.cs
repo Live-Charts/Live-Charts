@@ -23,6 +23,7 @@ using Winforms.Cartesian.Zooming_and_Panning;
 using Winforms.Gauge.AngularGauge;
 using Winforms.Gauge._180;
 using Winforms.Gauge._360;
+using Winforms.Maps;
 using Winforms.PieChart;
 
 namespace Winforms
@@ -157,6 +158,11 @@ namespace Winforms
         private void button11_Click(object sender, EventArgs e)
         {
             new ScatterForm().ShowDialog();
+        }
+
+        private void button12_Click(object sender, EventArgs e)
+        {
+            new GeoMapExample().ShowDialog();
         }
     }
 }

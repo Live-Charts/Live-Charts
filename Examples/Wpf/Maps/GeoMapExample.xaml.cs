@@ -28,9 +28,13 @@ namespace Wpf.Maps
             Values["FR"] = r.Next(0, 100);
             Values["GB"] = r.Next(0, 100);
 
+            LanguagePack = new Dictionary<string, string>();
+            LanguagePack["MX"] = "México"; // change the language if necessary
+
             DataContext = this;
         }
 
         public Dictionary<string, double> Values { get; set; }
+        public Dictionary<string, string> LanguagePack { get; set; }
     }
 }

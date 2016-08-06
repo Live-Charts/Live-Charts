@@ -139,11 +139,21 @@ namespace LiveCharts.Wpf
 
         private static readonly DependencyProperty GeoMapTooltipProperty = DependencyProperty.Register(
             "GeoMapTooltip", typeof (DefaultGeoMapTooltip), typeof (GeoMap), new PropertyMetadata(default(DefaultGeoMapTooltip)));
-
         private DefaultGeoMapTooltip GeoMapTooltip
         {
             get { return (DefaultGeoMapTooltip) GetValue(GeoMapTooltipProperty); }
             set { SetValue(GeoMapTooltipProperty, value); }
+        }
+
+        public static readonly DependencyProperty LanguagePackProperty = DependencyProperty.Register(
+            "LanguagePack", typeof (Dictionary<string, string>), typeof (GeoMap), new PropertyMetadata(default(Dictionary<string, string>)));
+        /// <summary>
+        /// Gets or sets the language dictionary
+        /// </summary>
+        public Dictionary<string, string> LanguagePack
+        {
+            get { return (Dictionary<string, string>) GetValue(LanguagePackProperty); }
+            set { SetValue(LanguagePackProperty, value); }
         }
 
         public static readonly DependencyProperty DefaultLandFillProperty = DependencyProperty.Register(
@@ -238,7 +248,7 @@ namespace LiveCharts.Wpf
         public static readonly DependencyProperty SourceProperty = DependencyProperty.Register(
             "Source", typeof (string), typeof (GeoMap), new PropertyMetadata(default(string)));
         /// <summary>
-        /// Gets or sets the image source
+        /// Gets or sets the map source
         /// </summary>
         public string Source
         {
@@ -261,47 +271,47 @@ namespace LiveCharts.Wpf
 
         #region Publics
 
-        /// <summary>
-        /// Moves the map to a specif area
-        /// </summary>
-        /// <param name="data">target area</param>
-        public void MoveTo(MapData data)
-        {
-            var s = (Path) data.Shape;
-            var area = s.Data.Bounds;
-            var t = (ScaleTransform) s.RenderTransform;
+        ///// <summary>
+        ///// Moves the map to a specif area
+        ///// </summary>
+        ///// <param name="data">target area</param>
+        //public void MoveTo(MapData data)
+        //{
+        //    var s = (Path) data.Shape;
+        //    var area = s.Data.Bounds;
+        //    var t = (ScaleTransform) s.RenderTransform;
             
 
 
-            //if (DisableAnimations)
-            //{
+        //    //if (DisableAnimations)
+        //    //{
             
-            double scale;
-            double cx = 0;
-            double cy = 0;
+        //    double scale;
+        //    double cx = 0;
+        //    double cy = 0;
 
-            if (IsWidthDominant)
-            {
-                scale = data.LvcMap.DesiredWidth / area.Width;
-            }
-            else
-            {
-                scale = data.LvcMap.DesiredHeight / area.Height;
-            }
+        //    if (IsWidthDominant)
+        //    {
+        //        scale = data.LvcMap.DesiredWidth / area.Width;
+        //    }
+        //    else
+        //    {
+        //        scale = data.LvcMap.DesiredHeight / area.Height;
+        //    }
 
-            Map.RenderTransformOrigin = new Point(0, 0);
-            Map.RenderTransform = new ScaleTransform(scale, scale);
+        //    Map.RenderTransformOrigin = new Point(0, 0);
+        //    Map.RenderTransform = new ScaleTransform(scale, scale);
 
-            Canvas.SetLeft(Map, -area.X*t.ScaleX*scale + cx);
-            Canvas.SetTop(Map, -area.Y*t.ScaleY*scale + cy);
+        //    Canvas.SetLeft(Map, -area.X*t.ScaleX*scale + cx);
+        //    Canvas.SetTop(Map, -area.Y*t.ScaleY*scale + cy);
 
-            //}
-            //else
-            //{
-            //    Map.BeginAnimation(Canvas.LeftProperty, new DoubleAnimation(-area.X, AnimationsSpeed));
-            //    //Map.BeginAnimation(Canvas.TopProperty, new DoubleAnimation(area.Y, AnimationsSpeed));
-            //}
-        }
+        //    //}
+        //    //else
+        //    //{
+        //    //    Map.BeginAnimation(Canvas.LeftProperty, new DoubleAnimation(-area.X, AnimationsSpeed));
+        //    //    //Map.BeginAnimation(Canvas.TopProperty, new DoubleAnimation(area.Y, AnimationsSpeed));
+        //    //}
+        //}
 
         /// <summary>
         /// Restarts the current map view
@@ -360,6 +370,7 @@ namespace LiveCharts.Wpf
             }
 
             var map = MapResolver.Get(Source);
+            if (map == null) return;
 
             var desiredSize = new Size(map.DesiredWidth, map.DesiredHeight);
             var r = desiredSize.Width/desiredSize.Height;
@@ -490,11 +501,17 @@ namespace LiveCharts.Wpf
             double value;
 
             if (!HeatMap.TryGetValue(land.Id, out value)) return;
+            if (!Hoverable) return;
 
             GeoMapTooltip.Visibility = Visibility.Visible;
+
+            string name = null;
+
+            if (LanguagePack != null) LanguagePack.TryGetValue(land.Id, out name);
+
             GeoMapTooltip.GeoData = new GeoData
             {
-                Name = land.Name,
+                Name = name ?? land.Name,
                 Value = value
             };
         }

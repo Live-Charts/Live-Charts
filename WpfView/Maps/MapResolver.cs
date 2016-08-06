@@ -20,6 +20,7 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Windows.Controls;
@@ -39,11 +40,11 @@ namespace LiveCharts.Wpf.Maps
             if (!File.Exists(file))
             {
 #if DEBUG
-                throw new LiveChartsException("Map file not found!");
+                Console.WriteLine("File not found!");
 #endif
 #pragma warning disable 162
                 // ReSharper disable once HeuristicUnreachableCode
-                return new LvcMap();
+                return null;
 #pragma warning restore 162
             }
 

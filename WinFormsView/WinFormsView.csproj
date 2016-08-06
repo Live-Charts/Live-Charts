@@ -130,6 +130,7 @@
     <Compile Include="AngularGauge.cs" />
     <Compile Include="CartesianChart.cs" />
     <Compile Include="Gauge.cs" />
+    <Compile Include="GeoMap.cs" />
     <Compile Include="PieChart.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

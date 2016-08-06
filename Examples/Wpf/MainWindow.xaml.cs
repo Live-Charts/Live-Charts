@@ -1,14 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics;
-using System.Runtime.CompilerServices;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Navigation;
-using LiveCharts;
-using LiveCharts.Maps;
-using LiveCharts.Wpf;
 using Wpf.Annotations;
 using Wpf.CartesianChart;
 using Wpf.CartesianChart.BasicLine;
@@ -30,7 +24,6 @@ using Wpf.CartesianChart.NegativeStackedRow;
 using Wpf.CartesianChart.PointShapeLine;
 using Wpf.CartesianChart.PointState;
 using Wpf.CartesianChart.ScatterPlot;
-using Wpf.CartesianChart.SharedTooltip;
 using Wpf.CartesianChart.StackedArea;
 using Wpf.CartesianChart.StackedBar;
 using Wpf.CartesianChart.UIElements;
@@ -64,11 +57,9 @@ namespace Wpf
             
             CartesianExamples = new List<UserControl>
             {
-                new ScatterExample(),
-                new BubblesExample(),
                 //new CustomTooltipAndLegendExample(),
 
-                new JimmyTheTestsGuy(),
+                //new JimmyTheTestsGuy(),
                 //new SharedTooltipExample(),
                 new GeoMapExample(),
                 new LinqExample(),
@@ -99,6 +90,7 @@ namespace Wpf
                 new ConstantChangesChart(),
                 new CustomizedLineSeries(),
                 new InvertedExample(),
+                new ScatterExample(),
                 new BubblesExample(),
                 new StackedAreaExample(),
                 new OhclExample(),

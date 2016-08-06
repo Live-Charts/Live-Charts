@@ -9,6 +9,6 @@
              d:DesignHeight="300" d:DesignWidth="300" 
              d:DataContext="{d:DesignInstance local:GeoMapExample}">
     <Grid>
-       <lvc:GeoMap HeatMap="{Binding Values}" Source="Maps/World.xml"></lvc:GeoMap> 
+       <lvc:GeoMap HeatMap="{Binding Values}" Source="Maps/World.xml" LanguagePack="{Binding LanguagePack}" /> 
     </Grid>
 </UserControl>

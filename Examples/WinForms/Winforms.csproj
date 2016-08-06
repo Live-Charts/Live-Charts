@@ -239,6 +239,12 @@
     <Compile Include="Main.Designer.cs">
       <DependentUpon>Main.cs</DependentUpon>
     </Compile>
+    <Compile Include="Maps\GeoMapExample.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Maps\GeoMapExample.Designer.cs">
+      <DependentUpon>GeoMapExample.cs</DependentUpon>
+    </Compile>
     <Compile Include="PieChart\DoughnutExample.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -253,6 +259,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Content Include="Maps\World.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <EmbeddedResource Include="Cartesian\Basic Stacked Bar\BasicsStackedRowExample.resx">
       <DependentUpon>BasicsStackedRowExample.cs</DependentUpon>
     </EmbeddedResource>
@@ -345,6 +354,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Main.resx">
       <DependentUpon>Main.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Maps\GeoMapExample.resx">
+      <DependentUpon>GeoMapExample.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="PieChart\DoughnutExample.resx">
       <DependentUpon>DoughnutExample.cs</DependentUpon>

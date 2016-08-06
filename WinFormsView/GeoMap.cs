@@ -1,4 +1,4 @@
-//The MIT License(MIT)
+﻿//The MIT License(MIT)
 
 //copyright(c) 2016 Alberto Rodriguez
 
@@ -21,100 +21,72 @@
 //SOFTWARE.
 
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.Design.Serialization;
 using System.Windows.Forms.Integration;
 using System.Windows.Media;
+using LiveCharts.Maps;
 
 namespace LiveCharts.WinForms
 {
     [Designer("System.Windows.Forms.Design.ControlDesigner, System.Design")]
     [DesignerSerializer("System.ComponentModel.Design.Serialization.TypeCodeDomSerializer , System.Design", "System.ComponentModel.Design.Serialization.CodeDomSerializer, System.Design")]
 
-    public class SolidGauge : ElementHost
+    public class GeoMap : ElementHost
     {
-        protected readonly Wpf.Gauge WpfBase = new Wpf.Gauge();
-
-        public SolidGauge()
+        protected readonly Wpf.GeoMap WpfBase = new Wpf.GeoMap();
+        public GeoMap()
         {
             Child = WpfBase;
+
+            WpfBase.LandClick += (o, point) =>
+            {
+                if (LandClick != null) LandClick.Invoke(o, point);
+            };
         }
 
+        public event Action<object, MapData> LandClick;
+
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public Wpf.Gauge Base
+        public Wpf.GeoMap Base
         {
             get { return WpfBase; }
         }
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public bool Uses360Mode
+        public Dictionary<string, string> LanguagePack
         {
-            get { return WpfBase.Uses360Mode; }
-            set { WpfBase.Uses360Mode = value; }
+            get { return WpfBase.LanguagePack; }
+            set { WpfBase.LanguagePack = value; }
         }
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public double From
+        public Brush DefaultLandFill
         {
-            get { return WpfBase.From; }
-            set { WpfBase.From = value; }
+            get { return WpfBase.DefaultLandFill; }
+            set { WpfBase.DefaultLandFill = value; }
         }
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public double To
+        public double LandStrokeThickness
         {
-            get { return WpfBase.To; }
-            set { WpfBase.To = value; }
+            get { return WpfBase.LandStrokeThickness; }
+            set { WpfBase.LandStrokeThickness = value; }
         }
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public double Value
+        public Brush LandStroke
         {
-            get { return WpfBase.Value; }
-            set { WpfBase.Value = value; }
-        }
-
-
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public double? InnerRadius
-        {
-            get { return WpfBase.InnerRadius; }
-            set { WpfBase.InnerRadius = value; }
+            get { return WpfBase.LandStroke; }
+            set { WpfBase.LandStroke = value; }
         }
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public Brush Stroke
+        public bool DisableAnimations
         {
-            get { return WpfBase.Stroke; }
-            set { WpfBase.Stroke = value; }
-        }
-
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public double StrokeThickness
-        {
-            get { return WpfBase.StrokeThickness; }
-            set { WpfBase.StrokeThickness = value; }
-        }
-
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public Color ToColor
-        {
-            get { return WpfBase.ToColor; }
-            set { WpfBase.ToColor = value; }
-        }
-
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public Color FromColor
-        {
-            get { return WpfBase.FromColor; }
-            set { WpfBase.FromColor = value; }
-        }
-
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public Brush GaugeBackground
-        {
-            get { return WpfBase.GaugeBackground; }
-            set { WpfBase.GaugeBackground = value; }
+            get { return WpfBase.DisableAnimations; }
+            set { WpfBase.DisableAnimations = value; }
         }
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
@@ -125,17 +97,38 @@ namespace LiveCharts.WinForms
         }
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public Func<double, string> LabelFormatter
+        public bool Hoverable
         {
-            get { return WpfBase.LabelFormatter; }
-            set { WpfBase.LabelFormatter = value; }
+            get { return WpfBase.Hoverable; }
+            set { WpfBase.Hoverable = value; }
         }
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public double? HighFontSize
+        public Dictionary<string, double> HeatMap
         {
-            get { return WpfBase.HighFontSize; }
-            set { WpfBase.HighFontSize = value; }
+            get { return WpfBase.HeatMap; }
+            set { WpfBase.HeatMap = value; }
+        }
+
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public GradientStopCollection GradientStopCollection
+        {
+            get { return WpfBase.GradientStopCollection; }
+            set { WpfBase.GradientStopCollection = value; }
+        }
+
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public string Source
+        {
+            get { return WpfBase.Source; }
+            set { WpfBase.Source = value; }
+        }
+
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public bool EnableZoomingAndPanning
+        {
+            get { return WpfBase.EnableZoomingAndPanning; }
+            set { WpfBase.EnableZoomingAndPanning = value; }
         }
     }
 }
