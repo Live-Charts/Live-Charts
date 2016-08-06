@@ -65,6 +65,7 @@ namespace Wpf
             CartesianExamples = new List<UserControl>
             {
                 new ScatterExample(),
+                new BubblesExample(),
                 //new CustomTooltipAndLegendExample(),
 
                 new JimmyTheTestsGuy(),
