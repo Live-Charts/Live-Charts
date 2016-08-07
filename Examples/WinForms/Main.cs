@@ -18,6 +18,7 @@ using Winforms.Cartesian.MultiAxes;
 using Winforms.Cartesian.ScatterExample;
 using Winforms.Cartesian.Sections;
 using Winforms.Cartesian.StackedArea;
+using Winforms.Cartesian.StepLine;
 using Winforms.Cartesian.UielementsExample;
 using Winforms.Cartesian.Zooming_and_Panning;
 using Winforms.Gauge.AngularGauge;
@@ -163,6 +164,11 @@ namespace Winforms
         private void button12_Click(object sender, EventArgs e)
         {
             new GeoMapExample().ShowDialog();
+        }
+
+        private void button13_Click(object sender, EventArgs e)
+        {
+            new StepLineExample().ShowDialog();
         }
     }
 }

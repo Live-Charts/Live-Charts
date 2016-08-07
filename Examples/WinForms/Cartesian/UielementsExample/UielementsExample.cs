@@ -87,6 +87,7 @@ namespace Winforms.Cartesian.UielementsExample
             Panel.SetZIndex(lineSeries, 1);
 
             cartesianChart1.Base.MouseMove += BaseOnMouseMove;
+            cartesianChart1.DataClick += cartesianChart1_DataClick;
         }
 
         private void BaseOnMouseMove(object sender, System.Windows.Input.MouseEventArgs mouseEventArgs)

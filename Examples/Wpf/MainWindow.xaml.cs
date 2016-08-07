@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows.Controls;
 using System.Windows.Input;
+using LiveCharts.Wpf;
 using Wpf.Annotations;
 using Wpf.CartesianChart;
 using Wpf.CartesianChart.BasicLine;
@@ -26,6 +27,7 @@ using Wpf.CartesianChart.PointState;
 using Wpf.CartesianChart.ScatterPlot;
 using Wpf.CartesianChart.StackedArea;
 using Wpf.CartesianChart.StackedBar;
+using Wpf.CartesianChart.StepLine;
 using Wpf.CartesianChart.UIElements;
 using Wpf.Gauges;
 using Wpf.Maps;
@@ -40,9 +42,6 @@ using StackedAreaExample = Wpf.CartesianChart.StackedArea.StackedAreaExample;
 
 namespace Wpf
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : INotifyPropertyChanged
     {
         private UserControl _cartesianView;
@@ -57,8 +56,6 @@ namespace Wpf
             
             CartesianExamples = new List<UserControl>
             {
-                //new CustomTooltipAndLegendExample(),
-
                 //new JimmyTheTestsGuy(),
                 //new SharedTooltipExample(),
                 new GeoMapExample(),
@@ -75,18 +72,16 @@ namespace Wpf
                 new PointStateExample(),
                 new BasicRowExample(),
                 new MultiAxesChart(),
-                //new JimmyTheTestsGuy(),
-                //new Issue179(),
                 new UiElementsExample(),
                 new StackedRowExample(),
                 new BasicColumn(),
                 new BasicLineExample(),
                 new StackedAreaExample(),
-                //new WelcomeCartesian(),
                 new FullyResponsiveExample(),
                 new CustomTypesPlotting(),
                 new NegativeStackedRowExample(),
                 new LineExample(),
+                new StepLineExample(),
                 new ConstantChangesChart(),
                 new CustomizedLineSeries(),
                 new InvertedExample(),

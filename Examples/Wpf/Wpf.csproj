@@ -224,6 +224,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="CartesianChart\StepLine\StepLineExample.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="CartesianChart\TypesSupport\TypesPlotting.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -378,6 +382,9 @@
     </Compile>
     <Compile Include="CartesianChart\Basic Stacked Bar\BasicStackedColumnExample.xaml.cs">
       <DependentUpon>BasicStackedColumnExample.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CartesianChart\StepLine\StepLineExample.xaml.cs">
+      <DependentUpon>StepLineExample.xaml</DependentUpon>
     </Compile>
     <Compile Include="CartesianChart\TypesSupport\TypesPlotting.xaml.cs">
       <DependentUpon>TypesPlotting.xaml</DependentUpon>

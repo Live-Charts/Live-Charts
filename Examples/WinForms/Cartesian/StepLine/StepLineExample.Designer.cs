@@ -1,6 +1,6 @@
-﻿namespace Winforms.Cartesian.UielementsExample
+﻿namespace Winforms.Cartesian.StepLine
 {
-    partial class UielementsExample
+    partial class StepLineExample
     {
         /// <summary>
         /// Required designer variable.
@@ -29,8 +29,6 @@
         private void InitializeComponent()
         {
             this.cartesianChart1 = new LiveCharts.WinForms.CartesianChart();
-            this.X = new System.Windows.Forms.Label();
-            this.Y = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // cartesianChart1
@@ -38,48 +36,25 @@
             this.cartesianChart1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.cartesianChart1.Location = new System.Drawing.Point(0, 0);
             this.cartesianChart1.Name = "cartesianChart1";
-            this.cartesianChart1.Size = new System.Drawing.Size(551, 432);
-            this.cartesianChart1.TabIndex = 3;
+            this.cartesianChart1.Size = new System.Drawing.Size(636, 454);
+            this.cartesianChart1.TabIndex = 0;
             this.cartesianChart1.Text = "cartesianChart1";
             // 
-            // X
-            // 
-            this.X.AutoSize = true;
-            this.X.Location = new System.Drawing.Point(13, 13);
-            this.X.Name = "X";
-            this.X.Size = new System.Drawing.Size(20, 13);
-            this.X.TabIndex = 4;
-            this.X.Text = "X: ";
-            // 
-            // Y
-            // 
-            this.Y.AutoSize = true;
-            this.Y.Location = new System.Drawing.Point(79, 13);
-            this.Y.Name = "Y";
-            this.Y.Size = new System.Drawing.Size(20, 13);
-            this.Y.TabIndex = 5;
-            this.Y.Text = "Y: ";
-            // 
-            // UielementsExample
+            // StepLineExample
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(551, 432);
-            this.Controls.Add(this.Y);
-            this.Controls.Add(this.X);
+            this.ClientSize = new System.Drawing.Size(636, 454);
             this.Controls.Add(this.cartesianChart1);
-            this.Name = "UielementsExample";
-            this.Text = "UielementsExample";
+            this.Name = "StepLineExample";
+            this.Text = "StepLineExample";
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
         #endregion
 
         private LiveCharts.WinForms.CartesianChart cartesianChart1;
-        private System.Windows.Forms.Label X;
-        private System.Windows.Forms.Label Y;
     }
 }

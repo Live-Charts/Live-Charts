@@ -203,6 +203,12 @@
     <Compile Include="Cartesian\StackedArea\StackedAreaExample.Designer.cs">
       <DependentUpon>StackedAreaExample.cs</DependentUpon>
     </Compile>
+    <Compile Include="Cartesian\StepLine\StepLineExample.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Cartesian\StepLine\StepLineExample.Designer.cs">
+      <DependentUpon>StepLineExample.cs</DependentUpon>
+    </Compile>
     <Compile Include="Cartesian\UielementsExample\UielementsExample.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -336,6 +342,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Cartesian\StackedArea\StackedAreaExample.resx">
       <DependentUpon>StackedAreaExample.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Cartesian\StepLine\StepLineExample.resx">
+      <DependentUpon>StepLineExample.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Cartesian\UielementsExample\UielementsExample.resx">
       <DependentUpon>UielementsExample.cs</DependentUpon>
