@@ -40,7 +40,8 @@ namespace Wpf.CartesianChart
             };
 
             ZoomingMode = ZoomingOptions.X;
-
+            MaxValue = DateTime.Now.Ticks;
+            MinValue = DateTime.Now.Ticks - TimeSpan.FromDays(1).Ticks;
             XFormatter = val => new DateTime((long) val).ToString("dd MMM");
             YFormatter = val => val.ToString("C");
 
@@ -58,6 +59,28 @@ namespace Wpf.CartesianChart
             {
                 _zoomingMode = value;
                 OnPropertyChanged();
+            }
+        }
+
+        private double _maxValue;
+        private double _minValue;
+
+        public double MaxValue
+        {
+            get { return _maxValue; }
+            set
+            {
+                _maxValue = value;
+                OnPropertyChanged("MaxValue");
+            }
+        }
+        public double MinValue
+        {
+            get { return _minValue; }
+            set
+            {
+                _minValue = value;
+                OnPropertyChanged("MinValue");
             }
         }
 
@@ -80,6 +103,8 @@ namespace Wpf.CartesianChart
                 default:
                     throw new ArgumentOutOfRangeException();
             }
+            this.Chart.ClearZoom();
+            this.SeriesCollection[0].Values = GetData();
         }
 
         private ChartValues<DateTimePoint> GetData()
@@ -87,14 +112,15 @@ namespace Wpf.CartesianChart
             var r = new Random();
             var trend = 100;
             var values = new ChartValues<DateTimePoint>();
-
+            var startDate = DateTime.Now - TimeSpan.FromDays(r.Next(0, 100));
             for (var i = 0; i < 100; i++)
             {
                 var seed = r.NextDouble();
                 if (seed > .8) trend += seed > .9 ? 50 : -50;
-                values.Add(new DateTimePoint(DateTime.Now.AddDays(i), trend + r.Next(0, 10)));
+                values.Add(new DateTimePoint(startDate.AddDays(i), trend + r.Next(0, 10)));
             }
-
+            MinValue = values[0].DateTime.Ticks;
+            MaxValue = values[values.Count-1].DateTime.Ticks;
             return values;
         }
 
