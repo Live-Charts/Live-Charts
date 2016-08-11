@@ -37,7 +37,7 @@ namespace LiveCharts.SeriesAlgorithms
 
         public override void Update()
         {
-            var castedSeries = (IOhlcSeriesView) View;
+            var castedSeries = (IFinancialSeriesView) View;
             
             const double padding = 5;
 

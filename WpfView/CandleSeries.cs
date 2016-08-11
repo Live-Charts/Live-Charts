@@ -39,7 +39,7 @@ namespace LiveCharts.Wpf
     /// <summary>
     /// The Candle series defines a financial series, add this series to a cartesian chart
     /// </summary>
-    public class CandleSeries : Series, IOhlcSeriesView
+    public class CandleSeries : Series, IFinancialSeriesView
     {
         #region Constructors
         /// <summary>

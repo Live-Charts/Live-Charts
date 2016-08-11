@@ -33,7 +33,7 @@ namespace LiveCharts.Charts
     {
 
         #region Constructors
-        protected ChartCore(IChartView view, IChartUpdater updater)
+        protected ChartCore(IChartView view, ChartUpdater updater)
         {
             View = view;
             Updater = updater;
@@ -56,7 +56,7 @@ namespace LiveCharts.Charts
         public static Charting Configurations { get; set; }
         public bool SeriesInitialized { get; set; }
         public IChartView View { get; set; }
-        public IChartUpdater Updater { get; set; }
+        public ChartUpdater Updater { get; set; }
         public CoreSize ControlSize { get; set; }
         public CoreRectangle DrawMargin { get; set; }
         public bool HasUnitaryPoints { get; set; }

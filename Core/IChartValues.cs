@@ -31,7 +31,7 @@ namespace LiveCharts
         /// <summary>
         /// Forces values to calculate max, min and index data.
         /// </summary>
-        void GetLimits(ISeriesView seriesView);
+        void Initialize(ISeriesView seriesView);
 
         /// <summary>
         /// Gets the current chart points in the view, the view is required as an argument, because an instance of IChartValues could hold many ISeriesView instances.

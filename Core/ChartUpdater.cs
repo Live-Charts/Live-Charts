@@ -23,13 +23,12 @@
 using System;
 using System.Diagnostics;
 using LiveCharts.Charts;
-using LiveCharts.Definitions.Charts;
 using LiveCharts.Definitions.Series;
 using LiveCharts.Helpers;
 
 namespace LiveCharts
 {
-    public class ChartUpdater : IChartUpdater
+    public class ChartUpdater
     {
         public ChartCore Chart { get; set; }
         public bool IsUpdating { get; set; }
@@ -73,7 +72,7 @@ namespace LiveCharts
             foreach (var series in Chart.View.ActualSeries)
             {
                 InitializeSeriesView(series);
-                series.ActualValues.GetLimits(series);
+                series.ActualValues.Initialize(series);
                 series.InitializeColors();
                 series.DrawSpecializedElements();
             }

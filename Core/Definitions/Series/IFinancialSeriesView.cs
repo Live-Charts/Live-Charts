@@ -20,19 +20,10 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-namespace LiveCharts.Dtos
+namespace LiveCharts.Definitions.Series
 {
-    public struct Xyw
+    public interface IFinancialSeriesView : ISeriesView
     {
-        public Xyw(double x, double y, double w) : this()
-        {
-            X = x;
-            Y = y;
-            W = w;
-        }
-
-        public double X { get; set; }
-        public double Y { get; set; }
-        public double W { get; set; }
+        double MaxColumnWidth { get; set; }
     }
 }

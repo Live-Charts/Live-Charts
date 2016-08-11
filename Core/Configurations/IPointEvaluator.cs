@@ -20,14 +20,10 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-using System.Collections.Generic;
-using LiveCharts.Dtos;
-
 namespace LiveCharts.Configurations
 {
-    public interface IPointEvaluator<T>
+    public interface IPointEvaluator<in T>
     {
-        void SetAll(KeyValuePair<int, T> valuePair, ChartPoint point);
-        Xyw[] GetEvaluation(KeyValuePair<int, T> valuePair);
+        void Evaluate(int key, T value, ChartPoint point);
     }
 }

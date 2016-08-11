@@ -21,8 +21,6 @@
 //SOFTWARE.
 
 using System;
-using System.Collections.Generic;
-using LiveCharts.Dtos;
 
 namespace LiveCharts.Configurations
 {
@@ -42,31 +40,17 @@ namespace LiveCharts.Configurations
         /// <summary>
         /// Sets values for a specific point
         /// </summary>
-        /// <param name="valuePair">Key and value</param>
         /// <param name="point">Point to set</param>
-        public void SetAll(KeyValuePair<int, T> valuePair, ChartPoint point)
+        /// <param name="value"></param>
+        /// <param name="key"></param>
+        public void Evaluate(int key, T value, ChartPoint point)
         {
-            point.X = _x(valuePair.Value, valuePair.Key);
-            point.Y = _y(valuePair.Value, valuePair.Key);
-            point.Open = _open(valuePair.Value, valuePair.Key);
-            point.High = _high(valuePair.Value, valuePair.Key);
-            point.Close = _close(valuePair.Value, valuePair.Key);
-            point.Low = _low(valuePair.Value, valuePair.Key);
-        }
-
-        /// <summary>
-        /// Evaluates a point with a given value and key
-        /// </summary>
-        /// <param name="valuePair">Value and Key</param>
-        /// <returns>point evaluation</returns>
-        public Xyw[] GetEvaluation(KeyValuePair<int, T> valuePair)
-        {
-            var x = _x(valuePair.Value, valuePair.Key);
-            return new[]
-            {
-                new Xyw(x, _low(valuePair.Value, valuePair.Key), 0),
-                new Xyw(x, _high(valuePair.Value, valuePair.Key), 0)
-            };
+            point.X = _x(value, key);
+            point.Y = _y(value, key);
+            point.Open = _open(value, key);
+            point.High = _high(value, key);
+            point.Close = _close(value, key);
+            point.Low = _low(value, key);
         }
 
         /// <summary>

@@ -21,8 +21,6 @@
 //SOFTWARE.
 
 using System;
-using System.Collections.Generic;
-using LiveCharts.Dtos;
 
 namespace LiveCharts.Configurations
 {
@@ -40,25 +38,15 @@ namespace LiveCharts.Configurations
         /// <summary>
         /// Sets values for a specific point
         /// </summary>
-        /// <param name="valuePair">Key and value</param>
         /// <param name="point">Point to set</param>
-        public void SetAll(KeyValuePair<int, T> valuePair, ChartPoint point)
+        /// <param name="value"></param>
+        /// <param name="key"></param>
+        public void Evaluate(int key, T value, ChartPoint point)
         {
-            point.Radius = _r(valuePair.Value, valuePair.Key);
-            point.Angle = _angle(valuePair.Value, valuePair.Key);
-            if (_stroke != null) point.Stroke = _stroke(valuePair.Value, valuePair.Key);
-            if (_fill != null) point.Fill = _fill(valuePair.Value, valuePair.Key);
-        }
-
-        /// <summary>
-        /// Evaluates a point with a given value and key
-        /// </summary>
-        /// <param name="valuePair">Value and Key</param>
-        /// <returns>evaluated point</returns>
-        public Xyw[] GetEvaluation(KeyValuePair<int, T> valuePair)
-        {
-            var xyw = new Xyw(_r(valuePair.Value, valuePair.Key), _angle(valuePair.Value, valuePair.Key), 0);
-            return new[] {xyw, xyw};
+            point.Radius = _r(value, key);
+            point.Angle = _angle(value, key);
+            if (_stroke != null) point.Stroke = _stroke(value, key);
+            if (_fill != null) point.Fill = _fill(value, key);
         }
 
         /// <summary>

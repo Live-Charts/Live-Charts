@@ -33,13 +33,12 @@ namespace LiveCharts.Charts
     {
         #region Constructors
 
-        public CartesianChartCore(IChartView view, IChartUpdater updater) : base(view, updater)
+        public CartesianChartCore(IChartView view, ChartUpdater updater) : base(view, updater)
         {
             updater.Chart = this;
         }
 
         #endregion
-
 
         #region Publics
 
@@ -168,7 +167,7 @@ namespace LiveCharts.Charts
             foreach (var series in View.ActualSeries)
             {
                 if (series is IStackedColumnSeriesView || series is IColumnSeriesView || 
-                    series is IOhlcSeriesView || series is IHeatSeriesView)
+                    series is IFinancialSeriesView || series is IHeatSeriesView)
                 {
                     AxisX[series.ScalesXAt].EvaluatesUnitWidth = true;
                 }

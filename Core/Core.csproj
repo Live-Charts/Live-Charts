@@ -69,7 +69,6 @@
     <Compile Include="Defaults\OHLCPoint.cs" />
     <Compile Include="Definitions\Charts\ICartesianChart.cs" />
     <Compile Include="Definitions\Charts\ICartesianVisualElement.cs" />
-    <Compile Include="Definitions\Charts\IChartUpdater.cs" />
     <Compile Include="Definitions\Charts\IChartView.cs" />
     <Compile Include="Definitions\Charts\IAxisView.cs" />
     <Compile Include="Definitions\Charts\IAxisSectionView.cs" />
@@ -90,7 +89,7 @@
     <Compile Include="Definitions\Series\IColumnSeriesView.cs" />
     <Compile Include="Definitions\Series\IHeatSeriesView.cs" />
     <Compile Include="Definitions\Series\ILineSeriesView.cs" />
-    <Compile Include="Definitions\Series\IOhlcSeriesView.cs" />
+    <Compile Include="Definitions\Series\IFinancialSeriesView.cs" />
     <Compile Include="Definitions\Series\IPieSeries.cs" />
     <Compile Include="Definitions\Series\IPieSeriesView.cs" />
     <Compile Include="Definitions\Series\IRowSeriesView.cs" />
@@ -116,7 +115,6 @@
     <Compile Include="Dtos\LabelEvaluation.cs" />
     <Compile Include="Dtos\StackedSum.cs" />
     <Compile Include="Dtos\TooltipDataViewModel.cs" />
-    <Compile Include="Dtos\Xyw.cs" />
     <Compile Include="IChartValues.cs" />
     <Compile Include="Charts\CartesianChartCore.cs" />
     <Compile Include="Helpers\LiveChartsException.cs" />

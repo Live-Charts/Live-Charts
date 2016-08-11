@@ -24,6 +24,7 @@ using System.Collections.Generic;
 using System.Linq;
 using LiveCharts.Charts;
 using LiveCharts.Configurations;
+using LiveCharts.Definitions.Points;
 using LiveCharts.Definitions.Series;
 using LiveCharts.Dtos;
 using LiveCharts.Helpers;
@@ -36,8 +37,6 @@ namespace LiveCharts
     /// <typeparam name="T">Type to plot, notice you could need to configure the type.</typeparam>
     public class ChartValues<T> : NoisyCollection<T>, IChartValues
     {
-        private IPointEvaluator<T> DefaultConfiguration { get; set; }
-
         #region Constructors
 
         /// <summary>
@@ -52,9 +51,8 @@ namespace LiveCharts
         #endregion
 
         #region Properties
-
+        private IPointEvaluator<T> DefaultConfiguration { get; set; }
         private Dictionary<ISeriesView, PointTracker> Trackers { get; set; }
-
         #endregion
 
         #region Public Methods
@@ -62,7 +60,7 @@ namespace LiveCharts
         /// <summary>
         /// Evaluates the limits in the chart values
         /// </summary>
-        public void GetLimits(ISeriesView seriesView)
+        public void Initialize(ISeriesView seriesView)
         {
             var config = GetConfig(seriesView);
             if (config == null) return;
@@ -76,20 +74,53 @@ namespace LiveCharts
 
             var tracker = GetTracker(seriesView);
 
-            for (var index = 0; index < Count; index++)
+            var cp = new ChartPoint();
+
+            if (seriesView is IFinancialSeriesView)
             {
-                var item = this[index];
-                var pair = new KeyValuePair<int, T>(index, item);
-                var xyw = config.GetEvaluation(pair);
+                for (var index = 0; index < Count; index++)
+                {
+                    var item = this[index];
+                    config.Evaluate(index, item, cp);
 
-                if (xyw[0].X < xMin) xMin = xyw[0].X;
-                if (xyw[1].X > xMax) xMax = xyw[1].X;
+                    if (cp.X < xMin) xMin = cp.X;
+                    if (cp.X > xMax) xMax = cp.X;
 
-                if (xyw[0].Y < yMin) yMin = xyw[0].Y;
-                if (xyw[1].Y > yMax) yMax = xyw[1].Y;
+                    if (cp.Low < yMin) yMin = cp.Low;
+                    if (cp.High > yMax) yMax = cp.High;
 
-                if (xyw[0].W < wMin) wMin = xyw[0].W;
-                if (xyw[1].W > wMax) wMax = xyw[1].W;
+                    if (cp.Weight < wMin) wMin = cp.Weight;
+                    if (cp.Weight > wMax) wMax = cp.Weight;
+                }
+            } else if (seriesView is IScatterSeriesView)
+            {
+                for (var index = 0; index < Count; index++)
+                {
+                    var item = this[index];
+                    config.Evaluate(index, item, cp);
+
+                    if (cp.X < xMin) xMin = cp.X;
+                    if (cp.X > xMax) xMax = cp.X;
+
+                    if (cp.Y < yMin) yMin = cp.Y;
+                    if (cp.Y > yMax) yMax = cp.Y;
+
+                    if (cp.Weight < wMin) wMin = cp.Weight;
+                    if (cp.Weight > wMax) wMax = cp.Weight;
+                }
+            } else
+            {
+                for (var index = 0; index < Count; index++)
+                {
+                    var item = this[index];
+                    config.Evaluate(index, item, cp);
+
+                    if (cp.X < xMin) xMin = cp.X;
+                    if (cp.X > xMax) xMax = cp.X;
+
+                    if (cp.Y < yMin) yMin = cp.Y;
+                    if (cp.Y > yMax) yMax = cp.Y;
+                }
             }
 
             tracker.Limit1 = new CoreLimit(double.IsInfinity(xMin)
@@ -133,40 +164,14 @@ namespace LiveCharts
                     }
                 }
 
-                ChartPoint cp;
-
-                if (!isClass)
-                {
-                    if (!tracker.Indexed.TryGetValue(index, out cp))
-                    {
-                        cp = new ChartPoint
-                        {
-                            Instance = value,
-                            Key = index
-                        };
-                        tracker.Indexed[index] = cp;
-                    }
-                }
-                else
-                {
-                    if (!tracker.Referenced.TryGetValue(value, out cp))   
-                    {
-                        cp = new ChartPoint
-                        {
-                            Instance = value,
-                            Key = index
-                        };
-                        tracker.Referenced[value] = cp;
-                    }
-                }
+                var cp = GetChartPoint(isClass, tracker, index, value);
 
                 cp.Gci = gci;
-
                 cp.Instance = value;
                 cp.Key = index;
                 cp.SeriesView = seriesView;
 
-                config.SetAll(new KeyValuePair<int, T>(index, value), cp);
+                config.Evaluate(index, value, cp);
 
                 yield return cp;
             }
@@ -220,15 +225,7 @@ namespace LiveCharts
 
         #endregion
 
-        #region Private Methods
-
-        private IEnumerable<ChartPoint> GetGarbagePoints(ISeriesView view)
-        {
-            var tracker = GetTracker(view);
-
-            return tracker.Indexed.Values.Where(x => IsGarbage(x, tracker)).Concat(
-                tracker.Referenced.Values.Where(x => IsGarbage(x, tracker)));
-        }
+        #region Privates
 
         private IPointEvaluator<T> GetConfig(ISeriesView view)
         {
@@ -248,6 +245,50 @@ namespace LiveCharts
                        ChartCore.Configurations.GetConfig<T>(view.Model.SeriesOrientation) as IPointEvaluator<T>);
         }
 
+        private ChartPoint GetChartPoint(bool isClass, PointTracker tracker, int index, T value)
+        {
+            ChartPoint cp;
+
+            if (!isClass)
+            {
+                if (!tracker.Indexed.TryGetValue(index, out cp))
+                {
+                    cp = new ChartPoint
+                    {
+                        Instance = value,
+                        Key = index
+                    };
+                    tracker.Indexed[index] = cp;
+                }
+            }
+            else
+            {
+                if (!tracker.Referenced.TryGetValue(value, out cp))
+                {
+                    cp = new ChartPoint
+                    {
+                        Instance = value,
+                        Key = index
+                    };
+                    tracker.Referenced[value] = cp;
+                }
+            }
+            return cp;
+        }
+
+        private void ObservableOnPointChanged()
+        {
+            Trackers.Keys.ForEach(x => x.Model.Chart.Updater.Run());
+        }
+
+        private IEnumerable<ChartPoint> GetGarbagePoints(ISeriesView view)
+        {
+            var tracker = GetTracker(view);
+
+            return tracker.Indexed.Values.Where(x => IsGarbage(x, tracker)).Concat(
+                tracker.Referenced.Values.Where(x => IsGarbage(x, tracker)));
+        }
+
         private void ValidateGarbageCollector(ISeriesView view)
         {
             var tracker = GetTracker(view);
@@ -259,12 +300,7 @@ namespace LiveCharts
             foreach (var point in tracker.Indexed.Values.Concat(tracker.Referenced.Values))
                 point.Gci = 0;
         }
-
-        private void ObservableOnPointChanged()
-        {
-            Trackers.Keys.ForEach(x => x.Model.Chart.Updater.Run());
-        }
-
+        
         private bool IsGarbage(ChartPoint point, PointTracker tracker)
         {
             return point.Gci < tracker.Gci

@@ -72,9 +72,11 @@ namespace LiveCharts.Wpf.Components
         private void UpdaterTick(bool restartView)
         {
             var wpfChart = (Chart) Chart.View;
-            if (!wpfChart.IsVisible) return;
+            if (!wpfChart.IsVisible && !wpfChart.IsMocked) return;
 
-            Chart.ControlSize = new CoreSize(wpfChart.ActualWidth, wpfChart.ActualHeight);
+            Chart.ControlSize = wpfChart.IsMocked
+                ? wpfChart.Model.ControlSize
+                : new CoreSize(wpfChart.ActualWidth, wpfChart.ActualHeight);
             Timer.Stop();
             Update(restartView);
             IsUpdating = false;
