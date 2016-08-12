@@ -33,9 +33,9 @@ namespace LiveCharts
             Referenced = new Dictionary<object, ChartPoint>();
         }
 
-        public CoreLimit Limit1 { get; internal set; }
-        public CoreLimit Limit2 { get; internal set; }
-        public CoreLimit Limit3 { get; internal set; }
+        public CoreLimit XLimit { get; internal set; }
+        public CoreLimit YLimit { get; internal set; }
+        public CoreLimit WLimit { get; internal set; }
         public int Gci { get; internal set; }
         public Dictionary<int, ChartPoint> Indexed { get; set; }
         public Dictionary<object, ChartPoint> Referenced { get; set; }

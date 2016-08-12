@@ -24,7 +24,6 @@ using System.Collections.Generic;
 using System.Linq;
 using LiveCharts.Charts;
 using LiveCharts.Configurations;
-using LiveCharts.Definitions.Points;
 using LiveCharts.Definitions.Series;
 using LiveCharts.Dtos;
 using LiveCharts.Helpers;
@@ -123,13 +122,13 @@ namespace LiveCharts
                 }
             }
 
-            tracker.Limit1 = new CoreLimit(double.IsInfinity(xMin)
+            tracker.XLimit = new CoreLimit(double.IsInfinity(xMin)
                 ? 0
                 : xMin, double.IsInfinity(yMin) ? 1 : xMax);
-            tracker.Limit2 = new CoreLimit(double.IsInfinity(yMin)
+            tracker.YLimit = new CoreLimit(double.IsInfinity(yMin)
                 ? 0
                 : yMin, double.IsInfinity(yMax) ? 1 : yMax);
-            tracker.Limit3 = new CoreLimit(double.IsInfinity(wMin)
+            tracker.WLimit = new CoreLimit(double.IsInfinity(wMin)
                 ? 0
                 : wMin, double.IsInfinity(wMax) ? 1 : wMax);
         }

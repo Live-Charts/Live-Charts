@@ -135,7 +135,7 @@ namespace LiveCharts.Wpf
 
             if (Figure != null && Values != null)
             {
-                var xIni = ChartFunctions.ToDrawMargin(ActualValues.GetTracker(this).Limit1.Min, AxisOrientation.X, Model.Chart, ScalesXAt);
+                var xIni = ChartFunctions.ToDrawMargin(ActualValues.GetTracker(this).XLimit.Min, AxisOrientation.X, Model.Chart, ScalesXAt);
 
                 if (Model.Chart.View.DisableAnimations)
                     Figure.StartPoint = new Point(xIni, Model.Chart.DrawMargin.Height);
@@ -173,7 +173,7 @@ namespace LiveCharts.Wpf
 
             Model.Chart.View.EnsureElementBelongsToCurrentDrawMargin(Path);
 
-            var x = ChartFunctions.ToDrawMargin(ActualValues.GetTracker(this).Limit1.Min, AxisOrientation.X, Model.Chart, ScalesXAt);
+            var x = ChartFunctions.ToDrawMargin(ActualValues.GetTracker(this).XLimit.Min, AxisOrientation.X, Model.Chart, ScalesXAt);
             Figure.StartPoint = new Point(x, Model.Chart.DrawMargin.Height);
         }
 

@@ -101,12 +101,12 @@ namespace LiveCharts.Charts
                 xi.TopLimit = xi.MaxValue ??
                               View.ActualSeries
                                   .Where(series => series.Values != null && series.ScalesXAt == index)
-                                  .Select(series => series.Values.GetTracker(series).Limit1.Max)
+                                  .Select(series => series.Values.GetTracker(series).XLimit.Max)
                                   .DefaultIfEmpty(0).Max();
                 xi.BotLimit = xi.MinValue ??
                               View.ActualSeries
                                   .Where(series => series.Values != null && series.ScalesXAt == index)
-                                  .Select(series => series.Values.GetTracker(series).Limit1.Min)
+                                  .Select(series => series.Values.GetTracker(series).XLimit.Min)
                                   .DefaultIfEmpty(0).Min();
             }
 
@@ -117,12 +117,12 @@ namespace LiveCharts.Charts
                 yi.TopLimit = yi.MaxValue ??
                               View.ActualSeries
                                   .Where(series => series.Values != null && series.ScalesYAt == index)
-                                  .Select(series => series.Values.GetTracker(series).Limit2.Max)
+                                  .Select(series => series.Values.GetTracker(series).YLimit.Max)
                                   .DefaultIfEmpty(0).Max();
                 yi.BotLimit = yi.MinValue ??
                               View.ActualSeries
                                   .Where(series => series.Values != null && series.ScalesYAt == index)
-                                  .Select(series => series.Values.GetTracker(series).Limit2.Min)
+                                  .Select(series => series.Values.GetTracker(series).YLimit.Min)
                                   .DefaultIfEmpty(0).Min();
             }
         }
