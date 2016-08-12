@@ -102,7 +102,7 @@ namespace UnitTests.MemoryLeaks
                     {
                         Values = new ChartValues<double> {2, 4, 5, 2}
                     },
-                    new LiveCharts.Wpf.OhlcSeries
+                    new LiveCharts.Wpf.OhlcSeries()
                     {
                         Values = new ChartValues<double> {2, 4, 5, 2}
                     },

@@ -45,7 +45,7 @@ namespace LiveCharts.Wpf
         /// </summary>
         public ScatterSeries()
         {
-            Model = new BubbleAlgorithm(this);
+            Model = new ScatterAlgorithm(this);
             InitializeDefuaults();
         }
 
@@ -55,7 +55,7 @@ namespace LiveCharts.Wpf
         /// <param name="configuration"></param>
         public ScatterSeries(object configuration)
         {
-            Model = new BubbleAlgorithm(this);
+            Model = new ScatterAlgorithm(this);
             Configuration = configuration;
             InitializeDefuaults();
         }

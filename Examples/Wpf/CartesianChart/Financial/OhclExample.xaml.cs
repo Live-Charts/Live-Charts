@@ -21,7 +21,7 @@ namespace Wpf.CartesianChart.Financial
 
             SeriesCollection = new SeriesCollection
             {
-                new OhlcSeries
+                new OhlcSeries()
                 {
                     Values = new ChartValues<OhlcPoint>
                     {

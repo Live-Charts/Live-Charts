@@ -169,7 +169,7 @@
     <Compile Include="Points\VBezierPointView.cs" />
     <Compile Include="HeatSeries.cs" />
     <Compile Include="PieSeries.cs" />
-    <Compile Include="OHCLSeries.cs" />
+    <Compile Include="OhlcSeries.cs" />
     <Compile Include="StackedAreaSeries.cs" />
     <Compile Include="StackedRowSeries.cs" />
     <Compile Include="StackedColumnSeries.cs" />

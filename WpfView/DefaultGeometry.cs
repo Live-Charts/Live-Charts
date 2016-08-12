@@ -54,7 +54,7 @@ namespace LiveCharts.Wpf
         }
 
         /// <summary>
-        /// Returns a diamond property
+        /// Returns a diamond geometry
         /// </summary>
         public static Geometry Diamond
         {
@@ -67,6 +67,14 @@ namespace LiveCharts.Wpf
         public static Geometry Triangle
         {
             get { return Geometry.Parse("M 0,1 l 1,1 h -2 Z"); }
+        }
+
+        /// <summary>
+        /// Returns a cross geometry
+        /// </summary>
+        public static Geometry Cross
+        {
+            get { return Geometry.Parse("M0,0 L1,1 M0,1 l1,-1"); }
         }
     }
 }

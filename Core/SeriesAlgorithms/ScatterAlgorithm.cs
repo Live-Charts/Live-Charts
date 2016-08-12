@@ -27,9 +27,9 @@ using LiveCharts.Dtos;
 
 namespace LiveCharts.SeriesAlgorithms
 {
-    public class BubbleAlgorithm : SeriesAlgorithm, ICartesianSeries
+    public class ScatterAlgorithm : SeriesAlgorithm, ICartesianSeries
     {
-        public BubbleAlgorithm(ISeriesView view) : base(view)
+        public ScatterAlgorithm(ISeriesView view) : base(view)
         {
             PreferredSelectionMode = TooltipSelectionMode.OnlySender;
         }

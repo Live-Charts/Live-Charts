@@ -133,7 +133,7 @@
     <Compile Include="SeriesAlgorithms\StackedColumnAlgorithm.cs" />
     <Compile Include="SeriesAlgorithms\ColumnAlgorithm.cs" />
     <Compile Include="SeriesAlgorithms\RowAlgorithm.cs" />
-    <Compile Include="SeriesAlgorithms\BubbleAlgorithm.cs" />
+    <Compile Include="SeriesAlgorithms\ScatterAlgorithm.cs" />
     <Compile Include="SeriesAlgorithms\VerticalLineAlgorithm.cs" />
     <Compile Include="SeriesAlgorithms\LineAlgorithm.cs" />
     <Compile Include="Helpers\Extentions.cs" />

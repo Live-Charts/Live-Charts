@@ -37,13 +37,13 @@ namespace LiveCharts.Wpf
     /// <summary>
     /// The OHCL series defines a financial series, add this series to a cartesian chart
     /// </summary>
-    public class OHCLSeries : Series, IFinancialSeriesView
+    public class OhlcSeries : Series, IFinancialSeriesView
     {
         #region Constructors
         /// <summary>
         /// Initializes a new instance of OhclSeries class
         /// </summary>
-        public OHCLSeries()
+        public OhlcSeries()
         {
             Model = new OhlcAlgorithm(this);
             InitializeDefuaults();
@@ -53,7 +53,7 @@ namespace LiveCharts.Wpf
         /// Initializes a new instance of OhclSeries class with a given mapper
         /// </summary>
         /// <param name="configuration"></param>
-        public OHCLSeries(object configuration)
+        public OhlcSeries(object configuration)
         {
             Model = new ColumnAlgorithm(this);
             Configuration = configuration;
@@ -69,7 +69,7 @@ namespace LiveCharts.Wpf
         #region Properties
 
         public static readonly DependencyProperty MaxColumnWidthProperty = DependencyProperty.Register(
-            "MaxColumnWidth", typeof (double), typeof (OHCLSeries), new PropertyMetadata(default(double)));
+            "MaxColumnWidth", typeof (double), typeof (OhlcSeries), new PropertyMetadata(default(double)));
         /// <summary>
         /// Gets or sets the maximum with of a point, a point will be capped to this width.
         /// </summary>
@@ -80,7 +80,7 @@ namespace LiveCharts.Wpf
         }
 
         public static readonly DependencyProperty IncreaseBrushProperty = DependencyProperty.Register(
-            "IncreaseBrush", typeof (Brush), typeof (OHCLSeries), new PropertyMetadata(default(Brush)));
+            "IncreaseBrush", typeof (Brush), typeof (OhlcSeries), new PropertyMetadata(default(Brush)));
         /// <summary>
         /// Gets or sets the brush of the point when close value is grater than open value
         /// </summary>
@@ -91,7 +91,7 @@ namespace LiveCharts.Wpf
         }
 
         public static readonly DependencyProperty DecreaseBrushProperty = DependencyProperty.Register(
-            "DecreaseBrush", typeof (Brush), typeof (OHCLSeries), new PropertyMetadata(default(Brush)));
+            "DecreaseBrush", typeof (Brush), typeof (OhlcSeries), new PropertyMetadata(default(Brush)));
         /// <summary>
         /// Gets or sets the brush of the point when close value is less than open value
         /// </summary>

@@ -56,7 +56,7 @@ namespace LiveCharts.Wpf
         /// <param name="configuration"></param>
         public StepLineSeries(object configuration)
         {
-            Model = new BubbleAlgorithm(this);
+            Model = new ScatterAlgorithm(this);
             Configuration = configuration;
             InitializeDefuaults();
         }
