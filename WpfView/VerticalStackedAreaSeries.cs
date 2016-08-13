@@ -24,7 +24,6 @@ using System;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
@@ -101,23 +100,31 @@ namespace LiveCharts.Wpf
                             Model.Chart.View.AnimationsSpeed));
             }
 
-            if (IsPathInitialized) return;
+            if (IsPathInitialized)
+            {
+                Model.Chart.View.EnsureElementBelongsToCurrentDrawMargin(Path);
+                Path.Stroke = Stroke;
+                Path.StrokeThickness = StrokeThickness;
+                Path.Fill = Fill;
+                Path.Visibility = Visibility;
+                Path.StrokeDashArray = StrokeDashArray;
+                Panel.SetZIndex(Path, Panel.GetZIndex(this));
+                return;
+            }
 
             IsPathInitialized = true;
 
-            Path = new Path();
-            BindingOperations.SetBinding(Path, Shape.StrokeProperty,
-                    new Binding { Path = new PropertyPath("Stroke"), Source = this });
-            BindingOperations.SetBinding(Path, Shape.FillProperty,
-                new Binding { Path = new PropertyPath("Fill"), Source = this });
-            BindingOperations.SetBinding(Path, Shape.StrokeThicknessProperty,
-                new Binding { Path = new PropertyPath("StrokeThickness"), Source = this });
-            BindingOperations.SetBinding(Path, VisibilityProperty,
-                new Binding { Path = new PropertyPath("Visibility"), Source = this });
-            BindingOperations.SetBinding(Path, Panel.ZIndexProperty,
-                new Binding { Path = new PropertyPath(Panel.ZIndexProperty), Source = this });
-            BindingOperations.SetBinding(Path, Shape.StrokeDashArrayProperty,
-                new Binding { Path = new PropertyPath(StrokeDashArrayProperty), Source = this });
+            Path = new Path
+            {
+                Stroke = Stroke,
+                StrokeThickness = StrokeThickness,
+                Fill = Fill,
+                Visibility = Visibility,
+                StrokeDashArray = StrokeDashArray
+            };
+
+            Panel.SetZIndex(Path, Panel.GetZIndex(this));
+
             var geometry = new PathGeometry();
             Figure = new PathFigure();
             geometry.Figures.Add(Figure);

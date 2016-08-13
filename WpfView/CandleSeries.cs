@@ -23,16 +23,13 @@
 using System;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using LiveCharts.Definitions.Points;
 using LiveCharts.Definitions.Series;
-using LiveCharts.Helpers;
 using LiveCharts.SeriesAlgorithms;
 using LiveCharts.Wpf.Charts.Base;
 using LiveCharts.Wpf.Points;
-using LiveCharts.Dtos;
 
 namespace LiveCharts.Wpf
 {
@@ -114,7 +111,7 @@ namespace LiveCharts.Wpf
 
         public override IChartPointView GetPointView(IChartPointView view, ChartPoint point, string label)
         {
-            var pbv = (view as CandlePointView);
+            var pbv = (CandlePointView) view;
 
             if (pbv == null)
             {
@@ -124,28 +121,6 @@ namespace LiveCharts.Wpf
                     HighToLowLine = new Line(),
                     OpenToCloseRectangle = new Rectangle()
                 };
-
-                BindingOperations.SetBinding(pbv.HighToLowLine, Shape.StrokeThicknessProperty,
-                    new Binding {Path = new PropertyPath(StrokeThicknessProperty), Source = this});
-                BindingOperations.SetBinding(pbv.HighToLowLine, Shape.StrokeDashArrayProperty,
-                    new Binding {Path = new PropertyPath(StrokeDashArrayProperty), Source = this});
-                BindingOperations.SetBinding(pbv.HighToLowLine, Panel.ZIndexProperty,
-                    new Binding {Path = new PropertyPath(Panel.ZIndexProperty), Source = this});
-                BindingOperations.SetBinding(pbv.HighToLowLine, VisibilityProperty,
-                    new Binding {Path = new PropertyPath(VisibilityProperty), Source = this});
-
-                BindingOperations.SetBinding(pbv.OpenToCloseRectangle, Shape.FillProperty,
-                    new Binding { Path = new PropertyPath(FillProperty), Source = this });
-                BindingOperations.SetBinding(pbv.OpenToCloseRectangle, Shape.StrokeProperty,
-                    new Binding { Path = new PropertyPath(StrokeProperty), Source = this });
-                BindingOperations.SetBinding(pbv.OpenToCloseRectangle, Shape.StrokeThicknessProperty,
-                    new Binding { Path = new PropertyPath(StrokeThicknessProperty), Source = this });
-                BindingOperations.SetBinding(pbv.OpenToCloseRectangle, Shape.StrokeDashArrayProperty,
-                    new Binding { Path = new PropertyPath(StrokeDashArrayProperty), Source = this });
-                BindingOperations.SetBinding(pbv.OpenToCloseRectangle, Panel.ZIndexProperty,
-                    new Binding { Path = new PropertyPath(Panel.ZIndexProperty), Source = this });
-                BindingOperations.SetBinding(pbv.OpenToCloseRectangle, VisibilityProperty,
-                    new Binding { Path = new PropertyPath(VisibilityProperty), Source = this });
 
                 Model.Chart.View.AddToDrawMargin(pbv.HighToLowLine);
                 Model.Chart.View.AddToDrawMargin(pbv.OpenToCloseRectangle);
@@ -163,6 +138,20 @@ namespace LiveCharts.Wpf
                     .EnsureElementBelongsToCurrentDrawMargin(pbv.DataLabel);
             }
 
+            var i = Panel.GetZIndex(this);
+
+            pbv.HighToLowLine.StrokeThickness = StrokeThickness;
+            pbv.HighToLowLine.StrokeDashArray = StrokeDashArray;
+            pbv.HighToLowLine.Visibility = Visibility;
+            Panel.SetZIndex(pbv.HighToLowLine, i);
+
+            pbv.OpenToCloseRectangle.Fill = Fill;
+            pbv.OpenToCloseRectangle.StrokeThickness = StrokeThickness;
+            pbv.OpenToCloseRectangle.Stroke = Stroke;
+            pbv.OpenToCloseRectangle.StrokeDashArray = StrokeDashArray;
+            pbv.OpenToCloseRectangle.Visibility = Visibility;
+            Panel.SetZIndex(pbv.HighToLowLine, i);
+
             if (Model.Chart.RequiresHoverShape && pbv.HoverShape == null)
             {
                 pbv.HoverShape = new Rectangle
@@ -172,14 +161,14 @@ namespace LiveCharts.Wpf
                 };
 
                 Panel.SetZIndex(pbv.HoverShape, int.MaxValue);
-                BindingOperations.SetBinding(pbv.HoverShape, VisibilityProperty,
-                    new Binding {Path = new PropertyPath(VisibilityProperty), Source = this});
 
                 var wpfChart = (Chart)Model.Chart.View;
                 wpfChart.AttachHoverableEventTo(pbv.HoverShape);
 
                 Model.Chart.View.AddToDrawMargin(pbv.HoverShape);
             }
+
+            if (pbv.HoverShape != null) pbv.HoverShape.Visibility = Visibility;
 
             if (DataLabels && pbv.DataLabel == null)
             {
@@ -193,21 +182,15 @@ namespace LiveCharts.Wpf
 
             if (point.Open <= point.Close)
             {
-                BindingOperations.SetBinding(pbv.HighToLowLine, Shape.StrokeProperty,
-                    new Binding { Path = new PropertyPath(IncreaseBrushProperty), Source = this });
-                BindingOperations.SetBinding(pbv.OpenToCloseRectangle, Shape.StrokeProperty,
-                    new Binding { Path = new PropertyPath(IncreaseBrushProperty), Source = this });
-                BindingOperations.SetBinding(pbv.OpenToCloseRectangle, Shape.FillProperty,
-                    new Binding { Path = new PropertyPath(IncreaseBrushProperty), Source = this });
+                pbv.HighToLowLine.Stroke = IncreaseBrush;
+                pbv.OpenToCloseRectangle.Fill = IncreaseBrush;
+                pbv.OpenToCloseRectangle.Stroke = IncreaseBrush;
             }
             else
             {
-                BindingOperations.SetBinding(pbv.HighToLowLine, Shape.StrokeProperty,
-                    new Binding { Path = new PropertyPath(DecreaseBrushProperty), Source = this });
-                BindingOperations.SetBinding(pbv.OpenToCloseRectangle, Shape.StrokeProperty,
-                    new Binding { Path = new PropertyPath(DecreaseBrushProperty), Source = this });
-                BindingOperations.SetBinding(pbv.OpenToCloseRectangle, Shape.FillProperty,
-                    new Binding { Path = new PropertyPath(DecreaseBrushProperty), Source = this });
+                pbv.HighToLowLine.Stroke = DecreaseBrush;
+                pbv.OpenToCloseRectangle.Fill = DecreaseBrush;
+                pbv.OpenToCloseRectangle.Stroke = DecreaseBrush;
             }
 
             return pbv;

@@ -58,7 +58,6 @@ namespace Wpf
             {
                 //new JimmyTheTestsGuy(),
                 //new SharedTooltipExample(),
-                new GeoMapExample(),
                 new LinqExample(),
                 new CustomTooltipAndLegendExample(),
                 new PointShapeLineExample(),
@@ -72,6 +71,7 @@ namespace Wpf
                 new PointStateExample(),
                 new BasicRowExample(),
                 new MultiAxesChart(),
+                new GeoMapExample(),
                 new UiElementsExample(),
                 new StackedRowExample(),
                 new BasicColumn(),

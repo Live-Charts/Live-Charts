@@ -35,7 +35,7 @@ namespace LiveCharts.Wpf.Points
         public double DeltaY { get; set; }
         public Line VerticalLine { get; set; }
         public Line HorizontalLine { get; set; }
-        public Shape Shape { get; set; }
+        public Path Shape { get; set; }
 
         public override void DrawOrMove(ChartPoint previousDrawn, ChartPoint current, int index, ChartCore chart)
         {

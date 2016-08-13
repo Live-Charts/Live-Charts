@@ -39,7 +39,7 @@ namespace LiveCharts.Definitions.Series
 
         IChartPointView GetPointView(IChartPointView view, ChartPoint point, string label);
         void OnSeriesUpdateStart();
-        void Erase();
+        void Erase(bool removeFromView);
         void OnSeriesUpdatedFinish();
         void InitializeColors();
         void DrawSpecializedElements();

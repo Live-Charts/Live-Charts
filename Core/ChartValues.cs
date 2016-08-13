@@ -91,7 +91,7 @@ namespace LiveCharts
                     if (cp.Weight < wMin) wMin = cp.Weight;
                     if (cp.Weight > wMax) wMax = cp.Weight;
                 }
-            } else if (seriesView is IScatterSeriesView)
+            } else if (seriesView is IScatterSeriesView || seriesView is IHeatSeriesView)
             {
                 for (var index = 0; index < Count; index++)
                 {

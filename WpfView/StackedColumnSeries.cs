@@ -23,13 +23,11 @@
 using System;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using LiveCharts.Definitions.Points;
 using LiveCharts.Definitions.Series;
 using LiveCharts.Dtos;
-using LiveCharts.Helpers;
 using LiveCharts.SeriesAlgorithms;
 using LiveCharts.Wpf.Charts.Base;
 using LiveCharts.Wpf.Points;
@@ -108,7 +106,7 @@ namespace LiveCharts.Wpf
 
         public override IChartPointView GetPointView(IChartPointView view, ChartPoint point, string label)
         {
-            var pbv = (view as ColumnPointView);
+            var pbv = (ColumnPointView) view;
 
             if (pbv == null)
             {
@@ -119,19 +117,6 @@ namespace LiveCharts.Wpf
                     Data = new CoreRectangle(),
                     LabelPosition = BarLabelPosition.Merged
                 };
-
-                BindingOperations.SetBinding(pbv.Rectangle, Shape.FillProperty,
-                    new Binding { Path = new PropertyPath(FillProperty), Source = this });
-                BindingOperations.SetBinding(pbv.Rectangle, Shape.StrokeProperty,
-                    new Binding { Path = new PropertyPath(StrokeProperty), Source = this });
-                BindingOperations.SetBinding(pbv.Rectangle, Shape.StrokeThicknessProperty,
-                    new Binding {Path = new PropertyPath(StrokeThicknessProperty), Source = this});
-                BindingOperations.SetBinding(pbv.Rectangle, Shape.StrokeDashArrayProperty,
-                    new Binding {Path = new PropertyPath(StrokeDashArrayProperty), Source = this});
-                BindingOperations.SetBinding(pbv.Rectangle, Panel.ZIndexProperty,
-                    new Binding {Path = new PropertyPath(Panel.ZIndexProperty), Source = this});
-                BindingOperations.SetBinding(pbv.Rectangle, VisibilityProperty,
-                    new Binding { Path = new PropertyPath(VisibilityProperty), Source = this });
 
                 Model.Chart.View.AddToDrawMargin(pbv.Rectangle);
             }
@@ -144,6 +129,13 @@ namespace LiveCharts.Wpf
                     .EnsureElementBelongsToCurrentDrawMargin(pbv.HoverShape);
             }
 
+            pbv.Rectangle.Fill = Fill;
+            pbv.Rectangle.StrokeThickness = StrokeThickness;
+            pbv.Rectangle.Stroke = Stroke;
+            pbv.Rectangle.StrokeDashArray = StrokeDashArray;
+            pbv.Rectangle.Visibility = Visibility;
+            Panel.SetZIndex(pbv.Rectangle, Panel.GetZIndex(this));
+
             if (Model.Chart.RequiresHoverShape && pbv.HoverShape == null)
             {
                 pbv.HoverShape = new Rectangle
@@ -153,14 +145,14 @@ namespace LiveCharts.Wpf
                 };
 
                 Panel.SetZIndex(pbv.HoverShape, int.MaxValue);
-                BindingOperations.SetBinding(pbv.HoverShape, VisibilityProperty,
-                    new Binding {Path = new PropertyPath(VisibilityProperty), Source = this});
 
                 var wpfChart = (Chart)Model.Chart.View;
                 wpfChart.AttachHoverableEventTo(pbv.HoverShape);
 
                 Model.Chart.View.AddToDrawMargin(pbv.HoverShape);
             }
+
+            if (pbv.HoverShape != null) pbv.HoverShape.Visibility = Visibility;
 
             if (DataLabels && pbv.DataLabel == null)
             {

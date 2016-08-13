@@ -23,14 +23,12 @@
 using System;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using LiveCharts.Definitions.Points;
 using LiveCharts.SeriesAlgorithms;
 using LiveCharts.Wpf.Charts.Base;
 using LiveCharts.Wpf.Components;
-using LiveCharts.Wpf.Converters;
 using LiveCharts.Wpf.Points;
 
 namespace LiveCharts.Wpf
@@ -108,7 +106,7 @@ namespace LiveCharts.Wpf
 
         public override IChartPointView GetPointView(IChartPointView view, ChartPoint point, string label)
         {
-            var pbv = (view as StepLinePointView);
+            var pbv = (StepLinePointView) view;
 
             if (pbv == null)
             {
@@ -118,28 +116,6 @@ namespace LiveCharts.Wpf
                     HorizontalLine = new Line(),
                     VerticalLine = new Line()
                 };
-
-                BindingOperations.SetBinding(pbv.VerticalLine, Shape.StrokeProperty,
-                    new Binding {Path = new PropertyPath(AlternativeStrokeProperty), Source = this});
-                BindingOperations.SetBinding(pbv.VerticalLine, Shape.StrokeThicknessProperty,
-                    new Binding {Path = new PropertyPath(StrokeThicknessProperty), Source = this});
-                BindingOperations.SetBinding(pbv.VerticalLine, VisibilityProperty,
-                    new Binding {Path = new PropertyPath(VisibilityProperty), Source = this});
-                BindingOperations.SetBinding(pbv.VerticalLine, Panel.ZIndexProperty,
-                    new Binding {Path = new PropertyPath(Panel.ZIndexProperty), Source = this});
-                BindingOperations.SetBinding(pbv.VerticalLine, Shape.StrokeDashArrayProperty,
-                    new Binding {Path = new PropertyPath(StrokeDashArrayProperty), Source = this});
-
-                BindingOperations.SetBinding(pbv.HorizontalLine, Shape.StrokeProperty,
-                    new Binding {Path = new PropertyPath(StrokeProperty), Source = this});
-                BindingOperations.SetBinding(pbv.HorizontalLine, Shape.StrokeThicknessProperty,
-                    new Binding {Path = new PropertyPath(StrokeThicknessProperty), Source = this});
-                BindingOperations.SetBinding(pbv.HorizontalLine, VisibilityProperty,
-                    new Binding {Path = new PropertyPath(VisibilityProperty), Source = this});
-                BindingOperations.SetBinding(pbv.HorizontalLine, Panel.ZIndexProperty,
-                    new Binding {Path = new PropertyPath(Panel.ZIndexProperty), Source = this});
-                BindingOperations.SetBinding(pbv.HorizontalLine, Shape.StrokeDashArrayProperty,
-                    new Binding {Path = new PropertyPath(StrokeDashArrayProperty), Source = this});
 
                 Model.Chart.View.AddToDrawMargin(pbv.HorizontalLine);
                 Model.Chart.View.AddToDrawMargin(pbv.VerticalLine);
@@ -160,6 +136,20 @@ namespace LiveCharts.Wpf
                     .EnsureElementBelongsToCurrentDrawMargin(pbv.VerticalLine);
             }
 
+            pbv.VerticalLine.Fill = Fill;
+            pbv.VerticalLine.StrokeThickness = StrokeThickness;
+            pbv.VerticalLine.Stroke = Stroke;
+            pbv.VerticalLine.StrokeDashArray = StrokeDashArray;
+            pbv.VerticalLine.Visibility = Visibility;
+            Panel.SetZIndex(pbv.VerticalLine, Panel.GetZIndex(this));
+
+            pbv.HorizontalLine.Fill = Fill;
+            pbv.HorizontalLine.StrokeThickness = StrokeThickness;
+            pbv.HorizontalLine.Stroke = Stroke;
+            pbv.HorizontalLine.StrokeDashArray = StrokeDashArray;
+            pbv.HorizontalLine.Visibility = Visibility;
+            Panel.SetZIndex(pbv.HorizontalLine, Panel.GetZIndex(this));
+
             if (PointGeometry != null && Math.Abs(PointGeometrySize) > 0.1 && pbv.Shape == null)
             {
                 if (PointGeometry != null)
@@ -170,35 +160,24 @@ namespace LiveCharts.Wpf
                         ClipToBounds = true,
                         StrokeThickness = StrokeThickness
                     };
-                    BindingOperations.SetBinding(pbv.Shape, Path.DataProperty,
-                        new Binding {Path = new PropertyPath(PointGeometryProperty), Source = this});
                 }
-                else
-                {
-                    pbv.Shape = new Ellipse();
-                }
-
-                BindingOperations.SetBinding(pbv.Shape, Shape.FillProperty,
-                    new Binding {Path = new PropertyPath(PointForeroundProperty), Source = this});
-                BindingOperations.SetBinding(pbv.Shape, Shape.StrokeProperty,
-                    new Binding {Path = new PropertyPath(StrokeProperty), Source = this});
-                BindingOperations.SetBinding(pbv.Shape, Shape.StrokeThicknessProperty,
-                    new Binding {Path = new PropertyPath(StrokeThicknessProperty), Source = this});
-                BindingOperations.SetBinding(pbv.Shape, WidthProperty,
-                    new Binding {Path = new PropertyPath(PointGeometrySizeProperty), Source = this});
-                BindingOperations.SetBinding(pbv.Shape, HeightProperty,
-                    new Binding {Path = new PropertyPath(PointGeometrySizeProperty), Source = this});
-                BindingOperations.SetBinding(pbv.Shape, VisibilityProperty,
-                    new Binding {Path = new PropertyPath(VisibilityProperty), Source = this});
-                BindingOperations.SetBinding(pbv.Shape, Panel.ZIndexProperty,
-                    new Binding
-                    {
-                        Path = new PropertyPath(Panel.ZIndexProperty),
-                        Source = this,
-                        Converter = new NextZIndexConverter()
-                    });
-
                 Model.Chart.View.AddToDrawMargin(pbv.Shape);
+            }
+
+            if (pbv.Shape != null)
+            {
+                pbv.Shape.Fill = Fill;
+                pbv.Shape.StrokeThickness = StrokeThickness;
+                pbv.Shape.Stroke = Stroke;
+                pbv.Shape.StrokeDashArray = StrokeDashArray;
+                pbv.Shape.Visibility = Visibility;
+                pbv.Shape.Width = PointGeometrySize;
+                pbv.Shape.Height = PointGeometrySize;
+                pbv.Shape.Data = PointGeometry;
+                Panel.SetZIndex(pbv.Shape, Panel.GetZIndex(this) + 1);
+
+                if (point.Stroke != null) pbv.Shape.Stroke = (Brush) point.Stroke;
+                if (point.Fill != null) pbv.Shape.Fill = (Brush) point.Fill;
             }
 
             if (Model.Chart.RequiresHoverShape && pbv.HoverShape == null)
@@ -210,14 +189,14 @@ namespace LiveCharts.Wpf
                 };
 
                 Panel.SetZIndex(pbv.HoverShape, int.MaxValue);
-                BindingOperations.SetBinding(pbv.HoverShape, VisibilityProperty,
-                    new Binding {Path = new PropertyPath(VisibilityProperty), Source = this});
 
                 var wpfChart = (Chart) Model.Chart.View;
                 wpfChart.AttachHoverableEventTo(pbv.HoverShape);
 
                 Model.Chart.View.AddToDrawMargin(pbv.HoverShape);
             }
+
+            if (pbv.HoverShape != null) pbv.HoverShape.Visibility = Visibility;
 
             if (DataLabels && pbv.DataLabel == null)
             {
@@ -228,9 +207,6 @@ namespace LiveCharts.Wpf
             }
 
             if (pbv.DataLabel != null) pbv.DataLabel.Text = label;
-
-            if (point.Stroke != null) pbv.Shape.Stroke = (Brush) point.Stroke;
-            if (point.Fill != null) pbv.Shape.Fill = (Brush) point.Fill;
 
             return pbv;
         }

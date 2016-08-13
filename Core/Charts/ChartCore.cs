@@ -68,9 +68,9 @@ namespace LiveCharts.Charts
         public List<AxisCore> AxisX { get; set; }
         public List<AxisCore> AxisY { get; set; }
 
-        public CoreLimit Value1CoreLimit { get; set; }
-        public CoreLimit Value2CoreLimit { get; set; }
-        public CoreLimit Value3CoreLimit { get; set; }
+        public CoreLimit XLimit { get; set; }
+        public CoreLimit YLimit { get; set; }
+        public CoreLimit WLimit { get; set; }
 
         public int CurrentColorIndex { get; set; }
 

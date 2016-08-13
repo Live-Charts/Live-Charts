@@ -85,7 +85,7 @@ namespace LiveCharts
             {
                 foreach (var view in oldItems)
                 {
-                    view.Erase();
+                    view.Erase(true);
                 }
             }
            

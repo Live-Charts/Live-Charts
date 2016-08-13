@@ -130,7 +130,7 @@ namespace LiveCharts.Wpf
 
         public static readonly DependencyProperty StrokeProperty = DependencyProperty.Register(
             "Stroke", typeof (Brush), typeof (Series), 
-            new PropertyMetadata(default(Brush)));
+            new PropertyMetadata(default(Brush), CallChartUpdater()));
         /// <summary>
         /// Gets or sets series stroke, if this property is null then a SolidColorBrush will be assigned according to series position in collection and Chart.Colors property
         /// </summary>
@@ -142,7 +142,7 @@ namespace LiveCharts.Wpf
 
         public static readonly DependencyProperty StrokeThicknessProperty = DependencyProperty.Register(
             "StrokeThickness", typeof (double), typeof (Series), 
-            new PropertyMetadata(default(double)));
+            new PropertyMetadata(default(double), CallChartUpdater()));
         /// <summary>
         /// Gets or sets the series stroke thickness.
         /// </summary>
@@ -154,7 +154,7 @@ namespace LiveCharts.Wpf
 
         public static readonly DependencyProperty FillProperty = DependencyProperty.Register(
             "Fill", typeof (Brush), typeof (Series), 
-            new PropertyMetadata(default(Brush)));
+            new PropertyMetadata(default(Brush), CallChartUpdater()));
         /// <summary>
         /// Gets or sets series fill color, if this property is null then a SolidColorBrush will be assigned according to series position in collection and Chart.Colors property, also Fill property has a default opacity according to chart type.
         /// </summary>
@@ -368,14 +368,14 @@ namespace LiveCharts.Wpf
         /// <summary>
         /// Erases series
         /// </summary>
-        public virtual void Erase()
+        public virtual void Erase(bool removeFromView = true)
         {
             Values.GetPoints(this).ForEach(p =>
             {
                 if (p.View != null)
                     p.View.RemoveFromView(Model.Chart);
             });
-            Model.Chart.View.RemoveFromView(this);
+            if (removeFromView) Model.Chart.View.RemoveFromView(this);
         }
 
         /// <summary>
@@ -457,8 +457,12 @@ namespace LiveCharts.Wpf
         {
             if (Model.Chart != null && PreviousVisibility != Visibility)
             {
-                Model.Chart.Updater.Run();
                 PreviousVisibility = Visibility;
+                Model.Chart.Updater.Run(false, true);
+                if (Visibility == Visibility.Collapsed || Visibility == Visibility.Hidden)
+                {
+                    Erase(false);
+                }
             }
         }
 

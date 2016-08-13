@@ -8,8 +8,20 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300" 
              d:DataContext="{d:DesignInstance local:LinqExample}">
+    <UserControl.Resources>
+        <Style TargetType="lvc:CartesianChart">
+            <Setter Property="Background" Value="Black"></Setter>
+        </Style>
+        <Style TargetType="lvc:Axis">
+            <Setter Property="FontSize" Value="20"></Setter>
+        </Style>
+        <Style TargetType="lvc:ColumnSeries">
+            <Setter Property="DataLabels" Value="True"></Setter>
+            <Setter Property="FontSize" Value="20"></Setter>
+        </Style>
+    </UserControl.Resources>
     <Grid>
-        <Grid.RowDefinitions>
+            <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>

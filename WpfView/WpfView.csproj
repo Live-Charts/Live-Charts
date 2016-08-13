@@ -131,7 +131,6 @@
     <Compile Include="AngularSection.cs" />
     <Compile Include="Components\IFondeable.cs" />
     <Compile Include="ScatterSeries.cs" />
-    <Compile Include="Converters\NextZIndexConverter.cs" />
     <Compile Include="DefaultGeoMapTooltip.xaml.cs">
       <DependentUpon>DefaultGeoMapTooltip.xaml</DependentUpon>
     </Compile>

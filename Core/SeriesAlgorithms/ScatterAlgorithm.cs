@@ -41,10 +41,10 @@ namespace LiveCharts.SeriesAlgorithms
             var p1 = new CorePoint();
             var p2 = new CorePoint();
 
-            p1.X = Chart.Value3CoreLimit.Max;
+            p1.X = Chart.WLimit.Max;
             p1.Y = bubbleSeries.MaxPointShapeDiameter;
 
-            p2.X = Chart.Value3CoreLimit.Min;
+            p2.X = Chart.WLimit.Min;
             p2.Y = bubbleSeries.MinPointShapeDiameter;
 
             var deltaX = p2.X - p1.X;

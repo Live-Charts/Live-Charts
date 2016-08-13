@@ -195,7 +195,7 @@ namespace LiveCharts.Wpf.Charts.Base
             {
                 foreach (var series in chart.LastKnownSeriesCollection)
                 {
-                    series.Erase();
+                    series.Erase(true);
                 }
             }
 
@@ -352,14 +352,16 @@ namespace LiveCharts.Wpf.Charts.Base
 
         public static readonly DependencyProperty HoverableProperty = DependencyProperty.Register(
             "Hoverable", typeof(bool), typeof(Chart), new PropertyMetadata(true));
+
         /// <summary>
         /// gets or sets whether chart should react when a user moves the mouse over a data point.
         /// </summary>
         public bool Hoverable
         {
-            get { return (bool)GetValue(HoverableProperty); }
+            get { return (bool) GetValue(HoverableProperty); }
             set { SetValue(HoverableProperty, value); }
         }
+
         /// <summary>
         /// Gets the chart model, the model is who calculates everything, is the engine of the chart
         /// </summary>
@@ -429,7 +431,7 @@ namespace LiveCharts.Wpf.Charts.Base
 
         public void AddToView(object element)
         {
-            var wpfElement = (FrameworkElement)element;
+            var wpfElement = (FrameworkElement) element;
             if (wpfElement == null) return;
             Canvas.Children.Add(wpfElement);
         }
@@ -699,8 +701,7 @@ namespace LiveCharts.Wpf.Charts.Base
         private void TooltipTimeoutTimerOnTick(object sender, EventArgs eventArgs)
         {
             TooltipTimeoutTimer.Stop();
-            if (DataTooltip == null) return;
-
+            if (DataTooltip == null || ActiveTooltip == null) return;
             ActiveTooltip.Visibility = Visibility.Hidden;
         }
 

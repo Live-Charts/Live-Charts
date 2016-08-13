@@ -158,7 +158,7 @@ namespace LiveCharts.Charts
             var vs = View.ActualSeries
                 .Select(x => x.ActualValues.GetTracker(x).WLimit)
                 .DefaultIfEmpty(new CoreLimit()).ToArray();
-            Value3CoreLimit = new CoreLimit(vs.Select(x => x.Min).DefaultIfEmpty(0).Min(),
+            WLimit = new CoreLimit(vs.Select(x => x.Min).DefaultIfEmpty(0).Min(),
                 vs.Select(x => x.Max).DefaultIfEmpty(0).Max());
         }
 

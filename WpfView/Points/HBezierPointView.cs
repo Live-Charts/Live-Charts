@@ -28,14 +28,13 @@ using System.Windows.Shapes;
 using LiveCharts.Charts;
 using LiveCharts.Definitions.Points;
 using LiveCharts.Dtos;
-using LiveCharts.Wpf.Components;
 
 namespace LiveCharts.Wpf.Points
 {
     internal class HBezierPointView : PointView, IBezierPointView
     {
         public BezierSegment Segment { get; set; }
-        public Shape Shape { get; set; }
+        public Path Shape { get; set; }
         public PathFigure Container { get; set; }
         public BezierData Data { get; set; }
 
