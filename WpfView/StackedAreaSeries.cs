@@ -112,7 +112,6 @@ namespace LiveCharts.Wpf
                 Path.Fill = Fill;
                 Path.Visibility = Visibility;
                 Path.StrokeDashArray = StrokeDashArray;
-                Panel.SetZIndex(Path, Panel.GetZIndex(this));
                 return;
             }
 
@@ -126,8 +125,6 @@ namespace LiveCharts.Wpf
                 Visibility = Visibility,
                 StrokeDashArray = StrokeDashArray
             };
-
-            Panel.SetZIndex(Path, Panel.GetZIndex(this));
 
             var geometry = new PathGeometry();
             Figure = new PathFigure();

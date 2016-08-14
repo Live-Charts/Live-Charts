@@ -23,7 +23,6 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -79,6 +78,23 @@ namespace LiveCharts.Wpf.Charts.Base
             SetCurrentValue(ChartLegendProperty, new DefaultLegend());
             SetCurrentValue(DataTooltipProperty, new DefaultTooltip());
 
+            var colors = new ColorsCollection
+            {
+                Color.FromRgb(33, 149, 242),
+                Color.FromRgb(243, 67, 54),
+                Color.FromRgb(254, 192, 7),
+                Color.FromRgb(96, 125, 138),
+                Color.FromRgb(0, 187, 211),
+                Color.FromRgb(232, 30, 99),
+                Color.FromRgb(254, 87, 34),
+                Color.FromRgb(63, 81, 180),
+                Color.FromRgb(204, 219, 57),
+                Color.FromRgb(0, 149, 135),
+                Color.FromRgb(76, 174, 80)
+            };
+
+            SetCurrentValue(ColorsProperty, colors);
+
             SizeChanged += OnSizeChanged;
             IsVisibleChanged += OnIsVisibleChanged;
             MouseWheel += MouseWheelOnRoll;
@@ -92,23 +108,6 @@ namespace LiveCharts.Wpf.Charts.Base
 
         static Chart()
         {
-            Colors = new List<Color>
-            {
-                Color.FromRgb(33, 149, 242),
-                Color.FromRgb(243, 67, 54),
-                Color.FromRgb(254, 192, 7),
-                Color.FromRgb(96, 125, 138),
-                Color.FromRgb(155, 39, 175),
-                Color.FromRgb(0, 149, 135),
-                Color.FromRgb(76, 174, 80),
-                Color.FromRgb(121, 85, 72),
-                Color.FromRgb(157, 157, 157),
-                Color.FromRgb(232, 30, 99),
-                Color.FromRgb(63, 81, 180),
-                Color.FromRgb(0, 187, 211),
-                Color.FromRgb(254, 234, 59),
-                Color.FromRgb(254, 87, 34)
-            };
             Randomizer = new Random();
         }
 
@@ -236,10 +235,17 @@ namespace LiveCharts.Wpf.Charts.Base
         /// Gets or sets whether charts must randomize the starting default series color.
         /// </summary>
         public static bool RandomizeStartingColor { get; set; }
+
+        public static readonly DependencyProperty ColorsProperty = DependencyProperty.Register(
+            "Colors", typeof(ColorsCollection), typeof(Chart), new PropertyMetadata(default(ColorsCollection)));
         /// <summary>
         /// Gets or sets the default series color set.
         /// </summary>
-        public static List<Color> Colors { get; set; }
+        public ColorsCollection Colors
+        {
+            get { return (ColorsCollection) GetValue(ColorsProperty); }
+            set { SetValue(ColorsProperty, value); }
+        }
 
         public static readonly DependencyProperty AxisYProperty = DependencyProperty.Register(
             "AxisY", typeof(AxesCollection), typeof(Chart),
@@ -409,6 +415,7 @@ namespace LiveCharts.Wpf.Charts.Base
         #endregion
 
         #region Public Methods
+
         public void SetDrawMarginTop(double value)
         {
             Canvas.SetTop(DrawMargin, value);
@@ -518,8 +525,8 @@ namespace LiveCharts.Wpf.Charts.Base
             {
                 if (x.Parent == null)
                 {
-                    chart.View.AddToView(x);
                     if (x.Separator != null) chart.View.AddToView(x.Separator);
+                    chart.View.AddToView(x);
                 }
                 return x.AsCoreElement(Model, AxisOrientation.X);
             }).ToList();

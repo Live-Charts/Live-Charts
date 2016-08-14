@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows.Controls;
 using System.Windows.Input;
-using LiveCharts.Wpf;
 using Wpf.Annotations;
 using Wpf.CartesianChart;
 using Wpf.CartesianChart.BasicLine;
@@ -58,6 +57,7 @@ namespace Wpf
             {
                 //new JimmyTheTestsGuy(),
                 //new SharedTooltipExample(),
+                new ScatterExample(),
                 new LinqExample(),
                 new CustomTooltipAndLegendExample(),
                 new PointShapeLineExample(),

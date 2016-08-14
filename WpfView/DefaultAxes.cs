@@ -21,7 +21,6 @@
 //SOFTWARE.
 
 using System.Windows;
-using System.Windows.Media;
 
 namespace LiveCharts.Wpf
 {
@@ -74,25 +73,6 @@ namespace LiveCharts.Wpf
             }
         }
 
-        /// <summary>
-        /// Returns an axis that highlights zeros.
-        /// </summary>
-        public static AxesCollection HighlightZerosAxis
-        {
-            get
-            {
-                return new AxesCollection
-                {
-                    new Axis
-                    {
-                        IsEnabled = false,
-                        StrokeThickness = 3d,
-                        Stroke = new SolidColorBrush(Color.FromRgb(218, 218, 218)),
-                        Separator = CleanSeparator
-                    }
-                };
-            }
-        }
 
         //Returns a clean separator
         public static Separator CleanSeparator

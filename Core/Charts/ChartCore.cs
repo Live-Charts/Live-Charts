@@ -62,7 +62,11 @@ namespace LiveCharts.Charts
         public bool HasUnitaryPoints { get; set; }
         public bool RequiresHoverShape
         {
-            get { return View != null && (View.HasTooltip || View.HasDataClickEventAttached || View.Hoverable); }
+            get
+            {
+                return View != null &&
+                       (View.HasTooltip || View.HasDataClickEventAttached || View.Hoverable);
+            }
         }
 
         public List<AxisCore> AxisX { get; set; }
@@ -76,17 +80,6 @@ namespace LiveCharts.Charts
 
         public AxisOrientation PivotZoomingAxis { get; set; }
         public CorePoint PanOrigin { get; set; }
-
-        private bool IsZooming
-        {
-            get
-            {
-                var animationsSpeed = View.DisableAnimations ? 0 : View.AnimationsSpeed.TotalMilliseconds;
-                return (DateTime.Now - RequestedZoomAt).TotalMilliseconds < animationsSpeed;
-            }
-        }
-
-        private DateTime RequestedZoomAt { get; set; }
 
         #endregion
 
@@ -230,28 +223,6 @@ namespace LiveCharts.Charts
                 }
             }
 
-
-            //if (curSize.Left < l)
-            //{
-            //    var cor = l - curSize.Left;
-            //    curSize.Left = l;
-            //    curSize.Width -= cor;
-            //    foreach (var yi in AxisY.Where(x => x.Position == AxisPosition.LeftBottom))
-            //    {
-            //        yi.View.SetTitleLeft(yi.View.GetTitleLeft() + cor);
-            //    }
-            //}
-            //var rp = ChartControlSize.Width - curSize.Left - curSize.Width;
-            //if (r > rp)
-            //{
-            //    var cor = r - rp;
-            //    curSize.Width -= cor;
-            //    foreach (var yi in AxisY.Where(x => x.Position == AxisPosition.RightTop))
-            //    {
-            //        yi.View.SetTitleLeft(yi.View.GetTitleLeft() - cor);
-            //    }
-            //}
-
             DrawMargin.Top = curSize.Top;
             DrawMargin.Left = curSize.Left;
             DrawMargin.Width = curSize.Width;
@@ -314,10 +285,6 @@ namespace LiveCharts.Charts
         {
             View.HideTooltop();
 
-            if (IsZooming) return;
-
-            RequestedZoomAt = DateTime.Now;
-
             pivot = new CorePoint(
                 ChartFunctions.FromPlotArea(pivot.X, AxisOrientation.X, this),
                 ChartFunctions.FromPlotArea(pivot.Y, AxisOrientation.Y, this));
@@ -352,16 +319,12 @@ namespace LiveCharts.Charts
                 }
             }
 
-            Updater.Run(false, true);
+            Updater.Run();
         }
 
         public void ZoomOut(CorePoint pivot)
         {
             View.HideTooltop();
-
-            if (IsZooming) return;
-
-            RequestedZoomAt = DateTime.Now;
 
             var dataPivot = new CorePoint(
                 ChartFunctions.FromPlotArea(pivot.X, AxisOrientation.X, this),
@@ -397,7 +360,7 @@ namespace LiveCharts.Charts
                 }
             }
 
-            Updater.Run(false, true);
+            Updater.Run();
         }
 
         public void ClearZoom()

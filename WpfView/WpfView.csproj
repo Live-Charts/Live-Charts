@@ -129,6 +129,7 @@
   <ItemGroup>
     <Compile Include="AngularGauge.cs" />
     <Compile Include="AngularSection.cs" />
+    <Compile Include="ColorsCollection.cs" />
     <Compile Include="Components\IFondeable.cs" />
     <Compile Include="ScatterSeries.cs" />
     <Compile Include="DefaultGeoMapTooltip.xaml.cs">
@@ -238,6 +239,7 @@
       <Name>Core</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
