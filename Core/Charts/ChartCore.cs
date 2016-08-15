@@ -31,7 +31,6 @@ namespace LiveCharts.Charts
 {
     public abstract class ChartCore
     {
-
         #region Constructors
         protected ChartCore(IChartView view, ChartUpdater updater)
         {
@@ -78,7 +77,6 @@ namespace LiveCharts.Charts
 
         public int CurrentColorIndex { get; set; }
 
-        public AxisOrientation PivotZoomingAxis { get; set; }
         public CorePoint PanOrigin { get; set; }
 
         #endregion
@@ -299,6 +297,8 @@ namespace LiveCharts.Charts
                     var rMin = (pivot.X - min) / l;
                     var rMax = 1 - rMin;
 
+                    if ((max - rMax*xi.S) - (min + rMin*xi.S) < xi.S*.01) return;
+
                     xi.View.MinValue = min + rMin * xi.S;
                     xi.View.MaxValue = max - rMax * xi.S;
                 }
@@ -313,6 +313,8 @@ namespace LiveCharts.Charts
                     var l = max - min;
                     var rMin = (pivot.Y - min) / l;
                     var rMax = 1 - rMin;
+
+                    if ((max - rMax*yi.S) - (min + rMin*yi.S) < yi.S*.01) return;
 
                     yi.View.MinValue = min + rMin * yi.S;
                     yi.View.MaxValue = max - rMax * yi.S;
@@ -382,7 +384,7 @@ namespace LiveCharts.Charts
 
         public void Drag(CorePoint delta)
         {
-            if (PivotZoomingAxis == AxisOrientation.None) return;
+            if (View.Zoom == ZoomingOptions.None) return;
 
             if (View.Zoom == ZoomingOptions.X || View.Zoom == ZoomingOptions.Xy)
             {

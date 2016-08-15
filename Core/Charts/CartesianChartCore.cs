@@ -44,7 +44,6 @@ namespace LiveCharts.Charts
 
         public override void PrepareAxes()
         {
-            PivotZoomingAxis = AxisOrientation.X;
             base.PrepareAxes();
 
             if (View.ActualSeries.Any(x => !(x.Model is ICartesianSeries)))

@@ -75,11 +75,13 @@ namespace LiveCharts
 
             var cp = new ChartPoint();
 
+            var source = this.ToList(); //lets copy it, to prevent issues from async operations.
+
             if (seriesView is IFinancialSeriesView)
             {
                 for (var index = 0; index < Count; index++)
                 {
-                    var item = this[index];
+                    var item = source[index];
                     config.Evaluate(index, item, cp);
 
                     if (cp.X < xMin) xMin = cp.X;
@@ -95,7 +97,7 @@ namespace LiveCharts
             {
                 for (var index = 0; index < Count; index++)
                 {
-                    var item = this[index];
+                    var item = source[index];
                     config.Evaluate(index, item, cp);
 
                     if (cp.X < xMin) xMin = cp.X;
@@ -111,7 +113,7 @@ namespace LiveCharts
             {
                 for (var index = 0; index < Count; index++)
                 {
-                    var item = this[index];
+                    var item = source[index];
                     config.Evaluate(index, item, cp);
 
                     if (cp.X < xMin) xMin = cp.X;
@@ -149,10 +151,12 @@ namespace LiveCharts
 
             var tracker = GetTracker(seriesView);
             var gci = tracker.Gci;
-            
+
+            var source = this.ToList(); //copy it, to prevent async issues
+
             for (var index = 0; index < Count; index++)
             {
-                var value = this[index];
+                var value = source[index];
                 if (isObservable)
                 {
                     var observable = (IObservableChartPoint)value;

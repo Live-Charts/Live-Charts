@@ -175,7 +175,7 @@ namespace LiveCharts.Wpf
         {
             SetCurrentValue(StrokeThicknessProperty, 0d);
             SetCurrentValue(MaxColumnWidthProperty, 35d);
-            SetCurrentValue(ColumnPaddingProperty, 5d);
+            SetCurrentValue(ColumnPaddingProperty, 1d);
             SetCurrentValue(ForegroundProperty, Brushes.White);
 
             Func<ChartPoint, string> defaultLabel = x =>  Model.CurrentYAxis.GetFormatter()(x.Y);

@@ -135,10 +135,7 @@ namespace LiveCharts.Wpf
             pbv.Rectangle.StrokeThickness = StrokeThickness;
             pbv.Rectangle.Stroke = Stroke;
             pbv.Rectangle.StrokeDashArray = StrokeDashArray;
-            if (Visibility == Visibility.Hidden || Visibility == Visibility.Collapsed)
-            {
-                var a = 1;
-            }
+
             pbv.Rectangle.Visibility = Visibility;
             Panel.SetZIndex(pbv.Rectangle, Panel.GetZIndex(this));
 
@@ -186,7 +183,7 @@ namespace LiveCharts.Wpf
         {
             SetCurrentValue(StrokeThicknessProperty, 0d);
             SetCurrentValue(MaxColumnWidthProperty, 35d);
-            SetCurrentValue(ColumnPaddingProperty, 5d);
+            SetCurrentValue(ColumnPaddingProperty, 1d);
             SetCurrentValue(LabelsPositionProperty, BarLabelPosition.Top);
 
             Func<ChartPoint, string> defaultLabel = x => Model.CurrentYAxis.GetFormatter()(x.Y);

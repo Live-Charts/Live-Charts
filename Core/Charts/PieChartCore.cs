@@ -43,7 +43,6 @@ namespace LiveCharts.Charts
 
         public override void PrepareAxes()
         {
-            PivotZoomingAxis = AxisOrientation.None;
             View.Zoom = ZoomingOptions.None;
 
             if (View.ActualSeries.Any(x => !(x.Model is IPieSeries)))
