@@ -128,11 +128,11 @@ namespace LiveCharts.Wpf
         {
             var mhr = PointGeometrySize < 10 ? 10 : PointGeometrySize;
 
-            var pbv = (VBezierPointView) view;
+            var pbv = (VerticalBezierPointView) view;
 
             if (pbv == null)
             {
-                pbv = new VBezierPointView
+                pbv = new VerticalBezierPointView
                 {
                     Segment = new BezierSegment(),
                     Container = Figure,

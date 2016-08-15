@@ -144,7 +144,9 @@ namespace LiveCharts
 
             InitializeGarbageCollector();
 
-            for (var i = BotLimit; i <= TopLimit - (EvaluatesUnitWidth ? 1 : 0); i += S)
+            var bl = Math.Ceiling(BotLimit/Magnitude)*Magnitude;
+
+            for (var i = bl; i <= TopLimit - (EvaluatesUnitWidth ? 1 : 0); i += S)
             {
                 SeparatorElementCore asc;
 

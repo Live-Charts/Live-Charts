@@ -166,7 +166,7 @@
     <Compile Include="Points\PieSlice.cs" />
     <Compile Include="Points\RowPointView.cs" />
     <Compile Include="Points\ColumnPointView.cs" />
-    <Compile Include="Points\VBezierPointView.cs" />
+    <Compile Include="Points\VerticalBezierPointView.cs" />
     <Compile Include="HeatSeries.cs" />
     <Compile Include="PieSeries.cs" />
     <Compile Include="OhlcSeries.cs" />
@@ -178,7 +178,7 @@
     <Compile Include="StepLineSeries.cs" />
     <Compile Include="VerticalStackedAreaSeries.cs" />
     <Compile Include="VerticalLineSeries.cs" />
-    <Compile Include="Points\HBezierPointView.cs" />
+    <Compile Include="Points\HorizontalBezierPointView.cs" />
     <Compile Include="Components\Converters.cs" />
     <Compile Include="DefaultAxes.cs" />
     <Compile Include="Components\TooltipDto.cs" />
@@ -229,6 +229,54 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="HeatColorRange.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\DarkBlues.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\DarkGreens.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\DarkMaterial.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\DarkMaterialBold.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\DarkMaterialSlim.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\DarkReds.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\LightBlues.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\LightGreens.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\LightMaterial.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\LightMaterialBold.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\LightMaterialSlim.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\LightReds.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
