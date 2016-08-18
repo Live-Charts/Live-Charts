@@ -183,7 +183,7 @@ namespace LiveCharts
         /// <summary>
         /// Initializes the garbage collector
         /// </summary>
-        public void InitializeGarbageCollector(ISeriesView series)
+        public void InitializeStep(ISeriesView series)
         {
             ValidateGarbageCollector(series);
             GetTracker(series).Gci++;
@@ -248,33 +248,29 @@ namespace LiveCharts
                        ChartCore.Configurations.GetConfig<T>(view.Model.SeriesOrientation) as IPointEvaluator<T>);
         }
 
-        private ChartPoint GetChartPoint(bool isClass, PointTracker tracker, int index, T value)
+        private static ChartPoint GetChartPoint(bool isClass, PointTracker tracker, int index, T value)
         {
             ChartPoint cp;
 
             if (!isClass)
             {
-                if (!tracker.Indexed.TryGetValue(index, out cp))
+                if (tracker.Indexed.TryGetValue(index, out cp)) return cp;
+                cp = new ChartPoint
                 {
-                    cp = new ChartPoint
-                    {
-                        Instance = value,
-                        Key = index
-                    };
-                    tracker.Indexed[index] = cp;
-                }
+                    Instance = value,
+                    Key = index
+                };
+                tracker.Indexed[index] = cp;
             }
             else
             {
-                if (!tracker.Referenced.TryGetValue(value, out cp))
+                if (tracker.Referenced.TryGetValue(value, out cp)) return cp;
+                cp = new ChartPoint
                 {
-                    cp = new ChartPoint
-                    {
-                        Instance = value,
-                        Key = index
-                    };
-                    tracker.Referenced[value] = cp;
-                }
+                    Instance = value,
+                    Key = index
+                };
+                tracker.Referenced[value] = cp;
             }
             return cp;
         }
@@ -304,7 +300,7 @@ namespace LiveCharts
                 point.Gci = 0;
         }
         
-        private bool IsGarbage(ChartPoint point, PointTracker tracker)
+        private static bool IsGarbage(ChartPoint point, PointTracker tracker)
         {
             return point.Gci < tracker.Gci
                    || double.IsNaN(point.X) || double.IsNaN(point.Y);

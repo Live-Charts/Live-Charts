@@ -42,7 +42,7 @@ namespace LiveCharts
         /// <summary>
         /// Initializes the garbage collector
         /// </summary>
-        void InitializeGarbageCollector(ISeriesView seriesView);
+        void InitializeStep(ISeriesView seriesView);
         /// <summary>
         /// Removes all unnecessary points from the view
         /// </summary>

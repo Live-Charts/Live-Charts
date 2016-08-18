@@ -83,7 +83,7 @@ namespace LiveCharts
             foreach (var series in Chart.View.ActualSeries)
             {
                 series.OnSeriesUpdateStart();
-                series.ActualValues.InitializeGarbageCollector(series);
+                series.ActualValues.InitializeStep(series);
                 series.Model.Update();
                 series.ActualValues.CollectGarbage(series);
                 series.OnSeriesUpdatedFinish();

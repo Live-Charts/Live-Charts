@@ -59,6 +59,13 @@ namespace LiveCharts.Wpf
         }
         #endregion
 
+        #region Events
+        /// <summary>
+        /// Happens every time an axis range changes, this handler will be called before the next updater tick.
+        /// </summary>
+        public event Action<double> RangeChanged;
+        #endregion
+
         #region properties
 
         private TextBlock TitleBlock { get; set; }
@@ -147,7 +154,7 @@ namespace LiveCharts.Wpf
 
         public static readonly DependencyProperty MinValueProperty = DependencyProperty.Register(
             "MinValue", typeof (double?), typeof (Axis),
-            new PropertyMetadata(null, UpdateChart()));
+            new PropertyMetadata(null, RangeChangedCallback));
         /// <summary>
         /// Gets or sets axis min value, set it to null to make this property Auto, default value is null
         /// </summary>
@@ -445,6 +452,15 @@ namespace LiveCharts.Wpf
             };
         }
 
+        private static void RangeChangedCallback(DependencyObject o, DependencyPropertyChangedEventArgs e)
+        {
+            var wpfAxis = o as Axis;
+            if (wpfAxis == null) return;
+
+            wpfAxis.OnRangeChanged();
+            UpdateChart()(o, e);
+        }
+
         private static void LabelsVisibilityChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
         {
             var axis = (Axis) dependencyObject;
@@ -459,6 +475,12 @@ namespace LiveCharts.Wpf
             }
 
             UpdateChart()(dependencyObject, dependencyPropertyChangedEventArgs);
+        }
+
+        protected void OnRangeChanged()
+        {
+            var r = MinValue == null || MaxValue == null ? double.NaN : MaxValue - MinValue;
+            if (RangeChanged != null) RangeChanged.Invoke(r ?? double.NaN);
         }
     }
 }

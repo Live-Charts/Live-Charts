@@ -263,41 +263,49 @@ namespace LiveCharts
                         Shares = null
                     };
                 case TooltipSelectionMode.SharedXValues:
+                    var tx = Math.Abs(FromPlotArea(1, AxisOrientation.X, chart, senderPoint.SeriesView.ScalesXAt)
+                                      - FromPlotArea(2, AxisOrientation.X, chart, senderPoint.SeriesView.ScalesXAt)) * .01;
                     return new TooltipDataViewModel
                     {
                         XFormatter = ax.GetFormatter(),
                         YFormatter = ay.GetFormatter(),
                         Points = chart.View.ActualSeries.Where(x => x.ScalesXAt == senderPoint.SeriesView.ScalesXAt)
                             .SelectMany(x => x.Values.GetPoints(x))
-                            .Where(x => Math.Abs(x.X - senderPoint.X) < ax.S*.01),
+                            .Where(x => Math.Abs(x.X - senderPoint.X) < tx),
                         Shares = (chart.View is IPieChart) ? null : (double?) senderPoint.X
                     };
                 case TooltipSelectionMode.SharedYValues:
+                    var ty = Math.Abs(FromPlotArea(1, AxisOrientation.Y, chart, senderPoint.SeriesView.ScalesYAt)
+                                     - FromPlotArea(2, AxisOrientation.Y, chart, senderPoint.SeriesView.ScalesYAt)) * .01;
                     return new TooltipDataViewModel
                     {
                         XFormatter = ax.GetFormatter(),
                         YFormatter = ay.GetFormatter(),
                         Points = chart.View.ActualSeries.Where(x => x.ScalesYAt == senderPoint.SeriesView.ScalesYAt)
                             .SelectMany(x => x.Values.GetPoints(x))
-                            .Where(x => Math.Abs(x.Y - senderPoint.Y) < ay.S*.01),
+                            .Where(x => Math.Abs(x.Y - senderPoint.Y) < ty),
                         Shares = senderPoint.Y
                     };
                 case TooltipSelectionMode.SharedXInSeries:
+                    var txs = Math.Abs(FromPlotArea(1, AxisOrientation.X, chart, senderPoint.SeriesView.ScalesXAt)
+                                     - FromPlotArea(2, AxisOrientation.X, chart, senderPoint.SeriesView.ScalesXAt)) * .01;
                     return new TooltipDataViewModel
                     {
                         XFormatter = ax.GetFormatter(),
                         YFormatter = ay.GetFormatter(),
                         Points = senderPoint.SeriesView.ActualValues.GetPoints(senderPoint.SeriesView)
-                            .Where(x => Math.Abs(x.X - senderPoint.X) < ax.S*.01),
+                            .Where(x => Math.Abs(x.X - senderPoint.X) < txs),
                         Shares = senderPoint.X
                     };
                 case TooltipSelectionMode.SharedYInSeries:
+                    var tys = Math.Abs(FromPlotArea(1, AxisOrientation.Y, chart, senderPoint.SeriesView.ScalesYAt)
+                                     - FromPlotArea(2, AxisOrientation.Y, chart, senderPoint.SeriesView.ScalesYAt)) * .01;
                     return new TooltipDataViewModel
                     {
                         XFormatter = ax.GetFormatter(),
                         YFormatter = ay.GetFormatter(),
                         Points = senderPoint.SeriesView.ActualValues.GetPoints(senderPoint.SeriesView)
-                            .Where(x => Math.Abs(x.Y - senderPoint.Y) < ay.S*.01),
+                            .Where(x => Math.Abs(x.Y - senderPoint.Y) < tys),
                         Shares = senderPoint.Y
                     };
                 default:
