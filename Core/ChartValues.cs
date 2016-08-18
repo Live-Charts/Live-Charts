@@ -75,15 +75,24 @@ namespace LiveCharts
 
             var cp = new ChartPoint();
 
-            var source = this.ToList(); //lets copy it, to prevent issues from async operations.
+            var source = this.ToArray();
 
-            if (seriesView is IFinancialSeriesView)
+            var ax = seriesView.Model.Chart.AxisX[seriesView.ScalesXAt];
+            var ay = seriesView.Model.Chart.AxisY[seriesView.ScalesYAt];
+            double fx = ax.MinValue ?? double.NegativeInfinity,
+                tx = ax.MaxValue ?? double.PositiveInfinity,
+                fy = ay.MinValue ?? double.NegativeInfinity,
+                ty = ay.MaxValue ?? double.PositiveInfinity;
+
+            for (var index = 0; index < source.Length; index++)
             {
-                for (var index = 0; index < Count; index++)
-                {
-                    var item = source[index];
-                    config.Evaluate(index, item, cp);
+                var item = source[index];
+                config.Evaluate(index, item, cp);
 
+                if (cp.X < fx || cp.X > tx || cp.Y < fy || cp.Y > ty) continue;
+
+                if (seriesView is IFinancialSeriesView)
+                {
                     if (cp.X < xMin) xMin = cp.X;
                     if (cp.X > xMax) xMax = cp.X;
 
@@ -92,14 +101,10 @@ namespace LiveCharts
 
                     if (cp.Weight < wMin) wMin = cp.Weight;
                     if (cp.Weight > wMax) wMax = cp.Weight;
-                }
-            } else if (seriesView is IScatterSeriesView || seriesView is IHeatSeriesView)
-            {
-                for (var index = 0; index < Count; index++)
-                {
-                    var item = source[index];
-                    config.Evaluate(index, item, cp);
 
+                }
+                else if (seriesView is IScatterSeriesView || seriesView is IHeatSeriesView)
+                {
                     if (cp.X < xMin) xMin = cp.X;
                     if (cp.X > xMax) xMax = cp.X;
 
@@ -109,13 +114,8 @@ namespace LiveCharts
                     if (cp.Weight < wMin) wMin = cp.Weight;
                     if (cp.Weight > wMax) wMax = cp.Weight;
                 }
-            } else
-            {
-                for (var index = 0; index < Count; index++)
+                else
                 {
-                    var item = source[index];
-                    config.Evaluate(index, item, cp);
-
                     if (cp.X < xMin) xMin = cp.X;
                     if (cp.X > xMax) xMax = cp.X;
 

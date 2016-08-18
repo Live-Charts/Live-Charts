@@ -28,19 +28,19 @@ namespace LiveCharts
     public enum ZoomingOptions
     {
         /// <summary>
-        /// Disables zoom
+        /// Disables zooming
         /// </summary>
         None,
         /// <summary>
-        /// Only X axis
+        /// Zoom only at X axis
         /// </summary>
         X,
         /// <summary>
-        /// Only Y axis
+        /// Zoom only at Y axis
         /// </summary>
         Y,
         /// <summary>
-        /// Both, X and Y axes
+        /// Zooms in both, X and Y axes
         /// </summary>
         Xy
     }
