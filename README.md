@@ -133,7 +133,7 @@ LiveCharts will also handle high performance, it is not ready yet but the curren
 
 ### Road Map
 
-* Build at least all the features any other charting library does, in WPF and WinForms
+* ~~Build at least all the features any other charting library does, in WPF and WinForms~~
 * Build High performance algorithms
 * Expand the library to at least Xamarin and UWP (should not be that hard, the code is already designed to support this point)
 * release 1.0 in WPF and WinForms, the other platforms will be beta, in case something went wrong.
