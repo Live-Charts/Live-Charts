@@ -137,3 +137,8 @@ LiveCharts will also handle high performance, it is not ready yet but the curren
 * Build High performance algorithms
 * Expand the library to at least Xamarin and UWP (should not be that hard, the code is already designed to support this point)
 * release 1.0 in WPF and WinForms, the other platforms will be beta, in case something went wrong.
+
+### Special thanks to
+
+* [JetBrains](https://www.jetbrains.com/), for the resharper license.
+* [Contributors](https://github.com/beto-rodriguez/Live-Charts/graphs/contributors) and any one brave enough to report any new issue
