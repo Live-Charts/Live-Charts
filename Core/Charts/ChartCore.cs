@@ -281,6 +281,8 @@ namespace LiveCharts.Charts
 
         public void ZoomIn(CorePoint pivot)
         {
+            if (AxisX == null || AxisY == null) return;
+
             View.HideTooltop();
 
             pivot = new CorePoint(
