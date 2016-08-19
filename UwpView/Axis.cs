@@ -53,7 +53,7 @@ namespace LiveCharts.Uwp
             SetCurrentValue(SeparatorProperty, new Separator());
             SetCurrentValue(ShowLabelsProperty, true);
             SetCurrentValue(SectionsProperty, new SectionsCollection());
-            SetCurrentValue(ForegroundProperty, new SolidColorBrush(Color.FromRgb(170, 170, 170)));
+            SetCurrentValue(ForegroundProperty, new SolidColorBrush(Color.FromArgb(255, 170, 170, 170)));
 
             TitleBlock.SetBinding(TextBlock.TextProperty,
                 new Binding {Path = new PropertyPath(TitleProperty), Source = this});

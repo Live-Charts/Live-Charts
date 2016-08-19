@@ -37,7 +37,7 @@ namespace LiveCharts.Uwp
     /// <summary>
     /// The default legend control, by default a new instance of this control is created for every chart that requires a legend.
     /// </summary>
-    public partial class DefaultLegend : IChartLegend
+    public partial class DefaultLegend : UserControl, IChartLegend
     {
         private List<SeriesViewModel> _series;
 

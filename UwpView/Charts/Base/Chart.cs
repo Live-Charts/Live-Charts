@@ -78,20 +78,20 @@ namespace LiveCharts.Uwp.Charts.Base
 
             SetCurrentValue(ChartLegendProperty, new DefaultLegend());
             SetCurrentValue(DataTooltipProperty, new DefaultTooltip());
-
+            
             var colors = new ColorsCollection
             {
-                Color.FromRgb(33, 149, 242),
-                Color.FromRgb(243, 67, 54),
-                Color.FromRgb(254, 192, 7),
-                Color.FromRgb(96, 125, 138),
-                Color.FromRgb(0, 187, 211),
-                Color.FromRgb(232, 30, 99),
-                Color.FromRgb(254, 87, 34),
-                Color.FromRgb(63, 81, 180),
-                Color.FromRgb(204, 219, 57),
-                Color.FromRgb(0, 149, 135),
-                Color.FromRgb(76, 174, 80)
+                Color.FromArgb(255, 33, 149, 242),
+                Color.FromArgb(255, 243, 67, 54),
+                Color.FromArgb(255, 254, 192, 7),
+                Color.FromArgb(255, 96, 125, 138),
+                Color.FromArgb(255, 0, 187, 211),
+                Color.FromArgb(255, 232, 30, 99),
+                Color.FromArgb(255, 254, 87, 34),
+                Color.FromArgb(255, 63, 81, 180),
+                Color.FromArgb(255, 204, 219, 57),
+                Color.FromArgb(255, 0, 149, 135),
+                Color.FromArgb(255, 76, 174, 80)
             };
 
             SetCurrentValue(ColorsProperty, colors);

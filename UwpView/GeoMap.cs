@@ -24,6 +24,11 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using Windows.Devices.Input;
+using Windows.Foundation;
+using Windows.UI;
+using Windows.UI.Text;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Media;
@@ -60,7 +65,7 @@ namespace LiveCharts.Uwp
             SetCurrentValue(GradientStopCollectionProperty, new GradientStopCollection
             {
                 new GradientStop(Color.FromArgb(100,2,119,188), 0d),
-                new GradientStop(Color.FromRgb(2,119,188), 1d),
+                new GradientStop(Color.FromArgb(255, 2,119,188), 1d),
             });
             SetCurrentValue(HeatMapProperty, new Dictionary<string, double>());
             SetCurrentValue(GeoMapTooltipProperty, new DefaultGeoMapTooltip {Visibility = Visibility.Hidden});
@@ -521,7 +526,7 @@ namespace LiveCharts.Uwp
 
         private Color ColorInterpolation(double weight)
         {
-            Color from = Color.FromRgb(0, 0, 0), to = Color.FromRgb(0, 0, 0);
+            Color from = Color.FromArgb(255, 0, 0, 0), to = Color.FromArgb(255, 0, 0, 0);
             double fromOffset = 0, toOffset = 0;
 
             for (var i = 0; i < GradientStopCollection.Count-1; i++)

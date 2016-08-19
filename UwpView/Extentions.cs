@@ -1,4 +1,5 @@
 using System.Linq;
+using Windows.Foundation;
 using LiveCharts.Dtos;
 using LiveCharts.Uwp.Charts.Base;
 

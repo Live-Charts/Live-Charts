@@ -64,13 +64,13 @@ namespace LiveCharts.Uwp
                 new Binding { Path = new PropertyPath(ActualHeightProperty), Source = this });
 
             SetCurrentValue(SectionsProperty, new List<AngularSection>());
-            SetCurrentValue(NeedleFillProperty, new SolidColorBrush(Color.FromRgb(69, 90, 100)));
+            SetCurrentValue(NeedleFillProperty, new SolidColorBrush(Color.FromArgb(255, 69, 90, 100)));
 
             Stick.SetBinding(Shape.FillProperty,
                 new Binding {Path = new PropertyPath(NeedleFillProperty), Source = this});
-
+            
             SetCurrentValue(AnimationsSpeedProperty, TimeSpan.FromMilliseconds(500));
-            SetCurrentValue(TicksForegroundProperty, new SolidColorBrush(Color.FromRgb(210, 210, 210)));
+            SetCurrentValue(TicksForegroundProperty, new SolidColorBrush(Color.FromArgb(255, 210, 210, 210)));
             Func<double, string> defaultFormatter = x => x.ToString(CultureInfo.InvariantCulture);
             SetCurrentValue(LabelFormatterProperty, defaultFormatter);
             SetCurrentValue(LabelsEffectProperty,

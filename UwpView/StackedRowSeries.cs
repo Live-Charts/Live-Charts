@@ -21,6 +21,7 @@
 //SOFTWARE.
 
 using System;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Shapes;
 using LiveCharts.Definitions.Points;

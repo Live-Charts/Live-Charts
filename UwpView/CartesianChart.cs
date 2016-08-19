@@ -21,6 +21,7 @@
 //SOFTWARE.
 
 using System;
+using Windows.UI.Xaml;
 using LiveCharts.Charts;
 using LiveCharts.Definitions.Charts;
 using LiveCharts.Uwp.Charts.Base;

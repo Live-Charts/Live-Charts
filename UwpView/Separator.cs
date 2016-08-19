@@ -20,6 +20,8 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
+using Windows.UI;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Media;
 using LiveCharts.Charts;
 using LiveCharts.Definitions.Charts;
@@ -37,7 +39,7 @@ namespace LiveCharts.Uwp
         public Separator()
         {
             SetCurrentValue(IsEnabledProperty, true);
-            SetCurrentValue(StrokeProperty, new SolidColorBrush(Color.FromRgb(240, 240, 240)));
+            SetCurrentValue(StrokeProperty, new SolidColorBrush(Color.FromArgb(255, 240, 240, 240)));
             SetCurrentValue(StrokeThicknessProperty, 1d);
         }
 

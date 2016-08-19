@@ -22,6 +22,10 @@
 
 using System;
 using System.Globalization;
+using Windows.Foundation;
+using Windows.UI;
+using Windows.UI.Text;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Media;
@@ -72,12 +76,12 @@ namespace LiveCharts.Uwp
                 new Binding { Path = new PropertyPath(StrokeThicknessProperty), Source = this });
             Pie.Stroke = Brushes.Transparent;
 
-            SetCurrentValue(GaugeBackgroundProperty, new SolidColorBrush(Color.FromRgb(21, 101, 191)) {Opacity = .1});
+            SetCurrentValue(GaugeBackgroundProperty, new SolidColorBrush(Color.FromArgb(255, 21, 101, 191)) {Opacity = .1});
             SetCurrentValue(StrokeThicknessProperty, 0d);
-            SetCurrentValue(StrokeProperty, new SolidColorBrush(Color.FromRgb(222, 222, 222)));
+            SetCurrentValue(StrokeProperty, new SolidColorBrush(Color.FromArgb(255, 222, 222, 222)));
 
-            SetCurrentValue(FromColorProperty, Color.FromRgb(100, 180, 245));
-            SetCurrentValue(ToColorProperty, Color.FromRgb(21, 101, 191));
+            SetCurrentValue(FromColorProperty, Color.FromArgb(255, 100, 180, 245));
+            SetCurrentValue(ToColorProperty, Color.FromArgb(255, 21, 101, 191));
 
             SetCurrentValue(MinHeightProperty, 50d);
             SetCurrentValue(MinWidthProperty, 80d);

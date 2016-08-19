@@ -236,7 +236,7 @@ namespace LiveCharts.Uwp
 
         public static readonly DependencyProperty ForegroundProperty = DependencyProperty.Register(
             "Foreground", typeof (Brush),
-            typeof (Series), new PropertyMetadata(new SolidColorBrush(Color.FromRgb(55, 71, 79))));
+            typeof (Series), new PropertyMetadata(new SolidColorBrush(Color.FromArgb(255, 55, 71, 79))));
         /// <summary>
         /// Gets or sets labels text color.
         /// </summary>

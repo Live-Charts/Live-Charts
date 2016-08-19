@@ -29,6 +29,7 @@ using LiveCharts.Definitions.Series;
 using LiveCharts.SeriesAlgorithms;
 using LiveCharts.Uwp.Charts.Base;
 using LiveCharts.Uwp.Points;
+using Windows.UI.Xaml;
 
 namespace LiveCharts.Uwp
 {

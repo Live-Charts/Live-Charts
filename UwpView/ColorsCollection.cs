@@ -21,6 +21,7 @@
 //SOFTWARE.
 
 using System.Collections.Generic;
+using Windows.UI;
 
 namespace LiveCharts.Uwp
 {

@@ -24,7 +24,9 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using Windows.UI;
 using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Media;
 
@@ -40,7 +42,7 @@ namespace LiveCharts.Uwp
     /// <summary>
     /// The Default Tooltip control, by default any chart that requires a tooltip will create a new instance of this class.
     /// </summary>
-    public partial class DefaultTooltip : IChartTooltip
+    public partial class DefaultTooltip : UserControl ,IChartTooltip
     {
         private TooltipData _data;
 
@@ -51,7 +53,7 @@ namespace LiveCharts.Uwp
         {
             InitializeComponent();
 
-            SetValue(ForegroundProperty, Brushes.White);
+            SetValue(ForegroundProperty, new SolidColorBrush(Color.FromArgb(255, 255, 255, 255)));
             SetValue(CornerRadiusProperty, 4d);
 
             DataContext = this;

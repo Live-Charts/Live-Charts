@@ -44,24 +44,24 @@ namespace LiveCharts.Uwp
         {
             _rectangle = new Rectangle();
             _label = new TextBlock();
-
-            SetCurrentValue(StrokeProperty, new SolidColorBrush(Color.FromRgb(131, 172, 191)));
-            SetCurrentValue(FillProperty, new SolidColorBrush(Color.FromRgb(131, 172, 191)) {Opacity = .35});
+            
+            SetCurrentValue(StrokeProperty, new SolidColorBrush(Color.FromArgb(255, 131, 172, 191)));
+            SetCurrentValue(FillProperty, new SolidColorBrush(Color.FromArgb(255, 131, 172, 191)) {Opacity = .35});
             SetCurrentValue(StrokeThicknessProperty, 0d);
             SetCurrentValue(FromValueProperty, 0d);
             SetCurrentValue(ToValueProperty, 0d);
 
             BindingOperations.SetBinding(_rectangle, Shape.FillProperty,
-                    new Binding { Path = new PropertyPath(FillProperty), Source = this });
+                    new Binding { Path = new PropertyPath(nameof(Fill)), Source = this });
             BindingOperations.SetBinding(_rectangle, Shape.StrokeProperty,
-                    new Binding { Path = new PropertyPath(StrokeProperty), Source = this });
+                    new Binding { Path = new PropertyPath(nameof(Stroke)), Source = this });
             BindingOperations.SetBinding(_rectangle, Shape.StrokeDashArrayProperty,
-                    new Binding { Path = new PropertyPath(StrokeDashArrayProperty), Source = this });
+                    new Binding { Path = new PropertyPath(nameof(StrokeDashArray)), Source = this });
             BindingOperations.SetBinding(_rectangle, Shape.StrokeThicknessProperty,
-                    new Binding { Path = new PropertyPath(StrokeThicknessProperty), Source = this });
+                    new Binding { Path = new PropertyPath(nameof(StrokeThickness)), Source = this });
 
             BindingOperations.SetBinding(_label, TextBlock.TextProperty,
-                new Binding {Path = new PropertyPath(LabelProperty), Source = this});
+                new Binding {Path = new PropertyPath(nameof(Label)), Source = this});
            
             Panel.SetZIndex(_rectangle, -1);
         }
@@ -191,10 +191,36 @@ namespace LiveCharts.Uwp
                 }
                 else
                 {
-                    _rectangle.BeginAnimation(WidthProperty, new DoubleAnimation(w > 0 ? w : 0, anSpeed));
-                    _rectangle.BeginAnimation(Canvas.LeftProperty, new DoubleAnimation(from, anSpeed));
-                    _label.BeginAnimation(Canvas.LeftProperty,
-                        new DoubleAnimation((from + to)/2 - _label.ActualWidth/2, anSpeed));
+                    var storyBoard = new Storyboard();
+                    var widthAnimation = new DoubleAnimation()
+                    {
+                        To = w > 0 ? w : 0,
+                        Duration = anSpeed
+                    };
+                    var rectangleLeftAnimation = new DoubleAnimation()
+                    {
+                        To = from,
+                        Duration = anSpeed
+                    };
+                    var labelLeftAnimation = new DoubleAnimation()
+                    {
+                        To = (from + to) / 2 - _label.ActualWidth / 2,
+                        Duration = anSpeed
+                    };
+                    Storyboard.SetTarget(widthAnimation, _rectangle);
+                    Storyboard.SetTargetProperty(widthAnimation, nameof(_rectangle.Width));
+
+                    Storyboard.SetTarget(rectangleLeftAnimation, _rectangle);
+                    Storyboard.SetTargetProperty(rectangleLeftAnimation, "Canvas.Left");
+
+                    Storyboard.SetTarget(labelLeftAnimation, _label);
+                    Storyboard.SetTargetProperty(labelLeftAnimation, "Canvas.Left");
+
+                    storyBoard.Children.Add(widthAnimation);
+                    storyBoard.Children.Add(rectangleLeftAnimation);
+                    storyBoard.Children.Add(labelLeftAnimation);
+
+                    storyBoard.Begin();
                 }
                 return;
             }
@@ -213,10 +239,36 @@ namespace LiveCharts.Uwp
             }
             else
             {
-                _rectangle.BeginAnimation(Canvas.TopProperty, new DoubleAnimation(from, anSpeed));
-                _rectangle.BeginAnimation(HeightProperty, new DoubleAnimation(h, anSpeed));
-                _label.BeginAnimation(Canvas.TopProperty,
-                    new DoubleAnimation((from + to)/2 - _label.ActualHeight/2, anSpeed));
+                var storyBoard = new Storyboard();
+                var rectangleTopAnimation = new DoubleAnimation()
+                {
+                    To = from,
+                    Duration = anSpeed
+                };
+                var heightAnimation = new DoubleAnimation()
+                {
+                    To = h,
+                    Duration = anSpeed
+                };
+                var labelTopAnimation = new DoubleAnimation()
+                {
+                    To = (from + to) / 2 - _label.ActualHeight / 2,
+                    Duration = anSpeed
+                };
+                Storyboard.SetTarget(rectangleTopAnimation, _rectangle);
+                Storyboard.SetTargetProperty(rectangleTopAnimation, "Canvas.Top");
+
+                Storyboard.SetTarget(heightAnimation, _rectangle);
+                Storyboard.SetTargetProperty(heightAnimation, nameof(Height));
+
+                Storyboard.SetTarget(labelTopAnimation, _label);
+                Storyboard.SetTargetProperty(labelTopAnimation, "Canvas.Top");
+
+                storyBoard.Children.Add(rectangleTopAnimation);
+                storyBoard.Children.Add(heightAnimation);
+                storyBoard.Children.Add(labelTopAnimation);
+
+                storyBoard.Begin();
             }
         }
 
