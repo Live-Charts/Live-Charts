@@ -354,7 +354,7 @@ namespace LiveCharts.Uwp
 
             Map.Children.Clear();
 
-            if (DesignerProperties.GetIsInDesignMode(this))
+            if (Windows.ApplicationModel.DesignMode.DesignModeEnabled)
             {
                 Map.Children.Add(new TextBlock
                 {

@@ -81,7 +81,7 @@ namespace LiveCharts.Uwp
         {
             get
             {
-                if (DesignerProperties.GetIsInDesignMode(this) && (Values == null || Values.Count == 0))
+                if (Windows.ApplicationModel.DesignMode.DesignModeEnabled && (Values == null || Values.Count == 0))
                     SetValue(ValuesProperty, GetValuesForDesigner());
 
                 return Values ?? new ChartValues<double>();
@@ -418,7 +418,7 @@ namespace LiveCharts.Uwp
 
         public Func<ChartPoint, string> GetLabelPointFormatter()
         {
-            if (DesignerProperties.GetIsInDesignMode(this))
+            if (Windows.ApplicationModel.DesignMode.DesignModeEnabled)
                 return x => "Label";
 
             return LabelPoint;
