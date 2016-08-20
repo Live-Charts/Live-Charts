@@ -27,44 +27,44 @@ using LiveCharts.Helpers;
 
 namespace LiveCharts.Uwp.Converters
 {
-    public class StringCollectionConverter : TypeConverter
-    {
-        public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
-        {
-            return sourceType == typeof (string) || base.CanConvertFrom(context, sourceType);
-        }
+    //public class StringCollectionConverter : TypeConverter
+    //{
+    //    public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
+    //    {
+    //        return sourceType == typeof (string) || base.CanConvertFrom(context, sourceType);
+    //    }
 
-        public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
-        {
-            var valueString = value as string;
-            if (valueString != null)
-            {
-                return valueString.Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries)
-                    .Select(x => x.Trim())
-                    .ToArray();
-            }
-            return base.ConvertFrom(context, culture, value);
-        }
-    }
+    //    public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
+    //    {
+    //        var valueString = value as string;
+    //        if (valueString != null)
+    //        {
+    //            return valueString.Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries)
+    //                .Select(x => x.Trim())
+    //                .ToArray();
+    //        }
+    //        return base.ConvertFrom(context, culture, value);
+    //    }
+    //}
 
-    public class NumericChartValuesConverter : TypeConverter
-    {
-        public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
-        {
-            return sourceType == typeof(string) || base.CanConvertFrom(context, sourceType);
-        }
+    //public class NumericChartValuesConverter : TypeConverter
+    //{
+    //    public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
+    //    {
+    //        return sourceType == typeof(string) || base.CanConvertFrom(context, sourceType);
+    //    }
 
-        public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
-        {
-            var valueString = value as string;
+    //    public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
+    //    {
+    //        var valueString = value as string;
 
-            if (valueString != null)
-            {
-                return valueString.Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries)
-                    .Select(d => double.Parse((string) d, CultureInfo.InvariantCulture))
-                    .AsChartValues();
-            }
-            return base.ConvertFrom(context, culture, value);
-        }
-    }
+    //        if (valueString != null)
+    //        {
+    //            return valueString.Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries)
+    //                .Select(d => double.Parse((string) d, CultureInfo.InvariantCulture))
+    //                .AsChartValues();
+    //        }
+    //        return base.ConvertFrom(context, culture, value);
+    //    }
+    //}
 }

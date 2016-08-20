@@ -24,6 +24,7 @@ using System;
 using System.Globalization;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using LiveCharts.Uwp.Components.MultiBinding;
 
 namespace LiveCharts.Uwp
 {
@@ -73,16 +74,16 @@ namespace LiveCharts.Uwp
         public double Value { get; set; }
     }
 
-    public class GeoDataLabelConverter : IMultiValueConverter
+    public class GeoDataLabelConverter : MultiValueConverterBase
     {
-        public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
+        public override object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
             Func<double, string> defF = x => x.ToString(CultureInfo.InvariantCulture);
             var f = values[1] as Func<double, string> ?? defF;
             return f(values[0] as double? ?? 0);
         }
 
-        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
+        public override Object[] ConvertBack(Object value, Type targetType, Object parameter, CultureInfo culture)
         {
             throw new NotImplementedException();
         }

@@ -86,7 +86,7 @@ namespace LiveCharts.Uwp
         /// <summary>
         /// Gets or sets axis labels, labels property stores the array to map for each index and value, for example if axis value is 0 then label will be labels[0], when value 1 then labels[1], value 2 then labels[2], ..., value n labels[n], use this property instead of a formatter when there is no conversion between value and label for example names, if you are plotting sales vs salesman name.
         /// </summary>
-        [TypeConverter(typeof(StringCollectionConverter))]
+        //[TypeConverter(typeof(StringCollectionConverter))]
         public IList<string> Labels
         {
             get { return (IList<string>) GetValue(LabelsProperty); }

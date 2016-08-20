@@ -36,6 +36,7 @@ using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Shapes;
 using LiveCharts.Maps;
 using LiveCharts.Uwp.Components;
+using LiveCharts.Uwp.Components.MultiBinding;
 using LiveCharts.Uwp.Maps;
 using Path = Windows.UI.Xaml.Shapes.Path;
 
@@ -576,14 +577,14 @@ namespace LiveCharts.Uwp
         #endregion
     }
 
-    public class ScaleStrokeConverter : IMultiValueConverter
+    public class ScaleStrokeConverter : MultiValueConverterBase
     {
-        public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
+        public override object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
             return (double) values[0]/(double) values[1];
         }
 
-        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
+        public override Object[] ConvertBack(Object value, Type targetType, Object parameter, CultureInfo culture)
         {
             throw new NotImplementedException();
         }

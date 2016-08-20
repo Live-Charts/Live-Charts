@@ -22,6 +22,7 @@
 
 using Windows.UI;
 using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
 using LiveCharts.Charts;
 using LiveCharts.Definitions.Charts;
@@ -31,7 +32,7 @@ namespace LiveCharts.Uwp
     /// <summary>
     /// Defines an Axis.Separator, this class customizes the separator of an axis.
     /// </summary>
-    public class Separator : FrameworkElement, ISeparatorView
+    public class Separator : Control, ISeparatorView
     {
         /// <summary>
         /// Initializes a new instance of Separator class

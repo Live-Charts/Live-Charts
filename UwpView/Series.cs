@@ -110,7 +110,7 @@ namespace LiveCharts.Uwp
         /// <summary>
         /// Gets or sets chart values.
         /// </summary>
-        [TypeConverter(typeof(NumericChartValuesConverter))]
+        //[TypeConverter(typeof(NumericChartValuesConverter))]
         public IChartValues Values
         {
             get { return (IChartValues) GetValue(ValuesProperty); }
