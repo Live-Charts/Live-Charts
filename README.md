@@ -33,9 +33,13 @@
 * **[Chat](https://gitter.im/beto-rodriguez/Live-Charts)**
 * **Questions, try [Stack Overflow](http://stackoverflow.com/questions/tagged/livecharts), tag your question as LiveCharts**, I personally review at least 1 time a day all questions with this tag, posting in SO helps others and also brings more traffic and contributors to the library.
 
+**What is Live-Charts?**
+
 Animated, MVVM orientated .Net charts, for WPF, WinForms under MIT Licence, written in C#, LiveCharts listens for any change in your data automatically and updates UI.
 
 Live charts makes your data alive, as easy as manipulating any .net list, the library animates and updates every time your data changes.
+
+it also is:
 
  - Good looking, animated and easy to customize charts, you can practically change all properties.
  - Autoupdate UI, you just create a SeriesCollection, then LiveCharts will handle everything.
@@ -46,6 +50,8 @@ Live charts makes your data alive, as easy as manipulating any .net list, the li
 **Why is LiveCharts different to other charting libraries?**
 
 First: animations and good looking charts by default, second: responsive charts these charts automatically update when your data changes also when you resize your chart, finally LiveCharts MVVM is different and for me it feels better than other libraries, becuase LiveCharts uses generics and with it strongly typed modeling, others use reflection to get the property value.
+
+**How to use it?**
 
 This is the logic you use in every chart, there are just some litle properties or rules that change from each type of chart
 
@@ -84,6 +90,17 @@ myChart.AxisX.Add(new Axis { Labels = labels});
 * **[Observable Points](http://lvcharts.net/App/examples/v1/wpf/IObservableChartPoint)**: notify the chart to update every time a property changes
 * **[Simple Bar Chart](http://lvcharts.net/App/examples/wpf/Basic%20Column)**: a simple bar chart.
 * *Do not need animations*? ok disable them, performance will be increased also, `Chart.DisableAnimations = true;`
+
+### Road Map
+
+- [x] ~~Build at least all the features any other charting library does, in WPF and WinForms~~
+- [ ] **[In progress]** Build High performance algorithms 
+- [ ] **[In progress]** Expand the library to:
+ - [x] ~~WPF~~
+ - [x] ~~WinForms~~
+ - [ ] UWP **[In progress]**
+ - [ ] Xamarin
+- [ ] Release 1.0 in WPF and WinForms, the other platforms will be beta, in case something went wrong.
 
 ###Support
 
@@ -130,13 +147,6 @@ The [web site](http://lvcharts.net/App/examples/wpf/start) has a nice set, they 
 ### High perfomance?
 
 LiveCharts will also handle high performance, it is not ready yet but the current tests allows the library to plot 3,000,000 in 1 second, yes even with aniations.
-
-### Road Map
-
-* ~~Build at least all the features any other charting library does, in WPF and WinForms~~
-* Build High performance algorithms
-* Expand the library to at least Xamarin and UWP (should not be that hard, the code is already designed to support this point)
-* release 1.0 in WPF and WinForms, the other platforms will be beta, in case something went wrong.
 
 ### Special thanks to
 
