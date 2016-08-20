@@ -326,7 +326,7 @@ namespace LiveCharts.Uwp
                 model.View = ase;
                 chart.View.AddToView(ase.Line);
                 chart.View.AddToView(ase.TextBlock);
-                Panel.SetZIndex(ase.Line, -1);
+                Canvas.SetZIndex(ase.Line, -1);
             }
             else
             {

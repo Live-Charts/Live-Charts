@@ -57,7 +57,7 @@ namespace LiveCharts.Uwp
                 RenderTransform = StickRotateTransform
             };
             Canvas.Children.Add(Stick);
-            Panel.SetZIndex(Stick, 1);
+            Canvas.SetZIndex(Stick, 1);
 
             Canvas.SetBinding(WidthProperty,
                 new Binding { Path = new PropertyPath(ActualWidthProperty), Source = this });

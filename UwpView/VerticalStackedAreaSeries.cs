@@ -124,7 +124,7 @@ namespace LiveCharts.Uwp
                 StrokeDashArray = StrokeDashArray
             };
 
-            Panel.SetZIndex(Path, Panel.GetZIndex(this));
+            Canvas.SetZIndex(Path, Panel.GetZIndex(this));
 
             var geometry = new PathGeometry();
             Figure = new PathFigure();
@@ -136,7 +136,7 @@ namespace LiveCharts.Uwp
             Figure.StartPoint = new Point(0, y);
 
             var i = Model.Chart.View.Series.IndexOf(this);
-            Panel.SetZIndex(Path, Model.Chart.View.Series.Count - i);
+            Canvas.SetZIndex(Path, Model.Chart.View.Series.Count - i);
         }
 
         #endregion

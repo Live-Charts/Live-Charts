@@ -62,8 +62,8 @@ namespace LiveCharts.Uwp
 
             BindingOperations.SetBinding(_label, TextBlock.TextProperty,
                 new Binding {Path = new PropertyPath(nameof(Label)), Source = this});
-           
-            Panel.SetZIndex(_rectangle, -1);
+
+            Canvas.SetZIndex(_rectangle, -1);
         }
 
         public AxisSectionCore Model { get; set; }

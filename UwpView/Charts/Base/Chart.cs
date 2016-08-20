@@ -612,7 +612,7 @@ namespace LiveCharts.Uwp.Charts.Base
             {
                 if (DataTooltip.Parent == null)
                 {
-                    Panel.SetZIndex(DataTooltip, int.MaxValue);
+                    Canvas.SetZIndex(DataTooltip, int.MaxValue);
                     AddToView(DataTooltip);
                     Canvas.SetTop(DataTooltip, 0d);
                     Canvas.SetLeft(DataTooltip, 0d);

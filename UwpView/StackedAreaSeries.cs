@@ -138,7 +138,7 @@ namespace LiveCharts.Uwp
             Figure.StartPoint = new Point(x, Model.Chart.DrawMargin.Height);
 
             var i = Model.Chart.View.Series.IndexOf(this);
-            Panel.SetZIndex(Path, Model.Chart.View.Series.Count - i);
+            Canvas.SetZIndex(Path, Model.Chart.View.Series.Count - i);
         }
 
         #endregion

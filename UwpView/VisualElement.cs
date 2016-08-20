@@ -86,7 +86,7 @@ namespace LiveCharts.Uwp
             if (UIElement.Parent == null)
             {
                 Chart.AddToDrawMargin(UIElement);
-                Panel.SetZIndex(UIElement, 1000);
+                Canvas.SetZIndex(UIElement, 1000);
             }
 
             var coordinate = new CorePoint(ChartFunctions.ToDrawMargin(X, AxisOrientation.X, Chart.Model, AxisX),

@@ -57,8 +57,8 @@ namespace LiveCharts.Uwp
             Canvas.Children.Add(RightLabel);
             Canvas.Children.Add(LeftLabel);
 
-            Panel.SetZIndex(PieBack, 0);
-            Panel.SetZIndex(Pie, 1);
+            Canvas.SetZIndex(PieBack, 0);
+            Canvas.SetZIndex(Pie, 1);
 
             Canvas.SetBinding(WidthProperty,
                 new Binding {Path = new PropertyPath(WidthProperty), Source = this});

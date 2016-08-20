@@ -109,7 +109,7 @@ namespace LiveCharts.Uwp
             pbv.Slice.StrokeDashArray = StrokeDashArray;
             pbv.Slice.PushOut = PushOut;
             pbv.Slice.Visibility = Visibility;
-            Panel.SetZIndex(pbv.Slice, Panel.GetZIndex(this));
+            Canvas.SetZIndex(pbv.Slice, Panel.GetZIndex(this));
             
             if (Model.Chart.RequiresHoverShape && pbv.HoverShape == null)
             {
@@ -119,7 +119,7 @@ namespace LiveCharts.Uwp
                     StrokeThickness = 0
                 };
 
-                Panel.SetZIndex(pbv.HoverShape, int.MaxValue);
+                Canvas.SetZIndex(pbv.HoverShape, int.MaxValue);
 
                 var wpfChart = (Chart)Model.Chart.View;
                 wpfChart.AttachHoverableEventTo(pbv.HoverShape);
@@ -132,7 +132,7 @@ namespace LiveCharts.Uwp
             if (DataLabels && pbv.DataLabel == null)
             {
                 pbv.DataLabel = BindATextBlock(0);
-                Panel.SetZIndex(pbv.DataLabel, int.MaxValue - 1);
+                Canvas.SetZIndex(pbv.DataLabel, int.MaxValue - 1);
 
                 Model.Chart.View.AddToDrawMargin(pbv.DataLabel);
             }

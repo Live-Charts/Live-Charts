@@ -141,14 +141,14 @@ namespace LiveCharts.Uwp
             pbv.VerticalLine.Stroke = Stroke;
             pbv.VerticalLine.StrokeDashArray = StrokeDashArray;
             pbv.VerticalLine.Visibility = Visibility;
-            Panel.SetZIndex(pbv.VerticalLine, Panel.GetZIndex(this));
+            Canvas.SetZIndex(pbv.VerticalLine, Panel.GetZIndex(this));
 
             pbv.HorizontalLine.Fill = Fill;
             pbv.HorizontalLine.StrokeThickness = StrokeThickness;
             pbv.HorizontalLine.Stroke = Stroke;
             pbv.HorizontalLine.StrokeDashArray = StrokeDashArray;
             pbv.HorizontalLine.Visibility = Visibility;
-            Panel.SetZIndex(pbv.HorizontalLine, Panel.GetZIndex(this));
+            Canvas.SetZIndex(pbv.HorizontalLine, Panel.GetZIndex(this));
 
             if (PointGeometry != null && Math.Abs(PointGeometrySize) > 0.1 && pbv.Shape == null)
             {
@@ -174,7 +174,7 @@ namespace LiveCharts.Uwp
                 pbv.Shape.Width = PointGeometrySize;
                 pbv.Shape.Height = PointGeometrySize;
                 pbv.Shape.Data = PointGeometry;
-                Panel.SetZIndex(pbv.Shape, Panel.GetZIndex(this) + 1);
+                Canvas.SetZIndex(pbv.Shape, Panel.GetZIndex(this) + 1);
 
                 if (point.Stroke != null) pbv.Shape.Stroke = (Brush) point.Stroke;
                 if (point.Fill != null) pbv.Shape.Fill = (Brush) point.Fill;
@@ -188,7 +188,7 @@ namespace LiveCharts.Uwp
                     StrokeThickness = 0
                 };
 
-                Panel.SetZIndex(pbv.HoverShape, int.MaxValue);
+                Canvas.SetZIndex(pbv.HoverShape, int.MaxValue);
 
                 var wpfChart = (Chart) Model.Chart.View;
                 wpfChart.AttachHoverableEventTo(pbv.HoverShape);
@@ -201,7 +201,7 @@ namespace LiveCharts.Uwp
             if (DataLabels && pbv.DataLabel == null)
             {
                 pbv.DataLabel = BindATextBlock(0);
-                Panel.SetZIndex(pbv.DataLabel, int.MaxValue - 1);
+                Canvas.SetZIndex(pbv.DataLabel, int.MaxValue - 1);
 
                 Model.Chart.View.AddToDrawMargin(pbv.DataLabel);
             }

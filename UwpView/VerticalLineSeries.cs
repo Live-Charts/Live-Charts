@@ -98,7 +98,7 @@ namespace LiveCharts.Uwp
                 Path.Fill = Fill;
                 Path.Visibility = Visibility;
                 Path.StrokeDashArray = StrokeDashArray;
-                Panel.SetZIndex(Path, Panel.GetZIndex(this));
+                Canvas.SetZIndex(Path, Panel.GetZIndex(this));
                 return;
             }
 
@@ -113,7 +113,7 @@ namespace LiveCharts.Uwp
                 StrokeDashArray = StrokeDashArray
             };
 
-            Panel.SetZIndex(Path, Panel.GetZIndex(this));
+            Canvas.SetZIndex(Path, Panel.GetZIndex(this));
 
             var geometry = new PathGeometry();
             Figure = new PathFigure();
@@ -161,7 +161,7 @@ namespace LiveCharts.Uwp
                     Height = mhr
                 };
 
-                Panel.SetZIndex(pbv.HoverShape, int.MaxValue);
+                Canvas.SetZIndex(pbv.HoverShape, int.MaxValue);
 
                 var wpfChart = (Chart)Model.Chart.View;
                 wpfChart.AttachHoverableEventTo(pbv.HoverShape);
@@ -195,7 +195,7 @@ namespace LiveCharts.Uwp
                 pbv.Shape.Height = PointGeometrySize;
                 pbv.Shape.Data = PointGeometry;
                 pbv.Shape.Visibility = Visibility;
-                Panel.SetZIndex(pbv.Shape, Panel.GetZIndex(this) + 1);
+                Canvas.SetZIndex(pbv.Shape, Panel.GetZIndex(this) + 1);
 
                 if (point.Stroke != null) pbv.Shape.Stroke = (Brush)point.Stroke;
                 if (point.Fill != null) pbv.Shape.Fill = (Brush)point.Fill;
@@ -204,7 +204,7 @@ namespace LiveCharts.Uwp
             if (DataLabels && pbv.DataLabel == null)
             {
                 pbv.DataLabel = BindATextBlock(0);
-                Panel.SetZIndex(pbv.DataLabel, int.MaxValue - 1);
+                Canvas.SetZIndex(pbv.DataLabel, int.MaxValue - 1);
 
                 Model.Chart.View.AddToDrawMargin(pbv.DataLabel);
             }
