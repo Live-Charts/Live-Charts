@@ -32,6 +32,7 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Shapes;
+using LiveCharts.Uwp.Components;
 using LiveCharts.Uwp.Points;
 
 namespace LiveCharts.Uwp
@@ -43,13 +44,13 @@ namespace LiveCharts.Uwp
     {
         public AngularGauge()
         {
-            Canvas = new Canvas { ClipToBounds = true};
+            Canvas = new Canvas(); //{ ClipToBounds = true};
             Content = Canvas;
 
             StickRotateTransform = new RotateTransform(180);
             Stick = new Path
             {
-                Data = Geometry.Parse("m0,90 a5,5 0 0 0 20,0 l-8,-88 a2,2 0 0 0 -4 0 z"),
+                Data = GeometryHelper.Parse("m0,90 a5,5 0 0 0 20,0 l-8,-88 a2,2 0 0 0 -4 0 z"),
                 Fill = Brushes.CornflowerBlue,
                 Stretch = Stretch.Fill,
                 RenderTransformOrigin = new Point(0.5, 0.9),

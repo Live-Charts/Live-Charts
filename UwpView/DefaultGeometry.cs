@@ -21,6 +21,7 @@
 //SOFTWARE.
 
 using Windows.UI.Xaml.Media;
+using LiveCharts.Uwp.Components;
 
 namespace LiveCharts.Uwp
 {
@@ -42,7 +43,7 @@ namespace LiveCharts.Uwp
         /// </summary>
         public static Geometry Circle
         {
-            get { return Geometry.Parse("M 0,0 A 180,180 180 1 1 1,1 Z"); }
+            get { return GeometryHelper.Parse("M 0,0 A 180,180 180 1 1 1,1 Z"); }
         }
 
         /// <summary>
@@ -50,7 +51,7 @@ namespace LiveCharts.Uwp
         /// </summary>
         public static Geometry Square
         {
-            get { return Geometry.Parse("M 1,1 h -2 v -2 h 2 z"); }
+            get { return GeometryHelper.Parse("M 1,1 h -2 v -2 h 2 z"); }
         }
 
         /// <summary>
@@ -58,7 +59,7 @@ namespace LiveCharts.Uwp
         /// </summary>
         public static Geometry Diamond
         {
-            get { return Geometry.Parse("M 1,0 L 2,1  1,2  0,1 z"); }
+            get { return GeometryHelper.Parse("M 1,0 L 2,1  1,2  0,1 z"); }
         }
 
         /// <summary>
@@ -66,7 +67,7 @@ namespace LiveCharts.Uwp
         /// </summary>
         public static Geometry Triangle
         {
-            get { return Geometry.Parse("M 0,1 l 1,1 h -2 Z"); }
+            get { return GeometryHelper.Parse("M 0,1 l 1,1 h -2 Z"); }
         }
 
         /// <summary>
@@ -74,7 +75,7 @@ namespace LiveCharts.Uwp
         /// </summary>
         public static Geometry Cross
         {
-            get { return Geometry.Parse("M0,0 L1,1 M0,1 l1,-1"); }
+            get { return GeometryHelper.Parse("M0,0 L1,1 M0,1 l1,-1"); }
         }
     }
 }

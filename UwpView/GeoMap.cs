@@ -35,6 +35,7 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Shapes;
 using LiveCharts.Maps;
+using LiveCharts.Uwp.Components;
 using LiveCharts.Uwp.Maps;
 using Path = Windows.UI.Xaml.Shapes.Path;
 
@@ -407,7 +408,7 @@ namespace LiveCharts.Uwp
             {
                 var p = new Path
                 {
-                    Data = Geometry.Parse(land.Data),
+                    Data = GeometryHelper.Parse(land.Data),
                     RenderTransform = t
                 };
 
