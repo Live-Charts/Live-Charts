@@ -53,24 +53,34 @@
                 <StackPanel Orientation="Vertical">
                     <TextBlock Text="{Binding Data, Converter={StaticResource SharedConverter}}" HorizontalAlignment="Center" FontWeight="Bold"
                                Visibility="{Binding Data, Converter={StaticResource SharedVisibilityConverter}}" />
-                    <ItemsControl ItemsSource="{Binding Data.Points}" Grid.IsSharedSizeScope="True">
+                    <!-- Grid.IsSharedSizeScope="True"-->
+                    <ItemsControl ItemsSource="{Binding Data.Points}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate x:DataType="uwp:DataPointViewModel">
                                 <Grid Margin="2">
                                     <Grid.Resources>
                                         <converters:StringFormatConverter x:Key="StrFormatConverter" Format="{}{0:P}"/>
                                     </Grid.Resources>
-                                    <Grid.ColumnDefinitions>
+                                    <!--
+                                                                 <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="Auto"/>
                                         <ColumnDefinition Width="Auto" SharedSizeGroup="Title"/>
                                         <ColumnDefinition Width="Auto" SharedSizeGroup="Label"/>
                                         <ColumnDefinition Width="Auto" SharedSizeGroup="Participation"/>
                                     </Grid.ColumnDefinitions>
+                                    -->
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <!--ClipToBounds="True"-->
                                     <Path Width="{Binding ElementName=UserControl, Path=BulletSize}" 
                                              Height="{Binding ElementName=UserControl, Path=BulletSize}" 
                                              StrokeThickness="{Binding Series.StrokeThickness}" 
                                              Stroke="{Binding Series.Stroke}" Fill="{Binding Series.Fill}" 
-                                             Stretch="Fill" ClipToBounds="True" Data="{Binding Series.PointGeometry}"/>
+                                             Stretch="Fill" Data="{Binding Series.PointGeometry}"/>
                                     <TextBlock Grid.Column="1" Text="{Binding Series.Title}" VerticalAlignment="Center" Margin="5 0 0 0"/>
                                     
                                     <TextBlock Grid.Column="2" Text="{Binding ChartPoint, Converter={StaticResource ChartPointLabelConverter}}" Margin="5 0 0 0" VerticalAlignment="Center"/>

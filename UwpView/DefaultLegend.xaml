@@ -44,7 +44,7 @@
                 <ItemsControl ItemsSource="{Binding Series}">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
-                            <WrapPanel MaxWidth="{Binding MaxWidth, ElementName=This}"
+                            <VariableSizedWrapGrid MaxWidth="{Binding MaxWidth, ElementName=This}"
                                        MaxHeight="{Binding MaxHeight, ElementName=This}">
                                 <interactivity:Interaction.Behaviors>
                                     <multiBinding:MultiBindingBehavior Converter="{StaticResource OrientationConverter}" PropertyName="Orientation">
@@ -52,7 +52,7 @@
                                         <multiBinding:MultiBindingItem Value="{Binding InternalOrientation}" />
                                     </multiBinding:MultiBindingBehavior>
                                 </interactivity:Interaction.Behaviors>
-                            </WrapPanel>
+                            </VariableSizedWrapGrid>
                         </ItemsPanelTemplate>
                     </ItemsControl.ItemsPanel>
                     <ItemsControl.ItemTemplate>
@@ -62,11 +62,12 @@
                                     <ColumnDefinition Width="Auto"/>
                                     <ColumnDefinition Width="Auto"/>
                                 </Grid.ColumnDefinitions>
+                                <!--ClipToBounds="True"-->
                                 <Path Width="{Binding BulletSize, ElementName=UserControl}" 
                                          Height="{Binding BulletSize, ElementName=UserControl}" 
                                          StrokeThickness="{Binding StrokeThickness}" 
                                          Stroke="{Binding Stroke}" Fill="{Binding Fill}"
-                                         Stretch="Fill" ClipToBounds="True" Data="{Binding PointGeometry}"/>
+                                         Stretch="Fill" Data="{Binding PointGeometry}"/>
                                 <TextBlock Grid.Column="1" Margin="4 0" Text="{Binding Title}" VerticalAlignment="Center" />
                             </Grid>
                         </DataTemplate>

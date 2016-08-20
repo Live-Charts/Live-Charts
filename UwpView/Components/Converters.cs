@@ -37,9 +37,10 @@ namespace LiveCharts.Uwp.Components
         {
             Instance = new SerieConverter();
         }
+
         private SerieConverter() { }
 
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        public Object Convert(Object value, Type targetType, Object parameter, String language)
         {
             var series = value as IEnumerable<Series>;
             if (series != null)
@@ -47,7 +48,6 @@ namespace LiveCharts.Uwp.Components
                 {
 
                 });
-
             var serie = value as Series;
             if (serie != null)
                 return new SeriesViewModel
@@ -60,7 +60,8 @@ namespace LiveCharts.Uwp.Components
 
             return value;
         }
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+
+        public Object ConvertBack(Object value, Type targetType, Object parameter, String language)
         {
             throw new NotImplementedException();
         }
