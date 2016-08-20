@@ -121,6 +121,11 @@
     <Compile Include="Components\ChartUpdater.cs" />
     <Compile Include="Components\Converters.cs" />
     <Compile Include="Components\IFondeable.cs" />
+    <Compile Include="Components\MultiBinding\DependencyObjectCollection.cs" />
+    <Compile Include="Components\MultiBinding\MultiBindingBehavior.cs" />
+    <Compile Include="Components\MultiBinding\MultiBindingItem.cs" />
+    <Compile Include="Components\MultiBinding\MultiBindingItemCollection.cs" />
+    <Compile Include="Components\MultiBinding\MultiValueConverterBase.cs" />
     <Compile Include="Components\TooltipDto.cs" />
     <Compile Include="Converters\StringFormatConverter.cs" />
     <Compile Include="Converters\TypeConverters.cs" />

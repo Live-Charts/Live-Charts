@@ -26,6 +26,8 @@ using System.ComponentModel;
 using System.Globalization;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Data;
+using LiveCharts.Uwp.Components.MultiBinding;
 
 namespace LiveCharts.Uwp
 {
@@ -107,14 +109,14 @@ namespace LiveCharts.Uwp
         }
     }
 
-    public class OrientationConverter : IMultiValueConverter
+    public class OrientationConverter : MultiValueConverterBase
     {
-        public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
+        public override Object Convert(Object[] values, Type targetType, Object parameter, CultureInfo culture)
         {
-            return (Orientation?) values[0] ?? (Orientation) values[1];
+            return (Orientation?)values[0] ?? (Orientation)values[1];
         }
 
-        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
+        public override Object[] ConvertBack(Object value, Type targetType, Object parameter, CultureInfo culture)
         {
             throw new NotImplementedException();
         }

@@ -31,6 +31,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:interop="using:Windows.UI.Xaml.Interop"
              xmlns:uwp="using:LiveCharts.Uwp"
+             xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
+             xmlns:multiBinding="using:LiveCharts.Uwp.Components.MultiBinding"
              mc:Ignorable="d" x:Name="UserControl"
              d:DataContext="{d:DesignInstance uwp:DefaultLegend}">
     <UserControl.Resources>
@@ -44,12 +46,12 @@
                         <ItemsPanelTemplate>
                             <WrapPanel MaxWidth="{Binding MaxWidth, ElementName=This}"
                                        MaxHeight="{Binding MaxHeight, ElementName=This}">
-                                <WrapPanel.Orientation>
-                                    <MultiBinding Converter="{StaticResource OrientationConverter}">
-                                        <Binding Path="Orientation"/>
-                                        <Binding Path="InternalOrientation"/>
-                                    </MultiBinding>
-                                </WrapPanel.Orientation>
+                                <interactivity:Interaction.Behaviors>
+                                    <multiBinding:MultiBindingBehavior Converter="{StaticResource OrientationConverter}" PropertyName="Orientation">
+                                        <multiBinding:MultiBindingItem Value="{Binding Orientation}" />
+                                        <multiBinding:MultiBindingItem Value="{Binding InternalOrientation}" />
+                                    </multiBinding:MultiBindingBehavior>
+                                </interactivity:Interaction.Behaviors>
                             </WrapPanel>
                         </ItemsPanelTemplate>
                     </ItemsControl.ItemsPanel>
@@ -74,3 +76,4 @@
         </ControlTemplate>
     </UserControl.Template>
 </UserControl>
+

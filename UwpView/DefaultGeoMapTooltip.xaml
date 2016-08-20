@@ -30,6 +30,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:uwp="using:LiveCharts.Uwp"
+             xmlns:components="using:LiveCharts.Uwp.Components"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300"
              d:DataContext="{d:DesignInstance uwp:DefaultGeoMapTooltip}"
@@ -52,10 +53,10 @@
                     <TextBlock FontWeight="Bold" Foreground="White" Text="{Binding GeoData.Name}"></TextBlock>
                     <TextBlock Grid.Column="1" Margin="10 0 0 0" Foreground="White" FontWeight="Bold">
                         <TextBlock.Text>
-                            <MultiBinding Converter="{StaticResource DataLabelConverter}">
+                            <components:MultiBinding Converter="{StaticResource DataLabelConverter}">
                                 <Binding Path="GeoData.Value" />
                                 <Binding Path="LabelFormatter" />
-                            </MultiBinding>
+                            </components:MultiBinding>
                         </TextBlock.Text>
                     </TextBlock>
                 </Grid>
