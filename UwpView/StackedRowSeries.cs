@@ -23,6 +23,7 @@
 using System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Shapes;
 using LiveCharts.Definitions.Points;
 using LiveCharts.Definitions.Series;
@@ -136,13 +137,13 @@ namespace LiveCharts.Uwp
             pbv.Rectangle.Stroke = Stroke;
             pbv.Rectangle.StrokeDashArray = StrokeDashArray;
             pbv.Rectangle.Visibility = Visibility;
-            Canvas.SetZIndex(pbv.Rectangle, Panel.GetZIndex(this));
+            Canvas.SetZIndex(pbv.Rectangle, Canvas.GetZIndex(this));
 
             if (Model.Chart.RequiresHoverShape && pbv.HoverShape == null)
             {
                 pbv.HoverShape = new Rectangle
                 {
-                    Fill = Brushes.Transparent,
+                    Fill = new SolidColorBrush(Windows.UI.Colors.Transparent),
                     StrokeThickness = 0
                 };
 
@@ -175,13 +176,13 @@ namespace LiveCharts.Uwp
 
         private void InitializeDefuaults()
         {
-            SetCurrentValue(StrokeThicknessProperty, 0d);
-            SetCurrentValue(MaxRowHeightProperty, 35d);
-            SetCurrentValue(RowPaddingProperty, 1d);
-            SetCurrentValue(ForegroundProperty, Brushes.White);
+            /*Current*/SetValue(StrokeThicknessProperty, 0d);
+            /*Current*/SetValue(MaxRowHeightProperty, 35d);
+            /*Current*/SetValue(RowPaddingProperty, 1d);
+            /*Current*/SetValue(ForegroundProperty, new SolidColorBrush(Windows.UI.Colors.White));
 
             Func<ChartPoint, string> defaultLabel = x =>  Model.CurrentXAxis.GetFormatter()(x.X);
-            SetCurrentValue(LabelPointProperty, defaultLabel);
+            /*Current*/SetValue(LabelPointProperty, defaultLabel);
 
             DefaultFillOpacity = 1;
         }

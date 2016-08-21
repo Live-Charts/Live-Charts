@@ -44,7 +44,7 @@ namespace LiveCharts.Uwp
             var updater = new Components.ChartUpdater(freq);
             ChartCoreModel = new PieChartCore(this, updater);
 
-            SetCurrentValue(SeriesProperty, new SeriesCollection());
+            /*Current*/SetValue(SeriesProperty, new SeriesCollection());
         }
 
         public static readonly DependencyProperty InnerRadiusProperty = DependencyProperty.Register(

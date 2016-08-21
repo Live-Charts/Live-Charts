@@ -146,13 +146,13 @@ namespace LiveCharts.Uwp
             pbv.Rectangle.StrokeThickness = StrokeThickness;
             pbv.Rectangle.Visibility = Visibility;
             pbv.Rectangle.StrokeDashArray = StrokeDashArray;
-            Canvas.SetZIndex(pbv.Rectangle, Panel.GetZIndex(pbv.Rectangle));
+            Canvas.SetZIndex(pbv.Rectangle, Canvas.GetZIndex(pbv.Rectangle));
 
             if (Model.Chart.RequiresHoverShape && pbv.HoverShape == null)
             {
                 pbv.HoverShape = new Rectangle
                 {
-                    Fill = Brushes.Transparent,
+                    Fill = new SolidColorBrush(Windows.UI.Colors.Transparent),
                     StrokeThickness = 0
                 };
 
@@ -242,14 +242,14 @@ namespace LiveCharts.Uwp
 
         private void InitializeDefuaults()
         {
-            SetCurrentValue(StrokeThicknessProperty, 0d);
-            SetCurrentValue(ForegroundProperty, Brushes.White);
-            SetCurrentValue(StrokeProperty, Brushes.White);
-            SetCurrentValue(DrawsHeatRangeProperty, true);
-            SetCurrentValue(GradientStopCollectionProperty, new GradientStopCollection());
+            /*Current*/SetValue(StrokeThicknessProperty, 0d);
+            /*Current*/SetValue(ForegroundProperty, new SolidColorBrush(Windows.UI.Colors.White));
+            /*Current*/SetValue(StrokeProperty, new SolidColorBrush(Windows.UI.Colors.White));
+            /*Current*/SetValue(DrawsHeatRangeProperty, true);
+            /*Current*/SetValue(GradientStopCollectionProperty, new GradientStopCollection());
 
             Func<ChartPoint, string> defaultLabel = x => x.Weight.ToString(CultureInfo.InvariantCulture);
-            SetCurrentValue(LabelPointProperty, defaultLabel);
+            /*Current*/SetValue(LabelPointProperty, defaultLabel);
 
             DefaultFillOpacity = 0.4;
         }

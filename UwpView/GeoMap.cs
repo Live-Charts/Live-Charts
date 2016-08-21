@@ -60,18 +60,18 @@ namespace LiveCharts.Uwp
 
             Lands = new Dictionary<string, MapData>();
 
-            SetCurrentValue(DefaultLandFillProperty, new SolidColorBrush(Color.FromArgb(200, 255, 255, 255)));
-            SetCurrentValue(LandStrokeProperty, new SolidColorBrush(Color.FromArgb(30, 55,55, 55)));
-            SetCurrentValue(LandStrokeThicknessProperty, 1.3d);
-            SetCurrentValue(AnimationsSpeedProperty, TimeSpan.FromMilliseconds(500));
-            SetCurrentValue(BackgroundProperty, new SolidColorBrush(Color.FromArgb(150, 96, 125, 138)));
-            SetCurrentValue(GradientStopCollectionProperty, new GradientStopCollection
+            /*Current*/SetValue(DefaultLandFillProperty, new SolidColorBrush(Color.FromArgb(200, 255, 255, 255)));
+            /*Current*/SetValue(LandStrokeProperty, new SolidColorBrush(Color.FromArgb(30, 55,55, 55)));
+            /*Current*/SetValue(LandStrokeThicknessProperty, 1.3d);
+            /*Current*/SetValue(AnimationsSpeedProperty, TimeSpan.FromMilliseconds(500));
+            /*Current*/SetValue(BackgroundProperty, new SolidColorBrush(Color.FromArgb(150, 96, 125, 138)));
+            /*Current*/SetValue(GradientStopCollectionProperty, new GradientStopCollection
             {
                 new GradientStop(Color.FromArgb(100,2,119,188), 0d),
                 new GradientStop(Color.FromArgb(255, 2,119,188), 1d),
             });
-            SetCurrentValue(HeatMapProperty, new Dictionary<string, double>());
-            SetCurrentValue(GeoMapTooltipProperty, new DefaultGeoMapTooltip {Visibility = Visibility.Hidden});
+            /*Current*/SetValue(HeatMapProperty, new Dictionary<string, double>());
+            /*Current*/SetValue(GeoMapTooltipProperty, new DefaultGeoMapTooltip {Visibility = Visibility.Hidden});
             Canvas.Children.Add(GeoMapTooltip);
 
             SizeChanged += (sender, e) =>
@@ -491,7 +491,7 @@ namespace LiveCharts.Uwp
             var path = (Path)sender;
             path.Opacity = 1;
 
-            GeoMapTooltip.Visibility = Visibility.Hidden;
+            GeoMapTooltip.Visibility = Visibility.Collapsed;//Visibility.Hidden;
         }
 
         private void POnMouseEnter(object sender, MouseEventArgs mouseEventArgs)

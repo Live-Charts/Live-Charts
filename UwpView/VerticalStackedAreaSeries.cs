@@ -124,7 +124,7 @@ namespace LiveCharts.Uwp
                 StrokeDashArray = StrokeDashArray
             };
 
-            Canvas.SetZIndex(Path, Panel.GetZIndex(this));
+            Canvas.SetZIndex(Path, Canvas.GetZIndex(this));
 
             var geometry = new PathGeometry();
             Figure = new PathFigure();
@@ -150,15 +150,15 @@ namespace LiveCharts.Uwp
 
         private void InitializeDefuaults()
         {
-            SetCurrentValue(LineSmoothnessProperty, .7d);
-            SetCurrentValue(PointGeometrySizeProperty, 0d);
-            SetCurrentValue(PointForeroundProperty, Brushes.White);
-            SetCurrentValue(ForegroundProperty, new SolidColorBrush(Color.FromArgb(255, 229, 229, 229)));
-            SetCurrentValue(StrokeThicknessProperty, 0d);
-            SetCurrentValue(StackModeProperty, StackMode.Values);
+            /*Current*/SetValue(LineSmoothnessProperty, .7d);
+            /*Current*/SetValue(PointGeometrySizeProperty, 0d);
+            /*Current*/SetValue(PointForeroundProperty, new SolidColorBrush(Windows.UI.Colors.White));
+            /*Current*/SetValue(ForegroundProperty, new SolidColorBrush(Color.FromArgb(255, 229, 229, 229)));
+            /*Current*/SetValue(StrokeThicknessProperty, 0d);
+            /*Current*/SetValue(StackModeProperty, StackMode.Values);
 
             Func<ChartPoint, string> defaultLabel = x => Model.CurrentXAxis.GetFormatter()(x.X);
-            SetCurrentValue(LabelPointProperty, defaultLabel);
+            /*Current*/SetValue(LabelPointProperty, defaultLabel);
 
             DefaultFillOpacity = 1;
             Splitters = new List<LineSegmentSplitter>();

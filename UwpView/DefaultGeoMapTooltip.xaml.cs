@@ -34,7 +34,7 @@ namespace LiveCharts.Uwp
         {
             InitializeComponent();
 
-            SetCurrentValue(CornerRadiusProperty, 4d);
+            /*Current*/SetValue(CornerRadiusProperty, 4d);
 
             DataContext = this;
         }

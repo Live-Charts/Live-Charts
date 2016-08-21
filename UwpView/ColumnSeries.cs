@@ -143,7 +143,7 @@ namespace LiveCharts.Uwp
             {
                 pbv.HoverShape = new Rectangle
                 {
-                    Fill = Brushes.Transparent,
+                    Fill = new SolidColorBrush(Windows.UI.Colors.Transparent),
                     StrokeThickness = 0
                 };
 
@@ -181,13 +181,13 @@ namespace LiveCharts.Uwp
 
         private void InitializeDefuaults()
         {
-            SetCurrentValue(StrokeThicknessProperty, 0d);
-            SetCurrentValue(MaxColumnWidthProperty, 35d);
-            SetCurrentValue(ColumnPaddingProperty, 1d);
-            SetCurrentValue(LabelsPositionProperty, BarLabelPosition.Top);
+            /*Current*/SetValue(StrokeThicknessProperty, 0d);
+            /*Current*/SetValue(MaxColumnWidthProperty, 35d);
+            /*Current*/SetValue(ColumnPaddingProperty, 1d);
+            /*Current*/SetValue(LabelsPositionProperty, BarLabelPosition.Top);
 
             Func<ChartPoint, string> defaultLabel = x => Model.CurrentYAxis.GetFormatter()(x.Y);
-            SetCurrentValue(LabelPointProperty, defaultLabel);
+            /*Current*/SetValue(LabelPointProperty, defaultLabel);
 
             DefaultFillOpacity = 1;
         }

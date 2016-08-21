@@ -141,14 +141,14 @@ namespace LiveCharts.Uwp
             pbv.VerticalLine.Stroke = Stroke;
             pbv.VerticalLine.StrokeDashArray = StrokeDashArray;
             pbv.VerticalLine.Visibility = Visibility;
-            Canvas.SetZIndex(pbv.VerticalLine, Panel.GetZIndex(this));
+            Canvas.SetZIndex(pbv.VerticalLine, Canvas.GetZIndex(this));
 
             pbv.HorizontalLine.Fill = Fill;
             pbv.HorizontalLine.StrokeThickness = StrokeThickness;
             pbv.HorizontalLine.Stroke = Stroke;
             pbv.HorizontalLine.StrokeDashArray = StrokeDashArray;
             pbv.HorizontalLine.Visibility = Visibility;
-            Canvas.SetZIndex(pbv.HorizontalLine, Panel.GetZIndex(this));
+            Canvas.SetZIndex(pbv.HorizontalLine, Canvas.GetZIndex(this));
 
             if (PointGeometry != null && Math.Abs(PointGeometrySize) > 0.1 && pbv.Shape == null)
             {
@@ -174,7 +174,7 @@ namespace LiveCharts.Uwp
                 pbv.Shape.Width = PointGeometrySize;
                 pbv.Shape.Height = PointGeometrySize;
                 pbv.Shape.Data = PointGeometry;
-                Canvas.SetZIndex(pbv.Shape, Panel.GetZIndex(this) + 1);
+                Canvas.SetZIndex(pbv.Shape, Canvas.GetZIndex(this) + 1);
 
                 if (point.Stroke != null) pbv.Shape.Stroke = (Brush) point.Stroke;
                 if (point.Fill != null) pbv.Shape.Fill = (Brush) point.Fill;
@@ -184,7 +184,7 @@ namespace LiveCharts.Uwp
             {
                 pbv.HoverShape = new Rectangle
                 {
-                    Fill = Brushes.Transparent,
+                    Fill = new SolidColorBrush(Windows.UI.Colors.Transparent),
                     StrokeThickness = 0
                 };
 
@@ -230,12 +230,12 @@ namespace LiveCharts.Uwp
 
         private void InitializeDefuaults()
         {
-            SetCurrentValue(PointGeometrySizeProperty, 8d);
-            SetCurrentValue(PointForeroundProperty, Brushes.White);
-            SetCurrentValue(StrokeThicknessProperty, 2d);
+            /*Current*/SetValue(PointGeometrySizeProperty, 8d);
+            /*Current*/SetValue(PointForeroundProperty, new SolidColorBrush(Windows.UI.Colors.White));
+            /*Current*/SetValue(StrokeThicknessProperty, 2d);
 
             Func<ChartPoint, string> defaultLabel = x => Model.CurrentYAxis.GetFormatter()(x.Y);
-            SetCurrentValue(LabelPointProperty, defaultLabel);
+            /*Current*/SetValue(LabelPointProperty, defaultLabel);
 
             DefaultFillOpacity = 0.15;
         }

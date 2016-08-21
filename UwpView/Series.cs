@@ -49,7 +49,7 @@ namespace LiveCharts.Uwp
         protected Series()
         {
             DefaultFillOpacity = 0.35;
-            SetCurrentValue(TitleProperty, "Series");
+            /*Current*/SetValue(TitleProperty, "Series");
             IsVisibleChanged += OnIsVisibleChanged;
         }
 
@@ -460,7 +460,7 @@ namespace LiveCharts.Uwp
             {
                 PreviousVisibility = Visibility;
                 Model.Chart.Updater.Run(false, true);
-                if (Visibility == Visibility.Collapsed || Visibility == Visibility.Hidden)
+                if (Visibility == Visibility.Collapsed)
                 {
                     Erase(false);
                 }

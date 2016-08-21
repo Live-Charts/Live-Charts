@@ -23,6 +23,7 @@
 using System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Media;
 using LiveCharts.Definitions.Points;
 using LiveCharts.Definitions.Series;
 using LiveCharts.SeriesAlgorithms;
@@ -109,13 +110,13 @@ namespace LiveCharts.Uwp
             pbv.Slice.StrokeDashArray = StrokeDashArray;
             pbv.Slice.PushOut = PushOut;
             pbv.Slice.Visibility = Visibility;
-            Canvas.SetZIndex(pbv.Slice, Panel.GetZIndex(this));
+            Canvas.SetZIndex(pbv.Slice, Canvas.GetZIndex(this));
             
             if (Model.Chart.RequiresHoverShape && pbv.HoverShape == null)
             {
                 pbv.HoverShape = new PieSlice
                 {
-                    Fill = Brushes.Transparent,
+                    Fill = new SolidColorBrush(Windows.UI.Colors.Transparent),
                     StrokeThickness = 0
                 };
 
@@ -150,13 +151,13 @@ namespace LiveCharts.Uwp
 
         private void InitializeDefuaults()
         {
-            SetCurrentValue(StrokeThicknessProperty, 2d);
-            SetCurrentValue(StrokeProperty, Brushes.White);
-            SetCurrentValue(ForegroundProperty, Brushes.White);
+            /*Current*/SetValue(StrokeThicknessProperty, 2d);
+            /*Current*/SetValue(StrokeProperty, new SolidColorBrush(Windows.UI.Colors.White));
+            /*Current*/SetValue(ForegroundProperty, new SolidColorBrush(Windows.UI.Colors.White));
 
             Func<ChartPoint, string> defaultLabel = x => Model.CurrentYAxis.GetFormatter()(x.Y);
 
-            SetCurrentValue(LabelPointProperty, defaultLabel);
+            /*Current*/SetValue(LabelPointProperty, defaultLabel);
 
             DefaultFillOpacity = 1;
         }

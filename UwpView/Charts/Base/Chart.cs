@@ -68,17 +68,17 @@ namespace LiveCharts.Uwp.Charts.Base
 
             TooltipTimeoutTimer = new DispatcherTimer();
             
-            SetCurrentValue(MinHeightProperty, 50d);
-            SetCurrentValue(MinWidthProperty, 80d);
+            /*Current*/SetValue(MinHeightProperty, 50d);
+            /*Current*/SetValue(MinWidthProperty, 80d);
 
-            SetCurrentValue(AnimationsSpeedProperty, TimeSpan.FromMilliseconds(300));
-            SetCurrentValue(TooltipTimeoutProperty, TimeSpan.FromMilliseconds(800));
+            /*Current*/SetValue(AnimationsSpeedProperty, TimeSpan.FromMilliseconds(300));
+            /*Current*/SetValue(TooltipTimeoutProperty, TimeSpan.FromMilliseconds(800));
 
-            SetCurrentValue(AxisXProperty, new AxesCollection());
-            SetCurrentValue(AxisYProperty, new AxesCollection());
+            /*Current*/SetValue(AxisXProperty, new AxesCollection());
+            /*Current*/SetValue(AxisYProperty, new AxesCollection());
 
-            SetCurrentValue(ChartLegendProperty, new DefaultLegend());
-            SetCurrentValue(DataTooltipProperty, new DefaultTooltip());
+            /*Current*/SetValue(ChartLegendProperty, new DefaultLegend());
+            /*Current*/SetValue(DataTooltipProperty, new DefaultTooltip());
             
             var colors = new ColorsCollection
             {
@@ -95,7 +95,7 @@ namespace LiveCharts.Uwp.Charts.Base
                 Color.FromArgb(255, 76, 174, 80)
             };
 
-            SetCurrentValue(ColorsProperty, colors);
+            /*Current*/SetValue(ColorsProperty, colors);
 
             SizeChanged += OnSizeChanged;
             RegisterPropertyChangedCallback(VisibilityProperty, OnIsVisibleChanged);
@@ -504,7 +504,7 @@ namespace LiveCharts.Uwp.Charts.Base
         public void HideLegend()
         {
             if (ChartLegend != null)
-                ChartLegend.Visibility = Visibility.Hidden;
+                ChartLegend.Visibility = Visibility.Collapsed;//Visibility.Hidden;
         }
 
         /// <summary>
@@ -729,7 +729,7 @@ namespace LiveCharts.Uwp.Charts.Base
         {
             TooltipTimeoutTimer.Stop();
             if (DataTooltip == null || ActiveTooltip == null) return;
-            ActiveTooltip.Visibility = Visibility.Hidden;
+            ActiveTooltip.Visibility = Visibility.Collapsed;//Visibility.Hidden;
         }
 
         public CoreSize LoadLegend()
@@ -804,7 +804,7 @@ namespace LiveCharts.Uwp.Charts.Base
         {
             if (DataTooltip == null) return;
 
-            DataTooltip.Visibility = Visibility.Hidden;
+            DataTooltip.Visibility = Visibility.Collapsed;
         }
 
         protected virtual Point GetTooltipPosition(ChartPoint senderPoint)

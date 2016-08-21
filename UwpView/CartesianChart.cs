@@ -42,9 +42,9 @@ namespace LiveCharts.Uwp
             var updater = new Components.ChartUpdater(freq);
             ChartCoreModel = new CartesianChartCore(this, updater);
             
-            SetCurrentValue(SeriesProperty, new SeriesCollection());
+            /*Current*/SetValue(SeriesProperty, new SeriesCollection());
 
-            SetCurrentValue(VisualElementsProperty, new VisualElementsCollection());
+            /*Current*/SetValue(VisualElementsProperty, new VisualElementsCollection());
         }
 
 

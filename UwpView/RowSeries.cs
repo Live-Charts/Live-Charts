@@ -138,13 +138,13 @@ namespace LiveCharts.Uwp
             pbv.Rectangle.StrokeThickness = StrokeThickness;
             pbv.Rectangle.StrokeDashArray = StrokeDashArray;
             pbv.Rectangle.Visibility = Visibility;
-            Canvas.SetZIndex(pbv.Rectangle, Panel.GetZIndex(this));
+            Canvas.SetZIndex(pbv.Rectangle, Canvas.GetZIndex(this));
 
             if (Model.Chart.RequiresHoverShape && pbv.HoverShape == null)
             {
                 pbv.HoverShape = new Rectangle
                 {
-                    Fill = Brushes.Transparent,
+                    Fill = new SolidColorBrush(Windows.UI.Colors.Transparent),
                     StrokeThickness = 0
                 };
 
@@ -182,13 +182,13 @@ namespace LiveCharts.Uwp
 
         private void InitializeDefuaults()
         {
-            SetCurrentValue(StrokeThicknessProperty, 0d);
-            SetCurrentValue(MaxRowHeigthProperty, 35d);
-            SetCurrentValue(RowPaddingProperty, 1d);
-            SetCurrentValue(LabelPositionProperty, BarLabelPosition.Top);
+            /*Current*/SetValue(StrokeThicknessProperty, 0d);
+            /*Current*/SetValue(MaxRowHeigthProperty, 35d);
+            /*Current*/SetValue(RowPaddingProperty, 1d);
+            /*Current*/SetValue(LabelPositionProperty, BarLabelPosition.Top);
 
             Func<ChartPoint, string> defaultLabel = x => Model.CurrentXAxis.GetFormatter()(x.X);
-            SetCurrentValue(LabelPointProperty, defaultLabel);
+            /*Current*/SetValue(LabelPointProperty, defaultLabel);
 
             DefaultFillOpacity = 1;
         }

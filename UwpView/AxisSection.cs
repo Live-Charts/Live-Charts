@@ -45,11 +45,11 @@ namespace LiveCharts.Uwp
             _rectangle = new Rectangle();
             _label = new TextBlock();
             
-            SetCurrentValue(StrokeProperty, new SolidColorBrush(Color.FromArgb(255, 131, 172, 191)));
-            SetCurrentValue(FillProperty, new SolidColorBrush(Color.FromArgb(255, 131, 172, 191)) {Opacity = .35});
-            SetCurrentValue(StrokeThicknessProperty, 0d);
-            SetCurrentValue(FromValueProperty, 0d);
-            SetCurrentValue(ToValueProperty, 0d);
+            /*Current*/SetValue(StrokeProperty, new SolidColorBrush(Color.FromArgb(255, 131, 172, 191)));
+            /*Current*/SetValue(FillProperty, new SolidColorBrush(Color.FromArgb(255, 131, 172, 191)) {Opacity = .35});
+            /*Current*/SetValue(StrokeThicknessProperty, 0d);
+            /*Current*/SetValue(FromValueProperty, 0d);
+            /*Current*/SetValue(ToValueProperty, 0d);
 
             BindingOperations.SetBinding(_rectangle, Shape.FillProperty,
                     new Binding { Path = new PropertyPath(nameof(Fill)), Source = this });

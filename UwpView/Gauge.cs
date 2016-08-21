@@ -74,19 +74,19 @@ namespace LiveCharts.Uwp
 
             Pie.SetBinding(Shape.StrokeThicknessProperty,
                 new Binding { Path = new PropertyPath("StrokeThickness"), Source = this });
-            Pie.Stroke = Brushes.Transparent;
+            Pie.Stroke = new SolidColorBrush(Windows.UI.Colors.Transparent);
 
-            SetCurrentValue(GaugeBackgroundProperty, new SolidColorBrush(Color.FromArgb(255, 21, 101, 191)) {Opacity = .1});
-            SetCurrentValue(StrokeThicknessProperty, 0d);
-            SetCurrentValue(StrokeProperty, new SolidColorBrush(Color.FromArgb(255, 222, 222, 222)));
+            /*Current*/SetValue(GaugeBackgroundProperty, new SolidColorBrush(Color.FromArgb(255, 21, 101, 191)) {Opacity = .1});
+            /*Current*/SetValue(StrokeThicknessProperty, 0d);
+            /*Current*/SetValue(StrokeProperty, new SolidColorBrush(Color.FromArgb(255, 222, 222, 222)));
 
-            SetCurrentValue(FromColorProperty, Color.FromArgb(255, 100, 180, 245));
-            SetCurrentValue(ToColorProperty, Color.FromArgb(255, 21, 101, 191));
+            /*Current*/SetValue(FromColorProperty, Color.FromArgb(255, 100, 180, 245));
+            /*Current*/SetValue(ToColorProperty, Color.FromArgb(255, 21, 101, 191));
 
-            SetCurrentValue(MinHeightProperty, 50d);
-            SetCurrentValue(MinWidthProperty, 80d);
+            /*Current*/SetValue(MinHeightProperty, 50d);
+            /*Current*/SetValue(MinWidthProperty, 80d);
 
-            SetCurrentValue(AnimationsSpeedProperty, TimeSpan.FromMilliseconds(800));
+            /*Current*/SetValue(AnimationsSpeedProperty, TimeSpan.FromMilliseconds(800));
 
             MeasureTextBlock.FontWeight = FontWeights.Bold;
 
@@ -291,8 +291,8 @@ namespace LiveCharts.Uwp
             }
             else
             {
-                LeftLabel.Visibility = Visibility.Hidden;
-                RightLabel.Visibility = Visibility.Hidden;
+                LeftLabel.Visibility = Visibility.Collapsed;//Visibility.Hidden;
+                RightLabel.Visibility = Visibility.Collapsed;//Visibility.Hidden;
             }
 
             double r, top;

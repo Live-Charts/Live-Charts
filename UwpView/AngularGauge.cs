@@ -47,7 +47,7 @@ namespace LiveCharts.Uwp
             Canvas = new Canvas(); //{ ClipToBounds = true};
             Content = Canvas;
 
-            StickRotateTransform = new RotateTransform(180);
+            StickRotateTransform = new RotateTransform() {Angle = 180};
             Stick = new Path
             {
                 Data = GeometryHelper.Parse("m0,90 a5,5 0 0 0 20,0 l-8,-88 a2,2 0 0 0 -4 0 z"),
@@ -64,17 +64,17 @@ namespace LiveCharts.Uwp
             Canvas.SetBinding(HeightProperty,
                 new Binding { Path = new PropertyPath("ActualHeight"), Source = this });
 
-            SetCurrentValue(SectionsProperty, new List<AngularSection>());
-            SetCurrentValue(NeedleFillProperty, new SolidColorBrush(Color.FromArgb(255, 69, 90, 100)));
+            /*Current*/SetValue(SectionsProperty, new List<AngularSection>());
+            /*Current*/SetValue(NeedleFillProperty, new SolidColorBrush(Color.FromArgb(255, 69, 90, 100)));
 
             Stick.SetBinding(Shape.FillProperty,
                 new Binding {Path = new PropertyPath("NeedleFill"), Source = this});
             
-            SetCurrentValue(AnimationsSpeedProperty, TimeSpan.FromMilliseconds(500));
-            SetCurrentValue(TicksForegroundProperty, new SolidColorBrush(Color.FromArgb(255, 210, 210, 210)));
+            /*Current*/SetValue(AnimationsSpeedProperty, TimeSpan.FromMilliseconds(500));
+            /*Current*/SetValue(TicksForegroundProperty, new SolidColorBrush(Color.FromArgb(255, 210, 210, 210)));
             Func<double, string> defaultFormatter = x => x.ToString(CultureInfo.InvariantCulture);
-            SetCurrentValue(LabelFormatterProperty, defaultFormatter);
-            //SetCurrentValue(LabelsEffectProperty,
+            /*Current*/SetValue(LabelFormatterProperty, defaultFormatter);
+            ///*Current*/SetValue(LabelsEffectProperty,
             //    new DropShadowEffect {ShadowDepth = 2, RenderingBias = RenderingBias.Performance});
 
             SizeChanged += (sender, args) =>

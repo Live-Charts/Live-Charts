@@ -152,7 +152,7 @@ namespace LiveCharts.Uwp
                 Path.Fill = Fill;
                 Path.Visibility = Visibility;
                 Path.StrokeDashArray = StrokeDashArray;
-                Canvas.SetZIndex(Path, Panel.GetZIndex(this));
+                Canvas.SetZIndex(Path, Canvas.GetZIndex(this));
                 return;
             }
 
@@ -167,7 +167,7 @@ namespace LiveCharts.Uwp
                 StrokeDashArray = StrokeDashArray
             };
 
-            Canvas.SetZIndex(Path, Panel.GetZIndex(this));
+            Canvas.SetZIndex(Path, Canvas.GetZIndex(this));
       
             var geometry = new PathGeometry();
             Figure = new PathFigure();
@@ -210,7 +210,7 @@ namespace LiveCharts.Uwp
             {
                 pbv.HoverShape = new Rectangle
                 {
-                    Fill = Brushes.Transparent,
+                    Fill = new SolidColorBrush(Windows.UI.Colors.Transparent),
                     StrokeThickness = 0,
                     Width = mhr,
                     Height = mhr
@@ -250,7 +250,7 @@ namespace LiveCharts.Uwp
                 pbv.Shape.Height = PointGeometrySize;
                 pbv.Shape.Data = PointGeometry;
                 pbv.Shape.Visibility = Visibility;
-                Canvas.SetZIndex(pbv.Shape, Panel.GetZIndex(this) + 1);
+                Canvas.SetZIndex(pbv.Shape, Canvas.GetZIndex(this) + 1);
 
                 if (point.Stroke != null) pbv.Shape.Stroke = (Brush) point.Stroke;
                 if (point.Fill != null) pbv.Shape.Fill = (Brush) point.Fill;
@@ -382,13 +382,13 @@ namespace LiveCharts.Uwp
 
         private void InitializeDefuaults()
         {
-            SetCurrentValue(LineSmoothnessProperty, .7d);
-            SetCurrentValue(PointGeometrySizeProperty, 8d);
-            SetCurrentValue(PointForeroundProperty, Brushes.White);
-            SetCurrentValue(StrokeThicknessProperty, 2d);
+            /*Current*/SetValue(LineSmoothnessProperty, .7d);
+            /*Current*/SetValue(PointGeometrySizeProperty, 8d);
+            /*Current*/SetValue(PointForeroundProperty, new SolidColorBrush(Windows.UI.Colors.White));
+            /*Current*/SetValue(StrokeThicknessProperty, 2d);
 
             Func<ChartPoint, string> defaultLabel = x => Model.CurrentYAxis.GetFormatter()(x.Y);
-            SetCurrentValue(LabelPointProperty, defaultLabel);
+            /*Current*/SetValue(LabelPointProperty, defaultLabel);
 
             DefaultFillOpacity = 0.15;
             Splitters = new List<LineSegmentSplitter>();

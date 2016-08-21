@@ -155,7 +155,7 @@ namespace LiveCharts.Uwp
             pbv.CloseLine.Visibility = Visibility;
             pbv.OpenLine.Visibility = Visibility;
 
-            var i = Panel.GetZIndex(this);
+            var i = Canvas.GetZIndex(this);
             Canvas.SetZIndex(pbv.HighToLowLine, i);
             Canvas.SetZIndex(pbv.CloseLine, i);
             Canvas.SetZIndex(pbv.OpenLine, i);
@@ -164,7 +164,7 @@ namespace LiveCharts.Uwp
             {
                 pbv.HoverShape = new Rectangle
                 {
-                    Fill = Brushes.Transparent,
+                    Fill = new SolidColorBrush(Windows.UI.Colors.Transparent),
                     StrokeThickness = 0
                 };
 
@@ -210,15 +210,15 @@ namespace LiveCharts.Uwp
 
         private void InitializeDefuaults()
         {
-            SetCurrentValue(StrokeThicknessProperty, 2.5d);
-            SetCurrentValue(MaxColumnWidthProperty, 35d);
-            SetCurrentValue(MaxWidthProperty, 25d);
-            SetCurrentValue(IncreaseBrushProperty, new SolidColorBrush(Color.FromArgb(255, 254, 178, 0)));
-            SetCurrentValue(DecreaseBrushProperty, new SolidColorBrush(Color.FromArgb(255, 238, 83, 80)));
+            /*Current*/SetValue(StrokeThicknessProperty, 2.5d);
+            /*Current*/SetValue(MaxColumnWidthProperty, 35d);
+            /*Current*/SetValue(MaxWidthProperty, 25d);
+            /*Current*/SetValue(IncreaseBrushProperty, new SolidColorBrush(Color.FromArgb(255, 254, 178, 0)));
+            /*Current*/SetValue(DecreaseBrushProperty, new SolidColorBrush(Color.FromArgb(255, 238, 83, 80)));
 
             Func<ChartPoint, string> defaultLabel = x =>
                 string.Format("O: {0}, H: {1}, C: {2} L: {3}", x.Open, x.High, x.Close, x.Low);
-            SetCurrentValue(LabelPointProperty, defaultLabel);
+            /*Current*/SetValue(LabelPointProperty, defaultLabel);
 
             DefaultFillOpacity = 1;
         }
