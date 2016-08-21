@@ -41,7 +41,6 @@ namespace LiveCharts.SeriesAlgorithms
         public override void Update()
         {
             var points = View.ActualValues.GetPoints(View).ToArray();
-            var @is = points.Select(x => x.X).ToArray();
 
             var segmentPosition = 0;
 
@@ -189,7 +188,7 @@ namespace LiveCharts.SeriesAlgorithms
 
         double ICartesianSeries.GetMaxY(AxisCore axis)
         {
-            return  AxisLimits.SeparatorMax(axis);
+            return  AxisLimits.SeparatorMaxRounded(axis);
         }
     }
 }

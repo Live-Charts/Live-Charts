@@ -40,7 +40,7 @@ namespace LiveCharts.SeriesAlgorithms
 
         double ICartesianSeries.GetMaxX(AxisCore axis)
         {
-            return AxisLimits.SeparatorMax(axis);
+            return AxisLimits.SeparatorMaxRounded(axis);
         }
 
         double ICartesianSeries.GetMinY(AxisCore axis)

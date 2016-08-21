@@ -48,7 +48,7 @@ namespace LiveCharts.Defaults
 
         internal static double SeparatorMax(AxisCore axis)
         {
-            return (((int) (axis.TopLimit/axis.S)) + 1)*axis.S;
+            return ((int) (axis.TopLimit/axis.S) + 1)*axis.S;
         }
 
         internal static double SeparatorMaxRounded(AxisCore axis)
