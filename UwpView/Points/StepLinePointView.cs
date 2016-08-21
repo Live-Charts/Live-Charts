@@ -104,23 +104,87 @@ namespace LiveCharts.Uwp.Points
 
             var animSpeed = chart.View.AnimationsSpeed;
 
-            VerticalLine.BeginAnimation(Line.X1Property,
-                new DoubleAnimation(current.ChartLocation.X, animSpeed));
-            VerticalLine.BeginAnimation(Line.X2Property,
-                new DoubleAnimation(current.ChartLocation.X, animSpeed));
-            VerticalLine.BeginAnimation(Line.Y1Property,
-                new DoubleAnimation(current.ChartLocation.Y, animSpeed));
-            VerticalLine.BeginAnimation(Line.Y2Property,
-                new DoubleAnimation(current.ChartLocation.Y - DeltaY, animSpeed));
+            {
+                var storyBoard = new Storyboard();
+                var x1Animation = new DoubleAnimation()
+                {
+                    To = current.ChartLocation.X,
+                    Duration = animSpeed
+                };
+                var x2Animation = new DoubleAnimation()
+                {
+                    To = current.ChartLocation.X,
+                    Duration = animSpeed
+                };
+                var y1Animation = new DoubleAnimation()
+                {
+                    To = current.ChartLocation.Y,
+                    Duration = animSpeed
+                };
+                var y2Animation = new DoubleAnimation()
+                {
+                    To = current.ChartLocation.Y - DeltaY,
+                    Duration = animSpeed
+                };
 
-            HorizontalLine.BeginAnimation(Line.X1Property,
-                new DoubleAnimation(current.ChartLocation.X - DeltaX, animSpeed));
-            HorizontalLine.BeginAnimation(Line.X2Property,
-                new DoubleAnimation(current.ChartLocation.X, animSpeed));
-            HorizontalLine.BeginAnimation(Line.Y1Property,
-                new DoubleAnimation(current.ChartLocation.Y - DeltaY, animSpeed));
-            HorizontalLine.BeginAnimation(Line.Y2Property,
-                new DoubleAnimation(current.ChartLocation.Y - DeltaY, animSpeed));
+                Storyboard.SetTarget(x1Animation, VerticalLine);
+                Storyboard.SetTarget(x2Animation, VerticalLine);
+                Storyboard.SetTarget(y1Animation, VerticalLine);
+                Storyboard.SetTarget(y2Animation, VerticalLine);
+
+                Storyboard.SetTargetProperty(x1Animation, "Line.X1");
+                Storyboard.SetTargetProperty(x2Animation, "Line.X2");
+                Storyboard.SetTargetProperty(y1Animation, "Line.Y1");
+                Storyboard.SetTargetProperty(y2Animation, "Line.Y2");
+
+                storyBoard.Children.Add(x1Animation);
+                storyBoard.Children.Add(x2Animation);
+                storyBoard.Children.Add(y1Animation);
+                storyBoard.Children.Add(y2Animation);
+
+                storyBoard.Begin();
+            }
+
+            {
+                var storyBoard = new Storyboard();
+                var x1Animation = new DoubleAnimation()
+                {
+                    To = current.ChartLocation.X - DeltaX,
+                    Duration = animSpeed
+                };
+                var x2Animation = new DoubleAnimation()
+                {
+                    To = current.ChartLocation.X,
+                    Duration = animSpeed
+                };
+                var y1Animation = new DoubleAnimation()
+                {
+                    To = current.ChartLocation.Y - DeltaY,
+                    Duration = animSpeed
+                };
+                var y2Animation = new DoubleAnimation()
+                {
+                    To = current.ChartLocation.Y - DeltaY,
+                    Duration = animSpeed
+                };
+
+                Storyboard.SetTarget(x1Animation, HorizontalLine);
+                Storyboard.SetTarget(x2Animation, HorizontalLine);
+                Storyboard.SetTarget(y1Animation, HorizontalLine);
+                Storyboard.SetTarget(y2Animation, HorizontalLine);
+
+                Storyboard.SetTargetProperty(x1Animation, "Line.X1");
+                Storyboard.SetTargetProperty(x2Animation, "Line.X2");
+                Storyboard.SetTargetProperty(y1Animation, "Line.Y1");
+                Storyboard.SetTargetProperty(y2Animation, "Line.Y2");
+
+                storyBoard.Children.Add(x1Animation);
+                storyBoard.Children.Add(x2Animation);
+                storyBoard.Children.Add(y1Animation);
+                storyBoard.Children.Add(y2Animation);
+
+                storyBoard.Begin();
+            }
 
             if (Shape != null)
             {

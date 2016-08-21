@@ -24,6 +24,9 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Animation;
 using LiveCharts.Charts;
+using Windows.Foundation;
+using Windows.UI.Composition;
+using Windows.UI.Xaml.Hosting;
 
 namespace LiveCharts.Uwp.Points
 {
@@ -109,12 +112,39 @@ namespace LiveCharts.Uwp.Points
 
             #endregion
 
-            Segment.BeginAnimation(BezierSegment.Point1Property,
-                new PointAnimation(Segment.Point1, Data.Point1.AsPoint(), chart.View.AnimationsSpeed));
-            Segment.BeginAnimation(BezierSegment.Point2Property,
-                new PointAnimation(Segment.Point2, Data.Point2.AsPoint(), chart.View.AnimationsSpeed));
-            Segment.BeginAnimation(BezierSegment.Point3Property,
-                new PointAnimation(Segment.Point3, Data.Point3.AsPoint(), chart.View.AnimationsSpeed));
+            var segmentStoryboard = new Storyboard();
+
+            var pa1 = new PointAnimation()
+            {
+                From = Segment.Point1,
+                To = Data.Point1.AsPoint(),
+                Duration = chart.View.AnimationsSpeed
+            };
+            var pa2 = new PointAnimation()
+            {
+                From = Segment.Point2,
+                To = Data.Point2.AsPoint(),
+                Duration = chart.View.AnimationsSpeed
+            };
+            var pa3 = new PointAnimation()
+            {
+                From = Segment.Point3,
+                To = Data.Point3.AsPoint(),
+                Duration = chart.View.AnimationsSpeed
+            };
+            Storyboard.SetTarget(pa1, Segment);
+            Storyboard.SetTarget(pa2, Segment);
+            Storyboard.SetTarget(pa3, Segment);
+
+            Storyboard.SetTargetProperty(pa1, "Point1");
+            Storyboard.SetTargetProperty(pa2, "Point2");
+            Storyboard.SetTargetProperty(pa3, "Point3");
+
+            segmentStoryboard.Children.Add(pa1);
+            segmentStoryboard.Children.Add(pa2);
+            segmentStoryboard.Children.Add(pa3);
+
+            segmentStoryboard.Begin();
 
             if (Shape != null)
             {
@@ -125,10 +155,24 @@ namespace LiveCharts.Uwp.Points
                 }
                 else
                 {
-                    Shape.BeginAnimation(Canvas.LeftProperty,
-                   new DoubleAnimation(current.ChartLocation.X - Shape.Width * .5, chart.View.AnimationsSpeed));
-                    Shape.BeginAnimation(Canvas.TopProperty,
-                        new DoubleAnimation(current.ChartLocation.Y - Shape.Height * .5, chart.View.AnimationsSpeed));
+                    var storyBoard = new Storyboard();
+                    var xAnimation = new DoubleAnimation()
+                    {
+                        To = current.ChartLocation.X - Shape.Width * .5,
+                        Duration = chart.View.AnimationsSpeed
+                    };
+                    var yAnimation = new DoubleAnimation()
+                    {
+                        To = current.ChartLocation.Y - Shape.Height * .5,
+                        Duration = chart.View.AnimationsSpeed
+                    };
+                    Storyboard.SetTarget(xAnimation, Shape);
+                    Storyboard.SetTarget(yAnimation, Shape);
+                    Storyboard.SetTargetProperty(xAnimation, "Canvas.Left");
+                    Storyboard.SetTargetProperty(yAnimation, "Canvas.Top");
+                    storyBoard.Children.Add(xAnimation);
+                    storyBoard.Children.Add(yAnimation);
+                    storyBoard.Begin();
                 }
             }
 
@@ -139,10 +183,29 @@ namespace LiveCharts.Uwp.Points
                 var xl = CorrectXLabel(current.ChartLocation.X - DataLabel.ActualWidth * .5, chart);
                 var yl = CorrectYLabel(current.ChartLocation.Y - DataLabel.ActualHeight * .5, chart);
 
-                DataLabel.BeginAnimation(Canvas.LeftProperty,
-                    new DoubleAnimation(xl, chart.View.AnimationsSpeed));
-                DataLabel.BeginAnimation(Canvas.TopProperty,
-                    new DoubleAnimation(yl, chart.View.AnimationsSpeed));
+                var storyBoard = new Storyboard();
+
+                var xAnimation = new DoubleAnimation()
+                {
+                    To = xl,
+                    Duration = chart.View.AnimationsSpeed
+                };
+                var yAnimation = new DoubleAnimation()
+                {
+                    To = yl,
+                    Duration = chart.View.AnimationsSpeed
+                };
+
+                Storyboard.SetTarget(xAnimation, DataLabel);
+                Storyboard.SetTarget(yAnimation, DataLabel);
+
+                Storyboard.SetTargetProperty(xAnimation, "Canvas.Left");
+                Storyboard.SetTargetProperty(yAnimation, "Canvas.Top");
+
+                storyBoard.Children.Add(xAnimation);
+                storyBoard.Children.Add(yAnimation);
+
+                storyBoard.Begin();
             }
 
             if (HoverShape != null)
