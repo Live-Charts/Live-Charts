@@ -61,19 +61,19 @@ namespace LiveCharts.Uwp
             Canvas.SetZIndex(Pie, 1);
 
             Canvas.SetBinding(WidthProperty,
-                new Binding {Path = new PropertyPath(WidthProperty), Source = this});
+                new Binding {Path = new PropertyPath("Width"), Source = this});
             Canvas.SetBinding(HeightProperty,
-                new Binding {Path = new PropertyPath(HeightProperty), Source = this});
+                new Binding {Path = new PropertyPath("Height"), Source = this});
 
             PieBack.SetBinding(Shape.FillProperty,
-                new Binding {Path = new PropertyPath(GaugeBackgroundProperty), Source = this});
+                new Binding {Path = new PropertyPath("GaugeBackground"), Source = this});
             PieBack.SetBinding(Shape.StrokeThicknessProperty,
-                new Binding {Path = new PropertyPath(StrokeThicknessProperty), Source = this});
+                new Binding {Path = new PropertyPath("StrokeThickness"), Source = this});
             PieBack.SetBinding(Shape.StrokeProperty,
-                new Binding {Path = new PropertyPath(StrokeProperty), Source = this});
+                new Binding {Path = new PropertyPath("Stroke"), Source = this});
 
             Pie.SetBinding(Shape.StrokeThicknessProperty,
-                new Binding { Path = new PropertyPath(StrokeThicknessProperty), Source = this });
+                new Binding { Path = new PropertyPath("StrokeThickness"), Source = this });
             Pie.Stroke = Brushes.Transparent;
 
             SetCurrentValue(GaugeBackgroundProperty, new SolidColorBrush(Color.FromArgb(255, 21, 101, 191)) {Opacity = .1});

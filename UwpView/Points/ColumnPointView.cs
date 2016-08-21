@@ -21,6 +21,7 @@
 //SOFTWARE.
 
 using System;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Media;
@@ -188,7 +189,7 @@ namespace LiveCharts.Uwp.Points
                 BindingOperations.SetBinding(Rectangle, Shape.FillProperty,
                     new Binding
                     {
-                        Path = new PropertyPath(Series.FillProperty),
+                        Path = new PropertyPath("Fill"),
                         Source = ((Series) point.SeriesView)
                     });
             }

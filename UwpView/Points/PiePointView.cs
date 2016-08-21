@@ -138,7 +138,7 @@ namespace LiveCharts.Uwp.Points
             BindingOperations.SetBinding(Slice, Shape.FillProperty,
                 new Binding
                 {
-                    Path = new PropertyPath(Series.FillProperty),
+                    Path = new PropertyPath("Series.Fill"),
                     Source = ((Series) point.SeriesView)
                 });
             Slice.BeginAnimation(PieSlice.PushOutProperty,

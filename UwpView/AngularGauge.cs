@@ -51,7 +51,7 @@ namespace LiveCharts.Uwp
             Stick = new Path
             {
                 Data = GeometryHelper.Parse("m0,90 a5,5 0 0 0 20,0 l-8,-88 a2,2 0 0 0 -4 0 z"),
-                Fill = Brushes.CornflowerBlue,
+                Fill = new SolidColorBrush(Colors.CornflowerBlue),
                 Stretch = Stretch.Fill,
                 RenderTransformOrigin = new Point(0.5, 0.9),
                 RenderTransform = StickRotateTransform
@@ -60,22 +60,22 @@ namespace LiveCharts.Uwp
             Canvas.SetZIndex(Stick, 1);
 
             Canvas.SetBinding(WidthProperty,
-                new Binding { Path = new PropertyPath(ActualWidthProperty), Source = this });
+                new Binding { Path = new PropertyPath("ActualWidth"), Source = this });
             Canvas.SetBinding(HeightProperty,
-                new Binding { Path = new PropertyPath(ActualHeightProperty), Source = this });
+                new Binding { Path = new PropertyPath("ActualHeight"), Source = this });
 
             SetCurrentValue(SectionsProperty, new List<AngularSection>());
             SetCurrentValue(NeedleFillProperty, new SolidColorBrush(Color.FromArgb(255, 69, 90, 100)));
 
             Stick.SetBinding(Shape.FillProperty,
-                new Binding {Path = new PropertyPath(NeedleFillProperty), Source = this});
+                new Binding {Path = new PropertyPath("NeedleFill"), Source = this});
             
             SetCurrentValue(AnimationsSpeedProperty, TimeSpan.FromMilliseconds(500));
             SetCurrentValue(TicksForegroundProperty, new SolidColorBrush(Color.FromArgb(255, 210, 210, 210)));
             Func<double, string> defaultFormatter = x => x.ToString(CultureInfo.InvariantCulture);
             SetCurrentValue(LabelFormatterProperty, defaultFormatter);
-            SetCurrentValue(LabelsEffectProperty,
-                new DropShadowEffect {ShadowDepth = 2, RenderingBias = RenderingBias.Performance});
+            //SetCurrentValue(LabelsEffectProperty,
+            //    new DropShadowEffect {ShadowDepth = 2, RenderingBias = RenderingBias.Performance});
 
             SizeChanged += (sender, args) =>
             {
@@ -242,14 +242,14 @@ namespace LiveCharts.Uwp
             set { SetValue(NeedleFillProperty, value); }
         }
 
-        public static readonly DependencyProperty LabelsEffectProperty = DependencyProperty.Register(
-            "LabelsEffect", typeof (Effect), typeof (AngularGauge), new PropertyMetadata(default(Effect)));
+        //public static readonly DependencyProperty LabelsEffectProperty = DependencyProperty.Register(
+        //    "LabelsEffect", typeof (Effect), typeof (AngularGauge), new PropertyMetadata(default(Effect)));
 
-        public Effect LabelsEffect
-        {
-            get { return (Effect) GetValue(LabelsEffectProperty); }
-            set { SetValue(LabelsEffectProperty, value); }
-        }
+        //public Effect LabelsEffect
+        //{
+        //    get { return (Effect) GetValue(LabelsEffectProperty); }
+        //    set { SetValue(LabelsEffectProperty, value); }
+        //}
 
         public static readonly DependencyProperty TicksStrokeThicknessProperty = DependencyProperty.Register(
             "TicksStrokeThickness", typeof (double), typeof (AngularGauge), new PropertyMetadata(2d));
@@ -362,9 +362,9 @@ namespace LiveCharts.Uwp
                 };
                 Canvas.Children.Add(tick);
                 tick.SetBinding(Shape.StrokeProperty,
-                    new Binding {Path = new PropertyPath(TicksForegroundProperty), Source = this});
+                    new Binding {Path = new PropertyPath("TicksForeground"), Source = this});
                 tick.SetBinding(Shape.StrokeThicknessProperty,
-                    new Binding { Path = new PropertyPath(TicksStrokeThicknessProperty), Source = this });
+                    new Binding { Path = new PropertyPath("TicksStrokeThickness"), Source = this });
             }
 
             for (var i = FromValue; i <= ToValue; i += LabelsStep)
@@ -386,7 +386,7 @@ namespace LiveCharts.Uwp
                 };
 
                 label.SetBinding(EffectProperty,
-                    new Binding {Path = new PropertyPath(LabelsEffectProperty), Source = this});
+                    new Binding {Path = new PropertyPath("LabelsEffect"), Source = this});
 
                 Canvas.Children.Add(label);
                 label.UpdateLayout();
@@ -397,9 +397,9 @@ namespace LiveCharts.Uwp
                         : tick.X2 - label.ActualWidth));
                 Canvas.SetTop(label, tick.Y2);
                 tick.SetBinding(Shape.StrokeProperty,
-                    new Binding { Path = new PropertyPath(TicksForegroundProperty), Source = this });
+                    new Binding { Path = new PropertyPath("TicksForeground"), Source = this });
                 tick.SetBinding(Shape.StrokeThicknessProperty,
-                    new Binding { Path = new PropertyPath(TicksStrokeThicknessProperty), Source = this });
+                    new Binding { Path = new PropertyPath("TicksStrokeThickness"), Source = this });
             }
             MoveStick();
         }

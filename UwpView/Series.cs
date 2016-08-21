@@ -327,19 +327,19 @@ namespace LiveCharts.Uwp
             var tb = new TextBlock();
 
             tb.SetBinding(TextBlock.FontFamilyProperty,
-                new Binding {Path = new PropertyPath(FontFamilyProperty), Source = this});
+                new Binding {Path = new PropertyPath("FontFamily"), Source = this});
             tb.SetBinding(TextBlock.FontSizeProperty,
-                new Binding {Path = new PropertyPath(FontSizeProperty), Source = this});
+                new Binding {Path = new PropertyPath("FontSize"), Source = this});
             tb.SetBinding(TextBlock.FontStretchProperty,
-                new Binding {Path = new PropertyPath(FontStretchProperty), Source = this});
+                new Binding {Path = new PropertyPath("FontStretch"), Source = this});
             tb.SetBinding(TextBlock.FontStyleProperty,
-                new Binding {Path = new PropertyPath(FontStyleProperty), Source = this});
+                new Binding {Path = new PropertyPath("FontStyle"), Source = this});
             tb.SetBinding(TextBlock.FontWeightProperty,
-                new Binding {Path = new PropertyPath(FontWeightProperty), Source = this});
+                new Binding {Path = new PropertyPath("FontWeight"), Source = this});
             tb.SetBinding(TextBlock.ForegroundProperty,
-                new Binding {Path = new PropertyPath(ForegroundProperty), Source = this});
+                new Binding {Path = new PropertyPath("Foreground"), Source = this});
             tb.SetBinding(TextBlock.VisibilityProperty,
-                new Binding {Path = new PropertyPath(VisibilityProperty), Source = this});
+                new Binding {Path = new PropertyPath("Visibility"), Source = this});
             return tb;
         }
 

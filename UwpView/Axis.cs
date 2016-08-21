@@ -56,7 +56,7 @@ namespace LiveCharts.Uwp
             SetCurrentValue(ForegroundProperty, new SolidColorBrush(Color.FromArgb(255, 170, 170, 170)));
 
             TitleBlock.SetBinding(TextBlock.TextProperty,
-                new Binding {Path = new PropertyPath(TitleProperty), Source = this});
+                new Binding {Path = new PropertyPath("Title"), Source = this});
         }
         #endregion
 
@@ -407,17 +407,17 @@ namespace LiveCharts.Uwp
             var tb = new TextBlock();
 
             tb.SetBinding(TextBlock.FontFamilyProperty,
-                new Binding { Path = new PropertyPath(FontFamilyProperty), Source = this });
+                new Binding { Path = new PropertyPath("FontFamily"), Source = this });
             tb.SetBinding(TextBlock.FontSizeProperty,
-                new Binding { Path = new PropertyPath(FontSizeProperty), Source = this });
+                new Binding { Path = new PropertyPath("FontSize"), Source = this });
             tb.SetBinding(TextBlock.FontStretchProperty,
-                new Binding { Path = new PropertyPath(FontStretchProperty), Source = this });
+                new Binding { Path = new PropertyPath("FontStretch"), Source = this });
             tb.SetBinding(TextBlock.FontStyleProperty,
-                new Binding { Path = new PropertyPath(FontStyleProperty), Source = this });
+                new Binding { Path = new PropertyPath("FontStyle"), Source = this });
             tb.SetBinding(TextBlock.FontWeightProperty,
-                new Binding { Path = new PropertyPath(FontWeightProperty), Source = this });
+                new Binding { Path = new PropertyPath("FontWeight"), Source = this });
             tb.SetBinding(TextBlock.ForegroundProperty,
-                 new Binding { Path = new PropertyPath(ForegroundProperty), Source = this });
+                 new Binding { Path = new PropertyPath("Foreground"), Source = this });
 
             return tb;
         }
@@ -430,13 +430,13 @@ namespace LiveCharts.Uwp
             if (s == null) return l;
 
             l.SetBinding(Shape.StrokeProperty,
-                new Binding {Path = new PropertyPath(Uwp.Separator.StrokeProperty), Source = s});
+                new Binding {Path = new PropertyPath("Stroke"), Source = s});
             l.SetBinding(Shape.StrokeDashArrayProperty,
-                new Binding {Path = new PropertyPath(Uwp.Separator.StrokeDashArrayProperty), Source = s});
+                new Binding {Path = new PropertyPath("StrokeDashArray"), Source = s});
             l.SetBinding(Shape.StrokeThicknessProperty,
-                new Binding {Path = new PropertyPath(Uwp.Separator.StrokeThicknessProperty), Source = s});
+                new Binding {Path = new PropertyPath("StrokeThickness"), Source = s});
             l.SetBinding(VisibilityProperty,
-                new Binding {Path = new PropertyPath(VisibilityProperty), Source = s});
+                new Binding {Path = new PropertyPath("Visibility"), Source = s});
 
             return l;
         }

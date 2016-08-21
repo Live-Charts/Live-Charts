@@ -157,7 +157,7 @@ namespace LiveCharts.Uwp
             {
                 pbv.HoverShape = new Rectangle
                 {
-                    Fill = Brushes.Transparent,
+                    Fill = new SolidColorBrush(Colors.Transparent),
                     StrokeThickness = 0
                 };
 

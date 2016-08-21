@@ -31,6 +31,7 @@ using Windows.UI.Text;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Data;
+using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Shapes;
@@ -47,19 +48,19 @@ namespace LiveCharts.Uwp
         #region Constructors
         public GeoMap()
         {
-            Canvas = new Canvas {ClipToBounds = true};
-            Map = new Canvas {ClipToBounds = true};
+            Canvas = new Canvas(); //{ClipToBounds = true};
+            Map = new Canvas(); //{ClipToBounds = true};
             Canvas.Children.Add(Map);
             Content = Canvas;
 
             Canvas.SetBinding(WidthProperty,
-                new Binding { Path = new PropertyPath(ActualWidthProperty), Source = this });
+                new Binding { Path = new PropertyPath("ActualWidth"), Source = this });
             Canvas.SetBinding(HeightProperty,
-                new Binding { Path = new PropertyPath(ActualHeightProperty), Source = this });
+                new Binding { Path = new PropertyPath("ActualHeight"), Source = this });
 
             Lands = new Dictionary<string, MapData>();
 
-            SetCurrentValue(DefaultLandFillProperty, new SolidColorBrush(Color.FromArgb(200,255,255,255)));
+            SetCurrentValue(DefaultLandFillProperty, new SolidColorBrush(Color.FromArgb(200, 255, 255, 255)));
             SetCurrentValue(LandStrokeProperty, new SolidColorBrush(Color.FromArgb(30, 55,55, 55)));
             SetCurrentValue(LandStrokeThicknessProperty, 1.3d);
             SetCurrentValue(AnimationsSpeedProperty, TimeSpan.FromMilliseconds(500));
@@ -360,14 +361,14 @@ namespace LiveCharts.Uwp
                 Map.Children.Add(new TextBlock
                 {
                     Text = "Designer preview is not currently available",
-                    Foreground = Brushes.White,
+                    Foreground = new SolidColorBrush(Colors.White),
                     FontWeight = FontWeights.Bold,
                     FontSize = 12,
-                    Effect = new DropShadowEffect
-                    {
-                        ShadowDepth = 2,
-                        RenderingBias = RenderingBias.Performance
-                    }
+                    //Effect = new DropShadowEffect
+                    //{
+                    //    ShadowDepth = 2,
+                    //    RenderingBias = RenderingBias.Performance
+                    //}
                 });
                 return;
             }
@@ -423,7 +424,7 @@ namespace LiveCharts.Uwp
                 p.MouseDown += POnMouseDown;
 
                 p.SetBinding(Shape.StrokeProperty,
-                    new Binding { Path = new PropertyPath(LandStrokeProperty), Source = this });
+                    new Binding { Path = new PropertyPath("LandStroke"), Source = this });
                 p.SetBinding(Shape.StrokeThicknessProperty,
                     new MultiBinding
                     {
@@ -457,7 +458,7 @@ namespace LiveCharts.Uwp
                 var shape = ((Shape) land.Value.Shape);
 
                 shape.SetBinding(Shape.FillProperty,
-                    new Binding {Path = new PropertyPath(DefaultLandFillProperty), Source = this});
+                    new Binding {Path = new PropertyPath("DefaultLandFill"), Source = this});
 
                 if (!HeatMap.TryGetValue(land.Key, out temperature)) continue;
 
@@ -477,7 +478,7 @@ namespace LiveCharts.Uwp
             }
         }
 
-        private void POnMouseDown(object sender, MouseButtonEventArgs mouseButtonEventArgs)
+        private void POnMouseDown(object sender, PointerRoutedEventArgs mouseButtonEventArgs)
         {
             var land = Lands.Values.FirstOrDefault(x => x.Shape == sender);
             if (land == null) return;

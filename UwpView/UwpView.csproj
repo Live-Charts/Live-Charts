@@ -161,6 +161,7 @@
     <Compile Include="Points\OhlcPointView.cs" />
     <Compile Include="Points\PiePointView.cs" />
     <Compile Include="Points\PieSlice.cs" />
+    <Compile Include="Points\PointExtensions.cs" />
     <Compile Include="Points\PointView.cs" />
     <Compile Include="Points\RowPointView.cs" />
     <Compile Include="Points\ScatterPointView.cs" />

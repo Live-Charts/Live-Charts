@@ -15,7 +15,8 @@ namespace LiveCharts.Uwp.Points
 
         public static readonly DependencyProperty RadiusProperty =
             DependencyProperty.Register("RadiusProperty", typeof(double), typeof(PieSlice),
-            new FrameworkPropertyMetadata(0.0, FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.AffectsMeasure));
+                              new PropertyMetadata(0.0));
+        //new FrameworkPropertyMetadata(0.0, FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.AffectsMeasure));
 
         /// <summary>
         /// The radius of this pie piece
@@ -28,7 +29,8 @@ namespace LiveCharts.Uwp.Points
 
         public static readonly DependencyProperty PushOutProperty =
             DependencyProperty.Register("PushOutProperty", typeof(double), typeof(PieSlice),
-            new FrameworkPropertyMetadata(0.0, FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.AffectsMeasure));
+                new PropertyMetadata(0.0));
+            //new FrameworkPropertyMetadata(0.0, FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.AffectsMeasure));
 
         /// <summary>
         /// The distance to 'push' this pie piece out from the centre.
@@ -41,7 +43,8 @@ namespace LiveCharts.Uwp.Points
 
         public static readonly DependencyProperty InnerRadiusProperty =
             DependencyProperty.Register("InnerRadiusProperty", typeof(double), typeof(PieSlice),
-            new FrameworkPropertyMetadata(0.0, FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.AffectsMeasure));
+                              new PropertyMetadata(0.0));
+        //new FrameworkPropertyMetadata(0.0, FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.AffectsMeasure));
         /// <summary>
         /// The inner radius of this pie piece
         /// </summary>
@@ -53,7 +56,8 @@ namespace LiveCharts.Uwp.Points
 
         public static readonly DependencyProperty WedgeAngleProperty =
             DependencyProperty.Register("WedgeAngleProperty", typeof(double), typeof(PieSlice),
-            new FrameworkPropertyMetadata(0.0, FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.AffectsMeasure));
+                              new PropertyMetadata(0.0));
+        //new FrameworkPropertyMetadata(0.0, FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.AffectsMeasure));
 
         /// <summary>
         /// The wedge angle of this pie piece in degrees
@@ -70,7 +74,8 @@ namespace LiveCharts.Uwp.Points
 
         public static readonly DependencyProperty RotationAngleProperty =
             DependencyProperty.Register("RotationAngleProperty", typeof(double), typeof(PieSlice),
-            new FrameworkPropertyMetadata(0.0, FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.AffectsMeasure));
+                              new PropertyMetadata(0.0));
+        //new FrameworkPropertyMetadata(0.0, FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.AffectsMeasure));
 
         /// <summary>
         /// The rotation, in degrees, from the Y axis vector of this pie piece.
@@ -83,7 +88,8 @@ namespace LiveCharts.Uwp.Points
 
         public static readonly DependencyProperty CentreXProperty =
             DependencyProperty.Register("CentreXProperty", typeof(double), typeof(PieSlice),
-            new FrameworkPropertyMetadata(0.0, FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.AffectsMeasure));
+                              new PropertyMetadata(0.0));
+        //new FrameworkPropertyMetadata(0.0, FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.AffectsMeasure));
 
         /// <summary>
         /// The X coordinate of centre of the circle from which this pie piece is cut.
@@ -96,7 +102,8 @@ namespace LiveCharts.Uwp.Points
 
         public static readonly DependencyProperty CentreYProperty =
             DependencyProperty.Register("CentreYProperty", typeof(double), typeof(PieSlice),
-            new FrameworkPropertyMetadata(0.0, FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.AffectsMeasure));
+                              new PropertyMetadata(0.0));
+        //new FrameworkPropertyMetadata(0.0, FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.AffectsMeasure));
 
         /// <summary>
         /// The Y coordinate of centre of the circle from which this pie piece is cut.
@@ -109,7 +116,8 @@ namespace LiveCharts.Uwp.Points
 
         public static readonly DependencyProperty PercentageProperty =
             DependencyProperty.Register("PercentageProperty", typeof(double), typeof(PieSlice),
-            new FrameworkPropertyMetadata(0.0));
+                              new PropertyMetadata(0.0));
+        //new FrameworkPropertyMetadata(0.0));
 
         /// <summary>
         /// The percentage of a full pie that this piece occupies.
@@ -122,7 +130,8 @@ namespace LiveCharts.Uwp.Points
 
         public static readonly DependencyProperty PieceValueProperty =
             DependencyProperty.Register("PieceValueProperty", typeof(double), typeof(PieSlice),
-            new FrameworkPropertyMetadata(0.0));
+                              new PropertyMetadata(0.0));
+        //    new FrameworkPropertyMetadata(0.0));
 
         /// <summary>
         /// The value that this pie piece represents.
@@ -136,76 +145,76 @@ namespace LiveCharts.Uwp.Points
 
         #endregion
 
-        protected override Geometry DefiningGeometry
-        {
-            get
-            {
-                // Create a StreamGeometry for describing the shape
-                var geometry = new StreamGeometry { FillRule = FillRule.EvenOdd };
+        //protected override Geometry DefiningGeometry
+        //{
+        //    get
+        //    {
+        //        // Create a StreamGeometry for describing the shape
+        //        var geometry = new StreamGeometry { FillRule = FillRule.EvenOdd };
 
-                using (var context = geometry.Open())
-                {
-                    DrawGeometry(context);
-                }
+        //        using (var context = geometry.Open())
+        //        {
+        //            DrawGeometry(context);
+        //        }
 
-                // Freeze the geometry for performance benefits
-                geometry.Freeze();
+        //        // Freeze the geometry for performance benefits
+        //        geometry.Freeze();
 
-                return geometry;
-            }
-        }
+        //        return geometry;
+        //    }
+        //}
 
-        /// <summary>
-        /// Draws the pie piece
-        /// </summary>
-        private void DrawGeometry(StreamGeometryContext context)
-        {
-            var innerArcStartPoint = PieUtils.ComputeCartesianCoordinate(RotationAngle, InnerRadius);
-            innerArcStartPoint.Offset(CentreX, CentreY);
-            var innerArcEndPoint = PieUtils.ComputeCartesianCoordinate(RotationAngle + WedgeAngle, InnerRadius);
-            innerArcEndPoint.Offset(CentreX, CentreY);
-            var outerArcStartPoint = PieUtils.ComputeCartesianCoordinate(RotationAngle, Radius);
-            outerArcStartPoint.Offset(CentreX, CentreY);
-            var outerArcEndPoint = PieUtils.ComputeCartesianCoordinate(RotationAngle + WedgeAngle, Radius);
-            outerArcEndPoint.Offset(CentreX, CentreY);
-            var innerArcMidPoint = PieUtils.ComputeCartesianCoordinate(RotationAngle + WedgeAngle * .5, InnerRadius);
-            innerArcMidPoint.Offset(CentreX, CentreY);
-            var outerArcMidPoint = PieUtils.ComputeCartesianCoordinate(RotationAngle + WedgeAngle * .5, Radius);
-            outerArcMidPoint.Offset(CentreX, CentreY);
+        ///// <summary>
+        ///// Draws the pie piece
+        ///// </summary>
+        //private void DrawGeometry(StreamGeometryContext context)
+        //{
+        //    var innerArcStartPoint = PieUtils.ComputeCartesianCoordinate(RotationAngle, InnerRadius);
+        //    innerArcStartPoint.Offset(CentreX, CentreY);
+        //    var innerArcEndPoint = PieUtils.ComputeCartesianCoordinate(RotationAngle + WedgeAngle, InnerRadius);
+        //    innerArcEndPoint.Offset(CentreX, CentreY);
+        //    var outerArcStartPoint = PieUtils.ComputeCartesianCoordinate(RotationAngle, Radius);
+        //    outerArcStartPoint.Offset(CentreX, CentreY);
+        //    var outerArcEndPoint = PieUtils.ComputeCartesianCoordinate(RotationAngle + WedgeAngle, Radius);
+        //    outerArcEndPoint.Offset(CentreX, CentreY);
+        //    var innerArcMidPoint = PieUtils.ComputeCartesianCoordinate(RotationAngle + WedgeAngle * .5, InnerRadius);
+        //    innerArcMidPoint.Offset(CentreX, CentreY);
+        //    var outerArcMidPoint = PieUtils.ComputeCartesianCoordinate(RotationAngle + WedgeAngle * .5, Radius);
+        //    outerArcMidPoint.Offset(CentreX, CentreY);
 
-            var largeArc = WedgeAngle > 180.0d;
-            var requiresMidPoint = Math.Abs(WedgeAngle - 360) < .01;
+        //    var largeArc = WedgeAngle > 180.0d;
+        //    var requiresMidPoint = Math.Abs(WedgeAngle - 360) < .01;
 
-            if (PushOut > 0 && !requiresMidPoint)
-            {
-                var offset = PieUtils.ComputeCartesianCoordinate(RotationAngle + WedgeAngle / 2, PushOut);
-                innerArcStartPoint.Offset(offset.X, offset.Y);
-                innerArcEndPoint.Offset(offset.X, offset.Y);
-                outerArcStartPoint.Offset(offset.X, offset.Y);
-                outerArcEndPoint.Offset(offset.X, offset.Y);
-            }
+        //    if (PushOut > 0 && !requiresMidPoint)
+        //    {
+        //        var offset = PieUtils.ComputeCartesianCoordinate(RotationAngle + WedgeAngle / 2, PushOut);
+        //        innerArcStartPoint.Offset(offset.X, offset.Y);
+        //        innerArcEndPoint.Offset(offset.X, offset.Y);
+        //        outerArcStartPoint.Offset(offset.X, offset.Y);
+        //        outerArcEndPoint.Offset(offset.X, offset.Y);
+        //    }
 
-            var outerArcSize = new Size(Radius, Radius);
-            var innerArcSize = new Size(InnerRadius, InnerRadius);
+        //    var outerArcSize = new Size(Radius, Radius);
+        //    var innerArcSize = new Size(InnerRadius, InnerRadius);
 
-            if (requiresMidPoint)
-            {
-                context.BeginFigure(innerArcStartPoint, true, true);
-                context.LineTo(outerArcStartPoint, true, true);
-                context.ArcTo(outerArcMidPoint, outerArcSize, 0, false, SweepDirection.Clockwise, true, true);
-                context.ArcTo(outerArcEndPoint, outerArcSize, 0, false, SweepDirection.Clockwise, true, true);
-                context.LineTo(innerArcEndPoint, true, true);
-                context.ArcTo(innerArcMidPoint, innerArcSize, 0, false, SweepDirection.Counterclockwise, true, true);
-                context.ArcTo(innerArcStartPoint, innerArcSize, 0, false, SweepDirection.Counterclockwise, true, true);
-                return;
-            }
+        //    if (requiresMidPoint)
+        //    {
+        //        context.BeginFigure(innerArcStartPoint, true, true);
+        //        context.LineTo(outerArcStartPoint, true, true);
+        //        context.ArcTo(outerArcMidPoint, outerArcSize, 0, false, SweepDirection.Clockwise, true, true);
+        //        context.ArcTo(outerArcEndPoint, outerArcSize, 0, false, SweepDirection.Clockwise, true, true);
+        //        context.LineTo(innerArcEndPoint, true, true);
+        //        context.ArcTo(innerArcMidPoint, innerArcSize, 0, false, SweepDirection.Counterclockwise, true, true);
+        //        context.ArcTo(innerArcStartPoint, innerArcSize, 0, false, SweepDirection.Counterclockwise, true, true);
+        //        return;
+        //    }
 
-            context.BeginFigure(innerArcStartPoint, true, true);
-            context.LineTo(outerArcStartPoint, true, true);
-            context.ArcTo(outerArcEndPoint, outerArcSize, 0, largeArc, SweepDirection.Clockwise, true, true);
-            context.LineTo(innerArcEndPoint, true, true);
-            context.ArcTo(innerArcStartPoint, innerArcSize, 0, largeArc, SweepDirection.Counterclockwise, true, true);
-        }
+        //    context.BeginFigure(innerArcStartPoint, true, true);
+        //    context.LineTo(outerArcStartPoint, true, true);
+        //    context.ArcTo(outerArcEndPoint, outerArcSize, 0, largeArc, SweepDirection.Clockwise, true, true);
+        //    context.LineTo(innerArcEndPoint, true, true);
+        //    context.ArcTo(innerArcStartPoint, innerArcSize, 0, largeArc, SweepDirection.Counterclockwise, true, true);
+        //}
     }
 
     public static class PieUtils

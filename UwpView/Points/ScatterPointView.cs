@@ -153,7 +153,7 @@ namespace LiveCharts.Uwp.Points
                 BindingOperations.SetBinding(Shape, Shape.FillProperty,
                 new Binding
                 {
-                    Path = new PropertyPath(Series.FillProperty),
+                    Path = new PropertyPath("Series.Fill"),
                     Source = ((Series)point.SeriesView)
                 });
             }

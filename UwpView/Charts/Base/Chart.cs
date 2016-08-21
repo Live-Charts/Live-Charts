@@ -29,6 +29,7 @@ using Windows.Foundation;
 using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Animation;
 using LiveCharts.Charts;
@@ -62,11 +63,11 @@ namespace LiveCharts.Uwp.Charts.Base
             Canvas = new Canvas();
             Content = Canvas;
 
-            DrawMargin = new Canvas {ClipToBounds = true};
+            DrawMargin = new Canvas(); //{ClipToBounds = true};
             Canvas.Children.Add(DrawMargin);
 
             TooltipTimeoutTimer = new DispatcherTimer();
-
+            
             SetCurrentValue(MinHeightProperty, 50d);
             SetCurrentValue(MinWidthProperty, 80d);
 
@@ -97,14 +98,14 @@ namespace LiveCharts.Uwp.Charts.Base
             SetCurrentValue(ColorsProperty, colors);
 
             SizeChanged += OnSizeChanged;
-            IsVisibleChanged += OnIsVisibleChanged;
-            MouseWheel += MouseWheelOnRoll;
+            RegisterPropertyChangedCallback(VisibilityProperty, OnIsVisibleChanged);
+            //MouseWheel += MouseWheelOnRoll;
             Loaded += OnLoaded;
             TooltipTimeoutTimer.Tick += TooltipTimeoutTimerOnTick;
 
-            DrawMargin.Background = Brushes.Transparent; // if this line is not set, then it does not detect mouse down event...
-            DrawMargin.MouseDown += OnDraggingStart;
-            DrawMargin.MouseUp += OnDraggingEnd;
+            DrawMargin.Background = new SolidColorBrush(Windows.UI.Colors.Transparent); // if this line is not set, then it does not detect mouse down event...
+            //DrawMargin.PointerPressed += OnDraggingStart;
+            //DrawMargin.PointerReleased += OnDraggingEnd;
         }
 
         static Chart()
@@ -171,7 +172,7 @@ namespace LiveCharts.Uwp.Charts.Base
             Model.Updater.Run();
         }
 
-        private void OnIsVisibleChanged(object sender, DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
+        private void OnIsVisibleChanged(DependencyObject dependencyObject, DependencyProperty dependencyProperty)
         {
 #if DEBUG
             Debug.WriteLine("ChartVisibilityChanged");
@@ -576,16 +577,16 @@ namespace LiveCharts.Uwp.Charts.Base
 
         internal void AttachHoverableEventTo(FrameworkElement element)
         {
-            element.MouseDown -= DataMouseDown;
-            element.MouseEnter -= DataMouseEnter;
-            element.MouseLeave -= DataMouseLeave;
+            element.PointerPressed -= DataMouseDown;
+            element.PointerEntered -= DataMouseEnter;
+            element.PointerExited -= DataMouseLeave;
 
-            element.MouseDown += DataMouseDown;
-            element.MouseEnter += DataMouseEnter;
-            element.MouseLeave += DataMouseLeave;
+            element.PointerPressed += DataMouseDown;
+            element.PointerEntered += DataMouseEnter;
+            element.PointerExited += DataMouseLeave;
         }
 
-        private void DataMouseDown(object sender, MouseEventArgs e)
+        private void DataMouseDown(object sender, PointerRoutedEventArgs e)
         {
             var result = ActualSeries.SelectMany(x => x.ActualValues.GetPoints(x))
                 .FirstOrDefault(x =>
@@ -596,7 +597,7 @@ namespace LiveCharts.Uwp.Charts.Base
             if (DataClick != null) DataClick.Invoke(sender, result);
         }
 
-        private void DataMouseEnter(object sender, EventArgs e)
+        private void DataMouseEnter(object sender, PointerRoutedEventArgs e)
         {
             TooltipTimeoutTimer.Stop();
 
@@ -684,15 +685,33 @@ namespace LiveCharts.Uwp.Charts.Base
                 }
                 else
                 {
-                    DataTooltip.BeginAnimation(Canvas.LeftProperty,
-                        new DoubleAnimation(location.X, TimeSpan.FromMilliseconds(200)));
-                    DataTooltip.BeginAnimation(Canvas.TopProperty,
-                        new DoubleAnimation(location.Y, TimeSpan.FromMilliseconds(200)));
+                    var storyBoard = new Storyboard();
+                    var xAnimation = new DoubleAnimation()
+                    {
+                        To = location.X,
+                        Duration = TimeSpan.FromMilliseconds(200)
+                    };
+
+                    var yAnimation = new DoubleAnimation()
+                    {
+                        To = location.Y,
+                        Duration = TimeSpan.FromMilliseconds(200)
+                    };
+
+                    storyBoard.Children.Add(xAnimation);
+                    storyBoard.Children.Add(yAnimation);
+
+                    Storyboard.SetTarget(xAnimation, DataTooltip);
+                    Storyboard.SetTargetProperty(xAnimation, "Canvas.Left");
+                    Storyboard.SetTarget(yAnimation, DataTooltip);
+                    Storyboard.SetTargetProperty(yAnimation, "Canvas.Top");
+
+                    storyBoard.Begin();
                 }
             }
         }
 
-        private void DataMouseLeave(object sender, EventArgs e)
+        private void DataMouseLeave(object sender, PointerRoutedEventArgs e)
         {
             TooltipTimeoutTimer.Stop();
             TooltipTimeoutTimer.Start();
@@ -706,7 +725,7 @@ namespace LiveCharts.Uwp.Charts.Base
             if (Hoverable) senderPoint.View.OnHoverLeave(senderPoint);
         }
 
-        private void TooltipTimeoutTimerOnTick(object sender, EventArgs eventArgs)
+        private void TooltipTimeoutTimerOnTick(object sender, object args)
         {
             TooltipTimeoutTimer.Stop();
             if (DataTooltip == null || ActiveTooltip == null) return;
@@ -843,7 +862,7 @@ namespace LiveCharts.Uwp.Charts.Base
                 {
                     new LineSeries {Values = getRandomValues(0, 100)},
                     new LineSeries {Values = getRandomValues(0, 100)},
-                    new LineSeries {Values = getRandomValues(0, 100), Fill = Brushes.Transparent}
+                    new LineSeries {Values = getRandomValues(0, 100), Fill = new SolidColorBrush(Windows.UI.Colors.Transparent)}
                 };
             }
 
@@ -869,45 +888,45 @@ namespace LiveCharts.Uwp.Charts.Base
         #endregion
 
         #region Zooming and Panning
-        private Point DragOrigin { get; set; }
+        //private Point DragOrigin { get; set; }
 
-        private void MouseWheelOnRoll(object sender, MouseWheelEventArgs e)
-        {
-            if (Zoom == ZoomingOptions.None) return;
+        //private void MouseWheelOnRoll(object sender, MouseWheelEventArgs e)
+        //{
+        //    if (Zoom == ZoomingOptions.None) return;
 
-            var p = e.GetPosition(this);
+        //    var p = e.GetPosition(this);
 
-            var corePoint = new CorePoint(p.X, p.Y);
+        //    var corePoint = new CorePoint(p.X, p.Y);
 
-            e.Handled = true;
+        //    e.Handled = true;
 
-            if (e.Delta > 0)
-                Model.ZoomIn(corePoint);
-            else
-                Model.ZoomOut(corePoint);
-        }
+        //    if (e.Delta > 0)
+        //        Model.ZoomIn(corePoint);
+        //    else
+        //        Model.ZoomOut(corePoint);
+        //}
 
-        private void OnDraggingStart(object sender, MouseButtonEventArgs e)
-        {
-            if (Model == null || Model.AxisX == null || Model.AxisY == null) return;
+        //private void OnDraggingStart(object sender, PointerRoutedEventArgs e)
+        //{
+        //    if (Model == null || Model.AxisX == null || Model.AxisY == null) return;
 
-            DragOrigin = e.GetPosition(this);
-            DragOrigin = new Point(
-                ChartFunctions.FromPlotArea(DragOrigin.X, AxisOrientation.X, Model),
-                ChartFunctions.FromPlotArea(DragOrigin.Y, AxisOrientation.Y, Model));
-        }
+        //    DragOrigin = e.GetCurrentPoint(this).Position;
+        //    DragOrigin = new Point(
+        //        ChartFunctions.FromPlotArea(DragOrigin.X, AxisOrientation.X, Model),
+        //        ChartFunctions.FromPlotArea(DragOrigin.Y, AxisOrientation.Y, Model));
+        //}
 
-        private void OnDraggingEnd(object sender, MouseButtonEventArgs e)
-        {
-            if (Zoom == ZoomingOptions.None) return;
+        //private void OnDraggingEnd(object sender, PointerRoutedEventArgs e)
+        //{
+        //    if (Zoom == ZoomingOptions.None) return;
 
-            var end = e.GetPosition(this);
-            end = new Point(
-                ChartFunctions.FromPlotArea(end.X, AxisOrientation.X, Model),
-                ChartFunctions.FromPlotArea(end.Y, AxisOrientation.Y, Model));
+        //    var end = e.GetCurrentPoint(this).Position;
+        //    end = new Point(
+        //        ChartFunctions.FromPlotArea(end.X, AxisOrientation.X, Model),
+        //        ChartFunctions.FromPlotArea(end.Y, AxisOrientation.Y, Model));
 
-            Model.Drag(new CorePoint(DragOrigin.X - end.X, DragOrigin.Y - end.Y));
-        }
+        //    Model.Drag(new CorePoint(DragOrigin.X - end.X, DragOrigin.Y - end.Y));
+        //}
         #endregion
 
         #region Property Changed
