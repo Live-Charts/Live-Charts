@@ -28,12 +28,12 @@ namespace LiveCharts.Defaults
     {
         internal static double StretchMax(AxisCore axis)
         {
-            return Math.Ceiling(axis.TopLimit/axis.Magnitude)*axis.Magnitude;
+            return axis.TopLimit; //Math.Ceiling(axis.TopLimit/axis.Magnitude)*axis.Magnitude;
         }
 
         internal static double StretchMin(AxisCore axis)
         {
-            return Math.Floor(axis.BotLimit/axis.Magnitude)*axis.Magnitude;
+            return axis.BotLimit; //Math.Floor(axis.BotLimit/axis.Magnitude)*axis.Magnitude;
         }
 
         internal static double UnitRight(AxisCore axis)

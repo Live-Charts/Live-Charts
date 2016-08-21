@@ -40,7 +40,8 @@ namespace LiveCharts.SeriesAlgorithms
 
         public override void Update()
         {
-            var points = View.ActualValues.GetPoints(View).ToList();
+            var points = View.ActualValues.GetPoints(View).ToArray();
+            var @is = points.Select(x => x.X).ToArray();
 
             var segmentPosition = 0;
 

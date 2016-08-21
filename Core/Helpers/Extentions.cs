@@ -46,7 +46,7 @@ namespace LiveCharts.Helpers
         /// </summary>
         /// <param name="toSplit">collection to split</param>
         /// <returns>collection of collections</returns>
-        public static IEnumerable<List<ChartPoint>> SplitEachNaN(this List<ChartPoint> toSplit)
+        public static IEnumerable<IList<ChartPoint>> SplitEachNaN(this IList<ChartPoint> toSplit)
         {
             var l = new List<ChartPoint>(toSplit.Count);
             var acum = -1;
