@@ -27,6 +27,7 @@ using Windows.UI.Xaml.Media.Animation;
 using LiveCharts.Definitions.Charts;
 using LiveCharts.Dtos;
 using LiveCharts.Uwp.Charts.Base;
+using LiveCharts.Uwp.Components;
 
 namespace LiveCharts.Uwp
 {
@@ -152,8 +153,10 @@ namespace LiveCharts.Uwp
                     Canvas.SetLeft(UIElement, coordinate.X);
                     Canvas.SetTop(UIElement, coordinate.Y);
                 }
-                UIElement.BeginAnimation(Canvas.LeftProperty, new DoubleAnimation(coordinate.X, wpfChart.AnimationsSpeed));
-                UIElement.BeginAnimation(Canvas.TopProperty, new DoubleAnimation(coordinate.Y, wpfChart.AnimationsSpeed));
+
+                var x = AnimationHelper.CreateDouble(coordinate.X, wpfChart.AnimationsSpeed, "Canvas.Left");
+                var y = AnimationHelper.CreateDouble(coordinate.Y, wpfChart.AnimationsSpeed, "Canvas.Top");
+                AnimationHelper.CreateStoryBoardAndBegin(UIElement, x, y);
             }
         }
 

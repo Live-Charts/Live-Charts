@@ -21,12 +21,15 @@
 //SOFTWARE.
 
 using System;
+using Windows.Foundation;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Shapes;
 using LiveCharts.Charts;
 using LiveCharts.Definitions.Points;
+using LiveCharts.Uwp.Components;
 
 namespace LiveCharts.Uwp.Points
 {
@@ -105,12 +108,12 @@ namespace LiveCharts.Uwp.Points
                 var lx = cp.X + chart.DrawMargin.Width / 2 - DataLabel.ActualWidth * .5;
                 var ly = chart.DrawMargin.Height / 2 - cp.Y - DataLabel.ActualHeight * .5;
 
-                DataLabel.BeginAnimation(Canvas.LeftProperty, new DoubleAnimation(lx, animSpeed));
-                DataLabel.BeginAnimation(Canvas.TopProperty, new DoubleAnimation(ly, animSpeed));
+                DataLabel.CreateCanvasStoryBoardAndBegin(lx, ly, animSpeed);
             }
 
-            Slice.BeginAnimation(PieSlice.WedgeAngleProperty, new DoubleAnimation(Wedge, animSpeed));
-            Slice.BeginAnimation(PieSlice.RotationAngleProperty, new DoubleAnimation(Rotation, animSpeed));
+            var wedge = AnimationHelper.CreateDouble(Wedge, animSpeed, nameof(PieSlice.WedgeAngle));
+            var rotation = AnimationHelper.CreateDouble(Rotation, animSpeed, nameof(PieSlice.RotationAngle));
+            AnimationHelper.CreateStoryBoardAndBegin(Slice, wedge, rotation);
         }
 
         public override void RemoveFromView(ChartCore chart)
@@ -128,9 +131,9 @@ namespace LiveCharts.Uwp.Points
 
             var pieChart = (PieChart) point.SeriesView.Model.Chart.View;
 
-            Slice.BeginAnimation(PieSlice.PushOutProperty,
-                new DoubleAnimation(Slice.PushOut, OriginalPushOut + pieChart.HoverPushOut,
-                    point.SeriesView.Model.Chart.View.AnimationsSpeed));
+            Slice.BeginDoubleAnimation(nameof(Slice.PushOut), Slice.PushOut,
+                OriginalPushOut + pieChart.HoverPushOut,
+                point.SeriesView.Model.Chart.View.AnimationsSpeed);
         }
 
         public override void OnHoverLeave(ChartPoint point)
@@ -141,8 +144,9 @@ namespace LiveCharts.Uwp.Points
                     Path = new PropertyPath("Series.Fill"),
                     Source = ((Series) point.SeriesView)
                 });
-            Slice.BeginAnimation(PieSlice.PushOutProperty,
-                new DoubleAnimation(OriginalPushOut, point.SeriesView.Model.Chart.View.AnimationsSpeed));
+
+            Slice.BeginDoubleAnimation(nameof(PieSlice.PushOut), OriginalPushOut,
+                point.SeriesView.Model.Chart.View.AnimationsSpeed);
         }
     }
 }

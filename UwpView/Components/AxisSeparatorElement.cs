@@ -154,12 +154,10 @@ namespace LiveCharts.Uwp.Components
         public void FadeIn(AxisCore axis, ChartCore chart)
         {
             if (TextBlock.Visibility != Visibility.Collapsed)
-                TextBlock.BeginAnimation(UIElement.OpacityProperty,
-                    new DoubleAnimation(0, 1, chart.View.AnimationsSpeed));
+                TextBlock.BeginDoubleAnimation("Opacity", 0, 1, chart.View.AnimationsSpeed);
 
             if (Line.Visibility != Visibility.Collapsed)
-                Line.BeginAnimation(UIElement.OpacityProperty,
-                    new DoubleAnimation(0, 1, chart.View.AnimationsSpeed));
+                Line.BeginDoubleAnimation("Opacity", 0, 1, chart.View.AnimationsSpeed);
         }
 
         public void FadeOutAndRemove(ChartCore chart)
@@ -183,16 +181,16 @@ namespace LiveCharts.Uwp.Components
                     return;
                 }
 
-                Application.Current.Dispatcher.Invoke(new Action(() =>
+                TextBlock.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
                 {
                     chart.View.RemoveFromView(TextBlock);
                     chart.View.RemoveFromView(Line);
-                }));
+                });
             };
 
-            TextBlock.BeginAnimation(UIElement.OpacityProperty, anim);
-            Line.BeginAnimation(UIElement.OpacityProperty,
-                new DoubleAnimation(1, 0, chart.View.AnimationsSpeed));
+            TextBlock.BeginDoubleAnimation(anim, "Opacity");
+
+            Line.BeginDoubleAnimation("Opacity", 1, 0, chart.View.AnimationsSpeed);
         }
     }
 }

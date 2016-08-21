@@ -27,6 +27,7 @@ using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Shapes;
 using LiveCharts.Charts;
 using LiveCharts.Definitions.Points;
+using LiveCharts.Uwp.Components;
 
 namespace LiveCharts.Uwp.Points
 {
@@ -109,23 +110,21 @@ namespace LiveCharts.Uwp.Points
                 var cx = CorrectXLabel(current.ChartLocation.X - DataLabel.ActualWidth*.5, chart);
                 var cy = CorrectYLabel(current.ChartLocation.Y - DataLabel.ActualHeight*.5, chart);
 
-                DataLabel.BeginAnimation(Canvas.LeftProperty, new DoubleAnimation(cx, animSpeed));
-                DataLabel.BeginAnimation(Canvas.TopProperty, new DoubleAnimation(cy, animSpeed));
+                DataLabel.CreateCanvasStoryBoardAndBegin(cx, cy, animSpeed);
             }
 
             HighToLowLine.X1 = center;
             HighToLowLine.X2 = center;
-            HighToLowLine.BeginAnimation(Line.Y1Property, new DoubleAnimation(High, animSpeed));
-            HighToLowLine.BeginAnimation(Line.Y2Property, new DoubleAnimation(Low, animSpeed));
+
+            var y1Animation = AnimationHelper.CreateDouble(High, animSpeed, "Line.Y1");
+            var y2Animation = AnimationHelper.CreateDouble(Low, animSpeed, "Line.Y2");
+            AnimationHelper.CreateStoryBoardAndBegin(HighToLowLine, y1Animation, y2Animation);
 
             Canvas.SetLeft(OpenToCloseRectangle, Left);
-            OpenToCloseRectangle.BeginAnimation(Canvas.TopProperty,
-                new DoubleAnimation(Math.Min(Open, Close), animSpeed));
+            OpenToCloseRectangle.BeginDoubleAnimation("Canvas.Top", Math.Min(Open, Close), animSpeed);
 
             OpenToCloseRectangle.Width = Width;
-            OpenToCloseRectangle.BeginAnimation(FrameworkElement.HeightProperty,
-                new DoubleAnimation(Math.Max(Math.Abs(Open - Close), OpenToCloseRectangle.StrokeThickness), animSpeed));
-
+            OpenToCloseRectangle.BeginDoubleAnimation("Height", Math.Max(Math.Abs(Open - Close), OpenToCloseRectangle.StrokeThickness), animSpeed);
         }
 
         public override void RemoveFromView(ChartCore chart)

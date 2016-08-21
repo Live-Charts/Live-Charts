@@ -28,6 +28,7 @@ using Windows.UI.Xaml.Shapes;
 using LiveCharts.Charts;
 using LiveCharts.Definitions.Points;
 using LiveCharts.Dtos;
+using LiveCharts.Uwp.Components;
 
 namespace LiveCharts.Uwp.Points
 {
@@ -122,12 +123,10 @@ namespace LiveCharts.Uwp.Points
 
             #endregion
 
-            Segment.BeginAnimation(BezierSegment.Point1Property,
-                new PointAnimation(Segment.Point1, Data.Point1.AsPoint(), chart.View.AnimationsSpeed));
-            Segment.BeginAnimation(BezierSegment.Point2Property,
-                new PointAnimation(Segment.Point2, Data.Point2.AsPoint(), chart.View.AnimationsSpeed));
-            Segment.BeginAnimation(BezierSegment.Point3Property,
-                new PointAnimation(Segment.Point3, Data.Point3.AsPoint(), chart.View.AnimationsSpeed));
+            var p1 = AnimationHelper.CreatePoint(Segment.Point1, Data.Point1.AsPoint(), chart.View.AnimationsSpeed, nameof(BezierSegment.Point1));
+            var p2 = AnimationHelper.CreatePoint(Segment.Point2, Data.Point2.AsPoint(), chart.View.AnimationsSpeed, nameof(BezierSegment.Point2));
+            var p3 = AnimationHelper.CreatePoint(Segment.Point3, Data.Point3.AsPoint(), chart.View.AnimationsSpeed, nameof(BezierSegment.Point3));
+            AnimationHelper.CreateStoryBoardAndBegin(Segment, p1, p2, p3);
 
             if (Shape != null)
             {
@@ -138,10 +137,8 @@ namespace LiveCharts.Uwp.Points
                 }
                 else
                 {
-                    Shape.BeginAnimation(Canvas.LeftProperty,
-                        new DoubleAnimation(current.ChartLocation.X - Shape.Width*.5, chart.View.AnimationsSpeed));
-                    Shape.BeginAnimation(Canvas.TopProperty,
-                        new DoubleAnimation(current.ChartLocation.Y - Shape.Height * .5, chart.View.AnimationsSpeed));
+                    Shape.CreateCanvasStoryBoardAndBegin(current.ChartLocation.X - Shape.Width*.5,
+                        current.ChartLocation.Y - Shape.Height*.5, chart.View.AnimationsSpeed);
                 }
             }
 
@@ -152,10 +149,7 @@ namespace LiveCharts.Uwp.Points
                 var xl = CorrectXLabel(current.ChartLocation.X - DataLabel.ActualWidth*.5, chart);
                 var yl = CorrectYLabel(current.ChartLocation.Y - DataLabel.ActualHeight*.5, chart);
 
-                DataLabel.BeginAnimation(Canvas.LeftProperty,
-                    new DoubleAnimation(xl, chart.View.AnimationsSpeed));
-                DataLabel.BeginAnimation(Canvas.TopProperty,
-                    new DoubleAnimation(yl, chart.View.AnimationsSpeed));
+                DataLabel.CreateCanvasStoryBoardAndBegin(xl, yl, chart.View.AnimationsSpeed);
             }
 
             if (HoverShape != null)

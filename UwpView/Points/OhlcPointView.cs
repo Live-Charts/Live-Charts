@@ -26,6 +26,7 @@ using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Shapes;
 using LiveCharts.Charts;
 using LiveCharts.Definitions.Points;
+using LiveCharts.Uwp.Components;
 
 namespace LiveCharts.Uwp.Points
 {
@@ -113,8 +114,7 @@ namespace LiveCharts.Uwp.Points
                 var cx = CorrectXLabel(current.ChartLocation.X - DataLabel.ActualWidth*.5, chart);
                 var cy = CorrectYLabel(current.ChartLocation.Y - DataLabel.ActualHeight*.5, chart);
 
-                DataLabel.BeginAnimation(Canvas.LeftProperty, new DoubleAnimation(cx, animSpeed));
-                DataLabel.BeginAnimation(Canvas.TopProperty, new DoubleAnimation(cy, animSpeed));
+                DataLabel.CreateCanvasStoryBoardAndBegin(cx, cy, animSpeed);
             }
 
             HighToLowLine.X1 = center;
@@ -124,12 +124,9 @@ namespace LiveCharts.Uwp.Points
             CloseLine.X1 = center;
             CloseLine.X2 = Left + Width;
 
-            HighToLowLine.BeginAnimation(Line.Y1Property, new DoubleAnimation(High, animSpeed));
-            HighToLowLine.BeginAnimation(Line.Y2Property, new DoubleAnimation(Low, animSpeed));
-            OpenLine.BeginAnimation(Line.Y1Property, new DoubleAnimation(Open, animSpeed));
-            OpenLine.BeginAnimation(Line.Y2Property, new DoubleAnimation(Open, animSpeed));
-            CloseLine.BeginAnimation(Line.Y1Property, new DoubleAnimation(Close, animSpeed));
-            CloseLine.BeginAnimation(Line.Y2Property, new DoubleAnimation(Close, animSpeed));
+            HighToLowLine.CreateY1Y2StoryBoardAndBegin(High, Low, animSpeed);
+            OpenLine.CreateY1Y2StoryBoardAndBegin(Open, Open, animSpeed);
+            CloseLine.CreateY1Y2StoryBoardAndBegin(Close, Close, animSpeed);
         }
 
         public override void RemoveFromView(ChartCore chart)
