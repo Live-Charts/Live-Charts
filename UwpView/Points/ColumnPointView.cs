@@ -30,6 +30,7 @@ using Windows.UI.Xaml.Shapes;
 using LiveCharts.Charts;
 using LiveCharts.Definitions.Points;
 using LiveCharts.Dtos;
+using LiveCharts.Uwp.Components;
 
 namespace LiveCharts.Uwp.Points
 {
@@ -141,17 +142,14 @@ namespace LiveCharts.Uwp.Points
             {
                 DataLabel.UpdateLayout();
 
-                DataLabel.BeginAnimation(Canvas.LeftProperty, new DoubleAnimation(getX(), animSpeed));
-                DataLabel.BeginAnimation(Canvas.TopProperty, new DoubleAnimation(getY(), animSpeed));
+                DataLabel.CreateCanvasStoryBoardAndBegin(getX(), getY(), animSpeed);
             }
 
             Canvas.SetLeft(Rectangle, Data.Left);
-            Rectangle.BeginAnimation(Canvas.TopProperty,
-                new DoubleAnimation(Data.Top, animSpeed));
+            Rectangle.BeginDoubleAnimation("Canvas.Top", Data.Top, animSpeed);
 
             Rectangle.Width = Data.Width;
-            Rectangle.BeginAnimation(FrameworkElement.HeightProperty,
-                new DoubleAnimation(Data.Height, animSpeed));
+            Rectangle.BeginDoubleAnimation(nameof(FrameworkElement.Height), Data.Height, animSpeed);
 
             if (HoverShape != null)
             {

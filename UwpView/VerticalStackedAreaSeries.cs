@@ -31,6 +31,7 @@ using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Shapes;
 using LiveCharts.Definitions.Series;
 using LiveCharts.SeriesAlgorithms;
+using LiveCharts.Uwp.Components;
 
 namespace LiveCharts.Uwp
 {
@@ -97,9 +98,8 @@ namespace LiveCharts.Uwp
                 if (Model.Chart.View.DisableAnimations)
                     Figure.StartPoint = new Point(0, yIni);
                 else
-                    Figure.BeginAnimation(PathFigure.StartPointProperty,
-                        new PointAnimation(new Point(0, yIni),
-                            Model.Chart.View.AnimationsSpeed));
+                    Figure.BeginPointAnimation(nameof(PathFigure.StartPoint), new Point(0, yIni),
+                        Model.Chart.View.AnimationsSpeed);
             }
 
             if (IsPathInitialized)

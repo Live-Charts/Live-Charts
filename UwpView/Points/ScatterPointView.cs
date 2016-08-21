@@ -28,6 +28,7 @@ using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Shapes;
 using LiveCharts.Charts;
 using LiveCharts.Definitions.Points;
+using LiveCharts.Uwp.Components;
 
 namespace LiveCharts.Uwp.Points
 {
@@ -92,19 +93,13 @@ namespace LiveCharts.Uwp.Points
                 var cx = CorrectXLabel(current.ChartLocation.X - DataLabel.ActualWidth*.5, chart);
                 var cy = CorrectYLabel(current.ChartLocation.Y - DataLabel.ActualHeight*.5, chart);
 
-                DataLabel.BeginAnimation(Canvas.LeftProperty, new DoubleAnimation(cx, animSpeed));
-                DataLabel.BeginAnimation(Canvas.TopProperty, new DoubleAnimation(cy, animSpeed));
+                DataLabel.CreateCanvasStoryBoardAndBegin(cx, cy, animSpeed);
             }
 
-            Shape.BeginAnimation(FrameworkElement.WidthProperty,
-                new DoubleAnimation(Diameter, animSpeed));
-            Shape.BeginAnimation(FrameworkElement.HeightProperty,
-                new DoubleAnimation(Diameter, animSpeed));
+            Shape.BeginDoubleAnimation(nameof(FrameworkElement.Width), Diameter, animSpeed);
+            Shape.BeginDoubleAnimation(nameof(FrameworkElement.Height), Diameter, animSpeed);
 
-            Shape.BeginAnimation(Canvas.TopProperty,
-                new DoubleAnimation(current.ChartLocation.Y - Diameter*.5, animSpeed));
-            Shape.BeginAnimation(Canvas.LeftProperty,
-                new DoubleAnimation(current.ChartLocation.X - Diameter*.5, animSpeed));
+            Shape.CreateCanvasStoryBoardAndBegin(current.ChartLocation.Y - Diameter * .5, current.ChartLocation.X - Diameter * .5, animSpeed);
         }
 
         public override void RemoveFromView(ChartCore chart)

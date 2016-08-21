@@ -36,7 +36,7 @@ namespace LiveCharts.Uwp.Maps
             if (!File.Exists(file))
             {
 #if DEBUG
-                Console.WriteLine("File not found!");
+                //Console.WriteLine("File not found!");
 #endif
 #pragma warning disable 162
                 // ReSharper disable once HeuristicUnreachableCode

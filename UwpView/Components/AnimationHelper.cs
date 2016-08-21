@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.Foundation;
+using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Shapes;
@@ -15,6 +16,17 @@ namespace LiveCharts.Uwp.Components
         public static DoubleAnimation CreateDouble(double? to, Duration duration, string targetProperty)
         {
             var animation = new DoubleAnimation()
+            {
+                To = to,
+                Duration = duration
+            };
+            Storyboard.SetTargetProperty(animation, targetProperty);
+            return animation;
+        }
+
+        public static PointAnimation CreatePoint(Point to, Duration duration, string targetProperty)
+        {
+            var animation = new PointAnimation()
             {
                 To = to,
                 Duration = duration
@@ -35,6 +47,17 @@ namespace LiveCharts.Uwp.Components
             return animation;
         }
 
+        public static ColorAnimation CreateColor(Color to, Duration duration, string targetProperty)
+        {
+            var animation = new ColorAnimation()
+            {
+                To = to,
+                Duration = duration
+            };
+            Storyboard.SetTargetProperty(animation, targetProperty);
+            return animation;
+        }
+
         public static void BeginDoubleAnimation(this DependencyObject target, string path, double? to,
             Duration duration)
         {
@@ -43,7 +66,7 @@ namespace LiveCharts.Uwp.Components
                 To = to,
                 Duration = duration
             };
-            target.BeginDoubleAnimation(animation, path);
+            target.BeginAnimation(animation, path);
         }
 
         public static void BeginDoubleAnimation(this DependencyObject target, string path, double? from, double? to,
@@ -55,10 +78,22 @@ namespace LiveCharts.Uwp.Components
                 To = to,
                 Duration = duration
             };
-            target.BeginDoubleAnimation(animation, path);
+            target.BeginAnimation(animation, path);
         }
 
-        public static void BeginDoubleAnimation(this DependencyObject target, DoubleAnimation animation, string path)
+        public static void BeginPointAnimation(this DependencyObject target, string path, Point to, Duration duration)
+        {
+            var animation = CreatePoint(to, duration, path);
+            target.BeginAnimation(animation, path);
+        }
+
+        public static void BegionColorAnimation(this DependencyObject target, string path, Color to, Duration duration)
+        {
+            var animation = CreateColor(to, duration, path);
+            target.BeginAnimation(animation, path);
+        }
+
+        public static void BeginAnimation(this DependencyObject target, Timeline animation, string path)
         {
             var sb = new Storyboard();
             Storyboard.SetTarget(animation, target);

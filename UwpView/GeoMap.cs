@@ -65,13 +65,15 @@ namespace LiveCharts.Uwp
             /*Current*/SetValue(LandStrokeThicknessProperty, 1.3d);
             /*Current*/SetValue(AnimationsSpeedProperty, TimeSpan.FromMilliseconds(500));
             /*Current*/SetValue(BackgroundProperty, new SolidColorBrush(Color.FromArgb(150, 96, 125, 138)));
-            /*Current*/SetValue(GradientStopCollectionProperty, new GradientStopCollection
+            /*Current*/
+            SetValue(GradientStopCollectionProperty, new GradientStopCollection
             {
-                new GradientStop(Color.FromArgb(100,2,119,188), 0d),
-                new GradientStop(Color.FromArgb(255, 2,119,188), 1d),
+                new GradientStop(Color.FromArgb(100, 2, 119, 188), 0d),
+                new GradientStop(Color.FromArgb(255, 2, 119, 188), 1d),
             });
             /*Current*/SetValue(HeatMapProperty, new Dictionary<string, double>());
-            /*Current*/SetValue(GeoMapTooltipProperty, new DefaultGeoMapTooltip {Visibility = Visibility.Hidden});
+            /*Current*/
+            SetValue(GeoMapTooltipProperty, new DefaultGeoMapTooltip {Visibility = Visibility.Collapsed}); //Visibility.Hidden});
             Canvas.Children.Add(GeoMapTooltip);
 
             SizeChanged += (sender, e) =>
@@ -117,8 +119,7 @@ namespace LiveCharts.Uwp
                 }
                 else
                 {
-                    Map.BeginAnimation(Canvas.LeftProperty, new DoubleAnimation(l, AnimationsSpeed));
-                    Map.BeginAnimation(Canvas.TopProperty, new DoubleAnimation(t, AnimationsSpeed));
+                    Map.CreateCanvasStoryBoardAndBegin(l, t, AnimationsSpeed);
                 }
             };
         }
@@ -330,8 +331,7 @@ namespace LiveCharts.Uwp
             }
             else
             {
-                Map.BeginAnimation(Canvas.LeftProperty, new DoubleAnimation(OriginalPosition.X, TimeSpan.FromMilliseconds(1)));
-                Map.BeginAnimation(Canvas.TopProperty, new DoubleAnimation(OriginalPosition.Y, TimeSpan.FromMilliseconds(1)));
+                Map.CreateCanvasStoryBoardAndBegin(OriginalPosition.X, OriginalPosition.Y, TimeSpan.FromMilliseconds(1));
             }
         }
 

@@ -215,7 +215,7 @@ namespace LiveCharts.Uwp
 
         public static readonly DependencyProperty FontStyleProperty = DependencyProperty.Register(
             "FontStyle", typeof (FontStyle),
-            typeof (Series), new PropertyMetadata(FontStyles.Normal, CallChartUpdater()));
+            typeof (Series), new PropertyMetadata(FontStyle.Normal, CallChartUpdater()));
         /// <summary>
         /// Gets or sets labels font style
         /// </summary>
@@ -227,7 +227,7 @@ namespace LiveCharts.Uwp
 
         public static readonly DependencyProperty FontStretchProperty = DependencyProperty.Register(
             "FontStretch", typeof (FontStretch),
-            typeof (Series), new PropertyMetadata(FontStretches.Normal, CallChartUpdater()));
+            typeof (Series), new PropertyMetadata(FontStretch.Normal, CallChartUpdater()));
         /// <summary>
         /// Gets or sets labels font stretch
         /// </summary>

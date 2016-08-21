@@ -32,6 +32,7 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Shapes;
 using LiveCharts.Uwp.Points;
+using LiveCharts.Uwp.Components;
 
 namespace LiveCharts.Uwp
 {
@@ -42,7 +43,7 @@ namespace LiveCharts.Uwp
     {
         public Gauge()
         {
-            Canvas = new Canvas {ClipToBounds = true};
+            Canvas = new Canvas(); //{ClipToBounds = true};
             Content = Canvas;
 
             PieBack = new PieSlice();
@@ -356,9 +357,8 @@ namespace LiveCharts.Uwp
                 Pie.WedgeAngle = 0;
             }
 
-            Pie.BeginAnimation(PieSlice.WedgeAngleProperty, new DoubleAnimation(completed*angle, AnimationsSpeed));
-            ((SolidColorBrush)Pie.Fill).BeginAnimation(SolidColorBrush.ColorProperty,
-                new ColorAnimation(interpolatedColor, AnimationsSpeed));
+            Pie.BeginDoubleAnimation(nameof(PieSlice.WedgeAngle), completed * angle, AnimationsSpeed);
+            ((SolidColorBrush)Pie.Fill).BegionColorAnimation(nameof(SolidColorBrush.Color), interpolatedColor, AnimationsSpeed);
 
             IsNew = false;
         }

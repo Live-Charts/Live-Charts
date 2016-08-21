@@ -26,6 +26,7 @@ using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Shapes;
 using LiveCharts.Charts;
 using LiveCharts.Definitions.Points;
+using LiveCharts.Uwp.Components;
 
 namespace LiveCharts.Uwp.Points
 {
@@ -188,10 +189,8 @@ namespace LiveCharts.Uwp.Points
 
             if (Shape != null)
             {
-                Shape.BeginAnimation(Canvas.LeftProperty,
-                    new DoubleAnimation(current.ChartLocation.X - Shape.Width/2, animSpeed));
-                Shape.BeginAnimation(Canvas.TopProperty,
-                    new DoubleAnimation(current.ChartLocation.Y - Shape.Height/2, animSpeed));
+                Shape.CreateCanvasStoryBoardAndBegin(current.ChartLocation.X - Shape.Width/2,
+                    current.ChartLocation.Y - Shape.Height/2, animSpeed);
             }
 
             if (DataLabel != null)

@@ -157,7 +157,7 @@ namespace LiveCharts.Uwp
                     pbv.Shape = new Path
                     {
                         Stretch = Stretch.Fill,
-                        ClipToBounds = true,
+                        //ClipToBounds = true,
                         StrokeThickness = StrokeThickness
                     };
                 }

@@ -33,6 +33,7 @@ using LiveCharts.Dtos;
 using LiveCharts.SeriesAlgorithms;
 using LiveCharts.Uwp.Charts.Base;
 using LiveCharts.Uwp.Points;
+using LiveCharts.Uwp.Components;
 
 namespace LiveCharts.Uwp
 {
@@ -85,9 +86,7 @@ namespace LiveCharts.Uwp
                 if (Model.Chart.View.DisableAnimations)
                     Figure.StartPoint = new Point(0, yIni);
                 else
-                    Figure.BeginAnimation(PathFigure.StartPointProperty,
-                        new PointAnimation(new Point(0, yIni),
-                            Model.Chart.View.AnimationsSpeed));
+                    Figure.BeginPointAnimation(nameof(PathFigure.StartPoint), new Point(0, yIni), Model.Chart.View.AnimationsSpeed);
             }
 
             if (IsPathInitialized)
@@ -178,7 +177,7 @@ namespace LiveCharts.Uwp
                     pbv.Shape = new Path
                     {
                         Stretch = Stretch.Fill,
-                        ClipToBounds = true,
+                        //ClipToBounds = true,
                         StrokeThickness = StrokeThickness
                     };
                 }
@@ -242,16 +241,14 @@ namespace LiveCharts.Uwp
                 if (noAnim)
                     splitter.Bottom.Point = new Point(0, location.Y);
                 else
-                    splitter.Bottom.BeginAnimation(LineSegment.PointProperty,
-                        new PointAnimation(new Point(0, location.Y), animSpeed));
+                    splitter.Bottom.BeginPointAnimation(nameof(LineSegment.Point), new Point(0, location.Y), animSpeed);
                 Figure.Segments.Insert(atIndex, splitter.Bottom);
 
                 Figure.Segments.Remove(splitter.Left);
                 if (noAnim)
                     splitter.Left.Point = location.AsPoint();
                 else
-                    splitter.Left.BeginAnimation(LineSegment.PointProperty,
-                        new PointAnimation(location.AsPoint(), animSpeed));
+                    splitter.Left.BeginPointAnimation(nameof(LineSegment.Point), location.AsPoint(), animSpeed);
                 Figure.Segments.Insert(atIndex + 1, splitter.Left);
 
                 return;
@@ -267,8 +264,7 @@ namespace LiveCharts.Uwp
             if (Model.Chart.View.DisableAnimations)
                 splitter.Left.Point = location.AsPoint();
             else
-                splitter.Left.BeginAnimation(LineSegment.PointProperty,
-                    new PointAnimation(location.AsPoint(), animSpeed));
+                splitter.Left.BeginPointAnimation(nameof(LineSegment.Point), location.AsPoint(), animSpeed);
             Figure.Segments.Insert(atIndex, splitter.Left);
         }
 
@@ -288,8 +284,7 @@ namespace LiveCharts.Uwp
             if (noAnim)
                 splitter.Right.Point = new Point(0, location.Y);
             else
-                splitter.Right.BeginAnimation(LineSegment.PointProperty,
-                    new PointAnimation(new Point(0, location.Y), animSpeed));
+                splitter.Right.BeginPointAnimation(nameof(LineSegment.Point), new Point(0, location.Y), animSpeed);
             Figure.Segments.Insert(atIndex, splitter.Right);
 
             splitter.IsNew = false;

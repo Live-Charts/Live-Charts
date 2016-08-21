@@ -188,7 +188,7 @@ namespace LiveCharts.Uwp.Components
                 });
             };
 
-            TextBlock.BeginDoubleAnimation(anim, "Opacity");
+            TextBlock.BeginAnimation(anim, "Opacity");
 
             Line.BeginDoubleAnimation("Opacity", 1, 0, chart.View.AnimationsSpeed);
         }
