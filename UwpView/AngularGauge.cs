@@ -289,8 +289,18 @@ namespace LiveCharts.Uwp
             }
             else
             {
-                StickRotateTransform.BeginAnimation(RotateTransform.AngleProperty,
-                    new DoubleAnimation(alpha, AnimationsSpeed));
+                var sb = new Storyboard();
+                var animation = new DoubleAnimation()
+                {
+                    To = alpha,
+                    Duration = AnimationsSpeed
+                };
+
+                Storyboard.SetTarget(animation, StickRotateTransform);
+                Storyboard.SetTargetProperty(animation, "Angle");
+
+                sb.Children.Add(animation);
+                sb.Begin();
             }
         }
 
@@ -385,8 +395,8 @@ namespace LiveCharts.Uwp
                     Text = LabelFormatter(i)
                 };
 
-                label.SetBinding(EffectProperty,
-                    new Binding {Path = new PropertyPath("LabelsEffect"), Source = this});
+                //label.SetBinding(EffectProperty,
+                    //new Binding {Path = new PropertyPath("LabelsEffect"), Source = this});
 
                 Canvas.Children.Add(label);
                 label.UpdateLayout();

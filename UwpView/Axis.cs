@@ -39,7 +39,7 @@ namespace LiveCharts.Uwp
     /// <summary>
     /// An Axis of a chart
     /// </summary>
-    public class Axis : FrameworkElement, IAxisView
+    public class Axis : UserControl, IAxisView
     {
 
         #region Constructors
@@ -252,7 +252,7 @@ namespace LiveCharts.Uwp
 
         public static readonly DependencyProperty FontStyleProperty =
             DependencyProperty.Register("FontStyle", typeof(FontStyle), typeof(Axis),
-                new PropertyMetadata(FontStyles.Normal));
+                new PropertyMetadata(FontStyle.Normal));
 
         /// <summary>
         /// Gets or sets labels font style
@@ -265,7 +265,7 @@ namespace LiveCharts.Uwp
 
         public static readonly DependencyProperty FontStretchProperty =
             DependencyProperty.Register("FontStretch", typeof(FontStretch), typeof(Axis),
-                new PropertyMetadata(FontStretches.Normal));
+                new PropertyMetadata(FontStretch.Normal));
 
         /// <summary>
         /// Gets or sets labels font stretch
@@ -344,7 +344,7 @@ namespace LiveCharts.Uwp
             if (TitleBlock.Parent == null)
             {
                 if (Math.Abs(rotationAngle) > 1)
-                    TitleBlock.RenderTransform = new RotateTransform(rotationAngle);
+                    TitleBlock.RenderTransform = new RotateTransform() {Angle = rotationAngle};
 
                 chart.View.AddToView(TitleBlock);
             }

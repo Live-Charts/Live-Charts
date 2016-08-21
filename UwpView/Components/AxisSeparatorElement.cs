@@ -60,7 +60,7 @@ namespace LiveCharts.Uwp.Components
                 TextBlock.ActualWidth, TextBlock.ActualHeight, axis, source);
 
             TextBlock.RenderTransform = Math.Abs(transform.LabelAngle) > 1
-                ? new RotateTransform(transform.LabelAngle)
+                ? new RotateTransform() {  Angle = transform.LabelAngle }
                 : null;
 
             LabelModel = transform;
@@ -122,35 +122,31 @@ namespace LiveCharts.Uwp.Components
         {
             if (direction == AxisOrientation.Y)
             {
-                Line.BeginAnimation(Line.X1Property,
-                    new DoubleAnimation(chart.DrawMargin.Left, chart.View.AnimationsSpeed));
-                Line.BeginAnimation(Line.X2Property,
-                    new DoubleAnimation(chart.DrawMargin.Left + chart.DrawMargin.Width, chart.View.AnimationsSpeed));
-                Line.BeginAnimation(Line.Y1Property,
-                    new DoubleAnimation(toLine, chart.View.AnimationsSpeed));
-                Line.BeginAnimation(Line.Y2Property,
-                    new DoubleAnimation(toLine, chart.View.AnimationsSpeed));
+                var x1 = AnimationHelper.CreateDouble(chart.DrawMargin.Left, chart.View.AnimationsSpeed, nameof(Line.X1));
+                var x2 = AnimationHelper.CreateDouble(chart.DrawMargin.Left + chart.DrawMargin.Width, chart.View.AnimationsSpeed, nameof(Line.X2));
+                var y1 = AnimationHelper.CreateDouble(toLine, chart.View.AnimationsSpeed, nameof(Line.Y1));
+                var y2 = AnimationHelper.CreateDouble(toLine, chart.View.AnimationsSpeed, nameof(Line.Y2));
 
-                TextBlock.BeginAnimation(Canvas.TopProperty,
-                    new DoubleAnimation(toLabel, chart.View.AnimationsSpeed));
-                TextBlock.BeginAnimation(Canvas.LeftProperty,
-                    new DoubleAnimation(tab, chart.View.AnimationsSpeed));
+                AnimationHelper.CreateStoryBoardAndBegin(Line, x1, x2, y1, y2);
+
+                var tb1 = AnimationHelper.CreateDouble(toLabel, chart.View.AnimationsSpeed, "Canvas.Top");
+                var tb2 = AnimationHelper.CreateDouble(tab, chart.View.AnimationsSpeed, "Canvas.Left");
+
+                AnimationHelper.CreateStoryBoardAndBegin(TextBlock, tb1, tb2);
             }
             else
             {
-                Line.BeginAnimation(Line.X1Property,
-                    new DoubleAnimation(toLine, chart.View.AnimationsSpeed));
-                Line.BeginAnimation(Line.X2Property,
-                    new DoubleAnimation(toLine, chart.View.AnimationsSpeed));
-                Line.BeginAnimation(Line.Y1Property,
-                    new DoubleAnimation(chart.DrawMargin.Top, chart.View.AnimationsSpeed));
-                Line.BeginAnimation(Line.Y2Property,
-                    new DoubleAnimation(chart.DrawMargin.Top + chart.DrawMargin.Height, chart.View.AnimationsSpeed));
+                var x1 = AnimationHelper.CreateDouble(toLine, chart.View.AnimationsSpeed, nameof(Line.X1));
+                var x2 = AnimationHelper.CreateDouble(toLine, chart.View.AnimationsSpeed, nameof(Line.X2));
+                var y1 = AnimationHelper.CreateDouble(chart.DrawMargin.Top, chart.View.AnimationsSpeed, nameof(Line.Y1));
+                var y2 = AnimationHelper.CreateDouble(chart.DrawMargin.Top + chart.DrawMargin.Height, chart.View.AnimationsSpeed, nameof(Line.Y2));
 
-                TextBlock.BeginAnimation(Canvas.LeftProperty,
-                    new DoubleAnimation(toLabel, chart.View.AnimationsSpeed));
-                TextBlock.BeginAnimation(Canvas.TopProperty,
-                    new DoubleAnimation(tab, chart.View.AnimationsSpeed));
+                AnimationHelper.CreateStoryBoardAndBegin(Line, x1, x2, y1, y2);
+
+                var tb1 = AnimationHelper.CreateDouble(toLabel, chart.View.AnimationsSpeed, "Canvas.Left");
+                var tb2 = AnimationHelper.CreateDouble(tab, chart.View.AnimationsSpeed, "Canvas.Top");
+
+                AnimationHelper.CreateStoryBoardAndBegin(TextBlock, tb1, tb2);
             }
 
         }

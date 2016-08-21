@@ -117,6 +117,7 @@
     <Compile Include="Charts\Base\Chart.cs" />
     <Compile Include="ColorsCollection.cs" />
     <Compile Include="ColumnSeries.cs" />
+    <Compile Include="Components\AnimationHelper.cs" />
     <Compile Include="Components\AxisSeparatorElement.cs" />
     <Compile Include="Components\ChartUpdater.cs" />
     <Compile Include="Components\Converters.cs" />
