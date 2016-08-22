@@ -1004,7 +1004,7 @@ namespace LiveCharts.Wpf.Charts.Base
 
                 EnsureElementBelongsToCurrentView(ScrollBar);
                 ScrollBar.MouseDown += ScrollBarOnMouseDown;
-                ScrollBar.MouseMove += ScrollBarOnMouseMove;
+                MouseMove += ScrollBarOnMouseMove;
                 ScrollBar.MouseUp += ScrollBarOnMouseUp;
             }
 
@@ -1019,13 +1019,13 @@ namespace LiveCharts.Wpf.Charts.Base
             if (ScrollMode == ScrollMode.X || ScrollMode == ScrollMode.XY)
             {
                 Canvas.SetLeft(ScrollBar, f.X);
-                ScrollBar.Width = t.X - f.X;
+                if (t.X - f.X >= 0) ScrollBar.Width = t.X - f.X;
             }
 
             if (ScrollMode == ScrollMode.Y || ScrollMode == ScrollMode.XY)
             {
                 Canvas.SetTop(ScrollBar, t.Y);
-                ScrollBar.Height = f.Y - t.Y;
+                if (f.Y - t.Y >= 0) ScrollBar.Height = f.Y - t.Y;
             }
         }
 
