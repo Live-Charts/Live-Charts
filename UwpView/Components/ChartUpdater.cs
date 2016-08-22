@@ -72,7 +72,7 @@ namespace LiveCharts.Uwp.Components
         private void UpdaterTick(bool restartView)
         {
             var wpfChart = (Chart) Chart.View;
-            if (!wpfChart.IsVisible && !wpfChart.IsMocked) return;
+            if (wpfChart.Visibility != Visibility.Visible && !wpfChart.IsMocked) return;
 
             Chart.ControlSize = wpfChart.IsMocked
                 ? wpfChart.Model.ControlSize

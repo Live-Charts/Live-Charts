@@ -358,7 +358,7 @@ namespace LiveCharts.Uwp
             }
 
             Pie.BeginDoubleAnimation(nameof(PieSlice.WedgeAngle), completed * angle, AnimationsSpeed);
-            ((SolidColorBrush)Pie.Fill).BegionColorAnimation(nameof(SolidColorBrush.Color), interpolatedColor, AnimationsSpeed);
+            ((SolidColorBrush)Pie.Fill).BeginColorAnimation(nameof(SolidColorBrush.Color), interpolatedColor, AnimationsSpeed);
 
             IsNew = false;
         }

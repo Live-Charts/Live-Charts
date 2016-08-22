@@ -87,7 +87,7 @@ namespace LiveCharts.Uwp.Components
             target.BeginAnimation(animation, path);
         }
 
-        public static void BegionColorAnimation(this DependencyObject target, string path, Color to, Duration duration)
+        public static void BeginColorAnimation(this DependencyObject target, string path, Color to, Duration duration)
         {
             var animation = CreateColor(to, duration, path);
             target.BeginAnimation(animation, path);

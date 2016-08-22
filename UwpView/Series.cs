@@ -50,7 +50,7 @@ namespace LiveCharts.Uwp
         {
             DefaultFillOpacity = 0.35;
             /*Current*/SetValue(TitleProperty, "Series");
-            IsVisibleChanged += OnIsVisibleChanged;
+            RegisterPropertyChangedCallback(VisibilityProperty, OnIsVisibleChanged);
         }
 
         /// <summary>
@@ -62,7 +62,7 @@ namespace LiveCharts.Uwp
             Configuration = configuration;
             SetValue(TitleProperty, "Series");
             PreviousVisibility = Visibility;
-            IsVisibleChanged += OnIsVisibleChanged;
+            RegisterPropertyChangedCallback(VisibilityProperty, OnIsVisibleChanged);
         }
         #endregion
 
@@ -454,7 +454,7 @@ namespace LiveCharts.Uwp
 
         private Visibility PreviousVisibility { get; set; }
        
-        private void OnIsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+        private void OnIsVisibleChanged(DependencyObject sender, DependencyProperty e)
         {
             if (Model.Chart != null && PreviousVisibility != Visibility)
             {

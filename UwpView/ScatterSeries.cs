@@ -107,7 +107,7 @@ namespace LiveCharts.Uwp
                     Shape = new Path
                     {
                         Stretch = Stretch.Fill,
-                        ClipToBounds = true,
+                        //ClipToBounds = true,
                         StrokeThickness = StrokeThickness
                     }
                 };

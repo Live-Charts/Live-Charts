@@ -20,6 +20,7 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
+using Windows.UI;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Animation;
@@ -27,6 +28,7 @@ using Windows.UI.Xaml.Shapes;
 using LiveCharts.Charts;
 using LiveCharts.Definitions.Points;
 using LiveCharts.Dtos;
+using LiveCharts.Uwp.Components;
 
 namespace LiveCharts.Uwp.Points
 {
@@ -81,8 +83,7 @@ namespace LiveCharts.Uwp.Points
 
             var animSpeed = chart.View.AnimationsSpeed;
 
-            Rectangle.Fill.BeginAnimation(SolidColorBrush.ColorProperty,
-                new ColorAnimation(targetColor, animSpeed));
+            Rectangle.Fill.BeginColorAnimation(nameof(SolidColorBrush.Color), targetColor, animSpeed);
         }
 
         public override void RemoveFromView(ChartCore chart)

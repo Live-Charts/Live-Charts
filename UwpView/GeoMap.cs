@@ -39,6 +39,7 @@ using LiveCharts.Maps;
 using LiveCharts.Uwp.Components;
 using LiveCharts.Uwp.Components.MultiBinding;
 using LiveCharts.Uwp.Maps;
+using Microsoft.Xaml.Interactivity;
 using Path = Windows.UI.Xaml.Shapes.Path;
 
 namespace LiveCharts.Uwp
@@ -68,8 +69,16 @@ namespace LiveCharts.Uwp
             /*Current*/
             SetValue(GradientStopCollectionProperty, new GradientStopCollection
             {
-                new GradientStop(Color.FromArgb(100, 2, 119, 188), 0d),
-                new GradientStop(Color.FromArgb(255, 2, 119, 188), 1d),
+                new GradientStop()
+                {
+                    Color = Color.FromArgb(100, 2, 119, 188),
+                    Offset = 0d
+                },
+                new GradientStop()
+                {
+                    Color = Color.FromArgb(255, 2, 119, 188),
+                    Offset = 1d
+                },
             });
             /*Current*/SetValue(HeatMapProperty, new Dictionary<string, double>());
             /*Current*/
@@ -81,47 +90,47 @@ namespace LiveCharts.Uwp
                 Draw();
             };
 
-            MouseWheel += (sender, e) =>
-            {
-                if (!EnableZoomingAndPanning) return;
+            //MouseWheel += (sender, e) =>
+            //{
+            //    if (!EnableZoomingAndPanning) return;
 
-                e.Handled = true;
-                var rt = Map.RenderTransform as ScaleTransform;
-                var p = rt == null ? 1 : rt.ScaleX;
-                p += e.Delta > 0 ? .05 : -.05;
-                p = p < 1 ? 1 : p;
-                var o = e.GetPosition(this);
-                if (e.Delta > 0) Map.RenderTransformOrigin = new Point(o.X/ActualWidth,o.Y/ActualHeight);
-                Map.RenderTransform = new ScaleTransform(p, p);
-            };
+            //    e.Handled = true;
+            //    var rt = Map.RenderTransform as ScaleTransform;
+            //    var p = rt == null ? 1 : rt.ScaleX;
+            //    p += e.Delta > 0 ? .05 : -.05;
+            //    p = p < 1 ? 1 : p;
+            //    var o = e.GetPosition(this);
+            //    if (e.Delta > 0) Map.RenderTransformOrigin = new Point(o.X/ActualWidth,o.Y/ActualHeight);
+            //    Map.RenderTransform = new ScaleTransform(p, p);
+            //};
 
-            MouseDown += (sender, e) =>
-            {
-                if (!EnableZoomingAndPanning) return;
+            //MouseDown += (sender, e) =>
+            //{
+            //    if (!EnableZoomingAndPanning) return;
 
-                DragOrigin = e.GetPosition(this);
-            };
+            //    DragOrigin = e.GetPosition(this);
+            //};
 
-            MouseUp += (sender, e) =>
-            {
-                if (!EnableZoomingAndPanning) return;
+            //MouseUp += (sender, e) =>
+            //{
+            //    if (!EnableZoomingAndPanning) return;
 
-                var end = e.GetPosition(this);
-                var delta = new Point(DragOrigin.X - end.X, DragOrigin.Y - end.Y);
+            //    var end = e.GetPosition(this);
+            //    var delta = new Point(DragOrigin.X - end.X, DragOrigin.Y - end.Y);
 
-                var l = Canvas.GetLeft(Map) - delta.X;
-                var t = Canvas.GetTop(Map) - delta.Y;
+            //    var l = Canvas.GetLeft(Map) - delta.X;
+            //    var t = Canvas.GetTop(Map) - delta.Y;
 
-                if (DisableAnimations)
-                {
-                    Canvas.SetLeft(Map, l);
-                    Canvas.SetTop(Map, t);
-                }
-                else
-                {
-                    Map.CreateCanvasStoryBoardAndBegin(l, t, AnimationsSpeed);
-                }
-            };
+            //    if (DisableAnimations)
+            //    {
+            //        Canvas.SetLeft(Map, l);
+            //        Canvas.SetTop(Map, t);
+            //    }
+            //    else
+            //    {
+            //        Map.CreateCanvasStoryBoardAndBegin(l, t, AnimationsSpeed);
+            //    }
+            //};
         }
 
         #endregion
@@ -323,7 +332,7 @@ namespace LiveCharts.Uwp
         /// </summary>
         public void Restart()
         {
-            Map.RenderTransform = new ScaleTransform(1, 1);
+            Map.RenderTransform = new ScaleTransform() {ScaleX = 1, ScaleY = 1};
             if (DisableAnimations)
             {
                 Canvas.SetLeft(Map, OriginalPosition.X);
@@ -404,7 +413,7 @@ namespace LiveCharts.Uwp
                 Canvas.SetTop(Map, OriginalPosition.Y);
             }
 
-            var t = new ScaleTransform(s, s);
+            var t = new ScaleTransform() {ScaleX = s, ScaleY = s};
 
             foreach (var land in map.Data)
             {
@@ -418,24 +427,20 @@ namespace LiveCharts.Uwp
                 Lands[land.Id] = land;
                 Map.Children.Add(p);
 
-                p.MouseEnter += POnMouseEnter;
-                p.MouseLeave += POnMouseLeave;
-                p.MouseMove += POnMouseMove;
-                p.MouseDown += POnMouseDown;
+                //p.MouseEnter += POnMouseEnter;
+                //p.MouseLeave += POnMouseLeave;
+                //p.MouseMove += POnMouseMove;
+                //p.MouseDown += POnMouseDown;
 
                 p.SetBinding(Shape.StrokeProperty,
                     new Binding { Path = new PropertyPath("LandStroke"), Source = this });
-                p.SetBinding(Shape.StrokeThicknessProperty,
-                    new MultiBinding
-                    {
-                        Converter = new ScaleStrokeConverter(),
-                        Bindings =
-                        {
-                            new Binding("LandStrokeThickness") {Source = this},
-                            new Binding("ScaleX") {Source = t}
-                        }
-                    });
-
+                var behavior = new MultiBindingBehavior()
+                {
+                    Converter = new ScaleStrokeConverter()
+                };
+                behavior.Items.Add(new MultiBindingItem() {Parent = behavior.Items, Value = new Binding() { Path = new PropertyPath("LandStrokeThickness"), Source = this } });
+                behavior.Items.Add(new MultiBindingItem() {Parent = behavior.Items, Value = new Binding() { Path = new PropertyPath("ScaleX"), Source = t } });
+                Interaction.SetBehaviors(p, new BehaviorCollection() {behavior});
             }      
 
             ShowMeSomeHeat();
@@ -472,8 +477,7 @@ namespace LiveCharts.Uwp
                 else
                 {
                     shape.Fill = new SolidColorBrush();
-                    ((SolidColorBrush) shape.Fill).BeginAnimation(SolidColorBrush.ColorProperty,
-                        new ColorAnimation(color, AnimationsSpeed));
+                    ((SolidColorBrush) shape.Fill).BeginColorAnimation(nameof(SolidColorBrush.Color), color, AnimationsSpeed);
                 }
             }
         }
@@ -520,12 +524,12 @@ namespace LiveCharts.Uwp
             };
         }
 
-        private void POnMouseMove(object sender, MouseEventArgs mouseEventArgs)
-        {
-            var location = mouseEventArgs.GetPosition(this);
-            Canvas.SetTop(GeoMapTooltip, location.Y + 5);
-            Canvas.SetLeft(GeoMapTooltip, location.X + 5);
-        }
+        //private void POnMouseMove(object sender, MouseEventArgs mouseEventArgs)
+        //{
+        //    var location = mouseEventArgs.GetPosition(this);
+        //    Canvas.SetTop(GeoMapTooltip, location.Y + 5);
+        //    Canvas.SetLeft(GeoMapTooltip, location.X + 5);
+        //}
 
         private Color ColorInterpolation(double weight)
         {

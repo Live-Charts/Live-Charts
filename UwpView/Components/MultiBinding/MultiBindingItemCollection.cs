@@ -44,7 +44,7 @@ namespace LiveCharts.Uwp.Components.MultiBinding
         /// </summary>
         public MultiBindingItemCollection()
         {
-            CollectionChange += OnCollectionChanged;
+            CollectionChanged += OnCollectionChanged;
         }
 
         private void OnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)

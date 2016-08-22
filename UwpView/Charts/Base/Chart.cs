@@ -663,8 +663,8 @@ namespace LiveCharts.Uwp.Charts.Base
                 if (lcTooltip.IsWrapped)
                 {
                     var container = (FrameworkElement) DataTooltip.Parent;
-                    var positionTransform = TransformToAncestor(container);
-                    var pos = positionTransform.Transform(new Point(0, 0));
+                    var positionTransform = TransformToVisual(container);
+                    var pos = positionTransform.TransformPoint(new Point(0, 0));
 
                     location.X += pos.X;
                     location.Y += pos.Y;
