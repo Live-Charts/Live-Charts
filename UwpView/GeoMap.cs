@@ -436,7 +436,8 @@ namespace LiveCharts.Uwp
                     new Binding { Path = new PropertyPath("LandStroke"), Source = this });
                 var behavior = new MultiBindingBehavior()
                 {
-                    Converter = new ScaleStrokeConverter()
+                    Converter = new ScaleStrokeConverter(),
+                    PropertyName = "StrokeThickness"
                 };
                 behavior.Items.Add(new MultiBindingItem() {Parent = behavior.Items, Value = new Binding() { Path = new PropertyPath("LandStrokeThickness"), Source = this } });
                 behavior.Items.Add(new MultiBindingItem() {Parent = behavior.Items, Value = new Binding() { Path = new PropertyPath("ScaleX"), Source = t } });

@@ -169,7 +169,7 @@ namespace LiveCharts.Uwp.Points
 
         public override void OnHover(ChartPoint point)
         {
-            var copy = Rectangle.Fill.Clone();
+            var copy = Rectangle.Fill;//.Clone();
             copy.Opacity -= .15;
             Rectangle.Fill = copy;
         }

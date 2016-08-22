@@ -21,6 +21,7 @@
 //SOFTWARE.
 
 using System;
+using System.IO;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Data;
@@ -155,7 +156,7 @@ namespace LiveCharts.Uwp.Points
 
         public override void OnHover(ChartPoint point)
         {
-            var copy = Rectangle.Fill.Clone();
+            var copy = Rectangle.Fill;//.Clone();
             copy.Opacity -= .15;
             Rectangle.Fill = copy;
         }

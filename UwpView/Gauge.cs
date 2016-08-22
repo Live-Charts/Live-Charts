@@ -334,8 +334,8 @@ namespace LiveCharts.Uwp
 
             Canvas.SetTop(LeftLabel, top);
             Canvas.SetTop(RightLabel, top);
-            Canvas.SetRight(LeftLabel, ActualWidth/2 + (r + PieBack.InnerRadius)/2 - LeftLabel.ActualWidth/2);
-            Canvas.SetRight(RightLabel, ActualWidth/2 - (r + PieBack.InnerRadius)/2 - RightLabel.ActualWidth/2);
+            Canvas.SetLeft(LeftLabel, Canvas.ActualWidth - (ActualWidth/2 + (r + PieBack.InnerRadius)/2 - LeftLabel.ActualWidth/2));
+            Canvas.SetLeft(RightLabel, Canvas.ActualWidth - (ActualWidth /2 - (r + PieBack.InnerRadius)/2 - RightLabel.ActualWidth/2));
 
             MeasureTextBlock.FontSize = HighFontSize ?? Pie.InnerRadius*.4;
             MeasureTextBlock.Text = (LabelFormatter ?? defFormatter)(Value);
