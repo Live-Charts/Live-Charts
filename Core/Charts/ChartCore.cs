@@ -416,64 +416,20 @@ namespace LiveCharts.Charts
         protected void StackPoints(IEnumerable<ISeriesView> stackables, AxisOrientation stackAt, int stackIndex,
             StackMode mode = StackMode.Values)
         {
-            var stackedColumns = stackables.Select(x => x.ActualValues.GetPoints(x).ToArray()).ToArray();
+            var stackedColumns = stackables.SelectMany(x => x.ActualValues.GetPoints(x))
+                .GroupBy(x => stackAt == AxisOrientation.X ? x.Y : x.X);
 
-            var maxI = stackedColumns.Select(x => x.Length).DefaultIfEmpty(0).Max();
+            double maxLeft = 0, maxRight = 0;
 
-            for (var i = 0; i < maxI; i++)
+            foreach (var column in stackedColumns)
             {
-                var cols = stackedColumns
-                    .Select(x => x.Length > i
-                        ? new StackedSum(Pull(x[i], stackAt))
-                        : new StackedSum()).ToArray();
+                double sumLeft = 0, sumRight = 0;
 
-                var sum = new StackedSum
+                foreach (var item in column)
                 {
-                    Left = cols.Select(x => x.Left).DefaultIfEmpty(0).Sum(),
-                    Right = cols.Select(x => x.Right).DefaultIfEmpty(0).Sum()
-                };
-
-                if (stackAt == AxisOrientation.X)
-                {
-                    if (mode == StackMode.Percentage)
-                    {
-                        AxisX[stackIndex].BotLimit = 0;
-                        AxisX[stackIndex].TopLimit = 1;
-                    }
-                    else
-                    {
-                        if (sum.Left < AxisX[stackIndex].BotLimit)
-                            // ReSharper disable once CompareOfFloatsByEqualityOperator
-                            AxisX[stackIndex].BotLimit = sum.Left == 0
-                                ? 0
-                                : ((int)(sum.Left / AxisX[stackIndex].S) - 1) * AxisX[stackIndex].S;
-                        if (sum.Right > AxisX[stackIndex].TopLimit)
-                            // ReSharper disable once CompareOfFloatsByEqualityOperator
-                            AxisX[stackIndex].TopLimit = sum.Right == 0
-                                ? 0
-                                : ((int)(sum.Right / AxisX[stackIndex].S) + 1) * AxisX[stackIndex].S;
-                    }
-                }
-                if (stackAt == AxisOrientation.Y)
-                {
-                    if (mode == StackMode.Percentage)
-                    {
-                        AxisY[stackIndex].BotLimit = 0;
-                        AxisY[stackIndex].TopLimit = 1;
-                    }
-                    else
-                    {
-                        if (sum.Left < AxisY[stackIndex].BotLimit)
-                            // ReSharper disable once CompareOfFloatsByEqualityOperator
-                            AxisY[stackIndex].BotLimit = sum.Left == 0
-                                ? 0
-                                : ((int)(sum.Left / AxisY[stackIndex].S) - 1) * AxisY[stackIndex].S;
-                        if (sum.Right > AxisY[stackIndex].TopLimit)
-                            // ReSharper disable once CompareOfFloatsByEqualityOperator
-                            AxisY[stackIndex].TopLimit = sum.Right == 0
-                                ? 0
-                                : ((int)(sum.Right / AxisY[stackIndex].S) + 1) * AxisY[stackIndex].S;
-                    }
+                    var s = stackAt == AxisOrientation.X ? item.X : item.Y;
+                    if (s < 0) sumLeft += s;
+                    else sumRight += s;
                 }
 
                 var lastLeft = 0d;
@@ -481,11 +437,9 @@ namespace LiveCharts.Charts
                 var leftPart = 0d;
                 var rightPart = 0d;
 
-                foreach (var col in stackedColumns)
+                foreach (var point in column)
                 {
-                    if (i >= col.Length) continue;
-                    var point = col[i];
-                    var pulled = Pull(point, stackAt);
+                    var pulled = stackAt == AxisOrientation.X ? point.X : point.Y;
 
                     //notice using (pulled < 0) or (pulled <= 0) could cause an issue similar to
                     //https://github.com/beto-rodriguez/Live-Charts/issues/231
@@ -494,11 +448,12 @@ namespace LiveCharts.Charts
                     //you could face a similar issue if you are stacking only negative values
                     //a work around is forcing (pulled < 0) to be true,
                     //instead of using zero values, use -0.000000001/
+
                     if (pulled < 0)
                     {
                         point.From = lastLeft;
                         point.To = lastLeft + pulled;
-                        point.Sum = sum.Left;
+                        point.Sum = sumLeft;
                         point.Participation = (point.To - point.From) / point.Sum;
                         point.Participation = double.IsNaN(point.Participation)
                             ? 0
@@ -512,8 +467,8 @@ namespace LiveCharts.Charts
                     {
                         point.From = lastRight;
                         point.To = lastRight + pulled;
-                        point.Sum = sum.Right;
-                        point.Participation = (point.To - point.From)/point.Sum;
+                        point.Sum = sumRight;
+                        point.Participation = (point.To - point.From) / point.Sum;
                         point.Participation = double.IsNaN(point.Participation)
                             ? 0
                             : point.Participation;
@@ -523,14 +478,55 @@ namespace LiveCharts.Charts
                         lastRight = point.To;
                     }
                 }
+
+                if (sumLeft > maxLeft) maxLeft = sumLeft;
+                if (sumRight > maxRight) maxRight = sumRight;
+            }
+
+            if (stackAt == AxisOrientation.X)
+            {
+                if (mode == StackMode.Percentage)
+                {
+                    AxisX[stackIndex].BotLimit = 0;
+                    AxisX[stackIndex].TopLimit = 1;
+                }
+                else
+                {
+                    if (maxLeft < AxisX[stackIndex].BotLimit)
+                        // ReSharper disable once CompareOfFloatsByEqualityOperator
+                        AxisX[stackIndex].BotLimit = maxLeft == 0
+                            ? 0
+                            : ((int) (maxLeft/AxisX[stackIndex].S) - 1)*AxisX[stackIndex].S;
+                    if (maxRight > AxisX[stackIndex].TopLimit)
+                        // ReSharper disable once CompareOfFloatsByEqualityOperator
+                        AxisX[stackIndex].TopLimit = maxRight == 0
+                            ? 0
+                            : ((int) (maxRight/AxisX[stackIndex].S) + 1)*AxisX[stackIndex].S;
+                }
+            }
+
+            if (stackAt == AxisOrientation.Y)
+            {
+                if (mode == StackMode.Percentage)
+                {
+                    AxisY[stackIndex].BotLimit = 0;
+                    AxisY[stackIndex].TopLimit = 1;
+                }
+                else
+                {
+                    if (maxLeft < AxisY[stackIndex].BotLimit)
+                        // ReSharper disable once CompareOfFloatsByEqualityOperator
+                        AxisY[stackIndex].BotLimit = maxLeft == 0
+                            ? 0
+                            : ((int) (maxLeft/AxisY[stackIndex].S) - 1)*AxisY[stackIndex].S;
+                    if (maxRight > AxisY[stackIndex].TopLimit)
+                        // ReSharper disable once CompareOfFloatsByEqualityOperator
+                        AxisY[stackIndex].TopLimit = maxRight == 0
+                            ? 0
+                            : ((int) (maxRight/AxisY[stackIndex].S) + 1)*AxisY[stackIndex].S;
+                }
             }
         }
-
-        protected static double Pull(ChartPoint point, AxisOrientation source)
-        {
-            return source == AxisOrientation.Y ? point.Y : point.X;
-        }
-
         #endregion
     }
 }

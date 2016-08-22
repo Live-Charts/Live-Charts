@@ -9,62 +9,10 @@
              d:DesignHeight="300"
              d:DesignWidth="500"
              d:DataContext="{d:DesignInstance local:JimmyTheTestsGuy}">
-    <UserControl.Resources>
-        <local:VisibilityToBooleanConverter x:Key="bvc"></local:VisibilityToBooleanConverter>
-    </UserControl.Resources>
-    <UserControl.DataContext>
-        <local:TestVm></local:TestVm>
-    </UserControl.DataContext>
     <Grid>
 
         <Grid>
-
-            <Grid.RowDefinitions>
-                <RowDefinition Height="35"/>
-                <RowDefinition/>
-            </Grid.RowDefinitions>
-
-            <Button Grid.Row="0" Width="100" Click="ButtonBase_OnClick">Load</Button>
-            
-            <ComboBox Grid.Row="0" Width="100" Height="20" HorizontalAlignment="Right" Margin="0 10 10 0" 
-                      ItemsSource="{Binding ChartSeries}">
-
-                <ComboBox.ItemTemplate>
-                    <DataTemplate>
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="{Binding Title}"/>
-                            <CheckBox IsChecked="{Binding Visibility , Mode=TwoWay , Converter={StaticResource bvc}}"/>
-
-
-                        </StackPanel>
-                    </DataTemplate>
-                </ComboBox.ItemTemplate>
-            </ComboBox>
-
-            <lvc:CartesianChart Grid.Row="1" Margin="10" LegendLocation="Top" Series="{Binding ChartSeries}" >
-
-                <lvc:CartesianChart.ChartLegend>
-                    <lvc:DefaultLegend Margin="0,0,0,10"/>
-                </lvc:CartesianChart.ChartLegend>
-
-                <lvc:CartesianChart.AxisY>
-                    <lvc:Axis Title="Effective Reach %" Foreground="Black" MinValue="0">
-                        <lvc:Axis.Separator>
-                            <lvc:Separator Stroke="DarkGray"></lvc:Separator>
-                        </lvc:Axis.Separator>
-                    </lvc:Axis>
-                </lvc:CartesianChart.AxisY>
-
-                <lvc:CartesianChart.AxisX>
-                    <lvc:Axis Title="Impressions" MinValue="0" Foreground="Black" >
-                        <lvc:Axis.Separator>
-                            <lvc:Separator Stroke="DarkGray"></lvc:Separator>
-                        </lvc:Axis.Separator>
-                    </lvc:Axis>
-                </lvc:CartesianChart.AxisX>
-
-            </lvc:CartesianChart>
-
+            <lvc:CartesianChart Series="{Binding SeriesCollection}"/>
         </Grid>
 
     </Grid>

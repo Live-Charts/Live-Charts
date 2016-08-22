@@ -1,11 +1,6 @@
-﻿using System;
-using System.ComponentModel;
-using System.Globalization;
-using System.Runtime.CompilerServices;
-using System.Windows;
-using System.Windows.Data;
+﻿using System.ComponentModel;
 using LiveCharts;
-using LiveCharts.Defaults;
+using LiveCharts.Configurations;
 using LiveCharts.Wpf;
 using Wpf.Annotations;
 
@@ -14,92 +9,46 @@ namespace Wpf
    
     //This is Jimmy, be rude with him.
 
-    public partial class JimmyTheTestsGuy : INotifyPropertyChanged
+    public partial class JimmyTheTestsGuy 
     {
         public JimmyTheTestsGuy()
         {
             InitializeComponent();
-        }
 
+            Charting.For<TestVm>(Mappers.Xy<TestVm>().X(m => m.X).Y(m => m.Y));
 
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        [NotifyPropertyChangedInvocator]
-        protected virtual void OnPropertyChanged(string propertyName = null)
-        {
-            if (PropertyChanged != null)
-                PropertyChanged.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
-        {
-            ((TestVm) DataContext).Load();
-        }
-    }
-
-    public class TestVm : INotifyPropertyChanged
-    {
-        private SeriesCollection _chartSeries;
-
-        public TestVm()
-        {
-            ChartSeries = new SeriesCollection();
-        }
-
-        public SeriesCollection ChartSeries
-        {
-            get { return _chartSeries; }
-            set
+            SeriesCollection = new SeriesCollection
             {
-                _chartSeries = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public void Load()
-        {
-            //var series = new SeriesCollection();
-            ChartSeries.Clear();
-
-            var r = new Random();
-
-            for (var i = 0; i < 3; i++)
-            {
-                var s = new LineSeries {Title =  "Series" + i, Values = new ChartValues<ObservableValue>()};
-                for (var j = 0; j < 10; j++)
+                new StackedColumnSeries
                 {
-                    s.Values.Add(new ObservableValue(r.Next(0, 10)));
+                    Values = new ChartValues<TestVm>
+                    {
+                        new TestVm { X = 0, Y = 1},
+                    }
+                },
+                new StackedColumnSeries
+                {
+                    Values = new ChartValues<TestVm>
+                    {
+                        new TestVm { X = 1, Y = 2},
+                    }
                 }
-                ChartSeries.Add(s);
-            }
+            };
+
+            DataContext = this;
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        public SeriesCollection SeriesCollection { get; set; }
+        
 
-        [NotifyPropertyChangedInvocator]
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            var handler = PropertyChanged;
-            if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
-        }
     }
 
-    public class VisibilityToBooleanConverter : IValueConverter
+    public class TestVm
     {
-        public VisibilityToBooleanConverter()
-        {
-        }
-
-        public virtual object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            return (Visibility) value == Visibility.Visible ? true : false;
-        }
-
-        public virtual object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            return (bool) value == true ? Visibility.Visible : Visibility.Hidden;
-        }
+        public double X { get; set; }
+        public double Y { get; set; }
     }
+
 }
 
 
