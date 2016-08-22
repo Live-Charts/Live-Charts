@@ -86,8 +86,8 @@ namespace LiveCharts.Wpf.Components
 #if DEBUG
             Debug.WriteLine("Chart is updated");
 #endif
-
             wpfChart.ChartUpdated();
+            wpfChart.PrepareScrolBar();
         }
     }
 }

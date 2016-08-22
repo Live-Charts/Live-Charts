@@ -23,29 +23,25 @@
 namespace LiveCharts
 {
     /// <summary>
-    /// Tooltip selection modes
+    /// Gets or sets a chart scroll mode
     /// </summary>
-    public enum TooltipSelectionMode
+    public enum ScrollMode
     {
         /// <summary>
-        /// Gets only the hovered point 
+        /// Disables Chart Scroll bars
         /// </summary>
-        OnlySender,
+        None,
         /// <summary>
-        /// Gets all the points that shares the value X in the chart
+        /// Enables scroll mode at the X axis
         /// </summary>
-        SharedXValues,
+        X,
         /// <summary>
-        /// Gets all the points that shares the value Y in the chart
+        /// Enables scroll mode at the Y axis
         /// </summary>
-        SharedYValues,
+        Y,
         /// <summary>
-        /// Gets all the points that shares the value X in the hovered series
+        /// Enables scroll mode in both, X and Y axis
         /// </summary>
-        SharedXInSeries,
-        /// <summary>
-        /// Gets all the points that shares the value Y in the hovered series
-        /// </summary>
-        SharedYInSeries
+        XY
     }
 }
