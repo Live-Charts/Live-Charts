@@ -47,6 +47,7 @@ namespace LiveCharts.Definitions.Charts
         bool HasDataClickEventAttached { get; }
         bool Hoverable { get; }
         bool IsControlLoaded { get; }
+        bool IsInDesignMode { get; }
 
         void SetDrawMarginTop(double value);
         void SetDrawMarginLeft(double value);

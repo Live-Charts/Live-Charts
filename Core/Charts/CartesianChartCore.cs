@@ -72,7 +72,7 @@ namespace LiveCharts.Charts
                     if (xi.MaxValue == null) xi.TopLimit += xi.S;
                     else xi.TopLimit = xi.MaxValue.Value;
 
-                    if (Math.Abs(xi.BotLimit - xi.TopLimit) < xi.S * .01)
+                    if (Math.Abs(xi.BotLimit - xi.TopLimit) < xi.S * .01 && !View.IsInDesignMode)
                         throw new LiveChartsException("One axis has an invalid range, it is or is really " +
                                                       "close to zero, please ensure your axis has a valid " +
                                                       "range");

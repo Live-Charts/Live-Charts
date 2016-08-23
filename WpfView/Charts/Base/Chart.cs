@@ -468,6 +468,8 @@ namespace LiveCharts.Wpf.Charts.Base
         /// </summary>
         public bool IsControlLoaded { get; private set; }
 
+        public bool IsInDesignMode { get { return DesignerProperties.GetIsInDesignMode(this); } }
+
         /// <summary>
         /// Gets the visible series in the chart
         /// </summary>
