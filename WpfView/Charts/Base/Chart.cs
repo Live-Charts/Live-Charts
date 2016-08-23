@@ -468,6 +468,9 @@ namespace LiveCharts.Wpf.Charts.Base
         /// </summary>
         public bool IsControlLoaded { get; private set; }
 
+        /// <summary>
+        /// Gets whether the control is in design mode
+        /// </summary>
         public bool IsInDesignMode { get { return DesignerProperties.GetIsInDesignMode(this); } }
 
         /// <summary>
@@ -779,7 +782,7 @@ namespace LiveCharts.Wpf.Charts.Base
         private void TooltipTimeoutTimerOnTick(object sender, EventArgs eventArgs)
         {
             TooltipTimeoutTimer.Stop();
-            if (DataTooltip == null || ActiveTooltip == null) return;
+            if (ActiveTooltip == null) return;
             ActiveTooltip.Visibility = Visibility.Hidden;
         }
 
