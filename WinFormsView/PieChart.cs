@@ -38,7 +38,10 @@ namespace LiveCharts.WinForms
         public PieChart()
         {
             Child = Chart;
-            Chart.DataClick += DataClick;
+            Chart.DataClick += (o, point) =>
+            {
+                if (DataClick != null) DataClick.Invoke(o, point);
+            };
         }
 
         public event Action<object, ChartPoint> DataClick;
