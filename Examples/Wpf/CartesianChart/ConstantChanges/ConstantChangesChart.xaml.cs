@@ -36,7 +36,7 @@ namespace Wpf.CartesianChart.ConstantChanges
 
 
             //the values property will store our values array
-            Values = new ChartValues<MeasureModel>();
+            ChartValues = new ChartValues<MeasureModel>();
 
             //lets set how to display the X Labels
             DateTimeFormatter = value => new DateTime((long) value).ToString("mm:ss");
@@ -56,7 +56,7 @@ namespace Wpf.CartesianChart.ConstantChanges
             DataContext = this;
         }
 
-        public ChartValues<MeasureModel> Values { get; set; }
+        public ChartValues<MeasureModel> ChartValues { get; set; }
         public Func<double, string> DateTimeFormatter { get; set; }
 
         public double AxisStep { get; set; }
@@ -102,7 +102,7 @@ namespace Wpf.CartesianChart.ConstantChanges
         {
             var now = DateTime.Now;
 
-            Values.Add(new MeasureModel
+            ChartValues.Add(new MeasureModel
             {
                 DateTime = now,
                 Value = R.Next(0, 10)
@@ -111,7 +111,7 @@ namespace Wpf.CartesianChart.ConstantChanges
             SetAxisLimits(now);
 
             //lets only use the last 30 values
-            if (Values.Count > 30) Values.RemoveAt(0);
+            if (ChartValues.Count > 30) ChartValues.RemoveAt(0);
         }
 
         private void SetAxisLimits(DateTime now)
