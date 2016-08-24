@@ -15,7 +15,7 @@ namespace Wpf.CartesianChart.DynamicVisibility
 
             MariaSeriesVisibility = true;
             CharlesSeriesVisibility = true;
-            JohnSeriesVisibility = true;
+            JohnSeriesVisibility = false;
 
             DataContext = this;
         }

@@ -60,7 +60,6 @@ namespace LiveCharts.Wpf
         {
             Configuration = configuration;
             SetValue(TitleProperty, "Series");
-            PreviousVisibility = Visibility;
             IsVisibleChanged += OnIsVisibleChanged;
         }
         #endregion
@@ -391,12 +390,15 @@ namespace LiveCharts.Wpf
         public virtual void InitializeColors()
         {
             var wpfChart = (Chart) Model.Chart.View;
+
+            if (Stroke != null && Fill != null) return;
+
             var nextColor = wpfChart.GetNextDefaultColor();
 
             if (Stroke == null)
                 SetValue(StrokeProperty, new SolidColorBrush(nextColor));
             if (Fill == null)
-                SetValue(FillProperty, new SolidColorBrush(nextColor) {Opacity = DefaultFillOpacity});
+                SetValue(FillProperty, new SolidColorBrush(nextColor) { Opacity = DefaultFillOpacity });
         }
 
         /// <summary>
@@ -451,18 +453,19 @@ namespace LiveCharts.Wpf
             };
         }
 
-        private Visibility PreviousVisibility { get; set; }
+        private Visibility? PreviousVisibility { get; set; }
        
         private void OnIsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            if (Model.Chart != null && PreviousVisibility != Visibility)
+            if (Model.Chart == null || PreviousVisibility == Visibility) return;
+
+            PreviousVisibility = Visibility;
+
+            if (PreviousVisibility != null) Model.Chart.Updater.Run(false, true);
+
+            if (Visibility == Visibility.Collapsed || Visibility == Visibility.Hidden)
             {
-                PreviousVisibility = Visibility;
-                Model.Chart.Updater.Run(false, true);
-                if (Visibility == Visibility.Collapsed || Visibility == Visibility.Hidden)
-                {
-                    Erase(false);
-                }
+                Erase(false);
             }
         }
 

@@ -55,7 +55,8 @@ namespace Wpf
             
             CartesianExamples = new List<UserControl>
             {
-                new JimmyTheTestsGuy(),
+                new DynamicVisibilityExample(),
+                //new JimmyTheTestsGuy(),
                 //new SharedTooltipExample(),
                 new ScatterExample(),
                 new LinqExample(),
@@ -104,15 +105,15 @@ namespace Wpf
 
             PieExamples = new List<UserControl>
             {
-                new PieChartExample(),
-                new DoughnutChartExample()
+                //new PieChartExample(),
+                //new DoughnutChartExample()
             };
 
             GaugeExamples = new List<UserControl>
             {
-                new Gauge180(),
-                new Gauge360(),
-                new AngularGaugeExmple()
+                ////new Gauge180(),
+                ////new Gauge360(),
+                ////new AngularGaugeExmple()
             };
 
             #endregion
