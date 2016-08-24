@@ -206,7 +206,7 @@ namespace LiveCharts
             ConfigWrapper wrapper;
 
             if (!Configurations.TryGetValue(typeof(T), out wrapper))
-                throw new LiveChartsException("LiveCharts does not know how to plot this type, " +
+                throw new LiveChartsException("LiveCharts does not know how to plot " + typeof(T).Name + ", " +
                                               "you can either, use an already configured type " +
                                               "or configure this type you are trying to use, " +
                                               "For more info see " +
