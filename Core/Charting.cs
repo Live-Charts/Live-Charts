@@ -24,6 +24,7 @@ using System;
 using System.Collections.Generic;
 using LiveCharts.Configurations;
 using LiveCharts.Defaults;
+using LiveCharts.Helpers;
 
 namespace LiveCharts
 {
@@ -202,7 +203,14 @@ namespace LiveCharts
         /// <returns></returns>
         public object GetConfig<T>(SeriesOrientation orientation = SeriesOrientation.Horizontal)
         {
-            var wrapper = Configurations[typeof (T)];
+            ConfigWrapper wrapper;
+
+            if (!Configurations.TryGetValue(typeof(T), out wrapper))
+                throw new LiveChartsException("LiveCharts does not know how to plot this type, " +
+                                              "you can either, use an already configured type " +
+                                              "or configure this type you are trying to use, " +
+                                              "For more info see " +
+                                              "http://lvcharts.net/App/examples/v1/wpf/Types%20and%20Configuration");
 
             return orientation == SeriesOrientation.Horizontal || orientation == SeriesOrientation.All
                 ? wrapper.HorizontalConfig

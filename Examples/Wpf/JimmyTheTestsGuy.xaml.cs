@@ -1,6 +1,8 @@
 ﻿using System.ComponentModel;
+using System.Linq;
 using LiveCharts;
 using LiveCharts.Configurations;
+using LiveCharts.Defaults;
 using LiveCharts.Wpf;
 using Wpf.Annotations;
 
@@ -14,41 +16,34 @@ namespace Wpf
         public JimmyTheTestsGuy()
         {
             InitializeComponent();
+            
+            var i = new []{1, 2, 3};
+            var j = new[] { 1, 2, 3,4,5 };
+            var k = new[] { 1, 2, 3,4,5,6,7 };
 
-            Charting.For<TestVm>(Mappers.Xy<TestVm>().X(m => m.X).Y(m => m.Y));
+            var source = new[] {i, j, k};
 
-            SeriesCollection = new SeriesCollection
+            var g = source.Select(n =>
             {
-                new StackedColumnSeries
+                var pieSeries = new PieSeries
                 {
-                    Values = new ChartValues<TestVm>
-                    {
-                        new TestVm { X = 0, Y = 1},
-                    }
-                },
-                new StackedColumnSeries
-                {
-                    Values = new ChartValues<TestVm>
-                    {
-                        new TestVm { X = 1, Y = 2},
-                    }
-                }
-            };
+                    DataLabels = true,
+                    Values = new ChartValues<ObservableValue> {new ObservableValue(n.Length)}
+                };
+                return pieSeries;
+            }).ToList();
+
+            SeriesCollection = new SeriesCollection();
+
+            SeriesCollection.Clear();
+            SeriesCollection.AddRange(g);
 
             DataContext = this;
         }
 
         public SeriesCollection SeriesCollection { get; set; }
         
-
     }
-
-    public class TestVm
-    {
-        public double X { get; set; }
-        public double Y { get; set; }
-    }
-
 }
 
 

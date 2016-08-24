@@ -12,7 +12,7 @@
     <Grid>
 
         <Grid>
-            <lvc:CartesianChart Series="{Binding SeriesCollection}"/>
+            <lvc:PieChart Series="{Binding SeriesCollection}"/>
         </Grid>
 
     </Grid>
