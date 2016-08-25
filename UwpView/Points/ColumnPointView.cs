@@ -144,9 +144,9 @@ namespace LiveCharts.Uwp.Points
 
                 DataLabel.CreateCanvasStoryBoardAndBegin(getX(), getY(), animSpeed);
             }
-
+            
             Canvas.SetLeft(Rectangle, Data.Left);
-            Rectangle.BeginDoubleAnimation("Canvas.Top", Data.Top, animSpeed);
+            Rectangle.BeginDoubleAnimation("(Canvas.Top)", Data.Top, animSpeed);
 
             Rectangle.Width = Data.Width;
             Rectangle.BeginDoubleAnimation(nameof(FrameworkElement.Height), Data.Height, animSpeed);

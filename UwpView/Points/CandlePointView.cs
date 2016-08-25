@@ -121,7 +121,7 @@ namespace LiveCharts.Uwp.Points
             AnimationHelper.CreateStoryBoardAndBegin(HighToLowLine, y1Animation, y2Animation);
 
             Canvas.SetLeft(OpenToCloseRectangle, Left);
-            OpenToCloseRectangle.BeginDoubleAnimation("Canvas.Top", Math.Min(Open, Close), animSpeed);
+            OpenToCloseRectangle.BeginDoubleAnimation("(Canvas.Top)", Math.Min(Open, Close), animSpeed);
 
             OpenToCloseRectangle.Width = Width;
             OpenToCloseRectangle.BeginDoubleAnimation("Height", Math.Max(Math.Abs(Open - Close), OpenToCloseRectangle.StrokeThickness), animSpeed);

@@ -115,8 +115,8 @@ namespace LiveCharts.Uwp.Components
 
         public static void CreateCanvasStoryBoardAndBegin(this DependencyObject target, double? toX, double? toY, Duration duration)
         {
-            var xAnimation = CreateDouble(toX, duration, "Canvas.Left");
-            var yAnimation = CreateDouble(toY, duration, "Canvas.Top");
+            var xAnimation = CreateDouble(toX, duration, "(Canvas.Left)");
+            var yAnimation = CreateDouble(toY, duration, "(Canvas.Top)");
             CreateStoryBoardAndBegin(target, xAnimation, yAnimation);
         }
 

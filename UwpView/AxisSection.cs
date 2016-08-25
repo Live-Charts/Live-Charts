@@ -211,10 +211,10 @@ namespace LiveCharts.Uwp
                     Storyboard.SetTargetProperty(widthAnimation, nameof(_rectangle.Width));
 
                     Storyboard.SetTarget(rectangleLeftAnimation, _rectangle);
-                    Storyboard.SetTargetProperty(rectangleLeftAnimation, "Canvas.Left");
+                    Storyboard.SetTargetProperty(rectangleLeftAnimation, "(Canvas.Left)");
 
                     Storyboard.SetTarget(labelLeftAnimation, _label);
-                    Storyboard.SetTargetProperty(labelLeftAnimation, "Canvas.Left");
+                    Storyboard.SetTargetProperty(labelLeftAnimation, "(Canvas.Left)");
 
                     storyBoard.Children.Add(widthAnimation);
                     storyBoard.Children.Add(rectangleLeftAnimation);
@@ -256,13 +256,13 @@ namespace LiveCharts.Uwp
                     Duration = anSpeed
                 };
                 Storyboard.SetTarget(rectangleTopAnimation, _rectangle);
-                Storyboard.SetTargetProperty(rectangleTopAnimation, "Canvas.Top");
+                Storyboard.SetTargetProperty(rectangleTopAnimation, "(Canvas.Top)");
 
                 Storyboard.SetTarget(heightAnimation, _rectangle);
                 Storyboard.SetTargetProperty(heightAnimation, nameof(Height));
 
                 Storyboard.SetTarget(labelTopAnimation, _label);
-                Storyboard.SetTargetProperty(labelTopAnimation, "Canvas.Top");
+                Storyboard.SetTargetProperty(labelTopAnimation, "(Canvas.Top)");
 
                 storyBoard.Children.Add(rectangleTopAnimation);
                 storyBoard.Children.Add(heightAnimation);

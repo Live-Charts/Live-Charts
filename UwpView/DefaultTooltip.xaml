@@ -46,22 +46,20 @@
         <uwp:ChartPointLabelConverter x:Key="ChartPointLabelConverter"/>
         <uwp:ParticipationVisibilityConverter x:Key="ParticipationVisibilityConverter"/>
     </UserControl.Resources>
-    <UserControl.Template>
-        <ControlTemplate>
-            <Border Background="{Binding Background}" CornerRadius="{Binding CornerRadius}"
+    <Border Background="{Binding Background}" CornerRadius="{Binding CornerRadius}"
                     BorderThickness="{Binding BorderThickness}" Padding="10 5">
-                <StackPanel Orientation="Vertical">
-                    <TextBlock Text="{Binding Data, Converter={StaticResource SharedConverter}}" HorizontalAlignment="Center" FontWeight="Bold"
+        <StackPanel Orientation="Vertical">
+            <TextBlock Text="{Binding Data, Converter={StaticResource SharedConverter}}" HorizontalAlignment="Center" FontWeight="Bold"
                                Visibility="{Binding Data, Converter={StaticResource SharedVisibilityConverter}}" />
-                    <!-- Grid.IsSharedSizeScope="True"-->
-                    <ItemsControl ItemsSource="{Binding Data.Points}">
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate x:DataType="uwp:DataPointViewModel">
-                                <Grid Margin="2">
-                                    <Grid.Resources>
-                                        <converters:StringFormatConverter x:Key="StrFormatConverter" Format="{}{0:P}"/>
-                                    </Grid.Resources>
-                                    <!--
+            <!-- Grid.IsSharedSizeScope="True"-->
+            <ItemsControl ItemsSource="{Binding Data.Points}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate x:DataType="uwp:DataPointViewModel">
+                        <Grid Margin="2">
+                            <Grid.Resources>
+                                <converters:StringFormatConverter x:Key="StrFormatConverter" Format="{}{0:P}"/>
+                            </Grid.Resources>
+                            <!--
                                                                  <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="Auto"/>
                                         <ColumnDefinition Width="Auto" SharedSizeGroup="Title"/>
@@ -69,32 +67,30 @@
                                         <ColumnDefinition Width="Auto" SharedSizeGroup="Participation"/>
                                     </Grid.ColumnDefinitions>
                                     -->
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="Auto"/>
-                                    </Grid.ColumnDefinitions>
-                                    <!--ClipToBounds="True"-->
-                                    <Path Width="{Binding ElementName=UserControl, Path=BulletSize}" 
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <!--ClipToBounds="True"-->
+                            <Path Width="{Binding ElementName=UserControl, Path=BulletSize}" 
                                              Height="{Binding ElementName=UserControl, Path=BulletSize}" 
                                              StrokeThickness="{Binding Series.StrokeThickness}" 
                                              Stroke="{Binding Series.Stroke}" Fill="{Binding Series.Fill}" 
                                              Stretch="Fill" Data="{Binding Series.PointGeometry}"/>
-                                    <TextBlock Grid.Column="1" Text="{Binding Series.Title}" VerticalAlignment="Center" Margin="5 0 0 0"/>
-                                    
-                                    <TextBlock Grid.Column="2" Text="{Binding ChartPoint, Converter={StaticResource ChartPointLabelConverter}}" Margin="5 0 0 0" VerticalAlignment="Center"/>
+                            <TextBlock Grid.Column="1" Text="{Binding Series.Title}" VerticalAlignment="Center" Margin="5 0 0 0"/>
 
-                                    <TextBlock Grid.Column="3" Text="{Binding ChartPoint.Participation, Converter={StaticResource StrFormatConverter}}" 
+                            <TextBlock Grid.Column="2" Text="{Binding ChartPoint, Converter={StaticResource ChartPointLabelConverter}}" Margin="5 0 0 0" VerticalAlignment="Center"/>
+
+                            <TextBlock Grid.Column="3" Text="{Binding ChartPoint.Participation, Converter={StaticResource StrFormatConverter}}" 
                                                VerticalAlignment="Center" Margin="5 0 0 0"
                                                Visibility="{Binding DataContext.Data, RelativeSource={RelativeSource Mode=TemplatedParent}, 
                                                                     Converter={StaticResource ParticipationVisibilityConverter}}"/>
-                                </Grid>
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
-                </StackPanel>
-            </Border>
-        </ControlTemplate>
-    </UserControl.Template>
+                        </Grid>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </StackPanel>
+    </Border>
 </UserControl>

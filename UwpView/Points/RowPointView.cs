@@ -133,7 +133,7 @@ namespace LiveCharts.Uwp.Points
             }
 
             Canvas.SetTop(Rectangle, Data.Top);
-            Rectangle.BeginDoubleAnimation("Canvas.Left", Data.Left, animSpeed);
+            Rectangle.BeginDoubleAnimation("(Canvas.Left)", Data.Left, animSpeed);
 
             Rectangle.Height = Data.Height;
             Rectangle.BeginDoubleAnimation("Width", Data.Width, animSpeed);

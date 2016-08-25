@@ -129,8 +129,8 @@ namespace LiveCharts.Uwp.Components
 
                 AnimationHelper.CreateStoryBoardAndBegin(Line, x1, x2, y1, y2);
 
-                var tb1 = AnimationHelper.CreateDouble(toLabel, chart.View.AnimationsSpeed, "Canvas.Top");
-                var tb2 = AnimationHelper.CreateDouble(tab, chart.View.AnimationsSpeed, "Canvas.Left");
+                var tb1 = AnimationHelper.CreateDouble(toLabel, chart.View.AnimationsSpeed, "(Canvas.Top)");
+                var tb2 = AnimationHelper.CreateDouble(tab, chart.View.AnimationsSpeed, "(Canvas.Left)");
 
                 AnimationHelper.CreateStoryBoardAndBegin(TextBlock, tb1, tb2);
             }
@@ -143,8 +143,8 @@ namespace LiveCharts.Uwp.Components
 
                 AnimationHelper.CreateStoryBoardAndBegin(Line, x1, x2, y1, y2);
 
-                var tb1 = AnimationHelper.CreateDouble(toLabel, chart.View.AnimationsSpeed, "Canvas.Left");
-                var tb2 = AnimationHelper.CreateDouble(tab, chart.View.AnimationsSpeed, "Canvas.Top");
+                var tb1 = AnimationHelper.CreateDouble(toLabel, chart.View.AnimationsSpeed, "(Canvas.Left)");
+                var tb2 = AnimationHelper.CreateDouble(tab, chart.View.AnimationsSpeed, "(Canvas.Top)");
 
                 AnimationHelper.CreateStoryBoardAndBegin(TextBlock, tb1, tb2);
             }

@@ -36,45 +36,41 @@
              mc:Ignorable="d" x:Name="UserControl"
              d:DataContext="{d:DesignInstance uwp:DefaultLegend}">
     <UserControl.Resources>
-            <uwp:OrientationConverter x:Key="OrientationConverter"/>
+        <uwp:OrientationConverter x:Key="OrientationConverter"/>
     </UserControl.Resources>
-    <UserControl.Template>
-        <ControlTemplate>
-            <Border>
-                <ItemsControl ItemsSource="{Binding Series}">
-                    <ItemsControl.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <VariableSizedWrapGrid MaxWidth="{Binding MaxWidth, ElementName=This}"
+    <Border>
+        <ItemsControl ItemsSource="{Binding Series}">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <VariableSizedWrapGrid MaxWidth="{Binding MaxWidth, ElementName=This}"
                                        MaxHeight="{Binding MaxHeight, ElementName=This}">
-                                <interactivity:Interaction.Behaviors>
-                                    <multiBinding:MultiBindingBehavior Converter="{StaticResource OrientationConverter}" PropertyName="Orientation">
-                                        <multiBinding:MultiBindingItem Value="{Binding Orientation}" />
-                                        <multiBinding:MultiBindingItem Value="{Binding InternalOrientation}" />
-                                    </multiBinding:MultiBindingBehavior>
-                                </interactivity:Interaction.Behaviors>
-                            </VariableSizedWrapGrid>
-                        </ItemsPanelTemplate>
-                    </ItemsControl.ItemsPanel>
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate x:DataType="uwp:SeriesViewModel">
-                            <Grid Margin="2">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto"/>
-                                    <ColumnDefinition Width="Auto"/>
-                                </Grid.ColumnDefinitions>
-                                <!--ClipToBounds="True"-->
-                                <Path Width="{Binding BulletSize, ElementName=UserControl}" 
+                        <interactivity:Interaction.Behaviors>
+                            <multiBinding:MultiBindingBehavior Converter="{StaticResource OrientationConverter}" PropertyName="Orientation">
+                                <multiBinding:MultiBindingItem Value="{Binding Orientation}" />
+                                <multiBinding:MultiBindingItem Value="{Binding InternalOrientation}" />
+                            </multiBinding:MultiBindingBehavior>
+                        </interactivity:Interaction.Behaviors>
+                    </VariableSizedWrapGrid>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate x:DataType="uwp:SeriesViewModel">
+                    <Grid Margin="2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <!--ClipToBounds="True"-->
+                        <Path Width="{Binding BulletSize, ElementName=UserControl}" 
                                          Height="{Binding BulletSize, ElementName=UserControl}" 
                                          StrokeThickness="{Binding StrokeThickness}" 
                                          Stroke="{Binding Stroke}" Fill="{Binding Fill}"
                                          Stretch="Fill" Data="{Binding PointGeometry}"/>
-                                <TextBlock Grid.Column="1" Margin="4 0" Text="{Binding Title}" VerticalAlignment="Center" />
-                            </Grid>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
-            </Border>
-        </ControlTemplate>
-    </UserControl.Template>
+                        <TextBlock Grid.Column="1" Margin="4 0" Text="{Binding Title}" VerticalAlignment="Center" />
+                    </Grid>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+    </Border>
 </UserControl>
 

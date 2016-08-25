@@ -549,7 +549,7 @@ namespace LiveCharts.Uwp.Charts.Base
 
         public Color GetNextDefaultColor()
         {
-            if (Series.CurrentSeriesIndex == int.MaxValue) Series.CurrentSeriesIndex = 0;
+            if (Series.CurrentSeriesIndex == Int16.MaxValue) Series.CurrentSeriesIndex = 0;
             var i = Series.CurrentSeriesIndex;
             Series.CurrentSeriesIndex++;
             var r = RandomizeStartingColor ? Randomizer.Next(0, Colors.Count) : 0;
@@ -613,7 +613,7 @@ namespace LiveCharts.Uwp.Charts.Base
             {
                 if (DataTooltip.Parent == null)
                 {
-                    Canvas.SetZIndex(DataTooltip, int.MaxValue);
+                    Canvas.SetZIndex(DataTooltip, Int16.MaxValue);
                     AddToView(DataTooltip);
                     Canvas.SetTop(DataTooltip, 0d);
                     Canvas.SetLeft(DataTooltip, 0d);
@@ -702,9 +702,9 @@ namespace LiveCharts.Uwp.Charts.Base
                     storyBoard.Children.Add(yAnimation);
 
                     Storyboard.SetTarget(xAnimation, DataTooltip);
-                    Storyboard.SetTargetProperty(xAnimation, "Canvas.Left");
+                    Storyboard.SetTargetProperty(xAnimation, "(Canvas.Left)");
                     Storyboard.SetTarget(yAnimation, DataTooltip);
-                    Storyboard.SetTargetProperty(yAnimation, "Canvas.Top");
+                    Storyboard.SetTargetProperty(yAnimation, "(Canvas.Top)");
 
                     storyBoard.Begin();
                 }

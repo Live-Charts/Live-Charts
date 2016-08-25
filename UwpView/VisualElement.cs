@@ -154,8 +154,8 @@ namespace LiveCharts.Uwp
                     Canvas.SetTop(UIElement, coordinate.Y);
                 }
 
-                var x = AnimationHelper.CreateDouble(coordinate.X, wpfChart.AnimationsSpeed, "Canvas.Left");
-                var y = AnimationHelper.CreateDouble(coordinate.Y, wpfChart.AnimationsSpeed, "Canvas.Top");
+                var x = AnimationHelper.CreateDouble(coordinate.X, wpfChart.AnimationsSpeed, "(Canvas.Left)");
+                var y = AnimationHelper.CreateDouble(coordinate.Y, wpfChart.AnimationsSpeed, "(Canvas.Top)");
                 AnimationHelper.CreateStoryBoardAndBegin(UIElement, x, y);
             }
         }

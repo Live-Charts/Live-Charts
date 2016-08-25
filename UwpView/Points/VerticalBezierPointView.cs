@@ -168,8 +168,8 @@ namespace LiveCharts.Uwp.Points
                     };
                     Storyboard.SetTarget(xAnimation, Shape);
                     Storyboard.SetTarget(yAnimation, Shape);
-                    Storyboard.SetTargetProperty(xAnimation, "Canvas.Left");
-                    Storyboard.SetTargetProperty(yAnimation, "Canvas.Top");
+                    Storyboard.SetTargetProperty(xAnimation, "(Canvas.Left)");
+                    Storyboard.SetTargetProperty(yAnimation, "(Canvas.Top)");
                     storyBoard.Children.Add(xAnimation);
                     storyBoard.Children.Add(yAnimation);
                     storyBoard.Begin();
@@ -199,8 +199,8 @@ namespace LiveCharts.Uwp.Points
                 Storyboard.SetTarget(xAnimation, DataLabel);
                 Storyboard.SetTarget(yAnimation, DataLabel);
 
-                Storyboard.SetTargetProperty(xAnimation, "Canvas.Left");
-                Storyboard.SetTargetProperty(yAnimation, "Canvas.Top");
+                Storyboard.SetTargetProperty(xAnimation, "(Canvas.Left)");
+                Storyboard.SetTargetProperty(yAnimation, "(Canvas.Top)");
 
                 storyBoard.Children.Add(xAnimation);
                 storyBoard.Children.Add(yAnimation);

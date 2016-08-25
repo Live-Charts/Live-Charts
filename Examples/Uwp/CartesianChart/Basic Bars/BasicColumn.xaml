@@ -9,14 +9,13 @@
     mc:Ignorable="d">
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <!--<uwp:CartesianChart Series="{Binding SeriesCollection}" LegendLocation="Left">
+        <uwp:CartesianChart Series="{Binding SeriesCollection, Mode=OneTime}">
             <uwp:CartesianChart.AxisX>
-                <uwp:Axis Title="Salesman" Labels="{Binding Labels}"></uwp:Axis>
+                <uwp:Axis Title="Salesman" Labels="{Binding Labels}"/>
             </uwp:CartesianChart.AxisX>
             <uwp:CartesianChart.AxisY>
-                <uwp:Axis Title="Sold Apps" LabelFormatter="{Binding Formatter}"></uwp:Axis>
+                <uwp:Axis Title="Sold Apps" LabelFormatter="{Binding Formatter}"/>
             </uwp:CartesianChart.AxisY>
-        </uwp:CartesianChart>-->
-        <TextBlock Text="Basic Column"/>
+        </uwp:CartesianChart>
     </Grid>
 </Page>

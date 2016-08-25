@@ -70,7 +70,7 @@ namespace LiveCharts.Uwp
         {
             ActiveSplitters = 0;
 
-            if (SplittersCollector == int.MaxValue - 1)
+            if (SplittersCollector == Int16.MaxValue - 1)
             {
                 //just in case!
                 Splitters.ForEach(s => s.SplitterCollectorIndex = 0);
@@ -160,7 +160,7 @@ namespace LiveCharts.Uwp
                     Height = mhr
                 };
 
-                Canvas.SetZIndex(pbv.HoverShape, int.MaxValue);
+                Canvas.SetZIndex(pbv.HoverShape, Int16.MaxValue);
 
                 var wpfChart = (Chart)Model.Chart.View;
                 wpfChart.AttachHoverableEventTo(pbv.HoverShape);
@@ -203,7 +203,7 @@ namespace LiveCharts.Uwp
             if (DataLabels && pbv.DataLabel == null)
             {
                 pbv.DataLabel = BindATextBlock(0);
-                Canvas.SetZIndex(pbv.DataLabel, int.MaxValue - 1);
+                Canvas.SetZIndex(pbv.DataLabel, Int16.MaxValue - 1);
 
                 Model.Chart.View.AddToDrawMargin(pbv.DataLabel);
             }
