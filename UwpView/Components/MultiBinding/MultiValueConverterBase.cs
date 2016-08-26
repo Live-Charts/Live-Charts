@@ -34,17 +34,6 @@ namespace LiveCharts.Uwp.Components.MultiBinding
         /// <param name="culture">The culture of the conversion.</param>
         public abstract object[] ConvertBack(object value, System.Type targetType, object parameter, System.Globalization.CultureInfo culture);
 
-#if WINDOWS_PHONE || WINDOWS_PHONE_81
-        object IValueConverter.Convert(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            return Convert((object[])value, targetType, parameter, culture);
-        }
-
-        object IValueConverter.ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            return ConvertBack(value, targetType, parameter, culture);
-        }
-#else
         object IValueConverter.Convert(object value, Type targetType, object parameter, string language)
         {
             var cultureInfo = !string.IsNullOrEmpty(language) ? new CultureInfo(language) : null;
@@ -58,6 +47,5 @@ namespace LiveCharts.Uwp.Components.MultiBinding
 
             return ConvertBack(value, targetType, parameter, cultureInfo);
         }
-#endif
     }
 }

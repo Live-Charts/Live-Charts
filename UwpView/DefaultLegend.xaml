@@ -33,7 +33,7 @@
              xmlns:uwp="using:LiveCharts.Uwp"
              xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
              xmlns:multiBinding="using:LiveCharts.Uwp.Components.MultiBinding"
-             mc:Ignorable="d" x:Name="UserControl"
+             mc:Ignorable="d" x:Name="This"
              d:DataContext="{d:DesignInstance uwp:DefaultLegend}">
     <UserControl.Resources>
         <uwp:OrientationConverter x:Key="OrientationConverter"/>
@@ -45,9 +45,9 @@
                     <VariableSizedWrapGrid MaxWidth="{Binding MaxWidth, ElementName=This}"
                                        MaxHeight="{Binding MaxHeight, ElementName=This}">
                         <interactivity:Interaction.Behaviors>
-                            <multiBinding:MultiBindingBehavior Converter="{StaticResource OrientationConverter}" PropertyName="Orientation">
-                                <multiBinding:MultiBindingItem Value="{Binding Orientation}" />
-                                <multiBinding:MultiBindingItem Value="{Binding InternalOrientation}" />
+                            <multiBinding:MultiBindingBehavior Converter="{StaticResource OrientationConverter}" Mode="OneWay" PropertyName="Orientation">
+                                <multiBinding:MultiBindingItem Value="{Binding Orientation, ElementName=This, Mode=OneWay}" />
+                                <multiBinding:MultiBindingItem Value="{Binding InternalOrientation, ElementName=This, Mode=OneWay}" />
                             </multiBinding:MultiBindingBehavior>
                         </interactivity:Interaction.Behaviors>
                     </VariableSizedWrapGrid>
@@ -61,16 +61,18 @@
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
                         <!--ClipToBounds="True"-->
-                        <Path Width="{Binding BulletSize, ElementName=UserControl}" 
-                                         Height="{Binding BulletSize, ElementName=UserControl}" 
+                        <Path Width="{Binding BulletSize, ElementName=This}" 
+                                         Height="{Binding BulletSize, ElementName=This}" 
                                          StrokeThickness="{Binding StrokeThickness}" 
-                                         Stroke="{Binding Stroke}" Fill="{Binding Fill}"
-                                         Stretch="Fill" Data="{Binding PointGeometry}"/>
-                        <TextBlock Grid.Column="1" Margin="4 0" Text="{Binding Title}" VerticalAlignment="Center" />
+                                         Stroke="{x:Bind Stroke}" Fill="{x:Bind Fill}"
+                                         Stretch="Fill" Data="{x:Bind PointGeometry}"/>
+                        <TextBlock Grid.Column="1" Margin="4 0" Text="{x:Bind Title}" VerticalAlignment="Center" />
                     </Grid>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
     </Border>
 </UserControl>
+
+
 

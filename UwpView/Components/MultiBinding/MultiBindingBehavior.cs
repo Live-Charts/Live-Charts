@@ -14,12 +14,8 @@ namespace LiveCharts.Uwp.Components.MultiBinding
     /// <summary>
     /// The behavior that enables multiple binding.
     /// </summary>
-#if WINDOWS_PHONE || WINDOWS_PHONE_81
-    [ContentProperty("Items")]
-#else
     [ContentProperty(Name = "Items")]
     [TypeConstraint(typeof(FrameworkElement))]
-#endif
     public class MultiBindingBehavior : Behavior<FrameworkElement>
     {
         /// <summary>
@@ -69,24 +65,6 @@ namespace LiveCharts.Uwp.Components.MultiBinding
         /// </summary>
         public static readonly DependencyProperty ConverterProperty =
             DependencyProperty.Register(nameof(Converter), typeof(IValueConverter), typeof(MultiBindingBehavior), new PropertyMetadata(null, OnPropertyChanged));
-
-#if WINDOWS_PHONE || WINDOWS_PHONE_81
-        /// <summary>
-        /// Gets or sets the <see cref="CultureInfo"/> object that applies to the converter.
-        /// </summary>
-        /// <value>The <see cref="CultureInfo"/> object that applies to the converter.</value>
-        public CultureInfo ConverterCulture
-        {
-            get { return (CultureInfo)GetValue(ConverterCultureProperty); }
-            set { SetValue(ConverterCultureProperty, value); }
-        }
-
-        /// <summary>
-        /// Identifier for the <see cref="ConverterCulture" /> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty ConverterCultureProperty =
-            DependencyProperty.Register(nameof(ConverterCulture), typeof(CultureInfo), typeof(MultiBindingBehavior), new PropertyMetadata(null, OnPropertyChanged));
-#endif
 
         /// <summary>
         /// Gets or sets an optional parameter to pass to the converter as additional information.
@@ -160,13 +138,8 @@ namespace LiveCharts.Uwp.Components.MultiBinding
             {
                 var propertyNameParts = targetProperty.Split('.');
 
-#if WINDOWS_PHONE || WINDOWS_PHONE_81
-                targetType = Type.GetType(string.Format("System.Windows.Controls.{0}, System.Windows",
-                    propertyNameParts[0]));
-#else
                 targetType = Type.GetType(string.Format("Windows.UI.Xaml.Controls.{0}, Windows",
                     propertyNameParts[0]));
-#endif
 
                 targetProperty = propertyNameParts[1];
             }
@@ -175,9 +148,6 @@ namespace LiveCharts.Uwp.Components.MultiBinding
                 targetType = AssociatedObject.GetType();
             }
 
-#if WINDOWS_PHONE || WINDOWS_PHONE_81
-            var targetDependencyPropertyField = targetType.GetField(targetProperty + "Property", BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy);
-#else
             PropertyInfo targetDependencyPropertyField = null;
 
             while (targetDependencyPropertyField == null && targetType != null)
@@ -188,7 +158,6 @@ namespace LiveCharts.Uwp.Components.MultiBinding
 
                 targetType = targetTypeInfo.BaseType;
             }
-#endif
             var targetDependencyProperty = (DependencyProperty)targetDependencyPropertyField.GetValue(null);
 
             var binding = new Binding()
@@ -196,9 +165,6 @@ namespace LiveCharts.Uwp.Components.MultiBinding
                 Path = new PropertyPath("Value"),
                 Source = Items,
                 Converter = Converter,
-#if WINDOWS_PHONE || WINDOWS_PHONE_81
-                ConverterCulture = ConverterCulture,
-#endif
                 ConverterParameter = ConverterParameter,
                 Mode = Mode
             };
