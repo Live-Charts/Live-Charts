@@ -21,7 +21,6 @@
 //SOFTWARE.
 
 using System;
-using System.Diagnostics;
 using LiveCharts.Charts;
 using LiveCharts.Definitions.Series;
 using LiveCharts.Helpers;
@@ -89,10 +88,6 @@ namespace LiveCharts
                 series.OnSeriesUpdatedFinish();
                 series.PlaceSpecializedElements();
             }
-#if DEBUG
-            Debug.WriteLine("<< -- Chart UI Updated | Canvas: {0} | DrawMargin: {1} -- >>",
-                Chart.View.GetCanvasElements(), Chart.View.GetDrawMarginElements());
-#endif
         }
        
     }

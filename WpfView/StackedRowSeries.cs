@@ -178,7 +178,7 @@ namespace LiveCharts.Wpf
         {
             SetCurrentValue(StrokeThicknessProperty, 0d);
             SetCurrentValue(MaxRowHeightProperty, 35d);
-            SetCurrentValue(RowPaddingProperty, 1d);
+            SetCurrentValue(RowPaddingProperty, 2d);
             SetCurrentValue(ForegroundProperty, Brushes.White);
 
             Func<ChartPoint, string> defaultLabel = x =>  Model.CurrentXAxis.GetFormatter()(x.X);

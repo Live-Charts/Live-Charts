@@ -70,7 +70,7 @@ namespace LiveCharts.Wpf
         public static readonly DependencyProperty MaxColumnWidthProperty = DependencyProperty.Register(
             "MaxColumnWidth", typeof (double), typeof (ColumnSeries), new PropertyMetadata(default(double)));
         /// <summary>
-        /// Gets or sets the MaxColumnWidht, the column width will be capped at this value.
+        /// Gets or sets the MaxColumnWidht in pixels, the column width will be capped at this value.
         /// </summary>
         public double MaxColumnWidth
         {
@@ -183,7 +183,7 @@ namespace LiveCharts.Wpf
         {
             SetCurrentValue(StrokeThicknessProperty, 0d);
             SetCurrentValue(MaxColumnWidthProperty, 35d);
-            SetCurrentValue(ColumnPaddingProperty, 1d);
+            SetCurrentValue(ColumnPaddingProperty, 2d);
             SetCurrentValue(LabelsPositionProperty, BarLabelPosition.Top);
 
             Func<ChartPoint, string> defaultLabel = x => Model.CurrentYAxis.GetFormatter()(x.Y);

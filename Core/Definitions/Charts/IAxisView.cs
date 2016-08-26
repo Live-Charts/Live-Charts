@@ -34,6 +34,7 @@ namespace LiveCharts.Definitions.Charts
         double? MinValue { get; set; }
         double LabelsRotation { get; set; }
         bool IsMerged { get; set; }
+        double BarUnit { get; set; }
 
         CoreSize UpdateTitle(ChartCore chart, double rotationAngle = 0);
         void SetTitleTop(double value);

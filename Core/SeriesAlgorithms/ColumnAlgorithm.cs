@@ -39,9 +39,9 @@ namespace LiveCharts.SeriesAlgorithms
 
         public override void Update()
         {
-            var castedSeries = (IColumnSeriesView) View;
+            var columnSeries = (IColumnSeriesView) View;
 
-            var padding = castedSeries.ColumnPadding;
+            var padding = columnSeries.ColumnPadding;
 
             var totalSpace = ChartFunctions.GetUnitWidth(AxisOrientation.X, Chart, View.ScalesXAt) - padding;
             var typeSeries = Chart.View.ActualSeries.OfType<IColumnSeriesView>().ToList();
@@ -50,12 +50,12 @@ namespace LiveCharts.SeriesAlgorithms
 
             double exceed = 0;
 
-            var seriesPosition = typeSeries.IndexOf(castedSeries);
+            var seriesPosition = typeSeries.IndexOf(columnSeries);
 
-            if (singleColWidth > castedSeries.MaxColumnWidth)
+            if (singleColWidth > columnSeries.MaxColumnWidth)
             {
-                exceed = (singleColWidth - castedSeries.MaxColumnWidth)*typeSeries.Count/2;
-                singleColWidth = castedSeries.MaxColumnWidth;
+                exceed = (singleColWidth - columnSeries.MaxColumnWidth)*typeSeries.Count/2;
+                singleColWidth = columnSeries.MaxColumnWidth;
             }
 
             var relativeLeft = padding + exceed + singleColWidth*(seriesPosition);
@@ -67,6 +67,8 @@ namespace LiveCharts.SeriesAlgorithms
                     : 0);                                                           //if mixed then use 0
 
             var zero = ChartFunctions.ToDrawMargin(startAt, AxisOrientation.Y, Chart, View.ScalesYAt);
+
+            var pts = View.ActualValues.GetPoints(View).ToArray();
 
             foreach (var chartPoint in View.ActualValues.GetPoints(View))
             {

@@ -130,7 +130,6 @@ namespace LiveCharts.Wpf
         public static readonly DependencyProperty ShowLabelsProperty = DependencyProperty.Register(
             "ShowLabels", typeof (bool), typeof (Axis), 
             new PropertyMetadata(default(bool), LabelsVisibilityChanged));
-
         /// <summary>
         /// Gets or sets if labels are shown in the axis.
         /// </summary>
@@ -188,7 +187,6 @@ namespace LiveCharts.Wpf
             set { SetValue(PositionProperty, value); }
         }
 
-
         public static readonly DependencyProperty IsMergedProperty = DependencyProperty.Register(
             "IsMerged", typeof (bool), typeof (Axis), 
             new PropertyMetadata(default(bool), UpdateChart()));
@@ -200,7 +198,6 @@ namespace LiveCharts.Wpf
             get { return (bool) GetValue(IsMergedProperty); }
             set { SetValue(IsMergedProperty, value); }
         }
-
 
         public static readonly DependencyProperty DisableAnimationsProperty = DependencyProperty.Register(
             "DisableAnimations", typeof (bool), typeof (Axis), new PropertyMetadata(default(bool), UpdateChart(true)));
@@ -297,6 +294,17 @@ namespace LiveCharts.Wpf
         {
             get { return (double) GetValue(LabelsRotationProperty); }
             set { SetValue(LabelsRotationProperty, value); }
+        }
+
+        public static readonly DependencyProperty BarUnitProperty = DependencyProperty.Register(
+            "BarUnit", typeof(double), typeof(Axis), new PropertyMetadata(default(double)));
+        /// <summary>
+        /// Gets or sets the bar's series unit width (rows and columns), this property specifies the value in the chart that any bar should take as width.
+        /// </summary>
+        public double BarUnit
+        {
+            get { return (double) GetValue(BarUnitProperty); }
+            set { SetValue(BarUnitProperty, value); }
         }
 
         #endregion

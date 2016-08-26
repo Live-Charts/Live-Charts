@@ -116,15 +116,6 @@ namespace LiveCharts.Wpf.Charts.Base
 
         #endregion
 
-        #region
-
-        /// <summary>
-        /// This property need to be true when unit testing
-        /// </summary>
-        public bool IsMocked { get; set; }
-
-        #endregion
-
         #region Debug
         public void MockIt(CoreSize size)
         {
@@ -239,6 +230,13 @@ namespace LiveCharts.Wpf.Charts.Base
         /// Gets or sets whether charts must randomize the starting default series color.
         /// </summary>
         public static bool RandomizeStartingColor { get; set; }
+
+        /// <summary>
+        /// This property need to be true when unit testing
+        /// </summary>
+        public bool IsMocked { get; set; }
+
+        public object Sign { get; set; }
 
         public static readonly DependencyProperty ColorsProperty = DependencyProperty.Register(
             "Colors", typeof(ColorsCollection), typeof(Chart), new PropertyMetadata(default(ColorsCollection)));

@@ -42,6 +42,7 @@ namespace LiveCharts.Definitions.Charts
         LegendLocation LegendLocation { get; set; }
         bool DisableAnimations { get; set; }
         TimeSpan AnimationsSpeed { get; set; }
+        object Sign { get; set; }
 
         bool HasTooltip { get; }
         bool HasDataClickEventAttached { get; }
@@ -68,12 +69,5 @@ namespace LiveCharts.Definitions.Charts
         CoreSize LoadLegend();
         List<AxisCore> MapXAxes(ChartCore chart);
         List<AxisCore> MapYAxes(ChartCore chart);
-
-#if DEBUG
-        int GetCanvasElements();
-        int GetDrawMarginElements();
-        object GetCanvas();
-        void MockIt(CoreSize size);
-#endif
     }
 }

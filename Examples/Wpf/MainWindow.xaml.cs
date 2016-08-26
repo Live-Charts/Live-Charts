@@ -24,6 +24,7 @@ using Wpf.CartesianChart.NegativeStackedRow;
 using Wpf.CartesianChart.PointShapeLine;
 using Wpf.CartesianChart.PointState;
 using Wpf.CartesianChart.ScatterPlot;
+using Wpf.CartesianChart.SharedTooltip;
 using Wpf.CartesianChart.StackedArea;
 using Wpf.CartesianChart.StackedBar;
 using Wpf.CartesianChart.StepLine;
@@ -55,64 +56,64 @@ namespace Wpf
             
             CartesianExamples = new List<UserControl>
             {
-                new JimmyTheTestsGuy(),
-                //new SharedTooltipExample(),
+                //new JimmyTheTestsGuy(),
+                new SharedTooltipExample(),
                 new ScatterExample(),
-                new LinqExample(),
-                new CustomTooltipAndLegendExample(),
-                new PointShapeLineExample(),
-                new HeatSeriesExample(),
-                new ManualZAndPExample(),
-                new DynamicVisibilityExample(),
-                new LabelsExample(),
-                new LabelsHorizontalExample(),
-                new BasicStackedRowPercentageExample(),
-                new BasicStackedColumnExample(),
-                new PointStateExample(),
-                new BasicRowExample(),
-                new MultiAxesChart(),
-                new GeoMapExample(),
-                new UiElementsExample(),
-                new StackedRowExample(),
-                new BasicColumn(),
-                new BasicLineExample(),
-                new StackedAreaExample(),
-                new FullyResponsiveExample(),
-                new CustomTypesPlotting(),
-                new NegativeStackedRowExample(),
-                new LineExample(),
-                new StepLineExample(),
-                new ConstantChangesChart(),
-                new CustomizedLineSeries(),
-                new InvertedExample(),
-                new ScatterExample(),
-                new BubblesExample(),
-                new StackedAreaExample(),
-                new OhclExample(),
-                new CandleStickExample(),
-                new StackedColumnExample(),
-                new SectionsExample(),
-                new MissingPointsExample(),
-                new IrregularIntervalsExample(),
-                new DateTime(),
-                new LogarithmScaleExample(),
-                new VerticalStackedAreaExample(),
-                new ZoomingAndPanning(),
-                new MixingTypes(),
-                new InLineSyntaxTest()
+                //new LinqExample(),
+                //new CustomTooltipAndLegendExample(),
+                //new PointShapeLineExample(),
+                //new HeatSeriesExample(),
+                //new ManualZAndPExample(),
+                //new DynamicVisibilityExample(),
+                //new LabelsExample(),
+                //new LabelsHorizontalExample(),
+                //new BasicStackedRowPercentageExample(),
+                //new BasicStackedColumnExample(),
+                //new PointStateExample(),
+                //new BasicRowExample(),
+                //new MultiAxesChart(),
+                //new GeoMapExample(),
+                //new UiElementsExample(),
+                //new StackedRowExample(),
+                //new BasicColumn(),
+                //new BasicLineExample(),
+                //new StackedAreaExample(),
+                //new FullyResponsiveExample(),
+                //new CustomTypesPlotting(),
+                //new NegativeStackedRowExample(),
+                //new LineExample(),
+                //new StepLineExample(),
+                //new ConstantChangesChart(),
+                //new CustomizedLineSeries(),
+                //new InvertedExample(),
+                //new ScatterExample(),
+                //new BubblesExample(),
+                //new StackedAreaExample(),
+                //new OhclExample(),
+                //new CandleStickExample(),
+                //new StackedColumnExample(),
+                //new SectionsExample(),
+                //new MissingPointsExample(),
+                //new IrregularIntervalsExample(),
+                //new DateTime(),
+                //new LogarithmScaleExample(),
+                //new VerticalStackedAreaExample(),
+                //new ZoomingAndPanning(),
+                //new MixingTypes(),
+                //new InLineSyntaxTest()
             };
 
             PieExamples = new List<UserControl>
             {
-                new PieChartExample(),
-                new DoughnutChartExample()
+                //new PieChartExample(),
+                //new DoughnutChartExample()
             };
 
             GaugeExamples = new List<UserControl>
             {
-                new Gauge180(),
-                new Gauge360(),
-                new AngularGaugeExmple()
+                //new Gauge180(),
+                //new Gauge360(),
+                //new AngularGaugeExmple()
             };
 
             #endregion

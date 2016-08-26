@@ -186,16 +186,9 @@ namespace LiveCharts
         /// <returns></returns>
         public static CorePoint ToDrawMargin(ChartPoint point, int axisXIndex, int axisYIndex, ChartCore chart)
         {
-            //Disabled for now, instead each axis will have a unitary width according to series it holds!
-            //var unitaryOffset = chart.HasUnitaryPoints
-            //    ? (chart.Invert
-            //        ? new LvcPoint(0, GetUnitWidth(AxisTags.Y, chart, axisYIndex)*.5)
-            //        : new LvcPoint(GetUnitWidth(AxisTags.X, chart, axisXIndex)*.5, 0))
-            //    : new LvcPoint();
-           
             return new CorePoint(
                 ToDrawMargin(point.X, AxisOrientation.X, chart, axisXIndex),
-                ToDrawMargin(point.Y, AxisOrientation.Y, chart, axisYIndex)); //+ unitaryOffset;
+                ToDrawMargin(point.Y, AxisOrientation.Y, chart, axisYIndex));
         }
 
         /// <summary>
@@ -207,16 +200,8 @@ namespace LiveCharts
         /// <returns></returns>
         public static double GetUnitWidth(AxisOrientation source, ChartCore chart, int axis = 0)
         {
-            double min;
-            
-            if (source == AxisOrientation.Y)
-            {
-                min = chart.AxisY[axis].BotLimit;
-                return ToDrawMargin(min, AxisOrientation.Y, chart, axis) - ToDrawMargin(min + 1, AxisOrientation.Y, chart, axis);
-            }
-
-            min = chart.AxisX[axis].BotLimit;
-            return ToDrawMargin(min + 1, AxisOrientation.X, chart, axis) - ToDrawMargin(min, AxisOrientation.X, chart, axis);
+            return GetUnitWidth(source, chart,
+                (source == AxisOrientation.X ? chart.AxisX : chart.AxisY)[axis]);
         }
 
         /// <summary>
@@ -229,15 +214,20 @@ namespace LiveCharts
         public static double GetUnitWidth(AxisOrientation source, ChartCore chart, AxisCore axis)
         {
             double min;
+            double u;
 
             if (source == AxisOrientation.Y)
             {
                 min = axis.BotLimit;
-                return ToDrawMargin(min, AxisOrientation.Y, chart, axis) - ToDrawMargin(min + 1, AxisOrientation.Y, chart, axis);
+                u = axis.View.BarUnit;
+                return ToDrawMargin(min, AxisOrientation.Y, chart, axis) -
+                       ToDrawMargin(min + u, AxisOrientation.Y, chart, axis);
             }
 
             min = axis.BotLimit;
-            return ToDrawMargin(min + 1, AxisOrientation.X, chart, axis) - ToDrawMargin(min, AxisOrientation.X, chart, axis);
+            u = axis.View.BarUnit;
+            return ToDrawMargin(min + u, AxisOrientation.X, chart, axis) -
+                   ToDrawMargin(min, AxisOrientation.X, chart, axis);
         }
 
         /// <summary>
