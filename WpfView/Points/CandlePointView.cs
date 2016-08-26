@@ -27,7 +27,6 @@ using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using LiveCharts.Charts;
 using LiveCharts.Definitions.Points;
-using LiveCharts.Dtos;
 
 namespace LiveCharts.Wpf.Points
 {
@@ -114,16 +113,18 @@ namespace LiveCharts.Wpf.Points
                 DataLabel.BeginAnimation(Canvas.TopProperty, new DoubleAnimation(cy, animSpeed));
             }
 
-            HighToLowLine.X1 = center;
-            HighToLowLine.X2 = center;
+            HighToLowLine.BeginAnimation(Line.X1Property, new DoubleAnimation(center, animSpeed));
+            HighToLowLine.BeginAnimation(Line.X2Property, new DoubleAnimation(center, animSpeed));
             HighToLowLine.BeginAnimation(Line.Y1Property, new DoubleAnimation(High, animSpeed));
             HighToLowLine.BeginAnimation(Line.Y2Property, new DoubleAnimation(Low, animSpeed));
 
-            Canvas.SetLeft(OpenToCloseRectangle, Left);
+            OpenToCloseRectangle.BeginAnimation(Canvas.LeftProperty,
+                new DoubleAnimation(Left, animSpeed));
             OpenToCloseRectangle.BeginAnimation(Canvas.TopProperty,
                 new DoubleAnimation(Math.Min(Open, Close), animSpeed));
 
-            OpenToCloseRectangle.Width = Width;
+            OpenToCloseRectangle.BeginAnimation(FrameworkElement.WidthProperty,
+                new DoubleAnimation(Width, animSpeed));
             OpenToCloseRectangle.BeginAnimation(FrameworkElement.HeightProperty,
                 new DoubleAnimation(Math.Max(Math.Abs(Open - Close), OpenToCloseRectangle.StrokeThickness), animSpeed));
 

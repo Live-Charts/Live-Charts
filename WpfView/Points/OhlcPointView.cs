@@ -117,12 +117,12 @@ namespace LiveCharts.Wpf.Points
                 DataLabel.BeginAnimation(Canvas.TopProperty, new DoubleAnimation(cy, animSpeed));
             }
 
-            HighToLowLine.X1 = center;
-            HighToLowLine.X2 = center;
-            OpenLine.X1 = Left;
-            OpenLine.X2 = center;
-            CloseLine.X1 = center;
-            CloseLine.X2 = Left + Width;
+            HighToLowLine.BeginAnimation(Line.X1Property, new DoubleAnimation(center, animSpeed));
+            HighToLowLine.BeginAnimation(Line.X2Property, new DoubleAnimation(center, animSpeed));
+            OpenLine.BeginAnimation(Line.X1Property, new DoubleAnimation(Left, animSpeed));
+            OpenLine.BeginAnimation(Line.X2Property, new DoubleAnimation(center, animSpeed));
+            CloseLine.BeginAnimation(Line.X1Property, new DoubleAnimation(center, animSpeed));
+            CloseLine.BeginAnimation(Line.X2Property, new DoubleAnimation(Left + Width, animSpeed));
 
             HighToLowLine.BeginAnimation(Line.Y1Property, new DoubleAnimation(High, animSpeed));
             HighToLowLine.BeginAnimation(Line.Y2Property, new DoubleAnimation(Low, animSpeed));
