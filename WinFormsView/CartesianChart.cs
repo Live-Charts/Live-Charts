@@ -126,6 +126,13 @@ namespace LiveCharts.WinForms
             set { WpfBase.VisualElements = value; }
         }
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public UpdaterState UpdaterState
+        {
+            get { return WpfBase.UpdaterState; }
+            set { WpfBase.UpdaterState = value; }
+        }
+
         #endregion
 
         #region ThisChartProperties

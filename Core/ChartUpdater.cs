@@ -50,6 +50,8 @@ namespace LiveCharts
 
         protected void Update(bool restartsAnimations = false)   
         {
+            if (Chart.View.UpdaterState == UpdaterState.Paused) return;
+
             if (!Chart.View.IsMocked)
                 if (!Chart.View.IsControlLoaded) return;
 

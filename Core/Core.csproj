@@ -147,6 +147,7 @@
     <Compile Include="SeriesOrientation.cs" />
     <Compile Include="StackMode.cs" />
     <Compile Include="TooltipSelectionMode.cs" />
+    <Compile Include="UpdaterState.cs" />
     <Compile Include="VisualElementsCollection.cs" />
     <Compile Include="ZoomingOptions.cs" />
   </ItemGroup>

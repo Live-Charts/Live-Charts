@@ -430,11 +430,25 @@ namespace LiveCharts.Wpf.Charts.Base
 
         public static readonly DependencyProperty ScrollBarFillProperty = DependencyProperty.Register(
             "ScrollBarFill", typeof(Brush), typeof(Chart), new PropertyMetadata(new SolidColorBrush(Color.FromArgb(30, 30, 30, 30))));
-
+        /// <summary>
+        /// Gets or sets the scroll bar fill brush
+        /// </summary>
         public Brush ScrollBarFill
         {
             get { return (Brush) GetValue(ScrollBarFillProperty); }
             set { SetValue(ScrollBarFillProperty, value); }
+        }
+
+        public static readonly DependencyProperty UpdaterStateProperty = DependencyProperty.Register(
+            "UpdaterState", typeof(UpdaterState), typeof(Chart), 
+            new PropertyMetadata(default(UpdaterState), CallChartUpdater()));
+        /// <summary>
+        /// Gets or sets chart's updater state
+        /// </summary>
+        public UpdaterState UpdaterState
+        {
+            get { return (UpdaterState) GetValue(UpdaterStateProperty); }
+            set { SetValue(UpdaterStateProperty, value); }
         }
 
         /// <summary>

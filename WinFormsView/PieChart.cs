@@ -129,6 +129,13 @@ namespace LiveCharts.WinForms
             get { return Chart.StartingRotationAngle; }
             set { Chart.StartingRotationAngle = value; }
         }
+
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public UpdaterState UpdaterState
+        {
+            get { return Chart.UpdaterState; }
+            set { Chart.UpdaterState = value; }
+        }
         #endregion
     }
 }

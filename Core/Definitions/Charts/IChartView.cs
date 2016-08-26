@@ -43,6 +43,7 @@ namespace LiveCharts.Definitions.Charts
         bool DisableAnimations { get; set; }
         TimeSpan AnimationsSpeed { get; set; }
         object Sign { get; set; }
+        UpdaterState UpdaterState { get; set; }
 
         bool HasTooltip { get; }
         bool HasDataClickEventAttached { get; }
