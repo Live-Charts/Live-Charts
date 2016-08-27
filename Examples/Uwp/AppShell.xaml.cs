@@ -22,6 +22,8 @@ using UWP.Views;
 
 namespace UWP
 {
+    using UWP.CartesianChart.Basic_Stacked_Bar;
+
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
@@ -43,12 +45,18 @@ namespace UWP
                 Label = "Basic Column",
                 DestPage = typeof(BasicColumn)
             },
-            //new NavMenuItem()
-            //{
-            //    Symbol = Symbol.Edit,
-            //    Label = "CommandBar Page",
-            //    DestPage = typeof(CommandBarPage)
-            //},
+            new NavMenuItem()
+            {
+                Symbol = Symbol.ThreeBars,
+                Label = "Basic Stacked Column",
+                DestPage = typeof(BasicStackedColumnExample)
+            },
+            new NavMenuItem()
+            {
+                Symbol = Symbol.TwoBars,
+                Label = "Basic Stacked Row Percentage Example",
+                DestPage = typeof(BasicStackedRowPercentageExample)
+            },
             //new NavMenuItem()
             //{
             //    Symbol = Symbol.Favorite,

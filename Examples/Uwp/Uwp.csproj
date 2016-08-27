@@ -101,6 +101,12 @@
     <Compile Include="CartesianChart\Basic Bars\BasicColumn.xaml.cs">
       <DependentUpon>BasicColumn.xaml</DependentUpon>
     </Compile>
+    <Compile Include="CartesianChart\Basic Stacked Bar\BasicStackedColumnExample.xaml.cs">
+      <DependentUpon>BasicStackedColumnExample.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CartesianChart\Basic Stacked Bar\BasicStackedRowPercentageExample.xaml.cs">
+      <DependentUpon>BasicStackedRowPercentageExample.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\NavMenuListView.cs" />
     <Compile Include="Controls\PageHeader.xaml.cs">
       <DependentUpon>PageHeader.xaml</DependentUpon>
@@ -110,6 +116,7 @@
     <Compile Include="Views\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="XamlUtils.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
@@ -137,6 +144,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="CartesianChart\Basic Bars\BasicColumn.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CartesianChart\Basic Stacked Bar\BasicStackedColumnExample.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CartesianChart\Basic Stacked Bar\BasicStackedRowPercentageExample.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

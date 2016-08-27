@@ -49,8 +49,6 @@ namespace UWP.CartesianChart.Basic_Bars
 
             Labels = new[] { "Maria", "Susan", "Charles", "Frida" };
             Formatter = value => value.ToString("N");
-
-            DataContext = this;
         }
 
         public SeriesCollection SeriesCollection { get; set; }
