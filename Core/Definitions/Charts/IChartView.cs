@@ -42,7 +42,6 @@ namespace LiveCharts.Definitions.Charts
         LegendLocation LegendLocation { get; set; }
         bool DisableAnimations { get; set; }
         TimeSpan AnimationsSpeed { get; set; }
-        object Sign { get; set; }
         UpdaterState UpdaterState { get; set; }
 
         bool HasTooltip { get; }

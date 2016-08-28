@@ -236,8 +236,6 @@ namespace LiveCharts.Wpf.Charts.Base
         /// </summary>
         public bool IsMocked { get; set; }
 
-        public object Sign { get; set; }
-
         public static readonly DependencyProperty ColorsProperty = DependencyProperty.Register(
             "Colors", typeof(ColorsCollection), typeof(Chart), new PropertyMetadata(default(ColorsCollection)));
         /// <summary>
