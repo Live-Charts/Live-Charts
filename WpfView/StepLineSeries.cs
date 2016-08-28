@@ -136,14 +136,12 @@ namespace LiveCharts.Wpf
                     .EnsureElementBelongsToCurrentDrawMargin(pbv.VerticalLine);
             }
 
-            pbv.VerticalLine.Fill = Fill;
             pbv.VerticalLine.StrokeThickness = StrokeThickness;
-            pbv.VerticalLine.Stroke = Stroke;
+            pbv.VerticalLine.Stroke = AlternativeStroke;
             pbv.VerticalLine.StrokeDashArray = StrokeDashArray;
             pbv.VerticalLine.Visibility = Visibility;
             Panel.SetZIndex(pbv.VerticalLine, Panel.GetZIndex(this));
 
-            pbv.HorizontalLine.Fill = Fill;
             pbv.HorizontalLine.StrokeThickness = StrokeThickness;
             pbv.HorizontalLine.Stroke = Stroke;
             pbv.HorizontalLine.StrokeDashArray = StrokeDashArray;
@@ -214,14 +212,15 @@ namespace LiveCharts.Wpf
         public override void InitializeColors()
         {
             var wpfChart = (Chart) Model.Chart.View;
-            var nextColor = wpfChart.GetNextDefaultColor();
 
+            if (Stroke != null && AlternativeStroke != null) return;
+
+            var nextColor = wpfChart.GetNextDefaultColor();
+            
             if (Stroke == null)
                 SetValue(StrokeProperty, new SolidColorBrush(nextColor));
             if (AlternativeStroke == null)
                 SetValue(AlternativeStrokeProperty, new SolidColorBrush(nextColor));
-            if (Fill == null)
-                SetValue(FillProperty, new SolidColorBrush(nextColor) { Opacity = DefaultFillOpacity });
         }
 
         #endregion

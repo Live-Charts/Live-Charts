@@ -55,6 +55,7 @@ namespace Wpf
             
             CartesianExamples = new List<UserControl>
             {
+                new StepLineExample(),
                 //new JimmyTheTestsGuy(),
                 new LinqExample(),
                 new PointShapeLineExample(),

@@ -26,6 +26,7 @@ using System.Globalization;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using LiveCharts.Definitions.Points;
@@ -197,13 +198,20 @@ namespace LiveCharts.Wpf
                     ColorRangeControl = new HeatColorRange();
                 }
 
-                //ColorRangeControl.FontFamily = FontFamily;
-                //ColorRangeControl.FontSize = FontSize;
-                //ColorRangeControl.FontStretch = FontStretch;
-                //ColorRangeControl.FontStyle = FontStyle;
-                //ColorRangeControl.FontWeight = FontWeight;
-                //ColorRangeControl.Foreground = Foreground;
-                //ColorRangeControl.Visibility = Visibility;
+                ColorRangeControl.SetBinding(TextBlock.FontFamilyProperty,
+                    new Binding {Path = new PropertyPath(FontFamilyProperty), Source = this});
+                ColorRangeControl.SetBinding(TextBlock.FontSizeProperty,
+                    new Binding { Path = new PropertyPath(FontSizeProperty), Source = this });
+                ColorRangeControl.SetBinding(TextBlock.FontStretchProperty,
+                    new Binding { Path = new PropertyPath(FontStretchProperty), Source = this });
+                ColorRangeControl.SetBinding(TextBlock.FontStyleProperty,
+                    new Binding { Path = new PropertyPath(FontStyleProperty), Source = this });
+                ColorRangeControl.SetBinding(TextBlock.FontWeightProperty,
+                    new Binding { Path = new PropertyPath(FontWeightProperty), Source = this });
+                ColorRangeControl.SetBinding(TextBlock.ForegroundProperty,
+                    new Binding { Path = new PropertyPath(ForegroundProperty), Source = this });
+                ColorRangeControl.SetBinding(VisibilityProperty,
+                    new Binding { Path = new PropertyPath(VisibilityProperty), Source = this });
 
                 if (ColorRangeControl.Parent == null)
                 {
