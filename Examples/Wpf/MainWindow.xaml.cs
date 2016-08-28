@@ -52,11 +52,12 @@ namespace Wpf
             InitializeComponent();
 
             #region Examples
-            
+
             CartesianExamples = new List<UserControl>
             {
-                new StepLineExample(),
                 //new JimmyTheTestsGuy(),
+                new ConstantChangesChart(),
+                new FullyResponsiveExample(),
                 new LinqExample(),
                 new PointShapeLineExample(),
                 new HeatSeriesExample(),
@@ -76,12 +77,10 @@ namespace Wpf
                 new BasicColumn(),
                 new BasicLineExample(),
                 new StackedAreaExample(),
-                new FullyResponsiveExample(),
                 new CustomTypesPlotting(),
                 new NegativeStackedRowExample(),
                 new LineExample(),
                 new StepLineExample(),
-                new ConstantChangesChart(),
                 new CustomizedLineSeries(),
                 new InvertedExample(),
                 new ScatterExample(),

@@ -175,6 +175,8 @@ namespace LiveCharts.Wpf.Points
 
         protected double CorrectXLabel(double desiredPosition, ChartCore chart)
         {
+            if (desiredPosition + DataLabel.ActualWidth*.5 < -0.1) return -DataLabel.ActualWidth;
+
             if (desiredPosition + DataLabel.ActualWidth > chart.DrawMargin.Width)
                 desiredPosition -= desiredPosition + DataLabel.ActualWidth - chart.DrawMargin.Width + 2;
 

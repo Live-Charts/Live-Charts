@@ -143,6 +143,8 @@ namespace LiveCharts.Wpf.Points
 
         protected double CorrectXLabel(double desiredPosition, ChartCore chart)
         {
+            if (desiredPosition + DataLabel.ActualWidth * .5 < -0.1) return -DataLabel.ActualWidth;
+
             if (desiredPosition + DataLabel.ActualWidth > chart.DrawMargin.Width)
                 desiredPosition -= desiredPosition + DataLabel.ActualWidth - chart.DrawMargin.Width + 2;
 
@@ -153,8 +155,6 @@ namespace LiveCharts.Wpf.Points
 
         protected double CorrectYLabel(double desiredPosition, ChartCore chart)
         {
-            //desiredPosition -= Ellipse.ActualHeight * .5 + DataLabel.ActualHeight * .5 + 2;
-
             if (desiredPosition + DataLabel.ActualHeight > chart.DrawMargin.Height)
                 desiredPosition -= desiredPosition + DataLabel.ActualHeight - chart.DrawMargin.Height + 2;
 

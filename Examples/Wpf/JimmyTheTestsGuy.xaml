@@ -10,11 +10,14 @@
              d:DesignWidth="500"
              d:DataContext="{d:DesignInstance local:JimmyTheTestsGuy}">
     <Grid>
-
-        <Grid>
-            <lvc:PieChart Series="{Binding SeriesCollection}"/>
-        </Grid>
-
+        <lvc:CartesianChart>
+            <lvc:CartesianChart.Series>
+                <lvc:LineSeries Values="1,2,3,4,5,6,7,8,9,10" DataLabels="True"></lvc:LineSeries>
+            </lvc:CartesianChart.Series>
+            <lvc:CartesianChart.AxisX>
+                <lvc:Axis MinValue="5"></lvc:Axis>
+            </lvc:CartesianChart.AxisX>
+        </lvc:CartesianChart>
     </Grid>
 
 </UserControl>
