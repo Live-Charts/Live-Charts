@@ -24,7 +24,6 @@ using Wpf.CartesianChart.NegativeStackedRow;
 using Wpf.CartesianChart.PointShapeLine;
 using Wpf.CartesianChart.PointState;
 using Wpf.CartesianChart.ScatterPlot;
-using Wpf.CartesianChart.SharedTooltip;
 using Wpf.CartesianChart.StackedArea;
 using Wpf.CartesianChart.StackedBar;
 using Wpf.CartesianChart.StepLine;

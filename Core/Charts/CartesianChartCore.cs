@@ -56,6 +56,7 @@ namespace LiveCharts.Charts
             for (var index = 0; index < AxisX.Count; index++)
             {
                 var xi = AxisX[index];
+
                 xi.CalculateSeparator(this, AxisOrientation.X);
                 xi.BotLimit = xi.MinValue ?? cartesianSeries.Where(x => x.View.ScalesXAt == index)
                     .Select(x => x.GetMinX(xi))
@@ -66,22 +67,33 @@ namespace LiveCharts.Charts
 
                 if (Math.Abs(xi.BotLimit - xi.TopLimit) < xi.S * .01)
                 {
-                    if (xi.MinValue == null) xi.BotLimit -= xi.S;
-                    else xi.BotLimit = xi.MinValue.Value;
+                    if (Math.Abs(xi.PreviousBot - xi.PreviousTop) < xi.S*.01)
+                    {
+                        if (xi.MinValue == null) xi.BotLimit -= xi.S;
+                        else xi.BotLimit = xi.MinValue.Value;
 
-                    if (xi.MaxValue == null) xi.TopLimit += xi.S;
-                    else xi.TopLimit = xi.MaxValue.Value;
+                        if (xi.MaxValue == null) xi.TopLimit += xi.S;
+                        else xi.TopLimit = xi.MaxValue.Value;
 
-                    if (Math.Abs(xi.BotLimit - xi.TopLimit) < xi.S * .01 && !View.IsInDesignMode)
-                        throw new LiveChartsException("One axis has an invalid range, it is or is really " +
-                                                      "close to zero, please ensure your axis has a valid " +
-                                                      "range");
+                        if (Math.Abs(xi.BotLimit - xi.TopLimit) < xi.S*.01 && !View.IsInDesignMode)
+                            throw new LiveChartsException("One axis has an invalid range, it is or is really " +
+                                                          "close to zero, please ensure your axis has a valid " +
+                                                          "range");
+                    }
+                    else
+                    {
+                        xi.BotLimit = xi.PreviousBot;
+                        xi.TopLimit = xi.PreviousTop;
+                    }
                 }
+                xi.PreviousBot = xi.BotLimit;
+                xi.PreviousTop = xi.TopLimit;
             }
 
             for (var index = 0; index < AxisY.Count; index++)
             {
                 var yi = AxisY[index];
+
                 yi.CalculateSeparator(this, AxisOrientation.Y);
                 yi.BotLimit = yi.MinValue ?? cartesianSeries.Where(x => x.View.ScalesYAt == index)
                     .Select(x => x.GetMinY(yi))
@@ -92,17 +104,27 @@ namespace LiveCharts.Charts
 
                 if (Math.Abs(yi.BotLimit - yi.TopLimit) < yi.S * .01)
                 {
-                    if (yi.MinValue == null) yi.BotLimit -= yi.S;
-                    else yi.BotLimit = yi.MinValue.Value;
+                    if (Math.Abs(yi.PreviousBot - yi.PreviousTop) < yi.S*.01)
+                    {
+                        if (yi.MinValue == null) yi.BotLimit -= yi.S;
+                        else yi.BotLimit = yi.MinValue.Value;
 
-                    if (yi.MaxValue == null) yi.TopLimit += yi.S;
-                    else yi.TopLimit = yi.MaxValue.Value;
+                        if (yi.MaxValue == null) yi.TopLimit += yi.S;
+                        else yi.TopLimit = yi.MaxValue.Value;
 
-                    if (Math.Abs(yi.BotLimit - yi.TopLimit) < yi.S*.01)
-                        throw new LiveChartsException("One axis has an invalid range, it is or is really " +
-                                                      "close to zero, please ensure your axis has a valid " +
-                                                      "range");
+                        if (Math.Abs(yi.BotLimit - yi.TopLimit) < yi.S*.01)
+                            throw new LiveChartsException("One axis has an invalid range, it is or is really " +
+                                                          "close to zero, please ensure your axis has a valid " +
+                                                          "range");
+                    }
+                    else
+                    {
+                        yi.BotLimit = yi.PreviousBot;
+                        yi.TopLimit = yi.PreviousTop;
+                    }
                 }
+                yi.PreviousBot = yi.BotLimit;
+                yi.PreviousTop = yi.TopLimit;
             }
 
             PrepareSeries();

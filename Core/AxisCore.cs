@@ -62,14 +62,12 @@ namespace LiveCharts
         public bool DisableAnimations { get; set; }
         public AxisPosition Position { get; set; }
         public bool IsMerged { get; set; }
-
+        public bool EvaluatesUnitWidth { get; internal set; }
         public IEnumerable<SeparatorElementCore> CurrentSeparators
         {
             get { return Cache.Values; }
         }
-
         public SeparatorConfigurationCore Separator { get; set; }
-
         public double S { get; internal set; }
 
         #endregion
@@ -78,21 +76,19 @@ namespace LiveCharts
 
         internal double Tab { get; set; }
         internal double TopLimit { get; set; }
-
         internal double BotLimit { get; set; }
-
         internal double Magnitude { get; set; }
-        public bool EvaluatesUnitWidth { get; internal set; }
         internal int CleanFactor { get; set; }
         internal Dictionary<double, SeparatorElementCore> Cache { get; set; }
         internal double? LastAxisMax { get; set; }
         internal double? LastAxisMin { get; set; }
         internal CoreRectangle LastPlotArea { get; set; }
         internal int GarbageCollectorIndex { get; set; }
-
+        internal double PreviousTop { get; set; }
+        internal double PreviousBot { get; set; }
         #endregion
 
-        #region Public Methods
+        #region Internal Methods
 
         internal void CalculateSeparator(ChartCore chart, AxisOrientation source)
         {

@@ -81,7 +81,7 @@ namespace LiveCharts.Wpf.Charts.Base
             SetCurrentValue(ChartLegendProperty, new DefaultLegend());
             SetCurrentValue(DataTooltipProperty, new DefaultTooltip());
 
-            var colors = new ColorsCollection
+            Colors = new List<Color>
             {
                 Color.FromRgb(33, 149, 242),
                 Color.FromRgb(243, 67, 54),
@@ -95,8 +95,6 @@ namespace LiveCharts.Wpf.Charts.Base
                 Color.FromRgb(0, 149, 135),
                 Color.FromRgb(76, 174, 80)
             };
-
-            SetCurrentValue(ColorsProperty, colors);
 
             SizeChanged += OnSizeChanged;
             IsVisibleChanged += OnIsVisibleChanged;
@@ -236,16 +234,10 @@ namespace LiveCharts.Wpf.Charts.Base
         /// </summary>
         public bool IsMocked { get; set; }
 
-        public static readonly DependencyProperty ColorsProperty = DependencyProperty.Register(
-            "Colors", typeof(ColorsCollection), typeof(Chart), new PropertyMetadata(default(ColorsCollection)));
         /// <summary>
-        /// Gets or sets the default series color set.
+        /// Gets or sets the application level default series color list
         /// </summary>
-        public ColorsCollection Colors
-        {
-            get { return (ColorsCollection) GetValue(ColorsProperty); }
-            set { SetValue(ColorsProperty, value); }
-        }
+        public static List<Color> Colors { get; set; }
 
         public static readonly DependencyProperty AxisYProperty = DependencyProperty.Register(
             "AxisY", typeof(AxesCollection), typeof(Chart),
