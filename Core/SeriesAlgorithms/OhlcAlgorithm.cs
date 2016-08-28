@@ -39,7 +39,7 @@ namespace LiveCharts.SeriesAlgorithms
         {
             var castedSeries = (IFinancialSeriesView) View;
             
-            const double padding = 5;
+            const double padding = 1.2;
 
             var totalSpace = ChartFunctions.GetUnitWidth(AxisOrientation.X, Chart, View.ScalesXAt) - padding;
 
@@ -50,6 +50,10 @@ namespace LiveCharts.SeriesAlgorithms
             {
                 exceed = totalSpace - castedSeries.MaxColumnWidth;
                 candleWidth = castedSeries.MaxColumnWidth;
+            }
+            else
+            {
+                candleWidth = totalSpace;
             }
 
             foreach (var chartPoint in View.ActualValues.GetPoints(View))

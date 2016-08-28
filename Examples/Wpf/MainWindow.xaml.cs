@@ -55,6 +55,7 @@ namespace Wpf
 
             CartesianExamples = new List<UserControl>
             {
+                new CandleStickExample(),
                 //new JimmyTheTestsGuy(),
                 new ConstantChangesChart(),
                 new FullyResponsiveExample(),
