@@ -12,11 +12,15 @@
     <Grid>
         <lvc:CartesianChart>
             <lvc:CartesianChart.Series>
-                <lvc:LineSeries Values="1,2,3,4,5,6,7,8,9,10" DataLabels="True"></lvc:LineSeries>
+                <lvc:LineSeries Values="0, .01, 0.001" ></lvc:LineSeries>
             </lvc:CartesianChart.Series>
-            <lvc:CartesianChart.AxisX>
-                <lvc:Axis MinValue="5"></lvc:Axis>
-            </lvc:CartesianChart.AxisX>
+            <lvc:CartesianChart.AxisY>
+                <lvc:Axis MinValue="-0.11" MaxValue="0.085">
+                    <lvc:Axis.Separator>
+                        <lvc:Separator Step=".0975"></lvc:Separator>
+                    </lvc:Axis.Separator>
+                </lvc:Axis>
+            </lvc:CartesianChart.AxisY>
         </lvc:CartesianChart>
     </Grid>
 
