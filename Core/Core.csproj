@@ -81,6 +81,8 @@
     <Compile Include="Definitions\Points\IOhlcPointView.cs" />
     <Compile Include="Definitions\Points\IPieSlicePointView.cs" />
     <Compile Include="Definitions\Points\IRectanglePointView.cs" />
+    <Compile Include="Events\Delegates.cs" />
+    <Compile Include="Events\RangeChangedEventArgs.cs" />
     <Compile Include="IObservableChartPoint.cs" />
     <Compile Include="Definitions\Charts\IPieChart.cs" />
     <Compile Include="Definitions\Points\IBezierPointView.cs" />

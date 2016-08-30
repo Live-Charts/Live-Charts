@@ -25,6 +25,7 @@ using System.ComponentModel;
 using System.ComponentModel.Design.Serialization;
 using System.Windows.Controls;
 using System.Windows.Forms.Integration;
+using LiveCharts.Events;
 using LiveCharts.Wpf;
 
 namespace LiveCharts.WinForms
@@ -41,7 +42,7 @@ namespace LiveCharts.WinForms
             Chart.DataClick += DataClick;
         }
 
-        public event Action<object, ChartPoint> DataClick;
+        public event DataClickHandler DataClick;
 
         #region ChartProperties
 

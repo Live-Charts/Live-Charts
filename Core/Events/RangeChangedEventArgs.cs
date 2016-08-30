@@ -1,4 +1,4 @@
-//The MIT License(MIT)
+﻿//The MIT License(MIT)
 
 //copyright(c) 2016 Alberto Rodriguez
 
@@ -20,33 +20,25 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-using LiveCharts.Charts;
-using LiveCharts.Dtos;
-
-namespace LiveCharts.Definitions.Charts
+namespace LiveCharts.Events
 {
-    public interface IAxisView
+    public class RangeChangedEventArgs
     {
-        AxisCore Model { get; set; }
-        bool DisableAnimations { get; set; }
-        bool ShowLabels { get; set; }
-        double? MaxValue { get; set; }
-        double? MinValue { get; set; }
-        double LabelsRotation { get; set; }
-        bool IsMerged { get; set; }
-        double BarUnit { get; set; }
-        double PreviousMaxValue { get; }
-        double PreviousMinValue { get; }
-
-        CoreSize UpdateTitle(ChartCore chart, double rotationAngle = 0);
-        void SetTitleTop(double value);
-        void SetTitleLeft(double value);
-        double GetTitleLeft();
-        double GetTileTop();
-        CoreSize GetLabelSize();
-        AxisCore AsCoreElement(ChartCore chart, AxisOrientation source);
-        void RenderSeparator(SeparatorElementCore model, ChartCore chart);
-        void Clean();
-        void SetRange(double? min, double? max);
+        /// <summary>
+        /// Gets the min limit difference compared with previous state
+        /// </summary>
+        public double DeltaMin { get; internal set; }
+        /// <summary>
+        /// Gets the max limit difference compared with previous state
+        /// </summary>
+        public double DeltaMax { get; internal set; }
+        /// <summary>
+        /// Gets the current axis range
+        /// </summary>
+        public double Range { get; internal set; }
+        /// <summary>
+        /// Gets the axis that fired the change
+        /// </summary>
+        public object Axis { get; internal set; }
     }
 }

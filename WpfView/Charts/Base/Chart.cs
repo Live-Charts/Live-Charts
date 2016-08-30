@@ -38,6 +38,7 @@ using LiveCharts.Defaults;
 using LiveCharts.Definitions.Charts;
 using LiveCharts.Definitions.Series;
 using LiveCharts.Dtos;
+using LiveCharts.Events;
 using LiveCharts.Helpers;
 using LiveCharts.Wpf.Components;
 using LiveCharts.Wpf.Points;
@@ -53,7 +54,7 @@ namespace LiveCharts.Wpf.Charts.Base
         /// Chart core model, the model calculates the chart.
         /// </summary>
         protected ChartCore ChartCoreModel;
-
+        
         #region Constructors
 
         /// <summary>
@@ -205,12 +206,12 @@ namespace LiveCharts.Wpf.Charts.Base
         /// <summary>
         /// The DataClick event is fired when a user click any data point
         /// </summary>
-        public event Action<object, ChartPoint> DataClick;
+        public event DataClickHandler DataClick;
 
         /// <summary>
         /// This event is fired every time the chart updates.
         /// </summary>
-        public event Action UpdaterTick;
+        public event UpdaterTickHandler UpdaterTick;
         #endregion
 
         #region Properties

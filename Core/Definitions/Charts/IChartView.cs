@@ -25,6 +25,7 @@ using System.Collections.Generic;
 using LiveCharts.Charts;
 using LiveCharts.Definitions.Series;
 using LiveCharts.Dtos;
+using LiveCharts.Events;
 
 namespace LiveCharts.Definitions.Charts
 {
@@ -32,7 +33,7 @@ namespace LiveCharts.Definitions.Charts
     {
         ChartCore Model { get; }
 
-        event Action<object, ChartPoint> DataClick;
+        event DataClickHandler DataClick;
 
         bool IsMocked { get; set; }
         SeriesCollection Series { get; set; }

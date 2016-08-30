@@ -299,10 +299,9 @@ namespace LiveCharts.Charts
                     var rMin = (pivot.X - min) / l;
                     var rMax = 1 - rMin;
 
-                    if ((max - rMax*xi.S) - (min + rMin*xi.S) < xi.S*.01) return;
+                    if (max - rMax*xi.S - (min + rMin*xi.S) < xi.S*.01) return;
 
-                    xi.View.MinValue = min + rMin * xi.S;
-                    xi.View.MaxValue = max - rMax * xi.S;
+                    xi.View.SetRange(min + rMin*xi.S, max - rMax*xi.S);
                 }
             }
 
@@ -316,14 +315,11 @@ namespace LiveCharts.Charts
                     var rMin = (pivot.Y - min) / l;
                     var rMax = 1 - rMin;
 
-                    if ((max - rMax*yi.S) - (min + rMin*yi.S) < yi.S*.01) return;
+                    if (max - rMax*yi.S - (min + rMin*yi.S) < yi.S*.01) return;
 
-                    yi.View.MinValue = min + rMin * yi.S;
-                    yi.View.MaxValue = max - rMax * yi.S;
+                    yi.View.SetRange(min + rMin * yi.S, max - rMax * yi.S);
                 }
             }
-
-            Updater.Run();
         }
 
         public void ZoomOut(CorePoint pivot)
@@ -344,8 +340,7 @@ namespace LiveCharts.Charts
                     var rMin = (dataPivot.X - min) / l;
                     var rMax = 1 - rMin;
 
-                    xi.View.MinValue = min - rMin * xi.S;
-                    xi.View.MaxValue = max + rMax * xi.S;
+                    xi.View.SetRange(min - rMin*xi.S, max + rMax*xi.S);
                 }
             }
 
@@ -359,29 +354,15 @@ namespace LiveCharts.Charts
                     var rMin = (dataPivot.Y - min) / l;
                     var rMax = 1 - rMin;
 
-                    yi.View.MinValue = min - rMin * yi.S;
-                    yi.View.MaxValue = max + rMax * yi.S;
+                    yi.View.SetRange(min - rMin * yi.S, max + rMax * yi.S);
                 }
             }
-
-            Updater.Run();
         }
 
         public void ClearZoom()
         {
-            foreach (var xi in AxisX)
-            {
-                xi.View.MinValue = null;
-                xi.View.MaxValue = null;
-            }
-
-            foreach (var yi in AxisY)
-            {
-                yi.View.MinValue = null;
-                yi.View.MaxValue = null;
-            }
-
-            Updater.Run();
+            foreach (var xi in AxisX) xi.View.SetRange(null, null);
+            foreach (var yi in AxisY) yi.View.SetRange(null,null);
         }
 
         public void Drag(CorePoint delta)
@@ -392,8 +373,8 @@ namespace LiveCharts.Charts
             {
                 foreach (var xi in AxisX)
                 {
-                    xi.View.MaxValue = (xi.MaxValue ?? xi.TopLimit) + delta.X;
-                    xi.View.MinValue = (xi.MinValue ?? xi.BotLimit) + delta.X;
+                    xi.View.SetRange((xi.MinValue ?? xi.BotLimit) + delta.X,
+                        (xi.MaxValue ?? xi.TopLimit) + delta.X);
                 }
             }
 
@@ -401,12 +382,10 @@ namespace LiveCharts.Charts
             {
                 foreach (var yi in AxisY)
                 {
-                    yi.View.MaxValue = (yi.MaxValue ?? yi.TopLimit) + delta.Y;
-                    yi.View.MinValue = (yi.MinValue ?? yi.BotLimit) + delta.Y;
+                    yi.View.SetRange((yi.MinValue ?? yi.BotLimit) + delta.Y,
+                        (yi.MaxValue ?? yi.TopLimit) + delta.Y);
                 }
             }
-            
-            Updater.Run(false, true);
         }
 
         #endregion

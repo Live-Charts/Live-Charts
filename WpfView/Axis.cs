@@ -30,6 +30,7 @@ using System.Windows.Shapes;
 using LiveCharts.Charts;
 using LiveCharts.Definitions.Charts;
 using LiveCharts.Dtos;
+using LiveCharts.Events;
 using LiveCharts.Wpf.Components;
 using LiveCharts.Wpf.Converters;
 
@@ -40,7 +41,6 @@ namespace LiveCharts.Wpf
     /// </summary>
     public class Axis : FrameworkElement, IAxisView
     {
-
         #region Constructors
 
         /// <summary>
@@ -61,20 +61,25 @@ namespace LiveCharts.Wpf
 
         #region Events
         /// <summary>
-        /// Happens every time an axis range changes, this handler will be called before the next updater tick.
+        /// Happens every time an axis range changes by a user event (zooming or panning)
         /// </summary>
-        public event Action<double> RangeChanged;
+        public event RangeChangedHandler RangeChanged;
         #endregion
 
         #region properties
-
         private TextBlock TitleBlock { get; set; }
-
         /// <summary>
         /// Gets the Model of the axis, the model is used a DTO to communicate with the core of the library.
         /// </summary>
         public AxisCore Model { get; set; }
-
+        /// <summary>
+        /// Gets previous Min Value
+        /// </summary>
+        public double PreviousMinValue { get; internal set; }
+        /// <summary>
+        /// Gets previous Max Value
+        /// </summary>
+        public double PreviousMaxValue { get; internal set; }
         #endregion
 
         #region Dependency Properties
@@ -153,7 +158,7 @@ namespace LiveCharts.Wpf
 
         public static readonly DependencyProperty MinValueProperty = DependencyProperty.Register(
             "MinValue", typeof (double?), typeof (Axis),
-            new PropertyMetadata(null, RangeChangedCallback));
+            new PropertyMetadata(null, UpdateChart()));
         /// <summary>
         /// Gets or sets axis min value, set it to null to make this property Auto, default value is null
         /// </summary>
@@ -407,6 +412,24 @@ namespace LiveCharts.Wpf
             return Model;
         }
 
+        public void SetRange(double? min, double? max)
+        {
+            var bMax = MaxValue ?? Model.TopLimit;
+            var bMin = MinValue ?? Model.BotLimit;
+
+            MaxValue = max;
+            MinValue = min;
+
+            Model.Chart.Updater.Run(false, true);
+
+            OnRangeChanged(new RangeChangedEventArgs
+            {
+                Range = (MaxValue ?? Model.TopLimit) - (MinValue ?? Model.BotLimit),
+                DeltaMax = bMax - (MaxValue ?? Model.TopLimit),
+                DeltaMin = bMin - (MinValue ?? Model.BotLimit)
+            });
+        }
+
         #endregion
 
         internal TextBlock BindATextBlock()
@@ -448,7 +471,7 @@ namespace LiveCharts.Wpf
             return l;
         }
 
-        private static PropertyChangedCallback UpdateChart(bool animate = false)
+        private static PropertyChangedCallback UpdateChart(bool animate = false, bool updateNow = false)
         {
             return (o, args) =>
             {
@@ -456,17 +479,8 @@ namespace LiveCharts.Wpf
                 if (wpfAxis == null) return;
 
                 if (wpfAxis.Model != null)
-                    wpfAxis.Model.Chart.Updater.Run(animate);
+                    wpfAxis.Model.Chart.Updater.Run(animate, updateNow);
             };
-        }
-
-        private static void RangeChangedCallback(DependencyObject o, DependencyPropertyChangedEventArgs e)
-        {
-            var wpfAxis = o as Axis;
-            if (wpfAxis == null) return;
-
-            wpfAxis.OnRangeChanged();
-            UpdateChart()(o, e);
         }
 
         private static void LabelsVisibilityChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
@@ -485,10 +499,9 @@ namespace LiveCharts.Wpf
             UpdateChart()(dependencyObject, dependencyPropertyChangedEventArgs);
         }
 
-        protected void OnRangeChanged()
+        protected void OnRangeChanged(RangeChangedEventArgs e)
         {
-            var r = MinValue == null || MaxValue == null ? double.NaN : MaxValue - MinValue;
-            if (RangeChanged != null) RangeChanged.Invoke(r ?? double.NaN);
+            if (RangeChanged != null) RangeChanged.Invoke(e);
         }
     }
 }
