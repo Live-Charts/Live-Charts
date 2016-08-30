@@ -425,8 +425,9 @@ namespace LiveCharts.Wpf
             OnRangeChanged(new RangeChangedEventArgs
             {
                 Range = (MaxValue ?? Model.TopLimit) - (MinValue ?? Model.BotLimit),
-                DeltaMax = bMax - (MaxValue ?? Model.TopLimit),
-                DeltaMin = bMin - (MinValue ?? Model.BotLimit)
+                RightLimitChange = bMax - (MaxValue ?? Model.TopLimit),
+                LeftLimitChange = bMin - (MinValue ?? Model.BotLimit),
+                Axis = this
             });
         }
 
