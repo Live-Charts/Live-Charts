@@ -192,7 +192,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="CartesianChart\NegativeStackedRow\NEgativeStackedRowExample.xaml">
+    <Page Include="CartesianChart\NegativeStackedRow\NegativeStackedRowExample.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -361,8 +361,8 @@
     <Compile Include="CartesianChart\FullyResponsive\FullyResponsiveExample.xaml.cs">
       <DependentUpon>FullyResponsiveExample.xaml</DependentUpon>
     </Compile>
-    <Compile Include="CartesianChart\NegativeStackedRow\NEgativeStackedRowExample.xaml.cs">
-      <DependentUpon>NEgativeStackedRowExample.xaml</DependentUpon>
+    <Compile Include="CartesianChart\NegativeStackedRow\NegativeStackedRowExample.xaml.cs">
+      <DependentUpon>NegativeStackedRowExample.xaml</DependentUpon>
     </Compile>
     <Compile Include="CartesianChart\PointShapeLine\PointShapeLineExample.cs" />
     <Compile Include="CartesianChart\PointState\PointStateExample.xaml.cs">

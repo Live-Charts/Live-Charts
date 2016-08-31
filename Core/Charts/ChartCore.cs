@@ -398,7 +398,7 @@ namespace LiveCharts.Charts
             var stackedColumns = stackables.SelectMany(x => x.ActualValues.GetPoints(x))
                 .GroupBy(x => stackAt == AxisOrientation.X ? x.Y : x.X);
 
-            double maxLeft = 0, maxRight = 0;
+            double mostLeft = 0, mostRight = 0;
 
             foreach (var column in stackedColumns)
             {
@@ -407,8 +407,10 @@ namespace LiveCharts.Charts
                 foreach (var item in column)
                 {
                     var s = stackAt == AxisOrientation.X ? item.X : item.Y;
-                    if (s < 0) sumLeft += s;
-                    else sumRight += s;
+                    if (s < 0)
+                        sumLeft += s;
+                    else
+                        sumRight += s;
                 }
 
                 var lastLeft = 0d;
@@ -458,8 +460,8 @@ namespace LiveCharts.Charts
                     }
                 }
 
-                if (sumLeft > maxLeft) maxLeft = sumLeft;
-                if (sumRight > maxRight) maxRight = sumRight;
+                if (sumLeft < mostLeft) mostLeft = sumLeft;
+                if (sumRight > mostRight) mostRight = sumRight;
             }
 
             if (stackAt == AxisOrientation.X)
@@ -471,16 +473,16 @@ namespace LiveCharts.Charts
                 }
                 else
                 {
-                    if (maxLeft < AxisX[stackIndex].BotLimit)
+                    if (mostLeft < AxisX[stackIndex].BotLimit)
                         // ReSharper disable once CompareOfFloatsByEqualityOperator
-                        AxisX[stackIndex].BotLimit = maxLeft == 0
+                        AxisX[stackIndex].BotLimit = mostLeft == 0
                             ? 0
-                            : ((int) (maxLeft/AxisX[stackIndex].S) - 1)*AxisX[stackIndex].S;
-                    if (maxRight > AxisX[stackIndex].TopLimit)
+                            : ((int) (mostLeft/AxisX[stackIndex].S) - 1)*AxisX[stackIndex].S;
+                    if (mostRight > AxisX[stackIndex].TopLimit)
                         // ReSharper disable once CompareOfFloatsByEqualityOperator
-                        AxisX[stackIndex].TopLimit = maxRight == 0
+                        AxisX[stackIndex].TopLimit = mostRight == 0
                             ? 0
-                            : ((int) (maxRight/AxisX[stackIndex].S) + 1)*AxisX[stackIndex].S;
+                            : ((int) (mostRight/AxisX[stackIndex].S) + 1)*AxisX[stackIndex].S;
                 }
             }
 
@@ -493,16 +495,16 @@ namespace LiveCharts.Charts
                 }
                 else
                 {
-                    if (maxLeft < AxisY[stackIndex].BotLimit)
+                    if (mostLeft < AxisY[stackIndex].BotLimit)
                         // ReSharper disable once CompareOfFloatsByEqualityOperator
-                        AxisY[stackIndex].BotLimit = maxLeft == 0
+                        AxisY[stackIndex].BotLimit = mostLeft == 0
                             ? 0
-                            : ((int) (maxLeft/AxisY[stackIndex].S) - 1)*AxisY[stackIndex].S;
-                    if (maxRight > AxisY[stackIndex].TopLimit)
+                            : ((int) (mostLeft/AxisY[stackIndex].S) - 1)*AxisY[stackIndex].S;
+                    if (mostRight > AxisY[stackIndex].TopLimit)
                         // ReSharper disable once CompareOfFloatsByEqualityOperator
-                        AxisY[stackIndex].TopLimit = maxRight == 0
+                        AxisY[stackIndex].TopLimit = mostRight == 0
                             ? 0
-                            : ((int) (maxRight/AxisY[stackIndex].S) + 1)*AxisY[stackIndex].S;
+                            : ((int) (mostRight/AxisY[stackIndex].S) + 1)*AxisY[stackIndex].S;
                 }
             }
         }
