@@ -178,7 +178,7 @@ namespace LiveCharts.Helpers
         {
             _source.Add((T)value);
             OnCollectionChanged(null, new[] {(T) value});
-            return _source.Count;
+            return _source.IndexOf((T)value);
         }
 
         /// <summary>
