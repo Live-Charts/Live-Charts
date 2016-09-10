@@ -33,6 +33,8 @@
 * **[Chat](https://gitter.im/beto-rodriguez/Live-Charts)**
 * **Questions and support?**, we are always happy to help you at our chat, if you require so you can also try [Stack Overflow](http://stackoverflow.com/questions/tagged/livecharts).
 
+<hr/>
+
 **What is Live-Charts?**
 
 Animated, MVVM orientated .Net charts, for WPF, WinForms under MIT Licence, written in C#, LiveCharts listens for any change in your data automatically and updates UI.
