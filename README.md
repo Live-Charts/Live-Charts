@@ -31,7 +31,7 @@
 
 * **[WebSite](http://lvcharts.net/)**
 * **[Chat](https://gitter.im/beto-rodriguez/Live-Charts)**
-* **Questions and support?, we are always happy to help you at our chat, if you require so you can also try [Stack Overflow](http://stackoverflow.com/questions/tagged/livecharts).
+* **Questions and support?**, we are always happy to help you at our chat, if you require so you can also try [Stack Overflow](http://stackoverflow.com/questions/tagged/livecharts).
 
 **What is Live-Charts?**
 
