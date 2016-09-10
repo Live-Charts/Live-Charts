@@ -1,3 +1,5 @@
+Instructions: replace text surrounded by '*' with your case, please delete this line.
+
 #### How to reproduce?
 
 *Explain how we can get this issue, if you created a repo with the issue, please add the link, blank if you are submitting a suggestion or improvement*
