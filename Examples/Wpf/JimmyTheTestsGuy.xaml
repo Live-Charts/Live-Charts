@@ -10,18 +10,35 @@
              d:DesignWidth="500"
              d:DataContext="{d:DesignInstance local:JimmyTheTestsGuy}">
     <Grid>
+        <Grid.Resources>
+            <BooleanToVisibilityConverter x:Key="b2v"/>
+        </Grid.Resources>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+        </Grid.RowDefinitions>
         <lvc:CartesianChart>
-            <lvc:CartesianChart.Series>
-                <lvc:LineSeries Values="0, .01, 0.001" ></lvc:LineSeries>
-            </lvc:CartesianChart.Series>
             <lvc:CartesianChart.AxisY>
-                <lvc:Axis MinValue="-0.11" MaxValue="0.085">
-                    <lvc:Axis.Separator>
-                        <lvc:Separator Step=".0975"></lvc:Separator>
-                    </lvc:Axis.Separator>
-                </lvc:Axis>
+                <lvc:Axis Foreground="DodgerBlue" Title="Blue Axis" Visibility="{Binding ElementName=blue,Converter={StaticResource ResourceKey=b2v},Path=IsChecked}"  />
+                <lvc:Axis Foreground="IndianRed" Title="Red Axis" Position="RightTop" Separator="{x:Static lvc:DefaultAxes.CleanSeparator}" Visibility="{Binding ElementName=red,Converter={StaticResource ResourceKey=b2v},Path=IsChecked}"  />
+                <lvc:Axis Foreground="DarkOliveGreen" Title="Green Axis" Position="RightTop" Separator="{x:Static lvc:DefaultAxes.CleanSeparator}" Visibility="{Binding ElementName=green,Converter={StaticResource ResourceKey=b2v},Path=IsChecked}"  />
             </lvc:CartesianChart.AxisY>
+            <lvc:CartesianChart.Series>
+                <lvc:LineSeries Values="1,5,3,5,3" ScalesYAt="0" Visibility="{Binding ElementName=blue,Converter={StaticResource ResourceKey=b2v},Path=IsChecked}"  />
+                <!--Scales at blue axis, Axis[0]-->
+                <!--<lvc:LineSeries Values="20,30,70,20,10"  ScalesYAt="1" Visibility="{Binding ElementName=red,Converter={StaticResource ResourceKey=b2v},Path=IsChecked}"  />-->
+                <!--Scales at red axis, Axis[1]-->
+                <!--<lvc:LineSeries Values="600,300,200,600,800"  ScalesYAt="2" Visibility="{Binding ElementName=green,Converter={StaticResource ResourceKey=b2v},Path=IsChecked}"  />-->
+                <!--Scales at green axis, Axis[2]-->
+            </lvc:CartesianChart.Series>
         </lvc:CartesianChart>
+        <TextBlock Grid.Row="1" HorizontalAlignment="Right" Text="Blue"
+                   Visibility="{Binding ElementName=blue,Converter={StaticResource ResourceKey=b2v},Path=IsChecked}"
+                   ></TextBlock>
+        <CheckBox Grid.Row="1" Name="blue" Content="Blue"></CheckBox>
+        <CheckBox Grid.Row="2" Name="red" Content="Red"></CheckBox>
+        <CheckBox Grid.Row="3" Name="green" Content="Green"></CheckBox>
     </Grid>
-
 </UserControl>

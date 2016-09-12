@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Windows;
 using LiveCharts;
 using LiveCharts.Defaults;
 using LiveCharts.Wpf;
@@ -18,7 +19,6 @@ namespace Wpf
         }
 
         public SeriesCollection SeriesCollection { get; set; }
-        
     }
 }
 

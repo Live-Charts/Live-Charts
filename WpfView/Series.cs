@@ -461,9 +461,7 @@ namespace LiveCharts.Wpf
 
             PreviousVisibility = Visibility;
 
-            if (PreviousVisibility != null)
-                Model.Chart.Updater.Run(false, false); // this method should be called as (false, true)
-                                                       // sadly this throws an exception in VisualStudio
+            if (PreviousVisibility != null) Model.Chart.Updater.Run(false, false);
 
             if (Visibility == Visibility.Collapsed || Visibility == Visibility.Hidden)
             {
