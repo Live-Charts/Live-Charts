@@ -154,7 +154,7 @@ namespace LiveCharts
 
             var source = this.ToList(); //copy it, to prevent async issues
 
-            for (var index = 0; index < Count; index++)
+            for (var index = 0; index < source.Count; index++)
             {
                 var value = source[index];
                 if (isObservable)
