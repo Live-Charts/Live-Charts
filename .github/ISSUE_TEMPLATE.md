@@ -6,7 +6,7 @@ Instructions: replace text surrounded by '*' with your case, please delete this 
 
 #### Extra notes
 
-*Explain what you expect, feedback, images or anything you concider necessary*
+*Explain what you expect, feedback, images or anything you consider necessary*
 
 #### I am using
 
