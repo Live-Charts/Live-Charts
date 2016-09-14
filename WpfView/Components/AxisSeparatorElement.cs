@@ -21,6 +21,7 @@
 //SOFTWARE.
 
 using System;
+using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -53,10 +54,16 @@ namespace LiveCharts.Wpf.Components
         public LabelEvaluation UpdateLabel(string text, AxisCore axis, AxisOrientation source)
         {
             TextBlock.Text = text;
-            TextBlock.UpdateLayout();
+
+            var formattedText = new FormattedText(
+                  TextBlock.Text,
+                  CultureInfo.CurrentUICulture,
+                  FlowDirection.LeftToRight,
+                  new Typeface(TextBlock.FontFamily, TextBlock.FontStyle, TextBlock.FontWeight, TextBlock.FontStretch),
+                  TextBlock.FontSize, Brushes.Black);
 
             var transform = new LabelEvaluation(axis.View.LabelsRotation,
-                TextBlock.ActualWidth, TextBlock.ActualHeight, axis, source);
+                formattedText.Width, formattedText.Height, axis, source);
 
             TextBlock.RenderTransform = Math.Abs(transform.LabelAngle) > 1
                 ? new RotateTransform(transform.LabelAngle)

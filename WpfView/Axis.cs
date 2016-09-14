@@ -21,6 +21,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Globalization;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -361,10 +362,16 @@ namespace LiveCharts.Wpf
                 chart.View.AddToView(TitleBlock);
             }
 
-            TitleBlock.UpdateLayout();
+            var formattedText = new FormattedText(
+                 TitleBlock.Text,
+                 CultureInfo.CurrentUICulture,
+                 FlowDirection.LeftToRight,
+                 new Typeface(TitleBlock.FontFamily, TitleBlock.FontStyle, TitleBlock.FontWeight, TitleBlock.FontStretch),
+                 TitleBlock.FontSize, Brushes.Black);
+
             return string.IsNullOrWhiteSpace(Title)
                 ? new CoreSize()
-                : new CoreSize(TitleBlock.RenderSize.Width, TitleBlock.RenderSize.Height);
+                : new CoreSize(TitleBlock.Width, formattedText.Height);
         }
 
         public void SetTitleTop(double value)
