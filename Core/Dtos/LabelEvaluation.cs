@@ -24,9 +24,9 @@ using System;
 
 namespace LiveCharts.Dtos
 {
-    public class LabelEvaluation
+    public struct LabelEvaluation
     {
-        public LabelEvaluation(double angle, double w, double h, AxisCore axis, AxisOrientation source)
+        public LabelEvaluation(double angle, double w, double h, AxisCore axis, AxisOrientation source) : this()
         {
             const double padding = 4;
 

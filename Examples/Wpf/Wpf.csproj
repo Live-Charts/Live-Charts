@@ -431,6 +431,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="PanelExample.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="PieChart\PieChartExample.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -443,6 +447,9 @@
   <ItemGroup>
     <Compile Include="Maps\GeoMapExample.xaml.cs">
       <DependentUpon>GeoMapExample.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PanelExample.xaml.cs">
+      <DependentUpon>PanelExample.xaml</DependentUpon>
     </Compile>
     <Compile Include="PieChart\PieChartExample.xaml.cs">
       <DependentUpon>PieChartExample.xaml</DependentUpon>

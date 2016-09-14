@@ -7,34 +7,28 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="600" Width="750"
         WindowStartupLocation="CenterScreen"
+        WindowState="Maximized"
         d:DataContext="{d:DesignInstance local:MainWindow}">
     <!--<Window.Resources>
         <ResourceDictionary Source="pack://application:,,,/LiveCharts.Wpf;component/Themes/LightMaterial.xaml"></ResourceDictionary>
     </Window.Resources>-->
     <ScrollViewer>
         <StackPanel Margin="15 0">
-            <Image Source="lvlogo.png" Height="50" Margin="15" Visibility="Collapsed"></Image>
-            <TextBlock TextWrapping="Wrap" Visibility="Collapsed">
-            Hey, welcome to LiveCharts examples, LiveCharts is designed to be powerful, customizable, maintainable and easy to use for the user.
+            <Image Source="lvlogo.png" Height="50" Margin="15"></Image>
+            <TextBlock TextWrapping="Wrap">
+            Welcome to LiveCharts examples, LiveCharts is designed to be powerful, customizable, maintainable and easy to use for the user.
             </TextBlock>
-            <TextBlock TextWrapping="Wrap" Visibility="Collapsed">
-            All the charts are responsive, what does this means? when you resize a chart or your data changes the UI will update automatically, this will save you
+            <TextBlock TextWrapping="Wrap" >
+            All the charts are really responsive, what does this means? when you resize a chart or your data changes the UI will update automatically, this will save you
             hours, and you will only need to focus in the logic of your business, let LiveCharts handle the plotting.
             </TextBlock>
-            <TextBlock TextWrapping="Wrap" Visibility="Collapsed">
+            <TextBlock TextWrapping="Wrap" >
                 There is a folder in this project with the code behind of each view you see in the next carousel, to reach the code behind, for example in the cartesian chart carousel go to the CartesialChart folder in this project, and then open the desired user view.
             </TextBlock>
-            <!--<TextBlock TextWrapping="Wrap" Margin="15" Padding="10">
-                <TextBlock.Background>
-                    <SolidColorBrush Color="YellowGreen" Opacity=".5"></SolidColorBrush>
-                </TextBlock.Background>
-                <Bold>Note:</Bold> This examples are only for 0.7.0 version and it is only alpha, if you are new to LiveCharts I reccomend you to wait for 0.7 version, it will be ready in no more than one week,
-            you could also find examples for the latest nuget package
-            <Hyperlink NavigateUri="https://github.com/beto-rodriguez/Live-Charts/tree/83d888974fca25161e0b2e9389f0611d91043449/WPFExamples" RequestNavigate="Hyperlink_OnRequestNavigate">
-                here
-            </Hyperlink>
-            </TextBlock>-->
             <Separator Margin="10" ></Separator>
+
+            <local:PanelExample Height="650"></local:PanelExample>
+
             <Grid Height="500">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"></ColumnDefinition>
