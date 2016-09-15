@@ -880,46 +880,67 @@ namespace LiveCharts.Wpf.Charts.Base
             var r = new Random();
             SeriesCollection mockedCollection;
 
+            Func<IChartValues> getValuesForPies = () =>
+            {
+                var gvt = Type.GetType("LiveCharts.Geared.GearedValues`1, LiveCharts.Geared");
+                if (gvt != null) gvt = gvt.MakeGenericType(typeof(ObservableValue));
+
+                var obj = gvt != null
+                    ? (IChartValues)Activator.CreateInstance(gvt)
+                    : new ChartValues<ObservableValue>();
+
+                obj.Add(new ObservableValue(r.Next(0, 100)));
+
+                return obj;
+            };
+
             if (this is PieChart)
             {
-
                 mockedCollection = new SeriesCollection
                 {
                     new PieSeries
                     {
-                        Values = new ChartValues<ObservableValue> {new ObservableValue(r.Next(10, 100)) }
+                        Values = getValuesForPies()
                     },
                     new PieSeries
                     {
-                        Values = new ChartValues<ObservableValue> {new ObservableValue(r.Next(10, 100)) }
+                        Values = getValuesForPies()
                     },
                     new PieSeries
                     {
-                        Values = new ChartValues<ObservableValue> {new ObservableValue(r.Next(10, 100)) }
+                        Values = getValuesForPies()
                     },
                     new PieSeries
                     {
-                        Values = new ChartValues<ObservableValue> {new ObservableValue(r.Next(10, 100)) }
+                        Values = getValuesForPies()
                     }
                 };
             }
             else
             {
-                Func<int, int,ChartValues<ObservableValue>> getRandomValues =
-                    (from, to) => new ChartValues<ObservableValue>
-                    {
-                        new ObservableValue(r.Next(from, to)),
-                        new ObservableValue(r.Next(from, to)),
-                        new ObservableValue(r.Next(from, to)),
-                        new ObservableValue(r.Next(from, to)),
-                        new ObservableValue(r.Next(from, to))
-                    };
+                Func<IChartValues> getRandomValues = () =>
+                {
+                    var gvt = Type.GetType("LiveCharts.Geared.GearedValues`1, LiveCharts.Geared");
+                    if (gvt != null) gvt = gvt.MakeGenericType(typeof(ObservableValue));
+
+                    var obj = gvt != null
+                        ? (IChartValues) Activator.CreateInstance(gvt)
+                        : new ChartValues<ObservableValue>();
+
+                    obj.Add(new ObservableValue(r.Next(0,100)));
+                    obj.Add(new ObservableValue(r.Next(0, 100)));
+                    obj.Add(new ObservableValue(r.Next(0, 100)));
+                    obj.Add(new ObservableValue(r.Next(0, 100)));
+                    obj.Add(new ObservableValue(r.Next(0, 100)));
+
+                    return obj;
+                };
 
                 mockedCollection = new SeriesCollection
                 {
-                    new LineSeries {Values = getRandomValues(0, 100)},
-                    new LineSeries {Values = getRandomValues(0, 100)},
-                    new LineSeries {Values = getRandomValues(0, 100), Fill = Brushes.Transparent}
+                    new LineSeries {Values = getRandomValues()},
+                    new LineSeries {Values = getRandomValues()},
+                    new LineSeries {Values = getRandomValues()}
                 };
             }
 

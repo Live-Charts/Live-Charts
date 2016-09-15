@@ -15,8 +15,14 @@ namespace Wpf
         {
             InitializeComponent();
 
+            From = 10;
+            To = 50;
+
             DataContext = this;
         }
+
+        public double From { get; set; }
+        public double To { get; set; }
 
         public SeriesCollection SeriesCollection { get; set; }
     }

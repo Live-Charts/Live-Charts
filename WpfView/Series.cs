@@ -23,6 +23,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -469,18 +470,24 @@ namespace LiveCharts.Wpf
             }
         }
 
-        private static ChartValues<ObservableValue> GetValuesForDesigner()
+        private static IChartValues GetValuesForDesigner()
         {
             var r = new Random();
-            return new ChartValues<ObservableValue>
-            {
-                new ObservableValue(r.Next(0, 100)),
-                new ObservableValue(r.Next(0, 100)),
-                new ObservableValue(r.Next(0, 100)),
-                new ObservableValue(r.Next(0, 100)),
-                new ObservableValue(r.Next(0, 100)),
-                new ObservableValue(r.Next(0, 100))
-            };
+
+            var gvt =  Type.GetType("LiveCharts.Geared.GearedValues`1, LiveCharts.Geared");
+            if (gvt != null) gvt = gvt.MakeGenericType(typeof(ObservableValue));
+
+            var obj = gvt != null
+                ? (IChartValues) Activator.CreateInstance(gvt)
+                : new ChartValues<ObservableValue>();
+
+            obj.Add(new ObservableValue(r.Next(0, 100)));
+            obj.Add(new ObservableValue(r.Next(0, 100)));
+            obj.Add(new ObservableValue(r.Next(0, 100)));
+            obj.Add(new ObservableValue(r.Next(0, 100)));
+            obj.Add(new ObservableValue(r.Next(0, 100)));
+
+            return obj;
         }
 
         #region Obsoletes

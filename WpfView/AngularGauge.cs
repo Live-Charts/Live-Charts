@@ -80,6 +80,8 @@ namespace LiveCharts.Wpf
                 IsControlLaoded = true;
                 Draw();
             };
+
+            Slices = new Dictionary<AngularSection, PieSlice>();
         }
 
         #region Properties
@@ -88,6 +90,7 @@ namespace LiveCharts.Wpf
         private Path Stick { get; set; }
         private RotateTransform StickRotateTransform { get; set; }
         private bool IsControlLaoded { get; set; }
+        private Dictionary<AngularSection, PieSlice> Slices { get; set; }
 
         public static readonly DependencyProperty WedgeProperty = DependencyProperty.Register(
             "Wedge", typeof (double), typeof (AngularGauge), 
@@ -292,13 +295,13 @@ namespace LiveCharts.Wpf
             }
         }
 
-        private void Draw()
+        internal void Draw()
         {
             if (!IsControlLaoded) return;
 
             //No cache for you gauge :( kill and redraw please
             foreach (var child in Canvas.Children.Cast<UIElement>()
-                .Where(x => !Equals(x, Stick)).ToArray())
+                .Where(x => !Equals(x, Stick) && !(x is AngularSection) && !(x is PieSlice)).ToArray())
                 Canvas.Children.Remove(child);
 
             Wedge = Wedge > 360 ? 360 : (Wedge < 0 ? 0 : Wedge);
@@ -318,34 +321,27 @@ namespace LiveCharts.Wpf
             var ticksHj = d*.47;
             var labelsHj = d*.44;
 
-            if (Sections.Any())
+            foreach (var section in Sections)
             {
-                SectionsInnerRadius = SectionsInnerRadius > 1
-                    ? 1
-                    : (SectionsInnerRadius < 0
-                        ? 0
-                        : SectionsInnerRadius);
-                
-                foreach (var section in Sections)
-                {
-                    var start = LinearInterpolation(fromAlpha, toAlpha, 
-                        FromValue, ToValue, section.FromValue)+180;
-                    var end = LinearInterpolation(fromAlpha, toAlpha, 
-                        FromValue, ToValue, section.ToValue)+180;
+                PieSlice slice;
 
-                    var slice = new PieSlice
-                    {
-                        RotationAngle = start,
-                        WedgeAngle = end - start,
-                        Radius = d*.5,
-                        InnerRadius = d*.5*SectionsInnerRadius,
-                        Fill = section.Fill
-                    };
-                    Canvas.Children.Add(slice);
-                    Canvas.SetTop(slice, ActualHeight*.5);
-                    Canvas.SetLeft(slice, ActualWidth*.5);
+                section.Owner = this;
+
+                if (!Slices.TryGetValue(section, out slice))
+                {
+                    slice = new PieSlice();
+                    Slices[section] = slice;
                 }
+
+                var p = (Canvas)section.Parent;
+                if (p != null) p.Children.Remove(section);
+                Canvas.Children.Add(section);
+                var ps = (Canvas)slice.Parent;
+                if (ps != null) ps.Children.Remove(slice);
+                Canvas.Children.Add(slice);
             }
+
+            UpdateSections();
 
             for (var i = FromValue; i <= ToValue; i += TicksStep)
             {
@@ -400,6 +396,43 @@ namespace LiveCharts.Wpf
                     new Binding { Path = new PropertyPath(TicksStrokeThicknessProperty), Source = this });
             }
             MoveStick();
+        }
+
+        internal void UpdateSections()
+        {
+            if (!IsControlLaoded) return;
+
+            var fromAlpha = (360 - Wedge) * .5;
+            var toAlpha = 360 - fromAlpha;
+            var d = ActualWidth < ActualHeight ? ActualWidth : ActualHeight;
+
+            if (Sections.Any())
+            {
+                SectionsInnerRadius = SectionsInnerRadius > 1
+                    ? 1
+                    : (SectionsInnerRadius < 0
+                        ? 0
+                        : SectionsInnerRadius);
+
+                foreach (var section in Sections)
+                {
+                    var slice = Slices[section];
+                    
+                    Canvas.SetTop(slice, ActualHeight * .5);
+                    Canvas.SetLeft(slice, ActualWidth * .5);
+              
+                    var start = LinearInterpolation(fromAlpha, toAlpha,
+                        FromValue, ToValue, section.FromValue) + 180;
+                    var end = LinearInterpolation(fromAlpha, toAlpha,
+                        FromValue, ToValue, section.ToValue) + 180;
+
+                    slice.RotationAngle = start;
+                    slice.WedgeAngle = end - start;
+                    slice.Radius = d*.5;
+                    slice.InnerRadius = d*.5*SectionsInnerRadius;
+                    slice.Fill = section.Fill;
+                }
+            }
         }
 
         private static double LinearInterpolation(double fromA, double toA, double fromB, double toB, double value)
