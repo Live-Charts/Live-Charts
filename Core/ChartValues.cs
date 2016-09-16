@@ -47,6 +47,15 @@ namespace LiveCharts
             NoisyCollectionChanged += OnChanged;
         }
 
+        /// <summary>
+        /// Initializes a new instance of chart values, with a given collection
+        /// </summary>
+        public ChartValues(IEnumerable<T> collection) : base(collection)
+        {
+            Trackers = new Dictionary<ISeriesView, PointTracker>();
+            NoisyCollectionChanged += OnChanged;
+        }
+
         #endregion
 
         #region Properties
