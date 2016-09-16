@@ -79,6 +79,8 @@ namespace LiveCharts.Wpf.Points
             {
                 HighToLowLine.Y1 = High;
                 HighToLowLine.Y2 = Low;
+                HighToLowLine.X1 = center;
+                HighToLowLine.X2 = center;
 
                 OpenToCloseRectangle.Width = Width;
                 OpenToCloseRectangle.Height = Math.Abs(Open - Close);

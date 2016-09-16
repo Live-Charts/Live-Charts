@@ -446,6 +446,5 @@ namespace LiveCharts.Wpf
 
             return m*(value - p1.X) + p1.Y;
         }
-
     }
 }

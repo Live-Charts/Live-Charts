@@ -10,10 +10,6 @@
              d:DesignWidth="500"
              d:DataContext="{d:DesignInstance local:JimmyTheTestsGuy}">
     <Grid>
-        <lvc:AngularGauge Value="10">
-            <lvc:AngularGauge.Sections>
-                <lvc:AngularSection FromValue="5" ToValue="{Binding To, PresentationTraceSources.TraceLevel=High}" Fill="Red"></lvc:AngularSection>
-            </lvc:AngularGauge.Sections>
-        </lvc:AngularGauge>
+        <lvc:Gauge Uses360Mode="True" FromColor="Blue" ToColor="DarkRed" Value=".1"></lvc:Gauge>
     </Grid>
 </UserControl>

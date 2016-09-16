@@ -83,12 +83,18 @@ namespace LiveCharts.Wpf.Points
             {
                 HighToLowLine.Y1 = High;
                 HighToLowLine.Y2 = Low;
+                HighToLowLine.X1 = center;
+                HighToLowLine.X2 = center;
 
                 OpenLine.Y1 = Open;
                 OpenLine.Y2 = Open;
+                OpenLine.X1 = Left;
+                OpenLine.X2 = center;
 
                 CloseLine.Y1 = Close;
                 CloseLine.Y2 = Close;
+                CloseLine.X1 = center;
+                CloseLine.X2 = Left;
 
                 if (DataLabel != null)
                 {
