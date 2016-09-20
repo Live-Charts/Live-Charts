@@ -10,6 +10,7 @@
              d:DesignWidth="500"
              d:DataContext="{d:DesignInstance local:JimmyTheTestsGuy}">
     <Grid>
-        <lvc:Gauge Uses360Mode="True" FromColor="Blue" ToColor="DarkRed" Value=".1"></lvc:Gauge>
+        <lvc:Gauge Uses360Mode="True" FromColor="Blue" ToColor="DarkRed" Value=".4"></lvc:Gauge>
     </Grid>
+    
 </UserControl>
