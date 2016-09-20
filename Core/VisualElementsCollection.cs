@@ -21,6 +21,7 @@
 //SOFTWARE.
 
 using System.Collections.Generic;
+using LiveCharts.Charts;
 using LiveCharts.Definitions.Charts;
 using LiveCharts.Helpers;
 
@@ -39,10 +40,12 @@ namespace LiveCharts
             NoisyCollectionChanged += OnNoisyCollectionChanged;
         }
 
+        public ChartCore Chart { get; set; }
+
         private void OnNoisyCollectionChanged(IEnumerable<ICartesianVisualElement> oldItems, IEnumerable<ICartesianVisualElement> newItems)
         {
-            if (oldItems != null) foreach (var oltItem in oldItems) oltItem.Remove();
-            if (newItems != null) foreach (var newItem in newItems) newItem.RequiresAdd = true;
+            if (oldItems != null) foreach (var oltItem in oldItems) oltItem.Remove(Chart);
+            if (newItems != null) foreach (var newItem in newItems) newItem.AddOrMove(Chart);
         }
     }
 }

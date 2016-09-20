@@ -10,7 +10,15 @@
              d:DesignWidth="500"
              d:DataContext="{d:DesignInstance local:JimmyTheTestsGuy}">
     <Grid>
-        <lvc:Gauge Uses360Mode="True" FromColor="Blue" ToColor="DarkRed" Value=".4"></lvc:Gauge>
+        <Button Height="30" Width="50" Click="ButtonBase_OnClick" VerticalAlignment="Top" HorizontalAlignment="Left">Add</Button>
+        <Button Height="30" Width="50" Click="RemoveOnClick" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="100 0 0 0">Remove</Button>
+        <Button Height="30" Width="50" Click="ClearOnClick" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="200 0 0 0">Clear</Button>
+        <Button Height="30" Width="50" Click="Move" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="300 0 0 0">Move</Button>
+        <lvc:CartesianChart VisualElements="{Binding Visuals}" Panel.ZIndex="-1">
+            <lvc:CartesianChart.Series>
+                <lvc:LineSeries Values="1,7,3,8,3,6"></lvc:LineSeries>
+            </lvc:CartesianChart.Series>
+        </lvc:CartesianChart>
     </Grid>
     
 </UserControl>

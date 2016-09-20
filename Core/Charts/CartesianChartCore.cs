@@ -153,8 +153,7 @@ namespace LiveCharts.Charts
         {
             foreach (var visualElement in ((ICartesianChart) View).VisualElements)
             {
-                visualElement.Chart = View;
-                visualElement.AddOrMove();
+                visualElement.AddOrMove(this);
             }
         }
 

@@ -20,17 +20,17 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
+using LiveCharts.Charts;
+
 namespace LiveCharts.Definitions.Charts
 {
     public interface ICartesianVisualElement
     {
-        IChartView Chart { get; set; }
-        bool RequiresAdd { get; set; }
         double X { get; set; }
         double Y { get; set; }
         int AxisX { get; set; }
         int AxisY { get; set; }
-        void AddOrMove();
-        void Remove();
+        void AddOrMove(ChartCore chart);
+        void Remove(ChartCore chart);
     }
 }
