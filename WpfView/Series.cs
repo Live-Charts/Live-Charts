@@ -474,7 +474,7 @@ namespace LiveCharts.Wpf
         {
             var r = new Random();
 
-            var gvt =  Type.GetType("LiveCharts.Geared.GearedValues`1, LiveCharts.Geared");
+            var gvt = Type.GetType("LiveCharts.Geared.GearedValues`1, LiveCharts.Geared");
             if (gvt != null) gvt = gvt.MakeGenericType(typeof(ObservableValue));
 
             var obj = gvt != null

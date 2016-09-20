@@ -123,19 +123,19 @@ namespace Wpf
                 }
             }
 
-            Task.Run(() =>
+            Task.Factory.StartNew(() =>
             {
                 Thread.Sleep(500);
-                DynamicValues.Add(new ObservableValue(r.NextDouble() * 10));
+                DynamicValues.Add(new ObservableValue(r.NextDouble()*10));
                 DynamicValues.RemoveAt(0);
                 Thread.Sleep(500);
-                DynamicValues.Add(new ObservableValue(r.NextDouble() * 10));
+                DynamicValues.Add(new ObservableValue(r.NextDouble()*10));
                 DynamicValues.RemoveAt(0);
             });
         }
 
         [NotifyPropertyChangedInvocator]
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        protected virtual void OnPropertyChanged( string propertyName = null)
         {
             var handler = PropertyChanged;
             if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));

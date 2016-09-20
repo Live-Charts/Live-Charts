@@ -78,7 +78,7 @@
             </lvc:CartesianChart.AxisY>
         </lvc:CartesianChart>
         <lvc:PieChart Grid.Row="1" Grid.Column="1" LegendLocation="Right" InnerRadius="60" Series="{Binding PieSeries}"
-                      DataTooltip="{x:Null}">
+                      DataTooltip="{x:Null}" Hoverable="True">
             <lvc:PieChart.ChartLegend>
                 <lvc:DefaultLegend Foreground="White"></lvc:DefaultLegend>
             </lvc:PieChart.ChartLegend>
