@@ -43,6 +43,8 @@ namespace LiveCharts.Helpers
     {
         private readonly List<T> _source;
 
+        private object asynclock = new object();
+
         #region Constructors
 
         /// <summary>
@@ -176,7 +178,8 @@ namespace LiveCharts.Helpers
         /// <returns>number of items in the collection</returns>
         public int Add(object value)
         {
-            _source.Add((T)value);
+            lock (asynclock)
+                _source.Add((T)value);
             OnCollectionChanged(null, new[] {(T) value});
             return _source.IndexOf((T)value);
         }
@@ -187,7 +190,8 @@ namespace LiveCharts.Helpers
         /// <param name="item">item to add</param>
         public void Add(T item)
         {
-            _source.Add(item);
+            lock(asynclock)
+                _source.Add(item);
             OnCollectionChanged(null, new [] {item});
         }
 
@@ -197,7 +201,8 @@ namespace LiveCharts.Helpers
         /// <param name="items">collection to add</param>
         public void AddRange(IEnumerable<T> items)
         {
-            _source.AddRange(items);
+            lock (asynclock)
+                _source.AddRange(items);
             OnCollectionChanged(null, items);
         }
 
@@ -208,7 +213,8 @@ namespace LiveCharts.Helpers
         /// <param name="value">item to insert</param>
         public void Insert(int index, object value)
         {
-            _source.Insert(index, (T) value);
+            lock (asynclock)
+                _source.Insert(index, (T) value);
             OnCollectionChanged(null, new[] {(T) value});
         }
 
@@ -219,7 +225,8 @@ namespace LiveCharts.Helpers
         /// <param name="item">item to insert</param>
         public void Insert(int index, T item)
         {
-            _source.Insert(index, item);
+            lock (asynclock)
+                _source.Insert(index, item);
             OnCollectionChanged(null, new[] {item});
         }
 
@@ -230,7 +237,8 @@ namespace LiveCharts.Helpers
         /// <param name="collection">collection to insert</param>
         public void InsertRange(int index, IEnumerable<T> collection)
         {
-            _source.InsertRange(index, collection);
+            lock (asynclock)
+                _source.InsertRange(index, collection);
             OnCollectionChanged(null, collection);
         }
 
@@ -240,7 +248,8 @@ namespace LiveCharts.Helpers
         /// <param name="value">item to remove</param>
         public void Remove(object value)
         {
-            _source.Remove((T) value);
+            lock (asynclock)
+                _source.Remove((T) value);
             OnCollectionChanged(new[] {(T) value}, null);
         }
 
@@ -251,7 +260,9 @@ namespace LiveCharts.Helpers
         /// <returns>number of items in the collection</returns>
         public bool Remove(T item)
         {
-            var ans = _source.Remove(item);
+            bool ans;
+            lock (asynclock)
+                 ans = _source.Remove(item);
             OnCollectionChanged(new[] { item }, null);
             return ans;
         }
@@ -263,7 +274,11 @@ namespace LiveCharts.Helpers
         void IList.RemoveAt(int index)
         {
             var i = _source[index];
-            _source.RemoveAt(index);
+
+            lock (asynclock)
+            {
+                _source.RemoveAt(index);
+            }
             OnCollectionChanged(new[] { i }, null);
         }
 
@@ -274,7 +289,11 @@ namespace LiveCharts.Helpers
         void IList<T>.RemoveAt(int index)
         {
             var i = _source[index];
-            _source.RemoveAt(index);
+            lock (asynclock)
+            {
+                _source.RemoveAt(index);
+            }
+            
             OnCollectionChanged(new[] { i }, null);
         }
 
@@ -285,7 +304,10 @@ namespace LiveCharts.Helpers
         public void RemoveAt(int index)
         {
             var i = _source[index];
-            _source.RemoveAt(index);
+            lock (asynclock)
+            {
+                _source.RemoveAt(index);
+            }
             OnCollectionChanged(new[] { i }, null);
         }
 
@@ -294,8 +316,12 @@ namespace LiveCharts.Helpers
         /// </summary>
         void IList.Clear()
         {
-            var backup = _source.ToArray();
-            _source.Clear();
+            IList<T> backup;
+            lock (asynclock)
+            {
+                backup = _source.ToArray();
+                _source.Clear();
+            }
             OnCollectionChanged(backup, null);
             if (CollectionReset != null) CollectionReset.Invoke();
         }
@@ -305,8 +331,12 @@ namespace LiveCharts.Helpers
         /// </summary>
         void ICollection<T>.Clear()
         {
-            var backup = _source.ToArray();
-            _source.Clear();
+            IList<T> backup;
+            lock (asynclock)
+            { 
+                 backup = _source.ToArray();
+                _source.Clear();
+            }
             OnCollectionChanged(backup, null);
             if (CollectionReset != null) CollectionReset.Invoke();
         }
@@ -316,8 +346,12 @@ namespace LiveCharts.Helpers
         /// </summary>
         public void Clear()
         {
-            var backup = _source.ToArray();
-            _source.Clear();
+            IList<T> backup;
+            lock (asynclock)
+            {
+                backup = _source.ToArray();
+                _source.Clear();
+            }
             OnCollectionChanged(backup, null);
             if (CollectionReset != null) CollectionReset.Invoke();
         }
@@ -349,7 +383,8 @@ namespace LiveCharts.Helpers
         /// <param name="index">array index</param>
         public void CopyTo(Array array, int index)
         {
-            _source.CopyTo(array.Cast<T>().ToArray(), index);
+            lock (asynclock)
+                _source.CopyTo(array.Cast<T>().ToArray(), index);
         }
 
         /// <summary>
@@ -359,7 +394,8 @@ namespace LiveCharts.Helpers
         /// <param name="index">array index</param>
         public void CopyTo(T[] array, int arrayIndex)
         {
-            _source.CopyTo(array, arrayIndex);
+            lock (asynclock)
+                _source.CopyTo(array, arrayIndex);
         }
 
         /// <summary>
