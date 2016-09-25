@@ -891,7 +891,7 @@ namespace LiveCharts.Wpf.Charts.Base
             return new Point(xt, yt);
         }
 
-        private SeriesCollection GetDesignerModeCollection()
+        internal SeriesCollection GetDesignerModeCollection()
         {
             var r = new Random();
             SeriesCollection mockedCollection;

@@ -43,6 +43,11 @@ namespace LiveCharts.WinForms
             {
                 if (DataClick != null) DataClick.Invoke(o, point);
             };
+
+            if (LicenseManager.UsageMode == LicenseUsageMode.Designtime)
+            {
+                WpfBase.Series = WpfBase.GetDesignerModeCollection();
+            }
         }
 
         public event Action<object, ChartPoint> DataClick;

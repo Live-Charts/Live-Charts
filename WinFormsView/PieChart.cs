@@ -34,15 +34,19 @@ namespace LiveCharts.WinForms
     [DesignerSerializer("System.ComponentModel.Design.Serialization.TypeCodeDomSerializer , System.Design", "System.ComponentModel.Design.Serialization.CodeDomSerializer, System.Design")]
     public class PieChart : ElementHost
     {
-        protected readonly Wpf.PieChart Chart = new Wpf.PieChart();
+        protected readonly Wpf.PieChart WpfBase = new Wpf.PieChart();
 
         public PieChart()
         {
-            Child = Chart;
-            Chart.DataClick += (o, point) =>
+            Child = WpfBase;
+            WpfBase.DataClick += (o, point) =>
             {
                 if (DataClick != null) DataClick.Invoke(o, point);
             };
+            if (LicenseManager.UsageMode == LicenseUsageMode.Designtime)
+            {
+                WpfBase.Series = WpfBase.GetDesignerModeCollection();
+            }
         }
 
         public event DataClickHandler DataClick;
@@ -53,68 +57,68 @@ namespace LiveCharts.WinForms
 
         public AxesCollection AxisY
         {
-            get { return Chart.AxisY; }
-            set { Chart.AxisY = value; }
+            get { return WpfBase.AxisY; }
+            set { WpfBase.AxisY = value; }
         }
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 
         public AxesCollection AxisX
         {
-            get { return Chart.AxisX; }
-            set { Chart.AxisX = value; }
+            get { return WpfBase.AxisX; }
+            set { WpfBase.AxisX = value; }
         }
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 
         public UserControl DefaultLegend
         {
-            get { return Chart.ChartLegend; }
-            set { Chart.ChartLegend = value; }
+            get { return WpfBase.ChartLegend; }
+            set { WpfBase.ChartLegend = value; }
         }
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 
         public ZoomingOptions Zoom
         {
-            get { return Chart.Zoom; }
-            set { Chart.Zoom = value; }
+            get { return WpfBase.Zoom; }
+            set { WpfBase.Zoom = value; }
         }
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 
         public LegendLocation LegendLocation
         {
-            get { return Chart.LegendLocation; }
-            set { Chart.LegendLocation = value; }
+            get { return WpfBase.LegendLocation; }
+            set { WpfBase.LegendLocation = value; }
         }
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public SeriesCollection Series
         {
-            get { return Chart.Series; }
-            set { Chart.Series = value; }
+            get { return WpfBase.Series; }
+            set { WpfBase.Series = value; }
         }
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public TimeSpan AnimationsSpeed
         {
-            get { return Chart.AnimationsSpeed; }
-            set { Chart.AnimationsSpeed = value; }
+            get { return WpfBase.AnimationsSpeed; }
+            set { WpfBase.AnimationsSpeed = value; }
         }
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool DisableAnimations
         {
-            get { return Chart.DisableAnimations; }
-            set { Chart.DisableAnimations = value; }
+            get { return WpfBase.DisableAnimations; }
+            set { WpfBase.DisableAnimations = value; }
         }
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public UserControl DataTooltip
         {
-            get { return Chart.DataTooltip; }
-            set { Chart.DataTooltip = value; }
+            get { return WpfBase.DataTooltip; }
+            set { WpfBase.DataTooltip = value; }
         }
         #endregion
 
@@ -123,22 +127,22 @@ namespace LiveCharts.WinForms
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public double InnerRadius
         {
-            get { return Chart.InnerRadius; }
-            set { Chart.InnerRadius = value; }
+            get { return WpfBase.InnerRadius; }
+            set { WpfBase.InnerRadius = value; }
         }
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public double StartingRotationAngle
         {
-            get { return Chart.StartingRotationAngle; }
-            set { Chart.StartingRotationAngle = value; }
+            get { return WpfBase.StartingRotationAngle; }
+            set { WpfBase.StartingRotationAngle = value; }
         }
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public UpdaterState UpdaterState
         {
-            get { return Chart.UpdaterState; }
-            set { Chart.UpdaterState = value; }
+            get { return WpfBase.UpdaterState; }
+            set { WpfBase.UpdaterState = value; }
         }
         #endregion
     }
