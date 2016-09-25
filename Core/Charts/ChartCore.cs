@@ -302,9 +302,10 @@ namespace LiveCharts.Charts
                     var rMin = (pivot.X - min) / l;
                     var rMax = 1 - rMin;
                     
-                    var taget = l*speed;
-                    var mint = pivot.X - taget*rMin;
-                    var maxt = pivot.X + taget*rMax; 
+                    var target = l*speed;
+                    if (target < xi.View.MinRange) return;
+                    var mint = pivot.X - target*rMin;
+                    var maxt = pivot.X + target*rMax; 
                     xi.View.SetRange(mint, maxt);
                 }
             }
@@ -319,9 +320,10 @@ namespace LiveCharts.Charts
                     var rMin = (pivot.Y - min) / l;
                     var rMax = 1 - rMin;
 
-                    var taget = l * speed;
-                    var mint = pivot.X - taget * rMin;
-                    var maxt = pivot.X + taget * rMax;
+                    var target = l * speed;
+                    if (target < yi.View.MinRange) return;
+                    var mint = pivot.X - target * rMin;
+                    var maxt = pivot.X + target * rMax;
                     yi.View.SetRange(mint, maxt);
                 }
             }
@@ -347,9 +349,10 @@ namespace LiveCharts.Charts
                     var rMin = (pivot.X - min) / l;
                     var rMax = 1 - rMin;
 
-                    var taget = l*(1/speed);
-                    var mint = pivot.X - taget * rMin;
-                    var maxt = pivot.X + taget * rMax;
+                    var target = l*(1/speed);
+                    if (target > xi.View.MaxRange) return;
+                    var mint = pivot.X - target * rMin;
+                    var maxt = pivot.X + target * rMax;
                     xi.View.SetRange(mint, maxt);
                 }
             }
@@ -364,9 +367,10 @@ namespace LiveCharts.Charts
                     var rMin = (pivot.Y - min) / l;
                     var rMax = 1 - rMin;
 
-                    var taget = l * (1 / speed);
-                    var mint = pivot.X - taget * rMin;
-                    var maxt = pivot.X + taget * rMax;
+                    var target = l * (1 / speed);
+                    if (target > yi.View.MaxRange) return;
+                    var mint = pivot.X - target * rMin;
+                    var maxt = pivot.X + target * rMax;
                     yi.View.SetRange(mint, maxt);
                 }
             }

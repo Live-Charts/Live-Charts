@@ -169,6 +169,29 @@ namespace LiveCharts.Wpf
             set { SetValue(MinValueProperty, value); }
         }
 
+        public static readonly DependencyProperty MaxRangeProperty = DependencyProperty.Register(
+            "MaxRange", typeof(double?), typeof(Axis), new PropertyMetadata(double.MaxValue));
+        /// <summary>
+        /// Gets or sets the max range this axis can display, useful to limit user zooming.
+        /// </summary>
+        public double MaxRange
+        {
+            get { return (double) GetValue(MaxRangeProperty); }
+            set { SetValue(MaxRangeProperty, value); }
+        }
+
+        public static readonly DependencyProperty MinRangeProperty = DependencyProperty.Register(
+            "MinRange", typeof(double), typeof(Axis), new PropertyMetadata(double.MinValue));
+        /// <summary>
+        /// Gets or sets the min range this axis can display, useful to limit user zooming.
+        /// </summary>
+        public double MinRange
+        {
+            get { return (double) GetValue(MinRangeProperty); }
+            set { SetValue(MinRangeProperty, value); }
+        }
+
+
         public static readonly DependencyProperty TitleProperty = DependencyProperty.Register(
             "Title", typeof(string), typeof(Axis), 
             new PropertyMetadata(null, UpdateChart()));
