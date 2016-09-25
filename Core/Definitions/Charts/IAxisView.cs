@@ -32,8 +32,6 @@ namespace LiveCharts.Definitions.Charts
         bool ShowLabels { get; set; }
         double? MaxValue { get; set; }
         double? MinValue { get; set; }
-        double MinRange { get; set; }
-        double MaxRange { get; set; }
         double LabelsRotation { get; set; }
         bool IsMerged { get; set; }
         double BarUnit { get; set; }
