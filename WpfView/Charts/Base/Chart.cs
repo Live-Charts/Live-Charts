@@ -430,6 +430,17 @@ namespace LiveCharts.Wpf.Charts.Base
             set { SetValue(ScrollBarFillProperty, value); }
         }
 
+        public static readonly DependencyProperty ZoomingSpeedProperty = DependencyProperty.Register(
+            "ZoomingSpeed", typeof(double), typeof(Chart), new PropertyMetadata(0.8d));
+        /// <summary>
+        /// Gets or sets zooming speed, goes from 0.95 (slow) to 0.1 (fast), default is 0.8, it means the current axis range percentage that will be draw in the next zooming step
+        /// </summary>
+        public double ZoomingSpeed
+        {
+            get { return (double) GetValue(ZoomingSpeedProperty); }
+            set { SetValue(ZoomingSpeedProperty, value); }
+        }
+
         public static readonly DependencyProperty UpdaterStateProperty = DependencyProperty.Register(
             "UpdaterState", typeof(UpdaterState), typeof(Chart), 
             new PropertyMetadata(default(UpdaterState), CallChartUpdater()));
@@ -669,7 +680,12 @@ namespace LiveCharts.Wpf.Charts.Base
                     var pointView = x.View as PointView;
                     return pointView != null && Equals(pointView.HoverShape, sender);
                 });
-            if (DataClick != null) DataClick.Invoke(sender, result);
+            OnDataClick(sender, result);
+        }
+
+        internal void OnDataClick(object sender, ChartPoint point)
+        {
+            if (DataClick != null) DataClick.Invoke(sender, point);
         }
 
         private void DataMouseEnter(object sender, EventArgs e)
@@ -857,7 +873,7 @@ namespace LiveCharts.Wpf.Charts.Base
             TooltipTimeoutTimer.Interval = chart.TooltipTimeout;
         }
 
-        public void HideTooltop()
+        public void HideTooltip()
         {
             if (DataTooltip == null) return;
 

@@ -40,6 +40,7 @@ namespace LiveCharts.Definitions.Charts
         IEnumerable<ISeriesView> ActualSeries { get; }
         TimeSpan TooltipTimeout { get; set; }
         ZoomingOptions Zoom { get; set; }
+        double ZoomingSpeed { get; set; }
         LegendLocation LegendLocation { get; set; }
         bool DisableAnimations { get; set; }
         TimeSpan AnimationsSpeed { get; set; }
@@ -63,7 +64,7 @@ namespace LiveCharts.Definitions.Charts
         void EnsureElementBelongsToCurrentView(object element);
         void EnsureElementBelongsToCurrentDrawMargin(object element);
 
-        void HideTooltop();
+        void HideTooltip();
         void ShowLegend(CorePoint at);
         void HideLegend();
 

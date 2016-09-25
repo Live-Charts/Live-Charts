@@ -283,11 +283,13 @@ namespace LiveCharts.Charts
         {
             if (AxisX == null || AxisY == null) return;
 
-            View.HideTooltop();
+            View.HideTooltip();
 
             pivot = new CorePoint(
                 ChartFunctions.FromPlotArea(pivot.X, AxisOrientation.X, this),
                 ChartFunctions.FromPlotArea(pivot.Y, AxisOrientation.Y, this));
+
+            var speed = View.ZoomingSpeed < 0.1 ? 0.1 : (View.ZoomingSpeed > 0.95 ? 0.95 : View.ZoomingSpeed);
 
             if (View.Zoom == ZoomingOptions.X || View.Zoom == ZoomingOptions.Xy)
             {
@@ -296,12 +298,14 @@ namespace LiveCharts.Charts
                     var max = xi.MaxValue ?? xi.TopLimit;
                     var min = xi.MinValue ?? xi.BotLimit;
                     var l = max - min;
+
                     var rMin = (pivot.X - min) / l;
                     var rMax = 1 - rMin;
-
-                    if (max - rMax*xi.S - (min + rMin*xi.S) < xi.S*.01) return;
-
-                    xi.View.SetRange(min + rMin*xi.S, max - rMax*xi.S);
+                    
+                    var taget = l*speed;
+                    var mint = pivot.X - taget*rMin;
+                    var maxt = pivot.X + taget*rMax; 
+                    xi.View.SetRange(mint, maxt);
                 }
             }
 
@@ -315,20 +319,23 @@ namespace LiveCharts.Charts
                     var rMin = (pivot.Y - min) / l;
                     var rMax = 1 - rMin;
 
-                    if (max - rMax*yi.S - (min + rMin*yi.S) < yi.S*.01) return;
-
-                    yi.View.SetRange(min + rMin * yi.S, max - rMax * yi.S);
+                    var taget = l * speed;
+                    var mint = pivot.X - taget * rMin;
+                    var maxt = pivot.X + taget * rMax;
+                    yi.View.SetRange(mint, maxt);
                 }
             }
         }
 
         public void ZoomOut(CorePoint pivot)
         {
-            View.HideTooltop();
+            View.HideTooltip();
 
-            var dataPivot = new CorePoint(
+            pivot = new CorePoint(
                 ChartFunctions.FromPlotArea(pivot.X, AxisOrientation.X, this),
                 ChartFunctions.FromPlotArea(pivot.Y, AxisOrientation.Y, this));
+
+            var speed = View.ZoomingSpeed < 0.1 ? 0.1 : (View.ZoomingSpeed > 0.95 ? 0.95 : View.ZoomingSpeed);
 
             if (View.Zoom == ZoomingOptions.X || View.Zoom == ZoomingOptions.Xy)
             {
@@ -337,10 +344,13 @@ namespace LiveCharts.Charts
                     var max = xi.MaxValue ?? xi.TopLimit;
                     var min = xi.MinValue ?? xi.BotLimit;
                     var l = max - min;
-                    var rMin = (dataPivot.X - min) / l;
+                    var rMin = (pivot.X - min) / l;
                     var rMax = 1 - rMin;
 
-                    xi.View.SetRange(min - rMin*xi.S, max + rMax*xi.S);
+                    var taget = l*(1/speed);
+                    var mint = pivot.X - taget * rMin;
+                    var maxt = pivot.X + taget * rMax;
+                    xi.View.SetRange(mint, maxt);
                 }
             }
 
@@ -351,10 +361,13 @@ namespace LiveCharts.Charts
                     var max = yi.MaxValue ?? yi.TopLimit;
                     var min = yi.MinValue ?? yi.BotLimit;
                     var l = max - min;
-                    var rMin = (dataPivot.Y - min) / l;
+                    var rMin = (pivot.Y - min) / l;
                     var rMax = 1 - rMin;
 
-                    yi.View.SetRange(min - rMin * yi.S, max + rMax * yi.S);
+                    var taget = l * (1 / speed);
+                    var mint = pivot.X - taget * rMin;
+                    var maxt = pivot.X + taget * rMax;
+                    yi.View.SetRange(mint, maxt);
                 }
             }
         }
