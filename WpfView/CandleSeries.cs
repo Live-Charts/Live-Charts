@@ -152,7 +152,7 @@ namespace LiveCharts.Wpf
             pbv.OpenToCloseRectangle.Visibility = Visibility;
             Panel.SetZIndex(pbv.HighToLowLine, i);
 
-            if (Model.Chart.RequiresHoverShape && pbv.HoverShape == null)
+            if (Model.Chart.RequiresHoverShape && pbv.HoverShape == null && !point.LazyHovering)
             {
                 pbv.HoverShape = new Rectangle
                 {

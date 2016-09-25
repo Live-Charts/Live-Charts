@@ -159,5 +159,6 @@ namespace LiveCharts
         public ISeriesView SeriesView { get; internal set; }
 
         internal double Gci { get; set; }
+        internal bool LazyHovering { get; set; }
     }
 }

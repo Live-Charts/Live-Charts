@@ -178,7 +178,7 @@ namespace LiveCharts.Wpf
                 if (point.Fill != null) pbv.Shape.Fill = (Brush) point.Fill;
             }
 
-            if (Model.Chart.RequiresHoverShape && pbv.HoverShape == null)
+            if (Model.Chart.RequiresHoverShape && pbv.HoverShape == null && !point.LazyHovering)
             {
                 pbv.HoverShape = new Rectangle
                 {

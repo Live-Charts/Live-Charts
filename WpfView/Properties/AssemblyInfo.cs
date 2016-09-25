@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿
+using System.Reflection;
 using System.Resources;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
@@ -53,3 +54,7 @@ using System.Windows;
 // [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("0.7.14")]
 [assembly: AssemblyFileVersion("0.7.14")]
+
+[assembly: InternalsVisibleTo("LiveCharts.Geared")]
+
+[assembly: InternalsVisibleTo("LiveCharts.Geared,PublicKey=002400000480000094000000060200000024000052534131000400000100010087883d646df5cd8bf4b645f425afe47a170b95b29c8161683846ae728f0de620dec6426dd3a0e315948318849f76ae8c7f9847b29d61d3bb60651cdd4a18d4997b7e42435e9223c7232b1f1e1d7c2c9f6c03c93cbc005364fac2d5f26fc9fee08024962bb7431ad09296767596df387caecadbe32cdac535ed2dd62da5dbb592")]

@@ -205,7 +205,7 @@ namespace LiveCharts.Wpf
                     .EnsureElementBelongsToCurrentDrawMargin(pbv.DataLabel);
             }
 
-            if (Model.Chart.RequiresHoverShape && pbv.HoverShape == null)
+            if (Model.Chart.RequiresHoverShape && pbv.HoverShape == null && !point.LazyHovering)
             {
                 pbv.HoverShape = new Rectangle
                 {

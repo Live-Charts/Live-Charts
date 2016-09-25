@@ -159,7 +159,7 @@ namespace LiveCharts.Wpf
             Panel.SetZIndex(pbv.CloseLine, i);
             Panel.SetZIndex(pbv.OpenLine, i);
 
-            if (Model.Chart.RequiresHoverShape && pbv.HoverShape == null)
+            if (Model.Chart.RequiresHoverShape && pbv.HoverShape == null && !point.LazyHovering)
             {
                 pbv.HoverShape = new Rectangle
                 {

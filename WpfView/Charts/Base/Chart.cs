@@ -635,8 +635,8 @@ namespace LiveCharts.Wpf.Charts.Base
         #endregion
 
         #region Tooltip and legend
-        private static DispatcherTimer TooltipTimeoutTimer { get; set; }
-        private static UserControl ActiveTooltip { get; set; }
+        internal static DispatcherTimer TooltipTimeoutTimer { get; set; }
+        internal static UserControl ActiveTooltip { get; set; }
 
         public static readonly DependencyProperty TooltipTimeoutProperty = DependencyProperty.Register(
             "TooltipTimeout", typeof(TimeSpan), typeof(Chart),
@@ -864,7 +864,7 @@ namespace LiveCharts.Wpf.Charts.Base
             DataTooltip.Visibility = Visibility.Hidden;
         }
 
-        protected virtual Point GetTooltipPosition(ChartPoint senderPoint)
+        protected internal virtual Point GetTooltipPosition(ChartPoint senderPoint)
         {
             var xt = senderPoint.ChartLocation.X;
             var yt = senderPoint.ChartLocation.Y;

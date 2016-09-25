@@ -140,7 +140,7 @@ namespace LiveCharts.Wpf
             pbv.Rectangle.Visibility = Visibility;
             Panel.SetZIndex(pbv.Rectangle, Panel.GetZIndex(this));
 
-            if (Model.Chart.RequiresHoverShape && pbv.HoverShape == null)
+            if (Model.Chart.RequiresHoverShape && pbv.HoverShape == null && !point.LazyHovering)
             {
                 pbv.HoverShape = new Rectangle
                 {
