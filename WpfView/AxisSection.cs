@@ -159,6 +159,7 @@ namespace LiveCharts.Wpf
                 Canvas.SetTop(_rectangle, Model.Chart.DrawMargin.Height);
                 Canvas.SetTop(_label, Model.Chart.DrawMargin.Height);
                 Canvas.SetLeft(_label, 0d);
+                Panel.SetZIndex(_rectangle, -1);
             }
 
             var from = ChartFunctions.ToDrawMargin(FromValue, source, Model.Chart, axis);

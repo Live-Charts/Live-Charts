@@ -34,7 +34,7 @@ using LiveCharts.Wpf.Points;
 namespace LiveCharts.Wpf
 {
     /// <summary>
-    /// The Bubble series, draws scatter series, only using X and Y properties or bubble series, if you also use the weight property, this series should be used in a cartesian chart.
+    /// The Step line series.
     /// </summary>
     public class StepLineSeries : Series, IFondeable
     {
@@ -178,7 +178,7 @@ namespace LiveCharts.Wpf
                 if (point.Fill != null) pbv.Shape.Fill = (Brush) point.Fill;
             }
 
-            if (Model.Chart.RequiresHoverShape && pbv.HoverShape == null && !point.LazyHovering)
+            if (Model.Chart.RequiresHoverShape && pbv.HoverShape == null)
             {
                 pbv.HoverShape = new Rectangle
                 {

@@ -172,7 +172,7 @@ namespace LiveCharts.Wpf
             Figure = new PathFigure();
             geometry.Figures.Add(Figure);
             Path.Data = geometry;
-
+            
             Model.Chart.View.EnsureElementBelongsToCurrentDrawMargin(Path);
 
             var x = ChartFunctions.ToDrawMargin(ActualValues.GetTracker(this).XLimit.Min, AxisOrientation.X, Model.Chart, ScalesXAt);
@@ -205,7 +205,7 @@ namespace LiveCharts.Wpf
                     .EnsureElementBelongsToCurrentDrawMargin(pbv.DataLabel);
             }
 
-            if (Model.Chart.RequiresHoverShape && pbv.HoverShape == null && !point.LazyHovering)
+            if (Model.Chart.RequiresHoverShape && pbv.HoverShape == null)
             {
                 pbv.HoverShape = new Rectangle
                 {

@@ -23,7 +23,6 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -397,9 +396,19 @@ namespace LiveCharts.Wpf
             var nextColor = wpfChart.GetNextDefaultColor();
 
             if (Stroke == null)
-                SetValue(StrokeProperty, new SolidColorBrush(nextColor));
+            {
+                var strokeBrush = new SolidColorBrush(nextColor);
+                strokeBrush.Freeze();
+                SetValue(StrokeProperty, strokeBrush);
+            }
+
             if (Fill == null)
-                SetValue(FillProperty, new SolidColorBrush(nextColor) { Opacity = DefaultFillOpacity });
+            {
+                var fillBursh = new SolidColorBrush(nextColor) {Opacity = DefaultFillOpacity};
+                fillBursh.Freeze();
+                SetValue(FillProperty, fillBursh);
+            }
+
         }
 
         /// <summary>

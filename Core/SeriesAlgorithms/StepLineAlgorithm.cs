@@ -39,6 +39,7 @@ namespace LiveCharts.SeriesAlgorithms
         {
             ChartPoint previous = null;
 
+            var i = 0;
             foreach (var current in View.ActualValues.GetPoints(View))
             {
                 current.View = View.GetPointView(current.View, current,
@@ -58,8 +59,9 @@ namespace LiveCharts.SeriesAlgorithms
                     stepView.DeltaY = current.ChartLocation.Y - previous.ChartLocation.Y;
                 }
 
-                current.View.DrawOrMove(previous, current, 0, Chart);
+                current.View.DrawOrMove(previous, current, i, Chart);
 
+                i++;
                 previous = current;
             }
         }

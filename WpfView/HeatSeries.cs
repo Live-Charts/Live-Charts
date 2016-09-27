@@ -148,7 +148,7 @@ namespace LiveCharts.Wpf
             pbv.Rectangle.StrokeDashArray = StrokeDashArray;
             Panel.SetZIndex(pbv.Rectangle, Panel.GetZIndex(pbv.Rectangle));
 
-            if (Model.Chart.RequiresHoverShape && pbv.HoverShape == null && !point.LazyHovering)
+            if (Model.Chart.RequiresHoverShape && pbv.HoverShape == null)
             {
                 pbv.HoverShape = new Rectangle
                 {
