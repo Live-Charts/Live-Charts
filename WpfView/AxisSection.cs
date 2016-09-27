@@ -58,93 +58,95 @@ namespace LiveCharts.Wpf
                     new Binding { Path = new PropertyPath(StrokeDashArrayProperty), Source = this });
             BindingOperations.SetBinding(_rectangle, Shape.StrokeThicknessProperty,
                     new Binding { Path = new PropertyPath(StrokeThicknessProperty), Source = this });
+            BindingOperations.SetBinding(_rectangle, Panel.ZIndexProperty,
+                new Binding {Path = new PropertyPath(Panel.ZIndexProperty), Source = this});
 
             BindingOperations.SetBinding(_label, TextBlock.TextProperty,
                 new Binding {Path = new PropertyPath(LabelProperty), Source = this});
-
-            Panel.SetZIndex(_rectangle, -1);
         }
 
+        #region Properties
         public AxisSectionCore Model { get; set; }
 
         public static readonly DependencyProperty LabelProperty = DependencyProperty.Register(
-            "Label", typeof (string), typeof (AxisSection), new PropertyMetadata(default(string)));
+            "Label", typeof(string), typeof(AxisSection), new PropertyMetadata(default(string)));
         /// <summary>
         /// Gets or sets the name, the title of the section, a visual element will be added to the chart if this property is not null.
         /// </summary>
         public string Label
         {
-            get { return (string) GetValue(LabelProperty); }
+            get { return (string)GetValue(LabelProperty); }
             set { SetValue(LabelProperty, value); }
         }
 
         public static readonly DependencyProperty FromValueProperty = DependencyProperty.Register(
-            "FromValue", typeof (double), typeof (AxisSection), 
+            "FromValue", typeof(double), typeof(AxisSection),
             new PropertyMetadata(default(double), CallChartUpdater));
         /// <summary>
         /// Gets or sets the value where the section starts
         /// </summary>
         public double FromValue
         {
-            get { return (double) GetValue(FromValueProperty); }
+            get { return (double)GetValue(FromValueProperty); }
             set { SetValue(FromValueProperty, value); }
         }
 
         public static readonly DependencyProperty ToValueProperty = DependencyProperty.Register(
-            "ToValue", typeof (double), typeof (AxisSection), 
+            "ToValue", typeof(double), typeof(AxisSection),
             new PropertyMetadata(default(double), CallChartUpdater));
         /// <summary>
         /// Gets or sets the value where the section ends
         /// </summary>
         public double ToValue
         {
-            get { return (double) GetValue(ToValueProperty); }
+            get { return (double)GetValue(ToValueProperty); }
             set { SetValue(ToValueProperty, value); }
         }
 
         public static readonly DependencyProperty StrokeProperty = DependencyProperty.Register(
-            "Stroke", typeof (Brush), typeof (AxisSection), new PropertyMetadata(default(Brush)));
+            "Stroke", typeof(Brush), typeof(AxisSection), new PropertyMetadata(default(Brush)));
         /// <summary>
         /// Gets o sets the section stroke, the stroke brush will be used to draw the border of the section
         /// </summary>
         public Brush Stroke
         {
-            get { return (Brush) GetValue(StrokeProperty); }
+            get { return (Brush)GetValue(StrokeProperty); }
             set { SetValue(StrokeProperty, value); }
         }
 
         public static readonly DependencyProperty FillProperty = DependencyProperty.Register(
-            "Fill", typeof (Brush), typeof (AxisSection), new PropertyMetadata(default(Brush)));
+            "Fill", typeof(Brush), typeof(AxisSection), new PropertyMetadata(default(Brush)));
         /// <summary>
         /// Gets or sets the section fill brush.
         /// </summary>
         public Brush Fill
         {
-            get { return (Brush) GetValue(FillProperty); }
+            get { return (Brush)GetValue(FillProperty); }
             set { SetValue(FillProperty, value); }
         }
 
         public static readonly DependencyProperty StrokeThicknessProperty = DependencyProperty.Register(
-            "StrokeThickness", typeof (double), typeof (AxisSection), new PropertyMetadata(default(double)));
+            "StrokeThickness", typeof(double), typeof(AxisSection), new PropertyMetadata(default(double)));
         /// <summary>
         /// Gets or sets the stroke thickness.
         /// </summary>
         public double StrokeThickness
         {
-            get { return (double) GetValue(StrokeThicknessProperty); }
+            get { return (double)GetValue(StrokeThicknessProperty); }
             set { SetValue(StrokeThicknessProperty, value); }
         }
 
         public static readonly DependencyProperty StrokeDashArrayProperty = DependencyProperty.Register(
-            "StrokeDashArray", typeof (DoubleCollection), typeof (AxisSection), new PropertyMetadata(default(DoubleCollection)));
+            "StrokeDashArray", typeof(DoubleCollection), typeof(AxisSection), new PropertyMetadata(default(DoubleCollection)));
         /// <summary>
         /// Gets or sets the stroke dash array collection, use this property to create dashed stroke sections
         /// </summary>
         public DoubleCollection StrokeDashArray
         {
-            get { return (DoubleCollection) GetValue(StrokeDashArrayProperty); }
+            get { return (DoubleCollection)GetValue(StrokeDashArrayProperty); }
             set { SetValue(StrokeDashArrayProperty, value); }
         }
+        #endregion
 
         public void DrawOrMove(AxisOrientation source, int axis)
         {
@@ -162,8 +164,11 @@ namespace LiveCharts.Wpf
                 Panel.SetZIndex(_rectangle, -1);
             }
 
-            var from = ChartFunctions.ToDrawMargin(FromValue, source, Model.Chart, axis);
-            var to = ChartFunctions.ToDrawMargin(ToValue, source, Model.Chart, axis);
+            var ax = source == AxisOrientation.X ? Model.Chart.AxisX[axis] : Model.Chart.AxisY[axis];
+            var uw = ax.EvaluatesUnitWidth ? ChartFunctions.GetUnitWidth(source, Model.Chart, axis)/2 : 0;
+
+            var from = ChartFunctions.ToDrawMargin(FromValue, source, Model.Chart, axis) + uw;
+            var to = ChartFunctions.ToDrawMargin(ToValue, source, Model.Chart, axis) + uw;
 
             if (from > to)
             {
