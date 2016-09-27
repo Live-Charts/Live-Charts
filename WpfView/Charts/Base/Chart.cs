@@ -710,6 +710,7 @@ namespace LiveCharts.Wpf.Charts.Base
                     Canvas.SetLeft(DataTooltip, 0d);
                 }
 
+                if(ActiveTooltip!= null) ActiveTooltip.Visibility = Visibility.Hidden;
                 ActiveTooltip = DataTooltip;
 
                 var lcTooltip = DataTooltip as IChartTooltip;
@@ -798,7 +799,7 @@ namespace LiveCharts.Wpf.Charts.Base
             if (Hoverable) senderPoint.View.OnHoverLeave(senderPoint);
         }
 
-        private void TooltipTimeoutTimerOnTick(object sender, EventArgs eventArgs)
+        private static void TooltipTimeoutTimerOnTick(object sender, EventArgs eventArgs)
         {
             TooltipTimeoutTimer.Stop();
             if (ActiveTooltip == null) return;
