@@ -10,21 +10,7 @@
              d:DesignWidth="500"
              d:DataContext="{d:DesignInstance local:JimmyTheTestsGuy}">
     <Grid>
-        <lvc:CartesianChart>
-            <lvc:CartesianChart.Series>
-                <lvc:ColumnSeries Values="1,2,3,4"></lvc:ColumnSeries>
-            </lvc:CartesianChart.Series>
-            <lvc:CartesianChart.AxisX>
-                <lvc:Axis>
-                    <lvc:Axis.Separator>
-                        <lvc:Separator Step="1"></lvc:Separator>
-                    </lvc:Axis.Separator>
-                    <lvc:Axis.Sections>
-                        <lvc:AxisSection FromValue="1" ToValue="2"></lvc:AxisSection>
-                    </lvc:Axis.Sections>
-                </lvc:Axis>
-            </lvc:CartesianChart.AxisX>
-        </lvc:CartesianChart>
+        <lvc:CartesianChart></lvc:CartesianChart>
     </Grid>
     
 </UserControl>

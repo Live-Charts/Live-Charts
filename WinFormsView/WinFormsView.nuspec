@@ -63,6 +63,6 @@
     <file src="bin\net452\LiveCharts.WinForms.dll" target="lib\net452" />
     <file src="bin\net46\LiveCharts.WinForms.dll" target="lib\net46" />
     <file src="bin\net461\LiveCharts.WinForms.dll" target="lib\net461" />  
-    <file src="intall.ps1" target="tools" /> 
+    <file src="install.ps1" target="tools" /> 
   </files>
 </package>

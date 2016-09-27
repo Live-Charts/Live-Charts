@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>LiveCharts.Wpf</id>
-    <version>0.0.0.0</version>
+    <version>0.7.15.0</version>
     <title>LiveCharts.Wpf</title>
     <authors>Beto Rodriguez</authors>
     <owners>Beto Rodriguez</owners>
@@ -15,7 +15,7 @@
     <copyright>Copyright 2016</copyright>
     <tags>Chart Charting Plot Plotting Wpf WindowsPresentationFoundation</tags>
 	<dependencies>
-      <dependency id="LiveCharts" version="0.0.0.0" />
+      <dependency id="LiveCharts" version="0.7.15.0" />
     </dependencies>
   </metadata>
   <files>
@@ -25,6 +25,6 @@
     <file src="bin\net452\LiveCharts.Wpf.dll" target="lib\net452" />
     <file src="bin\net46\LiveCharts.Wpf.dll" target="lib\net46" />
     <file src="bin\net461\LiveCharts.Wpf.dll" target="lib\net461" />  
-    <file src="intall.ps1" target="tools" />  
+    <file src="install.ps1" target="tools" />  
   </files>
 </package>
