@@ -10,7 +10,22 @@
              d:DesignWidth="500"
              d:DataContext="{d:DesignInstance local:JimmyTheTestsGuy}">
     <Grid>
-        <lvc:CartesianChart></lvc:CartesianChart>
+        <lvc:CartesianChart>
+            <lvc:CartesianChart.Series>
+                <lvc:LineSeries Values="1,2,3,4,5,6,7,8,9"></lvc:LineSeries>
+            </lvc:CartesianChart.Series>
+            <lvc:CartesianChart.AxisX>
+                <lvc:Axis>
+                    <lvc:Axis.Sections>
+                        <lvc:AxisSection FromValue="5" ToValue="5" 
+                                         Draggable="True"
+                                         StrokeThickness="3" 
+                                         StrokeDashArray="2"
+                                         Panel.ZIndex="99" />
+                    </lvc:Axis.Sections>
+                </lvc:Axis>
+            </lvc:CartesianChart.AxisX>
+        </lvc:CartesianChart>
     </Grid>
     
 </UserControl>

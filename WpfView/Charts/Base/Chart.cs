@@ -106,6 +106,8 @@ namespace LiveCharts.Wpf.Charts.Base
             DrawMargin.Background = Brushes.Transparent; // if this line is not set, then it does not detect mouse down event...
             DrawMargin.MouseDown += OnDraggingStart;
             DrawMargin.MouseUp += OnDraggingEnd;
+            DrawMargin.MouseMove += DragSection;
+            MouseUp += DisableSectionDragMouseUp;
         }
 
         static Chart()
@@ -1130,6 +1132,51 @@ namespace LiveCharts.Wpf.Charts.Base
             wpfChart.PrepareScrolBar();
         }
 
+        #endregion
+
+        #region Dragging Sections
+
+        internal static Point? Ldsp;
+
+        private void DragSection(object sender, MouseEventArgs e)
+        {
+            var ax = AxisSection.Dragging;
+
+            if (ax == null) return;
+
+            if (Ldsp == null)
+            {
+                Ldsp = e.GetPosition(this);
+                return;
+            }
+
+            var p = e.GetPosition(this);
+            double delta;
+
+            if (ax.Model.Source == AxisOrientation.X)
+            {
+                delta = this.ConvertToChartValues(new Point(Ldsp.Value.X, 0), ax.Model.AxisIndex).X -
+                        this.ConvertToChartValues(new Point(p.X, 0), ax.Model.AxisIndex).X;
+                Ldsp = p;
+                Debug.WriteLine(delta);
+                ax.FromValue -= delta;
+                ax.ToValue -= delta;
+            }
+            else
+            {
+                delta = this.ConvertToChartValues(new Point(0, Ldsp.Value.Y), 0, ax.Model.AxisIndex).Y -
+                        this.ConvertToChartValues(new Point(0, p.Y), 0, ax.Model.AxisIndex).Y;
+                Ldsp = p;
+                Debug.WriteLine(delta);
+                ax.FromValue -= delta;
+                ax.ToValue -= delta;
+            }
+        }
+
+        private void DisableSectionDragMouseUp(object sender, MouseButtonEventArgs mouseButtonEventArgs)
+        {
+            AxisSection.Dragging = null;
+        }
         #endregion
 
         #region Property Changed

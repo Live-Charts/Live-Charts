@@ -33,6 +33,8 @@ namespace LiveCharts
             Chart = chart;
         }
         public IAxisSectionView View { get; set; }
+        public AxisOrientation Source { get; set; }
+        public int AxisIndex { get; set; }
         public ChartCore Chart { get; set; }
     }
 }

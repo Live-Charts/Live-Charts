@@ -129,12 +129,26 @@ namespace LiveCharts.Charts
 
             PrepareSeries();
             CalculateComponentsAndMargin();
+            DrawOrUpdateSections();
+        }
 
+        public override void RunSpecializedChartComponents()
+        {
+            foreach (var visualElement in ((ICartesianChart) View).VisualElements)
+            {
+                visualElement.AddOrMove(this);
+            }
+        }
+
+        public void DrawOrUpdateSections()
+        {
             for (var index = 0; index < AxisX.Count; index++)
             {
                 var xi = AxisX[index];
                 foreach (var section in xi.Sections)
                 {
+                    section.AxisIndex = index;
+                    section.Source = AxisOrientation.X;
                     section.View.DrawOrMove(AxisOrientation.X, index);
                 }
             }
@@ -144,17 +158,12 @@ namespace LiveCharts.Charts
                 var yi = AxisY[index];
                 foreach (var section in yi.Sections)
                 {
+                    section.AxisIndex = index;
+                    section.Source = AxisOrientation.Y;
                     section.View.DrawOrMove(AxisOrientation.Y, index);
                 }
             }
-        }
-
-        public override void RunSpecializedChartComponents()
-        {
-            foreach (var visualElement in ((ICartesianChart) View).VisualElements)
-            {
-                visualElement.AddOrMove(this);
-            }
+            SectionsIntialized = true;
         }
 
         #endregion

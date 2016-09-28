@@ -91,6 +91,5 @@ namespace LiveCharts
                 series.PlaceSpecializedElements();
             }
         }
-       
     }
 }

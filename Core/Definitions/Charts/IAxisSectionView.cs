@@ -27,6 +27,7 @@ namespace LiveCharts.Definitions.Charts
         AxisSectionCore Model { get; set; }
         double FromValue { get; set; }
         double ToValue { get; set; }
+        bool Draggable { get; set; }
 
         void DrawOrMove(AxisOrientation source, int axis);
         void Remove();

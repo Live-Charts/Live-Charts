@@ -18,6 +18,8 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
+using System;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -25,6 +27,7 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using LiveCharts.Definitions.Charts;
+using LiveCharts.Wpf.Charts.Base;
 
 namespace LiveCharts.Wpf
 {
@@ -35,6 +38,7 @@ namespace LiveCharts.Wpf
     {
         private readonly Rectangle _rectangle;
         private readonly TextBlock _label;
+        internal static AxisSection Dragging;
 
         /// <summary>
         /// Initializes a new instance of AxisSection class
@@ -44,22 +48,19 @@ namespace LiveCharts.Wpf
             _rectangle = new Rectangle();
             _label = new TextBlock();
 
+            _rectangle.MouseDown += (sender, args) =>
+            {
+                if (!Draggable) return;
+                Dragging = this;
+                args.Handled = true;
+                Chart.Ldsp = null;
+            };
+
             SetCurrentValue(StrokeProperty, new SolidColorBrush(Color.FromRgb(131, 172, 191)));
             SetCurrentValue(FillProperty, new SolidColorBrush(Color.FromRgb(131, 172, 191)) {Opacity = .35});
             SetCurrentValue(StrokeThicknessProperty, 0d);
             SetCurrentValue(FromValueProperty, 0d);
             SetCurrentValue(ToValueProperty, 0d);
-
-            BindingOperations.SetBinding(_rectangle, Shape.FillProperty,
-                    new Binding { Path = new PropertyPath(FillProperty), Source = this });
-            BindingOperations.SetBinding(_rectangle, Shape.StrokeProperty,
-                    new Binding { Path = new PropertyPath(StrokeProperty), Source = this });
-            BindingOperations.SetBinding(_rectangle, Shape.StrokeDashArrayProperty,
-                    new Binding { Path = new PropertyPath(StrokeDashArrayProperty), Source = this });
-            BindingOperations.SetBinding(_rectangle, Shape.StrokeThicknessProperty,
-                    new Binding { Path = new PropertyPath(StrokeThicknessProperty), Source = this });
-            BindingOperations.SetBinding(_rectangle, Panel.ZIndexProperty,
-                new Binding {Path = new PropertyPath(Panel.ZIndexProperty), Source = this});
 
             BindingOperations.SetBinding(_label, TextBlock.TextProperty,
                 new Binding {Path = new PropertyPath(LabelProperty), Source = this});
@@ -81,7 +82,7 @@ namespace LiveCharts.Wpf
 
         public static readonly DependencyProperty FromValueProperty = DependencyProperty.Register(
             "FromValue", typeof(double), typeof(AxisSection),
-            new PropertyMetadata(default(double), CallChartUpdater));
+            new PropertyMetadata(default(double), UpdateSection));
         /// <summary>
         /// Gets or sets the value where the section starts
         /// </summary>
@@ -93,7 +94,7 @@ namespace LiveCharts.Wpf
 
         public static readonly DependencyProperty ToValueProperty = DependencyProperty.Register(
             "ToValue", typeof(double), typeof(AxisSection),
-            new PropertyMetadata(default(double), CallChartUpdater));
+            new PropertyMetadata(default(double), UpdateSection));
         /// <summary>
         /// Gets or sets the value where the section ends
         /// </summary>
@@ -146,10 +147,27 @@ namespace LiveCharts.Wpf
             get { return (DoubleCollection)GetValue(StrokeDashArrayProperty); }
             set { SetValue(StrokeDashArrayProperty, value); }
         }
+
+        public static readonly DependencyProperty DraggableProperty = DependencyProperty.Register(
+            "Draggable", typeof(bool), typeof(AxisSection), new PropertyMetadata(default(bool)));
+        /// <summary>
+        /// Gets or sets if a user can drag the section
+        /// </summary>
+        public bool Draggable
+        {
+            get { return (bool) GetValue(DraggableProperty); }
+            set { SetValue(DraggableProperty, value); }
+        }
         #endregion
 
         public void DrawOrMove(AxisOrientation source, int axis)
         {
+            _rectangle.Fill = Fill;
+            _rectangle.Stroke = Stroke;
+            _rectangle.StrokeDashArray = StrokeDashArray;
+            _rectangle.StrokeThickness = StrokeThickness;
+            Panel.SetZIndex(_rectangle, Panel.GetZIndex(this));
+
             if (Parent == null)
             {
                 Model.Chart.View.AddToView(this);
@@ -161,7 +179,6 @@ namespace LiveCharts.Wpf
                 Canvas.SetTop(_rectangle, Model.Chart.DrawMargin.Height);
                 Canvas.SetTop(_label, Model.Chart.DrawMargin.Height);
                 Canvas.SetLeft(_label, 0d);
-                Panel.SetZIndex(_rectangle, -1);
             }
 
             var ax = source == AxisOrientation.X ? Model.Chart.AxisX[axis] : Model.Chart.AxisY[axis];
@@ -191,13 +208,14 @@ namespace LiveCharts.Wpf
                 if (Model.Chart.View.DisableAnimations)
                 {
                     _rectangle.Width = w > 0 ? w : 0;
-                    Canvas.SetLeft(_rectangle, from);
+                    Canvas.SetLeft(_rectangle, from - StrokeThickness/2);
                     Canvas.SetLeft(_label, (from + to)/2 - _label.ActualWidth/2);
                 }
                 else
                 {
+                    Debug.WriteLine(w > 0 ? w : 0);
                     _rectangle.BeginAnimation(WidthProperty, new DoubleAnimation(w > 0 ? w : 0, anSpeed));
-                    _rectangle.BeginAnimation(Canvas.LeftProperty, new DoubleAnimation(from, anSpeed));
+                    _rectangle.BeginAnimation(Canvas.LeftProperty, new DoubleAnimation(from - StrokeThickness/2, anSpeed));
                     _label.BeginAnimation(Canvas.LeftProperty,
                         new DoubleAnimation((from + to)/2 - _label.ActualWidth/2, anSpeed));
                 }
@@ -239,11 +257,16 @@ namespace LiveCharts.Wpf
             return model;
         }
 
-        private static void CallChartUpdater(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
+        private static void UpdateSection(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
         {
             var section = (AxisSection) dependencyObject;
 
-            if (section.Model != null && section.Model.Chart != null) section.Model.Chart.Updater.Run();
+            if (section.Model != null && section.Model.Chart != null)
+            {
+                if (!section.Model.Chart.SectionsIntialized) return;
+                section.DrawOrMove(section.Model.Source, section.Model.AxisIndex);
+            }
+
         }
     }
 }

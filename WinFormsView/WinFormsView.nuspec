@@ -14,7 +14,7 @@
     <releaseNotes>See https://github.com/beto-rodriguez/Live-Charts/releases</releaseNotes>
     <copyright>Copyright 2016</copyright>
     <tags>Chart Charting Plot Plotting WinForms</tags> 
-	<dependencies>
+    <dependencies>
       <dependency id="LiveCharts" version="0.0.0.0" />
       <dependency id="LiveCharts.Wpf" version="0.0.0.0" />
     </dependencies>

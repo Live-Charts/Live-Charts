@@ -15,7 +15,7 @@
     <copyright>Copyright 2016</copyright>
     <tags>Chart Charting Plot Plotting Wpf WindowsPresentationFoundation</tags>
 	<dependencies>
-      <dependency id="LiveCharts" version="0.7.15.0" />
+      <dependency id="LiveCharts" version="0.0.0.0" />
     </dependencies>
   </metadata>
   <files>
