@@ -69,6 +69,7 @@ namespace LiveCharts.Wpf
 
         #region properties
         private TextBlock TitleBlock { get; set; }
+        private FormattedText FormattedTitle { get; set; }
         /// <summary>
         /// Gets the Model of the axis, the model is used a DTO to communicate with the core of the library.
         /// </summary>
@@ -385,7 +386,7 @@ namespace LiveCharts.Wpf
                 chart.View.AddToView(TitleBlock);
             }
 
-            var formattedText = new FormattedText(
+            FormattedTitle = new FormattedText(
                  TitleBlock.Text,
                  CultureInfo.CurrentUICulture,
                  FlowDirection.LeftToRight,
@@ -394,7 +395,7 @@ namespace LiveCharts.Wpf
 
             return string.IsNullOrWhiteSpace(Title)
                 ? new CoreSize()
-                : new CoreSize(TitleBlock.Width, formattedText.Height);
+                : new CoreSize(TitleBlock.Width, FormattedTitle.Height);
         }
 
         public void SetTitleTop(double value)
@@ -419,7 +420,7 @@ namespace LiveCharts.Wpf
 
         public CoreSize GetLabelSize()
         {
-            return new CoreSize(TitleBlock.RenderSize.Width, TitleBlock.RenderSize.Height);
+            return new CoreSize(FormattedTitle.Width, FormattedTitle.Height);
         }
 
         public AxisCore AsCoreElement(ChartCore chart, AxisOrientation source)

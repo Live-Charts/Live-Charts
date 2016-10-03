@@ -18,76 +18,50 @@ namespace Wpf
         public JimmyTheTestsGuy()
         {
             InitializeComponent();
+        }
 
-            From = 10;
-            To = 50;
+        
+    }
 
-            Visuals = new VisualElementsCollection
+    public class TestVm
+    {
+        public TestVm()
+        {
+            var r = new Random();
+
+            var values = new ChartValues<DateTimePoint>
             {
-                new VisualElement
+                new DateTimePoint(DateTime.Now.AddDays(1), r.NextDouble()),
+                new DateTimePoint(DateTime.Now.AddDays(2), r.NextDouble()),
+                new DateTimePoint(DateTime.Now.AddDays(3), r.NextDouble()),
+                new DateTimePoint(DateTime.Now.AddDays(4), r.NextDouble()),
+                new DateTimePoint(DateTime.Now.AddDays(5), r.NextDouble()),
+                new DateTimePoint(DateTime.Now.AddDays(6), r.NextDouble()),
+                new DateTimePoint(DateTime.Now.AddDays(7), r.NextDouble()),
+                new DateTimePoint(DateTime.Now.AddDays(8), r.NextDouble())
+            };
+
+            SeriesCollection = new SeriesCollection
+            {
+                new StepLineSeries
                 {
-                    X = 3,
-                    Y = 3,
-                    UIElement = new TextBlock
-                    {
-                        Text = i++.ToString()
-                    }
-                },
-                new VisualElement
-                {
-                    X = 3,
-                    Y = 3,
-                    UIElement = new TextBlock
-                    {
-                        Text = i++.ToString()
-                    }
-                },
-                new VisualElement
-                {
-                    X = 3,
-                    Y = 3,
-                    UIElement = new TextBlock
-                    {
-                        Text = i++.ToString()
-                    }
+                    Values = values
                 }
             };
 
-            DataContext = this;
+            From = DateTime.Now.AddDays(2).Ticks;
+            To = DateTime.Now.AddDays(6).Ticks;
+            Min = values.First().DateTime.Ticks;
+            Max = values.Last().DateTime.Ticks;
+            Formatter = val => new DateTime((long)val).ToString("HH:mm:ss.f");
         }
 
+        public SeriesCollection SeriesCollection { get; set; }
+        public Func<double, string> Formatter { get; set; }
         public double From { get; set; }
         public double To { get; set; }
-
-        public VisualElementsCollection Visuals { get; set; }
-
-        private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
-        {
-            Visuals.Add(new VisualElement
-            {
-                X = 3,
-                Y = 3,
-                UIElement = new TextBlock
-                {
-                    Text = i++.ToString()
-                }
-            });
-        }
-
-        private void RemoveOnClick(object sender, RoutedEventArgs e)
-        {
-            Visuals.RemoveAt(0);
-        }
-
-        private void ClearOnClick(object sender, RoutedEventArgs e)
-        {
-            Visuals.Clear();
-        }
-
-        private void Move(object sender, RoutedEventArgs e)
-        {
-            Visuals[0].X = new Random().Next(1, 5);
-        }
+        public double Min { get; set; }
+        public double Max { get; set; }
     }
 }
 

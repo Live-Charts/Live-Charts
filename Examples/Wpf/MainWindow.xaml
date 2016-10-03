@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="600" Width="750"
         WindowStartupLocation="CenterScreen"
-        WindowState="Maximized"
+        WindowState="Normal"
         d:DataContext="{d:DesignInstance local:MainWindow}">
     <!--<Window.Resources>
         <ResourceDictionary Source="pack://application:,,,/LiveCharts.Wpf;component/Themes/LightMaterial.xaml"></ResourceDictionary>
@@ -27,7 +27,7 @@
             </TextBlock>
             <Separator Margin="10" ></Separator>
 
-            <local:PanelExample Height="650"></local:PanelExample>
+            <!--<local:PanelExample Height="650"></local:PanelExample>-->
 
             <Grid Height="500">
                 <Grid.ColumnDefinitions>
