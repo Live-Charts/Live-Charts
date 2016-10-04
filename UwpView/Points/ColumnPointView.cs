@@ -178,6 +178,9 @@ namespace LiveCharts.Uwp.Points
         {
             if (Rectangle == null) return;
 
+            // only a temporary work, I can't find Brush.Clone in OnHover
+            Rectangle.Fill.Opacity += .15;
+
             if (point.Fill != null)
             {
                 Rectangle.Fill = (Brush) point.Fill;
