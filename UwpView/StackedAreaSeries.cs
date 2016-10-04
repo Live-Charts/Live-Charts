@@ -154,7 +154,7 @@ namespace LiveCharts.Uwp
             /*Current*/SetValue(LineSmoothnessProperty, .7d);
             /*Current*/SetValue(PointGeometrySizeProperty, 0d);
             /*Current*/SetValue(PointForeroundProperty, new SolidColorBrush(Windows.UI.Colors.White));
-            /*Current*/SetValue(ForegroundProperty, new SolidColorBrush(Color.FromArgb(255, 229, 229, 229)));
+            /*Current*/SetValue(ForegroundProperty, new SolidColorBrush(Color.FromArgb(0, 229, 229, 229)));
             /*Current*/SetValue(StrokeThicknessProperty, 0d);
             DefaultFillOpacity = 1;
 

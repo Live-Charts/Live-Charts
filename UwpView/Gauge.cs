@@ -77,12 +77,12 @@ namespace LiveCharts.Uwp
                 new Binding { Path = new PropertyPath("StrokeThickness"), Source = this });
             Pie.Stroke = new SolidColorBrush(Windows.UI.Colors.Transparent);
 
-            /*Current*/SetValue(GaugeBackgroundProperty, new SolidColorBrush(Color.FromArgb(255, 21, 101, 191)) {Opacity = .1});
+            /*Current*/SetValue(GaugeBackgroundProperty, new SolidColorBrush(Color.FromArgb(0, 21, 101, 191)) {Opacity = .1});
             /*Current*/SetValue(StrokeThicknessProperty, 0d);
-            /*Current*/SetValue(StrokeProperty, new SolidColorBrush(Color.FromArgb(255, 222, 222, 222)));
+            /*Current*/SetValue(StrokeProperty, new SolidColorBrush(Color.FromArgb(0, 222, 222, 222)));
 
-            /*Current*/SetValue(FromColorProperty, Color.FromArgb(255, 100, 180, 245));
-            /*Current*/SetValue(ToColorProperty, Color.FromArgb(255, 21, 101, 191));
+            /*Current*/SetValue(FromColorProperty, Color.FromArgb(0, 100, 180, 245));
+            /*Current*/SetValue(ToColorProperty, Color.FromArgb(0, 21, 101, 191));
 
             /*Current*/SetValue(MinHeightProperty, 50d);
             /*Current*/SetValue(MinWidthProperty, 80d);

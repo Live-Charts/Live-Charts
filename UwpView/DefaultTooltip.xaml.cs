@@ -53,7 +53,7 @@ namespace LiveCharts.Uwp
         {
             InitializeComponent();
 
-            SetValue(ForegroundProperty, new SolidColorBrush(Color.FromArgb(255, 255, 255, 255)));
+            SetValue(ForegroundProperty, new SolidColorBrush(Color.FromArgb(0, 255, 255, 255)));
             SetValue(CornerRadiusProperty, 4d);
 
             DataContext = this;

@@ -40,7 +40,7 @@ namespace LiveCharts.Uwp
         public Separator()
         {
             /*Current*/SetValue(IsEnabledProperty, true);
-            /*Current*/SetValue(StrokeProperty, new SolidColorBrush(Color.FromArgb(255, 240, 240, 240)));
+            /*Current*/SetValue(StrokeProperty, new SolidColorBrush(Color.FromArgb(0, 240, 240, 240)));
             /*Current*/SetValue(StrokeThicknessProperty, 1d);
         }
 

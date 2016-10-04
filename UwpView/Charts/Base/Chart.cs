@@ -82,17 +82,17 @@ namespace LiveCharts.Uwp.Charts.Base
             
             var colors = new ColorsCollection
             {
-                Color.FromArgb(255, 33, 149, 242),
-                Color.FromArgb(255, 243, 67, 54),
-                Color.FromArgb(255, 254, 192, 7),
-                Color.FromArgb(255, 96, 125, 138),
-                Color.FromArgb(255, 0, 187, 211),
-                Color.FromArgb(255, 232, 30, 99),
-                Color.FromArgb(255, 254, 87, 34),
-                Color.FromArgb(255, 63, 81, 180),
-                Color.FromArgb(255, 204, 219, 57),
-                Color.FromArgb(255, 0, 149, 135),
-                Color.FromArgb(255, 76, 174, 80)
+                Color.FromArgb(0, 33, 149, 242),
+                Color.FromArgb(0, 243, 67, 54),
+                Color.FromArgb(0, 254, 192, 7),
+                Color.FromArgb(0, 96, 125, 138),
+                Color.FromArgb(0, 0, 187, 211),
+                Color.FromArgb(0, 232, 30, 99),
+                Color.FromArgb(0, 254, 87, 34),
+                Color.FromArgb(0, 63, 81, 180),
+                Color.FromArgb(0, 204, 219, 57),
+                Color.FromArgb(0, 0, 149, 135),
+                Color.FromArgb(0, 76, 174, 80)
             };
 
             /*Current*/SetValue(ColorsProperty, colors);

@@ -206,8 +206,8 @@ namespace LiveCharts.Uwp
             SetValue(StrokeThicknessProperty, 1d);
             SetValue(MaxColumnWidthProperty, 35d);
             SetValue(MaxWidthProperty, 25d);
-            SetValue(IncreaseBrushProperty, new SolidColorBrush(Color.FromArgb(255, 254, 178, 0)));
-            SetValue(DecreaseBrushProperty, new SolidColorBrush(Color.FromArgb(255, 238, 83, 80)));
+            SetValue(IncreaseBrushProperty, new SolidColorBrush(Color.FromArgb(0, 254, 178, 0)));
+            SetValue(DecreaseBrushProperty, new SolidColorBrush(Color.FromArgb(0, 238, 83, 80)));
 
             Func<ChartPoint, string> defaultLabel = x =>
                 string.Format("O: {0}, H: {1}, C: {2} L: {3}", x.Open, x.High, x.Close, x.Low);

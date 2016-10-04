@@ -45,8 +45,8 @@ namespace LiveCharts.Uwp
             _rectangle = new Rectangle();
             _label = new TextBlock();
             
-            /*Current*/SetValue(StrokeProperty, new SolidColorBrush(Color.FromArgb(255, 131, 172, 191)));
-            /*Current*/SetValue(FillProperty, new SolidColorBrush(Color.FromArgb(255, 131, 172, 191)) {Opacity = .35});
+            /*Current*/SetValue(StrokeProperty, new SolidColorBrush(Color.FromArgb(0, 131, 172, 191)));
+            /*Current*/SetValue(FillProperty, new SolidColorBrush(Color.FromArgb(0, 131, 172, 191)) {Opacity = .35});
             /*Current*/SetValue(StrokeThicknessProperty, 0d);
             /*Current*/SetValue(FromValueProperty, 0d);
             /*Current*/SetValue(ToValueProperty, 0d);

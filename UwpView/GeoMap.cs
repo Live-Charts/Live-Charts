@@ -76,7 +76,7 @@ namespace LiveCharts.Uwp
                 },
                 new GradientStop()
                 {
-                    Color = Color.FromArgb(255, 2, 119, 188),
+                    Color = Color.FromArgb(0, 2, 119, 188),
                     Offset = 1d
                 },
             });
@@ -534,7 +534,7 @@ namespace LiveCharts.Uwp
 
         private Color ColorInterpolation(double weight)
         {
-            Color from = Color.FromArgb(255, 0, 0, 0), to = Color.FromArgb(255, 0, 0, 0);
+            Color from = Color.FromArgb(0, 0, 0, 0), to = Color.FromArgb(0, 0, 0, 0);
             double fromOffset = 0, toOffset = 0;
 
             for (var i = 0; i < GradientStopCollection.Count-1; i++)
