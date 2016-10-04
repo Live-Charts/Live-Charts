@@ -93,12 +93,21 @@ namespace LiveCharts
                 fy = ay.MinValue ?? double.NegativeInfinity,
                 ty = ay.MaxValue ?? double.PositiveInfinity;
 
+            var isHorizontal = seriesView.Model.SeriesOrientation == SeriesOrientation.Horizontal;
+
             for (var index = 0; index < source.Length; index++)
             {
                 var item = source[index];
                 config.Evaluate(index, item, cp);
 
-                if (cp.X < fx || cp.X > tx || cp.Y < fy || cp.Y > ty) continue;
+                if (isHorizontal)
+                {
+                    if (cp.X < fx || cp.X > tx) continue;
+                }
+                else
+                {
+                    if (cp.Y < fy || cp.Y > ty) continue;
+                }
 
                 if (seriesView is IFinancialSeriesView)
                 {
