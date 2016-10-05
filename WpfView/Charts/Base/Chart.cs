@@ -54,7 +54,7 @@ namespace LiveCharts.Wpf.Charts.Base
         /// Chart core model, the model calculates the chart.
         /// </summary>
         protected ChartCore ChartCoreModel;
-        
+
         #region Constructors
 
         /// <summary>
@@ -986,6 +986,7 @@ namespace LiveCharts.Wpf.Charts.Base
 
         #region Zooming and Panning
         private Point DragOrigin { get; set; }
+        private bool _isPanning { get; set; }
 
         private void MouseWheelOnRoll(object sender, MouseWheelEventArgs e)
         {
@@ -1011,10 +1012,12 @@ namespace LiveCharts.Wpf.Charts.Base
             DragOrigin = new Point(
                 ChartFunctions.FromPlotArea(DragOrigin.X, AxisOrientation.X, Model),
                 ChartFunctions.FromPlotArea(DragOrigin.Y, AxisOrientation.Y, Model));
+            _isPanning = true;
         }
 
         private void OnDraggingEnd(object sender, MouseButtonEventArgs e)
         {
+            if (!_isPanning) return;
             if (Zoom == ZoomingOptions.None) return;
 
             var end = e.GetPosition(this);
@@ -1023,6 +1026,7 @@ namespace LiveCharts.Wpf.Charts.Base
                 ChartFunctions.FromPlotArea(end.Y, AxisOrientation.Y, Model));
 
             Model.Drag(new CorePoint(DragOrigin.X - end.X, DragOrigin.Y - end.Y));
+            _isPanning = false;
         }
         #endregion
 
