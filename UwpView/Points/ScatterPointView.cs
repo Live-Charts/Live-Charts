@@ -139,7 +139,7 @@ namespace LiveCharts.Uwp.Points
         public override void OnHoverLeave(ChartPoint point)
         {
             if (Shape == null) return;
-
+            Shape.Fill.Opacity += .15;
             if (point.Fill != null)
             {
                 Shape.Fill = (Brush) point.Fill;

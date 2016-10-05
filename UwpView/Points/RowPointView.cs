@@ -156,18 +156,21 @@ namespace LiveCharts.Uwp.Points
 
         public override void OnHover(ChartPoint point)
         {
-            var copy = Rectangle.Fill;//.Clone();
-            if (copy != null)
-            {
-                copy.Opacity -= .15;
-                Rectangle.Fill = copy;
-            }
+            //var copy = Rectangle.Fill;//.Clone();
+            //if (copy != null)
+            //{
+            //    copy.Opacity -= .15;
+            //    Rectangle.Fill = copy;
+            //}
+            if (Rectangle?.Fill != null)
+                Rectangle.Fill.Opacity -= .15;
         }
 
         public override void OnHoverLeave(ChartPoint point)
         {
             if (Rectangle == null) return;
-
+            if (Rectangle?.Fill != null)
+                Rectangle.Fill.Opacity += .15;
             if (point.Fill != null)
             {
                 Rectangle.Fill = (Brush)point.Fill;

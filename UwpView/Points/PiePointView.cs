@@ -138,6 +138,8 @@ namespace LiveCharts.Uwp.Points
 
         public override void OnHoverLeave(ChartPoint point)
         {
+            Slice.Fill.Opacity += .15;
+
             BindingOperations.SetBinding(Slice, Shape.FillProperty,
                 new Binding
                 {
