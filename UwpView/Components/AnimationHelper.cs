@@ -18,7 +18,8 @@ namespace LiveCharts.Uwp.Components
             var animation = new DoubleAnimation()
             {
                 To = to,
-                Duration = duration
+                Duration = duration,
+                EnableDependentAnimation = true
             };
             Storyboard.SetTargetProperty(animation, targetProperty);
             return animation;
@@ -29,7 +30,8 @@ namespace LiveCharts.Uwp.Components
             var animation = new PointAnimation()
             {
                 To = to,
-                Duration = duration
+                Duration = duration,
+                EnableDependentAnimation = true
             };
             Storyboard.SetTargetProperty(animation, targetProperty);
             return animation;
@@ -52,7 +54,8 @@ namespace LiveCharts.Uwp.Components
             var animation = new ColorAnimation()
             {
                 To = to,
-                Duration = duration
+                Duration = duration,
+                EnableDependentAnimation = true
             };
             Storyboard.SetTargetProperty(animation, targetProperty);
             return animation;
@@ -64,7 +67,8 @@ namespace LiveCharts.Uwp.Components
             var animation = new DoubleAnimation()
             {
                 To = to,
-                Duration = duration
+                Duration = duration,
+                EnableDependentAnimation = true
             };
             target.BeginAnimation(animation, path);
         }
@@ -76,7 +80,8 @@ namespace LiveCharts.Uwp.Components
             {
                 From = from,
                 To = to,
-                Duration = duration
+                Duration = duration,
+                EnableDependentAnimation = true
             };
             target.BeginAnimation(animation, path);
         }

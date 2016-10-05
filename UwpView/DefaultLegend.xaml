@@ -63,9 +63,9 @@
                         <!--ClipToBounds="True"-->
                         <Path Width="{Binding BulletSize, ElementName=This}" 
                                          Height="{Binding BulletSize, ElementName=This}" 
-                                         StrokeThickness="{Binding StrokeThickness}" 
+                                         StrokeThickness="{x:Bind StrokeThickness}" 
                                          Stroke="{x:Bind Stroke}" Fill="{x:Bind Fill}"
-                                         Stretch="Fill" Data="{x:Bind PointGeometry}"/>
+                                         Stretch="Fill" Data="{Binding PointGeometry}"/>
                         <TextBlock Grid.Column="1" Margin="4 0" Text="{x:Bind Title}" VerticalAlignment="Center" />
                     </Grid>
                 </DataTemplate>
