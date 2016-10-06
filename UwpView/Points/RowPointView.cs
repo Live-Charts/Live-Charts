@@ -180,7 +180,7 @@ namespace LiveCharts.Uwp.Points
                 BindingOperations.SetBinding(Rectangle, Shape.FillProperty,
                     new Binding
                     {
-                        Path = new PropertyPath("Series.Fill"),
+                        Path = new PropertyPath("Fill"),
                         Source = ((Series) point.SeriesView)
                     });
             }
