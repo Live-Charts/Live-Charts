@@ -46,13 +46,13 @@
         <uwp:ChartPointLabelConverter x:Key="ChartPointLabelConverter"/>
         <uwp:ParticipationVisibilityConverter x:Key="ParticipationVisibilityConverter"/>
     </UserControl.Resources>
-    <Border Background="{Binding Background}" CornerRadius="{Binding CornerRadius}"
-                    BorderThickness="{Binding BorderThickness}" Padding="10 5">
+    <Border Background="{x:Bind Background}" CornerRadius="{x:Bind CornerRadius}"
+                    BorderThickness="{x:Bind BorderThickness}" Padding="10 5">
         <StackPanel Orientation="Vertical">
             <TextBlock Text="{Binding Data, Converter={StaticResource SharedConverter}}" HorizontalAlignment="Center" FontWeight="Bold"
                                Visibility="{Binding Data, Converter={StaticResource SharedVisibilityConverter}}" />
             <!-- Grid.IsSharedSizeScope="True"-->
-            <ItemsControl ItemsSource="{Binding Data.Points}">
+            <ItemsControl ItemsSource="{Binding Data.Points}" x:Name="ItemsControl">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate x:DataType="uwp:DataPointViewModel">
                         <Grid Margin="2">
@@ -85,7 +85,7 @@
 
                             <TextBlock Grid.Column="3" Text="{Binding ChartPoint.Participation, Converter={StaticResource StrFormatConverter}}" 
                                                VerticalAlignment="Center" Margin="5 0 0 0"
-                                               Visibility="{Binding DataContext.Data, RelativeSource={RelativeSource Mode=TemplatedParent}, 
+                                               Visibility="{Binding DataContext.Data, ElementName=ItemsControl, 
                                                                     Converter={StaticResource ParticipationVisibilityConverter}}"/>
                         </Grid>
                     </DataTemplate>

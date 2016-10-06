@@ -54,19 +54,19 @@ namespace LiveCharts.Uwp
             InitializeComponent();
 
             SetValue(ForegroundProperty, new SolidColorBrush(Color.FromArgb(255, 255, 255, 255)));
-            SetValue(CornerRadiusProperty, 4d);
+            SetValue(CornerRadiusProperty, new CornerRadius(4d));
 
             DataContext = this;
         }
 
         public static readonly DependencyProperty CornerRadiusProperty = DependencyProperty.Register(
-            "CornerRadius", typeof (double), typeof (DefaultTooltip), new PropertyMetadata(2d));
+            "CornerRadius", typeof (CornerRadius), typeof (DefaultTooltip), new PropertyMetadata(new CornerRadius(2d)));
         /// <summary>
         /// Gets or sets the corner radius of the tooltip
         /// </summary>
-        public double CornerRadius
+        public CornerRadius CornerRadius
         {
-            get { return (double) GetValue(CornerRadiusProperty); }
+            get { return (CornerRadius) GetValue(CornerRadiusProperty); }
             set { SetValue(CornerRadiusProperty, value); }
         }
 
