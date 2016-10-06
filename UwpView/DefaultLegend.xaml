@@ -33,13 +33,12 @@
              xmlns:uwp="using:LiveCharts.Uwp"
              xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
              xmlns:multiBinding="using:LiveCharts.Uwp.Components.MultiBinding"
-             mc:Ignorable="d" x:Name="This"
-             d:DataContext="{d:DesignInstance uwp:DefaultLegend}">
+             mc:Ignorable="d" x:Name="This">
     <UserControl.Resources>
         <uwp:OrientationConverter x:Key="OrientationConverter"/>
     </UserControl.Resources>
     <Border>
-        <ItemsControl ItemsSource="{Binding Series}">
+        <ItemsControl ItemsSource="{x:Bind Series, Mode=OneWay}">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
                     <VariableSizedWrapGrid MaxWidth="{Binding MaxWidth, ElementName=This}"
@@ -62,10 +61,10 @@
                         </Grid.ColumnDefinitions>
                         <!--ClipToBounds="True"-->
                         <Path Width="{Binding BulletSize, ElementName=This}" 
-                                         Height="{Binding BulletSize, ElementName=This}" 
-                                         StrokeThickness="{x:Bind StrokeThickness}" 
-                                         Stroke="{x:Bind Stroke}" Fill="{x:Bind Fill}"
-                                         Stretch="Fill" Data="{Binding PointGeometry}"/>
+                              Height="{Binding BulletSize, ElementName=This}" 
+                              StrokeThickness="{x:Bind StrokeThickness}" 
+                              Stroke="{x:Bind Stroke}" Fill="{x:Bind Fill}"
+                              Stretch="Fill" Data="{Binding PointGeometry}"/>
                         <TextBlock Grid.Column="1" Margin="4 0" Text="{x:Bind Title}" VerticalAlignment="Center" />
                     </Grid>
                 </DataTemplate>

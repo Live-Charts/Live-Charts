@@ -28,10 +28,11 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Data;
 using LiveCharts.Uwp.Components.MultiBinding;
+using System.Reflection;
 
 namespace LiveCharts.Uwp
 {
-    public interface IChartLegend : INotifyPropertyChanged
+    public interface IChartLegend
     {
         List<SeriesViewModel> Series { get; set; }
     }
@@ -41,35 +42,28 @@ namespace LiveCharts.Uwp
     /// </summary>
     public partial class DefaultLegend : UserControl, IChartLegend
     {
-        private List<SeriesViewModel> _series;
-
         /// <summary>
         /// Initializes a new instance of DefaultLegend class
         /// </summary>
         public DefaultLegend()
         {
             InitializeComponent();
-
-            DataContext = this;
         }
-
-        /// <summary>
-        /// Property changed event
-        /// </summary>
-        public event PropertyChangedEventHandler PropertyChanged;
 
         /// <summary>
         /// Gets the series displayed in the legend.
         /// </summary>
         public List<SeriesViewModel> Series
         {
-            get { return _series; }
-            set
-            {
-                _series = value;
-                OnPropertyChanged("Series");
-            }
+            get { return (List<SeriesViewModel>)GetValue(SeriesProperty); }
+            set { SetValue(SeriesProperty, value); }
         }
+
+        // Using a DependencyProperty as the backing store for Series.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty SeriesProperty =
+            DependencyProperty.Register("Series", typeof(List<SeriesViewModel>), typeof(DefaultLegend), new PropertyMetadata(null));
+
+
 
         public static readonly DependencyProperty OrientationProperty = DependencyProperty.Register(
             "Orientation", typeof (Orientation?), typeof (DefaultLegend), new PropertyMetadata(null));
@@ -101,11 +95,6 @@ namespace LiveCharts.Uwp
         {
             get { return (double)GetValue(BulletSizeProperty); }
             set { SetValue(BulletSizeProperty, value); }
-        }
-
-        protected virtual void OnPropertyChanged(string propertyName = null)
-        {
-            if (PropertyChanged != null) PropertyChanged.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 
