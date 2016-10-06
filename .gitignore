@@ -227,3 +227,5 @@ ModelManifest.xml
 /VirtualizedValues/VirtualizedValues.csproj
 /VirtualizedValues/Class1.cs
 /VirtualizedValues/Properties/AssemblyInfo.cs
+/binaries
+/binaries.zip
