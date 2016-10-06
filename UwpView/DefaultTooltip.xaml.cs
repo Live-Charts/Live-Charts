@@ -35,14 +35,14 @@ namespace LiveCharts.Uwp
     public interface IChartTooltip : INotifyPropertyChanged
     {
         TooltipData Data { get; set; }
-        TooltipSelectionMode? SelectionMode { get; set; }
+        TooltipSelectionMode SelectionMode { get; set; }
         bool IsWrapped { get; set; }
     }
 
     /// <summary>
     /// The Default Tooltip control, by default any chart that requires a tooltip will create a new instance of this class.
     /// </summary>
-    public partial class DefaultTooltip : UserControl ,IChartTooltip
+    public partial class DefaultTooltip : UserControl, IChartTooltip
     {
         private TooltipData _data;
 
@@ -71,14 +71,14 @@ namespace LiveCharts.Uwp
         }
 
         public static readonly DependencyProperty SelectionModeProperty = DependencyProperty.Register(
-            "SelectionMode", typeof (TooltipSelectionMode?), typeof (DefaultTooltip),
-            new PropertyMetadata(null));
+            "SelectionMode", typeof (TooltipSelectionMode), typeof (DefaultTooltip),
+            new PropertyMetadata(TooltipSelectionMode.Auto));
         /// <summary>
         /// Gets or sets the tooltip selection mode, default is null, if this property is null LiveCharts will decide the selection mode based on the series (that fired the tooltip) preferred section mode
         /// </summary>
-        public TooltipSelectionMode? SelectionMode
+        public TooltipSelectionMode SelectionMode
         {
-            get { return (TooltipSelectionMode?) GetValue(SelectionModeProperty); }
+            get { return (TooltipSelectionMode) GetValue(SelectionModeProperty); }
             set { SetValue(SelectionModeProperty, value); }
         }
 

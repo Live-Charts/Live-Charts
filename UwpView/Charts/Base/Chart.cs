@@ -625,17 +625,17 @@ namespace LiveCharts.Uwp.Charts.Base
                 if (lcTooltip == null)
                     throw new LiveChartsException("The current tooltip is not valid, ensure it implements IChartsTooltip");
 
-                if (lcTooltip.SelectionMode == null)
+                if (lcTooltip.SelectionMode == TooltipSelectionMode.Auto)
                     lcTooltip.SelectionMode = senderPoint.SeriesView.Model.PreferredSelectionMode;
 
-                var coreModel = ChartFunctions.GetTooltipData(senderPoint, Model,lcTooltip.SelectionMode.Value);
+                var coreModel = ChartFunctions.GetTooltipData(senderPoint, Model, lcTooltip.SelectionMode);
 
                 lcTooltip.Data = new TooltipData
                 {
                     XFormatter = coreModel.XFormatter,
                     YFormatter = coreModel.YFormatter,
                     SharedValue = coreModel.Shares,
-                    SelectionMode = lcTooltip.SelectionMode ?? TooltipSelectionMode.OnlySender,
+                    SelectionMode = lcTooltip.SelectionMode == TooltipSelectionMode.Auto ? TooltipSelectionMode.OnlySender : lcTooltip.SelectionMode,
                     Points = coreModel.Points.Select(x => new DataPointViewModel
                     {
                         Series = new SeriesViewModel

@@ -47,6 +47,12 @@ namespace UWP
             },
             new NavMenuItem()
             {
+                Symbol = Symbol.FourBars,
+                Label = "Basic Row",
+                DestPage = typeof(BasicRowExample)
+            },
+            new NavMenuItem()
+            {
                 Symbol = Symbol.ThreeBars,
                 Label = "Basic Stacked Column",
                 DestPage = typeof(BasicStackedColumnExample)

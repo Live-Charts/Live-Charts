@@ -101,6 +101,9 @@
     <Compile Include="CartesianChart\Basic Bars\BasicColumn.xaml.cs">
       <DependentUpon>BasicColumn.xaml</DependentUpon>
     </Compile>
+    <Compile Include="CartesianChart\Basic Bars\BasicRowExample.xaml.cs">
+      <DependentUpon>BasicRowExample.xaml</DependentUpon>
+    </Compile>
     <Compile Include="CartesianChart\Basic Stacked Bar\BasicStackedColumnExample.xaml.cs">
       <DependentUpon>BasicStackedColumnExample.xaml</DependentUpon>
     </Compile>
@@ -144,6 +147,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="CartesianChart\Basic Bars\BasicColumn.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CartesianChart\Basic Bars\BasicRowExample.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
