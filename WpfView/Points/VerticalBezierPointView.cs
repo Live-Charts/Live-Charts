@@ -157,7 +157,7 @@ namespace LiveCharts.Wpf.Points
         {
             var lineSeries = (LineSeries)point.SeriesView;
             if (Shape != null) Shape.Fill = Shape.Stroke;
-            lineSeries.StrokeThickness = lineSeries.StrokeThickness + 1;
+            lineSeries.Path.StrokeThickness = lineSeries.StrokeThickness + 1;
         }
 
         public override void OnHoverLeave(ChartPoint point)
@@ -167,7 +167,7 @@ namespace LiveCharts.Wpf.Points
                 Shape.Fill = point.Fill == null
                     ? lineSeries.PointForeround
                     : (Brush) point.Fill;
-            lineSeries.StrokeThickness = lineSeries.StrokeThickness - 1;
+            lineSeries.Path.StrokeThickness = lineSeries.StrokeThickness;
         }
     }
 }

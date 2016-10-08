@@ -69,7 +69,7 @@ namespace LiveCharts.Wpf
 
         #region Private Properties
         protected PathFigure Figure { get; set; }
-        protected Path Path { get; set; }
+        internal Path Path { get; set; }
         protected bool IsPathInitialized { get; set; }
         internal List<LineSegmentSplitter> Splitters { get; set; }
         protected int ActiveSplitters { get; set; }
