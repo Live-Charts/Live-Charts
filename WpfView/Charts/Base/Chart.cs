@@ -1071,13 +1071,13 @@ namespace LiveCharts.Wpf.Charts.Base
             if (ScrollMode == ScrollMode.X || ScrollMode == ScrollMode.XY)
             {
                 Canvas.SetLeft(ScrollBar, f.X);
-                if (t.X - f.X >= 0) ScrollBar.Width = t.X - f.X;
+                if (t.X - f.X >= 0) ScrollBar.Width = t.X - f.X > 8 ? t.X - f.X : 8;
             }
 
             if (ScrollMode == ScrollMode.Y || ScrollMode == ScrollMode.XY)
             {
                 Canvas.SetTop(ScrollBar, t.Y);
-                if (f.Y - t.Y >= 0) ScrollBar.Height = f.Y - t.Y;
+                if (f.Y - t.Y >= 0) ScrollBar.Height = f.Y - t.Y > 8 ? f.Y - t.Y : 8;
             }
         }
 
