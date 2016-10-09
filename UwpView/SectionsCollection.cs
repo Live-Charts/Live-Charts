@@ -1,4 +1,4 @@
-//The MIT License(MIT)
+﻿//The MIT License(MIT)
 
 //copyright(c) 2016 Alberto Rodriguez
 
@@ -20,36 +20,32 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-namespace LiveCharts
+using System.Collections.Generic;
+using LiveCharts.Helpers;
+
+namespace LiveCharts.Uwp
 {
     /// <summary>
-    /// Tooltip selection modes
+    /// The SectionsCollection class holds a collection of Axis.Sections
     /// </summary>
-    public enum TooltipSelectionMode
+    public class SectionsCollection : NoisyCollection<AxisSection>
     {
         /// <summary>
-        /// LiveCharts will decide the selection mode based on the series (that fired the tooltip) preferred section mode
+        /// Initializes a new instance of SectionsCollection instance
         /// </summary>
-        Auto,
-        /// <summary>
-        /// Gets only the hovered point 
-        /// </summary>
-        OnlySender,
-        /// <summary>
-        /// Gets all the points that shares the value X in the chart
-        /// </summary>
-        SharedXValues,
-        /// <summary>
-        /// Gets all the points that shares the value Y in the chart
-        /// </summary>
-        SharedYValues,
-        /// <summary>
-        /// Gets all the points that shares the value X in the hovered series
-        /// </summary>
-        SharedXInSeries,
-        /// <summary>
-        /// Gets all the points that shares the value Y in the hovered series
-        /// </summary>
-        SharedYInSeries
+        public SectionsCollection()
+        {
+            NoisyCollectionChanged += OnNoisyCollectionChanged;
+        }
+
+        private static void OnNoisyCollectionChanged(IEnumerable<AxisSection> oldItems, IEnumerable<AxisSection> newItems)
+        {
+            if (oldItems == null) return;
+
+            foreach (var oldSection in oldItems)
+            {
+                oldSection.Remove();
+            }
+        }
     }
 }

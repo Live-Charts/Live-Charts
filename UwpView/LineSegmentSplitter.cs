@@ -1,4 +1,4 @@
-//The MIT License(MIT)
+﻿//The MIT License(MIT)
 
 //copyright(c) 2016 Alberto Rodriguez
 
@@ -20,36 +20,23 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-namespace LiveCharts
+using Windows.UI.Xaml.Media;
+
+namespace LiveCharts.Uwp
 {
-    /// <summary>
-    /// Tooltip selection modes
-    /// </summary>
-    public enum TooltipSelectionMode
+    internal class LineSegmentSplitter
     {
-        /// <summary>
-        /// LiveCharts will decide the selection mode based on the series (that fired the tooltip) preferred section mode
-        /// </summary>
-        Auto,
-        /// <summary>
-        /// Gets only the hovered point 
-        /// </summary>
-        OnlySender,
-        /// <summary>
-        /// Gets all the points that shares the value X in the chart
-        /// </summary>
-        SharedXValues,
-        /// <summary>
-        /// Gets all the points that shares the value Y in the chart
-        /// </summary>
-        SharedYValues,
-        /// <summary>
-        /// Gets all the points that shares the value X in the hovered series
-        /// </summary>
-        SharedXInSeries,
-        /// <summary>
-        /// Gets all the points that shares the value Y in the hovered series
-        /// </summary>
-        SharedYInSeries
+        public LineSegmentSplitter()
+        {
+            Bottom = new LineSegment(); //{ IsStroked = false };
+            Left = new LineSegment(); //{ IsStroked = false };
+            Right = new LineSegment(); // { IsStroked = false };
+        }
+
+        public LineSegment Bottom { get; private set; }
+        public LineSegment Left { get; private set; }
+        public LineSegment Right { get; private set; }
+        public int SplitterCollectorIndex { get; set; }
+        public bool IsNew { get; set; }
     }
 }

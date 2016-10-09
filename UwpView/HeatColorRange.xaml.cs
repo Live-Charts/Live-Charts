@@ -1,4 +1,4 @@
-//The MIT License(MIT)
+﻿//The MIT License(MIT)
 
 //copyright(c) 2016 Alberto Rodriguez
 
@@ -20,36 +20,43 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-namespace LiveCharts
+using Windows.Foundation;
+using Windows.UI.Xaml.Media;
+
+namespace LiveCharts.Uwp
 {
     /// <summary>
-    /// Tooltip selection modes
+    /// Interaction logic for HeatColorRange.xaml
     /// </summary>
-    public enum TooltipSelectionMode
+    public partial class HeatColorRange
     {
-        /// <summary>
-        /// LiveCharts will decide the selection mode based on the series (that fired the tooltip) preferred section mode
-        /// </summary>
-        Auto,
-        /// <summary>
-        /// Gets only the hovered point 
-        /// </summary>
-        OnlySender,
-        /// <summary>
-        /// Gets all the points that shares the value X in the chart
-        /// </summary>
-        SharedXValues,
-        /// <summary>
-        /// Gets all the points that shares the value Y in the chart
-        /// </summary>
-        SharedYValues,
-        /// <summary>
-        /// Gets all the points that shares the value X in the hovered series
-        /// </summary>
-        SharedXInSeries,
-        /// <summary>
-        /// Gets all the points that shares the value Y in the hovered series
-        /// </summary>
-        SharedYInSeries
+        public HeatColorRange()
+        {
+            InitializeComponent();
+        }
+
+        public void UpdateFill(GradientStopCollection stops)
+        {
+            Background = new LinearGradientBrush
+            {
+                StartPoint = new Point(0, 0),
+                EndPoint = new Point(0, 1),
+                GradientStops = stops
+            };
+        }
+
+        public double SetMax(string value)
+        {
+            MaxVal.Text = value;
+            MaxVal.UpdateLayout();
+            return MaxVal.ActualWidth;
+        }
+
+        public double SetMin(string value)
+        {
+            MinVal.Text = value;
+            MinVal.UpdateLayout();
+            return MinVal.ActualWidth;
+        }
     }
 }

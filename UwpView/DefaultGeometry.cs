@@ -1,4 +1,4 @@
-//The MIT License(MIT)
+﻿//The MIT License(MIT)
 
 //copyright(c) 2016 Alberto Rodriguez
 
@@ -20,36 +20,62 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-namespace LiveCharts
+using Windows.UI.Xaml.Media;
+using LiveCharts.Uwp.Components;
+
+namespace LiveCharts.Uwp
 {
     /// <summary>
-    /// Tooltip selection modes
+    /// Contains an already defined collection of geometries, useful to set the Series.PointGeomety property
     /// </summary>
-    public enum TooltipSelectionMode
+    public static class DefaultGeometries
     {
         /// <summary>
-        /// LiveCharts will decide the selection mode based on the series (that fired the tooltip) preferred section mode
+        /// Returns a null geometry
         /// </summary>
-        Auto,
+        public static Geometry None
+        {
+            get { return null; }
+        }
+
         /// <summary>
-        /// Gets only the hovered point 
+        /// Returns a circle geometry
         /// </summary>
-        OnlySender,
+        public static Geometry Circle
+        {
+            get { return GeometryHelper.Parse("M 0,0 A 180,180 180 1 1 1,1 Z"); }
+        }
+
         /// <summary>
-        /// Gets all the points that shares the value X in the chart
+        /// Returns a square geometry
         /// </summary>
-        SharedXValues,
+        public static Geometry Square
+        {
+            get { return GeometryHelper.Parse("M 1,1 h -2 v -2 h 2 z"); }
+        }
+
         /// <summary>
-        /// Gets all the points that shares the value Y in the chart
+        /// Returns a diamond geometry
         /// </summary>
-        SharedYValues,
+        public static Geometry Diamond
+        {
+            get { return GeometryHelper.Parse("M 1,0 L 2,1  1,2  0,1 z"); }
+        }
+
         /// <summary>
-        /// Gets all the points that shares the value X in the hovered series
+        /// Returns a triangle geometry
         /// </summary>
-        SharedXInSeries,
+        public static Geometry Triangle
+        {
+            get { return GeometryHelper.Parse("M 0,1 l 1,1 h -2 Z"); }
+        }
+
         /// <summary>
-        /// Gets all the points that shares the value Y in the hovered series
+        /// Returns a cross geometry
         /// </summary>
-        SharedYInSeries
+        public static Geometry Cross
+        {
+            get { return GeometryHelper.Parse("M0,0 L1,1 M0,1 l1,-1"); }
+        }
     }
 }

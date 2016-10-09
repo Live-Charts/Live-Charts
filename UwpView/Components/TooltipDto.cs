@@ -1,4 +1,4 @@
-//The MIT License(MIT)
+﻿//The MIT License(MIT)
 
 //copyright(c) 2016 Alberto Rodriguez
 
@@ -20,36 +20,18 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-namespace LiveCharts
+using Windows.UI.Xaml.Media;
+
+namespace LiveCharts.Uwp.Components
 {
-    /// <summary>
-    /// Tooltip selection modes
-    /// </summary>
-    public enum TooltipSelectionMode
+    public class TooltipDto
     {
-        /// <summary>
-        /// LiveCharts will decide the selection mode based on the series (that fired the tooltip) preferred section mode
-        /// </summary>
-        Auto,
-        /// <summary>
-        /// Gets only the hovered point 
-        /// </summary>
-        OnlySender,
-        /// <summary>
-        /// Gets all the points that shares the value X in the chart
-        /// </summary>
-        SharedXValues,
-        /// <summary>
-        /// Gets all the points that shares the value Y in the chart
-        /// </summary>
-        SharedYValues,
-        /// <summary>
-        /// Gets all the points that shares the value X in the hovered series
-        /// </summary>
-        SharedXInSeries,
-        /// <summary>
-        /// Gets all the points that shares the value Y in the hovered series
-        /// </summary>
-        SharedYInSeries
+        public Series Series { get; set; }
+
+        public int Index { get; set; }
+        public Brush Stroke { get; set; }
+        public Brush Fill { get; set; }
+        public ChartPoint Point { get; set; }
+        public string Value { get; set; }
     }
 }

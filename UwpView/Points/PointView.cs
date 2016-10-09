@@ -1,5 +1,3 @@
-//The MIT License(MIT)
-
 //copyright(c) 2016 Alberto Rodriguez
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -20,36 +18,38 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-namespace LiveCharts
+using System;
+using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Shapes;
+using LiveCharts.Charts;
+using LiveCharts.Definitions.Points;
+
+namespace LiveCharts.Uwp.Points
 {
-    /// <summary>
-    /// Tooltip selection modes
-    /// </summary>
-    public enum TooltipSelectionMode
+    internal class PointView : IChartPointView
     {
-        /// <summary>
-        /// LiveCharts will decide the selection mode based on the series (that fired the tooltip) preferred section mode
-        /// </summary>
-        Auto,
-        /// <summary>
-        /// Gets only the hovered point 
-        /// </summary>
-        OnlySender,
-        /// <summary>
-        /// Gets all the points that shares the value X in the chart
-        /// </summary>
-        SharedXValues,
-        /// <summary>
-        /// Gets all the points that shares the value Y in the chart
-        /// </summary>
-        SharedYValues,
-        /// <summary>
-        /// Gets all the points that shares the value X in the hovered series
-        /// </summary>
-        SharedXInSeries,
-        /// <summary>
-        /// Gets all the points that shares the value Y in the hovered series
-        /// </summary>
-        SharedYInSeries
+        public Shape HoverShape { get; set; }
+        public TextBlock DataLabel { get; set; }
+        public bool IsNew { get; set; }
+
+        public virtual void DrawOrMove(ChartPoint previousDrawn, ChartPoint current, int index, ChartCore chart)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual void RemoveFromView(ChartCore chart)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual void OnHover(ChartPoint point)
+        {
+            
+        }
+
+        public virtual void OnHoverLeave(ChartPoint point)
+        {
+            
+        }
     }
 }

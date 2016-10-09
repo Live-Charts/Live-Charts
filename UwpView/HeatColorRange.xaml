@@ -1,0 +1,13 @@
+﻿<UserControl x:Class="LiveCharts.Uwp.HeatColorRange"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d" 
+             d:DesignHeight="100" d:DesignWidth="50" d:DataContext="{d:DesignInstance local:HeatColorRange}"
+             Width="Auto">
+    <Grid>
+        <TextBlock Name="MinVal" Padding="5 0" HorizontalAlignment="Center" Text="{Binding Min}"/>
+        <TextBlock Name="MaxVal" Padding="5 0" VerticalAlignment="Bottom" HorizontalAlignment="Center" Text="{Binding Max}"/>
+    </Grid>
+</UserControl>
