@@ -192,7 +192,6 @@ namespace LiveCharts.Wpf
             set { SetValue(MinRangeProperty, value); }
         }
 
-
         public static readonly DependencyProperty TitleProperty = DependencyProperty.Register(
             "Title", typeof(string), typeof(Axis), 
             new PropertyMetadata(null, UpdateChart()));

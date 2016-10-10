@@ -1118,8 +1118,6 @@ namespace LiveCharts.Wpf.Charts.Base
         {
             _isDragging = true;
             _previous = e.GetPosition(this);
-
-            
         }
 
         private static void ScrollModeOnChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)

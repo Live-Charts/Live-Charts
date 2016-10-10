@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Windows.Foundation;
+﻿using Windows.Foundation;
 using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Media.Animation;
@@ -11,11 +6,11 @@ using Windows.UI.Xaml.Shapes;
 
 namespace LiveCharts.Uwp.Components
 {
-    public static class AnimationHelper
+    public static class AnimationsHelper
     {
         public static DoubleAnimation CreateDouble(double? to, Duration duration, string targetProperty)
         {
-            var animation = new DoubleAnimation()
+            var animation = new DoubleAnimation
             {
                 To = to,
                 Duration = duration,
@@ -27,7 +22,7 @@ namespace LiveCharts.Uwp.Components
 
         public static PointAnimation CreatePoint(Point to, Duration duration, string targetProperty)
         {
-            var animation = new PointAnimation()
+            var animation = new PointAnimation
             {
                 To = to,
                 Duration = duration,
@@ -39,7 +34,7 @@ namespace LiveCharts.Uwp.Components
 
         public static PointAnimation CreatePoint(Point from, Point to, Duration duration, string targetProperty)
         {
-            var animation = new PointAnimation()
+            var animation = new PointAnimation
             {
                 From = from,
                 To = to,
@@ -51,7 +46,7 @@ namespace LiveCharts.Uwp.Components
 
         public static ColorAnimation CreateColor(Color to, Duration duration, string targetProperty)
         {
-            var animation = new ColorAnimation()
+            var animation = new ColorAnimation
             {
                 To = to,
                 Duration = duration,
@@ -64,7 +59,7 @@ namespace LiveCharts.Uwp.Components
         public static void BeginDoubleAnimation(this DependencyObject target, string path, double? to,
             Duration duration)
         {
-            var animation = new DoubleAnimation()
+            var animation = new DoubleAnimation
             {
                 To = to,
                 Duration = duration,
@@ -76,7 +71,7 @@ namespace LiveCharts.Uwp.Components
         public static void BeginDoubleAnimation(this DependencyObject target, string path, double? from, double? to,
             Duration duration)
         {
-            var animation = new DoubleAnimation()
+            var animation = new DoubleAnimation
             {
                 From = from,
                 To = to,

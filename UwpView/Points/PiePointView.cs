@@ -111,9 +111,9 @@ namespace LiveCharts.Uwp.Points
                 DataLabel.CreateCanvasStoryBoardAndBegin(lx, ly, animSpeed);
             }
 
-            var wedge = AnimationHelper.CreateDouble(Wedge, animSpeed, nameof(PieSlice.WedgeAngle));
-            var rotation = AnimationHelper.CreateDouble(Rotation, animSpeed, nameof(PieSlice.RotationAngle));
-            AnimationHelper.CreateStoryBoardAndBegin(Slice, wedge, rotation);
+            var wedge = AnimationsHelper.CreateDouble(Wedge, animSpeed, nameof(PieSlice.WedgeAngle));
+            var rotation = AnimationsHelper.CreateDouble(Rotation, animSpeed, nameof(PieSlice.RotationAngle));
+            AnimationsHelper.CreateStoryBoardAndBegin(Slice, wedge, rotation);
         }
 
         public override void RemoveFromView(ChartCore chart)

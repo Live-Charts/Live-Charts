@@ -24,7 +24,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using Windows.Devices.Input;
 using Windows.Foundation;
 using Windows.UI;
 using Windows.UI.Xaml;
@@ -32,11 +31,13 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Animation;
+using Windows.UI.Xaml.Shapes;
 using LiveCharts.Charts;
 using LiveCharts.Defaults;
 using LiveCharts.Definitions.Charts;
 using LiveCharts.Definitions.Series;
 using LiveCharts.Dtos;
+using LiveCharts.Events;
 using LiveCharts.Helpers;
 using LiveCharts.Uwp.Components;
 using LiveCharts.Uwp.Points;
@@ -106,6 +107,8 @@ namespace LiveCharts.Uwp.Charts.Base
             DrawMargin.Background = new SolidColorBrush(Windows.UI.Colors.Transparent); // if this line is not set, then it does not detect mouse down event...
             //DrawMargin.PointerPressed += OnDraggingStart;
             //DrawMargin.PointerReleased += OnDraggingEnd;
+            //DrawMargin.MouseMove += DragSection;
+            //MouseUp += DisableSectionDragMouseUp;
         }
 
         static Chart()
@@ -214,7 +217,7 @@ namespace LiveCharts.Uwp.Charts.Base
         /// <summary>
         /// The DataClick event is fired when a user click any data point
         /// </summary>
-        public event Action<object, ChartPoint> DataClick;
+        public event DataClickHandler DataClick;
 
         /// <summary>
         /// Thi event is fired every time the chart updates.
@@ -360,7 +363,6 @@ namespace LiveCharts.Uwp.Charts.Base
 
         public static readonly DependencyProperty HoverableProperty = DependencyProperty.Register(
             "Hoverable", typeof(bool), typeof(Chart), new PropertyMetadata(true));
-
         /// <summary>
         /// gets or sets whether chart should react when a user moves the mouse over a data point.
         /// </summary>
@@ -368,6 +370,98 @@ namespace LiveCharts.Uwp.Charts.Base
         {
             get { return (bool) GetValue(HoverableProperty); }
             set { SetValue(HoverableProperty, value); }
+        }
+
+        public static readonly DependencyProperty ScrollModeProperty = DependencyProperty.Register(
+            "ScrollMode", typeof(ScrollMode), typeof(Chart),
+            new PropertyMetadata(ScrollMode.None, ScrollModeOnChanged));
+        /// <summary>
+        /// Gets or sets chart scroll mode
+        /// </summary>
+        public ScrollMode ScrollMode
+        {
+            get { return (ScrollMode)GetValue(ScrollModeProperty); }
+            set { SetValue(ScrollModeProperty, value); }
+        }
+
+        public static readonly DependencyProperty ScrollHorizontalFromProperty = DependencyProperty.Register(
+            "ScrollHorizontalFrom", typeof(double), typeof(Chart),
+            new PropertyMetadata(default(double), ScrollLimitOnChanged));
+        /// <summary>
+        /// Gets or sets the scrolling horizontal start value
+        /// </summary>
+        public double ScrollHorizontalFrom
+        {
+            get { return (double)GetValue(ScrollHorizontalFromProperty); }
+            set { SetValue(ScrollHorizontalFromProperty, value); }
+        }
+
+        public static readonly DependencyProperty ScrollHorizontalToProperty = DependencyProperty.Register(
+            "ScrollHorizontalTo", typeof(double), typeof(Chart),
+            new PropertyMetadata(default(double), ScrollLimitOnChanged));
+        /// <summary>
+        /// Gets or sets the scrolling horizontal end value
+        /// </summary>
+        public double ScrollHorizontalTo
+        {
+            get { return (double)GetValue(ScrollHorizontalToProperty); }
+            set { SetValue(ScrollHorizontalToProperty, value); }
+        }
+
+        public static readonly DependencyProperty ScrollVerticalFromProperty = DependencyProperty.Register(
+            "ScrollVerticalFrom", typeof(double), typeof(Chart), new PropertyMetadata(default(double)));
+        /// <summary>
+        /// Gets or sets the scrolling vertical start value
+        /// </summary>
+        public double ScrollVerticalFrom
+        {
+            get { return (double)GetValue(ScrollVerticalFromProperty); }
+            set { SetValue(ScrollVerticalFromProperty, value); }
+        }
+
+        public static readonly DependencyProperty ScrollVerticalToProperty = DependencyProperty.Register(
+            "ScrollVerticalTo", typeof(double), typeof(Chart), new PropertyMetadata(default(double)));
+        /// <summary>
+        /// Gets or sets the scrolling vertical end value
+        /// </summary>
+        public double ScrollVerticalTo
+        {
+            get { return (double)GetValue(ScrollVerticalToProperty); }
+            set { SetValue(ScrollVerticalToProperty, value); }
+        }
+
+        public static readonly DependencyProperty ScrollBarFillProperty = DependencyProperty.Register(
+            "ScrollBarFill", typeof(Brush), typeof(Chart), new PropertyMetadata(new SolidColorBrush(Color.FromArgb(30, 30, 30, 30))));
+        /// <summary>
+        /// Gets or sets the scroll bar fill brush
+        /// </summary>
+        public Brush ScrollBarFill
+        {
+            get { return (Brush)GetValue(ScrollBarFillProperty); }
+            set { SetValue(ScrollBarFillProperty, value); }
+        }
+
+        public static readonly DependencyProperty ZoomingSpeedProperty = DependencyProperty.Register(
+            "ZoomingSpeed", typeof(double), typeof(Chart), new PropertyMetadata(0.8d));
+        /// <summary>
+        /// Gets or sets zooming speed, goes from 0.95 (slow) to 0.1 (fast), default is 0.8, it means the current axis range percentage that will be draw in the next zooming step
+        /// </summary>
+        public double ZoomingSpeed
+        {
+            get { return (double)GetValue(ZoomingSpeedProperty); }
+            set { SetValue(ZoomingSpeedProperty, value); }
+        }
+
+        public static readonly DependencyProperty UpdaterStateProperty = DependencyProperty.Register(
+            "UpdaterState", typeof(UpdaterState), typeof(Chart),
+            new PropertyMetadata(default(UpdaterState), CallChartUpdater()));
+        /// <summary>
+        /// Gets or sets chart's updater state
+        /// </summary>
+        public UpdaterState UpdaterState
+        {
+            get { return (UpdaterState)GetValue(UpdaterStateProperty); }
+            set { SetValue(UpdaterStateProperty, value); }
         }
 
         /// <summary>
@@ -398,6 +492,11 @@ namespace LiveCharts.Uwp.Charts.Base
         /// Gets whether the chart is already loaded in the view.
         /// </summary>
         public bool IsControlLoaded { get; private set; }
+
+        /// <summary>
+        /// Gets whether the control is in design mode
+        /// </summary>
+        public bool IsInDesignMode { get { return Windows.ApplicationModel.DesignMode.DesignModeEnabled; } }
 
         /// <summary>
         /// Gets the visible series in the chart
@@ -800,7 +899,7 @@ namespace LiveCharts.Uwp.Charts.Base
             TooltipTimeoutTimer.Interval = chart.TooltipTimeout;
         }
 
-        public void HideTooltop()
+        public void HideTooltip()
         {
             if (DataTooltip == null) return;
 
@@ -818,14 +917,13 @@ namespace LiveCharts.Uwp.Charts.Base
             return new Point(xt, yt);
         }
 
-        private SeriesCollection GetDesignerModeCollection()
+        internal SeriesCollection GetDesignerModeCollection()
         {
             var r = new Random();
             SeriesCollection mockedCollection;
 
             if (this is PieChart)
             {
-
                 mockedCollection = new SeriesCollection
                 {
                     new PieSeries
@@ -927,6 +1025,112 @@ namespace LiveCharts.Uwp.Charts.Base
 
         //    Model.Drag(new CorePoint(DragOrigin.X - end.X, DragOrigin.Y - end.Y));
         //}
+        #endregion
+
+        #region ScrollBar functionality
+        private bool _isDragging;
+        private Point _previous;
+        private Rectangle ScrollBar { get; set; }
+
+        //internal void PrepareScrolBar()
+        //{
+        //    if (!IsControlLoaded) return;
+
+        //    if (ScrollMode == ScrollMode.None)
+        //    {
+        //        RemoveFromDrawMargin(ScrollBar);
+        //        ScrollBar = null;
+
+        //        return;
+        //    }
+
+        //    if (ScrollBar == null)
+        //    {
+        //        ScrollBar = new Rectangle();
+
+        //        ScrollBar.SetBinding(Shape.FillProperty,
+        //            new Binding { Path = new PropertyPath(ScrollBarFillProperty), Source = this });
+
+        //        EnsureElementBelongsToCurrentView(ScrollBar);
+        //        ScrollBar.MouseDown += ScrollBarOnMouseDown;
+        //        MouseMove += ScrollBarOnMouseMove;
+        //        ScrollBar.MouseUp += ScrollBarOnMouseUp;
+        //    }
+
+        //    ScrollBar.SetBinding(HeightProperty,
+        //        new Binding { Path = new PropertyPath(ActualHeightProperty), Source = this });
+        //    ScrollBar.SetBinding(WidthProperty,
+        //        new Binding { Path = new PropertyPath(ActualWidthProperty), Source = this });
+
+        //    var f = this.ConvertToPixels(new Point(ScrollHorizontalFrom, ScrollVerticalFrom));
+        //    var t = this.ConvertToPixels(new Point(ScrollHorizontalTo, ScrollVerticalTo));
+
+        //    if (ScrollMode == ScrollMode.X || ScrollMode == ScrollMode.XY)
+        //    {
+        //        Canvas.SetLeft(ScrollBar, f.X);
+        //        if (t.X - f.X >= 0) ScrollBar.Width = t.X - f.X > 8 ? t.X - f.X : 8;
+        //    }
+
+        //    if (ScrollMode == ScrollMode.Y || ScrollMode == ScrollMode.XY)
+        //    {
+        //        Canvas.SetTop(ScrollBar, t.Y);
+        //        if (f.Y - t.Y >= 0) ScrollBar.Height = f.Y - t.Y > 8 ? f.Y - t.Y : 8;
+        //    }
+        //}
+
+        //private void ScrollBarOnMouseUp(object sender, MouseButtonEventArgs e)
+        //{
+        //    _isDragging = false;
+        //}
+
+        //private void ScrollBarOnMouseMove(object sender, MouseEventArgs e)
+        //{
+        //    if (!_isDragging) return;
+
+        //    var d = e.GetPosition(this);
+
+        //    var dp = new Point(d.X - _previous.X, d.Y - _previous.Y);
+        //    var d0 = this.ConvertToChartValues(new Point());
+        //    var d1 = this.ConvertToChartValues(dp);
+        //    var dv = new Point(d0.X - d1.X, d0.Y - d1.Y);
+
+        //    _previous = d;
+
+        //    if (ScrollMode == ScrollMode.X || ScrollMode == ScrollMode.XY)
+        //    {
+        //        if (Math.Abs(dp.X) < 0.1) return;
+        //        ScrollHorizontalFrom -= dv.X;
+        //        ScrollHorizontalTo -= dv.X;
+        //    }
+
+        //    if (ScrollMode == ScrollMode.Y || ScrollMode == ScrollMode.XY)
+        //    {
+        //        if (Math.Abs(dp.Y) < 0.1) return;
+        //        ScrollVerticalFrom += dv.Y;
+        //        ScrollVerticalTo += dv.Y;
+        //    }
+        //}
+
+        //private void ScrollBarOnMouseDown(object sender, MouseButtonEventArgs e)
+        //{
+        //    _isDragging = true;
+        //    _previous = e.GetPosition(this);
+        //}
+
+        private static void ScrollModeOnChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
+        {
+            var wpfChart = (Chart)o;
+            if (o == null) return;
+            //wpfChart.PrepareScrolBar();
+        }
+
+        private static void ScrollLimitOnChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
+        {
+            var wpfChart = (Chart)o;
+            if (o == null) return;
+            //wpfChart.PrepareScrolBar();
+        }
+
         #endregion
 
         #region Property Changed

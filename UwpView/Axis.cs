@@ -32,7 +32,6 @@ using LiveCharts.Charts;
 using LiveCharts.Definitions.Charts;
 using LiveCharts.Dtos;
 using LiveCharts.Uwp.Components;
-using LiveCharts.Uwp.Converters;
 
 namespace LiveCharts.Uwp
 {
@@ -41,7 +40,6 @@ namespace LiveCharts.Uwp
     /// </summary>
     public class Axis : UserControl, IAxisView
     {
-
         #region Constructors
 
         /// <summary>
@@ -75,7 +73,14 @@ namespace LiveCharts.Uwp
         /// Gets the Model of the axis, the model is used a DTO to communicate with the core of the library.
         /// </summary>
         public AxisCore Model { get; set; }
-
+        /// <summary>
+        /// Gets previous Max Value
+        /// </summary>
+        public double PreviousMaxValue { get; internal set; }
+        /// <summary>
+        /// Gets previous Min Value
+        /// </summary>
+        public double PreviousMinValue { get; internal set; }
         #endregion
 
         #region Dependency Properties
@@ -165,6 +170,28 @@ namespace LiveCharts.Uwp
             set { SetValue(MinValueProperty, value); }
         }
 
+        public static readonly DependencyProperty MinRangeProperty = DependencyProperty.Register(
+            "MinRange", typeof(double), typeof(Axis), new PropertyMetadata(default(double)));
+        /// <summary>
+        /// Gets or sets the min range this axis can display, useful to limit user zooming.
+        /// </summary>
+        public double MinRange
+        {
+            get { return (double) GetValue(MinRangeProperty); }
+            set { SetValue(MinRangeProperty, value); }
+        }
+
+        public static readonly DependencyProperty MaxRangeProperty = DependencyProperty.Register(
+            "MaxRange", typeof(double), typeof(Axis), new PropertyMetadata(default(double)));
+        /// <summary>
+        /// Gets or sets the max range this axis can display, useful to limit user zooming.
+        /// </summary>
+        public double MaxRange
+        {
+            get { return (double) GetValue(MaxRangeProperty); }
+            set { SetValue(MaxRangeProperty, value); }
+        }
+
         public static readonly DependencyProperty TitleProperty = DependencyProperty.Register(
             "Title", typeof(string), typeof(Axis), 
             new PropertyMetadata(null, UpdateChart()));
@@ -188,8 +215,7 @@ namespace LiveCharts.Uwp
             get { return (AxisPosition) GetValue(PositionProperty); }
             set { SetValue(PositionProperty, value); }
         }
-
-
+        
         public static readonly DependencyProperty IsMergedProperty = DependencyProperty.Register(
             "IsMerged", typeof (bool), typeof (Axis), 
             new PropertyMetadata(default(bool), UpdateChart()));
@@ -202,6 +228,16 @@ namespace LiveCharts.Uwp
             set { SetValue(IsMergedProperty, value); }
         }
 
+        public static readonly DependencyProperty BarUnitProperty = DependencyProperty.Register(
+            "BarUnit", typeof(double), typeof(Axis), new PropertyMetadata(default(double)));
+        /// <summary>
+        /// Gets or sets the bar's series unit width (rows and columns), this property specifies the value in the chart that any bar should take as width.
+        /// </summary>
+        public double BarUnit
+        {
+            get { return (double) GetValue(BarUnitProperty); }
+            set { SetValue(BarUnitProperty, value); }
+        }
 
         public static readonly DependencyProperty DisableAnimationsProperty = DependencyProperty.Register(
             "DisableAnimations", typeof (bool), typeof (Axis), new PropertyMetadata(default(bool), UpdateChart(true)));
@@ -300,6 +336,8 @@ namespace LiveCharts.Uwp
             set { SetValue(LabelsRotationProperty, value); }
         }
 
+
+
         #endregion
 
         #region Public Methods
@@ -309,6 +347,11 @@ namespace LiveCharts.Uwp
             Model.Chart.View.RemoveFromView(TitleBlock);
             Sections.Clear();
             TitleBlock = null;
+        }
+
+        public void SetRange(double? min, double? max)
+        {
+            throw new NotImplementedException();
         }
 
         public void RenderSeparator(SeparatorElementCore model, ChartCore chart)

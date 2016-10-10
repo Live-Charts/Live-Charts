@@ -23,7 +23,7 @@
 using System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Media.Animation;
+using LiveCharts.Charts;
 using LiveCharts.Definitions.Charts;
 using LiveCharts.Dtos;
 using LiveCharts.Uwp.Charts.Base;
@@ -82,25 +82,25 @@ namespace LiveCharts.Uwp
             set { SetValue(YProperty, value); }
         }
 
-        public void AddOrMove()
+        public void AddOrMove(ChartCore chart)
         {
             if (UIElement.Parent == null)
             {
-                Chart.AddToDrawMargin(UIElement);
+                chart.View.AddToDrawMargin(UIElement);
                 Canvas.SetZIndex(UIElement, 1000);
             }
 
-            var coordinate = new CorePoint(ChartFunctions.ToDrawMargin(X, AxisOrientation.X, Chart.Model, AxisX),
-                ChartFunctions.ToDrawMargin(Y, AxisOrientation.Y, Chart.Model, AxisY));
+            var coordinate = new CorePoint(ChartFunctions.ToDrawMargin(X, AxisOrientation.X, chart, AxisX),
+                ChartFunctions.ToDrawMargin(Y, AxisOrientation.Y, chart, AxisY));
 
-            var wpfChart = (CartesianChart) Chart;
+            var uwpChart = (CartesianChart) chart.View;
 
             var uw = new CorePoint(
-                wpfChart.AxisX[AxisX].Model.EvaluatesUnitWidth
-                    ? ChartFunctions.GetUnitWidth(AxisOrientation.X, Chart.Model, AxisX)/2
+                uwpChart.AxisX[AxisX].Model.EvaluatesUnitWidth
+                    ? ChartFunctions.GetUnitWidth(AxisOrientation.X, chart, AxisX)/2
                     : 0,
-                wpfChart.AxisY[AxisY].Model.EvaluatesUnitWidth
-                    ? ChartFunctions.GetUnitWidth(AxisOrientation.Y, Chart.Model, AxisY)/2
+                uwpChart.AxisY[AxisY].Model.EvaluatesUnitWidth
+                    ? ChartFunctions.GetUnitWidth(AxisOrientation.Y, chart, AxisY)/2
                     : 0);
 
             coordinate += uw;
@@ -141,7 +141,7 @@ namespace LiveCharts.Uwp
                     throw new ArgumentOutOfRangeException();
             }
 
-            if (Chart.DisableAnimations)
+            if (chart.View.DisableAnimations)
             {
                 Canvas.SetLeft(UIElement, coordinate.X);
                 Canvas.SetTop(UIElement, coordinate.Y);
@@ -154,15 +154,15 @@ namespace LiveCharts.Uwp
                     Canvas.SetTop(UIElement, coordinate.Y);
                 }
 
-                var x = AnimationHelper.CreateDouble(coordinate.X, wpfChart.AnimationsSpeed, "(Canvas.Left)");
-                var y = AnimationHelper.CreateDouble(coordinate.Y, wpfChart.AnimationsSpeed, "(Canvas.Top)");
-                AnimationHelper.CreateStoryBoardAndBegin(UIElement, x, y);
+                var x = AnimationsHelper.CreateDouble(coordinate.X, uwpChart.AnimationsSpeed, "(Canvas.Left)");
+                var y = AnimationsHelper.CreateDouble(coordinate.Y, uwpChart.AnimationsSpeed, "(Canvas.Top)");
+                AnimationsHelper.CreateStoryBoardAndBegin(UIElement, x, y);
             }
         }
 
-        public void Remove()
+        public void Remove(ChartCore chart)
         {
-            Chart.RemoveFromView(UIElement);
+            chart.View.RemoveFromView(UIElement);
         }
 
         private static void PropertyChangedCallback(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)

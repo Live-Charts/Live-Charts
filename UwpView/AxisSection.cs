@@ -103,6 +103,17 @@ namespace LiveCharts.Uwp
             set { SetValue(ToValueProperty, value); }
         }
 
+        public static readonly DependencyProperty DraggableProperty = DependencyProperty.Register(
+            "Draggable", typeof(bool), typeof(AxisSection), new PropertyMetadata(default(bool)));
+        /// <summary>
+        /// Gets or sets if a user can drag the section
+        /// </summary>
+        public bool Draggable
+        {
+            get { return (bool) GetValue(DraggableProperty); }
+            set { SetValue(DraggableProperty, value); }
+        }
+
         public static readonly DependencyProperty StrokeProperty = DependencyProperty.Register(
             "Stroke", typeof (Brush), typeof (AxisSection), new PropertyMetadata(default(Brush)));
         /// <summary>

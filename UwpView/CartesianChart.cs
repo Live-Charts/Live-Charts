@@ -41,8 +41,11 @@ namespace LiveCharts.Uwp
             var freq = DisableAnimations ? TimeSpan.FromMilliseconds(10) : AnimationsSpeed;
             var updater = new Components.ChartUpdater(freq);
             ChartCoreModel = new CartesianChartCore(this, updater);
-            
-            /*Current*/SetValue(SeriesProperty, new SeriesCollection());
+
+            SetValue(SeriesProperty,
+                Windows.ApplicationModel.DesignMode.DesignModeEnabled
+                    ? GetDesignerModeCollection()
+                    : new SeriesCollection());
 
             /*Current*/SetValue(VisualElementsProperty, new VisualElementsCollection());
         }

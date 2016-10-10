@@ -116,9 +116,9 @@ namespace LiveCharts.Uwp.Points
             HighToLowLine.X1 = center;
             HighToLowLine.X2 = center;
 
-            var y1Animation = AnimationHelper.CreateDouble(High, animSpeed, "Line.Y1");
-            var y2Animation = AnimationHelper.CreateDouble(Low, animSpeed, "Line.Y2");
-            AnimationHelper.CreateStoryBoardAndBegin(HighToLowLine, y1Animation, y2Animation);
+            var y1Animation = AnimationsHelper.CreateDouble(High, animSpeed, "Line.Y1");
+            var y2Animation = AnimationsHelper.CreateDouble(Low, animSpeed, "Line.Y2");
+            AnimationsHelper.CreateStoryBoardAndBegin(HighToLowLine, y1Animation, y2Animation);
 
             Canvas.SetLeft(OpenToCloseRectangle, Left);
             OpenToCloseRectangle.BeginDoubleAnimation("(Canvas.Top)", Math.Min(Open, Close), animSpeed);
