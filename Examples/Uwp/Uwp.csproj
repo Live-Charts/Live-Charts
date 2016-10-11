@@ -110,6 +110,16 @@
     <Compile Include="CartesianChart\Basic Stacked Bar\BasicStackedRowPercentageExample.xaml.cs">
       <DependentUpon>BasicStackedRowPercentageExample.xaml</DependentUpon>
     </Compile>
+    <Compile Include="CartesianChart\BasicLine\BasicLineExample.xaml.cs">
+      <DependentUpon>BasicLineExample.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CartesianChart\Bubbles\BubblesExample.xaml.cs">
+      <DependentUpon>BubblesExample.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CartesianChart\ConstantChanges\ConstantChangesChart.xaml.cs">
+      <DependentUpon>ConstantChangesChart.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CartesianChart\ConstantChanges\MeasureModel.cs" />
     <Compile Include="Commons\SampleCategory.cs" />
     <Compile Include="Commons\SampleDefinition.cs" />
     <Compile Include="Commons\SampleDefinitions.cs" />
@@ -156,6 +166,18 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="CartesianChart\Basic Stacked Bar\BasicStackedRowPercentageExample.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CartesianChart\BasicLine\BasicLineExample.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CartesianChart\Bubbles\BubblesExample.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CartesianChart\ConstantChanges\ConstantChangesChart.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
