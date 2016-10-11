@@ -39,7 +39,7 @@ namespace LiveCharts.Uwp
     /// <summary>
     /// An Axis of a chart
     /// </summary>
-    public class Axis : UserControl, IAxisView
+    public class Axis : FrameworkElement, IAxisView
     {
         #region Constructors
 
@@ -337,7 +337,14 @@ namespace LiveCharts.Uwp
             set { SetValue(LabelsRotationProperty, value); }
         }
 
+        public static readonly DependencyProperty IsEnabledProperty = DependencyProperty.Register(
+            "IsEnabled", typeof(bool), typeof(Axis), new PropertyMetadata(default(bool)));
 
+        public bool IsEnabled
+        {
+            get { return (bool) GetValue(IsEnabledProperty); }
+            set { SetValue(IsEnabledProperty, value); }
+        }
 
         #endregion
 
