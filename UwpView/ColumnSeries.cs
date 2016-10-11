@@ -148,7 +148,7 @@ namespace LiveCharts.Uwp
                     StrokeThickness = 0
                 };
 
-                Canvas.SetZIndex(pbv.HoverShape, Int16.MaxValue);
+                Canvas.SetZIndex(pbv.HoverShape, short.MaxValue);
 
                 var wpfChart = (Chart)Model.Chart.View;
                 wpfChart.AttachHoverableEventTo(pbv.HoverShape);
@@ -161,7 +161,7 @@ namespace LiveCharts.Uwp
             if (DataLabels && pbv.DataLabel == null)
             {
                 pbv.DataLabel = BindATextBlock(0);
-                Canvas.SetZIndex(pbv.DataLabel, Int16.MaxValue - 1);
+                Canvas.SetZIndex(pbv.DataLabel, short.MaxValue - 1);
 
                 Model.Chart.View.AddToDrawMargin(pbv.DataLabel);
             }

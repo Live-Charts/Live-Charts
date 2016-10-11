@@ -5,17 +5,17 @@
     xmlns:local="using:UWP.CartesianChart.Basic_Bars"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:uwp="using:LiveCharts.Uwp"
+    xmlns:lvc="using:LiveCharts.Uwp"
     mc:Ignorable="d" d:DataContext="{d:DesignInstance local:BasicColumn}">
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <uwp:CartesianChart Series="{x:Bind SeriesCollection}" LegendLocation="Left">
-            <uwp:CartesianChart.AxisX>
-                <uwp:Axis Title="Salesman" Labels="{x:Bind Labels}"/>
-            </uwp:CartesianChart.AxisX>
-            <uwp:CartesianChart.AxisY>
-                <uwp:Axis Title="Sold Apps" LabelFormatter="{x:Bind Formatter}"/>
-            </uwp:CartesianChart.AxisY>
-        </uwp:CartesianChart>
+        <lvc:CartesianChart Name="MyChart" Series="{x:Bind SeriesCollection}" LegendLocation="Left">
+            <lvc:CartesianChart.AxisX>
+                <lvc:Axis Title="Salesman" Labels="{x:Bind Labels}"/>
+            </lvc:CartesianChart.AxisX>
+            <lvc:CartesianChart.AxisY>
+                <lvc:Axis Title="Sold Apps" LabelFormatter="{x:Bind Formatter}"/>
+            </lvc:CartesianChart.AxisY>
+        </lvc:CartesianChart>
     </Grid>
 </Page>

@@ -230,7 +230,7 @@ namespace LiveCharts.Uwp
         }
 
         public static readonly DependencyProperty BarUnitProperty = DependencyProperty.Register(
-            "BarUnit", typeof(double), typeof(Axis), new PropertyMetadata(default(double)));
+            "BarUnit", typeof(double), typeof(Axis), new PropertyMetadata(1d));
         /// <summary>
         /// Gets or sets the bar's series unit width (rows and columns), this property specifies the value in the chart that any bar should take as width.
         /// </summary>

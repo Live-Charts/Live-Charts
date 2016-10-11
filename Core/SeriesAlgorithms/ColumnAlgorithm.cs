@@ -68,8 +68,6 @@ namespace LiveCharts.SeriesAlgorithms
 
             var zero = ChartFunctions.ToDrawMargin(startAt, AxisOrientation.Y, Chart, View.ScalesYAt);
 
-            var pts = View.ActualValues.GetPoints(View).ToArray();
-
             foreach (var chartPoint in View.ActualValues.GetPoints(View))
             {
                 var reference =
