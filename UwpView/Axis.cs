@@ -31,6 +31,7 @@ using Windows.UI.Xaml.Shapes;
 using LiveCharts.Charts;
 using LiveCharts.Definitions.Charts;
 using LiveCharts.Dtos;
+using LiveCharts.Events;
 using LiveCharts.Uwp.Components;
 
 namespace LiveCharts.Uwp
@@ -62,7 +63,7 @@ namespace LiveCharts.Uwp
         /// <summary>
         /// Happens every time an axis range changes, this handler will be called before the next updater tick.
         /// </summary>
-        public event Action<double> RangeChanged;
+        public event RangeChangedHandler RangeChanged;
         #endregion
 
         #region properties
@@ -160,7 +161,7 @@ namespace LiveCharts.Uwp
 
         public static readonly DependencyProperty MinValueProperty = DependencyProperty.Register(
             "MinValue", typeof (double?), typeof (Axis),
-            new PropertyMetadata(null, RangeChangedCallback));
+            new PropertyMetadata(null, UpdateChart()));
         /// <summary>
         /// Gets or sets axis min value, set it to null to make this property Auto, default value is null
         /// </summary>
@@ -351,7 +352,21 @@ namespace LiveCharts.Uwp
 
         public void SetRange(double? min, double? max)
         {
-            throw new NotImplementedException();
+            var bMax = MaxValue ?? Model.TopLimit;
+            var bMin = MinValue ?? Model.BotLimit;
+
+            MaxValue = max;
+            MinValue = min;
+
+            Model.Chart.Updater.Run(false, true);
+
+            OnRangeChanged(new RangeChangedEventArgs
+            {
+                Range = (MaxValue ?? Model.TopLimit) - (MinValue ?? Model.BotLimit),
+                RightLimitChange = bMax - (MaxValue ?? Model.TopLimit),
+                LeftLimitChange = bMin - (MinValue ?? Model.BotLimit),
+                Axis = this
+            });
         }
 
         public void RenderSeparator(SeparatorElementCore model, ChartCore chart)
@@ -496,15 +511,6 @@ namespace LiveCharts.Uwp
             };
         }
 
-        private static void RangeChangedCallback(DependencyObject o, DependencyPropertyChangedEventArgs e)
-        {
-            var wpfAxis = o as Axis;
-            if (wpfAxis == null) return;
-
-            wpfAxis.OnRangeChanged();
-            UpdateChart()(o, e);
-        }
-
         private static void LabelsVisibilityChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
         {
             var axis = (Axis) dependencyObject;
@@ -521,10 +527,9 @@ namespace LiveCharts.Uwp
             UpdateChart()(dependencyObject, dependencyPropertyChangedEventArgs);
         }
 
-        protected void OnRangeChanged()
+        protected void OnRangeChanged(RangeChangedEventArgs e)
         {
-            var r = MinValue == null || MaxValue == null ? double.NaN : MaxValue - MinValue;
-            if (RangeChanged != null) RangeChanged.Invoke(r ?? double.NaN);
+            if (RangeChanged != null) RangeChanged.Invoke(e);
         }
     }
 }
