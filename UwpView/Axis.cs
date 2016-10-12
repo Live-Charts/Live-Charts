@@ -21,6 +21,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Windows.Foundation;
 using Windows.UI;
 using Windows.UI.Text;
 using Windows.UI.Xaml;
@@ -183,7 +184,7 @@ namespace LiveCharts.Uwp
         }
 
         public static readonly DependencyProperty MaxRangeProperty = DependencyProperty.Register(
-            "MaxRange", typeof(double), typeof(Axis), new PropertyMetadata(default(double)));
+            "MaxRange", typeof(double), typeof(Axis), new PropertyMetadata(double.MinValue));
         /// <summary>
         /// Gets or sets the max range this axis can display, useful to limit user zooming.
         /// </summary>
@@ -409,15 +410,16 @@ namespace LiveCharts.Uwp
             if (TitleBlock.Parent == null)
             {
                 if (Math.Abs(rotationAngle) > 1)
-                    TitleBlock.RenderTransform = new RotateTransform() {Angle = rotationAngle};
+                    TitleBlock.RenderTransform = new RotateTransform {Angle = rotationAngle};
 
                 chart.View.AddToView(TitleBlock);
             }
 
-            TitleBlock.UpdateLayout();
+            TitleBlock.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+
             return string.IsNullOrWhiteSpace(Title)
                 ? new CoreSize()
-                : new CoreSize(TitleBlock.RenderSize.Width, TitleBlock.RenderSize.Height);
+                : new CoreSize(TitleBlock.DesiredSize.Width, TitleBlock.DesiredSize.Height);
         }
 
         public void SetTitleTop(double value)
