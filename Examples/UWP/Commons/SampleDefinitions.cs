@@ -8,6 +8,8 @@ using UWP.CartesianChart.Basic_Stacked_Bar;
 using UWP.CartesianChart.BasicLine;
 using UWP.CartesianChart.Bubbles;
 using UWP.CartesianChart.ConstantChanges;
+using UWP.CartesianChart.Customized_Series;
+using UWP.CartesianChart.CustomTooltipAndLegend;
 using UWP.Views;
 
 namespace UWP.Commons
@@ -24,6 +26,8 @@ namespace UWP.Commons
             new SampleDefinition("Basic Line", typeof(BasicLineExample), SampleCategory.CartesianChart),
             new SampleDefinition("Bubbles", typeof(BubblesExample), SampleCategory.CartesianChart),
             new SampleDefinition("Constant Changes", typeof(ConstantChangesChart), SampleCategory.CartesianChart),
+            new SampleDefinition("Customized Series", typeof(CustomizedLineSeries), SampleCategory.CartesianChart),
+            new SampleDefinition("Customers Legend", typeof(CustomersLegend), SampleCategory.CartesianChart),
         };
     }
 }
