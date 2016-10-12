@@ -34,7 +34,7 @@ using LiveCharts.Uwp.Points;
 namespace LiveCharts.Uwp
 {
     /// <summary>
-    /// The Bubble series, draws scatter series, only using X and Y properties or bubble series, if you also use the weight property, this series should be used in a cartesian chart.
+    /// ThesStep line series 
     /// </summary>
     public class StepLineSeries : Series, IFondeable
     {
@@ -136,14 +136,12 @@ namespace LiveCharts.Uwp
                     .EnsureElementBelongsToCurrentDrawMargin(pbv.VerticalLine);
             }
 
-            pbv.VerticalLine.Fill = Fill;
             pbv.VerticalLine.StrokeThickness = StrokeThickness;
-            pbv.VerticalLine.Stroke = Stroke;
+            pbv.VerticalLine.Stroke = AlternativeStroke;
             pbv.VerticalLine.StrokeDashArray = StrokeDashArray;
             pbv.VerticalLine.Visibility = Visibility;
             Canvas.SetZIndex(pbv.VerticalLine, Canvas.GetZIndex(this));
 
-            pbv.HorizontalLine.Fill = Fill;
             pbv.HorizontalLine.StrokeThickness = StrokeThickness;
             pbv.HorizontalLine.Stroke = Stroke;
             pbv.HorizontalLine.StrokeDashArray = StrokeDashArray;
@@ -166,7 +164,7 @@ namespace LiveCharts.Uwp
 
             if (pbv.Shape != null)
             {
-                pbv.Shape.Fill = Fill;
+                pbv.Shape.Fill = PointForeround;
                 pbv.Shape.StrokeThickness = StrokeThickness;
                 pbv.Shape.Stroke = Stroke;
                 pbv.Shape.StrokeDashArray = StrokeDashArray;
@@ -188,10 +186,10 @@ namespace LiveCharts.Uwp
                     StrokeThickness = 0
                 };
 
-                Canvas.SetZIndex(pbv.HoverShape, Int16.MaxValue);
+                Canvas.SetZIndex(pbv.HoverShape, short.MaxValue);
 
-                var wpfChart = (Chart) Model.Chart.View;
-                wpfChart.AttachHoverableEventTo(pbv.HoverShape);
+                var uwpfChart = (Chart) Model.Chart.View;
+                uwpfChart.AttachHoverableEventTo(pbv.HoverShape);
 
                 Model.Chart.View.AddToDrawMargin(pbv.HoverShape);
             }
@@ -201,7 +199,7 @@ namespace LiveCharts.Uwp
             if (DataLabels && pbv.DataLabel == null)
             {
                 pbv.DataLabel = BindATextBlock(0);
-                Canvas.SetZIndex(pbv.DataLabel, Int16.MaxValue - 1);
+                Canvas.SetZIndex(pbv.DataLabel, short.MaxValue - 1);
 
                 Model.Chart.View.AddToDrawMargin(pbv.DataLabel);
             }
@@ -213,8 +211,11 @@ namespace LiveCharts.Uwp
 
         public override void InitializeColors()
         {
-            var wpfChart = (Chart) Model.Chart.View;
-            var nextColor = wpfChart.GetNextDefaultColor();
+            var uwpfChart = (Chart) Model.Chart.View;
+
+            if (Stroke != null && AlternativeStroke != null) return;
+
+            var nextColor = uwpfChart.GetNextDefaultColor();
 
             if (Stroke == null)
                 SetValue(StrokeProperty, new SolidColorBrush(nextColor));

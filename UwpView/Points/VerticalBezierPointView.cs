@@ -25,8 +25,6 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Animation;
 using LiveCharts.Charts;
 using Windows.Foundation;
-using Windows.UI.Composition;
-using Windows.UI.Xaml.Hosting;
 
 namespace LiveCharts.Uwp.Points
 {
@@ -219,7 +217,7 @@ namespace LiveCharts.Uwp.Points
         {
             var lineSeries = (LineSeries)point.SeriesView;
             if (Shape != null) Shape.Fill = Shape.Stroke;
-            lineSeries.StrokeThickness = lineSeries.StrokeThickness + 1;
+            lineSeries.Path.StrokeThickness = lineSeries.StrokeThickness + 1;
         }
 
         public override void OnHoverLeave(ChartPoint point)
@@ -229,7 +227,7 @@ namespace LiveCharts.Uwp.Points
                 Shape.Fill = point.Fill == null
                     ? lineSeries.PointForeround
                     : (Brush) point.Fill;
-            lineSeries.StrokeThickness = lineSeries.StrokeThickness - 1;
+            lineSeries.Path.StrokeThickness = lineSeries.StrokeThickness;
         }
     }
 }

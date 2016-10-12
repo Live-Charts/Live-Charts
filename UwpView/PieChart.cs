@@ -80,7 +80,7 @@ namespace LiveCharts.Uwp
             set { SetValue(HoverPushOutProperty, value); }
         }
 
-        protected override Point GetTooltipPosition(ChartPoint senderPoint)
+        protected internal override Point GetTooltipPosition(ChartPoint senderPoint)
         {
             var pieSlice = ((PiePointView) senderPoint.View).Slice;
 

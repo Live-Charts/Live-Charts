@@ -25,7 +25,6 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Shapes;
 using LiveCharts.Charts;
 using LiveCharts.Definitions.Points;
@@ -145,10 +144,10 @@ namespace LiveCharts.Uwp.Points
                 DataLabel.CreateCanvasStoryBoardAndBegin(getX(), getY(), animSpeed);
             }
             
-            Canvas.SetLeft(Rectangle, Data.Left);
+            Rectangle.BeginDoubleAnimation("(Canvas.Left)", Data.Left, animSpeed);
             Rectangle.BeginDoubleAnimation("(Canvas.Top)", Data.Top, animSpeed);
-
-            Rectangle.Width = Data.Width;
+            
+            Rectangle.BeginDoubleAnimation("(Canvas.Height)", Data.Width, animSpeed);
             Rectangle.BeginDoubleAnimation(nameof(FrameworkElement.Height), Data.Height, animSpeed);
 
             if (HoverShape != null)

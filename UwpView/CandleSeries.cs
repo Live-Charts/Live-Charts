@@ -161,10 +161,10 @@ namespace LiveCharts.Uwp
                     StrokeThickness = 0
                 };
 
-                Canvas.SetZIndex(pbv.HoverShape, Int16.MaxValue);
+                Canvas.SetZIndex(pbv.HoverShape, short.MaxValue);
 
-                var wpfChart = (Chart)Model.Chart.View;
-                wpfChart.AttachHoverableEventTo(pbv.HoverShape);
+                var uwpfChart = (Chart)Model.Chart.View;
+                uwpfChart.AttachHoverableEventTo(pbv.HoverShape);
 
                 Model.Chart.View.AddToDrawMargin(pbv.HoverShape);
             }
@@ -174,7 +174,7 @@ namespace LiveCharts.Uwp
             if (DataLabels && pbv.DataLabel == null)
             {
                 pbv.DataLabel = BindATextBlock(0);
-                Canvas.SetZIndex(pbv.DataLabel, Int16.MaxValue - 1);
+                Canvas.SetZIndex(pbv.DataLabel, short.MaxValue - 1);
 
                 Model.Chart.View.AddToDrawMargin(pbv.DataLabel);
             }
@@ -210,7 +210,7 @@ namespace LiveCharts.Uwp
             SetValue(DecreaseBrushProperty, new SolidColorBrush(Color.FromArgb(255, 238, 83, 80)));
 
             Func<ChartPoint, string> defaultLabel = x =>
-                string.Format("O: {0}, H: {1}, C: {2} L: {3}", x.Open, x.High, x.Close, x.Low);
+                string.Format("O: {0}, H: {1}, L: {2} C: {3}", x.Open, x.High, x.Low, x.Close);
             SetValue(LabelPointProperty, defaultLabel);
 
             DefaultFillOpacity = 1;

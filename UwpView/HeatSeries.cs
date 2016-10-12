@@ -27,6 +27,7 @@ using System.Linq;
 using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Shapes;
 using LiveCharts.Definitions.Points;
@@ -152,14 +153,14 @@ namespace LiveCharts.Uwp
             {
                 pbv.HoverShape = new Rectangle
                 {
-                    Fill = new SolidColorBrush(Windows.UI.Colors.Transparent),
+                    Fill = new SolidColorBrush(Colors.Transparent),
                     StrokeThickness = 0
                 };
 
-                Canvas.SetZIndex(pbv.HoverShape, Int16.MaxValue);
+                Canvas.SetZIndex(pbv.HoverShape, short.MaxValue);
 
-                var wpfChart = (Chart)Model.Chart.View;
-                wpfChart.AttachHoverableEventTo(pbv.HoverShape);
+                var uwpfChart = (Chart)Model.Chart.View;
+                uwpfChart.AttachHoverableEventTo(pbv.HoverShape);
 
                 Model.Chart.View.AddToDrawMargin(pbv.HoverShape);
             }
@@ -169,7 +170,7 @@ namespace LiveCharts.Uwp
             if (DataLabels && pbv.DataLabel == null)
             {
                 pbv.DataLabel = BindATextBlock(0);
-                Canvas.SetZIndex(pbv.DataLabel, Int16.MaxValue - 1);
+                Canvas.SetZIndex(pbv.DataLabel, short.MaxValue - 1);
 
                 Model.Chart.View.AddToDrawMargin(pbv.DataLabel);
             }
@@ -198,13 +199,20 @@ namespace LiveCharts.Uwp
                     ColorRangeControl = new HeatColorRange();
                 }
 
-                //ColorRangeControl.FontFamily = FontFamily;
-                //ColorRangeControl.FontSize = FontSize;
-                //ColorRangeControl.FontStretch = FontStretch;
-                //ColorRangeControl.FontStyle = FontStyle;
-                //ColorRangeControl.FontWeight = FontWeight;
-                //ColorRangeControl.Foreground = Foreground;
-                //ColorRangeControl.Visibility = Visibility;
+                ColorRangeControl.SetBinding(TextBlock.FontFamilyProperty,
+                    new Binding {Path = new PropertyPath("FontFamily"), Source = this});
+                ColorRangeControl.SetBinding(TextBlock.FontSizeProperty,
+                    new Binding {Path = new PropertyPath("FontSize"), Source = this});
+                ColorRangeControl.SetBinding(TextBlock.FontStretchProperty,
+                    new Binding {Path = new PropertyPath("FontStretch"), Source = this});
+                ColorRangeControl.SetBinding(TextBlock.FontStyleProperty,
+                    new Binding {Path = new PropertyPath("FontStyle"), Source = this});
+                ColorRangeControl.SetBinding(TextBlock.FontWeightProperty,
+                    new Binding {Path = new PropertyPath("FontWeight"), Source = this});
+                ColorRangeControl.SetBinding(TextBlock.ForegroundProperty,
+                    new Binding {Path = new PropertyPath("Foreground"), Source = this});
+                ColorRangeControl.SetBinding(VisibilityProperty,
+                    new Binding {Path = new PropertyPath("Visibility"), Source = this});
 
                 if (ColorRangeControl.Parent == null)
                 {
@@ -243,8 +251,8 @@ namespace LiveCharts.Uwp
         private void InitializeDefuaults()
         {
             /*Current*/SetValue(StrokeThicknessProperty, 0d);
-            /*Current*/SetValue(ForegroundProperty, new SolidColorBrush(Windows.UI.Colors.White));
-            /*Current*/SetValue(StrokeProperty, new SolidColorBrush(Windows.UI.Colors.White));
+            /*Current*/SetValue(ForegroundProperty, new SolidColorBrush(Colors.White));
+            /*Current*/SetValue(StrokeProperty, new SolidColorBrush(Colors.White));
             /*Current*/SetValue(DrawsHeatRangeProperty, true);
             /*Current*/SetValue(GradientStopCollectionProperty, new GradientStopCollection());
 
@@ -256,8 +264,8 @@ namespace LiveCharts.Uwp
 
         public override void InitializeColors()
         {
-            var wpfChart = (Chart)Model.Chart.View;
-            var nextColor = wpfChart.GetNextDefaultColor();
+            var uwpfChart = (Chart)Model.Chart.View;
+            var nextColor = uwpfChart.GetNextDefaultColor();
 
             if (Stroke == null)
                 SetValue(StrokeProperty, new SolidColorBrush(nextColor));

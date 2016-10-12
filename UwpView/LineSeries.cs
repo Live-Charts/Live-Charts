@@ -69,7 +69,7 @@ namespace LiveCharts.Uwp
 
         #region Private Properties
         protected PathFigure Figure { get; set; }
-        protected Path Path { get; set; }
+        internal Path Path { get; set; }
         protected bool IsPathInitialized { get; set; }
         internal List<LineSegmentSplitter> Splitters { get; set; }
         protected int ActiveSplitters { get; set; }
@@ -122,7 +122,7 @@ namespace LiveCharts.Uwp
         {
             ActiveSplitters = 0;
 
-            if (SplittersCollector == Int16.MaxValue - 1)
+            if (SplittersCollector == short.MaxValue - 1)
             {
                 //just in case!
                 Splitters.ForEach(s => s.SplitterCollectorIndex = 0);
@@ -214,10 +214,10 @@ namespace LiveCharts.Uwp
                     Height = mhr
                 };
 
-                Canvas.SetZIndex(pbv.HoverShape, Int16.MaxValue);
+                Canvas.SetZIndex(pbv.HoverShape, short.MaxValue);
 
-                var wpfChart = (Chart)Model.Chart.View;
-                wpfChart.AttachHoverableEventTo(pbv.HoverShape);
+                var uwpfChart = (Chart)Model.Chart.View;
+                uwpfChart.AttachHoverableEventTo(pbv.HoverShape);
 
                 Model.Chart.View.AddToDrawMargin(pbv.HoverShape);
             }
@@ -257,7 +257,7 @@ namespace LiveCharts.Uwp
             if (DataLabels && pbv.DataLabel == null)
             {
                 pbv.DataLabel = BindATextBlock(0);
-                Canvas.SetZIndex(pbv.DataLabel, Int16.MaxValue - 1);
+                Canvas.SetZIndex(pbv.DataLabel, short.MaxValue - 1);
 
                 Model.Chart.View.AddToDrawMargin(pbv.DataLabel);
             }

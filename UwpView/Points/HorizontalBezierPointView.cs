@@ -23,7 +23,6 @@
 using Windows.Foundation;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Shapes;
 using LiveCharts.Charts;
 using LiveCharts.Definitions.Points;
@@ -169,6 +168,8 @@ namespace LiveCharts.Uwp.Points
 
         protected double CorrectXLabel(double desiredPosition, ChartCore chart)
         {
+            if (desiredPosition + DataLabel.ActualWidth * .5 < -0.1) return -DataLabel.ActualWidth;
+
             if (desiredPosition + DataLabel.ActualWidth > chart.DrawMargin.Width)
                 desiredPosition -= desiredPosition + DataLabel.ActualWidth - chart.DrawMargin.Width + 2;
 
@@ -193,7 +194,7 @@ namespace LiveCharts.Uwp.Points
         {
             var lineSeries = (LineSeries)point.SeriesView;
             if (Shape != null) Shape.Fill = Shape.Stroke;
-            lineSeries.StrokeThickness = lineSeries.StrokeThickness + 1;
+            lineSeries.Path.StrokeThickness = lineSeries.StrokeThickness + 1;
         }
 
         public override void OnHoverLeave(ChartPoint point)
@@ -203,7 +204,7 @@ namespace LiveCharts.Uwp.Points
                 Shape.Fill = point.Fill == null
                     ? lineSeries.PointForeround
                     : (Brush) point.Fill;
-            lineSeries.StrokeThickness = lineSeries.StrokeThickness - 1;
+            lineSeries.Path.StrokeThickness = lineSeries.StrokeThickness;
         }
     }
 }

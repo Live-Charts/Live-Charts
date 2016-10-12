@@ -22,7 +22,6 @@
 
 using System;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Shapes;
 using LiveCharts.Charts;
 using LiveCharts.Definitions.Points;
@@ -84,12 +83,18 @@ namespace LiveCharts.Uwp.Points
             {
                 HighToLowLine.Y1 = High;
                 HighToLowLine.Y2 = Low;
+                HighToLowLine.X1 = center;
+                HighToLowLine.X2 = center;
 
                 OpenLine.Y1 = Open;
                 OpenLine.Y2 = Open;
+                OpenLine.X1 = Left;
+                OpenLine.X2 = center;
 
                 CloseLine.Y1 = Close;
                 CloseLine.Y2 = Close;
+                CloseLine.X1 = center;
+                CloseLine.X2 = Left;
 
                 if (DataLabel != null)
                 {
@@ -117,12 +122,12 @@ namespace LiveCharts.Uwp.Points
                 DataLabel.CreateCanvasStoryBoardAndBegin(cx, cy, animSpeed);
             }
 
-            HighToLowLine.X1 = center;
-            HighToLowLine.X2 = center;
-            OpenLine.X1 = Left;
-            OpenLine.X2 = center;
-            CloseLine.X1 = center;
-            CloseLine.X2 = Left + Width;
+            HighToLowLine.BeginDoubleAnimation("Line.X1", center, animSpeed);
+            HighToLowLine.BeginDoubleAnimation("Line.X2", center, animSpeed);
+            OpenLine.BeginDoubleAnimation("Line.X1", Left, animSpeed);
+            OpenLine.BeginDoubleAnimation("Line.X2", center, animSpeed);
+            CloseLine.BeginDoubleAnimation("Line.X1", center, animSpeed);
+            CloseLine.BeginDoubleAnimation("Line.X2", center, animSpeed);
 
             HighToLowLine.CreateY1Y2StoryBoardAndBegin(High, Low, animSpeed);
             OpenLine.CreateY1Y2StoryBoardAndBegin(Open, Open, animSpeed);
@@ -140,6 +145,8 @@ namespace LiveCharts.Uwp.Points
 
         protected double CorrectXLabel(double desiredPosition, ChartCore chart)
         {
+            if (desiredPosition + DataLabel.ActualWidth * .5 < -0.1) return -DataLabel.ActualWidth;
+
             if (desiredPosition + DataLabel.ActualWidth > chart.DrawMargin.Width)
                 desiredPosition -= desiredPosition + DataLabel.ActualWidth - chart.DrawMargin.Width + 2;
 

@@ -33,7 +33,6 @@ using LiveCharts.Definitions.Points;
 using LiveCharts.Definitions.Series;
 using LiveCharts.Helpers;
 using LiveCharts.Uwp.Charts.Base;
-using LiveCharts.Uwp.Converters;
 
 namespace LiveCharts.Uwp
 {
@@ -61,7 +60,6 @@ namespace LiveCharts.Uwp
         {
             Configuration = configuration;
             SetValue(TitleProperty, "Series");
-            PreviousVisibility = Visibility;
             RegisterPropertyChangedCallback(VisibilityProperty, OnIsVisibleChanged);
         }
         #endregion
@@ -338,7 +336,7 @@ namespace LiveCharts.Uwp
                 new Binding {Path = new PropertyPath("FontWeight"), Source = this});
             tb.SetBinding(TextBlock.ForegroundProperty,
                 new Binding {Path = new PropertyPath("Foreground"), Source = this});
-            tb.SetBinding(TextBlock.VisibilityProperty,
+            tb.SetBinding(VisibilityProperty,
                 new Binding {Path = new PropertyPath("Visibility"), Source = this});
             return tb;
         }
@@ -391,11 +389,18 @@ namespace LiveCharts.Uwp
         /// </summary>
         public virtual void InitializeColors()
         {
-            var wpfChart = (Chart) Model.Chart.View;
-            var nextColor = wpfChart.GetNextDefaultColor();
+            var uwpfChart = (Chart) Model.Chart.View;
+            if (Stroke != null && Fill != null) return;
+
+            var nextColor = uwpfChart.GetNextDefaultColor();
 
             if (Stroke == null)
-                SetValue(StrokeProperty, new SolidColorBrush(nextColor));
+            {
+                var strokeBrush = new SolidColorBrush(nextColor);
+                // Todo: Find out what is going on with freezables... also freeze Fill if possible...
+                // strokeBrush.Freeze(); ???
+                SetValue(StrokeProperty, strokeBrush);
+            }
             if (Fill == null)
                 SetValue(FillProperty, new SolidColorBrush(nextColor) {Opacity = DefaultFillOpacity});
         }
@@ -452,33 +457,39 @@ namespace LiveCharts.Uwp
             };
         }
 
-        private Visibility PreviousVisibility { get; set; }
-       
+        private Visibility? PreviousVisibility { get; set; }
+
         private void OnIsVisibleChanged(DependencyObject sender, DependencyProperty e)
         {
-            if (Model.Chart != null && PreviousVisibility != Visibility)
+            if (Model.Chart == null || PreviousVisibility == Visibility) return;
+
+            PreviousVisibility = Visibility;
+
+            if (PreviousVisibility != null) Model.Chart.Updater.Run(false, false);
+
+            if (Visibility == Visibility.Collapsed || Visibility == Visibility.Collapsed)
             {
-                PreviousVisibility = Visibility;
-                Model.Chart.Updater.Run(false, true);
-                if (Visibility == Visibility.Collapsed)
-                {
-                    Erase(false);
-                }
+                Erase(false);
             }
         }
 
-        private static ChartValues<ObservableValue> GetValuesForDesigner()
+        private static IChartValues GetValuesForDesigner()
         {
             var r = new Random();
-            return new ChartValues<ObservableValue>
-            {
-                new ObservableValue(r.Next(0, 100)),
-                new ObservableValue(r.Next(0, 100)),
-                new ObservableValue(r.Next(0, 100)),
-                new ObservableValue(r.Next(0, 100)),
-                new ObservableValue(r.Next(0, 100)),
-                new ObservableValue(r.Next(0, 100))
-            };
+            var gvt = Type.GetType("LiveCharts.Geared.GearedValues`1, LiveCharts.Geared");
+            if (gvt != null) gvt = gvt.MakeGenericType(typeof(ObservableValue));
+            
+            var obj = gvt != null
+                ? (IChartValues) Activator.CreateInstance(gvt)
+                : new ChartValues<ObservableValue>();
+
+            obj.Add(new ObservableValue(r.Next(0, 100)));
+            obj.Add(new ObservableValue(r.Next(0, 100)));
+            obj.Add(new ObservableValue(r.Next(0, 100)));
+            obj.Add(new ObservableValue(r.Next(0, 100)));
+            obj.Add(new ObservableValue(r.Next(0, 100)));
+
+            return obj;
         }
 
         #region Obsoletes

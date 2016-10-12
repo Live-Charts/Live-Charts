@@ -71,12 +71,12 @@ namespace LiveCharts.Uwp.Components
 
         private void UpdaterTick(bool restartView)
         {
-            var wpfChart = (Chart) Chart.View;
-            if (wpfChart.Visibility != Visibility.Visible && !wpfChart.IsMocked) return;
+            var uwpfChart = (Chart) Chart.View;
+            if (uwpfChart.Visibility != Visibility.Visible && !uwpfChart.IsMocked) return;
 
-            Chart.ControlSize = wpfChart.IsMocked
-                ? wpfChart.Model.ControlSize
-                : new CoreSize(wpfChart.ActualWidth, wpfChart.ActualHeight);
+            Chart.ControlSize = uwpfChart.IsMocked
+                ? uwpfChart.Model.ControlSize
+                : new CoreSize(uwpfChart.ActualWidth, uwpfChart.ActualHeight);
             Timer.Stop();
             Update(restartView);
             IsUpdating = false;
@@ -87,7 +87,8 @@ namespace LiveCharts.Uwp.Components
             Debug.WriteLine("Chart is updated");
 #endif
 
-            wpfChart.ChartUpdated();
+            uwpfChart.ChartUpdated();
+            uwpfChart.PrepareScrolBar();
         }
     }
 }

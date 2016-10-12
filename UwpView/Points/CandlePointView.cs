@@ -21,7 +21,6 @@
 //SOFTWARE.
 
 using System;
-using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Shapes;
@@ -80,6 +79,8 @@ namespace LiveCharts.Uwp.Points
             {
                 HighToLowLine.Y1 = High;
                 HighToLowLine.Y2 = Low;
+                HighToLowLine.X1 = center;
+                HighToLowLine.X2 = center;
 
                 OpenToCloseRectangle.Width = Width;
                 OpenToCloseRectangle.Height = Math.Abs(Open - Close);
@@ -113,17 +114,18 @@ namespace LiveCharts.Uwp.Points
                 DataLabel.CreateCanvasStoryBoardAndBegin(cx, cy, animSpeed);
             }
 
-            HighToLowLine.X1 = center;
-            HighToLowLine.X2 = center;
+            var x1Animation = AnimationsHelper.CreateDouble(center, animSpeed, "Line.X1");
+            var x2Animation = AnimationsHelper.CreateDouble(center, animSpeed, "Line.X2");
+            AnimationsHelper.CreateStoryBoard(HighToLowLine, x1Animation, x2Animation);
 
             var y1Animation = AnimationsHelper.CreateDouble(High, animSpeed, "Line.Y1");
             var y2Animation = AnimationsHelper.CreateDouble(Low, animSpeed, "Line.Y2");
             AnimationsHelper.CreateStoryBoardAndBegin(HighToLowLine, y1Animation, y2Animation);
-
-            Canvas.SetLeft(OpenToCloseRectangle, Left);
+            
+            OpenToCloseRectangle.BeginDoubleAnimation("(Canvas.Left)", Left, animSpeed);
             OpenToCloseRectangle.BeginDoubleAnimation("(Canvas.Top)", Math.Min(Open, Close), animSpeed);
 
-            OpenToCloseRectangle.Width = Width;
+            OpenToCloseRectangle.BeginDoubleAnimation("Width", Width, animSpeed);
             OpenToCloseRectangle.BeginDoubleAnimation("Height", Math.Max(Math.Abs(Open - Close), OpenToCloseRectangle.StrokeThickness), animSpeed);
         }
 

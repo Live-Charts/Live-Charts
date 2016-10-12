@@ -29,7 +29,6 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Shapes;
 using LiveCharts.Uwp.Points;
 using LiveCharts.Uwp.Components;
@@ -348,7 +347,7 @@ namespace LiveCharts.Uwp
                 R = LinearInterpolation(FromColor.R, ToColor.R),
                 G = LinearInterpolation(FromColor.G, ToColor.G),
                 B = LinearInterpolation(FromColor.B, ToColor.B),
-                A = 255
+                A = LinearInterpolation(FromColor.A, ToColor.A)
             };
 
             if (IsNew)
@@ -372,7 +371,8 @@ namespace LiveCharts.Uwp
             // ReSharper disable once CompareOfFloatsByEqualityOperator
             var m = (p2.Y - p1.Y) / (deltaX == 0 ? double.MinValue : deltaX);
 
-            return (byte) (m * (Value - p1.X) + p1.Y);
+            var v = Value > To ? To : (Value < From ? From : Value);
+            return (byte) (m*(v - p1.X) + p1.Y);
         }
     }
 }

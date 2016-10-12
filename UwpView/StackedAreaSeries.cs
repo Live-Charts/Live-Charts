@@ -86,7 +86,7 @@ namespace LiveCharts.Uwp
         {
             ActiveSplitters = 0;
 
-            if (SplittersCollector == Int16.MaxValue - 1)
+            if (SplittersCollector == short.MaxValue - 1)
             {
                 //just in case!
                 Splitters.ForEach(s => s.SplitterCollectorIndex = 0);

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Text;
 using Windows.UI.Xaml.Markup;
 using Windows.UI.Xaml.Media;
 
@@ -16,7 +12,10 @@ namespace LiveCharts.Uwp.Components
             sb.Append("<Geometry xmlns='http://schemas.microsoft.com/winfx/2006/xaml/presentation'>");
             sb.Append(data);
             sb.Append("</Geometry>");
-            return (Geometry)XamlReader.Load(sb.ToString());
+            var g = (Geometry) XamlReader.Load(sb.ToString());
+            // Todo: Find out if this type could be frozen
+            //g.Freeze(); ????
+            return g;
         }
     }
 }

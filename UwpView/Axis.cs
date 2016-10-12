@@ -444,7 +444,7 @@ namespace LiveCharts.Uwp
 
         public CoreSize GetLabelSize()
         {
-            return new CoreSize(TitleBlock.RenderSize.Width, TitleBlock.RenderSize.Height);
+            return new CoreSize(TitleBlock.DesiredSize.Width, TitleBlock.DesiredSize.Height);
         }
 
         public AxisCore AsCoreElement(ChartCore chart, AxisOrientation source)
@@ -508,7 +508,7 @@ namespace LiveCharts.Uwp
             return l;
         }
 
-        private static PropertyChangedCallback UpdateChart(bool animate = false)
+        private static PropertyChangedCallback UpdateChart(bool animate = false, bool updateNow = false)
         {
             return (o, args) =>
             {
@@ -516,7 +516,7 @@ namespace LiveCharts.Uwp
                 if (wpfAxis == null) return;
 
                 if (wpfAxis.Model != null)
-                    wpfAxis.Model.Chart.Updater.Run(animate);
+                    wpfAxis.Model.Chart.Updater.Run(animate, updateNow);
             };
         }
 

@@ -144,10 +144,10 @@ namespace LiveCharts.Uwp
                     StrokeThickness = 0
                 };
 
-                Canvas.SetZIndex(pbv.HoverShape, Int16.MaxValue);
+                Canvas.SetZIndex(pbv.HoverShape, short.MaxValue);
 
-                var wpfChart = (Chart)Model.Chart.View;
-                wpfChart.AttachHoverableEventTo(pbv.HoverShape);
+                var uwpfChart = (Chart)Model.Chart.View;
+                uwpfChart.AttachHoverableEventTo(pbv.HoverShape);
 
                 Model.Chart.View.AddToDrawMargin(pbv.HoverShape);
             }
@@ -157,7 +157,7 @@ namespace LiveCharts.Uwp
             if (DataLabels && pbv.DataLabel == null)
             {
                 pbv.DataLabel = BindATextBlock(0);
-                Canvas.SetZIndex(pbv.DataLabel, Int16.MaxValue - 1);
+                Canvas.SetZIndex(pbv.DataLabel, short.MaxValue - 1);
 
                 Model.Chart.View.AddToDrawMargin(pbv.DataLabel);
             }
@@ -175,7 +175,7 @@ namespace LiveCharts.Uwp
         {
             /*Current*/SetValue(StrokeThicknessProperty, 0d);
             /*Current*/SetValue(MaxColumnWidthProperty, 35d);
-            /*Current*/SetValue(ColumnPaddingProperty, 1d);
+            /*Current*/SetValue(ColumnPaddingProperty, 2d);
             /*Current*/SetValue(ForegroundProperty, new SolidColorBrush(Windows.UI.Colors.White));
 
             Func<ChartPoint, string> defaultLabel = x =>  Model.CurrentYAxis.GetFormatter()(x.Y);

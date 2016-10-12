@@ -44,26 +44,24 @@ namespace LiveCharts.Uwp
         {
             _rectangle = new Rectangle();
             _label = new TextBlock();
-            
-            /*Current*/SetValue(StrokeProperty, new SolidColorBrush(Color.FromArgb(255, 131, 172, 191)));
+
+            //_rectangle.MouseDown += (sender, args) =>
+            //{
+            //    if (!Draggable) return;
+            //    Dragging = this;
+            //    args.Handled = true;
+            //    Chart.Ldsp = null;
+            //};
+
+            /*Current*/
+            SetValue(StrokeProperty, new SolidColorBrush(Color.FromArgb(255, 131, 172, 191)));
             /*Current*/SetValue(FillProperty, new SolidColorBrush(Color.FromArgb(255, 131, 172, 191)) {Opacity = .35});
             /*Current*/SetValue(StrokeThicknessProperty, 0d);
             /*Current*/SetValue(FromValueProperty, 0d);
             /*Current*/SetValue(ToValueProperty, 0d);
 
-            BindingOperations.SetBinding(_rectangle, Shape.FillProperty,
-                    new Binding { Path = new PropertyPath(nameof(Fill)), Source = this });
-            BindingOperations.SetBinding(_rectangle, Shape.StrokeProperty,
-                    new Binding { Path = new PropertyPath(nameof(Stroke)), Source = this });
-            BindingOperations.SetBinding(_rectangle, Shape.StrokeDashArrayProperty,
-                    new Binding { Path = new PropertyPath(nameof(StrokeDashArray)), Source = this });
-            BindingOperations.SetBinding(_rectangle, Shape.StrokeThicknessProperty,
-                    new Binding { Path = new PropertyPath(nameof(StrokeThickness)), Source = this });
-
             BindingOperations.SetBinding(_label, TextBlock.TextProperty,
                 new Binding {Path = new PropertyPath(nameof(Label)), Source = this});
-
-            Canvas.SetZIndex(_rectangle, -1);
         }
 
         public AxisSectionCore Model { get; set; }
@@ -81,7 +79,7 @@ namespace LiveCharts.Uwp
 
         public static readonly DependencyProperty FromValueProperty = DependencyProperty.Register(
             "FromValue", typeof (double), typeof (AxisSection), 
-            new PropertyMetadata(default(double), CallChartUpdater));
+            new PropertyMetadata(default(double), UpdateSection));
         /// <summary>
         /// Gets or sets the value where the section starts
         /// </summary>
@@ -93,7 +91,7 @@ namespace LiveCharts.Uwp
 
         public static readonly DependencyProperty ToValueProperty = DependencyProperty.Register(
             "ToValue", typeof (double), typeof (AxisSection), 
-            new PropertyMetadata(default(double), CallChartUpdater));
+            new PropertyMetadata(default(double), UpdateSection));
         /// <summary>
         /// Gets or sets the value where the section ends
         /// </summary>
@@ -160,6 +158,12 @@ namespace LiveCharts.Uwp
 
         public void DrawOrMove(AxisOrientation source, int axis)
         {
+            _rectangle.Fill = Fill;
+            _rectangle.Stroke = Stroke;
+            _rectangle.StrokeDashArray = StrokeDashArray;
+            _rectangle.StrokeThickness = StrokeThickness;
+            Canvas.SetZIndex(_rectangle, Canvas.GetZIndex(this));
+
             if (Parent == null)
             {
                 Model.Chart.View.AddToView(this);
@@ -173,8 +177,11 @@ namespace LiveCharts.Uwp
                 Canvas.SetLeft(_label, 0d);
             }
 
-            var from = ChartFunctions.ToDrawMargin(FromValue, source, Model.Chart, axis);
-            var to = ChartFunctions.ToDrawMargin(ToValue, source, Model.Chart, axis);
+            var ax = source == AxisOrientation.X ? Model.Chart.AxisX[axis] : Model.Chart.AxisY[axis];
+            var uw = ax.EvaluatesUnitWidth ? ChartFunctions.GetUnitWidth(source, Model.Chart, axis) / 2 : 0;
+            
+            var from = ChartFunctions.ToDrawMargin(FromValue, source, Model.Chart, axis) + uw;
+            var to = ChartFunctions.ToDrawMargin(ToValue, source, Model.Chart, axis) + uw;
 
             if (from > to)
             {
@@ -197,23 +204,23 @@ namespace LiveCharts.Uwp
                 if (Model.Chart.View.DisableAnimations)
                 {
                     _rectangle.Width = w > 0 ? w : 0;
-                    Canvas.SetLeft(_rectangle, from);
+                    Canvas.SetLeft(_rectangle, from - StrokeThickness / 2);
                     Canvas.SetLeft(_label, (from + to)/2 - _label.ActualWidth/2);
                 }
                 else
                 {
                     var storyBoard = new Storyboard();
-                    var widthAnimation = new DoubleAnimation()
+                    var widthAnimation = new DoubleAnimation
                     {
                         To = w > 0 ? w : 0,
                         Duration = anSpeed
                     };
-                    var rectangleLeftAnimation = new DoubleAnimation()
+                    var rectangleLeftAnimation = new DoubleAnimation
                     {
-                        To = from,
+                        To = from - StrokeThickness / 2,
                         Duration = anSpeed
                     };
-                    var labelLeftAnimation = new DoubleAnimation()
+                    var labelLeftAnimation = new DoubleAnimation
                     {
                         To = (from + to) / 2 - _label.ActualWidth / 2,
                         Duration = anSpeed
@@ -297,11 +304,16 @@ namespace LiveCharts.Uwp
             return model;
         }
 
-        private static void CallChartUpdater(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
+        private static void UpdateSection(DependencyObject dependencyObject,
+            DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
         {
             var section = (AxisSection) dependencyObject;
 
-            if (section.Model != null && section.Model.Chart != null) section.Model.Chart.Updater.Run();
+            if (section.Model != null && section.Model.Chart != null)
+            {
+                if (!section.Model.Chart.SectionsIntialized) return;
+                section.DrawOrMove(section.Model.Source, section.Model.AxisIndex);
+            }
         }
     }
 }

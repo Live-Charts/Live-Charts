@@ -17,7 +17,7 @@ namespace LiveCharts.Uwp
         /// <returns></returns>
         public static Point ConvertToChartValues(this Chart chart, Point screenPoint, int axisX = 0, int axisY = 0)
         {
-            if (chart.Model == null || chart.AxisX.Any(x => x.Model == null)) return new Point();
+            if (chart.Model == null || chart.AxisX == null || chart.AxisX.Any(x => x.Model == null)) return new Point();
 
             var uw = new CorePoint(
                 chart.AxisX[axisX].Model.EvaluatesUnitWidth
@@ -29,7 +29,7 @@ namespace LiveCharts.Uwp
 
             return new Point(
                 ChartFunctions.FromPlotArea(screenPoint.X - uw.X, AxisOrientation.X, chart.Model, axisX),
-                ChartFunctions.FromPlotArea(screenPoint.Y - uw.Y, AxisOrientation.Y, chart.Model, axisY)); ;
+                ChartFunctions.FromPlotArea(screenPoint.Y - uw.Y, AxisOrientation.Y, chart.Model, axisY));
         }
 
         /// <summary>

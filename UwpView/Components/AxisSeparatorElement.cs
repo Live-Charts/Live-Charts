@@ -21,7 +21,7 @@
 //SOFTWARE.
 
 using System;
-using System.Diagnostics;
+using Windows.Foundation;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
@@ -54,10 +54,10 @@ namespace LiveCharts.Uwp.Components
         public LabelEvaluation UpdateLabel(string text, AxisCore axis, AxisOrientation source)
         {
             TextBlock.Text = text;
-            TextBlock.UpdateLayout();
+            TextBlock.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
 
             var transform = new LabelEvaluation(axis.View.LabelsRotation,
-                TextBlock.ActualWidth, TextBlock.ActualHeight, axis, source);
+                TextBlock.DesiredSize.Width, TextBlock.DesiredSize.Height, axis, source);
 
             TextBlock.RenderTransform = Math.Abs(transform.LabelAngle) > 1
                 ? new RotateTransform {  Angle = transform.LabelAngle }

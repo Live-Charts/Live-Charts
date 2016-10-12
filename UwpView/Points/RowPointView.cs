@@ -21,12 +21,10 @@
 //SOFTWARE.
 
 using System;
-using System.IO;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Shapes;
 using LiveCharts.Charts;
 using LiveCharts.Definitions.Points;
@@ -132,10 +130,10 @@ namespace LiveCharts.Uwp.Points
                 DataLabel.CreateCanvasStoryBoardAndBegin(getX(), getY(), animSpeed);
             }
 
-            Canvas.SetTop(Rectangle, Data.Top);
+            Rectangle.BeginDoubleAnimation("(Canvas.Top)", Data.Top, animSpeed);
             Rectangle.BeginDoubleAnimation("(Canvas.Left)", Data.Left, animSpeed);
-
-            Rectangle.Height = Data.Height;
+            
+            Rectangle.BeginDoubleAnimation("Height", Data.Height, animSpeed);
             Rectangle.BeginDoubleAnimation("Width", Data.Width, animSpeed);
 
             if (HoverShape != null)

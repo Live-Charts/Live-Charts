@@ -212,7 +212,6 @@ namespace LiveCharts.Wpf
                 }
                 else
                 {
-                    Debug.WriteLine(w > 0 ? w : 0);
                     _rectangle.BeginAnimation(WidthProperty, new DoubleAnimation(w > 0 ? w : 0, anSpeed));
                     _rectangle.BeginAnimation(Canvas.LeftProperty, new DoubleAnimation(from - StrokeThickness/2, anSpeed));
                     _label.BeginAnimation(Canvas.LeftProperty,
