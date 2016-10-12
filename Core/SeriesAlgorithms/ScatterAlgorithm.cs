@@ -66,7 +66,7 @@ namespace LiveCharts.SeriesAlgorithms
 
                 chartPoint.SeriesView = View;
 
-                chartPoint.View = View.GetPointView(chartPoint.View, chartPoint,
+                chartPoint.View = View.GetPointView(chartPoint,
                     View.DataLabels ? View.GetLabelPointFormatter()(chartPoint) : null);
 
                 var bubbleView = (IScatterPointView) chartPoint.View;

@@ -122,11 +122,11 @@ namespace LiveCharts.Uwp
             Figure.StartPoint = new Point(0, y);
         }
 
-        public override IChartPointView GetPointView(IChartPointView view, ChartPoint point, string label)
+        public override IChartPointView GetPointView(ChartPoint point, string label)
         {
             var mhr = PointGeometrySize < 10 ? 10 : PointGeometrySize;
 
-            var pbv = (VerticalBezierPointView) view;
+            var pbv = (VerticalBezierPointView) point.View;
 
             if (pbv == null)
             {

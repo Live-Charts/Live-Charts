@@ -110,9 +110,9 @@ namespace LiveCharts.Uwp
             //do nothing on updateStart
         }
 
-        public override IChartPointView GetPointView(IChartPointView view, ChartPoint point, string label)
+        public override IChartPointView GetPointView(ChartPoint point, string label)
         {
-            var pbv = (OhlcPointView) view;
+            var pbv = (OhlcPointView) point.View;
 
             if (pbv == null)
             {

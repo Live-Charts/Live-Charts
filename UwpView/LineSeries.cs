@@ -178,11 +178,11 @@ namespace LiveCharts.Uwp
             Figure.StartPoint = new Point(x, Model.Chart.DrawMargin.Height);
         }
 
-        public override IChartPointView GetPointView(IChartPointView view, ChartPoint point, string label)
+        public override IChartPointView GetPointView(ChartPoint point, string label)
         {
             var mhr = PointGeometrySize < 10 ? 10 : PointGeometrySize;
 
-            var pbv = (HorizontalBezierPointView) view;
+            var pbv = (HorizontalBezierPointView) point.View;
 
             if (pbv == null)
             {
@@ -246,7 +246,7 @@ namespace LiveCharts.Uwp
                 pbv.Shape.StrokeThickness = StrokeThickness;
                 pbv.Shape.Width = PointGeometrySize;
                 pbv.Shape.Height = PointGeometrySize;
-                pbv.Shape.Data = PointGeometry;
+                //pbv.Shape.Data = PointGeometry;
                 pbv.Shape.Visibility = Visibility;
                 Canvas.SetZIndex(pbv.Shape, Canvas.GetZIndex(this) + 1);
 

@@ -118,9 +118,9 @@ namespace LiveCharts.Uwp
 
         #region Overridden Methods
 
-        public override IChartPointView GetPointView(IChartPointView view, ChartPoint point, string label)
+        public override IChartPointView GetPointView(ChartPoint point, string label)
         {
-            var pbv = (HeatPoint) view;
+            var pbv = (HeatPoint) point.View;
 
             if (pbv == null)
             {

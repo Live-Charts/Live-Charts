@@ -37,7 +37,7 @@ namespace LiveCharts.Definitions.Series
         Func<ChartPoint, string> LabelPoint { get; set; }
         IChartValues ActualValues { get; }
 
-        IChartPointView GetPointView(IChartPointView view, ChartPoint point, string label);
+        IChartPointView GetPointView(ChartPoint point, string label);
         void OnSeriesUpdateStart();
         void Erase(bool removeFromView);
         void OnSeriesUpdatedFinish();

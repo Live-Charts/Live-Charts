@@ -104,9 +104,9 @@ namespace LiveCharts.Wpf
 
         #region Overridden Methods
 
-        public override IChartPointView GetPointView(IChartPointView view, ChartPoint point, string label)
+        public override IChartPointView GetPointView(ChartPoint point, string label)
         {
-            var pbv = (StepLinePointView) view;
+            var pbv = (StepLinePointView) point.View;
 
             if (pbv == null)
             {
