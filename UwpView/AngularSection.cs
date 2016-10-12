@@ -20,16 +20,50 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Media;
 
 namespace LiveCharts.Uwp
 {
-    public class AngularSection 
+    public class AngularSection : FrameworkElement
     {
-        public double FromValue { get; set; }
-        
-        public double ToValue { get; set; }
+        internal AngularGauge Owner { get; set; }
 
-        public Brush Fill  { get; set; }
+        public static readonly DependencyProperty FromValueProperty = DependencyProperty.Register(
+            "FromValue", typeof(double), typeof(AngularSection), new PropertyMetadata(default(double), Redraw));
+
+        public double FromValue
+        {
+            get { return (double) GetValue(FromValueProperty); }
+            set { SetValue(FromValueProperty, value); }
+        }
+
+        public static readonly DependencyProperty ToValueProperty = DependencyProperty.Register(
+            "ToValue", typeof(double), typeof(AngularSection), new PropertyMetadata(default(double), Redraw));
+
+        public double ToValue
+        {
+            get { return (double) GetValue(ToValueProperty); }
+            set { SetValue(ToValueProperty, value); }
+        }
+
+        public static readonly DependencyProperty FillProperty = DependencyProperty.Register(
+            "Fill", typeof(Brush), typeof(AngularSection), new PropertyMetadata(default(Brush)));
+
+        public Brush Fill
+        {
+            get { return (Brush) GetValue(FillProperty); }
+            set { SetValue(FillProperty, value); }
+        }
+
+        private static void Redraw(DependencyObject dependencyObject,
+            DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
+        {
+            var angularSection = (AngularSection) dependencyObject;
+
+            if (angularSection.Owner == null) return;
+
+            angularSection.Owner.UpdateSections();
+        }
     }
 }
