@@ -20,7 +20,6 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-using Windows.UI.Xaml.Media;
 using LiveCharts.Uwp.Components;
 
 namespace LiveCharts.Uwp
@@ -28,54 +27,24 @@ namespace LiveCharts.Uwp
     /// <summary>
     /// Contains an already defined collection of geometries, useful to set the Series.PointGeomety property
     /// </summary>
-    public static class DefaultGeometries
+    public enum DefaultGeometries
     {
         /// <summary>
         /// Returns a null geometry
         /// </summary>
-        public static Geometry None
-        {
-            get { return null; }
-        }
-
-        /// <summary>
-        /// Returns a circle geometry
-        /// </summary>
-        public static Geometry Circle
-        {
-            get { return GeometryHelper.Parse("M 0,0 A 180,180 180 1 1 1,1 Z"); }
-        }
-
-        /// <summary>
-        /// Returns a square geometry
-        /// </summary>
-        public static Geometry Square
-        {
-            get { return GeometryHelper.Parse("M 1,1 h -2 v -2 h 2 z"); }
-        }
-
-        /// <summary>
-        /// Returns a diamond geometry
-        /// </summary>
-        public static Geometry Diamond
-        {
-            get { return GeometryHelper.Parse("M 1,0 L 2,1  1,2  0,1 z"); }
-        }
-
-        /// <summary>
-        /// Returns a triangle geometry
-        /// </summary>
-        public static Geometry Triangle
-        {
-            get { return GeometryHelper.Parse("M 0,1 l 1,1 h -2 Z"); }
-        }
-
-        /// <summary>
-        /// Returns a cross geometry
-        /// </summary>
-        public static Geometry Cross
-        {
-            get { return GeometryHelper.Parse("M0,0 L1,1 M0,1 l1,-1"); }
-        }
+        [GeometryData("")]
+        None,
+        [GeometryData("M 0,0 A 180,180 180 1 1 1,1 Z")]
+        Circle,
+        [GeometryData("M 1,1 h -2 v -2 h 2 z")]
+        Square,
+        [GeometryData("M 1,0 L 2,1  1,2  0,1 z")]
+        Diamond,
+        [GeometryData("M 0,1 l 1,1 h -2 Z")]
+        Triangle,
+        [GeometryData("M0,0 L1,1 M0,1 l1,-1")]
+        Cross,
+        [GeometryData("M 0, 0.5 h 1, 0.5 Z")]
+        Default
     }
 }

@@ -265,9 +265,9 @@ namespace LiveCharts.Uwp
         /// <summary>
         /// Gets or sets the point geometry, this shape will be drawn in the Tooltip, Legend, and if line series in every point also.
         /// </summary>
-        public Geometry PointGeometry
+        public DefaultGeometries PointGeometry
         {
-            get { return ((Geometry)GetValue(PointGeometryProperty)); }
+            get { return (DefaultGeometries) GetValue(PointGeometryProperty); }
             set { SetValue(PointGeometryProperty, value); }
         }
 

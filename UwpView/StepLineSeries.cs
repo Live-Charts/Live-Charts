@@ -171,7 +171,7 @@ namespace LiveCharts.Uwp
                 pbv.Shape.Visibility = Visibility;
                 pbv.Shape.Width = PointGeometrySize;
                 pbv.Shape.Height = PointGeometrySize;
-                pbv.Shape.Data = PointGeometry;
+                pbv.Shape.Data = GeometryHelper.Resolve(PointGeometry);
                 Canvas.SetZIndex(pbv.Shape, Canvas.GetZIndex(this) + 1);
 
                 if (point.Stroke != null) pbv.Shape.Stroke = (Brush) point.Stroke;

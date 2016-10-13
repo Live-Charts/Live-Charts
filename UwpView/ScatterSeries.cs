@@ -30,6 +30,7 @@ using LiveCharts.SeriesAlgorithms;
 using LiveCharts.Uwp.Charts.Base;
 using LiveCharts.Uwp.Points;
 using Windows.UI.Xaml;
+using LiveCharts.Uwp.Components;
 
 namespace LiveCharts.Uwp
 {
@@ -126,7 +127,7 @@ namespace LiveCharts.Uwp
             }
 
             var p = (Path) pbv.Shape;
-            p.Data = PointGeometry;
+            p.Data = GeometryHelper.Resolve(PointGeometry);
             p.Fill = Fill;
             p.Stroke = Stroke;
             p.StrokeThickness = StrokeThickness;

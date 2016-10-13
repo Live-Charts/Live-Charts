@@ -22,10 +22,8 @@
 
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Media;
 
 namespace LiveCharts.Uwp.Components
 {
@@ -40,7 +38,7 @@ namespace LiveCharts.Uwp.Components
 
         private SerieConverter() { }
 
-        public Object Convert(Object value, Type targetType, Object parameter, String language)
+        public object Convert(object value, Type targetType, object parameter, string language)
         {
             var series = value as IEnumerable<Series>;
             if (series != null)
@@ -55,13 +53,15 @@ namespace LiveCharts.Uwp.Components
                     Title = serie.Title,
                     Stroke = serie.Stroke,
                     Fill = serie.Fill,
-                    PointGeometry = serie.PointGeometry ?? GeometryHelper.Parse("M 0,0.5 h 1,0.5 Z")
+                    PointGeometry = serie.PointGeometry == DefaultGeometries.None
+                        ? GeometryHelper.Resolve(DefaultGeometries.Default)
+                        : GeometryHelper.Resolve(serie.PointGeometry)
                 };
 
             return value;
         }
 
-        public Object ConvertBack(Object value, Type targetType, Object parameter, String language)
+        public object ConvertBack(object value, Type targetType, object parameter, string language)
         {
             throw new NotImplementedException();
         }

@@ -247,7 +247,7 @@ namespace LiveCharts.Uwp
                 pbv.Shape.StrokeThickness = StrokeThickness;
                 pbv.Shape.Width = PointGeometrySize;
                 pbv.Shape.Height = PointGeometrySize;
-                //pbv.Shape.Data = PointGeometry;
+                pbv.Shape.Data = GeometryHelper.Resolve(PointGeometry);
                 pbv.Shape.Visibility = Visibility;
                 Canvas.SetZIndex(pbv.Shape, Canvas.GetZIndex(this) + 1);
 

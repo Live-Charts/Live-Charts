@@ -20,9 +20,6 @@
                 <lvc:LineSeries Values="{Binding Values1}" StrokeThickness="4" StrokeDashArray="2" 
                                 Stroke="#6BBA45" Fill="Transparent" LineSmoothness="0" PointGeometrySize="20"
                                 PointForeround="#6BBA45">
-                    <lvc:LineSeries.PointGeometry>
-                        <Geometry>M 1,0 L 2,1  1,2  0,1 z</Geometry>
-                    </lvc:LineSeries.PointGeometry>
                 </lvc:LineSeries>
                 <lvc:LineSeries Values="{Binding Values2}" StrokeThickness="2" 
                                 Stroke="#1C8FC5" Fill="Transparent" LineSmoothness="1" 

@@ -774,8 +774,9 @@ namespace LiveCharts.Uwp.Charts.Base
                     {
                         Series = new SeriesViewModel
                         {
-                            PointGeometry = ((Series) x.SeriesView).PointGeometry ??
-                                            GeometryHelper.Parse("M 0,0.5 h 1,0.5 Z"),
+                            PointGeometry = ((Series) x.SeriesView).PointGeometry == DefaultGeometries.None
+                                ? GeometryHelper.Resolve(DefaultGeometries.Default)
+                                : GeometryHelper.Resolve(((Series) x.SeriesView).PointGeometry),
                             Fill = ((Series) x.SeriesView) is IFondeable &&
                                    !(x.SeriesView is IVerticalStackedAreaSeriesView ||
                                      x.SeriesView is IStackedAreaSeriesView)
@@ -890,7 +891,9 @@ namespace LiveCharts.Uwp.Charts.Base
                               t is IStackedAreaSeriesView)
                     ? ((IFondeable) t).PointForeround
                     : ((Series) t).Fill;
-                item.PointGeometry = series.PointGeometry ?? GeometryHelper.Parse("M 0,0.5 h 1,0.5 Z");
+                item.PointGeometry = series.PointGeometry == DefaultGeometries.None
+                    ? GeometryHelper.Resolve(DefaultGeometries.Default)
+                    : GeometryHelper.Resolve(series.PointGeometry);
 
                 l.Add(item);
             }
