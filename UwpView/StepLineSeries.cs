@@ -148,17 +148,14 @@ namespace LiveCharts.Uwp
             pbv.HorizontalLine.Visibility = Visibility;
             Canvas.SetZIndex(pbv.HorizontalLine, Canvas.GetZIndex(this));
 
-            if (PointGeometry != null && Math.Abs(PointGeometrySize) > 0.1 && pbv.Shape == null)
+            if (Math.Abs(PointGeometrySize) > 0.1 && pbv.Shape == null)
             {
-                if (PointGeometry != null)
+                pbv.Shape = new Path
                 {
-                    pbv.Shape = new Path
-                    {
-                        Stretch = Stretch.Fill,
-                        //ClipToBounds = true,
-                        StrokeThickness = StrokeThickness
-                    };
-                }
+                    Stretch = Stretch.Fill,
+                    //ClipToBounds = true,
+                    StrokeThickness = StrokeThickness
+                };
                 Model.Chart.View.AddToDrawMargin(pbv.Shape);
             }
 
