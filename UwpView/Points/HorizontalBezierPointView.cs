@@ -122,10 +122,15 @@ namespace LiveCharts.Uwp.Points
 
             #endregion
 
-            var p1 = AnimationsHelper.CreatePoint(Segment.Point1, Data.Point1.AsPoint(), chart.View.AnimationsSpeed, nameof(BezierSegment.Point1));
-            var p2 = AnimationsHelper.CreatePoint(Segment.Point2, Data.Point2.AsPoint(), chart.View.AnimationsSpeed, nameof(BezierSegment.Point2));
-            var p3 = AnimationsHelper.CreatePoint(Segment.Point3, Data.Point3.AsPoint(), chart.View.AnimationsSpeed, nameof(BezierSegment.Point3));
-            AnimationsHelper.CreateStoryBoardAndBegin(Segment, p1, p2, p3);
+            var animSpeed = chart.View.AnimationsSpeed;
+
+            Segment.BeginPointAnimation(nameof(BezierSegment.Point1), Data.Point1.AsPoint(), animSpeed);
+            Segment.BeginPointAnimation(nameof(BezierSegment.Point2), Data.Point2.AsPoint(), animSpeed);
+            Segment.BeginPointAnimation(nameof(BezierSegment.Point3), Data.Point3.AsPoint(), animSpeed);
+            //var p1 = AnimationsHelper.CreatePoint(Segment.Point1, Data.Point1.AsPoint(), chart.View.AnimationsSpeed, nameof(BezierSegment.Point1));
+            //var p2 = AnimationsHelper.CreatePoint(Segment.Point2, Data.Point2.AsPoint(), chart.View.AnimationsSpeed, nameof(BezierSegment.Point2));
+            //var p3 = AnimationsHelper.CreatePoint(Segment.Point3, Data.Point3.AsPoint(), chart.View.AnimationsSpeed, nameof(BezierSegment.Point3));
+            //AnimationsHelper.CreateStoryBoardAndBegin(Segment, p1, p2, p3);
 
             if (Shape != null)
             {
