@@ -498,9 +498,17 @@ namespace LiveCharts.Uwp
 
             l.SetBinding(Shape.StrokeProperty,
                 new Binding {Path = new PropertyPath("Stroke"), Source = s});
-            l.SetBinding(Shape.StrokeDashArrayProperty,
-                new Binding {Path = new PropertyPath("StrokeDashArray"), Source = s});
-            l.SetBinding(Shape.StrokeThicknessProperty,
+            try
+            {
+                l.SetBinding(Shape.StrokeDashArrayProperty, 
+                    new Binding { Path = new PropertyPath("StrokeDashArray"), Source = s });
+            }
+            catch (Exception)
+            {
+                // temporarily ignore it
+            }
+
+            l.SetBinding(Shape.StrokeThicknessProperty, 
                 new Binding {Path = new PropertyPath("StrokeThickness"), Source = s});
             l.SetBinding(VisibilityProperty,
                 new Binding {Path = new PropertyPath("Visibility"), Source = s});

@@ -78,7 +78,7 @@ namespace LiveCharts.Uwp
 
         public void AddOrMove(ChartCore chart)
         {
-            if (chart == null || UIElement == null) return;
+            if (chart?.AxisX == null || chart?.AxisY == null || UIElement == null) return;
             if (UIElement.Parent == null)
             {
                 chart.View.AddToDrawMargin(UIElement);
