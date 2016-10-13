@@ -27,7 +27,7 @@ namespace UWP.Commons
             new SampleDefinition("Bubbles", typeof(BubblesExample), SampleCategory.CartesianChart),
             new SampleDefinition("Constant Changes", typeof(ConstantChangesChart), SampleCategory.CartesianChart),
             new SampleDefinition("Customized Series", typeof(CustomizedLineSeries), SampleCategory.CartesianChart),
-            new SampleDefinition("Customers Legend", typeof(CustomersLegend), SampleCategory.CartesianChart),
+            new SampleDefinition("Custom Tooltip and Legend", typeof(CustomTooltipAndLegendExample), SampleCategory.CartesianChart),
         };
     }
 }

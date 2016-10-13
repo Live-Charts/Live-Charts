@@ -1,4 +1,5 @@
-﻿using LiveCharts.Uwp;
+﻿using LiveCharts;
+using LiveCharts.Uwp;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -19,28 +20,34 @@ using Windows.UI.Xaml.Navigation;
 
 namespace UWP.CartesianChart.CustomTooltipAndLegend
 {
-    public sealed partial class CustomersLegend : UserControl, IChartLegend
+    public sealed partial class CustomersTooltip : UserControl, IChartTooltip
     {
-        private List<SeriesViewModel> _series;
+        private TooltipData _data;
 
-        public CustomersLegend()
+        public CustomersTooltip()
         {
             InitializeComponent();
+
+            //LiveCharts will inject the tooltip data in the Data property
+            //your job is only to display this data as required
 
             DataContext = this;
         }
 
-        public List<SeriesViewModel> Series
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public TooltipData Data
         {
-            get { return _series; }
+            get { return _data; }
             set
             {
-                _series = value;
-                OnPropertyChanged("Series");
+                _data = value;
+                OnPropertyChanged("Data");
             }
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        public TooltipSelectionMode SelectionMode { get; set; }
+        public bool IsWrapped { get; set; }
 
         public void OnPropertyChanged(string propertyName = null)
         {

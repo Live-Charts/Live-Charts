@@ -126,6 +126,13 @@
     <Compile Include="CartesianChart\CustomTooltipAndLegend\CustomersLegend.xaml.cs">
       <DependentUpon>CustomersLegend.xaml</DependentUpon>
     </Compile>
+    <Compile Include="CartesianChart\CustomTooltipAndLegend\CustomersTooltip.xaml.cs">
+      <DependentUpon>CustomersTooltip.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CartesianChart\CustomTooltipAndLegend\CustomerVm.cs" />
+    <Compile Include="CartesianChart\CustomTooltipAndLegend\CustomTooltipAndLegendExample.xaml.cs">
+      <DependentUpon>CustomTooltipAndLegendExample.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Commons\SampleCategory.cs" />
     <Compile Include="Commons\SampleDefinition.cs" />
     <Compile Include="Commons\SampleDefinitions.cs" />
@@ -192,6 +199,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="CartesianChart\CustomTooltipAndLegend\CustomersLegend.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CartesianChart\CustomTooltipAndLegend\CustomersTooltip.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CartesianChart\CustomTooltipAndLegend\CustomTooltipAndLegendExample.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
