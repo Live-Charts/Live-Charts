@@ -105,7 +105,7 @@ namespace LiveCharts
             var minimum = range/separations;
             Magnitude = Math.Pow(10, Math.Floor(Math.Log(minimum)/Math.Log(10)));
 
-            if (Separator.Step != double.NaN)
+            if (!double.IsNaN(Separator.Step))
             {
                 S = Separator.Step;
                 return;
