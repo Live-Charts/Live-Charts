@@ -32,6 +32,10 @@ using UWP.CartesianChart.ScatterPlot;
 using UWP.CartesianChart.Sections;
 using UWP.CartesianChart.SectionsDragable;
 using UWP.CartesianChart.SharedTooltip;
+using UWP.CartesianChart.StackedArea;
+using UWP.CartesianChart.StackedBar;
+using UWP.CartesianChart.StepLine;
+using UWP.CartesianChart.TypesSupport;
 using UWP.Views;
 
 namespace UWP.Commons
@@ -74,6 +78,12 @@ namespace UWP.Commons
             new SampleDefinition("Sections", typeof(SectionsExample), SampleCategory.CartesianChart),
             new SampleDefinition("Dragable Sections", typeof(DragableSections), SampleCategory.CartesianChart),
             new SampleDefinition("Shared Tooltip", typeof(SharedTooltipExample), SampleCategory.CartesianChart),
+            new SampleDefinition("Stacked Area", typeof(StackedAreaExample), SampleCategory.CartesianChart),
+            new SampleDefinition("Vertical Stacked Area", typeof(VerticalStackedAreaExample), SampleCategory.CartesianChart),
+            new SampleDefinition("Stacked Column", typeof(StackedColumnExample), SampleCategory.CartesianChart),
+            new SampleDefinition("Stacked Row", typeof(StackedRowExample), SampleCategory.CartesianChart),
+            new SampleDefinition("Step Line", typeof(StepLineExample), SampleCategory.CartesianChart),
+            new SampleDefinition("Types Plotting", typeof(TypesPlotting), SampleCategory.CartesianChart),
         };
     }
 }

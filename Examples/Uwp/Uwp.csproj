@@ -210,6 +210,24 @@
     <Compile Include="CartesianChart\SharedTooltip\SharedTooltipExample.xaml.cs">
       <DependentUpon>SharedTooltipExample.xaml</DependentUpon>
     </Compile>
+    <Compile Include="CartesianChart\StackedArea\StackedAreaExample.xaml.cs">
+      <DependentUpon>StackedAreaExample.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CartesianChart\StackedArea\VerticalStackedAreaExample.xaml.cs">
+      <DependentUpon>VerticalStackedAreaExample.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CartesianChart\StackedBar\StackedColumnExample.xaml.cs">
+      <DependentUpon>StackedColumnExample.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CartesianChart\StackedBar\StackedRowExample.xaml.cs">
+      <DependentUpon>StackedRowExample.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CartesianChart\StepLine\StepLineExample.xaml.cs">
+      <DependentUpon>StepLineExample.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CartesianChart\TypesSupport\TypesPlotting.xaml.cs">
+      <DependentUpon>TypesPlotting.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Commons\SampleCategory.cs" />
     <Compile Include="Commons\SampleDefinition.cs" />
     <Compile Include="Commons\SampleDefinitions.cs" />
@@ -384,6 +402,30 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="CartesianChart\StackedArea\StackedAreaExample.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CartesianChart\StackedArea\VerticalStackedAreaExample.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CartesianChart\StackedBar\StackedColumnExample.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CartesianChart\StackedBar\StackedRowExample.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CartesianChart\StepLine\StepLineExample.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CartesianChart\TypesSupport\TypesPlotting.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\MainPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -399,6 +441,7 @@
       <Name>UwpView</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>
