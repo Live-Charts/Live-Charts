@@ -89,6 +89,9 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .Net Framework and Windows SDK are automatically included -->
+    <Content Include="cities.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>
@@ -162,6 +165,26 @@
     </Compile>
     <Compile Include="CartesianChart\Labels\LabelsHorizontalExample.xaml.cs">
       <DependentUpon>LabelsHorizontalExample.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CartesianChart\LineExample\LineExample.xaml.cs">
+      <DependentUpon>LineExample.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CartesianChart\Linq\City.cs" />
+    <Compile Include="CartesianChart\Linq\DataBase.cs" />
+    <Compile Include="CartesianChart\Linq\LinqExample.xaml.cs">
+      <DependentUpon>LinqExample.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CartesianChart\LogarithmScale\LogarithmScaleExample.xaml.cs">
+      <DependentUpon>LogarithmScaleExample.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CartesianChart\ManualZAndP\ManualZAndPExample.xaml.cs">
+      <DependentUpon>ManualZAndPExample.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CartesianChart\Missing Line Points\MissingPointsExample.xaml.cs">
+      <DependentUpon>MissingPointsExample.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CartesianChart\MixingSeries\MixingSeries.xaml.cs">
+      <DependentUpon>MixingSeries.xaml</DependentUpon>
     </Compile>
     <Compile Include="Commons\SampleCategory.cs" />
     <Compile Include="Commons\SampleDefinition.cs" />
@@ -278,6 +301,30 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="CartesianChart\Labels\LabelsHorizontalExample.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CartesianChart\LineExample\LineExample.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CartesianChart\Linq\LinqExample.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CartesianChart\LogarithmScale\LogarithmScaleExample.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CartesianChart\ManualZAndP\ManualZAndPExample.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CartesianChart\Missing Line Points\MissingPointsExample.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CartesianChart\MixingSeries\MixingSeries.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

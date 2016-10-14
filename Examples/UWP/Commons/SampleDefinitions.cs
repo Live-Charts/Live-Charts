@@ -18,6 +18,12 @@ using UWP.CartesianChart.InLineSyntax;
 using UWP.CartesianChart.Inverted_Series;
 using UWP.CartesianChart.Irregular_Intervals;
 using UWP.CartesianChart.Labels;
+using UWP.CartesianChart.LineExample;
+using UWP.CartesianChart.Linq;
+using UWP.CartesianChart.LogarithmScale;
+using UWP.CartesianChart.ManualZAndP;
+using UWP.CartesianChart.Missing_Line_Points;
+using UWP.CartesianChart.MixingSeries;
 using UWP.Views;
 
 namespace UWP.Commons
@@ -46,6 +52,12 @@ namespace UWP.Commons
             new SampleDefinition("Irregular Intervals", typeof(IrregularIntervalsExample), SampleCategory.CartesianChart),
             new SampleDefinition("Labels", typeof(LabelsExample), SampleCategory.CartesianChart),
             new SampleDefinition("Labels Horizontal", typeof(LabelsHorizontalExample), SampleCategory.CartesianChart),
+            new SampleDefinition("Line Example", typeof(LineExample), SampleCategory.CartesianChart),
+            new SampleDefinition("Linq", typeof(LinqExample), SampleCategory.CartesianChart),
+            new SampleDefinition("Logarithm Scale", typeof(LogarithmScaleExample), SampleCategory.CartesianChart),
+            new SampleDefinition("Manual Z And P", typeof(ManualZAndPExample), SampleCategory.CartesianChart),
+            new SampleDefinition("Missing Line Points", typeof(MissingPointsExample), SampleCategory.CartesianChart),
+            new SampleDefinition("Mixing Series", typeof(MixingSeries), SampleCategory.CartesianChart),
         };
     }
 }
