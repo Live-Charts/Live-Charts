@@ -37,12 +37,16 @@ namespace LiveCharts.Uwp
 
         public void UpdateFill(GradientStopCollection stops)
         {
-            Background = new LinearGradientBrush
+            var brush = Background as LinearGradientBrush;
+            if (brush == null || brush.GradientStops != stops)
             {
-                StartPoint = new Point(0, 0),
-                EndPoint = new Point(0, 1),
-                GradientStops = stops
-            };
+                Background = new LinearGradientBrush
+                {
+                    StartPoint = new Point(0, 0),
+                    EndPoint = new Point(0, 1),
+                    GradientStops = stops
+                };
+            }
         }
 
         public double SetMax(string value)

@@ -142,6 +142,15 @@
     <Compile Include="CartesianChart\Financial\OhclExample.xaml.cs">
       <DependentUpon>OhclExample.xaml</DependentUpon>
     </Compile>
+    <Compile Include="CartesianChart\FullyResponsive\FullyResponsiveExample.xaml.cs">
+      <DependentUpon>FullyResponsiveExample.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CartesianChart\HeatChart\HeatSeriesExample.xaml.cs">
+      <DependentUpon>HeatSeriesExample.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CartesianChart\InLineSyntax\InLineSyntaxTest.xaml.cs">
+      <DependentUpon>InLineSyntaxTest.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Commons\SampleCategory.cs" />
     <Compile Include="Commons\SampleDefinition.cs" />
     <Compile Include="Commons\SampleDefinitions.cs" />
@@ -229,6 +238,18 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="CartesianChart\Financial\OhclExample.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CartesianChart\FullyResponsive\FullyResponsiveExample.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CartesianChart\HeatChart\HeatSeriesExample.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CartesianChart\InLineSyntax\InLineSyntaxTest.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

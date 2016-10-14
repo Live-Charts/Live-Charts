@@ -12,6 +12,9 @@ using UWP.CartesianChart.Customized_Series;
 using UWP.CartesianChart.CustomTooltipAndLegend;
 using UWP.CartesianChart.DynamicVisibility;
 using UWP.CartesianChart.Financial;
+using UWP.CartesianChart.FullyResponsive;
+using UWP.CartesianChart.HeatChart;
+using UWP.CartesianChart.InLineSyntax;
 using UWP.Views;
 
 namespace UWP.Commons
@@ -33,6 +36,9 @@ namespace UWP.Commons
             new SampleDefinition("Dynamic Visibility", typeof(DynamicVisibilityExample), SampleCategory.CartesianChart),
             new SampleDefinition("Financial Candle Stick", typeof(CandleStickExample), SampleCategory.CartesianChart),
             new SampleDefinition("Financial Ohcl", typeof(OhclExample), SampleCategory.CartesianChart),
+            new SampleDefinition("Fully Responsive", typeof(FullyResponsiveExample), SampleCategory.CartesianChart),
+            new SampleDefinition("Heat Chart", typeof(HeatSeriesExample), SampleCategory.CartesianChart),
+            new SampleDefinition("InLine Syntax", typeof(InLineSyntaxTest), SampleCategory.CartesianChart),
         };
     }
 }
