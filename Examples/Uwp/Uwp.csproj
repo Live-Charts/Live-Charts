@@ -186,6 +186,30 @@
     <Compile Include="CartesianChart\MixingSeries\MixingSeries.xaml.cs">
       <DependentUpon>MixingSeries.xaml</DependentUpon>
     </Compile>
+    <Compile Include="CartesianChart\MultiAxes\MultiAxesChart.xaml.cs">
+      <DependentUpon>MultiAxesChart.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CartesianChart\NegativeStackedRow\NegativeStackedRowExample.xaml.cs">
+      <DependentUpon>NegativeStackedRowExample.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CartesianChart\PointShapeLine\PointShapeLineExample.xaml.cs">
+      <DependentUpon>PointShapeLineExample.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CartesianChart\PointState\PointStateExample.xaml.cs">
+      <DependentUpon>PointStateExample.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CartesianChart\ScatterPlot\ScatterExample.xaml.cs">
+      <DependentUpon>ScatterExample.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CartesianChart\SectionsDragable\DragableSections.xaml.cs">
+      <DependentUpon>DragableSections.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CartesianChart\Sections\SectionsExample.xaml.cs">
+      <DependentUpon>SectionsExample.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CartesianChart\SharedTooltip\SharedTooltipExample.xaml.cs">
+      <DependentUpon>SharedTooltipExample.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Commons\SampleCategory.cs" />
     <Compile Include="Commons\SampleDefinition.cs" />
     <Compile Include="Commons\SampleDefinitions.cs" />
@@ -325,6 +349,38 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="CartesianChart\MixingSeries\MixingSeries.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CartesianChart\MultiAxes\MultiAxesChart.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CartesianChart\NegativeStackedRow\NegativeStackedRowExample.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CartesianChart\PointShapeLine\PointShapeLineExample.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CartesianChart\PointState\PointStateExample.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CartesianChart\ScatterPlot\ScatterExample.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CartesianChart\SectionsDragable\DragableSections.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CartesianChart\Sections\SectionsExample.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CartesianChart\SharedTooltip\SharedTooltipExample.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

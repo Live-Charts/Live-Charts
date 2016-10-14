@@ -24,6 +24,14 @@ using UWP.CartesianChart.LogarithmScale;
 using UWP.CartesianChart.ManualZAndP;
 using UWP.CartesianChart.Missing_Line_Points;
 using UWP.CartesianChart.MixingSeries;
+using UWP.CartesianChart.MultiAxes;
+using UWP.CartesianChart.NegativeStackedRow;
+using UWP.CartesianChart.PointShapeLine;
+using UWP.CartesianChart.PointState;
+using UWP.CartesianChart.ScatterPlot;
+using UWP.CartesianChart.Sections;
+using UWP.CartesianChart.SectionsDragable;
+using UWP.CartesianChart.SharedTooltip;
 using UWP.Views;
 
 namespace UWP.Commons
@@ -58,6 +66,14 @@ namespace UWP.Commons
             new SampleDefinition("Manual Z And P", typeof(ManualZAndPExample), SampleCategory.CartesianChart),
             new SampleDefinition("Missing Line Points", typeof(MissingPointsExample), SampleCategory.CartesianChart),
             new SampleDefinition("Mixing Series", typeof(MixingSeries), SampleCategory.CartesianChart),
+            new SampleDefinition("Multi Axes", typeof(MultiAxesChart), SampleCategory.CartesianChart),
+            new SampleDefinition("Negative Stacked Row", typeof(NegativeStackedRowExample), SampleCategory.CartesianChart),
+            new SampleDefinition("Point Shape Line", typeof(PointShapeLineExample), SampleCategory.CartesianChart),
+            new SampleDefinition("Point State", typeof(PointStateExample), SampleCategory.CartesianChart),
+            new SampleDefinition("Scatter Plot", typeof(ScatterExample), SampleCategory.CartesianChart),
+            new SampleDefinition("Sections", typeof(SectionsExample), SampleCategory.CartesianChart),
+            new SampleDefinition("Dragable Sections", typeof(DragableSections), SampleCategory.CartesianChart),
+            new SampleDefinition("Shared Tooltip", typeof(SharedTooltipExample), SampleCategory.CartesianChart),
         };
     }
 }

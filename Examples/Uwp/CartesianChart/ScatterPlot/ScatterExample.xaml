@@ -1,0 +1,34 @@
+﻿<Page
+    x:Class="UWP.CartesianChart.ScatterPlot.ScatterExample"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:UWP.CartesianChart.ScatterPlot"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:lvc="using:LiveCharts.Uwp"
+    mc:Ignorable="d">
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Button Grid.Row="0" Margin="10" Click="RandomizeOnClick">Randomize</Button>
+        <lvc:CartesianChart Grid.Row="1" LegendLocation="Bottom">
+            <lvc:CartesianChart.Series>
+                <lvc:ScatterSeries Title="Series A" Values="{Binding ValuesA}" />
+                <lvc:ScatterSeries Title="Series B" Values="{Binding ValuesB}">
+                    <lvc:ScatterSeries.PointGeometry>
+                        <lvc:PointGeometry Data="M 1,0 L 2,1  1,2  0,1 z"/>
+                    </lvc:ScatterSeries.PointGeometry>
+                </lvc:ScatterSeries>
+                <lvc:ScatterSeries Title="Series C" Values="{Binding ValuesC}"
+                                   StrokeThickness="2" Fill="Transparent">
+                    <lvc:ScatterSeries.PointGeometry>
+                        <lvc:PointGeometry Data="M 0,1 l 1,1 h -2 Z"/>
+                    </lvc:ScatterSeries.PointGeometry>
+                </lvc:ScatterSeries>
+            </lvc:CartesianChart.Series>
+        </lvc:CartesianChart>
+    </Grid>
+</Page>
