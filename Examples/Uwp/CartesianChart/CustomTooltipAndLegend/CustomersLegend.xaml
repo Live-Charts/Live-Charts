@@ -9,9 +9,8 @@
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400"
-    Background="#555555" BorderThickness="2" Padding="20 10" BorderBrush="AntiqueWhite">
-
-    <Grid>
+    >
+    <Grid Background="#555555" BorderThickness="2" Padding="20 10" BorderBrush="AntiqueWhite">
         <ItemsControl ItemsSource="{x:Bind Series}">
             <ItemsControl.ItemTemplate>
                 <DataTemplate x:DataType="lvc:SeriesViewModel">

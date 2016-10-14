@@ -16,8 +16,7 @@
             <lvc:CartesianChart.AxisX >
                 <lvc:Axis Labels="{Binding Labels}" LabelsRotation="-15">
                     <lvc:Axis.Separator>
-                        <lvc:Separator/>
-                        <!-- Step="1"-->
+                        <lvc:Separator Step="1"/>
                     </lvc:Axis.Separator>
                 </lvc:Axis>
             </lvc:CartesianChart.AxisX>

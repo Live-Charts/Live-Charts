@@ -10,9 +10,9 @@
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400"
-    Background="#E4555555" Padding="20 10" BorderThickness="2" BorderBrush="#555555">
+    >
 
-    <Grid>
+    <Grid Background="#E4555555" Padding="20 10" BorderThickness="2" BorderBrush="#555555">
         <Grid.Resources>
             <converter:StringFormatConverter x:Key="StringFormatConverter"/>
         </Grid.Resources>
@@ -28,15 +28,15 @@
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
                         <Rectangle Grid.Column="0" Stroke="{Binding Series.Stroke}" Fill="{Binding Series.Fill}"
-                               Height="15" Width="15"></Rectangle>
-                        <!--<TextBlock Grid.Column="1" Text="{Binding ChartPoint.Instance.(local:CustomerVm.Name)}" 
+                               Height="15" Width="15"/>
+                        <TextBlock Grid.Column="1" Text="{Binding ChartPoint.Instance.Name}" 
                                Margin="5 0 0 0" VerticalAlignment="Center" Foreground="White"/>
-                        <TextBlock Grid.Column="2" Text="{Binding ChartPoint.Instance.(local:CustomerVm.LastName)}" 
+                        <TextBlock Grid.Column="2" Text="{Binding ChartPoint.Instance.LastName}" 
                                Margin="5 0 0 0" VerticalAlignment="Center" Foreground="White"/>
-                        <TextBlock Grid.Column="3" Text="{Binding ChartPoint.Instance.(local:CustomerVm.Phone), Converter={StaticResource StringFormatConverter}, ConverterParameter=Phone: {0}}" 
+                        <TextBlock Grid.Column="3" Text="{Binding ChartPoint.Instance.Phone, Converter={StaticResource StringFormatConverter}, ConverterParameter=Phone: \{0\}}" 
                                Margin="5 0 0 0" VerticalAlignment="Center" Foreground="White"/>
-                        <TextBlock Grid.Column="4" Text="{Binding ChartPoint.Instance.(local:CustomerVm.PurchasedItems), Converter={StaticResource StringFormatConverter}, ConverterParameter=Purchased Items: {0:N}}" 
-                               Margin="5 0 0 0" VerticalAlignment="Center" Foreground="White"/>-->
+                        <TextBlock Grid.Column="4" Text="{Binding ChartPoint.Instance.PurchasedItems, Converter={StaticResource StringFormatConverter}, ConverterParameter=Purchased Items: \{0:N\}}" 
+                               Margin="5 0 0 0" VerticalAlignment="Center" Foreground="White"/>
                     </Grid>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
