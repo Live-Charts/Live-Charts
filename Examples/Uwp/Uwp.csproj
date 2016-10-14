@@ -151,6 +151,18 @@
     <Compile Include="CartesianChart\InLineSyntax\InLineSyntaxTest.xaml.cs">
       <DependentUpon>InLineSyntaxTest.xaml</DependentUpon>
     </Compile>
+    <Compile Include="CartesianChart\Inverted Series\InvertedExample.xaml.cs">
+      <DependentUpon>InvertedExample.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CartesianChart\Irregular Intervals\IrregularIntervalsExample.xaml.cs">
+      <DependentUpon>IrregularIntervalsExample.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CartesianChart\Labels\LabelsExample.xaml.cs">
+      <DependentUpon>LabelsExample.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CartesianChart\Labels\LabelsHorizontalExample.xaml.cs">
+      <DependentUpon>LabelsHorizontalExample.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Commons\SampleCategory.cs" />
     <Compile Include="Commons\SampleDefinition.cs" />
     <Compile Include="Commons\SampleDefinitions.cs" />
@@ -250,6 +262,22 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="CartesianChart\InLineSyntax\InLineSyntaxTest.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CartesianChart\Inverted Series\InvertedExample.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CartesianChart\Irregular Intervals\IrregularIntervalsExample.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CartesianChart\Labels\LabelsExample.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CartesianChart\Labels\LabelsHorizontalExample.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

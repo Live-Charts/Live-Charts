@@ -15,6 +15,9 @@ using UWP.CartesianChart.Financial;
 using UWP.CartesianChart.FullyResponsive;
 using UWP.CartesianChart.HeatChart;
 using UWP.CartesianChart.InLineSyntax;
+using UWP.CartesianChart.Inverted_Series;
+using UWP.CartesianChart.Irregular_Intervals;
+using UWP.CartesianChart.Labels;
 using UWP.Views;
 
 namespace UWP.Commons
@@ -39,6 +42,10 @@ namespace UWP.Commons
             new SampleDefinition("Fully Responsive", typeof(FullyResponsiveExample), SampleCategory.CartesianChart),
             new SampleDefinition("Heat Chart", typeof(HeatSeriesExample), SampleCategory.CartesianChart),
             new SampleDefinition("InLine Syntax", typeof(InLineSyntaxTest), SampleCategory.CartesianChart),
+            new SampleDefinition("Inverted Series", typeof(InvertedExample), SampleCategory.CartesianChart),
+            new SampleDefinition("Irregular Intervals", typeof(IrregularIntervalsExample), SampleCategory.CartesianChart),
+            new SampleDefinition("Labels", typeof(LabelsExample), SampleCategory.CartesianChart),
+            new SampleDefinition("Labels Horizontal", typeof(LabelsHorizontalExample), SampleCategory.CartesianChart),
         };
     }
 }
