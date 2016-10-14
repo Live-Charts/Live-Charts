@@ -133,9 +133,19 @@
     <Compile Include="CartesianChart\CustomTooltipAndLegend\CustomTooltipAndLegendExample.xaml.cs">
       <DependentUpon>CustomTooltipAndLegendExample.xaml</DependentUpon>
     </Compile>
+    <Compile Include="CartesianChart\DynamicVisibility\DynamicVisibilityExample.xaml.cs">
+      <DependentUpon>DynamicVisibilityExample.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CartesianChart\Financial\CandleStickExample.xaml.cs">
+      <DependentUpon>CandleStickExample.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CartesianChart\Financial\OhclExample.xaml.cs">
+      <DependentUpon>OhclExample.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Commons\SampleCategory.cs" />
     <Compile Include="Commons\SampleDefinition.cs" />
     <Compile Include="Commons\SampleDefinitions.cs" />
+    <Compile Include="Converters\BoolToObjectConverter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Views\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
@@ -207,6 +217,18 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="CartesianChart\CustomTooltipAndLegend\CustomTooltipAndLegendExample.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CartesianChart\DynamicVisibility\DynamicVisibilityExample.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CartesianChart\Financial\CandleStickExample.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CartesianChart\Financial\OhclExample.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

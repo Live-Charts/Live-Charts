@@ -10,6 +10,8 @@ using UWP.CartesianChart.Bubbles;
 using UWP.CartesianChart.ConstantChanges;
 using UWP.CartesianChart.Customized_Series;
 using UWP.CartesianChart.CustomTooltipAndLegend;
+using UWP.CartesianChart.DynamicVisibility;
+using UWP.CartesianChart.Financial;
 using UWP.Views;
 
 namespace UWP.Commons
@@ -28,6 +30,9 @@ namespace UWP.Commons
             new SampleDefinition("Constant Changes", typeof(ConstantChangesChart), SampleCategory.CartesianChart),
             new SampleDefinition("Customized Series", typeof(CustomizedLineSeries), SampleCategory.CartesianChart),
             new SampleDefinition("Custom Tooltip and Legend", typeof(CustomTooltipAndLegendExample), SampleCategory.CartesianChart),
+            new SampleDefinition("Dynamic Visibility", typeof(DynamicVisibilityExample), SampleCategory.CartesianChart),
+            new SampleDefinition("Financial Candle Stick", typeof(CandleStickExample), SampleCategory.CartesianChart),
+            new SampleDefinition("Financial Ohcl", typeof(OhclExample), SampleCategory.CartesianChart),
         };
     }
 }
