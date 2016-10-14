@@ -122,6 +122,7 @@
     <Compile Include="Components\ChartUpdater.cs" />
     <Compile Include="Components\Converters.cs" />
     <Compile Include="Components\GeometryHelper.cs" />
+    <Compile Include="Components\GeometryParser.cs" />
     <Compile Include="Components\IFondeable.cs" />
     <Compile Include="Components\MultiBinding\DependencyObjectCollection.cs" />
     <Compile Include="Components\MultiBinding\MultiBindingBehavior.cs" />
