@@ -42,7 +42,7 @@ namespace Wpf.CartesianChart.PointShapeLine
             {
                 Title = "Series 4",
                 Values = new ChartValues<double> {5, 3, 2, 4},
-                LineSmoothness = 0, //0: rect lines, 1: really smooth lines
+                LineSmoothness = 0, //0: straight lines, 1: really smooth lines
                 PointGeometry = Geometry.Parse("m 25 70.36218 20 -28 -20 22 -8 -6 z"),
                 PointGeometrySize = 50,
                 PointForeround = Brushes.Gray

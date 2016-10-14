@@ -7,18 +7,8 @@ using Windows.UI.Xaml.Media;
 
 namespace LiveCharts.Uwp.Components
 {
-    public class GeometryHelper
+    public static class GeometryHelper
     {
-        public static Geometry Resolve(DefaultGeometries geometry)
-        {
-            var type = typeof(DefaultGeometries);
-            var memInfo = type.GetMember(geometry.ToString());
-            var attributes = memInfo[0].GetCustomAttributes(typeof(GeometryData), false).ToArray();
-            if (!attributes.Any()) return null;
-            var data = ((GeometryData) attributes[0]).Data;
-            return Parse(data);
-        }
-
         public static Geometry Parse(string data)
         {
             var sb = new StringBuilder();
@@ -29,6 +19,11 @@ namespace LiveCharts.Uwp.Components
             // Todo: Find out if this type could be frozen
             //g.Freeze(); ????
             return g;
+        }
+
+        public static Geometry Parse(this PointGeometry geometry)
+        {
+            return geometry == null ? null : Parse(geometry.Data);
         }
     }
 

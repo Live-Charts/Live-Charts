@@ -260,14 +260,14 @@ namespace LiveCharts.Uwp
         }
 
         public static readonly DependencyProperty PointGeometryProperty =
-            DependencyProperty.Register("PointGeometry", typeof (Geometry), typeof (Series),
+            DependencyProperty.Register("PointGeometry", typeof (PointGeometry), typeof (Series),
                 new PropertyMetadata(DefaultGeometries.Circle, CallChartUpdater()));
         /// <summary>
         /// Gets or sets the point geometry, this shape will be drawn in the Tooltip, Legend, and if line series in every point also.
         /// </summary>
-        public DefaultGeometries PointGeometry
+        public PointGeometry PointGeometry
         {
-            get { return (DefaultGeometries) GetValue(PointGeometryProperty); }
+            get { return (PointGeometry) GetValue(PointGeometryProperty); }
             set { SetValue(PointGeometryProperty, value); }
         }
 

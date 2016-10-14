@@ -22,16 +22,18 @@
 
 namespace LiveCharts.Uwp
 {
-    /// <summary>
-    /// Contains an already defined collection of geometries, useful to set the Series.PointGeomety property
-    /// </summary>
-    public static class DefaultGeometries
+    public class PointGeometry
     {
-        public static PointGeometry None => null;
-        public static PointGeometry Circle => new PointGeometry("M 0,0 A 180,180 180 1 1 1,1 Z");
-        public static PointGeometry Square => new PointGeometry("M 1,1 h -2 v -2 h 2 z");
-        public static PointGeometry Diamond => new PointGeometry("M 1,0 L 2,1  1,2  0,1 z");
-        public static PointGeometry Triangle => new PointGeometry("M 0,1 l 1,1 h -2 Z");
-        public static PointGeometry Cross => new PointGeometry("M0, 0 L1, 1 M0, 1 l1, -1");
+        public PointGeometry()
+        {
+            
+        }
+
+        public PointGeometry(string data)
+        {
+            Data = data;
+        }
+
+        public string Data { get; set; }
     }
 }

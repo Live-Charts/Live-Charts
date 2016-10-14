@@ -127,7 +127,7 @@ namespace LiveCharts.Uwp
             }
 
             var p = (Path) pbv.Shape;
-            p.Data = GeometryHelper.Resolve(PointGeometry);
+            p.Data = PointGeometry.Parse();
             p.Fill = Fill;
             p.Stroke = Stroke;
             p.StrokeThickness = StrokeThickness;

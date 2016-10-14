@@ -155,6 +155,7 @@
     <Compile Include="OhlcSeries.cs" />
     <Compile Include="PieChart.cs" />
     <Compile Include="PieSeries.cs" />
+    <Compile Include="PointGeometry.cs" />
     <Compile Include="Points\CandlePointView.cs" />
     <Compile Include="Points\ColumnPointView.cs" />
     <Compile Include="Points\HeatPoint.cs" />

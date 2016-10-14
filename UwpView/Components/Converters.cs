@@ -54,8 +54,8 @@ namespace LiveCharts.Uwp.Components
                     Stroke = serie.Stroke,
                     Fill = serie.Fill,
                     PointGeometry = serie.PointGeometry == DefaultGeometries.None
-                        ? GeometryHelper.Resolve(DefaultGeometries.Default)
-                        : GeometryHelper.Resolve(serie.PointGeometry)
+                        ? new PointGeometry("M 0, 0.5 h 1, 0.5 Z").Parse()
+                        : serie.PointGeometry.Parse()
                 };
 
             return value;
