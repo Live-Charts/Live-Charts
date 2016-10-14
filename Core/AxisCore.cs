@@ -56,8 +56,8 @@ namespace LiveCharts
         public Func<double, string> LabelFormatter { get; set; }
         public double StrokeThickness { get; set; }
         public bool ShowLabels { get; set; }
-        public double? MaxValue { get; set; }
-        public double? MinValue { get; set; }
+        public double MaxValue { get; set; }
+        public double MinValue { get; set; }
         public string Title { get; set; }
         public bool DisableAnimations { get; set; }
         public AxisPosition Position { get; set; }

@@ -58,22 +58,22 @@ namespace LiveCharts.Charts
                 var xi = AxisX[index];
 
                 xi.CalculateSeparator(this, AxisOrientation.X);
-                xi.BotLimit = xi.MinValue ?? cartesianSeries.Where(x => x.View.ScalesXAt == index)
+                xi.BotLimit = double.IsNaN(xi.MinValue) ? cartesianSeries.Where(x => x.View.ScalesXAt == index)
                     .Select(x => x.GetMinX(xi))
-                    .DefaultIfEmpty(0).Min();
-                xi.TopLimit = xi.MaxValue ?? cartesianSeries.Where(x => x.View.ScalesXAt == index)
+                    .DefaultIfEmpty(0).Min() : xi.MinValue;
+                xi.TopLimit = double.IsNaN(xi.MaxValue) ? cartesianSeries.Where(x => x.View.ScalesXAt == index)
                     .Select(x => x.GetMaxX(xi))
-                    .DefaultIfEmpty(0).Max();
+                    .DefaultIfEmpty(0).Max() : xi.MaxValue;
 
                 if (Math.Abs(xi.BotLimit - xi.TopLimit) < xi.S * .01)
                 {
                     if (Math.Abs(xi.PreviousBot - xi.PreviousTop) < xi.S*.01)
                     {
-                        if (xi.MinValue == null) xi.BotLimit -= xi.S;
-                        else xi.BotLimit = xi.MinValue.Value;
+                        if (double.IsNaN(xi.MinValue)) xi.BotLimit -= xi.S;
+                        else xi.BotLimit = xi.MinValue;
 
-                        if (xi.MaxValue == null) xi.TopLimit += xi.S;
-                        else xi.TopLimit = xi.MaxValue.Value;
+                        if (double.IsNaN(xi.MaxValue)) xi.TopLimit += xi.S;
+                        else xi.TopLimit = xi.MaxValue;
 
                         if (Math.Abs(xi.BotLimit - xi.TopLimit) < xi.S*.01 && !View.IsInDesignMode)
                             throw new LiveChartsException("One axis has an invalid range, it is or is really " +
@@ -95,22 +95,22 @@ namespace LiveCharts.Charts
                 var yi = AxisY[index];
 
                 yi.CalculateSeparator(this, AxisOrientation.Y);
-                yi.BotLimit = yi.MinValue ?? cartesianSeries.Where(x => x.View.ScalesYAt == index)
+                yi.BotLimit = double.IsNaN(yi.MinValue) ? cartesianSeries.Where(x => x.View.ScalesYAt == index)
                     .Select(x => x.GetMinY(yi))
-                    .DefaultIfEmpty(0).Min();
-                yi.TopLimit = yi.MaxValue ?? cartesianSeries.Where(x => x.View.ScalesYAt == index)
+                    .DefaultIfEmpty(0).Min() : yi.MinValue;
+                yi.TopLimit = double.IsNaN(yi.MaxValue) ? cartesianSeries.Where(x => x.View.ScalesYAt == index)
                     .Select(x => x.GetMaxY(yi))
-                    .DefaultIfEmpty(0).Max();
+                    .DefaultIfEmpty(0).Max() : yi.MaxValue;
 
                 if (Math.Abs(yi.BotLimit - yi.TopLimit) < yi.S * .01)
                 {
                     if (Math.Abs(yi.PreviousBot - yi.PreviousTop) < yi.S*.01)
                     {
-                        if (yi.MinValue == null) yi.BotLimit -= yi.S;
-                        else yi.BotLimit = yi.MinValue.Value;
+                        if (double.IsNaN(yi.MinValue)) yi.BotLimit -= yi.S;
+                        else yi.BotLimit = yi.MinValue;
 
-                        if (yi.MaxValue == null) yi.TopLimit += yi.S;
-                        else yi.TopLimit = yi.MaxValue.Value;
+                        if (double.IsNaN(yi.MaxValue)) yi.TopLimit += yi.S;
+                        else yi.TopLimit = yi.MaxValue;
 
                         if (Math.Abs(yi.BotLimit - yi.TopLimit) < yi.S*.01)
                             throw new LiveChartsException("One axis has an invalid range, it is or is really " +

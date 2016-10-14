@@ -54,7 +54,7 @@ namespace UWP.CartesianChart.ConstantChanges
             ChartValues = new ChartValues<MeasureModel>();
 
             //lets set how to display the X Labels
-            DateTimeFormatter = value => new DateTime((long)(value < 0 ? 0 : value)).ToString("mm:ss");
+            DateTimeFormatter = value => new DateTime((long)(value)).ToString("mm:ss");
 
             AxisStep = TimeSpan.FromSeconds(1).Ticks;
             SetAxisLimits(DateTime.Now);

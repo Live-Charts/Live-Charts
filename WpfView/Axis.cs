@@ -147,31 +147,31 @@ namespace LiveCharts.Wpf
         }
 
         public static readonly DependencyProperty MaxValueProperty = DependencyProperty.Register(
-            "MaxValue", typeof (double?), typeof (Axis), 
-            new PropertyMetadata(default(double?), UpdateChart()));
+            "MaxValue", typeof (double), typeof (Axis), 
+            new PropertyMetadata(double.NaN, UpdateChart()));
         /// <summary>
         /// Gets or sets axis max value, set it to null to make this property Auto, default value is null
         /// </summary>
-        public double? MaxValue
+        public double MaxValue
         {
-            get { return (double?) GetValue(MaxValueProperty); }
+            get { return (double) GetValue(MaxValueProperty); }
             set { SetValue(MaxValueProperty, value); }
         }
 
         public static readonly DependencyProperty MinValueProperty = DependencyProperty.Register(
-            "MinValue", typeof (double?), typeof (Axis),
-            new PropertyMetadata(null, UpdateChart()));
+            "MinValue", typeof (double), typeof (Axis),
+            new PropertyMetadata(double.NaN, UpdateChart()));
         /// <summary>
         /// Gets or sets axis min value, set it to null to make this property Auto, default value is null
         /// </summary>
-        public double? MinValue
+        public double MinValue
         {
-            get { return (double?)GetValue(MinValueProperty); }
+            get { return (double)GetValue(MinValueProperty); }
             set { SetValue(MinValueProperty, value); }
         }
 
         public static readonly DependencyProperty MaxRangeProperty = DependencyProperty.Register(
-            "MaxRange", typeof(double?), typeof(Axis), new PropertyMetadata(double.MaxValue));
+            "MaxRange", typeof(double), typeof(Axis), new PropertyMetadata(double.MaxValue));
         /// <summary>
         /// Gets or sets the max range this axis can display, useful to limit user zooming.
         /// </summary>
@@ -442,21 +442,24 @@ namespace LiveCharts.Wpf
             return Model;
         }
 
-        public void SetRange(double? min, double? max)
+        public void SetRange(double min, double max)
         {
-            var bMax = MaxValue ?? Model.TopLimit;
-            var bMin = MinValue ?? Model.BotLimit;
+            var bMax = double.IsNaN(MaxValue) ? Model.TopLimit : MaxValue;
+            var bMin = double.IsNaN(MinValue) ? Model.BotLimit : MinValue;
 
             MaxValue = max;
             MinValue = min;
+
+            var nMax = double.IsNaN(MaxValue) ? Model.TopLimit : MaxValue;
+            var nMin = double.IsNaN(MinValue) ? Model.BotLimit : MinValue;
 
             Model.Chart.Updater.Run(false, true);
 
             OnRangeChanged(new RangeChangedEventArgs
             {
-                Range = (MaxValue ?? Model.TopLimit) - (MinValue ?? Model.BotLimit),
-                RightLimitChange = bMax - (MaxValue ?? Model.TopLimit),
-                LeftLimitChange = bMin - (MinValue ?? Model.BotLimit),
+                Range = nMax - nMin,
+                RightLimitChange = bMax - nMax,
+                LeftLimitChange = bMin - nMin,
                 Axis = this
             });
         }

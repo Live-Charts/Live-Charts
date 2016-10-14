@@ -30,8 +30,8 @@ namespace LiveCharts.Definitions.Charts
         AxisCore Model { get; set; }
         bool DisableAnimations { get; set; }
         bool ShowLabels { get; set; }
-        double? MaxValue { get; set; }
-        double? MinValue { get; set; }
+        double MaxValue { get; set; }
+        double MinValue { get; set; }
         double MinRange { get; set; }
         double MaxRange { get; set; }
         double LabelsRotation { get; set; }
@@ -49,6 +49,6 @@ namespace LiveCharts.Definitions.Charts
         AxisCore AsCoreElement(ChartCore chart, AxisOrientation source);
         void RenderSeparator(SeparatorElementCore model, ChartCore chart);
         void Clean();
-        void SetRange(double? min, double? max);
+        void SetRange(double min, double max);
     }
 }
