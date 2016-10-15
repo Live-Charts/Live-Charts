@@ -33,6 +33,7 @@
              xmlns:uwp="using:LiveCharts.Uwp"
              xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
              xmlns:multiBinding="using:LiveCharts.Uwp.Components.MultiBinding"
+             xmlns:components="using:LiveCharts.Uwp.Components"
              mc:Ignorable="d" x:Name="This">
     <UserControl.Resources>
         <uwp:OrientationConverter x:Key="OrientationConverter"/>
@@ -59,12 +60,12 @@
                             <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
-                        <!--ClipToBounds="True"-->
                         <Path Width="{Binding BulletSize, ElementName=This}" 
                               Height="{Binding BulletSize, ElementName=This}" 
                               StrokeThickness="{x:Bind StrokeThickness}" 
                               Stroke="{x:Bind Stroke}" Fill="{x:Bind Fill}"
-                              Stretch="Fill" Data="{Binding PointGeometry}"/>
+                              Stretch="Fill" Data="{Binding PointGeometry}"
+                              components:ClipAssist.ClipToBounds="True"/>
                         <TextBlock Grid.Column="1" Margin="4 0" Text="{x:Bind Title}" VerticalAlignment="Center" />
                     </Grid>
                 </DataTemplate>

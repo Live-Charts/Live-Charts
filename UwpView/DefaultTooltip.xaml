@@ -31,6 +31,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:uwp="using:LiveCharts.Uwp"
              xmlns:converters="using:LiveCharts.Uwp.Converters"
+             xmlns:components="using:LiveCharts.Uwp.Components"
              mc:Ignorable="d" x:Name="UserControl"
              d:DataContext="{d:DesignInstance uwp:DefaultTooltip}"
              BorderThickness="1.3">
@@ -38,9 +39,6 @@
         <SolidColorBrush Color="#202020" Opacity=".8" />
     </UserControl.Background>
     <UserControl.Resources>
-        <Style TargetType="TextBlock">
-            <Setter Property="Foreground" Value="{Binding Foreground}"></Setter>
-        </Style>
         <uwp:SharedConverter x:Key="SharedConverter"/>
         <uwp:SharedVisibilityConverter x:Key="SharedVisibilityConverter"/>
         <uwp:ChartPointLabelConverter x:Key="ChartPointLabelConverter"/>
@@ -59,34 +57,25 @@
                             <Grid.Resources>
                                 <converters:StringFormatConverter x:Key="StrFormatConverter" Format="{}{0:P}"/>
                             </Grid.Resources>
-                            <!--
-                                                                 <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="Auto" SharedSizeGroup="Title"/>
-                                        <ColumnDefinition Width="Auto" SharedSizeGroup="Label"/>
-                                        <ColumnDefinition Width="Auto" SharedSizeGroup="Participation"/>
-                                    </Grid.ColumnDefinitions>
-                                    -->
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
-                            <!--ClipToBounds="True"-->
                             <Path Width="{Binding ElementName=UserControl, Path=BulletSize}" 
-                                             Height="{Binding ElementName=UserControl, Path=BulletSize}" 
-                                             StrokeThickness="{Binding Series.StrokeThickness}" 
-                                             Stroke="{Binding Series.Stroke}" Fill="{Binding Series.Fill}" 
-                                             Stretch="Fill" Data="{Binding Series.PointGeometry}"/>
+                                  Height="{Binding ElementName=UserControl, Path=BulletSize}" 
+                                  StrokeThickness="{Binding Series.StrokeThickness}" 
+                                  Stroke="{Binding Series.Stroke}" Fill="{Binding Series.Fill}" 
+                                  Stretch="Fill" Data="{Binding Series.PointGeometry}" components:ClipAssist.ClipToBounds="True"/>
                             <TextBlock Grid.Column="1" Text="{Binding Series.Title}" VerticalAlignment="Center" Margin="5 0 0 0"/>
 
                             <TextBlock Grid.Column="2" Text="{Binding ChartPoint, Converter={StaticResource ChartPointLabelConverter}}" Margin="5 0 0 0" VerticalAlignment="Center"/>
 
                             <TextBlock Grid.Column="3" Text="{Binding ChartPoint.Participation, Converter={StaticResource StrFormatConverter}}" 
-                                               VerticalAlignment="Center" Margin="5 0 0 0"
-                                               Visibility="{Binding DataContext.Data, ElementName=ItemsControl, 
-                                                                    Converter={StaticResource ParticipationVisibilityConverter}}"/>
+                                       VerticalAlignment="Center" Margin="5 0 0 0"
+                                       Visibility="{Binding DataContext.Data, ElementName=ItemsControl, 
+                                       Converter={StaticResource ParticipationVisibilityConverter}}"/>
                         </Grid>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
