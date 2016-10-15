@@ -30,6 +30,7 @@ using Windows.UI.Xaml.Shapes;
 using LiveCharts.Charts;
 using LiveCharts.Definitions.Points;
 using LiveCharts.Uwp.Components;
+using Windows.UI.Xaml.Media;
 
 namespace LiveCharts.Uwp.Points
 {
@@ -111,9 +112,11 @@ namespace LiveCharts.Uwp.Points
                 DataLabel.CreateCanvasStoryBoardAndBegin(lx, ly, animSpeed);
             }
 
-            var wedge = AnimationsHelper.CreateDouble(Wedge, animSpeed, nameof(PieSlice.WedgeAngle));
-            var rotation = AnimationsHelper.CreateDouble(Rotation, animSpeed, nameof(PieSlice.RotationAngle));
-            AnimationsHelper.CreateStoryBoardAndBegin(Slice, wedge, rotation);
+            Slice.WedgeAngle = Wedge;
+            Slice.RotationAngle = Rotation;
+            //Slice.RenderTransform = new CompositeTransform();
+            //Slice.BeginDoubleAnimation(nameof(PieSlice.WedgeAngle), Wedge, animSpeed);
+            //Slice.BeginDoubleAnimation(nameof(PieSlice.RotationAngle), Rotation, animSpeed);
         }
 
         public override void RemoveFromView(ChartCore chart)
@@ -125,30 +128,42 @@ namespace LiveCharts.Uwp.Points
 
         public override void OnHover(ChartPoint point)
         {
-            var copy = Slice.Fill;//.Clone();
-            copy.Opacity -= .15;
-            Slice.Fill = copy;
+            //var copy = Slice.Fill;//.Clone();
+            //copy.Opacity -= .15;
+            //Slice.Fill = copy;
+            if (Slice?.Fill != null)
+            {
+                Slice.Fill.Opacity -= .15;
+            }
 
-            var pieChart = (PieChart) point.SeriesView.Model.Chart.View;
+            if (Slice != null)
+            {
+                var pieChart = (PieChart)point.SeriesView.Model.Chart.View;
 
-            Slice.BeginDoubleAnimation(nameof(Slice.PushOut), Slice.PushOut,
-                OriginalPushOut + pieChart.HoverPushOut,
-                point.SeriesView.Model.Chart.View.AnimationsSpeed);
+                //Slice.BeginDoubleAnimation(nameof(Slice.PushOut), Slice.PushOut,
+                //    OriginalPushOut + pieChart.HoverPushOut,
+                //    point.SeriesView.Model.Chart.View.AnimationsSpeed);
+                Slice.PushOut = OriginalPushOut + pieChart.HoverPushOut;
+            }
         }
 
         public override void OnHoverLeave(ChartPoint point)
         {
-            Slice.Fill.Opacity += .15;
+            if (Slice?.Fill != null)
+            {
+                Slice.Fill.Opacity += .15;
+            }
 
             BindingOperations.SetBinding(Slice, Shape.FillProperty,
                 new Binding
                 {
-                    Path = new PropertyPath("Series.Fill"),
+                    Path = new PropertyPath("Fill"),
                     Source = ((Series) point.SeriesView)
                 });
 
-            Slice.BeginDoubleAnimation(nameof(PieSlice.PushOut), OriginalPushOut,
-                point.SeriesView.Model.Chart.View.AnimationsSpeed);
+            Slice.PushOut = OriginalPushOut;
+            //Slice.BeginDoubleAnimation(nameof(PieSlice.PushOut), OriginalPushOut,
+            //    point.SeriesView.Model.Chart.View.AnimationsSpeed);
         }
     }
 }
