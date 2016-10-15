@@ -49,8 +49,10 @@ namespace LiveCharts.Uwp
         #region Constructors
         public GeoMap()
         {
-            Canvas = new Canvas(); //{ClipToBounds = true};
-            Map = new Canvas(); //{ClipToBounds = true};
+            Canvas = new Canvas();
+            ClipAssist.SetClipToBounds(Canvas, true);
+            Map = new Canvas();
+            ClipAssist.SetClipToBounds(Map, true);
             Canvas.Children.Add(Map);
             Content = Canvas;
 

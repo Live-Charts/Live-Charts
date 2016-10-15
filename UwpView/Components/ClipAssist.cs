@@ -129,6 +129,9 @@ namespace LiveCharts.Uwp.Components
     {
         private FrameworkElement _fe;
 
+        private long heightSign;
+        private long widthSign;
+
         /// <summary>
         /// Attaches to the specified framework element.
         /// </summary>
@@ -137,19 +140,27 @@ namespace LiveCharts.Uwp.Components
         {
             _fe = fe;
             UpdateClipGeometry();
+            fe.Loaded += Loaded;
             fe.SizeChanged += OnSizeChanged;
+            this.heightSign = fe.RegisterPropertyChangedCallback(FrameworkElement.HeightProperty, (obj, dp) => UpdateClipGeometry());
+            this.widthSign = fe.RegisterPropertyChangedCallback(FrameworkElement.WidthProperty, (obj, dp) => UpdateClipGeometry());
+        }
+
+        private void Loaded(Object sender, RoutedEventArgs e)
+        {
+            UpdateClipGeometry();
         }
 
         private void OnSizeChanged(object sender, SizeChangedEventArgs sizeChangedEventArgs)
         {
-            if (_fe == null)
-                return;
-
             UpdateClipGeometry();
         }
 
         private void UpdateClipGeometry()
         {
+            if (_fe == null)
+                return;
+
             _fe.Clip =
                 new RectangleGeometry
                 {
@@ -165,7 +176,10 @@ namespace LiveCharts.Uwp.Components
             if (_fe == null)
                 return;
 
+            _fe.Loaded -= Loaded;
             _fe.SizeChanged -= OnSizeChanged;
+            _fe.UnregisterPropertyChangedCallback(FrameworkElement.HeightProperty, this.heightSign);
+            _fe.UnregisterPropertyChangedCallback(FrameworkElement.WidthProperty, this.widthSign);
             _fe = null;
         }
     }

@@ -42,7 +42,8 @@ namespace LiveCharts.Uwp
     {
         public Gauge()
         {
-            Canvas = new Canvas(); //{ClipToBounds = true};
+            Canvas = new Canvas();
+            ClipAssist.SetClipToBounds(Canvas, true);
             Content = Canvas;
 
             PieBack = new PieSlice();

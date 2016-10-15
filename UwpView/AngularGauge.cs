@@ -44,7 +44,8 @@ namespace LiveCharts.Uwp
     {
         public AngularGauge()
         {
-            Canvas = new Canvas(); //{ ClipToBounds = true};
+            Canvas = new Canvas();
+            ClipAssist.SetClipToBounds(Canvas, true);
             Content = Canvas;
 
             StickRotateTransform = new RotateTransform {Angle = 180};

@@ -63,7 +63,8 @@ namespace LiveCharts.Uwp.Charts.Base
             Canvas = new Canvas();
             Content = Canvas;
 
-            DrawMargin = new Canvas(); //{ClipToBounds = true};
+            DrawMargin = new Canvas();
+            ClipAssist.SetClipToBounds(DrawMargin, true);
             Canvas.Children.Add(DrawMargin);
 
             TooltipTimeoutTimer = new DispatcherTimer();

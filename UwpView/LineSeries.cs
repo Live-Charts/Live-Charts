@@ -230,9 +230,9 @@ namespace LiveCharts.Uwp
                 pbv.Shape = new Path
                 {
                     Stretch = Stretch.Fill,
-                    //ClipToBounds = true,
                     StrokeThickness = StrokeThickness
                 };
+                ClipAssist.SetClipToBounds(pbv.Shape, true);
 
                 Model.Chart.View.AddToDrawMargin(pbv.Shape);
             }
