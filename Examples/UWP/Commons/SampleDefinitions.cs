@@ -36,6 +36,11 @@ using UWP.CartesianChart.StackedArea;
 using UWP.CartesianChart.StackedBar;
 using UWP.CartesianChart.StepLine;
 using UWP.CartesianChart.TypesSupport;
+using UWP.CartesianChart.UIElements;
+using UWP.CartesianChart.ZoomingAndPanning;
+using UWP.CartesianChart.zzIssues;
+using UWP.Gauges;
+using UWP.PieChart;
 using UWP.Views;
 
 namespace UWP.Commons
@@ -84,6 +89,17 @@ namespace UWP.Commons
             new SampleDefinition("Stacked Row", typeof(StackedRowExample), SampleCategory.CartesianChart),
             new SampleDefinition("Step Line", typeof(StepLineExample), SampleCategory.CartesianChart),
             new SampleDefinition("Types Plotting", typeof(TypesPlotting), SampleCategory.CartesianChart),
+            new SampleDefinition("UIElements", typeof(UIElementsExample), SampleCategory.CartesianChart),
+            new SampleDefinition("Using DateTime", typeof(CartesianChart.Using_DateTime.DateTime), SampleCategory.CartesianChart),
+            new SampleDefinition("Zooming And Panning", typeof(ZoomingAndPanning), SampleCategory.CartesianChart),
+            new SampleDefinition("Issue #179", typeof(Issue179), SampleCategory.CartesianChart),
+
+            new SampleDefinition("Angular Gauge", typeof(AngularGaugeExmple), SampleCategory.Gauges),
+            new SampleDefinition("Gauge 180", typeof(Gauge180), SampleCategory.Gauges),
+            new SampleDefinition("Gauge 360", typeof(Gauge360), SampleCategory.Gauges),
+
+            new SampleDefinition("Doughnut Chart", typeof(DoughnutChartExample), SampleCategory.PieChart),
+            new SampleDefinition("Pie Chart", typeof(PieChartExample), SampleCategory.PieChart),
         };
     }
 }

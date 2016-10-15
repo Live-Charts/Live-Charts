@@ -89,6 +89,7 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .Net Framework and Windows SDK are automatically included -->
+    <Resource Include="CartesianChart\UIElements\warning.png" />
     <Content Include="cities.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -228,10 +229,38 @@
     <Compile Include="CartesianChart\TypesSupport\TypesPlotting.xaml.cs">
       <DependentUpon>TypesPlotting.xaml</DependentUpon>
     </Compile>
+    <Compile Include="CartesianChart\UIElements\UIElementsExample.xaml.cs">
+      <DependentUpon>UIElementsExample.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CartesianChart\Using DateTime\DateModel.cs" />
+    <Compile Include="CartesianChart\Using DateTime\DateTime.xaml.cs">
+      <DependentUpon>DateTime.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CartesianChart\ZoomingAndPanning\ZoomingAndPanning.xaml.cs">
+      <DependentUpon>ZoomingAndPanning.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CartesianChart\zzIssues\Issue179.xaml.cs">
+      <DependentUpon>Issue179.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Commons\SampleCategory.cs" />
     <Compile Include="Commons\SampleDefinition.cs" />
     <Compile Include="Commons\SampleDefinitions.cs" />
     <Compile Include="Converters\BoolToObjectConverter.cs" />
+    <Compile Include="Gauges\AngularGaugeExmple.xaml.cs">
+      <DependentUpon>AngularGaugeExmple.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Gauges\Gauge180.xaml.cs">
+      <DependentUpon>Gauge180.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Gauges\Gauge360.xaml.cs">
+      <DependentUpon>Gauge360.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PieChart\DoughnutChartExample.xaml.cs">
+      <DependentUpon>DoughnutChartExample.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PieChart\PieChartExample.xaml.cs">
+      <DependentUpon>PieChartExample.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Views\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
@@ -423,6 +452,42 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="CartesianChart\TypesSupport\TypesPlotting.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CartesianChart\UIElements\UIElementsExample.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CartesianChart\Using DateTime\DateTime.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CartesianChart\ZoomingAndPanning\ZoomingAndPanning.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CartesianChart\zzIssues\Issue179.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Gauges\AngularGaugeExmple.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Gauges\Gauge180.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Gauges\Gauge360.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PieChart\DoughnutChartExample.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PieChart\PieChartExample.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
