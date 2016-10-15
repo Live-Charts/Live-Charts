@@ -22,7 +22,7 @@
         </TextBlock>
         <Button Grid.Row="1" Height="30" Click="ToogleZoomingMode">
             <TextBlock>Toggle zoming mode, current is: 
-                <TextBlock Text="{Binding ZoomingMode, Converter={StaticResource ZoomingModeCoverter}}"/>
+                <Run Text="{Binding ZoomingMode, Converter={StaticResource ZoomingModeCoverter}}"/>
             </TextBlock>
         </Button>
         <lvc:CartesianChart Grid.Row="2" Series="{Binding SeriesCollection}" Zoom="{Binding ZoomingMode}" >
