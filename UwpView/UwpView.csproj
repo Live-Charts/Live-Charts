@@ -119,6 +119,7 @@
     <Compile Include="ColumnSeries.cs" />
     <Compile Include="Components\AnimationsHelper.cs" />
     <Compile Include="Components\AxisSeparatorElement.cs" />
+    <Compile Include="Components\BrushCloner.cs" />
     <Compile Include="Components\ChartUpdater.cs" />
     <Compile Include="Components\Converters.cs" />
     <Compile Include="Components\GeometryHelper.cs" />

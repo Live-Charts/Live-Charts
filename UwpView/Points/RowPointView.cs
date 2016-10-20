@@ -21,9 +21,7 @@
 //SOFTWARE.
 
 using System;
-using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Shapes;
 using LiveCharts.Charts;
@@ -154,14 +152,11 @@ namespace LiveCharts.Uwp.Points
 
         public override void OnHover(ChartPoint point)
         {
-            //var copy = Rectangle.Fill;//.Clone();
-            //if (copy != null)
-            //{
-            //    copy.Opacity -= .15;
-            //    Rectangle.Fill = copy;
-            //}
-            if (Rectangle?.Fill != null)
-                Rectangle.Fill.Opacity -= .15;
+            var copy = Rectangle.Fill.Clone();
+            if (copy == null) return;
+
+            copy.Opacity -= .15;
+            Rectangle.Fill = copy;
         }
 
         public override void OnHoverLeave(ChartPoint point)
@@ -171,16 +166,11 @@ namespace LiveCharts.Uwp.Points
                 Rectangle.Fill.Opacity += .15;
             if (point.Fill != null)
             {
-                Rectangle.Fill = (Brush)point.Fill;
+                Rectangle.Fill = (Brush) point.Fill;
             }
             else
             {
-                BindingOperations.SetBinding(Rectangle, Shape.FillProperty,
-                    new Binding
-                    {
-                        Path = new PropertyPath("Fill"),
-                        Source = ((Series) point.SeriesView)
-                    });
+                Rectangle.Fill = ((Series) point.SeriesView).Fill;
             }
         }
     }

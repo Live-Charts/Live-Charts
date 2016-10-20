@@ -188,12 +188,7 @@ namespace LiveCharts.Wpf.Points
             }
             else
             {
-                BindingOperations.SetBinding(Rectangle, Shape.FillProperty,
-                    new Binding
-                    {
-                        Path = new PropertyPath(Series.FillProperty),
-                        Source = ((Series) point.SeriesView)
-                    });
+                Rectangle.Fill = ((Series) point.SeriesView).Fill;
             }
         }
     }

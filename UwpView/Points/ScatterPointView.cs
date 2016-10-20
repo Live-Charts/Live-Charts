@@ -22,7 +22,6 @@
 
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Shapes;
 using LiveCharts.Charts;
@@ -131,7 +130,7 @@ namespace LiveCharts.Uwp.Points
 
         public override void OnHover(ChartPoint point)
         {
-            var copy = Shape.Fill;//.Clone();
+            var copy = Shape.Fill.Clone();
             if (copy == null) return;
             copy.Opacity -= .15;
             Shape.Fill = copy;
@@ -147,12 +146,7 @@ namespace LiveCharts.Uwp.Points
             }
             else
             {
-                BindingOperations.SetBinding(Shape, Shape.FillProperty,
-                    new Binding
-                    {
-                        Path = new PropertyPath("Series.Fill"),
-                        Source = ((Series)point.SeriesView)
-                    });
+                Shape.Fill = ((Series) point.SeriesView).Fill;
             }
         }
     }

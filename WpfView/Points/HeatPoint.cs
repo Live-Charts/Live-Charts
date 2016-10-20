@@ -99,7 +99,7 @@ namespace LiveCharts.Wpf.Points
 
         public override void OnHoverLeave(ChartPoint point)
         {
-            Rectangle.StrokeThickness--;
+            Rectangle.StrokeThickness = ((Series) point.SeriesView).StrokeThickness;
         }
     }
 }

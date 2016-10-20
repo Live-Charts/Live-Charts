@@ -168,15 +168,16 @@ namespace LiveCharts.Uwp.Points
 
         public override void OnHover(ChartPoint point)
         {
-            var copy = Rectangle.Fill;//.Clone();
+            var copy = Rectangle.Fill.Clone();
+
             if (copy == null) return;
+
             copy.Opacity -= .15;
             Rectangle.Fill = copy;
         }
 
         public override void OnHoverLeave(ChartPoint point)
         {
-            // only a temporary work, I can't find Brush.Clone in OnHover
             if (Rectangle?.Fill == null) return;
 
             Rectangle.Fill.Opacity += .15;
@@ -187,12 +188,7 @@ namespace LiveCharts.Uwp.Points
             }
             else
             {
-                BindingOperations.SetBinding(Rectangle, Shape.FillProperty,
-                    new Binding
-                    {
-                        Path = new PropertyPath("Fill"),
-                        Source = ((Series) point.SeriesView)
-                    });
+                Rectangle.Fill = ((Series) point.SeriesView).Fill;
             }
         }
     }
