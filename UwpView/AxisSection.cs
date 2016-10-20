@@ -26,6 +26,7 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Shapes;
 using LiveCharts.Definitions.Charts;
+using LiveCharts.Uwp.Components;
 
 namespace LiveCharts.Uwp
 {
@@ -209,36 +210,9 @@ namespace LiveCharts.Uwp
                 }
                 else
                 {
-                    var storyBoard = new Storyboard();
-                    var widthAnimation = new DoubleAnimation
-                    {
-                        To = w > 0 ? w : 0,
-                        Duration = anSpeed
-                    };
-                    var rectangleLeftAnimation = new DoubleAnimation
-                    {
-                        To = from - StrokeThickness / 2,
-                        Duration = anSpeed
-                    };
-                    var labelLeftAnimation = new DoubleAnimation
-                    {
-                        To = (from + to) / 2 - _label.ActualWidth / 2,
-                        Duration = anSpeed
-                    };
-                    Storyboard.SetTarget(widthAnimation, _rectangle);
-                    Storyboard.SetTargetProperty(widthAnimation, nameof(_rectangle.Width));
-
-                    Storyboard.SetTarget(rectangleLeftAnimation, _rectangle);
-                    Storyboard.SetTargetProperty(rectangleLeftAnimation, "(Canvas.Left)");
-
-                    Storyboard.SetTarget(labelLeftAnimation, _label);
-                    Storyboard.SetTargetProperty(labelLeftAnimation, "(Canvas.Left)");
-
-                    storyBoard.Children.Add(widthAnimation);
-                    storyBoard.Children.Add(rectangleLeftAnimation);
-                    storyBoard.Children.Add(labelLeftAnimation);
-
-                    storyBoard.Begin();
+                    _rectangle.BeginDoubleAnimation("(Canvas.Left)", from - StrokeThickness/2, anSpeed);
+                    _rectangle.BeginDoubleAnimation(nameof(Height), w > 0 ? w: 0, anSpeed);
+                    _label.BeginDoubleAnimation("(Canvas.Left)", (from + to) / 2 - _label.ActualWidth / 2, anSpeed);
                 }
                 return;
             }
@@ -257,36 +231,9 @@ namespace LiveCharts.Uwp
             }
             else
             {
-                var storyBoard = new Storyboard();
-                var rectangleTopAnimation = new DoubleAnimation()
-                {
-                    To = from,
-                    Duration = anSpeed
-                };
-                var heightAnimation = new DoubleAnimation()
-                {
-                    To = h,
-                    Duration = anSpeed
-                };
-                var labelTopAnimation = new DoubleAnimation()
-                {
-                    To = (from + to) / 2 - _label.ActualHeight / 2,
-                    Duration = anSpeed
-                };
-                Storyboard.SetTarget(rectangleTopAnimation, _rectangle);
-                Storyboard.SetTargetProperty(rectangleTopAnimation, "(Canvas.Top)");
-
-                Storyboard.SetTarget(heightAnimation, _rectangle);
-                Storyboard.SetTargetProperty(heightAnimation, nameof(Height));
-
-                Storyboard.SetTarget(labelTopAnimation, _label);
-                Storyboard.SetTargetProperty(labelTopAnimation, "(Canvas.Top)");
-
-                storyBoard.Children.Add(rectangleTopAnimation);
-                storyBoard.Children.Add(heightAnimation);
-                storyBoard.Children.Add(labelTopAnimation);
-
-                storyBoard.Begin();
+                _rectangle.BeginDoubleAnimation("(Canvas.Top)", from -StrokeThickness/2, anSpeed);
+                _rectangle.BeginDoubleAnimation(nameof(Height), h > 0 ? h : 0, anSpeed);
+                _label.BeginDoubleAnimation("(Canvas.Top)", (from+to)/2 - _label.ActualHeight/2, anSpeed);
             }
         }
 

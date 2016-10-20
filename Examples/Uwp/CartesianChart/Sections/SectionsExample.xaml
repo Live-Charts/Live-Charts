@@ -20,7 +20,7 @@
         <Button Grid.Row="1" Height="30" Click="UpdateAllOnClick" HorizontalAlignment="Stretch">
             Move All
         </Button>
-        <lvc:CartesianChart Name="Chart" Grid.Row="2" Series="{Binding SeriesCollection}" >
+        <lvc:CartesianChart Name="Chart" Grid.Row="2" Series="{Binding SeriesCollection}">
             <lvc:CartesianChart.AxisY>
                 <lvc:Axis Name="Axis">
                     <lvc:Axis.Sections>

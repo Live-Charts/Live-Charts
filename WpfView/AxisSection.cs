@@ -228,7 +228,7 @@ namespace LiveCharts.Wpf
 
             if (Model.Chart.View.DisableAnimations)
             {
-                Canvas.SetTop(_rectangle, from);
+                Canvas.SetTop(_rectangle, from - StrokeThickness/2);
                 _rectangle.Height = h > 0 ? h : 0;
                 Canvas.SetTop(_label, (from + to)/2 - _label.ActualHeight/2);
             }
