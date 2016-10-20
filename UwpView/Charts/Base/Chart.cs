@@ -111,9 +111,9 @@ namespace LiveCharts.Uwp.Charts.Base
             TooltipTimeoutTimer.Tick += TooltipTimeoutTimerOnTick;
 
             DrawMargin.Background = new SolidColorBrush(Windows.UI.Colors.Transparent);
-                // if this line is not set, then it does not detect mouse down event...
-            //DrawMargin.PointerPressed += OnDraggingStart;
-            //DrawMargin.PointerReleased += OnDraggingEnd;
+            // if this line is not set, then it does not detect mouse down event...
+            DrawMargin.PointerPressed += OnDraggingStart;
+            DrawMargin.PointerReleased += OnDraggingEnd;
             //DrawMargin.MouseMove += DragSection;
             //MouseUp += DisableSectionDragMouseUp;
         }
@@ -1048,8 +1048,8 @@ namespace LiveCharts.Uwp.Charts.Base
 
         #region Zooming and Panning
 
-        //private Point DragOrigin { get; set; }
-        //private bool _isPanning { get; set; }
+        private Point DragOrigin { get; set; }
+        private bool _isPanning { get; set; }
 
         private void OnPointerWheelChanged(object sender, PointerRoutedEventArgs e)
         {
@@ -1067,30 +1067,30 @@ namespace LiveCharts.Uwp.Charts.Base
                 Model.ZoomOut(corePoint);
         }
 
-        //private void OnDraggingStart(object sender, PointerRoutedEventArgs e)
-        //{
-        //    if (Model == null || Model.AxisX == null || Model.AxisY == null) return;
+        private void OnDraggingStart(object sender, PointerRoutedEventArgs e)
+        {
+            if (Model?.AxisX == null || Model.AxisY == null) return;
 
-        //    DragOrigin = e.GetCurrentPoint(this).Position;
-        //    DragOrigin = new Point(
-        //        ChartFunctions.FromPlotArea(DragOrigin.X, AxisOrientation.X, Model),
-        //        ChartFunctions.FromPlotArea(DragOrigin.Y, AxisOrientation.Y, Model));
-        //    _isPanning = true;
-        //}
+            DragOrigin = e.GetCurrentPoint(this).Position;
+            DragOrigin = new Point(
+                ChartFunctions.FromPlotArea(DragOrigin.X, AxisOrientation.X, Model),
+                ChartFunctions.FromPlotArea(DragOrigin.Y, AxisOrientation.Y, Model));
+            _isPanning = true;
+        }
 
-        //private void OnDraggingEnd(object sender, PointerRoutedEventArgs e)
-        //{
-        //    if (!_isPanning) return;
-        //    if (Zoom == ZoomingOptions.None) return;
+        private void OnDraggingEnd(object sender, PointerRoutedEventArgs e)
+        {
+            if (!_isPanning) return;
+            if (Zoom == ZoomingOptions.None) return;
 
-        //    var end = e.GetCurrentPoint(this).Position;
-        //    end = new Point(
-        //        ChartFunctions.FromPlotArea(end.X, AxisOrientation.X, Model),
-        //        ChartFunctions.FromPlotArea(end.Y, AxisOrientation.Y, Model));
+            var end = e.GetCurrentPoint(this).Position;
+            end = new Point(
+                ChartFunctions.FromPlotArea(end.X, AxisOrientation.X, Model),
+                ChartFunctions.FromPlotArea(end.Y, AxisOrientation.Y, Model));
 
-        //    Model.Drag(new CorePoint(DragOrigin.X - end.X, DragOrigin.Y - end.Y));
-        //    _isPanning = false;
-        //}
+            Model.Drag(new CorePoint(DragOrigin.X - end.X, DragOrigin.Y - end.Y));
+            _isPanning = false;
+        }
 
         #endregion
 
