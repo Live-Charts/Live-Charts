@@ -40,8 +40,7 @@
                     <lvc:Axis.Sections>
                         <lvc:AxisSection FromValue="7" ToValue="7" 
                                          Stroke="YellowGreen" 
-                                         StrokeThickness="3" 
-                                         StrokeDashArray="10"/>
+                                         StrokeThickness="3"/>
                     </lvc:Axis.Sections>
                 </lvc:Axis>
             </lvc:CartesianChart.AxisY>

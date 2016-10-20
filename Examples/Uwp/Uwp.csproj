@@ -89,7 +89,9 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .Net Framework and Windows SDK are automatically included -->
-    <Resource Include="CartesianChart\UIElements\warning.png" />
+    <Content Include="CartesianChart\UIElements\warning.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="cities.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
