@@ -106,7 +106,7 @@ namespace LiveCharts.Uwp.Charts.Base
 
             SizeChanged += OnSizeChanged;
             RegisterPropertyChangedCallback(VisibilityProperty, OnIsVisibleChanged);
-            //MouseWheel += MouseWheelOnRoll;
+            PointerWheelChanged += OnPointerWheelChanged;
             Loaded += OnLoaded;
             TooltipTimeoutTimer.Tick += TooltipTimeoutTimerOnTick;
 
@@ -1051,21 +1051,21 @@ namespace LiveCharts.Uwp.Charts.Base
         //private Point DragOrigin { get; set; }
         //private bool _isPanning { get; set; }
 
-        //private void MouseWheelOnRoll(object sender, MouseWheelEventArgs e)
-        //{
-        //    if (Zoom == ZoomingOptions.None) return;
+        private void OnPointerWheelChanged(object sender, PointerRoutedEventArgs e)
+        {
+            if (Zoom == ZoomingOptions.None) return;
+            
+            var p = e.GetCurrentPoint(this);
 
-        //    var p = e.GetPosition(this);
+            var corePoint = new CorePoint(p.Position.X, p.Position.Y);
 
-        //    var corePoint = new CorePoint(p.X, p.Y);
+            e.Handled = true;
 
-        //    e.Handled = true;
-
-        //    if (e.Delta > 0)
-        //        Model.ZoomIn(corePoint);
-        //    else
-        //        Model.ZoomOut(corePoint);
-        //}
+            if (p.Properties.MouseWheelDelta > 0)
+                Model.ZoomIn(corePoint);
+            else
+                Model.ZoomOut(corePoint);
+        }
 
         //private void OnDraggingStart(object sender, PointerRoutedEventArgs e)
         //{

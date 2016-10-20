@@ -173,7 +173,7 @@ namespace LiveCharts.Uwp
         }
 
         public static readonly DependencyProperty MinRangeProperty = DependencyProperty.Register(
-            "MinRange", typeof(double), typeof(Axis), new PropertyMetadata(default(double)));
+            "MinRange", typeof(double), typeof(Axis), new PropertyMetadata(double.MinValue));
         /// <summary>
         /// Gets or sets the min range this axis can display, useful to limit user zooming.
         /// </summary>
@@ -184,7 +184,7 @@ namespace LiveCharts.Uwp
         }
 
         public static readonly DependencyProperty MaxRangeProperty = DependencyProperty.Register(
-            "MaxRange", typeof(double), typeof(Axis), new PropertyMetadata(double.MinValue));
+            "MaxRange", typeof(double), typeof(Axis), new PropertyMetadata(double.MaxValue));
         /// <summary>
         /// Gets or sets the max range this axis can display, useful to limit user zooming.
         /// </summary>
