@@ -13,12 +13,6 @@
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
-        <TextBlock>
-            <Run >Mouse at: </Run>
-            <Run x:Name="X"></Run>
-            <Run >, </Run>
-            <Run x:Name="Y"></Run>
-        </TextBlock>
         <lvc:CartesianChart Grid.Row="1" x:Name="Chart" DataClick="ChartOnDataClick">
             <lvc:CartesianChart.Series>
                 <lvc:LineSeries Values="{Binding Values1}" Fill="Transparent" StrokeThickness="4" 
