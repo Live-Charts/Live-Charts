@@ -25,6 +25,7 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Animation;
 using LiveCharts.Charts;
 using Windows.Foundation;
+using LiveCharts.Uwp.Components;
 
 namespace LiveCharts.Uwp.Points
 {
@@ -110,39 +111,11 @@ namespace LiveCharts.Uwp.Points
 
             #endregion
 
-            var segmentStoryboard = new Storyboard();
+            var animSpeed = chart.View.AnimationsSpeed;
 
-            var pa1 = new PointAnimation()
-            {
-                From = Segment.Point1,
-                To = Data.Point1.AsPoint(),
-                Duration = chart.View.AnimationsSpeed
-            };
-            var pa2 = new PointAnimation()
-            {
-                From = Segment.Point2,
-                To = Data.Point2.AsPoint(),
-                Duration = chart.View.AnimationsSpeed
-            };
-            var pa3 = new PointAnimation()
-            {
-                From = Segment.Point3,
-                To = Data.Point3.AsPoint(),
-                Duration = chart.View.AnimationsSpeed
-            };
-            Storyboard.SetTarget(pa1, Segment);
-            Storyboard.SetTarget(pa2, Segment);
-            Storyboard.SetTarget(pa3, Segment);
-
-            Storyboard.SetTargetProperty(pa1, "Point1");
-            Storyboard.SetTargetProperty(pa2, "Point2");
-            Storyboard.SetTargetProperty(pa3, "Point3");
-
-            segmentStoryboard.Children.Add(pa1);
-            segmentStoryboard.Children.Add(pa2);
-            segmentStoryboard.Children.Add(pa3);
-
-            segmentStoryboard.Begin();
+            //Segment.BeginPointAnimation(nameof(BezierSegment.Point1), Data.Point1.AsPoint(), animSpeed);
+            Segment.BeginPointAnimation(nameof(BezierSegment.Point2), Data.Point2.AsPoint(), animSpeed);
+            Segment.BeginPointAnimation(nameof(BezierSegment.Point3), Data.Point3.AsPoint(), animSpeed);
 
             if (Shape != null)
             {
