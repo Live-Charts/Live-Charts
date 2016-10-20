@@ -107,7 +107,6 @@ namespace LiveCharts.Wpf
                     Shape = new Path
                     {
                         Stretch = Stretch.Fill,
-                        ClipToBounds = true,
                         StrokeThickness = StrokeThickness
                     }
                 };

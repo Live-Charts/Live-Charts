@@ -50,9 +50,8 @@ namespace LiveCharts.Uwp
         public GeoMap()
         {
             Canvas = new Canvas();
-            ClipAssist.SetClipToBounds(Canvas, true);
             Map = new Canvas();
-            ClipAssist.SetClipToBounds(Map, true);
+            
             Canvas.Children.Add(Map);
             Content = Canvas;
 

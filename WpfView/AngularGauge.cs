@@ -42,7 +42,7 @@ namespace LiveCharts.Wpf
     {
         public AngularGauge()
         {
-            Canvas = new Canvas { ClipToBounds = true};
+            Canvas = new Canvas();
             Content = Canvas;
 
             StickRotateTransform = new RotateTransform(180);

@@ -120,7 +120,6 @@
     <Compile Include="Components\AnimationsHelper.cs" />
     <Compile Include="Components\AxisSeparatorElement.cs" />
     <Compile Include="Components\ChartUpdater.cs" />
-    <Compile Include="Components\ClipAssist.cs" />
     <Compile Include="Components\Converters.cs" />
     <Compile Include="Components\GeometryHelper.cs" />
     <Compile Include="Components\GeometryParser.cs" />

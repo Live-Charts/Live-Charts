@@ -77,6 +77,7 @@ namespace LiveCharts.Wpf.Components
             Chart.ControlSize = wpfChart.IsMocked
                 ? wpfChart.Model.ControlSize
                 : new CoreSize(wpfChart.ActualWidth, wpfChart.ActualHeight);
+
             Timer.Stop();
             Update(restartView);
             IsUpdating = false;

@@ -64,8 +64,7 @@
                               Height="{Binding BulletSize, ElementName=This}" 
                               StrokeThickness="{x:Bind StrokeThickness}" 
                               Stroke="{x:Bind Stroke}" Fill="{x:Bind Fill}"
-                              Stretch="Fill" Data="{Binding PointGeometry}"
-                              components:ClipAssist.ClipToBounds="True"/>
+                              Stretch="Fill" Data="{Binding PointGeometry}"/>
                         <TextBlock Grid.Column="1" Margin="4 0" Text="{x:Bind Title}" VerticalAlignment="Center" />
                     </Grid>
                 </DataTemplate>

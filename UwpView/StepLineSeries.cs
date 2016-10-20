@@ -155,7 +155,6 @@ namespace LiveCharts.Uwp
                     Stretch = Stretch.Fill,
                     StrokeThickness = StrokeThickness
                 };
-                ClipAssist.SetClipToBounds(pbv.Shape, true);
                 Model.Chart.View.AddToDrawMargin(pbv.Shape);
             }
 

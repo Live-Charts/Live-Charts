@@ -177,7 +177,6 @@ namespace LiveCharts.Wpf
                     pbv.Shape = new Path
                     {
                         Stretch = Stretch.Fill,
-                        ClipToBounds = true,
                         StrokeThickness = StrokeThickness
                     };
                 }
