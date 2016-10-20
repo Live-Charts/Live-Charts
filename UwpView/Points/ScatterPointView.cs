@@ -24,7 +24,6 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Shapes;
 using LiveCharts.Charts;
 using LiveCharts.Definitions.Points;
@@ -99,7 +98,8 @@ namespace LiveCharts.Uwp.Points
             Shape.BeginDoubleAnimation(nameof(FrameworkElement.Width), Diameter, animSpeed);
             Shape.BeginDoubleAnimation(nameof(FrameworkElement.Height), Diameter, animSpeed);
 
-            Shape.CreateCanvasStoryBoardAndBegin(current.ChartLocation.Y - Diameter * .5, current.ChartLocation.X - Diameter * .5, animSpeed);
+            Shape.CreateCanvasStoryBoardAndBegin(current.ChartLocation.X - Diameter*.5,
+                current.ChartLocation.Y - Diameter*.5, animSpeed);
         }
 
         public override void RemoveFromView(ChartCore chart)
