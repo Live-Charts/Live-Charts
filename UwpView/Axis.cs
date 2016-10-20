@@ -526,8 +526,7 @@ namespace LiveCharts.Uwp
                 var wpfAxis = o as Axis;
                 if (wpfAxis == null) return;
 
-                if (wpfAxis.Model != null)
-                    wpfAxis.Model.Chart.Updater.Run(animate, updateNow);
+                wpfAxis.Model?.Chart.Updater.Run(animate, updateNow);
             };
         }
 
@@ -549,7 +548,7 @@ namespace LiveCharts.Uwp
 
         protected void OnRangeChanged(RangeChangedEventArgs e)
         {
-            if (RangeChanged != null) RangeChanged.Invoke(e);
+            RangeChanged?.Invoke(e);
         }
     }
 }

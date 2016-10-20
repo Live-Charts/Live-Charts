@@ -29,11 +29,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:interop="using:Windows.UI.Xaml.Interop"
              xmlns:uwp="using:LiveCharts.Uwp"
              xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
              xmlns:multiBinding="using:LiveCharts.Uwp.Components.MultiBinding"
-             xmlns:components="using:LiveCharts.Uwp.Components"
              mc:Ignorable="d" x:Name="This">
     <UserControl.Resources>
         <uwp:OrientationConverter x:Key="OrientationConverter"/>

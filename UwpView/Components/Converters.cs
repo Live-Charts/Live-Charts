@@ -42,10 +42,7 @@ namespace LiveCharts.Uwp.Components
         {
             var series = value as IEnumerable<Series>;
             if (series != null)
-                return series.Select(x => new SeriesViewModel
-                {
-
-                });
+                return series.Select(x => new SeriesViewModel());
             var serie = value as Series;
             if (serie != null)
                 return new SeriesViewModel

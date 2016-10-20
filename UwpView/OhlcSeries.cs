@@ -164,7 +164,7 @@ namespace LiveCharts.Uwp
             {
                 pbv.HoverShape = new Rectangle
                 {
-                    Fill = new SolidColorBrush(Windows.UI.Colors.Transparent),
+                    Fill = new SolidColorBrush(Colors.Transparent),
                     StrokeThickness = 0
                 };
 
@@ -217,7 +217,7 @@ namespace LiveCharts.Uwp
             /*Current*/SetValue(DecreaseBrushProperty, new SolidColorBrush(Color.FromArgb(255, 238, 83, 80)));
 
             Func<ChartPoint, string> defaultLabel = x =>
-                string.Format("O: {0}, H: {1}, L: {2} C: {3}", x.Open, x.High, x.Low, x.Close);
+                $"O: {x.Open}, H: {x.High}, L: {x.Low} C: {x.Close}";
             /*Current*/
             SetValue(LabelPointProperty, defaultLabel);
 

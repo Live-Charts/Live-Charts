@@ -28,9 +28,9 @@ namespace LiveCharts.Uwp
     {
         public LineSegmentSplitter()
         {
-            Bottom = new LineSegment(); //{ IsStroked = false };
-            Left = new LineSegment(); //{ IsStroked = false };
-            Right = new LineSegment(); // { IsStroked = false };
+            Bottom = new LineSegment();
+            Left = new LineSegment();
+            Right = new LineSegment(); 
         }
 
         public LineSegment Bottom { get; private set; }

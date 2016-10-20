@@ -75,7 +75,7 @@ namespace LiveCharts.Uwp
 
             Pie.SetBinding(Shape.StrokeThicknessProperty,
                 new Binding { Path = new PropertyPath("StrokeThickness"), Source = this });
-            Pie.Stroke = new SolidColorBrush(Windows.UI.Colors.Transparent);
+            Pie.Stroke = new SolidColorBrush(Colors.Transparent);
 
             /*Current*/SetValue(GaugeBackgroundProperty, new SolidColorBrush(Color.FromArgb(255, 21, 101, 191)) {Opacity = .1});
             /*Current*/SetValue(StrokeThicknessProperty, 0d);
@@ -102,12 +102,12 @@ namespace LiveCharts.Uwp
 
         #region Properties
 
-        private Canvas Canvas { get; set; }
-        private PieSlice PieBack { get; set; }
-        private PieSlice Pie { get; set; }
-        private TextBlock MeasureTextBlock { get; set; }
-        private TextBlock LeftLabel { get; set; }
-        private TextBlock RightLabel { get; set; }
+        private Canvas Canvas { get; }
+        private PieSlice PieBack { get; }
+        private PieSlice Pie { get; }
+        private TextBlock MeasureTextBlock { get; }
+        private TextBlock LeftLabel { get; }
+        private TextBlock RightLabel { get; }
         private bool IsNew { get; set; }
         private bool IsChartInitialized { get; set; }
 

@@ -33,7 +33,6 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Shapes;
 using LiveCharts.Maps;
 using LiveCharts.Uwp.Components;
@@ -144,13 +143,13 @@ namespace LiveCharts.Uwp
 
         #region Properties
 
-        private Canvas Canvas { get; set; }
-        private Canvas Map { get; set; }
+        private Canvas Canvas { get; }
+        private Canvas Map { get; }
         private Point DragOrigin { get; set; }
         private Point OriginalPosition { get; set; }
         private bool IsDrawn { get; set; }
         private bool IsWidthDominant { get; set; }
-        private Dictionary<string, MapData> Lands { get; set; }
+        private Dictionary<string, MapData> Lands { get; }
 
         private static readonly DependencyProperty GeoMapTooltipProperty = DependencyProperty.Register(
             "GeoMapTooltip", typeof (DefaultGeoMapTooltip), typeof (GeoMap), new PropertyMetadata(default(DefaultGeoMapTooltip)));

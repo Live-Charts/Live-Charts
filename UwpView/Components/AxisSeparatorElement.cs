@@ -35,22 +35,17 @@ namespace LiveCharts.Uwp.Components
 {
     public class AxisSeparatorElement : ISeparatorElementView
     {
-        private readonly SeparatorElementCore _model;
-
         public AxisSeparatorElement(SeparatorElementCore model)
         {
-            _model = model;
+            Model = model;
         }
 
         internal TextBlock TextBlock { get; set; }
         internal Line Line { get; set; }
         public LabelEvaluation LabelModel { get; private set; }
 
-        public SeparatorElementCore Model
-        {
-            get { return _model; }
-        }
-        
+        public SeparatorElementCore Model { get; }
+
         public LabelEvaluation UpdateLabel(string text, AxisCore axis, AxisOrientation source)
         {
             TextBlock.Text = text;

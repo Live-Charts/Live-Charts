@@ -32,59 +32,37 @@ namespace LiveCharts.Uwp
         /// <summary>
         /// Returns default axis
         /// </summary>
-        public static AxesCollection DefaultAxis
-        {
-            get { return new AxesCollection {new Axis()}; }
-        }
+        public static AxesCollection DefaultAxis => new AxesCollection {new Axis()};
 
         /// <summary>
         /// Return an axis without separators at all
         /// </summary>
-        public static AxesCollection CleanAxis
+        public static AxesCollection CleanAxis => new AxesCollection
         {
-            get
+            new Axis
             {
-                return new AxesCollection
-                {
-                    new Axis
-                    {
-                        IsEnabled = false,
-                        Separator = CleanSeparator
-                    }
-                };
+                IsEnabled = false,
+                Separator = CleanSeparator
             }
-        }
+        };
 
         /// <summary>
         /// Returns an axis that only displays a line for zero
         /// </summary>
-        public static AxesCollection OnlyZerosAxis
+        public static AxesCollection OnlyZerosAxis => new AxesCollection
         {
-            get
+            new Axis
             {
-                return new AxesCollection
-                {
-                    new Axis
-                    {
-                        IsEnabled = true,
-                        Separator = CleanSeparator
-                    }
-                };
+                IsEnabled = true,
+                Separator = CleanSeparator
             }
-        }
+        };
 
 
         //Returns a clean separator
-        public static Separator CleanSeparator
+        public static Separator CleanSeparator => new Separator
         {
-            get
-            {
-                return new Separator
-                {
-                    Visibility = Visibility.Collapsed
-                };
-            }
-        }
-
+            Visibility = Visibility.Collapsed
+        };
     }
 }

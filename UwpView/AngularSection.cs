@@ -61,9 +61,7 @@ namespace LiveCharts.Uwp
         {
             var angularSection = (AngularSection) dependencyObject;
 
-            if (angularSection.Owner == null) return;
-
-            angularSection.Owner.UpdateSections();
+            angularSection.Owner?.UpdateSections();
         }
     }
 }

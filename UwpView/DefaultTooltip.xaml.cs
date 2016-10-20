@@ -26,7 +26,6 @@ using System.ComponentModel;
 using System.Linq;
 using Windows.UI;
 using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Media;
 
@@ -42,7 +41,7 @@ namespace LiveCharts.Uwp
     /// <summary>
     /// The Default Tooltip control, by default any chart that requires a tooltip will create a new instance of this class.
     /// </summary>
-    public partial class DefaultTooltip : UserControl, IChartTooltip
+    public partial class DefaultTooltip : IChartTooltip
     {
         private TooltipData _data;
 
@@ -119,8 +118,7 @@ namespace LiveCharts.Uwp
 
         protected virtual void OnPropertyChanged(string propertyName = null)
         {
-            if (PropertyChanged != null)
-                PropertyChanged.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 
@@ -151,9 +149,7 @@ namespace LiveCharts.Uwp
         {
             var chartPoint = value as ChartPoint;
 
-            if (chartPoint == null) return null;
-
-            return chartPoint.SeriesView.LabelPoint(chartPoint);
+            return chartPoint?.SeriesView.LabelPoint(chartPoint);
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)

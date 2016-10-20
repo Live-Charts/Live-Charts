@@ -184,8 +184,7 @@ namespace LiveCharts.Uwp
         {
             Values.GetPoints(this).ForEach(p =>
             {
-                if (p.View != null)
-                    p.View.RemoveFromView(Model.Chart);
+                p.View?.RemoveFromView(Model.Chart);
             });
             if (removeFromView) Model.Chart.View.RemoveFromView(this);
         }

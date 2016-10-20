@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using Windows.UI.Xaml.Markup;
 using Windows.UI.Xaml.Media;
 
 namespace LiveCharts.Uwp.Components

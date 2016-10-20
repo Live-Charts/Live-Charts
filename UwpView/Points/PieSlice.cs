@@ -14,15 +14,15 @@ namespace LiveCharts.Uwp.Points
     {
         public PieSlice()
         {
-            this.RegisterPropertyChangedCallback(PieSlice.WidthProperty, new DependencyPropertyChangedCallback(RenderAffectingPropertyChanged));
-            this.RegisterPropertyChangedCallback(PieSlice.RadiusProperty, new DependencyPropertyChangedCallback(RenderAffectingPropertyChanged));
-            this.RegisterPropertyChangedCallback(PieSlice.PushOutProperty, new DependencyPropertyChangedCallback(RenderAffectingPropertyChanged));
-            this.RegisterPropertyChangedCallback(PieSlice.InnerRadiusProperty, new DependencyPropertyChangedCallback(RenderAffectingPropertyChanged));
-            this.RegisterPropertyChangedCallback(PieSlice.WedgeAngleProperty, new DependencyPropertyChangedCallback(RenderAffectingPropertyChanged));
-            this.RegisterPropertyChangedCallback(PieSlice.RotationAngleProperty, new DependencyPropertyChangedCallback(RenderAffectingPropertyChanged));
-            this.RegisterPropertyChangedCallback(PieSlice.CentreXProperty, new DependencyPropertyChangedCallback(RenderAffectingPropertyChanged));
-            this.RegisterPropertyChangedCallback(PieSlice.CentreYProperty, new DependencyPropertyChangedCallback(RenderAffectingPropertyChanged));
-            this.RegisterPropertyChangedCallback(PieSlice.PieceValueProperty, new DependencyPropertyChangedCallback(RenderAffectingPropertyChanged));
+            RegisterPropertyChangedCallback(WidthProperty, RenderAffectingPropertyChanged);
+            RegisterPropertyChangedCallback(RadiusProperty, RenderAffectingPropertyChanged);
+            RegisterPropertyChangedCallback(PushOutProperty, RenderAffectingPropertyChanged);
+            RegisterPropertyChangedCallback(InnerRadiusProperty, RenderAffectingPropertyChanged);
+            RegisterPropertyChangedCallback(WedgeAngleProperty, RenderAffectingPropertyChanged);
+            RegisterPropertyChangedCallback(RotationAngleProperty, RenderAffectingPropertyChanged);
+            RegisterPropertyChangedCallback(CentreXProperty, RenderAffectingPropertyChanged);
+            RegisterPropertyChangedCallback(CentreYProperty, RenderAffectingPropertyChanged);
+            RegisterPropertyChangedCallback(PieceValueProperty, RenderAffectingPropertyChanged);
         }
 
         #region dependency properties
@@ -215,7 +215,7 @@ namespace LiveCharts.Uwp.Points
                 pathFigure.Segments.Add(new ArcSegment() { Point = innerArcStartPoint, Size = innerArcSize, RotationAngle = 0, IsLargeArc = largeArc, SweepDirection = SweepDirection.Counterclockwise });
             }
 
-            this.Data = new PathGeometry() { Figures = new PathFigureCollection() { pathFigure }, FillRule = FillRule.EvenOdd };
+            Data = new PathGeometry { Figures = new PathFigureCollection() { pathFigure }, FillRule = FillRule.EvenOdd };
         }
     }
 

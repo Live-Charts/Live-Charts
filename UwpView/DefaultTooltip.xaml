@@ -31,7 +31,6 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:uwp="using:LiveCharts.Uwp"
              xmlns:converters="using:LiveCharts.Uwp.Converters"
-             xmlns:components="using:LiveCharts.Uwp.Components"
              mc:Ignorable="d" x:Name="UserControl"
              d:DataContext="{d:DesignInstance uwp:DefaultTooltip}"
              BorderThickness="1.3">

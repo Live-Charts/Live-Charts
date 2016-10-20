@@ -187,13 +187,11 @@ namespace LiveCharts.Uwp.Points
                 storyBoard.Begin();
             }
 
-            if (Shape != null)
-            {
-                Shape.CreateCanvasStoryBoardAndBegin(current.ChartLocation.X - Shape.Width/2,
-                    current.ChartLocation.Y - Shape.Height/2, animSpeed);
-            }
+            Shape?.CreateCanvasStoryBoardAndBegin(current.ChartLocation.X - Shape.Width/2,
+                current.ChartLocation.Y - Shape.Height/2, animSpeed);
 
-            if (DataLabel != null)
+            if (DataLabel == null) return;
+
             {
                 DataLabel.UpdateLayout();
                 var xl = CorrectXLabel(current.ChartLocation.X - DataLabel.ActualWidth * .5, chart);
@@ -201,7 +199,6 @@ namespace LiveCharts.Uwp.Points
                 Canvas.SetLeft(DataLabel, xl);
                 Canvas.SetTop(DataLabel, yl);
             }
-
         }
 
         public override void RemoveFromView(ChartCore chart)
@@ -244,7 +241,7 @@ namespace LiveCharts.Uwp.Points
 
         protected double CorrectYLabel(double desiredPosition, ChartCore chart)
         {
-            desiredPosition -= (Shape == null ? 0 : Shape.ActualHeight * .5) + DataLabel.ActualHeight * .5 + 2;
+            desiredPosition -= (Shape?.ActualHeight * .5 ?? 0) + DataLabel.ActualHeight * .5 + 2;
 
             if (desiredPosition + DataLabel.ActualHeight > chart.DrawMargin.Height)
                 desiredPosition -= desiredPosition + DataLabel.ActualHeight - chart.DrawMargin.Height + 2;

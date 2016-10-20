@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Data;
 
@@ -32,7 +28,7 @@ namespace LiveCharts.Uwp.Components.MultiBinding
         /// <param name="targetType">The <see cref="T:System.Type"/> of data expected by the source object.</param>
         /// <param name="parameter">An optional parameter to be used in the converter logic.</param>
         /// <param name="culture">The culture of the conversion.</param>
-        public abstract object[] ConvertBack(object value, System.Type targetType, object parameter, System.Globalization.CultureInfo culture);
+        public abstract object[] ConvertBack(object value, Type targetType, object parameter, CultureInfo culture);
 
         object IValueConverter.Convert(object value, Type targetType, object parameter, string language)
         {

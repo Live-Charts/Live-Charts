@@ -280,8 +280,7 @@ namespace LiveCharts.Uwp
         {
             ActualValues.GetPoints(this).ForEach(p =>
             {
-                if (p.View != null)
-                    p.View.RemoveFromView(Model.Chart);
+                p.View?.RemoveFromView(Model.Chart);
             });
             if (removeFromView)
             {

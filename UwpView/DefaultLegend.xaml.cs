@@ -22,13 +22,10 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Globalization;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Data;
 using LiveCharts.Uwp.Components.MultiBinding;
-using System.Reflection;
 
 namespace LiveCharts.Uwp
 {
@@ -40,7 +37,7 @@ namespace LiveCharts.Uwp
     /// <summary>
     /// The default legend control, by default a new instance of this control is created for every chart that requires a legend.
     /// </summary>
-    public partial class DefaultLegend : UserControl, IChartLegend
+    public partial class DefaultLegend : IChartLegend
     {
         /// <summary>
         /// Initializes a new instance of DefaultLegend class

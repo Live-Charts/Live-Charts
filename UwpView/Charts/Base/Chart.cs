@@ -488,26 +488,17 @@ namespace LiveCharts.Uwp.Charts.Base
         /// <summary>
         /// Gets the chart model, the model is who calculates everything, is the engine of the chart
         /// </summary>
-        public ChartCore Model
-        {
-            get { return ChartCoreModel; }
-        }
+        public ChartCore Model => ChartCoreModel;
 
         /// <summary>
         /// Gets whether the chart has an active tooltip.
         /// </summary>
-        public bool HasTooltip
-        {
-            get { return DataTooltip != null; }
-        }
+        public bool HasTooltip => DataTooltip != null;
 
         /// <summary>
         /// Gets whether the chart has a DataClick event attacked.
         /// </summary>
-        public bool HasDataClickEventAttached
-        {
-            get { return DataClick != null; }
-        }
+        public bool HasDataClickEventAttached => DataClick != null;
 
         /// <summary>
         /// Gets whether the chart is already loaded in the view.
@@ -517,10 +508,7 @@ namespace LiveCharts.Uwp.Charts.Base
         /// <summary>
         /// Gets whether the control is in design mode
         /// </summary>
-        public bool IsInDesignMode
-        {
-            get { return Windows.ApplicationModel.DesignMode.DesignModeEnabled; }
-        }
+        public bool IsInDesignMode => Windows.ApplicationModel.DesignMode.DesignModeEnabled;
 
         /// <summary>
         /// Gets the visible series in the chart
@@ -734,7 +722,7 @@ namespace LiveCharts.Uwp.Charts.Base
 
         internal void OnDataClick(object sender, ChartPoint point)
         {
-            if (DataClick != null) DataClick.Invoke(sender, point);
+            DataClick?.Invoke(sender, point);
         }
 
         private void DataMouseEnter(object sender, PointerRoutedEventArgs e)
@@ -975,7 +963,7 @@ namespace LiveCharts.Uwp.Charts.Base
             Func<IChartValues> getValuesForPies = () =>
             {
                 var gvt = Type.GetType("LiveCharts.Geared.GearedValues`1, LiveCharts.Geared");
-                if (gvt != null) gvt = gvt.MakeGenericType(typeof(ObservableValue));
+                gvt = gvt?.MakeGenericType(typeof(ObservableValue));
 
                 var obj = gvt != null
                     ? (IChartValues) Activator.CreateInstance(gvt)
@@ -1013,7 +1001,7 @@ namespace LiveCharts.Uwp.Charts.Base
                 Func<IChartValues> getRandomValues = () =>
                 {
                     var gvt = Type.GetType("LiveCharts.Geared.GearedValues`1, LiveCharts.Geared");
-                    if (gvt != null) gvt = gvt.MakeGenericType(typeof(ObservableValue));
+                    gvt = gvt?.MakeGenericType(typeof(ObservableValue));
 
                     var obj = gvt != null
                         ? (IChartValues) Activator.CreateInstance(gvt)

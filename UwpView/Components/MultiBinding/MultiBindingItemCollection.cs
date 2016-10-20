@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
+﻿using System.Collections.Specialized;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
 
 namespace LiveCharts.Uwp.Components.MultiBinding
@@ -101,7 +96,7 @@ namespace LiveCharts.Uwp.Components.MultiBinding
             {
                 _updating = true;
 
-                for (var index = 0; index < this.Count; index++)
+                for (var index = 0; index < Count; index++)
                 {
                     var multiBindingItem = this[index] as MultiBindingItem;
 

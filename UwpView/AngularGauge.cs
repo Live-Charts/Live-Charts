@@ -75,7 +75,7 @@ namespace LiveCharts.Uwp
             /*Current*/SetValue(TicksForegroundProperty, new SolidColorBrush(Color.FromArgb(255, 210, 210, 210)));
             Func<double, string> defaultFormatter = x => x.ToString(CultureInfo.InvariantCulture);
             /*Current*/SetValue(LabelFormatterProperty, defaultFormatter);
-            ///*Current*/SetValue(LabelsEffectProperty,
+            //*Current*/SetValue(LabelsEffectProperty,
             //    new DropShadowEffect {ShadowDepth = 2, RenderingBias = RenderingBias.Performance});
 
             SizeChanged += (sender, args) =>
@@ -89,11 +89,11 @@ namespace LiveCharts.Uwp
 
         #region Properties
 
-        private Canvas Canvas { get; set; }
-        private Path Stick { get; set; }
-        private RotateTransform StickRotateTransform { get; set; }
+        private Canvas Canvas { get; }
+        private Path Stick { get; }
+        private RotateTransform StickRotateTransform { get; }
         private bool IsControlLaoded { get; set; }
-        private Dictionary<AngularSection, PieSlice> Slices { get; set; }
+        private Dictionary<AngularSection, PieSlice> Slices { get; }
 
         public static readonly DependencyProperty WedgeProperty = DependencyProperty.Register(
             "Wedge", typeof (double), typeof (AngularGauge), 
@@ -346,10 +346,10 @@ namespace LiveCharts.Uwp
                 }
 
                 var p = (Canvas) section.Parent;
-                if (p != null) p.Children.Remove(section);
+                p?.Children.Remove(section);
                 Canvas.Children.Add(section);
                 var ps = (Canvas) slice.Parent;
-                if (ps != null) ps.Children.Remove(slice);
+                ps?.Children.Remove(slice);
                 Canvas.Children.Add(slice);
             }
 

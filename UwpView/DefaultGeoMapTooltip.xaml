@@ -30,7 +30,6 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:uwp="using:LiveCharts.Uwp"
-             xmlns:components="using:LiveCharts.Uwp.Components"
              xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
              xmlns:multiBinding="using:LiveCharts.Uwp.Components.MultiBinding"
              mc:Ignorable="d" 

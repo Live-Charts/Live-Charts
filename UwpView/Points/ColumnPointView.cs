@@ -169,15 +169,16 @@ namespace LiveCharts.Uwp.Points
         public override void OnHover(ChartPoint point)
         {
             var copy = Rectangle.Fill;//.Clone();
+            if (copy == null) return;
             copy.Opacity -= .15;
             Rectangle.Fill = copy;
         }
 
         public override void OnHoverLeave(ChartPoint point)
         {
-            if (Rectangle == null) return;
-
             // only a temporary work, I can't find Brush.Clone in OnHover
+            if (Rectangle?.Fill == null) return;
+
             Rectangle.Fill.Opacity += .15;
 
             if (point.Fill != null)

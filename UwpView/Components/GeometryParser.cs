@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.UI.Xaml.Media;
 
@@ -22,7 +18,7 @@ namespace LiveCharts.Uwp.Components
 
         IFormatProvider _formatProvider;
 
-        PathFigure _figure = null;     // Figure object, which will accept parsed segments
+        PathFigure _figure;     // Figure object, which will accept parsed segments
         string _pathString;        // Input string to be parsed
         int _pathLength;
         int _curIndex;          // Location to read next character from
@@ -49,7 +45,7 @@ namespace LiveCharts.Uwp.Components
             if (path.Length == 0)
                 throw new ArgumentException("Path string cannot be empty!", nameof(path));
 
-            return parse(path);
+            return Parse(path);
         }
 
         /// <summary>
@@ -62,7 +58,7 @@ namespace LiveCharts.Uwp.Components
             if (geometry == null)
                 throw new ArgumentException("Path Geometry cannot be null!", nameof(geometry));
 
-            return parseBack(geometry);
+            return ParseBack(geometry);
         }
         #endregion
 
@@ -72,10 +68,9 @@ namespace LiveCharts.Uwp.Components
         /// </summary>
         /// <param name="path">String with path data definition</param>
         /// <returns>PathGeometry object created from string definition</returns>
-        private PathGeometry parse(string path)
+        private PathGeometry Parse(string path)
         {
-            PathGeometry _pathGeometry = null;
-
+            PathGeometry pathGeometry = null;
 
             _formatProvider = CultureInfo.InvariantCulture;
             _pathString = path;
@@ -88,9 +83,9 @@ namespace LiveCharts.Uwp.Components
 
             _figureStarted = false;
 
-            bool first = true;
+            var first = true;
 
-            char last_cmd = ' ';
+            var lastCmd = ' ';
 
             while (ReadToken()) // Empty path is allowed in XAML
             {
@@ -110,9 +105,10 @@ namespace LiveCharts.Uwp.Components
                 {
                     case 'f':
                     case 'F':
-                        _pathGeometry = new PathGeometry();
-                        double _num = ReadNumber(!AllowComma);
-                        _pathGeometry.FillRule = _num == 0 ? FillRule.EvenOdd : FillRule.Nonzero;
+                        pathGeometry = new PathGeometry();
+                        var num = ReadNumber(!AllowComma);
+                        // ReSharper disable once CompareOfFloatsByEqualityOperator
+                        pathGeometry.FillRule = num == 0 ? FillRule.EvenOdd : FillRule.Nonzero;
                         break;
 
                     case 'm':
@@ -120,24 +116,25 @@ namespace LiveCharts.Uwp.Components
                         // XAML allows multiple points after M/m
                         _lastPoint = ReadPoint(cmd, !AllowComma);
 
-                        _figure = new PathFigure();
-                        _figure.StartPoint = _lastPoint;
-                        _figure.IsFilled = IsFilled;
-                        _figure.IsClosed = !IsClosed;
+                        _figure = new PathFigure
+                        {
+                            StartPoint = _lastPoint,
+                            IsFilled = IsFilled,
+                            IsClosed = !IsClosed
+                        };
                         //context.BeginFigure(_lastPoint, IsFilled, !IsClosed);
                         _figureStarted = true;
                         _lastStart = _lastPoint;
-                        last_cmd = 'M';
+                        lastCmd = 'M';
 
                         while (IsNumber(AllowComma))
                         {
                             _lastPoint = ReadPoint(cmd, !AllowComma);
 
-                            LineSegment _lineSegment = new LineSegment();
-                            _lineSegment.Point = _lastPoint;
-                            _figure.Segments.Add(_lineSegment);
+                            var lineSegment = new LineSegment {Point = _lastPoint};
+                            _figure.Segments.Add(lineSegment);
                             //context.LineTo(_lastPoint, IsStroked, !IsSmoothJoin);
-                            last_cmd = 'L';
+                            lastCmd = 'L';
                         }
                         break;
 
@@ -161,14 +158,13 @@ namespace LiveCharts.Uwp.Components
                                 case 'V': _lastPoint.Y = ReadNumber(!AllowComma); break;
                             }
 
-                            LineSegment _lineSegment = new LineSegment();
-                            _lineSegment.Point = _lastPoint;
-                            _figure.Segments.Add(_lineSegment);
+                            var lineSegment = new LineSegment {Point = _lastPoint};
+                            _figure.Segments.Add(lineSegment);
                             //context.LineTo(_lastPoint, IsStroked, !IsSmoothJoin);
                         }
                         while (IsNumber(AllowComma));
 
-                        last_cmd = 'L';
+                        lastCmd = 'L';
                         break;
 
                     case 'c':
@@ -183,14 +179,7 @@ namespace LiveCharts.Uwp.Components
 
                             if ((cmd == 's') || (cmd == 'S'))
                             {
-                                if (last_cmd == 'C')
-                                {
-                                    p = Reflect();
-                                }
-                                else
-                                {
-                                    p = _lastPoint;
-                                }
+                                p = lastCmd == 'C' ? Reflect() : _lastPoint;
 
                                 _secondLastPoint = ReadPoint(cmd, !AllowComma);
                             }
@@ -203,14 +192,16 @@ namespace LiveCharts.Uwp.Components
 
                             _lastPoint = ReadPoint(cmd, AllowComma);
 
-                            BezierSegment _bizierSegment = new BezierSegment();
-                            _bizierSegment.Point1 = p;
-                            _bizierSegment.Point2 = _secondLastPoint;
-                            _bizierSegment.Point3 = _lastPoint;
-                            _figure.Segments.Add(_bizierSegment);
+                            var bizierSegment = new BezierSegment
+                            {
+                                Point1 = p,
+                                Point2 = _secondLastPoint,
+                                Point3 = _lastPoint
+                            };
+                            _figure.Segments.Add(bizierSegment);
                             //context.BezierTo(p, _secondLastPoint, _lastPoint, IsStroked, !IsSmoothJoin);
 
-                            last_cmd = 'C';
+                            lastCmd = 'C';
                         }
                         while (IsNumber(AllowComma));
 
@@ -226,14 +217,7 @@ namespace LiveCharts.Uwp.Components
                         {
                             if ((cmd == 't') || (cmd == 'T'))
                             {
-                                if (last_cmd == 'Q')
-                                {
-                                    _secondLastPoint = Reflect();
-                                }
-                                else
-                                {
-                                    _secondLastPoint = _lastPoint;
-                                }
+                                _secondLastPoint = lastCmd == 'Q' ? Reflect() : _lastPoint;
 
                                 _lastPoint = ReadPoint(cmd, !AllowComma);
                             }
@@ -243,13 +227,15 @@ namespace LiveCharts.Uwp.Components
                                 _lastPoint = ReadPoint(cmd, AllowComma);
                             }
 
-                            QuadraticBezierSegment _quadraticBezierSegment = new QuadraticBezierSegment();
-                            _quadraticBezierSegment.Point1 = _secondLastPoint;
-                            _quadraticBezierSegment.Point2 = _lastPoint;
-                            _figure.Segments.Add(_quadraticBezierSegment);
+                            var quadraticBezierSegment = new QuadraticBezierSegment
+                            {
+                                Point1 = _secondLastPoint,
+                                Point2 = _lastPoint
+                            };
+                            _figure.Segments.Add(quadraticBezierSegment);
                             //context.QuadraticBezierTo(_secondLastPoint, _lastPoint, IsStroked, !IsSmoothJoin);
 
-                            last_cmd = 'Q';
+                            lastCmd = 'Q';
                         }
                         while (IsNumber(AllowComma));
 
@@ -262,21 +248,23 @@ namespace LiveCharts.Uwp.Components
                         do
                         {
                             // A 3,4 5, 0, 0, 6,7
-                            double w = ReadNumber(!AllowComma);
-                            double h = ReadNumber(AllowComma);
-                            double rotation = ReadNumber(AllowComma);
-                            bool large = ReadBool();
-                            bool sweep = ReadBool();
+                            var w = ReadNumber(!AllowComma);
+                            var h = ReadNumber(AllowComma);
+                            var rotation = ReadNumber(AllowComma);
+                            var large = ReadBool();
+                            var sweep = ReadBool();
 
                             _lastPoint = ReadPoint(cmd, AllowComma);
 
-                            ArcSegment _arcSegment = new ArcSegment();
-                            _arcSegment.Point = _lastPoint;
-                            _arcSegment.Size = new Size(w, h);
-                            _arcSegment.RotationAngle = rotation;
-                            _arcSegment.IsLargeArc = large;
-                            _arcSegment.SweepDirection = sweep ? SweepDirection.Clockwise : SweepDirection.Counterclockwise;
-                            _figure.Segments.Add(_arcSegment);
+                            var arcSegment = new ArcSegment
+                            {
+                                Point = _lastPoint,
+                                Size = new Size(w, h),
+                                RotationAngle = rotation,
+                                IsLargeArc = large,
+                                SweepDirection = sweep ? SweepDirection.Clockwise : SweepDirection.Counterclockwise
+                            };
+                            _figure.Segments.Add(arcSegment);
                             //context.ArcTo(
                             //    _lastPoint,
                             //    new Size(w, h),
@@ -289,7 +277,7 @@ namespace LiveCharts.Uwp.Components
                         }
                         while (IsNumber(AllowComma));
 
-                        last_cmd = 'A';
+                        lastCmd = 'A';
                         break;
 
                     case 'z':
@@ -299,7 +287,7 @@ namespace LiveCharts.Uwp.Components
                         //context.SetClosedState(IsClosed);
 
                         _figureStarted = false;
-                        last_cmd = 'Z';
+                        lastCmd = 'Z';
 
                         _lastPoint = _lastStart; // Set reference point to be first point of current figure
                         break;
@@ -313,10 +301,10 @@ namespace LiveCharts.Uwp.Components
                 {
                     if (_figure.IsClosed)
                     {
-                        if (null == _pathGeometry)
-                            _pathGeometry = new PathGeometry();
+                        if (null == pathGeometry)
+                            pathGeometry = new PathGeometry();
 
-                        _pathGeometry.Figures.Add(_figure);
+                        pathGeometry.Figures.Add(_figure);
 
                         _figure = null;
                         first = true;
@@ -328,14 +316,14 @@ namespace LiveCharts.Uwp.Components
 
             if (null != _figure)
             {
-                if (null == _pathGeometry)
-                    _pathGeometry = new PathGeometry();
+                if (null == pathGeometry)
+                    pathGeometry = new PathGeometry();
 
-                if (!_pathGeometry.Figures.Contains(_figure))
-                    _pathGeometry.Figures.Add(_figure);
+                if (!pathGeometry.Figures.Contains(_figure))
+                    pathGeometry.Figures.Add(_figure);
 
             }
-            return _pathGeometry;
+            return pathGeometry;
         }
 
         void SkipDigits(bool signAllowed)
@@ -385,8 +373,7 @@ namespace LiveCharts.Uwp.Components
         {
             if (!_figureStarted)
             {
-                _figure = new PathFigure();
-                _figure.StartPoint = _lastStart;
+                _figure = new PathFigure {StartPoint = _lastStart};
 
                 //_context.BeginFigure(_lastStart, IsFilled, !IsClosed);
                 _figureStarted = true;
@@ -604,14 +591,14 @@ namespace LiveCharts.Uwp.Components
             throw new FormatException(string.Format("Unexpected character in path '{0}' at position {1}", _pathString, _curIndex - 1));
         }
 
-        static internal char GetNumericListSeparator(IFormatProvider provider)
+        internal static char GetNumericListSeparator(IFormatProvider provider)
         {
-            char numericSeparator = ',';
+            var numericSeparator = ',';
 
             // Get the NumberFormatInfo out of the provider, if possible
             // If the IFormatProvider doesn't not contain a NumberFormatInfo, then 
             // this method returns the current culture's NumberFormatInfo. 
-            NumberFormatInfo numberFormat = NumberFormatInfo.GetInstance(provider);
+            var numberFormat = NumberFormatInfo.GetInstance(provider);
 
             // Is the decimal separator is the same as the list separator?
             // If so, we use the ";". 
@@ -623,62 +610,61 @@ namespace LiveCharts.Uwp.Components
             return numericSeparator;
         }
 
-        private string parseBack(PathGeometry geometry)
+        private string ParseBack(PathGeometry geometry)
         {
-            System.Text.StringBuilder sb = new System.Text.StringBuilder();
-            IFormatProvider provider = new System.Globalization.CultureInfo("en-us");
-            string format = null;
+            var sb = new System.Text.StringBuilder();
+            IFormatProvider provider = new CultureInfo("en-us");
 
             sb.Append("F" + (geometry.FillRule == FillRule.EvenOdd ? "0" : "1") + " ");
 
             foreach (PathFigure figure in geometry.Figures)
             {
-                sb.Append("M " + ((IFormattable)figure.StartPoint).ToString(format, provider) + " ");
+                sb.Append("M " + ((IFormattable)figure.StartPoint).ToString(null, provider) + " ");
 
                 foreach (PathSegment segment in figure.Segments)
                 {
                     char separator = GetNumericListSeparator(provider);
 
-                    if (segment.GetType() == typeof(LineSegment))
+                    if (segment is LineSegment)
                     {
-                        LineSegment _lineSegment = segment as LineSegment;
+                        LineSegment lineSegment = segment as LineSegment;
 
-                        sb.Append("L " + ((IFormattable)_lineSegment.Point).ToString(format, provider) + " ");
+                        sb.Append("L " + ((IFormattable)lineSegment.Point).ToString(null, provider) + " ");
                     }
-                    else if (segment.GetType() == typeof(BezierSegment))
+                    else if (segment is BezierSegment)
                     {
-                        BezierSegment _bezierSegment = segment as BezierSegment;
+                        BezierSegment bezierSegment = segment as BezierSegment;
 
-                        sb.Append(String.Format(provider,
-                             "C{1:" + format + "}{0}{2:" + format + "}{0}{3:" + format + "} ",
+                        sb.Append(string.Format(provider,
+                             "C{1:" + null + "}{0}{2:" + null + "}{0}{3:" + null + "} ",
                              separator,
-                             _bezierSegment.Point1,
-                             _bezierSegment.Point2,
-                             _bezierSegment.Point3
+                             bezierSegment.Point1,
+                             bezierSegment.Point2,
+                             bezierSegment.Point3
                              ));
                     }
-                    else if (segment.GetType() == typeof(QuadraticBezierSegment))
+                    else if (segment is QuadraticBezierSegment)
                     {
-                        QuadraticBezierSegment _quadraticBezierSegment = segment as QuadraticBezierSegment;
+                        QuadraticBezierSegment quadraticBezierSegment = segment as QuadraticBezierSegment;
 
                         sb.Append(String.Format(provider,
-                             "Q{1:" + format + "}{0}{2:" + format + "} ",
+                             "Q{1:" + null + "}{0}{2:" + null + "} ",
                              separator,
-                             _quadraticBezierSegment.Point1,
-                             _quadraticBezierSegment.Point2));
+                             quadraticBezierSegment.Point1,
+                             quadraticBezierSegment.Point2));
                     }
-                    else if (segment.GetType() == typeof(ArcSegment))
+                    else if (segment is ArcSegment)
                     {
-                        ArcSegment _arcSegment = segment as ArcSegment;
+                        ArcSegment arcSegment = segment as ArcSegment;
 
                         sb.Append(String.Format(provider,
-                             "A{1:" + format + "}{0}{2:" + format + "}{0}{3}{0}{4}{0}{5:" + format + "} ",
+                             "A{1:" + null + "}{0}{2:" + null + "}{0}{3}{0}{4}{0}{5:" + null + "} ",
                              separator,
-                             _arcSegment.Size,
-                             _arcSegment.RotationAngle,
-                             _arcSegment.IsLargeArc ? "1" : "0",
-                             _arcSegment.SweepDirection == SweepDirection.Clockwise ? "1" : "0",
-                             _arcSegment.Point));
+                             arcSegment.Size,
+                             arcSegment.RotationAngle,
+                             arcSegment.IsLargeArc ? "1" : "0",
+                             arcSegment.SweepDirection == SweepDirection.Clockwise ? "1" : "0",
+                             arcSegment.Point));
                     }
                 }
 

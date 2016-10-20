@@ -23,12 +23,11 @@
 using System;
 using System.Globalization;
 using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
 using LiveCharts.Uwp.Components.MultiBinding;
 
 namespace LiveCharts.Uwp
 {
-    public partial class DefaultGeoMapTooltip : UserControl
+    public partial class DefaultGeoMapTooltip
     {
         public DefaultGeoMapTooltip()
         {

@@ -89,19 +89,13 @@ namespace LiveCharts.Uwp
         /// <summary>
         /// Gets whether the series is visible
         /// </summary>
-        public bool IsSeriesVisible
-        {
-            get { return Visibility == Visibility.Visible; }
-        }
+        public bool IsSeriesVisible => Visibility == Visibility.Visible;
 
         /// <summary>
         /// Gets the current chart points in the series
         /// </summary>
-        public IEnumerable<ChartPoint> ChartPoints
-        {
-            get { return ActualValues.GetPoints(this); }
-        }
-        
+        public IEnumerable<ChartPoint> ChartPoints => ActualValues.GetPoints(this);
+
         public static readonly DependencyProperty ValuesProperty = DependencyProperty.Register(
             "Values", typeof (IChartValues), typeof (Series),
             new PropertyMetadata(default(IChartValues), OnValuesInstanceChanged));
@@ -370,8 +364,7 @@ namespace LiveCharts.Uwp
         {
             Values.GetPoints(this).ForEach(p =>
             {
-                if (p.View != null)
-                    p.View.RemoveFromView(Model.Chart);
+                p.View?.RemoveFromView(Model.Chart);
             });
             if (removeFromView) Model.Chart.View.RemoveFromView(this);
         }
@@ -433,10 +426,13 @@ namespace LiveCharts.Uwp
         {
             var series = (Series) dependencyObject;
 
-            if (series.Values != series.LastKnownValues && series.LastKnownValues != null)
+            if (series.Values != series.LastKnownValues)
             {
-                series.LastKnownValues.GetPoints(series).ForEach(
-                    x => { if (x.View != null) x.View.RemoveFromView(series.Model.Chart); });
+                series.LastKnownValues?.GetPoints(series).ForEach(
+                    x =>
+                    {
+                        x.View?.RemoveFromView(series.Model.Chart);
+                    });
             }
 
             CallChartUpdater()(dependencyObject, dependencyPropertyChangedEventArgs);
@@ -449,10 +445,9 @@ namespace LiveCharts.Uwp
             {
                 var wpfSeries = o as Series;
 
-                if (wpfSeries == null) return;
-                if (wpfSeries.Model == null) return;
+                if (wpfSeries?.Model == null) return;
 
-                if (wpfSeries.Model.Chart != null) wpfSeries.Model.Chart.Updater.Run(animate);
+                wpfSeries.Model.Chart?.Updater.Run(animate);
             };
         }
 
@@ -464,7 +459,7 @@ namespace LiveCharts.Uwp
 
             PreviousVisibility = Visibility;
 
-            if (PreviousVisibility != null) Model.Chart.Updater.Run(false, false);
+            if (PreviousVisibility != null) Model.Chart.Updater.Run();
 
             if (Visibility == Visibility.Collapsed || Visibility == Visibility.Collapsed)
             {
@@ -476,8 +471,8 @@ namespace LiveCharts.Uwp
         {
             var r = new Random();
             var gvt = Type.GetType("LiveCharts.Geared.GearedValues`1, LiveCharts.Geared");
-            if (gvt != null) gvt = gvt.MakeGenericType(typeof(ObservableValue));
-            
+            gvt = gvt?.MakeGenericType(typeof(ObservableValue));
+
             var obj = gvt != null
                 ? (IChartValues) Activator.CreateInstance(gvt)
                 : new ChartValues<ObservableValue>();

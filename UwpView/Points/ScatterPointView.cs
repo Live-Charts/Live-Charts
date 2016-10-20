@@ -132,13 +132,14 @@ namespace LiveCharts.Uwp.Points
         public override void OnHover(ChartPoint point)
         {
             var copy = Shape.Fill;//.Clone();
+            if (copy == null) return;
             copy.Opacity -= .15;
             Shape.Fill = copy;
         }
 
         public override void OnHoverLeave(ChartPoint point)
         {
-            if (Shape == null) return;
+            if (Shape?.Fill == null) return;
             Shape.Fill.Opacity += .15;
             if (point.Fill != null)
             {
@@ -147,11 +148,11 @@ namespace LiveCharts.Uwp.Points
             else
             {
                 BindingOperations.SetBinding(Shape, Shape.FillProperty,
-                new Binding
-                {
-                    Path = new PropertyPath("Series.Fill"),
-                    Source = ((Series)point.SeriesView)
-                });
+                    new Binding
+                    {
+                        Path = new PropertyPath("Series.Fill"),
+                        Source = ((Series)point.SeriesView)
+                    });
             }
         }
     }

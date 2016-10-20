@@ -25,12 +25,10 @@ using Windows.Foundation;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Shapes;
 using LiveCharts.Charts;
 using LiveCharts.Definitions.Points;
 using LiveCharts.Uwp.Components;
-using Windows.UI.Xaml.Media;
 
 namespace LiveCharts.Uwp.Points
 {
@@ -161,7 +159,7 @@ namespace LiveCharts.Uwp.Points
                     Source = ((Series) point.SeriesView)
                 });
 
-            Slice.PushOut = OriginalPushOut;
+            if (Slice != null) Slice.PushOut = OriginalPushOut;
             //Slice.BeginDoubleAnimation(nameof(PieSlice.PushOut), OriginalPushOut,
             //    point.SeriesView.Model.Chart.View.AnimationsSpeed);
         }

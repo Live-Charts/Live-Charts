@@ -2,7 +2,6 @@
     x:Class="UWP.CartesianChart.Sections.SectionsExample"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:UWP.CartesianChart.Sections"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:lvc="using:LiveCharts.Uwp"
@@ -20,7 +19,7 @@
         <Button Grid.Row="1" Height="30" Click="UpdateAllOnClick" HorizontalAlignment="Stretch">
             Move All
         </Button>
-        <lvc:CartesianChart Name="Chart" Grid.Row="2" Series="{Binding SeriesCollection}">
+        <lvc:CartesianChart Grid.Row="2" Series="{Binding SeriesCollection}">
             <lvc:CartesianChart.AxisY>
                 <lvc:Axis Name="Axis">
                     <lvc:Axis.Sections>
