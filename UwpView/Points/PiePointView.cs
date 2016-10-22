@@ -45,8 +45,8 @@ namespace LiveCharts.Uwp.Points
         {
             if (IsNew)
             {
-                Canvas.SetTop(Slice, chart.DrawMargin.Height/2);
-                Canvas.SetLeft(Slice, chart.DrawMargin.Width/2);
+                Slice.Width = chart.DrawMargin.Width;
+                Slice.Height = chart.DrawMargin.Height;
 
                 Slice.WedgeAngle = 0;
                 Slice.RotationAngle = 0;
@@ -62,16 +62,17 @@ namespace LiveCharts.Uwp.Points
             {
                 var hs = (PieSlice) HoverShape;
 
-                Canvas.SetTop(hs, chart.DrawMargin.Height/2);
-                Canvas.SetLeft(hs, chart.DrawMargin.Width/2);
+                hs.Width = chart.DrawMargin.Width;
+                hs.Height = chart.DrawMargin.Height;
                 hs.WedgeAngle = Wedge;
                 hs.RotationAngle = Rotation;
                 hs.InnerRadius = InnerRadius;
                 hs.Radius = Radius;
             }
 
-            Canvas.SetTop(Slice, chart.DrawMargin.Height / 2);
-            Canvas.SetLeft(Slice, chart.DrawMargin.Width / 2);
+            Slice.Width = chart.DrawMargin.Width;
+            Slice.Height = chart.DrawMargin.Height;
+
             Slice.InnerRadius = InnerRadius;
             Slice.Radius = Radius;
 
@@ -126,9 +127,8 @@ namespace LiveCharts.Uwp.Points
 
         public override void OnHover(ChartPoint point)
         {
-            //var copy = Slice.Fill;//.Clone();
-            //copy.Opacity -= .15;
-            //Slice.Fill = copy;
+            Slice.Fill = Slice.Fill.Clone();
+
             if (Slice?.Fill != null)
             {
                 Slice.Fill.Opacity -= .15;
@@ -136,12 +136,12 @@ namespace LiveCharts.Uwp.Points
 
             if (Slice != null)
             {
-                var pieChart = (PieChart)point.SeriesView.Model.Chart.View;
+                var pieChart = (PieChart) point.SeriesView.Model.Chart.View;
 
-                //Slice.BeginDoubleAnimation(nameof(Slice.PushOut), Slice.PushOut,
-                //    OriginalPushOut + pieChart.HoverPushOut,
-                //    point.SeriesView.Model.Chart.View.AnimationsSpeed);
-                Slice.PushOut = OriginalPushOut + pieChart.HoverPushOut;
+                Slice.BeginDoubleAnimation(nameof(PieSlice.PushOut), Slice.PushOut,
+                    OriginalPushOut + pieChart.HoverPushOut,
+                    point.SeriesView.Model.Chart.View.AnimationsSpeed);
+                //Slice.PushOut = OriginalPushOut + pieChart.HoverPushOut;
             }
         }
 
