@@ -43,7 +43,6 @@ namespace LiveCharts.WinForms
             {
                 if (DataClick != null) DataClick.Invoke(o, point);
             };
-
             if (LicenseManager.UsageMode == LicenseUsageMode.Designtime)
             {
                 WpfBase.Series = WpfBase.GetDesignerModeCollection();
@@ -140,8 +139,12 @@ namespace LiveCharts.WinForms
 
         #endregion
 
-        #region ThisChartProperties
+        #region Methods
 
+        public void Update(bool restartView, bool force)
+        {
+            WpfBase.Update(restartView, force);
+        }
         #endregion
     }
 }

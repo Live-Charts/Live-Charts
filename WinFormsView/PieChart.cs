@@ -145,5 +145,13 @@ namespace LiveCharts.WinForms
             set { WpfBase.UpdaterState = value; }
         }
         #endregion
+
+        #region Methods
+
+        public void Update(bool restartView, bool force)
+        {
+            WpfBase.Update(restartView, force);
+        }
+        #endregion
     }
 }
