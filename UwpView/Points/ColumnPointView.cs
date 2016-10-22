@@ -65,7 +65,7 @@ namespace LiveCharts.Uwp.Points
                 if (LabelPosition == BarLabelPosition.Merged)
                 {
                     if (RotateTransform == null)
-                        RotateTransform = new RotateTransform() {Angle = 180};
+                        RotateTransform = new RotateTransform() {Angle = 270 };
 
                     DataLabel.RenderTransform = RotateTransform;
 
