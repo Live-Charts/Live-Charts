@@ -23,9 +23,8 @@
 using System;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
+using System.Windows.Media;
 using System.Windows.Media.Animation;
-using System.Windows.Shapes;
 using LiveCharts.Charts;
 using LiveCharts.Definitions.Points;
 
@@ -136,12 +135,14 @@ namespace LiveCharts.Wpf.Points
 
         public override void OnHoverLeave(ChartPoint point)
         {
-            BindingOperations.SetBinding(Slice, Shape.FillProperty,
-                new Binding
-                {
-                    Path = new PropertyPath(Series.FillProperty),
-                    Source = ((Series) point.SeriesView)
-                });
+            if (point.Fill != null)
+            {
+                Slice.Fill = (Brush)point.Fill;
+            }
+            else
+            {
+                Slice.Fill = ((Series) point.SeriesView).Fill;
+            }
             Slice.BeginAnimation(PieSlice.PushOutProperty,
                 new DoubleAnimation(OriginalPushOut, point.SeriesView.Model.Chart.View.AnimationsSpeed));
         }

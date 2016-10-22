@@ -1,0 +1,12 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:points="using:LiveCharts.Uwp.Points">
+    <!--
+        If we remove this dummy slice from XAML then we will get a throw when our slices are animated...
+        nice UWP bug! how do we solve it????
+        
+        info about it http://stackoverflow.com/questions/12890627/windows-8-animating-custom-property-in-code-behind
+        -->
+    <points:PieSlice x:Key="Slice" Width="150" Height="150" InnerRadius="50" WedgeAngle="45" Fill="Red"/>
+</ResourceDictionary>

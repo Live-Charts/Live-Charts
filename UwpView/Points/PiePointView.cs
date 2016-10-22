@@ -22,10 +22,8 @@
 
 using System;
 using Windows.Foundation;
-using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Shapes;
+using Windows.UI.Xaml.Media;
 using LiveCharts.Charts;
 using LiveCharts.Definitions.Points;
 using LiveCharts.Uwp.Components;
@@ -141,27 +139,21 @@ namespace LiveCharts.Uwp.Points
                 Slice.BeginDoubleAnimation(nameof(PieSlice.PushOut), Slice.PushOut,
                     OriginalPushOut + pieChart.HoverPushOut,
                     point.SeriesView.Model.Chart.View.AnimationsSpeed);
-                //Slice.PushOut = OriginalPushOut + pieChart.HoverPushOut;
             }
         }
 
         public override void OnHoverLeave(ChartPoint point)
         {
-            if (Slice?.Fill != null)
+            if (point.Fill != null)
             {
-                Slice.Fill.Opacity += .15;
+                Slice.Fill = (Brush)point.Fill;
             }
-
-            BindingOperations.SetBinding(Slice, Shape.FillProperty,
-                new Binding
-                {
-                    Path = new PropertyPath("Fill"),
-                    Source = ((Series) point.SeriesView)
-                });
-
-            if (Slice != null) Slice.PushOut = OriginalPushOut;
-            //Slice.BeginDoubleAnimation(nameof(PieSlice.PushOut), OriginalPushOut,
-            //    point.SeriesView.Model.Chart.View.AnimationsSpeed);
+            else
+            {
+                Slice.Fill = ((Series)point.SeriesView).Fill;
+            }
+            Slice.BeginDoubleAnimation(nameof(Slice.PushOut), OriginalPushOut,
+                point.SeriesView.Model.Chart.View.AnimationsSpeed);
         }
     }
 }
