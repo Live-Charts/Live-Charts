@@ -20,8 +20,8 @@ namespace LiveCharts.Uwp.Points
             RegisterPropertyChangedCallback(InnerRadiusProperty, RenderAffectingPropertyChanged);
             RegisterPropertyChangedCallback(WedgeAngleProperty, RenderAffectingPropertyChanged);
             RegisterPropertyChangedCallback(RotationAngleProperty, RenderAffectingPropertyChanged);
-            RegisterPropertyChangedCallback(CentreXProperty, RenderAffectingPropertyChanged);
-            RegisterPropertyChangedCallback(CentreYProperty, RenderAffectingPropertyChanged);
+            RegisterPropertyChangedCallback(XOffsetProperty, RenderAffectingPropertyChanged);
+            RegisterPropertyChangedCallback(YOffsetProperty, RenderAffectingPropertyChanged);
             RegisterPropertyChangedCallback(PieceValueProperty, RenderAffectingPropertyChanged);
             RegisterPropertyChangedCallback(HeightProperty, RenderAffectingPropertyChanged);
             RegisterPropertyChangedCallback(WidthProperty, RenderAffectingPropertyChanged);
@@ -102,32 +102,32 @@ namespace LiveCharts.Uwp.Points
             set { SetValue(RotationAngleProperty, value); }
         }
 
-        public static readonly DependencyProperty CentreXProperty =
-            DependencyProperty.Register(nameof(CentreX), typeof(double), typeof(PieSlice),
+        public static readonly DependencyProperty XOffsetProperty =
+            DependencyProperty.Register(nameof(XOffset), typeof(double), typeof(PieSlice),
                               new PropertyMetadata(0.0));
         //new FrameworkPropertyMetadata(0.0, FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.AffectsMeasure));
 
         /// <summary>
         /// The X coordinate of centre of the circle from which this pie piece is cut.
         /// </summary>
-        public double CentreX
+        public double XOffset
         {
-            get { return (double)GetValue(CentreXProperty); }
-            set { SetValue(CentreXProperty, value); }
+            get { return (double)GetValue(XOffsetProperty); }
+            set { SetValue(XOffsetProperty, value); }
         }
 
-        public static readonly DependencyProperty CentreYProperty =
-            DependencyProperty.Register(nameof(CentreY), typeof(double), typeof(PieSlice),
+        public static readonly DependencyProperty YOffsetProperty =
+            DependencyProperty.Register(nameof(YOffset), typeof(double), typeof(PieSlice),
                               new PropertyMetadata(0.0));
         //new FrameworkPropertyMetadata(0.0, FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.AffectsMeasure));
 
         /// <summary>
         /// The Y coordinate of centre of the circle from which this pie piece is cut.
         /// </summary>
-        public double CentreY
+        public double YOffset
         {
-            get { return (double)GetValue(CentreYProperty); }
-            set { SetValue(CentreYProperty, value); }
+            get { return (double)GetValue(YOffsetProperty); }
+            set { SetValue(YOffsetProperty, value); }
         }
 
         public static readonly DependencyProperty PercentageProperty =
@@ -171,17 +171,23 @@ namespace LiveCharts.Uwp.Points
         private void SetRenderData()
         {
             var innerArcStartPoint = PieUtils.ComputeCartesianCoordinate(RotationAngle, InnerRadius, this);
-            innerArcStartPoint.Offset(CentreX, CentreY);
+            innerArcStartPoint.X += XOffset;
+            innerArcStartPoint.Y += YOffset;
             var innerArcEndPoint = PieUtils.ComputeCartesianCoordinate(RotationAngle + WedgeAngle, InnerRadius, this);
-            innerArcEndPoint.Offset(CentreX, CentreY);
+            innerArcEndPoint.X += XOffset;
+            innerArcEndPoint.Y += YOffset;
             var outerArcStartPoint = PieUtils.ComputeCartesianCoordinate(RotationAngle, Radius, this);
-            outerArcStartPoint.Offset(CentreX, CentreY);
+            outerArcStartPoint.X += XOffset;
+            outerArcStartPoint.Y += YOffset;
             var outerArcEndPoint = PieUtils.ComputeCartesianCoordinate(RotationAngle + WedgeAngle, Radius, this);
-            outerArcEndPoint.Offset(CentreX, CentreY);
+            outerArcEndPoint.X += XOffset;
+            outerArcEndPoint.Y += YOffset;
             var innerArcMidPoint = PieUtils.ComputeCartesianCoordinate(RotationAngle + WedgeAngle * .5, InnerRadius, this);
-            innerArcMidPoint.Offset(CentreX, CentreY);
+            innerArcMidPoint.X += XOffset;
+            innerArcMidPoint.Y += YOffset;
             var outerArcMidPoint = PieUtils.ComputeCartesianCoordinate(RotationAngle + WedgeAngle * .5, Radius, this);
-            outerArcMidPoint.Offset(CentreX, CentreY);
+            outerArcMidPoint.X += XOffset;
+            outerArcMidPoint.Y += YOffset;
 
             var largeArc = WedgeAngle > 180.0d;
             var requiresMidPoint = Math.Abs(WedgeAngle - 360) < .01;
@@ -204,23 +210,23 @@ namespace LiveCharts.Uwp.Points
             var outerArcSize = new Size(Radius, Radius);
             var innerArcSize = new Size(InnerRadius, InnerRadius);
 
-            var pathFigure = new PathFigure() { IsClosed = true, IsFilled = true, StartPoint = innerArcStartPoint };
+            var pathFigure = new PathFigure { IsClosed = true, IsFilled = true, StartPoint = innerArcStartPoint };
             
             if (requiresMidPoint)
             {
-                pathFigure.Segments.Add(new LineSegment() { Point = outerArcStartPoint });
-                pathFigure.Segments.Add(new ArcSegment() { Point = outerArcMidPoint, Size = outerArcSize, RotationAngle = 0, IsLargeArc = false, SweepDirection = SweepDirection.Clockwise });
-                pathFigure.Segments.Add(new ArcSegment() { Point = outerArcEndPoint, Size = outerArcSize, RotationAngle = 0, IsLargeArc = false, SweepDirection = SweepDirection.Clockwise });
-                pathFigure.Segments.Add(new LineSegment() { Point = innerArcEndPoint });
-                pathFigure.Segments.Add(new ArcSegment() { Point = innerArcMidPoint, Size = innerArcSize, RotationAngle = 0, IsLargeArc = false, SweepDirection = SweepDirection.Counterclockwise });
-                pathFigure.Segments.Add(new ArcSegment() { Point = innerArcStartPoint, Size = innerArcSize, RotationAngle = 0, IsLargeArc = false, SweepDirection = SweepDirection.Counterclockwise });
+                pathFigure.Segments.Add(new LineSegment { Point = outerArcStartPoint });
+                pathFigure.Segments.Add(new ArcSegment { Point = outerArcMidPoint, Size = outerArcSize, RotationAngle = 0, IsLargeArc = false, SweepDirection = SweepDirection.Clockwise });
+                pathFigure.Segments.Add(new ArcSegment { Point = outerArcEndPoint, Size = outerArcSize, RotationAngle = 0, IsLargeArc = false, SweepDirection = SweepDirection.Clockwise });
+                pathFigure.Segments.Add(new LineSegment { Point = innerArcEndPoint });
+                pathFigure.Segments.Add(new ArcSegment { Point = innerArcMidPoint, Size = innerArcSize, RotationAngle = 0, IsLargeArc = false, SweepDirection = SweepDirection.Counterclockwise });
+                pathFigure.Segments.Add(new ArcSegment { Point = innerArcStartPoint, Size = innerArcSize, RotationAngle = 0, IsLargeArc = false, SweepDirection = SweepDirection.Counterclockwise });
             }
             else
             {
-                pathFigure.Segments.Add(new LineSegment() { Point = outerArcStartPoint });
-                pathFigure.Segments.Add(new ArcSegment() { Point = outerArcEndPoint, Size = outerArcSize, RotationAngle = 0, IsLargeArc = largeArc, SweepDirection = SweepDirection.Clockwise });
-                pathFigure.Segments.Add(new LineSegment() { Point = innerArcEndPoint });
-                pathFigure.Segments.Add(new ArcSegment() { Point = innerArcStartPoint, Size = innerArcSize, RotationAngle = 0, IsLargeArc = largeArc, SweepDirection = SweepDirection.Counterclockwise });
+                pathFigure.Segments.Add(new LineSegment { Point = outerArcStartPoint });
+                pathFigure.Segments.Add(new ArcSegment { Point = outerArcEndPoint, Size = outerArcSize, RotationAngle = 0, IsLargeArc = largeArc, SweepDirection = SweepDirection.Clockwise });
+                pathFigure.Segments.Add(new LineSegment { Point = innerArcEndPoint });
+                pathFigure.Segments.Add(new ArcSegment { Point = innerArcStartPoint, Size = innerArcSize, RotationAngle = 0, IsLargeArc = largeArc, SweepDirection = SweepDirection.Counterclockwise });
             }
 
             Data = new PathGeometry { Figures = new PathFigureCollection() { pathFigure }, FillRule = FillRule.EvenOdd };

@@ -61,11 +61,6 @@ namespace LiveCharts.Uwp
             Canvas.SetZIndex(PieBack, 0);
             Canvas.SetZIndex(Pie, 1);
 
-            Canvas.SetBinding(WidthProperty,
-                new Binding {Path = new PropertyPath("Width"), Source = this});
-            Canvas.SetBinding(HeightProperty,
-                new Binding {Path = new PropertyPath("Height"), Source = this});
-
             PieBack.SetBinding(Shape.FillProperty,
                 new Binding {Path = new PropertyPath("GaugeBackground"), Source = this});
             PieBack.SetBinding(Shape.StrokeThicknessProperty,
@@ -156,13 +151,13 @@ namespace LiveCharts.Uwp
         }
 
         public static readonly DependencyProperty InnerRadiusProperty = DependencyProperty.Register(
-            "InnerRadius", typeof (double?), typeof (Gauge), new PropertyMetadata(null, UpdateCallback));
+            "InnerRadius", typeof (double), typeof (Gauge), new PropertyMetadata(double.NaN, UpdateCallback));
         /// <summary>
         /// Gets o sets inner radius
         /// </summary>
-        public double? InnerRadius
+        public double InnerRadius
         {
-            get { return (double?) GetValue(InnerRadiusProperty); }
+            get { return (double) GetValue(InnerRadiusProperty); }
             set { SetValue(InnerRadiusProperty, value); }
         }
 
@@ -268,6 +263,11 @@ namespace LiveCharts.Uwp
         {
             if (!IsChartInitialized) return;
 
+            var ms = new Size(double.PositiveInfinity, double.PositiveInfinity);
+            Measure(ms);
+            Canvas.Width = Width;
+            Canvas.Height = Height;
+
             Func<double, string> defFormatter = x => x.ToString(CultureInfo.InvariantCulture);
 
             var completed = (Value-From)/(To - From);
@@ -281,9 +281,6 @@ namespace LiveCharts.Uwp
             {
                 LeftLabel.Text = (LabelFormatter ?? defFormatter)(From);
                 RightLabel.Text = (LabelFormatter ?? defFormatter)(To);
-
-                LeftLabel.UpdateLayout();
-                RightLabel.UpdateLayout();
 
                 LeftLabel.Visibility = Visibility.Visible;
                 RightLabel.Visibility = Visibility.Visible;
@@ -318,8 +315,13 @@ namespace LiveCharts.Uwp
                 top = ActualHeight/2 + r/2;
             }
 
+            PieBack.Height = Canvas.ActualHeight;
+            PieBack.Width = Canvas.ActualWidth;
+            Pie.Height = Canvas.ActualHeight;
+            Pie.Width = Canvas.ActualWidth;
+
             PieBack.Radius = r;
-            PieBack.InnerRadius = InnerRadius ?? r*.6;
+            PieBack.InnerRadius = double.IsNaN(InnerRadius) ? r*.6 : InnerRadius;
             PieBack.RotationAngle = 270;
             PieBack.WedgeAngle = angle;
 
@@ -327,22 +329,27 @@ namespace LiveCharts.Uwp
             Pie.InnerRadius = PieBack.InnerRadius;
             Pie.RotationAngle = PieBack.RotationAngle;
 
-            Canvas.SetLeft(PieBack, ActualWidth/2);
-            Canvas.SetTop(PieBack, top);
-            Canvas.SetLeft(Pie, ActualWidth/2);
-            Canvas.SetTop(Pie, top);
+            Pie.YOffset = top - ActualHeight/2;
+            PieBack.YOffset = top - ActualHeight / 2;
 
             Canvas.SetTop(LeftLabel, top);
             Canvas.SetTop(RightLabel, top);
-            Canvas.SetLeft(LeftLabel, Canvas.ActualWidth - (ActualWidth/2 + (r + PieBack.InnerRadius)/2 - LeftLabel.ActualWidth/2));
-            Canvas.SetLeft(RightLabel, Canvas.ActualWidth - (ActualWidth /2 - (r + PieBack.InnerRadius)/2 - RightLabel.ActualWidth/2));
+            LeftLabel.Measure(ms);
+            RightLabel.Measure(ms);
+            Canvas.SetLeft(LeftLabel,
+                Canvas.ActualWidth*.5 -
+                (Pie.InnerRadius + (Pie.Radius - Pie.InnerRadius)*.5 + LeftLabel.DesiredSize.Width*.5));
+            Canvas.SetLeft(RightLabel,
+                Canvas.ActualWidth*.5 +
+                (Pie.InnerRadius + (Pie.Radius - Pie.InnerRadius)*.5 - RightLabel.DesiredSize.Width * .5));
 
             MeasureTextBlock.FontSize = HighFontSize ?? Pie.InnerRadius*.4;
             MeasureTextBlock.Text = (LabelFormatter ?? defFormatter)(Value);
-            MeasureTextBlock.UpdateLayout();
-            Canvas.SetTop(MeasureTextBlock, top - MeasureTextBlock.ActualHeight*(Uses360Mode ? .5 : 1));
-            Canvas.SetLeft(MeasureTextBlock, ActualWidth/2 - MeasureTextBlock.ActualWidth/2);
 
+            MeasureTextBlock.Measure(ms);
+            Canvas.SetTop(MeasureTextBlock, top - MeasureTextBlock.DesiredSize.Height*(Uses360Mode ? .5 : 1));
+            Canvas.SetLeft(MeasureTextBlock, ActualWidth/2 - MeasureTextBlock.DesiredSize.Width/2);
+            
             var interpolatedColor = new Color
             {
                 R = LinearInterpolation(FromColor.R, ToColor.R),
