@@ -187,11 +187,6 @@
     <EmbeddedResource Include="Properties\UwpView.rd.xml" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="Components\DummyDictionary.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Page>
     <Page Include="DefaultGeoMapTooltip.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

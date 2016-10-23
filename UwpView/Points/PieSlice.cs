@@ -1,6 +1,7 @@
 ﻿using System;
 using Windows.Foundation;
 using Windows.UI.Xaml;
+using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Shapes;
 
@@ -10,6 +11,7 @@ namespace LiveCharts.Uwp.Points
     //http://www.codeproject.com/Articles/28098/A-WPF-Pie-Chart-with-Data-Binding-Support
     //http://domysee.com/blogposts/Blogpost%207%20-%20Creating%20custom%20Shapes%20for%20UWP%20Apps/
 
+    [Bindable]
     public class PieSlice : Path
     {
         public PieSlice()
