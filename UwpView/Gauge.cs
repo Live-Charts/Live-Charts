@@ -72,17 +72,17 @@ namespace LiveCharts.Uwp
                 new Binding { Path = new PropertyPath("StrokeThickness"), Source = this });
             Pie.Stroke = new SolidColorBrush(Colors.Transparent);
 
-            /*Current*/SetValue(GaugeBackgroundProperty, new SolidColorBrush(Color.FromArgb(255, 21, 101, 191)) {Opacity = .1});
-            /*Current*/SetValue(StrokeThicknessProperty, 0d);
-            /*Current*/SetValue(StrokeProperty, new SolidColorBrush(Color.FromArgb(255, 222, 222, 222)));
+            this.SetIfNotSet(GaugeBackgroundProperty, new SolidColorBrush(Color.FromArgb(255, 21, 101, 191)) {Opacity = .1});
+            this.SetIfNotSet(StrokeThicknessProperty, 0d);
+            this.SetIfNotSet(StrokeProperty, new SolidColorBrush(Color.FromArgb(255, 222, 222, 222)));
 
-            /*Current*/SetValue(FromColorProperty, Color.FromArgb(255, 100, 180, 245));
-            /*Current*/SetValue(ToColorProperty, Color.FromArgb(255, 21, 101, 191));
+            this.SetIfNotSet(FromColorProperty, Color.FromArgb(255, 100, 180, 245));
+            this.SetIfNotSet(ToColorProperty, Color.FromArgb(255, 21, 101, 191));
 
-            /*Current*/SetValue(MinHeightProperty, 50d);
-            /*Current*/SetValue(MinWidthProperty, 80d);
+            this.SetIfNotSet(MinHeightProperty, 50d);
+            this.SetIfNotSet(MinWidthProperty, 80d);
 
-            /*Current*/SetValue(AnimationsSpeedProperty, TimeSpan.FromMilliseconds(800));
+            this.SetIfNotSet(AnimationsSpeedProperty, TimeSpan.FromMilliseconds(800));
 
             MeasureTextBlock.FontWeight = FontWeights.Bold;
 

@@ -31,6 +31,7 @@ using LiveCharts.Dtos;
 using LiveCharts.SeriesAlgorithms;
 using LiveCharts.Uwp.Charts.Base;
 using LiveCharts.Uwp.Points;
+using LiveCharts.Uwp.Components;
 
 namespace LiveCharts.Uwp
 {
@@ -182,13 +183,13 @@ namespace LiveCharts.Uwp
 
         private void InitializeDefuaults()
         {
-            /*Current*/SetValue(StrokeThicknessProperty, 0d);
-            /*Current*/SetValue(MaxRowHeigthProperty, 35d);
-            /*Current*/SetValue(RowPaddingProperty, 2d);
-            /*Current*/SetValue(LabelPositionProperty, BarLabelPosition.Top);
+            this.SetIfNotSet(StrokeThicknessProperty, 0d);
+            this.SetIfNotSet(MaxRowHeigthProperty, 35d);
+            this.SetIfNotSet(RowPaddingProperty, 2d);
+            this.SetIfNotSet(LabelPositionProperty, BarLabelPosition.Top);
 
             Func<ChartPoint, string> defaultLabel = x => Model.CurrentXAxis.GetFormatter()(x.X);
-            /*Current*/SetValue(LabelPointProperty, defaultLabel);
+            this.SetIfNotSet(LabelPointProperty, defaultLabel);
 
             DefaultFillOpacity = 1;
         }

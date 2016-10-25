@@ -174,13 +174,13 @@ namespace LiveCharts.Uwp
 
         private void InitializeDefuaults()
         {
-            /*Current*/SetValue(StrokeThicknessProperty, 0d);
-            /*Current*/SetValue(MaxPointShapeDiameterProperty, 15d);
-            /*Current*/SetValue(MinPointShapeDiameterProperty, 10d);
+            this.SetIfNotSet(StrokeThicknessProperty, 0d);
+            this.SetIfNotSet(MaxPointShapeDiameterProperty, 15d);
+            this.SetIfNotSet(MinPointShapeDiameterProperty, 10d);
 
             Func<ChartPoint, string> defaultLabel = x => Model.CurrentXAxis.GetFormatter()(x.X) + ", "
                                                          + Model.CurrentYAxis.GetFormatter()(x.Y);
-            /*Current*/SetValue(LabelPointProperty, defaultLabel);
+            this.SetIfNotSet(LabelPointProperty, defaultLabel);
 
             DefaultFillOpacity = 0.7;
         }

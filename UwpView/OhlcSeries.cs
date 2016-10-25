@@ -31,6 +31,7 @@ using LiveCharts.Definitions.Series;
 using LiveCharts.SeriesAlgorithms;
 using LiveCharts.Uwp.Charts.Base;
 using LiveCharts.Uwp.Points;
+using LiveCharts.Uwp.Components;
 
 namespace LiveCharts.Uwp
 {
@@ -210,11 +211,11 @@ namespace LiveCharts.Uwp
 
         private void InitializeDefuaults()
         {
-            /*Current*/SetValue(StrokeThicknessProperty, 2.5d);
-            /*Current*/SetValue(MaxColumnWidthProperty, 35d);
-            /*Current*/SetValue(MaxWidthProperty, 25d);
-            /*Current*/SetValue(IncreaseBrushProperty, new SolidColorBrush(Color.FromArgb(255, 254, 178, 0)));
-            /*Current*/SetValue(DecreaseBrushProperty, new SolidColorBrush(Color.FromArgb(255, 238, 83, 80)));
+            this.SetIfNotSet(StrokeThicknessProperty, 2.5d);
+            this.SetIfNotSet(MaxColumnWidthProperty, 35d);
+            this.SetIfNotSet(MaxWidthProperty, 25d);
+            this.SetIfNotSet(IncreaseBrushProperty, new SolidColorBrush(Color.FromArgb(255, 254, 178, 0)));
+            this.SetIfNotSet(DecreaseBrushProperty, new SolidColorBrush(Color.FromArgb(255, 238, 83, 80)));
 
             Func<ChartPoint, string> defaultLabel = x =>
                 $"O: {x.Open}, H: {x.High}, L: {x.Low} C: {x.Close}";

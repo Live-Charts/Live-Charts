@@ -29,6 +29,7 @@ using LiveCharts.Definitions.Series;
 using LiveCharts.SeriesAlgorithms;
 using LiveCharts.Uwp.Charts.Base;
 using LiveCharts.Uwp.Points;
+using LiveCharts.Uwp.Components;
 
 namespace LiveCharts.Uwp
 {
@@ -151,13 +152,13 @@ namespace LiveCharts.Uwp
 
         private void InitializeDefuaults()
         {
-            /*Current*/SetValue(StrokeThicknessProperty, 2d);
-            /*Current*/SetValue(StrokeProperty, new SolidColorBrush(Windows.UI.Colors.White));
-            /*Current*/SetValue(ForegroundProperty, new SolidColorBrush(Windows.UI.Colors.White));
+            this.SetIfNotSet(StrokeThicknessProperty, 2d);
+            this.SetIfNotSet(StrokeProperty, new SolidColorBrush(Windows.UI.Colors.White));
+            this.SetIfNotSet(ForegroundProperty, new SolidColorBrush(Windows.UI.Colors.White));
 
             Func<ChartPoint, string> defaultLabel = x => Model.CurrentYAxis.GetFormatter()(x.Y);
 
-            /*Current*/SetValue(LabelPointProperty, defaultLabel);
+            this.SetIfNotSet(LabelPointProperty, defaultLabel);
 
             DefaultFillOpacity = 1;
         }

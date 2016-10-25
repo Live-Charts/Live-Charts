@@ -37,6 +37,7 @@ using LiveCharts.Helpers;
 using LiveCharts.SeriesAlgorithms;
 using LiveCharts.Uwp.Charts.Base;
 using LiveCharts.Uwp.Points;
+using LiveCharts.Uwp.Components;
 
 namespace LiveCharts.Uwp
 {
@@ -249,14 +250,14 @@ namespace LiveCharts.Uwp
 
         private void InitializeDefuaults()
         {
-            /*Current*/SetValue(StrokeThicknessProperty, 0d);
-            /*Current*/SetValue(ForegroundProperty, new SolidColorBrush(Colors.White));
-            /*Current*/SetValue(StrokeProperty, new SolidColorBrush(Colors.White));
-            /*Current*/SetValue(DrawsHeatRangeProperty, true);
-            /*Current*/SetValue(GradientStopCollectionProperty, new GradientStopCollection());
+            this.SetIfNotSet(StrokeThicknessProperty, 0d);
+            this.SetIfNotSet(ForegroundProperty, new SolidColorBrush(Colors.White));
+            this.SetIfNotSet(StrokeProperty, new SolidColorBrush(Colors.White));
+            this.SetIfNotSet(DrawsHeatRangeProperty, true);
+            this.SetIfNotSet(GradientStopCollectionProperty, new GradientStopCollection());
 
             Func<ChartPoint, string> defaultLabel = x => x.Weight.ToString(CultureInfo.InvariantCulture);
-            /*Current*/SetValue(LabelPointProperty, defaultLabel);
+            this.SetIfNotSet(LabelPointProperty, defaultLabel);
 
             DefaultFillOpacity = 0.4;
         }

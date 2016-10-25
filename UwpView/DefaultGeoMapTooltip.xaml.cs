@@ -24,6 +24,7 @@ using System;
 using System.Globalization;
 using Windows.UI.Xaml;
 using LiveCharts.Uwp.Components.MultiBinding;
+using LiveCharts.Uwp.Components;
 
 namespace LiveCharts.Uwp
 {
@@ -33,7 +34,7 @@ namespace LiveCharts.Uwp
         {
             InitializeComponent();
 
-            /*Current*/SetValue(CornerRadiusProperty, 4d);
+            this.SetIfNotSet(CornerRadiusProperty, 4d);
 
             DataContext = this;
         }

@@ -50,10 +50,10 @@ namespace LiveCharts.Uwp
         public Axis()
         {
             TitleBlock = BindATextBlock();
-            /*Current*/SetValue(SeparatorProperty, new Separator());
-            /*Current*/SetValue(ShowLabelsProperty, true);
-            /*Current*/SetValue(SectionsProperty, new SectionsCollection());
-            /*Current*/SetValue(ForegroundProperty, new SolidColorBrush(Color.FromArgb(255, 170, 170, 170)));
+            this.SetIfNotSet(SeparatorProperty, new Separator());
+            this.SetIfNotSet(ShowLabelsProperty, true);
+            this.SetIfNotSet(SectionsProperty, new SectionsCollection());
+            this.SetIfNotSet(ForegroundProperty, new SolidColorBrush(Color.FromArgb(255, 170, 170, 170)));
 
             TitleBlock.SetBinding(TextBlock.TextProperty,
                 new Binding {Path = new PropertyPath("Title"), Source = this});

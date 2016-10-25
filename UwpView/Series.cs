@@ -33,6 +33,7 @@ using LiveCharts.Definitions.Points;
 using LiveCharts.Definitions.Series;
 using LiveCharts.Helpers;
 using LiveCharts.Uwp.Charts.Base;
+using LiveCharts.Uwp.Components;
 
 namespace LiveCharts.Uwp
 {
@@ -48,7 +49,7 @@ namespace LiveCharts.Uwp
         protected Series()
         {
             DefaultFillOpacity = 0.35;
-            /*Current*/SetValue(TitleProperty, "Series");
+            this.SetIfNotSet(TitleProperty, "Series");
             RegisterPropertyChangedCallback(VisibilityProperty, OnIsVisibleChanged);
         }
 

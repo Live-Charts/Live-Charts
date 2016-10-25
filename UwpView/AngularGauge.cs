@@ -65,18 +65,17 @@ namespace LiveCharts.Uwp
             Canvas.SetBinding(HeightProperty,
                 new Binding { Path = new PropertyPath("ActualHeight"), Source = this });
 
-            /*Current*/SetValue(SectionsProperty, new List<AngularSection>());
-            /*Current*/SetValue(NeedleFillProperty, new SolidColorBrush(Color.FromArgb(255, 69, 90, 100)));
+            this.SetIfNotSet(SectionsProperty, new List<AngularSection>());
+            this.SetIfNotSet(NeedleFillProperty, new SolidColorBrush(Color.FromArgb(255, 69, 90, 100)));
 
             Stick.SetBinding(Shape.FillProperty,
                 new Binding {Path = new PropertyPath("NeedleFill"), Source = this});
             
-            /*Current*/SetValue(AnimationsSpeedProperty, TimeSpan.FromMilliseconds(500));
-            /*Current*/SetValue(TicksForegroundProperty, new SolidColorBrush(Color.FromArgb(255, 210, 210, 210)));
+            this.SetIfNotSet(AnimationsSpeedProperty, TimeSpan.FromMilliseconds(500));
+            this.SetIfNotSet(TicksForegroundProperty, new SolidColorBrush(Color.FromArgb(255, 210, 210, 210)));
             Func<double, string> defaultFormatter = x => x.ToString(CultureInfo.InvariantCulture);
-            /*Current*/SetValue(LabelFormatterProperty, defaultFormatter);
-            //*Current*/SetValue(LabelsEffectProperty,
-            //    new DropShadowEffect {ShadowDepth = 2, RenderingBias = RenderingBias.Performance});
+            this.SetIfNotSet(LabelFormatterProperty, defaultFormatter);
+            // this.SetIfNotSet(LabelsEffectProperty, new DropShadowEffect {ShadowDepth = 2, RenderingBias = RenderingBias.Performance});
 
             SizeChanged += (sender, args) =>
             {

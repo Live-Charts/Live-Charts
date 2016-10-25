@@ -26,6 +26,7 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
 using LiveCharts.Charts;
 using LiveCharts.Definitions.Charts;
+using LiveCharts.Uwp.Components;
 
 namespace LiveCharts.Uwp
 {
@@ -39,9 +40,9 @@ namespace LiveCharts.Uwp
         /// </summary>
         public Separator()
         {
-            /*Current*/SetValue(IsEnabledProperty, true);
-            /*Current*/SetValue(StrokeProperty, new SolidColorBrush(Color.FromArgb(255, 240, 240, 240)));
-            /*Current*/SetValue(StrokeThicknessProperty, 1d);
+            this.SetIfNotSet(IsEnabledProperty, true);
+            this.SetIfNotSet(StrokeProperty, new SolidColorBrush(Color.FromArgb(255, 240, 240, 240)));
+            this.SetIfNotSet(StrokeThicknessProperty, 1d);
         }
 
         /// <summary>

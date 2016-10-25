@@ -149,15 +149,15 @@ namespace LiveCharts.Uwp
 
         private void InitializeDefuaults()
         {
-            /*Current*/SetValue(LineSmoothnessProperty, .7d);
-            /*Current*/SetValue(PointGeometrySizeProperty, 0d);
-            /*Current*/SetValue(PointForeroundProperty, new SolidColorBrush(Colors.White));
-            /*Current*/SetValue(ForegroundProperty, new SolidColorBrush(Color.FromArgb(255, 229, 229, 229)));
-            /*Current*/SetValue(StrokeThicknessProperty, 0d);
-            /*Current*/SetValue(StackModeProperty, StackMode.Values);
+            this.SetIfNotSet(LineSmoothnessProperty, .7d);
+            this.SetIfNotSet(PointGeometrySizeProperty, 0d);
+            this.SetIfNotSet(PointForeroundProperty, new SolidColorBrush(Colors.White));
+            this.SetIfNotSet(ForegroundProperty, new SolidColorBrush(Color.FromArgb(255, 229, 229, 229)));
+            this.SetIfNotSet(StrokeThicknessProperty, 0d);
+            this.SetIfNotSet(StackModeProperty, StackMode.Values);
 
             Func<ChartPoint, string> defaultLabel = x => Model.CurrentXAxis.GetFormatter()(x.X);
-            /*Current*/SetValue(LabelPointProperty, defaultLabel);
+            this.SetIfNotSet(LabelPointProperty, defaultLabel);
 
             DefaultFillOpacity = 1;
             Splitters = new List<LineSegmentSplitter>();

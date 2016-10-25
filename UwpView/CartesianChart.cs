@@ -25,6 +25,7 @@ using Windows.UI.Xaml;
 using LiveCharts.Charts;
 using LiveCharts.Definitions.Charts;
 using LiveCharts.Uwp.Charts.Base;
+using LiveCharts.Uwp.Components;
 
 namespace LiveCharts.Uwp
 {
@@ -47,7 +48,7 @@ namespace LiveCharts.Uwp
                     ? GetDesignerModeCollection()
                     : new SeriesCollection());
 
-            /*Current*/SetValue(VisualElementsProperty, new VisualElementsCollection());
+            this.SetIfNotSet(VisualElementsProperty, new VisualElementsCollection());
         }
 
 

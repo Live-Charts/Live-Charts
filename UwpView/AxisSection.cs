@@ -55,10 +55,10 @@ namespace LiveCharts.Uwp
 
             /*Current*/
             SetValue(StrokeProperty, new SolidColorBrush(Color.FromArgb(255, 131, 172, 191)));
-            /*Current*/SetValue(FillProperty, new SolidColorBrush(Color.FromArgb(255, 131, 172, 191)) {Opacity = .35});
-            /*Current*/SetValue(StrokeThicknessProperty, 0d);
-            /*Current*/SetValue(FromValueProperty, 0d);
-            /*Current*/SetValue(ToValueProperty, 0d);
+            this.SetIfNotSet(FillProperty, new SolidColorBrush(Color.FromArgb(255, 131, 172, 191)) {Opacity = .35});
+            this.SetIfNotSet(StrokeThicknessProperty, 0d);
+            this.SetIfNotSet(FromValueProperty, 0d);
+            this.SetIfNotSet(ToValueProperty, 0d);
 
             BindingOperations.SetBinding(_label, TextBlock.TextProperty,
                 new Binding {Path = new PropertyPath(nameof(Label)), Source = this});

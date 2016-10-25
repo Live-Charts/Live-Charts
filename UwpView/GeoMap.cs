@@ -61,11 +61,11 @@ namespace LiveCharts.Uwp
 
             Lands = new Dictionary<string, MapData>();
 
-            /*Current*/SetValue(DefaultLandFillProperty, new SolidColorBrush(Color.FromArgb(200, 255, 255, 255)));
-            /*Current*/SetValue(LandStrokeProperty, new SolidColorBrush(Color.FromArgb(30, 55,55, 55)));
-            /*Current*/SetValue(LandStrokeThicknessProperty, 1.3d);
-            /*Current*/SetValue(AnimationsSpeedProperty, TimeSpan.FromMilliseconds(500));
-            /*Current*/SetValue(BackgroundProperty, new SolidColorBrush(Color.FromArgb(150, 96, 125, 138)));
+            this.SetIfNotSet(DefaultLandFillProperty, new SolidColorBrush(Color.FromArgb(200, 255, 255, 255)));
+            this.SetIfNotSet(LandStrokeProperty, new SolidColorBrush(Color.FromArgb(30, 55,55, 55)));
+            this.SetIfNotSet(LandStrokeThicknessProperty, 1.3d);
+            this.SetIfNotSet(AnimationsSpeedProperty, TimeSpan.FromMilliseconds(500));
+            this.SetIfNotSet(BackgroundProperty, new SolidColorBrush(Color.FromArgb(150, 96, 125, 138)));
             /*Current*/
             SetValue(GradientStopCollectionProperty, new GradientStopCollection
             {
@@ -80,7 +80,7 @@ namespace LiveCharts.Uwp
                     Offset = 1d
                 },
             });
-            /*Current*/SetValue(HeatMapProperty, new Dictionary<string, double>());
+            this.SetIfNotSet(HeatMapProperty, new Dictionary<string, double>());
             /*Current*/
             SetValue(GeoMapTooltipProperty, new DefaultGeoMapTooltip {Visibility = Visibility.Collapsed}); //Visibility.Hidden});
             Canvas.Children.Add(GeoMapTooltip);

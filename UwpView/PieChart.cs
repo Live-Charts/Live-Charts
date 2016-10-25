@@ -27,6 +27,7 @@ using LiveCharts.Charts;
 using LiveCharts.Definitions.Charts;
 using LiveCharts.Uwp.Charts.Base;
 using LiveCharts.Uwp.Points;
+using LiveCharts.Uwp.Components;
 
 namespace LiveCharts.Uwp
 {
@@ -44,7 +45,7 @@ namespace LiveCharts.Uwp
             var updater = new Components.ChartUpdater(freq);
             ChartCoreModel = new PieChartCore(this, updater);
 
-            /*Current*/SetValue(SeriesProperty, new SeriesCollection());
+            this.SetIfNotSet(SeriesProperty, new SeriesCollection());
         }
 
         public static readonly DependencyProperty InnerRadiusProperty = DependencyProperty.Register(
