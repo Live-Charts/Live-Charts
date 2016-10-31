@@ -37,7 +37,7 @@ First: animations and good looking charts by default, second: responsive charts 
 
 **How to use it?**
 
-This is the logic you use in every chart, there are just some litle properties or rules that change from each type of chart
+This is the logic you use in every chart, there are just some little properties or rules that change from each type of chart
 
 ```c#
 //create a new SeriesCollection
