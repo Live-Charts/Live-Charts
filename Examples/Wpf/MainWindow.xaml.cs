@@ -20,6 +20,7 @@ using Wpf.CartesianChart.Linq;
 using Wpf.CartesianChart.LogarithmScale;
 using Wpf.CartesianChart.ManualZAndP;
 using Wpf.CartesianChart.Missing_Line_Points;
+using Wpf.CartesianChart.MixingSeries;
 using Wpf.CartesianChart.NegativeStackedRow;
 using Wpf.CartesianChart.PointShapeLine;
 using Wpf.CartesianChart.PointState;

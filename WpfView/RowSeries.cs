@@ -90,16 +90,16 @@ namespace LiveCharts.Wpf
             set { SetValue(RowPaddingProperty, value); }
         }
 
-        public static readonly DependencyProperty LabelPositionProperty = DependencyProperty.Register(
-            "LabelPosition", typeof(BarLabelPosition), typeof(RowSeries), 
+        public static readonly DependencyProperty LabelsPositionProperty = DependencyProperty.Register(
+            "LabelsPosition", typeof(BarLabelPosition), typeof(RowSeries), 
             new PropertyMetadata(default(BarLabelPosition), CallChartUpdater()));
         /// <summary>
         /// Gets or sets where the label is placed
         /// </summary>
-        public BarLabelPosition LabelPosition
+        public BarLabelPosition LabelsPosition
         {
-            get { return (BarLabelPosition)GetValue(LabelPositionProperty); }
-            set { SetValue(LabelPositionProperty, value); }
+            get { return (BarLabelPosition)GetValue(LabelsPositionProperty); }
+            set { SetValue(LabelsPositionProperty, value); }
         }
 
 
@@ -171,7 +171,7 @@ namespace LiveCharts.Wpf
             if (point.Stroke != null) pbv.Rectangle.Stroke = (Brush) point.Stroke;
             if (point.Fill != null) pbv.Rectangle.Fill = (Brush) point.Fill;
 
-            pbv.LabelPosition = LabelPosition;
+            pbv.LabelPosition = LabelsPosition;
 
             return pbv;
         }
@@ -185,7 +185,7 @@ namespace LiveCharts.Wpf
             SetCurrentValue(StrokeThicknessProperty, 0d);
             SetCurrentValue(MaxRowHeigthProperty, 35d);
             SetCurrentValue(RowPaddingProperty, 2d);
-            SetCurrentValue(LabelPositionProperty, BarLabelPosition.Top);
+            SetCurrentValue(LabelsPositionProperty, BarLabelPosition.Top);
 
             Func<ChartPoint, string> defaultLabel = x => Model.CurrentXAxis.GetFormatter()(x.X);
             SetCurrentValue(LabelPointProperty, defaultLabel);

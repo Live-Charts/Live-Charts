@@ -7,6 +7,10 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
-        <lvc:CartesianChart Series="{Binding Series}"></lvc:CartesianChart> 
+        <lvc:CartesianChart Series="{Binding Series}">
+            <lvc:CartesianChart.AxisX>
+                <lvc:Axis MinValue="5.2"></lvc:Axis>
+            </lvc:CartesianChart.AxisX>
+        </lvc:CartesianChart> 
     </Grid>
 </UserControl>
