@@ -177,7 +177,7 @@ namespace LiveCharts.Wpf
 
         public static readonly DependencyProperty FontFamilyProperty = DependencyProperty.Register(
             "FontFamily", typeof (FontFamily), typeof (Series), 
-            new PropertyMetadata(default(FontFamily)));
+            new PropertyMetadata(new FontFamily("Segoe UI")));
         /// <summary>
         /// Gets or sets labels font family
         /// </summary>
