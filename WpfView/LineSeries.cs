@@ -200,11 +200,11 @@ namespace LiveCharts.Wpf
             Figure.StartPoint = new Point(x, areaLimit);
         }
 
-        public override IChartPointView GetPointView(IChartPointView view, ChartPoint point, string label)
+        public override IChartPointView GetPointView(ChartPoint point, string label)
         {
             var mhr = PointGeometrySize < 10 ? 10 : PointGeometrySize;
 
-            var pbv = (HorizontalBezierPointView) view;
+            var pbv = (HorizontalBezierPointView) point.View;
 
             if (pbv == null)
             {
@@ -253,7 +253,6 @@ namespace LiveCharts.Wpf
                     pbv.Shape = new Path
                     {
                         Stretch = Stretch.Fill,
-                        ClipToBounds = true,
                         StrokeThickness = StrokeThickness
                     };
                 }

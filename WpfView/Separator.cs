@@ -89,15 +89,15 @@ namespace LiveCharts.Wpf
         }
 
         public static readonly DependencyProperty StepProperty = DependencyProperty.Register(
-            "Step", typeof (double?), typeof (Separator),
-            new PropertyMetadata(default(double?), CallChartUpdater()));
+            "Step", typeof (double), typeof (Separator),
+            new PropertyMetadata(double.NaN, CallChartUpdater()));
 
         /// <summary>
         /// Gets or sets separators step, this means the value between each line, default is null, when null this value is calculated automatically.
         /// </summary>
-        public double? Step
+        public double Step
         {
-            get { return (double?) GetValue(StepProperty); }
+            get { return (double) GetValue(StepProperty); }
             set { SetValue(StepProperty, value); }
         }
 

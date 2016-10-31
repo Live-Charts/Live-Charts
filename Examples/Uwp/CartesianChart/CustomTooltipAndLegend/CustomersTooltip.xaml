@@ -1,0 +1,45 @@
+﻿<UserControl
+    x:Class="UWP.CartesianChart.CustomTooltipAndLegend.CustomersTooltip"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:UWP.CartesianChart.CustomTooltipAndLegend"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:lvc="using:LiveCharts.Uwp"
+    xmlns:converter="using:LiveCharts.Uwp.Converters"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="400"
+    >
+
+    <Grid Background="#E4555555" Padding="20 10" BorderThickness="2" BorderBrush="#555555">
+        <Grid.Resources>
+            <converter:StringFormatConverter x:Key="StringFormatConverter"/>
+        </Grid.Resources>
+        <ItemsControl ItemsSource="{Binding Data.Points}">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate x:DataType="lvc:DataPointViewModel">
+                    <Grid Margin="2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Rectangle Grid.Column="0" Stroke="{Binding Series.Stroke}" Fill="{Binding Series.Fill}"
+                               Height="15" Width="15"/>
+                        <TextBlock Grid.Column="1" Text="{Binding ChartPoint.Instance.Name}" 
+                               Margin="5 0 0 0" VerticalAlignment="Center" Foreground="White"/>
+                        <TextBlock Grid.Column="2" Text="{Binding ChartPoint.Instance.LastName}" 
+                               Margin="5 0 0 0" VerticalAlignment="Center" Foreground="White"/>
+                        <TextBlock Grid.Column="3" Text="{Binding ChartPoint.Instance.Phone, Converter={StaticResource StringFormatConverter}, ConverterParameter=Phone: \{0\}}" 
+                               Margin="5 0 0 0" VerticalAlignment="Center" Foreground="White"/>
+                        <TextBlock Grid.Column="4" Text="{Binding ChartPoint.Instance.PurchasedItems, Converter={StaticResource StringFormatConverter}, ConverterParameter=Purchased Items: \{0:N\}}" 
+                               Margin="5 0 0 0" VerticalAlignment="Center" Foreground="White"/>
+                    </Grid>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+    </Grid>
+</UserControl>

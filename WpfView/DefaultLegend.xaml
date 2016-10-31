@@ -64,7 +64,7 @@
                                          Height="{Binding BulletSize, RelativeSource={RelativeSource Mode=FindAncestor, AncestorLevel=1, AncestorType={x:Type UserControl}}}" 
                                          StrokeThickness="{Binding StrokeThickness}" 
                                          Stroke="{Binding Stroke}" Fill="{Binding Fill}"
-                                         Stretch="Fill" ClipToBounds="True" Data="{Binding PointGeometry}"/>
+                                         Stretch="Fill" Data="{Binding PointGeometry}"/>
                                 <TextBlock Grid.Column="1" Margin="4 0" Text="{Binding Title}" VerticalAlignment="Center" />
                             </Grid>
                         </DataTemplate>

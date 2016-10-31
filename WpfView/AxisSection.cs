@@ -18,7 +18,6 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-using System;
 using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
@@ -213,7 +212,6 @@ namespace LiveCharts.Wpf
                 }
                 else
                 {
-                    Debug.WriteLine(w > 0 ? w : 0);
                     _rectangle.BeginAnimation(WidthProperty, new DoubleAnimation(w > 0 ? w : 0, anSpeed));
                     _rectangle.BeginAnimation(Canvas.LeftProperty, new DoubleAnimation(from - StrokeThickness/2, anSpeed));
                     _label.BeginAnimation(Canvas.LeftProperty,
@@ -230,7 +228,7 @@ namespace LiveCharts.Wpf
 
             if (Model.Chart.View.DisableAnimations)
             {
-                Canvas.SetTop(_rectangle, from);
+                Canvas.SetTop(_rectangle, from - StrokeThickness/2);
                 _rectangle.Height = h > 0 ? h : 0;
                 Canvas.SetTop(_label, (from + to)/2 - _label.ActualHeight/2);
             }

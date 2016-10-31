@@ -43,14 +43,10 @@ namespace LiveCharts.Wpf
             var updater = new Components.ChartUpdater(freq);
             ChartCoreModel = new CartesianChartCore(this, updater);
 
-            if (DesignerProperties.GetIsInDesignMode(this))
-            {
-                SetCurrentValue(SeriesProperty, GetDesignerModeCollection());
-            }
-            else
-            {
-                SetCurrentValue(SeriesProperty, new SeriesCollection());
-            }
+            SetCurrentValue(SeriesProperty,
+                DesignerProperties.GetIsInDesignMode(this)
+                    ? GetDesignerModeCollection()
+                    : new SeriesCollection());
 
             SetCurrentValue(VisualElementsProperty, new VisualElementsCollection());
         }

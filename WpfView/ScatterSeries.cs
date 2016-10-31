@@ -95,9 +95,9 @@ namespace LiveCharts.Wpf
 
         #region Overridden Methods
 
-        public override IChartPointView GetPointView(IChartPointView view, ChartPoint point, string label)
+        public override IChartPointView GetPointView(ChartPoint point, string label)
         {
-            var pbv = (ScatterPointView) view;
+            var pbv = (ScatterPointView) point.View;
 
             if (pbv == null)
             {
@@ -107,7 +107,6 @@ namespace LiveCharts.Wpf
                     Shape = new Path
                     {
                         Stretch = Stretch.Fill,
-                        ClipToBounds = true,
                         StrokeThickness = StrokeThickness
                     }
                 };

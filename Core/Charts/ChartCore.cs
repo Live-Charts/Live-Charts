@@ -90,32 +90,32 @@ namespace LiveCharts.Charts
             {
                 var xi = AxisX[index];
 
-                xi.TopLimit = xi.MaxValue ??
+                xi.TopLimit = double.IsNaN(xi.MaxValue) ?
                               View.ActualSeries
                                   .Where(series => series.Values != null && series.ScalesXAt == index)
                                   .Select(series => series.Values.GetTracker(series).XLimit.Max)
-                                  .DefaultIfEmpty(0).Max();
-                xi.BotLimit = xi.MinValue ??
+                                  .DefaultIfEmpty(0).Max() : xi.MaxValue;
+                xi.BotLimit = double.IsNaN(xi.MinValue) ?
                               View.ActualSeries
                                   .Where(series => series.Values != null && series.ScalesXAt == index)
                                   .Select(series => series.Values.GetTracker(series).XLimit.Min)
-                                  .DefaultIfEmpty(0).Min();
+                                  .DefaultIfEmpty(0).Min() : xi.MinValue;
             }
 
             for (var index = 0; index < AxisY.Count; index++)
             {
                 var yi = AxisY[index];
 
-                yi.TopLimit = yi.MaxValue ??
+                yi.TopLimit = double.IsNaN(yi.MaxValue) ?
                               View.ActualSeries
                                   .Where(series => series.Values != null && series.ScalesYAt == index)
                                   .Select(series => series.Values.GetTracker(series).YLimit.Max)
-                                  .DefaultIfEmpty(0).Max();
-                yi.BotLimit = yi.MinValue ??
+                                  .DefaultIfEmpty(0).Max() : yi.MaxValue;
+                yi.BotLimit = double.IsNaN(yi.MinValue) ?
                               View.ActualSeries
                                   .Where(series => series.Values != null && series.ScalesYAt == index)
                                   .Select(series => series.Values.GetTracker(series).YLimit.Min)
-                                  .DefaultIfEmpty(0).Min();
+                                  .DefaultIfEmpty(0).Min() : yi.MinValue;
             }
         }
 
@@ -296,8 +296,8 @@ namespace LiveCharts.Charts
             {
                 foreach (var xi in AxisX)
                 {
-                    var max = xi.MaxValue ?? xi.TopLimit;
-                    var min = xi.MinValue ?? xi.BotLimit;
+                    var max = double.IsNaN(xi.MaxValue) ? xi.TopLimit : xi.MaxValue;
+                    var min = double.IsNaN(xi.MinValue) ? xi.BotLimit : xi.MinValue;
                     var l = max - min;
 
                     var rMin = (pivot.X - min) / l;
@@ -315,8 +315,8 @@ namespace LiveCharts.Charts
             {
                 foreach (var yi in AxisY)
                 {
-                    var max = yi.MaxValue ?? yi.TopLimit;
-                    var min = yi.MinValue ?? yi.BotLimit;
+                    var max = double.IsNaN(yi.MaxValue) ? yi.TopLimit : yi.MaxValue;
+                    var min = double.IsNaN(yi.MinValue) ? yi.BotLimit : yi.MinValue;
                     var l = max - min;
                     var rMin = (pivot.Y - min) / l;
                     var rMax = 1 - rMin;
@@ -344,8 +344,8 @@ namespace LiveCharts.Charts
             {
                 foreach (var xi in AxisX)
                 {
-                    var max = xi.MaxValue ?? xi.TopLimit;
-                    var min = xi.MinValue ?? xi.BotLimit;
+                    var max = double.IsNaN(xi.MaxValue) ? xi.TopLimit : xi.MaxValue;
+                    var min = double.IsNaN(xi.MinValue) ? xi.BotLimit : xi.MinValue;
                     var l = max - min;
                     var rMin = (pivot.X - min) / l;
                     var rMax = 1 - rMin;
@@ -362,8 +362,8 @@ namespace LiveCharts.Charts
             {
                 foreach (var yi in AxisY)
                 {
-                    var max = yi.MaxValue ?? yi.TopLimit;
-                    var min = yi.MinValue ?? yi.BotLimit;
+                    var max = double.IsNaN(yi.MaxValue) ? yi.TopLimit : yi.MaxValue;
+                    var min = double.IsNaN(yi.MinValue) ? yi.BotLimit : yi.MinValue;
                     var l = max - min;
                     var rMin = (pivot.Y - min) / l;
                     var rMax = 1 - rMin;
@@ -379,8 +379,8 @@ namespace LiveCharts.Charts
 
         public void ClearZoom()
         {
-            foreach (var xi in AxisX) xi.View.SetRange(null, null);
-            foreach (var yi in AxisY) yi.View.SetRange(null,null);
+            foreach (var xi in AxisX) xi.View.SetRange(double.NaN, double.NaN);
+            foreach (var yi in AxisY) yi.View.SetRange(double.NaN, double.NaN);
         }
 
         public void Drag(CorePoint delta)
@@ -391,8 +391,8 @@ namespace LiveCharts.Charts
             {
                 foreach (var xi in AxisX)
                 {
-                    xi.View.SetRange((xi.MinValue ?? xi.BotLimit) + delta.X,
-                        (xi.MaxValue ?? xi.TopLimit) + delta.X);
+                    xi.View.SetRange((double.IsNaN(xi.MinValue) ? xi.BotLimit : xi.MinValue) + delta.X,
+                        (double.IsNaN(xi.MaxValue) ? xi.TopLimit : xi.MaxValue) + delta.X);
                 }
             }
 
@@ -400,8 +400,8 @@ namespace LiveCharts.Charts
             {
                 foreach (var yi in AxisY)
                 {
-                    yi.View.SetRange((yi.MinValue ?? yi.BotLimit) + delta.Y,
-                        (yi.MaxValue ?? yi.TopLimit) + delta.Y);
+                    yi.View.SetRange((double.IsNaN(yi.MinValue) ? yi.BotLimit : yi.MinValue) + delta.Y,
+                        (double.IsNaN(yi.MaxValue) ? yi.TopLimit : yi.MaxValue) + delta.Y);
                 }
             }
         }

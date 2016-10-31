@@ -39,7 +39,7 @@ namespace LiveCharts.Wpf
     {
         public Gauge()
         {
-            Canvas = new Canvas {ClipToBounds = true};
+            Canvas = new Canvas();
             Content = Canvas;
 
             PieBack = new PieSlice();
