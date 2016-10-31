@@ -156,11 +156,10 @@ namespace LiveCharts.Wpf
                 xi += uw;
                 
                 if (Model.Chart.View.DisableAnimations)
-                    Figure.StartPoint = new Point(xi, Model.Chart.DrawMargin.Height);
+                    Figure.StartPoint = new Point(xi, areaLimit);
                 else
                     Figure.BeginAnimation(PathFigure.StartPointProperty,
-                        new PointAnimation(new Point(xi, areaLimit),
-                            Model.Chart.View.AnimationsSpeed));
+                        new PointAnimation(new Point(xi, areaLimit), Model.Chart.View.AnimationsSpeed));
             }
 
             if (IsPathInitialized)

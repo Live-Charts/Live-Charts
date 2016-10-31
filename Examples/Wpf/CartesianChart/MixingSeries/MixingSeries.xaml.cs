@@ -29,7 +29,8 @@ namespace Wpf.CartesianChart.MixingSeries
                     new ObservableValue(2),
                     new ObservableValue(3)
                 },
-                PointForeround = new SolidColorBrush(Color.FromRgb(50,50,50))
+                PointForeround = new SolidColorBrush(Color.FromRgb(50,50,50)),
+                AreaLimit = 0
             };
 
             ScatterSeries = new ScatterSeries
