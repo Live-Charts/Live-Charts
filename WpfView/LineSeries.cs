@@ -114,6 +114,17 @@ namespace LiveCharts.Wpf
             set { SetValue(LineSmoothnessProperty, value); }
         }
 
+        public static readonly DependencyProperty AreaLimitProperty = DependencyProperty.Register(
+            "AreaLimit", typeof(double), typeof(LineSeries), new PropertyMetadata(double.NaN));
+        /// <summary>
+        /// Gets or sets the limit where the fill area changes orientation
+        /// </summary>
+        public double AreaLimit
+        {
+            get { return (double) GetValue(AreaLimitProperty); }
+            set { SetValue(AreaLimitProperty, value); }
+        }
+
         #endregion
 
         #region Overridden Methods
@@ -131,20 +142,24 @@ namespace LiveCharts.Wpf
 
             SplittersCollector++;
 
-            var uw = ChartFunctions.GetUnitWidth(AxisOrientation.X, Model.Chart, ScalesXAt);
-            var zero = ChartFunctions.ToDrawMargin(0, AxisOrientation.Y, Model.Chart, ScalesYAt);
+            var uw = Model.Chart.AxisX[ScalesXAt].EvaluatesUnitWidth
+                ? ChartFunctions.GetUnitWidth(AxisOrientation.X, Model.Chart, ScalesXAt)/2
+                : 0;
+            var areaLimit = Model.Chart.DrawMargin.Height;
+            if (!double.IsNaN(AreaLimit))
+                areaLimit = ChartFunctions.ToDrawMargin(AreaLimit, AxisOrientation.Y, Model.Chart, ScalesYAt);
 
             if (Figure != null && Values != null)
             {
                 var xi = (ActualValues.GetPoints(this).FirstOrDefault() ?? new ChartPoint()).X;
                 xi = ChartFunctions.ToDrawMargin(xi, AxisOrientation.X, Model.Chart, ScalesXAt);
-                xi += uw / 2;
-
+                xi += uw;
+                
                 if (Model.Chart.View.DisableAnimations)
                     Figure.StartPoint = new Point(xi, Model.Chart.DrawMargin.Height);
                 else
                     Figure.BeginAnimation(PathFigure.StartPointProperty,
-                        new PointAnimation(new Point(xi, zero /*Model.Chart.DrawMargin.Height*/),
+                        new PointAnimation(new Point(xi, areaLimit),
                             Model.Chart.View.AnimationsSpeed));
             }
 
@@ -182,8 +197,8 @@ namespace LiveCharts.Wpf
 
             var x = (ActualValues.GetPoints(this).FirstOrDefault() ?? new ChartPoint()).X;
             x = ChartFunctions.ToDrawMargin(x, AxisOrientation.X, Model.Chart, ScalesXAt);
-            x += uw/2;
-            Figure.StartPoint = new Point(x, zero /*Model.Chart.DrawMargin.Height*/);
+            x += uw;
+            Figure.StartPoint = new Point(x, areaLimit);
         }
 
         public override IChartPointView GetPointView(IChartPointView view, ChartPoint point, string label)
@@ -367,9 +382,13 @@ namespace LiveCharts.Wpf
             var animSpeed = Model.Chart.View.AnimationsSpeed;
             var noAnim = Model.Chart.View.DisableAnimations;
 
-            var zero = ChartFunctions.ToDrawMargin(0, AxisOrientation.Y, Model.Chart, ScalesYAt);
-            var uw = ChartFunctions.GetUnitWidth(AxisOrientation.X, Model.Chart, ScalesXAt);
-            location.X -= uw/2;
+            var areaLimit = Model.Chart.DrawMargin.Height;
+            if (!double.IsNaN(AreaLimit))
+                areaLimit = ChartFunctions.ToDrawMargin(AreaLimit, AxisOrientation.Y, Model.Chart, ScalesYAt);
+            var uw = Model.Chart.AxisX[ScalesXAt].EvaluatesUnitWidth
+                ? ChartFunctions.GetUnitWidth(AxisOrientation.X, Model.Chart, ScalesXAt)/2
+                : 0;
+            location.X -= uw;
 
             if (splitter.IsNew)
             {
@@ -378,10 +397,10 @@ namespace LiveCharts.Wpf
 
             Figure.Segments.Remove(splitter.Right);
             if (noAnim)
-                splitter.Right.Point = new Point(location.X, zero /*Model.Chart.DrawMargin.Height*/);
+                splitter.Right.Point = new Point(location.X, areaLimit);
             else
                 splitter.Right.BeginAnimation(LineSegment.PointProperty,
-                    new PointAnimation(new Point(location.X, zero /*Model.Chart.DrawMargin.Height*/), animSpeed));
+                    new PointAnimation(new Point(location.X, areaLimit), animSpeed));
             Figure.Segments.Insert(atIndex, splitter.Right);
 
             splitter.IsNew = false;
