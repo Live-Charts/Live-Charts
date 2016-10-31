@@ -27,6 +27,7 @@ namespace LiveCharts.Definitions.Series
     public interface ILineSeriesView : ISeriesView
     {
         double LineSmoothness { get; set; }
+        double AreaLimit { get; set; }
         void StartSegment(int atIndex, CorePoint location);
         void EndSegment(int atIndex, CorePoint location);
     }
