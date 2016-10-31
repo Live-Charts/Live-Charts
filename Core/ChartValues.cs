@@ -88,10 +88,10 @@ namespace LiveCharts
 
             var ax = seriesView.Model.Chart.AxisX[seriesView.ScalesXAt];
             var ay = seriesView.Model.Chart.AxisY[seriesView.ScalesYAt];
-            double fx = ax.MinValue ?? double.NegativeInfinity,
-                tx = ax.MaxValue ?? double.PositiveInfinity,
-                fy = ay.MinValue ?? double.NegativeInfinity,
-                ty = ay.MaxValue ?? double.PositiveInfinity;
+            double fx = double.IsNaN(ax.MinValue) ? double.NegativeInfinity : ax.MinValue,
+                tx = double.IsNaN(ax.MaxValue) ? double.PositiveInfinity : ax.MaxValue,
+                fy = double.IsNaN(ay.MinValue) ? double.NegativeInfinity : ay.MinValue,
+                ty = double.IsNaN(ay.MaxValue) ? double.PositiveInfinity : ay.MaxValue;
 
             var isHorizontal = seriesView.Model.SeriesOrientation == SeriesOrientation.Horizontal;
 

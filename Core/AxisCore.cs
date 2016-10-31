@@ -56,8 +56,8 @@ namespace LiveCharts
         public Func<double, string> LabelFormatter { get; set; }
         public double StrokeThickness { get; set; }
         public bool ShowLabels { get; set; }
-        public double? MaxValue { get; set; }
-        public double? MinValue { get; set; }
+        public double MaxValue { get; set; }
+        public double MinValue { get; set; }
         public string Title { get; set; }
         public bool DisableAnimations { get; set; }
         public AxisPosition Position { get; set; }
@@ -105,9 +105,9 @@ namespace LiveCharts
             var minimum = range/separations;
             Magnitude = Math.Pow(10, Math.Floor(Math.Log(minimum)/Math.Log(10)));
 
-            if (Separator.Step != null)
+            if (!double.IsNaN(Separator.Step))
             {
-                S = Separator.Step ?? 1;
+                S = Separator.Step;
                 return;
             }
 

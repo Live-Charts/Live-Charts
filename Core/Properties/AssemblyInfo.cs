@@ -29,6 +29,7 @@ using System.Runtime.CompilerServices;
 [assembly: AssemblyFileVersion("0.7.17")]
 
 [assembly: InternalsVisibleTo("LiveCharts.Wpf")]
+[assembly: InternalsVisibleTo("LiveCharts.Uwp")]
 [assembly: InternalsVisibleTo("LiveCharts.Geared")]
 
 [assembly: InternalsVisibleTo("LiveCharts.Wpf,PublicKey=0024000004800000940000000602000000240000525341310004000001000100fd75e78956f97c7369ca28eb4214633471da9d13357dc192414bec59b911c99718d9d16a803e527a40a42f947bb297e9d2236d9e541937c4acfc0bc1ca8ee57114963445259b14532d56951de47e773d790110f63b04721bb853c23d9db25c45b83b45dea9aa4157aba95ad890bf69a7d2583e711c786a32817ab1937f43e7d5")]

@@ -26,9 +26,9 @@ namespace LiveCharts.Definitions.Charts
     {
         bool IsEnabled { get; set; }
         /// <summary>
-        /// Gets or sets separator step, this means the value between each line, use null for auto.
+        /// Gets or sets separator step, this means the value between each line, use double.NaN for auto.
         /// </summary>
-        double? Step { get; set; }
+        double Step { get; set; }
 
         SeparatorConfigurationCore AsCoreElement(AxisCore axis);
     }

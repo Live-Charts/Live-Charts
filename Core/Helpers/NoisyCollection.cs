@@ -176,7 +176,7 @@ namespace LiveCharts.Helpers
         /// </summary>
         /// <param name="value">item to add</param>
         /// <returns>number of items in the collection</returns>
-        public int Add(object value)
+        int IList.Add(object value)
         {
             var v = (T) value;
             Add(v);

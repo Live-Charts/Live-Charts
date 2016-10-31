@@ -44,8 +44,8 @@ namespace LiveCharts.Wpf
         #region Constructors
         public GeoMap()
         {
-            Canvas = new Canvas {ClipToBounds = true};
-            Map = new Canvas {ClipToBounds = true};
+            Canvas = new Canvas();
+            Map = new Canvas();
             Canvas.Children.Add(Map);
             Content = Canvas;
 

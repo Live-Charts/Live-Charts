@@ -1,0 +1,59 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:uwp="using:LiveCharts.Uwp">
+
+    <Style TargetType="uwp:CartesianChart">
+        <Setter Property="Background" Value="#1E1E1E"></Setter>
+        <Setter Property="Colors">
+            <Setter.Value>
+                <uwp:ColorsCollection>
+                    <Color>#CB2194F1</Color>
+                    <Color>#CBF24336</Color>
+                    <Color>#CBFDBF07</Color>
+                    <Color>#CB607D89</Color>
+                    <Color>#CB00BAD2</Color>
+                    <Color>#CBE71E63</Color>
+                    <Color>#CBFD5722</Color>
+                    <Color>#CB3F51B3</Color>
+                    <Color>#CB009486</Color>
+                    <Color>#CB4CAD50</Color>
+                </uwp:ColorsCollection>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    
+    <Style TargetType="uwp:Axis">
+        <Setter Property="FontSize" Value="14"></Setter>
+    </Style>
+
+    <Style TargetType="uwp:Separator">
+        <Setter Property="StrokeThickness" Value="1"></Setter>
+        <Setter Property="Stroke" Value="Blue"></Setter>
+    </Style>
+    
+    <Style x:Key="SeriesStyle" TargetType="uwp:Series">
+        <Setter Property="FontSize" Value="13.5"></Setter>
+        <Setter Property="StrokeThickness" Value="2"></Setter>
+    </Style>
+    <Style TargetType="uwp:LineSeries" BasedOn="{StaticResource SeriesStyle}">
+        <Setter Property="PointForeround" Value="#424242"></Setter>
+    </Style>
+    <Style TargetType="uwp:VerticalLineSeries" BasedOn="{StaticResource SeriesStyle}">
+        <Setter Property="PointForeround" Value="#424242"></Setter>
+    </Style>
+    <Style TargetType="uwp:StepLineSeries" BasedOn="{StaticResource SeriesStyle}">
+        <Setter Property="PointForeround" Value="#424242"></Setter>
+    </Style>
+    <Style TargetType="uwp:RowSeries" BasedOn="{StaticResource SeriesStyle}"></Style>
+    <Style TargetType="uwp:ColumnSeries" BasedOn="{StaticResource SeriesStyle}"></Style>
+    <Style TargetType="uwp:StackedRowSeries" BasedOn="{StaticResource SeriesStyle}"></Style>
+    <Style TargetType="uwp:StackedColumnSeries" BasedOn="{StaticResource SeriesStyle}"></Style>
+    <Style TargetType="uwp:StackedAreaSeries" BasedOn="{StaticResource SeriesStyle}"></Style>
+    <Style TargetType="uwp:VerticalStackedAreaSeries" BasedOn="{StaticResource SeriesStyle}"></Style>
+    <Style TargetType="uwp:OhlcSeries" BasedOn="{StaticResource SeriesStyle}"></Style>
+    <Style TargetType="uwp:CandleSeries" BasedOn="{StaticResource SeriesStyle}"></Style>
+    <Style TargetType="uwp:ScatterSeries" BasedOn="{StaticResource SeriesStyle}"></Style>
+    <Style TargetType="uwp:HeatSeries" BasedOn="{StaticResource SeriesStyle}"></Style>
+    <Style TargetType="uwp:PieSeries" BasedOn="{StaticResource SeriesStyle}"></Style>
+    
+</ResourceDictionary>

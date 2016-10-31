@@ -42,7 +42,7 @@ namespace LiveCharts.SeriesAlgorithms
             var i = 0;
             foreach (var current in View.ActualValues.GetPoints(View))
             {
-                current.View = View.GetPointView(current.View, current,
+                current.View = View.GetPointView(current,
                     View.DataLabels ? View.GetLabelPointFormatter()(current) : null);
 
                 current.SeriesView = View;

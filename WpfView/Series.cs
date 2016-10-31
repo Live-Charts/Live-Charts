@@ -177,7 +177,7 @@ namespace LiveCharts.Wpf
 
         public static readonly DependencyProperty FontFamilyProperty = DependencyProperty.Register(
             "FontFamily", typeof (FontFamily), typeof (Series), 
-            new PropertyMetadata(default(FontFamily)));
+            new PropertyMetadata(new FontFamily("Segoe UI")));
         /// <summary>
         /// Gets or sets labels font family
         /// </summary>
@@ -348,11 +348,10 @@ namespace LiveCharts.Wpf
         /// <summary>
         /// Gets the view of a given point
         /// </summary>
-        /// <param name="view"></param>
         /// <param name="point"></param>
         /// <param name="label"></param>
         /// <returns></returns>
-        public virtual IChartPointView GetPointView(IChartPointView view, ChartPoint point, string label)
+        public virtual IChartPointView GetPointView(ChartPoint point, string label)
         {
             throw new NotImplementedException();
         }

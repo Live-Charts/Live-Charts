@@ -38,6 +38,6 @@ namespace LiveCharts
         /// <summary>
         /// Gets or sets sepator step, this means the value between each line, use null for auto.
         /// </summary>
-        public double? Step { get; set; }
+        public double Step { get; set; }
     }
 }
