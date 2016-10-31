@@ -91,6 +91,7 @@ namespace LiveCharts.SeriesAlgorithms
                 segmentPosition += segmentPosition == 0 ? 1 : 2;
 
                 ChartPoint previousDrawn = null;
+                var isOpen = false;
 
                 for (var index = 0; index < segment.Count; index++)
                 {
@@ -164,8 +165,10 @@ namespace LiveCharts.SeriesAlgorithms
                     {
                         p3 = new CorePoint(p3.X + uw.X, p3.Y - uw.Y);
                     }
+
+                    isOpen = true;
                 }
-                lineView.EndSegment(segmentPosition, p1);
+                if (isOpen) lineView.EndSegment(segmentPosition, p1);
                 segmentPosition++;
             }
         }

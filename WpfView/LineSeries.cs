@@ -371,7 +371,6 @@ namespace LiveCharts.Wpf
             var uw = ChartFunctions.GetUnitWidth(AxisOrientation.X, Model.Chart, ScalesXAt);
             location.X -= uw/2;
 
-
             if (splitter.IsNew)
             {
                 splitter.Right.Point = new Point(location.X, Model.Chart.DrawMargin.Height);
