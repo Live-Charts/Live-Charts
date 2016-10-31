@@ -114,6 +114,17 @@ namespace LiveCharts.Uwp
             set { SetValue(LineSmoothnessProperty, value); }
         }
 
+        public static readonly DependencyProperty AreaLimitProperty = DependencyProperty.Register(
+            "AreaLimit", typeof(double), typeof(LineSeries), new PropertyMetadata(double.NaN));
+        /// <summary>
+        /// Gets or sets the limit where the fill area changes orientation
+        /// </summary>
+        public double AreaLimit
+        {
+            get { return (double)GetValue(AreaLimitProperty); }
+            set { SetValue(AreaLimitProperty, value); }
+        }
+
         #endregion
 
         #region Overridden Methods
@@ -122,7 +133,7 @@ namespace LiveCharts.Uwp
         {
             ActiveSplitters = 0;
 
-            if (SplittersCollector == short.MaxValue - 1)
+            if (SplittersCollector == int.MaxValue - 1)
             {
                 //just in case!
                 Splitters.ForEach(s => s.SplitterCollectorIndex = 0);
@@ -131,16 +142,24 @@ namespace LiveCharts.Uwp
 
             SplittersCollector++;
 
+            var uw = Model.Chart.AxisX[ScalesXAt].EvaluatesUnitWidth
+                ? ChartFunctions.GetUnitWidth(AxisOrientation.X, Model.Chart, ScalesXAt) / 2
+                : 0;
+            var areaLimit = Model.Chart.DrawMargin.Height;
+            if (!double.IsNaN(AreaLimit))
+                areaLimit = ChartFunctions.ToDrawMargin(AreaLimit, AxisOrientation.Y, Model.Chart, ScalesYAt);
+
             if (Figure != null && Values != null)
             {
-                var xIni = ChartFunctions.ToDrawMargin(ActualValues.GetTracker(this).XLimit.Min, AxisOrientation.X, Model.Chart, ScalesXAt);
+                var xi = (ActualValues.GetPoints(this).FirstOrDefault() ?? new ChartPoint()).X;
+                xi = ChartFunctions.ToDrawMargin(xi, AxisOrientation.X, Model.Chart, ScalesXAt);
+                xi += uw;
 
                 if (Model.Chart.View.DisableAnimations)
-                    Figure.StartPoint = new Point(xIni, Model.Chart.DrawMargin.Height);
+                    Figure.StartPoint = new Point(xi, areaLimit);
                 else
                     Figure.BeginPointAnimation(nameof(PathFigure.StartPoint),
-                        new Point(xIni, Model.Chart.DrawMargin.Height),
-                        Model.Chart.View.AnimationsSpeed);
+                        new Point(xi, areaLimit), Model.Chart.View.AnimationsSpeed);
             }
 
             if (IsPathInitialized)
@@ -167,7 +186,7 @@ namespace LiveCharts.Uwp
             };
 
             Canvas.SetZIndex(Path, Canvas.GetZIndex(this));
-      
+
             var geometry = new PathGeometry();
             Figure = new PathFigure();
             geometry.Figures.Add(Figure);
@@ -175,8 +194,10 @@ namespace LiveCharts.Uwp
 
             Model.Chart.View.EnsureElementBelongsToCurrentDrawMargin(Path);
 
-            var x = ChartFunctions.ToDrawMargin(ActualValues.GetTracker(this).XLimit.Min, AxisOrientation.X, Model.Chart, ScalesXAt);
-            Figure.StartPoint = new Point(x, Model.Chart.DrawMargin.Height);
+            var x = (ActualValues.GetPoints(this).FirstOrDefault() ?? new ChartPoint()).X;
+            x = ChartFunctions.ToDrawMargin(x, AxisOrientation.X, Model.Chart, ScalesXAt);
+            x += uw;
+            Figure.StartPoint = new Point(x, areaLimit);
         }
 
         public override IChartPointView GetPointView(ChartPoint point, string label)
@@ -347,10 +368,18 @@ namespace LiveCharts.Uwp
 
         public virtual void EndSegment(int atIndex, CorePoint location)
         {
-            var splitter = Splitters[ActiveSplitters-1];
+            var splitter = Splitters[ActiveSplitters - 1];
 
             var animSpeed = Model.Chart.View.AnimationsSpeed;
             var noAnim = Model.Chart.View.DisableAnimations;
+
+            var areaLimit = Model.Chart.DrawMargin.Height;
+            if (!double.IsNaN(AreaLimit))
+                areaLimit = ChartFunctions.ToDrawMargin(AreaLimit, AxisOrientation.Y, Model.Chart, ScalesYAt);
+            var uw = Model.Chart.AxisX[ScalesXAt].EvaluatesUnitWidth
+                ? ChartFunctions.GetUnitWidth(AxisOrientation.X, Model.Chart, ScalesXAt) / 2
+                : 0;
+            location.X -= uw;
 
             if (splitter.IsNew)
             {
@@ -359,9 +388,9 @@ namespace LiveCharts.Uwp
 
             Figure.Segments.Remove(splitter.Right);
             if (noAnim)
-                splitter.Right.Point = new Point(location.X, Model.Chart.DrawMargin.Height);
+                splitter.Right.Point = new Point(location.X, areaLimit);
             else
-                splitter.Right.BeginPointAnimation(nameof(LineSegment.Point), new Point(location.X, Model.Chart.DrawMargin.Height), animSpeed);
+                splitter.Right.BeginPointAnimation(nameof(LineSegment.Point), new Point(location.X, areaLimit), animSpeed);
             Figure.Segments.Insert(atIndex, splitter.Right);
 
             splitter.IsNew = false;
