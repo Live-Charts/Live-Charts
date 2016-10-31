@@ -27,7 +27,7 @@ namespace Wpf.CartesianChart.MixingSeries
                     new ObservableValue(5),
                     new ObservableValue(7),
                     new ObservableValue(2),
-                    new ObservableValue(3),
+                    new ObservableValue(3)
                 },
                 PointForeround = new SolidColorBrush(Color.FromRgb(50,50,50))
             };
@@ -50,7 +50,7 @@ namespace Wpf.CartesianChart.MixingSeries
                     new ObservableValue(5),
                     new ObservableValue(7),
                     new ObservableValue(2),
-                    new ObservableValue(3),
+                    new ObservableValue(3)
                 }
             };
 
@@ -64,7 +64,7 @@ namespace Wpf.CartesianChart.MixingSeries
             DataContext = this;
         }
 
-        public LiveCharts.Wpf.ScatterSeries ScatterSeries { get; set; }
+        public ScatterSeries ScatterSeries { get; set; }
         public LineSeries LineSeries { get; set; }
         public ColumnSeries ColumnSeries { get; set; }
         public SeriesCollection SeriesCollection { get; set; }
