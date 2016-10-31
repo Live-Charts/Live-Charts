@@ -609,7 +609,7 @@ namespace LiveCharts.Wpf.Charts.Base
 
         public List<AxisCore> MapXAxes(ChartCore chart)
         {
-            if (DesignerProperties.GetIsInDesignMode(this) && AxisX == null)
+            if (DesignerProperties.GetIsInDesignMode(this) || AxisX == null)
                 AxisX = DefaultAxes.DefaultAxis;
 
             if (AxisX.Count == 0) AxisX.AddRange(DefaultAxes.CleanAxis);
@@ -626,7 +626,7 @@ namespace LiveCharts.Wpf.Charts.Base
 
         public List<AxisCore> MapYAxes(ChartCore chart)
         {
-            if (DesignerProperties.GetIsInDesignMode(this) && AxisY == null)
+            if (DesignerProperties.GetIsInDesignMode(this) || AxisY == null)
                 AxisY = DefaultAxes.DefaultAxis;
 
             if (AxisY.Count == 0) AxisY.AddRange(DefaultAxes.DefaultAxis);
