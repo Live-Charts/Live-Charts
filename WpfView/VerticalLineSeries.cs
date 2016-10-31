@@ -22,6 +22,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -79,7 +80,8 @@ namespace LiveCharts.Wpf
 
             if (Figure != null && Values != null)
             {
-                var yIni = ChartFunctions.ToDrawMargin(Values.GetTracker(this).YLimit.Min, AxisOrientation.Y, Model.Chart, ScalesYAt);
+                var yiIni = (ActualValues.GetPoints(this).FirstOrDefault() ?? new ChartPoint()).X;
+                var yIni = ChartFunctions.ToDrawMargin(yiIni, AxisOrientation.Y, Model.Chart, ScalesYAt);
 
                 if (Model.Chart.View.DisableAnimations)
                     Figure.StartPoint = new Point(0, yIni);
@@ -120,7 +122,8 @@ namespace LiveCharts.Wpf
             Path.Data = geometry;
             Model.Chart.View.AddToDrawMargin(Path);
 
-            var y = ChartFunctions.ToDrawMargin(ActualValues.GetTracker(this).YLimit.Min, AxisOrientation.Y, Model.Chart, ScalesYAt);
+            var yi = (ActualValues.GetPoints(this).FirstOrDefault() ?? new ChartPoint()).X;
+            var y = ChartFunctions.ToDrawMargin(yi, AxisOrientation.Y, Model.Chart, ScalesYAt);
             Figure.StartPoint = new Point(0, y);
         }
 

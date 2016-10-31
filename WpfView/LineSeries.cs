@@ -131,15 +131,20 @@ namespace LiveCharts.Wpf
 
             SplittersCollector++;
 
+            var uw = ChartFunctions.GetUnitWidth(AxisOrientation.X, Model.Chart, ScalesXAt);
+            var zero = ChartFunctions.ToDrawMargin(0, AxisOrientation.Y, Model.Chart, ScalesYAt);
+
             if (Figure != null && Values != null)
             {
-                var xIni = ChartFunctions.ToDrawMargin(ActualValues.GetTracker(this).XLimit.Min, AxisOrientation.X, Model.Chart, ScalesXAt);
+                var xi = (ActualValues.GetPoints(this).FirstOrDefault() ?? new ChartPoint()).X;
+                xi = ChartFunctions.ToDrawMargin(xi, AxisOrientation.X, Model.Chart, ScalesXAt);
+                xi += uw / 2;
 
                 if (Model.Chart.View.DisableAnimations)
-                    Figure.StartPoint = new Point(xIni, Model.Chart.DrawMargin.Height);
+                    Figure.StartPoint = new Point(xi, Model.Chart.DrawMargin.Height);
                 else
                     Figure.BeginAnimation(PathFigure.StartPointProperty,
-                        new PointAnimation(new Point(xIni, Model.Chart.DrawMargin.Height),
+                        new PointAnimation(new Point(xi, zero /*Model.Chart.DrawMargin.Height*/),
                             Model.Chart.View.AnimationsSpeed));
             }
 
@@ -175,8 +180,10 @@ namespace LiveCharts.Wpf
             
             Model.Chart.View.EnsureElementBelongsToCurrentDrawMargin(Path);
 
-            var x = ChartFunctions.ToDrawMargin(ActualValues.GetTracker(this).XLimit.Min, AxisOrientation.X, Model.Chart, ScalesXAt);
-            Figure.StartPoint = new Point(x, Model.Chart.DrawMargin.Height);
+            var x = (ActualValues.GetPoints(this).FirstOrDefault() ?? new ChartPoint()).X;
+            x = ChartFunctions.ToDrawMargin(x, AxisOrientation.X, Model.Chart, ScalesXAt);
+            x += uw/2;
+            Figure.StartPoint = new Point(x, zero /*Model.Chart.DrawMargin.Height*/);
         }
 
         public override IChartPointView GetPointView(IChartPointView view, ChartPoint point, string label)
@@ -360,6 +367,11 @@ namespace LiveCharts.Wpf
             var animSpeed = Model.Chart.View.AnimationsSpeed;
             var noAnim = Model.Chart.View.DisableAnimations;
 
+            var zero = ChartFunctions.ToDrawMargin(0, AxisOrientation.Y, Model.Chart, ScalesYAt);
+            var uw = ChartFunctions.GetUnitWidth(AxisOrientation.X, Model.Chart, ScalesXAt);
+            location.X -= uw/2;
+
+
             if (splitter.IsNew)
             {
                 splitter.Right.Point = new Point(location.X, Model.Chart.DrawMargin.Height);
@@ -367,10 +379,10 @@ namespace LiveCharts.Wpf
 
             Figure.Segments.Remove(splitter.Right);
             if (noAnim)
-                splitter.Right.Point = new Point(location.X, Model.Chart.DrawMargin.Height);
+                splitter.Right.Point = new Point(location.X, zero /*Model.Chart.DrawMargin.Height*/);
             else
                 splitter.Right.BeginAnimation(LineSegment.PointProperty,
-                    new PointAnimation(new Point(location.X, Model.Chart.DrawMargin.Height), animSpeed));
+                    new PointAnimation(new Point(location.X, zero /*Model.Chart.DrawMargin.Height*/), animSpeed));
             Figure.Segments.Insert(atIndex, splitter.Right);
 
             splitter.IsNew = false;

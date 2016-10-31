@@ -44,8 +44,7 @@ namespace LiveCharts.SeriesAlgorithms
 
             var segmentPosition = 0;
 
-            var lineView = View as ILineSeriesView;
-            if (lineView == null) return;
+            var lineView = (ILineSeriesView) View;
 
             var smoothness = lineView.LineSmoothness;
             smoothness = smoothness > 1 ? 1 : (smoothness < 0 ? 0 : smoothness);
