@@ -261,7 +261,7 @@ namespace LiveCharts.Wpf
 
             if (section.Model != null && section.Model.Chart != null)
             {
-                if (!section.Model.Chart.SectionsIntialized) return;
+                if (!section.Model.Chart.AreComponentsLoaded) return;
                 section.DrawOrMove(section.Model.Source, section.Model.AxisIndex);
             }
 

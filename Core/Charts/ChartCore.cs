@@ -54,7 +54,7 @@ namespace LiveCharts.Charts
 
         public static Charting Configurations { get; set; }
         public bool SeriesInitialized { get; set; }
-        public bool SectionsIntialized { get; set; }
+        public bool AreComponentsLoaded { get; set; }
         public IChartView View { get; set; }
         public ChartUpdater Updater { get; set; }
         public CoreSize ControlSize { get; set; }
