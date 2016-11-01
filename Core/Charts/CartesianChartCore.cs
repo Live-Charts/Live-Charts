@@ -130,6 +130,8 @@ namespace LiveCharts.Charts
             PrepareSeries();
             CalculateComponentsAndMargin();
             DrawOrUpdateSections();
+
+            AreComponentsLoaded = true;
         }
 
         public override void RunSpecializedChartComponents()
@@ -163,7 +165,7 @@ namespace LiveCharts.Charts
                     section.View.DrawOrMove(AxisOrientation.Y, index);
                 }
             }
-            SectionsIntialized = true;
+            
         }
 
         #endregion
