@@ -13,6 +13,7 @@ using UWP.CartesianChart.CustomTooltipAndLegend;
 using UWP.CartesianChart.DynamicVisibility;
 using UWP.CartesianChart.Financial;
 using UWP.CartesianChart.FullyResponsive;
+using UWP.CartesianChart.GanttChart;
 using UWP.CartesianChart.HeatChart;
 using UWP.CartesianChart.InLineSyntax;
 using UWP.CartesianChart.Inverted_Series;
@@ -52,6 +53,7 @@ namespace UWP.Commons
             new SampleDefinition("Home", typeof(MainPage), SampleCategory.Information),
             new SampleDefinition("Basic Column", typeof(BasicColumn), SampleCategory.CartesianChart),
             new SampleDefinition("Basic Row", typeof(BasicRowExample), SampleCategory.CartesianChart),
+            new SampleDefinition("Gantt Chart", typeof(GanttExample), SampleCategory.CartesianChart),
             new SampleDefinition("Basic Stacked Column", typeof(BasicStackedColumnExample), SampleCategory.CartesianChart),
             new SampleDefinition("Basic Stacked Row Percentage", typeof(BasicStackedRowPercentageExample), SampleCategory.CartesianChart),
             new SampleDefinition("Basic Line", typeof(BasicLineExample), SampleCategory.CartesianChart),
