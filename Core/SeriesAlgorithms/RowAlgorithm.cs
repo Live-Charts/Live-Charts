@@ -82,10 +82,16 @@ namespace LiveCharts.SeriesAlgorithms
 
                 var rectangleView = (IRectanglePointView) chartPoint.View;
 
-                var w = Math.Abs(reference.X - zero);
+                var w = reference.X - zero > 0 ? reference.X - zero : 0;
                 var l = reference.X < zero
                     ? reference.X
                     : zero;
+
+                if (chartPoint.EvaluatesGantt)
+                {
+                    l = ChartFunctions.ToDrawMargin(chartPoint.XStart, AxisOrientation.X, Chart, View.ScalesXAt);
+                    w -= l;
+                }
 
                 rectangleView.Data.Height = singleRowHeight - padding;
                 rectangleView.Data.Top = reference.Y + relativeTop - correction;

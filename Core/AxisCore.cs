@@ -322,13 +322,22 @@ namespace LiveCharts
         #region Public Methods
         public Func<double, string> GetFormatter()
         {
-            return x => Labels == null
-                ? (LabelFormatter == null
+            return Formatter;
+        }
+
+        private string Formatter(double x)
+        {
+            if (Labels == null)
+            {
+                return LabelFormatter == null
                     ? x.ToString(CultureInfo.InvariantCulture)
-                    : LabelFormatter(x))
-                : (Labels.Count > x && x >= 0
-                    ? Labels[(int) x]
-                    : "");
+                    : LabelFormatter(x);
+            }
+
+            if (x < 0) x *= -1;
+            return Labels.Count > x && x >= 0
+                ? Labels[(int) x]
+                : "";
         }
 
         public void ClearSeparators()

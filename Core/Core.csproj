@@ -56,14 +56,16 @@
     <Compile Include="Charts\PieChartCore.cs" />
     <Compile Include="ChartUpdater.cs" />
     <Compile Include="ChartValues.cs" />
+    <Compile Include="Configurations\CartesianMapper.cs" />
     <Compile Include="Configurations\WeightedMapper.cs" />
     <Compile Include="Configurations\PolarMapper.cs" />
-    <Compile Include="Configurations\CartesianMapper.cs" />
+    <Compile Include="Configurations\GanttMapper.cs" />
     <Compile Include="Configurations\FinancialMapper.cs" />
     <Compile Include="Configurations\IPointEvaluator.cs" />
     <Compile Include="Configurations\Mappers.cs" />
     <Compile Include="Defaults\AxisLimits.cs" />
     <Compile Include="Defaults\DateTimePoint.cs" />
+    <Compile Include="Defaults\GanttPoint.cs" />
     <Compile Include="Defaults\HeatPoint.cs" />
     <Compile Include="Defaults\PolarPoint.cs" />
     <Compile Include="Defaults\ObservablePoint.cs" />
