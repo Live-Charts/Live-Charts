@@ -151,6 +151,9 @@
     <Compile Include="CartesianChart\FullyResponsive\FullyResponsiveExample.xaml.cs">
       <DependentUpon>FullyResponsiveExample.xaml</DependentUpon>
     </Compile>
+    <Compile Include="CartesianChart\GanttChart\GanttExample.xaml.cs">
+      <DependentUpon>GanttExample.xaml</DependentUpon>
+    </Compile>
     <Compile Include="CartesianChart\HeatChart\HeatSeriesExample.xaml.cs">
       <DependentUpon>HeatSeriesExample.xaml</DependentUpon>
     </Compile>
@@ -350,6 +353,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="CartesianChart\FullyResponsive\FullyResponsiveExample.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CartesianChart\GanttChart\GanttExample.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

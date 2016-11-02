@@ -1,4 +1,4 @@
-//The MIT License(MIT)
+﻿//The MIT License(MIT)
 
 //copyright(c) 2016 Alberto Rodriguez
 
@@ -20,61 +20,73 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-namespace LiveCharts.Configurations
+using System;
+
+namespace LiveCharts.Defaults
 {
     /// <summary>
-    /// Gets the already built point mappers
+    /// Defines a Gantt point in a cartesian chart
     /// </summary>
-    public static class Mappers
+    public class GanttPoint : IObservableChartPoint
     {
+        private double _startPoint;
+        private double _endPoint;
+
         /// <summary>
-        /// Gets a mapper to configure X, Y points
+        /// Initializes a new instance of GanttPoint class.
         /// </summary>
-        /// <typeparam name="T">Type to map</typeparam>
-        /// <returns>A new cartesian mapper instance</returns>
-        public static CartesianMapper<T> Xy<T>()
+        public GanttPoint()
         {
-            return new CartesianMapper<T>();
+            
         }
 
         /// <summary>
-        /// Gets a mapper to configure financial points
+        /// Initializes a new instance of GanttPoint class with given start and end points.
         /// </summary>
-        /// <typeparam name="T">type to map</typeparam>
-        /// <returns>a new financial mapper instance</returns>
-        public static FinancialMapper<T> Financial<T>()
+        public GanttPoint(double startPoint, double endPoint)
         {
-            return new FinancialMapper<T>();
+            StartPoint = startPoint;
+            EndPoint = endPoint;
+        }
+         
+        /// <summary>
+        /// Gets or sets point start
+        /// </summary>
+        public double StartPoint
+        {
+            get { return _startPoint; }
+            set
+            {
+                _startPoint = value;
+                OnPointChanged();
+            }
         }
 
         /// <summary>
-        /// Gets a mapper to configure X, Y and Weight points
+        /// Gets or sets point end
         /// </summary>
-        /// <typeparam name="T">type to map</typeparam>
-        /// <returns>a new weighted mapper instance</returns>
-        public static WeightedMapper<T> Weighted<T>()
+        public double EndPoint
         {
-            return new WeightedMapper<T>();
+            get { return _endPoint; }
+            set
+            {
+                _endPoint = value;
+                OnPointChanged();
+            }
         }
 
         /// <summary>
-        /// Gets a Gantt Mapper
+        /// PointChanged event
         /// </summary>
-        /// <typeparam name="T">type to amp</typeparam>
-        /// <returns>a new polar mapper insance</returns>
-        public static GanttMapper<T> Gantt<T>()
-        {
-            return new GanttMapper<T>();
-        }
+        public event Action PointChanged;
 
         /// <summary>
-        /// Gets a mapper to configure Radius and Angle
+        /// OnPoint property changed method
         /// </summary>
-        /// <typeparam name="T">type to amp</typeparam>
-        /// <returns>a new polar mapper insance</returns>
-        public static PolarMapper<T> Polar<T>()
+        protected virtual void OnPointChanged()
         {
-            return new PolarMapper<T>();
+            if (PointChanged != null)
+                PointChanged.Invoke();
         }
     }
 }

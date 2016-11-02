@@ -187,7 +187,10 @@ namespace LiveCharts.Wpf
             SetCurrentValue(RowPaddingProperty, 2d);
             SetCurrentValue(LabelsPositionProperty, BarLabelPosition.Top);
 
-            Func<ChartPoint, string> defaultLabel = x => Model.CurrentXAxis.GetFormatter()(x.X);
+            Func<ChartPoint, string> defaultLabel = x => x.EvaluatesGantt
+                ? string.Format("starts {0}, ends {1}", Model.CurrentXAxis.GetFormatter()(x.XStart),
+                    Model.CurrentXAxis.GetFormatter()(x.X))
+                : Model.CurrentXAxis.GetFormatter()(x.X);
             SetCurrentValue(LabelPointProperty, defaultLabel);
 
             DefaultFillOpacity = 1;

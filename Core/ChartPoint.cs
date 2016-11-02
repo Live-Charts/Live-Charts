@@ -46,6 +46,22 @@ namespace LiveCharts
 
         #endregion
 
+        /// <summary>
+        /// Gets the Gantt x start value
+        /// </summary>
+        public double XStart { get; set; }
+
+        /// <summary>
+        /// Gets the Gantt y start value
+        /// </summary>
+        public double YStart { get; set; }
+
+        internal bool EvaluatesGantt { get; set; }
+
+        #region Gantt
+
+        #endregion
+
         #region Weighted
 
         /// <summary>

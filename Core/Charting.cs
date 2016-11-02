@@ -162,6 +162,15 @@ namespace LiveCharts
                 .X(value => value.Value)
                 .Y(value => value.DateTime.Ticks), SeriesOrientation.Vertical);
 
+            For<GanttPoint>(Mappers.Gantt<GanttPoint>()
+                .X((v, i) => -i)
+                .YStart(v => v.StartPoint)
+                .Y(v => v.EndPoint), SeriesOrientation.Horizontal);
+            For<GanttPoint>(Mappers.Gantt<GanttPoint>()
+                .Y((v, i) => -i)
+                .XStart(v => v.StartPoint)
+                .X(v => v.EndPoint), SeriesOrientation.Vertical);
+
         }
 
         /// <summary>

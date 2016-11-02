@@ -7,6 +7,7 @@ using Winforms.Cartesian.DataPagination;
 using Winforms.Cartesian.DateTime;
 using Winforms.Cartesian.DynamicVisibility;
 using Winforms.Cartesian.FullyResponsive;
+using Winforms.Cartesian.GanttChart;
 using Winforms.Cartesian.HeatSeriesExample;
 using Winforms.Cartesian.Inverted_Series;
 using Winforms.Cartesian.Irregular_Intervals;
@@ -169,6 +170,11 @@ namespace Winforms
         private void button13_Click(object sender, EventArgs e)
         {
             new StepLineExample().ShowDialog();
+        }
+
+        private void button14_Click(object sender, EventArgs e)
+        {
+            new GanttExample().ShowDialog();
         }
     }
 }

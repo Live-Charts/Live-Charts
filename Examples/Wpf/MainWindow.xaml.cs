@@ -12,6 +12,7 @@ using Wpf.CartesianChart.Customized_Line_Series;
 using Wpf.CartesianChart.CustomTooltipAndLegend;
 using Wpf.CartesianChart.DynamicVisibility;
 using Wpf.CartesianChart.Financial;
+using Wpf.CartesianChart.GanttChart;
 using Wpf.CartesianChart.HeatChart;
 using Wpf.CartesianChart.Inverted_Series;
 using Wpf.CartesianChart.Irregular_Intervals;
@@ -71,6 +72,7 @@ namespace Wpf
                 new BasicStackedColumnExample(),
                 new PointStateExample(),
                 new BasicRowExample(),
+                new GanttExample(),
                 new MultiAxesChart(),
                 new GeoMapExample(),
                 new UiElementsExample(),

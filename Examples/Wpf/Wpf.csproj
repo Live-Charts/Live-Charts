@@ -79,6 +79,9 @@
     <Compile Include="CartesianChart\Financial\CandleStickExample.xaml.cs">
       <DependentUpon>CandleStickExample.xaml</DependentUpon>
     </Compile>
+    <Compile Include="CartesianChart\GanttChart\GanttExample.xaml.cs">
+      <DependentUpon>GanttExample.xaml</DependentUpon>
+    </Compile>
     <Compile Include="CartesianChart\Linq\City.cs" />
     <Compile Include="CartesianChart\Linq\DataBase.cs" />
     <Compile Include="CartesianChart\Linq\LinqExample.xaml.cs">
@@ -121,6 +124,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="CartesianChart\Financial\CandleStickExample.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CartesianChart\GanttChart\GanttExample.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
