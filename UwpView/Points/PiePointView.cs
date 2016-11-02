@@ -90,8 +90,8 @@ namespace LiveCharts.Uwp.Points
                     var lx = cp.X + chart.DrawMargin.Width / 2 - DataLabel.ActualWidth * .5;
                     var ly = chart.DrawMargin.Height/2 - cp.Y - DataLabel.ActualHeight*.5;
 
-                    Canvas.SetTop(DataLabel, lx);
-                    Canvas.SetLeft(DataLabel, ly);
+                    Canvas.SetLeft(DataLabel, lx);
+                    Canvas.SetTop(DataLabel, ly);
                 }
 
                 return;

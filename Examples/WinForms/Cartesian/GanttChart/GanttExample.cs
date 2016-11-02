@@ -10,7 +10,7 @@ namespace Winforms.Cartesian.GanttChart
 {
     public partial class GanttExample : Form
     {
-        private readonly ChartValues<GanttPoint> _values;
+        private ChartValues<GanttPoint> _values;
 
         public GanttExample()
         {
