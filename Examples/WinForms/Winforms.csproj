@@ -129,6 +129,12 @@
     <Compile Include="Cartesian\FullyResponsive\FullyResponsive.Designer.cs">
       <DependentUpon>FullyResponsive.cs</DependentUpon>
     </Compile>
+    <Compile Include="Cartesian\GanttChart\GanttExample.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Cartesian\GanttChart\GanttExample.Designer.cs">
+      <DependentUpon>GanttExample.cs</DependentUpon>
+    </Compile>
     <Compile Include="Cartesian\HeatSeriesExample\HeatSeriesExample.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -306,6 +312,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Cartesian\FullyResponsive\FullyResponsive.resx">
       <DependentUpon>FullyResponsive.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Cartesian\GanttChart\GanttExample.resx">
+      <DependentUpon>GanttExample.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Cartesian\HeatSeriesExample\HeatSeriesExample.resx">
       <DependentUpon>HeatSeriesExample.cs</DependentUpon>
