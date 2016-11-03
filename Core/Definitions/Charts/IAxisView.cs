@@ -39,6 +39,7 @@ namespace LiveCharts.Definitions.Charts
         double BarUnit { get; set; }
         double PreviousMaxValue { get; }
         double PreviousMinValue { get; }
+        AxisOrientation AxisOrientation { get; }
 
         CoreSize UpdateTitle(ChartCore chart, double rotationAngle = 0);
         void SetTitleTop(double value);

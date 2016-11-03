@@ -9,9 +9,9 @@
         WindowStartupLocation="CenterScreen"
         WindowState="Normal"
         d:DataContext="{d:DesignInstance local:MainWindow}">
-    <!--<Window.Resources>
-        <ResourceDictionary Source="pack://application:,,,/LiveCharts.Wpf;component/Themes/LightMaterial.xaml"></ResourceDictionary>
-    </Window.Resources>-->
+    <Window.Resources>
+        <ResourceDictionary Source="pack://application:,,,/LiveCharts.Wpf;component/Themes/default.xaml"></ResourceDictionary>
+    </Window.Resources>
     <ScrollViewer>
         <StackPanel Margin="15 0">
             <Image Source="lvlogo.png" Height="50" Margin="15"></Image>

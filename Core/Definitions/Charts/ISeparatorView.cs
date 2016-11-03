@@ -29,7 +29,8 @@ namespace LiveCharts.Definitions.Charts
         /// Gets or sets separator step, this means the value between each line, use double.NaN for auto.
         /// </summary>
         double Step { get; set; }
+        AxisOrientation AxisOrientation { get; }
 
-        SeparatorConfigurationCore AsCoreElement(AxisCore axis);
+        SeparatorConfigurationCore AsCoreElement(AxisCore axis, AxisOrientation source);
     }
 }

@@ -101,14 +101,27 @@ namespace LiveCharts.Wpf
             set { SetValue(StepProperty, value); }
         }
 
+        public static readonly DependencyProperty AxisOrientationProperty = DependencyProperty.Register(
+            "AxisOrientation", typeof(AxisOrientation), typeof(Separator), new PropertyMetadata(default(AxisOrientation)));
+        /// <summary>
+        /// Gets or sets the element orientation ind the axis
+        /// </summary>
+        public AxisOrientation AxisOrientation
+        {
+            get { return (AxisOrientation)GetValue(AxisOrientationProperty); }
+            internal set { SetValue(AxisOrientationProperty, value); }
+        }
+
         #endregion
 
-        public SeparatorConfigurationCore AsCoreElement(AxisCore axis)
+        public SeparatorConfigurationCore AsCoreElement(AxisCore axis, AxisOrientation source)
         {
+            AxisOrientation = source;
             return new SeparatorConfigurationCore(axis)
             {
                 IsEnabled = IsEnabled,
-                Step = Step
+                Step = Step,
+                Source = source
             };
         }
 
