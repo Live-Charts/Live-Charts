@@ -1,0 +1,9 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:system="using:System">
+
+    <system:Double x:Key="SeparatorStrokeThickness">1.3</system:Double>
+    <DoubleCollection x:Key="SeparatorStrokeDashArray"></DoubleCollection>
+    <system:Double x:Key="SeriesStrokeThickness">1</system:Double>
+
+</ResourceDictionary>

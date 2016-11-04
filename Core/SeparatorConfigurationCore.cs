@@ -39,5 +39,7 @@ namespace LiveCharts
         /// Gets or sets sepator step, this means the value between each line, use null for auto.
         /// </summary>
         public double Step { get; set; }
+
+        public AxisOrientation Source { get; set; }
     }
 }
