@@ -16,23 +16,39 @@
         <SplitView x:Name="SamplesSplitView" DisplayMode="Overlay" x:FieldModifier="Public">
             <SplitView.Pane>
                 <Grid>
-                    <ListView x:Name="SampleList" ItemsSource="{Binding Source={StaticResource SampleViewSource}}"
-                            IsItemClickEnabled="True" SelectionMode="None" ItemClick="SampleList_ItemClick">
-                        <ListView.GroupStyle>
-                            <GroupStyle>
-                                <GroupStyle.HeaderTemplate>
+                    <SemanticZoom>
+                        <SemanticZoom.ZoomedInView>
+                            <ListView x:Name="SampleList" 
+                                      ItemsSource="{x:Bind SampleViewSource.View}"
+                                      IsItemClickEnabled="True" SelectionMode="None" ItemClick="SampleList_ItemClick">
+                                <ListView.GroupStyle>
+                                    <GroupStyle>
+                                        <GroupStyle.HeaderTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Key}" FontSize="15" FontWeight="Bold" Foreground="#EC2471"/>
+                                            </DataTemplate>
+                                        </GroupStyle.HeaderTemplate>
+                                    </GroupStyle>
+                                </ListView.GroupStyle>
+                                <ListView.ItemTemplate>
                                     <DataTemplate>
-                                        <TextBlock Text="{Binding Key}" FontSize="15" FontWeight="Bold" Foreground="#EC2471"/>
+                                        <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Text="{Binding Name}" />
                                     </DataTemplate>
-                                </GroupStyle.HeaderTemplate>
-                            </GroupStyle>
-                        </ListView.GroupStyle>
-                        <ListView.ItemTemplate>
-                            <DataTemplate>
-                                <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Text="{Binding Name}" />
-                            </DataTemplate>
-                        </ListView.ItemTemplate>
-                    </ListView>
+                                </ListView.ItemTemplate>
+                            </ListView>
+                        </SemanticZoom.ZoomedInView>
+                        <SemanticZoom.ZoomedOutView>
+                            <ListView ItemsSource="{x:Bind SampleViewSource.View.CollectionGroups}" 
+                                      ScrollViewer.IsHorizontalScrollChainingEnabled="False" SelectionMode="None">
+                                <ListView.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Group.Key}" FontSize="15" FontWeight="Bold" Foreground="#EC2471"/>
+                                    </DataTemplate>
+                                </ListView.ItemTemplate>
+                            </ListView>
+                        </SemanticZoom.ZoomedOutView>
+                    </SemanticZoom>
+
                 </Grid>
             </SplitView.Pane>
             <Grid>
