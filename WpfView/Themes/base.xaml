@@ -2,12 +2,6 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:lvc="clr-namespace:LiveCharts.Wpf">
 
-    <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="pack://application:,,,/LiveCharts.Wpf;component/Themes/Colors/material.xaml"/>
-        <ResourceDictionary Source="pack://application:,,,/LiveCharts.Wpf;component/Themes/Size/s.xaml"/>
-        <ResourceDictionary Source="pack://application:,,,/LiveCharts.Wpf;component/Themes/Weight/bold.xaml"/>
-    </ResourceDictionary.MergedDictionaries>
-    
     <Style TargetType="lvc:CartesianChart">
         <Setter Property="AnimationsSpeed" Value="0:0:0.420"></Setter>
         <Setter Property="SeriesColors" Value="{StaticResource ColorsCollection}"/>

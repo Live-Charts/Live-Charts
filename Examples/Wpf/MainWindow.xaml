@@ -9,11 +9,8 @@
         WindowStartupLocation="CenterScreen"
         WindowState="Normal"
         d:DataContext="{d:DesignInstance local:MainWindow}">
-    <Window.Resources>
-        <ResourceDictionary Source="pack://application:,,,/LiveCharts.Wpf;component/Themes/default.xaml"></ResourceDictionary>
-    </Window.Resources>
     <ScrollViewer>
-        <StackPanel Margin="15 0">
+        <StackPanel Margin="15 0"> 
             <Image Source="lvlogo.png" Height="50" Margin="15"></Image>
             <TextBlock TextWrapping="Wrap">
             Welcome to LiveCharts examples, LiveCharts is designed to be powerful, customizable, maintainable and easy to use for the user.
