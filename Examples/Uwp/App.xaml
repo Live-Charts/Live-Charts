@@ -2,10 +2,40 @@
     x:Class="UWP.App"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:UWP"
     RequestedTheme="Light">
     <Application.Resources>
         <ResourceDictionary>
+            
+            <!--Not working...-->
+            <!--<ResourceDictionary.MergedDictionaries>
+                --><!--Select colors set, options are material, metro, blue, white and black-->
+
+                <!--Material design colors--><!--
+                <ResourceDictionary Source="ms-appx:///LiveCharts.Uwp/Themes/Colors/material.xaml" />
+                --><!--Metro colors--><!--<ResourceDictionary Source="ms-appx:///LiveCharts.Uwp/Themes/Colors/metro.xaml" />-->
+                <!--Blue gradient--><!--<ResourceDictionary Source="ms-appx:///LiveCharts.Uwp/Themes/Colors/blue.xaml" />-->
+                <!--white gradient--><!--<ResourceDictionary Source="ms-appx:///LiveCharts.Uwp/Themes/Colors/white.xaml" />-->
+                <!--black gradient--><!--<ResourceDictionary Source="ms-appx:///LiveCharts.Uwp/Themes/Colors/black.xaml" />-->
+
+                
+                <!--Select size, options are small, medium and large-->
+
+                <!--small--><!--<ResourceDictionary Source="ms-appx:///LiveCharts.Uwp/Themes/Size/s.xaml" />-->
+                <!--medium--><!--<ResourceDictionary Source="ms-appx:///LiveCharts.Uwp/Themes/Size/m.xaml" />
+                --><!--large--><!--<ResourceDictionary Source="ms-appx:///LiveCharts.Uwp/LiveCharts.Wpf;component/Themes/Size/l.xaml" />-->
+
+                
+                <!--Select weight, options are light, normal and bold-->
+
+                <!--light--><!--<ResourceDictionary Source="ms-appx:///LiveCharts.Uwp/Themes/Weight/light.xaml" />-->
+                <!--normal--><!--<ResourceDictionary Source="ms-appx:///LiveCharts.Uwp/Themes/Weight/normal.xaml" />
+                --><!--bold--><!--<ResourceDictionary Source="ms-appx:///LiveCharts.Uwp/Themes/Weight/bold.xaml" />-->
+                
+                <!--Also add the base theme, this is required always--><!--
+                <ResourceDictionary Source="ms-appx:///LiveCharts.Uwp/Themes/base.xaml" />
+                
+            </ResourceDictionary.MergedDictionaries>-->
+            
             <ControlTemplate x:Key="SplitViewTogglePaneButtonTemplate" TargetType="Button">
                 <Grid x:Name="RootGrid" Background="{TemplateBinding Background}">
                     <VisualStateManager.VisualStateGroups>

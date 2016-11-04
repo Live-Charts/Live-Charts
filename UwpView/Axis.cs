@@ -347,6 +347,17 @@ namespace LiveCharts.Uwp
             set { SetValue(IsEnabledProperty, value); }
         }
 
+        public static readonly DependencyProperty AxisOrientationProperty = DependencyProperty.Register(
+            "AxisOrientation", typeof(AxisOrientation), typeof(Axis), new PropertyMetadata(default(AxisOrientation)));
+        /// <summary>
+        /// Gets or sets the element orientation ind the axis
+        /// </summary>
+        public AxisOrientation AxisOrientation
+        {
+            get { return (AxisOrientation)GetValue(AxisOrientationProperty); }
+            internal set { SetValue(AxisOrientationProperty, value); }
+        }
+
         #endregion
 
         #region Public Methods
@@ -463,7 +474,7 @@ namespace LiveCharts.Uwp
             Model.MinValue = MinValue;
             Model.Title = Title;
             Model.Position = Position;
-            Model.Separator = Separator.AsCoreElement(Model);
+            Model.Separator = Separator.AsCoreElement(Model, source);
             Model.DisableAnimations = DisableAnimations;
             Model.Sections = Sections.Select(x => x.AsCoreElement(Model, source)).ToList();
 

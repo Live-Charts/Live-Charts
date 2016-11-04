@@ -240,7 +240,19 @@ namespace LiveCharts.Wpf.Charts.Base
         /// <summary>
         /// Gets or sets the application level default series color list
         /// </summary>
+        [Obsolete("This property will be removed ion future versions, Use Chart.SeriesColors property instead, this new property is no longer static, this way we can easily skin or theme up our charts.")]
         public static List<Color> Colors { get; set; }
+
+        public static readonly DependencyProperty SeriesColorsProperty = DependencyProperty.Register(
+            "SeriesColors", typeof(ColorsCollection), typeof(Chart), new PropertyMetadata(default(ColorsCollection)));
+        /// <summary>
+        /// Gets or sets 
+        /// </summary>
+        public ColorsCollection SeriesColors
+        {
+            get { return (ColorsCollection) GetValue(SeriesColorsProperty); }
+            set { SetValue(SeriesColorsProperty, value); }
+        }
 
         public static readonly DependencyProperty AxisYProperty = DependencyProperty.Register(
             "AxisY", typeof(AxesCollection), typeof(Chart),
@@ -622,11 +634,17 @@ namespace LiveCharts.Wpf.Charts.Base
             if (DesignerProperties.GetIsInDesignMode(this) || AxisX == null)
                 AxisX = DefaultAxes.DefaultAxis;
 
-            if (AxisX.Count == 0) AxisX.AddRange(DefaultAxes.CleanAxis);
+            //if (AxisX.Count == 0)
+            //    AxisX.AddRange(DefaultAxes.CleanAxis);
+
+            if (AxisX.Count == 0)
+                AxisX.Add(new Axis {Separator = new Separator()});
+
             return AxisX.Select(x =>
             {
                 if (x.Parent == null)
                 {
+                    x.AxisOrientation = AxisOrientation.X;
                     if (x.Separator != null) chart.View.AddToView(x.Separator);
                     chart.View.AddToView(x);
                 }
@@ -639,11 +657,21 @@ namespace LiveCharts.Wpf.Charts.Base
             if (DesignerProperties.GetIsInDesignMode(this) || AxisY == null)
                 AxisY = DefaultAxes.DefaultAxis;
 
-            if (AxisY.Count == 0) AxisY.AddRange(DefaultAxes.DefaultAxis);
-            return AxisY.Select(x =>
+            //if (AxisY.Count == 0)
+            //    AxisY.AddRange(DefaultAxes.DefaultAxis);
+
+            if (AxisY.Count == 0)
+                AxisY.Add(new Axis {Separator = new Separator()});
+
+            return AxisY.Select(y =>
             {
-                if (x.Parent == null) chart.View.AddToView(x);
-                return x.AsCoreElement(Model, AxisOrientation.Y);
+                if (y.Parent == null)
+                {
+                    y.AxisOrientation = AxisOrientation.Y;
+                    if (y.Separator != null) chart.View.AddToView(y.Separator);
+                    chart.View.AddToView(y);
+                }
+                return y.AsCoreElement(Model, AxisOrientation.Y);
             }).ToList();
         }
 
@@ -652,6 +680,15 @@ namespace LiveCharts.Wpf.Charts.Base
             if (Series.CurrentSeriesIndex == int.MaxValue) Series.CurrentSeriesIndex = 0;
             var i = Series.CurrentSeriesIndex;
             Series.CurrentSeriesIndex++;
+
+            if (SeriesColors != null)
+            {
+                var rsc = RandomizeStartingColor
+                ? Randomizer.Next(0, SeriesColors.Count)
+                : 0;
+                return SeriesColors[(i + rsc) % SeriesColors.Count];
+            }
+
             var r = RandomizeStartingColor ? Randomizer.Next(0, Colors.Count) : 0;
             return Colors[(i + r)%Colors.Count];
         }

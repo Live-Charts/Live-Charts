@@ -254,12 +254,23 @@ namespace LiveCharts.Uwp.Charts.Base
         /// <summary>
         /// Gets or sets the application level default series color list
         /// </summary>
+        [Obsolete("This property will be removed ion future versions, Use Chart.SeriesColors property instead, this new property is no longer static, this way we can easily skin or theme up our charts.")]
         public static List<Color> Colors { get; set; }
+
+        public static readonly DependencyProperty SeriesColorsProperty = DependencyProperty.Register(
+            "SeriesColors", typeof(ColorsCollection), typeof(Chart), new PropertyMetadata(default(ColorsCollection)));
+        /// <summary>
+        /// Gets or sets 
+        /// </summary>
+        public ColorsCollection SeriesColors
+        {
+            get { return (ColorsCollection)GetValue(SeriesColorsProperty); }
+            set { SetValue(SeriesColorsProperty, value); }
+        }
 
         public static readonly DependencyProperty AxisYProperty = DependencyProperty.Register(
             "AxisY", typeof(AxesCollection), typeof(Chart),
             new PropertyMetadata(null, CallChartUpdater()));
-
         /// <summary>
         /// Gets or sets vertical axis
         /// </summary>
@@ -650,6 +661,7 @@ namespace LiveCharts.Uwp.Charts.Base
                 {
                     if (x.Separator != null) chart.View.AddToView(x.Separator);
                     chart.View.AddToView(x);
+                    x.AxisOrientation = AxisOrientation.X;
                 }
                 return x.AsCoreElement(Model, AxisOrientation.X);
             }).ToList();
@@ -661,10 +673,15 @@ namespace LiveCharts.Uwp.Charts.Base
                 AxisY = DefaultAxes.DefaultAxis;
 
             if (AxisY.Count == 0) AxisY.AddRange(DefaultAxes.DefaultAxis);
-            return AxisY.Select(x =>
+            return AxisY.Select(y =>
             {
-                if (x.Parent == null) chart.View.AddToView(x);
-                return x.AsCoreElement(Model, AxisOrientation.Y);
+                if (y.Parent == null)
+                {
+                    if (y.Separator != null) chart.View.AddToView(y.Separator);
+                    chart.View.AddToView(y);
+                    y.AxisOrientation = AxisOrientation.Y;
+                }
+                return y.AsCoreElement(Model, AxisOrientation.Y);
             }).ToList();
         }
 
@@ -673,7 +690,18 @@ namespace LiveCharts.Uwp.Charts.Base
             if (Series.CurrentSeriesIndex == short.MaxValue) Series.CurrentSeriesIndex = 0;
             var i = Series.CurrentSeriesIndex;
             Series.CurrentSeriesIndex++;
-            var r = RandomizeStartingColor ? Randomizer.Next(0, Colors.Count) : 0;
+
+            if (SeriesColors != null)
+            {
+                var rsc = RandomizeStartingColor
+                ? Randomizer.Next(0, SeriesColors.Count)
+                : 0;
+                return SeriesColors[(i + rsc) % SeriesColors.Count];
+            }
+
+            var r = RandomizeStartingColor
+                ? Randomizer.Next(0, Colors.Count)
+                : 0;
             return Colors[(i + r)%Colors.Count];
         }
 
