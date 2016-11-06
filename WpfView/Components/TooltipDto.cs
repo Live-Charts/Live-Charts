@@ -24,6 +24,9 @@ using System.Windows.Media;
 
 namespace LiveCharts.Wpf.Components
 {
+    /// <summary>
+    /// A tooltip element data transfer object
+    /// </summary>
     public class TooltipDto
     {
         public Series Series { get; set; }

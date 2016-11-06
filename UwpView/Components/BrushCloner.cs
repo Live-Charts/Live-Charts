@@ -24,7 +24,7 @@ using Windows.UI.Xaml.Media;
 
 namespace LiveCharts.Uwp.Components
 {
-    public static class BrushCloner
+    internal static class BrushCloner
     {
         public static Brush Clone(this Brush brush)
         {

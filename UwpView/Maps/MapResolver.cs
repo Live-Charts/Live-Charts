@@ -27,7 +27,7 @@ using LiveCharts.Maps;
 
 namespace LiveCharts.Uwp.Maps
 {
-    public static class MapResolver
+    internal static class MapResolver
     {
         public static LvcMap Get(string file)
         {
