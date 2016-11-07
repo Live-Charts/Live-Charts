@@ -2,20 +2,10 @@
 using LiveCharts.Configurations;
 using LiveCharts.Defaults;
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -46,8 +36,8 @@ namespace UWP.CartesianChart.PointState
             Mapper = Mappers.Xy<ObservableValue>()
                 .X((item, index) => index)
                 .Y(item => item.Value)
-                .Fill(item => item.Value > 200 ? DangerBrush : OkBrush)
-                .Stroke(item => new SolidColorBrush(Colors.Transparent));
+                .Fill(item => item.Value > 200 ? DangerBrush : null)
+                .Stroke(item => item.Value > 200 ? DangerBrush : null);
 
             Formatter = x => x + " ms";
             OkBrush = new SolidColorBrush(Color.FromArgb(255, 254, 192, 7));

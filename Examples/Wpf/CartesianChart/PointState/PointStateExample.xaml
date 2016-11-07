@@ -15,7 +15,9 @@
         <Button Grid.Row="0" Click="UpdateDataOnClick">Update Data</Button>
         <lvc:CartesianChart Grid.Row="1">
             <lvc:CartesianChart.Series>
-                <lvc:LineSeries Values="{Binding Values}" PointGeometrySize="25" 
+                <lvc:LineSeries Values="{Binding Values}" 
+                                PointGeometrySize="20" 
+                                PointForeround="White"
                                 Configuration="{Binding Mapper}"/>
             </lvc:CartesianChart.Series>
         </lvc:CartesianChart>
