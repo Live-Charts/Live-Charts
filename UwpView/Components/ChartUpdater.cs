@@ -28,7 +28,7 @@ using LiveCharts.Uwp.Charts.Base;
 
 namespace LiveCharts.Uwp.Components
 {
-    public class ChartUpdater : LiveCharts.ChartUpdater
+    internal class ChartUpdater : LiveCharts.ChartUpdater
     {
         public ChartUpdater(TimeSpan frequency)
         {

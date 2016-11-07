@@ -191,6 +191,12 @@
     <Compile Include="Cartesian\NegativeStackedRow\NegativeStackedRow.Designer.cs">
       <DependentUpon>NegativeStackedRow.cs</DependentUpon>
     </Compile>
+    <Compile Include="Cartesian\PointState\PointState.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Cartesian\PointState\PointState.Designer.cs">
+      <DependentUpon>PointState.cs</DependentUpon>
+    </Compile>
     <Compile Include="Cartesian\ScatterExample\ScatterForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -342,6 +348,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Cartesian\NegativeStackedRow\NegativeStackedRow.resx">
       <DependentUpon>NegativeStackedRow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Cartesian\PointState\PointState.resx">
+      <DependentUpon>PointState.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Cartesian\ScatterExample\ScatterForm.resx">
       <DependentUpon>ScatterForm.cs</DependentUpon>

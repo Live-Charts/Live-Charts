@@ -6,7 +6,7 @@ using Windows.UI.Xaml.Shapes;
 
 namespace LiveCharts.Uwp.Components
 {
-    public static class AnimationsHelper
+    internal static class AnimationsHelper
     {
         public static DoubleAnimation CreateDouble(double? to, Duration duration, string targetProperty)
         {

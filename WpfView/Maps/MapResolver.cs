@@ -23,15 +23,12 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Windows.Controls;
 using System.Xml;
-using System.Xml.Linq;
-using LiveCharts.Helpers;
 using LiveCharts.Maps;
 
 namespace LiveCharts.Wpf.Maps
 {
-    public static class MapResolver
+    internal static class MapResolver
     {
         public static LvcMap Get(string file)
         {

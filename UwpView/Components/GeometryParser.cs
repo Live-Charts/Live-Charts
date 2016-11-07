@@ -8,7 +8,7 @@ namespace LiveCharts.Uwp.Components
     /// <summary>
     /// A String-To-PathGeometry Parser from https://stringtopathgeometry.codeplex.com/
     /// </summary>
-    public class GeometryParser
+    internal class GeometryParser
     {
         #region Const & Private Variables
         const bool AllowSign = true;
