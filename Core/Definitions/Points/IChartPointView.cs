@@ -21,13 +21,15 @@
 //SOFTWARE.
 
 using LiveCharts.Charts;
+using LiveCharts.Dtos;
 
 namespace LiveCharts.Definitions.Points
 {
 
     public interface IChartPointView
     {
-        bool IsNew { get; set; }
+        bool IsNew { get; }
+        CoreRectangle ValidArea { get; }
         void DrawOrMove(ChartPoint previousDrawn, ChartPoint current, int index, ChartCore chart);
         void RemoveFromView(ChartCore chart);
         void OnHover(ChartPoint point);

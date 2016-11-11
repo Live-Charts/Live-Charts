@@ -23,6 +23,7 @@ using System.Windows.Controls;
 using System.Windows.Shapes;
 using LiveCharts.Charts;
 using LiveCharts.Definitions.Points;
+using LiveCharts.Dtos;
 
 namespace LiveCharts.Wpf.Points
 {
@@ -31,6 +32,7 @@ namespace LiveCharts.Wpf.Points
         public Shape HoverShape { get; set; }
         public TextBlock DataLabel { get; set; }
         public bool IsNew { get; set; }
+        public CoreRectangle ValidArea { get; internal set; }
 
         public virtual void DrawOrMove(ChartPoint previousDrawn, ChartPoint current, int index, ChartCore chart)
         {

@@ -49,6 +49,8 @@ namespace LiveCharts.Wpf.Points
             Container.Segments.Remove(Segment);
             Container.Segments.Insert(index, Segment);
 
+            ValidArea = new CoreRectangle(current.ChartLocation.X - 7.5, current.ChartLocation.Y - 7.5, 15, 15);
+
             if (IsNew)
             {
                 if (previosPbv != null && !previosPbv.IsNew)

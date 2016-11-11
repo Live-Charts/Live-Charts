@@ -25,6 +25,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using LiveCharts.Charts;
+using LiveCharts.Dtos;
 
 namespace LiveCharts.Wpf.Points
 {
@@ -36,6 +37,8 @@ namespace LiveCharts.Wpf.Points
 
             Container.Segments.Remove(Segment);
             Container.Segments.Insert(index, Segment);
+
+            ValidArea = new CoreRectangle(current.ChartLocation.X - 7.5, current.ChartLocation.Y - 7.5, 15, 15);
 
             if (IsNew)
             {

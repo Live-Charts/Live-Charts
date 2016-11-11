@@ -323,8 +323,8 @@ namespace LiveCharts.Charts
 
                     var target = l * speed;
                     if (target < yi.View.MinRange) return;
-                    var mint = pivot.X - target * rMin;
-                    var maxt = pivot.X + target * rMax;
+                    var mint = pivot.Y - target * rMin;
+                    var maxt = pivot.Y + target * rMax;
                     yi.View.SetRange(mint, maxt);
                 }
             }
