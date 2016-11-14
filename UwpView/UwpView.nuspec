@@ -10,7 +10,7 @@
     <projectUrl>http://lvcharts.net/</projectUrl>
     <iconUrl>http://lvcharts.net/Content/Images/Logos/lcred.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>Simple, flexible, interactive & powerful data visualization for Uwp</description>
+    <description>Simple, flexible, interactive and powerful data visualization for Uwp</description>
     <releaseNotes>Summary of changes made in this release of the package.</releaseNotes>
     <copyright>Copyright 2016</copyright>
     <tags>Chart Charting Plot Plotting</tags>
