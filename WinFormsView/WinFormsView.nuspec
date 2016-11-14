@@ -10,7 +10,7 @@
     <projectUrl>http://lvcharts.net/</projectUrl>
     <iconUrl>http://lvcharts.net/Content/Images/Logos/lcred.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>LiveCharts is a modern chartig library: Responsive, animated and MVVM orientated charts</description>
+    <description>Simple, flexible, interactive & powerful data visualization for WinForms</description>
     <releaseNotes>See https://github.com/beto-rodriguez/Live-Charts/releases</releaseNotes>
     <copyright>Copyright 2016</copyright>
     <tags>Chart Charting Plot Plotting WinForms</tags> 

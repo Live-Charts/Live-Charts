@@ -1,22 +1,18 @@
 <?xml version="1.0"?>
 <package >
   <metadata>
-    <id>LiveCharts</id>
+    <id>LiveCharts.Uwp</id>
     <version>0.0.0.0</version>
-    <title>LiveCharts</title>
+    <title>LiveCharts.Uwp</title>
     <authors>Beto Rodriguez</authors>
     <owners>Beto Rodriguez</owners>
     <licenseUrl>https://github.com/beto-rodriguez/Live-Charts/blob/master/LICENSE.TXT</licenseUrl>
     <projectUrl>http://lvcharts.net/</projectUrl>
     <iconUrl>http://lvcharts.net/Content/Images/Logos/lcred.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>Simple, flexible, interactive & powerful data visualization for .Net</description>
-    <releaseNotes>See https://github.com/beto-rodriguez/Live-Charts/releases</releaseNotes>
+    <description>Simple, flexible, interactive & powerful data visualization for Uwp</description>
+    <releaseNotes>Summary of changes made in this release of the package.</releaseNotes>
     <copyright>Copyright 2016</copyright>
-    <tags>Chart Charting Plot Plotting</tags>     
+    <tags>Chart Charting Plot Plotting</tags>
   </metadata>
-  <files>
-    <file src="readme.txt" target="" />
-    <file src="bin\Release\LiveCharts.dll" target="lib\portable-net40+sl5+win8+wp8+wpa81" />
-  </files>
 </package>
