@@ -18,6 +18,7 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
+using System;
 using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
@@ -58,8 +59,6 @@ namespace LiveCharts.Wpf
             SetCurrentValue(StrokeProperty, new SolidColorBrush(Color.FromRgb(131, 172, 191)));
             SetCurrentValue(FillProperty, new SolidColorBrush(Color.FromRgb(131, 172, 191)) {Opacity = .35});
             SetCurrentValue(StrokeThicknessProperty, 0d);
-            SetCurrentValue(FromValueProperty, 0d);
-            SetCurrentValue(ToValueProperty, 0d);
 
             BindingOperations.SetBinding(_label, TextBlock.TextProperty,
                 new Binding {Path = new PropertyPath(LabelProperty), Source = this});
@@ -81,10 +80,11 @@ namespace LiveCharts.Wpf
 
         public static readonly DependencyProperty FromValueProperty = DependencyProperty.Register(
             "FromValue", typeof(double), typeof(AxisSection),
-            new PropertyMetadata(default(double), UpdateSection));
+            new PropertyMetadata(double.NaN, UpdateSection));
         /// <summary>
         /// Gets or sets the value where the section starts
         /// </summary>
+        [Obsolete("This property will be removed in future versions, instead use Value and SectionWidth properties")]
         public double FromValue
         {
             get { return (double)GetValue(FromValueProperty); }
@@ -93,14 +93,37 @@ namespace LiveCharts.Wpf
 
         public static readonly DependencyProperty ToValueProperty = DependencyProperty.Register(
             "ToValue", typeof(double), typeof(AxisSection),
-            new PropertyMetadata(default(double), UpdateSection));
+            new PropertyMetadata(double.NaN, UpdateSection));
         /// <summary>
         /// Gets or sets the value where the section ends
         /// </summary>
+        [Obsolete("This property will be removed in future versions, instead use Value and SectionWidth properties")]
         public double ToValue
         {
             get { return (double)GetValue(ToValueProperty); }
             set { SetValue(ToValueProperty, value); }
+        }
+
+        public static readonly DependencyProperty ValueProperty = DependencyProperty.Register(
+            "Value", typeof(double), typeof(AxisSection), new PropertyMetadata(default(double), UpdateSection));
+        /// <summary>
+        /// Gets or sets the value where the section is drawn
+        /// </summary>
+        public double Value
+        {
+            get { return (double) GetValue(ValueProperty); }
+            set { SetValue(ValueProperty, value); }
+        }
+
+        public static readonly DependencyProperty SectionWidthProperty = DependencyProperty.Register(
+            "SectionWidth", typeof(double), typeof(AxisSection), new PropertyMetadata(default(double), UpdateSection));
+        /// <summary>
+        /// Gets or sets the section width
+        /// </summary>
+        public double SectionWidth
+        {
+            get { return (double) GetValue(SectionWidthProperty); }
+            set { SetValue(SectionWidthProperty, value); }
         }
 
         public static readonly DependencyProperty StrokeProperty = DependencyProperty.Register(
@@ -183,8 +206,8 @@ namespace LiveCharts.Wpf
             var ax = source == AxisOrientation.X ? Model.Chart.AxisX[axis] : Model.Chart.AxisY[axis];
             var uw = ax.EvaluatesUnitWidth ? ChartFunctions.GetUnitWidth(source, Model.Chart, axis)/2 : 0;
 
-            var from = ChartFunctions.ToDrawMargin(FromValue, source, Model.Chart, axis) + uw;
-            var to = ChartFunctions.ToDrawMargin(ToValue, source, Model.Chart, axis) + uw;
+            var from = ChartFunctions.ToDrawMargin(double.IsNaN(FromValue) ? Value : FromValue, source, Model.Chart, axis) + uw;
+            var to = ChartFunctions.ToDrawMargin(double.IsNaN(ToValue) ? Value + SectionWidth : ToValue, source, Model.Chart, axis) + uw;
 
             if (from > to)
             {

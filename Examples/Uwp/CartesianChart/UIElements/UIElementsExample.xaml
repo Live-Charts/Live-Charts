@@ -38,7 +38,7 @@
             <lvc:CartesianChart.AxisY>
                 <lvc:Axis IsMerged="True">
                     <lvc:Axis.Sections>
-                        <lvc:AxisSection FromValue="7" ToValue="7" 
+                        <lvc:AxisSection Value="7" 
                                          Stroke="YellowGreen" 
                                          StrokeThickness="3"/>
                     </lvc:Axis.Sections>

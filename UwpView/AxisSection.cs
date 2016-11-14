@@ -57,8 +57,8 @@ namespace LiveCharts.Uwp
             SetValue(StrokeProperty, new SolidColorBrush(Color.FromArgb(255, 131, 172, 191)));
             this.SetIfNotSet(FillProperty, new SolidColorBrush(Color.FromArgb(255, 131, 172, 191)) {Opacity = .35});
             this.SetIfNotSet(StrokeThicknessProperty, 0d);
-            this.SetIfNotSet(FromValueProperty, 0d);
-            this.SetIfNotSet(ToValueProperty, 0d);
+            this.SetIfNotSet(ValueProperty, 0d);
+            this.SetIfNotSet(SectionWidthProperty, 0d);
 
             BindingOperations.SetBinding(_label, TextBlock.TextProperty,
                 new Binding {Path = new PropertyPath(nameof(Label)), Source = this});
@@ -77,28 +77,26 @@ namespace LiveCharts.Uwp
             set { SetValue(LabelProperty, value); }
         }
 
-        public static readonly DependencyProperty FromValueProperty = DependencyProperty.Register(
-            "FromValue", typeof (double), typeof (AxisSection), 
-            new PropertyMetadata(default(double), UpdateSection));
+        public static readonly DependencyProperty ValueProperty = DependencyProperty.Register(
+            "Value", typeof(double), typeof(AxisSection), new PropertyMetadata(default(double), UpdateSection));
         /// <summary>
-        /// Gets or sets the value where the section starts
+        /// Gets or sets the value where the section is drawn
         /// </summary>
-        public double FromValue
+        public double Value
         {
-            get { return (double) GetValue(FromValueProperty); }
-            set { SetValue(FromValueProperty, value); }
+            get { return (double)GetValue(ValueProperty); }
+            set { SetValue(ValueProperty, value); }
         }
 
-        public static readonly DependencyProperty ToValueProperty = DependencyProperty.Register(
-            "ToValue", typeof (double), typeof (AxisSection), 
-            new PropertyMetadata(default(double), UpdateSection));
+        public static readonly DependencyProperty SectionWidthProperty = DependencyProperty.Register(
+            "SectionWidth", typeof(double), typeof(AxisSection), new PropertyMetadata(default(double), UpdateSection));
         /// <summary>
-        /// Gets or sets the value where the section ends
+        /// Gets or sets the section width
         /// </summary>
-        public double ToValue
+        public double SectionWidth
         {
-            get { return (double) GetValue(ToValueProperty); }
-            set { SetValue(ToValueProperty, value); }
+            get { return (double)GetValue(SectionWidthProperty); }
+            set { SetValue(SectionWidthProperty, value); }
         }
 
         public static readonly DependencyProperty DraggableProperty = DependencyProperty.Register(
@@ -179,9 +177,9 @@ namespace LiveCharts.Uwp
 
             var ax = source == AxisOrientation.X ? Model.Chart.AxisX[axis] : Model.Chart.AxisY[axis];
             var uw = ax.EvaluatesUnitWidth ? ChartFunctions.GetUnitWidth(source, Model.Chart, axis) / 2 : 0;
-            
-            var from = ChartFunctions.ToDrawMargin(FromValue, source, Model.Chart, axis) + uw;
-            var to = ChartFunctions.ToDrawMargin(ToValue, source, Model.Chart, axis) + uw;
+
+            var from = ChartFunctions.ToDrawMargin(Value, source, Model.Chart, axis) + uw;
+            var to = ChartFunctions.ToDrawMargin(Value + SectionWidth, source, Model.Chart, axis) + uw;
 
             if (from > to)
             {

@@ -25,8 +25,8 @@ namespace LiveCharts.Definitions.Charts
     public interface IAxisSectionView
     {
         AxisSectionCore Model { get; set; }
-        double FromValue { get; set; }
-        double ToValue { get; set; }
+        double Value { get; set; }
+        double SectionWidth { get; set; }
         bool Draggable { get; set; }
 
         void DrawOrMove(AxisOrientation source, int axis);
