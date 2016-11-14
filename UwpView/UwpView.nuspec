@@ -14,5 +14,12 @@
     <releaseNotes>Summary of changes made in this release of the package.</releaseNotes>
     <copyright>Copyright 2016</copyright>
     <tags>Chart Charting Plot Plotting</tags>
+    <dependencies>
+      <dependency id="LiveCharts" version="0.0.0.0" />
+    </dependencies>
   </metadata>
+  <files>
+    <file src="bin\Release\LiveCharts.Uwp.dll" target="lib\uap10.0"/>
+    <file src="install.ps1" target="tools" />  
+  </files>
 </package>

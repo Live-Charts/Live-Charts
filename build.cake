@@ -12,6 +12,11 @@ var coreBin = "./bin/";
 var coreSpec = "./Core/Core.nuspec";
 var coreBinary = "./Core/bin/Release/LiveCharts.dll";
 
+var corePath = "./UwpView/UwpView.csproj";
+var coreBin = "./bin/";
+var coreSpec = "./UwpView/UwpView.nuspec";
+var coreBinary = "./UwpView/bin/Release/LiveCharts.Uwp.dll";
+
 var buildTags = new string[] { "Debug", "403", "45", "451", "452", "46", "461" };
 var buildDirectories = new string[] { "./bin/Debug", "./bin/net403", "./bin/net45", "./bin/net451", "./bin/net452", "./bin/net46", "./bin/net461" };
 var configurationList = new string[] { "Debug", "net40", "net45", "net451", "net452", "net46", "net461" };
@@ -80,6 +85,26 @@ Task("WPF")
             NugetPack(wpfSpec, wpfBinary);
         }
         Information("-- WPF Packed --");
+    });
+
+//Build UWP
+Task("UWP")
+    .Does(() =>
+    {
+        Information("-- UWP - " + buildType.ToUpper() + " --");
+        var ouputDirectory = uwpBin + buildType;
+        if(!DirectoryExists(ouputDirectory))
+        {
+            CreateDirectory(ouputDirectory);
+        }
+
+        BuildProject(uwpPath, ouputDirectory, buildType);
+        
+        if(buildType == "Release")
+        {
+            NugetPack(uwpSpec, uwpBinary);
+        }
+        Information("-- UWP Packed --");
     });
 
 Task("WinForms")
