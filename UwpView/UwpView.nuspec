@@ -21,22 +21,10 @@
   </metadata>
   <files>
     <file src="install.ps1" target="tools" /> 
-    <file src="bin\ARM\LiveCharts.Uwp.dll" target="runtimes\win10-arm\native"/>
-    <file src="bin\ARM\LiveCharts.Uwp.pdb" target="runtimes\win10-arm\native"/>    
-    <file src="bin\ARM\LiveCharts.Uwp.xml" target="runtimes\win10-arm\native"/>
-    <file src="bin\ARM\LiveCharts.Uwp.pri" target="runtimes\win10-arm\native"/>
-    <file src="bin\ARM\LiveCharts.Uwp\*.*" target="runtimes\win10-arm\native\LiveCharts.Uwp"/>
-    
-    <file src="bin\x64\LiveCharts.Uwp.dll" target="runtimes\win10-x64\native"/>
-    <file src="bin\x64\LiveCharts.Uwp.pdb" target="runtimes\win10-x64\native"/>    
-    <file src="bin\x64\LiveCharts.Uwp.xml" target="runtimes\win10-x64\native"/>  
-    <file src="bin\x64\LiveCharts.Uwp.pri" target="runtimes\win10-x64\native"/>
-    <file src="bin\x64\LiveCharts.Uwp\*.*" target="runtimes\win10-x64\native\LiveCharts.Uwp"/>
-    
-    <file src="bin\x86\LiveCharts.Uwp.dll" target="runtimes\win10-x86\native"/>
-    <file src="bin\x86\LiveCharts.Uwp.pdb" target="runtimes\win10-x86\native"/>    
-    <file src="bin\x86\LiveCharts.Uwp.xml" target="runtimes\win10-x86\native"/>   
-    <file src="bin\x86\LiveCharts.Uwp.pri" target="runtimes\win10-x86\native"/>
-    <file src="bin\x86\LiveCharts.Uwp\*.*" target="runtimes\win10-x86\native\LiveCharts.Uwp"/>
+    <file src="bin\AnyCPU\LiveCharts.Uwp.dll" target="lib\uap10.0"/>
+    <file src="bin\AnyCPU\LiveCharts.Uwp.pdb" target="lib\uap10.0"/>    
+    <file src="bin\AnyCPU\LiveCharts.Uwp.xml" target="lib\uap10.0"/>
+    <file src="bin\AnyCPU\LiveCharts.Uwp.pri" target="lib\uap10.0"/>
+    <file src="bin\AnyCPU\LiveCharts.Uwp\*.*" target="lib\uap10.0\LiveCharts.Uwp"/>
   </files>
 </package>

@@ -79,15 +79,11 @@ Task("UWP")
     {
         Information("-- UWP - " + buildType.ToUpper() + " --");
 
-        if(!DirectoryExists("./bin/Arm")) CreateDirectory("./bin/Arm");
-        if(!DirectoryExists("./bin/x64")) CreateDirectory("./bin/x64");
-        if(!DirectoryExists("./bin/x86")) CreateDirectory("./bin/x86");
+        if(!DirectoryExists("./bin/AnyCPU")) CreateDirectory("./bin/AnyCPU");
         
-        BuildProject("./UwpView/UwpView.csproj", "./bin/Arm", buildType, "ARM");
-        BuildProject("./UwpView/UwpView.csproj", "./bin/x64", buildType, "x64");
-        BuildProject("./UwpView/UwpView.csproj", "./bin/x86", buildType, "x86");
+        BuildProject("./UwpView/UwpView.csproj", "./bin/AnyCPU", buildType, "AnyCPU");
 
-        if(buildType == "Release") NugetPack("./UwpView/UwpView.nuspec", "./UwpView/bin/x86/LiveCharts.Uwp.dll");
+        if(buildType == "Release") NugetPack("./UwpView/UwpView.nuspec", "./UwpView/bin/AnyCPU/LiveCharts.Uwp.dll");
 
         Information("-- UWP Packed --");
     });
