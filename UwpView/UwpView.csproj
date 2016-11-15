@@ -11,8 +11,8 @@
     <AssemblyName>LiveCharts.Uwp</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
-    <TargetPlatformVersion>10.0.14393.0</TargetPlatformVersion>
-    <TargetPlatformMinVersion>10.0.10240.0</TargetPlatformMinVersion>
+    <TargetPlatformVersion>10.0.10586.0</TargetPlatformVersion>
+    <TargetPlatformMinVersion>10.0.10586.0</TargetPlatformMinVersion>
     <MinimumVisualStudioVersion>14</MinimumVisualStudioVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -38,7 +38,7 @@
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Debug\LiveCharts.Uwp.XML</DocumentationFile>
     <GenerateLibraryLayout>true</GenerateLibraryLayout>
-    <TargetPlatformVersion>10.0</TargetPlatformVersion>
+    <TargetPlatformVersion>10.0.10586.0</TargetPlatformVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <PlatformTarget>x86</PlatformTarget>
@@ -63,7 +63,7 @@
     <ErrorReport>prompt</ErrorReport>
     <DocumentationFile>bin\Debug\LiveCharts.Uwp.XML</DocumentationFile>
     <GenerateLibraryLayout>true</GenerateLibraryLayout>
-    <TargetPlatformVersion>10.0</TargetPlatformVersion>
+    <TargetPlatformVersion>10.0.10586.0</TargetPlatformVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|ARM'">
     <PlatformTarget>ARM</PlatformTarget>
@@ -88,7 +88,7 @@
     <ErrorReport>prompt</ErrorReport>
     <DocumentationFile>bin\Debug\LiveCharts.Uwp.XML</DocumentationFile>
     <GenerateLibraryLayout>true</GenerateLibraryLayout>
-    <TargetPlatformVersion>10.0</TargetPlatformVersion>
+    <TargetPlatformVersion>10.0.10586.0</TargetPlatformVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
     <PlatformTarget>x64</PlatformTarget>
@@ -113,7 +113,7 @@
     <ErrorReport>prompt</ErrorReport>
     <DocumentationFile>bin\Debug\LiveCharts.Uwp.XML</DocumentationFile>
     <GenerateLibraryLayout>true</GenerateLibraryLayout>
-    <TargetPlatformVersion>10.0</TargetPlatformVersion>
+    <TargetPlatformVersion>10.0.10586.0</TargetPlatformVersion>
   </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .Net Framework and Windows SDK are automatically included -->
