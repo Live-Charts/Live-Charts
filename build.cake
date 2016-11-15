@@ -74,6 +74,21 @@ Task("WPF")
         Information("-- WPF Packed --");
     });
 
+Task("UWP")
+    .Does(() =>
+    {
+        Information("-- UWP - " + buildType.ToUpper() + " --");
+        var ouputDirectory = "./bin/" + buildType;
+
+        if(!DirectoryExists(ouputDirectory)) CreateDirectory(ouputDirectory);
+        
+        BuildProject("./UwpView/UwpView.csproj", ouputDirectory, buildType);
+
+        if(buildType == "Release") NugetPack("./UwpView/UwpView.nuspec", "./UwpView/bin/Release/LiveCharts.Uwp.dll");
+
+        Information("-- UWP Packed --");
+    });
+
 Task("WinForms")
     .Does(() => 
     {
@@ -103,6 +118,7 @@ Task("Default")
     .IsDependentOn("OutputArguments")
 	.IsDependentOn("Core")
     .IsDependentOn("WPF")
+    .IsDependentOn("UWP")
     .IsDependentOn("WinForms");
 
 //Entry point for Cake build
