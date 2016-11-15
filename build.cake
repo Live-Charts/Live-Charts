@@ -7,16 +7,6 @@
 var target = Argument ("target", "Default");
 var buildType = Argument("Configuration", "Release");
 
-var corePath = "./Core/Core.csproj";
-var coreBin = "./bin/";
-var coreSpec = "./Core/Core.nuspec";
-var coreBinary = "./Core/bin/Release/LiveCharts.dll";
-
-var uwpPath = "./UwpView/UwpView.csproj";
-var uwpBin = "./bin/";
-var uwpSpec = "./UwpView/UwpView.nuspec";
-var uwpBinary = "./UwpView/bin/Release/LiveCharts.Uwp.dll";
-
 var buildTags = new string[] { "Debug", "403", "45", "451", "452", "46", "461" };
 var buildDirectories = new string[] { "./bin/Debug", "./bin/net403", "./bin/net45", "./bin/net451", "./bin/net452", "./bin/net46", "./bin/net461" };
 var configurationList = new string[] { "Debug", "net40", "net45", "net451", "net452", "net46", "net461" };
@@ -35,7 +25,7 @@ var formsBinary = "./WinFormsView/bin/net403/LiveCharts.WinForms.dll";
 
 //Print out configuration
 Task("OutputArguments")
-    .Does(() =>
+    .Does(() => 
     {
         Information("Target: " + target);
         Information("Build Type: " + buildType);
@@ -46,39 +36,16 @@ Task("Core")
     .Does(() =>
     {
         Information("-- Core - " + buildType.ToUpper() + " --");
-        var ouputDirectory = coreBin + buildType;
-        if(!DirectoryExists(ouputDirectory))
-        {
-            CreateDirectory(ouputDirectory);
-        }
+        var ouputDirectory = "./bin/" + buildType;
 
-        BuildProject(corePath, ouputDirectory, buildType);
+        if(!DirectoryExists(ouputDirectory)) CreateDirectory(ouputDirectory);
+
+        BuildProject("./Core/Core.csproj", ouputDirectory, buildType);
+        BuildProject("./Core40/Core40.csproj", ouputDirectory, buildType);
         
-        if(buildType == "Release")
-        {
-            NugetPack(coreSpec, coreBinary);
-        }
+        if(buildType == "Release") NugetPack("./Core/Core.nuspec", "./Core/bin/Release/LiveCharts.dll");
+
         Information("-- Core Packed --");
-    });
-
-//Build UWP
-Task("UWP")
-    .Does(() =>
-    {
-        Information("-- UWP - " + buildType.ToUpper() + " --");
-        var ouputDirectory = uwpBin + buildType;
-        if(!DirectoryExists(ouputDirectory))
-        {
-            CreateDirectory(ouputDirectory);
-        }
-
-        BuildProject(uwpPath, ouputDirectory, buildType);
-        
-        if(buildType == "Release")
-        {
-            NugetPack(uwpSpec, uwpBinary);
-        }
-        Information("-- UWP Packed --");
     });
 
 //Build WPF
@@ -134,8 +101,7 @@ Task("WinForms")
 
 Task("Default")
     .IsDependentOn("OutputArguments")
-    .IsDependentOn("Core")
-    .IsDependentOn("UWP")
+	.IsDependentOn("Core")
     .IsDependentOn("WPF")
     .IsDependentOn("WinForms");
 

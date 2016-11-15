@@ -7,8 +7,8 @@
     <ProjectGuid>{F261C3D7-6194-4625-9516-044081B06028}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Core40</RootNamespace>
-    <AssemblyName>Core40</AssemblyName>
+    <RootNamespace>LiveCharts</RootNamespace>
+    <AssemblyName>Livecharts</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -29,6 +29,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\LiveCharts.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
