@@ -25,15 +25,18 @@
     <file src="bin\ARM\LiveCharts.Uwp.pdb" target="runtimes\win10-arm\native"/>    
     <file src="bin\ARM\LiveCharts.Uwp.xml" target="runtimes\win10-arm\native"/>
     <file src="bin\ARM\LiveCharts.Uwp.xr.xml" target="runtimes\win10-arm\native\LiveCharts.Uwp"/>
+    <file src="bin\ARM\*.xbf" target="runtimes\win10-arm\native\LiveCharts.Uwp\Themes"/>
     
     <file src="bin\x64\LiveCharts.Uwp.dll" target="runtimes\win10-x64\native"/>
     <file src="bin\x64\LiveCharts.Uwp.pdb" target="runtimes\win10-x64\native"/>    
     <file src="bin\x64\LiveCharts.Uwp.xml" target="runtimes\win10-x64\native"/>
-    <file src="bin\ARM\LiveCharts.Uwp.xr.xml" target="runtimes\win10-arm\native\LiveCharts.Uwp"/>
+    <file src="bin\x64\LiveCharts.Uwp.xr.xml" target="runtimes\win10-arm\native\LiveCharts.Uwp"/>
+    <file src="bin\x64\*.xbf" target="runtimes\win10-arm\native\LiveCharts.Uwp\Themes"/>
     
     <file src="bin\x86\LiveCharts.Uwp.dll" target="runtimes\win10-x86\native"/>
     <file src="bin\x86\LiveCharts.Uwp.pdb" target="runtimes\win10-x86\native"/>    
     <file src="bin\x86\LiveCharts.Uwp.xml" target="runtimes\win10-x86\native"/>
     <file src="bin\x86\LiveCharts.Uwp.xr.xml" target="runtimes\win10-x86\native\LiveCharts.Uwp"/>
+    <file src="bin\x86\*.xbf" target="runtimes\win10-arm\native\LiveCharts.Uwp\Themes"/>
   </files>
 </package>
