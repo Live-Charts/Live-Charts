@@ -87,7 +87,7 @@ Task("UWP")
         BuildProject("./UwpView/UwpView.csproj", "./bin/x64", buildType, "x64");
         BuildProject("./UwpView/UwpView.csproj", "./bin/x86", buildType, "x86");
 
-        if(buildType == "Release") NugetPack("./UwpView/UwpView.nuspec", "./UwpView/bin/Release/LiveCharts.Uwp.dll");
+        if(buildType == "Release") NugetPack("./UwpView/UwpView.nuspec", "./UwpView/bin/x86/LiveCharts.Uwp.dll");
 
         Information("-- UWP Packed --");
     });
