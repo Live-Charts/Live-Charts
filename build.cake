@@ -7,9 +7,9 @@
 var target = Argument ("target", "Default");
 var buildType = Argument("Configuration", "Release");
 
-var buildTags = new string[] { "Debug", "403", "45", "451", "452", "46", "461" };
-var buildDirectories = new string[] { "./bin/Debug", "./bin/net403", "./bin/net45", "./bin/net451", "./bin/net452", "./bin/net46", "./bin/net461" };
-var configurationList = new string[] { "Debug", "net40", "net45", "net451", "net452", "net46", "net461" };
+var buildTags = new string[] { "Debug", "403", "45" };
+var buildDirectories = new string[] { "./bin/Debug", "./bin/net403", "./bin/net45" };
+var configurationList = new string[] { "Debug", "net40", "net45" };
 
 var wpfBinDirectory = "./WpfView/bin";
 var wpfPath = "./WpfView/wpfview.csproj";

@@ -19,12 +19,12 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="bin\net403\LiveCharts.Wpf.dll" target="lib\net403" />
-    <file src="bin\net45\LiveCharts.Wpf.dll" target="lib\net45" />
-    <file src="bin\net451\LiveCharts.Wpf.dll" target="lib\net451" />
-    <file src="bin\net452\LiveCharts.Wpf.dll" target="lib\net452" />
-    <file src="bin\net46\LiveCharts.Wpf.dll" target="lib\net46" />
-    <file src="bin\net461\LiveCharts.Wpf.dll" target="lib\net461" />  
     <file src="install.ps1" target="tools" />  
+    <file src="bin\net403\LiveCharts.Wpf.dll" target="lib\net40" />
+    <file src="bin\net403\LiveCharts.Wpf.pdb" target="lib\net40" />
+    <file src="bin\net403\LiveCharts.Wpf.xml" target="lib\net40" />
+    <file src="bin\net45\LiveCharts.Wpf.dll" target="lib\net45" />
+    <file src="bin\net45\LiveCharts.Wpf.pdb" target="lib\net45" />
+    <file src="bin\net45\LiveCharts.Wpf.xml" target="lib\net45" />    
   </files>
 </package>
