@@ -19,50 +19,26 @@
       <dependency id="LiveCharts.Wpf" version="0.0.0.0" />
     </dependencies>
     <frameworkAssemblies>
-      <frameworkAssembly assemblyName="PresentationFramework" targetFramework="net403" />
-      <frameworkAssembly assemblyName="PresentationCore" targetFramework="net403"/>
-      <frameworkAssembly assemblyName="WindowsBase" targetFramework="net403" />
-      <frameworkAssembly assemblyName="System.Xaml" targetFramework="net403"/>
-      <frameworkAssembly assemblyName="WindowsFormsIntegration" targetFramework="net403" />
+      <frameworkAssembly assemblyName="PresentationFramework" targetFramework="net40" />
+      <frameworkAssembly assemblyName="PresentationCore" targetFramework="net40"/>
+      <frameworkAssembly assemblyName="WindowsBase" targetFramework="net40" />
+      <frameworkAssembly assemblyName="System.Xaml" targetFramework="net40"/>
+      <frameworkAssembly assemblyName="WindowsFormsIntegration" targetFramework="net40" />
 
       <frameworkAssembly assemblyName="PresentationFramework" targetFramework="net45" />
       <frameworkAssembly assemblyName="PresentationCore" targetFramework="net45"/>
       <frameworkAssembly assemblyName="WindowsBase" targetFramework="net45" />
       <frameworkAssembly assemblyName="System.Xaml" targetFramework="net45"/>
       <frameworkAssembly assemblyName="WindowsFormsIntegration" targetFramework="net45" />
-
-      <frameworkAssembly assemblyName="PresentationFramework" targetFramework="net451" />
-      <frameworkAssembly assemblyName="PresentationCore" targetFramework="net451"/>
-      <frameworkAssembly assemblyName="WindowsBase" targetFramework="net451" />
-      <frameworkAssembly assemblyName="System.Xaml" targetFramework="net451"/>
-      <frameworkAssembly assemblyName="WindowsFormsIntegration" targetFramework="net451" />
-
-      <frameworkAssembly assemblyName="PresentationFramework" targetFramework="net452" />
-      <frameworkAssembly assemblyName="PresentationCore" targetFramework="net452"/>
-      <frameworkAssembly assemblyName="WindowsBase" targetFramework="net452" />
-      <frameworkAssembly assemblyName="System.Xaml" targetFramework="net452"/>
-      <frameworkAssembly assemblyName="WindowsFormsIntegration" targetFramework="net452" />
-
-      <frameworkAssembly assemblyName="PresentationFramework" targetFramework="net46" />
-      <frameworkAssembly assemblyName="PresentationCore" targetFramework="net46"/>
-      <frameworkAssembly assemblyName="WindowsBase" targetFramework="net46" />
-      <frameworkAssembly assemblyName="System.Xaml" targetFramework="net46"/>
-      <frameworkAssembly assemblyName="WindowsFormsIntegration" targetFramework="net46" />
-
-      <frameworkAssembly assemblyName="PresentationFramework" targetFramework="net461" />
-      <frameworkAssembly assemblyName="PresentationCore" targetFramework="net461"/>
-      <frameworkAssembly assemblyName="WindowsBase" targetFramework="net461" />
-      <frameworkAssembly assemblyName="System.Xaml" targetFramework="net461"/>
-      <frameworkAssembly assemblyName="WindowsFormsIntegration" targetFramework="net461" />
     </frameworkAssemblies>
   </metadata>
   <files>
-    <file src="bin\net403\LiveCharts.WinForms.dll" target="lib\net403" />
+    <file src="install.ps1" target="tools" />
+    <file src="bin\net403\LiveCharts.WinForms.dll" target="lib\net40" />
+    <file src="bin\net403\LiveCharts.WinForms.pdb" target="lib\net40" />
+    <file src="bin\net403\LiveCharts.WinForms.xml" target="lib\net40" />
     <file src="bin\net45\LiveCharts.WinForms.dll" target="lib\net45" />
-    <file src="bin\net451\LiveCharts.WinForms.dll" target="lib\net451" />
-    <file src="bin\net452\LiveCharts.WinForms.dll" target="lib\net452" />
-    <file src="bin\net46\LiveCharts.WinForms.dll" target="lib\net46" />
-    <file src="bin\net461\LiveCharts.WinForms.dll" target="lib\net461" />  
-    <file src="install.ps1" target="tools" /> 
+    <file src="bin\net45\LiveCharts.WinForms.pdb" target="lib\net45" />
+    <file src="bin\net45\LiveCharts.WinForms.xml" target="lib\net45" />  
   </files>
 </package>

@@ -19,7 +19,9 @@
     </dependencies>
   </metadata>
   <files>
+    <file src="install.ps1" target="tools" /> 
     <file src="bin\Release\LiveCharts.Uwp.dll" target="lib\uap10.0"/>
-    <file src="install.ps1" target="tools" />  
+    <file src="bin\Release\LiveCharts.Uwp.pdb" target="lib\uap10.0"/>
+    <file src="bin\Release\LiveCharts.Uwp.xml" target="lib\uap10.0"/>
   </files>
 </package>
