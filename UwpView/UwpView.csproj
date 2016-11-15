@@ -38,6 +38,7 @@
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Debug\LiveCharts.Uwp.XML</DocumentationFile>
     <GenerateLibraryLayout>true</GenerateLibraryLayout>
+    <TargetPlatformVersion>10.0</TargetPlatformVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <PlatformTarget>x86</PlatformTarget>
@@ -62,6 +63,7 @@
     <ErrorReport>prompt</ErrorReport>
     <DocumentationFile>bin\Debug\LiveCharts.Uwp.XML</DocumentationFile>
     <GenerateLibraryLayout>true</GenerateLibraryLayout>
+    <TargetPlatformVersion>10.0</TargetPlatformVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|ARM'">
     <PlatformTarget>ARM</PlatformTarget>
@@ -86,6 +88,7 @@
     <ErrorReport>prompt</ErrorReport>
     <DocumentationFile>bin\Debug\LiveCharts.Uwp.XML</DocumentationFile>
     <GenerateLibraryLayout>true</GenerateLibraryLayout>
+    <TargetPlatformVersion>10.0</TargetPlatformVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
     <PlatformTarget>x64</PlatformTarget>
@@ -110,6 +113,7 @@
     <ErrorReport>prompt</ErrorReport>
     <DocumentationFile>bin\Debug\LiveCharts.Uwp.XML</DocumentationFile>
     <GenerateLibraryLayout>true</GenerateLibraryLayout>
+    <TargetPlatformVersion>10.0</TargetPlatformVersion>
   </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .Net Framework and Windows SDK are automatically included -->
