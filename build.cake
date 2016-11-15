@@ -40,8 +40,8 @@ Task("Core")
 
         if(!DirectoryExists(ouputDirectory)) CreateDirectory(ouputDirectory);
 
-        BuildProject("./Core/Core.csproj", ouputDirectory, buildType);
-        BuildProject("./Core40/Core40.csproj", ouputDirectory, buildType);
+        BuildProject("./Core/Core.csproj", ouputDirectory, buildType, "AnyCPU");
+        BuildProject("./Core40/Core40.csproj", ouputDirectory, buildType, "AnyCPU");
         
         if(buildType == "Release") NugetPack("./Core/Core.nuspec", "./Core/bin/Release/LiveCharts.dll");
 
@@ -64,7 +64,7 @@ Task("WPF")
             {
                 CreateDirectory(buildDirectories[r]);
             }
-            BuildProject(wpfPath, buildDirectories[r], configurationList[r]);
+            BuildProject(wpfPath, buildDirectories[r], configurationList[r], "AnyCPU");
         }
 
         if(buildType == "Release")
@@ -78,11 +78,14 @@ Task("UWP")
     .Does(() =>
     {
         Information("-- UWP - " + buildType.ToUpper() + " --");
-        var ouputDirectory = "./bin/" + buildType;
 
-        if(!DirectoryExists(ouputDirectory)) CreateDirectory(ouputDirectory);
+        if(!DirectoryExists("./bin/Arm")) CreateDirectory("./bin/Arm");
+        if(!DirectoryExists("./bin/x64")) CreateDirectory("./bin/x64");
+        if(!DirectoryExists("./bin/x86")) CreateDirectory("./bin/x86");
         
-        BuildProject("./UwpView/UwpView.csproj", ouputDirectory, buildType);
+        BuildProject("./UwpView/UwpView.csproj", "./bin/Arm", buildType, "ARM");
+        BuildProject("./UwpView/UwpView.csproj", "./bin/x64", buildType, "x64");
+        BuildProject("./UwpView/UwpView.csproj", "./bin/x86", buildType, "x86");
 
         if(buildType == "Release") NugetPack("./UwpView/UwpView.nuspec", "./UwpView/bin/Release/LiveCharts.Uwp.dll");
 
@@ -104,7 +107,7 @@ Task("WinForms")
             {
                 CreateDirectory(buildDirectories[r]);
             }
-            BuildProject(formsPath, buildDirectories[r], configurationList[r]);
+            BuildProject(formsPath, buildDirectories[r], configurationList[r], "AnyCPU");
         }
 
         if(buildType == "Release")
@@ -127,18 +130,18 @@ RunTarget (target);
 //Helper Methods
 
 //Build a project
-public void BuildProject(string path, string outputPath, string configuration)
+public void BuildProject(string path, string outputPath, string configuration, string platform)
 {
     Information("Building " + path);
     try
     {
         DotNetBuild(path, settings =>
         settings.SetConfiguration(configuration)
-        .WithProperty("Platform", "AnyCPU")
-        .WithTarget("Clean,Build")
-        .WithProperty("OutputPath", outputPath)
-        .SetVerbosity(Cake.Core.Diagnostics.Verbosity.Minimal)
-        );
+            .WithProperty("Platform", platform)
+            .WithTarget("Clean,Build")
+            .WithProperty("OutputPath", outputPath)
+            .SetVerbosity(Cake.Core.Diagnostics.Verbosity.Minimal
+        ));
     }
     catch(Exception ex)
     {
