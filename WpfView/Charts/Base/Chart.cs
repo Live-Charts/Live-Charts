@@ -1208,8 +1208,7 @@ namespace LiveCharts.Wpf.Charts.Base
                         this.ConvertToChartValues(new Point(p.X, 0), ax.Model.AxisIndex).X;
                 Ldsp = p;
                 Debug.WriteLine(delta);
-                ax.FromValue -= delta;
-                ax.ToValue -= delta;
+                ax.Value -= delta;
             }
             else
             {
@@ -1217,8 +1216,7 @@ namespace LiveCharts.Wpf.Charts.Base
                         this.ConvertToChartValues(new Point(0, p.Y), 0, ax.Model.AxisIndex).Y;
                 Ldsp = p;
                 Debug.WriteLine(delta);
-                ax.FromValue -= delta;
-                ax.ToValue -= delta;
+                ax.Value -= delta;
             }
         }
 

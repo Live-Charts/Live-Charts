@@ -28,8 +28,7 @@
                 <lvc:Axis>
                     <lvc:Axis.Sections>
                         <lvc:AxisSection Draggable="True" 
-                                         FromValue="{Binding XSection, Mode=TwoWay}" 
-                                         ToValue="{Binding XSection}"
+                                         Value="{Binding XSection, Mode=TwoWay}"
                                          StrokeThickness="4"
                                          Stroke="DarkSlateBlue"
                                          Canvas.ZIndex="99"/>
@@ -40,8 +39,7 @@
                 <lvc:Axis>
                     <lvc:Axis.Sections>
                         <lvc:AxisSection Draggable="True" 
-                                         FromValue="{Binding YSection, Mode=TwoWay}" 
-                                         ToValue="{Binding YSection}"
+                                         Value="{Binding YSection, Mode=TwoWay}"
                                          StrokeThickness="4"
                                          Stroke="DarkSlateBlue"
                                          Canvas.ZIndex="99"/>

@@ -7,11 +7,6 @@
 var target = Argument ("target", "Default");
 var buildType = Argument("Configuration", "Release");
 
-var corePath = "./Core/Core.csproj";
-var coreBin = "./bin/";
-var coreSpec = "./Core/Core.nuspec";
-var coreBinary = "./Core/bin/Release/LiveCharts.dll";
-
 var buildTags = new string[] { "Debug", "403", "45", "451", "452", "46", "461" };
 var buildDirectories = new string[] { "./bin/Debug", "./bin/net403", "./bin/net45", "./bin/net451", "./bin/net452", "./bin/net46", "./bin/net461" };
 var configurationList = new string[] { "Debug", "net40", "net45", "net451", "net452", "net46", "net461" };
@@ -30,7 +25,7 @@ var formsBinary = "./WinFormsView/bin/net403/LiveCharts.WinForms.dll";
 
 //Print out configuration
 Task("OutputArguments")
-    .Does(() =>
+    .Does(() => 
     {
         Information("Target: " + target);
         Information("Build Type: " + buildType);
@@ -41,18 +36,15 @@ Task("Core")
     .Does(() =>
     {
         Information("-- Core - " + buildType.ToUpper() + " --");
-        var ouputDirectory = coreBin + buildType;
-        if(!DirectoryExists(ouputDirectory))
-        {
-            CreateDirectory(ouputDirectory);
-        }
+        var ouputDirectory = "./bin/" + buildType;
 
-        BuildProject(corePath, ouputDirectory, buildType);
+        if(!DirectoryExists(ouputDirectory)) CreateDirectory(ouputDirectory);
+
+        BuildProject("./Core/Core.csproj", ouputDirectory, buildType);
+        BuildProject("./Core40/Core40.csproj", ouputDirectory, buildType);
         
-        if(buildType == "Release")
-        {
-            NugetPack(coreSpec, coreBinary);
-        }
+        if(buildType == "Release") NugetPack("./Core/Core.nuspec", "./Core/bin/Release/LiveCharts.dll");
+
         Information("-- Core Packed --");
     });
 
@@ -80,6 +72,21 @@ Task("WPF")
             NugetPack(wpfSpec, wpfBinary);
         }
         Information("-- WPF Packed --");
+    });
+
+Task("UWP")
+    .Does(() =>
+    {
+        Information("-- UWP - " + buildType.ToUpper() + " --");
+        var ouputDirectory = "./bin/" + buildType;
+
+        if(!DirectoryExists(ouputDirectory)) CreateDirectory(ouputDirectory);
+        
+        BuildProject("./UwpView/UwpView.csproj", ouputDirectory, buildType);
+
+        if(buildType == "Release") NugetPack("./UwpView/UwpView.nuspec", "./UwpView/bin/Release/LiveCharts.Uwp.dll");
+
+        Information("-- UWP Packed --");
     });
 
 Task("WinForms")
@@ -111,6 +118,7 @@ Task("Default")
     .IsDependentOn("OutputArguments")
 	.IsDependentOn("Core")
     .IsDependentOn("WPF")
+    .IsDependentOn("UWP")
     .IsDependentOn("WinForms");
 
 //Entry point for Cake build

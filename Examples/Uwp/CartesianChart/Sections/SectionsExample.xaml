@@ -23,17 +23,17 @@
             <lvc:CartesianChart.AxisY>
                 <lvc:Axis Name="Axis">
                     <lvc:Axis.Sections>
-                        <lvc:AxisSection FromValue="8.5" ToValue="8.5" StrokeThickness="3" Stroke="#F9D648">
+                        <lvc:AxisSection Value="8.5" StrokeThickness="3" Stroke="#F9D648">
                             <lvc:AxisSection.Fill>
                                 <SolidColorBrush Color="#A3A3FF" Opacity=".4"></SolidColorBrush>
                             </lvc:AxisSection.Fill>
                         </lvc:AxisSection>
-                        <lvc:AxisSection FromValue="4" ToValue="8" Label="Good">
+                        <lvc:AxisSection Value="4" SectionWidth="4" Label="Good">
                             <lvc:AxisSection.Fill>
                                 <SolidColorBrush Color="#CDCDCD" Opacity=".4"></SolidColorBrush>
                             </lvc:AxisSection.Fill>
                         </lvc:AxisSection>
-                        <lvc:AxisSection FromValue="0" ToValue="4" Label="Bad">
+                        <lvc:AxisSection Value="0" SectionWidth="4" Label="Bad">
                             <lvc:AxisSection.Fill>
                                 <SolidColorBrush Color="#FF8585" Opacity=".4"></SolidColorBrush>
                             </lvc:AxisSection.Fill>
