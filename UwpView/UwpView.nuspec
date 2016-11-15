@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>LiveCharts.Uwp</id>
-    <version>0.0.0.0</version>
+    <version>0.8.0.0</version>
     <title>LiveCharts.Uwp</title>
     <authors>Beto Rodriguez</authors>
     <owners>Beto Rodriguez</owners>
@@ -15,7 +15,7 @@
     <copyright>Copyright 2016</copyright>
     <tags>Chart Charting Plot Plotting</tags>
     <dependencies>
-      <dependency id="LiveCharts" version="0.0.0.0" />
+      <dependency id="LiveCharts" version="0.8.0.0" />
       <dependency id="Microsoft.Xaml.Behaviors.Uwp.Managed" version="2.0.0.0" />
     </dependencies>
   </metadata>
@@ -30,13 +30,13 @@
     <file src="bin\x64\LiveCharts.Uwp.dll" target="runtimes\win10-x64\native"/>
     <file src="bin\x64\LiveCharts.Uwp.pdb" target="runtimes\win10-x64\native"/>    
     <file src="bin\x64\LiveCharts.Uwp.xml" target="runtimes\win10-x64\native"/>
-    <file src="bin\x64\LiveCharts.Uwp.xr.xml" target="runtimes\win10-arm\native\LiveCharts.Uwp"/>
-    <file src="bin\x64\*.xbf" target="runtimes\win10-arm\native\LiveCharts.Uwp\Themes"/>
+    <file src="bin\x64\LiveCharts.Uwp.xr.xml" target="runtimes\win10-x64\native\LiveCharts.Uwp"/>
+    <file src="bin\x64\*.xbf" target="runtimes\win10-x64\native\LiveCharts.Uwp\Themes"/>
     
     <file src="bin\x86\LiveCharts.Uwp.dll" target="runtimes\win10-x86\native"/>
     <file src="bin\x86\LiveCharts.Uwp.pdb" target="runtimes\win10-x86\native"/>    
     <file src="bin\x86\LiveCharts.Uwp.xml" target="runtimes\win10-x86\native"/>
     <file src="bin\x86\LiveCharts.Uwp.xr.xml" target="runtimes\win10-x86\native\LiveCharts.Uwp"/>
-    <file src="bin\x86\*.xbf" target="runtimes\win10-arm\native\LiveCharts.Uwp\Themes"/>
+    <file src="bin\x86\*.xbf" target="runtimes\win10-x86\native\LiveCharts.Uwp\Themes"/>
   </files>
 </package>
