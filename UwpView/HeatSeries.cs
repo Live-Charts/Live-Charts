@@ -148,6 +148,7 @@ namespace LiveCharts.Uwp
             pbv.Rectangle.StrokeThickness = StrokeThickness;
             pbv.Rectangle.Visibility = Visibility;
             pbv.Rectangle.StrokeDashArray = StrokeDashArray;
+
             Canvas.SetZIndex(pbv.Rectangle, Canvas.GetZIndex(pbv.Rectangle));
 
             if (Model.Chart.RequiresHoverShape && pbv.HoverShape == null)
@@ -236,12 +237,15 @@ namespace LiveCharts.Uwp
 
         public override void PlaceSpecializedElements()
         {
-            ColorRangeControl.UpdateFill(GradientStopCollection);
+            if (DrawsHeatRange)
+            {
+                ColorRangeControl.UpdateFill(GradientStopCollection);
 
-            ColorRangeControl.Height = Model.Chart.DrawMargin.Height;
+                ColorRangeControl.Height = Model.Chart.DrawMargin.Height;
 
-            Canvas.SetTop(ColorRangeControl, Model.Chart.DrawMargin.Top);
-            Canvas.SetLeft(ColorRangeControl, Model.Chart.DrawMargin.Left + Model.Chart.DrawMargin.Width + 4);
+                Canvas.SetTop(ColorRangeControl, Model.Chart.DrawMargin.Top);
+                Canvas.SetLeft(ColorRangeControl, Model.Chart.DrawMargin.Left + Model.Chart.DrawMargin.Width + 4);
+            }
         }
 
         #endregion
