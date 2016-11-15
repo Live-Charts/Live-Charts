@@ -22,6 +22,6 @@
     <file src="bin\Release\LiveCharts.xml" target="lib\portable-net40+sl5+win8+wp8+wpa81" />
     <file src="..\Core40\bin\Release\LiveCharts.dll" target="lib\net40" />
     <file src="..\Core40\bin\Release\LiveCharts.pdb" target="lib\net40" />
-    <file src="..\Core40\bin\Release\LiveCharts.xml" target="lib\net40" /
+    <file src="..\Core40\bin\Release\LiveCharts.xml" target="lib\net40" />
   </files>
 </package>
