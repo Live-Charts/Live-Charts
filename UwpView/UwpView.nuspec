@@ -24,11 +24,16 @@
     <file src="bin\ARM\LiveCharts.Uwp.dll" target="runtimes\win10-arm\native"/>
     <file src="bin\ARM\LiveCharts.Uwp.pdb" target="runtimes\win10-arm\native"/>    
     <file src="bin\ARM\LiveCharts.Uwp.xml" target="runtimes\win10-arm\native"/>
+    <file src="bin\ARM\LiveCharts.Uwp.xr.xml" target="runtimes\win10-arm\native"/>
+    
     <file src="bin\x64\LiveCharts.Uwp.dll" target="runtimes\win10-x64\native"/>
     <file src="bin\x64\LiveCharts.Uwp.pdb" target="runtimes\win10-x64\native"/>    
     <file src="bin\x64\LiveCharts.Uwp.xml" target="runtimes\win10-x64\native"/>
+    <file src="bin\ARM\LiveCharts.Uwp.xr.xml" target="runtimes\win10-arm\native"/>
+    
     <file src="bin\x86\LiveCharts.Uwp.dll" target="runtimes\win10-x86\native"/>
     <file src="bin\x86\LiveCharts.Uwp.pdb" target="runtimes\win10-x86\native"/>    
     <file src="bin\x86\LiveCharts.Uwp.xml" target="runtimes\win10-x86\native"/>
+    <file src="bin\x86\LiveCharts.Uwp.xr.xml" target="runtimes\win10-x86\native"/>
   </files>
 </package>
