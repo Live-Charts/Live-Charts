@@ -22,9 +22,21 @@
 
 namespace LiveCharts.Events
 {
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="sender">The sender.</param>
+    /// <param name="chartPoint">The chart point.</param>
     public delegate void DataClickHandler(object sender, ChartPoint chartPoint);
 
+    /// <summary>
+    /// 
+    /// </summary>
     public delegate void UpdaterTickHandler();
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="eventArgs">The <see cref="RangeChangedEventArgs"/> instance containing the event data.</param>
     public delegate void RangeChangedHandler(RangeChangedEventArgs eventArgs);
 }

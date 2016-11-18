@@ -31,10 +31,32 @@ using Windows.UI.Xaml.Media;
 
 namespace LiveCharts.Uwp
 {
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <seealso cref="System.ComponentModel.INotifyPropertyChanged" />
     public interface IChartTooltip : INotifyPropertyChanged
     {
+        /// <summary>
+        /// Gets or sets the data.
+        /// </summary>
+        /// <value>
+        /// The data.
+        /// </value>
         TooltipData Data { get; set; }
+        /// <summary>
+        /// Gets or sets the selection mode.
+        /// </summary>
+        /// <value>
+        /// The selection mode.
+        /// </value>
         TooltipSelectionMode SelectionMode { get; set; }
+        /// <summary>
+        /// Gets or sets a value indicating whether this instance is wrapped.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if this instance is wrapped; otherwise, <c>false</c>.
+        /// </value>
         bool IsWrapped { get; set; }
     }
 
@@ -58,6 +80,9 @@ namespace LiveCharts.Uwp
             DataContext = this;
         }
 
+        /// <summary>
+        /// The corner radius property
+        /// </summary>
         public static readonly DependencyProperty CornerRadiusProperty = DependencyProperty.Register(
             "CornerRadius", typeof (CornerRadius), typeof (DefaultTooltip), new PropertyMetadata(new CornerRadius(2d)));
         /// <summary>
@@ -69,6 +94,9 @@ namespace LiveCharts.Uwp
             set { SetValue(CornerRadiusProperty, value); }
         }
 
+        /// <summary>
+        /// The selection mode property
+        /// </summary>
         public static readonly DependencyProperty SelectionModeProperty = DependencyProperty.Register(
             "SelectionMode", typeof (TooltipSelectionMode), typeof (DefaultTooltip),
             new PropertyMetadata(TooltipSelectionMode.Auto));
@@ -81,6 +109,9 @@ namespace LiveCharts.Uwp
             set { SetValue(SelectionModeProperty, value); }
         }
 
+        /// <summary>
+        /// The bullet size property
+        /// </summary>
         public static readonly DependencyProperty BulletSizeProperty = DependencyProperty.Register(
             "BulletSize", typeof (double), typeof (DefaultTooltip), new PropertyMetadata(15d));
         /// <summary>
@@ -92,6 +123,9 @@ namespace LiveCharts.Uwp
             set { SetValue(BulletSizeProperty, value); }
         }
 
+        /// <summary>
+        /// The is wrapped property
+        /// </summary>
         public static readonly DependencyProperty IsWrappedProperty = DependencyProperty.Register(
             "IsWrapped", typeof (bool), typeof (DefaultTooltip), new PropertyMetadata(default(bool)));
         /// <summary>
@@ -104,6 +138,12 @@ namespace LiveCharts.Uwp
             set { SetValue(IsWrappedProperty, value); }
         }
 
+        /// <summary>
+        /// Gets or sets the data.
+        /// </summary>
+        /// <value>
+        /// The data.
+        /// </value>
         public TooltipData Data
         {
             get { return _data; }
@@ -114,16 +154,35 @@ namespace LiveCharts.Uwp
             }
         }
 
+        /// <summary>
+        /// Occurs when a property value changes.
+        /// </summary>
         public event PropertyChangedEventHandler PropertyChanged;
 
+        /// <summary>
+        /// Called when [property changed].
+        /// </summary>
+        /// <param name="propertyName">Name of the property.</param>
         protected virtual void OnPropertyChanged(string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <seealso cref="Windows.UI.Xaml.Data.IValueConverter" />
     public class SharedConverter : IValueConverter
     {
+        /// <summary>
+        /// Converts the specified value.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <param name="targetType">Type of the target.</param>
+        /// <param name="parameter">The parameter.</param>
+        /// <param name="language">The language.</param>
+        /// <returns></returns>
         public object Convert(object value, Type targetType, object parameter, string language)
         {
             var v = value as TooltipData;
@@ -137,14 +196,35 @@ namespace LiveCharts.Uwp
                 : v.YFormatter(v.SharedValue ?? 0);
         }
 
+        /// <summary>
+        /// Converts the back.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <param name="targetType">Type of the target.</param>
+        /// <param name="parameter">The parameter.</param>
+        /// <param name="language">The language.</param>
+        /// <returns></returns>
+        /// <exception cref="System.NotImplementedException"></exception>
         public object ConvertBack(object value, Type targetType, object parameter, string language)
         {
             throw new NotImplementedException();
         }
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <seealso cref="Windows.UI.Xaml.Data.IValueConverter" />
     public class ChartPointLabelConverter : IValueConverter
     {
+        /// <summary>
+        /// Converts the specified value.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <param name="targetType">Type of the target.</param>
+        /// <param name="parameter">The parameter.</param>
+        /// <param name="language">The language.</param>
+        /// <returns></returns>
         public object Convert(object value, Type targetType, object parameter, string language)
         {
             var chartPoint = value as ChartPoint;
@@ -152,14 +232,35 @@ namespace LiveCharts.Uwp
             return chartPoint?.SeriesView.LabelPoint(chartPoint);
         }
 
+        /// <summary>
+        /// Converts the back.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <param name="targetType">Type of the target.</param>
+        /// <param name="parameter">The parameter.</param>
+        /// <param name="language">The language.</param>
+        /// <returns></returns>
+        /// <exception cref="System.NotImplementedException"></exception>
         public object ConvertBack(object value, Type targetType, object parameter, string language)
         {
             throw new NotImplementedException();
         }
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <seealso cref="Windows.UI.Xaml.Data.IValueConverter" />
     public class ParticipationVisibilityConverter : IValueConverter
     {
+        /// <summary>
+        /// Converts the specified value.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <param name="targetType">Type of the target.</param>
+        /// <param name="parameter">The parameter.</param>
+        /// <param name="language">The language.</param>
+        /// <returns></returns>
         public object Convert(object value, Type targetType, object parameter, string language)
         {
             var v = value as TooltipData;
@@ -168,14 +269,35 @@ namespace LiveCharts.Uwp
             return v.Points.Any(x => x.ChartPoint.Participation > 0) ? Visibility.Visible : Visibility.Collapsed;
         }
 
+        /// <summary>
+        /// Converts the back.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <param name="targetType">Type of the target.</param>
+        /// <param name="parameter">The parameter.</param>
+        /// <param name="language">The language.</param>
+        /// <returns></returns>
+        /// <exception cref="System.NotImplementedException"></exception>
         public object ConvertBack(object value, Type targetType, object parameter, string language)
         {
             throw new NotImplementedException();
         }
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <seealso cref="Windows.UI.Xaml.Data.IValueConverter" />
     public class SharedVisibilityConverter : IValueConverter
     {
+        /// <summary>
+        /// Converts the specified value.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <param name="targetType">Type of the target.</param>
+        /// <param name="parameter">The parameter.</param>
+        /// <param name="language">The language.</param>
+        /// <returns></returns>
         public object Convert(object value, Type targetType, object parameter, string language)
         {
             var v = value as TooltipData;
@@ -187,6 +309,15 @@ namespace LiveCharts.Uwp
             return v.SharedValue == null ? Visibility.Collapsed : Visibility.Visible;
         }
 
+        /// <summary>
+        /// Converts the back.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <param name="targetType">Type of the target.</param>
+        /// <param name="parameter">The parameter.</param>
+        /// <param name="language">The language.</param>
+        /// <returns></returns>
+        /// <exception cref="System.NotImplementedException"></exception>
         public object ConvertBack(object value, Type targetType, object parameter, string language)
         {
             throw new NotImplementedException();

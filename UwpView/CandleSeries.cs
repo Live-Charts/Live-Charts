@@ -68,6 +68,9 @@ namespace LiveCharts.Uwp
 
         #region Properties
 
+        /// <summary>
+        /// The maximum column width property
+        /// </summary>
         public static readonly DependencyProperty MaxColumnWidthProperty = DependencyProperty.Register(
             "MaxColumnWidth", typeof (double), typeof (CandleSeries), new PropertyMetadata(default(double)));
         /// <summary>
@@ -79,6 +82,9 @@ namespace LiveCharts.Uwp
             set { SetValue(MaxColumnWidthProperty, value); }
         }
 
+        /// <summary>
+        /// The increase brush property
+        /// </summary>
         public static readonly DependencyProperty IncreaseBrushProperty = DependencyProperty.Register(
             "IncreaseBrush", typeof (Brush), typeof (CandleSeries), new PropertyMetadata(default(Brush)));
         /// <summary>
@@ -90,6 +96,9 @@ namespace LiveCharts.Uwp
             set { SetValue(IncreaseBrushProperty, value); }
         }
 
+        /// <summary>
+        /// The decrease brush property
+        /// </summary>
         public static readonly DependencyProperty DecreaseBrushProperty = DependencyProperty.Register(
             "DecreaseBrush", typeof (Brush), typeof (CandleSeries), new PropertyMetadata(default(Brush)));
         /// <summary>
@@ -100,16 +109,25 @@ namespace LiveCharts.Uwp
             get { return (Brush) GetValue(DecreaseBrushProperty); }
             set { SetValue(DecreaseBrushProperty, value); }
         }
-        
+
         #endregion
 
         #region Overridden Methods
 
+        /// <summary>
+        /// This method runs when the update starts
+        /// </summary>
         public override void OnSeriesUpdateStart()
         {
             //do nothing on updateStart
         }
 
+        /// <summary>
+        /// Gets the view of a given point
+        /// </summary>
+        /// <param name="point"></param>
+        /// <param name="label"></param>
+        /// <returns></returns>
         public override IChartPointView GetPointView(ChartPoint point, string label)
         {
             var pbv = (CandlePointView) point.View;

@@ -27,14 +27,26 @@ using LiveCharts.Dtos;
 
 namespace LiveCharts.SeriesAlgorithms
 {
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <seealso cref="LiveCharts.SeriesAlgorithm" />
+    /// <seealso cref="LiveCharts.Definitions.Series.ICartesianSeries" />
     public class StepLineAlgorithm : SeriesAlgorithm, ICartesianSeries
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="StepLineAlgorithm"/> class.
+        /// </summary>
+        /// <param name="view">The view.</param>
         public StepLineAlgorithm(ISeriesView view) : base(view)
         {
             SeriesOrientation = SeriesOrientation.Horizontal;
             PreferredSelectionMode = TooltipSelectionMode.SharedXValues;
         }
 
+        /// <summary>
+        /// Updates this instance.
+        /// </summary>
         public override void Update()
         {
             ChartPoint previous = null;

@@ -67,6 +67,9 @@ namespace LiveCharts.Wpf
 
         #region Properties
 
+        /// <summary>
+        /// The maximum column width property
+        /// </summary>
         public static readonly DependencyProperty MaxColumnWidthProperty = DependencyProperty.Register(
             "MaxColumnWidth", typeof (double), typeof (CandleSeries), new PropertyMetadata(default(double)));
         /// <summary>
@@ -78,6 +81,9 @@ namespace LiveCharts.Wpf
             set { SetValue(MaxColumnWidthProperty, value); }
         }
 
+        /// <summary>
+        /// The increase brush property
+        /// </summary>
         public static readonly DependencyProperty IncreaseBrushProperty = DependencyProperty.Register(
             "IncreaseBrush", typeof (Brush), typeof (CandleSeries), new PropertyMetadata(default(Brush)));
         /// <summary>
@@ -89,6 +95,9 @@ namespace LiveCharts.Wpf
             set { SetValue(IncreaseBrushProperty, value); }
         }
 
+        /// <summary>
+        /// The decrease brush property
+        /// </summary>
         public static readonly DependencyProperty DecreaseBrushProperty = DependencyProperty.Register(
             "DecreaseBrush", typeof (Brush), typeof (CandleSeries), new PropertyMetadata(default(Brush)));
         /// <summary>
@@ -99,19 +108,28 @@ namespace LiveCharts.Wpf
             get { return (Brush) GetValue(DecreaseBrushProperty); }
             set { SetValue(DecreaseBrushProperty, value); }
         }
-        
+
         #endregion
 
         #region Overridden Methods
 
+        /// <summary>
+        /// This method runs when the update starts
+        /// </summary>
         public override void OnSeriesUpdateStart()
         {
             //do nothing on updateStart
         }
 
+        /// <summary>
+        /// Gets the point view.
+        /// </summary>
+        /// <param name="point">The point.</param>
+        /// <param name="label">The label.</param>
+        /// <returns></returns>
         public override IChartPointView GetPointView(ChartPoint point, string label)
         {
-            var pbv = (CandlePointView) point.View;
+            var pbv = (CandlePointView)point.View;
 
             if (pbv == null)
             {

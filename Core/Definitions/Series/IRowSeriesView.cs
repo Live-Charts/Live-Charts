@@ -22,9 +22,25 @@
 
 namespace LiveCharts.Definitions.Series
 {
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <seealso cref="LiveCharts.Definitions.Series.ISeriesView" />
     public interface IRowSeriesView : ISeriesView
     {
+        /// <summary>
+        /// Gets or sets the maximum row heigth.
+        /// </summary>
+        /// <value>
+        /// The maximum row heigth.
+        /// </value>
         double MaxRowHeigth { get; set; }
+        /// <summary>
+        /// Gets or sets the row padding.
+        /// </summary>
+        /// <value>
+        /// The row padding.
+        /// </value>
         double RowPadding { get; set; }
     }
 }

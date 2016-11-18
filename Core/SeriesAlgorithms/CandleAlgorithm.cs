@@ -27,14 +27,26 @@ using LiveCharts.Dtos;
 
 namespace LiveCharts.SeriesAlgorithms
 {
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <seealso cref="LiveCharts.SeriesAlgorithm" />
+    /// <seealso cref="LiveCharts.Definitions.Series.ICartesianSeries" />
     public class CandleAlgorithm : SeriesAlgorithm, ICartesianSeries
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CandleAlgorithm"/> class.
+        /// </summary>
+        /// <param name="view">The view.</param>
         public CandleAlgorithm(ISeriesView view) : base(view)
         {
             SeriesOrientation = SeriesOrientation.Horizontal;
             PreferredSelectionMode = TooltipSelectionMode.SharedXValues;
         }
 
+        /// <summary>
+        /// Updates this instance.
+        /// </summary>
         public override void Update()
         {
             var castedSeries = (IFinancialSeriesView) View;

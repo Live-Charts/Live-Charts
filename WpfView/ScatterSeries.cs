@@ -67,6 +67,9 @@ namespace LiveCharts.Wpf
 
         #region Properties
 
+        /// <summary>
+        /// The maximum point shape diameter property
+        /// </summary>
         public static readonly DependencyProperty MaxPointShapeDiameterProperty = DependencyProperty.Register(
             "MaxPointShapeDiameter", typeof (double), typeof (ScatterSeries), 
             new PropertyMetadata(default(double), CallChartUpdater()));
@@ -79,6 +82,9 @@ namespace LiveCharts.Wpf
             set { SetValue(MaxPointShapeDiameterProperty, value); }
         }
 
+        /// <summary>
+        /// The minimum point shape diameter property
+        /// </summary>
         public static readonly DependencyProperty MinPointShapeDiameterProperty = DependencyProperty.Register(
             "MinPointShapeDiameter", typeof (double), typeof (ScatterSeries), 
             new PropertyMetadata(default(double), CallChartUpdater()));
@@ -95,6 +101,12 @@ namespace LiveCharts.Wpf
 
         #region Overridden Methods
 
+        /// <summary>
+        /// Gets the view of a given point
+        /// </summary>
+        /// <param name="point"></param>
+        /// <param name="label"></param>
+        /// <returns></returns>
         public override IChartPointView GetPointView(ChartPoint point, string label)
         {
             var pbv = (ScatterPointView) point.View;

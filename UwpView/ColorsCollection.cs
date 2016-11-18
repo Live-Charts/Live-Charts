@@ -25,6 +25,9 @@ using Windows.UI;
 
 namespace LiveCharts.Uwp
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class ColorsCollection : List<Color>
     {
     }

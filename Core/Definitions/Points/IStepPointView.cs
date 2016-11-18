@@ -22,9 +22,25 @@
 
 namespace LiveCharts.Definitions.Points
 {
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <seealso cref="LiveCharts.Definitions.Points.IChartPointView" />
     public interface IStepPointView : IChartPointView
     {
-        double DeltaX { get; set; }   
+        /// <summary>
+        /// Gets or sets the delta x.
+        /// </summary>
+        /// <value>
+        /// The delta x.
+        /// </value>
+        double DeltaX { get; set; }
+        /// <summary>
+        /// Gets or sets the delta y.
+        /// </summary>
+        /// <value>
+        /// The delta y.
+        /// </value>
         double DeltaY { get; set; }
     }
 }

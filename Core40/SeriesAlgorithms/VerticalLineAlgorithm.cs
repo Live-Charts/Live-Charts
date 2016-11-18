@@ -25,8 +25,17 @@ using LiveCharts.Definitions.Series;
 
 namespace LiveCharts.SeriesAlgorithms
 {
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <seealso cref="LiveCharts.SeriesAlgorithms.LineAlgorithm" />
+    /// <seealso cref="LiveCharts.Definitions.Series.ICartesianSeries" />
     public class VerticalLineAlgorithm : LineAlgorithm, ICartesianSeries
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="VerticalLineAlgorithm"/> class.
+        /// </summary>
+        /// <param name="view">The view.</param>
         public VerticalLineAlgorithm(ISeriesView view) : base(view)
         {
             SeriesOrientation = SeriesOrientation.Vertical;

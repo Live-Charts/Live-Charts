@@ -30,13 +30,26 @@ using LiveCharts.Helpers;
 
 namespace LiveCharts.SeriesAlgorithms
 {
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <seealso cref="LiveCharts.SeriesAlgorithm" />
+    /// <seealso cref="LiveCharts.Definitions.Series.ICartesianSeries" />
     public class HeatAlgorithm : SeriesAlgorithm, ICartesianSeries
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="HeatAlgorithm"/> class.
+        /// </summary>
+        /// <param name="view">The view.</param>
         public HeatAlgorithm(ISeriesView view) : base(view)
         {
             PreferredSelectionMode = TooltipSelectionMode.OnlySender;
         }
 
+        /// <summary>
+        /// Updates this instance.
+        /// </summary>
+        /// <exception cref="LiveCharts.Helpers.LiveChartsException">There is no a valid gradient to create a heat series.</exception>
         public override void Update()
         {
             var heatSeries = (IHeatSeriesView)View;
@@ -95,21 +108,41 @@ namespace LiveCharts.SeriesAlgorithms
             }
         }
 
+        /// <summary>
+        /// Gets the minimum x.
+        /// </summary>
+        /// <param name="axis">The axis.</param>
+        /// <returns></returns>
         public double GetMinX(AxisCore axis)
         {
             return AxisLimits.StretchMin(axis);
         }
 
+        /// <summary>
+        /// Gets the maximum x.
+        /// </summary>
+        /// <param name="axis">The axis.</param>
+        /// <returns></returns>
         public double GetMaxX(AxisCore axis)
         {
             return AxisLimits.StretchMax(axis) + 1;
         }
 
+        /// <summary>
+        /// Gets the minimum y.
+        /// </summary>
+        /// <param name="axis">The axis.</param>
+        /// <returns></returns>
         public double GetMinY(AxisCore axis)
         {
             return AxisLimits.StretchMin(axis);
         }
 
+        /// <summary>
+        /// Gets the maximum y.
+        /// </summary>
+        /// <param name="axis">The axis.</param>
+        /// <returns></returns>
         public double GetMaxY(AxisCore axis)
         {
             return AxisLimits.StretchMax(axis) + 1;

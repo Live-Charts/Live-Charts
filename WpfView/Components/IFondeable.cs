@@ -24,8 +24,17 @@ using System.Windows.Media;
 
 namespace LiveCharts.Wpf.Components
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public interface IFondeable
     {
+        /// <summary>
+        /// Gets the point foreround.
+        /// </summary>
+        /// <value>
+        /// The point foreround.
+        /// </value>
         Brush PointForeround { get; }
     }
 }

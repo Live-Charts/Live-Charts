@@ -32,10 +32,17 @@ using LiveCharts.Helpers;
 
 namespace LiveCharts
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class AxisCore
     {
         #region Constructors
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AxisCore"/> class.
+        /// </summary>
+        /// <param name="view">The view.</param>
         public AxisCore(IAxisView view)
         {
             View = view;
@@ -49,25 +56,127 @@ namespace LiveCharts
 
         #region Public Properties
 
+        /// <summary>
+        /// Gets or sets the chart.
+        /// </summary>
+        /// <value>
+        /// The chart.
+        /// </value>
         public ChartCore Chart { get; set; }
+        /// <summary>
+        /// Gets or sets the view.
+        /// </summary>
+        /// <value>
+        /// The view.
+        /// </value>
         public IAxisView View { get; set; }
+        /// <summary>
+        /// Gets or sets the labels.
+        /// </summary>
+        /// <value>
+        /// The labels.
+        /// </value>
         public IList<string> Labels { get; set; }
+        /// <summary>
+        /// Gets or sets the sections.
+        /// </summary>
+        /// <value>
+        /// The sections.
+        /// </value>
         public List<AxisSectionCore> Sections { get; set; }
+        /// <summary>
+        /// Gets or sets the label formatter.
+        /// </summary>
+        /// <value>
+        /// The label formatter.
+        /// </value>
         public Func<double, string> LabelFormatter { get; set; }
+        /// <summary>
+        /// Gets or sets the stroke thickness.
+        /// </summary>
+        /// <value>
+        /// The stroke thickness.
+        /// </value>
         public double StrokeThickness { get; set; }
+        /// <summary>
+        /// Gets or sets a value indicating whether [show labels].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [show labels]; otherwise, <c>false</c>.
+        /// </value>
         public bool ShowLabels { get; set; }
+        /// <summary>
+        /// Gets or sets the maximum value.
+        /// </summary>
+        /// <value>
+        /// The maximum value.
+        /// </value>
         public double MaxValue { get; set; }
+        /// <summary>
+        /// Gets or sets the minimum value.
+        /// </summary>
+        /// <value>
+        /// The minimum value.
+        /// </value>
         public double MinValue { get; set; }
+        /// <summary>
+        /// Gets or sets the title.
+        /// </summary>
+        /// <value>
+        /// The title.
+        /// </value>
         public string Title { get; set; }
+        /// <summary>
+        /// Gets or sets a value indicating whether [disable animations].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [disable animations]; otherwise, <c>false</c>.
+        /// </value>
         public bool DisableAnimations { get; set; }
+        /// <summary>
+        /// Gets or sets the position.
+        /// </summary>
+        /// <value>
+        /// The position.
+        /// </value>
         public AxisPosition Position { get; set; }
+        /// <summary>
+        /// Gets or sets a value indicating whether this instance is merged.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if this instance is merged; otherwise, <c>false</c>.
+        /// </value>
         public bool IsMerged { get; set; }
+        /// <summary>
+        /// Gets a value indicating whether [evaluates unit width].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [evaluates unit width]; otherwise, <c>false</c>.
+        /// </value>
         public bool EvaluatesUnitWidth { get; internal set; }
+        /// <summary>
+        /// Gets the current separators.
+        /// </summary>
+        /// <value>
+        /// The current separators.
+        /// </value>
         public IEnumerable<SeparatorElementCore> CurrentSeparators
         {
             get { return Cache.Values; }
         }
+        /// <summary>
+        /// Gets or sets the separator.
+        /// </summary>
+        /// <value>
+        /// The separator.
+        /// </value>
         public SeparatorConfigurationCore Separator { get; set; }
+        /// <summary>
+        /// Gets the s.
+        /// </summary>
+        /// <value>
+        /// The s.
+        /// </value>
         public double S { get; internal set; }
 
         #endregion
@@ -320,6 +429,10 @@ namespace LiveCharts
         #endregion
 
         #region Public Methods
+        /// <summary>
+        /// Gets the formatter.
+        /// </summary>
+        /// <returns></returns>
         public Func<double, string> GetFormatter()
         {
             return Formatter;
@@ -340,6 +453,9 @@ namespace LiveCharts
                 : "";
         }
 
+        /// <summary>
+        /// Clears the separators.
+        /// </summary>
         public void ClearSeparators()
         {
             foreach (var separator in Cache)

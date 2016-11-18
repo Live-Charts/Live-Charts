@@ -68,16 +68,43 @@ namespace LiveCharts.Wpf
         #endregion
 
         #region Private Properties
+        /// <summary>
+        /// Gets or sets the figure.
+        /// </summary>
+        /// <value>
+        /// The figure.
+        /// </value>
         protected PathFigure Figure { get; set; }
         internal Path Path { get; set; }
+        /// <summary>
+        /// Gets or sets a value indicating whether this instance is path initialized.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if this instance is path initialized; otherwise, <c>false</c>.
+        /// </value>
         protected bool IsPathInitialized { get; set; }
         internal List<LineSegmentSplitter> Splitters { get; set; }
+        /// <summary>
+        /// Gets or sets the active splitters.
+        /// </summary>
+        /// <value>
+        /// The active splitters.
+        /// </value>
         protected int ActiveSplitters { get; set; }
+        /// <summary>
+        /// Gets or sets the splitters collector.
+        /// </summary>
+        /// <value>
+        /// The splitters collector.
+        /// </value>
         protected int SplittersCollector { get; set; }
         #endregion
 
         #region Properties
 
+        /// <summary>
+        /// The point geometry size property
+        /// </summary>
         public static readonly DependencyProperty PointGeometrySizeProperty = DependencyProperty.Register(
             "PointGeometrySize", typeof (double), typeof (LineSeries), 
             new PropertyMetadata(default(double), CallChartUpdater()));
@@ -90,6 +117,9 @@ namespace LiveCharts.Wpf
             set { SetValue(PointGeometrySizeProperty, value); }
         }
 
+        /// <summary>
+        /// The point foreround property
+        /// </summary>
         public static readonly DependencyProperty PointForeroundProperty = DependencyProperty.Register(
             "PointForeround", typeof (Brush), typeof (LineSeries), 
             new PropertyMetadata(default(Brush)));
@@ -102,6 +132,9 @@ namespace LiveCharts.Wpf
             set { SetValue(PointForeroundProperty, value); }
         }
 
+        /// <summary>
+        /// The line smoothness property
+        /// </summary>
         public static readonly DependencyProperty LineSmoothnessProperty = DependencyProperty.Register(
             "LineSmoothness", typeof (double), typeof (LineSeries), 
             new PropertyMetadata(default(double), CallChartUpdater()));
@@ -114,6 +147,9 @@ namespace LiveCharts.Wpf
             set { SetValue(LineSmoothnessProperty, value); }
         }
 
+        /// <summary>
+        /// The area limit property
+        /// </summary>
         public static readonly DependencyProperty AreaLimitProperty = DependencyProperty.Register(
             "AreaLimit", typeof(double), typeof(LineSeries), new PropertyMetadata(double.NaN));
         /// <summary>
@@ -129,6 +165,9 @@ namespace LiveCharts.Wpf
 
         #region Overridden Methods
 
+        /// <summary>
+        /// This method runs when the update starts
+        /// </summary>
         public override void OnSeriesUpdateStart()
         {
             ActiveSplitters = 0;
@@ -200,6 +239,12 @@ namespace LiveCharts.Wpf
             Figure.StartPoint = new Point(x, areaLimit);
         }
 
+        /// <summary>
+        /// Gets the view of a given point
+        /// </summary>
+        /// <param name="point"></param>
+        /// <param name="label"></param>
+        /// <returns></returns>
         public override IChartPointView GetPointView(ChartPoint point, string label)
         {
             var mhr = PointGeometrySize < 10 ? 10 : PointGeometrySize;
@@ -288,6 +333,9 @@ namespace LiveCharts.Wpf
             return pbv;
         }
 
+        /// <summary>
+        /// This method runs when the update finishes
+        /// </summary>
         public override void OnSeriesUpdatedFinish()
         {
             foreach (var inactive in Splitters
@@ -300,6 +348,10 @@ namespace LiveCharts.Wpf
             }
         }
 
+        /// <summary>
+        /// Erases series
+        /// </summary>
+        /// <param name="removeFromView"></param>
         public override void Erase(bool removeFromView = true)
         {
             ActualValues.GetPoints(this).ForEach(p =>
@@ -318,6 +370,11 @@ namespace LiveCharts.Wpf
 
         #region Public Methods 
 
+        /// <summary>
+        /// Starts the segment.
+        /// </summary>
+        /// <param name="atIndex">At index.</param>
+        /// <param name="location">The location.</param>
         public virtual void StartSegment(int atIndex, CorePoint location)
         {
             if (Splitters.Count <= ActiveSplitters)
@@ -373,6 +430,11 @@ namespace LiveCharts.Wpf
             Figure.Segments.Insert(atIndex, splitter.Left);
         }
 
+        /// <summary>
+        /// Ends the segment.
+        /// </summary>
+        /// <param name="atIndex">At index.</param>
+        /// <param name="location">The location.</param>
         public virtual void EndSegment(int atIndex, CorePoint location)
         {
             var splitter = Splitters[ActiveSplitters-1];

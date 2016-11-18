@@ -67,6 +67,9 @@ namespace LiveCharts.Wpf
 
         #region Properties
 
+        /// <summary>
+        /// The point geometry size property
+        /// </summary>
         public static readonly DependencyProperty PointGeometrySizeProperty = DependencyProperty.Register(
            "PointGeometrySize", typeof(double), typeof(StepLineSeries),
            new PropertyMetadata(default(double), CallChartUpdater()));
@@ -79,6 +82,9 @@ namespace LiveCharts.Wpf
             set { SetValue(PointGeometrySizeProperty, value); }
         }
 
+        /// <summary>
+        /// The point foreround property
+        /// </summary>
         public static readonly DependencyProperty PointForeroundProperty = DependencyProperty.Register(
             "PointForeround", typeof(Brush), typeof(StepLineSeries),
             new PropertyMetadata(default(Brush)));
@@ -91,9 +97,18 @@ namespace LiveCharts.Wpf
             set { SetValue(PointForeroundProperty, value); }
         }
 
+        /// <summary>
+        /// The alternative stroke property
+        /// </summary>
         public static readonly DependencyProperty AlternativeStrokeProperty = DependencyProperty.Register(
             "AlternativeStroke", typeof (Brush), typeof (StepLineSeries), new PropertyMetadata(default(Brush)));
 
+        /// <summary>
+        /// Gets or sets the alternative stroke.
+        /// </summary>
+        /// <value>
+        /// The alternative stroke.
+        /// </value>
         public Brush AlternativeStroke
         {
             get { return (Brush) GetValue(AlternativeStrokeProperty); }
@@ -104,6 +119,12 @@ namespace LiveCharts.Wpf
 
         #region Overridden Methods
 
+        /// <summary>
+        /// Gets the view of a given point
+        /// </summary>
+        /// <param name="point"></param>
+        /// <param name="label"></param>
+        /// <returns></returns>
         public override IChartPointView GetPointView(ChartPoint point, string label)
         {
             var pbv = (StepLinePointView) point.View;
@@ -208,6 +229,9 @@ namespace LiveCharts.Wpf
             return pbv;
         }
 
+        /// <summary>
+        /// Initializes the series colors if they are not set
+        /// </summary>
         public override void InitializeColors()
         {
             var wpfChart = (Chart) Model.Chart.View;

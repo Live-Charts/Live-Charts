@@ -22,6 +22,9 @@
 
 namespace LiveCharts.Events
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class RangeChangedEventArgs
     {
         /// <summary>

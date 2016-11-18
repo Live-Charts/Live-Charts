@@ -232,6 +232,11 @@ namespace LiveCharts
             }
         }
 
+        /// <summary>
+        /// Gets series that owns the values
+        /// </summary>
+        /// <param name="view"></param>
+        /// <returns></returns>
         public PointTracker GetTracker(ISeriesView view)
         {
             PointTracker tracker;

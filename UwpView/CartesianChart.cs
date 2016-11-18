@@ -52,6 +52,9 @@ namespace LiveCharts.Uwp
         }
 
 
+        /// <summary>
+        /// The visual elements property
+        /// </summary>
         public static readonly DependencyProperty VisualElementsProperty = DependencyProperty.Register(
             "VisualElements", typeof (VisualElementsCollection), typeof (CartesianChart),
             new PropertyMetadata(default(VisualElementsCollection), OnVisualCollectionChanged));

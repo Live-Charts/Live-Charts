@@ -30,10 +30,19 @@ using LiveCharts.Helpers;
 
 namespace LiveCharts.SeriesAlgorithms
 {
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <seealso cref="LiveCharts.SeriesAlgorithm" />
+    /// <seealso cref="LiveCharts.Definitions.Series.ICartesianSeries" />
     public class StackedAreaAlgorithm : SeriesAlgorithm, ICartesianSeries
     {
         private readonly IStackModelableSeriesView _stackModelable;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="StackedAreaAlgorithm"/> class.
+        /// </summary>
+        /// <param name="view">The view.</param>
         public StackedAreaAlgorithm(ISeriesView view) : base(view)
         {
             SeriesOrientation = SeriesOrientation.Horizontal;
@@ -41,6 +50,9 @@ namespace LiveCharts.SeriesAlgorithms
             PreferredSelectionMode = TooltipSelectionMode.SharedXValues;
         }
 
+        /// <summary>
+        /// Updates this instance.
+        /// </summary>
         public override void Update()
         {
             var points = View.ActualValues.GetPoints(View).ToList();
@@ -159,6 +171,11 @@ namespace LiveCharts.SeriesAlgorithms
             }
         }
 
+        /// <summary>
+        /// Gets the stacked point.
+        /// </summary>
+        /// <param name="chartPoint">The chart point.</param>
+        /// <returns></returns>
         protected virtual CorePoint GetStackedPoint(ChartPoint chartPoint)
         {
             if (_stackModelable.StackMode == StackMode.Values)

@@ -117,9 +117,9 @@ namespace UnitTests.MemoryLeaks
                     {
                         Sections = new LiveCharts.Wpf.SectionsCollection
                         {
-                            new LiveCharts.Wpf.AxisSection { FromValue = 10, ToValue = 10, Label = "Hello!"},
-                            new LiveCharts.Wpf.AxisSection { FromValue = 10, ToValue = 10},
-                            new LiveCharts.Wpf.AxisSection { FromValue = 10, ToValue = 10}
+                            new LiveCharts.Wpf.AxisSection { Value = 10, Label = "Hello!"},
+                            new LiveCharts.Wpf.AxisSection { Value = 10},
+                            new LiveCharts.Wpf.AxisSection { Value = 10}
                         }
                     }
                 }

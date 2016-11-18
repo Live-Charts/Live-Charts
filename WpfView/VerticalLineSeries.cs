@@ -65,6 +65,9 @@ namespace LiveCharts.Wpf
 
         #region Overridden Methods
 
+        /// <summary>
+        /// This method runs when the update starts
+        /// </summary>
         public override void OnSeriesUpdateStart()
         {
             ActiveSplitters = 0;
@@ -136,6 +139,12 @@ namespace LiveCharts.Wpf
             Figure.StartPoint = new Point(areaLimit, y);
         }
 
+        /// <summary>
+        /// Gets the view of a given point
+        /// </summary>
+        /// <param name="point"></param>
+        /// <param name="label"></param>
+        /// <returns></returns>
         public override IChartPointView GetPointView(ChartPoint point, string label)
         {
             var mhr = PointGeometrySize < 10 ? 10 : PointGeometrySize;
@@ -223,10 +232,15 @@ namespace LiveCharts.Wpf
 
             return pbv;
         }
-#endregion
+        #endregion
 
         #region Public Methods 
 
+        /// <summary>
+        /// Starts the segment.
+        /// </summary>
+        /// <param name="atIndex">At index.</param>
+        /// <param name="location">The location.</param>
         public override void StartSegment(int atIndex, CorePoint location)
         {
             if (Splitters.Count <= ActiveSplitters)
@@ -282,6 +296,11 @@ namespace LiveCharts.Wpf
             Figure.Segments.Insert(atIndex, splitter.Left);
         }
 
+        /// <summary>
+        /// Ends the segment.
+        /// </summary>
+        /// <param name="atIndex">At index.</param>
+        /// <param name="location">The location.</param>
         public override void EndSegment(int atIndex, CorePoint location)
         {
             var splitter = Splitters[ActiveSplitters - 1];

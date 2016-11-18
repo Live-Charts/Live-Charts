@@ -53,15 +53,14 @@ namespace Winforms.Cartesian.Sections
                 {
                     new AxisSection
                     {
-                        FromValue = 8.5,
-                        ToValue = 8.5,
+                        Value = 8.5,
                         Stroke = new SolidColorBrush(System.Windows.Media.Color.FromRgb(248, 213, 72))
                     }, 
                     new AxisSection
                     {
                         Label = "Good",
-                        FromValue = 4,
-                        ToValue = 8,
+                        Value = 4,
+                        SectionWidth = 4,
                         Fill = new SolidColorBrush
                         {
                             Color = System.Windows.Media.Color.FromRgb(204,204,204),
@@ -71,8 +70,8 @@ namespace Winforms.Cartesian.Sections
                     new AxisSection
                     {
                         Label = "Bad",
-                        FromValue = 0,
-                        ToValue = 4,
+                        Value = 0,
+                        SectionWidth = 4,
                         Fill = new SolidColorBrush
                         {
                             Color = System.Windows.Media.Color.FromRgb(254,132,132),

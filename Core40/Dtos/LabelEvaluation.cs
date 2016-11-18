@@ -24,8 +24,19 @@ using System;
 
 namespace LiveCharts.Dtos
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public struct LabelEvaluation
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LabelEvaluation"/> struct.
+        /// </summary>
+        /// <param name="angle">The angle.</param>
+        /// <param name="w">The w.</param>
+        /// <param name="h">The h.</param>
+        /// <param name="axis">The axis.</param>
+        /// <param name="source">The source.</param>
         public LabelEvaluation(double angle, double w, double h, AxisCore axis, AxisOrientation source) : this()
         {
             const double padding = 4;
@@ -197,24 +208,119 @@ namespace LiveCharts.Dtos
 
         }
 
+        /// <summary>
+        /// Gets or sets the label angle.
+        /// </summary>
+        /// <value>
+        /// The label angle.
+        /// </value>
         public double LabelAngle { get; set; }
+        /// <summary>
+        /// Gets or sets the w from w.
+        /// </summary>
+        /// <value>
+        /// The w from w.
+        /// </value>
         public double WFromW { get; set; }
+        /// <summary>
+        /// Gets or sets the w from h.
+        /// </summary>
+        /// <value>
+        /// The w from h.
+        /// </value>
         public double WFromH { get; set; }
+        /// <summary>
+        /// Gets or sets the h from w.
+        /// </summary>
+        /// <value>
+        /// The h from w.
+        /// </value>
         public double HFromW { get; set; }
+        /// <summary>
+        /// Gets or sets the h from h.
+        /// </summary>
+        /// <value>
+        /// The h from h.
+        /// </value>
         public double HFromH { get; set; }
+        /// <summary>
+        /// Gets or sets the top.
+        /// </summary>
+        /// <value>
+        /// The top.
+        /// </value>
         public double Top { get; set; }
+        /// <summary>
+        /// Gets or sets the bottom.
+        /// </summary>
+        /// <value>
+        /// The bottom.
+        /// </value>
         public double Bottom { get; set; }
+        /// <summary>
+        /// Gets or sets the left.
+        /// </summary>
+        /// <value>
+        /// The left.
+        /// </value>
         public double Left { get; set; }
+        /// <summary>
+        /// Gets or sets the right.
+        /// </summary>
+        /// <value>
+        /// The right.
+        /// </value>
         public double Right { get; set; }
+        /// <summary>
+        /// Gets or sets the x offset.
+        /// </summary>
+        /// <value>
+        /// The x offset.
+        /// </value>
         public double XOffset { get; set; }
+        /// <summary>
+        /// Gets or sets the y offset.
+        /// </summary>
+        /// <value>
+        /// The y offset.
+        /// </value>
         public double YOffset { get; set; }
 
+        /// <summary>
+        /// Gets the width of the taken.
+        /// </summary>
+        /// <value>
+        /// The width of the taken.
+        /// </value>
         public double TakenWidth { get { return WFromW + WFromH; } }
+        /// <summary>
+        /// Gets the height of the taken.
+        /// </summary>
+        /// <value>
+        /// The height of the taken.
+        /// </value>
         public double TakenHeight { get { return HFromW + HFromH; } }
 
+        /// <summary>
+        /// Gets the actual width.
+        /// </summary>
+        /// <value>
+        /// The actual width.
+        /// </value>
         public double ActualWidth { get; private set; }
+        /// <summary>
+        /// Gets the actual height.
+        /// </summary>
+        /// <value>
+        /// The actual height.
+        /// </value>
         public double ActualHeight { get; private set; }
 
+        /// <summary>
+        /// Gets the offset by source.
+        /// </summary>
+        /// <param name="source">The source.</param>
+        /// <returns></returns>
         public double GetOffsetBySource(AxisOrientation source)
         {
             return source == AxisOrientation.X

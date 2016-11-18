@@ -30,12 +30,22 @@ using LiveCharts.Wpf;
 
 namespace LiveCharts.WinForms
 {
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <seealso cref="System.Windows.Forms.Integration.ElementHost" />
     [Designer("System.Windows.Forms.Design.ControlDesigner, System.Design")]
     [DesignerSerializer("System.ComponentModel.Design.Serialization.TypeCodeDomSerializer , System.Design", "System.ComponentModel.Design.Serialization.CodeDomSerializer, System.Design")]
     public class CartesianChart : ElementHost
     {
+        /// <summary>
+        /// The WPF base
+        /// </summary>
         protected readonly Wpf.CartesianChart WpfBase = new Wpf.CartesianChart();
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CartesianChart"/> class.
+        /// </summary>
         public CartesianChart()
         {
             Child = WpfBase;
@@ -49,19 +59,40 @@ namespace LiveCharts.WinForms
             }
         }
 
+        /// <summary>
+        /// Occurs when [data click].
+        /// </summary>
         public event Action<object, ChartPoint> DataClick;
 
         #region ChartProperties
 
+        /// <summary>
+        /// Gets the base.
+        /// </summary>
+        /// <value>
+        /// The base.
+        /// </value>
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public Wpf.CartesianChart Base { get { return WpfBase; } }
 
+        /// <summary>
+        /// Gets or sets the axis y.
+        /// </summary>
+        /// <value>
+        /// The axis y.
+        /// </value>
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public AxesCollection AxisY
         {
             get { return WpfBase.AxisY; }
             set { WpfBase.AxisY = value; }
         }
+        /// <summary>
+        /// Gets or sets the axis x.
+        /// </summary>
+        /// <value>
+        /// The axis x.
+        /// </value>
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public AxesCollection AxisX
         {
@@ -69,18 +100,36 @@ namespace LiveCharts.WinForms
             set { WpfBase.AxisX = value; }
         }
 
+        /// <summary>
+        /// Gets or sets the default legend.
+        /// </summary>
+        /// <value>
+        /// The default legend.
+        /// </value>
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public UserControl DefaultLegend
         {
             get { return WpfBase.ChartLegend; }
             set { WpfBase.ChartLegend = value; }
         }
+        /// <summary>
+        /// Gets or sets the zoom.
+        /// </summary>
+        /// <value>
+        /// The zoom.
+        /// </value>
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public ZoomingOptions Zoom
         {
             get { return WpfBase.Zoom; }
             set { WpfBase.Zoom = value; }
         }
+        /// <summary>
+        /// Gets or sets the legend location.
+        /// </summary>
+        /// <value>
+        /// The legend location.
+        /// </value>
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public LegendLocation LegendLocation
         {
@@ -88,6 +137,12 @@ namespace LiveCharts.WinForms
             set { WpfBase.LegendLocation = value; }
         }
 
+        /// <summary>
+        /// Gets or sets the series.
+        /// </summary>
+        /// <value>
+        /// The series.
+        /// </value>
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public SeriesCollection Series
         {
@@ -95,6 +150,12 @@ namespace LiveCharts.WinForms
             set { WpfBase.Series = value; }
         }
 
+        /// <summary>
+        /// Gets or sets the animations speed.
+        /// </summary>
+        /// <value>
+        /// The animations speed.
+        /// </value>
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public TimeSpan AnimationsSpeed
         {
@@ -102,6 +163,12 @@ namespace LiveCharts.WinForms
             set { WpfBase.AnimationsSpeed = value; }
         }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether [disable animations].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [disable animations]; otherwise, <c>false</c>.
+        /// </value>
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool DisableAnimations
         {
@@ -109,6 +176,12 @@ namespace LiveCharts.WinForms
             set { WpfBase.DisableAnimations = value; }
         }
 
+        /// <summary>
+        /// Gets or sets the data tooltip.
+        /// </summary>
+        /// <value>
+        /// The data tooltip.
+        /// </value>
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public UserControl DataTooltip
         {
@@ -116,6 +189,12 @@ namespace LiveCharts.WinForms
             set { WpfBase.DataTooltip = value; }
         }
 
+        /// <summary>
+        /// Gets or sets the background.
+        /// </summary>
+        /// <value>
+        /// The background.
+        /// </value>
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public Brush Background
         {
@@ -123,6 +202,12 @@ namespace LiveCharts.WinForms
             set { WpfBase.Background = value; }
         }
 
+        /// <summary>
+        /// Gets or sets the visual elements.
+        /// </summary>
+        /// <value>
+        /// The visual elements.
+        /// </value>
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public VisualElementsCollection VisualElements
         {
@@ -130,6 +215,12 @@ namespace LiveCharts.WinForms
             set { WpfBase.VisualElements = value; }
         }
 
+        /// <summary>
+        /// Gets or sets the state of the updater.
+        /// </summary>
+        /// <value>
+        /// The state of the updater.
+        /// </value>
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public UpdaterState UpdaterState
         {
@@ -141,6 +232,11 @@ namespace LiveCharts.WinForms
 
         #region Methods
 
+        /// <summary>
+        /// Updates the specified restart view.
+        /// </summary>
+        /// <param name="restartView">if set to <c>true</c> [restart view].</param>
+        /// <param name="force">if set to <c>true</c> [force].</param>
         public void Update(bool restartView, bool force)
         {
             WpfBase.Update(restartView, force);

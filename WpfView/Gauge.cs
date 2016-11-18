@@ -35,8 +35,12 @@ namespace LiveCharts.Wpf
     /// <summary>
     /// The gauge chart is useful to display progress or completion.
     /// </summary>
+    /// <seealso cref="System.Windows.Controls.UserControl" />
     public class Gauge : UserControl
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Gauge"/> class.
+        /// </summary>
         public Gauge()
         {
             Canvas = new Canvas();
@@ -58,22 +62,22 @@ namespace LiveCharts.Wpf
             Panel.SetZIndex(Pie, 1);
 
             Canvas.SetBinding(WidthProperty,
-                new Binding {Path = new PropertyPath(WidthProperty), Source = this});
+                new Binding { Path = new PropertyPath(WidthProperty), Source = this });
             Canvas.SetBinding(HeightProperty,
-                new Binding {Path = new PropertyPath(HeightProperty), Source = this});
+                new Binding { Path = new PropertyPath(HeightProperty), Source = this });
 
             PieBack.SetBinding(Shape.FillProperty,
-                new Binding {Path = new PropertyPath(GaugeBackgroundProperty), Source = this});
+                new Binding { Path = new PropertyPath(GaugeBackgroundProperty), Source = this });
             PieBack.SetBinding(Shape.StrokeThicknessProperty,
-                new Binding {Path = new PropertyPath(StrokeThicknessProperty), Source = this});
+                new Binding { Path = new PropertyPath(StrokeThicknessProperty), Source = this });
             PieBack.SetBinding(Shape.StrokeProperty,
-                new Binding {Path = new PropertyPath(StrokeProperty), Source = this});
+                new Binding { Path = new PropertyPath(StrokeProperty), Source = this });
 
             Pie.SetBinding(Shape.StrokeThicknessProperty,
                 new Binding { Path = new PropertyPath(StrokeThicknessProperty), Source = this });
             Pie.Stroke = Brushes.Transparent;
 
-            SetCurrentValue(GaugeBackgroundProperty, new SolidColorBrush(Color.FromRgb(21, 101, 191)) {Opacity = .1});
+            SetCurrentValue(GaugeBackgroundProperty, new SolidColorBrush(Color.FromRgb(21, 101, 191)) { Opacity = .1 });
             SetCurrentValue(StrokeThicknessProperty, 0d);
             SetCurrentValue(StrokeProperty, new SolidColorBrush(Color.FromRgb(222, 222, 222)));
 
@@ -107,17 +111,23 @@ namespace LiveCharts.Wpf
         private bool IsNew { get; set; }
         private bool IsChartInitialized { get; set; }
 
+        /// <summary>
+        /// The uses360 mode property
+        /// </summary>
         public static readonly DependencyProperty Uses360ModeProperty = DependencyProperty.Register(
-            "Uses360Mode", typeof (bool), typeof (Gauge), new PropertyMetadata(default(bool), UpdateCallback));
+            "Uses360Mode", typeof(bool), typeof(Gauge), new PropertyMetadata(default(bool), UpdateCallback));
         /// <summary>
         /// Gets or sets whether the gauge uses 360 mode, 360 mode will plot a full circle instead of a semi circle
         /// </summary>
         public bool Uses360Mode
         {
-            get { return (bool) GetValue(Uses360ModeProperty); }
+            get { return (bool)GetValue(Uses360ModeProperty); }
             set { SetValue(Uses360ModeProperty, value); }
         }
 
+        /// <summary>
+        /// From property
+        /// </summary>
         public static readonly DependencyProperty FromProperty = DependencyProperty.Register(
             "From", typeof(double), typeof(Gauge), new PropertyMetadata(0d, UpdateCallback));
         /// <summary>
@@ -129,6 +139,9 @@ namespace LiveCharts.Wpf
             set { SetValue(FromProperty, value); }
         }
 
+        /// <summary>
+        /// To property
+        /// </summary>
         public static readonly DependencyProperty ToProperty = DependencyProperty.Register(
             "To", typeof(double), typeof(Gauge), new PropertyMetadata(1d, UpdateCallback));
         /// <summary>
@@ -140,28 +153,37 @@ namespace LiveCharts.Wpf
             set { SetValue(ToProperty, value); }
         }
 
+        /// <summary>
+        /// The value property
+        /// </summary>
         public static readonly DependencyProperty ValueProperty = DependencyProperty.Register(
-            "Value", typeof (double), typeof (Gauge), new PropertyMetadata(default(double), UpdateCallback));
+            "Value", typeof(double), typeof(Gauge), new PropertyMetadata(default(double), UpdateCallback));
         /// <summary>
         /// Gets or sets the current value of the gauge
         /// </summary>
         public double Value
         {
-            get { return (double) GetValue(ValueProperty); }
+            get { return (double)GetValue(ValueProperty); }
             set { SetValue(ValueProperty, value); }
         }
 
+        /// <summary>
+        /// The inner radius property
+        /// </summary>
         public static readonly DependencyProperty InnerRadiusProperty = DependencyProperty.Register(
-            "InnerRadius", typeof (double?), typeof (Gauge), new PropertyMetadata(null, UpdateCallback));
+            "InnerRadius", typeof(double?), typeof(Gauge), new PropertyMetadata(null, UpdateCallback));
         /// <summary>
         /// Gets o sets inner radius
         /// </summary>
         public double? InnerRadius
         {
-            get { return (double?) GetValue(InnerRadiusProperty); }
+            get { return (double?)GetValue(InnerRadiusProperty); }
             set { SetValue(InnerRadiusProperty, value); }
         }
 
+        /// <summary>
+        /// The stroke property
+        /// </summary>
         public static readonly DependencyProperty StrokeProperty = DependencyProperty.Register(
             "Stroke", typeof(Brush), typeof(Gauge), new PropertyMetadata(default(Brush)));
         /// <summary>
@@ -174,6 +196,9 @@ namespace LiveCharts.Wpf
         }
 
 
+        /// <summary>
+        /// The stroke thickness property
+        /// </summary>
         public static readonly DependencyProperty StrokeThicknessProperty = DependencyProperty.Register(
             "StrokeThickness", typeof(double), typeof(Gauge), new PropertyMetadata(default(double)));
         /// <summary>
@@ -185,6 +210,9 @@ namespace LiveCharts.Wpf
             set { SetValue(StrokeThicknessProperty, value); }
         }
 
+        /// <summary>
+        /// To color property
+        /// </summary>
         public static readonly DependencyProperty ToColorProperty = DependencyProperty.Register(
             "ToColor", typeof(Color), typeof(Gauge), new PropertyMetadata(default(Color), UpdateCallback));
         /// <summary>
@@ -196,6 +224,9 @@ namespace LiveCharts.Wpf
             set { SetValue(ToColorProperty, value); }
         }
 
+        /// <summary>
+        /// From color property
+        /// </summary>
         public static readonly DependencyProperty FromColorProperty = DependencyProperty.Register(
             "FromColor", typeof(Color), typeof(Gauge), new PropertyMetadata(default(Color), UpdateCallback));
         /// <summary>
@@ -207,47 +238,59 @@ namespace LiveCharts.Wpf
             set { SetValue(FromColorProperty, value); }
         }
 
+        /// <summary>
+        /// The gauge background property
+        /// </summary>
         public static readonly DependencyProperty GaugeBackgroundProperty = DependencyProperty.Register(
-            "GaugeBackground", typeof (Brush), typeof (Gauge), new PropertyMetadata(default(Brush)));
+            "GaugeBackground", typeof(Brush), typeof(Gauge), new PropertyMetadata(default(Brush)));
         /// <summary>
         /// Gets or sets the gauge background
         /// </summary>
         public Brush GaugeBackground
         {
-            get { return (Brush) GetValue(GaugeBackgroundProperty); }
+            get { return (Brush)GetValue(GaugeBackgroundProperty); }
             set { SetValue(GaugeBackgroundProperty, value); }
         }
 
+        /// <summary>
+        /// The animations speed property
+        /// </summary>
         public static readonly DependencyProperty AnimationsSpeedProperty = DependencyProperty.Register(
-            "AnimationsSpeed", typeof (TimeSpan), typeof (Gauge), new PropertyMetadata(default(TimeSpan)));
+            "AnimationsSpeed", typeof(TimeSpan), typeof(Gauge), new PropertyMetadata(default(TimeSpan)));
         /// <summary>
         /// G3ts or sets the gauge animations speed
         /// </summary>
         public TimeSpan AnimationsSpeed
         {
-            get { return (TimeSpan) GetValue(AnimationsSpeedProperty); }
+            get { return (TimeSpan)GetValue(AnimationsSpeedProperty); }
             set { SetValue(AnimationsSpeedProperty, value); }
         }
 
+        /// <summary>
+        /// The label formatter property
+        /// </summary>
         public static readonly DependencyProperty LabelFormatterProperty = DependencyProperty.Register(
-            "LabelFormatter", typeof (Func<double, string>), typeof (Gauge), new PropertyMetadata(default(Func<double, string>)));
+            "LabelFormatter", typeof(Func<double, string>), typeof(Gauge), new PropertyMetadata(default(Func<double, string>)));
         /// <summary>
         /// Gets or sets the label formatter, a label formatter takes a double value, and return a string, e.g. val => val.ToString("C");
         /// </summary>
         public Func<double, string> LabelFormatter
         {
-            get { return (Func<double, string>) GetValue(LabelFormatterProperty); }
+            get { return (Func<double, string>)GetValue(LabelFormatterProperty); }
             set { SetValue(LabelFormatterProperty, value); }
         }
 
+        /// <summary>
+        /// The high font size property
+        /// </summary>
         public static readonly DependencyProperty HighFontSizeProperty = DependencyProperty.Register(
-            "HighFontSize", typeof (double?), typeof (Gauge), new PropertyMetadata(null));
+            "HighFontSize", typeof(double?), typeof(Gauge), new PropertyMetadata(null));
         /// <summary>
         /// Gets o sets the label size, if this value is null then it will be automatically calculated, default is null.
         /// </summary>
         public double? HighFontSize
         {
-            get { return (double?) GetValue(HighFontSizeProperty); }
+            get { return (double?)GetValue(HighFontSizeProperty); }
             set { SetValue(HighFontSizeProperty, value); }
         }
 
@@ -266,7 +309,7 @@ namespace LiveCharts.Wpf
 
             Func<double, string> defFormatter = x => x.ToString(CultureInfo.InvariantCulture);
 
-            var completed = (Value-From)/(To - From);
+            var completed = (Value - From) / (To - From);
 
             var t = 0d;
 
@@ -296,26 +339,26 @@ namespace LiveCharts.Wpf
 
             if (Uses360Mode)
             {
-                r = ActualWidth > ActualHeight ? ActualHeight: ActualWidth;
-                r = r/2 - 2*t ;
-                top = ActualHeight/2;
+                r = ActualWidth > ActualHeight ? ActualHeight : ActualWidth;
+                r = r / 2 - 2 * t;
+                top = ActualHeight / 2;
             }
             else
             {
                 r = ActualWidth;
-                
-                if (ActualWidth > ActualHeight*2)
+
+                if (ActualWidth > ActualHeight * 2)
                 {
-                    r = ActualHeight*2;
+                    r = ActualHeight * 2;
                 }
 
-                r = r/2 - 2*t;
+                r = r / 2 - 2 * t;
 
-                top = ActualHeight/2 + r/2;
+                top = ActualHeight / 2 + r / 2;
             }
 
             PieBack.Radius = r;
-            PieBack.InnerRadius = InnerRadius ?? r*.6;
+            PieBack.InnerRadius = InnerRadius ?? r * .6;
             PieBack.RotationAngle = 270;
             PieBack.WedgeAngle = angle;
 
@@ -323,21 +366,21 @@ namespace LiveCharts.Wpf
             Pie.InnerRadius = PieBack.InnerRadius;
             Pie.RotationAngle = PieBack.RotationAngle;
 
-            Canvas.SetLeft(PieBack, ActualWidth/2);
+            Canvas.SetLeft(PieBack, ActualWidth / 2);
             Canvas.SetTop(PieBack, top);
-            Canvas.SetLeft(Pie, ActualWidth/2);
+            Canvas.SetLeft(Pie, ActualWidth / 2);
             Canvas.SetTop(Pie, top);
 
             Canvas.SetTop(LeftLabel, top);
             Canvas.SetTop(RightLabel, top);
-            Canvas.SetRight(LeftLabel, ActualWidth/2 + (r + PieBack.InnerRadius)/2 - LeftLabel.ActualWidth/2);
-            Canvas.SetRight(RightLabel, ActualWidth/2 - (r + PieBack.InnerRadius)/2 - RightLabel.ActualWidth/2);
+            Canvas.SetRight(LeftLabel, ActualWidth / 2 + (r + PieBack.InnerRadius) / 2 - LeftLabel.ActualWidth / 2);
+            Canvas.SetRight(RightLabel, ActualWidth / 2 - (r + PieBack.InnerRadius) / 2 - RightLabel.ActualWidth / 2);
 
-            MeasureTextBlock.FontSize = HighFontSize ?? Pie.InnerRadius*.4;
+            MeasureTextBlock.FontSize = HighFontSize ?? Pie.InnerRadius * .4;
             MeasureTextBlock.Text = (LabelFormatter ?? defFormatter)(Value);
             MeasureTextBlock.UpdateLayout();
-            Canvas.SetTop(MeasureTextBlock, top - MeasureTextBlock.ActualHeight*(Uses360Mode ? .5 : 1));
-            Canvas.SetLeft(MeasureTextBlock, ActualWidth/2 - MeasureTextBlock.ActualWidth/2);
+            Canvas.SetTop(MeasureTextBlock, top - MeasureTextBlock.ActualHeight * (Uses360Mode ? .5 : 1));
+            Canvas.SetLeft(MeasureTextBlock, ActualWidth / 2 - MeasureTextBlock.ActualWidth / 2);
 
             var interpolatedColor = new Color
             {
@@ -353,7 +396,7 @@ namespace LiveCharts.Wpf
                 Pie.WedgeAngle = 0;
             }
 
-            Pie.BeginAnimation(PieSlice.WedgeAngleProperty, new DoubleAnimation(completed*angle, AnimationsSpeed));
+            Pie.BeginAnimation(PieSlice.WedgeAngleProperty, new DoubleAnimation(completed * angle, AnimationsSpeed));
             ((SolidColorBrush)Pie.Fill).BeginAnimation(SolidColorBrush.ColorProperty,
                 new ColorAnimation(interpolatedColor, AnimationsSpeed));
 
@@ -367,11 +410,11 @@ namespace LiveCharts.Wpf
 
             var deltaX = p2.X - p1.X;
             // ReSharper disable once CompareOfFloatsByEqualityOperator
-            var m = (p2.Y - p1.Y)/(deltaX == 0 ? double.MinValue : deltaX);
+            var m = (p2.Y - p1.Y) / (deltaX == 0 ? double.MinValue : deltaX);
 
             var v = Value > To ? To : (Value < From ? From : Value);
 
-            return (byte) (m * (v - p1.X) + p1.Y);
+            return (byte)(m * (v - p1.X) + p1.Y);
         }
     }
 }

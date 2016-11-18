@@ -29,9 +29,18 @@ using LiveCharts.Helpers;
 
 namespace LiveCharts.Charts
 {
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <seealso cref="LiveCharts.Charts.ChartCore" />
     public class PieChartCore : ChartCore
     {
         #region Constructors
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PieChartCore"/> class.
+        /// </summary>
+        /// <param name="view">The view.</param>
+        /// <param name="updater">The updater.</param>
         public PieChartCore(IChartView view, ChartUpdater updater) : base(view, updater)
         {
             updater.Chart = this;
@@ -41,6 +50,11 @@ namespace LiveCharts.Charts
 
         #region Publics
 
+        /// <summary>
+        /// Prepares the axes.
+        /// </summary>
+        /// <exception cref="LiveChartsException">There is a invalid series in the series collection, " +
+        ///                     "verify that all the series implement IPieSeries.</exception>
         public override void PrepareAxes()
         {
             View.Zoom = ZoomingOptions.None;

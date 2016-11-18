@@ -48,6 +48,9 @@ namespace LiveCharts.Uwp
             this.SetIfNotSet(SeriesProperty, new SeriesCollection());
         }
 
+        /// <summary>
+        /// The inner radius property
+        /// </summary>
         public static readonly DependencyProperty InnerRadiusProperty = DependencyProperty.Register(
             "InnerRadius", typeof (double), typeof (PieChart), new PropertyMetadata(0d, CallChartUpdater()));
         /// <summary>
@@ -59,6 +62,9 @@ namespace LiveCharts.Uwp
             set { SetValue(InnerRadiusProperty, value); }
         }
 
+        /// <summary>
+        /// The starting rotation angle property
+        /// </summary>
         public static readonly DependencyProperty StartingRotationAngleProperty = DependencyProperty.Register(
             "StartingRotationAngle", typeof (double), typeof (PieChart), new PropertyMetadata(45d, CallChartUpdater()));
         /// <summary>
@@ -70,6 +76,9 @@ namespace LiveCharts.Uwp
             set { SetValue(StartingRotationAngleProperty, value); }
         }
 
+        /// <summary>
+        /// The hover push out property
+        /// </summary>
         public static readonly DependencyProperty HoverPushOutProperty = DependencyProperty.Register(
             "HoverPushOut", typeof (double), typeof (PieChart), new PropertyMetadata(5d));
         /// <summary>
@@ -81,6 +90,11 @@ namespace LiveCharts.Uwp
             set { SetValue(HoverPushOutProperty, value); }
         }
 
+        /// <summary>
+        /// Gets the tooltip position.
+        /// </summary>
+        /// <param name="senderPoint">The sender point.</param>
+        /// <returns></returns>
         protected internal override Point GetTooltipPosition(ChartPoint senderPoint)
         {
             var pieSlice = ((PiePointView) senderPoint.View).Slice;

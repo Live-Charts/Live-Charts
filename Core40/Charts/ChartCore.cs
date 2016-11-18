@@ -29,9 +29,17 @@ using LiveCharts.Dtos;
 
 namespace LiveCharts.Charts
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public abstract class ChartCore
     {
         #region Constructors
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ChartCore"/> class.
+        /// </summary>
+        /// <param name="view">The view.</param>
+        /// <param name="updater">The updater.</param>
         protected ChartCore(IChartView view, ChartUpdater updater)
         {
             View = view;
@@ -43,6 +51,9 @@ namespace LiveCharts.Charts
             DrawMargin.SetLeft += view.SetDrawMarginLeft;
         }
 
+        /// <summary>
+        /// Initializes the <see cref="ChartCore"/> class.
+        /// </summary>
         static ChartCore()
         {
             Configurations = new Charting();
@@ -52,14 +63,68 @@ namespace LiveCharts.Charts
 
         #region Properties 
 
+        /// <summary>
+        /// Gets or sets the configurations.
+        /// </summary>
+        /// <value>
+        /// The configurations.
+        /// </value>
         public static Charting Configurations { get; set; }
+        /// <summary>
+        /// Gets or sets a value indicating whether [series initialized].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [series initialized]; otherwise, <c>false</c>.
+        /// </value>
         public bool SeriesInitialized { get; set; }
+        /// <summary>
+        /// Gets or sets a value indicating whether [are components loaded].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [are components loaded]; otherwise, <c>false</c>.
+        /// </value>
         public bool AreComponentsLoaded { get; set; }
+        /// <summary>
+        /// Gets or sets the view.
+        /// </summary>
+        /// <value>
+        /// The view.
+        /// </value>
         public IChartView View { get; set; }
+        /// <summary>
+        /// Gets or sets the updater.
+        /// </summary>
+        /// <value>
+        /// The updater.
+        /// </value>
         public ChartUpdater Updater { get; set; }
+        /// <summary>
+        /// Gets or sets the size of the control.
+        /// </summary>
+        /// <value>
+        /// The size of the control.
+        /// </value>
         public CoreSize ControlSize { get; set; }
+        /// <summary>
+        /// Gets or sets the draw margin.
+        /// </summary>
+        /// <value>
+        /// The draw margin.
+        /// </value>
         public CoreRectangle DrawMargin { get; set; }
+        /// <summary>
+        /// Gets or sets a value indicating whether this instance has unitary points.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if this instance has unitary points; otherwise, <c>false</c>.
+        /// </value>
         public bool HasUnitaryPoints { get; set; }
+        /// <summary>
+        /// Gets a value indicating whether [requires hover shape].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [requires hover shape]; otherwise, <c>false</c>.
+        /// </value>
         public bool RequiresHoverShape
         {
             get
@@ -69,21 +134,66 @@ namespace LiveCharts.Charts
             }
         }
 
+        /// <summary>
+        /// Gets or sets the axis x.
+        /// </summary>
+        /// <value>
+        /// The axis x.
+        /// </value>
         public List<AxisCore> AxisX { get; set; }
+        /// <summary>
+        /// Gets or sets the axis y.
+        /// </summary>
+        /// <value>
+        /// The axis y.
+        /// </value>
         public List<AxisCore> AxisY { get; set; }
 
+        /// <summary>
+        /// Gets or sets the x limit.
+        /// </summary>
+        /// <value>
+        /// The x limit.
+        /// </value>
         public CoreLimit XLimit { get; set; }
+        /// <summary>
+        /// Gets or sets the y limit.
+        /// </summary>
+        /// <value>
+        /// The y limit.
+        /// </value>
         public CoreLimit YLimit { get; set; }
+        /// <summary>
+        /// Gets or sets the w limit.
+        /// </summary>
+        /// <value>
+        /// The w limit.
+        /// </value>
         public CoreLimit WLimit { get; set; }
 
+        /// <summary>
+        /// Gets or sets the index of the current color.
+        /// </summary>
+        /// <value>
+        /// The index of the current color.
+        /// </value>
         public int CurrentColorIndex { get; set; }
 
+        /// <summary>
+        /// Gets or sets the pan origin.
+        /// </summary>
+        /// <value>
+        /// The pan origin.
+        /// </value>
         public CorePoint PanOrigin { get; set; }
 
         #endregion
 
         #region Public Methods
 
+        /// <summary>
+        /// Prepares the axes.
+        /// </summary>
         public virtual void PrepareAxes()
         {
             for (var index = 0; index < AxisX.Count; index++)
@@ -119,11 +229,17 @@ namespace LiveCharts.Charts
             }
         }
 
+        /// <summary>
+        /// Runs the specialized chart components.
+        /// </summary>
         public virtual void RunSpecializedChartComponents()
         {
             
         }
 
+        /// <summary>
+        /// Calculates the components and margin.
+        /// </summary>
         public void CalculateComponentsAndMargin()
         {
             var curSize = new CoreRectangle(0, 0, ControlSize.Width, ControlSize.Height);
@@ -242,6 +358,12 @@ namespace LiveCharts.Charts
             }
         }
 
+        /// <summary>
+        /// Places the legend.
+        /// </summary>
+        /// <param name="drawMargin">The draw margin.</param>
+        /// <returns></returns>
+        /// <exception cref="System.ArgumentOutOfRangeException"></exception>
         public CoreRectangle PlaceLegend(CoreRectangle drawMargin)
         {
             var legendSize = View.LoadLegend();
@@ -280,6 +402,10 @@ namespace LiveCharts.Charts
             return drawMargin;
         }
 
+        /// <summary>
+        /// Zooms the in.
+        /// </summary>
+        /// <param name="pivot">The pivot.</param>
         public void ZoomIn(CorePoint pivot)
         {
             if (AxisX == null || AxisY == null) return;
@@ -330,6 +456,10 @@ namespace LiveCharts.Charts
             }
         }
 
+        /// <summary>
+        /// Zooms the out.
+        /// </summary>
+        /// <param name="pivot">The pivot.</param>
         public void ZoomOut(CorePoint pivot)
         {
             View.HideTooltip();
@@ -377,12 +507,19 @@ namespace LiveCharts.Charts
             }
         }
 
+        /// <summary>
+        /// Clears the zoom.
+        /// </summary>
         public void ClearZoom()
         {
             foreach (var xi in AxisX) xi.View.SetRange(double.NaN, double.NaN);
             foreach (var yi in AxisY) yi.View.SetRange(double.NaN, double.NaN);
         }
 
+        /// <summary>
+        /// Drags the specified delta.
+        /// </summary>
+        /// <param name="delta">The delta.</param>
         public void Drag(CorePoint delta)
         {
             if (View.Zoom == ZoomingOptions.None) return;
@@ -410,6 +547,13 @@ namespace LiveCharts.Charts
 
         #region Protected
 
+        /// <summary>
+        /// Stacks the points.
+        /// </summary>
+        /// <param name="stackables">The stackables.</param>
+        /// <param name="stackAt">The stack at.</param>
+        /// <param name="stackIndex">Index of the stack.</param>
+        /// <param name="mode">The mode.</param>
         protected void StackPoints(IEnumerable<ISeriesView> stackables, AxisOrientation stackAt, int stackIndex,
             StackMode mode = StackMode.Values)
         {

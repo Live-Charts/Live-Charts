@@ -24,10 +24,32 @@ using LiveCharts.Dtos;
 
 namespace LiveCharts.Definitions.Points
 {
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <seealso cref="LiveCharts.Definitions.Points.IChartPointView" />
     public interface IHeatPointView : IChartPointView
     {
+        /// <summary>
+        /// Gets or sets the color components.
+        /// </summary>
+        /// <value>
+        /// The color components.
+        /// </value>
         CoreColor ColorComponents { get; set; }
+        /// <summary>
+        /// Gets or sets the width.
+        /// </summary>
+        /// <value>
+        /// The width.
+        /// </value>
         double Width { get; set; }
+        /// <summary>
+        /// Gets or sets the height.
+        /// </summary>
+        /// <value>
+        /// The height.
+        /// </value>
         double Height { get; set; }
     }
 }

@@ -20,7 +20,6 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-using System;
 using System.Linq;
 using LiveCharts.Defaults;
 using LiveCharts.Definitions.Points;
@@ -29,14 +28,26 @@ using LiveCharts.Dtos;
 
 namespace LiveCharts.SeriesAlgorithms
 {
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <seealso cref="LiveCharts.SeriesAlgorithm" />
+    /// <seealso cref="LiveCharts.Definitions.Series.ICartesianSeries" />
     public class RowAlgorithm : SeriesAlgorithm, ICartesianSeries
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RowAlgorithm"/> class.
+        /// </summary>
+        /// <param name="view">The view.</param>
         public RowAlgorithm(ISeriesView view) : base(view)
         {
             SeriesOrientation = SeriesOrientation.Vertical;
             PreferredSelectionMode = TooltipSelectionMode.SharedYInSeries;
         }
 
+        /// <summary>
+        /// Updates this instance.
+        /// </summary>
         public override void Update()
         {
             var castedSeries = (IRowSeriesView) View;

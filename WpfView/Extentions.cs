@@ -5,6 +5,9 @@ using LiveCharts.Wpf.Charts.Base;
 
 namespace LiveCharts.Wpf
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public static class Extentions
     {
         /// <summary>

@@ -28,9 +28,18 @@ using LiveCharts.Dtos;
 
 namespace LiveCharts.SeriesAlgorithms
 {
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <seealso cref="LiveCharts.SeriesAlgorithm" />
+    /// <seealso cref="LiveCharts.Definitions.Series.ICartesianSeries" />
     public class StackedColumnAlgorithm : SeriesAlgorithm , ICartesianSeries
     {
         private readonly IStackModelableSeriesView _stackModelable;
+        /// <summary>
+        /// Initializes a new instance of the <see cref="StackedColumnAlgorithm"/> class.
+        /// </summary>
+        /// <param name="view">The view.</param>
         public StackedColumnAlgorithm(ISeriesView view) : base(view)
         {
             SeriesOrientation = SeriesOrientation.Horizontal;
@@ -38,6 +47,9 @@ namespace LiveCharts.SeriesAlgorithms
             PreferredSelectionMode = TooltipSelectionMode.SharedXValues;
         }
 
+        /// <summary>
+        /// Updates this instance.
+        /// </summary>
         public override void Update()
         {
             var castedSeries = (IStackedColumnSeriesView) View;

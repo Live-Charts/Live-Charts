@@ -69,6 +69,9 @@ namespace LiveCharts.Uwp
 
         #region Properties
 
+        /// <summary>
+        /// The maximum row heigth property
+        /// </summary>
         public static readonly DependencyProperty MaxRowHeigthProperty = DependencyProperty.Register(
             "MaxRowHeigth", typeof (double), typeof (RowSeries), new PropertyMetadata(default(double)));
         /// <summary>
@@ -80,6 +83,9 @@ namespace LiveCharts.Uwp
             set { SetValue(MaxRowHeigthProperty, value); }
         }
 
+        /// <summary>
+        /// The row padding property
+        /// </summary>
         public static readonly DependencyProperty RowPaddingProperty = DependencyProperty.Register(
             "RowPadding", typeof (double), typeof (RowSeries), new PropertyMetadata(default(double)));
         /// <summary>
@@ -91,6 +97,9 @@ namespace LiveCharts.Uwp
             set { SetValue(RowPaddingProperty, value); }
         }
 
+        /// <summary>
+        /// The label position property
+        /// </summary>
         public static readonly DependencyProperty LabelPositionProperty = DependencyProperty.Register(
             "LabelPosition", typeof(BarLabelPosition), typeof(RowSeries), 
             new PropertyMetadata(default(BarLabelPosition), CallChartUpdater()));
@@ -108,6 +117,12 @@ namespace LiveCharts.Uwp
 
         #region Overridden Methods
 
+        /// <summary>
+        /// Gets the view of a given point
+        /// </summary>
+        /// <param name="point"></param>
+        /// <param name="label"></param>
+        /// <returns></returns>
         public override IChartPointView GetPointView(ChartPoint point, string label)
         {
             var pbv = (RowPointView) point.View;

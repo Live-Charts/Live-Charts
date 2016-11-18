@@ -65,6 +65,9 @@ namespace LiveCharts.Uwp
 
         #region Overridden Methods
 
+        /// <summary>
+        /// This method runs when the update starts
+        /// </summary>
         public override void OnSeriesUpdateStart()
         {
             ActiveSplitters = 0;
@@ -135,11 +138,17 @@ namespace LiveCharts.Uwp
             Figure.StartPoint = new Point(areaLimit, y);
         }
 
+        /// <summary>
+        /// Gets the point view.
+        /// </summary>
+        /// <param name="point">The point.</param>
+        /// <param name="label">The label.</param>
+        /// <returns></returns>
         public override IChartPointView GetPointView(ChartPoint point, string label)
         {
             var mhr = PointGeometrySize < 10 ? 10 : PointGeometrySize;
 
-            var pbv = (VerticalBezierPointView) point.View;
+            var pbv = (VerticalBezierPointView)point.View;
 
             if (pbv == null)
             {
@@ -219,10 +228,15 @@ namespace LiveCharts.Uwp
 
             return pbv;
         }
-#endregion
+        #endregion
 
         #region Public Methods 
 
+        /// <summary>
+        /// Starts the segment.
+        /// </summary>
+        /// <param name="atIndex">At index.</param>
+        /// <param name="location">The location.</param>
         public override void StartSegment(int atIndex, CorePoint location)
         {
             if (Splitters.Count <= ActiveSplitters)
@@ -275,6 +289,11 @@ namespace LiveCharts.Uwp
             Figure.Segments.Insert(atIndex, splitter.Left);
         }
 
+        /// <summary>
+        /// Ends the segment.
+        /// </summary>
+        /// <param name="atIndex">At index.</param>
+        /// <param name="location">The location.</param>
         public override void EndSegment(int atIndex, CorePoint location)
         {
             var splitter = Splitters[ActiveSplitters - 1];

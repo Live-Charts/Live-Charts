@@ -28,24 +28,46 @@ using System.Windows.Media;
 
 namespace LiveCharts.WinForms
 {
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <seealso cref="System.Windows.Forms.Integration.ElementHost" />
     [Designer("System.Windows.Forms.Design.ControlDesigner, System.Design")]
     [DesignerSerializer("System.ComponentModel.Design.Serialization.TypeCodeDomSerializer , System.Design", "System.ComponentModel.Design.Serialization.CodeDomSerializer, System.Design")]
 
     public class SolidGauge : ElementHost
     {
+        /// <summary>
+        /// The WPF base
+        /// </summary>
         protected readonly Wpf.Gauge WpfBase = new Wpf.Gauge();
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SolidGauge"/> class.
+        /// </summary>
         public SolidGauge()
         {
             Child = WpfBase;
         }
 
+        /// <summary>
+        /// Gets the base.
+        /// </summary>
+        /// <value>
+        /// The base.
+        /// </value>
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public Wpf.Gauge Base
         {
             get { return WpfBase; }
         }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether [uses360 mode].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [uses360 mode]; otherwise, <c>false</c>.
+        /// </value>
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool Uses360Mode
         {
@@ -53,6 +75,12 @@ namespace LiveCharts.WinForms
             set { WpfBase.Uses360Mode = value; }
         }
 
+        /// <summary>
+        /// Gets or sets from.
+        /// </summary>
+        /// <value>
+        /// From.
+        /// </value>
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public double From
         {
@@ -60,6 +88,12 @@ namespace LiveCharts.WinForms
             set { WpfBase.From = value; }
         }
 
+        /// <summary>
+        /// Gets or sets to.
+        /// </summary>
+        /// <value>
+        /// To.
+        /// </value>
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public double To
         {
@@ -67,6 +101,12 @@ namespace LiveCharts.WinForms
             set { WpfBase.To = value; }
         }
 
+        /// <summary>
+        /// Gets or sets the value.
+        /// </summary>
+        /// <value>
+        /// The value.
+        /// </value>
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public double Value
         {
@@ -75,6 +115,12 @@ namespace LiveCharts.WinForms
         }
 
 
+        /// <summary>
+        /// Gets or sets the inner radius.
+        /// </summary>
+        /// <value>
+        /// The inner radius.
+        /// </value>
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public double? InnerRadius
         {
@@ -82,6 +128,12 @@ namespace LiveCharts.WinForms
             set { WpfBase.InnerRadius = value; }
         }
 
+        /// <summary>
+        /// Gets or sets the stroke.
+        /// </summary>
+        /// <value>
+        /// The stroke.
+        /// </value>
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public Brush Stroke
         {
@@ -89,6 +141,12 @@ namespace LiveCharts.WinForms
             set { WpfBase.Stroke = value; }
         }
 
+        /// <summary>
+        /// Gets or sets the stroke thickness.
+        /// </summary>
+        /// <value>
+        /// The stroke thickness.
+        /// </value>
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public double StrokeThickness
         {
@@ -96,6 +154,12 @@ namespace LiveCharts.WinForms
             set { WpfBase.StrokeThickness = value; }
         }
 
+        /// <summary>
+        /// Gets or sets to color.
+        /// </summary>
+        /// <value>
+        /// To color.
+        /// </value>
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public Color ToColor
         {
@@ -103,6 +167,12 @@ namespace LiveCharts.WinForms
             set { WpfBase.ToColor = value; }
         }
 
+        /// <summary>
+        /// Gets or sets from color.
+        /// </summary>
+        /// <value>
+        /// From color.
+        /// </value>
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public Color FromColor
         {
@@ -110,6 +180,12 @@ namespace LiveCharts.WinForms
             set { WpfBase.FromColor = value; }
         }
 
+        /// <summary>
+        /// Gets or sets the gauge background.
+        /// </summary>
+        /// <value>
+        /// The gauge background.
+        /// </value>
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public Brush GaugeBackground
         {
@@ -117,6 +193,12 @@ namespace LiveCharts.WinForms
             set { WpfBase.GaugeBackground = value; }
         }
 
+        /// <summary>
+        /// Gets or sets the animations speed.
+        /// </summary>
+        /// <value>
+        /// The animations speed.
+        /// </value>
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public TimeSpan AnimationsSpeed
         {
@@ -124,6 +206,12 @@ namespace LiveCharts.WinForms
             set { WpfBase.AnimationsSpeed = value; }
         }
 
+        /// <summary>
+        /// Gets or sets the label formatter.
+        /// </summary>
+        /// <value>
+        /// The label formatter.
+        /// </value>
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public Func<double, string> LabelFormatter
         {
@@ -131,6 +219,12 @@ namespace LiveCharts.WinForms
             set { WpfBase.LabelFormatter = value; }
         }
 
+        /// <summary>
+        /// Gets or sets the size of the high font.
+        /// </summary>
+        /// <value>
+        /// The size of the high font.
+        /// </value>
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public double? HighFontSize
         {

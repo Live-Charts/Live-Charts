@@ -22,6 +22,11 @@
 
 namespace LiveCharts.Definitions.Series
 {
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <seealso cref="LiveCharts.Definitions.Series.ILineSeriesView" />
+    /// <seealso cref="LiveCharts.Definitions.Series.IStackModelableSeriesView" />
     public interface IVerticalStackedAreaSeriesView : ILineSeriesView, IStackModelableSeriesView
     {
 

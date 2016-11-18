@@ -68,6 +68,9 @@ namespace LiveCharts.Wpf
 
         #region Properties
 
+        /// <summary>
+        /// The maximum row heigth property
+        /// </summary>
         public static readonly DependencyProperty MaxRowHeigthProperty = DependencyProperty.Register(
             "MaxRowHeigth", typeof (double), typeof (RowSeries), new PropertyMetadata(default(double)));
         /// <summary>
@@ -79,6 +82,9 @@ namespace LiveCharts.Wpf
             set { SetValue(MaxRowHeigthProperty, value); }
         }
 
+        /// <summary>
+        /// The row padding property
+        /// </summary>
         public static readonly DependencyProperty RowPaddingProperty = DependencyProperty.Register(
             "RowPadding", typeof (double), typeof (RowSeries), new PropertyMetadata(default(double)));
         /// <summary>
@@ -90,6 +96,9 @@ namespace LiveCharts.Wpf
             set { SetValue(RowPaddingProperty, value); }
         }
 
+        /// <summary>
+        /// The labels position property
+        /// </summary>
         public static readonly DependencyProperty LabelsPositionProperty = DependencyProperty.Register(
             "LabelsPosition", typeof(BarLabelPosition), typeof(RowSeries), 
             new PropertyMetadata(default(BarLabelPosition), CallChartUpdater()));
@@ -107,9 +116,15 @@ namespace LiveCharts.Wpf
 
         #region Overridden Methods
 
+        /// <summary>
+        /// Gets the point view.
+        /// </summary>
+        /// <param name="point">The point.</param>
+        /// <param name="label">The label.</param>
+        /// <returns></returns>
         public override IChartPointView GetPointView(ChartPoint point, string label)
         {
-            var pbv = (RowPointView) point.View;
+            var pbv = (RowPointView)point.View;
 
             if (pbv == null)
             {
@@ -168,8 +183,8 @@ namespace LiveCharts.Wpf
 
             if (pbv.DataLabel != null) pbv.DataLabel.Text = label;
 
-            if (point.Stroke != null) pbv.Rectangle.Stroke = (Brush) point.Stroke;
-            if (point.Fill != null) pbv.Rectangle.Fill = (Brush) point.Fill;
+            if (point.Stroke != null) pbv.Rectangle.Stroke = (Brush)point.Stroke;
+            if (point.Fill != null) pbv.Rectangle.Fill = (Brush)point.Fill;
 
             pbv.LabelPosition = LabelsPosition;
 

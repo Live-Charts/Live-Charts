@@ -33,8 +33,16 @@ using LiveCharts.Dtos;
 
 namespace LiveCharts.Uwp.Components
 {
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <seealso cref="LiveCharts.Definitions.Charts.ISeparatorElementView" />
     public class AxisSeparatorElement : ISeparatorElementView
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AxisSeparatorElement"/> class.
+        /// </summary>
+        /// <param name="model">The model.</param>
         public AxisSeparatorElement(SeparatorElementCore model)
         {
             Model = model;
@@ -42,10 +50,29 @@ namespace LiveCharts.Uwp.Components
 
         internal TextBlock TextBlock { get; set; }
         internal Line Line { get; set; }
+        /// <summary>
+        /// Gets the label model.
+        /// </summary>
+        /// <value>
+        /// The label model.
+        /// </value>
         public LabelEvaluation LabelModel { get; private set; }
 
+        /// <summary>
+        /// Gets the model.
+        /// </summary>
+        /// <value>
+        /// The model.
+        /// </value>
         public SeparatorElementCore Model { get; }
 
+        /// <summary>
+        /// Updates the label.
+        /// </summary>
+        /// <param name="text">The text.</param>
+        /// <param name="axis">The axis.</param>
+        /// <param name="source">The source.</param>
+        /// <returns></returns>
         public LabelEvaluation UpdateLabel(string text, AxisCore axis, AxisOrientation source)
         {
             TextBlock.Text = text;
@@ -63,14 +90,28 @@ namespace LiveCharts.Uwp.Components
             return transform;
         }
 
+        /// <summary>
+        /// Clears the specified chart.
+        /// </summary>
+        /// <param name="chart">The chart.</param>
         public void Clear(IChartView chart)
         {
             chart.RemoveFromView(TextBlock);
             chart.RemoveFromView(Line);
             TextBlock = null;
             Line = null;
-        }      
+        }
 
+        /// <summary>
+        /// Places the specified chart.
+        /// </summary>
+        /// <param name="chart">The chart.</param>
+        /// <param name="axis">The axis.</param>
+        /// <param name="direction">The direction.</param>
+        /// <param name="axisIndex">Index of the axis.</param>
+        /// <param name="toLabel">To label.</param>
+        /// <param name="toLine">To line.</param>
+        /// <param name="tab">The tab.</param>
         public void Place(ChartCore chart, AxisCore axis, AxisOrientation direction, int axisIndex, 
             double toLabel, double toLine, double tab)
         {
@@ -96,6 +137,10 @@ namespace LiveCharts.Uwp.Components
             }
         }
 
+        /// <summary>
+        /// Removes the specified chart.
+        /// </summary>
+        /// <param name="chart">The chart.</param>
         public void Remove(ChartCore chart)
         {
             chart.View.RemoveFromView(TextBlock);
@@ -104,6 +149,16 @@ namespace LiveCharts.Uwp.Components
             Line = null;
         }
 
+        /// <summary>
+        /// Moves the specified chart.
+        /// </summary>
+        /// <param name="chart">The chart.</param>
+        /// <param name="axis">The axis.</param>
+        /// <param name="direction">The direction.</param>
+        /// <param name="axisIndex">Index of the axis.</param>
+        /// <param name="toLabel">To label.</param>
+        /// <param name="toLine">To line.</param>
+        /// <param name="tab">The tab.</param>
         public void Move(ChartCore chart, AxisCore axis, AxisOrientation direction, int axisIndex, double toLabel, double toLine, double tab)
         {
             if (direction == AxisOrientation.Y)
@@ -137,6 +192,11 @@ namespace LiveCharts.Uwp.Components
 
         }
 
+        /// <summary>
+        /// Fades the in.
+        /// </summary>
+        /// <param name="axis">The axis.</param>
+        /// <param name="chart">The chart.</param>
         public void FadeIn(AxisCore axis, ChartCore chart)
         {
             if (TextBlock.Visibility != Visibility.Collapsed)
@@ -146,6 +206,10 @@ namespace LiveCharts.Uwp.Components
                 Line.BeginDoubleAnimation("Opacity", 0, 1, chart.View.AnimationsSpeed);
         }
 
+        /// <summary>
+        /// Fades the out and remove.
+        /// </summary>
+        /// <param name="chart">The chart.</param>
         public void FadeOutAndRemove(ChartCore chart)
         {
             if (TextBlock.Visibility == Visibility.Collapsed &&
@@ -167,11 +231,13 @@ namespace LiveCharts.Uwp.Components
                     return;
                 }
 
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
                 TextBlock.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
                 {
                     chart.View.RemoveFromView(TextBlock);
                     chart.View.RemoveFromView(Line);
                 });
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
             };
 
             TextBlock.BeginAnimation(anim, "Opacity");

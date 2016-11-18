@@ -27,13 +27,35 @@ using System.Linq;
 
 namespace LiveCharts.Helpers
 {
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="oldItems">The old items.</param>
+    /// <param name="newItems">The new items.</param>
     public delegate void NoisyCollectionCollectionChanged<in T>(
         IEnumerable<T> oldItems, IEnumerable<T> newItems);
-    
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <seealso cref="System.Collections.IList" />
     public interface INoisyCollection : IList
     {
+        /// <summary>
+        /// Occurs when [noisy collection changed].
+        /// </summary>
         event NoisyCollectionCollectionChanged<object> NoisyCollectionChanged;
+        /// <summary>
+        /// Adds the range.
+        /// </summary>
+        /// <param name="items">The items.</param>
         void AddRange(IEnumerable<object> items);
+        /// <summary>
+        /// Inserts the range.
+        /// </summary>
+        /// <param name="index">The index.</param>
+        /// <param name="collection">The collection.</param>
         void InsertRange(int index, IEnumerable<object> collection);
     }
 
@@ -76,6 +98,9 @@ namespace LiveCharts.Helpers
         #endregion
 
         #region Events
+        /// <summary>
+        /// Occurs when [collection reset].
+        /// </summary>
         public event Action CollectionReset;
         #endregion
 
@@ -398,6 +423,9 @@ namespace LiveCharts.Helpers
             add { NoisyCollectionChanged += value as NoisyCollectionCollectionChanged<T>; }
             remove { NoisyCollectionChanged -= value as NoisyCollectionCollectionChanged<T>; }
         }
+        /// <summary>
+        /// Occurs when [noisy collection changed].
+        /// </summary>
         public event NoisyCollectionCollectionChanged<T> NoisyCollectionChanged;
 
         private void OnCollectionChanged(IEnumerable<T> olditems, IEnumerable<T> newItems)
