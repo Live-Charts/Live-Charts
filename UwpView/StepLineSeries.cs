@@ -34,8 +34,10 @@ using LiveCharts.Uwp.Points;
 namespace LiveCharts.Uwp
 {
     /// <summary>
-    /// ThesStep line series 
+    /// ThesStep line series
     /// </summary>
+    /// <seealso cref="LiveCharts.Uwp.Series" />
+    /// <seealso cref="LiveCharts.Uwp.Components.IFondeable" />
     public class StepLineSeries : Series, IFondeable
     {
         #region Constructors
@@ -67,6 +69,9 @@ namespace LiveCharts.Uwp
 
         #region Properties
 
+        /// <summary>
+        /// The point geometry size property
+        /// </summary>
         public static readonly DependencyProperty PointGeometrySizeProperty = DependencyProperty.Register(
            "PointGeometrySize", typeof(double), typeof(StepLineSeries),
            new PropertyMetadata(default(double), CallChartUpdater()));
@@ -79,6 +84,9 @@ namespace LiveCharts.Uwp
             set { SetValue(PointGeometrySizeProperty, value); }
         }
 
+        /// <summary>
+        /// The point foreround property
+        /// </summary>
         public static readonly DependencyProperty PointForeroundProperty = DependencyProperty.Register(
             "PointForeround", typeof(Brush), typeof(StepLineSeries),
             new PropertyMetadata(default(Brush)));
@@ -91,12 +99,21 @@ namespace LiveCharts.Uwp
             set { SetValue(PointForeroundProperty, value); }
         }
 
+        /// <summary>
+        /// The alternative stroke property
+        /// </summary>
         public static readonly DependencyProperty AlternativeStrokeProperty = DependencyProperty.Register(
-            "AlternativeStroke", typeof (Brush), typeof (StepLineSeries), new PropertyMetadata(default(Brush)));
+            "AlternativeStroke", typeof(Brush), typeof(StepLineSeries), new PropertyMetadata(default(Brush)));
 
+        /// <summary>
+        /// Gets or sets the alternative stroke.
+        /// </summary>
+        /// <value>
+        /// The alternative stroke.
+        /// </value>
         public Brush AlternativeStroke
         {
-            get { return (Brush) GetValue(AlternativeStrokeProperty); }
+            get { return (Brush)GetValue(AlternativeStrokeProperty); }
             set { SetValue(AlternativeStrokeProperty, value); }
         }
 
@@ -104,9 +121,15 @@ namespace LiveCharts.Uwp
 
         #region Overridden Methods
 
+        /// <summary>
+        /// Gets the view of a given point
+        /// </summary>
+        /// <param name="point"></param>
+        /// <param name="label"></param>
+        /// <returns></returns>
         public override IChartPointView GetPointView(ChartPoint point, string label)
         {
-            var pbv = (StepLinePointView) point.View;
+            var pbv = (StepLinePointView)point.View;
 
             if (pbv == null)
             {
@@ -170,8 +193,8 @@ namespace LiveCharts.Uwp
                 pbv.Shape.Data = PointGeometry.Parse();
                 Canvas.SetZIndex(pbv.Shape, Canvas.GetZIndex(this) + 1);
 
-                if (point.Stroke != null) pbv.Shape.Stroke = (Brush) point.Stroke;
-                if (point.Fill != null) pbv.Shape.Fill = (Brush) point.Fill;
+                if (point.Stroke != null) pbv.Shape.Stroke = (Brush)point.Stroke;
+                if (point.Fill != null) pbv.Shape.Fill = (Brush)point.Fill;
             }
 
             if (Model.Chart.RequiresHoverShape && pbv.HoverShape == null)
@@ -184,7 +207,7 @@ namespace LiveCharts.Uwp
 
                 Canvas.SetZIndex(pbv.HoverShape, short.MaxValue);
 
-                var uwpfChart = (Chart) Model.Chart.View;
+                var uwpfChart = (Chart)Model.Chart.View;
                 uwpfChart.AttachHoverableEventTo(pbv.HoverShape);
 
                 Model.Chart.View.AddToDrawMargin(pbv.HoverShape);
@@ -205,9 +228,12 @@ namespace LiveCharts.Uwp
             return pbv;
         }
 
+        /// <summary>
+        /// Initializes the series colors if they are not set
+        /// </summary>
         public override void InitializeColors()
         {
-            var uwpfChart = (Chart) Model.Chart.View;
+            var uwpfChart = (Chart)Model.Chart.View;
 
             if (Stroke != null && AlternativeStroke != null) return;
 

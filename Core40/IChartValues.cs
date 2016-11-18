@@ -26,6 +26,10 @@ using LiveCharts.Helpers;
 
 namespace LiveCharts
 {
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <seealso cref="LiveCharts.Helpers.INoisyCollection" />
     public interface IChartValues : INoisyCollection
     {
         /// <summary>

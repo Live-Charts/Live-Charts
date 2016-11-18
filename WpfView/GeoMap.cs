@@ -39,9 +39,16 @@ using Path = System.Windows.Shapes.Path;
 
 namespace LiveCharts.Wpf
 {
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <seealso cref="System.Windows.Controls.UserControl" />
     public class GeoMap : UserControl
     {
         #region Constructors
+        /// <summary>
+        /// Initializes a new instance of the <see cref="GeoMap"/> class.
+        /// </summary>
         public GeoMap()
         {
             Canvas = new Canvas();
@@ -123,6 +130,9 @@ namespace LiveCharts.Wpf
 
         #region Events
 
+        /// <summary>
+        /// Occurs when [land click].
+        /// </summary>
         public event Action<object, MapData> LandClick;
 
         #endregion
@@ -145,6 +155,9 @@ namespace LiveCharts.Wpf
             set { SetValue(GeoMapTooltipProperty, value); }
         }
 
+        /// <summary>
+        /// The language pack property
+        /// </summary>
         public static readonly DependencyProperty LanguagePackProperty = DependencyProperty.Register(
             "LanguagePack", typeof (Dictionary<string, string>), typeof (GeoMap), new PropertyMetadata(default(Dictionary<string, string>)));
         /// <summary>
@@ -156,6 +169,9 @@ namespace LiveCharts.Wpf
             set { SetValue(LanguagePackProperty, value); }
         }
 
+        /// <summary>
+        /// The default land fill property
+        /// </summary>
         public static readonly DependencyProperty DefaultLandFillProperty = DependencyProperty.Register(
             "DefaultLandFill", typeof (Brush), typeof (GeoMap), new PropertyMetadata(default(Brush)));
         /// <summary>
@@ -167,6 +183,9 @@ namespace LiveCharts.Wpf
             set { SetValue(DefaultLandFillProperty, value); }
         }
 
+        /// <summary>
+        /// The land stroke thickness property
+        /// </summary>
         public static readonly DependencyProperty LandStrokeThicknessProperty = DependencyProperty.Register(
             "LandStrokeThickness", typeof (double), typeof (GeoMap), new PropertyMetadata(default(double)));
         /// <summary>
@@ -178,6 +197,9 @@ namespace LiveCharts.Wpf
             set { SetValue(LandStrokeThicknessProperty, value); }
         }
 
+        /// <summary>
+        /// The land stroke property
+        /// </summary>
         public static readonly DependencyProperty LandStrokeProperty = DependencyProperty.Register(
             "LandStroke", typeof (Brush), typeof (GeoMap), new PropertyMetadata(default(Brush)));
         /// <summary>
@@ -189,6 +211,9 @@ namespace LiveCharts.Wpf
             set { SetValue(LandStrokeProperty, value); }
         }
 
+        /// <summary>
+        /// The disable animations property
+        /// </summary>
         public static readonly DependencyProperty DisableAnimationsProperty = DependencyProperty.Register(
             "DisableAnimations", typeof (bool), typeof (GeoMap), new PropertyMetadata(default(bool)));
         /// <summary>
@@ -200,6 +225,9 @@ namespace LiveCharts.Wpf
             set { SetValue(DisableAnimationsProperty, value); }
         }
 
+        /// <summary>
+        /// The animations speed property
+        /// </summary>
         public static readonly DependencyProperty AnimationsSpeedProperty = DependencyProperty.Register(
             "AnimationsSpeed", typeof (TimeSpan), typeof (GeoMap), new PropertyMetadata(default(TimeSpan)));
         /// <summary>
@@ -211,6 +239,9 @@ namespace LiveCharts.Wpf
             set { SetValue(AnimationsSpeedProperty, value); }
         }
 
+        /// <summary>
+        /// The hoverable property
+        /// </summary>
         public static readonly DependencyProperty HoverableProperty = DependencyProperty.Register(
             "Hoverable", typeof (bool), typeof (GeoMap), new PropertyMetadata(default(bool)));
         /// <summary>
@@ -222,6 +253,9 @@ namespace LiveCharts.Wpf
             set { SetValue(HoverableProperty, value); }
         }
 
+        /// <summary>
+        /// The heat map property
+        /// </summary>
         public static readonly DependencyProperty HeatMapProperty = DependencyProperty.Register(
             "HeatMap", typeof (Dictionary<string, double>), typeof (GeoMap), 
             new PropertyMetadata(default(Dictionary<string, double>), OnHeapMapChanged));
@@ -234,6 +268,9 @@ namespace LiveCharts.Wpf
             set { SetValue(HeatMapProperty, value); }
         }
 
+        /// <summary>
+        /// The gradient stop collection property
+        /// </summary>
         public static readonly DependencyProperty GradientStopCollectionProperty = DependencyProperty.Register(
             "GradientStopCollection", typeof(GradientStopCollection), typeof(GeoMap), new PropertyMetadata(default(GradientStopCollection)));
         /// <summary>
@@ -245,6 +282,9 @@ namespace LiveCharts.Wpf
             set { SetValue(GradientStopCollectionProperty, value); }
         }
 
+        /// <summary>
+        /// The source property
+        /// </summary>
         public static readonly DependencyProperty SourceProperty = DependencyProperty.Register(
             "Source", typeof (string), typeof (GeoMap), new PropertyMetadata(default(string)));
         /// <summary>
@@ -255,7 +295,10 @@ namespace LiveCharts.Wpf
             get { return (string) GetValue(SourceProperty); }
             set { SetValue(SourceProperty, value); }
         }
-        
+
+        /// <summary>
+        /// The enable zooming and panning property
+        /// </summary>
         public static readonly DependencyProperty EnableZoomingAndPanningProperty = DependencyProperty.Register(
             "EnableZoomingAndPanning", typeof (bool), typeof (GeoMap), new PropertyMetadata(default(bool)));
         /// <summary>
@@ -574,13 +617,38 @@ namespace LiveCharts.Wpf
         #endregion
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <seealso cref="System.Windows.Data.IMultiValueConverter" />
     public class ScaleStrokeConverter : IMultiValueConverter
     {
+        /// <summary>
+        /// Converts source values to a value for the binding target. The data binding engine calls this method when it propagates the values from source bindings to the binding target.
+        /// </summary>
+        /// <param name="values">The array of values that the source bindings in the <see cref="T:System.Windows.Data.MultiBinding" /> produces. The value <see cref="F:System.Windows.DependencyProperty.UnsetValue" /> indicates that the source binding has no value to provide for conversion.</param>
+        /// <param name="targetType">The type of the binding target property.</param>
+        /// <param name="parameter">The converter parameter to use.</param>
+        /// <param name="culture">The culture to use in the converter.</param>
+        /// <returns>
+        /// A converted value.If the method returns null, the valid null value is used.A return value of <see cref="T:System.Windows.DependencyProperty" />.<see cref="F:System.Windows.DependencyProperty.UnsetValue" /> indicates that the converter did not produce a value, and that the binding will use the <see cref="P:System.Windows.Data.BindingBase.FallbackValue" /> if it is available, or else will use the default value.A return value of <see cref="T:System.Windows.Data.Binding" />.<see cref="F:System.Windows.Data.Binding.DoNothing" /> indicates that the binding does not transfer the value or use the <see cref="P:System.Windows.Data.BindingBase.FallbackValue" /> or the default value.
+        /// </returns>
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
             return (double) values[0]/(double) values[1];
         }
 
+        /// <summary>
+        /// Converts a binding target value to the source binding values.
+        /// </summary>
+        /// <param name="value">The value that the binding target produces.</param>
+        /// <param name="targetTypes">The array of types to convert to. The array length indicates the number and types of values that are suggested for the method to return.</param>
+        /// <param name="parameter">The converter parameter to use.</param>
+        /// <param name="culture">The culture to use in the converter.</param>
+        /// <returns>
+        /// An array of values that have been converted from the target value back to the source values.
+        /// </returns>
+        /// <exception cref="System.NotImplementedException"></exception>
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
         {
             throw new NotImplementedException();

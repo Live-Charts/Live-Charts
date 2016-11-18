@@ -30,11 +30,18 @@ namespace LiveCharts.Uwp
     /// </summary>
     public partial class HeatColorRange
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="HeatColorRange"/> class.
+        /// </summary>
         public HeatColorRange()
         {
             InitializeComponent();
         }
 
+        /// <summary>
+        /// Updates the fill.
+        /// </summary>
+        /// <param name="stops">The stops.</param>
         public void UpdateFill(GradientStopCollection stops)
         {
             var brush = Background as LinearGradientBrush;
@@ -49,6 +56,11 @@ namespace LiveCharts.Uwp
             }
         }
 
+        /// <summary>
+        /// Sets the maximum.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <returns></returns>
         public double SetMax(string value)
         {
             MaxVal.Text = value;
@@ -56,6 +68,11 @@ namespace LiveCharts.Uwp
             return MaxVal.ActualWidth;
         }
 
+        /// <summary>
+        /// Sets the minimum.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <returns></returns>
         public double SetMin(string value)
         {
             MinVal.Text = value;

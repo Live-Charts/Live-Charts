@@ -22,9 +22,25 @@
 
 namespace LiveCharts.Definitions.Series
 {
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <seealso cref="LiveCharts.Definitions.Series.ISeriesView" />
     public interface IColumnSeriesView : ISeriesView
     {
+        /// <summary>
+        /// Gets or sets the maximum width of the column.
+        /// </summary>
+        /// <value>
+        /// The maximum width of the column.
+        /// </value>
         double MaxColumnWidth { get; set; }
+        /// <summary>
+        /// Gets or sets the column padding.
+        /// </summary>
+        /// <value>
+        /// The column padding.
+        /// </value>
         double ColumnPadding { get; set; }
     }
 }

@@ -24,9 +24,25 @@ using LiveCharts.Dtos;
 
 namespace LiveCharts.Definitions.Points
 {
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <seealso cref="LiveCharts.Definitions.Points.IChartPointView" />
     public interface IRectanglePointView : IChartPointView
     {
+        /// <summary>
+        /// Gets or sets the data.
+        /// </summary>
+        /// <value>
+        /// The data.
+        /// </value>
         CoreRectangle Data { get; set; }
+        /// <summary>
+        /// Gets or sets the zero reference.
+        /// </summary>
+        /// <value>
+        /// The zero reference.
+        /// </value>
         double ZeroReference { get; set; }
     }
 }

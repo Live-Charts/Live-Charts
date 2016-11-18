@@ -75,6 +75,12 @@ namespace LiveCharts.Wpf
 
 
         //Returns a clean separator
+        /// <summary>
+        /// Gets the clean separator.
+        /// </summary>
+        /// <value>
+        /// The clean separator.
+        /// </value>
         public static Separator CleanSeparator
         {
             get

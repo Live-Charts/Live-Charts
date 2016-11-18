@@ -49,6 +49,9 @@ namespace LiveCharts.Wpf
 
         #region Dependency Properties
 
+        /// <summary>
+        /// The stroke property
+        /// </summary>
         public static readonly DependencyProperty StrokeProperty = DependencyProperty.Register(
             "Stroke", typeof (Brush), typeof (Separator),
             new PropertyMetadata(default(Brush), CallChartUpdater()));
@@ -62,6 +65,9 @@ namespace LiveCharts.Wpf
             set { SetValue(StrokeProperty, value); }
         }
 
+        /// <summary>
+        /// The stroke thickness property
+        /// </summary>
         public static readonly DependencyProperty StrokeThicknessProperty = DependencyProperty.Register(
             "StrokeThickness", typeof (double), typeof (Separator),
             new PropertyMetadata(default(double), CallChartUpdater()));
@@ -75,6 +81,9 @@ namespace LiveCharts.Wpf
             set { SetValue(StrokeThicknessProperty, value); }
         }
 
+        /// <summary>
+        /// The stroke dash array property
+        /// </summary>
         public static readonly DependencyProperty StrokeDashArrayProperty = DependencyProperty.Register(
             "StrokeDashArray", typeof (DoubleCollection), typeof (Separator),
             new PropertyMetadata(default(DoubleCollection), CallChartUpdater()));
@@ -88,6 +97,9 @@ namespace LiveCharts.Wpf
             set { SetValue(StrokeDashArrayProperty, value); }
         }
 
+        /// <summary>
+        /// The step property
+        /// </summary>
         public static readonly DependencyProperty StepProperty = DependencyProperty.Register(
             "Step", typeof (double), typeof (Separator),
             new PropertyMetadata(double.NaN, CallChartUpdater()));
@@ -101,6 +113,9 @@ namespace LiveCharts.Wpf
             set { SetValue(StepProperty, value); }
         }
 
+        /// <summary>
+        /// The axis orientation property
+        /// </summary>
         public static readonly DependencyProperty AxisOrientationProperty = DependencyProperty.Register(
             "AxisOrientation", typeof(AxisOrientation), typeof(Separator), new PropertyMetadata(default(AxisOrientation)));
         /// <summary>
@@ -114,6 +129,12 @@ namespace LiveCharts.Wpf
 
         #endregion
 
+        /// <summary>
+        /// Ases the core element.
+        /// </summary>
+        /// <param name="axis">The axis.</param>
+        /// <param name="source">The source.</param>
+        /// <returns></returns>
         public SeparatorConfigurationCore AsCoreElement(AxisCore axis, AxisOrientation source)
         {
             AxisOrientation = source;

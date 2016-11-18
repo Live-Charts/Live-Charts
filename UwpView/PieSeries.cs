@@ -67,6 +67,9 @@ namespace LiveCharts.Uwp
 
         #region Properties
 
+        /// <summary>
+        /// The push out property
+        /// </summary>
         public static readonly DependencyProperty PushOutProperty = DependencyProperty.Register(
             "PushOut", typeof (double), typeof (PieSeries), new PropertyMetadata(default(double)));
         /// <summary>
@@ -81,6 +84,12 @@ namespace LiveCharts.Uwp
 
         #region Overridden Methods
 
+        /// <summary>
+        /// Gets the view of a given point
+        /// </summary>
+        /// <param name="point"></param>
+        /// <param name="label"></param>
+        /// <returns></returns>
         public override IChartPointView GetPointView(ChartPoint point, string label)
         {
             var pbv = (PiePointView) point.View;

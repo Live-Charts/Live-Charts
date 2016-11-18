@@ -25,6 +25,9 @@ using System.Windows.Media;
 
 namespace LiveCharts.Wpf
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class ColorsCollection : List<Color>
     {
     }

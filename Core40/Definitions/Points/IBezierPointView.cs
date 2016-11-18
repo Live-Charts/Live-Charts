@@ -24,8 +24,18 @@ using LiveCharts.Dtos;
 
 namespace LiveCharts.Definitions.Points
 {
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <seealso cref="LiveCharts.Definitions.Points.IChartPointView" />
     public interface IBezierPointView : IChartPointView
     {
+        /// <summary>
+        /// Gets or sets the data.
+        /// </summary>
+        /// <value>
+        /// The data.
+        /// </value>
         BezierData Data { get; set; }
     }
 }

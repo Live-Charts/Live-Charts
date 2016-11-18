@@ -22,18 +22,34 @@
 
 namespace LiveCharts.Uwp
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class PointGeometry
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PointGeometry"/> class.
+        /// </summary>
         public PointGeometry()
         {
             
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PointGeometry"/> class.
+        /// </summary>
+        /// <param name="data">The data.</param>
         public PointGeometry(string data)
         {
             Data = data;
         }
 
+        /// <summary>
+        /// Gets or sets the data.
+        /// </summary>
+        /// <value>
+        /// The data.
+        /// </value>
         public string Data { get; set; }
     }
 }

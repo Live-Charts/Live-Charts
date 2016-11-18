@@ -29,10 +29,18 @@ using LiveCharts.Helpers;
 
 namespace LiveCharts.Charts
 {
+    /// <summary>
+    /// Chart Model
+    /// </summary>
     public class CartesianChartCore : ChartCore
     {
         #region Constructors
 
+        /// <summary>
+        /// Initializes Chart model
+        /// </summary>
+        /// <param name="view">The view.</param>
+        /// <param name="updater">The updater.</param>
         public CartesianChartCore(IChartView view, ChartUpdater updater) : base(view, updater)
         {
             updater.Chart = this;
@@ -42,6 +50,9 @@ namespace LiveCharts.Charts
 
         #region Publics
 
+        /// <summary>
+        /// Prepares Chart Axes
+        /// </summary>
         public override void PrepareAxes()
         {
             base.PrepareAxes();
@@ -67,7 +78,7 @@ namespace LiveCharts.Charts
 
                 if (Math.Abs(xi.BotLimit - xi.TopLimit) < xi.S * .01)
                 {
-                    if (Math.Abs(xi.PreviousBot - xi.PreviousTop) < xi.S*.01)
+                    if (Math.Abs(xi.PreviousBot - xi.PreviousTop) < xi.S * .01)
                     {
                         if (double.IsNaN(xi.MinValue)) xi.BotLimit -= xi.S;
                         else xi.BotLimit = xi.MinValue;
@@ -75,7 +86,7 @@ namespace LiveCharts.Charts
                         if (double.IsNaN(xi.MaxValue)) xi.TopLimit += xi.S;
                         else xi.TopLimit = xi.MaxValue;
 
-                        if (Math.Abs(xi.BotLimit - xi.TopLimit) < xi.S*.01 && !View.IsInDesignMode)
+                        if (Math.Abs(xi.BotLimit - xi.TopLimit) < xi.S * .01 && !View.IsInDesignMode)
                             throw new LiveChartsException("One axis has an invalid range, it is or is really " +
                                                           "close to zero, please ensure your axis has a valid " +
                                                           "range");
@@ -104,7 +115,7 @@ namespace LiveCharts.Charts
 
                 if (Math.Abs(yi.BotLimit - yi.TopLimit) < yi.S * .01)
                 {
-                    if (Math.Abs(yi.PreviousBot - yi.PreviousTop) < yi.S*.01)
+                    if (Math.Abs(yi.PreviousBot - yi.PreviousTop) < yi.S * .01)
                     {
                         if (double.IsNaN(yi.MinValue)) yi.BotLimit -= yi.S;
                         else yi.BotLimit = yi.MinValue;
@@ -112,7 +123,7 @@ namespace LiveCharts.Charts
                         if (double.IsNaN(yi.MaxValue)) yi.TopLimit += yi.S;
                         else yi.TopLimit = yi.MaxValue;
 
-                        if (Math.Abs(yi.BotLimit - yi.TopLimit) < yi.S*.01)
+                        if (Math.Abs(yi.BotLimit - yi.TopLimit) < yi.S * .01)
                             throw new LiveChartsException("One axis has an invalid range, it is or is really " +
                                                           "close to zero, please ensure your axis has a valid " +
                                                           "range");
@@ -134,6 +145,9 @@ namespace LiveCharts.Charts
             AreComponentsLoaded = true;
         }
 
+        /// <summary>
+        /// Runs the specialized chart components.
+        /// </summary>
         public override void RunSpecializedChartComponents()
         {
             foreach (var visualElement in ((ICartesianChart) View).VisualElements)
@@ -142,6 +156,9 @@ namespace LiveCharts.Charts
             }
         }
 
+        /// <summary>
+        /// Draws the or update sections.
+        /// </summary>
         public void DrawOrUpdateSections()
         {
             for (var index = 0; index < AxisX.Count; index++)

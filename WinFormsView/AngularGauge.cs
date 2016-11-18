@@ -31,24 +31,46 @@ using LiveCharts.Wpf;
 
 namespace LiveCharts.WinForms
 {
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <seealso cref="System.Windows.Forms.Integration.ElementHost" />
     [Designer("System.Windows.Forms.Design.ControlDesigner, System.Design")]
     [DesignerSerializer("System.ComponentModel.Design.Serialization.TypeCodeDomSerializer , System.Design", "System.ComponentModel.Design.Serialization.CodeDomSerializer, System.Design")]
 
     public class AngularGauge : ElementHost
     {
+        /// <summary>
+        /// The WPF base
+        /// </summary>
         protected readonly Wpf.AngularGauge WpfBase = new Wpf.AngularGauge();
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AngularGauge"/> class.
+        /// </summary>
         public AngularGauge()
         {
             Child = WpfBase;
         }
 
+        /// <summary>
+        /// Gets the base.
+        /// </summary>
+        /// <value>
+        /// The base.
+        /// </value>
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public Wpf.AngularGauge Base
         {
             get { return WpfBase; }
         }
 
+        /// <summary>
+        /// Gets or sets the wedge.
+        /// </summary>
+        /// <value>
+        /// The wedge.
+        /// </value>
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public double Wedge
         {
@@ -56,6 +78,12 @@ namespace LiveCharts.WinForms
             set { WpfBase.Wedge = value; }
         }
 
+        /// <summary>
+        /// Gets or sets the tick step.
+        /// </summary>
+        /// <value>
+        /// The tick step.
+        /// </value>
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public double TickStep
         {
@@ -63,6 +91,12 @@ namespace LiveCharts.WinForms
             set { WpfBase.TicksStep = value; }
         }
 
+        /// <summary>
+        /// Gets or sets the labels step.
+        /// </summary>
+        /// <value>
+        /// The labels step.
+        /// </value>
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public double LabelsStep
         {
@@ -70,6 +104,12 @@ namespace LiveCharts.WinForms
             set { WpfBase.LabelsStep = value; }
         }
 
+        /// <summary>
+        /// Gets or sets from value.
+        /// </summary>
+        /// <value>
+        /// From value.
+        /// </value>
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public double FromValue
         {
@@ -77,6 +117,12 @@ namespace LiveCharts.WinForms
             set { WpfBase.FromValue = value; }
         }
 
+        /// <summary>
+        /// Gets or sets to value.
+        /// </summary>
+        /// <value>
+        /// To value.
+        /// </value>
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public double ToValue
         {
@@ -84,6 +130,12 @@ namespace LiveCharts.WinForms
             set { WpfBase.ToValue = value; }
         }
 
+        /// <summary>
+        /// Gets or sets the sections.
+        /// </summary>
+        /// <value>
+        /// The sections.
+        /// </value>
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public List<AngularSection> Sections
         {
@@ -91,6 +143,12 @@ namespace LiveCharts.WinForms
             set { WpfBase.Sections = value; }
         }
 
+        /// <summary>
+        /// Gets or sets the value.
+        /// </summary>
+        /// <value>
+        /// The value.
+        /// </value>
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public double Value
         {
@@ -98,6 +156,12 @@ namespace LiveCharts.WinForms
             set { WpfBase.Value = value; }
         }
 
+        /// <summary>
+        /// Gets or sets the label formatter.
+        /// </summary>
+        /// <value>
+        /// The label formatter.
+        /// </value>
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public Func<double, string> LabelFormatter
         {
@@ -105,6 +169,12 @@ namespace LiveCharts.WinForms
             set { WpfBase.LabelFormatter = value; }
         }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether [disable animations].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [disable animations]; otherwise, <c>false</c>.
+        /// </value>
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool DisableAnimations
         {
@@ -112,6 +182,12 @@ namespace LiveCharts.WinForms
             set { WpfBase.DisableaAnimations = value; }
         }
 
+        /// <summary>
+        /// Gets or sets the animations speed.
+        /// </summary>
+        /// <value>
+        /// The animations speed.
+        /// </value>
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public TimeSpan AnimationsSpeed
         {
@@ -119,6 +195,12 @@ namespace LiveCharts.WinForms
             set { WpfBase.AnimationsSpeed = value; }
         }
 
+        /// <summary>
+        /// Gets or sets the ticks foreground.
+        /// </summary>
+        /// <value>
+        /// The ticks foreground.
+        /// </value>
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public Brush TicksForeground
         {
@@ -126,6 +208,12 @@ namespace LiveCharts.WinForms
             set { WpfBase.TicksForeground = value; }
         }
 
+        /// <summary>
+        /// Gets or sets the sections inner radius.
+        /// </summary>
+        /// <value>
+        /// The sections inner radius.
+        /// </value>
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public double SectionsInnerRadius
         {
@@ -133,6 +221,12 @@ namespace LiveCharts.WinForms
             set { WpfBase.SectionsInnerRadius = value; }
         }
 
+        /// <summary>
+        /// Gets or sets the needle fill.
+        /// </summary>
+        /// <value>
+        /// The needle fill.
+        /// </value>
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public Brush NeedleFill
         {
@@ -140,6 +234,12 @@ namespace LiveCharts.WinForms
             set { WpfBase.NeedleFill = value; }
         }
 
+        /// <summary>
+        /// Gets or sets the labels effect.
+        /// </summary>
+        /// <value>
+        /// The labels effect.
+        /// </value>
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public Effect LabelsEffect
         {
@@ -147,6 +247,12 @@ namespace LiveCharts.WinForms
             set { WpfBase.LabelsEffect = value; }
         }
 
+        /// <summary>
+        /// Gets or sets the ticks stroke thickness.
+        /// </summary>
+        /// <value>
+        /// The ticks stroke thickness.
+        /// </value>
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public double TicksStrokeThickness
         {

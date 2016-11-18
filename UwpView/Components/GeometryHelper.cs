@@ -17,13 +17,27 @@ namespace LiveCharts.Uwp.Components
         }
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <seealso cref="System.Attribute" />
     public class GeometryData : Attribute
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="GeometryData"/> class.
+        /// </summary>
+        /// <param name="data">The data.</param>
         public GeometryData(string data)
         {
             Data = data;
         }
 
+        /// <summary>
+        /// Gets or sets the data.
+        /// </summary>
+        /// <value>
+        /// The data.
+        /// </value>
         public string Data { get; set; }
     }
 }

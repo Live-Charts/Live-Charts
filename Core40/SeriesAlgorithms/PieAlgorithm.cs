@@ -27,13 +27,25 @@ using LiveCharts.Definitions.Series;
 
 namespace LiveCharts.SeriesAlgorithms
 {
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <seealso cref="LiveCharts.SeriesAlgorithm" />
+    /// <seealso cref="LiveCharts.Definitions.Series.IPieSeries" />
     public class PieAlgorithm : SeriesAlgorithm, IPieSeries
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PieAlgorithm"/> class.
+        /// </summary>
+        /// <param name="view">The view.</param>
         public PieAlgorithm(ISeriesView view) : base(view)
         {
             PreferredSelectionMode= TooltipSelectionMode.SharedXValues;
         }
 
+        /// <summary>
+        /// Updates this instance.
+        /// </summary>
         public override void Update()
         {
             var pieChart = (IPieChart) View.Model.Chart.View;

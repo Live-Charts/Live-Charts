@@ -97,6 +97,9 @@ namespace LiveCharts.Uwp
         /// </summary>
         public IEnumerable<ChartPoint> ChartPoints => ActualValues.GetPoints(this);
 
+        /// <summary>
+        /// The values property
+        /// </summary>
         public static readonly DependencyProperty ValuesProperty = DependencyProperty.Register(
             "Values", typeof (IChartValues), typeof (Series),
             new PropertyMetadata(default(IChartValues), OnValuesInstanceChanged));
@@ -110,6 +113,9 @@ namespace LiveCharts.Uwp
             set { SetValue(ValuesProperty, value); }
         }
 
+        /// <summary>
+        /// The title property
+        /// </summary>
         public static readonly DependencyProperty TitleProperty = DependencyProperty.Register(
             "Title", typeof (string), typeof (Series),
             new PropertyMetadata(default(string), CallChartUpdater()));
@@ -122,6 +128,9 @@ namespace LiveCharts.Uwp
             set { SetValue(TitleProperty, value); }
         }
 
+        /// <summary>
+        /// The stroke property
+        /// </summary>
         public static readonly DependencyProperty StrokeProperty = DependencyProperty.Register(
             "Stroke", typeof (Brush), typeof (Series), 
             new PropertyMetadata(default(Brush), CallChartUpdater()));
@@ -134,6 +143,9 @@ namespace LiveCharts.Uwp
             set { SetValue(StrokeProperty, value); }
         }
 
+        /// <summary>
+        /// The stroke thickness property
+        /// </summary>
         public static readonly DependencyProperty StrokeThicknessProperty = DependencyProperty.Register(
             "StrokeThickness", typeof (double), typeof (Series), 
             new PropertyMetadata(default(double), CallChartUpdater()));
@@ -146,6 +158,9 @@ namespace LiveCharts.Uwp
             set { SetValue(StrokeThicknessProperty, value); }
         }
 
+        /// <summary>
+        /// The fill property
+        /// </summary>
         public static readonly DependencyProperty FillProperty = DependencyProperty.Register(
             "Fill", typeof (Brush), typeof (Series), 
             new PropertyMetadata(default(Brush), CallChartUpdater()));
@@ -158,6 +173,9 @@ namespace LiveCharts.Uwp
             set { SetValue(FillProperty, value); }
         }
 
+        /// <summary>
+        /// The data labels property
+        /// </summary>
         public static readonly DependencyProperty DataLabelsProperty = DependencyProperty.Register(
             "DataLabels", typeof (bool), typeof (Series), 
             new PropertyMetadata(default(bool), CallChartUpdater()));
@@ -170,6 +188,9 @@ namespace LiveCharts.Uwp
             set { SetValue(DataLabelsProperty, value); }
         }
 
+        /// <summary>
+        /// The font family property
+        /// </summary>
         public static readonly DependencyProperty FontFamilyProperty = DependencyProperty.Register(
             "FontFamily", typeof (FontFamily), typeof (Series), 
             new PropertyMetadata(default(FontFamily)));
@@ -182,6 +203,9 @@ namespace LiveCharts.Uwp
             set { SetValue(FontFamilyProperty, value); }
         }
 
+        /// <summary>
+        /// The font size property
+        /// </summary>
         public static readonly DependencyProperty FontSizeProperty = DependencyProperty.Register(
             "FontSize", typeof (double),
             typeof (Series), new PropertyMetadata(10d, CallChartUpdater()));
@@ -194,6 +218,9 @@ namespace LiveCharts.Uwp
             set { SetValue(FontSizeProperty, value); }
         }
 
+        /// <summary>
+        /// The font weight property
+        /// </summary>
         public static readonly DependencyProperty FontWeightProperty = DependencyProperty.Register(
             "FontWeight", typeof (FontWeight), typeof (Series),
             new PropertyMetadata(FontWeights.Bold, CallChartUpdater()));
@@ -206,6 +233,9 @@ namespace LiveCharts.Uwp
             set { SetValue(FontWeightProperty, value); }
         }
 
+        /// <summary>
+        /// The font style property
+        /// </summary>
         public static readonly DependencyProperty FontStyleProperty = DependencyProperty.Register(
             "FontStyle", typeof (FontStyle),
             typeof (Series), new PropertyMetadata(FontStyle.Normal, CallChartUpdater()));
@@ -218,6 +248,9 @@ namespace LiveCharts.Uwp
             set { SetValue(FontStyleProperty, value); }
         }
 
+        /// <summary>
+        /// The font stretch property
+        /// </summary>
         public static readonly DependencyProperty FontStretchProperty = DependencyProperty.Register(
             "FontStretch", typeof (FontStretch),
             typeof (Series), new PropertyMetadata(FontStretch.Normal, CallChartUpdater()));
@@ -230,6 +263,9 @@ namespace LiveCharts.Uwp
             set { SetValue(FontStretchProperty, value); }
         }
 
+        /// <summary>
+        /// The foreground property
+        /// </summary>
         public static readonly DependencyProperty ForegroundProperty = DependencyProperty.Register(
             "Foreground", typeof (Brush),
             typeof (Series), new PropertyMetadata(new SolidColorBrush(Color.FromArgb(255, 55, 71, 79))));
@@ -242,6 +278,9 @@ namespace LiveCharts.Uwp
             set { SetValue(ForegroundProperty, value); }
         }
 
+        /// <summary>
+        /// The stroke dash array property
+        /// </summary>
         public static readonly DependencyProperty StrokeDashArrayProperty = DependencyProperty.Register(
             "StrokeDashArray", typeof(DoubleCollection), typeof(Series), 
             new PropertyMetadata(default(DoubleCollection)));
@@ -254,6 +293,9 @@ namespace LiveCharts.Uwp
             set { SetValue(StrokeDashArrayProperty, value); }
         }
 
+        /// <summary>
+        /// The point geometry property
+        /// </summary>
         public static readonly DependencyProperty PointGeometryProperty =
             DependencyProperty.Register("PointGeometry", typeof (PointGeometry), typeof (Series),
                 new PropertyMetadata(DefaultGeometries.Circle, CallChartUpdater()));
@@ -266,6 +308,9 @@ namespace LiveCharts.Uwp
             set { SetValue(PointGeometryProperty, value); }
         }
 
+        /// <summary>
+        /// The scales x at property
+        /// </summary>
         public static readonly DependencyProperty ScalesXAtProperty = DependencyProperty.Register(
             "ScalesXAt", typeof (int), typeof (Series), new PropertyMetadata(default(int), CallChartUpdater()));
         /// <summary>
@@ -277,6 +322,9 @@ namespace LiveCharts.Uwp
             set { SetValue(ScalesXAtProperty, value); }
         }
 
+        /// <summary>
+        /// The scales y at property
+        /// </summary>
         public static readonly DependencyProperty ScalesYAtProperty = DependencyProperty.Register(
             "ScalesYAt", typeof (int), typeof (Series), new PropertyMetadata(default(int), CallChartUpdater()));
         /// <summary>
@@ -288,6 +336,9 @@ namespace LiveCharts.Uwp
             set { SetValue(ScalesYAtProperty, value); }
         }
 
+        /// <summary>
+        /// The label point property
+        /// </summary>
         public static readonly DependencyProperty LabelPointProperty = DependencyProperty.Register(
             "LabelPoint", typeof (Func<ChartPoint, string>), typeof (Series), new PropertyMetadata(default(Func<ChartPoint, string>)));
         /// <summary>
@@ -299,6 +350,9 @@ namespace LiveCharts.Uwp
             set { SetValue(LabelPointProperty, value); }
         }
 
+        /// <summary>
+        /// The configuration property
+        /// </summary>
         public static readonly DependencyProperty ConfigurationProperty = DependencyProperty.Register(
             "Configuration", typeof (object), typeof (Series), 
             new PropertyMetadata(default(object), CallChartUpdater()));
@@ -414,6 +468,10 @@ namespace LiveCharts.Uwp
 
         }
 
+        /// <summary>
+        /// Gets the label point formatter.
+        /// </summary>
+        /// <returns></returns>
         public Func<ChartPoint, string> GetLabelPointFormatter()
         {
             if (Windows.ApplicationModel.DesignMode.DesignModeEnabled)
@@ -440,6 +498,11 @@ namespace LiveCharts.Uwp
             series.LastKnownValues = series.Values;
         }
 
+        /// <summary>
+        /// Calls the chart updater.
+        /// </summary>
+        /// <param name="animate">if set to <c>true</c> [animate].</param>
+        /// <returns></returns>
         protected static PropertyChangedCallback CallChartUpdater(bool animate = false)
         {
             return (o, args) =>

@@ -8,10 +8,17 @@ namespace LiveCharts.Wpf.Points
     //special thanks to Colin Eberhardt for the article.
     //http://www.codeproject.com/Articles/28098/A-WPF-Pie-Chart-with-Data-Binding-Support
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <seealso cref="System.Windows.Shapes.Shape" />
     public class PieSlice : Shape
     {
         #region dependency properties
 
+        /// <summary>
+        /// The radius property
+        /// </summary>
         public static readonly DependencyProperty RadiusProperty =
             DependencyProperty.Register("RadiusProperty", typeof(double), typeof(PieSlice),
             new FrameworkPropertyMetadata(0.0, FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.AffectsMeasure));
@@ -25,6 +32,9 @@ namespace LiveCharts.Wpf.Points
             set { SetValue(RadiusProperty, value); }
         }
 
+        /// <summary>
+        /// The push out property
+        /// </summary>
         public static readonly DependencyProperty PushOutProperty =
             DependencyProperty.Register("PushOutProperty", typeof(double), typeof(PieSlice),
             new FrameworkPropertyMetadata(0.0, FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.AffectsMeasure));
@@ -38,6 +48,9 @@ namespace LiveCharts.Wpf.Points
             set { SetValue(PushOutProperty, value); }
         }
 
+        /// <summary>
+        /// The inner radius property
+        /// </summary>
         public static readonly DependencyProperty InnerRadiusProperty =
             DependencyProperty.Register("InnerRadiusProperty", typeof(double), typeof(PieSlice),
             new FrameworkPropertyMetadata(0.0, FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.AffectsMeasure));
@@ -50,6 +63,9 @@ namespace LiveCharts.Wpf.Points
             set { SetValue(InnerRadiusProperty, value); }
         }
 
+        /// <summary>
+        /// The wedge angle property
+        /// </summary>
         public static readonly DependencyProperty WedgeAngleProperty =
             DependencyProperty.Register("WedgeAngleProperty", typeof(double), typeof(PieSlice),
             new FrameworkPropertyMetadata(0.0, FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.AffectsMeasure));
@@ -67,6 +83,9 @@ namespace LiveCharts.Wpf.Points
             }
         }
 
+        /// <summary>
+        /// The rotation angle property
+        /// </summary>
         public static readonly DependencyProperty RotationAngleProperty =
             DependencyProperty.Register("RotationAngleProperty", typeof(double), typeof(PieSlice),
             new FrameworkPropertyMetadata(0.0, FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.AffectsMeasure));
@@ -80,6 +99,9 @@ namespace LiveCharts.Wpf.Points
             set { SetValue(RotationAngleProperty, value); }
         }
 
+        /// <summary>
+        /// The centre x property
+        /// </summary>
         public static readonly DependencyProperty CentreXProperty =
             DependencyProperty.Register("CentreXProperty", typeof(double), typeof(PieSlice),
             new FrameworkPropertyMetadata(0.0, FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.AffectsMeasure));
@@ -93,6 +115,9 @@ namespace LiveCharts.Wpf.Points
             set { SetValue(CentreXProperty, value); }
         }
 
+        /// <summary>
+        /// The centre y property
+        /// </summary>
         public static readonly DependencyProperty CentreYProperty =
             DependencyProperty.Register("CentreYProperty", typeof(double), typeof(PieSlice),
             new FrameworkPropertyMetadata(0.0, FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.AffectsMeasure));
@@ -106,6 +131,9 @@ namespace LiveCharts.Wpf.Points
             set { SetValue(CentreYProperty, value); }
         }
 
+        /// <summary>
+        /// The percentage property
+        /// </summary>
         public static readonly DependencyProperty PercentageProperty =
             DependencyProperty.Register("PercentageProperty", typeof(double), typeof(PieSlice),
             new FrameworkPropertyMetadata(0.0));
@@ -119,6 +147,9 @@ namespace LiveCharts.Wpf.Points
             private set { SetValue(PercentageProperty, value); }
         }
 
+        /// <summary>
+        /// The piece value property
+        /// </summary>
         public static readonly DependencyProperty PieceValueProperty =
             DependencyProperty.Register("PieceValueProperty", typeof(double), typeof(PieSlice),
             new FrameworkPropertyMetadata(0.0));
@@ -135,6 +166,9 @@ namespace LiveCharts.Wpf.Points
 
         #endregion
 
+        /// <summary>
+        /// Gets a value that represents the <see cref="T:System.Windows.Media.Geometry" /> of the <see cref="T:System.Windows.Shapes.Shape" />.
+        /// </summary>
         protected override Geometry DefiningGeometry
         {
             get
@@ -207,6 +241,9 @@ namespace LiveCharts.Wpf.Points
         }
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
     public static class PieUtils
     {
         /// <summary>

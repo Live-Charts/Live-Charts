@@ -40,6 +40,9 @@ namespace LiveCharts.Wpf
     /// </summary>
     public class AngularGauge : UserControl
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AngularGauge"/> class.
+        /// </summary>
         public AngularGauge()
         {
             Canvas = new Canvas();
@@ -92,6 +95,9 @@ namespace LiveCharts.Wpf
         private bool IsControlLaoded { get; set; }
         private Dictionary<AngularSection, PieSlice> Slices { get; set; }
 
+        /// <summary>
+        /// The wedge property
+        /// </summary>
         public static readonly DependencyProperty WedgeProperty = DependencyProperty.Register(
             "Wedge", typeof (double), typeof (AngularGauge), 
             new PropertyMetadata(300d, Redraw));
@@ -104,6 +110,9 @@ namespace LiveCharts.Wpf
             set { SetValue(WedgeProperty, value); }
         }
 
+        /// <summary>
+        /// The ticks step property
+        /// </summary>
         public static readonly DependencyProperty TicksStepProperty = DependencyProperty.Register(
             "TicksStep", typeof (double), typeof (AngularGauge), 
             new PropertyMetadata(2d, Redraw));
@@ -116,6 +125,9 @@ namespace LiveCharts.Wpf
             set { SetValue(TicksStepProperty, value); }
         }
 
+        /// <summary>
+        /// The labels step property
+        /// </summary>
         public static readonly DependencyProperty LabelsStepProperty = DependencyProperty.Register(
             "LabelsStep", typeof (double), typeof (AngularGauge), 
             new PropertyMetadata(10d, Redraw));
@@ -128,6 +140,9 @@ namespace LiveCharts.Wpf
             set { SetValue(LabelsStepProperty, value); }
         }
 
+        /// <summary>
+        /// From value property
+        /// </summary>
         public static readonly DependencyProperty FromValueProperty = DependencyProperty.Register(
             "FromValue", typeof (double), typeof (AngularGauge), 
             new PropertyMetadata(0d, Redraw));
@@ -140,6 +155,9 @@ namespace LiveCharts.Wpf
             set { SetValue(FromValueProperty, value); }
         }
 
+        /// <summary>
+        /// To value property
+        /// </summary>
         public static readonly DependencyProperty ToValueProperty = DependencyProperty.Register(
             "ToValue", typeof (double), typeof (AngularGauge), 
             new PropertyMetadata(100d, Redraw));
@@ -152,6 +170,9 @@ namespace LiveCharts.Wpf
             set { SetValue(ToValueProperty, value); }
         }
 
+        /// <summary>
+        /// The sections property
+        /// </summary>
         public static readonly DependencyProperty SectionsProperty = DependencyProperty.Register(
             "Sections", typeof (List<AngularSection>), typeof (AngularGauge), 
             new PropertyMetadata(default(SectionsCollection), Redraw));
@@ -164,6 +185,9 @@ namespace LiveCharts.Wpf
             set { SetValue(SectionsProperty, value); }
         }
 
+        /// <summary>
+        /// The value property
+        /// </summary>
         public static readonly DependencyProperty ValueProperty = DependencyProperty.Register(
             "Value", typeof (double), typeof (AngularGauge), 
             new PropertyMetadata(default(double), ValueChangedCallback));
@@ -176,6 +200,9 @@ namespace LiveCharts.Wpf
             set { SetValue(ValueProperty, value); }
         }
 
+        /// <summary>
+        /// The label formatter property
+        /// </summary>
         public static readonly DependencyProperty LabelFormatterProperty = DependencyProperty.Register(
             "LabelFormatter", typeof (Func<double, string>), typeof (AngularGauge), new PropertyMetadata(default(Func<double, string>)));
         /// <summary>
@@ -187,6 +214,9 @@ namespace LiveCharts.Wpf
             set { SetValue(LabelFormatterProperty, value); }
         }
 
+        /// <summary>
+        /// The disablea animations property
+        /// </summary>
         public static readonly DependencyProperty DisableaAnimationsProperty = DependencyProperty.Register(
             "DisableaAnimations", typeof (bool), typeof (AngularGauge), new PropertyMetadata(default(bool)));
         /// <summary>
@@ -198,6 +228,9 @@ namespace LiveCharts.Wpf
             set { SetValue(DisableaAnimationsProperty, value); }
         }
 
+        /// <summary>
+        /// The animations speed property
+        /// </summary>
         public static readonly DependencyProperty AnimationsSpeedProperty = DependencyProperty.Register(
             "AnimationsSpeed", typeof (TimeSpan), typeof (AngularGauge), new PropertyMetadata(default(TimeSpan)));
         /// <summary>
@@ -209,6 +242,9 @@ namespace LiveCharts.Wpf
             set { SetValue(AnimationsSpeedProperty, value); }
         }
 
+        /// <summary>
+        /// The ticks foreground property
+        /// </summary>
         public static readonly DependencyProperty TicksForegroundProperty = DependencyProperty.Register(
             "TicksForeground", typeof (Brush), typeof (AngularGauge), new PropertyMetadata(default(Brush)));
         /// <summary>
@@ -220,6 +256,9 @@ namespace LiveCharts.Wpf
             set { SetValue(TicksForegroundProperty, value); }
         }
 
+        /// <summary>
+        /// The sections inner radius property
+        /// </summary>
         public static readonly DependencyProperty SectionsInnerRadiusProperty = DependencyProperty.Register(
             "SectionsInnerRadius", typeof (double), typeof (AngularGauge), 
             new PropertyMetadata(0.94d, Redraw));
@@ -232,6 +271,9 @@ namespace LiveCharts.Wpf
             set { SetValue(SectionsInnerRadiusProperty, value); }
         }
 
+        /// <summary>
+        /// The needle fill property
+        /// </summary>
         public static readonly DependencyProperty NeedleFillProperty = DependencyProperty.Register(
             "NeedleFill", typeof (Brush), typeof (AngularGauge), new PropertyMetadata(default(Brush)));
         /// <summary>
@@ -243,18 +285,36 @@ namespace LiveCharts.Wpf
             set { SetValue(NeedleFillProperty, value); }
         }
 
+        /// <summary>
+        /// The labels effect property
+        /// </summary>
         public static readonly DependencyProperty LabelsEffectProperty = DependencyProperty.Register(
             "LabelsEffect", typeof (Effect), typeof (AngularGauge), new PropertyMetadata(default(Effect)));
 
+        /// <summary>
+        /// Gets or sets the labels effect.
+        /// </summary>
+        /// <value>
+        /// The labels effect.
+        /// </value>
         public Effect LabelsEffect
         {
             get { return (Effect) GetValue(LabelsEffectProperty); }
             set { SetValue(LabelsEffectProperty, value); }
         }
 
+        /// <summary>
+        /// The ticks stroke thickness property
+        /// </summary>
         public static readonly DependencyProperty TicksStrokeThicknessProperty = DependencyProperty.Register(
             "TicksStrokeThickness", typeof (double), typeof (AngularGauge), new PropertyMetadata(2d));
 
+        /// <summary>
+        /// Gets or sets the ticks stroke thickness.
+        /// </summary>
+        /// <value>
+        /// The ticks stroke thickness.
+        /// </value>
         public double TicksStrokeThickness
         {
             get { return (double) GetValue(TicksStrokeThicknessProperty); }

@@ -29,8 +29,17 @@ using LiveCharts.Uwp.Components.MultiBinding;
 
 namespace LiveCharts.Uwp
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public interface IChartLegend
     {
+        /// <summary>
+        /// Gets or sets the series.
+        /// </summary>
+        /// <value>
+        /// The series.
+        /// </value>
         List<SeriesViewModel> Series { get; set; }
     }
 
@@ -57,11 +66,17 @@ namespace LiveCharts.Uwp
         }
 
         // Using a DependencyProperty as the backing store for Series.  This enables animation, styling, binding, etc...
+        /// <summary>
+        /// The series property
+        /// </summary>
         public static readonly DependencyProperty SeriesProperty =
             DependencyProperty.Register("Series", typeof(List<SeriesViewModel>), typeof(DefaultLegend), new PropertyMetadata(null));
 
 
 
+        /// <summary>
+        /// The orientation property
+        /// </summary>
         public static readonly DependencyProperty OrientationProperty = DependencyProperty.Register(
             "Orientation", typeof (Orientation?), typeof (DefaultLegend), new PropertyMetadata(null));
         /// <summary>
@@ -73,16 +88,28 @@ namespace LiveCharts.Uwp
             set { SetValue(OrientationProperty, value); }
         }
 
+        /// <summary>
+        /// The internal orientation property
+        /// </summary>
         public static readonly DependencyProperty InternalOrientationProperty = DependencyProperty.Register(
             "InternalOrientation", typeof (Orientation), typeof (DefaultLegend), 
             new PropertyMetadata(default(Orientation)));
 
+        /// <summary>
+        /// Gets or sets the internal orientation.
+        /// </summary>
+        /// <value>
+        /// The internal orientation.
+        /// </value>
         public Orientation InternalOrientation
         {
             get { return (Orientation) GetValue(InternalOrientationProperty); }
             set { SetValue(InternalOrientationProperty, value); }
         }
 
+        /// <summary>
+        /// The bullet size property
+        /// </summary>
         public static readonly DependencyProperty BulletSizeProperty = DependencyProperty.Register(
             "BulletSize", typeof(double), typeof(DefaultLegend), new PropertyMetadata(15d));
         /// <summary>
@@ -95,13 +122,38 @@ namespace LiveCharts.Uwp
         }
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <seealso cref="LiveCharts.Uwp.Components.MultiBinding.MultiValueConverterBase" />
     public class OrientationConverter : MultiValueConverterBase
     {
+        /// <summary>
+        /// Modifies the source data before passing it to the target for display in the UI.
+        /// </summary>
+        /// <param name="values">The source data being passed to the target.</param>
+        /// <param name="targetType">The <see cref="T:System.Type" /> of data expected by the target dependency property.</param>
+        /// <param name="parameter">An optional parameter to be used in the converter logic.</param>
+        /// <param name="culture">The culture of the conversion.</param>
+        /// <returns>
+        /// The value to be passed to the target dependency property.
+        /// </returns>
         public override Object Convert(Object[] values, Type targetType, Object parameter, CultureInfo culture)
         {
             return (Orientation?)values[0] ?? (Orientation)values[1];
         }
 
+        /// <summary>
+        /// Modifies the target data before passing it to the source object. This method is called only in <see cref="F:System.Windows.Data.BindingMode.TwoWay" /> bindings.
+        /// </summary>
+        /// <param name="value">The target data being passed to the source.</param>
+        /// <param name="targetType">The <see cref="T:System.Type" /> of data expected by the source object.</param>
+        /// <param name="parameter">An optional parameter to be used in the converter logic.</param>
+        /// <param name="culture">The culture of the conversion.</param>
+        /// <returns>
+        /// The value to be passed to the source object.
+        /// </returns>
+        /// <exception cref="System.NotImplementedException"></exception>
         public override Object[] ConvertBack(Object value, Type targetType, Object parameter, CultureInfo culture)
         {
             throw new NotImplementedException();

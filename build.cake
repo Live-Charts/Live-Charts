@@ -40,8 +40,8 @@ Task("Core")
 
         if(!DirectoryExists(ouputDirectory)) CreateDirectory(ouputDirectory);
 
-        BuildProject("./Core/Core.csproj", ouputDirectory, buildType);
-        BuildProject("./Core40/Core40.csproj", ouputDirectory, buildType);
+        BuildProject("./Core/Core.csproj", ouputDirectory, buildType, "AnyCPU");
+        BuildProject("./Core40/Core40.csproj", ouputDirectory, buildType, "AnyCPU");
         
         if(buildType == "Release") NugetPack("./Core/Core.nuspec", "./Core/bin/Release/LiveCharts.dll");
 
@@ -64,7 +64,7 @@ Task("WPF")
             {
                 CreateDirectory(buildDirectories[r]);
             }
-            BuildProject(wpfPath, buildDirectories[r], configurationList[r]);
+            BuildProject(wpfPath, buildDirectories[r], configurationList[r], "AnyCPU");
         }
 
         if(buildType == "Release")
@@ -78,13 +78,12 @@ Task("UWP")
     .Does(() =>
     {
         Information("-- UWP - " + buildType.ToUpper() + " --");
-        var ouputDirectory = "./bin/" + buildType;
 
-        if(!DirectoryExists(ouputDirectory)) CreateDirectory(ouputDirectory);
+        if(!DirectoryExists("./bin/AnyCPU")) CreateDirectory("./bin/AnyCPU");
         
-        BuildProject("./UwpView/UwpView.csproj", ouputDirectory, buildType);
+        BuildProject("./UwpView/UwpView.csproj", "./bin/AnyCPU", buildType, "AnyCPU");
 
-        if(buildType == "Release") NugetPack("./UwpView/UwpView.nuspec", "./UwpView/bin/Release/LiveCharts.Uwp.dll");
+        if(buildType == "Release") NugetPack("./UwpView/UwpView.nuspec", "./UwpView/bin/AnyCPU/LiveChartsUwp.dll");
 
         Information("-- UWP Packed --");
     });
@@ -104,7 +103,7 @@ Task("WinForms")
             {
                 CreateDirectory(buildDirectories[r]);
             }
-            BuildProject(formsPath, buildDirectories[r], configurationList[r]);
+            BuildProject(formsPath, buildDirectories[r], configurationList[r], "AnyCPU");
         }
 
         if(buildType == "Release")
@@ -127,18 +126,18 @@ RunTarget (target);
 //Helper Methods
 
 //Build a project
-public void BuildProject(string path, string outputPath, string configuration)
+public void BuildProject(string path, string outputPath, string configuration, string platform)
 {
     Information("Building " + path);
     try
     {
         DotNetBuild(path, settings =>
         settings.SetConfiguration(configuration)
-        .WithProperty("Platform", "AnyCPU")
-        .WithTarget("Clean,Build")
-        .WithProperty("OutputPath", outputPath)
-        .SetVerbosity(Cake.Core.Diagnostics.Verbosity.Minimal)
-        );
+            .WithProperty("Platform", platform)
+            .WithTarget("Clean,Build")
+            .WithProperty("OutputPath", outputPath)
+            .SetVerbosity(Cake.Core.Diagnostics.Verbosity.Minimal
+        ));
     }
     catch(Exception ex)
     {

@@ -52,6 +52,9 @@ namespace LiveCharts.Uwp
         /// </summary>
         public int AxisY { get; set; }
 
+        /// <summary>
+        /// The x property
+        /// </summary>
         public static readonly DependencyProperty XProperty = DependencyProperty.Register(
             "X", typeof (double), typeof (VisualElement), 
             new PropertyMetadata(default(double), PropertyChangedCallback));
@@ -64,6 +67,9 @@ namespace LiveCharts.Uwp
             set { SetValue(XProperty, value); }
         }
 
+        /// <summary>
+        /// The y property
+        /// </summary>
         public static readonly DependencyProperty YProperty = DependencyProperty.Register(
             "Y", typeof (double), typeof (VisualElement), 
             new PropertyMetadata(default(double), PropertyChangedCallback));
@@ -76,6 +82,12 @@ namespace LiveCharts.Uwp
             set { SetValue(YProperty, value); }
         }
 
+        /// <summary>
+        /// Adds the or move.
+        /// </summary>
+        /// <param name="chart">The chart.</param>
+        /// <exception cref="System.ArgumentOutOfRangeException">
+        /// </exception>
         public void AddOrMove(ChartCore chart)
         {
             if (chart?.AxisX == null || chart?.AxisY == null || UIElement == null) return;
@@ -156,6 +168,10 @@ namespace LiveCharts.Uwp
             _owner = chart;
         }
 
+        /// <summary>
+        /// Removes the specified chart.
+        /// </summary>
+        /// <param name="chart">The chart.</param>
         public void Remove(ChartCore chart)
         {
             chart.View.RemoveFromView(UIElement);

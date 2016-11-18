@@ -23,8 +23,14 @@
 using System;
 namespace LiveCharts
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public interface IObservableChartPoint
     {
+        /// <summary>
+        /// Occurs when [point changed].
+        /// </summary>
         event Action PointChanged;
     }
 }

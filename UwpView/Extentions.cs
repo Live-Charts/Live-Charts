@@ -5,6 +5,9 @@ using LiveCharts.Uwp.Charts.Base;
 
 namespace LiveCharts.Uwp
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public static class Extentions
     {
         /// <summary>

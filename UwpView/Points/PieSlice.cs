@@ -11,9 +11,16 @@ namespace LiveCharts.Uwp.Points
     //http://www.codeproject.com/Articles/28098/A-WPF-Pie-Chart-with-Data-Binding-Support
     //http://domysee.com/blogposts/Blogpost%207%20-%20Creating%20custom%20Shapes%20for%20UWP%20Apps/
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <seealso cref="Windows.UI.Xaml.Shapes.Path" />
     [Bindable]
     public class PieSlice : Path
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PieSlice"/> class.
+        /// </summary>
         public PieSlice()
         {
             RegisterPropertyChangedCallback(WidthProperty, RenderAffectingPropertyChanged);
@@ -31,6 +38,9 @@ namespace LiveCharts.Uwp.Points
 
         #region dependency properties
 
+        /// <summary>
+        /// The radius property
+        /// </summary>
         public static readonly DependencyProperty RadiusProperty =
             DependencyProperty.Register(nameof(Radius), typeof(double), typeof(PieSlice),
                               new PropertyMetadata(0.0));
@@ -45,6 +55,9 @@ namespace LiveCharts.Uwp.Points
             set { SetValue(RadiusProperty, value); }
         }
 
+        /// <summary>
+        /// The push out property
+        /// </summary>
         public static readonly DependencyProperty PushOutProperty =
             DependencyProperty.Register(nameof(PushOut), typeof(double), typeof(PieSlice),
                 new PropertyMetadata(0.0));
@@ -59,6 +72,9 @@ namespace LiveCharts.Uwp.Points
             set { SetValue(PushOutProperty, value); }
         }
 
+        /// <summary>
+        /// The inner radius property
+        /// </summary>
         public static readonly DependencyProperty InnerRadiusProperty =
             DependencyProperty.Register(nameof(InnerRadius), typeof(double), typeof(PieSlice),
                               new PropertyMetadata(0.0));
@@ -72,6 +88,9 @@ namespace LiveCharts.Uwp.Points
             set { SetValue(InnerRadiusProperty, value); }
         }
 
+        /// <summary>
+        /// The wedge angle property
+        /// </summary>
         public static readonly DependencyProperty WedgeAngleProperty =
             DependencyProperty.Register(nameof(WedgeAngle), typeof(double), typeof(PieSlice),
                               new PropertyMetadata(0.0));
@@ -90,6 +109,9 @@ namespace LiveCharts.Uwp.Points
             }
         }
 
+        /// <summary>
+        /// The rotation angle property
+        /// </summary>
         public static readonly DependencyProperty RotationAngleProperty =
             DependencyProperty.Register(nameof(RotationAngle), typeof(double), typeof(PieSlice),
                               new PropertyMetadata(0.0));
@@ -104,6 +126,9 @@ namespace LiveCharts.Uwp.Points
             set { SetValue(RotationAngleProperty, value); }
         }
 
+        /// <summary>
+        /// The x offset property
+        /// </summary>
         public static readonly DependencyProperty XOffsetProperty =
             DependencyProperty.Register(nameof(XOffset), typeof(double), typeof(PieSlice),
                               new PropertyMetadata(0.0));
@@ -118,6 +143,9 @@ namespace LiveCharts.Uwp.Points
             set { SetValue(XOffsetProperty, value); }
         }
 
+        /// <summary>
+        /// The y offset property
+        /// </summary>
         public static readonly DependencyProperty YOffsetProperty =
             DependencyProperty.Register(nameof(YOffset), typeof(double), typeof(PieSlice),
                               new PropertyMetadata(0.0));
@@ -132,6 +160,9 @@ namespace LiveCharts.Uwp.Points
             set { SetValue(YOffsetProperty, value); }
         }
 
+        /// <summary>
+        /// The percentage property
+        /// </summary>
         public static readonly DependencyProperty PercentageProperty =
             DependencyProperty.Register(nameof(Percentage), typeof(double), typeof(PieSlice),
                               new PropertyMetadata(0.0));
@@ -140,12 +171,18 @@ namespace LiveCharts.Uwp.Points
         /// <summary>
         /// The percentage of a full pie that this piece occupies.
         /// </summary>
+        /// <value>
+        /// The percentage.
+        /// </value>
         public double Percentage
         {
             get { return (double)GetValue(PercentageProperty); }
             private set { SetValue(PercentageProperty, value); }
         }
 
+        /// <summary>
+        /// The piece value property
+        /// </summary>
         public static readonly DependencyProperty PieceValueProperty =
             DependencyProperty.Register(nameof(PieceValue), typeof(double), typeof(PieSlice),
                               new PropertyMetadata(0.0));
@@ -235,6 +272,9 @@ namespace LiveCharts.Uwp.Points
         }
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
     public static class PieUtils
     {
         /// <summary>

@@ -27,13 +27,25 @@ using LiveCharts.Dtos;
 
 namespace LiveCharts.SeriesAlgorithms
 {
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <seealso cref="LiveCharts.SeriesAlgorithm" />
+    /// <seealso cref="LiveCharts.Definitions.Series.ICartesianSeries" />
     public class ScatterAlgorithm : SeriesAlgorithm, ICartesianSeries
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ScatterAlgorithm"/> class.
+        /// </summary>
+        /// <param name="view">The view.</param>
         public ScatterAlgorithm(ISeriesView view) : base(view)
         {
             PreferredSelectionMode = TooltipSelectionMode.OnlySender;
         }
 
+        /// <summary>
+        /// Updates this instance.
+        /// </summary>
         public override void Update()
         {
             var bubbleSeries = (IScatterSeriesView) View;

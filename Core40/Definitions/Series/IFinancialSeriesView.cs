@@ -22,8 +22,18 @@
 
 namespace LiveCharts.Definitions.Series
 {
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <seealso cref="LiveCharts.Definitions.Series.ISeriesView" />
     public interface IFinancialSeriesView : ISeriesView
     {
+        /// <summary>
+        /// Gets or sets the maximum width of the column.
+        /// </summary>
+        /// <value>
+        /// The maximum width of the column.
+        /// </value>
         double MaxColumnWidth { get; set; }
     }
 }

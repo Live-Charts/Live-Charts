@@ -87,6 +87,9 @@ namespace LiveCharts.Uwp
 
         #region Dependency Properties
 
+        /// <summary>
+        /// The labels property
+        /// </summary>
         public static readonly DependencyProperty LabelsProperty = DependencyProperty.Register(
             "Labels", typeof (IList<string>), typeof (Axis), 
             new PropertyMetadata(default(IList<string>), UpdateChart()));
@@ -100,6 +103,9 @@ namespace LiveCharts.Uwp
             set { SetValue(LabelsProperty, value); }
         }
 
+        /// <summary>
+        /// The sections property
+        /// </summary>
         public static readonly DependencyProperty SectionsProperty = DependencyProperty.Register(
             "Sections", typeof (SectionsCollection), typeof (Axis), new PropertyMetadata(default(SectionsCollection)));
         /// <summary>
@@ -111,6 +117,9 @@ namespace LiveCharts.Uwp
             set { SetValue(SectionsProperty, value); }
         }
 
+        /// <summary>
+        /// The label formatter property
+        /// </summary>
         public static readonly DependencyProperty LabelFormatterProperty = DependencyProperty.Register(
             "LabelFormatter", typeof (Func<double, string>), typeof (Axis),
             new PropertyMetadata(default(Func<double, string>), UpdateChart()));
@@ -123,6 +132,9 @@ namespace LiveCharts.Uwp
             set { SetValue(LabelFormatterProperty, value); }
         }
 
+        /// <summary>
+        /// The separator property
+        /// </summary>
         public static readonly DependencyProperty SeparatorProperty = DependencyProperty.Register(
             "Separator", typeof (ISeparatorView), typeof (Axis),
             new PropertyMetadata(default(ISeparatorView), UpdateChart()));
@@ -135,6 +147,9 @@ namespace LiveCharts.Uwp
             set { SetValue(SeparatorProperty, value); }
         }
 
+        /// <summary>
+        /// The show labels property
+        /// </summary>
         public static readonly DependencyProperty ShowLabelsProperty = DependencyProperty.Register(
             "ShowLabels", typeof (bool), typeof (Axis), 
             new PropertyMetadata(default(bool), LabelsVisibilityChanged));
@@ -148,6 +163,9 @@ namespace LiveCharts.Uwp
             set { SetValue(ShowLabelsProperty, value); }
         }
 
+        /// <summary>
+        /// The maximum value property
+        /// </summary>
         public static readonly DependencyProperty MaxValueProperty = DependencyProperty.Register(
             "MaxValue", typeof (double), typeof (Axis), 
             new PropertyMetadata(double.NaN, UpdateChart()));
@@ -160,6 +178,9 @@ namespace LiveCharts.Uwp
             set { SetValue(MaxValueProperty, value); }
         }
 
+        /// <summary>
+        /// The minimum value property
+        /// </summary>
         public static readonly DependencyProperty MinValueProperty = DependencyProperty.Register(
             "MinValue", typeof (double), typeof (Axis),
             new PropertyMetadata(double.NaN, UpdateChart()));
@@ -172,6 +193,9 @@ namespace LiveCharts.Uwp
             set { SetValue(MinValueProperty, value); }
         }
 
+        /// <summary>
+        /// The minimum range property
+        /// </summary>
         public static readonly DependencyProperty MinRangeProperty = DependencyProperty.Register(
             "MinRange", typeof(double), typeof(Axis), new PropertyMetadata(double.MinValue));
         /// <summary>
@@ -183,6 +207,9 @@ namespace LiveCharts.Uwp
             set { SetValue(MinRangeProperty, value); }
         }
 
+        /// <summary>
+        /// The maximum range property
+        /// </summary>
         public static readonly DependencyProperty MaxRangeProperty = DependencyProperty.Register(
             "MaxRange", typeof(double), typeof(Axis), new PropertyMetadata(double.MaxValue));
         /// <summary>
@@ -194,6 +221,9 @@ namespace LiveCharts.Uwp
             set { SetValue(MaxRangeProperty, value); }
         }
 
+        /// <summary>
+        /// The title property
+        /// </summary>
         public static readonly DependencyProperty TitleProperty = DependencyProperty.Register(
             "Title", typeof(string), typeof(Axis), 
             new PropertyMetadata(null, UpdateChart()));
@@ -206,6 +236,9 @@ namespace LiveCharts.Uwp
             set { SetValue(TitleProperty, value); }
         }
 
+        /// <summary>
+        /// The position property
+        /// </summary>
         public static readonly DependencyProperty PositionProperty = DependencyProperty.Register(
             "Position", typeof (AxisPosition), typeof (Axis), 
             new PropertyMetadata(default(AxisPosition), UpdateChart()));
@@ -217,7 +250,10 @@ namespace LiveCharts.Uwp
             get { return (AxisPosition) GetValue(PositionProperty); }
             set { SetValue(PositionProperty, value); }
         }
-        
+
+        /// <summary>
+        /// The is merged property
+        /// </summary>
         public static readonly DependencyProperty IsMergedProperty = DependencyProperty.Register(
             "IsMerged", typeof (bool), typeof (Axis), 
             new PropertyMetadata(default(bool), UpdateChart()));
@@ -230,6 +266,9 @@ namespace LiveCharts.Uwp
             set { SetValue(IsMergedProperty, value); }
         }
 
+        /// <summary>
+        /// The bar unit property
+        /// </summary>
         public static readonly DependencyProperty BarUnitProperty = DependencyProperty.Register(
             "BarUnit", typeof(double), typeof(Axis), new PropertyMetadata(1d));
         /// <summary>
@@ -241,6 +280,9 @@ namespace LiveCharts.Uwp
             set { SetValue(BarUnitProperty, value); }
         }
 
+        /// <summary>
+        /// The disable animations property
+        /// </summary>
         public static readonly DependencyProperty DisableAnimationsProperty = DependencyProperty.Register(
             "DisableAnimations", typeof (bool), typeof (Axis), new PropertyMetadata(default(bool), UpdateChart(true)));
         /// <summary>
@@ -252,6 +294,9 @@ namespace LiveCharts.Uwp
             set { SetValue(DisableAnimationsProperty, value); }
         }
 
+        /// <summary>
+        /// The font family property
+        /// </summary>
         public static readonly DependencyProperty FontFamilyProperty =
             DependencyProperty.Register("FontFamily", typeof(FontFamily), typeof(Axis),
                 new PropertyMetadata(new FontFamily("Calibri")));
@@ -265,6 +310,9 @@ namespace LiveCharts.Uwp
             set { SetValue(FontFamilyProperty, value); }
         }
 
+        /// <summary>
+        /// The font size property
+        /// </summary>
         public static readonly DependencyProperty FontSizeProperty =
             DependencyProperty.Register("FontSize", typeof(double), typeof(Axis), new PropertyMetadata(11.0));
         /// <summary>
@@ -276,6 +324,9 @@ namespace LiveCharts.Uwp
             set { SetValue(FontSizeProperty, value); }
         }
 
+        /// <summary>
+        /// The font weight property
+        /// </summary>
         public static readonly DependencyProperty FontWeightProperty =
             DependencyProperty.Register("FontWeight", typeof(FontWeight), typeof(Axis),
                 new PropertyMetadata(FontWeights.Normal));
@@ -288,6 +339,9 @@ namespace LiveCharts.Uwp
             set { SetValue(FontWeightProperty, value); }
         }
 
+        /// <summary>
+        /// The font style property
+        /// </summary>
         public static readonly DependencyProperty FontStyleProperty =
             DependencyProperty.Register("FontStyle", typeof(FontStyle), typeof(Axis),
                 new PropertyMetadata(FontStyle.Normal));
@@ -301,6 +355,9 @@ namespace LiveCharts.Uwp
             set { SetValue(FontStyleProperty, value); }
         }
 
+        /// <summary>
+        /// The font stretch property
+        /// </summary>
         public static readonly DependencyProperty FontStretchProperty =
             DependencyProperty.Register("FontStretch", typeof(FontStretch), typeof(Axis),
                 new PropertyMetadata(FontStretch.Normal));
@@ -314,6 +371,9 @@ namespace LiveCharts.Uwp
             set { SetValue(FontStretchProperty, value); }
         }
 
+        /// <summary>
+        /// The foreground property
+        /// </summary>
         public static readonly DependencyProperty ForegroundProperty =
             DependencyProperty.Register("Foreground", typeof(Brush), typeof(Axis),
                 new PropertyMetadata(null));
@@ -327,6 +387,9 @@ namespace LiveCharts.Uwp
             set { SetValue(ForegroundProperty, value); }
         }
 
+        /// <summary>
+        /// The labels rotation property
+        /// </summary>
         public static readonly DependencyProperty LabelsRotationProperty = DependencyProperty.Register(
             "LabelsRotation", typeof (double), typeof (Axis), new PropertyMetadata(default(double), UpdateChart()));
         /// <summary>
@@ -338,15 +401,27 @@ namespace LiveCharts.Uwp
             set { SetValue(LabelsRotationProperty, value); }
         }
 
+        /// <summary>
+        /// The is enabled property
+        /// </summary>
         public static readonly DependencyProperty IsEnabledProperty = DependencyProperty.Register(
             "IsEnabled", typeof(bool), typeof(Axis), new PropertyMetadata(default(bool)));
 
+        /// <summary>
+        /// Gets or sets a value indicating whether this instance is enabled.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if this instance is enabled; otherwise, <c>false</c>.
+        /// </value>
         public bool IsEnabled
         {
             get { return (bool) GetValue(IsEnabledProperty); }
             set { SetValue(IsEnabledProperty, value); }
         }
 
+        /// <summary>
+        /// The axis orientation property
+        /// </summary>
         public static readonly DependencyProperty AxisOrientationProperty = DependencyProperty.Register(
             "AxisOrientation", typeof(AxisOrientation), typeof(Axis), new PropertyMetadata(default(AxisOrientation)));
         /// <summary>
@@ -361,6 +436,9 @@ namespace LiveCharts.Uwp
         #endregion
 
         #region Public Methods
+        /// <summary>
+        /// Cleans this instance.
+        /// </summary>
         public void Clean()
         {
             Model.ClearSeparators();
@@ -369,6 +447,11 @@ namespace LiveCharts.Uwp
             TitleBlock = null;
         }
 
+        /// <summary>
+        /// Sets the range.
+        /// </summary>
+        /// <param name="min">The minimum.</param>
+        /// <param name="max">The maximum.</param>
         public void SetRange(double min, double max)
         {
             var bMax = double.IsNaN(MaxValue) ? Model.TopLimit : MaxValue;
@@ -391,6 +474,11 @@ namespace LiveCharts.Uwp
             });
         }
 
+        /// <summary>
+        /// Renders the separator.
+        /// </summary>
+        /// <param name="model">The model.</param>
+        /// <param name="chart">The chart.</param>
         public void RenderSeparator(SeparatorElementCore model, ChartCore chart)
         {
             AxisSeparatorElement ase;
@@ -419,6 +507,12 @@ namespace LiveCharts.Uwp
                 ase.TextBlock.Visibility = Visibility.Collapsed;
         }
 
+        /// <summary>
+        /// Updates the title.
+        /// </summary>
+        /// <param name="chart">The chart.</param>
+        /// <param name="rotationAngle">The rotation angle.</param>
+        /// <returns></returns>
         public CoreSize UpdateTitle(ChartCore chart, double rotationAngle = 0)
         {
             if (TitleBlock.Parent == null)
@@ -436,31 +530,57 @@ namespace LiveCharts.Uwp
                 : new CoreSize(TitleBlock.DesiredSize.Width, TitleBlock.DesiredSize.Height);
         }
 
+        /// <summary>
+        /// Sets the title top.
+        /// </summary>
+        /// <param name="value">The value.</param>
         public void SetTitleTop(double value)
         {
             Canvas.SetTop(TitleBlock, value);
         }
 
+        /// <summary>
+        /// Sets the title left.
+        /// </summary>
+        /// <param name="value">The value.</param>
         public void SetTitleLeft(double value)
         {
             Canvas.SetLeft(TitleBlock, value);
         }
 
+        /// <summary>
+        /// Gets the title left.
+        /// </summary>
+        /// <returns></returns>
         public double GetTitleLeft()
         {
             return Canvas.GetLeft(TitleBlock);
         }
 
+        /// <summary>
+        /// Gets the tile top.
+        /// </summary>
+        /// <returns></returns>
         public double GetTileTop()
         {
             return Canvas.GetTop(TitleBlock);
         }
 
+        /// <summary>
+        /// Gets the size of the label.
+        /// </summary>
+        /// <returns></returns>
         public CoreSize GetLabelSize()
         {
             return new CoreSize(TitleBlock.DesiredSize.Width, TitleBlock.DesiredSize.Height);
         }
 
+        /// <summary>
+        /// Ases the core element.
+        /// </summary>
+        /// <param name="chart">The chart.</param>
+        /// <param name="source">The source.</param>
+        /// <returns></returns>
         public AxisCore AsCoreElement(ChartCore chart, AxisOrientation source)
         {
             if (Model == null) Model = new AxisCore(this);
@@ -557,6 +677,10 @@ namespace LiveCharts.Uwp
             UpdateChart()(dependencyObject, dependencyPropertyChangedEventArgs);
         }
 
+        /// <summary>
+        /// Raises the <see cref="E:RangeChanged" /> event.
+        /// </summary>
+        /// <param name="e">The <see cref="RangeChangedEventArgs"/> instance containing the event data.</param>
         protected void OnRangeChanged(RangeChangedEventArgs e)
         {
             RangeChanged?.Invoke(e);

@@ -25,10 +25,18 @@ using LiveCharts.Dtos;
 
 namespace LiveCharts.SeriesAlgorithms
 {
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <seealso cref="LiveCharts.SeriesAlgorithms.StackedAreaAlgorithm" />
     public class VerticalStackedAreaAlgorithm : StackedAreaAlgorithm
     {
         private readonly IStackModelableSeriesView _stackModelable;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="VerticalStackedAreaAlgorithm"/> class.
+        /// </summary>
+        /// <param name="view">The view.</param>
         public VerticalStackedAreaAlgorithm(ISeriesView view) : base(view)
         {
             SeriesOrientation = SeriesOrientation.Vertical;
@@ -36,6 +44,11 @@ namespace LiveCharts.SeriesAlgorithms
             PreferredSelectionMode = TooltipSelectionMode.SharedYValues;
         }
 
+        /// <summary>
+        /// Gets the stacked point.
+        /// </summary>
+        /// <param name="chartPoint">The chart point.</param>
+        /// <returns></returns>
         protected override CorePoint GetStackedPoint(ChartPoint chartPoint)
         {
             if (_stackModelable.StackMode == StackMode.Values)

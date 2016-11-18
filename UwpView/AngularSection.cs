@@ -25,31 +25,62 @@ using Windows.UI.Xaml.Media;
 
 namespace LiveCharts.Uwp
 {
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <seealso cref="Windows.UI.Xaml.FrameworkElement" />
     public class AngularSection : FrameworkElement
     {
         internal AngularGauge Owner { get; set; }
 
+        /// <summary>
+        /// From value property
+        /// </summary>
         public static readonly DependencyProperty FromValueProperty = DependencyProperty.Register(
             "FromValue", typeof(double), typeof(AngularSection), new PropertyMetadata(default(double), Redraw));
 
+        /// <summary>
+        /// Gets or sets from value.
+        /// </summary>
+        /// <value>
+        /// From value.
+        /// </value>
         public double FromValue
         {
             get { return (double) GetValue(FromValueProperty); }
             set { SetValue(FromValueProperty, value); }
         }
 
+        /// <summary>
+        /// To value property
+        /// </summary>
         public static readonly DependencyProperty ToValueProperty = DependencyProperty.Register(
             "ToValue", typeof(double), typeof(AngularSection), new PropertyMetadata(default(double), Redraw));
 
+        /// <summary>
+        /// Gets or sets to value.
+        /// </summary>
+        /// <value>
+        /// To value.
+        /// </value>
         public double ToValue
         {
             get { return (double) GetValue(ToValueProperty); }
             set { SetValue(ToValueProperty, value); }
         }
 
+        /// <summary>
+        /// The fill property
+        /// </summary>
         public static readonly DependencyProperty FillProperty = DependencyProperty.Register(
             "Fill", typeof(Brush), typeof(AngularSection), new PropertyMetadata(default(Brush)));
 
+        /// <summary>
+        /// Gets or sets the fill.
+        /// </summary>
+        /// <value>
+        /// The fill.
+        /// </value>
         public Brush Fill
         {
             get { return (Brush) GetValue(FillProperty); }

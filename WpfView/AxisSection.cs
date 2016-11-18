@@ -19,7 +19,6 @@
 //SOFTWARE.
 
 using System;
-using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -65,8 +64,17 @@ namespace LiveCharts.Wpf
         }
 
         #region Properties
+        /// <summary>
+        /// Gets or sets the model.
+        /// </summary>
+        /// <value>
+        /// The model.
+        /// </value>
         public AxisSectionCore Model { get; set; }
 
+        /// <summary>
+        /// The label property
+        /// </summary>
         public static readonly DependencyProperty LabelProperty = DependencyProperty.Register(
             "Label", typeof(string), typeof(AxisSection), new PropertyMetadata(default(string)));
         /// <summary>
@@ -78,6 +86,9 @@ namespace LiveCharts.Wpf
             set { SetValue(LabelProperty, value); }
         }
 
+        /// <summary>
+        /// From value property
+        /// </summary>
         public static readonly DependencyProperty FromValueProperty = DependencyProperty.Register(
             "FromValue", typeof(double), typeof(AxisSection),
             new PropertyMetadata(double.NaN, UpdateSection));
@@ -91,6 +102,9 @@ namespace LiveCharts.Wpf
             set { SetValue(FromValueProperty, value); }
         }
 
+        /// <summary>
+        /// To value property
+        /// </summary>
         public static readonly DependencyProperty ToValueProperty = DependencyProperty.Register(
             "ToValue", typeof(double), typeof(AxisSection),
             new PropertyMetadata(double.NaN, UpdateSection));
@@ -104,6 +118,9 @@ namespace LiveCharts.Wpf
             set { SetValue(ToValueProperty, value); }
         }
 
+        /// <summary>
+        /// The value property
+        /// </summary>
         public static readonly DependencyProperty ValueProperty = DependencyProperty.Register(
             "Value", typeof(double), typeof(AxisSection), new PropertyMetadata(default(double), UpdateSection));
         /// <summary>
@@ -115,6 +132,9 @@ namespace LiveCharts.Wpf
             set { SetValue(ValueProperty, value); }
         }
 
+        /// <summary>
+        /// The section width property
+        /// </summary>
         public static readonly DependencyProperty SectionWidthProperty = DependencyProperty.Register(
             "SectionWidth", typeof(double), typeof(AxisSection), new PropertyMetadata(default(double), UpdateSection));
         /// <summary>
@@ -126,6 +146,9 @@ namespace LiveCharts.Wpf
             set { SetValue(SectionWidthProperty, value); }
         }
 
+        /// <summary>
+        /// The stroke property
+        /// </summary>
         public static readonly DependencyProperty StrokeProperty = DependencyProperty.Register(
             "Stroke", typeof(Brush), typeof(AxisSection), new PropertyMetadata(default(Brush)));
         /// <summary>
@@ -137,6 +160,9 @@ namespace LiveCharts.Wpf
             set { SetValue(StrokeProperty, value); }
         }
 
+        /// <summary>
+        /// The fill property
+        /// </summary>
         public static readonly DependencyProperty FillProperty = DependencyProperty.Register(
             "Fill", typeof(Brush), typeof(AxisSection), new PropertyMetadata(default(Brush)));
         /// <summary>
@@ -148,6 +174,9 @@ namespace LiveCharts.Wpf
             set { SetValue(FillProperty, value); }
         }
 
+        /// <summary>
+        /// The stroke thickness property
+        /// </summary>
         public static readonly DependencyProperty StrokeThicknessProperty = DependencyProperty.Register(
             "StrokeThickness", typeof(double), typeof(AxisSection), new PropertyMetadata(default(double)));
         /// <summary>
@@ -159,6 +188,9 @@ namespace LiveCharts.Wpf
             set { SetValue(StrokeThicknessProperty, value); }
         }
 
+        /// <summary>
+        /// The stroke dash array property
+        /// </summary>
         public static readonly DependencyProperty StrokeDashArrayProperty = DependencyProperty.Register(
             "StrokeDashArray", typeof(DoubleCollection), typeof(AxisSection), new PropertyMetadata(default(DoubleCollection)));
         /// <summary>
@@ -170,6 +202,9 @@ namespace LiveCharts.Wpf
             set { SetValue(StrokeDashArrayProperty, value); }
         }
 
+        /// <summary>
+        /// The draggable property
+        /// </summary>
         public static readonly DependencyProperty DraggableProperty = DependencyProperty.Register(
             "Draggable", typeof(bool), typeof(AxisSection), new PropertyMetadata(default(bool)));
         /// <summary>
@@ -182,6 +217,11 @@ namespace LiveCharts.Wpf
         }
         #endregion
 
+        /// <summary>
+        /// Draws the or move.
+        /// </summary>
+        /// <param name="source">The source.</param>
+        /// <param name="axis">The axis.</param>
         public void DrawOrMove(AxisOrientation source, int axis)
         {
             _rectangle.Fill = Fill;
@@ -206,8 +246,12 @@ namespace LiveCharts.Wpf
             var ax = source == AxisOrientation.X ? Model.Chart.AxisX[axis] : Model.Chart.AxisY[axis];
             var uw = ax.EvaluatesUnitWidth ? ChartFunctions.GetUnitWidth(source, Model.Chart, axis)/2 : 0;
 
+#pragma warning disable 618
             var from = ChartFunctions.ToDrawMargin(double.IsNaN(FromValue) ? Value : FromValue, source, Model.Chart, axis) + uw;
+#pragma warning restore 618
+#pragma warning disable 618
             var to = ChartFunctions.ToDrawMargin(double.IsNaN(ToValue) ? Value + SectionWidth : ToValue, source, Model.Chart, axis) + uw;
+#pragma warning restore 618
 
             if (from > to)
             {
@@ -264,6 +308,9 @@ namespace LiveCharts.Wpf
             }
         }
 
+        /// <summary>
+        /// Removes this instance.
+        /// </summary>
         public void Remove()
         {
             Model.Chart.View.RemoveFromView(this);
@@ -271,6 +318,12 @@ namespace LiveCharts.Wpf
             Model.Chart.View.RemoveFromDrawMargin(_label);
         }
 
+        /// <summary>
+        /// Ases the core element.
+        /// </summary>
+        /// <param name="axis">The axis.</param>
+        /// <param name="source">The source.</param>
+        /// <returns></returns>
         public AxisSectionCore AsCoreElement(AxisCore axis, AxisOrientation source)
         {
             var model = new AxisSectionCore(this, axis.Chart);

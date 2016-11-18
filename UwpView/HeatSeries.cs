@@ -77,6 +77,9 @@ namespace LiveCharts.Uwp
 
         #region Properties
 
+        /// <summary>
+        /// The draws heat range property
+        /// </summary>
         public static readonly DependencyProperty DrawsHeatRangeProperty = DependencyProperty.Register(
             "DrawsHeatRange", typeof(bool), typeof(HeatSeries),
             new PropertyMetadata(default(bool), CallChartUpdater()));
@@ -89,6 +92,9 @@ namespace LiveCharts.Uwp
             set { SetValue(DrawsHeatRangeProperty, value); }
         }
 
+        /// <summary>
+        /// The gradient stop collection property
+        /// </summary>
         public static readonly DependencyProperty GradientStopCollectionProperty = DependencyProperty.Register(
             "GradientStopCollection", typeof(GradientStopCollection), typeof(HeatSeries), new PropertyMetadata(default(GradientStopCollection)));
         /// <summary>
@@ -119,6 +125,12 @@ namespace LiveCharts.Uwp
 
         #region Overridden Methods
 
+        /// <summary>
+        /// Gets the view of a given point
+        /// </summary>
+        /// <param name="point"></param>
+        /// <param name="label"></param>
+        /// <returns></returns>
         public override IChartPointView GetPointView(ChartPoint point, string label)
         {
             var pbv = (HeatPoint) point.View;
@@ -148,6 +160,7 @@ namespace LiveCharts.Uwp
             pbv.Rectangle.StrokeThickness = StrokeThickness;
             pbv.Rectangle.Visibility = Visibility;
             pbv.Rectangle.StrokeDashArray = StrokeDashArray;
+
             Canvas.SetZIndex(pbv.Rectangle, Canvas.GetZIndex(pbv.Rectangle));
 
             if (Model.Chart.RequiresHoverShape && pbv.HoverShape == null)
@@ -181,6 +194,10 @@ namespace LiveCharts.Uwp
             return pbv;
         }
 
+        /// <summary>
+        /// Erases series
+        /// </summary>
+        /// <param name="removeFromView"></param>
         public override void Erase(bool removeFromView = true)
         {
             Values.GetPoints(this).ForEach(p =>
@@ -190,6 +207,9 @@ namespace LiveCharts.Uwp
             if (removeFromView) Model.Chart.View.RemoveFromView(this);
         }
 
+        /// <summary>
+        /// Defines special elements to draw according to the series type
+        /// </summary>
         public override void DrawSpecializedElements()
         {
             if (DrawsHeatRange)
@@ -234,14 +254,20 @@ namespace LiveCharts.Uwp
             }
         }
 
+        /// <summary>
+        /// Places specializes items
+        /// </summary>
         public override void PlaceSpecializedElements()
         {
-            ColorRangeControl.UpdateFill(GradientStopCollection);
+            if (DrawsHeatRange)
+            {
+                ColorRangeControl.UpdateFill(GradientStopCollection);
 
-            ColorRangeControl.Height = Model.Chart.DrawMargin.Height;
+                ColorRangeControl.Height = Model.Chart.DrawMargin.Height;
 
-            Canvas.SetTop(ColorRangeControl, Model.Chart.DrawMargin.Top);
-            Canvas.SetLeft(ColorRangeControl, Model.Chart.DrawMargin.Left + Model.Chart.DrawMargin.Width + 4);
+                Canvas.SetTop(ColorRangeControl, Model.Chart.DrawMargin.Top);
+                Canvas.SetLeft(ColorRangeControl, Model.Chart.DrawMargin.Left + Model.Chart.DrawMargin.Width + 4);
+            }
         }
 
         #endregion
@@ -262,6 +288,9 @@ namespace LiveCharts.Uwp
             DefaultFillOpacity = 0.4;
         }
 
+        /// <summary>
+        /// Initializes the series colors if they are not set
+        /// </summary>
         public override void InitializeColors()
         {
             var uwpfChart = (Chart)Model.Chart.View;

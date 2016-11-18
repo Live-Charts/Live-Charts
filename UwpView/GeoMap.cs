@@ -43,9 +43,16 @@ using Path = Windows.UI.Xaml.Shapes.Path;
 
 namespace LiveCharts.Uwp
 {
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <seealso cref="Windows.UI.Xaml.Controls.UserControl" />
     public class GeoMap : UserControl
     {
         #region Constructors
+        /// <summary>
+        /// Initializes a new instance of the <see cref="GeoMap"/> class.
+        /// </summary>
         public GeoMap()
         {
             Canvas = new Canvas();
@@ -137,6 +144,9 @@ namespace LiveCharts.Uwp
 
         #region Events
 
+        /// <summary>
+        /// Occurs when [land click].
+        /// </summary>
         public event Action<object, MapData> LandClick;
 
         #endregion
@@ -159,6 +169,9 @@ namespace LiveCharts.Uwp
             set { SetValue(GeoMapTooltipProperty, value); }
         }
 
+        /// <summary>
+        /// The language pack property
+        /// </summary>
         public static readonly DependencyProperty LanguagePackProperty = DependencyProperty.Register(
             "LanguagePack", typeof (Dictionary<string, string>), typeof (GeoMap), new PropertyMetadata(default(Dictionary<string, string>)));
         /// <summary>
@@ -170,6 +183,9 @@ namespace LiveCharts.Uwp
             set { SetValue(LanguagePackProperty, value); }
         }
 
+        /// <summary>
+        /// The default land fill property
+        /// </summary>
         public static readonly DependencyProperty DefaultLandFillProperty = DependencyProperty.Register(
             "DefaultLandFill", typeof (Brush), typeof (GeoMap), new PropertyMetadata(default(Brush)));
         /// <summary>
@@ -181,6 +197,9 @@ namespace LiveCharts.Uwp
             set { SetValue(DefaultLandFillProperty, value); }
         }
 
+        /// <summary>
+        /// The land stroke thickness property
+        /// </summary>
         public static readonly DependencyProperty LandStrokeThicknessProperty = DependencyProperty.Register(
             "LandStrokeThickness", typeof (double), typeof (GeoMap), new PropertyMetadata(default(double)));
         /// <summary>
@@ -192,6 +211,9 @@ namespace LiveCharts.Uwp
             set { SetValue(LandStrokeThicknessProperty, value); }
         }
 
+        /// <summary>
+        /// The land stroke property
+        /// </summary>
         public static readonly DependencyProperty LandStrokeProperty = DependencyProperty.Register(
             "LandStroke", typeof (Brush), typeof (GeoMap), new PropertyMetadata(default(Brush)));
         /// <summary>
@@ -203,6 +225,9 @@ namespace LiveCharts.Uwp
             set { SetValue(LandStrokeProperty, value); }
         }
 
+        /// <summary>
+        /// The disable animations property
+        /// </summary>
         public static readonly DependencyProperty DisableAnimationsProperty = DependencyProperty.Register(
             "DisableAnimations", typeof (bool), typeof (GeoMap), new PropertyMetadata(default(bool)));
         /// <summary>
@@ -214,6 +239,9 @@ namespace LiveCharts.Uwp
             set { SetValue(DisableAnimationsProperty, value); }
         }
 
+        /// <summary>
+        /// The animations speed property
+        /// </summary>
         public static readonly DependencyProperty AnimationsSpeedProperty = DependencyProperty.Register(
             "AnimationsSpeed", typeof (TimeSpan), typeof (GeoMap), new PropertyMetadata(default(TimeSpan)));
         /// <summary>
@@ -225,6 +253,9 @@ namespace LiveCharts.Uwp
             set { SetValue(AnimationsSpeedProperty, value); }
         }
 
+        /// <summary>
+        /// The hoverable property
+        /// </summary>
         public static readonly DependencyProperty HoverableProperty = DependencyProperty.Register(
             "Hoverable", typeof (bool), typeof (GeoMap), new PropertyMetadata(default(bool)));
         /// <summary>
@@ -236,6 +267,9 @@ namespace LiveCharts.Uwp
             set { SetValue(HoverableProperty, value); }
         }
 
+        /// <summary>
+        /// The heat map property
+        /// </summary>
         public static readonly DependencyProperty HeatMapProperty = DependencyProperty.Register(
             "HeatMap", typeof (Dictionary<string, double>), typeof (GeoMap), 
             new PropertyMetadata(default(Dictionary<string, double>), OnHeapMapChanged));
@@ -248,6 +282,9 @@ namespace LiveCharts.Uwp
             set { SetValue(HeatMapProperty, value); }
         }
 
+        /// <summary>
+        /// The gradient stop collection property
+        /// </summary>
         public static readonly DependencyProperty GradientStopCollectionProperty = DependencyProperty.Register(
             "GradientStopCollection", typeof(GradientStopCollection), typeof(GeoMap), new PropertyMetadata(default(GradientStopCollection)));
         /// <summary>
@@ -259,6 +296,9 @@ namespace LiveCharts.Uwp
             set { SetValue(GradientStopCollectionProperty, value); }
         }
 
+        /// <summary>
+        /// The source property
+        /// </summary>
         public static readonly DependencyProperty SourceProperty = DependencyProperty.Register(
             "Source", typeof (string), typeof (GeoMap), new PropertyMetadata(default(string)));
         /// <summary>
@@ -269,7 +309,10 @@ namespace LiveCharts.Uwp
             get { return (string) GetValue(SourceProperty); }
             set { SetValue(SourceProperty, value); }
         }
-        
+
+        /// <summary>
+        /// The enable zooming and panning property
+        /// </summary>
         public static readonly DependencyProperty EnableZoomingAndPanningProperty = DependencyProperty.Register(
             "EnableZoomingAndPanning", typeof (bool), typeof (GeoMap), new PropertyMetadata(default(bool)));
         /// <summary>
@@ -583,13 +626,38 @@ namespace LiveCharts.Uwp
         #endregion
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <seealso cref="LiveCharts.Uwp.Components.MultiBinding.MultiValueConverterBase" />
     public class ScaleStrokeConverter : MultiValueConverterBase
     {
+        /// <summary>
+        /// Modifies the source data before passing it to the target for display in the UI.
+        /// </summary>
+        /// <param name="values">The source data being passed to the target.</param>
+        /// <param name="targetType">The <see cref="T:System.Type" /> of data expected by the target dependency property.</param>
+        /// <param name="parameter">An optional parameter to be used in the converter logic.</param>
+        /// <param name="culture">The culture of the conversion.</param>
+        /// <returns>
+        /// The value to be passed to the target dependency property.
+        /// </returns>
         public override object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
             return (double) values[0]/(double) values[1];
         }
 
+        /// <summary>
+        /// Modifies the target data before passing it to the source object. This method is called only in <see cref="F:System.Windows.Data.BindingMode.TwoWay" /> bindings.
+        /// </summary>
+        /// <param name="value">The target data being passed to the source.</param>
+        /// <param name="targetType">The <see cref="T:System.Type" /> of data expected by the source object.</param>
+        /// <param name="parameter">An optional parameter to be used in the converter logic.</param>
+        /// <param name="culture">The culture of the conversion.</param>
+        /// <returns>
+        /// The value to be passed to the source object.
+        /// </returns>
+        /// <exception cref="System.NotImplementedException"></exception>
         public override Object[] ConvertBack(Object value, Type targetType, Object parameter, CultureInfo culture)
         {
             throw new NotImplementedException();

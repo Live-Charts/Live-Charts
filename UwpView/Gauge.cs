@@ -40,6 +40,9 @@ namespace LiveCharts.Uwp
     /// </summary>
     public class Gauge : UserControl
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Gauge"/> class.
+        /// </summary>
         public Gauge()
         {
             Canvas = new Canvas();
@@ -106,6 +109,9 @@ namespace LiveCharts.Uwp
         private bool IsNew { get; set; }
         private bool IsChartInitialized { get; set; }
 
+        /// <summary>
+        /// The uses360 mode property
+        /// </summary>
         public static readonly DependencyProperty Uses360ModeProperty = DependencyProperty.Register(
             "Uses360Mode", typeof (bool), typeof (Gauge), new PropertyMetadata(default(bool), UpdateCallback));
         /// <summary>
@@ -117,6 +123,9 @@ namespace LiveCharts.Uwp
             set { SetValue(Uses360ModeProperty, value); }
         }
 
+        /// <summary>
+        /// From property
+        /// </summary>
         public static readonly DependencyProperty FromProperty = DependencyProperty.Register(
             "From", typeof(double), typeof(Gauge), new PropertyMetadata(0d, UpdateCallback));
         /// <summary>
@@ -128,6 +137,9 @@ namespace LiveCharts.Uwp
             set { SetValue(FromProperty, value); }
         }
 
+        /// <summary>
+        /// To property
+        /// </summary>
         public static readonly DependencyProperty ToProperty = DependencyProperty.Register(
             "To", typeof(double), typeof(Gauge), new PropertyMetadata(1d, UpdateCallback));
         /// <summary>
@@ -139,6 +151,9 @@ namespace LiveCharts.Uwp
             set { SetValue(ToProperty, value); }
         }
 
+        /// <summary>
+        /// The value property
+        /// </summary>
         public static readonly DependencyProperty ValueProperty = DependencyProperty.Register(
             "Value", typeof (double), typeof (Gauge), new PropertyMetadata(default(double), UpdateCallback));
         /// <summary>
@@ -150,6 +165,9 @@ namespace LiveCharts.Uwp
             set { SetValue(ValueProperty, value); }
         }
 
+        /// <summary>
+        /// The inner radius property
+        /// </summary>
         public static readonly DependencyProperty InnerRadiusProperty = DependencyProperty.Register(
             "InnerRadius", typeof (double), typeof (Gauge), new PropertyMetadata(double.NaN, UpdateCallback));
         /// <summary>
@@ -161,6 +179,9 @@ namespace LiveCharts.Uwp
             set { SetValue(InnerRadiusProperty, value); }
         }
 
+        /// <summary>
+        /// The stroke property
+        /// </summary>
         public static readonly DependencyProperty StrokeProperty = DependencyProperty.Register(
             "Stroke", typeof(Brush), typeof(Gauge), new PropertyMetadata(default(Brush)));
         /// <summary>
@@ -173,6 +194,9 @@ namespace LiveCharts.Uwp
         }
 
 
+        /// <summary>
+        /// The stroke thickness property
+        /// </summary>
         public static readonly DependencyProperty StrokeThicknessProperty = DependencyProperty.Register(
             "StrokeThickness", typeof(double), typeof(Gauge), new PropertyMetadata(default(double)));
         /// <summary>
@@ -184,6 +208,9 @@ namespace LiveCharts.Uwp
             set { SetValue(StrokeThicknessProperty, value); }
         }
 
+        /// <summary>
+        /// To color property
+        /// </summary>
         public static readonly DependencyProperty ToColorProperty = DependencyProperty.Register(
             "ToColor", typeof(Color), typeof(Gauge), new PropertyMetadata(default(Color), UpdateCallback));
         /// <summary>
@@ -195,6 +222,9 @@ namespace LiveCharts.Uwp
             set { SetValue(ToColorProperty, value); }
         }
 
+        /// <summary>
+        /// From color property
+        /// </summary>
         public static readonly DependencyProperty FromColorProperty = DependencyProperty.Register(
             "FromColor", typeof(Color), typeof(Gauge), new PropertyMetadata(default(Color), UpdateCallback));
         /// <summary>
@@ -206,6 +236,9 @@ namespace LiveCharts.Uwp
             set { SetValue(FromColorProperty, value); }
         }
 
+        /// <summary>
+        /// The gauge background property
+        /// </summary>
         public static readonly DependencyProperty GaugeBackgroundProperty = DependencyProperty.Register(
             "GaugeBackground", typeof (Brush), typeof (Gauge), new PropertyMetadata(default(Brush)));
         /// <summary>
@@ -217,6 +250,9 @@ namespace LiveCharts.Uwp
             set { SetValue(GaugeBackgroundProperty, value); }
         }
 
+        /// <summary>
+        /// The animations speed property
+        /// </summary>
         public static readonly DependencyProperty AnimationsSpeedProperty = DependencyProperty.Register(
             "AnimationsSpeed", typeof (TimeSpan), typeof (Gauge), new PropertyMetadata(default(TimeSpan)));
         /// <summary>
@@ -228,6 +264,9 @@ namespace LiveCharts.Uwp
             set { SetValue(AnimationsSpeedProperty, value); }
         }
 
+        /// <summary>
+        /// The label formatter property
+        /// </summary>
         public static readonly DependencyProperty LabelFormatterProperty = DependencyProperty.Register(
             "LabelFormatter", typeof (Func<double, string>), typeof (Gauge), new PropertyMetadata(default(Func<double, string>)));
         /// <summary>
@@ -239,6 +278,9 @@ namespace LiveCharts.Uwp
             set { SetValue(LabelFormatterProperty, value); }
         }
 
+        /// <summary>
+        /// The high font size property
+        /// </summary>
         public static readonly DependencyProperty HighFontSizeProperty = DependencyProperty.Register(
             "HighFontSize", typeof (double?), typeof (Gauge), new PropertyMetadata(null));
         /// <summary>

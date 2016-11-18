@@ -64,8 +64,17 @@ namespace LiveCharts.Uwp
                 new Binding {Path = new PropertyPath(nameof(Label)), Source = this});
         }
 
+        /// <summary>
+        /// Gets or sets the model.
+        /// </summary>
+        /// <value>
+        /// The model.
+        /// </value>
         public AxisSectionCore Model { get; set; }
 
+        /// <summary>
+        /// The label property
+        /// </summary>
         public static readonly DependencyProperty LabelProperty = DependencyProperty.Register(
             "Label", typeof (string), typeof (AxisSection), new PropertyMetadata(default(string)));
         /// <summary>
@@ -77,6 +86,9 @@ namespace LiveCharts.Uwp
             set { SetValue(LabelProperty, value); }
         }
 
+        /// <summary>
+        /// The value property
+        /// </summary>
         public static readonly DependencyProperty ValueProperty = DependencyProperty.Register(
             "Value", typeof(double), typeof(AxisSection), new PropertyMetadata(default(double), UpdateSection));
         /// <summary>
@@ -88,6 +100,9 @@ namespace LiveCharts.Uwp
             set { SetValue(ValueProperty, value); }
         }
 
+        /// <summary>
+        /// The section width property
+        /// </summary>
         public static readonly DependencyProperty SectionWidthProperty = DependencyProperty.Register(
             "SectionWidth", typeof(double), typeof(AxisSection), new PropertyMetadata(default(double), UpdateSection));
         /// <summary>
@@ -99,6 +114,9 @@ namespace LiveCharts.Uwp
             set { SetValue(SectionWidthProperty, value); }
         }
 
+        /// <summary>
+        /// The draggable property
+        /// </summary>
         public static readonly DependencyProperty DraggableProperty = DependencyProperty.Register(
             "Draggable", typeof(bool), typeof(AxisSection), new PropertyMetadata(default(bool)));
         /// <summary>
@@ -110,6 +128,9 @@ namespace LiveCharts.Uwp
             set { SetValue(DraggableProperty, value); }
         }
 
+        /// <summary>
+        /// The stroke property
+        /// </summary>
         public static readonly DependencyProperty StrokeProperty = DependencyProperty.Register(
             "Stroke", typeof (Brush), typeof (AxisSection), new PropertyMetadata(default(Brush)));
         /// <summary>
@@ -121,6 +142,9 @@ namespace LiveCharts.Uwp
             set { SetValue(StrokeProperty, value); }
         }
 
+        /// <summary>
+        /// The fill property
+        /// </summary>
         public static readonly DependencyProperty FillProperty = DependencyProperty.Register(
             "Fill", typeof (Brush), typeof (AxisSection), new PropertyMetadata(default(Brush)));
         /// <summary>
@@ -132,6 +156,9 @@ namespace LiveCharts.Uwp
             set { SetValue(FillProperty, value); }
         }
 
+        /// <summary>
+        /// The stroke thickness property
+        /// </summary>
         public static readonly DependencyProperty StrokeThicknessProperty = DependencyProperty.Register(
             "StrokeThickness", typeof (double), typeof (AxisSection), new PropertyMetadata(default(double)));
         /// <summary>
@@ -143,6 +170,9 @@ namespace LiveCharts.Uwp
             set { SetValue(StrokeThicknessProperty, value); }
         }
 
+        /// <summary>
+        /// The stroke dash array property
+        /// </summary>
         public static readonly DependencyProperty StrokeDashArrayProperty = DependencyProperty.Register(
             "StrokeDashArray", typeof (DoubleCollection), typeof (AxisSection), new PropertyMetadata(default(DoubleCollection)));
         /// <summary>
@@ -154,6 +184,11 @@ namespace LiveCharts.Uwp
             set { SetValue(StrokeDashArrayProperty, value); }
         }
 
+        /// <summary>
+        /// Draws the or move.
+        /// </summary>
+        /// <param name="source">The source.</param>
+        /// <param name="axis">The axis.</param>
         public void DrawOrMove(AxisOrientation source, int axis)
         {
             _rectangle.Fill = Fill;
@@ -234,6 +269,9 @@ namespace LiveCharts.Uwp
             }
         }
 
+        /// <summary>
+        /// Removes this instance.
+        /// </summary>
         public void Remove()
         {
             Model.Chart.View.RemoveFromView(this);
@@ -241,6 +279,12 @@ namespace LiveCharts.Uwp
             Model.Chart.View.RemoveFromDrawMargin(_label);
         }
 
+        /// <summary>
+        /// Ases the core element.
+        /// </summary>
+        /// <param name="axis">The axis.</param>
+        /// <param name="source">The source.</param>
+        /// <returns></returns>
         public AxisSectionCore AsCoreElement(AxisCore axis, AxisOrientation source)
         {
             var model = new AxisSectionCore(this, axis.Chart);

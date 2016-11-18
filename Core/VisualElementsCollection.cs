@@ -40,6 +40,12 @@ namespace LiveCharts
             NoisyCollectionChanged += OnNoisyCollectionChanged;
         }
 
+        /// <summary>
+        /// Gets or sets the chart.
+        /// </summary>
+        /// <value>
+        /// The chart.
+        /// </value>
         public ChartCore Chart { get; set; }
 
         private void OnNoisyCollectionChanged(IEnumerable<ICartesianVisualElement> oldItems, IEnumerable<ICartesianVisualElement> newItems)

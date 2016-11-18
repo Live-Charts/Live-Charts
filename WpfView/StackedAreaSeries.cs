@@ -35,6 +35,8 @@ namespace LiveCharts.Wpf
     /// <summary>
     /// The stacked area compares trends and percentage, add this series to a cartesian chart
     /// </summary>
+    /// <seealso cref="LiveCharts.Wpf.LineSeries" />
+    /// <seealso cref="LiveCharts.Definitions.Series.IStackedAreaSeriesView" />
     public class StackedAreaSeries : LineSeries, IStackedAreaSeriesView
     {
         #region Constructors
@@ -64,21 +66,27 @@ namespace LiveCharts.Wpf
 
         #region Properties
 
+        /// <summary>
+        /// The stack mode property
+        /// </summary>
         public static readonly DependencyProperty StackModeProperty = DependencyProperty.Register(
-            "StackMode", typeof (StackMode), typeof (StackedAreaSeries), 
+            "StackMode", typeof(StackMode), typeof(StackedAreaSeries),
             new PropertyMetadata(default(StackMode), CallChartUpdater()));
         /// <summary>
         /// Gets or sets the series stacked mode, values or percentage
         /// </summary>
         public StackMode StackMode
         {
-            get { return (StackMode) GetValue(StackModeProperty); }
+            get { return (StackMode)GetValue(StackModeProperty); }
             set { SetValue(StackModeProperty, value); }
         }
         #endregion
 
         #region Overridden Methods
 
+        /// <summary>
+        /// This method runs when the update starts
+        /// </summary>
         public override void OnSeriesUpdateStart()
         {
             ActiveSplitters = 0;

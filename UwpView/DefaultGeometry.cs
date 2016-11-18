@@ -27,11 +27,47 @@ namespace LiveCharts.Uwp
     /// </summary>
     public static class DefaultGeometries
     {
+        /// <summary>
+        /// Gets the none.
+        /// </summary>
+        /// <value>
+        /// The none.
+        /// </value>
         public static PointGeometry None => null;
+        /// <summary>
+        /// Gets the circle.
+        /// </summary>
+        /// <value>
+        /// The circle.
+        /// </value>
         public static PointGeometry Circle => new PointGeometry("M 0,0 A 180,180 180 1 1 1,1 Z");
+        /// <summary>
+        /// Gets the square.
+        /// </summary>
+        /// <value>
+        /// The square.
+        /// </value>
         public static PointGeometry Square => new PointGeometry("M 1,1 h -2 v -2 h 2 z");
+        /// <summary>
+        /// Gets the diamond.
+        /// </summary>
+        /// <value>
+        /// The diamond.
+        /// </value>
         public static PointGeometry Diamond => new PointGeometry("M 1,0 L 2,1  1,2  0,1 z");
+        /// <summary>
+        /// Gets the triangle.
+        /// </summary>
+        /// <value>
+        /// The triangle.
+        /// </value>
         public static PointGeometry Triangle => new PointGeometry("M 0,1 l 1,1 h -2 Z");
+        /// <summary>
+        /// Gets the cross.
+        /// </summary>
+        /// <value>
+        /// The cross.
+        /// </value>
         public static PointGeometry Cross => new PointGeometry("M0, 0 L1, 1 M0, 1 l1, -1");
     }
 }

@@ -70,8 +70,7 @@ namespace Winforms.Cartesian.UielementsExample
                 {
                     new AxisSection
                     {
-                        FromValue = 7,
-                        ToValue = 7,
+                        Value = 7,
                         Stroke = Brushes.YellowGreen,
                         StrokeThickness = 3,
                         StrokeDashArray = new DoubleCollection(new [] {10d})

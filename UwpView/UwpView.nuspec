@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>LiveCharts.Uwp</id>
-    <version>0.0.0.0</version>
+    <version>0.8.0.0</version>
     <title>LiveCharts.Uwp</title>
     <authors>Beto Rodriguez</authors>
     <owners>Beto Rodriguez</owners>
@@ -15,13 +15,17 @@
     <copyright>Copyright 2016</copyright>
     <tags>Chart Charting Plot Plotting</tags>
     <dependencies>
-      <dependency id="LiveCharts" version="0.0.0.0" />
+      <dependency id="LiveCharts" version="0.8.0.0" />
+      <dependency id="Microsoft.Xaml.Behaviors.Uwp.Managed" version="2.0.0.0" />
+      <dependency id="Microsoft.NETCore.UniversalWindowsPlatform" version="5.2.2" />
     </dependencies>
   </metadata>
   <files>
     <file src="install.ps1" target="tools" /> 
-    <file src="bin\Release\LiveCharts.Uwp.dll" target="lib\uap10.0"/>
-    <file src="bin\Release\LiveCharts.Uwp.pdb" target="lib\uap10.0"/>
-    <file src="bin\Release\LiveCharts.Uwp.xml" target="lib\uap10.0"/>
+    <file src="bin\AnyCPU\LiveChartsUwp.dll" target="lib\uap10.0"/>
+    <file src="bin\AnyCPU\LiveChartsUwp.pdb" target="lib\uap10.0"/>    
+    <file src="bin\AnyCPU\LiveChartsUwp.xml" target="lib\uap10.0"/>
+    <file src="bin\AnyCPU\LiveChartsUwp.pri" target="lib\uap10.0"/>
+    <file src="bin\AnyCPU\LiveChartsUwp\*.*" target="lib\uap10.0\LiveChartsUwp"/>
   </files>
 </package>
