@@ -137,7 +137,7 @@ namespace LiveCharts.SeriesAlgorithms
 
             return new CoreColor(
                 InterpolateColorComponent(from.A, to.A, fromOffset, toOffset, weight),
-                InterpolateColorComponent(from.R, from.R, fromOffset, toOffset, weight),
+                InterpolateColorComponent(from.R, to.R, fromOffset, toOffset, weight),
                 InterpolateColorComponent(from.G, to.G, fromOffset, toOffset, weight),
                 InterpolateColorComponent(from.B, to.B, fromOffset, toOffset, weight));
         }
@@ -145,14 +145,18 @@ namespace LiveCharts.SeriesAlgorithms
         private static byte InterpolateColorComponent(byte fromComponent, byte toComponent,
             double fromOffset, double toOffset, double value)
         {
-            var p1 = new CorePoint(fromOffset, fromComponent);
-            var p2 = new CorePoint(toOffset, toComponent);
+            if (fromComponent == toComponent)
+            {
+                return fromComponent;
+            }
+            else
+            {
+                var deltaX = toOffset - fromOffset;
+                // ReSharper disable once CompareOfFloatsByEqualityOperator
+                var m = (toComponent - fromComponent) / (deltaX == 0 ? double.MinValue : deltaX);
 
-            var deltaX = p2.X - p1.X;
-            // ReSharper disable once CompareOfFloatsByEqualityOperator
-            var m = (p2.Y - p1.Y) / (deltaX == 0 ? double.MinValue : deltaX);
-
-            return (byte)(m * (value - p1.X) + p1.Y);
+                return (byte)(m * (value - fromOffset) + fromComponent);
+            }
         }
     }
 }
