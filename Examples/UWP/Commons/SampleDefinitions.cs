@@ -13,6 +13,7 @@ using UWP.CartesianChart.CustomTooltipAndLegend;
 using UWP.CartesianChart.DynamicVisibility;
 using UWP.CartesianChart.Financial;
 using UWP.CartesianChart.FullyResponsive;
+using UWP.CartesianChart.Funnel_Chart;
 using UWP.CartesianChart.GanttChart;
 using UWP.CartesianChart.HeatChart;
 using UWP.CartesianChart.InLineSyntax;
@@ -51,6 +52,7 @@ namespace UWP.Commons
         public static SampleDefinition[] Definitions { get; } =
         {
             new SampleDefinition("Home", typeof(MainPage), SampleCategory.Information),
+            new SampleDefinition("Funnel Chart", typeof(FunnelExample), SampleCategory.CartesianChart),
             new SampleDefinition("Basic Column", typeof(BasicColumn), SampleCategory.CartesianChart),
             new SampleDefinition("Basic Row", typeof(BasicRowExample), SampleCategory.CartesianChart),
             new SampleDefinition("Gantt Chart", typeof(GanttExample), SampleCategory.CartesianChart),

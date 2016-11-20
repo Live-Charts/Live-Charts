@@ -102,6 +102,9 @@
     <Compile Include="CartesianChart\Financial\CandleStickExample.xaml.cs">
       <DependentUpon>CandleStickExample.xaml</DependentUpon>
     </Compile>
+    <Compile Include="CartesianChart\Funnel Chart\FunnelExample.xaml.cs">
+      <DependentUpon>FunnelExample.xaml</DependentUpon>
+    </Compile>
     <Compile Include="CartesianChart\GanttChart\GanttExample.xaml.cs">
       <DependentUpon>GanttExample.xaml</DependentUpon>
     </Compile>
@@ -147,6 +150,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="CartesianChart\Financial\CandleStickExample.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CartesianChart\Funnel Chart\FunnelExample.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -508,6 +515,9 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Resource Include="CartesianChart\Funnel Chart\resources\view.png" />
+    <Resource Include="CartesianChart\Funnel Chart\resources\user.png" />
+    <Resource Include="CartesianChart\Funnel Chart\resources\fingerprint.png" />
     <Content Include="Maps\World.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

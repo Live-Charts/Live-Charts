@@ -89,6 +89,9 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .Net Framework and Windows SDK are automatically included -->
+    <Resource Include="CartesianChart\Funnel Chart\resources\fingerprint.png" />
+    <Resource Include="CartesianChart\Funnel Chart\resources\user.png" />
+    <Resource Include="CartesianChart\Funnel Chart\resources\view.png" />
     <Content Include="CartesianChart\UIElements\warning.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -150,6 +153,9 @@
     </Compile>
     <Compile Include="CartesianChart\FullyResponsive\FullyResponsiveExample.xaml.cs">
       <DependentUpon>FullyResponsiveExample.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CartesianChart\Funnel Chart\FunnelExample.xaml.cs">
+      <DependentUpon>FunnelExample.xaml</DependentUpon>
     </Compile>
     <Compile Include="CartesianChart\GanttChart\GanttExample.xaml.cs">
       <DependentUpon>GanttExample.xaml</DependentUpon>
@@ -355,6 +361,10 @@
     <Page Include="CartesianChart\FullyResponsive\FullyResponsiveExample.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CartesianChart\Funnel Chart\FunnelExample.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="CartesianChart\GanttChart\GanttExample.xaml">
       <SubType>Designer</SubType>

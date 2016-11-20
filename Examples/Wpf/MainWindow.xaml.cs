@@ -12,6 +12,7 @@ using Wpf.CartesianChart.Customized_Line_Series;
 using Wpf.CartesianChart.CustomTooltipAndLegend;
 using Wpf.CartesianChart.DynamicVisibility;
 using Wpf.CartesianChart.Financial;
+using Wpf.CartesianChart.Funnel_Chart;
 using Wpf.CartesianChart.GanttChart;
 using Wpf.CartesianChart.HeatChart;
 using Wpf.CartesianChart.Inverted_Series;
@@ -59,6 +60,7 @@ namespace Wpf
             CartesianExamples = new List<UserControl>
             {
                 //new JimmyTheTestsGuy(),
+                new FunnelExample(),
                 new ConstantChangesChart(),
                 new FullyResponsiveExample(),
                 new LinqExample(),
