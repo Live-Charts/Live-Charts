@@ -22,10 +22,10 @@
   </metadata>
   <files>
     <file src="install.ps1" target="tools" /> 
-    <file src="bin\AnyCPU\LiveChartsUwp.dll" target="lib\uap10.0"/>
-    <file src="bin\AnyCPU\LiveChartsUwp.pdb" target="lib\uap10.0"/>    
-    <file src="bin\AnyCPU\LiveChartsUwp.xml" target="lib\uap10.0"/>
-    <file src="bin\AnyCPU\LiveChartsUwp.pri" target="lib\uap10.0"/>
-    <file src="bin\AnyCPU\LiveChartsUwp\*.*" target="lib\uap10.0\LiveChartsUwp"/>
+    <file src="bin\AnyCPU\LiveCharts.Uwp.dll" target="lib\uap10.0"/>
+    <file src="bin\AnyCPU\LiveCharts.Uwp.pdb" target="lib\uap10.0"/>    
+    <file src="bin\AnyCPU\LiveCharts.Uwp.xml" target="lib\uap10.0"/>
+    <file src="bin\AnyCPU\LiveCharts.Uwp.pri" target="lib\uap10.0"/>
+    <file src="bin\AnyCPU\LiveCharts.Uwp\*.*" target="lib\uap10.0\LiveCharts.Uwp"/>
   </files>
 </package>
