@@ -7,8 +7,8 @@
     <ProjectGuid>{9F22A3E2-CE88-41C3-8117-E9D3901BAA48}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>LiveChartsUwp</RootNamespace>
-    <AssemblyName>LiveChartsUwp</AssemblyName>
+    <RootNamespace>LiveCharts.Uwp</RootNamespace>
+    <AssemblyName>LiveCharts.Uwp</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
     <TargetPlatformVersion>10.0.10586.0</TargetPlatformVersion>
@@ -27,7 +27,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <GenerateLibraryLayout>true</GenerateLibraryLayout>
-    <DocumentationFile>bin\Debug\LiveChartsUwp.xml</DocumentationFile>
+    <DocumentationFile>bin\Debug\LiveCharts.Uwp.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
