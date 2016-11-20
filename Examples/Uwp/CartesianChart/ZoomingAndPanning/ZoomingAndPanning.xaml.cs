@@ -110,6 +110,17 @@ namespace UWP.CartesianChart.ZoomingAndPanning
         {
             if (PropertyChanged != null) PropertyChanged.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
+        private void ResetZoomIOnclick(object sender, RoutedEventArgs e)
+        {
+            //Use the axis MinValue/MaxValue properties to specify the values to display.
+            //use double.Nan to clear it.
+
+            X.MinValue = double.NaN;
+            X.MaxValue = double.NaN;
+            Y.MinValue = double.NaN;
+            Y.MaxValue = double.NaN;
+        }
     }
 
     public class ZoomingModeCoverter : IValueConverter
