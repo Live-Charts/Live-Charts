@@ -148,7 +148,6 @@ namespace LiveCharts.Uwp
             pbv.Rectangle.StrokeThickness = StrokeThickness;
             pbv.Rectangle.Visibility = Visibility;
             pbv.Rectangle.StrokeDashArray = StrokeDashArray;
-            pbv.Rectangle.Margin = Margin;
 
             Canvas.SetZIndex(pbv.Rectangle, Canvas.GetZIndex(pbv.Rectangle));
 

@@ -40,11 +40,11 @@ namespace LiveCharts.Uwp.Points
 
         public override void DrawOrMove(ChartPoint previousDrawn, ChartPoint current, int index, ChartCore chart)
         {
-            Canvas.SetTop(Rectangle, current.ChartLocation.Y + Rectangle.Margin.Top);
-            Canvas.SetLeft(Rectangle, current.ChartLocation.X + Rectangle.Margin.Left);
+            Canvas.SetTop(Rectangle, current.ChartLocation.Y);
+            Canvas.SetLeft(Rectangle, current.ChartLocation.X);
 
-            Rectangle.Width = Width - Rectangle.Margin.Left - Rectangle.Margin.Right;
-            Rectangle.Height = Height - Rectangle.Margin.Top - Rectangle.Margin.Bottom;
+            Rectangle.Width = Width;
+            Rectangle.Height = Height;
 
             if (IsNew)
             {
