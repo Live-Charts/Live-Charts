@@ -500,8 +500,8 @@ namespace LiveCharts.Charts
 
                     var target = l * (1 / speed);
                     if (target > yi.View.MaxRange) return;
-                    var mint = pivot.X - target * rMin;
-                    var maxt = pivot.X + target * rMax;
+                    var mint = pivot.Y - target * rMin;
+                    var maxt = pivot.Y + target * rMax;
                     yi.View.SetRange(mint, maxt);
                 }
             }

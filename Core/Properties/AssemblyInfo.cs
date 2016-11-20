@@ -29,5 +29,5 @@ using System.Runtime.CompilerServices;
 [assembly: AssemblyFileVersion("0.8.0")]
 
 [assembly: InternalsVisibleTo("LiveCharts.Wpf")]
-[assembly: InternalsVisibleTo("LiveChartsUwp")]//remove the . to prevent packing issue..
+[assembly: InternalsVisibleTo("LiveCharts.Uwp")]
 [assembly: InternalsVisibleTo("LiveCharts.Geared")]
