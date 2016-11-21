@@ -355,6 +355,7 @@ namespace LiveCharts.Uwp
             {
                 p.View?.RemoveFromView(Model.Chart);
             });
+            Path.Visibility = Visibility.Collapsed;
             if (removeFromView)
             {
                 Model.Chart.View.RemoveFromDrawMargin(Path);

@@ -103,6 +103,7 @@
       <DependentUpon>EnergyPredictionExample.xaml</DependentUpon>
     </Compile>
     <Compile Include="CartesianChart\Energy Predictions\OpacityConverter.cs" />
+    <Compile Include="CartesianChart\Energy Predictions\ReverseConverter.cs" />
     <Compile Include="CartesianChart\Financial\CandleStickExample.xaml.cs">
       <DependentUpon>CandleStickExample.xaml</DependentUpon>
     </Compile>

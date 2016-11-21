@@ -11,6 +11,7 @@ using UWP.CartesianChart.ConstantChanges;
 using UWP.CartesianChart.Customized_Series;
 using UWP.CartesianChart.CustomTooltipAndLegend;
 using UWP.CartesianChart.DynamicVisibility;
+using UWP.CartesianChart.Energy_Predictions;
 using UWP.CartesianChart.Financial;
 using UWP.CartesianChart.FullyResponsive;
 using UWP.CartesianChart.Funnel_Chart;
@@ -52,6 +53,7 @@ namespace UWP.Commons
         public static SampleDefinition[] Definitions { get; } =
         {
             new SampleDefinition("Home", typeof(MainPage), SampleCategory.Information),
+            new SampleDefinition("Energy Prediction", typeof(EnergyPredictionExample), SampleCategory.CartesianChart),
             new SampleDefinition("Funnel Chart", typeof(FunnelExample), SampleCategory.CartesianChart),
             new SampleDefinition("Basic Column", typeof(BasicColumn), SampleCategory.CartesianChart),
             new SampleDefinition("Basic Row", typeof(BasicRowExample), SampleCategory.CartesianChart),

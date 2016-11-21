@@ -145,6 +145,11 @@
     <Compile Include="CartesianChart\DynamicVisibility\DynamicVisibilityExample.xaml.cs">
       <DependentUpon>DynamicVisibilityExample.xaml</DependentUpon>
     </Compile>
+    <Compile Include="CartesianChart\Energy Predictions\EnergyPredictionExample.xaml.cs">
+      <DependentUpon>EnergyPredictionExample.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CartesianChart\Energy Predictions\OpacityConverter.cs" />
+    <Compile Include="CartesianChart\Energy Predictions\ReverseConverter.cs" />
     <Compile Include="CartesianChart\Financial\CandleStickExample.xaml.cs">
       <DependentUpon>CandleStickExample.xaml</DependentUpon>
     </Compile>
@@ -349,6 +354,10 @@
     <Page Include="CartesianChart\DynamicVisibility\DynamicVisibilityExample.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CartesianChart\Energy Predictions\EnergyPredictionExample.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="CartesianChart\Financial\CandleStickExample.xaml">
       <SubType>Designer</SubType>
