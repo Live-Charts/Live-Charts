@@ -7,7 +7,8 @@
              mc:Ignorable="d" 
              d:DesignHeight="600" d:DesignWidth="600">
     <Grid Background="#14144B">
-        <!--inspired in https://dribbble.com/jethansen-->
+        <!-- Credit https://dribbble.com/shots/2673159-Funnel-UI-concept-->
+        <!-- Icons http://www.flaticon.com/authors/madebyoliver -->
         <Grid.Resources>
             <Style TargetType="lvc:LineSeries">
                 <Setter Property="PointGeometrySize" Value="0"/>
@@ -58,7 +59,7 @@
                 <lvc:VisualElement X="2.5" Y="120" VerticalAlignment="Bottom" HorizontalAlignment="Center">
                     <lvc:VisualElement.UIElement>
                         <StackPanel Orientation="Vertical">
-                            <Image Source="resources/user.png"></Image>
+                            <Image Source="resources/view.png"></Image>
                             <TextBlock Foreground="White" FontSize="16" FontWeight="Bold">SAW THE AD</TextBlock>
                         </StackPanel>
                     </lvc:VisualElement.UIElement>

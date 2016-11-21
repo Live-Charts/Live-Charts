@@ -7,6 +7,7 @@ using Winforms.Cartesian.DataPagination;
 using Winforms.Cartesian.DateTime;
 using Winforms.Cartesian.DynamicVisibility;
 using Winforms.Cartesian.FullyResponsive;
+using Winforms.Cartesian.Funnel_Chart;
 using Winforms.Cartesian.GanttChart;
 using Winforms.Cartesian.HeatSeriesExample;
 using Winforms.Cartesian.Inverted_Series;
@@ -175,6 +176,11 @@ namespace Winforms
         private void button14_Click(object sender, EventArgs e)
         {
             new GanttExample().ShowDialog();
+        }
+
+        private void button15_Click(object sender, EventArgs e)
+        {
+            new FunnelExample().ShowDialog();
         }
     }
 }

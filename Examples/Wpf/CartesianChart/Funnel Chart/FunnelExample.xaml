@@ -8,7 +8,8 @@
              mc:Ignorable="d" 
              d:DesignHeight="600" d:DesignWidth="600">
     <Grid Background="#14144B">
-        <!--inspired in https://dribbble.com/jethansen-->
+        <!-- Credit https://dribbble.com/shots/2673159-Funnel-UI-concept-->
+        <!-- Icons http://www.flaticon.com/authors/madebyoliver -->
         <Grid.Resources>
             <Style TargetType="lvc:LineSeries">
                 <Setter Property="PointGeometry" Value="{x:Null}"/>

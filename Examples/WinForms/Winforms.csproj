@@ -152,6 +152,12 @@
     <Compile Include="Cartesian\FullyResponsive\FullyResponsive.Designer.cs">
       <DependentUpon>FullyResponsive.cs</DependentUpon>
     </Compile>
+    <Compile Include="Cartesian\FunnelChart\FunnelExample.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Cartesian\FunnelChart\FunnelExample.Designer.cs">
+      <DependentUpon>FunnelExample.cs</DependentUpon>
+    </Compile>
     <Compile Include="Cartesian\GanttChart\GanttExample.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -300,6 +306,15 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Content Include="Cartesian\FunnelChart\Resources\fingerprint.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Cartesian\FunnelChart\Resources\user.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Cartesian\FunnelChart\Resources\view.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Maps\World.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -341,6 +356,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Cartesian\FullyResponsive\FullyResponsive.resx">
       <DependentUpon>FullyResponsive.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Cartesian\FunnelChart\FunnelExample.resx">
+      <DependentUpon>FunnelExample.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Cartesian\GanttChart\GanttExample.resx">
       <DependentUpon>GanttExample.cs</DependentUpon>
