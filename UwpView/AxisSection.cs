@@ -231,12 +231,12 @@ namespace LiveCharts.Uwp
                 {
                     _rectangle.Width = w > 0 ? w : 0;
                     Canvas.SetLeft(_rectangle, from - StrokeThickness / 2);
-                    Canvas.SetLeft(_label, (from + to)/2 - _label.ActualWidth/2);
+                    Canvas.SetLeft(_label, (from + to) / 2 - _label.ActualWidth / 2);
                 }
                 else
                 {
-                    _rectangle.BeginDoubleAnimation("(Canvas.Left)", from - StrokeThickness/2, anSpeed);
-                    _rectangle.BeginDoubleAnimation(nameof(Height), w > 0 ? w: 0, anSpeed);
+                    _rectangle.BeginDoubleAnimation(nameof(Width), w > 0 ? w : 0, anSpeed);
+                    _rectangle.BeginDoubleAnimation("(Canvas.Left)", from - StrokeThickness / 2, anSpeed);
                     _label.BeginDoubleAnimation("(Canvas.Left)", (from + to) / 2 - _label.ActualWidth / 2, anSpeed);
                 }
                 return;
