@@ -82,7 +82,7 @@ namespace LiveCharts.Uwp
         /// </summary>
         public static readonly DependencyProperty DrawsHeatRangeProperty = DependencyProperty.Register(
             "DrawsHeatRange", typeof(bool), typeof(HeatSeries),
-            new PropertyMetadata(default(bool), CallChartUpdater()));
+            new PropertyMetadata(true, CallChartUpdater()));
         /// <summary>
         /// Gets or sets whether the series should draw the heat range control, it is the vertical frame to the right that displays the heat gradient.
         /// </summary>
@@ -276,10 +276,9 @@ namespace LiveCharts.Uwp
 
         private void InitializeDefuaults()
         {
-            this.SetIfNotSet(StrokeThicknessProperty, 0d);
-            this.SetIfNotSet(ForegroundProperty, new SolidColorBrush(Colors.White));
-            this.SetIfNotSet(StrokeProperty, new SolidColorBrush(Colors.White));
-            this.SetIfNotSet(DrawsHeatRangeProperty, true);
+            //this.SetIfNotSet(StrokeThicknessProperty, 0d);
+            //this.SetIfNotSet(ForegroundProperty, new SolidColorBrush(Colors.White));
+            //this.SetIfNotSet(StrokeProperty, new SolidColorBrush(Colors.White));
             this.SetIfNotSet(GradientStopCollectionProperty, new GradientStopCollection());
 
             Func<ChartPoint, string> defaultLabel = x => x.Weight.ToString(CultureInfo.InvariantCulture);

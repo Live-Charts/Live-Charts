@@ -73,7 +73,7 @@ namespace LiveCharts.Uwp
         /// The maximum row heigth property
         /// </summary>
         public static readonly DependencyProperty MaxRowHeigthProperty = DependencyProperty.Register(
-            "MaxRowHeigth", typeof (double), typeof (RowSeries), new PropertyMetadata(default(double)));
+            "MaxRowHeigth", typeof (double), typeof (RowSeries), new PropertyMetadata(35d));
         /// <summary>
         /// Gets or sets the maximum row height, the height of a column will be capped at this value
         /// </summary>
@@ -87,7 +87,7 @@ namespace LiveCharts.Uwp
         /// The row padding property
         /// </summary>
         public static readonly DependencyProperty RowPaddingProperty = DependencyProperty.Register(
-            "RowPadding", typeof (double), typeof (RowSeries), new PropertyMetadata(default(double)));
+            "RowPadding", typeof (double), typeof (RowSeries), new PropertyMetadata(2d));
         /// <summary>
         /// Gets or sets the padding between rows in this series
         /// </summary>
@@ -102,7 +102,7 @@ namespace LiveCharts.Uwp
         /// </summary>
         public static readonly DependencyProperty LabelPositionProperty = DependencyProperty.Register(
             "LabelPosition", typeof(BarLabelPosition), typeof(RowSeries), 
-            new PropertyMetadata(default(BarLabelPosition), CallChartUpdater()));
+            new PropertyMetadata(BarLabelPosition.Top, CallChartUpdater()));
         /// <summary>
         /// Gets or sets where the label is placed
         /// </summary>
@@ -198,10 +198,7 @@ namespace LiveCharts.Uwp
 
         private void InitializeDefuaults()
         {
-            this.SetIfNotSet(StrokeThicknessProperty, 0d);
-            this.SetIfNotSet(MaxRowHeigthProperty, 35d);
-            this.SetIfNotSet(RowPaddingProperty, 2d);
-            this.SetIfNotSet(LabelPositionProperty, BarLabelPosition.Top);
+            //this.SetIfNotSet(StrokeThicknessProperty, 0d);
 
             Func<ChartPoint, string> defaultLabel = x => x.EvaluatesGantt
                 ? string.Format("starts {0}, ends {1}", Model.CurrentXAxis.GetFormatter()(x.XStart),

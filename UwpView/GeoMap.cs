@@ -68,10 +68,6 @@ namespace LiveCharts.Uwp
 
             Lands = new Dictionary<string, MapData>();
 
-            this.SetIfNotSet(DefaultLandFillProperty, new SolidColorBrush(Color.FromArgb(200, 255, 255, 255)));
-            this.SetIfNotSet(LandStrokeProperty, new SolidColorBrush(Color.FromArgb(30, 55,55, 55)));
-            this.SetIfNotSet(LandStrokeThicknessProperty, 1.3d);
-            this.SetIfNotSet(AnimationsSpeedProperty, TimeSpan.FromMilliseconds(500));
             this.SetIfNotSet(BackgroundProperty, new SolidColorBrush(Color.FromArgb(150, 96, 125, 138)));
             /*Current*/
             SetValue(GradientStopCollectionProperty, new GradientStopCollection
@@ -187,7 +183,7 @@ namespace LiveCharts.Uwp
         /// The default land fill property
         /// </summary>
         public static readonly DependencyProperty DefaultLandFillProperty = DependencyProperty.Register(
-            "DefaultLandFill", typeof (Brush), typeof (GeoMap), new PropertyMetadata(default(Brush)));
+            "DefaultLandFill", typeof (Brush), typeof (GeoMap), new PropertyMetadata(new SolidColorBrush(Color.FromArgb(200, 255, 255, 255))));
         /// <summary>
         /// Gets or sets default land fill
         /// </summary>
@@ -201,7 +197,7 @@ namespace LiveCharts.Uwp
         /// The land stroke thickness property
         /// </summary>
         public static readonly DependencyProperty LandStrokeThicknessProperty = DependencyProperty.Register(
-            "LandStrokeThickness", typeof (double), typeof (GeoMap), new PropertyMetadata(default(double)));
+            "LandStrokeThickness", typeof (double), typeof (GeoMap), new PropertyMetadata(1.3d));
         /// <summary>
         /// Gets or sets every land stroke thickness property
         /// </summary>
@@ -215,7 +211,7 @@ namespace LiveCharts.Uwp
         /// The land stroke property
         /// </summary>
         public static readonly DependencyProperty LandStrokeProperty = DependencyProperty.Register(
-            "LandStroke", typeof (Brush), typeof (GeoMap), new PropertyMetadata(default(Brush)));
+            "LandStroke", typeof (Brush), typeof (GeoMap), new PropertyMetadata(new SolidColorBrush(Color.FromArgb(30, 55, 55, 55))));
         /// <summary>
         /// Gets or sets every land stroke
         /// </summary>
@@ -243,7 +239,7 @@ namespace LiveCharts.Uwp
         /// The animations speed property
         /// </summary>
         public static readonly DependencyProperty AnimationsSpeedProperty = DependencyProperty.Register(
-            "AnimationsSpeed", typeof (TimeSpan), typeof (GeoMap), new PropertyMetadata(default(TimeSpan)));
+            "AnimationsSpeed", typeof (TimeSpan), typeof (GeoMap), new PropertyMetadata(TimeSpan.FromMilliseconds(500)));
         /// <summary>
         /// Gets or sets animations speed
         /// </summary>

@@ -72,7 +72,7 @@ namespace LiveCharts.Uwp
         /// The maximum column width property
         /// </summary>
         public static readonly DependencyProperty MaxColumnWidthProperty = DependencyProperty.Register(
-            "MaxColumnWidth", typeof (double), typeof (ColumnSeries), new PropertyMetadata(default(double)));
+            "MaxColumnWidth", typeof (double), typeof (ColumnSeries), new PropertyMetadata(35d));
         /// <summary>
         /// Gets or sets the MaxColumnWidht in pixels, the column width will be capped at this value.
         /// </summary>
@@ -86,7 +86,7 @@ namespace LiveCharts.Uwp
         /// The column padding property
         /// </summary>
         public static readonly DependencyProperty ColumnPaddingProperty = DependencyProperty.Register(
-            "ColumnPadding", typeof (double), typeof (ColumnSeries), new PropertyMetadata(default(double)));
+            "ColumnPadding", typeof (double), typeof (ColumnSeries), new PropertyMetadata(2d));
         /// <summary>
         /// Gets or sets the padding between the columns in the series.
         /// </summary>
@@ -101,7 +101,7 @@ namespace LiveCharts.Uwp
         /// </summary>
         public static readonly DependencyProperty LabelsPositionProperty = DependencyProperty.Register(
             "LabelsPosition", typeof (BarLabelPosition), typeof (ColumnSeries), 
-            new PropertyMetadata(default(BarLabelPosition), CallChartUpdater()));
+            new PropertyMetadata(BarLabelPosition.Top, CallChartUpdater()));
         /// <summary>
         /// Gets or sets where the label is placed
         /// </summary>
@@ -198,10 +198,7 @@ namespace LiveCharts.Uwp
 
         private void InitializeDefuaults()
         {
-            this.SetIfNotSet(StrokeThicknessProperty, 0d);
-            this.SetIfNotSet(MaxColumnWidthProperty, 35d);
-            this.SetIfNotSet(ColumnPaddingProperty, 2d);
-            this.SetIfNotSet(LabelsPositionProperty, BarLabelPosition.Top);
+            //this.SetIfNotSet(StrokeThicknessProperty, 0d);
 
             Func<ChartPoint, string> defaultLabel = x => Model.CurrentYAxis.GetFormatter()(x.Y);
             this.SetIfNotSet(LabelPointProperty, defaultLabel);

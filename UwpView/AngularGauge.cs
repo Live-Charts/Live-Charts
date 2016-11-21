@@ -69,13 +69,10 @@ namespace LiveCharts.Uwp
                 new Binding { Path = new PropertyPath("ActualHeight"), Source = this });
 
             this.SetIfNotSet(SectionsProperty, new List<AngularSection>());
-            this.SetIfNotSet(NeedleFillProperty, new SolidColorBrush(Color.FromArgb(255, 69, 90, 100)));
 
             Stick.SetBinding(Shape.FillProperty,
                 new Binding {Path = new PropertyPath("NeedleFill"), Source = this});
             
-            this.SetIfNotSet(AnimationsSpeedProperty, TimeSpan.FromMilliseconds(500));
-            this.SetIfNotSet(TicksForegroundProperty, new SolidColorBrush(Color.FromArgb(255, 210, 210, 210)));
             Func<double, string> defaultFormatter = x => x.ToString(CultureInfo.InvariantCulture);
             this.SetIfNotSet(LabelFormatterProperty, defaultFormatter);
             // this.SetIfNotSet(LabelsEffectProperty, new DropShadowEffect {ShadowDepth = 2, RenderingBias = RenderingBias.Performance});
@@ -234,7 +231,7 @@ namespace LiveCharts.Uwp
         /// The animations speed property
         /// </summary>
         public static readonly DependencyProperty AnimationsSpeedProperty = DependencyProperty.Register(
-            "AnimationsSpeed", typeof (TimeSpan), typeof (AngularGauge), new PropertyMetadata(default(TimeSpan)));
+            "AnimationsSpeed", typeof (TimeSpan), typeof (AngularGauge), new PropertyMetadata(TimeSpan.FromMilliseconds(500)));
         /// <summary>
         /// Gets or sets the animations speed
         /// </summary>
@@ -248,7 +245,7 @@ namespace LiveCharts.Uwp
         /// The ticks foreground property
         /// </summary>
         public static readonly DependencyProperty TicksForegroundProperty = DependencyProperty.Register(
-            "TicksForeground", typeof (Brush), typeof (AngularGauge), new PropertyMetadata(default(Brush)));
+            "TicksForeground", typeof (Brush), typeof (AngularGauge), new PropertyMetadata(new SolidColorBrush(Color.FromArgb(255, 210, 210, 210))));
         /// <summary>
         /// Gets or sets the ticks foreground
         /// </summary>
@@ -277,7 +274,7 @@ namespace LiveCharts.Uwp
         /// The needle fill property
         /// </summary>
         public static readonly DependencyProperty NeedleFillProperty = DependencyProperty.Register(
-            "NeedleFill", typeof (Brush), typeof (AngularGauge), new PropertyMetadata(default(Brush)));
+            "NeedleFill", typeof (Brush), typeof (AngularGauge), new PropertyMetadata(new SolidColorBrush(Color.FromArgb(255, 69, 90, 100))));
         /// <summary>
         /// Gets o sets the needle fill
         /// </summary>

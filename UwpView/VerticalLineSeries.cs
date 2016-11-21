@@ -330,11 +330,6 @@ namespace LiveCharts.Uwp
 
         private void InitializeDefuaults()
         {
-            this.SetIfNotSet(LineSmoothnessProperty, .7d);
-            this.SetIfNotSet(PointGeometrySizeProperty, 8d);
-            this.SetIfNotSet(PointForeroundProperty, new SolidColorBrush(Windows.UI.Colors.White));
-            this.SetIfNotSet(StrokeThicknessProperty, 2d);
-
             Func<ChartPoint, string> defaultLabel = x => Model.CurrentXAxis.GetFormatter()(x.X);
             this.SetIfNotSet(LabelPointProperty, defaultLabel);
 

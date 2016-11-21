@@ -73,7 +73,7 @@ namespace LiveCharts.Uwp
         /// The maximum row height property
         /// </summary>
         public static readonly DependencyProperty MaxRowHeightProperty = DependencyProperty.Register(
-            "MaxRowHeight", typeof (double), typeof (StackedRowSeries), new PropertyMetadata(default(double)));
+            "MaxRowHeight", typeof (double), typeof (StackedRowSeries), new PropertyMetadata(35d));
         /// <summary>
         /// Gets or sets the maximum height of row, any row height will be capped at this value.
         /// </summary>
@@ -87,7 +87,7 @@ namespace LiveCharts.Uwp
         /// The row padding property
         /// </summary>
         public static readonly DependencyProperty RowPaddingProperty = DependencyProperty.Register(
-            "RowPadding", typeof (double), typeof (StackedRowSeries), new PropertyMetadata(default(double)));
+            "RowPadding", typeof (double), typeof (StackedRowSeries), new PropertyMetadata(2d));
         /// <summary>
         /// Gets or sets the padding between each row in the series.
         /// </summary>
@@ -192,10 +192,8 @@ namespace LiveCharts.Uwp
 
         private void InitializeDefuaults()
         {
-            this.SetIfNotSet(StrokeThicknessProperty, 0d);
-            this.SetIfNotSet(MaxRowHeightProperty, 35d);
-            this.SetIfNotSet(RowPaddingProperty, 2d);
-            this.SetIfNotSet(ForegroundProperty, new SolidColorBrush(Windows.UI.Colors.White));
+            //this.SetIfNotSet(StrokeThicknessProperty, 0d);
+            //this.SetIfNotSet(ForegroundProperty, new SolidColorBrush(Windows.UI.Colors.White));
 
             Func<ChartPoint, string> defaultLabel = x =>  Model.CurrentXAxis.GetFormatter()(x.X);
             this.SetIfNotSet(LabelPointProperty, defaultLabel);

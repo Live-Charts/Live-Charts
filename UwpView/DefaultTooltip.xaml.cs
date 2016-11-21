@@ -28,6 +28,7 @@ using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Media;
+using LiveCharts.Uwp.Components;
 
 namespace LiveCharts.Uwp
 {
@@ -74,8 +75,8 @@ namespace LiveCharts.Uwp
         {
             InitializeComponent();
 
-            SetValue(ForegroundProperty, new SolidColorBrush(Color.FromArgb(255, 255, 255, 255)));
-            SetValue(CornerRadiusProperty, new CornerRadius(4d));
+            this.SetIfNotSet(ForegroundProperty, new SolidColorBrush(Color.FromArgb(255, 255, 255, 255)));
+            //SetValue(CornerRadiusProperty, new CornerRadius(4d));
 
             DataContext = this;
         }
@@ -84,7 +85,7 @@ namespace LiveCharts.Uwp
         /// The corner radius property
         /// </summary>
         public static readonly DependencyProperty CornerRadiusProperty = DependencyProperty.Register(
-            "CornerRadius", typeof (CornerRadius), typeof (DefaultTooltip), new PropertyMetadata(new CornerRadius(2d)));
+            "CornerRadius", typeof (CornerRadius), typeof (DefaultTooltip), new PropertyMetadata(new CornerRadius(4d)));
         /// <summary>
         /// Gets or sets the corner radius of the tooltip
         /// </summary>

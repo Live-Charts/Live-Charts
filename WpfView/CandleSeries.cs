@@ -222,7 +222,6 @@ namespace LiveCharts.Wpf
         {
             SetCurrentValue(StrokeThicknessProperty, 1d);
             SetCurrentValue(MaxColumnWidthProperty, 35d);
-            SetValue(MaxWidthProperty, 25d);
             SetCurrentValue(IncreaseBrushProperty, new SolidColorBrush(Color.FromRgb(254, 178, 0)));
             SetCurrentValue(DecreaseBrushProperty, new SolidColorBrush(Color.FromRgb(238, 83, 80)));
 

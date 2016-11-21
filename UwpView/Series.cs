@@ -49,7 +49,6 @@ namespace LiveCharts.Uwp
         protected Series()
         {
             DefaultFillOpacity = 0.35;
-            this.SetIfNotSet(TitleProperty, "Series");
             RegisterPropertyChangedCallback(VisibilityProperty, OnIsVisibleChanged);
         }
 
@@ -118,7 +117,7 @@ namespace LiveCharts.Uwp
         /// </summary>
         public static readonly DependencyProperty TitleProperty = DependencyProperty.Register(
             "Title", typeof (string), typeof (Series),
-            new PropertyMetadata(default(string), CallChartUpdater()));
+            new PropertyMetadata("Series", CallChartUpdater()));
         /// <summary>
         /// Gets or sets series title
         /// </summary>
@@ -148,7 +147,7 @@ namespace LiveCharts.Uwp
         /// </summary>
         public static readonly DependencyProperty StrokeThicknessProperty = DependencyProperty.Register(
             "StrokeThickness", typeof (double), typeof (Series), 
-            new PropertyMetadata(default(double), CallChartUpdater()));
+            new PropertyMetadata(2d, CallChartUpdater()));
         /// <summary>
         /// Gets or sets the series stroke thickness.
         /// </summary>

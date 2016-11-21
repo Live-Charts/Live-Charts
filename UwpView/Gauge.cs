@@ -75,17 +75,8 @@ namespace LiveCharts.Uwp
                 new Binding { Path = new PropertyPath("StrokeThickness"), Source = this });
             Pie.Stroke = new SolidColorBrush(Colors.Transparent);
 
-            this.SetIfNotSet(GaugeBackgroundProperty, new SolidColorBrush(Color.FromArgb(255, 21, 101, 191)) {Opacity = .1});
-            this.SetIfNotSet(StrokeThicknessProperty, 0d);
-            this.SetIfNotSet(StrokeProperty, new SolidColorBrush(Color.FromArgb(255, 222, 222, 222)));
-
-            this.SetIfNotSet(FromColorProperty, Color.FromArgb(255, 100, 180, 245));
-            this.SetIfNotSet(ToColorProperty, Color.FromArgb(255, 21, 101, 191));
-
             this.SetIfNotSet(MinHeightProperty, 50d);
             this.SetIfNotSet(MinWidthProperty, 80d);
-
-            this.SetIfNotSet(AnimationsSpeedProperty, TimeSpan.FromMilliseconds(800));
 
             MeasureTextBlock.FontWeight = FontWeights.Bold;
 
@@ -183,7 +174,7 @@ namespace LiveCharts.Uwp
         /// The stroke property
         /// </summary>
         public static readonly DependencyProperty StrokeProperty = DependencyProperty.Register(
-            "Stroke", typeof(Brush), typeof(Gauge), new PropertyMetadata(default(Brush)));
+            "Stroke", typeof(Brush), typeof(Gauge), new PropertyMetadata(new SolidColorBrush(Color.FromArgb(255, 222, 222, 222))));
         /// <summary>
         /// Gets or sets stroke, the stroke is the brush used to draw the gauge border.
         /// </summary>
@@ -198,7 +189,7 @@ namespace LiveCharts.Uwp
         /// The stroke thickness property
         /// </summary>
         public static readonly DependencyProperty StrokeThicknessProperty = DependencyProperty.Register(
-            "StrokeThickness", typeof(double), typeof(Gauge), new PropertyMetadata(default(double)));
+            "StrokeThickness", typeof(double), typeof(Gauge), new PropertyMetadata(0d));
         /// <summary>
         /// Gets or sets stroke brush thickness
         /// </summary>
@@ -212,7 +203,7 @@ namespace LiveCharts.Uwp
         /// To color property
         /// </summary>
         public static readonly DependencyProperty ToColorProperty = DependencyProperty.Register(
-            "ToColor", typeof(Color), typeof(Gauge), new PropertyMetadata(default(Color), UpdateCallback));
+            "ToColor", typeof(Color), typeof(Gauge), new PropertyMetadata(Color.FromArgb(255, 21, 101, 191), UpdateCallback));
         /// <summary>
         /// Gets or sets the color when the current value equals to min value, any value between min and max will use an interpolated color.
         /// </summary>
@@ -226,7 +217,7 @@ namespace LiveCharts.Uwp
         /// From color property
         /// </summary>
         public static readonly DependencyProperty FromColorProperty = DependencyProperty.Register(
-            "FromColor", typeof(Color), typeof(Gauge), new PropertyMetadata(default(Color), UpdateCallback));
+            "FromColor", typeof(Color), typeof(Gauge), new PropertyMetadata(Color.FromArgb(255, 100, 180, 245), UpdateCallback));
         /// <summary>
         /// Gets or sets the color when the current value equals to max value, any value between min and max will use an interpolated color.
         /// </summary>
@@ -240,7 +231,7 @@ namespace LiveCharts.Uwp
         /// The gauge background property
         /// </summary>
         public static readonly DependencyProperty GaugeBackgroundProperty = DependencyProperty.Register(
-            "GaugeBackground", typeof (Brush), typeof (Gauge), new PropertyMetadata(default(Brush)));
+            "GaugeBackground", typeof (Brush), typeof (Gauge), new PropertyMetadata(new SolidColorBrush(Color.FromArgb(255, 21, 101, 191)) { Opacity = .1 }));
         /// <summary>
         /// Gets or sets the gauge background
         /// </summary>
@@ -254,7 +245,7 @@ namespace LiveCharts.Uwp
         /// The animations speed property
         /// </summary>
         public static readonly DependencyProperty AnimationsSpeedProperty = DependencyProperty.Register(
-            "AnimationsSpeed", typeof (TimeSpan), typeof (Gauge), new PropertyMetadata(default(TimeSpan)));
+            "AnimationsSpeed", typeof (TimeSpan), typeof (Gauge), new PropertyMetadata(TimeSpan.FromMilliseconds(800)));
         /// <summary>
         /// G3ts or sets the gauge animations speed
         /// </summary>
