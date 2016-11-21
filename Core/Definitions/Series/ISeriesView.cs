@@ -93,6 +93,13 @@ namespace LiveCharts.Definitions.Series
         /// The actual values.
         /// </value>
         IChartValues ActualValues { get; }
+        /// <summary>
+        /// Gets the title.
+        /// </summary>
+        /// <value>
+        /// The title.
+        /// </value>
+        string Title { get; }
 
         /// <summary>
         /// Gets the point view.

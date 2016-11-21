@@ -359,6 +359,7 @@ namespace LiveCharts.Wpf
                 if (p.View != null)
                     p.View.RemoveFromView(Model.Chart);
             });
+            Path.Visibility = Visibility.Hidden;
             if (removeFromView)
             {
                 Model.Chart.View.RemoveFromDrawMargin(Path);

@@ -11,6 +11,7 @@ using Wpf.CartesianChart.Basic_Stacked_Bar;
 using Wpf.CartesianChart.Customized_Line_Series;
 using Wpf.CartesianChart.CustomTooltipAndLegend;
 using Wpf.CartesianChart.DynamicVisibility;
+using Wpf.CartesianChart.Energy_Predictions;
 using Wpf.CartesianChart.Financial;
 using Wpf.CartesianChart.Funnel_Chart;
 using Wpf.CartesianChart.GanttChart;
@@ -60,6 +61,7 @@ namespace Wpf
             CartesianExamples = new List<UserControl>
             {
                 //new JimmyTheTestsGuy(),
+                new EnergyPredictionExample(),
                 new FunnelExample(),
                 new ConstantChangesChart(),
                 new FullyResponsiveExample(),
