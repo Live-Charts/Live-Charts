@@ -22,6 +22,7 @@ using Wpf.CartesianChart.Labels;
 using Wpf.CartesianChart.Linq;
 using Wpf.CartesianChart.LogarithmScale;
 using Wpf.CartesianChart.ManualZAndP;
+using Wpf.CartesianChart.MaterialCards;
 using Wpf.CartesianChart.Missing_Line_Points;
 using Wpf.CartesianChart.MixingSeries;
 using Wpf.CartesianChart.NegativeStackedRow;
@@ -61,6 +62,7 @@ namespace Wpf
             CartesianExamples = new List<UserControl>
             {
                 //new JimmyTheTestsGuy(),
+                new MaterialCards(),
                 new EnergyPredictionExample(),
                 new FunnelExample(),
                 new ConstantChangesChart(),

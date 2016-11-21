@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Wpf"
         mc:Ignorable="d"
-        Title="MainWindow" Height="600" Width="750"
+        Title="MainWindow" Height="600" Width="850"
         WindowStartupLocation="CenterScreen"
         WindowState="Normal"
         d:DataContext="{d:DesignInstance local:MainWindow}">

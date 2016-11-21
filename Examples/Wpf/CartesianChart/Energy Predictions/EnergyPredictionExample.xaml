@@ -6,9 +6,9 @@
              xmlns:local="clr-namespace:Wpf.CartesianChart.Energy_Predictions"
              xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="600"
+             d:DesignHeight="300" d:DesignWidth="6"
              Background="#ECECEC" d:DataContext="{d:DesignInstance local:EnergyPredictionExample}">
-    <Grid Margin="15">
+    <Grid Margin="20" Width="620">
         <Grid.Effect>
             <DropShadowEffect BlurRadius="15" Direction="-90" RenderingBias="Quality" Opacity=".2" ShadowDepth="1"/>
         </Grid.Effect>
