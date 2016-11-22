@@ -197,6 +197,9 @@
     <Compile Include="CartesianChart\ManualZAndP\ManualZAndPExample.xaml.cs">
       <DependentUpon>ManualZAndPExample.xaml</DependentUpon>
     </Compile>
+    <Compile Include="CartesianChart\MaterialCards\MaterialCards.xaml.cs">
+      <DependentUpon>MaterialCards.xaml</DependentUpon>
+    </Compile>
     <Compile Include="CartesianChart\Missing Line Points\MissingPointsExample.xaml.cs">
       <DependentUpon>MissingPointsExample.xaml</DependentUpon>
     </Compile>
@@ -418,6 +421,10 @@
     <Page Include="CartesianChart\ManualZAndP\ManualZAndPExample.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CartesianChart\MaterialCards\MaterialCards.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="CartesianChart\Missing Line Points\MissingPointsExample.xaml">
       <SubType>Designer</SubType>

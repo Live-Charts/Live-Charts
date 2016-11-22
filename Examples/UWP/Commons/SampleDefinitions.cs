@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using UWP.CartesianChart.Basic_Bars;
@@ -25,6 +26,7 @@ using UWP.CartesianChart.LineExample;
 using UWP.CartesianChart.Linq;
 using UWP.CartesianChart.LogarithmScale;
 using UWP.CartesianChart.ManualZAndP;
+using UWP.CartesianChart.MaterialCards;
 using UWP.CartesianChart.Missing_Line_Points;
 using UWP.CartesianChart.MixingSeries;
 using UWP.CartesianChart.MultiAxes;
@@ -53,6 +55,7 @@ namespace UWP.Commons
         public static SampleDefinition[] Definitions { get; } =
         {
             new SampleDefinition("Home", typeof(MainPage), SampleCategory.Information),
+            new SampleDefinition("Material Cards", typeof(MaterialCards), SampleCategory.CartesianChart),
             new SampleDefinition("Energy Prediction", typeof(EnergyPredictionExample), SampleCategory.CartesianChart),
             new SampleDefinition("Funnel Chart", typeof(FunnelExample), SampleCategory.CartesianChart),
             new SampleDefinition("Basic Column", typeof(BasicColumn), SampleCategory.CartesianChart),
