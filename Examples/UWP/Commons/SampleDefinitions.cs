@@ -37,6 +37,7 @@ using UWP.CartesianChart.ScatterPlot;
 using UWP.CartesianChart.Sections;
 using UWP.CartesianChart.SectionsDragable;
 using UWP.CartesianChart.SharedTooltip;
+using UWP.CartesianChart.SolidColorChart;
 using UWP.CartesianChart.StackedArea;
 using UWP.CartesianChart.StackedBar;
 using UWP.CartesianChart.StepLine;
@@ -57,6 +58,7 @@ namespace UWP.Commons
             new SampleDefinition("Home", typeof(MainPage), SampleCategory.Information),
             new SampleDefinition("Material Cards", typeof(MaterialCards), SampleCategory.CartesianChart),
             new SampleDefinition("Energy Prediction", typeof(EnergyPredictionExample), SampleCategory.CartesianChart),
+            new SampleDefinition("Solid Color", typeof(SolidColorExample), SampleCategory.CartesianChart),
             new SampleDefinition("Funnel Chart", typeof(FunnelExample), SampleCategory.CartesianChart),
             new SampleDefinition("Basic Column", typeof(BasicColumn), SampleCategory.CartesianChart),
             new SampleDefinition("Basic Row", typeof(BasicRowExample), SampleCategory.CartesianChart),

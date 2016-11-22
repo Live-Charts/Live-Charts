@@ -266,6 +266,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="CartesianChart\SolidColorChart\SolidColorExample.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="CartesianChart\StackedArea\VerticalStackedAreaExample.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -433,6 +437,9 @@
     </Compile>
     <Compile Include="CartesianChart\SharedTooltip\SharedTooltipExample.xaml.cs">
       <DependentUpon>SharedTooltipExample.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CartesianChart\SolidColorChart\SolidColorExample.xaml.cs">
+      <DependentUpon>SolidColorExample.xaml</DependentUpon>
     </Compile>
     <Compile Include="CartesianChart\StackedArea\VerticalStackedAreaExample.xaml.cs">
       <DependentUpon>VerticalStackedAreaExample.xaml</DependentUpon>

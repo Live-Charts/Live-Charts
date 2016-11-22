@@ -30,6 +30,7 @@ using Wpf.CartesianChart.PointShapeLine;
 using Wpf.CartesianChart.PointState;
 using Wpf.CartesianChart.ScatterPlot;
 using Wpf.CartesianChart.SectionsDragable;
+using Wpf.CartesianChart.SolidColorChart;
 using Wpf.CartesianChart.StackedArea;
 using Wpf.CartesianChart.StackedBar;
 using Wpf.CartesianChart.StepLine;
@@ -64,6 +65,7 @@ namespace Wpf
                 //new JimmyTheTestsGuy(),
                 new MaterialCards(),
                 new EnergyPredictionExample(),
+                new SolidColorExample(),
                 new FunnelExample(),
                 new ConstantChangesChart(),
                 new FullyResponsiveExample(),
