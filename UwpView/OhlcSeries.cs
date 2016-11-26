@@ -73,7 +73,7 @@ namespace LiveCharts.Uwp
         /// The maximum column width property
         /// </summary>
         public static readonly DependencyProperty MaxColumnWidthProperty = DependencyProperty.Register(
-            "MaxColumnWidth", typeof (double), typeof (OhlcSeries), new PropertyMetadata(default(double)));
+            "MaxColumnWidth", typeof (double), typeof (OhlcSeries), new PropertyMetadata(35d));
         /// <summary>
         /// Gets or sets the maximum with of a point, a point will be capped to this width.
         /// </summary>
@@ -90,7 +90,7 @@ namespace LiveCharts.Uwp
         /// The increase brush property
         /// </summary>
         public static readonly DependencyProperty IncreaseBrushProperty = DependencyProperty.Register(
-            "IncreaseBrush", typeof (Brush), typeof (OhlcSeries), new PropertyMetadata(default(Brush)));
+            "IncreaseBrush", typeof (Brush), typeof (OhlcSeries), new PropertyMetadata(new SolidColorBrush(Color.FromArgb(255, 254, 178, 0))));
         /// <summary>
         /// Gets or sets the brush of the point when close value is grater than open value
         /// </summary>
@@ -104,7 +104,7 @@ namespace LiveCharts.Uwp
         /// The decrease brush property
         /// </summary>
         public static readonly DependencyProperty DecreaseBrushProperty = DependencyProperty.Register(
-            "DecreaseBrush", typeof (Brush), typeof (OhlcSeries), new PropertyMetadata(default(Brush)));
+            "DecreaseBrush", typeof (Brush), typeof (OhlcSeries), new PropertyMetadata(new SolidColorBrush(Color.FromArgb(255, 238, 83, 80))));
         /// <summary>
         /// Gets or sets the brush of the point when close value is less than open value
         /// </summary>
@@ -232,11 +232,8 @@ namespace LiveCharts.Uwp
 
         private void InitializeDefuaults()
         {
-            this.SetIfNotSet(StrokeThicknessProperty, 2.5d);
-            this.SetIfNotSet(MaxColumnWidthProperty, 35d);
-            this.SetIfNotSet(MaxWidthProperty, 25d);
-            this.SetIfNotSet(IncreaseBrushProperty, new SolidColorBrush(Color.FromArgb(255, 254, 178, 0)));
-            this.SetIfNotSet(DecreaseBrushProperty, new SolidColorBrush(Color.FromArgb(255, 238, 83, 80)));
+            //this.SetIfNotSet(StrokeThicknessProperty, 2.5d);
+            //this.SetIfNotSet(MaxColumnWidthProperty, 35d);
 
             Func<ChartPoint, string> defaultLabel = x =>
                 $"O: {x.Open}, H: {x.High}, L: {x.Low} C: {x.Close}";

@@ -155,12 +155,11 @@ namespace LiveCharts.Uwp
         #region Private Methods
 
         private void InitializeDefuaults()
-        {
-            this.SetIfNotSet(LineSmoothnessProperty, .7d);
-            this.SetIfNotSet(PointGeometrySizeProperty, 0d);
-            this.SetIfNotSet(PointForeroundProperty, new SolidColorBrush(Colors.White));
-            this.SetIfNotSet(ForegroundProperty, new SolidColorBrush(Color.FromArgb(255, 229, 229, 229)));
-            this.SetIfNotSet(StrokeThicknessProperty, 0d);
+        {;
+            //this.SetIfNotSet(PointGeometrySizeProperty, 0d);
+            //this.SetIfNotSet(ForegroundProperty, new SolidColorBrush(Color.FromArgb(255, 229, 229, 229)));
+            //this.SetIfNotSet(StrokeThicknessProperty, 0d);
+
             DefaultFillOpacity = 1;
 
             Func<ChartPoint, string> defaultLabel = x => Model.CurrentYAxis.GetFormatter()(x.Y);

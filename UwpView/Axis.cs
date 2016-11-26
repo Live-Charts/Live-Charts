@@ -50,10 +50,9 @@ namespace LiveCharts.Uwp
         public Axis()
         {
             TitleBlock = BindATextBlock();
+
             this.SetIfNotSet(SeparatorProperty, new Separator());
-            this.SetIfNotSet(ShowLabelsProperty, true);
             this.SetIfNotSet(SectionsProperty, new SectionsCollection());
-            this.SetIfNotSet(ForegroundProperty, new SolidColorBrush(Color.FromArgb(255, 170, 170, 170)));
 
             TitleBlock.SetBinding(TextBlock.TextProperty,
                 new Binding {Path = new PropertyPath("Title"), Source = this});
@@ -152,7 +151,7 @@ namespace LiveCharts.Uwp
         /// </summary>
         public static readonly DependencyProperty ShowLabelsProperty = DependencyProperty.Register(
             "ShowLabels", typeof (bool), typeof (Axis), 
-            new PropertyMetadata(default(bool), LabelsVisibilityChanged));
+            new PropertyMetadata(true, LabelsVisibilityChanged));
 
         /// <summary>
         /// Gets or sets if labels are shown in the axis.
@@ -375,8 +374,7 @@ namespace LiveCharts.Uwp
         /// The foreground property
         /// </summary>
         public static readonly DependencyProperty ForegroundProperty =
-            DependencyProperty.Register("Foreground", typeof(Brush), typeof(Axis),
-                new PropertyMetadata(null));
+            DependencyProperty.Register("Foreground", typeof(Brush), typeof(Axis), new PropertyMetadata(new SolidColorBrush(Color.FromArgb(255, 170, 170, 170))));
 
         /// <summary>
         /// Gets or sets labels text color.

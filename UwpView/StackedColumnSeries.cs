@@ -72,7 +72,7 @@ namespace LiveCharts.Uwp
         /// The maximum column width property
         /// </summary>
         public static readonly DependencyProperty MaxColumnWidthProperty = DependencyProperty.Register(
-            "MaxColumnWidth", typeof (double), typeof (StackedColumnSeries), new PropertyMetadata(default(double)));
+            "MaxColumnWidth", typeof (double), typeof (StackedColumnSeries), new PropertyMetadata(35d));
         /// <summary>
         /// Gets or sets the maximum width of a column, any column will be capped at this value
         /// </summary>
@@ -86,7 +86,7 @@ namespace LiveCharts.Uwp
         /// The column padding property
         /// </summary>
         public static readonly DependencyProperty ColumnPaddingProperty = DependencyProperty.Register(
-            "ColumnPadding", typeof (double), typeof (StackedColumnSeries), new PropertyMetadata(default(double)));
+            "ColumnPadding", typeof (double), typeof (StackedColumnSeries), new PropertyMetadata(2d));
         /// <summary>
         /// Gets or sets the padding between every column in this series
         /// </summary>
@@ -189,10 +189,8 @@ namespace LiveCharts.Uwp
 
         private void InitializeDefuaults()
         {
-            this.SetIfNotSet(StrokeThicknessProperty, 0d);
-            this.SetIfNotSet(MaxColumnWidthProperty, 35d);
-            this.SetIfNotSet(ColumnPaddingProperty, 2d);
-            this.SetIfNotSet(ForegroundProperty, new SolidColorBrush(Windows.UI.Colors.White));
+            //this.SetIfNotSet(StrokeThicknessProperty, 0d);
+            //this.SetIfNotSet(ForegroundProperty, new SolidColorBrush(Windows.UI.Colors.White));
 
             Func<ChartPoint, string> defaultLabel = x =>  Model.CurrentYAxis.GetFormatter()(x.Y);
             this.SetIfNotSet(LabelPointProperty, defaultLabel);

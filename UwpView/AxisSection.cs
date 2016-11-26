@@ -53,13 +53,6 @@ namespace LiveCharts.Uwp
             //    Chart.Ldsp = null;
             //};
 
-            /*Current*/
-            SetValue(StrokeProperty, new SolidColorBrush(Color.FromArgb(255, 131, 172, 191)));
-            this.SetIfNotSet(FillProperty, new SolidColorBrush(Color.FromArgb(255, 131, 172, 191)) {Opacity = .35});
-            this.SetIfNotSet(StrokeThicknessProperty, 0d);
-            this.SetIfNotSet(ValueProperty, 0d);
-            this.SetIfNotSet(SectionWidthProperty, 0d);
-
             BindingOperations.SetBinding(_label, TextBlock.TextProperty,
                 new Binding {Path = new PropertyPath(nameof(Label)), Source = this});
         }
@@ -90,7 +83,7 @@ namespace LiveCharts.Uwp
         /// The value property
         /// </summary>
         public static readonly DependencyProperty ValueProperty = DependencyProperty.Register(
-            "Value", typeof(double), typeof(AxisSection), new PropertyMetadata(default(double), UpdateSection));
+            "Value", typeof(double), typeof(AxisSection), new PropertyMetadata(0d, UpdateSection));
         /// <summary>
         /// Gets or sets the value where the section is drawn
         /// </summary>
@@ -104,7 +97,7 @@ namespace LiveCharts.Uwp
         /// The section width property
         /// </summary>
         public static readonly DependencyProperty SectionWidthProperty = DependencyProperty.Register(
-            "SectionWidth", typeof(double), typeof(AxisSection), new PropertyMetadata(default(double), UpdateSection));
+            "SectionWidth", typeof(double), typeof(AxisSection), new PropertyMetadata(0d, UpdateSection));
         /// <summary>
         /// Gets or sets the section width
         /// </summary>
@@ -132,7 +125,7 @@ namespace LiveCharts.Uwp
         /// The stroke property
         /// </summary>
         public static readonly DependencyProperty StrokeProperty = DependencyProperty.Register(
-            "Stroke", typeof (Brush), typeof (AxisSection), new PropertyMetadata(default(Brush)));
+            "Stroke", typeof (Brush), typeof (AxisSection), new PropertyMetadata(new SolidColorBrush(Color.FromArgb(255, 131, 172, 191))));
         /// <summary>
         /// Gets o sets the section stroke, the stroke brush will be used to draw the border of the section
         /// </summary>
@@ -146,7 +139,7 @@ namespace LiveCharts.Uwp
         /// The fill property
         /// </summary>
         public static readonly DependencyProperty FillProperty = DependencyProperty.Register(
-            "Fill", typeof (Brush), typeof (AxisSection), new PropertyMetadata(default(Brush)));
+            "Fill", typeof (Brush), typeof (AxisSection), new PropertyMetadata(new SolidColorBrush(Color.FromArgb(255, 131, 172, 191)) { Opacity = .35 }));
         /// <summary>
         /// Gets or sets the section fill brush.
         /// </summary>
@@ -160,7 +153,7 @@ namespace LiveCharts.Uwp
         /// The stroke thickness property
         /// </summary>
         public static readonly DependencyProperty StrokeThicknessProperty = DependencyProperty.Register(
-            "StrokeThickness", typeof (double), typeof (AxisSection), new PropertyMetadata(default(double)));
+            "StrokeThickness", typeof (double), typeof (AxisSection), new PropertyMetadata(0d));
         /// <summary>
         /// Gets or sets the stroke thickness.
         /// </summary>
@@ -238,12 +231,12 @@ namespace LiveCharts.Uwp
                 {
                     _rectangle.Width = w > 0 ? w : 0;
                     Canvas.SetLeft(_rectangle, from - StrokeThickness / 2);
-                    Canvas.SetLeft(_label, (from + to)/2 - _label.ActualWidth/2);
+                    Canvas.SetLeft(_label, (from + to) / 2 - _label.ActualWidth / 2);
                 }
                 else
                 {
-                    _rectangle.BeginDoubleAnimation("(Canvas.Left)", from - StrokeThickness/2, anSpeed);
-                    _rectangle.BeginDoubleAnimation(nameof(Height), w > 0 ? w: 0, anSpeed);
+                    _rectangle.BeginDoubleAnimation(nameof(Width), w > 0 ? w : 0, anSpeed);
+                    _rectangle.BeginDoubleAnimation("(Canvas.Left)", from - StrokeThickness / 2, anSpeed);
                     _label.BeginDoubleAnimation("(Canvas.Left)", (from + to) / 2 - _label.ActualWidth / 2, anSpeed);
                 }
                 return;

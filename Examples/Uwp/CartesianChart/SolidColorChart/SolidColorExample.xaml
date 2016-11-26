@@ -1,0 +1,68 @@
+﻿<Page x:Class="UWP.CartesianChart.SolidColorChart.SolidColorExample"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:lvc="using:LiveCharts.Uwp"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="600"
+             Background="#7EBE8E">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width=".7*"></ColumnDefinition>
+            <ColumnDefinition Width=".3*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Border Grid.ColumnSpan="2"></Border>
+        <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal" Margin="25, 10">
+            <Path Width="25" Height="25" Stretch="Fill" Fill="#4C4949" Data="F1 M 38,3.16666C 57.2379,3.16666 72.8333,18.7621 72.8333,38C 72.8333,57.2379 57.2379,72.8333 38,72.8333C 18.7621,72.8333 3.16667,57.2379 3.16667,38C 3.16667,18.7621 18.7621,3.16666 38,3.16666 Z M 52.252,18.9974L 36.4164,18.9974L 23.75,39.5833L 34.8333,39.5833L 25.3316,60.1667L 50.6667,34.8333L 38,34.8333L 52.252,18.9974 Z "/>
+            <StackPanel Margin="10, 0">
+                <TextBlock FontSize="22" Foreground="White">Time Energy</TextBlock>
+                <TextBlock FontSize="14" Foreground="#7CFFFFFF">03.24.2013</TextBlock>
+            </StackPanel>
+        </StackPanel>
+        <lvc:CartesianChart Name="Chart" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="15">
+            <lvc:CartesianChart.Series>
+                <lvc:LineSeries Values="{Binding Values}" LineSmoothness="1" StrokeThickness="10" 
+                                DataLabels="True" FontSize="20" Foreground="#6B303030"
+                                Stroke="White" Fill="Transparent" PointGeometrySize="0"/>
+            </lvc:CartesianChart.Series>
+            <lvc:CartesianChart.AxisX>
+                <lvc:Axis IsEnabled="False" ShowLabels="False"/>
+            </lvc:CartesianChart.AxisX>
+            <lvc:CartesianChart.AxisY>
+                <lvc:Axis Foreground="White" FontSize="14">
+                    <lvc:Axis.Separator>
+                        <lvc:Separator StrokeThickness="1" Stroke="#8EFFFFFF" StrokeDashArray="8" Step="100" />
+                    </lvc:Axis.Separator>
+                </lvc:Axis>
+            </lvc:CartesianChart.AxisY>
+        </lvc:CartesianChart>
+        <StackPanel Grid.Row="0" Grid.RowSpan="2" Grid.Column="1" Background="#4CFFFFFF" Height="270" VerticalAlignment="Top">
+            <TextBlock Foreground="White" FontSize="16" HorizontalAlignment="Center" Margin="0,20,0,0">Peak Time Today</TextBlock>
+            <TextBlock Foreground="White" FontSize="30" HorizontalAlignment="Center">7:08 am</TextBlock>
+            <TextBlock Foreground="White" FontSize="16" HorizontalAlignment="Center" Margin="0,20,0,0">Peak Value Today</TextBlock>
+            <TextBlock Foreground="White" FontSize="30" HorizontalAlignment="Center">525 kWh</TextBlock>
+            <TextBlock Foreground="White" FontSize="16" HorizontalAlignment="Center" Margin="0,20,0,0">Day Average</TextBlock>
+            <TextBlock Foreground="White" FontSize="30" HorizontalAlignment="Center">354 kWh</TextBlock>
+        </StackPanel>
+        <Button Grid.Column="1" Grid.Row="1" Width="40" Height="40" VerticalAlignment="Top" Canvas.ZIndex="1"
+                    Click="UpdateOnclick" Margin="0, 180, 0, 0">
+            <Button.Template>
+                <ControlTemplate TargetType="Button">
+                    <Grid>
+                        <Ellipse Stroke="Black" StrokeThickness="0" Fill="#4C4949">
+
+                        </Ellipse>
+                        <Path Width="20" Height="20" Stretch="Fill" Fill="White" Data="F1 M 58,33.5001L 58,27L 49,19L 40,27.5001L 40,33.5001L 46,28.2097L 46,40.5C 46,46.299 41.299,51 35.5,51C 29.701,51 25,46.299 25,40.5C 25,34.8686 29.4332,30.2727 35,30.0117L 35,24.0074C 26.1186,24.2718 19,31.5546 19,40.5C 19,49.6127 26.3873,57 35.5,57C 44.6127,57 52,49.6127 52,40.5L 52,28.125L 58,33.5001 Z "/>
+                        <ContentPresenter HorizontalAlignment="Center"
+                                  VerticalAlignment="Center"/>
+                    </Grid>
+                </ControlTemplate>
+            </Button.Template>
+        </Button>
+    </Grid>
+</Page>

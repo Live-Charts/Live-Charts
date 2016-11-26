@@ -73,7 +73,7 @@ namespace LiveCharts.Uwp
         /// </summary>
         public static readonly DependencyProperty MaxPointShapeDiameterProperty = DependencyProperty.Register(
             "MaxPointShapeDiameter", typeof (double), typeof (ScatterSeries), 
-            new PropertyMetadata(default(double), CallChartUpdater()));
+            new PropertyMetadata(15d, CallChartUpdater()));
         /// <summary>
         /// Gets or sets the max shape diameter, the points using the max weight in the series will have this radius.
         /// </summary>
@@ -88,7 +88,7 @@ namespace LiveCharts.Uwp
         /// </summary>
         public static readonly DependencyProperty MinPointShapeDiameterProperty = DependencyProperty.Register(
             "MinPointShapeDiameter", typeof (double), typeof (ScatterSeries), 
-            new PropertyMetadata(default(double), CallChartUpdater()));
+            new PropertyMetadata(10d, CallChartUpdater()));
         /// <summary>
         /// Gets or sets the min shape diameter, the points using the min weight in the series will have this radius.
         /// </summary>
@@ -186,9 +186,7 @@ namespace LiveCharts.Uwp
 
         private void InitializeDefuaults()
         {
-            this.SetIfNotSet(StrokeThicknessProperty, 0d);
-            this.SetIfNotSet(MaxPointShapeDiameterProperty, 15d);
-            this.SetIfNotSet(MinPointShapeDiameterProperty, 10d);
+            //this.SetIfNotSet(StrokeThicknessProperty, 0d);
 
             Func<ChartPoint, string> defaultLabel = x => Model.CurrentXAxis.GetFormatter()(x.X) + ", "
                                                          + Model.CurrentYAxis.GetFormatter()(x.Y);

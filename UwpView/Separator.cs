@@ -40,9 +40,7 @@ namespace LiveCharts.Uwp
         /// </summary>
         public Separator()
         {
-            this.SetIfNotSet(IsEnabledProperty, true);
-            this.SetIfNotSet(StrokeProperty, new SolidColorBrush(Color.FromArgb(255, 240, 240, 240)));
-            this.SetIfNotSet(StrokeThicknessProperty, 1d);
+            //this.SetIfNotSet(IsEnabledProperty, true);
         }
 
         /// <summary>
@@ -57,7 +55,7 @@ namespace LiveCharts.Uwp
         /// </summary>
         public static readonly DependencyProperty StrokeProperty = DependencyProperty.Register(
             "Stroke", typeof (Brush), typeof (Separator),
-            new PropertyMetadata(default(Brush), CallChartUpdater()));
+            new PropertyMetadata(new SolidColorBrush(Color.FromArgb(255, 240, 240, 240)), CallChartUpdater()));
 
         /// <summary>
         /// Gets or sets separators color 
@@ -73,7 +71,7 @@ namespace LiveCharts.Uwp
         /// </summary>
         public static readonly DependencyProperty StrokeThicknessProperty = DependencyProperty.Register(
             "StrokeThickness", typeof (double), typeof (Separator),
-            new PropertyMetadata(default(double), CallChartUpdater()));
+            new PropertyMetadata(1d, CallChartUpdater()));
 
         /// <summary>
         /// Gets or sets separators thickness

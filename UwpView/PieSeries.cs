@@ -161,12 +161,11 @@ namespace LiveCharts.Uwp
 
         private void InitializeDefuaults()
         {
-            this.SetIfNotSet(StrokeThicknessProperty, 2d);
-            this.SetIfNotSet(StrokeProperty, new SolidColorBrush(Windows.UI.Colors.White));
-            this.SetIfNotSet(ForegroundProperty, new SolidColorBrush(Windows.UI.Colors.White));
+            //this.SetIfNotSet(StrokeThicknessProperty, 2d);
+            //this.SetIfNotSet(StrokeProperty, new SolidColorBrush(Windows.UI.Colors.White));
+            //this.SetIfNotSet(ForegroundProperty, new SolidColorBrush(Windows.UI.Colors.White));
 
             Func<ChartPoint, string> defaultLabel = x => Model.CurrentYAxis.GetFormatter()(x.Y);
-
             this.SetIfNotSet(LabelPointProperty, defaultLabel);
 
             DefaultFillOpacity = 1;

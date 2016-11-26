@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using UWP.CartesianChart.Basic_Bars;
@@ -11,8 +12,10 @@ using UWP.CartesianChart.ConstantChanges;
 using UWP.CartesianChart.Customized_Series;
 using UWP.CartesianChart.CustomTooltipAndLegend;
 using UWP.CartesianChart.DynamicVisibility;
+using UWP.CartesianChart.Energy_Predictions;
 using UWP.CartesianChart.Financial;
 using UWP.CartesianChart.FullyResponsive;
+using UWP.CartesianChart.Funnel_Chart;
 using UWP.CartesianChart.GanttChart;
 using UWP.CartesianChart.HeatChart;
 using UWP.CartesianChart.InLineSyntax;
@@ -23,6 +26,7 @@ using UWP.CartesianChart.LineExample;
 using UWP.CartesianChart.Linq;
 using UWP.CartesianChart.LogarithmScale;
 using UWP.CartesianChart.ManualZAndP;
+using UWP.CartesianChart.MaterialCards;
 using UWP.CartesianChart.Missing_Line_Points;
 using UWP.CartesianChart.MixingSeries;
 using UWP.CartesianChart.MultiAxes;
@@ -33,6 +37,7 @@ using UWP.CartesianChart.ScatterPlot;
 using UWP.CartesianChart.Sections;
 using UWP.CartesianChart.SectionsDragable;
 using UWP.CartesianChart.SharedTooltip;
+using UWP.CartesianChart.SolidColorChart;
 using UWP.CartesianChart.StackedArea;
 using UWP.CartesianChart.StackedBar;
 using UWP.CartesianChart.StepLine;
@@ -51,6 +56,10 @@ namespace UWP.Commons
         public static SampleDefinition[] Definitions { get; } =
         {
             new SampleDefinition("Home", typeof(MainPage), SampleCategory.Information),
+            new SampleDefinition("Material Cards", typeof(MaterialCards), SampleCategory.CartesianChart),
+            new SampleDefinition("Energy Prediction", typeof(EnergyPredictionExample), SampleCategory.CartesianChart),
+            new SampleDefinition("Solid Color", typeof(SolidColorExample), SampleCategory.CartesianChart),
+            new SampleDefinition("Funnel Chart", typeof(FunnelExample), SampleCategory.CartesianChart),
             new SampleDefinition("Basic Column", typeof(BasicColumn), SampleCategory.CartesianChart),
             new SampleDefinition("Basic Row", typeof(BasicRowExample), SampleCategory.CartesianChart),
             new SampleDefinition("Gantt Chart", typeof(GanttExample), SampleCategory.CartesianChart),

@@ -107,7 +107,7 @@ namespace LiveCharts.Uwp
         /// </summary>
         public static readonly DependencyProperty PointGeometrySizeProperty = DependencyProperty.Register(
             "PointGeometrySize", typeof (double), typeof (LineSeries), 
-            new PropertyMetadata(default(double), CallChartUpdater()));
+            new PropertyMetadata(8d, CallChartUpdater()));
         /// <summary>
         /// Gets or sets the point geometry size, increasing this property will make the series points bigger
         /// </summary>
@@ -118,11 +118,11 @@ namespace LiveCharts.Uwp
         }
 
         /// <summary>
-        /// The point foreround property
+        /// The point foreground property
         /// </summary>
         public static readonly DependencyProperty PointForeroundProperty = DependencyProperty.Register(
             "PointForeround", typeof (Brush), typeof (LineSeries), 
-            new PropertyMetadata(default(Brush)));
+            new PropertyMetadata(new SolidColorBrush(Windows.UI.Colors.White)));
         /// <summary>
         /// Gets or sets the point shape foreground.
         /// </summary>
@@ -137,7 +137,7 @@ namespace LiveCharts.Uwp
         /// </summary>
         public static readonly DependencyProperty LineSmoothnessProperty = DependencyProperty.Register(
             "LineSmoothness", typeof (double), typeof (LineSeries), 
-            new PropertyMetadata(default(double), CallChartUpdater()));
+            new PropertyMetadata(.7d, CallChartUpdater()));
         /// <summary>
         /// Gets or sets line smoothness, this property goes from 0 to 1, use 0 to draw straight lines, 1 really curved lines.
         /// </summary>
@@ -355,6 +355,7 @@ namespace LiveCharts.Uwp
             {
                 p.View?.RemoveFromView(Model.Chart);
             });
+            if (Path != null) Path.Visibility = Visibility.Collapsed;
             if (removeFromView)
             {
                 Model.Chart.View.RemoveFromDrawMargin(Path);
@@ -463,11 +464,6 @@ namespace LiveCharts.Uwp
 
         private void InitializeDefuaults()
         {
-            this.SetIfNotSet(LineSmoothnessProperty, .7d);
-            this.SetIfNotSet(PointGeometrySizeProperty, 8d);
-            this.SetIfNotSet(PointForeroundProperty, new SolidColorBrush(Windows.UI.Colors.White));
-            this.SetIfNotSet(StrokeThicknessProperty, 2d);
-
             Func<ChartPoint, string> defaultLabel = x => Model.CurrentYAxis.GetFormatter()(x.Y);
             this.SetIfNotSet(LabelPointProperty, defaultLabel);
 

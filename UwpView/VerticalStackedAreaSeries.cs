@@ -67,7 +67,7 @@ namespace LiveCharts.Uwp
         /// The stack mode property
         /// </summary>
         public static readonly DependencyProperty StackModeProperty = DependencyProperty.Register(
-            "StackMode", typeof (StackMode), typeof (VerticalStackedAreaSeries), new PropertyMetadata(default(StackMode)));
+            "StackMode", typeof (StackMode), typeof (VerticalStackedAreaSeries), new PropertyMetadata(StackMode.Values));
         /// <summary>
         /// Gets or sets the series stack mode, values or percentage
         /// </summary>
@@ -155,12 +155,9 @@ namespace LiveCharts.Uwp
 
         private void InitializeDefuaults()
         {
-            this.SetIfNotSet(LineSmoothnessProperty, .7d);
-            this.SetIfNotSet(PointGeometrySizeProperty, 0d);
-            this.SetIfNotSet(PointForeroundProperty, new SolidColorBrush(Colors.White));
-            this.SetIfNotSet(ForegroundProperty, new SolidColorBrush(Color.FromArgb(255, 229, 229, 229)));
-            this.SetIfNotSet(StrokeThicknessProperty, 0d);
-            this.SetIfNotSet(StackModeProperty, StackMode.Values);
+            //this.SetIfNotSet(PointGeometrySizeProperty, 0d);
+            //this.SetIfNotSet(ForegroundProperty, new SolidColorBrush(Color.FromArgb(255, 229, 229, 229)));
+            //this.SetIfNotSet(StrokeThicknessProperty, 0d);
 
             Func<ChartPoint, string> defaultLabel = x => Model.CurrentXAxis.GetFormatter()(x.X);
             this.SetIfNotSet(LabelPointProperty, defaultLabel);

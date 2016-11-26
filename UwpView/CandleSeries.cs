@@ -30,6 +30,7 @@ using LiveCharts.Definitions.Points;
 using LiveCharts.Definitions.Series;
 using LiveCharts.SeriesAlgorithms;
 using LiveCharts.Uwp.Charts.Base;
+using LiveCharts.Uwp.Components;
 using LiveCharts.Uwp.Points;
 
 namespace LiveCharts.Uwp
@@ -72,7 +73,7 @@ namespace LiveCharts.Uwp
         /// The maximum column width property
         /// </summary>
         public static readonly DependencyProperty MaxColumnWidthProperty = DependencyProperty.Register(
-            "MaxColumnWidth", typeof (double), typeof (CandleSeries), new PropertyMetadata(default(double)));
+            "MaxColumnWidth", typeof (double), typeof (CandleSeries), new PropertyMetadata(35d));
         /// <summary>
         /// Gets or sets the maximum with of a point, a point will be capped to this width.
         /// </summary>
@@ -86,7 +87,7 @@ namespace LiveCharts.Uwp
         /// The increase brush property
         /// </summary>
         public static readonly DependencyProperty IncreaseBrushProperty = DependencyProperty.Register(
-            "IncreaseBrush", typeof (Brush), typeof (CandleSeries), new PropertyMetadata(default(Brush)));
+            "IncreaseBrush", typeof (Brush), typeof (CandleSeries), new PropertyMetadata(new SolidColorBrush(Color.FromArgb(255, 254, 178, 0))));
         /// <summary>
         /// Gets or sets the brush of the point when close value is grater than open value
         /// </summary>
@@ -100,7 +101,7 @@ namespace LiveCharts.Uwp
         /// The decrease brush property
         /// </summary>
         public static readonly DependencyProperty DecreaseBrushProperty = DependencyProperty.Register(
-            "DecreaseBrush", typeof (Brush), typeof (CandleSeries), new PropertyMetadata(default(Brush)));
+            "DecreaseBrush", typeof (Brush), typeof (CandleSeries), new PropertyMetadata(new SolidColorBrush(Color.FromArgb(255, 238, 83, 80))));
         /// <summary>
         /// Gets or sets the brush of the point when close value is less than open value
         /// </summary>
@@ -221,15 +222,9 @@ namespace LiveCharts.Uwp
 
         private void InitializeDefuaults()
         {
-            SetValue(StrokeThicknessProperty, 1d);
-            SetValue(MaxColumnWidthProperty, 35d);
-            SetValue(MaxWidthProperty, 25d);
-            SetValue(IncreaseBrushProperty, new SolidColorBrush(Color.FromArgb(255, 254, 178, 0)));
-            SetValue(DecreaseBrushProperty, new SolidColorBrush(Color.FromArgb(255, 238, 83, 80)));
-
             Func<ChartPoint, string> defaultLabel = x =>
                 string.Format("O: {0}, H: {1}, L: {2} C: {3}", x.Open, x.High, x.Low, x.Close);
-            SetValue(LabelPointProperty, defaultLabel);
+            this.SetIfNotSet(LabelPointProperty, defaultLabel);
 
             DefaultFillOpacity = 1;
         }

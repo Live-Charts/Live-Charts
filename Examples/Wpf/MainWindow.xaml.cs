@@ -11,7 +11,9 @@ using Wpf.CartesianChart.Basic_Stacked_Bar;
 using Wpf.CartesianChart.Customized_Line_Series;
 using Wpf.CartesianChart.CustomTooltipAndLegend;
 using Wpf.CartesianChart.DynamicVisibility;
+using Wpf.CartesianChart.Energy_Predictions;
 using Wpf.CartesianChart.Financial;
+using Wpf.CartesianChart.Funnel_Chart;
 using Wpf.CartesianChart.GanttChart;
 using Wpf.CartesianChart.HeatChart;
 using Wpf.CartesianChart.Inverted_Series;
@@ -20,6 +22,7 @@ using Wpf.CartesianChart.Labels;
 using Wpf.CartesianChart.Linq;
 using Wpf.CartesianChart.LogarithmScale;
 using Wpf.CartesianChart.ManualZAndP;
+using Wpf.CartesianChart.MaterialCards;
 using Wpf.CartesianChart.Missing_Line_Points;
 using Wpf.CartesianChart.MixingSeries;
 using Wpf.CartesianChart.NegativeStackedRow;
@@ -27,6 +30,7 @@ using Wpf.CartesianChart.PointShapeLine;
 using Wpf.CartesianChart.PointState;
 using Wpf.CartesianChart.ScatterPlot;
 using Wpf.CartesianChart.SectionsDragable;
+using Wpf.CartesianChart.SolidColorChart;
 using Wpf.CartesianChart.StackedArea;
 using Wpf.CartesianChart.StackedBar;
 using Wpf.CartesianChart.StepLine;
@@ -59,6 +63,10 @@ namespace Wpf
             CartesianExamples = new List<UserControl>
             {
                 //new JimmyTheTestsGuy(),
+                new MaterialCards(),
+                new EnergyPredictionExample(),
+                new SolidColorExample(),
+                new FunnelExample(),
                 new ConstantChangesChart(),
                 new FullyResponsiveExample(),
                 new LinqExample(),

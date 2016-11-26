@@ -43,8 +43,6 @@ namespace LiveCharts.Uwp
         {
             InitializeComponent();
 
-            this.SetIfNotSet(CornerRadiusProperty, 4d);
-
             DataContext = this;
         }
 
@@ -52,7 +50,7 @@ namespace LiveCharts.Uwp
         /// The corner radius property
         /// </summary>
         public static readonly DependencyProperty CornerRadiusProperty = DependencyProperty.Register(
-            "CornerRadius", typeof (double), typeof (DefaultGeoMapTooltip), new PropertyMetadata(default(double)));
+            "CornerRadius", typeof (double), typeof (DefaultGeoMapTooltip), new PropertyMetadata(4d));
 
         /// <summary>
         /// Gets or sets the corner radius.

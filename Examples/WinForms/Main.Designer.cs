@@ -29,6 +29,8 @@
         private void InitializeComponent()
         {
             this.panel1 = new System.Windows.Forms.Panel();
+            this.label28 = new System.Windows.Forms.Label();
+            this.button14 = new System.Windows.Forms.Button();
             this.label27 = new System.Windows.Forms.Label();
             this.button13 = new System.Windows.Forms.Button();
             this.label26 = new System.Windows.Forms.Label();
@@ -83,14 +85,16 @@
             this.btnSeries = new System.Windows.Forms.Button();
             this.btnIObservable = new System.Windows.Forms.Button();
             this.btnLabels = new System.Windows.Forms.Button();
-            this.label28 = new System.Windows.Forms.Label();
-            this.button14 = new System.Windows.Forms.Button();
+            this.label29 = new System.Windows.Forms.Label();
+            this.button15 = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel1
             // 
             this.panel1.AutoScroll = true;
+            this.panel1.Controls.Add(this.label29);
+            this.panel1.Controls.Add(this.button15);
             this.panel1.Controls.Add(this.label28);
             this.panel1.Controls.Add(this.button14);
             this.panel1.Controls.Add(this.label27);
@@ -152,6 +156,25 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(847, 516);
             this.panel1.TabIndex = 0;
+            // 
+            // label28
+            // 
+            this.label28.AutoSize = true;
+            this.label28.Font = new System.Drawing.Font("Calibri", 12.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label28.Location = new System.Drawing.Point(377, 482);
+            this.label28.Name = "label28";
+            this.label28.Size = new System.Drawing.Size(91, 21);
+            this.label28.TabIndex = 82;
+            this.label28.Text = "Gantt Chart";
+            // 
+            // button14
+            // 
+            this.button14.Location = new System.Drawing.Point(350, 426);
+            this.button14.Name = "button14";
+            this.button14.Size = new System.Drawing.Size(160, 53);
+            this.button14.TabIndex = 81;
+            this.button14.UseVisualStyleBackColor = true;
+            this.button14.Click += new System.EventHandler(this.button14_Click);
             // 
             // label27
             // 
@@ -666,24 +689,24 @@
             this.btnLabels.UseVisualStyleBackColor = true;
             this.btnLabels.Click += new System.EventHandler(this.btnLabels_Click);
             // 
-            // label28
+            // label29
             // 
-            this.label28.AutoSize = true;
-            this.label28.Font = new System.Drawing.Font("Calibri", 12.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label28.Location = new System.Drawing.Point(377, 482);
-            this.label28.Name = "label28";
-            this.label28.Size = new System.Drawing.Size(91, 21);
-            this.label28.TabIndex = 82;
-            this.label28.Text = "Gantt Chart";
+            this.label29.AutoSize = true;
+            this.label29.Font = new System.Drawing.Font("Calibri", 12.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label29.Location = new System.Drawing.Point(550, 482);
+            this.label29.Name = "label29";
+            this.label29.Size = new System.Drawing.Size(99, 21);
+            this.label29.TabIndex = 84;
+            this.label29.Text = "Funnel Chart";
             // 
-            // button14
+            // button15
             // 
-            this.button14.Location = new System.Drawing.Point(350, 426);
-            this.button14.Name = "button14";
-            this.button14.Size = new System.Drawing.Size(160, 53);
-            this.button14.TabIndex = 81;
-            this.button14.UseVisualStyleBackColor = true;
-            this.button14.Click += new System.EventHandler(this.button14_Click);
+            this.button15.Location = new System.Drawing.Point(523, 426);
+            this.button15.Name = "button15";
+            this.button15.Size = new System.Drawing.Size(160, 53);
+            this.button15.TabIndex = 83;
+            this.button15.UseVisualStyleBackColor = true;
+            this.button15.Click += new System.EventHandler(this.button15_Click);
             // 
             // Main
             // 
@@ -758,6 +781,8 @@
         private System.Windows.Forms.Button button13;
         private System.Windows.Forms.Label label28;
         private System.Windows.Forms.Button button14;
+        private System.Windows.Forms.Label label29;
+        private System.Windows.Forms.Button button15;
     }
 }
 
