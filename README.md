@@ -1,9 +1,5 @@
 <p align="center">
-  <a href="http://lvcharts.net/"><img src="http://lvcharts.net/Content/Images/Logos/LiveChartsLogo.png" /></a>
-</p>
-
-<p align="center">
-  <img src="https://lvcharts.net/content/images/darkpanel.gif" />
+  <a href="http://lvcharts.net/"><img src="http://lvcharts.net/Content/Images/LiveChartsWhite.gif" /></a>
 </p>
 
 [![GitHub license](https://img.shields.io/github/license/beto-rodriguez/Live-Charts.svg?style=flat-square)](https://github.com/beto-rodriguez/Live-Charts/blob/master/LICENSE.TXT)
@@ -11,69 +7,51 @@
 [![GitHub issues](https://img.shields.io/github/issues/beto-rodriguez/Live-Charts.svg?style=flat-square)](https://github.com/beto-rodriguez/Live-Charts/issues)
 [![Gitter](https://img.shields.io/gitter/room/beto-rodriguez/Live-Charts.svg?style=flat-square)](https://gitter.im/beto-rodriguez/Live-Charts?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-* **[WebSite](http://lvcharts.net/)**
+* **[Get Started Here](http://lvcharts.net/App/examples/wpf/start)**, this repository has much more examples also.
 * **[Chat](https://gitter.im/beto-rodriguez/Live-Charts)**
 * **Questions and support?**, we are always happy to help you at our chat, if you require so you can also try [Stack Overflow](http://stackoverflow.com/questions/tagged/livecharts).
 
-<hr/>
+### LiveCharts is
+# Flexible, Customizable
 
-**What is Live-Charts?**
+*images in this section are build with LiveCharts, but designed by [Kingyo](https://dribbble.com/Kingyo)*
 
-Animated, MVVM orientated .Net charts, for WPF, WinForms under MIT Licence, written in C#, LiveCharts listens for any change in your data automatically and updates UI.
+<p align="center">
+  <img src="http://lvcharts.net/Content/Images/materialcards.gif" />
+</p>
+<p align="center">
+  <img src="http://lvcharts.net/Content/Images/energy.gif" />
+</p>
+<p align="center">
+  <img src="http://lvcharts.net/Content/Images/solid.gif" />
+</p>
 
-Live charts makes your data alive, as easy as manipulating any .net list, the library animates and updates every time your data changes.
+### it is also
+# Simple, Interactive
 
-it also is:
+As easy as manipulating any generic list in .Net, LiveCharts updates and animates as your data changes in real time, charts are also sensitive to size changes.
 
- - Good looking, animated and easy to customize charts, you can practically change all properties.
- - Autoupdate UI, you just create a SeriesCollection, then LiveCharts will handle everything.
- - MVVM Charting, Support for WPF Bindings.
- - Supports zooming and panning.
- - MIT License, permissive licensing, yes free.
- 
-**Why is LiveCharts different to other charting libraries?**
+<p align="center">
+  <img src="https://lvcharts.net/Content/Images/Banner/linq.gif" />
+  <img src="https://lvcharts.net/Content/Images/Banner/responsive.gif" />
+  <img src="https://lvcharts.net/Content/Images/Banner/doughnut.gif" />/
+  <img src="https://lvcharts.net/Content/Images/Banner/constant.gif" />
+</p>
 
-First: animations and good looking charts by default, second: responsive charts these charts automatically update when your data changes also when you resize your chart, finally LiveCharts MVVM is different and for me it feels better than other libraries, becuase LiveCharts uses generics and with it strongly typed modeling, others use reflection to get the property value.
+### and of course it also is
+# Powerful
 
-**How to use it?**
+LiveCharts is not just beauty charts, this example contains 100,000 points, and the chart is being refreshed constantly, we support multiple axes, sections, merged UIelemnts and much more!
 
-This is the logic you use in every chart, there are just some little properties or rules that change from each type of chart
+<p align="center">
+  <img src="https://lvcharts.net/Content/Images/scrll.gif" />
+</p>
 
-```c#
-//create a new SeriesCollection
-var seriesCollection = new SeriesCollection();
+But that is not all, we try to support as many charts as possible, bars, lines, heat maps, gauges, maps:
 
-//create some LineSeries if you need so, there are many supported series
-var charlesSeries = new LineSeries
-{
-  Title = "Charles",
-  Values = new ChartValues<double> {10, 5, 7, 5, 7, 8}
-};
-var jamesSeries = new LineSeries
-{
-  Title = "James",
-  Values = new ChartValues<double> { 5, 6, 9, 10, 11, 9 }
-};
-
-//add series to seriesCollection
-seriesCollection.Add(charlesSeries);
-seriesCollection.Add(jamesSeries);
-
-//now just assing this seriesCollection to your chart
-//you can use wpf bindings if you need it
-myChart.Series = seriesCollection
-
-//create some labels if necessary
-var labels = new string[] {"Jan", "Feb" , "Mar", "Apr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dec"};
-myChart.AxisX.Add(new Axis { Labels = labels});
-```
-
-### Is live charts what you are looking for? see these interesting examples.
-
-* **[Live Data](http://lvcharts.net/App/examples/wpf/Constant%20Changes)**: a charts that adds new data each 300ms, DateTime as X Axis.
-* **[Observable Points](http://lvcharts.net/App/examples/v1/wpf/IObservableChartPoint)**: notify the chart to update every time a property changes
-* **[Simple Bar Chart](http://lvcharts.net/App/examples/wpf/Basic%20Column)**: a simple bar chart.
-* *Do not need animations*? ok disable them, performance will be increased also, `Chart.DisableAnimations = true;`
+<p align="center">
+  <img src="https://lvcharts.net/content/images/darkpanel.gif" />
+</p>
 
 ### Road Map
 
@@ -92,16 +70,12 @@ WPF and Winforms, currenlty the library is in the process to become a cross net 
 
 ###Net Version
 
-.Net 4.0.3 or greater, Windows XP SP3 at least, for more info see [#212](https://github.com/beto-rodriguez/Live-Charts/issues/212)
+.Net 4.0 or greater
 
 ### Installation
 
-Verify your project uses .Net 4.0.3 or greater, then follow these steps.
-
 * [Wpf](http://lvcharts.net/App/examples/wpf/Install)
 * [WinForms](http://lvcharts.net/App/examples/wf/Install)
-
-To verify if you are using a supported .net version, go to SolutionExplorer > Right click on your project > Properties > Application, then verify Taret framework is set at least to .net 4.0.3 
 
 ### Migrating from older versions?
 
@@ -127,10 +101,6 @@ You can also buy me a beer
 ### Examples?
 
 The [web site](http://lvcharts.net/App/examples/wpf/start) has a nice set, they are also built in the examples folder up here ^^^^
-
-### High perfomance?
-
-LiveCharts will also handle high performance, it is not ready yet but the current tests allows the library to plot 3,000,000 in 1 second, yes even with aniations.
 
 ### Special thanks to
 
