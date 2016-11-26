@@ -41,7 +41,7 @@ As easy as manipulating any generic list in .Net, LiveCharts updates and animate
 ### and of course it also is
 # Powerful
 
-LiveCharts is not just beauty charts, this example contains 100,000 points, and the chart is being refreshed constantly, we support multiple axes, sections, merged UIelemnts and much more!
+LiveCharts is not just beauty charts, this example contains 100,000 points, and the chart is being refreshed constantly, we support zooming, panning, multiple axes, sections, merged UIelemnts and much more!
 
 <p align="center">
   <img src="https://lvcharts.net/Content/Images/scrll.gif" />
