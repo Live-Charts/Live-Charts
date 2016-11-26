@@ -14,7 +14,7 @@
 ### LiveCharts is
 # Flexible, Customizable
 
-*images in this section are build with LiveCharts, but designed by [Kingyo](https://dribbble.com/Kingyo)*
+*images in this section are built with LiveCharts, but designed by [Kingyo](https://dribbble.com/Kingyo)*
 
 <p align="center">
   <img src="http://lvcharts.net/Content/Images/materialcards.gif" />
