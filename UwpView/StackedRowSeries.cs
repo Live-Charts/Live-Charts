@@ -111,6 +111,20 @@ namespace LiveCharts.Uwp
             set { SetValue(StackModeProperty, value); }
         }
 
+        /// <summary>
+        /// The label position property
+        /// </summary>
+        public static readonly DependencyProperty LabelPositionProperty = DependencyProperty.Register(
+            "LabelPosition", typeof(BarLabelPosition), typeof(StackedRowSeries),
+            new PropertyMetadata(BarLabelPosition.Top, CallChartUpdater()));
+        /// <summary>
+        /// Gets or sets where the label is placed
+        /// </summary>
+        public BarLabelPosition LabelPosition
+        {
+            get { return (BarLabelPosition)GetValue(LabelPositionProperty); }
+            set { SetValue(LabelPositionProperty, value); }
+        }
         #endregion
 
         #region Overridden Methods
@@ -131,8 +145,7 @@ namespace LiveCharts.Uwp
                 {
                     IsNew = true,
                     Rectangle = new Rectangle(),
-                    Data = new CoreRectangle(),
-                    LabelPosition = BarLabelPosition.Merged
+                    Data = new CoreRectangle()
                 };
 
                 Model.Chart.View.AddToDrawMargin(pbv.Rectangle);
@@ -182,6 +195,8 @@ namespace LiveCharts.Uwp
             }
 
             if (pbv.DataLabel != null) pbv.DataLabel.Text = label;
+
+            pbv.LabelPosition = LabelPosition;
 
             return pbv;
         }

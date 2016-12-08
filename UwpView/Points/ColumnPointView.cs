@@ -23,7 +23,6 @@
 using System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Shapes;
 using LiveCharts.Charts;
@@ -39,7 +38,7 @@ namespace LiveCharts.Uwp.Points
         public CoreRectangle Data { get; set; }
         public double ZeroReference  { get; set; }
         public BarLabelPosition LabelPosition { get; set; }
-        public RotateTransform RotateTransform { get; set; }
+        private RotateTransform Transform { get; set; }
 
         public override void DrawOrMove(ChartPoint previousDrawn, ChartPoint current, int index, ChartCore chart)
         {
@@ -57,19 +56,24 @@ namespace LiveCharts.Uwp.Points
                     Canvas.SetLeft(DataLabel, current.ChartLocation.X);
                 }
             }
-          
+
             Func<double> getY = () =>
             {
                 double y;
 
-                if (LabelPosition == BarLabelPosition.Merged)
+#pragma warning disable 618
+                if (LabelPosition == BarLabelPosition.Parallel || LabelPosition == BarLabelPosition.Merged)
+#pragma warning restore 618
                 {
-                    if (RotateTransform == null)
-                        RotateTransform = new RotateTransform() {Angle = 270 };
+                    if (Transform == null)
+                        Transform = new RotateTransform {Angle = 270};
 
-                    DataLabel.RenderTransform = RotateTransform;
-
-                    y = Data.Top + Data.Height/2 + DataLabel.ActualWidth*.5;
+                    y = Data.Top + Data.Height / 2 + DataLabel.ActualWidth * .5;
+                    DataLabel.RenderTransform = Transform;
+                }
+                else if (LabelPosition == BarLabelPosition.Perpendicular)
+                {
+                    y = Data.Top + Data.Height / 2 - DataLabel.ActualHeight * .5;
                 }
                 else
                 {
@@ -92,9 +96,15 @@ namespace LiveCharts.Uwp.Points
             {
                 double x;
 
-                if (LabelPosition == BarLabelPosition.Merged)
+#pragma warning disable 618
+                if (LabelPosition == BarLabelPosition.Parallel || LabelPosition == BarLabelPosition.Merged)
+#pragma warning restore 618
                 {
-                    x = Data.Left + Data.Width/2 - DataLabel.ActualHeight/2;
+                    x = Data.Left + Data.Width / 2 - DataLabel.ActualHeight / 2;
+                }
+                else if (LabelPosition == BarLabelPosition.Perpendicular)
+                {
+                    x = Data.Left + Data.Width / 2 - DataLabel.ActualWidth / 2;
                 }
                 else
                 {
