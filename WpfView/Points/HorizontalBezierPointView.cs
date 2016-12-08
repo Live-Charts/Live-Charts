@@ -59,12 +59,6 @@ namespace LiveCharts.Wpf.Points
                     Segment.Point2 = previosPbv.Segment.Point3;
                     Segment.Point3 = previosPbv.Segment.Point3;
 
-                    if (DataLabel != null)
-                    {
-                        Canvas.SetTop(DataLabel, Canvas.GetTop(previosPbv.DataLabel));
-                        Canvas.SetLeft(DataLabel, Canvas.GetLeft(previosPbv.DataLabel));
-                    }
-
                     if (Shape != null)
                     {
                         Canvas.SetTop(Shape, Canvas.GetTop(previosPbv.Shape));
@@ -90,10 +84,15 @@ namespace LiveCharts.Wpf.Points
                     }
                 }
             }
+            else if (DataLabel != null && double.IsNaN(Canvas.GetLeft(DataLabel)))
+            {
+                Canvas.SetTop(DataLabel, y);
+                Canvas.SetLeft(DataLabel, current.ChartLocation.X - DataLabel.ActualWidth*.5);
+            }
 
             #region No Animated
 
-            if (chart.View.DisableAnimations)
+                if (chart.View.DisableAnimations)
             {
                 Segment.Point1 = Data.Point1.AsPoint();
                 Segment.Point2 = Data.Point2.AsPoint();

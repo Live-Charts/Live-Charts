@@ -48,12 +48,12 @@ namespace LiveCharts.Wpf.Points
 
                 Slice.WedgeAngle = 0;
                 Slice.RotationAngle = 0;
+            }
 
-                if (DataLabel != null)
-                {
-                    Canvas.SetTop(DataLabel, 0d);
-                    Canvas.SetLeft(DataLabel, 0d);
-                }
+            if (DataLabel != null && double.IsNaN(Canvas.GetLeft(DataLabel)))
+            {
+                Canvas.SetTop(DataLabel, 0d);
+                Canvas.SetLeft(DataLabel, 0d);
             }
 
             if (HoverShape != null)

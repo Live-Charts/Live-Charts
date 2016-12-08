@@ -59,7 +59,7 @@ namespace LiveCharts.Uwp.Points
                 Canvas.SetTop(HoverShape, current.ChartLocation.Y);
             }
 
-            if (DataLabel != null)
+            if (DataLabel != null && double.IsNaN(Canvas.GetLeft(DataLabel)))
             {
                 DataLabel.UpdateLayout();
                 Canvas.SetTop(DataLabel, current.ChartLocation.Y + (Height/2) - DataLabel.ActualHeight*.5);

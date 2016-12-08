@@ -48,12 +48,12 @@ namespace LiveCharts.Uwp.Points
 
                 Rectangle.Width = 0;
                 Rectangle.Height = Data.Height;
+            }
 
-                if (DataLabel != null)
-                {
-                    Canvas.SetTop(DataLabel, Data.Top);
-                    Canvas.SetLeft(DataLabel, ZeroReference);
-                }
+            if (DataLabel != null && double.IsNaN(Canvas.GetLeft(DataLabel)))
+            {
+                Canvas.SetTop(DataLabel, Data.Top);
+                Canvas.SetLeft(DataLabel, ZeroReference);
             }
 
             Func<double> getY = () =>

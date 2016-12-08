@@ -70,6 +70,12 @@ namespace LiveCharts.Wpf.Points
                 }
             }
 
+            if (DataLabel != null && double.IsNaN(Canvas.GetLeft(DataLabel)))
+            {
+                Canvas.SetTop(DataLabel, current.ChartLocation.Y);
+                Canvas.SetLeft(DataLabel, current.ChartLocation.X);
+            }
+
             if (HoverShape != null)
             {
                 var h = Math.Abs(High - Low);
