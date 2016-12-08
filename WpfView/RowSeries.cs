@@ -110,8 +110,6 @@ namespace LiveCharts.Wpf
             get { return (BarLabelPosition)GetValue(LabelsPositionProperty); }
             set { SetValue(LabelsPositionProperty, value); }
         }
-
-
         #endregion
 
         #region Overridden Methods

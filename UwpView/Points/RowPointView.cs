@@ -37,6 +37,7 @@ namespace LiveCharts.Uwp.Points
         public CoreRectangle Data { get; set; }
         public double ZeroReference  { get; set; }
         public BarLabelPosition LabelPosition { get; set; }
+        private RotateTransform Transform { get; set; }
 
         public override void DrawOrMove(ChartPoint previousDrawn, ChartPoint current, int index, ChartCore chart)
         {
@@ -54,9 +55,18 @@ namespace LiveCharts.Uwp.Points
                     Canvas.SetLeft(DataLabel, ZeroReference);
                 }
             }
-          
+
             Func<double> getY = () =>
             {
+                if (LabelPosition == BarLabelPosition.Perpendicular)
+                {
+                    if (Transform == null)
+                        Transform = new RotateTransform {Angle = 270};
+
+                    DataLabel.RenderTransform = Transform;
+                    return Data.Top + Data.Height / 2 + DataLabel.ActualWidth * .5;
+                }
+
                 var r = Data.Top + Data.Height / 2 - DataLabel.ActualHeight / 2;
 
                 if (r < 0) r = 2;
@@ -70,9 +80,15 @@ namespace LiveCharts.Uwp.Points
             {
                 double r;
 
-                if (LabelPosition == BarLabelPosition.Merged)
+#pragma warning disable 618
+                if (LabelPosition == BarLabelPosition.Parallel || LabelPosition == BarLabelPosition.Merged)
+#pragma warning restore 618
                 {
-                    r = Data.Left + Data.Width/2 - DataLabel.ActualWidth/2;
+                    r = Data.Left + Data.Width / 2 - DataLabel.ActualWidth / 2;
+                }
+                else if (LabelPosition == BarLabelPosition.Perpendicular)
+                {
+                    r = Data.Left + Data.Width / 2 - DataLabel.ActualHeight / 2;
                 }
                 else
                 {

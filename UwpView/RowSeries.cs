@@ -111,8 +111,6 @@ namespace LiveCharts.Uwp
             get { return (BarLabelPosition)GetValue(LabelPositionProperty); }
             set { SetValue(LabelPositionProperty, value); }
         }
-
-
         #endregion
 
         #region Overridden Methods
