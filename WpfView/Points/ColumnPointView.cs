@@ -38,7 +38,7 @@ namespace LiveCharts.Wpf.Points
         public CoreRectangle Data { get; set; }
         public double ZeroReference  { get; set; }
         public BarLabelPosition LabelPosition { get; set; }
-        public RotateTransform RotateTransform { get; set; }
+        private RotateTransform Transform { get; set; }
 
         public override void DrawOrMove(ChartPoint previousDrawn, ChartPoint current, int index, ChartCore chart)
         {
@@ -61,14 +61,19 @@ namespace LiveCharts.Wpf.Points
             {
                 double y;
 
-                if (LabelPosition == BarLabelPosition.Merged)
+#pragma warning disable 618
+                if (LabelPosition == BarLabelPosition.Parallel || LabelPosition == BarLabelPosition.Merged)
+#pragma warning restore 618
                 {
-                    if (RotateTransform == null)
-                        RotateTransform = new RotateTransform(270);
-
-                    DataLabel.RenderTransform = RotateTransform;
+                    if (Transform == null)
+                        Transform = new RotateTransform(270);
 
                     y = Data.Top + Data.Height/2 + DataLabel.ActualWidth*.5;
+                    DataLabel.RenderTransform = Transform;
+                }
+                else if (LabelPosition == BarLabelPosition.Perpendicular)
+                {
+                    y = Data.Top + Data.Height/2 - DataLabel.ActualHeight * .5;
                 }
                 else
                 {
@@ -91,9 +96,15 @@ namespace LiveCharts.Wpf.Points
             {
                 double x;
 
-                if (LabelPosition == BarLabelPosition.Merged)
+#pragma warning disable 618
+                if (LabelPosition == BarLabelPosition.Parallel || LabelPosition == BarLabelPosition.Merged)
+#pragma warning restore 618
                 {
                     x = Data.Left + Data.Width/2 - DataLabel.ActualHeight/2;
+                }
+                else if (LabelPosition == BarLabelPosition.Perpendicular)
+                {
+                    x = Data.Left + Data.Width/2 - DataLabel.ActualWidth/2;
                 }
                 else
                 {
