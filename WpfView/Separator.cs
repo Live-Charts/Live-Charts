@@ -138,6 +138,7 @@ namespace LiveCharts.Wpf
         public SeparatorConfigurationCore AsCoreElement(AxisCore axis, AxisOrientation source)
         {
             AxisOrientation = source;
+            Chart = axis.Chart;
             return new SeparatorConfigurationCore(axis)
             {
                 IsEnabled = IsEnabled,
