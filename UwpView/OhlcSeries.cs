@@ -56,7 +56,7 @@ namespace LiveCharts.Uwp
         /// <param name="configuration"></param>
         public OhlcSeries(object configuration)
         {
-            Model = new ColumnAlgorithm(this);
+            Model = new OhlcAlgorithm(this);
             Configuration = configuration;
             InitializeDefuaults();
         }
