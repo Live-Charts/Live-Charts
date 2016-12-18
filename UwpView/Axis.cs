@@ -499,10 +499,8 @@ namespace LiveCharts.Uwp
                 ase = (AxisSeparatorElement) model.View;
             }
 
-            if (!Separator.IsEnabled)
-                ase.Line.Visibility = Visibility.Collapsed;
-            if (!ShowLabels)
-                ase.TextBlock.Visibility = Visibility.Collapsed;
+            ase.Line.Visibility = !Separator.IsEnabled ? Visibility.Collapsed : Visibility.Visible;
+            ase.TextBlock.Visibility = !ShowLabels ? Visibility.Collapsed : Visibility.Visible;
         }
 
         /// <summary>
