@@ -239,6 +239,11 @@ namespace LiveCharts.Uwp.Charts.Base
         public event DataClickHandler DataClick;
 
         /// <summary>
+        /// The DataHover event is fired when a user hovers over any data point
+        /// </summary>
+        public event DataHoverHandler DataHover;
+
+        /// <summary>
         /// This event is fired every time the chart updates.
         /// </summary>
         public event UpdaterTickHandler UpdaterTick;
@@ -582,6 +587,11 @@ namespace LiveCharts.Uwp.Charts.Base
         /// Gets whether the chart has a DataClick event attacked.
         /// </summary>
         public bool HasDataClickEventAttached => DataClick != null;
+
+        /// <summary>
+        /// Gets whether the chart has a DataHover event attached
+        /// </summary>
+        public bool HasDataHoverEventAttached => DataHover != null;
 
         /// <summary>
         /// Gets whether the chart is already loaded in the view.
