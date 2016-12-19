@@ -1017,6 +1017,13 @@ namespace LiveCharts.Uwp.Charts.Base
                     storyBoard.Begin();
                 }
             }
+
+            OnDataHover(sender, senderPoint);
+        }
+
+        internal void OnDataHover(object sender, ChartPoint point)
+        {
+            if (DataHover != null) DataHover.Invoke(sender, point);
         }
 
         private void DataMouseLeave(object sender, PointerRoutedEventArgs e)
