@@ -628,45 +628,53 @@ namespace LiveCharts.Charts
 
             if (stackAt == AxisOrientation.X)
             {
+                var ax = AxisX[stackIndex];
+
                 if (mode == StackMode.Percentage)
                 {
-                    AxisX[stackIndex].BotLimit = 0;
-                    AxisX[stackIndex].TopLimit = 1;
+                    if (double.IsNaN(ax.BotLimit)) ax.BotLimit = 0;
+                    if (double.IsNaN(ax.TopLimit)) ax.TopLimit = 1;
                 }
                 else
                 {
-                    if (mostLeft < AxisX[stackIndex].BotLimit)
+                    if (mostLeft < ax.BotLimit)
                         // ReSharper disable once CompareOfFloatsByEqualityOperator
-                        AxisX[stackIndex].BotLimit = mostLeft == 0
-                            ? 0
-                            : ((int) (mostLeft/AxisX[stackIndex].S) - 1)*AxisX[stackIndex].S;
-                    if (mostRight > AxisX[stackIndex].TopLimit)
+                        if (double.IsNaN(ax.BotLimit))
+                            ax.BotLimit = mostLeft == 0
+                                ? 0
+                                : ((int) (mostLeft/ax.S) - 1)*ax.S;
+                    if (mostRight > ax.TopLimit)
                         // ReSharper disable once CompareOfFloatsByEqualityOperator
-                        AxisX[stackIndex].TopLimit = mostRight == 0
-                            ? 0
-                            : ((int) (mostRight/AxisX[stackIndex].S) + 1)*AxisX[stackIndex].S;
+                        if (double.IsNaN(ax.TopLimit))
+                            ax.TopLimit = mostRight == 0
+                                ? 0
+                                : ((int) (mostRight/ax.S) + 1)*ax.S;
                 }
             }
 
             if (stackAt == AxisOrientation.Y)
             {
+                var ay = AxisY[stackIndex];
+
                 if (mode == StackMode.Percentage)
                 {
-                    AxisY[stackIndex].BotLimit = 0;
-                    AxisY[stackIndex].TopLimit = 1;
+                    if (double.IsNaN(ay.BotLimit)) ay.BotLimit = 0;
+                    if (double.IsNaN(ay.TopLimit)) ay.TopLimit = 1;
                 }
                 else
                 {
-                    if (mostLeft < AxisY[stackIndex].BotLimit)
+                    if (mostLeft < ay.BotLimit)
                         // ReSharper disable once CompareOfFloatsByEqualityOperator
-                        AxisY[stackIndex].BotLimit = mostLeft == 0
-                            ? 0
-                            : ((int) (mostLeft/AxisY[stackIndex].S) - 1)*AxisY[stackIndex].S;
-                    if (mostRight > AxisY[stackIndex].TopLimit)
+                        if (double.IsNaN(ay.BotLimit))
+                            ay.BotLimit = mostLeft == 0
+                                ? 0
+                                : ((int) (mostLeft/ay.S) - 1)*ay.S;
+                    if (mostRight > ay.TopLimit)
                         // ReSharper disable once CompareOfFloatsByEqualityOperator
-                        AxisY[stackIndex].TopLimit = mostRight == 0
-                            ? 0
-                            : ((int) (mostRight/AxisY[stackIndex].S) + 1)*AxisY[stackIndex].S;
+                        if (double.IsNaN(ay.TopLimit))
+                            ay.TopLimit = mostRight == 0
+                                ? 0
+                                : ((int) (mostRight/ay.S) + 1)*ay.S;
                 }
             }
         }
