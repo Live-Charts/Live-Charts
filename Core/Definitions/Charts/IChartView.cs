@@ -48,6 +48,11 @@ namespace LiveCharts.Definitions.Charts
         event DataClickHandler DataClick;
 
         /// <summary>
+        /// Occurs when [data hover]
+        /// </summary>
+        event DataHoverHandler DataHover;
+
+        /// <summary>
         /// Gets or sets a value indicating whether this instance is mocked.
         /// </summary>
         /// <value>
@@ -132,6 +137,12 @@ namespace LiveCharts.Definitions.Charts
         /// <c>true</c> if this instance has data click event attached; otherwise, <c>false</c>.
         /// </value>
         bool HasDataClickEventAttached { get; }
+        /// Gets a value indicating whether this instance has data hover event attached.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if this instance has data hover event attached; otherwise, <c>false</c>.
+        /// </value>
+        bool HasDataHoverEventAttached { get; }
         /// <summary>
         /// Gets a value indicating whether this <see cref="IChartView"/> is hoverable.
         /// </summary>
