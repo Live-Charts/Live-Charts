@@ -189,6 +189,8 @@ namespace LiveCharts.Uwp
             _rectangle.StrokeDashArray = StrokeDashArray;
             _rectangle.StrokeThickness = StrokeThickness;
             Canvas.SetZIndex(_rectangle, Canvas.GetZIndex(this));
+            BindingOperations.SetBinding(_rectangle, VisibilityProperty,
+                new Binding {Path = new PropertyPath(nameof(Visibility)), Source = this});
 
             if (Parent == null)
             {
