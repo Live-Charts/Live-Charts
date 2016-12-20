@@ -57,12 +57,12 @@ namespace LiveCharts.Uwp.Points
 
                 OpenToCloseRectangle.Width = Width;
                 OpenToCloseRectangle.Height = 0;
+            }
 
-                if (DataLabel != null)
-                {
-                    Canvas.SetTop(DataLabel, current.ChartLocation.Y);
-                    Canvas.SetLeft(DataLabel, current.ChartLocation.X);
-                }
+            if (DataLabel != null && double.IsNaN(Canvas.GetLeft(DataLabel)))
+            {
+                Canvas.SetTop(DataLabel, current.ChartLocation.Y);
+                Canvas.SetLeft(DataLabel, current.ChartLocation.X);
             }
 
             if (HoverShape != null)

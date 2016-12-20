@@ -49,12 +49,12 @@ namespace LiveCharts.Wpf.Points
 
                 Rectangle.Width = Data.Width;
                 Rectangle.Height = 0;
+            }
 
-                if (DataLabel != null)
-                {
-                    Canvas.SetTop(DataLabel, ZeroReference);
-                    Canvas.SetLeft(DataLabel, current.ChartLocation.X);
-                }
+            if (DataLabel != null && double.IsNaN(Canvas.GetLeft(DataLabel)))
+            {
+                Canvas.SetTop(DataLabel, ZeroReference);
+                Canvas.SetLeft(DataLabel, current.ChartLocation.X);
             }
           
             Func<double> getY = () =>

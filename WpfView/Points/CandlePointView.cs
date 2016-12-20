@@ -58,15 +58,15 @@ namespace LiveCharts.Wpf.Points
 
                 OpenToCloseRectangle.Width = Width;
                 OpenToCloseRectangle.Height = 0;
-
-                if (DataLabel != null)
-                {
-                    Canvas.SetTop(DataLabel, current.ChartLocation.Y);
-                    Canvas.SetLeft(DataLabel, current.ChartLocation.X);
-                }
             }
 
-            if (HoverShape != null)
+            if (DataLabel != null && double.IsNaN(Canvas.GetLeft(DataLabel)))
+            {
+                Canvas.SetTop(DataLabel, current.ChartLocation.Y);
+                Canvas.SetLeft(DataLabel, current.ChartLocation.X);
+            }
+
+                if (HoverShape != null)
             {
                 var h = Math.Abs(High - Low);
                 HoverShape.Width = Width;

@@ -78,7 +78,7 @@ namespace LiveCharts.Uwp.Points
                     if (DataLabel != null)
                     {
                         Canvas.SetTop(DataLabel, y);
-                        Canvas.SetLeft(DataLabel, current.ChartLocation.X - DataLabel.ActualWidth*.5);
+                        Canvas.SetLeft(DataLabel, current.ChartLocation.X - DataLabel.ActualWidth * .5);
                     }
 
                     if (Shape != null)
@@ -88,10 +88,15 @@ namespace LiveCharts.Uwp.Points
                     }
                 }
             }
+            else if (DataLabel != null && double.IsNaN(Canvas.GetLeft(DataLabel)))
+            {
+                Canvas.SetTop(DataLabel, y);
+                Canvas.SetLeft(DataLabel, current.ChartLocation.X - DataLabel.ActualWidth*.5);
+            }
 
             #region No Animated
 
-            if (chart.View.DisableAnimations)
+                if (chart.View.DisableAnimations)
             {
                 Segment.Point1 = Data.Point1.AsPoint();
                 Segment.Point2 = Data.Point2.AsPoint();

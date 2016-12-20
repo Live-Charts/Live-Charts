@@ -32,6 +32,13 @@ namespace LiveCharts.Events
     /// <summary>
     /// 
     /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="chartPoint"></param>
+    public delegate void DataHoverHandler(object sender, ChartPoint chartPoint);
+
+    /// <summary>
+    /// 
+    /// </summary>
     public delegate void UpdaterTickHandler();
 
     /// <summary>

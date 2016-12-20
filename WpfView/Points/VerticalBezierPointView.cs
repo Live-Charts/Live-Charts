@@ -68,16 +68,21 @@ namespace LiveCharts.Wpf.Points
 
                     if (DataLabel != null)
                     {
-                        Canvas.SetTop(DataLabel, current.ChartLocation.Y - DataLabel.ActualHeight * .5);
+                        Canvas.SetTop(DataLabel, current.ChartLocation.Y - DataLabel.ActualHeight*.5);
                         Canvas.SetLeft(DataLabel, 0);
                     }
 
                     if (Shape != null)
                     {
-                        Canvas.SetTop(Shape, current.ChartLocation.Y - Shape.Height * .5);
+                        Canvas.SetTop(Shape, current.ChartLocation.Y - Shape.Height*.5);
                         Canvas.SetLeft(Shape, 0);
                     }
                 }
+            }
+            else if (DataLabel != null && double.IsNaN(Canvas.GetLeft(DataLabel)))
+            {
+                Canvas.SetTop(DataLabel, current.ChartLocation.Y - DataLabel.ActualHeight * .5);
+                Canvas.SetLeft(DataLabel, 0);
             }
 
             #region No Animated

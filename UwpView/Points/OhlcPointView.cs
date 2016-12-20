@@ -62,12 +62,6 @@ namespace LiveCharts.Uwp.Points
                 CloseLine.X2 = Left + Width;
                 CloseLine.Y1 = StartReference;
                 CloseLine.Y2 = StartReference;
-
-                if (DataLabel != null)
-                {
-                    Canvas.SetTop(DataLabel, current.ChartLocation.Y);
-                    Canvas.SetLeft(DataLabel, current.ChartLocation.X);
-                }
             }
 
             if (HoverShape != null)
@@ -77,6 +71,12 @@ namespace LiveCharts.Uwp.Points
                 HoverShape.Height = h > 10 ? h : 10;
                 Canvas.SetLeft(HoverShape, Left);
                 Canvas.SetTop(HoverShape, High);
+            }
+
+            if (DataLabel != null && double.IsNaN(Canvas.GetLeft(DataLabel)))
+            {
+                Canvas.SetTop(DataLabel, current.ChartLocation.Y);
+                Canvas.SetLeft(DataLabel, current.ChartLocation.X);
             }
 
             if (chart.View.DisableAnimations)

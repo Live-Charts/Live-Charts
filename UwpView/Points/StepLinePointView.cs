@@ -56,12 +56,12 @@ namespace LiveCharts.Uwp.Points
                     Canvas.SetLeft(Shape, current.ChartLocation.X - Shape.Width/2);
                     Canvas.SetTop(Shape, chart.DrawMargin.Height);
                 }
+            }
 
-                if (DataLabel != null)
-                {
-                    Canvas.SetTop(DataLabel, chart.DrawMargin.Height);
-                    Canvas.SetLeft(DataLabel, current.ChartLocation.X);
-                }
+            if (DataLabel != null && double.IsNaN(Canvas.GetLeft(DataLabel)))
+            {
+                Canvas.SetTop(DataLabel, chart.DrawMargin.Height);
+                Canvas.SetLeft(DataLabel, current.ChartLocation.X);
             }
 
             if (HoverShape != null)

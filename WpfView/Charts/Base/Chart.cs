@@ -227,6 +227,11 @@ namespace LiveCharts.Wpf.Charts.Base
         public event DataClickHandler DataClick;
 
         /// <summary>
+        /// The DataHover event is fired when a user hovers over any data point
+        /// </summary>
+        public event DataHoverHandler DataHover;
+
+        /// <summary>
         /// This event is fired every time the chart updates.
         /// </summary>
         public event UpdaterTickHandler UpdaterTick;
@@ -561,6 +566,14 @@ namespace LiveCharts.Wpf.Charts.Base
         public bool HasDataClickEventAttached
         {
             get { return DataClick != null; }
+        }
+
+        /// <summary>
+        /// Gets whether the chart has a DataHover event attached
+        /// </summary>
+        public bool HasDataHoverEventAttached
+        {
+            get { return DataHover != null; }
         }
 
         /// <summary>
@@ -968,6 +981,13 @@ namespace LiveCharts.Wpf.Charts.Base
                         new DoubleAnimation(location.Y, TimeSpan.FromMilliseconds(200)));
                 }
             }
+
+            OnDataHover(sender, senderPoint);
+        }
+
+        internal void OnDataHover(object sender, ChartPoint point)
+        {
+            if (DataHover != null) DataHover.Invoke(sender, point);
         }
 
         private void DataMouseLeave(object sender, EventArgs e)
