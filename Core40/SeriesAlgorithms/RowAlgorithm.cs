@@ -20,6 +20,7 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
+using System;
 using System.Linq;
 using LiveCharts.Defaults;
 using LiveCharts.Definitions.Points;
@@ -93,15 +94,16 @@ namespace LiveCharts.SeriesAlgorithms
 
                 var rectangleView = (IRectanglePointView) chartPoint.View;
 
-                var w = reference.X - zero > 0 ? reference.X - zero : 0;
+                var w = Math.Abs(reference.X - zero);
                 var l = reference.X < zero
                     ? reference.X
                     : zero;
 
+            
                 if (chartPoint.EvaluatesGantt)
                 {
                     l = ChartFunctions.ToDrawMargin(chartPoint.XStart, AxisOrientation.X, Chart, View.ScalesXAt);
-                    w -= l;
+                    if (!(reference.X < zero && l < zero)) w -= l;
                 }
 
                 rectangleView.Data.Height = singleRowHeight - padding;
@@ -122,7 +124,7 @@ namespace LiveCharts.SeriesAlgorithms
         double ICartesianSeries.GetMinX(AxisCore axis)
         {
             var f = AxisLimits.SeparatorMin(axis);
-            return CurrentYAxis.BotLimit >= 0 && CurrentYAxis.TopLimit > 0
+            return CurrentXAxis.BotLimit >= 0 && CurrentXAxis.TopLimit > 0
                 ? (f >= 0 ? f : 0)
                 : f;
         }
@@ -130,7 +132,7 @@ namespace LiveCharts.SeriesAlgorithms
         double ICartesianSeries.GetMaxX(AxisCore axis)
         {
             var f = AxisLimits.SeparatorMaxRounded(axis);
-            return CurrentYAxis.BotLimit < 0 && CurrentYAxis.TopLimit <= 0
+            return CurrentXAxis.BotLimit < 0 && CurrentXAxis.TopLimit <= 0
                 ? (f >= 0 ? f : 0)
                 : f;
         }

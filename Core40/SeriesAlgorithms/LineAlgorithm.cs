@@ -180,7 +180,8 @@ namespace LiveCharts.SeriesAlgorithms
 
                     isOpen = true;
                 }
-                if (isOpen) lineView.EndSegment(segmentPosition, p1);
+                if (!isOpen) continue;
+                lineView.EndSegment(segmentPosition, p1);
                 segmentPosition++;
             }
         }

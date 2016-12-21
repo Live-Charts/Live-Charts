@@ -20,6 +20,8 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
+using System;
+
 namespace LiveCharts
 {
     /// <summary>
@@ -34,6 +36,15 @@ namespace LiveCharts
         /// <summary>
         /// Places a labels inside the bar
         /// </summary>
-        Merged
+        [Obsolete("Instead use BarLabelPosition.Parallel")]
+        Merged,
+        /// <summary>
+        /// Places a labels in a parallel orientation to the bar height.
+        /// </summary>
+        Parallel,
+        /// <summary>
+        /// Places a labels in a perpendicular orientation to the bar height.
+        /// </summary>
+        Perpendicular
     }
 }
