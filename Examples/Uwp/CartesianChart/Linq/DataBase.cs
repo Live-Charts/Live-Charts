@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Threading.Tasks;
 using Windows.Storage;
@@ -28,8 +29,8 @@ namespace UWP.CartesianChart.Linq
                     read.Add(new City
                     {
                         Name = values[0],
-                        Population = double.Parse(values[1]),
-                        Area = double.Parse(values[2]),
+                        Population = double.Parse(values[1], CultureInfo.InvariantCulture),
+                        Area = double.Parse(values[2], CultureInfo.InvariantCulture),
                         Country = values[3]
                     });
                 }
