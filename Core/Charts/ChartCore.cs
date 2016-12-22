@@ -632,20 +632,20 @@ namespace LiveCharts.Charts
 
                 if (mode == StackMode.Percentage)
                 {
-                    if (double.IsNaN(ax.BotLimit)) ax.BotLimit = 0;
-                    if (double.IsNaN(ax.TopLimit)) ax.TopLimit = 1;
+                    if (double.IsNaN(ax.MinValue)) ax.BotLimit = 0;
+                    if (double.IsNaN(ax.MaxValue)) ax.TopLimit = 1;
                 }
                 else
                 {
                     if (mostLeft < ax.BotLimit)
                         // ReSharper disable once CompareOfFloatsByEqualityOperator
-                        if (double.IsNaN(ax.BotLimit))
+                        if (double.IsNaN(ax.MinValue))
                             ax.BotLimit = mostLeft == 0
                                 ? 0
                                 : ((int) (mostLeft/ax.S) - 1)*ax.S;
                     if (mostRight > ax.TopLimit)
                         // ReSharper disable once CompareOfFloatsByEqualityOperator
-                        if (double.IsNaN(ax.TopLimit))
+                        if (double.IsNaN(ax.MaxValue))
                             ax.TopLimit = mostRight == 0
                                 ? 0
                                 : ((int) (mostRight/ax.S) + 1)*ax.S;
@@ -658,20 +658,20 @@ namespace LiveCharts.Charts
 
                 if (mode == StackMode.Percentage)
                 {
-                    if (double.IsNaN(ay.BotLimit)) ay.BotLimit = 0;
-                    if (double.IsNaN(ay.TopLimit)) ay.TopLimit = 1;
+                    if (double.IsNaN(ay.MinValue)) ay.BotLimit = 0;
+                    if (double.IsNaN(ay.MaxValue)) ay.TopLimit = 1;
                 }
                 else
                 {
                     if (mostLeft < ay.BotLimit)
                         // ReSharper disable once CompareOfFloatsByEqualityOperator
-                        if (double.IsNaN(ay.BotLimit))
+                        if (double.IsNaN(ay.MinValue))
                             ay.BotLimit = mostLeft == 0
                                 ? 0
                                 : ((int) (mostLeft/ay.S) - 1)*ay.S;
                     if (mostRight > ay.TopLimit)
                         // ReSharper disable once CompareOfFloatsByEqualityOperator
-                        if (double.IsNaN(ay.TopLimit))
+                        if (double.IsNaN(ay.MaxValue))
                             ay.TopLimit = mostRight == 0
                                 ? 0
                                 : ((int) (mostRight/ay.S) + 1)*ay.S;

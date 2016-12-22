@@ -99,14 +99,17 @@ namespace LiveCharts.SeriesAlgorithms
                     p3 = new CorePoint(p3.X + uw.X, p3.Y - uw.Y);
                 }
 
-                lineView.StartSegment(segmentPosition, p1);
-                segmentPosition += segmentPosition == 0 ? 1 : 2;
-
                 ChartPoint previousDrawn = null;
                 var isOpen = false;
 
                 for (var index = 0; index < segment.Count; index++)
                 {
+                    if (isOpen)
+                    {
+                        lineView.StartSegment(segmentPosition, p1);
+                        segmentPosition += segmentPosition == 0 ? 1 : 2;
+                    }
+
                     var chartPoint = segment[index];
 
                     chartPoint.ChartLocation = p1;

@@ -98,6 +98,13 @@ namespace LiveCharts.Wpf
         /// The splitters collector.
         /// </value>
         protected int SplittersCollector { get; set; }
+        /// <summary>
+        /// Gets or sets a value indicating whether this instance is new.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if this instance is new; otherwise, <c>false</c>.
+        /// </value>
+        private bool IsNew { get; set; }
         #endregion
 
         #region Properties
@@ -181,26 +188,6 @@ namespace LiveCharts.Wpf
 
             SplittersCollector++;
 
-            var uw = Model.Chart.AxisX[ScalesXAt].EvaluatesUnitWidth
-                ? ChartFunctions.GetUnitWidth(AxisOrientation.X, Model.Chart, ScalesXAt)/2
-                : 0;
-            var areaLimit = Model.Chart.DrawMargin.Height;
-            if (!double.IsNaN(AreaLimit))
-                areaLimit = ChartFunctions.ToDrawMargin(AreaLimit, AxisOrientation.Y, Model.Chart, ScalesYAt);
-
-            if (Figure != null && Values != null)
-            {
-                var xi = (ActualValues.GetPoints(this).FirstOrDefault() ?? new ChartPoint()).X;
-                xi = ChartFunctions.ToDrawMargin(xi, AxisOrientation.X, Model.Chart, ScalesXAt);
-                xi += uw;
-                
-                if (Model.Chart.View.DisableAnimations)
-                    Figure.StartPoint = new Point(xi, areaLimit);
-                else
-                    Figure.BeginAnimation(PathFigure.StartPointProperty,
-                        new PointAnimation(new Point(xi, areaLimit), Model.Chart.View.AnimationsSpeed));
-            }
-
             if (IsPathInitialized)
             {
                 Model.Chart.View.EnsureElementBelongsToCurrentDrawMargin(Path);
@@ -232,11 +219,6 @@ namespace LiveCharts.Wpf
             Path.Data = geometry;
             
             Model.Chart.View.EnsureElementBelongsToCurrentDrawMargin(Path);
-
-            var x = (ActualValues.GetPoints(this).FirstOrDefault() ?? new ChartPoint()).X;
-            x = ChartFunctions.ToDrawMargin(x, AxisOrientation.X, Model.Chart, ScalesXAt);
-            x += uw;
-            Figure.StartPoint = new Point(x, areaLimit);
         }
 
         /// <summary>
@@ -388,6 +370,21 @@ namespace LiveCharts.Wpf
             var animSpeed = Model.Chart.View.AnimationsSpeed;
             var noAnim = Model.Chart.View.DisableAnimations;
 
+            var areaLimit = Model.Chart.DrawMargin.Height;
+            if (!double.IsNaN(AreaLimit))
+                areaLimit = ChartFunctions.ToDrawMargin(AreaLimit, AxisOrientation.Y, Model.Chart, ScalesYAt);
+
+            if (Values != null)
+            {
+                if (Model.Chart.View.DisableAnimations || IsNew)
+                    Figure.StartPoint = new Point(location.X, areaLimit);
+                else
+                    Figure.BeginAnimation(PathFigure.StartPointProperty,
+                        new PointAnimation(new Point(location.X, areaLimit), Model.Chart.View.AnimationsSpeed));
+
+                IsNew = false;
+            }
+
             if (atIndex != 0)
             {
                 Figure.Segments.Remove(splitter.Bottom);
@@ -482,6 +479,8 @@ namespace LiveCharts.Wpf
 
             DefaultFillOpacity = 0.15;
             Splitters = new List<LineSegmentSplitter>();
+
+            IsNew = true;
         }
 
         #endregion
