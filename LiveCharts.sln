@@ -23,11 +23,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UWP", "Examples\UWP\UWP.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core40", "Core40\Core40.csproj", "{F261C3D7-6194-4625-9516-044081B06028}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{2C6AC81D-9A5A-41B7-884F-F3AB1443F0F9}"
-	ProjectSection(SolutionItems) = preProject
-		internals.txt = internals.txt
-	EndProjectSection
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
