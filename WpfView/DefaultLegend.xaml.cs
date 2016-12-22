@@ -155,6 +155,8 @@ namespace LiveCharts.Wpf
         /// </returns>
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
+            if (values[0] == DependencyProperty.UnsetValue) return null;
+
             return (Orientation?) values[0] ?? (Orientation) values[1];
         }
 
