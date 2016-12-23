@@ -33,7 +33,7 @@
     <DocumentationFile>bin\Release\LiveCharts.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup>
-    <SignAssembly>true</SignAssembly>
+    <SignAssembly>false</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
     <AssemblyOriginatorKeyFile>sign.pfx</AssemblyOriginatorKeyFile>
