@@ -106,8 +106,7 @@ public void BuildProject(string path, string outputPath, string configuration, s
                                         .WithProperty("Platform", platform)
                                         .WithTarget("Clean,Build")
                                         .WithProperty("OutputPath", outputPath)
-                                        .SetVerbosity(Cake.Core.Diagnostics.Verbosity.Minimal
-        ));
+                                        .SetVerbosity(Cake.Core.Diagnostics.Verbosity.Minimal));
     }
     catch(Exception ex)
     {
