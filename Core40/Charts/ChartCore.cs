@@ -642,13 +642,13 @@ namespace LiveCharts.Charts
                         if (double.IsNaN(ax.MinValue))
                             ax.BotLimit = mostLeft == 0
                                 ? 0
-                                : ((int)(mostLeft / ax.S) - 1) * ax.S;
+                                : ((int) (mostLeft/ax.S) - 1)*ax.S;
                     if (mostRight > ax.TopLimit)
                         // ReSharper disable once CompareOfFloatsByEqualityOperator
                         if (double.IsNaN(ax.MaxValue))
                             ax.TopLimit = mostRight == 0
                                 ? 0
-                                : ((int)(mostRight / ax.S) + 1) * ax.S;
+                                : ((int) (mostRight/ax.S) + 1)*ax.S;
                 }
             }
 
@@ -668,13 +668,13 @@ namespace LiveCharts.Charts
                         if (double.IsNaN(ay.MinValue))
                             ay.BotLimit = mostLeft == 0
                                 ? 0
-                                : ((int)(mostLeft / ay.S) - 1) * ay.S;
+                                : ((int) (mostLeft/ay.S) - 1)*ay.S;
                     if (mostRight > ay.TopLimit)
                         // ReSharper disable once CompareOfFloatsByEqualityOperator
                         if (double.IsNaN(ay.MaxValue))
                             ay.TopLimit = mostRight == 0
                                 ? 0
-                                : ((int)(mostRight / ay.S) + 1) * ay.S;
+                                : ((int) (mostRight/ay.S) + 1)*ay.S;
                 }
             }
         }

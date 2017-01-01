@@ -230,3 +230,13 @@ ModelManifest.xml
 /binaries
 /binaries.zip
 /internals.txt
+/Autofac.dll
+/Cake.Common.dll
+/Cake.Core.dll
+/Cake.exe
+/Cake.NuGet.dll
+/LICENSE
+/Mono.CSharp.dll
+/NuGet.Core.dll
+/Roslyn.Compilers.CSharp.dll
+/Roslyn.Compilers.dll
