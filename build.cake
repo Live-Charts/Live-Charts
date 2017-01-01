@@ -20,7 +20,7 @@ Task("Core")
     {
         var ouputDirectory = "./bin/Release";
 
-        Information("Bulding Core.PCL...");
+        Information("Building Core.PCL...");
         BuildProject("./Core/Core.csproj", ouputDirectory, buildType, configuration);
 
         Information("Building Core.Net40...");
@@ -75,7 +75,7 @@ Task("WinForms")
 Task("UWP")
     .Does(() =>
     {
-        Information("Bulding UWP...");        
+        Information("Building UWP...");        
         BuildProject("./UwpView/UwpView.csproj", "./bin/AnyCPU", buildType, "AnyCPU");
 
         Information("Packing UWP...");
@@ -111,7 +111,7 @@ public void BuildProject(string path, string outputPath, string configuration, s
     }
     catch(Exception ex)
     {
-        Error("An error occured while trying to build {0} with {1}", path, configuration);
+        Error("An error occurred while trying to build {0} with {1}", path, configuration);
     }
 
     Information("Build completed");
