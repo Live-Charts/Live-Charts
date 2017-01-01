@@ -104,7 +104,7 @@ namespace LiveCharts.SeriesAlgorithms
 
                 for (var index = 0; index < segment.Count; index++)
                 {
-                    if (isOpen)
+                    if (!isOpen)
                     {
                         lineView.StartSegment(segmentPosition, p1);
                         segmentPosition += segmentPosition == 0 ? 1 : 2;
