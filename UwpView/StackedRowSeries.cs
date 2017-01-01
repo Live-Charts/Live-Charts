@@ -116,7 +116,7 @@ namespace LiveCharts.Uwp
         /// </summary>
         public static readonly DependencyProperty LabelPositionProperty = DependencyProperty.Register(
             "LabelPosition", typeof(BarLabelPosition), typeof(StackedRowSeries),
-            new PropertyMetadata(BarLabelPosition.Top, CallChartUpdater()));
+            new PropertyMetadata(BarLabelPosition.Parallel, CallChartUpdater()));
         /// <summary>
         /// Gets or sets where the label is placed
         /// </summary>
