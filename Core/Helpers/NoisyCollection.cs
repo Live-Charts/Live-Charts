@@ -114,7 +114,7 @@ namespace LiveCharts.Helpers
         public T this[int index]
         {
             get { return _source[index]; }
-            set { _source[index] = value; }
+            set { lock (_source) { _source[index] = value; } }
         }
 
         /// <summary>
@@ -125,7 +125,7 @@ namespace LiveCharts.Helpers
         object IList.this[int index]
         {
             get { return _source[index]; }
-            set { _source[index] = (T) value; }
+            set { lock (_source) { _source[index] = (T)value; } }
         }
 
         /// <summary>
@@ -204,8 +204,11 @@ namespace LiveCharts.Helpers
         int IList.Add(object value)
         {
             var v = (T) value;
-            Add(v);
-            return _source.IndexOf(v);
+            lock (_source)
+            {
+                Add(v);
+                return _source.IndexOf(v);
+            }
         }
 
         /// <summary>
@@ -214,8 +217,11 @@ namespace LiveCharts.Helpers
         /// <returns>number of items in the collection</returns>
         public void Add(T item)
         {
-            _source.Add(item);
-            OnCollectionChanged(null, new[] {item});
+            lock (_source)
+            {
+                _source.Add(item);
+            }
+            OnCollectionChanged(null, new[] { item });
         }
 
         /// <summary>
@@ -234,7 +240,10 @@ namespace LiveCharts.Helpers
         public void AddRange(IEnumerable<T> items)
         {
             var newItems = items as T[] ?? items.ToArray();
-            _source.AddRange(newItems);
+            lock (_source)
+            {
+                _source.AddRange(newItems);
+            }
             OnCollectionChanged(null, newItems);
         }
 
@@ -245,7 +254,10 @@ namespace LiveCharts.Helpers
         /// <param name="item">item to insert</param>
         public void Insert(int index, T item)
         {
-            _source.Insert(index, item);
+            lock (_source)
+            {
+                _source.Insert(index, item);
+            }
             OnCollectionChanged(null, new[] { item });
         }
 
@@ -277,7 +289,10 @@ namespace LiveCharts.Helpers
         public void InsertRange(int index, IEnumerable<T> collection)
         {
             var newItems = collection as T[] ?? collection.ToArray();
-            _source.InsertRange(index, newItems);
+            lock (_source)
+            {
+                _source.InsertRange(index, newItems);
+            }
             OnCollectionChanged(null, newItems);
         }
 
@@ -297,7 +312,11 @@ namespace LiveCharts.Helpers
         /// <returns>number of items in the collection</returns>
         public bool Remove(T item)
         {
-            var ans = _source.Remove(item);
+            bool ans = false;
+            lock (_source)
+            {
+                ans = _source.Remove(item);
+            }
             OnCollectionChanged(new[] { item }, null);
             return ans;
         }
@@ -326,8 +345,12 @@ namespace LiveCharts.Helpers
         /// <param name="index">index to remove at</param>
         public void RemoveAt(int index)
         {
-            var i = _source[index];
-            _source.RemoveAt(index);
+            T i = default(T);
+            lock (_source)
+            {
+                i = _source[index];
+                _source.RemoveAt(index);
+            }
             OnCollectionChanged(new[] {i}, null);
         }
 
@@ -352,8 +375,12 @@ namespace LiveCharts.Helpers
         /// </summary>
         public void Clear()
         {
-            var backup = _source.ToArray();
-            _source.Clear();
+            T[] backup = null;
+            lock (_source)
+            {
+                backup = _source.ToArray();
+                _source.Clear();
+            }
             OnCollectionChanged(backup, null);
             if (CollectionReset != null) CollectionReset.Invoke();
         }
@@ -395,7 +422,10 @@ namespace LiveCharts.Helpers
         /// <param name="index">array index</param>
         public void CopyTo(T[] array, int index)
         {
-            _source.CopyTo(array, index);
+            lock (_source)
+            {
+                _source.CopyTo(array, index);
+            }
         }
 
         /// <summary>
