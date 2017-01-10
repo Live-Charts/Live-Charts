@@ -201,8 +201,8 @@ namespace LiveCharts.Charts
                 SetAxisLimits(
                     AxisX[index],
                     View.ActualSeries
-                        .Where(series => series.Values != null && series.ScalesXAt == index)
-                        .ToArray(),
+                        // ReSharper disable once AccessToModifiedClosure
+                        .Where(series => series.Values != null && series.ScalesXAt == index),
                     AxisOrientation.X);
             }
 
@@ -211,8 +211,8 @@ namespace LiveCharts.Charts
                 SetAxisLimits(
                     AxisY[index],
                     View.ActualSeries
-                        .Where(series => series.Values != null && series.ScalesYAt == index)
-                        .ToArray(),
+                        // ReSharper disable once AccessToModifiedClosure
+                        .Where(series => series.Values != null && series.ScalesYAt == index),
                     AxisOrientation.Y);
             }
         }
@@ -669,7 +669,7 @@ namespace LiveCharts.Charts
         #endregion
 
         #region Privates
-        private static void SetAxisLimits(AxisCore ax, ISeriesView[] series, AxisOrientation orientation)
+        private static void SetAxisLimits(AxisCore ax, IEnumerable<ISeriesView> series, AxisOrientation orientation)
         {
             //                     [ max, min, pointRadius ]
             var boundries = new [] {double.MinValue, double.MaxValue, 0d};

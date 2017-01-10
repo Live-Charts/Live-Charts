@@ -55,8 +55,6 @@ namespace LiveCharts.Charts
         /// </summary>
         public override void PrepareAxes()
         {
-            base.PrepareAxes();
-
             if (View.ActualSeries.Any(x => !(x.Model is ICartesianSeries)))
                 throw new LiveChartsException(
                     "There is a invalid series in the series collection, " +
@@ -69,6 +67,7 @@ namespace LiveCharts.Charts
                 var xi = AxisX[index];
 
                 xi.CalculateSeparator(this, AxisOrientation.X);
+
                 xi.BotLimit = double.IsNaN(xi.MinValue) ? cartesianSeries.Where(x => x.View.ScalesXAt == index)
                     .Select(x => x.GetMinX(xi))
                     .DefaultIfEmpty(0).Min() : xi.MinValue;
@@ -87,7 +86,7 @@ namespace LiveCharts.Charts
                         else xi.TopLimit = xi.MaxValue;
 
                         if (Math.Abs(xi.BotLimit - xi.TopLimit) < xi.S * .01 && !View.IsInDesignMode)
-                            throw new LiveChartsException("One axis has an invalid range, it is or is really " +
+                            throw new LiveChartsException("One axis has an invalid range, it is or it is " +
                                                           "close to zero, please ensure your axis has a valid " +
                                                           "range");
                     }
