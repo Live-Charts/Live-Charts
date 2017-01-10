@@ -931,7 +931,7 @@ namespace LiveCharts.Wpf.Charts.Base
                         Series = new SeriesViewModel
                         {
                             PointGeometry = ((Series) x.SeriesView).PointGeometry ??
-                                            Geometry.Parse("M 0,0.5 h 1,0.5 Z"),
+                                            Geometry.Parse("M.5,.5 L1,0"),
                             Fill = ((Series) x.SeriesView) is IFondeable &&
                                    !(x.SeriesView is IVerticalStackedAreaSeriesView ||
                                      x.SeriesView is IStackedAreaSeriesView)

@@ -948,7 +948,7 @@ namespace LiveCharts.Uwp.Charts.Base
                         Series = new SeriesViewModel
                         {
                             PointGeometry = ((Series) x.SeriesView).PointGeometry == DefaultGeometries.None
-                                ? new PointGeometry("M 0, 0.5 h 1, 0.5 Z").Parse()
+                                ? new PointGeometry("M.5,.5 L1,0").Parse()
                                 : ((Series) x.SeriesView).PointGeometry.Parse(),
                             Fill = ((Series) x.SeriesView) is IFondeable &&
                                    !(x.SeriesView is IVerticalStackedAreaSeriesView ||
