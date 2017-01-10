@@ -36,7 +36,7 @@ namespace LiveCharts.Wpf
     /// <summary>
     /// The Bubble series, draws scatter series, only using X and Y properties or bubble series, if you also use the weight property, this series should be used in a cartesian chart.
     /// </summary>
-    public class ScatterSeries : Series, IScatterSeriesView, IPointGeometrySize
+    public class ScatterSeries : Series, IScatterSeriesView, IAreaPoint
     {
         #region Constructors
         /// <summary>
