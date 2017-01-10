@@ -774,6 +774,7 @@ namespace LiveCharts.Wpf.Charts.Base
             //if (AxisX.Count == 0)
             //    AxisX.AddRange(DefaultAxes.CleanAxis);
 
+
             if (AxisX.Count == 0)
                 AxisX.Add(new Axis {Separator = new Separator()});
 

@@ -200,16 +200,33 @@ namespace LiveCharts.Charts
             {
                 var xi = AxisX[index];
 
-                xi.TopLimit = double.IsNaN(xi.MaxValue) ?
-                              View.ActualSeries
-                                  .Where(series => series.Values != null && series.ScalesXAt == index)
-                                  .Select(series => series.Values.GetTracker(series).XLimit.Max)
-                                  .DefaultIfEmpty(0).Max() : xi.MaxValue;
-                xi.BotLimit = double.IsNaN(xi.MinValue) ?
-                              View.ActualSeries
-                                  .Where(series => series.Values != null && series.ScalesXAt == index)
-                                  .Select(series => series.Values.GetTracker(series).XLimit.Min)
-                                  .DefaultIfEmpty(0).Min() : xi.MinValue;
+                if (double.IsNaN(xi.MaxValue))
+                {
+                    xi.TopSeriesLimit = View.ActualSeries
+                        .Where(series => series.Values != null && series.ScalesXAt == index)
+                        .Select(series => series.Values.GetTracker(series).XLimit.Max)
+                        .DefaultIfEmpty(0)
+                        .Max();
+                    xi.TopLimit = xi.TopSeriesLimit;
+                }
+                else
+                {
+                    xi.TopLimit = xi.MaxValue;
+                }
+
+                if (double.IsNaN(xi.MinValue))
+                {
+                    xi.BotSeriesLimit = View.ActualSeries
+                        .Where(series => series.Values != null && series.ScalesXAt == index)
+                        .Select(series => series.Values.GetTracker(series).XLimit.Min)
+                        .DefaultIfEmpty(0)
+                        .Min();
+                    xi.BotLimit = xi.BotSeriesLimit;
+                }
+                else
+                {
+                    xi.BotLimit = xi.MinValue;
+                }
             }
 
             for (var index = 0; index < AxisY.Count; index++)

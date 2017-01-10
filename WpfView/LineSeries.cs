@@ -42,7 +42,7 @@ namespace LiveCharts.Wpf
     /// <summary>
     /// The line series displays trends between points, you must add this series to a cartesian chart. 
     /// </summary>
-    public class LineSeries : Series, ILineSeriesView, IFondeable
+    public class LineSeries : Series, ILineSeriesView, IFondeable, IAreaPoint
     {
         #region Constructors
         /// <summary>
@@ -351,7 +351,15 @@ namespace LiveCharts.Wpf
 
         #endregion
 
-        #region Public Methods 
+        #region Public Methods         
+        /// <summary>
+        /// Gets the point diameter.
+        /// </summary>
+        /// <returns></returns>
+        public double GetPointDiameter()
+        {
+            return PointGeometrySize/2;
+        }
 
         /// <summary>
         /// Starts the segment.

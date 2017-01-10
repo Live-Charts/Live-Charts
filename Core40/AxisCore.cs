@@ -186,6 +186,8 @@ namespace LiveCharts
         internal double Tab { get; set; }
         internal double TopLimit { get; set; }
         internal double BotLimit { get; set; }
+        internal double TopSeriesLimit { get; set; }
+        internal double BotSeriesLimit { get; set; }
         internal double Magnitude { get; set; }
         internal int CleanFactor { get; set; }
         internal Dictionary<double, SeparatorElementCore> Cache { get; set; }
