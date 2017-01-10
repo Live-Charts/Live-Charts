@@ -1040,7 +1040,7 @@ namespace LiveCharts.Wpf.Charts.Base
                               t is IStackedAreaSeriesView)
                     ? ((IFondeable) t).PointForeround
                     : ((Series) t).Fill;
-                item.PointGeometry = series.PointGeometry ?? Geometry.Parse("M 0,0.5 h 1,0.5 Z");
+                item.PointGeometry = series.PointGeometry ?? Geometry.Parse("M.5,.5 L1,0");
 
                 l.Add(item);
             }
