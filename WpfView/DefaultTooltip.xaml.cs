@@ -28,6 +28,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media;
+using System.Windows.Media.Effects;
 
 namespace LiveCharts.Wpf
 {
@@ -44,10 +45,7 @@ namespace LiveCharts.Wpf
         public DefaultTooltip()
         {
             InitializeComponent();
-
-            SetValue(ForegroundProperty, Brushes.White);
-            SetValue(CornerRadiusProperty, 4d);
-
+            
             DataContext = this;
         }
 
@@ -57,20 +55,61 @@ namespace LiveCharts.Wpf
         static DefaultTooltip()
         {
             BackgroundProperty.OverrideMetadata(
-                typeof(DefaultTooltip), new FrameworkPropertyMetadata(Brushes.Black));
+                typeof(DefaultTooltip), new FrameworkPropertyMetadata(new SolidColorBrush(Color.FromRgb(255,255,255))));
+            BorderThicknessProperty.OverrideMetadata(
+                typeof(DefaultTooltip), new FrameworkPropertyMetadata(new Thickness(5, .5, .5, .5)));
+            BorderBrushProperty.OverrideMetadata(
+                typeof(DefaultTooltip), new FrameworkPropertyMetadata(new SolidColorBrush(Color.FromRgb(100,180,245))));
+            EffectProperty.OverrideMetadata(
+                typeof(DefaultTooltip),
+                new FrameworkPropertyMetadata(new DropShadowEffect {BlurRadius = 10, Color = Colors.LightGray}));
+        }
+
+        /// <summary>
+        /// The show title property
+        /// </summary>
+        public static readonly DependencyProperty ShowTitleProperty = DependencyProperty.Register(
+            "ShowTitle", typeof(bool), typeof(DefaultTooltip), new PropertyMetadata(true));
+        /// <summary>
+        /// Gets or sets a value indicating whether the tooltip should show the shared coordinate value in the current tooltip data.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [show title]; otherwise, <c>false</c>.
+        /// </value>
+        public bool ShowTitle
+        {
+            get { return (bool) GetValue(ShowTitleProperty); }
+            set { SetValue(ShowTitleProperty, value); }
+        }
+
+        /// <summary>
+        /// The show series property
+        /// </summary>
+        public static readonly DependencyProperty ShowSeriesProperty = DependencyProperty.Register(
+            "ShowSeries", typeof(bool), typeof(DefaultTooltip), new PropertyMetadata(true));
+        /// <summary>
+        /// Gets or sets a value indicating whether should show series name and color.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [show series]; otherwise, <c>false</c>.
+        /// </value>
+        public bool ShowSeries
+        {
+            get { return (bool) GetValue(ShowSeriesProperty); }
+            set { SetValue(ShowSeriesProperty, value); }
         }
 
         /// <summary>
         /// The corner radius property
         /// </summary>
         public static readonly DependencyProperty CornerRadiusProperty = DependencyProperty.Register(
-            "CornerRadius", typeof (double), typeof (DefaultTooltip), new PropertyMetadata(2d));
+            "CornerRadius", typeof (CornerRadius), typeof (DefaultTooltip), new PropertyMetadata(new CornerRadius(2)));
         /// <summary>
         /// Gets or sets the corner radius of the tooltip
         /// </summary>
-        public double CornerRadius
+        public CornerRadius CornerRadius
         {
-            get { return (double) GetValue(CornerRadiusProperty); }
+            get { return (CornerRadius) GetValue(CornerRadiusProperty); }
             set { SetValue(CornerRadiusProperty, value); }
         }
 
@@ -282,42 +321,49 @@ namespace LiveCharts.Wpf
     /// <summary>
     /// 
     /// </summary>
-    /// <seealso cref="System.Windows.Data.IValueConverter" />
-    public class SharedVisibilityConverter : IValueConverter
+    /// <seealso cref="System.Windows.Data.IMultiValueConverter" />
+    public class SharedVisibilityConverter : IMultiValueConverter
     {
         /// <summary>
-        /// Converts a value.
+        /// Converts source values to a value for the binding target. The data binding engine calls this method when it propagates the values from source bindings to the binding target.
         /// </summary>
-        /// <param name="value">The value produced by the binding source.</param>
+        /// <param name="values">The array of values that the source bindings in the <see cref="T:System.Windows.Data.MultiBinding" /> produces. The value <see cref="F:System.Windows.DependencyProperty.UnsetValue" /> indicates that the source binding has no value to provide for conversion.</param>
         /// <param name="targetType">The type of the binding target property.</param>
         /// <param name="parameter">The converter parameter to use.</param>
         /// <param name="culture">The culture to use in the converter.</param>
         /// <returns>
-        /// A converted value. If the method returns null, the valid null value is used.
+        /// A converted value.If the method returns null, the valid null value is used.A return value of <see cref="T:System.Windows.DependencyProperty" />.<see cref="F:System.Windows.DependencyProperty.UnsetValue" /> indicates that the converter did not produce a value, and that the binding will use the <see cref="P:System.Windows.Data.BindingBase.FallbackValue" /> if it is available, or else will use the default value.A return value of <see cref="T:System.Windows.Data.Binding" />.<see cref="F:System.Windows.Data.Binding.DoNothing" /> indicates that the binding does not transfer the value or use the <see cref="P:System.Windows.Data.BindingBase.FallbackValue" /> or the default value.
         /// </returns>
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
-            var v = value as TooltipData;
+            var v = values[0] as TooltipData;
+            var show = values[1] as bool?;
 
-            if (v == null) return null;
+            if (v == null || show == null) return null;
 
-            if (v.SelectionMode == TooltipSelectionMode.OnlySender) return Visibility.Collapsed;
+            if (show.Value == false)
+                return Visibility.Collapsed;
 
-            return v.SharedValue == null ? Visibility.Collapsed : Visibility.Visible;
+            if (v.SelectionMode == TooltipSelectionMode.OnlySender)
+                return Visibility.Collapsed;
+
+            return v.SharedValue == null
+                ? Visibility.Collapsed
+                : Visibility.Visible;
         }
 
         /// <summary>
-        /// Converts a value.
+        /// Converts a binding target value to the source binding values.
         /// </summary>
-        /// <param name="value">The value that is produced by the binding target.</param>
-        /// <param name="targetType">The type to convert to.</param>
+        /// <param name="value">The value that the binding target produces.</param>
+        /// <param name="targetTypes">The array of types to convert to. The array length indicates the number and types of values that are suggested for the method to return.</param>
         /// <param name="parameter">The converter parameter to use.</param>
         /// <param name="culture">The culture to use in the converter.</param>
         /// <returns>
-        /// A converted value. If the method returns null, the valid null value is used.
+        /// An array of values that have been converted from the target value back to the source values.
         /// </returns>
         /// <exception cref="System.NotImplementedException"></exception>
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
         {
             throw new NotImplementedException();
         }
