@@ -21,6 +21,7 @@
 //SOFTWARE.
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using LiveCharts.Definitions.Charts;
 using LiveCharts.Definitions.Series;
@@ -55,6 +56,8 @@ namespace LiveCharts.Charts
         /// </summary>
         public override void PrepareAxes()
         {
+            base.PrepareAxes();
+
             if (View.ActualSeries.Any(x => !(x.Model is ICartesianSeries)))
                 throw new LiveChartsException(
                     "There is a invalid series in the series collection, " +
@@ -68,12 +71,8 @@ namespace LiveCharts.Charts
 
                 xi.CalculateSeparator(this, AxisOrientation.X);
 
-                xi.BotLimit = double.IsNaN(xi.MinValue) ? cartesianSeries.Where(x => x.View.ScalesXAt == index)
-                    .Select(x => x.GetMinX(xi))
-                    .DefaultIfEmpty(0).Min() : xi.MinValue;
-                xi.TopLimit = double.IsNaN(xi.MaxValue) ? cartesianSeries.Where(x => x.View.ScalesXAt == index)
-                    .Select(x => x.GetMaxX(xi))
-                    .DefaultIfEmpty(0).Max() : xi.MaxValue;
+                // ReSharper disable once AccessToModifiedClosure
+                SetAxisLimits(xi, cartesianSeries.Where(x => x.View.ScalesXAt == index), AxisOrientation.X);
 
                 if (Math.Abs(xi.BotLimit - xi.TopLimit) < xi.S * .01)
                 {
@@ -87,7 +86,7 @@ namespace LiveCharts.Charts
 
                         if (Math.Abs(xi.BotLimit - xi.TopLimit) < xi.S * .01 && !View.IsInDesignMode)
                             throw new LiveChartsException("One axis has an invalid range, it is or it is " +
-                                                          "close to zero, please ensure your axis has a valid " +
+                                                          "tends to zero, please ensure your axis has a valid " +
                                                           "range");
                     }
                     else
@@ -105,12 +104,9 @@ namespace LiveCharts.Charts
                 var yi = AxisY[index];
 
                 yi.CalculateSeparator(this, AxisOrientation.Y);
-                yi.BotLimit = double.IsNaN(yi.MinValue) ? cartesianSeries.Where(x => x.View.ScalesYAt == index)
-                    .Select(x => x.GetMinY(yi))
-                    .DefaultIfEmpty(0).Min() : yi.MinValue;
-                yi.TopLimit = double.IsNaN(yi.MaxValue) ? cartesianSeries.Where(x => x.View.ScalesYAt == index)
-                    .Select(x => x.GetMaxY(yi))
-                    .DefaultIfEmpty(0).Max() : yi.MaxValue;
+
+                // ReSharper disable once AccessToModifiedClosure
+                SetAxisLimits(yi, cartesianSeries.Where(x => x.View.ScalesYAt == index), AxisOrientation.Y);
 
                 if (Math.Abs(yi.BotLimit - yi.TopLimit) < yi.S * .01)
                 {
@@ -123,8 +119,8 @@ namespace LiveCharts.Charts
                         else yi.TopLimit = yi.MaxValue;
 
                         if (Math.Abs(yi.BotLimit - yi.TopLimit) < yi.S * .01)
-                            throw new LiveChartsException("One axis has an invalid range, it is or is really " +
-                                                          "close to zero, please ensure your axis has a valid " +
+                            throw new LiveChartsException("One axis has an invalid range, it is or it " +
+                                                          "tends to zero, please ensure your axis has a valid " +
                                                           "range");
                     }
                     else
@@ -187,6 +183,40 @@ namespace LiveCharts.Charts
         #endregion
 
         #region Privates
+
+        private static void SetAxisLimits(AxisCore ax, IEnumerable<ICartesianSeries> series, AxisOrientation orientation)
+        {
+            //                     [ max, min, pointRadius ]
+            var boundries = new[] { double.MinValue, double.MaxValue, 0d };
+
+            //yi.BotLimit = double.IsNaN(yi.MinValue) ? cartesianSeries.Where(x => x.View.ScalesYAt == index)
+            //    .Select(x => x.GetMinY(yi))
+            //    .DefaultIfEmpty(0).Min() : yi.MinValue;
+            //yi.TopLimit = double.IsNaN(yi.MaxValue) ? cartesianSeries.Where(x => x.View.ScalesYAt == index)
+            //    .Select(x => x.GetMaxY(yi))
+            //    .DefaultIfEmpty(0).Max() : yi.MaxValue;
+
+            foreach (var cartesianSeries in series)
+            {
+                var limit = orientation == AxisOrientation.X
+                    ? new CoreLimit(cartesianSeries.GetMinX(ax), cartesianSeries.GetMaxX(ax))
+                    : new CoreLimit(cartesianSeries.GetMinY(ax), cartesianSeries.GetMaxY(ax));
+                var view = cartesianSeries.View as IAreaPoint;
+                var radius = view != null ? view.GetPointDiameter() : 0;
+
+                if (limit.Max > boundries[0]) boundries[0] = limit.Max;
+                if (limit.Min < boundries[1]) boundries[1] = limit.Min;
+                if (radius > boundries[2]) boundries[2] = radius;
+            }
+
+            ax.TopSeriesLimit = boundries[0];
+            ax.BotSeriesLimit = boundries[1];
+
+            ax.TopLimit = double.IsNaN(ax.MaxValue) ? boundries[0] : ax.MaxValue;
+            ax.BotLimit = double.IsNaN(ax.MinValue) ? boundries[1] : ax.MinValue;
+
+            ax.MaxPointRadius = boundries[2];
+        }
 
         private void PrepareSeries()
         {
