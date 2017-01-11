@@ -33,35 +33,6 @@ using LiveCharts.Uwp.Components;
 namespace LiveCharts.Uwp
 {
     /// <summary>
-    /// 
-    /// </summary>
-    /// <seealso cref="System.ComponentModel.INotifyPropertyChanged" />
-    public interface IChartTooltip : INotifyPropertyChanged
-    {
-        /// <summary>
-        /// Gets or sets the data.
-        /// </summary>
-        /// <value>
-        /// The data.
-        /// </value>
-        TooltipData Data { get; set; }
-        /// <summary>
-        /// Gets or sets the selection mode.
-        /// </summary>
-        /// <value>
-        /// The selection mode.
-        /// </value>
-        TooltipSelectionMode SelectionMode { get; set; }
-        /// <summary>
-        /// Gets or sets a value indicating whether this instance is wrapped.
-        /// </summary>
-        /// <value>
-        /// <c>true</c> if this instance is wrapped; otherwise, <c>false</c>.
-        /// </value>
-        bool IsWrapped { get; set; }
-    }
-
-    /// <summary>
     /// The Default Tooltip control, by default any chart that requires a tooltip will create a new instance of this class.
     /// </summary>
     public partial class DefaultTooltip : IChartTooltip

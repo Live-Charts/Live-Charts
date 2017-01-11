@@ -31,21 +31,6 @@ using System.Windows.Data;
 namespace LiveCharts.Wpf
 {
     /// <summary>
-    /// 
-    /// </summary>
-    /// <seealso cref="System.ComponentModel.INotifyPropertyChanged" />
-    public interface IChartLegend : INotifyPropertyChanged
-    {
-        /// <summary>
-        /// Gets or sets the series.
-        /// </summary>
-        /// <value>
-        /// The series.
-        /// </value>
-        List<SeriesViewModel> Series { get; set; }
-    }
-
-    /// <summary>
     /// The default legend control, by default a new instance of this control is created for every chart that requires a legend.
     /// </summary>
     public partial class DefaultLegend : IChartLegend

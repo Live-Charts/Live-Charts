@@ -163,6 +163,8 @@
       <DependentUpon>HeatColorRange.xaml</DependentUpon>
     </Compile>
     <Compile Include="HeatSeries.cs" />
+    <Compile Include="IChartLegend.cs" />
+    <Compile Include="IChartTooltip.cs" />
     <Compile Include="LineSegmentSplitter.cs" />
     <Compile Include="LineSeries.cs" />
     <Compile Include="Maps\MapResolver.cs" />
