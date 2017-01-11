@@ -32,10 +32,7 @@
              xmlns:wpf="clr-namespace:LiveCharts.Wpf"
              mc:Ignorable="d" 
              d:DataContext="{d:DesignInstance wpf:DefaultTooltip}"
-             BorderThickness="1.3">
-    <UserControl.Background>
-        <SolidColorBrush Color="#202020" Opacity=".8" />
-    </UserControl.Background>
+             x:Name="Control">
     <UserControl.Resources>
         <Style TargetType="TextBlock">
             <Setter Property="Foreground" Value="{Binding Foreground}"></Setter>
@@ -44,44 +41,59 @@
         <wpf:SharedVisibilityConverter x:Key="SharedVisibilityConverter"/>
         <wpf:ChartPointLabelConverter x:Key="ChartPointLabelConverter"/>
         <wpf:ParticipationVisibilityConverter x:Key="ParticipationVisibilityConverter"/>
+        <BooleanToVisibilityConverter x:Key="Bvc"></BooleanToVisibilityConverter>
     </UserControl.Resources>
     <UserControl.Template>
         <ControlTemplate>
-            <Border Background="{Binding Background}" CornerRadius="{Binding CornerRadius}"
-                    BorderThickness="{Binding BorderThickness}" Padding="10 5">
-                <StackPanel Orientation="Vertical">
-                    <TextBlock Text="{Binding Data, Converter={StaticResource SharedConverter}}" HorizontalAlignment="Center" FontWeight="Bold"
-                               Visibility="{Binding Data, Converter={StaticResource SharedVisibilityConverter}}" />
-                    <ItemsControl ItemsSource="{Binding Data.Points}" Grid.IsSharedSizeScope="True">
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate DataType="{x:Type wpf:DataPointViewModel}">
-                                <Grid Margin="2">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="Auto" SharedSizeGroup="Title"/>
-                                        <ColumnDefinition Width="Auto" SharedSizeGroup="Label"/>
-                                        <ColumnDefinition Width="Auto" SharedSizeGroup="Participation"/>
-                                    </Grid.ColumnDefinitions>
-                                    <Path Width="{Binding BulletSize, RelativeSource={RelativeSource Mode=FindAncestor, AncestorLevel=1, AncestorType={x:Type UserControl}}}" 
+            <Grid VerticalAlignment="Center" HorizontalAlignment="Center">
+                <Border Background="{Binding Background}" BorderThickness="1" Effect="{Binding Effect}" CornerRadius="{Binding CornerRadius}"
+                        Width="{Binding Width}" Height="{Binding Height}"/>
+                <Border Background="{Binding Background}" CornerRadius="{Binding CornerRadius}"
+                        BorderThickness="{Binding BorderThickness}" Padding="5"
+                        BorderBrush="{Binding BorderBrush}"
+                        Width="{Binding Width}" Height="{Binding Height}">
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock Text="{Binding Data, Converter={StaticResource SharedConverter}}" HorizontalAlignment="Center" FontWeight="Bold">
+                            <TextBlock.Visibility>
+                                <MultiBinding Converter="{StaticResource SharedVisibilityConverter}">
+                                    <Binding Path="Data"></Binding>
+                                    <Binding Path="ShowTitle"></Binding>
+                                </MultiBinding>
+                            </TextBlock.Visibility>
+                        </TextBlock>
+                        <ItemsControl ItemsSource="{Binding Data.Points}" Grid.IsSharedSizeScope="True">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate DataType="{x:Type wpf:DataPointViewModel}">
+                                    <Grid Margin="2" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="Auto" SharedSizeGroup="Title"/>
+                                            <ColumnDefinition Width="Auto" SharedSizeGroup="Label"/>
+                                            <ColumnDefinition Width="Auto" SharedSizeGroup="Participation"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Path Width="{Binding BulletSize, RelativeSource={RelativeSource Mode=FindAncestor, AncestorLevel=1, AncestorType={x:Type UserControl}}}" 
                                              Height="{Binding BulletSize, RelativeSource={RelativeSource Mode=FindAncestor, AncestorLevel=1, AncestorType={x:Type UserControl}}}" 
                                              StrokeThickness="{Binding Series.StrokeThickness}" 
                                              Stroke="{Binding Series.Stroke}" Fill="{Binding Series.Fill}" 
-                                             Stretch="Fill" Data="{Binding Series.PointGeometry}"/>
-                                    <TextBlock Grid.Column="1" Text="{Binding Series.Title}" VerticalAlignment="Center" Margin="5 0 0 0"/>
-                                    
-                                    <TextBlock Grid.Column="2" Text="{Binding ChartPoint, Converter={StaticResource ChartPointLabelConverter}}" Margin="5 0 0 0" VerticalAlignment="Center"/>
+                                             Stretch="Fill" Data="{Binding Series.PointGeometry}"
+                                             Visibility="{Binding ShowSeries, ElementName=Control, Converter={StaticResource Bvc}}"/>
+                                        <TextBlock Grid.Column="1" Text="{Binding Series.Title}" VerticalAlignment="Center" Margin="5 0 5 0"
+                                                   Visibility="{Binding ShowSeries, ElementName=Control, Converter={StaticResource Bvc}}"/>
 
-                                    <TextBlock Grid.Column="3" Text="{Binding ChartPoint.Participation, StringFormat={}{0:P}}" 
+                                        <TextBlock Grid.Column="2" Text="{Binding ChartPoint, Converter={StaticResource ChartPointLabelConverter}}" VerticalAlignment="Center"/>
+
+                                        <TextBlock Grid.Column="3" Text="{Binding ChartPoint.Participation, StringFormat={}{0:P}}" 
                                                VerticalAlignment="Center" Margin="5 0 0 0"
                                                Visibility="{Binding DataContext.Data, RelativeSource={RelativeSource  FindAncestor, 
                                                                                                     AncestorType={x:Type StackPanel}}, 
                                                                     Converter={StaticResource ParticipationVisibilityConverter}}"/>
-                                </Grid>
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
-                </StackPanel>
-            </Border>
+                                    </Grid>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+                </Border>
+            </Grid>
         </ControlTemplate>
     </UserControl.Template>
 </UserControl>

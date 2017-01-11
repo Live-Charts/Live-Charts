@@ -92,6 +92,8 @@
     <Compile Include="AngularSection.cs" />
     <Compile Include="ColorsCollection.cs" />
     <Compile Include="Components\IFondeable.cs" />
+    <Compile Include="IChartLegend.cs" />
+    <Compile Include="IChartTooltip.cs" />
     <Compile Include="ScatterSeries.cs" />
     <Compile Include="DefaultGeoMapTooltip.xaml.cs">
       <DependentUpon>DefaultGeoMapTooltip.xaml</DependentUpon>
