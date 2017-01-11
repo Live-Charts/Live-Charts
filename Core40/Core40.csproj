@@ -101,6 +101,7 @@
     <Compile Include="Definitions\Series\ILineSeriesView.cs" />
     <Compile Include="Definitions\Series\IPieSeries.cs" />
     <Compile Include="Definitions\Series\IPieSeriesView.cs" />
+    <Compile Include="Definitions\Series\IAreaPoint.cs" />
     <Compile Include="Definitions\Series\IRowSeriesView.cs" />
     <Compile Include="Definitions\Series\IScatterSeriesView.cs" />
     <Compile Include="Definitions\Series\ISeriesView.cs" />

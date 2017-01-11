@@ -39,78 +39,75 @@
     <SignAssembly>false</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>sign.pfx</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup>
     <DelaySign>false</DelaySign>
   </PropertyGroup>
   <ItemGroup>
-    <!-- A reference to the entire .NET Framework is automatically included -->
-    <None Include="sign.pfx" />
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="AxisCore.cs" />
+    <Compile Include="AxisOrientation.cs" />
     <Compile Include="AxisPosition.cs" />
     <Compile Include="AxisSectionCore.cs" />
     <Compile Include="BarLabelPosition.cs" />
+    <Compile Include="ChartFunctions.cs" />
+    <Compile Include="Charting.cs" />
+    <Compile Include="ChartPoint.cs" />
+    <Compile Include="Charts\CartesianChartCore.cs" />
+    <Compile Include="Charts\ChartCore.cs" />
     <Compile Include="Charts\PieChartCore.cs" />
     <Compile Include="ChartUpdater.cs" />
     <Compile Include="ChartValues.cs" />
     <Compile Include="Configurations\CartesianMapper.cs" />
-    <Compile Include="Configurations\WeightedMapper.cs" />
-    <Compile Include="Configurations\PolarMapper.cs" />
-    <Compile Include="Configurations\GanttMapper.cs" />
     <Compile Include="Configurations\FinancialMapper.cs" />
+    <Compile Include="Configurations\GanttMapper.cs" />
     <Compile Include="Configurations\IPointEvaluator.cs" />
     <Compile Include="Configurations\Mappers.cs" />
+    <Compile Include="Configurations\PolarMapper.cs" />
+    <Compile Include="Configurations\WeightedMapper.cs" />
     <Compile Include="Defaults\AxisLimits.cs" />
     <Compile Include="Defaults\DateTimePoint.cs" />
     <Compile Include="Defaults\GanttPoint.cs" />
     <Compile Include="Defaults\HeatPoint.cs" />
-    <Compile Include="Defaults\PolarPoint.cs" />
     <Compile Include="Defaults\ObservablePoint.cs" />
-    <Compile Include="Charting.cs" />
     <Compile Include="Defaults\ObservableValue.cs" />
     <Compile Include="Defaults\OHLCPoint.cs" />
+    <Compile Include="Defaults\PolarPoint.cs" />
+    <Compile Include="Defaults\ScatterPoint.cs" />
+    <Compile Include="Definitions\Charts\IAxisSectionView.cs" />
+    <Compile Include="Definitions\Charts\IAxisView.cs" />
     <Compile Include="Definitions\Charts\ICartesianChart.cs" />
     <Compile Include="Definitions\Charts\ICartesianVisualElement.cs" />
     <Compile Include="Definitions\Charts\IChartView.cs" />
-    <Compile Include="Definitions\Charts\IAxisView.cs" />
-    <Compile Include="Definitions\Charts\IAxisSectionView.cs" />
-    <Compile Include="Definitions\Charts\ISeparatorView.cs" />
+    <Compile Include="Definitions\Charts\IPieChart.cs" />
     <Compile Include="Definitions\Charts\ISeparatorElementView.cs" />
-    <Compile Include="Definitions\Points\IStepPointView.cs" />
-    <Compile Include="Definitions\Series\ISeriesView.cs" />
-    <Compile Include="Definitions\Points\IScatterPointView.cs" />
+    <Compile Include="Definitions\Charts\ISeparatorView.cs" />
+    <Compile Include="Definitions\Points\IBezierPointView.cs" />
+    <Compile Include="Definitions\Points\IChartPointView.cs" />
     <Compile Include="Definitions\Points\IHeatPointView.cs" />
     <Compile Include="Definitions\Points\IOhlcPointView.cs" />
     <Compile Include="Definitions\Points\IPieSlicePointView.cs" />
     <Compile Include="Definitions\Points\IRectanglePointView.cs" />
-    <Compile Include="Events\Delegates.cs" />
-    <Compile Include="Events\RangeChangedEventArgs.cs" />
-    <Compile Include="IObservableChartPoint.cs" />
-    <Compile Include="Definitions\Charts\IPieChart.cs" />
-    <Compile Include="Definitions\Points\IBezierPointView.cs" />
-    <Compile Include="Definitions\Series\IScatterSeriesView.cs" />
+    <Compile Include="Definitions\Points\IScatterPointView.cs" />
+    <Compile Include="Definitions\Points\IStepPointView.cs" />
+    <Compile Include="Definitions\Series\IAreaPoint.cs" />
     <Compile Include="Definitions\Series\ICartesianSeries.cs" />
     <Compile Include="Definitions\Series\IColumnSeriesView.cs" />
+    <Compile Include="Definitions\Series\IFinancialSeriesView.cs" />
     <Compile Include="Definitions\Series\IHeatSeriesView.cs" />
     <Compile Include="Definitions\Series\ILineSeriesView.cs" />
-    <Compile Include="Definitions\Series\IFinancialSeriesView.cs" />
     <Compile Include="Definitions\Series\IPieSeries.cs" />
     <Compile Include="Definitions\Series\IPieSeriesView.cs" />
     <Compile Include="Definitions\Series\IRowSeriesView.cs" />
+    <Compile Include="Definitions\Series\IScatterSeriesView.cs" />
+    <Compile Include="Definitions\Series\ISeriesView.cs" />
     <Compile Include="Definitions\Series\IStackedAreaSeriesView.cs" />
     <Compile Include="Definitions\Series\IStackedColumnSeriesView.cs" />
     <Compile Include="Definitions\Series\IStackedRowSeriesView.cs" />
     <Compile Include="Definitions\Series\IStackModelableSeriesView.cs" />
     <Compile Include="Definitions\Series\IVerticalStackedAreaSeriesView.cs" />
-    <Compile Include="AxisOrientation.cs" />
-    <Compile Include="Charts\ChartCore.cs" />
-    <Compile Include="ChartFunctions.cs" />
-    <Compile Include="ChartPoint.cs" />
-    <Compile Include="Defaults\ScatterPoint.cs" />
-    <Compile Include="Definitions\Points\IChartPointView.cs" />
+    <Compile Include="Dtos\BezierData.cs" />
     <Compile Include="Dtos\CoreColor.cs" />
     <Compile Include="Dtos\CoreGradientStop.cs" />
     <Compile Include="Dtos\CoreLimit.cs" />
@@ -118,38 +115,39 @@
     <Compile Include="Dtos\CorePoint.cs" />
     <Compile Include="Dtos\CoreRectangle.cs" />
     <Compile Include="Dtos\CoreSize.cs" />
-    <Compile Include="Dtos\BezierData.cs" />
     <Compile Include="Dtos\LabelEvaluation.cs" />
     <Compile Include="Dtos\StackedSum.cs" />
     <Compile Include="Dtos\TooltipDataViewModel.cs" />
-    <Compile Include="IChartValues.cs" />
-    <Compile Include="Charts\CartesianChartCore.cs" />
+    <Compile Include="Events\Delegates.cs" />
+    <Compile Include="Events\RangeChangedEventArgs.cs" />
+    <Compile Include="Helpers\Extentions.cs" />
     <Compile Include="Helpers\LiveChartsException.cs" />
+    <Compile Include="Helpers\NoisyCollection.cs" />
+    <Compile Include="IChartValues.cs" />
+    <Compile Include="IObservableChartPoint.cs" />
     <Compile Include="LegendLocation.cs" />
     <Compile Include="Maps\MapData.cs" />
     <Compile Include="PointTracker.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ScrollMode.cs" />
     <Compile Include="SeparationState.cs" />
-    <Compile Include="SeriesAlgorithms\HeatAlgorithm.cs" />
-    <Compile Include="SeriesAlgorithms\CandleAlgorithm.cs" />
-    <Compile Include="SeriesAlgorithms\PieAlgorithm.cs" />
-    <Compile Include="SeriesAlgorithms\OhlcAlgorithm.cs" />
-    <Compile Include="SeriesAlgorithms\StepLineAlgorithm.cs" />
-    <Compile Include="SeriesAlgorithms\VerticalStackedAreaAlgorithm.cs" />
-    <Compile Include="SeriesAlgorithms\StackedAreaAlgorithm.cs" />
-    <Compile Include="SeriesAlgorithms\StackedRowAlgorithm.cs" />
-    <Compile Include="SeriesAlgorithms\StackedColumnAlgorithm.cs" />
-    <Compile Include="SeriesAlgorithms\ColumnAlgorithm.cs" />
-    <Compile Include="SeriesAlgorithms\RowAlgorithm.cs" />
-    <Compile Include="SeriesAlgorithms\ScatterAlgorithm.cs" />
-    <Compile Include="SeriesAlgorithms\VerticalLineAlgorithm.cs" />
-    <Compile Include="SeriesAlgorithms\LineAlgorithm.cs" />
-    <Compile Include="Helpers\Extentions.cs" />
-    <Compile Include="Helpers\NoisyCollection.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SeparatorConfigurationCore.cs" />
     <Compile Include="SeparatorElementCore.cs" />
     <Compile Include="Seriesalgorithm.cs" />
+    <Compile Include="SeriesAlgorithms\CandleAlgorithm.cs" />
+    <Compile Include="SeriesAlgorithms\ColumnAlgorithm.cs" />
+    <Compile Include="SeriesAlgorithms\HeatAlgorithm.cs" />
+    <Compile Include="SeriesAlgorithms\LineAlgorithm.cs" />
+    <Compile Include="SeriesAlgorithms\OhlcAlgorithm.cs" />
+    <Compile Include="SeriesAlgorithms\PieAlgorithm.cs" />
+    <Compile Include="SeriesAlgorithms\RowAlgorithm.cs" />
+    <Compile Include="SeriesAlgorithms\ScatterAlgorithm.cs" />
+    <Compile Include="SeriesAlgorithms\StackedAreaAlgorithm.cs" />
+    <Compile Include="SeriesAlgorithms\StackedColumnAlgorithm.cs" />
+    <Compile Include="SeriesAlgorithms\StackedRowAlgorithm.cs" />
+    <Compile Include="SeriesAlgorithms\StepLineAlgorithm.cs" />
+    <Compile Include="SeriesAlgorithms\VerticalLineAlgorithm.cs" />
+    <Compile Include="SeriesAlgorithms\VerticalStackedAreaAlgorithm.cs" />
     <Compile Include="SeriesCollection.cs" />
     <Compile Include="SeriesOrientation.cs" />
     <Compile Include="StackMode.cs" />
@@ -157,6 +155,9 @@
     <Compile Include="UpdaterState.cs" />
     <Compile Include="VisualElementsCollection.cs" />
     <Compile Include="ZoomingOptions.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="sign.pfx" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

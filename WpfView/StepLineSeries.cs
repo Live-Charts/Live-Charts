@@ -26,6 +26,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using LiveCharts.Definitions.Points;
+using LiveCharts.Definitions.Series;
 using LiveCharts.SeriesAlgorithms;
 using LiveCharts.Wpf.Charts.Base;
 using LiveCharts.Wpf.Components;
@@ -36,7 +37,7 @@ namespace LiveCharts.Wpf
     /// <summary>
     /// The Step line series.
     /// </summary>
-    public class StepLineSeries : Series, IFondeable
+    public class StepLineSeries : Series, IFondeable, IAreaPoint
     {
         #region Constructors
         /// <summary>
@@ -246,6 +247,17 @@ namespace LiveCharts.Wpf
                 SetValue(AlternativeStrokeProperty, new SolidColorBrush(nextColor));
         }
 
+        #endregion
+
+        #region Public methods
+        /// <summary>
+        /// Gets the point diameter.
+        /// </summary>
+        /// <returns></returns>
+        public double GetPointDiameter()
+        {
+            return PointGeometrySize/2;
+        }
         #endregion
 
         #region Private Methods

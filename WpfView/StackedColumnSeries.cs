@@ -114,7 +114,7 @@ namespace LiveCharts.Wpf
         /// </summary>
         public static readonly DependencyProperty LabelsPositionProperty = DependencyProperty.Register(
             "LabelsPosition", typeof(BarLabelPosition), typeof(StackedColumnSeries),
-            new PropertyMetadata(default(BarLabelPosition), CallChartUpdater()));
+            new PropertyMetadata(BarLabelPosition.Parallel, CallChartUpdater()));
         /// <summary>
         /// Gets or sets where the label is placed
         /// </summary>

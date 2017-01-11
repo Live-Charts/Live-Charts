@@ -774,6 +774,7 @@ namespace LiveCharts.Wpf.Charts.Base
             //if (AxisX.Count == 0)
             //    AxisX.AddRange(DefaultAxes.CleanAxis);
 
+
             if (AxisX.Count == 0)
                 AxisX.Add(new Axis {Separator = new Separator()});
 
@@ -931,7 +932,7 @@ namespace LiveCharts.Wpf.Charts.Base
                         Series = new SeriesViewModel
                         {
                             PointGeometry = ((Series) x.SeriesView).PointGeometry ??
-                                            Geometry.Parse("M 0,0.5 h 1,0.5 Z"),
+                                            Geometry.Parse("M0,0 L1,0"),
                             Fill = ((Series) x.SeriesView) is IFondeable &&
                                    !(x.SeriesView is IVerticalStackedAreaSeriesView ||
                                      x.SeriesView is IStackedAreaSeriesView)
@@ -1040,7 +1041,7 @@ namespace LiveCharts.Wpf.Charts.Base
                               t is IStackedAreaSeriesView)
                     ? ((IFondeable) t).PointForeround
                     : ((Series) t).Fill;
-                item.PointGeometry = series.PointGeometry ?? Geometry.Parse("M 0,0.5 h 1,0.5 Z");
+                item.PointGeometry = series.PointGeometry ?? Geometry.Parse("M0,0 L1,0");
 
                 l.Add(item);
             }
