@@ -40,6 +40,7 @@ using LiveCharts.Events;
 using LiveCharts.Helpers;
 using LiveCharts.Uwp.Components;
 using LiveCharts.Uwp.Points;
+using System.Windows.Input;
 
 namespace LiveCharts.Uwp.Charts.Base
 {
@@ -248,6 +249,42 @@ namespace LiveCharts.Uwp.Charts.Base
         /// </summary>
         public event UpdaterTickHandler UpdaterTick;
 
+        #endregion
+
+        #region Commands        
+        /// <summary>
+        /// The data click command property
+        /// </summary>
+        public static readonly DependencyProperty DataClickCommandProperty = DependencyProperty.Register(
+            "DataClickCommand", typeof(ICommand), typeof(Chart), new PropertyMetadata(default(ICommand)));
+        /// <summary>
+        /// Gets or sets the data click command.
+        /// </summary>
+        /// <value>
+        /// The data click command.
+        /// </value>
+        public ICommand DataClickCommand
+        {
+            get { return (ICommand) GetValue(DataClickCommandProperty); }
+            set { SetValue(DataClickCommandProperty, value); }
+        }
+
+        /// <summary>
+        /// The data hover command property
+        /// </summary>
+        public static readonly DependencyProperty DataHoverCommandProperty = DependencyProperty.Register(
+            "DataHoverCommand", typeof(ICommand), typeof(Chart), new PropertyMetadata(default(ICommand)));
+        /// <summary>
+        /// Gets or sets the data hover command.
+        /// </summary>
+        /// <value>
+        /// The data hover command.
+        /// </value>
+        public ICommand DataHoverCommand
+        {
+            get { return (ICommand) GetValue(DataHoverCommandProperty); }
+            set { SetValue(DataHoverCommandProperty, value); }
+        }
         #endregion
 
         #region Properties
@@ -897,6 +934,7 @@ namespace LiveCharts.Uwp.Charts.Base
         internal void OnDataClick(object sender, ChartPoint point)
         {
             DataClick?.Invoke(sender, point);
+            if (DataClickCommand != null && DataClickCommand.CanExecute(point)) DataClickCommand.Execute(point);
         }
 
         private void DataMouseEnter(object sender, PointerRoutedEventArgs e)
@@ -1019,11 +1057,13 @@ namespace LiveCharts.Uwp.Charts.Base
             }
 
             OnDataHover(sender, senderPoint);
+
         }
 
         internal void OnDataHover(object sender, ChartPoint point)
         {
-            if (DataHover != null) DataHover.Invoke(sender, point);
+            DataHover?.Invoke(sender, point);
+            if (DataHoverCommand != null && DataHoverCommand.CanExecute(point)) DataHoverCommand.Execute(point);
         }
 
         private void DataMouseLeave(object sender, PointerRoutedEventArgs e)
