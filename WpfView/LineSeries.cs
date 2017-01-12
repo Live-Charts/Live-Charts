@@ -382,7 +382,7 @@ namespace LiveCharts.Wpf
             if (!double.IsNaN(AreaLimit))
                 areaLimit = ChartFunctions.ToDrawMargin(AreaLimit, AxisOrientation.Y, Model.Chart, ScalesYAt);
 
-            if (Values != null)
+            if (Values != null && atIndex == 0)
             {
                 if (Model.Chart.View.DisableAnimations || IsNew)
                     Figure.StartPoint = new Point(location.X, areaLimit);
