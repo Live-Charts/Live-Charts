@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="Wpf.CartesianChart.UIElements.UiElementsExample"
+﻿<UserControl x:Class="Wpf.CartesianChart.UIElements.UiElementsAndEventsExample"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -7,6 +7,9 @@
              xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
+    <UserControl.DataContext>
+        <local:ViewModel></local:ViewModel>
+    </UserControl.DataContext>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
@@ -18,7 +21,12 @@
             <TextBlock >, </TextBlock>
             <TextBlock Name="Y"></TextBlock>
         </TextBlock>
-        <lvc:CartesianChart Grid.Row="1" Name="Chart" DataClick="ChartOnDataClick" MouseMove="ChartMouseMove">
+        <lvc:CartesianChart Grid.Row="1" Name="Chart" 
+                            MouseMove="ChartMouseMove"
+                            DataClick="ChartOnDataClick"
+                            DataClickCommand="{Binding DataClickCommand}"
+                            DataHover="Chart_OnDataHover"
+                            DataHoverCommand="{Binding DataHoverCommand}">
             <lvc:CartesianChart.Series>
                 <lvc:LineSeries Values="4,6,6,3,5" Fill="Transparent" StrokeThickness="4" 
                                 Panel.ZIndex="2" PointGeometry="{x:Null}"/>
