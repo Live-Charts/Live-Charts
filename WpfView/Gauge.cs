@@ -347,9 +347,13 @@ namespace LiveCharts.Wpf
             {
                 r = ActualWidth;
 
-                if (ActualWidth > ActualHeight * 2)
+                if (ActualWidth > ActualHeight*2)
                 {
-                    r = ActualHeight * 2;
+                    r = ActualHeight*2;
+                }
+                else
+                {
+                    t = 0;
                 }
 
                 r = r / 2 - 2 * t;
