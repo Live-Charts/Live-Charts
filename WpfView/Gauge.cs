@@ -84,8 +84,8 @@ namespace LiveCharts.Wpf
             SetCurrentValue(FromColorProperty, Color.FromRgb(100, 180, 245));
             SetCurrentValue(ToColorProperty, Color.FromRgb(21, 101, 191));
 
-            SetCurrentValue(MinHeightProperty, 50d);
-            SetCurrentValue(MinWidthProperty, 80d);
+            SetCurrentValue(MinHeightProperty, 20d);
+            SetCurrentValue(MinWidthProperty, 20d);
 
             SetCurrentValue(AnimationsSpeedProperty, TimeSpan.FromMilliseconds(800));
 

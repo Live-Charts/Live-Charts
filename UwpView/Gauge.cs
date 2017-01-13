@@ -75,8 +75,8 @@ namespace LiveCharts.Uwp
                 new Binding { Path = new PropertyPath("StrokeThickness"), Source = this });
             Pie.Stroke = new SolidColorBrush(Colors.Transparent);
 
-            this.SetIfNotSet(MinHeightProperty, 50d);
-            this.SetIfNotSet(MinWidthProperty, 80d);
+            this.SetIfNotSet(MinHeightProperty, 20d);
+            this.SetIfNotSet(MinWidthProperty, 20d);
 
             MeasureTextBlock.FontWeight = FontWeights.Bold;
 
