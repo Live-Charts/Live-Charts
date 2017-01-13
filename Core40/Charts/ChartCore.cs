@@ -202,7 +202,7 @@ namespace LiveCharts.Charts
                     AxisX[index],
                     View.ActualSeries
                         // ReSharper disable once AccessToModifiedClosure
-                        .Where(series => series.Values != null && series.ScalesXAt == index),
+                        .Where(series => series.Values != null && series.ScalesXAt == index).ToArray(),
                     AxisOrientation.X);
             }
 
@@ -212,7 +212,7 @@ namespace LiveCharts.Charts
                     AxisY[index],
                     View.ActualSeries
                         // ReSharper disable once AccessToModifiedClosure
-                        .Where(series => series.Values != null && series.ScalesYAt == index),
+                        .Where(series => series.Values != null && series.ScalesYAt == index).ToArray(),
                     AxisOrientation.Y);
             }
         }
@@ -677,13 +677,26 @@ namespace LiveCharts.Charts
         #endregion
 
         #region Privates
-        private static void SetAxisLimits(AxisCore ax, IEnumerable<ISeriesView> series, AxisOrientation orientation)
+        private static void SetAxisLimits(AxisCore ax, IList<ISeriesView> series, AxisOrientation orientation)
         {
-            //                     [ max, min, pointRadius ]
-            var boundries = new [] {double.MinValue, double.MaxValue, 0d};
+            var first = new CoreLimit();
+            var firstR = 0d;
 
-            foreach (var seriesView in series)
+            if (series.Count > 0)
             {
+                first = orientation == AxisOrientation.X
+                    ? series[0].Values.GetTracker(series[0]).XLimit
+                    : series[0].Values.GetTracker(series[0]).YLimit;
+                var view = series[0] as IAreaPoint;
+                firstR = view != null ? view.GetPointDiameter() : 0;
+            }
+            
+            //                     [ max, min, pointRadius ]
+            var boundries = new[] {first.Max, first.Min, firstR};
+
+            for (var index = 1; index < series.Count; index++)
+            {
+                var seriesView = series[index];
                 var tracker = seriesView.Values.GetTracker(seriesView);
                 var limit = orientation == AxisOrientation.X ? tracker.XLimit : tracker.YLimit;
                 var view = seriesView as IAreaPoint;
