@@ -45,7 +45,7 @@ namespace LiveCharts.Uwp
             foreach (var oldAxis in oldItems)
             {
                 oldAxis.Clean();
-                var chart = oldAxis.Model.Chart.View;
+                var chart = oldAxis.Model?.Chart.View;
                 if (chart == null) continue;
                 chart.RemoveFromView(oldAxis);
                 chart.RemoveFromView(oldAxis.Separator);

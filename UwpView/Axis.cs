@@ -439,6 +439,7 @@ namespace LiveCharts.Uwp
         /// </summary>
         public void Clean()
         {
+            if (Model == null) return;
             Model.ClearSeparators();
             Model.Chart.View.RemoveFromView(TitleBlock);
             Sections.Clear();
