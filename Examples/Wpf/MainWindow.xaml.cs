@@ -83,7 +83,7 @@ namespace Wpf
                 new GanttExample(),
                 new MultiAxesChart(),
                 new GeoMapExample(),
-                new UiElementsExample(),
+                new UiElementsAndEventsExample(),
                 new StackedRowExample(),
                 new CustomTooltipAndLegendExample(),
                 new BasicColumn(),
