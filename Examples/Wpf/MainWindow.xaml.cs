@@ -121,8 +121,8 @@ namespace Wpf
 
             GaugeExamples = new List<UserControl>
             {
-                new Gauge180(),
                 new Gauge360(),
+                new Gauge180(),
                 new AngularGaugeExmple()
             };
 
@@ -190,7 +190,7 @@ namespace Wpf
         private void NextPieOnClick(object sender, MouseButtonEventArgs e)
         {
             if (PieView == null) return;
-            var current = PieExamples.IndexOf(CartesianView);
+            var current = PieExamples.IndexOf(PieView);
             current++;
             PieView = PieExamples.Count > current ? PieExamples[current] : PieExamples[0];
         }
@@ -198,7 +198,7 @@ namespace Wpf
         private void PreviousPieOnClick(object sender, MouseButtonEventArgs e)
         {
             if (PieView == null) return;
-            var current = PieExamples.IndexOf(CartesianView);
+            var current = PieExamples.IndexOf(PieView);
             current--;
             PieView = current >= 0 ? PieExamples[current] : PieExamples[PieExamples.Count - 1];
         }
