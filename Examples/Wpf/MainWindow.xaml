@@ -24,7 +24,7 @@
             </TextBlock>
             <Separator Margin="10" ></Separator>
 
-            <local:PanelExample Height="650" Margin="10"></local:PanelExample>
+            <!--<local:PanelExample Height="650" Margin="10"></local:PanelExample>-->
 
             <Grid Height="500">
                 <Grid.ColumnDefinitions>

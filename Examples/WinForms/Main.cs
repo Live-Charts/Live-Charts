@@ -6,6 +6,7 @@ using Winforms.Cartesian.Customized_Series;
 using Winforms.Cartesian.DataPagination;
 using Winforms.Cartesian.DateTime;
 using Winforms.Cartesian.DynamicVisibility;
+using Winforms.Cartesian.Events;
 using Winforms.Cartesian.FullyResponsive;
 using Winforms.Cartesian.Funnel_Chart;
 using Winforms.Cartesian.GanttChart;
@@ -181,6 +182,11 @@ namespace Winforms
         private void button15_Click(object sender, EventArgs e)
         {
             new FunnelExample().ShowDialog();
+        }
+
+        private void button16_Click(object sender, EventArgs e)
+        {
+            new EventsExample().ShowDialog();
         }
     }
 }

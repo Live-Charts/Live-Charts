@@ -227,7 +227,8 @@ namespace LiveCharts.Uwp.Charts.Base
 
         internal void ChartUpdated()
         {
-            UpdaterTick?.Invoke();
+            UpdaterTick?.Invoke(this);
+            if (UpdaterTickCommand != null && UpdaterTickCommand.CanExecute(this)) UpdaterTickCommand.Execute(this);
         }
 
         #endregion
@@ -284,6 +285,23 @@ namespace LiveCharts.Uwp.Charts.Base
         {
             get { return (ICommand) GetValue(DataHoverCommandProperty); }
             set { SetValue(DataHoverCommandProperty, value); }
+        }
+
+        /// <summary>
+        /// The updater tick command property
+        /// </summary>
+        public static readonly DependencyProperty UpdaterTickCommandProperty = DependencyProperty.Register(
+            "UpdaterTickCommand", typeof(ICommand), typeof(Chart), new PropertyMetadata(default(ICommand)));
+        /// <summary>
+        /// Gets or sets the updater tick command.
+        /// </summary>
+        /// <value>
+        /// The updater tick command.
+        /// </value>
+        public ICommand UpdaterTickCommand
+        {
+            get { return (ICommand)GetValue(UpdaterTickCommandProperty); }
+            set { SetValue(UpdaterTickCommandProperty, value); }
         }
         #endregion
 

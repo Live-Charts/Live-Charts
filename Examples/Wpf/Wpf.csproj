@@ -104,6 +104,11 @@
     </Compile>
     <Compile Include="CartesianChart\Energy Predictions\OpacityConverter.cs" />
     <Compile Include="CartesianChart\Energy Predictions\ReverseConverter.cs" />
+    <Compile Include="CartesianChart\Events\ChartPointCommandHandler.cs" />
+    <Compile Include="CartesianChart\Events\EventsExample.xaml.cs">
+      <DependentUpon>EventsExample.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CartesianChart\Events\ViewModel.cs" />
     <Compile Include="CartesianChart\Financial\CandleStickExample.xaml.cs">
       <DependentUpon>CandleStickExample.xaml</DependentUpon>
     </Compile>
@@ -157,6 +162,10 @@
     <Page Include="CartesianChart\Energy Predictions\EnergyPredictionExample.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CartesianChart\Events\EventsExample.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="CartesianChart\Financial\CandleStickExample.xaml">
       <SubType>Designer</SubType>
@@ -302,7 +311,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="CartesianChart\UIElements\UiElementsAndEventsExample.xaml">
+    <Page Include="CartesianChart\UIElements\UiElementsExample.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -466,7 +475,7 @@
       <DependentUpon>StackedAreaExample.xaml</DependentUpon>
     </Compile>
     <Compile Include="CartesianChart\UIElements\UiElementsAndEventsExample.xaml.cs">
-      <DependentUpon>UiElementsAndEventsExample.xaml</DependentUpon>
+      <DependentUpon>UiElementsExample.xaml</DependentUpon>
     </Compile>
     <Compile Include="CartesianChart\Using DateTime\DateTime.xaml.cs">
       <DependentUpon>DateTime.xaml</DependentUpon>

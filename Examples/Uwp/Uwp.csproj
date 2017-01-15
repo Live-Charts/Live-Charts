@@ -150,6 +150,11 @@
     </Compile>
     <Compile Include="CartesianChart\Energy Predictions\OpacityConverter.cs" />
     <Compile Include="CartesianChart\Energy Predictions\ReverseConverter.cs" />
+    <Compile Include="CartesianChart\Events\ChartPointCommandHandler.cs" />
+    <Compile Include="CartesianChart\Events\EventsExample.xaml.cs">
+      <DependentUpon>EventsExample.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CartesianChart\Events\ViewModel.cs" />
     <Compile Include="CartesianChart\Financial\CandleStickExample.xaml.cs">
       <DependentUpon>CandleStickExample.xaml</DependentUpon>
     </Compile>
@@ -362,6 +367,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="CartesianChart\Energy Predictions\EnergyPredictionExample.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="CartesianChart\Events\EventsExample.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

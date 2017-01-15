@@ -12,6 +12,7 @@ using Wpf.CartesianChart.Customized_Line_Series;
 using Wpf.CartesianChart.CustomTooltipAndLegend;
 using Wpf.CartesianChart.DynamicVisibility;
 using Wpf.CartesianChart.Energy_Predictions;
+using Wpf.CartesianChart.Events;
 using Wpf.CartesianChart.Financial;
 using Wpf.CartesianChart.Funnel_Chart;
 using Wpf.CartesianChart.GanttChart;
@@ -83,6 +84,7 @@ namespace Wpf
                 new GanttExample(),
                 new MultiAxesChart(),
                 new GeoMapExample(),
+                new EventsExample(),
                 new UiElementsAndEventsExample(),
                 new StackedRowExample(),
                 new CustomTooltipAndLegendExample(),
