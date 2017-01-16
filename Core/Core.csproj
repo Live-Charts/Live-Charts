@@ -80,6 +80,7 @@
     <Compile Include="Definitions\Charts\ICartesianChart.cs" />
     <Compile Include="Definitions\Charts\ICartesianVisualElement.cs" />
     <Compile Include="Definitions\Charts\IChartView.cs" />
+    <Compile Include="Definitions\Charts\ILogarithmicAxisView.cs" />
     <Compile Include="Definitions\Charts\IPieChart.cs" />
     <Compile Include="Definitions\Charts\ISeparatorElementView.cs" />
     <Compile Include="Definitions\Charts\ISeparatorView.cs" />
@@ -126,6 +127,7 @@
     <Compile Include="IChartValues.cs" />
     <Compile Include="IObservableChartPoint.cs" />
     <Compile Include="LegendLocation.cs" />
+    <Compile Include="LogarithmicAxisCore.cs" />
     <Compile Include="Maps\MapData.cs" />
     <Compile Include="PointTracker.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

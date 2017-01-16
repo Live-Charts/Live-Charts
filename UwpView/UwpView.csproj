@@ -167,6 +167,7 @@
     <Compile Include="IChartTooltip.cs" />
     <Compile Include="LineSegmentSplitter.cs" />
     <Compile Include="LineSeries.cs" />
+    <Compile Include="LogarithmicAxis.cs" />
     <Compile Include="Maps\MapResolver.cs" />
     <Compile Include="OhlcSeries.cs" />
     <Compile Include="PieChart.cs" />

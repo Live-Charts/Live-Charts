@@ -190,7 +190,7 @@ namespace LiveCharts
         internal double BotSeriesLimit { get; set; }
         internal double MaxPointRadius { get; set; }
         internal double Magnitude { get; set; }
-        internal int CleanFactor { get; set; }
+        internal double CleanFactor { get; set; }
         internal Dictionary<double, SeparatorElementCore> Cache { get; set; }
         internal double? LastAxisMax { get; set; }
         internal double? LastAxisMin { get; set; }
@@ -198,6 +198,7 @@ namespace LiveCharts
         internal int GarbageCollectorIndex { get; set; }
         internal double PreviousTop { get; set; }
         internal double PreviousBot { get; set; }
+
         #endregion
 
         #region Internal Methods
@@ -239,7 +240,7 @@ namespace LiveCharts
             if (Labels != null) S = S < 1 ? 1 : S;
         }
 
-        internal CoreMargin PrepareChart(AxisOrientation source, ChartCore chart)
+        internal virtual CoreMargin PrepareChart(AxisOrientation source, ChartCore chart)
         {
             if (!(Math.Abs(TopLimit - BotLimit) > S*.01) || !ShowLabels) return new CoreMargin();
 
@@ -472,7 +473,10 @@ namespace LiveCharts
 
         #region Privates
 
-        private void InitializeGarbageCollector()
+        /// <summary>
+        /// Initializes the garbage collector.
+        /// </summary>
+        protected void InitializeGarbageCollector()
         {
             if (GarbageCollectorIndex == int.MaxValue)
             {

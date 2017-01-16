@@ -416,7 +416,7 @@ namespace LiveCharts.Wpf
         #endregion
 
         #region Public Methods
-        /// <summary>
+        ///<summary>
         /// Cleans this instance.
         /// </summary>
         public void Clean()
@@ -538,7 +538,7 @@ namespace LiveCharts.Wpf
         /// <param name="chart">The chart.</param>
         /// <param name="source">The source.</param>
         /// <returns></returns>
-        public AxisCore AsCoreElement(ChartCore chart, AxisOrientation source)
+        public virtual AxisCore AsCoreElement(ChartCore chart, AxisOrientation source)
         {
             if (Model == null) Model = new AxisCore(this);
 
@@ -626,7 +626,13 @@ namespace LiveCharts.Wpf
             return l;
         }
 
-        private static PropertyChangedCallback UpdateChart(bool animate = false, bool updateNow = false)
+        /// <summary>
+        /// Updates the chart.
+        /// </summary>
+        /// <param name="animate">if set to <c>true</c> [animate].</param>
+        /// <param name="updateNow">if set to <c>true</c> [update now].</param>
+        /// <returns></returns>
+        protected static PropertyChangedCallback UpdateChart(bool animate = false, bool updateNow = false)
         {
             return (o, args) =>
             {
