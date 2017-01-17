@@ -276,9 +276,6 @@
     <Compile Include="Gauges\AngularGaugeExmple.xaml.cs">
       <DependentUpon>AngularGaugeExmple.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Gauges\Gauge180.xaml.cs">
-      <DependentUpon>Gauge180.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Gauges\Gauge360.xaml.cs">
       <DependentUpon>Gauge360.xaml</DependentUpon>
     </Compile>
@@ -523,10 +520,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Gauges\AngularGaugeExmple.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Gauges\Gauge180.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
