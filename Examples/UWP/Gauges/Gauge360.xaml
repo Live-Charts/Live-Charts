@@ -23,7 +23,7 @@
                    Uses360Mode="True"
                    From="0" To="100" Value="50" />
 
-        <!--this gauge is rotated 90° and has an inverted clockwise fill-->
+        <!--this gauge is rotated 90° -->
         <lvc:Gauge Grid.Row="0" Grid.Column="1" Margin="5"
                    Uses360Mode="True"
                    From="0" To="100" Value="50" >
