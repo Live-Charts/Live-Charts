@@ -268,12 +268,6 @@
     <Compile Include="Cartesian\Zooming and Panning\ZomingAndPanningExample.Designer.cs">
       <DependentUpon>ZomingAndPanningExample.cs</DependentUpon>
     </Compile>
-    <Compile Include="Gauge\180\Gauge180Example.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Gauge\180\Gauge180Example.Designer.cs">
-      <DependentUpon>Gauge180Example.cs</DependentUpon>
-    </Compile>
     <Compile Include="Gauge\360\Gauge360Example.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -419,9 +413,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Cartesian\Zooming and Panning\ZomingAndPanningExample.resx">
       <DependentUpon>ZomingAndPanningExample.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Gauge\180\Gauge180Example.resx">
-      <DependentUpon>Gauge180Example.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Gauge\360\Gauge360Example.resx">
       <DependentUpon>Gauge360Example.cs</DependentUpon>
