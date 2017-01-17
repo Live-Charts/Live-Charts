@@ -45,6 +45,7 @@ namespace LiveCharts.Wpf
             foreach (var oldAxis in oldItems)
             {
                 oldAxis.Clean();
+                if (oldAxis.Model == null) continue;
                 var chart = oldAxis.Model.Chart.View;
                 if (chart == null) continue;
                 chart.RemoveFromView(oldAxis);

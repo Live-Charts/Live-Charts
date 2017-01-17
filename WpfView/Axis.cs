@@ -26,6 +26,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using LiveCharts.Charts;
@@ -65,6 +66,23 @@ namespace LiveCharts.Wpf
         /// Happens every time an axis range changes by a user event (zooming or panning)
         /// </summary>
         public event RangeChangedHandler RangeChanged;
+
+        /// <summary>
+        /// The range changed command property
+        /// </summary>
+        public static readonly DependencyProperty RangeChangedCommandProperty = DependencyProperty.Register(
+            "RangeChangedCommand", typeof(ICommand), typeof(Axis), new PropertyMetadata(default(ICommand)));
+        /// <summary>
+        /// Gets or sets the range changed command.
+        /// </summary>
+        /// <value>
+        /// The range changed command.
+        /// </value>
+        public ICommand RangeChangedCommand
+        {
+            get { return (ICommand) GetValue(RangeChangedCommandProperty); }
+            set { SetValue(RangeChangedCommandProperty, value); }
+        }
         #endregion
 
         #region properties
@@ -416,11 +434,12 @@ namespace LiveCharts.Wpf
         #endregion
 
         #region Public Methods
-        /// <summary>
+        ///<summary>
         /// Cleans this instance.
         /// </summary>
         public void Clean()
         {
+            if (Model == null) return;
             Model.ClearSeparators();
             Model.Chart.View.RemoveFromView(TitleBlock);
             Sections.Clear();
@@ -537,7 +556,7 @@ namespace LiveCharts.Wpf
         /// <param name="chart">The chart.</param>
         /// <param name="source">The source.</param>
         /// <returns></returns>
-        public AxisCore AsCoreElement(ChartCore chart, AxisOrientation source)
+        public virtual AxisCore AsCoreElement(ChartCore chart, AxisOrientation source)
         {
             if (Model == null) Model = new AxisCore(this);
 
@@ -625,7 +644,13 @@ namespace LiveCharts.Wpf
             return l;
         }
 
-        private static PropertyChangedCallback UpdateChart(bool animate = false, bool updateNow = false)
+        /// <summary>
+        /// Updates the chart.
+        /// </summary>
+        /// <param name="animate">if set to <c>true</c> [animate].</param>
+        /// <param name="updateNow">if set to <c>true</c> [update now].</param>
+        /// <returns></returns>
+        protected static PropertyChangedCallback UpdateChart(bool animate = false, bool updateNow = false)
         {
             return (o, args) =>
             {
@@ -660,6 +685,7 @@ namespace LiveCharts.Wpf
         protected void OnRangeChanged(RangeChangedEventArgs e)
         {
             if (RangeChanged != null) RangeChanged.Invoke(e);
+            if (RangeChangedCommand != null  && RangeChangedCommand.CanExecute(e)) RangeChangedCommand.Execute(e);
         }
     }
 }

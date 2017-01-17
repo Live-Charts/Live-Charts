@@ -6,6 +6,8 @@
 [![AppVeyor](https://ci.appveyor.com/api/projects/status/707m8sye0ggbfrcq)](https://ci.appveyor.com/project/beto-rodriguez/live-charts)
 [![GitHub issues](https://img.shields.io/github/issues/beto-rodriguez/Live-Charts.svg?style=flat-square)](https://github.com/beto-rodriguez/Live-Charts/issues)
 [![Gitter](https://img.shields.io/gitter/room/beto-rodriguez/Live-Charts.svg?style=flat-square)](https://gitter.im/beto-rodriguez/Live-Charts?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+<a href="http://isitmaintained.com/project/beto-rodriguez/live-charts" title="Average time to resolve an issue"><img src="http://isitmaintained.com/badge/resolution/beto-rodriguez/live-charts.svg" alt="Average time to resolve an issue"></a>
+<a href="http://isitmaintained.com/project/beto-rodriguez/live-charts" title="Percentage of issues still open"><img src="http://isitmaintained.com/badge/open/beto-rodriguez/live-charts.svg" alt="Percentage of issues still open"></a>
 
 * **[Get Started Here](http://lvcharts.net/App/examples/wpf/start)**, this repository has many examples also.
 * **[Chat](https://gitter.im/beto-rodriguez/Live-Charts)**

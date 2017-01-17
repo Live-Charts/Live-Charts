@@ -21,6 +21,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows.Input;
 using Windows.Foundation;
 using Windows.UI;
 using Windows.UI.Text;
@@ -64,6 +65,23 @@ namespace LiveCharts.Uwp
         /// Happens every time an axis range changes, this handler will be called before the next updater tick.
         /// </summary>
         public event RangeChangedHandler RangeChanged;
+
+        /// <summary>
+        /// The range changed command property
+        /// </summary>
+        public static readonly DependencyProperty RangeChangedCommandProperty = DependencyProperty.Register(
+            "RangeChangedCommand", typeof(ICommand), typeof(Axis), new PropertyMetadata(default(ICommand)));
+        /// <summary>
+        /// Gets or sets the range changed command.
+        /// </summary>
+        /// <value>
+        /// The range changed command.
+        /// </value>
+        public ICommand RangeChangedCommand
+        {
+            get { return (ICommand)GetValue(RangeChangedCommandProperty); }
+            set { SetValue(RangeChangedCommandProperty, value); }
+        }
         #endregion
 
         #region properties
@@ -439,6 +457,7 @@ namespace LiveCharts.Uwp
         /// </summary>
         public void Clean()
         {
+            if (Model == null) return;
             Model.ClearSeparators();
             Model.Chart.View.RemoveFromView(TitleBlock);
             Sections.Clear();
@@ -577,7 +596,7 @@ namespace LiveCharts.Uwp
         /// <param name="chart">The chart.</param>
         /// <param name="source">The source.</param>
         /// <returns></returns>
-        public AxisCore AsCoreElement(ChartCore chart, AxisOrientation source)
+        public virtual AxisCore AsCoreElement(ChartCore chart, AxisOrientation source)
         {
             if (Model == null) Model = new AxisCore(this);
 
@@ -646,7 +665,13 @@ namespace LiveCharts.Uwp
             return l;
         }
 
-        private static PropertyChangedCallback UpdateChart(bool animate = false, bool updateNow = false)
+        /// <summary>
+        /// Updates the chart.
+        /// </summary>
+        /// <param name="animate">if set to <c>true</c> [animate].</param>
+        /// <param name="updateNow">if set to <c>true</c> [update now].</param>
+        /// <returns></returns>
+        protected static PropertyChangedCallback UpdateChart(bool animate = false, bool updateNow = false)
         {
             return (o, args) =>
             {
@@ -680,6 +705,7 @@ namespace LiveCharts.Uwp
         protected void OnRangeChanged(RangeChangedEventArgs e)
         {
             RangeChanged?.Invoke(e);
+            if (RangeChangedCommand != null && RangeChangedCommand.CanExecute(e)) RangeChangedCommand.Execute(e);
         }
     }
 }

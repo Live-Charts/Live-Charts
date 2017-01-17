@@ -58,6 +58,10 @@ namespace LiveCharts.Wpf
             Canvas.Children.Add(RightLabel);
             Canvas.Children.Add(LeftLabel);
 
+            Panel.SetZIndex(MeasureTextBlock, 1);
+            Panel.SetZIndex(RightLabel, 1);
+            Panel.SetZIndex(LeftLabel, 1);
+
             Panel.SetZIndex(PieBack, 0);
             Panel.SetZIndex(Pie, 1);
 
@@ -72,9 +76,13 @@ namespace LiveCharts.Wpf
                 new Binding { Path = new PropertyPath(StrokeThicknessProperty), Source = this });
             PieBack.SetBinding(Shape.StrokeProperty,
                 new Binding { Path = new PropertyPath(StrokeProperty), Source = this });
+            PieBack.SetBinding(RenderTransformProperty,
+                new Binding {Path = new PropertyPath(GaugeRenderTransformProperty), Source = this});
 
             Pie.SetBinding(Shape.StrokeThicknessProperty,
                 new Binding { Path = new PropertyPath(StrokeThicknessProperty), Source = this });
+            Pie.SetBinding(RenderTransformProperty,
+                new Binding { Path = new PropertyPath(GaugeRenderTransformProperty), Source = this });
             Pie.Stroke = Brushes.Transparent;
 
             SetCurrentValue(GaugeBackgroundProperty, new SolidColorBrush(Color.FromRgb(21, 101, 191)) { Opacity = .1 });
@@ -84,8 +92,8 @@ namespace LiveCharts.Wpf
             SetCurrentValue(FromColorProperty, Color.FromRgb(100, 180, 245));
             SetCurrentValue(ToColorProperty, Color.FromRgb(21, 101, 191));
 
-            SetCurrentValue(MinHeightProperty, 50d);
-            SetCurrentValue(MinWidthProperty, 80d);
+            SetCurrentValue(MinHeightProperty, 20d);
+            SetCurrentValue(MinWidthProperty, 20d);
 
             SetCurrentValue(AnimationsSpeedProperty, TimeSpan.FromMilliseconds(800));
 
@@ -110,6 +118,57 @@ namespace LiveCharts.Wpf
         private TextBlock RightLabel { get; set; }
         private bool IsNew { get; set; }
         private bool IsChartInitialized { get; set; }
+
+        /// <summary>
+        /// The gauge active fill property
+        /// </summary>
+        public static readonly DependencyProperty GaugeActiveFillProperty = DependencyProperty.Register(
+            "GaugeActiveFill", typeof(Brush), typeof(Gauge), new PropertyMetadata(default(Brush)));
+        /// <summary>
+        /// Gets or sets the gauge active fill, if this property is set, From/to color properties interpolation will be ignored
+        /// </summary>
+        /// <value>
+        /// The gauge active fill.
+        /// </value>
+        public Brush GaugeActiveFill
+        {
+            get { return (Brush) GetValue(GaugeActiveFillProperty); }
+            set { SetValue(GaugeActiveFillProperty, value); }
+        }
+
+        /// <summary>
+        /// The labels visibility property
+        /// </summary>
+        public static readonly DependencyProperty LabelsVisibilityProperty = DependencyProperty.Register(
+            "LabelsVisibility", typeof(Visibility), typeof(Gauge), new PropertyMetadata(default(Visibility)));
+        /// <summary>
+        /// Gets or sets the labels visibility.
+        /// </summary>
+        /// <value>
+        /// The labels visibility.
+        /// </value>
+        public Visibility LabelsVisibility
+        {
+            get { return (Visibility) GetValue(LabelsVisibilityProperty); }
+            set { SetValue(LabelsVisibilityProperty, value); }
+        }
+
+        /// <summary>
+        /// The gauge render transform property
+        /// </summary>
+        public static readonly DependencyProperty GaugeRenderTransformProperty = DependencyProperty.Register(
+            "GaugeRenderTransform", typeof(Transform), typeof(Gauge), new PropertyMetadata(default(Transform)));
+        /// <summary>
+        /// Gets or sets the gauge render transform.
+        /// </summary>
+        /// <value>
+        /// The gauge render transform.
+        /// </value>
+        public Transform GaugeRenderTransform
+        {
+            get { return (Transform) GetValue(GaugeRenderTransformProperty); }
+            set { SetValue(GaugeRenderTransformProperty, value); }
+        }
 
         /// <summary>
         /// The uses360 mode property
@@ -329,8 +388,8 @@ namespace LiveCharts.Wpf
                 LeftLabel.UpdateLayout();
                 RightLabel.UpdateLayout();
 
-                LeftLabel.Visibility = Visibility.Visible;
-                RightLabel.Visibility = Visibility.Visible;
+                LeftLabel.Visibility = LabelsVisibility;
+                RightLabel.Visibility = LabelsVisibility;
 
                 t = LeftLabel.ActualHeight;
             }
@@ -352,15 +411,21 @@ namespace LiveCharts.Wpf
             {
                 r = ActualWidth;
 
-                if (ActualWidth > ActualHeight * 2)
+                if (ActualWidth > ActualHeight*2)
                 {
-                    r = ActualHeight * 2;
+                    r = ActualHeight*2;
+                }
+                else
+                {
+                    t = 0;
                 }
 
                 r = r / 2 - 2 * t;
 
                 top = ActualHeight / 2 + r / 2;
             }
+
+            if (r < 0) r = 1;
 
             PieBack.Radius = r;
             PieBack.InnerRadius = InnerRadius ?? r * .6;
@@ -381,7 +446,7 @@ namespace LiveCharts.Wpf
             Canvas.SetRight(LeftLabel, ActualWidth / 2 + (r + PieBack.InnerRadius) / 2 - LeftLabel.ActualWidth / 2);
             Canvas.SetRight(RightLabel, ActualWidth / 2 - (r + PieBack.InnerRadius) / 2 - RightLabel.ActualWidth / 2);
 
-            MeasureTextBlock.FontSize = HighFontSize ?? Pie.InnerRadius * .4;
+            MeasureTextBlock.FontSize = HighFontSize ?? Pie.InnerRadius*.4;
             MeasureTextBlock.Text = (LabelFormatter ?? defFormatter)(Value);
             MeasureTextBlock.UpdateLayout();
             Canvas.SetTop(MeasureTextBlock, top - MeasureTextBlock.ActualHeight * (Uses360Mode ? .5 : 1));
@@ -402,8 +467,16 @@ namespace LiveCharts.Wpf
             }
 
             Pie.BeginAnimation(PieSlice.WedgeAngleProperty, new DoubleAnimation(completed * angle, AnimationsSpeed));
-            ((SolidColorBrush)Pie.Fill).BeginAnimation(SolidColorBrush.ColorProperty,
-                new ColorAnimation(interpolatedColor, AnimationsSpeed));
+
+            if (GaugeActiveFill == null)
+            {
+                ((SolidColorBrush) Pie.Fill).BeginAnimation(SolidColorBrush.ColorProperty,
+                    new ColorAnimation(interpolatedColor, AnimationsSpeed));
+            }
+            else
+            {
+                Pie.Fill = GaugeActiveFill;
+            }
 
             IsNew = false;
         }

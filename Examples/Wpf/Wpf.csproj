@@ -104,6 +104,11 @@
     </Compile>
     <Compile Include="CartesianChart\Energy Predictions\OpacityConverter.cs" />
     <Compile Include="CartesianChart\Energy Predictions\ReverseConverter.cs" />
+    <Compile Include="CartesianChart\Events\ChartPointCommandHandler.cs" />
+    <Compile Include="CartesianChart\Events\EventsExample.xaml.cs">
+      <DependentUpon>EventsExample.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CartesianChart\Events\ViewModel.cs" />
     <Compile Include="CartesianChart\Financial\CandleStickExample.xaml.cs">
       <DependentUpon>CandleStickExample.xaml</DependentUpon>
     </Compile>
@@ -157,6 +162,10 @@
     <Page Include="CartesianChart\Energy Predictions\EnergyPredictionExample.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CartesianChart\Events\EventsExample.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="CartesianChart\Financial\CandleStickExample.xaml">
       <SubType>Designer</SubType>
@@ -302,7 +311,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="CartesianChart\UIElements\UIElementsExample.xaml">
+    <Page Include="CartesianChart\UIElements\UiElementsExample.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -327,10 +336,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Gauges\Gauge180.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="JimmyTheTestsGuy.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -465,8 +470,8 @@
     <Compile Include="CartesianChart\StackedArea\StackedAreaExample.xaml.cs">
       <DependentUpon>StackedAreaExample.xaml</DependentUpon>
     </Compile>
-    <Compile Include="CartesianChart\UIElements\UIElementsExample.xaml.cs">
-      <DependentUpon>UIElementsExample.xaml</DependentUpon>
+    <Compile Include="CartesianChart\UIElements\UiElementsAndEventsExample.xaml.cs">
+      <DependentUpon>UiElementsExample.xaml</DependentUpon>
     </Compile>
     <Compile Include="CartesianChart\Using DateTime\DateTime.xaml.cs">
       <DependentUpon>DateTime.xaml</DependentUpon>
@@ -486,9 +491,6 @@
     </Compile>
     <Compile Include="Gauges\Gauge180.xaml.cs">
       <DependentUpon>Gauge180.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="JimmyTheTestsGuy.xaml.cs">
-      <DependentUpon>JimmyTheTestsGuy.xaml</DependentUpon>
     </Compile>
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>

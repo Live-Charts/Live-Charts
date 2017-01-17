@@ -1,4 +1,4 @@
-﻿//The MIT License(MIT)
+//The MIT License(MIT)
 
 //copyright(c) 2016 Alberto Rodriguez
 
@@ -20,36 +20,20 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-using System.Collections.Generic;
-using LiveCharts.Helpers;
-
-namespace LiveCharts.Uwp
+namespace LiveCharts.Definitions.Charts
 {
     /// <summary>
-    /// Stores a collection of axis.
+    /// 
     /// </summary>
-    public class AxesCollection : NoisyCollection<Axis>
+    /// <seealso cref="LiveCharts.Definitions.Charts.IAxisView" />
+    public interface ILogarithmicAxisView : IAxisView
     {
         /// <summary>
-        /// Initializes a new instance of AxisCollection class
+        /// Gets or sets the base.
         /// </summary>
-        public AxesCollection()
-        {
-            NoisyCollectionChanged += OnNoisyCollectionChanged;
-        }
-
-        private static void OnNoisyCollectionChanged(IEnumerable<Axis> oldItems, IEnumerable<Axis> newItems)
-        {
-            if (oldItems == null) return;
-
-            foreach (var oldAxis in oldItems)
-            {
-                oldAxis.Clean();
-                var chart = oldAxis.Model?.Chart.View;
-                if (chart == null) continue;
-                chart.RemoveFromView(oldAxis);
-                chart.RemoveFromView(oldAxis.Separator);
-            }
-        }
+        /// <value>
+        /// The base.
+        /// </value>
+        double Base { get; set; }
     }
 }

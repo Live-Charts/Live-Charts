@@ -94,6 +94,7 @@
     <Compile Include="Components\IFondeable.cs" />
     <Compile Include="IChartLegend.cs" />
     <Compile Include="IChartTooltip.cs" />
+    <Compile Include="LogarithmicAxis.cs" />
     <Compile Include="ScatterSeries.cs" />
     <Compile Include="DefaultGeoMapTooltip.xaml.cs">
       <DependentUpon>DefaultGeoMapTooltip.xaml</DependentUpon>

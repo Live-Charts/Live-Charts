@@ -39,7 +39,8 @@ namespace LiveCharts.Events
     /// <summary>
     /// 
     /// </summary>
-    public delegate void UpdaterTickHandler();
+    /// <param name="sender">The sender.</param>
+    public delegate void UpdaterTickHandler(object sender);
 
     /// <summary>
     /// 

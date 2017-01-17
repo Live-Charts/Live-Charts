@@ -49,10 +49,7 @@ namespace LiveCharts.WinForms
         public PieChart()
         {
             Child = WpfBase;
-            WpfBase.DataClick += (o, point) =>
-            {
-                if (DataClick != null) DataClick.Invoke(o, point);
-            };
+
             if (LicenseManager.UsageMode == LicenseUsageMode.Designtime)
             {
                 WpfBase.Series = WpfBase.GetDesignerModeCollection();
@@ -60,9 +57,31 @@ namespace LiveCharts.WinForms
         }
 
         /// <summary>
-        /// Occurs when [data click].
+        /// Occurs when the users clicks any point in the chart
         /// </summary>
-        public event DataClickHandler DataClick;
+        public event DataClickHandler DataClick
+        {
+            add { WpfBase.DataClick += value; }
+            remove { WpfBase.DataClick += value; }
+        }
+
+        /// <summary>
+        /// Occurs when the users hovers over any point in the chart
+        /// </summary>
+        public event DataHoverHandler DataHover
+        {
+            add { WpfBase.DataHover += value; }
+            remove { WpfBase.DataHover += value; }
+        }
+
+        /// <summary>
+        /// Occurs every time the chart updates
+        /// </summary>
+        public event UpdaterTickHandler UpdaterTick
+        {
+            add { WpfBase.UpdaterTick += value; }
+            remove { WpfBase.UpdaterTick += value; }
+        }
 
         #region ChartProperties
 

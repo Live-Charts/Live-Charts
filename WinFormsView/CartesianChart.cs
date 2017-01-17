@@ -23,10 +23,12 @@
 using System;
 using System.ComponentModel;
 using System.ComponentModel.Design.Serialization;
-using System.Windows.Controls;
+using System.Windows.Forms;
 using System.Windows.Forms.Integration;
 using System.Windows.Media;
+using LiveCharts.Events;
 using LiveCharts.Wpf;
+using UserControl = System.Windows.Controls.UserControl;
 
 namespace LiveCharts.WinForms
 {
@@ -49,10 +51,7 @@ namespace LiveCharts.WinForms
         public CartesianChart()
         {
             Child = WpfBase;
-            WpfBase.DataClick += (o, point) =>
-            {
-                if (DataClick != null) DataClick.Invoke(o, point);
-            };
+
             if (LicenseManager.UsageMode == LicenseUsageMode.Designtime)
             {
                 WpfBase.Series = WpfBase.GetDesignerModeCollection();
@@ -60,10 +59,31 @@ namespace LiveCharts.WinForms
         }
 
         /// <summary>
-        /// Occurs when [data click].
+        /// Occurs when the users clicks any point in the chart
         /// </summary>
-        public event Action<object, ChartPoint> DataClick;
+        public event DataClickHandler DataClick
+        {
+            add { WpfBase.DataClick += value; }
+            remove { WpfBase.DataClick += value; }
+        }
 
+        /// <summary>
+        /// Occurs when the users hovers over any point in the chart
+        /// </summary>
+        public event DataHoverHandler DataHover
+        {
+            add { WpfBase.DataHover += value; }
+            remove { WpfBase.DataHover += value; }
+        }
+
+        /// <summary>
+        /// Occurs every time the chart updates
+        /// </summary>
+        public event UpdaterTickHandler UpdaterTick
+        {
+            add { WpfBase.UpdaterTick += value; }
+            remove { WpfBase.UpdaterTick += value; }
+        }
         #region ChartProperties
 
         /// <summary>

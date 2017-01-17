@@ -8,7 +8,6 @@ using LiveCharts;
 using LiveCharts.Wpf;
 using Brushes = System.Windows.Media.Brushes;
 using HorizontalAlignment = System.Windows.HorizontalAlignment;
-using MessageBox = System.Windows.MessageBox;
 using Panel = System.Windows.Controls.Panel;
 
 namespace Winforms.Cartesian.UielementsExample
@@ -84,26 +83,6 @@ namespace Winforms.Cartesian.UielementsExample
 
             Panel.SetZIndex(barSeries, 0);
             Panel.SetZIndex(lineSeries, 1);
-
-            cartesianChart1.Base.MouseMove += BaseOnMouseMove;
-            cartesianChart1.DataClick += cartesianChart1_DataClick;
-        }
-
-        private void BaseOnMouseMove(object sender, System.Windows.Input.MouseEventArgs mouseEventArgs)
-        {
-            var point = cartesianChart1.Base
-                .ConvertToChartValues(mouseEventArgs.GetPosition(cartesianChart1.Base));
-
-            X.Text = "X: " + point.X.ToString("N");
-            Y.Text = "Y: " + point.Y.ToString("N");
-        }
-
-
-        private void cartesianChart1_DataClick(object sender, ChartPoint chartPoint)
-        {
-            var asPixels = cartesianChart1.Base.ConvertToPixels(chartPoint.AsPoint());
-            MessageBox.Show("You clicked (" + chartPoint.X + ", " + chartPoint.Y + ") in pixels (" +
-                            asPixels.X + ", " + asPixels.Y + ")");
         }
     }
 }

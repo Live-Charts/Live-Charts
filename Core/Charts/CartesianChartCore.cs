@@ -72,7 +72,7 @@ namespace LiveCharts.Charts
                 xi.CalculateSeparator(this, AxisOrientation.X);
 
                 // ReSharper disable once AccessToModifiedClosure
-                SetAxisLimits(xi, cartesianSeries.Where(x => x.View.ScalesXAt == index), AxisOrientation.X);
+                SetAxisLimits(xi, cartesianSeries.Where(x => x.View.ScalesXAt == index).ToArray(), AxisOrientation.X);
 
                 if (Math.Abs(xi.BotLimit - xi.TopLimit) < xi.S * .01)
                 {
@@ -106,7 +106,7 @@ namespace LiveCharts.Charts
                 yi.CalculateSeparator(this, AxisOrientation.Y);
 
                 // ReSharper disable once AccessToModifiedClosure
-                SetAxisLimits(yi, cartesianSeries.Where(x => x.View.ScalesYAt == index), AxisOrientation.Y);
+                SetAxisLimits(yi, cartesianSeries.Where(x => x.View.ScalesYAt == index).ToArray(), AxisOrientation.Y);
 
                 if (Math.Abs(yi.BotLimit - yi.TopLimit) < yi.S * .01)
                 {
@@ -188,20 +188,26 @@ namespace LiveCharts.Charts
 
         #region Privates
 
-        private static void SetAxisLimits(AxisCore ax, IEnumerable<ICartesianSeries> series, AxisOrientation orientation)
+        private static void SetAxisLimits(AxisCore ax, IList<ICartesianSeries> series, AxisOrientation orientation)
         {
-            //                     [ max, min, pointRadius ]
-            var boundries = new[] { double.MinValue, double.MaxValue, 0d };
+            var first = new CoreLimit();
+            var firstR = 0d;
 
-            //yi.BotLimit = double.IsNaN(yi.MinValue) ? cartesianSeries.Where(x => x.View.ScalesYAt == index)
-            //    .Select(x => x.GetMinY(yi))
-            //    .DefaultIfEmpty(0).Min() : yi.MinValue;
-            //yi.TopLimit = double.IsNaN(yi.MaxValue) ? cartesianSeries.Where(x => x.View.ScalesYAt == index)
-            //    .Select(x => x.GetMaxY(yi))
-            //    .DefaultIfEmpty(0).Max() : yi.MaxValue;
-
-            foreach (var cartesianSeries in series)
+            if (series.Count > 0)
             {
+                first = orientation == AxisOrientation.X
+                    ? new CoreLimit(series[0].GetMinX(ax), series[0].GetMaxX(ax))
+                    : new CoreLimit(series[0].GetMinY(ax), series[0].GetMaxY(ax));
+                var view = series[0].View as IAreaPoint;
+                firstR = view != null ? view.GetPointDiameter() : 0;
+            }
+
+            //                     [ max, min, pointRadius ]
+            var boundries = new[] { first.Max, first.Min, firstR };
+
+            for (var index = 1; index < series.Count; index++)
+            {
+                var cartesianSeries = series[index];
                 var limit = orientation == AxisOrientation.X
                     ? new CoreLimit(cartesianSeries.GetMinX(ax), cartesianSeries.GetMaxX(ax))
                     : new CoreLimit(cartesianSeries.GetMinY(ax), cartesianSeries.GetMaxY(ax));

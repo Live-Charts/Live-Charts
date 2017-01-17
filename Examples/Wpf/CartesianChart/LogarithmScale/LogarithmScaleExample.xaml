@@ -9,8 +9,18 @@
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
         <lvc:CartesianChart Series="{Binding SeriesCollection}">
+            <lvc:CartesianChart.Resources>
+                <Style TargetType="lvc:Separator">
+                    <Setter Property="Stroke" Value="LightGray"></Setter>
+                </Style>
+            </lvc:CartesianChart.Resources>
             <lvc:CartesianChart.AxisX>
-                <lvc:Axis LabelFormatter="{Binding Formatter}" Separator="{x:Static lvc:DefaultAxes.CleanSeparator}" />
+                <lvc:LogarithmicAxis LabelFormatter="{Binding Formatter}" 
+                                     Base="{Binding Base}" >
+                    <lvc:LogarithmicAxis.Separator>
+                        <lvc:Separator StrokeThickness="1" IsEnabled="True"></lvc:Separator>
+                    </lvc:LogarithmicAxis.Separator>
+                </lvc:LogarithmicAxis>
             </lvc:CartesianChart.AxisX>
         </lvc:CartesianChart>
     </Grid>

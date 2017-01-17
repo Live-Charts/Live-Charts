@@ -12,6 +12,7 @@ using Wpf.CartesianChart.Customized_Line_Series;
 using Wpf.CartesianChart.CustomTooltipAndLegend;
 using Wpf.CartesianChart.DynamicVisibility;
 using Wpf.CartesianChart.Energy_Predictions;
+using Wpf.CartesianChart.Events;
 using Wpf.CartesianChart.Financial;
 using Wpf.CartesianChart.Funnel_Chart;
 using Wpf.CartesianChart.GanttChart;
@@ -62,7 +63,6 @@ namespace Wpf
 
             CartesianExamples = new List<UserControl>
             {
-                //new JimmyTheTestsGuy(),
                 new MaterialCards(),
                 new EnergyPredictionExample(),
                 new SolidColorExample(),
@@ -83,7 +83,8 @@ namespace Wpf
                 new GanttExample(),
                 new MultiAxesChart(),
                 new GeoMapExample(),
-                new UiElementsExample(),
+                new EventsExample(),
+                new UiElementsAndEventsExample(),
                 new StackedRowExample(),
                 new CustomTooltipAndLegendExample(),
                 new BasicColumn(),
@@ -113,18 +114,18 @@ namespace Wpf
                 new InLineSyntaxTest()
             };
 
-            PieExamples = new List<UserControl>
-            {
-                new PieChartExample(),
-                new DoughnutChartExample()
-            };
+            //PieExamples = new List<UserControl>
+            //{
+            //    new PieChartExample(),
+            //    new DoughnutChartExample()
+            //};
 
-            GaugeExamples = new List<UserControl>
-            {
-                new Gauge180(),
-                new Gauge360(),
-                new AngularGaugeExmple()
-            };
+            //GaugeExamples = new List<UserControl>
+            //{
+            //    new Gauge360(),
+            //    new Gauge180(),
+            //    new AngularGaugeExmple()
+            //};
 
             #endregion
 
@@ -190,7 +191,7 @@ namespace Wpf
         private void NextPieOnClick(object sender, MouseButtonEventArgs e)
         {
             if (PieView == null) return;
-            var current = PieExamples.IndexOf(CartesianView);
+            var current = PieExamples.IndexOf(PieView);
             current++;
             PieView = PieExamples.Count > current ? PieExamples[current] : PieExamples[0];
         }
@@ -198,7 +199,7 @@ namespace Wpf
         private void PreviousPieOnClick(object sender, MouseButtonEventArgs e)
         {
             if (PieView == null) return;
-            var current = PieExamples.IndexOf(CartesianView);
+            var current = PieExamples.IndexOf(PieView);
             current--;
             PieView = current >= 0 ? PieExamples[current] : PieExamples[PieExamples.Count - 1];
         }

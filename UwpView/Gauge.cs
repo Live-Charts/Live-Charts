@@ -70,13 +70,17 @@ namespace LiveCharts.Uwp
                 new Binding {Path = new PropertyPath("StrokeThickness"), Source = this});
             PieBack.SetBinding(Shape.StrokeProperty,
                 new Binding {Path = new PropertyPath("Stroke"), Source = this});
+            PieBack.SetBinding(RenderTransformProperty,
+                new Binding { Path = new PropertyPath("GaugeRenderTransform"), Source = this });
 
             Pie.SetBinding(Shape.StrokeThicknessProperty,
                 new Binding { Path = new PropertyPath("StrokeThickness"), Source = this });
+            Pie.SetBinding(RenderTransformProperty,
+                new Binding { Path = new PropertyPath("GaugeRenderTransform"), Source = this });
             Pie.Stroke = new SolidColorBrush(Colors.Transparent);
 
-            this.SetIfNotSet(MinHeightProperty, 50d);
-            this.SetIfNotSet(MinWidthProperty, 80d);
+            this.SetIfNotSet(MinHeightProperty, 20d);
+            this.SetIfNotSet(MinWidthProperty, 20d);
 
             MeasureTextBlock.FontWeight = FontWeights.Bold;
 
@@ -99,6 +103,57 @@ namespace LiveCharts.Uwp
         private TextBlock RightLabel { get; }
         private bool IsNew { get; set; }
         private bool IsChartInitialized { get; set; }
+
+        /// <summary>
+        /// The gauge active fill property
+        /// </summary>
+        public static readonly DependencyProperty GaugeActiveFillProperty = DependencyProperty.Register(
+            "GaugeActiveFill", typeof(Brush), typeof(Gauge), new PropertyMetadata(default(Brush)));
+        /// <summary>
+        /// Gets or sets the gauge active fill, if this property is set, From/to color properties interpolation will be ignored
+        /// </summary>
+        /// <value>
+        /// The gauge active fill.
+        /// </value>
+        public Brush GaugeActiveFill
+        {
+            get { return (Brush)GetValue(GaugeActiveFillProperty); }
+            set { SetValue(GaugeActiveFillProperty, value); }
+        }
+
+        /// <summary>
+        /// The labels visibility property
+        /// </summary>
+        public static readonly DependencyProperty LabelsVisibilityProperty = DependencyProperty.Register(
+            "LabelsVisibility", typeof(Visibility), typeof(Gauge), new PropertyMetadata(default(Visibility)));
+        /// <summary>
+        /// Gets or sets the labels visibility.
+        /// </summary>
+        /// <value>
+        /// The labels visibility.
+        /// </value>
+        public Visibility LabelsVisibility
+        {
+            get { return (Visibility)GetValue(LabelsVisibilityProperty); }
+            set { SetValue(LabelsVisibilityProperty, value); }
+        }
+
+        /// <summary>
+        /// The gauge render transform property
+        /// </summary>
+        public static readonly DependencyProperty GaugeRenderTransformProperty = DependencyProperty.Register(
+            "GaugeRenderTransform", typeof(Transform), typeof(Gauge), new PropertyMetadata(default(Transform)));
+        /// <summary>
+        /// Gets or sets the gauge render transform.
+        /// </summary>
+        /// <value>
+        /// The gauge render transform.
+        /// </value>
+        public Transform GaugeRenderTransform
+        {
+            get { return (Transform) GetValue(GaugeRenderTransformProperty); }
+            set { SetValue(GaugeRenderTransformProperty, value); }
+        }
 
         /// <summary>
         /// The uses360 mode property
@@ -315,15 +370,15 @@ namespace LiveCharts.Uwp
                 LeftLabel.Text = (LabelFormatter ?? defFormatter)(From);
                 RightLabel.Text = (LabelFormatter ?? defFormatter)(To);
 
-                LeftLabel.Visibility = Visibility.Visible;
-                RightLabel.Visibility = Visibility.Visible;
+                LeftLabel.Visibility = LabelsVisibility;
+                RightLabel.Visibility = LabelsVisibility;
 
                 t = LeftLabel.ActualHeight;
             }
             else
             {
-                LeftLabel.Visibility = Visibility.Collapsed;//Visibility.Hidden;
-                RightLabel.Visibility = Visibility.Collapsed;//Visibility.Hidden;
+                LeftLabel.Visibility = Visibility.Collapsed;
+                RightLabel.Visibility = Visibility.Collapsed;
             }
 
             double r, top;
@@ -337,16 +392,22 @@ namespace LiveCharts.Uwp
             else
             {
                 r = ActualWidth;
-                
+
                 if (ActualWidth > ActualHeight*2)
                 {
                     r = ActualHeight*2;
+                }
+                else
+                {
+                    t = 0;
                 }
 
                 r = r/2 - 2*t;
 
                 top = ActualHeight/2 + r/2;
             }
+
+            if (r < 0) r = 1;
 
             PieBack.Height = Canvas.ActualHeight;
             PieBack.Width = Canvas.ActualWidth;
@@ -398,7 +459,15 @@ namespace LiveCharts.Uwp
             }
 
             Pie.BeginDoubleAnimation(nameof(PieSlice.WedgeAngle), completed * angle, AnimationsSpeed);
-            ((SolidColorBrush)Pie.Fill).BeginColorAnimation(nameof(SolidColorBrush.Color), interpolatedColor, AnimationsSpeed);
+
+            if (GaugeActiveFill == null)
+            {
+                ((SolidColorBrush)Pie.Fill).BeginColorAnimation(nameof(SolidColorBrush.Color), interpolatedColor, AnimationsSpeed);
+            }
+            else
+            {
+                Pie.Fill = GaugeActiveFill;
+            }
 
             IsNew = false;
         }
