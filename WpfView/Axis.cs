@@ -26,6 +26,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using LiveCharts.Charts;
@@ -65,6 +66,23 @@ namespace LiveCharts.Wpf
         /// Happens every time an axis range changes by a user event (zooming or panning)
         /// </summary>
         public event RangeChangedHandler RangeChanged;
+
+        /// <summary>
+        /// The range changed command property
+        /// </summary>
+        public static readonly DependencyProperty RangeChangedCommandProperty = DependencyProperty.Register(
+            "RangeChangedCommand", typeof(ICommand), typeof(Axis), new PropertyMetadata(default(ICommand)));
+        /// <summary>
+        /// Gets or sets the range changed command.
+        /// </summary>
+        /// <value>
+        /// The range changed command.
+        /// </value>
+        public ICommand RangeChangedCommand
+        {
+            get { return (ICommand) GetValue(RangeChangedCommandProperty); }
+            set { SetValue(RangeChangedCommandProperty, value); }
+        }
         #endregion
 
         #region properties
@@ -667,6 +685,7 @@ namespace LiveCharts.Wpf
         protected void OnRangeChanged(RangeChangedEventArgs e)
         {
             if (RangeChanged != null) RangeChanged.Invoke(e);
+            if (RangeChangedCommand != null  && RangeChangedCommand.CanExecute(e)) RangeChangedCommand.Execute(e);
         }
     }
 }

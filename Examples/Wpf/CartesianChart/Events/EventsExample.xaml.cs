@@ -2,6 +2,7 @@
 using System.Windows.Controls;
 using System.Windows.Input;
 using LiveCharts;
+using LiveCharts.Events;
 using LiveCharts.Wpf;
 
 namespace Wpf.CartesianChart.Events
@@ -30,6 +31,11 @@ namespace Wpf.CartesianChart.Events
         private void ChartOnUpdaterTick(object sender)
         {
             Console.WriteLine("[EVENT] chart was updated");
+        }
+
+        private void Axis_OnRangeChanged(RangeChangedEventArgs eventargs)
+        {
+            Console.WriteLine("[EVENT] axis range changed");
         }
 
         private void ChartMouseMove(object sender, MouseEventArgs e)

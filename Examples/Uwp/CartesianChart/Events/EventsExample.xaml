@@ -11,13 +11,17 @@
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
-        <lvc:CartesianChart Grid.Row="1" Name="Chart" 
+        <lvc:CartesianChart Grid.Row="1" Name="Chart" Zoom="Xy"
                             DataClick="ChartOnDataClick"
                             DataHover="Chart_OnDataHover"
                             UpdaterTick="ChartOnUpdaterTick"
                             DataClickCommand="{Binding DataClickCommand}"
                             DataHoverCommand="{Binding DataHoverCommand}"
                             UpdaterTickCommand="{Binding UpdaterTickCommand}">
+            <lvc:CartesianChart.AxisX>
+                <lvc:Axis RangeChanged="Axis_OnRangeChanged"
+                          RangeChangedCommand="{Binding RangeChangedCommand}"/>
+            </lvc:CartesianChart.AxisX>
             <lvc:CartesianChart.Series>
                 <lvc:LineSeries Values="{Binding Values}" 
                                 Fill="Transparent" 

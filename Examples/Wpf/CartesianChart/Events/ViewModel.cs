@@ -1,5 +1,6 @@
 using System;
 using LiveCharts;
+using LiveCharts.Events;
 
 namespace Wpf.CartesianChart.Events
 {
@@ -21,10 +22,15 @@ namespace Wpf.CartesianChart.Events
             {
                 ExecuteDelegate = c => Console.WriteLine("[COMMAND] Chart was updated!")
             };
+            RangeChangedCommand = new MyCommand<RangeChangedEventArgs>
+            {
+                ExecuteDelegate = e => Console.WriteLine("[COMMAND] Axis range changed")
+            };
         }
 
         public MyCommand<ChartPoint> DataHoverCommand { get; set; }
         public MyCommand<ChartPoint> DataClickCommand { get; set; }
         public MyCommand<LiveCharts.Wpf.CartesianChart> UpdaterTickCommand { get; set; }
+        public MyCommand<RangeChangedEventArgs> RangeChangedCommand { get; set; }
     }
 }

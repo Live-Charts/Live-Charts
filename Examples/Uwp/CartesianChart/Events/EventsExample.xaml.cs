@@ -2,6 +2,7 @@
 using Windows.Devices.Input;
 using Windows.UI.Xaml.Controls;
 using LiveCharts;
+using LiveCharts.Events;
 using LiveCharts.Uwp;
 
 namespace UWP.CartesianChart.Events
@@ -32,6 +33,11 @@ namespace UWP.CartesianChart.Events
         private void ChartOnUpdaterTick(object sender)
         {
             Debug.WriteLine("[EVENT] chart was updated");
+        }
+
+        private void Axis_OnRangeChanged(RangeChangedEventArgs eventargs)
+        {
+            Debug.WriteLine("[EVENT] axis range changed");
         }
     }
 }

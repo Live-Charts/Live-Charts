@@ -21,6 +21,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows.Input;
 using Windows.Foundation;
 using Windows.UI;
 using Windows.UI.Text;
@@ -64,6 +65,23 @@ namespace LiveCharts.Uwp
         /// Happens every time an axis range changes, this handler will be called before the next updater tick.
         /// </summary>
         public event RangeChangedHandler RangeChanged;
+
+        /// <summary>
+        /// The range changed command property
+        /// </summary>
+        public static readonly DependencyProperty RangeChangedCommandProperty = DependencyProperty.Register(
+            "RangeChangedCommand", typeof(ICommand), typeof(Axis), new PropertyMetadata(default(ICommand)));
+        /// <summary>
+        /// Gets or sets the range changed command.
+        /// </summary>
+        /// <value>
+        /// The range changed command.
+        /// </value>
+        public ICommand RangeChangedCommand
+        {
+            get { return (ICommand)GetValue(RangeChangedCommandProperty); }
+            set { SetValue(RangeChangedCommandProperty, value); }
+        }
         #endregion
 
         #region properties
@@ -687,6 +705,7 @@ namespace LiveCharts.Uwp
         protected void OnRangeChanged(RangeChangedEventArgs e)
         {
             RangeChanged?.Invoke(e);
+            if (RangeChangedCommand != null && RangeChangedCommand.CanExecute(e)) RangeChangedCommand.Execute(e);
         }
     }
 }

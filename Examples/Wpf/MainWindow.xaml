@@ -10,21 +10,11 @@
         WindowState="Normal"
         d:DataContext="{d:DesignInstance local:MainWindow}">
     <ScrollViewer>
-        <StackPanel Margin="15 0"> 
-            <Image Source="lvlogo.png" Height="50" Margin="15"></Image>
-            <TextBlock TextWrapping="Wrap">
-            Welcome to LiveCharts examples, LiveCharts is designed to be powerful, customizable, maintainable and easy to use for the user.
-            </TextBlock>
-            <TextBlock TextWrapping="Wrap" >
-            All the charts are really responsive, what does this means? when you resize a chart or your data changes the UI will update automatically, this will save you
-            hours, and you will only need to focus in the logic of your business, let LiveCharts handle the plotting.
-            </TextBlock>
-            <TextBlock TextWrapping="Wrap" >
-                There is a folder in this project with the code behind of each view you see in the next carousel, to reach the code behind, for example in the cartesian chart carousel go to the CartesialChart folder in this project, and then open the desired user view.
+        <StackPanel Margin="15 0">
+            <TextBlock TextWrapping="Wrap" Margin="0 20" FontSize="18">
+              Use the navigation arrows at left and right of each chart to see more examples.
             </TextBlock>
             <Separator Margin="10" ></Separator>
-
-            <!--<local:PanelExample Height="650" Margin="10"></local:PanelExample>-->
 
             <Grid Height="500">
                 <Grid.ColumnDefinitions>
@@ -58,6 +48,8 @@
                 <ContentControl Grid.Column="1" Content="{Binding GaugeView}"/>
                 <Image Grid.Column="2" Source="Right.png" Height="30" MouseDown="NextGaugeOnClick"></Image>
             </Grid>
+
+            <local:PanelExample Height="650" Margin="10"></local:PanelExample>
         </StackPanel>
     </ScrollViewer>
 </Window>

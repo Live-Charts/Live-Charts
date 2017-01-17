@@ -63,7 +63,6 @@ namespace Wpf
 
             CartesianExamples = new List<UserControl>
             {
-                //new JimmyTheTestsGuy(),
                 new MaterialCards(),
                 new EnergyPredictionExample(),
                 new SolidColorExample(),
@@ -115,18 +114,18 @@ namespace Wpf
                 new InLineSyntaxTest()
             };
 
-            PieExamples = new List<UserControl>
-            {
-                new PieChartExample(),
-                new DoughnutChartExample()
-            };
+            //PieExamples = new List<UserControl>
+            //{
+            //    new PieChartExample(),
+            //    new DoughnutChartExample()
+            //};
 
-            GaugeExamples = new List<UserControl>
-            {
-                new Gauge360(),
-                new Gauge180(),
-                new AngularGaugeExmple()
-            };
+            //GaugeExamples = new List<UserControl>
+            //{
+            //    new Gauge360(),
+            //    new Gauge180(),
+            //    new AngularGaugeExmple()
+            //};
 
             #endregion
 

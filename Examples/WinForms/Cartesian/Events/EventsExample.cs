@@ -2,6 +2,7 @@
 using System.Windows.Media;
 using System.Windows.Forms;
 using LiveCharts;
+using LiveCharts.Events;
 using LiveCharts.Wpf;
 
 namespace Winforms.Cartesian.Events
@@ -19,6 +20,11 @@ namespace Winforms.Cartesian.Events
                 StrokeThickness = 4,
                 PointGeometrySize = 25
             });
+
+            var ax = new Axis();
+            ax.RangeChanged += AxOnRangeChanged; 
+
+            cartesianChart1.AxisX.Add(ax);
         }
 
         private void ChartOnDataClick(object sender, ChartPoint p)
@@ -36,6 +42,11 @@ namespace Winforms.Cartesian.Events
         private void ChartOnUpdaterTick(object sender)
         {
             Console.WriteLine("[EVENT] chart was updated");
+        }
+
+        private void AxOnRangeChanged(RangeChangedEventArgs eventArgs)
+        {
+            Console.WriteLine("[EVENT] axis range changed");
         }
     }
 }
