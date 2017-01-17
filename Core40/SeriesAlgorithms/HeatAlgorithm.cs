@@ -99,7 +99,7 @@ namespace LiveCharts.SeriesAlgorithms
                 var heatView = (IHeatPointView)chartPoint.View;
 
                 heatView.ColorComponents = ColorInterpolation(correctedGradients,
-                    chartPoint.Weight / Chart.WLimit.Max);
+                    (chartPoint.Weight - Chart.WLimit.Min)/(Chart.WLimit.Max - Chart.WLimit.Min));
 
                 heatView.Width = w;
                 heatView.Height = h;
