@@ -123,7 +123,6 @@ namespace Wpf
             GaugeExamples = new List<UserControl>
             {
                 new Gauge360(),
-                new Gauge180(),
                 new AngularGaugeExmple()
             };
 
