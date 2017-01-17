@@ -31,6 +31,7 @@ using System.Windows.Shapes;
 using System.Linq;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Effects;
+using LiveCharts.Helpers;
 using LiveCharts.Wpf.Points;
 
 namespace LiveCharts.Wpf
@@ -115,7 +116,7 @@ namespace LiveCharts.Wpf
         /// </summary>
         public static readonly DependencyProperty TicksStepProperty = DependencyProperty.Register(
             "TicksStep", typeof (double), typeof (AngularGauge), 
-            new PropertyMetadata(2d, Redraw));
+            new PropertyMetadata(double.NaN, Redraw));
         /// <summary>
         /// Gets or sets the separation between every tick
         /// </summary>
@@ -130,7 +131,7 @@ namespace LiveCharts.Wpf
         /// </summary>
         public static readonly DependencyProperty LabelsStepProperty = DependencyProperty.Register(
             "LabelsStep", typeof (double), typeof (AngularGauge), 
-            new PropertyMetadata(10d, Redraw));
+            new PropertyMetadata(double.NaN, Redraw));
         /// <summary>
         /// Gets or sets the separation between every label
         /// </summary>
@@ -403,7 +404,12 @@ namespace LiveCharts.Wpf
 
             UpdateSections();
 
-            for (var i = FromValue; i <= ToValue; i += TicksStep)
+            var ts = double.IsNaN(TicksStep) ? DecideInterval((ToValue - FromValue)/5) : TicksStep;
+            if (ts / (FromValue - ToValue) > 300)
+                throw new LiveChartsException("TicksStep property is too small compared with the range in " +
+                                              "the gauge, to avoid performance issues, please increase it.");
+
+            for (var i = FromValue; i <= ToValue; i += ts)
             {
                 var alpha = LinearInterpolation(fromAlpha, toAlpha, FromValue, ToValue, i) + 90;
 
@@ -421,7 +427,12 @@ namespace LiveCharts.Wpf
                     new Binding { Path = new PropertyPath(TicksStrokeThicknessProperty), Source = this });
             }
 
-            for (var i = FromValue; i <= ToValue; i += LabelsStep)
+            var ls = double.IsNaN(LabelsStep) ? DecideInterval((ToValue - FromValue) / 5) : LabelsStep;
+            if (ls / (FromValue - ToValue) > 300)
+                throw new LiveChartsException("LabelsStep property is too small compared with the range in " +
+                                              "the gauge, to avoid performance issues, please increase it.");
+
+            for (var i = FromValue; i <= ToValue; i += ls)
             {
                 var alpha = LinearInterpolation(fromAlpha, toAlpha, FromValue, ToValue, i) + 90;
 
@@ -505,6 +516,24 @@ namespace LiveCharts.Wpf
             var m = (p2.Y - p1.Y)/(deltaX == 0 ? double.MinValue : deltaX);
 
             return m*(value - p1.X) + p1.Y;
+        }
+
+        private static double DecideInterval(double minimum)
+        {
+            var magnitude = Math.Pow(10, Math.Floor(Math.Log(minimum) / Math.Log(10)));
+
+            var residual = minimum / magnitude;
+            double tick;
+            if (residual > 5)
+                tick = 10 * magnitude;
+            else if (residual > 2)
+                tick = 5 * magnitude;
+            else if (residual > 1)
+                tick = 2 * magnitude;
+            else
+                tick = magnitude;
+
+            return tick;
         }
     }
 }
