@@ -175,6 +175,9 @@ namespace LiveCharts
             for (var index = 0; index < source.Count; index++)
             {
                 var value = source[index];
+                if (value == null)
+                    continue;
+
                 if (isObservable)
                 {
                     var observable = (IObservableChartPoint)value;
