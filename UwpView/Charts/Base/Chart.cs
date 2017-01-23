@@ -184,9 +184,6 @@ namespace LiveCharts.Uwp.Charts.Base
 
         private void OnSizeChanged(object sender, SizeChangedEventArgs args)
         {
-#if DEBUG
-            Debug.WriteLine("ChartResized");
-#endif
             Model.ControlSize = new CoreSize(ActualWidth, ActualHeight);
 
             Model.Updater.Run();
@@ -194,9 +191,6 @@ namespace LiveCharts.Uwp.Charts.Base
 
         private void OnIsVisibleChanged(DependencyObject dependencyObject, DependencyProperty dependencyProperty)
         {
-#if DEBUG
-            Debug.WriteLine("ChartVisibilityChanged");
-#endif
             Model.ControlSize = new CoreSize(ActualWidth, ActualHeight);
 
             Model.Updater.Run();
@@ -1476,7 +1470,6 @@ namespace LiveCharts.Uwp.Charts.Base
         //        delta = this.ConvertToChartValues(new Point(Ldsp.Value.X, 0), ax.Model.AxisIndex).X -
         //                this.ConvertToChartValues(new Point(p.X, 0), ax.Model.AxisIndex).X;
         //        Ldsp = p;
-        //        Debug.WriteLine(delta);
         //        ax.FromValue -= delta;
         //        ax.ToValue -= delta;
         //    }
@@ -1485,7 +1478,6 @@ namespace LiveCharts.Uwp.Charts.Base
         //        delta = this.ConvertToChartValues(new Point(0, Ldsp.Value.Y), 0, ax.Model.AxisIndex).Y -
         //                this.ConvertToChartValues(new Point(0, p.Y), 0, ax.Model.AxisIndex).Y;
         //        Ldsp = p;
-        //        Debug.WriteLine(delta);
         //        ax.FromValue -= delta;
         //        ax.ToValue -= delta;
         //    }

@@ -403,10 +403,6 @@ namespace LiveCharts
             LastAxisMin = BotLimit;
             LastPlotArea = new CoreRectangle(chart.DrawMargin.Left, chart.DrawMargin.Top,
                 chart.DrawMargin.Width, chart.DrawMargin.Height);
-
-#if DEBUG
-            Debug.WriteLine("Axis.Separations: " + Cache.Count);
-#endif
         }
 
         internal double FromPreviousState(double value, AxisOrientation source, ChartCore chart)
