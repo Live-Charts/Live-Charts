@@ -137,6 +137,7 @@ namespace LiveCharts.Definitions.Charts
         /// <c>true</c> if this instance has data click event attached; otherwise, <c>false</c>.
         /// </value>
         bool HasDataClickEventAttached { get; }
+        /// <summary>
         /// Gets a value indicating whether this instance has data hover event attached.
         /// </summary>
         /// <value>

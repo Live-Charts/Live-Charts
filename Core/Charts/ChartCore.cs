@@ -336,8 +336,11 @@ namespace LiveCharts.Charts
                 var ax = AxisY[index];
                 var pr = ChartFunctions.FromPlotArea(ax.MaxPointRadius, AxisOrientation.Y, this, index) -
                          ChartFunctions.FromPlotArea(0, AxisOrientation.Y, this, index);
-                ax.BotLimit += pr;
-                ax.TopLimit -= pr;
+                if (!double.IsNaN(pr))
+                {
+                    ax.BotLimit += pr;
+                    ax.TopLimit -= pr;
+                }
                 ax.UpdateSeparators(AxisOrientation.Y, this, index);
                 ax.View.SetTitleTop(curSize.Top + curSize.Height*.5 + ax.View.GetLabelSize().Width*.5);
             }
@@ -347,8 +350,11 @@ namespace LiveCharts.Charts
                 var xi = AxisX[index];
                 var pr = ChartFunctions.FromPlotArea(xi.MaxPointRadius, AxisOrientation.X, this, index) -
                          ChartFunctions.FromPlotArea(0, AxisOrientation.X, this, index);
-                xi.BotLimit -= pr;
-                xi.TopLimit += pr;
+                if (!double.IsNaN(pr))
+                {
+                    xi.BotLimit -= pr;
+                    xi.TopLimit += pr;
+                }
                 xi.UpdateSeparators(AxisOrientation.X, this, index);
                 xi.View.SetTitleLeft(curSize.Left + curSize.Width*.5 - xi.View.GetLabelSize().Width*.5);
             }
