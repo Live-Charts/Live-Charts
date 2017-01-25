@@ -23,7 +23,6 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -819,12 +818,10 @@ namespace LiveCharts.Wpf.Charts.Base
             if (DesignerProperties.GetIsInDesignMode(this) || AxisX == null)
                 AxisX = DefaultAxes.DefaultAxis;
 
-            //if (AxisX.Count == 0)
-            //    AxisX.AddRange(DefaultAxes.CleanAxis);
-
-
             if (AxisX.Count == 0)
                 AxisX.Add(new Axis {Separator = new Separator()});
+
+            AxisX.Chart = this;
 
             return AxisX.Select(x =>
             {
@@ -848,11 +845,10 @@ namespace LiveCharts.Wpf.Charts.Base
             if (DesignerProperties.GetIsInDesignMode(this) || AxisY == null)
                 AxisY = DefaultAxes.DefaultAxis;
 
-            //if (AxisY.Count == 0)
-            //    AxisY.AddRange(DefaultAxes.DefaultAxis);
-
             if (AxisY.Count == 0)
                 AxisY.Add(new Axis {Separator = new Separator()});
+
+            AxisY.Chart = this;
 
             return AxisY.Select(y =>
             {

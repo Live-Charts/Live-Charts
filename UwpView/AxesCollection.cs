@@ -22,6 +22,7 @@
 
 using System.Collections.Generic;
 using LiveCharts.Helpers;
+using LiveCharts.Uwp.Charts.Base;
 
 namespace LiveCharts.Uwp
 {
@@ -38,8 +39,18 @@ namespace LiveCharts.Uwp
             NoisyCollectionChanged += OnNoisyCollectionChanged;
         }
 
-        private static void OnNoisyCollectionChanged(IEnumerable<Axis> oldItems, IEnumerable<Axis> newItems)
+        /// <summary>
+        /// Gets the chart that owns the series.
+        /// </summary>
+        /// <value>
+        /// The chart.
+        /// </value>
+        public Chart Chart { get; internal set; }
+
+        private void OnNoisyCollectionChanged(IEnumerable<Axis> oldItems, IEnumerable<Axis> newItems)
         {
+            Chart?.Model?.Updater.Run();
+
             if (oldItems == null) return;
 
             foreach (var oldAxis in oldItems)

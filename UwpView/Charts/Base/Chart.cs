@@ -22,7 +22,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using Windows.Foundation;
 using Windows.UI;
@@ -837,7 +836,11 @@ namespace LiveCharts.Uwp.Charts.Base
             if (Windows.ApplicationModel.DesignMode.DesignModeEnabled && AxisX == null)
                 AxisX = DefaultAxes.DefaultAxis;
 
-            if (AxisX.Count == 0) AxisX.AddRange(DefaultAxes.CleanAxis);
+            if (AxisX.Count == 0)
+                AxisX.AddRange(DefaultAxes.CleanAxis);
+
+            AxisX.Chart = this;
+
             return AxisX.Select(x =>
             {
                 if (x.Parent == null)
@@ -860,7 +863,11 @@ namespace LiveCharts.Uwp.Charts.Base
             if (Windows.ApplicationModel.DesignMode.DesignModeEnabled && AxisY == null)
                 AxisY = DefaultAxes.DefaultAxis;
 
-            if (AxisY.Count == 0) AxisY.AddRange(DefaultAxes.DefaultAxis);
+            if (AxisY.Count == 0)
+                AxisY.AddRange(DefaultAxes.DefaultAxis);
+
+            AxisX.Chart = this;
+
             return AxisY.Select(y =>
             {
                 if (y.Parent == null)
