@@ -55,14 +55,14 @@ namespace LiveCharts.Wpf
         static DefaultTooltip()
         {
             BackgroundProperty.OverrideMetadata(
-                typeof(DefaultTooltip), new FrameworkPropertyMetadata(new SolidColorBrush(Color.FromRgb(255,255,255))));
+                typeof(DefaultTooltip), new FrameworkPropertyMetadata(new SolidColorBrush(Color.FromArgb(140, 255, 255, 255))));
             BorderThicknessProperty.OverrideMetadata(
                 typeof(DefaultTooltip), new FrameworkPropertyMetadata(new Thickness(5, .5, .5, .5)));
             BorderBrushProperty.OverrideMetadata(
                 typeof(DefaultTooltip), new FrameworkPropertyMetadata(new SolidColorBrush(Color.FromRgb(100,180,245))));
             EffectProperty.OverrideMetadata(
                 typeof(DefaultTooltip),
-                new FrameworkPropertyMetadata(new DropShadowEffect {BlurRadius = 10, Color = Colors.LightGray}));
+                new FrameworkPropertyMetadata(new DropShadowEffect {BlurRadius = 3, Color = Color.FromRgb(50,50,50), Opacity = .2}));
         }
 
         /// <summary>
