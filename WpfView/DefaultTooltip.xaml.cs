@@ -56,10 +56,8 @@ namespace LiveCharts.Wpf
         {
             BackgroundProperty.OverrideMetadata(
                 typeof(DefaultTooltip), new FrameworkPropertyMetadata(new SolidColorBrush(Color.FromArgb(140, 255, 255, 255))));
-            BorderThicknessProperty.OverrideMetadata(
-                typeof(DefaultTooltip), new FrameworkPropertyMetadata(new Thickness(5, .5, .5, .5)));
-            BorderBrushProperty.OverrideMetadata(
-                typeof(DefaultTooltip), new FrameworkPropertyMetadata(new SolidColorBrush(Color.FromRgb(100,180,245))));
+            PaddingProperty.OverrideMetadata(
+                typeof(DefaultTooltip), new FrameworkPropertyMetadata(new Thickness(10, 5, 10, 5)));
             EffectProperty.OverrideMetadata(
                 typeof(DefaultTooltip),
                 new FrameworkPropertyMetadata(new DropShadowEffect {BlurRadius = 3, Color = Color.FromRgb(50,50,50), Opacity = .2}));
@@ -103,7 +101,7 @@ namespace LiveCharts.Wpf
         /// The corner radius property
         /// </summary>
         public static readonly DependencyProperty CornerRadiusProperty = DependencyProperty.Register(
-            "CornerRadius", typeof (CornerRadius), typeof (DefaultTooltip), new PropertyMetadata(new CornerRadius(2)));
+            "CornerRadius", typeof (CornerRadius), typeof (DefaultTooltip), new PropertyMetadata(new CornerRadius(4)));
         /// <summary>
         /// Gets or sets the corner radius of the tooltip
         /// </summary>
