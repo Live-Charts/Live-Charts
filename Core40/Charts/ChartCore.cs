@@ -424,8 +424,8 @@ namespace LiveCharts.Charts
             {
                 foreach (var xi in AxisX)
                 {
-                    var max = double.IsNaN(xi.MaxValue) ? xi.TopLimit : xi.MaxValue;
-                    var min = double.IsNaN(xi.MinValue) ? xi.BotLimit : xi.MinValue;
+                    var max = double.IsNaN(xi.View.MaxValue) ? xi.TopLimit : xi.View.MaxValue;
+                    var min = double.IsNaN(xi.View.MinValue) ? xi.BotLimit : xi.View.MinValue;
                     var l = max - min;
 
                     var rMin = (pivot.X - min) / l;
@@ -443,8 +443,8 @@ namespace LiveCharts.Charts
             {
                 foreach (var ax in AxisY)
                 {
-                    var max = double.IsNaN(ax.MaxValue) ? ax.TopLimit : ax.MaxValue;
-                    var min = double.IsNaN(ax.MinValue) ? ax.BotLimit : ax.MinValue;
+                    var max = double.IsNaN(ax.View.MaxValue) ? ax.TopLimit : ax.View.MaxValue;
+                    var min = double.IsNaN(ax.View.MinValue) ? ax.BotLimit : ax.View.MinValue;
                     var l = max - min;
                     var rMin = (pivot.Y - min) / l;
                     var rMax = 1 - rMin;
@@ -476,8 +476,8 @@ namespace LiveCharts.Charts
             {
                 foreach (var xi in AxisX)
                 {
-                    var max = double.IsNaN(xi.MaxValue) ? xi.TopLimit : xi.MaxValue;
-                    var min = double.IsNaN(xi.MinValue) ? xi.BotLimit : xi.MinValue;
+                    var max = double.IsNaN(xi.View.MaxValue) ? xi.TopLimit : xi.View.MaxValue;
+                    var min = double.IsNaN(xi.View.MinValue) ? xi.BotLimit : xi.View.MinValue;
                     var l = max - min;
                     var rMin = (pivot.X - min) / l;
                     var rMax = 1 - rMin;

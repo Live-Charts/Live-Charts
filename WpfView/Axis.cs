@@ -592,7 +592,7 @@ namespace LiveCharts.Wpf
             var nMax = double.IsNaN(MaxValue) ? Model.TopLimit : MaxValue;
             var nMin = double.IsNaN(MinValue) ? Model.BotLimit : MinValue;
 
-            Model.Chart.Updater.Run(false, DisableAnimations == false);
+            Model.Chart.Updater.Run();
 
             OnRangeChanged(new RangeChangedEventArgs
             {
