@@ -125,7 +125,7 @@ namespace LiveCharts.Wpf
         }
 
         /// <summary>
-        /// The point foreround property
+        /// The point foreground property
         /// </summary>
         public static readonly DependencyProperty PointForeroundProperty = DependencyProperty.Register(
             "PointForeround", typeof (Brush), typeof (LineSeries), 
