@@ -1,7 +1,7 @@
 ﻿<Application x:Class="Wpf.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             StartupUri="MainWindow.xaml">
+             StartupUri="Home/HomeView.xaml">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -18,8 +18,8 @@
                 <!--Select size, options are small, medium and large-->
                 
                 <!--small--><!--<ResourceDictionary Source="pack://application:,,,/LiveCharts.Wpf;component/Themes/Size/s.xaml" />-->
-                <!--medium--><ResourceDictionary Source="pack://application:,,,/LiveCharts.Wpf;component/Themes/Size/m.xaml" />
-                <!--large--><!--<ResourceDictionary Source="pack://application:,,,/LiveCharts.Wpf;component/Themes/Size/l.xaml" />-->
+                <!--medium--><!--<ResourceDictionary Source="pack://application:,,,/LiveCharts.Wpf;component/Themes/Size/m.xaml" />-->
+                <!--large--><ResourceDictionary Source="pack://application:,,,/LiveCharts.Wpf;component/Themes/Size/l.xaml" />
 
                 
                 <!--Select weight, options are light, normal and bold-->
@@ -30,6 +30,19 @@
                 
                 <!--Also add the base theme, this is required always-->
                 <ResourceDictionary Source="pack://application:,,,/LiveCharts.Wpf;component/Themes/base.xaml" />
+                
+                
+                <!--mahaps resources-->
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colors.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/FlatButton.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/Steel.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseLight.xaml" />
+                
+                <!-- local resources-->
+                <ResourceDictionary Source="Resources/AppDictionary.xaml"></ResourceDictionary>
+                <ResourceDictionary Source="Resources/ChartResources.xaml"></ResourceDictionary>
                 
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>

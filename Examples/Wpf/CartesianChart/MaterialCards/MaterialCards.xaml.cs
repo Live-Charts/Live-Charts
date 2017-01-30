@@ -63,6 +63,28 @@ namespace Wpf.CartesianChart.MaterialCards
                 }
             };
             _trend = 8;
+
+#if NET40
+            Task.Factory.StartNew(() =>
+            {
+                var r = new Random();
+
+                Action action = delegate
+                {
+                    LastHourSeries[0].Values.Add(new ObservableValue(_trend));
+                    LastHourSeries[0].Values.RemoveAt(0);
+                    SetLecture();
+                };
+
+                while (true)
+                {
+                    Thread.Sleep(500);
+                    _trend += (r.NextDouble() > 0.3 ? 1 : -1) * r.Next(0, 5);
+                    Application.Current.Dispatcher.Invoke(DispatcherPriority.Normal, action);
+                }
+            });
+#endif
+#if NET45
             Task.Run(() =>
             {
                 var r = new Random();
@@ -78,6 +100,7 @@ namespace Wpf.CartesianChart.MaterialCards
                     });
                 }
             });
+#endif
 
             DataContext = this;
         }
@@ -98,6 +121,18 @@ namespace Wpf.CartesianChart.MaterialCards
         {
             var target = ((ChartValues<ObservableValue>)LastHourSeries[0].Values).Last().Value;
             var step = (target - _lastLecture) / 4;
+#if NET40
+            Task.Factory.StartNew(() =>
+            {
+                for (var i = 0; i < 4; i++)
+                {
+                    Thread.Sleep(100);
+                    LastLecture += step;
+                }
+                LastLecture = target;
+            });
+#endif
+#if NET45
             Task.Run(() =>
             {
                 for (var i = 0; i < 4; i++)
@@ -107,6 +142,7 @@ namespace Wpf.CartesianChart.MaterialCards
                 }
                 LastLecture = target;
             });
+#endif
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

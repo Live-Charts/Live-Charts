@@ -12,7 +12,7 @@
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
-        <Button Grid.Row="0" Height="30" Click="RunDataOnClick">
+        <Button Grid.Row="0" Click="RunDataOnClick">
             Inject/Stop Data
         </Button>
         <lvc:CartesianChart Grid.Row="1">

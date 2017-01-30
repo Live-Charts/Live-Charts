@@ -61,7 +61,7 @@
             </StackPanel>
         </Grid>
         
-        <Grid Grid.Column="1" Margin="15, 60, 15, 15" MaxHeight="350">
+        <Grid Grid.Column="1" Margin="15, 20, 15, 15" MaxHeight="350">
             <Grid.Effect>
                 <DropShadowEffect BlurRadius="15" Direction="-90" RenderingBias="Quality" Opacity=".2" ShadowDepth="1"/>
             </Grid.Effect>

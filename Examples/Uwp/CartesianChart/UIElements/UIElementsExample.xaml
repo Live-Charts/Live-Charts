@@ -13,7 +13,7 @@
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
-        <lvc:CartesianChart Grid.Row="1" x:Name="Chart" DataClick="ChartOnDataClick">
+        <lvc:CartesianChart Grid.Row="1" x:Name="Chart">
             <lvc:CartesianChart.Series>
                 <lvc:LineSeries Values="{Binding Values1}" Fill="Transparent" StrokeThickness="4" 
                                 Canvas.ZIndex="2" PointGeometry="{x:Null}"/>

@@ -13,7 +13,7 @@
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
         
-        <Button Grid.Row="0" Height="30" Width="100" Click="ButtonBase_OnClick" Margin="10">Randomize</Button>
+        <Button Grid.Row="0" Click="ButtonBase_OnClick" Margin="10">Randomize</Button>
         <lvc:CartesianChart Grid.Row="1" DataTooltip="{x:Null}">
             <lvc:CartesianChart.Series>
                 <lvc:HeatSeries Values="{Binding Values}" DataLabels="True">

@@ -25,7 +25,6 @@ using Winforms.Cartesian.StepLine;
 using Winforms.Cartesian.UielementsExample;
 using Winforms.Cartesian.Zooming_and_Panning;
 using Winforms.Gauge.AngularGauge;
-using Winforms.Gauge._180;
 using Winforms.Gauge._360;
 using Winforms.Maps;
 using Winforms.PieChart;
@@ -102,11 +101,6 @@ namespace Winforms
         private void btnLogScale_Click(object sender, EventArgs e)
         {
             new LogarithmSacale().ShowDialog();
-        }
-
-        private void btnGauge_Click(object sender, EventArgs e)
-        {
-            new Gauge180Example().ShowDialog();
         }
 
         private void button1_Click(object sender, EventArgs e)

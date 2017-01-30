@@ -13,10 +13,7 @@
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
-        <TextBlock Grid.Row="0" TextWrapping="Wrap">
-            <Bold>New in 0.7.0</Bold> You can now have axis sections to highlight a range of values
-        </TextBlock>
-        <Button Grid.Row="1" Height="30" Click="UpdateAllOnClick">
+        <Button Grid.Row="1"  Click="UpdateAllOnClick">
             Move All
         </Button>
         <lvc:CartesianChart Name="Chart" Grid.Row="2" Series="{Binding SeriesCollection}" >

@@ -13,15 +13,15 @@
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
         <StackPanel Grid.Row="0" Orientation="Horizontal">
-            <Button  Height="30" Click="UpdateAllOnClick" Padding="10 0">
+            <Button Click="UpdateAllOnClick" Padding="10 0">
                 Move All
             </Button>
-            <Button Height="30" Click="RestartOnClick">Restart</Button>
+            <Button Click="RestartOnClick">Restart</Button>
             <TextBlock VerticalAlignment="Center" Padding="10 0">Series</TextBlock>
-            <Button Height="30" Click="AddSeriesOnClick" MinWidth="30">
+            <Button Click="AddSeriesOnClick" MinWidth="30">
                 +
             </Button>
-            <Button  Height="30" Click="RemoveSeriesOnClick" MinWidth="30">
+            <Button Click="RemoveSeriesOnClick" MinWidth="30">
                 -
             </Button>
             <TextBlock VerticalAlignment="Center" Padding="10 0">Values</TextBlock>
