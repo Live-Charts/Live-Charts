@@ -8,9 +8,9 @@
         <Setter Property="NonActiveWindowTitleBrush" Value="White"></Setter>
         <Setter Property="TitleCharacterCasing" Value="Normal"></Setter>
         <Setter Property="Background" Value="White"></Setter>
-        <Setter Property="BorderThickness" Value="1"></Setter>
         <Setter Property="BorderBrush" Value="#151516"></Setter>
-        <Setter Property="GlowBrush" Value="#1CFFFFFF"></Setter>
+        <Setter Property="GlowBrush" Value="Black"></Setter>
+        <Setter Property="BorderThickness" Value="0"></Setter>
     </Style>
 
     <DropShadowEffect x:Key="CardShadow" Color="#303030" Opacity=".25" BlurRadius="5" ShadowDepth="3"/>
