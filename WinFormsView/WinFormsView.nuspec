@@ -13,7 +13,7 @@
     <description>Simple, flexible, interactive and powerful data visualization for WinForms</description>
     <releaseNotes>See https://github.com/beto-rodriguez/Live-Charts/releases</releaseNotes>
     <copyright>Copyright 2016</copyright>
-    <tags>ivechart, live, chart, charting, plot, plots, plotting, graph, graphs, graphing, data, winform, winforms, win, form, forms</tags> 
+    <tags>livechart, live, chart, charting, plot, plots, plotting, graph, graphs, graphing, data, winform, winforms, win, form, forms</tags> 
     <dependencies>
       <dependency id="LiveCharts" version="0.0.0.0" />
       <dependency id="LiveCharts.Wpf" version="0.0.0.0" />
