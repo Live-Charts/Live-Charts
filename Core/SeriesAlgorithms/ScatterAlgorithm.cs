@@ -91,22 +91,22 @@ namespace LiveCharts.SeriesAlgorithms
 
         double ICartesianSeries.GetMinX(AxisCore axis)
         {
-            return AxisLimits.StretchMin(axis);
+            return (int)(axis.BotLimit / axis.S) * axis.S;
         }
 
         double ICartesianSeries.GetMaxX(AxisCore axis)
         {
-            return AxisLimits.StretchMax(axis);
+            return AxisLimits.SeparatorMax(axis);
         }
 
         double ICartesianSeries.GetMinY(AxisCore axis)
         {
-            return AxisLimits.StretchMin(axis);
+            return (int)(axis.BotLimit / axis.S) * axis.S;
         }
 
         double ICartesianSeries.GetMaxY(AxisCore axis)
         {
-            return AxisLimits.StretchMax(axis);
+            return AxisLimits.SeparatorMax(axis);
         }
     }
 }
