@@ -204,7 +204,7 @@ namespace LiveCharts.SeriesAlgorithms
 
         double ICartesianSeries.GetMaxY(AxisCore axis)
         {
-            return AxisLimits.StretchMax(axis);
+            return AxisLimits.SeparatorMaxRounded(axis);
         }
     }
 }
