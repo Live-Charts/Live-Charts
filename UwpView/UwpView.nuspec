@@ -13,7 +13,7 @@
     <description>Simple, flexible, interactive and powerful data visualization for Uwp</description>
     <releaseNotes>Summary of changes made in this release of the package.</releaseNotes>
     <copyright>Copyright 2016</copyright>
-    <tags>Chart Charting Plot Plotting</tags>
+    <tags>livechart, live, chart, charting, plot, plots, plotting, graph, graphs, graphing, data, uwp, universal, windows, platform</tags>
     <dependencies>
       <dependency id="LiveCharts" version="0.8.0.0" />
       <dependency id="Microsoft.Xaml.Behaviors.Uwp.Managed" version="2.0.0.0" />

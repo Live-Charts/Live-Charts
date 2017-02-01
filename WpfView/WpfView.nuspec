@@ -13,7 +13,7 @@
     <description>Simple, flexible, interactive and powerful data visualization for Wpf</description>
     <releaseNotes>See https://github.com/beto-rodriguez/Live-Charts/releases</releaseNotes>
     <copyright>Copyright 2016</copyright>
-    <tags>Chart Charting Plot Plotting Wpf WindowsPresentationFoundation</tags>
+    <tags>livechart, live, chart, charting, plot, plots, plotting, graph, graphs, graphing, data, wpf, windows, presentation, foundation, format</tags>
 	<dependencies>
       <dependency id="LiveCharts" version="0.0.0.0" />
     </dependencies>
