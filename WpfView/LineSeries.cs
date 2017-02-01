@@ -104,7 +104,7 @@ namespace LiveCharts.Wpf
         /// <value>
         ///   <c>true</c> if this instance is new; otherwise, <c>false</c>.
         /// </value>
-        private bool IsNew { get; set; }
+        protected bool IsNew { get; set; }
         #endregion
 
         #region Properties
@@ -388,7 +388,7 @@ namespace LiveCharts.Wpf
                     Figure.StartPoint = new Point(location.X, areaLimit);
                 else
                     Figure.BeginAnimation(PathFigure.StartPointProperty,
-                        new PointAnimation(new Point(location.X, areaLimit), Model.Chart.View.AnimationsSpeed));
+                        new PointAnimation(new Point(location.X, areaLimit), animSpeed));
 
                 IsNew = false;
             }

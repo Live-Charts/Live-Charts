@@ -104,7 +104,7 @@ namespace LiveCharts.Uwp
         /// <value>
         ///   <c>true</c> if this instance is new; otherwise, <c>false</c>.
         /// </value>
-        private bool IsNew { get; set; }
+        protected bool IsNew { get; set; }
         #endregion
 
         #region Properties

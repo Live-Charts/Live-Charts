@@ -24,6 +24,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Windows.Foundation;
+using Windows.Perception.Spatial;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Shapes;
@@ -81,26 +82,6 @@ namespace LiveCharts.Uwp
 
             SplittersCollector++;
 
-            var uw = Model.Chart.AxisY[ScalesYAt].EvaluatesUnitWidth
-                ? ChartFunctions.GetUnitWidth(AxisOrientation.Y, Model.Chart, ScalesYAt) / 2
-                : 0;
-            var areaLimit = 0d;
-            if (!double.IsNaN(AreaLimit))
-                areaLimit = ChartFunctions.ToDrawMargin(AreaLimit, AxisOrientation.Y, Model.Chart, ScalesYAt);
-
-            if (Figure != null && Values != null)
-            {
-                var yi = (ActualValues.GetPoints(this).FirstOrDefault() ?? new ChartPoint()).Y;
-                yi = ChartFunctions.ToDrawMargin(yi, AxisOrientation.Y, Model.Chart, ScalesYAt);
-                yi -= uw;
-
-                if (Model.Chart.View.DisableAnimations)
-                    Figure.StartPoint = new Point(areaLimit, yi);
-                else
-                    Figure.BeginPointAnimation(nameof(PathFigure.StartPoint),
-                        new Point(areaLimit, yi), Model.Chart.View.AnimationsSpeed);
-            }
-
             if (IsPathInitialized)
             {
                 Model.Chart.View.EnsureElementBelongsToCurrentDrawMargin(Path);
@@ -130,12 +111,8 @@ namespace LiveCharts.Uwp
             Figure = new PathFigure();
             geometry.Figures.Add(Figure);
             Path.Data = geometry;
-            Model.Chart.View.AddToDrawMargin(Path);
 
-            var y = (ActualValues.GetPoints(this).FirstOrDefault() ?? new ChartPoint()).Y;
-            y = ChartFunctions.ToDrawMargin(y, AxisOrientation.Y, Model.Chart, ScalesYAt);
-            y -= uw;
-            Figure.StartPoint = new Point(areaLimit, y);
+            Model.Chart.View.EnsureElementBelongsToCurrentDrawMargin(Path);
         }
 
         /// <summary>
@@ -249,27 +226,44 @@ namespace LiveCharts.Uwp
             var animSpeed = Model.Chart.View.AnimationsSpeed;
             var noAnim = Model.Chart.View.DisableAnimations;
 
+            var areaLimit = ChartFunctions.ToDrawMargin(double.IsNaN(AreaLimit)
+                ? Model.Chart.AxisX[ScalesXAt].FirstSeparator
+                : AreaLimit, AxisOrientation.X, Model.Chart, ScalesXAt);
+
+            if (Values != null && atIndex == 0)
+            {
+                if (Model.Chart.View.DisableAnimations || IsNew)
+                    Figure.StartPoint = new Point(areaLimit, location.Y);
+                else
+                    Figure.BeginPointAnimation(nameof(PathFigure.StartPoint),
+                        new Point(areaLimit, location.Y), animSpeed);
+
+                IsNew = false;
+            }
+
             if (atIndex != 0)
             {
                 Figure.Segments.Remove(splitter.Bottom);
 
                 if (splitter.IsNew)
                 {
-                    splitter.Bottom.Point = new Point(0, location.Y);
-                    splitter.Left.Point = new Point(0, location.Y);
+                    splitter.Bottom.Point = new Point(Model.Chart.DrawMargin.Width, location.Y);
+                    splitter.Left.Point = new Point(Model.Chart.DrawMargin.Width, location.Y);
                 }
 
                 if (noAnim)
-                    splitter.Bottom.Point = new Point(0, location.Y);
+                    splitter.Bottom.Point = new Point(Model.Chart.DrawMargin.Width, location.Y);
                 else
-                    splitter.Bottom.BeginPointAnimation(nameof(LineSegment.Point), new Point(0, location.Y), animSpeed);
+                    splitter.Bottom.BeginPointAnimation(nameof(LineSegment.Point),
+                        new Point(Model.Chart.DrawMargin.Width, location.Y), animSpeed);
                 Figure.Segments.Insert(atIndex, splitter.Bottom);
 
                 Figure.Segments.Remove(splitter.Left);
                 if (noAnim)
                     splitter.Left.Point = location.AsPoint();
                 else
-                    splitter.Left.BeginPointAnimation(nameof(LineSegment.Point), location.AsPoint(), animSpeed);
+                    splitter.Left.BeginPointAnimation(nameof(LineSegment.Point), 
+                        location.AsPoint(), animSpeed);
                 Figure.Segments.Insert(atIndex + 1, splitter.Left);
 
                 return;
@@ -277,15 +271,16 @@ namespace LiveCharts.Uwp
 
             if (splitter.IsNew)
             {
-                splitter.Bottom.Point = new Point(0, location.Y);
-                splitter.Left.Point = new Point(0, location.Y);
+                splitter.Bottom.Point = new Point(location.X, Model.Chart.DrawMargin.Height);
+                splitter.Left.Point = new Point(location.X, Model.Chart.DrawMargin.Height);
             }
 
             Figure.Segments.Remove(splitter.Left);
             if (Model.Chart.View.DisableAnimations)
                 splitter.Left.Point = location.AsPoint();
             else
-                splitter.Left.BeginPointAnimation(nameof(LineSegment.Point), location.AsPoint(), animSpeed);
+                splitter.Left.BeginPointAnimation(nameof(LineSegment.Point),
+                    location.AsPoint(), animSpeed);
             Figure.Segments.Insert(atIndex, splitter.Left);
         }
 
@@ -301,24 +296,26 @@ namespace LiveCharts.Uwp
             var animSpeed = Model.Chart.View.AnimationsSpeed;
             var noAnim = Model.Chart.View.DisableAnimations;
 
+            var areaLimit = ChartFunctions.ToDrawMargin(double.IsNaN(AreaLimit)
+                 ? Model.Chart.AxisX[ScalesXAt].FirstSeparator
+                 : AreaLimit, AxisOrientation.X, Model.Chart, ScalesXAt);
+
+            var uw = Model.Chart.AxisY[ScalesYAt].EvaluatesUnitWidth
+                ? ChartFunctions.GetUnitWidth(AxisOrientation.Y, Model.Chart, ScalesYAt) / 2
+                : 0;
+            location.Y -= uw;
+
             if (splitter.IsNew)
             {
                 splitter.Right.Point = new Point(0, location.Y);
             }
 
-            var areaLimit = 0d;
-            if (!double.IsNaN(AreaLimit))
-                areaLimit = ChartFunctions.ToDrawMargin(AreaLimit, AxisOrientation.X, Model.Chart, ScalesXAt);
-            var uw = Model.Chart.AxisY[ScalesYAt].EvaluatesUnitWidth
-                ? ChartFunctions.GetUnitWidth(AxisOrientation.Y, Model.Chart, ScalesYAt) / 2
-                : 0;
-            location.Y += uw;
-
             Figure.Segments.Remove(splitter.Right);
             if (noAnim)
                 splitter.Right.Point = new Point(areaLimit, location.Y);
             else
-                splitter.Right.BeginPointAnimation(nameof(LineSegment.Point), new Point(areaLimit, location.Y), animSpeed);
+                splitter.Right.BeginPointAnimation(nameof(LineSegment.Point),
+                    new Point(areaLimit, location.Y), animSpeed);
             Figure.Segments.Insert(atIndex, splitter.Right);
 
             splitter.IsNew = false;
