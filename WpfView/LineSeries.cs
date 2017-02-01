@@ -358,7 +358,7 @@ namespace LiveCharts.Wpf
         /// <returns></returns>
         public double GetPointDiameter()
         {
-            return PointGeometrySize/2;
+            return (PointGeometry == null ? 0 : PointGeometrySize)/2;
         }
 
         /// <summary>
