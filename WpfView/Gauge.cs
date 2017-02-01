@@ -372,6 +372,11 @@ namespace LiveCharts.Wpf
 
             var t = 0d;
 
+            if (double.IsNaN(completed) || double.IsInfinity(completed))
+            {
+                completed = 0;
+            }
+
             completed = completed > 1 ? 1 : (completed < 0 ? 0 : completed);
             var angle = Uses360Mode ? 360 : 180;
 
