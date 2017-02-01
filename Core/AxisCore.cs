@@ -36,6 +36,8 @@ namespace LiveCharts
     /// </summary>
     public class AxisCore
     {
+        private double _topLimit;
+
         #region Constructors
 
         /// <summary>
@@ -183,7 +185,16 @@ namespace LiveCharts
         #region Internal Properties
 
         internal double Tab { get; set; }
-        internal double TopLimit { get; set; }
+
+        internal double TopLimit
+        {
+            get { return _topLimit; }
+            set
+            {
+                _topLimit = value;
+            }
+        }
+
         internal double BotLimit { get; set; }
         internal double TopSeriesLimit { get; set; }
         internal double BotSeriesLimit { get; set; }
@@ -329,7 +340,7 @@ namespace LiveCharts
 
                 toLine += EvaluatesUnitWidth ? direction*ChartFunctions.GetUnitWidth(source, chart, this)/2 : 0;
                 var toLabel = toLine + element.View.LabelModel.GetOffsetBySource(source);
-
+                
                 if (IsMerged)
                 {
                     const double padding = 4;

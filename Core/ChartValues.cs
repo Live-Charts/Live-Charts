@@ -223,7 +223,7 @@ namespace LiveCharts
         public void CollectGarbage(ISeriesView seriesView)
         {
 #if NET40
-            var isclass = typeof (T).IsClass;
+            var isclass = typeof(T).IsClass;
 #endif
 #if NET45
             var isclass = typeof(T).GetTypeInfo().IsClass;
@@ -264,9 +264,9 @@ namespace LiveCharts
             return tracker;
         }
 
-#endregion
+        #endregion
 
-#region Privates
+        #region Privates
 
         private IPointEvaluator<T> GetConfig(ISeriesView view)
         {
@@ -277,8 +277,8 @@ namespace LiveCharts
             if (view == null || view.Model.SeriesCollection == null) return null;
 
             var config =
-                (view.Configuration ??  view.Model.SeriesCollection.Configuration) as IPointEvaluator<T>;
-            
+                (view.Configuration ?? view.Model.SeriesCollection.Configuration) as IPointEvaluator<T>;
+
             if (config != null) return config;
 
             return DefaultConfiguration ??
@@ -337,7 +337,7 @@ namespace LiveCharts
             foreach (var point in tracker.Indexed.Values.Concat(tracker.Referenced.Values))
                 point.Gci = 0;
         }
-        
+
         private static bool IsGarbage(ChartPoint point, PointTracker tracker)
         {
             return point.Gci < tracker.Gci
@@ -350,6 +350,6 @@ namespace LiveCharts
                 Trackers.Keys.ForEach(x => x.Model.Chart.Updater.Run());
         }
 
-#endregion
+        #endregion
     }
 }

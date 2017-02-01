@@ -72,11 +72,11 @@ namespace LiveCharts.SeriesAlgorithms
 
             var relativeTop = padding + exceed + singleRowHeight * (seriesPosition);
 
-            var startAt = CurrentXAxis.BotLimit >= 0 && CurrentXAxis.TopLimit > 0   //both positive
-                ? CurrentXAxis.BotLimit                                             //then use Min
-                : (CurrentXAxis.BotLimit < 0 && CurrentXAxis.TopLimit <= 0          //both negative
-                    ? CurrentXAxis.TopLimit                                         //then use Max
-                    : 0);                                                           //if mixed then use 0
+            var startAt = CurrentXAxis.FirstSeparator >= 0 && CurrentXAxis.LastSeparator > 0   //both positive
+                ? CurrentXAxis.FirstSeparator                                                  //then use Min
+                : (CurrentXAxis.FirstSeparator < 0 && CurrentXAxis.LastSeparator <= 0          //both negative
+                    ? CurrentXAxis.LastSeparator                                               //then use Max
+                    : 0);                                                                      //if mixed then use 0
 
             var zero = ChartFunctions.ToDrawMargin(startAt, AxisOrientation.X, Chart, View.ScalesXAt);
 
