@@ -378,9 +378,9 @@ namespace LiveCharts.Wpf
             var animSpeed = Model.Chart.View.AnimationsSpeed;
             var noAnim = Model.Chart.View.DisableAnimations;
 
-            var areaLimit = Model.Chart.DrawMargin.Height;
-            if (!double.IsNaN(AreaLimit))
-                areaLimit = ChartFunctions.ToDrawMargin(AreaLimit, AxisOrientation.Y, Model.Chart, ScalesYAt);
+            var areaLimit = ChartFunctions.ToDrawMargin(double.IsNaN(AreaLimit)
+                ? Model.Chart.AxisY[ScalesYAt].FirstSeparator
+                : AreaLimit, AxisOrientation.Y, Model.Chart, ScalesYAt);
 
             if (Values != null && atIndex == 0)
             {
@@ -448,9 +448,10 @@ namespace LiveCharts.Wpf
             var animSpeed = Model.Chart.View.AnimationsSpeed;
             var noAnim = Model.Chart.View.DisableAnimations;
 
-            var areaLimit = Model.Chart.DrawMargin.Height;
-            if (!double.IsNaN(AreaLimit))
-                areaLimit = ChartFunctions.ToDrawMargin(AreaLimit, AxisOrientation.Y, Model.Chart, ScalesYAt);
+            var areaLimit = ChartFunctions.ToDrawMargin(double.IsNaN(AreaLimit)
+                 ? Model.Chart.AxisY[ScalesYAt].FirstSeparator
+                 : AreaLimit, AxisOrientation.Y, Model.Chart, ScalesYAt);
+
             var uw = Model.Chart.AxisX[ScalesXAt].EvaluatesUnitWidth
                 ? ChartFunctions.GetUnitWidth(AxisOrientation.X, Model.Chart, ScalesXAt)/2
                 : 0;
