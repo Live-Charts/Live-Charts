@@ -22,7 +22,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using LiveCharts.Charts;
@@ -198,6 +197,8 @@ namespace LiveCharts
         internal int GarbageCollectorIndex { get; set; }
         internal double PreviousTop { get; set; }
         internal double PreviousBot { get; set; }
+        internal double FirstSeparator { get; private set; }
+        internal double LastSeparator { get; private set; }
 
         #endregion
 
@@ -254,9 +255,11 @@ namespace LiveCharts
             InitializeGarbageCollector();
 
             var bl = Math.Ceiling(BotLimit/Magnitude)*Magnitude;
+            FirstSeparator = bl;
 
             for (var i = bl; i <= TopLimit - (EvaluatesUnitWidth ? 1 : 0); i += S)
             {
+                LastSeparator = i;
                 SeparatorElementCore asc;
 
                 var key = Math.Round(i/tolerance)*tolerance;
