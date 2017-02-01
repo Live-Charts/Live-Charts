@@ -99,7 +99,7 @@ namespace LiveCharts.Wpf
 
         #endregion
 
-        #region
+        #region Public Methods
         /// <summary>
         /// Gets the point diameter.
         /// </summary>

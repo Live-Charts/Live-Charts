@@ -26,6 +26,7 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Shapes;
 using LiveCharts.Definitions.Points;
+using LiveCharts.Definitions.Series;
 using LiveCharts.SeriesAlgorithms;
 using LiveCharts.Uwp.Charts.Base;
 using LiveCharts.Uwp.Components;
@@ -38,7 +39,7 @@ namespace LiveCharts.Uwp
     /// </summary>
     /// <seealso cref="LiveCharts.Uwp.Series" />
     /// <seealso cref="LiveCharts.Uwp.Components.IFondeable" />
-    public class StepLineSeries : Series, IFondeable
+    public class StepLineSeries : Series, IFondeable, IAreaPoint
     {
         #region Constructors
         /// <summary>
@@ -247,6 +248,17 @@ namespace LiveCharts.Uwp
                 SetValue(FillProperty, new SolidColorBrush(nextColor) { Opacity = DefaultFillOpacity });
         }
 
+        #endregion
+
+        #region Public methods
+        /// <summary>
+        /// Gets the point diameter.
+        /// </summary>
+        /// <returns></returns>
+        public double GetPointDiameter()
+        {
+            return PointGeometrySize / 2;
+        }
         #endregion
 
         #region Private Methods
