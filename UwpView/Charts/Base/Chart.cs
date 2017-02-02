@@ -862,6 +862,8 @@ namespace LiveCharts.Uwp.Charts.Base
             {
                 if (x.Parent == null)
                 {
+                    CleanAxes(chart.AxisX);
+                    x.AxisOrientation = AxisOrientation.X;
                     if (x.Separator != null) chart.View.AddToView(x.Separator);
                     chart.View.AddToView(x);
                     x.AxisOrientation = AxisOrientation.X;
@@ -889,6 +891,8 @@ namespace LiveCharts.Uwp.Charts.Base
             {
                 if (y.Parent == null)
                 {
+                    CleanAxes(chart.AxisY);
+                    y.AxisOrientation = AxisOrientation.Y;
                     if (y.Separator != null) chart.View.AddToView(y.Separator);
                     chart.View.AddToView(y);
                     y.AxisOrientation = AxisOrientation.Y;
@@ -1514,6 +1518,17 @@ namespace LiveCharts.Uwp.Charts.Base
         //    AxisSection.Dragging = null;
         // }
         // #endregion
+
+        private static void CleanAxes(List<AxisCore> axes)
+        {
+            if (axes != null && axes.Any())
+            {
+                foreach (var axisCore in axes)
+                {
+                    axisCore.View.Clean();
+                }
+            }
+        }
 
         #region Property Changed
 
