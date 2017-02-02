@@ -91,7 +91,7 @@ namespace LiveCharts.SeriesAlgorithms
 
         double ICartesianSeries.GetMinX(AxisCore axis)
         {
-            return (int)(axis.BotLimit / axis.S) * axis.S;
+            return (int) (axis.BotLimit/axis.S)*axis.S;
         }
 
         double ICartesianSeries.GetMaxX(AxisCore axis)

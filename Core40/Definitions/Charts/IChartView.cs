@@ -88,6 +88,13 @@ namespace LiveCharts.Definitions.Charts
         /// </value>
         ZoomingOptions Zoom { get; set; }
         /// <summary>
+        /// Gets or sets the zoom.
+        /// </summary>
+        /// <value>
+        /// The zoom.
+        /// </value>
+        PanningOptions Pan { get; set; }
+        /// <summary>
         /// Gets or sets the zooming speed.
         /// </summary>
         /// <value>

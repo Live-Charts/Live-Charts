@@ -524,9 +524,14 @@ namespace LiveCharts.Charts
         /// <param name="delta">The delta.</param>
         public void Drag(CorePoint delta)
         {
-            if (View.Zoom == ZoomingOptions.None) return;
+            if ((View.Pan == PanningOptions.Unset && View.Zoom == ZoomingOptions.None) ||
+                View.Pan == PanningOptions.None) return;
 
-            if (View.Zoom == ZoomingOptions.X || View.Zoom == ZoomingOptions.Xy)
+            var px = View.Pan == PanningOptions.Unset &&
+                     (View.Zoom == ZoomingOptions.X || View.Zoom == ZoomingOptions.Xy);
+            px = px || View.Pan == PanningOptions.X || View.Pan == PanningOptions.Xy;
+
+            if (px)
             {
                 foreach (var xi in AxisX)
                 {
@@ -535,7 +540,10 @@ namespace LiveCharts.Charts
                 }
             }
 
-            if (View.Zoom == ZoomingOptions.Y || View.Zoom == ZoomingOptions.Xy)
+            var py = View.Pan == PanningOptions.Unset &&
+                     (View.Zoom == ZoomingOptions.Y || View.Zoom == ZoomingOptions.Xy);
+            py = py || View.Pan == PanningOptions.Y || View.Pan == PanningOptions.Xy;
+            if (py)
             {
                 foreach (var ax in AxisY)
                 {

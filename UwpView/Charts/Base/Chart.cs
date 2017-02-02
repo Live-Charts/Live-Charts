@@ -403,6 +403,23 @@ namespace LiveCharts.Uwp.Charts.Base
         }
 
         /// <summary>
+        /// The pan property
+        /// </summary>
+        public static readonly DependencyProperty PanProperty = DependencyProperty.Register(
+            "Pan", typeof(PanningOptions), typeof(Chart), new PropertyMetadata(PanningOptions.Unset));
+        /// <summary>
+        /// Gets or sets the chart pan, default is Unset, which bases the behavior according to Zoom property
+        /// </summary>
+        /// <value>
+        /// The pan.
+        /// </value>
+        public PanningOptions Pan
+        {
+            get { return (PanningOptions)GetValue(PanProperty); }
+            set { SetValue(PanProperty, value); }
+        }
+
+        /// <summary>
         /// The legend location property
         /// </summary>
         public static readonly DependencyProperty LegendLocationProperty = DependencyProperty.Register(
@@ -1302,7 +1319,7 @@ namespace LiveCharts.Uwp.Charts.Base
         #region Zooming and Panning
 
         private Point DragOrigin { get; set; }
-        private bool _isPanning { get; set; }
+        private bool IsPanning { get; set; }
 
         private void OnPointerWheelChanged(object sender, PointerRoutedEventArgs e)
         {
@@ -1323,18 +1340,20 @@ namespace LiveCharts.Uwp.Charts.Base
         private void OnDraggingStart(object sender, PointerRoutedEventArgs e)
         {
             if (Model?.AxisX == null || Model.AxisY == null) return;
-
+            
             DragOrigin = e.GetCurrentPoint(this).Position;
             DragOrigin = new Point(
                 ChartFunctions.FromPlotArea(DragOrigin.X, AxisOrientation.X, Model),
                 ChartFunctions.FromPlotArea(DragOrigin.Y, AxisOrientation.Y, Model));
-            _isPanning = true;
+            IsPanning = true;
         }
 
         private void OnDraggingEnd(object sender, PointerRoutedEventArgs e)
         {
-            if (!_isPanning) return;
-            if (Zoom == ZoomingOptions.None) return;
+            if (!IsPanning) return;
+
+            if ((Pan == PanningOptions.Unset && Zoom == ZoomingOptions.None) ||
+                Pan == PanningOptions.None) return;
 
             var end = e.GetCurrentPoint(this).Position;
             end = new Point(
@@ -1342,7 +1361,7 @@ namespace LiveCharts.Uwp.Charts.Base
                 ChartFunctions.FromPlotArea(end.Y, AxisOrientation.Y, Model));
 
             Model.Drag(new CorePoint(DragOrigin.X - end.X, DragOrigin.Y - end.Y));
-            _isPanning = false;
+            IsPanning = false;
         }
 
         #endregion
