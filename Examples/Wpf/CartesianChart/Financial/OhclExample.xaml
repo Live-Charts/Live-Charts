@@ -9,14 +9,11 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300" d:DataContext="{d:DesignInstance financial:OhclExample }">
     <Grid>
-       <Grid.RowDefinitions>
-           <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="30"></RowDefinition>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
-       </Grid.RowDefinitions>
-        <TextBlock Grid.Row="0">
-            <Bold>New in 0.7.0</Bold> Financial series
-        </TextBlock>
+        </Grid.RowDefinitions>
         <Button Grid.Row="1" Click="UpdateAllOnClick">Update Open and Close</Button>
         <lvc:CartesianChart Grid.Row="2" Series="{Binding SeriesCollection}">
             <lvc:CartesianChart.AxisX>

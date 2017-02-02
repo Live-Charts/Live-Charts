@@ -336,8 +336,11 @@ namespace LiveCharts.Charts
                 var ax = AxisY[index];
                 var pr = ChartFunctions.FromPlotArea(ax.MaxPointRadius, AxisOrientation.Y, this, index) -
                          ChartFunctions.FromPlotArea(0, AxisOrientation.Y, this, index);
-                ax.BotLimit += pr;
-                ax.TopLimit -= pr;
+                if (!double.IsNaN(pr))
+                {
+                    ax.BotLimit += pr;
+                    ax.TopLimit -= pr;
+                }
                 ax.UpdateSeparators(AxisOrientation.Y, this, index);
                 ax.View.SetTitleTop(curSize.Top + curSize.Height*.5 + ax.View.GetLabelSize().Width*.5);
             }
@@ -347,8 +350,11 @@ namespace LiveCharts.Charts
                 var xi = AxisX[index];
                 var pr = ChartFunctions.FromPlotArea(xi.MaxPointRadius, AxisOrientation.X, this, index) -
                          ChartFunctions.FromPlotArea(0, AxisOrientation.X, this, index);
-                xi.BotLimit -= pr;
-                xi.TopLimit += pr;
+                if (!double.IsNaN(pr))
+                {
+                    xi.BotLimit -= pr;
+                    xi.TopLimit += pr;
+                }
                 xi.UpdateSeparators(AxisOrientation.X, this, index);
                 xi.View.SetTitleLeft(curSize.Left + curSize.Width*.5 - xi.View.GetLabelSize().Width*.5);
             }
@@ -418,8 +424,8 @@ namespace LiveCharts.Charts
             {
                 foreach (var xi in AxisX)
                 {
-                    var max = double.IsNaN(xi.MaxValue) ? xi.TopLimit : xi.MaxValue;
-                    var min = double.IsNaN(xi.MinValue) ? xi.BotLimit : xi.MinValue;
+                    var max = double.IsNaN(xi.View.MaxValue) ? xi.TopLimit : xi.View.MaxValue;
+                    var min = double.IsNaN(xi.View.MinValue) ? xi.BotLimit : xi.View.MinValue;
                     var l = max - min;
 
                     var rMin = (pivot.X - min) / l;
@@ -437,8 +443,8 @@ namespace LiveCharts.Charts
             {
                 foreach (var ax in AxisY)
                 {
-                    var max = double.IsNaN(ax.MaxValue) ? ax.TopLimit : ax.MaxValue;
-                    var min = double.IsNaN(ax.MinValue) ? ax.BotLimit : ax.MinValue;
+                    var max = double.IsNaN(ax.View.MaxValue) ? ax.TopLimit : ax.View.MaxValue;
+                    var min = double.IsNaN(ax.View.MinValue) ? ax.BotLimit : ax.View.MinValue;
                     var l = max - min;
                     var rMin = (pivot.Y - min) / l;
                     var rMax = 1 - rMin;
@@ -470,8 +476,8 @@ namespace LiveCharts.Charts
             {
                 foreach (var xi in AxisX)
                 {
-                    var max = double.IsNaN(xi.MaxValue) ? xi.TopLimit : xi.MaxValue;
-                    var min = double.IsNaN(xi.MinValue) ? xi.BotLimit : xi.MinValue;
+                    var max = double.IsNaN(xi.View.MaxValue) ? xi.TopLimit : xi.View.MaxValue;
+                    var min = double.IsNaN(xi.View.MinValue) ? xi.BotLimit : xi.View.MinValue;
                     var l = max - min;
                     var rMin = (pivot.X - min) / l;
                     var rMax = 1 - rMin;
@@ -488,8 +494,8 @@ namespace LiveCharts.Charts
             {
                 foreach (var ax in AxisY)
                 {
-                    var max = double.IsNaN(ax.MaxValue) ? ax.TopLimit : ax.MaxValue;
-                    var min = double.IsNaN(ax.MinValue) ? ax.BotLimit : ax.MinValue;
+                    var max = double.IsNaN(ax.View.MaxValue) ? ax.TopLimit : ax.View.MaxValue;
+                    var min = double.IsNaN(ax.View.MinValue) ? ax.BotLimit : ax.View.MinValue;
                     var l = max - min;
                     var rMin = (pivot.Y - min) / l;
                     var rMax = 1 - rMin;
@@ -518,9 +524,14 @@ namespace LiveCharts.Charts
         /// <param name="delta">The delta.</param>
         public void Drag(CorePoint delta)
         {
-            if (View.Zoom == ZoomingOptions.None) return;
+            if ((View.Pan == PanningOptions.Unset && View.Zoom == ZoomingOptions.None) ||
+                View.Pan == PanningOptions.None) return;
 
-            if (View.Zoom == ZoomingOptions.X || View.Zoom == ZoomingOptions.Xy)
+            var px = View.Pan == PanningOptions.Unset &&
+                     (View.Zoom == ZoomingOptions.X || View.Zoom == ZoomingOptions.Xy);
+            px = px || View.Pan == PanningOptions.X || View.Pan == PanningOptions.Xy;
+
+            if (px)
             {
                 foreach (var xi in AxisX)
                 {
@@ -529,7 +540,10 @@ namespace LiveCharts.Charts
                 }
             }
 
-            if (View.Zoom == ZoomingOptions.Y || View.Zoom == ZoomingOptions.Xy)
+            var py = View.Pan == PanningOptions.Unset &&
+                     (View.Zoom == ZoomingOptions.Y || View.Zoom == ZoomingOptions.Xy);
+            py = py || View.Pan == PanningOptions.Y || View.Pan == PanningOptions.Xy;
+            if (py)
             {
                 foreach (var ax in AxisY)
                 {

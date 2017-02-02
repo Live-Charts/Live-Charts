@@ -37,7 +37,7 @@ namespace LiveCharts.Uwp
     /// <summary>
     /// The Bubble series, draws scatter series, only using X and Y properties or bubble series, if you also use the weight property, this series should be used in a cartesian chart.
     /// </summary>
-    public class ScatterSeries : Series, IScatterSeriesView
+    public class ScatterSeries : Series, IScatterSeriesView, IAreaPoint
     {
         #region Constructors
         /// <summary>
@@ -180,6 +180,17 @@ namespace LiveCharts.Uwp
             return pbv;
         }
 
+        #endregion
+
+        #region Public Methods
+        /// <summary>
+        /// Gets the point diameter.
+        /// </summary>
+        /// <returns></returns>
+        public double GetPointDiameter()
+        {
+            return MaxPointShapeDiameter / 2;
+        }
         #endregion
 
         #region Private Methods

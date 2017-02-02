@@ -1,0 +1,107 @@
+﻿<controls:MetroWindow x:Class="Wpf.Home.HomeView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+        xmlns:home="clr-namespace:Wpf.Home"
+        mc:Ignorable="d" Height="650" Width="1100"
+        Style="{StaticResource WindowStyle}"
+        WindowStartupLocation="CenterScreen"
+        ShowIconOnTitleBar="True"
+        MinWidth="900"
+        Name="Window" 
+        Background="WhiteSmoke">
+    <controls:MetroWindow.IconTemplate>
+        <DataTemplate>
+            <Image Source="../Resources/LiveChartsLogo.png" Margin="10 0" Stretch="None"></Image>
+        </DataTemplate>
+    </controls:MetroWindow.IconTemplate>
+    <controls:MetroWindow.DataContext>
+        <home:HomeViewModel></home:HomeViewModel>
+    </controls:MetroWindow.DataContext>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="300" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Border Grid.Column="0" Effect="{StaticResource CardShadow}" Background="White">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                </Grid.RowDefinitions>
+                <TextBlock Style="{StaticResource H5}" Opacity="{StaticResource SecondaryTextOpacity}" Padding="10 20 10 5">Select any of the following examples</TextBlock>
+                <Border Grid.Row="1" Background="#4E303030" Height="30" CornerRadius="12" Margin="15 5" BorderThickness="0" Effect="{StaticResource CardShadow}">
+                    <StackPanel Orientation="Horizontal">
+                        <!--
+                        Icon made by Madebyoliver (http://www.flaticon.es/autores/madebyoliver)
+                        from http://www.flaticon.com
+                        license CC 3.0 BY (http://creativecommons.org/licenses/by/3.0/)
+                        -->
+                        <Path Stretch="Fill" Height="18" Width="18" Fill="White" Margin="8 0" StrokeThickness="1" Stroke="White" Data="M55.146,51.887L41.588,37.786c3.486-4.144,5.396-9.358,5.396-14.786c0-12.682-10.318-23-23-23s-23,10.318-23,23  s10.318,23,23,23c4.761,0,9.298-1.436,13.177-4.162l13.661,14.208c0.571,0.593,1.339,0.92,2.162,0.92  c0.779,0,1.518-0.297,2.079-0.837C56.255,54.982,56.293,53.08,55.146,51.887z M23.984,6c9.374,0,17,7.626,17,17s-7.626,17-17,17  s-17-7.626-17-17S14.61,6,23.984,6z"></Path>
+                        <TextBox Width="220" Background="Transparent" BorderThickness="0" Foreground="#303030" Text="{Binding Criteria, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" VerticalAlignment="Center"></TextBox>
+                    </StackPanel>
+                </Border>
+                <ScrollViewer Grid.Row="2">
+                    <Grid>
+                        <ItemsControl Margin="0,0,-12,0" ItemsSource="{Binding Samples}" >
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding Name}" Style="{StaticResource H3}" Foreground="#0398E2" HorizontalAlignment="Left" Padding="10"></TextBlock>
+                                        <ItemsControl ItemsSource="{Binding Items}">
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate>
+                                                    <Border MouseDown="UIElement_OnMouseDown" Style="{StaticResource MenuItem}" Width="280">
+                                                        <TextBlock Grid.Row="0" Grid.Column="1" Style="{StaticResource H5}" HorizontalAlignment="Left" Text="{Binding Title}"/>
+                                                    </Border>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </Grid>
+                </ScrollViewer>
+            </Grid>
+        </Border>
+        <Border Grid.Column="1" BorderThickness="0 1 0 0" BorderBrush="#E6E6E6">
+            <Grid >
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                </Grid.RowDefinitions>
+                <Border Background="#303030" Padding="20">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                        <Button Margin="5 0">
+                            <Hyperlink NavigateUri="https://lvcharts.net/App/documentation/wpf/introduction" RequestNavigate="RequestNavigate">Object Explorer</Hyperlink>
+                        </Button>
+                        <Button Margin="5 0">
+                            <Hyperlink NavigateUri="https://github.com/beto-rodriguez/Live-Charts" RequestNavigate="RequestNavigate">Source Code</Hyperlink>
+                        </Button>
+                        <Button Margin="5 0">
+                            <Hyperlink NavigateUri="https://lvcharts.net/App/examples/wpf/start" RequestNavigate="RequestNavigate">Tutorials and examples</Hyperlink>
+                        </Button>
+                    </StackPanel>
+                </Border>
+                <Border Grid.Row="1" Padding="10" Background="#0398E2" Effect="{StaticResource CardShadow}">
+                    <TextBlock Foreground="{StaticResource WhiteBrush}" HorizontalAlignment="Center" TextWrapping="Wrap" Style="{StaticResource H5}">
+                        <Hyperlink NavigateUri="https://lvcharts.net/licensing/pricing" RequestNavigate="RequestNavigate">
+                            <Bold>Psst!</Bold> Get LiveCharts.Geared and extend LiveCharts to a high performance charting library
+                        </Hyperlink>
+                    </TextBlock>
+                </Border>
+                <Border Grid.Row="2" Margin="25" Background="White" CornerRadius="3" 
+                    Effect="{StaticResource CardShadow}" Padding="8"
+                    BorderThickness="1" BorderBrush="#EBEBEB">
+                    <ContentPresenter  Content="{Binding Content}"/>
+                </Border>
+            </Grid>
+        </Border>
+    </Grid>
+</controls:MetroWindow>
+

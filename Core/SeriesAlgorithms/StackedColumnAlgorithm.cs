@@ -69,10 +69,10 @@ namespace LiveCharts.SeriesAlgorithms
 
             var relativeLeft = padding + exceed;
 
-            var startAt = CurrentYAxis.BotLimit >= 0 && CurrentYAxis.TopLimit > 0
-                ? CurrentYAxis.BotLimit                                            
-                : (CurrentYAxis.BotLimit < 0 && CurrentYAxis.TopLimit <= 0          
-                ? CurrentYAxis.TopLimit                                         
+            var startAt = CurrentYAxis.FirstSeparator >= 0 && CurrentYAxis.LastSeparator > 0
+                ? CurrentYAxis.FirstSeparator
+                : (CurrentYAxis.FirstSeparator < 0 && CurrentYAxis.LastSeparator <= 0          
+                ? CurrentYAxis.LastSeparator
                     : 0);                                                         
 
             var zero = ChartFunctions.ToDrawMargin(startAt, AxisOrientation.Y, Chart, View.ScalesYAt);

@@ -42,7 +42,7 @@ namespace LiveCharts.Uwp
     /// <summary>
     /// The line series displays trends between points, you must add this series to a cartesian chart. 
     /// </summary>
-    public class LineSeries : Series, ILineSeriesView, IFondeable
+    public class LineSeries : Series, ILineSeriesView, IFondeable, IAreaPoint
     {
         #region Constructors
         /// <summary>
@@ -104,7 +104,7 @@ namespace LiveCharts.Uwp
         /// <value>
         ///   <c>true</c> if this instance is new; otherwise, <c>false</c>.
         /// </value>
-        private bool IsNew { get; set; }
+        protected bool IsNew { get; set; }
         #endregion
 
         #region Properties
@@ -348,6 +348,14 @@ namespace LiveCharts.Uwp
         #endregion
 
         #region Public Methods 
+        /// <summary>
+        /// Gets the point diameter.
+        /// </summary>
+        /// <returns></returns>
+        public double GetPointDiameter()
+        {
+            return (PointGeometry == null ? 0 : PointGeometrySize)/2;
+        }
 
         /// <summary>
         /// Starts the segment.
@@ -366,9 +374,9 @@ namespace LiveCharts.Uwp
             var animSpeed = Model.Chart.View.AnimationsSpeed;
             var noAnim = Model.Chart.View.DisableAnimations;
 
-            var areaLimit = Model.Chart.DrawMargin.Height;
-            if (!double.IsNaN(AreaLimit))
-                areaLimit = ChartFunctions.ToDrawMargin(AreaLimit, AxisOrientation.Y, Model.Chart, ScalesYAt);
+            var areaLimit = ChartFunctions.ToDrawMargin(double.IsNaN(AreaLimit)
+                ? Model.Chart.AxisY[ScalesYAt].FirstSeparator
+                : AreaLimit, AxisOrientation.Y, Model.Chart, ScalesYAt);
 
             if (Values != null && atIndex == 0)
             {
@@ -433,9 +441,10 @@ namespace LiveCharts.Uwp
             var animSpeed = Model.Chart.View.AnimationsSpeed;
             var noAnim = Model.Chart.View.DisableAnimations;
 
-            var areaLimit = Model.Chart.DrawMargin.Height;
-            if (!double.IsNaN(AreaLimit))
-                areaLimit = ChartFunctions.ToDrawMargin(AreaLimit, AxisOrientation.Y, Model.Chart, ScalesYAt);
+            var areaLimit = ChartFunctions.ToDrawMargin(double.IsNaN(AreaLimit)
+                ? Model.Chart.AxisY[ScalesYAt].FirstSeparator
+                : AreaLimit, AxisOrientation.Y, Model.Chart, ScalesYAt);
+
             var uw = Model.Chart.AxisX[ScalesXAt].EvaluatesUnitWidth
                 ? ChartFunctions.GetUnitWidth(AxisOrientation.X, Model.Chart, ScalesXAt) / 2
                 : 0;

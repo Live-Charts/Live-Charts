@@ -20,12 +20,12 @@
             Use the Chart.Zoom property to enable zooming and panning, you have some options: None, X, Y and XY, click, hold and drag the chart for panning.
         </TextBlock>
         <StackPanel Grid.Row="1">
-            <Button Height="30" Click="ToogleZoomingMode">
+            <Button Click="ToogleZoomingMode">
                 <TextBlock>Toggle zoming mode, current is: 
                     <TextBlock Text="{Binding ZoomingMode, Converter={StaticResource ZoomingModeCoverter}}"/>
                 </TextBlock>
             </Button>
-            <Button Height="30" Click="ResetZoomOnClick">Reset Zoom</Button>
+            <Button Click="ResetZoomOnClick">Reset Zoom</Button>
         </StackPanel>
         <lvc:CartesianChart Grid.Row="2" Series="{Binding SeriesCollection}" Zoom="{Binding ZoomingMode}" >
             <lvc:CartesianChart.AxisX>

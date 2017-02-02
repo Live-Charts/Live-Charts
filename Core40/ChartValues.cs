@@ -27,6 +27,9 @@ using LiveCharts.Configurations;
 using LiveCharts.Definitions.Series;
 using LiveCharts.Dtos;
 using LiveCharts.Helpers;
+#if NET45
+using System.Reflection;
+#endif
 
 namespace LiveCharts
 {
@@ -164,8 +167,15 @@ namespace LiveCharts
 
             var config = GetConfig(seriesView);
 
+#if NET40
             var isClass = typeof(T).IsClass;
             var isObservable = isClass && typeof(IObservableChartPoint).IsAssignableFrom(typeof(T));
+#endif
+#if NET45
+            var isClass = typeof(T).GetTypeInfo().IsClass;
+            var isObservable = isClass &&
+                               typeof(IObservableChartPoint).GetTypeInfo().IsAssignableFrom(typeof(T).GetTypeInfo());
+#endif
 
             var tracker = GetTracker(seriesView);
             var gci = tracker.Gci;
@@ -212,7 +222,12 @@ namespace LiveCharts
         /// </summary>
         public void CollectGarbage(ISeriesView seriesView)
         {
-            var isclass = typeof (T).IsClass;
+#if NET40
+            var isclass = typeof(T).IsClass;
+#endif
+#if NET45
+            var isclass = typeof(T).GetTypeInfo().IsClass;
+#endif
 
             var tracker = GetTracker(seriesView);
 
@@ -262,8 +277,8 @@ namespace LiveCharts
             if (view == null || view.Model.SeriesCollection == null) return null;
 
             var config =
-                (view.Configuration ??  view.Model.SeriesCollection.Configuration) as IPointEvaluator<T>;
-            
+                (view.Configuration ?? view.Model.SeriesCollection.Configuration) as IPointEvaluator<T>;
+
             if (config != null) return config;
 
             return DefaultConfiguration ??
@@ -322,7 +337,7 @@ namespace LiveCharts
             foreach (var point in tracker.Indexed.Values.Concat(tracker.Referenced.Values))
                 point.Gci = 0;
         }
-        
+
         private static bool IsGarbage(ChartPoint point, PointTracker tracker)
         {
             return point.Gci < tracker.Gci

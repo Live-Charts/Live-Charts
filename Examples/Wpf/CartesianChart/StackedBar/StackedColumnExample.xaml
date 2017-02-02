@@ -13,7 +13,7 @@
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
-        <Button Grid.Row="1" Height="30" Click="UpdateAllOnClick">
+        <Button Grid.Row="1" Click="UpdateAllOnClick">
             Move All
         </Button>
         <wpf:CartesianChart Grid.Row="2" Series="{Binding SeriesCollection}">

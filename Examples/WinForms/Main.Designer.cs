@@ -463,7 +463,6 @@
             this.btnGauge.Size = new System.Drawing.Size(160, 53);
             this.btnGauge.TabIndex = 53;
             this.btnGauge.UseVisualStyleBackColor = true;
-            this.btnGauge.Click += new System.EventHandler(this.btnGauge_Click);
             // 
             // label13
             // 

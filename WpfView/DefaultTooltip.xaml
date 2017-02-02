@@ -45,11 +45,11 @@
     </UserControl.Resources>
     <UserControl.Template>
         <ControlTemplate>
-            <Grid VerticalAlignment="Center" HorizontalAlignment="Center">
+            <Grid VerticalAlignment="Center" HorizontalAlignment="Center" >
                 <Border Background="{Binding Background}" BorderThickness="1" Effect="{Binding Effect}" CornerRadius="{Binding CornerRadius}"
                         Width="{Binding Width}" Height="{Binding Height}"/>
                 <Border Background="{Binding Background}" CornerRadius="{Binding CornerRadius}"
-                        BorderThickness="{Binding BorderThickness}" Padding="5"
+                        BorderThickness="{Binding BorderThickness}" Padding="{Binding Padding}"
                         BorderBrush="{Binding BorderBrush}"
                         Width="{Binding Width}" Height="{Binding Height}">
                     <StackPanel Orientation="Vertical">

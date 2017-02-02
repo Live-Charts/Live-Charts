@@ -45,14 +45,8 @@ namespace LiveCharts.Uwp.Components
 
         public override void Run(bool restartView = false, bool updateNow = false)
         {
-#if DEBUG
-            Debug.WriteLine("Updater run requested...");
-#endif
             if (updateNow || Chart.View.IsMocked)
             {
-#if DEBUG
-                Debug.WriteLine("Updater was forced.");
-#endif
                 UpdaterTick(restartView);
                 return;
             }
@@ -82,10 +76,6 @@ namespace LiveCharts.Uwp.Components
             IsUpdating = false;
 
             RequiresRestart = false;
-            
-#if DEBUG
-            Debug.WriteLine("Chart is updated");
-#endif
 
             uwpfChart.ChartUpdated();
             uwpfChart.PrepareScrolBar();

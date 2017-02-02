@@ -88,6 +88,13 @@ namespace LiveCharts.Definitions.Charts
         /// </value>
         ZoomingOptions Zoom { get; set; }
         /// <summary>
+        /// Gets or sets the zoom.
+        /// </summary>
+        /// <value>
+        /// The zoom.
+        /// </value>
+        PanningOptions Pan { get; set; }
+        /// <summary>
         /// Gets or sets the zooming speed.
         /// </summary>
         /// <value>
@@ -137,6 +144,7 @@ namespace LiveCharts.Definitions.Charts
         /// <c>true</c> if this instance has data click event attached; otherwise, <c>false</c>.
         /// </value>
         bool HasDataClickEventAttached { get; }
+        /// <summary>
         /// Gets a value indicating whether this instance has data hover event attached.
         /// </summary>
         /// <value>

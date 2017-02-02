@@ -106,7 +106,6 @@ namespace UWP.Commons
             new SampleDefinition("Issue #179", typeof(Issue179), SampleCategory.CartesianChart),
 
             new SampleDefinition("Angular Gauge", typeof(AngularGaugeExmple), SampleCategory.Gauges),
-            new SampleDefinition("Gauge 180", typeof(Gauge180), SampleCategory.Gauges),
             new SampleDefinition("Gauge 360", typeof(Gauge360), SampleCategory.Gauges),
 
             new SampleDefinition("Doughnut Chart", typeof(DoughnutChartExample), SampleCategory.PieChart),

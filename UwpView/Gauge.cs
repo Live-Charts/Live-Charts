@@ -328,13 +328,13 @@ namespace LiveCharts.Uwp
         /// The high font size property
         /// </summary>
         public static readonly DependencyProperty HighFontSizeProperty = DependencyProperty.Register(
-            "HighFontSize", typeof (double?), typeof (Gauge), new PropertyMetadata(null));
+            "HighFontSize", typeof (double), typeof (Gauge), new PropertyMetadata(double.NaN));
         /// <summary>
         /// Gets o sets the label size, if this value is null then it will be automatically calculated, default is null.
         /// </summary>
-        public double? HighFontSize
+        public double HighFontSize
         {
-            get { return (double?) GetValue(HighFontSizeProperty); }
+            get { return (double) GetValue(HighFontSizeProperty); }
             set { SetValue(HighFontSizeProperty, value); }
         }
 
@@ -361,6 +361,11 @@ namespace LiveCharts.Uwp
             var completed = (Value-From)/(To - From);
 
             var t = 0d;
+
+            if (double.IsNaN(completed) || double.IsInfinity(completed))
+            {
+                completed = 0;
+            }
 
             completed = completed > 1 ? 1 : (completed < 0 ? 0 : completed);
             var angle = Uses360Mode ? 360 : 180;
@@ -437,7 +442,7 @@ namespace LiveCharts.Uwp
                 Canvas.ActualWidth*.5 +
                 (Pie.InnerRadius + (Pie.Radius - Pie.InnerRadius)*.5 - RightLabel.DesiredSize.Width * .5));
 
-            MeasureTextBlock.FontSize = HighFontSize ?? Pie.InnerRadius*.4;
+            MeasureTextBlock.FontSize = double.IsNaN(HighFontSize) ? Pie.InnerRadius*.4 : HighFontSize;
             MeasureTextBlock.Text = (LabelFormatter ?? defFormatter)(Value);
 
             MeasureTextBlock.Measure(ms);

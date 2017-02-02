@@ -22,7 +22,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using Windows.Foundation;
 using Windows.UI;
@@ -184,9 +183,6 @@ namespace LiveCharts.Uwp.Charts.Base
 
         private void OnSizeChanged(object sender, SizeChangedEventArgs args)
         {
-#if DEBUG
-            Debug.WriteLine("ChartResized");
-#endif
             Model.ControlSize = new CoreSize(ActualWidth, ActualHeight);
 
             Model.Updater.Run();
@@ -194,9 +190,6 @@ namespace LiveCharts.Uwp.Charts.Base
 
         private void OnIsVisibleChanged(DependencyObject dependencyObject, DependencyProperty dependencyProperty)
         {
-#if DEBUG
-            Debug.WriteLine("ChartVisibilityChanged");
-#endif
             Model.ControlSize = new CoreSize(ActualWidth, ActualHeight);
 
             Model.Updater.Run();
@@ -407,6 +400,23 @@ namespace LiveCharts.Uwp.Charts.Base
         {
             get { return (ZoomingOptions) GetValue(ZoomProperty); }
             set { SetValue(ZoomProperty, value); }
+        }
+
+        /// <summary>
+        /// The pan property
+        /// </summary>
+        public static readonly DependencyProperty PanProperty = DependencyProperty.Register(
+            "Pan", typeof(PanningOptions), typeof(Chart), new PropertyMetadata(PanningOptions.Unset));
+        /// <summary>
+        /// Gets or sets the chart pan, default is Unset, which bases the behavior according to Zoom property
+        /// </summary>
+        /// <value>
+        /// The pan.
+        /// </value>
+        public PanningOptions Pan
+        {
+            get { return (PanningOptions)GetValue(PanProperty); }
+            set { SetValue(PanProperty, value); }
         }
 
         /// <summary>
@@ -843,7 +853,11 @@ namespace LiveCharts.Uwp.Charts.Base
             if (Windows.ApplicationModel.DesignMode.DesignModeEnabled && AxisX == null)
                 AxisX = DefaultAxes.DefaultAxis;
 
-            if (AxisX.Count == 0) AxisX.AddRange(DefaultAxes.CleanAxis);
+            if (AxisX.Count == 0)
+                AxisX.AddRange(DefaultAxes.CleanAxis);
+
+            AxisX.Chart = this;
+
             return AxisX.Select(x =>
             {
                 if (x.Parent == null)
@@ -868,7 +882,11 @@ namespace LiveCharts.Uwp.Charts.Base
             if (Windows.ApplicationModel.DesignMode.DesignModeEnabled && AxisY == null)
                 AxisY = DefaultAxes.DefaultAxis;
 
-            if (AxisY.Count == 0) AxisY.AddRange(DefaultAxes.DefaultAxis);
+            if (AxisY.Count == 0)
+                AxisY.AddRange(DefaultAxes.DefaultAxis);
+
+            AxisX.Chart = this;
+
             return AxisY.Select(y =>
             {
                 if (y.Parent == null)
@@ -1305,7 +1323,7 @@ namespace LiveCharts.Uwp.Charts.Base
         #region Zooming and Panning
 
         private Point DragOrigin { get; set; }
-        private bool _isPanning { get; set; }
+        private bool IsPanning { get; set; }
 
         private void OnPointerWheelChanged(object sender, PointerRoutedEventArgs e)
         {
@@ -1326,18 +1344,20 @@ namespace LiveCharts.Uwp.Charts.Base
         private void OnDraggingStart(object sender, PointerRoutedEventArgs e)
         {
             if (Model?.AxisX == null || Model.AxisY == null) return;
-
+            
             DragOrigin = e.GetCurrentPoint(this).Position;
             DragOrigin = new Point(
                 ChartFunctions.FromPlotArea(DragOrigin.X, AxisOrientation.X, Model),
                 ChartFunctions.FromPlotArea(DragOrigin.Y, AxisOrientation.Y, Model));
-            _isPanning = true;
+            IsPanning = true;
         }
 
         private void OnDraggingEnd(object sender, PointerRoutedEventArgs e)
         {
-            if (!_isPanning) return;
-            if (Zoom == ZoomingOptions.None) return;
+            if (!IsPanning) return;
+
+            if ((Pan == PanningOptions.Unset && Zoom == ZoomingOptions.None) ||
+                Pan == PanningOptions.None) return;
 
             var end = e.GetCurrentPoint(this).Position;
             end = new Point(
@@ -1345,7 +1365,7 @@ namespace LiveCharts.Uwp.Charts.Base
                 ChartFunctions.FromPlotArea(end.Y, AxisOrientation.Y, Model));
 
             Model.Drag(new CorePoint(DragOrigin.X - end.X, DragOrigin.Y - end.Y));
-            _isPanning = false;
+            IsPanning = false;
         }
 
         #endregion
@@ -1480,7 +1500,6 @@ namespace LiveCharts.Uwp.Charts.Base
         //        delta = this.ConvertToChartValues(new Point(Ldsp.Value.X, 0), ax.Model.AxisIndex).X -
         //                this.ConvertToChartValues(new Point(p.X, 0), ax.Model.AxisIndex).X;
         //        Ldsp = p;
-        //        Debug.WriteLine(delta);
         //        ax.FromValue -= delta;
         //        ax.ToValue -= delta;
         //    }
@@ -1489,7 +1508,6 @@ namespace LiveCharts.Uwp.Charts.Base
         //        delta = this.ConvertToChartValues(new Point(0, Ldsp.Value.Y), 0, ax.Model.AxisIndex).Y -
         //                this.ConvertToChartValues(new Point(0, p.Y), 0, ax.Model.AxisIndex).Y;
         //        Ldsp = p;
-        //        Debug.WriteLine(delta);
         //        ax.FromValue -= delta;
         //        ax.ToValue -= delta;
         //    }

@@ -114,7 +114,7 @@ namespace LiveCharts.SeriesAlgorithms
 
         double ICartesianSeries.GetMaxY(AxisCore axis)
         {
-            var f = AxisLimits.SeparatorMax(axis);
+            var f = AxisLimits.SeparatorMaxRounded(axis);
             return CurrentYAxis.BotLimit < 0 && CurrentYAxis.TopLimit <= 0
                 ? (f >= 0 ? f : 0)
                 : f;
