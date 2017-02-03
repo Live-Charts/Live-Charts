@@ -61,10 +61,10 @@ Task("WinForms")
         BuildProject(formsPath, "./bin/Debug", "Debug", configuration, "v4.0");
 
         Information("Building WinForms.Net40...");
-        BuildProject(formsPath, "./bin/net403", "net40", configuration, "v4.0");
+        BuildProject(formsPath, "./bin/net403", "Release", configuration, "v4.0");
 
         Information("Building WinForms.Debug...");
-        BuildProject(formsPath, "./bin/net45", "net45", configuration, "v4.5");
+        BuildProject(formsPath, "./bin/net45", "Release", configuration, "v4.5");
 
         Information("Packing WinForms...");
         NugetPack("./WinFormsView/WinFormsView.nuspec", "./WinFormsView/bin/net403/LiveCharts.WinForms.dll");
