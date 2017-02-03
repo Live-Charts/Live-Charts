@@ -21,7 +21,7 @@ Task("Core")
         var ouputDirectory = "./bin/Release";
 
         Information("Building Core.PCL...");
-        BuildProject("./Core/Core.csproj", ouputDirectory, buildType, configuration, "v4.0");
+        BuildProject("./Core/Core.csproj", ouputDirectory, buildType, configuration, "v4.5");
 
         Information("Building Core.Net40...");
         BuildProject("./Core40/Core40.csproj", ouputDirectory, buildType, configuration, "v4.0");
