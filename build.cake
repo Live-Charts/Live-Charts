@@ -41,8 +41,7 @@ Task("WPF")
         BuildProject(wpfPath, "./bin/Debug", "Debug", configuration, "v4.0");
 
         Information("Building Wpf.Net40...");
-        BuildProject(wpfPath, "./bin/test", "Release", configuration, "v4.0");
-        //BuildProject(wpfPath, "./bin/net403", "net40", configuration);
+        BuildProject(wpfPath, "./bin/net403", "Release", configuration, "v4.0");
 
         Information("Building Wpf.Debug...");
         BuildProject(wpfPath, "./bin/net45", "Release", configuration, "v4.5");
