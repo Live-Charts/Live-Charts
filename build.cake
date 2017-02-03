@@ -21,7 +21,7 @@ Task("Core")
         var ouputDirectory = "./bin/Release";
 
         Information("Building Core.PCL...");
-        BuildProject("./Core/Core.csproj", ouputDirectory, buildType, configuration, "v4.5");
+        BuildProject("./Core/Core.csproj", ouputDirectory, buildType, configuration, "v4.0");
 
         Information("Building Core.Net40...");
         BuildProject("./Core40/Core40.csproj", ouputDirectory, buildType, configuration, "v4.0");
@@ -85,8 +85,8 @@ Task("UWP")
     });
 
 Task("Default")
-    //.IsDependentOn("OutputArguments")
-	//.IsDependentOn("Core")
+    .IsDependentOn("OutputArguments")
+	.IsDependentOn("Core")
     .IsDependentOn("WPF")
     .IsDependentOn("UWP")
     .IsDependentOn("WinForms");
