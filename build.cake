@@ -18,10 +18,8 @@ Task("OutputArguments")
 Task("Core")
     .Does(() =>
     {
-        var ouputDirectory = "./bin/Release";
-
         Information("Building Core.PCL...");
-        BuildProject("./Core/Core.csproj", ouputDirectory, buildType, configuration, "v4.5");
+        BuildProject("./Core/Core.csproj", "./bin/Release", buildType, configuration, "v4.5");
 
         Information("Building Core.Net40...");
         BuildProject("./Core40/Core40.csproj", "./bin/Net40", buildType, configuration, "v4.0");
