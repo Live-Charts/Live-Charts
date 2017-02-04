@@ -18,14 +18,15 @@ Task("OutputArguments")
 Task("Core")
     .Does(() =>
     {
-        var ouputDirectory = "./bin/Release";
-
         Information("Building Core.PCL...");
-        BuildProject("./Core/Core.csproj", ouputDirectory, buildType, configuration);
+        BuildProject("./Core/Core.csproj", "./bin/Release", buildType, configuration, "v4.5");
 
         Information("Building Core.Net40...");
-        BuildProject("./Core40/Core40.csproj", ouputDirectory, buildType, configuration);
+        BuildProject("./Core40/Core40.csproj", "./bin/Net40", buildType, configuration, "v4.0");
         
+		Information("Building Core.Net45...");
+        BuildProject("./Core40/Core40.csproj", "./bin/Net45", buildType, configuration, "v4.5");
+
         Information("Packing Core...");
         NugetPack("./Core/Core.nuspec", "./Core/bin/Release/LiveCharts.dll");
 
@@ -38,13 +39,13 @@ Task("WPF")
         var wpfPath = "./WpfView/wpfview.csproj";
 
         Information("Building Wpf.Debug...");
-        BuildProject(wpfPath, "./bin/Debug", "Debug", configuration);
+        BuildProject(wpfPath, "./bin/Debug", "Debug", configuration, "v4.0");
 
         Information("Building Wpf.Net40...");
-        BuildProject(wpfPath, "./bin/net403", "net40", configuration);
+        BuildProject(wpfPath, "./bin/net403", "Release", configuration, "v4.0");
 
         Information("Building Wpf.Debug...");
-        BuildProject(wpfPath, "./bin/net45", "net45", configuration);
+        BuildProject(wpfPath, "./bin/net45", "Release", configuration, "v4.5");
 
         Information("Packing Wpf...");
         NugetPack("./WpfView/WpfView.nuspec", "./WpfView/bin/net403/LiveCharts.Wpf.dll");
@@ -58,13 +59,13 @@ Task("WinForms")
         var formsPath = "./WinFormsView/WinFormsView.csproj";
 
         Information("Building WinForms.Debug...");
-        BuildProject(formsPath, "./bin/Debug", "Debug", configuration);
+        BuildProject(formsPath, "./bin/Debug", "Debug", configuration, "v4.0");
 
         Information("Building WinForms.Net40...");
-        BuildProject(formsPath, "./bin/net403", "net40", configuration);
+        BuildProject(formsPath, "./bin/net403", "Release", configuration, "v4.0");
 
         Information("Building WinForms.Debug...");
-        BuildProject(formsPath, "./bin/net45", "net45", configuration);
+        BuildProject(formsPath, "./bin/net45", "Release", configuration, "v4.5");
 
         Information("Packing WinForms...");
         NugetPack("./WinFormsView/WinFormsView.nuspec", "./WinFormsView/bin/net403/LiveCharts.WinForms.dll");
@@ -97,16 +98,23 @@ RunTarget (target);
 //Helper Methods
 
 //Build a project
-public void BuildProject(string path, string outputPath, string configuration, string platform)
+public void BuildProject(string path, string outputPath, string configuration, 
+								string platform, string targetVersion = null)
 {
     Information("Building " + path);
     try
     {
-        DotNetBuild(path, settings => settings.SetConfiguration(configuration)
-                                        .WithProperty("Platform", platform)
-                                        .WithTarget("Clean,Build")
-                                        .WithProperty("OutputPath", outputPath)
-                                        .SetVerbosity(Cake.Core.Diagnostics.Verbosity.Minimal));
+        DotNetBuild(path, settings => 
+		{ 
+			settings.SetConfiguration(configuration)
+				.WithProperty("Platform", platform)
+				.WithTarget("Clean,Build")
+				.WithProperty("OutputPath", outputPath)
+                .SetVerbosity(Cake.Core.Diagnostics.Verbosity.Minimal);
+
+            if (targetVersion != null) 
+				settings.WithProperty("TargetFrameworkVersion", targetVersion);
+        });
     }
     catch(Exception ex)
     {
