@@ -25,7 +25,7 @@ Task("Core")
         BuildProject("./Core40/Core40.csproj", "./bin/Net40", buildType, configuration, "v4.0");
         
 		Information("Building Core.Net45...");
-        BuildProject("./Core40/Core45.csproj", "./bin/Net45", buildType, configuration, "v4.5");
+        BuildProject("./Core40/Core40.csproj", "./bin/Net45", buildType, configuration, "v4.5");
 
         Information("Packing Core...");
         NugetPack("./Core/Core.nuspec", "./Core/bin/Release/LiveCharts.dll");
