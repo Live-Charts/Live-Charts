@@ -133,6 +133,7 @@
     <Compile Include="Components\BrushCloner.cs" />
     <Compile Include="Components\ChartUpdater.cs" />
     <Compile Include="Components\Converters.cs" />
+    <Compile Include="Components\DefaultXamlReader.cs" />
     <Compile Include="Components\DependencyObjectExtensions.cs" />
     <Compile Include="Components\GeometryHelper.cs" />
     <Compile Include="Components\GeometryParser.cs" />

@@ -24,6 +24,7 @@ using System;
 using Windows.Foundation;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
+using Windows.UI.Xaml.Media.Animation;
 using LiveCharts.Charts;
 using LiveCharts.Definitions.Points;
 using LiveCharts.Uwp.Components;
@@ -52,8 +53,8 @@ namespace LiveCharts.Uwp.Points
 
             if (DataLabel != null && double.IsNaN(Canvas.GetLeft(DataLabel)))
             {
-                Canvas.SetTop(DataLabel, 0d);
-                Canvas.SetLeft(DataLabel, 0d);
+                Canvas.SetTop(DataLabel, chart.DrawMargin.Height / 2);
+                Canvas.SetLeft(DataLabel, chart.DrawMargin.Width / 2);
             }
 
             if (HoverShape != null)
@@ -71,17 +72,27 @@ namespace LiveCharts.Uwp.Points
             Slice.Width = chart.DrawMargin.Width;
             Slice.Height = chart.DrawMargin.Height;
 
-            Slice.InnerRadius = InnerRadius;
-            Slice.Radius = Radius;
+            var lh = 0d;
+            if (DataLabel != null)
+            {
+                DataLabel.UpdateLayout();
+                lh = DataLabel.ActualHeight;
+            }
 
-            var hypo = (Slice.Radius + Slice.InnerRadius)/2;
+            var hypo = ((PieSeries)current.SeriesView).LabelPosition == PieLabelPosition.InsideSlice
+                ? (Radius + InnerRadius) * (Math.Abs(InnerRadius) < 0.01 ? .65 : .5)
+                : Radius + lh;
             var gamma = current.Participation*360/2 + Rotation;
             var cp = new Point(hypo * Math.Sin(gamma * (Math.PI / 180)), hypo * Math.Cos(gamma * (Math.PI / 180)));
 
             if (chart.View.DisableAnimations)
             {
+                Slice.InnerRadius = InnerRadius;
+                Slice.Radius = Radius;
                 Slice.WedgeAngle = Wedge;
                 Slice.RotationAngle = Rotation;
+                Canvas.SetTop(Slice, chart.DrawMargin.Height / 2);
+                Canvas.SetLeft(Slice, chart.DrawMargin.Width / 2);
 
                 if (DataLabel != null)
                 {
@@ -108,7 +119,11 @@ namespace LiveCharts.Uwp.Points
 
                 DataLabel.CreateCanvasStoryBoardAndBegin(lx, ly, animSpeed);
             }
-            
+
+            Slice.BeginDoubleAnimation("(Canvas.Left)", chart.DrawMargin.Width / 2, animSpeed);
+            Slice.BeginDoubleAnimation("(Canvas.Top)", chart.DrawMargin.Height / 2, animSpeed);
+            Slice.BeginDoubleAnimation(nameof(PieSlice.InnerRadius), InnerRadius, animSpeed);
+            Slice.BeginDoubleAnimation(nameof(PieSlice.Radius), Radius, animSpeed);
             Slice.BeginDoubleAnimation(nameof(PieSlice.WedgeAngle), Wedge, animSpeed);
             Slice.BeginDoubleAnimation(nameof(PieSlice.RotationAngle), Rotation, animSpeed);
         }
