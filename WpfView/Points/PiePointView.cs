@@ -77,7 +77,7 @@ namespace LiveCharts.Wpf.Points
 
             var hypo = ((PieSeries) current.SeriesView).LabelPosition == PieLabelPosition.InsideSlice
                 ? (Radius + InnerRadius)*(Math.Abs(InnerRadius) < 0.01 ? .65 : .5)
-                : Radius + lh;
+                : Radius+lh;
             var gamma = current.Participation*360/2 + Rotation;
             var cp = new Point(hypo * Math.Sin(gamma * (Math.PI / 180)), hypo * Math.Cos(gamma * (Math.PI / 180)));
 

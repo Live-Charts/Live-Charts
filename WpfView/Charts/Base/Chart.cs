@@ -665,6 +665,7 @@ namespace LiveCharts.Wpf.Charts.Base
 
         private void SetClip()
         {
+            if (this is IPieChart) return;
             DrawMargin.Clip = new RectangleGeometry
             {
                 Rect = new Rect(0, 0, DrawMargin.Width, DrawMargin.Height)

@@ -70,6 +70,7 @@
     <Compile Include="Configurations\Mappers.cs" />
     <Compile Include="Configurations\PolarMapper.cs" />
     <Compile Include="Configurations\WeightedMapper.cs" />
+    <Compile Include="DataLabelViewModel.cs" />
     <Compile Include="Defaults\AxisLimits.cs" />
     <Compile Include="Defaults\DateTimePoint.cs" />
     <Compile Include="Defaults\GanttPoint.cs" />

@@ -1,4 +1,6 @@
-//copyright(c) 2016 Alberto Rodriguez
+﻿//The MIT License(MIT)
+
+//Copyright(c) 2016 Alberto Rodriguez
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -18,41 +20,27 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-using System;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Shapes;
-using LiveCharts.Charts;
-using LiveCharts.Definitions.Points;
-using LiveCharts.Dtos;
-
-namespace LiveCharts.Wpf.Points
+namespace LiveCharts
 {
-    internal class PointView : IChartPointView
+    /// <summary>
+    /// Describes a data label view model
+    /// </summary>
+    public class DataLabelViewModel
     {
-        public Shape HoverShape { get; set; }
-        public ContentControl DataLabel { get; set; }
-        public bool IsNew { get; set; }
-        public CoreRectangle ValidArea { get; internal set; }
+        /// <summary>
+        /// Gets or sets the formatted text of the current point
+        /// </summary>
+        /// <value>
+        /// The formatted text.
+        /// </value>
+        public string FormattedText { get; set; }
+        /// <summary>
+        /// Gets the instance of the current point.
+        /// </summary>
+        /// <value>
+        /// The instance.
+        /// </value>
+        public object Instance { get; internal set; }
 
-        public virtual void DrawOrMove(ChartPoint previousDrawn, ChartPoint current, int index, ChartCore chart)
-        {
-            throw new NotImplementedException();
-        }
-
-        public virtual void RemoveFromView(ChartCore chart)
-        {
-            throw new NotImplementedException();
-        }
-
-        public virtual void OnHover(ChartPoint point)
-        {
-            
-        }
-
-        public virtual void OnHoverLeave(ChartPoint point)
-        {
-            
-        }
     }
 }

@@ -32,6 +32,7 @@ using LiveCharts.Definitions.Points;
 using LiveCharts.Definitions.Series;
 using LiveCharts.Helpers;
 using LiveCharts.Wpf.Charts.Base;
+using LiveCharts.Wpf.Components;
 using LiveCharts.Wpf.Converters;
 
 namespace LiveCharts.Wpf
@@ -191,6 +192,24 @@ namespace LiveCharts.Wpf
         {
             get { return (bool) GetValue(DataLabelsProperty); }
             set { SetValue(DataLabelsProperty, value); }
+        }
+
+        /// <summary>
+        /// The labels template property
+        /// </summary>
+        public static readonly DependencyProperty DataLabelsTemplateProperty = DependencyProperty.Register(
+            "DataLabelsTemplate", typeof(DataTemplate), typeof(Series),
+            new PropertyMetadata(DefaultXamlReader.DataLabelTemplate(), CallChartUpdater()));
+        /// <summary>
+        /// Gets or sets the labels template.
+        /// </summary>
+        /// <value>
+        /// The labels template.
+        /// </value>
+        public DataTemplate DataLabelsTemplate
+        {
+            get { return (DataTemplate) GetValue(DataLabelsTemplateProperty); }
+            set { SetValue(DataLabelsTemplateProperty, value); }
         }
 
         /// <summary>
@@ -374,25 +393,23 @@ namespace LiveCharts.Wpf
 
         #region Internal Helpers
 
-        internal TextBlock BindATextBlock(int rotate)
+        internal ContentControl UpdateLabelContent(DataLabelViewModel content)
         {
-            var tb = new TextBlock();
+            var control = new ContentControl
+            {
+                Content = content,
+                ContentTemplate = DataLabelsTemplate,
+                FontFamily = FontFamily,
+                FontSize = FontSize,
+                FontStretch = FontStretch,
+                FontStyle = FontStyle,
+                FontWeight = FontWeight,
+                Foreground = Foreground
+            };
 
-            tb.SetBinding(TextBlock.FontFamilyProperty,
-                new Binding {Path = new PropertyPath(FontFamilyProperty), Source = this});
-            tb.SetBinding(TextBlock.FontSizeProperty,
-                new Binding {Path = new PropertyPath(FontSizeProperty), Source = this});
-            tb.SetBinding(TextBlock.FontStretchProperty,
-                new Binding {Path = new PropertyPath(FontStretchProperty), Source = this});
-            tb.SetBinding(TextBlock.FontStyleProperty,
-                new Binding {Path = new PropertyPath(FontStyleProperty), Source = this});
-            tb.SetBinding(TextBlock.FontWeightProperty,
-                new Binding {Path = new PropertyPath(FontWeightProperty), Source = this});
-            tb.SetBinding(TextBlock.ForegroundProperty,
-                new Binding {Path = new PropertyPath(ForegroundProperty), Source = this});
-            tb.SetBinding(TextBlock.VisibilityProperty,
-                new Binding {Path = new PropertyPath(VisibilityProperty), Source = this});
-            return tb;
+            control.SetBinding(VisibilityProperty, new Binding {Path = new PropertyPath(VisibilityProperty), Source = this});
+
+            return control;
         }
 
         #endregion
