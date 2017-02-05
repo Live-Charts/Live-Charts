@@ -7,7 +7,7 @@ using Windows.UI.Xaml.Controls;
 
 namespace UWP.CartesianChart.CustomTooltipAndLegend
 {
-    public sealed partial class CustomersTooltip : UserControl, IChartTooltip
+    public sealed partial class CustomersTooltip : IChartTooltip
     {
         private TooltipData _data;
 
@@ -34,7 +34,6 @@ namespace UWP.CartesianChart.CustomTooltipAndLegend
         }
 
         public TooltipSelectionMode SelectionMode { get; set; }
-        public bool IsWrapped { get; set; }
 
         public void OnPropertyChanged(string propertyName = null)
         {
