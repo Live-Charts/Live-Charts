@@ -52,8 +52,8 @@ namespace LiveCharts.Wpf.Points
 
             if (DataLabel != null && double.IsNaN(Canvas.GetLeft(DataLabel)))
             {
-                Canvas.SetTop(DataLabel, 0d);
-                Canvas.SetLeft(DataLabel, 0d);
+                Canvas.SetTop(DataLabel, chart.DrawMargin.Height/2);
+                Canvas.SetLeft(DataLabel, chart.DrawMargin.Width/2);
             }
 
             if (HoverShape != null)
@@ -68,25 +68,31 @@ namespace LiveCharts.Wpf.Points
                 hs.Radius = Radius;
             }
 
-            Canvas.SetTop(Slice, chart.DrawMargin.Height / 2);
-            Canvas.SetLeft(Slice, chart.DrawMargin.Width / 2);
-            Slice.InnerRadius = InnerRadius;
-            Slice.Radius = Radius;
+            var lh = 0d;
+            if (DataLabel != null)
+            {
+                DataLabel.UpdateLayout();
+                lh = DataLabel.ActualHeight;
+            }
 
-            var hypo = (Slice.Radius + Slice.InnerRadius)/2;
+            var hypo = ((PieSeries) current.SeriesView).LabelPosition == PieLabelPosition.InsideSlice
+                ? (Radius + InnerRadius)*(Math.Abs(InnerRadius) < 0.01 ? .65 : .5)
+                : Radius + lh;
             var gamma = current.Participation*360/2 + Rotation;
             var cp = new Point(hypo * Math.Sin(gamma * (Math.PI / 180)), hypo * Math.Cos(gamma * (Math.PI / 180)));
 
             if (chart.View.DisableAnimations)
             {
+                Slice.InnerRadius = InnerRadius;
+                Slice.Radius = Radius;
                 Slice.WedgeAngle = Wedge;
                 Slice.RotationAngle = Rotation;
+                Canvas.SetTop(Slice, chart.DrawMargin.Height / 2);
+                Canvas.SetLeft(Slice, chart.DrawMargin.Width / 2);
 
                 if (DataLabel != null)
                 {
-                    DataLabel.UpdateLayout();
-
-                    var lx = cp.X + chart.DrawMargin.Width / 2 - DataLabel.ActualWidth * .5;
+                    var lx = cp.X + chart.DrawMargin.Width/2 - DataLabel.ActualWidth * .5;
                     var ly = chart.DrawMargin.Height/2 - cp.Y - DataLabel.ActualHeight*.5;
 
                     Canvas.SetLeft(DataLabel, lx);
@@ -102,13 +108,19 @@ namespace LiveCharts.Wpf.Points
             {
                 DataLabel.UpdateLayout();
 
-                var lx = cp.X + chart.DrawMargin.Width / 2 - DataLabel.ActualWidth * .5;
-                var ly = chart.DrawMargin.Height / 2 - cp.Y - DataLabel.ActualHeight * .5;
+                var lx = cp.X + chart.DrawMargin.Width/2 - DataLabel.ActualWidth * .5;
+                var ly = chart.DrawMargin.Height/2 - cp.Y - DataLabel.ActualHeight * .5;
 
                 DataLabel.BeginAnimation(Canvas.LeftProperty, new DoubleAnimation(lx, animSpeed));
                 DataLabel.BeginAnimation(Canvas.TopProperty, new DoubleAnimation(ly, animSpeed));
             }
 
+            Slice.BeginAnimation(Canvas.LeftProperty, 
+                new DoubleAnimation(chart.DrawMargin.Width / 2, animSpeed));
+            Slice.BeginAnimation(Canvas.TopProperty,
+                new DoubleAnimation(chart.DrawMargin.Height/2, animSpeed));
+            Slice.BeginAnimation(PieSlice.InnerRadiusProperty, new DoubleAnimation(InnerRadius, animSpeed));
+            Slice.BeginAnimation(PieSlice.RadiusProperty, new DoubleAnimation(Radius, animSpeed));
             Slice.BeginAnimation(PieSlice.WedgeAngleProperty, new DoubleAnimation(Wedge, animSpeed));
             Slice.BeginAnimation(PieSlice.RotationAngleProperty, new DoubleAnimation(Rotation, animSpeed));
         }

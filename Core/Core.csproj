@@ -134,6 +134,7 @@
     <Compile Include="LogarithmicAxisCore.cs" />
     <Compile Include="Maps\MapData.cs" />
     <Compile Include="PanningOptions.cs" />
+    <Compile Include="PieLabelPosition.cs" />
     <Compile Include="PointTracker.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ScrollMode.cs" />
