@@ -44,12 +44,5 @@ namespace LiveCharts.Uwp
         /// The selection mode.
         /// </value>
         TooltipSelectionMode SelectionMode { get; set; }
-        /// <summary>
-        /// Gets or sets a value indicating whether this instance is wrapped.
-        /// </summary>
-        /// <value>
-        /// <c>true</c> if this instance is wrapped; otherwise, <c>false</c>.
-        /// </value>
-        bool IsWrapped { get; set; }
     }
 }

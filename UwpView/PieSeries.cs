@@ -80,6 +80,24 @@ namespace LiveCharts.Uwp
             get { return (double) GetValue(PushOutProperty); }
             set { SetValue(PushOutProperty, value); }
         }
+
+        /// <summary>
+        /// The label position property
+        /// </summary>
+        public static readonly DependencyProperty LabelPositionProperty = DependencyProperty.Register(
+            "LabelPosition", typeof(PieLabelPosition), typeof(PieSeries),
+            new PropertyMetadata(PieLabelPosition.InsideSlice, CallChartUpdater()));
+        /// <summary>
+        /// Gets or sets the label position.
+        /// </summary>
+        /// <value>
+        /// The label position.
+        /// </value>
+        public PieLabelPosition LabelPosition
+        {
+            get { return (PieLabelPosition)GetValue(LabelPositionProperty); }
+            set { SetValue(LabelPositionProperty, value); }
+        }
         #endregion
 
         #region Overridden Methods
@@ -142,13 +160,15 @@ namespace LiveCharts.Uwp
 
             if (DataLabels && pbv.DataLabel == null)
             {
-                pbv.DataLabel = BindATextBlock(0);
+                pbv.DataLabel = UpdateLabelContent(new DataLabelViewModel
+                {
+                    FormattedText = label,
+                    Instance = point.Instance
+                });
                 Canvas.SetZIndex(pbv.DataLabel, short.MaxValue - 1);
 
                 Model.Chart.View.AddToDrawMargin(pbv.DataLabel);
             }
-
-            if (pbv.DataLabel != null) pbv.DataLabel.Text = label;
 
             pbv.OriginalPushOut = PushOut;
 

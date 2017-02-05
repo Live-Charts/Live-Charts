@@ -19,6 +19,7 @@
 //SOFTWARE.
 
 using System;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Shapes;
 using LiveCharts.Charts;
@@ -30,7 +31,7 @@ namespace LiveCharts.Wpf.Points
     internal class PointView : IChartPointView
     {
         public Shape HoverShape { get; set; }
-        public TextBlock DataLabel { get; set; }
+        public ContentControl DataLabel { get; set; }
         public bool IsNew { get; set; }
         public CoreRectangle ValidArea { get; internal set; }
 

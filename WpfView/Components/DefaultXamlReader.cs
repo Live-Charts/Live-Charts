@@ -1,3 +1,5 @@
+﻿//The MIT License(MIT)
+
 //copyright(c) 2016 Alberto Rodriguez
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -18,40 +20,31 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-using System;
-using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Shapes;
-using LiveCharts.Charts;
-using LiveCharts.Definitions.Points;
-using LiveCharts.Dtos;
+using System.IO;
+using System.Windows;
+using System.Windows.Markup;
+using System.Xml;
 
-namespace LiveCharts.Uwp.Points
+namespace LiveCharts.Wpf.Components
 {
-    internal class PointView : IChartPointView
+    /// <summary>
+    /// 
+    /// </summary>
+    public static class DefaultXamlReader
     {
-        public Shape HoverShape { get; set; }
-        public ContentControl DataLabel { get; set; }
-        public bool IsNew { get; set; }
-        public CoreRectangle ValidArea { get; }
-
-        public virtual void DrawOrMove(ChartPoint previousDrawn, ChartPoint current, int index, ChartCore chart)
+        /// <summary>
+        /// Creates the specified type.
+        /// </summary>
+        /// <returns></returns>
+        public static DataTemplate DataLabelTemplate()
         {
-            throw new NotImplementedException();
-        }
+            var stringReader = new StringReader(
+                @"<DataTemplate xmlns=""http://schemas.microsoft.com/winfx/2006/xaml/presentation"">
+                    <TextBlock Text=""{Binding FormattedText}""></TextBlock>
+                  </DataTemplate>");
 
-        public virtual void RemoveFromView(ChartCore chart)
-        {
-            throw new NotImplementedException();
-        }
-
-        public virtual void OnHover(ChartPoint point)
-        {
-            
-        }
-
-        public virtual void OnHoverLeave(ChartPoint point)
-        {
-            
+            var xmlReader = XmlReader.Create(stringReader);
+            return XamlReader.Load(xmlReader) as DataTemplate;
         }
     }
 }

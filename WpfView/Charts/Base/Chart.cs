@@ -26,6 +26,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -116,53 +117,7 @@ namespace LiveCharts.Wpf.Charts.Base
 
         #endregion
 
-        #region Debug
-        /// <summary>
-        /// Mocks it.
-        /// </summary>
-        /// <param name="size">The size.</param>
-        public void MockIt(CoreSize size)
-        {
-            DisableAnimations = true;
-
-            IsMocked = true;
-            IsControlLoaded = true;
-
-            Model.ControlSize = size;
-
-            Model.DrawMargin.Height = Canvas.ActualHeight;
-            Model.DrawMargin.Width = Canvas.ActualWidth;
-        }
-
-        /// <summary>
-        /// Gets the canvas elements.
-        /// </summary>
-        /// <returns></returns>
-        public int GetCanvasElements()
-        {
-            return Canvas.Children.Count;
-        }
-
-        /// <summary>
-        /// Gets the draw margin elements.
-        /// </summary>
-        /// <returns></returns>
-        public int GetDrawMarginElements()
-        {
-            return DrawMargin.Children.Count;
-        }
-
-        /// <summary>
-        /// Gets the canvas.
-        /// </summary>
-        /// <returns></returns>
-        public object GetCanvas()
-        {
-            return Canvas;
-        }
-        #endregion
-
-        #region Essentials
+        #region Private and internal methods
         private void OnLoaded(object sender, RoutedEventArgs args)
         {
             IsControlLoaded = true;
@@ -294,6 +249,7 @@ namespace LiveCharts.Wpf.Charts.Base
         /// </summary>
         protected Canvas Canvas { get; set; }
         internal Canvas DrawMargin { get; set; }
+        internal Popup TooltipContainer { get; set; }
 
         /// <summary>
         /// Gets or sets whether charts must randomize the starting default series color.
@@ -709,6 +665,7 @@ namespace LiveCharts.Wpf.Charts.Base
 
         private void SetClip()
         {
+            if (this is IPieChart) return;
             DrawMargin.Clip = new RectangleGeometry
             {
                 Rect = new Rect(0, 0, DrawMargin.Width, DrawMargin.Height)
@@ -905,8 +862,7 @@ namespace LiveCharts.Wpf.Charts.Base
         #endregion
 
         #region Tooltip and legend
-        internal static DispatcherTimer TooltipTimeoutTimer { get; set; }
-        internal static UserControl ActiveTooltip { get; set; }
+        internal DispatcherTimer TooltipTimeoutTimer { get; set; }
 
         /// <summary>
         /// The tooltip timeout property
@@ -968,22 +924,22 @@ namespace LiveCharts.Wpf.Charts.Base
                 if (DataTooltip.Parent == null)
                 {
                     Panel.SetZIndex(DataTooltip, int.MaxValue);
-                    AddToView(DataTooltip);
+                    TooltipContainer = new Popup {AllowsTransparency = true, Placement = PlacementMode.RelativePoint};
+                    AddToView(TooltipContainer);
+                    TooltipContainer.Child = DataTooltip;
                     Canvas.SetTop(DataTooltip, 0d);
                     Canvas.SetLeft(DataTooltip, 0d);
                 }
 
-                if(ActiveTooltip!= null) ActiveTooltip.Visibility = Visibility.Hidden;
-                ActiveTooltip = DataTooltip;
-
                 var lcTooltip = DataTooltip as IChartTooltip;
                 if (lcTooltip == null)
-                    throw new LiveChartsException("The current tooltip is not valid, ensure it implements IChartsTooltip");
+                    throw new LiveChartsException(
+                        "The current tooltip is not valid, ensure it implements IChartsTooltip");
 
                 if (lcTooltip.SelectionMode == null)
                     lcTooltip.SelectionMode = senderPoint.SeriesView.Model.PreferredSelectionMode;
 
-                var coreModel = ChartFunctions.GetTooltipData(senderPoint, Model,lcTooltip.SelectionMode.Value);
+                var coreModel = ChartFunctions.GetTooltipData(senderPoint, Model, lcTooltip.SelectionMode.Value);
 
                 lcTooltip.Data = new TooltipData
                 {
@@ -1010,40 +966,23 @@ namespace LiveCharts.Wpf.Charts.Base
                     }).ToList()
                 };
 
-                DataTooltip.Visibility = Visibility.Visible;
+                TooltipContainer.IsOpen = true;
                 DataTooltip.UpdateLayout();
 
                 var location = GetTooltipPosition(senderPoint);
                 location = new Point(Canvas.GetLeft(DrawMargin) + location.X, Canvas.GetTop(DrawMargin) + location.Y);
-                if (lcTooltip.IsWrapped)
-                {
-                    var container = (FrameworkElement) DataTooltip.Parent;
-                    var positionTransform = TransformToAncestor(container);
-                    var pos = positionTransform.Transform(new Point(0, 0));
-
-                    location.X += pos.X;
-                    location.Y += pos.Y;
-
-                    if (location.X < 0) location.X = 0;
-                    if (location.X + DataTooltip.ActualWidth > container.ActualWidth)
-                    {
-                        var dif = container.ActualWidth - (location.X + DataTooltip.ActualWidth);
-                        dif *= container.ActualWidth/2 > senderPoint.ChartLocation.X ? 1 : -1;
-                        location.X += dif;
-                    }
-                }
 
                 if (DisableAnimations)
                 {
-                    Canvas.SetLeft(DataTooltip, location.X);
-                    Canvas.SetTop(DataTooltip, location.Y);
+                    TooltipContainer.VerticalOffset = location.Y;
+                    TooltipContainer.HorizontalOffset = location.X;
                 }
                 else
                 {
-                    DataTooltip.BeginAnimation(Canvas.LeftProperty,
-                        new DoubleAnimation(location.X, TimeSpan.FromMilliseconds(200)));
-                    DataTooltip.BeginAnimation(Canvas.TopProperty,
+                    TooltipContainer.BeginAnimation(Popup.VerticalOffsetProperty,
                         new DoubleAnimation(location.Y, TimeSpan.FromMilliseconds(200)));
+                    TooltipContainer.BeginAnimation(Popup.HorizontalOffsetProperty,
+                        new DoubleAnimation(location.X, TimeSpan.FromMilliseconds(200)));
                 }
             }
 
@@ -1070,11 +1009,11 @@ namespace LiveCharts.Wpf.Charts.Base
             if (Hoverable) senderPoint.View.OnHoverLeave(senderPoint);
         }
 
-        private static void TooltipTimeoutTimerOnTick(object sender, EventArgs eventArgs)
+        private void TooltipTimeoutTimerOnTick(object sender, EventArgs eventArgs)
         {
             TooltipTimeoutTimer.Stop();
-            if (ActiveTooltip == null) return;
-            ActiveTooltip.Visibility = Visibility.Hidden;
+            if (TooltipContainer == null) return;
+            TooltipContainer.IsOpen = false;
         }
 
         /// <summary>
@@ -1147,7 +1086,7 @@ namespace LiveCharts.Wpf.Charts.Base
 
             if (chart == null) return;
 
-            TooltipTimeoutTimer.Interval = chart.TooltipTimeout;
+            chart.TooltipTimeoutTimer.Interval = chart.TooltipTimeout;
         }
 
         /// <summary>

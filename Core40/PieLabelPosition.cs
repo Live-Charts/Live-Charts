@@ -1,3 +1,5 @@
+//The MIT License(MIT)
+
 //copyright(c) 2016 Alberto Rodriguez
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -18,40 +20,20 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-using System;
-using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Shapes;
-using LiveCharts.Charts;
-using LiveCharts.Definitions.Points;
-using LiveCharts.Dtos;
-
-namespace LiveCharts.Uwp.Points
+namespace LiveCharts
 {
-    internal class PointView : IChartPointView
+    /// <summary>
+    /// Describes where a label should be placed
+    /// </summary>
+    public enum PieLabelPosition
     {
-        public Shape HoverShape { get; set; }
-        public ContentControl DataLabel { get; set; }
-        public bool IsNew { get; set; }
-        public CoreRectangle ValidArea { get; }
-
-        public virtual void DrawOrMove(ChartPoint previousDrawn, ChartPoint current, int index, ChartCore chart)
-        {
-            throw new NotImplementedException();
-        }
-
-        public virtual void RemoveFromView(ChartCore chart)
-        {
-            throw new NotImplementedException();
-        }
-
-        public virtual void OnHover(ChartPoint point)
-        {
-            
-        }
-
-        public virtual void OnHoverLeave(ChartPoint point)
-        {
-            
-        }
+        /// <summary>
+        /// Places the label inside the pie slice
+        /// </summary>
+        InsideSlice,
+        /// <summary>
+        /// Places the label outside the pie slice
+        /// </summary>
+        OutsideSlice
     }
 }

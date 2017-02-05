@@ -196,13 +196,15 @@ namespace LiveCharts.Wpf
 
             if (DataLabels && pbv.DataLabel == null)
             {
-                pbv.DataLabel = BindATextBlock(0);
+                pbv.DataLabel = UpdateLabelContent(new DataLabelViewModel
+                {
+                    FormattedText = label,
+                    Instance = point.Instance
+                });
                 Panel.SetZIndex(pbv.DataLabel, int.MaxValue - 1);
 
                 Model.Chart.View.AddToDrawMargin(pbv.DataLabel);
             }
-
-            if (pbv.DataLabel != null) pbv.DataLabel.Text = label;
 
             return pbv;
         }

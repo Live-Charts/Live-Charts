@@ -49,5 +49,6 @@
     <Style TargetType="lvc:StackedColumnSeries" BasedOn="{StaticResource SeriesStyle}"/>
     <Style TargetType="lvc:StackedRowSeries" BasedOn="{StaticResource SeriesStyle}"/>
     <Style TargetType="lvc:VerticalStackedAreaSeries" BasedOn="{StaticResource SeriesStyle}"/>
+    <Style TargetType="lvc:PieSeries" BasedOn="{StaticResource SeriesStyle}"></Style>
 
 </ResourceDictionary>

@@ -40,6 +40,7 @@ using LiveCharts.Helpers;
 using LiveCharts.Uwp.Components;
 using LiveCharts.Uwp.Points;
 using System.Windows.Input;
+using Windows.UI.Xaml.Controls.Primitives;
 
 namespace LiveCharts.Uwp.Charts.Base
 {
@@ -125,54 +126,7 @@ namespace LiveCharts.Uwp.Charts.Base
 
         #endregion
 
-        #region Debug
-
-        /// <summary>
-        /// Mocks it.
-        /// </summary>
-        /// <param name="size">The size.</param>
-        public void MockIt(CoreSize size)
-        {
-            IsMocked = true;
-            DisableAnimations = true;
-            IsControlLoaded = true;
-
-            Model.ControlSize = size;
-
-            Model.DrawMargin.Height = Canvas.ActualHeight;
-            Model.DrawMargin.Width = Canvas.ActualWidth;
-        }
-
-        /// <summary>
-        /// Gets the canvas elements.
-        /// </summary>
-        /// <returns></returns>
-        public int GetCanvasElements()
-        {
-            return Canvas.Children.Count;
-        }
-
-        /// <summary>
-        /// Gets the draw margin elements.
-        /// </summary>
-        /// <returns></returns>
-        public int GetDrawMarginElements()
-        {
-            return DrawMargin.Children.Count;
-        }
-
-        /// <summary>
-        /// Gets the canvas.
-        /// </summary>
-        /// <returns></returns>
-        public object GetCanvas()
-        {
-            return Canvas;
-        }
-
-        #endregion
-
-        #region Essentials
+        #region Private and internal methods
 
         private void OnLoaded(object sender, RoutedEventArgs args)
         {
@@ -307,8 +261,8 @@ namespace LiveCharts.Uwp.Charts.Base
         /// Gets or sets the chart current canvas
         /// </summary>
         protected Canvas Canvas { get; set; }
-
         internal Canvas DrawMargin { get; set; }
+        internal Popup TooltipContainer { get; set; }
 
         /// <summary>
         /// Gets or sets whether charts must randomize the starting default series color.
@@ -929,8 +883,7 @@ namespace LiveCharts.Uwp.Charts.Base
 
         #region Tooltip and legend
 
-        internal static DispatcherTimer TooltipTimeoutTimer { get; set; }
-        internal static UserControl ActiveTooltip { get; set; }
+        internal DispatcherTimer TooltipTimeoutTimer { get; set; }
 
         /// <summary>
         /// The tooltip timeout property
@@ -994,13 +947,12 @@ namespace LiveCharts.Uwp.Charts.Base
                 if (DataTooltip.Parent == null)
                 {
                     Canvas.SetZIndex(DataTooltip, short.MaxValue);
-                    AddToView(DataTooltip);
+                    TooltipContainer = new Popup();
+                    AddToView(TooltipContainer);
+                    TooltipContainer.Child = DataTooltip;
                     Canvas.SetTop(DataTooltip, 0d);
                     Canvas.SetLeft(DataTooltip, 0d);
                 }
-
-                if (ActiveTooltip != null) ActiveTooltip.Visibility = Visibility.Collapsed;
-                ActiveTooltip = DataTooltip;
 
                 var lcTooltip = DataTooltip as IChartTooltip;
                 if (lcTooltip == null)
@@ -1041,58 +993,23 @@ namespace LiveCharts.Uwp.Charts.Base
                     }).ToList()
                 };
 
-                DataTooltip.Visibility = Visibility.Visible;
+                TooltipContainer.IsOpen = true;
                 DataTooltip.UpdateLayout();
 
                 var location = GetTooltipPosition(senderPoint);
                 location = new Point(Canvas.GetLeft(DrawMargin) + location.X, Canvas.GetTop(DrawMargin) + location.Y);
-                if (lcTooltip.IsWrapped)
-                {
-                    var container = (FrameworkElement) DataTooltip.Parent;
-                    var positionTransform = TransformToVisual(container);
-                    var pos = positionTransform.TransformPoint(new Point(0, 0));
-
-                    location.X += pos.X;
-                    location.Y += pos.Y;
-
-                    if (location.X < 0) location.X = 0;
-                    if (location.X + DataTooltip.ActualWidth > container.ActualWidth)
-                    {
-                        var dif = container.ActualWidth - (location.X + DataTooltip.ActualWidth);
-                        dif *= container.ActualWidth/2 > senderPoint.ChartLocation.X ? 1 : -1;
-                        location.X += dif;
-                    }
-                }
 
                 if (DisableAnimations)
                 {
-                    Canvas.SetLeft(DataTooltip, location.X);
-                    Canvas.SetTop(DataTooltip, location.Y);
+                    TooltipContainer.VerticalOffset = location.Y;
+                    TooltipContainer.HorizontalOffset = location.X;
                 }
                 else
                 {
-                    var storyBoard = new Storyboard();
-                    var xAnimation = new DoubleAnimation()
-                    {
-                        To = location.X,
-                        Duration = TimeSpan.FromMilliseconds(200)
-                    };
-
-                    var yAnimation = new DoubleAnimation()
-                    {
-                        To = location.Y,
-                        Duration = TimeSpan.FromMilliseconds(200)
-                    };
-
-                    storyBoard.Children.Add(xAnimation);
-                    storyBoard.Children.Add(yAnimation);
-
-                    Storyboard.SetTarget(xAnimation, DataTooltip);
-                    Storyboard.SetTargetProperty(xAnimation, "(Canvas.Left)");
-                    Storyboard.SetTarget(yAnimation, DataTooltip);
-                    Storyboard.SetTargetProperty(yAnimation, "(Canvas.Top)");
-
-                    storyBoard.Begin();
+                    TooltipContainer.BeginDoubleAnimation(nameof(Popup.VerticalOffset),
+                        location.Y, TimeSpan.FromMilliseconds(200));
+                    TooltipContainer.BeginDoubleAnimation(nameof(Popup.HorizontalOffset),
+                        location.X, TimeSpan.FromMilliseconds(200));
                 }
             }
 
@@ -1120,11 +1037,11 @@ namespace LiveCharts.Uwp.Charts.Base
             if (Hoverable) senderPoint.View.OnHoverLeave(senderPoint);
         }
 
-        private static void TooltipTimeoutTimerOnTick(object sender, object args)
+        private void TooltipTimeoutTimerOnTick(object sender, object args)
         {
             TooltipTimeoutTimer.Stop();
-            if (ActiveTooltip == null) return;
-            ActiveTooltip.Visibility = Visibility.Collapsed;
+            if (TooltipContainer == null) return;
+            TooltipContainer.IsOpen = false;
         }
 
         /// <summary>
@@ -1200,7 +1117,7 @@ namespace LiveCharts.Uwp.Charts.Base
 
             if (chart == null) return;
 
-            TooltipTimeoutTimer.Interval = chart.TooltipTimeout;
+            chart.TooltipTimeoutTimer.Interval = chart.TooltipTimeout;
         }
 
         /// <summary>
