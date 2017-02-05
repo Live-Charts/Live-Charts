@@ -71,6 +71,7 @@
     <Compile Include="Configurations\GanttMapper.cs" />
     <Compile Include="Configurations\IPointEvaluator.cs" />
     <Compile Include="Configurations\Mappers.cs" />
+    <Compile Include="Configurations\PieMapper.cs" />
     <Compile Include="Configurations\PolarMapper.cs" />
     <Compile Include="Configurations\WeightedMapper.cs" />
     <Compile Include="DataLabelViewModel.cs" />
