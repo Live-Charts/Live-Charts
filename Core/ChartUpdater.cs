@@ -108,6 +108,8 @@ namespace LiveCharts
 
             foreach (var series in Chart.View.ActualSeries)
             {
+                if (Chart.View.ContainsElement(series)) continue;
+
                 InitializeSeriesView(series);
                 series.ActualValues.Initialize(series);
                 series.InitializeColors();

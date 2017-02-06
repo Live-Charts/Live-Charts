@@ -65,7 +65,7 @@ namespace LiveCharts.Uwp.Charts.Base
             Content = Canvas;
 
             DrawMargin = new Canvas();
-            
+
             Canvas.Children.Add(DrawMargin);
 
             TooltipTimeoutTimer = new DispatcherTimer();
@@ -200,11 +200,13 @@ namespace LiveCharts.Uwp.Charts.Base
         #endregion
 
         #region Commands        
+
         /// <summary>
         /// The data click command property
         /// </summary>
         public static readonly DependencyProperty DataClickCommandProperty = DependencyProperty.Register(
             "DataClickCommand", typeof(ICommand), typeof(Chart), new PropertyMetadata(default(ICommand)));
+
         /// <summary>
         /// Gets or sets the data click command.
         /// </summary>
@@ -222,6 +224,7 @@ namespace LiveCharts.Uwp.Charts.Base
         /// </summary>
         public static readonly DependencyProperty DataHoverCommandProperty = DependencyProperty.Register(
             "DataHoverCommand", typeof(ICommand), typeof(Chart), new PropertyMetadata(default(ICommand)));
+
         /// <summary>
         /// Gets or sets the data hover command.
         /// </summary>
@@ -239,6 +242,7 @@ namespace LiveCharts.Uwp.Charts.Base
         /// </summary>
         public static readonly DependencyProperty UpdaterTickCommandProperty = DependencyProperty.Register(
             "UpdaterTickCommand", typeof(ICommand), typeof(Chart), new PropertyMetadata(default(ICommand)));
+
         /// <summary>
         /// Gets or sets the updater tick command.
         /// </summary>
@@ -247,13 +251,16 @@ namespace LiveCharts.Uwp.Charts.Base
         /// </value>
         public ICommand UpdaterTickCommand
         {
-            get { return (ICommand)GetValue(UpdaterTickCommandProperty); }
+            get { return (ICommand) GetValue(UpdaterTickCommandProperty); }
             set { SetValue(UpdaterTickCommandProperty, value); }
         }
+
         #endregion
 
         #region Properties
 
+        private AxesCollection PreviousXAxis { get; set; }
+        private AxesCollection PreviousYAxis { get; set; }
         private static Random Randomizer { get; }
         private SeriesCollection LastKnownSeriesCollection { get; set; }
 
@@ -261,6 +268,7 @@ namespace LiveCharts.Uwp.Charts.Base
         /// Gets or sets the chart current canvas
         /// </summary>
         protected Canvas Canvas { get; set; }
+
         internal Canvas DrawMargin { get; set; }
         internal Popup TooltipContainer { get; set; }
 
@@ -284,12 +292,13 @@ namespace LiveCharts.Uwp.Charts.Base
         /// </summary>
         public static readonly DependencyProperty SeriesColorsProperty = DependencyProperty.Register(
             "SeriesColors", typeof(ColorsCollection), typeof(Chart), new PropertyMetadata(default(ColorsCollection)));
+
         /// <summary>
         /// Gets or sets 
         /// </summary>
         public ColorsCollection SeriesColors
         {
-            get { return (ColorsCollection)GetValue(SeriesColorsProperty); }
+            get { return (ColorsCollection) GetValue(SeriesColorsProperty); }
             set { SetValue(SeriesColorsProperty, value); }
         }
 
@@ -298,7 +307,8 @@ namespace LiveCharts.Uwp.Charts.Base
         /// </summary>
         public static readonly DependencyProperty AxisYProperty = DependencyProperty.Register(
             "AxisY", typeof(AxesCollection), typeof(Chart),
-            new PropertyMetadata(null, CallChartUpdater()));
+            new PropertyMetadata(null, AxisInstancechanged(AxisOrientation.Y)));
+
         /// <summary>
         /// Gets or sets vertical axis
         /// </summary>
@@ -313,7 +323,7 @@ namespace LiveCharts.Uwp.Charts.Base
         /// </summary>
         public static readonly DependencyProperty AxisXProperty = DependencyProperty.Register(
             "AxisX", typeof(AxesCollection), typeof(Chart),
-            new PropertyMetadata(null, CallChartUpdater()));
+            new PropertyMetadata(null, AxisInstancechanged(AxisOrientation.X)));
 
         /// <summary>
         /// Gets or sets horizontal axis
@@ -361,6 +371,7 @@ namespace LiveCharts.Uwp.Charts.Base
         /// </summary>
         public static readonly DependencyProperty PanProperty = DependencyProperty.Register(
             "Pan", typeof(PanningOptions), typeof(Chart), new PropertyMetadata(PanningOptions.Unset));
+
         /// <summary>
         /// Gets or sets the chart pan, default is Unset, which bases the behavior according to Zoom property
         /// </summary>
@@ -369,7 +380,7 @@ namespace LiveCharts.Uwp.Charts.Base
         /// </value>
         public PanningOptions Pan
         {
-            get { return (PanningOptions)GetValue(PanProperty); }
+            get { return (PanningOptions) GetValue(PanProperty); }
             set { SetValue(PanProperty, value); }
         }
 
@@ -758,6 +769,17 @@ namespace LiveCharts.Uwp.Charts.Base
         }
 
         /// <summary>
+        /// Determines whether the specified element contains element.
+        /// </summary>
+        /// <param name="element">The element.</param>
+        /// <returns></returns>
+        public bool ContainsElement(object element)
+        {
+            var wpfElement = (FrameworkElement) element;
+            return wpfElement != null && Canvas.Children.Contains(wpfElement);
+        }
+
+        /// <summary>
         /// Shows the legend.
         /// </summary>
         /// <param name="at">At.</param>
@@ -816,7 +838,6 @@ namespace LiveCharts.Uwp.Charts.Base
             {
                 if (x.Parent == null)
                 {
-                    CleanAxes(chart.AxisX);
                     x.AxisOrientation = AxisOrientation.X;
                     if (x.Separator != null) chart.View.AddToView(x.Separator);
                     chart.View.AddToView(x);
@@ -845,7 +866,6 @@ namespace LiveCharts.Uwp.Charts.Base
             {
                 if (y.Parent == null)
                 {
-                    CleanAxes(chart.AxisY);
                     y.AxisOrientation = AxisOrientation.Y;
                     if (y.Separator != null) chart.View.AddToView(y.Separator);
                     chart.View.AddToView(y);
@@ -868,9 +888,9 @@ namespace LiveCharts.Uwp.Charts.Base
             if (SeriesColors != null)
             {
                 var rsc = RandomizeStartingColor
-                ? Randomizer.Next(0, SeriesColors.Count)
-                : 0;
-                return SeriesColors[(i + rsc) % SeriesColors.Count];
+                    ? Randomizer.Next(0, SeriesColors.Count)
+                    : 0;
+                return SeriesColors[(i + rsc)%SeriesColors.Count];
             }
 
             var r = RandomizeStartingColor
@@ -1245,7 +1265,7 @@ namespace LiveCharts.Uwp.Charts.Base
         private void OnPointerWheelChanged(object sender, PointerRoutedEventArgs e)
         {
             if (Zoom == ZoomingOptions.None) return;
-            
+
             var p = e.GetCurrentPoint(this);
 
             var corePoint = new CorePoint(p.Position.X, p.Position.Y);
@@ -1261,7 +1281,7 @@ namespace LiveCharts.Uwp.Charts.Base
         private void OnDraggingStart(object sender, PointerRoutedEventArgs e)
         {
             if (Model?.AxisX == null || Model.AxisY == null) return;
-            
+
             DragOrigin = e.GetCurrentPoint(this).Position;
             DragOrigin = new Point(
                 ChartFunctions.FromPlotArea(DragOrigin.X, AxisOrientation.X, Model),
@@ -1436,17 +1456,6 @@ namespace LiveCharts.Uwp.Charts.Base
         // }
         // #endregion
 
-        private static void CleanAxes(List<AxisCore> axes)
-        {
-            if (axes != null && axes.Any())
-            {
-                foreach (var axisCore in axes)
-                {
-                    axisCore.View.Clean();
-                }
-            }
-        }
-
         #region Property Changed
 
         /// <summary>
@@ -1476,6 +1485,30 @@ namespace LiveCharts.Uwp.Charts.Base
             uwpChart.Model.Updater.UpdateFrequency(freq);
 
             CallChartUpdater(true)(o, e);
+        }
+
+        private static PropertyChangedCallback AxisInstancechanged(AxisOrientation orientation)
+        {
+            return (o, a) =>
+            {
+                var chart = (Chart) o;
+                var ax = orientation == AxisOrientation.X ? chart.PreviousXAxis : chart.PreviousYAxis;
+
+                if (ax != null)
+                    foreach (var axis in ax)
+                    {
+                        axis.Clean();
+                    }
+                if (orientation == AxisOrientation.X)
+                {
+                    chart.PreviousXAxis = chart.AxisX;
+                }
+                else
+                {
+                    chart.PreviousYAxis = chart.AxisY;
+                }
+                CallChartUpdater()(o, a);
+            };
         }
 
         #endregion

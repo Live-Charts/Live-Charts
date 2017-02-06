@@ -76,5 +76,15 @@ namespace LiveCharts.Configurations
         {
             return new PolarMapper<T>();
         }
+
+        /// <summary>
+        /// PGets a mapper to configure a pie chart
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        public static PieMapper<T> Pie<T>()
+        {
+            return new PieMapper<T>();
+        }
     }
 }

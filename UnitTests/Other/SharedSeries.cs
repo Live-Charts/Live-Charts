@@ -12,22 +12,22 @@ namespace UnitTests.Other
         [TestMethod]
         public void SharingSeries()
         {
-            var aGuy = new CartesianChart();
-            var bGuy = new CartesianChart();
+            //var aGuy = new CartesianChart();
+            //var bGuy = new CartesianChart();
 
-            aGuy.MockIt(new CoreSize(200, 200));
-            bGuy.MockIt(new CoreSize(200, 200));
+            //aGuy.MockIt(new CoreSize(200, 200));
+            //bGuy.MockIt(new CoreSize(200, 200));
 
-            var aSeries = new LineSeries();
+            //var aSeries = new LineSeries();
 
-            aGuy.Series.Add(aSeries);
-            aGuy.Update();
-            Debug.WriteLine(aGuy.Series.Count);
+            //aGuy.Series.Add(aSeries);
+            //aGuy.Update();
+            //Debug.WriteLine(aGuy.Series.Count);
 
-            bGuy.Series.Add(aSeries);
-            bGuy.Update();
-            Debug.WriteLine(aGuy.Series.Count);
-            Debug.WriteLine(bGuy.Series.Count);
+            //bGuy.Series.Add(aSeries);
+            //bGuy.Update();
+            //Debug.WriteLine(aGuy.Series.Count);
+            //Debug.WriteLine(bGuy.Series.Count);
         }
     }
 }

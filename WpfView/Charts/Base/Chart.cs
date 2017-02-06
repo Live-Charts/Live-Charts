@@ -241,6 +241,8 @@ namespace LiveCharts.Wpf.Charts.Base
 
         #region Properties
 
+        private AxesCollection PreviousXAxis { get; set; }
+        private AxesCollection PreviousYAxis { get; set; }
         private static Random Randomizer { get; set; }
         private SeriesCollection LastKnownSeriesCollection { get; set; }
 
@@ -285,7 +287,7 @@ namespace LiveCharts.Wpf.Charts.Base
         /// </summary>
         public static readonly DependencyProperty AxisYProperty = DependencyProperty.Register(
             "AxisY", typeof(AxesCollection), typeof(Chart),
-            new PropertyMetadata(null, CallChartUpdater()));
+            new PropertyMetadata(null, AxisInstancechanged(AxisOrientation.Y)));
         /// <summary>
         /// Gets or sets vertical axis
         /// </summary>
@@ -300,7 +302,8 @@ namespace LiveCharts.Wpf.Charts.Base
         /// </summary>
         public static readonly DependencyProperty AxisXProperty = DependencyProperty.Register(
             "AxisX", typeof(AxesCollection), typeof(Chart),
-            new PropertyMetadata(null, CallChartUpdater()));
+            new PropertyMetadata(null, AxisInstancechanged(AxisOrientation.X)));
+
         /// <summary>
         /// Gets or sets horizontal axis
         /// </summary>
@@ -743,6 +746,17 @@ namespace LiveCharts.Wpf.Charts.Base
         }
 
         /// <summary>
+        /// Determines whether the specified element contains element.
+        /// </summary>
+        /// <param name="element">The element.</param>
+        /// <returns></returns>
+        public bool ContainsElement(object element)
+        {
+            var wpfElement = (FrameworkElement)element;
+            return wpfElement != null && Canvas.Children.Contains(wpfElement);
+        }
+
+        /// <summary>
         /// Shows the legend.
         /// </summary>
         /// <param name="at">At.</param>
@@ -801,7 +815,6 @@ namespace LiveCharts.Wpf.Charts.Base
             {
                 if (x.Parent == null)
                 {
-                    CleanAxes(chart.AxisX);
                     x.AxisOrientation = AxisOrientation.X;
                     if (x.Separator != null) chart.View.AddToView(x.Separator);
                     chart.View.AddToView(x);
@@ -829,7 +842,6 @@ namespace LiveCharts.Wpf.Charts.Base
             {
                 if (y.Parent == null)
                 {
-                    CleanAxes(chart.AxisY);
                     y.AxisOrientation = AxisOrientation.Y;
                     if (y.Separator != null) chart.View.AddToView(y.Separator);
                     chart.View.AddToView(y);
@@ -1430,17 +1442,31 @@ namespace LiveCharts.Wpf.Charts.Base
             CallChartUpdater(true)(o, e);
         }
 
-        #endregion
-
-        private static void CleanAxes(List<AxisCore> axes)
+        private static PropertyChangedCallback AxisInstancechanged(AxisOrientation orientation)
         {
-            if (axes != null && axes.Any())
+            return (o, a) =>
             {
-                foreach (var axisCore in axes)
+                var chart = (Chart) o;
+
+                var ax = orientation == AxisOrientation.X ? chart.PreviousXAxis : chart.PreviousYAxis;
+
+                if (ax != null)
+                    foreach (var axis in ax)
+                    {
+                        axis.Clean();
+                    }
+                if (orientation == AxisOrientation.X)
                 {
-                    axisCore.View.Clean();
+                    chart.PreviousXAxis = chart.AxisX;
                 }
-            }
+                else
+                {
+                    chart.PreviousYAxis = chart.AxisY;
+                }
+                CallChartUpdater()(o, a);
+            };
         }
+
+        #endregion
     }
 }

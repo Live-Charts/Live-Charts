@@ -145,13 +145,9 @@ namespace LiveCharts.Charts
         /// </summary>
         public override void RunSpecializedChartComponents()
         {
-            var cartesianChart = (ICartesianChart) View;
-            if (cartesianChart.VisualElements != null)
+            foreach (var visualElement in ((ICartesianChart) View).VisualElements)
             {
-                foreach (var visualElement in cartesianChart.VisualElements)
-                {
-                    visualElement.AddOrMove(this);
-                }
+                visualElement.AddOrMove(this);
             }
         }
 
