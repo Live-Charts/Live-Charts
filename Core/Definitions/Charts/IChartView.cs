@@ -224,12 +224,7 @@ namespace LiveCharts.Definitions.Charts
         /// </summary>
         /// <param name="element">The element.</param>
         void EnsureElementBelongsToCurrentDrawMargin(object element);
-        /// <summary>
-        /// Determines whether the specified element contains element.
-        /// </summary>
-        /// <param name="element">The element.</param>
-        bool ContainsElement(object element);
-
+        
         /// <summary>
         /// Hides the tooltip.
         /// </summary>
