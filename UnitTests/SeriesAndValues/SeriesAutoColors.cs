@@ -12,17 +12,17 @@ namespace UnitTests.SeriesAndValues
         [TestMethod]
         public void AutoSeriesColors()
         {
-            var testguy = new CartesianChart();
-            testguy.MockIt(new CoreSize(200, 200));
+            //var testguy = new CartesianChart();
+            //testguy.MockIt(new CoreSize(200, 200));
 
-            var seriesCollection = new SeriesCollection();
+            //var seriesCollection = new SeriesCollection();
 
-            for (var i = 0; i < 100; i++)
-            {
-                seriesCollection.Add(new LineSeries {Values = new ChartValues<double> {1, 2, 3}});
-            }
+            //for (var i = 0; i < 100; i++)
+            //{
+            //    seriesCollection.Add(new LineSeries {Values = new ChartValues<double> {1, 2, 3}});
+            //}
 
-            testguy.Series = seriesCollection;
+            //testguy.Series = seriesCollection;
         }
     }
 }
