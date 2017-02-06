@@ -39,7 +39,7 @@ namespace Wpf.CartesianChart.MaterialCards
             {
                 new LineSeries
                 {
-                    AreaLimit = 0,
+                    AreaLimit = -10,
                     Values = new ChartValues<ObservableValue>
                     {
                         new ObservableValue(3),
