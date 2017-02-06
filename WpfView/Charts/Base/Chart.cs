@@ -743,6 +743,17 @@ namespace LiveCharts.Wpf.Charts.Base
         }
 
         /// <summary>
+        /// Determines whether the specified element contains element.
+        /// </summary>
+        /// <param name="element">The element.</param>
+        /// <returns></returns>
+        public bool ContainsElement(object element)
+        {
+            var wpfElement = (FrameworkElement)element;
+            return wpfElement != null && Canvas.Children.Contains(wpfElement);
+        }
+
+        /// <summary>
         /// Shows the legend.
         /// </summary>
         /// <param name="at">At.</param>
