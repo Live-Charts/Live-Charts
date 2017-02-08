@@ -322,6 +322,8 @@ namespace LiveCharts.Wpf
         /// </summary>
         public override void OnSeriesUpdatedFinish()
         {
+            base.OnSeriesUpdatedFinish();
+
             foreach (var inactive in Splitters
                 .Where(s => s.SplitterCollectorIndex < SplittersCollector).ToList())
             {
