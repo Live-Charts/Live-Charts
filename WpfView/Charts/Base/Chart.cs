@@ -1097,7 +1097,7 @@ namespace LiveCharts.Wpf.Charts.Base
         {
             if (DataTooltip == null) return;
 
-            DataTooltip.Visibility = Visibility.Hidden;
+            TooltipContainer.IsOpen = false;
         }
 
         /// <summary>

@@ -29,7 +29,6 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Media.Animation;
 using LiveCharts.Charts;
 using LiveCharts.Defaults;
 using LiveCharts.Definitions.Charts;
@@ -1136,7 +1135,7 @@ namespace LiveCharts.Uwp.Charts.Base
         {
             if (DataTooltip == null) return;
 
-            DataTooltip.Visibility = Visibility.Collapsed;
+            TooltipContainer.IsOpen = false;
         }
 
         /// <summary>
