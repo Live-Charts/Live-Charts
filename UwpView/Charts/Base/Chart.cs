@@ -750,8 +750,7 @@ namespace LiveCharts.Uwp.Charts.Base
             var wpfElement = (FrameworkElement) element;
             if (wpfElement == null) return;
             var p = (Canvas) wpfElement.Parent;
-            p?.Children.Remove(wpfElement);
-            AddToView(wpfElement);
+            if (p == null) AddToView(wpfElement);
         }
 
         /// <summary>
