@@ -1133,7 +1133,7 @@ namespace LiveCharts.Uwp.Charts.Base
         /// </summary>
         public void HideTooltip()
         {
-            if (DataTooltip == null) return;
+            if (TooltipContainer == null) return;
 
             TooltipContainer.IsOpen = false;
         }
