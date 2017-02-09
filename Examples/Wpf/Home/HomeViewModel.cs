@@ -35,6 +35,7 @@ using Wpf.CartesianChart.Sections;
 using Wpf.CartesianChart.SolidColorChart;
 using Wpf.CartesianChart.StackedArea;
 using Wpf.CartesianChart.StepLine;
+using Wpf.CartesianChart.ThreadSafe;
 using Wpf.CartesianChart.UIElements;
 using Wpf.Gauges;
 using Wpf.Maps;
@@ -111,6 +112,7 @@ namespace Wpf.Home
                         new SampleVm("Irregular intervals", typeof(IrregularIntervalsExample)),
                         new SampleVm("Missing Points", typeof(MissingPointsExample)),
                         new SampleVm("Constant Changes", typeof(ConstantChangesChart)),
+                        new SampleVm("Thread Safe", typeof(ThreadSafeExample)), 
                         new SampleVm("Zooming/Panning", typeof(ZoomingAndPanning)),
                         new SampleVm("Data Pagination", typeof(ManualZAndPExample)),
                         new SampleVm("Observable point", typeof(FullyResponsiveExample)),

@@ -112,6 +112,11 @@
     <Compile Include="CartesianChart\Linq\LinqExample.xaml.cs">
       <DependentUpon>LinqExample.xaml</DependentUpon>
     </Compile>
+    <Compile Include="CartesianChart\ThreadSafe\RelyCommand.cs" />
+    <Compile Include="CartesianChart\ThreadSafe\ThreadSafeViewModel.cs" />
+    <Compile Include="CartesianChart\ThreadSafe\ThreadSafeExample.xaml.cs">
+      <DependentUpon>ThreadSafeExample.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Home\SampleGroupVm.cs" />
     <Compile Include="Home\SampleVm.cs" />
     <Page Include="CartesianChart\Basic Bars\BasicColumn.xaml">
@@ -283,6 +288,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="CartesianChart\StepLine\StepLineExample.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CartesianChart\ThreadSafe\ThreadSafeExample.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

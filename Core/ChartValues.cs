@@ -87,73 +87,74 @@ namespace LiveCharts
 
             var cp = new ChartPoint();
 
-            var source = this.ToArray();
-
-            var ax = seriesView.Model.Chart.AxisX[seriesView.ScalesXAt];
-            var ay = seriesView.Model.Chart.AxisY[seriesView.ScalesYAt];
-            double fx = double.IsNaN(ax.MinValue) ? double.NegativeInfinity : ax.MinValue,
-                tx = double.IsNaN(ax.MaxValue) ? double.PositiveInfinity : ax.MaxValue,
-                fy = double.IsNaN(ay.MinValue) ? double.NegativeInfinity : ay.MinValue,
-                ty = double.IsNaN(ay.MaxValue) ? double.PositiveInfinity : ay.MaxValue;
-
-            var isHorizontal = seriesView.Model.SeriesOrientation == SeriesOrientation.Horizontal;
-
-            for (var index = 0; index < source.Length; index++)
+            lock (this)
             {
-                var item = source[index];
-                config.Evaluate(index, item, cp);
+                var ax = seriesView.Model.Chart.AxisX[seriesView.ScalesXAt];
+                var ay = seriesView.Model.Chart.AxisY[seriesView.ScalesYAt];
+                double fx = double.IsNaN(ax.MinValue) ? double.NegativeInfinity : ax.MinValue,
+                    tx = double.IsNaN(ax.MaxValue) ? double.PositiveInfinity : ax.MaxValue,
+                    fy = double.IsNaN(ay.MinValue) ? double.NegativeInfinity : ay.MinValue,
+                    ty = double.IsNaN(ay.MaxValue) ? double.PositiveInfinity : ay.MaxValue;
 
-                if (isHorizontal)
+                var isHorizontal = seriesView.Model.SeriesOrientation == SeriesOrientation.Horizontal;
+
+                for (var index = 0; index < Count; index++)
                 {
-                    if (cp.X < fx || cp.X > tx) continue;
+                    var item = this[index];
+                    config.Evaluate(index, item, cp);
+
+                    if (isHorizontal)
+                    {
+                        if (cp.X < fx || cp.X > tx) continue;
+                    }
+                    else
+                    {
+                        if (cp.Y < fy || cp.Y > ty) continue;
+                    }
+
+                    if (seriesView is IFinancialSeriesView)
+                    {
+                        if (cp.X < xMin) xMin = cp.X;
+                        if (cp.X > xMax) xMax = cp.X;
+
+                        if (cp.Low < yMin) yMin = cp.Low;
+                        if (cp.High > yMax) yMax = cp.High;
+
+                        if (cp.Weight < wMin) wMin = cp.Weight;
+                        if (cp.Weight > wMax) wMax = cp.Weight;
+
+                    }
+                    else if (seriesView is IScatterSeriesView || seriesView is IHeatSeriesView)
+                    {
+                        if (cp.X < xMin) xMin = cp.X;
+                        if (cp.X > xMax) xMax = cp.X;
+
+                        if (cp.Y < yMin) yMin = cp.Y;
+                        if (cp.Y > yMax) yMax = cp.Y;
+
+                        if (cp.Weight < wMin) wMin = cp.Weight;
+                        if (cp.Weight > wMax) wMax = cp.Weight;
+                    }
+                    else
+                    {
+                        if (cp.X < xMin) xMin = cp.X;
+                        if (cp.X > xMax) xMax = cp.X;
+
+                        if (cp.Y < yMin) yMin = cp.Y;
+                        if (cp.Y > yMax) yMax = cp.Y;
+                    }
                 }
-                else
-                {
-                    if (cp.Y < fy || cp.Y > ty) continue;
-                }
 
-                if (seriesView is IFinancialSeriesView)
-                {
-                    if (cp.X < xMin) xMin = cp.X;
-                    if (cp.X > xMax) xMax = cp.X;
-
-                    if (cp.Low < yMin) yMin = cp.Low;
-                    if (cp.High > yMax) yMax = cp.High;
-
-                    if (cp.Weight < wMin) wMin = cp.Weight;
-                    if (cp.Weight > wMax) wMax = cp.Weight;
-
-                }
-                else if (seriesView is IScatterSeriesView || seriesView is IHeatSeriesView)
-                {
-                    if (cp.X < xMin) xMin = cp.X;
-                    if (cp.X > xMax) xMax = cp.X;
-
-                    if (cp.Y < yMin) yMin = cp.Y;
-                    if (cp.Y > yMax) yMax = cp.Y;
-
-                    if (cp.Weight < wMin) wMin = cp.Weight;
-                    if (cp.Weight > wMax) wMax = cp.Weight;
-                }
-                else
-                {
-                    if (cp.X < xMin) xMin = cp.X;
-                    if (cp.X > xMax) xMax = cp.X;
-
-                    if (cp.Y < yMin) yMin = cp.Y;
-                    if (cp.Y > yMax) yMax = cp.Y;
-                }
+                tracker.XLimit = new CoreLimit(double.IsInfinity(xMin)
+                    ? 0
+                    : xMin, double.IsInfinity(yMin) ? 1 : xMax);
+                tracker.YLimit = new CoreLimit(double.IsInfinity(yMin)
+                    ? 0
+                    : yMin, double.IsInfinity(yMax) ? 1 : yMax);
+                tracker.WLimit = new CoreLimit(double.IsInfinity(wMin)
+                    ? 0
+                    : wMin, double.IsInfinity(wMax) ? 1 : wMax);
             }
-
-            tracker.XLimit = new CoreLimit(double.IsInfinity(xMin)
-                ? 0
-                : xMin, double.IsInfinity(yMin) ? 1 : xMax);
-            tracker.YLimit = new CoreLimit(double.IsInfinity(yMin)
-                ? 0
-                : yMin, double.IsInfinity(yMax) ? 1 : yMax);
-            tracker.WLimit = new CoreLimit(double.IsInfinity(wMin)
-                ? 0
-                : wMin, double.IsInfinity(wMax) ? 1 : wMax);
         }
 
         /// <summary>
@@ -180,31 +181,32 @@ namespace LiveCharts
             var tracker = GetTracker(seriesView);
             var gci = tracker.Gci;
 
-            var source = this.ToList(); //copy it, to prevent async issues
-
-            for (var index = 0; index < source.Count; index++)
+            lock (this)
             {
-                var value = source[index];
-                if (isObservable)
+                for (var index = 0; index < Count; index++)
                 {
-                    var observable = (IObservableChartPoint)value;
-                    if (observable != null)
+                    var value = this[index];
+                    if (isObservable)
                     {
-                        observable.PointChanged -= ObservableOnPointChanged;
-                        observable.PointChanged += ObservableOnPointChanged;
+                        var observable = (IObservableChartPoint)value;
+                        if (observable != null)
+                        {
+                            observable.PointChanged -= ObservableOnPointChanged;
+                            observable.PointChanged += ObservableOnPointChanged;
+                        }
                     }
+
+                    var cp = GetChartPoint(isClass, tracker, index, value);
+
+                    cp.Gci = gci;
+                    cp.Instance = value;
+                    cp.Key = index;
+                    cp.SeriesView = seriesView;
+
+                    config.Evaluate(index, value, cp);
+
+                    yield return cp;
                 }
-
-                var cp = GetChartPoint(isClass, tracker, index, value);
-
-                cp.Gci = gci;
-                cp.Instance = value;
-                cp.Key = index;
-                cp.SeriesView = seriesView;
-
-                config.Evaluate(index, value, cp);
-
-                yield return cp;
             }
         }
 
