@@ -26,7 +26,6 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
-using System.Runtime.InteropServices;
 
 namespace LiveCharts.Helpers
 {
@@ -69,6 +68,7 @@ namespace LiveCharts.Helpers
     public class NoisyCollection<T> : INoisyCollection, IList<T>
     {
         #region Private Fields
+        private readonly object _sync = new object();
         private readonly List<T> _source;
         private const string CountString = "Count";
         private const string IndexerString = "Item[]";
@@ -154,11 +154,20 @@ namespace LiveCharts.Helpers
         /// <returns></returns>
         public T this[int index]
         {
-            get { return _source[index]; }
+            get
+            {
+                lock (_sync)
+                {
+                    return _source[index];
+                }
+            }
             set
             {
                 var original = this[index];
-                _source[index] = value;
+                lock (_sync)
+                {
+                    _source[index] = value;
+                }
                 ReplaceItem(original, value, index);
             }
         }
@@ -170,11 +179,20 @@ namespace LiveCharts.Helpers
         /// <returns></returns>
         object IList.this[int index]
         {
-            get { return _source[index]; }
+            get
+            {
+                lock (_sync)
+                {
+                    return _source[index];
+                }
+            }
             set
             {
                 var original = this[index];
-                _source[index] = (T)value;
+                lock (_sync)
+                {
+                    _source[index] = (T)value;
+                }
                 ReplaceItem(original, value, index);
             }
         }
@@ -185,7 +203,10 @@ namespace LiveCharts.Helpers
         /// <returns>collection enumeration</returns>
         public IEnumerator<T> GetEnumerator()
         {
-            return _source.GetEnumerator();
+            lock (_sync)
+            {
+                return new List<T>(_source).GetEnumerator();
+            }
         }
 
         /// <summary>
@@ -258,7 +279,10 @@ namespace LiveCharts.Helpers
         {
             var v = (T)value;
             Add(v);
-            return _source.IndexOf(v);
+            lock (_sync)
+            {
+                return _source.IndexOf(v);
+            }
         }
 
         /// <summary>
@@ -267,7 +291,7 @@ namespace LiveCharts.Helpers
         /// <returns>number of items in the collection</returns>
         public void Add(T item)
         {
-            lock (_source)
+            lock (_sync)
             {
                 _source.Add(item);
             }
@@ -294,7 +318,7 @@ namespace LiveCharts.Helpers
         public void AddRange(IEnumerable<T> items)
         {
             var newItems = items as T[] ?? items.ToArray();
-            lock (_source)
+            lock (_sync)
             {
                 _source.AddRange(newItems);
             }
@@ -314,7 +338,7 @@ namespace LiveCharts.Helpers
         /// <param name="item">item to insert</param>
         public void Insert(int index, T item)
         {
-            lock (_source)
+            lock (_sync)
             {
                 _source.Insert(index, item);
             }
@@ -353,7 +377,7 @@ namespace LiveCharts.Helpers
         public void InsertRange(int index, IEnumerable<T> collection)
         {
             var newItems = collection as T[] ?? collection.ToArray();
-            lock (_source)
+            lock (_sync)
             {
                 _source.InsertRange(index, newItems);
             }
@@ -382,7 +406,11 @@ namespace LiveCharts.Helpers
         /// <returns>number of items in the collection</returns>
         public bool Remove(T item)
         {
-            var index = _source.IndexOf(item);
+            int index;
+            lock (_sync)
+            {
+                index = _source.IndexOf(item);
+            }
             if (index < 0) return false;
             RemoveAt(index);
             return true;
@@ -412,9 +440,10 @@ namespace LiveCharts.Helpers
         /// <param name="index">index to remove at</param>
         public void RemoveAt(int index)
         {
-            var item = _source[index];
-            lock (_source)
+            T item;
+            lock (_sync)
             {
+                item = _source[index];
                 _source.RemoveAt(index);
             }
             OnNoisyCollectionChanged(new[] { item }, null);
@@ -446,7 +475,7 @@ namespace LiveCharts.Helpers
         public void Clear()
         {
             T[] backup;
-            lock (_source)
+            lock (_sync)
             {
                 backup = _source.ToArray();
                 _source.Clear();
@@ -475,7 +504,7 @@ namespace LiveCharts.Helpers
         /// <returns>evaluation</returns>
         public bool Contains(T item)
         {
-            lock (_source)
+            lock (_sync)
             {
                 return _source.Contains(item);
             }
@@ -498,7 +527,7 @@ namespace LiveCharts.Helpers
         /// <param name="index">array index</param>
         public void CopyTo(T[] array, int index)
         {
-            lock (_source)
+            lock (_sync)
             {
                 _source.CopyTo(array, index);
             }
@@ -521,7 +550,7 @@ namespace LiveCharts.Helpers
         /// <returns></returns>
         public int IndexOf(T item)
         {
-            lock (_source)
+            lock (_sync)
             {
                 return _source.IndexOf(item);
             }
