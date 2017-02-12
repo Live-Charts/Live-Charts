@@ -128,7 +128,7 @@ namespace LiveCharts.Wpf.Charts.Base
         private void OnSizeChanged(object sender, SizeChangedEventArgs args)
         {
             Model.ControlSize = new CoreSize(ActualWidth, ActualHeight);
-
+            Canvas.Clip = new RectangleGeometry(new Rect(new Point(0,0), new Size(ActualWidth, ActualHeight)));
             Model.Updater.Run();
         }
 
