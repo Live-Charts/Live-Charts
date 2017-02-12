@@ -20,6 +20,7 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
+using System;
 using LiveCharts.Charts;
 using LiveCharts.Dtos;
 
@@ -99,6 +100,14 @@ namespace LiveCharts.Definitions.Charts
         /// <value>
         /// The bar unit.
         /// </value>
+        double Unit { get; set; }
+        /// <summary>
+        /// Gets or sets the bar unit.
+        /// </summary>
+        /// <value>
+        /// The bar unit.
+        /// </value>
+        [Obsolete]
         double BarUnit { get; set; }
         /// <summary>
         /// Gets the previous maximum value.

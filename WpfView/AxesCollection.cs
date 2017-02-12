@@ -21,7 +21,6 @@
 //SOFTWARE.
 
 using System.Collections.Generic;
-using System.Xml;
 using LiveCharts.Helpers;
 using LiveCharts.Wpf.Charts.Base;
 
