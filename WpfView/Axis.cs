@@ -210,6 +210,28 @@ namespace LiveCharts.Wpf
         }
 
         /// <summary>
+        /// Gets the actual minimum value.
+        /// </summary>
+        /// <value>
+        /// The actual minimum value.
+        /// </value>
+        public double ActualMinValue
+        {
+            get { return Model.BotLimit; }
+        }
+
+        /// <summary>
+        /// Gets the actual maximum value.
+        /// </summary>
+        /// <value>
+        /// The actual maximum value.
+        /// </value>
+        public double ActualMaxValue
+        {
+            get { return Model.TopLimit; }
+        }
+
+        /// <summary>
         /// The maximum range property
         /// </summary>
         public static readonly DependencyProperty MaxRangeProperty = DependencyProperty.Register(
