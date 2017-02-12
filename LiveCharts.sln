@@ -27,8 +27,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LiveChartsTesterGuy", "..\.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LiveChartsTesterWinForms", "..\..\..\..\..\LocalProjects\LiveChartsTesterGuy\LiveChartsTesterWinForms\LiveChartsTesterWinForms.csproj", "{252FFEF2-0BE1-4BE6-A245-06BAD448C953}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GearedValues", "..\..\..\..\..\LocalProjects\VirtualizedValues\VirtualizedValues\GearedValues.csproj", "{101A4B0F-8F02-415D-A613-F1B1602A7044}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -415,38 +413,6 @@ Global
 		{252FFEF2-0BE1-4BE6-A245-06BAD448C953}.Release|x64.Build.0 = Release|Any CPU
 		{252FFEF2-0BE1-4BE6-A245-06BAD448C953}.Release|x86.ActiveCfg = Release|Any CPU
 		{252FFEF2-0BE1-4BE6-A245-06BAD448C953}.Release|x86.Build.0 = Release|Any CPU
-		{101A4B0F-8F02-415D-A613-F1B1602A7044}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{101A4B0F-8F02-415D-A613-F1B1602A7044}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{101A4B0F-8F02-415D-A613-F1B1602A7044}.Debug|ARM.ActiveCfg = Debug|Any CPU
-		{101A4B0F-8F02-415D-A613-F1B1602A7044}.Debug|ARM.Build.0 = Debug|Any CPU
-		{101A4B0F-8F02-415D-A613-F1B1602A7044}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{101A4B0F-8F02-415D-A613-F1B1602A7044}.Debug|x64.Build.0 = Debug|Any CPU
-		{101A4B0F-8F02-415D-A613-F1B1602A7044}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{101A4B0F-8F02-415D-A613-F1B1602A7044}.Debug|x86.Build.0 = Debug|Any CPU
-		{101A4B0F-8F02-415D-A613-F1B1602A7044}.net40|Any CPU.ActiveCfg = Release|Any CPU
-		{101A4B0F-8F02-415D-A613-F1B1602A7044}.net40|Any CPU.Build.0 = Release|Any CPU
-		{101A4B0F-8F02-415D-A613-F1B1602A7044}.net40|ARM.ActiveCfg = Release|Any CPU
-		{101A4B0F-8F02-415D-A613-F1B1602A7044}.net40|ARM.Build.0 = Release|Any CPU
-		{101A4B0F-8F02-415D-A613-F1B1602A7044}.net40|x64.ActiveCfg = Release|Any CPU
-		{101A4B0F-8F02-415D-A613-F1B1602A7044}.net40|x64.Build.0 = Release|Any CPU
-		{101A4B0F-8F02-415D-A613-F1B1602A7044}.net40|x86.ActiveCfg = Release|Any CPU
-		{101A4B0F-8F02-415D-A613-F1B1602A7044}.net40|x86.Build.0 = Release|Any CPU
-		{101A4B0F-8F02-415D-A613-F1B1602A7044}.net45|Any CPU.ActiveCfg = Release|Any CPU
-		{101A4B0F-8F02-415D-A613-F1B1602A7044}.net45|Any CPU.Build.0 = Release|Any CPU
-		{101A4B0F-8F02-415D-A613-F1B1602A7044}.net45|ARM.ActiveCfg = Release|Any CPU
-		{101A4B0F-8F02-415D-A613-F1B1602A7044}.net45|ARM.Build.0 = Release|Any CPU
-		{101A4B0F-8F02-415D-A613-F1B1602A7044}.net45|x64.ActiveCfg = Release|Any CPU
-		{101A4B0F-8F02-415D-A613-F1B1602A7044}.net45|x64.Build.0 = Release|Any CPU
-		{101A4B0F-8F02-415D-A613-F1B1602A7044}.net45|x86.ActiveCfg = Release|Any CPU
-		{101A4B0F-8F02-415D-A613-F1B1602A7044}.net45|x86.Build.0 = Release|Any CPU
-		{101A4B0F-8F02-415D-A613-F1B1602A7044}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{101A4B0F-8F02-415D-A613-F1B1602A7044}.Release|Any CPU.Build.0 = Release|Any CPU
-		{101A4B0F-8F02-415D-A613-F1B1602A7044}.Release|ARM.ActiveCfg = Release|Any CPU
-		{101A4B0F-8F02-415D-A613-F1B1602A7044}.Release|ARM.Build.0 = Release|Any CPU
-		{101A4B0F-8F02-415D-A613-F1B1602A7044}.Release|x64.ActiveCfg = Release|Any CPU
-		{101A4B0F-8F02-415D-A613-F1B1602A7044}.Release|x64.Build.0 = Release|Any CPU
-		{101A4B0F-8F02-415D-A613-F1B1602A7044}.Release|x86.ActiveCfg = Release|Any CPU
-		{101A4B0F-8F02-415D-A613-F1B1602A7044}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
