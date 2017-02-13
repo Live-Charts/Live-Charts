@@ -87,8 +87,6 @@ namespace LiveCharts
 
             var cp = new ChartPoint();
 
-            var source = this.ToArray();
-
             var ax = seriesView.Model.Chart.AxisX[seriesView.ScalesXAt];
             var ay = seriesView.Model.Chart.AxisY[seriesView.ScalesYAt];
             double fx = double.IsNaN(ax.MinValue) ? double.NegativeInfinity : ax.MinValue,
@@ -98,10 +96,11 @@ namespace LiveCharts
 
             var isHorizontal = seriesView.Model.SeriesOrientation == SeriesOrientation.Horizontal;
 
-            for (var index = 0; index < source.Length; index++)
+            var index = 0;
+            foreach(var item in this)
             {
-                var item = source[index];
                 config.Evaluate(index, item, cp);
+                index++;
 
                 if (isHorizontal)
                 {
@@ -154,6 +153,7 @@ namespace LiveCharts
             tracker.WLimit = new CoreLimit(double.IsInfinity(wMin)
                 ? 0
                 : wMin, double.IsInfinity(wMax) ? 1 : wMax);
+
         }
 
         /// <summary>
@@ -180,11 +180,9 @@ namespace LiveCharts
             var tracker = GetTracker(seriesView);
             var gci = tracker.Gci;
 
-            var source = this.ToList(); //copy it, to prevent async issues
-
-            for (var index = 0; index < source.Count; index++)
+            var index = 0;
+            foreach (var value in this)
             {
-                var value = source[index];
                 if (isObservable)
                 {
                     var observable = (IObservableChartPoint)value;
@@ -203,6 +201,7 @@ namespace LiveCharts
                 cp.SeriesView = seriesView;
 
                 config.Evaluate(index, value, cp);
+                index++;
 
                 yield return cp;
             }

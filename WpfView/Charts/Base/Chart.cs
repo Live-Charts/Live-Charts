@@ -128,7 +128,7 @@ namespace LiveCharts.Wpf.Charts.Base
         private void OnSizeChanged(object sender, SizeChangedEventArgs args)
         {
             Model.ControlSize = new CoreSize(ActualWidth, ActualHeight);
-
+            Canvas.Clip = new RectangleGeometry(new Rect(new Point(0,0), new Size(ActualWidth, ActualHeight)));
             Model.Updater.Run();
         }
 
@@ -728,8 +728,7 @@ namespace LiveCharts.Wpf.Charts.Base
             var wpfElement = (FrameworkElement)element;
             if (wpfElement == null) return;
             var p = (Canvas)wpfElement.Parent;
-            if (p != null) p.Children.Remove(wpfElement);
-            AddToView(wpfElement);
+            if (p == null) AddToView(wpfElement);
         }
 
         /// <summary>
@@ -743,17 +742,6 @@ namespace LiveCharts.Wpf.Charts.Base
             var p = (Canvas)wpfElement.Parent;
             if (p != null) p.Children.Remove(wpfElement);
             AddToDrawMargin(wpfElement);
-        }
-
-        /// <summary>
-        /// Determines whether the specified element contains element.
-        /// </summary>
-        /// <param name="element">The element.</param>
-        /// <returns></returns>
-        public bool ContainsElement(object element)
-        {
-            var wpfElement = (FrameworkElement)element;
-            return wpfElement != null && Canvas.Children.Contains(wpfElement);
         }
 
         /// <summary>
@@ -1106,9 +1094,9 @@ namespace LiveCharts.Wpf.Charts.Base
         /// </summary>
         public void HideTooltip()
         {
-            if (DataTooltip == null) return;
+            if (TooltipContainer == null) return;
 
-            DataTooltip.Visibility = Visibility.Hidden;
+            TooltipContainer.IsOpen = false;
         }
 
         /// <summary>

@@ -211,6 +211,22 @@ namespace LiveCharts.Uwp
         }
 
         /// <summary>
+        /// Gets the actual minimum value.
+        /// </summary>
+        /// <value>
+        /// The actual minimum value.
+        /// </value>
+        public double ActualMinValue => Model.BotLimit;
+
+        /// <summary>
+        /// Gets the actual maximum value.
+        /// </summary>
+        /// <value>
+        /// The actual maximum value.
+        /// </value>
+        public double ActualMaxValue => Model.TopLimit;
+
+        /// <summary>
         /// The minimum range property
         /// </summary>
         public static readonly DependencyProperty MinRangeProperty = DependencyProperty.Register(

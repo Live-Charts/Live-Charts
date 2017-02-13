@@ -219,13 +219,17 @@ namespace LiveCharts
             if (source == AxisOrientation.Y)
             {
                 min = axis.BotLimit;
-                u = axis.View.BarUnit;
+                u = axis.View.BarUnit != 1d
+                    ? axis.View.BarUnit
+                    : axis.View.Unit;
                 return ToDrawMargin(min, AxisOrientation.Y, chart, axis) -
                        ToDrawMargin(min + u, AxisOrientation.Y, chart, axis);
             }
 
             min = axis.BotLimit;
-            u = axis.View.BarUnit;
+            u = axis.View.BarUnit != 1d
+                    ? axis.View.BarUnit
+                    : axis.View.Unit;
             return ToDrawMargin(min + u, AxisOrientation.X, chart, axis) -
                    ToDrawMargin(min, AxisOrientation.X, chart, axis);
         }

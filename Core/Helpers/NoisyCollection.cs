@@ -68,6 +68,7 @@ namespace LiveCharts.Helpers
     public class NoisyCollection<T> : INoisyCollection, IList<T>
     {
         #region Private Fields
+        private readonly object _sync = new object();
         private readonly List<T> _source;
         private const string CountString = "Count";
         private const string IndexerString = "Item[]";
@@ -153,11 +154,20 @@ namespace LiveCharts.Helpers
         /// <returns></returns>
         public T this[int index]
         {
-            get { return _source[index]; }
+            get
+            {
+                lock (_sync)
+                {
+                    return _source[index];
+                }
+            }
             set
             {
                 var original = this[index];
-                _source[index] = value;
+                lock (_sync)
+                {
+                    _source[index] = value;
+                }
                 ReplaceItem(original, value, index);
             }
         }
@@ -169,11 +179,20 @@ namespace LiveCharts.Helpers
         /// <returns></returns>
         object IList.this[int index]
         {
-            get { return _source[index]; }
+            get
+            {
+                lock (_sync)
+                {
+                    return _source[index];
+                }
+            }
             set
             {
                 var original = this[index];
-                _source[index] = (T)value;
+                lock (_sync)
+                {
+                    _source[index] = (T)value;
+                }
                 ReplaceItem(original, value, index);
             }
         }
@@ -184,7 +203,10 @@ namespace LiveCharts.Helpers
         /// <returns>collection enumeration</returns>
         public IEnumerator<T> GetEnumerator()
         {
-            return _source.GetEnumerator();
+            lock (_sync)
+            {
+                return new List<T>(_source).GetEnumerator();
+            }
         }
 
         /// <summary>
@@ -257,7 +279,10 @@ namespace LiveCharts.Helpers
         {
             var v = (T)value;
             Add(v);
-            return _source.IndexOf(v);
+            lock (_sync)
+            {
+                return _source.IndexOf(v);
+            }
         }
 
         /// <summary>
@@ -266,7 +291,10 @@ namespace LiveCharts.Helpers
         /// <returns>number of items in the collection</returns>
         public void Add(T item)
         {
-            _source.Add(item);
+            lock (_sync)
+            {
+                _source.Add(item);
+            }
             OnNoisyCollectionChanged(null, new[] { item });
             OnPropertyChanged(CountString);
             OnPropertyChanged(IndexerString);
@@ -290,7 +318,10 @@ namespace LiveCharts.Helpers
         public void AddRange(IEnumerable<T> items)
         {
             var newItems = items as T[] ?? items.ToArray();
-            _source.AddRange(newItems);
+            lock (_sync)
+            {
+                _source.AddRange(newItems);
+            }
             OnNoisyCollectionChanged(null, newItems);
             OnPropertyChanged(CountString);
             OnPropertyChanged(IndexerString);
@@ -307,7 +338,10 @@ namespace LiveCharts.Helpers
         /// <param name="item">item to insert</param>
         public void Insert(int index, T item)
         {
-            _source.Insert(index, item);
+            lock (_sync)
+            {
+                _source.Insert(index, item);
+            }
             OnNoisyCollectionChanged(null, new[] { item });
             OnPropertyChanged(CountString);
             OnPropertyChanged(IndexerString);
@@ -343,7 +377,10 @@ namespace LiveCharts.Helpers
         public void InsertRange(int index, IEnumerable<T> collection)
         {
             var newItems = collection as T[] ?? collection.ToArray();
-            _source.InsertRange(index, newItems);
+            lock (_sync)
+            {
+                _source.InsertRange(index, newItems);
+            }
             OnNoisyCollectionChanged(null, newItems);
             OnPropertyChanged(CountString);
             OnPropertyChanged(IndexerString);
@@ -369,7 +406,11 @@ namespace LiveCharts.Helpers
         /// <returns>number of items in the collection</returns>
         public bool Remove(T item)
         {
-            var index = _source.IndexOf(item);
+            int index;
+            lock (_sync)
+            {
+                index = _source.IndexOf(item);
+            }
             if (index < 0) return false;
             RemoveAt(index);
             return true;
@@ -399,8 +440,12 @@ namespace LiveCharts.Helpers
         /// <param name="index">index to remove at</param>
         public void RemoveAt(int index)
         {
-            var item = _source[index];
-            _source.RemoveAt(index);
+            T item;
+            lock (_sync)
+            {
+                item = _source[index];
+                _source.RemoveAt(index);
+            }
             OnNoisyCollectionChanged(new[] { item }, null);
             OnPropertyChanged(CountString);
             OnPropertyChanged(IndexerString);
@@ -429,8 +474,12 @@ namespace LiveCharts.Helpers
         /// </summary>
         public void Clear()
         {
-            var backup = _source.ToArray();
-            _source.Clear();
+            T[] backup;
+            lock (_sync)
+            {
+                backup = _source.ToArray();
+                _source.Clear();
+            }
             OnNoisyCollectionChanged(backup, null);
             OnNoisyCollectionReset();
             OnPropertyChanged(CountString);
@@ -455,7 +504,10 @@ namespace LiveCharts.Helpers
         /// <returns>evaluation</returns>
         public bool Contains(T item)
         {
-            return _source.Contains(item);
+            lock (_sync)
+            {
+                return _source.Contains(item);
+            }
         }
 
         /// <summary>
@@ -475,7 +527,10 @@ namespace LiveCharts.Helpers
         /// <param name="index">array index</param>
         public void CopyTo(T[] array, int index)
         {
-            _source.CopyTo(array, index);
+            lock (_sync)
+            {
+                _source.CopyTo(array, index);
+            }
         }
 
         /// <summary>
@@ -495,7 +550,10 @@ namespace LiveCharts.Helpers
         /// <returns></returns>
         public int IndexOf(T item)
         {
-            return _source.IndexOf(item);
+            lock (_sync)
+            {
+                return _source.IndexOf(item);
+            }
         }
 
         #endregion

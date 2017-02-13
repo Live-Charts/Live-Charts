@@ -100,6 +100,13 @@ namespace LiveCharts.Definitions.Series
         /// The title.
         /// </value>
         string Title { get; }
+        /// <summary>
+        /// Gets a value indicating whether this instance is first draw.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if this instance is first draw; otherwise, <c>false</c>.
+        /// </value>
+        bool IsFirstDraw { get; }
 
         /// <summary>
         /// Gets the point view.
