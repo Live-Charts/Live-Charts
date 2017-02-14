@@ -127,6 +127,8 @@ namespace LiveCharts.Uwp
             set { SetValue(TitleProperty, value); }
         }
 
+        public bool IsFirstDraw { get; }
+
         /// <summary>
         /// The stroke property
         /// </summary>

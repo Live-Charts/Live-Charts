@@ -299,6 +299,8 @@ namespace LiveCharts.Uwp
             set { SetValue(IsMergedProperty, value); }
         }
 
+        public double Unit { get; set; }
+
         /// <summary>
         /// The bar unit property
         /// </summary>
