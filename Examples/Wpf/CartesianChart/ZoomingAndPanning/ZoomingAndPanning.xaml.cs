@@ -1,16 +1,14 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Globalization;
-using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media;
 using LiveCharts;
 using LiveCharts.Defaults;
 using LiveCharts.Wpf;
-using Wpf.Annotations;
 
-namespace Wpf.CartesianChart
+namespace Wpf.CartesianChart.ZoomingAndPanning
 {
     /// <summary>
     /// Interaction logic for ZoomingAndPanning.xaml
@@ -100,7 +98,6 @@ namespace Wpf.CartesianChart
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged(string propertyName = null)
         {
             if (PropertyChanged != null) PropertyChanged.Invoke(this, new PropertyChangedEventArgs(propertyName));

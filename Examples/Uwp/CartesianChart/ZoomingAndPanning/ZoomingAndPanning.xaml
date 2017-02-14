@@ -11,7 +11,7 @@
         <local:ZoomingModeCoverter x:Key="ZoomingModeCoverter"/>
     </Page.Resources>
 
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
@@ -21,16 +21,17 @@
             Use the Chart.Zoom property to enable zooming and panning, you have some options: None, X, Y and XY, click, hold and drag the chart for panning.
         </TextBlock>
         <StackPanel Grid.Row="1">
-            <Button Height="30" Click="ToogleZoomingMode">
+            <Button Click="ToogleZoomingMode">
                 <TextBlock>Toggle zoming mode, current is: 
-                <Run Text="{Binding ZoomingMode, Converter={StaticResource ZoomingModeCoverter}}"/>
+                    <TextBlock Text="{Binding ZoomingMode, Converter={StaticResource ZoomingModeCoverter}}"/>
                 </TextBlock>
             </Button>
-            <Button Height="30" Click="ResetZoomIOnclick">Reset Zoom</Button>
+            <Button Click="ResetZoomOnClick">Reset Zoom</Button>
         </StackPanel>
         <lvc:CartesianChart Grid.Row="2" Series="{Binding SeriesCollection}" Zoom="{Binding ZoomingMode}" >
             <lvc:CartesianChart.AxisX>
-                <lvc:Axis Name="X" LabelFormatter="{Binding XFormatter}" Separator="{x:Bind CleanSeparator}"/>
+                <lvc:Axis Name="X" LabelFormatter="{Binding XFormatter}" 
+                          Separator="{x:Static lvc:DefaultAxes.CleanSeparator}"/>
             </lvc:CartesianChart.AxisX>
             <lvc:CartesianChart.AxisY>
                 <lvc:Axis Name="Y" LabelFormatter="{Binding YFormatter}"/>
