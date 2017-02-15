@@ -30,8 +30,8 @@ namespace UWP.CartesianChart.ZoomingAndPanning
                 StartPoint = new Point(0, 0),
                 EndPoint = new Point(0, 1)
             };
-            gradientBrush.GradientStops.Add(new GradientStop() { Color = Color.FromArgb(255, 33, 148, 241), Offset = 0 });
-            gradientBrush.GradientStops.Add(new GradientStop() { Color = Colors.Transparent, Offset = 1});
+            gradientBrush.GradientStops.Add(new GradientStop {Color = Color.FromArgb(255, 33, 148, 241), Offset = 0});
+            gradientBrush.GradientStops.Add(new GradientStop {Color = Colors.Transparent, Offset = 1});
 
             SeriesCollection = new SeriesCollection
             {
@@ -55,7 +55,6 @@ namespace UWP.CartesianChart.ZoomingAndPanning
         public SeriesCollection SeriesCollection { get; set; }
         public Func<double, string> XFormatter { get; set; }
         public Func<double, string> YFormatter { get; set; }
-        public Separator CleanSeparator { get; set; } = DefaultAxes.CleanSeparator;
 
         public ZoomingOptions ZoomingMode
         {
@@ -63,7 +62,7 @@ namespace UWP.CartesianChart.ZoomingAndPanning
             set
             {
                 _zoomingMode = value;
-                OnPropertyChanged("ZoomingMode");
+                OnPropertyChanged();
             }
         }
 
@@ -106,12 +105,12 @@ namespace UWP.CartesianChart.ZoomingAndPanning
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public void OnPropertyChanged(string propertyName = null)
+        private void OnPropertyChanged(string propertyName = null)
         {
             if (PropertyChanged != null) PropertyChanged.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        private void ResetZoomIOnclick(object sender, RoutedEventArgs e)
+        private void ResetZoomOnClick(object sender, RoutedEventArgs e)
         {
             //Use the axis MinValue/MaxValue properties to specify the values to display.
             //use double.Nan to clear it.
@@ -125,7 +124,7 @@ namespace UWP.CartesianChart.ZoomingAndPanning
 
     public class ZoomingModeCoverter : IValueConverter
     {
-        public Object Convert(Object value, Type targetType, Object parameter, String language)
+        public object Convert(object value, Type targetType, object parameter, string language)
         {
             switch ((ZoomingOptions)value)
             {
@@ -142,7 +141,7 @@ namespace UWP.CartesianChart.ZoomingAndPanning
             }
         }
 
-        public Object ConvertBack(Object value, Type targetType, Object parameter, String language)
+        public object ConvertBack(object value, Type targetType, object parameter, string language)
         {
             throw new NotImplementedException();
         }
