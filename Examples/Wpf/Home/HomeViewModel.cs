@@ -37,6 +37,7 @@ using Wpf.CartesianChart.StackedArea;
 using Wpf.CartesianChart.StepLine;
 using Wpf.CartesianChart.ThreadSafe;
 using Wpf.CartesianChart.UIElements;
+using Wpf.CartesianChart.ZoomingAndPanning;
 using Wpf.Gauges;
 using Wpf.Maps;
 using Wpf.PieChart;
