@@ -56,7 +56,6 @@ namespace Wpf.CartesianChart.ManualZAndP
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged(string propertyName = null)
         {
             if (PropertyChanged != null)

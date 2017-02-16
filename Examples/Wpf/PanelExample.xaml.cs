@@ -134,7 +134,6 @@ namespace Wpf
             });
         }
 
-        [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged( string propertyName = null)
         {
             var handler = PropertyChanged;
