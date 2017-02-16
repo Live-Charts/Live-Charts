@@ -266,14 +266,14 @@ namespace LiveCharts
             InitializeGarbageCollector();
 
             var bl = Math.Ceiling(BotLimit/Magnitude)*Magnitude;
-            var u = View.BarUnit != 1d
-                ? View.BarUnit
-                : View.Unit;
-            if (u != 1d)
-            {
-                bl = Math.Ceiling(BotLimit / u) * u;
-            }
-            bl = Math.Round(bl/u)*u;
+            //var u = View.BarUnit != 1d
+            //    ? View.BarUnit
+            //    : View.Unit;
+            //if (u != 1d)
+            //{
+            //    bl = Math.Ceiling(BotLimit / u) * u;
+            //}
+            //bl = Math.Round(bl/u)*u;
             FirstSeparator = bl;
 
             for (var i = bl; i <= TopLimit - (EvaluatesUnitWidth ? 1 : 0); i += S)
