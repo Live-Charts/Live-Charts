@@ -26,7 +26,6 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
 using LiveCharts.Charts;
 using LiveCharts.Definitions.Charts;
-using LiveCharts.Uwp.Components;
 
 namespace LiveCharts.Uwp
 {
@@ -47,6 +46,7 @@ namespace LiveCharts.Uwp
         /// Gets the chart the own the separator
         /// </summary>
         public ChartCore Chart { get; set; }
+        private AxisCore Axis { get; set; }
 
         #region Dependency Properties
 
@@ -115,6 +115,22 @@ namespace LiveCharts.Uwp
         }
 
         /// <summary>
+        /// The actual step property
+        /// </summary>
+        public static readonly DependencyProperty ActualStepProperty = DependencyProperty.Register(
+            "ActualStep", typeof(double), typeof(Separator), new PropertyMetadata(default(double)));
+        /// <summary>
+        /// Gets the actual step.
+        /// </summary>
+        /// <value>
+        /// The actual step.
+        /// </value>
+        public double ActualStep
+        {
+            get { return Axis.S; }
+        }
+
+        /// <summary>
         /// The axis orientation property
         /// </summary>
         public static readonly DependencyProperty AxisOrientationProperty = DependencyProperty.Register(
@@ -139,6 +155,7 @@ namespace LiveCharts.Uwp
         {
             AxisOrientation = source;
             Chart = axis.Chart;
+            Axis = axis;
             return new SeparatorConfigurationCore(axis)
             {
                 IsEnabled = IsEnabled,
