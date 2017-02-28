@@ -115,6 +115,7 @@ namespace LiveCharts.Uwp.Charts.Base
             DrawMargin.PointerPressed += OnDraggingStart;
             DrawMargin.PointerReleased += OnDraggingEnd;
             //DrawMargin.MouseMove += DragSection;
+            DrawMargin.PointerMoved += PanOnMouseMove;
             //MouseUp += DisableSectionDragMouseUp;
         }
 
@@ -1277,6 +1278,21 @@ namespace LiveCharts.Uwp.Charts.Base
                 ChartFunctions.FromPlotArea(DragOrigin.X, AxisOrientation.X, Model),
                 ChartFunctions.FromPlotArea(DragOrigin.Y, AxisOrientation.Y, Model));
             IsPanning = true;
+        }
+
+        private void PanOnMouseMove(object sender, PointerRoutedEventArgs e)
+        {
+            if (!IsPanning) return;
+
+            if ((Pan == PanningOptions.Unset && Zoom == ZoomingOptions.None) ||
+                Pan == PanningOptions.None) return;
+
+            var end = e.GetCurrentPoint(this).Position;
+            end = new Point(
+                ChartFunctions.FromPlotArea(end.X, AxisOrientation.X, Model),
+                ChartFunctions.FromPlotArea(end.Y, AxisOrientation.Y, Model));
+
+            Model.Drag(new CorePoint(DragOrigin.X - end.X, DragOrigin.Y - end.Y));
         }
 
         private void OnDraggingEnd(object sender, PointerRoutedEventArgs e)

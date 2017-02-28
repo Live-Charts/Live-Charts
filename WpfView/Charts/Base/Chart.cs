@@ -107,6 +107,7 @@ namespace LiveCharts.Wpf.Charts.Base
             DrawMargin.MouseDown += OnDraggingStart;
             DrawMargin.MouseUp += OnDraggingEnd;
             DrawMargin.MouseMove += DragSection;
+            DrawMargin.MouseMove += PanOnMouseMove;
             MouseUp += DisableSectionDragMouseUp;
         }
 
@@ -1236,7 +1237,7 @@ namespace LiveCharts.Wpf.Charts.Base
             IsPanning = true;
         }
 
-        private void OnDraggingEnd(object sender, MouseButtonEventArgs e)
+        private void PanOnMouseMove(object sender, MouseEventArgs e)
         {
             if (!IsPanning) return;
 
@@ -1249,6 +1250,23 @@ namespace LiveCharts.Wpf.Charts.Base
                 ChartFunctions.FromPlotArea(end.Y, AxisOrientation.Y, Model));
 
             Model.Drag(new CorePoint(DragOrigin.X - end.X, DragOrigin.Y - end.Y));
+
+            //DragOrigin = end;
+        }
+
+        private void OnDraggingEnd(object sender, MouseButtonEventArgs e)
+        {
+            if (!IsPanning) return;
+
+            //if ((Pan == PanningOptions.Unset && Zoom == ZoomingOptions.None) ||
+            //    Pan == PanningOptions.None) return;
+
+            //var end = e.GetPosition(this);
+            //end = new Point(
+            //    ChartFunctions.FromPlotArea(end.X, AxisOrientation.X, Model),
+            //    ChartFunctions.FromPlotArea(end.Y, AxisOrientation.Y, Model));
+
+            //Model.Drag(new CorePoint(DragOrigin.X - end.X, DragOrigin.Y - end.Y));
             IsPanning = false;
         }
         #endregion
