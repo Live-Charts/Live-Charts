@@ -116,7 +116,7 @@ namespace LiveCharts.Uwp
         /// The shares position property
         /// </summary>
         public static readonly DependencyProperty SharesPositionProperty = DependencyProperty.Register(
-            "SharesPosition", typeof(bool), typeof(RowSeries), new PropertyMetadata(default(bool)));
+            "SharesPosition", typeof(bool), typeof(RowSeries), new PropertyMetadata(true));
         /// <summary>
         /// Gets or sets a value indicating whether this row shares space with all the row series in the same position
         /// </summary>

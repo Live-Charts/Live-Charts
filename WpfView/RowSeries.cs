@@ -86,7 +86,7 @@ namespace LiveCharts.Wpf
         /// The row padding property
         /// </summary>
         public static readonly DependencyProperty RowPaddingProperty = DependencyProperty.Register(
-            "RowPadding", typeof (double), typeof (RowSeries), new PropertyMetadata(default(double)));
+            "RowPadding", typeof (double), typeof (RowSeries), new PropertyMetadata(true));
         /// <summary>
         /// Gets or sets the padding between rows in this series
         /// </summary>

@@ -114,7 +114,7 @@ namespace LiveCharts.Wpf
         /// The shares position property
         /// </summary>
         public static readonly DependencyProperty SharesPositionProperty = DependencyProperty.Register(
-            "SharesPosition", typeof(bool), typeof(ColumnSeries), new PropertyMetadata(default(bool)));
+            "SharesPosition", typeof(bool), typeof(ColumnSeries), new PropertyMetadata(true));
         /// <summary>
         /// Gets or sets a value indicating whether this column shares space with all the column series in the same position
         /// </summary>
