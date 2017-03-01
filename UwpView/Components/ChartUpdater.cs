@@ -36,7 +36,7 @@ namespace LiveCharts.Uwp.Components
 
             Timer.Tick += (sender, args) =>
             {
-                UpdaterTick(RequiresRestart);
+                UpdaterTick(RequiresRestart, false);
             };
         }
 
@@ -45,9 +45,9 @@ namespace LiveCharts.Uwp.Components
 
         public override void Run(bool restartView = false, bool updateNow = false)
         {
-            if (updateNow || Chart.View.IsMocked)
+            if (updateNow)
             {
-                UpdaterTick(restartView);
+                UpdaterTick(restartView, true);
                 return;
             }
 
@@ -63,7 +63,7 @@ namespace LiveCharts.Uwp.Components
             Timer.Interval = freq;
         }
 
-        private void UpdaterTick(bool restartView)
+        private void UpdaterTick(bool restartView, bool force)
         {
             var uwpfChart = (Chart) Chart.View;
             if (uwpfChart.Visibility != Visibility.Visible && !uwpfChart.IsMocked) return;
@@ -72,7 +72,7 @@ namespace LiveCharts.Uwp.Components
                 ? uwpfChart.Model.ControlSize
                 : new CoreSize(uwpfChart.ActualWidth, uwpfChart.ActualHeight);
             Timer.Stop();
-            Update(restartView);
+            Update(restartView, force);
             IsUpdating = false;
 
             RequiresRestart = false;
