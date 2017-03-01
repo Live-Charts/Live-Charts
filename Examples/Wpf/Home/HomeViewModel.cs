@@ -15,6 +15,7 @@ using Wpf.CartesianChart.Chart_to_Image;
 using Wpf.CartesianChart.ConstantChanges;
 using Wpf.CartesianChart.Customized_Line_Series;
 using Wpf.CartesianChart.CustomTooltipAndLegend;
+using Wpf.CartesianChart.DataLabelTemplate;
 using Wpf.CartesianChart.DynamicVisibility;
 using Wpf.CartesianChart.Energy_Predictions;
 using Wpf.CartesianChart.Events;
@@ -104,7 +105,8 @@ namespace Wpf.Home
                         new SampleVm("Multiple Axes", typeof(MultiAxesChart)),
                         new SampleVm("Events", typeof(EventsExample)),
                         new SampleVm("Visual Elements", typeof(UiElementsAndEventsExample)),
-                        new SampleVm("Chart to Image", typeof(ChartToImageSample))
+                        new SampleVm("Chart to Image", typeof(ChartToImageSample)),
+                        new SampleVm("DataLabelTemplate", typeof(DataLabelTemplateSample))
                     }
                 }, 
                 new SampleGroupVm
