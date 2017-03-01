@@ -58,7 +58,7 @@ namespace LiveCharts.SeriesAlgorithms
             var totalSpace = ChartFunctions.GetUnitWidth(AxisOrientation.X, Chart, View.ScalesXAt) - padding;
             var typeSeries = Chart.View.ActualSeries.OfType<IColumnSeriesView>().ToList();
 
-            var singleColWidth = totalSpace/typeSeries.Count;
+            var singleColWidth = totalSpace / 1;//typeSeries.Count;
 
             double exceed = 0;
 

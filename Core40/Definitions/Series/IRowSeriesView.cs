@@ -42,5 +42,12 @@ namespace LiveCharts.Definitions.Series
         /// The row padding.
         /// </value>
         double RowPadding { get; set; }
+        /// <summary>
+        /// Gets or sets a value indicating whether [shares position].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [shares position]; otherwise, <c>false</c>.
+        /// </value>
+        bool SharesPosition { get; set; }
     }
 }
