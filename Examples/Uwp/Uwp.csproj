@@ -125,6 +125,9 @@
     <Compile Include="CartesianChart\Bubbles\BubblesExample.xaml.cs">
       <DependentUpon>BubblesExample.xaml</DependentUpon>
     </Compile>
+    <Compile Include="CartesianChart\Chart to Image\ChartToImageSample.xaml.cs">
+      <DependentUpon>ChartToImageSample.xaml</DependentUpon>
+    </Compile>
     <Compile Include="CartesianChart\ConstantChanges\ConstantChangesChart.xaml.cs">
       <DependentUpon>ConstantChangesChart.xaml</DependentUpon>
     </Compile>
@@ -338,6 +341,10 @@
     <Page Include="CartesianChart\Bubbles\BubblesExample.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CartesianChart\Chart to Image\ChartToImageSample.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="CartesianChart\ConstantChanges\ConstantChangesChart.xaml">
       <SubType>Designer</SubType>

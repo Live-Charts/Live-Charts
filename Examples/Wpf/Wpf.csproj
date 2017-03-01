@@ -88,6 +88,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="CartesianChart\Chart to Image\ChartToImageSample.xaml.cs">
+      <DependentUpon>ChartToImageSample.xaml</DependentUpon>
+    </Compile>
     <Compile Include="CartesianChart\Energy Predictions\EnergyPredictionExample.xaml.cs">
       <DependentUpon>EnergyPredictionExample.xaml</DependentUpon>
     </Compile>
@@ -132,6 +135,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="CartesianChart\BasicLine\BasicLineExample.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CartesianChart\Chart to Image\ChartToImageSample.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

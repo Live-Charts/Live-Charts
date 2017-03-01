@@ -11,6 +11,7 @@ using Wpf.CartesianChart.BasicLine;
 using Wpf.CartesianChart.Basic_Bars;
 using Wpf.CartesianChart.Basic_Stacked_Bar;
 using Wpf.CartesianChart.Bubbles;
+using Wpf.CartesianChart.Chart_to_Image;
 using Wpf.CartesianChart.ConstantChanges;
 using Wpf.CartesianChart.Customized_Line_Series;
 using Wpf.CartesianChart.CustomTooltipAndLegend;
@@ -102,7 +103,8 @@ namespace Wpf.Home
                         new SampleVm("Sections", typeof(SectionsExample)),
                         new SampleVm("Multiple Axes", typeof(MultiAxesChart)),
                         new SampleVm("Events", typeof(EventsExample)),
-                        new SampleVm("Visual Elements", typeof(UiElementsAndEventsExample))
+                        new SampleVm("Visual Elements", typeof(UiElementsAndEventsExample)),
+                        new SampleVm("Chart to Image", typeof(ChartToImageSample))
                     }
                 }, 
                 new SampleGroupVm
