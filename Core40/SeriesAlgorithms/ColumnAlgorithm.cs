@@ -56,9 +56,14 @@ namespace LiveCharts.SeriesAlgorithms
             var padding = columnSeries.ColumnPadding;
 
             var totalSpace = ChartFunctions.GetUnitWidth(AxisOrientation.X, Chart, View.ScalesXAt) - padding;
-            var typeSeries = Chart.View.ActualSeries.OfType<IColumnSeriesView>().ToList();
+            var typeSeries = Chart.View.ActualSeries.Where(x =>
+            {
+                if (x == View) return true;
+                var icsv = x as IColumnSeriesView;
+                return icsv != null && icsv.SharesPosition;
+            }).ToList();
 
-            var singleColWidth = totalSpace / 1;//typeSeries.Count;
+            var singleColWidth = totalSpace / typeSeries.Count;
 
             double exceed = 0;
 

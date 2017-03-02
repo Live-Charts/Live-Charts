@@ -43,6 +43,7 @@ using Wpf.CartesianChart.ZoomingAndPanning;
 using Wpf.Gauges;
 using Wpf.Maps;
 using Wpf.PieChart;
+using Wpf.PieChart.DropDowns;
 
 namespace Wpf.Home
 {
@@ -115,6 +116,7 @@ namespace Wpf.Home
                     Items = new []
                     {
                         new SampleVm("Irregular intervals", typeof(IrregularIntervalsExample)),
+                        new SampleVm("Pie with drop downs", typeof(PieDropDownSample)), 
                         new SampleVm("Missing Points", typeof(MissingPointsExample)),
                         new SampleVm("Constant Changes", typeof(ConstantChangesChart)),
                         new SampleVm("Thread Safe", typeof(ThreadSafeExample)), 

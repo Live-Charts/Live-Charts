@@ -512,6 +512,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="PieChart\DropDowns\PieDropDownSample.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="PieChart\PieChartExample.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -536,6 +540,14 @@
     <Compile Include="PanelExample.xaml.cs">
       <DependentUpon>PanelExample.xaml</DependentUpon>
     </Compile>
+    <Compile Include="PieChart\DropDowns\DataProvider.cs" />
+    <Compile Include="PieChart\DropDowns\DropDownCommand.cs" />
+    <Compile Include="PieChart\DropDowns\DropDownViewModel.cs" />
+    <Compile Include="PieChart\DropDowns\PieDropDownSample.xaml.cs">
+      <DependentUpon>PieDropDownSample.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PieChart\DropDowns\PiePoint.cs" />
+    <Compile Include="PieChart\DropDowns\RelayCommand.cs" />
     <Compile Include="PieChart\PieChartExample.xaml.cs">
       <DependentUpon>PieChartExample.xaml</DependentUpon>
     </Compile>

@@ -22,6 +22,7 @@
 
 using System;
 using System.Collections.Generic;
+using LiveCharts.Definitions.Series;
 
 namespace LiveCharts.Helpers
 {
@@ -81,7 +82,7 @@ namespace LiveCharts.Helpers
         }
 
         /// <summary>
-        /// Converts any collection to chart values
+        /// Converts any collection to chart values.
         /// </summary>
         /// <typeparam name="T">type to convert</typeparam>
         /// <param name="values">values to convert</param>
@@ -91,6 +92,16 @@ namespace LiveCharts.Helpers
             var l = new ChartValues<T>();
             l.AddRange(values);
             return l;
+        }
+
+        /// <summary>
+        /// Converts an enumeration of series to a SeriesCollection instance.
+        /// </summary>
+        /// <param name="series">The series.</param>
+        /// <returns></returns>
+        public static SeriesCollection AsSeriesCollection(this IEnumerable<ISeriesView> series)
+        {
+            return new SeriesCollection(series);
         }
     }
 }
