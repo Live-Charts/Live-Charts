@@ -414,45 +414,49 @@ namespace LiveCharts.Charts
 
             View.HideTooltip();
 
-            pivot = new CorePoint(
-                ChartFunctions.FromPlotArea(pivot.X, AxisOrientation.X, this),
-                ChartFunctions.FromPlotArea(pivot.Y, AxisOrientation.Y, this));
-
             var speed = View.ZoomingSpeed < 0.1 ? 0.1 : (View.ZoomingSpeed > 0.95 ? 0.95 : View.ZoomingSpeed);
 
             if (View.Zoom == ZoomingOptions.X || View.Zoom == ZoomingOptions.Xy)
             {
-                foreach (var xi in AxisX)
+                for (var index = 0; index < AxisX.Count; index++)
                 {
+                    var xi = AxisX[index];
+
+                    var px = ChartFunctions.FromPlotArea(pivot.X, AxisOrientation.X, this, index);
+
                     var max = double.IsNaN(xi.View.MaxValue) ? xi.TopLimit : xi.View.MaxValue;
                     var min = double.IsNaN(xi.View.MinValue) ? xi.BotLimit : xi.View.MinValue;
                     var l = max - min;
 
-                    var rMin = (pivot.X - min) / l;
+                    var rMin = (px - min) / l;
                     var rMax = 1 - rMin;
-                    
-                    var target = l*speed;
+
+                    var target = l * speed;
                     if (target < xi.View.MinRange) return;
-                    var mint = pivot.X - target*rMin;
-                    var maxt = pivot.X + target*rMax; 
+                    var mint = px - target * rMin;
+                    var maxt = px + target * rMax;
                     xi.View.SetRange(mint, maxt);
                 }
             }
 
             if (View.Zoom == ZoomingOptions.Y || View.Zoom == ZoomingOptions.Xy)
             {
-                foreach (var ax in AxisY)
+                for (var index = 0; index < AxisY.Count; index++)
                 {
+                    var ax = AxisY[index];
+
+                    var py = ChartFunctions.FromPlotArea(pivot.Y, AxisOrientation.Y, this, index);
+
                     var max = double.IsNaN(ax.View.MaxValue) ? ax.TopLimit : ax.View.MaxValue;
                     var min = double.IsNaN(ax.View.MinValue) ? ax.BotLimit : ax.View.MinValue;
                     var l = max - min;
-                    var rMin = (pivot.Y - min) / l;
+                    var rMin = (py - min) / l;
                     var rMax = 1 - rMin;
 
                     var target = l * speed;
                     if (target < ax.View.MinRange) return;
-                    var mint = pivot.Y - target * rMin;
-                    var maxt = pivot.Y + target * rMax;
+                    var mint = py - target * rMin;
+                    var maxt = py + target * rMax;
                     ax.View.SetRange(mint, maxt);
                 }
             }
@@ -466,44 +470,48 @@ namespace LiveCharts.Charts
         {
             View.HideTooltip();
 
-            pivot = new CorePoint(
-                ChartFunctions.FromPlotArea(pivot.X, AxisOrientation.X, this),
-                ChartFunctions.FromPlotArea(pivot.Y, AxisOrientation.Y, this));
-
             var speed = View.ZoomingSpeed < 0.1 ? 0.1 : (View.ZoomingSpeed > 0.95 ? 0.95 : View.ZoomingSpeed);
 
             if (View.Zoom == ZoomingOptions.X || View.Zoom == ZoomingOptions.Xy)
             {
-                foreach (var xi in AxisX)
+                for (var index = 0; index < AxisX.Count; index++)
                 {
+                    var xi = AxisX[index];
+
+                    var px = ChartFunctions.FromPlotArea(pivot.X, AxisOrientation.X, this, index);
+
                     var max = double.IsNaN(xi.View.MaxValue) ? xi.TopLimit : xi.View.MaxValue;
                     var min = double.IsNaN(xi.View.MinValue) ? xi.BotLimit : xi.View.MinValue;
                     var l = max - min;
-                    var rMin = (pivot.X - min) / l;
+                    var rMin = (px - min) / l;
                     var rMax = 1 - rMin;
 
-                    var target = l*(1/speed);
+                    var target = l * (1 / speed);
                     if (target > xi.View.MaxRange) return;
-                    var mint = pivot.X - target * rMin;
-                    var maxt = pivot.X + target * rMax;
+                    var mint = px- target * rMin;
+                    var maxt = px + target * rMax;
                     xi.View.SetRange(mint, maxt);
                 }
             }
 
             if (View.Zoom == ZoomingOptions.Y || View.Zoom == ZoomingOptions.Xy)
             {
-                foreach (var ax in AxisY)
+                for (var index = 0; index < AxisY.Count; index++)
                 {
+                    var ax = AxisY[index];
+
+                    var py = ChartFunctions.FromPlotArea(pivot.Y, AxisOrientation.Y, this, index);
+                    
                     var max = double.IsNaN(ax.View.MaxValue) ? ax.TopLimit : ax.View.MaxValue;
                     var min = double.IsNaN(ax.View.MinValue) ? ax.BotLimit : ax.View.MinValue;
                     var l = max - min;
-                    var rMin = (pivot.Y - min) / l;
+                    var rMin = (py - min) / l;
                     var rMax = 1 - rMin;
 
                     var target = l * (1 / speed);
                     if (target > ax.View.MaxRange) return;
-                    var mint = pivot.Y - target * rMin;
-                    var maxt = pivot.Y + target * rMax;
+                    var mint = py - target * rMin;
+                    var maxt = py + target * rMax;
                     ax.View.SetRange(mint, maxt);
                 }
             }
