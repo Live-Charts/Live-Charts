@@ -1232,9 +1232,6 @@ namespace LiveCharts.Wpf.Charts.Base
             if (Model == null || Model.AxisX == null || Model.AxisY == null) return;
 
             DragOrigin = e.GetPosition(this);
-            DragOrigin = new Point(
-                ChartFunctions.FromPlotArea(DragOrigin.X, AxisOrientation.X, Model),
-                ChartFunctions.FromPlotArea(DragOrigin.Y, AxisOrientation.Y, Model));
             IsPanning = true;
         }
 
@@ -1242,32 +1239,18 @@ namespace LiveCharts.Wpf.Charts.Base
         {
             if (!IsPanning) return;
 
-            if ((Pan == PanningOptions.Unset && Zoom == ZoomingOptions.None) ||
+            if (Pan == PanningOptions.Unset && Zoom == ZoomingOptions.None ||
                 Pan == PanningOptions.None) return;
 
             var end = e.GetPosition(this);
-            end = new Point(
-                ChartFunctions.FromPlotArea(end.X, AxisOrientation.X, Model),
-                ChartFunctions.FromPlotArea(end.Y, AxisOrientation.Y, Model));
 
             Model.Drag(new CorePoint(DragOrigin.X - end.X, DragOrigin.Y - end.Y));
-
-            //DragOrigin = end;
+            DragOrigin = end;
         }
 
         private void OnDraggingEnd(object sender, MouseButtonEventArgs e)
         {
             if (!IsPanning) return;
-
-            //if ((Pan == PanningOptions.Unset && Zoom == ZoomingOptions.None) ||
-            //    Pan == PanningOptions.None) return;
-
-            //var end = e.GetPosition(this);
-            //end = new Point(
-            //    ChartFunctions.FromPlotArea(end.X, AxisOrientation.X, Model),
-            //    ChartFunctions.FromPlotArea(end.Y, AxisOrientation.Y, Model));
-
-            //Model.Drag(new CorePoint(DragOrigin.X - end.X, DragOrigin.Y - end.Y));
             IsPanning = false;
         }
         #endregion

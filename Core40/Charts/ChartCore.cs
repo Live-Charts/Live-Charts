@@ -21,6 +21,7 @@
 //SOFTWARE.
 
 using System;
+using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.Linq;
 using LiveCharts.Definitions.Charts;
@@ -532,7 +533,7 @@ namespace LiveCharts.Charts
         /// <param name="delta">The delta.</param>
         public void Drag(CorePoint delta)
         {
-            if ((View.Pan == PanningOptions.Unset && View.Zoom == ZoomingOptions.None) ||
+            if (View.Pan == PanningOptions.Unset && View.Zoom == ZoomingOptions.None ||
                 View.Pan == PanningOptions.None) return;
 
             var px = View.Pan == PanningOptions.Unset &&
@@ -541,10 +542,14 @@ namespace LiveCharts.Charts
 
             if (px)
             {
-                foreach (var xi in AxisX)
+                for (var index = 0; index < AxisX.Count; index++)
                 {
-                    xi.View.SetRange((double.IsNaN(xi.MinValue) ? xi.BotLimit : xi.MinValue) + delta.X,
-                        (double.IsNaN(xi.MaxValue) ? xi.TopLimit : xi.MaxValue) + delta.X);
+                    var xi = AxisX[index];
+                    var dx = ChartFunctions.FromPlotArea(delta.X, AxisOrientation.X, this, index) -
+                             ChartFunctions.FromPlotArea(0, AxisOrientation.X, this, index);
+
+                    xi.View.SetRange((double.IsNaN(xi.View.MinValue) ? xi.BotLimit : xi.View.MinValue) + dx,
+                        (double.IsNaN(xi.View.MaxValue) ? xi.TopLimit : xi.View.MaxValue) + dx);
                 }
             }
 
@@ -553,10 +558,14 @@ namespace LiveCharts.Charts
             py = py || View.Pan == PanningOptions.Y || View.Pan == PanningOptions.Xy;
             if (py)
             {
-                foreach (var ax in AxisY)
+                for (var index = 0; index < AxisY.Count; index++)
                 {
-                    ax.View.SetRange((double.IsNaN(ax.MinValue) ? ax.BotLimit : ax.MinValue) + delta.Y,
-                        (double.IsNaN(ax.MaxValue) ? ax.TopLimit : ax.MaxValue) + delta.Y);
+                    var ax = AxisY[index];
+                    var dy = ChartFunctions.FromPlotArea(delta.Y, AxisOrientation.Y, this, index) -
+                             ChartFunctions.FromPlotArea(0, AxisOrientation.Y, this, index);
+
+                    ax.View.SetRange((double.IsNaN(ax.View.MinValue) ? ax.BotLimit : ax.View.MinValue) + dy,
+                        (double.IsNaN(ax.View.MaxValue) ? ax.TopLimit : ax.View.MaxValue) + dy);
                 }
             }
         }
