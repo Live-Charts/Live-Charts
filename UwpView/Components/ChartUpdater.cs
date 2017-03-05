@@ -21,7 +21,6 @@
 //SOFTWARE.
 
 using System;
-using System.Diagnostics;
 using Windows.UI.Xaml;
 using LiveCharts.Dtos;
 using LiveCharts.Uwp.Charts.Base;
@@ -34,10 +33,7 @@ namespace LiveCharts.Uwp.Components
         {
             Timer = new DispatcherTimer {Interval = frequency};
 
-            Timer.Tick += (sender, args) =>
-            {
-                UpdaterTick(RequiresRestart, false);
-            };
+            Timer.Tick += OnTimerOnTick;
         }
 
         public DispatcherTimer Timer { get; set; }
@@ -61,6 +57,11 @@ namespace LiveCharts.Uwp.Components
         public override void UpdateFrequency(TimeSpan freq)
         {
             Timer.Interval = freq;
+        }
+
+        public void OnTimerOnTick(object sender, object args)
+        {
+            UpdaterTick(RequiresRestart, false);
         }
 
         private void UpdaterTick(bool restartView, bool force)

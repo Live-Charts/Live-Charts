@@ -117,6 +117,16 @@ namespace LiveCharts.Uwp.Charts.Base
             //DrawMargin.MouseMove += DragSection;
             DrawMargin.PointerMoved += PanOnMouseMove;
             //MouseUp += DisableSectionDragMouseUp;
+
+            Unloaded += (sender, args) =>
+            {
+                //remove updater timer from memory
+                var updater = (Components.ChartUpdater)Model.Updater;
+                updater.Timer.Tick -= updater.OnTimerOnTick;
+                updater.Timer.Stop();
+                //updater.Timer.IsEnabled = false;
+                updater.Timer = null;
+            };
         }
 
         static Chart()

@@ -34,10 +34,7 @@ namespace LiveCharts.Wpf.Components
         {
             Timer = new DispatcherTimer {Interval = frequency};
 
-            Timer.Tick += (sender, args) =>
-            {
-                UpdaterTick(RequiresRestart, false);
-            };
+            Timer.Tick += OnTimerOnTick;
         }
 
         public DispatcherTimer Timer { get; set; }
@@ -61,6 +58,11 @@ namespace LiveCharts.Wpf.Components
         public override void UpdateFrequency(TimeSpan freq)
         {
             Timer.Interval = freq;
+        }
+
+        public void OnTimerOnTick(object sender, EventArgs args)
+        {
+            UpdaterTick(RequiresRestart, false);
         }
 
         private void UpdaterTick(bool restartView, bool force)
