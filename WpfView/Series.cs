@@ -532,7 +532,6 @@ namespace LiveCharts.Wpf
 
             CallChartUpdater()(dependencyObject, dependencyPropertyChangedEventArgs);
             series.LastKnownValues = series.Values;
-            var quePedo = series.LastKnownValues.GetHashCode() == series.Values.GetHashCode();
         }
 
         /// <summary>
