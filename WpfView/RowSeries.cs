@@ -72,7 +72,7 @@ namespace LiveCharts.Wpf
         /// The maximum row heigth property
         /// </summary>
         public static readonly DependencyProperty MaxRowHeigthProperty = DependencyProperty.Register(
-            "MaxRowHeigth", typeof (double), typeof (RowSeries), new PropertyMetadata(default(double)));
+            "MaxRowHeigth", typeof (double), typeof (RowSeries), new PropertyMetadata(35d));
         /// <summary>
         /// Gets or sets the maximum row height, the height of a column will be capped at this value
         /// </summary>
@@ -86,7 +86,7 @@ namespace LiveCharts.Wpf
         /// The row padding property
         /// </summary>
         public static readonly DependencyProperty RowPaddingProperty = DependencyProperty.Register(
-            "RowPadding", typeof (double), typeof (RowSeries), new PropertyMetadata(true));
+            "RowPadding", typeof (double), typeof (RowSeries), new PropertyMetadata(2d));
         /// <summary>
         /// Gets or sets the padding between rows in this series
         /// </summary>

@@ -429,11 +429,11 @@ namespace LiveCharts.Wpf
         /// The bar unit property
         /// </summary>
         public static readonly DependencyProperty BarUnitProperty = DependencyProperty.Register(
-            "BarUnit", typeof(double), typeof(Axis), new PropertyMetadata(1d));
+            "BarUnit", typeof(double), typeof(Axis), new PropertyMetadata(double.NaN));
         /// <summary>
         /// Gets or sets the bar's series unit width (rows and columns), this property specifies the value in the chart that any bar should take as width.
         /// </summary>
-        [Obsolete("Please use Unit property instead.")]
+        [Obsolete("PThis property was renamed, please use Unit property instead.")]
         public double BarUnit
         {
             get { return (double) GetValue(BarUnitProperty); }
@@ -444,7 +444,7 @@ namespace LiveCharts.Wpf
         /// The unit property
         /// </summary>
         public static readonly DependencyProperty UnitProperty = DependencyProperty.Register(
-            "Unit", typeof(double), typeof(Axis), new PropertyMetadata(1d));
+            "Unit", typeof(double), typeof(Axis), new PropertyMetadata(double.NaN));
         /// <summary>
         /// Gets or sets the axis unit, setting this property to your actual scale unit (seconds, minutes or any other scale) helps you to fix possible visual issues.
         /// </summary>

@@ -71,7 +71,7 @@ namespace LiveCharts.Wpf
         /// The maximum column width property
         /// </summary>
         public static readonly DependencyProperty MaxColumnWidthProperty = DependencyProperty.Register(
-            "MaxColumnWidth", typeof (double), typeof (ColumnSeries), new PropertyMetadata(default(double)));
+            "MaxColumnWidth", typeof (double), typeof (ColumnSeries), new PropertyMetadata(35d));
         /// <summary>
         /// Gets or sets the MaxColumnWidht in pixels, the column width will be capped at this value.
         /// </summary>
@@ -85,7 +85,7 @@ namespace LiveCharts.Wpf
         /// The column padding property
         /// </summary>
         public static readonly DependencyProperty ColumnPaddingProperty = DependencyProperty.Register(
-            "ColumnPadding", typeof (double), typeof (ColumnSeries), new PropertyMetadata(default(double)));
+            "ColumnPadding", typeof (double), typeof (ColumnSeries), new PropertyMetadata(2d));
         /// <summary>
         /// Gets or sets the padding between the columns in the series.
         /// </summary>
