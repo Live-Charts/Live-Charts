@@ -259,8 +259,7 @@ namespace LiveCharts.Wpf
         /// </summary>
         public override void PlaceSpecializedElements()
         {
-            if (!DrawsHeatRange)
-            { return; }
+            if (!DrawsHeatRange) return;
 
             ColorRangeControl.UpdateFill(GradientStopCollection);
 

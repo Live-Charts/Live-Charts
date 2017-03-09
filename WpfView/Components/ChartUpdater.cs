@@ -34,10 +34,7 @@ namespace LiveCharts.Wpf.Components
         {
             Timer = new DispatcherTimer {Interval = frequency};
 
-            Timer.Tick += (sender, args) =>
-            {
-                UpdaterTick(RequiresRestart);
-            };
+            Timer.Tick += OnTimerOnTick;
         }
 
         public DispatcherTimer Timer { get; set; }
@@ -45,9 +42,9 @@ namespace LiveCharts.Wpf.Components
 
         public override void Run(bool restartView = false, bool updateNow = false)
         {
-            if (updateNow || Chart.View.IsMocked)
+            if (updateNow)
             {
-                UpdaterTick(restartView);
+                UpdaterTick(restartView, true);
                 return;
             }
 
@@ -63,17 +60,23 @@ namespace LiveCharts.Wpf.Components
             Timer.Interval = freq;
         }
 
-        private void UpdaterTick(bool restartView)
+        public void OnTimerOnTick(object sender, EventArgs args)
+        {
+            UpdaterTick(RequiresRestart, false);
+        }
+
+        private void UpdaterTick(bool restartView, bool force)
         {
             var wpfChart = (Chart) Chart.View;
-            if (!wpfChart.IsVisible && !wpfChart.IsMocked) return;
+            
+            if (!force && !wpfChart.IsVisible && !wpfChart.IsMocked) return;
 
             Chart.ControlSize = wpfChart.IsMocked
                 ? wpfChart.Model.ControlSize
                 : new CoreSize(wpfChart.ActualWidth, wpfChart.ActualHeight);
 
             Timer.Stop();
-            Update(restartView);
+            Update(restartView, force);
             IsUpdating = false;
 
             RequiresRestart = false;

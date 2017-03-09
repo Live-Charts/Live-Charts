@@ -107,7 +107,18 @@ namespace LiveCharts.Wpf.Charts.Base
             DrawMargin.MouseDown += OnDraggingStart;
             DrawMargin.MouseUp += OnDraggingEnd;
             DrawMargin.MouseMove += DragSection;
+            DrawMargin.MouseMove += PanOnMouseMove;
             MouseUp += DisableSectionDragMouseUp;
+
+            Unloaded += (sender, args) =>
+            {
+                //remove updater timer from memory
+                var updater = (Components.ChartUpdater) Model.Updater;
+                updater.Timer.Tick -= updater.OnTimerOnTick;
+                updater.Timer.Stop();
+                updater.Timer.IsEnabled = false;
+                updater.Timer = null;
+            };
         }
 
         static Chart()
@@ -128,7 +139,8 @@ namespace LiveCharts.Wpf.Charts.Base
         private void OnSizeChanged(object sender, SizeChangedEventArgs args)
         {
             Model.ControlSize = new CoreSize(ActualWidth, ActualHeight);
-            Canvas.Clip = new RectangleGeometry(new Rect(new Point(0,0), new Size(ActualWidth, ActualHeight)));
+            if (!(this is IPieChart))
+                Canvas.Clip = new RectangleGeometry(new Rect(new Point(0,0), new Size(ActualWidth, ActualHeight)));
             Model.Updater.Run();
         }
 
@@ -791,7 +803,7 @@ namespace LiveCharts.Wpf.Charts.Base
         /// <returns></returns>
         public List<AxisCore> MapXAxes(ChartCore chart)
         {
-            if (DesignerProperties.GetIsInDesignMode(this) || AxisX == null)
+            if (DesignerProperties.GetIsInDesignMode(this) && AxisX == null)
                 AxisX = DefaultAxes.DefaultAxis;
 
             if (AxisX.Count == 0)
@@ -818,7 +830,7 @@ namespace LiveCharts.Wpf.Charts.Base
         /// <returns></returns>
         public List<AxisCore> MapYAxes(ChartCore chart)
         {
-            if (DesignerProperties.GetIsInDesignMode(this) || AxisY == null)
+            if (DesignerProperties.GetIsInDesignMode(this) && AxisY == null)
                 AxisY = DefaultAxes.DefaultAxis;
 
             if (AxisY.Count == 0)
@@ -1230,25 +1242,25 @@ namespace LiveCharts.Wpf.Charts.Base
             if (Model == null || Model.AxisX == null || Model.AxisY == null) return;
 
             DragOrigin = e.GetPosition(this);
-            DragOrigin = new Point(
-                ChartFunctions.FromPlotArea(DragOrigin.X, AxisOrientation.X, Model),
-                ChartFunctions.FromPlotArea(DragOrigin.Y, AxisOrientation.Y, Model));
             IsPanning = true;
+        }
+
+        private void PanOnMouseMove(object sender, MouseEventArgs e)
+        {
+            if (!IsPanning) return;
+
+            if (Pan == PanningOptions.Unset && Zoom == ZoomingOptions.None ||
+                Pan == PanningOptions.None) return;
+
+            var end = e.GetPosition(this);
+
+            Model.Drag(new CorePoint(DragOrigin.X - end.X, DragOrigin.Y - end.Y));
+            DragOrigin = end;
         }
 
         private void OnDraggingEnd(object sender, MouseButtonEventArgs e)
         {
             if (!IsPanning) return;
-
-            if ((Pan == PanningOptions.Unset && Zoom == ZoomingOptions.None) ||
-                Pan == PanningOptions.None) return;
-
-            var end = e.GetPosition(this);
-            end = new Point(
-                ChartFunctions.FromPlotArea(end.X, AxisOrientation.X, Model),
-                ChartFunctions.FromPlotArea(end.Y, AxisOrientation.Y, Model));
-
-            Model.Drag(new CorePoint(DragOrigin.X - end.X, DragOrigin.Y - end.Y));
             IsPanning = false;
         }
         #endregion

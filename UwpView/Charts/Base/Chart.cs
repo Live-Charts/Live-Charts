@@ -115,7 +115,18 @@ namespace LiveCharts.Uwp.Charts.Base
             DrawMargin.PointerPressed += OnDraggingStart;
             DrawMargin.PointerReleased += OnDraggingEnd;
             //DrawMargin.MouseMove += DragSection;
+            DrawMargin.PointerMoved += PanOnMouseMove;
             //MouseUp += DisableSectionDragMouseUp;
+
+            Unloaded += (sender, args) =>
+            {
+                //remove updater timer from memory
+                var updater = (Components.ChartUpdater)Model.Updater;
+                updater.Timer.Tick -= updater.OnTimerOnTick;
+                updater.Timer.Stop();
+                //updater.Timer.IsEnabled = false;
+                updater.Timer = null;
+            };
         }
 
         static Chart()
@@ -137,10 +148,11 @@ namespace LiveCharts.Uwp.Charts.Base
         private void OnSizeChanged(object sender, SizeChangedEventArgs args)
         {
             Model.ControlSize = new CoreSize(ActualWidth, ActualHeight);
-            Canvas.Clip = new RectangleGeometry
-            {
-                Rect = new Rect(new Point(0, 0), new Size(ActualWidth, ActualHeight))
-            };
+            if (!(this is IPieChart))
+                Canvas.Clip = new RectangleGeometry
+                {
+                    Rect = new Rect(new Point(0, 0), new Size(ActualWidth, ActualHeight))
+                };
             Model.Updater.Run();
         }
 
@@ -1273,25 +1285,25 @@ namespace LiveCharts.Uwp.Charts.Base
             if (Model?.AxisX == null || Model.AxisY == null) return;
 
             DragOrigin = e.GetCurrentPoint(this).Position;
-            DragOrigin = new Point(
-                ChartFunctions.FromPlotArea(DragOrigin.X, AxisOrientation.X, Model),
-                ChartFunctions.FromPlotArea(DragOrigin.Y, AxisOrientation.Y, Model));
             IsPanning = true;
+        }
+
+        private void PanOnMouseMove(object sender, PointerRoutedEventArgs e)
+        {
+            if (!IsPanning) return;
+
+            if (Pan == PanningOptions.Unset && Zoom == ZoomingOptions.None ||
+                Pan == PanningOptions.None) return;
+
+            var end = e.GetCurrentPoint(this).Position;
+            
+            Model.Drag(new CorePoint(DragOrigin.X - end.X, DragOrigin.Y - end.Y));
+            DragOrigin = end;
         }
 
         private void OnDraggingEnd(object sender, PointerRoutedEventArgs e)
         {
             if (!IsPanning) return;
-
-            if ((Pan == PanningOptions.Unset && Zoom == ZoomingOptions.None) ||
-                Pan == PanningOptions.None) return;
-
-            var end = e.GetCurrentPoint(this).Position;
-            end = new Point(
-                ChartFunctions.FromPlotArea(end.X, AxisOrientation.X, Model),
-                ChartFunctions.FromPlotArea(end.Y, AxisOrientation.Y, Model));
-
-            Model.Drag(new CorePoint(DragOrigin.X - end.X, DragOrigin.Y - end.Y));
             IsPanning = false;
         }
 

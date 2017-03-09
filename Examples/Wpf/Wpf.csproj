@@ -88,6 +88,12 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="CartesianChart\Chart to Image\ChartToImageSample.xaml.cs">
+      <DependentUpon>ChartToImageSample.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CartesianChart\DataLabelTemplate\DataLabelTemplateSample.xaml.cs">
+      <DependentUpon>DataLabelTemplateSample.xaml</DependentUpon>
+    </Compile>
     <Compile Include="CartesianChart\Energy Predictions\EnergyPredictionExample.xaml.cs">
       <DependentUpon>EnergyPredictionExample.xaml</DependentUpon>
     </Compile>
@@ -135,6 +141,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="CartesianChart\Chart to Image\ChartToImageSample.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="CartesianChart\Customized Series\CustomizedLineSeries.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -148,6 +158,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="CartesianChart\CustomTooltipAndLegend\CustomTooltipAndLegendExample.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CartesianChart\DataLabelTemplate\DataLabelTemplateSample.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -498,6 +512,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="PieChart\DropDowns\PieDropDownSample.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="PieChart\PieChartExample.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -522,6 +540,14 @@
     <Compile Include="PanelExample.xaml.cs">
       <DependentUpon>PanelExample.xaml</DependentUpon>
     </Compile>
+    <Compile Include="PieChart\DropDowns\DataProvider.cs" />
+    <Compile Include="PieChart\DropDowns\DropDownCommand.cs" />
+    <Compile Include="PieChart\DropDowns\DropDownViewModel.cs" />
+    <Compile Include="PieChart\DropDowns\PieDropDownSample.xaml.cs">
+      <DependentUpon>PieDropDownSample.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PieChart\DropDowns\PiePoint.cs" />
+    <Compile Include="PieChart\DropDowns\RelayCommand.cs" />
     <Compile Include="PieChart\PieChartExample.xaml.cs">
       <DependentUpon>PieChartExample.xaml</DependentUpon>
     </Compile>

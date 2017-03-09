@@ -53,13 +53,6 @@ namespace LiveCharts.Definitions.Charts
         event DataHoverHandler DataHover;
 
         /// <summary>
-        /// Gets or sets a value indicating whether this instance is mocked.
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if this instance is mocked; otherwise, <c>false</c>.
-        /// </value>
-        bool IsMocked { get; set; }
-        /// <summary>
         /// Gets or sets the series.
         /// </summary>
         /// <value>

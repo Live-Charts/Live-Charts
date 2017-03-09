@@ -261,6 +261,8 @@ namespace LiveCharts.Uwp
         /// </summary>
         public override void PlaceSpecializedElements()
         {
+            if (!DrawsHeatRange) return;
+
             if (DrawsHeatRange)
             {
                 ColorRangeControl.UpdateFill(GradientStopCollection);

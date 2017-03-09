@@ -111,6 +111,20 @@ namespace LiveCharts.Uwp
             set { SetValue(LabelsPositionProperty, value); }
         }
 
+        /// <summary>
+        /// The shares position property
+        /// </summary>
+        public static readonly DependencyProperty SharesPositionProperty = DependencyProperty.Register(
+            "SharesPosition", typeof(bool), typeof(ColumnSeries), new PropertyMetadata(true));
+        /// <summary>
+        /// Gets or sets a value indicating whether this column shares space with all the column series in the same position
+        /// </summary>
+        public bool SharesPosition
+        {
+            get { return (bool)GetValue(SharesPositionProperty); }
+            set { SetValue(SharesPositionProperty, value); }
+        }
+
         #endregion
 
         #region Overridden Methods

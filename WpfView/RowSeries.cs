@@ -72,7 +72,7 @@ namespace LiveCharts.Wpf
         /// The maximum row heigth property
         /// </summary>
         public static readonly DependencyProperty MaxRowHeigthProperty = DependencyProperty.Register(
-            "MaxRowHeigth", typeof (double), typeof (RowSeries), new PropertyMetadata(default(double)));
+            "MaxRowHeigth", typeof (double), typeof (RowSeries), new PropertyMetadata(35d));
         /// <summary>
         /// Gets or sets the maximum row height, the height of a column will be capped at this value
         /// </summary>
@@ -86,7 +86,7 @@ namespace LiveCharts.Wpf
         /// The row padding property
         /// </summary>
         public static readonly DependencyProperty RowPaddingProperty = DependencyProperty.Register(
-            "RowPadding", typeof (double), typeof (RowSeries), new PropertyMetadata(default(double)));
+            "RowPadding", typeof (double), typeof (RowSeries), new PropertyMetadata(2d));
         /// <summary>
         /// Gets or sets the padding between rows in this series
         /// </summary>
@@ -110,6 +110,24 @@ namespace LiveCharts.Wpf
             get { return (BarLabelPosition)GetValue(LabelsPositionProperty); }
             set { SetValue(LabelsPositionProperty, value); }
         }
+
+        /// <summary>
+        /// The shares position property
+        /// </summary>
+        public static readonly DependencyProperty SharesPositionProperty = DependencyProperty.Register(
+            "SharesPosition", typeof(bool), typeof(RowSeries), new PropertyMetadata(default(bool)));
+        /// <summary>
+        /// Gets or sets a value indicating whether this row shares space with all the row series in the same position
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if [shares position]; otherwise, <c>false</c>.
+        /// </value>
+        public bool SharesPosition
+        {
+            get { return (bool)GetValue(SharesPositionProperty); }
+            set { SetValue(SharesPositionProperty, value); }
+        }
+
         #endregion
 
         #region Overridden Methods
