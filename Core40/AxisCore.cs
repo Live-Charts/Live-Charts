@@ -283,6 +283,8 @@ namespace LiveCharts
             
             for (var i = bl; i <= TopLimit - (EvaluatesUnitWidth ? u : 0); i += S)
             {
+                if (i < BotLimit) continue;
+
                 LastSeparator = i;
                 SeparatorElementCore asc;
 
