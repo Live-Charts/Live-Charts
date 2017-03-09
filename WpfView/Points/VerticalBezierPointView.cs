@@ -73,6 +73,11 @@ namespace LiveCharts.Wpf.Points
                             Canvas.SetTop(Shape, current.ChartLocation.Y - Shape.Height * .5);
                             Canvas.SetLeft(Shape, 0);
                         }
+                        if (DataLabel != null)
+                        {
+                            Canvas.SetTop(DataLabel, current.ChartLocation.Y - DataLabel.ActualHeight * .5);
+                            Canvas.SetLeft(DataLabel, 0);
+                        }
                     }
                     else
                     {
@@ -86,12 +91,11 @@ namespace LiveCharts.Wpf.Points
                             Canvas.SetTop(Shape, startPoint.Y - Shape.Height * .5);
                             Canvas.SetLeft(Shape,  startPoint.X);
                         }
-                    }
-
-                    if (DataLabel != null)
-                    {
-                        Canvas.SetTop(DataLabel, current.ChartLocation.Y - DataLabel.ActualHeight*.5);
-                        Canvas.SetLeft(DataLabel, 0);
+                        if (DataLabel != null)
+                        {
+                            Canvas.SetTop(DataLabel, startPoint.Y - DataLabel.ActualHeight * .5);
+                            Canvas.SetLeft(DataLabel, startPoint.X);
+                        }
                     }
                 }
             }
