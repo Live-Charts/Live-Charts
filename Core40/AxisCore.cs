@@ -22,7 +22,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Globalization;
 using System.Linq;
 using LiveCharts.Charts;
@@ -271,12 +270,18 @@ namespace LiveCharts
                 : (!double.IsNaN(View.Unit)
                     ? View.Unit
                     : Magnitude);
-            
+
+            var u = !double.IsNaN(View.BarUnit)
+                ? View.BarUnit
+                : (!double.IsNaN(View.Unit)
+                    ? View.Unit
+                    : 1);
+
             var bl = Math.Truncate(BotLimit / m) * m;
 
             FirstSeparator = bl;
             
-            for (var i = bl; i <= TopLimit - (EvaluatesUnitWidth ? 1 : 0); i += S)
+            for (var i = bl; i <= TopLimit - (EvaluatesUnitWidth ? u : 0); i += S)
             {
                 LastSeparator = i;
                 SeparatorElementCore asc;

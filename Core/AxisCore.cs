@@ -271,11 +271,17 @@ namespace LiveCharts
                     ? View.Unit
                     : Magnitude);
 
-            var bl = Math.Ceiling(BotLimit/m)*m;
+            var u = !double.IsNaN(View.BarUnit)
+                ? View.BarUnit
+                : (!double.IsNaN(View.Unit)
+                    ? View.Unit
+                    : 1);
+
+            var bl = Math.Truncate(BotLimit / m) * m;
 
             FirstSeparator = bl;
-
-            for (var i = bl; i <= TopLimit - (EvaluatesUnitWidth ? 1 : 0); i += S)
+            
+            for (var i = bl; i <= TopLimit - (EvaluatesUnitWidth ? u : 0); i += S)
             {
                 LastSeparator = i;
                 SeparatorElementCore asc;
