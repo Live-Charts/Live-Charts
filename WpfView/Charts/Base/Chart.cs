@@ -112,8 +112,8 @@ namespace LiveCharts.Wpf.Charts.Base
 
             Unloaded += (sender, args) =>
             {
-                //remove updater timer from memory
                 var updater = (Components.ChartUpdater) Model.Updater;
+                if (updater.Timer == null) return;
                 updater.Timer.Tick -= updater.OnTimerOnTick;
                 updater.Timer.Stop();
                 updater.Timer.IsEnabled = false;
