@@ -80,6 +80,7 @@ namespace LiveCharts.Wpf
         /// <summary>
         /// Gets or sets the name, the title of the section, a visual element will be added to the chart if this property is not null.
         /// </summary>
+        [Obsolete("Use a VisualElement instead")]
         public string Label
         {
             get { return (string)GetValue(LabelProperty); }

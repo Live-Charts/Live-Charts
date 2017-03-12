@@ -18,6 +18,7 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
+using System;
 using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -73,6 +74,7 @@ namespace LiveCharts.Uwp
         /// <summary>
         /// Gets or sets the name, the title of the section, a visual element will be added to the chart if this property is not null.
         /// </summary>
+        [Obsolete("Use a VisualElement instead")]
         public string Label
         {
             get { return (string) GetValue(LabelProperty); }
