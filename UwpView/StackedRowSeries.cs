@@ -192,8 +192,7 @@ namespace LiveCharts.Uwp
                 {
                     FormattedText = label,
                     Instance = point.Instance
-                });
-                Canvas.SetZIndex(pbv.DataLabel, short.MaxValue - 1);
+                }, pbv.DataLabel);
 
                 Model.Chart.View.AddToDrawMargin(pbv.DataLabel);
             }

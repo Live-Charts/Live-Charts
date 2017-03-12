@@ -170,10 +170,7 @@ namespace LiveCharts.Uwp
                 {
                     FormattedText = label,
                     Instance = point.Instance
-                });
-                Canvas.SetZIndex(pbv.DataLabel, short.MaxValue - 1);
-
-                Model.Chart.View.AddToDrawMargin(pbv.DataLabel);
+                }, pbv.DataLabel);
             }
 
             if (point.Stroke != null) pbv.Shape.Stroke = (Brush)point.Stroke;
