@@ -186,7 +186,7 @@ namespace LiveCharts.Wpf
             "MaxValue", typeof (double), typeof (Axis), 
             new PropertyMetadata(double.NaN, UpdateChart()));
         /// <summary>
-        /// Gets or sets axis max value, set it to null to make this property Auto, default value is null
+        /// Gets or sets axis max value, set it to double.NaN to make this property Auto, default value is double.NaN
         /// </summary>
         public double MaxValue
         {
@@ -201,7 +201,7 @@ namespace LiveCharts.Wpf
             "MinValue", typeof (double), typeof (Axis),
             new PropertyMetadata(double.NaN, UpdateChart()));
         /// <summary>
-        /// Gets or sets axis min value, set it to null to make this property Auto, default value is null
+        /// Gets or sets axis min value, set it to double.NaN to make this property Auto, default value is double.NaN
         /// </summary>
         public double MinValue
         {
