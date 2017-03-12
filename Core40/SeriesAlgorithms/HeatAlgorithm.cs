@@ -156,7 +156,7 @@ namespace LiveCharts.SeriesAlgorithms
             for (var i = 0; i < gradients.Count; i++)
             {
                 // ReSharper disable once InvertIf
-                if (gradients[i].Offset <= weight && gradients[i + 1].Offset >= weight)
+                if (double.IsNaN(weight) || gradients[i].Offset <= weight && gradients[i + 1].Offset >= weight)
                 {
                     from = gradients[i].Color;
                     to = gradients[i + 1].Color;

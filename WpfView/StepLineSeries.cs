@@ -223,10 +223,7 @@ namespace LiveCharts.Wpf
                 {
                     FormattedText = label,
                     Instance = point.Instance
-                });
-                Panel.SetZIndex(pbv.DataLabel, int.MaxValue - 1);
-
-                Model.Chart.View.AddToDrawMargin(pbv.DataLabel);
+                }, pbv.DataLabel);
             }
 
             return pbv;
