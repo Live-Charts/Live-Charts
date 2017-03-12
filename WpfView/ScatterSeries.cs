@@ -176,7 +176,7 @@ namespace LiveCharts.Wpf
 
             if (DataLabels)
             {
-                pbv.DataLabel = UpdateLabelContent1(new DataLabelViewModel
+                pbv.DataLabel = UpdateLabelContent(new DataLabelViewModel
                 {
                     FormattedText = label,
                     Instance = point.Instance
