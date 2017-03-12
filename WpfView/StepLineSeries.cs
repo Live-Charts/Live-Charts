@@ -217,9 +217,9 @@ namespace LiveCharts.Wpf
 
             if (pbv.HoverShape != null) pbv.HoverShape.Visibility = Visibility;
 
-            if (DataLabels && pbv.DataLabel == null)
+            if (DataLabels)
             {
-                pbv.DataLabel = UpdateLabelContent(new DataLabelViewModel
+                pbv.DataLabel = UpdateLabelContent1(new DataLabelViewModel
                 {
                     FormattedText = label,
                     Instance = point.Instance

@@ -194,9 +194,9 @@ namespace LiveCharts.Wpf
                 if (point.Fill != null) pbv.Shape.Fill = (Brush)point.Fill;
             }
 
-            if (DataLabels && pbv.DataLabel == null)
+            if (DataLabels )
             {
-                pbv.DataLabel = UpdateLabelContent(new DataLabelViewModel
+                pbv.DataLabel = UpdateLabelContent1(new DataLabelViewModel
                 {
                     FormattedText = label,
                     Instance = point.Instance
