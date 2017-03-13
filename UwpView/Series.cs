@@ -388,7 +388,7 @@ namespace LiveCharts.Uwp
 
         #region Internal Helpers
 
-        internal ContentControl UpdateLabelContent1(DataLabelViewModel content, ContentControl currentControl)
+        internal ContentControl UpdateLabelContent(DataLabelViewModel content, ContentControl currentControl)
         {
             ContentControl control;
 

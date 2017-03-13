@@ -158,7 +158,7 @@ namespace LiveCharts.Uwp
 
             if (pbv.HoverShape != null) pbv.HoverShape.Visibility = Visibility;
 
-            if (DataLabels && pbv.DataLabel == null)
+            if (DataLabels)
             {
                 pbv.DataLabel = UpdateLabelContent(new DataLabelViewModel
                 {
