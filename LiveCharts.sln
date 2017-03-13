@@ -23,10 +23,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UWP", "Examples\UWP\UWP.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core40", "Core40\Core40.csproj", "{F261C3D7-6194-4625-9516-044081B06028}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LiveChartsTesterGuy", "..\..\..\..\..\LocalProjects\LiveChartsTesterGuy\LiveChartsTesterGuy\LiveChartsTesterGuy.csproj", "{77D449D4-CD7F-4A94-AEF3-66C4183D4FCA}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LiveChartsTesterWinForms", "..\..\..\..\..\LocalProjects\LiveChartsTesterGuy\LiveChartsTesterWinForms\LiveChartsTesterWinForms.csproj", "{252FFEF2-0BE1-4BE6-A245-06BAD448C953}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
