@@ -4,55 +4,33 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+             xmlns:uiElements="clr-namespace:Wpf.CartesianChart.UIElements"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
+    <UserControl.DataContext>
+        <uiElements:UiElementsViewModel></uiElements:UiElementsViewModel>
+    </UserControl.DataContext>
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="*"></RowDefinition>
-        </Grid.RowDefinitions>
-        <TextBlock>
-            <TextBlock >Mouse at: </TextBlock>
-            <TextBlock Name="X"></TextBlock>
-            <TextBlock >, </TextBlock>
-            <TextBlock Name="Y"></TextBlock>
-        </TextBlock>
-        <lvc:CartesianChart Grid.Row="1" Name="Chart" >
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <ListBox Width="120" Margin="10" ItemsSource="{Binding Values}" 
+                 SelectedItem="{Binding SelectedPoint, Mode=TwoWay}">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding DateTime, StringFormat={}{0:dd MMM}}"/>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        <lvc:CartesianChart Grid.Column="1" VisualElements="{Binding Visuals}">
             <lvc:CartesianChart.Series>
-                <lvc:LineSeries Values="4,6,6,3,5" Fill="Transparent" StrokeThickness="4" 
-                                Panel.ZIndex="2" PointGeometry="{x:Null}"/>
-                <lvc:ColumnSeries Values="2,6,8,9, 4" Panel.ZIndex="1"/>
+                <lvc:LineSeries Values="{Binding Values}" PointGeometry="{x:Null}" Fill="Transparent"></lvc:LineSeries>
             </lvc:CartesianChart.Series>
-            <lvc:CartesianChart.VisualElements>
-                <lvc:VisualElement X="0.5" Y="7" 
-                                   HorizontalAlignment="Center" VerticalAlignment="Top">
-                    <lvc:VisualElement.UIElement>
-                        <TextBlock FontWeight="Bold" FontSize="16" Opacity=".6">
-                           Warning!
-                        </TextBlock>
-                    </lvc:VisualElement.UIElement>
-                </lvc:VisualElement>
-                <lvc:VisualElement X="0.5" Y="6.9" 
-                                   HorizontalAlignment="Center" VerticalAlignment="Bottom">
-                    <lvc:VisualElement.UIElement>
-                       <Image Source="warning.png" Height="24" Width="24"></Image>
-                    </lvc:VisualElement.UIElement>
-                </lvc:VisualElement>
-            </lvc:CartesianChart.VisualElements>
-            <lvc:CartesianChart.AxisY>
-                <lvc:Axis IsMerged="True">
-                    <lvc:Axis.Sections>
-                        <lvc:AxisSection Value="7" 
-                                         Stroke="YellowGreen" 
-                                         StrokeThickness="3" 
-                                         StrokeDashArray="10"/>
-                    </lvc:Axis.Sections>
-                </lvc:Axis>
-            </lvc:CartesianChart.AxisY>
             <lvc:CartesianChart.AxisX>
-                <lvc:Axis Labels="Jan, Feb, Mar, Abr, May">
+                <lvc:Axis LabelFormatter="{Binding Formatter}" LabelsRotation="-90">
                     <lvc:Axis.Separator>
-                        <lvc:Separator Step="1"></lvc:Separator>
+                        <lvc:Separator Step="{Binding Step}"/>
                     </lvc:Axis.Separator>
                 </lvc:Axis>
             </lvc:CartesianChart.AxisX>

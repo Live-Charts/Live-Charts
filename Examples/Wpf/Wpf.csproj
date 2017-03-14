@@ -123,6 +123,17 @@
     <Compile Include="CartesianChart\ThreadSafe\ThreadSafeExample.xaml.cs">
       <DependentUpon>ThreadSafeExample.xaml</DependentUpon>
     </Compile>
+    <Compile Include="CartesianChart\UIElements\DataGenerator.cs" />
+    <Compile Include="CartesianChart\UIElements\EventAControl.xaml.cs">
+      <DependentUpon>EventAControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CartesianChart\UIElements\EventBControl.xaml.cs">
+      <DependentUpon>EventBControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CartesianChart\UIElements\SelectedItemControl.xaml.cs">
+      <DependentUpon>SelectedItemControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CartesianChart\UIElements\UiElementsViewModel.cs" />
     <Compile Include="Home\SampleGroupVm.cs" />
     <Compile Include="Home\SampleVm.cs" />
     <Page Include="CartesianChart\Basic Bars\BasicColumn.xaml">
@@ -322,6 +333,18 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="CartesianChart\StackedArea\StackedAreaExample.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CartesianChart\UIElements\EventAControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CartesianChart\UIElements\EventBControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CartesianChart\UIElements\SelectedItemControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -575,7 +598,6 @@
     <Content Include="Maps\World.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Resource Include="CartesianChart\UIElements\warning.png" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
