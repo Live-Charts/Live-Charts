@@ -9,9 +9,9 @@
              d:DesignHeight="300" d:DesignWidth="500" 
              d:DataContext="{d:DesignInstance local:PieChartExample}">
     <Grid>
-        <lvc:PieChart LegendLocation="Bottom">
+        <lvc:PieChart LegendLocation="Bottom" DataClick="Chart_OnDataClick" Hoverable="False" DataTooltip="{x:Null}">
             <lvc:PieChart.Series>
-                <lvc:PieSeries Title="Maria" Values="3" DataLabels="True" PushOut="20" 
+                <lvc:PieSeries Title="Maria" Values="3" DataLabels="True"
                                LabelPoint="{Binding PointLabel}"/>
                 <lvc:PieSeries Title="Charles" Values="4" DataLabels="True" 
                                LabelPoint="{Binding PointLabel}"/>
