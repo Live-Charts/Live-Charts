@@ -248,6 +248,18 @@ namespace LiveCharts.WinForms
             get { return WpfBase.UpdaterState; }
             set { WpfBase.UpdaterState = value; }
         }
+
+        /// <summary>
+        /// Gets or sets the units that a slice is pushed out when a user moves the mouse over data point.
+        /// </summary>
+        /// <value>
+        /// The hover push out.
+        /// </value>
+        public double HoverPushOut
+        {
+            get { return WpfBase.HoverPushOut; }
+            set { WpfBase.HoverPushOut = value; }
+        }
         #endregion
 
         #region Methods
