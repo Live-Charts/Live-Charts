@@ -255,6 +255,7 @@ namespace LiveCharts.WinForms
         /// <value>
         /// The hover push out.
         /// </value>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public double HoverPushOut
         {
             get { return WpfBase.HoverPushOut; }
