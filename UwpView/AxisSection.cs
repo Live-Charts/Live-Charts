@@ -19,13 +19,14 @@
 //SOFTWARE.
 
 using System;
-using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Shapes;
 using LiveCharts.Definitions.Charts;
+using LiveCharts.Dtos;
+using LiveCharts.Helpers;
 using LiveCharts.Uwp.Components;
 
 namespace LiveCharts.Uwp
@@ -36,7 +37,8 @@ namespace LiveCharts.Uwp
     public class AxisSection : FrameworkElement, IAxisSectionView
     {
         private readonly Rectangle _rectangle;
-        private readonly TextBlock _label;
+        private TextBlock _label;
+        internal static AxisSection Dragging;
 
         /// <summary>
         /// Initializes a new instance of AxisSection class
@@ -44,8 +46,7 @@ namespace LiveCharts.Uwp
         public AxisSection()
         {
             _rectangle = new Rectangle();
-            _label = new TextBlock();
-
+            
             //_rectangle.MouseDown += (sender, args) =>
             //{
             //    if (!Draggable) return;
@@ -54,10 +55,12 @@ namespace LiveCharts.Uwp
             //    Chart.Ldsp = null;
             //};
 
-            BindingOperations.SetBinding(_label, TextBlock.TextProperty,
-                new Binding {Path = new PropertyPath(nameof(Label)), Source = this});
+            //SetCurrentValue(StrokeProperty, new SolidColorBrush(Color.FromRgb(131, 172, 191)));
+            //SetCurrentValue(FillProperty, new SolidColorBrush(Color.FromRgb(131, 172, 191)) {Opacity = .35});
+            //SetCurrentValue(StrokeThicknessProperty, 0d);
         }
 
+        #region Properties
         /// <summary>
         /// Gets or sets the model.
         /// </summary>
@@ -70,28 +73,60 @@ namespace LiveCharts.Uwp
         /// The label property
         /// </summary>
         public static readonly DependencyProperty LabelProperty = DependencyProperty.Register(
-            "Label", typeof (string), typeof (AxisSection), new PropertyMetadata(default(string)));
+            "Label", typeof(string), typeof(AxisSection), new PropertyMetadata(default(string)));
         /// <summary>
         /// Gets or sets the name, the title of the section, a visual element will be added to the chart if this property is not null.
         /// </summary>
         [Obsolete("Use a VisualElement instead")]
         public string Label
         {
-            get { return (string) GetValue(LabelProperty); }
+            get { return (string)GetValue(LabelProperty); }
             set { SetValue(LabelProperty, value); }
+        }
+
+        /// <summary>
+        /// From value property
+        /// </summary>
+        public static readonly DependencyProperty FromValueProperty = DependencyProperty.Register(
+            "FromValue", typeof(double), typeof(AxisSection),
+            new PropertyMetadata(double.NaN, UpdateSection));
+        /// <summary>
+        /// Gets or sets the value where the section starts
+        /// </summary>
+        [Obsolete("This property will be removed in future versions, instead use Value and SectionWidth properties")]
+        public double FromValue
+        {
+            get { return (double)GetValue(FromValueProperty); }
+            set { SetValue(FromValueProperty, value); }
+        }
+
+        /// <summary>
+        /// To value property
+        /// </summary>
+        public static readonly DependencyProperty ToValueProperty = DependencyProperty.Register(
+            "ToValue", typeof(double), typeof(AxisSection),
+            new PropertyMetadata(double.NaN, UpdateSection));
+        /// <summary>
+        /// Gets or sets the value where the section ends
+        /// </summary>
+        [Obsolete("This property will be removed in future versions, instead use Value and SectionWidth properties")]
+        public double ToValue
+        {
+            get { return (double)GetValue(ToValueProperty); }
+            set { SetValue(ToValueProperty, value); }
         }
 
         /// <summary>
         /// The value property
         /// </summary>
         public static readonly DependencyProperty ValueProperty = DependencyProperty.Register(
-            "Value", typeof(double), typeof(AxisSection), new PropertyMetadata(0d, UpdateSection));
+            "Value", typeof(double), typeof(AxisSection), new PropertyMetadata(default(double), UpdateSection));
         /// <summary>
         /// Gets or sets the value where the section is drawn
         /// </summary>
         public double Value
         {
-            get { return (double)GetValue(ValueProperty); }
+            get { return (double) GetValue(ValueProperty); }
             set { SetValue(ValueProperty, value); }
         }
 
@@ -99,14 +134,70 @@ namespace LiveCharts.Uwp
         /// The section width property
         /// </summary>
         public static readonly DependencyProperty SectionWidthProperty = DependencyProperty.Register(
-            "SectionWidth", typeof(double), typeof(AxisSection), new PropertyMetadata(0d, UpdateSection));
+            "SectionWidth", typeof(double), typeof(AxisSection), new PropertyMetadata(default(double), UpdateSection));
         /// <summary>
         /// Gets or sets the section width
         /// </summary>
         public double SectionWidth
         {
-            get { return (double)GetValue(SectionWidthProperty); }
+            get { return (double) GetValue(SectionWidthProperty); }
             set { SetValue(SectionWidthProperty, value); }
+        }
+
+        /// <summary>
+        /// The stroke property
+        /// </summary>
+        public static readonly DependencyProperty StrokeProperty = DependencyProperty.Register(
+            "Stroke", typeof(Brush), typeof(AxisSection), new PropertyMetadata(default(Brush)));
+        /// <summary>
+        /// Gets o sets the section stroke, the stroke brush will be used to draw the border of the section
+        /// </summary>
+        public Brush Stroke
+        {
+            get { return (Brush)GetValue(StrokeProperty); }
+            set { SetValue(StrokeProperty, value); }
+        }
+
+        /// <summary>
+        /// The fill property
+        /// </summary>
+        public static readonly DependencyProperty FillProperty = DependencyProperty.Register(
+            "Fill", typeof(Brush), typeof(AxisSection), new PropertyMetadata(default(Brush)));
+        /// <summary>
+        /// Gets or sets the section fill brush.
+        /// </summary>
+        public Brush Fill
+        {
+            get { return (Brush)GetValue(FillProperty); }
+            set { SetValue(FillProperty, value); }
+        }
+
+        /// <summary>
+        /// The stroke thickness property
+        /// </summary>
+        public static readonly DependencyProperty StrokeThicknessProperty = DependencyProperty.Register(
+            "StrokeThickness", typeof(double), typeof(AxisSection), new PropertyMetadata(default(double)));
+        /// <summary>
+        /// Gets or sets the stroke thickness.
+        /// </summary>
+        public double StrokeThickness
+        {
+            get { return (double)GetValue(StrokeThicknessProperty); }
+            set { SetValue(StrokeThicknessProperty, value); }
+        }
+
+        /// <summary>
+        /// The stroke dash array property
+        /// </summary>
+        public static readonly DependencyProperty StrokeDashArrayProperty = DependencyProperty.Register(
+            "StrokeDashArray", typeof(DoubleCollection), typeof(AxisSection), new PropertyMetadata(default(DoubleCollection)));
+        /// <summary>
+        /// Gets or sets the stroke dash array collection, use this property to create dashed stroke sections
+        /// </summary>
+        public DoubleCollection StrokeDashArray
+        {
+            get { return (DoubleCollection)GetValue(StrokeDashArrayProperty); }
+            set { SetValue(StrokeDashArrayProperty, value); }
         }
 
         /// <summary>
@@ -124,60 +215,56 @@ namespace LiveCharts.Uwp
         }
 
         /// <summary>
-        /// The stroke property
+        /// The disable animations property
         /// </summary>
-        public static readonly DependencyProperty StrokeProperty = DependencyProperty.Register(
-            "Stroke", typeof (Brush), typeof (AxisSection), new PropertyMetadata(new SolidColorBrush(Color.FromArgb(255, 131, 172, 191))));
+        public static readonly DependencyProperty DisableAnimationsProperty = DependencyProperty.Register(
+            "DisableAnimations", typeof(bool), typeof(AxisSection), new PropertyMetadata(default(bool)));
         /// <summary>
-        /// Gets o sets the section stroke, the stroke brush will be used to draw the border of the section
+        /// Gets or sets a value indicating whether the section is animated
         /// </summary>
-        public Brush Stroke
+        /// <value>
+        /// <c>true</c> if [disable animations]; otherwise, <c>false</c>.
+        /// </value>
+        public bool DisableAnimations
         {
-            get { return (Brush) GetValue(StrokeProperty); }
-            set { SetValue(StrokeProperty, value); }
+            get { return (bool) GetValue(DisableAnimationsProperty); }
+            set { SetValue(DisableAnimationsProperty, value); }
         }
 
         /// <summary>
-        /// The fill property
+        /// The data label property
         /// </summary>
-        public static readonly DependencyProperty FillProperty = DependencyProperty.Register(
-            "Fill", typeof (Brush), typeof (AxisSection), new PropertyMetadata(new SolidColorBrush(Color.FromArgb(255, 131, 172, 191)) { Opacity = .35 }));
+        public static readonly DependencyProperty DataLabelProperty = DependencyProperty.Register(
+            "DataLabel", typeof(bool), typeof(AxisSection), new PropertyMetadata(default(bool)));
         /// <summary>
-        /// Gets or sets the section fill brush.
+        /// Gets or sets a value indicating whether the section should display a label that displays its current value.
         /// </summary>
-        public Brush Fill
+        /// <value>
+        /// <c>true</c> if [data label]; otherwise, <c>false</c>.
+        /// </value>
+        public bool DataLabel
         {
-            get { return (Brush) GetValue(FillProperty); }
-            set { SetValue(FillProperty, value); }
+            get { return (bool) GetValue(DataLabelProperty); }
+            set { SetValue(DataLabelProperty, value); }
         }
 
         /// <summary>
-        /// The stroke thickness property
+        /// The data label brush property
         /// </summary>
-        public static readonly DependencyProperty StrokeThicknessProperty = DependencyProperty.Register(
-            "StrokeThickness", typeof (double), typeof (AxisSection), new PropertyMetadata(0d));
+        public static readonly DependencyProperty DataLabelForegroundProperty = DependencyProperty.Register(
+            "DataLabelForeground", typeof(Brush), typeof(AxisSection), new PropertyMetadata(default(Brush)));
         /// <summary>
-        /// Gets or sets the stroke thickness.
+        /// Gets or sets the data label brush.
         /// </summary>
-        public double StrokeThickness
+        /// <value>
+        /// The label brush.
+        /// </value>
+        public Brush DataLabelForeground
         {
-            get { return (double) GetValue(StrokeThicknessProperty); }
-            set { SetValue(StrokeThicknessProperty, value); }
+            get { return (Brush) GetValue(DataLabelForegroundProperty); }
+            set { SetValue(DataLabelForegroundProperty, value); }
         }
-
-        /// <summary>
-        /// The stroke dash array property
-        /// </summary>
-        public static readonly DependencyProperty StrokeDashArrayProperty = DependencyProperty.Register(
-            "StrokeDashArray", typeof (DoubleCollection), typeof (AxisSection), new PropertyMetadata(default(DoubleCollection)));
-        /// <summary>
-        /// Gets or sets the stroke dash array collection, use this property to create dashed stroke sections
-        /// </summary>
-        public DoubleCollection StrokeDashArray
-        {
-            get { return (DoubleCollection) GetValue(StrokeDashArrayProperty); }
-            set { SetValue(StrokeDashArrayProperty, value); }
-        }
+        #endregion
 
         /// <summary>
         /// Draws the or move.
@@ -194,24 +281,32 @@ namespace LiveCharts.Uwp
             BindingOperations.SetBinding(_rectangle, VisibilityProperty,
                 new Binding {Path = new PropertyPath(nameof(Visibility)), Source = this});
 
+            var ax = source == AxisOrientation.X ? Model.Chart.AxisX[axis] : Model.Chart.AxisY[axis];
+            var uw = ax.EvaluatesUnitWidth ? ChartFunctions.GetUnitWidth(source, Model.Chart, axis) / 2 : 0;
+
             if (Parent == null)
             {
+                _label = ((Axis) ax.View).BindATextBlock();
+                _label.Padding = new Thickness(5, 2, 5, 2);
                 Model.Chart.View.AddToView(this);
                 Model.Chart.View.AddToDrawMargin(_rectangle);
-                Model.Chart.View.AddToDrawMargin(_label);
+                Model.Chart.View.AddToView(_label);
                 _rectangle.Height = 0;
                 _rectangle.Width = 0;
                 Canvas.SetLeft(_rectangle, 0d);
                 Canvas.SetTop(_rectangle, Model.Chart.DrawMargin.Height);
+                #region Obsolete
                 Canvas.SetTop(_label, Model.Chart.DrawMargin.Height);
                 Canvas.SetLeft(_label, 0d);
+                #endregion
             }
 
-            var ax = source == AxisOrientation.X ? Model.Chart.AxisX[axis] : Model.Chart.AxisY[axis];
-            var uw = ax.EvaluatesUnitWidth ? ChartFunctions.GetUnitWidth(source, Model.Chart, axis) / 2 : 0;
-
-            var from = ChartFunctions.ToDrawMargin(Value, source, Model.Chart, axis) + uw;
-            var to = ChartFunctions.ToDrawMargin(Value + SectionWidth, source, Model.Chart, axis) + uw;
+            #pragma warning disable 618
+            var from = ChartFunctions.ToDrawMargin(double.IsNaN(FromValue) ? Value : FromValue, source, Model.Chart, axis) + uw;
+#pragma warning restore 618
+#pragma warning disable 618
+            var to = ChartFunctions.ToDrawMargin(double.IsNaN(ToValue) ? Value + SectionWidth : ToValue, source, Model.Chart, axis) + uw;
+#pragma warning restore 618
 
             if (from > to)
             {
@@ -221,7 +316,14 @@ namespace LiveCharts.Uwp
             }
 
             var anSpeed = Model.Chart.View.AnimationsSpeed;
-            _label.UpdateLayout();
+
+            if (DataLabel)
+            {
+                if (DataLabelForeground != null) _label.Foreground = DataLabelForeground;
+                _label.UpdateLayout();
+                //_label.Background = Stroke ?? Fill;
+                PlaceLabel(ax.GetFormatter()(Value), ax, source);
+            }
 
             if (source == AxisOrientation.X)
             {
@@ -231,17 +333,15 @@ namespace LiveCharts.Uwp
                 Canvas.SetTop(_rectangle, 0);
                 _rectangle.Height = Model.Chart.DrawMargin.Height;
 
-                if (Model.Chart.View.DisableAnimations)
+                if (Model.Chart.View.DisableAnimations || DisableAnimations)
                 {
                     _rectangle.Width = w > 0 ? w : 0;
-                    Canvas.SetLeft(_rectangle, from - StrokeThickness / 2);
-                    Canvas.SetLeft(_label, (from + to) / 2 - _label.ActualWidth / 2);
+                    Canvas.SetLeft(_rectangle, from - StrokeThickness/2);
                 }
                 else
                 {
                     _rectangle.BeginDoubleAnimation(nameof(Width), w > 0 ? w : 0, anSpeed);
-                    _rectangle.BeginDoubleAnimation("(Canvas.Left)", from - StrokeThickness / 2, anSpeed);
-                    _label.BeginDoubleAnimation("(Canvas.Left)", (from + to) / 2 - _label.ActualWidth / 2, anSpeed);
+                    _rectangle.BeginDoubleAnimation("Canvas.Left", from - StrokeThickness / 2, anSpeed);
                 }
                 return;
             }
@@ -252,17 +352,15 @@ namespace LiveCharts.Uwp
             Canvas.SetLeft(_rectangle, 0d);
             _rectangle.Width = Model.Chart.DrawMargin.Width;
 
-            if (Model.Chart.View.DisableAnimations)
+            if (Model.Chart.View.DisableAnimations || DisableAnimations)
             {
-                Canvas.SetTop(_rectangle, from);
+                Canvas.SetTop(_rectangle, from - StrokeThickness/2);
                 _rectangle.Height = h > 0 ? h : 0;
-                Canvas.SetTop(_label, (from + to)/2 - _label.ActualHeight/2);
             }
             else
             {
-                _rectangle.BeginDoubleAnimation("(Canvas.Top)", from -StrokeThickness/2, anSpeed);
-                _rectangle.BeginDoubleAnimation(nameof(Height), h > 0 ? h : 0, anSpeed);
-                _label.BeginDoubleAnimation("(Canvas.Top)", (from+to)/2 - _label.ActualHeight/2, anSpeed);
+                _rectangle.BeginDoubleAnimation("Canvas.Left", from, anSpeed);
+                _rectangle.BeginDoubleAnimation(nameof(Height), h, anSpeed);
             }
         }
 
@@ -289,8 +387,7 @@ namespace LiveCharts.Uwp
             return model;
         }
 
-        private static void UpdateSection(DependencyObject dependencyObject,
-            DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
+        private static void UpdateSection(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
         {
             var section = (AxisSection) dependencyObject;
 
@@ -299,6 +396,76 @@ namespace LiveCharts.Uwp
                 if (!section.Model.Chart.AreComponentsLoaded) return;
                 section.DrawOrMove(section.Model.Source, section.Model.AxisIndex);
             }
+        }
+
+        private void PlaceLabel(string text, AxisCore axis, AxisOrientation source)
+        {
+            _label.Text = text;
+
+            _label.UpdateLayout();
+
+            var transform = new LabelEvaluation(axis.View.LabelsRotation,
+                _label.Width + 10, _label.Height, axis, source);
+
+            _label.RenderTransform = Math.Abs(transform.LabelAngle) > 1
+                ? new RotateTransform {Angle = transform.LabelAngle}
+                : null;
+
+            var toLine = ChartFunctions.ToPlotArea(Value, source, Model.Chart, axis);
+
+            var direction = source == AxisOrientation.X ? 1 : -1;
+
+            toLine += axis.EvaluatesUnitWidth ? direction * ChartFunctions.GetUnitWidth(source, Model.Chart, axis) / 2 : 0;
+            var toLabel = toLine + transform.GetOffsetBySource(source);
+
+            var chart = Model.Chart;
+
+            if (axis.IsMerged)
+            {
+                const double padding = 4;
+
+                if (source == AxisOrientation.Y)
+                {
+                    if (toLabel + transform.ActualHeight >
+                        chart.DrawMargin.Top + chart.DrawMargin.Height)
+                        toLabel -= transform.ActualHeight + padding;
+                }
+                else
+                {
+                    if (toLabel + transform.ActualWidth >
+                        chart.DrawMargin.Left + chart.DrawMargin.Width)
+                        toLabel -= transform.ActualWidth + padding;
+                }
+            }
+
+            var labelTab = axis.Tab;
+            labelTab += transform.GetOffsetBySource(source.Invert());
+
+            if (source == AxisOrientation.Y)
+            {
+                if (Model.View.DisableAnimations || DisableAnimations)
+                {
+                    Canvas.SetLeft(_label, labelTab);
+                    Canvas.SetTop(_label, toLabel);
+                    return;
+                }
+
+                _label.BeginDoubleAnimation("Canvas.Top", toLabel, chart.View.AnimationsSpeed);
+                _label.BeginDoubleAnimation("Canvas.Left", labelTab, chart.View.AnimationsSpeed);
+            }
+            else
+            {
+                if (Model.View.DisableAnimations || DisableAnimations)
+                {
+                    Canvas.SetLeft(_label, toLabel);
+                    Canvas.SetTop(_label, labelTab);
+                    return;
+                }
+
+                _label.BeginDoubleAnimation("Canvas.Left", toLabel, chart.View.AnimationsSpeed);
+                _label.BeginDoubleAnimation("Canvas.Top", labelTab, chart.View.AnimationsSpeed);
+            }
+
         }
     }
 }
