@@ -124,7 +124,14 @@ namespace LiveCharts.Wpf
         [TypeConverter(typeof(NumericChartValuesConverter))]
         public IChartValues Values
         {
-            get { return (IChartValues) GetValue(ValuesProperty); }
+            get
+            {
+                if (Application.Current == null || Application.Current.Dispatcher.CheckAccess())
+                    return (IChartValues) GetValue(ValuesProperty);
+
+                return (IChartValues) Application.Current.Dispatcher.Invoke(
+                    new Func<IChartValues>(() => (IChartValues) GetValue(ValuesProperty)));
+            }
             set { SetValue(ValuesProperty, value); }
         }
 
