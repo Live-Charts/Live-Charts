@@ -229,7 +229,7 @@ namespace LiveCharts.Wpf
             SetCurrentValue(StrokeThicknessProperty, 2.5d);
             SetCurrentValue(MaxColumnWidthProperty, 35d);
             SetCurrentValue(MaxWidthProperty, 25d);
-            SetCurrentValue(IncreaseBrushProperty, new SolidColorBrush(Color.FromRgb(254, 178, 0)));
+            SetCurrentValue(IncreaseBrushProperty, new SolidColorBrush(Color.FromRgb(76, 174, 80)));
             SetCurrentValue(DecreaseBrushProperty, new SolidColorBrush(Color.FromRgb(238, 83, 80)));
 
             Func<ChartPoint, string> defaultLabel = x =>
