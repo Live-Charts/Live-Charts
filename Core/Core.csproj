@@ -125,6 +125,7 @@
     <Compile Include="Dtos\StackedSum.cs" />
     <Compile Include="Dtos\TooltipDataViewModel.cs" />
     <Compile Include="Events\Delegates.cs" />
+    <Compile Include="Events\PreviewRangeChangedEventArgs.cs" />
     <Compile Include="Events\RangeChangedEventArgs.cs" />
     <Compile Include="Helpers\Extentions.cs" />
     <Compile Include="Helpers\LiveChartsException.cs" />

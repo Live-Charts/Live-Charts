@@ -62,7 +62,7 @@ namespace LiveCharts.Uwp
 
         #region Events
         /// <summary>
-        /// Happens every time an axis range changes, this handler will be called before the next updater tick.
+        /// Occurs when an axis range changes by an user action (zooming or panning)
         /// </summary>
         public event RangeChangedHandler RangeChanged;
 
@@ -72,7 +72,7 @@ namespace LiveCharts.Uwp
         public static readonly DependencyProperty RangeChangedCommandProperty = DependencyProperty.Register(
             "RangeChangedCommand", typeof(ICommand), typeof(Axis), new PropertyMetadata(default(ICommand)));
         /// <summary>
-        /// Gets or sets the range changed command.
+        /// Gets or sets the command to execute when an axis range changes by an user action (zooming or panning)
         /// </summary>
         /// <value>
         /// The range changed command.
@@ -81,6 +81,28 @@ namespace LiveCharts.Uwp
         {
             get { return (ICommand)GetValue(RangeChangedCommandProperty); }
             set { SetValue(RangeChangedCommandProperty, value); }
+        }
+
+        /// <summary>
+        /// Occurs before an axis range changes by an user action (zooming or panning)
+        /// </summary>
+        public event PreviewRangeChangedHandler PreviewRangeChanged;
+
+        /// <summary>
+        /// The preview range changed command property
+        /// </summary>
+        public static readonly DependencyProperty PreviewRangeChangedCommandProperty = DependencyProperty.Register(
+            "PreviewRangeChangedCommand", typeof(ICommand), typeof(Axis), new PropertyMetadata(default(ICommand)));
+        /// <summary>
+        /// Gets or sets the command to execute before an axis range changes by an user action (zooming or panning)
+        /// </summary>
+        /// <value>
+        /// The preview range changed command.
+        /// </value>
+        public ICommand PreviewRangeChangedCommand
+        {
+            get { return (ICommand)GetValue(PreviewRangeChangedCommandProperty); }
+            set { SetValue(PreviewRangeChangedCommandProperty, value); }
         }
         #endregion
 
@@ -508,21 +530,32 @@ namespace LiveCharts.Uwp
             var bMax = double.IsNaN(MaxValue) ? Model.TopLimit : MaxValue;
             var bMin = double.IsNaN(MinValue) ? Model.BotLimit : MinValue;
 
-            MaxValue = max;
-            MinValue = min;
-
             var nMax = double.IsNaN(MaxValue) ? Model.TopLimit : MaxValue;
             var nMin = double.IsNaN(MinValue) ? Model.BotLimit : MinValue;
 
-            Model.Chart.Updater.Run();
-
-            OnRangeChanged(new RangeChangedEventArgs
+            var e = new RangeChangedEventArgs
             {
                 Range = nMax - nMin,
                 RightLimitChange = bMax - nMax,
                 LeftLimitChange = bMin - nMin,
                 Axis = this
-            });
+            };
+
+            var pe = new PreviewRangeChangedEventArgs(e)
+            {
+                PreviewMaxValue = max,
+                PreviewMinValue = min
+            };
+            OnPreviewRangeChanged(pe);
+
+            if (pe.Cancel) return;
+
+            MaxValue = max;
+            MinValue = min;
+
+            Model.Chart.Updater.Run();
+
+            OnRangeChanged(e);
         }
 
         /// <summary>
@@ -739,7 +772,19 @@ namespace LiveCharts.Uwp
         protected void OnRangeChanged(RangeChangedEventArgs e)
         {
             RangeChanged?.Invoke(e);
-            if (RangeChangedCommand != null && RangeChangedCommand.CanExecute(e)) RangeChangedCommand.Execute(e);
+            if (RangeChangedCommand != null && RangeChangedCommand.CanExecute(e))
+                RangeChangedCommand.Execute(e);
+        }
+
+        /// <summary>
+        /// Raises the <see cref="E:PreviewRangeChanged" /> event.
+        /// </summary>
+        /// <param name="e">The <see cref="PreviewRangeChangedEventArgs"/> instance containing the event data.</param>
+        protected void OnPreviewRangeChanged(PreviewRangeChangedEventArgs e)
+        {
+            PreviewRangeChanged?.Invoke(e);
+            if (PreviewRangeChangedCommand != null && PreviewRangeChangedCommand.CanExecute(e))
+                PreviewRangeChangedCommand.Execute(e);
         }
     }
 }
