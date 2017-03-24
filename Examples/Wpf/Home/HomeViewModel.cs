@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Windows.Controls;
 using System.Windows.Data;
 using LiveCharts.Defaults;
@@ -33,6 +34,7 @@ using Wpf.CartesianChart.Missing_Line_Points;
 using Wpf.CartesianChart.NegativeStackedRow;
 using Wpf.CartesianChart.PointState;
 using Wpf.CartesianChart.ScatterPlot;
+using Wpf.CartesianChart.Scatter_With_Pies;
 using Wpf.CartesianChart.Sections;
 using Wpf.CartesianChart.SolidColorChart;
 using Wpf.CartesianChart.StackedArea;
@@ -122,6 +124,7 @@ namespace Wpf.Home
                         new SampleVm("Thread Safe", typeof(ThreadSafeExample)), 
                         new SampleVm("Zooming/Panning", typeof(ZoomingAndPanning)),
                         new SampleVm("Data Pagination", typeof(ManualZAndPExample)),
+                        new SampleVm("Scattered Pie", typeof(Scatter_With_Pies)), 
                         new SampleVm("Observable point", typeof(FullyResponsiveExample)),
                         new SampleVm("Point State", typeof(PointStateExample)),  
                         new SampleVm("Negative Stacked", typeof(NegativeStackedRowExample)),

@@ -118,6 +118,9 @@
     <Compile Include="CartesianChart\Linq\LinqExample.xaml.cs">
       <DependentUpon>LinqExample.xaml</DependentUpon>
     </Compile>
+    <Compile Include="CartesianChart\Scatter With Pies\Scatter With Pies.xaml.cs">
+      <DependentUpon>Scatter With Pies.xaml</DependentUpon>
+    </Compile>
     <Compile Include="CartesianChart\ThreadSafe\RelyCommand.cs" />
     <Compile Include="CartesianChart\ThreadSafe\ThreadSafeViewModel.cs" />
     <Compile Include="CartesianChart\ThreadSafe\ThreadSafeExample.xaml.cs">
@@ -281,6 +284,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="CartesianChart\PointState\PointStateExample.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CartesianChart\Scatter With Pies\Scatter With Pies.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
