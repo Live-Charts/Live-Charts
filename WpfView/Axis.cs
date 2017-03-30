@@ -139,7 +139,7 @@ namespace LiveCharts.Wpf
         [TypeConverter(typeof(StringCollectionConverter))]
         public IList<string> Labels
         {
-            get { return (IList<string>) GetValue(LabelsProperty); }
+            get { return ThreadAccess.Resolve<IList<string>>(this, LabelsProperty); }
             set { SetValue(LabelsProperty, value); }
         }
 

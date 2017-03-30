@@ -399,7 +399,7 @@ namespace LiveCharts.Wpf.Charts.Base
         /// </summary>
         public SeriesCollection Series
         {
-            get { return (SeriesCollection)GetValue(SeriesProperty); }
+            get { return ThreadAccess.Resolve<SeriesCollection>(this, SeriesProperty); }
             set { SetValue(SeriesProperty, value); }
         }
 
