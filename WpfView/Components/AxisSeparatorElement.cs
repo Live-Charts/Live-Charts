@@ -30,6 +30,7 @@ using System.Windows.Shapes;
 using LiveCharts.Charts;
 using LiveCharts.Definitions.Charts;
 using LiveCharts.Dtos;
+using LiveCharts.Wpf.Charts.Base;
 
 namespace LiveCharts.Wpf.Components
 {
@@ -239,16 +240,10 @@ namespace LiveCharts.Wpf.Components
                 Duration = chart.View.AnimationsSpeed
             };
 
+            var dispatcher = ((Chart) chart.View).Dispatcher;
             anim.Completed += (sender, args) =>
             {
-                if (Application.Current == null)
-                {
-                    chart.View.RemoveFromView(TextBlock);
-                    chart.View.RemoveFromView(Line);
-                    return;
-                }
-
-                Application.Current.Dispatcher.Invoke(new Action(() =>
+                dispatcher.Invoke(new Action(() =>
                 {
                     chart.View.RemoveFromView(TextBlock);
                     chart.View.RemoveFromView(Line);
