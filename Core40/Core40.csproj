@@ -77,6 +77,10 @@
     <Compile Include="Configurations\PolarMapper.cs" />
     <Compile Include="Configurations\WeightedMapper.cs" />
     <Compile Include="DataLabelViewModel.cs" />
+    <Compile Include="DateAxisCore.cs" />
+    <Compile Include="DateAxisWindow.cs" />
+    <Compile Include="DateAxisWindows.cs" />
+    <Compile Include="DateSeparatorElementCore.cs" />
     <Compile Include="Defaults\AxisLimits.cs" />
     <Compile Include="Defaults\DateTimePoint.cs" />
     <Compile Include="Defaults\GanttPoint.cs" />
@@ -91,6 +95,7 @@
     <Compile Include="Definitions\Charts\ICartesianChart.cs" />
     <Compile Include="Definitions\Charts\ICartesianVisualElement.cs" />
     <Compile Include="Definitions\Charts\IChartView.cs" />
+    <Compile Include="Definitions\Charts\IDateAxisView.cs" />
     <Compile Include="Definitions\Charts\ILogarithmicAxisView.cs" />
     <Compile Include="Definitions\Charts\IPieChart.cs" />
     <Compile Include="Definitions\Charts\ISeparatorElementView.cs" />
@@ -135,6 +140,8 @@
     <Compile Include="Helpers\Extentions.cs" />
     <Compile Include="Helpers\LiveChartsException.cs" />
     <Compile Include="Helpers\NoisyCollection.cs" />
+    <Compile Include="SeparatorResolution.cs" />
+    <Compile Include="SeriesResolution.cs" />
     <Compile Include="IChartValues.cs" />
     <Compile Include="IObservableChartPoint.cs" />
     <Compile Include="LegendLocation.cs" />

@@ -491,7 +491,7 @@ namespace LiveCharts.Wpf
         /// </summary>
         /// <param name="model">The model.</param>
         /// <param name="chart">The chart.</param>
-        public void RenderSeparator(SeparatorElementCore model, ChartCore chart)
+        public virtual void RenderSeparator(SeparatorElementCore model, ChartCore chart)
         {
             AxisSeparatorElement ase;
 

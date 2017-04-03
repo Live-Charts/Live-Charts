@@ -14,6 +14,7 @@ using Wpf.CartesianChart.Bubbles;
 using Wpf.CartesianChart.ConstantChanges;
 using Wpf.CartesianChart.Customized_Line_Series;
 using Wpf.CartesianChart.CustomTooltipAndLegend;
+using Wpf.CartesianChart.DateChart;
 using Wpf.CartesianChart.DynamicVisibility;
 using Wpf.CartesianChart.Energy_Predictions;
 using Wpf.CartesianChart.Events;
@@ -37,6 +38,7 @@ using Wpf.CartesianChart.StackedArea;
 using Wpf.CartesianChart.StepLine;
 using Wpf.CartesianChart.ThreadSafe;
 using Wpf.CartesianChart.UIElements;
+using Wpf.CartesianChart.ZoomingAndPanning;
 using Wpf.Gauges;
 using Wpf.Maps;
 using Wpf.PieChart;
@@ -56,6 +58,14 @@ namespace Wpf.Home
             IsMenuOpen = true;
             _dataSource = new[]
             {
+                new SampleGroupVm
+                {
+                  Name = "Date",
+                  Items = new[]
+                  {
+                      new SampleVm("Date", typeof(DatechartExample))
+                  }
+                },
                 new SampleGroupVm
                 {
                     Name = "Customizing",

@@ -208,8 +208,8 @@ namespace LiveCharts
         internal int GarbageCollectorIndex { get; set; }
         internal double PreviousTop { get; set; }
         internal double PreviousBot { get; set; }
-        internal double FirstSeparator { get; private set; }
-        internal double LastSeparator { get; private set; }
+        protected internal double FirstSeparator { get; protected set; }
+        protected internal double LastSeparator { get; protected set; }
 
         #endregion
 
@@ -455,7 +455,7 @@ namespace LiveCharts
         /// Gets the formatter.
         /// </summary>
         /// <returns></returns>
-        public Func<double, string> GetFormatter()
+        public virtual Func<double, string> GetFormatter()
         {
             return Formatter;
         }

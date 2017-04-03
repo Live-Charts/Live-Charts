@@ -1,0 +1,68 @@
+﻿<UserControl x:Class="Wpf.CartesianChart.DateChart.DatechartExample"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Wpf.CartesianChart.DateChart"
+             xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <Grid>
+        <Grid.RowDefinitions>
+
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="1">
+            <Label>Set the DateAxis.ReferenceDateTime to configure the starting point (X=0) date.</Label>
+            <Label>Configure the DateAxis.SeriesResolution to the resolution of your X values. Use the buttons below to configure this property.</Label>
+            <Label>The DateAxis will automatically change the SeparatorResolution based upon  your SeriesResolution and the current zoom level. Zoom X has been enabled.</Label>
+        </StackPanel>
+        
+        <StackPanel Grid.Row="2" Orientation="Horizontal">
+            <Button Click="SetSecondResolution">
+                Second
+            </Button>
+            <Button Click="SetMinuteResolution">
+                Minute
+            </Button>
+            <Button Click="SetHourResolution">
+                Hour
+            </Button>
+            <Button Click="SetDayResolution">
+                Day                
+            </Button>
+        </StackPanel>
+        
+        <StackPanel Grid.Row="3" Orientation="Horizontal">
+            <Label Content="Series resolution: "></Label>
+            <Label Content="{Binding SeriesResolution}"></Label>
+            
+            <Label Content="Separator resolution: "></Label>
+            <Label Content="{Binding SeparatorResolution}"></Label>
+        </StackPanel>
+
+        <lvc:CartesianChart Zoom="X" Grid.Row="4" Series="{Binding SeriesCollection}">
+            <lvc:CartesianChart.AxisX>
+                <lvc:DateAxis
+                    MinValue="0"
+                    MaxValue="60"
+                    Foreground="DarkSlateBlue"
+                    HeaderForeground="Black"
+                    SeparatorResolution="{Binding SeparatorResolution, Mode=TwoWay}"
+                    Resolution="{Binding SeriesResolution, Mode=TwoWay}"
+                    ShowLabels="True"                    
+                    ReferenceDateTime="{Binding ReferenceDateTime}">
+                    <lvc:DateAxis.Separator>
+                        <lvc:Separator StrokeThickness="10" Stroke="Black"></lvc:Separator>
+                    </lvc:DateAxis.Separator>
+                </lvc:DateAxis>
+            </lvc:CartesianChart.AxisX>
+        </lvc:CartesianChart>
+                        
+    </Grid>
+</UserControl>
