@@ -23,6 +23,7 @@
 using System;
 using System.ComponentModel;
 using System.ComponentModel.Design.Serialization;
+using System.Diagnostics;
 using System.Windows.Forms.Integration;
 using System.Windows.Media;
 using LiveCharts.Events;
@@ -50,6 +51,13 @@ namespace LiveCharts.WinForms
         public CartesianChart()
         {
             Child = WpfBase;
+
+            //workaround for windows 7 focus issue
+            //https://github.com/beto-rodriguez/Live-Charts/issues/515
+            HostContainer.MouseEnter += (sender, args) =>
+            {
+                Focus();
+            };
 
             if (LicenseManager.UsageMode == LicenseUsageMode.Designtime)
             {

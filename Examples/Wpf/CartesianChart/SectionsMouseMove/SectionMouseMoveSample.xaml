@@ -13,7 +13,7 @@
     <Grid>
         <lvc:CartesianChart MouseMove="UIElement_OnMouseMove" DataTooltip="{x:Null}">
             <lvc:CartesianChart.Series>
-                <lvc:ColumnSeries Values="5,6,7,9,2,4,6,5,9,7,5,10, 15, 12"/>
+                <lvc:ColumnSeries Values="5,6,7,9,2,4,6,5,9,7,5,10"/>
             </lvc:CartesianChart.Series>
             <lvc:CartesianChart.AxisY>
                 <lvc:Axis LabelFormatter="{Binding Formatter}">
