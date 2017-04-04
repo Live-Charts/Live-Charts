@@ -49,6 +49,13 @@ namespace LiveCharts.Definitions.Charts
         /// </value>
         double SectionWidth { get; set; }
         /// <summary>
+        /// Gets or sets the section offset.
+        /// </summary>
+        /// <value>
+        /// The section offset.
+        /// </value>
+        double SectionOffset { get; set; }
+        /// <summary>
         /// Gets or sets a value indicating whether this <see cref="IAxisSectionView"/> is draggable.
         /// </summary>
         /// <value>

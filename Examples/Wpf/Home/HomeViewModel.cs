@@ -36,6 +36,8 @@ using Wpf.CartesianChart.PointState;
 using Wpf.CartesianChart.ScatterPlot;
 using Wpf.CartesianChart.Scatter_With_Pies;
 using Wpf.CartesianChart.Sections;
+using Wpf.CartesianChart.SectionsDragable;
+using Wpf.CartesianChart.SectionsMouseMove;
 using Wpf.CartesianChart.SolidColorChart;
 using Wpf.CartesianChart.StackedArea;
 using Wpf.CartesianChart.StepLine;
@@ -105,6 +107,8 @@ namespace Wpf.Home
                     {
                         new SampleVm("Inverted Series", typeof(InvertedExample)),
                         new SampleVm("Sections", typeof(SectionsExample)),
+                        new SampleVm("Dragable Sections", typeof(DragableSections)),
+                        new SampleVm("Section Mouse Move", typeof(SectionMouseMoveSample)),
                         new SampleVm("Multiple Axes", typeof(MultiAxesChart)),
                         new SampleVm("Events", typeof(EventsExample)),
                         new SampleVm("Visual Elements", typeof(UiElementsAndEventsExample)),

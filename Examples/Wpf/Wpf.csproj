@@ -121,6 +121,10 @@
     <Compile Include="CartesianChart\Scatter With Pies\Scatter With Pies.xaml.cs">
       <DependentUpon>Scatter With Pies.xaml</DependentUpon>
     </Compile>
+    <Compile Include="CartesianChart\SectionsMouseMove\SectionMouseMoveSample.xaml.cs">
+      <DependentUpon>SectionMouseMoveSample.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CartesianChart\SectionsMouseMove\ViewModel.cs" />
     <Compile Include="CartesianChart\ThreadSafe\RelyCommand.cs" />
     <Compile Include="CartesianChart\ThreadSafe\ThreadSafeViewModel.cs" />
     <Compile Include="CartesianChart\ThreadSafe\ThreadSafeExample.xaml.cs">
@@ -296,6 +300,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="CartesianChart\SectionsDragable\DragableSections.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CartesianChart\SectionsMouseMove\SectionMouseMoveSample.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

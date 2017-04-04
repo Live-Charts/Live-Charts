@@ -26,7 +26,6 @@ using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
-using LiveCharts.Charts;
 using LiveCharts.Definitions.Charts;
 using LiveCharts.Dtos;
 using LiveCharts.Helpers;
@@ -145,6 +144,23 @@ namespace LiveCharts.Wpf
         {
             get { return (double) GetValue(SectionWidthProperty); }
             set { SetValue(SectionWidthProperty, value); }
+        }
+
+        /// <summary>
+        /// The section offset property
+        /// </summary>
+        public static readonly DependencyProperty SectionOffsetProperty = DependencyProperty.Register(
+            "SectionOffset", typeof(double), typeof(AxisSection), new PropertyMetadata(default(double)));
+        /// <summary>
+        /// Gets or sets the section offset.
+        /// </summary>
+        /// <value>
+        /// The section offset.
+        /// </value>
+        public double SectionOffset
+        {
+            get { return (double) GetValue(SectionOffsetProperty); }
+            set { SetValue(SectionOffsetProperty, value); }
         }
 
         /// <summary>
@@ -305,10 +321,10 @@ namespace LiveCharts.Wpf
             }
 
             #pragma warning disable 618
-            var from = ChartFunctions.ToDrawMargin(double.IsNaN(FromValue) ? Value : FromValue, source, Model.Chart, axis) + uw;
+            var from = ChartFunctions.ToDrawMargin(double.IsNaN(FromValue) ? Value + SectionOffset : FromValue, source, Model.Chart, axis) + uw;
 #pragma warning restore 618
 #pragma warning disable 618
-            var to = ChartFunctions.ToDrawMargin(double.IsNaN(ToValue) ? Value + SectionWidth : ToValue, source, Model.Chart, axis) + uw;
+            var to = ChartFunctions.ToDrawMargin(double.IsNaN(ToValue) ? Value  + SectionOffset + SectionWidth : ToValue, source, Model.Chart, axis) + uw;
 #pragma warning restore 618
 
             if (from > to)
@@ -420,7 +436,8 @@ namespace LiveCharts.Wpf
                 ? new RotateTransform(transform.LabelAngle)
                 : null;
 
-            var toLine = ChartFunctions.ToPlotArea(Value, source, Model.Chart, axis);
+            var toLine = ChartFunctions.ToPlotArea(Value + SectionOffset + SectionWidth * .5, source, Model.Chart,
+                axis);
 
             var direction = source == AxisOrientation.X ? 1 : -1;
 
@@ -452,6 +469,8 @@ namespace LiveCharts.Wpf
 
             if (source == AxisOrientation.Y)
             {
+                labelTab += 8 * (axis.Position == AxisPosition.LeftBottom ? 1 : -1);
+
                 if (Model.View.DisableAnimations || DisableAnimations)
                 {
                     Canvas.SetLeft(_label, labelTab);
