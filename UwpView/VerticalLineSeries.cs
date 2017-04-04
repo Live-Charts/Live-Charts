@@ -193,16 +193,13 @@ namespace LiveCharts.Uwp
                 if (point.Fill != null) pbv.Shape.Fill = (Brush)point.Fill;
             }
 
-            if (DataLabels && pbv.DataLabel == null)
+            if (DataLabels)
             {
                 pbv.DataLabel = UpdateLabelContent(new DataLabelViewModel
                 {
                     FormattedText = label,
                     Instance = point.Instance
-                });
-                Canvas.SetZIndex(pbv.DataLabel, short.MaxValue - 1);
-
-                Model.Chart.View.AddToDrawMargin(pbv.DataLabel);
+                }, pbv.DataLabel);
             }
 
             return pbv;

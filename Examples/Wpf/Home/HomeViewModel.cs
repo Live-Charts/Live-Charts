@@ -11,10 +11,12 @@ using Wpf.CartesianChart.BasicLine;
 using Wpf.CartesianChart.Basic_Bars;
 using Wpf.CartesianChart.Basic_Stacked_Bar;
 using Wpf.CartesianChart.Bubbles;
+using Wpf.CartesianChart.Chart_to_Image;
 using Wpf.CartesianChart.ConstantChanges;
 using Wpf.CartesianChart.Customized_Line_Series;
 using Wpf.CartesianChart.CustomTooltipAndLegend;
 using Wpf.CartesianChart.DateChart;
+using Wpf.CartesianChart.DataLabelTemplate;
 using Wpf.CartesianChart.DynamicVisibility;
 using Wpf.CartesianChart.Energy_Predictions;
 using Wpf.CartesianChart.Events;
@@ -42,6 +44,7 @@ using Wpf.CartesianChart.ZoomingAndPanning;
 using Wpf.Gauges;
 using Wpf.Maps;
 using Wpf.PieChart;
+using Wpf.PieChart.DropDowns;
 
 namespace Wpf.Home
 {
@@ -111,7 +114,9 @@ namespace Wpf.Home
                         new SampleVm("Sections", typeof(SectionsExample)),
                         new SampleVm("Multiple Axes", typeof(MultiAxesChart)),
                         new SampleVm("Events", typeof(EventsExample)),
-                        new SampleVm("Visual Elements", typeof(UiElementsAndEventsExample))
+                        new SampleVm("Visual Elements", typeof(UiElementsAndEventsExample)),
+                        new SampleVm("Chart to Image", typeof(ChartToImageSample)),
+                        new SampleVm("DataLabelTemplate", typeof(DataLabelTemplateSample))
                     }
                 }, 
                 new SampleGroupVm
@@ -120,6 +125,7 @@ namespace Wpf.Home
                     Items = new []
                     {
                         new SampleVm("Irregular intervals", typeof(IrregularIntervalsExample)),
+                        new SampleVm("Pie with drop downs", typeof(PieDropDownSample)), 
                         new SampleVm("Missing Points", typeof(MissingPointsExample)),
                         new SampleVm("Constant Changes", typeof(ConstantChangesChart)),
                         new SampleVm("Thread Safe", typeof(ThreadSafeExample)), 

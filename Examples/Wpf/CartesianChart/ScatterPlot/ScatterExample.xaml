@@ -22,6 +22,10 @@
                                    PointGeometry="{x:Static lvc:DefaultGeometries.Triangle}"
                                    StrokeThickness="2" Fill="Transparent"/>
             </lvc:CartesianChart.Series>
+            <lvc:CartesianChart.AxisY>
+                <!--setting the axis unit improved the labels rounding rule-->
+                <lvc:Axis Unit="1"></lvc:Axis>
+            </lvc:CartesianChart.AxisY>
         </lvc:CartesianChart>
     </Grid>
 </UserControl>

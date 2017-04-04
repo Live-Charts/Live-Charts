@@ -388,22 +388,32 @@ namespace LiveCharts.Uwp
 
         #region Internal Helpers
 
-        internal ContentControl UpdateLabelContent(DataLabelViewModel content)
+        internal ContentControl UpdateLabelContent(DataLabelViewModel content, ContentControl currentControl)
         {
-            var control = new ContentControl
-            {
-                Content = content,
-                ContentTemplate = DataLabelsTemplate,
-                FontFamily = FontFamily,
-                FontSize = FontSize,
-                FontStretch = FontStretch,
-                FontStyle = FontStyle,
-                FontWeight = FontWeight,
-                Foreground = Foreground
-            };
+            ContentControl control;
 
-            control.SetBinding(VisibilityProperty, 
-                new Binding {Path = new PropertyPath(nameof(Visibility)), Source = this});
+            if (currentControl == null)
+            {
+                control = new ContentControl();
+                control.SetBinding(VisibilityProperty,
+                    new Binding { Path = new PropertyPath(nameof(Visibility)), Source = this });
+                Canvas.SetZIndex(control, int.MaxValue - 1);
+
+                Model.Chart.View.AddToDrawMargin(control);
+            }
+            else
+            {
+                control = currentControl;
+            }
+
+            control.Content = content;
+            control.ContentTemplate = DataLabelsTemplate;
+            control.FontFamily = FontFamily;
+            control.FontSize = FontSize;
+            control.FontStretch = FontStretch;
+            control.FontStyle = FontStyle;
+            control.FontWeight = FontWeight;
+            control.Foreground = Foreground;
 
             return control;
         }

@@ -186,14 +186,13 @@ namespace LiveCharts.Uwp
 
             if (pbv.HoverShape != null) pbv.HoverShape.Visibility = Visibility;
 
-            if (DataLabels && pbv.DataLabel == null)
+            if (DataLabels)
             {
                 pbv.DataLabel = UpdateLabelContent(new DataLabelViewModel
                 {
                     FormattedText = label,
                     Instance = point.Instance
-                });
-                Canvas.SetZIndex(pbv.DataLabel, short.MaxValue - 1);
+                }, pbv.DataLabel);
 
                 Model.Chart.View.AddToDrawMargin(pbv.DataLabel);
             }

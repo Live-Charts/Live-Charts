@@ -21,7 +21,6 @@
 //SOFTWARE.
 
 using System;
-using System.Diagnostics;
 using Windows.UI.Xaml;
 using LiveCharts.Dtos;
 using LiveCharts.Uwp.Charts.Base;
@@ -34,20 +33,26 @@ namespace LiveCharts.Uwp.Components
         {
             Timer = new DispatcherTimer {Interval = frequency};
 
-            Timer.Tick += (sender, args) =>
-            {
-                UpdaterTick(RequiresRestart);
-            };
+            Timer.Tick += OnTimerOnTick;
+            Freq = frequency;
         }
 
         public DispatcherTimer Timer { get; set; }
         private bool RequiresRestart { get; set; }
+        private TimeSpan Freq { get; set; }
 
         public override void Run(bool restartView = false, bool updateNow = false)
         {
-            if (updateNow || Chart.View.IsMocked)
+            if (Timer == null)
             {
-                UpdaterTick(restartView);
+                Timer = new DispatcherTimer { Interval = Freq };
+                Timer.Tick += OnTimerOnTick;
+                IsUpdating = false;
+            }
+
+            if (updateNow)
+            {
+                UpdaterTick(restartView, true);
                 return;
             }
 
@@ -63,7 +68,12 @@ namespace LiveCharts.Uwp.Components
             Timer.Interval = freq;
         }
 
-        private void UpdaterTick(bool restartView)
+        public void OnTimerOnTick(object sender, object args)
+        {
+            UpdaterTick(RequiresRestart, false);
+        }
+
+        private void UpdaterTick(bool restartView, bool force)
         {
             var uwpfChart = (Chart) Chart.View;
             if (uwpfChart.Visibility != Visibility.Visible && !uwpfChart.IsMocked) return;
@@ -72,7 +82,7 @@ namespace LiveCharts.Uwp.Components
                 ? uwpfChart.Model.ControlSize
                 : new CoreSize(uwpfChart.ActualWidth, uwpfChart.ActualHeight);
             Timer.Stop();
-            Update(restartView);
+            Update(restartView, force);
             IsUpdating = false;
 
             RequiresRestart = false;

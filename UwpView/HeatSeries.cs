@@ -181,16 +181,13 @@ namespace LiveCharts.Uwp
 
             if (pbv.HoverShape != null) pbv.HoverShape.Visibility = Visibility;
 
-            if (DataLabels && pbv.DataLabel == null)
+            if (DataLabels)
             {
                 pbv.DataLabel = UpdateLabelContent(new DataLabelViewModel
                 {
                     FormattedText = label,
                     Instance = point.Instance
-                });
-                Canvas.SetZIndex(pbv.DataLabel, short.MaxValue - 1);
-
-                Model.Chart.View.AddToDrawMargin(pbv.DataLabel);
+                }, pbv.DataLabel);
             }
 
             return pbv;
@@ -261,6 +258,8 @@ namespace LiveCharts.Uwp
         /// </summary>
         public override void PlaceSpecializedElements()
         {
+            if (!DrawsHeatRange) return;
+
             if (DrawsHeatRange)
             {
                 ColorRangeControl.UpdateFill(GradientStopCollection);

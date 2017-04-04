@@ -588,7 +588,7 @@ namespace LiveCharts.Wpf
 
             return Color.FromArgb(
                 (byte) LinealInterpolation(from.A, to.A, fromOffset, toOffset, weight),
-                (byte) LinealInterpolation(from.R, from.R, fromOffset, toOffset, weight),
+                (byte) LinealInterpolation(from.R, to.R, fromOffset, toOffset, weight),
                 (byte) LinealInterpolation(from.G, to.G, fromOffset, toOffset, weight),
                 (byte) LinealInterpolation(from.B, to.B, fromOffset, toOffset, weight));
         }

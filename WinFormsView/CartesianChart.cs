@@ -23,7 +23,6 @@
 using System;
 using System.ComponentModel;
 using System.ComponentModel.Design.Serialization;
-using System.Windows.Forms;
 using System.Windows.Forms.Integration;
 using System.Windows.Media;
 using LiveCharts.Events;
@@ -144,6 +143,20 @@ namespace LiveCharts.WinForms
             get { return WpfBase.Zoom; }
             set { WpfBase.Zoom = value; }
         }
+
+        /// <summary>
+        /// Gets or sets the pan.
+        /// </summary>
+        /// <value>
+        /// The pan.
+        /// </value>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public PanningOptions Pan
+        {
+            get { return WpfBase.Pan; }
+            set { WpfBase.Pan = value; }
+        }
+
         /// <summary>
         /// Gets or sets the legend location.
         /// </summary>
@@ -207,6 +220,86 @@ namespace LiveCharts.WinForms
         {
             get { return WpfBase.DataTooltip; }
             set { WpfBase.DataTooltip = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether this <see cref="CartesianChart"/> is hoverable.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if hoverable; otherwise, <c>false</c>.
+        /// </value>
+        public bool Hoverable
+        {
+            get { return Base.Hoverable; }
+            set { Base.Hoverable = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the scroll mode.
+        /// </summary>
+        /// <value>
+        /// The scroll mode.
+        /// </value>
+        public ScrollMode ScrollMode { get { return Base.ScrollMode; } set { Base.ScrollMode = value; } }
+
+        /// <summary>
+        /// Gets or sets the scroll horizontal from.
+        /// </summary>
+        /// <value>
+        /// The scroll horizontal from.
+        /// </value>
+        public double ScrollHorizontalFrom
+        {
+            get { return Base.ScrollHorizontalFrom; }
+            set { Base.ScrollHorizontalFrom = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the scroll horizontal to.
+        /// </summary>
+        /// <value>
+        /// The scroll horizontal to.
+        /// </value>
+        public double ScrollHorizontalTo
+        {
+            get { return Base.ScrollHorizontalTo; }
+            set { Base.ScrollHorizontalTo = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the scroll vertical from.
+        /// </summary>
+        /// <value>
+        /// The scroll vertical from.
+        /// </value>
+        public double ScrollVerticalFrom
+        {
+            get { return Base.ScrollVerticalFrom; }
+            set { Base.ScrollVerticalFrom = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the scroll vertical to.
+        /// </summary>
+        /// <value>
+        /// The scroll vertical to.
+        /// </value>
+        public double ScrollVerticalTo
+        {
+            get { return Base.ScrollVerticalTo; }
+            set { Base.ScrollVerticalTo = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the scroll bar fill.
+        /// </summary>
+        /// <value>
+        /// The scroll bar fill.
+        /// </value>
+        public Brush ScrollBarFill
+        {
+            get { return Base.ScrollBarFill; }
+            set { Base.ScrollBarFill = value; }
         }
 
         /// <summary>

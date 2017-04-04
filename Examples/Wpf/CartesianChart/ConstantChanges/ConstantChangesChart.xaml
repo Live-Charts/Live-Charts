@@ -12,20 +12,26 @@
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
-        <Button Grid.Row="0" Click="RunDataOnClick">
+        <Button Grid.Row="0" Click="InjectStopOnClick">
             Inject/Stop Data
         </Button>
-        <lvc:CartesianChart Grid.Row="1">
+        <!--Here we disable tooltips and hovering to get a better performance-->
+        <lvc:CartesianChart Grid.Row="1" AnimationsSpeed="0:0:0.5" Hoverable="False" DataTooltip="{x:Null}">
             <lvc:CartesianChart.Series>
-                <lvc:LineSeries Values="{Binding ChartValues}" PointGeometrySize="18" StrokeThickness="4" />
+                <lvc:LineSeries Values="{Binding ChartValues}" 
+                                PointGeometry="{x:Null}" 
+                                LineSmoothness="1"
+                                StrokeThickness="6" 
+                                Stroke="#F34336"
+                                Fill="Transparent"/>
             </lvc:CartesianChart.Series>
             <lvc:CartesianChart.AxisX>
                 <lvc:Axis LabelFormatter="{Binding DateTimeFormatter}" 
                           MaxValue="{Binding AxisMax}" 
                           MinValue="{Binding AxisMin}"
-                          DisableAnimations="True">
+                          Unit="{Binding AxisUnit}">
                     <lvc:Axis.Separator>
-                        <lvc:Separator Step="{Binding AxisStep}"></lvc:Separator>
+                        <lvc:Separator Step="{Binding AxisStep}" />
                     </lvc:Axis.Separator>
                 </lvc:Axis>
             </lvc:CartesianChart.AxisX>

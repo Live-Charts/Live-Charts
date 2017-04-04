@@ -64,6 +64,12 @@ namespace LiveCharts.Wpf.Points
                         Canvas.SetTop(Shape, Canvas.GetTop(previosPbv.Shape));
                         Canvas.SetLeft(Shape, Canvas.GetLeft(previosPbv.Shape));
                     }
+
+                    if (DataLabel != null)
+                    {
+                        Canvas.SetTop(DataLabel, Canvas.GetTop(previosPbv.DataLabel));
+                        Canvas.SetLeft(DataLabel, Canvas.GetLeft(previosPbv.DataLabel));
+                    }
                 }
                 else
                 {
@@ -78,6 +84,12 @@ namespace LiveCharts.Wpf.Points
                             Canvas.SetTop(Shape, y);
                             Canvas.SetLeft(Shape, current.ChartLocation.X - Shape.Width*.5);
                         }
+
+                        if (DataLabel != null)
+                        {
+                            Canvas.SetTop(DataLabel, y);
+                            Canvas.SetLeft(DataLabel, current.ChartLocation.X - DataLabel.ActualWidth * .5);
+                        }
                     }
                     else
                     {
@@ -91,15 +103,13 @@ namespace LiveCharts.Wpf.Points
                             Canvas.SetTop(Shape, y);
                             Canvas.SetLeft(Shape, startPoint.X - Shape.Width * .5);
                         }
-                    }
-                    
-                    if (DataLabel != null)
-                    {
-                        Canvas.SetTop(DataLabel, y);
-                        Canvas.SetLeft(DataLabel, current.ChartLocation.X - DataLabel.ActualWidth*.5);
-                    }
 
-                    
+                        if (DataLabel != null)
+                        {
+                            Canvas.SetTop(DataLabel, y);
+                            Canvas.SetLeft(DataLabel, startPoint.X - DataLabel.ActualWidth * .5);
+                        }
+                    }
                 }
             }
             else if (DataLabel != null && double.IsNaN(Canvas.GetLeft(DataLabel)))

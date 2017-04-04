@@ -71,7 +71,7 @@ namespace LiveCharts.Wpf
         /// The maximum column width property
         /// </summary>
         public static readonly DependencyProperty MaxColumnWidthProperty = DependencyProperty.Register(
-            "MaxColumnWidth", typeof (double), typeof (ColumnSeries), new PropertyMetadata(default(double)));
+            "MaxColumnWidth", typeof (double), typeof (ColumnSeries), new PropertyMetadata(35d));
         /// <summary>
         /// Gets or sets the MaxColumnWidht in pixels, the column width will be capped at this value.
         /// </summary>
@@ -85,7 +85,7 @@ namespace LiveCharts.Wpf
         /// The column padding property
         /// </summary>
         public static readonly DependencyProperty ColumnPaddingProperty = DependencyProperty.Register(
-            "ColumnPadding", typeof (double), typeof (ColumnSeries), new PropertyMetadata(default(double)));
+            "ColumnPadding", typeof (double), typeof (ColumnSeries), new PropertyMetadata(2d));
         /// <summary>
         /// Gets or sets the padding between the columns in the series.
         /// </summary>
@@ -108,6 +108,20 @@ namespace LiveCharts.Wpf
         {
             get { return (BarLabelPosition) GetValue(LabelsPositionProperty); }
             set { SetValue(LabelsPositionProperty, value); }
+        }
+
+        /// <summary>
+        /// The shares position property
+        /// </summary>
+        public static readonly DependencyProperty SharesPositionProperty = DependencyProperty.Register(
+            "SharesPosition", typeof(bool), typeof(ColumnSeries), new PropertyMetadata(true));
+        /// <summary>
+        /// Gets or sets a value indicating whether this column shares space with all the column series in the same position
+        /// </summary>
+        public bool SharesPosition
+        {
+            get { return (bool) GetValue(SharesPositionProperty); }
+            set { SetValue(SharesPositionProperty, value); }
         }
 
         #endregion
@@ -172,16 +186,13 @@ namespace LiveCharts.Wpf
 
             if (pbv.HoverShape != null) pbv.HoverShape.Visibility = Visibility;
 
-            if (DataLabels && pbv.DataLabel == null)
+            if (DataLabels)
             {
                 pbv.DataLabel = UpdateLabelContent(new DataLabelViewModel
                 {
                     FormattedText = label,
                     Instance = point.Instance
-                });
-                Panel.SetZIndex(pbv.DataLabel, int.MaxValue - 1);
-
-                Model.Chart.View.AddToDrawMargin(pbv.DataLabel);
+                }, pbv.DataLabel);
             }
 
             if (point.Stroke != null) pbv.Rectangle.Stroke = (Brush)point.Stroke;

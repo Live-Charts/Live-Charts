@@ -18,7 +18,7 @@ A good way to say thanks for this library is doing good reports, the better you 
 * Create a repository that illustrates the issue, please use as less dependencies as possible.
 * If you are not very familiar with git, you could simply send us a mail with an example project that illustrates the issue at support@lvcharts.net
 * Simply open a [new issue](https://github.com/beto-rodriguez/Live-Charts/issues/new) following the sugested structure.
-* Comment it in out [chat](https://gitter.im/beto-rodriguez/Live-Charts).
+* Comment it in our [chat](https://gitter.im/beto-rodriguez/Live-Charts).
 
 ### Pull Request
 

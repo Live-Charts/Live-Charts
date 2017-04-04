@@ -84,12 +84,12 @@ namespace LiveCharts
         /// Updates the specified restarts animations.
         /// </summary>
         /// <param name="restartsAnimations">if set to <c>true</c> [restarts animations].</param>
-        protected void Update(bool restartsAnimations = false)   
+        /// <param name="force"></param>
+        protected void Update(bool restartsAnimations = false, bool force = false)   
         {
             if (Chart.View.UpdaterState == UpdaterState.Paused) return;
              
-            if (!Chart.View.IsMocked)
-                if (!Chart.View.IsControlLoaded) return;
+            if (!force && !Chart.View.IsControlLoaded) return;
 
             if (restartsAnimations)
                 Chart.View.ActualSeries.ForEach(s =>

@@ -213,6 +213,30 @@ namespace LiveCharts
 
         #endregion
 
+        #region Public Methods
+        /// <summary>
+        /// Gets the formatter.
+        /// </summary>
+        /// <returns></returns>
+        public virtual Func<double, string> GetFormatter()
+        {
+            return Formatter;
+        }
+
+        /// <summary>
+        /// Clears the separators.
+        /// </summary>
+        public void ClearSeparators()
+        {
+            foreach (var separator in Cache)
+            {
+                separator.Value.View.Clear(Chart.View);
+            }
+            Cache = new Dictionary<double, SeparatorElementCore>();
+        }
+
+        #endregion
+
         #region Internal Methods
 
         internal void CalculateSeparator(ChartCore chart, AxisOrientation source)
@@ -222,13 +246,13 @@ namespace LiveCharts
 
             //ToDO: Improve this according to current labels!
             var separations = source == AxisOrientation.Y
-                ? Math.Round(chart.ControlSize.Height/((12)*CleanFactor), 0) // at least 3 font 12 labels per separator.
-                : Math.Round(chart.ControlSize.Width/(50*CleanFactor), 0); // at least 150 pixels per separator.
+                ? Math.Round(chart.ControlSize.Height / ((12) * CleanFactor), 0) // at least 3 font 12 labels per separator.
+                : Math.Round(chart.ControlSize.Width / (50 * CleanFactor), 0); // at least 150 pixels per separator.
 
             separations = separations < 2 ? 2 : separations;
 
-            var minimum = range/separations;
-            Magnitude = Math.Pow(10, Math.Floor(Math.Log(minimum)/Math.Log(10)));
+            var minimum = range / separations;
+            Magnitude = Math.Pow(10, Math.Floor(Math.Log(minimum) / Math.Log(10)));
 
             if (!double.IsNaN(Separator.Step))
             {
@@ -236,14 +260,14 @@ namespace LiveCharts
                 return;
             }
 
-            var residual = minimum/Magnitude;
+            var residual = minimum / Magnitude;
             double tick;
             if (residual > 5)
-                tick = 10*Magnitude;
+                tick = 10 * Magnitude;
             else if (residual > 2)
-                tick = 5*Magnitude;
+                tick = 5 * Magnitude;
             else if (residual > 1)
-                tick = 2*Magnitude;
+                tick = 2 * Magnitude;
             else
                 tick = Magnitude;
 
@@ -254,81 +278,50 @@ namespace LiveCharts
 
         internal virtual CoreMargin PrepareChart(AxisOrientation source, ChartCore chart)
         {
-            if (!(Math.Abs(TopLimit - BotLimit) > S*.01) || !ShowLabels) return new CoreMargin();
+            if (!(Math.Abs(TopLimit - BotLimit) > S * .01) || !ShowLabels) return new CoreMargin();
 
             CalculateSeparator(chart, source);
 
             var f = GetFormatter();
 
             var currentMargin = new CoreMargin();
-            var tolerance = S/10;
+            var tolerance = S / 10;
 
             InitializeGarbageCollector();
 
-            var bl = Math.Ceiling(BotLimit/Magnitude)*Magnitude;
-            var u = View.BarUnit != 1d
+            var m = !double.IsNaN(View.BarUnit)
                 ? View.BarUnit
-                : View.Unit;
-            if (u != 1d)
+                : (!double.IsNaN(View.Unit)
+                    ? View.Unit
+                    : Magnitude);
+
+            var u = !double.IsNaN(View.BarUnit)
+                ? View.BarUnit
+                : (!double.IsNaN(View.Unit)
+                    ? View.Unit
+                    : 1);
+
+            if (TopLimit <= 0 && BotLimit < 0)
             {
-                bl = Math.Ceiling(BotLimit / u) * u;
+                var l = TopLimit - (EvaluatesUnitWidth ? u : 0);
+                LastSeparator = l;
+                for (var i = l; i >= Math.Truncate(BotLimit / m) * m; i -= S)
+                {
+                    FirstSeparator = i;
+                    DrawSeparator(i, tolerance, currentMargin, f, source);
+                }
             }
-            bl = Math.Round(bl/u)*u;
-            FirstSeparator = bl;
-
-            for (var i = bl; i <= TopLimit - (EvaluatesUnitWidth ? 1 : 0); i += S)
+            else
             {
-                LastSeparator = i;
-                SeparatorElementCore asc;
-
-                var key = Math.Round(i/tolerance)*tolerance;
-                if (!Cache.TryGetValue(key, out asc))
+                var l = Math.Truncate(BotLimit / m) * m;
+                FirstSeparator = l;
+                for (var i = l; i <= TopLimit - (EvaluatesUnitWidth ? u : 0); i += S)
                 {
-                    asc = new SeparatorElementCore {IsNew = true};
-                    Cache[key] = asc;
+                     LastSeparator = i;
+                    DrawSeparator(i, tolerance, currentMargin, f, source);
                 }
-                else
-                {
-                    asc.IsNew = false;
-                }
-
-                View.RenderSeparator(asc, Chart);
-
-                asc.Key = key;
-                asc.Value = i;
-                asc.GarbageCollectorIndex = GarbageCollectorIndex;
-
-                var labelsMargin = asc.View.UpdateLabel(f(i), this, source);
-
-                currentMargin.Width = labelsMargin.TakenWidth > currentMargin.Width
-                    ? labelsMargin.TakenWidth
-                    : currentMargin.Width;
-                currentMargin.Height = labelsMargin.TakenHeight > currentMargin.Height
-                    ? labelsMargin.TakenHeight
-                    : currentMargin.Height;
-
-                currentMargin.Left = labelsMargin.Left > currentMargin.Left
-                    ? labelsMargin.Left
-                    : currentMargin.Left;
-                currentMargin.Right = labelsMargin.Right > currentMargin.Right
-                    ? labelsMargin.Right
-                    : currentMargin.Right;
-
-                currentMargin.Top = labelsMargin.Top > currentMargin.Top
-                    ? labelsMargin.Top
-                    : currentMargin.Top;
-                currentMargin.Bottom = labelsMargin.Bottom > currentMargin.Bottom
-                    ? labelsMargin.Bottom
-                    : currentMargin.Bottom;
-
-                if (LastAxisMax == null)
-                {
-                    asc.State = SeparationState.InitialAdd;
-                    continue;
-                }
-
-                asc.State = SeparationState.Keep;
             }
+
             return currentMargin;
         }
 
@@ -346,9 +339,9 @@ namespace LiveCharts
 
                 var direction = source == AxisOrientation.X ? 1 : -1;
 
-                toLine += EvaluatesUnitWidth ? direction*ChartFunctions.GetUnitWidth(source, chart, this)/2 : 0;
+                toLine += EvaluatesUnitWidth ? direction * ChartFunctions.GetUnitWidth(source, chart, this) / 2 : 0;
                 var toLabel = toLine + element.View.LabelModel.GetOffsetBySource(source);
-                
+
                 if (IsMerged)
                 {
                     const double padding = 4;
@@ -391,7 +384,7 @@ namespace LiveCharts
                                 var toLinePrevious = FromPreviousState(element.Value, source, chart);
                                 toLinePrevious += EvaluatesUnitWidth ? ChartFunctions.GetUnitWidth(source, chart, this) / 2 : 0;
                                 var toLabelPrevious = toLinePrevious + element.View.LabelModel.GetOffsetBySource(source);
-                                element.View.Place(chart, this, source, axisIndex, toLabelPrevious, 
+                                element.View.Place(chart, this, source, axisIndex, toLabelPrevious,
                                     toLinePrevious, labelTab);
                                 element.View.FadeIn(this, chart);
                             }
@@ -450,46 +443,7 @@ namespace LiveCharts
 
         #endregion
 
-        #region Public Methods
-        /// <summary>
-        /// Gets the formatter.
-        /// </summary>
-        /// <returns></returns>
-        public virtual Func<double, string> GetFormatter()
-        {
-            return Formatter;
-        }
-
-        private string Formatter(double x)
-        {
-            if (Labels == null)
-            {
-                return LabelFormatter == null
-                    ? x.ToString(CultureInfo.InvariantCulture)
-                    : LabelFormatter(x);
-            }
-
-            if (x < 0) x *= -1;
-            return Labels.Count > x && x >= 0
-                ? Labels[(int) x]
-                : "";
-        }
-
-        /// <summary>
-        /// Clears the separators.
-        /// </summary>
-        public void ClearSeparators()
-        {
-            foreach (var separator in Cache)
-            {
-                separator.Value.View.Clear(Chart.View);
-            }
-            Cache = new Dictionary<double, SeparatorElementCore>();
-        }
-
-        #endregion
-
-        #region Privates
+        #region Protected Methods
 
         /// <summary>
         /// Initializes the garbage collector.
@@ -507,6 +461,80 @@ namespace LiveCharts
 
             GarbageCollectorIndex++;
         }
+        #endregion
+
+        #region Private Methods
+
+        private void DrawSeparator(double i, double tolerance, CoreMargin currentMargin, Func<double, string> f, AxisOrientation source)
+        {
+            if (i < BotLimit) return;
+           
+            SeparatorElementCore asc;
+
+            var key = Math.Round(i / tolerance) * tolerance;
+            if (!Cache.TryGetValue(key, out asc))
+            {
+                asc = new SeparatorElementCore { IsNew = true };
+                Cache[key] = asc;
+            }
+            else
+            {
+                asc.IsNew = false;
+            }
+
+            View.RenderSeparator(asc, Chart);
+
+            asc.Key = key;
+            asc.Value = i;
+            asc.GarbageCollectorIndex = GarbageCollectorIndex;
+
+            var labelsMargin = asc.View.UpdateLabel(f(i), this, source);
+
+            currentMargin.Width = labelsMargin.TakenWidth > currentMargin.Width
+                ? labelsMargin.TakenWidth
+                : currentMargin.Width;
+            currentMargin.Height = labelsMargin.TakenHeight > currentMargin.Height
+                ? labelsMargin.TakenHeight
+                : currentMargin.Height;
+
+            currentMargin.Left = labelsMargin.Left > currentMargin.Left
+                ? labelsMargin.Left
+                : currentMargin.Left;
+            currentMargin.Right = labelsMargin.Right > currentMargin.Right
+                ? labelsMargin.Right
+                : currentMargin.Right;
+
+            currentMargin.Top = labelsMargin.Top > currentMargin.Top
+                ? labelsMargin.Top
+                : currentMargin.Top;
+            currentMargin.Bottom = labelsMargin.Bottom > currentMargin.Bottom
+                ? labelsMargin.Bottom
+                : currentMargin.Bottom;
+
+            if (LastAxisMax == null)
+            {
+                asc.State = SeparationState.InitialAdd;
+                return;
+            }
+
+            asc.State = SeparationState.Keep;
+        }
+
+        private string Formatter(double x)
+        {
+            if (Labels == null)
+            {
+                return LabelFormatter == null
+                    ? x.ToString(CultureInfo.InvariantCulture)
+                    : LabelFormatter(x);
+            }
+
+            if (x < 0) x *= -1;
+            return Labels.Count > x && x >= 0
+                ? Labels[(int)x]
+                : "";
+        }
+
         #endregion
     }
 }
