@@ -4,7 +4,6 @@ namespace LiveCharts.Definitions.Charts
     /// 
     /// </summary>
     public interface IWindowAxisView : IAxisView
-    {
-        
+    {        
     }
 }

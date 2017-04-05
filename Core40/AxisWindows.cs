@@ -1,17 +1,24 @@
+using System;
+
 namespace LiveCharts
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public static class AxisWindows
     {
         /// <summary>
         /// 
         /// </summary>
-        public static AxisWindowCore EmptyWindow
+        public static AxisWindow EmptyWindow
         {
             get { return new EmptyAxisWindow(); }
         }
 
-        /// <inheritdoc />
-        public sealed class EmptyAxisWindow : AxisWindowCore
+        /// <summary>
+        /// 
+        /// </summary>
+        public class EmptyAxisWindow : AxisWindow
         {
             /// <inheritdoc />
             public override double MinimumSeparatorWidth

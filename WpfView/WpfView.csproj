@@ -68,6 +68,7 @@
   <ItemGroup>
     <Compile Include="AngularGauge.cs" />
     <Compile Include="AngularSection.cs" />
+    <Compile Include="AxisWindowCollection.cs" />
     <Compile Include="ColorsCollection.cs" />
     <Compile Include="Components\DefaultXamlReader.cs" />
     <Compile Include="Components\IFondeable.cs" />

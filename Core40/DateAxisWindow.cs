@@ -5,7 +5,7 @@ namespace LiveCharts
     /// <summary>
     /// 
     /// </summary>
-    public abstract class DateAxisWindowCore : AxisWindowCore
+    public abstract class DateAxisWindow : AxisWindow
     {
         public DateAxisCore DateAxisCore { get; set; }
 

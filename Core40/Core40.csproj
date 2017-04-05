@@ -59,7 +59,7 @@
     <Compile Include="AxisOrientation.cs" />
     <Compile Include="AxisPosition.cs" />
     <Compile Include="AxisSectionCore.cs" />
-    <Compile Include="AxisWindowCore.cs" />
+    <Compile Include="AxisWindow.cs" />
     <Compile Include="AxisWindows.cs" />
     <Compile Include="BarLabelPosition.cs" />
     <Compile Include="ChartFunctions.cs" />
@@ -79,10 +79,10 @@
     <Compile Include="Configurations\PolarMapper.cs" />
     <Compile Include="Configurations\WeightedMapper.cs" />
     <Compile Include="DataLabelViewModel.cs" />
+    <Compile Include="DateAxisCore.cs" />
     <Compile Include="DateAxisWindowCore.cs" />
     <Compile Include="Definitions\Charts\IAxisWindow.cs" />
     <Compile Include="Definitions\Charts\IWindowAxisView.cs" />
-    <Compile Include="Definitions\Charts\IWindowView.cs" />
     <Compile Include="WindowAxisCore.cs" />
     <Compile Include="DateAxisWindows.cs" />
     <Compile Include="DateSeparatorElementCore.cs" />

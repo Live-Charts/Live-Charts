@@ -14,7 +14,7 @@ namespace LiveCharts
         /// Gets preconfigured windows that can be used to build a datetime window axis
         /// </summary>
         /// <returns></returns>
-        public static IEnumerable<DateAxisWindowCore> GetDateAxisWindows()
+        public static IEnumerable<DateAxisWindow> GetDateAxisWindows()
         {
             yield return new SecondAxisWindow();
             yield return new FifteenSecondsAxisWindow();
@@ -31,7 +31,7 @@ namespace LiveCharts
         }
 
         /// <inheritdoc />
-        public sealed class SecondAxisWindow : DateAxisWindowCore
+        public sealed class SecondAxisWindow : DateAxisWindow
         {
             /// <inheritdoc />
             public override double MinimumSeparatorWidth
@@ -61,7 +61,7 @@ namespace LiveCharts
         }
 
         /// <inheritdoc />
-        public sealed class FifteenSecondsAxisWindow : DateAxisWindowCore
+        public sealed class FifteenSecondsAxisWindow : DateAxisWindow
         {
             /// <inheritdoc />
             public override double MinimumSeparatorWidth
@@ -89,7 +89,7 @@ namespace LiveCharts
         }
 
         /// <inheritdoc />
-        public sealed class ThirtySecondsAxisWindow : DateAxisWindowCore
+        public sealed class ThirtySecondsAxisWindow : DateAxisWindow
         {
             /// <inheritdoc />
             public override double MinimumSeparatorWidth
@@ -117,7 +117,7 @@ namespace LiveCharts
         }
 
         /// <inheritdoc />
-        public sealed class MinuteAxisWindow : DateAxisWindowCore
+        public sealed class MinuteAxisWindow : DateAxisWindow
         {
             /// <inheritdoc />
             public override double MinimumSeparatorWidth
@@ -145,7 +145,7 @@ namespace LiveCharts
         }
 
         /// <inheritdoc />
-        public sealed class QuarterAxisWindow : DateAxisWindowCore
+        public sealed class QuarterAxisWindow : DateAxisWindow
         {
             /// <inheritdoc />
             public override double MinimumSeparatorWidth
@@ -175,7 +175,7 @@ namespace LiveCharts
         }
 
         /// <inheritdoc />
-        public sealed class HalfHourAxisWindow : DateAxisWindowCore
+        public sealed class HalfHourAxisWindow : DateAxisWindow
         {
             /// <inheritdoc />
             public override double MinimumSeparatorWidth
@@ -205,7 +205,7 @@ namespace LiveCharts
         }
 
         /// <inheritdoc />
-        public sealed class HourAxisWindow : DateAxisWindowCore
+        public sealed class HourAxisWindow : DateAxisWindow
         {
             /// <inheritdoc />
             public override double MinimumSeparatorWidth
@@ -235,7 +235,7 @@ namespace LiveCharts
         }
 
         /// <inheritdoc />
-        public sealed class DayAxisWindow : DateAxisWindowCore
+        public sealed class DayAxisWindow : DateAxisWindow
         {
             /// <inheritdoc />
             public override double MinimumSeparatorWidth
@@ -267,7 +267,7 @@ namespace LiveCharts
         }
 
         /// <inheritdoc />
-        public sealed class WeekAxisWindow : DateAxisWindowCore
+        public sealed class WeekAxisWindow : DateAxisWindow
         {
             /// <inheritdoc />
             public override double MinimumSeparatorWidth
@@ -297,7 +297,7 @@ namespace LiveCharts
         }
 
         /// <inheritdoc />
-        public sealed class MonthAxisWindow : DateAxisWindowCore
+        public sealed class MonthAxisWindow : DateAxisWindow
         {
             /// <inheritdoc />
             public override double MinimumSeparatorWidth
@@ -327,7 +327,7 @@ namespace LiveCharts
         }
 
         /// <inheritdoc />
-        public sealed class YearAxisWindow : DateAxisWindowCore
+        public sealed class YearAxisWindow : DateAxisWindow
         {
             /// <inheritdoc />
             public override double MinimumSeparatorWidth
@@ -355,7 +355,7 @@ namespace LiveCharts
         }
 
         /// <inheritdoc />
-        public sealed class DecadeAxisWindow : DateAxisWindowCore
+        public sealed class DecadeAxisWindow : DateAxisWindow
         {
             /// <inheritdoc />
             public override double MinimumSeparatorWidth

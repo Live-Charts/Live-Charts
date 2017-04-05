@@ -1,3 +1,4 @@
+using System.Configuration;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -14,8 +15,26 @@ namespace LiveCharts.Wpf
     /// </summary>
     public class WindowAxis : Axis, IWindowAxisView
     {
-        public static readonly DependencyProperty HeaderFontWeightProperty = DependencyProperty.Register("HeaderFontWeight", typeof(FontWeight), typeof(Axis), new PropertyMetadata(FontWeights.ExtraBold));
-        public static readonly DependencyProperty HeaderForegroundProperty = DependencyProperty.Register("HeaderForeground", typeof(Brush), typeof(Axis), new PropertyMetadata(new SolidColorBrush(Color.FromRgb(130, 130, 130))));
+        public static readonly DependencyProperty WindowsProperty = DependencyProperty.Register("Windows", typeof(AxisWindowCollection), typeof(WindowAxis),new PropertyMetadata(default(AxisWindowCollection)));
+        public static readonly DependencyProperty HeaderFontWeightProperty = DependencyProperty.Register("HeaderFontWeight", typeof(FontWeight), typeof(WindowAxis), new PropertyMetadata(FontWeights.ExtraBold));
+        public static readonly DependencyProperty HeaderForegroundProperty = DependencyProperty.Register("HeaderForeground", typeof(Brush), typeof(WindowAxis), new PropertyMetadata(new SolidColorBrush(Color.FromRgb(130, 130, 130))));
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public AxisWindowCollection Windows
+        {
+            get { return (AxisWindowCollection)GetValue(WindowsProperty); }
+            set { SetValue(WindowsProperty, value); }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public WindowAxis()
+        {
+            SetCurrentValue(WindowsProperty, new AxisWindowCollection());
+        }
 
         /// <summary>
         /// Gets or sets labels font weight
@@ -50,6 +69,7 @@ namespace LiveCharts.Wpf
             Model.Separator = Separator.AsCoreElement(Model, source);
             Model.DisableAnimations = DisableAnimations;
             Model.Sections = Sections.Select(x => x.AsCoreElement(Model, source)).ToList();
+            ((WindowAxisCore) Model).Windows = Windows.ToList();
             return Model;
         }
                         

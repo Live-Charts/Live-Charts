@@ -23,11 +23,16 @@
         <wpf:CartesianChart Zoom="X" Grid.Row="4" DisableAnimations="False" Series="{Binding SeriesCollection}">
             <wpf:CartesianChart.AxisX>
                 <wpf:WindowAxis
-                    MinValue="0"
-                    MaxValue="60"
+                    MinValue="1970"
+                    MaxValue="1990"
+                    LabelsRotation="45"
                     Foreground="DarkSlateBlue"
-                    HeaderForeground="Black"
+                    HeaderForeground="OrangeRed"
                     ShowLabels="True">
+                    <wpf:WindowAxis.Windows>
+                        <local:PresidentWindow/>
+                        <local:OtherWindow/>
+                    </wpf:WindowAxis.Windows>
                     <wpf:WindowAxis.Separator>
                         <wpf:Separator StrokeThickness="10" Stroke="Black"/>
                     </wpf:WindowAxis.Separator>
