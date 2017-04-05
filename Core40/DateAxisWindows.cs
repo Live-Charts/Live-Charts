@@ -11,151 +11,378 @@ namespace LiveCharts
     public static class DateAxisWindows
     {
         /// <summary>
-        /// Gets an array with the default resolutions.
+        /// Gets preconfigured windows that can be used to build a datetime window axis
         /// </summary>
-        /// <remarks>In the future, I do not expect all existing windows to be default supported (i.e. Milennium, half minutes etc)</remarks>
-        public static SeparatorResolution[] DefaultResolutions
+        /// <returns></returns>
+        public static IEnumerable<DateAxisWindowCore> GetDateAxisWindows()
         {
-            get
+            yield return new SecondAxisWindow();
+            yield return new FifteenSecondsAxisWindow();
+            yield return new ThirtySecondsAxisWindow();
+            yield return new MinuteAxisWindow();
+            yield return new QuarterAxisWindow();
+            yield return new HalfHourAxisWindow();
+            yield return new HourAxisWindow();
+            yield return new DayAxisWindow();
+            yield return new WeekAxisWindow();
+            yield return new MonthAxisWindow();
+            yield return new YearAxisWindow();
+            yield return new DecadeAxisWindow();
+        }
+
+        /// <inheritdoc />
+        public sealed class SecondAxisWindow : DateAxisWindowCore
+        {
+            /// <inheritdoc />
+            public override double MinimumSeparatorWidth
             {
-                return new[]
-                {
-                    SeparatorResolution.Second,
-                    SeparatorResolution.Minute,
-                    SeparatorResolution.Hour,
-                    SeparatorResolution.Day,
-                    SeparatorResolution.Week,
-                    SeparatorResolution.Month,
-                    SeparatorResolution.Year,
-                    SeparatorResolution.Decade
-                };
+                get { return 20; }
+            }
+
+            /// <inheritdoc />
+            public override bool IsHeader(DateTime x)
+            {
+                return x.Second == 0;
+            }
+
+            /// <inheritdoc />
+            public override bool IsSeparator(DateTime x)
+            {
+                return x.Millisecond == 0;
+            }
+
+            /// <inheritdoc />
+            public override string FormatAxisLabel(DateTime x)
+            {
+                return x.ToString(IsHeader(x)
+                    ? "hh:mm:ss"
+                    : "mm:ss");
             }
         }
 
-        /// <summary>
-        /// Gets the default configured window for the provided resolution
-        /// </summary>
-        /// <param name="resolution"></param>
-        /// <returns></returns>
-        public static DateAxisWindow GetDefaultWindow(SeparatorResolution resolution)
+        /// <inheritdoc />
+        public sealed class FifteenSecondsAxisWindow : DateAxisWindowCore
         {
-            switch (resolution)
+            /// <inheritdoc />
+            public override double MinimumSeparatorWidth
             {
-                case SeparatorResolution.Second:
-                    return SecondWindow;
-                    
-                case SeparatorResolution.Minute:
-                    return MinuteWindow;
+                get { return 50; }
+            }
 
-                case SeparatorResolution.Hour:
-                    return HourWindow;
+            /// <inheritdoc />
+            public override bool IsHeader(DateTime x)
+            {
+                return x.Minute == 0 && x.Second == 0;
+            }
 
-                case SeparatorResolution.Day:
-                    return DayWindow;
+            /// <inheritdoc />
+            public override bool IsSeparator(DateTime x)
+            {
+                return x.Second % 15 == 0;
+            }
 
-                case SeparatorResolution.Week:
-                    return WeekWindow;
-                case SeparatorResolution.Month:
-                    return MonthWindow;
-                    
-                case SeparatorResolution.Year:
-                    return YearWindow;
-                    
-                case SeparatorResolution.Decade:
-                    return DecadeWindow;
-
-                default:
-                    throw new ArgumentOutOfRangeException();
+            /// <inheritdoc />
+            public override string FormatAxisLabel(DateTime x)
+            {
+                return x.ToString("hh:mm:ss");
             }
         }
 
-        /// <summary>
-        /// Gets an enumerable of Default Windows based upon the default resolutions
-        /// </summary>
-        /// <returns></returns>
-        public static IEnumerable<DateAxisWindow> GetDefaultWindows()
+        /// <inheritdoc />
+        public sealed class ThirtySecondsAxisWindow : DateAxisWindowCore
         {
-            return GetWindows(DefaultResolutions);
+            /// <inheritdoc />
+            public override double MinimumSeparatorWidth
+            {
+                get { return 40; }
+            }
+
+            /// <inheritdoc />
+            public override bool IsHeader(DateTime x)
+            {
+                return x.Minute == 0 && x.Second == 0;
+            }
+
+            /// <inheritdoc />
+            public override bool IsSeparator(DateTime x)
+            {
+                return x.Second % 30 == 0;
+            }
+
+            /// <inheritdoc />
+            public override string FormatAxisLabel(DateTime x)
+            {
+                return x.ToString("hh:mm:ss");
+            }
         }
 
-        public static IEnumerable<DateAxisWindow> GetWindows(SeparatorResolution[] resolutions)
+        /// <inheritdoc />
+        public sealed class MinuteAxisWindow : DateAxisWindowCore
         {
-            return (Enum.GetValues(typeof(SeparatorResolution))
-                .Cast<SeparatorResolution>()
-                .Where(resolutions.Contains)
-                .Select(GetDefaultWindow)).ToList();
+            /// <inheritdoc />
+            public override double MinimumSeparatorWidth
+            {
+                get { return 20; }
+            }
+
+            /// <inheritdoc />
+            public override bool IsHeader(DateTime x)
+            {
+                return x.Minute == 0;
+            }
+
+            /// <inheritdoc />
+            public override bool IsSeparator(DateTime x)
+            {
+                return x.Second == 0;
+            }
+
+            /// <inheritdoc />
+            public override string FormatAxisLabel(DateTime x)
+            {
+                return x.ToString("hh:mm");
+            }
         }
 
-        public static DateAxisWindow SecondWindow = new DateAxisWindow
+        /// <inheritdoc />
+        public sealed class QuarterAxisWindow : DateAxisWindowCore
         {
-            Resolution = SeparatorResolution.Second,
-            Threshold = 0.005,
-            IsHeader = x => x.Second == 0,
-            IsSeparator = x => x.Millisecond == 0,
-            AxisLabel = x => x.ToString(x.Second == 0 ? "hh:mm:ss" : "ss"),
-        };
+            /// <inheritdoc />
+            public override double MinimumSeparatorWidth
+            {
+                get { return 20; }
+            }
 
-        public static DateAxisWindow MinuteWindow = new DateAxisWindow
-        {
-            Resolution = SeparatorResolution.Minute,
-            Threshold = 0.03,
-            IsHeader = x => x.Minute == 0,
-            IsSeparator = x => x.Second == 0,
-            AxisLabel = x => x.ToString(x.Minute == 0 ? "hh:mm" : "mm"),
-        };
+            /// <inheritdoc />
+            public override bool IsHeader(DateTime x)
+            {
+                return x.Minute == 0;
+            }
 
-        public static DateAxisWindow HourWindow = new DateAxisWindow
-        {
-            Resolution = SeparatorResolution.Hour,
-            Threshold = 1.2,
-            IsHeader = x => x.Hour == 0 && x.Minute == 0,
-            IsSeparator = x => x.Minute == 0,
-            AxisLabel = x => x.Hour == 0 && x.Minute == 0 ? x.ToString("d") : x.ToString("hh"),
-        };
+            /// <inheritdoc />
+            public override bool IsSeparator(DateTime x)
+            {
+                return x.Minute % 15 == 0;
+            }
 
-        public static DateAxisWindow DayWindow = new DateAxisWindow
-        {
-            Resolution = SeparatorResolution.Day,
-            Threshold = 30,
-            IsHeader = x => x.DayOfYear == 1 || x.Day == 1,
-            IsSeparator = x => x.Hour == 0,
-            AxisLabel = x => x.DayOfYear == 1 ? x.ToString("yyyy") : x.ToString(x.Day == 1 ? "MMM" : "dd"),
-        };
+            /// <inheritdoc />
+            public override string FormatAxisLabel(DateTime x)
+            {
+                return x.Hour == 0 && x.Minute == 0
+                    ? x.ToString("d")
+                    : x.ToString("hh:mm");
+            }
+        }
 
-        public static DateAxisWindow WeekWindow = new DateAxisWindow
+        /// <inheritdoc />
+        public sealed class HalfHourAxisWindow : DateAxisWindowCore
         {
-            Resolution = SeparatorResolution.Week,
-            Threshold = 90,
-            IsHeader = x => x.Day <= 7,
-            IsSeparator = x => x.DayOfWeek == DayOfWeek.Monday,
-            AxisLabel = x => x.ToString(x.Day <= 7 ? "MMM" : "dd"),
-        };
+            /// <inheritdoc />
+            public override double MinimumSeparatorWidth
+            {
+                get { return 20; }
+            }
 
-        public static DateAxisWindow MonthWindow = new DateAxisWindow
-        {
-            Resolution = SeparatorResolution.Month,
-            Threshold = 725,
-            IsHeader = x => x.DayOfYear == 1,
-            IsSeparator = x => x.Day == 1,
-            AxisLabel = x => x.ToString(x.DayOfYear == 1 ? "yyyy" : "MMM"),
-        };
+            /// <inheritdoc />
+            public override bool IsHeader(DateTime x)
+            {
+                return x.Hour == 0 && x.Minute == 0;
+            }
 
-        public static DateAxisWindow YearWindow = new DateAxisWindow
-        {
-            Resolution = SeparatorResolution.Year,
-            Threshold = 10950,
-            IsHeader = x => false,
-            IsSeparator = x => x.DayOfYear == 1,
-            AxisLabel = x => x.ToString("yyyy"),
-        };
+            /// <inheritdoc />
+            public override bool IsSeparator(DateTime x)
+            {
+                return x.Minute % 30 == 0;
+            }
 
-        public static DateAxisWindow DecadeWindow = new DateAxisWindow
+            /// <inheritdoc />
+            public override string FormatAxisLabel(DateTime x)
+            {
+                return IsHeader(x)
+                    ? x.ToString("d")
+                    : x.ToString("hh:mm");
+            }
+        }
+
+        /// <inheritdoc />
+        public sealed class HourAxisWindow : DateAxisWindowCore
         {
-            Resolution = SeparatorResolution.Decade,
-            Threshold = 10000000,
-            IsHeader = x => x.Year % 100 == 0,
-            IsSeparator = x => x.Year % 10 == 0,
-            AxisLabel = x => x.ToString(x.Year % 100 == 0 ? "yyyy" : "yy"),
-        };
+            /// <inheritdoc />
+            public override double MinimumSeparatorWidth
+            {
+                get { return 20; }
+            }
+
+            /// <inheritdoc />
+            public override bool IsHeader(DateTime x)
+            {
+                return x.Hour == 0 && x.Minute == 0;
+            }
+
+            /// <inheritdoc />
+            public override bool IsSeparator(DateTime x)
+            {
+                return x.Minute == 0;
+            }
+
+            /// <inheritdoc />
+            public override string FormatAxisLabel(DateTime x)
+            {
+                return IsHeader(x)
+                    ? x.ToString("d")
+                    : x.ToString("hh:mm");
+            }
+        }
+
+        /// <inheritdoc />
+        public sealed class DayAxisWindow : DateAxisWindowCore
+        {
+            /// <inheritdoc />
+            public override double MinimumSeparatorWidth
+            {
+                get { return 10; }
+            }
+
+            /// <inheritdoc />
+            public override bool IsHeader(DateTime x)
+            {
+                return x.DayOfYear == 1 || x.Day == 1;
+            }
+
+            /// <inheritdoc />
+            public override bool IsSeparator(DateTime x)
+            {
+                return x.Hour == 0;
+            }
+
+            /// <inheritdoc />
+            public override string FormatAxisLabel(DateTime x)
+            {
+                return x.DayOfYear == 1
+                    ? x.ToString("yyyy")
+                    : x.ToString(IsHeader(x)
+                        ? "MMM"
+                        : "dd");
+            }
+        }
+
+        /// <inheritdoc />
+        public sealed class WeekAxisWindow : DateAxisWindowCore
+        {
+            /// <inheritdoc />
+            public override double MinimumSeparatorWidth
+            {
+                get { return 10; }
+            }
+
+            /// <inheritdoc />
+            public override bool IsHeader(DateTime x)
+            {
+                return x.Day <= 7;
+            }
+
+            /// <inheritdoc />
+            public override bool IsSeparator(DateTime x)
+            {
+                return x.DayOfWeek == DayOfWeek.Monday;
+            }
+
+            /// <inheritdoc />
+            public override string FormatAxisLabel(DateTime x)
+            {
+                return x.ToString(IsHeader(x)
+                    ? "MMM"
+                    : "dd");
+            }
+        }
+
+        /// <inheritdoc />
+        public sealed class MonthAxisWindow : DateAxisWindowCore
+        {
+            /// <inheritdoc />
+            public override double MinimumSeparatorWidth
+            {
+                get { return 10; }
+            }
+
+            /// <inheritdoc />
+            public override bool IsHeader(DateTime x)
+            {
+                return x.DayOfYear == 1;
+            }
+
+            /// <inheritdoc />
+            public override bool IsSeparator(DateTime x)
+            {
+                return x.Day == 1;
+            }
+
+            /// <inheritdoc />
+            public override string FormatAxisLabel(DateTime x)
+            {
+                return x.ToString(IsHeader(x)
+                    ? "yyyy"
+                    : "MMM");
+            }
+        }
+
+        /// <inheritdoc />
+        public sealed class YearAxisWindow : DateAxisWindowCore
+        {
+            /// <inheritdoc />
+            public override double MinimumSeparatorWidth
+            {
+                get { return 20; }
+            }
+
+            /// <inheritdoc />
+            public override bool IsHeader(DateTime x)
+            {
+                return x.Year % 10 == 0;
+            }
+
+            /// <inheritdoc />
+            public override bool IsSeparator(DateTime x)
+            {
+                return x.DayOfYear == 1;
+            }
+
+            /// <inheritdoc />
+            public override string FormatAxisLabel(DateTime x)
+            {
+                return x.ToString("yyyy");
+            }
+        }
+
+        /// <inheritdoc />
+        public sealed class DecadeAxisWindow : DateAxisWindowCore
+        {
+            /// <inheritdoc />
+            public override double MinimumSeparatorWidth
+            {
+                get { return 10; }
+            }
+
+            /// <inheritdoc />
+            public override bool IsHeader(DateTime x)
+            {
+                return x.Year % 100 == 0;
+            }
+
+            /// <inheritdoc />
+            public override bool IsSeparator(DateTime x)
+            {
+                return x.Year % 10 == 0;
+            }
+
+            /// <inheritdoc />
+            public override string FormatAxisLabel(DateTime x)
+            {
+                return x.ToString(IsHeader(x)
+                    ? "yyyy"
+                    : "yy");
+            }
+        }
+
     }
 }

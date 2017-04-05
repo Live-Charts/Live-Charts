@@ -9,18 +9,18 @@ using LiveCharts.Defaults;
 using LiveCharts.Helpers;
 using LiveCharts.Wpf;
 
-namespace Wpf.CartesianChart.DateChart
+namespace Wpf.CartesianChart.DateAxis
 {
-    public partial class DatechartExample : UserControl, INotifyPropertyChanged
+    public partial class DateAxisExample : UserControl, INotifyPropertyChanged
     {
         private DateTime _referenceDateTime;
 
         private SeriesResolution _seriesResolution = SeriesResolution.Day;
-        private SeparatorResolution _separatorResolution;
 
-        public DatechartExample()
+        public DateAxisExample()
         {
             InitializeComponent();
+
             var now = DateTime.UtcNow;
             ReferenceDateTime = new DateTime(now.Year, now.Month, now.Day);
 
@@ -29,7 +29,7 @@ namespace Wpf.CartesianChart.DateChart
                 new LineSeries
                 {
                     Title = "Series 1",
-                    Values = new ChartValues<double> { 4, 6, 5, 2 ,7, 8, 2, 0, 3, 5, 2, 4, 6, 4, 7, 3, 10, 4, 1, 2, 5, 8, 4, 6, 2, 4, 8, 7, 5, 4, 3, 2, 5, 6, 5, 3, 6, 4, 6, 3, 4, 1, 4, 2, 3, 2, 3, 5, 8, 6, 8, 4, 2, 4, 1, 2, 5, 6 },
+                    Values = new ChartValues<double> { 4, 6, 5, 2 ,7, 8, 2, 0, 3, 5, 2, 4, 6, 4, 7, 3, 10, 4, 1, 2, 5, 8, 4, 6, 2, 4, 8, 7, 5, 4, 3, 2, 5, 6, 5, 3, 6, 4, 6, 3, 4, 1, 4, 2, 3, 2, 3, 5, 8, 6, 8, 4, 2, 4, 1, 2, 5, 6, 4, 6, 5, 2 ,7, 8, 2, 0, 3, 5, 2, 4, 6, 4, 7, 3, 10, 4, 1, 2, 5, 8, 4, 6, 2, 4, 8, 7, 5, 4, 3, 2, 5, 6, 5, 3, 6, 4, 6, 3, 4, 1, 4, 2, 3, 2, 3, 5, 8, 6, 8, 4, 2, 4, 1, 2, 5, 6  },
                     PointGeometry = null
                 },                
             };
@@ -46,16 +46,6 @@ namespace Wpf.CartesianChart.DateChart
             {
                 _referenceDateTime = value;
                 OnPropertyChanged("ReferenceDateTime");
-            }
-        }
-
-        public SeparatorResolution SeparatorResolution
-        {
-            get { return _separatorResolution; }
-            set
-            {
-                _separatorResolution = value;
-                OnPropertyChanged("SeparatorResolution");
             }
         }
 

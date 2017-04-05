@@ -1,0 +1,42 @@
+﻿<UserControl x:Class="Wpf.CartesianChart.WindowAxis.WindowAxisExample"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Wpf.CartesianChart.WindowAxis"
+             xmlns:wpf="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <Grid>
+        <Grid.RowDefinitions>
+
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="1">
+        </StackPanel>
+
+        <wpf:CartesianChart Zoom="X" Grid.Row="4" DisableAnimations="False" Series="{Binding SeriesCollection}">
+            <wpf:CartesianChart.AxisX>
+                <wpf:WindowAxis
+                    MinValue="0"
+                    MaxValue="60"
+                    Foreground="DarkSlateBlue"
+                    HeaderForeground="Black"
+                    ShowLabels="True">
+                    <wpf:WindowAxis.Separator>
+                        <wpf:Separator StrokeThickness="10" Stroke="Black"/>
+                    </wpf:WindowAxis.Separator>
+                </wpf:WindowAxis>
+            </wpf:CartesianChart.AxisX>
+        </wpf:CartesianChart>
+
+    </Grid>
+</UserControl>
+
+
+

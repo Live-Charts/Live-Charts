@@ -59,6 +59,8 @@
     <Compile Include="AxisOrientation.cs" />
     <Compile Include="AxisPosition.cs" />
     <Compile Include="AxisSectionCore.cs" />
+    <Compile Include="AxisWindowCore.cs" />
+    <Compile Include="AxisWindows.cs" />
     <Compile Include="BarLabelPosition.cs" />
     <Compile Include="ChartFunctions.cs" />
     <Compile Include="Charting.cs" />
@@ -77,8 +79,11 @@
     <Compile Include="Configurations\PolarMapper.cs" />
     <Compile Include="Configurations\WeightedMapper.cs" />
     <Compile Include="DataLabelViewModel.cs" />
-    <Compile Include="DateAxisCore.cs" />
-    <Compile Include="DateAxisWindow.cs" />
+    <Compile Include="DateAxisWindowCore.cs" />
+    <Compile Include="Definitions\Charts\IAxisWindow.cs" />
+    <Compile Include="Definitions\Charts\IWindowAxisView.cs" />
+    <Compile Include="Definitions\Charts\IWindowView.cs" />
+    <Compile Include="WindowAxisCore.cs" />
     <Compile Include="DateAxisWindows.cs" />
     <Compile Include="DateSeparatorElementCore.cs" />
     <Compile Include="Defaults\AxisLimits.cs" />
@@ -140,7 +145,6 @@
     <Compile Include="Helpers\Extentions.cs" />
     <Compile Include="Helpers\LiveChartsException.cs" />
     <Compile Include="Helpers\NoisyCollection.cs" />
-    <Compile Include="SeparatorResolution.cs" />
     <Compile Include="SeriesResolution.cs" />
     <Compile Include="IChartValues.cs" />
     <Compile Include="IObservableChartPoint.cs" />

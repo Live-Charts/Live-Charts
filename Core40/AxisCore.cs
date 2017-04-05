@@ -239,7 +239,7 @@ namespace LiveCharts
 
         #region Internal Methods
 
-        internal void CalculateSeparator(ChartCore chart, AxisOrientation source)
+        internal virtual void CalculateSeparator(ChartCore chart, AxisOrientation source)
         {
             var range = TopLimit - BotLimit;
             range = range <= 0 ? 1 : range;

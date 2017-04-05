@@ -94,8 +94,8 @@
     <Compile Include="CartesianChart\DataLabelTemplate\DataLabelTemplateSample.xaml.cs">
       <DependentUpon>DataLabelTemplateSample.xaml</DependentUpon>
     </Compile>
-    <Compile Include="CartesianChart\DateChart\DateChartExample.xaml.cs">
-      <DependentUpon>DateChartExample.xaml</DependentUpon>
+    <Compile Include="CartesianChart\DateAxis\DateAxisExample.xaml.cs">
+      <DependentUpon>DateAxisExample.xaml</DependentUpon>
     </Compile>
     <Compile Include="CartesianChart\Energy Predictions\EnergyPredictionExample.xaml.cs">
       <DependentUpon>EnergyPredictionExample.xaml</DependentUpon>
@@ -125,6 +125,9 @@
     <Compile Include="CartesianChart\ThreadSafe\ThreadSafeViewModel.cs" />
     <Compile Include="CartesianChart\ThreadSafe\ThreadSafeExample.xaml.cs">
       <DependentUpon>ThreadSafeExample.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CartesianChart\WindowAxis\WindowAxisExample.xaml.cs">
+      <DependentUpon>WindowAxisExample.xaml</DependentUpon>
     </Compile>
     <Compile Include="Home\SampleGroupVm.cs" />
     <Compile Include="Home\SampleVm.cs" />
@@ -168,7 +171,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="CartesianChart\DateChart\DateChartExample.xaml">
+    <Page Include="CartesianChart\DateAxis\DateAxisExample.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -337,6 +340,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="CartesianChart\Using DateTime\DateTime.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CartesianChart\WindowAxis\WindowAxisExample.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -629,6 +636,7 @@
       <Name>WpfView</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

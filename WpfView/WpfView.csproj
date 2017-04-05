@@ -148,6 +148,7 @@
     <Compile Include="LineSegmentSplitter.cs" />
     <Compile Include="VisualElement.cs" />
     <Compile Include="GeoMap.cs" />
+    <Compile Include="WindowAxis.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
