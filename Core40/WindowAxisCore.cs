@@ -21,6 +21,7 @@ namespace LiveCharts
             {
                 if (Equals(_selectedWindow, value)) return;
                 _selectedWindow = value;
+                ((IWindowAxisView)View).SetSelectedWindow(value);
             }
         }
 
@@ -42,12 +43,7 @@ namespace LiveCharts
         /// </summary>
         internal override CoreMargin PrepareChart(AxisOrientation source, ChartCore chart)
         {
-            //if (TopLimit <= 0 && BotLimit < 0) throw new Exception("DateAxis does not support negative values");
-
             if (!(Math.Abs(TopLimit - BotLimit) > S * .01) || !ShowLabels) return new CoreMargin();
-
-            // Calculate the separators and the resolution
-            CalculateSeparator(chart, source);
 
             var currentMargin = new CoreMargin();
             var tolerance = S / 10;
@@ -58,62 +54,67 @@ namespace LiveCharts
             var m = (!double.IsNaN(View.Unit) ? View.Unit : Magnitude);
             var u = (!double.IsNaN(View.Unit) ? View.Unit : 1);
 
-            // Loop trough all the 
-            // I use ceiling, because possibly the X was out of range
-            if (SelectedWindow != null)
-            {
-                for (var x = Math.Floor(BotLimit); x <= TopLimit - (EvaluatesUnitWidth ? u : 0); x += 1)
-                {
-                    LastSeparator = x;
+            // Calculate the separators and the resolution
+            var indices = CalculateSeparatorIndices(chart, source, u);
 
-                    // Filter for actual separators
-                    if (SelectedWindow.IsSeparator(x))
-                    {
-                        DrawSeparator(x, tolerance, currentMargin, source);
-                    }
-                }
+            // Draw the separators
+            foreach (var index in indices)
+            {
+                DrawSeparator(index, tolerance, currentMargin, source);
             }
 
             return currentMargin;
         }
 
-        internal override void CalculateSeparator(ChartCore chart, AxisOrientation source)
+        internal IEnumerable<double> CalculateSeparatorIndices(ChartCore chart, AxisOrientation source, double unit)
         {
             if (!double.IsNaN(Separator.Step)) throw new Exception("Step should be NaN for WindowAxis separators");
-            if (Windows == null) return;
+            if (Windows == null) return Enumerable.Empty<double>();
 
             // Find the seperator resolution represented by the first available window
             double supportedSeparatorCount = 0;
 
-            AxisWindow proposedWindow = null;
-            if (Windows != null)
+            // Holder for the calculated separator indices and the proposed window
+            var separatorIndices = new List<double>();
+            IAxisWindow proposedWindow = AxisWindows.EmptyWindow;
+
+            // Build a range of possible separator indices
+            var rangeIndices = Enumerable.Range((int)Math.Floor(BotLimit), (int)Math.Floor(TopLimit - (EvaluatesUnitWidth ? unit : 0) - BotLimit)).Select(i => (double)i).ToList();
+
+            // Make sure we have at least 2 separators to show
+            if (Windows != null && rangeIndices.Count > 1)
             {
-                proposedWindow = Windows.FirstOrDefault(w =>
+                foreach (var window in Windows)
                 {
-                // Calculate the number of separators we support
-                supportedSeparatorCount = Math.Round(chart.ControlSize.Width / (w.MinimumSeparatorWidth * CleanFactor),
-                        0);
+                    IEnumerable<double> proposedSeparatorIndices;
 
-                // Calculate the number of required separators
-                var requiredSeparatorCount = 0;
-
-                    for (var x = Math.Floor(BotLimit); x <= TopLimit; x += 1)
+                    // Let the window validate our range
+                    if (!window.TryGetSeparatorIndices(rangeIndices, out proposedSeparatorIndices))
                     {
-                        if (w.IsSeparator(x))
-                        {
-                            requiredSeparatorCount++;
-                        }
+                        // This window does not support this range. Skip it
+                        continue;
                     }
 
-                    return supportedSeparatorCount >= requiredSeparatorCount;
-                });
+                    separatorIndices = proposedSeparatorIndices.ToList();
+
+                    // Validate the requirements of the window
+                    supportedSeparatorCount = Math.Round(chart.ControlSize.Width / (window.MinimumSeparatorWidth * CleanFactor), 0);
+
+                    if (supportedSeparatorCount < separatorIndices.Count)
+                    {
+                        // We do not support this range of separators. Skip the window
+                        continue;
+                    }
+
+                    // Pick this window. It is the first who passed both validations and our best candidate
+                    proposedWindow = window;
+                    break;
+                }
             }
 
             if (proposedWindow == null)
             {
-                // Apparently no window can be used to display the X axis. Show no labels as fallback.
-                proposedWindow = AxisWindows.EmptyWindow;
-                supportedSeparatorCount = Math.Round(chart.ControlSize.Width / (proposedWindow.MinimumSeparatorWidth * CleanFactor), 0);
+                // All variables are still set to defaults
             }
 
             // Force the step of 1, as our preparechart will filter the X asis for valid separators, and will skip a few
@@ -121,6 +122,8 @@ namespace LiveCharts
 
             Magnitude = Math.Pow(10, Math.Floor(Math.Log(supportedSeparatorCount) / Math.Log(10)));
             SelectedWindow = proposedWindow;
+
+            return separatorIndices;
         }
 
         private void DrawSeparator(double x, double tolerance, CoreMargin currentMargin, AxisOrientation source)

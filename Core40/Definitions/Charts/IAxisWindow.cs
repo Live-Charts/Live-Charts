@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace LiveCharts
 {
     /// <summary>
@@ -24,5 +26,7 @@ namespace LiveCharts
         /// Gets or sets a function to format the label for the axis
         /// </summary>
         string FormatAxisLabel(double x);
+
+        bool TryGetSeparatorIndices(IEnumerable<double> indices, out IEnumerable<double> separatorIndices);
     }
 }

@@ -16,6 +16,7 @@ namespace LiveCharts.Wpf
     public class WindowAxis : Axis, IWindowAxisView
     {
         public static readonly DependencyProperty WindowsProperty = DependencyProperty.Register("Windows", typeof(AxisWindowCollection), typeof(WindowAxis),new PropertyMetadata(default(AxisWindowCollection)));
+        public static readonly DependencyProperty SelectedWindowProperty = DependencyProperty.Register("SelectedWindow", typeof(IAxisWindow), typeof(WindowAxis), new PropertyMetadata(null));
         public static readonly DependencyProperty HeaderFontWeightProperty = DependencyProperty.Register("HeaderFontWeight", typeof(FontWeight), typeof(WindowAxis), new PropertyMetadata(FontWeights.ExtraBold));
         public static readonly DependencyProperty HeaderForegroundProperty = DependencyProperty.Register("HeaderForeground", typeof(Brush), typeof(WindowAxis), new PropertyMetadata(new SolidColorBrush(Color.FromRgb(130, 130, 130))));
 
@@ -26,6 +27,15 @@ namespace LiveCharts.Wpf
         {
             get { return (AxisWindowCollection)GetValue(WindowsProperty); }
             set { SetValue(WindowsProperty, value); }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public IAxisWindow SelectedWindow
+        {
+            get { return (IAxisWindow)GetValue(SelectedWindowProperty); }
+            set { SetValue(SelectedWindowProperty, value); }
         }
 
         /// <summary>
@@ -105,6 +115,11 @@ namespace LiveCharts.Wpf
                     Source = this
                 });
             }
+        }
+
+        public void SetSelectedWindow(IAxisWindow window)
+        {
+            SetCurrentValue(SelectedWindowProperty, window);
         }
     }
 }

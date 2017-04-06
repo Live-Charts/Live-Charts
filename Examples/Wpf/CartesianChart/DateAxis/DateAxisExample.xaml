@@ -40,6 +40,8 @@
         <StackPanel Grid.Row="3" Orientation="Horizontal">
             <Label Content="Series resolution: "></Label>
             <Label Content="{Binding SeriesResolution}"></Label>
+            <Label Content="Seperator window: "></Label>
+            <Label Content="{Binding SelectedWindow, Mode=TwoWay}"></Label>
         </StackPanel>
 
         <lvc:CartesianChart Zoom="X" Grid.Row="4" DisableAnimations="False" Series="{Binding SeriesCollection}">
@@ -50,7 +52,8 @@
                     Foreground="DarkSlateBlue"
                     HeaderForeground="Black"
                     Resolution="{Binding SeriesResolution, Mode=TwoWay}"
-                    ShowLabels="True"                    
+                    ShowLabels="True"           
+                    SelectedWindow="{Binding SelectedWindow, Mode=TwoWay}"
                     ReferenceDateTime="{Binding ReferenceDateTime}">
                     <lvc:DateAxis.Separator>
                         <lvc:Separator StrokeThickness="10" Stroke="Black"/>

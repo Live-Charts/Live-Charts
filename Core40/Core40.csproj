@@ -80,7 +80,7 @@
     <Compile Include="Configurations\WeightedMapper.cs" />
     <Compile Include="DataLabelViewModel.cs" />
     <Compile Include="DateAxisCore.cs" />
-    <Compile Include="DateAxisWindowCore.cs" />
+    <Compile Include="DateAxisWindow.cs" />
     <Compile Include="Definitions\Charts\IAxisWindow.cs" />
     <Compile Include="Definitions\Charts\IWindowAxisView.cs" />
     <Compile Include="WindowAxisCore.cs" />

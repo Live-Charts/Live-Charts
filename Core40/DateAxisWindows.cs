@@ -28,6 +28,8 @@ namespace LiveCharts
             yield return new MonthAxisWindow();
             yield return new YearAxisWindow();
             yield return new DecadeAxisWindow();
+            yield return new CenturyAxisWindow();
+            yield return new MillenniumAxisWindow();
         }
 
         /// <inheritdoc />
@@ -48,15 +50,20 @@ namespace LiveCharts
             /// <inheritdoc />
             public override bool IsSeparator(DateTime x)
             {
-                return x.Millisecond == 0;
+                return IsSecond(x);
             }
-
             /// <inheritdoc />
             public override string FormatAxisLabel(DateTime x)
             {
                 return x.ToString(IsHeader(x)
                     ? "hh:mm:ss"
                     : "mm:ss");
+            }        
+
+            /// <inheritdoc />
+            protected override bool Validate(TimeSpan seperatorDistance)
+            {
+                return seperatorDistance.TotalSeconds <= 1;
             }
         }
 
@@ -78,13 +85,19 @@ namespace LiveCharts
             /// <inheritdoc />
             public override bool IsSeparator(DateTime x)
             {
-                return x.Second % 15 == 0;
+                return IsSecond(x) && x.Second % 15 == 0;
             }
 
             /// <inheritdoc />
             public override string FormatAxisLabel(DateTime x)
             {
                 return x.ToString("hh:mm:ss");
+            }
+
+            /// <inheritdoc />
+            protected override bool Validate(TimeSpan seperatorDistance)
+            {
+                return seperatorDistance.TotalSeconds <= 15;
             }
         }
 
@@ -106,13 +119,19 @@ namespace LiveCharts
             /// <inheritdoc />
             public override bool IsSeparator(DateTime x)
             {
-                return x.Second % 30 == 0;
+                return IsSecond(x) && x.Second % 30 == 0;
             }
 
             /// <inheritdoc />
             public override string FormatAxisLabel(DateTime x)
             {
                 return x.ToString("hh:mm:ss");
+            }
+
+            /// <inheritdoc />
+            protected override bool Validate(TimeSpan seperatorDistance)
+            {
+                return seperatorDistance.TotalSeconds <= 30;
             }
         }
 
@@ -128,19 +147,25 @@ namespace LiveCharts
             /// <inheritdoc />
             public override bool IsHeader(DateTime x)
             {
-                return x.Minute == 0;
+                return x.Hour == 0 && x.Minute == 0;
             }
 
             /// <inheritdoc />
             public override bool IsSeparator(DateTime x)
             {
-                return x.Second == 0;
+                return IsMinute(x);
             }
 
             /// <inheritdoc />
             public override string FormatAxisLabel(DateTime x)
             {
                 return x.ToString("hh:mm");
+            }
+
+            /// <inheritdoc />
+            protected override bool Validate(TimeSpan seperatorDistance)
+            {
+                return seperatorDistance.TotalMinutes <= 1;
             }
         }
 
@@ -162,7 +187,7 @@ namespace LiveCharts
             /// <inheritdoc />
             public override bool IsSeparator(DateTime x)
             {
-                return x.Minute % 15 == 0;
+                return IsMinute(x) && x.Minute % 15 == 0;
             }
 
             /// <inheritdoc />
@@ -171,6 +196,12 @@ namespace LiveCharts
                 return x.Hour == 0 && x.Minute == 0
                     ? x.ToString("d")
                     : x.ToString("hh:mm");
+            }
+
+            /// <inheritdoc />
+            protected override bool Validate(TimeSpan seperatorDistance)
+            {
+                return seperatorDistance.TotalMinutes <= 15;
             }
         }
 
@@ -192,7 +223,7 @@ namespace LiveCharts
             /// <inheritdoc />
             public override bool IsSeparator(DateTime x)
             {
-                return x.Minute % 30 == 0;
+                return IsMinute(x) && x.Minute % 30 == 0;
             }
 
             /// <inheritdoc />
@@ -201,6 +232,12 @@ namespace LiveCharts
                 return IsHeader(x)
                     ? x.ToString("d")
                     : x.ToString("hh:mm");
+            }
+
+            /// <inheritdoc />
+            protected override bool Validate(TimeSpan seperatorDistance)
+            {
+                return seperatorDistance.TotalMinutes <= 30;
             }
         }
 
@@ -222,7 +259,7 @@ namespace LiveCharts
             /// <inheritdoc />
             public override bool IsSeparator(DateTime x)
             {
-                return x.Minute == 0;
+                return IsHour(x);
             }
 
             /// <inheritdoc />
@@ -231,6 +268,12 @@ namespace LiveCharts
                 return IsHeader(x)
                     ? x.ToString("d")
                     : x.ToString("hh:mm");
+            }
+
+            /// <inheritdoc />
+            protected override bool Validate(TimeSpan seperatorDistance)
+            {
+                return seperatorDistance.TotalHours <= 1;
             }
         }
 
@@ -252,7 +295,7 @@ namespace LiveCharts
             /// <inheritdoc />
             public override bool IsSeparator(DateTime x)
             {
-                return x.Hour == 0;
+                return IsDay(x);
             }
 
             /// <inheritdoc />
@@ -263,6 +306,12 @@ namespace LiveCharts
                     : x.ToString(IsHeader(x)
                         ? "MMM"
                         : "dd");
+            }
+
+            /// <inheritdoc />
+            protected override bool Validate(TimeSpan seperatorDistance)
+            {
+                return seperatorDistance.TotalDays <= 1;
             }
         }
 
@@ -278,13 +327,16 @@ namespace LiveCharts
             /// <inheritdoc />
             public override bool IsHeader(DateTime x)
             {
+                // TODO: See IsSeparator
                 return x.Day <= 7;
             }
 
             /// <inheritdoc />
             public override bool IsSeparator(DateTime x)
             {
-                return x.DayOfWeek == DayOfWeek.Monday;
+                // TODO: First day of week is not always monday.
+                // Use CultureInfo to determine the first day of week
+                return IsDay(x) && x.DayOfWeek == DayOfWeek.Monday;
             }
 
             /// <inheritdoc />
@@ -314,7 +366,7 @@ namespace LiveCharts
             /// <inheritdoc />
             public override bool IsSeparator(DateTime x)
             {
-                return x.Day == 1;
+                return IsDay(x) && x.Day == 1;
             }
 
             /// <inheritdoc />
@@ -344,7 +396,7 @@ namespace LiveCharts
             /// <inheritdoc />
             public override bool IsSeparator(DateTime x)
             {
-                return x.DayOfYear == 1;
+                return IsYear(x);
             }
 
             /// <inheritdoc />
@@ -372,17 +424,70 @@ namespace LiveCharts
             /// <inheritdoc />
             public override bool IsSeparator(DateTime x)
             {
-                return x.Year % 10 == 0;
+                return IsYear(x) && x.Year % 10 == 0;
             }
 
             /// <inheritdoc />
             public override string FormatAxisLabel(DateTime x)
             {
-                return x.ToString(IsHeader(x)
-                    ? "yyyy"
-                    : "yy");
+                return x.ToString("yyyy");
             }
         }
 
+        /// <inheritdoc />
+        public sealed class CenturyAxisWindow : DateAxisWindow
+        {
+            /// <inheritdoc />
+            public override double MinimumSeparatorWidth
+            {
+                get { return 10; }
+            }
+
+            /// <inheritdoc />
+            public override bool IsHeader(DateTime x)
+            {
+                return false;
+            }
+
+            /// <inheritdoc />
+            public override bool IsSeparator(DateTime x)
+            {
+                return IsYear(x) && x.Year % 100 == 0;
+            }
+
+            /// <inheritdoc />
+            public override string FormatAxisLabel(DateTime x)
+            {
+                return x.ToString("yyyy");
+            }
+        }
+
+        /// <inheritdoc />
+        public sealed class MillenniumAxisWindow : DateAxisWindow
+        {
+            /// <inheritdoc />
+            public override double MinimumSeparatorWidth
+            {
+                get { return 10; }
+            }
+
+            /// <inheritdoc />
+            public override bool IsHeader(DateTime x)
+            {
+                return false;
+            }
+
+            /// <inheritdoc />
+            public override bool IsSeparator(DateTime x)
+            {
+                return IsYear(x) && x.Year % 1000 == 0;
+            }
+
+            /// <inheritdoc />
+            public override string FormatAxisLabel(DateTime x)
+            {
+                return x.ToString("yyyy");
+            }
+        }
     }
 }
