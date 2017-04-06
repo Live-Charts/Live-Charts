@@ -101,19 +101,20 @@ namespace Wpf.CartesianChart.WindowAxis
 
         public override bool IsHeader(double x)
         {
-            return _presidents.ContainsKey(x);
+            return Math.Floor(x) % 10 == 0;
         }
 
         public override bool IsSeparator(double x)
         {
             // Return if this is a president, or if this is a period of 10 years
-            return IsHeader(x) || Math.Floor(x) % 10 == 0;
+            return _presidents.ContainsKey(x) || Math.Floor(x) % 10 == 0;
         }
 
         public override string FormatAxisLabel(double x)
         {
-            return IsHeader(x)
-                ? string.Format("{0}-{1}", x.ToString(CultureInfo.InvariantCulture), _presidents[x])
+            string president;
+            return _presidents.TryGetValue(x, out president)
+                ? string.Format("{0}-{1}", x.ToString(CultureInfo.InvariantCulture), president)
                 : x.ToString(CultureInfo.InvariantCulture);
         }
     }
