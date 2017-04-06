@@ -376,6 +376,12 @@ namespace LiveCharts
                     ? "yyyy"
                     : "MMM");
             }
+
+            /// <inheritdoc />
+            protected override bool Validate(TimeSpan seperatorDistance)
+            {
+                return seperatorDistance.TotalDays <= 31;
+            }
         }
 
         /// <inheritdoc />
@@ -403,6 +409,12 @@ namespace LiveCharts
             public override string FormatAxisLabel(DateTime x)
             {
                 return x.ToString("yyyy");
+            }
+
+            /// <inheritdoc />
+            protected override bool Validate(TimeSpan seperatorDistance)
+            {
+                return seperatorDistance.TotalDays < 370;
             }
         }
 
@@ -432,6 +444,12 @@ namespace LiveCharts
             {
                 return x.ToString("yyyy");
             }
+
+            /// <inheritdoc />
+            protected override bool Validate(TimeSpan seperatorDistance)
+            {
+                return seperatorDistance.TotalDays < 3700;
+            }
         }
 
         /// <inheritdoc />
@@ -459,6 +477,12 @@ namespace LiveCharts
             public override string FormatAxisLabel(DateTime x)
             {
                 return x.ToString("yyyy");
+            }
+
+            /// <inheritdoc />
+            protected override bool Validate(TimeSpan seperatorDistance)
+            {
+                return seperatorDistance.TotalDays < 37000;
             }
         }
 

@@ -27,6 +27,6 @@ namespace LiveCharts
         /// </summary>
         string FormatAxisLabel(double x);
 
-        bool TryGetSeparatorIndices(IEnumerable<double> indices, out IEnumerable<double> separatorIndices);
+        bool TryGetSeparatorIndices(IEnumerable<double> indices, int maximumSeparatorcount, out IEnumerable<double> separatorIndices);
     }
 }

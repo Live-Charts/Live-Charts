@@ -72,7 +72,7 @@ namespace LiveCharts
             if (Windows == null) return Enumerable.Empty<double>();
 
             // Find the seperator resolution represented by the first available window
-            double supportedSeparatorCount = 0;
+            var supportedSeparatorCount = 0;
 
             // Holder for the calculated separator indices and the proposed window
             var separatorIndices = new List<double>();
@@ -88,24 +88,17 @@ namespace LiveCharts
                 {
                     IEnumerable<double> proposedSeparatorIndices;
 
-                    // Let the window validate our range
-                    if (!window.TryGetSeparatorIndices(rangeIndices, out proposedSeparatorIndices))
-                    {
-                        // This window does not support this range. Skip it
-                        continue;
-                    }
+                    // Calculate the number of supported separators.
+                    supportedSeparatorCount = (int)Math.Floor(chart.ControlSize.Width / (window.MinimumSeparatorWidth * CleanFactor));
 
+                    // Try go get separators. Continue if the window invalidated.
+                    if (!window.TryGetSeparatorIndices(rangeIndices, supportedSeparatorCount, out proposedSeparatorIndices)) continue;
+
+                    // Doublecheck whether the window exceeded the maximum separator count.
+                    // It might be it does not respect the supportedSeparatorCount parameter.
                     separatorIndices = proposedSeparatorIndices.ToList();
-
-                    // Validate the requirements of the window
-                    supportedSeparatorCount = Math.Round(chart.ControlSize.Width / (window.MinimumSeparatorWidth * CleanFactor), 0);
-
-                    if (supportedSeparatorCount < separatorIndices.Count)
-                    {
-                        // We do not support this range of separators. Skip the window
-                        continue;
-                    }
-
+                    if (supportedSeparatorCount < separatorIndices.Count) continue;
+                    
                     // Pick this window. It is the first who passed both validations and our best candidate
                     proposedWindow = window;
                     break;

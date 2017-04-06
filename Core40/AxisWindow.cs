@@ -17,10 +17,27 @@ namespace LiveCharts
 
         public abstract string FormatAxisLabel(double x);
 
-        public virtual bool TryGetSeparatorIndices(IEnumerable<double> indices, out IEnumerable<double> separators)
+        public virtual bool TryGetSeparatorIndices(IEnumerable<double> indices, int maximumSeparatorCount, out IEnumerable<double> separators)
         {
-            separators = new List<double>();
-            ((List<double>)separators).AddRange(indices.Where(IsSeparator));
+            var separatorList = new List<double>();
+
+            foreach (var index in indices)
+            {
+                if (separatorList.Count > maximumSeparatorCount)
+                {
+                    // We have exceeded the maxmimum separators.
+                    separators = Enumerable.Empty<double>();
+                    return false;
+                }
+
+                if (!IsSeparator(index)) continue;
+
+                // Add this separator
+                separatorList.Add(index);
+            }
+
+            // Return the separators
+            separators = separatorList;
             return true;
         }
     }

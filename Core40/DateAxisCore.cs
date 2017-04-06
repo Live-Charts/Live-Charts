@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using LiveCharts.Charts;
 using LiveCharts.Definitions.Charts;
+using LiveCharts.Dtos;
 using LiveCharts.Helpers;
 
 namespace LiveCharts
@@ -11,7 +13,10 @@ namespace LiveCharts
     /// </summary>
     public class DateAxisCore : WindowAxisCore
     {
-        public DateAxisCore(IAxisView view) : base(view)
+        private DateTime _referenceDateTime = DateTime.MinValue;
+        private SeriesResolution _seriesResolution = SeriesResolution.Ticks;
+
+        public DateAxisCore(IWindowAxisView view) : base(view)
         {
         }
 
@@ -19,6 +24,15 @@ namespace LiveCharts
         public override Func<double, string> GetFormatter()
         {
             return FormatLabel;
+        }
+
+        internal override CoreMargin PrepareChart(AxisOrientation source, ChartCore chart)
+        {
+            // Get the current configued values from the view
+            _referenceDateTime = ((IDateAxisView) View).ReferenceDateTime;
+            _seriesResolution = ((IDateAxisView)View).Resolution;
+
+            return base.PrepareChart(source, chart);
         }
 
         private string FormatLabel(double x)
@@ -50,30 +64,28 @@ namespace LiveCharts
 
         internal DateTime GetdateTime(double x)
         {
-            // Get the reference date time
             // All our X values are based upon this starting point (configured by the user)
-            // Using this starting point, we can calculate the DateTime represented by this X value
-            var referenceDateTime = ((IDateAxisView)View).ReferenceDateTime;
-
+            // Using this starting point, we can calculate the DateTime represented by this X value           
+            
             // We use the series resolution (configured by the user) to determine which unit to use to increase the reference date.
             DateTime dateTime;
 
-            switch (((IDateAxisView)View).Resolution)
+            switch (_seriesResolution)
             {
                 case SeriesResolution.Ticks:
-                    dateTime = referenceDateTime.AddTicks((long)x);
+                    dateTime = _referenceDateTime.AddTicks((long)x);
                     break;
                 case SeriesResolution.Second:
-                    dateTime = referenceDateTime.AddSeconds(Math.Floor(x));
+                    dateTime = _referenceDateTime.AddSeconds(Math.Floor(x));
                     break;
                 case SeriesResolution.Minute:
-                    dateTime = referenceDateTime.AddMinutes(Math.Floor(x));
+                    dateTime = _referenceDateTime.AddMinutes(Math.Floor(x));
                     break;
                 case SeriesResolution.Hour:
-                    dateTime = referenceDateTime.AddHours(Math.Floor(x));
+                    dateTime = _referenceDateTime.AddHours(Math.Floor(x));
                     break;
                 case SeriesResolution.Day:
-                    dateTime = referenceDateTime.AddDays(Math.Floor(x));
+                    dateTime = _referenceDateTime.AddDays(Math.Floor(x));
                     break;
 
                 default:

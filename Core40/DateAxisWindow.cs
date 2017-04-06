@@ -56,7 +56,7 @@ namespace LiveCharts
         /// <param name="indices"></param>
         /// <param name="separators"></param>
         /// <returns></returns>
-        public override bool TryGetSeparatorIndices(IEnumerable<double> indices, out IEnumerable<double> separators)
+        public override bool TryGetSeparatorIndices(IEnumerable<double> indices, int maximumSeparatorCount, out IEnumerable<double> separators)
         {
             // First validate the interval between the indices
             // We expect always at least 2 indices to exist.
@@ -73,7 +73,7 @@ namespace LiveCharts
                 return false;
             }
 
-            return base.TryGetSeparatorIndices(indices, out separators);
+            return base.TryGetSeparatorIndices(indices, maximumSeparatorCount, out separators);
         }
 
         /// <summary>
