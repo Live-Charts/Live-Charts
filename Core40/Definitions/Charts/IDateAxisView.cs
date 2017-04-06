@@ -11,11 +11,11 @@ namespace LiveCharts.Definitions.Charts
         /// <summary>
         /// The datetime used for the first point to calculate relative date values
         /// </summary>
-        DateTime ReferenceDateTime { get; set; }
+        DateTime InitialDateTime { get; set; }
 
         /// <summary>
-        /// Gets or sets the resolution for the series
+        /// Gets or sets the period used by the series in this axis
         /// </summary>
-        SeriesResolution Resolution { get; set; }
+        PeriodUnits Period { get; set; }
     }
 }

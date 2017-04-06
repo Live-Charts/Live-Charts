@@ -54,7 +54,7 @@ namespace LiveCharts
             var m = (!double.IsNaN(View.Unit) ? View.Unit : Magnitude);
             var u = (!double.IsNaN(View.Unit) ? View.Unit : 1);
 
-            // Calculate the separators and the resolution
+            // Calculate the separator indices
             var indices = CalculateSeparatorIndices(chart, source, u);
 
             // Draw the separators
@@ -71,10 +71,8 @@ namespace LiveCharts
             if (!double.IsNaN(Separator.Step)) throw new Exception("Step should be NaN for WindowAxis separators");
             if (Windows == null) return Enumerable.Empty<double>();
 
-            // Find the seperator resolution represented by the first available window
-            var supportedSeparatorCount = 0;
-
             // Holder for the calculated separator indices and the proposed window
+            var supportedSeparatorCount = 0;
             var separatorIndices = new List<double>();
             IAxisWindow proposedWindow = AxisWindows.EmptyWindow;
 

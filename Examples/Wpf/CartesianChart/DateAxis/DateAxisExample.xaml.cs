@@ -13,9 +13,9 @@ namespace Wpf.CartesianChart.DateAxis
 {
     public partial class DateAxisExample : UserControl, INotifyPropertyChanged
     {
-        private DateTime _referenceDateTime;
+        private DateTime _initialDateTime;
 
-        private SeriesResolution _seriesResolution = SeriesResolution.Day;
+        private PeriodUnits _period = PeriodUnits.Days;
         private IAxisWindow _selectedWindow;
 
         public DateAxisExample()
@@ -23,7 +23,7 @@ namespace Wpf.CartesianChart.DateAxis
             InitializeComponent();
 
             var now = DateTime.UtcNow;
-            ReferenceDateTime = new DateTime(now.Year, now.Month, now.Day);
+            InitialDateTime = new DateTime(now.Year, now.Month, now.Day);
 
             SeriesCollection = new SeriesCollection
             {
@@ -39,23 +39,23 @@ namespace Wpf.CartesianChart.DateAxis
 
         public SeriesCollection SeriesCollection { get; set; }
 
-        public DateTime ReferenceDateTime
+        public DateTime InitialDateTime
         {
-            get { return _referenceDateTime; }
+            get { return _initialDateTime; }
             set
             {
-                _referenceDateTime = value;
-                OnPropertyChanged("ReferenceDateTime");
+                _initialDateTime = value;
+                OnPropertyChanged("InitialDateTime");
             }
         }
 
-        public SeriesResolution SeriesResolution
+        public PeriodUnits Period
         {
-            get { return _seriesResolution; }
+            get { return _period; }
             set
             {
-                _seriesResolution = value;
-                OnPropertyChanged("SeriesResolution");
+                _period = value;
+                OnPropertyChanged("Period");
             }
         }
 
@@ -76,24 +76,24 @@ namespace Wpf.CartesianChart.DateAxis
             if (PropertyChanged != null) PropertyChanged.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        private void SetDayResolution(object sender, RoutedEventArgs e)
+        private void SetDayPeriod(object sender, RoutedEventArgs e)
         {
-            SeriesResolution = SeriesResolution.Day;
+            Period = PeriodUnits.Days;
         }
 
-        private void SetHourResolution(object sender, RoutedEventArgs e)
+        private void SetHourPeriod(object sender, RoutedEventArgs e)
         {
-            SeriesResolution = SeriesResolution.Hour;
+            Period = PeriodUnits.Hours;
         }
 
-        private void SetMinuteResolution(object sender, RoutedEventArgs e)
+        private void SetMinutePeriod(object sender, RoutedEventArgs e)
         {
-            SeriesResolution = SeriesResolution.Minute;
+            Period = PeriodUnits.Minutes;
         }
 
-        private void SetSecondResolution(object sender, RoutedEventArgs e)
+        private void SetSecondPeriod(object sender, RoutedEventArgs e)
         {
-            SeriesResolution = SeriesResolution.Second;
+            Period = PeriodUnits.Seconds;
         }
     }
 }

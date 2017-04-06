@@ -145,7 +145,7 @@
     <Compile Include="Helpers\Extentions.cs" />
     <Compile Include="Helpers\LiveChartsException.cs" />
     <Compile Include="Helpers\NoisyCollection.cs" />
-    <Compile Include="SeriesResolution.cs" />
+    <Compile Include="PeriodUnits.cs" />
     <Compile Include="IChartValues.cs" />
     <Compile Include="IObservableChartPoint.cs" />
     <Compile Include="LegendLocation.cs" />

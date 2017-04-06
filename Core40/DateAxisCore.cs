@@ -13,8 +13,8 @@ namespace LiveCharts
     /// </summary>
     public class DateAxisCore : WindowAxisCore
     {
-        private DateTime _referenceDateTime = DateTime.MinValue;
-        private SeriesResolution _seriesResolution = SeriesResolution.Ticks;
+        private DateTime _initialDateTime = DateTime.MinValue;
+        private PeriodUnits _period = PeriodUnits.Ticks;
 
         public DateAxisCore(IWindowAxisView view) : base(view)
         {
@@ -30,32 +30,32 @@ namespace LiveCharts
         internal override CoreMargin PrepareChart(AxisOrientation source, ChartCore chart)
         {
             // Get the current configued values from the view
-            _referenceDateTime = ((IDateAxisView) View).ReferenceDateTime;
-            _seriesResolution = ((IDateAxisView)View).Resolution;
+            _initialDateTime = ((IDateAxisView) View).InitialDateTime;
+            _period = ((IDateAxisView)View).Period;
 
             return base.PrepareChart(source, chart);
         }
 
         private string FormatLabel(double x)
         {
-            // For the points, we use the actual value formatted with its resolution
+            // For the points, we use the actual value based upon the period
             var dateTime = GetdateTime(x);
 
-            switch (((IDateAxisView)View).Resolution)
+            switch (((IDateAxisView)View).Period)
             {
-                case SeriesResolution.Second:
+                case PeriodUnits.Seconds:
                     return dateTime.ToString("dd-MM-yyyy hh:mm:ss");
 
-                case SeriesResolution.Minute:
+                case PeriodUnits.Minutes:
                     return dateTime.ToString("dd-MM-yyyy hh:mm");
 
-                case SeriesResolution.Hour:
+                case PeriodUnits.Hours:
                     return dateTime.ToString("dd-MM-yyyy hh:00");
 
-                case SeriesResolution.Day:
+                case PeriodUnits.Days:
                     return dateTime.ToString("dd-MM-yyyy");
 
-                case SeriesResolution.Ticks:
+                case PeriodUnits.Ticks:
                     return dateTime.ToString("dd-MM-yyyy hh:mm:ss");
 
                 default:
@@ -68,25 +68,25 @@ namespace LiveCharts
             // All our X values are based upon this starting point (configured by the user)
             // Using this starting point, we can calculate the DateTime represented by this X value           
             
-            // We use the series resolution (configured by the user) to determine which unit to use to increase the reference date.
+            // We use the series period (configured by the user) to determine which period unit to use to increase the reference date.
             DateTime dateTime;
 
-            switch (_seriesResolution)
+            switch (_period)
             {
-                case SeriesResolution.Ticks:
-                    dateTime = _referenceDateTime.AddTicks((long)x);
+                case PeriodUnits.Ticks:
+                    dateTime = _initialDateTime.AddTicks((long)x);
                     break;
-                case SeriesResolution.Second:
-                    dateTime = _referenceDateTime.AddSeconds(Math.Floor(x));
+                case PeriodUnits.Seconds:
+                    dateTime = _initialDateTime.AddSeconds(Math.Floor(x));
                     break;
-                case SeriesResolution.Minute:
-                    dateTime = _referenceDateTime.AddMinutes(Math.Floor(x));
+                case PeriodUnits.Minutes:
+                    dateTime = _initialDateTime.AddMinutes(Math.Floor(x));
                     break;
-                case SeriesResolution.Hour:
-                    dateTime = _referenceDateTime.AddHours(Math.Floor(x));
+                case PeriodUnits.Hours:
+                    dateTime = _initialDateTime.AddHours(Math.Floor(x));
                     break;
-                case SeriesResolution.Day:
-                    dateTime = _referenceDateTime.AddDays(Math.Floor(x));
+                case PeriodUnits.Days:
+                    dateTime = _initialDateTime.AddDays(Math.Floor(x));
                     break;
 
                 default:

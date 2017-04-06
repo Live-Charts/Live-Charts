@@ -3,12 +3,13 @@ namespace LiveCharts.Helpers
     /// <summary>
     /// Defines the interval on which earch of the charts bars is based
     /// </summary>
-    public enum SeriesResolution
+    public enum PeriodUnits
     {
-        Second,
-        Minute,
-        Hour,
-        Day,
+        Milliseconds,
+        Seconds,
+        Minutes,
+        Hours,
+        Days,
         Ticks
     }
 }

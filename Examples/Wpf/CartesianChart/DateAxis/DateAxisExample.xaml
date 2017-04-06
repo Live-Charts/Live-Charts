@@ -17,29 +17,28 @@
         </Grid.RowDefinitions>
 
         <StackPanel Grid.Row="1">
-            <Label>DateAxis is based upon the WIndowAxis, with predefined windows.</Label>
-            <Label>Set the DateAxis.ReferenceDateTime to configure the starting point (X=0) date.</Label>
-            <Label>Configure the DateAxis.SeriesResolution to the resolution of your X values. Use the buttons below to configure this property.</Label>
+            <Label>Set `DateAxis.InitialDateTime` to configure the starting point (X=0) dateTime.</Label>
+            <Label>Configure the DateAxis.Period to the PeriodUnit of your axis values. Use the buttons below to configure this property for the X axis.</Label>
         </StackPanel>
 
         <StackPanel Grid.Row="2" Orientation="Horizontal">
-            <Button Click="SetSecondResolution">
+            <Button Click="SetSecondPeriod">
                 Second
             </Button>
-            <Button Click="SetMinuteResolution">
+            <Button Click="SetMinutePeriod">
                 Minute
             </Button>
-            <Button Click="SetHourResolution">
+            <Button Click="SetHourPeriod">
                 Hour
             </Button>
-            <Button Click="SetDayResolution">
+            <Button Click="SetDayPeriod">
                 Day
             </Button>
         </StackPanel>
 
         <StackPanel Grid.Row="3" Orientation="Horizontal">
-            <Label Content="Series resolution: "></Label>
-            <Label Content="{Binding SeriesResolution}"></Label>
+            <Label Content="Series Period: "></Label>
+            <Label Content="{Binding Period}"></Label>
             <Label Content="Seperator window: "></Label>
             <Label Content="{Binding SelectedWindow, Mode=TwoWay}"></Label>
         </StackPanel>
@@ -51,10 +50,10 @@
                     MaxValue="60"
                     Foreground="DarkSlateBlue"
                     HeaderForeground="Black"
-                    Resolution="{Binding SeriesResolution, Mode=TwoWay}"
+                    Period="{Binding Period, Mode=TwoWay}"
                     ShowLabels="True"           
                     SelectedWindow="{Binding SelectedWindow, Mode=TwoWay}"
-                    ReferenceDateTime="{Binding ReferenceDateTime}">
+                    InitialDateTime="{Binding InitialDateTime}">
                     <lvc:DateAxis.Separator>
                         <lvc:Separator StrokeThickness="10" Stroke="Black"/>
                     </lvc:DateAxis.Separator>

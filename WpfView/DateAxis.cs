@@ -9,8 +9,8 @@ namespace LiveCharts.Wpf
 {
     public class DateAxis : WindowAxis, IDateAxisView
     {
-        public static readonly DependencyProperty ReferenceDateTimeProperty = DependencyProperty.Register("ReferenceDateTime", typeof(DateTime), typeof(DateAxis), new PropertyMetadata(DateTime.UtcNow, UpdateChart()));
-        public static readonly DependencyProperty ResolutionProperty = DependencyProperty.Register("Resolution", typeof(SeriesResolution), typeof(DateAxis), new PropertyMetadata(SeriesResolution.Ticks, UpdateChart()));
+        public static readonly DependencyProperty InitialDateTimeProperty = DependencyProperty.Register("InitialDateTime", typeof(DateTime), typeof(DateAxis), new PropertyMetadata(DateTime.UtcNow, UpdateChart()));
+        public static readonly DependencyProperty PeriodProperty = DependencyProperty.Register("Period", typeof(PeriodUnits), typeof(DateAxis), new PropertyMetadata(PeriodUnits.Ticks, UpdateChart()));
 
         public DateAxis()
         {
@@ -21,27 +21,21 @@ namespace LiveCharts.Wpf
         }
 
         /// <summary>
-        /// Gets or sets the base.
+        /// Gets or sets the Initial Date Time. Together with Period, this is used to calculate date times based opon the value of the axis.
         /// </summary>
-        /// <value>
-        /// The base.
-        /// </value>
-        public DateTime ReferenceDateTime
+        public DateTime InitialDateTime
         {
-            get { return (DateTime)GetValue(ReferenceDateTimeProperty); }
-            set { SetValue(ReferenceDateTimeProperty, value); }
+            get { return (DateTime)GetValue(InitialDateTimeProperty); }
+            set { SetValue(InitialDateTimeProperty, value); }
         }
 
         /// <summary>
-        /// Gets or sets the base.
+        /// Gets or sets the period of the data. For each index, we increment the Initial dateTime with this period.
         /// </summary>
-        /// <value>
-        /// The resolution.
-        /// </value>
-        public SeriesResolution Resolution
+        public PeriodUnits Period
         {
-            get { return (SeriesResolution)GetValue(ResolutionProperty); }
-            set { SetValue(ResolutionProperty, value); }
+            get { return (PeriodUnits)GetValue(PeriodProperty); }
+            set { SetValue(PeriodProperty, value); }
         }
 
         public override AxisCore AsCoreElement(ChartCore chart, AxisOrientation source)
