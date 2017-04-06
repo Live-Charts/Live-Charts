@@ -10,7 +10,7 @@ namespace LiveCharts.Wpf
     public class DateAxis : WindowAxis, IDateAxisView
     {
         public static readonly DependencyProperty InitialDateTimeProperty = DependencyProperty.Register("InitialDateTime", typeof(DateTime), typeof(DateAxis), new PropertyMetadata(DateTime.UtcNow, UpdateChart()));
-        public static readonly DependencyProperty PeriodProperty = DependencyProperty.Register("Period", typeof(PeriodUnits), typeof(DateAxis), new PropertyMetadata(PeriodUnits.Ticks, UpdateChart()));
+        public static readonly DependencyProperty PeriodProperty = DependencyProperty.Register("Period", typeof(PeriodUnits), typeof(DateAxis), new PropertyMetadata(PeriodUnits.Milliseconds, UpdateChart()));
 
         public DateAxis()
         {
@@ -54,7 +54,6 @@ namespace LiveCharts.Wpf
             Model.DisableAnimations = DisableAnimations;
             Model.Sections = Sections.Select(x => x.AsCoreElement(Model, source)).ToList();            
 
-            // TODO: come up with a better way to assing the core to the models
             ((DateAxisCore)Model).Windows = Windows.ToList();
             ((DateAxisCore)Model).Windows.ForEach(w => ((DateAxisWindow)w).DateAxisCore = (DateAxisCore)Model);
             return Model;

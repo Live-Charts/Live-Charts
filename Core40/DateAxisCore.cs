@@ -14,7 +14,7 @@ namespace LiveCharts
     public class DateAxisCore : WindowAxisCore
     {
         private DateTime _initialDateTime = DateTime.MinValue;
-        private PeriodUnits _period = PeriodUnits.Ticks;
+        private PeriodUnits _period = PeriodUnits.Milliseconds;
 
         public DateAxisCore(IWindowAxisView view) : base(view)
         {
@@ -44,19 +44,19 @@ namespace LiveCharts
             switch (((IDateAxisView)View).Period)
             {
                 case PeriodUnits.Seconds:
-                    return dateTime.ToString("dd-MM-yyyy hh:mm:ss");
+                    return dateTime.ToString("G");
 
                 case PeriodUnits.Minutes:
-                    return dateTime.ToString("dd-MM-yyyy hh:mm");
+                    return dateTime.ToString("g");
 
                 case PeriodUnits.Hours:
-                    return dateTime.ToString("dd-MM-yyyy hh:00");
+                    return dateTime.ToString("g");
 
                 case PeriodUnits.Days:
-                    return dateTime.ToString("dd-MM-yyyy");
+                    return dateTime.ToString("d");
 
-                case PeriodUnits.Ticks:
-                    return dateTime.ToString("dd-MM-yyyy hh:mm:ss");
+                case PeriodUnits.Milliseconds:
+                    return dateTime.ToString("G") + dateTime.ToString(".fff");
 
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -73,8 +73,8 @@ namespace LiveCharts
 
             switch (_period)
             {
-                case PeriodUnits.Ticks:
-                    dateTime = _initialDateTime.AddTicks((long)x);
+                case PeriodUnits.Milliseconds:
+                    dateTime = _initialDateTime.AddMilliseconds(Math.Floor(x));
                     break;
                 case PeriodUnits.Seconds:
                     dateTime = _initialDateTime.AddSeconds(Math.Floor(x));

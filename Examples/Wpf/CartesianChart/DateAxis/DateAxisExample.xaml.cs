@@ -95,5 +95,10 @@ namespace Wpf.CartesianChart.DateAxis
         {
             Period = PeriodUnits.Seconds;
         }
+
+        private void SetMilliSecondPeriod(object sender, RoutedEventArgs e)
+        {
+            Period = PeriodUnits.Milliseconds;
+        }
     }
 }

@@ -9,7 +9,6 @@ namespace LiveCharts.Helpers
         Seconds,
         Minutes,
         Hours,
-        Days,
-        Ticks
+        Days
     }
 }

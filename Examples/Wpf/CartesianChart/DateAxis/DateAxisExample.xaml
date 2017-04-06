@@ -22,6 +22,9 @@
         </StackPanel>
 
         <StackPanel Grid.Row="2" Orientation="Horizontal">
+            <Button Click="SetMilliSecondPeriod">
+                Millisecond
+            </Button>
             <Button Click="SetSecondPeriod">
                 Second
             </Button>
