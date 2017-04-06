@@ -38,6 +38,9 @@
                     </wpf:WindowAxis.Separator>
                 </wpf:WindowAxis>
             </wpf:CartesianChart.AxisX>
+            <wpf:CartesianChart.AxisY>
+                <wpf:Axis MinValue="0" MaxValue="300000000"></wpf:Axis>
+            </wpf:CartesianChart.AxisY>
         </wpf:CartesianChart>
 
     </Grid>

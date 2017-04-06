@@ -18,6 +18,7 @@ namespace LiveCharts
 
         public DateAxisCore(IWindowAxisView view) : base(view)
         {
+            CleanFactor = 6;
         }
 
         /// <inheritdoc />
