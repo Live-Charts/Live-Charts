@@ -33,7 +33,7 @@ namespace Winforms.Cartesian.Customized_Series
                 Fill = System.Windows.Media.Brushes.Transparent,
                 LineSmoothness = 1,
                 PointGeometrySize = 15,
-                PointForeround =
+                PointForeground =
                     new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(34, 46, 49))
             });
 

@@ -42,7 +42,7 @@ namespace Winforms.Cartesian.PointState
                 Configuration = mapper,
                 Values = _values,
                 PointGeometrySize = 20,
-                PointForeround = Brushes.White
+                PointForeground = Brushes.White
             });
 
             cartesianChart1.AxisY.Add(new Axis

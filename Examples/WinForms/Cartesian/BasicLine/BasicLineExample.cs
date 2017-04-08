@@ -55,7 +55,7 @@ namespace Winforms.Cartesian.BasicLine
                 LineSmoothness = 0, //straight lines, 1 really smooth lines
                 PointGeometry = Geometry.Parse("m 25 70.36218 20 -28 -20 22 -8 -6 z"),
                 PointGeometrySize = 50,
-                PointForeround = Brushes.Gray
+                PointForeground = Brushes.Gray
             });
 
             //modifying any series values will also animate and update the chart

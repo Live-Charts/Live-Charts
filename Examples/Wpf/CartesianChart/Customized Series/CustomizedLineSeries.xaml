@@ -19,10 +19,10 @@
                 <lvc:LineSeries Values="{Binding Values1}" StrokeThickness="4" StrokeDashArray="2" 
                                 Stroke="#6BBA45" Fill="Transparent" LineSmoothness="0" PointGeometrySize="20"
                                 PointGeometry="{x:Static lvc:DefaultGeometries.Diamond}" 
-                                PointForeround="#6BBA45"/>
+                                PointForeground="#6BBA45"/>
                 <lvc:LineSeries Values="{Binding Values2}" StrokeThickness="2" 
                                 Stroke="#1C8FC5" Fill="Transparent" LineSmoothness="1" 
-                                PointGeometrySize="15" PointForeround="#222E31"/>
+                                PointGeometrySize="15" PointForeground="#222E31"/>
             </lvc:CartesianChart.Series>
             <lvc:CartesianChart.VisualElements>
                 <lvc:VisualElement X="0.5" Y="8">

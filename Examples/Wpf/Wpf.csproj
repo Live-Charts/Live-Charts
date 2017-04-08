@@ -133,7 +133,6 @@
     <Compile Include="CartesianChart\ThreadSafe\ThreadSafeExample.xaml.cs">
       <DependentUpon>ThreadSafeExample.xaml</DependentUpon>
     </Compile>
-<<<<<<< HEAD
     <Compile Include="CartesianChart\UIElements\DataGenerator.cs" />
     <Compile Include="CartesianChart\UIElements\EventAControl.xaml.cs">
       <DependentUpon>EventAControl.xaml</DependentUpon>
@@ -145,11 +144,9 @@
       <DependentUpon>SelectedItemControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="CartesianChart\UIElements\UiElementsViewModel.cs" />
-=======
     <Compile Include="CartesianChart\WindowAxis\WindowAxisExample.xaml.cs">
       <DependentUpon>WindowAxisExample.xaml</DependentUpon>
     </Compile>
->>>>>>> dateaxis
     <Compile Include="Home\SampleGroupVm.cs" />
     <Compile Include="Home\SampleVm.cs" />
     <Page Include="CartesianChart\Basic Bars\BasicColumn.xaml">
