@@ -7,6 +7,7 @@ using System.Runtime.CompilerServices;
 using System.Windows.Controls;
 using System.Windows.Data;
 using LiveCharts.Defaults;
+using LiveCharts.Wpf;
 using Wpf.CartesianChart;
 using Wpf.CartesianChart.BasicLine;
 using Wpf.CartesianChart.Basic_Bars;
@@ -17,6 +18,7 @@ using Wpf.CartesianChart.ConstantChanges;
 using Wpf.CartesianChart.Customized_Line_Series;
 using Wpf.CartesianChart.CustomTooltipAndLegend;
 using Wpf.CartesianChart.DataLabelTemplate;
+using Wpf.CartesianChart.DateAxis;
 using Wpf.CartesianChart.DynamicVisibility;
 using Wpf.CartesianChart.Energy_Predictions;
 using Wpf.CartesianChart.Events;
@@ -43,6 +45,7 @@ using Wpf.CartesianChart.StackedArea;
 using Wpf.CartesianChart.StepLine;
 using Wpf.CartesianChart.ThreadSafe;
 using Wpf.CartesianChart.UIElements;
+using Wpf.CartesianChart.WindowAxis;
 using Wpf.CartesianChart.ZoomingAndPanning;
 using Wpf.Gauges;
 using Wpf.Maps;
@@ -64,6 +67,16 @@ namespace Wpf.Home
             IsMenuOpen = true;
             _dataSource = new[]
             {
+                new SampleGroupVm
+                {
+                  Name = "Special axes",
+                  Items = new[]
+                  {
+                      new SampleVm("Window Axis", typeof(WindowAxisExample)),
+                      new SampleVm("Date Axis", typeof(DateAxisExample)),
+                      new SampleVm("Logarithmic Axis", typeof(LogarithmScaleExample))
+                  }
+                },
                 new SampleGroupVm
                 {
                     Name = "Customizing",
@@ -134,8 +147,7 @@ namespace Wpf.Home
                         new SampleVm("Negative Stacked", typeof(NegativeStackedRowExample)),
                         new SampleVm("Dynamic Visibility", typeof(DynamicVisibilityExample)),
                         new SampleVm("Filtering Data", typeof(LinqExample)),
-                        new SampleVm("Percentage Stacked", typeof(BasicStackedRowPercentageExample)),
-                        new SampleVm("Logarithmic Scale", typeof(LogarithmScaleExample))     
+                        new SampleVm("Percentage Stacked", typeof(BasicStackedRowPercentageExample)),                        
                     }
                 }
             };

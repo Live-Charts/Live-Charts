@@ -170,7 +170,6 @@ namespace LiveCharts
                 .Y((v, i) => -i)
                 .XStart(v => v.StartPoint)
                 .X(v => v.EndPoint), SeriesOrientation.Vertical);
-
         }
 
         /// <summary>
