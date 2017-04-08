@@ -20,6 +20,7 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
+using LiveCharts.Definitions.Charts;
 using LiveCharts.Definitions.Points;
 using LiveCharts.Definitions.Series;
 using LiveCharts.Dtos;
@@ -173,6 +174,14 @@ namespace LiveCharts
         /// Gets the series where the point belongs to
         /// </summary>
         public ISeriesView SeriesView { get; internal set; }
+
+        /// <summary>
+        /// Gets the chart view.
+        /// </summary>
+        /// <value>
+        /// The chart view.
+        /// </value>
+        public IChartView ChartView { get { return SeriesView.Model.Chart.View; } }
 
         internal double Gci { get; set; }
     }

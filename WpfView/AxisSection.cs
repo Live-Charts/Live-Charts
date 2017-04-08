@@ -19,6 +19,7 @@
 //SOFTWARE.
 
 using System;
+using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -26,6 +27,8 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using LiveCharts.Definitions.Charts;
+using LiveCharts.Dtos;
+using LiveCharts.Helpers;
 using LiveCharts.Wpf.Charts.Base;
 
 namespace LiveCharts.Wpf
@@ -36,7 +39,7 @@ namespace LiveCharts.Wpf
     public class AxisSection : FrameworkElement, IAxisSectionView
     {
         private readonly Rectangle _rectangle;
-        private readonly TextBlock _label;
+        private TextBlock _label;
         internal static AxisSection Dragging;
 
         /// <summary>
@@ -45,8 +48,7 @@ namespace LiveCharts.Wpf
         public AxisSection()
         {
             _rectangle = new Rectangle();
-            _label = new TextBlock();
-
+            
             _rectangle.MouseDown += (sender, args) =>
             {
                 if (!Draggable) return;
@@ -58,9 +60,6 @@ namespace LiveCharts.Wpf
             SetCurrentValue(StrokeProperty, new SolidColorBrush(Color.FromRgb(131, 172, 191)));
             SetCurrentValue(FillProperty, new SolidColorBrush(Color.FromRgb(131, 172, 191)) {Opacity = .35});
             SetCurrentValue(StrokeThicknessProperty, 0d);
-
-            BindingOperations.SetBinding(_label, TextBlock.TextProperty,
-                new Binding {Path = new PropertyPath(LabelProperty), Source = this});
         }
 
         #region Properties
@@ -148,6 +147,23 @@ namespace LiveCharts.Wpf
         }
 
         /// <summary>
+        /// The section offset property
+        /// </summary>
+        public static readonly DependencyProperty SectionOffsetProperty = DependencyProperty.Register(
+            "SectionOffset", typeof(double), typeof(AxisSection), new PropertyMetadata(default(double)));
+        /// <summary>
+        /// Gets or sets the section offset.
+        /// </summary>
+        /// <value>
+        /// The section offset.
+        /// </value>
+        public double SectionOffset
+        {
+            get { return (double) GetValue(SectionOffsetProperty); }
+            set { SetValue(SectionOffsetProperty, value); }
+        }
+
+        /// <summary>
         /// The stroke property
         /// </summary>
         public static readonly DependencyProperty StrokeProperty = DependencyProperty.Register(
@@ -216,6 +232,57 @@ namespace LiveCharts.Wpf
             get { return (bool) GetValue(DraggableProperty); }
             set { SetValue(DraggableProperty, value); }
         }
+
+        /// <summary>
+        /// The disable animations property
+        /// </summary>
+        public static readonly DependencyProperty DisableAnimationsProperty = DependencyProperty.Register(
+            "DisableAnimations", typeof(bool), typeof(AxisSection), new PropertyMetadata(default(bool)));
+        /// <summary>
+        /// Gets or sets a value indicating whether the section is animated
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if [disable animations]; otherwise, <c>false</c>.
+        /// </value>
+        public bool DisableAnimations
+        {
+            get { return (bool) GetValue(DisableAnimationsProperty); }
+            set { SetValue(DisableAnimationsProperty, value); }
+        }
+
+        /// <summary>
+        /// The data label property
+        /// </summary>
+        public static readonly DependencyProperty DataLabelProperty = DependencyProperty.Register(
+            "DataLabel", typeof(bool), typeof(AxisSection), new PropertyMetadata(default(bool)));
+        /// <summary>
+        /// Gets or sets a value indicating whether the section should display a label that displays its current value.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if [data label]; otherwise, <c>false</c>.
+        /// </value>
+        public bool DataLabel
+        {
+            get { return (bool) GetValue(DataLabelProperty); }
+            set { SetValue(DataLabelProperty, value); }
+        }
+
+        /// <summary>
+        /// The data label brush property
+        /// </summary>
+        public static readonly DependencyProperty DataLabelForegroundProperty = DependencyProperty.Register(
+            "DataLabelForeground", typeof(Brush), typeof(AxisSection), new PropertyMetadata(default(Brush)));
+        /// <summary>
+        /// Gets or sets the data label brush.
+        /// </summary>
+        /// <value>
+        /// The label brush.
+        /// </value>
+        public Brush DataLabelForeground
+        {
+            get { return (Brush) GetValue(DataLabelForegroundProperty); }
+            set { SetValue(DataLabelForegroundProperty, value); }
+        }
         #endregion
 
         /// <summary>
@@ -233,27 +300,31 @@ namespace LiveCharts.Wpf
             BindingOperations.SetBinding(_rectangle, VisibilityProperty,
                 new Binding {Path = new PropertyPath(VisibilityProperty), Source = this});
 
+            var ax = source == AxisOrientation.X ? Model.Chart.AxisX[axis] : Model.Chart.AxisY[axis];
+            var uw = ax.EvaluatesUnitWidth ? ChartFunctions.GetUnitWidth(source, Model.Chart, axis) / 2 : 0;
+
             if (Parent == null)
             {
+                _label = ((Axis) ax.View).BindATextBlock();
+                _label.Padding = new Thickness(5, 2, 5, 2);
                 Model.Chart.View.AddToView(this);
                 Model.Chart.View.AddToDrawMargin(_rectangle);
-                Model.Chart.View.AddToDrawMargin(_label);
+                Model.Chart.View.AddToView(_label);
                 _rectangle.Height = 0;
                 _rectangle.Width = 0;
                 Canvas.SetLeft(_rectangle, 0d);
                 Canvas.SetTop(_rectangle, Model.Chart.DrawMargin.Height);
+                #region Obsolete
                 Canvas.SetTop(_label, Model.Chart.DrawMargin.Height);
                 Canvas.SetLeft(_label, 0d);
+                #endregion
             }
 
-            var ax = source == AxisOrientation.X ? Model.Chart.AxisX[axis] : Model.Chart.AxisY[axis];
-            var uw = ax.EvaluatesUnitWidth ? ChartFunctions.GetUnitWidth(source, Model.Chart, axis)/2 : 0;
-
-#pragma warning disable 618
-            var from = ChartFunctions.ToDrawMargin(double.IsNaN(FromValue) ? Value : FromValue, source, Model.Chart, axis) + uw;
+            #pragma warning disable 618
+            var from = ChartFunctions.ToDrawMargin(double.IsNaN(FromValue) ? Value + SectionOffset : FromValue, source, Model.Chart, axis) + uw;
 #pragma warning restore 618
 #pragma warning disable 618
-            var to = ChartFunctions.ToDrawMargin(double.IsNaN(ToValue) ? Value + SectionWidth : ToValue, source, Model.Chart, axis) + uw;
+            var to = ChartFunctions.ToDrawMargin(double.IsNaN(ToValue) ? Value  + SectionOffset + SectionWidth : ToValue, source, Model.Chart, axis) + uw;
 #pragma warning restore 618
 
             if (from > to)
@@ -264,7 +335,14 @@ namespace LiveCharts.Wpf
             }
 
             var anSpeed = Model.Chart.View.AnimationsSpeed;
-            _label.UpdateLayout();
+
+            if (DataLabel)
+            {
+                if (DataLabelForeground != null) _label.Foreground = DataLabelForeground;
+                _label.UpdateLayout();
+                _label.Background = Stroke ?? Fill;
+                PlaceLabel(ax.GetFormatter()(Value), ax, source);
+            }
 
             if (source == AxisOrientation.X)
             {
@@ -274,18 +352,16 @@ namespace LiveCharts.Wpf
                 Canvas.SetTop(_rectangle, 0);
                 _rectangle.Height = Model.Chart.DrawMargin.Height;
 
-                if (Model.Chart.View.DisableAnimations)
+                if (Model.Chart.View.DisableAnimations || DisableAnimations)
                 {
                     _rectangle.Width = w > 0 ? w : 0;
                     Canvas.SetLeft(_rectangle, from - StrokeThickness/2);
-                    Canvas.SetLeft(_label, (from + to)/2 - _label.ActualWidth/2);
                 }
                 else
                 {
                     _rectangle.BeginAnimation(WidthProperty, new DoubleAnimation(w > 0 ? w : 0, anSpeed));
-                    _rectangle.BeginAnimation(Canvas.LeftProperty, new DoubleAnimation(from - StrokeThickness/2, anSpeed));
-                    _label.BeginAnimation(Canvas.LeftProperty,
-                        new DoubleAnimation((from + to)/2 - _label.ActualWidth/2, anSpeed));
+                    _rectangle.BeginAnimation(Canvas.LeftProperty,
+                        new DoubleAnimation(from - StrokeThickness / 2, anSpeed));
                 }
                 return;
             }
@@ -296,18 +372,15 @@ namespace LiveCharts.Wpf
             Canvas.SetLeft(_rectangle, 0d);
             _rectangle.Width = Model.Chart.DrawMargin.Width;
 
-            if (Model.Chart.View.DisableAnimations)
+            if (Model.Chart.View.DisableAnimations || DisableAnimations)
             {
                 Canvas.SetTop(_rectangle, from - StrokeThickness/2);
                 _rectangle.Height = h > 0 ? h : 0;
-                Canvas.SetTop(_label, (from + to)/2 - _label.ActualHeight/2);
             }
             else
             {
                 _rectangle.BeginAnimation(Canvas.TopProperty, new DoubleAnimation(from, anSpeed));
                 _rectangle.BeginAnimation(HeightProperty, new DoubleAnimation(h, anSpeed));
-                _label.BeginAnimation(Canvas.TopProperty,
-                    new DoubleAnimation((from + to)/2 - _label.ActualHeight/2, anSpeed));
             }
         }
 
@@ -342,6 +415,87 @@ namespace LiveCharts.Wpf
             {
                 if (!section.Model.Chart.AreComponentsLoaded) return;
                 section.DrawOrMove(section.Model.Source, section.Model.AxisIndex);
+            }
+        }
+
+        private void PlaceLabel(string text, AxisCore axis, AxisOrientation source)
+        {
+            _label.Text = text;
+
+            var formattedText = new FormattedText(
+                _label.Text,
+                CultureInfo.CurrentUICulture,
+                FlowDirection.LeftToRight,
+                new Typeface(_label.FontFamily, _label.FontStyle, _label.FontWeight, _label.FontStretch),
+                _label.FontSize, Brushes.Black);
+
+            var transform = new LabelEvaluation(axis.View.LabelsRotation,
+                formattedText.Width + 10, formattedText.Height, axis, source);
+
+            _label.RenderTransform = Math.Abs(transform.LabelAngle) > 1
+                ? new RotateTransform(transform.LabelAngle)
+                : null;
+
+            var toLine = ChartFunctions.ToPlotArea(Value + SectionOffset + SectionWidth * .5, source, Model.Chart,
+                axis);
+
+            var direction = source == AxisOrientation.X ? 1 : -1;
+
+            toLine += axis.EvaluatesUnitWidth ? direction * ChartFunctions.GetUnitWidth(source, Model.Chart, axis) / 2 : 0;
+            var toLabel = toLine + transform.GetOffsetBySource(source);
+
+            var chart = Model.Chart;
+
+            if (axis.IsMerged)
+            {
+                const double padding = 4;
+
+                if (source == AxisOrientation.Y)
+                {
+                    if (toLabel + transform.ActualHeight >
+                        chart.DrawMargin.Top + chart.DrawMargin.Height)
+                        toLabel -= transform.ActualHeight + padding;
+                }
+                else
+                {
+                    if (toLabel + transform.ActualWidth >
+                        chart.DrawMargin.Left + chart.DrawMargin.Width)
+                        toLabel -= transform.ActualWidth + padding;
+                }
+            }
+
+            var labelTab = axis.Tab;
+            labelTab += transform.GetOffsetBySource(source.Invert());
+
+            if (source == AxisOrientation.Y)
+            {
+                labelTab += 8 * (axis.Position == AxisPosition.LeftBottom ? 1 : -1);
+
+                if (Model.View.DisableAnimations || DisableAnimations)
+                {
+                    Canvas.SetLeft(_label, labelTab);
+                    Canvas.SetTop(_label, toLabel);
+                    return;
+                }
+
+                _label.BeginAnimation(Canvas.TopProperty,
+                    new DoubleAnimation(toLabel, chart.View.AnimationsSpeed));
+                _label.BeginAnimation(Canvas.LeftProperty,
+                    new DoubleAnimation(labelTab, chart.View.AnimationsSpeed));
+            }
+            else
+            {
+                if (Model.View.DisableAnimations || DisableAnimations)
+                {
+                    Canvas.SetLeft(_label, toLabel);
+                    Canvas.SetTop(_label, labelTab);
+                    return;
+                }
+
+                _label.BeginAnimation(Canvas.LeftProperty,
+                    new DoubleAnimation(toLabel, chart.View.AnimationsSpeed));
+                _label.BeginAnimation(Canvas.TopProperty,
+                    new DoubleAnimation(labelTab, chart.View.AnimationsSpeed));
             }
 
         }

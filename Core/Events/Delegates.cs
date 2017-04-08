@@ -47,4 +47,10 @@ namespace LiveCharts.Events
     /// </summary>
     /// <param name="eventArgs">The <see cref="RangeChangedEventArgs"/> instance containing the event data.</param>
     public delegate void RangeChangedHandler(RangeChangedEventArgs eventArgs);
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="eventArgs">The <see cref="PreviewRangeChangedEventArgs"/> instance containing the event data.</param>
+    public delegate void PreviewRangeChangedHandler(PreviewRangeChangedEventArgs eventArgs);
 }

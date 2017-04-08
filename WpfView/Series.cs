@@ -118,13 +118,14 @@ namespace LiveCharts.Wpf
         public static readonly DependencyProperty ValuesProperty = DependencyProperty.Register(
             "Values", typeof (IChartValues), typeof (Series),
             new PropertyMetadata(default(IChartValues), OnValuesInstanceChanged));
+
         /// <summary>
         /// Gets or sets chart values.
         /// </summary>
         [TypeConverter(typeof(NumericChartValuesConverter))]
         public IChartValues Values
         {
-            get { return (IChartValues) GetValue(ValuesProperty); }
+            get { return ThreadAccess.Resolve<IChartValues>(this, ValuesProperty); }
             set { SetValue(ValuesProperty, value); }
         }
 

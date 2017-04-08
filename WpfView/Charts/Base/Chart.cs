@@ -399,7 +399,7 @@ namespace LiveCharts.Wpf.Charts.Base
         /// </summary>
         public SeriesCollection Series
         {
-            get { return (SeriesCollection)GetValue(SeriesProperty); }
+            get { return ThreadAccess.Resolve<SeriesCollection>(this, SeriesProperty); }
             set { SetValue(SeriesProperty, value); }
         }
 
@@ -1319,6 +1319,7 @@ namespace LiveCharts.Wpf.Charts.Base
         private void ScrollBarOnMouseUp(object sender, MouseButtonEventArgs e)
         {
             _isDragging = false;
+            ((UIElement) sender).ReleaseMouseCapture();
         }
 
         private void ScrollBarOnMouseMove(object sender, MouseEventArgs e)
@@ -1353,6 +1354,7 @@ namespace LiveCharts.Wpf.Charts.Base
         {
             _isDragging = true;
             _previous = e.GetPosition(this);
+            ((UIElement) sender).CaptureMouse();
         }
 
         private static void ScrollModeOnChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)

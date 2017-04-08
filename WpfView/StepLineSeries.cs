@@ -116,6 +116,23 @@ namespace LiveCharts.Wpf
             set { SetValue(AlternativeStrokeProperty, value); }
         }
 
+        /// <summary>
+        /// The inverted mode property
+        /// </summary>
+        public static readonly DependencyProperty InvertedModeProperty = DependencyProperty.Register(
+            "InvertedMode", typeof(bool), typeof(StepLineSeries), new PropertyMetadata(default(bool), CallChartUpdater()));
+        /// <summary>
+        /// Gets or sets a value indicating whether the series should be drawn using the inverted mode.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [inverted mode]; otherwise, <c>false</c>.
+        /// </value>
+        public bool InvertedMode
+        {
+            get { return (bool) GetValue(InvertedModeProperty); }
+            set { SetValue(InvertedModeProperty, value); }
+        }
+
         #endregion
 
         #region Overridden Methods
@@ -135,12 +152,12 @@ namespace LiveCharts.Wpf
                 pbv = new StepLinePointView
                 {
                     IsNew = true,
-                    HorizontalLine = new Line(),
-                    VerticalLine = new Line()
+                    Line2 = new Line(),
+                    Line1 = new Line()
                 };
 
-                Model.Chart.View.AddToDrawMargin(pbv.HorizontalLine);
-                Model.Chart.View.AddToDrawMargin(pbv.VerticalLine);
+                Model.Chart.View.AddToDrawMargin(pbv.Line2);
+                Model.Chart.View.AddToDrawMargin(pbv.Line1);
                 Model.Chart.View.AddToDrawMargin(pbv.Shape);
             }
             else
@@ -153,22 +170,22 @@ namespace LiveCharts.Wpf
                 point.SeriesView.Model.Chart.View
                     .EnsureElementBelongsToCurrentDrawMargin(pbv.DataLabel);
                 point.SeriesView.Model.Chart.View
-                    .EnsureElementBelongsToCurrentDrawMargin(pbv.HorizontalLine);
+                    .EnsureElementBelongsToCurrentDrawMargin(pbv.Line2);
                 point.SeriesView.Model.Chart.View
-                    .EnsureElementBelongsToCurrentDrawMargin(pbv.VerticalLine);
+                    .EnsureElementBelongsToCurrentDrawMargin(pbv.Line1);
             }
 
-            pbv.VerticalLine.StrokeThickness = StrokeThickness;
-            pbv.VerticalLine.Stroke = AlternativeStroke;
-            pbv.VerticalLine.StrokeDashArray = StrokeDashArray;
-            pbv.VerticalLine.Visibility = Visibility;
-            Panel.SetZIndex(pbv.VerticalLine, Panel.GetZIndex(this));
+            pbv.Line1.StrokeThickness = StrokeThickness;
+            pbv.Line1.Stroke = AlternativeStroke;
+            pbv.Line1.StrokeDashArray = StrokeDashArray;
+            pbv.Line1.Visibility = Visibility;
+            Panel.SetZIndex(pbv.Line1, Panel.GetZIndex(this));
 
-            pbv.HorizontalLine.StrokeThickness = StrokeThickness;
-            pbv.HorizontalLine.Stroke = Stroke;
-            pbv.HorizontalLine.StrokeDashArray = StrokeDashArray;
-            pbv.HorizontalLine.Visibility = Visibility;
-            Panel.SetZIndex(pbv.HorizontalLine, Panel.GetZIndex(this));
+            pbv.Line2.StrokeThickness = StrokeThickness;
+            pbv.Line2.Stroke = Stroke;
+            pbv.Line2.StrokeDashArray = StrokeDashArray;
+            pbv.Line2.Visibility = Visibility;
+            Panel.SetZIndex(pbv.Line2, Panel.GetZIndex(this));
 
             if (PointGeometry != null && Math.Abs(PointGeometrySize) > 0.1 && pbv.Shape == null)
             {

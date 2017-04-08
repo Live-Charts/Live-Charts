@@ -50,6 +50,13 @@ namespace LiveCharts.WinForms
         {
             Child = WpfBase;
 
+            //workaround for windows 7 focus issue
+            //https://github.com/beto-rodriguez/Live-Charts/issues/515
+            HostContainer.MouseEnter += (sender, args) =>
+            {
+                Focus();
+            };
+
             if (LicenseManager.UsageMode == LicenseUsageMode.Designtime)
             {
                 WpfBase.Series = WpfBase.GetDesignerModeCollection();
@@ -247,6 +254,19 @@ namespace LiveCharts.WinForms
         {
             get { return WpfBase.UpdaterState; }
             set { WpfBase.UpdaterState = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the units that a slice is pushed out when a user moves the mouse over data point.
+        /// </summary>
+        /// <value>
+        /// The hover push out.
+        /// </value>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public double HoverPushOut
+        {
+            get { return WpfBase.HoverPushOut; }
+            set { WpfBase.HoverPushOut = value; }
         }
         #endregion
 

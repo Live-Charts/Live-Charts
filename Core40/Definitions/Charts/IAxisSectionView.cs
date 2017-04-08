@@ -49,12 +49,33 @@ namespace LiveCharts.Definitions.Charts
         /// </value>
         double SectionWidth { get; set; }
         /// <summary>
+        /// Gets or sets the section offset.
+        /// </summary>
+        /// <value>
+        /// The section offset.
+        /// </value>
+        double SectionOffset { get; set; }
+        /// <summary>
         /// Gets or sets a value indicating whether this <see cref="IAxisSectionView"/> is draggable.
         /// </summary>
         /// <value>
         ///   <c>true</c> if draggable; otherwise, <c>false</c>.
         /// </value>
         bool Draggable { get; set; }
+        /// <summary>
+        /// Gets or sets a value indicating whether the section is animated
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [disable animations]; otherwise, <c>false</c>.
+        /// </value>
+        bool DisableAnimations { get; set; }
+        /// <summary>
+        /// Gets or sets a value indicating whether the section should display a label that displays its current value.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [data label]; otherwise, <c>false</c>.
+        /// </value>
+        bool DataLabel { get; set; }
 
         /// <summary>
         /// Draws the or move.

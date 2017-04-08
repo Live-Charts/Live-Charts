@@ -23,6 +23,7 @@
 using System;
 using System.Collections.Generic;
 using Windows.UI;
+using Windows.UI.Core;
 using Windows.UI.Text;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -108,7 +109,11 @@ namespace LiveCharts.Uwp
         //[TypeConverter(typeof(NumericChartValuesConverter))]
         public IChartValues Values
         {
-            get { return (IChartValues) GetValue(ValuesProperty); }
+            get
+            {
+                //ToDo: fix binding series threading issue..
+                return (IChartValues) GetValue(ValuesProperty);
+            }
             set { SetValue(ValuesProperty, value); }
         }
 

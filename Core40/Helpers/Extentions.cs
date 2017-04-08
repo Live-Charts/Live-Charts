@@ -22,8 +22,8 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using LiveCharts.Definitions.Series;
+using LiveCharts.Dtos;
 
 namespace LiveCharts.Helpers
 {
@@ -38,7 +38,7 @@ namespace LiveCharts.Helpers
         /// <typeparam name="T">type to iterate with</typeparam>
         /// <param name="source">collection to iterate</param>
         /// <param name="predicate">action to execute</param>
-        public static void ForEach<T>(this IEnumerable<T> source, Action<T> predicate)
+        internal static void ForEach<T>(this IEnumerable<T> source, Action<T> predicate)
         {
             foreach (var item in source) predicate(item);
         }
@@ -48,7 +48,7 @@ namespace LiveCharts.Helpers
         /// </summary>
         /// <param name="toSplit">collection to split</param>
         /// <returns>collection of collections</returns>
-        public static IEnumerable<IList<ChartPoint>> SplitEachNaN(this IList<ChartPoint> toSplit)
+        internal static IEnumerable<IList<ChartPoint>> SplitEachNaN(this IList<ChartPoint> toSplit)
         {
             var l = new List<ChartPoint>(toSplit.Count);
             var acum = -1;
@@ -75,7 +75,7 @@ namespace LiveCharts.Helpers
         /// </summary>
         /// <param name="axis">current orientation</param>
         /// <returns>inverted axis orientation</returns>
-        public static AxisOrientation Invert(this AxisOrientation axis)
+        internal static AxisOrientation Invert(this AxisOrientation axis)
         {
             return axis == AxisOrientation.X
                 ? AxisOrientation.Y
@@ -105,6 +105,34 @@ namespace LiveCharts.Helpers
             var collection = new SeriesCollection();
             collection.AddRange(series);
             return collection;
+        }
+
+        /// <summary>
+        /// Gets the closest chart point with a given value.
+        /// </summary>
+        /// <param name="series">The target series.</param>
+        /// <param name="value">The value.</param>
+        /// <param name="orientation">the axis orientation</param>
+        /// <returns></returns>
+        public static ChartPoint ClosestPointTo(this ISeriesView series, double value, AxisOrientation orientation)
+        {
+            ChartPoint t = null;
+            var delta = double.PositiveInfinity;
+
+            foreach (var point in series.Values.GetPoints(series))
+            {
+                var i = orientation == AxisOrientation.X ? point.X : point.Y;
+
+                var di = Math.Abs(i - value);
+
+                if (di < delta)
+                {
+                    t = point;
+                    delta = di;
+                }
+            }
+
+            return t;
         }
     }
 }

@@ -1364,6 +1364,7 @@ namespace LiveCharts.Uwp.Charts.Base
         //private void ScrollBarOnMouseUp(object sender, MouseButtonEventArgs e)
         //{
         //    _isDragging = false;
+        //    ((UIElement) sender).ReleaseMouseCapture();
         //}
 
         //private void ScrollBarOnMouseMove(object sender, MouseEventArgs e)
@@ -1398,6 +1399,7 @@ namespace LiveCharts.Uwp.Charts.Base
         //{
         //    _isDragging = true;
         //    _previous = e.GetPosition(this);
+        //    ((UIElement) sender).CaptureMouse();
         //}
 
         private static void ScrollModeOnChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)

@@ -70,7 +70,7 @@ namespace LiveCharts.Wpf
         /// The push out property
         /// </summary>
         public static readonly DependencyProperty PushOutProperty = DependencyProperty.Register(
-            "PushOut", typeof (double), typeof (PieSeries), new PropertyMetadata(default(double)));
+            "PushOut", typeof (double), typeof (PieSeries), new PropertyMetadata(default(double), CallChartUpdater()));
         /// <summary>
         /// Gets or sets the slice push out, this property highlights the slice
         /// </summary>

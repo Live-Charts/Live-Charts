@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Windows.Controls;
 using System.Windows.Data;
 using LiveCharts.Defaults;
@@ -33,7 +34,10 @@ using Wpf.CartesianChart.Missing_Line_Points;
 using Wpf.CartesianChart.NegativeStackedRow;
 using Wpf.CartesianChart.PointState;
 using Wpf.CartesianChart.ScatterPlot;
+using Wpf.CartesianChart.Scatter_With_Pies;
 using Wpf.CartesianChart.Sections;
+using Wpf.CartesianChart.SectionsDragable;
+using Wpf.CartesianChart.SectionsMouseMove;
 using Wpf.CartesianChart.SolidColorChart;
 using Wpf.CartesianChart.StackedArea;
 using Wpf.CartesianChart.StepLine;
@@ -103,6 +107,8 @@ namespace Wpf.Home
                     {
                         new SampleVm("Inverted Series", typeof(InvertedExample)),
                         new SampleVm("Sections", typeof(SectionsExample)),
+                        new SampleVm("Dragable Sections", typeof(DragableSections)),
+                        new SampleVm("Section Mouse Move", typeof(SectionMouseMoveSample)),
                         new SampleVm("Multiple Axes", typeof(MultiAxesChart)),
                         new SampleVm("Events", typeof(EventsExample)),
                         new SampleVm("Visual Elements", typeof(UiElementsAndEventsExample)),
@@ -122,6 +128,7 @@ namespace Wpf.Home
                         new SampleVm("Thread Safe", typeof(ThreadSafeExample)), 
                         new SampleVm("Zooming/Panning", typeof(ZoomingAndPanning)),
                         new SampleVm("Data Pagination", typeof(ManualZAndPExample)),
+                        new SampleVm("Scattered Pie", typeof(Scatter_With_Pies)), 
                         new SampleVm("Observable point", typeof(FullyResponsiveExample)),
                         new SampleVm("Point State", typeof(PointStateExample)),  
                         new SampleVm("Negative Stacked", typeof(NegativeStackedRowExample)),

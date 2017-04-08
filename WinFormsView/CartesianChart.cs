@@ -23,6 +23,7 @@
 using System;
 using System.ComponentModel;
 using System.ComponentModel.Design.Serialization;
+using System.Diagnostics;
 using System.Windows.Forms.Integration;
 using System.Windows.Media;
 using LiveCharts.Events;
@@ -50,6 +51,13 @@ namespace LiveCharts.WinForms
         public CartesianChart()
         {
             Child = WpfBase;
+
+            //workaround for windows 7 focus issue
+            //https://github.com/beto-rodriguez/Live-Charts/issues/515
+            HostContainer.MouseEnter += (sender, args) =>
+            {
+                Focus();
+            };
 
             if (LicenseManager.UsageMode == LicenseUsageMode.Designtime)
             {
@@ -83,6 +91,7 @@ namespace LiveCharts.WinForms
             add { WpfBase.UpdaterTick += value; }
             remove { WpfBase.UpdaterTick += value; }
         }
+
         #region ChartProperties
 
         /// <summary>
@@ -228,6 +237,7 @@ namespace LiveCharts.WinForms
         /// <value>
         ///   <c>true</c> if hoverable; otherwise, <c>false</c>.
         /// </value>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool Hoverable
         {
             get { return Base.Hoverable; }
@@ -240,6 +250,7 @@ namespace LiveCharts.WinForms
         /// <value>
         /// The scroll mode.
         /// </value>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public ScrollMode ScrollMode { get { return Base.ScrollMode; } set { Base.ScrollMode = value; } }
 
         /// <summary>
@@ -248,6 +259,7 @@ namespace LiveCharts.WinForms
         /// <value>
         /// The scroll horizontal from.
         /// </value>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public double ScrollHorizontalFrom
         {
             get { return Base.ScrollHorizontalFrom; }
@@ -260,6 +272,7 @@ namespace LiveCharts.WinForms
         /// <value>
         /// The scroll horizontal to.
         /// </value>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public double ScrollHorizontalTo
         {
             get { return Base.ScrollHorizontalTo; }
@@ -272,6 +285,7 @@ namespace LiveCharts.WinForms
         /// <value>
         /// The scroll vertical from.
         /// </value>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public double ScrollVerticalFrom
         {
             get { return Base.ScrollVerticalFrom; }
@@ -284,6 +298,7 @@ namespace LiveCharts.WinForms
         /// <value>
         /// The scroll vertical to.
         /// </value>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public double ScrollVerticalTo
         {
             get { return Base.ScrollVerticalTo; }
@@ -296,6 +311,7 @@ namespace LiveCharts.WinForms
         /// <value>
         /// The scroll bar fill.
         /// </value>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public Brush ScrollBarFill
         {
             get { return Base.ScrollBarFill; }

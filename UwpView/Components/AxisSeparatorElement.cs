@@ -30,6 +30,7 @@ using Windows.UI.Xaml.Shapes;
 using LiveCharts.Charts;
 using LiveCharts.Definitions.Charts;
 using LiveCharts.Dtos;
+using LiveCharts.Uwp.Charts.Base;
 
 namespace LiveCharts.Uwp.Components
 {
@@ -222,17 +223,11 @@ namespace LiveCharts.Uwp.Components
                 Duration = chart.View.AnimationsSpeed
             };
 
+            var dispatcher = ((Chart) chart.View).Dispatcher;
             anim.Completed += (sender, args) =>
             {
-                if (Application.Current == null)
-                {
-                    chart.View.RemoveFromView(TextBlock);
-                    chart.View.RemoveFromView(Line);
-                    return;
-                }
-
 #pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
-                TextBlock.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+                dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
                 {
                     chart.View.RemoveFromView(TextBlock);
                     chart.View.RemoveFromView(Line);
