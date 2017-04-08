@@ -127,16 +127,16 @@ namespace LiveCharts.Wpf
         /// <summary>
         /// The point foreground property
         /// </summary>
-        public static readonly DependencyProperty PointForeroundProperty = DependencyProperty.Register(
-            "PointForeround", typeof (Brush), typeof (LineSeries), 
+        public static readonly DependencyProperty PointForegroundProperty = DependencyProperty.Register(
+            "PointForeground", typeof (Brush), typeof (LineSeries), 
             new PropertyMetadata(default(Brush)));
         /// <summary>
         /// Gets or sets the point shape foreground.
         /// </summary>
-        public Brush PointForeround
+        public Brush PointForeground
         {
-            get { return (Brush) GetValue(PointForeroundProperty); }
-            set { SetValue(PointForeroundProperty, value); }
+            get { return (Brush) GetValue(PointForegroundProperty); }
+            set { SetValue(PointForegroundProperty, value); }
         }
 
         /// <summary>
@@ -289,7 +289,7 @@ namespace LiveCharts.Wpf
 
             if (pbv.Shape != null)
             {
-                pbv.Shape.Fill = PointForeround;
+                pbv.Shape.Fill = PointForeground;
                 pbv.Shape.Stroke = Stroke;
                 pbv.Shape.StrokeThickness = StrokeThickness;
                 pbv.Shape.Width = PointGeometrySize;
@@ -481,7 +481,7 @@ namespace LiveCharts.Wpf
         {
             SetCurrentValue(LineSmoothnessProperty, .7d);
             SetCurrentValue(PointGeometrySizeProperty, 8d);
-            SetCurrentValue(PointForeroundProperty, Brushes.White);
+            SetCurrentValue(PointForegroundProperty, Brushes.White);
             SetCurrentValue(StrokeThicknessProperty, 2d);
 
             Func<ChartPoint, string> defaultLabel = x => Model.CurrentYAxis.GetFormatter()(x.Y);
