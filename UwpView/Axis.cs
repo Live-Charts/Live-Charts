@@ -175,14 +175,14 @@ namespace LiveCharts.Uwp
         /// The separator property
         /// </summary>
         public static readonly DependencyProperty SeparatorProperty = DependencyProperty.Register(
-            "Separator", typeof (ISeparatorView), typeof (Axis),
-            new PropertyMetadata(default(ISeparatorView), UpdateChart()));
+            "Separator", typeof (Separator), typeof (Axis),
+            new PropertyMetadata(default(Separator), UpdateChart()));
         /// <summary>
         /// Get or sets configuration for parallel lines to axis.
         /// </summary>
-        public ISeparatorView Separator
+        public Separator Separator
         {
-            get { return (ISeparatorView) GetValue(SeparatorProperty); }
+            get { return (Separator) GetValue(SeparatorProperty); }
             set { SetValue(SeparatorProperty, value); }
         }
 
