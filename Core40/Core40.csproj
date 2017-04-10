@@ -83,6 +83,7 @@
     <Compile Include="DateAxisWindow.cs" />
     <Compile Include="Definitions\Charts\IAxisWindow.cs" />
     <Compile Include="Definitions\Charts\IWindowAxisView.cs" />
+    <Compile Include="Delegates.cs" />
     <Compile Include="WindowAxisCore.cs" />
     <Compile Include="DateAxisWindows.cs" />
     <Compile Include="DateSeparatorElementCore.cs" />
