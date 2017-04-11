@@ -238,7 +238,7 @@ namespace LiveCharts.Wpf.Points
             var lineSeries = (LineSeries) point.SeriesView;
             if (Shape != null)
                 Shape.Fill = point.Fill == null
-                    ? lineSeries.PointForeround
+                    ? lineSeries.PointForeground
                     : (Brush) point.Fill;
             lineSeries.Path.StrokeThickness = lineSeries.StrokeThickness;
         }

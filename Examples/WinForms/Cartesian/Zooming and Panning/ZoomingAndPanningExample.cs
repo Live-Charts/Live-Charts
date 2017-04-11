@@ -16,9 +16,9 @@ using Point = System.Windows.Point;
 
 namespace Winforms.Cartesian.Zooming_and_Panning
 {
-    public partial class ZomingAndPanningExample : Form
+    public partial class ZoomingAndPanningExample : Form
     {
-        public ZomingAndPanningExample()
+        public ZoomingAndPanningExample()
         {
             InitializeComponent();
 
@@ -79,7 +79,7 @@ namespace Winforms.Cartesian.Zooming_and_Panning
             cartesianChart1.AxisY[0].MaxValue = double.NaN;
         }
 
-        private void ZomingAndPanningExample_Load(object sender, EventArgs e)
+        private void ZoomingAndPanningExample_Load(object sender, EventArgs e)
         {
 
         }

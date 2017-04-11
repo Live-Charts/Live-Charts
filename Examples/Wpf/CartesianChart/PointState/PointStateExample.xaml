@@ -17,7 +17,7 @@
             <lvc:CartesianChart.Series>
                 <lvc:LineSeries Values="{Binding Values}" 
                                 PointGeometrySize="20" 
-                                PointForeround="White"
+                                PointForeground="White"
                                 Configuration="{Binding Mapper}"/>
             </lvc:CartesianChart.Series>
         </lvc:CartesianChart>

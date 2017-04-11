@@ -8,7 +8,7 @@
     xmlns:lvc="using:LiveCharts.Uwp"
     mc:Ignorable="d">
     <Page.Resources>
-        <local:ZoomingModeCoverter x:Key="ZoomingModeCoverter"/>
+        <local:ZoomingModeConverter x:Key="ZoomingModeConverter"/>
     </Page.Resources>
 
     <Grid>
@@ -22,16 +22,16 @@
         </TextBlock>
         <StackPanel Grid.Row="1">
             <Button Click="ToogleZoomingMode">
-                <TextBlock>Toggle zoming mode, current is: 
-                    <TextBlock Text="{Binding ZoomingMode, Converter={StaticResource ZoomingModeCoverter}}"/>
-                </TextBlock>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock>Toggle zooming mode, current is:</TextBlock>
+                    <TextBlock Text="{Binding ZoomingMode, Converter={StaticResource ZoomingModeConverter}}"/>
+                </StackPanel>
             </Button>
             <Button Click="ResetZoomOnClick">Reset Zoom</Button>
         </StackPanel>
         <lvc:CartesianChart Grid.Row="2" Series="{Binding SeriesCollection}" Zoom="{Binding ZoomingMode}" >
             <lvc:CartesianChart.AxisX>
-                <lvc:Axis Name="X" LabelFormatter="{Binding XFormatter}" 
-                          Separator="{x:Static lvc:DefaultAxes.CleanSeparator}"/>
+                <lvc:Axis Name="X" LabelFormatter="{Binding XFormatter}"/>
             </lvc:CartesianChart.AxisX>
             <lvc:CartesianChart.AxisY>
                 <lvc:Axis Name="Y" LabelFormatter="{Binding YFormatter}"/>

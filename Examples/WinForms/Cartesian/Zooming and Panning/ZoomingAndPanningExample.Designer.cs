@@ -1,6 +1,6 @@
 ﻿namespace Winforms.Cartesian.Zooming_and_Panning
 {
-    partial class ZomingAndPanningExample
+    partial class ZoomingAndPanningExample
     {
         /// <summary>
         /// Required designer variable.
@@ -50,7 +50,7 @@
             this.button1.Text = "button1";
             this.button1.UseVisualStyleBackColor = true;
             // 
-            // ZomingAndPanningExample
+            // ZoomingAndPanningExample
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -58,9 +58,9 @@
             this.ClientSize = new System.Drawing.Size(579, 473);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.cartesianChart1);
-            this.Name = "ZomingAndPanningExample";
-            this.Text = "ZomingAndPanningExample";
-            this.Load += new System.EventHandler(this.ZomingAndPanningExample_Load);
+            this.Name = "ZoomingAndPanningExample";
+            this.Text = "ZoomingAndPanningExample";
+            this.Load += new System.EventHandler(this.ZoomingAndPanningExample_Load);
             this.ResumeLayout(false);
 
         }

@@ -127,16 +127,16 @@ namespace LiveCharts.Uwp
         /// <summary>
         /// The point foreground property
         /// </summary>
-        public static readonly DependencyProperty PointForeroundProperty = DependencyProperty.Register(
-            "PointForeround", typeof (Brush), typeof (LineSeries), 
+        public static readonly DependencyProperty PointForegroundProperty = DependencyProperty.Register(
+            "PointForeground", typeof (Brush), typeof (LineSeries), 
             new PropertyMetadata(new SolidColorBrush(Windows.UI.Colors.White)));
         /// <summary>
         /// Gets or sets the point shape foreground.
         /// </summary>
-        public Brush PointForeround
+        public Brush PointForeground
         {
-            get { return (Brush) GetValue(PointForeroundProperty); }
-            set { SetValue(PointForeroundProperty, value); }
+            get { return (Brush) GetValue(PointForegroundProperty); }
+            set { SetValue(PointForegroundProperty, value); }
         }
 
         /// <summary>
@@ -286,7 +286,7 @@ namespace LiveCharts.Uwp
 
             if (pbv.Shape != null)
             {
-                pbv.Shape.Fill = PointForeround;
+                pbv.Shape.Fill = PointForeground;
                 pbv.Shape.Stroke = Stroke;
                 pbv.Shape.StrokeThickness = StrokeThickness;
                 pbv.Shape.Width = PointGeometrySize;

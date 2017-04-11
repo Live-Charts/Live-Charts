@@ -180,7 +180,7 @@ namespace LiveCharts.Uwp
 
             if (pbv.Shape != null)
             {
-                pbv.Shape.Fill = PointForeround;
+                pbv.Shape.Fill = PointForeground;
                 pbv.Shape.Stroke = Stroke;
                 pbv.Shape.StrokeThickness = StrokeThickness;
                 pbv.Shape.Width = PointGeometrySize;

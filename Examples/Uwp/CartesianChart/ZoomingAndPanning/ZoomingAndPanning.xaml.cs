@@ -62,7 +62,7 @@ namespace UWP.CartesianChart.ZoomingAndPanning
             set
             {
                 _zoomingMode = value;
-                OnPropertyChanged();
+                OnPropertyChanged(nameof(ZoomingMode));
             }
         }
 
@@ -122,7 +122,7 @@ namespace UWP.CartesianChart.ZoomingAndPanning
         }
     }
 
-    public class ZoomingModeCoverter : IValueConverter
+    public class ZoomingModeConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
