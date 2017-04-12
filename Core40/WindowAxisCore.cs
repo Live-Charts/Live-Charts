@@ -1,3 +1,25 @@
+//The MIT License(MIT)
+
+//Copyright(c) 2016 Alberto Rodriguez & LiveCharts Contributors
+
+//Permission is hereby granted, free of charge, to any person obtaining a copy
+//of this software and associated documentation files (the "Software"), to deal
+//in the Software without restriction, including without limitation the rights
+//to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+//copies of the Software, and to permit persons to whom the Software is
+//furnished to do so, subject to the following conditions:
+
+//The above copyright notice and this permission notice shall be included in all
+//copies or substantial portions of the Software.
+
+//THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+//OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+//SOFTWARE.
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +30,7 @@ using LiveCharts.Dtos;
 namespace LiveCharts
 {
     /// <summary>
-    /// Provides an axis that displays seperators based upon configured windows
+    /// Provides an axis that displays separators based upon configured windows
     /// </summary>
     public class WindowAxisCore : AxisCore
     {
@@ -92,7 +114,7 @@ namespace LiveCharts
                     // Try go get separators. Continue if the window invalidated.
                     if (!window.TryGetSeparatorIndices(rangeIndices, supportedSeparatorCount, out proposedSeparatorIndices)) continue;
 
-                    // Doublecheck whether the window exceeded the maximum separator count.
+                    // Double check whether the window exceeded the maximum separator count.
                     // It might be it does not respect the supportedSeparatorCount parameter.
                     separatorIndices = proposedSeparatorIndices.ToList();
                     if (supportedSeparatorCount < separatorIndices.Count) continue;
@@ -108,7 +130,7 @@ namespace LiveCharts
                 // All variables are still set to defaults
             }
 
-            // Force the step of 1, as our preparechart will filter the X asis for valid separators, and will skip a few
+            // Force the step of 1, as our prepare chart will filter the X axis for valid separators, and will skip a few
             S = 1;
 
             Magnitude = Math.Pow(10, Math.Floor(Math.Log(supportedSeparatorCount) / Math.Log(10)));

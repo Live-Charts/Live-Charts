@@ -36,9 +36,11 @@ namespace LiveCharts.Wpf
     /// <seealso cref="LiveCharts.Definitions.Charts.IDateAxisView" />
     public class DateAxis : WindowAxis, IDateAxisView
     {
-        public static readonly DependencyProperty InitialDateTimeProperty = DependencyProperty.Register("InitialDateTime", typeof(DateTime), typeof(DateAxis), new PropertyMetadata(DateTime.UtcNow, UpdateChart()));
-        public static readonly DependencyProperty PeriodProperty = DependencyProperty.Register("Period", typeof(PeriodUnits), typeof(DateAxis), new PropertyMetadata(PeriodUnits.Milliseconds, UpdateChart()));
+        #region Constructors
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DateAxis"/> class.
+        /// </summary>
         public DateAxis()
         {
             // Initialize the axis with date windows
@@ -47,8 +49,17 @@ namespace LiveCharts.Wpf
             SetCurrentValue(WindowsProperty, collection);
         }
 
+        #endregion
+
+        #region Properties
+
         /// <summary>
-        /// Gets or sets the Initial Date Time. Together with Period, this is used to calculate date times based opon the value of the axis.
+        /// The initial date time property
+        /// </summary>
+        public static readonly DependencyProperty InitialDateTimeProperty = DependencyProperty.Register(
+            "InitialDateTime", typeof(DateTime), typeof(DateAxis), new PropertyMetadata(DateTime.UtcNow, UpdateChart()));
+        /// <summary>
+        /// Gets or sets the Initial Date Time.
         /// </summary>
         public DateTime InitialDateTime
         {
@@ -57,7 +68,12 @@ namespace LiveCharts.Wpf
         }
 
         /// <summary>
-        /// Gets or sets the period of the data. For each index, we increment the Initial dateTime with this period.
+        /// The period property
+        /// </summary>
+        public static readonly DependencyProperty PeriodProperty = DependencyProperty.Register(
+            "Period", typeof(PeriodUnits), typeof(DateAxis), new PropertyMetadata(PeriodUnits.Milliseconds, UpdateChart()));
+        /// <summary>
+        /// Gets or sets the period that represents every unit in the axis.
         /// </summary>
         public PeriodUnits Period
         {
@@ -65,6 +81,14 @@ namespace LiveCharts.Wpf
             set { SetValue(PeriodProperty, value); }
         }
 
+        #endregion
+
+        /// <summary>
+        /// Maps as core element.
+        /// </summary>
+        /// <param name="chart">The chart.</param>
+        /// <param name="source">The source.</param>
+        /// <returns></returns>
         public override AxisCore AsCoreElement(ChartCore chart, AxisOrientation source)
         {
             if (Model == null) Model = new DateAxisCore(this);

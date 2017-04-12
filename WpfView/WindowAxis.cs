@@ -34,6 +34,8 @@ namespace LiveCharts.Wpf
     /// <summary>
     /// 
     /// </summary>
+    /// <seealso cref="LiveCharts.Wpf.Axis" />
+    /// <seealso cref="LiveCharts.Definitions.Charts.IWindowAxisView" />
     public class WindowAxis : Axis, IWindowAxisView
     {
         public static readonly DependencyProperty WindowsProperty = DependencyProperty.Register("Windows", typeof(AxisWindowCollection), typeof(WindowAxis),new PropertyMetadata(default(AxisWindowCollection)));
