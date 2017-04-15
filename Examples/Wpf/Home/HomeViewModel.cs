@@ -69,16 +69,6 @@ namespace Wpf.Home
             {
                 new SampleGroupVm
                 {
-                  Name = "Special axes",
-                  Items = new[]
-                  {
-                      new SampleVm("Window Axis", typeof(WindowAxisExample)),
-                      new SampleVm("Date Axis", typeof(DateAxisExample)),
-                      new SampleVm("Logarithmic Axis", typeof(LogarithmScaleExample))
-                  }
-                },
-                new SampleGroupVm
-                {
                     Name = "Customizing",
                     Items = new[]
                     {
@@ -116,7 +106,7 @@ namespace Wpf.Home
                 new SampleGroupVm
                 {
                     Name = "Features",
-                    Items = new []
+                    Items = new[]
                     {
                         new SampleVm("Inverted Series", typeof(InvertedExample)),
                         new SampleVm("Sections", typeof(SectionsExample)),
@@ -128,26 +118,36 @@ namespace Wpf.Home
                         new SampleVm("Chart to Image", typeof(ChartToImageSample)),
                         new SampleVm("DataLabelTemplate", typeof(DataLabelTemplateSample))
                     }
-                }, 
+                },
                 new SampleGroupVm
                 {
                     Name = "More",
-                    Items = new []
+                    Items = new[]
                     {
                         new SampleVm("Irregular intervals", typeof(IrregularIntervalsExample)),
-                        new SampleVm("Pie with drop downs", typeof(PieDropDownSample)), 
+                        new SampleVm("Pie with drop downs", typeof(PieDropDownSample)),
                         new SampleVm("Missing Points", typeof(MissingPointsExample)),
                         new SampleVm("Constant Changes", typeof(ConstantChangesChart)),
-                        new SampleVm("Thread Safe", typeof(ThreadSafeExample)), 
+                        new SampleVm("Thread Safe", typeof(ThreadSafeExample)),
                         new SampleVm("Zooming/Panning", typeof(ZoomingAndPanning)),
                         new SampleVm("Data Pagination", typeof(ManualZAndPExample)),
-                        new SampleVm("Scattered Pie", typeof(Scatter_With_Pies)), 
+                        new SampleVm("Scattered Pie", typeof(Scatter_With_Pies)),
                         new SampleVm("Observable point", typeof(FullyResponsiveExample)),
-                        new SampleVm("Point State", typeof(PointStateExample)),  
+                        new SampleVm("Point State", typeof(PointStateExample)),
                         new SampleVm("Negative Stacked", typeof(NegativeStackedRowExample)),
                         new SampleVm("Dynamic Visibility", typeof(DynamicVisibilityExample)),
                         new SampleVm("Filtering Data", typeof(LinqExample)),
-                        new SampleVm("Percentage Stacked", typeof(BasicStackedRowPercentageExample)),                        
+                        new SampleVm("Percentage Stacked", typeof(BasicStackedRowPercentageExample))
+                    }
+                },
+                new SampleGroupVm
+                {
+                    Name = "Special axes",
+                    Items = new[]
+                    {
+                        new SampleVm("Window Axis", typeof(WindowAxisExample)),
+                        new SampleVm("Date Axis", typeof(DateAxisExample)),
+                        new SampleVm("Logarithmic Axis", typeof(LogarithmScaleExample))
                     }
                 }
             };

@@ -16,6 +16,8 @@
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
 
+        <TextBlock Background="#FFC107" HorizontalAlignment="Right" Padding="10 5" FontWeight="Bold">Experimental</TextBlock>
+        
         <StackPanel Grid.Row="1">
             <Label>Set `DateAxis.InitialDateTime` to configure the starting point (X=0) dateTime.</Label>
             <Label>Configure the DateAxis.Period to the PeriodUnit of your axis values. Use the buttons below to configure this property for the X axis.</Label>

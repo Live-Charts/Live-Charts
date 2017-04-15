@@ -17,6 +17,8 @@
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
 
+        <TextBlock Background="#FFC107" HorizontalAlignment="Right" Padding="10 5" FontWeight="Bold">Experimental</TextBlock>
+        
         <StackPanel Grid.Row="1">
         </StackPanel>
 
