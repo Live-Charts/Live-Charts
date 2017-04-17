@@ -1006,7 +1006,7 @@ namespace LiveCharts.Uwp.Charts.Base
                             Fill = ((Series) x.SeriesView) is IFondeable &&
                                    !(x.SeriesView is IVerticalStackedAreaSeriesView ||
                                      x.SeriesView is IStackedAreaSeriesView)
-                                ? ((IFondeable) x.SeriesView).PointForeround
+                                ? ((IFondeable) x.SeriesView).PointForeground
                                 : ((Series) x.SeriesView).Fill,
                             Stroke = ((Series) x.SeriesView).Stroke,
                             StrokeThickness = ((Series) x.SeriesView).StrokeThickness,
@@ -1094,7 +1094,7 @@ namespace LiveCharts.Uwp.Charts.Base
                 item.Fill = ((Series) t) is IFondeable &&
                             !(t is IVerticalStackedAreaSeriesView ||
                               t is IStackedAreaSeriesView)
-                    ? ((IFondeable) t).PointForeround
+                    ? ((IFondeable) t).PointForeground
                     : ((Series) t).Fill;
                 item.PointGeometry = series.PointGeometry == DefaultGeometries.None
                     ? new PointGeometry("M0,0 L1,0").Parse()

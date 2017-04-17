@@ -22,7 +22,7 @@
         </TextBlock>
         <StackPanel Grid.Row="1">
             <Button Click="ToogleZoomingMode">
-                <TextBlock>Toggle zoming mode, current is: 
+                <TextBlock>Toggle zooming mode, current is: 
                     <TextBlock Text="{Binding ZoomingMode, Converter={StaticResource ZoomingModeCoverter}}"/>
                 </TextBlock>
             </Button>

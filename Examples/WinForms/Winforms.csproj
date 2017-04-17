@@ -262,11 +262,11 @@
     <Compile Include="Cartesian\UielementsExample\UielementsExample.Designer.cs">
       <DependentUpon>UielementsExample.cs</DependentUpon>
     </Compile>
-    <Compile Include="Cartesian\Zooming and Panning\ZomingAndPanningExample.cs">
+    <Compile Include="Cartesian\Zooming and Panning\ZoomingAndPanningExample.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Cartesian\Zooming and Panning\ZomingAndPanningExample.Designer.cs">
-      <DependentUpon>ZomingAndPanningExample.cs</DependentUpon>
+    <Compile Include="Cartesian\Zooming and Panning\ZoomingAndPanningExample.Designer.cs">
+      <DependentUpon>ZoomingAndPanningExample.cs</DependentUpon>
     </Compile>
     <Compile Include="Gauge\360\Gauge360Example.cs">
       <SubType>Form</SubType>
@@ -411,8 +411,8 @@
     <EmbeddedResource Include="Cartesian\UielementsExample\UielementsExample.resx">
       <DependentUpon>UielementsExample.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Cartesian\Zooming and Panning\ZomingAndPanningExample.resx">
-      <DependentUpon>ZomingAndPanningExample.cs</DependentUpon>
+    <EmbeddedResource Include="Cartesian\Zooming and Panning\ZoomingAndPanningExample.resx">
+      <DependentUpon>ZoomingAndPanningExample.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Gauge\360\Gauge360Example.resx">
       <DependentUpon>Gauge360Example.cs</DependentUpon>

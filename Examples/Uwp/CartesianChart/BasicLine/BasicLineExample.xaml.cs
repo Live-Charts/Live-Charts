@@ -51,7 +51,7 @@ namespace UWP.CartesianChart.BasicLine
                 LineSmoothness = 0, //0: straight lines, 1: really smooth lines
                 PointGeometry = new PointGeometry("m0,50 l25,30 l60,-80 l-60 60z"),
                 PointGeometrySize = 50,
-                PointForeround = new SolidColorBrush(Colors.Gray)
+                PointForeground = new SolidColorBrush(Colors.Gray)
             });
 
             //modifying any series values will also animate and update the chart

@@ -30,11 +30,11 @@ namespace LiveCharts.Wpf.Components
     public interface IFondeable
     {
         /// <summary>
-        /// Gets the point foreround.
+        /// Gets the point foreground.
         /// </summary>
         /// <value>
-        /// The point foreround.
+        /// The point foreground.
         /// </value>
-        Brush PointForeround { get; }
+        Brush PointForeground { get; }
     }
 }

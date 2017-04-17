@@ -149,7 +149,7 @@ namespace LiveCharts.Uwp.Points
             var lineSeries = (StepLineSeries) point.SeriesView;
             if (Shape != null)
                 Shape.Fill = point.Fill == null
-                    ? lineSeries.PointForeround
+                    ? lineSeries.PointForeground
                     : (Brush) point.Fill;
             lineSeries.StrokeThickness = lineSeries.StrokeThickness - 1;
         }
