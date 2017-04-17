@@ -1,6 +1,6 @@
 ﻿//The MIT License(MIT)
 
-//Copyright(c) 2016 Alberto Rodriguez
+//Copyright(c) 2016 Alberto Rodriguez & LiveCharts Contributors
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -181,7 +181,7 @@ namespace LiveCharts.Wpf
 
             if (pbv.Shape != null)
             {
-                pbv.Shape.Fill = PointForeround;
+                pbv.Shape.Fill = PointForeground;
                 pbv.Shape.Stroke = Stroke;
                 pbv.Shape.StrokeThickness = StrokeThickness;
                 pbv.Shape.Width = PointGeometrySize;
@@ -329,7 +329,7 @@ namespace LiveCharts.Wpf
         {
             SetCurrentValue(LineSmoothnessProperty, .7d);
             SetCurrentValue(PointGeometrySizeProperty, 8d);
-            SetCurrentValue(PointForeroundProperty, Brushes.White);
+            SetCurrentValue(PointForegroundProperty, Brushes.White);
             SetCurrentValue(StrokeThicknessProperty, 2d);
 
             Func<ChartPoint, string> defaultLabel = x => Model.CurrentXAxis.GetFormatter()(x.X);

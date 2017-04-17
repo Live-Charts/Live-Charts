@@ -1,6 +1,6 @@
 ﻿//The MIT License(MIT)
 
-//copyright(c) 2016 Alberto Rodriguez
+//Copyright(c) 2016 Alberto Rodriguez & LiveCharts Contributors
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -606,6 +606,7 @@ namespace LiveCharts.Helpers
         private void ReplaceItem(object original, object item, int index)
         {
             OnPropertyChanged(IndexerString);
+            OnNoisyCollectionChanged(new List<T>{(T) original}, new List<T>{(T) item});
             OnCollectionChanged(new NotifyCollectionChangedEventArgs(
                 NotifyCollectionChangedAction.Replace, original, item, index));
         }

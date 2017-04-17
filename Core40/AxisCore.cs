@@ -1,6 +1,6 @@
 ﻿//The MIT License(MIT)
 
-//copyright(c) 2016 Alberto Rodriguez
+//Copyright(c) 2016 Alberto Rodriguez & LiveCharts Contributors
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -208,8 +208,8 @@ namespace LiveCharts
         internal int GarbageCollectorIndex { get; set; }
         internal double PreviousTop { get; set; }
         internal double PreviousBot { get; set; }
-        internal double FirstSeparator { get; private set; }
-        internal double LastSeparator { get; private set; }
+        protected internal double FirstSeparator { get; protected set; }
+        protected internal double LastSeparator { get; protected set; }
 
         #endregion
 
@@ -218,7 +218,7 @@ namespace LiveCharts
         /// Gets the formatter.
         /// </summary>
         /// <returns></returns>
-        public Func<double, string> GetFormatter()
+        public virtual Func<double, string> GetFormatter()
         {
             return Formatter;
         }
@@ -239,7 +239,7 @@ namespace LiveCharts
 
         #region Internal Methods
 
-        internal void CalculateSeparator(ChartCore chart, AxisOrientation source)
+        internal virtual void CalculateSeparator(ChartCore chart, AxisOrientation source)
         {
             var range = TopLimit - BotLimit;
             range = range <= 0 ? 1 : range;

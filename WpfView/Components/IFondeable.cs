@@ -1,6 +1,6 @@
 ﻿//The MIT License(MIT)
 
-//copyright(c) 2016 Alberto Rodriguez
+//Copyright(c) 2016 Alberto Rodriguez & LiveCharts Contributors
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -30,11 +30,11 @@ namespace LiveCharts.Wpf.Components
     public interface IFondeable
     {
         /// <summary>
-        /// Gets the point foreround.
+        /// Gets the point foreground.
         /// </summary>
         /// <value>
-        /// The point foreround.
+        /// The point foreground.
         /// </value>
-        Brush PointForeround { get; }
+        Brush PointForeground { get; }
     }
 }

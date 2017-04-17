@@ -1,6 +1,6 @@
 ﻿//The MIT License(MIT)
 
-//copyright(c) 2016 Alberto Rodriguez
+//Copyright(c) 2016 Alberto Rodriguez & LiveCharts Contributors
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -193,7 +193,7 @@ namespace LiveCharts.Wpf.Points
             var lineSeries = (LineSeries)point.SeriesView;
             if (Shape != null)
                 Shape.Fill = point.Fill == null
-                    ? lineSeries.PointForeround
+                    ? lineSeries.PointForeground
                     : (Brush) point.Fill;
             lineSeries.Path.StrokeThickness = lineSeries.StrokeThickness;
         }

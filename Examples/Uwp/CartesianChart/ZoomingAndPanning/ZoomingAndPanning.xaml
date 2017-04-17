@@ -22,16 +22,14 @@
         </TextBlock>
         <StackPanel Grid.Row="1">
             <Button Click="ToogleZoomingMode">
-                <TextBlock>Toggle zoming mode, current is: 
-                    <TextBlock Text="{Binding ZoomingMode, Converter={StaticResource ZoomingModeCoverter}}"/>
+                <TextBlock Text="{Binding ZoomingMode, Converter={StaticResource ZoomingModeCoverter}}">
                 </TextBlock>
             </Button>
             <Button Click="ResetZoomOnClick">Reset Zoom</Button>
         </StackPanel>
         <lvc:CartesianChart Grid.Row="2" Series="{Binding SeriesCollection}" Zoom="{Binding ZoomingMode}" >
             <lvc:CartesianChart.AxisX>
-                <lvc:Axis Name="X" LabelFormatter="{Binding XFormatter}" 
-                          Separator="{x:Static lvc:DefaultAxes.CleanSeparator}"/>
+                <lvc:Axis Name="X" LabelFormatter="{Binding XFormatter}" />
             </lvc:CartesianChart.AxisX>
             <lvc:CartesianChart.AxisY>
                 <lvc:Axis Name="Y" LabelFormatter="{Binding YFormatter}"/>

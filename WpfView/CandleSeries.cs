@@ -1,7 +1,7 @@
 ﻿
 //The MIT License(MIT)
 
-//Copyright(c) 2016 Alberto Rodriguez
+//Copyright(c) 2016 Alberto Rodriguez & LiveCharts Contributors
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -22,6 +22,7 @@
 //SOFTWARE.
 
 using System;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -110,6 +111,23 @@ namespace LiveCharts.Wpf
             set { SetValue(DecreaseBrushProperty, value); }
         }
 
+        /// <summary>
+        /// The coloring rules property
+        /// </summary>
+        public static readonly DependencyProperty ColoringRulesProperty = DependencyProperty.Register(
+            "ColoringRules", typeof(IList<FinancialColoringRule>), typeof(CandleSeries), new PropertyMetadata(default(IList<FinancialColoringRule>)));
+        /// <summary>
+        /// Gets or sets the coloring rules, the coloring rules allows you to customize Stroke and Fill properties according to your needs, the first rule in this collection that returns true, will decide the Stroke/Fill of every point. If this property is not null (default is null), CandleSeries Fill/Stroke will be based on DecreaseBrush and IncreaseBrush properties.
+        /// </summary>
+        /// <value>
+        /// The coloring rules.
+        /// </value>
+        public IList<FinancialColoringRule> ColoringRules
+        {
+            get { return (IList<FinancialColoringRule>) GetValue(ColoringRulesProperty); }
+            set { SetValue(ColoringRulesProperty, value); }
+        }
+
         #endregion
 
         #region Overridden Methods
@@ -196,19 +214,6 @@ namespace LiveCharts.Wpf
                     FormattedText = label,
                     Instance = point.Instance
                 }, pbv.DataLabel);
-            }
-
-            if (point.Open <= point.Close)
-            {
-                pbv.HighToLowLine.Stroke = IncreaseBrush;
-                pbv.OpenToCloseRectangle.Fill = IncreaseBrush;
-                pbv.OpenToCloseRectangle.Stroke = IncreaseBrush;
-            }
-            else
-            {
-                pbv.HighToLowLine.Stroke = DecreaseBrush;
-                pbv.OpenToCloseRectangle.Fill = DecreaseBrush;
-                pbv.OpenToCloseRectangle.Stroke = DecreaseBrush;
             }
 
             return pbv;

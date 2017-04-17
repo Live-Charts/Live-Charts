@@ -1,6 +1,6 @@
 ﻿//The MIT License(MIT)
 
-//Copyright(c) 2016 Alberto Rodriguez
+//Copyright(c) 2016 Alberto Rodriguez & LiveCharts Contributors
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -86,16 +86,16 @@ namespace LiveCharts.Wpf
         /// <summary>
         /// The point foreround property
         /// </summary>
-        public static readonly DependencyProperty PointForeroundProperty = DependencyProperty.Register(
-            "PointForeround", typeof(Brush), typeof(StepLineSeries),
+        public static readonly DependencyProperty PointForegroundProperty = DependencyProperty.Register(
+            "PointForeground", typeof(Brush), typeof(StepLineSeries),
             new PropertyMetadata(default(Brush)));
         /// <summary>
         /// Gets or sets the point shape foreground.
         /// </summary>
-        public Brush PointForeround
+        public Brush PointForeground
         {
-            get { return (Brush)GetValue(PointForeroundProperty); }
-            set { SetValue(PointForeroundProperty, value); }
+            get { return (Brush)GetValue(PointForegroundProperty); }
+            set { SetValue(PointForegroundProperty, value); }
         }
 
         /// <summary>
@@ -202,7 +202,7 @@ namespace LiveCharts.Wpf
 
             if (pbv.Shape != null)
             {
-                pbv.Shape.Fill = PointForeround;
+                pbv.Shape.Fill = PointForeground;
                 pbv.Shape.StrokeThickness = StrokeThickness;
                 pbv.Shape.Stroke = Stroke;
                 pbv.Shape.StrokeDashArray = StrokeDashArray;
@@ -281,7 +281,7 @@ namespace LiveCharts.Wpf
         private void InitializeDefuaults()
         {
             SetCurrentValue(PointGeometrySizeProperty, 8d);
-            SetCurrentValue(PointForeroundProperty, Brushes.White);
+            SetCurrentValue(PointForegroundProperty, Brushes.White);
             SetCurrentValue(StrokeThicknessProperty, 2d);
 
             Func<ChartPoint, string> defaultLabel = x => Model.CurrentYAxis.GetFormatter()(x.Y);

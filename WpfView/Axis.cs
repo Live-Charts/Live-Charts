@@ -176,17 +176,16 @@ namespace LiveCharts.Wpf
         /// The separator property
         /// </summary>
         public static readonly DependencyProperty SeparatorProperty = DependencyProperty.Register(
-            "Separator", typeof (ISeparatorView), typeof (Axis),
-            new PropertyMetadata(default(ISeparatorView), UpdateChart()));
+            "Separator", typeof (Separator), typeof (Axis),
+            new PropertyMetadata(default(Separator), UpdateChart()));
         /// <summary>
         /// Get or sets configuration for parallel lines to axis.
         /// </summary>
-        public ISeparatorView Separator
+        public Separator Separator
         {
-            get { return (ISeparatorView) GetValue(SeparatorProperty); }
+            get { return (Separator) GetValue(SeparatorProperty); }
             set { SetValue(SeparatorProperty, value); }
         }
-
         /// <summary>
         /// The show labels property
         /// </summary>
@@ -514,7 +513,7 @@ namespace LiveCharts.Wpf
         /// </summary>
         /// <param name="model">The model.</param>
         /// <param name="chart">The chart.</param>
-        public void RenderSeparator(SeparatorElementCore model, ChartCore chart)
+        public virtual void RenderSeparator(SeparatorElementCore model, ChartCore chart)
         {
             AxisSeparatorElement ase;
 

@@ -1,6 +1,6 @@
 //The MIT License(MIT)
 
-//copyright(c) 2016 Alberto Rodriguez
+//Copyright(c) 2016 Alberto Rodriguez & LiveCharts Contributors
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -23,6 +23,7 @@
 using System;
 using System.ComponentModel;
 using System.ComponentModel.Design.Serialization;
+using System.Windows;
 using System.Windows.Forms.Integration;
 using System.Windows.Media;
 
@@ -48,7 +49,7 @@ namespace LiveCharts.WinForms
         public SolidGauge()
         {
             Child = WpfBase;
-
+            
             //workaround for windows 7 focus issue
             //https://github.com/beto-rodriguez/Live-Charts/issues/515
             HostContainer.MouseEnter += (sender, args) =>
@@ -237,6 +238,84 @@ namespace LiveCharts.WinForms
         {
             get { return WpfBase.HighFontSize; }
             set { WpfBase.HighFontSize = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the size of the font.
+        /// </summary>
+        /// <value>
+        /// The size of the font.
+        /// </value>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public double FontSize
+        {
+            get { return WpfBase.FontSize; }
+            set { WpfBase.FontSize = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the font family.
+        /// </summary>
+        /// <value>
+        /// The font family.
+        /// </value>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public FontFamily FontFamily
+        {
+            get { return WpfBase.FontFamily; }
+            set { WpfBase.FontFamily = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the font weight.
+        /// </summary>
+        /// <value>
+        /// The font weight.
+        /// </value>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public FontWeight FontWeight
+        {
+            get { return WpfBase.FontWeight; }
+            set { WpfBase.FontWeight = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the font style.
+        /// </summary>
+        /// <value>
+        /// The font style.
+        /// </value>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public FontStyle FontStyle
+        {
+            get { return WpfBase.FontStyle; }
+            set { WpfBase.FontStyle = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the font stretch.
+        /// </summary>
+        /// <value>
+        /// The font stretch.
+        /// </value>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public FontStretch FontStretch
+        {
+            get { return WpfBase.FontStretch; }
+            set { WpfBase.FontStretch = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the fore ground.
+        /// </summary>
+        /// <value>
+        /// The fore ground.
+        /// </value>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public Brush ForeGround
+        {
+            get { return WpfBase.Foreground; }
+            set { WpfBase.Foreground = value; }
         }
     }
 }
