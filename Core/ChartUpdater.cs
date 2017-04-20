@@ -87,7 +87,7 @@ namespace LiveCharts
         /// <param name="force"></param>
         protected void Update(bool restartsAnimations = false, bool force = false)   
         {
-            if (Chart.View.UpdaterState == UpdaterState.Paused) return;
+            if (!force && Chart.View.UpdaterState == UpdaterState.Paused) return;
              
             if (!force && !Chart.View.IsControlLoaded) return;
 
