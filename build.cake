@@ -89,8 +89,8 @@ Task("Default")
     .IsDependentOn("OutputArguments")
 	.IsDependentOn("Core")
     .IsDependentOn("WPF")
-    .IsDependentOn("UWP")
-    .IsDependentOn("WinForms");
+    .IsDependentOn("WinForms")
+	.IsDependentOn("UWP");
 
 //Entry point for Cake build
 RunTarget (target);
