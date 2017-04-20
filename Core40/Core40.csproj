@@ -42,7 +42,8 @@
     <SignAssembly>false</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>sign.pfx</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -183,9 +184,6 @@
     <Compile Include="UpdaterState.cs" />
     <Compile Include="VisualElementsCollection.cs" />
     <Compile Include="ZoomingOptions.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="sign.pfx" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
