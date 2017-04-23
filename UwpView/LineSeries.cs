@@ -399,9 +399,9 @@ namespace LiveCharts.Uwp
                 }
 
                 if (noAnim)
-                    splitter.Bottom.Point = new Point(location.X, Model.Chart.DrawMargin.Height);
+                    splitter.Bottom.Point = new Point(location.X, areaLimit);
                 else
-                    splitter.Bottom.BeginPointAnimation(nameof(LineSegment.Point), new Point(location.X, Model.Chart.DrawMargin.Height), animSpeed);
+                    splitter.Bottom.BeginPointAnimation(nameof(LineSegment.Point), new Point(location.X, areaLimit), animSpeed);
                 Figure.Segments.Insert(atIndex, splitter.Bottom);
 
                 Figure.Segments.Remove(splitter.Left);

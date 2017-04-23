@@ -405,10 +405,10 @@ namespace LiveCharts.Wpf
                 }
 
                 if (noAnim)
-                    splitter.Bottom.Point = new Point(location.X, Model.Chart.DrawMargin.Height);
+                    splitter.Bottom.Point = new Point(location.X, areaLimit);
                 else
                     splitter.Bottom.BeginAnimation(LineSegment.PointProperty,
-                        new PointAnimation(new Point(location.X, Model.Chart.DrawMargin.Height), animSpeed));
+                        new PointAnimation(new Point(location.X, areaLimit), animSpeed));
                 Figure.Segments.Insert(atIndex, splitter.Bottom);
 
                 Figure.Segments.Remove(splitter.Left);
