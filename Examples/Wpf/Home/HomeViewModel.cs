@@ -25,6 +25,7 @@ using Wpf.CartesianChart.Events;
 using Wpf.CartesianChart.Financial;
 using Wpf.CartesianChart.FullyResponsive;
 using Wpf.CartesianChart.Funnel_Chart;
+using Wpf.CartesianChart.GanttChart;
 using Wpf.CartesianChart.HeatChart;
 using Wpf.CartesianChart.Inverted_Series;
 using Wpf.CartesianChart.Irregular_Intervals;
@@ -100,7 +101,8 @@ namespace Wpf.Home
                         new SampleVm("Solid Gauges", typeof(Gauge360)),
                         new SampleVm("Angular Gauge", typeof(AngularGaugeExmple)),
                         new SampleVm("Heat Series", typeof(HeatSeriesExample)),
-                        new SampleVm("GeoHeatMap", typeof(GeoMapExample))
+                        new SampleVm("GeoHeatMap", typeof(GeoMapExample)),
+                        new SampleVm("Gantt Chart", typeof(GanttExample))
                     }
                 },
                 new SampleGroupVm
