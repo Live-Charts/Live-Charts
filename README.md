@@ -66,11 +66,11 @@ But that is not all, we try to support as many charts as possible, bars, lines, 
  - [ ] Xamarin
 - [ ] Release 1.0 in WPF and WinForms, the other platforms will be beta, in case something went wrong.
 
-###Support
+### Support
 
 WPF and Winforms, currenlty the library is in the process to become a cross net library...
 
-###Net Version
+### Net Version
 
 .Net 4.0 or greater
 
