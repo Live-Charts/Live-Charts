@@ -51,11 +51,20 @@ using System.Windows;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("0.9.5")]
-[assembly: AssemblyFileVersion("0.9.5")]
+[assembly: AssemblyVersion("0.9.6")]
+[assembly: AssemblyFileVersion("0.9.6")]
+
+#if DEBUG
 
 [assembly: InternalsVisibleTo("LiveCharts.Geared")]
 [assembly: InternalsVisibleTo("LiveCharts.WinForms")]
 
+#endif
+
+#if TRACE
+
+[assembly: AssemblyKeyFile(@"..\LVCSign.snk")]
 [assembly: InternalsVisibleTo("LiveCharts.Geared,PublicKey=0024000004800000940000000602000000240000525341310004000001000100bd2e66fab8ce9a4900047ffda57d2f525cf6313dcc9d20994c5e6b3cd8fca906ba7ccd54bea5f7bd6cb503deb81d685259e355e3a9b5c21e5bc80091f08846246371b2a71ab306655651261e910adfa61be236b77d11df23a44d48f00a0e07c689f9a2daaff16d505a1c861d9854d92ed5a8a38fb28c1343fb691462873e71a1")]
-[assembly: InternalsVisibleTo("LiveCharts.WinForms,PublicKey=0024000004800000940000000602000000240000525341310004000001000100350c0d66a049ff682dde73f82292f9f6fc3da862f96726095d135cbb1e37f338312b771c89616ee6d241447293585eb53522aed80ba396f196d8108beba690c5563b45a10a8202b67e0e9e01d5843871a74bf8715463550f10f3004e5a1ed8727e48afc64822c7286bd3dc6c6e1439d910d762d9d7ed65ef32ac1fd633bc35c4")]
+[assembly: InternalsVisibleTo("LiveCharts.WinForms,PublicKey=002400000480000094000000060200000024000052534131000400000100010009132ae1a474e2ecf9903c1ef8945a2119aa0b9a3b4e40c43f6cb66233669e3007b4109d5c37957c2d0c5cfe7fce34366150210f83c618c18cdc8d7b763bff60419837a2185df1867c73f679e05f82b861e6ca764612eabc36d71858260b262bb9c3ad546c9692fe6379a520b6c5fc701e0ee6d071b52e9f20166fc0752ff894")]
+
+#endif

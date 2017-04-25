@@ -18,9 +18,8 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <DefineConstants Condition=" '$(TargetFrameworkVersion)' == 'v4.0' ">NET40</DefineConstants>
-    <DefineConstants Condition=" '$(TargetFrameworkVersion)' == 'v4.5' ">NET45</DefineConstants>
+    <DefineConstants Condition=" '$(TargetFrameworkVersion)' == 'v4.0' ">NET40; DEBUG</DefineConstants>
+    <DefineConstants Condition=" '$(TargetFrameworkVersion)' == 'v4.5' ">NET45; DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Debug\LiveCharts.xml</DocumentationFile>
@@ -30,19 +29,12 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <DefineConstants Condition=" '$(TargetFrameworkVersion)' == 'v4.0' ">NET40</DefineConstants>
-    <DefineConstants Condition=" '$(TargetFrameworkVersion)' == 'v4.5' ">NET45</DefineConstants>
+    <DefineConstants Condition=" '$(TargetFrameworkVersion)' == 'v4.0' ">NET40; TRACE</DefineConstants>
+    <DefineConstants Condition=" '$(TargetFrameworkVersion)' == 'v4.5' ">NET45; TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Release\LiveCharts.xml</DocumentationFile>
     <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup>
-    <SignAssembly>false</SignAssembly>
-  </PropertyGroup>
-  <PropertyGroup>
-    <AssemblyOriginatorKeyFile>sign.pfx</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -183,9 +175,6 @@
     <Compile Include="UpdaterState.cs" />
     <Compile Include="VisualElementsCollection.cs" />
     <Compile Include="ZoomingOptions.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="sign.pfx" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
