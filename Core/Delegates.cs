@@ -1,4 +1,4 @@
-//The MIT License(MIT)
+﻿//The MIT License(MIT)
 
 //Copyright(c) 2016 Alberto Rodriguez & LiveCharts Contributors
 
@@ -20,18 +20,12 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-using System;
 namespace LiveCharts
 {
     /// <summary>
-    /// 
+    /// Defines a financial coloring rule delegate
     /// </summary>
-    [Obsolete("Use INotifyPropertyChangedInstead")]
-    public interface IObservableChartPoint
-    {
-        /// <summary>
-        /// Occurs when [point changed].
-        /// </summary>
-        event Action PointChanged;
-    }
+    /// <param name="current">The current point</param>
+    /// <param name="prior">The previous point</param>
+    public delegate bool FinancialDelegate(ChartPoint current, ChartPoint prior);
 }

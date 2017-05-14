@@ -45,6 +45,8 @@
     <Compile Include="AxisOrientation.cs" />
     <Compile Include="AxisPosition.cs" />
     <Compile Include="AxisSectionCore.cs" />
+    <Compile Include="AxisWindow.cs" />
+    <Compile Include="AxisWindows.cs" />
     <Compile Include="BarLabelPosition.cs" />
     <Compile Include="ChartFunctions.cs" />
     <Compile Include="Charting.cs" />
@@ -63,6 +65,10 @@
     <Compile Include="Configurations\PolarMapper.cs" />
     <Compile Include="Configurations\WeightedMapper.cs" />
     <Compile Include="DataLabelViewModel.cs" />
+    <Compile Include="DateAxisCore.cs" />
+    <Compile Include="DateAxisWindow.cs" />
+    <Compile Include="DateAxisWindows.cs" />
+    <Compile Include="DateSeparatorElementCore.cs" />
     <Compile Include="Defaults\AxisLimits.cs" />
     <Compile Include="Defaults\DateTimePoint.cs" />
     <Compile Include="Defaults\GanttPoint.cs" />
@@ -74,13 +80,16 @@
     <Compile Include="Defaults\ScatterPoint.cs" />
     <Compile Include="Definitions\Charts\IAxisSectionView.cs" />
     <Compile Include="Definitions\Charts\IAxisView.cs" />
+    <Compile Include="Definitions\Charts\IAxisWindow.cs" />
     <Compile Include="Definitions\Charts\ICartesianChart.cs" />
     <Compile Include="Definitions\Charts\ICartesianVisualElement.cs" />
     <Compile Include="Definitions\Charts\IChartView.cs" />
+    <Compile Include="Definitions\Charts\IDateAxisView.cs" />
     <Compile Include="Definitions\Charts\ILogarithmicAxisView.cs" />
     <Compile Include="Definitions\Charts\IPieChart.cs" />
     <Compile Include="Definitions\Charts\ISeparatorElementView.cs" />
     <Compile Include="Definitions\Charts\ISeparatorView.cs" />
+    <Compile Include="Definitions\Charts\IWindowAxisView.cs" />
     <Compile Include="Definitions\Points\IBezierPointView.cs" />
     <Compile Include="Definitions\Points\IChartPointView.cs" />
     <Compile Include="Definitions\Points\IHeatPointView.cs" />
@@ -105,6 +114,7 @@
     <Compile Include="Definitions\Series\IStackedRowSeriesView.cs" />
     <Compile Include="Definitions\Series\IStackModelableSeriesView.cs" />
     <Compile Include="Definitions\Series\IVerticalStackedAreaSeriesView.cs" />
+    <Compile Include="Delegates.cs" />
     <Compile Include="Dtos\BezierData.cs" />
     <Compile Include="Dtos\CoreColor.cs" />
     <Compile Include="Dtos\CoreGradientStop.cs" />
@@ -128,6 +138,7 @@
     <Compile Include="LogarithmicAxisCore.cs" />
     <Compile Include="Maps\MapData.cs" />
     <Compile Include="PanningOptions.cs" />
+    <Compile Include="PeriodUnits.cs" />
     <Compile Include="PieLabelPosition.cs" />
     <Compile Include="PointTracker.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -156,6 +167,7 @@
     <Compile Include="TooltipSelectionMode.cs" />
     <Compile Include="UpdaterState.cs" />
     <Compile Include="VisualElementsCollection.cs" />
+    <Compile Include="WindowAxisCore.cs" />
     <Compile Include="ZoomingOptions.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
