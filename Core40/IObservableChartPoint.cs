@@ -26,6 +26,7 @@ namespace LiveCharts
     /// <summary>
     /// 
     /// </summary>
+    [Obsolete("Use INotifyPropertyChangedInstead")]
     public interface IObservableChartPoint
     {
         /// <summary>
