@@ -531,7 +531,7 @@ namespace LiveCharts
 
             if (x < 0) x *= -1;
             return Labels.Count > x && x >= 0
-                ? Labels[(int)x]
+                ? Labels[checked((int)x)]
                 : "";
         }
 
