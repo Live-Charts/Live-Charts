@@ -82,6 +82,19 @@ namespace LiveCharts.WinForms
             get { return WpfBase.Uses360Mode; }
             set { WpfBase.Uses360Mode = value; }
         }
+		
+		/// <summary>
+        /// Gets or sets a value indicating whether [disable animations].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [disable animations]; otherwise, <c>false</c>.
+        /// </value>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public bool DisableAnimations
+        {
+            get { return WpfBase.DisableAnimations; }
+            set { WpfBase.DisableAnimations = value; }
+        }
 
         /// <summary>
         /// Gets or sets from.

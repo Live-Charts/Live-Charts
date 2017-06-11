@@ -324,6 +324,20 @@ namespace LiveCharts.Wpf
             get { return (TimeSpan)GetValue(AnimationsSpeedProperty); }
             set { SetValue(AnimationsSpeedProperty, value); }
         }
+		
+		/// <summary>
+        /// The disablea animations property
+        /// </summary>
+        public static readonly DependencyProperty DisableAnimationsProperty = DependencyProperty.Register(
+            "DisableAnimations", typeof(bool), typeof(Gauge), new PropertyMetadata(default(bool)));
+        /// <summary>
+        /// Gets or sets whether the chart is animated
+        /// </summary>
+        public bool DisableAnimations
+        {
+            get { return (bool)GetValue(DisableAnimationsProperty); }
+            set { SetValue(DisableAnimationsProperty, value); }
+        }
 
         /// <summary>
         /// The label formatter property
@@ -466,7 +480,14 @@ namespace LiveCharts.Wpf
                 Pie.WedgeAngle = 0;
             }
 
-            Pie.BeginAnimation(PieSlice.WedgeAngleProperty, new DoubleAnimation(completed * angle, AnimationsSpeed));
+            if (DisableAnimations)
+            {
+                Pie.WedgeAngle = completed * angle;
+            }
+            else
+            {
+                Pie.BeginAnimation(PieSlice.WedgeAngleProperty, new DoubleAnimation(completed * angle, AnimationsSpeed));
+            }
 
             if (GaugeActiveFill == null)
             {
