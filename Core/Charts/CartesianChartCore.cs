@@ -85,7 +85,7 @@ namespace LiveCharts.Charts
                         else xi.TopLimit = xi.MaxValue;
 
                         if (Math.Abs(xi.BotLimit - xi.TopLimit) < xi.S * .01 && !View.IsInDesignMode)
-                            throw new LiveChartsException("One axis has an invalid range, it is or it is " +
+                            throw new LiveChartsException("One axis has an invalid range, it is or it " +
                                                           "tends to zero, please ensure your axis has a valid " +
                                                           "range");
                     }
