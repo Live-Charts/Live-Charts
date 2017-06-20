@@ -51,8 +51,8 @@ using System.Windows;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("0.9.6")]
-[assembly: AssemblyFileVersion("0.9.6")]
+[assembly: AssemblyVersion("0.9.7")]
+[assembly: AssemblyFileVersion("0.9.7")]
 
 [assembly: AssemblyKeyFile(@"..\LVCSign.snk")]
 [assembly: InternalsVisibleTo("LiveCharts.Geared,PublicKey=0024000004800000940000000602000000240000525341310004000001000100bd2e66fab8ce9a4900047ffda57d2f525cf6313dcc9d20994c5e6b3cd8fca906ba7ccd54bea5f7bd6cb503deb81d685259e355e3a9b5c21e5bc80091f08846246371b2a71ab306655651261e910adfa61be236b77d11df23a44d48f00a0e07c689f9a2daaff16d505a1c861d9854d92ed5a8a38fb28c1343fb691462873e71a1")]
