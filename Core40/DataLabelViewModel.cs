@@ -40,7 +40,7 @@ namespace LiveCharts
         /// <value>
         /// The instance.
         /// </value>
-        public object Instance { get; internal set; }
+        public ChartPoint Point { get; internal set; }
 
     }
 }
