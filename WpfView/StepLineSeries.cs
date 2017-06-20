@@ -243,6 +243,12 @@ namespace LiveCharts.Wpf
                 }, pbv.DataLabel);
             }
 
+            if (!DataLabels && pbv.DataLabel != null)
+            {
+                Model.Chart.View.RemoveFromDrawMargin(pbv.DataLabel);
+                pbv.DataLabel = null;
+            }
+
             return pbv;
         }
 
