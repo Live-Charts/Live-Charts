@@ -36,13 +36,7 @@ namespace LiveCharts.Wpf.Maps
 
             if (!File.Exists(file))
             {
-#if DEBUG
-                Console.WriteLine("File not found!");
-#endif
-#pragma warning disable 162
-                // ReSharper disable once HeuristicUnreachableCode
-                return null;
-#pragma warning restore 162
+                throw new FileNotFoundException(String.Format("This file {0} was not found.", file));
             }
 
             var svgMap = new LvcMap
