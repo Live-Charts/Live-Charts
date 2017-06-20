@@ -958,6 +958,7 @@ namespace LiveCharts.Wpf.Charts.Base
                     XFormatter = coreModel.XFormatter,
                     YFormatter = coreModel.YFormatter,
                     SharedValue = coreModel.Shares,
+                    SenderSeries = (Series) senderPoint.SeriesView,
                     SelectionMode = lcTooltip.SelectionMode ?? TooltipSelectionMode.OnlySender,
                     Points = coreModel.Points.Select(x => new DataPointViewModel
                     {
