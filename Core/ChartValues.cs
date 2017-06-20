@@ -171,15 +171,16 @@ namespace LiveCharts
 
 #if NET40
             var isClass = typeof(T).IsClass;
-            var isObservable = isClass && (typeof(IObservableChartPoint).IsAssignableFrom(typeof(T))
-                                           || typeof(INotifyPropertyChanged).IsAssignableFrom(typeof(T)));
+            var isObservable = isClass && typeof(IObservableChartPoint).IsAssignableFrom(typeof(T));
+            var notifies = isClass && typeof(INotifyPropertyChanged).IsAssignableFrom(typeof(T));
 
 #endif
 #if NET45
             var isClass = typeof(T).GetTypeInfo().IsClass;
             var isObservable = isClass &&
-                               (typeof(IObservableChartPoint).GetTypeInfo().IsAssignableFrom(typeof(T).GetTypeInfo())
-                                || typeof(INotifyPropertyChanged).GetTypeInfo().IsAssignableFrom(typeof(T).GetTypeInfo()));
+                               typeof(IObservableChartPoint).GetTypeInfo().IsAssignableFrom(typeof(T).GetTypeInfo());
+            var notifies = isClass && typeof(INotifyPropertyChanged).GetTypeInfo()
+                               .IsAssignableFrom(typeof(T).GetTypeInfo());
 #endif
 
             var tracker = GetTracker(seriesView);
@@ -196,6 +197,10 @@ namespace LiveCharts
                         observable.PointChanged -= ObservableOnPointChanged;
                         observable.PointChanged += ObservableOnPointChanged;
                     }
+                }
+
+                if (notifies)
+                {
                     var notify = (INotifyPropertyChanged) value;
                     if (notify != null)
                     {
