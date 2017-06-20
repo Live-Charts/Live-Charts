@@ -21,20 +21,17 @@
 //SOFTWARE.
 
 using System;
+using System.ComponentModel;
 
 namespace LiveCharts.Defaults
 {
     /// <summary>
     /// An already configured chart point, this class notifies a chart to update every time a property changes
     /// </summary>
-    public class ObservablePoint : IObservableChartPoint
+    public class ObservablePoint : INotifyPropertyChanged
     {
         private double _x;
         private double _y;
-        /// <summary>
-        /// The point changed event
-        /// </summary>
-        public event Action PointChanged;
 
         /// <summary>
         /// Initializes a new instance of ObservablePoint class
@@ -64,7 +61,7 @@ namespace LiveCharts.Defaults
             set
             {
                 _x = value;
-                OnPointChanged();
+                OnPropertyChanged("X");
             }
         }
 
@@ -77,17 +74,27 @@ namespace LiveCharts.Defaults
             set
             {
                 _y = value;
-                OnPointChanged();
+                OnPropertyChanged("Y");
             }
         }
 
+        #region INotifyPropertyChangedImplementation
+
         /// <summary>
-        /// OnPoint property changed method
+        /// Occurs when a property value changes.
         /// </summary>
-        protected virtual void OnPointChanged()
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        /// <summary>
+        /// Called when [property changed].
+        /// </summary>
+        /// <param name="propertyName">Name of the property.</param>
+        protected virtual void OnPropertyChanged(string propertyName = null)
         {
-            if (PointChanged != null)
-                PointChanged.Invoke();
+            var handler = PropertyChanged;
+            if (PropertyChanged != null) PropertyChanged.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
+        #endregion
     }
 }

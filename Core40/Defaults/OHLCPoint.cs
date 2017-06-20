@@ -21,13 +21,14 @@
 //SOFTWARE.
 
 using System;
+using System.ComponentModel;
 
 namespace LiveCharts.Defaults
 {
     /// <summary>
     /// An already configured chart point, this class notifies the chart to update every time a property changes
     /// </summary>
-    public class OhlcPoint : IObservableChartPoint
+    public class OhlcPoint : INotifyPropertyChanged
     {
         private double _open;
         private double _high;
@@ -66,7 +67,7 @@ namespace LiveCharts.Defaults
             set
             {
                 _open = value;
-                OnPointChanged();
+                OnPropertyChanged("Open");
             }
         }
 
@@ -79,7 +80,7 @@ namespace LiveCharts.Defaults
             set
             {
                 _high = value;
-                OnPointChanged();
+                OnPropertyChanged("High");
             }
         }
 
@@ -92,7 +93,7 @@ namespace LiveCharts.Defaults
             set
             {
                 _low = value;
-                OnPointChanged();
+                OnPropertyChanged("Low");
             }
         }
 
@@ -105,21 +106,26 @@ namespace LiveCharts.Defaults
             set
             {
                 _close = value;
-                OnPointChanged();
+                OnPropertyChanged("Close");
             }
         }
 
-        /// <summary>
-        /// The Point changed event
-        /// </summary>
-        public event Action PointChanged;
+        #region INotifyPropertyChangedImplementation
 
         /// <summary>
-        /// On point property changed method
+        /// Occurs when a property value changes.
         /// </summary>
-        protected virtual void OnPointChanged()
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        /// <summary>
+        /// Called when [property changed].
+        /// </summary>
+        /// <param name="propertyName">Name of the property.</param>
+        protected virtual void OnPropertyChanged(string propertyName = null)
         {
-            if (PointChanged != null) PointChanged.Invoke();
+            if (PropertyChanged != null) PropertyChanged.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
+        #endregion
     }
 }

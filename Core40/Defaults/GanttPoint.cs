@@ -21,13 +21,14 @@
 //SOFTWARE.
 
 using System;
+using System.ComponentModel;
 
 namespace LiveCharts.Defaults
 {
     /// <summary>
     /// Defines a Gantt point in a cartesian chart
     /// </summary>
-    public class GanttPoint : IObservableChartPoint
+    public class GanttPoint : INotifyPropertyChanged
     {
         private double _startPoint;
         private double _endPoint;
@@ -58,7 +59,7 @@ namespace LiveCharts.Defaults
             set
             {
                 _startPoint = value;
-                OnPointChanged();
+                OnPropertyChanged("StartPoint");
             }
         }
 
@@ -71,22 +72,26 @@ namespace LiveCharts.Defaults
             set
             {
                 _endPoint = value;
-                OnPointChanged();
+                OnPropertyChanged("EndPoint");
             }
         }
 
-        /// <summary>
-        /// PointChanged event
-        /// </summary>
-        public event Action PointChanged;
+        #region INotifyPropertyChangedImplementation
 
         /// <summary>
-        /// OnPoint property changed method
+        /// Occurs when a property value changes.
         /// </summary>
-        protected virtual void OnPointChanged()
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        /// <summary>
+        /// Called when [property changed].
+        /// </summary>
+        /// <param name="propertyName">Name of the property.</param>
+        protected virtual void OnPropertyChanged(string propertyName = null)
         {
-            if (PointChanged != null)
-                PointChanged.Invoke();
+            if (PropertyChanged != null) PropertyChanged.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
+        #endregion
     }
 }

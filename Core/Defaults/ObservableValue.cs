@@ -21,12 +21,14 @@
 //SOFTWARE.
 
 using System;
+using System.ComponentModel;
+
 namespace LiveCharts.Defaults
 {
     /// <summary>
     /// An already configured chart point, this class notifies the chart to update every time the value property changes
     /// </summary>
-    public class ObservableValue : IObservableChartPoint
+    public class ObservableValue : INotifyPropertyChanged
     {
         private double _value;
 
@@ -48,11 +50,6 @@ namespace LiveCharts.Defaults
         }
 
         /// <summary>
-        /// Point changed event
-        /// </summary>
-        public event Action PointChanged;
-
-        /// <summary>
         /// Value in he chart
         /// </summary>
         public double Value
@@ -61,16 +58,26 @@ namespace LiveCharts.Defaults
             set
             {
                 _value = value;
-                OnPointChanged();
+                OnPropertyChanged("Value");
             }
         }
 
+        #region INotifyPropertyChangedImplementation
+
         /// <summary>
-        /// On point property changed event
+        /// Occurs when a property value changes.
         /// </summary>
-        protected virtual  void OnPointChanged()
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        /// <summary>
+        /// Called when [property changed].
+        /// </summary>
+        /// <param name="propertyName">Name of the property.</param>
+        protected virtual void OnPropertyChanged(string propertyName = null)
         {
-            if (PointChanged != null) PointChanged.Invoke();
+            if (PropertyChanged != null) PropertyChanged.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
+        #endregion
     }
 }

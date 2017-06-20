@@ -375,23 +375,30 @@ namespace LiveCharts.Wpf
         /// <summary>
         /// The current X formatter
         /// </summary>
-        public Func<double, string> XFormatter { get; set; }
+        public Func<double, string> XFormatter { get; internal set; }
         /// <summary>
         /// The current Y formatter
         /// </summary>
-        public Func<double, string> YFormatter { get; set; }
+        public Func<double, string> YFormatter { get; internal set; }
         /// <summary>
         /// Shared coordinate value between points
         /// </summary>
-        public double? SharedValue { get; set; }
+        public double? SharedValue { get; internal set; }
+        /// <summary>
+        /// Gets or sets the series that fired the tooltip.
+        /// </summary>
+        /// <value>
+        /// The sender series.
+        /// </value>
+        public Series SenderSeries { get; internal set; }
         /// <summary>
         /// Current selection mode
         /// </summary>
-        public TooltipSelectionMode SelectionMode { get; set; }
+        public TooltipSelectionMode SelectionMode { get; internal set; }
         /// <summary>
         /// collection of points
         /// </summary>
-        public List<DataPointViewModel> Points { get; set; }
+        public List<DataPointViewModel> Points { get; internal set; }
     }
 
     /// <summary>

@@ -606,7 +606,7 @@ namespace LiveCharts.Helpers
         private void ReplaceItem(object original, object item, int index)
         {
             OnPropertyChanged(IndexerString);
-            OnNoisyCollectionChanged(new List<T> { (T)original }, new List<T> { (T)item });
+            OnNoisyCollectionChanged(new List<T>{(T) original}, new List<T>{(T) item});
             OnCollectionChanged(new NotifyCollectionChangedEventArgs(
                 NotifyCollectionChangedAction.Replace, original, item, index));
         }

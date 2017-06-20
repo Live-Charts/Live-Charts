@@ -21,21 +21,17 @@
 //SOFTWARE.
 
 using System;
+using System.ComponentModel;
 
 namespace LiveCharts.Defaults
 {
     /// <summary>
     /// An already configured chart point, this class notifies the chart to update every time a property changes
     /// </summary>
-    public class PolarPoint : IObservableChartPoint
+    public class PolarPoint : INotifyPropertyChanged
     {
         private double _radius;
         private double _angle;
-
-        /// <summary>
-        /// The point changed event
-        /// </summary>
-        public event Action PointChanged;
 
         /// <summary>
         /// Initializes a new instance of PolarPoint class
@@ -65,7 +61,7 @@ namespace LiveCharts.Defaults
             set
             {
                 _radius = value;
-                OnPointChanged();
+                OnPropertyChanged("Radius");
             }
         }
 
@@ -78,16 +74,26 @@ namespace LiveCharts.Defaults
             set
             {
                 _angle = value;
-                OnPointChanged();
+                OnPropertyChanged("Angle");
             }
         }
 
+        #region INotifyPropertyChangedImplementation
+
         /// <summary>
-        /// On point property changed method
+        /// Occurs when a property value changes.
         /// </summary>
-        protected virtual void OnPointChanged()
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        /// <summary>
+        /// Called when [property changed].
+        /// </summary>
+        /// <param name="propertyName">Name of the property.</param>
+        protected virtual void OnPropertyChanged(string propertyName = null)
         {
-            if (PointChanged != null)PointChanged.Invoke();
+            if (PropertyChanged != null) PropertyChanged.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
+        #endregion
     }
 }

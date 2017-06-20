@@ -21,13 +21,15 @@
 //SOFTWARE.
 
 using System;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 namespace LiveCharts.Defaults
 {
     /// <summary>
     /// An already configured chart point with a date time and a double properties, this class notifies the chart to update every time a property changes
     /// </summary>
-    public class DateTimePoint : IObservableChartPoint
+    public class DateTimePoint : INotifyPropertyChanged
     {
         private DateTime _dateTime;
         private double _value;
@@ -60,7 +62,7 @@ namespace LiveCharts.Defaults
             set
             {
                 _dateTime = value;
-                OnPointChanged();
+                OnPropertyChanged("DateTime");
             }
         }
 
@@ -73,21 +75,26 @@ namespace LiveCharts.Defaults
             set
             {
                 _value = value;
-                OnPointChanged();
+                OnPropertyChanged("Value");
             }
         }
 
-        /// <summary>
-        /// Point changed event
-        /// </summary>
-        public event Action PointChanged;
+        #region INotifyPropertyChangedImplementation
 
         /// <summary>
-        /// On Point property changed method
+        /// Occurs when a property value changes.
         /// </summary>
-        protected virtual void OnPointChanged()
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        /// <summary>
+        /// Called when [property changed].
+        /// </summary>
+        /// <param name="propertyName">Name of the property.</param>
+        protected virtual void OnPropertyChanged(string propertyName = null)
         {
-            if (PointChanged != null) PointChanged.Invoke();
+            if (PropertyChanged != null) PropertyChanged.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
+        #endregion
     }
 }

@@ -20,7 +20,9 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
+using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using LiveCharts.Charts;
 using LiveCharts.Configurations;
@@ -170,11 +172,15 @@ namespace LiveCharts
 #if NET40
             var isClass = typeof(T).IsClass;
             var isObservable = isClass && typeof(IObservableChartPoint).IsAssignableFrom(typeof(T));
+            var notifies = isClass && typeof(INotifyPropertyChanged).IsAssignableFrom(typeof(T));
+
 #endif
 #if NET45
             var isClass = typeof(T).GetTypeInfo().IsClass;
             var isObservable = isClass &&
                                typeof(IObservableChartPoint).GetTypeInfo().IsAssignableFrom(typeof(T).GetTypeInfo());
+            var notifies = isClass && typeof(INotifyPropertyChanged).GetTypeInfo()
+                               .IsAssignableFrom(typeof(T).GetTypeInfo());
 #endif
 
             var tracker = GetTracker(seriesView);
@@ -185,11 +191,21 @@ namespace LiveCharts
             {
                 if (isObservable)
                 {
-                    var observable = (IObservableChartPoint)value;
+                    var observable = (IObservableChartPoint) value;
                     if (observable != null)
                     {
                         observable.PointChanged -= ObservableOnPointChanged;
                         observable.PointChanged += ObservableOnPointChanged;
+                    }
+                }
+
+                if (notifies)
+                {
+                    var notify = (INotifyPropertyChanged) value;
+                    if (notify != null)
+                    {
+                        notify.PropertyChanged -= NotifyOnPropertyChanged;
+                        notify.PropertyChanged += NotifyOnPropertyChanged;
                     }
                 }
 
@@ -313,6 +329,11 @@ namespace LiveCharts
         }
 
         private void ObservableOnPointChanged()
+        {
+            Trackers.Keys.ForEach(x => x.Model.Chart.Updater.Run());
+        }
+
+        private void NotifyOnPropertyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
         {
             Trackers.Keys.ForEach(x => x.Model.Chart.Updater.Run());
         }

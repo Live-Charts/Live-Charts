@@ -65,6 +65,11 @@ namespace LiveCharts.Wpf
             IsVisibleChanged += OnIsVisibleChanged;
             IsFirstDraw = true;
         }
+
+        static Series()
+        {
+            VisibilityProperty.OverrideMetadata(typeof(Series), new PropertyMetadata(Visibility.Visible, OnIsVisibleChanged));
+        }
         #endregion
 
         #region Properties
@@ -563,21 +568,16 @@ namespace LiveCharts.Wpf
                 if (wpfSeries.Model.Chart != null) wpfSeries.Model.Chart.Updater.Run(animate);
             };
         }
-
-        private Visibility? PreviousVisibility { get; set; }
-       
-        private void OnIsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+        
+        private static void OnIsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            if (Model.Chart == null || PreviousVisibility == Visibility) return;
+             var series = (Series) sender;
 
-            PreviousVisibility = Visibility;
+            if (series.Visibility == Visibility.Collapsed || series.Visibility == Visibility.Hidden)
+                series.Erase(false);
 
-            if (PreviousVisibility != null) Model.Chart.Updater.Run(false, false);
-
-            if (Visibility == Visibility.Collapsed || Visibility == Visibility.Hidden)
-            {
-                Erase(false);
-            }
+            if (series.Model == null) return;
+            series.Model.Chart.Updater.Run();
         }
 
         private static IChartValues GetValuesForDesigner()
