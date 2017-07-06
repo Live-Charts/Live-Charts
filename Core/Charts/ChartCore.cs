@@ -583,124 +583,129 @@ namespace LiveCharts.Charts
         protected void StackPoints(IEnumerable<ISeriesView> stackables, AxisOrientation stackAt, int stackIndex,
             StackMode mode = StackMode.Values)
         {
-            var stackedColumns = stackables.SelectMany(x => x.ActualValues.GetPoints(x))
+            var groupedStackables = stackables.GroupBy(s => s is IGroupedStackedSeriesView ? (s as IGroupedStackedSeriesView).Grouping : 0).ToList();
+
+            foreach (var groupedStack in groupedStackables)
+            {
+                var stackedColumns = groupedStack.SelectMany(x => x.ActualValues.GetPoints(x))
                 .GroupBy(x => stackAt == AxisOrientation.X ? x.Y : x.X);
 
-            double mostLeft = 0, mostRight = 0;
+                double mostLeft = 0, mostRight = 0;
 
-            foreach (var column in stackedColumns)
-            {
-                double sumLeft = 0, sumRight = 0;
-
-                foreach (var item in column)
+                foreach (var column in stackedColumns)
                 {
-                    var s = stackAt == AxisOrientation.X ? item.X : item.Y;
-                    if (s < 0)
-                        sumLeft += s;
-                    else
-                        sumRight += s;
+                    double sumLeft = 0, sumRight = 0;
+
+                    foreach (var item in column)
+                    {
+                        var s = stackAt == AxisOrientation.X ? item.X : item.Y;
+                        if (s < 0)
+                            sumLeft += s;
+                        else
+                            sumRight += s;
+                    }
+
+                    var lastLeft = 0d;
+                    var lastRight = 0d;
+                    var leftPart = 0d;
+                    var rightPart = 0d;
+
+                    foreach (var point in column)
+                    {
+                        var pulled = stackAt == AxisOrientation.X ? point.X : point.Y;
+
+                        //notice using (pulled < 0) or (pulled <= 0) could cause an issue similar to
+                        //https://github.com/beto-rodriguez/Live-Charts/issues/231
+                        //from that issue I changed <= to <
+                        //only because it is more common to use positive values than negative
+                        //you could face a similar issue if you are stacking only negative values
+                        //a work around is forcing (pulled < 0) to be true,
+                        //instead of using zero values, use -0.000000001/
+
+                        if (pulled < 0)
+                        {
+                            point.From = lastLeft;
+                            point.To = lastLeft + pulled;
+                            point.Sum = sumLeft;
+                            point.Participation = (point.To - point.From) / point.Sum;
+                            point.Participation = double.IsNaN(point.Participation)
+                                ? 0
+                                : point.Participation;
+                            leftPart += point.Participation;
+                            point.StackedParticipation = leftPart;
+
+                            lastLeft = point.To;
+                        }
+                        else
+                        {
+                            point.From = lastRight;
+                            point.To = lastRight + pulled;
+                            point.Sum = sumRight;
+                            point.Participation = (point.To - point.From) / point.Sum;
+                            point.Participation = double.IsNaN(point.Participation)
+                                ? 0
+                                : point.Participation;
+                            rightPart += point.Participation;
+                            point.StackedParticipation = rightPart;
+
+                            lastRight = point.To;
+                        }
+                    }
+
+                    if (sumLeft < mostLeft) mostLeft = sumLeft;
+                    if (sumRight > mostRight) mostRight = sumRight;
                 }
 
-                var lastLeft = 0d;
-                var lastRight = 0d;
-                var leftPart = 0d;
-                var rightPart = 0d;
-
-                foreach (var point in column)
+                if (stackAt == AxisOrientation.X)
                 {
-                    var pulled = stackAt == AxisOrientation.X ? point.X : point.Y;
+                    var ax = AxisX[stackIndex];
 
-                    //notice using (pulled < 0) or (pulled <= 0) could cause an issue similar to
-                    //https://github.com/beto-rodriguez/Live-Charts/issues/231
-                    //from that issue I changed <= to <
-                    //only because it is more common to use positive values than negative
-                    //you could face a similar issue if you are stacking only negative values
-                    //a work around is forcing (pulled < 0) to be true,
-                    //instead of using zero values, use -0.000000001/
-
-                    if (pulled < 0)
+                    if (mode == StackMode.Percentage)
                     {
-                        point.From = lastLeft;
-                        point.To = lastLeft + pulled;
-                        point.Sum = sumLeft;
-                        point.Participation = (point.To - point.From) / point.Sum;
-                        point.Participation = double.IsNaN(point.Participation)
-                            ? 0
-                            : point.Participation;
-                        leftPart += point.Participation;
-                        point.StackedParticipation = leftPart;
-
-                        lastLeft = point.To;
+                        if (double.IsNaN(ax.MinValue)) ax.BotLimit = 0;
+                        if (double.IsNaN(ax.MaxValue)) ax.TopLimit = 1;
                     }
                     else
                     {
-                        point.From = lastRight;
-                        point.To = lastRight + pulled;
-                        point.Sum = sumRight;
-                        point.Participation = (point.To - point.From) / point.Sum;
-                        point.Participation = double.IsNaN(point.Participation)
-                            ? 0
-                            : point.Participation;
-                        rightPart += point.Participation;
-                        point.StackedParticipation = rightPart;
-
-                        lastRight = point.To;
+                        if (mostLeft < ax.BotLimit)
+                            // ReSharper disable once CompareOfFloatsByEqualityOperator
+                            if (double.IsNaN(ax.MinValue))
+                                ax.BotLimit = mostLeft == 0.0
+                                    ? 0.0
+                                    : Math.Floor(mostLeft/ax.S)*ax.S;
+                        if (mostRight > ax.TopLimit)
+                            // ReSharper disable once CompareOfFloatsByEqualityOperator
+                            if (double.IsNaN(ax.MaxValue))
+                                ax.TopLimit = mostRight == 0.0
+                                    ? 0.0
+                                    : (Math.Floor(mostRight/ax.S) + 1.0) *ax.S;
                     }
                 }
 
-                if (sumLeft < mostLeft) mostLeft = sumLeft;
-                if (sumRight > mostRight) mostRight = sumRight;
-            }
-
-            if (stackAt == AxisOrientation.X)
-            {
-                var ax = AxisX[stackIndex];
-
-                if (mode == StackMode.Percentage)
+                if (stackAt == AxisOrientation.Y)
                 {
-                    if (double.IsNaN(ax.MinValue)) ax.BotLimit = 0;
-                    if (double.IsNaN(ax.MaxValue)) ax.TopLimit = 1;
-                }
-                else
-                {
-                    if (mostLeft < ax.BotLimit)
-                        // ReSharper disable once CompareOfFloatsByEqualityOperator
-                        if (double.IsNaN(ax.MinValue))
-                            ax.BotLimit = mostLeft == 0.0
-                                ? 0.0
-                                : Math.Floor(mostLeft/ax.S)*ax.S;
-                    if (mostRight > ax.TopLimit)
-                        // ReSharper disable once CompareOfFloatsByEqualityOperator
-                        if (double.IsNaN(ax.MaxValue))
-                            ax.TopLimit = mostRight == 0.0
-                                ? 0.0
-                                : (Math.Floor(mostRight/ax.S) + 1.0) *ax.S;
-                }
-            }
+                    var ay = AxisY[stackIndex];
 
-            if (stackAt == AxisOrientation.Y)
-            {
-                var ay = AxisY[stackIndex];
-
-                if (mode == StackMode.Percentage)
-                {
-                    if (double.IsNaN(ay.MinValue)) ay.BotLimit = 0;
-                    if (double.IsNaN(ay.MaxValue)) ay.TopLimit = 1;
-                }
-                else
-                {
-                    if (mostLeft < ay.BotLimit)
-                        // ReSharper disable once CompareOfFloatsByEqualityOperator
-                        if (double.IsNaN(ay.MinValue))
-                            ay.BotLimit = mostLeft == 0.0
-                                ? 0.0
-                                : Math.Floor(mostLeft/ay.S)*ay.S;
-                    if (mostRight > ay.TopLimit)
-                        // ReSharper disable once CompareOfFloatsByEqualityOperator
-                        if (double.IsNaN(ay.MaxValue))
-                            ay.TopLimit = mostRight == 0.0
-                                ? 0.0
-                                : (Math.Floor(mostRight/ay.S) + 1.0) *ay.S;
+                    if (mode == StackMode.Percentage)
+                    {
+                        if (double.IsNaN(ay.MinValue)) ay.BotLimit = 0;
+                        if (double.IsNaN(ay.MaxValue)) ay.TopLimit = 1;
+                    }
+                    else
+                    {
+                        if (mostLeft < ay.BotLimit)
+                            // ReSharper disable once CompareOfFloatsByEqualityOperator
+                            if (double.IsNaN(ay.MinValue))
+                                ay.BotLimit = mostLeft == 0.0
+                                    ? 0.0
+                                    : Math.Floor(mostLeft/ay.S)*ay.S;
+                        if (mostRight > ay.TopLimit)
+                            // ReSharper disable once CompareOfFloatsByEqualityOperator
+                            if (double.IsNaN(ay.MaxValue))
+                                ay.TopLimit = mostRight == 0.0
+                                    ? 0.0
+                                    : (Math.Floor(mostRight/ay.S) + 1.0) *ay.S;
+                    }
                 }
             }
         }

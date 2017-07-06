@@ -1,8 +1,10 @@
-﻿using System;
+﻿using LiveCharts;
+using LiveCharts.Defaults;
+using LiveCharts.Wpf;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -12,24 +14,21 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using LiveCharts;
-using LiveCharts.Defaults;
-using LiveCharts.Wpf;
 
 namespace Wpf.CartesianChart
 {
     /// <summary>
-    /// Interaction logic for StackedRowExample.xaml
+    /// Interaction logic for GroupedStackedColumnExample.xaml
     /// </summary>
-    public partial class StackedRowExample : UserControl
+    public partial class GroupedStackedColumnExample : UserControl
     {
-        public StackedRowExample()
+        public GroupedStackedColumnExample()
         {
             InitializeComponent();
 
             SeriesCollection = new SeriesCollection
             {
-                new StackedRowSeries
+                new StackedColumnSeries
                 {
                     Values = new ChartValues<ObservableValue>
                     {
@@ -42,9 +41,10 @@ namespace Wpf.CartesianChart
                         new ObservableValue(9),
                         new ObservableValue(3)
                     },
-                    DataLabels = true
+                    DataLabels = true,
+                    Grouping = "Credits"
                 },
-                new StackedRowSeries
+                new StackedColumnSeries
                 {
                     Values = new ChartValues<ObservableValue>
                     {
@@ -57,9 +57,10 @@ namespace Wpf.CartesianChart
                         new ObservableValue(0),
                         new ObservableValue(3)
                     },
-                    DataLabels = true
+                    DataLabels = true,
+                    Grouping = "Credits"
                 },
-                new StackedRowSeries
+                new StackedColumnSeries
                 {
                     Values = new ChartValues<ObservableValue>
                     {
@@ -72,7 +73,24 @@ namespace Wpf.CartesianChart
                         new ObservableValue(3),
                         new ObservableValue(3)
                     },
-                    DataLabels = true
+                    DataLabels = true,
+                    Grouping = "Debits"
+                },
+                new StackedColumnSeries
+                {
+                    Values = new ChartValues<ObservableValue>
+                    {
+                        new ObservableValue(2),
+                        new ObservableValue(4),
+                        new ObservableValue(7),
+                        new ObservableValue(1),
+                        new ObservableValue(9),
+                        new ObservableValue(3),
+                        new ObservableValue(4),
+                        new ObservableValue(8)
+                    },
+                    DataLabels = true,
+                    Grouping = "Debits"
                 }
             };
 

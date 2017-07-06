@@ -42,6 +42,11 @@
         <wpf:ChartPointLabelConverter x:Key="ChartPointLabelConverter"/>
         <wpf:ParticipationVisibilityConverter x:Key="ParticipationVisibilityConverter"/>
         <BooleanToVisibilityConverter x:Key="Bvc"></BooleanToVisibilityConverter>
+        <CollectionViewSource x:Key="GroupedPoints" Source="{Binding Data.Points}" >
+            <CollectionViewSource.GroupDescriptions>
+                <PropertyGroupDescription PropertyName="ChartPoint.SeriesView.Grouping" />
+            </CollectionViewSource.GroupDescriptions>
+        </CollectionViewSource>
     </UserControl.Resources>
     <UserControl.Template>
         <ControlTemplate>
@@ -61,7 +66,16 @@
                                 </MultiBinding>
                             </TextBlock.Visibility>
                         </TextBlock>
-                        <ItemsControl ItemsSource="{Binding Data.Points}" Grid.IsSharedSizeScope="True">
+                        <ItemsControl ItemsSource="{Binding Source={StaticResource GroupedPoints}}" Grid.IsSharedSizeScope="True">
+                            <ItemsControl.GroupStyle>
+                                <GroupStyle>
+                                    <GroupStyle.HeaderTemplate>
+                                        <DataTemplate>
+                                            <ContentPresenter Content="{Binding Name}" />
+                                        </DataTemplate>
+                                    </GroupStyle.HeaderTemplate>
+                                </GroupStyle>
+                            </ItemsControl.GroupStyle>
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate DataType="{x:Type wpf:DataPointViewModel}">
                                     <Grid Margin="2" VerticalAlignment="Center" HorizontalAlignment="Center">

@@ -124,6 +124,21 @@ namespace LiveCharts.Uwp
             get { return (BarLabelPosition)GetValue(LabelsPositionProperty); }
             set { SetValue(LabelsPositionProperty, value); }
         }
+
+        /// <summary>
+        /// The Grouping property
+        /// </summary>
+        public object Grouping
+        {
+            get { return (object)GetValue(GroupingProperty); }
+            set { SetValue(GroupingProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets which columns are grouped together
+        /// </summary>
+        public static readonly DependencyProperty GroupingProperty =
+            DependencyProperty.Register("Grouping", typeof(object), typeof(StackedColumnSeries), new PropertyMetadata(null));
         #endregion
 
         #region Overridden Methods

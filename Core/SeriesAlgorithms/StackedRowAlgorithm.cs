@@ -25,6 +25,7 @@ using LiveCharts.Defaults;
 using LiveCharts.Definitions.Points;
 using LiveCharts.Definitions.Series;
 using LiveCharts.Dtos;
+using System.Linq;
 
 namespace LiveCharts.SeriesAlgorithms
 {
@@ -57,17 +58,19 @@ namespace LiveCharts.SeriesAlgorithms
             var padding = castedSeries.RowPadding;
 
             var totalSpace = ChartFunctions.GetUnitWidth(AxisOrientation.Y, Chart, View.ScalesYAt) - padding;
-            var singleColHeigth = totalSpace;
+            var groups = Chart.View.ActualSeries.Select(s => (s as IStackedColumnSeriesView)?.Grouping).Distinct().ToList();
+            var singleColHeigth = totalSpace / groups.Count();
 
             double exceed = 0;
+            var seriesPosition = groups.IndexOf(castedSeries.Grouping);
 
             if (singleColHeigth > castedSeries.MaxRowHeight)
             {
-                exceed = (singleColHeigth - castedSeries.MaxRowHeight)/2;
+                exceed = (singleColHeigth - castedSeries.MaxRowHeight) * groups.Count() / 2;
                 singleColHeigth = castedSeries.MaxRowHeight;
             }
 
-            var relativeTop = padding + exceed;
+            var relativeTop = padding + exceed + singleColHeigth * (seriesPosition);
 
             var startAt = CurrentXAxis.FirstSeparator >= 0 && CurrentXAxis.LastSeparator > 0
                 ? CurrentXAxis.FirstSeparator

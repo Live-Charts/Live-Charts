@@ -75,6 +75,7 @@
     <Compile Include="DateAxisWindow.cs" />
     <Compile Include="Definitions\Charts\IAxisWindow.cs" />
     <Compile Include="Definitions\Charts\IWindowAxisView.cs" />
+    <Compile Include="Definitions\Series\IGroupedStackedSeriesView.cs" />
     <Compile Include="Delegates.cs" />
     <Compile Include="WindowAxisCore.cs" />
     <Compile Include="DateAxisWindows.cs" />
