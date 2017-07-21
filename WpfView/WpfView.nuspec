@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <package >
   <metadata>
-    <id>$id$</id>
-    <version>$version$</version>
+    <id>LiveCharts.Wpf</id>
+    <version>0.0.0.0</version>
     <title>LiveCharts.Wpf</title>
     <authors>Beto Rodriguez</authors>
     <owners>Beto Rodriguez</owners>
@@ -10,17 +10,21 @@
     <projectUrl>http://lvcharts.net/</projectUrl>
     <iconUrl>http://lvcharts.net/Content/Images/Logos/lcred.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>LiveCharts is a modern chartig library: Responsive, animated and MVVM orientated charts</description>
+    <description>Simple, flexible, interactive and powerful data visualization for Wpf</description>
     <releaseNotes>See https://github.com/beto-rodriguez/Live-Charts/releases</releaseNotes>
     <copyright>Copyright 2016</copyright>
-    <tags>Chart Charting Plot Plotting Wpf WindowsPresentationFoundation</tags>
+    <tags>livechart, live, chart, charting, plot, plots, plotting, graph, graphs, graphing, data, wpf, windows, presentation, foundation, format</tags>
+	<dependencies>
+      <dependency id="LiveCharts" version="0.0.0.0" />
+    </dependencies>
   </metadata>
   <files>
-    <file src="bin\net403\LiveCharts.Wpf.dll" target="lib\net403" />
+    <file src="install.ps1" target="tools" />  
+    <file src="bin\net403\LiveCharts.Wpf.dll" target="lib\net40" />
+    <file src="bin\net403\LiveCharts.Wpf.pdb" target="lib\net40" />
+    <file src="bin\net403\LiveCharts.Wpf.xml" target="lib\net40" />
     <file src="bin\net45\LiveCharts.Wpf.dll" target="lib\net45" />
-    <file src="bin\net451\LiveCharts.Wpf.dll" target="lib\net451" />
-    <file src="bin\net452\LiveCharts.Wpf.dll" target="lib\net452" />
-    <file src="bin\net46\LiveCharts.Wpf.dll" target="lib\net46" />
-    <file src="bin\net461\LiveCharts.Wpf.dll" target="lib\net461" />  
+    <file src="bin\net45\LiveCharts.Wpf.pdb" target="lib\net45" />
+    <file src="bin\net45\LiveCharts.Wpf.xml" target="lib\net45" />    
   </files>
 </package>

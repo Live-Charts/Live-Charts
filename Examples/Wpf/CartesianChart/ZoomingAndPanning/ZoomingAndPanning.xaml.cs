@@ -1,16 +1,14 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Globalization;
-using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media;
 using LiveCharts;
 using LiveCharts.Defaults;
 using LiveCharts.Wpf;
-using Wpf.Annotations;
 
-namespace Wpf.CartesianChart
+namespace Wpf.CartesianChart.ZoomingAndPanning
 {
     /// <summary>
     /// Interaction logic for ZoomingAndPanning.xaml
@@ -35,7 +33,7 @@ namespace Wpf.CartesianChart
                     Values = GetData(),
                     Fill = gradientBrush,
                     StrokeThickness = 1,
-                    PointDiameter = 0
+                    PointGeometrySize = 0
                 }
             };
 
@@ -100,10 +98,20 @@ namespace Wpf.CartesianChart
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged(string propertyName = null)
         {
             if (PropertyChanged != null) PropertyChanged.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        private void ResetZoomOnClick(object sender, RoutedEventArgs e)
+        {
+            //Use the axis MinValue/MaxValue properties to specify the values to display.
+            //use double.Nan to clear it.
+
+            X.MinValue = double.NaN;
+            X.MaxValue = double.NaN;
+            Y.MinValue = double.NaN;
+            Y.MaxValue = double.NaN;
         }
     }
 

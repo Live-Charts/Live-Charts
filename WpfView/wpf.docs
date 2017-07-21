@@ -1,0 +1,1140 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>LiveCharts.Wpf</name>
+    </assembly>
+    <members>
+        <member name="T:LiveCharts.Wpf.DefaultGeometries">
+            <summary>
+            Contains an already defined collection of geometries, useful to set the Series.PointGeomety property
+            </summary>
+        </member>
+        <member name="P:LiveCharts.Wpf.DefaultGeometries.None">
+            <summary>
+            Returns a null geometry
+            </summary>
+        </member>
+        <member name="P:LiveCharts.Wpf.DefaultGeometries.Circle">
+            <summary>
+            Returns a circle geometry
+            </summary>
+        </member>
+        <member name="P:LiveCharts.Wpf.DefaultGeometries.Square">
+            <summary>
+            Returns a square geometry
+            </summary>
+        </member>
+        <member name="P:LiveCharts.Wpf.DefaultGeometries.Diamond">
+            <summary>
+            Returns a diamond property
+            </summary>
+        </member>
+        <member name="P:LiveCharts.Wpf.DefaultGeometries.Trangle">
+            <summary>
+            Returns a triangle geometry
+            </summary>
+        </member>
+        <member name="T:LiveCharts.Wpf.HeatColorRange">
+            <summary>
+            Interaction logic for HeatColorRange.xaml
+            </summary>
+            <summary>
+            HeatColorRange
+            </summary>
+        </member>
+        <member name="M:LiveCharts.Wpf.HeatColorRange.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="P:LiveCharts.Wpf.Points.PieSlice.Radius">
+            <summary>
+            The radius of this pie piece
+            </summary>
+        </member>
+        <member name="P:LiveCharts.Wpf.Points.PieSlice.PushOut">
+            <summary>
+            The distance to 'push' this pie piece out from the centre.
+            </summary>
+        </member>
+        <member name="P:LiveCharts.Wpf.Points.PieSlice.InnerRadius">
+            <summary>
+            The inner radius of this pie piece
+            </summary>
+        </member>
+        <member name="P:LiveCharts.Wpf.Points.PieSlice.WedgeAngle">
+            <summary>
+            The wedge angle of this pie piece in degrees
+            </summary>
+        </member>
+        <member name="P:LiveCharts.Wpf.Points.PieSlice.RotationAngle">
+            <summary>
+            The rotation, in degrees, from the Y axis vector of this pie piece.
+            </summary>
+        </member>
+        <member name="P:LiveCharts.Wpf.Points.PieSlice.CentreX">
+            <summary>
+            The X coordinate of centre of the circle from which this pie piece is cut.
+            </summary>
+        </member>
+        <member name="P:LiveCharts.Wpf.Points.PieSlice.CentreY">
+            <summary>
+            The Y coordinate of centre of the circle from which this pie piece is cut.
+            </summary>
+        </member>
+        <member name="P:LiveCharts.Wpf.Points.PieSlice.Percentage">
+            <summary>
+            The percentage of a full pie that this piece occupies.
+            </summary>
+        </member>
+        <member name="P:LiveCharts.Wpf.Points.PieSlice.PieceValue">
+            <summary>
+            The value that this pie piece represents.
+            </summary>
+        </member>
+        <member name="M:LiveCharts.Wpf.Points.PieSlice.DrawGeometry(System.Windows.Media.StreamGeometryContext)">
+            <summary>
+            Draws the pie piece
+            </summary>
+        </member>
+        <member name="M:LiveCharts.Wpf.Points.PieUtils.ComputeCartesianCoordinate(System.Double,System.Double)">
+            <summary>
+            Converts a coordinate from the polar coordinate system to the cartesian coordinate system.
+            </summary>
+            <param name="angle"></param>
+            <param name="radius"></param>
+            <returns></returns>
+        </member>
+        <member name="T:LiveCharts.Wpf.SectionsCollection">
+            <summary>
+            The SectionsCollection class holds a collection of Axis.Sections
+            </summary>
+        </member>
+        <member name="M:LiveCharts.Wpf.SectionsCollection.#ctor">
+            <summary>
+            Initializes a new instance of SectionsCollection instance
+            </summary>
+        </member>
+        <member name="T:LiveCharts.Wpf.AxesCollection">
+            <summary>
+            Stores a collection of axis.
+            </summary>
+        </member>
+        <member name="M:LiveCharts.Wpf.AxesCollection.#ctor">
+            <summary>
+            Initializes a new instance of AxisCollection class
+            </summary>
+        </member>
+        <member name="T:LiveCharts.Wpf.Axis">
+            <summary>
+            An Axis of a chart
+            </summary>
+        </member>
+        <member name="M:LiveCharts.Wpf.Axis.#ctor">
+            <summary>
+            Initializes a new instance of Axis class
+            </summary>
+        </member>
+        <member name="P:LiveCharts.Wpf.Axis.Model">
+            <summary>
+            Gets the Model of the axis, the model is used a DTO to communicate with the core of the library.
+            </summary>
+        </member>
+        <member name="P:LiveCharts.Wpf.Axis.Labels">
+            <summary>
+            Gets or sets axis labels, labels property stores the array to map for each index and value, for example if axis value is 0 then label will be labels[0], when value 1 then labels[1], value 2 then labels[2], ..., value n labels[n], use this property instead of a formatter when there is no conversion between value and label for example names, if you are plotting sales vs salesman name.
+            </summary>
+        </member>
+        <member name="P:LiveCharts.Wpf.Axis.Sections">
+            <summary>
+            Gets or sets the axis sectionsCollection, a section is useful to highlight ranges or values in a chart.
+            </summary>
+        </member>
+        <member name="P:LiveCharts.Wpf.Axis.LabelFormatter">
+            <summary>
+            Gets or sets the function to convert a value to label, for example when you need to display your chart as currency ($1.00) or as degrees (10°), if Labels property is not null then formatter is ignored, and label will be pulled from Labels prop.
+            </summary>
+        </member>
+        <member name="P:LiveCharts.Wpf.Axis.Separator">
+            <summary>
+            Get or sets configuration for parallel lines to axis.
+            </summary>
+        </member>
+        <member name="P:LiveCharts.Wpf.Axis.Stroke">
+            <summary>
+            Gets or sets axis color, axis means only the zero value, if you need to highlight where zero is. to change separators color, see Axis.Separator
+            </summary>
+        </member>
+        <member name="P:LiveCharts.Wpf.Axis.StrokeThickness">
+            <summary>
+            Gets or sets axis thickness.
+            </summary>
+        </member>
+        <member name="P:LiveCharts.Wpf.Axis.ShowLabels">
+            <summary>
+            Gets or sets if labels are shown in the axis.
+            </summary>
+        </member>
+        <member name="P:LiveCharts.Wpf.Axis.MaxValue">
+            <summary>
+            Gets or sets axis max value, set it to null to make this property Auto, default value is null
+            </summary>
+        </member>
+        <member name="P:LiveCharts.Wpf.Axis.MinValue">
+            <summary>
+            Gets or sets axis min value, set it to null to make this property Auto, default value is null
+            </summary>
+        </member>
+        <member name="P:LiveCharts.Wpf.Axis.Title">
+            <summary>
+            Gets or sets axis title, the title will be displayed only if this property is not null, default is null.
+            </summary>
+        </member>
+        <member name="P:LiveCharts.Wpf.Axis.Position">
+            <summary>
+            Gets or sets the axis position, default is Axis.Position.LeftBottom, when the axis is at Y and Position is LeftBottom, then axis will be placed at left, RightTop position will place it at Right, when the axis is at X and position LeftBottom, the axis will be placed at bottom, if position is RightTop then it will be placed at top.
+            </summary>
+        </member>
+        <member name="P:LiveCharts.Wpf.Axis.IsMerged">
+            <summary>
+            Gets or sets if the axis labels should me placed inside the chart, this is useful to save some space.
+            </summary>
+        </member>
+        <member name="P:LiveCharts.Wpf.Axis.DisableAnimations">
+            <summary>
+            Gets or sets if the axis is animated.
+            </summary>
+        </member>
+        <member name="P:LiveCharts.Wpf.Axis.FontFamily">
+            <summary>
+            Gets or sets labels font family, font to use for any label in this axis
+            </summary>
+        </member>
+        <member name="P:LiveCharts.Wpf.Axis.FontSize">
+            <summary>
+            Gets or sets labels font size
+            </summary>
+        </member>
+        <member name="P:LiveCharts.Wpf.Axis.FontWeight">
+            <summary>
+            Gets or sets labels font weight
+            </summary>
+        </member>
+        <member name="P:LiveCharts.Wpf.Axis.FontStyle">
+            <summary>
+            Gets or sets labels font style
+            </summary>
+        </member>
+        <member name="P:LiveCharts.Wpf.Axis.FontStretch">
+            <summary>
+            Gets or sets labels font stretch
+            </summary>
+        </member>
+        <member name="P:LiveCharts.Wpf.Axis.Foreground">
+            <summary>
+            Gets or sets labels text color.
+            </summary>
+        </member>
+        <member name="P:LiveCharts.Wpf.Axis.LabelsRotation">
+            <summary>
+            Gets or sets the labels rotation in the axis, the angle starts as a horizontal line, you can use any angle in degrees, even negatives.
+            </summary>
+        </member>
+        <member name="T:LiveCharts.Wpf.AxisSection">
+            <summary>
+            An Axis section highlights values or ranges in a chart.
+            </summary>
+        </member>
+        <member name="M:LiveCharts.Wpf.AxisSection.#ctor">
+            <summary>
+            Initializes a new instance of AxisSection class
+            </summary>
+        </member>
+        <member name="P:LiveCharts.Wpf.AxisSection.Label">
+            <summary>
+            Gets or sets the name, the title of the section, a visual element will be added to the chart if this property is not null.
+            </summary>
+        </member>
+        <member name="P:LiveCharts.Wpf.AxisSection.FromValue">
+            <summary>
+            Gets or sets the value where the section starts
+            </summary>
+        </member>
+        <member name="P:LiveCharts.Wpf.AxisSection.ToValue">
+            <summary>
+            Gets or sets the value where the section ends
+            </summary>
+        </member>
+        <member name="P:LiveCharts.Wpf.AxisSection.Stroke">
+            <summary>
+            Gets o sets the section stroke, the stroke brush will be used to draw the border of the section
+            </summary>
+        </member>
+        <member name="P:LiveCharts.Wpf.AxisSection.Fill">
+            <summary>
+            Gets or sets the section fill brush.
+            </summary>
+        </member>
+        <member name="P:LiveCharts.Wpf.AxisSection.StrokeThickness">
+            <summary>
+            Gets or sets the stroke thickness.
+            </summary>
+        </member>
+        <member name="P:LiveCharts.Wpf.AxisSection.StrokeDashArray">
+            <summary>
+            Gets or sets the stroke dash array collection, use this property to create dashed stroke sections
+            </summary>
+        </member>
+        <member name="T:LiveCharts.Wpf.Charts.Base.Chart">
+            <summary>
+            Base chart class
+            </summary>
+        </member>
+        <member name="E:LiveCharts.Wpf.Charts.Base.Chart.DataClick">
+            <summary>
+            The DataClick event is fired when a user click any data point
+            </summary>
+        </member>
+        <member name="P:LiveCharts.Wpf.Charts.Base.Chart.Canvas">
+            <summary>
+            Gets or sets the chart current canvas
+            </summary>
+        </member>
+        <member name="P:LiveCharts.Wpf.Charts.Base.Chart.RandomizeStartingColor">
+            <summary>
+            Gets or sets whether charts must randomize the starting default series color.
+            </summary>
+        </member>
+        <member name="P:LiveCharts.Wpf.Charts.Base.Chart.Colors">
+            <summary>
+            Gets or sets the default series color set.
+            </summary>
+        </member>
+        <member name="P:LiveCharts.Wpf.Charts.Base.Chart.AxisY">
+            <summary>
+            Gets or sets vertical axis
+            </summary>
+        </member>
+        <member name="P:LiveCharts.Wpf.Charts.Base.Chart.AxisX">
+            <summary>
+            Gets or sets horizontal axis
+            </summary>
+        </member>
+        <member name="P:LiveCharts.Wpf.Charts.Base.Chart.ChartLegend">
+            <summary>
+            Gets or sets the control to use as chart legend for this chart.
+            </summary>
+        </member>
+        <member name="P:LiveCharts.Wpf.Charts.Base.Chart.Zoom">
+            <summary>
+            Gets or sets chart zoom behavior
+            </summary>
+        </member>
+        <member name="P:LiveCharts.Wpf.Charts.Base.Chart.LegendLocation">
+            <summary>
+            Gets or sets where legend is located
+            </summary>
+        </member>
+        <member name="P:LiveCharts.Wpf.Charts.Base.Chart.Series">
+            <summary>
+            Gets or sets chart series collection to plot.
+            </summary>
+        </member>
+        <member name="P:LiveCharts.Wpf.Charts.Base.Chart.AnimationsSpeed">
+            <summary>
+            Gets or sets the default animation speed for this chart, you can override this speed for each element (series and axes)
+            </summary>
+        </member>
+        <member name="P:LiveCharts.Wpf.Charts.Base.Chart.DisableAnimations">
+            <summary>
+            Gets or sets if the chart is animated or not.
+            </summary>
+        </member>
+        <member name="P:LiveCharts.Wpf.Charts.Base.Chart.DataTooltip">
+            <summary>
+            Gets or sets the chart data tooltip.
+            </summary>
+        </member>
+        <member name="P:LiveCharts.Wpf.Charts.Base.Chart.Hoverable">
+            <summary>
+            gets or sets whether chart should react when a user moves the mouse over a data point.
+            </summary>
+        </member>
+        <member name="P:LiveCharts.Wpf.Charts.Base.Chart.Model">
+            <summary>
+            Gets the chart model, the model is who calculates everything, is the engine of the chart
+            </summary>
+        </member>
+        <member name="P:LiveCharts.Wpf.Charts.Base.Chart.HasTooltip">
+            <summary>
+            Gets whether the chart has an active tooltip.
+            </summary>
+        </member>
+        <member name="P:LiveCharts.Wpf.Charts.Base.Chart.HasDataClickEventAttached">
+            <summary>
+            Gets whether the chart has a DataClick event attacked.
+            </summary>
+        </member>
+        <member name="P:LiveCharts.Wpf.Charts.Base.Chart.IsControlLoaded">
+            <summary>
+            Gets whether the chart is already loaded in the view.
+            </summary>
+        </member>
+        <member name="F:LiveCharts.Wpf.Charts.Base.Chart.ChartCoreModel">
+            <summary>
+            Chart core model, the model calculates the chart.
+            </summary>
+        </member>
+        <member name="M:LiveCharts.Wpf.Charts.Base.Chart.#ctor">
+            <summary>
+            Initializes a new instance of Chart class
+            </summary>
+        </member>
+        <member name="P:LiveCharts.Wpf.Charts.Base.Chart.IsMocked">
+            <summary>
+            This property need to be true when unit testing
+            </summary>
+        </member>
+        <member name="M:LiveCharts.Wpf.Charts.Base.Chart.CallChartUpdater(System.Boolean,System.Boolean)">
+            <summary>
+            Calls the chart updater
+            </summary>
+            <param name="animate">if true, the series view will be removed and added again, this restarts animations also.</param>
+            <param name="updateNow">forces the updater to run as this function is called.</param>
+            <returns></returns>
+        </member>
+        <member name="P:LiveCharts.Wpf.Charts.Base.Chart.TooltipTimeout">
+            <summary>
+            Gets or sets the time a tooltip takes to hide when the user leaves the data point.
+            </summary>
+        </member>
+        <member name="M:LiveCharts.Wpf.Charts.Base.Chart.Update(System.Boolean,System.Boolean)">
+            <summary>
+            Forces the chart to update
+            </summary>
+            <param name="restartView">Indicates whether the update should restart the view, animations will run again if true.</param>
+            <param name="force">Force the updater to run when called, without waiting for the next updater step.</param>
+        </member>
+        <member name="T:LiveCharts.Wpf.Charts.test">
+            <summary>
+            Interaction logic for test.xaml
+            </summary>
+            <summary>
+            test
+            </summary>
+        </member>
+        <member name="M:LiveCharts.Wpf.Charts.test.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="T:LiveCharts.Wpf.Gauge">
+            <summary>
+            The gauge chart is useful to display progress or completion.
+            </summary>
+        </member>
+        <member name="P:LiveCharts.Wpf.Gauge.Uses360Mode">
+            <summary>
+            Gets or sets whether the gauge uses 360 mode, 360 mode will plot a full circle instead of a semi circle
+            </summary>
+        </member>
+        <member name="P:LiveCharts.Wpf.Gauge.From">
+            <summary>
+            Gets or sets the value where the gauge starts
+            </summary>
+        </member>
+        <member name="P:LiveCharts.Wpf.Gauge.To">
+            <summary>
+            Gets or sets the value where the gauge ends
+            </summary>
+        </member>
+        <member name="P:LiveCharts.Wpf.Gauge.Value">
+            <summary>
+            Gets or sets the current value of the gauge
+            </summary>
+        </member>
+        <member name="P:LiveCharts.Wpf.Gauge.Title">
+            <summary>
+            Gets or sets the gauge title
+            </summary>
+        </member>
+        <member name="P:LiveCharts.Wpf.Gauge.InnerRadius">
+            <summary>
+            Gets o sets inner radius
+            </summary>
+        </member>
+        <member name="P:LiveCharts.Wpf.Gauge.Stroke">
+            <summary>
+            Gets or sets stroke, the stroke is the brush used to draw the gauge border.
+            </summary>
+        </member>
+        <member name="P:LiveCharts.Wpf.Gauge.StrokeThickness">
+            <summary>
+            Gets or sets stroke brush thickness
+            </summary>
+        </member>
+        <member name="P:LiveCharts.Wpf.Gauge.ToColor">
+            <summary>
+            Gets or sets the color when the current value equals to min value, any value between min and max will use an interpolated color.
+            </summary>
+        </member>
+        <member name="P:LiveCharts.Wpf.Gauge.FromColor">
+            <summary>
+            Gets or sets the color when the current value equals to max value, any value between min and max will use an interpolated color.
+            </summary>
+        </member>
+        <member name="P:LiveCharts.Wpf.Gauge.GaugeBackground">
+            <summary>
+            Gets or sets the gauge background
+            </summary>
+        </member>
+        <member name="P:LiveCharts.Wpf.Gauge.AnimationsSpeed">
+            <summary>
+            G3ts or sets the gauge animations speed
+            </summary>
+        </member>
+        <member name="P:LiveCharts.Wpf.Gauge.LabelFormatter">
+            <summary>
+            Gets or sets the label formatter, a label formatter takes a double value, and return a string, e.g. val => val.ToString("C");
+            </summary>
+        </member>
+        <member name="P:LiveCharts.Wpf.Gauge.HighFontSize">
+            <summary>
+            Gets o sets the label size, if this value is null then it will be automatically calculated, default is null.
+            </summary>
+        </member>
+        <member name="T:LiveCharts.Wpf.PieChart">
+            <summary>
+            The pie chart compares mainly the distribution of the data according to different series.
+            </summary>
+        </member>
+        <member name="M:LiveCharts.Wpf.PieChart.#ctor">
+            <summary>
+            Initializes a new instance of PieChart class
+            </summary>
+        </member>
+        <member name="P:LiveCharts.Wpf.PieChart.InnerRadius">
+            <summary>
+            Gets or sets the pie inner radius, increasing this property will result in a doughnut chart.
+            </summary>
+        </member>
+        <member name="P:LiveCharts.Wpf.PieChart.StartingRotationAngle">
+            <summary>
+            Gets or sets the starting rotation angle in degrees.
+            </summary>
+        </member>
+        <member name="P:LiveCharts.Wpf.PieChart.HoverPushOut">
+            <summary>
+            Gets or sets the units that a slice is pushed out when a user moves the mouse over data point.
+            </summary>
+        </member>
+        <member name="T:LiveCharts.Wpf.DefaultLegend">
+            <summary>
+            The default legend control, by default a new instance of this control is created for every chart that requires a legend.
+            </summary>
+            <summary>
+            DefaultLegend
+            </summary>
+        </member>
+        <member name="M:LiveCharts.Wpf.DefaultLegend.#ctor">
+            <summary>
+            Initializes a new instance of DefaultLegend class
+            </summary>
+        </member>
+        <member name="E:LiveCharts.Wpf.DefaultLegend.PropertyChanged">
+            <summary>
+            Property changed event
+            </summary>
+        </member>
+        <member name="P:LiveCharts.Wpf.DefaultLegend.Series">
+            <summary>
+            Gets the series displayed in the legend.
+            </summary>
+        </member>
+        <member name="P:LiveCharts.Wpf.DefaultLegend.Orientation">
+            <summary>
+            Gets or sets the orientation of the legend, default is null, if null LiveCharts will decide which orientation to use, based on the Chart.Legend location property.
+            </summary>
+        </member>
+        <member name="P:LiveCharts.Wpf.DefaultLegend.BulletSize">
+            <summary>
+            Gets or sets the bullet size, the bullet size modifies the drawn shape size.
+            </summary>
+        </member>
+        <member name="M:LiveCharts.Wpf.DefaultLegend.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="T:LiveCharts.Wpf.DefaultTooltip">
+            <summary>
+            The Default Tooltip control, by default any chart that requires a tooltip will create a new instance of this class.
+            </summary>
+            <summary>
+            DefaultTooltip
+            </summary>
+        </member>
+        <member name="M:LiveCharts.Wpf.DefaultTooltip.#ctor">
+            <summary>
+            Initializes a new instance of DefaultTooltip class
+            </summary>
+        </member>
+        <member name="P:LiveCharts.Wpf.DefaultTooltip.CornerRadius">
+            <summary>
+            Gets or sets the corner radius of the tooltip
+            </summary>
+        </member>
+        <member name="P:LiveCharts.Wpf.DefaultTooltip.SelectionMode">
+            <summary>
+            Gets or sets the tooltip selection mode, default is null, if this property is null LiveCharts will decide the selection mode based on the series (that fired the tooltip) preferred section mode
+            </summary>
+        </member>
+        <member name="P:LiveCharts.Wpf.DefaultTooltip.BulletSize">
+            <summary>
+            Gets or sets the bullet size, the bullet size modifies the drawn shape size.
+            </summary>
+        </member>
+        <member name="M:LiveCharts.Wpf.DefaultTooltip.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="T:LiveCharts.Wpf.HeatSeries">
+            <summary>
+            Use a HeatSeries in a cartesian chart to draw heat maps.
+            </summary>
+        </member>
+        <member name="M:LiveCharts.Wpf.HeatSeries.#ctor">
+            <summary>
+            Initializes a new instance of HeatSeries class
+            </summary>
+        </member>
+        <member name="M:LiveCharts.Wpf.HeatSeries.#ctor(System.Object)">
+            <summary>
+            Initializes a new instance of HeatSries class, using a given mapper
+            </summary>
+            <param name="configuration"></param>
+        </member>
+        <member name="P:LiveCharts.Wpf.HeatSeries.DrawsHeatRange">
+            <summary>
+            Gets or sets whether the series should draw the heat range control, it is the vertical frame to the right that displays the heat gradient.
+            </summary>
+        </member>
+        <member name="P:LiveCharts.Wpf.HeatSeries.GradientStopCollection">
+            <summary>
+            Gets or sets the gradient stop collection, use every gradient offset and color properties to define your gradient.
+            </summary>
+        </member>
+        <member name="P:LiveCharts.Wpf.HeatSeries.Stops">
+            <summary>
+            Gets the gradient stops, this property is normally used internally to communicate with the core of the library.
+            </summary>
+        </member>
+        <member name="T:LiveCharts.Wpf.PieSeries">
+            <summary>
+            The pie series should be added only in a pie chart.
+            </summary>
+        </member>
+        <member name="M:LiveCharts.Wpf.PieSeries.#ctor">
+            <summary>
+            Initializes a new instance of PieSeries class
+            </summary>
+        </member>
+        <member name="M:LiveCharts.Wpf.PieSeries.#ctor(System.Object)">
+            <summary>
+            Initializes a new instance of PieSeries class with a given mapper.
+            </summary>
+            <param name="configuration"></param>
+        </member>
+        <member name="P:LiveCharts.Wpf.PieSeries.PushOut">
+            <summary>
+            Gets or sets the slice push out, this property highlights the slice
+            </summary>
+        </member>
+        <member name="T:LiveCharts.Wpf.OhlcSeries">
+            <summary>
+            The OHCL series defines a financial series, add this series to a cartesian chart
+            </summary>
+        </member>
+        <member name="M:LiveCharts.Wpf.OhlcSeries.#ctor">
+            <summary>
+            Initializes a new instance of OhclSeries class
+            </summary>
+        </member>
+        <member name="M:LiveCharts.Wpf.OhlcSeries.#ctor(System.Object)">
+            <summary>
+            Initializes a new instance of OhclSeries class with a given mapper
+            </summary>
+            <param name="configuration"></param>
+        </member>
+        <member name="P:LiveCharts.Wpf.OhlcSeries.MaxColumnWidth">
+            <summary>
+            Gets or sets the maximum with of a point, a point will be capped to this width.
+            </summary>
+        </member>
+        <member name="P:LiveCharts.Wpf.OhlcSeries.IncreaseBrush">
+            <summary>
+            Gets or sets the brush of the point when close value is grater than open value
+            </summary>
+        </member>
+        <member name="P:LiveCharts.Wpf.OhlcSeries.DecreaseBrush">
+            <summary>
+            Gets or sets the brush of the point when close value is less than open value
+            </summary>
+        </member>
+        <member name="T:LiveCharts.Wpf.StackedAreaSeries">
+            <summary>
+            The stacked area compares trends and percentage, add this series to a cartesian chart
+            </summary>
+        </member>
+        <member name="M:LiveCharts.Wpf.StackedAreaSeries.#ctor">
+            <summary>
+            Initializes a new instance of StackedAreaSeries class
+            </summary>
+        </member>
+        <member name="M:LiveCharts.Wpf.StackedAreaSeries.#ctor(System.Object)">
+            <summary>
+            Initializes a new instance of StackedAreaSeries class, with a given mapper
+            </summary>
+        </member>
+        <member name="P:LiveCharts.Wpf.StackedAreaSeries.StackMode">
+            <summary>
+            Gets or sets the series stacked mode, values or percentage
+            </summary>
+        </member>
+        <member name="T:LiveCharts.Wpf.StackedRowSeries">
+            <summary>
+            The stacked row series compares the proportion of every series in a point
+            </summary>
+        </member>
+        <member name="M:LiveCharts.Wpf.StackedRowSeries.#ctor">
+            <summary>
+            Initializes a new instance of StackedRow series class
+            </summary>
+        </member>
+        <member name="M:LiveCharts.Wpf.StackedRowSeries.#ctor(System.Object)">
+            <summary>
+            Initializes a new instance of StackedRow series class, with a given mapper
+            </summary>
+        </member>
+        <member name="P:LiveCharts.Wpf.StackedRowSeries.MaxRowHeight">
+            <summary>
+            Gets or sets the maximum height of row, any row height will be capped at this value.
+            </summary>
+        </member>
+        <member name="P:LiveCharts.Wpf.StackedRowSeries.RowPadding">
+            <summary>
+            Gets or sets the padding between each row in the series.
+            </summary>
+        </member>
+        <member name="P:LiveCharts.Wpf.StackedRowSeries.StackMode">
+            <summary>
+            Gets or sets the stacked mode, values or percentage.
+            </summary>
+        </member>
+        <member name="T:LiveCharts.Wpf.StackedColumnSeries">
+            <summary>
+            The stacked column series compares the proportion of every series in a point
+            </summary>
+        </member>
+        <member name="M:LiveCharts.Wpf.StackedColumnSeries.#ctor">
+            <summary>
+            Initializes a new instance of StackedColumnSeries class
+            </summary>
+        </member>
+        <member name="M:LiveCharts.Wpf.StackedColumnSeries.#ctor(System.Object)">
+            <summary>
+            Initializes a new instance of StackedColumnSeries class, with a given mapper
+            </summary>
+        </member>
+        <member name="P:LiveCharts.Wpf.StackedColumnSeries.MaxColumnWidth">
+            <summary>
+            Gets or sets the maximum width of a column, any column will be capped at this value
+            </summary>
+        </member>
+        <member name="P:LiveCharts.Wpf.StackedColumnSeries.ColumnPadding">
+            <summary>
+            Gets or sets the padding between every column in this series
+            </summary>
+        </member>
+        <member name="P:LiveCharts.Wpf.StackedColumnSeries.StackMode">
+            <summary>
+            Gets or sets stacked mode, values or percentage
+            </summary>
+        </member>
+        <member name="T:LiveCharts.Wpf.RowSeries">
+            <summary>
+            The Row series plots horizontal bars in a cartesian chart
+            </summary>
+        </member>
+        <member name="M:LiveCharts.Wpf.RowSeries.#ctor">
+            <summary>
+            Initializes a new instance of RowSeries class
+            </summary>
+        </member>
+        <member name="M:LiveCharts.Wpf.RowSeries.#ctor(System.Object)">
+            <summary>
+            Initializes a new instance of RowSeries class with a given mapper
+            </summary>
+            <param name="configuration"></param>
+        </member>
+        <member name="P:LiveCharts.Wpf.RowSeries.MaxRowHeigth">
+            <summary>
+            Gets or sets the maximum row height, the height of a column will be capped at this value
+            </summary>
+        </member>
+        <member name="P:LiveCharts.Wpf.RowSeries.RowPadding">
+            <summary>
+            Gets or sets the padding between rows in this series
+            </summary>
+        </member>
+        <member name="T:LiveCharts.Wpf.ColumnSeries">
+            <summary>
+            Use the column series to plot horizontal bars in a cartesian chart
+            </summary>
+        </member>
+        <member name="M:LiveCharts.Wpf.ColumnSeries.#ctor">
+            <summary>
+            Initializes a new instance of ColumnSeries class
+            </summary>
+        </member>
+        <member name="M:LiveCharts.Wpf.ColumnSeries.#ctor(System.Object)">
+            <summary>
+            Initializes a new instance of ColumnSeries class, using a given mapper
+            </summary>
+        </member>
+        <member name="P:LiveCharts.Wpf.ColumnSeries.MaxColumnWidth">
+            <summary>
+            Gets or sets the MaxColumnWidht, the column width will be capped at this value.
+            </summary>
+        </member>
+        <member name="P:LiveCharts.Wpf.ColumnSeries.ColumnPadding">
+            <summary>
+            Gets or sets the padding between the columns in the series.
+            </summary>
+        </member>
+        <member name="T:LiveCharts.Wpf.BubbleSeries">
+            <summary>
+            The Bubble series, draws scatter series, only using X and Y properties or bubble series, if you also use the weight property, this series should be used in a cartesian chart.
+            </summary>
+        </member>
+        <member name="M:LiveCharts.Wpf.BubbleSeries.#ctor">
+            <summary>
+            Initializes a new instance of BubbleSeries class
+            </summary>
+        </member>
+        <member name="M:LiveCharts.Wpf.BubbleSeries.#ctor(System.Object)">
+            <summary>
+            Initializes a new instance of BubbleSeries class using a given mapper
+            </summary>
+            <param name="configuration"></param>
+        </member>
+        <member name="P:LiveCharts.Wpf.BubbleSeries.MaxBubbleDiameter">
+            <summary>
+            Gets or sets the max bubble diameter, the bubbles using the max weight in the series will have this radius.
+            </summary>
+        </member>
+        <member name="P:LiveCharts.Wpf.BubbleSeries.MinBubbleDiameter">
+            <summary>
+            Gets or sets the min bubble diameter, the bubbles using the min weight in the series will have this radius.
+            </summary>
+        </member>
+        <member name="T:LiveCharts.Wpf.VerticalStackedAreaSeries">
+            <summary>
+            Compares trend and proportion, this series must be added in a cartesian chart.
+            </summary>
+        </member>
+        <member name="M:LiveCharts.Wpf.VerticalStackedAreaSeries.#ctor">
+            <summary>
+            Initializes a new instance of VerticalStackedAreaSeries class
+            </summary>
+        </member>
+        <member name="M:LiveCharts.Wpf.VerticalStackedAreaSeries.#ctor(System.Object)">
+            <summary>
+            Initializes a new instance of VerticalStackedAreaSeries class, with a given mapper
+            </summary>
+        </member>
+        <member name="P:LiveCharts.Wpf.VerticalStackedAreaSeries.StackMode">
+            <summary>
+            Gets or sets the series stack mode, values or percentage
+            </summary>
+        </member>
+        <member name="T:LiveCharts.Wpf.VerticalLineSeries">
+            <summary>
+            The vertical line series is useful to compare trends, this is the inverted version of the LineSeries, this series must be added in a cartesian chart.
+            </summary>
+        </member>
+        <member name="M:LiveCharts.Wpf.VerticalLineSeries.#ctor">
+            <summary>
+            Initializes an new instance of VerticalLineSeries class
+            </summary>
+        </member>
+        <member name="M:LiveCharts.Wpf.VerticalLineSeries.#ctor(System.Object)">
+            <summary>
+            Initializes an new instance of VerticalLineSeries class, with a given mapper
+            </summary>
+        </member>
+        <member name="T:LiveCharts.Wpf.DefaultAxes">
+            <summary>
+            Contains a collection of already defined axes.
+            </summary>
+        </member>
+        <member name="P:LiveCharts.Wpf.DefaultAxes.DefaultAxis">
+            <summary>
+            Returns default axis
+            </summary>
+        </member>
+        <member name="P:LiveCharts.Wpf.DefaultAxes.CleanAxis">
+            <summary>
+            Return an axis without separators at all
+            </summary>
+        </member>
+        <member name="P:LiveCharts.Wpf.DefaultAxes.OnlyZerosAxis">
+            <summary>
+            Returns an axis that only displays a line for zero
+            </summary>
+        </member>
+        <member name="P:LiveCharts.Wpf.DefaultAxes.HighlightZerosAxis">
+            <summary>
+            Returns an axis that highlights zeros.
+            </summary>
+        </member>
+        <member name="T:LiveCharts.Wpf.CartesianChart">
+            <summary>
+            The Cartesian chart can plot any series with x and y coordinates
+            </summary>
+        </member>
+        <member name="M:LiveCharts.Wpf.CartesianChart.#ctor">
+            <summary>
+            Initializes a new instance of CartesianChart class
+            </summary>
+        </member>
+        <member name="P:LiveCharts.Wpf.CartesianChart.VisualElements">
+            <summary>
+            Gets or sets the collection of visual elements in the chart, a visual element display another UiElement in the chart.
+            </summary>
+        </member>
+        <member name="T:LiveCharts.Wpf.LineSeries">
+            <summary>
+            The line series displays trends between points, you must add this series to a cartesian chart. 
+            </summary>
+        </member>
+        <member name="M:LiveCharts.Wpf.LineSeries.#ctor">
+            <summary>
+            Initializes a new instance of LineSeries class
+            </summary>
+        </member>
+        <member name="M:LiveCharts.Wpf.LineSeries.#ctor(System.Object)">
+            <summary>
+            Initializes a new instance of LineSeries class with a given mapper
+            </summary>
+            <param name="configuration"></param>
+        </member>
+        <member name="P:LiveCharts.Wpf.LineSeries.PointGeometrySize">
+            <summary>
+            Gets or sets the point geometry size, increasing this property will make the series points bigger
+            </summary>
+        </member>
+        <member name="P:LiveCharts.Wpf.LineSeries.PointForeround">
+            <summary>
+            Gets or sets the point shape foreground.
+            </summary>
+        </member>
+        <member name="P:LiveCharts.Wpf.LineSeries.LineSmoothness">
+            <summary>
+            Gets or sets line smoothness, this property goes from 0 to 1, use 0 to draw straight lines, 1 really curved lines.
+            </summary>
+        </member>
+        <member name="T:LiveCharts.Wpf.Properties.Resources">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:LiveCharts.Wpf.Properties.Resources.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:LiveCharts.Wpf.Properties.Resources.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="T:LiveCharts.Wpf.Separator">
+            <summary>
+            Defines an Axis.Separator, this class customizes the separator of an axis.
+            </summary>
+        </member>
+        <member name="M:LiveCharts.Wpf.Separator.#ctor">
+            <summary>
+            Initializes a new instance of Separator class
+            </summary>
+        </member>
+        <member name="P:LiveCharts.Wpf.Separator.Chart">
+            <summary>
+            Gets the chart the own the separator
+            </summary>
+        </member>
+        <member name="P:LiveCharts.Wpf.Separator.Stroke">
+            <summary>
+            Gets or sets separators color 
+            </summary>
+        </member>
+        <member name="P:LiveCharts.Wpf.Separator.StrokeThickness">
+            <summary>
+            Gets or sets separators thickness
+            </summary>
+        </member>
+        <member name="P:LiveCharts.Wpf.Separator.StrokeDashArray">
+            <summary>
+            Gets or sets the stroke dash array for the current separator.
+            </summary>
+        </member>
+        <member name="P:LiveCharts.Wpf.Separator.Step">
+            <summary>
+            Gets or sets separators step, this means the value between each line, default is null, when null this value is calculated automatically.
+            </summary>
+        </member>
+        <member name="P:LiveCharts.Wpf.Series.Series.ActualValues">
+            <summary>
+            Gets the Actual values in the series, active or visible series only
+            </summary>
+        </member>
+        <member name="P:LiveCharts.Wpf.Series.Series.IsSeriesVisible">
+            <summary>
+            Gets whether the series is visible
+            </summary>
+        </member>
+        <member name="P:LiveCharts.Wpf.Series.Series.Values">
+            <summary>
+            Gets or sets chart values.
+            </summary>
+        </member>
+        <member name="P:LiveCharts.Wpf.Series.Series.Title">
+            <summary>
+            Gets or sets series title
+            </summary>
+        </member>
+        <member name="P:LiveCharts.Wpf.Series.Series.Stroke">
+            <summary>
+            Gets or sets series stroke, if this property is null then a SolidColorBrush will be assigned according to series position in collection and Chart.Colors property
+            </summary>
+        </member>
+        <member name="P:LiveCharts.Wpf.Series.Series.StrokeThickness">
+            <summary>
+            Gets or sets the series stroke thickness.
+            </summary>
+        </member>
+        <member name="P:LiveCharts.Wpf.Series.Series.Fill">
+            <summary>
+            Gets or sets series fill color, if this property is null then a SolidColorBrush will be assigned according to series position in collection and Chart.Colors property, also Fill property has a default opacity according to chart type.
+            </summary>
+        </member>
+        <member name="P:LiveCharts.Wpf.Series.Series.DataLabels">
+            <summary>
+            Gets or sets if series should include a label over each data point.
+            </summary>
+        </member>
+        <member name="P:LiveCharts.Wpf.Series.Series.FontFamily">
+            <summary>
+            Gets or sets labels font family
+            </summary>
+        </member>
+        <member name="P:LiveCharts.Wpf.Series.Series.FontSize">
+            <summary>
+            Gets or sets labels font size
+            </summary>
+        </member>
+        <member name="P:LiveCharts.Wpf.Series.Series.FontWeight">
+            <summary>
+            Gets or sets labels font weight
+            </summary>
+        </member>
+        <member name="P:LiveCharts.Wpf.Series.Series.FontStyle">
+            <summary>
+            Gets or sets labels font style
+            </summary>
+        </member>
+        <member name="P:LiveCharts.Wpf.Series.Series.FontStretch">
+            <summary>
+            Gets or sets labels font stretch
+            </summary>
+        </member>
+        <member name="P:LiveCharts.Wpf.Series.Series.Foreground">
+            <summary>
+            Gets or sets labels text color.
+            </summary>
+        </member>
+        <member name="P:LiveCharts.Wpf.Series.Series.StrokeDashArray">
+            <summary>
+            Gets or sets the stroke dash array of a series, sue this property to draw dashed strokes
+            </summary>
+        </member>
+        <member name="P:LiveCharts.Wpf.Series.Series.PointGeometry">
+            <summary>
+            Gets or sets the point geometry, this shape will be drawn in the Tooltip, Legend, and if line series in every point also.
+            </summary>
+        </member>
+        <member name="P:LiveCharts.Wpf.Series.Series.ScalesXAt">
+            <summary>
+            Gets or sets the axis where series is scaled at, the axis must exist in the collection
+            </summary>
+        </member>
+        <member name="P:LiveCharts.Wpf.Series.Series.ScalesYAt">
+            <summary>
+            Gets or sets the axis where series is scaled at, the axis must exist in the collection
+            </summary>
+        </member>
+        <member name="P:LiveCharts.Wpf.Series.Series.LabelPoint">
+            <summary>
+            Gets or sets the label formatter for the data label and tooltip, this property is set by default according to the series
+            </summary>
+        </member>
+        <member name="P:LiveCharts.Wpf.Series.Series.Configuration">
+            <summary>
+            Gets or sets series mapper, if this property is set then the library will ignore the SeriesCollection mapper and global mappers.
+            </summary>
+        </member>
+        <member name="T:LiveCharts.Wpf.VisualElement">
+            <summary>
+            Defines a visual element, a visual element is a UI element that is placed and scaled in the chart.
+            </summary>
+        </member>
+        <member name="P:LiveCharts.Wpf.VisualElement.UIElement">
+            <summary>
+            Gets or sets the user interface element.
+            </summary>
+        </member>
+        <member name="P:LiveCharts.Wpf.VisualElement.Chart">
+            <summary>
+            Gets the chart that owns the visual element
+            </summary>
+        </member>
+        <member name="P:LiveCharts.Wpf.VisualElement.RequiresAdd">
+            <summary>
+            Gets if the elements requires to be added to the chart, this property should normally only be used internally by LiveCharts
+            </summary>
+        </member>
+        <member name="P:LiveCharts.Wpf.VisualElement.AxisX">
+            <summary>
+            Gets or sets the index of the axis in X that owns the element, the axis position must exist.
+            </summary>
+        </member>
+        <member name="P:LiveCharts.Wpf.VisualElement.AxisY">
+            <summary>
+            Gets or sets the index of the axis in Y that owns the element, the axis position must exist.
+            </summary>
+        </member>
+        <member name="P:LiveCharts.Wpf.VisualElement.X">
+            <summary>
+            Gets or sets the X value of the UiElement
+            </summary>
+        </member>
+        <member name="P:LiveCharts.Wpf.VisualElement.Y">
+            <summary>
+            Gets or sets the Y value of the UiElement
+            </summary>
+        </member>
+    </members>
+</doc>

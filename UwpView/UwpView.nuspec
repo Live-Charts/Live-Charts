@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>LiveCharts.Uwp</id>
+    <version>0.8.0.0</version>
+    <title>LiveCharts.Uwp</title>
+    <authors>Beto Rodriguez</authors>
+    <owners>Beto Rodriguez</owners>
+    <licenseUrl>https://github.com/beto-rodriguez/Live-Charts/blob/master/LICENSE.TXT</licenseUrl>
+    <projectUrl>http://lvcharts.net/</projectUrl>
+    <iconUrl>http://lvcharts.net/Content/Images/Logos/lcred.png</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Simple, flexible, interactive and powerful data visualization for Uwp</description>
+    <releaseNotes>Summary of changes made in this release of the package.</releaseNotes>
+    <copyright>Copyright 2016</copyright>
+    <tags>livechart, live, chart, charting, plot, plots, plotting, graph, graphs, graphing, data, uwp, universal, windows, platform</tags>
+    <dependencies>
+      <dependency id="LiveCharts" version="0.8.0.0" />
+      <dependency id="Microsoft.Xaml.Behaviors.Uwp.Managed" version="2.0.0.0" />
+      <dependency id="Microsoft.NETCore.UniversalWindowsPlatform" version="5.2.2" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="install.ps1" target="tools" /> 
+    <file src="bin\AnyCPU\LiveCharts.Uwp.dll" target="lib\uap10.0"/>
+    <file src="bin\AnyCPU\LiveCharts.Uwp.pdb" target="lib\uap10.0"/>    
+    <file src="bin\AnyCPU\LiveCharts.Uwp.xml" target="lib\uap10.0"/>
+    <file src="bin\AnyCPU\LiveCharts.Uwp.pri" target="lib\uap10.0"/>
+    <file src="bin\AnyCPU\LiveCharts.Uwp\*.*" target="lib\uap10.0\LiveCharts.Uwp"/>
+  </files>
+</package>

@@ -1,6 +1,6 @@
 //The MIT License(MIT)
 
-//copyright(c) 2016 Alberto Rodriguez
+//Copyright(c) 2016 Alberto Rodriguez & LiveCharts Contributors
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -21,10 +21,12 @@
 //SOFTWARE.
 
 using System.Windows;
-using System.Windows.Media;
 
 namespace LiveCharts.Wpf
 {
+    /// <summary>
+    /// Contains a collection of already defined axes.
+    /// </summary>
     public static class DefaultAxes
     {
         /// <summary>
@@ -71,27 +73,14 @@ namespace LiveCharts.Wpf
             }
         }
 
-        /// <summary>
-        /// Returns an axis that highlights zeros.
-        /// </summary>
-        public static AxesCollection HighlightZerosAxis
-        {
-            get
-            {
-                return new AxesCollection
-                {
-                    new Axis
-                    {
-                        IsEnabled = false,
-                        StrokeThickness = 3d,
-                        Stroke = new SolidColorBrush(Color.FromRgb(218, 218, 218)),
-                        Separator = CleanSeparator
-                    }
-                };
-            }
-        }
 
         //Returns a clean separator
+        /// <summary>
+        /// Gets the clean separator.
+        /// </summary>
+        /// <value>
+        /// The clean separator.
+        /// </value>
         public static Separator CleanSeparator
         {
             get

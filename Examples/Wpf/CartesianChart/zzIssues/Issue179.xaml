@@ -5,8 +5,9 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
              xmlns:cartesianChart="clr-namespace:Wpf.CartesianChart"
+             xmlns:zzIssues="clr-namespace:Wpf.CartesianChart.zzIssues"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300" d:DataContext="{d:DesignInstance cartesianChart:Issue179}">
+             d:DesignHeight="300" d:DesignWidth="300" d:DataContext="{d:DesignInstance zzIssues:Issue179}">
     <Grid>
         <Button Height="50" Width="50" VerticalAlignment="Top" HorizontalAlignment="Left" Panel.ZIndex="1"
                 Click="ButtonBase_OnClick">

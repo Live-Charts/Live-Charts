@@ -1,6 +1,6 @@
 ﻿//The MIT License(MIT)
 
-//copyright(c) 2016 Alberto Rodriguez
+//Copyright(c) 2016 Alberto Rodriguez & LiveCharts Contributors
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -23,38 +23,41 @@
 using System;
 using System.Diagnostics;
 using System.Windows.Threading;
+using LiveCharts.Dtos;
 using LiveCharts.Wpf.Charts.Base;
 
 namespace LiveCharts.Wpf.Components
 {
-    public class ChartUpdater : LiveCharts.ChartUpdater
+    internal class ChartUpdater : LiveCharts.ChartUpdater
     {
         public ChartUpdater(TimeSpan frequency)
         {
             Timer = new DispatcherTimer {Interval = frequency};
 
-            Timer.Tick += (sender, args) =>
-            {
-                UpdaterTick();
-            };
+            Timer.Tick += OnTimerOnTick;
+            Freq = frequency;
         }
 
         public DispatcherTimer Timer { get; set; }
+        private bool RequiresRestart { get; set; }
+        private TimeSpan Freq { get; set; }
 
         public override void Run(bool restartView = false, bool updateNow = false)
         {
-#if DEBUG
-            Debug.WriteLine("Updater run requested...");
-#endif
-            if (updateNow || Chart.View.IsMocked)
+            if (Timer == null)
             {
-#if DEBUG
-                Debug.WriteLine("Updater was forced.");
-#endif
-                UpdaterTick();
+                Timer = new DispatcherTimer {Interval = Freq};
+                Timer.Tick += OnTimerOnTick;
+                IsUpdating = false;
+            }
+
+            if (updateNow)
+            {
+                UpdaterTick(restartView, true);
                 return;
             }
 
+            RequiresRestart = restartView || RequiresRestart;
             if (IsUpdating) return;
 
             IsUpdating = true;
@@ -66,18 +69,29 @@ namespace LiveCharts.Wpf.Components
             Timer.Interval = freq;
         }
 
-        private void UpdaterTick()
+        public void OnTimerOnTick(object sender, EventArgs args)
+        {
+            UpdaterTick(RequiresRestart, false);
+        }
+
+        private void UpdaterTick(bool restartView, bool force)
         {
             var wpfChart = (Chart) Chart.View;
+            
+            if (!force && !wpfChart.IsVisible && !wpfChart.IsMocked) return;
 
-            Chart.ControlSize = new CoreSize(wpfChart.ActualWidth, wpfChart.ActualHeight);
+            Chart.ControlSize = wpfChart.IsMocked
+                ? wpfChart.Model.ControlSize
+                : new CoreSize(wpfChart.ActualWidth, wpfChart.ActualHeight);
+
             Timer.Stop();
-            Update();
+            Update(restartView, force);
             IsUpdating = false;
 
-#if DEBUG
-            Debug.WriteLine("Chart is updated");
-#endif
+            RequiresRestart = false;
+            
+            wpfChart.ChartUpdated();
+            wpfChart.PrepareScrolBar();
         }
     }
 }

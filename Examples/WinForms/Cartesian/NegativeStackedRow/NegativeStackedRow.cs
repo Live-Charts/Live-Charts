@@ -36,7 +36,12 @@ namespace Winforms.Cartesian.NegativeStackedRow
                 LabelFormatter = value => Math.Abs(value).ToString("P")
             });
             
-            cartesianChart1.DataTooltip.SelectionMode = TooltipSelectionMode.SharedYValues;
+            var tooltip = new DefaultTooltip
+            {
+                SelectionMode = TooltipSelectionMode.SharedYValues
+            };
+
+            cartesianChart1.DataTooltip = tooltip;
 
         }
     }

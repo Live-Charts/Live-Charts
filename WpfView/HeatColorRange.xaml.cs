@@ -1,6 +1,6 @@
 ﻿//The MIT License(MIT)
 
-//copyright(c) 2016 Alberto Rodriguez
+//Copyright(c) 2016 Alberto Rodriguez & LiveCharts Contributors
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -30,11 +30,18 @@ namespace LiveCharts.Wpf
     /// </summary>
     public partial class HeatColorRange
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="HeatColorRange"/> class.
+        /// </summary>
         public HeatColorRange()
         {
             InitializeComponent();
         }
 
+        /// <summary>
+        /// Updates the fill.
+        /// </summary>
+        /// <param name="stops">The stops.</param>
         public void UpdateFill(GradientStopCollection stops)
         {
             Background = new LinearGradientBrush
@@ -45,6 +52,11 @@ namespace LiveCharts.Wpf
             };
         }
 
+        /// <summary>
+        /// Sets the maximum.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <returns></returns>
         public double SetMax(string value)
         {
             MaxVal.Text = value;
@@ -52,6 +64,11 @@ namespace LiveCharts.Wpf
             return MaxVal.ActualWidth;
         }
 
+        /// <summary>
+        /// Sets the minimum.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <returns></returns>
         public double SetMin(string value)
         {
             MinVal.Text = value;

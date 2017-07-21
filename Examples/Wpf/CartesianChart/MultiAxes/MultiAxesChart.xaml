@@ -8,6 +8,11 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
+        <Grid.Resources>
+            <Style x:Key="CleanSeparator" TargetType="lvc:Separator">
+                <Setter Property="IsEnabled" Value="False"></Setter>
+            </Style>
+        </Grid.Resources>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
@@ -19,13 +24,21 @@
         <lvc:CartesianChart Grid.Row="2">
             <lvc:CartesianChart.AxisY>
                 <lvc:Axis Foreground="DodgerBlue" Title="Blue Axis"/>
-                <lvc:Axis Foreground="IndianRed" Title="Red Axis" Position="RightTop" Separator="{x:Static lvc:DefaultAxes.CleanSeparator}"/>
-                <lvc:Axis Foreground="DarkOliveGreen" Title="Green Axis" Position="RightTop" Separator="{x:Static lvc:DefaultAxes.CleanSeparator}"/>
+                <lvc:Axis Foreground="IndianRed" Title="Red Axis" Position="RightTop">
+                    <lvc:Axis.Separator>
+                        <lvc:Separator Style="{StaticResource CleanSeparator}"></lvc:Separator>
+                    </lvc:Axis.Separator>
+                </lvc:Axis>
+                <lvc:Axis Foreground="DarkOliveGreen" Title="Green Axis" Position="RightTop">
+                    <lvc:Axis.Separator>
+                        <lvc:Separator Style="{StaticResource CleanSeparator}"></lvc:Separator>
+                    </lvc:Axis.Separator>
+                </lvc:Axis>
             </lvc:CartesianChart.AxisY>
             <lvc:CartesianChart.Series>
                 <lvc:LineSeries Values="1,5,3,5,3" ScalesYAt="0"/> <!--Scales at blue axis, Axis[0]-->
-                <lvc:LineSeries Values="20,30,70,20,10"  ScalesYAt="1"/> <!--Scales at blue axis, Axis[1]-->
-                <lvc:LineSeries Values="600,300,200,600,800"  ScalesYAt="2"/> <!--Scales at blue axis, Axis[2]-->
+                <lvc:LineSeries Values="20,30,70,20,10"  ScalesYAt="1"/> <!--Scales at red axis, Axis[1]-->
+                <lvc:LineSeries Values="600,300,200,600,800"  ScalesYAt="2"/> <!--Scales at green axis, Axis[2]-->
             </lvc:CartesianChart.Series>
         </lvc:CartesianChart>
     </Grid>

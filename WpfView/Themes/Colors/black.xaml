@@ -1,0 +1,13 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:lvc="clr-namespace:LiveCharts.Wpf">
+
+    <lvc:ColorsCollection x:Key="ColorsCollection">
+        <Color A="255" R="15" G="15" B="15" />
+        <Color A="255" R="33" G="33" B="33" />
+        <Color A="255" R="48" G="48" B="48" />
+        <Color A="255" R="66" G="66" B="66" />
+        <Color A="255" R="84" G="84" B="84" />
+    </lvc:ColorsCollection>
+
+</ResourceDictionary>

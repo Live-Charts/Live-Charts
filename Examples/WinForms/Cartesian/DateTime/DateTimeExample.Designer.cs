@@ -1,4 +1,6 @@
-﻿namespace Winforms.Cartesian.DateTime
+﻿using System.Drawing;
+
+namespace Winforms.Cartesian.DateTime
 {
     partial class DateTimeExample
     {
@@ -28,6 +30,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.BackColor = Color.White;
             this.cartesianChart1 = new LiveCharts.WinForms.CartesianChart();
             this.SuspendLayout();
             // 

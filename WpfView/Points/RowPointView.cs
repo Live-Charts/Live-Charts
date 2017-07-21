@@ -1,6 +1,6 @@
 ﻿//The MIT License(MIT)
 
-//copyright(c) 2016 Alberto Rodriguez
+//Copyright(c) 2016 Alberto Rodriguez & LiveCharts Contributors
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -23,10 +23,12 @@
 using System;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
+using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using LiveCharts.Charts;
+using LiveCharts.Definitions.Points;
+using LiveCharts.Dtos;
 
 namespace LiveCharts.Wpf.Points
 {
@@ -35,7 +37,8 @@ namespace LiveCharts.Wpf.Points
         public Rectangle Rectangle { get; set; }
         public CoreRectangle Data { get; set; }
         public double ZeroReference  { get; set; }
-        public bool LabelInside { get; set; }
+        public BarLabelPosition LabelPosition { get; set; }
+        private RotateTransform Transform { get; set; }
 
         public override void DrawOrMove(ChartPoint previousDrawn, ChartPoint current, int index, ChartCore chart)
         {
@@ -46,16 +49,25 @@ namespace LiveCharts.Wpf.Points
 
                 Rectangle.Width = 0;
                 Rectangle.Height = Data.Height;
-
-                if (DataLabel != null)
-                {
-                    Canvas.SetTop(DataLabel, Data.Top);
-                    Canvas.SetLeft(DataLabel, ZeroReference);
-                }
             }
-          
+
+            if (DataLabel != null && double.IsNaN(Canvas.GetLeft(DataLabel)))
+            {
+                Canvas.SetTop(DataLabel, Data.Top);
+                Canvas.SetLeft(DataLabel, ZeroReference);
+            }
+
             Func<double> getY = () =>
             {
+                if (LabelPosition == BarLabelPosition.Perpendicular)
+                {
+                    if (Transform == null)
+                        Transform = new RotateTransform(270);
+
+                    DataLabel.RenderTransform = Transform;
+                    return Data.Top + Data.Height/2 + DataLabel.ActualWidth*.5;
+                }
+
                 var r = Data.Top + Data.Height / 2 - DataLabel.ActualHeight / 2;
 
                 if (r < 0) r = 2;
@@ -69,9 +81,15 @@ namespace LiveCharts.Wpf.Points
             {
                 double r;
 
-                if (LabelInside)
+#pragma warning disable 618
+                if (LabelPosition == BarLabelPosition.Parallel || LabelPosition == BarLabelPosition.Merged)
+#pragma warning restore 618
                 {
                     r = Data.Left + Data.Width/2 - DataLabel.ActualWidth/2;
+                }
+                else if (LabelPosition == BarLabelPosition.Perpendicular)
+                {
+                    r = Data.Left + Data.Width/2 - DataLabel.ActualHeight/2;
                 }
                 else
                 {
@@ -128,11 +146,13 @@ namespace LiveCharts.Wpf.Points
                 DataLabel.BeginAnimation(Canvas.TopProperty, new DoubleAnimation(getY(), animSpeed));
             }
 
-            Canvas.SetTop(Rectangle, Data.Top);
+            Rectangle.BeginAnimation(Canvas.TopProperty, 
+                new DoubleAnimation(Data.Top, animSpeed));
             Rectangle.BeginAnimation(Canvas.LeftProperty,
                 new DoubleAnimation(Data.Left, animSpeed));
 
-            Rectangle.Height = Data.Height;
+            Rectangle.BeginAnimation(FrameworkElement.HeightProperty, 
+                new DoubleAnimation(Data.Height, animSpeed));
             Rectangle.BeginAnimation(FrameworkElement.WidthProperty,
                 new DoubleAnimation(Data.Width, animSpeed));
 
@@ -161,12 +181,16 @@ namespace LiveCharts.Wpf.Points
 
         public override void OnHoverLeave(ChartPoint point)
         {
-            BindingOperations.SetBinding(Rectangle, Shape.FillProperty,
-                new Binding
-                {
-                    Path = new PropertyPath(Series.Series.FillProperty),
-                    Source = ((Series.Series)point.SeriesView)
-                });
+            if (Rectangle == null) return;
+
+            if (point.Fill != null)
+            {
+                Rectangle.Fill = (Brush)point.Fill;
+            }
+            else
+            {
+                Rectangle.Fill = ((Series) point.SeriesView).Fill;
+            }
         }
     }
 }

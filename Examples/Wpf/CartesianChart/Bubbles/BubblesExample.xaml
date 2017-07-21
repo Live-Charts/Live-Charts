@@ -10,20 +10,12 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
-        <TextBlock Grid.Row="0">
-            <Bold>New in 0.7.0</Bold> Bubble and scatter series.
-        </TextBlock>
-        <Button Grid.Row="1" Height="30" Click="UpdateAllOnClick">
+        <Button Grid.Row="0" Click="UpdateAllOnClick">
             Move All
         </Button>
-        <lvc:CartesianChart Grid.Row="2" Series="{Binding SeriesCollection}">
-            <lvc:CartesianChart.DataTooltip>
-                <!--The selection mode property sould be done automaticaly in future versions!-->
-                <lvc:DefaultTooltip SelectionMode="OnlySender"></lvc:DefaultTooltip>
-            </lvc:CartesianChart.DataTooltip>
+        <lvc:CartesianChart Grid.Row="1" Series="{Binding SeriesCollection}">
         </lvc:CartesianChart>
     </Grid>
 </UserControl>

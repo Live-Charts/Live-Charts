@@ -1,0 +1,16 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:lvc="clr-namespace:LiveCharts.Uwp">
+
+    <lvc:ColorsCollection x:Key="ColorsCollection">
+        <Color>#FF2D89EF</Color>
+        <Color>#FFEE1111</Color>
+        <Color>#FFFFC40D</Color>
+        <Color>#FF00ABA9</Color>
+        <Color>#FFFF0097</Color>
+        <Color>#FF00A300</Color>
+        <Color>#FFDA532C</Color>
+        <Color>#FF2B5797</Color>
+    </lvc:ColorsCollection>
+
+</ResourceDictionary>

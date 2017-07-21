@@ -15,7 +15,6 @@ using System.Windows.Shapes;
 using LiveCharts;
 using LiveCharts.Defaults;
 using LiveCharts.Wpf;
-using LiveCharts.Wpf.Series;
 
 namespace Wpf.CartesianChart
 {

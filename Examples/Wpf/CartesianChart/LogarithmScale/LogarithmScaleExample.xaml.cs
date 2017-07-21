@@ -13,9 +13,13 @@ namespace Wpf.CartesianChart.LogarithmScale
         {
             InitializeComponent();
 
-            SeriesCollection = new SeriesCollection(Mappers.Xy<ObservablePoint>()
-                .X(point => Math.Log10(point.X))
-                .Y(point => point.Y))
+            Base = 10;
+
+            var mapper = Mappers.Xy<ObservablePoint>()
+                .X(point => Math.Log(point.X, Base)) //a 10 base log scale in the X axis
+                .Y(point => point.Y);
+
+            SeriesCollection =  new SeriesCollection(mapper)
             {
                 new LineSeries
                 {
@@ -33,13 +37,14 @@ namespace Wpf.CartesianChart.LogarithmScale
                 }
             };
 
-            Formatter = value => Math.Pow(10, value).ToString("N");
+            Formatter = value => Math.Pow(Base, value).ToString("N");
 
             DataContext = this;
         }
 
         public SeriesCollection SeriesCollection { get; set; }
         public Func<double, string> Formatter { get; set; }
+        public double Base { get; set; }
 
     }
 }

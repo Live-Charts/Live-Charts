@@ -25,6 +25,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Windows.Data;
+using System.Windows.Media;
 
 namespace LiveCharts.Wpf.Components
 {
@@ -40,20 +41,21 @@ namespace LiveCharts.Wpf.Components
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var series = value as IEnumerable<Series.Series>;
+            var series = value as IEnumerable<Series>;
             if (series != null)
                 return series.Select(x => new SeriesViewModel
                 {
 
                 });
 
-            var serie = value as Series.Series;
+            var serie = value as Series;
             if (serie != null)
                 return new SeriesViewModel
                 {
                     Title = serie.Title,
                     Stroke = serie.Stroke,
-                    Fill = serie.Fill
+                    Fill = serie.Fill,
+                    PointGeometry = serie.PointGeometry ?? Geometry.Parse("M 0,0.5 h 1,0.5 Z")
                 };
 
             return value;

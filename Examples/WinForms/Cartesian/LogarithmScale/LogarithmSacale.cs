@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
+using System.Windows.Media;
 using LiveCharts;
 using LiveCharts.Configurations;
 using LiveCharts.Defaults;
@@ -33,9 +34,14 @@ namespace Winforms.Cartesian.LogarithmScale
                 }
             };
 
-            cartesianChart1.AxisX.Add(new Axis
+            cartesianChart1.AxisX.Add(new LogarithmicAxis
             {
-                LabelFormatter = value => Math.Pow(10, value).ToString("N")
+                LabelFormatter = value => Math.Pow(10, value).ToString("N"),
+                Base = 10,
+                Separator = new Separator
+                {
+                    Stroke = Brushes.LightGray
+                }
             });
 
         }

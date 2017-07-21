@@ -7,9 +7,6 @@ using LiveCharts.Wpf;
 
 namespace Wpf.CartesianChart.Using_DateTime
 {
-    /// <summary>
-    /// Interaction logic for UserControl.xaml
-    /// </summary>
     public partial class DateTime : UserControl
     {
         public DateTime()

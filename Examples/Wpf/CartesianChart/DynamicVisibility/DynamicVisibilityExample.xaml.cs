@@ -1,13 +1,8 @@
 ﻿using System.ComponentModel;
-using System.Runtime.CompilerServices;
 using System.Windows.Controls;
-using Wpf.Annotations;
 
 namespace Wpf.CartesianChart.DynamicVisibility
 {
-    /// <summary>
-    /// Interaction logic for DynamicVisibility.xaml
-    /// </summary>
     public partial class DynamicVisibilityExample : UserControl, INotifyPropertyChanged
     {
         private bool _mariaSeriesVisibility;
@@ -20,7 +15,7 @@ namespace Wpf.CartesianChart.DynamicVisibility
 
             MariaSeriesVisibility = true;
             CharlesSeriesVisibility = true;
-            JohnSeriesVisibility = true;
+            JohnSeriesVisibility = false;
 
             DataContext = this;
         }
@@ -57,7 +52,6 @@ namespace Wpf.CartesianChart.DynamicVisibility
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged(string propertyName = null)
         {
             if (PropertyChanged != null)

@@ -36,7 +36,7 @@ namespace Winforms.Cartesian.ConstantChanges
                 new LineSeries
                 {
                     Values = ChartValues,
-                    PointDiameter = 18,
+                    PointGeometrySize = 18,
                     StrokeThickness = 4
                 }
             };

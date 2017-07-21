@@ -1,6 +1,6 @@
 ﻿//The MIT License(MIT)
 
-//copyright(c) 2016 Alberto Rodriguez
+//Copyright(c) 2016 Alberto Rodriguez & LiveCharts Contributors
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -25,6 +25,7 @@ using System.Windows.Controls;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using LiveCharts.Charts;
+using LiveCharts.Definitions.Points;
 
 namespace LiveCharts.Wpf.Points
 {
@@ -69,6 +70,12 @@ namespace LiveCharts.Wpf.Points
                 }
             }
 
+            if (DataLabel != null && double.IsNaN(Canvas.GetLeft(DataLabel)))
+            {
+                Canvas.SetTop(DataLabel, current.ChartLocation.Y);
+                Canvas.SetLeft(DataLabel, current.ChartLocation.X);
+            }
+
             if (HoverShape != null)
             {
                 var h = Math.Abs(High - Low);
@@ -82,12 +89,18 @@ namespace LiveCharts.Wpf.Points
             {
                 HighToLowLine.Y1 = High;
                 HighToLowLine.Y2 = Low;
+                HighToLowLine.X1 = center;
+                HighToLowLine.X2 = center;
 
                 OpenLine.Y1 = Open;
                 OpenLine.Y2 = Open;
+                OpenLine.X1 = Left;
+                OpenLine.X2 = center;
 
                 CloseLine.Y1 = Close;
                 CloseLine.Y2 = Close;
+                CloseLine.X1 = center;
+                CloseLine.X2 = Left;
 
                 if (DataLabel != null)
                 {
@@ -116,12 +129,12 @@ namespace LiveCharts.Wpf.Points
                 DataLabel.BeginAnimation(Canvas.TopProperty, new DoubleAnimation(cy, animSpeed));
             }
 
-            HighToLowLine.X1 = center;
-            HighToLowLine.X2 = center;
-            OpenLine.X1 = Left;
-            OpenLine.X2 = center;
-            CloseLine.X1 = center;
-            CloseLine.X2 = Left + Width;
+            HighToLowLine.BeginAnimation(Line.X1Property, new DoubleAnimation(center, animSpeed));
+            HighToLowLine.BeginAnimation(Line.X2Property, new DoubleAnimation(center, animSpeed));
+            OpenLine.BeginAnimation(Line.X1Property, new DoubleAnimation(Left, animSpeed));
+            OpenLine.BeginAnimation(Line.X2Property, new DoubleAnimation(center, animSpeed));
+            CloseLine.BeginAnimation(Line.X1Property, new DoubleAnimation(center, animSpeed));
+            CloseLine.BeginAnimation(Line.X2Property, new DoubleAnimation(Left + Width, animSpeed));
 
             HighToLowLine.BeginAnimation(Line.Y1Property, new DoubleAnimation(High, animSpeed));
             HighToLowLine.BeginAnimation(Line.Y2Property, new DoubleAnimation(Low, animSpeed));
@@ -142,6 +155,8 @@ namespace LiveCharts.Wpf.Points
 
         protected double CorrectXLabel(double desiredPosition, ChartCore chart)
         {
+            if (desiredPosition + DataLabel.ActualWidth * .5 < -0.1) return -DataLabel.ActualWidth;
+
             if (desiredPosition + DataLabel.ActualWidth > chart.DrawMargin.Width)
                 desiredPosition -= desiredPosition + DataLabel.ActualWidth - chart.DrawMargin.Width + 2;
 
@@ -152,8 +167,6 @@ namespace LiveCharts.Wpf.Points
 
         protected double CorrectYLabel(double desiredPosition, ChartCore chart)
         {
-            //desiredPosition -= Ellipse.ActualHeight * .5 + DataLabel.ActualHeight * .5 + 2;
-
             if (desiredPosition + DataLabel.ActualHeight > chart.DrawMargin.Height)
                 desiredPosition -= desiredPosition + DataLabel.ActualHeight - chart.DrawMargin.Height + 2;
 

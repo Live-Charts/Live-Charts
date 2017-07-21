@@ -1,6 +1,6 @@
 ﻿//The MIT License(MIT)
 
-//copyright(c) 2016 Alberto Rodriguez
+//Copyright(c) 2016 Alberto Rodriguez & LiveCharts Contributors
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -25,14 +25,20 @@ using LiveCharts.Helpers;
 
 namespace LiveCharts.Wpf
 {
+    /// <summary>
+    /// The SectionsCollection class holds a collection of Axis.Sections
+    /// </summary>
     public class SectionsCollection : NoisyCollection<AxisSection>
     {
+        /// <summary>
+        /// Initializes a new instance of SectionsCollection instance
+        /// </summary>
         public SectionsCollection()
         {
-            CollectionChanged += OnCollectionChanged;
+            NoisyCollectionChanged += OnNoisyCollectionChanged;
         }
 
-        private static void OnCollectionChanged(IEnumerable<AxisSection> oldItems, IEnumerable<AxisSection> newItems)
+        private static void OnNoisyCollectionChanged(IEnumerable<AxisSection> oldItems, IEnumerable<AxisSection> newItems)
         {
             if (oldItems == null) return;
 

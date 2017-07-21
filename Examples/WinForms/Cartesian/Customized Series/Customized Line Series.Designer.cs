@@ -42,10 +42,11 @@ namespace Winforms.Cartesian.Customized_Series
             this.cartesianChart1.TabIndex = 0;
             this.cartesianChart1.Text = "cartesianChart1";
             // 
-            // CustomizedLineSeries
+            // CustomizedSeries
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(665, 441);
             this.Controls.Add(this.cartesianChart1);
             this.Name = "CustomizedSeries";

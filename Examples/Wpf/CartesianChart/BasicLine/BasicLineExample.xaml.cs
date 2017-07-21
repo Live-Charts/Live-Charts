@@ -28,14 +28,14 @@ namespace Wpf.CartesianChart.BasicLine
             Labels = new[] {"Jan", "Feb", "Mar", "Apr", "May"};
             YFormatter = value => value.ToString("C");
 
-            //modifing the series collection will animate and update the chart
+            //modifying the series collection will animate and update the chart
             SeriesCollection.Add(new LineSeries
             {
                 Values = new ChartValues<double> {5, 3, 2, 4},
-                LineSmoothness = 0 //rect lines, 1 really smooth lines
+                LineSmoothness = 0 //straight lines, 1 really smooth lines
             });
 
-            //modifing any series values will also animate and update the chart
+            //modifying any series values will also animate and update the chart
             SeriesCollection[2].Values.Add(5d);
 
             DataContext = this;

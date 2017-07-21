@@ -1,0 +1,52 @@
+﻿<UserControl x:Class="Wpf.CartesianChart.WindowAxis.WindowAxisExample"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Wpf.CartesianChart.WindowAxis"
+             xmlns:wpf="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <Grid>
+        <Grid.RowDefinitions>
+
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <TextBlock Background="#FFC107" HorizontalAlignment="Right" Padding="10 5" FontWeight="Bold">Experimental</TextBlock>
+        
+        <StackPanel Grid.Row="1">
+        </StackPanel>
+
+        <wpf:CartesianChart Zoom="X" Grid.Row="4" DisableAnimations="False" Series="{Binding SeriesCollection}">
+            <wpf:CartesianChart.AxisX>
+                <wpf:WindowAxis
+                    MinValue="1970"
+                    MaxValue="1990"
+                    LabelsRotation="45"
+                    Foreground="DarkSlateBlue"
+                    HeaderForeground="OrangeRed"
+                    ShowLabels="True">
+                    <wpf:WindowAxis.Windows>
+                        <local:PresidentWindow/>
+                        <local:OtherWindow/>
+                    </wpf:WindowAxis.Windows>
+                    <wpf:WindowAxis.Separator>
+                        <wpf:Separator StrokeThickness="10" Stroke="Black"/>
+                    </wpf:WindowAxis.Separator>
+                </wpf:WindowAxis>
+            </wpf:CartesianChart.AxisX>
+            <wpf:CartesianChart.AxisY>
+                <wpf:Axis MinValue="0" MaxValue="300000000"></wpf:Axis>
+            </wpf:CartesianChart.AxisY>
+        </wpf:CartesianChart>
+
+    </Grid>
+</UserControl>
+
+
+

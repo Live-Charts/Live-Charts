@@ -1,23 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
-using System.Windows.Shapes;
 using LiveCharts;
 using LiveCharts.Defaults;
 using LiveCharts.Wpf;
 
-namespace Wpf.CartesianChart
+namespace Wpf.CartesianChart.MixingSeries
 {
     /// <summary>
     /// Interaction logic for MixingSeries.xaml
@@ -35,19 +27,20 @@ namespace Wpf.CartesianChart
                     new ObservableValue(5),
                     new ObservableValue(7),
                     new ObservableValue(2),
-                    new ObservableValue(3),
+                    new ObservableValue(3)
                 },
-                Fill = Brushes.Transparent
+                PointForeground = new SolidColorBrush(Color.FromRgb(50,50,50)),
+                AreaLimit = 0
             };
 
-            BubbleSeries = new BubbleSeries
+            ScatterSeries = new ScatterSeries
             {
-                Values = new ChartValues<BubblePoint>
+                Values = new ChartValues<ScatterPoint>
                 {
-                    new BubblePoint(0, 2, 10),
-                    new BubblePoint(1, 1, 2),
-                    new BubblePoint(2, 3, 7),
-                    new BubblePoint(3, 4, 9)
+                    new ScatterPoint(0, 2, 10),
+                    new ScatterPoint(1, 1, 2),
+                    new ScatterPoint(2, 3, 7),
+                    new ScatterPoint(3, 4, 9)
                 }
             };
 
@@ -58,21 +51,21 @@ namespace Wpf.CartesianChart
                     new ObservableValue(5),
                     new ObservableValue(7),
                     new ObservableValue(2),
-                    new ObservableValue(3),
+                    new ObservableValue(3)
                 }
             };
 
             SeriesCollection = new SeriesCollection
             {
                 LineSeries,
-                BubbleSeries,
+                ScatterSeries,
                 ColumnSeries
             };
 
             DataContext = this;
         }
 
-        public LiveCharts.Wpf.BubbleSeries BubbleSeries { get; set; }
+        public ScatterSeries ScatterSeries { get; set; }
         public LineSeries LineSeries { get; set; }
         public ColumnSeries ColumnSeries { get; set; }
         public SeriesCollection SeriesCollection { get; set; }
@@ -96,7 +89,7 @@ namespace Wpf.CartesianChart
                 value.Value = r.Next(-20, 20);
             }
             var i = 0;
-            foreach (var value in BubbleSeries.Values.Cast<BubblePoint>())
+            foreach (var value in ScatterSeries.Values.Cast<ScatterPoint>())
             {
                 value.X = i;
                 value.Y = r.Next(-20, 20);

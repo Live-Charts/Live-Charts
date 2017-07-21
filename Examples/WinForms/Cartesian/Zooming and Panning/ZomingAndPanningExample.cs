@@ -36,7 +36,7 @@ namespace Winforms.Cartesian.Zooming_and_Panning
                 Values = GetData(),
                 Fill = gradientBrush,
                 StrokeThickness = 1,
-                PointDiameter = 0
+                PointGeometry = null
             });
 
             cartesianChart1.Zoom = ZoomingOptions.X;
@@ -67,6 +67,21 @@ namespace Winforms.Cartesian.Zooming_and_Panning
             }
 
             return values;
+        }
+
+        private void ClearZoom()
+        {
+            //to clear the current zoom/pan just set the axis limits to double.NaN
+
+            cartesianChart1.AxisX[0].MinValue = double.NaN;
+            cartesianChart1.AxisX[0].MaxValue = double.NaN;
+            cartesianChart1.AxisY[0].MinValue = double.NaN;
+            cartesianChart1.AxisY[0].MaxValue = double.NaN;
+        }
+
+        private void ZomingAndPanningExample_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

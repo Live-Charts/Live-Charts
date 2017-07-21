@@ -153,17 +153,6 @@ namespace Wpf.Annotations
   /// <item><c>SetProperty(ref myField, value, "Property")</c></item>
   /// </list>
   /// </example>
-  [AttributeUsage(AttributeTargets.Method)]
-  public sealed class NotifyPropertyChangedInvocatorAttribute : Attribute
-  {
-    public NotifyPropertyChangedInvocatorAttribute() { }
-    public NotifyPropertyChangedInvocatorAttribute(string parameterName)
-    {
-      ParameterName = parameterName;
-    }
-
-    public string ParameterName { get; private set; }
-  }
 
   /// <summary>
   /// Describes dependency between method input and output.

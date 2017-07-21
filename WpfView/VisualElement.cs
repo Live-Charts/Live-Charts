@@ -1,6 +1,6 @@
 ﻿//The MIT License(MIT)
 
-//copyright(c) 2016 Alberto Rodriguez
+//Copyright(c) 2016 Alberto Rodriguez & LiveCharts Contributors
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -24,58 +24,91 @@ using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Animation;
-using LiveCharts.Wpf.Charts.Base;
+using LiveCharts.Charts;
+using LiveCharts.Definitions.Charts;
+using LiveCharts.Dtos;
 
 namespace LiveCharts.Wpf
 {
+    /// <summary>
+    /// Defines a visual element, a visual element is a UI element that is placed and scaled in the chart.
+    /// </summary>
     public class VisualElement : FrameworkElement, ICartesianVisualElement
     {
+        private ChartCore _owner;
+
         // ReSharper disable once InconsistentNaming
+        /// <summary>
+        /// Gets or sets the user interface element.
+        /// </summary>
         public FrameworkElement UIElement { get; set; }
-        public IChartView Chart { get; set; }
-        public bool RequiresAdd { get; set; }
+        /// <summary>
+        /// Gets or sets the index of the axis in X that owns the element, the axis position must exist.
+        /// </summary>
         public int AxisX { get; set; }
+        /// <summary>
+        /// Gets or sets the index of the axis in Y that owns the element, the axis position must exist.
+        /// </summary>
         public int AxisY { get; set; }
 
+        /// <summary>
+        /// The x property
+        /// </summary>
         public static readonly DependencyProperty XProperty = DependencyProperty.Register(
             "X", typeof (double), typeof (VisualElement), 
             new PropertyMetadata(default(double), PropertyChangedCallback));
-
+        /// <summary>
+        /// Gets or sets the X value of the UiElement
+        /// </summary>
         public double X
         {
             get { return (double) GetValue(XProperty); }
             set { SetValue(XProperty, value); }
         }
 
+        /// <summary>
+        /// The y property
+        /// </summary>
         public static readonly DependencyProperty YProperty = DependencyProperty.Register(
             "Y", typeof (double), typeof (VisualElement), 
             new PropertyMetadata(default(double), PropertyChangedCallback));
-
+        /// <summary>
+        /// Gets or sets the Y value of the UiElement
+        /// </summary>
         public double Y
         {
             get { return (double) GetValue(YProperty); }
             set { SetValue(YProperty, value); }
         }
 
-        public void AddOrMove()
+        /// <summary>
+        /// Adds the or move.
+        /// </summary>
+        /// <param name="chart">The chart.</param>
+        /// <exception cref="System.ArgumentOutOfRangeException">
+        /// </exception>
+        public void AddOrMove(ChartCore chart)
         {
+            if (chart == null || UIElement == null) return;
+            if (!chart.AreComponentsLoaded) return;
+
             if (UIElement.Parent == null)
             {
-                Chart.AddToDrawMargin(UIElement);
+                chart.View.AddToDrawMargin(UIElement);
                 Panel.SetZIndex(UIElement, 1000);
             }
 
-            var coordinate = new CorePoint(ChartFunctions.ToDrawMargin(X, AxisTags.X, Chart.Model, AxisX),
-                ChartFunctions.ToDrawMargin(Y, AxisTags.Y, Chart.Model, AxisY));
+            var coordinate = new CorePoint(ChartFunctions.ToDrawMargin(X, AxisOrientation.X, chart, AxisX),
+                ChartFunctions.ToDrawMargin(Y, AxisOrientation.Y, chart.View.Model, AxisY));
 
-            var wpfChart = (CartesianChart) Chart;
+            var wpfChart = (CartesianChart) chart.View;
 
             var uw = new CorePoint(
                 wpfChart.AxisX[AxisX].Model.EvaluatesUnitWidth
-                    ? ChartFunctions.GetUnitWidth(AxisTags.X, Chart.Model, AxisX)/2
+                    ? ChartFunctions.GetUnitWidth(AxisOrientation.X, chart, AxisX)/2
                     : 0,
                 wpfChart.AxisY[AxisY].Model.EvaluatesUnitWidth
-                    ? ChartFunctions.GetUnitWidth(AxisTags.Y, Chart.Model, AxisY)/2
+                    ? ChartFunctions.GetUnitWidth(AxisOrientation.Y, chart, AxisY)/2
                     : 0);
 
             coordinate += uw;
@@ -116,7 +149,7 @@ namespace LiveCharts.Wpf
                     throw new ArgumentOutOfRangeException();
             }
 
-            if (Chart.DisableAnimations)
+            if (chart.View.DisableAnimations)
             {
                 Canvas.SetLeft(UIElement, coordinate.X);
                 Canvas.SetTop(UIElement, coordinate.Y);
@@ -131,18 +164,23 @@ namespace LiveCharts.Wpf
                 UIElement.BeginAnimation(Canvas.LeftProperty, new DoubleAnimation(coordinate.X, wpfChart.AnimationsSpeed));
                 UIElement.BeginAnimation(Canvas.TopProperty, new DoubleAnimation(coordinate.Y, wpfChart.AnimationsSpeed));
             }
+
+            _owner = chart;
         }
 
-        public void Remove()
+        /// <summary>
+        /// Removes the specified chart.
+        /// </summary>
+        /// <param name="chart">The chart.</param>
+        public void Remove(ChartCore chart)
         {
-            Chart.RemoveFromView(UIElement);
+            chart.View.RemoveFromDrawMargin(UIElement);
         }
 
         private static void PropertyChangedCallback(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
         {
-            var wpfChart = dependencyObject as Chart;
-            if (wpfChart == null) return;
-            if (wpfChart.Model != null) wpfChart.Model.Updater.Run();
+            var element = (VisualElement) dependencyObject;
+            if (element._owner != null) element.AddOrMove(element._owner);
         }
     }
 }

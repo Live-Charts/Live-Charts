@@ -1,0 +1,56 @@
+﻿<Page
+    x:Class="UWP.CartesianChart.UIElements.UIElementsExample"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:UWP.CartesianChart.UIElements"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:lvc="using:LiveCharts.Uwp"
+    mc:Ignorable="d">
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <lvc:CartesianChart Grid.Row="1" x:Name="Chart">
+            <lvc:CartesianChart.Series>
+                <lvc:LineSeries Values="{Binding Values1}" Fill="Transparent" StrokeThickness="4" 
+                                Canvas.ZIndex="2" PointGeometry="{x:Null}"/>
+                <lvc:ColumnSeries Values="{Binding Values2}" Canvas.ZIndex="1"/>
+            </lvc:CartesianChart.Series>
+            <lvc:CartesianChart.VisualElements>
+                <lvc:VisualElement X="0.5" Y="7" 
+                                   HorizontalAlignment="Center" VerticalAlignment="Top">
+                    <lvc:VisualElement.UIElement>
+                        <TextBlock FontWeight="Bold" FontSize="16" Opacity=".6">
+                           Warning!
+                        </TextBlock>
+                    </lvc:VisualElement.UIElement>
+                </lvc:VisualElement>
+                <lvc:VisualElement X="0.5" Y="6.9" 
+                                   HorizontalAlignment="Center" VerticalAlignment="Bottom">
+                    <lvc:VisualElement.UIElement>
+                        <Image Source="warning.png" Height="24" Width="24"></Image>
+                    </lvc:VisualElement.UIElement>
+                </lvc:VisualElement>
+            </lvc:CartesianChart.VisualElements>
+            <lvc:CartesianChart.AxisY>
+                <lvc:Axis IsMerged="True">
+                    <lvc:Axis.Sections>
+                        <lvc:AxisSection Value="7" 
+                                         Stroke="YellowGreen" 
+                                         StrokeThickness="3"/>
+                    </lvc:Axis.Sections>
+                </lvc:Axis>
+            </lvc:CartesianChart.AxisY>
+            <lvc:CartesianChart.AxisX>
+                <lvc:Axis Labels="{x:Bind Labels}">
+                    <lvc:Axis.Separator>
+                        <lvc:Separator Step="1"/>
+                    </lvc:Axis.Separator>
+                </lvc:Axis>
+            </lvc:CartesianChart.AxisX>
+        </lvc:CartesianChart>
+    </Grid>
+</Page>
