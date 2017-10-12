@@ -30,6 +30,7 @@ using LiveCharts.Definitions.Charts;
 using LiveCharts.Dtos;
 using LiveCharts.Helpers;
 using LiveCharts.Wpf.Charts.Base;
+using System.Diagnostics;
 
 namespace LiveCharts.Wpf
 {
@@ -389,9 +390,10 @@ namespace LiveCharts.Wpf
         /// </summary>
         public void Remove()
         {
-            Model.Chart.View.RemoveFromView(this);
-            Model.Chart.View.RemoveFromDrawMargin(_rectangle);
             Model.Chart.View.RemoveFromDrawMargin(_label);
+            Model.Chart.View.RemoveFromView(_label);
+            Model.Chart.View.RemoveFromDrawMargin(_rectangle);
+            Model.Chart.View.RemoveFromView(this);
         }
 
         /// <summary>
