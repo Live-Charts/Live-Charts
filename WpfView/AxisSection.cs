@@ -30,7 +30,6 @@ using LiveCharts.Definitions.Charts;
 using LiveCharts.Dtos;
 using LiveCharts.Helpers;
 using LiveCharts.Wpf.Charts.Base;
-using System.Diagnostics;
 
 namespace LiveCharts.Wpf
 {
