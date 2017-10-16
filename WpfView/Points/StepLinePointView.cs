@@ -70,7 +70,7 @@ namespace LiveCharts.Wpf.Points
                                       
                 }
 
-                if (index == current.SeriesView.Values.Count - 1)
+                if (((StepLineSeries)current.SeriesView).ContinueLastLine && index == current.SeriesView.Values.Count - 1)
                 {
                     Line3.Visibility = System.Windows.Visibility.Visible;
                     Line3.X1 = current.ChartLocation.X;
@@ -132,7 +132,7 @@ namespace LiveCharts.Wpf.Points
                    
                 }
 
-                if (index == current.SeriesView.Values.Count - 1)
+                if (((StepLineSeries)current.SeriesView).ContinueLastLine && index == current.SeriesView.Values.Count - 1)
                 {
                     Line3.Visibility = System.Windows.Visibility.Visible;
                     Line3.X1 = current.ChartLocation.X;
@@ -207,7 +207,7 @@ namespace LiveCharts.Wpf.Points
                 
             }
 
-            if (index == current.SeriesView.Values.Count - 1)
+            if (((StepLineSeries)current.SeriesView).ContinueLastLine &&  index == current.SeriesView.Values.Count - 1)
             {
                 Line3.Visibility = System.Windows.Visibility.Visible;
                 Line3.BeginAnimation(Line.X1Property,

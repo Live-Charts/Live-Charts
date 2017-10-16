@@ -133,6 +133,17 @@ namespace LiveCharts.Wpf
             set { SetValue(InvertedModeProperty, value); }
         }
 
+        public bool ContinueLastLine
+        {
+            get { return (bool)GetValue(ContinueLastLineProperty); }
+            set { SetValue(ContinueLastLineProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for ContinueLastLine.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty ContinueLastLineProperty =
+            DependencyProperty.Register("ContinueLastLine", typeof(bool), typeof(StepLineSeries), new PropertyMetadata(false, CallChartUpdater()));
+
+
         #endregion
 
         #region Overridden Methods
