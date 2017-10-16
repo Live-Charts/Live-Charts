@@ -152,8 +152,8 @@ namespace LiveCharts.Wpf
                 pbv = new StepLinePointView
                 {
                     IsNew = true,
-                    Line2 = new Line(),
-                    Line1 = new Line()
+                    Line2 = new Line() { StrokeLineJoin = PenLineJoin.Miter , StrokeEndLineCap = PenLineCap.Square , StrokeStartLineCap = PenLineCap.Square },
+                    Line1 = new Line() { StrokeLineJoin = PenLineJoin.Miter, StrokeEndLineCap = PenLineCap.Square, StrokeStartLineCap = PenLineCap.Square }
                 };
 
                 Model.Chart.View.AddToDrawMargin(pbv.Line2);
