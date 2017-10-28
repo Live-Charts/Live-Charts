@@ -75,34 +75,8 @@ namespace LiveCharts.Wpf.Points
                 Canvas.SetTop(HoverShape, High);
             }
 
-            if (chart.View.DisableAnimations)
-            {
-                HighToLowLine.Y1 = High;
-                HighToLowLine.Y2 = Low;
-                HighToLowLine.X1 = center;
-                HighToLowLine.X2 = center;
 
-                OpenToCloseRectangle.Width = Width;
-                OpenToCloseRectangle.Height = Math.Abs(Open - Close);
-
-                Canvas.SetTop(OpenToCloseRectangle, Math.Min(Open, Close));
-                Canvas.SetLeft(OpenToCloseRectangle, Left);
-
-                if (DataLabel != null)
-                {
-                    DataLabel.UpdateLayout();
-
-                    var cx = CorrectXLabel(current.ChartLocation.X - DataLabel.ActualHeight * .5, chart);
-                    var cy = CorrectYLabel(current.ChartLocation.Y - DataLabel.ActualWidth * .5, chart);
-
-                    Canvas.SetTop(DataLabel, cy);
-                    Canvas.SetLeft(DataLabel, cx);
-                }
-
-                return;
-            }
-
-            var candleSeries = (CandleSeries) current.SeriesView;
+            var candleSeries = (CandleSeries)current.SeriesView;
 
             if (candleSeries.ColoringRules == null)
             {
@@ -132,6 +106,36 @@ namespace LiveCharts.Wpf.Points
                     break;
                 }
             }
+
+
+            if (chart.View.DisableAnimations)
+            {
+                HighToLowLine.Y1 = High;
+                HighToLowLine.Y2 = Low;
+                HighToLowLine.X1 = center;
+                HighToLowLine.X2 = center;
+
+                OpenToCloseRectangle.Width = Width;
+                OpenToCloseRectangle.Height = Math.Abs(Open - Close);
+
+                Canvas.SetTop(OpenToCloseRectangle, Math.Min(Open, Close));
+                Canvas.SetLeft(OpenToCloseRectangle, Left);
+
+                if (DataLabel != null)
+                {
+                    DataLabel.UpdateLayout();
+
+                    var cx = CorrectXLabel(current.ChartLocation.X - DataLabel.ActualHeight * .5, chart);
+                    var cy = CorrectYLabel(current.ChartLocation.Y - DataLabel.ActualWidth * .5, chart);
+
+                    Canvas.SetTop(DataLabel, cy);
+                    Canvas.SetLeft(DataLabel, cx);
+                }
+
+                return;
+            }
+
+            
 
             var animSpeed = chart.View.AnimationsSpeed;
 

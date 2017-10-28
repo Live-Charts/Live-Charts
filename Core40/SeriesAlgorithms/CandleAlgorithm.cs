@@ -68,6 +68,8 @@ namespace LiveCharts.SeriesAlgorithms
                 candleWidth = totalSpace;
             }
 
+            ChartPoint previousDrawn = null;
+
             foreach (var chartPoint in View.ActualValues.GetPoints(View))
             {
                 var x = ChartFunctions.ToDrawMargin(chartPoint.X, AxisOrientation.X, Chart, View.ScalesXAt);
@@ -90,7 +92,9 @@ namespace LiveCharts.SeriesAlgorithms
 
                 chartPoint.ChartLocation = new CorePoint(x + exceed/2, (candeView.High + candeView.Low)/2);
 
-                chartPoint.View.DrawOrMove(null, chartPoint, 0, Chart);
+                chartPoint.View.DrawOrMove(previousDrawn, chartPoint, 0, Chart);
+
+                previousDrawn = chartPoint;
             }
         }
 
