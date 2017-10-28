@@ -25,9 +25,9 @@ namespace LiveCharts.Definitions.Series
     /// <summary>
     /// 
     /// </summary>
-    /// <seealso cref="LiveCharts.Definitions.Series.ISeriesView" />
+    /// <seealso cref="LiveCharts.Definitions.Series.IGroupedStackedSeriesView" />
     /// <seealso cref="LiveCharts.Definitions.Series.IStackModelableSeriesView" />
-    public interface IStackedColumnSeriesView : ISeriesView, IStackModelableSeriesView
+    public interface IStackedColumnSeriesView : IGroupedStackedSeriesView, IStackModelableSeriesView
     {
         /// <summary>
         /// Gets or sets the maximum width of the column.

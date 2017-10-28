@@ -25,6 +25,7 @@ using LiveCharts.Defaults;
 using LiveCharts.Definitions.Points;
 using LiveCharts.Definitions.Series;
 using LiveCharts.Dtos;
+using System.Linq;
 
 namespace LiveCharts.SeriesAlgorithms
 {
@@ -57,23 +58,25 @@ namespace LiveCharts.SeriesAlgorithms
             var padding = castedSeries.ColumnPadding;
 
             var totalSpace = ChartFunctions.GetUnitWidth(AxisOrientation.X, Chart, View.ScalesXAt) - padding;
-            var singleColWidth = totalSpace;
+            var groups = Chart.View.ActualSeries.Select(s => (s as IGroupedStackedSeriesView)?.Grouping).Distinct().ToList();
+            var singleColWidth = totalSpace / groups.Count();
 
             double exceed = 0;
+            var seriesPosition = groups.IndexOf(castedSeries.Grouping);
 
             if (singleColWidth > castedSeries.MaxColumnWidth)
             {
-                exceed = (singleColWidth - castedSeries.MaxColumnWidth)/2;
+                exceed = (singleColWidth - castedSeries.MaxColumnWidth) * groups.Count() / 2;
                 singleColWidth = castedSeries.MaxColumnWidth;
             }
 
-            var relativeLeft = padding + exceed;
+            var relativeLeft = padding + exceed + singleColWidth * (seriesPosition);
 
             var startAt = CurrentYAxis.FirstSeparator >= 0 && CurrentYAxis.LastSeparator > 0
                 ? CurrentYAxis.FirstSeparator
-                : (CurrentYAxis.FirstSeparator < 0 && CurrentYAxis.LastSeparator <= 0          
+                : (CurrentYAxis.FirstSeparator < 0 && CurrentYAxis.LastSeparator <= 0
                 ? CurrentYAxis.LastSeparator
-                    : 0);                                                         
+                    : 0);
 
             var zero = ChartFunctions.ToDrawMargin(startAt, AxisOrientation.Y, Chart, View.ScalesYAt);
 

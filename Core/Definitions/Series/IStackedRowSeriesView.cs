@@ -25,9 +25,9 @@ namespace LiveCharts.Definitions.Series
     /// <summary>
     /// 
     /// </summary>
-    /// <seealso cref="LiveCharts.Definitions.Series.ISeriesView" />
+    /// <seealso cref="LiveCharts.Definitions.Series.IGroupedStackedSeriesView" />
     /// <seealso cref="LiveCharts.Definitions.Series.IStackModelableSeriesView" />
-    public interface IStackedRowSeriesView : ISeriesView, IStackModelableSeriesView
+    public interface IStackedRowSeriesView : IGroupedStackedSeriesView, IStackModelableSeriesView
     {
         /// <summary>
         /// Gets or sets the maximum height of the row.

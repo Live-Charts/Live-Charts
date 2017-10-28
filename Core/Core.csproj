@@ -102,6 +102,7 @@
     <Compile Include="Definitions\Series\ICartesianSeries.cs" />
     <Compile Include="Definitions\Series\IColumnSeriesView.cs" />
     <Compile Include="Definitions\Series\IFinancialSeriesView.cs" />
+    <Compile Include="Definitions\Series\IGroupedStackedSeriesView.cs" />
     <Compile Include="Definitions\Series\IHeatSeriesView.cs" />
     <Compile Include="Definitions\Series\ILineSeriesView.cs" />
     <Compile Include="Definitions\Series\IPieSeries.cs" />
