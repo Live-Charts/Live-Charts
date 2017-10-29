@@ -31,7 +31,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LiveCharts", "Src\LiveChart
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{1B79F18C-11EA-4452-B081-D2800AA6E68B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTestProject1", "Tests\Tests.Wpf\UnitTestProject1\UnitTestProject1.csproj", "{DDEDB209-683F-4525-A3CA-E92E2EC3ECEC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests.Wpf", "Tests\Tests.Wpf\UnitTestProject1\Tests.Wpf.csproj", "{DDEDB209-683F-4525-A3CA-E92E2EC3ECEC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
