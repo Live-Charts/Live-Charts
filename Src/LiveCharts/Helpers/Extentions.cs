@@ -23,7 +23,6 @@
 using System;
 using System.Collections.Generic;
 using LiveCharts.Definitions.Series;
-using LiveCharts.Dtos;
 
 namespace LiveCharts.Helpers
 {

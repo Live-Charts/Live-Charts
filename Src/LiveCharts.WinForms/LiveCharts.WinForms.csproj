@@ -79,6 +79,10 @@
       <Project>{4d253423-ae05-47f6-a59d-9162ec0bb1f2}</Project>
       <Name>LiveCharts.Wpf</Name>
     </ProjectReference>
+    <ProjectReference Include="..\LiveCharts\LiveCharts.csproj">
+      <Project>{692cf908-97fe-4b5a-a837-06711f6ce839}</Project>
+      <Name>LiveCharts</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
