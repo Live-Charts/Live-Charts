@@ -75,10 +75,6 @@
     <None Include="app.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\LiveCharts\LiveCharts.csproj">
-      <Project>{ea8cbc21-cf78-4357-9253-c733a8a4a345}</Project>
-      <Name>LiveCharts</Name>
-    </ProjectReference>
     <ProjectReference Include="..\LiveCharts.Wpf\LiveCharts.Wpf.csproj">
       <Project>{4d253423-ae05-47f6-a59d-9162ec0bb1f2}</Project>
       <Name>LiveCharts.Wpf</Name>

@@ -229,12 +229,6 @@
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\LiveCharts\LiveCharts.csproj">
-      <Project>{ea8cbc21-cf78-4357-9253-c733a8a4a345}</Project>
-      <Name>LiveCharts</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
