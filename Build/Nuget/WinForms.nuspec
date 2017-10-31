@@ -2,8 +2,8 @@
 <package >
   <metadata>
     <id>LiveCharts.WinForms</id>
-    <version>0.0.0.0</version>
     <title>LiveCharts.WinForms</title>
+    <version>$version$</version>
     <authors>Beto Rodriguez</authors>
     <owners>Beto Rodriguez</owners>
     <licenseUrl>https://github.com/beto-rodriguez/Live-Charts/blob/master/LICENSE.TXT</licenseUrl>
@@ -15,8 +15,8 @@
     <copyright>Copyright 2016</copyright>
     <tags>livechart, live, chart, charting, plot, plots, plotting, graph, graphs, graphing, data, winform, winforms, win, form, forms</tags> 
     <dependencies>
-      <dependency id="LiveCharts" version="0.0.0.0" />
-      <dependency id="LiveCharts.Wpf" version="0.0.0.0" />
+      <dependency id="LiveCharts" version="1.0.0.0" />
+      <dependency id="LiveCharts.Wpf" version="1.0.0.0" />
     </dependencies>
     <frameworkAssemblies>
       <frameworkAssembly assemblyName="PresentationFramework" targetFramework="net40" />

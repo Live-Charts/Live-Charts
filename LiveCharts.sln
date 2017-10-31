@@ -20,8 +20,11 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Nuget", "Nuget", "{C3CE0184-165E-4395-A298-B578C1967850}"
 	ProjectSection(SolutionItems) = preProject
 		Build\Nuget\Core.nuspec = Build\Nuget\Core.nuspec
+		Build\Nuget\Uwp.install.ps1 = Build\Nuget\Uwp.install.ps1
 		Build\Nuget\Uwp.nuspec = Build\Nuget\Uwp.nuspec
+		Build\Nuget\WinForms.install.ps1 = Build\Nuget\WinForms.install.ps1
 		Build\Nuget\WinForms.nuspec = Build\Nuget\WinForms.nuspec
+		Build\Nuget\Wpf.install.ps1 = Build\Nuget\Wpf.install.ps1
 		Build\Nuget\Wpf.nuspec = Build\Nuget\Wpf.nuspec
 	EndProjectSection
 EndProject

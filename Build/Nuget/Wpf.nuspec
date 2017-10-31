@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>LiveCharts.Wpf</id>
-    <version>0.0.0.0</version>
+    <version>$version$</version>
     <title>LiveCharts.Wpf</title>
     <authors>Beto Rodriguez</authors>
     <owners>Beto Rodriguez</owners>
@@ -15,16 +15,16 @@
     <copyright>Copyright 2016</copyright>
     <tags>livechart, live, chart, charting, plot, plots, plotting, graph, graphs, graphing, data, wpf, windows, presentation, foundation, format</tags>
 	<dependencies>
-      <dependency id="LiveCharts" version="0.0.0.0" />
+      <dependency id="LiveCharts" version="1.0.0.0" />
     </dependencies>
   </metadata>
   <files>
-    <file src="install.ps1" target="tools" />  
-    <file src="bin\net403\LiveCharts.Wpf.dll" target="lib\net40" />
-    <file src="bin\net403\LiveCharts.Wpf.pdb" target="lib\net40" />
-    <file src="bin\net403\LiveCharts.Wpf.xml" target="lib\net40" />
-    <file src="bin\net45\LiveCharts.Wpf.dll" target="lib\net45" />
-    <file src="bin\net45\LiveCharts.Wpf.pdb" target="lib\net45" />
-    <file src="bin\net45\LiveCharts.Wpf.xml" target="lib\net45" />    
+    <file src="..\Nuget\Wpf.install.ps1" target="tools" />
+    <file src="..\..\Dist\net40\LiveCharts.Wpf.dll" target="lib\net40" />
+    <file src="..\..\Dist\net40\LiveCharts.Wpf.pdb" target="lib\net40" />
+    <file src="..\..\Dist\net40\LiveCharts.Wpf.xml" target="lib\net40" />
+    <file src="..\..\Dist\net45\LiveCharts.Wpf.dll" target="lib\net45" />
+    <file src="..\..\Dist\net45\LiveCharts.Wpf.pdb" target="lib\net45" />
+    <file src="..\..\Dist\net45\LiveCharts.Wpf.xml" target="lib\net45" />
   </files>
 </package>
