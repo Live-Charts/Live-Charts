@@ -24,7 +24,6 @@
       <frameworkAssembly assemblyName="WindowsBase" targetFramework="net40" />
       <frameworkAssembly assemblyName="System.Xaml" targetFramework="net40"/>
       <frameworkAssembly assemblyName="WindowsFormsIntegration" targetFramework="net40" />
-
       <frameworkAssembly assemblyName="PresentationFramework" targetFramework="net45" />
       <frameworkAssembly assemblyName="PresentationCore" targetFramework="net45"/>
       <frameworkAssembly assemblyName="WindowsBase" targetFramework="net45" />
@@ -33,12 +32,12 @@
     </frameworkAssemblies>
   </metadata>
   <files>
-    <file src="install.ps1" target="tools" />
-    <file src="bin\net403\LiveCharts.WinForms.dll" target="lib\net40" />
-    <file src="bin\net403\LiveCharts.WinForms.pdb" target="lib\net40" />
-    <file src="bin\net403\LiveCharts.WinForms.xml" target="lib\net40" />
-    <file src="bin\net45\LiveCharts.WinForms.dll" target="lib\net45" />
-    <file src="bin\net45\LiveCharts.WinForms.pdb" target="lib\net45" />
-    <file src="bin\net45\LiveCharts.WinForms.xml" target="lib\net45" />  
+    <file src="..\Nuget\Winforms.install.ps1" target="tools" />
+    <file src="..\..\Dist\net40\LiveCharts.WinForms.dll" target="lib\net40" />
+    <file src="..\..\Dist\net40\LiveCharts.WinForms.pdb" target="lib\net40" />
+    <file src="..\..\Dist\net40\LiveCharts.WinForms.xml" target="lib\net40" />
+    <file src="..\..\Dist\net45\LiveCharts.WinForms.dll" target="lib\net45" />
+    <file src="..\..\Dist\net45\LiveCharts.WinForms.pdb" target="lib\net45" />
+    <file src="..\..\Dist\net45\LiveCharts.WinForms.xml" target="lib\net45" />  
   </files>
 </package>

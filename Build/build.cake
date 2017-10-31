@@ -81,31 +81,41 @@ Task("WPF")
 Task("WinForms")
     .Does(() => 
     {
-        var formsPath = "./WinFormsView/WinFormsView.csproj";
+        var frameworks = new [] {"net40", "net45"};
 
-        Information("Building WinForms.Debug...");
-        BuildProject(formsPath, "./bin/Debug", "Debug", "AnyCPU", "v4.0");
+		for (var i = 0; i < frameworks.Length; i++)
+		{
+			var framework = frameworks[i];
+			DotNetBuild(sourceDir + "LiveCharts.WinForms/LiveCharts.WinForms.csproj", 
+				settings => 
+				{ 
+					settings.SetConfiguration(buildType)
+						.WithTarget("Clean,Build")
+						.WithProperty("Platform", "AnyCPU")
+						.WithProperty("OutputPath", "../" + releaseDir + framework)
+						.WithProperty("TargetFrameworkVersion", MapFrameworkToCompiler(framework))
+						.WithProperty("DocumentationFile", "../" + releaseDir + framework + "/LiveCharts.WinForms.xml")
+						.SetVerbosity(Cake.Core.Diagnostics.Verbosity.Minimal);
+				});
 
-        Information("Building WinForms.Net40...");
-        BuildProject(formsPath, "./bin/net403", "Release", "AnyCPU", "v4.0");
+			Information("\n===== LiveCharts.WinForms(" + framework + ") Built ======");
+		}
+        
+		NuGetPack("./Nuget/WinForms.nuspec", new NuGetPackSettings
+		{
+			Verbosity = NuGetVerbosity.Quiet,
+			OutputDirectory = nugetOutDir,
+			Version = GetFullVersionNumber(releaseDir + frameworks[0] + "/LiveCharts.WinForms.dll")
+		});
 
-        Information("Building WinForms.Debug...");
-        BuildProject(formsPath, "./bin/net45", "Release", "AnyCPU", "v4.5");
-
-        Information("Packing WinForms...");
-
-        Information("-- WinForms Packed --");
+		Information("\n===== LiveCharts.WinForms Packed =====");
     });
 
 Task("UWP")
     .Does(() =>
     {
-        Information("Building UWP...");        
-        BuildProject("./UwpView/UwpView.csproj", "./bin/AnyCPU", buildType, "AnyCPU");
-
-        Information("Packing UWP...");
-
-        Information("-- UWP Packed --");
+        // disabled for now...
+		// since the project is not compiling..
     });
 
 Task("Default")
@@ -131,31 +141,4 @@ public string MapFrameworkToCompiler(string framework)
 		default:
 			return "v4.0";
 	}
-}
-
-//Build a project
-public void BuildProject(string path, string outputPath, string configuration, 
-								string platform, string targetVersion = null)
-{
-    Information("Building " + path);
-    try
-    {
-        DotNetBuild(path, settings => 
-		{ 
-			settings.SetConfiguration(configuration)
-				.WithProperty("Platform", platform)
-				.WithTarget("Clean,Build")
-				.WithProperty("OutputPath", outputPath)
-                .SetVerbosity(Cake.Core.Diagnostics.Verbosity.Minimal);
-
-            if (targetVersion != null) 
-				settings.WithProperty("TargetFrameworkVersion", targetVersion);
-        });
-    }
-    catch(Exception ex)
-    {
-        Error("An error occurred while trying to build {0} with {1}", path, configuration);
-    }
-
-    Information("Build completed");
 }
