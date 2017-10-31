@@ -18,6 +18,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{5D38A0C5
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Nuget", "Nuget", "{C3CE0184-165E-4395-A298-B578C1967850}"
+	ProjectSection(SolutionItems) = preProject
+		Build\Nuget\Core.nuspec = Build\Nuget\Core.nuspec
+		Build\Nuget\Uwp.nuspec = Build\Nuget\Uwp.nuspec
+		Build\Nuget\WinForms.nuspec = Build\Nuget\WinForms.nuspec
+		Build\Nuget\Wpf.nuspec = Build\Nuget\Wpf.nuspec
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{9A7525CA-962D-423A-BB19-1220AFD5B6B0}"
 EndProject

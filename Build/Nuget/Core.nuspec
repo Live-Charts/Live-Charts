@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>LiveCharts</id>
-    <version>0.0.0.0</version>
+    <version>$version$</version>
     <title>LiveCharts</title>
     <authors>Beto Rodriguez</authors>
     <owners>Beto Rodriguez</owners>
@@ -16,7 +16,6 @@
     <tags>livechart, live, chart, charting, plot, plots, plotting, graph, graphs, graphing, data</tags>     
   </metadata>
   <files>
-    <file src="readme.txt" target="" />
     <file src="bin\Release\LiveCharts.dll" target="lib\portable-net45+win8+wp8" />
     <file src="bin\Release\LiveCharts.pdb" target="lib\portable-net45+win8+wp8" />
     <file src="bin\Release\LiveCharts.xml" target="lib\portable-net45+win8+wp8" />

@@ -7,6 +7,9 @@
 var buildType = Argument("Configuration", "Release");
 var target = Argument ("target", "Default");
 var configuration = "AnyCPU";
+var releaseDir = "../Dist/";
+var sourceDir = "../Src/";
+var nugetOutDir = "../";
 
 Task("OutputArguments")
     .Does(() => 
@@ -18,19 +21,35 @@ Task("OutputArguments")
 Task("Core")
     .Does(() =>
     {
-        Information("Building Core.PCL...");
-        BuildProject("./Core/Core.csproj", "./bin/Release", buildType, configuration, "v4.5");
+		var frameworks = new [] {"net40", "net45", "net46", "netstandard2.0"};
+		string version = string.Empty;
 
-        Information("Building Core.Net40...");
-        BuildProject("./Core40/Core40.csproj", "./bin/Net40", buildType, configuration, "v4.0");
-        
-		Information("Building Core.Net45...");
-        BuildProject("./Core40/Core40.csproj", "./bin/Net45", buildType, configuration, "v4.5");
+		for (var i = 0; i < frameworks.Length; i++) 
+		{
+			var framework = frameworks[i];
+			DotNetCoreBuild(sourceDir + "LiveCharts/LiveCharts.csproj", 
+				new DotNetCoreBuildSettings
+				{
+					Framework = framework,
+					Configuration = "Release",
+					OutputDirectory = releaseDir + framework
+				});
 
-        Information("Packing Core...");
-        NugetPack("./Core/Core.nuspec", "./Core/bin/Release/LiveCharts.dll");
+			if (version == string.Empty) 
+			{
+				version = GetFullVersionNumber(releaseDir + framework + "/LiveCharts.dll");
+			}
+			Information("-- " + framework + " Built --");
+		}
 
-        Information("-- Core Packed --");
+		NuGetPack("./Nuget/Core.nuspec", new NuGetPackSettings
+		{
+			Verbosity = NuGetVerbosity.Quiet,
+			OutputDirectory = nugetOutDir,
+			Version = version
+		});
+
+        Information("-- LiveCharts Packed --");
     });
 
 Task("WPF")
@@ -48,7 +67,6 @@ Task("WPF")
         BuildProject(wpfPath, "./bin/net45", "Release", configuration, "v4.5");
 
         Information("Packing Wpf...");
-        NugetPack("./WpfView/WpfView.nuspec", "./WpfView/bin/net403/LiveCharts.Wpf.dll");
         
         Information("-- WPF Packed --");
     });
@@ -68,7 +86,6 @@ Task("WinForms")
         BuildProject(formsPath, "./bin/net45", "Release", configuration, "v4.5");
 
         Information("Packing WinForms...");
-        NugetPack("./WinFormsView/WinFormsView.nuspec", "./WinFormsView/bin/net403/LiveCharts.WinForms.dll");
 
         Information("-- WinForms Packed --");
     });
@@ -80,7 +97,6 @@ Task("UWP")
         BuildProject("./UwpView/UwpView.csproj", "./bin/AnyCPU", buildType, "AnyCPU");
 
         Information("Packing UWP...");
-        NugetPack("./UwpView/UwpView.nuspec", "./UwpView/bin/AnyCPU/LiveCharts.Uwp.dll");
 
         Information("-- UWP Packed --");
     });
@@ -122,25 +138,4 @@ public void BuildProject(string path, string outputPath, string configuration,
     }
 
     Information("Build completed");
-}
-
-//Pack into Nuget package
-public void NugetPack(string nuspecPath, string mainBinaryPath)
-{
-    Information("Packing " + nuspecPath);
-    var binary = MakeAbsolute(File(mainBinaryPath));
-    var binaryVersion = GetFullVersionNumber(binary);
-    ReplaceRegexInFiles(nuspecPath, "0.0.0.0", binaryVersion);
-    
-    NuGetPack(nuspecPath, new NuGetPackSettings{
-        Verbosity = NuGetVerbosity.Quiet,
-        OutputDirectory = "./"
-    });
-
-    //We revert the nuspec file to the check out one, otherwise we cannot build it again with a new version
-    //This should rather use XmlPoke but cannot yet get it to work
-    var fullNuspecPath = MakeAbsolute(File(nuspecPath));
-    GitCheckout("./", fullNuspecPath);
-
-    Information("Packing completed");
 }
