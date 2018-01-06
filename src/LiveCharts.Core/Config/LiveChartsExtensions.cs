@@ -1,12 +1,8 @@
-﻿using System;
-using System.Drawing;
-using System.Linq;
+﻿using System.Linq;
 using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Charts;
 using LiveCharts.Core.Data;
-using LiveCharts.Core.Dimensions;
-using Rectangle = LiveCharts.Core.Drawing.Rectangle;
-using Size = LiveCharts.Core.Drawing.Size;
+using LiveCharts.Core.Drawing;
 
 namespace LiveCharts.Core.Config
 {
@@ -23,7 +19,7 @@ namespace LiveCharts.Core.Config
         /// <returns></returns>
         public static Color SetOpacity(this Color color, double opacity)
         {
-            return Color.FromArgb((byte) (255 * opacity), color.R, color.G, color.B);
+            return new Color((byte) (255 * opacity), color.R, color.G, color.B);
         }
 
         /// <summary>

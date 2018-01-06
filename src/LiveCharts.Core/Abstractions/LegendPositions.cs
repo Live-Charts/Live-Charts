@@ -6,6 +6,10 @@ namespace LiveCharts.Core.Abstractions
     public enum LegendPositions
     {
         /// <summary>
+        /// Removes the legend from the chart.
+        /// </summary>
+        None,
+        /// <summary>
         /// The top position.
         /// </summary>
         Top,

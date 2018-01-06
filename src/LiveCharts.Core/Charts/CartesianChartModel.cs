@@ -63,25 +63,11 @@ namespace LiveCharts.Core.Charts
         {
             base.Update(restart);
 
-            var chartSpace = View.ControlSize;
-
-            // draw legend
-            if (View.Legend != null)
-            {
-                // ToDo:
-                // we must use a smarter method to recognize if the 
-                // chart legend size changed,
-                // if it did not, then we could skip UpdateLayout() method.
-                View.Legend.Series = View.Series;
-                View.Legend.UpdateLayout();
-                chartSpace -= View.Legend.ControlSize;
-            }
-
             // see appendix/chart.spacing.png
             var drawMargin = EvaluateAxisAndGetDrawMargin();
             DrawAreaSize = new Size(
-                chartSpace.Width - drawMargin.Left - drawMargin.Right,
-                chartSpace.Height - drawMargin.Top - drawMargin.Bottom);
+                DrawAreaSize.Width - drawMargin.Left - drawMargin.Right,
+                DrawAreaSize.Height - drawMargin.Top - drawMargin.Bottom);
 
             if (DrawAreaSize.Width <= 0 || DrawAreaSize.Height <= 0)
             {
@@ -90,6 +76,8 @@ namespace LiveCharts.Core.Charts
                 CollectResources();
                 return;
             }
+
+            View.UpdateDrawArea(new Rectangle(DrawAreaLocation, DrawAreaSize));
 
             // draw separators
 

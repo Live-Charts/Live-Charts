@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using LiveCharts.Core.Charts;
 using LiveCharts.Core.Config;
 using LiveCharts.Core.Data;
 using LiveCharts.Core.Data.Points;
+using LiveCharts.Core.Drawing;
+using LiveCharts.Core.Drawing.Svg;
 
 namespace LiveCharts.Core.Abstractions
 {
@@ -19,7 +20,7 @@ namespace LiveCharts.Core.Abstractions
         /// <value>
         /// The series configuration.
         /// </value>
-        SeriesMetadata Metadata { get; }
+        SeriesMetadata Defaults { get; }
 
         /// <summary>
         /// Gets the tracking mode.
@@ -38,12 +39,36 @@ namespace LiveCharts.Core.Abstractions
         IChartingTypeBuilder TypeBuilder { get; }
 
         /// <summary>
+        /// Gets or sets the title.
+        /// </summary>
+        /// <value>
+        /// The title.
+        /// </value>
+        string Title { get; set; }
+
+        /// <summary>
+        /// Gets or sets the geometry.
+        /// </summary>
+        /// <value>
+        /// The geometry.
+        /// </value>
+        Geometry Geometry { get; set; }
+
+        /// <summary>
         /// Gets or sets a value indicating whether this <see cref="IChartSeries"/> is visible.
         /// </summary>
         /// <value>
         ///   <c>true</c> if visible; otherwise, <c>false</c>.
         /// </value>
         bool IsVisible { get; set; }
+
+        /// <summary>
+        /// Gets or sets the stroke thickness.
+        /// </summary>
+        /// <value>
+        /// The stroke thickness.
+        /// </value>
+        double StrokeThickness { get; set; }
 
         /// <summary>
         /// Gets the stroke color.
@@ -76,6 +101,14 @@ namespace LiveCharts.Core.Abstractions
         /// The data range.
         /// </value>
         DimensionRange DataRange { get; }
+
+        /// <summary>
+        /// Gets the charts that are using this series.
+        /// </summary>
+        /// <value>
+        /// The used by.
+        /// </value>
+        IEnumerable<ChartModel> UsedBy { get; }
 
         /// <summary>
         /// Gets the value point dictionary.

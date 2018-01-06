@@ -48,12 +48,11 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Chart.cs" />
+    <Compile Include="DefaultLegend.cs" />
+    <Compile Include="Extensions.cs" />
     <Compile Include="PointViews\ColumnPointView.cs" />
     <Compile Include="WpfLiveChartsProvider.cs" />
-    <Page Include="Themes\Generic.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Compile Include="CartesianChart.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -76,7 +75,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <Compile Include="LiveCharts.Config.cs" />
+    <Compile Include="LiveCharts.Wpf.Config.cs" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

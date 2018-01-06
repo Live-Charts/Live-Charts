@@ -25,6 +25,21 @@ namespace LiveCharts.Core.Abstractions
     public interface IChartView
     {
         /// <summary>
+        /// Occurs when the charts is initialized.
+        /// </summary>
+        event Action ChartViewInitialized;
+
+        /// <summary>
+        /// Occurs when the reference of a property related to LiveCharts API changes.
+        /// </summary>
+        event PropertyInstanceChangedHandler DataInstanceChanged;
+
+        /// <summary>
+        /// Occurs when the chart <see cref="AnimationsSpeed"/> property or <see cref="DisableAnimations"/> property change.
+        /// </summary>
+        event ChartUpdaterfrequencyChangedHandler UpdaterFrequencyChanged;
+
+        /// <summary>
         /// Gets the chart model.
         /// </summary>
         /// <value>
@@ -46,7 +61,7 @@ namespace LiveCharts.Core.Abstractions
         /// <value>
         /// The size of the draw margin.
         /// </value>
-        Margin DrawMargin { get; set; }
+        Margin DrawMargin { get; }
 
         /// <summary>
         /// Gets the dimensions.
@@ -89,18 +104,17 @@ namespace LiveCharts.Core.Abstractions
         IChartLegend Legend { get; }
 
         /// <summary>
-        /// Occurs when the charts is initialized.
+        /// Gets the legend position.
         /// </summary>
-        event Action ChartViewInitialized;
+        /// <value>
+        /// The legend position.
+        /// </value>
+        LegendPositions LegendPosition { get; }
 
         /// <summary>
-        /// Occurs when the reference of a property related to LiveCharts API changes.
+        /// Updates the draw margin.
         /// </summary>
-        event PropertyInstanceChangedHandler PropertyInstanceChanged;
-
-        /// <summary>
-        /// Occurs when the chart <see cref="AnimationsSpeed"/> property or <see cref="DisableAnimations"/> property change.
-        /// </summary>
-        event ChartUpdaterfrequencyChangedHandler UpdaterFrequencyChanged;
+        /// <param name="model">The model.</param>
+        void UpdateDrawArea(Rectangle model);
     }
 }

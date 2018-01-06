@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
 using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Data;
 using LiveCharts.Core.Dimensions;
+using LiveCharts.Core.Drawing;
 using Size = LiveCharts.Core.Drawing.Size;
 
 namespace LiveCharts.Core.Charts
@@ -17,6 +17,7 @@ namespace LiveCharts.Core.Charts
     public abstract class ChartModel : IDisposable
     {
         private static int _colorCount;
+        private IChartLegend _previousLegend;
         private Task _delayer;
         private readonly Dictionary<string, object> _propertyReferences = new Dictionary<string, object>();
         private object _updateId;
@@ -33,7 +34,7 @@ namespace LiveCharts.Core.Charts
             View = view;
             view.ChartViewInitialized += ChartViewOnInitialized;
             view.UpdaterFrequencyChanged += ChartViewOnUpdaterFreqChanged;
-            view.PropertyInstanceChanged += ChartViewOnPropertyInstanceChanged;
+            view.DataInstanceChanged += ChartViewOnPropertyInstanceChanged;
         }
 
         /// <summary>
@@ -59,6 +60,14 @@ namespace LiveCharts.Core.Charts
                 }
             }
         }
+
+        /// <summary>
+        /// Gets or sets the draw area location.
+        /// </summary>
+        /// <value>
+        /// The draw area location.
+        /// </value>
+        public Point DrawAreaLocation { get; set; }
 
         /// <summary>
         /// Gets or sets the size of the draw area.
@@ -160,7 +169,7 @@ namespace LiveCharts.Core.Charts
         /// </summary>
         /// <param name="restart">if set to <c>true</c> all the elements in the view will be redrawn.</param>
         /// <exception cref="NotImplementedException"></exception>
-        protected virtual void Update(bool restart)
+        protected virtual async void Update(bool restart)
         {
             UpdateId = new object();
 
@@ -193,6 +202,57 @@ namespace LiveCharts.Core.Charts
                 series.FetchData(this);
                 RegisterResource(series);
             }
+
+            var chartSize = View.ControlSize;
+            double dax = 0, day = 0;
+            var legendSize = new Size(0, 0);
+
+            // draw and measure legend
+            if (View.Legend != null && View.LegendPosition != LegendPositions.None)
+            {
+                var o = View.LegendPosition == LegendPositions.Top ||
+                        View.LegendPosition == LegendPositions.Bottom
+                    ? Orientation.Horizontal
+                    : Orientation.Vertical;
+
+                legendSize = await View.Legend.UpdateLayoutAsync(Series, o);
+                
+                switch (View.LegendPosition)
+                {
+                    case LegendPositions.None:
+                        dax = 0;
+                        day = 0;
+                        break;
+                    case LegendPositions.Top:
+                        dax = chartSize.Width * .5 - legendSize.Width * .5;
+                        day = chartSize.Height - legendSize.Height;
+                        break;
+                    case LegendPositions.Bottom:
+                        dax = chartSize.Width * .5 - legendSize.Width * .5;
+                        day = 0;
+                        break;
+                    case LegendPositions.Left:
+                        dax = chartSize.Width - legendSize.Width;
+                        day = chartSize.Height * .5 - legendSize.Height * .5;
+                        break;
+                    case LegendPositions.Right:
+                        dax = 0;
+                        day = chartSize.Height * .5 - legendSize.Height * .5;
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+
+                _previousLegend = View.Legend;
+            }
+            else
+            {
+                _previousLegend?.RemoveLegend(View);
+                _previousLegend = null;
+            }
+
+            DrawAreaLocation = new Point(dax, day);
+            DrawAreaSize = chartSize - legendSize;
         }
 
         internal Color GetNextColor()

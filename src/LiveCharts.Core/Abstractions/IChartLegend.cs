@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using LiveCharts.Core.Drawing;
 
 namespace LiveCharts.Core.Abstractions
@@ -9,32 +10,17 @@ namespace LiveCharts.Core.Abstractions
     public interface IChartLegend
     {
         /// <summary>
-        /// Gets the size of the control.
+        /// Removes the legend.
         /// </summary>
-        /// <value>
-        /// The size of the control.
-        /// </value>
-        Size ControlSize { get; }
+        /// <param name="chart">The chart.</param>
+        void RemoveLegend(IChartView chart);
 
         /// <summary>
-        /// Updates the layout.
+        /// Updates the layout asynchronous.
         /// </summary>
-        void UpdateLayout();
-
-        /// <summary>
-        /// Gets the position.
-        /// </summary>
-        /// <value>
-        /// The position.
-        /// </value>
-        LegendPositions Position { get; }
-
-        /// <summary>
-        /// Gets the series.
-        /// </summary>
-        /// <value>
-        /// The series.
-        /// </value>
-        IEnumerable<IChartSeries> Series { set; }
+        /// <param name="series">The series.</param>
+        /// <param name="orientation">The orientation.</param>
+        /// <returns></returns>
+        Task<Size> UpdateLayoutAsync(IEnumerable<IChartSeries> series, Orientation orientation);
     }
 }

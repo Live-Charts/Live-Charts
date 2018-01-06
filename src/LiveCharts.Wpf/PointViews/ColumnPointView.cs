@@ -1,7 +1,7 @@
 ﻿using System;
-using System.Drawing;
 using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Data.Points;
+using Rectangle = System.Windows.Shapes.Rectangle;
 
 namespace LiveCharts.Wpf.PointViews
 {
@@ -21,7 +21,8 @@ namespace LiveCharts.Wpf.PointViews
 
         public void Draw(ChartPoint point, ChartPoint previous, IChartView chart)
         {
-            
+            var wpfChart = (CartesianChart) chart;
+
             throw new NotImplementedException();
         }
 

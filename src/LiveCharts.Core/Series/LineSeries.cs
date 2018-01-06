@@ -1,8 +1,7 @@
-using System.Collections.Generic;
 using System.Linq;
 using LiveCharts.Core.Charts;
-using LiveCharts.Core.Data;
 using LiveCharts.Core.Data.Points;
+using LiveCharts.Core.Drawing.Svg;
 
 namespace LiveCharts.Core.Series
 {
@@ -17,8 +16,9 @@ namespace LiveCharts.Core.Series
         /// Initializes a new instance of the <see cref="LineSeries{TModel}"/> class.
         /// </summary>
         public LineSeries()
-            : base(LiveCharts.Constants.LineSeries)
+            : base(LiveChartsConstants.LineSeries)
         {
+            PointGeometry = Defaults.Geometry;
         }
 
         /// <summary>
@@ -29,13 +29,19 @@ namespace LiveCharts.Core.Series
         /// </value>
         public double LineSmoothness { get; set; }
 
+        /// <summary>
+        /// Gets or sets the point geometry.
+        /// </summary>
+        /// <value>
+        /// The point geometry.
+        /// </value>
+        public Geometry PointGeometry { get; set; }
+
         /// <inheritdoc />
         protected override void OnUpdateView(ChartModel chart)
         {
             var points = FetchData(chart).Cast<CartesianChartPoint>();
             var smoothness = LineSmoothness > 1 ? 1 : (LineSmoothness < 0 ? 0 : LineSmoothness);
-
-
         }
     }
 }

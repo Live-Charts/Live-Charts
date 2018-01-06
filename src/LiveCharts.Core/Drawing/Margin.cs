@@ -7,10 +7,16 @@ namespace LiveCharts.Core.Drawing
     /// </summary>
     public struct Margin
     {
-        /// <summary>
-        /// The empty
-        /// </summary>
-        public static Margin Empty = new Margin(int.MinValue, int.MinValue, int.MinValue, int.MinValue);
+        private readonly bool _isEmpty;
+
+        private Margin(bool isEmpty)
+        {
+            _isEmpty = true;
+            Top = 0;
+            Left = 0;
+            Right = 0;
+            Bottom = 0;
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Margin"/> struct.
@@ -18,6 +24,7 @@ namespace LiveCharts.Core.Drawing
         /// <param name="topRightBottomAndLeftMargin">The top right bottom and left margin.</param>
         public Margin(int topRightBottomAndLeftMargin)
         {
+            _isEmpty = false;
             Top = topRightBottomAndLeftMargin;
             Right = topRightBottomAndLeftMargin;
             Bottom = topRightBottomAndLeftMargin;
@@ -31,6 +38,7 @@ namespace LiveCharts.Core.Drawing
         /// <param name="yMargin">The y margin.</param>
         public Margin(int xMargin, int yMargin)
         {
+            _isEmpty = false;
             Top = yMargin;
             Right = xMargin;
             Bottom = yMargin;
@@ -46,6 +54,7 @@ namespace LiveCharts.Core.Drawing
         /// <param name="left">The left.</param>
         public Margin(int top, int right, int bottom, int left)
         {
+            _isEmpty = false;
             Top = top;
             Right = right;
             Bottom = bottom;
@@ -61,11 +70,17 @@ namespace LiveCharts.Core.Drawing
         /// <param name="left">The left.</param>
         public Margin(double top, double right, double bottom, double left)
         {
+            _isEmpty = false;
             Top = (int) Math.Round(top);
             Right = (int) Math.Round(right);
             Bottom = (int) Math.Round(bottom);
             Left = (int) Math.Round(left);
         }
+
+        /// <summary>
+        /// An empty margin.
+        /// </summary>
+        public static Margin Empty = new Margin(true);
 
         /// <summary>
         /// Gets or sets the top.
@@ -152,13 +167,13 @@ namespace LiveCharts.Core.Drawing
         }
 
         /// <summary>
-        /// Compares equality the specified other.
+        /// Compares the specified other.
         /// </summary>
         /// <param name="other">The other.</param>
         /// <returns></returns>
         public bool Equals(Margin other)
         {
-            return Top == other.Top && Left == other.Left && Right == other.Right && Bottom == other.Bottom;
+            return _isEmpty == other._isEmpty && Top == other.Top && Left == other.Left && Right == other.Right && Bottom == other.Bottom;
         }
 
         /// <summary>
@@ -184,7 +199,8 @@ namespace LiveCharts.Core.Drawing
         {
             unchecked
             {
-                var hashCode = Top;
+                var hashCode = _isEmpty.GetHashCode();
+                hashCode = (hashCode * 397) ^ Top;
                 hashCode = (hashCode * 397) ^ Left;
                 hashCode = (hashCode * 397) ^ Right;
                 hashCode = (hashCode * 397) ^ Bottom;

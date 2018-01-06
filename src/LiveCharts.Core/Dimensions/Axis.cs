@@ -117,7 +117,7 @@ namespace LiveCharts.Core.Dimensions
             // ... this is not supported for now.
             #endregion
 
-            var space = chart.View.ControlSize - chart.View.Legend.ControlSize;
+            var space = chart.DrawAreaSize;
             if (!(Type == PlaneTypes.X || Type == PlaneTypes.Y))
             {
                 throw new LiveChartsException(

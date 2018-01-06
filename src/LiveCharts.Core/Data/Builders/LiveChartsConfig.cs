@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Config;
+using LiveCharts.Core.Drawing;
 
 namespace LiveCharts.Core.Data.Builders
 {
@@ -53,7 +53,7 @@ namespace LiveCharts.Core.Data.Builders
         /// </summary>
         /// <param name="type">The type.</param>
         /// <returns></returns>
-        public SeriesMetadata HasSeriesMetadata(string type)
+        public SeriesMetadata HasSeriesDefault(string type)
         {
             if (SeriesConfig.TryGetValue(type, out SeriesMetadata builder))
             {

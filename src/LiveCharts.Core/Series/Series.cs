@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
-using System.Drawing;
 using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Charts;
 using LiveCharts.Core.Config;
 using LiveCharts.Core.Data;
 using LiveCharts.Core.Data.Builders;
 using LiveCharts.Core.Data.Points;
+using LiveCharts.Core.Drawing;
+using LiveCharts.Core.Drawing.Svg;
 
 namespace LiveCharts.Core.Series
 {
@@ -30,7 +31,8 @@ namespace LiveCharts.Core.Series
         /// <param name="type">the series type.</param>
         protected Series(string type)
         {
-            Metadata = LiveCharts.Options.HasSeriesMetadata(type);
+            Defaults = LiveCharts.Options.HasSeriesDefault(type);
+            Geometry = Geometry.Empty;
             Type = type;
             Fill = Color.Empty;
             Stroke = Color.Empty;
@@ -73,8 +75,8 @@ namespace LiveCharts.Core.Series
         /// </value>
         public SeriesTrackingModes TrackingMode { get; set; }
 
-        /// <inheritdoc cref="IChartSeries.Metadata"/>
-        public SeriesMetadata Metadata { get; set; }
+        /// <inheritdoc cref="IChartSeries.Defaults"/>
+        public SeriesMetadata Defaults { get; set; }
 
         /// <summary>
         /// Gets the charts that are using this series.
@@ -82,7 +84,10 @@ namespace LiveCharts.Core.Series
         /// <value>
         /// The chart.
         /// </value>
-        public IEnumerable<ChartModel> UsedBy { get; set; }
+        public IEnumerable<ChartModel> UsedBy { get; internal set; }
+
+        /// <inheritdoc cref="IChartSeries.Geometry"/>
+        public Geometry Geometry { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether this <see cref="Series"/> is visible.
@@ -100,6 +105,9 @@ namespace LiveCharts.Core.Series
         /// </value>
         public IChartingTypeBuilder TypeBuilder { get; set; }
 
+        /// <inheritdoc cref="IChartSeries.Title"/>
+        public string Title { get; set; }
+
         /// <summary>
         /// Gets the type.
         /// </summary>
@@ -108,11 +116,22 @@ namespace LiveCharts.Core.Series
         /// </value>
         public string Type { get; }
 
+        /// <inheritdoc cref="IChartSeries.StrokeThickness"/>
+        public double StrokeThickness { get; set; }
+
         /// <inheritdoc cref="IChartSeries.Stroke"/>
         public Color Stroke { get; set; }
 
         /// <inheritdoc cref="IChartSeries.Fill"/>
         public Color Fill { get; set; }
+
+        /// <summary>
+        /// Gets or sets the index of the z.
+        /// </summary>
+        /// <value>
+        /// The index of the z.
+        /// </value>
+        public int ZIndex { get; set; }
 
         /// <inheritdoc cref="IChartSeries.ScaleAtByDimension"/>
         protected int[] ScalesAt { get; set; }
@@ -142,7 +161,7 @@ namespace LiveCharts.Core.Series
                 if (Stroke == Color.Empty)
                     Stroke = nextColor;
                 if (Fill == Color.Empty)
-                    Fill = nextColor.SetOpacity(((IChartSeries) this).Metadata.DefaultFillOpacity);
+                    Fill = nextColor.SetOpacity(((IChartSeries) this).Defaults.FillOpacity);
             }
 
             // call the factory to fetch our data.

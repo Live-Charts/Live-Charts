@@ -1,5 +1,6 @@
 using System.Linq;
 using LiveCharts.Core.Charts;
+using LiveCharts.Core.Data.Points;
 
 namespace LiveCharts.Core.Series
 {
@@ -13,7 +14,7 @@ namespace LiveCharts.Core.Series
         /// Initializes a new instance of the <see cref="ColumnSeries{TModel}"/> class.
         /// </summary>
         public ColumnSeries()
-            : base(LiveCharts.Constants.ColumnSeries)
+            : base(LiveChartsConstants.ColumnSeries)
         {
         }
 
@@ -42,7 +43,7 @@ namespace LiveCharts.Core.Series
 
             var xUnitWidth = chart.ScaleTo(x.Unit, x) - ColumnPadding;
             var columnSeries = chart.Series
-                .Where(series => series.Metadata.Type == "")
+                .Where(series => series.Defaults.Type == "")
                 .ToList();
             var singleColumnWidth = xUnitWidth / columnSeries.Count;
 
@@ -64,12 +65,16 @@ namespace LiveCharts.Core.Series
 
             var zero = chart.ScaleTo(startAt, y);
 
+            ChartPoint previous = null;
             foreach (var chartPoint in FetchData(chart))
             {
                 if (chartPoint.View == null)
                 {
-                    chartPoint.View = Metadata.PointViewProvider();
+                    chartPoint.View = Defaults.PointViewProvider();
                 }
+
+                chartPoint.View.Draw(chartPoint, previous, chart.View);
+                previous = chartPoint;
             }
 
         }

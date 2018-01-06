@@ -14,14 +14,6 @@ namespace LiveCharts.Core
             Options = new LiveChartsConfig();
         }
 
-        /// <summary>
-        /// Gets the constants.
-        /// </summary>
-        /// <value>
-        /// The constants.
-        /// </value>
-        public static Constants Constants => new Constants();
-
         internal static LiveChartsConfig Options { get; }
 
         internal static IChartingTypeBuilder GetBuilder(Type type)

@@ -7,10 +7,14 @@ namespace LiveCharts.Core.Drawing
     /// </summary>
     public struct Size
     {
-        /// <summary>
-        /// The empty size.
-        /// </summary>
-        public static Size Empty = new Size(int.MinValue, int.MinValue);
+        private readonly bool _isEmpty;
+
+        private Size(bool isEmpty)
+        {
+            _isEmpty = isEmpty;
+            Width = 0;
+            Height = 0;
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Size"/> struct.
@@ -19,6 +23,7 @@ namespace LiveCharts.Core.Drawing
         /// <param name="height">The height.</param>
         public Size(int width, int height)
         {
+            _isEmpty = false;
             Width = width;
             Height = height;
         }
@@ -30,9 +35,15 @@ namespace LiveCharts.Core.Drawing
         /// <param name="height">The height.</param>
         public Size(double width, double height)
         {
+            _isEmpty = false;
             Width = (int) Math.Round(width);
             Height = (int) Math.Round(height);
         }
+
+        /// <summary>
+        /// The empty size.
+        /// </summary>
+        public static Size Empty = new Size(true);
 
         /// <summary>
         /// Gets or sets the width.
@@ -135,7 +146,7 @@ namespace LiveCharts.Core.Drawing
         /// <returns></returns>
         public bool Equals(Size other)
         {
-            return Width == other.Width && Height == other.Height;
+            return _isEmpty == other._isEmpty && Width == other.Width && Height == other.Height;
         }
 
         /// <summary>
@@ -161,7 +172,10 @@ namespace LiveCharts.Core.Drawing
         {
             unchecked
             {
-                return (Width * 397) ^ Height;
+                var hashCode = _isEmpty.GetHashCode();
+                hashCode = (hashCode * 397) ^ Width;
+                hashCode = (hashCode * 397) ^ Height;
+                return hashCode;
             }
         }
     }
