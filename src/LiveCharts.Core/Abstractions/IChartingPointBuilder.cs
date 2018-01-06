@@ -12,7 +12,8 @@ namespace LiveCharts.Core.Abstractions
         /// </summary>
         /// <param name="instance">The instance.</param>
         /// <param name="index">The key.</param>
+        /// <param name="createdAtUpdate">The update id when the point was created.</param>
         /// <returns></returns>
-        ChartPoint Build(object instance, int index);
+        ChartPoint Build(object instance, int index, object createdAtUpdate);
     }
 }

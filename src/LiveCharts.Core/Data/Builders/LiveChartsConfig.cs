@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using LiveCharts.Core.Abstractions;
+using LiveCharts.Core.Config;
 
 namespace LiveCharts.Core.Data.Builders
 {
@@ -12,15 +13,14 @@ namespace LiveCharts.Core.Data.Builders
     {
         internal static readonly Dictionary<Type, IChartingTypeBuilder> Builders = 
             new Dictionary<Type, IChartingTypeBuilder>();
+        private static readonly Dictionary<string, SeriesMetadata> SeriesConfig =
+            new Dictionary<string, SeriesMetadata>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LiveChartsConfig"/> class.
         /// </summary>
         public LiveChartsConfig()
         {
-            PointFactory = new DefaultDataFactory();
-            DefaultLineSeriesFillOpacity = .35d;
-            DefaultColumnSeriesFillOpacity = .8d;
             Colors = new List<Color>();
         }
 
@@ -49,20 +49,22 @@ namespace LiveCharts.Core.Data.Builders
         public IDataFactory PointFactory { get; set; }
 
         /// <summary>
-        /// Gets or sets the default line series fill opacity.
+        /// Returns a builder for the specified series type.
         /// </summary>
-        /// <value>
-        /// The default line series fill opacity.
-        /// </value>
-        public double DefaultLineSeriesFillOpacity { get; set; }
-
-        /// <summary>
-        /// Gets or sets the default column series fill opacity.
-        /// </summary>
-        /// <value>
-        /// The default column series fill opacity.
-        /// </value>
-        public double DefaultColumnSeriesFillOpacity { get; set; }
+        /// <param name="type">The type.</param>
+        /// <returns></returns>
+        public SeriesMetadata HasSeriesMetadata(string type)
+        {
+            if (SeriesConfig.TryGetValue(type, out SeriesMetadata builder))
+            {
+                builder.Type = type;
+                return builder;
+            }
+            builder = new SeriesMetadata();
+            SeriesConfig[type] = builder;
+            builder.Type = type;
+            return builder;
+        }
 
         /// <summary>
         /// Uses the type.

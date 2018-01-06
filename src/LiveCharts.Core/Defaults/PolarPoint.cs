@@ -20,12 +20,23 @@ namespace LiveCharts.Core.Defaults
             
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PolarPoint"/> class.
+        /// </summary>
+        /// <param name="radius">The radius.</param>
+        /// <param name="angle">The angle.</param>
         public PolarPoint(double radius, double angle)
         {
             Radius = radius;
             Angle = angle;
         }
 
+        /// <summary>
+        /// Gets or sets the radius.
+        /// </summary>
+        /// <value>
+        /// The radius.
+        /// </value>
         public double Radius
         {
             get => _radius;
@@ -36,6 +47,12 @@ namespace LiveCharts.Core.Defaults
             }
         }
 
+        /// <summary>
+        /// Gets or sets the angle.
+        /// </summary>
+        /// <value>
+        /// The angle.
+        /// </value>
         public double Angle
         {
             get => _angle;

@@ -7,6 +7,9 @@ namespace LiveCharts.Core.Drawing
     /// </summary>
     public struct Point
     {
+        /// <summary>
+        /// The empty value.
+        /// </summary>
         public static Point Empty = new Point();
 
         /// <summary>

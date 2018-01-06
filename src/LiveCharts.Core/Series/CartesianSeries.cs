@@ -13,12 +13,9 @@ namespace LiveCharts.Core.Series
         /// <summary>
         /// Initializes a new instance of the <see cref="CartesianSeries{TModel}"/> class.
         /// </summary>
-        /// <param name="chartPointType">Type of the chart point.</param>
-        /// <param name="defaultFillOpacity">Default fill opacity</param>
-        /// <param name="skipCriteria">The skip criteria.</param>
-        protected CartesianSeries(
-            ChartPointTypes chartPointType, double defaultFillOpacity, SeriesSkipCriteria skipCriteria)
-            : base(chartPointType, defaultFillOpacity, skipCriteria)
+        /// <param name="type">the series type.</param>
+        protected CartesianSeries(string type)
+            : base(type)
         {
             // A cartesian chart has 2 axis, X, Y
             // A cartesian chart can have as many axis as the user needs

@@ -1,17 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using LiveCharts.Core.Abstractions;
+using LiveCharts.Core.Series;
 
 namespace Samples.Wpf
 {
@@ -23,6 +14,17 @@ namespace Samples.Wpf
         public MainWindow()
         {
             InitializeComponent();
+            DataContext = this;
+
+            Series = new ObservableCollection<IChartSeries>
+            {
+                new ColumnSeries<double>
+                {
+                    Values = new List<double>() {3, 2, 1}
+                }
+            };
         }
+
+        public ObservableCollection<IChartSeries> Series { get; set; }
     }
 }

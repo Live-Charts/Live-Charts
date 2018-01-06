@@ -1,3 +1,5 @@
+using System;
+
 namespace LiveCharts.Core.Drawing
 {
     /// <summary>
@@ -31,6 +33,21 @@ namespace LiveCharts.Core.Drawing
             Left = left;
             Width = width;
             Height = height;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Rectangle"/> struct.
+        /// </summary>
+        /// <param name="top">The top.</param>
+        /// <param name="left">The left.</param>
+        /// <param name="width">The width.</param>
+        /// <param name="height">The height.</param>
+        public Rectangle(double top, double left, double width, double height)
+        {
+            Top = (int) Math.Round(top);
+            Left = (int) Math.Round(left);
+            Width = (int) Math.Round(width);
+            Height = (int) Math.Round(height);
         }
 
         /// <summary>

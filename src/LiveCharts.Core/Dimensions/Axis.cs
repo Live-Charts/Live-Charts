@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using LiveCharts.Core.Abstractions;
+using LiveCharts.Core.Charts;
 using LiveCharts.Core.Drawing;
 
 namespace LiveCharts.Core.Dimensions
@@ -178,6 +179,7 @@ namespace LiveCharts.Core.Dimensions
             }
         }
 
+        /// <inheritdoc cref="Plane.OnDispose"/>
         protected override void OnDispose()
         {
             foreach (var activeSeparator in _activeSeparators)

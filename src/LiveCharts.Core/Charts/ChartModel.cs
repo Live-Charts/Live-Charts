@@ -9,7 +9,7 @@ using LiveCharts.Core.Data;
 using LiveCharts.Core.Dimensions;
 using Size = LiveCharts.Core.Drawing.Size;
 
-namespace LiveCharts.Core
+namespace LiveCharts.Core.Charts
 {
     /// <summary>
     /// Defines a chart.
@@ -103,7 +103,15 @@ namespace LiveCharts.Core
             get => _colors ?? LiveCharts.Options.Colors;
             set => _colors = value;
         }
-        
+
+        /// <summary>
+        /// Gets the series.
+        /// </summary>
+        /// <value>
+        /// The series.
+        /// </value>
+        public IEnumerable<IChartSeries> Series => View.Series;
+
         /// <summary>
         /// Invalidates this instance, the chart will queue an update request.
         /// </summary>
@@ -142,22 +150,9 @@ namespace LiveCharts.Core
         /// <param name="plane">The axis.</param>
         /// <param name="size">The draw margin, this param is optional, if not set, the current chart's draw margin area will be used.</param>
         /// <returns></returns>
-        public double ScaleTo(double value, Plane plane, Size? size = null)
+        public virtual double ScaleTo(double value, Plane plane, Size? size = null)
         {
-            var chartSize = size ?? DrawAreaSize;
-
-            // based on the linear equation 
-            // y = m * (x - x1) + y1
-            // where m is the slope, (y2 - y1) / (x2 - x1)
-
-            // for now we only support cartesian planes, X, other wise we suppose it is Y.
-            var dimension = plane.Type == PlaneTypes.X ? chartSize.Width : chartSize.Height;
-
-            double x1 = plane.ActualMaxValue, y1 = dimension;
-            double x2 = plane.ActualMinValue; // y2 = 0;
-
-            // m was simplified from => ((0 - y1) / (x2-x1))
-            return (y1 / (x1 - x2)) * (value - x1) + y1;
+            throw new NotImplementedException();
         }
 
         /// <summary>

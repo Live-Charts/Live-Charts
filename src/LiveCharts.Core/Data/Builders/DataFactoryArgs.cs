@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.ComponentModel;
 using LiveCharts.Core.Abstractions;
+using LiveCharts.Core.Charts;
 
 namespace LiveCharts.Core.Data.Builders
 {

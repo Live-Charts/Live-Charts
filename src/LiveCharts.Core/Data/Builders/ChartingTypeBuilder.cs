@@ -12,11 +12,11 @@ namespace LiveCharts.Core.Data.Builders
     /// <typeparam name="TModel">The type of the model.</typeparam>
     public class ChartingTypeBuilder<TModel> : IChartingTypeBuilder
     {
-        private CartesianPointOptions<TModel> _cartesianPointOptions;
-        private FinancialPointOptions<TModel> _financialPointOptions;
-        private PiePointOptions<TModel> _piePointOptions;
-        private PolarPointOptions<TModel> _polarPointOptions;
-        private WeightedPointOptions<TModel> _weightedPointOptions;
+        private CartesianPointBuilder<TModel> _cartesianPointBuilder;
+        private FinancialPointBuilder<TModel> _financialPointBuilder;
+        private PiePointBuilder<TModel> _piePointBuilder;
+        private PolarPointBuilder<TModel> _polarPointBuilder;
+        private WeightedPointBuilder<TModel> _builder;
 
         /// <summary>
         /// Gets the cartesian point builder.
@@ -24,15 +24,15 @@ namespace LiveCharts.Core.Data.Builders
         /// <value>
         /// The cartesian point builder.
         /// </value>
-        private CartesianPointOptions<TModel> CartesianPointOptions
+        private CartesianPointBuilder<TModel> CartesianPointBuilder
         {
             get
             {
-                if (_cartesianPointOptions == null)
+                if (_cartesianPointBuilder == null)
                 {
                     throw new LiveChartsException(GetErrorHelp(nameof(AsCartesian)), 100);
                 }
-                return _cartesianPointOptions;
+                return _cartesianPointBuilder;
             }
         }
 
@@ -42,15 +42,15 @@ namespace LiveCharts.Core.Data.Builders
         /// <value>
         /// The financial point builder.
         /// </value>
-        private FinancialPointOptions<TModel> FinancialPointOptions
+        private FinancialPointBuilder<TModel> FinancialPointBuilder
         {
             get
             {
-                if (_financialPointOptions == null)
+                if (_financialPointBuilder == null)
                 {
                     throw new LiveChartsException(GetErrorHelp(nameof(AsFinancial)), 100);
                 }
-                return _financialPointOptions;
+                return _financialPointBuilder;
             }
         }
 
@@ -60,15 +60,15 @@ namespace LiveCharts.Core.Data.Builders
         /// <value>
         /// The pie point builder.
         /// </value>
-        private PiePointOptions<TModel> PiePointOptions
+        private PiePointBuilder<TModel> PiePointBuilder
         {
             get
             {
-                if (_piePointOptions == null)
+                if (_piePointBuilder == null)
                 {
                     throw new LiveChartsException(GetErrorHelp(nameof(AsPie)), 100);
                 }
-                return _piePointOptions;
+                return _piePointBuilder;
             }
         }
 
@@ -78,15 +78,15 @@ namespace LiveCharts.Core.Data.Builders
         /// <value>
         /// The polar point builder.
         /// </value>
-        private PolarPointOptions<TModel> PolarPointOptions
+        private PolarPointBuilder<TModel> PolarPointBuilder
         {
             get
             {
-                if (_polarPointOptions == null)
+                if (_polarPointBuilder == null)
                 {
                     throw new LiveChartsException(GetErrorHelp(nameof(AsPolar)), 100);
                 }
-                return _polarPointOptions;
+                return _polarPointBuilder;
             }
         }
 
@@ -96,15 +96,15 @@ namespace LiveCharts.Core.Data.Builders
         /// <value>
         /// The weighted point builder.
         /// </value>
-        private WeightedPointOptions<TModel> WeightedPointOptions
+        private WeightedPointBuilder<TModel> Builder
         {
             get
             {
-                 if (_weightedPointOptions == null)
+                 if (_builder == null)
                 {
                     throw new LiveChartsException(GetErrorHelp(nameof(AsWeighted)), 100);
                 }
-                return _weightedPointOptions;
+                return _builder;
             }
         }
 
@@ -113,10 +113,10 @@ namespace LiveCharts.Core.Data.Builders
         /// </summary>
         /// <param name="options">The builder.</param>
         /// <returns></returns>
-        public ChartingTypeBuilder<TModel> AsCartesian(Action<CartesianPointOptions<TModel>> options)
+        public ChartingTypeBuilder<TModel> AsCartesian(Action<CartesianPointBuilder<TModel>> options)
         {
-            _cartesianPointOptions = _cartesianPointOptions ?? new CartesianPointOptions<TModel>();
-            options(_cartesianPointOptions);
+            _cartesianPointBuilder = _cartesianPointBuilder ?? new CartesianPointBuilder<TModel>();
+            options(_cartesianPointBuilder);
             return this;
         }
 
@@ -125,10 +125,10 @@ namespace LiveCharts.Core.Data.Builders
         /// </summary>
         /// <param name="options">The builder.</param>
         /// <returns></returns>
-        public ChartingTypeBuilder<TModel> AsFinancial(Action<FinancialPointOptions<TModel>> options)
+        public ChartingTypeBuilder<TModel> AsFinancial(Action<FinancialPointBuilder<TModel>> options)
         {
-            _financialPointOptions = _financialPointOptions ?? new FinancialPointOptions<TModel>();
-            options(_financialPointOptions);
+            _financialPointBuilder = _financialPointBuilder ?? new FinancialPointBuilder<TModel>();
+            options(_financialPointBuilder);
             return this;
         }
 
@@ -137,10 +137,10 @@ namespace LiveCharts.Core.Data.Builders
         /// </summary>
         /// <param name="options">The builder.</param>
         /// <returns></returns>
-        public ChartingTypeBuilder<TModel> AsPie(Action<PiePointOptions<TModel>> options)
+        public ChartingTypeBuilder<TModel> AsPie(Action<PiePointBuilder<TModel>> options)
         {
-            _piePointOptions = _piePointOptions ?? new PiePointOptions<TModel>();
-            options(_piePointOptions);
+            _piePointBuilder = _piePointBuilder ?? new PiePointBuilder<TModel>();
+            options(_piePointBuilder);
             return this;
         }
 
@@ -149,10 +149,10 @@ namespace LiveCharts.Core.Data.Builders
         /// </summary>
         /// <param name="options">The builder.</param>
         /// <returns></returns>
-        public ChartingTypeBuilder<TModel> AsPolar(Action<PolarPointOptions<TModel>> options)
+        public ChartingTypeBuilder<TModel> AsPolar(Action<PolarPointBuilder<TModel>> options)
         {
-            _polarPointOptions = _polarPointOptions ?? new PolarPointOptions<TModel>();
-            options(_polarPointOptions);
+            _polarPointBuilder = _polarPointBuilder ?? new PolarPointBuilder<TModel>();
+            options(_polarPointBuilder);
             return this;
         }
 
@@ -161,10 +161,10 @@ namespace LiveCharts.Core.Data.Builders
         /// </summary>
         /// <param name="options">The builder.</param>
         /// <returns></returns>
-        public ChartingTypeBuilder<TModel> AsWeighted(Action<WeightedPointOptions<TModel>> options)
+        public ChartingTypeBuilder<TModel> AsWeighted(Action<WeightedPointBuilder<TModel>> options)
         {
-            _weightedPointOptions = _weightedPointOptions ?? new WeightedPointOptions<TModel>();
-            options(_weightedPointOptions);
+            _builder = _builder ?? new WeightedPointBuilder<TModel>();
+            options(_builder);
             return this;
         }
 
@@ -174,17 +174,17 @@ namespace LiveCharts.Core.Data.Builders
             switch (pointType)
             {
                 case ChartPointTypes.Cartesian:
-                    return CartesianPointOptions;
+                    return CartesianPointBuilder;
                 case ChartPointTypes.Financial:
-                    return FinancialPointOptions;
+                    return FinancialPointBuilder;
                 case ChartPointTypes.Pie:
-                    return PiePointOptions;
+                    return PiePointBuilder;
                 case ChartPointTypes.Polar:
-                    return PolarPointOptions;
+                    return PolarPointBuilder;
                 case ChartPointTypes.StackedCartesian:
                     throw new NotImplementedException();
                 case ChartPointTypes.Weighted:
-                    return WeightedPointOptions;
+                    return Builder;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(pointType), pointType, null);
             }

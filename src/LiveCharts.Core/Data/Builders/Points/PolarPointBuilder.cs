@@ -9,7 +9,7 @@ namespace LiveCharts.Core.Data.Builders.Points
     /// </summary>
     /// <typeparam name="TModel">The type of the model.</typeparam>
     /// <seealso cref="IChartingPointBuilder" />
-    public class PolarPointOptions<TModel> : IChartingPointBuilder
+    public class PolarPointBuilder<TModel> : IChartingPointBuilder
     {
         /// <summary>
         /// Gets or sets the radius getter.
@@ -28,11 +28,12 @@ namespace LiveCharts.Core.Data.Builders.Points
         public Func<TModel, int, double> AngleGetter { get; set; }
 
         /// <inheritdoc cref="IChartingPointBuilder.Build"/>
-        ChartPoint IChartingPointBuilder.Build(object instance, int index)
+        ChartPoint IChartingPointBuilder.Build(object instance, int index, object createdAtUpdate)
         {
             return new PolarChartPoint(
                 RadiusGetter((TModel) instance, index),
-                AngleGetter((TModel) instance, index));
+                AngleGetter((TModel) instance, index),
+                createdAtUpdate);
         }
     }
 }

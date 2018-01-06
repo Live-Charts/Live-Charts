@@ -10,7 +10,9 @@ namespace LiveCharts.Core.Data.Points
         /// </summary>
         /// <param name="radius">The radius.</param>
         /// <param name="angle">The angle.</param>
-        public PolarChartPoint(double radius, double angle)
+        /// <param name="creationStamp">the update stamp.</param>
+        public PolarChartPoint(double radius, double angle, object creationStamp)
+            : base(creationStamp)
         {
             Radius = radius;
             Angle = angle;
@@ -32,6 +34,7 @@ namespace LiveCharts.Core.Data.Points
         /// </value>
         public double Angle { get; internal set; }
 
+        /// <inheritdoc cref="ChartPoint.CompareDimensions"/>
         public override bool CompareDimensions(DimensionRange[] ranges, SeriesSkipCriteria skipCriteria)
         {
             var radiusDimensionRange = ranges[0];

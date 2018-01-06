@@ -7,6 +7,11 @@ namespace LiveCharts.Core.Abstractions
     /// </summary>
     public interface IChartingTypeBuilder
     {
+        /// <summary>
+        /// Gets the builder.
+        /// </summary>
+        /// <param name="pointType">Type of the point.</param>
+        /// <returns></returns>
         IChartingPointBuilder GetBuilder(ChartPointTypes pointType);
     }
 }

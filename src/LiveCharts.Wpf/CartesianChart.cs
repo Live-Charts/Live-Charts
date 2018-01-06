@@ -6,6 +6,7 @@ using System.Windows;
 using System.Windows.Controls;
 using LiveCharts.Core;
 using LiveCharts.Core.Abstractions;
+using LiveCharts.Core.Charts;
 using LiveCharts.Core.Dimensions;
 using LiveCharts.Core.Drawing;
 using Size = LiveCharts.Core.Drawing.Size;
@@ -172,7 +173,7 @@ namespace LiveCharts.Wpf
 
         private object _seriesUpdateId;
         private IList<IChartSeries> _series;
-        IList<IChartSeries> IChartView.Series
+        IEnumerable<IChartSeries> IChartView.Series
         {
             get
             {

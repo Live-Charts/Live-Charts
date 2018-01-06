@@ -1,5 +1,4 @@
 ﻿using System;
-using LiveCharts.Core.Dimensions;
 
 namespace LiveCharts.Core.Data.Points
 {
@@ -14,7 +13,9 @@ namespace LiveCharts.Core.Data.Points
         /// </summary>
         /// <param name="x">The x.</param>
         /// <param name="y">The y.</param>
-        public CartesianChartPoint(double x, double y)
+        /// <param name="creationStamp">the update stamp.</param>
+        public CartesianChartPoint(double x, double y, object creationStamp)
+            : base(creationStamp)
         {
             X = x;
             Y = y;

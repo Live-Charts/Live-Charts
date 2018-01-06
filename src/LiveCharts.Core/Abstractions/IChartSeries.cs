@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using LiveCharts.Core.Charts;
+using LiveCharts.Core.Config;
 using LiveCharts.Core.Data;
 using LiveCharts.Core.Data.Points;
 
@@ -12,28 +14,12 @@ namespace LiveCharts.Core.Abstractions
     public interface IChartSeries : IDisposable
     {
         /// <summary>
-        /// Gets the <see cref="ChartPointTypes"/> value of the chart point.
+        /// Gets the series configuration.
         /// </summary>
         /// <value>
-        /// The type of the chart point.
+        /// The series configuration.
         /// </value>
-        ChartPointTypes ChartPointType { get; }
-
-        /// <summary>
-        /// Gets the default fill opacity.
-        /// </summary>
-        /// <value>
-        /// The default fill opacity.
-        /// </value>
-        double DefaultFillOpacity { get; }
-
-        /// <summary>
-        /// Gets the skip criteria.
-        /// </summary>
-        /// <value>
-        /// The skip criteria.
-        /// </value>
-        SeriesSkipCriteria SkipCriteria { get; }
+        SeriesMetadata Metadata { get; }
 
         /// <summary>
         /// Gets the tracking mode.

@@ -1,6 +1,6 @@
 ﻿using LiveCharts.Core.Abstractions;
 
-namespace LiveCharts.Core
+namespace LiveCharts.Core.Charts
 {
     /// <summary>
     /// Represents a chart with a polar system.

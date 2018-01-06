@@ -5,7 +5,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Samples.Wpf"
         xmlns:wpf="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+        xmlns:series="clr-namespace:LiveCharts.Core.Series;assembly=LiveCharts.Core"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
-    <wpf:CartesianChart></wpf:CartesianChart>
+        Title="MainWindow" Height="350" Width="525"
+        Name="This"
+        d:DataContext="{Binding ElementName=This}">
+    <wpf:CartesianChart Series="{Binding Series}">
+    </wpf:CartesianChart>
 </Window>

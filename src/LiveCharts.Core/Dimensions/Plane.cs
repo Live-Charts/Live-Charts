@@ -190,6 +190,7 @@ namespace LiveCharts.Core.Dimensions
            OnDispose();
         }
 
+        /// <inheritdoc cref="IDisposable.Dispose"/>
         protected virtual void OnDispose()
         {
             throw new NotImplementedException();

@@ -11,7 +11,9 @@ namespace LiveCharts.Core.Data.Points
         /// </summary>
         /// <param name="index">the index.</param>
         /// <param name="value">The value.</param>
-        public PieChartPoint(int index, double value)
+        /// <param name="creationStamp">the creation stamp.</param>
+        public PieChartPoint(int index, double value, object creationStamp)
+            :base(creationStamp)
         {
             Index = index;
             Value = value;
@@ -41,6 +43,7 @@ namespace LiveCharts.Core.Data.Points
         /// </value>
         public double Participation { get; internal set; }
 
+        /// <inheritdoc cref="ChartPoint.CompareDimensions"/>
         public override bool CompareDimensions(DimensionRange[] ranges, SeriesSkipCriteria skipCriteria)
         {
             return false;

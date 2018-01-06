@@ -14,8 +14,9 @@ namespace LiveCharts.Core.Data.Points
         /// <param name="x">The x.</param>
         /// <param name="y">The y.</param>
         /// <param name="weight">The weight.</param>
-        public WeightedCartesianChartPoint(double x, double y, double weight)
-            : base(x, y)
+        /// <param name="creationStamp">the update stamp.</param>
+        public WeightedCartesianChartPoint(double x, double y, double weight, object creationStamp)
+            : base(x, y, creationStamp)
         {
             Weight = weight;
         }

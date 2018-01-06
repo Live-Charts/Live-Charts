@@ -2,6 +2,7 @@
 using System.Drawing;
 using System.Linq;
 using LiveCharts.Core.Abstractions;
+using LiveCharts.Core.Charts;
 using LiveCharts.Core.Data;
 using LiveCharts.Core.Dimensions;
 using Rectangle = LiveCharts.Core.Drawing.Rectangle;

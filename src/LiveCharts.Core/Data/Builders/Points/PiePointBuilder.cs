@@ -9,7 +9,7 @@ namespace LiveCharts.Core.Data.Builders.Points
     /// </summary>
     /// <typeparam name="TModel">The type of the model.</typeparam>
     /// <seealso cref="IChartingPointBuilder" />
-    public class PiePointOptions<TModel> : IChartingPointBuilder
+    public class PiePointBuilder<TModel> : IChartingPointBuilder
     {
         /// <summary>
         /// Gets or sets the value getter.
@@ -20,9 +20,12 @@ namespace LiveCharts.Core.Data.Builders.Points
         public Func<TModel, int, double> ValueGetter { get; set; }
 
         /// <inheritdoc cref="IChartingPointBuilder.Build"/>
-        ChartPoint IChartingPointBuilder.Build(object instance, int index)
+        ChartPoint IChartingPointBuilder.Build(object instance, int index, object createdAtUpdate)
         {
-            return new PieChartPoint(index, ValueGetter((TModel) instance, index));
+            return new PieChartPoint(
+                index, 
+                ValueGetter((TModel) instance, index), 
+                createdAtUpdate);
         }
     }
 }

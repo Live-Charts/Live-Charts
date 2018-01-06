@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using LiveCharts.Core.Charts;
 using LiveCharts.Core.Data;
 using LiveCharts.Core.Data.Points;
 
@@ -16,10 +17,7 @@ namespace LiveCharts.Core.Series
         /// Initializes a new instance of the <see cref="LineSeries{TModel}"/> class.
         /// </summary>
         public LineSeries()
-            : base(
-                ChartPointTypes.Cartesian,
-                LiveCharts.Options.DefaultLineSeriesFillOpacity,
-                SeriesSkipCriteria.IgnoreXOverflow)
+            : base(LiveCharts.Constants.LineSeries)
         {
         }
 
@@ -31,6 +29,7 @@ namespace LiveCharts.Core.Series
         /// </value>
         public double LineSmoothness { get; set; }
 
+        /// <inheritdoc />
         protected override void OnUpdateView(ChartModel chart)
         {
             var points = FetchData(chart).Cast<CartesianChartPoint>();

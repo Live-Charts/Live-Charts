@@ -4,6 +4,7 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Drawing;
 using LiveCharts.Core.Abstractions;
+using LiveCharts.Core.Charts;
 using LiveCharts.Core.Config;
 using LiveCharts.Core.Data;
 using LiveCharts.Core.Data.Builders;
@@ -26,22 +27,18 @@ namespace LiveCharts.Core.Series
         /// <summary>
         /// Initializes a new instance of the <see cref="Series{TModel}"/> class.
         /// </summary>
-        /// <param name="chartPointType">Type of the chart point.</param>
-        /// <param name="defaultFillOpacity">the series default fill opacity.</param>
-        /// <param name="skipCriteria">the skip criteria.</param>
-        protected Series(
-            ChartPointTypes chartPointType, double defaultFillOpacity, SeriesSkipCriteria skipCriteria)
+        /// <param name="type">the series type.</param>
+        protected Series(string type)
         {
-            _chartPointType = chartPointType;
-            _defaultFillOpacity = defaultFillOpacity;
-            _skipCriteria = skipCriteria;
+            Metadata = LiveCharts.Options.HasSeriesMetadata(type);
+            Type = type;
             Fill = Color.Empty;
             Stroke = Color.Empty;
             TrackingMode = SeriesTrackingModes.ByReference;
         }
 
         /// <summary>
-        /// Gets or sets the values to plot.
+        /// Gets or sets the values.
         /// </summary>
         /// <value>
         /// The values.
@@ -76,14 +73,8 @@ namespace LiveCharts.Core.Series
         /// </value>
         public SeriesTrackingModes TrackingMode { get; set; }
 
-        private readonly double _defaultFillOpacity;
-        double IChartSeries.DefaultFillOpacity => _defaultFillOpacity;
-
-        private readonly SeriesSkipCriteria _skipCriteria;
-        SeriesSkipCriteria IChartSeries.SkipCriteria => _skipCriteria;
-
-        private readonly ChartPointTypes _chartPointType;
-        ChartPointTypes IChartSeries.ChartPointType => _chartPointType;
+        /// <inheritdoc cref="IChartSeries.Metadata"/>
+        public SeriesMetadata Metadata { get; set; }
 
         /// <summary>
         /// Gets the charts that are using this series.
@@ -108,6 +99,14 @@ namespace LiveCharts.Core.Series
         /// The type builder.
         /// </value>
         public IChartingTypeBuilder TypeBuilder { get; set; }
+
+        /// <summary>
+        /// Gets the type.
+        /// </summary>
+        /// <value>
+        /// The type.
+        /// </value>
+        public string Type { get; }
 
         /// <inheritdoc cref="IChartSeries.Stroke"/>
         public Color Stroke { get; set; }
@@ -143,7 +142,7 @@ namespace LiveCharts.Core.Series
                 if (Stroke == Color.Empty)
                     Stroke = nextColor;
                 if (Fill == Color.Empty)
-                    Fill = nextColor.SetOpacity(((IChartSeries) this).DefaultFillOpacity);
+                    Fill = nextColor.SetOpacity(((IChartSeries) this).Metadata.DefaultFillOpacity);
             }
 
             // call the factory to fetch our data.

@@ -1,6 +1,5 @@
 using System;
 using LiveCharts.Core.Abstractions;
-using LiveCharts.Core.Config;
 using LiveCharts.Core.Data.Builders;
 
 namespace LiveCharts.Core
@@ -13,16 +12,15 @@ namespace LiveCharts.Core
         static LiveCharts()
         {
             Options = new LiveChartsConfig();
-
-            // default configuration
-            Config(options =>
-            {
-                options
-                    .AddPrimitivesPlotTypes()
-                    .AddDefaultPlotObjects()
-                    .UseMaterialDesignColors();
-            });
         }
+
+        /// <summary>
+        /// Gets the constants.
+        /// </summary>
+        /// <value>
+        /// The constants.
+        /// </value>
+        public static Constants Constants => new Constants();
 
         internal static LiveChartsConfig Options { get; }
 

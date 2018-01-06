@@ -9,7 +9,7 @@ namespace LiveCharts.Core.Data.Builders.Points
     /// </summary>
     /// <typeparam name="TModel">The type of the model.</typeparam>
     /// <seealso cref="IChartingPointBuilder" />
-    public class FinancialPointOptions<TModel> : IChartingPointBuilder
+    public class FinancialPointBuilder<TModel> : IChartingPointBuilder
     {
         /// <summary>
         /// Gets or sets the open getter.
@@ -44,14 +44,15 @@ namespace LiveCharts.Core.Data.Builders.Points
         public Func<TModel, int, double> CloseGetter { get; set; }
 
         /// <inheritdoc cref="IChartingPointBuilder.Build"/>
-        ChartPoint IChartingPointBuilder.Build(object instance, int index)
+        ChartPoint IChartingPointBuilder.Build(object instance, int index, object createdAtUpdate)
         {
             return new FinancialChartPoint(
                 index,
                 OpenGetter((TModel) instance, index),
                 HighGetter((TModel) instance, index),
                 LowGetter((TModel) instance, index),
-                CloseGetter((TModel) instance, index));
+                CloseGetter((TModel) instance, index),
+                createdAtUpdate);
         }
     }
 }

@@ -4,11 +4,9 @@ using System.Linq;
 using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Dimensions;
 using LiveCharts.Core.Drawing;
-using Point = LiveCharts.Core.Drawing.Point;
-using Rectangle = LiveCharts.Core.Drawing.Rectangle;
 using Size = LiveCharts.Core.Drawing.Size;
 
-namespace LiveCharts.Core
+namespace LiveCharts.Core.Charts
 {
     /// <summary>
     /// Represents a chart with a cartesian plane coordinate system (x,y).
@@ -23,6 +21,41 @@ namespace LiveCharts.Core
         public CartesianChartModel(IChartView view)
             : base(view)
         {
+        }
+
+        /// <summary>
+        /// Gets the x axis.
+        /// </summary>
+        /// <value>
+        /// The x axis.
+        /// </value>
+        public IList<Plane> XAxis => View.AxisArrayByDimension[0];
+
+        /// <summary>
+        /// Gets the y axis.
+        /// </summary>
+        /// <value>
+        /// The y axis.
+        /// </value>
+        public IList<Plane> YAxis => View.AxisArrayByDimension[1];
+
+        /// <inheritdoc cref="ChartModel.ScaleTo"/>
+        public override double ScaleTo(double value, Plane plane, Size? size = null)
+        {
+            var chartSize = size ?? DrawAreaSize;
+
+            // based on the linear equation 
+            // y = m * (x - x1) + y1
+            // where m is the slope, (y2 - y1) / (x2 - x1)
+
+            // for now we only support cartesian planes, X, other wise we suppose it is Y.
+            var dimension = plane.Type == PlaneTypes.X ? chartSize.Width : chartSize.Height;
+
+            double x1 = plane.ActualMaxValue, y1 = dimension;
+            double x2 = plane.ActualMinValue; // y2 = 0;
+
+            // m was simplified from => ((0 - y1) / (x2-x1))
+            return (y1 / (x1 - x2)) * (value - x1) + y1;
         }
 
         /// <inheritdoc cref="ChartModel.Update"/>

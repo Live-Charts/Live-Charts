@@ -14,7 +14,9 @@ namespace LiveCharts.Core.Data.Points
         /// <param name="high">The high.</param>
         /// <param name="low">The low.</param>
         /// <param name="close">The close.</param>
-        public FinancialChartPoint(int key, double open, double high, double low, double close)
+        /// <param name="creationStamp">the update stamp.</param>
+        public FinancialChartPoint(int key, double open, double high, double low, double close, object creationStamp)
+            :base(creationStamp)
         {
             Index = key;
             Open = open;

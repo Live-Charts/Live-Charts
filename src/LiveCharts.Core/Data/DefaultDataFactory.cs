@@ -17,7 +17,7 @@ namespace LiveCharts.Core.Data
         public IEnumerable<ChartPoint> Fetch(DataFactoryArgs args)
         {
             var typeBuilder = args.Series.TypeBuilder ?? LiveCharts.GetBuilder(args.CollectionItemsType);
-            var pointBuilder = typeBuilder.GetBuilder(args.Series.ChartPointType);
+            var pointBuilder = typeBuilder.GetBuilder(args.Series.Metadata.ChartPointType);
             var notifiesChange = typeof(INotifyPropertyChanged).IsAssignableFrom(args.CollectionItemsType);
             var trackByRef = !args.CollectionItemsType.IsValueType &&
                              args.Series.TrackingMode == SeriesTrackingModes.ByReference;
@@ -42,10 +42,10 @@ namespace LiveCharts.Core.Data
                     .TryGetValue(
                         key, out ChartPoint chartPoint))
                 {
-                    chartPoint = pointBuilder.Build(instance, index);
+                    chartPoint = pointBuilder.Build(instance, index, args.Chart.UpdateId);
                 }
 
-                if (chartPoint.CompareDimensions(dimensions, args.Series.SkipCriteria)) continue;
+                if (chartPoint.CompareDimensions(dimensions, args.Series.Metadata.SkipCriteria)) continue;
 
                 // feed our chart points ...
                 chartPoint.Instance = instance;

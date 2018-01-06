@@ -9,7 +9,7 @@ namespace LiveCharts.Core.Data.Builders.Points
     /// </summary>
     /// <typeparam name="TModel">The type of the model.</typeparam>
     /// <seealso cref="IChartingPointBuilder" />
-    public class CartesianPointOptions<TModel> : IChartingPointBuilder
+    public class CartesianPointBuilder<TModel> : IChartingPointBuilder
     {
         /// <summary>
         /// Gets or sets the x getter.
@@ -28,9 +28,12 @@ namespace LiveCharts.Core.Data.Builders.Points
         public Func<TModel, int, double> YGetter { get; set; }
 
         /// <inheritdoc cref="IChartingPointBuilder.Build"/>
-        ChartPoint IChartingPointBuilder.Build(object instance, int index)
+        ChartPoint IChartingPointBuilder.Build(object instance, int index, object createdAtUpdate)
         {
-            return new CartesianChartPoint(XGetter((TModel) instance, index), YGetter((TModel) instance, index));
+            return new CartesianChartPoint(
+                XGetter((TModel) instance, index),
+                YGetter((TModel) instance, index),
+                createdAtUpdate);
         }
     }
 }

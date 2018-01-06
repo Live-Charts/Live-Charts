@@ -22,7 +22,7 @@
 
 using System;
 using LiveCharts.Core.Abstractions;
-using LiveCharts.Core.Series;
+using LiveCharts.Core.Charts;
 
 namespace LiveCharts.Core.Data.Points
 {
@@ -32,9 +32,20 @@ namespace LiveCharts.Core.Data.Points
     /// <seealso cref="System.IDisposable" />
     public abstract class ChartPoint : IDisposable
     {
+        private readonly object _createdStamp; 
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ChartPoint"/> class.
+        /// </summary>
+        /// <param name="createdAt">The created at.</param>
+        protected ChartPoint(object createdAt)
+        {
+            _createdStamp = createdAt;
+        }
+
         /// <summary>
         /// Gets the key of the point, a key is used internally as a unique identifier in 
-        /// in a <see cref="Series{TModel}"/> 
+        /// in a <see cref="Series"/> 
         /// </summary>
         /// <value>
         /// The key.
@@ -55,7 +66,7 @@ namespace LiveCharts.Core.Data.Points
         /// <value>
         /// The point view.
         /// </value>
-        public IPointView PointView { get; internal set; }
+        public IPointView View { get; internal set; }
 
         /// <summary>
         /// Gets the series that owns the point.
@@ -74,6 +85,14 @@ namespace LiveCharts.Core.Data.Points
         public ChartModel Chart { get; internal set; }
 
         /// <summary>
+        /// Gets a value indicating whether this instance was just created in the update cycle.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if this instance is new; otherwise, <c>false</c>.
+        /// </value>
+        public bool IsNew => Chart.UpdateId == _createdStamp;
+
+        /// <summary>
         /// Compares the dimension, returns <c>true</c> if the point should be skipped by the data provider.
         /// </summary>
         /// <param name="ranges">The ranges.</param>
@@ -84,7 +103,7 @@ namespace LiveCharts.Core.Data.Points
         /// <inheritdoc cref="IDisposable.Dispose"/>
         public void Dispose()
         {
-            PointView.Erase();
+            View.Erase();
         }
     }
 }

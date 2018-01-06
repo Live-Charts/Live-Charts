@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using LiveCharts.Core.Charts;
 using LiveCharts.Core.Dimensions;
 using LiveCharts.Core.Drawing;
 
@@ -61,7 +62,7 @@ namespace LiveCharts.Core.Abstractions
         /// <value>
         /// The actual series.
         /// </value>
-        IList<IChartSeries> Series { get; }
+        IEnumerable<IChartSeries> Series { get; }
 
         /// <summary>
         /// Gets a value indicating whether animations are disabled.
