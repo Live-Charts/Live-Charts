@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using LiveCharts.Core.Data.Builders;
+using LiveCharts.Core.Data;
 using LiveCharts.Core.Drawing;
 
 namespace LiveCharts.Core.Config
@@ -15,7 +15,7 @@ namespace LiveCharts.Core.Config
         /// <param name="config">The configuration.</param>
         /// <param name="colors"></param>
         /// <returns></returns>
-        public static LiveChartsConfig UseColors(this LiveChartsConfig config, IEnumerable<Color> colors)
+        public static ChartingConfig UseColors(this ChartingConfig config, IEnumerable<Color> colors)
         {
             config.Colors.Clear();
             config.Colors.AddRange(colors);
@@ -27,7 +27,7 @@ namespace LiveCharts.Core.Config
         /// </summary>
         /// <param name="config">The configuration.</param>
         /// <returns></returns>
-        public static LiveChartsConfig UseMaterialDesignColors(this LiveChartsConfig config)
+        public static ChartingConfig UseMaterialDesignColors(this ChartingConfig config)
         {
             config.Colors.Clear();
             config.Colors.AddRange(new[]
@@ -55,7 +55,7 @@ namespace LiveCharts.Core.Config
         /// </summary>
         /// <param name="config">The configuration.</param>
         /// <returns></returns>
-        public static LiveChartsConfig UseMetroColors(this LiveChartsConfig config)
+        public static ChartingConfig UseMetroColors(this ChartingConfig config)
         {
             config.Colors.Clear();
             config.Colors.AddRange(new[]
@@ -80,7 +80,7 @@ namespace LiveCharts.Core.Config
         /// </summary>
         /// <param name="config">The configuration.</param>
         /// <returns></returns>
-        public static LiveChartsConfig UseWhiteScaleColors(this LiveChartsConfig config)
+        public static ChartingConfig UseWhiteScaleColors(this ChartingConfig config)
         {
             config.Colors.Clear();
             config.Colors.AddRange(new[]
@@ -100,7 +100,7 @@ namespace LiveCharts.Core.Config
         /// </summary>
         /// <param name="config">The configuration.</param>
         /// <returns></returns>
-        public static LiveChartsConfig UseBlackScaleColors(this LiveChartsConfig config)
+        public static ChartingConfig UseBlackScaleColors(this ChartingConfig config)
         {
             config.Colors.Clear();
             config.Colors.AddRange(new[]
@@ -120,7 +120,7 @@ namespace LiveCharts.Core.Config
         /// </summary>
         /// <param name="config">The configuration.</param>
         /// <returns></returns>
-        public static LiveChartsConfig UseBlueScaleColors(this LiveChartsConfig config)
+        public static ChartingConfig UseBlueScaleColors(this ChartingConfig config)
         {
             config.Colors.Clear();
             config.Colors.AddRange(new[]

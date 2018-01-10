@@ -5,6 +5,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using LiveCharts.Core.Abstractions;
+using LiveCharts.Core.Data;
 using Orientation = LiveCharts.Core.Abstractions.Orientation;
 using Size = LiveCharts.Core.Drawing.Size;
 
@@ -61,7 +62,7 @@ namespace LiveCharts.Wpf
         }
 
         /// <inheritdoc cref="IChartLegend.UpdateLayoutAsync"/>
-        async Task<Size> IChartLegend.UpdateLayoutAsync(IEnumerable<IChartSeries> series, Orientation orientation)
+        async Task<Size> IChartLegend.UpdateLayoutAsync(IEnumerable<IChartSeries> seriesCollection, Orientation orientation)
         {
             // we really don't care about the wpf cycle, we don't need bindings,
             // we could actually get a sync error if we use bindings in this control
@@ -81,11 +82,11 @@ namespace LiveCharts.Wpf
 
                 Children.Clear();
 
-                foreach (var current in series)
+                foreach (var series in seriesCollection)
                 {
-                    var g = current.Geometry == Core.Drawing.Svg.Geometry.Empty
-                        ? current.Defaults.Geometry
-                        : current.Geometry;
+                    var g = series.Geometry == Core.Drawing.Svg.Geometry.Empty
+                        ? ChartingConfig.GetDefault(series.Key).Geometry
+                        : series.Geometry;
 
                     Children.Add(new StackPanel
                     {
@@ -95,16 +96,16 @@ namespace LiveCharts.Wpf
                             {
                                 Width = GeometrySize,
                                 Height = GeometrySize,
-                                StrokeThickness = current.StrokeThickness,
-                                Stroke = current.Stroke.AsSolidColorBrush(),
-                                Fill = current.Stroke.AsSolidColorBrush(),
+                                StrokeThickness = series.StrokeThickness,
+                                Stroke = series.Stroke.AsSolidColorBrush(),
+                                Fill = series.Stroke.AsSolidColorBrush(),
                                 Stretch = Stretch.Fill,
                                 Data = Geometry.Parse(g.Data)
                             },
                             new TextBlock
                             {
                                 Margin = new Thickness(4, 0, 4, 0),
-                                Text = current.Title,
+                                Text = series.Title,
                                 VerticalAlignment = VerticalAlignment.Center
                             }
                         }

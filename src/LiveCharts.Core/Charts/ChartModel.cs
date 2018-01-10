@@ -199,7 +199,7 @@ namespace LiveCharts.Core.Charts
 
             foreach (var series in View.Series.Where(x => x.IsVisible))
             {
-                series.FetchData(this);
+                series.Fetch(this);
                 RegisterResource(series);
             }
 

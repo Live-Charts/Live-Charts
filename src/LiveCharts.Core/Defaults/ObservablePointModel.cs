@@ -7,25 +7,25 @@ namespace LiveCharts.Core.Defaults
     /// Defines an observable point object, this object notifies the chart to update when any property change.
     /// </summary>
     /// <seealso cref="System.ComponentModel.INotifyPropertyChanged" />
-    public class ObservablePoint : INotifyPropertyChanged
+    public class ObservablePointModel : INotifyPropertyChanged
     {
         private double _x;
         private double _y;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ObservablePoint"/> class.
+        /// Initializes a new instance of the <see cref="ObservablePointModel"/> class.
         /// </summary>
-        public ObservablePoint()
+        public ObservablePointModel()
         {
             
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ObservablePoint"/> class.
+        /// Initializes a new instance of the <see cref="ObservablePointModel"/> class.
         /// </summary>
         /// <param name="x">The x.</param>
         /// <param name="y">The y.</param>
-        public ObservablePoint(double x, double y)
+        public ObservablePointModel(double x, double y)
         {
             
         }

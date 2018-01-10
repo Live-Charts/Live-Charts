@@ -1,34 +1,31 @@
-﻿using System;
-using LiveCharts.Core;
+﻿using LiveCharts.Core;
 using LiveCharts.Core.Config;
 using LiveCharts.Core.Data;
-using LiveCharts.Core.Data.Builders;
 using LiveCharts.Core.Drawing.Svg;
-using LiveCharts.Wpf.PointViews;
 
 namespace LiveCharts.Wpf
 {
     public static class Config
     {
-        public static LiveChartsConfig UseWpf(this LiveChartsConfig config)
+        public static ChartingConfig UseWpf(this ChartingConfig config)
         {
-            config.PointFactory = new DefaultDataFactory();
-            config.UiProvider = new WpfLiveChartsProvider();
+            config.DataFactory = new DefaultDataFactory();
+            config.UiProvider = new ChartingUiProvider();
 
-            config.HasSeriesDefault(LiveChartsConstants.LineSeries)
-                .WithFillOpacity(.35d)
-                .WithSkipCriteria(SeriesSkipCriteria.IgnoreXOverflow)
-                .WithPointViewProvider(() => throw new NotImplementedException())
-                .WithDefaultGeometry(Geometry.HorizontalLine);
+            config.HasDefaults(SeriesKeys.Line, defaults =>
+                {
+                    defaults.FillOpacity = .35;
+                    defaults.Geometry = Geometry.HorizontalLine;
+                });
 
-            config.HasSeriesDefault(LiveChartsConstants.ColumnSeries)
-                .WithFillOpacity(.8d)
-                .WithSkipCriteria(SeriesSkipCriteria.None)
-                .WithPointViewProvider(() => new ColumnPointView())
-                .WithDefaultGeometry(Geometry.Square);
+            config.HasDefaults(SeriesKeys.Column, defaults =>
+            {
+                defaults.FillOpacity = .8;
+                defaults.Geometry = Geometry.Square;
+            });
 
-            config.AddPrimitivesPlotTypes()
-                .AddDefaultPlotObjects()
+            config.PlotPrimitiveTypes()
+                .PlotDefaultTypes()
                 .UseMaterialDesignColors();
 
             return config;

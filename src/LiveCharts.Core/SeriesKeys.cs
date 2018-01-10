@@ -3,12 +3,12 @@ namespace LiveCharts.Core
     /// <summary>
     /// LiveCharts constants.
     /// </summary>
-    public class LiveChartsConstants
+    public class SeriesKeys
     {
         /// <summary>
         /// The column series key.
         /// </summary>
-        public const string ColumnSeries = "Column";
+        public const string Column = "LiveChartsColumnSeries";
 
         /// <summary>
         /// Gets the line series key.
@@ -16,6 +16,6 @@ namespace LiveCharts.Core
         /// <value>
         /// The line series.
         /// </value>
-        public const string LineSeries = "Line";
+        public const string Line = "LiveChartsLineSeries";
     }
 }

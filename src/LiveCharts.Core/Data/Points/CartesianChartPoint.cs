@@ -1,43 +1,27 @@
 ﻿using System;
+using LiveCharts.Core.Abstractions.PointViews;
+using LiveCharts.Core.Coordinates;
 
 namespace LiveCharts.Core.Data.Points
 {
-    /// <summary>
-    /// Represents a point in a cartesian plane.
-    /// </summary>
-    /// <seealso cref="ChartPoint" />
-    public class CartesianChartPoint : ChartPoint
+    public class ColumnChartPoint<TModel> : CartesianChartPoint<TModel, ColumnViewModel>
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="CartesianChartPoint"/> class.
-        /// </summary>
-        /// <param name="x">The x.</param>
-        /// <param name="y">The y.</param>
-        /// <param name="creationStamp">the update stamp.</param>
-        public CartesianChartPoint(double x, double y, object creationStamp)
-            : base(creationStamp)
-        {
-            X = x;
-            Y = y;
-        }
+    }
 
-        /// <summary>
-        /// Gets the x coordinate value.
-        /// </summary>
-        /// <value>
-        /// The x.
-        /// </value>
-        public double X { get; internal set; }
+    public class LineChartPoint<TModel> : CartesianChartPoint<TModel, BezierModel>
+    {
+        
+    }
 
-        /// <summary>
-        /// Gets the y coordinate value.
-        /// </summary>
-        /// <value>
-        /// The y.
-        /// </value>
-        public double Y { get; internal set; }
-
-        /// <inheritdoc cref="ChartPoint.CompareDimensions"/>
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <typeparam name="TModel">The type of the model.</typeparam>
+    /// <typeparam name="TViewModel">The type of the view model.</typeparam>
+    /// <seealso cref="ChartPoint{TModel, PointCoordinate, TViewModel}" />
+    public class CartesianChartPoint<TModel, TViewModel> : ChartPoint<TModel, Point2D, TViewModel>
+    {
+        /// <inheritdoc cref="ChartPoint{U, U, V}.CompareDimensions"/>
         public override bool CompareDimensions(DimensionRange[] ranges, SeriesSkipCriteria skipCriteria)
         {
             var xDimensionRange = ranges[0];
@@ -46,13 +30,14 @@ namespace LiveCharts.Core.Data.Points
             switch (skipCriteria)
             {
                 case SeriesSkipCriteria.IgnoreXOverflow:
-                    if (X < xDimensionRange.From || X > xDimensionRange.To) return true;
+                    if (Coordinate.X < xDimensionRange.From || Coordinate.X > xDimensionRange.To) return true;
                     break;
                 case SeriesSkipCriteria.IgnoreYOverflow:
-                    if (Y < yDimensionRange.From || Y > yDimensionRange.To) return true;
+                    if (Coordinate.Y < yDimensionRange.From || Coordinate.Y > yDimensionRange.To) return true;
                     break;
                 case SeriesSkipCriteria.IgnoreOverflow:
-                    if (X < xDimensionRange.From || X > xDimensionRange.To || Y < yDimensionRange.From || Y > yDimensionRange.To) return true;
+                    if (Coordinate.X < xDimensionRange.From || Coordinate.X > xDimensionRange.To ||
+                        Coordinate.Y < yDimensionRange.From || Coordinate.Y > yDimensionRange.To) return true;
                     break;
                 case SeriesSkipCriteria.None:
                     break;
@@ -60,10 +45,10 @@ namespace LiveCharts.Core.Data.Points
                     throw new ArgumentOutOfRangeException(nameof(skipCriteria), skipCriteria, null);
             }
 
-            if (X > xDimensionRange.Max) xDimensionRange.Max = X;
-            if (X < xDimensionRange.Min) xDimensionRange.Min = X;
-            if (Y > yDimensionRange.Max) yDimensionRange.Max = Y;
-            if (Y < yDimensionRange.Min) yDimensionRange.Min = Y;
+            if (Coordinate.X > xDimensionRange.Max) xDimensionRange.Max = Coordinate.X;
+            if (Coordinate.X < xDimensionRange.Min) xDimensionRange.Min = Coordinate.X;
+            if (Coordinate.Y > yDimensionRange.Max) yDimensionRange.Max = Coordinate.Y;
+            if (Coordinate.Y < yDimensionRange.Min) yDimensionRange.Min = Coordinate.Y;
             return false;
         }
     }

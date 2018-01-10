@@ -2,7 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Windows;
 using LiveCharts.Core.Abstractions;
-using LiveCharts.Core.Series;
+using LiveCharts.Wpf;
 
 namespace Samples.Wpf
 {

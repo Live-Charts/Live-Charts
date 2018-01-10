@@ -1,5 +1,7 @@
 using System.Linq;
+using LiveCharts.Core.Abstractions.PointViews;
 using LiveCharts.Core.Charts;
+using LiveCharts.Core.Coordinates;
 using LiveCharts.Core.Data.Points;
 
 namespace LiveCharts.Core.Series
@@ -8,13 +10,20 @@ namespace LiveCharts.Core.Series
     /// 
     /// </summary>The column series class.
     /// <typeparam name="TModel">The type of the model.</typeparam>
-    public class ColumnSeries<TModel> : CartesianSeries<TModel>
+    /// <typeparam name="TView">The user interface view.</typeparam>
+    /// <typeparam name="TChartPoint">the type of the chart point.</typeparam>
+    public abstract class ColumnSeries<TModel, TChartPoint, TView>
+        : CartesianSeries<TModel, Point2D, ColumnViewModel, TChartPoint>
+        where TChartPoint : ChartPoint<TModel, Point2D, ColumnViewModel>, new()
+        where TView : ChartPointView<TModel, ChartPoint<TModel, Point2D, ColumnViewModel>, Point2D, ColumnViewModel>, new()
+        // shouldn't the next line compile too??? probably a bug for .Net team
+        // where TView : ChartPointView<TModel, TChartPoint, Point2D, ColumnViewModel>, new()
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ColumnSeries{TModel}"/> class.
+        /// Initializes a new instance of the <see cref="ColumnSeries{TModel, TChartPoint, TView}"/> class.
         /// </summary>
-        public ColumnSeries()
-            : base(LiveChartsConstants.ColumnSeries)
+        protected ColumnSeries()
+            : base(SeriesKeys.Column)
         {
         }
 
@@ -43,7 +52,7 @@ namespace LiveCharts.Core.Series
 
             var xUnitWidth = chart.ScaleTo(x.Unit, x) - ColumnPadding;
             var columnSeries = chart.Series
-                .Where(series => series.Defaults.Type == "")
+                .Where(series => series.Key == SeriesKeys.Column)
                 .ToList();
             var singleColumnWidth = xUnitWidth / columnSeries.Count;
 
@@ -65,15 +74,14 @@ namespace LiveCharts.Core.Series
 
             var zero = chart.ScaleTo(startAt, y);
 
-            ChartPoint previous = null;
-            foreach (var chartPoint in FetchData(chart))
+            TChartPoint previous = null;
+            foreach (var chartPoint in Points)
             {
                 if (chartPoint.View == null)
                 {
-                    chartPoint.View = Defaults.PointViewProvider();
+                    chartPoint.View = new TView();
                 }
-
-                chartPoint.View.Draw(chartPoint, previous, chart.View);
+                chartPoint.View.Draw(chartPoint, new ColumnViewModel(), previous, chart.View);
                 previous = chartPoint;
             }
 

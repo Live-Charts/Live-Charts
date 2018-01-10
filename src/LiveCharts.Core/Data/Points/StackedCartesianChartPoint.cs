@@ -1,40 +1,29 @@
-﻿namespace LiveCharts.Core.Data.Points
+﻿using LiveCharts.Core.Coordinates;
+
+namespace LiveCharts.Core.Data.Points
 {
     /// <summary>
     /// 
     /// </summary>
-    /// <seealso cref="ChartPoint" />
-    public class StackedCartesianChartPoint : ChartPoint
+    /// <typeparam name="TModel">The type of the model.</typeparam>
+    /// <typeparam name="TViewModel">The type of the view model.</typeparam>
+    /// <seealso cref=".ChartPoint{TModel, StackedCoordinate, TViewModel}" />
+    public class StackedCartesianChartPoint<TModel, TViewModel> : ChartPoint<TModel, StackedPoint, TViewModel>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="StackedCartesianChartPoint"/> class.
+        /// Initializes a new instance of the <see cref="StackedCartesianChartPoint{TModel, TViewModel}"/> class.
         /// </summary>
-        /// <param name="index"></param>
-        /// <param name="dimensionRange">The range.</param>
-        /// <param name="createdAt">the creation stamp.</param>
-        public StackedCartesianChartPoint(int index, DimensionRange dimensionRange, object createdAt)
+        /// <param name="index">The index.</param>
+        /// <param name="participation">The participation.</param>
+        /// <param name="value">The value.</param>
+        /// <param name="createdAt">The created at.</param>
+        public StackedCartesianChartPoint(int index, double participation, double value, object createdAt)
             : base(createdAt)
         {
-            DimensionRange = dimensionRange;
+            Coordinate = new StackedPoint(participation, value, index);
         }
 
-        /// <summary>
-        /// Gets or sets the index.
-        /// </summary>
-        /// <value>
-        /// The index.
-        /// </value>
-        public int Index { get; internal set; }
-
-        /// <summary>
-        /// Gets or sets the range.
-        /// </summary>
-        /// <value>
-        /// The range.
-        /// </value>
-        public DimensionRange DimensionRange { get; internal set; }
-
-        /// <inheritdoc cref="ChartPoint.CompareDimensions"/>
+        /// <inheritdoc cref="ChartPoint{TModel, StackedCoordinate, TViewmodel}.CompareDimensions"/>
         public override bool CompareDimensions(DimensionRange[] ranges, SeriesSkipCriteria skipCriteria)
         {
             throw new System.NotImplementedException();

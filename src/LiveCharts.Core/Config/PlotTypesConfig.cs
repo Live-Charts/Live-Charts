@@ -1,4 +1,5 @@
-﻿using LiveCharts.Core.Data.Builders;
+﻿using LiveCharts.Core.Coordinates;
+using LiveCharts.Core.Data;
 using LiveCharts.Core.Defaults;
 
 namespace LiveCharts.Core.Config
@@ -9,186 +10,45 @@ namespace LiveCharts.Core.Config
     public static class PlotTypesConfig
     {
         /// <summary>
-        /// Returns a builder to teach the library how to plot any given type.
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="config">The configuration.</param>
-        /// <returns></returns>
-        public static ChartingTypeBuilder<T> PlotType<T>(this LiveChartsConfig config)
-        {
-            return config.ConfigureType<T>();
-        }
-
-        /// <summary>
-        /// Removes all configured plot types.
-        /// </summary>
-        /// <param name="config">The configuration.</param>
-        /// <returns></returns>
-        public static LiveChartsConfig RemoveAllConfiguredPlotTypes(this LiveChartsConfig config)
-        {
-            LiveChartsConfig.Builders.Clear();
-            return config;
-        }
-
-        /// <summary>
         /// Configures LiveCharts to plot C# primitive types.
         /// </summary>
-        /// <param name="config">The configuration.</param>
+        /// <param name="charting">The configuration.</param>
         /// <returns></returns>
-        public static LiveChartsConfig AddPrimitivesPlotTypes(this LiveChartsConfig config)
+        public static ChartingConfig PlotPrimitiveTypes(this ChartingConfig charting)
         {
-            config.ConfigureType<short>()
-                .AsCartesian(options =>
-                {
-                    options.XGetter = (value, index) => index;
-                    options.YGetter = (value, index) => value;
-                })
-                .AsPie(builder =>
-                {
-                    builder.ValueGetter = (value, index) => value;
-                });
+            charting.Plot2D<short>((value, index) => new Point2D(index, value));
+            // in the previous line, since we knew the cartesian coordinate type is Point2D
+            // we could also use the following syntax =>
+            // charting.PlotAs<short, Point2D>((value, index) => new Point2D());
+            charting.Plot2D<ushort>((value, index) => new Point2D(index, value));
+            charting.Plot2D<int>((value, index) => new Point2D(index, value));
+            charting.Plot2D<long>((value, index) => new Point2D(index, value));
+            charting.Plot2D<ulong>((value, index) => new Point2D(index, value));
+            charting.Plot2D<double>((value, index) => new Point2D(index, value));
+            charting.Plot2D<float>((value, index) => new Point2D(index, value));
 
-            config.ConfigureType<ushort>()
-                .AsCartesian(options =>
-                {
-                    options.XGetter = (value, index) => index;
-                    options.YGetter = (value, index) => value;
-                })
-                .AsPie(builder =>
-                {
-                    builder.ValueGetter = (value, index) => value;
-                });
-
-            config.ConfigureType<int>()
-                .AsCartesian(options =>
-                {
-                    options.XGetter = (value, index) => index;
-                    options.YGetter = (value, index) => value;
-                })
-                .AsPie(options =>
-                {
-                    options.ValueGetter = (value, index) => value;
-                });
-
-            config.ConfigureType<uint>()
-                .AsCartesian(options =>
-                {
-                    options.XGetter = (value, index) => index;
-                    options.YGetter = (value, index) => value;
-                })
-                .AsPie(options =>
-                {
-                    options.ValueGetter = (value, index) => value;
-                });
-
-            config.ConfigureType<long>()
-                .AsCartesian(options =>
-                {
-                    options.XGetter = (value, index) => index;
-                    options.YGetter = (value, index) => value;
-                })
-                .AsPie(options =>
-                {
-                    options.ValueGetter = (value, index) => value;
-                });
-
-            config.ConfigureType<ulong>()
-                .AsCartesian(options =>
-                {
-                    options.XGetter = (value, index) => index;
-                    options.YGetter = (value, index) => value;
-                })
-                .AsPie(options =>
-                {
-                    options.ValueGetter = (value, index) => value;
-                });
-
-            config.ConfigureType<double>()
-                .AsCartesian(options =>
-                {
-                    options.XGetter = (value, index) => index;
-                    options.YGetter = (value, index) => value;
-                })
-                .AsPie(options =>
-                {
-                    options.ValueGetter = (value, index) => value;
-                });
-
-            config.ConfigureType<float>()
-                .AsCartesian(options =>
-                {
-                    options.XGetter = (value, index) => index;
-                    options.YGetter = (value, index) => value;
-                })
-                .AsPie(options =>
-                {
-                    options.ValueGetter = (value, index) => value;
-                });
-
-            return config;
+            return charting;
         }
 
         /// <summary>
         /// Configures LiveCharts to plot the already the default objects at LiveCharts.Core.Defaults namespace.
         /// </summary>
-        /// <param name="config">The configuration.</param>
+        /// <param name="charting">The configuration.</param>
         /// <returns></returns>
-        public static LiveChartsConfig AddDefaultPlotObjects(this LiveChartsConfig config)
+        public static ChartingConfig PlotDefaultTypes(this ChartingConfig charting)
         {
-            config.ConfigureType<decimal>()
-                .AsCartesian(options =>
-                {
-                    options.XGetter = (value, index) => index;
-                    options.YGetter = (value, index) => (double)value;
-                })
-                .AsPie(options =>
-                {
-                    options.ValueGetter = (value, index) => (double)value;
-                });
+            charting.Plot2D<decimal>((value, index) => new Point2D(index, (double) value));
+            charting.Plot2D<ObservableModel>((om, index) => new Point2D(index, om.Value));
+            charting.Plot2D<ObservablePointModel>((opm, index) => new Point2D(opm.X, opm.Y));
 
-            config.ConfigureType<Observable>()
-                .AsCartesian(options =>
-                {
-                    options.XGetter = (value, index) => index;
-                    options.YGetter = (observable, index) => observable.Value;
-                })
-                .AsPie(options =>
-                {
-                    options.ValueGetter = (observable, index) => observable.Value;
-                });
+            charting.PlotFinancial<FinancialModel>(
+                (fm, index) => new FinancialPoint(index, fm.Open, fm.High, fm.Low, fm.Close));
 
-            config.ConfigureType<ObservablePoint>()
-                .AsCartesian(options =>
-                {
-                    options.XGetter = (observable, index) => observable.X;
-                    options.YGetter = (observable, index) => observable.Y;
-                });
+            charting.PlotPolar<PolarModel>((pm, index) => new PolarPoint(pm.Radius, pm.Angle));
 
-            config.ConfigureType<PolarPoint>()
-                .AsPolar(options =>
-                {
-                    options.RadiusGetter = (observable, index) => observable.Radius;
-                    options.AngleGetter = (observable, index) => observable.Angle;
-                });
+            charting.PlotWeighted2D<Weighted2DPoint>((point, index) => new Weighted2DPoint(point.X, point.Y, point.Weight));
 
-            config.ConfigureType<FinancialPoint>()
-                .AsFinancial(options =>
-                {
-                    options.OpenGetter = (observable, index) => observable.Open;
-                    options.HighGetter = (observable, index) => observable.High;
-                    options.LowGetter = (observable, index) => observable.Low;
-                    options.CloseGetter = (observable, index) => observable.Close;
-                });
-
-            config.ConfigureType<WeightedPoint>()
-                .AsWeighted(buidler =>
-                {
-                    buidler.XGetter = (observalbe, index) => observalbe.X;
-                    buidler.YGetter = (observalbe, index) => observalbe.Y;
-                    buidler.WeightGetter = (observalbe, index) => observalbe.Weight;
-                });
-
-            return config;
+            return charting;
         }
     }
 }

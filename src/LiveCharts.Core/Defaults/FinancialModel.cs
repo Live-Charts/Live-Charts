@@ -1,13 +1,22 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using LiveCharts.Core.Data;
+using LiveCharts.Core.Data.Points;
 
 namespace LiveCharts.Core.Defaults
 {
+    public class ReferenceChartModel<TModel, TCoordinate, TViewModel, TChartPoint>
+        : IReferenceChartPoint<TModel, TCoordinate, TViewModel, TChartPoint>
+        where TChartPoint : ChartPoint<TModel, TCoordinate, TViewModel>, new()
+    {
+        public TChartPoint ChartPoint { get; set; }
+    }
+
     /// <summary>
     /// Defines an observable financial point, this object notifies the chart to update when any property change.
     /// </summary>
     /// <seealso cref="System.ComponentModel.INotifyPropertyChanged" />
-    public class FinancialPoint : INotifyPropertyChanged
+    public class FinancialModel : INotifyPropertyChanged
     {
         private double _open;
         private double _high;
@@ -15,21 +24,21 @@ namespace LiveCharts.Core.Defaults
         private double _close;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="FinancialPoint"/> class.
+        /// Initializes a new instance of the <see cref="FinancialModel"/> class.
         /// </summary>
-        public FinancialPoint()
+        public FinancialModel()
         {
             
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="FinancialPoint"/> class.
+        /// Initializes a new instance of the <see cref="FinancialModel"/> class.
         /// </summary>
         /// <param name="open">The open.</param>
         /// <param name="high">The high.</param>
         /// <param name="low">The low.</param>
         /// <param name="close">The close.</param>
-        public FinancialPoint(double open, double high, double low, double close)
+        public FinancialModel(double open, double high, double low, double close)
         {
             Open = open;
             High = high;

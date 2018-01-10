@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using LiveCharts.Core.Charts;
-using LiveCharts.Core.Config;
 using LiveCharts.Core.Data;
 using LiveCharts.Core.Data.Points;
 using LiveCharts.Core.Drawing;
@@ -10,33 +9,18 @@ using LiveCharts.Core.Drawing.Svg;
 namespace LiveCharts.Core.Abstractions
 {
     /// <summary>
-    /// A Chart series extraction.
+    /// Chart series extraction.
     /// </summary>
+    /// <seealso cref="System.IDisposable" />
     public interface IChartSeries : IDisposable
     {
         /// <summary>
-        /// Gets the series configuration.
+        /// Gets the key, the unique name of this series.
         /// </summary>
         /// <value>
-        /// The series configuration.
+        /// The key.
         /// </value>
-        SeriesMetadata Defaults { get; }
-
-        /// <summary>
-        /// Gets the tracking mode.
-        /// </summary>
-        /// <value>
-        /// The tracking mode.
-        /// </value>
-        SeriesTrackingModes TrackingMode { get; }
-
-        /// <summary>
-        /// Gets the type builder.
-        /// </summary>
-        /// <value>
-        /// The type builder.
-        /// </value>
-        IChartingTypeBuilder TypeBuilder { get; }
+        string Key { get; }
 
         /// <summary>
         /// Gets or sets the title.
@@ -111,24 +95,54 @@ namespace LiveCharts.Core.Abstractions
         IEnumerable<ChartModel> UsedBy { get; }
 
         /// <summary>
-        /// Gets the value point dictionary.
-        /// </summary>
-        /// <value>
-        /// The value point dictionary.
-        /// </value>
-        Dictionary<ChartModel, Dictionary<object, ChartPoint>> ValuePointDictionary { get; }
-
-        /// <summary>
-        /// Calculates the all necessary data to plot the series.
-        /// </summary>
-        /// <param name="chart">The chart.</param>
-        /// <returns></returns>
-        IEnumerable<ChartPoint> FetchData(ChartModel chart);
-
-        /// <summary>
         /// Updates the view.
         /// </summary>
         /// <param name="chart"></param>
         void UpdateView(ChartModel chart);
+
+        /// <summary>
+        /// Fetches the data.
+        /// </summary>
+        /// <param name="chart">The chart.</param>
+        void Fetch(ChartModel chart);
+    }
+
+    /// <summary>
+    /// A Chart series extraction.
+    /// </summary>
+    public interface IChartSeries<in TModel, out TCoordinate, out TViewModel, TChartPoint> : IChartSeries
+        where TChartPoint : ChartPoint<TModel, TCoordinate, TViewModel>, new()
+    {
+        /// <summary>
+        /// Gets the mapper.
+        /// </summary>
+        /// <value>
+        /// The mapper.
+        /// </value>
+        Func<TModel, TCoordinate> Mapper { get; }
+        
+        /// <summary>
+        /// Gets or sets the reference tracker.
+        /// </summary>
+        /// <value>
+        /// The reference tracker.
+        /// </value>
+        IList<TChartPoint> ValueTracker { get; set; }
+
+        /// <summary>
+        /// Gets the points.
+        /// </summary>
+        /// <value>
+        /// The points.
+        /// </value>
+        IEnumerable<TChartPoint> Points { get; }
+
+        /// <summary>
+        /// Gets the type builder.
+        /// </summary>
+        /// <value>
+        /// The type builder.
+        /// </value>
+        Func<TModel, TViewModel> PointBuilder { get; }
     }
 }

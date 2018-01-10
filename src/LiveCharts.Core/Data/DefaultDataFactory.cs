@@ -2,25 +2,34 @@
 using System.ComponentModel;
 using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Config;
-using LiveCharts.Core.Data.Builders;
 using LiveCharts.Core.Data.Points;
 
 namespace LiveCharts.Core.Data
 {
+    /// <summary>
+    /// 
+    /// </summary>
+    public interface IReferenceChartPoint<TModel, TCoordinate, TViewModel, TChartPoint>
+        where TChartPoint : ChartPoint<TModel, TCoordinate, TViewModel>, new()
+    {
+        TChartPoint ChartPoint { get; set; }
+    }
+
     /// <summary>
     /// Defines the default chart point factory.
     /// </summary>
     /// <seealso cref="IDataFactory" />
     public class DefaultDataFactory : IDataFactory
     {
-        /// <inheritdoc cref="IDataFactory.Fetch"/>
-        public IEnumerable<ChartPoint> Fetch(DataFactoryArgs args)
+        public IEnumerable<TChartPoint> FetchData<TModel, TCoordinate, TViewModel, TChartPoint>(
+            DataFactoryArgs<TModel, TCoordinate, TViewModel, TChartPoint> args) 
+            where TChartPoint: ChartPoint<TModel, TCoordinate, TViewModel>, new()
         {
-            var typeBuilder = args.Series.TypeBuilder ?? LiveCharts.GetBuilder(args.CollectionItemsType);
-            var pointBuilder = typeBuilder.GetBuilder(args.Series.Defaults.ChartPointType);
-            var notifiesChange = typeof(INotifyPropertyChanged).IsAssignableFrom(args.CollectionItemsType);
-            var trackByRef = !args.CollectionItemsType.IsValueType &&
-                             args.Series.TrackingMode == SeriesTrackingModes.ByReference;
+            var modelType = typeof(TModel);
+            // var pointBuilder = args.Series.PointBuilder ?? ChartingTypeBuilder<TModel>.GetPointBuilder<TChartPoint>();
+            var mapper = args.Series.Mapper;
+            var notifiesChange = typeof(INotifyPropertyChanged).IsAssignableFrom(modelType);
+            var trackByRef = typeof(IReferenceChartPoint<TModel, TCoordinate, TViewModel, TChartPoint>).IsAssignableFrom(modelType);
             var collection = args.Collection;
             var dimensions = args.Chart.GetSeriesDimensions(args.Series);
 
@@ -35,20 +44,39 @@ namespace LiveCharts.Core.Data
                     npc.PropertyChanged += args.PropertyChangedEventHandler;
                 }
 
-                var key = trackByRef ? instance : index;
+                TChartPoint chartPoint;
 
-                // if the point does not exist already, we build it:
-                if (!args.Series.ValuePointDictionary[args.Chart]
-                    .TryGetValue(
-                        key, out ChartPoint chartPoint))
+                if (trackByRef)
                 {
-                    chartPoint = pointBuilder.Build(instance, index, args.Chart.UpdateId);
+                    var ircp = (IReferenceChartPoint<TModel, TCoordinate, TViewModel, TChartPoint>) instance;
+                    if (ircp.ChartPoint == null)
+                    {
+                        chartPoint = new TChartPoint();
+                        ircp.ChartPoint = chartPoint;
+                    }
+                    else
+                    {
+                        chartPoint = ircp.ChartPoint;
+                    }
+                }
+                else
+                {
+                    if (args.Series.ValueTracker.Count < index)
+                    {
+                        chartPoint = args.Series.ValueTracker[index];
+                    }
+                    else
+                    {
+                        chartPoint = new TChartPoint();
+                        args.Series.ValueTracker.Add(chartPoint);
+                    }
                 }
 
-                if (chartPoint.CompareDimensions(dimensions, args.Series.Defaults.SkipCriteria)) continue;
+                // ChartingConfig.GetDefault(key);
+                // if (chartPoint.CompareDimensions(dimensions, args.Series.Defaults.SkipCriteria)) continue;
 
                 // feed our chart points ...
-                chartPoint.Instance = instance;
+                chartPoint.Model = instance;
                 chartPoint.Key = index;
                 chartPoint.Series = args.Series;
                 chartPoint.Chart = args.Chart;

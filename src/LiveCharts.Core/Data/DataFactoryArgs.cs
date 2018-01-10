@@ -1,31 +1,23 @@
-using System;
-using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel;
 using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Charts;
-
-namespace LiveCharts.Core.Data.Builders
+using LiveCharts.Core.Data.Points;
+namespace LiveCharts.Core.Data
 {
     /// <summary>
     /// Point factory options class.
     /// </summary>
-    public class DataFactoryArgs
+    public class DataFactoryArgs<TModel, TCoordinate, TViewModel, TChartPoint>
+        where TChartPoint : ChartPoint<TModel, TCoordinate, TViewModel>, new()
     {
-        /// <summary>
-        /// Gets or sets the type of the collection items.
-        /// </summary>
-        /// <value>
-        /// The type of the collection items.
-        /// </value>
-        public Type CollectionItemsType { get; set; }
-
         /// <summary>
         /// Gets or sets the collection.
         /// </summary>
         /// <value>
         /// The collection.
         /// </value>
-        public IList Collection { get; set; }
+        public IList<TModel> Collection { get; set; }
 
         /// <summary>
         /// Gets or sets the series.
@@ -33,7 +25,7 @@ namespace LiveCharts.Core.Data.Builders
         /// <value>
         /// The series.
         /// </value>
-        public IChartSeries Series { get; set; }
+        public IChartSeries<TModel, TCoordinate, TViewModel, TChartPoint> Series { get; set; }
 
         /// <summary>
         /// Gets or sets the chart.

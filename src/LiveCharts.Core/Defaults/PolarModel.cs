@@ -7,25 +7,25 @@ namespace LiveCharts.Core.Defaults
     /// Defines an observable polar point, this object notifies the chart to update when any property change.
     /// </summary>
     /// <seealso cref="System.ComponentModel.INotifyPropertyChanged" />
-    public class PolarPoint : INotifyPropertyChanged
+    public class PolarModel : INotifyPropertyChanged
     {
         private double _radius;
         private double _angle;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PolarPoint"/> class.
+        /// Initializes a new instance of the <see cref="PolarModel"/> class.
         /// </summary>
-        public PolarPoint()
+        public PolarModel()
         {
             
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PolarPoint"/> class.
+        /// Initializes a new instance of the <see cref="PolarModel"/> class.
         /// </summary>
         /// <param name="radius">The radius.</param>
         /// <param name="angle">The angle.</param>
-        public PolarPoint(double radius, double angle)
+        public PolarModel(double radius, double angle)
         {
             Radius = radius;
             Angle = angle;

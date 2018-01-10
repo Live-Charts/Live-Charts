@@ -22,27 +22,20 @@
 
 using System;
 using LiveCharts.Core.Abstractions;
+using LiveCharts.Core.Abstractions.PointViews;
 using LiveCharts.Core.Charts;
 
 namespace LiveCharts.Core.Data.Points
 {
     /// <summary>
-    /// Represents a point in a chart.
+    /// Represents a point int he chart.
     /// </summary>
+    /// <typeparam name="TModel">The type of the model.</typeparam>
+    /// <typeparam name="TCoordinate">The type of the coordinate.</typeparam>
+    /// <typeparam name="TViewModel">The type of the view model.</typeparam>
     /// <seealso cref="System.IDisposable" />
-    public abstract class ChartPoint : IDisposable
+    public class ChartPoint<TModel, TCoordinate, TViewModel> : IDisposable
     {
-        private readonly object _createdStamp; 
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ChartPoint"/> class.
-        /// </summary>
-        /// <param name="createdAt">The created at.</param>
-        protected ChartPoint(object createdAt)
-        {
-            _createdStamp = createdAt;
-        }
-
         /// <summary>
         /// Gets the key of the point, a key is used internally as a unique identifier in 
         /// in a <see cref="Series"/> 
@@ -58,15 +51,40 @@ namespace LiveCharts.Core.Data.Points
         /// <value>
         /// The instance.
         /// </value>
-        public object Instance { get; internal set; }
+        public TModel Model { get; internal set; }
 
         /// <summary>
-        /// Gets the point graphical point view in the chart.
+        /// Gets the view model,the model to drawn in the user interface.
         /// </summary>
         /// <value>
-        /// The point view.
+        /// The view model.
         /// </value>
-        public IPointView View { get; internal set; }
+        public TViewModel ViewModel { get; internal set; }
+
+        /// <summary>
+        /// Gets or sets the point.
+        /// </summary>
+        /// <value>
+        /// The point.
+        /// </value>
+        public TCoordinate Coordinate { get; set; }
+
+        /// <summary>
+        /// Gets or sets the mapper.
+        /// </summary>
+        /// <value>
+        /// The mapper.
+        /// </value>
+        public Func<TModel, TCoordinate> Mapper { get; set; }
+
+        /// <summary>
+        /// Gets the view.
+        /// </summary>
+        /// <value>
+        /// The view.
+        /// </value>
+        public ChartPointView<TModel, ChartPoint<TModel, TCoordinate, TViewModel>, TCoordinate, TViewModel>
+            View { get; internal set; }
 
         /// <summary>
         /// Gets the series that owns the point.
@@ -85,25 +103,20 @@ namespace LiveCharts.Core.Data.Points
         public ChartModel Chart { get; internal set; }
 
         /// <summary>
-        /// Gets a value indicating whether this instance was just created in the update cycle.
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if this instance is new; otherwise, <c>false</c>.
-        /// </value>
-        public bool IsNew => Chart.UpdateId == _createdStamp;
-
-        /// <summary>
         /// Compares the dimension, returns <c>true</c> if the point should be skipped by the data provider.
         /// </summary>
         /// <param name="ranges">The ranges.</param>
         /// <param name="skipCriteria">The skip criteria.</param>
         /// <returns>A boolean indicating if the point should be skipped by the data provider.</returns>
-        public abstract bool CompareDimensions(DimensionRange[] ranges, SeriesSkipCriteria skipCriteria);
-
+        public virtual bool CompareDimensions(DimensionRange[] ranges, SeriesSkipCriteria skipCriteria)
+        {
+            throw new NotImplementedException();
+        }
+        
         /// <inheritdoc cref="IDisposable.Dispose"/>
         public void Dispose()
         {
-            View.Erase();
+            // View.Erase();
         }
     }
 }

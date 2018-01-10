@@ -1,49 +1,26 @@
+using LiveCharts.Core.Coordinates;
+
 namespace LiveCharts.Core.Data.Points
 {
     /// <summary>
     /// Represents a pie chart point.
     /// </summary>
-    /// <seealso cref="ChartPoint" />
-    public class PieChartPoint : ChartPoint
+    /// <seealso cref="ChartPoint{T, U, V}" />
+    public class PieChartPoint<TModel, TViewModel> : ChartPoint<TModel, StackedPoint, TViewModel>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="PieChartPoint"/> class.
+        /// Initializes a new instance of the <see cref="PieChartPoint{TModel, TViewModel}"/> class.
         /// </summary>
-        /// <param name="index">the index.</param>
+        /// <param name="index">The index.</param>
         /// <param name="value">The value.</param>
-        /// <param name="creationStamp">the creation stamp.</param>
+        /// <param name="creationStamp">The creation stamp.</param>
         public PieChartPoint(int index, double value, object creationStamp)
-            :base(creationStamp)
+            : base(creationStamp)
         {
-            Index = index;
-            Value = value;
+            Coordinate = new StackedPoint(0d, value, index);
         }
 
-        /// <summary>
-        /// Gets or sets the index.
-        /// </summary>
-        /// <value>
-        /// The index.
-        /// </value>
-        public int Index { get; internal set; }
-
-        /// <summary>
-        /// Gets or sets the value.
-        /// </summary>
-        /// <value>
-        /// The value.
-        /// </value>
-        public double Value { get; internal set; }
-
-        /// <summary>
-        /// Gets the participation.
-        /// </summary>
-        /// <value>
-        /// The participation.
-        /// </value>
-        public double Participation { get; internal set; }
-
-        /// <inheritdoc cref="ChartPoint.CompareDimensions"/>
+        /// <inheritdoc cref="ChartPoint{T, U, X}.CompareDimensions"/>
         public override bool CompareDimensions(DimensionRange[] ranges, SeriesSkipCriteria skipCriteria)
         {
             return false;

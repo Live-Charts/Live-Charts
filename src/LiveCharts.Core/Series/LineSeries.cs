@@ -1,24 +1,29 @@
-using System.Linq;
+using LiveCharts.Core.Abstractions.PointViews;
 using LiveCharts.Core.Charts;
+using LiveCharts.Core.Coordinates;
+using LiveCharts.Core.Data.Builders;
 using LiveCharts.Core.Data.Points;
 using LiveCharts.Core.Drawing.Svg;
 
 namespace LiveCharts.Core.Series
 {
     /// <summary>
-    /// The line series class.
+    /// 
     /// </summary>
     /// <typeparam name="TModel">The type of the model.</typeparam>
-    /// <seealso cref="CartesianSeries{TModel}" />
-    public class LineSeries<TModel> : CartesianSeries<TModel>
+    /// <typeparam name="TView">The type of the view.</typeparam>
+    /// <seealso cref="CartesianSeries{T,U,V,W}" />
+    public abstract class LineSeries<TModel, TView>
+        : CartesianSeries<TModel, CartesianChartPoint<TModel, BezierModel>, Point2D, BezierModel>
+        where TView : ChartPointView<TModel, CartesianChartPoint<TModel, BezierModel>, Point2D, BezierModel>, new()
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="LineSeries{TModel}"/> class.
+        /// Initializes a new instance of the <see cref="LineSeries{TModel,TView}"/> class.
         /// </summary>
-        public LineSeries()
-            : base(LiveChartsConstants.LineSeries)
+        protected LineSeries()
+            : base(SeriesKeys.Line)
         {
-            PointGeometry = Defaults.Geometry;
+            PointGeometry = ChartingConfig.GetDefault(SeriesKeys.Line).Geometry;
         }
 
         /// <summary>
@@ -40,8 +45,7 @@ namespace LiveCharts.Core.Series
         /// <inheritdoc />
         protected override void OnUpdateView(ChartModel chart)
         {
-            var points = FetchData(chart).Cast<CartesianChartPoint>();
-            var smoothness = LineSmoothness > 1 ? 1 : (LineSmoothness < 0 ? 0 : LineSmoothness);
+
         }
     }
 }

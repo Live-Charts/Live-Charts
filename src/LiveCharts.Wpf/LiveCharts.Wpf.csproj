@@ -49,15 +49,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Chart.cs" />
+    <Compile Include="ColumnSeries.cs" />
     <Compile Include="DefaultLegend.cs" />
     <Compile Include="Extensions.cs" />
-    <Compile Include="PointViews\ColumnPointView.cs" />
-    <Compile Include="WpfLiveChartsProvider.cs" />
+    <Compile Include="ChartingUiProvider.cs" />
     <Compile Include="CartesianChart.cs">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="PointViews\ColumnView.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

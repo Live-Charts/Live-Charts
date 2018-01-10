@@ -1,6 +1,5 @@
 using System;
-using LiveCharts.Core.Abstractions;
-using LiveCharts.Core.Data.Builders;
+using LiveCharts.Core.Data;
 
 namespace LiveCharts.Core
 {
@@ -11,21 +10,16 @@ namespace LiveCharts.Core
     {
         static LiveCharts()
         {
-            Options = new LiveChartsConfig();
+            Options = new ChartingConfig();
         }
 
-        internal static LiveChartsConfig Options { get; }
-
-        internal static IChartingTypeBuilder GetBuilder(Type type)
-        {
-            return LiveChartsConfig.GetBuilder(type);
-        }
+        internal static ChartingConfig Options { get; }
 
         /// <summary>
         /// Configures LiveCharts globally.
         /// </summary>
         /// <param name="options">The builder.</param>
-        public static void Config(Action<LiveChartsConfig> options)
+        public static void Config(Action<ChartingConfig> options)
         {
             options(Options);
         }

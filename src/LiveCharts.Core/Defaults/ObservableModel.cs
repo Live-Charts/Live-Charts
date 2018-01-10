@@ -7,23 +7,23 @@ namespace LiveCharts.Core.Defaults
     /// Defines an observable object, this object notifies the chart to update when the value property changes.
     /// </summary>
     /// <seealso cref="System.ComponentModel.INotifyPropertyChanged" />
-    public class Observable : INotifyPropertyChanged
+    public class ObservableModel : INotifyPropertyChanged
     {
         private double _value;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Observable"/> class.
+        /// Initializes a new instance of the <see cref="ObservableModel"/> class.
         /// </summary>
-        public Observable()
+        public ObservableModel()
         {
             
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Observable"/> class.
+        /// Initializes a new instance of the <see cref="ObservableModel"/> class.
         /// </summary>
         /// <param name="value">The value.</param>
-        public Observable(double value)
+        public ObservableModel(double value)
         {
             Value = value;
         }
