@@ -3,7 +3,7 @@ using LiveCharts.Wpf.PointViews;
 
 namespace LiveCharts.Wpf
 {
-    public class ColumnSeries<TModel> : ColumnSeries<TModel, ColumnView<TModel>>
+    public class ColumnSeries<TModel> : ColumnSeries<TModel, ColumnPointView<,>>
     {
     }
 }

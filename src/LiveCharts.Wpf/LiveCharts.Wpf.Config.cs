@@ -10,15 +10,15 @@ namespace LiveCharts.Wpf
         public static ChartingConfig UseWpf(this ChartingConfig config)
         {
             config.DataFactory = new DefaultDataFactory();
-            config.UiProvider = new ChartingUiProvider();
+            config.UiProvider = new UiProvider();
 
-            config.HasDefaults(SeriesKeys.Line, defaults =>
+            config.HasDefaults(SeriesConstants.Line, defaults =>
                 {
                     defaults.FillOpacity = .35;
                     defaults.Geometry = Geometry.HorizontalLine;
                 });
 
-            config.HasDefaults(SeriesKeys.Column, defaults =>
+            config.HasDefaults(SeriesConstants.Column, defaults =>
             {
                 defaults.FillOpacity = .8;
                 defaults.Geometry = Geometry.Square;

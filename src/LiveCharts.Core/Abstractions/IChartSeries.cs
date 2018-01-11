@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using LiveCharts.Core.Charts;
 using LiveCharts.Core.Data;
-using LiveCharts.Core.Data.Points;
 using LiveCharts.Core.Drawing;
 using LiveCharts.Core.Drawing.Svg;
 
@@ -112,6 +111,7 @@ namespace LiveCharts.Core.Abstractions
     /// </summary>
     public interface IChartSeries<in TModel, out TCoordinate, out TViewModel, TChartPoint> : IChartSeries
         where TChartPoint : ChartPoint<TModel, TCoordinate, TViewModel>, new()
+        where TCoordinate : ICoordinate
     {
         /// <summary>
         /// Gets the mapper.

@@ -6,7 +6,6 @@ using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Charts;
 using LiveCharts.Core.Config;
 using LiveCharts.Core.Data;
-using LiveCharts.Core.Data.Points;
 using LiveCharts.Core.Drawing;
 using LiveCharts.Core.Drawing.Svg;
 
@@ -23,6 +22,7 @@ namespace LiveCharts.Core.Series
     public abstract class Series<TModel, TCoordinate, TViewModel, TChartPoint>
         : IChartSeries<TModel, TCoordinate, TViewModel, TChartPoint>
         where TChartPoint : ChartPoint<TModel, TCoordinate, TViewModel>, new()
+        where TCoordinate : ICoordinate
     {
         private readonly string _key;
         private object _chartPointsUpdateId;

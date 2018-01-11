@@ -1,4 +1,5 @@
 using System;
+using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Data;
 
 namespace LiveCharts.Core

@@ -1,9 +1,12 @@
+using LiveCharts.Core.Abstractions;
+using LiveCharts.Core.Data;
+
 namespace LiveCharts.Core.Coordinates
 {
     /// <summary>
     /// Financial coordinate.
     /// </summary>
-    public struct FinancialPoint
+    public struct FinancialPoint : ICoordinate
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="FinancialPoint"/> struct.
@@ -61,5 +64,19 @@ namespace LiveCharts.Core.Coordinates
         /// The close.
         /// </value>
         public double Close { get; }
+
+        /// <inheritdoc cref="ICoordinate.CompareDimensions"/>
+        public bool CompareDimensions(DimensionRange[] dimensionRanges, SeriesSkipCriteria skipCriteria)
+        {
+            var indexDimensionRange = dimensionRanges[0];
+            var yDimensionRange = dimensionRanges[1];
+
+            if (Index > indexDimensionRange.Max) indexDimensionRange.Max = Index;
+            if (Index < indexDimensionRange.Min) indexDimensionRange.Min = Index;
+            if (High > yDimensionRange.Max) yDimensionRange.Max = High;
+            if (Low < yDimensionRange.Min) yDimensionRange.Min = Low;
+
+            return false;
+        }
     }
 }

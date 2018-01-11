@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Config;
 using LiveCharts.Core.Coordinates;
-using LiveCharts.Core.Data.Points;
 using LiveCharts.Core.Drawing;
 
 namespace LiveCharts.Core.Data

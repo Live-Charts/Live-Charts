@@ -1,13 +1,14 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Data;
-using LiveCharts.Core.Data.Points;
 
 namespace LiveCharts.Core.Defaults
 {
     public class ReferenceChartModel<TModel, TCoordinate, TViewModel, TChartPoint>
         : IReferenceChartPoint<TModel, TCoordinate, TViewModel, TChartPoint>
         where TChartPoint : ChartPoint<TModel, TCoordinate, TViewModel>, new()
+        where TCoordinate : ICoordinate
     {
         public TChartPoint ChartPoint { get; set; }
     }

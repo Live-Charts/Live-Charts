@@ -1,9 +1,9 @@
-using LiveCharts.Core.Abstractions.PointViews;
 using LiveCharts.Core.Charts;
 using LiveCharts.Core.Coordinates;
-using LiveCharts.Core.Data.Builders;
-using LiveCharts.Core.Data.Points;
+using LiveCharts.Core.Data;
 using LiveCharts.Core.Drawing.Svg;
+using LiveCharts.Core.ViewModels;
+using LiveCharts.Core.Views;
 
 namespace LiveCharts.Core.Series
 {
@@ -12,18 +12,18 @@ namespace LiveCharts.Core.Series
     /// </summary>
     /// <typeparam name="TModel">The type of the model.</typeparam>
     /// <typeparam name="TView">The type of the view.</typeparam>
-    /// <seealso cref="CartesianSeries{T,U,V,W}" />
-    public abstract class LineSeries<TModel, TView>
-        : CartesianSeries<TModel, CartesianChartPoint<TModel, BezierModel>, Point2D, BezierModel>
-        where TView : ChartPointView<TModel, CartesianChartPoint<TModel, BezierModel>, Point2D, BezierModel>, new()
+    /// <typeparam name="TChartPoint">the type of the chart point.</typeparam>
+    public abstract class LineSeries<TModel, TChartPoint, TView>
+        : CartesianSeries<TModel, Point2D, BezierViewModel, TChartPoint>
+        where TChartPoint : ChartPoint<TModel, Point2D, BezierViewModel>, new()
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="LineSeries{TModel,TView}"/> class.
+        /// Initializes a new instance of the <see cref="LineSeries{TModel, TChartPoint, TView}"/> class.
         /// </summary>
         protected LineSeries()
-            : base(SeriesKeys.Line)
+            : base(SeriesConstants.Line)
         {
-            PointGeometry = ChartingConfig.GetDefault(SeriesKeys.Line).Geometry;
+            PointGeometry = ChartingConfig.GetDefault(SeriesConstants.Line).Geometry;
         }
 
         /// <summary>

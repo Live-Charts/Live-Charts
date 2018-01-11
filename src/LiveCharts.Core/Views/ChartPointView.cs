@@ -1,6 +1,7 @@
-using LiveCharts.Core.Data.Points;
+using LiveCharts.Core.Abstractions;
+using LiveCharts.Core.Data;
 
-namespace LiveCharts.Core.Abstractions.PointViews
+namespace LiveCharts.Core.Views
 {
     /// <summary>
     /// 
@@ -11,6 +12,7 @@ namespace LiveCharts.Core.Abstractions.PointViews
     /// <typeparam name="TViewModel">The type of the point model.</typeparam>
     public abstract class ChartPointView<TModel, TChartPoint, TCoordinate, TViewModel>
         where TChartPoint : ChartPoint<TModel, TCoordinate, TViewModel>, new()
+        where TCoordinate : ICoordinate
     {
         /// <summary>
         /// Draws the specified point.

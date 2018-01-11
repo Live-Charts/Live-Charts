@@ -1,7 +1,7 @@
-﻿namespace LiveCharts.Core.Abstractions.PointViews
+﻿namespace LiveCharts.Core.ViewModels
 {
     /// <summary>
-    /// A column model.
+    /// A column view model.
     /// </summary>
     public struct ColumnViewModel
     {

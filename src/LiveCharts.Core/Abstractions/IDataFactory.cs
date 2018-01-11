@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using LiveCharts.Core.Data;
-using LiveCharts.Core.Data.Points;
 
 namespace LiveCharts.Core.Abstractions
 {
@@ -20,6 +19,7 @@ namespace LiveCharts.Core.Abstractions
         /// <returns></returns>
         IEnumerable<TChartPoint> FetchData<TModel, TCoordinate, TViewModel, TChartPoint>(
             DataFactoryArgs<TModel, TCoordinate, TViewModel, TChartPoint> args)
-            where TChartPoint : ChartPoint<TModel, TCoordinate, TViewModel>, new();
+            where TChartPoint : ChartPoint<TModel, TCoordinate, TViewModel>, new()
+            where TCoordinate : ICoordinate;
     }
 }

@@ -3,7 +3,7 @@ namespace LiveCharts.Core
     /// <summary>
     /// LiveCharts constants.
     /// </summary>
-    public class SeriesKeys
+    public class SeriesConstants
     {
         /// <summary>
         /// The column series key.

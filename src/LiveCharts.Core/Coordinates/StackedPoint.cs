@@ -1,9 +1,12 @@
+using LiveCharts.Core.Abstractions;
+using LiveCharts.Core.Data;
+
 namespace LiveCharts.Core.Coordinates
 {
     /// <summary>
     /// A stacked coordinate.
     /// </summary>
-    public struct StackedPoint
+    public struct StackedPoint : ICoordinate
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="StackedPoint"/> struct.
@@ -46,5 +49,10 @@ namespace LiveCharts.Core.Coordinates
         /// The total.
         /// </value>
         public double TotalStacked => Value / Participation;
+
+        public bool CompareDimensions(DimensionRange[] dimensionRanges, SeriesSkipCriteria skipCriteria)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

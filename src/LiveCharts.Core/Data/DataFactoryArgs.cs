@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Charts;
-using LiveCharts.Core.Data.Points;
 namespace LiveCharts.Core.Data
 {
     /// <summary>
@@ -10,6 +9,7 @@ namespace LiveCharts.Core.Data
     /// </summary>
     public class DataFactoryArgs<TModel, TCoordinate, TViewModel, TChartPoint>
         where TChartPoint : ChartPoint<TModel, TCoordinate, TViewModel>, new()
+        where TCoordinate : ICoordinate
     {
         /// <summary>
         /// Gets or sets the collection.

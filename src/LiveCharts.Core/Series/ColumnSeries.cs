@@ -1,8 +1,9 @@
 using System.Linq;
-using LiveCharts.Core.Abstractions.PointViews;
 using LiveCharts.Core.Charts;
 using LiveCharts.Core.Coordinates;
-using LiveCharts.Core.Data.Points;
+using LiveCharts.Core.Data;
+using LiveCharts.Core.ViewModels;
+using LiveCharts.Core.Views;
 
 namespace LiveCharts.Core.Series
 {
@@ -10,20 +11,18 @@ namespace LiveCharts.Core.Series
     /// 
     /// </summary>The column series class.
     /// <typeparam name="TModel">The type of the model.</typeparam>
-    /// <typeparam name="TView">The user interface view.</typeparam>
     /// <typeparam name="TChartPoint">the type of the chart point.</typeparam>
-    public abstract class ColumnSeries<TModel, TChartPoint, TView>
+    public class ColumnSeries<TModel, TChartPoint>
         : CartesianSeries<TModel, Point2D, ColumnViewModel, TChartPoint>
         where TChartPoint : ChartPoint<TModel, Point2D, ColumnViewModel>, new()
-        where TView : ChartPointView<TModel, ChartPoint<TModel, Point2D, ColumnViewModel>, Point2D, ColumnViewModel>, new()
         // shouldn't the next line compile too??? probably a bug for .Net team
         // where TView : ChartPointView<TModel, TChartPoint, Point2D, ColumnViewModel>, new()
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ColumnSeries{TModel, TChartPoint, TView}"/> class.
+        /// Initializes a new instance of the <see cref="ColumnSeries{TModel, TChartPoint}"/> class.
         /// </summary>
         protected ColumnSeries()
-            : base(SeriesKeys.Column)
+            : base(SeriesConstants.Column)
         {
         }
 
@@ -46,13 +45,14 @@ namespace LiveCharts.Core.Series
         /// <inheritdoc />
         protected override void OnUpdateView(ChartModel chart)
         {
+            var uiProvider = LiveCharts.Options.UiProvider;
             var cartesianChart = (CartesianChartModel) chart;
             var x = cartesianChart.XAxis[ScalesXAt];
             var y = cartesianChart.YAxis[ScalesYAt];
 
             var xUnitWidth = chart.ScaleTo(x.Unit, x) - ColumnPadding;
             var columnSeries = chart.Series
-                .Where(series => series.Key == SeriesKeys.Column)
+                .Where(series => series.Key == SeriesConstants.Column)
                 .ToList();
             var singleColumnWidth = xUnitWidth / columnSeries.Count;
 
@@ -79,7 +79,7 @@ namespace LiveCharts.Core.Series
             {
                 if (chartPoint.View == null)
                 {
-                    chartPoint.View = new TView();
+                    chartPoint.View = uiProvider.BuildColumnPointView<TModel>();
                 }
                 chartPoint.View.Draw(chartPoint, new ColumnViewModel(), previous, chart.View);
                 previous = chartPoint;

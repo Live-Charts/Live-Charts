@@ -2,7 +2,6 @@
 using System.ComponentModel;
 using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Config;
-using LiveCharts.Core.Data.Points;
 
 namespace LiveCharts.Core.Data
 {
@@ -11,6 +10,7 @@ namespace LiveCharts.Core.Data
     /// </summary>
     public interface IReferenceChartPoint<TModel, TCoordinate, TViewModel, TChartPoint>
         where TChartPoint : ChartPoint<TModel, TCoordinate, TViewModel>, new()
+        where TCoordinate : ICoordinate
     {
         TChartPoint ChartPoint { get; set; }
     }
@@ -23,7 +23,8 @@ namespace LiveCharts.Core.Data
     {
         public IEnumerable<TChartPoint> FetchData<TModel, TCoordinate, TViewModel, TChartPoint>(
             DataFactoryArgs<TModel, TCoordinate, TViewModel, TChartPoint> args) 
-            where TChartPoint: ChartPoint<TModel, TCoordinate, TViewModel>, new()
+            where TChartPoint : ChartPoint<TModel, TCoordinate, TViewModel>, new()
+            where TCoordinate : ICoordinate
         {
             var modelType = typeof(TModel);
             // var pointBuilder = args.Series.PointBuilder ?? ChartingTypeBuilder<TModel>.GetPointBuilder<TChartPoint>();
@@ -72,8 +73,7 @@ namespace LiveCharts.Core.Data
                     }
                 }
 
-                // ChartingConfig.GetDefault(key);
-                // if (chartPoint.CompareDimensions(dimensions, args.Series.Defaults.SkipCriteria)) continue;
+                if (chartPoint.Coordinate.CompareDimensions(dimensions, SeriesSkipCriteria.None)) continue;
 
                 // feed our chart points ...
                 chartPoint.Model = instance;

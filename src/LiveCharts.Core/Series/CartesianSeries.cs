@@ -1,4 +1,5 @@
-using LiveCharts.Core.Data.Points;
+using LiveCharts.Core.Abstractions;
+using LiveCharts.Core.Data;
 
 namespace LiveCharts.Core.Series
 {
@@ -12,7 +13,8 @@ namespace LiveCharts.Core.Series
     /// <seealso cref="Series{TModel, TChartPoint, TCoordinate, TViewModel}" />
     public abstract class CartesianSeries<TModel, TCoordinate, TViewModel, TChartPoint> 
         : Series<TModel, TCoordinate, TViewModel, TChartPoint>
-        where TChartPoint: ChartPoint<TModel, TCoordinate, TViewModel>, new ()
+        where TChartPoint : ChartPoint<TModel, TCoordinate, TViewModel>, new ()
+        where TCoordinate : ICoordinate
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="CartesianSeries{T,U,V,W}"/> class.
