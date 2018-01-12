@@ -28,7 +28,7 @@ namespace LiveCharts.Core.Config
         /// <param name="chart">The chart.</param>
         /// <param name="series">The series.</param>
         /// <returns></returns>
-        public static DimensionRange[] GetSeriesDimensions(this ChartModel chart, IChartSeries series)
+        public static DimensionRange[] GetSeriesDimensions(this ChartModel chart, ISeries series)
         {
             return series.ScaleAtByDimension
                 .Select((scalesAtIndex, dimensionIndex) =>

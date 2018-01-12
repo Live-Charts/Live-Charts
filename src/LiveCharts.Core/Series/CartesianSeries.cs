@@ -7,13 +7,13 @@ namespace LiveCharts.Core.Series
     /// 
     /// </summary>
     /// <typeparam name="TModel">The type of the model.</typeparam>
-    /// <typeparam name="TChartPoint">The type of the chart point.</typeparam>
+    /// <typeparam name="TPoint">The type of the chart point.</typeparam>
     /// <typeparam name="TCoordinate">The type of the coordinate.</typeparam>
     /// <typeparam name="TViewModel">The type of the view model.</typeparam>
-    /// <seealso cref="Series{TModel, TChartPoint, TCoordinate, TViewModel}" />
-    public abstract class CartesianSeries<TModel, TCoordinate, TViewModel, TChartPoint> 
-        : Series<TModel, TCoordinate, TViewModel, TChartPoint>
-        where TChartPoint : ChartPoint<TModel, TCoordinate, TViewModel>, new ()
+    /// <seealso cref="Series{TModel, TPoint, TCoordinate, TViewModel}" />
+    public abstract class CartesianSeries<TModel, TCoordinate, TViewModel, TPoint> 
+        : Series<TModel, TCoordinate, TViewModel, TPoint>
+        where TPoint : Point<TModel, TCoordinate, TViewModel>, new ()
         where TCoordinate : ICoordinate
     {
         /// <summary>
@@ -23,7 +23,7 @@ namespace LiveCharts.Core.Series
         protected CartesianSeries(string key)
             : base(key)
         {
-            // A cartesian chart has 2 axis, X, Y
+            // A cartesian chart has 2 dimensions, X, Y
             // A cartesian chart can have as many axis as the user needs
             //      this means, There are always only 2 dimensions, X and Y
             //      but the user can define, for example multiple X axis

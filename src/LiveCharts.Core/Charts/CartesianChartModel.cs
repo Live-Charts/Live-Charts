@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using LiveCharts.Core.Abstractions;
+using LiveCharts.Core.Coordinates;
 using LiveCharts.Core.Dimensions;
 using LiveCharts.Core.Drawing;
 using Size = LiveCharts.Core.Drawing.Size;
@@ -40,7 +41,7 @@ namespace LiveCharts.Core.Charts
         public IList<Plane> YAxis => View.AxisArrayByDimension[1];
 
         /// <inheritdoc cref="ChartModel.ScaleTo"/>
-        public override double ScaleTo(double value, Plane plane, Size? size = null)
+        public override double ScaleToUi(double value, Plane plane, Size? size = null)
         {
             var chartSize = size ?? DrawAreaSize;
 

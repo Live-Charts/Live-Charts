@@ -2,7 +2,6 @@
 using LiveCharts.Core.Data;
 using LiveCharts.Core.Drawing;
 using LiveCharts.Core.ViewModels;
-using LiveCharts.Core.Views;
 
 namespace LiveCharts.Core.Abstractions
 {
@@ -26,6 +25,7 @@ namespace LiveCharts.Core.Abstractions
         /// </summary>
         /// <typeparam name="TModel">The type of the model.</typeparam>
         /// <returns></returns>
-        ChartPointView<TModel, ChartPoint<TModel, Point2D, ColumnViewModel>, Point2D, ColumnViewModel> BuildColumnPointView<TModel>();
+        IPointView<TModel, Point<TModel, Point2D, ColumnViewModel>, Point2D, ColumnViewModel> 
+            ColumnViewProvider<TModel>();
     }
 }

@@ -1,9 +1,12 @@
-﻿namespace LiveCharts.Core.Coordinates
+﻿using LiveCharts.Core.Abstractions;
+using LiveCharts.Core.Data;
+
+namespace LiveCharts.Core.Coordinates
 {
     /// <summary>
     /// A weighted coordinate.
     /// </summary>
-    public struct Weighted2DPoint
+    public struct Weighted2DPoint : ICoordinate
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Point2D"/> struct.
@@ -38,5 +41,10 @@
         /// The w.
         /// </value>
         public double Weight { get; }
+
+        public bool CompareDimensions(DimensionRange[] dimensionRanges, SeriesSkipCriteria skipCriteria)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

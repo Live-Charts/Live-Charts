@@ -3,22 +3,33 @@ using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Coordinates;
 using LiveCharts.Core.Data;
 using LiveCharts.Core.ViewModels;
-using LiveCharts.Core.Views;
 
 namespace LiveCharts.Wpf.PointViews
 {
-    public class ColumnPointView<TModel, TChartPoint>
-        : ChartPointView<TModel, TChartPoint, Point2D, ColumnViewModel>
-        where TChartPoint : ChartPoint<TModel, Point2D, ColumnViewModel>, new()
+    /// <summary>
+    /// Column series point view.
+    /// </summary>
+    /// <typeparam name="TModel">The type of the model.</typeparam>
+    /// <typeparam name="TPoint">The type of the chart point.</typeparam>
+    /// <seealso cref="IPointView{TModel,TPoint,TCoordinate,TViewModel}" />
+    public class ColumnPointView<TModel, TPoint>
+        : IPointView<TModel, TPoint, Point2D, ColumnViewModel>
+        where TPoint : Point<TModel, Point2D, ColumnViewModel>, new()
     {
-        public Rectangle Rectangle { get; set; }
+        /// <inheritdoc />
+        public object VisualElement { get; protected set; }
 
-        public override void Draw(TChartPoint point, ColumnViewModel model, TChartPoint previous, IChartView chart)
+        public void Draw(TPoint point, TPoint previous, IChartView chart, ColumnViewModel model)
         {
-            throw new System.NotImplementedException();
+            var isNew = VisualElement == null;
+
+            if (isNew)
+            {
+                VisualElement = new Rectangle();
+            }
         }
 
-        public override void Erase(IChartView chart)
+        public virtual void Erase(IChartView chart)
         {
             throw new System.NotImplementedException();
         }

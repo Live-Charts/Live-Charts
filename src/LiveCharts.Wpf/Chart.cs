@@ -28,7 +28,7 @@ namespace LiveCharts.Wpf
         /// The series property.
         /// </summary>
         public static readonly DependencyProperty SeriesProperty = DependencyProperty.Register(
-            nameof(Series), typeof(IEnumerable<IChartSeries>), typeof(CartesianChart),
+            nameof(Series), typeof(IEnumerable<ISeries>), typeof(CartesianChart),
             new PropertyMetadata(null, BuildInstanceChangedCallback(p => p.Series, nameof(Series))));
 
         /// <summary>
@@ -49,7 +49,7 @@ namespace LiveCharts.Wpf
         /// The legend property, default is DefaultLegend class.
         /// </summary>
         public static readonly DependencyProperty LegendProperty = DependencyProperty.Register(
-            nameof(Legend), typeof(IChartLegend), typeof(Chart),
+            nameof(Legend), typeof(ILegend), typeof(Chart),
             new PropertyMetadata(new DefaultLegend()));
 
         /// <summary>
@@ -147,9 +147,9 @@ namespace LiveCharts.Wpf
         /// <value>
         /// The series.
         /// </value>
-        public IEnumerable<IChartSeries> Series
+        public IEnumerable<ISeries> Series
         {
-            get => (IEnumerable<IChartSeries>)GetValue(SeriesProperty);
+            get => (IEnumerable<ISeries>)GetValue(SeriesProperty);
             set => SetValue(SeriesProperty, value);
         }
 
@@ -168,9 +168,9 @@ namespace LiveCharts.Wpf
         }
 
         /// <inheritdoc cref="IChartView.Legend"/>
-        public IChartLegend Legend
+        public ILegend Legend
         {
-            get => (IChartLegend) GetValue(LegendProperty);
+            get => (ILegend) GetValue(LegendProperty);
             set => SetValue(LegendProperty, value);
         }
 

@@ -3,7 +3,6 @@ using LiveCharts.Core.Coordinates;
 using LiveCharts.Core.Data;
 using LiveCharts.Core.Drawing.Svg;
 using LiveCharts.Core.ViewModels;
-using LiveCharts.Core.Views;
 
 namespace LiveCharts.Core.Series
 {
@@ -12,18 +11,18 @@ namespace LiveCharts.Core.Series
     /// </summary>
     /// <typeparam name="TModel">The type of the model.</typeparam>
     /// <typeparam name="TView">The type of the view.</typeparam>
-    /// <typeparam name="TChartPoint">the type of the chart point.</typeparam>
-    public abstract class LineSeries<TModel, TChartPoint, TView>
-        : CartesianSeries<TModel, Point2D, BezierViewModel, TChartPoint>
-        where TChartPoint : ChartPoint<TModel, Point2D, BezierViewModel>, new()
+    /// <typeparam name="TPoint">the type of the chart point.</typeparam>
+    public abstract class LineSeries<TModel, TPoint, TView>
+        : CartesianSeries<TModel, Point2D, BezierViewModel, TPoint>
+        where TPoint : Point<TModel, Point2D, BezierViewModel>, new()
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="LineSeries{TModel, TChartPoint, TView}"/> class.
+        /// Initializes a new instance of the <see cref="LineSeries{TModel, TPoint, TView}"/> class.
         /// </summary>
         protected LineSeries()
             : base(SeriesConstants.Line)
         {
-            PointGeometry = ChartingConfig.GetDefault(SeriesConstants.Line).Geometry;
+            PointGeometry = LiveChartsSettings.GetSeriesDefault(SeriesConstants.Line).Geometry;
         }
 
         /// <summary>

@@ -1,27 +1,25 @@
+using System;
 using System.Linq;
 using LiveCharts.Core.Charts;
 using LiveCharts.Core.Coordinates;
 using LiveCharts.Core.Data;
 using LiveCharts.Core.ViewModels;
-using LiveCharts.Core.Views;
 
 namespace LiveCharts.Core.Series
 {
     /// <summary>
-    /// 
+    /// A Column series.
     /// </summary>The column series class.
     /// <typeparam name="TModel">The type of the model.</typeparam>
-    /// <typeparam name="TChartPoint">the type of the chart point.</typeparam>
-    public class ColumnSeries<TModel, TChartPoint>
-        : CartesianSeries<TModel, Point2D, ColumnViewModel, TChartPoint>
-        where TChartPoint : ChartPoint<TModel, Point2D, ColumnViewModel>, new()
+    public class ColumnSeries<TModel>
+        : CartesianSeries<TModel, Point2D, ColumnViewModel, Point<TModel, Point2D, ColumnViewModel>>
         // shouldn't the next line compile too??? probably a bug for .Net team
-        // where TView : ChartPointView<TModel, TChartPoint, Point2D, ColumnViewModel>, new()
+        // where TView : ChartPointView<TModel, TPoint, Point2D, ColumnViewModel>, new()
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ColumnSeries{TModel, TChartPoint}"/> class.
+        /// Initializes a new instance of the <see cref="ColumnSeries{TModel}"/> class.
         /// </summary>
-        protected ColumnSeries()
+        public ColumnSeries()
             : base(SeriesConstants.Column)
         {
         }
@@ -42,15 +40,17 @@ namespace LiveCharts.Core.Series
         /// </value>
         public double ColumnPadding { get; set; }
 
-        /// <inheritdoc />
+        /// <inheritdoc cref="OnUpdateView"/>
         protected override void OnUpdateView(ChartModel chart)
         {
-            var uiProvider = LiveCharts.Options.UiProvider;
+            var viewProvider = PointViewProvider ?? LiveChartsSettings.Current.UiProvider.ColumnViewProvider<TModel>;
+            var mapper = Mapper ?? LiveChartsSettings.GetMapper<TModel, Point2D>();
+
             var cartesianChart = (CartesianChartModel) chart;
             var x = cartesianChart.XAxis[ScalesXAt];
             var y = cartesianChart.YAxis[ScalesYAt];
 
-            var xUnitWidth = chart.ScaleTo(x.Unit, x) - ColumnPadding;
+            var xUnitWidth = chart.ScaleToUi(x.Unit, x) - ColumnPadding;
             var columnSeries = chart.Series
                 .Where(series => series.Key == SeriesConstants.Column)
                 .ToList();
@@ -67,22 +67,38 @@ namespace LiveCharts.Core.Series
             var relativeLeft = ColumnPadding + overFlow + singleColumnWidth * seriesPosition;
 
             var startAt = x.ActualMinValue >= 0 && y.ActualMaxValue > 0 // both positive
-                ? y.ActualMinValue // then use axisYMin
-                : (y.ActualMinValue < 0 && y.ActualMaxValue <= 0 // both negative
-                    ? y.ActualMaxValue // then use axisYMax
+                ? y.ActualMinValue                                      // then use axisYMin
+                : (y.ActualMinValue < 0 && y.ActualMaxValue <= 0        // both negative
+                    ? y.ActualMaxValue                                  // then use axisYMax
                     : 0);
+            var zero = chart.ScaleToUi(startAt, y);
 
-            var zero = chart.ScaleTo(startAt, y);
-
-            TChartPoint previous = null;
-            foreach (var chartPoint in Points)
+            Point<TModel, Point2D, ColumnViewModel> previous = null;
+            foreach (var current in Points)
             {
-                if (chartPoint.View == null)
+                if (current.View == null)
                 {
-                    chartPoint.View = uiProvider.BuildColumnPointView<TModel>();
+                    current.View = viewProvider();
                 }
-                chartPoint.View.Draw(chartPoint, new ColumnViewModel(), previous, chart.View);
-                previous = chartPoint;
+
+                var p = chart.ScaleToUi(current.Coordinate, x, y);
+
+                current.View.Draw(
+                    current,
+                    previous,
+                    chart.View,
+                    new ColumnViewModel(
+                        p.X + relativeLeft,
+                        p.Y < zero
+                            ? p.Y
+                            : zero,
+                        Math.Abs(p.Y - zero),
+                        singleColumnWidth - ColumnPadding,
+                        zero));
+
+                mapper.EvaluateModelDependentActions(current.Model, current.View.VisualElement, current);
+
+                previous = current;
             }
 
         }

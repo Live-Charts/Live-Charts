@@ -4,6 +4,7 @@ using System.Collections.Specialized;
 using System.Linq;
 using System.Threading.Tasks;
 using LiveCharts.Core.Abstractions;
+using LiveCharts.Core.Coordinates;
 using LiveCharts.Core.Data;
 using LiveCharts.Core.Dimensions;
 using LiveCharts.Core.Drawing;
@@ -17,7 +18,7 @@ namespace LiveCharts.Core.Charts
     public abstract class ChartModel : IDisposable
     {
         private static int _colorCount;
-        private IChartLegend _previousLegend;
+        private ILegend _previousLegend;
         private Task _delayer;
         private readonly Dictionary<string, object> _propertyReferences = new Dictionary<string, object>();
         private object _updateId;
@@ -109,7 +110,7 @@ namespace LiveCharts.Core.Charts
         /// </value>
         public IList<Color> Colors
         {
-            get => _colors ?? LiveCharts.Options.Colors;
+            get => _colors ?? LiveChartsSettings.Current.Colors;
             set => _colors = value;
         }
 
@@ -119,7 +120,7 @@ namespace LiveCharts.Core.Charts
         /// <value>
         /// The series.
         /// </value>
-        public IEnumerable<IChartSeries> Series => View.Series;
+        public IEnumerable<ISeries> Series => View.Series;
 
         /// <summary>
         /// Invalidates this instance, the chart will queue an update request.
@@ -159,9 +160,21 @@ namespace LiveCharts.Core.Charts
         /// <param name="plane">The axis.</param>
         /// <param name="size">The draw margin, this param is optional, if not set, the current chart's draw margin area will be used.</param>
         /// <returns></returns>
-        public virtual double ScaleTo(double value, Plane plane, Size? size = null)
+        public virtual double ScaleToUi(double value, Plane plane, Size? size = null)
         {
             throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Scales a point to the UI.
+        /// </summary>
+        /// <param name="point">The point.</param>
+        /// <param name="x">The x.</param>
+        /// <param name="y">The y.</param>
+        /// <returns></returns>
+        public Point2D ScaleToUi(Point2D point, Plane x, Plane y)
+        {
+            return new Point2D(ScaleToUi(point.X, x), ScaleToUi(point.Y, y));
         }
 
         /// <summary>

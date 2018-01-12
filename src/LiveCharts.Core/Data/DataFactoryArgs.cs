@@ -7,8 +7,8 @@ namespace LiveCharts.Core.Data
     /// <summary>
     /// Point factory options class.
     /// </summary>
-    public class DataFactoryArgs<TModel, TCoordinate, TViewModel, TChartPoint>
-        where TChartPoint : ChartPoint<TModel, TCoordinate, TViewModel>, new()
+    public class DataFactoryArgs<TModel, TCoordinate, TViewModel, TPoint>
+        where TPoint : Point<TModel, TCoordinate, TViewModel>, new()
         where TCoordinate : ICoordinate
     {
         /// <summary>
@@ -25,7 +25,7 @@ namespace LiveCharts.Core.Data
         /// <value>
         /// The series.
         /// </value>
-        public IChartSeries<TModel, TCoordinate, TViewModel, TChartPoint> Series { get; set; }
+        public ISeries<TModel, TCoordinate, TViewModel, TPoint> Series { get; set; }
 
         /// <summary>
         /// Gets or sets the chart.

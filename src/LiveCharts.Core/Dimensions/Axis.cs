@@ -157,7 +157,7 @@ namespace LiveCharts.Core.Dimensions
 
             for (var i = from; i < to; i += ActualStep)
             {
-                var iui = chart.ScaleTo(i, this);
+                var iui = chart.ScaleToUi(i, this);
                 var key = Math.Round(i / tolerance) * tolerance;
                 if (!_activeSeparators.TryGetValue(key, out AxisSeparator separator))
                 {
@@ -243,7 +243,7 @@ namespace LiveCharts.Core.Dimensions
             const double toRadians = Math.PI / 180;
             var angle = ActualLabelsRotation;
 
-            var labelModel = LiveCharts.Options.UiProvider.MeasureString(
+            var labelModel = LiveChartsSettings.Current.UiProvider.MeasureString(
                 FormatValue(valueToLabel), FontFamily, FontSize, FontStyle);
 
             var xw = Math.Abs(Math.Cos(angle * toRadians) * labelModel.Width);  // width's    horizontal    component
@@ -274,7 +274,7 @@ namespace LiveCharts.Core.Dimensions
                     l = .5 * xh;
                     t = 0;
                 }
-                x = chart.ScaleTo(valueToLabel, this, drawMargin);
+                x = chart.ScaleToUi(valueToLabel, this, drawMargin);
                 y = drawMargin.Height;
             }
             else if (Type == PlaneTypes.X && Position == AxisPositions.Top)
@@ -295,7 +295,7 @@ namespace LiveCharts.Core.Dimensions
                     l = xw + .5 * xh;
                     t = yh + yw;
                 }
-                x = chart.ScaleTo(valueToLabel, this, drawMargin);
+                x = chart.ScaleToUi(valueToLabel, this, drawMargin);
                 y = 0;
             }
             else if (Type == PlaneTypes.Y && Position == AxisPositions.Left)
@@ -317,7 +317,7 @@ namespace LiveCharts.Core.Dimensions
                     t = yw;
                 }
                 x = 0;
-                y = chart.ScaleTo(valueToLabel, this, drawMargin);
+                y = chart.ScaleToUi(valueToLabel, this, drawMargin);
             }
             else if (Type == PlaneTypes.Y && Position == AxisPositions.Right)
             {
@@ -338,7 +338,7 @@ namespace LiveCharts.Core.Dimensions
                     t = yo;
                 }
                 x = drawMargin.Width;
-                y = chart.ScaleTo(valueToLabel, this, drawMargin);
+                y = chart.ScaleToUi(valueToLabel, this, drawMargin);
             }
             else
             {

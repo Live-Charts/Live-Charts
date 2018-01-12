@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using LiveCharts.Core.Charts;
+﻿using LiveCharts.Core.Charts;
 using LiveCharts.Core.Data;
 using LiveCharts.Core.Drawing;
 using LiveCharts.Core.Drawing.Svg;
+using System;
+using System.Collections.Generic;
 
 namespace LiveCharts.Core.Abstractions
 {
@@ -11,7 +11,7 @@ namespace LiveCharts.Core.Abstractions
     /// Chart series extraction.
     /// </summary>
     /// <seealso cref="System.IDisposable" />
-    public interface IChartSeries : IDisposable
+    public interface ISeries : IDisposable
     {
         /// <summary>
         /// Gets the key, the unique name of this series.
@@ -38,7 +38,7 @@ namespace LiveCharts.Core.Abstractions
         Geometry Geometry { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether this <see cref="IChartSeries"/> is visible.
+        /// Gets or sets a value indicating whether this <see cref="ISeries"/> is visible.
         /// </summary>
         /// <value>
         ///   <c>true</c> if visible; otherwise, <c>false</c>.
@@ -109,8 +109,8 @@ namespace LiveCharts.Core.Abstractions
     /// <summary>
     /// A Chart series extraction.
     /// </summary>
-    public interface IChartSeries<in TModel, out TCoordinate, out TViewModel, TChartPoint> : IChartSeries
-        where TChartPoint : ChartPoint<TModel, TCoordinate, TViewModel>, new()
+    public interface ISeries<TModel, TCoordinate, TViewModel, TPoint> : ISeries
+        where TPoint : Point<TModel, TCoordinate, TViewModel>, new()
         where TCoordinate : ICoordinate
     {
         /// <summary>
@@ -119,7 +119,7 @@ namespace LiveCharts.Core.Abstractions
         /// <value>
         /// The mapper.
         /// </value>
-        Func<TModel, TCoordinate> Mapper { get; }
+        ModelToPointMapper<TModel, TCoordinate> Mapper { get; }
         
         /// <summary>
         /// Gets or sets the reference tracker.
@@ -127,7 +127,7 @@ namespace LiveCharts.Core.Abstractions
         /// <value>
         /// The reference tracker.
         /// </value>
-        IList<TChartPoint> ValueTracker { get; set; }
+        IList<TPoint> ValueTracker { get; set; }
 
         /// <summary>
         /// Gets the points.
@@ -135,7 +135,7 @@ namespace LiveCharts.Core.Abstractions
         /// <value>
         /// The points.
         /// </value>
-        IEnumerable<TChartPoint> Points { get; }
+        IEnumerable<TPoint> Points { get; }
 
         /// <summary>
         /// Gets the type builder.
@@ -144,5 +144,13 @@ namespace LiveCharts.Core.Abstractions
         /// The type builder.
         /// </value>
         Func<TModel, TViewModel> PointBuilder { get; }
+
+        /// <summary>
+        /// Gets or sets the point view provider.
+        /// </summary>
+        /// <value>
+        /// The point view provider.
+        /// </value>
+        Func<IPointView<TModel, TPoint, TCoordinate, TViewModel>> PointViewProvider { get; set; }
     }
 }

@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using LiveCharts.Core.Data;
 
 namespace LiveCharts.Core.Abstractions
@@ -12,6 +8,12 @@ namespace LiveCharts.Core.Abstractions
     /// </summary>
     public interface ICoordinate
     {
+        /// <summary>
+        /// Compares the dimensions.
+        /// </summary>
+        /// <param name="dimensionRanges">The chart dimension ranges.</param>
+        /// <param name="skipCriteria">The skip criteria.</param>
+        /// <returns></returns>
         bool CompareDimensions(DimensionRange[] dimensionRanges, SeriesSkipCriteria skipCriteria);
     }
 }

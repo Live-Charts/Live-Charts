@@ -7,28 +7,32 @@ namespace LiveCharts.Wpf
 {
     public static class Config
     {
-        public static ChartingConfig UseWpf(this ChartingConfig config)
+        public static LiveChartsSettings UseWpf(this LiveChartsSettings defaults)
         {
-            config.DataFactory = new DefaultDataFactory();
-            config.UiProvider = new UiProvider();
+            defaults.DataFactory = new DefaultDataFactory();
+            defaults.UiProvider = new UiProvider();
 
-            config.HasDefaults(SeriesConstants.Line, defaults =>
+            defaults.Series(
+                SeriesConstants.Line,
+                seriesDefault =>
                 {
-                    defaults.FillOpacity = .35;
-                    defaults.Geometry = Geometry.HorizontalLine;
+                    seriesDefault.FillOpacity = .35;
+                    seriesDefault.Geometry = Geometry.HorizontalLine;
                 });
 
-            config.HasDefaults(SeriesConstants.Column, defaults =>
-            {
-                defaults.FillOpacity = .8;
-                defaults.Geometry = Geometry.Square;
-            });
+            defaults.Series(
+                SeriesConstants.Column,
+                seriesDefault =>
+                {
+                    seriesDefault.FillOpacity = .8;
+                    seriesDefault.Geometry = Geometry.Square;
+                });
 
-            config.PlotPrimitiveTypes()
+            defaults.PlotPrimitiveTypes()
                 .PlotDefaultTypes()
                 .UseMaterialDesignColors();
 
-            return config;
+            return defaults;
         }
     }
 }

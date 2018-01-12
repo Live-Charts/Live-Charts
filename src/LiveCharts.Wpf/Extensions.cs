@@ -11,6 +11,16 @@ namespace LiveCharts.Wpf
     public static class Extensions
     {
         /// <summary>
+        /// Converts a WPF color to LiveCharts color.
+        /// </summary>
+        /// <param name="color">The color.</param>
+        /// <returns></returns>
+        public static Color AsLiveChartsColors(this System.Windows.Media.Color color)
+        {
+            return new Color(color.A, color.R, color.G, color.B);
+        }
+
+        /// <summary>
         /// converts a color to a solid color brush.
         /// </summary>
         /// <param name="color">The color.</param>

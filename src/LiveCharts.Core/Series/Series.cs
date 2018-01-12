@@ -17,11 +17,11 @@ namespace LiveCharts.Core.Series
     /// <typeparam name="TModel">The type of the model.</typeparam>
     /// <typeparam name="TCoordinate">The type of the coordinate.</typeparam>
     /// <typeparam name="TViewModel">The type of the view model.</typeparam>
-    /// <typeparam name="TChartPoint">The type of the chart point.</typeparam>
-    /// <seealso cref="IChartSeries{TModel, TCoordinate, TViewModel, TChartPoint}" />
-    public abstract class Series<TModel, TCoordinate, TViewModel, TChartPoint>
-        : IChartSeries<TModel, TCoordinate, TViewModel, TChartPoint>
-        where TChartPoint : ChartPoint<TModel, TCoordinate, TViewModel>, new()
+    /// <typeparam name="TPoint">The type of the chart point.</typeparam>
+    /// <seealso cref="ISeries{TModel,TCoordinate,TViewModel,TPoint}" />
+    public abstract class Series<TModel, TCoordinate, TViewModel, TPoint>
+        : ISeries<TModel, TCoordinate, TViewModel, TPoint>
+        where TPoint : Point<TModel, TCoordinate, TViewModel>, new()
         where TCoordinate : ICoordinate
     {
         private readonly string _key;
@@ -47,7 +47,7 @@ namespace LiveCharts.Core.Series
         /// <value>
         /// The key.
         /// </value>
-        string IChartSeries.Key => _key;
+        string ISeries.Key => _key;
 
         /// <summary>
         /// Gets or sets the values.
@@ -85,7 +85,7 @@ namespace LiveCharts.Core.Series
         /// </value>
         public IEnumerable<ChartModel> UsedBy { get; internal set; }
 
-        /// <inheritdoc cref="IChartSeries.Geometry"/>
+        /// <inheritdoc cref="ISeries.Geometry"/>
         public Geometry Geometry { get; set; }
 
         /// <summary>
@@ -102,7 +102,7 @@ namespace LiveCharts.Core.Series
         /// <value>
         /// The mapper.
         /// </value>
-        public Func<TModel, TCoordinate> Mapper { get; set; }
+        public ModelToPointMapper<TModel, TCoordinate> Mapper { get; set; }
 
         /// <summary>
         /// Gets or sets the reference tracker.
@@ -110,10 +110,10 @@ namespace LiveCharts.Core.Series
         /// <value>
         /// The reference tracker.
         /// </value>
-        IList<TChartPoint> IChartSeries<TModel, TCoordinate, TViewModel, TChartPoint>.ValueTracker { get; set; }
+        IList<TPoint> ISeries<TModel, TCoordinate, TViewModel, TPoint>.ValueTracker { get; set; }
 
-        /// <inheritdoc cref="IChartSeries{T, U, V, W}.Points"/>
-        public IEnumerable<TChartPoint> Points { get; private set; }
+        /// <inheritdoc cref="ISeries{TModel,TCoordinate,TViewModel,TPoint}.Points"/>
+        public IEnumerable<TPoint> Points { get; private set; }
 
         /// <summary>
         /// Gets or sets the point builder, it defines the way the type is mapped to the chart.
@@ -123,16 +123,19 @@ namespace LiveCharts.Core.Series
         /// </value>
         public Func<TModel, TViewModel> PointBuilder { get; set; }
 
-        /// <inheritdoc cref="IChartSeries.Title"/>
+        /// <inheritdoc cref="ISeries"/>
+        public Func<IPointView<TModel, Point<TModel, TCoordinate, TViewModel>, TCoordinate, TViewModel>> PointViewProvider { get; set; }
+
+        /// <inheritdoc cref="ISeries.Title"/>
         public string Title { get; set; }
 
-        /// <inheritdoc cref="IChartSeries.StrokeThickness"/>
+        /// <inheritdoc cref="ISeries.StrokeThickness"/>
         public double StrokeThickness { get; set; }
 
-        /// <inheritdoc cref="IChartSeries.Stroke"/>
+        /// <inheritdoc cref="ISeries.Stroke"/>
         public Color Stroke { get; set; }
 
-        /// <inheritdoc cref="IChartSeries.Fill"/>
+        /// <inheritdoc cref="ISeries.Fill"/>
         public Color Fill { get; set; }
 
         /// <summary>
@@ -143,13 +146,14 @@ namespace LiveCharts.Core.Series
         /// </value>
         public int ZIndex { get; set; }
 
-        /// <inheritdoc cref="IChartSeries.ScaleAtByDimension"/>
+        /// <inheritdoc cref="ISeries.ScaleAtByDimension"/>
         protected int[] ScalesAt { get; set; }
 
-        int[] IChartSeries.ScaleAtByDimension => ScalesAt;
+        int[] ISeries.ScaleAtByDimension => ScalesAt;
 
-        /// <inheritdoc cref="IChartSeries{T, U, V, W}.ScaleAtByDimension"/>
+        /// <inheritdoc cref="ISeries{TModel,TCoordinate,TViewModel,TPoint}.ScaleAtByDimension"/>
         public DimensionRange DataRange { get; } = new DimensionRange(double.PositiveInfinity, double.NegativeInfinity);
+        Func<IPointView<TModel, TPoint, TCoordinate, TViewModel>> ISeries<TModel, TCoordinate, TViewModel, TPoint>.PointViewProvider { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         /// <summary>
         /// Fetches the data for a given chart.
@@ -172,7 +176,7 @@ namespace LiveCharts.Core.Series
                 }
                 if (Fill == Color.Empty)
                 {
-                    Fill = nextColor.SetOpacity(ChartingConfig.GetDefault(((IChartSeries) this).Key).FillOpacity);
+                    Fill = nextColor.SetOpacity(LiveChartsSettings.GetSeriesDefault(((ISeries) this).Key).FillOpacity);
                 }
             }
 
@@ -180,9 +184,9 @@ namespace LiveCharts.Core.Series
             // Fetch() has 2 main tasks.
             // 1. Calculate each ChartPoint required by the series.
             // 2. Evaluate every dimension and every axis to get Max and Min limits.
-            Points = LiveCharts.Options.DataFactory
+            Points = LiveChartsSettings.Current.DataFactory
                 .FetchData(
-                    new DataFactoryArgs<TModel, TCoordinate, TViewModel, TChartPoint>
+                    new DataFactoryArgs<TModel, TCoordinate, TViewModel, TPoint>
                     {
                         Series = this,
                         Chart = chart,
@@ -192,13 +196,13 @@ namespace LiveCharts.Core.Series
         }
 
         /// <param name="chart"></param>
-        /// <inheritdoc cref="IChartSeries.UpdateView"/>
-        void IChartSeries.UpdateView(ChartModel chart)
+        /// <inheritdoc cref="ISeries.UpdateView"/>
+        void ISeries.UpdateView(ChartModel chart)
         {
             OnUpdateView(chart);
         }
 
-        /// <inheritdoc cref="IChartSeries.UpdateView"/>
+        /// <inheritdoc cref="ISeries.UpdateView"/>
         protected virtual void OnUpdateView(ChartModel chart)
         {
             throw new NotImplementedException();

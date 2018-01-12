@@ -6,31 +6,21 @@ using LiveCharts.Core.Config;
 namespace LiveCharts.Core.Data
 {
     /// <summary>
-    /// 
-    /// </summary>
-    public interface IReferenceChartPoint<TModel, TCoordinate, TViewModel, TChartPoint>
-        where TChartPoint : ChartPoint<TModel, TCoordinate, TViewModel>, new()
-        where TCoordinate : ICoordinate
-    {
-        TChartPoint ChartPoint { get; set; }
-    }
-
-    /// <summary>
     /// Defines the default chart point factory.
     /// </summary>
     /// <seealso cref="IDataFactory" />
     public class DefaultDataFactory : IDataFactory
     {
-        public IEnumerable<TChartPoint> FetchData<TModel, TCoordinate, TViewModel, TChartPoint>(
-            DataFactoryArgs<TModel, TCoordinate, TViewModel, TChartPoint> args) 
-            where TChartPoint : ChartPoint<TModel, TCoordinate, TViewModel>, new()
+        /// <inheritdoc />
+        public IEnumerable<TPoint> FetchData<TModel, TCoordinate, TViewModel, TPoint>(
+            DataFactoryArgs<TModel, TCoordinate, TViewModel, TPoint> args) 
+            where TPoint : Point<TModel, TCoordinate, TViewModel>, new()
             where TCoordinate : ICoordinate
         {
             var modelType = typeof(TModel);
-            // var pointBuilder = args.Series.PointBuilder ?? ChartingTypeBuilder<TModel>.GetPointBuilder<TChartPoint>();
-            var mapper = args.Series.Mapper;
+            var mapper = args.Series.Mapper ?? LiveChartsSettings.GetMapper<TModel, TCoordinate>();
             var notifiesChange = typeof(INotifyPropertyChanged).IsAssignableFrom(modelType);
-            var trackByRef = typeof(IReferenceChartPoint<TModel, TCoordinate, TViewModel, TChartPoint>).IsAssignableFrom(modelType);
+            var observable = typeof(IChartPoint<TModel, TCoordinate, TViewModel, TPoint>).IsAssignableFrom(modelType);
             var collection = args.Collection;
             var dimensions = args.Chart.GetSeriesDimensions(args.Series);
 
@@ -45,19 +35,19 @@ namespace LiveCharts.Core.Data
                     npc.PropertyChanged += args.PropertyChangedEventHandler;
                 }
 
-                TChartPoint chartPoint;
+                TPoint chartPoint;
 
-                if (trackByRef)
+                if (observable)
                 {
-                    var ircp = (IReferenceChartPoint<TModel, TCoordinate, TViewModel, TChartPoint>) instance;
-                    if (ircp.ChartPoint == null)
+                    var iocp = (IChartPoint<TModel, TCoordinate, TViewModel, TPoint>) instance;
+                    if (iocp.ChartPoint == null)
                     {
-                        chartPoint = new TChartPoint();
-                        ircp.ChartPoint = chartPoint;
+                        chartPoint = new TPoint();
+                        iocp.ChartPoint = chartPoint;
                     }
                     else
                     {
-                        chartPoint = ircp.ChartPoint;
+                        chartPoint = iocp.ChartPoint;
                     }
                 }
                 else
@@ -68,7 +58,7 @@ namespace LiveCharts.Core.Data
                     }
                     else
                     {
-                        chartPoint = new TChartPoint();
+                        chartPoint = new TPoint();
                         args.Series.ValueTracker.Add(chartPoint);
                     }
                 }
@@ -80,6 +70,10 @@ namespace LiveCharts.Core.Data
                 chartPoint.Key = index;
                 chartPoint.Series = args.Series;
                 chartPoint.Chart = args.Chart;
+                chartPoint.Coordinate = mapper.Predicate(instance, index);
+
+                // evaluate model defined events
+                mapper.EvaluateModelDependentActions(instance, chartPoint.View, chartPoint);
 
                 // register our chart point at the resource collector
                 args.Chart.RegisterResource(chartPoint);

@@ -7,7 +7,7 @@ namespace LiveCharts.Core.Abstractions
     /// <summary>
     /// Defines a chart legend.
     /// </summary>
-    public interface IChartLegend
+    public interface ILegend
     {
         /// <summary>
         /// Removes the legend.
@@ -21,6 +21,6 @@ namespace LiveCharts.Core.Abstractions
         /// <param name="series">The series.</param>
         /// <param name="orientation">The orientation.</param>
         /// <returns></returns>
-        Task<Size> UpdateLayoutAsync(IEnumerable<IChartSeries> series, Orientation orientation);
+        Task<Size> UpdateLayoutAsync(IEnumerable<ISeries> series, Orientation orientation);
     }
 }

@@ -5,12 +5,12 @@ using LiveCharts.Core.Data;
 
 namespace LiveCharts.Core.Defaults
 {
-    public class ReferenceChartModel<TModel, TCoordinate, TViewModel, TChartPoint>
-        : IReferenceChartPoint<TModel, TCoordinate, TViewModel, TChartPoint>
-        where TChartPoint : ChartPoint<TModel, TCoordinate, TViewModel>, new()
+    public class ChartModel<TModel, TCoordinate, TViewModel, TPoint>
+        : IChartPoint<TModel, TCoordinate, TViewModel, TPoint>
+        where TPoint : Point<TModel, TCoordinate, TViewModel>, new()
         where TCoordinate : ICoordinate
     {
-        public TChartPoint ChartPoint { get; set; }
+        public TPoint ChartPoint { get; set; }
     }
 
     /// <summary>

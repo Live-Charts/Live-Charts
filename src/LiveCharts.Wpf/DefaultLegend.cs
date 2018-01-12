@@ -5,7 +5,6 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using LiveCharts.Core.Abstractions;
-using LiveCharts.Core.Data;
 using Orientation = LiveCharts.Core.Abstractions.Orientation;
 using Size = LiveCharts.Core.Drawing.Size;
 
@@ -14,7 +13,7 @@ namespace LiveCharts.Wpf
     /// <summary>
     /// Interaction logic for DefaultLegend.xaml
     /// </summary>
-    public class DefaultLegend : WrapPanel, IChartLegend
+    public class DefaultLegend : WrapPanel, ILegend
     {
         /// <summary>
         /// The automatic orientation property.
@@ -61,8 +60,8 @@ namespace LiveCharts.Wpf
             }
         }
 
-        /// <inheritdoc cref="IChartLegend.UpdateLayoutAsync"/>
-        async Task<Size> IChartLegend.UpdateLayoutAsync(IEnumerable<IChartSeries> seriesCollection, Orientation orientation)
+        /// <inheritdoc cref="ILegend.UpdateLayoutAsync"/>
+        async Task<Size> ILegend.UpdateLayoutAsync(IEnumerable<ISeries> seriesCollection, Orientation orientation)
         {
             // we really don't care about the wpf cycle, we don't need bindings,
             // we could actually get a sync error if we use bindings in this control
@@ -85,7 +84,7 @@ namespace LiveCharts.Wpf
                 foreach (var series in seriesCollection)
                 {
                     var g = series.Geometry == Core.Drawing.Svg.Geometry.Empty
-                        ? ChartingConfig.GetDefault(series.Key).Geometry
+                        ? Core.LiveCharts.GetDefault(series.Key).Geometry
                         : series.Geometry;
 
                     Children.Add(new StackPanel

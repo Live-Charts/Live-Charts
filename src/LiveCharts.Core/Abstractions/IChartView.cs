@@ -77,7 +77,7 @@ namespace LiveCharts.Core.Abstractions
         /// <value>
         /// The actual series.
         /// </value>
-        IEnumerable<IChartSeries> Series { get; }
+        IEnumerable<ISeries> Series { get; }
 
         /// <summary>
         /// Gets a value indicating whether animations are disabled.
@@ -101,7 +101,7 @@ namespace LiveCharts.Core.Abstractions
         /// <value>
         /// The legend.
         /// </value>
-        IChartLegend Legend { get; }
+        ILegend Legend { get; }
 
         /// <summary>
         /// Gets the legend position.

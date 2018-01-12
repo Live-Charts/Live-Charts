@@ -23,7 +23,6 @@
 using System;
 using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Charts;
-using LiveCharts.Core.Views;
 
 namespace LiveCharts.Core.Data
 {
@@ -34,7 +33,7 @@ namespace LiveCharts.Core.Data
     /// <typeparam name="TCoordinate">The type of the coordinate.</typeparam>
     /// <typeparam name="TViewModel">The type of the view model.</typeparam>
     /// <seealso cref="System.IDisposable" />
-    public class ChartPoint<TModel, TCoordinate, TViewModel> : IDisposable
+    public class Point<TModel, TCoordinate, TViewModel> : IDisposable
         where TCoordinate : ICoordinate
     {
         /// <summary>
@@ -52,7 +51,7 @@ namespace LiveCharts.Core.Data
         /// <value>
         /// The instance.
         /// </value>
-        public TModel Model { get; internal set; }                                                                 // user defined object
+        public TModel Model { get; internal set; }
 
         /// <summary>
         /// Gets the view model,the model to drawn in the user interface.
@@ -60,7 +59,7 @@ namespace LiveCharts.Core.Data
         /// <value>
         /// The view model.
         /// </value>
-        public TViewModel ViewModel { get; internal set; }                                                         // column view model
+        public TViewModel ViewModel { get; internal set; }
 
         /// <summary>
         /// Gets the view.
@@ -68,9 +67,8 @@ namespace LiveCharts.Core.Data
         /// <value>
         /// The view.
         /// </value>
-        public ChartPointView<TModel, ChartPoint<TModel, TCoordinate, TViewModel>, TCoordinate, TViewModel>
-            View
-        { get; internal set; }                                                                                     // column view
+        public IPointView<TModel, Point<TModel, TCoordinate, TViewModel>, TCoordinate, TViewModel>
+            View { get; internal set; }
 
         /// <summary>
         /// Gets or sets the point.
@@ -78,7 +76,7 @@ namespace LiveCharts.Core.Data
         /// <value>
         /// The point.
         /// </value>
-        public TCoordinate Coordinate { get; set; }                                                                 // 2d point
+        public TCoordinate Coordinate { get; set; }
 
         /// <summary>
         /// Gets the series that owns the point.
@@ -86,7 +84,7 @@ namespace LiveCharts.Core.Data
         /// <value>
         /// The series.
         /// </value>
-        public IChartSeries Series { get; internal set; }
+        public ISeries Series { get; internal set; }
 
         /// <summary>
         /// Gets the chart that owns the point.
@@ -95,11 +93,29 @@ namespace LiveCharts.Core.Data
         /// The chart.
         /// </value>
         public ChartModel Chart { get; internal set; }
-        
+
         /// <inheritdoc cref="IDisposable.Dispose"/>
         public void Dispose()
         {
             // View.Erase();
+        }
+
+        /// <summary>
+        /// returns a point with an unknown.
+        /// </summary>
+        /// <returns></returns>
+        public Point<TModel, TCoordinate, object> AsUnknownViewModel()
+        {
+            return new Point<TModel, TCoordinate, object>()
+            {
+                Chart = Chart,
+                Coordinate = Coordinate,
+                Key = Key,
+                Model = Model,
+                Series = Series,
+                View = null,
+                ViewModel = ViewModel
+            };
         }
     }
 }

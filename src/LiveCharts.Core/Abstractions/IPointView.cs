@@ -1,19 +1,26 @@
-using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Data;
 
-namespace LiveCharts.Core.Views
+namespace LiveCharts.Core.Abstractions
 {
     /// <summary>
     /// 
     /// </summary>
     /// <typeparam name="TModel">The type of the model.</typeparam>
-    /// <typeparam name="TChartPoint">The type of the chart point.</typeparam>
+    /// <typeparam name="TPoint">The type of the chart point.</typeparam>
     /// <typeparam name="TCoordinate">The type of the coordinate.</typeparam>
     /// <typeparam name="TViewModel">The type of the point model.</typeparam>
-    public abstract class ChartPointView<TModel, TChartPoint, TCoordinate, TViewModel>
-        where TChartPoint : ChartPoint<TModel, TCoordinate, TViewModel>, new()
+    public interface IPointView<TModel, in TPoint, TCoordinate, in TViewModel>
+        where TPoint : Point<TModel, TCoordinate, TViewModel>, new()
         where TCoordinate : ICoordinate
     {
+        /// <summary>
+        /// Gets the visual element.
+        /// </summary>
+        /// <value>
+        /// The visual.
+        /// </value>
+        object VisualElement { get; }
+
         /// <summary>
         /// Draws the specified point.
         /// </summary>
@@ -21,14 +28,13 @@ namespace LiveCharts.Core.Views
         /// <param name="model">The model.</param>
         /// <param name="previous">The previous.</param>
         /// <param name="chart">The chart.</param>
-        /// <exception cref="System.NotImplementedException"></exception>
-        public abstract void Draw(TChartPoint point, TViewModel model, TChartPoint previous, IChartView chart);
+        void Draw(TPoint point, TPoint previous, IChartView chart, TViewModel model);
 
         /// <summary>
         /// Erases the specified chart.
         /// </summary>
         /// <param name="chart">The chart.</param>
         /// <exception cref="System.NotImplementedException"></exception>
-        public abstract void Erase(IChartView chart);
+        void Erase(IChartView chart);
     }
 }

@@ -49,7 +49,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Chart.cs" />
-    <Compile Include="ColumnSeries.cs" />
     <Compile Include="DefaultLegend.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="UiProvider.cs" />
