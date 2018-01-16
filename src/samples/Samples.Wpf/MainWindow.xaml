@@ -6,9 +6,14 @@
         xmlns:local="clr-namespace:Samples.Wpf"
         xmlns:wpf="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525"
+        Title="MainWindow" Height="250" Width="250"
         Name="This"
         d:DataContext="{Binding ElementName=This}">
-    <wpf:CartesianChart Series="{Binding Series}">
-    </wpf:CartesianChart>
+    <Canvas Background="DarkGray" Height="100" Width="100">
+        <Rectangle Canvas.Left="25" Canvas.Top="0" Fill="Black" Width="100" Height="100">
+            <Rectangle.RenderTransform>
+                <RotateTransform Angle="50"></RotateTransform>
+            </Rectangle.RenderTransform>
+        </Rectangle>
+    </Canvas>
 </Window>

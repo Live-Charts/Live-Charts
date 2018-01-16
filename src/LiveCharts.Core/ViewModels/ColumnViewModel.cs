@@ -3,7 +3,7 @@
     /// <summary>
     /// A column view model.
     /// </summary>
-    public struct ColumnViewModel
+    public class ColumnViewModel
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ColumnViewModel"/> struct.
@@ -21,7 +21,6 @@
             Width = w;
             Zero = zero;
         }
-
 
         /// <summary>
         /// Specifies the column animation direction.

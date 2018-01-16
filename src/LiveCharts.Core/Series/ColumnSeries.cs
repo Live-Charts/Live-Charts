@@ -1,8 +1,10 @@
 using System;
 using System.Linq;
+using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Charts;
 using LiveCharts.Core.Coordinates;
 using LiveCharts.Core.Data;
+using LiveCharts.Core.Drawing;
 using LiveCharts.Core.ViewModels;
 
 namespace LiveCharts.Core.Series
@@ -13,8 +15,6 @@ namespace LiveCharts.Core.Series
     /// <typeparam name="TModel">The type of the model.</typeparam>
     public class ColumnSeries<TModel>
         : CartesianSeries<TModel, Point2D, ColumnViewModel, Point<TModel, Point2D, ColumnViewModel>>
-        // shouldn't the next line compile too??? probably a bug for .Net team
-        // where TView : ChartPointView<TModel, TPoint, Point2D, ColumnViewModel>, new()
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ColumnSeries{TModel}"/> class.
@@ -43,9 +43,6 @@ namespace LiveCharts.Core.Series
         /// <inheritdoc cref="OnUpdateView"/>
         protected override void OnUpdateView(ChartModel chart)
         {
-            var viewProvider = PointViewProvider ?? LiveChartsSettings.Current.UiProvider.ColumnViewProvider<TModel>;
-            var mapper = Mapper ?? LiveChartsSettings.GetMapper<TModel, Point2D>();
-
             var cartesianChart = (CartesianChartModel) chart;
             var x = cartesianChart.XAxis[ScalesXAt];
             var y = cartesianChart.YAxis[ScalesYAt];
@@ -78,12 +75,14 @@ namespace LiveCharts.Core.Series
             {
                 if (current.View == null)
                 {
-                    current.View = viewProvider();
+                    current.View = PointViewProvider();
                 }
 
                 var p = chart.ScaleToUi(current.Coordinate, x, y);
 
-                current.View.Draw(
+                current.LinesByDimension = current.Coordinate.AsTooltipData(x, y);
+
+                current.View.DrawShape(
                     current,
                     previous,
                     chart.View,
@@ -96,11 +95,33 @@ namespace LiveCharts.Core.Series
                         singleColumnWidth - ColumnPadding,
                         zero));
 
-                mapper.EvaluateModelDependentActions(current.Model, current.View.VisualElement, current);
+                if (DataLabels && x.IsInRange(p.X) && y.IsInRange(p.Y))
+                {
+                    current.View.DrawLabel(
+                        current,
+                        GetLabelPosition(
+                            new Point(p.X, p.Y),
+                            new Margin(0),
+                            zero,
+                            LiveChartsSettings.Current.UiProvider.MeasureString(
+                                Mapper.PointPredicate(current.Model),
+                                DataLabelsFont),
+                            DataLabelsPosition),
+                        chart.View);
+                }
+
+                Mapper.EvaluateModelDependentActions(current.Model, current.View.VisualElement, current);
 
                 previous = current;
             }
 
+        }
+        
+        /// <inheritdoc />
+        protected override IPointView<TModel, Point<TModel, Point2D, ColumnViewModel>, Point2D, ColumnViewModel> 
+            DefaultPointViewProvider()
+        {
+            return LiveChartsSettings.Current.UiProvider.ColumnViewProvider<TModel>();
         }
     }
 }

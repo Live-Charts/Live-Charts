@@ -4,6 +4,7 @@ using LiveCharts.Core.Drawing;
 using LiveCharts.Core.Drawing.Svg;
 using System;
 using System.Collections.Generic;
+using LiveCharts.Core.Dimensions;
 
 namespace LiveCharts.Core.Abstractions
 {
@@ -28,6 +29,30 @@ namespace LiveCharts.Core.Abstractions
         /// The title.
         /// </value>
         string Title { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether data labels should be displayed.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if display data labels; otherwise, <c>false</c>.
+        /// </value>
+        bool DataLabels { get; set; }
+
+        /// <summary>
+        /// Gets or sets the data labels position.
+        /// </summary>
+        /// <value>
+        /// The data labels position.
+        /// </value>
+        DataLabelsPosition DataLabelsPosition { get; set; }
+
+        /// <summary>
+        /// Gets or sets the data labels font.
+        /// </summary>
+        /// <value>
+        /// The data labels font.
+        /// </value>
+        Font DataLabelsFont { get; set; }
 
         /// <summary>
         /// Gets or sets the geometry.
@@ -94,6 +119,19 @@ namespace LiveCharts.Core.Abstractions
         IEnumerable<ChartModel> UsedBy { get; }
 
         /// <summary>
+        /// Gets the plane for the given index.
+        /// </summary>
+        /// <returns></returns>
+        Plane GetPlane(IChartView chart, int index);
+
+        /// <summary>
+        /// Gets the planes.
+        /// </summary>
+        /// <param name="chart">The chart.</param>
+        /// <returns></returns>
+        IList<Plane> GetPlanes(IChartView chart);
+
+        /// <summary>
         /// Updates the view.
         /// </summary>
         /// <param name="chart"></param>
@@ -127,7 +165,7 @@ namespace LiveCharts.Core.Abstractions
         /// <value>
         /// The reference tracker.
         /// </value>
-        IList<TPoint> ValueTracker { get; set; }
+        IList<TPoint> ByValTracker { get; set; }
 
         /// <summary>
         /// Gets the points.

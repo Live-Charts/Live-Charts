@@ -30,7 +30,7 @@ namespace LiveCharts.Core.Charts
         /// <value>
         /// The x axis.
         /// </value>
-        public IList<Plane> XAxis => View.AxisArrayByDimension[0];
+        public IList<Plane> XAxis => View.PlanesArrayByDimension[0];
 
         /// <summary>
         /// Gets the y axis.
@@ -38,7 +38,7 @@ namespace LiveCharts.Core.Charts
         /// <value>
         /// The y axis.
         /// </value>
-        public IList<Plane> YAxis => View.AxisArrayByDimension[1];
+        public IList<Plane> YAxis => View.PlanesArrayByDimension[1];
 
         /// <inheritdoc cref="ChartModel.ScaleTo"/>
         public override double ScaleToUi(double value, Plane plane, Size? size = null)
@@ -83,7 +83,7 @@ namespace LiveCharts.Core.Charts
             // draw separators
 
             // for each dimension (for a cartesian chart X and Y)
-            foreach (var axisArray in View.AxisArrayByDimension)
+            foreach (var axisArray in View.PlanesArrayByDimension)
             {
                 // for each axis in each dimension
                 foreach (var plane in axisArray)
@@ -118,10 +118,10 @@ namespace LiveCharts.Core.Charts
             int l = 0, r = 0, t = 0, b = 0;
 
             // for each dimension (for a cartesian chart X and Y)
-            for (var dimensionIndex = 0; dimensionIndex < View.AxisArrayByDimension.Count; dimensionIndex++)
+            for (var dimensionIndex = 0; dimensionIndex < View.PlanesArrayByDimension.Count; dimensionIndex++)
             {
                 var dimensionRanges = DataRangeMatrix[dimensionIndex];
-                var planesArray = View.AxisArrayByDimension[dimensionIndex];
+                var planesArray = View.PlanesArrayByDimension[dimensionIndex];
 
                 // for each axis in each dimension
                 for (var index = 0; index < planesArray.Count; index++)

@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
-using LiveCharts.Core;
 using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Charts;
 using LiveCharts.Core.Dimensions;
@@ -20,7 +19,7 @@ namespace LiveCharts.Wpf
             Initialized += OnInitialized;
         }
 
-        internal Canvas DrawArea { get; set; }
+        public Canvas DrawArea { get; private set; }
 
         #region Dependency properties
 
@@ -130,7 +129,7 @@ namespace LiveCharts.Wpf
 
         private object _dimensionsUpdateId;
         private IList<IList<Plane>> _dimensions;
-        IList<IList<Plane>> IChartView.AxisArrayByDimension
+        IList<IList<Plane>> IChartView.PlanesArrayByDimension
         {
             get
             {

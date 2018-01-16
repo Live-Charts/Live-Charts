@@ -52,14 +52,14 @@ namespace LiveCharts.Core.Data
                 }
                 else
                 {
-                    if (args.Series.ValueTracker.Count < index)
+                    if (args.Series.ByValTracker.Count < index)
                     {
-                        chartPoint = args.Series.ValueTracker[index];
+                        chartPoint = args.Series.ByValTracker[index];
                     }
                     else
                     {
                         chartPoint = new TPoint();
-                        args.Series.ValueTracker.Add(chartPoint);
+                        args.Series.ByValTracker.Add(chartPoint);
                     }
                 }
 

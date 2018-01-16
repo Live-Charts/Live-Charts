@@ -20,19 +20,22 @@ namespace Samples.Wpf
             LiveChartsSettings.Define(
                 settings =>
                 {
-                    settings.Has2DPlotFor<City>(
-                            (city, index) => new Point2D(index, city.Population))
+                    settings
+                        .Has2DPlotFor<City>(
+                            (city, index) => new Point2D(index, city.Population)
+                        )
                         .When(city => city.Population > 1000,
                             (city, args) =>
                             {
-                                var shape = (Shape) args.VisualElement;
+                                var shape = (Shape) args.Visual;
                                 shape.Fill = Brushes.Red;
                             })
                         .When(UiActions.PointerEnter,
                             (city, args) =>
                             {
 
-                            });
+                            })
+                        .LabeledAs(city => $"{city.Population:N2}");
                 }
             );
         }

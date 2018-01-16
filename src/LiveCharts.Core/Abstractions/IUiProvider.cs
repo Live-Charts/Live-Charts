@@ -14,11 +14,9 @@ namespace LiveCharts.Core.Abstractions
         /// Measures the string.
         /// </summary>
         /// <param name="text">The text.</param>
-        /// <param name="fontFamily">The font family.</param>
-        /// <param name="fontSize">Size of the font.</param>
-        /// <param name="fontStyle">The font style.</param>
+        /// <param name="font">The font.</param>
         /// <returns></returns>
-        Size MeasureString(string text, string fontFamily, double fontSize, FontStyles fontStyle);
+        Size MeasureString(string text, Font font);
 
         /// <summary>
         /// Gets the column view.

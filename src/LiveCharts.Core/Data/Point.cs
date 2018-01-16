@@ -71,12 +71,20 @@ namespace LiveCharts.Core.Data
             View { get; internal set; }
 
         /// <summary>
-        /// Gets or sets the point.
+        /// Gets the point coordinate.
         /// </summary>
         /// <value>
         /// The point.
         /// </value>
-        public TCoordinate Coordinate { get; set; }
+        public TCoordinate Coordinate { get; internal set; }
+
+        /// <summary>
+        /// Gets the tooltip data.
+        /// </summary>
+        /// <value>
+        /// The tooltip data.
+        /// </value>
+        public string[][] LinesByDimension { get; internal set; }
 
         /// <summary>
         /// Gets the series that owns the point.
@@ -104,9 +112,9 @@ namespace LiveCharts.Core.Data
         /// returns a point with an unknown.
         /// </summary>
         /// <returns></returns>
-        public Point<TModel, TCoordinate, object> AsUnknownViewModel()
+        public PackedPoint<TModel, TCoordinate> Pack()
         {
-            return new Point<TModel, TCoordinate, object>()
+            return new PackedPoint<TModel, TCoordinate>
             {
                 Chart = Chart,
                 Coordinate = Coordinate,

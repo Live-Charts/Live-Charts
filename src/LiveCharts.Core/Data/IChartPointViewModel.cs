@@ -10,7 +10,5 @@ namespace LiveCharts.Core.Data
         where TCoordinate : ICoordinate
     {
         TPoint ChartPoint { get; set; }
-
-        
     }
 }

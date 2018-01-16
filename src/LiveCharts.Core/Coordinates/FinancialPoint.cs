@@ -1,5 +1,6 @@
 using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Data;
+using LiveCharts.Core.Dimensions;
 
 namespace LiveCharts.Core.Coordinates
 {
@@ -77,6 +78,27 @@ namespace LiveCharts.Core.Coordinates
             if (Low < yDimensionRange.Min) yDimensionRange.Min = Low;
 
             return false;
+        }
+
+        /// <inheritdoc />
+        public string[][] AsTooltipData(params Plane[] dimensions)
+        {
+            return new[]
+            {
+                // x dimension:
+                // dimensions[0]
+                new[] {dimensions[0].FormatValue(Index)},           // first line in the tooltip.
+
+                // y dimension
+                // dimensions[1]
+                new[]
+                {
+                    $"Open: {dimensions[1].FormatValue(Open)}",     // first line in the tooltip
+                    $"High: {dimensions[1].FormatValue(High)}",     // second line
+                    $"Low: {dimensions[1].FormatValue(Low)}",       // third line
+                    $"Close: {dimensions[1].FormatValue(Close)}"    // fourth line
+                }
+            };
         }
     }
 }

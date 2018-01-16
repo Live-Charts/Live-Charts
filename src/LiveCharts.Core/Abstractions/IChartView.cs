@@ -69,7 +69,7 @@ namespace LiveCharts.Core.Abstractions
         /// <value>
         /// The dimensions.
         /// </value>
-        IList<IList<Plane>> AxisArrayByDimension { get; }
+        IList<IList<Plane>> PlanesArrayByDimension { get; }
 
         /// <summary>
         /// Gets the visible series in the chart, this property must be thread-safe.
@@ -78,14 +78,6 @@ namespace LiveCharts.Core.Abstractions
         /// The actual series.
         /// </value>
         IEnumerable<ISeries> Series { get; }
-
-        /// <summary>
-        /// Gets a value indicating whether animations are disabled.
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if animations are disabled otherwise, <c>false</c>.
-        /// </value>
-        bool DisableAnimations { get; }
 
         /// <summary>
         /// Gets the animations speed.

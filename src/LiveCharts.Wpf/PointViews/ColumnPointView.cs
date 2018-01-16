@@ -1,4 +1,7 @@
-﻿using System.Windows.Shapes;
+﻿using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Media.Animation;
+using System.Windows.Shapes;
 using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Coordinates;
 using LiveCharts.Core.Data;
@@ -7,31 +10,73 @@ using LiveCharts.Core.ViewModels;
 namespace LiveCharts.Wpf.PointViews
 {
     /// <summary>
-    /// Column series point view.
+    /// 
     /// </summary>
     /// <typeparam name="TModel">The type of the model.</typeparam>
-    /// <typeparam name="TPoint">The type of the chart point.</typeparam>
-    /// <seealso cref="IPointView{TModel,TPoint,TCoordinate,TViewModel}" />
-    public class ColumnPointView<TModel, TPoint>
-        : IPointView<TModel, TPoint, Point2D, ColumnViewModel>
-        where TPoint : Point<TModel, Point2D, ColumnViewModel>, new()
+    /// <typeparam name="TPoint">the type of the chart point.</typeparam>
+    /// <typeparam name="TShape">the type of the shape.</typeparam>
+    /// <typeparam name="TLabel">the type of the label.</typeparam>
+    /// <typeparam name="TCoordinate">the type of the coordinate.</typeparam>
+    /// <typeparam name="TViewModel">the type of the view model.</typeparam>
+    /// <seealso cref="PointView{TModel, Point,Point2D, ColumnViewModel, TShape, TLabel}" />
+    public class ColumnPointView<TModel, TPoint, TCoordinate, TViewModel, TShape, TLabel>
+        : PointView<TModel, TPoint, TCoordinate, TViewModel, TShape, TLabel>
+        where TPoint : Point<TModel, TCoordinate, TViewModel>, new()
+        where TCoordinate : Point2D
+        where TViewModel : ColumnViewModel
+        where TShape : Shape, new()
+        where TLabel : FrameworkElement, new()
     {
         /// <inheritdoc />
-        public object VisualElement { get; protected set; }
-
-        public void Draw(TPoint point, TPoint previous, IChartView chart, ColumnViewModel model)
+        protected override void OnDraw(TPoint point, TPoint previous, IChartView chart, TViewModel viewModel)
         {
-            var isNew = VisualElement == null;
+            var isNew = Shape == null;
 
             if (isNew)
             {
-                VisualElement = new Rectangle();
+                var wpfChart = (CartesianChart) chart;
+                Shape = new TShape();
+                wpfChart.DrawArea.Children.Add(Shape);
+                Canvas.SetLeft(Shape, viewModel.Left);
+                Canvas.SetTop(Shape, viewModel.Zero);
+                Shape.Width = viewModel.Width;
+                Shape.Height = 0;
             }
+
+            var speed = chart.AnimationsSpeed;
+
+            Shape.BeginAnimation(Canvas.LeftProperty,
+                new DoubleAnimation(viewModel.Left, speed));
+            Shape.BeginAnimation(Canvas.TopProperty,
+                new DoubleAnimation(viewModel.Top, speed));
+            Shape.BeginAnimation(FrameworkElement.WidthProperty,
+                new DoubleAnimation(viewModel.Width, speed));
+            Shape.BeginAnimation(FrameworkElement.HeightProperty,
+                new DoubleAnimation(viewModel.Height, speed));
         }
 
-        public virtual void Erase(IChartView chart)
+        /// <inheritdoc />
+        protected override void OnDrawLabel(TPoint point, Core.Drawing.Point location, IChartView chart)
         {
-            throw new System.NotImplementedException();
+            var isNew = Label == null;
+
+            if (isNew)
+            {
+                var wpfChart = (CartesianChart) chart;
+                Label = new TLabel {DataContext = point};
+                wpfChart.DrawArea.Children.Add(Label);
+            }
+
+            Canvas.SetLeft(Label, location.X);
+            Canvas.SetTop(Label, location.Y);
+        }
+
+        /// <inheritdoc />
+        protected override void OnErase(IChartView chart)
+        {
+            var wpfChart = (CartesianChart) chart;
+            wpfChart.DrawArea.Children.Remove(Shape);
+            wpfChart.DrawArea.Children.Remove(Label);
         }
     }
 }

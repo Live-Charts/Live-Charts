@@ -1,13 +1,14 @@
 ﻿using System;
 using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Data;
+using LiveCharts.Core.Dimensions;
 
 namespace LiveCharts.Core.Coordinates
 {
     /// <summary>
     /// A point coordinate.
     /// </summary>
-    public struct Point2D : ICoordinate
+    public class Point2D : ICoordinate
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Point2D"/> struct.
@@ -69,6 +70,21 @@ namespace LiveCharts.Core.Coordinates
             if (Y > yDimensionRange.Max) yDimensionRange.Max = Y;
             if (Y < yDimensionRange.Min) yDimensionRange.Min = Y;
             return false;
+        }
+
+        /// <inheritdoc />
+        public string[][] AsTooltipData(params Plane[] dimensions)
+        {
+            return new[]
+            {
+                // x dimension:
+                // dimensions[0]
+                new[] {dimensions[0].FormatValue(X)}, // first line in the tooltip.
+
+                // y dimension
+                // dimensions[1]
+                new[] {dimensions[1].FormatValue(Y)} // first line in the tooltip
+            };
         }
     }
 }

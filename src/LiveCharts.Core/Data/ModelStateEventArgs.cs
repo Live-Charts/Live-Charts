@@ -11,23 +11,23 @@ namespace LiveCharts.Core.Data
         /// <summary>
         /// Initializes a new instance of the <see cref="ModelStateEventArgs{TModel, TCoordinate}"/> class.
         /// </summary>
-        /// <param name="visualElement">The visual.</param>
+        /// <param name="visual">The visual.</param>
         /// <param name="point">the point.</param>
         public ModelStateEventArgs(
-            object visualElement,
-            Point<TModel, TCoordinate, object> point)
+            object visual,
+            PackedPoint<TModel, TCoordinate> point)
         {
-            VisualElement = visualElement;
+            Visual = visual;
             Point = point;
         }
 
         /// <summary>
-        /// Gets a copy of the chart point, this copy has no access to the point view.
+        /// Gets a copy of the point in the chart.
         /// </summary>
         /// <value>
         /// The point.
         /// </value>
-        public Point<TModel, TCoordinate, object> Point { get; }
+        public PackedPoint<TModel, TCoordinate> Point { get; }
 
         /// <summary>
         /// Gets the visual.
@@ -35,6 +35,6 @@ namespace LiveCharts.Core.Data
         /// <value>
         /// The visual.
         /// </value>
-        public object VisualElement { get; }
+        public object Visual { get; }
     }
 }

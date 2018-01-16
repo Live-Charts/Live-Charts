@@ -1,5 +1,7 @@
+using System;
 using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Data;
+using LiveCharts.Core.Dimensions;
 
 namespace LiveCharts.Core.Coordinates
 {
@@ -52,7 +54,23 @@ namespace LiveCharts.Core.Coordinates
 
         public bool CompareDimensions(DimensionRange[] dimensionRanges, SeriesSkipCriteria skipCriteria)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
+        }
+
+        /// <inheritdoc />
+        public string[][] AsTooltipData(params Plane[] dimensions)
+        {
+            throw new NotImplementedException();
+            //return new[]
+            //{
+            //    // x dimension:
+            //    // dimensions[0]
+            //    new[] {dimensions[0].FormatValue(X)}, // first line in the tooltip.
+
+            //    // y dimension
+            //    // dimensions[1]
+            //    new[] {dimensions[1].FormatValue(Y)} // first line in the tooltip
+            //};
         }
     }
 }

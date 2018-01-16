@@ -32,6 +32,25 @@ namespace LiveCharts.Core.Data
         public Func<TModel, int, TCoordinate> Predicate { get; }
 
         /// <summary>
+        /// Gets the point predicate.
+        /// </summary>
+        /// <value>
+        /// The point predicate.
+        /// </value>
+        public Func<TModel, string> PointPredicate { get; private set; }
+
+        /// <summary>
+        /// Sets a delegate to map a type to a series data label, if null, then the series will set it for you, default is null.
+        /// </summary>
+        /// <param name="predicate">The predicate.</param>
+        /// <returns></returns>
+        public ModelToPointMapper<TModel, TCoordinate> LabeledAs(Func<TModel, string> predicate)
+        {
+            PointPredicate = predicate;
+            return this;
+        }
+
+        /// <summary>
         /// Whens this instance.
         /// </summary>
         /// <returns></returns>
@@ -86,7 +105,7 @@ namespace LiveCharts.Core.Data
                     sender, 
                     new ModelStateEventArgs<TModel, TCoordinate>(
                         visual, 
-                        point.AsUnknownViewModel()));
+                        point.Pack()));
             }
         }
 
@@ -108,7 +127,7 @@ namespace LiveCharts.Core.Data
                         model,
                         new ModelStateEventArgs<TModel, TCoordinate>(
                             visual,
-                            point.AsUnknownViewModel()));
+                            point.Pack()));
                 }
             }
         }

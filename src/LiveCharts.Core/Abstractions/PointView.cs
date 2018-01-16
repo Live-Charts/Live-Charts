@@ -1,4 +1,5 @@
 using LiveCharts.Core.Data;
+using LiveCharts.Core.Drawing;
 
 namespace LiveCharts.Core.Abstractions
 {
@@ -22,13 +23,29 @@ namespace LiveCharts.Core.Abstractions
         object VisualElement { get; }
 
         /// <summary>
+        /// Gets the label.
+        /// </summary>
+        /// <value>
+        /// The label.
+        /// </value>
+        object Label { get; }
+
+        /// <summary>
         /// Draws the specified point.
         /// </summary>
         /// <param name="point">The point.</param>
-        /// <param name="model">The model.</param>
+        /// <param name="viewModel">The model.</param>
         /// <param name="previous">The previous.</param>
         /// <param name="chart">The chart.</param>
-        void Draw(TPoint point, TPoint previous, IChartView chart, TViewModel model);
+        void DrawShape(TPoint point, TPoint previous, IChartView chart, TViewModel viewModel);
+
+        /// <summary>
+        /// Draws the label.
+        /// </summary>
+        /// <param name="point">The point.</param>
+        /// <param name="location">The location.</param>
+        /// <param name="chart">The chart.</param>
+        void DrawLabel(TPoint point, Point location, IChartView chart);
 
         /// <summary>
         /// Erases the specified chart.

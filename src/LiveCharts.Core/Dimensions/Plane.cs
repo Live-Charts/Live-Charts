@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using LiveCharts.Core.Abstractions;
+using LiveCharts.Core.Data;
 using Margin = LiveCharts.Core.Drawing.Margin;
 
 namespace LiveCharts.Core.Dimensions
@@ -18,6 +19,7 @@ namespace LiveCharts.Core.Dimensions
         public Plane()
         {
             Unit = 1;
+            LabelFormatter = Builders.AsMetricNumber;
         }
 
         /// <summary>
@@ -128,28 +130,12 @@ namespace LiveCharts.Core.Dimensions
         public double ActualMinValue { get; internal set; }
 
         /// <summary>
-        /// Gets or sets the font family.
+        /// Gets or sets the font.
         /// </summary>
         /// <value>
-        /// The font family.
+        /// The font.
         /// </value>
-        public string FontFamily { get; set; }
-
-        /// <summary>
-        /// Gets or sets the size of the font.
-        /// </summary>
-        /// <value>
-        /// The size of the font.
-        /// </value>
-        public double FontSize { get; set; }
-
-        /// <summary>
-        /// Gets or sets the font style.
-        /// </summary>
-        /// <value>
-        /// The font style.
-        /// </value>
-        public FontStyles FontStyle { get; set; }
+        public Font Font { get; set; }
 
         /// <summary>
         /// Gets the type.
@@ -182,6 +168,18 @@ namespace LiveCharts.Core.Dimensions
                     : "";
             }
             return LabelFormatter(value);
+        }
+
+        /// <summary>
+        /// Determines whether a given value is between the plane range.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <returns>
+        ///   <c>true</c> if [is in range] [the specified value]; otherwise, <c>false</c>.
+        /// </returns>
+        public bool IsInRange(double value)
+        {
+            return value >= ActualMinValue && value <= ActualMaxValue;
         }
 
         /// <inheritdoc cref="IDisposable.Dispose"/>

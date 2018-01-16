@@ -50,7 +50,9 @@
   <ItemGroup>
     <Compile Include="Chart.cs" />
     <Compile Include="DefaultLegend.cs" />
+    <Compile Include="Defaults\DefaultPointLabel.cs" />
     <Compile Include="Extensions.cs" />
+    <Compile Include="PointViews\PointView.cs" />
     <Compile Include="UiProvider.cs" />
     <Compile Include="CartesianChart.cs">
       <SubType>Code</SubType>
@@ -75,7 +77,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <Compile Include="LiveCharts.Wpf.Config.cs" />
+    <Compile Include="LiveCharts.Config.cs" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

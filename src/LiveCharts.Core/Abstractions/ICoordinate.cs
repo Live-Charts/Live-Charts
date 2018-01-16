@@ -1,5 +1,6 @@
-﻿using System;
+﻿using System.Collections.Generic;
 using LiveCharts.Core.Data;
+using LiveCharts.Core.Dimensions;
 
 namespace LiveCharts.Core.Abstractions
 {
@@ -15,5 +16,11 @@ namespace LiveCharts.Core.Abstractions
         /// <param name="skipCriteria">The skip criteria.</param>
         /// <returns></returns>
         bool CompareDimensions(DimensionRange[] dimensionRanges, SeriesSkipCriteria skipCriteria);
+
+        /// <summary>
+        ///gets the coordinate as tooltip data.
+        /// </summary>
+        /// <returns></returns>
+        string[][] AsTooltipData(params Plane[] dimensions);
     }
 }

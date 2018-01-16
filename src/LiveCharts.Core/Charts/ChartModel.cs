@@ -129,7 +129,7 @@ namespace LiveCharts.Core.Charts
         public async void Invalidate()
         {
             if (_delayer == null || !_delayer.IsCompleted) return;
-            var delay = View.DisableAnimations
+            var delay = View.AnimationsSpeed.TotalMilliseconds < 10 
                 ? TimeSpan.FromMilliseconds(10)
                 : View.AnimationsSpeed;
             _delayer = Task.Delay(delay);
@@ -202,7 +202,7 @@ namespace LiveCharts.Core.Charts
             }
 
             // [ x: [x1: range, x2: range, x3: range, ..., xn: range], y: [...], z[...], w[...] ]
-            DataRangeMatrix = View.AxisArrayByDimension.Select(
+            DataRangeMatrix = View.PlanesArrayByDimension.Select(
                     x => x.Select(
                             y => new DimensionRange(
                                 double.IsNaN(y.MinValue) ? double.PositiveInfinity : y.MinValue,
