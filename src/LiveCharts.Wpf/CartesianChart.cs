@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
+using LiveCharts.Core;
 using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Charts;
 using LiveCharts.Core.Dimensions;
@@ -20,8 +21,14 @@ namespace LiveCharts.Wpf
         {
             Model = new CartesianChartModel(this);
             SetValue(SeriesProperty, new ObservableCollection<ISeries>());
-            SetValue(XAxisProperty, new ObservableCollection<Plane>());
-            SetValue(XAxisProperty, new ObservableCollection<Plane>());
+            SetValue(XAxisProperty, new ObservableCollection<Plane>
+            {
+                new Axis()
+            });
+            SetValue(YAxisProperty, new ObservableCollection<Plane>
+            {
+                new Axis()
+            });
         }
 
         #region Dependency properties
@@ -73,6 +80,13 @@ namespace LiveCharts.Wpf
         /// <inheritdoc cref="Chart.GetPlanes"/>
         protected override IList<IList<Plane>> GetPlanes()
         {
+            if (XAxis == null || !XAxis.Any() ||
+                YAxis == null || !YAxis.Any())
+            {
+                throw new LiveChartsException(
+                    "No axis was found, please ensure your chart contains at least an axis.", 190);
+            }
+
             return new List<IList<Plane>>
             {
                 XAxis.Select(axis => new Plane(PlaneTypes.X)).ToList(),

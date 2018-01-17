@@ -1,4 +1,9 @@
 ﻿using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Diagnostics;
+using System.IO;
+using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Shapes;
@@ -44,22 +49,41 @@ namespace Samples.Wpf
         {
             // InitializeComponent();
 
-            DataContext = this;
-
             Series = new ObservableCollection<ISeries>
             {
                 new ColumnSeries<double>
                 {
-                    Values = new[] {3d, 4d}
+                    Values = new[] {3d, 4d}, Title = "hola"
                 }
             };
+
+            DataContext = Series;
         }
 
         public ObservableCollection<ISeries> Series { get; set; }
+
+        private void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            var isInUiTread = Dispatcher.CheckAccess();
+        }
     }
 
-    public class City
+    public class City : INotifyPropertyChanged
     {
-        public double Population { get; set; }
+        private double _population;
+
+        public double Population
+
+        {
+            get { return _population; }
+            set { _population = value; }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
     }
 }

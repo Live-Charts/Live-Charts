@@ -33,7 +33,7 @@ namespace LiveCharts.Core.Data
     /// <typeparam name="TCoordinate">The type of the coordinate.</typeparam>
     /// <typeparam name="TViewModel">The type of the view model.</typeparam>
     /// <seealso cref="System.IDisposable" />
-    public class Point<TModel, TCoordinate, TViewModel> : IDisposable
+    public class Point<TModel, TCoordinate, TViewModel> : IDisposableChartingResource
         where TCoordinate : ICoordinate
     {
         /// <summary>
@@ -102,12 +102,6 @@ namespace LiveCharts.Core.Data
         /// </value>
         public ChartModel Chart { get; internal set; }
 
-        /// <inheritdoc cref="IDisposable.Dispose"/>
-        public void Dispose()
-        {
-            // View.Erase();
-        }
-
         /// <summary>
         /// returns a point with an unknown.
         /// </summary>
@@ -124,6 +118,11 @@ namespace LiveCharts.Core.Data
                 View = null,
                 ViewModel = ViewModel
             };
+        }
+
+        public void Dispose(IChartView view)
+        {
+            View.Dispose(view);
         }
     }
 }

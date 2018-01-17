@@ -10,16 +10,18 @@ using Size = LiveCharts.Core.Drawing.Size;
 
 namespace LiveCharts.Wpf
 {
-    public abstract class Chart : Canvas, IChartView
+    public abstract class Chart : UserControl, IChartView
     {
         protected Chart()
         {
             DrawArea = new Canvas();
-            Children.Add(DrawArea);
+            Canvas = new Canvas();
+            Canvas.Children.Add(DrawArea);
             Initialized += OnInitialized;
         }
 
-        public Canvas DrawArea { get; private set; }
+        public Canvas Canvas { get; set; }
+        public Canvas DrawArea { get; }
 
         #region Dependency properties
 
@@ -27,21 +29,14 @@ namespace LiveCharts.Wpf
         /// The series property.
         /// </summary>
         public static readonly DependencyProperty SeriesProperty = DependencyProperty.Register(
-            nameof(Series), typeof(IEnumerable<ISeries>), typeof(CartesianChart),
+            nameof(Series), typeof(IEnumerable<ISeries>), typeof(Chart),
             new PropertyMetadata(null, BuildInstanceChangedCallback(p => p.Series, nameof(Series))));
-
-        /// <summary>
-        /// The disable animations property, default value is true.
-        /// </summary>
-        public static readonly DependencyProperty DisableAnimationsProperty = DependencyProperty.Register(
-            nameof(DisableAnimations), typeof(bool), typeof(CartesianChart),
-            new PropertyMetadata(false, ChartUpdaterFreqChangedCallback));
 
         /// <summary>
         /// The animations speed property, default value is 250 milliseconds.
         /// </summary>
         public static readonly DependencyProperty AnimationsSpeedProperty = DependencyProperty.Register(
-            nameof(AnimationsSpeed), typeof(TimeSpan), typeof(CartesianChart),
+            nameof(AnimationsSpeed), typeof(TimeSpan), typeof(Chart),
             new PropertyMetadata(TimeSpan.FromMilliseconds(250), ChartUpdaterFreqChangedCallback));
 
         /// <summary>
@@ -49,7 +44,7 @@ namespace LiveCharts.Wpf
         /// </summary>
         public static readonly DependencyProperty LegendProperty = DependencyProperty.Register(
             nameof(Legend), typeof(ILegend), typeof(Chart),
-            new PropertyMetadata(new DefaultLegend()));
+            new PropertyMetadata(null));
 
         /// <summary>
         /// The legend position property
@@ -86,7 +81,7 @@ namespace LiveCharts.Wpf
         protected static void ChartUpdaterFreqChangedCallback(
             DependencyObject sender, DependencyPropertyChangedEventArgs args)
         {
-            var chart = (CartesianChart)sender;
+            var chart = (CartesianChart) sender;
             chart.UpdaterFrequencyChanged?.Invoke(chart.AnimationsSpeed);
         }
 
@@ -129,6 +124,7 @@ namespace LiveCharts.Wpf
 
         private object _dimensionsUpdateId;
         private IList<IList<Plane>> _dimensions;
+
         IList<IList<Plane>> IChartView.PlanesArrayByDimension
         {
             get
@@ -140,29 +136,17 @@ namespace LiveCharts.Wpf
             }
         }
 
-        /// <summary>
-        /// Gets or sets the series.
-        /// </summary>
-        /// <value>
-        /// The series.
-        /// </value>
+        /// <inheritdoc cref="IChartView.Series"/>
         public IEnumerable<ISeries> Series
         {
-            get => (IEnumerable<ISeries>)GetValue(SeriesProperty);
+            get => (IEnumerable<ISeries>) GetValue(SeriesProperty);
             set => SetValue(SeriesProperty, value);
-        }
-
-        /// <inheritdoc cref="IChartView.DisableAnimations"/>
-        public bool DisableAnimations
-        {
-            get => (bool)GetValue(DisableAnimationsProperty);
-            set => SetValue(DisableAnimationsProperty, value);
         }
 
         /// <inheritdoc cref="IChartView.AnimationsSpeed"/>
         public TimeSpan AnimationsSpeed
         {
-            get => (TimeSpan)GetValue(AnimationsSpeedProperty);
+            get => (TimeSpan) GetValue(AnimationsSpeedProperty);
             set => SetValue(AnimationsSpeedProperty, value);
         }
 
@@ -183,8 +167,8 @@ namespace LiveCharts.Wpf
         /// <inheritdoc cref="IChartView.UpdateDrawArea"/>
         public void UpdateDrawArea(Rectangle model)
         {
-            SetLeft(DrawArea, model.Left);
-            SetTop(DrawArea, model.Top);
+            Canvas.SetLeft(DrawArea, model.Left);
+            Canvas.SetTop(DrawArea, model.Top);
             DrawArea.Width = model.Width;
             DrawArea.Height = model.Height;
         }

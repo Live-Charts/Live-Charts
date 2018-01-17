@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using LiveCharts.Core;
 using LiveCharts.Core.Abstractions;
 using Orientation = LiveCharts.Core.Abstractions.Orientation;
 using Size = LiveCharts.Core.Drawing.Size;
@@ -51,71 +51,65 @@ namespace LiveCharts.Wpf
             set => SetValue(GeometrySizeProperty, value);
         }
 
-        public void RemoveLegend(IChartView chart)
+        private Size BuildControl(IEnumerable<ISeries> seriesCollection, Orientation orientation)
         {
-            var wpfChart = (Chart)chart;
-            if (wpfChart.Children.Contains(this))
+            Orientation = AutomaticOrientation
+                ? orientation.AsWpfOrientation()
+                : Orientation;
+
+            MaxWidth = Width;
+            MaxHeight = Width;
+
+            Children.Clear();
+
+            foreach (var series in seriesCollection)
             {
-                wpfChart.Children.Remove(this);
+                var g = series.Geometry == Core.Drawing.Svg.Geometry.Empty
+                    ? LiveChartsSettings.GetSeriesDefault(series.Key).Geometry
+                    : series.Geometry;
+
+                Children.Add(new StackPanel
+                {
+                    Children =
+                    {
+                        new Path
+                        {
+                            Width = GeometrySize,
+                            Height = GeometrySize,
+                            StrokeThickness = series.StrokeThickness,
+                            Stroke = series.Stroke.AsSolidColorBrush(),
+                            Fill = series.Stroke.AsSolidColorBrush(),
+                            Stretch = Stretch.Fill,
+                            Data = Geometry.Parse(g.Data)
+                        },
+                        new TextBlock
+                        {
+                            Margin = new Thickness(4, 0, 4, 0),
+                            Text = series.Title,
+                            VerticalAlignment = VerticalAlignment.Center
+                        }
+                    }
+                });
             }
+
+            Measure(new System.Windows.Size(double.PositiveInfinity, double.PositiveInfinity));
+            return new Size(DesiredSize.Width, DesiredSize.Height);
         }
 
-        /// <inheritdoc cref="ILegend.UpdateLayoutAsync"/>
-        async Task<Size> ILegend.UpdateLayoutAsync(IEnumerable<ISeries> seriesCollection, Orientation orientation)
+        /// <inheritdoc />
+        Size ILegend.Measure(IEnumerable<ISeries> seriesCollection, Orientation orientation)
         {
-            // we really don't care about the wpf cycle, we don't need bindings,
-            // we could actually get a sync error if we use bindings in this control
-            // our chart is updated every time UpdateLayoutAsync method is called
-            // we should only update the legend when this method is called.
+            return Dispatcher.Invoke(() => BuildControl(seriesCollection, orientation));
+        }
 
-            // wait for the UI thread to calculate the new size of the control
-            await Dispatcher.InvokeAsync(() =>
+        /// <inheritdoc />
+        void IDisposableChartingResource.Dispose(IChartView view)
+        {
+            var wpfChart = (Chart) view;
+            if (wpfChart.Canvas.Children.Contains(this))
             {
-
-                Orientation = AutomaticOrientation
-                    ? orientation.AsWpfOrientation()
-                    : Orientation;
-
-                MaxWidth = Width;
-                MaxHeight = Width;
-
-                Children.Clear();
-
-                foreach (var series in seriesCollection)
-                {
-                    var g = series.Geometry == Core.Drawing.Svg.Geometry.Empty
-                        ? Core.LiveCharts.GetDefault(series.Key).Geometry
-                        : series.Geometry;
-
-                    Children.Add(new StackPanel
-                    {
-                        Children =
-                        {
-                            new Path
-                            {
-                                Width = GeometrySize,
-                                Height = GeometrySize,
-                                StrokeThickness = series.StrokeThickness,
-                                Stroke = series.Stroke.AsSolidColorBrush(),
-                                Fill = series.Stroke.AsSolidColorBrush(),
-                                Stretch = Stretch.Fill,
-                                Data = Geometry.Parse(g.Data)
-                            },
-                            new TextBlock
-                            {
-                                Margin = new Thickness(4, 0, 4, 0),
-                                Text = series.Title,
-                                VerticalAlignment = VerticalAlignment.Center
-                            }
-                        }
-                    });
-                }
-
-                UpdateLayout();
-            });
-
-            // and once it is finished, we return the size of our legend with the new data.
-            return new Size(ActualWidth, ActualHeight);
+                wpfChart.Canvas.Children.Remove(this);
+            }
         }
     }
 }

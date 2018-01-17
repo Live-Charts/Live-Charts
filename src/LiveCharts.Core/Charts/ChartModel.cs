@@ -21,10 +21,11 @@ namespace LiveCharts.Core.Charts
         private ILegend _previousLegend;
         private Task _delayer;
         private readonly Dictionary<string, object> _propertyReferences = new Dictionary<string, object>();
-        private object _updateId;
         private IList<Color> _colors;
         private readonly Dictionary<IDisposableChartingResource, object> _resources =
             new Dictionary<IDisposableChartingResource, object>();
+
+        private object _updateId = new object();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ChartModel"/> class.
@@ -46,20 +47,8 @@ namespace LiveCharts.Core.Charts
         /// </value>
         public object UpdateId
         {
-            get
-            {
-                lock (_updateId)
-                {
-                    return _updateId;
-                }
-            }
-            private set
-            {
-                lock (_updateId)
-                {
-                    _updateId = value;
-                }
-            }
+            get { return _updateId; }
+            private set { _updateId = value; }
         }
 
         /// <summary>
@@ -123,6 +112,17 @@ namespace LiveCharts.Core.Charts
         public IEnumerable<ISeries> Series => View.Series;
 
         /// <summary>
+        /// Gets or sets the default legend orientation.
+        /// </summary>
+        /// <value>
+        /// The default legend orientation.
+        /// </value>
+        public Orientation DefaultLegendOrientation =>
+            View.LegendPosition == LegendPositions.Top || View.LegendPosition == LegendPositions.Bottom
+                ? Orientation.Horizontal
+                : Orientation.Vertical;
+
+        /// <summary>
         /// Invalidates this instance, the chart will queue an update request.
         /// </summary>
         /// <returns></returns>
@@ -135,22 +135,6 @@ namespace LiveCharts.Core.Charts
             _delayer = Task.Delay(delay);
             await _delayer;
             Update(false);
-        }
-
-        /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
-        public void Dispose()
-        {
-            View.ChartViewInitialized -= ChartViewOnInitialized;
-            View.UpdaterFrequencyChanged -= ChartViewOnUpdaterFreqChanged;
-            foreach (var reference in _propertyReferences)
-            {
-                if (reference.Value is INotifyCollectionChanged incc)
-                {
-                    incc.CollectionChanged -= OnCollectionChangedUpdate;
-                }
-            }
         }
 
         /// <summary>
@@ -182,7 +166,7 @@ namespace LiveCharts.Core.Charts
         /// </summary>
         /// <param name="restart">if set to <c>true</c> all the elements in the view will be redrawn.</param>
         /// <exception cref="NotImplementedException"></exception>
-        protected virtual async void Update(bool restart)
+        protected virtual void Update(bool restart)
         {
             UpdateId = new object();
 
@@ -223,13 +207,12 @@ namespace LiveCharts.Core.Charts
             // draw and measure legend
             if (View.Legend != null && View.LegendPosition != LegendPositions.None)
             {
-                var o = View.LegendPosition == LegendPositions.Top ||
-                        View.LegendPosition == LegendPositions.Bottom
-                    ? Orientation.Horizontal
-                    : Orientation.Vertical;
+                if (_previousLegend != View.Legend)
+                {
+                    RegisterResource(View.Legend);
+                }
+                legendSize = View.Legend.Measure(Series, DefaultLegendOrientation);
 
-                legendSize = await View.Legend.UpdateLayoutAsync(Series, o);
-                
                 switch (View.LegendPosition)
                 {
                     case LegendPositions.None:
@@ -257,11 +240,6 @@ namespace LiveCharts.Core.Charts
                 }
 
                 _previousLegend = View.Legend;
-            }
-            else
-            {
-                _previousLegend?.RemoveLegend(View);
-                _previousLegend = null;
             }
 
             DrawAreaLocation = new Point(dax, day);
@@ -323,6 +301,22 @@ namespace LiveCharts.Core.Charts
         private void ChartViewOnUpdaterFreqChanged(TimeSpan newValue)
         {
             Invalidate();
+        }
+
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        void IDisposable.Dispose()
+        {
+            View.ChartViewInitialized -= ChartViewOnInitialized;
+            View.UpdaterFrequencyChanged -= ChartViewOnUpdaterFreqChanged;
+            foreach (var reference in _propertyReferences)
+            {
+                if (reference.Value is INotifyCollectionChanged incc)
+                {
+                    incc.CollectionChanged -= OnCollectionChangedUpdate;
+                }
+            }
         }
     }
 }

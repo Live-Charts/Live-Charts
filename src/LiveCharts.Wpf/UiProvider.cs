@@ -13,9 +13,14 @@ namespace LiveCharts.Wpf
     public class UiProvider : IUiProvider
     {
         /// <inheritdoc cref="IUiProvider.MeasureString"/>
-        Size IUiProvider.MeasureString(string text, string fontFamily, double fontSize, FontStyles fontStyle)
+        Size IUiProvider.MeasureString(string text, Font font)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
+        }
+
+        public ISeparator SeparatorProvider()
+        {
+            throw new NotImplementedException();
         }
 
         public IPointView<TModel, Point<TModel, Point2D, ColumnViewModel>, Point2D, ColumnViewModel> ColumnViewProvider<TModel>()

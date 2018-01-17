@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Coordinates;
 using LiveCharts.Core.Dimensions;

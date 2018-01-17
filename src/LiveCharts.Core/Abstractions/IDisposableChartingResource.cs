@@ -5,6 +5,10 @@ namespace LiveCharts.Core.Abstractions
     /// </summary>
     public interface IDisposableChartingResource
     {
+        /// <summary>
+        /// Disposes from specified view.
+        /// </summary>
+        /// <param name="view">The view.</param>
         void Dispose(IChartView view);
     }
 }

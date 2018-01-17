@@ -50,7 +50,7 @@
   <ItemGroup>
     <Compile Include="Chart.cs" />
     <Compile Include="DefaultLegend.cs" />
-    <Compile Include="Defaults\DefaultPointLabel.cs" />
+    <Compile Include="PointViews\DefaultPointLabel.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="PointViews\PointView.cs" />
     <Compile Include="Animation.cs" />
