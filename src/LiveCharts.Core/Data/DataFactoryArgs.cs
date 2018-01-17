@@ -2,6 +2,8 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Charts;
+using LiveCharts.Core.Series;
+
 namespace LiveCharts.Core.Data
 {
     /// <summary>
@@ -25,7 +27,7 @@ namespace LiveCharts.Core.Data
         /// <value>
         /// The series.
         /// </value>
-        public ISeries<TModel, TCoordinate, TViewModel, TPoint> Series { get; set; }
+        public Series<TModel, TCoordinate, TViewModel, TPoint> Series { get; set; }
 
         /// <summary>
         /// Gets or sets the chart.

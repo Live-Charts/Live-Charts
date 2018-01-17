@@ -49,7 +49,7 @@ namespace Samples.Wpf
         {
             // InitializeComponent();
 
-            Series = new ObservableCollection<ISeries>
+            Series = new ObservableCollection<Series>
             {
                 new ColumnSeries<double>
                 {
@@ -60,7 +60,7 @@ namespace Samples.Wpf
             DataContext = Series;
         }
 
-        public ObservableCollection<ISeries> Series { get; set; }
+        public ObservableCollection<Series> Series { get; set; }
 
         private void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
         {

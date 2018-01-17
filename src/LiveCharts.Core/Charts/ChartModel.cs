@@ -8,6 +8,7 @@ using LiveCharts.Core.Coordinates;
 using LiveCharts.Core.Data;
 using LiveCharts.Core.Dimensions;
 using LiveCharts.Core.Drawing;
+using LiveCharts.Core.Series;
 using Size = LiveCharts.Core.Drawing.Size;
 
 namespace LiveCharts.Core.Charts
@@ -109,7 +110,7 @@ namespace LiveCharts.Core.Charts
         /// <value>
         /// The series.
         /// </value>
-        public IEnumerable<ISeries> Series => View.Series;
+        public IEnumerable<Series.Series> Series => View.Series;
 
         /// <summary>
         /// Gets or sets the default legend orientation.

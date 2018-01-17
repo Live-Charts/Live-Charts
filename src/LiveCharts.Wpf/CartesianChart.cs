@@ -6,6 +6,7 @@ using LiveCharts.Core;
 using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Charts;
 using LiveCharts.Core.Dimensions;
+using LiveCharts.Core.Series;
 
 namespace LiveCharts.Wpf
 {
@@ -20,7 +21,7 @@ namespace LiveCharts.Wpf
          public CartesianChart()
         {
             Model = new CartesianChartModel(this);
-            SetValue(SeriesProperty, new ObservableCollection<ISeries>());
+            SetValue(SeriesProperty, new ObservableCollection<Series>());
             SetValue(XAxisProperty, new ObservableCollection<Plane>
             {
                 new Axis()

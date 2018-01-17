@@ -5,6 +5,7 @@ using System.Windows.Media;
 using System.Windows.Shapes;
 using LiveCharts.Core;
 using LiveCharts.Core.Abstractions;
+using LiveCharts.Core.Series;
 using Orientation = LiveCharts.Core.Abstractions.Orientation;
 using Size = LiveCharts.Core.Drawing.Size;
 
@@ -51,7 +52,7 @@ namespace LiveCharts.Wpf
             set => SetValue(GeometrySizeProperty, value);
         }
 
-        private Size BuildControl(IEnumerable<ISeries> seriesCollection, Orientation orientation)
+        private Size BuildControl(IEnumerable<Series> seriesCollection, Orientation orientation)
         {
             Orientation = AutomaticOrientation
                 ? orientation.AsWpfOrientation()
@@ -97,7 +98,7 @@ namespace LiveCharts.Wpf
         }
 
         /// <inheritdoc />
-        Size ILegend.Measure(IEnumerable<ISeries> seriesCollection, Orientation orientation)
+        Size ILegend.Measure(IEnumerable<Series> seriesCollection, Orientation orientation)
         {
             return Dispatcher.Invoke(() => BuildControl(seriesCollection, orientation));
         }

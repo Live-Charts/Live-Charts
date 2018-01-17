@@ -12,6 +12,6 @@ namespace LiveCharts.Core.Abstractions
         /// Measures this instance.
         /// </summary>
         /// <returns></returns>
-        Size Measure(IEnumerable<ISeries> seriesCollection, Orientation orientation);
+        Size Measure(IEnumerable<Series.Series> seriesCollection, Orientation orientation);
     }
 }

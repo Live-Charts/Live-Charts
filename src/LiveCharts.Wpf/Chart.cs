@@ -6,6 +6,7 @@ using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Charts;
 using LiveCharts.Core.Dimensions;
 using LiveCharts.Core.Drawing;
+using LiveCharts.Core.Series;
 using Size = LiveCharts.Core.Drawing.Size;
 
 namespace LiveCharts.Wpf
@@ -29,7 +30,7 @@ namespace LiveCharts.Wpf
         /// The series property.
         /// </summary>
         public static readonly DependencyProperty SeriesProperty = DependencyProperty.Register(
-            nameof(Series), typeof(IEnumerable<ISeries>), typeof(Chart),
+            nameof(Series), typeof(IEnumerable<Series>), typeof(Chart),
             new PropertyMetadata(null, BuildInstanceChangedCallback(p => p.Series, nameof(Series))));
 
         /// <summary>
@@ -137,9 +138,9 @@ namespace LiveCharts.Wpf
         }
 
         /// <inheritdoc cref="IChartView.Series"/>
-        public IEnumerable<ISeries> Series
+        public IEnumerable<Series> Series
         {
-            get => (IEnumerable<ISeries>) GetValue(SeriesProperty);
+            get => (IEnumerable<Series>) GetValue(SeriesProperty);
             set => SetValue(SeriesProperty, value);
         }
 
