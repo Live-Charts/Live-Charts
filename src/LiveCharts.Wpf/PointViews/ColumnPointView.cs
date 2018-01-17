@@ -10,7 +10,7 @@ using LiveCharts.Core.ViewModels;
 namespace LiveCharts.Wpf.PointViews
 {
     /// <summary>
-    /// 
+    /// The column point view.
     /// </summary>
     /// <typeparam name="TModel">The type of the model.</typeparam>
     /// <typeparam name="TPoint">the type of the chart point.</typeparam>
@@ -45,13 +45,17 @@ namespace LiveCharts.Wpf.PointViews
 
             var speed = chart.AnimationsSpeed;
 
-            Shape.BeginAnimation(Canvas.LeftProperty,
+            Shape.BeginAnimation(
+                Canvas.LeftProperty,
                 new DoubleAnimation(viewModel.Left, speed));
-            Shape.BeginAnimation(Canvas.TopProperty,
+            Shape.BeginAnimation(
+                Canvas.TopProperty,
                 new DoubleAnimation(viewModel.Top, speed));
-            Shape.BeginAnimation(FrameworkElement.WidthProperty,
+            Shape.BeginAnimation(
+                FrameworkElement.WidthProperty,
                 new DoubleAnimation(viewModel.Width, speed));
-            Shape.BeginAnimation(FrameworkElement.HeightProperty,
+            Shape.BeginAnimation(
+                FrameworkElement.HeightProperty,
                 new DoubleAnimation(viewModel.Height, speed));
         }
 
@@ -64,15 +68,23 @@ namespace LiveCharts.Wpf.PointViews
             {
                 var wpfChart = (CartesianChart) chart;
                 Label = new TLabel {DataContext = point};
+                Canvas.SetLeft(Shape, Canvas.GetLeft(Shape));
+                Canvas.SetTop(Shape, Canvas.GetTop(Shape));
                 wpfChart.DrawArea.Children.Add(Label);
             }
 
-            Canvas.SetLeft(Label, location.X);
-            Canvas.SetTop(Label, location.Y);
+            var speed = chart.AnimationsSpeed;
+
+            Label.BeginAnimation(
+                Canvas.LeftProperty,
+                new DoubleAnimation(location.X, speed));
+            Label.BeginAnimation(
+                Canvas.TopProperty,
+                new DoubleAnimation(location.Y, speed));
         }
 
         /// <inheritdoc />
-        protected override void OnErase(IChartView chart)
+        protected override void OnDispose(IChartView chart)
         {
             var wpfChart = (CartesianChart) chart;
             wpfChart.DrawArea.Children.Remove(Shape);

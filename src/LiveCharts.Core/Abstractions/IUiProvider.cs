@@ -19,7 +19,13 @@ namespace LiveCharts.Core.Abstractions
         Size MeasureString(string text, Font font);
 
         /// <summary>
-        /// Gets the column view.
+        /// Separators the provider.
+        /// </summary>
+        /// <returns></returns>
+        ISeparator SeparatorProvider();
+
+        /// <summary>
+        /// Provides LiveCharts with a builder that returns a column view.
         /// </summary>
         /// <typeparam name="TModel">The type of the model.</typeparam>
         /// <returns></returns>

@@ -12,7 +12,7 @@ namespace LiveCharts.Core.Abstractions
     /// Chart series extraction.
     /// </summary>
     /// <seealso cref="System.IDisposable" />
-    public interface ISeries : IDisposable
+    public interface ISeries : IDisposableChartingResource
     {
         /// <summary>
         /// Gets the key, the unique name of this series.

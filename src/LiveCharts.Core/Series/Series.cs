@@ -94,7 +94,7 @@ namespace LiveCharts.Core.Series
         /// <inheritdoc />
         public ModelToPointMapper<TModel, TCoordinate> Mapper
         {
-            get => _mapper ?? LiveChartsSettings.GetMapper<TModel, TCoordinate>();
+            get => _mapper ?? LiveChartsSettings.GetCurrentMapperFor<TModel, TCoordinate>();
             set => _mapper = value;
         }
 
@@ -193,8 +193,8 @@ namespace LiveCharts.Core.Series
         /// <inheritdoc />
         public IList<Plane> GetPlanes(IChartView chart)
         {
-            if (_planesUpdateId == chart.ChartModel.UpdateId) return _planes;
-            _planesUpdateId = chart.ChartModel.UpdateId;
+            if (_planesUpdateId == chart.Model.UpdateId) return _planes;
+            _planesUpdateId = chart.Model.UpdateId;
             _planes = ScalesAt.Select((t, i) => chart.PlanesArrayByDimension[i][t]).ToList();
             return _planes;
         }
@@ -210,24 +210,6 @@ namespace LiveCharts.Core.Series
         protected virtual void OnUpdateView(ChartModel chart)
         {
             throw new NotImplementedException();
-        }
-
-        /// <inheritdoc cref="IDisposable.Dispose"/>
-        public void Dispose()
-        {
-            if (_values is INotifyCollectionChanged incc)
-            {
-                incc.CollectionChanged -= OnValuesCollectionChanged;
-            }
-
-            var notifiesChange = typeof(INotifyPropertyChanged).IsAssignableFrom(typeof(TModel));
-            if (!notifiesChange) return;
-            foreach (var value in _values)
-            {
-                var npc = (INotifyPropertyChanged) value;
-                npc.PropertyChanged -= OnValuesItemPropertyChanged;
-            }
-            _values = null;
         }
 
         internal void AddChart(ChartModel chart)
@@ -336,6 +318,23 @@ namespace LiveCharts.Core.Series
             {
                 chartModel.Invalidate();
             }
+        }
+
+        public void Dispose(IChartView view)
+        {
+            if (_values is INotifyCollectionChanged incc)
+            {
+                incc.CollectionChanged -= OnValuesCollectionChanged;
+            }
+
+            var notifiesChange = typeof(INotifyPropertyChanged).IsAssignableFrom(typeof(TModel));
+            if (!notifiesChange) return;
+            foreach (var value in _values)
+            {
+                var npc = (INotifyPropertyChanged)value;
+                npc.PropertyChanged -= OnValuesItemPropertyChanged;
+            }
+            _values = null;
         }
     }
 }

@@ -18,7 +18,7 @@ namespace LiveCharts.Core.Data
             where TCoordinate : ICoordinate
         {
             var modelType = typeof(TModel);
-            var mapper = args.Series.Mapper ?? LiveChartsSettings.GetMapper<TModel, TCoordinate>();
+            var mapper = args.Series.Mapper ?? LiveChartsSettings.GetCurrentMapperFor<TModel, TCoordinate>();
             var notifiesChange = typeof(INotifyPropertyChanged).IsAssignableFrom(modelType);
             var observable = typeof(IChartPoint<TModel, TCoordinate, TViewModel, TPoint>).IsAssignableFrom(modelType);
             var collection = args.Collection;

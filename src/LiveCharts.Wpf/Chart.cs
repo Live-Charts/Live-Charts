@@ -118,8 +118,8 @@ namespace LiveCharts.Wpf
         /// <inheritdoc cref="IChartView.UpdaterFrequencyChanged"/>
         public event ChartUpdaterfrequencyChangedHandler UpdaterFrequencyChanged;
 
-        /// <inheritdoc cref="IChartView.ChartModel"/>
-        public ChartModel ChartModel { get; protected set; }
+        /// <inheritdoc cref="IChartView.Model"/>
+        public ChartModel Model { get; protected set; }
 
         /// <inheritdoc cref="IChartView.ControlSize"/>
         Size IChartView.ControlSize => new Size((int) ActualWidth, (int) ActualHeight);
@@ -133,9 +133,9 @@ namespace LiveCharts.Wpf
         {
             get
             {
-                if (ChartModel.UpdateId == _dimensionsUpdateId) return _dimensions;
+                if (Model.UpdateId == _dimensionsUpdateId) return _dimensions;
                 _dimensions = GetPlanes();
-                _dimensionsUpdateId = ChartModel.UpdateId;
+                _dimensionsUpdateId = Model.UpdateId;
                 return _dimensions;
             }
         }

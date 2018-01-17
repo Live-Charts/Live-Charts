@@ -4,13 +4,13 @@ using LiveCharts.Core.Drawing;
 namespace LiveCharts.Core.Abstractions
 {
     /// <summary>
-    /// 
+    /// Defines a point view.
     /// </summary>
     /// <typeparam name="TModel">The type of the model.</typeparam>
     /// <typeparam name="TPoint">The type of the chart point.</typeparam>
     /// <typeparam name="TCoordinate">The type of the coordinate.</typeparam>
     /// <typeparam name="TViewModel">The type of the point model.</typeparam>
-    public interface IPointView<TModel, in TPoint, TCoordinate, in TViewModel>
+    public interface IPointView<TModel, in TPoint, TCoordinate, in TViewModel> : IDisposableChartingResource
         where TPoint : Point<TModel, TCoordinate, TViewModel>, new()
         where TCoordinate : ICoordinate
     {
@@ -47,11 +47,5 @@ namespace LiveCharts.Core.Abstractions
         /// <param name="chart">The chart.</param>
         void DrawLabel(TPoint point, Point location, IChartView chart);
 
-        /// <summary>
-        /// Erases the specified chart.
-        /// </summary>
-        /// <param name="chart">The chart.</param>
-        /// <exception cref="System.NotImplementedException"></exception>
-        void Erase(IChartView chart);
     }
 }

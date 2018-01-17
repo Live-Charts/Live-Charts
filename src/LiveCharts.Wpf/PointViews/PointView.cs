@@ -46,7 +46,7 @@ namespace LiveCharts.Wpf.PointViews
         }
 
         /// <inheritdoc cref="Erase"/>
-        protected virtual void OnErase(IChartView chart)
+        protected virtual void OnDispose(IChartView chart)
         {
             throw new NotImplementedException();
         }
@@ -72,9 +72,9 @@ namespace LiveCharts.Wpf.PointViews
         }
 
         /// <inheritdoc />
-        public void Erase(IChartView chart)
+        public void Dispose(IChartView view)
         {
-            OnErase(chart);
+            OnDispose(view);
         }
 
         #endregion

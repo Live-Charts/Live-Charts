@@ -9,7 +9,7 @@ namespace LiveCharts.Core.Dimensions
     /// <summary>
     /// Defines a Plane.
     /// </summary>
-    public class Plane : IDisposable
+    public class Plane : IDisposableChartingResource
     {
         private Func<double, string> _labelFormatter;
 
@@ -183,15 +183,15 @@ namespace LiveCharts.Core.Dimensions
         }
 
         /// <inheritdoc cref="IDisposable.Dispose"/>
-        public void Dispose()
-        {
-           OnDispose();
-        }
-
-        /// <inheritdoc cref="IDisposable.Dispose"/>
-        protected virtual void OnDispose()
+        protected virtual void OnDispose(IChartView view)
         {
             throw new NotImplementedException();
+        }
+
+        /// <inheritdoc />
+        void IDisposableChartingResource.Dispose(IChartView view)
+        {
+            OnDispose(view);
         }
     }
 }

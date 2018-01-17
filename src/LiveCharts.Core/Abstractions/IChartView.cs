@@ -45,7 +45,7 @@ namespace LiveCharts.Core.Abstractions
         /// <value>
         /// The chart model.
         /// </value>
-        ChartModel ChartModel { get; }
+        ChartModel Model { get; }
 
         /// <summary>
         /// Gets the size of the control.

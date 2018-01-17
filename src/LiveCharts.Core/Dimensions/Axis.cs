@@ -7,49 +7,12 @@ using LiveCharts.Core.Drawing;
 namespace LiveCharts.Core.Dimensions
 {
     /// <summary>
-    /// Defines an cartesian axis separator element.
-    /// </summary>
-    /// <seealso cref="System.IDisposable" />
-    public class AxisSeparator : IDisposable
-    {
-        private bool _isNew = true;
-
-        /// <summary>
-        /// Gets or sets the point1.
-        /// </summary>
-        /// <value>
-        /// The point1.
-        /// </value>
-        public Point Point1 { get; set; }
-
-        /// <summary>
-        /// Gets or sets the point2.
-        /// </summary>
-        /// <value>
-        /// The point2.
-        /// </value>
-        public Point Point2 { get; set; }
-
-        /// <inheritdoc cref="IDisposable.Dispose"/>
-        public void Dispose()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Draw()
-        {
-            _isNew = false;
-            throw new NotImplementedException();
-        }
-    }
-
-    /// <summary>
     /// Defines a cartesian linear axis.
     /// </summary>
     public class Axis : Plane
     {
-        private readonly Dictionary<double, AxisSeparator> _activeSeparators =
-            new Dictionary<double, AxisSeparator>();
+        private readonly Dictionary<double, ISeparator> _activeSeparators =
+            new Dictionary<double, ISeparator>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Axis"/> class.
@@ -159,32 +122,29 @@ namespace LiveCharts.Core.Dimensions
             {
                 var iui = chart.ScaleToUi(i, this);
                 var key = Math.Round(i / tolerance) * tolerance;
-                if (!_activeSeparators.TryGetValue(key, out AxisSeparator separator))
+                if (!_activeSeparators.TryGetValue(key, out ISeparator separator))
                 {
-                    separator = new AxisSeparator();
+                    separator = LiveChartsSettings.Current.UiProvider.SeparatorProvider();
                     _activeSeparators.Add(key, separator);
                 }
                 chart.RegisterResource(separator);
                 if (Type == PlaneTypes.X)
                 {
-                    separator.Point1 = new Point(iui, 0);
-                    separator.Point2 = new Point(iui, chart.DrawAreaSize.Height);
+                    separator.Move(new Point(iui, 0), new Point(iui, chart.DrawAreaSize.Height), false, chart.View);
                 }
                 else
                 {
-                    separator.Point1 = new Point(0, iui);
-                    separator.Point2 = new Point(chart.DrawAreaSize.Width, iui);
+                    separator.Move(new Point(0, iui), new Point(chart.DrawAreaSize.Width, iui), false, chart.View);
                 }
-                separator.Draw();
             }
         }
 
         /// <inheritdoc cref="Plane.OnDispose"/>
-        protected override void OnDispose()
+        protected override void OnDispose(IChartView chart)
         {
-            foreach (var activeSeparator in _activeSeparators)
+            foreach (var separator in _activeSeparators)
             {
-                activeSeparator.Value.Dispose();
+                separator.Value.Dispose(chart);
             }
             _activeSeparators.Clear();
         }
@@ -244,7 +204,7 @@ namespace LiveCharts.Core.Dimensions
             var angle = ActualLabelsRotation;
 
             var labelModel = LiveChartsSettings.Current.UiProvider.MeasureString(
-                FormatValue(valueToLabel), FontFamily, FontSize, FontStyle);
+                FormatValue(valueToLabel), Font);
 
             var xw = Math.Abs(Math.Cos(angle * toRadians) * labelModel.Width);  // width's    horizontal    component
             var yw = Math.Abs(Math.Sin(angle * toRadians) * labelModel.Width);  // width's    vertical      component

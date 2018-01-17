@@ -23,8 +23,8 @@ namespace LiveCharts.Core.Charts
         private readonly Dictionary<string, object> _propertyReferences = new Dictionary<string, object>();
         private object _updateId;
         private IList<Color> _colors;
-        private readonly Dictionary<IDisposable, object> _resources =
-            new Dictionary<IDisposable, object>();
+        private readonly Dictionary<IDisposableChartingResource, object> _resources =
+            new Dictionary<IDisposableChartingResource, object>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ChartModel"/> class.
@@ -196,7 +196,7 @@ namespace LiveCharts.Core.Charts
             {
                 foreach (var resource in _resources)
                 {
-                    resource.Key.Dispose();
+                    resource.Key.Dispose(View);
                 }
                 _resources.Clear();
             }
@@ -273,7 +273,7 @@ namespace LiveCharts.Core.Charts
             return Colors[_colorCount++ % Colors.Count];
         }
 
-        internal void RegisterResource(IDisposable disposable)
+        internal void RegisterResource(IDisposableChartingResource disposable)
         {
             if (!_resources.ContainsKey(disposable))
             {
@@ -288,7 +288,7 @@ namespace LiveCharts.Core.Charts
             foreach (var disposable in _resources.ToArray())
             {
                 if (disposable.Value == UpdateId) continue;
-                disposable.Key.Dispose();
+                disposable.Key.Dispose(View);
                 _resources.Remove(disposable.Key);
             }
         }

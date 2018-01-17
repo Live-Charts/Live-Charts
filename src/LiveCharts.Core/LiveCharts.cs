@@ -158,7 +158,7 @@ namespace LiveCharts.Core
         /// <typeparam name="TModel">The type of the model.</typeparam>
         /// <typeparam name="TCoordinate">The type of the coordinate.</typeparam>
         /// <returns></returns>
-        public static ModelToPointMapper<TModel, TCoordinate> GetMapper<TModel, TCoordinate>()
+        public static ModelToPointMapper<TModel, TCoordinate> GetCurrentMapperFor<TModel, TCoordinate>()
             where TCoordinate : ICoordinate
         {
             var modelType = typeof(TModel);
