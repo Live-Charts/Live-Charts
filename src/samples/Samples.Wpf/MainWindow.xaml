@@ -8,16 +8,8 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="250" Width="250"
         Name="This"
-        d:DataContext="{Binding ElementName=This}" Loaded="MainWindow_OnLoaded">
-    <StackPanel>
-        <ItemsControl ItemsSource="{Binding}" Name="Control">
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <TextBlock Text="{Binding Title}"></TextBlock>
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-        </ItemsControl>
-        <wpf:CartesianChart Height="200" Series="{Binding}"></wpf:CartesianChart>
-    </StackPanel>
-    
+        d:DataContext="{Binding ElementName=This}">
+
+    <wpf:CartesianChart Height="200" Series="{Binding}"></wpf:CartesianChart>
+
 </Window>

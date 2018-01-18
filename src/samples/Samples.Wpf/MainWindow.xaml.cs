@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
@@ -61,11 +62,6 @@ namespace Samples.Wpf
         }
 
         public ObservableCollection<Series> Series { get; set; }
-
-        private void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
-        {
-            var isInUiTread = Dispatcher.CheckAccess();
-        }
     }
 
     public class City : INotifyPropertyChanged

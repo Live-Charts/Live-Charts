@@ -8,7 +8,6 @@ using LiveCharts.Core.Coordinates;
 using LiveCharts.Core.Data;
 using LiveCharts.Core.Dimensions;
 using LiveCharts.Core.Drawing;
-using LiveCharts.Core.Series;
 using Size = LiveCharts.Core.Drawing.Size;
 
 namespace LiveCharts.Core.Charts
@@ -23,10 +22,7 @@ namespace LiveCharts.Core.Charts
         private Task _delayer;
         private readonly Dictionary<string, object> _propertyReferences = new Dictionary<string, object>();
         private IList<Color> _colors;
-        private readonly Dictionary<IDisposableChartingResource, object> _resources =
-            new Dictionary<IDisposableChartingResource, object>();
-
-        private object _updateId = new object();
+        private readonly HashSet<IDisposableChartingResource> _resources = new HashSet<IDisposableChartingResource>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ChartModel"/> class.
@@ -35,7 +31,7 @@ namespace LiveCharts.Core.Charts
         protected ChartModel(IChartView view)
         {
             View = view;
-            view.ChartViewInitialized += ChartViewOnInitialized;
+            view.ChartViewLoaded += ChartViewOnInitialized;
             view.UpdaterFrequencyChanged += ChartViewOnUpdaterFreqChanged;
             view.DataInstanceChanged += ChartViewOnPropertyInstanceChanged;
         }
@@ -46,11 +42,7 @@ namespace LiveCharts.Core.Charts
         /// <value>
         /// The update identifier.
         /// </value>
-        public object UpdateId
-        {
-            get { return _updateId; }
-            private set { _updateId = value; }
-        }
+        public object UpdateId { get; private set; } = new object();
 
         /// <summary>
         /// Gets or sets the draw area location.
@@ -181,13 +173,13 @@ namespace LiveCharts.Core.Charts
             {
                 foreach (var resource in _resources)
                 {
-                    resource.Key.Dispose(View);
+                    resource.Dispose(View);
                 }
                 _resources.Clear();
             }
 
             // [ x: [x1: range, x2: range, x3: range, ..., xn: range], y: [...], z[...], w[...] ]
-            DataRangeMatrix = View.PlanesArrayByDimension.Select(
+            DataRangeMatrix = View.PlaneSets.Select(
                     x => x.Select(
                             y => new DimensionRange(
                                 double.IsNaN(y.MinValue) ? double.PositiveInfinity : y.MinValue,
@@ -254,21 +246,20 @@ namespace LiveCharts.Core.Charts
 
         internal void RegisterResource(IDisposableChartingResource disposable)
         {
-            if (!_resources.ContainsKey(disposable))
+            if (!_resources.Contains(disposable))
             {
-                _resources.Add(disposable, UpdateId);
-                return;
+                _resources.Add(disposable);
             }
-            _resources[disposable] = UpdateId;
+            disposable.UpdateId = UpdateId;
         }
 
         internal void CollectResources()
         {
             foreach (var disposable in _resources.ToArray())
             {
-                if (disposable.Value == UpdateId) continue;
-                disposable.Key.Dispose(View);
-                _resources.Remove(disposable.Key);
+                if (disposable.UpdateId == UpdateId) continue;
+                disposable.Dispose(View);
+                _resources.Remove(disposable);
             }
         }
 
@@ -309,7 +300,7 @@ namespace LiveCharts.Core.Charts
         /// </summary>
         void IDisposable.Dispose()
         {
-            View.ChartViewInitialized -= ChartViewOnInitialized;
+            View.ChartViewLoaded -= ChartViewOnInitialized;
             View.UpdaterFrequencyChanged -= ChartViewOnUpdaterFreqChanged;
             foreach (var reference in _propertyReferences)
             {

@@ -188,6 +188,8 @@ namespace LiveCharts.Core.Dimensions
             throw new NotImplementedException();
         }
 
+        object IDisposableChartingResource.UpdateId { get; set; }
+
         /// <inheritdoc />
         void IDisposableChartingResource.Dispose(IChartView view)
         {

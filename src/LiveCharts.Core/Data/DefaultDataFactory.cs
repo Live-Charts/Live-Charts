@@ -20,7 +20,7 @@ namespace LiveCharts.Core.Data
             var modelType = typeof(TModel);
             var mapper = args.Series.Mapper ?? LiveChartsSettings.GetCurrentMapperFor<TModel, TCoordinate>();
             var notifiesChange = typeof(INotifyPropertyChanged).IsAssignableFrom(modelType);
-            var observable = typeof(IChartPoint<TModel, TCoordinate, TViewModel, TPoint>).IsAssignableFrom(modelType);
+            var observable = typeof(IObservablePoint<TModel, TCoordinate, TViewModel, TPoint>).IsAssignableFrom(modelType);
             var collection = args.Collection;
             var dimensions = args.Chart.GetSeriesDimensions(args.Series);
 
@@ -39,7 +39,7 @@ namespace LiveCharts.Core.Data
 
                 if (observable)
                 {
-                    var iocp = (IChartPoint<TModel, TCoordinate, TViewModel, TPoint>) instance;
+                    var iocp = (IObservablePoint<TModel, TCoordinate, TViewModel, TPoint>) instance;
                     if (iocp.ChartPoint == null)
                     {
                         chartPoint = new TPoint();

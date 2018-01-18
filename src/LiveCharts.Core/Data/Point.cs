@@ -120,7 +120,9 @@ namespace LiveCharts.Core.Data
             };
         }
 
-        public void Dispose(IChartView view)
+        object IDisposableChartingResource.UpdateId { get; set; }
+
+        void IDisposableChartingResource.Dispose(IChartView view)
         {
             View.Dispose(view);
         }

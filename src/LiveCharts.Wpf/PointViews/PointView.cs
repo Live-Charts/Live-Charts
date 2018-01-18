@@ -71,6 +71,8 @@ namespace LiveCharts.Wpf.PointViews
             OnDrawLabel(point, location, chart);
         }
 
+        object IDisposableChartingResource.UpdateId { get; set; }
+
         /// <inheritdoc />
         public void Dispose(IChartView view)
         {

@@ -27,7 +27,7 @@ namespace LiveCharts.Core.Abstractions
         /// <summary>
         /// Occurs when the charts is initialized.
         /// </summary>
-        event Action ChartViewInitialized;
+        event Action ChartViewLoaded;
 
         /// <summary>
         /// Occurs when the reference of a property related to LiveCharts API changes.
@@ -35,7 +35,7 @@ namespace LiveCharts.Core.Abstractions
         event PropertyInstanceChangedHandler DataInstanceChanged;
 
         /// <summary>
-        /// Occurs when the chart <see cref="AnimationsSpeed"/> property or <see cref="DisableAnimations"/> property change.
+        /// Occurs when [updater frequency changed].
         /// </summary>
         event ChartUpdaterfrequencyChangedHandler UpdaterFrequencyChanged;
 
@@ -64,12 +64,12 @@ namespace LiveCharts.Core.Abstractions
         Margin DrawMargin { get; }
 
         /// <summary>
-        /// Gets the dimensions.
+        /// Gets the plane sets.
         /// </summary>
         /// <value>
-        /// The dimensions.
+        /// The plane sets.
         /// </value>
-        IList<IList<Plane>> PlanesArrayByDimension { get; }
+        IList<IList<Plane>> PlaneSets { get; }
 
         /// <summary>
         /// Gets the visible series in the chart, this property must be thread-safe.

@@ -6,6 +6,14 @@ namespace LiveCharts.Core.Abstractions
     public interface IDisposableChartingResource
     {
         /// <summary>
+        /// Gets the update identifier.
+        /// </summary>
+        /// <value>
+        /// The update identifier.
+        /// </value>
+        object UpdateId { get; set; }
+
+        /// <summary>
         /// Disposes from specified view.
         /// </summary>
         /// <param name="view">The view.</param>

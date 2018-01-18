@@ -103,6 +103,8 @@ namespace LiveCharts.Wpf
             return Dispatcher.Invoke(() => BuildControl(seriesCollection, orientation));
         }
 
+        object IDisposableChartingResource.UpdateId { get; set; }
+
         /// <inheritdoc />
         void IDisposableChartingResource.Dispose(IChartView view)
         {

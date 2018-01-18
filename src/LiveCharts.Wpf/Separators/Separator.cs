@@ -50,6 +50,8 @@ namespace LiveCharts.Wpf.Separators
             }
         }
 
+        public object UpdateId { get; set; }
+
         public void Dispose(IChartView view)
         {
             var wpfChart = (CartesianChart) view;

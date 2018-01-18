@@ -1,5 +1,6 @@
 using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Data;
+using LiveCharts.Core.Dimensions;
 
 namespace LiveCharts.Core.Series
 {
@@ -32,7 +33,7 @@ namespace LiveCharts.Core.Series
             //      see: https://lvcharts.net/App/examples/v1/wf/Multiple%20Axes
             // The ScaleAt array, for a cartesian series has 2 dimensions:
             //               {x, y}
-            ScalesAt = new[] {0, 0};
+            Planes = new Plane[] {null, null};
             // This means that by default, any cartesian series is scaled at
             // the first element in the axis array for both, X and Y dimensions.
             // A user can change where the series is scaled using the properties

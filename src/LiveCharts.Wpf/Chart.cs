@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
+using LiveCharts.Core;
 using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Charts;
 using LiveCharts.Core.Dimensions;
@@ -13,12 +14,17 @@ namespace LiveCharts.Wpf
 {
     public abstract class Chart : UserControl, IChartView
     {
+        static Chart()
+        {
+            LiveChartsSettings.Define(settings => settings.UseWpf());
+        }
+
         protected Chart()
         {
             DrawArea = new Canvas();
             Canvas = new Canvas();
             Canvas.Children.Add(DrawArea);
-            Initialized += OnInitialized;
+            Loaded += OnLoaded;
         }
 
         public Canvas Canvas { get; set; }
@@ -96,17 +102,17 @@ namespace LiveCharts.Wpf
             throw new NotImplementedException();
         }
 
-        private void OnInitialized(object sender, EventArgs eventArgs)
+        private void OnLoaded(object sender, EventArgs eventArgs)
         {
-            ChartViewInitialized?.Invoke();
+            ChartViewLoaded?.Invoke();
         }
 
         #endregion
 
         #region IChartView implementation
 
-        /// <inheritdoc cref="IChartView.ChartViewInitialized"/>
-        public event Action ChartViewInitialized;
+        /// <inheritdoc cref="IChartView.ChartViewLoaded"/>
+        public event Action ChartViewLoaded;
 
         /// <inheritdoc cref="IChartView.DataInstanceChanged"/>
         public event PropertyInstanceChangedHandler DataInstanceChanged;
@@ -126,7 +132,7 @@ namespace LiveCharts.Wpf
         private object _dimensionsUpdateId;
         private IList<IList<Plane>> _dimensions;
 
-        IList<IList<Plane>> IChartView.PlanesArrayByDimension
+        IList<IList<Plane>> IChartView.PlaneSets
         {
             get
             {

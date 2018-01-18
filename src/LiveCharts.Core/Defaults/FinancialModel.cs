@@ -5,8 +5,8 @@ using LiveCharts.Core.Data;
 
 namespace LiveCharts.Core.Defaults
 {
-    public class ChartModel<TModel, TCoordinate, TViewModel, TPoint>
-        : IChartPoint<TModel, TCoordinate, TViewModel, TPoint>
+    public class ObservableModel<TModel, TCoordinate, TViewModel, TPoint>
+        : IObservablePoint<TModel, TCoordinate, TViewModel, TPoint>
         where TPoint : Point<TModel, TCoordinate, TViewModel>, new()
         where TCoordinate : ICoordinate
     {
