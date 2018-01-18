@@ -12,10 +12,6 @@
         /// <summary>
         /// The y axis.
         /// </summary>
-        Y,
-        /// <summary>
-        /// An undefined axis.
-        /// </summary>
-        Undefined
+        Y
     }
 }

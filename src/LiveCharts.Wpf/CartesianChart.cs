@@ -3,7 +3,6 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using LiveCharts.Core;
-using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Charts;
 using LiveCharts.Core.Dimensions;
 using LiveCharts.Core.Series;
@@ -38,14 +37,14 @@ namespace LiveCharts.Wpf
         /// The x axis property.
         /// </summary>
         public static readonly DependencyProperty XAxisProperty = DependencyProperty.Register(
-            nameof(XAxis), typeof(IEnumerable<Plane>), typeof(CartesianChart),
+            nameof(XAxis), typeof(IList<Plane>), typeof(CartesianChart),
             new PropertyMetadata(null, BuildInstanceChangedCallback(p => p.XAxis, nameof(XAxis))));
 
         /// <summary>
         /// The y axis property
         /// </summary>
         public static readonly DependencyProperty YAxisProperty = DependencyProperty.Register(
-            nameof(YAxis), typeof(IEnumerable<Plane>), typeof(CartesianChart),
+            nameof(YAxis), typeof(IList<Plane>), typeof(CartesianChart),
             new PropertyMetadata(null, BuildInstanceChangedCallback(p => p.YAxis, nameof(YAxis))));
 
         #endregion
@@ -58,9 +57,9 @@ namespace LiveCharts.Wpf
         /// <value>
         /// The x axis.
         /// </value>
-        public IEnumerable<Plane> XAxis
+        public IList<Plane> XAxis
         {
-            get => (IEnumerable<Plane>) GetValue(XAxisProperty);
+            get => (IList<Plane>) GetValue(XAxisProperty);
             set => SetValue(XAxisProperty, value);
         }
 
@@ -70,9 +69,9 @@ namespace LiveCharts.Wpf
         /// <value>
         /// The y axis.
         /// </value>
-        public IEnumerable<Plane> YAxis
+        public IList<Plane> YAxis
         {
-            get => (IEnumerable<Plane>) GetValue(YAxisProperty);
+            get => (IList<Plane>) GetValue(YAxisProperty);
             set => SetValue(YAxisProperty, value);
         }
 
@@ -90,8 +89,8 @@ namespace LiveCharts.Wpf
 
             return new List<IList<Plane>>
             {
-                XAxis.Select(axis => new Plane(PlaneTypes.X)).ToList(),
-                YAxis.Select(axis => new Plane(PlaneTypes.Y)).ToList()
+                XAxis,
+                YAxis
             };
         }
     }

@@ -147,7 +147,7 @@ namespace LiveCharts.Core.Series
         /// <returns></returns>
         public Plane GetPlane(IChartView chart, int index)
         {
-            return chart.PlaneSets[index][ScalesAt[index]];
+            return chart.Dimensions[index][ScalesAt[index]];
         }
 
         /// <summary>
@@ -159,7 +159,7 @@ namespace LiveCharts.Core.Series
         {
             if (_planesUpdateId == chart.Model.UpdateId) return _planes;
             _planesUpdateId = chart.Model.UpdateId;
-            _planes = ScalesAt.Select((t, i) => chart.PlaneSets[i][t]).ToList();
+            _planes = ScalesAt.Select((t, i) => chart.Dimensions[i][t]).ToList();
             return _planes;
         }
 
@@ -297,7 +297,7 @@ namespace LiveCharts.Core.Series
     }
 
     /// <summary>
-    /// 
+    /// The series class with a defined plot model, represents a series to plot in a chart.
     /// </summary>
     /// <typeparam name="TModel">The type of the model.</typeparam>
     /// <typeparam name="TCoordinate">The type of the coordinate.</typeparam>
@@ -321,6 +321,7 @@ namespace LiveCharts.Core.Series
         protected Series(string key)
             :base(key)
         {
+            ByValTracker = new List<TPoint>();
         }
 
         /// <summary>
@@ -369,7 +370,7 @@ namespace LiveCharts.Core.Series
         /// <value>
         /// The by value tracker.
         /// </value>
-        public IList<TPoint> ByValTracker { get; set; }
+        public IList<TPoint> ByValTracker { get; }
 
         /// <summary>
         /// Gets the points.
@@ -444,7 +445,8 @@ namespace LiveCharts.Core.Series
                         Chart = model,
                         Collection = new List<TModel>(Values),
                         PropertyChangedEventHandler = OnValuesItemPropertyChanged
-                    });
+                    })
+                .ToArray();
         }
 
         private void OnValuesCollectionChanged(object sender, NotifyCollectionChangedEventArgs args)

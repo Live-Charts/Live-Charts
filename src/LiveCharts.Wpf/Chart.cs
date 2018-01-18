@@ -21,6 +21,7 @@ namespace LiveCharts.Wpf
 
         protected Chart()
         {
+            DrawMargin = Core.Drawing.Margin.Empty;
             DrawArea = new Canvas();
             Canvas = new Canvas();
             Canvas.Children.Add(DrawArea);
@@ -132,7 +133,7 @@ namespace LiveCharts.Wpf
         private object _dimensionsUpdateId;
         private IList<IList<Plane>> _dimensions;
 
-        IList<IList<Plane>> IChartView.PlaneSets
+        IList<IList<Plane>> IChartView.Dimensions
         {
             get
             {

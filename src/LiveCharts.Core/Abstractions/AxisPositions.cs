@@ -6,6 +6,10 @@ namespace LiveCharts.Core.Abstractions
     public enum AxisPositions
     {
         /// <summary>
+        /// The position will be set according to the predefined data.
+        /// </summary>
+        Auto,
+        /// <summary>
         /// The top position.
         /// </summary>
         Top,

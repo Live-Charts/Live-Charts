@@ -19,16 +19,8 @@ namespace LiveCharts.Core.Dimensions
         /// </summary>
         public Axis()
         {
-        }
-
-        /// <summary>
-        /// You should normally not use this constructor, it might change in future versions without warnings.
-        /// </summary>
-        /// <param name="type">The type.</param>
-        public Axis(PlaneTypes type)
-            : base(type)
-        {
             Step = double.NaN;
+            Position = AxisPositions.Auto;
         }
 
         /// <summary>
@@ -81,12 +73,12 @@ namespace LiveCharts.Core.Dimensions
             #endregion
 
             var space = chart.DrawAreaSize;
-            if (!(Type == PlaneTypes.X || Type == PlaneTypes.Y))
+            if (!(PlaneType == PlaneTypes.X || PlaneType == PlaneTypes.Y))
             {
                 throw new LiveChartsException(
-                    $"An axis of type '{Type}' can not be used in a Cartesian Chart", 130);
+                    $"An axis of type '{PlaneType}' can not be used in a Cartesian Chart", 130);
             }
-            var dimension = Type == PlaneTypes.X ? space.Width : space.Height;
+            var dimension = PlaneType == PlaneTypes.X ? space.Width : space.Height;
             const int step = 5; // ToDo: or use the real if it is defined?
             int l = 0, r = 0, t = 0, b = 0;
             for (var i = 0; i < dimension; i += step)
@@ -128,7 +120,7 @@ namespace LiveCharts.Core.Dimensions
                     _activeSeparators.Add(key, separator);
                 }
                 chart.RegisterResource(separator);
-                if (Type == PlaneTypes.X)
+                if (PlaneType == PlaneTypes.X)
                 {
                     separator.Move(new Point(iui, 0), new Point(iui, chart.DrawAreaSize.Height), false, chart.View);
                 }
@@ -162,7 +154,7 @@ namespace LiveCharts.Core.Dimensions
             const double cleanFactor = 35d;
 
             //ToDO: Improve this according to current labels!
-            var separations = Type == PlaneTypes.Y
+            var separations = PlaneType == PlaneTypes.Y
                 ? Math.Round(chart.DrawAreaSize.Height / cleanFactor, 0)
                 : Math.Round(chart.DrawAreaSize.Width / cleanFactor, 0);
 
@@ -216,7 +208,7 @@ namespace LiveCharts.Core.Dimensions
 
             double x, y, xo, yo, l, t;
 
-            if (Type == PlaneTypes.X && Position == AxisPositions.Bottom)
+            if (PlaneType == PlaneTypes.X && Position == AxisPositions.Bottom)
             {
                 // case 1
                 if (angle < 0)
@@ -237,7 +229,7 @@ namespace LiveCharts.Core.Dimensions
                 x = chart.ScaleToUi(valueToLabel, this, drawMargin);
                 y = drawMargin.Height;
             }
-            else if (Type == PlaneTypes.X && Position == AxisPositions.Top)
+            else if (PlaneType == PlaneTypes.X && Position == AxisPositions.Top)
             {
                 // case 3
                 if (angle < 0)
@@ -258,7 +250,7 @@ namespace LiveCharts.Core.Dimensions
                 x = chart.ScaleToUi(valueToLabel, this, drawMargin);
                 y = 0;
             }
-            else if (Type == PlaneTypes.Y && Position == AxisPositions.Left)
+            else if (PlaneType == PlaneTypes.Y && Position == AxisPositions.Left)
             {
                 // case 6
                 if (angle < 0)
@@ -279,7 +271,7 @@ namespace LiveCharts.Core.Dimensions
                 x = 0;
                 y = chart.ScaleToUi(valueToLabel, this, drawMargin);
             }
-            else if (Type == PlaneTypes.Y && Position == AxisPositions.Right)
+            else if (PlaneType == PlaneTypes.Y && Position == AxisPositions.Right)
             {
                 // case 8
                 if (angle < 0)
@@ -303,7 +295,7 @@ namespace LiveCharts.Core.Dimensions
             else
             {
                 throw new LiveChartsException(
-                    $"An axis of type '{Type}' can not be positioned at '{Position}'", 120);
+                    $"An axis of type '{PlaneType}' can not be positioned at '{Position}'", 120);
             }
 
             return new AxisLabelModel(

@@ -54,7 +54,7 @@
     <Compile Include="Extensions.cs" />
     <Compile Include="PointViews\PointView.cs" />
     <Compile Include="Animation.cs" />
-    <Compile Include="Separators\Separator.cs" />
+    <Compile Include="Separators\SeparatorView.cs" />
     <Compile Include="UiProvider.cs" />
     <Compile Include="CartesianChart.cs">
       <SubType>Code</SubType>

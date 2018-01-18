@@ -179,7 +179,7 @@ namespace LiveCharts.Core.Charts
             }
 
             // [ x: [x1: range, x2: range, x3: range, ..., xn: range], y: [...], z[...], w[...] ]
-            DataRangeMatrix = View.PlaneSets.Select(
+            DataRangeMatrix = View.Dimensions.Select(
                     x => x.Select(
                             y => new DimensionRange(
                                 double.IsNaN(y.MinValue) ? double.PositiveInfinity : y.MinValue,

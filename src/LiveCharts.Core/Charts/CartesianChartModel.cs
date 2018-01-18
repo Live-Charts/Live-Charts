@@ -31,7 +31,7 @@ namespace LiveCharts.Core.Charts
         /// <value>
         /// The x axis.
         /// </value>
-        public IList<Plane> XAxis => View.PlaneSets[0];
+        public IList<Plane> XAxis => View.Dimensions[0];
 
         /// <summary>
         /// Gets the y axis.
@@ -39,7 +39,7 @@ namespace LiveCharts.Core.Charts
         /// <value>
         /// The y axis.
         /// </value>
-        public IList<Plane> YAxis => View.PlaneSets[1];
+        public IList<Plane> YAxis => View.Dimensions[1];
 
         /// <inheritdoc />
         public override double ScaleToUi(double value, Plane plane, Size? size = null)
@@ -50,8 +50,7 @@ namespace LiveCharts.Core.Charts
             // y = m * (x - x1) + y1
             // where m is the slope, (y2 - y1) / (x2 - x1)
 
-            // for now we only support cartesian planes, X, other wise we suppose it is Y.
-            var dimension = plane.Type == PlaneTypes.X ? chartSize.Width : chartSize.Height;
+            var dimension = plane.PlaneType == PlaneTypes.X ? chartSize.Width : chartSize.Height;
 
             double x1 = plane.ActualMaxValue, y1 = dimension;
             double x2 = plane.ActualMinValue; // y2 = 0;
@@ -84,12 +83,18 @@ namespace LiveCharts.Core.Charts
             // draw separators
 
             // for each dimension (for a cartesian chart X and Y)
-            foreach (var axisArray in View.PlaneSets)
+            foreach (var dimension in View.Dimensions)
             {
                 // for each axis in each dimension
-                foreach (var plane in axisArray)
+                foreach (var plane in dimension)
                 {
                     var axis = (Axis) plane;
+                    axis.PlaneType = View.Dimensions[0].Contains(plane) ? PlaneTypes.X : PlaneTypes.Y;
+                    axis.Position = axis.Position == AxisPositions.Auto
+                        ? (axis.PlaneType == PlaneTypes.X
+                            ? AxisPositions.Bottom
+                            : AxisPositions.Left)
+                        : axis.Position;
                     RegisterResource(axis);
                     axis.DrawSeparators(this);
                 }
@@ -119,10 +124,10 @@ namespace LiveCharts.Core.Charts
             int l = 0, r = 0, t = 0, b = 0;
 
             // for each dimension (for a cartesian chart X and Y)
-            for (var dimensionIndex = 0; dimensionIndex < View.PlaneSets.Count; dimensionIndex++)
+            for (var dimensionIndex = 0; dimensionIndex < View.Dimensions.Count; dimensionIndex++)
             {
                 var dimensionRanges = DataRangeMatrix[dimensionIndex];
-                var planesArray = View.PlaneSets[dimensionIndex];
+                var planesArray = View.Dimensions[dimensionIndex];
 
                 // for each axis in each dimension
                 for (var index = 0; index < planesArray.Count; index++)

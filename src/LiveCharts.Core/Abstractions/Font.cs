@@ -17,7 +17,7 @@ namespace LiveCharts.Core.Abstractions
         /// <value>
         /// The font family.
         /// </value>
-        public string FontFamily { get; set; }
+        public string FamilyName { get; set; }
 
         /// <summary>
         /// Gets or sets the size of the font.
@@ -25,7 +25,7 @@ namespace LiveCharts.Core.Abstractions
         /// <value>
         /// The size of the font.
         /// </value>
-        public double FontSize { get; set; }
+        public double Size { get; set; }
 
         /// <summary>
         /// Gets or sets the font style.
@@ -33,6 +33,14 @@ namespace LiveCharts.Core.Abstractions
         /// <value>
         /// The font style.
         /// </value>
-        public FontStyles FontStyle { get; set; }
+        public FontStyles Style { get; set; }
+
+        /// <summary>
+        /// Gets or sets the weight.
+        /// </summary>
+        /// <value>
+        /// The weight.
+        /// </value>
+        public FontWeight Weight { get; set; }
     }
 }

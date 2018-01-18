@@ -69,7 +69,7 @@ namespace LiveCharts.Core.Abstractions
         /// <value>
         /// The plane sets.
         /// </value>
-        IList<IList<Plane>> PlaneSets { get; }
+        IList<IList<Plane>> Dimensions { get; }
 
         /// <summary>
         /// Gets the visible series in the chart, this property must be thread-safe.

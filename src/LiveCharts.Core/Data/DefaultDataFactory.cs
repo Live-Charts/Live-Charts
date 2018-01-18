@@ -18,7 +18,7 @@ namespace LiveCharts.Core.Data
             where TCoordinate : ICoordinate
         {
             var modelType = typeof(TModel);
-            var mapper = args.Series.Mapper ?? LiveChartsSettings.GetCurrentMapperFor<TModel, TCoordinate>();
+            var mapper = args.Series.Mapper;
             var notifiesChange = typeof(INotifyPropertyChanged).IsAssignableFrom(modelType);
             var observable = typeof(IObservablePoint<TModel, TCoordinate, TViewModel, TPoint>).IsAssignableFrom(modelType);
             var collection = args.Collection;
@@ -63,14 +63,15 @@ namespace LiveCharts.Core.Data
                     }
                 }
 
-                if (chartPoint.Coordinate.CompareDimensions(dimensions, SeriesSkipCriteria.None)) continue;
-
                 // feed our chart points ...
                 chartPoint.Model = instance;
                 chartPoint.Key = index;
                 chartPoint.Series = args.Series;
                 chartPoint.Chart = args.Chart;
                 chartPoint.Coordinate = mapper.Predicate(instance, index);
+
+                // compare the dimensions to scale the chart.
+                if (chartPoint.Coordinate.CompareDimensions(dimensions, SeriesSkipCriteria.None)) continue;
 
                 // evaluate model defined events
                 mapper.EvaluateModelDependentActions(instance, chartPoint.View, chartPoint);

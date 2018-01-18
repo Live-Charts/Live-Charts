@@ -10,10 +10,6 @@ namespace LiveCharts.Core.Abstractions
         /// </summary>
         Regular,
         /// <summary>
-        /// The bold style.
-        /// </summary>
-        Bold,
-        /// <summary>
         /// The italic style.
         /// </summary>
         Italic

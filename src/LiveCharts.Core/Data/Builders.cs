@@ -23,7 +23,7 @@ namespace LiveCharts.Core.Data
             const double giga = 1000000000;
             const double tera = 1000000000000;
 
-            var log = Math.Log10(number);
+            var log = Math.Abs(number) < pico ? 0 : Math.Log10(number);
             string Func(double @const) => Math.Round(number / @const, 2).ToString("N2");
 
             if (log >= 12) return $"{Func(tera)} T";

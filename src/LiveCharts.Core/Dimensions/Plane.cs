@@ -19,18 +19,10 @@ namespace LiveCharts.Core.Dimensions
         public Plane()
         {
             Unit = 1;
+            Margin = new Margin(2);
             LabelFormatter = Builders.AsMetricNumber;
-        }
-
-        /// <summary>
-        /// You should normally not use this constructor, it might change in future versions without warnings.
-        /// </summary>
-        /// <param name="type">The type.</param>
-        public Plane(PlaneTypes type)
-        {
-            Unit = 1;
-            Margin = new Margin(3);
-            Type = type;
+            MinValue = double.NaN;
+            MaxValue = double.NaN;
         }
 
         /// <summary>
@@ -138,20 +130,20 @@ namespace LiveCharts.Core.Dimensions
         public Font Font { get; set; }
 
         /// <summary>
-        /// Gets the type.
-        /// </summary>
-        /// <value>
-        /// The type.
-        /// </value>
-        public PlaneTypes Type { get; }
-
-        /// <summary>
         /// Gets or sets the unit.
         /// </summary>
         /// <value>
         /// The unit.
         /// </value>
         public double Unit { get; set; }
+
+        /// <summary>
+        /// Gets the type.
+        /// </summary>
+        /// <value>
+        /// The type.
+        /// </value>
+        public PlaneTypes PlaneType { get; internal set; }
 
         /// <summary>
         /// Formats a given value according to the axis, <see cref="LabelFormatter"/> and <see cref="Labels"/> properties.
