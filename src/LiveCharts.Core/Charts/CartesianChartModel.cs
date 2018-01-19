@@ -14,10 +14,7 @@ namespace LiveCharts.Core.Charts
     /// <seealso cref="ChartModel" />
     public class CartesianChartModel : ChartModel
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="CartesianChartModel"/> class.
-        /// </summary>
-        /// <param name="view">The view.</param>
+        /// <inheritdoc />
         public CartesianChartModel(IChartView view)
             : base(view)
         {
@@ -87,12 +84,6 @@ namespace LiveCharts.Core.Charts
                 foreach (var plane in dimension)
                 {
                     var axis = (Axis) plane;
-                    axis.PlaneType = View.Dimensions[0].Contains(plane) ? PlaneTypes.X : PlaneTypes.Y;
-                    axis.Position = axis.Position == AxisPositions.Auto
-                        ? (axis.PlaneType == PlaneTypes.X
-                            ? AxisPositions.Bottom
-                            : AxisPositions.Left)
-                        : axis.Position;
                     RegisterResource(axis);
                     axis.DrawSeparators(this);
                 }
@@ -131,6 +122,13 @@ namespace LiveCharts.Core.Charts
                 for (var index = 0; index < planesArray.Count; index++)
                 {
                     var axis = (Axis) planesArray[index];
+
+                    axis.PlaneType = View.Dimensions[0].Contains(axis) ? PlaneTypes.X : PlaneTypes.Y;
+                    axis.Position = axis.Position == AxisPositions.Auto
+                        ? (axis.PlaneType == PlaneTypes.X
+                            ? AxisPositions.Bottom
+                            : AxisPositions.Left)
+                        : axis.Position;
 
                     // get the axis limits...
                     axis.ActualMinValue = double.IsNaN(axis.MinValue)
