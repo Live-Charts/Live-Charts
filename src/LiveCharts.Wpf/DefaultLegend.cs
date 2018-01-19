@@ -11,9 +11,7 @@ using Size = LiveCharts.Core.Drawing.Size;
 
 namespace LiveCharts.Wpf
 {
-    /// <summary>
-    /// Interaction logic for DefaultLegend.xaml
-    /// </summary>
+    /// <inheritdoc cref="WrapPanel" />
     public class DefaultLegend : WrapPanel, ILegend
     {
         /// <summary>
@@ -109,9 +107,9 @@ namespace LiveCharts.Wpf
         void IDisposableChartingResource.Dispose(IChartView view)
         {
             var wpfChart = (Chart) view;
-            if (wpfChart.Canvas.Children.Contains(this))
+            if (wpfChart.Children.Contains(this))
             {
-                wpfChart.Canvas.Children.Remove(this);
+                wpfChart.Children.Remove(this);
             }
         }
     }

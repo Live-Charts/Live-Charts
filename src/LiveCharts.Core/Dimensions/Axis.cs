@@ -226,7 +226,7 @@ namespace LiveCharts.Core.Dimensions
                     l = .5 * xh;
                     t = 0;
                 }
-                x = chart.ScaleToUi(valueToLabel, this, drawMargin);
+                x = valueToLabel;
                 y = drawMargin.Height;
             }
             else if (PlaneType == PlaneTypes.X && Position == AxisPositions.Top)
@@ -247,7 +247,7 @@ namespace LiveCharts.Core.Dimensions
                     l = xw + .5 * xh;
                     t = yh + yw;
                 }
-                x = chart.ScaleToUi(valueToLabel, this, drawMargin);
+                x = valueToLabel;
                 y = 0;
             }
             else if (PlaneType == PlaneTypes.Y && Position == AxisPositions.Left)
@@ -269,7 +269,7 @@ namespace LiveCharts.Core.Dimensions
                     t = yw;
                 }
                 x = 0;
-                y = chart.ScaleToUi(valueToLabel, this, drawMargin);
+                y = valueToLabel;
             }
             else if (PlaneType == PlaneTypes.Y && Position == AxisPositions.Right)
             {
@@ -290,7 +290,7 @@ namespace LiveCharts.Core.Dimensions
                     t = yo;
                 }
                 x = drawMargin.Width;
-                y = chart.ScaleToUi(valueToLabel, this, drawMargin);
+                y = valueToLabel;
             }
             else
             {

@@ -30,6 +30,11 @@ namespace LiveCharts.Core.Abstractions
         event Action ChartViewLoaded;
 
         /// <summary>
+        /// Occurs when the chart is resized.
+        /// </summary>
+        event Action ChartViewResized;
+
+        /// <summary>
         /// Occurs when the reference of a property related to LiveCharts API changes.
         /// </summary>
         event PropertyInstanceChangedHandler DataInstanceChanged;

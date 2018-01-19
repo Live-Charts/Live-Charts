@@ -8,10 +8,7 @@ using Size = LiveCharts.Core.Drawing.Size;
 
 namespace LiveCharts.Core.Charts
 {
-    /// <summary>
-    /// Represents a chart with a cartesian plane coordinate system (x,y).
-    /// </summary>
-    /// <seealso cref="ChartModel" />
+    /// <inheritdoc />
     public class CartesianChartModel : ChartModel
     {
         /// <inheritdoc />

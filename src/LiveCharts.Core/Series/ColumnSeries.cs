@@ -22,6 +22,8 @@ namespace LiveCharts.Core.Series
         public ColumnSeries()
             : base(Column)
         {
+            MaxColumnWidth = 45;
+            ColumnPadding = 2;
         }
 
         /// <summary>

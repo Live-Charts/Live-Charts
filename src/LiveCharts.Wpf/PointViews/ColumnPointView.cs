@@ -43,20 +43,18 @@ namespace LiveCharts.Wpf.PointViews
                 Shape.Height = 0;
             }
 
+            Shape.Stroke = point.Series.Stroke.AsSolidColorBrush();
+            Shape.Fill = point.Series.Fill.AsSolidColorBrush();
+
             var speed = chart.AnimationsSpeed;
 
-            Shape.BeginAnimation(
-                Canvas.LeftProperty,
-                new DoubleAnimation(viewModel.Left, speed));
-            Shape.BeginAnimation(
-                Canvas.TopProperty,
-                new DoubleAnimation(viewModel.Top, speed));
-            Shape.BeginAnimation(
-                FrameworkElement.WidthProperty,
-                new DoubleAnimation(viewModel.Width, speed));
-            Shape.BeginAnimation(
-                FrameworkElement.HeightProperty,
-                new DoubleAnimation(viewModel.Height, speed));
+            Shape.Animate()
+                .WithSpeed(speed)
+                .Property(Canvas.LeftProperty, viewModel.Left)
+                .Property(Canvas.TopProperty, viewModel.Top)
+                .Property(shape => shape.Width, viewModel.Width)
+                .Property(shape => shape.Height, viewModel.Height)
+                .Run();
         }
 
         /// <inheritdoc />

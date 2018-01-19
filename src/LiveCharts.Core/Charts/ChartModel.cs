@@ -31,7 +31,8 @@ namespace LiveCharts.Core.Charts
         protected ChartModel(IChartView view)
         {
             View = view;
-            view.ChartViewLoaded += ChartViewOnInitialized;
+            view.ChartViewLoaded += UpdateView;
+            view.ChartViewResized += UpdateView;
             view.UpdaterFrequencyChanged += ChartViewOnUpdaterFreqChanged;
             view.DataInstanceChanged += ChartViewOnPropertyInstanceChanged;
         }
@@ -263,7 +264,7 @@ namespace LiveCharts.Core.Charts
             }
         }
 
-        private void ChartViewOnInitialized()
+        private void UpdateView()
         {
             IsViewInitialized = true;
             Update(false);
@@ -300,7 +301,7 @@ namespace LiveCharts.Core.Charts
         /// </summary>
         void IDisposable.Dispose()
         {
-            View.ChartViewLoaded -= ChartViewOnInitialized;
+            View.ChartViewLoaded -= UpdateView;
             View.UpdaterFrequencyChanged -= ChartViewOnUpdaterFreqChanged;
             foreach (var reference in _propertyReferences)
             {

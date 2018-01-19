@@ -7,12 +7,24 @@ using System.Windows.Media.Animation;
 namespace LiveCharts.Wpf
 {
     /// <summary>
+    /// The animations extensions.
+    /// </summary>
+    public static class AnimationsExtensions
+    {
+        public static Animation<T> Animate<T>(this T element)
+        where T : FrameworkElement
+        {
+            return new Animation<T>(element);
+        }
+    }
+
+    /// <summary>
     /// A storyboard builder... I REALLY hate the current way.
     /// </summary>
     public class Animation<T>
         where T : DependencyObject
     {
-        private readonly TimeSpan _speed;
+        private TimeSpan _speed;
         private readonly Storyboard _storyboard;
         private readonly T _target;
 
@@ -20,10 +32,8 @@ namespace LiveCharts.Wpf
         /// Initializes a new instance of the <see cref="Animation{T}"/> class.
         /// </summary>
         /// <param name="target">The target.</param>
-        /// <param name="speed">The speed.</param>
-        public Animation(T target, TimeSpan speed)
+        public Animation(T target)
         {
-            _speed = speed;
             _storyboard = new Storyboard();
             _storyboard.Begin();
             _target = target;
@@ -37,8 +47,52 @@ namespace LiveCharts.Wpf
             _storyboard.Begin();
         }
 
+        public Animation<T> WithSpeed(TimeSpan speedSpan)
+        {
+            _speed = speedSpan;
+            return this;
+        }
+
         /// <summary>
-        /// To the specified expression.
+        /// Animates the specified property.
+        /// </summary>
+        /// <param name="dependencyProperty">Name of the property.</param>
+        /// <param name="to">To.</param>
+        /// <param name="from">From.</param>
+        /// <param name="speed">The speed.</param>
+        /// <returns></returns>
+        public Animation<T> Property(DependencyProperty dependencyProperty, double to, double? from = null, TimeSpan? speed = null)
+        {
+            var animation = from == null
+                ? new DoubleAnimation(to, speed ?? _speed)
+                : new DoubleAnimation(from.Value, to, speed ?? _speed);
+            _storyboard.Children.Add(animation);
+            Storyboard.SetTarget(animation, _target);
+            Storyboard.SetTargetProperty(animation, new PropertyPath(dependencyProperty));
+            return this;
+        }
+
+        /// <summary>
+        /// Animates the specified property.
+        /// </summary>
+        /// <param name="propertyName">Name of the property.</param>
+        /// <param name="to">To.</param>
+        /// <param name="from">From.</param>
+        /// <param name="speed">The speed.</param>
+        /// <returns></returns>
+        public Animation<T> Property(string propertyName, double to, double? from = null, TimeSpan? speed = null)
+        {
+            var animation = from == null 
+                ? new DoubleAnimation(to, speed ?? _speed)
+                : new DoubleAnimation(from.Value, to, speed ?? _speed);
+            _storyboard.Children.Add(animation);
+            Storyboard.SetTarget(animation, _target);
+            Storyboard.SetTargetProperty(animation, new PropertyPath(propertyName));
+            return this;
+        }
+
+        /// <summary>
+        /// Animates the specified property.
         /// </summary>
         /// <param name="expression">The expression.</param>
         /// <param name="to">To.</param>
@@ -46,15 +100,11 @@ namespace LiveCharts.Wpf
         /// <returns></returns>
         public Animation<T> Property(Expression<Func<T, double>> expression, double to, TimeSpan? speed = null)
         {
-            var animation = new DoubleAnimation(to, speed ?? _speed);
-            _storyboard.Children.Add(animation);
-            Storyboard.SetTarget(animation, _target);
-            Storyboard.SetTargetProperty(animation, new PropertyPath(GetPropertyInfo(expression)));
-            return this;
+            return Property(GetPropertyInfo(expression).Name, to , null, speed);
         }
 
         /// <summary>
-        /// Properties the specified expression.
+        /// Animates the specified property.
         /// </summary>
         /// <param name="expression">The expression.</param>
         /// <param name="from">From.</param>
@@ -63,11 +113,7 @@ namespace LiveCharts.Wpf
         /// <returns></returns>
         public Animation<T> Property(Expression<Func<T, double>> expression, double from, double to, TimeSpan? speed = null)
         {
-            var animation = new DoubleAnimation(from, to, speed ?? _speed);
-            _storyboard.Children.Add(animation);
-            Storyboard.SetTarget(animation, _target);
-            Storyboard.SetTargetProperty(animation, new PropertyPath(GetPropertyInfo(expression).Name));
-            return this;
+            return Property(GetPropertyInfo(expression).Name, to, from, speed);
         }
 
         /// <summary>
@@ -86,8 +132,7 @@ namespace LiveCharts.Wpf
         {
             var type = typeof(TSource);
 
-            var member = expression.Body as MemberExpression;
-            if (member == null)
+            if (!(expression.Body is MemberExpression member))
                 throw new ArgumentException(
                     $"Expression '{expression}' refers to a method, not a property.");
 

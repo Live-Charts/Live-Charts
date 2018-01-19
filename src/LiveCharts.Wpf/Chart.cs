@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using LiveCharts.Core;
 using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Charts;
@@ -12,7 +13,7 @@ using Size = LiveCharts.Core.Drawing.Size;
 
 namespace LiveCharts.Wpf
 {
-    public abstract class Chart : UserControl, IChartView
+    public abstract class Chart : Canvas, IChartView
     {
         static Chart()
         {
@@ -23,12 +24,12 @@ namespace LiveCharts.Wpf
         {
             DrawMargin = Core.Drawing.Margin.Empty;
             DrawArea = new Canvas();
-            Canvas = new Canvas();
-            Canvas.Children.Add(DrawArea);
+            DrawArea.Background = Brushes.Red;
+            Children.Add(DrawArea);
             Loaded += OnLoaded;
+            SizeChanged += OnSizeChanged;
         }
 
-        public Canvas Canvas { get; set; }
         public Canvas DrawArea { get; }
 
         #region Dependency properties
@@ -108,12 +109,20 @@ namespace LiveCharts.Wpf
             ChartViewLoaded?.Invoke();
         }
 
+        private void OnSizeChanged(object o, SizeChangedEventArgs sizeChangedEventArgs)
+        {
+            ChartViewResized?.Invoke();
+        }
+
         #endregion
 
         #region IChartView implementation
 
         /// <inheritdoc cref="IChartView.ChartViewLoaded"/>
         public event Action ChartViewLoaded;
+
+        /// <inheritdoc />
+        public event Action ChartViewResized;
 
         /// <inheritdoc cref="IChartView.DataInstanceChanged"/>
         public event PropertyInstanceChangedHandler DataInstanceChanged;
@@ -175,8 +184,8 @@ namespace LiveCharts.Wpf
         /// <inheritdoc cref="IChartView.UpdateDrawArea"/>
         public void UpdateDrawArea(Rectangle model)
         {
-            Canvas.SetLeft(DrawArea, model.Left);
-            Canvas.SetTop(DrawArea, model.Top);
+            SetLeft(DrawArea, model.Left);
+            SetTop(DrawArea, model.Top);
             DrawArea.Width = model.Width;
             DrawArea.Height = model.Height;
         }

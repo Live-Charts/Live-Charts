@@ -1,4 +1,5 @@
-﻿using System.Windows.Shapes;
+﻿using System.Windows.Media;
+using System.Windows.Shapes;
 using LiveCharts.Core.Abstractions;
 using Point = LiveCharts.Core.Drawing.Point;
 
@@ -30,10 +31,15 @@ namespace LiveCharts.Wpf.Separators
                 var wpfChart = (CartesianChart) chart;
                 Line = new Line();
                 wpfChart.DrawArea.Children.Add(Line);
-                new Animation<Line>(Line, speed).Property(line => line.Opacity, 0, 1);
+                Line.Animate()
+                    .WithSpeed(speed)
+                    .Property(line => line.Opacity, 0, 1);
             }
 
-            var animation = new Animation<Line>(Line, speed)
+            Line.Stroke = Brushes.Black;
+
+            var animation = Line.Animate()
+                .WithSpeed(speed)
                 .Property(line => line.X1, point1.X)
                 .Property(line => line.X2, point2.X)
                 .Property(line => line.Y1, point1.Y)
