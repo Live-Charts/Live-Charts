@@ -52,7 +52,7 @@ namespace LiveCharts.Core.Data
                 }
                 else
                 {
-                    if (args.Series.ByValTracker.Count < index)
+                    if (index < args.Series.ByValTracker.Count)
                     {
                         chartPoint = args.Series.ByValTracker[index];
                     }

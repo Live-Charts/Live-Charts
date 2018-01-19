@@ -95,23 +95,11 @@ namespace LiveCharts.Wpf
         /// Animates the specified property.
         /// </summary>
         /// <param name="expression">The expression.</param>
-        /// <param name="to">To.</param>
-        /// <param name="speed">The speed.</param>
-        /// <returns></returns>
-        public Animation<T> Property(Expression<Func<T, double>> expression, double to, TimeSpan? speed = null)
-        {
-            return Property(GetPropertyInfo(expression).Name, to , null, speed);
-        }
-
-        /// <summary>
-        /// Animates the specified property.
-        /// </summary>
-        /// <param name="expression">The expression.</param>
         /// <param name="from">From.</param>
         /// <param name="to">To.</param>
         /// <param name="speed">The speed.</param>
         /// <returns></returns>
-        public Animation<T> Property(Expression<Func<T, double>> expression, double from, double to, TimeSpan? speed = null)
+        public Animation<T> Property(Expression<Func<T, double>> expression, double to, double? from = null, TimeSpan? speed = null)
         {
             return Property(GetPropertyInfo(expression).Name, to, from, speed);
         }

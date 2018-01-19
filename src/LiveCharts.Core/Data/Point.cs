@@ -20,7 +20,6 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-using System;
 using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Charts;
 
@@ -32,7 +31,7 @@ namespace LiveCharts.Core.Data
     /// <typeparam name="TModel">The type of the model.</typeparam>
     /// <typeparam name="TCoordinate">The type of the coordinate.</typeparam>
     /// <typeparam name="TViewModel">The type of the view model.</typeparam>
-    /// <seealso cref="System.IDisposable" />
+    /// <seealso cref="T:System.IDisposable" />
     public class Point<TModel, TCoordinate, TViewModel> : IDisposableChartingResource
         where TCoordinate : ICoordinate
     {
