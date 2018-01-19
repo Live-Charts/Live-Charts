@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
-using LiveCharts.Core.Data;
 using LiveCharts.Core.Drawing;
 
-namespace LiveCharts.Core.Config
+namespace LiveCharts.Core.DefaultSettings
 {
     /// <summary>
     /// Colors extensions.
@@ -13,21 +12,22 @@ namespace LiveCharts.Core.Config
         /// Uses a custom colors array as the default series color set.
         /// </summary>
         /// <returns></returns>
-        public static LiveChartsSettings UseColors(this LiveChartsSettings defaults, IEnumerable<Color> colors)
+        public static LiveChartsSettings UseColors(this LiveChartsSettings settings, IEnumerable<Color> colors)
         {
-            defaults.Colors.Clear();
-            defaults.Colors.AddRange(colors);
-            return defaults;
+            settings.Colors.Clear();
+            settings.Colors.AddRange(colors);
+            return settings;
         }
 
         /// <summary>
         /// Uses Google's material design colors.
         /// </summary>
         /// <returns></returns>
-        public static LiveChartsSettings UseMaterialDesignColors(this LiveChartsSettings defaults)
+        public static LiveChartsSettings UseMaterialDesignColors(this LiveChartsSettings settings)
         {
-            defaults.Colors.Clear();
-            defaults.Colors.AddRange(new[]
+            settings.Colors.Clear();
+
+            settings.Colors.AddRange(new[]
             {
                 // Goolge's material design
                 // https://material.io/guidelines/style/color.html#color-color-palette
@@ -44,17 +44,17 @@ namespace LiveCharts.Core.Config
                 new Color(255, 254, 140, 43), // orange       600
             });
 
-            return defaults;
+            return settings;
         }
 
         /// <summary>
         /// Uses Microsoft's metro colors.
         /// </summary>
         /// <returns></returns>
-        public static LiveChartsSettings UseMetroColors(this LiveChartsSettings defaults)
+        public static LiveChartsSettings UseMetroColors(this LiveChartsSettings settings)
         {
-            defaults.Colors.Clear();
-            defaults.Colors.AddRange(new[]
+            settings.Colors.Clear();
+            settings.Colors.AddRange(new[]
             {
                 // Microsoft's Metro UI colors
                 new Color(255, 43, 86, 145), // dark blue
@@ -68,17 +68,17 @@ namespace LiveCharts.Core.Config
                 new Color(255, 0, 168, 166)  // teal
             });
 
-            return defaults;
+            return settings;
         }
 
         /// <summary>
         /// Uses a white scale colors.
         /// </summary>
         /// <returns></returns>
-        public static LiveChartsSettings UseWhiteScaleColors(this LiveChartsSettings defaults)
+        public static LiveChartsSettings UseWhiteScaleColors(this LiveChartsSettings settings)
         {
-            defaults.Colors.Clear();
-            defaults.Colors.AddRange(new[]
+            settings.Colors.Clear();
+            settings.Colors.AddRange(new[]
             {
                 new Color(255, 245, 245, 245),
                 new Color(255, 215, 215, 215),
@@ -87,17 +87,17 @@ namespace LiveCharts.Core.Config
                 new Color(255, 140, 140, 140)
             });
 
-            return defaults;
+            return settings;
         }
 
         /// <summary>
         /// Uses a black scale colors.
         /// </summary>
         /// <returns></returns>
-        public static LiveChartsSettings UseBlackScaleColors(this LiveChartsSettings defaults)
+        public static LiveChartsSettings UseBlackScaleColors(this LiveChartsSettings settings)
         {
-            defaults.Colors.Clear();
-            defaults.Colors.AddRange(new[]
+            settings.Colors.Clear();
+            settings.Colors.AddRange(new[]
             {
                 new Color(255, 30, 30, 30),
                 new Color(255, 65, 65, 65),
@@ -106,17 +106,17 @@ namespace LiveCharts.Core.Config
                 new Color(255, 140, 140, 140)
             });
 
-            return defaults;
+            return settings;
         }
 
         /// <summary>
         /// Uses a blue scale colors.
         /// </summary>
         /// <returns></returns>
-        public static LiveChartsSettings UseBlueScaleColors(this LiveChartsSettings defaults)
+        public static LiveChartsSettings UseBlueScaleColors(this LiveChartsSettings settings)
         {
-            defaults.Colors.Clear();
-            defaults.Colors.AddRange(new[]
+            settings.Colors.Clear();
+            settings.Colors.AddRange(new[]
             {
                 // Goolge's material design
                 // https://material.io/guidelines/style/color.html#color-color-palette
@@ -128,7 +128,7 @@ namespace LiveCharts.Core.Config
                 new Color(255, 89, 177, 241), // blue 300
             });
 
-            return defaults;
+            return settings;
         }
     }
 }

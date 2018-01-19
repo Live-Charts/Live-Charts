@@ -4,7 +4,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using LiveCharts.Core.Abstractions;
 
-namespace LiveCharts.Wpf.Defaults
+namespace LiveCharts.Wpf.PointViews
 {
     /// <summary>
     /// a default label for a point.

@@ -5,8 +5,8 @@ using System.ComponentModel;
 using System.Linq;
 using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Charts;
-using LiveCharts.Core.Config;
 using LiveCharts.Core.Data;
+using LiveCharts.Core.DefaultSettings;
 using LiveCharts.Core.Dimensions;
 using LiveCharts.Core.Drawing;
 using LiveCharts.Core.Drawing.Svg;
@@ -28,12 +28,36 @@ namespace LiveCharts.Core.Series
         /// </summary>
         protected Series(string key)
         {
-            Geometry = Geometry.Empty;
+            Metadata = LiveChartsSettings.GetSeriesSettings(key);
+            DataLabelsFont = Metadata.Font;
+            Geometry = Metadata.Geometry;
             Fill = Color.Empty;
             Stroke = Color.Empty;
             IsVisible = true;
             Key = key;
         }
+
+        #region known series
+
+        /// <summary>
+        /// All the series.
+        /// </summary>
+        public const string All = "All";
+
+        /// <summary>
+        /// The column series key.
+        /// </summary>
+        public const string Column = "LiveChartsColumnSeries";
+
+        /// <summary>
+        /// Gets the line series key.
+        /// </summary>
+        /// <value>
+        /// The line series.
+        /// </value>
+        public const string Line = "LiveChartsLineSeries";
+
+        #endregion
 
         /// <summary>
         /// Gets the key.
@@ -42,6 +66,14 @@ namespace LiveCharts.Core.Series
         /// The key.
         /// </value>
         public string Key { get; }
+
+        /// <summary>
+        /// Gets the meta data.
+        /// </summary>
+        /// <value>
+        /// The meta data.
+        /// </value>
+        public SeriesSettings Metadata { get; }
 
         /// <summary>
         /// Gets the used by.
@@ -429,7 +461,7 @@ namespace LiveCharts.Core.Series
                 }
                 if (Fill == Color.Empty)
                 {
-                    Fill = nextColor.SetOpacity(LiveChartsSettings.GetSeriesDefault(Key).FillOpacity);
+                    Fill = nextColor.SetOpacity(Metadata.FillOpacity);
                 }
             }
 

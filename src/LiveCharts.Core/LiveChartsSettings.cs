@@ -1,10 +1,11 @@
 using System;
 using System.Collections.Generic;
 using LiveCharts.Core.Abstractions;
-using LiveCharts.Core.Config;
 using LiveCharts.Core.Coordinates;
 using LiveCharts.Core.Data;
+using LiveCharts.Core.DefaultSettings;
 using LiveCharts.Core.Drawing;
+using LiveCharts.Core.Drawing.Svg;
 
 namespace LiveCharts.Core
 {
@@ -13,12 +14,29 @@ namespace LiveCharts.Core
     /// </summary>
     public class LiveChartsSettings
     {
-        private static readonly Dictionary<string, SeriesDefault> SeriesDefaults =
-            new Dictionary<string, SeriesDefault>();
+        private static readonly Dictionary<string, SeriesSettings> SeriesDefaults =
+            new Dictionary<string, SeriesSettings>
+            {
+                [Series.Series.All] = new SeriesSettings
+                {
+                    Geometry = Geometry.Circle,
+                    FillOpacity = .8,
+                    Font = new Font
+                    {
+                        FamilyName = "Arial",
+                        Size = 10,
+                        Style = FontStyles.Regular,
+                        Weight = FontWeight.Regular
+                    }
+                }
+            };
 
         private static readonly Dictionary<Tuple<Type, Type>, object> DefaultMappers =
             new Dictionary<Tuple<Type, Type>, object>();
 
+        /// <summary>
+        /// Initializes the <see cref="LiveChartsSettings"/> class.
+        /// </summary>
         static LiveChartsSettings()
         {
             Current = new LiveChartsSettings();
@@ -33,20 +51,20 @@ namespace LiveCharts.Core
         }
 
         /// <summary>
-        /// Gets the current settings.
-        /// </summary>
-        /// <value>
-        /// The current.
-        /// </value>
-        public static LiveChartsSettings Current { get; }
-
-        /// <summary>
         /// Gets the default colors.
         /// </summary>
         /// <value>
         /// The colors.
         /// </value>
         internal List<Color> Colors { get; }
+
+        /// <summary>
+        /// Gets the current settings.
+        /// </summary>
+        /// <value>
+        /// The current.
+        /// </value>
+        public static LiveChartsSettings Current { get; }
 
         /// <summary>
         /// Gets the drawing provider.
@@ -64,23 +82,7 @@ namespace LiveCharts.Core
         /// </value>
         public IDataFactory DataFactory { get; set; }
 
-        /// <summary>
-        /// Returns a builder for the specified series unique name.
-        /// </summary>
-        /// <param name="seriesKey">the series unique name.</param>
-        /// <param name="builder">the builder.</param>
-        /// <returns></returns>
-        public LiveChartsSettings Series(string seriesKey, Action<SeriesDefault> builder)
-        {
-            if (SeriesDefaults.ContainsKey(seriesKey))
-            {
-                return Current;
-            }
-            var newDefaults = new SeriesDefault(seriesKey);
-            builder(newDefaults);
-            SeriesDefaults[seriesKey] = newDefaults;
-            return Current;
-        }
+        #region Register types
 
         /// <summary>
         /// Defines a plot map for a given type.
@@ -152,6 +154,8 @@ namespace LiveCharts.Core
             return PlotAs(predicate);
         }
 
+        #endregion
+
         /// <summary>
         /// Gets the default mapper for the pair TModel, TCoordinate.
         /// </summary>
@@ -175,11 +179,31 @@ namespace LiveCharts.Core
         /// </summary>
         /// <param name="seriesKey">The series key.</param>
         /// <returns></returns>
-        public static SeriesDefault GetSeriesDefault(string seriesKey)
+        public static SeriesSettings GetSeriesSettings(string seriesKey)
         {
-            return !SeriesDefaults.TryGetValue(seriesKey, out SeriesDefault defaults)
-                ? new SeriesDefault(seriesKey)
+            return !SeriesDefaults.TryGetValue(seriesKey, out SeriesSettings defaults)
+                ? SeriesDefaults[Series.Series.All]
                 : defaults;
+        }
+
+        /// <summary>
+        /// Returns a builder for the specified series unique name.
+        /// </summary>
+        /// <param name="seriesKey">the series unique name.</param>
+        /// <param name="builder">the builder.</param>
+        /// <returns></returns>
+        public LiveChartsSettings SetSeriesSettings(string seriesKey, Action<SeriesSettings> builder)
+        {
+            if (SeriesDefaults.ContainsKey(seriesKey))
+            {
+                return Current;
+            }
+
+            var newDefaults = SeriesDefaults[Series.Series.All];
+            builder(newDefaults);
+            SeriesDefaults[seriesKey] = newDefaults;
+
+            return Current;
         }
 
         /// <summary>

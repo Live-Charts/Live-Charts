@@ -5,7 +5,6 @@ using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Coordinates;
 using LiveCharts.Core.Data;
 using LiveCharts.Core.ViewModels;
-using LiveCharts.Wpf.Defaults;
 using LiveCharts.Wpf.PointViews;
 using LiveCharts.Wpf.Separators;
 using Brushes = System.Windows.Media.Brushes;

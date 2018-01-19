@@ -3,7 +3,7 @@ using LiveCharts.Core.Charts;
 using LiveCharts.Core.Data;
 using LiveCharts.Core.Drawing;
 
-namespace LiveCharts.Core.Config
+namespace LiveCharts.Core.DefaultSettings
 {
     /// <summary>
     /// A set of useful extensions.

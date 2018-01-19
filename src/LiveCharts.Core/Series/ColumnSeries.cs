@@ -20,7 +20,7 @@ namespace LiveCharts.Core.Series
         /// Initializes a new instance of the <see cref="ColumnSeries{TModel}"/> class.
         /// </summary>
         public ColumnSeries()
-            : base(SeriesConstants.Column)
+            : base(Column)
         {
         }
 
@@ -49,7 +49,7 @@ namespace LiveCharts.Core.Series
 
             var xUnitWidth = chart.ScaleToUi(x.Unit, x) - ColumnPadding;
             var columnSeries = chart.Series
-                .Where(series => series.Key == SeriesConstants.Column)
+                .Where(series => series.Key == Column)
                 .ToList();
             var singleColumnWidth = xUnitWidth / columnSeries.Count;
 

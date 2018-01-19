@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
 using LiveCharts.Core.Abstractions;
-using LiveCharts.Core.Config;
+using LiveCharts.Core.DefaultSettings;
 
 namespace LiveCharts.Core.Data
 {

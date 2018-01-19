@@ -20,9 +20,9 @@ namespace LiveCharts.Core.Series
         /// Initializes a new instance of the <see cref="LineSeries{TModel, TPoint, TView}"/> class.
         /// </summary>
         protected LineSeries()
-            : base(SeriesConstants.Line)
+            : base(Line)
         {
-            PointGeometry = LiveChartsSettings.GetSeriesDefault(SeriesConstants.Line).Geometry;
+            PointGeometry = LiveChartsSettings.GetSeriesSettings(Line).Geometry;
         }
 
         /// <summary>

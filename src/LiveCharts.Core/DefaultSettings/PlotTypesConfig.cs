@@ -1,8 +1,7 @@
 ﻿using LiveCharts.Core.Coordinates;
-using LiveCharts.Core.Data;
 using LiveCharts.Core.Defaults;
 
-namespace LiveCharts.Core.Config
+namespace LiveCharts.Core.DefaultSettings
 {
     /// <summary>
     /// Primitive types configuration.
@@ -12,22 +11,22 @@ namespace LiveCharts.Core.Config
         /// <summary>
         /// Configures LiveCharts to plot C# primitive types.
         /// </summary>
-        /// <param name="charting">The configuration.</param>
+        /// <param name="settings">The configuration.</param>
         /// <returns></returns>
-        public static LiveChartsSettings PlotPrimitiveTypes(this LiveChartsSettings charting)
+        public static LiveChartsSettings PlotPrimitiveTypes(this LiveChartsSettings settings)
         {
-            charting.Has2DPlotFor<short>((value, index) => new Point2D(index, value));
+            settings.Has2DPlotFor<short>((value, index) => new Point2D(index, value));
             // in the previous line, since we knew the cartesian coordinate type is Point2D
             // we could also use the following syntax =>
             // charting.PlotAs<short, Point2D>((value, index) => new Point2D());
-            charting.Has2DPlotFor<ushort>((value, index) => new Point2D(index, value));
-            charting.Has2DPlotFor<int>((value, index) => new Point2D(index, value));
-            charting.Has2DPlotFor<long>((value, index) => new Point2D(index, value));
-            charting.Has2DPlotFor<ulong>((value, index) => new Point2D(index, value));
-            charting.Has2DPlotFor<double>((value, index) => new Point2D(index, value));
-            charting.Has2DPlotFor<float>((value, index) => new Point2D(index, value));
+            settings.Has2DPlotFor<ushort>((value, index) => new Point2D(index, value));
+            settings.Has2DPlotFor<int>((value, index) => new Point2D(index, value));
+            settings.Has2DPlotFor<long>((value, index) => new Point2D(index, value));
+            settings.Has2DPlotFor<ulong>((value, index) => new Point2D(index, value));
+            settings.Has2DPlotFor<double>((value, index) => new Point2D(index, value));
+            settings.Has2DPlotFor<float>((value, index) => new Point2D(index, value));
 
-            return charting;
+            return settings;
         }
 
         /// <summary>

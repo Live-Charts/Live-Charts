@@ -1,38 +1,23 @@
 ﻿using LiveCharts.Core;
-using LiveCharts.Core.Config;
 using LiveCharts.Core.Data;
-using LiveCharts.Core.Drawing.Svg;
+using LiveCharts.Core.DefaultSettings;
 
 namespace LiveCharts.Wpf
 {
     public static class Config
     {
-        public static LiveChartsSettings UseWpf(this LiveChartsSettings defaults)
+        public static LiveChartsSettings UseWpf(this LiveChartsSettings settings)
         {
-            defaults.DataFactory = new DefaultDataFactory();
-            defaults.UiProvider = new UiProvider();
+            settings.DataFactory = new DefaultDataFactory();
+            settings.UiProvider = new UiProvider();
 
-            defaults.Series(
-                SeriesConstants.Line,
-                seriesDefault =>
-                {
-                    seriesDefault.FillOpacity = .35;
-                    seriesDefault.Geometry = Geometry.HorizontalLine;
-                });
-
-            defaults.Series(
-                SeriesConstants.Column,
-                seriesDefault =>
-                {
-                    seriesDefault.FillOpacity = .8;
-                    seriesDefault.Geometry = Geometry.Square;
-                });
-
-            defaults.PlotPrimitiveTypes()
+            settings
+                .UseDefaultSeriesSettings()
+                .PlotPrimitiveTypes()
                 .PlotDefaultTypes()
                 .UseMaterialDesignColors();
 
-            return defaults;
+            return settings;
         }
     }
 }

@@ -23,6 +23,7 @@ namespace LiveCharts.Core.Dimensions
             LabelFormatter = Builders.AsMetricNumber;
             MinValue = double.NaN;
             MaxValue = double.NaN;
+            Font = LiveChartsSettings.GetSeriesSettings(Series.Series.All).Font;
         }
 
         /// <summary>

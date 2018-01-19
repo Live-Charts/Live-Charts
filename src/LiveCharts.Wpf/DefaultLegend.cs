@@ -66,7 +66,7 @@ namespace LiveCharts.Wpf
             foreach (var series in seriesCollection)
             {
                 var g = series.Geometry == Core.Drawing.Svg.Geometry.Empty
-                    ? LiveChartsSettings.GetSeriesDefault(series.Key).Geometry
+                    ? LiveChartsSettings.GetSeriesSettings(series.Key).Geometry
                     : series.Geometry;
 
                 Children.Add(new StackPanel
