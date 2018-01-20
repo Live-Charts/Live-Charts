@@ -6,10 +6,11 @@
         xmlns:local="clr-namespace:Samples.Wpf"
         xmlns:wpf="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
         mc:Ignorable="d"
-        Title="MainWindow" Height="250" Width="250"
+        Title="MainWindow" 
+        Height="500" Width="500"
         Name="This"
         d:DataContext="{Binding ElementName=This}">
 
-    <wpf:CartesianChart Height="200" Series="{Binding}"></wpf:CartesianChart>
+    <wpf:CartesianChart Series="{Binding}"></wpf:CartesianChart>
 
 </Window>

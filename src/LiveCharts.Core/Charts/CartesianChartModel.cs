@@ -33,6 +33,16 @@ namespace LiveCharts.Core.Charts
         /// </value>
         public IList<Plane> YAxis => View.Dimensions[1];
 
+        /// <summary>
+        /// Gets the width of the unit.
+        /// </summary>
+        /// <param name="plane">The plane.</param>
+        /// <returns></returns>
+        public double GetUnitWidth(Plane plane)
+        {
+            return Math.Abs(ScaleToUi(0, plane) - ScaleToUi(plane.Unit, plane));
+        }
+
         /// <inheritdoc />
         public override double ScaleToUi(double value, Plane plane, Size? size = null)
         {

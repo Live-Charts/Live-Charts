@@ -32,14 +32,15 @@ namespace LiveCharts.Wpf.Separators
                 Line = new Line();
                 wpfChart.DrawArea.Children.Add(Line);
                 Line.Animate()
-                    .WithSpeed(speed)
+                    .AtSpeed(speed)
                     .Property(line => line.Opacity, 0, 1);
             }
 
             Line.Stroke = Brushes.Black;
+            Line.StrokeThickness = 2;
 
             var animation = Line.Animate()
-                .WithSpeed(speed)
+                .AtSpeed(speed)
                 .Property(line => line.X1, point1.X)
                 .Property(line => line.X2, point2.X)
                 .Property(line => line.Y1, point1.Y)
@@ -54,6 +55,8 @@ namespace LiveCharts.Wpf.Separators
                         animation = null;
                     });
             }
+
+            animation.Run();
         }
 
         public object UpdateId { get; set; }

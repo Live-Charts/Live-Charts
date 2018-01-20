@@ -47,7 +47,7 @@ namespace LiveCharts.Wpf
             _storyboard.Begin();
         }
 
-        public Animation<T> WithSpeed(TimeSpan speedSpan)
+        public Animation<T> AtSpeed(TimeSpan speedSpan)
         {
             _speed = speedSpan;
             return this;

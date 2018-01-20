@@ -49,7 +49,7 @@ namespace LiveCharts.Core.Series
             var x = cartesianChart.XAxis[ScalesXAt];
             var y = cartesianChart.YAxis[ScalesYAt];
 
-            var xUnitWidth = chart.ScaleToUi(x.Unit, x) - ColumnPadding;
+            var xUnitWidth = cartesianChart.GetUnitWidth(x) - ColumnPadding;
             var columnSeries = chart.Series
                 .Where(series => series.Key == Column)
                 .ToList();
