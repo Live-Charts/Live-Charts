@@ -128,6 +128,7 @@ namespace LiveCharts.Core.Dimensions
                 {
                     separator.Move(new Point(0, iui), new Point(chart.DrawAreaSize.Width, iui), false, chart.View);
                 }
+                chart.RegisterResource(separator);
             }
         }
 

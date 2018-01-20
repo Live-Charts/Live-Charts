@@ -254,11 +254,11 @@ namespace LiveCharts.Core.Charts
             disposable.UpdateId = UpdateId;
         }
 
-        internal void CollectResources()
+        internal void CollectResources(bool collectAll = false)
         {
             foreach (var disposable in _resources.ToArray())
             {
-                if (disposable.UpdateId == UpdateId) continue;
+                if (!collectAll && disposable.UpdateId == UpdateId) continue;
                 disposable.Dispose(View);
                 _resources.Remove(disposable);
             }

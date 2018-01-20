@@ -76,7 +76,7 @@ namespace LiveCharts.Core.Charts
             {
                 // skip update if the chart is too small.
                 // and lets delete its content...
-                CollectResources();
+                CollectResources(true);
                 return;
             }
 
@@ -102,15 +102,7 @@ namespace LiveCharts.Core.Charts
                 series.UpdateView(this);
             }
 
-            //foreach (var series in Chart.View.ActualSeries)
-            //{
-            //    series.OnSeriesUpdateStart();
-            //    series.ActualValues.InitializeStep(series);
-            //    series.Model.Update();
-            //    series.ActualValues.CollectGarbage(series);
-            //    series.OnSeriesUpdatedFinish();
-            //    series.PlaceSpecializedElements();
-            //}
+           CollectResources();
         }
 
         internal Margin EvaluateAxisAndGetDrawMargin()
