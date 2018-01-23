@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Coordinates;
 using LiveCharts.Core.Data;
-using LiveCharts.Core.DefaultSettings;
 using LiveCharts.Core.Drawing;
 using LiveCharts.Core.Drawing.Svg;
+using LiveCharts.Core.Styles;
 
 namespace LiveCharts.Core
 {
@@ -14,20 +14,24 @@ namespace LiveCharts.Core
     /// </summary>
     public class LiveChartsSettings
     {
-        private static readonly Dictionary<string, SeriesSettings> SeriesDefaults =
-            new Dictionary<string, SeriesSettings>
+        private static readonly Dictionary<string, Style> Styles =
+            new Dictionary<string, Style>
             {
-                [Series.Series.All] = new SeriesSettings
+                ["Default"] = new Style
                 {
+                    Font = new Font("Arial", 11, FontStyles.Regular, FontWeight.Regular),
+                    Fill = Color.Empty,
+                    Stroke = Color.Empty,
+                    StrokeThickness = 1
+                },
+                ["DefaultSeries"] = new SeriesStyle
+                {
+                    Font = new Font("Arial", 11, FontStyles.Regular, FontWeight.Regular),
+                    Fill = Color.Empty,
+                    Stroke = Color.Empty,
+                    StrokeThickness = 1,
                     Geometry = Geometry.Circle,
-                    FillOpacity = .8,
-                    Font = new Font
-                    {
-                        FamilyName = "Arial",
-                        Size = 10,
-                        Style = FontStyles.Regular,
-                        Weight = FontWeight.Regular
-                    }
+                    DefaultFillOpacity = .8
                 }
             };
 
@@ -168,7 +172,7 @@ namespace LiveCharts.Core
             var modelType = typeof(TModel);
             var coordinateType = typeof(TCoordinate);
             var key = new Tuple<Type, Type>(modelType, coordinateType);
-            if (DefaultMappers.TryGetValue(key, out object mapper)) return (ModelToPointMapper<TModel, TCoordinate>) mapper;
+            if (DefaultMappers.TryGetValue(key, out var mapper)) return (ModelToPointMapper<TModel, TCoordinate>) mapper;
             throw new LiveChartsException(
                 $"LiveCharts was not able to map from '{modelType.Name}' to " +
                 $"'{coordinateType.Name}' ensure you configured properly the type you are trying to plot.", 100);
@@ -177,32 +181,49 @@ namespace LiveCharts.Core
         /// <summary>
         /// Gets the default for a given series.
         /// </summary>
-        /// <param name="seriesKey">The series key.</param>
+        /// <param name="selector">The series key.</param>
+        /// <param name="default">The selector to use when the current selector was not found.</param>
         /// <returns></returns>
-        public static SeriesSettings GetSeriesSettings(string seriesKey)
+        public static Style GetStyle(string selector, string @default = "Default")
         {
-            return !SeriesDefaults.TryGetValue(seriesKey, out SeriesSettings defaults)
-                ? SeriesDefaults[Series.Series.All]
-                : defaults;
+            return !Styles.TryGetValue(selector, out var style)
+                ? Styles[@default]
+                : style;
         }
 
         /// <summary>
-        /// Returns a builder for the specified series unique name.
+        /// Returns a style builder for the specified selector.
         /// </summary>
-        /// <param name="seriesKey">the series unique name.</param>
+        /// <param name="selector">the series unique name.</param>
         /// <param name="builder">the builder.</param>
         /// <returns></returns>
-        public LiveChartsSettings SetSeriesSettings(string seriesKey, Action<SeriesSettings> builder)
+        public LiveChartsSettings SetStyle(string selector, Action<Style> builder)
         {
-            if (SeriesDefaults.ContainsKey(seriesKey))
+            if (!Styles.ContainsKey(selector))
             {
+                Styles[selector] = Styles["Default"];
                 return Current;
             }
 
-            var newDefaults = SeriesDefaults[Series.Series.All];
-            builder(newDefaults);
-            SeriesDefaults[seriesKey] = newDefaults;
+            builder(Styles[selector]);
+            return Current;
+        }
 
+        /// <summary>
+        /// Returns a style builder for the specified selector.
+        /// </summary>
+        /// <param name="selector">the series unique name.</param>
+        /// <param name="builder">the builder.</param>
+        /// <returns></returns>
+        public LiveChartsSettings SetStyle(string selector, Action<SeriesStyle> builder)
+        {
+            if (!Styles.ContainsKey(selector))
+            {
+                Styles[selector] = Styles["DefaultSeries"];
+                return Current;
+            }
+
+            builder((SeriesStyle) Styles[selector]);
             return Current;
         }
 

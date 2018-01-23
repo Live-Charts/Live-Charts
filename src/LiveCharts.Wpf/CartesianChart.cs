@@ -1,11 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
 using System.Windows;
-using LiveCharts.Core;
+using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Charts;
+using LiveCharts.Core.DataSeries;
 using LiveCharts.Core.Dimensions;
-using LiveCharts.Core.Series;
 
 namespace LiveCharts.Wpf
 {
@@ -21,14 +20,8 @@ namespace LiveCharts.Wpf
         {
             Model = new CartesianChartModel(this);
             SetValue(SeriesProperty, new ObservableCollection<Series>());
-            SetValue(XAxisProperty, new ObservableCollection<Plane>
-            {
-                new Axis()
-            });
-            SetValue(YAxisProperty, new ObservableCollection<Plane>
-            {
-                new Axis()
-            });
+            SetValue(XAxisProperty, new ObservableCollection<Axis> {new Axis()});
+            SetValue(YAxisProperty, new ObservableCollection<Axis> {new Axis()});
         }
 
         #region Dependency properties
@@ -38,14 +31,14 @@ namespace LiveCharts.Wpf
         /// </summary>
         public static readonly DependencyProperty XAxisProperty = DependencyProperty.Register(
             nameof(XAxis), typeof(IList<Plane>), typeof(CartesianChart),
-            new PropertyMetadata(null, BuildInstanceChangedCallback(p => p.XAxis, nameof(XAxis))));
+            new PropertyMetadata(null, RaiseOnPropertyChanged(nameof(IChartView.Dimensions))));
 
         /// <summary>
         /// The y axis property
         /// </summary>
         public static readonly DependencyProperty YAxisProperty = DependencyProperty.Register(
             nameof(YAxis), typeof(IList<Plane>), typeof(CartesianChart),
-            new PropertyMetadata(null, BuildInstanceChangedCallback(p => p.YAxis, nameof(YAxis))));
+            new PropertyMetadata(null, RaiseOnPropertyChanged(nameof(IChartView.Dimensions))));
 
         #endregion
 
@@ -80,13 +73,6 @@ namespace LiveCharts.Wpf
         /// <inheritdoc cref="Chart.GetPlanes"/>
         protected override IList<IList<Plane>> GetPlanes()
         {
-            if (XAxis == null || !XAxis.Any() ||
-                YAxis == null || !YAxis.Any())
-            {
-                throw new LiveChartsException(
-                    "No axis was found, please ensure your chart contains at least an axis.", 190);
-            }
-
             return new List<IList<Plane>>
             {
                 XAxis,

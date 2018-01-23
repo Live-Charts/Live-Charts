@@ -1,23 +1,45 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace LiveCharts.Core.Abstractions
+﻿namespace LiveCharts.Core.Abstractions
 {
     /// <summary>
     /// A font abstraction.
     /// </summary>
     public struct Font
     {
+        private readonly bool _isEmpty;
+
+        private Font(bool isEmpty) : this()
+        {
+            _isEmpty = isEmpty;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Font"/> struct.
+        /// </summary>
+        /// <param name="familyName">Name of the family.</param>
+        /// <param name="size">The size.</param>
+        /// <param name="style">The style.</param>
+        /// <param name="weight">The weight.</param>
+        public Font(string familyName, double size, FontStyles style, FontWeight weight)
+        {
+            _isEmpty = false;
+            FamilyName = familyName;
+            Size = size;
+            Style = style;
+            Weight = weight;
+        }
+
+        /// <summary>
+        /// An empty font.
+        /// </summary>
+        public static Font Empty = new Font(true);
+
         /// <summary>
         /// Gets or sets the font family.
         /// </summary>
         /// <value>
         /// The font family.
         /// </value>
-        public string FamilyName { get; set; }
+        public string FamilyName { get; }
 
         /// <summary>
         /// Gets or sets the size of the font.
@@ -25,7 +47,7 @@ namespace LiveCharts.Core.Abstractions
         /// <value>
         /// The size of the font.
         /// </value>
-        public double Size { get; set; }
+        public double Size { get; }
 
         /// <summary>
         /// Gets or sets the font style.
@@ -33,7 +55,7 @@ namespace LiveCharts.Core.Abstractions
         /// <value>
         /// The font style.
         /// </value>
-        public FontStyles Style { get; set; }
+        public FontStyles Style { get; }
 
         /// <summary>
         /// Gets or sets the weight.
@@ -41,6 +63,84 @@ namespace LiveCharts.Core.Abstractions
         /// <value>
         /// The weight.
         /// </value>
-        public FontWeight Weight { get; set; }
+        public FontWeight Weight { get; }
+
+        /// <summary>
+        /// Determines whether the specified <see cref="System.Object" />, is equal to this instance.
+        /// </summary>
+        /// <param name="obj">The <see cref="System.Object" /> to compare with this instance.</param>
+        /// <returns>
+        ///   <c>true</c> if the specified <see cref="System.Object" /> is equal to this instance; otherwise, <c>false</c>.
+        /// </returns>
+        public override bool Equals(object obj)
+        {
+            if (!(obj is Font))
+            {
+                return false;
+            }
+
+            var font = (Font)obj;
+            return _isEmpty == font._isEmpty &&
+                   FamilyName == font.FamilyName &&
+                   // ReSharper disable once CompareOfFloatsByEqualityOperator
+                   Size == font.Size &&
+                   Style == font.Style &&
+                   Weight == font.Weight;
+        }
+
+        /// <summary>
+        /// Compares with the specified element.
+        /// </summary>
+        /// <param name="other">The other.</param>
+        /// <returns></returns>
+        public bool Equals(Font other)
+        {
+            return _isEmpty == other._isEmpty && string.Equals(FamilyName, other.FamilyName) && Size.Equals(other.Size) && Style == other.Style && Weight == other.Weight;
+        }
+
+        /// <summary>
+        /// Returns a hash code for this instance.
+        /// </summary>
+        /// <returns>
+        /// A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table. 
+        /// </returns>
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = _isEmpty.GetHashCode();
+                hashCode = (hashCode * 397) ^ (FamilyName != null ? FamilyName.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ Size.GetHashCode();
+                hashCode = (hashCode * 397) ^ (int) Style;
+                hashCode = (hashCode * 397) ^ (int) Weight;
+                return hashCode;
+            }
+        }
+
+        /// <summary>
+        /// Implements the operator ==.
+        /// </summary>
+        /// <param name="f1">The f1.</param>
+        /// <param name="f2">The f2.</param>
+        /// <returns>
+        /// The result of the operator.
+        /// </returns>
+        public static bool operator ==(Font f1, Font f2)
+        {
+            return Equals(f1, f2);
+        }
+
+        /// <summary>
+        /// Implements the operator !=.
+        /// </summary>
+        /// <param name="f1">The f1.</param>
+        /// <param name="f2">The f2.</param>
+        /// <returns>
+        /// The result of the operator.
+        /// </returns>
+        public static bool operator !=(Font f1, Font f2)
+        {
+            return !(f1 == f2);
+        }
     }
 }

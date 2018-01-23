@@ -5,9 +5,10 @@ using LiveCharts.Core.Charts;
 using LiveCharts.Core.Coordinates;
 using LiveCharts.Core.Data;
 using LiveCharts.Core.Drawing;
+using LiveCharts.Core.Styles;
 using LiveCharts.Core.ViewModels;
 
-namespace LiveCharts.Core.Series
+namespace LiveCharts.Core.DataSeries
 {
     /// <summary>
     /// A Column series.
@@ -20,7 +21,7 @@ namespace LiveCharts.Core.Series
         /// Initializes a new instance of the <see cref="ColumnSeries{TModel}"/> class.
         /// </summary>
         public ColumnSeries()
-            : base(Column)
+            : base(LiveChartsSelectors.Column)
         {
             MaxColumnWidth = 45;
             ColumnPadding = 2;
@@ -48,10 +49,11 @@ namespace LiveCharts.Core.Series
             var cartesianChart = (CartesianChartModel) chart;
             var x = cartesianChart.XAxis[ScalesXAt];
             var y = cartesianChart.YAxis[ScalesYAt];
+            var style = (SeriesStyle) Style;
 
             var xUnitWidth = cartesianChart.GetUnitWidth(x) - ColumnPadding;
             var columnSeries = chart.Series
-                .Where(series => series.Key == Column)
+                .Where(series => series.Selector == LiveChartsSelectors.Column)
                 .ToList();
             var singleColumnWidth = xUnitWidth / columnSeries.Count;
 
@@ -107,8 +109,8 @@ namespace LiveCharts.Core.Series
                             zero,
                             LiveChartsSettings.Current.UiProvider.MeasureString(
                                 Mapper.PointPredicate(current.Model),
-                                DataLabelsFont),
-                            DataLabelsPosition),
+                                style.Font),
+                            style.DataLabelsPosition),
                         chart.View);
                 }
 

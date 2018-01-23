@@ -43,8 +43,8 @@ namespace LiveCharts.Wpf.PointViews
                 Shape.Height = 0;
             }
 
-            Shape.Stroke = point.Series.Stroke.AsSolidColorBrush();
-            Shape.Fill = point.Series.Fill.AsSolidColorBrush();
+            Shape.Stroke = point.Series.Style.Stroke.AsSolidColorBrush();
+            Shape.Fill = point.Series.Style.Fill.AsSolidColorBrush();
 
             var speed = chart.AnimationsSpeed;
 
@@ -54,7 +54,7 @@ namespace LiveCharts.Wpf.PointViews
                 .Property(Canvas.TopProperty, viewModel.Top)
                 .Property(shape => shape.Width, viewModel.Width)
                 .Property(shape => shape.Height, viewModel.Height)
-                .Run();
+                .Start();
         }
 
         /// <inheritdoc />

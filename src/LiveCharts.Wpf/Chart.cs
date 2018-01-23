@@ -1,14 +1,16 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using LiveCharts.Core;
 using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Charts;
+using LiveCharts.Core.DataSeries;
 using LiveCharts.Core.Dimensions;
 using LiveCharts.Core.Drawing;
-using LiveCharts.Core.Series;
 using Size = LiveCharts.Core.Drawing.Size;
 
 namespace LiveCharts.Wpf
@@ -39,60 +41,32 @@ namespace LiveCharts.Wpf
         /// </summary>
         public static readonly DependencyProperty SeriesProperty = DependencyProperty.Register(
             nameof(Series), typeof(IEnumerable<Series>), typeof(Chart),
-            new PropertyMetadata(null, BuildInstanceChangedCallback(p => p.Series, nameof(Series))));
+            new PropertyMetadata(null, RaiseOnPropertyChanged(nameof(Series))));
 
         /// <summary>
         /// The animations speed property, default value is 250 milliseconds.
         /// </summary>
         public static readonly DependencyProperty AnimationsSpeedProperty = DependencyProperty.Register(
             nameof(AnimationsSpeed), typeof(TimeSpan), typeof(Chart),
-            new PropertyMetadata(TimeSpan.FromMilliseconds(250), ChartUpdaterFreqChangedCallback));
+            new PropertyMetadata(TimeSpan.FromMilliseconds(250), RaiseOnPropertyChanged(nameof(AnimationsSpeed))));
 
         /// <summary>
         /// The legend property, default is DefaultLegend class.
         /// </summary>
         public static readonly DependencyProperty LegendProperty = DependencyProperty.Register(
             nameof(Legend), typeof(ILegend), typeof(Chart),
-            new PropertyMetadata(null));
+            new PropertyMetadata(null, RaiseOnPropertyChanged(nameof(Legend))));
 
         /// <summary>
         /// The legend position property
         /// </summary>
         public static readonly DependencyProperty LegendPositionProperty = DependencyProperty.Register(
             nameof(LegendPosition), typeof(LegendPositions), typeof(Chart),
-            new PropertyMetadata(LegendPositions.None));
+            new PropertyMetadata(LegendPositions.None, RaiseOnPropertyChanged(nameof(LegendPosition))));
 
         #endregion
 
         #region private and protected methods
-
-        /// <summary>
-        /// Builds the instance changed callback.
-        /// </summary>
-        /// <param name="getter">The getter.</param>
-        /// <param name="propertyName">Name of the property.</param>
-        /// <returns></returns>
-        protected static PropertyChangedCallback BuildInstanceChangedCallback(
-            Func<CartesianChart, object> getter, string propertyName)
-        {
-            return (sender, args) =>
-            {
-                var chart = (CartesianChart) sender;
-                chart.DataInstanceChanged?.Invoke(getter(chart), propertyName);
-            };
-        }
-
-        /// <summary>
-        /// The updater freq changed callback.
-        /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="args">The <see cref="DependencyPropertyChangedEventArgs"/> instance containing the event data.</param>
-        protected static void ChartUpdaterFreqChangedCallback(
-            DependencyObject sender, DependencyPropertyChangedEventArgs args)
-        {
-            var chart = (CartesianChart) sender;
-            chart.UpdaterFrequencyChanged?.Invoke(chart.AnimationsSpeed);
-        }
 
         /// <summary>
         /// Gets the planes in the current chart.
@@ -102,6 +76,21 @@ namespace LiveCharts.Wpf
         protected virtual IList<IList<Plane>> GetPlanes()
         {
             throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Notifies that the specified property changed.
+        /// </summary>
+        /// <param name="propertyName">Name of the property.</param>
+        /// <returns></returns>
+        protected static PropertyChangedCallback RaiseOnPropertyChanged(string propertyName)
+        {
+            return (sender, eventArgs) =>
+            {
+                var chart = (Chart) sender;
+                if (!chart.IsLoaded) return;
+                chart.OnPropertyChanged(propertyName);
+            };
         }
 
         private void OnLoaded(object sender, EventArgs eventArgs)
@@ -124,12 +113,6 @@ namespace LiveCharts.Wpf
         /// <inheritdoc />
         public event Action ChartViewResized;
 
-        /// <inheritdoc cref="IChartView.DataInstanceChanged"/>
-        public event PropertyInstanceChangedHandler DataInstanceChanged;
-
-        /// <inheritdoc cref="IChartView.UpdaterFrequencyChanged"/>
-        public event ChartUpdaterfrequencyChangedHandler UpdaterFrequencyChanged;
-
         /// <inheritdoc cref="IChartView.Model"/>
         public ChartModel Model { get; protected set; }
 
@@ -139,19 +122,8 @@ namespace LiveCharts.Wpf
         /// <inheritdoc cref="IChartView.DrawMargin"/>
         public Margin DrawMargin { get; set; }
 
-        private object _dimensionsUpdateId;
-        private IList<IList<Plane>> _dimensions;
-
-        IList<IList<Plane>> IChartView.Dimensions
-        {
-            get
-            {
-                if (Model.UpdateId == _dimensionsUpdateId) return _dimensions;
-                _dimensions = GetPlanes();
-                _dimensionsUpdateId = Model.UpdateId;
-                return _dimensions;
-            }
-        }
+        /// <inheritdoc />
+        IList<IList<Plane>> IChartView.Dimensions => GetPlanes();
 
         /// <inheritdoc cref="IChartView.Series"/>
         public IEnumerable<Series> Series
@@ -188,6 +160,22 @@ namespace LiveCharts.Wpf
             SetTop(DrawArea, model.Top);
             DrawArea.Width = model.Width;
             DrawArea.Height = model.Height;
+        }
+
+        #endregion
+
+        #region INPC implementation
+
+        /// <inheritdoc />
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        /// <summary>
+        /// Called when [property changed].
+        /// </summary>
+        /// <param name="propertyName">Name of the property.</param>
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         #endregion

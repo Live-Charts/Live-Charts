@@ -1,7 +1,7 @@
 using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Data;
 
-namespace LiveCharts.Core.Series
+namespace LiveCharts.Core.DataSeries
 {
     /// <summary>
     /// 
@@ -19,9 +19,9 @@ namespace LiveCharts.Core.Series
         /// <summary>
         /// Initializes a new instance of the <see cref="CartesianSeries{T,U,V,W}"/> class.
         /// </summary>
-        /// <param name="key">the series type.</param>
-        protected CartesianSeries(string key)
-            : base(key)
+        /// <param name="selector">the series type.</param>
+        protected CartesianSeries(string selector)
+            : base(selector)
         {
             // A cartesian chart has 2 dimensions, X, Y
             // A cartesian chart can have as many axis as the user needs
@@ -50,7 +50,11 @@ namespace LiveCharts.Core.Series
         public int ScalesXAt
         {
             get => ScalesAt[0];
-            set => ScalesAt[0] = value;
+            set
+            {
+                ScalesAt[0] = value;
+                OnPropertyChanged();
+            }
         }
 
         /// <summary>
@@ -62,7 +66,11 @@ namespace LiveCharts.Core.Series
         public int ScalesYAt
         {
             get => ScalesAt[1];
-            set => ScalesAt[1] = value;
+            set
+            {
+                ScalesAt[1] = value; 
+                OnPropertyChanged();
+            }
         }
     }
 }

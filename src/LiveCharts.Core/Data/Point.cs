@@ -20,6 +20,8 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Charts;
 
@@ -32,7 +34,7 @@ namespace LiveCharts.Core.Data
     /// <typeparam name="TCoordinate">The type of the coordinate.</typeparam>
     /// <typeparam name="TViewModel">The type of the view model.</typeparam>
     /// <seealso cref="T:System.IDisposable" />
-    public class Point<TModel, TCoordinate, TViewModel> : IDisposableChartingResource
+    public class Point<TModel, TCoordinate, TViewModel> : IResource
         where TCoordinate : ICoordinate
     {
         /// <summary>
@@ -91,7 +93,7 @@ namespace LiveCharts.Core.Data
         /// <value>
         /// The series.
         /// </value>
-        public Series.Series Series { get; internal set; }
+        public DataSeries.Series Series { get; internal set; }
 
         /// <summary>
         /// Gets the chart that owns the point.
@@ -119,9 +121,9 @@ namespace LiveCharts.Core.Data
             };
         }
 
-        object IDisposableChartingResource.UpdateId { get; set; }
+        object IResource.UpdateId { get; set; }
 
-        void IDisposableChartingResource.Dispose(IChartView view)
+        void IResource.Dispose(IChartView view)
         {
             View.Dispose(view);
         }

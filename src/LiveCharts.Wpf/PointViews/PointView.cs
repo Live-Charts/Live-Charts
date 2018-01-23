@@ -1,11 +1,10 @@
 ﻿using System;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Media;
 using System.Windows.Shapes;
 using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Data;
-using LiveCharts.Core.Drawing;
 using Point = LiveCharts.Core.Drawing.Point;
 
 namespace LiveCharts.Wpf.PointViews
@@ -45,13 +44,14 @@ namespace LiveCharts.Wpf.PointViews
             throw new NotImplementedException();
         }
 
-        /// <inheritdoc cref="Erase"/>
+        /// <inheritdoc cref="Dispose"/>
         protected virtual void OnDispose(IChartView chart)
         {
             throw new NotImplementedException();
         }
 
-        #region OPointView implementation
+        #region ResourceViewImplementation
+
 
         /// <inheritdoc />
         object IPointView<TModel, TPoint, TCoordinate, TViewModel>.VisualElement => Shape;
@@ -71,12 +71,23 @@ namespace LiveCharts.Wpf.PointViews
             OnDrawLabel(point, location, chart);
         }
 
-        object IDisposableChartingResource.UpdateId { get; set; }
+        object IResource.UpdateId { get; set; }
 
         /// <inheritdoc />
         public void Dispose(IChartView view)
         {
             OnDispose(view);
+        }
+
+        #endregion
+
+        #region INPC implementation
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         #endregion

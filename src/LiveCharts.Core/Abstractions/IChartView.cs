@@ -1,28 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using LiveCharts.Core.Charts;
+using LiveCharts.Core.DataSeries;
 using LiveCharts.Core.Dimensions;
 using LiveCharts.Core.Drawing;
 
 namespace LiveCharts.Core.Abstractions
 {
     /// <summary>
-    /// Defines a chart animations speed changed handler.
-    /// </summary>
-    /// <param name="newValue">The new value.</param>
-    public delegate void ChartUpdaterfrequencyChangedHandler(TimeSpan newValue);
-
-    /// <summary>
-    /// Defines a property instance change handler.
-    /// </summary>
-    /// <param name="instance">The instance.</param>
-    /// <param name="propertyName">The property name.</param>
-    public delegate void PropertyInstanceChangedHandler(object instance, string propertyName);
-
-    /// <summary>
     /// Defines a chart view
     /// </summary>
-    public interface IChartView
+    public interface IChartView : INotifyPropertyChanged
     {
         /// <summary>
         /// Occurs when the charts is initialized.
@@ -33,16 +22,6 @@ namespace LiveCharts.Core.Abstractions
         /// Occurs when the chart is resized.
         /// </summary>
         event Action ChartViewResized;
-
-        /// <summary>
-        /// Occurs when the reference of a property related to LiveCharts API changes.
-        /// </summary>
-        event PropertyInstanceChangedHandler DataInstanceChanged;
-
-        /// <summary>
-        /// Occurs when [updater frequency changed].
-        /// </summary>
-        event ChartUpdaterfrequencyChangedHandler UpdaterFrequencyChanged;
 
         /// <summary>
         /// Gets the chart model.
@@ -82,7 +61,7 @@ namespace LiveCharts.Core.Abstractions
         /// <value>
         /// The actual series.
         /// </value>
-        IEnumerable<Series.Series> Series { get; }
+        IEnumerable<Series> Series { get; }
 
         /// <summary>
         /// Gets the animations speed.

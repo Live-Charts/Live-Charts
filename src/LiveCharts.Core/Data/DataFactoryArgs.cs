@@ -1,8 +1,7 @@
 using System.Collections.Generic;
-using System.ComponentModel;
 using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Charts;
-using LiveCharts.Core.Series;
+using LiveCharts.Core.DataSeries;
 
 namespace LiveCharts.Core.Data
 {
@@ -36,13 +35,5 @@ namespace LiveCharts.Core.Data
         /// The chart.
         /// </value>
         public ChartModel Chart { get; set; }
-
-        /// <summary>
-        /// Gets or sets the property changed event handler.
-        /// </summary>
-        /// <value>
-        /// The property changed event handler.
-        /// </value>
-        public PropertyChangedEventHandler PropertyChangedEventHandler { get; set; }
     }
 }

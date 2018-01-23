@@ -1,6 +1,7 @@
-﻿using System.Windows.Media;
+﻿using System.ComponentModel;
 using System.Windows.Shapes;
 using LiveCharts.Core.Abstractions;
+using LiveCharts.Core.Dimensions;
 using Point = LiveCharts.Core.Drawing.Point;
 
 namespace LiveCharts.Wpf.Separators
@@ -19,8 +20,7 @@ namespace LiveCharts.Wpf.Separators
         /// </value>
         public Line Line { get; protected set; }
 
-        /// <inheritdoc />
-        public void Move(Point point1, Point point2, bool dispose, IChartView chart)
+        public void Move(Point point1, Point point2, bool disposeWhenFinished, Plane plane, IChartView chart)
         {
             var isNew = Line == null;
 
@@ -28,16 +28,17 @@ namespace LiveCharts.Wpf.Separators
 
             if (isNew)
             {
-                var wpfChart = (CartesianChart) chart;
+                var wpfChart = (CartesianChart)chart;
                 Line = new Line();
                 wpfChart.DrawArea.Children.Add(Line);
                 Line.Animate()
                     .AtSpeed(speed)
-                    .Property(line => line.Opacity, 0, 1);
+                    .Property(line => line.Opacity, 1, 0)
+                    .Start();
             }
 
-            Line.Stroke = Brushes.Black;
-            Line.StrokeThickness = 2;
+            Line.Stroke = plane.Style.Stroke.AsSolidColorBrush();
+            Line.StrokeThickness = plane.Style.StrokeThickness;
 
             var animation = Line.Animate()
                 .AtSpeed(speed)
@@ -46,24 +47,26 @@ namespace LiveCharts.Wpf.Separators
                 .Property(line => line.Y1, point1.Y)
                 .Property(line => line.Y2, point2.Y);
 
-            if (dispose)
+            if (disposeWhenFinished)
             {
                 animation.Property(p => p.Opacity, 0)
                     .Then((sender, args) =>
                     {
-                        Dispose(chart);
+                        ((IResource) this).Dispose(chart);
                         animation = null;
                     });
             }
 
-            animation.Run();
+            animation.Start();
         }
 
-        public object UpdateId { get; set; }
+        public event PropertyChangedEventHandler PropertyChanged;
 
-        public void Dispose(IChartView view)
+        object IResource.UpdateId { get; set; }
+
+        void IResource.Dispose(IChartView view)
         {
-            var wpfChart = (CartesianChart) view;
+            var wpfChart = (CartesianChart)view;
             wpfChart.DrawArea.Children.Remove(Line);
             Line = null;
         }

@@ -5,7 +5,8 @@ using System.Windows.Media;
 using System.Windows.Shapes;
 using LiveCharts.Core;
 using LiveCharts.Core.Abstractions;
-using LiveCharts.Core.Series;
+using LiveCharts.Core.DataSeries;
+using LiveCharts.Core.Styles;
 using Orientation = LiveCharts.Core.Abstractions.Orientation;
 using Size = LiveCharts.Core.Drawing.Size;
 
@@ -63,10 +64,7 @@ namespace LiveCharts.Wpf
 
             foreach (var series in seriesCollection)
             {
-                var g = series.Geometry == Core.Drawing.Svg.Geometry.Empty
-                    ? LiveChartsSettings.GetSeriesSettings(series.Key).Geometry
-                    : series.Geometry;
-
+                var style = (SeriesStyle) series.Style;
                 Children.Add(new StackPanel
                 {
                     Children =
@@ -75,11 +73,11 @@ namespace LiveCharts.Wpf
                         {
                             Width = GeometrySize,
                             Height = GeometrySize,
-                            StrokeThickness = series.StrokeThickness,
-                            Stroke = series.Stroke.AsSolidColorBrush(),
-                            Fill = series.Stroke.AsSolidColorBrush(),
+                            StrokeThickness = style.StrokeThickness,
+                            Stroke = style.Stroke.AsSolidColorBrush(),
+                            Fill = style.Stroke.AsSolidColorBrush(),
                             Stretch = Stretch.Fill,
-                            Data = Geometry.Parse(g.Data)
+                            Data = Geometry.Parse(style.Geometry.Data)
                         },
                         new TextBlock
                         {
@@ -101,10 +99,10 @@ namespace LiveCharts.Wpf
             return Dispatcher.Invoke(() => BuildControl(seriesCollection, orientation));
         }
 
-        object IDisposableChartingResource.UpdateId { get; set; }
+        object IResource.UpdateId { get; set; }
 
         /// <inheritdoc />
-        void IDisposableChartingResource.Dispose(IChartView view)
+        void IResource.Dispose(IChartView view)
         {
             var wpfChart = (Chart) view;
             if (wpfChart.Children.Contains(this))

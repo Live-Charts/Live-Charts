@@ -11,7 +11,7 @@
 
 [assembly: global::Android.Runtime.ResourceDesignerAttribute("LiveCharts.Xamarin.Droid.Resource", IsApplication=true)]
 
-namespace LiveCharts.Xamarin.Droid.Resources
+namespace LiveCharts.Xamarin.Droid
 {
 	
 	
@@ -26,7 +26,7 @@ namespace LiveCharts.Xamarin.Droid.Resources
 		
 		public static void UpdateIdValues()
 		{
-			global::Xamarin.Forms.Platform.Android.Resource.Attribute.actionBarSize = global::LiveCharts.Xamarin.Droid.Resources.Resource.Attribute.actionBarSize;
+			global::Xamarin.Forms.Platform.Android.Resource.Attribute.actionBarSize = global::LiveCharts.Xamarin.Droid.Resource.Attribute.actionBarSize;
 		}
 		
 		public partial class Animation

@@ -42,7 +42,7 @@ namespace LiveCharts.Wpf
         /// <summary>
         /// Runs this instance.
         /// </summary>
-        public void Run()
+        public void Start()
         {
             _storyboard.Begin();
         }

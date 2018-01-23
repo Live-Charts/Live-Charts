@@ -49,6 +49,29 @@ namespace LiveCharts.Core.UnitTests
         }
 
         [TestMethod]
+        public void CopyTo()
+        {
+            const int itemsCount = 100000000;
+
+            var r = new Random();
+            var source = new int[itemsCount];
+            var sw = new Stopwatch();
+            for (var i = 0; i < itemsCount; i++)
+            {
+                source[i] = r.Next();
+            }
+            sw.Start();
+            var destiny = new int[itemsCount];
+            source.CopyTo(destiny, 0);
+            sw.Stop();
+
+            using (var writter = new StreamWriter("copyTo.txt"))
+            {
+                writter.WriteLine($"{sw.ElapsedMilliseconds} ms");
+            }
+        }
+
+        [TestMethod]
         public void CastingImpactTest()
         {
             const int iterations = 100000000;

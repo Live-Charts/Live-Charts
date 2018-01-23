@@ -10,7 +10,7 @@ namespace LiveCharts.Core.Abstractions
     /// <typeparam name="TPoint">The type of the chart point.</typeparam>
     /// <typeparam name="TCoordinate">The type of the coordinate.</typeparam>
     /// <typeparam name="TViewModel">The type of the point model.</typeparam>
-    public interface IPointView<TModel, in TPoint, TCoordinate, in TViewModel> : IDisposableChartingResource
+    public interface IPointView<TModel, in TPoint, TCoordinate, in TViewModel> : IResource
         where TPoint : Point<TModel, TCoordinate, TViewModel>, new()
         where TCoordinate : ICoordinate
     {
@@ -46,6 +46,5 @@ namespace LiveCharts.Core.Abstractions
         /// <param name="location">The location.</param>
         /// <param name="chart">The chart.</param>
         void DrawLabel(TPoint point, Point location, IChartView chart);
-
     }
 }

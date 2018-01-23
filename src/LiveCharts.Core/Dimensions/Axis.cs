@@ -18,6 +18,7 @@ namespace LiveCharts.Core.Dimensions
         /// Initializes a new instance of the <see cref="Axis"/> class.
         /// </summary>
         public Axis()
+            : base(LiveChartsSelectors.Axis)
         {
             Step = double.NaN;
             Position = AxisPositions.Auto;
@@ -83,7 +84,7 @@ namespace LiveCharts.Core.Dimensions
             int l = 0, r = 0, t = 0, b = 0;
             for (var i = 0; i < dimension; i += step)
             {
-                var label = EvaluateAxisLabel(chart, i, space);
+                var label = EvaluateAxisLabel(i, space);
 
                 var li = label.Location.X - label.Margin.Left;
                 if (li < 0 && l < -li) l = -li;
@@ -122,11 +123,11 @@ namespace LiveCharts.Core.Dimensions
                 chart.RegisterResource(separator);
                 if (PlaneType == PlaneTypes.X)
                 {
-                    separator.Move(new Point(iui, 0), new Point(iui, chart.DrawAreaSize.Height), false, chart.View);
+                    separator.Move(new Point(iui, 0), new Point(iui, chart.DrawAreaSize.Height), false, this, chart.View);
                 }
                 else
                 {
-                    separator.Move(new Point(0, iui), new Point(chart.DrawAreaSize.Width, iui), false, chart.View);
+                    separator.Move(new Point(0, iui), new Point(chart.DrawAreaSize.Width, iui), false, this, chart.View);
                 }
                 chart.RegisterResource(separator);
             }
@@ -191,13 +192,13 @@ namespace LiveCharts.Core.Dimensions
             return tick;
         }
 
-        private AxisLabelModel EvaluateAxisLabel(ChartModel chart, double valueToLabel, Size drawMargin)
+        private AxisLabelModel EvaluateAxisLabel(double valueToLabel, Size drawMargin)
         {
             const double toRadians = Math.PI / 180;
             var angle = ActualLabelsRotation;
 
             var labelModel = LiveChartsSettings.Current.UiProvider.MeasureString(
-                FormatValue(valueToLabel), Font);
+                FormatValue(valueToLabel), Style.Font);
 
             var xw = Math.Abs(Math.Cos(angle * toRadians) * labelModel.Width);  // width's    horizontal    component
             var yw = Math.Abs(Math.Sin(angle * toRadians) * labelModel.Width);  // width's    vertical      component

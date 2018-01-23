@@ -32,7 +32,7 @@ namespace LiveCharts.Core.Data
                 if (notifiesChange)
                 {
                     var npc = (INotifyPropertyChanged) instance;
-                    npc.PropertyChanged += args.PropertyChangedEventHandler;
+                    npc.PropertyChanged += args.Chart.InvalidateOnPropertyChanged;
                 }
 
                 TPoint chartPoint;

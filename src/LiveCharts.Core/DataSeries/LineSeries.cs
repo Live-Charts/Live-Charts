@@ -4,7 +4,7 @@ using LiveCharts.Core.Data;
 using LiveCharts.Core.Drawing.Svg;
 using LiveCharts.Core.ViewModels;
 
-namespace LiveCharts.Core.Series
+namespace LiveCharts.Core.DataSeries
 {
     /// <summary>
     /// 
@@ -20,9 +20,8 @@ namespace LiveCharts.Core.Series
         /// Initializes a new instance of the <see cref="LineSeries{TModel, TPoint, TView}"/> class.
         /// </summary>
         protected LineSeries()
-            : base(Line)
+            : base(LiveChartsSelectors.Line)
         {
-            PointGeometry = LiveChartsSettings.GetSeriesSettings(Line).Geometry;
         }
 
         /// <summary>

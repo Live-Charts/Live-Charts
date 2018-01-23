@@ -1,87 +1,44 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Charts;
 using LiveCharts.Core.Data;
 using LiveCharts.Core.DefaultSettings;
 using LiveCharts.Core.Dimensions;
 using LiveCharts.Core.Drawing;
-using LiveCharts.Core.Drawing.Svg;
+using LiveCharts.Core.Styles;
 
-namespace LiveCharts.Core.Series
+namespace LiveCharts.Core.DataSeries
 {
     /// <summary>
     /// The series class, represents a series to plot in a chart.
     /// </summary>
-    /// <seealso cref="LiveCharts.Core.Abstractions.IDisposableChartingResource" />
-    public abstract class Series : IDisposableChartingResource
+    /// <seealso cref="IResource" />
+    public abstract class Series : IResource, IStylable
     {
         private object _planesUpdateId;
         private IList<Plane> _planes;
         private readonly List<ChartModel> _usedBy = new List<ChartModel>();
+        private string _selector;
+        private Style _style;
+        private bool _isVisible;
+        private int _zIndex;
+        private int[] _scalesAt;
+        private bool _dataLabels;
+        private string _title;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Series"/> class.
         /// </summary>
-        protected Series(string key)
+        protected Series(string selector)
         {
-            Metadata = LiveChartsSettings.GetSeriesSettings(key);
-            DataLabelsFont = Metadata.Font;
-            Geometry = Metadata.Geometry;
-            Fill = Color.Empty;
-            Stroke = Color.Empty;
+            Style = LiveChartsSettings.GetStyle(selector, "DefaultSeries");
             IsVisible = true;
-            Key = key;
+            Selector = selector;
         }
-
-        #region known series
-
-        /// <summary>
-        /// All the series.
-        /// </summary>
-        public const string All = "All";
-
-        /// <summary>
-        /// The column series key.
-        /// </summary>
-        public const string Column = "LiveChartsColumnSeries";
-
-        /// <summary>
-        /// Gets the line series key.
-        /// </summary>
-        /// <value>
-        /// The line series.
-        /// </value>
-        public const string Line = "LiveChartsLineSeries";
-
-        #endregion
-
-        /// <summary>
-        /// Gets the key.
-        /// </summary>
-        /// <value>
-        /// The key.
-        /// </value>
-        public string Key { get; }
-
-        /// <summary>
-        /// Gets the meta data.
-        /// </summary>
-        /// <value>
-        /// The meta data.
-        /// </value>
-        public SeriesSettings Metadata { get; }
-
-        /// <summary>
-        /// Gets the used by.
-        /// </summary>
-        /// <value>
-        /// The used by.
-        /// </value>
-        public IEnumerable<ChartModel> UsedBy { get; internal set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether [data labels].
@@ -89,31 +46,15 @@ namespace LiveCharts.Core.Series
         /// <value>
         ///   <c>true</c> if [data labels]; otherwise, <c>false</c>.
         /// </value>
-        public bool DataLabels { get; set; }
-
-        /// <summary>
-        /// Gets or sets the data labels position.
-        /// </summary>
-        /// <value>
-        /// The data labels position.
-        /// </value>
-        public DataLabelsPosition DataLabelsPosition { get; set; }
-
-        /// <summary>
-        /// Gets or sets the data labels font.
-        /// </summary>
-        /// <value>
-        /// The data labels font.
-        /// </value>
-        public Font DataLabelsFont { get; set; }
-
-        /// <summary>
-        /// Gets or sets the geometry.
-        /// </summary>
-        /// <value>
-        /// The geometry.
-        /// </value>
-        public Geometry Geometry { get; set; }
+        public bool DataLabels
+        {
+            get => _dataLabels;
+            set
+            {
+                _dataLabels = value; 
+                OnPropertyChanged();
+            }
+        }
 
         /// <summary>
         /// Gets or sets a value indicating whether this instance is visible.
@@ -121,7 +62,15 @@ namespace LiveCharts.Core.Series
         /// <value>
         ///   <c>true</c> if this instance is visible; otherwise, <c>false</c>.
         /// </value>
-        public bool IsVisible { get; set; }
+        public bool IsVisible
+        {
+            get => _isVisible;
+            set
+            {
+                _isVisible = value;
+                OnPropertyChanged();
+            }
+        }
 
         /// <summary>
         /// Gets or sets the title.
@@ -129,31 +78,15 @@ namespace LiveCharts.Core.Series
         /// <value>
         /// The title.
         /// </value>
-        public string Title { get; set; }
-
-        /// <summary>
-        /// Gets or sets the stroke thickness.
-        /// </summary>
-        /// <value>
-        /// The stroke thickness.
-        /// </value>
-        public double StrokeThickness { get; set; }
-
-        /// <summary>
-        /// Gets or sets the stroke.
-        /// </summary>
-        /// <value>
-        /// The stroke.
-        /// </value>
-        public Color Stroke { get; set; }
-
-        /// <summary>
-        /// Gets or sets the fill.
-        /// </summary>
-        /// <value>
-        /// The fill.
-        /// </value>
-        public Color Fill { get; set; }
+        public string Title
+        {
+            get => _title;
+            set
+            {
+                _title = value;
+                OnPropertyChanged();
+            }
+        }
 
         /// <summary>
         /// Gets or sets the index of the z.
@@ -161,7 +94,15 @@ namespace LiveCharts.Core.Series
         /// <value>
         /// The index of the z.
         /// </value>
-        public int ZIndex { get; set; }
+        public int ZIndex
+        {
+            get => _zIndex;
+            set
+            {
+                _zIndex = value;
+                OnPropertyChanged();
+            }
+        }
 
         /// <summary>
         /// Gets or sets the scales at array.
@@ -169,7 +110,15 @@ namespace LiveCharts.Core.Series
         /// <value>
         /// The scales at.
         /// </value>
-        public int[] ScalesAt { get; protected set; }
+        public int[] ScalesAt
+        {
+            get => _scalesAt;
+            protected set
+            {
+                _scalesAt = value; 
+                OnPropertyChanged();
+            }
+        }
 
         /// <summary>
         /// Gets the plane.
@@ -214,11 +163,10 @@ namespace LiveCharts.Core.Series
         }
 
         /// <summary>
-        /// Called when [update view].
+        /// Gets the current values.
         /// </summary>
-        /// <param name="chart">The chart.</param>
-        /// <exception cref="NotImplementedException"></exception>
-        protected virtual void OnUpdateView(ChartModel chart)
+        /// <returns></returns>
+        public virtual object GetValues()
         {
             throw new NotImplementedException();
         }
@@ -245,7 +193,8 @@ namespace LiveCharts.Core.Series
             DataLabelsPosition labelsPosition)
         {
             const double toRadians = Math.PI / 180;
-            var rotationAngle = DataLabelsPosition.Rotation;
+            var style = (SeriesStyle) Style;
+            var rotationAngle = style.DataLabelsPosition.Rotation;
 
             var xw =
                 Math.Abs(Math.Cos(rotationAngle * toRadians) * labelModel.Width); // width's    horizontal    component
@@ -261,7 +210,7 @@ namespace LiveCharts.Core.Series
 
             double left, top;
 
-            switch (DataLabelsPosition.HorizontalAlignment)
+            switch (style.DataLabelsPosition.HorizontalAlignment)
             {
                 case HorizontalAlingment.Centered:
                     left = pointLocation.X - .5 * width;
@@ -277,10 +226,11 @@ namespace LiveCharts.Core.Series
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(
-                        nameof(DataLabelsPosition.HorizontalAlignment), DataLabelsPosition.HorizontalAlignment, null);
+                        nameof(DataLabelsPosition.HorizontalAlignment), style.DataLabelsPosition.HorizontalAlignment,
+                        null);
             }
 
-            switch (DataLabelsPosition.VerticalAlignment)
+            switch (style.DataLabelsPosition.VerticalAlignment)
             {
                 case VerticalLabelPosition.Centered:
                     top = pointLocation.Y - .5 * height;
@@ -296,22 +246,30 @@ namespace LiveCharts.Core.Series
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(
-                        nameof(DataLabelsPosition.VerticalAlignment), DataLabelsPosition.VerticalAlignment, null);
+                        nameof(DataLabelsPosition.VerticalAlignment), style.DataLabelsPosition.VerticalAlignment, null);
             }
 
             return new Point(left, top);
         }
 
-        /// <inheritdoc />
         protected virtual void OnDispose(IChartView view)
         {
             throw new NotImplementedException();
         }
 
-        /// <inheritdoc />
         protected virtual void OnFetch(ChartModel model)
         {
-            throw new  NotImplementedException();
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Called when [update view].
+        /// </summary>
+        /// <param name="chart">The chart.</param>
+        /// <exception cref="NotImplementedException"></exception>
+        protected virtual void OnUpdateView(ChartModel chart)
+        {
+            throw new NotImplementedException();
         }
 
         internal void AddChart(ChartModel chart)
@@ -320,12 +278,58 @@ namespace LiveCharts.Core.Series
             _usedBy.Add(chart);
         }
 
-        object IDisposableChartingResource.UpdateId { get; set; }
+        #region IResource implementation
 
-        void IDisposableChartingResource.Dispose(IChartView view)
+        object IResource.UpdateId { get; set; }
+
+        void IResource.Dispose(IChartView view)
         {
             OnDispose(view);
         }
+
+        #endregion
+
+        #region IStylable implementation
+
+        /// <inheritdoc />
+        public string Selector
+        {
+            get => _selector;
+            set
+            {
+                _selector = value;
+                OnPropertyChanged();
+            }
+        }
+
+        /// <inheritdoc />
+        public Style Style
+        {
+            get => _style;
+            set
+            {
+                _style = value;
+                OnPropertyChanged();
+            }
+        }
+
+        #endregion
+
+        #region INPC implementation
+
+        /// <inheritdoc />
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        /// <summary>
+        /// Called when a property changes.
+        /// </summary>
+        /// <param name="propertyName">Name of the property.</param>
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        #endregion
     }
 
     /// <summary>
@@ -335,7 +339,7 @@ namespace LiveCharts.Core.Series
     /// <typeparam name="TCoordinate">The type of the coordinate.</typeparam>
     /// <typeparam name="TViewModel">The type of the view model.</typeparam>
     /// <typeparam name="TPoint">The type of the point.</typeparam>
-    /// <seealso cref="LiveCharts.Core.Abstractions.IDisposableChartingResource" />
+    /// <seealso cref="IResource" />
     public abstract class Series<TModel, TCoordinate, TViewModel, TPoint> : Series
         where TPoint : Point<TModel, TCoordinate, TViewModel>, new()
         where TCoordinate : ICoordinate
@@ -349,9 +353,9 @@ namespace LiveCharts.Core.Series
         /// <summary>
         /// Initializes a new instance of the <see cref="Series{TModel, TCoordinate, TViewModel, TPoint}"/> class.
         /// </summary>
-        /// <param name="key"></param>
-        protected Series(string key)
-            :base(key)
+        /// <param name="selector"></param>
+        protected Series(string selector)
+            :base(selector)
         {
             ByValTracker = new List<TPoint>();
         }
@@ -367,20 +371,8 @@ namespace LiveCharts.Core.Series
             get => _values;
             set
             {
-                // unsubscribe previous instance from INCC.
-                if (_values is INotifyCollectionChanged previousIncc)
-                {
-                    previousIncc.CollectionChanged -= OnValuesCollectionChanged;
-                }
-
-                // assign the new instance
                 _values = value;
-
-                // subscribe new instance to INCC.
-                if (_values is INotifyCollectionChanged incc)
-                {
-                    incc.CollectionChanged += OnValuesCollectionChanged;
-                }
+                OnPropertyChanged();
             }
         }
 
@@ -393,7 +385,11 @@ namespace LiveCharts.Core.Series
         public ModelToPointMapper<TModel, TCoordinate> Mapper
         {
             get => _mapper ?? LiveChartsSettings.GetCurrentMapperFor<TModel, TCoordinate>();
-            set => _mapper = value;
+            set
+            {
+                _mapper = value;
+                OnPropertyChanged();
+            }
         }
 
         /// <summary>
@@ -430,7 +426,11 @@ namespace LiveCharts.Core.Series
             PointViewProvider
         {
             get => _pointViewProvider ?? DefaultPointViewProvider;
-            set => _pointViewProvider = value;
+            set
+            {
+                _pointViewProvider = value;
+                OnPropertyChanged();
+            }
         }
 
         /// <summary>
@@ -441,7 +441,11 @@ namespace LiveCharts.Core.Series
         /// </value>
         public DimensionRange DataRange { get; } = new DimensionRange(double.PositiveInfinity, double.NegativeInfinity);
 
-        //
+        public override object GetValues()
+        {
+            return Values;
+        }
+
         protected abstract IPointView<TModel, Point<TModel, TCoordinate, TViewModel>, TCoordinate, TViewModel>
             DefaultPointViewProvider();
 
@@ -452,66 +456,33 @@ namespace LiveCharts.Core.Series
             _chartPointsUpdateId = model.UpdateId;
 
             // Assign a color if the user did not set it.
-            if (Stroke == Color.Empty || Fill == Color.Empty)
+            if (Style.Stroke == Color.Empty || Style.Fill == Color.Empty)
             {
                 var nextColor = model.GetNextColor();
-                if (Stroke == Color.Empty)
+                if (Style.Stroke == Color.Empty)
                 {
-                    Stroke = nextColor;
+                    Style.Stroke = nextColor;
                 }
-                if (Fill == Color.Empty)
+
+                if (Style.Fill == Color.Empty)
                 {
-                    Fill = nextColor.SetOpacity(Metadata.FillOpacity);
+                    Style.Fill = nextColor.SetOpacity(((SeriesStyle) Style).DefaultFillOpacity);
                 }
             }
 
             // call the factory to fetch our data.
             // Fetch() has 2 main tasks.
             // 1. Calculate each ChartPoint required by the series.
-            // 2. Evaluate every dimension and every axis to get Max and Min limits.
+            // 2. Evaluate every dimension to get Max and Min limits.
             Points = LiveChartsSettings.Current.DataFactory
                 .FetchData(
                     new DataFactoryArgs<TModel, TCoordinate, TViewModel, TPoint>
                     {
                         Series = this,
                         Chart = model,
-                        Collection = new List<TModel>(Values),
-                        PropertyChangedEventHandler = OnValuesItemPropertyChanged
+                        Collection = Values.ToArray() // create a copy of the current points.
                     })
                 .ToArray();
-        }
-
-        private void OnValuesCollectionChanged(object sender, NotifyCollectionChangedEventArgs args)
-        {
-            foreach (var chartModel in UsedBy)
-            {
-                chartModel.Invalidate();
-            }
-        }
-
-        private void OnValuesItemPropertyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
-        {
-            foreach (var chartModel in UsedBy)
-            {
-                chartModel.Invalidate();
-            }
-        }
-
-        protected override void OnDispose(IChartView view)
-        {
-            if (_values is INotifyCollectionChanged incc)
-            {
-                incc.CollectionChanged -= OnValuesCollectionChanged;
-            }
-
-            var notifiesChange = typeof(INotifyPropertyChanged).IsAssignableFrom(typeof(TModel));
-            if (!notifiesChange) return;
-            foreach (var value in _values)
-            {
-                var npc = (INotifyPropertyChanged) value;
-                npc.PropertyChanged -= OnValuesItemPropertyChanged;
-            }
-            _values = null;
         }
     }
 }

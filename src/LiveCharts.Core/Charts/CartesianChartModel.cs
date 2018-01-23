@@ -23,7 +23,7 @@ namespace LiveCharts.Core.Charts
         /// <value>
         /// The x axis.
         /// </value>
-        public IList<Plane> XAxis => View.Dimensions[0];
+        public IList<Plane> XAxis => Dimensions[0];
 
         /// <summary>
         /// Gets the y axis.
@@ -31,7 +31,7 @@ namespace LiveCharts.Core.Charts
         /// <value>
         /// The y axis.
         /// </value>
-        public IList<Plane> YAxis => View.Dimensions[1];
+        public IList<Plane> YAxis => Dimensions[1];
 
         /// <summary>
         /// Gets the width of the unit.
@@ -85,7 +85,7 @@ namespace LiveCharts.Core.Charts
             // draw separators
 
             // for each dimension (for a cartesian chart X and Y)
-            foreach (var dimension in View.Dimensions)
+            foreach (var dimension in Dimensions)
             {
                 // for each axis in each dimension
                 foreach (var plane in dimension)
@@ -96,7 +96,7 @@ namespace LiveCharts.Core.Charts
                 }
             }
 
-            foreach (var series in View.Series.Where(x => x.IsVisible))
+            foreach (var series in Series.Where(x => x.IsVisible))
             {
                 RegisterResource(series);
                 series.UpdateView(this);
@@ -107,22 +107,22 @@ namespace LiveCharts.Core.Charts
 
         internal Margin EvaluateAxisAndGetDrawMargin()
         {
-            var requiresDrawMarginEvaluation = View.DrawMargin == Margin.Empty;
+            var requiresDrawMarginEvaluation = DrawMargin == Margin.Empty;
 
             int l = 0, r = 0, t = 0, b = 0;
 
             // for each dimension (for a cartesian chart X and Y)
-            for (var dimensionIndex = 0; dimensionIndex < View.Dimensions.Count; dimensionIndex++)
+            for (var dimensionIndex = 0; dimensionIndex < Dimensions.Length; dimensionIndex++)
             {
                 var dimensionRanges = DataRangeMatrix[dimensionIndex];
-                var planesArray = View.Dimensions[dimensionIndex];
+                var dimension = Dimensions[dimensionIndex];
 
                 // for each axis in each dimension
-                for (var index = 0; index < planesArray.Count; index++)
+                for (var index = 0; index < dimension.Length; index++)
                 {
-                    var axis = (Axis) planesArray[index];
+                    var axis = (Axis) dimension[index];
 
-                    axis.PlaneType = View.Dimensions[0].Contains(axis) ? PlaneTypes.X : PlaneTypes.Y;
+                    axis.PlaneType = Dimensions[0].Contains(axis) ? PlaneTypes.X : PlaneTypes.Y;
                     axis.Position = axis.Position == AxisPositions.Auto
                         ? (axis.PlaneType == PlaneTypes.X
                             ? AxisPositions.Bottom
@@ -171,7 +171,7 @@ namespace LiveCharts.Core.Charts
 
             return requiresDrawMarginEvaluation
                 ? new Margin(t, r, b, l)
-                : View.DrawMargin;
+                : DrawMargin;
         }
     }
 }

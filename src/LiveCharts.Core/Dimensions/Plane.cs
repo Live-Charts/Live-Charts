@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Data;
+using LiveCharts.Core.Styles;
 using Margin = LiveCharts.Core.Drawing.Margin;
 
 namespace LiveCharts.Core.Dimensions
@@ -9,21 +12,21 @@ namespace LiveCharts.Core.Dimensions
     /// <summary>
     /// Defines a Plane.
     /// </summary>
-    public class Plane : IDisposableChartingResource
+    public abstract class Plane : IResource, IStylable
     {
         private Func<double, string> _labelFormatter;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Plane"/> class.
         /// </summary>
-        public Plane()
+        protected Plane(string selector)
         {
             Unit = 1;
             Margin = new Margin(2);
             LabelFormatter = Builders.AsMetricNumber;
             MinValue = double.NaN;
             MaxValue = double.NaN;
-            Font = LiveChartsSettings.GetSeriesSettings(Series.Series.All).Font;
+            Style = LiveChartsSettings.GetStyle(selector);
         }
 
         /// <summary>
@@ -123,14 +126,6 @@ namespace LiveCharts.Core.Dimensions
         public double ActualMinValue { get; internal set; }
 
         /// <summary>
-        /// Gets or sets the font.
-        /// </summary>
-        /// <value>
-        /// The font.
-        /// </value>
-        public Font Font { get; set; }
-
-        /// <summary>
         /// Gets or sets the unit.
         /// </summary>
         /// <value>
@@ -181,12 +176,37 @@ namespace LiveCharts.Core.Dimensions
             throw new NotImplementedException();
         }
 
-        object IDisposableChartingResource.UpdateId { get; set; }
+        #region IResource implementation
+
+        object IResource.UpdateId { get; set; }
 
         /// <inheritdoc />
-        void IDisposableChartingResource.Dispose(IChartView view)
+        void IResource.Dispose(IChartView view)
         {
             OnDispose(view);
         }
+
+        #endregion
+
+        #region IStylable Implementation
+
+        /// <inheritdoc />
+        public string Selector { get; }
+
+        /// <inheritdoc />
+        public Style Style { get; set; }
+
+        #endregion
+
+        #region INPC implementation
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        #endregion
     }
 }
