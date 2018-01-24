@@ -48,13 +48,13 @@ namespace LiveCharts.Wpf.PointViews
 
             var speed = chart.AnimationsSpeed;
 
-            Shape.Animate()
+            Shape.AsStoryboardTarget()
                 .AtSpeed(speed)
                 .Property(Canvas.LeftProperty, viewModel.Left)
                 .Property(Canvas.TopProperty, viewModel.Top)
-                .Property(shape => shape.Width, viewModel.Width)
-                .Property(shape => shape.Height, viewModel.Height)
-                .Start();
+                .Property(FrameworkElement.WidthProperty, viewModel.Width)
+                .Property(FrameworkElement.HeightProperty, viewModel.Height)
+                .Begin();
         }
 
         /// <inheritdoc />

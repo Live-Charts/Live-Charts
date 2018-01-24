@@ -12,12 +12,22 @@ namespace LiveCharts.Core.Drawing
         /// <param name="location"></param>
         /// <param name="offset">The offset.</param>
         /// <param name="margin">The margin.</param>
-        public AxisLabelModel(Point location, Point offset, Margin margin)
+        /// <param name="content">The content.</param>
+        public AxisLabelModel(Point location, Point offset, Margin margin, string content)
         {
             Location = location;
             Offset = offset;
             Margin = margin;
+            Content = content;
         }
+
+        /// <summary>
+        /// Gets or sets the content.
+        /// </summary>
+        /// <value>
+        /// The content.
+        /// </value>
+        public string Content { get; set; }
 
         /// <summary>
         /// Gets or sets the raw location of the label, to ensure label readability, we set an <see cref="Offset"/> and calculate the margin from this point, to every direction (<see cref="Margin"/>).

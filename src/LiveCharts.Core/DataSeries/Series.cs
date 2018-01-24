@@ -252,11 +252,21 @@ namespace LiveCharts.Core.DataSeries
             return new Point(left, top);
         }
 
+        /// <summary>
+        /// Called when [dispose].
+        /// </summary>
+        /// <param name="view">The view.</param>
+        /// <exception cref="NotImplementedException"></exception>
         protected virtual void OnDispose(IChartView view)
         {
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Called when [fetch].
+        /// </summary>
+        /// <param name="model">The model.</param>
+        /// <exception cref="NotImplementedException"></exception>
         protected virtual void OnFetch(ChartModel model)
         {
             throw new NotImplementedException();
@@ -441,14 +451,26 @@ namespace LiveCharts.Core.DataSeries
         /// </value>
         public DimensionRange DataRange { get; } = new DimensionRange(double.PositiveInfinity, double.NegativeInfinity);
 
+        /// <summary>
+        /// Gets the current values.
+        /// </summary>
+        /// <returns></returns>
         public override object GetValues()
         {
             return Values;
         }
 
+        /// <summary>
+        /// Defaults the point view provider.
+        /// </summary>
+        /// <returns></returns>
         protected abstract IPointView<TModel, Point<TModel, TCoordinate, TViewModel>, TCoordinate, TViewModel>
             DefaultPointViewProvider();
 
+        /// <summary>
+        /// Called when [fetch].
+        /// </summary>
+        /// <param name="model">The model.</param>
         protected override void OnFetch(ChartModel model)
         {
             // returned cached points if this method was called from the same updateId.

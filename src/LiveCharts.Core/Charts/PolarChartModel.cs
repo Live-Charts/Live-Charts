@@ -1,4 +1,6 @@
 ﻿using LiveCharts.Core.Abstractions;
+using LiveCharts.Core.Dimensions;
+using LiveCharts.Core.Drawing;
 
 namespace LiveCharts.Core.Charts
 {
@@ -15,6 +17,16 @@ namespace LiveCharts.Core.Charts
         public PolarChartModel(IChartView view)
             : base(view)
         {
+        }
+
+        public override double ScaleToUi(double dataValue, Plane plane, Size? size = null)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public override double ScaleFromUi(double pixelsValue, Plane plane, Size? size = null)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

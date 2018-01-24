@@ -44,21 +44,41 @@ namespace LiveCharts.Core.Charts
         }
 
         /// <inheritdoc />
-        public override double ScaleToUi(double value, Plane plane, Size? size = null)
+        public override double ScaleToUi(double dataValue, Plane plane, Size? size = null)
         {
             var chartSize = size ?? DrawAreaSize;
 
-            // based on the linear equation 
-            // y = m * (x - x1) + y1
-            // where m is the slope, (y2 - y1) / (x2 - x1)
+            // based on the linear equation
+            // y = m * (x - x1) + y1 
+            // where x is the Series.Values scale and y the UI scale
 
             var dimension = plane.PlaneType == PlaneTypes.X ? chartSize.Width : chartSize.Height;
 
             double x1 = plane.ActualMaxValue, y1 = dimension;
-            double x2 = plane.ActualMinValue; // y2 = 0;
+            double x2 = plane.ActualMinValue, y2 = 0;
+            double m = (y2 - y1) / (x2 - x1);
 
-            // m was simplified from => ((0 - y1) / (x2-x1))
-            return (y1 / (x1 - x2)) * (value - x1) + y1;
+            return m * (dataValue - x1) + y1;
+        }
+
+        /// <inheritdoc />
+        public override double ScaleFromUi(double pixelsValue, Plane plane, Size? size = null)
+        {
+            var chartSize = size ?? DrawAreaSize;
+
+            // based on the linear equation
+            // y = m * (x - x1) + y1 
+            // where x is the Series.Values scale and y the UI scale
+            // then
+            // x = ((y - y1) / m) + x1
+
+            var dimension = plane.PlaneType == PlaneTypes.X ? chartSize.Width : chartSize.Height;
+
+            double x1 = plane.ActualMaxValue, y1 = dimension;
+            double x2 = plane.ActualMinValue, y2 = 0;
+            double m = (y2 - y1) / (x2 - x1);
+
+            return (pixelsValue - y1) / m + x1;
         }
 
         /// <inheritdoc cref="ChartModel.Update"/>

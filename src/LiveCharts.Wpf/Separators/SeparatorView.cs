@@ -23,12 +23,7 @@ namespace LiveCharts.Wpf.Separators
         /// </value>
         public Line Line { get; protected set; }
 
-        /// <summary>
-        /// Gets or sets the label.
-        /// </summary>
-        /// <value>
-        /// The label.
-        /// </value>
+        /// <inheritdoc />
         public IPlaneLabelControl Label { get; protected set; }
 
         public void Move(
@@ -40,65 +35,88 @@ namespace LiveCharts.Wpf.Separators
 
             if (isNew)
             {
-                var wpfChart = (CartesianChart)chart;
+                var wpfChart = (CartesianChart) chart;
                 Line = new Line();
                 Panel.SetZIndex(Line, -1);
-                if (plane.PlaneType == PlaneTypes.X)
-                {
-                    Line.X1 = point1.X;
-                    Line.Y1 = 0;
-                    Line.X2 = point2.X;
-                    Line.Y2 = chart.Model.DrawAreaSize.Height;
-                }
-                else
-                {
-                    Line.X1 = 0;
-                    Line.Y1 = point1.Y;
-                    Line.X2 = chart.Model.DrawAreaSize.Width;
-                    Line.Y2 = point2.Y;
-                }
+                SetInitialLineParams(plane, point1, point2, chart);
                 wpfChart.DrawArea.Children.Add(Line);
-                Line.Animate()
+                Line.AsStoryboardTarget()
                     .AtSpeed(speed)
-                    .Property(line => line.Opacity, 1, 0)
-                    .Start();
+                    .Property(UIElement.OpacityProperty, 1, 0)
+                    .Begin();
             }
 
             if (isNewLabel)
             {
                 var wpfChart = (CartesianChart) chart;
                 Label = new TLabel();
+                SetInitialLabelParams();
+                wpfChart.Children.Add((UIElement) Label);
+                ((UIElement) Label).AsStoryboardTarget()
+                    .AtSpeed(speed)
+                    .Property(UIElement.OpacityProperty, 1, 0)
+                    .Begin();
             }
 
             Line.Stroke = plane.Style.Stroke.AsSolidColorBrush();
             Line.StrokeThickness = plane.Style.StrokeThickness;
+            Label.Measure(labelModel.Content);
 
-            var animation = Line.Animate()
+            var storyboard = Line.AsStoryboardTarget()
                 .AtSpeed(speed)
-                .Property(line => line.X1, point1.X)
-                .Property(line => line.X2, point2.X)
-                .Property(line => line.Y1, point1.Y)
-                .Property(line => line.Y2, point2.Y);
+                .Property(Line.X1Property, point1.X)
+                .Property(Line.X2Property, point2.X)
+                .Property(Line.Y1Property, point1.Y)
+                .Property(Line.Y2Property, point2.Y)
+                .SetTarget((UIElement) Label)
+                .Property(Canvas.LeftProperty, labelModel.Location.X)
+                .Property(Canvas.TopProperty, labelModel.Location.Y);
 
             if (disposeWhenFinished)
             {
-                animation.Property(p => p.Opacity, 0)
+                storyboard.Property(UIElement.OpacityProperty, 0)
                     .Then((sender, args) =>
                     {
                         ((IResource) this).Dispose(chart);
-                        animation = null;
+                        storyboard = null;
                     });
             }
 
-            animation.Start();
+            storyboard.Begin();
+        }
+
+        private void SetInitialLineParams(Plane plane, Point point1, Point point2, IChartView chart)
+        {
+            if (plane.PlaneType == PlaneTypes.X)
+            {
+                Line.X1 = point1.X;
+                Line.Y1 = 0;
+                Line.X2 = point2.X;
+                Line.Y2 = chart.Model.DrawAreaSize.Height;
+            }
+            else
+            {
+                Line.X1 = 0;
+                Line.Y1 = point1.Y;
+                Line.X2 = chart.Model.DrawAreaSize.Width;
+                Line.Y2 = point2.Y;
+            }
+        }
+
+        private void SetInitialLabelParams()
+        {
+            var uiLablel = (UIElement) Label;
+            Canvas.SetTop(uiLablel, 0);
+            Canvas.SetLeft(uiLablel, 0);
         }
 
         object IResource.UpdateId { get; set; }
 
         void IResource.Dispose(IChartView view)
         {
-            var wpfChart = (CartesianChart)view;
+            var wpfChart = (CartesianChart) view;
             wpfChart.DrawArea.Children.Remove(Line);
+            wpfChart.Children.Remove((UIElement) Label);
             Line = null;
         }
     }

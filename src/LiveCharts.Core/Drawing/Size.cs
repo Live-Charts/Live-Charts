@@ -62,6 +62,17 @@ namespace LiveCharts.Core.Drawing
         public int Height { get; }
 
         /// <summary>
+        /// Returns a <see cref="System.String" /> that represents this instance.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="System.String" /> that represents this instance.
+        /// </returns>
+        public override string ToString()
+        {
+            return $"{Width}, {Height}";
+        }
+
+        /// <summary>
         /// Implements the operator ==.
         /// </summary>
         /// <param name="c1">The c1.</param>

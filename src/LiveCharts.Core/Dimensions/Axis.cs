@@ -80,11 +80,12 @@ namespace LiveCharts.Core.Dimensions
                     $"An axis of type '{PlaneType}' can not be used in a Cartesian Chart", 130);
             }
             var dimension = PlaneType == PlaneTypes.X ? space.Width : space.Height;
-            const int step = 5; // ToDo: or use the real if it is defined?
+            var step = chart.ScaleFromUi(5, this, space); // ToDo: or use the real if it is defined?
+
             int l = 0, r = 0, t = 0, b = 0;
-            for (var i = 0; i < dimension; i += step)
+            for (var i = 0d; i < dimension; i += step)
             {
-                var label = EvaluateAxisLabel(i, space);
+                var label = EvaluateAxisLabel(i, space, chart);
 
                 var li = label.Location.X - label.Margin.Left;
                 if (li < 0 && l < -li) l = -li;
@@ -114,7 +115,7 @@ namespace LiveCharts.Core.Dimensions
             for (var i = from; i < to; i += ActualStep)
             {
                 var iui = chart.ScaleToUi(i, this);
-                var label = EvaluateAxisLabel(i, chart.DrawAreaSize);
+                var label = EvaluateAxisLabel(i, chart.DrawAreaSize, chart);
                 var key = Math.Round(i / tolerance) * tolerance;
 
                 if (!_activeSeparators.TryGetValue(key, out var separator))
@@ -200,12 +201,13 @@ namespace LiveCharts.Core.Dimensions
             return tick;
         }
 
-        private AxisLabelModel EvaluateAxisLabel(double value, Size drawMargin)
+        private AxisLabelModel EvaluateAxisLabel(double value, Size drawMargin, ChartModel chart)
         {
             const double toRadians = Math.PI / 180;
             var angle = ActualLabelsRotation;
 
-            var labelModel = LabelProvider().Measure(FormatValue(value));
+            var content = FormatValue(value);
+            var labelModel = LabelProvider().Measure(content);
 
             var xw = Math.Abs(Math.Cos(angle * toRadians) * labelModel.Width);  // width's    horizontal    component
             var yw = Math.Abs(Math.Sin(angle * toRadians) * labelModel.Width);  // width's    vertical      component
@@ -235,7 +237,7 @@ namespace LiveCharts.Core.Dimensions
                     l = .5 * xh;
                     t = 0;
                 }
-                x = value;
+                x = chart.ScaleToUi(value, this, drawMargin);
                 y = drawMargin.Height;
             }
             else if (PlaneType == PlaneTypes.X && Position == AxisPositions.Top)
@@ -256,7 +258,7 @@ namespace LiveCharts.Core.Dimensions
                     l = xw + .5 * xh;
                     t = yh + yw;
                 }
-                x = value;
+                x = chart.ScaleToUi(value, this, drawMargin);
                 y = 0;
             }
             else if (PlaneType == PlaneTypes.Y && Position == AxisPositions.Left)
@@ -278,7 +280,7 @@ namespace LiveCharts.Core.Dimensions
                     t = yw;
                 }
                 x = 0;
-                y = value;
+                y = chart.ScaleToUi(value, this, drawMargin);
             }
             else if (PlaneType == PlaneTypes.Y && Position == AxisPositions.Right)
             {
@@ -299,7 +301,7 @@ namespace LiveCharts.Core.Dimensions
                     t = yo;
                 }
                 x = drawMargin.Width;
-                y = value;
+                y = chart.ScaleToUi(value, this, drawMargin);
             }
             else
             {
@@ -314,7 +316,19 @@ namespace LiveCharts.Core.Dimensions
                     t,
                     xw + xh - l,
                     yw + yh - t,
-                    l));
+                    l),
+                content);
+        }
+
+        /// <summary>
+        /// Returns a <see cref="System.String" /> that represents this instance.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="System.String" /> that represents this instance.
+        /// </returns>
+        public override string ToString()
+        {
+            return $"{PlaneType} at {Position}, from {FormatValue(ActualMinValue)} to {FormatValue(ActualMaxValue)} @ {FormatValue(ActualStep)}";
         }
     }
 }

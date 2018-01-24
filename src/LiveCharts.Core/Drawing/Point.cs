@@ -66,6 +66,17 @@ namespace LiveCharts.Core.Drawing
         public int Y { get; }
 
         /// <summary>
+        /// Returns a <see cref="System.String" /> that represents this instance.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="System.String" /> that represents this instance.
+        /// </returns>
+        public override string ToString()
+        {
+            return $"{X}, {Y}";
+        }
+
+        /// <summary>
         /// Sums the components of a pair of points.
         /// </summary>
         /// <param name="p1">The p1.</param>

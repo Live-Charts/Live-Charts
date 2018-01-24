@@ -144,16 +144,23 @@ namespace LiveCharts.Core.Charts
         }
 
         /// <summary>
-        /// Scales a number according to an axis range, to a given area, if the area is not present, the chart draw margin size will be used.
+        /// Scales to pixels a data value according to an axis range and a given area, if the area is not present, the chart draw margin size will be used.
         /// </summary>
-        /// <param name="value">The value.</param>
+        /// <param name="dataValue">The value.</param>
         /// <param name="plane">The axis.</param>
         /// <param name="size">The draw margin, this param is optional, if not set, the current chart's draw margin area will be used.</param>
         /// <returns></returns>
-        public virtual double ScaleToUi(double value, Plane plane, Size? size = null)
-        {
-            throw new NotImplementedException();
-        }
+        public abstract double ScaleToUi(double dataValue, Plane plane, Size? size = null);
+
+        /// <summary>
+        /// Scales from pixels to a data value.
+        /// </summary>
+        /// <param name="pixelsValue">The value.</param>
+        /// <param name="plane">The plane.</param>
+        /// <param name="size">The size.</param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        public abstract double ScaleFromUi(double pixelsValue, Plane plane, Size? size = null);
 
         /// <summary>
         /// Scales a point to the UI.
