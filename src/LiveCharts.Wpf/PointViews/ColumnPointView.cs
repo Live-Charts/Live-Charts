@@ -25,7 +25,7 @@ namespace LiveCharts.Wpf.PointViews
         where TCoordinate : Point2D
         where TViewModel : ColumnViewModel
         where TShape : Shape, new()
-        where TLabel : FrameworkElement, new()
+        where TLabel : FrameworkElement, IDataLabelControl<TModel, TCoordinate, TViewModel>, new()
     {
         /// <inheritdoc />
         protected override void OnDraw(TPoint point, TPoint previous, IChartView chart, TViewModel viewModel)
@@ -65,18 +65,19 @@ namespace LiveCharts.Wpf.PointViews
             if (isNew)
             {
                 var wpfChart = (CartesianChart) chart;
-                Label = new TLabel {DataContext = point};
+                Label = new TLabel();
+                Label.Measure(point);
                 Canvas.SetLeft(Shape, Canvas.GetLeft(Shape));
                 Canvas.SetTop(Shape, Canvas.GetTop(Shape));
-                wpfChart.DrawArea.Children.Add(Label);
+                wpfChart.DrawArea.Children.Add((UIElement) Label);
             }
 
             var speed = chart.AnimationsSpeed;
 
-            Label.BeginAnimation(
+            ((FrameworkElement) Label).BeginAnimation(
                 Canvas.LeftProperty,
                 new DoubleAnimation(location.X, speed));
-            Label.BeginAnimation(
+            ((FrameworkElement) Label).BeginAnimation(
                 Canvas.TopProperty,
                 new DoubleAnimation(location.Y, speed));
         }
@@ -86,7 +87,7 @@ namespace LiveCharts.Wpf.PointViews
         {
             var wpfChart = (CartesianChart) chart;
             wpfChart.DrawArea.Children.Remove(Shape);
-            wpfChart.DrawArea.Children.Remove(Label);
+            wpfChart.DrawArea.Children.Remove((UIElement) Label);
         }
     }
 }

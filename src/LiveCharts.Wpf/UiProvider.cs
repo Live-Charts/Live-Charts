@@ -19,11 +19,10 @@ namespace LiveCharts.Wpf
     /// </summary>
     public class UiProvider : IUiProvider
     {
-        /// <inheritdoc cref="IUiProvider.MeasureString"/>
-        Size IUiProvider.MeasureString(string text, Font font)
+        public Size MeasureControl(string context, Font font, object control)
         {
             var formattedText = new FormattedText(
-                text,
+                context,
                 CultureInfo.CurrentCulture,
                 FlowDirection.LeftToRight,
                 font.AsTypeface(),
@@ -33,9 +32,20 @@ namespace LiveCharts.Wpf
             return new Size(formattedText.Width, formattedText.Height);
         }
 
-        public ISeparator SeparatorProvider()
+        public IPlaneLabelControl AxisLabelProvider()
         {
-            return new SeparatorView();
+            return new DefaultPlaneLabelControl();
+        }
+
+        public IDataLabelControl<TModel, TCoordinate, TViewModel> DataLabelProvider<TModel, TCoordinate, TViewModel>() 
+            where TCoordinate : ICoordinate
+        {
+            return new DefaultDataLabel<TModel, TCoordinate, TViewModel>();
+        }
+
+        public ISeparator AxisSeparatorProvider()
+        {
+            return new SeparatorView<DefaultPlaneLabelControl>();
         }
 
         public IPointView<TModel, Point<TModel, Point2D, ColumnViewModel>, Point2D, ColumnViewModel> 
@@ -47,7 +57,7 @@ namespace LiveCharts.Wpf
                 Point2D,
                 ColumnViewModel,
                 Rectangle,
-                DefaultPointLabel>();
+                DefaultDataLabel<TModel, Point2D, ColumnViewModel>>();
         }
     }
 }

@@ -6,9 +6,19 @@ namespace LiveCharts.Core
     public class LiveChartsSelectors
     {
         /// <summary>
-        /// The separator
+        /// The default style.
         /// </summary>
-        public const string Axis = "LiveChartsAxis";
+        public const string Default = "LiveChartsDefault";
+
+        /// <summary>
+        /// The default series style.
+        /// </summary>
+        public const string DefaultSeries = "LivbeChartsDefaultSeries";
+
+        /// <summary>
+        /// The plane, axis ... (more future axis) selector.
+        /// </summary>
+        public const string DefaultPlane = "LiveChartsSeparator";
 
         /// <summary>
         /// The column series selector.

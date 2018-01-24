@@ -1,6 +1,4 @@
 ﻿using System;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Shapes;
 using LiveCharts.Core.Abstractions;
@@ -14,7 +12,7 @@ namespace LiveCharts.Wpf.PointViews
         where TPoint : Point<TModel, TCoordinate, TViewModel>, new()
         where TCoordinate : ICoordinate
         where TShape : Shape, new()
-        where TLabel : FrameworkElement
+        where TLabel : DependencyObject, IDataLabelControl<TModel, TCoordinate, TViewModel>, new()
     {
         /// <summary>
         /// Gets or sets the shape.
@@ -30,7 +28,7 @@ namespace LiveCharts.Wpf.PointViews
         /// <value>
         /// The label.
         /// </value>
-        public TLabel Label { get; protected set; }
+        public IDataLabelControl<TModel, TCoordinate, TViewModel> Label { get; protected set; }
 
         /// <inheritdoc cref="DrawShape"/>
         protected virtual void OnDraw(TPoint point, TPoint previous, IChartView chart, TViewModel viewModel)
@@ -57,7 +55,7 @@ namespace LiveCharts.Wpf.PointViews
         object IPointView<TModel, TPoint, TCoordinate, TViewModel>.VisualElement => Shape;
 
         /// <inheritdoc />
-        object IPointView<TModel, TPoint, TCoordinate, TViewModel>.Label => Label;
+        IDataLabelControl<TModel, TCoordinate, TViewModel> IPointView<TModel, TPoint, TCoordinate, TViewModel>.Label => Label;
 
         /// <inheritdoc />
         public void DrawShape(TPoint point, TPoint previous, IChartView chart, TViewModel viewModel)
@@ -77,17 +75,6 @@ namespace LiveCharts.Wpf.PointViews
         public void Dispose(IChartView view)
         {
             OnDispose(view);
-        }
-
-        #endregion
-
-        #region INPC implementation
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         #endregion

@@ -5,7 +5,6 @@ using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using LiveCharts.Core;
 using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Charts;
 using LiveCharts.Core.DataSeries;
@@ -17,11 +16,6 @@ namespace LiveCharts.Wpf
 {
     public abstract class Chart : Canvas, IChartView
     {
-        static Chart()
-        {
-            LiveChartsSettings.Define(settings => settings.UseWpf());
-        }
-
         protected Chart()
         {
             DrawMargin = Core.Drawing.Margin.Empty;

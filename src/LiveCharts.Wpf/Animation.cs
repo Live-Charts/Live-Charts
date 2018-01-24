@@ -12,7 +12,7 @@ namespace LiveCharts.Wpf
     public static class AnimationsExtensions
     {
         public static Animation<T> Animate<T>(this T element)
-        where T : FrameworkElement
+            where T : FrameworkElement
         {
             return new Animation<T>(element);
         }
@@ -22,7 +22,7 @@ namespace LiveCharts.Wpf
     /// A storyboard builder... I REALLY hate the current way.
     /// </summary>
     public class Animation<T>
-        where T : DependencyObject
+        where T : FrameworkElement
     {
         private TimeSpan _speed;
         private readonly Storyboard _storyboard;

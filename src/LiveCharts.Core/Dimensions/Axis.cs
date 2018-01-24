@@ -18,7 +18,7 @@ namespace LiveCharts.Core.Dimensions
         /// Initializes a new instance of the <see cref="Axis"/> class.
         /// </summary>
         public Axis()
-            : base(LiveChartsSelectors.Axis)
+            : base(LiveChartsSelectors.DefaultPlane)
         {
             Step = double.NaN;
             Position = AxisPositions.Auto;
@@ -114,20 +114,22 @@ namespace LiveCharts.Core.Dimensions
             for (var i = from; i < to; i += ActualStep)
             {
                 var iui = chart.ScaleToUi(i, this);
+                var label = EvaluateAxisLabel(i, chart.DrawAreaSize);
                 var key = Math.Round(i / tolerance) * tolerance;
-                if (!_activeSeparators.TryGetValue(key, out ISeparator separator))
+
+                if (!_activeSeparators.TryGetValue(key, out var separator))
                 {
-                    separator = LiveChartsSettings.Current.UiProvider.SeparatorProvider();
+                    separator = LiveChartsSettings.Current.UiProvider.AxisSeparatorProvider();
                     _activeSeparators.Add(key, separator);
                 }
                 chart.RegisterResource(separator);
                 if (PlaneType == PlaneTypes.X)
                 {
-                    separator.Move(new Point(iui, 0), new Point(iui, chart.DrawAreaSize.Height), false, this, chart.View);
+                    separator.Move(new Point(iui, 0), new Point(iui, chart.DrawAreaSize.Height), label, false, this, chart.View);
                 }
                 else
                 {
-                    separator.Move(new Point(0, iui), new Point(chart.DrawAreaSize.Width, iui), false, this, chart.View);
+                    separator.Move(new Point(0, iui), new Point(chart.DrawAreaSize.Width, iui), label, false, this, chart.View);
                 }
                 chart.RegisterResource(separator);
             }
@@ -141,6 +143,12 @@ namespace LiveCharts.Core.Dimensions
                 separator.Value.Dispose(chart);
             }
             _activeSeparators.Clear();
+        }
+        
+        /// <inheritdoc />
+        protected override IPlaneLabelControl DefaultLabelProvider()
+        {
+            return LiveChartsSettings.Current.UiProvider.AxisLabelProvider();
         }
 
         private double GetActualAxisStep(ChartModel chart)
@@ -192,13 +200,12 @@ namespace LiveCharts.Core.Dimensions
             return tick;
         }
 
-        private AxisLabelModel EvaluateAxisLabel(double valueToLabel, Size drawMargin)
+        private AxisLabelModel EvaluateAxisLabel(double value, Size drawMargin)
         {
             const double toRadians = Math.PI / 180;
             var angle = ActualLabelsRotation;
 
-            var labelModel = LiveChartsSettings.Current.UiProvider.MeasureString(
-                FormatValue(valueToLabel), Style.Font);
+            var labelModel = LabelProvider().Measure(FormatValue(value));
 
             var xw = Math.Abs(Math.Cos(angle * toRadians) * labelModel.Width);  // width's    horizontal    component
             var yw = Math.Abs(Math.Sin(angle * toRadians) * labelModel.Width);  // width's    vertical      component
@@ -228,7 +235,7 @@ namespace LiveCharts.Core.Dimensions
                     l = .5 * xh;
                     t = 0;
                 }
-                x = valueToLabel;
+                x = value;
                 y = drawMargin.Height;
             }
             else if (PlaneType == PlaneTypes.X && Position == AxisPositions.Top)
@@ -249,7 +256,7 @@ namespace LiveCharts.Core.Dimensions
                     l = xw + .5 * xh;
                     t = yh + yw;
                 }
-                x = valueToLabel;
+                x = value;
                 y = 0;
             }
             else if (PlaneType == PlaneTypes.Y && Position == AxisPositions.Left)
@@ -271,7 +278,7 @@ namespace LiveCharts.Core.Dimensions
                     t = yw;
                 }
                 x = 0;
-                y = valueToLabel;
+                y = value;
             }
             else if (PlaneType == PlaneTypes.Y && Position == AxisPositions.Right)
             {
@@ -292,7 +299,7 @@ namespace LiveCharts.Core.Dimensions
                     t = yo;
                 }
                 x = drawMargin.Width;
-                y = valueToLabel;
+                y = value;
             }
             else
             {

@@ -1,6 +1,5 @@
 ﻿using LiveCharts.Core;
 using LiveCharts.Core.Data;
-using LiveCharts.Core.DefaultSettings;
 
 namespace LiveCharts.Wpf
 {
@@ -10,12 +9,6 @@ namespace LiveCharts.Wpf
         {
             settings.DataFactory = new DefaultDataFactory();
             settings.UiProvider = new UiProvider();
-
-            settings
-                .UseDefaultSeriesSettings()
-                .PlotPrimitiveTypes()
-                .PlotDefaultTypes()
-                .UseMaterialDesignColors();
 
             return settings;
         }

@@ -107,9 +107,7 @@ namespace LiveCharts.Core.DataSeries
                             new Point(p.X, p.Y),
                             new Margin(0),
                             zero,
-                            LiveChartsSettings.Current.UiProvider.MeasureString(
-                                Mapper.PointPredicate(current.Model),
-                                style.Font),
+                            current.View.Label.Measure(current),
                             style.DataLabelsPosition),
                         chart.View);
                 }

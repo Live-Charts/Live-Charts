@@ -20,8 +20,8 @@ namespace LiveCharts.Wpf
         {
             Model = new CartesianChartModel(this);
             SetValue(SeriesProperty, new ObservableCollection<Series>());
-            SetValue(XAxisProperty, new ObservableCollection<Axis> {new Axis()});
-            SetValue(YAxisProperty, new ObservableCollection<Axis> {new Axis()});
+            SetValue(XAxisProperty, new ObservableCollection<Plane> {new Axis()});
+            SetValue(YAxisProperty, new ObservableCollection<Plane> {new Axis()});
         }
 
         #region Dependency properties

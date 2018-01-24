@@ -3,6 +3,10 @@ namespace LiveCharts.Core.Data
     public enum UiActions
     {
         /// <summary>
+        /// The always action.
+        /// </summary>
+        Always,
+        /// <summary>
         /// The mouse enter action.
         /// </summary>
         PointerEnter,

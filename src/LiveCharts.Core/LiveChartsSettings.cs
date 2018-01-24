@@ -17,14 +17,14 @@ namespace LiveCharts.Core
         private static readonly Dictionary<string, Style> Styles =
             new Dictionary<string, Style>
             {
-                ["Default"] = new Style
+                [LiveChartsSelectors.Default] = new Style
                 {
                     Font = new Font("Arial", 11, FontStyles.Regular, FontWeight.Regular),
                     Fill = Color.Empty,
                     Stroke = Color.Empty,
                     StrokeThickness = 1
                 },
-                ["DefaultSeries"] = new SeriesStyle
+                [LiveChartsSelectors.DefaultSeries] = new SeriesStyle
                 {
                     Font = new Font("Arial", 11, FontStyles.Regular, FontWeight.Regular),
                     Fill = Color.Empty,
@@ -32,6 +32,13 @@ namespace LiveCharts.Core
                     StrokeThickness = 1,
                     Geometry = Geometry.Circle,
                     DefaultFillOpacity = .8
+                },
+                [LiveChartsSelectors.DefaultPlane] = new Style
+                {
+                    Font = new Font("Arial", 11, FontStyles.Regular, FontWeight.Regular),
+                    Fill = Color.Empty,
+                    Stroke = Color.Empty,
+                    StrokeThickness = 1
                 }
             };
 
@@ -184,7 +191,7 @@ namespace LiveCharts.Core
         /// <param name="selector">The series key.</param>
         /// <param name="default">The selector to use when the current selector was not found.</param>
         /// <returns></returns>
-        public static Style GetStyle(string selector, string @default = "Default")
+        public static Style GetStyle(string selector, string @default = LiveChartsSelectors.Default)
         {
             return !Styles.TryGetValue(selector, out var style)
                 ? Styles[@default]
@@ -192,7 +199,7 @@ namespace LiveCharts.Core
         }
 
         /// <summary>
-        /// Returns a style builder for the specified selector.
+        /// Builds a style for the specified selector based on the corresponding default style.
         /// </summary>
         /// <param name="selector">the series unique name.</param>
         /// <param name="builder">the builder.</param>
@@ -201,7 +208,7 @@ namespace LiveCharts.Core
         {
             if (!Styles.ContainsKey(selector))
             {
-                Styles[selector] = Styles["Default"];
+                Styles[selector] = Styles[LiveChartsSelectors.Default];
                 return Current;
             }
 
@@ -210,7 +217,7 @@ namespace LiveCharts.Core
         }
 
         /// <summary>
-        /// Returns a style builder for the specified selector.
+        /// Builds a style for the specified selector based on the corresponding default style.
         /// </summary>
         /// <param name="selector">the series unique name.</param>
         /// <param name="builder">the builder.</param>
@@ -219,7 +226,7 @@ namespace LiveCharts.Core
         {
             if (!Styles.ContainsKey(selector))
             {
-                Styles[selector] = Styles["DefaultSeries"];
+                Styles[selector] = Styles[LiveChartsSelectors.DefaultSeries];
                 return Current;
             }
 

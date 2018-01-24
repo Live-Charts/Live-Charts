@@ -49,8 +49,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Chart.cs" />
+    <Compile Include="DefaultDataLabel.cs" />
     <Compile Include="DefaultLegend.cs" />
-    <Compile Include="PointViews\DefaultPointLabel.cs" />
+    <Compile Include="DefaultPlaneLabelControl.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="PointViews\PointView.cs" />
     <Compile Include="Animation.cs" />

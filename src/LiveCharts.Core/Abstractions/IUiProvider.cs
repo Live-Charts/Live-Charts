@@ -1,6 +1,5 @@
 ﻿using LiveCharts.Core.Coordinates;
 using LiveCharts.Core.Data;
-using LiveCharts.Core.Drawing;
 using LiveCharts.Core.ViewModels;
 
 namespace LiveCharts.Core.Abstractions
@@ -11,18 +10,26 @@ namespace LiveCharts.Core.Abstractions
     public interface IUiProvider
     {
         /// <summary>
-        /// Measures the string.
+        /// The axis label provider.
         /// </summary>
-        /// <param name="text">The text.</param>
-        /// <param name="font">The font.</param>
         /// <returns></returns>
-        Size MeasureString(string text, Font font);
+        IPlaneLabelControl AxisLabelProvider();
 
         /// <summary>
-        /// Separators the provider.
+        /// The label provider.
+        /// </summary>
+        /// <typeparam name="TModel">The type of the model.</typeparam>
+        /// <typeparam name="TCoordinate">The type of the coordinate.</typeparam>
+        /// <typeparam name="TViewModel">The type of the view model.</typeparam>
+        /// <returns></returns>
+        IDataLabelControl<TModel, TCoordinate, TViewModel> DataLabelProvider<TModel, TCoordinate, TViewModel>()
+            where TCoordinate : ICoordinate;
+
+        /// <summary>
+        /// The axis separator provider.
         /// </summary>
         /// <returns></returns>
-        ISeparator SeparatorProvider();
+        ISeparator AxisSeparatorProvider();
 
         /// <summary>
         /// Provides LiveCharts with a builder that returns a column view.

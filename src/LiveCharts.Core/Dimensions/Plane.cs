@@ -15,6 +15,7 @@ namespace LiveCharts.Core.Dimensions
     public abstract class Plane : IResource, IStylable
     {
         private Func<double, string> _labelFormatter;
+        private Func<IPlaneLabelControl> _separatorProvider;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Plane"/> class.
@@ -26,7 +27,8 @@ namespace LiveCharts.Core.Dimensions
             LabelFormatter = Builders.AsMetricNumber;
             MinValue = double.NaN;
             MaxValue = double.NaN;
-            Style = LiveChartsSettings.GetStyle(selector);
+            Selector = selector;
+            Style = LiveChartsSettings.GetStyle(selector, LiveChartsSelectors.DefaultPlane);
         }
 
         /// <summary>
@@ -170,11 +172,33 @@ namespace LiveCharts.Core.Dimensions
             return value >= ActualMinValue && value <= ActualMaxValue;
         }
 
+        /// <summary>
+        /// Gets or sets the separator provider.
+        /// </summary>
+        /// <value>
+        /// The separator provider.
+        /// </value>
+        public Func<IPlaneLabelControl> LabelProvider
+        {
+            get => _separatorProvider ?? DefaultLabelProvider;
+            set
+            {
+                _separatorProvider = value;
+                OnPropertyChanged();
+            }
+        }
+
         /// <inheritdoc cref="IDisposable.Dispose"/>
         protected virtual void OnDispose(IChartView view)
         {
             throw new NotImplementedException();
         }
+
+        /// <summary>
+        /// The default separator provider.
+        /// </summary>
+        /// <returns></returns>
+        protected abstract IPlaneLabelControl DefaultLabelProvider();
 
         #region IResource implementation
 
