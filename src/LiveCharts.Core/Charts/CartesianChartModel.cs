@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Xml;
 using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Dimensions;
 using LiveCharts.Core.Drawing;
@@ -91,6 +92,9 @@ namespace LiveCharts.Core.Charts
             DrawAreaSize = new Size(
                 DrawAreaSize.Width - drawMargin.Left - drawMargin.Right,
                 DrawAreaSize.Height - drawMargin.Top - drawMargin.Bottom);
+            DrawAreaLocation = new Point(
+                DrawAreaLocation.X + drawMargin.Left,
+                DrawAreaLocation.Y + drawMargin.Top);
 
             if (DrawAreaSize.Width <= 0 || DrawAreaSize.Height <= 0)
             {
@@ -129,7 +133,8 @@ namespace LiveCharts.Core.Charts
         {
             var requiresDrawMarginEvaluation = DrawMargin == Margin.Empty;
 
-            int l = 0, r = 0, t = 0, b = 0;
+            double xt = 0, xr = 0, xb = 0, xl = 0;
+            double yt = 0, yr = 0, yb = 0, yl = 0;
 
             // for each dimension (for a cartesian chart X and Y)
             for (var dimensionIndex = 0; dimensionIndex < Dimensions.Length; dimensionIndex++)
@@ -164,24 +169,24 @@ namespace LiveCharts.Core.Charts
                     switch (axis.Position)
                     {
                         case AxisPositions.Top:
-                            t += mi.Top + mi.Bottom;
-                            l += mi.Left;
-                            r += mi.Right;
-                            break;
-                        case AxisPositions.Left:
-                            l += mi.Left + mi.Right;
-                            b += mi.Bottom;
-                            t += mi.Bottom;
-                            break;
-                        case AxisPositions.Right:
-                            r += mi.Left + mi.Right;
-                            b += mi.Bottom;
-                            t += mi.Bottom;
+                            yt += mi.Top + mi.Bottom;
+                            yl += mi.Left;
+                            yr += mi.Right;
                             break;
                         case AxisPositions.Bottom:
-                            b += mi.Top + mi.Bottom;
-                            l += mi.Left;
-                            r += mi.Right;
+                            yb += mi.Top + mi.Bottom;
+                            yl += mi.Left;
+                            yr += mi.Right;
+                            break;
+                        case AxisPositions.Left:
+                            xl += mi.Left + mi.Right;
+                            xb += mi.Bottom;
+                            xt += mi.Top;
+                            break;
+                        case AxisPositions.Right:
+                            xr += mi.Left + mi.Right;
+                            xb += mi.Bottom;
+                            xt += mi.Top;
                             break;
                         default:
                             throw new ArgumentOutOfRangeException();
@@ -190,7 +195,11 @@ namespace LiveCharts.Core.Charts
             }
 
             return requiresDrawMarginEvaluation
-                ? new Margin(t, r, b, l)
+                ? new Margin(
+                    xt > yt ? xt : yt,
+                    xr > yr ? xr : yr,
+                    xb > yb ? xb : yb,
+                    xl > yl ? xl : yl)
                 : DrawMargin;
         }
     }

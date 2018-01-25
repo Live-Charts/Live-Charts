@@ -26,6 +26,8 @@ namespace LiveCharts.Wpf.Separators
         /// <inheritdoc />
         public IPlaneLabelControl Label { get; protected set; }
 
+        private Plane _plane;
+
         public void Move(
             Point point1, Point point2, AxisLabelModel labelModel, bool disposeWhenFinished, Plane plane, IChartView chart)
         {
@@ -44,6 +46,7 @@ namespace LiveCharts.Wpf.Separators
                     .AtSpeed(speed)
                     .Property(UIElement.OpacityProperty, 1, 0)
                     .Begin();
+                _plane = plane;
             }
 
             if (isNewLabel)
@@ -51,7 +54,7 @@ namespace LiveCharts.Wpf.Separators
                 var wpfChart = (CartesianChart) chart;
                 Label = new TLabel();
                 SetInitialLabelParams();
-                wpfChart.Children.Add((UIElement) Label);
+                wpfChart.DrawArea.Children.Add((UIElement) Label);
                 ((UIElement) Label).AsStoryboardTarget()
                     .AtSpeed(speed)
                     .Property(UIElement.OpacityProperty, 1, 0)
@@ -62,6 +65,8 @@ namespace LiveCharts.Wpf.Separators
             Line.StrokeThickness = plane.Style.StrokeThickness;
             Label.Measure(labelModel.Content);
 
+            var actualLabelLocation = labelModel.Location + labelModel.Offset;
+
             var storyboard = Line.AsStoryboardTarget()
                 .AtSpeed(speed)
                 .Property(Line.X1Property, point1.X)
@@ -69,8 +74,8 @@ namespace LiveCharts.Wpf.Separators
                 .Property(Line.Y1Property, point1.Y)
                 .Property(Line.Y2Property, point2.Y)
                 .SetTarget((UIElement) Label)
-                .Property(Canvas.LeftProperty, labelModel.Location.X)
-                .Property(Canvas.TopProperty, labelModel.Location.Y);
+                .Property(Canvas.LeftProperty, actualLabelLocation.X)
+                .Property(Canvas.TopProperty, actualLabelLocation.Y);
 
             if (disposeWhenFinished)
             {
@@ -116,7 +121,7 @@ namespace LiveCharts.Wpf.Separators
         {
             var wpfChart = (CartesianChart) view;
             wpfChart.DrawArea.Children.Remove(Line);
-            wpfChart.Children.Remove((UIElement) Label);
+            wpfChart.DrawArea.Children.Remove((UIElement) Label);
             Line = null;
         }
     }

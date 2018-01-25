@@ -115,6 +115,17 @@ namespace LiveCharts.Core.Drawing
         public int Bottom { get; }
 
         /// <summary>
+        /// Returns a <see cref="System.String" /> that represents this instance.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="System.String" /> that represents this instance.
+        /// </returns>
+        public override string ToString()
+        {
+            return $"l:{Left}, t:{Top}, r:{Right}, b:{Bottom}";
+        }
+
+        /// <summary>
         /// Implements the operator ==.
         /// </summary>
         /// <param name="c1">The c1.</param>

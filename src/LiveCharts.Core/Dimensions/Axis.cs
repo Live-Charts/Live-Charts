@@ -48,6 +48,17 @@ namespace LiveCharts.Core.Dimensions
         /// </value>
         public AxisPositions Position { get; set; }
 
+        /// <summary>
+        /// Returns a <see cref="System.String" /> that represents this instance.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="System.String" /> that represents this instance.
+        /// </returns>
+        public override string ToString()
+        {
+            return $"{PlaneType} at {Position}, from {FormatValue(ActualMinValue)} to {FormatValue(ActualMaxValue)} @ {FormatValue(ActualStep)}";
+        }
+
         internal Margin CalculateAxisMargin(ChartModel chart)
         {
             #region note
@@ -80,12 +91,12 @@ namespace LiveCharts.Core.Dimensions
                     $"An axis of type '{PlaneType}' can not be used in a Cartesian Chart", 130);
             }
             var dimension = PlaneType == PlaneTypes.X ? space.Width : space.Height;
-            var step = chart.ScaleFromUi(5, this, space); // ToDo: or use the real if it is defined?
+            var step = 5; // ToDo: or use the real if it is defined?
 
             int l = 0, r = 0, t = 0, b = 0;
             for (var i = 0d; i < dimension; i += step)
             {
-                var label = EvaluateAxisLabel(i, space, chart);
+                var label = EvaluateAxisLabel(chart.ScaleFromUi(i, this, space), space, chart);
 
                 var li = label.Location.X - label.Margin.Left;
                 if (li < 0 && l < -li) l = -li;
@@ -318,17 +329,6 @@ namespace LiveCharts.Core.Dimensions
                     yw + yh - t,
                     l),
                 content);
-        }
-
-        /// <summary>
-        /// Returns a <see cref="System.String" /> that represents this instance.
-        /// </summary>
-        /// <returns>
-        /// A <see cref="System.String" /> that represents this instance.
-        /// </returns>
-        public override string ToString()
-        {
-            return $"{PlaneType} at {Position}, from {FormatValue(ActualMinValue)} to {FormatValue(ActualMaxValue)} @ {FormatValue(ActualStep)}";
         }
     }
 }
