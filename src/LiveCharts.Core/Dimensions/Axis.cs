@@ -94,10 +94,22 @@ namespace LiveCharts.Core.Dimensions
             var dimension = PlaneType == PlaneTypes.X ? space.Width : space.Height;
             var step = 5; // ToDo: or use the real if it is defined?
 
+            double unit;
+            if (ActualPointWidth == Point.Empty)
+            {
+                unit = 0;
+            }
+            else
+            {
+                unit = PlaneType == PlaneTypes.X
+                    ? ActualPointWidth.X
+                    : ActualPointWidth.Y;
+            }
+
             int l = 0, r = 0, t = 0, b = 0;
             for (var i = 0d; i < dimension; i += step)
             {
-                var label = EvaluateAxisLabel(chart.ScaleFromUi(i, this, space), space, chart);
+                var label = EvaluateAxisLabel(chart.ScaleFromUi(i, this, space), space, unit, chart);
 
                 var li = label.Location.X - label.Margin.Left;
                 if (li < 0 && l < -li) l = -li;
@@ -121,13 +133,24 @@ namespace LiveCharts.Core.Dimensions
 
             var from = Math.Ceiling(ActualMinValue / ActualStep) * ActualStep;
             var to = Math.Floor(ActualMaxValue / ActualStep) * ActualStep;
+            double unit;
+            if (ActualPointWidth == Point.Empty)
+            {
+                unit = 0;
+            }
+            else
+            {
+                unit = PlaneType == PlaneTypes.X
+                    ? ActualPointWidth.X
+                    : ActualPointWidth.Y;
+            }
 
             var tolerance = ActualStep * .1;
 
-            for (var i = from; i < to; i += ActualStep)
+            for (var i = from; i < to + unit; i += ActualStep)
             {
                 var iui = chart.ScaleToUi(i, this);
-                var label = EvaluateAxisLabel(i, chart.DrawAreaSize, chart);
+                var label = EvaluateAxisLabel(i, chart.DrawAreaSize, unit, chart);
                 var key = Math.Round(i / tolerance) * tolerance;
 
                 if (!_activeSeparators.TryGetValue(key, out var separator))
@@ -180,10 +203,22 @@ namespace LiveCharts.Core.Dimensions
                 return Step;
             }
 
-            var range = ActualMaxValue - ActualMinValue;
+            double unit;
+            if (ActualPointWidth == Point.Empty)
+            {
+                unit = 0;
+            }
+            else
+            {
+                unit = PlaneType == PlaneTypes.X
+                    ? ActualPointWidth.X
+                    : ActualPointWidth.Y;
+            }
+
+            var range = ActualMaxValue + unit - ActualMinValue;
             range = range <= 0 ? 1 : range;
 
-            const double cleanFactor = 35d;
+            const double cleanFactor = 50d;
 
             //ToDO: Improve this according to current labels!
             var separations = PlaneType == PlaneTypes.Y
@@ -222,12 +257,12 @@ namespace LiveCharts.Core.Dimensions
             return tick;
         }
 
-        private AxisLabelModel EvaluateAxisLabel(double value, Size drawMargin, ChartModel chart)
+        private AxisLabelModel EvaluateAxisLabel(double value, Size drawMargin, double unit, ChartModel chart)
         {
             const double toRadians = Math.PI / 180;
             var angle = ActualLabelsRotation;
 
-            var content = FormatValue(value);
+            var content = FormatValue(value - .5 * unit);
             var labelModel = LabelProvider().Measure(content);
 
             var xw = Math.Abs(Math.Cos(angle * toRadians) * labelModel.Width);  // width's    horizontal    component

@@ -46,14 +46,14 @@ namespace LiveCharts.Core.Charts
 
             if (plane.PlaneType == PlaneTypes.X)
             {
-                x1 = plane.ActualMaxValue;
+                x1 = plane.ActualMaxValue + plane.ActualPointWidth.X;
                 y1 = chartSize.Width;
                 x2 = plane.ActualMinValue;
                 y2 = 0;
             }
             else
             {
-                x1 = plane.ActualMaxValue;
+                x1 = plane.ActualMaxValue + plane.ActualPointWidth.Y;
                 y1 = 0;
                 x2 = plane.ActualMinValue;
                 y2 = chartSize.Height;
@@ -79,9 +79,9 @@ namespace LiveCharts.Core.Charts
 
             if (plane.PlaneType == PlaneTypes.X)
             {
-                x1 = plane.ActualMaxValue;
+                x1 = plane.ActualMaxValue + plane.ActualPointWidth.X;
                 y1 = chartSize.Width;
-                x2 = plane.ActualMinValue;
+                x2 = plane.ActualMinValue + plane.ActualPointWidth.Y;
                 y2 = 0;
             }
             else

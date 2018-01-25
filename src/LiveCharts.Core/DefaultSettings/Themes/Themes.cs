@@ -44,7 +44,6 @@ namespace LiveCharts.Core.DefaultSettings.Themes
                 {
                     style.Font = baseFont;
                     style.Fill = new Color(0, 0, 0, 0);
-                    var c = System.Drawing.Color.FromArgb(255, 196, 196, 196);
                     style.Stroke = new Color(255, 30, 30, 30);
                     style.StrokeThickness = 1.5;
                 })

@@ -28,7 +28,7 @@ namespace LiveCharts.Core.Dimensions
             LabelFormatter = Builders.AsMetricNumber;
             MinValue = double.NaN;
             MaxValue = double.NaN;
-            PointWidth = Point.Empty;
+            _pointWidth = Point.Empty;
             Selector = selector;
             Style = LiveChartsSettings.GetStyle(selector, LiveChartsSelectors.DefaultPlane);
         }
