@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Xml;
 using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Dimensions;
 using LiveCharts.Core.Drawing;
@@ -53,11 +52,24 @@ namespace LiveCharts.Core.Charts
             // y = m * (x - x1) + y1 
             // where x is the Series.Values scale and y the UI scale
 
-            var dimension = plane.PlaneType == PlaneTypes.X ? chartSize.Width : chartSize.Height;
+            double x1, x2, y1, y2;
 
-            double x1 = plane.ActualMaxValue, y1 = dimension;
-            double x2 = plane.ActualMinValue, y2 = 0;
-            double m = (y2 - y1) / (x2 - x1);
+            if (plane.PlaneType == PlaneTypes.X)
+            {
+                x1 = plane.ActualMaxValue;
+                y1 = chartSize.Width;
+                x2 = plane.ActualMinValue;
+                y2 = 0;
+            }
+            else
+            {
+                x1 = plane.ActualMaxValue;
+                y1 = 0;
+                x2 = plane.ActualMinValue;
+                y2 = chartSize.Height;
+            }
+
+            var m = (y2 - y1) / (x2 - x1);
 
             return m * (dataValue - x1) + y1;
         }
@@ -73,11 +85,24 @@ namespace LiveCharts.Core.Charts
             // then
             // x = ((y - y1) / m) + x1
 
-            var dimension = plane.PlaneType == PlaneTypes.X ? chartSize.Width : chartSize.Height;
+            double x1, x2, y1, y2;
 
-            double x1 = plane.ActualMaxValue, y1 = dimension;
-            double x2 = plane.ActualMinValue, y2 = 0;
-            double m = (y2 - y1) / (x2 - x1);
+            if (plane.PlaneType == PlaneTypes.X)
+            {
+                x1 = plane.ActualMaxValue;
+                y1 = chartSize.Width;
+                x2 = plane.ActualMinValue;
+                y2 = 0;
+            }
+            else
+            {
+                x1 = plane.ActualMaxValue;
+                y1 = 0;
+                x2 = plane.ActualMinValue;
+                y2 = chartSize.Height;
+            }
+
+            var m = (y2 - y1) / (x2 - x1);
 
             return (pixelsValue - y1) / m + x1;
         }
@@ -111,7 +136,7 @@ namespace LiveCharts.Core.Charts
             // for each dimension (for a cartesian chart X and Y)
             foreach (var dimension in Dimensions)
             {
-                // for each axis in each dimension
+                // for each plane in each dimension, in this case CartesianLinearAxis, for convention named Axis
                 foreach (var plane in dimension)
                 {
                     var axis = (Axis) plane;
@@ -188,6 +213,10 @@ namespace LiveCharts.Core.Charts
                             xb += mi.Bottom;
                             xt += mi.Top;
                             break;
+                        case AxisPositions.Auto:
+                            // code should never reach here.
+                            // previously set by the library...
+                            throw new NotImplementedException();
                         default:
                             throw new ArgumentOutOfRangeException();
                     }
