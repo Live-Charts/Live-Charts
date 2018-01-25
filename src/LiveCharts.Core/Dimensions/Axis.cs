@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Charts;
 using LiveCharts.Core.Drawing;
@@ -144,6 +145,15 @@ namespace LiveCharts.Core.Dimensions
                     separator.Move(new Point(0, iui), new Point(chart.DrawAreaSize.Width, iui), label, false, this, chart.View);
                 }
                 chart.RegisterResource(separator);
+            }
+
+            // remove unnecessary elements from cache
+            foreach (var separator in _activeSeparators.ToArray())
+            {
+                if (separator.Value.UpdateId != chart.UpdateId)
+                {
+                    _activeSeparators.Remove(separator.Key);
+                }
             }
         }
 
