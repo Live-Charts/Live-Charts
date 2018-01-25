@@ -1,6 +1,7 @@
 using LiveCharts.Core.Charts;
 using LiveCharts.Core.Coordinates;
 using LiveCharts.Core.Data;
+using LiveCharts.Core.Drawing;
 using LiveCharts.Core.Drawing.Svg;
 using LiveCharts.Core.ViewModels;
 
@@ -39,6 +40,9 @@ namespace LiveCharts.Core.DataSeries
         /// The point geometry.
         /// </value>
         public Geometry PointGeometry { get; set; }
+
+        /// <inheritdoc />
+        public override Point DefaultPointWidth => Point.Empty;
 
         /// <inheritdoc />
         protected override void OnUpdateView(ChartModel chart)

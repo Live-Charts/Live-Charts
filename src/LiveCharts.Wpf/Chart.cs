@@ -20,7 +20,6 @@ namespace LiveCharts.Wpf
         {
             DrawMargin = Core.Drawing.Margin.Empty;
             DrawArea = new Canvas();
-            DrawArea.Background = Brushes.Red;
             Children.Add(DrawArea);
             Loaded += OnLoaded;
             SizeChanged += OnSizeChanged;

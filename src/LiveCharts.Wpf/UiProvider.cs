@@ -37,7 +37,7 @@ namespace LiveCharts.Wpf
             return new DefaultPlaneLabelControl();
         }
 
-        public IDataLabelControl<TModel, TCoordinate, TViewModel> DataLabelProvider<TModel, TCoordinate, TViewModel>() 
+        public IDataLabelControl<TModel, TCoordinate, TViewModel> DataLabelProvider<TModel, TCoordinate, TViewModel>()
             where TCoordinate : ICoordinate
         {
             return new DefaultDataLabel<TModel, TCoordinate, TViewModel>();
@@ -48,7 +48,7 @@ namespace LiveCharts.Wpf
             return new SeparatorView<DefaultPlaneLabelControl>();
         }
 
-        public IPointView<TModel, Point<TModel, Point2D, ColumnViewModel>, Point2D, ColumnViewModel> 
+        public IPointView<TModel, Point<TModel, Point2D, ColumnViewModel>, Point2D, ColumnViewModel>
             ColumnViewProvider<TModel>()
         {
             return new ColumnPointView<

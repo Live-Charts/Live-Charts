@@ -7,7 +7,6 @@ using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Charts;
 using LiveCharts.Core.Data;
 using LiveCharts.Core.DefaultSettings;
-using LiveCharts.Core.Dimensions;
 using LiveCharts.Core.Drawing;
 using LiveCharts.Core.Styles;
 
@@ -19,8 +18,6 @@ namespace LiveCharts.Core.DataSeries
     /// <seealso cref="IResource" />
     public abstract class Series : IResource, IStylable
     {
-        private object _planesUpdateId;
-        private IList<Plane> _planes;
         private readonly List<ChartModel> _usedBy = new List<ChartModel>();
         private string _selector;
         private Style _style;
@@ -121,28 +118,12 @@ namespace LiveCharts.Core.DataSeries
         }
 
         /// <summary>
-        /// Gets the plane.
+        /// Gets the default width of the point.
         /// </summary>
-        /// <param name="chart">The chart.</param>
-        /// <param name="index">The index.</param>
-        /// <returns></returns>
-        public Plane GetPlane(IChartView chart, int index)
-        {
-            return chart.Dimensions[index][ScalesAt[index]];
-        }
-
-        /// <summary>
-        /// Gets the planes.
-        /// </summary>
-        /// <param name="chart">The chart.</param>
-        /// <returns></returns>
-        public IList<Plane> GetPlanes(IChartView chart)
-        {
-            if (_planesUpdateId == chart.Model.UpdateId) return _planes;
-            _planesUpdateId = chart.Model.UpdateId;
-            _planes = ScalesAt.Select((t, i) => chart.Dimensions[i][t]).ToList();
-            return _planes;
-        }
+        /// <value>
+        /// The default width of the point.
+        /// </value>
+        public abstract Point DefaultPointWidth { get; }
 
         /// <summary>
         /// Updates the view.

@@ -36,6 +36,12 @@ namespace LiveCharts.Wpf.PointViews
             {
                 var wpfChart = (CartesianChart) chart;
                 Shape = new TShape();
+                var r = Shape as Rectangle;
+                if (r != null)
+                {
+                    r.RadiusY = 4;
+                    r.RadiusX = 4;
+                }
                 wpfChart.DrawArea.Children.Add(Shape);
                 Canvas.SetLeft(Shape, viewModel.Left);
                 Canvas.SetTop(Shape, viewModel.Zero);

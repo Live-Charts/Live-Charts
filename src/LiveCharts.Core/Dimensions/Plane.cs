@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Data;
+using LiveCharts.Core.Drawing;
 using LiveCharts.Core.Styles;
 using Margin = LiveCharts.Core.Drawing.Margin;
 
@@ -16,17 +17,18 @@ namespace LiveCharts.Core.Dimensions
     {
         private Func<double, string> _labelFormatter;
         private Func<IPlaneLabelControl> _separatorProvider;
+        private Point _pointWidth;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Plane"/> class.
         /// </summary>
         protected Plane(string selector)
         {
-            Unit = 1;
             Margin = new Margin(2);
             LabelFormatter = Builders.AsMetricNumber;
             MinValue = double.NaN;
             MaxValue = double.NaN;
+            PointWidth = Point.Empty;
             Selector = selector;
             Style = LiveChartsSettings.GetStyle(selector, LiveChartsSelectors.DefaultPlane);
         }
@@ -128,12 +130,28 @@ namespace LiveCharts.Core.Dimensions
         public double ActualMinValue { get; internal set; }
 
         /// <summary>
-        /// Gets or sets the unit.
+        /// Gets the actual point unit.
         /// </summary>
         /// <value>
-        /// The unit.
+        /// The actual point unit.
         /// </value>
-        public double Unit { get; set; }
+        public Point ActualPointWidth { get; internal set; }
+
+        /// <summary>
+        /// Gets or sets the width of the point.
+        /// </summary>
+        /// <value>
+        /// The width of the point.
+        /// </value>
+        public Point PointWidth
+        {
+            get => _pointWidth;
+            set
+            {
+                _pointWidth = value;
+                ActualPointWidth = new Point(0, 0);
+            }
+        }
 
         /// <summary>
         /// Gets the type.

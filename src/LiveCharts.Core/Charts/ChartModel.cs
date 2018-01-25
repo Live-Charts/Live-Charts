@@ -213,6 +213,10 @@ namespace LiveCharts.Core.Charts
             {
                 series.Fetch(this);
                 RegisterResource(series);
+                var x = Dimensions[0][series.ScalesAt[0]];
+                var y = Dimensions[1][series.ScalesAt[1]];
+                if (x.PointWidth == Point.Empty) x.ActualPointWidth = series.DefaultPointWidth;
+                if (y.PointWidth == Point.Empty) y.ActualPointWidth = series.DefaultPointWidth;
             }
 
             var chartSize = ControlSize;
