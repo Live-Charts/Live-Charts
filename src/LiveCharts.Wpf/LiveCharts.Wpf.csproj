@@ -50,10 +50,13 @@
   <ItemGroup>
     <Compile Include="Chart.cs" />
     <Compile Include="Converters\ColorToSolidBrushConverter.cs" />
+    <Compile Include="Converters\PointAsTooltipData.cs" />
+    <Compile Include="Converters\GetXFromPointConverter.cs" />
+    <Compile Include="Converters\GetYFromPointConverter.cs" />
     <Compile Include="Converters\SvgToGeometryDataConverter.cs" />
     <Compile Include="DefaultDataLabel.cs" />
-    <Compile Include="DefaultDataTooltip.cs" />
-    <Compile Include="DefaultLegend.cs" />
+    <Compile Include="ChartTooltip.cs" />
+    <Compile Include="ChartLegend.cs" />
     <Compile Include="DefaultPlaneLabelControl.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="PointViews\PointView.cs" />

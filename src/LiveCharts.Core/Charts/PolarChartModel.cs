@@ -28,5 +28,10 @@ namespace LiveCharts.Core.Charts
         {
             throw new System.NotImplementedException();
         }
+
+        protected override void ViewOnPointerMoved(Point location, TooltipSelectionMode selectionMode, params double[] dimensions)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

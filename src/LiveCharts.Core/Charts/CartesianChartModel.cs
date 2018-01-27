@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using LiveCharts.Core.Abstractions;
+using LiveCharts.Core.Coordinates;
 using LiveCharts.Core.Dimensions;
 using LiveCharts.Core.Drawing;
 using Size = LiveCharts.Core.Drawing.Size;
@@ -11,10 +12,12 @@ namespace LiveCharts.Core.Charts
     /// <inheritdoc />
     public class CartesianChartModel : ChartModel
     {
+        private Point _previousTooltipLocation = Point.Empty;
+        
         /// <inheritdoc />
         public CartesianChartModel(IChartView view)
             : base(view)
-        {
+        { 
         }
 
         /// <summary>
@@ -142,6 +145,51 @@ namespace LiveCharts.Core.Charts
             }
 
            CollectResources();
+        }
+        /// <inheritdoc />
+        protected override void ViewOnPointerMoved(Point location, TooltipSelectionMode selectionMode, params double[] dimensions)
+        {
+            var selectedPoints = Series.SelectMany(series => series.SelectPointsByDimension(selectionMode, dimensions)).ToArray();
+
+            if (selectionMode == TooltipSelectionMode.Auto)
+            {
+                // ToDo: guess what the user meant here ...
+            }
+
+            Console.WriteLine(selectedPoints.Length);
+
+            Tooltip = View.DataTooltip;
+
+            // ReSharper disable once PossibleMultipleEnumeration
+            if (!selectedPoints.Any())
+            {
+                TooltipTimoutTimer.Start();
+                return;
+            }
+
+            TooltipTimoutTimer.Stop();
+
+            var size = View.DataTooltip.ShowAndMeasure(selectedPoints, View);
+            double sx = 0, sy = 0;
+
+            foreach (var point in selectedPoints)
+            {
+                var point2D = (Point2D) point.Coordinate;
+                sx += ScaleToUi(point2D.X, XAxis[point.Series.ScalesAt[0]]);
+                sy += ScaleToUi(point2D.Y, YAxis[point.Series.ScalesAt[1]]);
+            }
+
+            sx = sx / selectedPoints.Length;
+            sy = sy / selectedPoints.Length;
+
+            var newTooltipLocation = new Point(sx, sy);
+
+            if (_previousTooltipLocation != newTooltipLocation)
+            {
+                View.DataTooltip.Move(newTooltipLocation, View);
+            }
+
+            _previousTooltipLocation = newTooltipLocation;
         }
 
         internal Margin EvaluateAxisAndGetDrawMargin()

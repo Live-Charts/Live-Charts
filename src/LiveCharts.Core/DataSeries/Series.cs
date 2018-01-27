@@ -143,7 +143,7 @@ namespace LiveCharts.Core.DataSeries
         /// <param name="selectionMode">The selection mode.</param>
         /// <param name="dimensions">The dimensions.</param>
         /// <returns></returns>
-        public abstract IEnumerable<PackedPoint> PointsWhereHoverAreaContains(TooltipSelectionMode selectionMode, params double[] dimensions);
+        public abstract IEnumerable<PackedPoint> SelectPointsByDimension(TooltipSelectionMode selectionMode, params double[] dimensions);
 
         /// <summary>
         /// Evaluates the data label.
@@ -445,7 +445,7 @@ namespace LiveCharts.Core.DataSeries
         }
 
         /// <inheritdoc />
-        public override IEnumerable<PackedPoint> PointsWhereHoverAreaContains(TooltipSelectionMode selectionMode, params double[] dimensions)
+        public override IEnumerable<PackedPoint> SelectPointsByDimension(TooltipSelectionMode selectionMode, params double[] dimensions)
         {
             return Points.Where(point => point.HoverArea.Contains(selectionMode, dimensions))
                 .Select(point => new PackedPoint

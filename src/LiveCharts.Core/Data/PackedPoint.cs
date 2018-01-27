@@ -1,5 +1,7 @@
-﻿using LiveCharts.Core.Abstractions;
+﻿using System.Collections.Generic;
+using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Charts;
+using LiveCharts.Core.Dimensions;
 
 namespace LiveCharts.Core.Data
 {
@@ -64,6 +66,21 @@ namespace LiveCharts.Core.Data
         /// The chart.
         /// </value>
         public ChartModel Chart { get; internal set; }
+
+        /// <summary>
+        /// Returns a string array containing the default representation of a coordinate in every dimension.
+        /// </summary>
+        /// <returns></returns>
+        public string[] AsTooltipData()
+        {
+            var planes = new Plane[Chart.Dimensions.Length];
+            for (var index = 0; index < Chart.Dimensions.Length; index++)
+            {
+                var dimension = Chart.Dimensions[index];
+                planes[index] = dimension[Series.ScalesAt[index]];
+            }
+            return Coordinate.AsTooltipData(planes);
+        }
     }
 
     /// <summary>

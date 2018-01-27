@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Timers;
 using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Coordinates;
 using LiveCharts.Core.Data;
@@ -40,6 +42,13 @@ namespace LiveCharts.Core.Charts
             view.ChartViewResized += Invalidate;
             view.PointerMoved += ViewOnPointerMoved;
             view.PropertyChanged += OnViewPropertyChanged;
+            TooltipTimoutTimer = new Timer();
+            TooltipTimoutTimer.Elapsed += (sender, args) =>
+            {
+                Tooltip.Hide(View);
+                TooltipTimoutTimer.Stop();
+                Debug.WriteLine("tool closed");
+            };
         }
 
         /// <summary>
@@ -109,7 +118,7 @@ namespace LiveCharts.Core.Charts
         /// The default legend orientation.
         /// </value>
         public Orientation DefaultLegendOrientation =>
-            LegendPosition == Abstractions.LegendPosition.Top || LegendPosition == Abstractions.LegendPosition.Bottom
+            LegendPosition == LegendPosition.Top || LegendPosition == LegendPosition.Bottom
                 ? Orientation.Horizontal
                 : Orientation.Vertical;
 
@@ -123,9 +132,13 @@ namespace LiveCharts.Core.Charts
 
         internal TimeSpan AnimationsSpeed { get; set; } 
 
+        internal IDataTooltip Tooltip { get; set; }
+
         internal ILegend Legend { get; set; }
 
         internal LegendPosition LegendPosition { get; set; }
+
+        internal Timer TooltipTimoutTimer { get; set; }
 
         /// <summary>
         /// Invalidates this instance, the chart will queue an update request.
@@ -173,6 +186,15 @@ namespace LiveCharts.Core.Charts
         {
             return new Point2D(ScaleToUi(point.X, x), ScaleToUi(point.Y, y));
         }
+
+        /// <summary>
+        /// Called when the pointer moves over a chart and there is a tooltip in the view.
+        /// </summary>
+        /// <param name="location">The location.</param>
+        /// <param name="selectionMode">The selection mode.</param>
+        /// <param name="dimensions">The dimensions.</param>
+        protected abstract void ViewOnPointerMoved(
+            Point location, TooltipSelectionMode selectionMode, params double[] dimensions);
 
         /// <summary>
         /// Updates the chart.
@@ -458,18 +480,6 @@ namespace LiveCharts.Core.Charts
                 default:
                     throw new ArgumentOutOfRangeException();
             }
-        }
-
-        private void ViewOnPointerMoved(TooltipSelectionMode selectionMode, params double[] dimensions)
-        {
-            var data = Series.SelectMany(series => series.PointsWhereHoverAreaContains(selectionMode, dimensions));
-
-            if (selectionMode == TooltipSelectionMode.Auto)
-            {
-                // ToDo: guess what the user meant here ...
-            }
-
-            View.DataTooltip.Measure(data);
         }
 
         private void CopyDataFromView()

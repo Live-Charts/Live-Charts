@@ -22,12 +22,19 @@ namespace LiveCharts.Core.Abstractions
         /// Measures this instance with the selected points.
         /// </summary>
         /// <returns></returns>
-        Size Measure(IEnumerable<PackedPoint> selected);
+        Size ShowAndMeasure(IEnumerable<PackedPoint> selected, IChartView chart);
 
         /// <summary>
-        /// Moves the specified location.
+        ///  Moves to the specified location.
         /// </summary>
         /// <param name="location">The location.</param>
-        void Move(Point location);
+        /// <param name="chart">The chart.</param>
+        void Move(Point location, IChartView chart);
+
+        /// <summary>
+        /// Hides from specified chart.
+        /// </summary>
+        /// <param name="chart">The chart.</param>
+        void Hide(IChartView chart);
     }
 }

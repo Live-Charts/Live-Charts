@@ -11,9 +11,10 @@ namespace LiveCharts.Core.Abstractions
     /// <summary>
     /// The pointer moved handler.
     /// </summary>
+    /// <param name="location">The location.</param>
     /// <param name="selectionMode">The selection mode.</param>
     /// <param name="dimensions">The dimensions.</param>
-    public delegate void PointerMovedHandler(TooltipSelectionMode selectionMode, params double[] dimensions);
+    public delegate void PointerMovedHandler(Point location, TooltipSelectionMode selectionMode, params double[] dimensions);
 
     /// <summary>
     /// Defines a chart view
@@ -82,6 +83,14 @@ namespace LiveCharts.Core.Abstractions
         /// The animations speed.
         /// </value>
         TimeSpan AnimationsSpeed { get; }
+
+        /// <summary>
+        /// Gets the tooltip time out.
+        /// </summary>
+        /// <value>
+        /// The tooltip time out.
+        /// </value>
+        TimeSpan TooltipTimeOut { get; }
 
         /// <summary>
         /// Gets the legend.

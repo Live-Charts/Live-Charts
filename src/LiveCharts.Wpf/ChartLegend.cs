@@ -14,15 +14,15 @@ namespace LiveCharts.Wpf
     /// </summary>
     /// <seealso cref="System.Windows.Controls.WrapPanel" />
     /// <seealso cref="LiveCharts.Core.Abstractions.ILegend" />
-    public class DefaultLegend : ItemsControl, ILegend
+    public class ChartLegend : ItemsControl, ILegend
     {
         /// <summary>
-        /// Initializes the <see cref="DefaultLegend"/> class.
+        /// Initializes the <see cref="ChartLegend"/> class.
         /// </summary>
-        static DefaultLegend()
+        static ChartLegend()
         {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(DefaultLegend),
-                new FrameworkPropertyMetadata(typeof(DefaultLegend)));
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(ChartLegend),
+                new FrameworkPropertyMetadata(typeof(ChartLegend)));
         }
 
         #region Properties
@@ -31,7 +31,7 @@ namespace LiveCharts.Wpf
         /// The orientation property.
         /// </summary>
         public static readonly DependencyProperty OrientationProperty = DependencyProperty.Register(
-            nameof(Orientation), typeof(Orientation), typeof(DefaultLegend), new PropertyMetadata(default(Orientation)));
+            nameof(Orientation), typeof(Orientation), typeof(ChartLegend), new PropertyMetadata(default(Orientation)));
 
         /// <summary>
         /// Gets or sets the orientation.
@@ -49,7 +49,7 @@ namespace LiveCharts.Wpf
         /// The geometry size property.
         /// </summary>
         public static readonly DependencyProperty GeometrySizeProperty = DependencyProperty.Register(
-            nameof(GeometrySize), typeof(double), typeof(DefaultLegend), new PropertyMetadata(15d));
+            nameof(GeometrySize), typeof(double), typeof(ChartLegend), new PropertyMetadata(15d));
 
         /// <summary>
         /// Gets or sets the size of the geometry.
@@ -67,7 +67,7 @@ namespace LiveCharts.Wpf
         /// The actual orientation property
         /// </summary>
         public static readonly DependencyProperty ActualOrientationProperty = DependencyProperty.Register(
-            nameof(ActualOrientation), typeof(System.Windows.Controls.Orientation), typeof(DefaultLegend), 
+            nameof(ActualOrientation), typeof(System.Windows.Controls.Orientation), typeof(ChartLegend), 
             new PropertyMetadata(default(System.Windows.Controls.Orientation)));
 
         /// <summary>
@@ -79,7 +79,38 @@ namespace LiveCharts.Wpf
         public System.Windows.Controls.Orientation ActualOrientation =>
             (System.Windows.Controls.Orientation) GetValue(ActualOrientationProperty);
 
+        /// <summary>
+        /// The default group style property
+        /// </summary>
+        public static readonly DependencyProperty DefaultGroupStyleProperty = DependencyProperty.Register(
+            nameof(DefaultGroupStyle), typeof(GroupStyle), typeof(ChartLegend),
+            new PropertyMetadata(default(GroupStyle), OnDefaultGroupStyleChanged));
+
+        /// <summary>
+        /// Gets or sets the default group style.
+        /// </summary>
+        /// <value>
+        /// The default group style.
+        /// </value>
+        public GroupStyle DefaultGroupStyle
+        {
+            get => (GroupStyle)GetValue(DefaultGroupStyleProperty);
+            set => SetValue(DefaultGroupStyleProperty, value);
+        }
+
         #endregion
+
+        private static void OnDefaultGroupStyleChanged(DependencyObject sender, DependencyPropertyChangedEventArgs args)
+        {
+            if (args.NewValue == null) return;
+
+            var tooltip = (ChartTooltip)sender;
+
+            if (tooltip.GroupStyle.Count == 0)
+            {
+                tooltip.GroupStyle.Add((GroupStyle)args.NewValue);
+            }
+        }
 
         Size ILegend.Measure(
             IEnumerable<Series> seriesCollection, 
@@ -93,7 +124,9 @@ namespace LiveCharts.Wpf
                     var wpfChart = (Chart) chart;
                     wpfChart.Children.Add(this);
                 }
+
                 ItemsSource = seriesCollection;
+
                 if (Orientation == Orientation.Auto)
                 {
                     SetValue(ActualOrientationProperty,

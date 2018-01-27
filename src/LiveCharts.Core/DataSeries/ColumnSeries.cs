@@ -47,7 +47,7 @@ namespace LiveCharts.Core.DataSeries
         /// <inheritdoc />
         public override Point DefaultPointWidth => new Point(1, 0);
 
-        /// <inheritdoc cref="OnUpdateView"/>
+        /// <inheritdoc />
         public override void UpdateView(ChartModel chart)
         {
             var cartesianChart = (CartesianChartModel) chart;

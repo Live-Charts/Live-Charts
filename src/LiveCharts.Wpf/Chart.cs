@@ -4,7 +4,9 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Input;
+using System.Windows.Media;
 using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Charts;
 using LiveCharts.Core.DataSeries;
@@ -19,10 +21,19 @@ namespace LiveCharts.Wpf
         protected Chart()
         {
             DrawMargin = Core.Drawing.Margin.Empty;
-            DrawArea = new Canvas();
+            DrawArea = new Canvas
+            {
+                Background = Brushes.Transparent // to detect events
+            };
+            TooltipPopup = new Popup
+            {
+                AllowsTransparency = true,
+                Placement = PlacementMode.RelativePoint
+            };
             Children.Add(DrawArea);
-            SetValue(LegendProperty, new DefaultLegend());
-            SetValue(DataTooltipProperty, new DefaultDataTooltip());
+            Children.Add(TooltipPopup);
+            SetValue(LegendProperty, new ChartLegend());
+            SetValue(DataTooltipProperty, new ChartTooltip());
             Loaded += OnLoaded;
             SizeChanged += OnSizeChanged;
         }
@@ -44,6 +55,12 @@ namespace LiveCharts.Wpf
             new PropertyMetadata(TimeSpan.FromMilliseconds(250), RaiseOnPropertyChanged(nameof(AnimationsSpeed))));
 
         /// <summary>
+        /// The tooltip timeout property
+        /// </summary>
+        public static readonly DependencyProperty TooltipTimeoutProperty = DependencyProperty.Register(
+            nameof(TooltipTimeOut), typeof(TimeSpan), typeof(Chart), new PropertyMetadata(TimeSpan.FromMilliseconds(150)));
+
+        /// <summary>
         /// The legend property, default is DefaultLegend class.
         /// </summary>
         public static readonly DependencyProperty LegendProperty = DependencyProperty.Register(
@@ -55,7 +72,7 @@ namespace LiveCharts.Wpf
         /// </summary>
         public static readonly DependencyProperty LegendPositionProperty = DependencyProperty.Register(
             nameof(LegendPosition), typeof(LegendPosition), typeof(Chart),
-            new PropertyMetadata(Core.Abstractions.LegendPosition.None, RaiseOnPropertyChanged(nameof(LegendPosition))));
+            new PropertyMetadata(LegendPosition.None, RaiseOnPropertyChanged(nameof(LegendPosition))));
 
         /// <summary>
         /// The data tooltip property.
@@ -68,7 +85,21 @@ namespace LiveCharts.Wpf
 
         #region Properties
 
+        /// <summary>
+        /// Gets the draw area.
+        /// </summary>
+        /// <value>
+        /// The draw area.
+        /// </value>
         public Canvas DrawArea { get; }
+
+        /// <summary>
+        /// Gets or sets the tooltip popup.
+        /// </summary>
+        /// <value>
+        /// The tooltip popup.
+        /// </value>
+        public Popup TooltipPopup { get; set; }
 
         #endregion
 
@@ -126,7 +157,7 @@ namespace LiveCharts.Wpf
         {
             if (DataTooltip == null) return;
             var point = args.GetPosition(DrawArea);
-            PointerMoved?.Invoke(DataTooltip.SelectionMode, point.X, point.Y);
+            PointerMoved?.Invoke(new Core.Drawing.Point(point.X, point.Y), DataTooltip.SelectionMode, point.X, point.Y);
         }
 
         #endregion
@@ -178,6 +209,18 @@ namespace LiveCharts.Wpf
         {
             get => (TimeSpan) GetValue(AnimationsSpeedProperty);
             set => SetValue(AnimationsSpeedProperty, value);
+        }
+
+        /// <summary>
+        /// Gets or sets the tooltip time out.
+        /// </summary>
+        /// <value>
+        /// The tooltip time out.
+        /// </value>
+        public TimeSpan TooltipTimeOut
+        {
+            get => (TimeSpan)GetValue(TooltipTimeoutProperty);
+            set => SetValue(TooltipTimeoutProperty, value);
         }
 
         /// <inheritdoc cref="IChartView.Legend"/>
