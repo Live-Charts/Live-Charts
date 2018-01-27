@@ -73,17 +73,17 @@ namespace LiveCharts.Core.Coordinates
         }
 
         /// <inheritdoc />
-        public string[][] AsTooltipData(params Plane[] dimensions)
+        public string[] AsTooltipData(params Plane[] dimensions)
         {
             return new[]
             {
                 // x dimension:
                 // dimensions[0]
-                new[] {dimensions[0].FormatValue(X)}, // first line in the tooltip.
+                dimensions[0].FormatValue(X),
 
                 // y dimension
                 // dimensions[1]
-                new[] {dimensions[1].FormatValue(Y)} // first line in the tooltip
+                dimensions[1].FormatValue(Y)
             };
         }
     }

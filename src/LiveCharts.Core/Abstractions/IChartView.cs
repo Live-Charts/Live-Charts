@@ -9,6 +9,13 @@ using LiveCharts.Core.Drawing;
 namespace LiveCharts.Core.Abstractions
 {
     /// <summary>
+    /// The pointer moved handler.
+    /// </summary>
+    /// <param name="selectionMode">The selection mode.</param>
+    /// <param name="dimensions">The dimensions.</param>
+    public delegate void PointerMovedHandler(TooltipSelectionMode selectionMode, params double[] dimensions);
+
+    /// <summary>
     /// Defines a chart view
     /// </summary>
     public interface IChartView : INotifyPropertyChanged
@@ -22,6 +29,11 @@ namespace LiveCharts.Core.Abstractions
         /// Occurs when the chart is resized.
         /// </summary>
         event Action ChartViewResized;
+
+        /// <summary>
+        /// Occurs when pointer moves.
+        /// </summary>
+        event PointerMovedHandler PointerMoved;
 
         /// <summary>
         /// Gets the chart model.
@@ -85,7 +97,15 @@ namespace LiveCharts.Core.Abstractions
         /// <value>
         /// The legend position.
         /// </value>
-        LegendPositions LegendPosition { get; }
+        LegendPosition LegendPosition { get; }
+
+        /// <summary>
+        /// Gets the data tooltip.
+        /// </summary>
+        /// <value>
+        /// The data tooltip.
+        /// </value>
+        IDataTooltip DataTooltip { get; }
 
         /// <summary>
         /// Updates the draw margin.

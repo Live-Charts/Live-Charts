@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using LiveCharts.Core.Data;
+﻿using LiveCharts.Core.Data;
 using LiveCharts.Core.Dimensions;
 
 namespace LiveCharts.Core.Abstractions
@@ -21,6 +20,6 @@ namespace LiveCharts.Core.Abstractions
         ///gets the coordinate as tooltip data.
         /// </summary>
         /// <returns></returns>
-        string[][] AsTooltipData(params Plane[] dimensions);
+        string[] AsTooltipData(params Plane[] dimensions);
     }
 }

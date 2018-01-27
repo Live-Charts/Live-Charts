@@ -20,7 +20,6 @@ namespace LiveCharts.Core.Charts
     public abstract class ChartModel : IDisposable
     {
         private static int _colorCount;
-        private ILegend _previousLegend;
         private Task _delayer;
         private readonly Dictionary<string, object> _previousPropertyReferences = new Dictionary<string, object>();
         private IList<Color> _colors;
@@ -39,6 +38,7 @@ namespace LiveCharts.Core.Charts
                 Invalidate();
             };
             view.ChartViewResized += Invalidate;
+            view.PointerMoved += ViewOnPointerMoved;
             view.PropertyChanged += OnViewPropertyChanged;
         }
 
@@ -109,7 +109,7 @@ namespace LiveCharts.Core.Charts
         /// The default legend orientation.
         /// </value>
         public Orientation DefaultLegendOrientation =>
-            LegendPosition == LegendPositions.Top || LegendPosition == LegendPositions.Bottom
+            LegendPosition == Abstractions.LegendPosition.Top || LegendPosition == Abstractions.LegendPosition.Bottom
                 ? Orientation.Horizontal
                 : Orientation.Vertical;
 
@@ -125,7 +125,7 @@ namespace LiveCharts.Core.Charts
 
         internal ILegend Legend { get; set; }
 
-        internal LegendPositions LegendPosition { get; set; }
+        internal LegendPosition LegendPosition { get; set; }
 
         /// <summary>
         /// Invalidates this instance, the chart will queue an update request.
@@ -221,48 +221,50 @@ namespace LiveCharts.Core.Charts
 
             var chartSize = ControlSize;
             double dax = 0, day = 0;
-            var legendSize = new Size(0, 0);
+            double lw = 0, lh = 0;
 
             // draw and measure legend
-            if (Legend != null && LegendPosition != LegendPositions.None)
+            if (Legend != null && LegendPosition != LegendPosition.None)
             {
-                if (_previousLegend != Legend)
-                {
-                    RegisterResource(Legend);
-                }
-                legendSize = Legend.Measure(Series, DefaultLegendOrientation);
+                RegisterResource(Legend);
+
+                var legendSize = Legend.Measure(Series, DefaultLegendOrientation, View);
+
+                double lx = 0, ly = 0;
 
                 switch (LegendPosition)
                 {
-                    case LegendPositions.None:
-                        dax = 0;
-                        day = 0;
+                    case LegendPosition.None:
                         break;
-                    case LegendPositions.Top:
-                        dax = chartSize.Width * .5 - legendSize.Width * .5;
-                        day = chartSize.Height - legendSize.Height;
+                    case LegendPosition.Top:
+                        day = legendSize.Height;
+                        lh = legendSize.Height;
+                        lx = ControlSize.Width * .5 - legendSize.Width * .5;
                         break;
-                    case LegendPositions.Bottom:
-                        dax = chartSize.Width * .5 - legendSize.Width * .5;
-                        day = 0;
+                    case LegendPosition.Bottom:
+                        lh = legendSize.Height;
+                        lx = chartSize.Width * .5 - legendSize.Width * .5;
+                        ly = chartSize.Height - legendSize.Height;
                         break;
-                    case LegendPositions.Left:
-                        dax = chartSize.Width - legendSize.Width;
-                        day = chartSize.Height * .5 - legendSize.Height * .5;
+                    case LegendPosition.Left:
+                        dax = legendSize.Width;
+                        lw = legendSize.Width;
+                        ly = chartSize.Height * .5 - legendSize.Height * .5;
                         break;
-                    case LegendPositions.Right:
-                        dax = 0;
-                        day = chartSize.Height * .5 - legendSize.Height * .5;
+                    case LegendPosition.Right:
+                        lw = legendSize.Width;
+                        lx = chartSize.Width - legendSize.Width;
+                        ly = chartSize.Height * .5 - legendSize.Height * .5;
                         break;
                     default:
                         throw new ArgumentOutOfRangeException();
                 }
 
-                _previousLegend = Legend;
+                Legend.Move(new Point(lx, ly), View);
             }
 
             DrawAreaLocation = new Point(dax, day);
-            DrawAreaSize = chartSize - legendSize;
+            DrawAreaSize = chartSize - new Size(lw, lh);
         }
 
         internal Color GetNextColor()
@@ -458,6 +460,18 @@ namespace LiveCharts.Core.Charts
             }
         }
 
+        private void ViewOnPointerMoved(TooltipSelectionMode selectionMode, params double[] dimensions)
+        {
+            var data = Series.SelectMany(series => series.PointsWhereHoverAreaContains(selectionMode, dimensions));
+
+            if (selectionMode == TooltipSelectionMode.Auto)
+            {
+                // ToDo: guess what the user meant here ...
+            }
+
+            View.DataTooltip.Measure(data);
+        }
+
         private void CopyDataFromView()
         {
             Series = View.Series.ToArray();
@@ -466,6 +480,7 @@ namespace LiveCharts.Core.Charts
             DrawMargin = View.DrawMargin;
             AnimationsSpeed = View.AnimationsSpeed;
             LegendPosition = View.LegendPosition;
+            Legend = View.Legend;
         }
 
         /// <inheritdoc />

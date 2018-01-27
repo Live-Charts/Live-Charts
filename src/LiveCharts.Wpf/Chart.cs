@@ -4,7 +4,7 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
+using System.Windows.Input;
 using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Charts;
 using LiveCharts.Core.DataSeries;
@@ -21,11 +21,11 @@ namespace LiveCharts.Wpf
             DrawMargin = Core.Drawing.Margin.Empty;
             DrawArea = new Canvas();
             Children.Add(DrawArea);
+            SetValue(LegendProperty, new DefaultLegend());
+            SetValue(DataTooltipProperty, new DefaultDataTooltip());
             Loaded += OnLoaded;
             SizeChanged += OnSizeChanged;
         }
-
-        public Canvas DrawArea { get; }
 
         #region Dependency properties
 
@@ -54,8 +54,21 @@ namespace LiveCharts.Wpf
         /// The legend position property
         /// </summary>
         public static readonly DependencyProperty LegendPositionProperty = DependencyProperty.Register(
-            nameof(LegendPosition), typeof(LegendPositions), typeof(Chart),
-            new PropertyMetadata(LegendPositions.None, RaiseOnPropertyChanged(nameof(LegendPosition))));
+            nameof(LegendPosition), typeof(LegendPosition), typeof(Chart),
+            new PropertyMetadata(Core.Abstractions.LegendPosition.None, RaiseOnPropertyChanged(nameof(LegendPosition))));
+
+        /// <summary>
+        /// The data tooltip property.
+        /// </summary>
+        public static readonly DependencyProperty DataTooltipProperty = DependencyProperty.Register(
+            nameof(DataTooltip), typeof(IDataTooltip), typeof(Chart),
+            new PropertyMetadata(null, OnDataTooltipPropertyChanged));
+
+        #endregion
+
+        #region Properties
+
+        public Canvas DrawArea { get; }
 
         #endregion
 
@@ -96,15 +109,50 @@ namespace LiveCharts.Wpf
             ChartViewResized?.Invoke();
         }
 
+        private static void OnDataTooltipPropertyChanged(DependencyObject sender, DependencyPropertyChangedEventArgs args)
+        {
+            var chart = (Chart) sender;
+            if (chart.DataTooltip != null)
+            {
+                chart.MouseMove += chart.OnMouseMove;
+            }
+            else
+            {
+                chart.MouseMove -= chart.OnMouseMove;
+            }
+        }
+
+        private void OnMouseMove(object o, MouseEventArgs args)
+        {
+            if (DataTooltip == null) return;
+            var point = args.GetPosition(DrawArea);
+            PointerMoved?.Invoke(DataTooltip.SelectionMode, point.X, point.Y);
+        }
+
         #endregion
 
         #region IChartView implementation
 
-        /// <inheritdoc cref="IChartView.ChartViewLoaded"/>
-        public event Action ChartViewLoaded;
+        private event Action ChartViewLoaded;
+        event Action IChartView.ChartViewLoaded
+        {
+            add => ChartViewLoaded += value;
+            remove => ChartViewLoaded -= value;
+        }
 
-        /// <inheritdoc />
-        public event Action ChartViewResized;
+        private event Action ChartViewResized;
+        event Action IChartView.ChartViewResized
+        {
+            add => ChartViewResized += value;
+            remove => ChartViewResized -= value;
+        }
+
+        private event PointerMovedHandler PointerMoved;
+        event PointerMovedHandler IChartView.PointerMoved
+        {
+            add => PointerMoved += value;
+            remove => PointerMoved -= value;
+        }
 
         /// <inheritdoc cref="IChartView.Model"/>
         public ChartModel Model { get; protected set; }
@@ -140,10 +188,17 @@ namespace LiveCharts.Wpf
         }
 
         /// <inheritdoc cref="IChartView.LegendPosition"/>
-        public LegendPositions LegendPosition
+        public LegendPosition LegendPosition
         {
-            get => (LegendPositions) GetValue(LegendPositionProperty);
+            get => (LegendPosition) GetValue(LegendPositionProperty);
             set => SetValue(LegendPositionProperty, value);
+        }
+
+        /// <inheritdoc cref="IChartView.DataTooltip"/>
+        public IDataTooltip DataTooltip
+        {
+            get => (IDataTooltip)GetValue(DataTooltipProperty);
+            set => SetValue(DataTooltipProperty, value);
         }
 
         /// <inheritdoc cref="IChartView.UpdateDrawArea"/>

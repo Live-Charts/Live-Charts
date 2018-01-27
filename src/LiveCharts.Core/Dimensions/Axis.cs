@@ -22,7 +22,7 @@ namespace LiveCharts.Core.Dimensions
             : base(LiveChartsSelectors.DefaultPlane)
         {
             Step = double.NaN;
-            Position = AxisPositions.Auto;
+            Position = AxisPosition.Auto;
         }
 
         /// <summary>
@@ -47,7 +47,7 @@ namespace LiveCharts.Core.Dimensions
         /// <value>
         /// The position.
         /// </value>
-        public AxisPositions Position { get; set; }
+        public AxisPosition Position { get; set; }
 
         /// <summary>
         /// Returns a <see cref="System.String" /> that represents this instance.
@@ -275,7 +275,7 @@ namespace LiveCharts.Core.Dimensions
 
             double x, y, xo, yo, l, t;
 
-            if (PlaneType == PlaneTypes.X && Position == AxisPositions.Bottom)
+            if (PlaneType == PlaneTypes.X && Position == AxisPosition.Bottom)
             {
                 // case 1
                 if (angle < 0)
@@ -296,7 +296,7 @@ namespace LiveCharts.Core.Dimensions
                 x = chart.ScaleToUi(value, this, drawMargin);
                 y = drawMargin.Height;
             }
-            else if (PlaneType == PlaneTypes.X && Position == AxisPositions.Top)
+            else if (PlaneType == PlaneTypes.X && Position == AxisPosition.Top)
             {
                 // case 3
                 if (angle < 0)
@@ -317,7 +317,7 @@ namespace LiveCharts.Core.Dimensions
                 x = chart.ScaleToUi(value, this, drawMargin);
                 y = 0;
             }
-            else if (PlaneType == PlaneTypes.Y && Position == AxisPositions.Left)
+            else if (PlaneType == PlaneTypes.Y && Position == AxisPosition.Left)
             {
                 // case 6
                 if (angle < 0)
@@ -338,7 +338,7 @@ namespace LiveCharts.Core.Dimensions
                 x = 0;
                 y = chart.ScaleToUi(value, this, drawMargin);
             }
-            else if (PlaneType == PlaneTypes.Y && Position == AxisPositions.Right)
+            else if (PlaneType == PlaneTypes.Y && Position == AxisPosition.Right)
             {
                 // case 8
                 if (angle < 0)

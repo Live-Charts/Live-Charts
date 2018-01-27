@@ -49,7 +49,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Chart.cs" />
+    <Compile Include="Converters\ColorToSolidBrushConverter.cs" />
+    <Compile Include="Converters\SvgToGeometryDataConverter.cs" />
     <Compile Include="DefaultDataLabel.cs" />
+    <Compile Include="DefaultDataTooltip.cs" />
     <Compile Include="DefaultLegend.cs" />
     <Compile Include="DefaultPlaneLabelControl.cs" />
     <Compile Include="Extensions.cs" />
@@ -92,5 +95,12 @@
       <Name>LiveCharts.Core</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <Page Include="Themes\Generic.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

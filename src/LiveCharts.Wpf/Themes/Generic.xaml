@@ -1,0 +1,69 @@
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="clr-namespace:LiveCharts.Wpf"
+    xmlns:dataSeries="clr-namespace:LiveCharts.Core.DataSeries;assembly=LiveCharts.Core"
+    xmlns:converters="clr-namespace:LiveCharts.Wpf.Converters"
+    xmlns:styles="clr-namespace:LiveCharts.Core.Styles;assembly=LiveCharts.Core">
+
+    <converters:ColorToSolidBrushConverter x:Key="AsSolidColorBrush"></converters:ColorToSolidBrushConverter>
+    <converters:SvgToGeometryDataConverter x:Key="AsGeometryData"></converters:SvgToGeometryDataConverter>
+
+    <Style TargetType="{x:Type local:DefaultDataTooltip}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type local:DefaultDataTooltip}">
+                    <Border Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            Padding="4">
+                        <ItemsPresenter />
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    
+    <Style TargetType="{x:Type local:DefaultLegend}">
+
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type local:DefaultLegend}">
+                    <Border Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            Padding="6">
+                        <ItemsPresenter />
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        
+        <Setter Property="ItemTemplate">
+            <Setter.Value>
+                <DataTemplate DataType="{x:Type dataSeries:Series}">
+                    <StackPanel Orientation="Horizontal">
+                        <Path Width="{Binding GeometrySize, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:DefaultLegend}}}"
+                              Height="{Binding GeometrySize, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:DefaultLegend}}}"
+                              StrokeThickness="{Binding Style.StrokeThickness}"
+                              Stroke="{Binding Style.Stroke, Converter={StaticResource AsSolidColorBrush}}"
+                              Fill="{Binding Style.Fill, Converter={StaticResource AsSolidColorBrush}}"
+                              Stretch="Fill"
+                              Data="{Binding Path=Style.(styles:SeriesStyle.Geometry).Data, Converter={StaticResource AsGeometryData}}"
+                              Margin="0 0 6 0"/>
+                        <TextBlock Text="{Binding Title}" VerticalAlignment="Center"></TextBlock>
+                    </StackPanel>
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+
+        <Setter Property="ItemsPanel">
+            <Setter.Value>
+                <ItemsPanelTemplate>
+                    <WrapPanel Orientation="{Binding ActualOrientation, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:DefaultLegend}}}"></WrapPanel>
+                </ItemsPanelTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+</ResourceDictionary>

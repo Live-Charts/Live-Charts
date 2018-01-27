@@ -43,7 +43,7 @@ namespace Samples.Wpf
 
         public MainWindow()
         {
-            // InitializeComponent();
+             InitializeComponent();
 
             Series = new ObservableCollection<Series>
             {

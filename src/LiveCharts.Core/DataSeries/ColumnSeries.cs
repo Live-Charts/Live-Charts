@@ -5,6 +5,7 @@ using LiveCharts.Core.Charts;
 using LiveCharts.Core.Coordinates;
 using LiveCharts.Core.Data;
 using LiveCharts.Core.Drawing;
+using LiveCharts.Core.Interaction;
 using LiveCharts.Core.Styles;
 using LiveCharts.Core.ViewModels;
 
@@ -47,7 +48,7 @@ namespace LiveCharts.Core.DataSeries
         public override Point DefaultPointWidth => new Point(1, 0);
 
         /// <inheritdoc cref="OnUpdateView"/>
-        protected override void OnUpdateView(ChartModel chart)
+        public override void UpdateView(ChartModel chart)
         {
             var cartesianChart = (CartesianChartModel) chart;
             var x = cartesianChart.XAxis[ScalesXAt];
@@ -86,21 +87,22 @@ namespace LiveCharts.Core.DataSeries
                 }
 
                 var p = chart.ScaleToUi(current.Coordinate, x, y);
-
-                current.LinesByDimension = current.Coordinate.AsTooltipData(x, y);
+                var vm = new ColumnViewModel(
+                    p.X + relativeLeft,
+                    p.Y < zero
+                        ? p.Y
+                        : zero,
+                    Math.Abs(p.Y - zero),
+                    singleColumnWidth - ColumnPadding,
+                    zero);
 
                 current.View.DrawShape(
                     current,
                     previous,
                     chart.View,
-                    new ColumnViewModel(
-                        p.X + relativeLeft,
-                        p.Y < zero
-                            ? p.Y
-                            : zero,
-                        Math.Abs(p.Y - zero),
-                        singleColumnWidth - ColumnPadding,
-                        zero));
+                    vm);
+
+                current.HoverArea = new RectangleHoverArea(vm);
 
                 if (DataLabels && x.IsInRange(p.X) && y.IsInRange(p.Y))
                 {

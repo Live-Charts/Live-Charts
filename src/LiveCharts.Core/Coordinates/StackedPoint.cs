@@ -52,13 +52,14 @@ namespace LiveCharts.Core.Coordinates
         /// </value>
         public double TotalStacked => Value / Participation;
 
+        /// <inheritdoc />
         public bool CompareDimensions(DimensionRange[] dimensionRanges, SeriesSkipCriteria skipCriteria)
         {
             throw new NotImplementedException();
         }
 
         /// <inheritdoc />
-        public string[][] AsTooltipData(params Plane[] dimensions)
+        public string[] AsTooltipData(params Plane[] dimensions)
         {
             throw new NotImplementedException();
             //return new[]

@@ -129,28 +129,21 @@ namespace LiveCharts.Core.DataSeries
         /// Updates the view.
         /// </summary>
         /// <param name="chart">The chart.</param>
-        public void UpdateView(ChartModel chart)
-        {
-            OnUpdateView(chart);
-        }
+        public abstract void UpdateView(ChartModel chart);
 
         /// <summary>
         /// Fetches the data for the specified chart.
         /// </summary>
         /// <param name="chart">The chart.</param>
-        public void Fetch(ChartModel chart)
-        {
-            OnFetch(chart);
-        }
+        public abstract void Fetch(ChartModel chart);
 
         /// <summary>
-        /// Gets the current values.
+        /// Gets the points that  its hover area contains the given n dimensions.
         /// </summary>
+        /// <param name="selectionMode">The selection mode.</param>
+        /// <param name="dimensions">The dimensions.</param>
         /// <returns></returns>
-        public virtual object GetValues()
-        {
-            throw new NotImplementedException();
-        }
+        public abstract IEnumerable<PackedPoint> PointsWhereHoverAreaContains(TooltipSelectionMode selectionMode, params double[] dimensions);
 
         /// <summary>
         /// Evaluates the data label.
@@ -233,36 +226,6 @@ namespace LiveCharts.Core.DataSeries
             return new Point(left, top);
         }
 
-        /// <summary>
-        /// Called when [dispose].
-        /// </summary>
-        /// <param name="view">The view.</param>
-        /// <exception cref="NotImplementedException"></exception>
-        protected virtual void OnDispose(IChartView view)
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <summary>
-        /// Called when [fetch].
-        /// </summary>
-        /// <param name="model">The model.</param>
-        /// <exception cref="NotImplementedException"></exception>
-        protected virtual void OnFetch(ChartModel model)
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <summary>
-        /// Called when [update view].
-        /// </summary>
-        /// <param name="chart">The chart.</param>
-        /// <exception cref="NotImplementedException"></exception>
-        protected virtual void OnUpdateView(ChartModel chart)
-        {
-            throw new NotImplementedException();
-        }
-
         internal void AddChart(ChartModel chart)
         {
             if (_usedBy.Contains(chart)) return;
@@ -276,6 +239,11 @@ namespace LiveCharts.Core.DataSeries
         void IResource.Dispose(IChartView view)
         {
             OnDispose(view);
+        }
+
+        protected virtual void OnDispose(IChartView view)
+        {
+            throw new NotImplementedException();
         }
 
         #endregion
@@ -433,26 +401,14 @@ namespace LiveCharts.Core.DataSeries
         public DimensionRange DataRange { get; } = new DimensionRange(double.PositiveInfinity, double.NegativeInfinity);
 
         /// <summary>
-        /// Gets the current values.
-        /// </summary>
-        /// <returns></returns>
-        public override object GetValues()
-        {
-            return Values;
-        }
-
-        /// <summary>
         /// Defaults the point view provider.
         /// </summary>
         /// <returns></returns>
         protected abstract IPointView<TModel, Point<TModel, TCoordinate, TViewModel>, TCoordinate, TViewModel>
             DefaultPointViewProvider();
 
-        /// <summary>
-        /// Called when [fetch].
-        /// </summary>
-        /// <param name="model">The model.</param>
-        protected override void OnFetch(ChartModel model)
+        /// <inheritdoc />
+        public override void Fetch(ChartModel model)
         {
             // returned cached points if this method was called from the same updateId.
             if (_chartPointsUpdateId == model.UpdateId) return;
@@ -486,6 +442,22 @@ namespace LiveCharts.Core.DataSeries
                         Collection = Values.ToArray() // create a copy of the current points.
                     })
                 .ToArray();
+        }
+
+        /// <inheritdoc />
+        public override IEnumerable<PackedPoint> PointsWhereHoverAreaContains(TooltipSelectionMode selectionMode, params double[] dimensions)
+        {
+            return Points.Where(point => point.HoverArea.Contains(selectionMode, dimensions))
+                .Select(point => new PackedPoint
+                {
+                    Key = point.Key,
+                    Model = point.Model,
+                    Chart = point.Chart,
+                    Coordinate = point.Coordinate,
+                    Series = point.Series,
+                    View = point.View,
+                    ViewModel = point.ViewModel
+                });
         }
     }
 }

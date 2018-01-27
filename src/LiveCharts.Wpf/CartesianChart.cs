@@ -10,12 +10,6 @@ namespace LiveCharts.Wpf
 {
     public class CartesianChart : Chart
     {
-        static CartesianChart()
-        {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(CartesianChart),
-                new FrameworkPropertyMetadata(typeof(CartesianChart)));
-        }
-
          public CartesianChart()
         {
             Model = new CartesianChartModel(this);

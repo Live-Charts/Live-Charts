@@ -1,4 +1,5 @@
-﻿using LiveCharts.Core.Abstractions;
+﻿using System;
+using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Data;
 using LiveCharts.Core.Dimensions;
 
@@ -43,27 +44,20 @@ namespace LiveCharts.Core.Coordinates
         /// </value>
         public double Weight { get; }
 
+        /// <inheritdoc />
         public bool CompareDimensions(DimensionRange[] dimensionRanges, SeriesSkipCriteria skipCriteria)
         {
             throw new System.NotImplementedException();
         }
 
         /// <inheritdoc />
-        public string[][] AsTooltipData(params Plane[] dimensions)
+        public string[] AsTooltipData(params Plane[] dimensions)
         {
             return new[]
             {
-                // x dimension:
-                // dimensions[0]
-                new[] {dimensions[0].FormatValue(X)}, // first line in the tooltip.
-
-                // y dimension
-                // dimensions[1]
-                new[]
-                {
-                    dimensions[1].FormatValue(Y),
-                    dimensions[2].FormatValue(Weight)
-                } // first line in the tooltip
+                dimensions[0].FormatValue(X),
+                dimensions[1].FormatValue(Y),
+                dimensions[2].FormatValue(Weight)
             };
         }
     }

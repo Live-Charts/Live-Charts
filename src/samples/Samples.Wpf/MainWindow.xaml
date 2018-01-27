@@ -10,7 +10,5 @@
         Height="500" Width="500"
         Name="This"
         d:DataContext="{Binding ElementName=This}">
-
-    <wpf:CartesianChart Series="{Binding}"></wpf:CartesianChart>
-
+    <wpf:CartesianChart Series="{Binding}" LegendPosition="Right"></wpf:CartesianChart>
 </Window>

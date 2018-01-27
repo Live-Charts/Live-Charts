@@ -22,6 +22,7 @@
 
 using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Charts;
+using LiveCharts.Core.Interaction;
 
 namespace LiveCharts.Core.Data
 {
@@ -78,12 +79,12 @@ namespace LiveCharts.Core.Data
         public TCoordinate Coordinate { get; internal set; }
 
         /// <summary>
-        /// Gets the tooltip data.
+        /// Gets the hover area.
         /// </summary>
         /// <value>
-        /// The tooltip data.
+        /// The hover area.
         /// </value>
-        public string[][] LinesByDimension { get; internal set; }
+        public HoverArea HoverArea { get; internal set; }
 
         /// <summary>
         /// Gets the series that owns the point.

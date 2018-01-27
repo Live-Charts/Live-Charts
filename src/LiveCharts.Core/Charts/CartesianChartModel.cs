@@ -163,10 +163,10 @@ namespace LiveCharts.Core.Charts
                     var axis = (Axis) dimension[index];
 
                     axis.PlaneType = Dimensions[0].Contains(axis) ? PlaneTypes.X : PlaneTypes.Y;
-                    axis.Position = axis.Position == AxisPositions.Auto
+                    axis.Position = axis.Position == AxisPosition.Auto
                         ? (axis.PlaneType == PlaneTypes.X
-                            ? AxisPositions.Bottom
-                            : AxisPositions.Left)
+                            ? AxisPosition.Bottom
+                            : AxisPosition.Left)
                         : axis.Position;
 
                     // get the axis limits...
@@ -183,27 +183,27 @@ namespace LiveCharts.Core.Charts
                     var mi = axis.CalculateAxisMargin(this);
                     switch (axis.Position)
                     {
-                        case AxisPositions.Top:
+                        case AxisPosition.Top:
                             yt += mi.Top + mi.Bottom;
                             yl += mi.Left;
                             yr += mi.Right;
                             break;
-                        case AxisPositions.Bottom:
+                        case AxisPosition.Bottom:
                             yb += mi.Top + mi.Bottom;
                             yl += mi.Left;
                             yr += mi.Right;
                             break;
-                        case AxisPositions.Left:
+                        case AxisPosition.Left:
                             xl += mi.Left + mi.Right;
                             xb += mi.Bottom;
                             xt += mi.Top;
                             break;
-                        case AxisPositions.Right:
+                        case AxisPosition.Right:
                             xr += mi.Left + mi.Right;
                             xb += mi.Bottom;
                             xt += mi.Top;
                             break;
-                        case AxisPositions.Auto:
+                        case AxisPosition.Auto:
                             // code should never reach here.
                             // previously set by the library...
                             throw new NotImplementedException();

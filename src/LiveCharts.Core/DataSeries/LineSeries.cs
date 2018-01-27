@@ -45,7 +45,7 @@ namespace LiveCharts.Core.DataSeries
         public override Point DefaultPointWidth => Point.Empty;
 
         /// <inheritdoc />
-        protected override void OnUpdateView(ChartModel chart)
+        public override void UpdateView(ChartModel chart)
         {
 
         }

@@ -9,6 +9,11 @@ namespace LiveCharts.Core.Coordinates
     /// </summary>
     public struct PolarPoint : ICoordinate
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PolarPoint"/> struct.
+        /// </summary>
+        /// <param name="radius">The radius.</param>
+        /// <param name="angle">The angle.</param>
         public PolarPoint(double radius, double angle)
         {
             Angle = angle;
@@ -43,17 +48,17 @@ namespace LiveCharts.Core.Coordinates
         }
 
         /// <inheritdoc />
-        public string[][] AsTooltipData(params Plane[] dimensions)
+        public string[] AsTooltipData(params Plane[] dimensions)
         {
             return new[]
             {
                 // x dimension:
                 // dimensions[0]
-                new[] {dimensions[0].FormatValue(Angle)}, // first line in the tooltip.
+                dimensions[0].FormatValue(Angle),
 
                 // y dimension
                 // dimensions[1]
-                new[] {dimensions[1].FormatValue(Radius)} // first line in the tooltip
+                dimensions[1].FormatValue(Radius)
             };
         }
     }

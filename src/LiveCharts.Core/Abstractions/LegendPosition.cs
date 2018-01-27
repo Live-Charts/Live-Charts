@@ -3,7 +3,7 @@ namespace LiveCharts.Core.Abstractions
     /// <summary>
     /// Chart legend available positions.
     /// </summary>
-    public enum LegendPositions
+    public enum LegendPosition
     {
         /// <summary>
         /// Removes the legend from the chart.

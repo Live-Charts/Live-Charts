@@ -1,43 +1,55 @@
 ﻿using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
-using System.Windows.Shapes;
-using LiveCharts.Core;
 using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.DataSeries;
-using LiveCharts.Core.Styles;
 using Orientation = LiveCharts.Core.Abstractions.Orientation;
+using Point = LiveCharts.Core.Drawing.Point;
 using Size = LiveCharts.Core.Drawing.Size;
 
 namespace LiveCharts.Wpf
 {
-    /// <inheritdoc cref="WrapPanel" />
-    public class DefaultLegend : WrapPanel, ILegend
+    /// <summary>
+    /// Default legend class.
+    /// </summary>
+    /// <seealso cref="System.Windows.Controls.WrapPanel" />
+    /// <seealso cref="LiveCharts.Core.Abstractions.ILegend" />
+    public class DefaultLegend : ItemsControl, ILegend
     {
         /// <summary>
-        /// The automatic orientation property.
+        /// Initializes the <see cref="DefaultLegend"/> class.
         /// </summary>
-        public static readonly DependencyProperty AutomaticOrientationProperty = DependencyProperty.Register(
-            nameof(AutomaticOrientation), typeof(bool), typeof(DefaultLegend), new PropertyMetadata(default(bool)));
+        static DefaultLegend()
+        {
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(DefaultLegend),
+                new FrameworkPropertyMetadata(typeof(DefaultLegend)));
+        }
+
+        #region Properties
 
         /// <summary>
-        /// Gets or sets a value indicating whether the orientation should be decided according to LiveCharts data.
+        /// The orientation property.
+        /// </summary>
+        public static readonly DependencyProperty OrientationProperty = DependencyProperty.Register(
+            nameof(Orientation), typeof(Orientation), typeof(DefaultLegend), new PropertyMetadata(default(Orientation)));
+
+        /// <summary>
+        /// Gets or sets the orientation.
         /// </summary>
         /// <value>
-        ///   <c>true</c> if the orientation should be set by LiveCharts; otherwise, <c>false</c>.
+        /// The orientation.
         /// </value>
-        public bool AutomaticOrientation
+        public Orientation Orientation
         {
-            get => (bool) GetValue(AutomaticOrientationProperty);
-            set => SetValue(AutomaticOrientationProperty, value);
+            get => (Orientation) GetValue(OrientationProperty);
+            set => SetValue(OrientationProperty, value);
         }
 
         /// <summary>
         /// The geometry size property.
         /// </summary>
         public static readonly DependencyProperty GeometrySizeProperty = DependencyProperty.Register(
-            nameof(GeometrySize), typeof(double), typeof(DefaultLegend), new PropertyMetadata(default(double)));
+            nameof(GeometrySize), typeof(double), typeof(DefaultLegend), new PropertyMetadata(15d));
 
         /// <summary>
         /// Gets or sets the size of the geometry.
@@ -51,52 +63,60 @@ namespace LiveCharts.Wpf
             set => SetValue(GeometrySizeProperty, value);
         }
 
-        private Size BuildControl(IEnumerable<Series> seriesCollection, Orientation orientation)
+        /// <summary>
+        /// The actual orientation property
+        /// </summary>
+        public static readonly DependencyProperty ActualOrientationProperty = DependencyProperty.Register(
+            nameof(ActualOrientation), typeof(System.Windows.Controls.Orientation), typeof(DefaultLegend), 
+            new PropertyMetadata(default(System.Windows.Controls.Orientation)));
+
+        /// <summary>
+        /// Gets the actual orientation.
+        /// </summary>
+        /// <value>
+        /// The actual orientation.
+        /// </value>
+        public System.Windows.Controls.Orientation ActualOrientation =>
+            (System.Windows.Controls.Orientation) GetValue(ActualOrientationProperty);
+
+        #endregion
+
+        Size ILegend.Measure(
+            IEnumerable<Series> seriesCollection, 
+            Orientation orientation,
+            IChartView chart)
         {
-            Orientation = AutomaticOrientation
-                ? orientation.AsWpfOrientation()
-                : Orientation;
-
-            MaxWidth = Width;
-            MaxHeight = Width;
-
-            Children.Clear();
-
-            foreach (var series in seriesCollection)
+            return Dispatcher.Invoke(() =>
             {
-                var style = (SeriesStyle) series.Style;
-                Children.Add(new StackPanel
+                if (Parent == null)
                 {
-                    Children =
-                    {
-                        new Path
-                        {
-                            Width = GeometrySize,
-                            Height = GeometrySize,
-                            StrokeThickness = style.StrokeThickness,
-                            Stroke = style.Stroke.AsSolidColorBrush(),
-                            Fill = style.Stroke.AsSolidColorBrush(),
-                            Stretch = Stretch.Fill,
-                            Data = Geometry.Parse(style.Geometry.Data)
-                        },
-                        new TextBlock
-                        {
-                            Margin = new Thickness(4, 0, 4, 0),
-                            Text = series.Title,
-                            VerticalAlignment = VerticalAlignment.Center
-                        }
-                    }
-                });
-            }
-
-            Measure(new System.Windows.Size(double.PositiveInfinity, double.PositiveInfinity));
-            return new Size(DesiredSize.Width, DesiredSize.Height);
+                    var wpfChart = (Chart) chart;
+                    wpfChart.Children.Add(this);
+                }
+                ItemsSource = seriesCollection;
+                if (Orientation == Orientation.Auto)
+                {
+                    SetValue(ActualOrientationProperty,
+                        orientation == Orientation.Horizontal
+                            ? System.Windows.Controls.Orientation.Horizontal
+                            : System.Windows.Controls.Orientation.Vertical);
+                }
+                else
+                {
+                    SetValue(ActualOrientationProperty, Orientation.AsWpfOrientation());
+                }
+                UpdateLayout();
+                return new Size(DesiredSize.Width, DesiredSize.Width);
+            });
         }
 
-        /// <inheritdoc />
-        Size ILegend.Measure(IEnumerable<Series> seriesCollection, Orientation orientation)
+        void ILegend.Move(Point location, IChartView chart)
         {
-            return Dispatcher.Invoke(() => BuildControl(seriesCollection, orientation));
+            Dispatcher.Invoke(() =>
+            {
+                Canvas.SetLeft(this, location.X);
+                Canvas.SetTop(this, location.Y);
+            });
         }
 
         object IResource.UpdateId { get; set; }
@@ -104,11 +124,14 @@ namespace LiveCharts.Wpf
         /// <inheritdoc />
         void IResource.Dispose(IChartView view)
         {
-            var wpfChart = (Chart) view;
-            if (wpfChart.Children.Contains(this))
+            Dispatcher.Invoke(() =>
             {
-                wpfChart.Children.Remove(this);
-            }
+                var wpfChart = (Chart) view;
+                if (wpfChart.Children.Contains(this))
+                {
+                    wpfChart.Children.Remove(this);
+                }
+            });
         }
     }
 }

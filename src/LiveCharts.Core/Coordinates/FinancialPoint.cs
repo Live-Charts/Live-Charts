@@ -1,3 +1,4 @@
+using System;
 using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Data;
 using LiveCharts.Core.Dimensions;
@@ -32,7 +33,7 @@ namespace LiveCharts.Core.Coordinates
         /// <value>
         /// The index.
         /// </value>
-        public int Index { get; set; }
+        public int Index { get; }
 
         /// <summary>
         /// Gets the open.
@@ -81,23 +82,18 @@ namespace LiveCharts.Core.Coordinates
         }
 
         /// <inheritdoc />
-        public string[][] AsTooltipData(params Plane[] dimensions)
+        public string[] AsTooltipData(params Plane[] dimensions)
         {
+            var n = Environment.NewLine;
             return new[]
             {
                 // x dimension:
                 // dimensions[0]
-                new[] {dimensions[0].FormatValue(Index)},           // first line in the tooltip.
+                dimensions[0].FormatValue(Index),
 
                 // y dimension
                 // dimensions[1]
-                new[]
-                {
-                    $"Open: {dimensions[1].FormatValue(Open)}",     // first line in the tooltip
-                    $"High: {dimensions[1].FormatValue(High)}",     // second line
-                    $"Low: {dimensions[1].FormatValue(Low)}",       // third line
-                    $"Close: {dimensions[1].FormatValue(Close)}"    // fourth line
-                }
+                $"Open: {dimensions[1].FormatValue(Open)}{n}High: {dimensions[1].FormatValue(High)}{n}Low: {dimensions[1].FormatValue(Low)}{n}Close: {dimensions[1].FormatValue(Close)}"
             };
         }
     }
