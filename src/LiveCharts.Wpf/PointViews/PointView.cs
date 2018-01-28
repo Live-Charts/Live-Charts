@@ -12,7 +12,7 @@ namespace LiveCharts.Wpf.PointViews
         where TPoint : Point<TModel, TCoordinate, TViewModel>, new()
         where TCoordinate : ICoordinate
         where TShape : Shape, new()
-        where TLabel : DependencyObject, IDataLabelControl<TModel, TCoordinate, TViewModel>, new()
+        where TLabel : DependencyObject, IDataLabelControl, new()
     {
         /// <summary>
         /// Gets or sets the shape.
@@ -28,7 +28,7 @@ namespace LiveCharts.Wpf.PointViews
         /// <value>
         /// The label.
         /// </value>
-        public IDataLabelControl<TModel, TCoordinate, TViewModel> Label { get; protected set; }
+        public IDataLabelControl Label { get; protected set; }
 
         /// <inheritdoc cref="DrawShape"/>
         protected virtual void OnDraw(TPoint point, TPoint previous, IChartView chart, TViewModel viewModel)
@@ -55,7 +55,7 @@ namespace LiveCharts.Wpf.PointViews
         object IPointView<TModel, TPoint, TCoordinate, TViewModel>.VisualElement => Shape;
 
         /// <inheritdoc />
-        IDataLabelControl<TModel, TCoordinate, TViewModel> IPointView<TModel, TPoint, TCoordinate, TViewModel>.Label => Label;
+        IDataLabelControl IPointView<TModel, TPoint, TCoordinate, TViewModel>.Label => Label;
 
         /// <inheritdoc />
         public void DrawShape(TPoint point, TPoint previous, IChartView chart, TViewModel viewModel)

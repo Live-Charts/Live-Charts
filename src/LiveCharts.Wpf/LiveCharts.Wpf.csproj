@@ -54,10 +54,10 @@
     <Compile Include="Converters\GetXFromPointConverter.cs" />
     <Compile Include="Converters\GetYFromPointConverter.cs" />
     <Compile Include="Converters\SvgToGeometryDataConverter.cs" />
-    <Compile Include="DefaultDataLabel.cs" />
-    <Compile Include="ChartTooltip.cs" />
-    <Compile Include="ChartLegend.cs" />
-    <Compile Include="DefaultPlaneLabelControl.cs" />
+    <Compile Include="Controls\DataLabel.cs" />
+    <Compile Include="Controls\ChartTooltip.cs" />
+    <Compile Include="Controls\ChartLegend.cs" />
+    <Compile Include="Controls\AxisLabel.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="PointViews\PointView.cs" />
     <Compile Include="StoryboardBuilder.cs" />

@@ -22,7 +22,7 @@ namespace LiveCharts.Core.Abstractions
         /// <typeparam name="TCoordinate">The type of the coordinate.</typeparam>
         /// <typeparam name="TViewModel">The type of the view model.</typeparam>
         /// <returns></returns>
-        IDataLabelControl<TModel, TCoordinate, TViewModel> DataLabelProvider<TModel, TCoordinate, TViewModel>()
+        IDataLabelControl DataLabelProvider<TModel, TCoordinate, TViewModel>()
             where TCoordinate : ICoordinate;
 
         /// <summary>

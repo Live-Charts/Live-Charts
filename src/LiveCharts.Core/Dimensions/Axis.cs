@@ -161,11 +161,14 @@ namespace LiveCharts.Core.Dimensions
                 chart.RegisterResource(separator);
                 if (PlaneType == PlaneTypes.X)
                 {
-                    separator.Move(new Point(iui, 0), new Point(iui, chart.DrawAreaSize.Height), label, false, this, chart.View);
+                    separator.Move(
+                        new Point(iui, 0), new Point(iui, chart.DrawAreaSize.Height), label, false, Style, this,
+                        chart.View);
                 }
                 else
                 {
-                    separator.Move(new Point(0, iui), new Point(chart.DrawAreaSize.Width, iui), label, false, this, chart.View);
+                    separator.Move(new Point(0, iui), new Point(chart.DrawAreaSize.Width, iui), label, false, Style,
+                        this, chart.View);
                 }
                 chart.RegisterResource(separator);
             }

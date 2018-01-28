@@ -12,6 +12,7 @@ using LiveCharts.Core.Charts;
 using LiveCharts.Core.DataSeries;
 using LiveCharts.Core.Dimensions;
 using LiveCharts.Core.Drawing;
+using LiveCharts.Wpf.Controls;
 using Size = LiveCharts.Core.Drawing.Size;
 
 namespace LiveCharts.Wpf

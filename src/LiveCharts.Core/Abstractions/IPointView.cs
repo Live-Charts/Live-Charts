@@ -28,7 +28,7 @@ namespace LiveCharts.Core.Abstractions
         /// <value>
         /// The label.
         /// </value>
-        IDataLabelControl<TModel, TCoordinate, TViewModel> Label { get; }
+        IDataLabelControl Label { get; }
 
         /// <summary>
         /// Draws the specified point.

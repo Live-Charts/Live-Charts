@@ -44,7 +44,7 @@ namespace LiveCharts.Core.DefaultSettings.Themes
                 {
                     style.Font = baseFont;
                     style.Fill = new Color(0, 0, 0, 0);
-                    style.Stroke = new Color(255, 30, 30, 30);
+                    style.Stroke = new Color(25, 30, 30, 30);
                     style.StrokeThickness = 1.5;
                 })
                 .SetStyle(LiveChartsSelectors.Column, style =>

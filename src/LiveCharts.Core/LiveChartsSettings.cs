@@ -193,9 +193,12 @@ namespace LiveCharts.Core
         /// <returns></returns>
         public static Style GetStyle(string selector, string @default = LiveChartsSelectors.Default)
         {
-            return !Styles.TryGetValue(selector, out var style)
-                ? Styles[@default]
-                : style;
+            if (!Styles.TryGetValue(selector, out var style))
+            {
+                style = Styles[@default];
+            }
+
+            return style;
         }
 
         /// <summary>

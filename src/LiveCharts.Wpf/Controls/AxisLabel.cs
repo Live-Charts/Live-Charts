@@ -1,20 +1,27 @@
-﻿using System.Windows.Controls;
+﻿using System.Windows;
+using System.Windows.Controls;
 using LiveCharts.Core.Abstractions;
-using LiveCharts.Core.Drawing;
+using Size = LiveCharts.Core.Drawing.Size;
 
-namespace LiveCharts.Wpf
+namespace LiveCharts.Wpf.Controls
 {
     /// <summary>
     /// a default label for a point.
     /// </summary>
     /// <seealso cref="System.Windows.Controls.TextBlock" />
-    public class DefaultPlaneLabelControl : TextBlock, IPlaneLabelControl
+    public class AxisLabel : Label, IPlaneLabelControl
     {
+        static AxisLabel()
+        {
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(AxisLabel),
+                new FrameworkPropertyMetadata(typeof(AxisLabel)));
+        }
+
         Size IPlaneLabelControl.Measure(string label)
         {
-            Text = label;
             return Dispatcher.Invoke(() =>
             {
+                Content = label;
                 Measure(new System.Windows.Size(double.PositiveInfinity, double.PositiveInfinity));
                 return new Size(DesiredSize.Width, DesiredSize.Height);
             });

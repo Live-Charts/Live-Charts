@@ -112,7 +112,7 @@ namespace LiveCharts.Core.DataSeries
                             new Point(p.X, p.Y),
                             new Margin(0),
                             zero,
-                            current.View.Label.Measure(current),
+                            current.View.Label.Measure(current.PackAll()),
                             style.DataLabelsPosition),
                         chart.View);
                 }

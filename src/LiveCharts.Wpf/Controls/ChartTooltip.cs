@@ -8,7 +8,7 @@ using LiveCharts.Core.Data;
 using Point = LiveCharts.Core.Drawing.Point;
 using Size = LiveCharts.Core.Drawing.Size;
 
-namespace LiveCharts.Wpf
+namespace LiveCharts.Wpf.Controls
 {
     /// <summary>
     /// Default data tool tip class.
@@ -76,6 +76,24 @@ namespace LiveCharts.Wpf
         {
             get => (GroupStyle) GetValue(DefaultGroupStyleProperty);
             set => SetValue(DefaultGroupStyleProperty, value);
+        }
+
+        /// <summary>
+        /// The corner radius property
+        /// </summary>
+        public static readonly DependencyProperty CornerRadiusProperty = DependencyProperty.Register(
+            nameof(CornerRadius), typeof(double), typeof(ChartTooltip), new PropertyMetadata(default(double)));
+
+        /// <summary>
+        /// Gets or sets the corner radius.
+        /// </summary>
+        /// <value>
+        /// The corner radius.
+        /// </value>
+        public double CornerRadius
+        {
+            get => (double) GetValue(CornerRadiusProperty);
+            set => SetValue(CornerRadiusProperty, value);
         }
 
         #endregion

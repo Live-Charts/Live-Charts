@@ -7,7 +7,7 @@ using Orientation = LiveCharts.Core.Abstractions.Orientation;
 using Point = LiveCharts.Core.Drawing.Point;
 using Size = LiveCharts.Core.Drawing.Size;
 
-namespace LiveCharts.Wpf
+namespace LiveCharts.Wpf.Controls
 {
     /// <summary>
     /// Default legend class.

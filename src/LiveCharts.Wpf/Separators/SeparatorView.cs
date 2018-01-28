@@ -26,10 +26,10 @@ namespace LiveCharts.Wpf.Separators
         /// <inheritdoc />
         public IPlaneLabelControl Label { get; protected set; }
 
-        private Plane _plane;
-
         public void Move(
-            Point point1, Point point2, AxisLabelModel labelModel, bool disposeWhenFinished, Plane plane, IChartView chart)
+            Point point1, Point point2, AxisLabelModel labelModel, 
+            bool disposeWhenFinished, Core.Styles.Style style, Plane plane,
+            IChartView chart)
         {
             var isNew = Line == null;
             var isNewLabel = Label == null;
@@ -46,7 +46,6 @@ namespace LiveCharts.Wpf.Separators
                     .AtSpeed(speed)
                     .Property(UIElement.OpacityProperty, 1, 0)
                     .Begin();
-                _plane = plane;
             }
 
             if (isNewLabel)
@@ -61,8 +60,8 @@ namespace LiveCharts.Wpf.Separators
                     .Begin();
             }
 
-            Line.Stroke = plane.Style.Stroke.AsSolidColorBrush();
-            Line.StrokeThickness = plane.Style.StrokeThickness;
+            Line.Stroke = style.Stroke.AsSolidColorBrush();
+            Line.StrokeThickness = style.StrokeThickness;
             Label.Measure(labelModel.Content);
 
             var actualLabelLocation = labelModel.Location + labelModel.Offset;

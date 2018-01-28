@@ -47,7 +47,6 @@ namespace LiveCharts.Core.Charts
             {
                 Tooltip.Hide(View);
                 TooltipTimoutTimer.Stop();
-                Debug.WriteLine("tool closed");
             };
         }
 

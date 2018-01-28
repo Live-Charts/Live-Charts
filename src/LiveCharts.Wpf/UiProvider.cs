@@ -5,6 +5,7 @@ using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Coordinates;
 using LiveCharts.Core.Data;
 using LiveCharts.Core.ViewModels;
+using LiveCharts.Wpf.Controls;
 using LiveCharts.Wpf.PointViews;
 using LiveCharts.Wpf.Separators;
 using Brushes = System.Windows.Media.Brushes;
@@ -34,18 +35,18 @@ namespace LiveCharts.Wpf
 
         public IPlaneLabelControl AxisLabelProvider()
         {
-            return new DefaultPlaneLabelControl();
+            return new AxisLabel();
         }
 
-        public IDataLabelControl<TModel, TCoordinate, TViewModel> DataLabelProvider<TModel, TCoordinate, TViewModel>()
+        public IDataLabelControl DataLabelProvider<TModel, TCoordinate, TViewModel>()
             where TCoordinate : ICoordinate
         {
-            return new DefaultDataLabel<TModel, TCoordinate, TViewModel>();
+            return new DataLabel();
         }
 
         public ISeparator AxisSeparatorProvider()
         {
-            return new SeparatorView<DefaultPlaneLabelControl>();
+            return new SeparatorView<AxisLabel>();
         }
 
         public IPointView<TModel, Point<TModel, Point2D, ColumnViewModel>, Point2D, ColumnViewModel>
@@ -57,7 +58,7 @@ namespace LiveCharts.Wpf
                 Point2D,
                 ColumnViewModel,
                 Rectangle,
-                DefaultDataLabel<TModel, Point2D, ColumnViewModel>>();
+                DataLabel>();
         }
     }
 }

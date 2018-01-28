@@ -120,6 +120,24 @@ namespace LiveCharts.Core.Data
             };
         }
 
+        /// <summary>
+        /// Packs all.
+        /// </summary>
+        /// <returns></returns>
+        public PackedPoint PackAll()
+        {
+            return new PackedPoint
+            {
+                Chart = Chart,
+                Coordinate = Coordinate,
+                Key = Key,
+                Model = Model,
+                Series = Series,
+                View = null,
+                ViewModel = ViewModel
+            };
+        }
+
         object IResource.UpdateId { get; set; }
 
         void IResource.Dispose(IChartView view)

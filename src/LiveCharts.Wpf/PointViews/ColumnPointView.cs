@@ -25,7 +25,7 @@ namespace LiveCharts.Wpf.PointViews
         where TCoordinate : Point2D
         where TViewModel : ColumnViewModel
         where TShape : Shape, new()
-        where TLabel : FrameworkElement, IDataLabelControl<TModel, TCoordinate, TViewModel>, new()
+        where TLabel : FrameworkElement, IDataLabelControl, new()
     {
         /// <inheritdoc />
         protected override void OnDraw(TPoint point, TPoint previous, IChartView chart, TViewModel viewModel)
@@ -72,7 +72,7 @@ namespace LiveCharts.Wpf.PointViews
             {
                 var wpfChart = (CartesianChart) chart;
                 Label = new TLabel();
-                Label.Measure(point);
+                Label.Measure(point.PackAll());
                 Canvas.SetLeft(Shape, Canvas.GetLeft(Shape));
                 Canvas.SetTop(Shape, Canvas.GetTop(Shape));
                 wpfChart.DrawArea.Children.Add((UIElement) Label);

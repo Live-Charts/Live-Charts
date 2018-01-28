@@ -1,5 +1,6 @@
 using LiveCharts.Core.Dimensions;
 using LiveCharts.Core.Drawing;
+using LiveCharts.Core.Styles;
 
 namespace LiveCharts.Core.Abstractions
 {
@@ -23,8 +24,9 @@ namespace LiveCharts.Core.Abstractions
         /// <param name="point2">The point2.</param>
         /// <param name="labelModel">The label model.</param>
         /// <param name="disposeWhenFinished">if set to <c>true</c> [dispose when finished].</param>
+        /// <param name="style">The style.</param>
         /// <param name="plane">the sender plane.</param>
         /// <param name="chart">The chart.</param>
-        void Move(Point point1, Point point2, AxisLabelModel labelModel, bool disposeWhenFinished, Plane plane, IChartView chart);
+        void Move(Point point1, Point point2, AxisLabelModel labelModel, bool disposeWhenFinished, Style style, Plane plane, IChartView chart);
     }
 }

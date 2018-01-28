@@ -5,26 +5,48 @@
     xmlns:dataSeries="clr-namespace:LiveCharts.Core.DataSeries;assembly=LiveCharts.Core"
     xmlns:converters="clr-namespace:LiveCharts.Wpf.Converters"
     xmlns:styles="clr-namespace:LiveCharts.Core.Styles;assembly=LiveCharts.Core"
-    xmlns:data="clr-namespace:LiveCharts.Core.Data;assembly=LiveCharts.Core">
+    xmlns:data="clr-namespace:LiveCharts.Core.Data;assembly=LiveCharts.Core"
+    xmlns:controls="clr-namespace:LiveCharts.Wpf.Controls">
 
     <converters:ColorToSolidBrushConverter x:Key="AsSolidColorBrush"/>
     <converters:SvgToGeometryDataConverter x:Key="AsGeometryData"/>
     <converters:GetXFromPointConverter x:Key="GetX"/>
     <converters:GetYFromPointConverter x:Key="GetY"/>
 
-    <Style TargetType="{x:Type local:ChartTooltip}">
+    <Style TargetType="{x:Type controls:AxisLabel}">
         
-        <Setter Property="Background" Value="White"></Setter>
+        <Setter Property="Padding" Value="6 3 6 3"></Setter>
 
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="{x:Type local:ChartTooltip}">
+                <ControlTemplate TargetType="{x:Type controls:AxisLabel}">
                     <Border Background="{TemplateBinding Background}"
                             BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness="{TemplateBinding BorderThickness}"
-                            CornerRadius="3"
-                            Padding="8 5"
-                            Margin="3">
+                            Padding="{TemplateBinding Padding}">
+                        <ContentPresenter/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="{x:Type controls:ChartTooltip}">
+
+        <Setter Property="Background" Value="White"></Setter>
+        <Setter Property="Padding" Value="8 4"></Setter>
+        <Setter Property="Margin" Value="3"></Setter>
+        <Setter Property="CornerRadius" Value="3"></Setter>
+
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type controls:ChartTooltip}">
+                    <Border Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="{TemplateBinding CornerRadius}"
+                            Padding="{TemplateBinding Padding}"
+                            Margin="{TemplateBinding Margin}">
                         <Border.Effect>
                             <DropShadowEffect BlurRadius="5" ShadowDepth="1" Direction="270" Color="Black" Opacity=".42" RenderingBias="Performance" />
                         </Border.Effect>
@@ -44,8 +66,8 @@
                             <ColumnDefinition Width="Auto" SharedSizeGroup="Label" />
                         </Grid.ColumnDefinitions>
                         <Path  Grid.Column="0"  
-                               Width="{Binding GeometrySize, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:ChartTooltip}}}"
-                               Height="{Binding GeometrySize, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:ChartTooltip}}}"
+                               Width="{Binding GeometrySize, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type controls:ChartTooltip}}}"
+                               Height="{Binding GeometrySize, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type controls:ChartTooltip}}}"
                                StrokeThickness="{Binding Series.Style.StrokeThickness}"
                                Stroke="{Binding Series.Style.Stroke, Converter={StaticResource AsSolidColorBrush}}"
                                Fill="{Binding Series.Style.Fill, Converter={StaticResource AsSolidColorBrush}}"
@@ -63,10 +85,10 @@
         </Setter>
     </Style>
     
-    <Style TargetType="{x:Type local:ChartLegend}">
+    <Style TargetType="{x:Type controls:ChartLegend}">
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="{x:Type local:ChartLegend}">
+                <ControlTemplate TargetType="{x:Type controls:ChartLegend}">
                     <Border Background="{TemplateBinding Background}"
                             BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness="{TemplateBinding BorderThickness}"
@@ -80,7 +102,7 @@
         <Setter Property="ItemsPanel">
             <Setter.Value>
                 <ItemsPanelTemplate>
-                    <WrapPanel Orientation="{Binding ActualOrientation, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:ChartLegend}}}"></WrapPanel>
+                    <WrapPanel Orientation="{Binding ActualOrientation, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type controls:ChartLegend}}}"></WrapPanel>
                 </ItemsPanelTemplate>
             </Setter.Value>
         </Setter>
@@ -89,8 +111,8 @@
             <Setter.Value>
                 <DataTemplate DataType="{x:Type dataSeries:Series}">
                     <StackPanel Orientation="Horizontal">
-                        <Path Width="{Binding GeometrySize, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:ChartLegend}}}"
-                              Height="{Binding GeometrySize, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:ChartLegend}}}"
+                        <Path Width="{Binding GeometrySize, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type controls:ChartLegend}}}"
+                              Height="{Binding GeometrySize, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type controls:ChartLegend}}}"
                               StrokeThickness="{Binding Style.StrokeThickness}"
                               Stroke="{Binding Style.Stroke, Converter={StaticResource AsSolidColorBrush}}"
                               Fill="{Binding Style.Fill, Converter={StaticResource AsSolidColorBrush}}"

@@ -6,12 +6,13 @@ namespace LiveCharts.Core.Abstractions
     /// <summary>
     /// Defines a control that can be used as a data label.
     /// </summary>
-    /// <typeparam name="TModel">The type of the model.</typeparam>
-    /// <typeparam name="TCoordinate">The type of the coordinate.</typeparam>
-    /// <typeparam name="TViewModel">The type of the view model.</typeparam>
-    public interface IDataLabelControl<TModel, TCoordinate, TViewModel>
-        where TCoordinate : ICoordinate
+    public interface IDataLabelControl
     {
-        Size Measure(Point<TModel, TCoordinate, TViewModel> point);
+        /// <summary>
+        /// Measures the control with the specified point.
+        /// </summary>
+        /// <param name="point">The point.</param>
+        /// <returns></returns>
+        Size Measure(PackedPoint point);
     }
 }
