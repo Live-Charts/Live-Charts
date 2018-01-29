@@ -13,12 +13,12 @@ namespace LiveCharts.Wpf.Controls
     /// <summary>
     /// Default data tool tip class.
     /// </summary>
-    public class ChartTooltip : ItemsControl, IDataTooltip
+    public class ChartToolTip : ItemsControl, IDataToolTip
     {
-        static ChartTooltip()
+        static ChartToolTip()
         {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(ChartTooltip),
-                new FrameworkPropertyMetadata(typeof(ChartTooltip)));
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(ChartToolTip),
+                new FrameworkPropertyMetadata(typeof(ChartToolTip)));
         }
 
         #region Properties
@@ -27,7 +27,7 @@ namespace LiveCharts.Wpf.Controls
         /// The bullet size property
         /// </summary>
         public static readonly DependencyProperty GeometrySizeProperty = DependencyProperty.Register(
-            nameof(GeometrySize), typeof(double), typeof(ChartTooltip), new PropertyMetadata(15d));
+            nameof(GeometrySize), typeof(double), typeof(ChartToolTip), new PropertyMetadata(15d));
 
         /// <summary>
         /// Gets or sets the size of the bullet.
@@ -45,7 +45,7 @@ namespace LiveCharts.Wpf.Controls
         /// The selection mode property
         /// </summary>
         public static readonly DependencyProperty SelectionModeProperty = DependencyProperty.Register(
-            nameof(SelectionMode), typeof(TooltipSelectionMode), typeof(ChartTooltip), new PropertyMetadata(default(TooltipSelectionMode)));
+            nameof(SelectionMode), typeof(TooltipSelectionMode), typeof(ChartToolTip), new PropertyMetadata(default(TooltipSelectionMode)));
 
         /// <summary>
         /// Gets or sets the selection mode.
@@ -63,7 +63,7 @@ namespace LiveCharts.Wpf.Controls
         /// The default group style property
         /// </summary>
         public static readonly DependencyProperty DefaultGroupStyleProperty = DependencyProperty.Register(
-            nameof(DefaultGroupStyle), typeof(GroupStyle), typeof(ChartTooltip), 
+            nameof(DefaultGroupStyle), typeof(GroupStyle), typeof(ChartToolTip), 
             new PropertyMetadata(default(GroupStyle), OnDefaultGroupStyleChanged));
 
         /// <summary>
@@ -82,7 +82,7 @@ namespace LiveCharts.Wpf.Controls
         /// The corner radius property
         /// </summary>
         public static readonly DependencyProperty CornerRadiusProperty = DependencyProperty.Register(
-            nameof(CornerRadius), typeof(double), typeof(ChartTooltip), new PropertyMetadata(default(double)));
+            nameof(CornerRadius), typeof(double), typeof(ChartToolTip), new PropertyMetadata(default(double)));
 
         /// <summary>
         /// Gets or sets the corner radius.
@@ -102,7 +102,7 @@ namespace LiveCharts.Wpf.Controls
         {
             if (args.NewValue == null) return;
 
-            var tooltip = (ChartTooltip)sender;
+            var tooltip = (ChartToolTip)sender;
 
             if (tooltip.GroupStyle.Count == 0)
             {
@@ -110,9 +110,9 @@ namespace LiveCharts.Wpf.Controls
             }
         }
 
-        TooltipSelectionMode IDataTooltip.SelectionMode => SelectionMode;
+        TooltipSelectionMode IDataToolTip.SelectionMode => SelectionMode;
 
-        Size IDataTooltip.ShowAndMeasure(IEnumerable<PackedPoint> selected, IChartView chart)
+        Size IDataToolTip.ShowAndMeasure(IEnumerable<PackedPoint> selected, IChartView chart)
         {
             return Dispatcher.Invoke(() =>
             {
@@ -132,7 +132,7 @@ namespace LiveCharts.Wpf.Controls
         }
 
         /// <inheritdoc />
-        void IDataTooltip.Hide(IChartView chart)
+        void IDataToolTip.Hide(IChartView chart)
         {
             Dispatcher.Invoke(() =>
             {
@@ -141,7 +141,7 @@ namespace LiveCharts.Wpf.Controls
             });
         }
 
-        void IDataTooltip.Move(Point location, IChartView chart)
+        void IDataToolTip.Move(Point location, IChartView chart)
         {
             Dispatcher.Invoke(() =>
             {

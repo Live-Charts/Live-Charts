@@ -104,7 +104,7 @@ namespace LiveCharts.Wpf.Controls
         {
             if (args.NewValue == null) return;
 
-            var tooltip = (ChartTooltip)sender;
+            var tooltip = (ChartToolTip)sender;
 
             if (tooltip.GroupStyle.Count == 0)
             {

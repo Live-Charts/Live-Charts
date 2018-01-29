@@ -29,7 +29,7 @@
         </Setter>
     </Style>
 
-    <Style TargetType="{x:Type controls:ChartTooltip}">
+    <Style TargetType="{x:Type controls:ChartToolTip}">
 
         <Setter Property="Background" Value="White"></Setter>
         <Setter Property="Padding" Value="8 4"></Setter>
@@ -38,7 +38,7 @@
 
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="{x:Type controls:ChartTooltip}">
+                <ControlTemplate TargetType="{x:Type controls:ChartToolTip}">
                     <Border Background="{TemplateBinding Background}"
                             BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness="{TemplateBinding BorderThickness}"
@@ -64,8 +64,8 @@
                             <ColumnDefinition Width="Auto" SharedSizeGroup="Label" />
                         </Grid.ColumnDefinitions>
                         <Path  Grid.Column="0"  
-                               Width="{Binding GeometrySize, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type controls:ChartTooltip}}}"
-                               Height="{Binding GeometrySize, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type controls:ChartTooltip}}}"
+                               Width="{Binding GeometrySize, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type controls:ChartToolTip}}}"
+                               Height="{Binding GeometrySize, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type controls:ChartToolTip}}}"
                                StrokeThickness="{Binding Series.StrokeThickness}"
                                Stroke="{Binding Series.Stroke, Converter={StaticResource AsSolidColorBrush}}"
                                Fill="{Binding Series.Fill, Converter={StaticResource AsSolidColorBrush}}"

@@ -34,7 +34,7 @@ namespace LiveCharts.Wpf
             Children.Add(DrawArea);
             Children.Add(TooltipPopup);
             SetValue(LegendProperty, new ChartLegend());
-            SetValue(DataTooltipProperty, new ChartTooltip());
+            SetValue(DataTooltipProperty, new ChartToolTip());
             Loaded += OnLoaded;
             SizeChanged += OnSizeChanged;
         }
@@ -79,7 +79,7 @@ namespace LiveCharts.Wpf
         /// The data tooltip property.
         /// </summary>
         public static readonly DependencyProperty DataTooltipProperty = DependencyProperty.Register(
-            nameof(DataTooltip), typeof(IDataTooltip), typeof(Chart),
+            nameof(DataToolTip), typeof(IDataToolTip), typeof(Chart),
             new PropertyMetadata(null, OnDataTooltipPropertyChanged));
 
         #endregion
@@ -144,7 +144,7 @@ namespace LiveCharts.Wpf
         private static void OnDataTooltipPropertyChanged(DependencyObject sender, DependencyPropertyChangedEventArgs args)
         {
             var chart = (Chart) sender;
-            if (chart.DataTooltip != null)
+            if (chart.DataToolTip != null)
             {
                 chart.MouseMove += chart.OnMouseMove;
             }
@@ -156,9 +156,9 @@ namespace LiveCharts.Wpf
 
         private void OnMouseMove(object o, MouseEventArgs args)
         {
-            if (DataTooltip == null) return;
+            if (DataToolTip == null) return;
             var point = args.GetPosition(DrawArea);
-            PointerMoved?.Invoke(new Core.Drawing.Point(point.X, point.Y), DataTooltip.SelectionMode, point.X, point.Y);
+            PointerMoved?.Invoke(new Core.Drawing.Point(point.X, point.Y), DataToolTip.SelectionMode, point.X, point.Y);
         }
 
         #endregion
@@ -238,10 +238,10 @@ namespace LiveCharts.Wpf
             set => SetValue(LegendPositionProperty, value);
         }
 
-        /// <inheritdoc cref="IChartView.DataTooltip"/>
-        public IDataTooltip DataTooltip
+        /// <inheritdoc cref="IChartView.DataToolTip"/>
+        public IDataToolTip DataToolTip
         {
-            get => (IDataTooltip)GetValue(DataTooltipProperty);
+            get => (IDataToolTip)GetValue(DataTooltipProperty);
             set => SetValue(DataTooltipProperty, value);
         }
 

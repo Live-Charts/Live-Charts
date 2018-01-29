@@ -114,7 +114,7 @@ namespace LiveCharts.Core.Abstractions
         /// <value>
         /// The data tooltip.
         /// </value>
-        IDataTooltip DataTooltip { get; }
+        IDataToolTip DataToolTip { get; }
 
         /// <summary>
         /// Updates the draw margin.
