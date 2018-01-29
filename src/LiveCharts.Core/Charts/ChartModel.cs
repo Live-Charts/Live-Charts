@@ -44,7 +44,7 @@ namespace LiveCharts.Core.Charts
             TooltipTimoutTimer = new Timer();
             TooltipTimoutTimer.Elapsed += (sender, args) =>
             {
-                Tooltip.Hide(View);
+                ToolTip.Hide(View);
                 TooltipTimoutTimer.Stop();
             };
         }
@@ -130,7 +130,7 @@ namespace LiveCharts.Core.Charts
 
         internal TimeSpan AnimationsSpeed { get; set; } 
 
-        internal IDataTooltip Tooltip { get; set; }
+        internal IDataToolTip ToolTip { get; set; }
 
         internal ILegend Legend { get; set; }
 

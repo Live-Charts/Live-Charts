@@ -19,12 +19,9 @@ namespace LiveCharts.Wpf.Controls
 
         Size IPlaneLabelControl.Measure(string label)
         {
-            return Dispatcher.Invoke(() =>
-            {
-                Content = label;
-                Measure(new System.Windows.Size(double.PositiveInfinity, double.PositiveInfinity));
-                return new Size(DesiredSize.Width, DesiredSize.Height);
-            });
+            Content = label;
+            Measure(new System.Windows.Size(double.PositiveInfinity, double.PositiveInfinity));
+            return new Size(DesiredSize.Width, DesiredSize.Height);
         }
     }
 }

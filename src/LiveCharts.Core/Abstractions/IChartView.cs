@@ -121,5 +121,11 @@ namespace LiveCharts.Core.Abstractions
         /// </summary>
         /// <param name="model">The model.</param>
         void UpdateDrawArea(Rectangle model);
+
+        /// <summary>
+        /// Dispatchers the specified action.
+        /// </summary>
+        /// <param name="action">The action.</param>
+        void InvokeOnThread(Action action);
     }
 }

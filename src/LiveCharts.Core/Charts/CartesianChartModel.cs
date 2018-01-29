@@ -103,48 +103,52 @@ namespace LiveCharts.Core.Charts
         /// <inheritdoc cref="ChartModel.Update"/>
         protected override void Update(bool restart)
         {
-            base.Update(restart);
-
-            // see appendix/chart.spacing.png
-            var drawMargin = EvaluateAxisAndGetDrawMargin();
-            DrawAreaSize = new Size(
-                DrawAreaSize.Width - drawMargin.Left - drawMargin.Right,
-                DrawAreaSize.Height - drawMargin.Top - drawMargin.Bottom);
-            DrawAreaLocation = new Point(
-                DrawAreaLocation.X + drawMargin.Left,
-                DrawAreaLocation.Y + drawMargin.Top);
-
-            if (DrawAreaSize.Width <= 0 || DrawAreaSize.Height <= 0)
+            // run the update on the view's thread
+            View.InvokeOnThread(() =>
             {
-                // skip update if the chart is too small.
-                // and lets delete its content...
-                CollectResources(true);
-                return;
-            }
+                base.Update(restart);
 
-            View.UpdateDrawArea(new Rectangle(DrawAreaLocation, DrawAreaSize));
+                // see appendix/chart.spacing.png
+                var drawMargin = EvaluateAxisAndGetDrawMargin();
+                DrawAreaSize = new Size(
+                    DrawAreaSize.Width - drawMargin.Left - drawMargin.Right,
+                    DrawAreaSize.Height - drawMargin.Top - drawMargin.Bottom);
+                DrawAreaLocation = new Point(
+                    DrawAreaLocation.X + drawMargin.Left,
+                    DrawAreaLocation.Y + drawMargin.Top);
 
-            // draw separators
-
-            // for each dimension (for a cartesian chart X and Y)
-            foreach (var dimension in Dimensions)
-            {
-                // for each plane in each dimension, in this case CartesianLinearAxis, for convention named Axis
-                foreach (var plane in dimension)
+                if (DrawAreaSize.Width <= 0 || DrawAreaSize.Height <= 0)
                 {
-                    var axis = (Axis) plane;
-                    RegisterResource(axis);
-                    axis.DrawSeparators(this);
+                    // skip update if the chart is too small.
+                    // and lets delete its content...
+                    CollectResources(true);
+                    return;
                 }
-            }
 
-            foreach (var series in Series.Where(x => x.IsVisible))
-            {
-                RegisterResource(series);
-                series.UpdateView(this);
-            }
+                View.UpdateDrawArea(new Rectangle(DrawAreaLocation, DrawAreaSize));
 
-           CollectResources();
+                // draw separators
+
+                // for each dimension (for a cartesian chart X and Y)
+                foreach (var dimension in Dimensions)
+                {
+                    // for each plane in each dimension, in this case CartesianLinearAxis, for convention named Axis
+                    foreach (var plane in dimension)
+                    {
+                        var axis = (Axis)plane;
+                        RegisterResource(axis);
+                        axis.DrawSeparators(this);
+                    }
+                }
+
+                foreach (var series in Series.Where(x => x.IsVisible))
+                {
+                    RegisterResource(series);
+                    series.UpdateView(this);
+                }
+
+                CollectResources();
+            });
         }
         /// <inheritdoc />
         protected override void ViewOnPointerMoved(Point location, TooltipSelectionMode selectionMode, params double[] dimensions)
@@ -158,7 +162,7 @@ namespace LiveCharts.Core.Charts
 
             Console.WriteLine(selectedPoints.Length);
 
-            Tooltip = View.DataTooltip;
+            ToolTip = View.DataToolTip;
 
             // ReSharper disable once PossibleMultipleEnumeration
             if (!selectedPoints.Any())
@@ -169,7 +173,7 @@ namespace LiveCharts.Core.Charts
 
             TooltipTimoutTimer.Stop();
 
-            var size = View.DataTooltip.ShowAndMeasure(selectedPoints, View);
+            var size = View.DataToolTip.ShowAndMeasure(selectedPoints, View);
             double sx = 0, sy = 0;
 
             foreach (var point in selectedPoints)
@@ -186,7 +190,7 @@ namespace LiveCharts.Core.Charts
 
             if (_previousTooltipLocation != newTooltipLocation)
             {
-                View.DataTooltip.Move(newTooltipLocation, View);
+                View.DataToolTip.Move(newTooltipLocation, View);
             }
 
             _previousTooltipLocation = newTooltipLocation;

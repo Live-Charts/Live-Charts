@@ -114,44 +114,35 @@ namespace LiveCharts.Wpf.Controls
 
         Size IDataToolTip.ShowAndMeasure(IEnumerable<PackedPoint> selected, IChartView chart)
         {
-            return Dispatcher.Invoke(() =>
+            var wpfChart = (Chart)chart;
+
+            if (Parent == null)
             {
-                var wpfChart = (Chart)chart;
+                wpfChart.TooltipPopup.Child = this;
+            }
 
-                if (Parent == null)
-                {
-                    wpfChart.TooltipPopup.Child = this;
-                }
+            ItemsSource = selected;
+            wpfChart.TooltipPopup.IsOpen = true;
+            UpdateLayout();
 
-                ItemsSource = selected;
-                wpfChart.TooltipPopup.IsOpen = true;
-                UpdateLayout();
-
-                return new Size(DesiredSize.Width, DesiredSize.Height);
-            });
+            return new Size(DesiredSize.Width, DesiredSize.Height);
         }
 
         /// <inheritdoc />
         void IDataToolTip.Hide(IChartView chart)
         {
-            Dispatcher.Invoke(() =>
-            {
-                var wpfChart = (Chart)chart;
-                wpfChart.TooltipPopup.IsOpen = false;
-            });
+            var wpfChart = (Chart)chart;
+            wpfChart.TooltipPopup.IsOpen = false;
         }
 
         void IDataToolTip.Move(Point location, IChartView chart)
         {
-            Dispatcher.Invoke(() =>
-            {
-                var wpfChart = (Chart)chart;
-                wpfChart.TooltipPopup.AsStoryboardTarget()
-                    .AtSpeed(TimeSpan.FromMilliseconds(150))
-                    .Property(Popup.HorizontalOffsetProperty, location.X)
-                    .Property(Popup.VerticalOffsetProperty, location.Y)
-                    .Begin();
-            });
+            var wpfChart = (Chart)chart;
+            wpfChart.TooltipPopup.AsStoryboardTarget()
+                .AtSpeed(TimeSpan.FromMilliseconds(150))
+                .Property(Popup.HorizontalOffsetProperty, location.X)
+                .Property(Popup.VerticalOffsetProperty, location.Y)
+                .Begin();
         }
     }
 }

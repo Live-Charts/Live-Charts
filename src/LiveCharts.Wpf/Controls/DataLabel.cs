@@ -17,12 +17,9 @@ namespace LiveCharts.Wpf.Controls
 
         Size IDataLabelControl.Measure(PackedPoint point)
         {
-            return Dispatcher.Invoke(() =>
-            {
-                DataContext = point;
-                Measure(new System.Windows.Size(double.PositiveInfinity, double.PositiveInfinity));
-                return new Size(DesiredSize.Width, DesiredSize.Height);
-            });
+            DataContext = point;
+            Measure(new System.Windows.Size(double.PositiveInfinity, double.PositiveInfinity));
+            return new Size(DesiredSize.Width, DesiredSize.Height);
         }
     }
 }

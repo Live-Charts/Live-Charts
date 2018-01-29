@@ -117,39 +117,33 @@ namespace LiveCharts.Wpf.Controls
             Orientation orientation,
             IChartView chart)
         {
-            return Dispatcher.Invoke(() =>
+            if (Parent == null)
             {
-                if (Parent == null)
-                {
-                    var wpfChart = (Chart) chart;
-                    wpfChart.Children.Add(this);
-                }
+                var wpfChart = (Chart)chart;
+                wpfChart.Children.Add(this);
+            }
 
-                ItemsSource = seriesCollection;
+            ItemsSource = seriesCollection;
 
-                if (Orientation == Orientation.Auto)
-                {
-                    SetValue(ActualOrientationProperty,
-                        orientation == Orientation.Horizontal
-                            ? System.Windows.Controls.Orientation.Horizontal
-                            : System.Windows.Controls.Orientation.Vertical);
-                }
-                else
-                {
-                    SetValue(ActualOrientationProperty, Orientation.AsWpfOrientation());
-                }
-                UpdateLayout();
-                return new Size(DesiredSize.Width, DesiredSize.Width);
-            });
+            if (Orientation == Orientation.Auto)
+            {
+                SetValue(ActualOrientationProperty,
+                    orientation == Orientation.Horizontal
+                        ? System.Windows.Controls.Orientation.Horizontal
+                        : System.Windows.Controls.Orientation.Vertical);
+            }
+            else
+            {
+                SetValue(ActualOrientationProperty, Orientation.AsWpfOrientation());
+            }
+            UpdateLayout();
+            return new Size(DesiredSize.Width, DesiredSize.Width);
         }
 
         void ILegend.Move(Point location, IChartView chart)
         {
-            Dispatcher.Invoke(() =>
-            {
-                Canvas.SetLeft(this, location.X);
-                Canvas.SetTop(this, location.Y);
-            });
+            Canvas.SetLeft(this, location.X);
+            Canvas.SetTop(this, location.Y);
         }
 
         public event DisposingResource Disposed;
@@ -159,14 +153,11 @@ namespace LiveCharts.Wpf.Controls
         /// <inheritdoc />
         void IResource.Dispose(IChartView view)
         {
-            Dispatcher.Invoke(() =>
+            var wpfChart = (Chart)view;
+            if (wpfChart.Children.Contains(this))
             {
-                var wpfChart = (Chart) view;
-                if (wpfChart.Children.Contains(this))
-                {
-                    wpfChart.Children.Remove(this);
-                }
-            });
+                wpfChart.Children.Remove(this);
+            }
             Disposed?.Invoke(view);
         }
     }

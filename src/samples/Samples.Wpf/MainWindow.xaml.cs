@@ -1,6 +1,9 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Shapes;
@@ -31,11 +34,6 @@ namespace Samples.Wpf
                                 var shape = (Shape) args.Visual;
                                 shape.Fill = Brushes.Red;
                             })
-                        .When(UiActions.PointerEnter,
-                            (city, args) =>
-                            {
-
-                            })
                         .LabeledAs(city => $"{city.Population:N2}");
                 }
             );
@@ -45,13 +43,38 @@ namespace Samples.Wpf
         {
              InitializeComponent();
 
-            Series = new ObservableCollection<Series>
+            var city = new City
             {
-                new ColumnSeries<double>
+                Population = 4
+            };
+
+            var collection = new ObservableCollection<City>
+            {
+                city,
+                new City
                 {
-                    Values = new[] {3d, 4d}, Title = "hola"
+                    Population = 5
                 }
             };
+
+            Series = new ObservableCollection<Series>
+            {
+                new ColumnSeries<City>
+                {
+                    Values = collection,
+                    Title = "hola"
+                }
+            };
+
+            var r = new Random();
+            Task.Run(() =>
+            {
+                while (true)
+                {
+                    Thread.Sleep(2000);
+                    city.Population = r.Next(0, 10);
+                }
+            });
 
             DataContext = Series;
         }
@@ -66,8 +89,12 @@ namespace Samples.Wpf
         public double Population
 
         {
-            get { return _population; }
-            set { _population = value; }
+            get => _population;
+            set
+            {
+                _population = value; 
+                OnPropertyChanged();
+            }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
