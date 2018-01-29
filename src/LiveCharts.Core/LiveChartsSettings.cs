@@ -1,11 +1,10 @@
 using System;
 using System.Collections.Generic;
 using LiveCharts.Core.Abstractions;
+using LiveCharts.Core.Abstractions.DataSeries;
 using LiveCharts.Core.Coordinates;
 using LiveCharts.Core.Data;
 using LiveCharts.Core.Drawing;
-using LiveCharts.Core.Drawing.Svg;
-using LiveCharts.Core.Styles;
 
 namespace LiveCharts.Core
 {
@@ -14,33 +13,7 @@ namespace LiveCharts.Core
     /// </summary>
     public class LiveChartsSettings
     {
-        private static readonly Dictionary<string, Style> Styles =
-            new Dictionary<string, Style>
-            {
-                [LiveChartsSelectors.Default] = new Style
-                {
-                    Font = new Font("Arial", 11, FontStyles.Regular, FontWeight.Regular),
-                    Fill = Color.Empty,
-                    Stroke = Color.Empty,
-                    StrokeThickness = 1
-                },
-                [LiveChartsSelectors.DefaultSeries] = new SeriesStyle
-                {
-                    Font = new Font("Arial", 11, FontStyles.Regular, FontWeight.Regular),
-                    Fill = Color.Empty,
-                    Stroke = Color.Empty,
-                    StrokeThickness = 1,
-                    Geometry = Geometry.Circle,
-                    DefaultFillOpacity = .8
-                },
-                [LiveChartsSelectors.DefaultPlane] = new Style
-                {
-                    Font = new Font("Arial", 11, FontStyles.Regular, FontWeight.Regular),
-                    Fill = Color.Empty,
-                    Stroke = Color.Empty,
-                    StrokeThickness = 1
-                }
-            };
+        private static readonly Dictionary<Type, object> Builders = new Dictionary<Type, object>();
 
         private static readonly Dictionary<Tuple<Type, Type>, object> DefaultMappers =
             new Dictionary<Tuple<Type, Type>, object>();
@@ -186,55 +159,26 @@ namespace LiveCharts.Core
         }
 
         /// <summary>
-        /// Gets the default for a given series.
-        /// </summary>
-        /// <param name="selector">The series key.</param>
-        /// <param name="default">The selector to use when the current selector was not found.</param>
-        /// <returns></returns>
-        public static Style GetStyle(string selector, string @default = LiveChartsSelectors.Default)
-        {
-            if (!Styles.TryGetValue(selector, out var style))
-            {
-                style = Styles[@default];
-            }
-
-            return style;
-        }
-
-        /// <summary>
         /// Builds a style for the specified selector based on the corresponding default style.
         /// </summary>
-        /// <param name="selector">the series unique name.</param>
         /// <param name="builder">the builder.</param>
         /// <returns></returns>
-        public LiveChartsSettings SetStyle(string selector, Action<Style> builder)
+        public LiveChartsSettings SetDefault<T>(Action<T> builder)
         {
-            if (!Styles.ContainsKey(selector))
-            {
-                Styles[selector] = Styles[LiveChartsSelectors.Default];
-                return Current;
-            }
-
-            builder(Styles[selector]);
+            Builders[typeof(T)] = builder;
             return Current;
         }
 
         /// <summary>
-        /// Builds a style for the specified selector based on the corresponding default style.
+        /// Builds the specified type.
         /// </summary>
-        /// <param name="selector">the series unique name.</param>
-        /// <param name="builder">the builder.</param>
-        /// <returns></returns>
-        public LiveChartsSettings SetStyle(string selector, Action<SeriesStyle> builder)
+        /// <typeparam name="T"></typeparam>
+        /// <param name="instance">The instance.</param>
+        public static void Build<T>(T instance)
         {
-            if (!Styles.ContainsKey(selector))
-            {
-                Styles[selector] = Styles[LiveChartsSelectors.DefaultSeries];
-                return Current;
-            }
-
-            builder((SeriesStyle) Styles[selector]);
-            return Current;
+            if (!Builders.TryGetValue(typeof(T), out var builder)) return;
+            var casted = (Action<T>) builder;
+            casted(instance);
         }
 
         /// <summary>

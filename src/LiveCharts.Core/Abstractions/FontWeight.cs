@@ -1,5 +1,8 @@
 namespace LiveCharts.Core.Abstractions
 {
+    /// <summary>
+    /// Specifies the font weight.
+    /// </summary>
     public enum FontWeight
     {
         /// <summary>

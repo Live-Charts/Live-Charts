@@ -1,4 +1,8 @@
 ﻿using LiveCharts.Core.Abstractions;
+using LiveCharts.Core.Abstractions.DataSeries;
+using LiveCharts.Core.Data;
+using LiveCharts.Core.DataSeries;
+using LiveCharts.Core.Dimensions;
 using LiveCharts.Core.Drawing;
 using LiveCharts.Core.Drawing.Svg;
 
@@ -18,44 +22,55 @@ namespace LiveCharts.Core.DefaultSettings.Themes
         {
             var baseFont = new Font("Arial", 11, FontStyles.Regular, FontWeight.Regular);
 
+            var t = typeof(ColumnSeries<>);
+
             settings.PlotDefaults()
                 .UseMaterialDesignColors()
-                .SetStyle(LiveChartsSelectors.Default, style =>
+
+                // sets a base for all the series
+                .SetDefault<ISeries>(series =>
                 {
-                    style.Font = baseFont;
-                    style.StrokeThickness = 0;
-                })
-                .SetStyle(LiveChartsSelectors.DefaultSeries, style =>
-                {
-                    style.Font = baseFont;
-                    style.Fill = Color.Empty;   // means that the DataFactory will set the default next color.
-                    style.Stroke = Color.Empty; // same ^^
-                    style.StrokeThickness = 0;
-                    style.Geometry = Geometry.Circle;
-                    style.DefaultFillOpacity = 1;
-                    style.DataLabelsPosition = new DataLabelsPosition
+                    series.IsVisible = true;
+                    series.Font = baseFont;
+                    series.DataLabels = false;
+                    series.DefaultFillOpacity = 1;
+                    series.Fill = Color.Empty; // if the color is empty, the DataFactory will assign it.
+                    series.Stroke = Color.Empty;
+                    series.StrokeThickness = 0;
+                    series.Geometry = Geometry.Circle;
+                    series.Title = "Unnamed Series";
+                    series.DataLabelsPosition = new DataLabelsPosition
                     {
                         HorizontalAlignment = HorizontalAlingment.Centered,
                         VerticalAlignment = VerticalLabelPosition.Top,
                         Rotation = 0
                     };
                 })
-                .SetStyle(LiveChartsSelectors.DefaultPlane, style =>
+                .SetDefault<IColumnSeries>(columnSeries =>
                 {
-                    style.Font = baseFont;
-                    style.Fill = new Color(0, 0, 0, 0);
-                    style.Stroke = new Color(25, 30, 30, 30);
-                    style.StrokeThickness = 1.5;
+                    columnSeries.Geometry = Geometry.Square;
+                    columnSeries.MaxColumnWidth = 20d;
+                    columnSeries.PointCornerRadius = 8d;
                 })
-                .SetStyle(LiveChartsSelectors.Column, style =>
+                .SetDefault<ILineSeries>(lineSeries =>
                 {
-                    style.Geometry = Geometry.Square;
+                    lineSeries.Geometry = Geometry.HorizontalLine;
+                    lineSeries.StrokeThickness = 3.5;
+                    lineSeries.DefaultFillOpacity = .25;
                 })
-                .SetStyle(LiveChartsSelectors.Line, style =>
+
+                // sets a base for all the planes
+                .SetDefault<Plane>(plane =>
                 {
-                    style.Geometry = Geometry.HorizontalLine;
-                    style.StrokeThickness = 3.5;
-                    style.DefaultFillOpacity = .25;
+                    plane.Font = baseFont;
+                    plane.LabelFormatter = Builders.AsMetricNumber;
+                })
+                .SetDefault<Axis>(axis =>
+                {
+                    axis.XSeparatorStyle = SeparatorStyle.Empty;
+                    axis.YSeparatorStyle = new SeparatorStyle(new Color(0, 0, 0, 0), new Color(255, 245, 245, 245), 0);
+                    axis.XAlternativeSeparatorStyle = SeparatorStyle.Empty;
+                    axis.YAlternativeSeparatorStyle = SeparatorStyle.Empty;
                 });
 
             return settings;

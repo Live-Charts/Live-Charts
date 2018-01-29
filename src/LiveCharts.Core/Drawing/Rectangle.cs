@@ -27,7 +27,7 @@ namespace LiveCharts.Core.Drawing
         /// <param name="left">The left.</param>
         /// <param name="width">The width.</param>
         /// <param name="height">The height.</param>
-        public Rectangle(int top, int left, int width, int height)
+        public Rectangle(double top, double left, double width, double height)
         {
             Top = top;
             Left = left;
@@ -36,27 +36,12 @@ namespace LiveCharts.Core.Drawing
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Rectangle"/> struct.
-        /// </summary>
-        /// <param name="top">The top.</param>
-        /// <param name="left">The left.</param>
-        /// <param name="width">The width.</param>
-        /// <param name="height">The height.</param>
-        public Rectangle(double top, double left, double width, double height)
-        {
-            Top = (int) Math.Round(top);
-            Left = (int) Math.Round(left);
-            Width = (int) Math.Round(width);
-            Height = (int) Math.Round(height);
-        }
-
-        /// <summary>
         /// Gets or sets the top.
         /// </summary>
         /// <value>
         /// The top.
         /// </value>
-        public int Top { get; set; }
+        public double Top { get; set; }
 
         /// <summary>
         /// Gets or sets the left.
@@ -64,7 +49,7 @@ namespace LiveCharts.Core.Drawing
         /// <value>
         /// The left.
         /// </value>
-        public int Left { get; set; }
+        public double Left { get; set; }
 
         /// <summary>
         /// Gets or sets the width.
@@ -72,7 +57,7 @@ namespace LiveCharts.Core.Drawing
         /// <value>
         /// The width.
         /// </value>
-        public int Width { get; set; }
+        public double Width { get; set; }
 
         /// <summary>
         /// Gets or sets the height.
@@ -80,6 +65,6 @@ namespace LiveCharts.Core.Drawing
         /// <value>
         /// The height.
         /// </value>
-        public int Height { get; set; }
+        public double Height { get; set; }
     }
 }

@@ -52,29 +52,13 @@ namespace LiveCharts.Core.Drawing
         /// <param name="right">The right.</param>
         /// <param name="bottom">The bottom.</param>
         /// <param name="left">The left.</param>
-        public Margin(int top, int right, int bottom, int left)
+        public Margin(double top, double right, double bottom, double left)
         {
             _isEmpty = false;
             Top = top;
             Right = right;
             Bottom = bottom;
             Left = left;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Margin"/> struct.
-        /// </summary>
-        /// <param name="top">The top.</param>
-        /// <param name="right">The right.</param>
-        /// <param name="bottom">The bottom.</param>
-        /// <param name="left">The left.</param>
-        public Margin(double top, double right, double bottom, double left)
-        {
-            _isEmpty = false;
-            Top = (int) Math.Round(top);
-            Right = (int) Math.Round(right);
-            Bottom = (int) Math.Round(bottom);
-            Left = (int) Math.Round(left);
         }
 
         /// <summary>
@@ -88,7 +72,7 @@ namespace LiveCharts.Core.Drawing
         /// <value>
         /// The top.
         /// </value>
-        public int Top { get; }
+        public double Top { get; }
 
         /// <summary>
         /// Gets or sets the left.
@@ -96,7 +80,7 @@ namespace LiveCharts.Core.Drawing
         /// <value>
         /// The left.
         /// </value>
-        public int Left { get; }
+        public double Left { get; }
 
         /// <summary>
         /// Gets or sets the right.
@@ -104,7 +88,7 @@ namespace LiveCharts.Core.Drawing
         /// <value>
         /// The right.
         /// </value>
-        public int Right { get; }
+        public double Right { get; }
 
         /// <summary>
         /// Gets or sets the bottom.
@@ -112,7 +96,7 @@ namespace LiveCharts.Core.Drawing
         /// <value>
         /// The bottom.
         /// </value>
-        public int Bottom { get; }
+        public double Bottom { get; }
 
         /// <summary>
         /// Returns a <see cref="System.String" /> that represents this instance.
@@ -211,10 +195,10 @@ namespace LiveCharts.Core.Drawing
             unchecked
             {
                 var hashCode = _isEmpty.GetHashCode();
-                hashCode = (hashCode * 397) ^ Top;
-                hashCode = (hashCode * 397) ^ Left;
-                hashCode = (hashCode * 397) ^ Right;
-                hashCode = (hashCode * 397) ^ Bottom;
+                hashCode = (hashCode * 397) ^ Top.GetHashCode();
+                hashCode = (hashCode * 397) ^ Left.GetHashCode();
+                hashCode = (hashCode * 397) ^ Right.GetHashCode();
+                hashCode = (hashCode * 397) ^ Bottom.GetHashCode();
                 return hashCode;
             }
         }

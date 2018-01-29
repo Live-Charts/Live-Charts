@@ -12,17 +12,17 @@ namespace LiveCharts.Core.Dimensions
     /// </summary>
     public class Axis : Plane
     {
-        private readonly Dictionary<double, ISeparator> _activeSeparators =
-            new Dictionary<double, ISeparator>();
+        private readonly Dictionary<double, ICartesianAxisSeparator> _activeSeparators =
+            new Dictionary<double, ICartesianAxisSeparator>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Axis"/> class.
         /// </summary>
         public Axis()
-            : base(LiveChartsSelectors.DefaultPlane)
         {
             Step = double.NaN;
             Position = AxisPosition.Auto;
+            LiveChartsSettings.Build(this);
         }
 
         /// <summary>
@@ -48,6 +48,38 @@ namespace LiveCharts.Core.Dimensions
         /// The position.
         /// </value>
         public AxisPosition Position { get; set; }
+
+        /// <summary>
+        /// Gets or sets the x axis separator style.
+        /// </summary>
+        /// <value>
+        /// The x axis separator style.
+        /// </value>
+        public SeparatorStyle XSeparatorStyle { get; set; }
+
+        /// <summary>
+        /// Gets or sets the x axis alternative separator style.
+        /// </summary>
+        /// <value>
+        /// The x axis alternative separator style.
+        /// </value>
+        public SeparatorStyle XAlternativeSeparatorStyle { get; set; }
+
+        /// <summary>
+        /// Gets or sets the y axis separator style.
+        /// </summary>
+        /// <value>
+        /// The y axis separator style.
+        /// </value>
+        public SeparatorStyle YSeparatorStyle { get; set; }
+
+        /// <summary>
+        /// Gets or sets the y axis alternative separator style.
+        /// </summary>
+        /// <value>
+        /// The y axis alternative separator style.
+        /// </value>
+        public SeparatorStyle YAlternativeSeparatorStyle { get; set; }
 
         /// <summary>
         /// Returns a <see cref="System.String" /> that represents this instance.
@@ -106,7 +138,7 @@ namespace LiveCharts.Core.Dimensions
                     : ActualPointWidth.Y;
             }
 
-            int l = 0, r = 0, t = 0, b = 0;
+            double l = 0, r = 0, t = 0, b = 0;
             for (var i = 0d; i < dimension; i += step)
             {
                 var label = EvaluateAxisLabel(chart.ScaleFromUi(i, this, space), space, unit, chart);
@@ -146,29 +178,49 @@ namespace LiveCharts.Core.Dimensions
             }
 
             var tolerance = ActualStep * .1;
+            var stepSize = Math.Abs(chart.ScaleToUi(ActualStep, this) - chart.ScaleToUi(0, this));
+            var alternate = false;
 
             for (var i = from; i < to + unit; i += ActualStep)
             {
+                alternate = !alternate;
                 var iui = chart.ScaleToUi(i, this);
                 var label = EvaluateAxisLabel(i, chart.DrawAreaSize, unit, chart);
                 var key = Math.Round(i / tolerance) * tolerance;
 
                 if (!_activeSeparators.TryGetValue(key, out var separator))
                 {
-                    separator = LiveChartsSettings.Current.UiProvider.AxisSeparatorProvider();
+                    separator = LiveChartsSettings.Current.UiProvider.CartesianAxisSeparatorProvider();
                     _activeSeparators.Add(key, separator);
                 }
                 chart.RegisterResource(separator);
                 if (PlaneType == PlaneTypes.X)
                 {
+                    var w = iui + stepSize > chart.DrawAreaSize.Width ? 0 : stepSize;
                     separator.Move(
-                        new Point(iui, 0), new Point(iui, chart.DrawAreaSize.Height), label, false, Style, this,
-                        chart.View);
+                        new CartesianAxisSeparatorArgs
+                        {
+                            Model = new Rectangle(new Point(iui, 0), new Size(w, chart.DrawAreaSize.Height)),
+                            AxisLabelModel = label,
+                            IsAlternative = alternate,
+                            Disposing = false,
+                            Plane = this,
+                            ChartView = chart.View
+                        });
                 }
                 else
                 {
-                    separator.Move(new Point(0, iui), new Point(chart.DrawAreaSize.Width, iui), label, false, Style,
-                        this, chart.View);
+                    var h = iui + stepSize > chart.DrawAreaSize.Height ? 0 : stepSize;
+                    separator.Move(
+                        new CartesianAxisSeparatorArgs
+                        {
+                            Model = new Rectangle(new Point(0, iui), new Size(chart.DrawAreaSize.Width, h)),
+                            AxisLabelModel = label,
+                            IsAlternative = alternate,
+                            Disposing = false,
+                            Plane = this,
+                            ChartView = chart.View
+                        });
                 }
                 chart.RegisterResource(separator);
             }

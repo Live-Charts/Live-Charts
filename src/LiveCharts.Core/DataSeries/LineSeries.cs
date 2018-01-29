@@ -1,3 +1,4 @@
+using LiveCharts.Core.Abstractions.DataSeries;
 using LiveCharts.Core.Charts;
 using LiveCharts.Core.Coordinates;
 using LiveCharts.Core.Data;
@@ -14,15 +15,14 @@ namespace LiveCharts.Core.DataSeries
     /// <typeparam name="TView">The type of the view.</typeparam>
     /// <typeparam name="TPoint">the type of the chart point.</typeparam>
     public abstract class LineSeries<TModel, TPoint, TView>
-        : CartesianSeries<TModel, Point2D, BezierViewModel, TPoint>
-        where TPoint : Point<TModel, Point2D, BezierViewModel>, new()
+        : CartesianSeries<TModel, Point2D, BezierViewModel, TPoint>, ILineSeries where TPoint : Point<TModel, Point2D, BezierViewModel>, new()
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="LineSeries{TModel, TPoint, TView}"/> class.
         /// </summary>
         protected LineSeries()
-            : base(LiveChartsSelectors.Line)
         {
+            LiveChartsSettings.Build<ILineSeries>(this);
         }
 
         /// <summary>

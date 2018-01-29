@@ -110,13 +110,6 @@ namespace LiveCharts.Wpf.Controls
             }
         }
 
-        object IResource.UpdateId { get; set; }
-
-        void IResource.Dispose(IChartView view)
-        {
-            throw new System.NotImplementedException();
-        }
-
         TooltipSelectionMode IDataTooltip.SelectionMode => SelectionMode;
 
         Size IDataTooltip.ShowAndMeasure(IEnumerable<PackedPoint> selected, IChartView chart)

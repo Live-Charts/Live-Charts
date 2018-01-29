@@ -19,9 +19,7 @@ namespace LiveCharts.Core.DataSeries
         /// <summary>
         /// Initializes a new instance of the <see cref="CartesianSeries{T,U,V,W}"/> class.
         /// </summary>
-        /// <param name="selector">the series type.</param>
-        protected CartesianSeries(string selector)
-            : base(selector)
+        protected CartesianSeries()
         {
             // A cartesian chart has 2 dimensions, X, Y
             // A cartesian chart can have as many axis as the user needs

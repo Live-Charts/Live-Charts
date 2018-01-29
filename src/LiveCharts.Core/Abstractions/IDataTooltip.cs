@@ -8,7 +8,7 @@ namespace LiveCharts.Core.Abstractions
     /// Defines a data tool tip.
     /// </summary>
     /// <seealso cref="IResource" />
-    public interface IDataTooltip : IResource
+    public interface IDataTooltip
     {
         /// <summary>
         /// Gets or sets the selection mode.

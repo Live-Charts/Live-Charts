@@ -21,23 +21,11 @@ namespace LiveCharts.Core.Drawing
         /// </summary>
         /// <param name="width">The width.</param>
         /// <param name="height">The height.</param>
-        public Size(int width, int height)
+        public Size(double width, double height)
         {
             _isEmpty = false;
             Width = width;
             Height = height;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Size"/> struct.
-        /// </summary>
-        /// <param name="width">The width.</param>
-        /// <param name="height">The height.</param>
-        public Size(double width, double height)
-        {
-            _isEmpty = false;
-            Width = (int) Math.Round(width);
-            Height = (int) Math.Round(height);
         }
 
         /// <summary>
@@ -51,7 +39,7 @@ namespace LiveCharts.Core.Drawing
         /// <value>
         /// The width.
         /// </value>
-        public int Width { get; }
+        public double Width { get; }
 
         /// <summary>
         /// Gets or sets the height.
@@ -59,7 +47,7 @@ namespace LiveCharts.Core.Drawing
         /// <value>
         /// The height.
         /// </value>
-        public int Height { get; }
+        public double Height { get; }
 
         /// <summary>
         /// Returns a <see cref="System.String" /> that represents this instance.
@@ -184,8 +172,8 @@ namespace LiveCharts.Core.Drawing
             unchecked
             {
                 var hashCode = _isEmpty.GetHashCode();
-                hashCode = (hashCode * 397) ^ Width;
-                hashCode = (hashCode * 397) ^ Height;
+                hashCode = (hashCode * 397) ^ Width.GetHashCode();
+                hashCode = (hashCode * 397) ^ Height.GetHashCode();
                 return hashCode;
             }
         }

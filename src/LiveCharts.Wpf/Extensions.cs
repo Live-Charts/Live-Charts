@@ -71,6 +71,7 @@ namespace LiveCharts.Wpf
         /// <returns></returns>
         public static SolidColorBrush AsSolidColorBrush(this Color color)
         {
+            if (color == Color.Empty) return null;
             return new SolidColorBrush(
                 System.Windows.Media.Color.FromArgb(color.A, color.R, color.G, color.B));
         }

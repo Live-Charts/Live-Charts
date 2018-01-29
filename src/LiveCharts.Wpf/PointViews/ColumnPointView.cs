@@ -3,6 +3,7 @@ using System.Windows.Controls;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using LiveCharts.Core.Abstractions;
+using LiveCharts.Core.Abstractions.DataSeries;
 using LiveCharts.Core.Coordinates;
 using LiveCharts.Core.Data;
 using LiveCharts.Core.ViewModels;
@@ -39,8 +40,9 @@ namespace LiveCharts.Wpf.PointViews
                 var r = Shape as Rectangle;
                 if (r != null)
                 {
-                    r.RadiusY = 4;
-                    r.RadiusX = 4;
+                    var radius = (point.Series as IColumnSeries)?.PointCornerRadius ?? 0;
+                    r.RadiusY = radius;
+                    r.RadiusX = radius;
                 }
                 wpfChart.DrawArea.Children.Add(Shape);
                 Canvas.SetLeft(Shape, viewModel.Left);
@@ -49,8 +51,8 @@ namespace LiveCharts.Wpf.PointViews
                 Shape.Height = 0;
             }
 
-            Shape.Stroke = point.Series.Style.Stroke.AsSolidColorBrush();
-            Shape.Fill = point.Series.Style.Fill.AsSolidColorBrush();
+            Shape.Stroke = point.Series.Stroke.AsSolidColorBrush();
+            Shape.Fill = point.Series.Fill.AsSolidColorBrush();
 
             var speed = chart.AnimationsSpeed;
 

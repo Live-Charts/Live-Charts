@@ -4,11 +4,12 @@ using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using LiveCharts.Core.Abstractions;
+using LiveCharts.Core.Abstractions.DataSeries;
 using LiveCharts.Core.Charts;
 using LiveCharts.Core.Data;
 using LiveCharts.Core.DefaultSettings;
 using LiveCharts.Core.Drawing;
-using LiveCharts.Core.Styles;
+using LiveCharts.Core.Drawing.Svg;
 
 namespace LiveCharts.Core.DataSeries
 {
@@ -16,25 +17,29 @@ namespace LiveCharts.Core.DataSeries
     /// The series class, represents a series to plot in a chart.
     /// </summary>
     /// <seealso cref="IResource" />
-    public abstract class Series : IResource, IStylable
+    public abstract class Series : IResource, ISeries
     {
         private readonly List<ChartModel> _usedBy = new List<ChartModel>();
-        private string _selector;
-        private Style _style;
         private bool _isVisible;
         private int _zIndex;
         private int[] _scalesAt;
         private bool _dataLabels;
         private string _title;
+        private Color _stroke;
+        private double _strokeThickness;
+        private Color _fill;
+        private Font _font;
+        private double _defaultFillOpacity;
+        private Geometry _geometry;
+        private DataLabelsPosition _dataLabelsPosition;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Series"/> class.
         /// </summary>
-        protected Series(string selector)
+        protected Series()
         {
-            Style = LiveChartsSettings.GetStyle(selector, "DefaultSeries");
             IsVisible = true;
-            Selector = selector;
+            LiveChartsSettings.Build<ISeries>(this);
         }
 
         /// <summary>
@@ -118,6 +123,118 @@ namespace LiveCharts.Core.DataSeries
         }
 
         /// <summary>
+        /// Gets or sets the stroke.
+        /// </summary>
+        /// <value>
+        /// The stroke.
+        /// </value>
+        public Color Stroke
+        {
+            get => _stroke;
+            set
+            {
+                _stroke = value;
+                OnPropertyChanged();
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the stroke thickness.
+        /// </summary>
+        /// <value>
+        /// The stroke thickness.
+        /// </value>
+        public double StrokeThickness
+        {
+            get => _strokeThickness;
+            set
+            {
+                _strokeThickness = value;
+                OnPropertyChanged();
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the fill.
+        /// </summary>
+        /// <value>
+        /// The fill.
+        /// </value>
+        public Color Fill
+        {
+            get => _fill;
+            set
+            {
+                _fill = value;
+                OnPropertyChanged();
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the font.
+        /// </summary>
+        /// <value>
+        /// The font.
+        /// </value>
+        public Font Font
+        {
+            get => _font;
+            set
+            {
+                _font = value;
+                OnPropertyChanged();
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the default fill opacity.
+        /// </summary>
+        /// <value>
+        /// The default fill opacity.
+        /// </value>
+        public double DefaultFillOpacity
+        {
+            get => _defaultFillOpacity;
+            set
+            {
+                _defaultFillOpacity = value;
+                OnPropertyChanged();
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the default geometry.
+        /// </summary>
+        /// <value>
+        /// The default geometry.
+        /// </value>
+        public Geometry Geometry
+        {
+            get => _geometry;
+            set
+            {
+                _geometry = value;
+                OnPropertyChanged();
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the data labels position.
+        /// </summary>
+        /// <value>
+        /// The data labels position.
+        /// </value>
+        public DataLabelsPosition DataLabelsPosition
+        {
+            get => _dataLabelsPosition;
+            set
+            {
+                _dataLabelsPosition = value; 
+                OnPropertyChanged();
+            }
+        }
+
+        /// <summary>
         /// Gets the default width of the point.
         /// </summary>
         /// <value>
@@ -167,8 +284,7 @@ namespace LiveCharts.Core.DataSeries
             DataLabelsPosition labelsPosition)
         {
             const double toRadians = Math.PI / 180;
-            var style = (SeriesStyle) Style;
-            var rotationAngle = style.DataLabelsPosition.Rotation;
+            var rotationAngle = DataLabelsPosition.Rotation;
 
             var xw =
                 Math.Abs(Math.Cos(rotationAngle * toRadians) * labelModel.Width); // width's    horizontal    component
@@ -184,7 +300,7 @@ namespace LiveCharts.Core.DataSeries
 
             double left, top;
 
-            switch (style.DataLabelsPosition.HorizontalAlignment)
+            switch (DataLabelsPosition.HorizontalAlignment)
             {
                 case HorizontalAlingment.Centered:
                     left = pointLocation.X - .5 * width;
@@ -200,11 +316,11 @@ namespace LiveCharts.Core.DataSeries
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(
-                        nameof(DataLabelsPosition.HorizontalAlignment), style.DataLabelsPosition.HorizontalAlignment,
+                        nameof(DataLabelsPosition.HorizontalAlignment), DataLabelsPosition.HorizontalAlignment,
                         null);
             }
 
-            switch (style.DataLabelsPosition.VerticalAlignment)
+            switch (DataLabelsPosition.VerticalAlignment)
             {
                 case VerticalLabelPosition.Centered:
                     top = pointLocation.Y - .5 * height;
@@ -220,7 +336,7 @@ namespace LiveCharts.Core.DataSeries
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(
-                        nameof(DataLabelsPosition.VerticalAlignment), style.DataLabelsPosition.VerticalAlignment, null);
+                        nameof(DataLabelsPosition.VerticalAlignment), DataLabelsPosition.VerticalAlignment, null);
             }
 
             return new Point(left, top);
@@ -234,42 +350,19 @@ namespace LiveCharts.Core.DataSeries
 
         #region IResource implementation
 
+        public event DisposingResource Disposed;
+
         object IResource.UpdateId { get; set; }
 
         void IResource.Dispose(IChartView view)
         {
             OnDispose(view);
+            Disposed?.Invoke(view);
         }
 
         protected virtual void OnDispose(IChartView view)
         {
             throw new NotImplementedException();
-        }
-
-        #endregion
-
-        #region IStylable implementation
-
-        /// <inheritdoc />
-        public string Selector
-        {
-            get => _selector;
-            set
-            {
-                _selector = value;
-                OnPropertyChanged();
-            }
-        }
-
-        /// <inheritdoc />
-        public Style Style
-        {
-            get => _style;
-            set
-            {
-                _style = value;
-                OnPropertyChanged();
-            }
         }
 
         #endregion
@@ -312,9 +405,7 @@ namespace LiveCharts.Core.DataSeries
         /// <summary>
         /// Initializes a new instance of the <see cref="Series{TModel, TCoordinate, TViewModel, TPoint}"/> class.
         /// </summary>
-        /// <param name="selector"></param>
-        protected Series(string selector)
-            :base(selector)
+        protected Series()
         {
             ByValTracker = new List<TPoint>();
         }
@@ -415,17 +506,17 @@ namespace LiveCharts.Core.DataSeries
             _chartPointsUpdateId = model.UpdateId;
 
             // Assign a color if the user did not set it.
-            if (Style.Stroke == Color.Empty || Style.Fill == Color.Empty)
+            if (Stroke == Color.Empty || Fill == Color.Empty)
             {
                 var nextColor = model.GetNextColor();
-                if (Style.Stroke == Color.Empty)
+                if (Stroke == Color.Empty)
                 {
-                    Style.Stroke = nextColor;
+                    Stroke = nextColor;
                 }
 
-                if (Style.Fill == Color.Empty)
+                if (Fill == Color.Empty)
                 {
-                    Style.Fill = nextColor.SetOpacity(((SeriesStyle) Style).DefaultFillOpacity);
+                    Fill = nextColor.SetOpacity(DefaultFillOpacity);
                 }
             }
 

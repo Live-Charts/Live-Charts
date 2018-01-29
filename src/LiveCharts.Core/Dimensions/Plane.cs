@@ -3,34 +3,30 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using LiveCharts.Core.Abstractions;
-using LiveCharts.Core.Data;
 using LiveCharts.Core.Drawing;
-using LiveCharts.Core.Styles;
-using Margin = LiveCharts.Core.Drawing.Margin;
 
 namespace LiveCharts.Core.Dimensions
 {
     /// <summary>
     /// Defines a Plane.
     /// </summary>
-    public abstract class Plane : IResource, IStylable
+    public abstract class Plane : IResource
     {
         private Func<double, string> _labelFormatter;
         private Func<IPlaneLabelControl> _separatorProvider;
         private Point _pointWidth;
+        private PlaneTypes _planeType;
+        private Font _font;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Plane"/> class.
         /// </summary>
-        protected Plane(string selector)
+        protected Plane()
         {
-            Margin = new Margin(2);
-            LabelFormatter = Builders.AsMetricNumber;
             MinValue = double.NaN;
             MaxValue = double.NaN;
             _pointWidth = Point.Empty;
-            Selector = selector;
-            Style = LiveChartsSettings.GetStyle(selector, LiveChartsSelectors.DefaultPlane);
+            LiveChartsSettings.Build(this);
         }
 
         /// <summary>
@@ -90,14 +86,6 @@ namespace LiveCharts.Core.Dimensions
         }
 
         /// <summary>
-        /// Gets or sets the margin.
-        /// </summary>
-        /// <value>
-        /// The margin.
-        /// </value>
-        public Margin Margin { get; set; }
-
-        /// <summary>
         /// Gets or sets the maximum value to display.
         /// </summary>
         /// <value>
@@ -154,12 +142,36 @@ namespace LiveCharts.Core.Dimensions
         }
 
         /// <summary>
+        /// Gets or sets the font.
+        /// </summary>
+        /// <value>
+        /// The font.
+        /// </value>
+        public Font Font
+        {
+            get => _font;
+            set
+            {
+                _font = value;
+                OnPropertyChanged();
+            }
+        }
+
+        /// <summary>
         /// Gets the type.
         /// </summary>
         /// <value>
         /// The type.
         /// </value>
-        public PlaneTypes PlaneType { get; internal set; }
+        public PlaneTypes PlaneType
+        {
+            get => _planeType;
+            internal set
+            {
+                _planeType = value;
+                OnPropertyChanged();
+            }
+        }
 
         /// <summary>
         /// Formats a given value according to the axis, <see cref="LabelFormatter"/> and <see cref="Labels"/> properties.
@@ -220,23 +232,15 @@ namespace LiveCharts.Core.Dimensions
 
         #region IResource implementation
 
+        public event DisposingResource Disposed;
         object IResource.UpdateId { get; set; }
 
         /// <inheritdoc />
         void IResource.Dispose(IChartView view)
         {
             OnDispose(view);
+            Disposed?.Invoke(view);
         }
-
-        #endregion
-
-        #region IStylable Implementation
-
-        /// <inheritdoc />
-        public string Selector { get; }
-
-        /// <inheritdoc />
-        public Style Style { get; set; }
 
         #endregion
 

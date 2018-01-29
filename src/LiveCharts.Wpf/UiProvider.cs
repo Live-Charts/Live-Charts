@@ -44,9 +44,9 @@ namespace LiveCharts.Wpf
             return new DataLabel();
         }
 
-        public ISeparator AxisSeparatorProvider()
+        public ICartesianAxisSeparator CartesianAxisSeparatorProvider()
         {
-            return new SeparatorView<AxisLabel>();
+            return new CartesianAxisSeparatorView<AxisLabel>();
         }
 
         public IPointView<TModel, Point<TModel, Point2D, ColumnViewModel>, Point2D, ColumnViewModel>

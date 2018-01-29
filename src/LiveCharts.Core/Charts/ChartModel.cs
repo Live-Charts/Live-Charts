@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Timers;
@@ -351,7 +350,6 @@ namespace LiveCharts.Core.Charts
             foreach (var series in Series)
             {
                 series.PropertyChanged += InvalidateOnPropertyChanged;
-                series.Style.PropertyChanged += InvalidateOnPropertyChanged;
             }
 
             if (previousSeries != null)
@@ -359,14 +357,13 @@ namespace LiveCharts.Core.Charts
                 foreach (var series in Series)
                 {
                     series.PropertyChanged -= InvalidateOnPropertyChanged;
-                    series.Style.PropertyChanged -= InvalidateOnPropertyChanged;
                 }
             }
 
             // dispose each series previous instance.
             if (!Equals(previousSeries, Series))
-                foreach (IResource series in previousSeries as IEnumerable<DataSeries.Series> ??
-                                             Enumerable.Empty<DataSeries.Series>())
+                foreach (IResource series in previousSeries as IEnumerable<Series> ??
+                                             Enumerable.Empty<Series>())
                 {
                     series.Dispose(View);
                 }
@@ -455,25 +452,21 @@ namespace LiveCharts.Core.Charts
                 case NotifyCollectionChangedAction.Move:
                 case NotifyCollectionChangedAction.Replace:
                 case NotifyCollectionChangedAction.Remove:
-                    foreach (DataSeries.Series newItem in args.NewItems)
+                    foreach (Series newItem in args.NewItems)
                     {
                         newItem.PropertyChanged += InvalidateOnPropertyChanged;
-                        newItem.Style.PropertyChanged += InvalidateOnPropertyChanged;
                     }
 
-                    foreach (DataSeries.Series oldItem in args.OldItems)
+                    foreach (Series oldItem in args.OldItems)
                     {
                         oldItem.PropertyChanged -= InvalidateOnPropertyChanged;
-                        oldItem.Style.PropertyChanged -= InvalidateOnPropertyChanged;
                     }
                     break;
                 case NotifyCollectionChangedAction.Reset:
                     foreach (var series in Series)
                     {
                         series.PropertyChanged -= InvalidateOnPropertyChanged;
-                        series.Style.PropertyChanged -= InvalidateOnPropertyChanged;
                         series.PropertyChanged += InvalidateOnPropertyChanged;
-                        series.Style.PropertyChanged += InvalidateOnPropertyChanged;
                     }
                     break;
                 default:
@@ -513,7 +506,6 @@ namespace LiveCharts.Core.Charts
             foreach (var series in Series)
             {
                 series.PropertyChanged -= InvalidateOnPropertyChanged;
-                series.Style.PropertyChanged -= InvalidateOnPropertyChanged;
             }
         }
     }

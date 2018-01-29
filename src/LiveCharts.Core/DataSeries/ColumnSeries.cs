@@ -1,12 +1,12 @@
 using System;
 using System.Linq;
 using LiveCharts.Core.Abstractions;
+using LiveCharts.Core.Abstractions.DataSeries;
 using LiveCharts.Core.Charts;
 using LiveCharts.Core.Coordinates;
 using LiveCharts.Core.Data;
 using LiveCharts.Core.Drawing;
 using LiveCharts.Core.Interaction;
-using LiveCharts.Core.Styles;
 using LiveCharts.Core.ViewModels;
 
 namespace LiveCharts.Core.DataSeries
@@ -16,16 +16,16 @@ namespace LiveCharts.Core.DataSeries
     /// </summary>The column series class.
     /// <typeparam name="TModel">The type of the model.</typeparam>
     public class ColumnSeries<TModel>
-        : CartesianSeries<TModel, Point2D, ColumnViewModel, Point<TModel, Point2D, ColumnViewModel>>
+        : CartesianSeries<TModel, Point2D, ColumnViewModel, Point<TModel, Point2D, ColumnViewModel>>, IColumnSeries
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ColumnSeries{TModel}"/> class.
         /// </summary>
         public ColumnSeries()
-            : base(LiveChartsSelectors.Column)
         {
             MaxColumnWidth = 45;
-            ColumnPadding = 2;
+            ColumnPadding = 2d;
+            LiveChartsSettings.Build<IColumnSeries>(this);
         }
 
         /// <summary>
@@ -35,6 +35,14 @@ namespace LiveCharts.Core.DataSeries
         /// The maximum width of the column.
         /// </value>
         public double MaxColumnWidth { get; set; }
+
+        /// <summary>
+        /// Gets or sets the point corner radius.
+        /// </summary>
+        /// <value>
+        /// The point corner radius.
+        /// </value>
+        public double PointCornerRadius { get; set; }
 
         /// <summary>
         /// Gets or sets the column padding.
@@ -53,11 +61,10 @@ namespace LiveCharts.Core.DataSeries
             var cartesianChart = (CartesianChartModel) chart;
             var x = cartesianChart.XAxis[ScalesXAt];
             var y = cartesianChart.YAxis[ScalesYAt];
-            var style = (SeriesStyle) Style;
 
             var xUnitWidth = Math.Abs(chart.ScaleToUi(0, x) - chart.ScaleToUi(x.ActualPointWidth.X, x)) - ColumnPadding;
             var columnSeries = chart.Series
-                .Where(series => series.Selector == LiveChartsSelectors.Column)
+                .Where(series => series is IColumnSeries)
                 .ToList();
             var singleColumnWidth = xUnitWidth / columnSeries.Count;
 
@@ -113,7 +120,7 @@ namespace LiveCharts.Core.DataSeries
                             new Margin(0),
                             zero,
                             current.View.Label.Measure(current.PackAll()),
-                            style.DataLabelsPosition),
+                            DataLabelsPosition),
                         chart.View);
                 }
 

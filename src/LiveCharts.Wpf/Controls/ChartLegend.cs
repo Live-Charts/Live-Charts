@@ -152,6 +152,8 @@ namespace LiveCharts.Wpf.Controls
             });
         }
 
+        public event DisposingResource Disposed;
+
         object IResource.UpdateId { get; set; }
 
         /// <inheritdoc />
@@ -165,6 +167,7 @@ namespace LiveCharts.Wpf.Controls
                     wpfChart.Children.Remove(this);
                 }
             });
+            Disposed?.Invoke(view);
         }
     }
 }

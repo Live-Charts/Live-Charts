@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace LiveCharts.Core.Drawing
+﻿namespace LiveCharts.Core.Drawing
 {
     /// <summary>
     /// Represents a point.
@@ -25,23 +23,11 @@ namespace LiveCharts.Core.Drawing
         /// </summary>
         /// <param name="x">The x.</param>
         /// <param name="y">The y.</param>
-        public Point(int x, int y)
+        public Point(double x, double y)
         {
             _isEmpty = false;
             X = x;
             Y = y;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Point"/> struct.
-        /// </summary>
-        /// <param name="x">The x.</param>
-        /// <param name="y">The y.</param>
-        public Point(double x, double y)
-        {
-            _isEmpty = false;
-            X = (int) Math.Round(x);
-            Y = (int) Math.Round(y);
         }
 
         /// <summary>
@@ -55,7 +41,7 @@ namespace LiveCharts.Core.Drawing
         /// <value>
         /// The x.
         /// </value>
-        public int X { get; }
+        public double X { get; }
 
         /// <summary>
         /// Gets or sets the y.
@@ -63,7 +49,7 @@ namespace LiveCharts.Core.Drawing
         /// <value>
         /// The y.
         /// </value>
-        public int Y { get; }
+        public double Y { get; }
 
         /// <summary>
         /// Returns a <see cref="System.String" /> that represents this instance.
@@ -162,8 +148,8 @@ namespace LiveCharts.Core.Drawing
             unchecked
             {
                 var hashCode = _isEmpty.GetHashCode();
-                hashCode = (hashCode * 397) ^ X;
-                hashCode = (hashCode * 397) ^ Y;
+                hashCode = (hashCode * 397) ^ X.GetHashCode();
+                hashCode = (hashCode * 397) ^ Y.GetHashCode();
                 return hashCode;
             }
         }

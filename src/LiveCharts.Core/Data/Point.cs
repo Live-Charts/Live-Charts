@@ -138,11 +138,14 @@ namespace LiveCharts.Core.Data
             };
         }
 
+        public event DisposingResource Disposed;
+
         object IResource.UpdateId { get; set; }
 
         void IResource.Dispose(IChartView view)
         {
             View.Dispose(view);
+            Disposed?.Invoke(view);
         }
     }
 }

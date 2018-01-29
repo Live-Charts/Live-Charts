@@ -69,12 +69,15 @@ namespace LiveCharts.Wpf.PointViews
             OnDrawLabel(point, location, chart);
         }
 
+        public event DisposingResource Disposed;
+
         object IResource.UpdateId { get; set; }
 
         /// <inheritdoc />
         public void Dispose(IChartView view)
         {
             OnDispose(view);
+            Disposed?.Invoke(view);
         }
 
         #endregion

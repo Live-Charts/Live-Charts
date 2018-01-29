@@ -29,7 +29,7 @@ namespace LiveCharts.Core.Abstractions
         /// The axis separator provider.
         /// </summary>
         /// <returns></returns>
-        ISeparator AxisSeparatorProvider();
+        ICartesianAxisSeparator CartesianAxisSeparatorProvider();
 
         /// <summary>
         /// Provides LiveCharts with a builder that returns a column view.
