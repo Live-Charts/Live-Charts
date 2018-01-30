@@ -350,7 +350,7 @@ namespace LiveCharts.Core.DataSeries
 
         #region IResource implementation
 
-        public event DisposingResource Disposed;
+        public event DisposingResourceHandler Disposed;
 
         object IResource.UpdateId { get; set; }
 

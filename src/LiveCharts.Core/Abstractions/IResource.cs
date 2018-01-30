@@ -4,7 +4,7 @@ namespace LiveCharts.Core.Abstractions
     /// Disposing resource delegate.
     /// </summary>
     /// <param name="view">The view.</param>
-    public delegate void DisposingResource(IChartView view);
+    public delegate void DisposingResourceHandler(IChartView view);
 
     /// <summary>
     /// A resource able to erase itself from memory and/or a chart view.
@@ -14,7 +14,7 @@ namespace LiveCharts.Core.Abstractions
         /// <summary>
         /// Occurs when the resource is disposed.
         /// </summary>
-        event DisposingResource Disposed;
+        event DisposingResourceHandler Disposed;
 
         /// <summary>
         /// Gets the update identifier.

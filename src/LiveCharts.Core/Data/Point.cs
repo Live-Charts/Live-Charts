@@ -138,7 +138,8 @@ namespace LiveCharts.Core.Data
             };
         }
 
-        public event DisposingResource Disposed;
+        /// <inheritdoc />
+        public event DisposingResourceHandler Disposed;
 
         object IResource.UpdateId { get; set; }
 

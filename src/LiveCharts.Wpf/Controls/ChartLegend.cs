@@ -146,7 +146,7 @@ namespace LiveCharts.Wpf.Controls
             Canvas.SetTop(this, location.Y);
         }
 
-        public event DisposingResource Disposed;
+        public event DisposingResourceHandler Disposed;
 
         object IResource.UpdateId { get; set; }
 

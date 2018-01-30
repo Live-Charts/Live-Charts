@@ -44,7 +44,10 @@ namespace LiveCharts.Core.Charts
             TooltipTimoutTimer = new Timer();
             TooltipTimoutTimer.Elapsed += (sender, args) =>
             {
-                ToolTip.Hide(View);
+                View.InvokeOnThread(() =>
+                {
+                    ToolTip.Hide(View);
+                });
                 TooltipTimoutTimer.Stop();
             };
         }
@@ -411,7 +414,7 @@ namespace LiveCharts.Core.Charts
             Invalidate();
         }
 
-        public void InvalidateOnPropertyChanged(object sender, PropertyChangedEventArgs args)
+        private void InvalidateOnPropertyChanged(object sender, PropertyChangedEventArgs args)
         {
             const string seriesPropertyName = nameof(IChartView.Series);
 

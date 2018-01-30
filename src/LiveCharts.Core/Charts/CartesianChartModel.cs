@@ -160,8 +160,6 @@ namespace LiveCharts.Core.Charts
                 // ToDo: guess what the user meant here ...
             }
 
-            Console.WriteLine(selectedPoints.Length);
-
             ToolTip = View.DataToolTip;
 
             // ReSharper disable once PossibleMultipleEnumeration

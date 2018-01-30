@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
 using LiveCharts.Core.Abstractions;
+using LiveCharts.Core.Charts;
 using LiveCharts.Core.DefaultSettings;
 
 namespace LiveCharts.Core.Data
@@ -23,17 +24,11 @@ namespace LiveCharts.Core.Data
             var observable = typeof(IObservablePoint<TModel, TCoordinate, TViewModel, TPoint>).IsAssignableFrom(modelType);
             var collection = args.Collection;
             var dimensions = args.Chart.GetSeriesDimensions(args.Series);
+            var pcHandler = BuildPCHandlerFor(args.Chart);
 
             for (var index = 0; index < collection.Count; index++)
             {
                 var instance = collection[index];
-
-                // if INPC then attach the updater...
-                if (notifiesChange)
-                {
-                    var npc = (INotifyPropertyChanged) instance;
-                    npc.PropertyChanged += args.Chart.InvalidateOnPropertyChanged;
-                }
 
                 TPoint chartPoint;
 
@@ -79,8 +74,21 @@ namespace LiveCharts.Core.Data
                 // register our chart point at the resource collector
                 args.Chart.RegisterResource(chartPoint);
 
+                // if INPC then invalidate the chart on property change.
+                if (notifiesChange)
+                {
+                    var npc = (INotifyPropertyChanged) instance;
+                    npc.PropertyChanged += pcHandler;
+                    chartPoint.Disposed += view => { npc.PropertyChanged -= pcHandler; };
+                }
+
                 yield return chartPoint;
             }
+        }
+
+        private PropertyChangedEventHandler BuildPCHandlerFor(ChartModel chart)
+        {
+            return (sender, args) => { chart.Invalidate(); };
         }
     }
 }

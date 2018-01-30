@@ -232,7 +232,7 @@ namespace LiveCharts.Core.Dimensions
 
         #region IResource implementation
 
-        public event DisposingResource Disposed;
+        public event DisposingResourceHandler Disposed;
         object IResource.UpdateId { get; set; }
 
         /// <inheritdoc />

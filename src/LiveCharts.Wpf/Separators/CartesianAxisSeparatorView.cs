@@ -110,7 +110,7 @@ namespace LiveCharts.Wpf.Separators
             Canvas.SetLeft(uiLablel, 0);
         }
 
-        public event DisposingResource Disposed;
+        public event DisposingResourceHandler Disposed;
 
         object IResource.UpdateId { get; set; }
 

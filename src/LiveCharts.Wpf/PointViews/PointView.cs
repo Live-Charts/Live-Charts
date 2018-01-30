@@ -69,7 +69,7 @@ namespace LiveCharts.Wpf.PointViews
             OnDrawLabel(point, location, chart);
         }
 
-        public event DisposingResource Disposed;
+        public event DisposingResourceHandler Disposed;
 
         object IResource.UpdateId { get; set; }
 
