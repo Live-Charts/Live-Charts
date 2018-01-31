@@ -23,6 +23,16 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Samples.Wpf", "samples\Samp
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{101FAF12-0301-4572-959A-3E0C54ED991E}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Assets", "Assets", "{F0842D9A-28FC-4998-AD64-2301793FE365}"
+	ProjectSection(SolutionItems) = preProject
+		samples.json = samples.json
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "images", "images", "{30FF7C5A-805B-49A0-8C62-AAB4E7DD09DC}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\..\..\Downloads\propertyAndInstanceChanged.png = ..\..\..\..\Downloads\propertyAndInstanceChanged.png
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Ad-Hoc|Any CPU = Ad-Hoc|Any CPU
@@ -509,6 +519,7 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{CC5D03FB-99BB-4FD0-A2CA-ECCE983454CC} = {101FAF12-0301-4572-959A-3E0C54ED991E}
+		{30FF7C5A-805B-49A0-8C62-AAB4E7DD09DC} = {F0842D9A-28FC-4998-AD64-2301793FE365}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3E0A5D15-3647-4BC7-B133-8526242EC901}

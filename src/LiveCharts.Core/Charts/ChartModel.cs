@@ -44,7 +44,7 @@ namespace LiveCharts.Core.Charts
             TooltipTimoutTimer = new Timer();
             TooltipTimoutTimer.Elapsed += (sender, args) =>
             {
-                View.InvokeOnThread(() =>
+                View.InvokeOnUiThread(() =>
                 {
                     ToolTip.Hide(View);
                 });

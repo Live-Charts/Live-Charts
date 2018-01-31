@@ -5,6 +5,7 @@ using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using LiveCharts.Core;
@@ -43,6 +44,8 @@ namespace Samples.Wpf
         {
              InitializeComponent();
 
+            MouseDown += OnMouseDown;
+
             var city = new City
             {
                 Population = 4
@@ -77,6 +80,14 @@ namespace Samples.Wpf
             });
 
             DataContext = Series;
+        }
+
+        private void OnMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ChangedButton == MouseButton.Left)
+            {
+                DragMove();
+            }
         }
 
         public ObservableCollection<Series> Series { get; set; }

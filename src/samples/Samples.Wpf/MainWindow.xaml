@@ -7,8 +7,20 @@
         xmlns:wpf="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
         mc:Ignorable="d"
         Title="MainWindow" 
-        Height="500" Width="500"
+        Height="600"
+        Width="800"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        ResizeMode="CanResizeWithGrip"
+        Background="Transparent"
         Name="This"
         d:DataContext="{Binding ElementName=This}">
-    <wpf:CartesianChart Series="{Binding}" LegendPosition="Right"></wpf:CartesianChart>
+    <Border Margin="15" Background="WhiteSmoke">
+        <Border.Effect>
+            <DropShadowEffect BlurRadius="25" ShadowDepth="8" Direction="270" Color="Black" Opacity=".42" RenderingBias="Performance" />
+        </Border.Effect>
+        
+        
+
+    </Border>
 </Window>

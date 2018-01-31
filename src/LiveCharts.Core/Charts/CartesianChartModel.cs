@@ -104,7 +104,7 @@ namespace LiveCharts.Core.Charts
         protected override void Update(bool restart)
         {
             // run the update on the view's thread
-            View.InvokeOnThread(() =>
+            View.InvokeOnUiThread(() =>
             {
                 base.Update(restart);
 

@@ -126,6 +126,6 @@ namespace LiveCharts.Core.Abstractions
         /// Dispatchers the specified action.
         /// </summary>
         /// <param name="action">The action.</param>
-        void InvokeOnThread(Action action);
+        void InvokeOnUiThread(Action action);
     }
 }

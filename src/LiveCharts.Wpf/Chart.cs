@@ -254,7 +254,7 @@ namespace LiveCharts.Wpf
             DrawArea.Height = model.Height;
         }
 
-        void IChartView.InvokeOnThread(Action action)
+        void IChartView.InvokeOnUiThread(Action action)
         {
             Dispatcher.Invoke(action);
         }

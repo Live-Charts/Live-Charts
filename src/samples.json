@@ -1,0 +1,10 @@
+{
+  "version": "1.0",
+  "items": [
+    {
+      "name": "propertyAndInstanceChanged",
+      "public": false,
+      "description": "A local test to debug property changed/instance changed handlers."
+    }
+  ]
+}
