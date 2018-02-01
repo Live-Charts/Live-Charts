@@ -185,7 +185,7 @@ namespace LiveCharts.Core
         /// Configures LiveCharts globally.
         /// </summary>
         /// <param name="settings">The builder.</param>
-        public static void Define(Action<LiveChartsSettings> settings)
+        public static void Set(Action<LiveChartsSettings> settings)
         {
             settings(Current);
         }

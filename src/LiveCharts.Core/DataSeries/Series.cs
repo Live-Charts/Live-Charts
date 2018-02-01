@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -6,6 +7,7 @@ using System.Runtime.CompilerServices;
 using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Abstractions.DataSeries;
 using LiveCharts.Core.Charts;
+using LiveCharts.Core.Collections;
 using LiveCharts.Core.Data;
 using LiveCharts.Core.DefaultSettings;
 using LiveCharts.Core.Drawing;
@@ -392,15 +394,18 @@ namespace LiveCharts.Core.DataSeries
     /// <typeparam name="TViewModel">The type of the view model.</typeparam>
     /// <typeparam name="TPoint">The type of the point.</typeparam>
     /// <seealso cref="IResource" />
-    public abstract class Series<TModel, TCoordinate, TViewModel, TPoint> : Series
+    public abstract class Series<TModel, TCoordinate, TViewModel, TPoint> 
+        : Series, IEnumerable<TModel>
         where TPoint : Point<TModel, TCoordinate, TViewModel>, new()
         where TCoordinate : ICoordinate
     {
-        private IEnumerable<TModel> _values;
+        private IEnumerable<TModel> _itemsSource;
         private ModelToPointMapper<TModel, TCoordinate> _mapper;
         private Func<IPointView<TModel, Point<TModel, TCoordinate, TViewModel>, TCoordinate, TViewModel>>
             _pointViewProvider;
         private object _chartPointsUpdateId;
+        private IList<TModel> _list;
+        private INotifyRangeChanged<TModel> _rangedList;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Series{TModel, TCoordinate, TViewModel, TPoint}"/> class.
@@ -408,6 +413,41 @@ namespace LiveCharts.Core.DataSeries
         protected Series()
         {
             ByValTracker = new List<TPoint>();
+            _itemsSource = new PlotableCollection<TModel>();
+            OnItemsIntancechanged();
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Series{TModel, TCoordinate, TViewModel, TPoint}"/> class.
+        /// </summary>
+        /// <param name="itemsSource">The values.</param>
+        protected Series(IEnumerable<TModel> itemsSource)
+        {
+            _itemsSource = itemsSource;
+            OnItemsIntancechanged();
+            ByValTracker = new List<TPoint>();
+        }
+
+        /// <summary>
+        /// Gets or sets the <see cref="TModel"/> at the specified index.
+        /// </summary>
+        /// <value>
+        /// The <see cref="TModel"/>.
+        /// </value>
+        /// <param name="index">The index.</param>
+        /// <returns></returns>
+        public TModel this[int index]
+        {
+            get
+            {
+                EnsureIListImplementation();
+                return _list[index];
+            }
+            set
+            {
+                EnsureIListImplementation();
+                _list[index] = value;
+            }
         }
 
         /// <summary>
@@ -416,12 +456,13 @@ namespace LiveCharts.Core.DataSeries
         /// <value>
         /// The values.
         /// </value>
-        public IEnumerable<TModel> Values
+        public IEnumerable<TModel> ItemsSource
         {
-            get => _values;
+            get => _itemsSource;
             set
             {
-                _values = value;
+                _itemsSource = value;
+                OnItemsIntancechanged();
                 OnPropertyChanged();
             }
         }
@@ -443,7 +484,7 @@ namespace LiveCharts.Core.DataSeries
         }
 
         /// <summary>
-        /// Gets or sets the by value tracker.
+        /// Gets the by value tracker.
         /// </summary>
         /// <value>
         /// The by value tracker.
@@ -530,7 +571,7 @@ namespace LiveCharts.Core.DataSeries
                     {
                         Series = this,
                         Chart = model,
-                        Collection = Values.ToArray() // create a copy of the current points.
+                        Collection = ItemsSource.ToArray() // create a copy of the current points.
                     })
                 .ToArray();
         }
@@ -549,6 +590,95 @@ namespace LiveCharts.Core.DataSeries
                     View = point.View,
                     ViewModel = point.ViewModel
                 });
+        }
+
+        /// <summary>
+        /// Adds the specified item.
+        /// </summary>
+        /// <param name="item">The item.</param>
+        /// <exception cref="LiveChartsException">Items - 200</exception>
+        public void Add(TModel item)
+        {
+           EnsureIListImplementation();
+            _list.Add(item);
+        }
+
+        /// <summary>
+        /// Removes the specified item.
+        /// </summary>
+        /// <param name="item">The item.</param>
+        public void Remove(TModel item)
+        {
+            EnsureIListImplementation();
+            _list.Remove(item);
+        }
+
+        /// <summary>
+        /// Removes at a specified index.
+        /// </summary>
+        /// <param name="index">The index.</param>
+        public void RemoveAt(int index)
+        {
+            EnsureIListImplementation();
+            _list.RemoveAt(index);
+        }
+
+        /// <summary>
+        /// Adds the given range of items.
+        /// </summary>
+        /// <param name="items">The items.</param>
+        public void AddRange(IEnumerable<TModel> items)
+        {
+            EnsureINotifyRangeImplementation();
+            _rangedList.AddRange(items);
+        }
+
+        /// <summary>
+        /// Removes the given range of items.
+        /// </summary>
+        /// <param name="items">The items.</param>
+        public void RemoveRange(IEnumerable<TModel> items)
+        {
+            EnsureINotifyRangeImplementation();
+            _rangedList.RemoveRange(items);
+        }
+
+        private void EnsureIListImplementation([CallerMemberName] string method = null)
+        {
+            if (_list == null)
+            {
+                throw new LiveChartsException(
+                    $"{nameof(ItemsSource)} property, does not implement {nameof(IList<TModel>)}, " +
+                    $"thus the method {method} is not supported.",
+                    200);
+            }
+        }
+
+        private void EnsureINotifyRangeImplementation([CallerMemberName] string method = null)
+        {
+            if (_list == null)
+            {
+                throw new LiveChartsException(
+                    $"{nameof(ItemsSource)} property, does not implement {nameof(INotifyRangeChanged<TModel>)}, " +
+                    $"thus the method {method} is not supported.",
+                    200);
+            }
+        }
+
+        private void OnItemsIntancechanged()
+        {
+            _list = _itemsSource as IList<TModel>;
+            _rangedList = ItemsSource as INotifyRangeChanged<TModel>;
+        }
+
+        public IEnumerator<TModel> GetEnumerator()
+        {
+            return ItemsSource.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
         }
     }
 }

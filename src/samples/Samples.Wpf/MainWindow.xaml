@@ -3,8 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Samples.Wpf"
-        xmlns:wpf="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+        xmlns:viewModels="clr-namespace:Assets.ViewModels;assembly=Assets"
         mc:Ignorable="d"
         Title="MainWindow" 
         Height="600"
@@ -12,15 +11,22 @@
         WindowStyle="None"
         AllowsTransparency="True"
         ResizeMode="CanResizeWithGrip"
-        Background="Transparent"
-        Name="This"
-        d:DataContext="{Binding ElementName=This}">
+        Background="Transparent">
+    <Window.DataContext>
+        <viewModels:Menu></viewModels:Menu>
+    </Window.DataContext>
     <Border Margin="15" Background="WhiteSmoke">
         <Border.Effect>
             <DropShadowEffect BlurRadius="25" ShadowDepth="8" Direction="270" Color="Black" Opacity=".42" RenderingBias="Performance" />
         </Border.Effect>
-        
-        
+        <ItemsControl ItemsSource="{Binding Samples}" ItemTemplate="{StaticResource MainMenuButtonTemplate}" Margin="25">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel VerticalAlignment="Center" HorizontalAlignment="Center"></WrapPanel>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+        </ItemsControl>
 
     </Border>
 </Window>
+
