@@ -39,6 +39,13 @@ namespace LiveCharts.Core.Data
                     {
                         chartPoint = new TPoint();
                         iocp.ChartPoint = chartPoint;
+                        // if INPC then invalidate the chart on property change.
+                        if (notifiesChange)
+                        {
+                            var npc = (INotifyPropertyChanged)instance;
+                            npc.PropertyChanged += pcHandler;
+                            chartPoint.Disposed += (view, point) => { npc.PropertyChanged -= pcHandler; };
+                        }
                     }
                     else
                     {
@@ -55,6 +62,13 @@ namespace LiveCharts.Core.Data
                     {
                         chartPoint = new TPoint();
                         args.Series.ByValTracker.Add(chartPoint);
+                        // if INPC then invalidate the chart on property change.
+                        if (notifiesChange)
+                        {
+                            var npc = (INotifyPropertyChanged)instance;
+                            npc.PropertyChanged += pcHandler;
+                            chartPoint.Disposed += (view, point) => { npc.PropertyChanged -= pcHandler; };
+                        }
                     }
                 }
 
@@ -73,14 +87,6 @@ namespace LiveCharts.Core.Data
 
                 // register our chart point at the resource collector
                 args.Chart.RegisterResource(chartPoint);
-
-                // if INPC then invalidate the chart on property change.
-                if (notifiesChange)
-                {
-                    var npc = (INotifyPropertyChanged) instance;
-                    npc.PropertyChanged += pcHandler;
-                    chartPoint.Disposed += view => { npc.PropertyChanged -= pcHandler; };
-                }
 
                 yield return chartPoint;
             }

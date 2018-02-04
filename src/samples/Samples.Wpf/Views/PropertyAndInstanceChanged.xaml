@@ -6,13 +6,23 @@
              xmlns:local="clr-namespace:Samples.Wpf.Views"
              xmlns:wpf="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
              xmlns:viewModels="clr-namespace:Assets.ViewModels;assembly=Assets"
-             xmlns:dataSeries="clr-namespace:LiveCharts.Core.DataSeries;assembly=LiveCharts.Core"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <UserControl.DataContext>
         <viewModels:PropertyAndInstanceChanged />
     </UserControl.DataContext>
-    <wpf:CartesianChart Series="{Binding SeriesCollection}">
-    </wpf:CartesianChart>
+    <Grid Background="White">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="35"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal">
+            <TextBlock>Series</TextBlock>
+            <Button Command="{Binding AddSeries}">+</Button>
+            <Button Command="{Binding RemoveSeries}">-</Button>
+            <Button Command="{Binding ChangeSeriesProp}">*</Button>
+        </StackPanel>
+        <wpf:CartesianChart Grid.Row="1" Series="{Binding SeriesCollection}" />
+    </Grid>
 </UserControl>
 

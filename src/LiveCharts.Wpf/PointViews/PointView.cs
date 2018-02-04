@@ -1,4 +1,6 @@
 ﻿using System;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Shapes;
 using LiveCharts.Core.Abstractions;
@@ -77,7 +79,7 @@ namespace LiveCharts.Wpf.PointViews
         public void Dispose(IChartView view)
         {
             OnDispose(view);
-            Disposed?.Invoke(view);
+            Disposed?.Invoke(view, this);
         }
 
         #endregion

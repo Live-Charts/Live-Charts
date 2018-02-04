@@ -10,7 +10,7 @@ namespace LiveCharts.Core.Dimensions
     /// <summary>
     /// Defines a Plane.
     /// </summary>
-    public abstract class Plane : IResource
+    public abstract class Plane : IResource, INotifyPropertyChanged
     {
         private Func<double, string> _labelFormatter;
         private Func<IPlaneLabelControl> _separatorProvider;
@@ -239,7 +239,7 @@ namespace LiveCharts.Core.Dimensions
         void IResource.Dispose(IChartView view)
         {
             OnDispose(view);
-            Disposed?.Invoke(view);
+            Disposed?.Invoke(view, this);
         }
 
         #endregion

@@ -8,9 +8,10 @@
              StartupUri="MainWindow.xaml">
     <Application.Resources>
         <local:SampleImageConverter x:Key="SampleImageConverter"></local:SampleImageConverter>
-        <DropShadowEffect x:Key="CardShadow" BlurRadius="5" ShadowDepth="1" Direction="270" Color="#303030" Opacity=".42"></DropShadowEffect>
+        <DropShadowEffect x:Key="CardShadow" BlurRadius="5" ShadowDepth="1" Direction="270" Color="#303030" Opacity=".15" RenderingBias="Performance"></DropShadowEffect>
         <Style x:Key="CardStyle" TargetType="Border">
             <Setter Property="Background" Value="White"></Setter>
+            <Setter Property="BorderThickness" Value="0"></Setter>
             <Setter Property="Margin" Value="15"></Setter>
             <Setter Property="Padding" Value="8 10"></Setter>
             <Setter Property="Height" Value="280"></Setter>
@@ -38,12 +39,22 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
+        <Style TargetType="Button">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <TextBlock Margin="10 5" Foreground="#0F0F6C" FontSize="16" Cursor="Hand" Text="{TemplateBinding Content}" />
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
         <DataTemplate x:Key="MainMenuButtonTemplate">
-            <Button Click="MainButtonOnClick">
+            <Button d:DataContext="{d:DesignInstance models:Sample}"
+                    Command="{Binding Path=NavigationHandler.NavigateTo, RelativeSource={RelativeSource AncestorType={x:Type local:MainWindow}}}" 
+                    CommandParameter="{Binding Id}">
                 <Button.Template>
                     <ControlTemplate>
-                        <Border d:DataContext="{d:DesignInstance models:Sample}"
-                                Style="{StaticResource CardStyle}">
+                        <Border Style="{StaticResource CardStyle}">
                             <StackPanel>
                                 <TextBlock Style="{DynamicResource Title}" Text="{Binding Name}" HorizontalAlignment="Center"></TextBlock>
                                 <Image Source="{Binding Converter={StaticResource SampleImageConverter}}" Height="128" Margin="0 25"></Image>

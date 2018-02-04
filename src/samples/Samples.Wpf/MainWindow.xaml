@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:viewModels="clr-namespace:Assets.ViewModels;assembly=Assets"
+        xmlns:wpf="clr-namespace:Samples.Wpf"
         mc:Ignorable="d"
         Title="MainWindow" 
         Height="600"
@@ -11,22 +12,25 @@
         WindowStyle="None"
         AllowsTransparency="True"
         ResizeMode="CanResizeWithGrip"
-        Background="Transparent">
-    <Window.DataContext>
-        <viewModels:Menu></viewModels:Menu>
-    </Window.DataContext>
-    <Border Margin="15" Background="WhiteSmoke">
-        <Border.Effect>
+        Background="Transparent"
+        d:DataContext="{d:DesignInstance wpf:NavigationHandler}">
+    <Grid Margin="15" Background="WhiteSmoke">
+        <Grid.Effect>
             <DropShadowEffect BlurRadius="25" ShadowDepth="8" Direction="270" Color="Black" Opacity=".42" RenderingBias="Performance" />
-        </Border.Effect>
-        <ItemsControl ItemsSource="{Binding Samples}" ItemTemplate="{StaticResource MainMenuButtonTemplate}" Margin="25">
-            <ItemsControl.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <WrapPanel VerticalAlignment="Center" HorizontalAlignment="Center"></WrapPanel>
-                </ItemsPanelTemplate>
-            </ItemsControl.ItemsPanel>
-        </ItemsControl>
-
-    </Border>
+        </Grid.Effect>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="35"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button Command="{Binding GoBack}">Go back</Button>
+            <Button Click="OnCloseAppClicked">Close App</Button>
+        </StackPanel>
+        <Border Grid.Row="1" Padding="8" Effect="{StaticResource CardShadow}">
+            <ContentControl Content="{Binding CurrentView}"></ContentControl>
+        </Border>
+    </Grid>
 </Window>
+
+
 

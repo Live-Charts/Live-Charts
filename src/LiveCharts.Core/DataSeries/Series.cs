@@ -19,7 +19,7 @@ namespace LiveCharts.Core.DataSeries
     /// The series class, represents a series to plot in a chart.
     /// </summary>
     /// <seealso cref="IResource" />
-    public abstract class Series : IResource, ISeries
+    public abstract class Series : IResource, ISeries, IEnumerable, INotifyPropertyChanged
     {
         private readonly List<ChartModel> _usedBy = new List<ChartModel>();
         private bool _isVisible;
@@ -264,6 +264,17 @@ namespace LiveCharts.Core.DataSeries
         /// <returns></returns>
         public abstract IEnumerable<PackedPoint> SelectPointsByDimension(TooltipSelectionMode selectionMode, params double[] dimensions);
 
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return OnGetEnumerator();
+        }
+
+        /// <summary>
+        /// Called when [get enumerator].
+        /// </summary>
+        /// <returns></returns>
+        protected abstract IEnumerator OnGetEnumerator();
+
         /// <summary>
         /// Evaluates the data label.
         /// </summary>
@@ -358,20 +369,16 @@ namespace LiveCharts.Core.DataSeries
 
         void IResource.Dispose(IChartView view)
         {
-            OnDispose(view);
-            Disposed?.Invoke(view);
-        }
-
-        protected virtual void OnDispose(IChartView view)
-        {
-            throw new NotImplementedException();
+            Disposed?.Invoke(view, this);
         }
 
         #endregion
 
         #region INPC implementation
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Occurs when [property changed].
+        /// </summary>
         public event PropertyChangedEventHandler PropertyChanged;
 
         /// <summary>
@@ -643,6 +650,17 @@ namespace LiveCharts.Core.DataSeries
             _rangedList.RemoveRange(items);
         }
 
+        public IEnumerator<TModel> GetEnumerator()
+        {
+            return ItemsSource.GetEnumerator();
+        }
+
+        /// <inheritdoc />
+        protected override IEnumerator OnGetEnumerator()
+        {
+            return ItemsSource.GetEnumerator();
+        }
+
         private void EnsureIListImplementation([CallerMemberName] string method = null)
         {
             if (_list == null)
@@ -669,16 +687,6 @@ namespace LiveCharts.Core.DataSeries
         {
             _list = _itemsSource as IList<TModel>;
             _rangedList = ItemsSource as INotifyRangeChanged<TModel>;
-        }
-
-        public IEnumerator<TModel> GetEnumerator()
-        {
-            return ItemsSource.GetEnumerator();
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
         }
     }
 }

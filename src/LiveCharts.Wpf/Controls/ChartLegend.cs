@@ -158,7 +158,7 @@ namespace LiveCharts.Wpf.Controls
             {
                 wpfChart.Children.Remove(this);
             }
-            Disposed?.Invoke(view);
+            Disposed?.Invoke(view, this);
         }
     }
 }

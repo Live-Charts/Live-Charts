@@ -20,6 +20,8 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Charts;
 using LiveCharts.Core.Interaction;
@@ -146,7 +148,7 @@ namespace LiveCharts.Core.Data
         void IResource.Dispose(IChartView view)
         {
             View.Dispose(view);
-            Disposed?.Invoke(view);
+            Disposed?.Invoke(view, this);
         }
     }
 }

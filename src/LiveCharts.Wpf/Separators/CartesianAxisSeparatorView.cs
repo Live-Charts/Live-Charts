@@ -120,7 +120,7 @@ namespace LiveCharts.Wpf.Separators
             wpfChart.DrawArea.Children.Remove(Rectangle);
             wpfChart.DrawArea.Children.Remove((UIElement)Label);
             Rectangle = null;
-            Disposed?.Invoke(view);
+            Disposed?.Invoke(view, this);
         }
     }
 }

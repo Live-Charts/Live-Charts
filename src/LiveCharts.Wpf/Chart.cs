@@ -1,3 +1,4 @@
+
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -126,7 +127,6 @@ namespace LiveCharts.Wpf
             return (sender, eventArgs) =>
             {
                 var chart = (Chart) sender;
-                if (!chart.IsLoaded) return;
                 chart.OnPropertyChanged(propertyName);
             };
         }
