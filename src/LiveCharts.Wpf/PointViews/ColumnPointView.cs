@@ -28,6 +28,8 @@ namespace LiveCharts.Wpf.PointViews
         where TShape : Shape, new()
         where TLabel : FrameworkElement, IDataLabelControl, new()
     {
+        private TPoint _point;
+
         /// <inheritdoc />
         protected override void OnDraw(TPoint point, TPoint previous, IChartView chart, TViewModel viewModel)
         {
@@ -56,13 +58,20 @@ namespace LiveCharts.Wpf.PointViews
 
             var speed = chart.AnimationsSpeed;
 
+            var bounce = isNew ? 30 : 0;
+
             Shape.AsStoryboardTarget()
                 .AtSpeed(speed)
                 .Property(Canvas.LeftProperty, viewModel.Left)
-                .Property(Canvas.TopProperty, viewModel.Top)
+                .Property(Canvas.TopProperty, 
+                    new AnimationFrame(0.9, viewModel.Top - bounce),
+                    new AnimationFrame(1, viewModel.Top))
                 .Property(FrameworkElement.WidthProperty, viewModel.Width)
-                .Property(FrameworkElement.HeightProperty, viewModel.Height)
+                .Property(FrameworkElement.HeightProperty,
+                    new AnimationFrame(0.9, viewModel.Height + bounce),
+                    new AnimationFrame(1, viewModel.Height))
                 .Begin();
+            _point = point;
         }
 
         /// <inheritdoc />
@@ -94,8 +103,19 @@ namespace LiveCharts.Wpf.PointViews
         protected override void OnDispose(IChartView chart)
         {
             var wpfChart = (CartesianChart) chart;
-            wpfChart.DrawArea.Children.Remove(Shape);
-            wpfChart.DrawArea.Children.Remove((UIElement) Label);
+
+            var zero = chart.Model.ScaleToUi(0, chart.Dimensions[1][_point.Series.ScalesAt[1]]);
+
+            Shape.AsStoryboardTarget()
+                .AtSpeed(chart.AnimationsSpeed)
+                .Property(Canvas.TopProperty, zero)
+                .Property(FrameworkElement.HeightProperty, 0)
+                .Then((sender, args) =>
+                {
+                    wpfChart.DrawArea.Children.Remove(Shape);
+                    wpfChart.DrawArea.Children.Remove((UIElement)Label);
+                })
+                .Begin();
         }
     }
 }

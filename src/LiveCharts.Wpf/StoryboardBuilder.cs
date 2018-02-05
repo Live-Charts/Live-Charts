@@ -39,6 +39,11 @@ namespace LiveCharts.Wpf
             _storyboard.Begin();
         }
 
+        /// <summary>
+        /// Specifies the storyboard speed.
+        /// </summary>
+        /// <param name="speedSpan">The speed span.</param>
+        /// <returns></returns>
         public StoryboardBuilder AtSpeed(TimeSpan speedSpan)
         {
             _speed = speedSpan;
@@ -46,21 +51,46 @@ namespace LiveCharts.Wpf
         }
 
         /// <summary>
-        /// Animates the specified property.
+        /// Animates the specified property using a defined .
         /// </summary>
-        /// <param name="dependencyProperty">Name of the property.</param>
+        /// <param name="property">The property.</param>
+        /// <param name="frames">The frames.</param>
+        /// <returns></returns>
+        public StoryboardBuilder Property(DependencyProperty property, params AnimationFrame[] frames)
+        {
+            var animation = new DoubleAnimationUsingKeyFrames {RepeatBehavior = new RepeatBehavior(1)};
+            foreach (var frame in frames)
+            {
+                animation.KeyFrames.Add(
+                    new SplineDoubleKeyFrame(
+                        frame.Value,
+                        TimeSpan.FromMilliseconds(_speed.TotalMilliseconds * frame.Proportion),
+                        new KeySpline(new Point(0.25, 0.5), new Point(0.75, 1))));
+            }
+
+            _storyboard.Children.Add(animation);
+            Storyboard.SetTarget(animation, _target);
+            Storyboard.SetTargetProperty(animation, new PropertyPath(property));
+            return this;
+        }
+
+        /// <summary>
+        /// Animates the specified property linearly.
+        /// </summary>
+        /// <param name="property">Name of the property.</param>
         /// <param name="to">To.</param>
         /// <param name="from">From.</param>
         /// <param name="speed">The speed.</param>
         /// <returns></returns>
-        public StoryboardBuilder Property(DependencyProperty dependencyProperty, double to, double? from = null, TimeSpan? speed = null)
+        public StoryboardBuilder Property(DependencyProperty property, double to, double? from = null, TimeSpan? speed = null)
         {
-            var animation = from == null
+           var animation = from == null
                 ? new DoubleAnimation(to, speed ?? _speed)
                 : new DoubleAnimation(from.Value, to, speed ?? _speed);
+            animation.RepeatBehavior = new RepeatBehavior(1);
             _storyboard.Children.Add(animation);
             Storyboard.SetTarget(animation, _target);
-            Storyboard.SetTargetProperty(animation, new PropertyPath(dependencyProperty));
+            Storyboard.SetTargetProperty(animation, new PropertyPath(property));
             return this;
         }
 
@@ -77,6 +107,7 @@ namespace LiveCharts.Wpf
             var animation = from == null 
                 ? new DoubleAnimation(to, speed ?? _speed)
                 : new DoubleAnimation(from.Value, to, speed ?? _speed);
+            animation.RepeatBehavior = new RepeatBehavior(1);
             _storyboard.Children.Add(animation);
             Storyboard.SetTarget(animation, _target);
             Storyboard.SetTargetProperty(animation, new PropertyPath(propertyName));

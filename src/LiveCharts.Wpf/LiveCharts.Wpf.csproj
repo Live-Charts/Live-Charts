@@ -48,6 +48,7 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AnimationFrame.cs" />
     <Compile Include="Chart.cs" />
     <Compile Include="Converters\ColorToSolidBrushConverter.cs" />
     <Compile Include="Converters\PointAsTooltipData.cs" />

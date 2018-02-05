@@ -15,7 +15,6 @@ namespace LiveCharts.Core.Dimensions
         private Func<double, string> _labelFormatter;
         private Func<IPlaneLabelControl> _separatorProvider;
         private Point _pointWidth;
-        private PlaneTypes _planeType;
         private Font _font;
 
         /// <summary>
@@ -163,15 +162,7 @@ namespace LiveCharts.Core.Dimensions
         /// <value>
         /// The type.
         /// </value>
-        public PlaneTypes PlaneType
-        {
-            get => _planeType;
-            internal set
-            {
-                _planeType = value;
-                OnPropertyChanged();
-            }
-        }
+        public PlaneTypes PlaneType { get; internal set; }
 
         /// <summary>
         /// Formats a given value according to the axis, <see cref="LabelFormatter"/> and <see cref="Labels"/> properties.
