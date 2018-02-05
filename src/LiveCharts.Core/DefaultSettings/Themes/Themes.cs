@@ -50,7 +50,6 @@ namespace LiveCharts.Core.DefaultSettings.Themes
                 {
                     columnSeries.Geometry = Geometry.Square;
                     columnSeries.MaxColumnWidth = 20d;
-                    columnSeries.PointCornerRadius = 8d;
                 })
                 .SetDefault<ILineSeries>(lineSeries =>
                 {

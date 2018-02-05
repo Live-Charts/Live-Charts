@@ -245,6 +245,37 @@ namespace LiveCharts.Core.DataSeries
         public abstract Point DefaultPointWidth { get; }
 
         /// <summary>
+        /// Adds the specified item.
+        /// </summary>
+        /// <param name="item">The item.</param>
+        /// <exception cref="LiveChartsException">Items - 200</exception>
+        public abstract void Add(object item);
+
+        /// <summary>
+        /// Removes the specified item.
+        /// </summary>
+        /// <param name="item">The item.</param>
+        public abstract void Remove(object item);
+
+        /// <summary>
+        /// Removes at a specified index.
+        /// </summary>
+        /// <param name="index">The index.</param>
+        public abstract void RemoveAt(int index);
+
+        /// <summary>
+        /// Adds the given range of items.
+        /// </summary>
+        /// <param name="items">The items.</param>
+        public abstract void AddRange(IEnumerable items);
+
+        /// <summary>
+        /// Removes the given range of items.
+        /// </summary>
+        /// <param name="items">The items.</param>
+        public abstract void RemoveRange(IEnumerable items);
+
+        /// <summary>
         /// Updates the view.
         /// </summary>
         /// <param name="chart">The chart.</param>
@@ -599,6 +630,12 @@ namespace LiveCharts.Core.DataSeries
                 });
         }
 
+        /// <inheritdoc />
+        public override void Add(object item)
+        {
+            Add((TModel) item);
+        }
+
         /// <summary>
         /// Adds the specified item.
         /// </summary>
@@ -608,6 +645,12 @@ namespace LiveCharts.Core.DataSeries
         {
            EnsureIListImplementation();
             _list.Add(item);
+        }
+
+        /// <inheritdoc />
+        public override void Remove(object item)
+        {
+            Remove((TModel) item);
         }
 
         /// <summary>
@@ -624,10 +667,16 @@ namespace LiveCharts.Core.DataSeries
         /// Removes at a specified index.
         /// </summary>
         /// <param name="index">The index.</param>
-        public void RemoveAt(int index)
+        public override void RemoveAt(int index)
         {
             EnsureIListImplementation();
             _list.RemoveAt(index);
+        }
+
+        /// <inheritdoc />
+        public override void AddRange(IEnumerable items)
+        {
+            AddRange((IEnumerable<TModel>) items);
         }
 
         /// <summary>
@@ -640,6 +689,12 @@ namespace LiveCharts.Core.DataSeries
             _rangedList.AddRange(items);
         }
 
+        /// <inheritdoc />
+        public override void RemoveRange(IEnumerable items)
+        {
+            RemoveRange((IEnumerable<TModel>) items);
+        }
+
         /// <summary>
         /// Removes the given range of items.
         /// </summary>
@@ -650,6 +705,7 @@ namespace LiveCharts.Core.DataSeries
             _rangedList.RemoveRange(items);
         }
 
+        /// <inheritdoc />
         public IEnumerator<TModel> GetEnumerator()
         {
             return ItemsSource.GetEnumerator();

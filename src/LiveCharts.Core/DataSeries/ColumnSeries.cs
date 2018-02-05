@@ -37,14 +37,6 @@ namespace LiveCharts.Core.DataSeries
         public double MaxColumnWidth { get; set; }
 
         /// <summary>
-        /// Gets or sets the point corner radius.
-        /// </summary>
-        /// <value>
-        /// The point corner radius.
-        /// </value>
-        public double PointCornerRadius { get; set; }
-
-        /// <summary>
         /// Gets or sets the column padding.
         /// </summary>
         /// <value>

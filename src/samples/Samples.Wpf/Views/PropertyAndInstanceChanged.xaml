@@ -20,7 +20,7 @@
             <TextBlock>Series</TextBlock>
             <Button Command="{Binding AddSeries}">+</Button>
             <Button Command="{Binding RemoveSeries}">-</Button>
-            <Button Command="{Binding ChangeSeriesProp}">*</Button>
+            <Button Command="{Binding EditSeries}">*</Button>
         </StackPanel>
         <wpf:CartesianChart Grid.Row="1" Series="{Binding SeriesCollection}" />
     </Grid>

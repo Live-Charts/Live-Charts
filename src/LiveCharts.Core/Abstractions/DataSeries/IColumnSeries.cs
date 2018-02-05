@@ -1,5 +1,9 @@
 ﻿namespace LiveCharts.Core.Abstractions.DataSeries
 {
+    /// <summary>
+    /// The column series definition.
+    /// </summary>
+    /// <seealso cref="LiveCharts.Core.Abstractions.DataSeries.ISeries" />
     public interface IColumnSeries: ISeries
     {
         /// <summary>
@@ -17,13 +21,5 @@
         /// The maximum width of the column.
         /// </value>
         double MaxColumnWidth { get; set; }
-
-        /// <summary>
-        /// Gets or sets the point corner radius.
-        /// </summary>
-        /// <value>
-        /// The point corner radius.
-        /// </value>
-        double PointCornerRadius { get; set; }
 }
 }

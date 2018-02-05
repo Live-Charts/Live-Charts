@@ -39,7 +39,7 @@ namespace Assets.ViewModels
 
             AddSeries = new DelegateCommand(o => _addSeries());
             RemoveSeries = new DelegateCommand(o => _removeSeries());
-            ChangeSeriesProp = new DelegateCommand(o => _changeSeriesProp());
+            EditSeries = new DelegateCommand(o => _changeSeriesProp());
             ChangeAllSeriesItems = new DelegateCommand(o => _changeAllSeriesItems());
         }
 
@@ -49,9 +49,20 @@ namespace Assets.ViewModels
 
         public ICommand RemoveSeries { get; }
 
-        public ICommand ChangeSeriesProp { get; }
+        public ICommand EditSeries { get; }
+
+        public ICommand AddPoint { get; }
+
+        public ICommand RemovePoint { get; }
+
+        public ICommand EditPoint { get; }
 
         public ICommand ChangeAllSeriesItems { get; }
+
+        private void _addPoint()
+        {
+            var a = SeriesCollection[0];
+        }
 
         private void _addSeries()
         {

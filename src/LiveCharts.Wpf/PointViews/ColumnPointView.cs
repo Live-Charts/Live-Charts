@@ -39,18 +39,19 @@ namespace LiveCharts.Wpf.PointViews
             {
                 var wpfChart = (CartesianChart) chart;
                 Shape = new TShape();
-                var r = Shape as Rectangle;
-                if (r != null)
-                {
-                    var radius = (point.Series as IColumnSeries)?.PointCornerRadius ?? 0;
-                    r.RadiusY = radius;
-                    r.RadiusX = radius;
-                }
                 wpfChart.DrawArea.Children.Add(Shape);
                 Canvas.SetLeft(Shape, viewModel.Left);
                 Canvas.SetTop(Shape, viewModel.Zero);
                 Shape.Width = viewModel.Width;
                 Shape.Height = 0;
+            }
+
+            var r = Shape as Rectangle;
+            if (r != null)
+            {
+                var radius = viewModel.Width * .4;
+                r.RadiusY = radius;
+                r.RadiusX = radius;
             }
 
             Shape.Stroke = point.Series.Stroke.AsSolidColorBrush();
