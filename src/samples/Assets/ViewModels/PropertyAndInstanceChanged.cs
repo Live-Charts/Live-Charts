@@ -1,4 +1,6 @@
 ﻿using System;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using Assets.Commands;
 using Assets.Models;
@@ -9,9 +11,10 @@ using LiveCharts.Core.Drawing;
 
 namespace Assets.ViewModels
 {
-    public class PropertyAndInstanceChanged
+    public class PropertyAndInstanceChanged: INotifyPropertyChanged
     {
         private readonly Random _r = new Random();
+        private SeriesCollection _seriesCollection;
 
         public PropertyAndInstanceChanged()
         {
@@ -43,14 +46,25 @@ namespace Assets.ViewModels
             AddSeries = new DelegateCommand(o => _addSeries());
             RemoveSeries = new DelegateCommand(o => _removeSeries());
             EditSeries = new DelegateCommand(o => _changeSeriesProp());
+            SetNewSeriesInstance = new DelegateCommand(o => _setNewSeriesInstance());
             ChangeAllSeriesItems = new DelegateCommand(o => _changeAllSeriesItems());
         }
 
-        public SeriesCollection SeriesCollection { get; set; }
+        public SeriesCollection SeriesCollection
+        {
+            get => _seriesCollection;
+            set
+            {
+                _seriesCollection = value;
+                OnPropertyChanged();
+            }
+        }
 
         public ICommand AddSeries { get; }
 
         public ICommand RemoveSeries { get; }
+
+        public ICommand SetNewSeriesInstance { get; }
 
         public ICommand EditSeries { get; }
 
@@ -83,6 +97,24 @@ namespace Assets.ViewModels
             var series = (ColumnSeries<City>) SeriesCollection[0];
             if (series.Count < 1) return;
             series[0].Population = _r.Next(0, 10);
+        }
+
+        private void _setNewSeriesInstance()
+        {
+            SeriesCollection = new SeriesCollection
+            {
+                new ColumnSeries<City>
+                {
+                    new City
+                    {
+                        Population = _r.Next(0, 10)
+                    },
+                    new City
+                    {
+                        Population = _r.Next(0, 10)
+                    }
+                }
+            };
         }
 
         private void _addSeries()
@@ -122,6 +154,13 @@ namespace Assets.ViewModels
                     city.Population = _r.Next(0, 10);
                 }
             }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

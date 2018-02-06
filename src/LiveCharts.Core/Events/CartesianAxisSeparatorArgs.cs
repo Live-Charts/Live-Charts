@@ -1,7 +1,8 @@
 ﻿using LiveCharts.Core.Abstractions;
+using LiveCharts.Core.Dimensions;
 using LiveCharts.Core.Drawing;
 
-namespace LiveCharts.Core.Dimensions
+namespace LiveCharts.Core.Events
 {
     /// <summary>
     /// The Cartesian Axis Separator Arguments.

@@ -4,6 +4,7 @@ using System.Linq;
 using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Charts;
 using LiveCharts.Core.Drawing;
+using LiveCharts.Core.Events;
 
 namespace LiveCharts.Core.Dimensions
 {

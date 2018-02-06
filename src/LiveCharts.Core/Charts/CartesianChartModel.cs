@@ -106,6 +106,8 @@ namespace LiveCharts.Core.Charts
             // run the update on the view's thread
             View.InvokeOnUiThread(() =>
             {
+                OnUpdateStarted();
+
                 base.Update(restart);
 
                 // see appendix/chart.spacing.png
@@ -148,6 +150,7 @@ namespace LiveCharts.Core.Charts
                 }
 
                 CollectResources();
+                OnUpdateFinished();
             });
         }
         /// <inheritdoc />

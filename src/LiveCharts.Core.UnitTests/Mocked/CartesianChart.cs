@@ -2,16 +2,33 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Windows.Input;
+using Assets.Models;
 using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Charts;
+using LiveCharts.Core.Coordinates;
+using LiveCharts.Core.Data;
 using LiveCharts.Core.DataSeries;
+using LiveCharts.Core.DefaultSettings.Themes;
 using LiveCharts.Core.Dimensions;
 using LiveCharts.Core.Drawing;
+using LiveCharts.Core.Events;
 
-namespace LiveCharts.Core.UnitTests
+namespace LiveCharts.Core.UnitTests.Mocked
 {
-    public class MockedChart : IChartView
+    public class CartesianChart : IChartView
     {
+        static CartesianChart()
+        {
+            LiveChartsSettings.Set(settings =>
+            {
+                settings.DataFactory = new DefaultDataFactory();
+                settings.UiProvider = new UiProvider();
+                settings.UseMaterialDesignLightTheme()
+                    .Has2DPlotFor<City>((city, index) => new Point2D(index, city.Population));
+            });
+        }
+
         private IEnumerable<BaseSeries> _series;
         private TimeSpan _animationsSpeed;
         private TimeSpan _tooltipTimeOut;
@@ -20,9 +37,8 @@ namespace LiveCharts.Core.UnitTests
         private IDataToolTip _dataToolTip;
         private IList<IList<Plane>> _dimensions;
 
-        public MockedChart()
+        public CartesianChart()
         {
-            Model = new CartesianChartModel(this);
             Dimensions = new List<IList<Plane>>
             {
                 new List<Plane>
@@ -34,13 +50,21 @@ namespace LiveCharts.Core.UnitTests
                     new Axis()
                 }
             };
-            ChartViewLoaded?.Invoke();
+            ControlSize = new Size(600, 600);
+            Model = new CartesianChartModel(this);
+            DrawMargin = Margin.Empty;
+            Legend = null;
+            DataToolTip = null;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
-        public event Action ChartViewLoaded;
-        public event Action ChartViewResized;
+        public event ChartEventHandler ChartViewLoaded;
+        public event ChartEventHandler ChartViewResized;
         public event PointerMovedHandler PointerMoved;
+        public event ChartEventHandler UpdatePreview;
+        public ICommand UpdatePreviewCommand { get; set; }
+        public event ChartEventHandler Updated;
+        public ICommand UpdatedCommand { get; set; }
         public ChartModel Model { get; set; }
         public Size ControlSize { get; set; }
         public Margin DrawMargin { get; set; }
@@ -123,6 +147,11 @@ namespace LiveCharts.Core.UnitTests
         public void InvokeOnUiThread(Action action)
         {
             action();
+        }
+
+        public void Loaded()
+        {
+            ChartViewLoaded?.Invoke(this);
         }
 
         protected void OnPropertyChanged([CallerMemberName] string propertyName = null)

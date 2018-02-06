@@ -14,6 +14,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\LiveCharts.Core\LiveCharts.Core.csproj" />
+    <ProjectReference Include="..\samples\Assets\Assets.csproj" />
   </ItemGroup>
 
 </Project>

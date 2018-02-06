@@ -3,6 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.DataSeries;
+using LiveCharts.Core.Events;
 using Orientation = LiveCharts.Core.Abstractions.Orientation;
 using Point = LiveCharts.Core.Drawing.Point;
 using Size = LiveCharts.Core.Drawing.Size;

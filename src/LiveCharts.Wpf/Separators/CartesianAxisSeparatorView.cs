@@ -2,6 +2,7 @@
 using System.Windows.Controls;
 using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Dimensions;
+using LiveCharts.Core.Events;
 using Rectangle = System.Windows.Shapes.Rectangle;
 
 namespace LiveCharts.Wpf.Separators

@@ -94,7 +94,7 @@ namespace LiveCharts.Core.Data
 
         private PropertyChangedEventHandler BuildPCHandlerFor(ChartModel chart)
         {
-            return (sender, args) => { chart.Invalidate(); };
+            return (sender, args) => { chart.Invalidate(chart.View); };
         }
     }
 }

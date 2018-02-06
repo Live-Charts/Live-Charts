@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using LiveCharts.Core.Abstractions;
@@ -21,11 +22,12 @@ namespace LiveCharts.Core.DataSeries
     /// <typeparam name="TPoint">The type of the point.</typeparam>
     /// <seealso cref="IResource" />
     public abstract class Series<TModel, TCoordinate, TViewModel, TPoint> 
-        : BaseSeries, IList<TModel>
+        : BaseSeries, IList<TModel>, INotifyCollectionChanged
         where TPoint : Point<TModel, TCoordinate, TViewModel>, new()
         where TCoordinate : ICoordinate
     {
         private IEnumerable<TModel> _itemsSource;
+        private IEnumerable<TModel> _previousItemsSource;
         private IList<TModel> _sourceAsIList;
         private INotifyRangeChanged<TModel> _sourceAsRangeChanged;
         private ModelToPointMapper<TModel, TCoordinate> _mapper;
@@ -152,7 +154,7 @@ namespace LiveCharts.Core.DataSeries
         public DimensionRange DataRange { get; } = new DimensionRange(double.PositiveInfinity, double.NegativeInfinity);
 
         /// <inheritdoc />
-        public int Count
+        public new int Count
         {
             get
             {
@@ -431,6 +433,24 @@ namespace LiveCharts.Core.DataSeries
         {
             _sourceAsIList = _itemsSource as IList<TModel>;
             _sourceAsRangeChanged = ItemsSource as INotifyRangeChanged<TModel>;
+
+            if (_itemsSource is INotifyCollectionChanged incc)
+            {
+                incc.CollectionChanged += InccOnCollectionChanged;
+            }
+
+            if (_previousItemsSource is INotifyCollectionChanged pincc)
+            {
+                pincc.CollectionChanged -= InccOnCollectionChanged;
+            }
         }
+
+        private void InccOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs notifyCollectionChangedEventArgs)
+        {
+            CollectionChanged?.Invoke(sender, notifyCollectionChangedEventArgs);
+        }
+
+        /// <inheritdoc />
+        public event NotifyCollectionChangedEventHandler CollectionChanged;
     }
 }

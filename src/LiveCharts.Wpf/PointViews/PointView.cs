@@ -1,10 +1,9 @@
 ﻿using System;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Shapes;
 using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Data;
+using LiveCharts.Core.Events;
 using Point = LiveCharts.Core.Drawing.Point;
 
 namespace LiveCharts.Wpf.PointViews

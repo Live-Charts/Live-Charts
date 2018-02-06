@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using LiveCharts.Core.Abstractions;
+using LiveCharts.Core.Events;
 
 namespace LiveCharts.Core.Data
 {
@@ -11,7 +12,7 @@ namespace LiveCharts.Core.Data
         where TCoordinate : ICoordinate
     {
         private List<ModelState<TModel, TCoordinate>> _modelDependentActions;
-        private readonly Dictionary<UiActions, List<ModelStateAction<TModel, TCoordinate>>> _userUiActions;
+        private readonly Dictionary<UiActions, List<ModelStateHandler<TModel, TCoordinate>>> _userUiActions;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ModelToPointMapper{TModel,TCoordinate}"/> class.
@@ -20,7 +21,7 @@ namespace LiveCharts.Core.Data
         public ModelToPointMapper(Func<TModel, int, TCoordinate> predicate)
         {
             Predicate = predicate;
-            _userUiActions = new Dictionary<UiActions, List<ModelStateAction<TModel, TCoordinate>>>();
+            _userUiActions = new Dictionary<UiActions, List<ModelStateHandler<TModel, TCoordinate>>>();
         }
 
         /// <summary>
@@ -55,7 +56,7 @@ namespace LiveCharts.Core.Data
         /// </summary>
         /// <returns></returns>
         public ModelToPointMapper<TModel, TCoordinate> When(
-            Func<TModel, bool> trigger, ModelStateAction<TModel, TCoordinate> action)
+            Func<TModel, bool> trigger, ModelStateHandler<TModel, TCoordinate> handler)
         {
             if (_modelDependentActions == null)
             {
@@ -64,7 +65,7 @@ namespace LiveCharts.Core.Data
             _modelDependentActions.Add(new ModelState<TModel, TCoordinate>
             {
                Trigger = trigger,
-               Action = action
+               Handler = handler
             });
             return this;
         }
@@ -73,16 +74,16 @@ namespace LiveCharts.Core.Data
         /// Whens the specified trigger.
         /// </summary>
         /// <param name="trigger">The trigger.</param>
-        /// <param name="action">The action.</param>
+        /// <param name="handler">The action.</param>
         /// <returns></returns>
         public ModelToPointMapper<TModel, TCoordinate> When(
-            UiActions trigger, ModelStateAction<TModel, TCoordinate> action)
+            UiActions trigger, ModelStateHandler<TModel, TCoordinate> handler)
         {
             if (!_userUiActions.ContainsKey(trigger))
             {
-                _userUiActions.Add(trigger, new List<ModelStateAction<TModel, TCoordinate>>());
+                _userUiActions.Add(trigger, new List<ModelStateHandler<TModel, TCoordinate>>());
             }
-            _userUiActions[trigger].Add(action);
+            _userUiActions[trigger].Add(handler);
             return this;
         }
 
@@ -123,7 +124,7 @@ namespace LiveCharts.Core.Data
             {
                 if (mda.Trigger(model))
                 {
-                    mda.Action(
+                    mda.Handler(
                         model,
                         new ModelStateEventArgs<TModel, TCoordinate>(
                             visual,

@@ -9,6 +9,7 @@ using LiveCharts.Core.Charts;
 using LiveCharts.Core.Data;
 using LiveCharts.Core.Drawing;
 using LiveCharts.Core.Drawing.Svg;
+using LiveCharts.Core.Events;
 
 namespace LiveCharts.Core.DataSeries
 {

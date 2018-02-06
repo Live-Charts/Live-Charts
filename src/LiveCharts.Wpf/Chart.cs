@@ -13,6 +13,7 @@ using LiveCharts.Core.Charts;
 using LiveCharts.Core.DataSeries;
 using LiveCharts.Core.Dimensions;
 using LiveCharts.Core.Drawing;
+using LiveCharts.Core.Events;
 using LiveCharts.Wpf.Controls;
 using Size = LiveCharts.Core.Drawing.Size;
 
@@ -133,12 +134,12 @@ namespace LiveCharts.Wpf
 
         private void OnLoaded(object sender, EventArgs eventArgs)
         {
-            ChartViewLoaded?.Invoke();
+            ChartViewLoaded?.Invoke(this);
         }
 
         private void OnSizeChanged(object o, SizeChangedEventArgs sizeChangedEventArgs)
         {
-            ChartViewResized?.Invoke();
+            ChartViewResized?.Invoke(this);
         }
 
         private static void OnDataTooltipPropertyChanged(DependencyObject sender, DependencyPropertyChangedEventArgs args)
@@ -165,25 +166,50 @@ namespace LiveCharts.Wpf
 
         #region IChartView implementation
 
-        private event Action ChartViewLoaded;
-        event Action IChartView.ChartViewLoaded
+        private event ChartEventHandler ChartViewLoaded;
+        event ChartEventHandler IChartView.ChartViewLoaded
         {
             add => ChartViewLoaded += value;
             remove => ChartViewLoaded -= value;
         }
 
-        private event Action ChartViewResized;
-        event Action IChartView.ChartViewResized
+        private event ChartEventHandler ChartViewResized;
+        event ChartEventHandler IChartView.ChartViewResized
         {
             add => ChartViewResized += value;
             remove => ChartViewResized -= value;
         }
 
         private event PointerMovedHandler PointerMoved;
+
         event PointerMovedHandler IChartView.PointerMoved
         {
             add => PointerMoved += value;
             remove => PointerMoved -= value;
+        }
+        
+        /// <inheritdoc />
+        public event ChartEventHandler UpdatePreview
+        {
+            add => Model.UpdatePreview += value;
+            remove => Model.UpdatePreview -= value;
+        }
+
+        /// <inheritdoc cref="IChartView.UpdatePreview" />
+        public ICommand UpdatePreviewCommand
+        {
+            get => Model.UpdatePreviewCommand;
+            set => Model.UpdatePreviewCommand = value;
+        }
+
+        /// <inheritdoc />
+        public event ChartEventHandler Updated;
+
+        /// <inheritdoc cref="IChartView.Updated" />
+        public ICommand UpdatedCommand
+        {
+            get => Model.UpdatedCommand;
+            set => Model.UpdatedCommand = value;
         }
 
         /// <inheritdoc cref="IChartView.Model"/>

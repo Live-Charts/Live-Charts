@@ -6,12 +6,14 @@ using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Timers;
+using System.Windows.Input;
 using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Coordinates;
 using LiveCharts.Core.Data;
 using LiveCharts.Core.DataSeries;
 using LiveCharts.Core.Dimensions;
 using LiveCharts.Core.Drawing;
+using LiveCharts.Core.Events;
 using Size = LiveCharts.Core.Drawing.Size;
 
 namespace LiveCharts.Core.Charts
@@ -34,10 +36,10 @@ namespace LiveCharts.Core.Charts
         protected ChartModel(IChartView view)
         {
             View = view;
-            view.ChartViewLoaded += () =>
+            view.ChartViewLoaded += sender =>
             {
                 IsViewInitialized = true;
-                Invalidate();
+                Invalidate(sender);
             };
             view.ChartViewResized += Invalidate;
             view.PointerMoved += ViewOnPointerMoved;
@@ -50,6 +52,13 @@ namespace LiveCharts.Core.Charts
             };
             _observableResources = new object[view.Dimensions.Count + 1];
         }
+
+#if DEBUG
+        /// <summary>
+        /// [DEBUG PROPERTY] Invalidation debug count.
+        /// </summary>
+        public int InvalidateCount { get; set; }
+#endif
 
         /// <summary>
         /// Gets the update identifier.
@@ -122,6 +131,26 @@ namespace LiveCharts.Core.Charts
                 ? Orientation.Horizontal
                 : Orientation.Vertical;
 
+        /// <summary>
+        /// Occurs before a chart update is called.
+        /// </summary>
+        public event ChartEventHandler UpdatePreview;
+
+        /// <summary>
+        /// Occurs before a chart update is called.
+        /// </summary>
+        public ICommand UpdatePreviewCommand { get; set; }
+
+        /// <summary>
+        /// Occurs after a chart update was called.
+        /// </summary>
+        public event ChartEventHandler Updated;
+
+        /// <summary>
+        /// Occurs after a chart update was called.
+        /// </summary>
+        public ICommand UpdatedCommand { get; set; }
+
         internal BaseSeries[] Series { get; set; }
 
         internal Plane[][] Dimensions { get; set; }
@@ -144,8 +173,9 @@ namespace LiveCharts.Core.Charts
         /// Invalidates this instance, the chart will queue an update request.
         /// </summary>
         /// <returns></returns>
-        public async void Invalidate()
+        public async void Invalidate(object sender)
         {
+            InvalidateCount++;
             if (!IsViewInitialized) return;
             if (_delayer != null && !_delayer.IsCompleted) return;
             var delay = AnimationsSpeed.TotalMilliseconds < 10
@@ -207,7 +237,7 @@ namespace LiveCharts.Core.Charts
 
             if (!IsViewInitialized)
             {
-                Invalidate();
+                Invalidate(View);
                 return;
             }
 
@@ -290,8 +320,27 @@ namespace LiveCharts.Core.Charts
             DrawAreaSize = chartSize - new Size(lw, lh);
         }
 
+        internal void OnUpdateStarted()
+        {
+            UpdatePreview?.Invoke(View);
+            if (UpdatePreviewCommand != null && UpdatePreviewCommand.CanExecute(View))
+            {
+                UpdatePreviewCommand.Execute(View);
+            }
+        }
+
+        internal void OnUpdateFinished()
+        {
+            Updated?.Invoke(View);
+            if (UpdatedCommand != null && UpdatedCommand.CanExecute(View))
+            {
+                UpdatedCommand.Execute(View);
+            }
+        }
+
         internal Color GetNextColor()
         {
+            if (Series.Length - 1 < _colorCount) _colorCount = 0;
             return Colors[_colorCount++ % Colors.Count];
         }
 
@@ -333,7 +382,7 @@ namespace LiveCharts.Core.Charts
                 }
             }
 
-            Invalidate();
+            Invalidate(View);
         }
 
         private void OnObservableResourceChanged(object current, object previous)
@@ -364,10 +413,17 @@ namespace LiveCharts.Core.Charts
                     case NotifyCollectionChangedAction.Remove:
                         if (args.NewItems != null)
                         {
-                            foreach (IResource newResource in args.NewItems)
+                            foreach (var @new in args.NewItems)
                             {
+                                if (!(@new is IResource newResource)) continue;
                                 ((INotifyPropertyChanged) newResource).PropertyChanged += InvalidateOnPropertyChanged;
                                 newResource.Disposed += OnDisposedResource;
+                                if (newResource is INotifyCollectionChanged incc)
+                                {
+                                    var ccHandler =
+                                        BuildObservableResourceCollectionChangedHandler((IEnumerable) newResource);
+                                    incc.CollectionChanged += ccHandler;
+                                }
                             }
                         }
 
@@ -382,6 +438,13 @@ namespace LiveCharts.Core.Charts
                                 resource.Disposed -= OnDisposedResource;
                                 pc.PropertyChanged += InvalidateOnPropertyChanged;
                                 resource.Disposed += OnDisposedResource;
+
+                                if (resource is INotifyCollectionChanged incc)
+                                {
+                                    var ccHandler =
+                                        BuildObservableResourceCollectionChangedHandler((IEnumerable) resource);
+                                    incc.CollectionChanged += ccHandler;
+                                }
                             }
                         }
 
@@ -390,13 +453,13 @@ namespace LiveCharts.Core.Charts
                         throw new ArgumentOutOfRangeException();
                 }
 
-                Invalidate();
+                Invalidate(View);
             };
         }
 
         private void InvalidateOnPropertyChanged(object sender, PropertyChangedEventArgs args)
         {
-            Invalidate();
+            Invalidate(View);
         }
 
         private void OnDisposedResource(IChartView chartView, object instance)
@@ -407,7 +470,7 @@ namespace LiveCharts.Core.Charts
 
         private void CopyDataFromView()
         {
-            Series = View.Series.ToArray();
+            Series = (View.Series ?? Enumerable.Empty<BaseSeries>()).ToArray();
             Dimensions = View.Dimensions.Select(x => x.ToArray()).ToArray();
             ControlSize = View.ControlSize;
             DrawMargin = View.DrawMargin;

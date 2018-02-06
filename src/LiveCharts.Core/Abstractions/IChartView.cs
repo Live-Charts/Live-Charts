@@ -1,21 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Windows.Input;
 using LiveCharts.Core.Charts;
 using LiveCharts.Core.DataSeries;
 using LiveCharts.Core.Dimensions;
 using LiveCharts.Core.Drawing;
+using LiveCharts.Core.Events;
 
 namespace LiveCharts.Core.Abstractions
 {
-    /// <summary>
-    /// The pointer moved handler.
-    /// </summary>
-    /// <param name="location">The location.</param>
-    /// <param name="selectionMode">The selection mode.</param>
-    /// <param name="dimensions">The dimensions.</param>
-    public delegate void PointerMovedHandler(Point location, TooltipSelectionMode selectionMode, params double[] dimensions);
-
     /// <summary>
     /// Defines a chart view
     /// </summary>
@@ -24,17 +18,37 @@ namespace LiveCharts.Core.Abstractions
         /// <summary>
         /// Occurs when the charts is initialized.
         /// </summary>
-        event Action ChartViewLoaded;
+        event ChartEventHandler ChartViewLoaded;
 
         /// <summary>
         /// Occurs when the chart is resized.
         /// </summary>
-        event Action ChartViewResized;
+        event ChartEventHandler ChartViewResized;
 
         /// <summary>
         /// Occurs when pointer moves.
         /// </summary>
         event PointerMovedHandler PointerMoved;
+
+        /// <summary>
+        /// Occurs before a chart update is called.
+        /// </summary>
+        event ChartEventHandler UpdatePreview;
+
+        /// <summary>
+        /// Occurs before a chart update is called.
+        /// </summary>
+        ICommand UpdatePreviewCommand { get; set; }
+
+        /// <summary>
+        /// Occurs after a chart update was called.
+        /// </summary>
+        event ChartEventHandler Updated;
+
+        /// <summary>
+        /// Occurs after a chart update was called.
+        /// </summary>
+        ICommand UpdatedCommand { get; set; }
 
         /// <summary>
         /// Gets the chart model.

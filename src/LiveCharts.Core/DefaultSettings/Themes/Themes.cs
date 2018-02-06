@@ -22,8 +22,6 @@ namespace LiveCharts.Core.DefaultSettings.Themes
         {
             var baseFont = new Font("Arial", 11, FontStyles.Regular, FontWeight.Regular);
 
-            var t = typeof(ColumnSeries<>);
-
             settings.PlotDefaults()
                 .UseMaterialDesignColors()
 

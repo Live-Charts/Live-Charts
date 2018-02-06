@@ -1,13 +1,8 @@
 using System.ComponentModel;
+using LiveCharts.Core.Events;
 
 namespace LiveCharts.Core.Abstractions
 {
-    /// <summary>
-    /// Disposing resource delegate.
-    /// </summary>
-    /// <param name="view">The view.</param>
-    public delegate void DisposingResourceHandler(IChartView view, object instance);
-
     /// <summary>
     /// A resource able to erase itself from memory and/or a chart view.
     /// </summary>

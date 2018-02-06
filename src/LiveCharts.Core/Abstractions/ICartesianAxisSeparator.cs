@@ -1,4 +1,5 @@
 using LiveCharts.Core.Dimensions;
+using LiveCharts.Core.Events;
 
 namespace LiveCharts.Core.Abstractions
 {

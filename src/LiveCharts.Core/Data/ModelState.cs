@@ -1,18 +1,9 @@
 using System;
 using LiveCharts.Core.Abstractions;
+using LiveCharts.Core.Events;
 
 namespace LiveCharts.Core.Data
 {
-    /// <summary>
-    /// Defines a model state action.
-    /// </summary>
-    /// <param name="sender">The sender.</param>
-    /// <param name="args">The <see cref="ModelStateEventArgs{TModel, TCoordinate}"/> instance containing the event data.</param>
-    public delegate void ModelStateAction<TModel, TCoordinate>(
-        TModel sender,
-        ModelStateEventArgs<TModel, TCoordinate> args)
-        where TCoordinate : ICoordinate;
-
     /// <summary>
     /// the model state class.
     /// </summary>
@@ -35,6 +26,6 @@ namespace LiveCharts.Core.Data
         /// <value>
         /// The type.
         /// </value>
-        public ModelStateAction<TModel, TCoordinate> Action { get; set; }
+        public ModelStateHandler<TModel, TCoordinate> Handler { get; set; }
     }
 }
