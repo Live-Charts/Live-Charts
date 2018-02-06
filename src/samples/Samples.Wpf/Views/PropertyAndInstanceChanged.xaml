@@ -21,6 +21,11 @@
             <Button Command="{Binding AddSeries}">+</Button>
             <Button Command="{Binding RemoveSeries}">-</Button>
             <Button Command="{Binding EditSeries}">*</Button>
+
+            <TextBlock>Points</TextBlock>
+            <Button Command="{Binding AddPoint}">+</Button>
+            <Button Command="{Binding RemovePoint}">-</Button>
+            <Button Command="{Binding EditPoint}">*</Button>
         </StackPanel>
         <wpf:CartesianChart Grid.Row="1" Series="{Binding SeriesCollection}" />
     </Grid>

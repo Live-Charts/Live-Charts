@@ -1,429 +1,17 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using LiveCharts.Core.Abstractions;
-using LiveCharts.Core.Abstractions.DataSeries;
 using LiveCharts.Core.Charts;
 using LiveCharts.Core.Collections;
 using LiveCharts.Core.Data;
 using LiveCharts.Core.DefaultSettings;
 using LiveCharts.Core.Drawing;
-using LiveCharts.Core.Drawing.Svg;
 
 namespace LiveCharts.Core.DataSeries
 {
-    /// <summary>
-    /// The series class, represents a series to plot in a chart.
-    /// </summary>
-    /// <seealso cref="IResource" />
-    public abstract class Series : IResource, ISeries, IEnumerable, INotifyPropertyChanged
-    {
-        private readonly List<ChartModel> _usedBy = new List<ChartModel>();
-        private bool _isVisible;
-        private int _zIndex;
-        private int[] _scalesAt;
-        private bool _dataLabels;
-        private string _title;
-        private Color _stroke;
-        private double _strokeThickness;
-        private Color _fill;
-        private Font _font;
-        private double _defaultFillOpacity;
-        private Geometry _geometry;
-        private DataLabelsPosition _dataLabelsPosition;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Series"/> class.
-        /// </summary>
-        protected Series()
-        {
-            IsVisible = true;
-            LiveChartsSettings.Build<ISeries>(this);
-        }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether [data labels].
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if [data labels]; otherwise, <c>false</c>.
-        /// </value>
-        public bool DataLabels
-        {
-            get => _dataLabels;
-            set
-            {
-                _dataLabels = value; 
-                OnPropertyChanged();
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether this instance is visible.
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if this instance is visible; otherwise, <c>false</c>.
-        /// </value>
-        public bool IsVisible
-        {
-            get => _isVisible;
-            set
-            {
-                _isVisible = value;
-                OnPropertyChanged();
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the title.
-        /// </summary>
-        /// <value>
-        /// The title.
-        /// </value>
-        public string Title
-        {
-            get => _title;
-            set
-            {
-                _title = value;
-                OnPropertyChanged();
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the index of the z.
-        /// </summary>
-        /// <value>
-        /// The index of the z.
-        /// </value>
-        public int ZIndex
-        {
-            get => _zIndex;
-            set
-            {
-                _zIndex = value;
-                OnPropertyChanged();
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the scales at array.
-        /// </summary>
-        /// <value>
-        /// The scales at.
-        /// </value>
-        public int[] ScalesAt
-        {
-            get => _scalesAt;
-            protected set
-            {
-                _scalesAt = value; 
-                OnPropertyChanged();
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the stroke.
-        /// </summary>
-        /// <value>
-        /// The stroke.
-        /// </value>
-        public Color Stroke
-        {
-            get => _stroke;
-            set
-            {
-                _stroke = value;
-                OnPropertyChanged();
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the stroke thickness.
-        /// </summary>
-        /// <value>
-        /// The stroke thickness.
-        /// </value>
-        public double StrokeThickness
-        {
-            get => _strokeThickness;
-            set
-            {
-                _strokeThickness = value;
-                OnPropertyChanged();
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the fill.
-        /// </summary>
-        /// <value>
-        /// The fill.
-        /// </value>
-        public Color Fill
-        {
-            get => _fill;
-            set
-            {
-                _fill = value;
-                OnPropertyChanged();
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the font.
-        /// </summary>
-        /// <value>
-        /// The font.
-        /// </value>
-        public Font Font
-        {
-            get => _font;
-            set
-            {
-                _font = value;
-                OnPropertyChanged();
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the default fill opacity.
-        /// </summary>
-        /// <value>
-        /// The default fill opacity.
-        /// </value>
-        public double DefaultFillOpacity
-        {
-            get => _defaultFillOpacity;
-            set
-            {
-                _defaultFillOpacity = value;
-                OnPropertyChanged();
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the default geometry.
-        /// </summary>
-        /// <value>
-        /// The default geometry.
-        /// </value>
-        public Geometry Geometry
-        {
-            get => _geometry;
-            set
-            {
-                _geometry = value;
-                OnPropertyChanged();
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the data labels position.
-        /// </summary>
-        /// <value>
-        /// The data labels position.
-        /// </value>
-        public DataLabelsPosition DataLabelsPosition
-        {
-            get => _dataLabelsPosition;
-            set
-            {
-                _dataLabelsPosition = value; 
-                OnPropertyChanged();
-            }
-        }
-
-        /// <summary>
-        /// Gets the default width of the point.
-        /// </summary>
-        /// <value>
-        /// The default width of the point.
-        /// </value>
-        public abstract Point DefaultPointWidth { get; }
-
-        /// <summary>
-        /// Adds the specified item.
-        /// </summary>
-        /// <param name="item">The item.</param>
-        /// <exception cref="LiveChartsException">Items - 200</exception>
-        public abstract void Add(object item);
-
-        /// <summary>
-        /// Removes the specified item.
-        /// </summary>
-        /// <param name="item">The item.</param>
-        public abstract void Remove(object item);
-
-        /// <summary>
-        /// Removes at a specified index.
-        /// </summary>
-        /// <param name="index">The index.</param>
-        public abstract void RemoveAt(int index);
-
-        /// <summary>
-        /// Adds the given range of items.
-        /// </summary>
-        /// <param name="items">The items.</param>
-        public abstract void AddRange(IEnumerable items);
-
-        /// <summary>
-        /// Removes the given range of items.
-        /// </summary>
-        /// <param name="items">The items.</param>
-        public abstract void RemoveRange(IEnumerable items);
-
-        /// <summary>
-        /// Updates the view.
-        /// </summary>
-        /// <param name="chart">The chart.</param>
-        public abstract void UpdateView(ChartModel chart);
-
-        /// <summary>
-        /// Fetches the data for the specified chart.
-        /// </summary>
-        /// <param name="chart">The chart.</param>
-        public abstract void Fetch(ChartModel chart);
-
-        /// <summary>
-        /// Gets the points that  its hover area contains the given n dimensions.
-        /// </summary>
-        /// <param name="selectionMode">The selection mode.</param>
-        /// <param name="dimensions">The dimensions.</param>
-        /// <returns></returns>
-        public abstract IEnumerable<PackedPoint> SelectPointsByDimension(TooltipSelectionMode selectionMode, params double[] dimensions);
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return OnGetEnumerator();
-        }
-
-        /// <summary>
-        /// Called when [get enumerator].
-        /// </summary>
-        /// <returns></returns>
-        protected abstract IEnumerator OnGetEnumerator();
-
-        /// <summary>
-        /// Evaluates the data label.
-        /// </summary>
-        /// <param name="pointLocation">The point location.</param>
-        /// <param name="pointMargin">The point margin.</param>
-        /// <param name="betweenBottomLimit">The series bottom limit.</param>
-        /// <param name="labelModel">The label model.</param>
-        /// <param name="labelsPosition">The labels position.</param>
-        /// <returns></returns>
-        /// <exception cref="ArgumentOutOfRangeException">
-        /// horizontal - null
-        /// or
-        /// vertical - null
-        /// </exception>
-        protected Point GetLabelPosition(
-            Point pointLocation,
-            Margin pointMargin,
-            double betweenBottomLimit,
-            Size labelModel,
-            DataLabelsPosition labelsPosition)
-        {
-            const double toRadians = Math.PI / 180;
-            var rotationAngle = DataLabelsPosition.Rotation;
-
-            var xw =
-                Math.Abs(Math.Cos(rotationAngle * toRadians) * labelModel.Width); // width's    horizontal    component
-            var yw =
-                Math.Abs(Math.Sin(rotationAngle * toRadians) * labelModel.Width); // width's    vertical      component
-            var xh =
-                Math.Abs(Math.Sin(rotationAngle * toRadians) * labelModel.Height); // height's   horizontal    component
-            var yh =
-                Math.Abs(Math.Cos(rotationAngle * toRadians) * labelModel.Height); // height's   vertical      component
-
-            var width = xw + xh;
-            var height = yh + yw;
-
-            double left, top;
-
-            switch (DataLabelsPosition.HorizontalAlignment)
-            {
-                case HorizontalAlingment.Centered:
-                    left = pointLocation.X - .5 * width;
-                    break;
-                case HorizontalAlingment.Left:
-                    left = pointLocation.X - pointMargin.Left - width;
-                    break;
-                case HorizontalAlingment.Right:
-                    left = pointLocation.X + pointMargin.Right;
-                    break;
-                case HorizontalAlingment.Between:
-                    left = ((pointLocation.X + betweenBottomLimit) / 2) - .5 * width;
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException(
-                        nameof(DataLabelsPosition.HorizontalAlignment), DataLabelsPosition.HorizontalAlignment,
-                        null);
-            }
-
-            switch (DataLabelsPosition.VerticalAlignment)
-            {
-                case VerticalLabelPosition.Centered:
-                    top = pointLocation.Y - .5 * height;
-                    break;
-                case VerticalLabelPosition.Top:
-                    top = pointLocation.Y - pointMargin.Top - height;
-                    break;
-                case VerticalLabelPosition.Bottom:
-                    top = pointLocation.Y + pointMargin.Bottom;
-                    break;
-                case VerticalLabelPosition.Between:
-                    top = ((pointLocation.Y + betweenBottomLimit) / 2) - .5 * height;
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException(
-                        nameof(DataLabelsPosition.VerticalAlignment), DataLabelsPosition.VerticalAlignment, null);
-            }
-
-            return new Point(left, top);
-        }
-
-        internal void AddChart(ChartModel chart)
-        {
-            if (_usedBy.Contains(chart)) return;
-            _usedBy.Add(chart);
-        }
-
-        #region IResource implementation
-
-        public event DisposingResourceHandler Disposed;
-
-        object IResource.UpdateId { get; set; }
-
-        void IResource.Dispose(IChartView view)
-        {
-            Disposed?.Invoke(view, this);
-        }
-
-        #endregion
-
-        #region INPC implementation
-
-        /// <summary>
-        /// Occurs when [property changed].
-        /// </summary>
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        /// <summary>
-        /// Called when a property changes.
-        /// </summary>
-        /// <param name="propertyName">Name of the property.</param>
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        #endregion
-    }
-
     /// <summary>
     /// The series class with a defined plot model, represents a series to plot in a chart.
     /// </summary>
@@ -433,17 +21,17 @@ namespace LiveCharts.Core.DataSeries
     /// <typeparam name="TPoint">The type of the point.</typeparam>
     /// <seealso cref="IResource" />
     public abstract class Series<TModel, TCoordinate, TViewModel, TPoint> 
-        : Series, IEnumerable<TModel>
+        : BaseSeries, IList<TModel>
         where TPoint : Point<TModel, TCoordinate, TViewModel>, new()
         where TCoordinate : ICoordinate
     {
         private IEnumerable<TModel> _itemsSource;
+        private IList<TModel> _sourceAsIList;
+        private INotifyRangeChanged<TModel> _sourceAsRangeChanged;
         private ModelToPointMapper<TModel, TCoordinate> _mapper;
         private Func<IPointView<TModel, Point<TModel, TCoordinate, TViewModel>, TCoordinate, TViewModel>>
             _pointViewProvider;
         private object _chartPointsUpdateId;
-        private IList<TModel> _list;
-        private INotifyRangeChanged<TModel> _rangedList;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Series{TModel, TCoordinate, TViewModel, TPoint}"/> class.
@@ -466,25 +54,18 @@ namespace LiveCharts.Core.DataSeries
             ByValTracker = new List<TPoint>();
         }
 
-        /// <summary>
-        /// Gets or sets the <see cref="TModel"/> at the specified index.
-        /// </summary>
-        /// <value>
-        /// The <see cref="TModel"/>.
-        /// </value>
-        /// <param name="index">The index.</param>
-        /// <returns></returns>
-        public TModel this[int index]
+        /// <inheritdoc />
+        public new TModel this[int index]
         {
             get
             {
                 EnsureIListImplementation();
-                return _list[index];
+                return _sourceAsIList[index];
             }
             set
             {
                 EnsureIListImplementation();
-                _list[index] = value;
+                _sourceAsIList[index] = value;
             }
         }
 
@@ -570,6 +151,26 @@ namespace LiveCharts.Core.DataSeries
         /// </value>
         public DimensionRange DataRange { get; } = new DimensionRange(double.PositiveInfinity, double.NegativeInfinity);
 
+        /// <inheritdoc />
+        public int Count
+        {
+            get
+            {
+                EnsureIListImplementation();
+                return _sourceAsIList.Count;
+            }
+        }
+
+        /// <inheritdoc />
+        public bool IsReadOnly
+        {
+            get
+            {
+                EnsureIListImplementation();
+                return _sourceAsIList.IsReadOnly;
+            }
+        }
+
         /// <summary>
         /// Defaults the point view provider.
         /// </summary>
@@ -630,80 +231,6 @@ namespace LiveCharts.Core.DataSeries
                 });
         }
 
-        /// <inheritdoc />
-        public override void Add(object item)
-        {
-            Add((TModel) item);
-        }
-
-        /// <summary>
-        /// Adds the specified item.
-        /// </summary>
-        /// <param name="item">The item.</param>
-        /// <exception cref="LiveChartsException">Items - 200</exception>
-        public void Add(TModel item)
-        {
-           EnsureIListImplementation();
-            _list.Add(item);
-        }
-
-        /// <inheritdoc />
-        public override void Remove(object item)
-        {
-            Remove((TModel) item);
-        }
-
-        /// <summary>
-        /// Removes the specified item.
-        /// </summary>
-        /// <param name="item">The item.</param>
-        public void Remove(TModel item)
-        {
-            EnsureIListImplementation();
-            _list.Remove(item);
-        }
-
-        /// <summary>
-        /// Removes at a specified index.
-        /// </summary>
-        /// <param name="index">The index.</param>
-        public override void RemoveAt(int index)
-        {
-            EnsureIListImplementation();
-            _list.RemoveAt(index);
-        }
-
-        /// <inheritdoc />
-        public override void AddRange(IEnumerable items)
-        {
-            AddRange((IEnumerable<TModel>) items);
-        }
-
-        /// <summary>
-        /// Adds the given range of items.
-        /// </summary>
-        /// <param name="items">The items.</param>
-        public void AddRange(IEnumerable<TModel> items)
-        {
-            EnsureINotifyRangeImplementation();
-            _rangedList.AddRange(items);
-        }
-
-        /// <inheritdoc />
-        public override void RemoveRange(IEnumerable items)
-        {
-            RemoveRange((IEnumerable<TModel>) items);
-        }
-
-        /// <summary>
-        /// Removes the given range of items.
-        /// </summary>
-        /// <param name="items">The items.</param>
-        public void RemoveRange(IEnumerable<TModel> items)
-        {
-            EnsureINotifyRangeImplementation();
-            _rangedList.RemoveRange(items);
-        }
 
         /// <inheritdoc />
         public IEnumerator<TModel> GetEnumerator()
@@ -717,9 +244,170 @@ namespace LiveCharts.Core.DataSeries
             return ItemsSource.GetEnumerator();
         }
 
+        /// <inheritdoc />
+        public int IndexOf(TModel item)
+        {
+            EnsureIListImplementation();
+            return _sourceAsIList.IndexOf(item);
+        }
+
+        /// <inheritdoc />
+        protected override int OnListIndexOf(object value)
+        {
+            return IndexOf((TModel) value);
+        }
+
+        /// <inheritdoc />
+        public void Insert(int index, TModel item)
+        {
+            EnsureIListImplementation();
+            _sourceAsIList.Insert(index, item);
+        }
+
+        /// <inheritdoc />
+        protected override void OnIListInsert(int index, object value)
+        {
+            Insert(index, (TModel) value);
+        }
+
+        /// <inheritdoc />
+        public void Add(TModel item)
+        {
+            EnsureIListImplementation();
+            _sourceAsIList.Add(item);
+        }
+
+        /// <inheritdoc />
+        protected override int OnIListAdd(object item)
+        {
+            Add((TModel) item);
+            return Count;
+        }
+
+        /// <inheritdoc />
+        public override void AddRange(IEnumerable items)
+        {
+            EnsureINotifyRangeImplementation();
+            _sourceAsRangeChanged.AddRange((IEnumerable<TModel>) items);
+        }
+
+        /// <inheritdoc />
+        public new void Clear()
+        {
+            EnsureIListImplementation();
+            _sourceAsIList.Clear();
+        }
+
+        /// <inheritdoc />
+        protected override void OnIListClear()
+        {
+            Clear();
+        }
+
+        /// <inheritdoc />
+        public bool Contains(TModel item)
+        {
+            EnsureIListImplementation();
+            return _sourceAsIList.Contains(item);
+        }
+
+        /// <inheritdoc />
+        protected override bool OnIListContains(object item)
+        {
+            return Contains((TModel) item);
+        }
+
+        /// <inheritdoc />
+        void ICollection<TModel>.CopyTo(TModel[] array, int arrayIndex)
+        {
+            EnsureIListImplementation();
+            _sourceAsIList.CopyTo(array, arrayIndex);
+        }
+
+        /// <inheritdoc />
+        protected override void OnIListCopyTo(Array array, int index)
+        {
+            ((ICollection<TModel>) this).CopyTo((TModel[]) array, index);
+        }
+
+        /// <inheritdoc />
+        public bool Remove(TModel item)
+        {
+            EnsureIListImplementation();
+            return _sourceAsIList.Remove(item);
+        }
+
+        /// <inheritdoc />
+        protected override void OnIListRemove(object item)
+        {
+            Remove((TModel) item);
+        }
+
+        /// <inheritdoc />
+        public new void RemoveAt(int index)
+        {
+            EnsureIListImplementation();
+            _sourceAsIList.RemoveAt(index);
+        }
+
+        /// <inheritdoc />
+        public override void RemoveRange(IEnumerable items)
+        {
+            EnsureINotifyRangeImplementation();
+            _sourceAsRangeChanged.RemoveRange((IEnumerable<TModel>) items);
+        }
+
+        /// <inheritdoc />
+        protected override void OnIListRemoveAt(int index)
+        {
+            RemoveAt(index);
+        }
+
+        /// <inheritdoc />
+        protected override bool OnIListIsReadOnly()
+        {
+            return _sourceAsIList.IsReadOnly;
+        }
+
+        /// <inheritdoc />
+        protected override bool OnIListIsFixedSize()
+        {
+            return ((IList) _sourceAsIList).IsFixedSize;
+        }
+
+        /// <inheritdoc />
+        protected override int OnIListCount()
+        {
+            return Count;
+        }
+
+        /// <inheritdoc />
+        protected override object OnIListSyncRoot()
+        {
+            return ((IList) _sourceAsIList).SyncRoot;
+        }
+
+        /// <inheritdoc />
+        protected override bool OnIListIsSynchronized()
+        {
+            return ((IList) _sourceAsIList).IsSynchronized;
+        }
+
+        /// <inheritdoc />
+        protected override object GetItem(int index)
+        {
+            return this[index];
+        }
+
+        /// <inheritdoc />
+        protected override void SetItem(object value, int index)
+        {
+            this[index] = (TModel) value;
+        }
+
         private void EnsureIListImplementation([CallerMemberName] string method = null)
         {
-            if (_list == null)
+            if (_sourceAsIList == null)
             {
                 throw new LiveChartsException(
                     $"{nameof(ItemsSource)} property, does not implement {nameof(IList<TModel>)}, " +
@@ -730,19 +418,19 @@ namespace LiveCharts.Core.DataSeries
 
         private void EnsureINotifyRangeImplementation([CallerMemberName] string method = null)
         {
-            if (_list == null)
+            if (_sourceAsRangeChanged == null)
             {
                 throw new LiveChartsException(
                     $"{nameof(ItemsSource)} property, does not implement {nameof(INotifyRangeChanged<TModel>)}, " +
                     $"thus the method {method} is not supported.",
-                    200);
+                    210);
             }
         }
 
         private void OnItemsIntancechanged()
         {
-            _list = _itemsSource as IList<TModel>;
-            _rangedList = ItemsSource as INotifyRangeChanged<TModel>;
+            _sourceAsIList = _itemsSource as IList<TModel>;
+            _sourceAsRangeChanged = ItemsSource as INotifyRangeChanged<TModel>;
         }
     }
 }

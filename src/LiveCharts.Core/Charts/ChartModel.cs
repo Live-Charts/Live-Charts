@@ -122,7 +122,7 @@ namespace LiveCharts.Core.Charts
                 ? Orientation.Horizontal
                 : Orientation.Vertical;
 
-        internal Series[] Series { get; set; }
+        internal BaseSeries[] Series { get; set; }
 
         internal Plane[][] Dimensions { get; set; }
 
@@ -401,7 +401,7 @@ namespace LiveCharts.Core.Charts
 
         private void OnDisposedResource(IChartView chartView, object instance)
         {
-            var series = (Series) instance;
+            var series = (BaseSeries) instance;
             series.PropertyChanged -= InvalidateOnPropertyChanged;
         }
 

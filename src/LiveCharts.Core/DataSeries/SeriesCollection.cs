@@ -4,9 +4,9 @@ using LiveCharts.Core.Collections;
 namespace LiveCharts.Core.DataSeries
 {
     /// <summary>
-    /// An observable collection of <see cref="Series"/>.
+    /// An observable collection of <see cref="BaseSeries"/>.
     /// </summary>
-    public class SeriesCollection : PlotableCollection<Series>
+    public class SeriesCollection : PlotableCollection<BaseSeries>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="SeriesCollection"/> class.
@@ -19,7 +19,7 @@ namespace LiveCharts.Core.DataSeries
         /// Initializes a new instance of the <see cref="SeriesCollection"/> class.
         /// </summary>
         /// <param name="source">The source.</param>
-        public SeriesCollection(IEnumerable<Series> source)
+        public SeriesCollection(IEnumerable<BaseSeries> source)
             : base(source)
         {
         }
@@ -28,7 +28,7 @@ namespace LiveCharts.Core.DataSeries
         /// Initializes a new instance of the <see cref="SeriesCollection"/> class.
         /// </summary>
         /// <param name="source">The source.</param>
-        public SeriesCollection(IList<Series> source)
+        public SeriesCollection(IList<BaseSeries> source)
             : base(source)
         {
         }

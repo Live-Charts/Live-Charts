@@ -37,6 +37,9 @@ namespace Assets.ViewModels
                 columnSeries
             };
 
+            AddPoint = new DelegateCommand(o => _addPoint());
+            RemovePoint = new DelegateCommand(o => _removePoint());
+            EditPoint = new DelegateCommand(o => _editPoint());
             AddSeries = new DelegateCommand(o => _addSeries());
             RemoveSeries = new DelegateCommand(o => _removeSeries());
             EditSeries = new DelegateCommand(o => _changeSeriesProp());
@@ -61,7 +64,25 @@ namespace Assets.ViewModels
 
         private void _addPoint()
         {
-            var a = SeriesCollection[0];
+            if (SeriesCollection.Count < 1) return;
+            SeriesCollection[0].Add(new City
+            {
+                Population = _r.Next(0, 10)
+            });
+        }
+
+        private void _removePoint()
+        {
+            var series = SeriesCollection[0];
+            if (series.Count < 1) return;
+            series.RemoveAt(0);
+        }
+
+        private void _editPoint()
+        {
+            var series = (ColumnSeries<City>) SeriesCollection[0];
+            if (series.Count < 1) return;
+            series[0].Population = _r.Next(0, 10);
         }
 
         private void _addSeries()

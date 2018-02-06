@@ -46,7 +46,7 @@ namespace LiveCharts.Wpf
         /// The series property.
         /// </summary>
         public static readonly DependencyProperty SeriesProperty = DependencyProperty.Register(
-            nameof(Series), typeof(IEnumerable<Series>), typeof(Chart),
+            nameof(Series), typeof(IEnumerable<BaseSeries>), typeof(Chart),
             new PropertyMetadata(null, RaiseOnPropertyChanged(nameof(Series))));
 
         /// <summary>
@@ -199,9 +199,9 @@ namespace LiveCharts.Wpf
         IList<IList<Plane>> IChartView.Dimensions => GetPlanes();
 
         /// <inheritdoc cref="IChartView.Series"/>
-        public IEnumerable<Series> Series
+        public IEnumerable<BaseSeries> Series
         {
-            get => (IEnumerable<Series>) GetValue(SeriesProperty);
+            get => (IEnumerable<BaseSeries>) GetValue(SeriesProperty);
             set => SetValue(SeriesProperty, value);
         }
 

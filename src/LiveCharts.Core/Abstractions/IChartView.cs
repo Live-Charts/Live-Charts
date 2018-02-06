@@ -74,7 +74,7 @@ namespace LiveCharts.Core.Abstractions
         /// <value>
         /// The actual series.
         /// </value>
-        IEnumerable<Series> Series { get; }
+        IEnumerable<BaseSeries> Series { get; }
 
         /// <summary>
         /// Gets the animations speed.

@@ -113,7 +113,7 @@ namespace LiveCharts.Wpf.Controls
         }
 
         Size ILegend.Measure(
-            IEnumerable<Series> seriesCollection, 
+            IEnumerable<BaseSeries> seriesCollection, 
             Orientation orientation,
             IChartView chart)
         {

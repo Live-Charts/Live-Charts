@@ -120,9 +120,8 @@ namespace LiveCharts.Core.DataSeries
 
                 previous = current;
             }
-
         }
-        
+
         /// <inheritdoc />
         protected override IPointView<TModel, Point<TModel, Point2D, ColumnViewModel>, Point2D, ColumnViewModel> 
             DefaultPointViewProvider()

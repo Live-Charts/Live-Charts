@@ -13,7 +13,7 @@ namespace LiveCharts.Wpf
          public CartesianChart()
         {
             Model = new CartesianChartModel(this);
-            SetValue(SeriesProperty, new ObservableCollection<Series>());
+            SetValue(SeriesProperty, new ObservableCollection<BaseSeries>());
             SetValue(XAxisProperty, new ObservableCollection<Plane> {new Axis()});
             SetValue(YAxisProperty, new ObservableCollection<Plane> {new Axis()});
         }
