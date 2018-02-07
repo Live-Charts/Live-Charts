@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
 using LiveCharts.Core.Abstractions;
-using LiveCharts.Core.Charts;
 using LiveCharts.Core.DefaultSettings;
 
 namespace LiveCharts.Core.Data
@@ -14,17 +13,22 @@ namespace LiveCharts.Core.Data
     {
         /// <inheritdoc />
         public IEnumerable<TPoint> FetchData<TModel, TCoordinate, TViewModel, TPoint>(
-            DataFactoryArgs<TModel, TCoordinate, TViewModel, TPoint> args) 
+            DataFactoryArgs<TModel, TCoordinate, TViewModel, TPoint> args)
             where TPoint : Point<TModel, TCoordinate, TViewModel>, new()
             where TCoordinate : ICoordinate
         {
             var modelType = typeof(TModel);
             var mapper = args.Series.Mapper;
             var notifiesChange = typeof(INotifyPropertyChanged).IsAssignableFrom(modelType);
-            var observable = typeof(IObservablePoint<TModel, TCoordinate, TViewModel, TPoint>).IsAssignableFrom(modelType);
+            var observable =
+                typeof(IObservablePoint<TModel, TCoordinate, TViewModel, TPoint>).IsAssignableFrom(modelType);
             var collection = args.Collection;
             var dimensions = args.Chart.GetSeriesDimensions(args.Series);
-            var pcHandler = BuildPCHandlerFor(args.Chart);
+
+            void InvalidateOnPropertyChanged(object sender, PropertyChangedEventArgs e)
+            {
+                args.Chart.Invalidate(args.Chart.View);
+            }
 
             for (var index = 0; index < collection.Count; index++)
             {
@@ -42,9 +46,17 @@ namespace LiveCharts.Core.Data
                         // if INPC then invalidate the chart on property change.
                         if (notifiesChange)
                         {
-                            var npc = (INotifyPropertyChanged)instance;
-                            npc.PropertyChanged += pcHandler;
-                            chartPoint.Disposed += (view, point) => { npc.PropertyChanged -= pcHandler; };
+                            var npc = (INotifyPropertyChanged) instance;
+
+                            void DisposeByRefPoint(IChartView view, object sender)
+                            {
+                                npc.PropertyChanged -= InvalidateOnPropertyChanged;
+                                chartPoint.Disposed -= DisposeByRefPoint;
+                                iocp.ChartPoint = null;
+                            }
+
+                            npc.PropertyChanged += InvalidateOnPropertyChanged;
+                            chartPoint.Disposed += DisposeByRefPoint;
                         }
                     }
                     else
@@ -62,12 +74,21 @@ namespace LiveCharts.Core.Data
                     {
                         chartPoint = new TPoint();
                         args.Series.ByValTracker.Add(chartPoint);
+
                         // if INPC then invalidate the chart on property change.
                         if (notifiesChange)
                         {
-                            var npc = (INotifyPropertyChanged)instance;
-                            npc.PropertyChanged += pcHandler;
-                            chartPoint.Disposed += (view, point) => { npc.PropertyChanged -= pcHandler; };
+                            var npc = (INotifyPropertyChanged) instance;
+                            var copiedIndex = index;
+
+                            void DisposeByValPoint(IChartView view, object sender)
+                            {
+                                npc.PropertyChanged -= InvalidateOnPropertyChanged;
+                                args.Series.ByValTracker.RemoveAt(copiedIndex);
+                            }
+
+                            npc.PropertyChanged += InvalidateOnPropertyChanged;
+                            chartPoint.Disposed += DisposeByValPoint;
                         }
                     }
                 }
@@ -90,11 +111,6 @@ namespace LiveCharts.Core.Data
 
                 yield return chartPoint;
             }
-        }
-
-        private PropertyChangedEventHandler BuildPCHandlerFor(ChartModel chart)
-        {
-            return (sender, args) => { chart.Invalidate(chart.View); };
         }
     }
 }

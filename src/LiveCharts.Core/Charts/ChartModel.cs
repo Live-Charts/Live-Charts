@@ -379,7 +379,10 @@ namespace LiveCharts.Core.Charts
 
         internal void RegisterResourseCollection(string propertyName, object collection)
         {
-            _resourcesCollections.TryGetValue(propertyName, out var previous);
+            if (!_resourcesCollections.TryGetValue(propertyName, out var previous))
+            {
+                _resourcesCollections.Add(propertyName, collection);
+            }
             if (previous != null && Equals(collection, previous)) return;
             if (collection is INotifyCollectionChanged incc)
             {
@@ -390,7 +393,8 @@ namespace LiveCharts.Core.Charts
             {
                 pincc.CollectionChanged -= InvalidateOnCollectionChanged;
             }
-            _resourcesCollections.Add(propertyName, collection);
+
+            _resourcesCollections[propertyName] = collection;
         }
         
         internal void CollectResources(bool collectAll = false)
