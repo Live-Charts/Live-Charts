@@ -377,7 +377,7 @@ namespace LiveCharts.Core.Charts
             resource.UpdateId = UpdateId;
         }
 
-        internal void RegisterResourseCollection(string propertyName, object collection)
+        internal void RegisterResourceCollection(string propertyName, object collection)
         {
             if (!_resourcesCollections.TryGetValue(propertyName, out var previous))
             {
@@ -427,11 +427,11 @@ namespace LiveCharts.Core.Charts
             LegendPosition = View.LegendPosition;
             Legend = View.Legend;
 
-            RegisterResourseCollection(nameof(IChartView.Series), View.Series);
+            RegisterResourceCollection(nameof(IChartView.Series), View.Series);
             for (var index = 0; index < View.Dimensions.Count; index++)
             {
                 var dimension = View.Dimensions[index];
-                RegisterResourseCollection($"{nameof(IChartView.Dimensions)}[{index}]", dimension);
+                RegisterResourceCollection($"{nameof(IChartView.Dimensions)}[{index}]", dimension);
             }
         }
 
