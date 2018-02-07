@@ -1,5 +1,5 @@
 ﻿using LiveCharts.Core.Abstractions;
-using LiveCharts.Core.Dimensions;
+using LiveCharts.Core.Events;
 
 namespace LiveCharts.Core.UnitTests.Mocked
 {

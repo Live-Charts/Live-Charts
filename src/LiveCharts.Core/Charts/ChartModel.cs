@@ -26,8 +26,8 @@ namespace LiveCharts.Core.Charts
         private static int _colorCount;
         private Task _delayer;
         private IList<Color> _colors;
-        private HashSet<IResource> _resources = new HashSet<IResource>();
-        private readonly object[] _observableResources;
+        private readonly HashSet<IResource> _resources = new HashSet<IResource>();
+        private readonly Dictionary<string, object> _resourcesCollections = new Dictionary<string, object>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ChartModel"/> class.
@@ -43,14 +43,13 @@ namespace LiveCharts.Core.Charts
             };
             view.ChartViewResized += Invalidate;
             view.PointerMoved += ViewOnPointerMoved;
-            view.PropertyChanged += InvalidateOnChartViewPropertyChanged;
+            view.PropertyChanged += InvalidatePropertyChanged;
             TooltipTimoutTimer = new Timer();
             TooltipTimoutTimer.Elapsed += (sender, args) =>
             {
                 View.InvokeOnUiThread(() => { ToolTip.Hide(View); });
                 TooltipTimoutTimer.Stop();
             };
-            _observableResources = new object[view.Dimensions.Count + 1];
         }
 
 #if DEBUG
@@ -349,11 +348,51 @@ namespace LiveCharts.Core.Charts
             if (!_resources.Contains(resource))
             {
                 _resources.Add(resource);
+                if (resource is INotifyPropertyChanged inpc)
+                {
+                    inpc.PropertyChanged += InvalidatePropertyChanged;
+
+                    void DisposePropertyChanged(IChartView view, object instance)
+                    {
+                        inpc.PropertyChanged -= InvalidatePropertyChanged;
+                        resource.Disposed -= DisposePropertyChanged;
+                    }
+
+                    resource.Disposed += DisposePropertyChanged;
+                }
+
+                if (resource is INotifyCollectionChanged incc)
+                {
+                    incc.CollectionChanged += InvalidateOnCollectionChanged;
+
+                    void DisposeCollectionChanged(IChartView view, object instance)
+                    {
+                        incc.CollectionChanged -= InvalidateOnCollectionChanged;
+                        resource.Disposed -= DisposeCollectionChanged;
+                    }
+
+                    resource.Disposed += DisposeCollectionChanged;
+                }
             }
 
             resource.UpdateId = UpdateId;
         }
 
+        internal void RegisterResourseCollection(string propertyName, object collection)
+        {
+            _resourcesCollections.TryGetValue(propertyName, out var previous);
+            if (previous != null && Equals(collection, previous)) return;
+            if (collection is INotifyCollectionChanged incc)
+            {
+                incc.CollectionChanged += InvalidateOnCollectionChanged;
+            }
+
+            if (previous is INotifyCollectionChanged pincc)
+            {
+                pincc.CollectionChanged -= InvalidateOnCollectionChanged;
+            }
+        }
+        
         internal void CollectResources(bool collectAll = false)
         {
             foreach (var disposable in _resources.ToArray())
@@ -364,108 +403,14 @@ namespace LiveCharts.Core.Charts
             }
         }
 
-        private void InvalidateOnChartViewPropertyChanged(object sender, PropertyChangedEventArgs args)
-        {
-            if (args.PropertyName == nameof(IChartView.Series) ||
-                args.PropertyName == nameof(IChartView.Dimensions))
-            {
-                var dimensions = View.Dimensions;
-                for (var index = 0; index < _observableResources.Length; index++)
-                {
-                    var previous = _observableResources[index];
-                    var current = index == 0
-                        ? (object) View.Series
-                        : dimensions[index - 1];
-                    if (Equals(current, previous)) continue;
-                    OnObservableResourceChanged(current, previous);
-                    _observableResources[index] = current;
-                }
-            }
-
-            Invalidate(View);
-        }
-
-        private void OnObservableResourceChanged(object current, object previous)
-        {
-            var handler = BuildObservableResourceCollectionChangedHandler((IEnumerable) current);
-
-            if (current is INotifyCollectionChanged incc)
-            {
-                incc.CollectionChanged += handler;
-                handler(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
-            }
-
-            if (previous is INotifyCollectionChanged pincc)
-            {
-                pincc.CollectionChanged -= handler;
-            }
-        }
-
-        private NotifyCollectionChangedEventHandler BuildObservableResourceCollectionChangedHandler(IEnumerable propertyValue)
-        {
-            return (sender, args) =>
-            {
-                switch (args.Action)
-                {
-                    case NotifyCollectionChangedAction.Add:
-                    case NotifyCollectionChangedAction.Move:
-                    case NotifyCollectionChangedAction.Replace:
-                    case NotifyCollectionChangedAction.Remove:
-                        if (args.NewItems != null)
-                        {
-                            foreach (var @new in args.NewItems)
-                            {
-                                if (!(@new is IResource newResource)) continue;
-                                ((INotifyPropertyChanged) newResource).PropertyChanged += InvalidateOnPropertyChanged;
-                                newResource.Disposed += OnDisposedResource;
-                                if (newResource is INotifyCollectionChanged incc)
-                                {
-                                    var ccHandler =
-                                        BuildObservableResourceCollectionChangedHandler((IEnumerable) newResource);
-                                    incc.CollectionChanged += ccHandler;
-                                }
-                            }
-                        }
-
-                        break;
-                    case NotifyCollectionChangedAction.Reset:
-                        if (View.Series != null)
-                        {
-                            foreach (IResource resource in propertyValue)
-                            {
-                                var pc = (INotifyPropertyChanged) resource;
-                                pc.PropertyChanged -= InvalidateOnPropertyChanged;
-                                resource.Disposed -= OnDisposedResource;
-                                pc.PropertyChanged += InvalidateOnPropertyChanged;
-                                resource.Disposed += OnDisposedResource;
-
-                                if (resource is INotifyCollectionChanged incc)
-                                {
-                                    var ccHandler =
-                                        BuildObservableResourceCollectionChangedHandler((IEnumerable) resource);
-                                    incc.CollectionChanged += ccHandler;
-                                }
-                            }
-                        }
-
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException();
-                }
-
-                Invalidate(View);
-            };
-        }
-
-        private void InvalidateOnPropertyChanged(object sender, PropertyChangedEventArgs args)
+        private void InvalidatePropertyChanged(object sender, PropertyChangedEventArgs args)
         {
             Invalidate(View);
         }
 
-        private void OnDisposedResource(IChartView chartView, object instance)
+        private void InvalidateOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs args)
         {
-            var series = (BaseSeries) instance;
-            series.PropertyChanged -= InvalidateOnPropertyChanged;
+            Invalidate(View);
         }
 
         private void CopyDataFromView()
@@ -477,18 +422,28 @@ namespace LiveCharts.Core.Charts
             AnimationsSpeed = View.AnimationsSpeed;
             LegendPosition = View.LegendPosition;
             Legend = View.Legend;
+
+            RegisterResourseCollection(nameof(IChartView.Series), View.Series);
+            for (var index = 0; index < Dimensions.Length; index++)
+            {
+                var dimension = Dimensions[index];
+                RegisterResourseCollection($"{nameof(IChartView.Dimensions)}[{index}]", dimension);
+            }
         }
 
         /// <inheritdoc />
         public void Dispose()
         {
-            _resources = null;
-            foreach (IEnumerable resource in _observableResources)
+            foreach (var resource in _resources)
             {
-                foreach (IResource r in resource)
+                resource.Dispose(View);
+            }
+
+            foreach (var resourceCollection in _resourcesCollections.Values)
+            {
+                if (resourceCollection is INotifyCollectionChanged incc)
                 {
-                    r.Dispose(View);
-                    r.Disposed -= OnDisposedResource;
+                    incc.CollectionChanged -= InvalidateOnCollectionChanged;
                 }
             }
         }

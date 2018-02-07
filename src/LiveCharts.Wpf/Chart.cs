@@ -203,7 +203,11 @@ namespace LiveCharts.Wpf
         }
 
         /// <inheritdoc />
-        public event ChartEventHandler Updated;
+        public event ChartEventHandler Updated
+        {
+            add => Model.Updated += value;
+            remove => Model.Updated -= value;
+        }
 
         /// <inheritdoc cref="IChartView.Updated" />
         public ICommand UpdatedCommand

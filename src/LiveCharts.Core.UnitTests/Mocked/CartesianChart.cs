@@ -61,10 +61,33 @@ namespace LiveCharts.Core.UnitTests.Mocked
         public event ChartEventHandler ChartViewLoaded;
         public event ChartEventHandler ChartViewResized;
         public event PointerMovedHandler PointerMoved;
-        public event ChartEventHandler UpdatePreview;
-        public ICommand UpdatePreviewCommand { get; set; }
-        public event ChartEventHandler Updated;
-        public ICommand UpdatedCommand { get; set; }
+        /// <inheritdoc />
+        public event ChartEventHandler UpdatePreview
+        {
+            add => Model.UpdatePreview += value;
+            remove => Model.UpdatePreview -= value;
+        }
+
+        /// <inheritdoc cref="IChartView.UpdatePreview" />
+        public ICommand UpdatePreviewCommand
+        {
+            get => Model.UpdatePreviewCommand;
+            set => Model.UpdatePreviewCommand = value;
+        }
+
+        /// <inheritdoc />
+        public event ChartEventHandler Updated
+        {
+            add => Model.Updated += value;
+            remove => Model.Updated -= value;
+        }
+
+        /// <inheritdoc cref="IChartView.Updated" />
+        public ICommand UpdatedCommand
+        {
+            get => Model.UpdatedCommand;
+            set => Model.UpdatedCommand = value;
+        }
         public ChartModel Model { get; set; }
         public Size ControlSize { get; set; }
         public Margin DrawMargin { get; set; }

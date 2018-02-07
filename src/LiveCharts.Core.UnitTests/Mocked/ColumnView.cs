@@ -3,6 +3,7 @@ using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Coordinates;
 using LiveCharts.Core.Data;
 using LiveCharts.Core.Drawing;
+using LiveCharts.Core.Events;
 using LiveCharts.Core.ViewModels;
 
 namespace LiveCharts.Core.UnitTests.Mocked

@@ -1,3 +1,4 @@
+using System;
 using Assets.Models;
 using LiveCharts.Core.DataSeries;
 using LiveCharts.Core.UnitTests.Mocked;
@@ -22,8 +23,10 @@ namespace LiveCharts.Core.UnitTests
                             Population = 10
                         }
                     }
-                }
+                },
+                AnimationsSpeed = TimeSpan.FromMilliseconds(100)
             };
+
 
             var newSeries = new SeriesCollection
             {
@@ -40,9 +43,12 @@ namespace LiveCharts.Core.UnitTests
 
             var c = chart.Model.InvalidateCount;
 
-            chart.Series = newSeries;
+            chart.UpdatePreview += sender =>
+            {
+                Assert.IsTrue(c + 1 == chart.Model.InvalidateCount, "on seres property changed fired");
+            };
 
-            Assert.IsTrue(c == chart.Model.InvalidateCount + 1, "on seres property changed fired");
+            chart.Series = newSeries;
         }
     
     }
