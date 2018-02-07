@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
@@ -391,6 +390,7 @@ namespace LiveCharts.Core.Charts
             {
                 pincc.CollectionChanged -= InvalidateOnCollectionChanged;
             }
+            _resourcesCollections.Add(propertyName, collection);
         }
         
         internal void CollectResources(bool collectAll = false)
@@ -424,9 +424,9 @@ namespace LiveCharts.Core.Charts
             Legend = View.Legend;
 
             RegisterResourseCollection(nameof(IChartView.Series), View.Series);
-            for (var index = 0; index < Dimensions.Length; index++)
+            for (var index = 0; index < View.Dimensions.Count; index++)
             {
-                var dimension = Dimensions[index];
+                var dimension = View.Dimensions[index];
                 RegisterResourseCollection($"{nameof(IChartView.Dimensions)}[{index}]", dimension);
             }
         }

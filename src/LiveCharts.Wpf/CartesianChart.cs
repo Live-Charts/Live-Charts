@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Windows;
 using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Charts;
+using LiveCharts.Core.Collections;
 using LiveCharts.Core.DataSeries;
 using LiveCharts.Core.Dimensions;
 
@@ -13,9 +13,9 @@ namespace LiveCharts.Wpf
          public CartesianChart()
         {
             Model = new CartesianChartModel(this);
-            SetValue(SeriesProperty, new ObservableCollection<BaseSeries>());
-            SetValue(XAxisProperty, new ObservableCollection<Plane> {new Axis()});
-            SetValue(YAxisProperty, new ObservableCollection<Plane> {new Axis()});
+            SetValue(SeriesProperty, new PlotableCollection<BaseSeries>());
+            SetValue(XAxisProperty, new PlotableCollection<Plane> {new Axis()});
+            SetValue(YAxisProperty, new PlotableCollection<Plane> {new Axis()});
         }
 
         #region Dependency properties
