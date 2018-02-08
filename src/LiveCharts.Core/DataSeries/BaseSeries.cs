@@ -541,13 +541,22 @@ namespace LiveCharts.Core.DataSeries
 
         #region IResource implementation
 
+        /// <inheritdoc />
         public event DisposingResourceHandler Disposed;
 
         object IResource.UpdateId { get; set; }
 
         void IResource.Dispose(IChartView view)
         {
+            OnDisposing();
             Disposed?.Invoke(view, this);
+        }
+
+        /// <summary>
+        /// Called when the series is disposed.
+        /// </summary>
+        protected virtual void OnDisposing()
+        {
         }
 
         #endregion

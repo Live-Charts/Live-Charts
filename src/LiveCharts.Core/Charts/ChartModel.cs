@@ -399,11 +399,11 @@ namespace LiveCharts.Core.Charts
         
         internal void CollectResources(bool collectAll = false)
         {
-            foreach (var disposable in _resources.ToArray())
+            foreach (var resource in _resources.ToArray())
             {
-                if (!collectAll && disposable.UpdateId == UpdateId) continue;
-                disposable.Dispose(View);
-                _resources.Remove(disposable);
+                if (!collectAll && resource.UpdateId == UpdateId) continue;
+                resource.Dispose(View);
+                _resources.Remove(resource);
             }
         }
 

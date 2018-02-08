@@ -1,18 +1,8 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using LiveCharts.Core.Abstractions;
-using LiveCharts.Core.Data;
 
 namespace LiveCharts.Core.Defaults
 {
-    public class ObservableModel<TModel, TCoordinate, TViewModel, TPoint>
-        : IObservablePoint<TModel, TCoordinate, TViewModel, TPoint>
-        where TPoint : Point<TModel, TCoordinate, TViewModel>, new()
-        where TCoordinate : ICoordinate
-    {
-        public TPoint ChartPoint { get; set; }
-    }
-
     /// <summary>
     /// Defines an observable financial point, this object notifies the chart to update when any property change.
     /// </summary>

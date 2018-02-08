@@ -17,13 +17,12 @@ namespace LiveCharts.Core.Data
             where TPoint : Point<TModel, TCoordinate, TViewModel>, new()
             where TCoordinate : ICoordinate
         {
-            var modelType = typeof(TModel);
             var mapper = args.Series.Mapper;
-            var notifiesChange = typeof(INotifyPropertyChanged).IsAssignableFrom(modelType);
-            var observable =
-                typeof(IObservablePoint<TModel, TCoordinate, TViewModel, TPoint>).IsAssignableFrom(modelType);
+            var notifiesChange = typeof(INotifyPropertyChanged).IsAssignableFrom(args.Series.Metatada.ModelType);
             var collection = args.Collection;
             var dimensions = args.Chart.GetSeriesDimensions(args.Series);
+            var isValueType = args.Series.Metatada.IsValueType;
+            var tracker = args.Series.Tracker;
 
             void InvalidateOnPropertyChanged(object sender, PropertyChangedEventArgs e)
             {
@@ -34,62 +33,24 @@ namespace LiveCharts.Core.Data
             {
                 var instance = collection[index];
 
-                TPoint chartPoint;
+                var key = isValueType ? index : (object) instance;
 
-                if (observable)
+                if (!tracker.TryGetValue(key, out var chartPoint))
                 {
-                    var iocp = (IObservablePoint<TModel, TCoordinate, TViewModel, TPoint>) instance;
-                    if (iocp.ChartPoint == null)
+                    chartPoint = new TPoint();
+                    tracker.Add(key, chartPoint);
+                    if (notifiesChange)
                     {
-                        chartPoint = new TPoint();
-                        iocp.ChartPoint = chartPoint;
-                        // if INPC then invalidate the chart on property change.
-                        if (notifiesChange)
+                        var npc = (INotifyPropertyChanged) instance;
+
+                        void DisposeByValPoint(IChartView view, object sender)
                         {
-                            var npc = (INotifyPropertyChanged) instance;
-
-                            void DisposeByRefPoint(IChartView view, object sender)
-                            {
-                                npc.PropertyChanged -= InvalidateOnPropertyChanged;
-                                chartPoint.Disposed -= DisposeByRefPoint;
-                                iocp.ChartPoint = null;
-                            }
-
-                            npc.PropertyChanged += InvalidateOnPropertyChanged;
-                            chartPoint.Disposed += DisposeByRefPoint;
+                            npc.PropertyChanged -= InvalidateOnPropertyChanged;
+                            tracker.Remove(key);
                         }
-                    }
-                    else
-                    {
-                        chartPoint = iocp.ChartPoint;
-                    }
-                }
-                else
-                {
-                    if (index < args.Series.ByValTracker.Count)
-                    {
-                        chartPoint = args.Series.ByValTracker[index];
-                    }
-                    else
-                    {
-                        chartPoint = new TPoint();
-                        args.Series.ByValTracker.Add(chartPoint);
 
-                        // if INPC then invalidate the chart on property change.
-                        if (notifiesChange)
-                        {
-                            var npc = (INotifyPropertyChanged) instance;
-                            var copiedIndex = index;
-
-                            void DisposeByValPoint(IChartView view, object sender)
-                            {
-                                npc.PropertyChanged -= InvalidateOnPropertyChanged;
-                                args.Series.ByValTracker.RemoveAt(copiedIndex);
-                            }
-
-                            npc.PropertyChanged += InvalidateOnPropertyChanged;
-                            chartPoint.Disposed += DisposeByValPoint;
-                        }
+                        npc.PropertyChanged += InvalidateOnPropertyChanged;
+                        chartPoint.Disposed += DisposeByValPoint;
                     }
                 }
 

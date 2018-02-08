@@ -40,9 +40,7 @@ namespace LiveCharts.Core.DataSeries
         /// </summary>
         protected Series()
         {
-            ByValTracker = new List<TPoint>();
-            _itemsSource = new PlotableCollection<TModel>();
-            OnItemsIntancechanged();
+            Initialize();
         }
 
         /// <summary>
@@ -51,9 +49,7 @@ namespace LiveCharts.Core.DataSeries
         /// <param name="itemsSource">The values.</param>
         protected Series(IEnumerable<TModel> itemsSource)
         {
-            _itemsSource = itemsSource;
-            OnItemsIntancechanged();
-            ByValTracker = new List<TPoint>();
+            Initialize(itemsSource);
         }
 
         /// <inheritdoc />
@@ -89,6 +85,14 @@ namespace LiveCharts.Core.DataSeries
         }
 
         /// <summary>
+        /// Gets or sets the metatada.
+        /// </summary>
+        /// <value>
+        /// The metatada.
+        /// </value>
+        public SeriesMetatada Metatada { get; set; }
+
+        /// <summary>
         /// Gets or sets the mapper.
         /// </summary>
         /// <value>
@@ -105,12 +109,12 @@ namespace LiveCharts.Core.DataSeries
         }
 
         /// <summary>
-        /// Gets the by value tracker.
+        /// Gets the tracker.
         /// </summary>
         /// <value>
-        /// The by value tracker.
+        /// The tracker.
         /// </value>
-        public IList<TPoint> ByValTracker { get; }
+        public Dictionary<object, TPoint> Tracker { get; private set; }
 
         /// <summary>
         /// Gets the points.
@@ -443,11 +447,32 @@ namespace LiveCharts.Core.DataSeries
             {
                 pincc.CollectionChanged -= InccOnCollectionChanged;
             }
+
+            _previousItemsSource = _itemsSource;
         }
 
         private void InccOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs notifyCollectionChangedEventArgs)
         {
             CollectionChanged?.Invoke(sender, notifyCollectionChangedEventArgs);
+        }
+
+        /// <inheritdoc />
+        protected override void OnDisposing()
+        {
+            Tracker = null;
+        } 
+
+        private void Initialize(IEnumerable<TModel> itemsSource = null)
+        {
+            Tracker = new Dictionary<object, TPoint>();
+            _itemsSource = itemsSource ?? new PlotableCollection<TModel>();
+            OnItemsIntancechanged();
+            var t = typeof(TModel);
+            Metatada = new SeriesMetatada
+            {
+                ModelType = t,
+                IsValueType = t.IsValueType
+            };
         }
 
         /// <inheritdoc />

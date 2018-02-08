@@ -42,6 +42,8 @@ namespace Assets.ViewModels
 
             AddPoint = new DelegateCommand(o => _addPoint());
             RemovePoint = new DelegateCommand(o => _removePoint());
+            InsertPoint = new DelegateCommand(o => _insertPoint());
+            RemoveBetweenPoint = new DelegateCommand(o => _removeBetweenPoint());
             EditPoint = new DelegateCommand(o => _editPoint());
             AddSeries = new DelegateCommand(o => _addSeries());
             RemoveSeries = new DelegateCommand(o => _removeSeries());
@@ -70,6 +72,10 @@ namespace Assets.ViewModels
 
         public ICommand AddPoint { get; }
 
+        public ICommand InsertPoint { get; }
+
+        public ICommand RemoveBetweenPoint { get; }
+
         public ICommand RemovePoint { get; }
 
         public ICommand EditPoint { get; }
@@ -88,8 +94,27 @@ namespace Assets.ViewModels
         private void _removePoint()
         {
             var series = SeriesCollection[0];
-            if (series.Count < 1) return;
+            if (series.Count == 1) return;
             series.RemoveAt(0);
+        }
+
+        private void _insertPoint()
+        {
+            var series = SeriesCollection[0];
+            if (series.Count < 3) return;
+            series.Insert(
+                series.Count / 2,
+                new City
+                {
+                    Population = _r.Next(0, 10)
+                });
+        }
+
+        private void _removeBetweenPoint()
+        {
+            var series = SeriesCollection[0];
+            if (series.Count < 3) return;
+            series.RemoveAt(series.Count / 2);
         }
 
         private void _editPoint()
