@@ -1,7 +1,6 @@
 ﻿using LiveCharts.Core.Coordinates;
-using LiveCharts.Core.Defaults;
 
-namespace LiveCharts.Core.DefaultSettings
+namespace LiveCharts.Core.Defaults
 {
     /// <summary>
     /// Primitive types configuration.

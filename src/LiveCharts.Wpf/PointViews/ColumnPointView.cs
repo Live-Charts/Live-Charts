@@ -3,7 +3,6 @@ using System.Windows.Controls;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using LiveCharts.Core.Abstractions;
-using LiveCharts.Core.Abstractions.DataSeries;
 using LiveCharts.Core.Coordinates;
 using LiveCharts.Core.Data;
 using LiveCharts.Core.ViewModels;

@@ -38,5 +38,13 @@ namespace LiveCharts.Core.Abstractions
         /// <returns></returns>
         IPointView<TModel, Point<TModel, Point2D, ColumnViewModel>, Point2D, ColumnViewModel> 
             ColumnViewProvider<TModel>();
+
+        /// <summary>
+        /// Provides LiveCharts with a builder that returns a bezier view.
+        /// </summary>
+        /// <typeparam name="TModel">The type of the model.</typeparam>
+        /// <returns></returns>
+        IPointView<TModel, Point<TModel, Point2D, BezierViewModel>, Point2D, BezierViewModel>
+            BezierViewProvider<TModel>();
     }
 }

@@ -80,11 +80,6 @@ namespace LiveCharts.Core.DataSeries
             Point<TModel, Point2D, ColumnViewModel> previous = null;
             foreach (var current in Points)
             {
-                if (current.View == null)
-                {
-                    current.View = PointViewProvider();
-                }
-
                 var p = chart.ScaleToUi(current.Coordinate, x, y);
                 var vm = new ColumnViewModel(
                     p.X + relativeLeft,
@@ -95,13 +90,24 @@ namespace LiveCharts.Core.DataSeries
                     singleColumnWidth - ColumnPadding,
                     zero);
 
+                if (current.View == null)
+                {
+                    current.View = PointViewProvider();
+                }
+
                 current.View.DrawShape(
                     current,
                     previous,
                     chart.View,
                     vm);
 
-                current.HoverArea = new RectangleHoverArea(vm);
+                current.HoverArea = new RectangleHoverArea
+                {
+                    Top = vm.Top,
+                    Left = vm.Left,
+                    Height = vm.Height,
+                    Width = vm.Width
+                };
 
                 if (DataLabels && x.IsInRange(p.X) && y.IsInRange(p.Y))
                 {

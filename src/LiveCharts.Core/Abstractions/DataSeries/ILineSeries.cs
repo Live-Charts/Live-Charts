@@ -22,5 +22,13 @@ namespace LiveCharts.Core.Abstractions.DataSeries
         /// The point geometry.
         /// </value>
         Geometry PointGeometry { get; set; }
+
+        /// <summary>
+        /// Gets or sets the size of the geometry.
+        /// </summary>
+        /// <value>
+        /// The size of the geometry.
+        /// </value>
+        double GeometrySize { get; set; }
     }
 }

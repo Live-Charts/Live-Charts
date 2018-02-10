@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 using LiveCharts.Core;
-using LiveCharts.Core.DefaultSettings.Themes;
+using LiveCharts.Core.Themes;
 using LiveCharts.Wpf;
 
 namespace Samples.Wpf

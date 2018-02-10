@@ -1,17 +1,17 @@
 ﻿using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Abstractions.DataSeries;
 using LiveCharts.Core.Data;
-using LiveCharts.Core.DataSeries;
+using LiveCharts.Core.Defaults;
 using LiveCharts.Core.Dimensions;
 using LiveCharts.Core.Drawing;
 using LiveCharts.Core.Drawing.Svg;
 
-namespace LiveCharts.Core.DefaultSettings.Themes
+namespace LiveCharts.Core.Themes
 {
     /// <summary>
     /// Predefined themes.
     /// </summary>
-    public static class Themes
+    public static class MaterialDesign
     {
         /// <summary>
         /// Uses the material design light theme.
@@ -51,9 +51,10 @@ namespace LiveCharts.Core.DefaultSettings.Themes
                 })
                 .SetDefault<ILineSeries>(lineSeries =>
                 {
-                    lineSeries.Geometry = Geometry.HorizontalLine;
-                    lineSeries.StrokeThickness = 3.5;
-                    lineSeries.DefaultFillOpacity = .25;
+                    lineSeries.Geometry = Geometry.Circle;
+                    lineSeries.GeometrySize = 15d;
+                    lineSeries.StrokeThickness = 3.5d;
+                    lineSeries.DefaultFillOpacity = .25d;
                 })
 
                 // sets a base for all the planes

@@ -216,6 +216,18 @@ namespace LiveCharts.Core.Charts
         }
 
         /// <summary>
+        /// Scales to UI.
+        /// </summary>
+        /// <param name="point">The point.</param>
+        /// <param name="x">The x.</param>
+        /// <param name="y">The y.</param>
+        /// <returns></returns>
+        public Point ScaleToUi(Point point, Plane x, Plane y)
+        {
+            return new Point(ScaleToUi(point.X, x), ScaleToUi(point.Y, y));
+        }
+
+        /// <summary>
         /// Called when the pointer moves over a chart and there is a tooltip in the view.
         /// </summary>
         /// <param name="location">The location.</param>

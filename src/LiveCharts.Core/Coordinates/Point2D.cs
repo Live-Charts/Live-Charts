@@ -86,5 +86,42 @@ namespace LiveCharts.Core.Coordinates
                 dimensions[1].FormatValue(Y)
             };
         }
+
+        /// <summary>
+        /// Implements the operator +.
+        /// </summary>
+        /// <param name="p1">The p1.</param>
+        /// <param name="p2">The p2.</param>
+        /// <returns>
+        /// The result of the operator.
+        /// </returns>
+        public static Point2D operator +(Point2D p1, Point2D p2)
+        {
+            return new Point2D(p1.X+ p2.X, p1.Y+p2.Y);
+        }
+
+        /// <summary>
+        /// Implements the operator -.
+        /// </summary>
+        /// <param name="p1">The p1.</param>
+        /// <param name="p2">The p2.</param>
+        /// <returns>
+        /// The result of the operator.
+        /// </returns>
+        public static Point2D operator -(Point2D p1, Point2D p2)
+        {
+            return new Point2D(p1.X - p2.X, p1.Y - p2.Y);
+        }
+
+        /// <summary>
+        /// Returns a <see cref="System.String" /> that represents this instance.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="System.String" /> that represents this instance.
+        /// </returns>
+        public override string ToString()
+        {
+            return $"{X}, {Y}";
+        }
     }
 }

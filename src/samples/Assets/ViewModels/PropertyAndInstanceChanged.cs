@@ -23,21 +23,32 @@ namespace Assets.ViewModels
                     settings.Has2DPlotFor<City>((city, index) => new Point2D(index, city.Population));
                 });
 
-            var columnSeries = new ColumnSeries<City>
+            var series = new LineSeries<City>
             {
                 new City
                 {
-                    Population = 6d
+                    Population = 2d
                 },
                 new City
                 {
-                    Population = 10d
+                    Population = 4d
+                },
+                new City
+                {
+                    Population = 8d
+                },
+                new City
+                {
+                    Population = 16d
+                },new City
+                {
+                    Population = 32d
                 }
             };
 
             SeriesCollection = new SeriesCollection
             {
-                columnSeries
+                series
             };
 
             AddPoint = new DelegateCommand(o => _addPoint());

@@ -60,6 +60,7 @@
     <Compile Include="Controls\ChartLegend.cs" />
     <Compile Include="Controls\AxisLabel.cs" />
     <Compile Include="Extensions.cs" />
+    <Compile Include="PointViews\BezierPointView.cs" />
     <Compile Include="PointViews\PointView.cs" />
     <Compile Include="StoryboardBuilder.cs" />
     <Compile Include="Separators\CartesianAxisSeparatorView.cs" />

@@ -53,6 +53,9 @@ namespace LiveCharts.Core.DataSeries
         }
 
         /// <inheritdoc />
+        public event NotifyCollectionChangedEventHandler CollectionChanged;
+
+        /// <inheritdoc />
         public new TModel this[int index]
         {
             get
@@ -156,16 +159,6 @@ namespace LiveCharts.Core.DataSeries
         /// The data range.
         /// </value>
         public DimensionRange DataRange { get; } = new DimensionRange(double.PositiveInfinity, double.NegativeInfinity);
-
-        /// <inheritdoc />
-        public new int Count
-        {
-            get
-            {
-                EnsureIListImplementation();
-                return _sourceAsIList.Count;
-            }
-        }
 
         /// <inheritdoc />
         public bool IsReadOnly
@@ -384,7 +377,8 @@ namespace LiveCharts.Core.DataSeries
         /// <inheritdoc />
         protected override int OnIListCount()
         {
-            return Count;
+            EnsureIListImplementation();
+            return _sourceAsIList.Count;
         }
 
         /// <inheritdoc />
@@ -409,6 +403,12 @@ namespace LiveCharts.Core.DataSeries
         protected override void SetItem(object value, int index)
         {
             this[index] = (TModel) value;
+        }
+
+        /// <inheritdoc />
+        protected override void OnDisposing()
+        {
+            Tracker = null;
         }
 
         private void EnsureIListImplementation([CallerMemberName] string method = null)
@@ -456,12 +456,6 @@ namespace LiveCharts.Core.DataSeries
             CollectionChanged?.Invoke(sender, notifyCollectionChangedEventArgs);
         }
 
-        /// <inheritdoc />
-        protected override void OnDisposing()
-        {
-            Tracker = null;
-        } 
-
         private void Initialize(IEnumerable<TModel> itemsSource = null)
         {
             Tracker = new Dictionary<object, TPoint>();
@@ -474,8 +468,5 @@ namespace LiveCharts.Core.DataSeries
                 IsValueType = t.IsValueType
             };
         }
-
-        /// <inheritdoc />
-        public event NotifyCollectionChangedEventHandler CollectionChanged;
     }
 }

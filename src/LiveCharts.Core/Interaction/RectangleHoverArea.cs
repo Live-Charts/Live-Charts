@@ -1,5 +1,4 @@
 ﻿using LiveCharts.Core.Abstractions;
-using LiveCharts.Core.ViewModels;
 
 namespace LiveCharts.Core.Interaction
 {
@@ -9,25 +8,6 @@ namespace LiveCharts.Core.Interaction
     /// <seealso cref="LiveCharts.Core.Interaction.HoverArea" />
     public class RectangleHoverArea : HoverArea
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="RectangleHoverArea"/> class.
-        /// </summary>
-        public RectangleHoverArea()
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="RectangleHoverArea"/> class.
-        /// </summary>
-        /// <param name="columnViewModel">The column view model.</param>
-        public RectangleHoverArea(ColumnViewModel columnViewModel)
-        {
-            Top = columnViewModel.Top;
-            Left = columnViewModel.Left;
-            Height = columnViewModel.Height;
-            Width = columnViewModel.Width;
-        }
-
         /// <summary>
         /// Gets or sets the top.
         /// </summary>

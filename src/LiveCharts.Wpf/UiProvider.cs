@@ -60,5 +60,10 @@ namespace LiveCharts.Wpf
                 Rectangle,
                 DataLabel>();
         }
+
+        public IPointView<TModel, Point<TModel, Point2D, BezierViewModel>, Point2D, BezierViewModel> BezierViewProvider<TModel>()
+        {
+            return new BezierPointView<TModel,Point<TModel,Point2D,BezierViewModel>,Point2D,BezierViewModel, DataLabel>();
+        }
     }
 }

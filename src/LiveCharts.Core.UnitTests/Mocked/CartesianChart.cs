@@ -9,10 +9,10 @@ using LiveCharts.Core.Charts;
 using LiveCharts.Core.Coordinates;
 using LiveCharts.Core.Data;
 using LiveCharts.Core.DataSeries;
-using LiveCharts.Core.DefaultSettings.Themes;
 using LiveCharts.Core.Dimensions;
 using LiveCharts.Core.Drawing;
 using LiveCharts.Core.Events;
+using LiveCharts.Core.Themes;
 
 namespace LiveCharts.Core.UnitTests.Mocked
 {

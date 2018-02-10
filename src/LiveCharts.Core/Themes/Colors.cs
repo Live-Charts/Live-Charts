@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
 using LiveCharts.Core.Drawing;
 
-namespace LiveCharts.Core.DefaultSettings
+namespace LiveCharts.Core.Themes
 {
     /// <summary>
     /// Colors extensions.
     /// </summary>
-    public static class ColorsConfig
+    public static class Colors
     {
         /// <summary>
         /// Uses a custom colors array as the default series color set.
