@@ -34,17 +34,14 @@ namespace LiveCharts.Core.Abstractions
         /// Draws the specified point.
         /// </summary>
         /// <param name="point">The point.</param>
-        /// <param name="viewModel">The model.</param>
         /// <param name="previous">The previous.</param>
-        /// <param name="chart">The chart.</param>
-        void DrawShape(TPoint point, TPoint previous, IChartView chart, TViewModel viewModel);
+        void DrawShape(TPoint point, TPoint previous);
 
         /// <summary>
         /// Draws the label.
         /// </summary>
         /// <param name="point">The point.</param>
         /// <param name="location">The location.</param>
-        /// <param name="chart">The chart.</param>
-        void DrawLabel(TPoint point, Point location, IChartView chart);
+        void DrawLabel(TPoint point, Point location);
     }
 }

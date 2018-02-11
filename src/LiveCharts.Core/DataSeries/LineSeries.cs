@@ -84,11 +84,10 @@ namespace LiveCharts.Core.DataSeries
                     bezier.Point.View = PointViewProvider();
                 }
 
+                bezier.Point.ViewModel = bezier.ViewModel;
                 bezier.Point.View.DrawShape(
                     bezier.Point,
-                    previous,
-                    chart.View,
-                    bezier.Bezier);
+                    previous);
 
                 previous = bezier.Point;
             }
@@ -97,12 +96,14 @@ namespace LiveCharts.Core.DataSeries
         private IEnumerable<BezierData> GetBeziers(Point offset, CartesianChartModel chart, Plane x, Plane y)
         {
             Point<TModel, Point2D, BezierViewModel> pi, pn = null, pnn = null;
-            Point previous, current = new Point(0,0), next = new Point(0,0), nextNext;
+            Point previous, current = new Point(0,0), next = new Point(0,0), nextNext = new Point(0, 0);
 
             var smoothness = LineSmoothness > 1 ? 1 : (LineSmoothness < 0 ? 0 : LineSmoothness);
 
             var e = Points.GetEnumerator();
+            var isFirstPoint = true; 
 
+            // ReSharper disable once ImplicitlyCapturedClosure
             BezierViewModel BuildModel()
             {
                 var xc1 = (previous.X + current.X) / 2.0;
@@ -134,8 +135,8 @@ namespace LiveCharts.Core.DataSeries
 
                 return new BezierViewModel
                 {
-                    Location = current,
-                    Point1 =  new Point(c1X, c1Y),
+                    Location = new Point(current.X - .5 * GeometrySize, current.Y - .5 * GeometrySize),
+                    Point1 = isFirstPoint ? current : new Point(c1X, c1Y),
                     Point2 = new Point(c2X, c2Y),
                     Point3 = new Point(next.X, next.Y),
                     Geometry = Geometry,
@@ -143,15 +144,17 @@ namespace LiveCharts.Core.DataSeries
                 };
             }
 
+            // ReSharper disable once ImplicitlyCapturedClosure
             void Next(Point<TModel, Point2D, BezierViewModel> item)
             {
-                pnn = item;
-                nextNext = chart.ScaleToUi(new Point(pnn.Coordinate.X, pnn.Coordinate.Y), x, y) + offset;
                 pi = pn;
                 pn = pnn;
+                pnn = item;
+
                 previous = current;
                 current = next;
                 next = nextNext;
+                nextNext = chart.ScaleToUi(new Point(pnn.Coordinate.X, pnn.Coordinate.Y), x, y) + offset;
             }
 
             while (e.MoveNext())
@@ -166,16 +169,24 @@ namespace LiveCharts.Core.DataSeries
                 yield return new BezierData
                 {
                     Point = pi,
-                    Bezier = BuildModel()
+                    ViewModel = BuildModel()
                 };
+
+                isFirstPoint = false;
             }
 
             Next(pnn);
-
             yield return new BezierData
             {
                 Point = pi,
-                Bezier = BuildModel()
+                ViewModel = BuildModel()
+            };
+
+            Next(pnn);
+            yield return new BezierData
+            {
+                Point = pi,
+                ViewModel = BuildModel()
             };
 
             e.Dispose();
@@ -190,7 +201,7 @@ namespace LiveCharts.Core.DataSeries
         private struct BezierData
         {
             public Point<TModel, Point2D, BezierViewModel> Point { get; set; }
-            public BezierViewModel Bezier { get; set; }
+            public BezierViewModel ViewModel { get; set; }
         }
     }
 }

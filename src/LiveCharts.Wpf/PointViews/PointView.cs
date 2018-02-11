@@ -32,13 +32,13 @@ namespace LiveCharts.Wpf.PointViews
         public IDataLabelControl Label { get; protected set; }
 
         /// <inheritdoc cref="DrawShape"/>
-        protected virtual void OnDraw(TPoint point, TPoint previous, IChartView chart, TViewModel viewModel)
+        protected virtual void OnDraw(TPoint point, TPoint previous)
         {
             throw new NotImplementedException();
         }
 
         /// <inheritdoc cref="DrawLabel"/>
-        protected virtual void OnDrawLabel(TPoint point, Point location, IChartView chart)
+        protected virtual void OnDrawLabel(TPoint point, Point location)
         {
             throw new NotImplementedException();
         }
@@ -59,15 +59,15 @@ namespace LiveCharts.Wpf.PointViews
         IDataLabelControl IPointView<TModel, TPoint, TCoordinate, TViewModel>.Label => Label;
 
         /// <inheritdoc />
-        public void DrawShape(TPoint point, TPoint previous, IChartView chart, TViewModel viewModel)
+        public void DrawShape(TPoint point, TPoint previous)
         {
-            OnDraw(point, previous, chart, viewModel);
+            OnDraw(point, previous);
         }
 
         /// <inheritdoc />
-        public void DrawLabel(TPoint point, Point location, IChartView chart)
+        public void DrawLabel(TPoint point, Point location)
         {
-            OnDrawLabel(point, location, chart);
+            OnDrawLabel(point, location);
         }
 
         public event DisposingResourceHandler Disposed;

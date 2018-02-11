@@ -62,8 +62,8 @@ namespace LiveCharts.Wpf.Separators
                 : (args.IsAlternative ? axis.YAlternativeSeparatorStyle : axis.YSeparatorStyle);
             var st = double.IsNaN(style.StrokeThickness) ? 0 : style.StrokeThickness;
 
-            Rectangle.Fill = style.Fill.AsSolidColorBrush();
-            Rectangle.Stroke = style.Stroke.AsSolidColorBrush();
+            Rectangle.Fill = style.Fill.AsWpf();
+            Rectangle.Stroke = style.Stroke.AsWpf();
 
             Label.Measure(args.AxisLabelModel.Content);
 

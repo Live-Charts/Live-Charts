@@ -95,11 +95,8 @@ namespace LiveCharts.Core.DataSeries
                     current.View = PointViewProvider();
                 }
 
-                current.View.DrawShape(
-                    current,
-                    previous,
-                    chart.View,
-                    vm);
+                current.ViewModel = vm;
+                current.View.DrawShape(current, previous);
 
                 current.HoverArea = new RectangleHoverArea
                 {
@@ -118,8 +115,7 @@ namespace LiveCharts.Core.DataSeries
                             new Margin(0),
                             zero,
                             current.View.Label.Measure(current.PackAll()),
-                            DataLabelsPosition),
-                        chart.View);
+                            DataLabelsPosition));
                 }
 
                 Mapper.EvaluateModelDependentActions(current.Model, current.View.VisualElement, current);

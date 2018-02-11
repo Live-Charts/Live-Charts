@@ -19,7 +19,7 @@ namespace LiveCharts.Wpf
         /// </summary>
         /// <param name="color">The color.</param>
         /// <returns></returns>
-        public static Color AsLiveChartsColors(this System.Windows.Media.Color color)
+        public static Color AsLiveCharts(this System.Windows.Media.Color color)
         {
             return new Color(color.A, color.R, color.G, color.B);
         }
@@ -69,11 +69,21 @@ namespace LiveCharts.Wpf
         /// </summary>
         /// <param name="color">The color.</param>
         /// <returns></returns>
-        public static SolidColorBrush AsSolidColorBrush(this Color color)
+        public static SolidColorBrush AsWpf(this Color color)
         {
             if (color == Color.Empty) return null;
             return new SolidColorBrush(
                 System.Windows.Media.Color.FromArgb(color.A, color.R, color.G, color.B));
+        }
+
+        /// <summary>
+        /// converts a LiveCharts point to a WPF point.
+        /// </summary>
+        /// <param name="point">The point.</param>
+        /// <returns></returns>
+        public static Point AsWpf(this Core.Drawing.Point point)
+        {
+            return new Point(point.X, point.Y);
         }
 
         /// <summary>
@@ -82,7 +92,7 @@ namespace LiveCharts.Wpf
         /// <param name="orientation">The orientation.</param>
         /// <returns></returns>
         /// <exception cref="ArgumentOutOfRangeException">orientation - null</exception>
-        public static Orientation AsWpfOrientation(this Core.Abstractions.Orientation orientation)
+        public static Orientation AsWpf(this Core.Abstractions.Orientation orientation)
         {
             switch (orientation)
             {

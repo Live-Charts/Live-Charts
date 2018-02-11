@@ -55,6 +55,7 @@ namespace LiveCharts.Core.UnitTests.Mocked
             DrawMargin = Margin.Empty;
             Legend = null;
             DataToolTip = null;
+            ChartViewLoaded?.Invoke(this);
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -170,11 +171,6 @@ namespace LiveCharts.Core.UnitTests.Mocked
         public void InvokeOnUiThread(Action action)
         {
             action();
-        }
-
-        public void Loaded()
-        {
-            ChartViewLoaded?.Invoke(this);
         }
 
         protected void OnPropertyChanged([CallerMemberName] string propertyName = null)

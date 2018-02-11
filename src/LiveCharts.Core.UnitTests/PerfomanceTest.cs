@@ -2,6 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
+using System.Threading;
+using LiveCharts.Core.Coordinates;
+using LiveCharts.Core.DataSeries;
+using LiveCharts.Core.Drawing;
+using LiveCharts.Core.UnitTests.Mocked;
+using LiveCharts.Core.ViewModels;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace LiveCharts.Core.UnitTests
@@ -11,6 +18,119 @@ namespace LiveCharts.Core.UnitTests
     {
         private static Random r = new Random();
         private Func<double> g = () => r.Next();
+
+        [TestMethod]
+        public void RandomTest()
+        {
+            var chart = new CartesianChart();
+
+            var series = new LineSeries<double> {2, 4, 8, 16, 32};
+            series.LineSmoothness = 1;
+
+            chart.Series = new SeriesCollection
+            {
+                series
+            };
+
+            chart.Updated += sender =>
+            {
+                var l = series.Points.Select(p =>
+                {
+                    return new[]
+                    {
+                        p.ViewModel.Point1,
+                        p.ViewModel.Point2,
+                        p.ViewModel.Point3,
+                    };
+                }).ToArray();
+
+                var pts = new List<Point>()
+                {
+                    new Point(0, 2),
+                    new Point(1, 4),
+                    new Point(2, 8),
+                    new Point(3, 16),
+                    new Point(4, 32)
+                };
+
+                var x = chart.Dimensions[0][0];
+                var y = chart.Dimensions[1][0];
+                var smoothness = 1;
+                var s = new Size(585,570);
+
+                var tt = chart.Model.ScaleToUi(new Point(0, 2), x, y, s);
+
+                var index = 0;
+                var p0 = pts.Count > 0
+                    ? pts[0]
+                    : new Point(0, 0);
+                var p1 = pts.Count > 0
+                    ? pts[0]
+                    : p0;
+                var p2 = pts.Count > 1
+                    ? pts[1]
+                    : p1;
+                var p3 = pts.Count > 2
+                    ? pts[2]
+                    : p2;
+
+                foreach (var pt in pts)
+                {
+                    var xc1 = (p0.X + p1.X) / 2.0;
+                    var yc1 = (p0.Y + p1.Y) / 2.0;
+                    var xc2 = (p1.X + p2.X) / 2.0;
+                    var yc2 = (p1.Y + p2.Y) / 2.0;
+                    var xc3 = (p2.X + p3.X) / 2.0;
+                    var yc3 = (p2.Y + p3.Y) / 2.0;
+
+                    var len1 = Math.Sqrt((p1.X - p0.X) * (p1.X - p0.X) + (p1.Y - p0.Y) * (p1.Y - p0.Y));
+                    var len2 = Math.Sqrt((p2.X - p1.X) * (p2.X - p1.X) + (p2.Y - p1.Y) * (p2.Y - p1.Y));
+                    var len3 = Math.Sqrt((p3.X - p2.X) * (p3.X - p2.X) + (p3.Y - p2.Y) * (p3.Y - p2.Y));
+
+                    var k1 = len1 / (len1 + len2);
+                    var k2 = len2 / (len2 + len3);
+
+                    if (double.IsNaN(k1)) k1 = 0d;
+                    if (double.IsNaN(k2)) k2 = 0d;
+
+                    var xm1 = xc1 + (xc2 - xc1) * k1;
+                    var ym1 = yc1 + (yc2 - yc1) * k1;
+                    var xm2 = xc2 + (xc3 - xc2) * k2;
+                    var ym2 = yc2 + (yc3 - yc2) * k2;
+
+                    var c1X = xm1 + (xc2 - xm1) * smoothness + p1.X - xm1;
+                    var c1Y = ym1 + (yc2 - ym1) * smoothness + p1.Y - ym1;
+                    var c2X = xm2 + (xc2 - xm2) * smoothness + p2.X - xm2;
+                    var c2Y = ym2 + (yc2 - ym2) * smoothness + p2.Y - ym2;
+
+                    var r = new List<Point>
+                    {
+                        index == 0 ? new Point(p1.X, p1.Y) : new Point(c1X, c1Y),
+                        new Point(c2X, c2Y),
+                        new Point(p2.X, p2.Y)
+                    };
+
+                    var ll = l[index];
+
+                    var a = ll[0];
+                    var a1 = r[0];
+                    var ae = ll[0] == r[0];
+                    var b = ll[1] == r[1];
+                    var c = ll[2] == r[2];
+
+                    p0 = new Point(p1.X, p1.Y);
+                    p1 = new Point(p2.X, p2.Y);
+                    p2 = new Point(p3.X, p3.Y);
+                    p3 = pts.Count > index + 3
+                        ? chart.Model.ScaleToUi(pts[index + 3], x, y)
+                        : p2;
+
+                    index++;
+                }
+            };
+
+            Thread.Sleep((int) TimeSpan.FromHours(1).TotalMilliseconds);
+        }
 
         [TestMethod]
         public void DelegateVsMethodTest()

@@ -39,8 +39,6 @@ namespace LiveCharts.Core.UnitTests
                 }
             };
 
-            chart.Loaded();
-
             var c = chart.Model.InvalidateCount;
 
             chart.UpdatePreview += sender =>

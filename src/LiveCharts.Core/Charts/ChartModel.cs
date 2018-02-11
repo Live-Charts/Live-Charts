@@ -209,10 +209,11 @@ namespace LiveCharts.Core.Charts
         /// <param name="point">The point.</param>
         /// <param name="x">The x.</param>
         /// <param name="y">The y.</param>
+        /// /// <param name="size">The draw margin, this param is optional, if not set, the current chart's draw margin area will be used.</param>
         /// <returns></returns>
-        public Point2D ScaleToUi(Point2D point, Plane x, Plane y)
+        public Point2D ScaleToUi(Point2D point, Plane x, Plane y, Size? size = null)
         {
-            return new Point2D(ScaleToUi(point.X, x), ScaleToUi(point.Y, y));
+            return new Point2D(ScaleToUi(point.X, x, size), ScaleToUi(point.Y, y, size));
         }
 
         /// <summary>
@@ -221,10 +222,11 @@ namespace LiveCharts.Core.Charts
         /// <param name="point">The point.</param>
         /// <param name="x">The x.</param>
         /// <param name="y">The y.</param>
+        /// <param name="size">The draw margin, this param is optional, if not set, the current chart's draw margin area will be used.</param>
         /// <returns></returns>
-        public Point ScaleToUi(Point point, Plane x, Plane y)
+        public Point ScaleToUi(Point point, Plane x, Plane y, Size? size = null)
         {
-            return new Point(ScaleToUi(point.X, x), ScaleToUi(point.Y, y));
+            return new Point(ScaleToUi(point.X, x, size), ScaleToUi(point.Y, y, size));
         }
 
         /// <summary>

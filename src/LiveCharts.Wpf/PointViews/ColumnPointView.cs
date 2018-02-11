@@ -30,8 +30,10 @@ namespace LiveCharts.Wpf.PointViews
         private TPoint _point;
 
         /// <inheritdoc />
-        protected override void OnDraw(TPoint point, TPoint previous, IChartView chart, TViewModel viewModel)
+        protected override void OnDraw(TPoint point, TPoint previous)
         {
+            var chart = point.Chart.View;
+            var viewModel = point.ViewModel;
             var isNew = Shape == null;
 
             if (isNew)
@@ -53,8 +55,8 @@ namespace LiveCharts.Wpf.PointViews
                 r.RadiusX = radius;
             }
 
-            Shape.Stroke = point.Series.Stroke.AsSolidColorBrush();
-            Shape.Fill = point.Series.Fill.AsSolidColorBrush();
+            Shape.Stroke = point.Series.Stroke.AsWpf();
+            Shape.Fill = point.Series.Fill.AsWpf();
 
             var speed = chart.AnimationsSpeed;
 
@@ -75,8 +77,9 @@ namespace LiveCharts.Wpf.PointViews
         }
 
         /// <inheritdoc />
-        protected override void OnDrawLabel(TPoint point, Core.Drawing.Point location, IChartView chart)
+        protected override void OnDrawLabel(TPoint point, Core.Drawing.Point location)
         {
+            var chart = point.Chart.View;
             var isNew = Label == null;
 
             if (isNew)

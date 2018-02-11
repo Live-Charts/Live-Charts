@@ -26,5 +26,10 @@ namespace LiveCharts.Core.UnitTests.Mocked
         {
             return new ColumnView<TModel>();
         }
+
+        public IPointView<TModel, Point<TModel, Point2D, BezierViewModel>, Point2D, BezierViewModel> BezierViewProvider<TModel>()
+        {
+            return new BezierProvider<TModel>();
+        }
     }
 }

@@ -135,7 +135,7 @@ namespace LiveCharts.Wpf.Controls
             }
             else
             {
-                SetValue(ActualOrientationProperty, Orientation.AsWpfOrientation());
+                SetValue(ActualOrientationProperty, Orientation.AsWpf());
             }
             UpdateLayout();
             return new Size(DesiredSize.Width, DesiredSize.Width);

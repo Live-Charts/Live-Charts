@@ -55,6 +55,7 @@ namespace LiveCharts.Core.Themes
                     lineSeries.GeometrySize = 15d;
                     lineSeries.StrokeThickness = 3.5d;
                     lineSeries.DefaultFillOpacity = .25d;
+                    lineSeries.LineSmoothness = .6d;
                 })
 
                 // sets a base for all the planes
