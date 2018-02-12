@@ -130,7 +130,7 @@ namespace Assets.ViewModels
 
         private void _editPoint()
         {
-            var series = (ColumnSeries<City>) SeriesCollection[0];
+            var series = (LineSeries<City>) SeriesCollection[0];
             if (series.Count < 1) return;
             series[0].Population = _r.Next(0, 10);
         }

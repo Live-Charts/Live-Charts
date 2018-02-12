@@ -13,7 +13,7 @@ namespace LiveCharts.Core.Abstractions
         /// The axis label provider.
         /// </summary>
         /// <returns></returns>
-        IPlaneLabelControl AxisLabelProvider();
+        IPlaneLabelControl GetNewAxisLabel();
 
         /// <summary>
         /// The label provider.
@@ -22,14 +22,20 @@ namespace LiveCharts.Core.Abstractions
         /// <typeparam name="TCoordinate">The type of the coordinate.</typeparam>
         /// <typeparam name="TViewModel">The type of the view model.</typeparam>
         /// <returns></returns>
-        IDataLabelControl DataLabelProvider<TModel, TCoordinate, TViewModel>()
+        IDataLabelControl GetNewDataLabel<TModel, TCoordinate, TViewModel>()
             where TCoordinate : ICoordinate;
 
         /// <summary>
         /// The axis separator provider.
         /// </summary>
         /// <returns></returns>
-        ICartesianAxisSeparator CartesianAxisSeparatorProvider();
+        ICartesianAxisSeparator GetNewAxisSeparator();
+
+        /// <summary>
+        /// The path provider.
+        /// </summary>
+        /// <returns></returns>
+        ICartesianPath GetNewPath();
 
         /// <summary>
         /// Provides LiveCharts with a builder that returns a column view.
@@ -37,7 +43,7 @@ namespace LiveCharts.Core.Abstractions
         /// <typeparam name="TModel">The type of the model.</typeparam>
         /// <returns></returns>
         IPointView<TModel, Point<TModel, Point2D, ColumnViewModel>, Point2D, ColumnViewModel> 
-            ColumnViewProvider<TModel>();
+            GetNewColumnView<TModel>();
 
         /// <summary>
         /// Provides LiveCharts with a builder that returns a bezier view.
@@ -45,6 +51,6 @@ namespace LiveCharts.Core.Abstractions
         /// <typeparam name="TModel">The type of the model.</typeparam>
         /// <returns></returns>
         IPointView<TModel, Point<TModel, Point2D, BezierViewModel>, Point2D, BezierViewModel>
-            BezierViewProvider<TModel>();
+            GetNewBezierView<TModel>();
     }
 }

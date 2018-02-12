@@ -3,14 +3,14 @@ namespace LiveCharts.Wpf
     /// <summary>
     /// A helper class to build an animation using key frames.
     /// </summary>
-    public struct AnimationFrame
+    public struct Frame
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="AnimationFrame" /> struct.
+        /// Initializes a new instance of the <see cref="Frame" /> struct.
         /// </summary>
         /// <param name="proportion">The time span proportion.</param>
         /// <param name="value">The value.</param>
-        public AnimationFrame(double proportion, double value)
+        public Frame(double proportion, double value)
         {
             Value = value;
             Proportion = proportion;

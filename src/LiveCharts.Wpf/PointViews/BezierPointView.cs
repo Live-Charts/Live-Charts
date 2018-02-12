@@ -18,13 +18,11 @@ namespace LiveCharts.Wpf.PointViews
         where TViewModel : BezierViewModel
         where TLabel : FrameworkElement, IDataLabelControl, new()
     {
-        private static PathFigure _f;
-        private static bool _isIn;
         private BezierSegment _segment;
+        private ICartesianPath _path;
 
         protected override void OnDraw(TPoint point, TPoint previous)
         {
-            CreateSegment(point);
             var chart = point.Chart.View;
             var viewModel = point.ViewModel;
             var isNew = Shape == null;
@@ -32,16 +30,15 @@ namespace LiveCharts.Wpf.PointViews
             if (isNew)
             {
                 var wpfChart = (CartesianChart)point.Chart.View;
-                Shape = new Path();
-                Shape.Stretch = Stretch.Fill;
+                Shape = new Path {Stretch = Stretch.Fill};
                 wpfChart.DrawArea.Children.Add(Shape);
                 Canvas.SetLeft(Shape, point.ViewModel.Location.X);
                 Canvas.SetTop(Shape, point.ViewModel.Location.Y);
                 Shape.Width = 0;
                 Shape.Height = 0;
-                _segment = new BezierSegment(point.ViewModel.Point1.AsWpf(), point.ViewModel.Point2.AsWpf(),
-                    point.ViewModel.Point3.AsWpf(), true);
-                _f.Segments.Add(_segment);
+                _path = viewModel.Path;
+                _segment = (BezierSegment) _path.AddBezierSegment(
+                    viewModel.Point1, viewModel.Point2, viewModel.Point3);
             }
 
             Shape.Stroke = point.Series.Stroke.AsWpf();
@@ -73,39 +70,10 @@ namespace LiveCharts.Wpf.PointViews
 
         protected override void OnDispose(IChartView chart)
         {
-            
-        }
-
-        private Path _p;
-
-        private void CreateSegment(TPoint point)
-        {
-            if (!_isIn)
-            {
-                var wpfChart = (CartesianChart)point.Chart.View;
-               _p = new Path();
-                wpfChart.DrawArea.Children.Add(_p);
-                _isIn = true;
-                _p.StrokeThickness = point.Series.StrokeThickness;
-                _p.Stroke = point.Series.Stroke.AsWpf();
-                _f = new PathFigure
-                {
-                    StartPoint = new System.Windows.Point(point.ViewModel.Location.AsWpf().X, point.ViewModel.Location.AsWpf().Y),
-                    Segments = new PathSegmentCollection
-                    {
-                        new BezierSegment(
-                            point.ViewModel.Point1.AsWpf(), point.ViewModel.Point2.AsWpf(), point.ViewModel.Point3.AsWpf(), true)
-                    }
-                };
-
-                _p.Data = new PathGeometry
-                {
-                    Figures = new PathFigureCollection
-                    {
-                        _f
-                    }
-                };
-            }
+            var wpfChart = (CartesianChart) chart;
+            wpfChart.DrawArea.Children.Remove(Shape);
+            _path.RemoveSegment(_segment);
+            _path = null;
         }
     }
 }

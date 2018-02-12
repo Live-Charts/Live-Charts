@@ -60,18 +60,25 @@ namespace LiveCharts.Wpf.PointViews
 
             var speed = chart.AnimationsSpeed;
 
-            var bounce = isNew ? 30 : 0;
+            var by = isNew ? viewModel.Height * .3 : 0;
+            var bx = isNew ? viewModel.Width * .1 : 0;
 
             Shape.Animate()
                 .AtSpeed(speed)
-                .Property(Canvas.LeftProperty, viewModel.Left)
-                .Property(Canvas.TopProperty, 
-                    new AnimationFrame(0.9, viewModel.Top - bounce),
-                    new AnimationFrame(1, viewModel.Top))
-                .Property(FrameworkElement.WidthProperty, viewModel.Width)
+                .Property(Canvas.LeftProperty,
+                    new Frame(0.9, viewModel.Left - bx * .5),
+                    new Frame(1, viewModel.Left))
+                .Property(FrameworkElement.WidthProperty,
+                    new Frame(0.9, viewModel.Width + bx),
+                    new Frame(1, viewModel.Width))
+                .Property(Canvas.TopProperty,
+                    new Frame(0.8, viewModel.Top - by),
+                    new Frame(0.9, viewModel.Top - by * .5),
+                    new Frame(1, viewModel.Top))
                 .Property(FrameworkElement.HeightProperty,
-                    new AnimationFrame(0.9, viewModel.Height + bounce),
-                    new AnimationFrame(1, viewModel.Height))
+                    new Frame(0.8, viewModel.Height + by),
+                    new Frame(0.9, viewModel.Height + by * .5),
+                    new Frame(1, viewModel.Height))
                 .Begin();
             _point = point;
         }

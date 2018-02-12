@@ -55,6 +55,8 @@ namespace LiveCharts.Core.DataSeries
         /// <inheritdoc />
         public override Point DefaultPointWidth => Point.Empty;
 
+        private ICartesianPath _path;
+
         /// <inheritdoc />
         public override void UpdateView(ChartModel chart)
         {
@@ -66,6 +68,14 @@ namespace LiveCharts.Core.DataSeries
                 Math.Abs(chart.ScaleToUi(0, y) - chart.ScaleToUi(y.ActualPointWidth.Y, y)));
 
             Point<TModel, Point2D, BezierViewModel> previous = null;
+
+            if (_path == null)
+            {
+                _path = LiveChartsSettings.Current.UiProvider.GetNewPath();
+                _path.Initialize(chart.View);
+            }
+
+            _path.SetStyle(new Point(0,0), Stroke, Fill, StrokeThickness, StrokeDashArray);
 
             foreach (var bezier in GetBeziers(unitWidth, cartesianChart, x, y))
             {
@@ -84,6 +94,7 @@ namespace LiveCharts.Core.DataSeries
                     bezier.Point.View = PointViewProvider();
                 }
 
+                bezier.ViewModel.Path = _path;
                 bezier.Point.ViewModel = bezier.ViewModel;
                 bezier.Point.View.DrawShape(
                     bezier.Point,
@@ -91,6 +102,8 @@ namespace LiveCharts.Core.DataSeries
 
                 previous = bezier.Point;
             }
+
+            _path.Close();
         }
 
         private IEnumerable<BezierData> GetBeziers(Point offset, CartesianChartModel chart, Plane x, Plane y)
@@ -200,7 +213,7 @@ namespace LiveCharts.Core.DataSeries
         /// <inheritdoc />
         protected override IPointView<TModel, Point<TModel, Point2D, BezierViewModel>, Point2D, BezierViewModel> DefaultPointViewProvider()
         {
-            return LiveChartsSettings.Current.UiProvider.BezierViewProvider<TModel>();
+            return LiveChartsSettings.Current.UiProvider.GetNewBezierView<TModel>();
         }
 
         private struct BezierData

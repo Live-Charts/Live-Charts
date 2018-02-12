@@ -128,7 +128,7 @@ namespace LiveCharts.Core.DataSeries
         protected override IPointView<TModel, Point<TModel, Point2D, ColumnViewModel>, Point2D, ColumnViewModel> 
             DefaultPointViewProvider()
         {
-            return LiveChartsSettings.Current.UiProvider.ColumnViewProvider<TModel>();
+            return LiveChartsSettings.Current.UiProvider.GetNewColumnView<TModel>();
         }
     }
 }

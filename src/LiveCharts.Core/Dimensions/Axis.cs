@@ -191,7 +191,7 @@ namespace LiveCharts.Core.Dimensions
 
                 if (!_activeSeparators.TryGetValue(key, out var separator))
                 {
-                    separator = LiveChartsSettings.Current.UiProvider.CartesianAxisSeparatorProvider();
+                    separator = LiveChartsSettings.Current.UiProvider.GetNewAxisSeparator();
                     _activeSeparators.Add(key, separator);
                 }
                 chart.RegisterResource(separator);
@@ -249,7 +249,7 @@ namespace LiveCharts.Core.Dimensions
         /// <inheritdoc />
         protected override IPlaneLabelControl DefaultLabelProvider()
         {
-            return LiveChartsSettings.Current.UiProvider.AxisLabelProvider();
+            return LiveChartsSettings.Current.UiProvider.GetNewAxisLabel();
         }
 
         private double GetActualAxisStep(ChartModel chart)

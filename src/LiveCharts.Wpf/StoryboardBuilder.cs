@@ -82,7 +82,7 @@ namespace LiveCharts.Wpf
         /// <param name="property">The property.</param>
         /// <param name="frames">The frames.</param>
         /// <returns></returns>
-        public AnimationBuilder Property(DependencyProperty property, params AnimationFrame[] frames)
+        public AnimationBuilder Property(DependencyProperty property, params Frame[] frames)
         {
             var animation = new DoubleAnimationUsingKeyFrames { RepeatBehavior = new RepeatBehavior(1) };
             foreach (var frame in frames)

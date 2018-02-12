@@ -32,6 +32,7 @@ namespace LiveCharts.Core.DataSeries
         private double _defaultFillOpacity;
         private Geometry _geometry;
         private DataLabelsPosition _dataLabelsPosition;
+        private IEnumerable<double> _strokeDashArray;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BaseSeries"/> class.
@@ -157,6 +158,22 @@ namespace LiveCharts.Core.DataSeries
             set
             {
                 _strokeThickness = value;
+                OnPropertyChanged();
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the stroke dash array.
+        /// </summary>
+        /// <value>
+        /// The stroke dash array.
+        /// </value>
+        public IEnumerable<double> StrokeDashArray
+        {
+            get => _strokeDashArray;
+            set
+            {
+                _strokeDashArray = value;
                 OnPropertyChanged();
             }
         }

@@ -1,4 +1,5 @@
-﻿using LiveCharts.Core.Drawing;
+﻿using LiveCharts.Core.Abstractions;
+using LiveCharts.Core.Drawing;
 using LiveCharts.Core.Drawing.Svg;
 
 namespace LiveCharts.Core.ViewModels
@@ -15,6 +16,14 @@ namespace LiveCharts.Core.ViewModels
         /// The location.
         /// </value>
         public Point Location { get; set; }
+
+        /// <summary>
+        /// Gets or sets the path.
+        /// </summary>
+        /// <value>
+        /// The path.
+        /// </value>
+        public ICartesianPath Path { get; set; }
 
         /// <summary>
         /// Gets or sets the geometry.
