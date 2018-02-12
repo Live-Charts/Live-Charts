@@ -106,6 +106,11 @@ namespace LiveCharts.Core.DataSeries
             // ReSharper disable once ImplicitlyCapturedClosure
             BezierViewModel BuildModel()
             {
+                if (isFirstPoint)
+                {
+                    previous = current;
+                }
+
                 var xc1 = (previous.X + current.X) / 2.0;
                 var yc1 = (previous.Y + current.Y) / 2.0;
                 var xc2 = (current.X + next.X) / 2.0;

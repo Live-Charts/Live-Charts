@@ -62,7 +62,7 @@ namespace LiveCharts.Wpf.PointViews
 
             var bounce = isNew ? 30 : 0;
 
-            Shape.AsStoryboardTarget()
+            Shape.Animate()
                 .AtSpeed(speed)
                 .Property(Canvas.LeftProperty, viewModel.Left)
                 .Property(Canvas.TopProperty, 
@@ -109,7 +109,7 @@ namespace LiveCharts.Wpf.PointViews
 
             var zero = chart.Model.ScaleToUi(0, chart.Dimensions[1][_point.Series.ScalesAt[1]]);
 
-            Shape.AsStoryboardTarget()
+            Shape.Animate()
                 .AtSpeed(chart.AnimationsSpeed)
                 .Property(Canvas.TopProperty, zero)
                 .Property(FrameworkElement.HeightProperty, 0)

@@ -138,7 +138,7 @@ namespace LiveCharts.Wpf.Controls
         void IDataToolTip.Move(Point location, IChartView chart)
         {
             var wpfChart = (Chart)chart;
-            wpfChart.TooltipPopup.AsStoryboardTarget()
+            wpfChart.TooltipPopup.Animate()
                 .AtSpeed(TimeSpan.FromMilliseconds(150))
                 .Property(Popup.HorizontalOffsetProperty, location.X)
                 .Property(Popup.VerticalOffsetProperty, location.Y)

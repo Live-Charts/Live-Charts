@@ -12,7 +12,7 @@ namespace LiveCharts.Wpf.PointViews
         : IPointView<TModel, TPoint, TCoordinate, TViewModel>
         where TPoint : Point<TModel, TCoordinate, TViewModel>, new()
         where TCoordinate : ICoordinate
-        where TShape : Shape, new()
+        where TShape : FrameworkElement, new()
         where TLabel : DependencyObject, IDataLabelControl, new()
     {
         /// <summary>

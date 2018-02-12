@@ -39,7 +39,7 @@ namespace LiveCharts.Wpf.Separators
                 Panel.SetZIndex(Rectangle, -1);
                 SetInitialLineParams(args);
                 wpfChart.DrawArea.Children.Add(Rectangle);
-                Rectangle.AsStoryboardTarget()
+                Rectangle.Animate()
                     .AtSpeed(speed)
                     .Property(UIElement.OpacityProperty, 1, 0)
                     .Begin();
@@ -50,7 +50,7 @@ namespace LiveCharts.Wpf.Separators
                 Label = new TLabel();
                 SetInitialLabelParams();
                 wpfChart.DrawArea.Children.Add((UIElement)Label);
-                ((UIElement)Label).AsStoryboardTarget()
+                ((FrameworkElement) Label).Animate()
                     .AtSpeed(speed)
                     .Property(UIElement.OpacityProperty, 1, 0)
                     .Begin();
@@ -69,7 +69,7 @@ namespace LiveCharts.Wpf.Separators
 
             var actualLabelLocation = args.AxisLabelModel.Location + args.AxisLabelModel.Offset;
 
-            var storyboard = Rectangle.AsStoryboardTarget()
+            var storyboard = Rectangle.Animate()
                 .AtSpeed(speed)
                 .Property(Canvas.TopProperty, args.Model.Top)
                 .Property(Canvas.LeftProperty, args.Model.Left)

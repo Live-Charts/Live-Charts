@@ -9,26 +9,31 @@ namespace LiveCharts.Wpf
     /// </summary>
     public static class AnimationsExtensions
     {
-        public static StoryboardBuilder AsStoryboardTarget(this UIElement element)
+        public static AnimationBuilder Animate(this FrameworkElement element)
         {
-            return new StoryboardBuilder()
-                .SetTarget(element);
+            return new AnimationBuilder(true).SetTarget(element);
+        }
+
+        public static AnimationBuilder Animate(this Animatable animatable)
+        {
+            return new AnimationBuilder(false).SetTarget(animatable);
         }
     }
 
     /// <summary>
     /// A storyboard builder.
     /// </summary>
-    public class StoryboardBuilder
+    public class AnimationBuilder
     {
         private readonly Storyboard _storyboard;
         private TimeSpan _speed;
-        private UIElement _target;
+        private DependencyObject _target;
+        private readonly bool _isFe;
 
-        public StoryboardBuilder()
+        public AnimationBuilder(bool isFe)
         {
             _storyboard = new Storyboard();
-            _storyboard.Begin();
+            _isFe = isFe;
         }
 
         /// <summary>
@@ -44,9 +49,30 @@ namespace LiveCharts.Wpf
         /// </summary>
         /// <param name="speedSpan">The speed span.</param>
         /// <returns></returns>
-        public StoryboardBuilder AtSpeed(TimeSpan speedSpan)
+        public AnimationBuilder AtSpeed(TimeSpan speedSpan)
         {
             _speed = speedSpan;
+            return this;
+        }
+
+        /// <summary>
+        /// Animates the specified property linearly.
+        /// </summary>
+        /// <param name="property">Name of the property.</param>
+        /// <param name="to">To.</param>
+        /// <param name="from">From.</param>
+        /// <param name="speed">The speed.</param>
+        /// <returns></returns>
+        public AnimationBuilder Property(DependencyProperty property, double to, double? from = null,
+            TimeSpan? speed = null)
+        {
+            var animation = from == null
+                ? new DoubleAnimation(to, speed ?? _speed)
+                : new DoubleAnimation(from.Value, to, speed ?? _speed);
+            animation.RepeatBehavior = new RepeatBehavior(1);
+            _storyboard.Children.Add(animation);
+            Storyboard.SetTarget(animation, _target);
+            Storyboard.SetTargetProperty(animation, new PropertyPath(property));
             return this;
         }
 
@@ -56,9 +82,9 @@ namespace LiveCharts.Wpf
         /// <param name="property">The property.</param>
         /// <param name="frames">The frames.</param>
         /// <returns></returns>
-        public StoryboardBuilder Property(DependencyProperty property, params AnimationFrame[] frames)
+        public AnimationBuilder Property(DependencyProperty property, params AnimationFrame[] frames)
         {
-            var animation = new DoubleAnimationUsingKeyFrames {RepeatBehavior = new RepeatBehavior(1)};
+            var animation = new DoubleAnimationUsingKeyFrames { RepeatBehavior = new RepeatBehavior(1) };
             foreach (var frame in frames)
             {
                 animation.KeyFrames.Add(
@@ -74,43 +100,28 @@ namespace LiveCharts.Wpf
             return this;
         }
 
-        /// <summary>
-        /// Animates the specified property linearly.
-        /// </summary>
-        /// <param name="property">Name of the property.</param>
-        /// <param name="to">To.</param>
-        /// <param name="from">From.</param>
-        /// <param name="speed">The speed.</param>
-        /// <returns></returns>
-        public StoryboardBuilder Property(DependencyProperty property, double to, double? from = null, TimeSpan? speed = null)
+        public AnimationBuilder Property(
+            DependencyProperty property, Point to, Point? from = null, TimeSpan? speed = null)
         {
-           var animation = from == null
-                ? new DoubleAnimation(to, speed ?? _speed)
-                : new DoubleAnimation(from.Value, to, speed ?? _speed);
-            animation.RepeatBehavior = new RepeatBehavior(1);
-            _storyboard.Children.Add(animation);
-            Storyboard.SetTarget(animation, _target);
-            Storyboard.SetTargetProperty(animation, new PropertyPath(property));
-            return this;
-        }
+            if (_isFe)
+            {
+                var feAnim = from == null
+                    ? new PointAnimation(to, speed ?? _speed)
+                    : new PointAnimation(from.Value, to, speed ?? _speed);
+                feAnim.RepeatBehavior = new RepeatBehavior(1);
+                _storyboard.Children.Add(feAnim);
+                Storyboard.SetTarget(feAnim, _target);
+                Storyboard.SetTargetProperty(feAnim, new PropertyPath(property));
+                return this;
+            }
 
-        /// <summary>
-        /// Animates the specified property.
-        /// </summary>
-        /// <param name="propertyName">Name of the property.</param>
-        /// <param name="to">To.</param>
-        /// <param name="from">From.</param>
-        /// <param name="speed">The speed.</param>
-        /// <returns></returns>
-        public StoryboardBuilder Property(string propertyName, double to, double? from = null, TimeSpan? speed = null)
-        {
-            var animation = from == null 
-                ? new DoubleAnimation(to, speed ?? _speed)
-                : new DoubleAnimation(from.Value, to, speed ?? _speed);
-            animation.RepeatBehavior = new RepeatBehavior(1);
-            _storyboard.Children.Add(animation);
-            Storyboard.SetTarget(animation, _target);
-            Storyboard.SetTargetProperty(animation, new PropertyPath(propertyName));
+            // storyboard for some reason only works with FrameworkElement, 
+            // because <- insert reason here???? ->
+
+            var animation = from == null
+                ? new PointAnimation(to, speed ?? _speed)
+                : new PointAnimation(from.Value, to, speed ?? _speed);
+            ((Animatable) _target).BeginAnimation(property, animation);
             return this;
         }
 
@@ -118,7 +129,7 @@ namespace LiveCharts.Wpf
         /// Sets the target.
         /// </summary>
         /// <returns></returns>
-        public StoryboardBuilder SetTarget(UIElement target)
+        public AnimationBuilder SetTarget(DependencyObject target)
         {
             _target = target;
             return this;
@@ -129,7 +140,7 @@ namespace LiveCharts.Wpf
         /// </summary>
         /// <param name="callback">The callback.</param>
         /// <returns></returns>
-        public StoryboardBuilder Then(EventHandler callback)
+        public AnimationBuilder Then(EventHandler callback)
         {
             _storyboard.Completed += callback;
             return this;
