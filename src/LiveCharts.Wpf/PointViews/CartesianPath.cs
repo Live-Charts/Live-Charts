@@ -1,5 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.CodeDom;
+using System.Collections.Generic;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Drawing;
@@ -56,15 +59,59 @@ namespace LiveCharts.Wpf.PointViews
             _figure.Segments.Remove((PathSegment) segment);
         }
 
-        public void Close()
+        public void Close(double length)
         {
+            _path.UpdateLayout();
+            _path.UpdateLayout();
+            var uglyL = _path.Data.GetLength();
 
+            Console.WriteLine($"Error => {(length - uglyL)/uglyL:N2}");
+
+            //_path.StrokeThickness = 10d;
+            var l = length / _path.StrokeThickness;
+            _path.StrokeDashArray = new DoubleCollection(new[] {l, l});
+            _path.StrokeDashOffset = l;
+            _path.BeginAnimation(
+                Shape.StrokeDashOffsetProperty,
+                new DoubleAnimation(l, 0, TimeSpan.FromMilliseconds(2000), FillBehavior.Stop));
+            _path.StrokeDashOffset = 0;
         }
 
         public void Dispose(IChartView view)
         {
             var chart = (CartesianChart) view;
             chart.DrawArea.Children.Remove(_path);
+        }
+    }
+
+    public static class UglyHelper
+    {
+        public static double GetLength(this Geometry geo)
+        {
+            PathGeometry path = geo.GetFlattenedPathGeometry();
+
+            double length = 0.0;
+
+            foreach (PathFigure pf in path.Figures)
+            {
+                System.Windows.Point start = pf.StartPoint;
+
+                foreach (PolyLineSegment seg in pf.Segments)
+                {
+                    foreach (System.Windows.Point point in seg.Points)
+                    {
+                        length += Distance(start, point);
+                        start = point;
+                    }
+                }
+            }
+
+            return length;
+        }
+
+        private static double Distance(System.Windows.Point p1, System.Windows.Point p2)
+        {
+            return Math.Sqrt(Math.Pow(p1.X - p2.X, 2) + Math.Pow(p1.Y - p2.Y, 2));
         }
     }
 }

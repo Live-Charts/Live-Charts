@@ -75,11 +75,17 @@ namespace LiveCharts.Core.DataSeries
                 _path.Initialize(chart.View);
             }
 
-            _path.SetStyle(new Point(0,0), Stroke, Fill, StrokeThickness, StrokeDashArray);
+            double lenght = 0;
+            var isFist = true;
 
             foreach (var bezier in GetBeziers(unitWidth, cartesianChart, x, y))
             {
                 var p = chart.ScaleToUi(bezier.Point.Coordinate, x, y);
+                if (isFist)
+                {
+                    _path.SetStyle(bezier.ViewModel.Point1, Stroke, Fill, StrokeThickness, StrokeDashArray);
+                    isFist = false;
+                }
 
                 bezier.Point.HoverArea = new RectangleHoverArea
                 {
@@ -101,9 +107,10 @@ namespace LiveCharts.Core.DataSeries
                     previous);
 
                 previous = bezier.Point;
+                lenght += bezier.ViewModel.AproxLength;
             }
 
-            _path.Close();
+            _path.Close(lenght);
         }
 
         private IEnumerable<BezierData> GetBeziers(Point offset, CartesianChartModel chart, Plane x, Plane y)
@@ -114,7 +121,13 @@ namespace LiveCharts.Core.DataSeries
             var smoothness = LineSmoothness > 1 ? 1 : (LineSmoothness < 0 ? 0 : LineSmoothness);
 
             var e = Points.GetEnumerator();
-            var isFirstPoint = true; 
+            var isFirstPoint = true;
+
+            double GetDistance(Point p1, Point p2)
+            {
+                return Math.Sqrt(
+                    Math.Pow(p2.X - p1.X, 2) + Math.Pow(p2.Y - p1.Y, 2));
+            }
 
             // ReSharper disable once ImplicitlyCapturedClosure
             BezierViewModel BuildModel()
@@ -151,7 +164,7 @@ namespace LiveCharts.Core.DataSeries
                 var c2X = xm2 + (xc2 - xm2) * smoothness + next.X - xm2;
                 var c2Y = ym2 + (yc2 - ym2) * smoothness + next.Y - ym2;
 
-                return new BezierViewModel
+                var bezier = new BezierViewModel
                 {
                     Location = new Point(current.X - .5 * GeometrySize, current.Y - .5 * GeometrySize),
                     Point1 = isFirstPoint ? current : new Point(c1X, c1Y),
@@ -160,6 +173,14 @@ namespace LiveCharts.Core.DataSeries
                     Geometry = Geometry,
                     GeometrySize = GeometrySize
                 };
+
+                var chord = GetDistance(previous, nextNext);
+                var net = GetDistance(previous, current) +
+                          GetDistance(current, next) +
+                          GetDistance(nextNext, nextNext);
+                bezier.AproxLength = (chord + net) / 2;
+
+                return bezier;
             }
 
             // ReSharper disable once ImplicitlyCapturedClosure

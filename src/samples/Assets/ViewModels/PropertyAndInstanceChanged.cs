@@ -27,24 +27,26 @@ namespace Assets.ViewModels
             {
                 new City
                 {
-                    Population = 2d
+                    Population = 9
                 },
                 new City
                 {
-                    Population = 4d
+                    Population = 5
                 },
                 new City
                 {
-                    Population = 8d
+                    Population = 6
                 },
                 new City
                 {
-                    Population = 16d
+                    Population = -15
                 },new City
                 {
-                    Population = 32d
+                    Population = 30
                 }
             };
+
+            series.LineSmoothness = 1;
 
             SeriesCollection = new SeriesCollection
             {

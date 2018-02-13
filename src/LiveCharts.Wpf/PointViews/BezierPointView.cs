@@ -73,6 +73,7 @@ namespace LiveCharts.Wpf.PointViews
             var wpfChart = (CartesianChart) chart;
             wpfChart.DrawArea.Children.Remove(Shape);
             _path.RemoveSegment(_segment);
+            _segment = null;
             _path = null;
         }
     }

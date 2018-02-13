@@ -64,5 +64,13 @@ namespace LiveCharts.Core.ViewModels
         /// The point3.
         /// </value>
         public Point Point3 { get; set; }
+
+        /// <summary>
+        /// Gets or sets the length of the aprox.
+        /// </summary>
+        /// <value>
+        /// The length of the aprox.
+        /// </value>
+        public double AproxLength { get; set; }
     }
 }
