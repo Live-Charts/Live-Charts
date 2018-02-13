@@ -41,8 +41,9 @@ namespace LiveCharts.Wpf.PointViews
                     viewModel.Point1, viewModel.Point2, viewModel.Point3);
             }
 
+            Shape.StrokeThickness = 3.5;
             Shape.Stroke = point.Series.Stroke.AsWpf();
-            Shape.Fill = point.Series.Fill.AsWpf();
+            Shape.Fill = Brushes.White;
             Shape.Data = Geometry.Parse(Core.Drawing.Svg.Geometry.Circle.Data);  //Geometry.Parse(viewModel.Geometry.Data);
 
             var speed = chart.AnimationsSpeed;

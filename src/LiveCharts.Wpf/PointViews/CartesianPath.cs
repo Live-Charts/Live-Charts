@@ -1,12 +1,10 @@
 ﻿using System;
-using System.CodeDom;
 using System.Collections.Generic;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Drawing;
-using Color = LiveCharts.Core.Drawing.Color;
 
 namespace LiveCharts.Wpf.PointViews
 {
@@ -37,7 +35,9 @@ namespace LiveCharts.Wpf.PointViews
             chart.DrawArea.Children.Add(_path);
         }
 
-        public void SetStyle(Point startPoint, Color stroke, Color fill, double strokeThickness, IEnumerable<double> strokeDashArray)
+        public void SetStyle(
+            Point startPoint, System.Drawing.Color stroke, System.Drawing.Color fill, 
+            double strokeThickness, IEnumerable<double> strokeDashArray)
         {
             _figure.StartPoint = startPoint.AsWpf();
             _path.Stroke = stroke.AsWpf();
@@ -61,13 +61,6 @@ namespace LiveCharts.Wpf.PointViews
 
         public void Close(double length)
         {
-            _path.UpdateLayout();
-            _path.UpdateLayout();
-            var uglyL = _path.Data.GetLength();
-
-            Console.WriteLine($"Error => {(length - uglyL)/uglyL:N2}");
-
-            //_path.StrokeThickness = 10d;
             var l = length / _path.StrokeThickness;
             _path.StrokeDashArray = new DoubleCollection(new[] {l, l});
             _path.StrokeDashOffset = l;

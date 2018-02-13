@@ -2,7 +2,6 @@
 using System.Globalization;
 using System.Windows.Data;
 using System.Windows.Media;
-using Color = LiveCharts.Core.Drawing.Color;
 
 namespace LiveCharts.Wpf.Converters
 {

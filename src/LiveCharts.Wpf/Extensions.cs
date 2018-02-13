@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Media;
-using LiveCharts.Core.Abstractions;
-using Color = LiveCharts.Core.Drawing.Color;
+using Color = System.Drawing.Color;
+using Font = LiveCharts.Core.Abstractions.Font;
+using FontStyle = System.Windows.FontStyle;
 using FontStyles = LiveCharts.Core.Abstractions.FontStyles;
 using FontWeight = LiveCharts.Core.Abstractions.FontWeight;
 using Orientation = System.Windows.Controls.Orientation;
+using Point = System.Windows.Point;
 
 namespace LiveCharts.Wpf
 {
@@ -19,9 +21,9 @@ namespace LiveCharts.Wpf
         /// </summary>
         /// <param name="color">The color.</param>
         /// <returns></returns>
-        public static Color AsLiveCharts(this System.Windows.Media.Color color)
+        public static Color AsLiveCharts(this Color color)
         {
-            return new Color(color.A, color.R, color.G, color.B);
+            return Color.FromArgb(color.A, color.R, color.G, color.B);
         }
 
         /// <summary>

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Drawing;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using Assets.Commands;
@@ -180,7 +181,7 @@ namespace Assets.ViewModels
         {
             if (SeriesCollection.Count <= 0) return;
             SeriesCollection[0].Fill =
-                new Color(255, (byte) _r.Next(0, 255), (byte) _r.Next(0, 255), (byte) _r.Next(0, 255));
+                Color.FromArgb(255, (byte) _r.Next(0, 255), (byte) _r.Next(0, 255), (byte) _r.Next(0, 255));
         }
 
         private void _changeAllSeriesItems()

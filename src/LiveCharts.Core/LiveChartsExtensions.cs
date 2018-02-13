@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Drawing;
+using System.Linq;
 using LiveCharts.Core.Charts;
 using LiveCharts.Core.Data;
 using LiveCharts.Core.Drawing;
@@ -18,7 +19,7 @@ namespace LiveCharts.Core.DefaultSettings
         /// <returns></returns>
         public static Color SetOpacity(this Color color, double opacity)
         {
-            return new Color((byte) (255 * opacity), color.R, color.G, color.B);
+            return Color.FromArgb((byte) (255 * opacity), color.R, color.G, color.B);
         }
 
         /// <summary>

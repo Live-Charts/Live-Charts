@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
-using LiveCharts.Core.Drawing;
+using System.Drawing;
+using Point = LiveCharts.Core.Drawing.Point;
 
 namespace LiveCharts.Core.Abstractions
 {

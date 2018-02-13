@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Drawing;
 using System.Runtime.CompilerServices;
 using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Abstractions.DataSeries;
@@ -10,6 +11,9 @@ using LiveCharts.Core.Data;
 using LiveCharts.Core.Drawing;
 using LiveCharts.Core.Drawing.Svg;
 using LiveCharts.Core.Events;
+using Point = LiveCharts.Core.Drawing.Point;
+using Size = LiveCharts.Core.Drawing.Size;
+using Font = LiveCharts.Core.Abstractions.Font;
 
 namespace LiveCharts.Core.DataSeries
 {

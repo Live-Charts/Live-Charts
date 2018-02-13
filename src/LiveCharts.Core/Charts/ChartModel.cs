@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Timers;
@@ -13,6 +14,7 @@ using LiveCharts.Core.DataSeries;
 using LiveCharts.Core.Dimensions;
 using LiveCharts.Core.Drawing;
 using LiveCharts.Core.Events;
+using Point = LiveCharts.Core.Drawing.Point;
 using Size = LiveCharts.Core.Drawing.Size;
 
 namespace LiveCharts.Core.Charts

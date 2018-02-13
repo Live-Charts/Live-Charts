@@ -1,5 +1,6 @@
 ﻿using LiveCharts.Core.Drawing;
 using System.Collections.Generic;
+using System.Drawing;
 
 namespace LiveCharts.Core.Dimensions
 {

@@ -174,6 +174,10 @@ namespace LiveCharts.Core.DataSeries
                     GeometrySize = GeometrySize
                 };
 
+                // based on: 
+                // https://stackoverflow.com/questions/29438398/cheap-way-of-calculating-cubic-bezier-length
+                // according to a previous test, this method seems fast, and accurate enough for our purposes
+
                 var chord = GetDistance(previous, nextNext);
                 var net = GetDistance(previous, current) +
                           GetDistance(current, next) +

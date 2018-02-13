@@ -1,10 +1,11 @@
-﻿using LiveCharts.Core.Abstractions;
+﻿using System.Drawing;
+using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Abstractions.DataSeries;
 using LiveCharts.Core.Data;
 using LiveCharts.Core.Defaults;
 using LiveCharts.Core.Dimensions;
-using LiveCharts.Core.Drawing;
 using LiveCharts.Core.Drawing.Svg;
+using Font = LiveCharts.Core.Abstractions.Font;
 
 namespace LiveCharts.Core.Themes
 {
@@ -67,7 +68,7 @@ namespace LiveCharts.Core.Themes
                 .SetDefault<Axis>(axis =>
                 {
                     axis.XSeparatorStyle = SeparatorStyle.Empty;
-                    axis.YSeparatorStyle = new SeparatorStyle(new Color(0, 0, 0, 0), new Color(255, 245, 245, 245), 0);
+                    axis.YSeparatorStyle = new SeparatorStyle(Color.FromArgb(0, 0, 0, 0), Color.FromArgb(255, 245, 245, 245), 0);
                     axis.XAlternativeSeparatorStyle = SeparatorStyle.Empty;
                     axis.YAlternativeSeparatorStyle = SeparatorStyle.Empty;
                 });
