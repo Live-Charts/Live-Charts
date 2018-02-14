@@ -1,26 +1,30 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
+using Assets.Models;
 using LiveCharts.Core.Abstractions;
+using LiveCharts.Core.DataSeries;
 using LiveCharts.Core.Drawing;
 
 namespace LiveCharts.Wpf.PointViews
 {
     public class CartesianPath : ICartesianPath
     {
-        private readonly Path _path;
+        private readonly Path _strokePath;
         private readonly PathFigure _figure;
+        private IEnumerable<double> _strokeDashArray;
 
         public CartesianPath()
         {
-            _path = new Path();
+            _strokePath = new Path();
             _figure = new PathFigure
             {
                 Segments = new PathSegmentCollection()
             };
-            _path.Data = new PathGeometry
+            _strokePath.Data = new PathGeometry
             {
                 Figures = new PathFigureCollection(1)
                 {
@@ -32,7 +36,7 @@ namespace LiveCharts.Wpf.PointViews
         public void Initialize(IChartView view)
         {
             var chart = (CartesianChart) view;
-            chart.DrawArea.Children.Add(_path);
+            chart.DrawArea.Children.Add(_strokePath);
         }
 
         public void SetStyle(
@@ -40,11 +44,14 @@ namespace LiveCharts.Wpf.PointViews
             double strokeThickness, IEnumerable<double> strokeDashArray)
         {
             _figure.StartPoint = startPoint.AsWpf();
-            _path.Stroke = stroke.AsWpf();
-            _path.Fill = fill.AsWpf();
-            _path.StrokeThickness = strokeThickness;
-            _path.StrokeDashArray = strokeDashArray == null ? null : new DoubleCollection(strokeDashArray);
-            _path.StrokeDashOffset = 0;
+            _strokePath.Stroke = stroke.AsWpf();
+            _strokePath.Fill = null;
+            _strokePath.StrokeThickness = strokeThickness;
+
+            _strokePath.StrokeThickness = 10;
+            _strokePath.StrokeDashArray = new DoubleCollection(new[] {10d, 2,2});
+            _strokeDashArray = strokeDashArray;
+            _strokePath.StrokeDashOffset = 0;
         }
 
         public object AddBezierSegment(Point p1, Point p2, Point p3)
@@ -59,52 +66,50 @@ namespace LiveCharts.Wpf.PointViews
             _figure.Segments.Remove((PathSegment) segment);
         }
 
-        public void Close(double length)
+        public void Close(IChartView view, double length)
         {
-            var l = length / _path.StrokeThickness;
-            _path.StrokeDashArray = new DoubleCollection(new[] {l, l});
-            _path.StrokeDashOffset = l;
-            _path.BeginAnimation(
+            var chart = (CartesianChart)view;
+            var series = (LineSeries<City>) chart.Series.First();
+            var first = series.Points.First();
+            var last = series.Points.Last();
+            var d = Math.Sqrt(
+                Math.Pow(first.ViewModel.Location.X - last.ViewModel.Location.X, 2) +
+                Math.Pow(first.ViewModel.Location.Y - last.ViewModel.Location.Y, 2));
+
+            var l = length / _strokePath.StrokeThickness;
+            _strokePath.StrokeDashArray = new DoubleCollection(GetAnimatedStrokeDashArray(l));
+            _strokePath.StrokeDashOffset = l;
+            _strokePath.BeginAnimation(
                 Shape.StrokeDashOffsetProperty,
-                new DoubleAnimation(l, 0, TimeSpan.FromMilliseconds(2000), FillBehavior.Stop));
-            _path.StrokeDashOffset = 0;
+                new DoubleAnimation(l, 0, TimeSpan.FromMilliseconds(3000), FillBehavior.Stop));
+            _strokePath.StrokeDashOffset = 0;
         }
 
         public void Dispose(IChartView view)
         {
             var chart = (CartesianChart) view;
-            chart.DrawArea.Children.Remove(_path);
+            chart.DrawArea.Children.Remove(_strokePath);
         }
-    }
 
-    public static class UglyHelper
-    {
-        public static double GetLength(this Geometry geo)
+        private IEnumerable<double> GetAnimatedStrokeDashArray(double lenght)
         {
-            PathGeometry path = geo.GetFlattenedPathGeometry();
-
-            double length = 0.0;
-
-            foreach (PathFigure pf in path.Figures)
+            var stack = 0d;
+            var e = _strokeDashArray.GetEnumerator();
+            var isStroked = true;
+            while (stack < lenght)
             {
-                System.Windows.Point start = pf.StartPoint;
-
-                foreach (PolyLineSegment seg in pf.Segments)
+                if (!e.MoveNext())
                 {
-                    foreach (System.Windows.Point point in seg.Points)
-                    {
-                        length += Distance(start, point);
-                        start = point;
-                    }
+                    e.Reset();
+                    e.MoveNext();
                 }
+                yield return e.Current;
+                isStroked = !isStroked;
+                stack += e.Current;
             }
 
-            return length;
-        }
-
-        private static double Distance(System.Windows.Point p1, System.Windows.Point p2)
-        {
-            return Math.Sqrt(Math.Pow(p1.X - p2.X, 2) + Math.Pow(p1.Y - p2.Y, 2));
+            yield return lenght;
+            e.Dispose();
         }
     }
 }

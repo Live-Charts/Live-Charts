@@ -100,6 +100,10 @@
       <Project>{8CAF054C-FB7C-405B-889D-59048650F4B4}</Project>
       <Name>LiveCharts.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\samples\Assets\Assets.csproj">
+      <Project>{742595A2-5344-4E28-AFD5-6BDCF7A9B729}</Project>
+      <Name>Assets</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Page Include="Themes\Generic.xaml">

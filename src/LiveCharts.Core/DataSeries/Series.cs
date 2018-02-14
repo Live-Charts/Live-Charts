@@ -10,7 +10,6 @@ using LiveCharts.Core.Charts;
 using LiveCharts.Core.Collections;
 using LiveCharts.Core.Data;
 using LiveCharts.Core.DefaultSettings;
-using LiveCharts.Core.Drawing;
 
 namespace LiveCharts.Core.DataSeries
 {

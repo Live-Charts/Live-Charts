@@ -28,26 +28,28 @@ namespace Assets.ViewModels
             {
                 new City
                 {
-                    Population = 9
+                    Population = 1
                 },
                 new City
                 {
-                    Population = 5
+                    Population = 2
                 },
                 new City
                 {
-                    Population = 6
+                    Population = 3
                 },
                 new City
                 {
-                    Population = -15
+                    Population = 4
+
                 },new City
                 {
-                    Population = 30
+                    Population = 5
                 }
             };
 
             series.LineSmoothness = 1;
+            series.StrokeDashArray = new[] {2d, 2d};
 
             SeriesCollection = new SeriesCollection
             {

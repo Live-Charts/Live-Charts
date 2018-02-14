@@ -89,7 +89,7 @@ namespace LiveCharts.Wpf
             {
                 animation.KeyFrames.Add(
                     new SplineDoubleKeyFrame(
-                        frame.Value,
+                        frame.To,
                         TimeSpan.FromMilliseconds(_speed.TotalMilliseconds * frame.Proportion),
                         new KeySpline(new Point(0.25, 0.5), new Point(0.75, 1))));
             }

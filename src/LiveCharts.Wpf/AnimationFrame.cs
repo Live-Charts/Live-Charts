@@ -9,10 +9,10 @@ namespace LiveCharts.Wpf
         /// Initializes a new instance of the <see cref="Frame" /> struct.
         /// </summary>
         /// <param name="proportion">The time span proportion.</param>
-        /// <param name="value">The value.</param>
-        public Frame(double proportion, double value)
+        /// <param name="to">The value.</param>
+        public Frame(double proportion, double to)
         {
-            Value = value;
+            To = to;
             Proportion = proportion;
         }
 
@@ -22,7 +22,7 @@ namespace LiveCharts.Wpf
         /// <value>
         /// The value.
         /// </value>
-        public double Value { get; set; }
+        public double To { get; set; }
 
         /// <summary>
         /// Gets or sets the time span.

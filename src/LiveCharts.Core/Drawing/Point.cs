@@ -89,6 +89,32 @@
         }
 
         /// <summary>
+        /// Implements the operator *.
+        /// </summary>
+        /// <param name="p1">The p1.</param>
+        /// <param name="const">The constant.</param>
+        /// <returns>
+        /// The result of the operator.
+        /// </returns>
+        public static Point operator *(Point p1, double @const)
+        {
+            return new Point(p1.X * @const, p1.Y * @const);
+        }
+
+        /// <summary>
+        /// Implements the operator *.
+        /// </summary>
+        /// <param name="const">The constant.</param>
+        /// <param name="p1">The p1.</param>
+        /// <returns>
+        /// The result of the operator.
+        /// </returns>
+        public static Point operator *(double @const, Point p1)
+        {
+            return p1 * @const;
+        }
+
+        /// <summary>
         /// Implements the operator ==.
         /// </summary>
         /// <param name="p1">The p1.</param>

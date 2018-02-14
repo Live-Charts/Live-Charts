@@ -110,10 +110,10 @@ namespace LiveCharts.Core.DataSeries
                 lenght += bezier.ViewModel.AproxLength;
             }
 
-            _path.Close(lenght);
+            _path.Close(chart.View, lenght);
         }
 
-        private IEnumerable<BezierData> GetBeziers(Point offset, CartesianChartModel chart, Plane x, Plane y)
+        private IEnumerable<BezierData> GetBeziers(Point offset, ChartModel chart, Plane x, Plane y)
         {
             Point<TModel, Point2D, BezierViewModel> pi, pn = null, pnn = null;
             Point previous, current = new Point(0,0), next = new Point(0,0), nextNext = new Point(0, 0);
@@ -144,9 +144,12 @@ namespace LiveCharts.Core.DataSeries
                 var xc3 = (next.X + nextNext.X) / 2.0;
                 var yc3 = (next.Y + nextNext.Y) / 2.0;
 
-                var len1 = Math.Sqrt((current.X - previous.X) * (current.X - previous.X) + (current.Y - previous.Y) * (current.Y - previous.Y));
-                var len2 = Math.Sqrt((next.X - current.X) * (next.X - current.X) + (next.Y - current.Y) * (next.Y - current.Y));
-                var len3 = Math.Sqrt((nextNext.X - next.X) * (nextNext.X - next.X) + (nextNext.Y - next.Y) * (nextNext.Y - next.Y));
+                var len1 = Math.Sqrt((current.X - previous.X) * (current.X - previous.X) +
+                                     (current.Y - previous.Y) * (current.Y - previous.Y));
+                var len2 = Math.Sqrt((next.X - current.X) * (next.X - current.X) +
+                                     (next.Y - current.Y) * (next.Y - current.Y));
+                var len3 = Math.Sqrt((nextNext.X - next.X) * (nextNext.X - next.X) +
+                                     (nextNext.Y - next.Y) * (nextNext.Y - next.Y));
 
                 var k1 = len1 / (len1 + len2);
                 var k2 = len2 / (len2 + len3);
@@ -166,10 +169,10 @@ namespace LiveCharts.Core.DataSeries
 
                 var bezier = new BezierViewModel
                 {
-                    Location = new Point(current.X - .5 * GeometrySize, current.Y - .5 * GeometrySize),
+                    Location = current,
                     Point1 = isFirstPoint ? current : new Point(c1X, c1Y),
                     Point2 = new Point(c2X, c2Y),
-                    Point3 = new Point(next.X, next.Y),
+                    Point3 = next,
                     Geometry = Geometry,
                     GeometrySize = GeometrySize
                 };
@@ -178,10 +181,10 @@ namespace LiveCharts.Core.DataSeries
                 // https://stackoverflow.com/questions/29438398/cheap-way-of-calculating-cubic-bezier-length
                 // according to a previous test, this method seems fast, and accurate enough for our purposes
 
-                var chord = GetDistance(previous, nextNext);
-                var net = GetDistance(previous, current) +
-                          GetDistance(current, next) +
-                          GetDistance(nextNext, nextNext);
+                var chord = GetDistance(current, next);
+                var net = GetDistance(current, bezier.Point1) +
+                          GetDistance(bezier.Point1, bezier.Point2) +
+                          GetDistance(bezier.Point2, next);
                 bezier.AproxLength = (chord + net) / 2;
 
                 return bezier;
