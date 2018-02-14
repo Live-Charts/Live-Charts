@@ -103,11 +103,15 @@ namespace LiveCharts.Wpf.PointViews
                     e.Reset();
                     e.MoveNext();
                 }
-                yield return e.Current;
                 isStroked = !isStroked;
+                yield return e.Current;
                 stack += e.Current;
             }
 
+            if (isStroked)
+            {
+                yield return 0;
+            }
             yield return lenght;
             e.Dispose();
         }
