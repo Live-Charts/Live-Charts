@@ -2,6 +2,7 @@
 using System.Globalization;
 using System.Windows.Data;
 using System.Windows.Media;
+using Color = System.Drawing.Color;
 
 namespace LiveCharts.Wpf.Converters
 {
@@ -27,7 +28,6 @@ namespace LiveCharts.Wpf.Converters
             if (value == null) return null;
 
             var lvcColor = (Color) value;
-
             return new SolidColorBrush(
                 System.Windows.Media.Color.FromArgb(lvcColor.A, lvcColor.R, lvcColor.G, lvcColor.B));
         }
