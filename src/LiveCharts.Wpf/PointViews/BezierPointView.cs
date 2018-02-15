@@ -7,6 +7,8 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using LiveCharts.Wpf.Animations;
+using Frame = LiveCharts.Wpf.Animations.Frame;
 using Point = LiveCharts.Core.Drawing.Point;
 
 namespace LiveCharts.Wpf.PointViews
@@ -20,41 +22,60 @@ namespace LiveCharts.Wpf.PointViews
     {
         private BezierSegment _segment;
         private ICartesianPath _path;
+        private BezierPointView<TModel, TPoint, TCoordinate, TViewModel, TLabel> _previous;
+        private BezierPointView<TModel, TPoint, TCoordinate, TViewModel, TLabel> _next;
+        private BezierViewModel _vm;
+
+        private bool IsMiddlePoint => _next != null && _previous != null;
+        private bool IsDisposing { get; set; }
 
         protected override void OnDraw(TPoint point, TPoint previous)
         {
             var chart = point.Chart.View;
-            var viewModel = point.ViewModel;
+            _vm = point.ViewModel;
             var isNew = Shape == null;
             var speed = chart.AnimationsSpeed;
+            _previous = (BezierPointView<TModel, TPoint, TCoordinate, TViewModel, TLabel>) previous?.View;
+            if (_previous != null)
+            {
+                _previous._next = this;
+            }
 
             if (isNew)
             {
                 var wpfChart = (CartesianChart)point.Chart.View;
                 Shape = new Path {Stretch = Stretch.Fill};
                 wpfChart.DrawArea.Children.Add(Shape);
-                Canvas.SetLeft(Shape, point.ViewModel.Location.X - .5 * viewModel.GeometrySize);
-                Canvas.SetTop(Shape, point.ViewModel.Location.Y - .5 * viewModel.GeometrySize);
+                Canvas.SetLeft(Shape, point.ViewModel.Location.X - .5 * _vm.GeometrySize);
+                Canvas.SetTop(Shape, point.ViewModel.Location.Y - .5 * _vm.GeometrySize);
                 Shape.Width = 0;
                 Shape.Height = 0;
-                _path = viewModel.Path;
-                _segment = (BezierSegment) _path.AddBezierSegment(
-                    viewModel.Point1, viewModel.Point2, viewModel.Point3);
+                _path = _vm.Path;
+                _segment = (BezierSegment) _path.InsertSegment(_segment, _vm.Index, _vm.Point1, _vm.Point2, _vm.Point3);
 
-                var bounce = .3 * viewModel.GeometrySize;
+                var bounce = .3 * _vm.GeometrySize;
 
                 Shape.Animate()
-                    .AtSpeed(speed)
-                    .Property(FrameworkElement.WidthProperty,
+                    .AtSpeed(TimeSpan.FromMilliseconds(speed.TotalMilliseconds * 2))
+                    .Property(Canvas.LeftProperty,
+                        new Frame(0.5, _vm.Location.X),
+                        new Frame(0.8, _vm.Location.X - .5 * (_vm.GeometrySize + bounce)),
+                        new Frame(0.9, _vm.Location.X - .5 * (_vm.GeometrySize - bounce * .5)),
+                        new Frame(1, point.ViewModel.Location.X - .5 * _vm.GeometrySize))
+                    .Property(Canvas.TopProperty,
+                        new Frame(0.5, _vm.Location.Y),
+                        new Frame(0.8, _vm.Location.Y - .5 * (_vm.GeometrySize + bounce)),
+                        new Frame(0.9, _vm.Location.Y - .5 * (_vm.GeometrySize - bounce * .5)),
+                        new Frame(1, point.ViewModel.Location.Y - .5 * _vm.GeometrySize))
+                    .Properties(new[]
+                        {
+                            FrameworkElement.WidthProperty,
+                            FrameworkElement.HeightProperty
+                        },
                         new Frame(0.5, 0),
-                        new Frame(0.8, viewModel.GeometrySize + bounce),
-                        new Frame(0.9, viewModel.GeometrySize - bounce * .5),
-                        new Frame(1, viewModel.GeometrySize))
-                    .Property(FrameworkElement.HeightProperty,
-                        new Frame(0.5, 0),
-                        new Frame(0.8, viewModel.GeometrySize + bounce),
-                        new Frame(0.9, viewModel.GeometrySize - bounce * .5),
-                        new Frame(1, viewModel.GeometrySize))
+                        new Frame(0.8, _vm.GeometrySize + bounce),
+                        new Frame(0.9, _vm.GeometrySize - bounce * .5),
+                        new Frame(1, _vm.GeometrySize))
                     .Begin();
             }
 
@@ -63,17 +84,20 @@ namespace LiveCharts.Wpf.PointViews
             Shape.Fill = Brushes.White;
             Shape.Data = Geometry.Parse(Core.Drawing.Svg.Geometry.Circle.Data); // Geometry.Parse(viewModel.Geometry.Data);
 
-            Shape.Animate()
-                .AtSpeed(speed)
-                .Property(Canvas.LeftProperty, viewModel.Location.X - .5 * viewModel.GeometrySize)
-                .Property(Canvas.TopProperty, viewModel.Location.Y - .5 * viewModel.GeometrySize)
-                .Begin();
+            if (!isNew)
+            {
+                Shape.Animate()
+                    .AtSpeed(speed)
+                    .Property(Canvas.LeftProperty, _vm.Location.X - .5 * _vm.GeometrySize)
+                    .Property(Canvas.TopProperty, _vm.Location.Y - .5 * _vm.GeometrySize)
+                    .Begin();
+            }
 
             _segment.Animate()
                 .AtSpeed(speed)
-                .Property(BezierSegment.Point1Property, point.ViewModel.Point1.AsWpf())
-                .Property(BezierSegment.Point2Property, point.ViewModel.Point2.AsWpf())
-                .Property(BezierSegment.Point3Property, point.ViewModel.Point3.AsWpf())
+                .Property(BezierSegment.Point1Property, _vm.Point1.AsWpf())
+                .Property(BezierSegment.Point2Property, _vm.Point2.AsWpf())
+                .Property(BezierSegment.Point3Property, _vm.Point3.AsWpf())
                 .Begin();
         }
         
@@ -84,11 +108,48 @@ namespace LiveCharts.Wpf.PointViews
 
         protected override void OnDispose(IChartView chart)
         {
+            IsDisposing = true;
             var wpfChart = (CartesianChart) chart;
-            wpfChart.DrawArea.Children.Remove(Shape);
-            _path.RemoveSegment(_segment);
-            _segment = null;
-            _path = null;
+            var t = _next ?? _previous ?? this;
+
+            var shapeAnimation = Shape.Animate()
+                .AtSpeed(wpfChart.AnimationsSpeed)
+                .Property(Canvas.LeftProperty, t._vm.Location.X - .5 * _vm.GeometrySize)
+                .Property(Canvas.TopProperty, t._vm.Location.Y - .5 * _vm.GeometrySize);
+
+            shapeAnimation
+                .Then((sender, args) =>
+                {
+                    wpfChart.DrawArea.Children.Remove(Shape);
+                    IsDisposing = false;
+                })
+                .Begin();
+
+            if (IsMiddlePoint)
+            {
+                _path.RemoveSegment(_segment);
+                _segment = null;
+                _path = null;
+            }
+            else
+            {
+                var segmentAnimation = _segment.Animate()
+                    .AtSpeed(chart.AnimationsSpeed)
+                    .Property(BezierSegment.Point1Property, t._vm.Point1.AsWpf())
+                    .Property(BezierSegment.Point2Property, t._vm.Point1.AsWpf())
+                    .Property(BezierSegment.Point3Property, t._vm.Point1.AsWpf());
+
+                segmentAnimation
+                    .Then((sender, args) =>
+                    {
+                        IsDisposing = false;
+                        _path.RemoveSegment(_segment);
+                        _segment = null;
+                        _path = null;
+                        segmentAnimation.Dispose();
+                    })
+                    .Begin();
+            }
         }
     }
 }

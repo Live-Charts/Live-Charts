@@ -77,6 +77,7 @@ namespace LiveCharts.Core.DataSeries
 
             double lenght = 0;
             var isFist = true;
+            double i = 0, j = 0;
 
             foreach (var bezier in GetBeziers(unitWidth, cartesianChart, x, y))
             {
@@ -85,6 +86,7 @@ namespace LiveCharts.Core.DataSeries
                 {
                     _path.SetStyle(bezier.ViewModel.Point1, Stroke, Fill, StrokeThickness, StrokeDashArray);
                     isFist = false;
+                    i = p.X;
                 }
 
                 bezier.Point.HoverArea = new RectangleHoverArea
@@ -108,15 +110,17 @@ namespace LiveCharts.Core.DataSeries
 
                 previous = bezier.Point;
                 lenght += bezier.ViewModel.AproxLength;
+                j = p.X;
             }
 
-            _path.Close(chart.View, lenght);
+            _path.Close(chart.View, lenght, i, j);
         }
 
         private IEnumerable<BezierData> GetBeziers(Point offset, ChartModel chart, Plane x, Plane y)
         {
             Point<TModel, Point2D, BezierViewModel> pi, pn = null, pnn = null;
             Point previous, current = new Point(0,0), next = new Point(0,0), nextNext = new Point(0, 0);
+            var i = 0;
 
             var smoothness = LineSmoothness > 1 ? 1 : (LineSmoothness < 0 ? 0 : LineSmoothness);
 
@@ -169,6 +173,7 @@ namespace LiveCharts.Core.DataSeries
 
                 var bezier = new BezierViewModel
                 {
+                    Index = i,
                     Location = current,
                     Point1 = isFirstPoint ? current : new Point(c1X, c1Y),
                     Point2 = new Point(c2X, c2Y),
@@ -186,6 +191,7 @@ namespace LiveCharts.Core.DataSeries
                           GetDistance(bezier.Point1, bezier.Point2) +
                           GetDistance(bezier.Point2, next);
                 bezier.AproxLength = (chord + net) / 2;
+                i++;
 
                 return bezier;
             }

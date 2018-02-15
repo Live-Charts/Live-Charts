@@ -48,7 +48,8 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AnimationFrame.cs" />
+    <Compile Include="Animations\Frame.cs" />
+    <Compile Include="Animations\Extensions.cs" />
     <Compile Include="Chart.cs" />
     <Compile Include="Converters\ColorToSolidBrushConverter.cs" />
     <Compile Include="Converters\PointAsTooltipData.cs" />
@@ -63,7 +64,7 @@
     <Compile Include="PointViews\BezierPointView.cs" />
     <Compile Include="PointViews\CartesianPath.cs" />
     <Compile Include="PointViews\PointView.cs" />
-    <Compile Include="StoryboardBuilder.cs" />
+    <Compile Include="Animations\AnimationBuilder.cs" />
     <Compile Include="Separators\CartesianAxisSeparatorView.cs" />
     <Compile Include="UiProvider.cs" />
     <Compile Include="CartesianChart.cs">

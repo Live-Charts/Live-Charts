@@ -6,6 +6,8 @@ using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Coordinates;
 using LiveCharts.Core.Data;
 using LiveCharts.Core.ViewModels;
+using LiveCharts.Wpf.Animations;
+using Frame = LiveCharts.Wpf.Animations.Frame;
 
 namespace LiveCharts.Wpf.PointViews
 {
@@ -33,7 +35,7 @@ namespace LiveCharts.Wpf.PointViews
         protected override void OnDraw(TPoint point, TPoint previous)
         {
             var chart = point.Chart.View;
-            var viewModel = point.ViewModel;
+            var vm = point.ViewModel;
             var isNew = Shape == null;
 
             if (isNew)
@@ -41,16 +43,16 @@ namespace LiveCharts.Wpf.PointViews
                 var wpfChart = (CartesianChart) chart;
                 Shape = new TShape();
                 wpfChart.DrawArea.Children.Add(Shape);
-                Canvas.SetLeft(Shape, viewModel.Left);
-                Canvas.SetTop(Shape, viewModel.Zero);
-                Shape.Width = viewModel.Width;
+                Canvas.SetLeft(Shape, vm.Left);
+                Canvas.SetTop(Shape, vm.Zero);
+                Shape.Width = vm.Width;
                 Shape.Height = 0;
             }
 
             var r = Shape as Rectangle;
             if (r != null)
             {
-                var radius = viewModel.Width * .4;
+                var radius = vm.Width * .4;
                 r.RadiusY = radius;
                 r.RadiusX = radius;
             }
@@ -60,25 +62,25 @@ namespace LiveCharts.Wpf.PointViews
 
             var speed = chart.AnimationsSpeed;
 
-            var by = isNew ? viewModel.Height * .3 : 0;
-            var bx = isNew ? viewModel.Width * .1 : 0;
+            var by = isNew ? vm.Height * .3 : 0;
+            var bx = isNew ? vm.Width * .1 : 0;
 
             Shape.Animate()
                 .AtSpeed(speed)
                 .Property(Canvas.LeftProperty,
-                    new Frame(0.9, viewModel.Left - bx * .5),
-                    new Frame(1, viewModel.Left))
+                    new Frame(0.9, vm.Left - bx * .5),
+                    new Frame(1, vm.Left))
                 .Property(FrameworkElement.WidthProperty,
-                    new Frame(0.9, viewModel.Width + bx),
-                    new Frame(1, viewModel.Width))
+                    new Frame(0.9, vm.Width + bx),
+                    new Frame(1, vm.Width))
                 .Property(Canvas.TopProperty,
-                    new Frame(0.8, viewModel.Top - by),
-                    new Frame(0.9, viewModel.Top - by * .5),
-                    new Frame(1, viewModel.Top))
+                    new Frame(0.8, vm.Top - by),
+                    new Frame(0.9, vm.Top - by * .5),
+                    new Frame(1, vm.Top))
                 .Property(FrameworkElement.HeightProperty,
-                    new Frame(0.8, viewModel.Height + by),
-                    new Frame(0.9, viewModel.Height + by * .5),
-                    new Frame(1, viewModel.Height))
+                    new Frame(0.8, vm.Height + by),
+                    new Frame(0.9, vm.Height + by * .5),
+                    new Frame(1, vm.Height))
                 .Begin();
             _point = point;
         }
@@ -116,16 +118,18 @@ namespace LiveCharts.Wpf.PointViews
 
             var zero = chart.Model.ScaleToUi(0, chart.Dimensions[1][_point.Series.ScalesAt[1]]);
 
-            Shape.Animate()
+            var animation = Shape.Animate()
                 .AtSpeed(chart.AnimationsSpeed)
                 .Property(Canvas.TopProperty, zero)
-                .Property(FrameworkElement.HeightProperty, 0)
-                .Then((sender, args) =>
-                {
-                    wpfChart.DrawArea.Children.Remove(Shape);
-                    wpfChart.DrawArea.Children.Remove((UIElement)Label);
-                })
-                .Begin();
+                .Property(FrameworkElement.HeightProperty, 0);
+
+            animation.Then((sender, args) =>
+            {
+                wpfChart.DrawArea.Children.Remove(Shape);
+                wpfChart.DrawArea.Children.Remove((UIElement) Label);
+                animation.Dispose();
+                animation = null;
+            }).Begin();
         }
     }
 }

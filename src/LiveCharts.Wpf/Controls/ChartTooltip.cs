@@ -5,6 +5,7 @@ using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Data;
+using LiveCharts.Wpf.Animations;
 using Point = LiveCharts.Core.Drawing.Point;
 using Size = LiveCharts.Core.Drawing.Size;
 

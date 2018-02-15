@@ -29,10 +29,12 @@ namespace LiveCharts.Core.Abstractions
         /// <summary>
         /// Adds the bezier segment and returns the instance added.
         /// </summary>
+        /// <param name="segment">The segment instance.</param>
+        /// <param name="index">The index to insert the segment at.</param>
         /// <param name="p1">The p1.</param>
         /// <param name="p2">The p2.</param>
         /// <param name="p3">The p3.</param>
-        object AddBezierSegment(Point p1, Point p2, Point p3);
+        object InsertSegment(object segment, int index, Point p1, Point p2, Point p3);
 
         /// <summary>
         /// Removes the segment.
@@ -43,7 +45,7 @@ namespace LiveCharts.Core.Abstractions
         /// <summary>
         /// Closes this instance.
         /// </summary>
-        void Close(IChartView view, double length);
+        void Close(IChartView view, double length, double i, double j);
 
         /// <summary>
         /// Disposes the specified view.

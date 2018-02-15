@@ -1,34 +1,21 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using System.Windows.Media.Animation;
 
-namespace LiveCharts.Wpf
+namespace LiveCharts.Wpf.Animations
 {
-    /// <summary>
-    /// The animations extensions.
-    /// </summary>
-    public static class AnimationsExtensions
-    {
-        public static AnimationBuilder Animate(this FrameworkElement element)
-        {
-            return new AnimationBuilder(true).SetTarget(element);
-        }
-
-        public static AnimationBuilder Animate(this Animatable animatable)
-        {
-            return new AnimationBuilder(false).SetTarget(animatable);
-        }
-    }
-
     /// <summary>
     /// A storyboard builder.
     /// </summary>
     public class AnimationBuilder
     {
-        private readonly Storyboard _storyboard;
+        private Storyboard _storyboard;
         private TimeSpan _speed;
         private DependencyObject _target;
         private readonly bool _isFe;
+        private List<Tuple<DependencyProperty, Timeline>> _animations = new List<Tuple<DependencyProperty, Timeline>>();
 
         public AnimationBuilder(bool isFe)
         {
@@ -41,7 +28,17 @@ namespace LiveCharts.Wpf
         /// </summary>
         public void Begin()
         {
-            _storyboard.Begin();
+            if (_isFe)
+            {
+                _storyboard.Begin();
+            }
+            else
+            {
+                foreach (var tuple in _animations)
+                {
+                    ((Animatable) _target).BeginAnimation(tuple.Item1, (AnimationTimeline) tuple.Item2);
+                }
+            }
         }
 
         /// <summary>
@@ -100,6 +97,21 @@ namespace LiveCharts.Wpf
             return this;
         }
 
+        /// <summary>
+        /// Animates the specified property using a defined .
+        /// </summary>
+        /// <param name="properties">The properties.</param>
+        /// <param name="frames">The frames.</param>
+        /// <returns></returns>
+        public AnimationBuilder Properties(IEnumerable<DependencyProperty> properties, params Frame[] frames)
+        {
+            foreach (var dependencyProperty in properties)
+            {
+                Property(dependencyProperty, frames);
+            }
+            return this;
+        }
+
         public AnimationBuilder Property(
             DependencyProperty property, Point to, Point? from = null, TimeSpan? speed = null)
         {
@@ -121,7 +133,9 @@ namespace LiveCharts.Wpf
             var animation = from == null
                 ? new PointAnimation(to, speed ?? _speed)
                 : new PointAnimation(from.Value, to, speed ?? _speed);
-            ((Animatable) _target).BeginAnimation(property, animation);
+
+            _animations.Add(new Tuple<DependencyProperty, Timeline>(property, animation));
+
             return this;
         }
 
@@ -143,7 +157,17 @@ namespace LiveCharts.Wpf
         public AnimationBuilder Then(EventHandler callback)
         {
             _storyboard.Completed += callback;
+            if (!_isFe && _animations.Any())
+            {
+                _animations[0].Item2.Completed += callback;
+            }
             return this;
+        }
+
+        public void Dispose()
+        {
+            _storyboard = null;
+            _animations = null;
         }
     }
 }

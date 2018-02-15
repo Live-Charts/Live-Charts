@@ -1,4 +1,4 @@
-namespace LiveCharts.Wpf
+namespace LiveCharts.Wpf.Animations
 {
     /// <summary>
     /// A helper class to build an animation using key frames.
