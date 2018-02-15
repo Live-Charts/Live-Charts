@@ -153,10 +153,11 @@ namespace LiveCharts.Core.Charts
                 OnUpdateFinished();
             });
         }
+
         /// <inheritdoc />
         protected override void ViewOnPointerMoved(Point location, TooltipSelectionMode selectionMode, params double[] dimensions)
         {
-            var selectedPoints = Series.SelectMany(series => series.SelectPointsByDimension(selectionMode, dimensions)).ToArray();
+            var query = GetInteractedPoints(dimensions).ToArray();
 
             if (selectionMode == TooltipSelectionMode.Auto)
             {
@@ -166,7 +167,7 @@ namespace LiveCharts.Core.Charts
             ToolTip = View.DataToolTip;
 
             // ReSharper disable once PossibleMultipleEnumeration
-            if (!selectedPoints.Any())
+            if (!query.Any())
             {
                 TooltipTimoutTimer.Start();
                 return;
@@ -174,18 +175,18 @@ namespace LiveCharts.Core.Charts
 
             TooltipTimoutTimer.Stop();
 
-            var size = View.DataToolTip.ShowAndMeasure(selectedPoints, View);
+            View.DataToolTip.ShowAndMeasure(query, View);
             double sx = 0, sy = 0;
 
-            foreach (var point in selectedPoints)
+            foreach (var point in query)
             {
                 var point2D = (Point2D) point.Coordinate;
                 sx += ScaleToUi(point2D.X, XAxis[point.Series.ScalesAt[0]]);
                 sy += ScaleToUi(point2D.Y, YAxis[point.Series.ScalesAt[1]]);
             }
 
-            sx = sx / selectedPoints.Length;
-            sy = sy / selectedPoints.Length;
+            sx = sx / query.Length;
+            sy = sy / query.Length;
 
             var newTooltipLocation = new Point(sx, sy);
 
@@ -193,6 +194,17 @@ namespace LiveCharts.Core.Charts
             {
                 View.DataToolTip.Move(newTooltipLocation, View);
             }
+
+            OnDataPointerEnter(query);
+            var leftPoints = PreviousHoveredPoints?.ToArray()
+                .Where(x => !x.InteractionArea.Contains(dimensions));
+            // ReSharper disable once PossibleMultipleEnumeration
+            if (leftPoints != null && leftPoints.Any())
+            {
+                // ReSharper disable once PossibleMultipleEnumeration
+                OnDataPointerLeave(leftPoints);
+            }
+            PreviousHoveredPoints = query;
 
             _previousTooltipLocation = newTooltipLocation;
         }

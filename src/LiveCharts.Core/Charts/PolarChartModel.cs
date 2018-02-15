@@ -19,16 +19,19 @@ namespace LiveCharts.Core.Charts
         {
         }
 
+        /// <inheritdoc />
         public override double ScaleToUi(double dataValue, Plane plane, Size? size = null)
         {
             throw new System.NotImplementedException();
         }
 
+        /// <inheritdoc />
         public override double ScaleFromUi(double pixelsValue, Plane plane, Size? size = null)
         {
             throw new System.NotImplementedException();
         }
 
+        /// <inheritdoc />
         protected override void ViewOnPointerMoved(Point location, TooltipSelectionMode selectionMode, params double[] dimensions)
         {
             throw new System.NotImplementedException();

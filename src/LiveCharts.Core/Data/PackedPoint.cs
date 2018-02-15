@@ -2,6 +2,7 @@
 using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Charts;
 using LiveCharts.Core.Dimensions;
+using LiveCharts.Core.Interaction;
 
 namespace LiveCharts.Core.Data
 {
@@ -50,6 +51,14 @@ namespace LiveCharts.Core.Data
         /// The point.
         /// </value>
         public ICoordinate Coordinate { get; set; }
+
+        /// <summary>
+        /// Gets or sets the area.
+        /// </summary>
+        /// <value>
+        /// The area.
+        /// </value>
+        public InteractionArea InteractionArea { get; set; }
 
         /// <summary>
         /// Gets the series that owns the point.

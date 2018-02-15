@@ -11,7 +11,8 @@ namespace LiveCharts.Wpf.Controls
     {
         static DataLabel()
         {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(DataLabel),
+            DefaultStyleKeyProperty.OverrideMetadata(
+                typeof(DataLabel),
                 new FrameworkPropertyMetadata(typeof(DataLabel)));
         }
 

@@ -98,7 +98,7 @@ namespace LiveCharts.Core.DataSeries
                 current.ViewModel = vm;
                 current.View.DrawShape(current, previous);
 
-                current.HoverArea = new RectangleHoverArea
+                current.InteractionArea = new RectangleInteractionArea
                 {
                     Top = vm.Top,
                     Left = vm.Left,

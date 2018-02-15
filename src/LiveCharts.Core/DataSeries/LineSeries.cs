@@ -89,7 +89,7 @@ namespace LiveCharts.Core.DataSeries
                     i = p.X;
                 }
 
-                bezier.Point.HoverArea = new RectangleHoverArea
+                bezier.Point.InteractionArea = new RectangleInteractionArea
                 {
                     Top = p.Y - GeometrySize * .5,
                     Left = p.X - GeometrySize * .5,

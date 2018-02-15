@@ -430,10 +430,9 @@ namespace LiveCharts.Core.DataSeries
         /// <summary>
         /// Gets the points that  its hover area contains the given n dimensions.
         /// </summary>
-        /// <param name="selectionMode">The selection mode.</param>
         /// <param name="dimensions">The dimensions.</param>
         /// <returns></returns>
-        public abstract IEnumerable<PackedPoint> SelectPointsByDimension(TooltipSelectionMode selectionMode, params double[] dimensions);
+        public abstract IEnumerable<PackedPoint> GetInteractedPoints(params double[] dimensions);
 
         /// <inheritdoc />
         IEnumerator IEnumerable.GetEnumerator()

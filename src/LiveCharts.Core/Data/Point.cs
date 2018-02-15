@@ -85,7 +85,7 @@ namespace LiveCharts.Core.Data
         /// <value>
         /// The hover area.
         /// </value>
-        public HoverArea HoverArea { get; internal set; }
+        public InteractionArea InteractionArea { get; internal set; }
 
         /// <summary>
         /// Gets the series that owns the point.

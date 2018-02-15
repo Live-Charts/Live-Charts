@@ -1,12 +1,10 @@
-﻿using LiveCharts.Core.Abstractions;
-
-namespace LiveCharts.Core.Interaction
+﻿namespace LiveCharts.Core.Interaction
 {
     /// <summary>
     /// The hover rectangle class.
     /// </summary>
-    /// <seealso cref="LiveCharts.Core.Interaction.HoverArea" />
-    public class RectangleHoverArea : HoverArea
+    /// <seealso cref="InteractionArea" />
+    public class RectangleInteractionArea : InteractionArea
     {
         /// <summary>
         /// Gets or sets the top.
@@ -41,24 +39,13 @@ namespace LiveCharts.Core.Interaction
         public double Height { get; set; }
 
         /// <inheritdoc />
-        public override bool Contains(TooltipSelectionMode selectionMode, params double[] dimensions)
+        public override bool Contains(params double[] dimensions)
         {
-            // at least 2 dimensions are required.
-            // x = dimensions[0]
-            // y = dimensions[1]
             var x = dimensions[0];
             var y = dimensions[1];
 
-            switch (selectionMode)
-            {
-                case TooltipSelectionMode.SharedX:
-                    return x >= Left && x <= Left + Width;
-                case TooltipSelectionMode.SharedY:
-                    return y >= Top && y <= Top + Height;
-                default:
-                    return x >= Left && x <= Left + Width &&
-                           y >= Top && y <= Top + Height;
-            }
+            return x >= Left && x <= Left + Width &&
+                   y >= Top && y <= Top + Height;
         }
     }
 }

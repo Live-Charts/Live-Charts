@@ -10,7 +10,14 @@ namespace LiveCharts.Wpf
 {
     public class CartesianChart : Chart
     {
-         public CartesianChart()
+        static CartesianChart()
+        {
+            DefaultStyleKeyProperty.OverrideMetadata(
+                typeof(CartesianChart),
+                new FrameworkPropertyMetadata(typeof(CartesianChart)));
+        }
+
+        public CartesianChart()
         {
             Model = new CartesianChartModel(this);
             SetValue(SeriesProperty, new PlotableCollection<BaseSeries>());

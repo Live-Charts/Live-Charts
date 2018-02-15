@@ -22,7 +22,8 @@ namespace LiveCharts.Wpf.Controls
         /// </summary>
         static ChartLegend()
         {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(ChartLegend),
+            DefaultStyleKeyProperty.OverrideMetadata(
+                typeof(ChartLegend),
                 new FrameworkPropertyMetadata(typeof(ChartLegend)));
         }
 

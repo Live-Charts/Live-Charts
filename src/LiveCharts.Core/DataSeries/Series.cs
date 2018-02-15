@@ -215,9 +215,10 @@ namespace LiveCharts.Core.DataSeries
         }
 
         /// <inheritdoc />
-        public override IEnumerable<PackedPoint> SelectPointsByDimension(TooltipSelectionMode selectionMode, params double[] dimensions)
+        public override IEnumerable<PackedPoint> GetInteractedPoints(params double[] dimensions)
         {
-            return Points.Where(point => point.HoverArea.Contains(selectionMode, dimensions))
+            return Points
+                .Where(point => point.InteractionArea.Contains(dimensions))
                 .Select(point => new PackedPoint
                 {
                     Key = point.Key,
@@ -226,7 +227,8 @@ namespace LiveCharts.Core.DataSeries
                     Coordinate = point.Coordinate,
                     Series = point.Series,
                     View = point.View,
-                    ViewModel = point.ViewModel
+                    ViewModel = point.ViewModel,
+                    InteractionArea = point.InteractionArea
                 });
         }
 

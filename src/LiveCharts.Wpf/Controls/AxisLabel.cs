@@ -13,7 +13,8 @@ namespace LiveCharts.Wpf.Controls
     {
         static AxisLabel()
         {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(AxisLabel),
+            DefaultStyleKeyProperty.OverrideMetadata(
+                typeof(AxisLabel),
                 new FrameworkPropertyMetadata(typeof(AxisLabel)));
         }
 

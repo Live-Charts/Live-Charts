@@ -14,12 +14,33 @@ using LiveCharts.Core.Dimensions;
 using LiveCharts.Core.Drawing;
 using LiveCharts.Core.Events;
 using LiveCharts.Wpf.Controls;
+using LiveCharts.Wpf.Interaction;
+using DataInteractionHandler = LiveCharts.Core.Events.DataInteractionHandler;
 using Size = LiveCharts.Core.Drawing.Size;
 
 namespace LiveCharts.Wpf
 {
-    public abstract class Chart : Canvas, IChartView
+    /// <summary>
+    /// Defines a chart class.
+    /// </summary>
+    /// <seealso cref="System.Windows.Controls.Canvas" />
+    /// <seealso cref="LiveCharts.Core.Abstractions.IChartView" />
+    /// <seealso cref="LiveCharts.Core.Abstractions.IDesktopChart" />
+    public abstract class Chart : Canvas, IChartView, IDesktopChart
     {
+        /// <summary>
+        /// Initializes the <see cref="Chart"/> class.
+        /// </summary>
+        static Chart()
+        {
+            DefaultStyleKeyProperty.OverrideMetadata(
+                typeof(Chart),
+                new FrameworkPropertyMetadata(typeof(Chart)));
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Chart"/> class.
+        /// </summary>
         protected Chart()
         {
             DrawMargin = Core.Drawing.Margin.Empty;
@@ -38,6 +59,28 @@ namespace LiveCharts.Wpf
             SetValue(DataTooltipProperty, new ChartToolTip());
             Loaded += OnLoaded;
             SizeChanged += OnSizeChanged;
+            MouseMove += OnMouseMove;
+            MouseLeftButtonUp += (sender, args) =>
+            {
+                var p = args.GetPosition(DrawArea);
+                var points = Model.GetInteractedPoints(p.X, p.Y);
+                var e = new DataInteractionEventArgs(args.MouseDevice, args.Timestamp, args.ChangedButton, points)
+                {
+                    RoutedEvent = MouseDownEvent
+                };
+                OnDataClick(e);
+            };
+            MouseLeftButtonDown += (sender, args) =>
+            {
+                if (args.ClickCount != 2) return;
+                var p = args.GetPosition(DrawArea);
+                var points = Model.GetInteractedPoints(p.X, p.Y);
+                var e = new DataInteractionEventArgs(args.MouseDevice, args.Timestamp, args.ChangedButton, points)
+                {
+                    RoutedEvent = MouseDownEvent
+                };
+                OnDataClick(e);
+            };
         }
 
         #region Dependency properties
@@ -60,7 +103,8 @@ namespace LiveCharts.Wpf
         /// The tooltip timeout property
         /// </summary>
         public static readonly DependencyProperty TooltipTimeoutProperty = DependencyProperty.Register(
-            nameof(TooltipTimeOut), typeof(TimeSpan), typeof(Chart), new PropertyMetadata(TimeSpan.FromMilliseconds(150)));
+            nameof(TooltipTimeOut), typeof(TimeSpan), typeof(Chart),
+            new PropertyMetadata(TimeSpan.FromMilliseconds(150)));
 
         /// <summary>
         /// The legend property, default is DefaultLegend class.
@@ -81,7 +125,7 @@ namespace LiveCharts.Wpf
         /// </summary>
         public static readonly DependencyProperty DataTooltipProperty = DependencyProperty.Register(
             nameof(DataToolTip), typeof(IDataToolTip), typeof(Chart),
-            new PropertyMetadata(null, OnDataTooltipPropertyChanged));
+            new PropertyMetadata(null));
 
         #endregion
 
@@ -126,9 +170,35 @@ namespace LiveCharts.Wpf
         {
             return (sender, eventArgs) =>
             {
-                var chart = (Chart) sender;
+                var chart = (Chart)sender;
                 chart.OnPropertyChanged(propertyName);
             };
+        }
+
+        /// <summary>
+        /// Raises the <see cref="E:DataClick" /> event.
+        /// </summary>
+        /// <param name="args">The <see cref="DataInteractionEventArgs"/> instance containing the event data.</param>
+        protected virtual void OnDataClick(DataInteractionEventArgs args)
+        {
+            DataClick?.Invoke(this, args);
+            if (DataClickCommand != null && DataClickCommand.CanExecute(args.Points))
+            {
+                DataClickCommand.Execute(args.Points);
+            }
+        }
+
+        /// <summary>
+        /// Raises the <see cref="E:DataDoubleClick" /> event.
+        /// </summary>
+        /// <param name="args">The <see cref="DataInteractionEventArgs"/> instance containing the event data.</param>
+        protected virtual void OnDataDoubleClick(DataInteractionEventArgs args)
+        {
+            DataDoubleClick?.Invoke(this, args);
+            if (DataClickCommand != null && DataDoubleClickCommand.CanExecute(args.Points))
+            {
+                DataClickCommand.Execute(args.Points);
+            }
         }
 
         private void OnLoaded(object sender, EventArgs eventArgs)
@@ -139,19 +209,6 @@ namespace LiveCharts.Wpf
         private void OnSizeChanged(object o, SizeChangedEventArgs sizeChangedEventArgs)
         {
             ChartViewResized?.Invoke(this);
-        }
-
-        private static void OnDataTooltipPropertyChanged(DependencyObject sender, DependencyPropertyChangedEventArgs args)
-        {
-            var chart = (Chart) sender;
-            if (chart.DataToolTip != null)
-            {
-                chart.MouseMove += chart.OnMouseMove;
-            }
-            else
-            {
-                chart.MouseMove -= chart.OnMouseMove;
-            }
         }
 
         private void OnMouseMove(object o, MouseEventArgs args)
@@ -166,6 +223,7 @@ namespace LiveCharts.Wpf
         #region IChartView implementation
 
         private event ChartEventHandler ChartViewLoaded;
+
         event ChartEventHandler IChartView.ChartViewLoaded
         {
             add => ChartViewLoaded += value;
@@ -173,6 +231,7 @@ namespace LiveCharts.Wpf
         }
 
         private event ChartEventHandler ChartViewResized;
+
         event ChartEventHandler IChartView.ChartViewResized
         {
             add => ChartViewResized += value;
@@ -186,7 +245,7 @@ namespace LiveCharts.Wpf
             add => PointerMoved += value;
             remove => PointerMoved -= value;
         }
-        
+
         /// <inheritdoc />
         public event ChartEventHandler UpdatePreview
         {
@@ -219,7 +278,7 @@ namespace LiveCharts.Wpf
         public ChartModel Model { get; protected set; }
 
         /// <inheritdoc cref="IChartView.ControlSize"/>
-        Size IChartView.ControlSize => new Size((int) ActualWidth, (int) ActualHeight);
+        Size IChartView.ControlSize => new Size((int)ActualWidth, (int)ActualHeight);
 
         /// <inheritdoc cref="IChartView.DrawMargin"/>
         public Margin DrawMargin { get; set; }
@@ -230,23 +289,18 @@ namespace LiveCharts.Wpf
         /// <inheritdoc cref="IChartView.Series"/>
         public IEnumerable<BaseSeries> Series
         {
-            get => (IEnumerable<BaseSeries>) GetValue(SeriesProperty);
+            get => (IEnumerable<BaseSeries>)GetValue(SeriesProperty);
             set => SetValue(SeriesProperty, value);
         }
 
         /// <inheritdoc cref="IChartView.AnimationsSpeed"/>
         public TimeSpan AnimationsSpeed
         {
-            get => (TimeSpan) GetValue(AnimationsSpeedProperty);
+            get => (TimeSpan)GetValue(AnimationsSpeedProperty);
             set => SetValue(AnimationsSpeedProperty, value);
         }
 
-        /// <summary>
-        /// Gets or sets the tooltip time out.
-        /// </summary>
-        /// <value>
-        /// The tooltip time out.
-        /// </value>
+        /// <inheritdoc />
         public TimeSpan TooltipTimeOut
         {
             get => (TimeSpan)GetValue(TooltipTimeoutProperty);
@@ -256,14 +310,14 @@ namespace LiveCharts.Wpf
         /// <inheritdoc cref="IChartView.Legend"/>
         public ILegend Legend
         {
-            get => (ILegend) GetValue(LegendProperty);
+            get => (ILegend)GetValue(LegendProperty);
             set => SetValue(LegendProperty, value);
         }
 
         /// <inheritdoc cref="IChartView.LegendPosition"/>
         public LegendPosition LegendPosition
         {
-            get => (LegendPosition) GetValue(LegendPositionProperty);
+            get => (LegendPosition)GetValue(LegendPositionProperty);
             set => SetValue(LegendPositionProperty, value);
         }
 
@@ -286,6 +340,60 @@ namespace LiveCharts.Wpf
         void IChartView.InvokeOnUiThread(Action action)
         {
             Dispatcher.Invoke(action);
+        }
+
+        #endregion
+
+        #region PlatformSpecific events 
+
+        ///<summary>
+        /// Occurs when the user clicks in a data point.
+        /// </summary>
+        public event Interaction.DataInteractionHandler DataClick;
+
+        ///<summary>
+        /// Occurs when the user clicks in a data point.
+        /// </summary>
+        public ICommand DataClickCommand { get; set; }
+
+        ///<summary>
+        /// Occurs when the user double clicks in a data point.
+        /// </summary>
+        public event Interaction.DataInteractionHandler DataDoubleClick;
+
+        ///<summary>
+        /// Occurs when the user double clicks in a data point.
+        /// </summary>
+        public ICommand DataDoubleClickCommand { get; set; }
+
+        #endregion
+
+        #region IDesktopChart implementation
+
+        /// <inheritdoc />
+        public event DataInteractionHandler DataMouseEnter
+        {
+            add => Model.DataPointerEnter += value;
+            remove => Model.DataPointerLeave -= value;
+        }
+
+        public ICommand DataMouseEnterCommand
+        {
+            get => Model.DataPointerEnterCommand;
+            set => Model.DataPointerEnterCommand = value;
+        }
+
+        /// <inheritdoc />
+        public event DataInteractionHandler DataMouseLeave
+        {
+            add => Model.DataPointerLeave += value;
+            remove => Model.DataPointerLeave -= value;
+        }
+
+        public ICommand DataMouseLeaveCommand
+        {
+            get => Model.DataPointerLeaveCommand;
+            set => Model.DataPointerLeaveCommand = value;
         }
 
         #endregion

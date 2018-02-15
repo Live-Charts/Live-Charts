@@ -19,23 +19,9 @@ namespace Samples.Wpf
             InitializeComponent();
             NavigationHandler = new NavigationHandler();
             DataContext = NavigationHandler;
-            MouseDown += OnMouseDown;
         }
 
         public NavigationHandler NavigationHandler { get; set; }
-
-        private void OnMouseDown(object sender, MouseButtonEventArgs e)
-        {
-            if (e.ChangedButton == MouseButton.Left)
-            {
-                DragMove();
-            }
-        }
-
-        private void OnCloseAppClicked(object sender, RoutedEventArgs e)
-        {
-            Application.Current.Shutdown();
-        }
     }
 
     public class NavigationHandler : INotifyPropertyChanged

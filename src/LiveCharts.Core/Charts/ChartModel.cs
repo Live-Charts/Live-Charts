@@ -151,6 +151,32 @@ namespace LiveCharts.Core.Charts
         /// </summary>
         public ICommand UpdatedCommand { get; set; }
 
+        /// <summary>
+        /// Occurs when [data pointer enter].
+        /// </summary>
+        public event DataInteractionHandler DataPointerEnter;
+
+        /// <summary>
+        /// Gets or sets the data pointer enter.
+        /// </summary>
+        /// <value>
+        /// The data pointer enter.
+        /// </value>
+        public ICommand DataPointerEnterCommand { get; set; }
+
+        /// <summary>
+        /// Occurs when [data pointer leave].
+        /// </summary>
+        public event DataInteractionHandler DataPointerLeave;
+
+        /// <summary>
+        /// Gets or sets the data pointer leave command.
+        /// </summary>
+        /// <value>
+        /// The data pointer leave command.
+        /// </value>
+        public ICommand DataPointerLeaveCommand { get; set; }
+
         internal BaseSeries[] Series { get; set; }
 
         internal Plane[][] Dimensions { get; set; }
@@ -168,6 +194,8 @@ namespace LiveCharts.Core.Charts
         internal LegendPosition LegendPosition { get; set; }
 
         internal Timer TooltipTimoutTimer { get; set; }
+
+        internal IEnumerable<PackedPoint> PreviousHoveredPoints { get; set; }
 
         /// <summary>
         /// Invalidates this instance, the chart will queue an update request.
@@ -229,6 +257,16 @@ namespace LiveCharts.Core.Charts
         public Point ScaleToUi(Point point, Plane x, Plane y, Size? size = null)
         {
             return new Point(ScaleToUi(point.X, x, size), ScaleToUi(point.Y, y, size));
+        }
+
+        /// <summary>
+        /// Selects the points.
+        /// </summary>
+        /// <param name="dimensions">The dimensions.</param>
+        /// <returns></returns>
+        public IEnumerable<PackedPoint> GetInteractedPoints(params double[] dimensions)
+        {
+            return Series.SelectMany(series => series.GetInteractedPoints(dimensions));
         }
 
         /// <summary>
@@ -332,24 +370,6 @@ namespace LiveCharts.Core.Charts
 
             DrawAreaLocation = new Point(dax, day);
             DrawAreaSize = chartSize - new Size(lw, lh);
-        }
-
-        internal void OnUpdateStarted()
-        {
-            UpdatePreview?.Invoke(View);
-            if (UpdatePreviewCommand != null && UpdatePreviewCommand.CanExecute(View))
-            {
-                UpdatePreviewCommand.Execute(View);
-            }
-        }
-
-        internal void OnUpdateFinished()
-        {
-            Updated?.Invoke(View);
-            if (UpdatedCommand != null && UpdatedCommand.CanExecute(View))
-            {
-                UpdatedCommand.Execute(View);
-            }
         }
 
         internal Color GetNextColor()
@@ -465,6 +485,56 @@ namespace LiveCharts.Core.Charts
                 {
                     incc.CollectionChanged -= InvalidateOnCollectionChanged;
                 }
+            }
+        }
+
+        /// <summary>
+        /// Called when [update started].
+        /// </summary>
+        protected void OnUpdateStarted()
+        {
+            UpdatePreview?.Invoke(View);
+            if (UpdatePreviewCommand != null && UpdatePreviewCommand.CanExecute(View))
+            {
+                UpdatePreviewCommand.Execute(null);
+            }
+        }
+
+        /// <summary>
+        /// Called when [update finished].
+        /// </summary>
+        protected void OnUpdateFinished()
+        {
+            Updated?.Invoke(View);
+            if (UpdatedCommand != null && UpdatedCommand.CanExecute(View))
+            {
+                UpdatedCommand.Execute(null);
+            }
+        }
+
+        /// <summary>
+        /// Called when [data pointer enter].
+        /// </summary>
+        /// <param name="points">The points.</param>
+        protected virtual void OnDataPointerEnter(IEnumerable<PackedPoint> points)
+        {
+            DataPointerEnter?.Invoke(this, points);
+            if (DataPointerEnterCommand != null && DataPointerEnterCommand.CanExecute(points))
+            {
+                DataPointerEnterCommand.Execute(points);
+            }
+        }
+
+        /// <summary>
+        /// Called when [data pointer leave].
+        /// </summary>
+        /// <param name="points">The points.</param>
+        protected virtual void OnDataPointerLeave(IEnumerable<PackedPoint> points)
+        {
+            DataPointerLeave?.Invoke(this, points);
+            if (DataPointerLeaveCommand != null && DataPointerLeaveCommand.CanExecute(points))
+            {
+                DataPointerLeaveCommand.Execute(points);
             }
         }
     }

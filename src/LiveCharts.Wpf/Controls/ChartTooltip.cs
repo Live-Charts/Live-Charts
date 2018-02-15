@@ -18,7 +18,8 @@ namespace LiveCharts.Wpf.Controls
     {
         static ChartToolTip()
         {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(ChartToolTip),
+            DefaultStyleKeyProperty.OverrideMetadata(
+                typeof(ChartToolTip),
                 new FrameworkPropertyMetadata(typeof(ChartToolTip)));
         }
 
