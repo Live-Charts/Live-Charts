@@ -10,7 +10,7 @@
     <UserControl.DataContext>
         <viewModels:PropertyAndInstanceChanged />
     </UserControl.DataContext>
-    <Grid Background="White" MouseDown="GridOnMouseUp">
+    <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="35"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
@@ -28,7 +28,10 @@
             <Button Command="{Binding RemoveBetweenPoint}">/-</Button>
             <Button Command="{Binding EditPoint}">*</Button>
         </StackPanel>
-        <wpf:CartesianChart Grid.Row="1" AnimationsSpeed="0:0:1" Series="{Binding SeriesCollection}" DataClick="Chart_OnDataClick" />
+        <wpf:CartesianChart Grid.Row="1"
+                            AnimationsSpeed="0:0:1"
+                            Series="{Binding SeriesCollection}" 
+                            DataDoubleClickCommand="{Binding RemoveOnDoubleClick}" />
     </Grid>
 </UserControl>
 

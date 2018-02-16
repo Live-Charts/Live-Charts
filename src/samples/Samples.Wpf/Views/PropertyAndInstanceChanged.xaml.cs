@@ -18,19 +18,5 @@ namespace Samples.Wpf.Views
         {
             InitializeComponent();
         }
-
-        private void GridOnMouseUp(object sender, MouseButtonEventArgs e)
-        {
-            Console.WriteLine("Grid Mouse Up");
-        }
-
-        private void Chart_OnDataClick(object sender, DataInteractionEventArgs args)
-        {
-            args.Handled = true;
-            foreach (var p in args.Points)
-            {
-                Console.WriteLine(p.Coordinate);
-            }
-        }
     }
 }

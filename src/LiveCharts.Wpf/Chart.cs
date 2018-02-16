@@ -66,7 +66,8 @@ namespace LiveCharts.Wpf
                 var points = Model.GetInteractedPoints(p.X, p.Y);
                 var e = new DataInteractionEventArgs(args.MouseDevice, args.Timestamp, args.ChangedButton, points)
                 {
-                    RoutedEvent = MouseDownEvent
+                    RoutedEvent = MouseDownEvent,
+                    Handled = args.Handled
                 };
                 OnDataClick(e);
             };
@@ -79,7 +80,7 @@ namespace LiveCharts.Wpf
                 {
                     RoutedEvent = MouseDownEvent
                 };
-                OnDataClick(e);
+                OnDataDoubleClick(e);
             };
         }
 
@@ -195,9 +196,9 @@ namespace LiveCharts.Wpf
         protected virtual void OnDataDoubleClick(DataInteractionEventArgs args)
         {
             DataDoubleClick?.Invoke(this, args);
-            if (DataClickCommand != null && DataDoubleClickCommand.CanExecute(args.Points))
+            if (DataDoubleClickCommand != null && DataDoubleClickCommand.CanExecute(args.Points))
             {
-                DataClickCommand.Execute(args.Points);
+                DataDoubleClickCommand.Execute(args.Points);
             }
         }
 
@@ -351,20 +352,36 @@ namespace LiveCharts.Wpf
         /// </summary>
         public event Interaction.DataInteractionHandler DataClick;
 
+        public static readonly DependencyProperty DataClickCommandProperty = DependencyProperty.Register(
+            nameof(DataClickCommand), typeof(ICommand), typeof(Chart),
+            new PropertyMetadata(default(ICommand)));
+
         ///<summary>
         /// Occurs when the user clicks in a data point.
         /// </summary>
-        public ICommand DataClickCommand { get; set; }
+        public ICommand DataClickCommand
+        {
+            get => (ICommand)GetValue(DataClickCommandProperty);
+            set => SetValue(DataClickCommandProperty, value);
+        }
 
         ///<summary>
         /// Occurs when the user double clicks in a data point.
         /// </summary>
         public event Interaction.DataInteractionHandler DataDoubleClick;
 
+        public static readonly DependencyProperty DataDoubleClickCommandProperty = DependencyProperty.Register(
+            nameof(DataDoubleClickCommand), typeof(ICommand), typeof(Chart),
+            new PropertyMetadata(default(ICommand)));
+
         ///<summary>
         /// Occurs when the user double clicks in a data point.
         /// </summary>
-        public ICommand DataDoubleClickCommand { get; set; }
+        public ICommand DataDoubleClickCommand
+        {
+            get => (ICommand)GetValue(DataDoubleClickCommandProperty);
+            set => SetValue(DataDoubleClickCommandProperty, value);
+        }
 
         #endregion
 

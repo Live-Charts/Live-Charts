@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Runtime.CompilerServices;
@@ -7,8 +8,8 @@ using Assets.Commands;
 using Assets.Models;
 using LiveCharts.Core;
 using LiveCharts.Core.Coordinates;
+using LiveCharts.Core.Data;
 using LiveCharts.Core.DataSeries;
-using LiveCharts.Core.Drawing;
 
 namespace Assets.ViewModels
 {
@@ -66,6 +67,7 @@ namespace Assets.ViewModels
             EditSeries = new DelegateCommand(o => _changeSeriesProp());
             SetNewSeriesInstance = new DelegateCommand(o => _setNewSeriesInstance());
             ChangeAllSeriesItems = new DelegateCommand(o => _changeAllSeriesItems());
+            RemoveOnDoubleClick = new DelegateCommand(o => _removeOnDoubleClick((IEnumerable<PackedPoint>) o));
         }
 
         public SeriesCollection SeriesCollection
@@ -97,6 +99,8 @@ namespace Assets.ViewModels
         public ICommand EditPoint { get; }
 
         public ICommand ChangeAllSeriesItems { get; }
+
+        public ICommand RemoveOnDoubleClick { get; }
 
         private void _addPoint()
         {
@@ -194,6 +198,14 @@ namespace Assets.ViewModels
                 {
                     city.Population = _r.Next(0, 10);
                 }
+            }
+        }
+
+        private void _removeOnDoubleClick(IEnumerable<PackedPoint> clickedPoints)
+        {
+            foreach (var point in clickedPoints)
+            {
+                SeriesCollection[0].Remove(point.Model);
             }
         }
 
