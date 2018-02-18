@@ -86,6 +86,7 @@ namespace LiveCharts.Core.Data
             for (var index = 0; index < Chart.Dimensions.Length; index++)
             {
                 var dimension = Chart.Dimensions[index];
+                if (index >= Series.ScalesAt.Length) continue;
                 planes[index] = dimension[Series.ScalesAt[index]];
             }
             return Coordinate.AsTooltipData(planes);
