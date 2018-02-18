@@ -15,6 +15,7 @@ namespace LiveCharts.Core.Dimensions
     {
         private readonly Dictionary<double, ICartesianAxisSeparator> _activeSeparators =
             new Dictionary<double, ICartesianAxisSeparator>();
+        private Func<IPlaneLabelControl> _separatorProvider;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Axis"/> class.
@@ -23,7 +24,7 @@ namespace LiveCharts.Core.Dimensions
         {
             Step = double.NaN;
             Position = AxisPosition.Auto;
-            LiveChartsSettings.Build(this);
+            LiveChartsSettings.Set(this);
         }
 
         /// <summary>
@@ -81,6 +82,22 @@ namespace LiveCharts.Core.Dimensions
         /// The y axis alternative separator style.
         /// </value>
         public SeparatorStyle YAlternativeSeparatorStyle { get; set; }
+
+        /// <summary>
+        /// Gets or sets the separator provider.
+        /// </summary>
+        /// <value>
+        /// The separator provider.
+        /// </value>
+        public Func<IPlaneLabelControl> LabelProvider
+        {
+            get => _separatorProvider ?? DefaultLabelProvider;
+            set
+            {
+                _separatorProvider = value;
+                OnPropertyChanged();
+            }
+        }
 
         /// <summary>
         /// Returns a <see cref="System.String" /> that represents this instance.

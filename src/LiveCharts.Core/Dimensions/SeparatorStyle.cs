@@ -1,5 +1,4 @@
-﻿using LiveCharts.Core.Drawing;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Drawing;
 
 namespace LiveCharts.Core.Dimensions
@@ -19,6 +18,12 @@ namespace LiveCharts.Core.Dimensions
             Stroke = Color.Empty;
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SeparatorStyle"/> struct.
+        /// </summary>
+        /// <param name="stroke">The stroke.</param>
+        /// <param name="fill">The fill.</param>
+        /// <param name="strokeThickness">The stroke thickness.</param>
         public SeparatorStyle(Color stroke, Color fill, double strokeThickness)
         {
             _isEmpty = false;
@@ -78,7 +83,7 @@ namespace LiveCharts.Core.Dimensions
         }
 
         /// <summary>
-        /// Equalses the specified other.
+        /// Compares the specified instances.
         /// </summary>
         /// <param name="other">The other.</param>
         /// <returns></returns>

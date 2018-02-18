@@ -4,7 +4,7 @@
     /// The column series definition.
     /// </summary>
     /// <seealso cref="LiveCharts.Core.Abstractions.DataSeries.ISeries" />
-    public interface IColumnSeries: ISeries
+    public interface IColumnSeries : ISeries
     {
         /// <summary>
         /// Gets or sets the column padding.
@@ -21,5 +21,5 @@
         /// The maximum width of the column.
         /// </value>
         double MaxColumnWidth { get; set; }
-}
+    }
 }

@@ -37,14 +37,12 @@ namespace LiveCharts.Core.Coordinates
         public double Radius { get; }
 
         /// <inheritdoc cref="CompareDimensions"/>
-        public bool CompareDimensions(DimensionRange[] dimensionRanges, SeriesSkipCriteria skipCriteria)
+        public void CompareDimensions(DataRange[] dimensions)
         {
-            var radiusDimensionRange = dimensionRanges[0];
+            var radius = dimensions[0];
 
-            if (Radius > radiusDimensionRange.Max) radiusDimensionRange.Max = Radius;
-            if (Radius < radiusDimensionRange.Min) radiusDimensionRange.Min = Radius;
-
-            return false;
+            if (Radius > radius.MaxValue) radius.MaxValue = Radius;
+            if (Radius < radius.MinValue) radius.MinValue = Radius;
         }
 
         /// <inheritdoc />

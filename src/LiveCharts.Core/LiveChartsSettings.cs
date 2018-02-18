@@ -174,7 +174,7 @@ namespace LiveCharts.Core
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="instance">The instance.</param>
-        public static void Build<T>(T instance)
+        public static void Set<T>(T instance)
         {
             if (!Builders.TryGetValue(typeof(T), out var builder)) return;
             var casted = (Action<T>) builder;

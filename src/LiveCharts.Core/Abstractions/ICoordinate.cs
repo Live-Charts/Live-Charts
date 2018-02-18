@@ -1,5 +1,4 @@
-﻿using LiveCharts.Core.Data;
-using LiveCharts.Core.Dimensions;
+﻿using LiveCharts.Core.Dimensions;
 
 namespace LiveCharts.Core.Abstractions
 {
@@ -11,10 +10,8 @@ namespace LiveCharts.Core.Abstractions
         /// <summary>
         /// Compares the dimensions.
         /// </summary>
-        /// <param name="dimensionRanges">The chart dimension ranges.</param>
-        /// <param name="skipCriteria">The skip criteria.</param>
-        /// <returns></returns>
-        bool CompareDimensions(DimensionRange[] dimensionRanges, SeriesSkipCriteria skipCriteria);
+        /// <param name="rangeBydimension">The series range by dimension.</param>
+        void CompareDimensions(DataRange[] rangeBydimension);
 
         /// <summary>
         ///gets the coordinate as tooltip data.

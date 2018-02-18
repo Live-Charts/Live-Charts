@@ -21,19 +21,5 @@ namespace LiveCharts.Core.DefaultSettings
         {
             return Color.FromArgb((byte) (255 * opacity), color.R, color.G, color.B);
         }
-
-        /// <summary>
-        /// Gets the series dimensions.
-        /// </summary>
-        /// <param name="chart">The chart.</param>
-        /// <param name="series">The series.</param>
-        /// <returns></returns>
-        public static DimensionRange[] GetSeriesDimensions(this ChartModel chart, DataSeries.BaseSeries series)
-        {
-            return series.ScalesAt
-                .Select((scalesAtIndex, dimensionIndex) =>
-                    chart.DataRangeMatrix[dimensionIndex][scalesAtIndex])
-                .ToArray();
-        }
     }
 }

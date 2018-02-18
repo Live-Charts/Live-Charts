@@ -15,6 +15,9 @@ namespace LiveCharts.Core.Collections
         private const string CountString = "Count";
         private const string IndexerName = "Item[]";
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PlotableCollection{T}"/> class.
+        /// </summary>
         public PlotableCollection()
         {
         }

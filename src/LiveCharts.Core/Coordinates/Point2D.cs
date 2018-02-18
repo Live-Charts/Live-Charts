@@ -35,41 +35,16 @@ namespace LiveCharts.Core.Coordinates
         /// </value>
         public double Y { get; }
 
-        /// <summary>
-        /// Compares the dimensions.
-        /// </summary>
-        /// <param name="dimensionRanges">The dimension ranges.</param>
-        /// <param name="skipCriteria">The skip criteria.</param>
-        /// <returns></returns>
-        /// <exception cref="NotImplementedException"></exception>
-        public bool CompareDimensions(DimensionRange[] dimensionRanges, SeriesSkipCriteria skipCriteria)
+        /// <inheritdoc />
+        public void CompareDimensions(DataRange[] dimensions)
         {
-            var xDimensionRange = dimensionRanges[0];
-            var yDimensionRange = dimensionRanges[1];
+            var x = dimensions[0];
+            var y = dimensions[1];
 
-            switch (skipCriteria)
-            {
-                case SeriesSkipCriteria.IgnoreXOverflow:
-                    if (X < xDimensionRange.From || X > xDimensionRange.To) return true;
-                    break;
-                case SeriesSkipCriteria.IgnoreYOverflow:
-                    if (Y < yDimensionRange.From || Y > yDimensionRange.To) return true;
-                    break;
-                case SeriesSkipCriteria.IgnoreOverflow:
-                    if (X < xDimensionRange.From || X > xDimensionRange.To ||
-                        Y < yDimensionRange.From || Y > yDimensionRange.To) return true;
-                    break;
-                case SeriesSkipCriteria.None:
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(skipCriteria), skipCriteria, null);
-            }
-
-            if (X > xDimensionRange.Max) xDimensionRange.Max = X;
-            if (X < xDimensionRange.Min) xDimensionRange.Min = X;
-            if (Y > yDimensionRange.Max) yDimensionRange.Max = Y;
-            if (Y < yDimensionRange.Min) yDimensionRange.Min = Y;
-            return false;
+            if (X > x.MaxValue) x.MaxValue = X;
+            if (X < x.MinValue) x.MinValue = X;
+            if (Y > y.MaxValue) y.MaxValue = Y;
+            if (Y < y.MinValue) y.MinValue = Y;
         }
 
         /// <inheritdoc />

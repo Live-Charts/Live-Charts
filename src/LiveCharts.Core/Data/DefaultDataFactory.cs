@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using LiveCharts.Core.Abstractions;
-using LiveCharts.Core.DefaultSettings;
 
 namespace LiveCharts.Core.Data
 {
@@ -12,7 +12,7 @@ namespace LiveCharts.Core.Data
     public class DefaultDataFactory : IDataFactory
     {
         /// <inheritdoc />
-        public IEnumerable<TPoint> FetchData<TModel, TCoordinate, TViewModel, TPoint>(
+        public IEnumerable<TPoint> Fetch<TModel, TCoordinate, TViewModel, TPoint>(
             DataFactoryArgs<TModel, TCoordinate, TViewModel, TPoint> args)
             where TPoint : Point<TModel, TCoordinate, TViewModel>, new()
             where TCoordinate : ICoordinate
@@ -20,7 +20,6 @@ namespace LiveCharts.Core.Data
             var mapper = args.Series.Mapper;
             var notifiesChange = typeof(INotifyPropertyChanged).IsAssignableFrom(args.Series.Metatada.ModelType);
             var collection = args.Collection;
-            var dimensions = args.Chart.GetSeriesDimensions(args.Series);
             var isValueType = args.Series.Metatada.IsValueType;
             var tracker = args.Series.Tracker;
 
@@ -62,7 +61,7 @@ namespace LiveCharts.Core.Data
                 chartPoint.Coordinate = mapper.Predicate(instance, index);
 
                 // compare the dimensions to scale the chart.
-                if (chartPoint.Coordinate.CompareDimensions(dimensions, SeriesSkipCriteria.None)) continue;
+                chartPoint.Coordinate.CompareDimensions(args.Series.RangeByDimension);
 
                 // evaluate model defined events
                 mapper.EvaluateModelDependentActions(instance, chartPoint.View, chartPoint);

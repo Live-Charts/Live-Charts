@@ -45,9 +45,18 @@ namespace LiveCharts.Core.Coordinates
         public double Weight { get; }
 
         /// <inheritdoc />
-        public bool CompareDimensions(DimensionRange[] dimensionRanges, SeriesSkipCriteria skipCriteria)
+        public void CompareDimensions(DataRange[] dimensions)
         {
-            throw new System.NotImplementedException();
+            var x = dimensions[0];
+            var y = dimensions[1];
+            var w = dimensions[2];
+
+            if (X > x.MaxValue) x.MaxValue = X;
+            if (X < x.MinValue) x.MinValue = X;
+            if (Y > y.MaxValue) y.MaxValue = Y;
+            if (Y < y.MinValue) y.MinValue = Y;
+            if (Weight > w.MaxValue) w.MaxValue = Weight;
+            if (Weight < w.MinValue) w.MinValue = Weight;
         }
 
         /// <inheritdoc />

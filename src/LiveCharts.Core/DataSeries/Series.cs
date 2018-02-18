@@ -10,6 +10,7 @@ using LiveCharts.Core.Charts;
 using LiveCharts.Core.Collections;
 using LiveCharts.Core.Data;
 using LiveCharts.Core.DefaultSettings;
+using LiveCharts.Core.Dimensions;
 
 namespace LiveCharts.Core.DataSeries
 {
@@ -22,7 +23,7 @@ namespace LiveCharts.Core.DataSeries
     /// <typeparam name="TPoint">The type of the point.</typeparam>
     /// <seealso cref="IResource" />
     public abstract class Series<TModel, TCoordinate, TViewModel, TPoint> 
-        : BaseSeries, IList<TModel>, INotifyCollectionChanged
+        : DataSet, IList<TModel>, INotifyCollectionChanged
         where TPoint : Point<TModel, TCoordinate, TViewModel>, new()
         where TCoordinate : ICoordinate
     {
@@ -152,14 +153,6 @@ namespace LiveCharts.Core.DataSeries
             }
         }
 
-        /// <summary>
-        /// Gets the data range.
-        /// </summary>
-        /// <value>
-        /// The data range.
-        /// </value>
-        public DimensionRange DataRange { get; } = new DimensionRange(double.PositiveInfinity, double.NegativeInfinity);
-
         /// <inheritdoc />
         public bool IsReadOnly
         {
@@ -204,7 +197,7 @@ namespace LiveCharts.Core.DataSeries
             // 1. Calculate each ChartPoint required by the series.
             // 2. Evaluate every dimension to get Max and Min limits.
             Points = LiveChartsSettings.Current.DataFactory
-                .FetchData(
+                .Fetch(
                     new DataFactoryArgs<TModel, TCoordinate, TViewModel, TPoint>
                     {
                         Series = this,
@@ -231,7 +224,6 @@ namespace LiveCharts.Core.DataSeries
                     InteractionArea = point.InteractionArea
                 });
         }
-
 
         /// <inheritdoc />
         public IEnumerator<TModel> GetEnumerator()

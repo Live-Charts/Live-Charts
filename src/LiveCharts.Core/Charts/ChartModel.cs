@@ -85,14 +85,6 @@ namespace LiveCharts.Core.Charts
         public Size DrawAreaSize { get; set; }
 
         /// <summary>
-        /// Gets the data range matrix.
-        /// </summary>
-        /// <value>
-        /// The data range matrix.
-        /// </value>
-        public DimensionRange[][] DataRangeMatrix { get; protected set; }
-
-        /// <summary>
         /// Gets the chart view.
         /// </summary>
         /// <value>
@@ -177,7 +169,7 @@ namespace LiveCharts.Core.Charts
         /// </value>
         public ICommand DataPointerLeaveCommand { get; set; }
 
-        internal BaseSeries[] Series { get; set; }
+        internal DataSet[] Series { get; set; }
 
         internal Plane[][] Dimensions { get; set; }
 
@@ -305,23 +297,21 @@ namespace LiveCharts.Core.Charts
 
             CopyDataFromView();
 
-            // [ x: [x1: range, x2: range, x3: range, ..., xn: range], y: [...], z[...], w[...] ]
-            DataRangeMatrix = Dimensions.Select(
-                    x => x.Select(
-                            y => new DimensionRange(
-                                double.IsNaN(y.MinValue) ? double.PositiveInfinity : y.MinValue,
-                                double.IsNaN(y.MaxValue) ? double.NegativeInfinity : y.MaxValue))
-                        .ToArray())
-                .ToArray();
-
             foreach (var series in Series.Where(x => x.IsVisible))
             {
+                series.ResetRanges();
                 series.Fetch(this);
                 RegisterResource(series);
-                var x = Dimensions[0][series.ScalesAt[0]];
-                var y = Dimensions[1][series.ScalesAt[1]];
-                if (x.PointWidth == Point.Empty) x.ActualPointWidth = series.DefaultPointWidth;
-                if (y.PointWidth == Point.Empty) y.ActualPointWidth = series.DefaultPointWidth;
+
+                for (var i = 0; i < Dimensions.Length; i++)
+                {
+                    if (series.ScalesAt.Length <= i) continue;
+                    var plane = Dimensions[i][series.ScalesAt[i]];
+                    if (plane.PointWidth == Point.Empty) plane.ActualPointWidth = series.DefaultPointWidth;
+                    plane.ResetRange();
+                    if (series.RangeByDimension[i].MaxValue > plane.DataRange.MaxValue) plane.DataRange.MaxValue = series.RangeByDimension[i].MaxValue;
+                    if (series.RangeByDimension[i].MinValue < plane.DataRange.MinValue) plane.DataRange.MinValue = series.RangeByDimension[i].MinValue;
+                }
             }
 
             var chartSize = ControlSize;
@@ -455,7 +445,7 @@ namespace LiveCharts.Core.Charts
 
         private void CopyDataFromView()
         {
-            Series = (View.Series ?? Enumerable.Empty<BaseSeries>()).ToArray();
+            Series = (View.Series ?? Enumerable.Empty<DataSet>()).ToArray();
             Dimensions = View.Dimensions.Select(x => x.ToArray()).ToArray();
             ControlSize = View.ControlSize;
             DrawMargin = View.DrawMargin;

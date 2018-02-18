@@ -11,79 +11,31 @@ namespace LiveCharts.Core.Dimensions
     /// <summary>
     /// Defines a Plane.
     /// </summary>
-    public abstract class Plane : IResource, INotifyPropertyChanged
+    public class Plane : IResource, INotifyPropertyChanged
     {
-        private Func<double, string> _labelFormatter;
-        private Func<IPlaneLabelControl> _separatorProvider;
         private Point _pointWidth;
         private Font _font;
+        private Func<double, string> _labelFormatter;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Plane"/> class.
         /// </summary>
-        protected Plane()
+        public Plane()
         {
             MinValue = double.NaN;
             MaxValue = double.NaN;
+            DataRange = new DataRange();
             _pointWidth = Point.Empty;
-            LiveChartsSettings.Build(this);
+            LiveChartsSettings.Set(this);
         }
 
         /// <summary>
-        /// Gets or sets the title.
+        /// Gets or sets the data range.
         /// </summary>
         /// <value>
-        /// The title.
+        /// The data range.
         /// </value>
-        public string Title { get; set; }
-
-        /// <summary>
-        /// Gets or sets the labels.
-        /// </summary>
-        /// <value>
-        /// The labels.
-        /// </value>
-        public IList<string> Labels { get; set; }
-
-        /// <summary>
-        /// Gets or sets the label formatter.
-        /// </summary>
-        /// <value>
-        /// The label formatter.
-        /// </value>
-        public Func<double, string> LabelFormatter
-        {
-            get => _labelFormatter;
-            set => _labelFormatter = value ?? throw new LiveChartsException(
-                                         $"{nameof(LabelFormatter)} can not be null.", 0);
-        }
-
-        /// <summary>
-        /// Gets or sets the labels rotation.
-        /// </summary>
-        /// <value>
-        /// The labels rotation.
-        /// </value>
-        public double LabelsRotation { get; set; }
-
-        /// <summary>
-        /// Gets the actual labels rotation.
-        /// </summary>
-        /// <value>
-        /// The actual labels rotation.
-        /// </value>
-        public double ActualLabelsRotation
-        {
-            get
-            {
-                // we only allow angles from -90° to 90°
-                // see appendix/labels.1.png
-                var alpha = LabelsRotation % 360;
-                if (alpha < -90) alpha += 360;
-                if (alpha > 90) alpha += 180;
-                return alpha;
-            }
-        }
+        public DataRange DataRange { get; protected set; }
 
         /// <summary>
         /// Gets or sets the maximum value to display.
@@ -158,6 +110,62 @@ namespace LiveCharts.Core.Dimensions
         }
 
         /// <summary>
+        /// Gets or sets the title.
+        /// </summary>
+        /// <value>
+        /// The title.
+        /// </value>
+        public string Title { get; set; }
+
+        /// <summary>
+        /// Gets or sets the labels.
+        /// </summary>
+        /// <value>
+        /// The labels.
+        /// </value>
+        public IList<string> Labels { get; set; }
+
+        /// <summary>
+        /// Gets or sets the label formatter.
+        /// </summary>
+        /// <value>
+        /// The label formatter.
+        /// </value>
+        public Func<double, string> LabelFormatter
+        {
+            get => _labelFormatter;
+            set => _labelFormatter = value ?? throw new LiveChartsException(
+                                         $"{nameof(LabelFormatter)} can not be null.", 0);
+        }
+
+        /// <summary>
+        /// Gets or sets the labels rotation.
+        /// </summary>
+        /// <value>
+        /// The labels rotation.
+        /// </value>
+        public double LabelsRotation { get; set; }
+
+        /// <summary>
+        /// Gets the actual labels rotation.
+        /// </summary>
+        /// <value>
+        /// The actual labels rotation.
+        /// </value>
+        public double ActualLabelsRotation
+        {
+            get
+            {
+                // we only allow angles from -90° to 90°
+                // see appendix/labels.1.png
+                var alpha = LabelsRotation % 360;
+                if (alpha < -90) alpha += 360;
+                if (alpha > 90) alpha += 180;
+                return alpha;
+            }
+        }
+
+        /// <summary>
         /// Gets the type.
         /// </summary>
         /// <value>
@@ -176,7 +184,7 @@ namespace LiveCharts.Core.Dimensions
             if (Labels != null)
             {
                 return Labels.Count > value && value >= 0
-                    ? Labels[checked((int) value)]
+                    ? Labels[checked((int)value)]
                     : "";
             }
             return LabelFormatter(value);
@@ -194,22 +202,6 @@ namespace LiveCharts.Core.Dimensions
             return value >= ActualMinValue && value <= ActualMaxValue;
         }
 
-        /// <summary>
-        /// Gets or sets the separator provider.
-        /// </summary>
-        /// <value>
-        /// The separator provider.
-        /// </value>
-        public Func<IPlaneLabelControl> LabelProvider
-        {
-            get => _separatorProvider ?? DefaultLabelProvider;
-            set
-            {
-                _separatorProvider = value;
-                OnPropertyChanged();
-            }
-        }
-
         /// <inheritdoc cref="IDisposable.Dispose"/>
         protected virtual void OnDispose(IChartView view)
         {
@@ -220,11 +212,23 @@ namespace LiveCharts.Core.Dimensions
         /// The default separator provider.
         /// </summary>
         /// <returns></returns>
-        protected abstract IPlaneLabelControl DefaultLabelProvider();
+        protected virtual IPlaneLabelControl DefaultLabelProvider()
+        {
+            throw new LiveChartsException(
+                $"A {nameof(IPlaneLabelControl)} was not found when trying to draw Plane in the UI", 115);
+        }
+
+        internal void ResetRange()
+        {
+            DataRange.MaxValue = double.MinValue;
+            DataRange.MinValue = double.MaxValue;
+        }
 
         #region IResource implementation
 
+        /// <inheritdoc />
         public event DisposingResourceHandler Disposed;
+
         object IResource.UpdateId { get; set; }
 
         /// <inheritdoc />

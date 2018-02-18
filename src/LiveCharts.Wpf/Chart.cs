@@ -23,9 +23,9 @@ namespace LiveCharts.Wpf
     /// <summary>
     /// Defines a chart class.
     /// </summary>
-    /// <seealso cref="System.Windows.Controls.Canvas" />
-    /// <seealso cref="LiveCharts.Core.Abstractions.IChartView" />
-    /// <seealso cref="LiveCharts.Core.Abstractions.IDesktopChart" />
+    /// <seealso cref="Canvas" />
+    /// <seealso cref="IChartView" />
+    /// <seealso cref="IDesktopChart" />
     public abstract class Chart : Canvas, IChartView, IDesktopChart
     {
         /// <summary>
@@ -90,7 +90,7 @@ namespace LiveCharts.Wpf
         /// The series property.
         /// </summary>
         public static readonly DependencyProperty SeriesProperty = DependencyProperty.Register(
-            nameof(Series), typeof(IEnumerable<BaseSeries>), typeof(Chart),
+            nameof(Series), typeof(IEnumerable<DataSet>), typeof(Chart),
             new PropertyMetadata(null, RaiseOnPropertyChanged(nameof(Series))));
 
         /// <summary>
@@ -288,9 +288,9 @@ namespace LiveCharts.Wpf
         IList<IList<Plane>> IChartView.Dimensions => GetPlanes();
 
         /// <inheritdoc cref="IChartView.Series"/>
-        public IEnumerable<BaseSeries> Series
+        public IEnumerable<DataSet> Series
         {
-            get => (IEnumerable<BaseSeries>)GetValue(SeriesProperty);
+            get => (IEnumerable<DataSet>)GetValue(SeriesProperty);
             set => SetValue(SeriesProperty, value);
         }
 

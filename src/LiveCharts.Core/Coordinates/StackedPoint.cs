@@ -53,9 +53,15 @@ namespace LiveCharts.Core.Coordinates
         public double TotalStacked => Value / Participation;
 
         /// <inheritdoc />
-        public bool CompareDimensions(DimensionRange[] dimensionRanges, SeriesSkipCriteria skipCriteria)
+        public void CompareDimensions(DataRange[] dimensions)
         {
-            throw new NotImplementedException();
+            var x = dimensions[0];
+            var y = dimensions[1];
+
+            if (Index > x.MaxValue) x.MaxValue = Index;
+            if (Index < x.MinValue) x.MinValue = Index;
+            if (Value > y.MaxValue) y.MaxValue = Value;
+            if (Value < y.MinValue) y.MinValue = Value;
         }
 
         /// <inheritdoc />

@@ -17,7 +17,7 @@ namespace LiveCharts.Core.Abstractions
         /// <param name="orientation">The orientation.</param>
         /// <param name="chart">The chart.</param>
         /// <returns></returns>
-        Size Measure(IEnumerable<BaseSeries> seriesCollection, Orientation orientation, IChartView chart);
+        Size Measure(IEnumerable<DataSet> seriesCollection, Orientation orientation, IChartView chart);
 
         /// <summary>
         /// Moves to the specified location.

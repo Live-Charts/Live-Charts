@@ -130,14 +130,13 @@ namespace LiveCharts.Core.Charts
                 View.UpdateDrawArea(new Rectangle(DrawAreaLocation, DrawAreaSize));
 
                 // draw separators
-
                 // for each dimension (for a cartesian chart X and Y)
                 foreach (var dimension in Dimensions)
                 {
                     // for each plane in each dimension, in this case CartesianLinearAxis, for convention named Axis
-                    foreach (var plane in dimension)
+                    foreach (var plane in dimension.OfType<Axis>())
                     {
-                        var axis = (Axis)plane;
+                        var axis = plane;
                         RegisterResource(axis);
                         axis.DrawSeparators(this);
                     }
@@ -217,32 +216,29 @@ namespace LiveCharts.Core.Charts
             double yt = 0, yr = 0, yb = 0, yl = 0;
 
             // for each dimension (for a cartesian chart X and Y)
-            for (var dimensionIndex = 0; dimensionIndex < Dimensions.Length; dimensionIndex++)
+            foreach (var dimension in Dimensions)
             {
-                var dimensionRanges = DataRangeMatrix[dimensionIndex];
-                var dimension = Dimensions[dimensionIndex];
-
                 // for each axis in each dimension
-                for (var index = 0; index < dimension.Length; index++)
+                foreach (var plane in dimension)
                 {
-                    var axis = (Axis) dimension[index];
+                    plane.PlaneType = Dimensions[0].Contains(plane) ? PlaneTypes.X : PlaneTypes.Y;
+                    
+                    // get the axis limits...
+                    plane.ActualMinValue = double.IsNaN(plane.MinValue)
+                        ? plane.DataRange.MinValue
+                        : plane.MinValue;
+                    plane.ActualMaxValue = double.IsNaN(plane.MaxValue)
+                        ? plane.DataRange.MaxValue
+                        : plane.MaxValue;
 
-                    axis.PlaneType = Dimensions[0].Contains(axis) ? PlaneTypes.X : PlaneTypes.Y;
+                    if (!requiresDrawMarginEvaluation) continue;
+                    if (!(plane is Axis axis)) continue;
+
                     axis.Position = axis.Position == AxisPosition.Auto
-                        ? (axis.PlaneType == PlaneTypes.X
+                        ? (plane.PlaneType == PlaneTypes.X
                             ? AxisPosition.Bottom
                             : AxisPosition.Left)
                         : axis.Position;
-
-                    // get the axis limits...
-                    axis.ActualMinValue = double.IsNaN(axis.MinValue)
-                        ? dimensionRanges[index].Min
-                        : axis.MinValue;
-                    axis.ActualMaxValue = double.IsNaN(axis.MaxValue)
-                        ? dimensionRanges[index].Max
-                        : axis.MaxValue;
-
-                    if (!requiresDrawMarginEvaluation) continue;
 
                     // we stack the axis required margin
                     var mi = axis.CalculateAxisMargin(this);

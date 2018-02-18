@@ -12,7 +12,7 @@ using LiveCharts.Core.ViewModels;
 namespace LiveCharts.Core.DataSeries
 {
     /// <summary>
-    /// A Column series.
+    /// The column series class.
     /// </summary>The column series class.
     /// <typeparam name="TModel">The type of the model.</typeparam>
     public class ColumnSeries<TModel>
@@ -25,7 +25,7 @@ namespace LiveCharts.Core.DataSeries
         {
             MaxColumnWidth = 45;
             ColumnPadding = 2d;
-            LiveChartsSettings.Build<IColumnSeries>(this);
+            LiveChartsSettings.Set<IColumnSeries>(this);
         }
 
         /// <summary>

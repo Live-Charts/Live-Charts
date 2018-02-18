@@ -107,7 +107,7 @@
 
         <Setter Property="ItemTemplate">
             <Setter.Value>
-                <DataTemplate DataType="{x:Type dataSeries:BaseSeries}">
+                <DataTemplate DataType="{x:Type dataSeries:DataSet}">
                     <StackPanel Orientation="Horizontal">
                         <Path Width="{Binding GeometrySize, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type controls:ChartLegend}}}"
                               Height="{Binding GeometrySize, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type controls:ChartLegend}}}"

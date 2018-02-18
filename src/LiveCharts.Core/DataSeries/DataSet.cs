@@ -8,20 +8,21 @@ using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Abstractions.DataSeries;
 using LiveCharts.Core.Charts;
 using LiveCharts.Core.Data;
+using LiveCharts.Core.Dimensions;
 using LiveCharts.Core.Drawing;
 using LiveCharts.Core.Drawing.Svg;
 using LiveCharts.Core.Events;
-using Point = LiveCharts.Core.Drawing.Point;
 using Size = LiveCharts.Core.Drawing.Size;
 using Font = LiveCharts.Core.Abstractions.Font;
+using Point = LiveCharts.Core.Drawing.Point;
 
 namespace LiveCharts.Core.DataSeries
 {
     /// <summary>
-    /// The series class, represents a series to plot in a chart.
+    /// The data set class, represents a series to plot in a chart.
     /// </summary>
     /// <seealso cref="IResource" />
-    public abstract class BaseSeries : IResource, ISeries, INotifyPropertyChanged, IList
+    public abstract class DataSet : IResource, ISeries, INotifyPropertyChanged, IList
     {
         private readonly List<ChartModel> _usedBy = new List<ChartModel>();
         private bool _isVisible;
@@ -39,12 +40,12 @@ namespace LiveCharts.Core.DataSeries
         private IEnumerable<double> _strokeDashArray;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="BaseSeries"/> class.
+        /// Initializes a new instance of the <see cref="DataSet"/> class.
         /// </summary>
-        protected BaseSeries()
+        protected DataSet()
         {
             IsVisible = true;
-            LiveChartsSettings.Build<ISeries>(this);
+            LiveChartsSettings.Set<ISeries>(this);
         }
 
         /// <inheritdoc />
@@ -269,6 +270,14 @@ namespace LiveCharts.Core.DataSeries
         /// The default width of the point.
         /// </value>
         public abstract Point DefaultPointWidth { get; }
+
+        /// <summary>
+        /// Gets the range by dimension.
+        /// </summary>
+        /// <value>
+        /// The range by dimension.
+        /// </value>
+        public DataRange[] RangeByDimension { get; protected set; }
 
         /// <inheritdoc />
         bool IList.IsReadOnly => OnIListIsReadOnly();
@@ -524,6 +533,15 @@ namespace LiveCharts.Core.DataSeries
             }
 
             return new Point(left, top);
+        }
+
+        internal void ResetRanges()
+        {
+            foreach (var dataRange in RangeByDimension)
+            {
+                dataRange.MaxValue = double.MinValue;
+                dataRange.MinValue = double.MaxValue;
+            }
         }
 
         internal void AddChart(ChartModel chart)

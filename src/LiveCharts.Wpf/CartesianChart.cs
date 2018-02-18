@@ -20,9 +20,10 @@ namespace LiveCharts.Wpf
         public CartesianChart()
         {
             Model = new CartesianChartModel(this);
-            SetValue(SeriesProperty, new PlotableCollection<BaseSeries>());
+            SetValue(SeriesProperty, new PlotableCollection<DataSet>());
             SetValue(XAxisProperty, new PlotableCollection<Plane> {new Axis()});
             SetValue(YAxisProperty, new PlotableCollection<Plane> {new Axis()});
+            SetValue(WeightPlaneProperty, new PlotableCollection<Plane> {new Plane()});
         }
 
         #region Dependency properties
@@ -39,6 +40,10 @@ namespace LiveCharts.Wpf
         /// </summary>
         public static readonly DependencyProperty YAxisProperty = DependencyProperty.Register(
             nameof(YAxis), typeof(IList<Plane>), typeof(CartesianChart),
+            new PropertyMetadata(null, RaiseOnPropertyChanged(nameof(IChartView.Dimensions))));
+
+        public static readonly DependencyProperty WeightPlaneProperty = DependencyProperty.Register(
+            nameof(WeightPlane), typeof(IList<Plane>), typeof(CartesianChart),
             new PropertyMetadata(null, RaiseOnPropertyChanged(nameof(IChartView.Dimensions))));
 
         #endregion
@@ -69,6 +74,18 @@ namespace LiveCharts.Wpf
             set => SetValue(YAxisProperty, value);
         }
 
+        /// <summary>
+        /// Gets or sets the weight plane.
+        /// </summary>
+        /// <value>
+        /// The weight plane.
+        /// </value>
+        public IList<Plane> WeightPlane
+        {
+            get => (IList<Plane>)GetValue(WeightPlaneProperty);
+            set => SetValue(WeightPlaneProperty, value);
+        }
+
         #endregion
 
         /// <inheritdoc cref="Chart.GetPlanes"/>
@@ -77,7 +94,8 @@ namespace LiveCharts.Wpf
             return new List<IList<Plane>>
             {
                 XAxis,
-                YAxis
+                YAxis,
+                WeightPlane
             };
         }
     }

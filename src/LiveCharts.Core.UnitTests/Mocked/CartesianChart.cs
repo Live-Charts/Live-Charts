@@ -29,7 +29,7 @@ namespace LiveCharts.Core.UnitTests.Mocked
             });
         }
 
-        private IEnumerable<BaseSeries> _series;
+        private IEnumerable<DataSet> _series;
         private TimeSpan _animationsSpeed;
         private TimeSpan _tooltipTimeOut;
         private ILegend _legend;
@@ -103,7 +103,7 @@ namespace LiveCharts.Core.UnitTests.Mocked
             }
         }
 
-        public IEnumerable<BaseSeries> Series
+        public IEnumerable<DataSet> Series
         {
             get => _series;
             set

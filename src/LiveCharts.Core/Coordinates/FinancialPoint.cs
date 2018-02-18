@@ -1,6 +1,5 @@
 using System;
 using LiveCharts.Core.Abstractions;
-using LiveCharts.Core.Data;
 using LiveCharts.Core.Dimensions;
 
 namespace LiveCharts.Core.Coordinates
@@ -67,18 +66,16 @@ namespace LiveCharts.Core.Coordinates
         /// </value>
         public double Close { get; }
 
-        /// <inheritdoc cref="ICoordinate.CompareDimensions"/>
-        public bool CompareDimensions(DimensionRange[] dimensionRanges, SeriesSkipCriteria skipCriteria)
+        /// <inheritdoc />
+        public void CompareDimensions(DataRange[] dimensions)
         {
-            var indexDimensionRange = dimensionRanges[0];
-            var yDimensionRange = dimensionRanges[1];
+            var x = dimensions[0];
+            var y = dimensions[1];
 
-            if (Index > indexDimensionRange.Max) indexDimensionRange.Max = Index;
-            if (Index < indexDimensionRange.Min) indexDimensionRange.Min = Index;
-            if (High > yDimensionRange.Max) yDimensionRange.Max = High;
-            if (Low < yDimensionRange.Min) yDimensionRange.Min = Low;
-
-            return false;
+            if (Index > x.MaxValue) x.MaxValue = Index;
+            if (Index < x.MinValue) x.MinValue = Index;
+            if (High > y.MaxValue) y.MaxValue = High;
+            if (Low < y.MinValue) y.MinValue = Low;
         }
 
         /// <inheritdoc />

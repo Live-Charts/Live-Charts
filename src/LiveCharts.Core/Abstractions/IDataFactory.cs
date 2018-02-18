@@ -17,7 +17,7 @@ namespace LiveCharts.Core.Abstractions
         /// <typeparam name="TViewModel">The type of the view model.</typeparam>
         /// <param name="args">The arguments.</param>
         /// <returns></returns>
-        IEnumerable<TPoint> FetchData<TModel, TCoordinate, TViewModel, TPoint>(
+        IEnumerable<TPoint> Fetch<TModel, TCoordinate, TViewModel, TPoint>(
             DataFactoryArgs<TModel, TCoordinate, TViewModel, TPoint> args)
             where TPoint : Point<TModel, TCoordinate, TViewModel>, new()
             where TCoordinate : ICoordinate;

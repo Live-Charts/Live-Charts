@@ -14,7 +14,7 @@ using LiveCharts.Core.ViewModels;
 namespace LiveCharts.Core.DataSeries
 {
     /// <summary>
-    /// 
+    /// The line series class.
     /// </summary>
     /// <typeparam name="TModel">The type of the model.</typeparam>
     public class LineSeries<TModel>
@@ -25,7 +25,7 @@ namespace LiveCharts.Core.DataSeries
         /// </summary>
         public LineSeries()
         {
-            LiveChartsSettings.Build<ILineSeries>(this);
+            LiveChartsSettings.Set<ILineSeries>(this);
         }
 
         /// <summary>
