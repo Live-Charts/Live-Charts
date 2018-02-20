@@ -225,32 +225,6 @@ namespace LiveCharts.Core.Charts
         public abstract double ScaleFromUi(double pixelsValue, Plane plane, double[] sizeVector = null);
 
         /// <summary>
-        /// Scales a point to the UI.
-        /// </summary>
-        /// <param name="point">The point.</param>
-        /// <param name="x">The x.</param>
-        /// <param name="y">The y.</param>
-        /// /// <param name="sizeVector">The draw margin, this param is optional, if not set, the current chart's draw margin area will be used.</param>
-        /// <returns></returns>
-        public Point2D ScaleToUi(Point2D point, Plane x, Plane y, double[] sizeVector = null)
-        {
-            return new Point2D(ScaleToUi(point.X, x, sizeVector), ScaleToUi(point.Y, y, sizeVector));
-        }
-
-        /// <summary>
-        /// Scales to UI.
-        /// </summary>
-        /// <param name="point">The point.</param>
-        /// <param name="x">The x.</param>
-        /// <param name="y">The y.</param>
-        /// <param name="sizeVector">The draw margin, this param is optional, if not set, the current chart's draw margin area will be used.</param>
-        /// <returns></returns>
-        public Point ScaleToUi(Point point, Plane x, Plane y, double[] sizeVector = null)
-        {
-            return new Point(ScaleToUi(point.X, x, sizeVector), ScaleToUi(point.Y, y, sizeVector));
-        }
-
-        /// <summary>
         /// Selects the points.
         /// </summary>
         /// <param name="dimensions">The dimensions.</param>

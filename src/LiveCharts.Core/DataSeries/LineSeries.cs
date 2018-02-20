@@ -66,18 +66,22 @@ namespace LiveCharts.Core.DataSeries
 
             foreach (var bezier in GetBeziers(unitWidth, cartesianChart, x, y))
             {
-                var p = chart.ScaleToUi(bezier.Point.Coordinate, x, y);
+                var p = new[]
+                {
+                    chart.ScaleToUi(bezier.Point.Coordinate.X, x),
+                    chart.ScaleToUi(bezier.Point.Coordinate.Y, y)
+                };
                 if (isFist)
                 {
                     _path.SetStyle(bezier.ViewModel.Point1, Stroke, Fill, StrokeThickness, StrokeDashArray);
                     isFist = false;
-                    i = p.X;
+                    i = p[0];
                 }
 
                 bezier.Point.InteractionArea = new RectangleInteractionArea
                 {
-                    Top = p.Y - GeometrySize * .5,
-                    Left = p.X - GeometrySize * .5,
+                    Top = p[1] - GeometrySize * .5,
+                    Left = p[0] - GeometrySize * .5,
                     Height = GeometrySize,
                     Width = GeometrySize
                 };
@@ -95,7 +99,7 @@ namespace LiveCharts.Core.DataSeries
 
                 previous = bezier.Point;
                 lenght += bezier.ViewModel.AproxLength;
-                j = p.X;
+                j = p[0];
             }
 
             _path.Close(chart.View, lenght, i, j);
@@ -191,7 +195,10 @@ namespace LiveCharts.Core.DataSeries
                 previous = current;
                 current = next;
                 next = nextNext;
-                nextNext = chart.ScaleToUi(new Point(pnn.Coordinate.X, pnn.Coordinate.Y), x, y) + offset;
+                nextNext = new Point(
+                               chart.ScaleToUi(pnn.Coordinate.X, x),
+                               chart.ScaleToUi(pnn.Coordinate.Y, y)
+                           ) + offset;
             }
 
             while (e.MoveNext())

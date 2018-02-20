@@ -54,7 +54,8 @@ namespace LiveCharts.Core.DataSeries
             var x = cartesianChart.XAxis[ScalesXAt];
             var y = cartesianChart.YAxis[ScalesYAt];
 
-            var xUnitWidth = Math.Abs(chart.ScaleToUi(0, x) - chart.ScaleToUi(x.ActualPointWidth[x.Dimension], x)) - ColumnPadding;
+            var xUnitWidth = Math.Abs(chart.ScaleToUi(0, x) - chart.ScaleToUi(x.ActualPointWidth[x.Dimension], x)) -
+                             ColumnPadding;
             var columnSeries = chart.Series
                 .Where(series => series is IColumnSeries)
                 .ToList();
@@ -71,22 +72,26 @@ namespace LiveCharts.Core.DataSeries
             var relativeLeft = ColumnPadding + overFlow + singleColumnWidth * seriesPosition;
 
             var startAt = x.ActualMinValue >= 0 && y.ActualMaxValue > 0 // both positive
-                ? y.ActualMinValue                                      // then use axisYMin
-                : (y.ActualMinValue < 0 && y.ActualMaxValue <= 0        // both negative
-                    ? y.ActualMaxValue                                  // then use axisYMax
+                ? y.ActualMinValue // then use axisYMin
+                : (y.ActualMinValue < 0 && y.ActualMaxValue <= 0 // both negative
+                    ? y.ActualMaxValue // then use axisYMax
                     : 0);
             var zero = chart.ScaleToUi(startAt, y);
 
             Point<TModel, Point2D, ColumnViewModel> previous = null;
             foreach (var current in Points)
             {
-                var p = chart.ScaleToUi(current.Coordinate, x, y);
+                var p = new[]
+                {
+                    chart.ScaleToUi(current.Coordinate.X, x),
+                    chart.ScaleToUi(current.Coordinate.Y, y)
+                };
                 var vm = new ColumnViewModel(
-                    p.X + relativeLeft,
-                    p.Y < zero
-                        ? p.Y
+                    p[0] + relativeLeft,
+                    p[1] < zero
+                        ? p[1]
                         : zero,
-                    Math.Abs(p.Y - zero),
+                    Math.Abs(p[1] - zero),
                     singleColumnWidth - ColumnPadding,
                     zero);
 
@@ -106,12 +111,12 @@ namespace LiveCharts.Core.DataSeries
                     Width = vm.Width
                 };
 
-                if (DataLabels && x.IsInRange(p.X) && y.IsInRange(p.Y))
+                if (DataLabels && x.IsInRange(p[0]) && y.IsInRange(p[1]))
                 {
                     current.View.DrawLabel(
                         current,
                         GetLabelPosition(
-                            new Point(p.X, p.Y),
+                            new Point(p[0], p[1]),
                             new Margin(0),
                             zero,
                             current.View.Label.Measure(current.PackAll()),

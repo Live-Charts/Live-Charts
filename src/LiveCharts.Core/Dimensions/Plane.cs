@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using LiveCharts.Core.Abstractions;
+using LiveCharts.Core.Charts;
 using LiveCharts.Core.Events;
 
 namespace LiveCharts.Core.Dimensions
@@ -208,6 +209,20 @@ namespace LiveCharts.Core.Dimensions
         public bool IsInRange(double value)
         {
             return value >= ActualMinValue && value <= ActualMaxValue;
+        }
+
+        /// <summary>
+        /// Gets the UI unit width.
+        /// </summary>
+        /// <param name="chart">The chart.</param>
+        /// <returns></returns>
+        public double[] Get2DUiUnitWidth(ChartModel chart)
+        {
+            return new[]
+            {
+                chart.ScaleToUi(0, this) - chart.ScaleToUi(PointWidth[0], this),
+                chart.ScaleToUi(0, this) - chart.ScaleToUi(PointWidth[1], this)
+            };
         }
 
         /// <inheritdoc cref="IDisposable.Dispose"/>
