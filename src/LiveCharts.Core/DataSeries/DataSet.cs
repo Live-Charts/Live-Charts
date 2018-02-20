@@ -269,7 +269,7 @@ namespace LiveCharts.Core.DataSeries
         /// <value>
         /// The default width of the point.
         /// </value>
-        public abstract Point DefaultPointWidth { get; }
+        public abstract double[] DefaultPointWidth { get; }
 
         /// <summary>
         /// Gets the range by dimension.

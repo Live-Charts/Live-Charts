@@ -279,7 +279,7 @@ namespace LiveCharts.Wpf
         public ChartModel Model { get; protected set; }
 
         /// <inheritdoc cref="IChartView.ControlSize"/>
-        Size IChartView.ControlSize => new Size((int)ActualWidth, (int)ActualHeight);
+        double[] IChartView.ControlSize => new [] {ActualWidth, ActualHeight};
 
         /// <inheritdoc cref="IChartView.DrawMargin"/>
         public Margin DrawMargin { get; set; }

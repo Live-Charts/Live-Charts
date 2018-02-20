@@ -45,7 +45,7 @@ namespace LiveCharts.Core.DataSeries
         public double ColumnPadding { get; set; }
 
         /// <inheritdoc />
-        public override Point DefaultPointWidth => new Point(1, 0);
+        public override double[] DefaultPointWidth => new[] {1d, 0d};
 
         /// <inheritdoc />
         public override void UpdateView(ChartModel chart)
@@ -54,7 +54,7 @@ namespace LiveCharts.Core.DataSeries
             var x = cartesianChart.XAxis[ScalesXAt];
             var y = cartesianChart.YAxis[ScalesYAt];
 
-            var xUnitWidth = Math.Abs(chart.ScaleToUi(0, x) - chart.ScaleToUi(x.ActualPointWidth.X, x)) - ColumnPadding;
+            var xUnitWidth = Math.Abs(chart.ScaleToUi(0, x) - chart.ScaleToUi(x.ActualPointWidth[x.Dimension], x)) - ColumnPadding;
             var columnSeries = chart.Series
                 .Where(series => series is IColumnSeries)
                 .ToList();

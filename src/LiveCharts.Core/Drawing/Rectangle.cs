@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace LiveCharts.Core.Drawing
 {
@@ -33,6 +34,19 @@ namespace LiveCharts.Core.Drawing
             Left = left;
             Width = width;
             Height = height;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Rectangle"/> struct.
+        /// </summary>
+        /// <param name="point">The point.</param>
+        /// <param name="size">The size.</param>
+        public Rectangle(IReadOnlyList<double> point, IReadOnlyList<double> size)
+        {
+            Top = point[1];
+            Left = point[0];
+            Width = size[0];
+            Height = size[1];
         }
 
         /// <summary>

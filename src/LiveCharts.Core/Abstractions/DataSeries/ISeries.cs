@@ -40,7 +40,7 @@ namespace LiveCharts.Core.Abstractions.DataSeries
         /// <value>
         /// The default width of the point.
         /// </value>
-        Point DefaultPointWidth { get; }
+        double[] DefaultPointWidth { get; }
 
         /// <summary>
         /// Gets or sets the fill.

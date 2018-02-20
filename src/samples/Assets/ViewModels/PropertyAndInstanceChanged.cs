@@ -29,23 +29,15 @@ namespace Assets.ViewModels
             {
                 new City
                 {
-                    Population = 9
+                    Population = 1
                 },
                 new City
-                {
-                    Population = 4
-                },
-                new City
-                {
-                    Population = -5
-                },
-                new City
-                {
-                    Population = 9
-
-                },new City
                 {
                     Population = 2
+                },
+                new City
+                {
+                    Population = 3
                 }
             };
 

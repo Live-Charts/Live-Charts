@@ -58,7 +58,7 @@ namespace LiveCharts.Wpf.Separators
             }
 
             var axis = (Axis)args.Plane;
-            var style = args.Plane.PlaneType == PlaneTypes.X
+            var style = args.Plane.Dimension == 0
                 ? (args.IsAlternative ? axis.XAlternativeSeparatorStyle : axis.XSeparatorStyle)
                 : (args.IsAlternative ? axis.YAlternativeSeparatorStyle : axis.YSeparatorStyle);
             var st = double.IsNaN(style.StrokeThickness) ? 0 : style.StrokeThickness;

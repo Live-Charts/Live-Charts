@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Coordinates;
 using LiveCharts.Core.Dimensions;
 using LiveCharts.Core.Drawing;
-using Size = LiveCharts.Core.Drawing.Size;
 
 namespace LiveCharts.Core.Charts
 {
@@ -37,29 +37,25 @@ namespace LiveCharts.Core.Charts
         public IList<Plane> YAxis => Dimensions[1];
 
         /// <inheritdoc />
-        public override double ScaleToUi(double dataValue, Plane plane, Size? size = null)
+        public override double ScaleToUi(double dataValue, Plane plane, double[] sizeVector = null)
         {
-            var chartSize = size ?? DrawAreaSize;
+            var chartSize = sizeVector ?? DrawAreaSize;
 
             // based on the linear equation
             // y = m * (x - x1) + y1 
             // where x is the Series.Values scale and y the UI scale
 
-            double x1, x2, y1, y2;
+            var x1 = plane.ActualMaxValue + (plane.ActualPointWidth?[plane.Dimension] ?? 0);
+            var y1 = chartSize[plane.Dimension];
+            var x2 = plane.ActualMinValue;
+            double y2 = 0;
 
-            if (plane.PlaneType == PlaneTypes.X)
+            if (plane.ActualReverse)
             {
-                x1 = plane.ActualMaxValue + plane.ActualPointWidth.X;
-                y1 = chartSize.Width;
-                x2 = plane.ActualMinValue;
-                y2 = 0;
-            }
-            else
-            {
-                x1 = plane.ActualMaxValue + plane.ActualPointWidth.Y;
-                y1 = 0;
-                x2 = plane.ActualMinValue;
-                y2 = chartSize.Height;
+                var temp1 = y1;
+                var temp2 = y2;
+                y1 = temp2;
+                y2 = temp1;
             }
 
             var m = (y2 - y1) / (x2 - x1);
@@ -68,9 +64,9 @@ namespace LiveCharts.Core.Charts
         }
 
         /// <inheritdoc />
-        public override double ScaleFromUi(double pixelsValue, Plane plane, Size? size = null)
+        public override double ScaleFromUi(double pixelsValue, Plane plane, double[] sizeVector = null)
         {
-            var chartSize = size ?? DrawAreaSize;
+            var chartSize = sizeVector ?? DrawAreaSize;
 
             // based on the linear equation
             // y = m * (x - x1) + y1 
@@ -78,22 +74,10 @@ namespace LiveCharts.Core.Charts
             // then
             // x = ((y - y1) / m) + x1
 
-            double x1, x2, y1, y2;
-
-            if (plane.PlaneType == PlaneTypes.X)
-            {
-                x1 = plane.ActualMaxValue + plane.ActualPointWidth.X;
-                y1 = chartSize.Width;
-                x2 = plane.ActualMinValue + plane.ActualPointWidth.Y;
-                y2 = 0;
-            }
-            else
-            {
-                x1 = plane.ActualMaxValue;
-                y1 = 0;
-                x2 = plane.ActualMinValue;
-                y2 = chartSize.Height;
-            }
+            var x1 = plane.ActualMaxValue + (plane.ActualPointWidth?[plane.Dimension] ?? 0);
+            var y1 = chartSize[plane.Dimension];
+            var x2 = plane.ActualMinValue;
+            double y2 = 0;
 
             var m = (y2 - y1) / (x2 - x1);
 
@@ -112,14 +96,20 @@ namespace LiveCharts.Core.Charts
 
                 // see appendix/chart.spacing.png
                 var drawMargin = EvaluateAxisAndGetDrawMargin();
-                DrawAreaSize = new Size(
-                    DrawAreaSize.Width - drawMargin.Left - drawMargin.Right,
-                    DrawAreaSize.Height - drawMargin.Top - drawMargin.Bottom);
-                DrawAreaLocation = new Point(
-                    DrawAreaLocation.X + drawMargin.Left,
-                    DrawAreaLocation.Y + drawMargin.Top);
 
-                if (DrawAreaSize.Width <= 0 || DrawAreaSize.Height <= 0)
+                DrawAreaSize = new[]
+                {
+                    DrawAreaSize[0] - drawMargin.Left - drawMargin.Right,
+                    DrawAreaSize[1] - drawMargin.Top - drawMargin.Bottom
+                };
+
+                DrawAreaLocation = new[]
+                {
+                    DrawAreaLocation[0] + drawMargin.Left,
+                    DrawAreaLocation[1] + drawMargin.Top
+                };
+
+                if (DrawAreaSize[0] <= 0 || DrawAreaSize[1] <= 0)
                 {
                     // skip update if the chart is too small.
                     // and lets delete its content...
@@ -216,13 +206,14 @@ namespace LiveCharts.Core.Charts
             double yt = 0, yr = 0, yb = 0, yl = 0;
 
             // for each dimension (for a cartesian chart X and Y)
-            foreach (var dimension in Dimensions)
+            for (var index = 0; index < Dimensions.Length; index++)
             {
-                // for each axis in each dimension
+                var dimension = Dimensions[index];
+// for each axis in each dimension
                 foreach (var plane in dimension)
                 {
-                    plane.PlaneType = Dimensions[0].Contains(plane) ? PlaneTypes.X : PlaneTypes.Y;
-                    
+                    plane.Dimension = index;
+
                     // get the axis limits...
                     plane.ActualMinValue = double.IsNaN(plane.MinValue)
                         ? plane.DataRange.MinValue
@@ -231,11 +222,14 @@ namespace LiveCharts.Core.Charts
                         ? plane.DataRange.MaxValue
                         : plane.MaxValue;
 
+                    plane.ActualReverse = index == 1;
+                    if (plane.Reverse) plane.ActualReverse = !plane.ActualReverse;
+
                     if (!requiresDrawMarginEvaluation) continue;
                     if (!(plane is Axis axis)) continue;
 
                     axis.Position = axis.Position == AxisPosition.Auto
-                        ? (plane.PlaneType == PlaneTypes.X
+                        ? (plane.Dimension == 0
                             ? AxisPosition.Bottom
                             : AxisPosition.Left)
                         : axis.Position;

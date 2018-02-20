@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using LiveCharts.Core.Abstractions;
-using LiveCharts.Core.Drawing;
 using LiveCharts.Core.Events;
 
 namespace LiveCharts.Core.Dimensions
@@ -13,7 +12,7 @@ namespace LiveCharts.Core.Dimensions
     /// </summary>
     public class Plane : IResource, INotifyPropertyChanged
     {
-        private Point _pointWidth;
+        private double[] _pointWidth;
         private Font _font;
         private Func<double, string> _labelFormatter;
 
@@ -25,7 +24,6 @@ namespace LiveCharts.Core.Dimensions
             MinValue = double.NaN;
             MaxValue = double.NaN;
             DataRange = new DataRange();
-            _pointWidth = Point.Empty;
             LiveChartsSettings.Set(this);
         }
 
@@ -75,7 +73,7 @@ namespace LiveCharts.Core.Dimensions
         /// <value>
         /// The actual point unit.
         /// </value>
-        public Point ActualPointWidth { get; internal set; }
+        public double[] ActualPointWidth { get; internal set; }
 
         /// <summary>
         /// Gets or sets the width of the point.
@@ -83,13 +81,13 @@ namespace LiveCharts.Core.Dimensions
         /// <value>
         /// The width of the point.
         /// </value>
-        public Point PointWidth
+        public double[] PointWidth
         {
             get => _pointWidth;
             set
             {
                 _pointWidth = value;
-                ActualPointWidth = new Point(0, 0);
+                ActualPointWidth = new [] {0d, 0d};
             }
         }
 
@@ -166,12 +164,22 @@ namespace LiveCharts.Core.Dimensions
         }
 
         /// <summary>
-        /// Gets the type.
+        /// Gets the dimension affected, for a cartesian chart -> 0: X, 1: Y.
         /// </summary>
         /// <value>
-        /// The type.
+        /// The index.
         /// </value>
-        public PlaneTypes PlaneType { get; internal set; }
+        public int Dimension { get; internal set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether this <see cref="Plane"/> is drawn in reverse.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if reverse; otherwise, <c>false</c>.
+        /// </value>
+        public bool Reverse { get; set; }
+
+        internal bool ActualReverse { get; set; }
 
         /// <summary>
         /// Formats a given value according to the axis, <see cref="LabelFormatter"/> and <see cref="Labels"/> properties.

@@ -31,7 +31,7 @@ namespace LiveCharts.Core.DataSeries
         }
 
         /// <inheritdoc />
-        public override Point DefaultPointWidth => new Point(0, 0);
+        public override double[] DefaultPointWidth => new []{0d,0d};
 
         /// <inheritdoc />
         public override void UpdateView(ChartModel chart)
@@ -40,8 +40,8 @@ namespace LiveCharts.Core.DataSeries
             var x = cartesianChart.XAxis[ScalesXAt];
             var y = cartesianChart.YAxis[ScalesYAt];
             var unitWidth = new Point(
-                Math.Abs(chart.ScaleToUi(0, x) - chart.ScaleToUi(x.ActualPointWidth.X, x)),
-                Math.Abs(chart.ScaleToUi(0, y) - chart.ScaleToUi(y.ActualPointWidth.Y, y)));
+                Math.Abs(chart.ScaleToUi(0, x) - chart.ScaleToUi(x.ActualPointWidth[x.Dimension], x)),
+                Math.Abs(chart.ScaleToUi(0, y) - chart.ScaleToUi(y.ActualPointWidth[y.Dimension], y)));
 
             //foreach (var current in Points)
             //{

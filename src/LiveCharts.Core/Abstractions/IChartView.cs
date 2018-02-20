@@ -64,7 +64,7 @@ namespace LiveCharts.Core.Abstractions
         /// <value>
         /// The size of the control.
         /// </value>
-        Size ControlSize { get; }
+        double[] ControlSize { get; }
 
         /// <summary>
         /// Gets the size of the draw margin.

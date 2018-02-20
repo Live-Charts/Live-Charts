@@ -6,7 +6,6 @@ using LiveCharts.Core.DataSeries;
 using LiveCharts.Core.Events;
 using Orientation = LiveCharts.Core.Abstractions.Orientation;
 using Point = LiveCharts.Core.Drawing.Point;
-using Size = LiveCharts.Core.Drawing.Size;
 
 namespace LiveCharts.Wpf.Controls
 {
@@ -114,7 +113,7 @@ namespace LiveCharts.Wpf.Controls
             }
         }
 
-        Size ILegend.Measure(
+        double[] ILegend.Measure(
             IEnumerable<DataSet> seriesCollection, 
             Orientation orientation,
             IChartView chart)
@@ -139,7 +138,7 @@ namespace LiveCharts.Wpf.Controls
                 SetValue(ActualOrientationProperty, Orientation.AsWpf());
             }
             UpdateLayout();
-            return new Size(DesiredSize.Width, DesiredSize.Width);
+            return new[] {DesiredSize.Width, DesiredSize.Height};
         }
 
         void ILegend.Move(Point location, IChartView chart)

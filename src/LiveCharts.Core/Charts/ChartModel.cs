@@ -15,7 +15,6 @@ using LiveCharts.Core.Dimensions;
 using LiveCharts.Core.Drawing;
 using LiveCharts.Core.Events;
 using Point = LiveCharts.Core.Drawing.Point;
-using Size = LiveCharts.Core.Drawing.Size;
 
 namespace LiveCharts.Core.Charts
 {
@@ -74,7 +73,7 @@ namespace LiveCharts.Core.Charts
         /// <value>
         /// The draw area location.
         /// </value>
-        public Point DrawAreaLocation { get; set; }
+        public double[] DrawAreaLocation { get; set; }
 
         /// <summary>
         /// Gets or sets the size of the draw area.
@@ -82,7 +81,7 @@ namespace LiveCharts.Core.Charts
         /// <value>
         /// The size of the draw area.
         /// </value>
-        public Size DrawAreaSize { get; set; }
+        public double[] DrawAreaSize { get; set; }
 
         /// <summary>
         /// Gets the chart view.
@@ -173,7 +172,7 @@ namespace LiveCharts.Core.Charts
 
         internal Plane[][] Dimensions { get; set; }
 
-        internal Size ControlSize { get; set; }
+        internal double[] ControlSize { get; set; }
 
         internal Margin DrawMargin { get; set; }
 
@@ -211,19 +210,19 @@ namespace LiveCharts.Core.Charts
         /// </summary>
         /// <param name="dataValue">The value.</param>
         /// <param name="plane">The axis.</param>
-        /// <param name="size">The draw margin, this param is optional, if not set, the current chart's draw margin area will be used.</param>
+        /// <param name="sizeVector">The draw margin, this param is optional, if not set, the current chart's draw margin area will be used.</param>
         /// <returns></returns>
-        public abstract double ScaleToUi(double dataValue, Plane plane, Size? size = null);
+        public abstract double ScaleToUi(double dataValue, Plane plane, double[] sizeVector = null);
 
         /// <summary>
         /// Scales from pixels to a data value.
         /// </summary>
         /// <param name="pixelsValue">The value.</param>
         /// <param name="plane">The plane.</param>
-        /// <param name="size">The size.</param>
+        /// <param name="sizeVector">The size.</param>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
-        public abstract double ScaleFromUi(double pixelsValue, Plane plane, Size? size = null);
+        public abstract double ScaleFromUi(double pixelsValue, Plane plane, double[] sizeVector = null);
 
         /// <summary>
         /// Scales a point to the UI.
@@ -231,11 +230,11 @@ namespace LiveCharts.Core.Charts
         /// <param name="point">The point.</param>
         /// <param name="x">The x.</param>
         /// <param name="y">The y.</param>
-        /// /// <param name="size">The draw margin, this param is optional, if not set, the current chart's draw margin area will be used.</param>
+        /// /// <param name="sizeVector">The draw margin, this param is optional, if not set, the current chart's draw margin area will be used.</param>
         /// <returns></returns>
-        public Point2D ScaleToUi(Point2D point, Plane x, Plane y, Size? size = null)
+        public Point2D ScaleToUi(Point2D point, Plane x, Plane y, double[] sizeVector = null)
         {
-            return new Point2D(ScaleToUi(point.X, x, size), ScaleToUi(point.Y, y, size));
+            return new Point2D(ScaleToUi(point.X, x, sizeVector), ScaleToUi(point.Y, y, sizeVector));
         }
 
         /// <summary>
@@ -244,11 +243,11 @@ namespace LiveCharts.Core.Charts
         /// <param name="point">The point.</param>
         /// <param name="x">The x.</param>
         /// <param name="y">The y.</param>
-        /// <param name="size">The draw margin, this param is optional, if not set, the current chart's draw margin area will be used.</param>
+        /// <param name="sizeVector">The draw margin, this param is optional, if not set, the current chart's draw margin area will be used.</param>
         /// <returns></returns>
-        public Point ScaleToUi(Point point, Plane x, Plane y, Size? size = null)
+        public Point ScaleToUi(Point point, Plane x, Plane y, double[] sizeVector = null)
         {
-            return new Point(ScaleToUi(point.X, x, size), ScaleToUi(point.Y, y, size));
+            return new Point(ScaleToUi(point.X, x, sizeVector), ScaleToUi(point.Y, y, sizeVector));
         }
 
         /// <summary>
@@ -307,7 +306,7 @@ namespace LiveCharts.Core.Charts
                 {
                     if (series.ScalesAt.Length <= i) continue;
                     var plane = Dimensions[i][series.ScalesAt[i]];
-                    if (plane.PointWidth == Point.Empty) plane.ActualPointWidth = series.DefaultPointWidth;
+                    if (plane.PointWidth == null) plane.ActualPointWidth = series.DefaultPointWidth;
                     plane.ResetRange();
                     if (series.RangeByDimension[i].MaxValue > plane.DataRange.MaxValue) plane.DataRange.MaxValue = series.RangeByDimension[i].MaxValue;
                     if (series.RangeByDimension[i].MinValue < plane.DataRange.MinValue) plane.DataRange.MinValue = series.RangeByDimension[i].MinValue;
@@ -332,24 +331,24 @@ namespace LiveCharts.Core.Charts
                     case LegendPosition.None:
                         break;
                     case LegendPosition.Top:
-                        day = legendSize.Height;
-                        lh = legendSize.Height;
-                        lx = ControlSize.Width * .5 - legendSize.Width * .5;
+                        day = legendSize[1];
+                        lh = legendSize[1];
+                        lx = ControlSize[0] * .5 - legendSize[0] * .5;
                         break;
                     case LegendPosition.Bottom:
-                        lh = legendSize.Height;
-                        lx = chartSize.Width * .5 - legendSize.Width * .5;
-                        ly = chartSize.Height - legendSize.Height;
+                        lh = legendSize[1];
+                        lx = chartSize[0] * .5 - legendSize[0] * .5;
+                        ly = chartSize[1] - legendSize[1];
                         break;
                     case LegendPosition.Left:
-                        dax = legendSize.Width;
-                        lw = legendSize.Width;
-                        ly = chartSize.Height * .5 - legendSize.Height * .5;
+                        dax = legendSize[0];
+                        lw = legendSize[0];
+                        ly = chartSize[1] * .5 - legendSize[1] * .5;
                         break;
                     case LegendPosition.Right:
-                        lw = legendSize.Width;
-                        lx = chartSize.Width - legendSize.Width;
-                        ly = chartSize.Height * .5 - legendSize.Height * .5;
+                        lw = legendSize[0];
+                        lx = chartSize[0] - legendSize[0];
+                        ly = chartSize[1] * .5 - legendSize[1] * .5;
                         break;
                     default:
                         throw new ArgumentOutOfRangeException();
@@ -358,8 +357,8 @@ namespace LiveCharts.Core.Charts
                 Legend.Move(new Point(lx, ly), View);
             }
 
-            DrawAreaLocation = new Point(dax, day);
-            DrawAreaSize = chartSize - new Size(lw, lh);
+            DrawAreaLocation = new[] {dax, day};
+            DrawAreaSize = Vector.Substract2D(chartSize, new[] {lw, lh});
         }
 
         internal Color GetNextColor()

@@ -28,32 +28,17 @@ namespace LiveCharts.Core.DataSeries
             LiveChartsSettings.Set<ILineSeries>(this);
         }
 
-        /// <summary>
-        /// Gets or sets the line smoothness, goes from 0 to 1, 0: straight lines, 1: max curved line.
-        /// </summary>
-        /// <value>
-        /// The line smoothness.
-        /// </value>
+        /// <inheritdoc />
         public double LineSmoothness { get; set; }
 
-        /// <summary>
-        /// Gets or sets the point geometry.
-        /// </summary>
-        /// <value>
-        /// The point geometry.
-        /// </value>
+        /// <inheritdoc />
         public Geometry PointGeometry { get; set; }
 
-        /// <summary>
-        /// Gets or sets the size of the geometry.
-        /// </summary>
-        /// <value>
-        /// The size of the geometry.
-        /// </value>
+        /// <inheritdoc />
         public double GeometrySize { get; set; }
 
         /// <inheritdoc />
-        public override Point DefaultPointWidth => Point.Empty;
+        public override double[] DefaultPointWidth => new[] {0d, 0d};
 
         private ICartesianPath _path;
 
@@ -64,8 +49,8 @@ namespace LiveCharts.Core.DataSeries
             var x = cartesianChart.XAxis[ScalesXAt];
             var y = cartesianChart.YAxis[ScalesYAt];
             var unitWidth = new Point(
-                Math.Abs(chart.ScaleToUi(0, x) - chart.ScaleToUi(x.ActualPointWidth.X, x)),
-                Math.Abs(chart.ScaleToUi(0, y) - chart.ScaleToUi(y.ActualPointWidth.Y, y)));
+                Math.Abs(chart.ScaleToUi(0, x) - chart.ScaleToUi(x.ActualPointWidth[x.Dimension], x)),
+                Math.Abs(chart.ScaleToUi(0, y) - chart.ScaleToUi(y.ActualPointWidth[y.Dimension], y)));
 
             Point<TModel, Point2D, BezierViewModel> previous = null;
 

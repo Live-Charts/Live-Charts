@@ -107,10 +107,11 @@ namespace LiveCharts.Core.Dimensions
         /// </returns>
         public override string ToString()
         {
-            return $"{PlaneType} at {Position}, from {FormatValue(ActualMinValue)} to {FormatValue(ActualMaxValue)} @ {FormatValue(ActualStep)}";
+            var d = Dimension == 0 ? "X" : "Y";
+            return $"{d} at {Position}, from {FormatValue(ActualMinValue)} to {FormatValue(ActualMaxValue)} @ {FormatValue(ActualStep)}";
         }
 
-        internal Margin CalculateAxisMargin(ChartModel chart)
+        internal Margin CalculateAxisMargin(ChartModel sizeVector)
         {
             #region note
 
@@ -135,43 +136,33 @@ namespace LiveCharts.Core.Dimensions
             // ... this is not supported for now.
             #endregion
 
-            var space = chart.DrawAreaSize;
-            if (!(PlaneType == PlaneTypes.X || PlaneType == PlaneTypes.Y))
+            var space = sizeVector.DrawAreaSize;
+            if (!(Dimension == 0 || Dimension == 1))
             {
                 throw new LiveChartsException(
-                    $"An axis of type '{PlaneType}' can not be used in a Cartesian Chart", 130);
+                    $"A Cartesian chart is not able to handle dimension {Dimension}.", 130);
             }
-            var dimension = PlaneType == PlaneTypes.X ? space.Width : space.Height;
+            var dimension = space[Dimension];
             var step = 5; // ToDo: or use the real if it is defined?
 
-            double unit;
-            if (ActualPointWidth == Point.Empty)
-            {
-                unit = 0;
-            }
-            else
-            {
-                unit = PlaneType == PlaneTypes.X
-                    ? ActualPointWidth.X
-                    : ActualPointWidth.Y;
-            }
+            var unit = ActualPointWidth?[Dimension] ?? 0;
 
             double l = 0, r = 0, t = 0, b = 0;
             for (var i = 0d; i < dimension; i += step)
             {
-                var label = EvaluateAxisLabel(chart.ScaleFromUi(i, this, space), space, unit, chart);
+                var label = EvaluateAxisLabel(sizeVector.ScaleFromUi(i, this, space), space, unit, sizeVector);
 
                 var li = label.Location.X - label.Margin.Left;
                 if (li < 0 && l < -li) l = -li;
 
                 var ri = label.Location.X + label.Margin.Right;
-                if (ri > space.Width && r < ri - space.Width) r = ri - space.Width;
+                if (ri > space[0] && r < ri - space[0]) r = ri - space[0];
 
                 var ti = label.Location.Y - label.Margin.Top;
                 if (ti < 0 && t < ti) t = -ti;
 
                 var bi = label.Location.Y + label.Margin.Bottom;
-                if (bi > space.Height && b < bi - space.Height) b = bi - space.Height;
+                if (bi > space[1] && b < bi - space[1]) b = bi - space[1];
             }
 
             return new Margin(t, r, b, l);
@@ -183,17 +174,7 @@ namespace LiveCharts.Core.Dimensions
 
             var from = Math.Ceiling(ActualMinValue / ActualStep) * ActualStep;
             var to = Math.Floor(ActualMaxValue / ActualStep) * ActualStep;
-            double unit;
-            if (ActualPointWidth == Point.Empty)
-            {
-                unit = 0;
-            }
-            else
-            {
-                unit = PlaneType == PlaneTypes.X
-                    ? ActualPointWidth.X
-                    : ActualPointWidth.Y;
-            }
+            var unit = ActualPointWidth?[Dimension] ?? 0;
 
             var tolerance = ActualStep * .1;
             var stepSize = Math.Abs(chart.ScaleToUi(ActualStep, this) - chart.ScaleToUi(0, this));
@@ -212,13 +193,13 @@ namespace LiveCharts.Core.Dimensions
                     _activeSeparators.Add(key, separator);
                 }
                 chart.RegisterResource(separator);
-                if (PlaneType == PlaneTypes.X)
+                if (Dimension == 0)
                 {
-                    var w = iui + stepSize > chart.DrawAreaSize.Width ? 0 : stepSize;
+                    var w = iui + stepSize > chart.DrawAreaSize[0] ? 0 : stepSize;
                     separator.Move(
                         new CartesianAxisSeparatorArgs
                         {
-                            Model = new Rectangle(new Point(iui, 0), new Size(w, chart.DrawAreaSize.Height)),
+                            Model = new Rectangle(new Point(iui, 0), new Size(w, chart.DrawAreaSize[1])),
                             AxisLabelModel = label,
                             IsAlternative = alternate,
                             Disposing = false,
@@ -228,11 +209,11 @@ namespace LiveCharts.Core.Dimensions
                 }
                 else
                 {
-                    var h = iui + stepSize > chart.DrawAreaSize.Height ? 0 : stepSize;
+                    var h = iui + stepSize > chart.DrawAreaSize[1] ? 0 : stepSize;
                     separator.Move(
                         new CartesianAxisSeparatorArgs
                         {
-                            Model = new Rectangle(new Point(0, iui), new Size(chart.DrawAreaSize.Width, h)),
+                            Model = new Rectangle(new Point(0, iui), new Size(chart.DrawAreaSize[0], h)),
                             AxisLabelModel = label,
                             IsAlternative = alternate,
                             Disposing = false,
@@ -276,17 +257,7 @@ namespace LiveCharts.Core.Dimensions
                 return Step;
             }
 
-            double unit;
-            if (ActualPointWidth == Point.Empty)
-            {
-                unit = 0;
-            }
-            else
-            {
-                unit = PlaneType == PlaneTypes.X
-                    ? ActualPointWidth.X
-                    : ActualPointWidth.Y;
-            }
+            var unit = ActualPointWidth?[Dimension] ?? 0;
 
             var range = ActualMaxValue + unit - ActualMinValue;
             range = range <= 0 ? 1 : range;
@@ -294,9 +265,7 @@ namespace LiveCharts.Core.Dimensions
             const double cleanFactor = 50d;
 
             //ToDO: Improve this according to current labels!
-            var separations = PlaneType == PlaneTypes.Y
-                ? Math.Round(chart.DrawAreaSize.Height / cleanFactor, 0)
-                : Math.Round(chart.DrawAreaSize.Width / cleanFactor, 0);
+            var separations = Math.Round(chart.DrawAreaSize[Dimension] / cleanFactor, 0);
 
             separations = separations < 2 ? 2 : separations;
 
@@ -330,7 +299,7 @@ namespace LiveCharts.Core.Dimensions
             return tick;
         }
 
-        private AxisLabelModel EvaluateAxisLabel(double value, Size drawMargin, double unit, ChartModel chart)
+        private AxisLabelModel EvaluateAxisLabel(double value, double[] drawMargin, double unit, ChartModel chart)
         {
             const double toRadians = Math.PI / 180;
             var angle = ActualLabelsRotation;
@@ -348,7 +317,7 @@ namespace LiveCharts.Core.Dimensions
 
             double x, y, xo, yo, l, t;
 
-            if (PlaneType == PlaneTypes.X && Position == AxisPosition.Bottom)
+            if (Dimension == 0 && Position == AxisPosition.Bottom)
             {
                 // case 1
                 if (angle < 0)
@@ -367,9 +336,9 @@ namespace LiveCharts.Core.Dimensions
                     t = 0;
                 }
                 x = chart.ScaleToUi(value, this, drawMargin);
-                y = drawMargin.Height;
+                y = drawMargin[1];
             }
-            else if (PlaneType == PlaneTypes.X && Position == AxisPosition.Top)
+            else if (Dimension == 0 && Position == AxisPosition.Top)
             {
                 // case 3
                 if (angle < 0)
@@ -390,7 +359,7 @@ namespace LiveCharts.Core.Dimensions
                 x = chart.ScaleToUi(value, this, drawMargin);
                 y = 0;
             }
-            else if (PlaneType == PlaneTypes.Y && Position == AxisPosition.Left)
+            else if (Dimension == 1 && Position == AxisPosition.Left)
             {
                 // case 6
                 if (angle < 0)
@@ -411,7 +380,7 @@ namespace LiveCharts.Core.Dimensions
                 x = 0;
                 y = chart.ScaleToUi(value, this, drawMargin);
             }
-            else if (PlaneType == PlaneTypes.Y && Position == AxisPosition.Right)
+            else if (Dimension == 1 && Position == AxisPosition.Right)
             {
                 // case 8
                 if (angle < 0)
@@ -429,13 +398,14 @@ namespace LiveCharts.Core.Dimensions
                     l = 0;
                     t = yo;
                 }
-                x = drawMargin.Width;
+                x = drawMargin[0];
                 y = chart.ScaleToUi(value, this, drawMargin);
             }
             else
             {
+                var d = Dimension == 0 ? "X" : "Y";
                 throw new LiveChartsException(
-                    $"An axis of type '{PlaneType}' can not be positioned at '{Position}'", 120);
+                    $"An axis at dimension '{d}' can not be positioned at '{Position}'", 120);
             }
 
             return new AxisLabelModel(

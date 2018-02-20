@@ -6,7 +6,7 @@ namespace LiveCharts.Core.Collections
     /// <summary>
     /// An extended <see cref="INotifyCollectionChanged"/> that implements AddRange and RemoveRange methods.
     /// </summary>
-    public interface INotifyRangeChanged<T> : INotifyCollectionChanged
+    public interface INotifyRangeChanged<in T> : INotifyCollectionChanged
     {
         /// <summary>
         /// Adds the range.
