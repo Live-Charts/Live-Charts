@@ -21,11 +21,9 @@ namespace LiveCharts.Wpf.PointViews
     /// <typeparam name="TCoordinate">the type of the coordinate.</typeparam>
     /// <typeparam name="TViewModel">the type of the view model.</typeparam>
     /// <seealso cref="PointView{TModel, Point,Point2D, ColumnViewModel, TShape, TLabel}" />
-    public class ColumnPointView<TModel, TPoint, TCoordinate, TViewModel, TShape, TLabel>
-        : PointView<TModel, TPoint, TCoordinate, TViewModel, TShape, TLabel>
-        where TPoint : Point<TModel, TCoordinate, TViewModel>, new()
-        where TCoordinate : Point2D
-        where TViewModel : ColumnViewModel
+    public class ColumnPointView<TModel, TPoint, TShape, TLabel>
+        : PointView<TModel, TPoint, Point2D, ColumnViewModel, TShape, TLabel>
+        where TPoint : Point<TModel, Point2D, ColumnViewModel>, new()
         where TShape : Shape, new()
         where TLabel : FrameworkElement, IDataLabelControl, new()
     {

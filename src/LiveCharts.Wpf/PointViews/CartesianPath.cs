@@ -13,7 +13,7 @@ namespace LiveCharts.Wpf.PointViews
         private readonly Path _strokePath;
         private readonly PathFigure _figure;
         private IEnumerable<double> _strokeDashArray;
-        private double _previousLenght;
+        private double _previousLength;
         private CartesianChart _chart;
 
         public CartesianPath()
@@ -76,7 +76,7 @@ namespace LiveCharts.Wpf.PointViews
             var chart = (CartesianChart) view;
 
             var l = length / _strokePath.StrokeThickness;
-            var tl = l - _previousLenght;
+            var tl = l - _previousLength;
             var remaining = 0d;
             if (tl < 0)
             {
@@ -89,7 +89,7 @@ namespace LiveCharts.Wpf.PointViews
                 new DoubleAnimation(tl + remaining, 0, chart.AnimationsSpeed, FillBehavior.Stop));
 
             _strokePath.StrokeDashOffset = 0;
-            _previousLenght = l;
+            _previousLength = l;
         }
 
         public void Dispose(IChartView view)
@@ -97,13 +97,13 @@ namespace LiveCharts.Wpf.PointViews
             _chart.DrawArea.Children.Remove(_strokePath);
         }
 
-        private IEnumerable<double> GetAnimatedStrokeDashArray(double lenght)
+        private IEnumerable<double> GetAnimatedStrokeDashArray(double length)
         {
             var stack = 0d;
             var e = _strokeDashArray.GetEnumerator();
             var isStroked = true;
 
-            while (stack < lenght)
+            while (stack < length)
             {
                 if (!e.MoveNext())
                 {
@@ -119,7 +119,7 @@ namespace LiveCharts.Wpf.PointViews
             {
                 yield return 0;
             }
-            yield return lenght;
+            yield return length;
             e.Dispose();
         }
     }

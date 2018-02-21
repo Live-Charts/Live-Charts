@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 using System.Timers;
 using System.Windows.Input;
 using LiveCharts.Core.Abstractions;
-using LiveCharts.Core.Coordinates;
 using LiveCharts.Core.Data;
 using LiveCharts.Core.DataSeries;
 using LiveCharts.Core.Dimensions;
@@ -44,11 +43,11 @@ namespace LiveCharts.Core.Charts
             view.ChartViewResized += Invalidate;
             view.PointerMoved += ViewOnPointerMoved;
             view.PropertyChanged += InvalidatePropertyChanged;
-            TooltipTimoutTimer = new Timer();
-            TooltipTimoutTimer.Elapsed += (sender, args) =>
+            ToolTipTimeoutTimer = new Timer();
+            ToolTipTimeoutTimer.Elapsed += (sender, args) =>
             {
                 View.InvokeOnUiThread(() => { ToolTip.Hide(View); });
-                TooltipTimoutTimer.Stop();
+                ToolTipTimeoutTimer.Stop();
             };
         }
 
@@ -184,7 +183,7 @@ namespace LiveCharts.Core.Charts
 
         internal LegendPosition LegendPosition { get; set; }
 
-        internal Timer TooltipTimoutTimer { get; set; }
+        internal Timer ToolTipTimeoutTimer { get; set; }
 
         internal IEnumerable<PackedPoint> PreviousHoveredPoints { get; set; }
 
@@ -230,13 +229,11 @@ namespace LiveCharts.Core.Charts
         /// <param name="x">The x.</param>
         /// <param name="y">The y.</param>
         /// <returns></returns>
-        public virtual double[] Get2DUiUnitWidth(Plane x, Plane y)
+        public virtual Point Get2DUiUnitWidth(Plane x, Plane y)
         {
-            return new[]
-            {
+            return new Point(
                 Math.Abs(ScaleToUi(0, x) - ScaleToUi(x.ActualPointWidth[x.Dimension], x)),
-                Math.Abs(ScaleToUi(0, y) - ScaleToUi(y.ActualPointWidth[y.Dimension], y))
-            };
+                Math.Abs(ScaleToUi(0, y) - ScaleToUi(y.ActualPointWidth[y.Dimension], y)));
         }
 
         /// <summary>
@@ -376,6 +373,7 @@ namespace LiveCharts.Core.Charts
             if (!_resources.Contains(resource))
             {
                 _resources.Add(resource);
+                // ReSharper disable once IdentifierTypo
                 if (resource is INotifyPropertyChanged inpc)
                 {
                     inpc.PropertyChanged += InvalidatePropertyChanged;
@@ -389,6 +387,7 @@ namespace LiveCharts.Core.Charts
                     resource.Disposed += DisposePropertyChanged;
                 }
 
+                // ReSharper disable once IdentifierTypo
                 if (resource is INotifyCollectionChanged incc)
                 {
                     incc.CollectionChanged += InvalidateOnCollectionChanged;
@@ -413,11 +412,13 @@ namespace LiveCharts.Core.Charts
                 _resourcesCollections.Add(propertyName, collection);
             }
             if (previous != null && Equals(collection, previous)) return;
+            // ReSharper disable once IdentifierTypo
             if (collection is INotifyCollectionChanged incc)
             {
                 incc.CollectionChanged += InvalidateOnCollectionChanged;
             }
 
+            // ReSharper disable once IdentifierTypo
             if (previous is INotifyCollectionChanged pincc)
             {
                 pincc.CollectionChanged -= InvalidateOnCollectionChanged;
@@ -474,6 +475,7 @@ namespace LiveCharts.Core.Charts
 
             foreach (var resourceCollection in _resourcesCollections.Values)
             {
+                // ReSharper disable once IdentifierTypo
                 if (resourceCollection is INotifyCollectionChanged incc)
                 {
                     incc.CollectionChanged -= InvalidateOnCollectionChanged;

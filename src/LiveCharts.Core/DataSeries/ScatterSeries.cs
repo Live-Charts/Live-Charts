@@ -6,6 +6,7 @@ using LiveCharts.Core.Coordinates;
 using LiveCharts.Core.Data;
 using LiveCharts.Core.Dimensions;
 using LiveCharts.Core.Drawing;
+using LiveCharts.Core.Interaction;
 using LiveCharts.Core.ViewModels;
 
 namespace LiveCharts.Core.DataSeries
@@ -14,7 +15,7 @@ namespace LiveCharts.Core.DataSeries
     /// The scatter series class.
     /// </summary>
     public class ScatterSeries<TModel> 
-        : CartesianSeries<TModel, Weighted2DPoint, ColumnViewModel, Point<TModel, Weighted2DPoint, ColumnViewModel>>, IScatterSeries
+        : CartesianSeries<TModel, Weighted2DPoint, ScatterViewModel, Point<TModel, Weighted2DPoint, ScatterViewModel>>, IScatterSeries
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ScatterSeries{TModel}"/> class.
@@ -39,33 +40,51 @@ namespace LiveCharts.Core.DataSeries
             var cartesianChart = (CartesianChartModel)chart;
             var x = cartesianChart.XAxis[ScalesXAt];
             var y = cartesianChart.YAxis[ScalesYAt];
-            var unitWidth = new Point(
-                Math.Abs(chart.ScaleToUi(0, x) - chart.ScaleToUi(x.ActualPointWidth[x.Dimension], x)),
-                Math.Abs(chart.ScaleToUi(0, y) - chart.ScaleToUi(y.ActualPointWidth[y.Dimension], y)));
+            var w = chart.Dimensions[2][ScalesAt[2]];
+            var unitWidth = chart.Get2DUiUnitWidth(x, y);
 
-            //foreach (var current in Points)
-            //{
-            //    var p = chart.ScaleToUi(current.Coordinate, x, y);
-            //    chartPoint.ChartLocation = ChartFunctions.ToDrawMargin(
-            //                                   chartPoint, View.ScalesXAt, View.ScalesYAt, Chart) + uw;
+            Point<TModel, Weighted2DPoint, ScatterViewModel> previous = null;
+            foreach (var current in Points)
+            {
+                var p = new[]
+                {
+                    chart.ScaleToUi(current.Coordinate[0][0], x),
+                    chart.ScaleToUi(current.Coordinate[1][0], y)
+                };
 
-            //    chartPoint.SeriesView = View;
+                var dw = chart.ScaleToUi(current.Coordinate.Weight, w);
 
-            //    chartPoint.View = View.GetPointView(chartPoint,
-            //        View.DataLabels ? View.GetLabelPointFormatter()(chartPoint) : null);
+                var vm = new ScatterViewModel
+                {
+                    Location = new Point(p[0], p[1]) + unitWidth,
+                    Size = new Size(dw, dw)
+                };
 
-            //    var bubbleView = (IScatterPointView)chartPoint.View;
+                if (current.View == null)
+                {
+                    current.View = PointViewProvider();
+                }
 
-            //    bubbleView.Diameter = m * (chartPoint.Weight - p1.X) + p1.Y;
+                current.ViewModel = vm;
+                current.View.DrawShape(current, previous);
 
-            //    chartPoint.View.DrawOrMove(null, chartPoint, 0, Chart);
-            //}
+                current.InteractionArea = new RectangleInteractionArea
+                {
+                    Top = vm.Location.Y,
+                    Left = vm.Location.X,
+                    Height = dw,
+                    Width = dw
+                };
+
+                previous = current;
+            }
         }
 
-        protected override IPointView<TModel, Point<TModel, Weighted2DPoint, ColumnViewModel>, Weighted2DPoint, ColumnViewModel> 
+        /// <inheritdoc />
+        protected override IPointView<TModel, Point<TModel, Weighted2DPoint, ScatterViewModel>, Weighted2DPoint, ScatterViewModel> 
             DefaultPointViewProvider()
         {
-            throw new System.NotImplementedException();
+            return LiveChartsSettings.Current.UiProvider.GetNewScatterView<TModel>();
         }
     }
 }

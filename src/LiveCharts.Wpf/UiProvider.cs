@@ -43,16 +43,21 @@ namespace LiveCharts.Wpf
         public IPointView<TModel, Point<TModel, Point2D, ColumnViewModel>, Point2D, ColumnViewModel>
             GetNewColumnView<TModel>()
         {
-            return new ColumnPointView<
-                TModel, Point<TModel, Point2D, ColumnViewModel>, Point2D, ColumnViewModel, Rectangle, DataLabel>();
+            return new ColumnPointView<TModel, Point<TModel, Point2D, ColumnViewModel>, Rectangle, DataLabel>();
         }
 
         /// <inheritdoc />
         public IPointView<TModel, Point<TModel, Point2D, BezierViewModel>, Point2D, BezierViewModel>
             GetNewBezierView<TModel>()
         {
-            return new BezierPointView<
-                TModel, Point<TModel, Point2D, BezierViewModel>, Point2D, BezierViewModel, DataLabel>();
+            return new BezierPointView<TModel, Point<TModel, Point2D, BezierViewModel>, DataLabel>();
+        }
+
+        /// <inheritdoc />
+        public IPointView<TModel, Point<TModel, Weighted2DPoint, ScatterViewModel>, Weighted2DPoint, ScatterViewModel>
+            GetNewScatterView<TModel>()
+        {
+            return new ScatterPointView<TModel, Point<TModel, Weighted2DPoint, ScatterViewModel>, DataLabel>();
         }
     }
 }

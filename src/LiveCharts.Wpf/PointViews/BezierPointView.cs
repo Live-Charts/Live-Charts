@@ -13,17 +13,15 @@ using Point = LiveCharts.Core.Drawing.Point;
 
 namespace LiveCharts.Wpf.PointViews
 {
-    public class BezierPointView<TModel, TPoint, TCoordinate, TViewModel, TLabel>
-        : PointView<TModel, TPoint, TCoordinate, TViewModel, Path, TLabel>
-        where TPoint : Point<TModel, TCoordinate, TViewModel>, new()
-        where TCoordinate : Point2D
-        where TViewModel : BezierViewModel
+    public class BezierPointView<TModel, TPoint, TLabel>
+        : PointView<TModel, TPoint, Point2D, BezierViewModel, Path, TLabel>
+        where TPoint : Point<TModel, Point2D, BezierViewModel>, new()
         where TLabel : FrameworkElement, IDataLabelControl, new()
     {
         private BezierSegment _segment;
         private ICartesianPath _path;
-        private BezierPointView<TModel, TPoint, TCoordinate, TViewModel, TLabel> _previous;
-        private BezierPointView<TModel, TPoint, TCoordinate, TViewModel, TLabel> _next;
+        private BezierPointView<TModel, TPoint, TLabel> _previous;
+        private BezierPointView<TModel, TPoint, TLabel> _next;
         private BezierViewModel _vm;
 
         private bool IsMiddlePoint => _next != null && _previous != null;
@@ -35,7 +33,7 @@ namespace LiveCharts.Wpf.PointViews
             _vm = point.ViewModel;
             var isNew = Shape == null;
             var speed = chart.AnimationsSpeed;
-            _previous = (BezierPointView<TModel, TPoint, TCoordinate, TViewModel, TLabel>) previous?.View;
+            _previous = (BezierPointView<TModel, TPoint, TLabel>) previous?.View;
             if (_previous != null)
             {
                 _previous._next = this;

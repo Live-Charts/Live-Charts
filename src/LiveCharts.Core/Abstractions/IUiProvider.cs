@@ -52,5 +52,13 @@ namespace LiveCharts.Core.Abstractions
         /// <returns></returns>
         IPointView<TModel, Point<TModel, Point2D, BezierViewModel>, Point2D, BezierViewModel>
             GetNewBezierView<TModel>();
+
+        /// <summary>
+        /// gs the et new scatter view.
+        /// </summary>
+        /// <typeparam name="TModel">The type of the model.</typeparam>
+        /// <returns></returns>
+        IPointView<TModel, Point<TModel, Weighted2DPoint, ScatterViewModel>, Weighted2DPoint, ScatterViewModel>
+            GetNewScatterView <TModel>();
     }
 }

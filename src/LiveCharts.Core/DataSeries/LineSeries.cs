@@ -63,11 +63,11 @@ namespace LiveCharts.Core.DataSeries
                 _path.Initialize(chart.View);
             }
 
-            double lenght = 0;
+            double length = 0;
             var isFist = true;
             double i = 0, j = 0;
 
-            foreach (var bezier in GetBeziers(new Point(unitWidth[di], unitWidth[dj]), cartesianChart, x, y))
+            foreach (var bezier in GetBeziers(unitWidth, cartesianChart, x, y))
             {
                 var p = new[]
                 {
@@ -96,16 +96,14 @@ namespace LiveCharts.Core.DataSeries
 
                 bezier.ViewModel.Path = _path;
                 bezier.Point.ViewModel = bezier.ViewModel;
-                bezier.Point.View.DrawShape(
-                    bezier.Point,
-                    previous);
+                bezier.Point.View.DrawShape(bezier.Point, previous);
 
                 previous = bezier.Point;
-                lenght += bezier.ViewModel.AproxLength;
+                length += bezier.ViewModel.AproxLength;
                 j = p[0];
             }
 
-            _path.Close(chart.View, lenght, i, j);
+            _path.Close(chart.View, length, i, j);
         }
 
         private IEnumerable<BezierData> GetBeziers(Point offset, ChartModel chart, Plane x, Plane y)

@@ -158,11 +158,11 @@ namespace LiveCharts.Core.Charts
             // ReSharper disable once PossibleMultipleEnumeration
             if (!query.Any())
             {
-                TooltipTimoutTimer.Start();
+                ToolTipTimeoutTimer.Start();
                 return;
             }
 
-            TooltipTimoutTimer.Stop();
+            ToolTipTimeoutTimer.Stop();
 
             View.DataToolTip.ShowAndMeasure(query, View);
             double sx = 0, sy = 0;
@@ -214,7 +214,7 @@ namespace LiveCharts.Core.Charts
                 foreach (var plane in dimension)
                 {
                     plane.Dimension = index;
-                    plane.Dimension = index == 0 ? 1 : (index == 1 ? 0 : index);
+                    //plane.Dimension = index == 0 ? 1 : (index == 1 ? 0 : index);
                     // get the axis limits...
                     plane.ActualMinValue = double.IsNaN(plane.MinValue)
                         ? plane.Range.To
