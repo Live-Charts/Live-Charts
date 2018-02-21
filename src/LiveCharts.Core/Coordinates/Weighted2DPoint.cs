@@ -1,24 +1,31 @@
-﻿using System;
-using LiveCharts.Core.Abstractions;
-using LiveCharts.Core.Data;
+﻿using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Dimensions;
+using LiveCharts.Core.Drawing;
 
 namespace LiveCharts.Core.Coordinates
 {
     /// <summary>
     /// A weighted coordinate.
     /// </summary>
-    public struct Weighted2DPoint : ICoordinate
+    public class Weighted2DPoint : ICoordinate
     {
+        /// <summary>
+        /// The _vector.
+        /// </summary>
+        private readonly double[][] _vector = new double[3][];
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Point2D"/> struct.
         /// </summary>
         public Weighted2DPoint(double x, double y, double weight)
         {
-            X = x;
-            Y = y;
-            Weight = weight;
+            _vector[0] = new []{x};
+            _vector[1] = new []{y};
+            _vector[2] = new[] {weight};
         }
+
+        /// <inheritdoc />
+        public double[] this[int dimension] => _vector[dimension];
 
         /// <summary>
         /// Gets or sets the x.
@@ -26,7 +33,7 @@ namespace LiveCharts.Core.Coordinates
         /// <value>
         /// The x.
         /// </value>
-        public double X { get; }
+        public double X => _vector[0][0];
 
         /// <summary>
         /// Gets or sets the y.
@@ -34,7 +41,7 @@ namespace LiveCharts.Core.Coordinates
         /// <value>
         /// The y.
         /// </value>
-        public double Y { get; }
+        public double Y => _vector[1][0];
 
         /// <summary>
         /// Gets the weight.
@@ -42,21 +49,21 @@ namespace LiveCharts.Core.Coordinates
         /// <value>
         /// The w.
         /// </value>
-        public double Weight { get; }
+        public double Weight => _vector[2][0];
 
         /// <inheritdoc />
-        public void CompareDimensions(DataRange[] dimensions)
+        public void CompareDimensions(DoubleRange[] rangeByDimension)
         {
-            var x = dimensions[0];
-            var y = dimensions[1];
-            var w = dimensions[2];
+            var x = rangeByDimension[0];
+            var y = rangeByDimension[1];
+            var w = rangeByDimension[2];
 
-            if (X > x.MaxValue) x.MaxValue = X;
-            if (X < x.MinValue) x.MinValue = X;
-            if (Y > y.MaxValue) y.MaxValue = Y;
-            if (Y < y.MinValue) y.MinValue = Y;
-            if (Weight > w.MaxValue) w.MaxValue = Weight;
-            if (Weight < w.MinValue) w.MinValue = Weight;
+            if (X > x.From) x.From = X;
+            if (X < x.To) x.To = X;
+            if (Y > y.From) y.From = Y;
+            if (Y < y.To) y.To = Y;
+            if (Weight > w.From) w.From = Weight;
+            if (Weight < w.To) w.To = Weight;
         }
 
         /// <inheritdoc />

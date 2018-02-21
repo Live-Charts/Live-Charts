@@ -24,9 +24,9 @@ namespace LiveCharts.Core.DataSeries
             LiveChartsSettings.Set<IScatterSeries>(this);
             RangeByDimension = RangeByDimension = new[]
             {
-                new DataRange(), // x
-                new DataRange(), // y
-                new DataRange()  // w
+                new DoubleRange(), // x
+                new DoubleRange(), // y
+                new DoubleRange()  // w
             };
         }
 

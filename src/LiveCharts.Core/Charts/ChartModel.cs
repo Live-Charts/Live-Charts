@@ -225,6 +225,21 @@ namespace LiveCharts.Core.Charts
         public abstract double ScaleFromUi(double pixelsValue, Plane plane, double[] sizeVector = null);
 
         /// <summary>
+        /// Get2s the width of the d UI unit.
+        /// </summary>
+        /// <param name="x">The x.</param>
+        /// <param name="y">The y.</param>
+        /// <returns></returns>
+        public virtual double[] Get2DUiUnitWidth(Plane x, Plane y)
+        {
+            return new[]
+            {
+                Math.Abs(ScaleToUi(0, x) - ScaleToUi(x.ActualPointWidth[x.Dimension], x)),
+                Math.Abs(ScaleToUi(0, y) - ScaleToUi(y.ActualPointWidth[y.Dimension], y))
+            };
+        }
+
+        /// <summary>
         /// Selects the points.
         /// </summary>
         /// <param name="dimensions">The dimensions.</param>
@@ -282,8 +297,23 @@ namespace LiveCharts.Core.Charts
                     var plane = Dimensions[i][series.ScalesAt[i]];
                     if (plane.PointWidth == null) plane.ActualPointWidth = series.DefaultPointWidth;
                     plane.ResetRange();
-                    if (series.RangeByDimension[i].MaxValue > plane.DataRange.MaxValue) plane.DataRange.MaxValue = series.RangeByDimension[i].MaxValue;
-                    if (series.RangeByDimension[i].MinValue < plane.DataRange.MinValue) plane.DataRange.MinValue = series.RangeByDimension[i].MinValue;
+                    if (series.RangeByDimension[i].From > plane.Range.From)
+                    {
+                        plane.Range = new DoubleRange
+                        {
+                            To = plane.Range.To,
+                            From = series.RangeByDimension[i].From
+                        };
+                    }
+
+                    if (series.RangeByDimension[i].To < plane.Range.To)
+                    {
+                        plane.Range = new DoubleRange
+                        {
+                            To = series.RangeByDimension[i].To,
+                            From = plane.Range.From
+                        };
+                    }
                 }
             }
 

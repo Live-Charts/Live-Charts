@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Charts;
+using LiveCharts.Core.Drawing;
 using LiveCharts.Core.Events;
 
 namespace LiveCharts.Core.Dimensions
@@ -24,7 +25,7 @@ namespace LiveCharts.Core.Dimensions
         {
             MinValue = double.NaN;
             MaxValue = double.NaN;
-            DataRange = new DataRange();
+            Range = new DoubleRange();
             LiveChartsSettings.Set(this);
         }
 
@@ -34,7 +35,7 @@ namespace LiveCharts.Core.Dimensions
         /// <value>
         /// The data range.
         /// </value>
-        public DataRange DataRange { get; protected set; }
+        public DoubleRange Range { get; internal set; }
 
         /// <summary>
         /// Gets or sets the maximum value to display.
@@ -243,8 +244,11 @@ namespace LiveCharts.Core.Dimensions
 
         internal void ResetRange()
         {
-            DataRange.MaxValue = double.MinValue;
-            DataRange.MinValue = double.MaxValue;
+            Range = new DoubleRange
+            {
+                From = double.MinValue,
+                To = double.MaxValue
+            };
         }
 
         #region IResource implementation

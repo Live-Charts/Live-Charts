@@ -46,11 +46,14 @@ namespace LiveCharts.Core.DataSeries
         public override void UpdateView(ChartModel chart)
         {
             var cartesianChart = (CartesianChartModel) chart;
-            var x = cartesianChart.XAxis[ScalesXAt];
-            var y = cartesianChart.YAxis[ScalesYAt];
-            var unitWidth = new Point(
-                Math.Abs(chart.ScaleToUi(0, x) - chart.ScaleToUi(x.ActualPointWidth[x.Dimension], x)),
-                Math.Abs(chart.ScaleToUi(0, y) - chart.ScaleToUi(y.ActualPointWidth[y.Dimension], y)));
+
+            var di = 0;
+            var dj = 1;
+
+            var x = chart.Dimensions[di][ScalesAt[di]];;
+            var y = chart.Dimensions[dj][ScalesAt[dj]];
+
+            var unitWidth = chart.Get2DUiUnitWidth(x, y);
 
             Point<TModel, Point2D, BezierViewModel> previous = null;
 
@@ -64,7 +67,7 @@ namespace LiveCharts.Core.DataSeries
             var isFist = true;
             double i = 0, j = 0;
 
-            foreach (var bezier in GetBeziers(unitWidth, cartesianChart, x, y))
+            foreach (var bezier in GetBeziers(new Point(unitWidth[di], unitWidth[dj]), cartesianChart, x, y))
             {
                 var p = new[]
                 {

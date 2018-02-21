@@ -1,9 +1,9 @@
-﻿namespace LiveCharts.Core.Dimensions
+﻿namespace LiveCharts.Core.Drawing
 {
     /// <summary>
     /// Represents a range.
     /// </summary>
-    public class DataRange
+    public class DoubleRange
     {
         /// <summary>
         /// Gets or sets from.
@@ -11,7 +11,7 @@
         /// <value>
         /// From.
         /// </value>
-        public double MaxValue { get; set; }
+        public double From { get; set; }
 
         /// <summary>
         /// Gets or sets to.
@@ -19,6 +19,6 @@
         /// <value>
         /// To.
         /// </value>
-        public double MinValue { get; set; }
+        public double To { get; set; }
     }
 }

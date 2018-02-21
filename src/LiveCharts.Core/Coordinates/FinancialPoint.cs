@@ -1,14 +1,17 @@
 using System;
 using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Dimensions;
+using LiveCharts.Core.Drawing;
 
 namespace LiveCharts.Core.Coordinates
 {
     /// <summary>
     /// Financial coordinate.
     /// </summary>
-    public struct FinancialPoint : ICoordinate
+    public class FinancialPoint : ICoordinate
     {
+        private readonly double[][] _vector = new double[2][];
+
         /// <summary>
         /// Initializes a new instance of the <see cref="FinancialPoint"/> struct.
         /// </summary>
@@ -19,12 +22,14 @@ namespace LiveCharts.Core.Coordinates
         /// <param name="close">The close.</param>
         public FinancialPoint(int index, double open, double high, double low, double close)
         {
-            Index = index;
+            _vector[0] = new[] {(double) index};
+            _vector[1] = new[] {low, high};
             Open = open;
-            High = high;
-            Low = low;
             Close = close;
         }
+
+        /// <inheritdoc />
+        public double[] this[int dimension] => _vector[dimension];
 
         /// <summary>
         /// Gets or sets the index.
@@ -32,7 +37,7 @@ namespace LiveCharts.Core.Coordinates
         /// <value>
         /// The index.
         /// </value>
-        public int Index { get; }
+        public int Index => (int) _vector[0][0];
 
         /// <summary>
         /// Gets the open.
@@ -48,7 +53,7 @@ namespace LiveCharts.Core.Coordinates
         /// <value>
         /// The high.
         /// </value>
-        public double High { get; }
+        public double High => _vector[1][1];
 
         /// <summary>
         /// Gets the low.
@@ -56,7 +61,7 @@ namespace LiveCharts.Core.Coordinates
         /// <value>
         /// The low.
         /// </value>
-        public double Low { get; }
+        public double Low => _vector[1][0];
 
         /// <summary>
         /// Gets the close.
@@ -67,15 +72,15 @@ namespace LiveCharts.Core.Coordinates
         public double Close { get; }
 
         /// <inheritdoc />
-        public void CompareDimensions(DataRange[] dimensions)
+        public void CompareDimensions(DoubleRange[] rangeByDimension)
         {
-            var x = dimensions[0];
-            var y = dimensions[1];
+            var x = rangeByDimension[0];
+            var y = rangeByDimension[1];
 
-            if (Index > x.MaxValue) x.MaxValue = Index;
-            if (Index < x.MinValue) x.MinValue = Index;
-            if (High > y.MaxValue) y.MaxValue = High;
-            if (Low < y.MinValue) y.MinValue = Low;
+            if (Index > x.From) x.From = Index;
+            if (Index < x.To) x.To = Index;
+            if (High > y.From) y.From = High;
+            if (Low < y.To) y.To = Low;
         }
 
         /// <inheritdoc />

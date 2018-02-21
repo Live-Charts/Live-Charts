@@ -1,7 +1,6 @@
-﻿using System;
-using LiveCharts.Core.Abstractions;
-using LiveCharts.Core.Data;
+﻿using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Dimensions;
+using LiveCharts.Core.Drawing;
 
 namespace LiveCharts.Core.Coordinates
 {
@@ -10,14 +9,19 @@ namespace LiveCharts.Core.Coordinates
     /// </summary>
     public class Point2D : ICoordinate
     {
+        private readonly double[][] _vector = new double[2][];
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Point2D"/> struct.
         /// </summary>
         public Point2D(double x, double y)
         {
-            X = x;
-            Y = y;
+            _vector[0] = new[] {x};
+            _vector[1] = new[] {y};
         }
+
+        /// <inheritdoc />
+        public double[] this[int dimension] => _vector[dimension];
 
         /// <summary>
         /// Gets or sets the x.
@@ -25,7 +29,7 @@ namespace LiveCharts.Core.Coordinates
         /// <value>
         /// The x.
         /// </value>
-        public double X { get; }
+        public double X => _vector[0][0];
 
         /// <summary>
         /// Gets or sets the y.
@@ -33,18 +37,18 @@ namespace LiveCharts.Core.Coordinates
         /// <value>
         /// The y.
         /// </value>
-        public double Y { get; }
+        public double Y => _vector[1][0];
 
         /// <inheritdoc />
-        public void CompareDimensions(DataRange[] dimensions)
+        public void CompareDimensions(DoubleRange[] rangeByDimension)
         {
-            var x = dimensions[0];
-            var y = dimensions[1];
+            var x = rangeByDimension[0];
+            var y = rangeByDimension[1];
 
-            if (X > x.MaxValue) x.MaxValue = X;
-            if (X < x.MinValue) x.MinValue = X;
-            if (Y > y.MaxValue) y.MaxValue = Y;
-            if (Y < y.MinValue) y.MinValue = Y;
+            if (X > x.From) x.From = X;
+            if (X < x.To) x.To = X;
+            if (Y > y.From) y.From = Y;
+            if (Y < y.To) y.To = Y;
         }
 
         /// <inheritdoc />

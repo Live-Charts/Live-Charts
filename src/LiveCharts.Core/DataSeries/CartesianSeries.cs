@@ -1,6 +1,7 @@
 using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Data;
 using LiveCharts.Core.Dimensions;
+using LiveCharts.Core.Drawing;
 
 namespace LiveCharts.Core.DataSeries
 {
@@ -34,8 +35,8 @@ namespace LiveCharts.Core.DataSeries
             ScalesAt = new [] {0, 0};
             RangeByDimension = new[]
             {
-                new DataRange(), // x
-                new DataRange()  // y
+                new DoubleRange(), // x
+                new DoubleRange()  // y
             };
             // This means that by default, any cartesian series is scaled at
             // the first element in the axis array for both, X and Y dimensions.

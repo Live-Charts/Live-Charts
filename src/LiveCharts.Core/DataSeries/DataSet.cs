@@ -8,7 +8,6 @@ using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Abstractions.DataSeries;
 using LiveCharts.Core.Charts;
 using LiveCharts.Core.Data;
-using LiveCharts.Core.Dimensions;
 using LiveCharts.Core.Drawing;
 using LiveCharts.Core.Drawing.Svg;
 using LiveCharts.Core.Events;
@@ -277,7 +276,7 @@ namespace LiveCharts.Core.DataSeries
         /// <value>
         /// The range by dimension.
         /// </value>
-        public DataRange[] RangeByDimension { get; protected set; }
+        public DoubleRange[] RangeByDimension { get; protected set; }
 
         /// <inheritdoc />
         bool IList.IsReadOnly => OnIListIsReadOnly();
@@ -537,10 +536,13 @@ namespace LiveCharts.Core.DataSeries
 
         internal void ResetRanges()
         {
-            foreach (var dataRange in RangeByDimension)
+            for (var index = 0; index < RangeByDimension.Length; index++)
             {
-                dataRange.MaxValue = double.MinValue;
-                dataRange.MinValue = double.MaxValue;
+                RangeByDimension[index] = new DoubleRange
+                {
+                    From = double.MinValue,
+                    To = double.MaxValue
+                };
             }
         }
 

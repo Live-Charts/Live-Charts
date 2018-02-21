@@ -210,19 +210,20 @@ namespace LiveCharts.Core.Charts
             {
                 var dimension = Dimensions[index];
 // for each axis in each dimension
+
                 foreach (var plane in dimension)
                 {
                     plane.Dimension = index;
-
+                    plane.Dimension = index == 0 ? 1 : (index == 1 ? 0 : index);
                     // get the axis limits...
                     plane.ActualMinValue = double.IsNaN(plane.MinValue)
-                        ? plane.DataRange.MinValue
+                        ? plane.Range.To
                         : plane.MinValue;
                     plane.ActualMaxValue = double.IsNaN(plane.MaxValue)
-                        ? plane.DataRange.MaxValue
+                        ? plane.Range.From
                         : plane.MaxValue;
 
-                    plane.ActualReverse = index == 1;
+                    plane.ActualReverse = plane.Dimension == 1;
                     if (plane.Reverse) plane.ActualReverse = !plane.ActualReverse;
 
                     if (!requiresDrawMarginEvaluation) continue;

@@ -1,15 +1,20 @@
 using System;
 using LiveCharts.Core.Abstractions;
-using LiveCharts.Core.Data;
 using LiveCharts.Core.Dimensions;
+using LiveCharts.Core.Drawing;
 
 namespace LiveCharts.Core.Coordinates
 {
     /// <summary>
     /// A stacked coordinate.
     /// </summary>
-    public struct StackedPoint : ICoordinate
+    public class StackedPoint : ICoordinate
     {
+        /// <summary>
+        /// The _vector.
+        /// </summary>
+        private readonly double[][] _vector = new double[2][];
+
         /// <summary>
         /// Initializes a new instance of the <see cref="StackedPoint"/> struct.
         /// </summary>
@@ -18,7 +23,11 @@ namespace LiveCharts.Core.Coordinates
             Participation = participation;
             Value = value;
             Index = index;
+            throw new NotImplementedException();
         }
+
+        /// <inheritdoc />
+        public double[] this[int dimension] => throw new NotImplementedException();
 
         /// <summary>
         /// Gets or sets the index.
@@ -53,15 +62,15 @@ namespace LiveCharts.Core.Coordinates
         public double TotalStacked => Value / Participation;
 
         /// <inheritdoc />
-        public void CompareDimensions(DataRange[] dimensions)
+        public void CompareDimensions(DoubleRange[] rangeByDimension)
         {
-            var x = dimensions[0];
-            var y = dimensions[1];
+            var x = rangeByDimension[0];
+            var y = rangeByDimension[1];
 
-            if (Index > x.MaxValue) x.MaxValue = Index;
-            if (Index < x.MinValue) x.MinValue = Index;
-            if (Value > y.MaxValue) y.MaxValue = Value;
-            if (Value < y.MinValue) y.MinValue = Value;
+            if (Index > x.From) x.From = Index;
+            if (Index < x.To) x.To = Index;
+            if (Value > y.From) y.From = Value;
+            if (Value < y.To) y.To = Value;
         }
 
         /// <inheritdoc />

@@ -25,7 +25,7 @@ namespace LiveCharts.Core.DataSeries
         : DataSet, IList<TModel>, INotifyCollectionChanged
         where TPoint : Point<TModel, TCoordinate, TViewModel>, new()
         where TCoordinate : ICoordinate
-    {
+    { 
         private IEnumerable<TModel> _itemsSource;
         private IEnumerable<TModel> _previousItemsSource;
         private IList<TModel> _sourceAsIList;

@@ -1,14 +1,16 @@
 using LiveCharts.Core.Abstractions;
-using LiveCharts.Core.Data;
 using LiveCharts.Core.Dimensions;
+using LiveCharts.Core.Drawing;
 
 namespace LiveCharts.Core.Coordinates
 {
     /// <summary>
     /// A polar coordinate.
     /// </summary>
-    public struct PolarPoint : ICoordinate
+    public class PolarPoint : ICoordinate
     {
+        private readonly double[][] _vector = new double[2][];
+
         /// <summary>
         /// Initializes a new instance of the <see cref="PolarPoint"/> struct.
         /// </summary>
@@ -16,9 +18,12 @@ namespace LiveCharts.Core.Coordinates
         /// <param name="angle">The angle.</param>
         public PolarPoint(double radius, double angle)
         {
-            Angle = angle;
-            Radius = radius;
+            _vector[0] = new[] {radius};
+            _vector[1] = new[] {angle};
         }
+
+        /// <inheritdoc />
+        public double[] this[int dimension] => _vector[dimension];
 
         /// <summary>
         /// Gets or sets the angle.
@@ -26,7 +31,7 @@ namespace LiveCharts.Core.Coordinates
         /// <value>
         /// The angle.
         /// </value>
-        public double Angle { get; }
+        public double Angle => _vector[1][0];
 
         /// <summary>
         /// Gets or sets the radius.
@@ -34,15 +39,15 @@ namespace LiveCharts.Core.Coordinates
         /// <value>
         /// The radius.
         /// </value>
-        public double Radius { get; }
+        public double Radius => _vector[0][0];
 
         /// <inheritdoc cref="CompareDimensions"/>
-        public void CompareDimensions(DataRange[] dimensions)
+        public void CompareDimensions(DoubleRange[] rangeByDimension)
         {
-            var radius = dimensions[0];
+            var radius = rangeByDimension[0];
 
-            if (Radius > radius.MaxValue) radius.MaxValue = Radius;
-            if (Radius < radius.MinValue) radius.MinValue = Radius;
+            if (Radius > radius.From) radius.From = Radius;
+            if (Radius < radius.To) radius.To = Radius;
         }
 
         /// <inheritdoc />
