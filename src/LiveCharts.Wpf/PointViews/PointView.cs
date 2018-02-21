@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Windows;
-using System.Windows.Shapes;
 using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Data;
 using LiveCharts.Core.Events;
@@ -29,7 +28,7 @@ namespace LiveCharts.Wpf.PointViews
         /// <value>
         /// The label.
         /// </value>
-        public IDataLabelControl Label { get; protected set; }
+        public TLabel Label { get; protected set; }
 
         /// <inheritdoc cref="DrawShape"/>
         protected virtual void OnDraw(TPoint point, TPoint previous)

@@ -7,7 +7,6 @@ using LiveCharts.Core.Coordinates;
 using LiveCharts.Core.Data;
 using LiveCharts.Core.ViewModels;
 using LiveCharts.Wpf.Animations;
-using Frame = LiveCharts.Wpf.Animations.Frame;
 
 namespace LiveCharts.Wpf.PointViews
 {
@@ -60,25 +59,12 @@ namespace LiveCharts.Wpf.PointViews
 
             var speed = chart.AnimationsSpeed;
 
-            var by = isNew ? vm.Height * .3 : 0;
-            var bx = isNew ? vm.Width * .1 : 0;
-
             Shape.Animate()
                 .AtSpeed(speed)
-                .Property(Canvas.LeftProperty,
-                    new Frame(0.9, vm.Left - bx * .5),
-                    new Frame(1, vm.Left))
-                .Property(FrameworkElement.WidthProperty,
-                    new Frame(0.9, vm.Width + bx),
-                    new Frame(1, vm.Width))
-                .Property(Canvas.TopProperty,
-                    new Frame(0.8, vm.Top - by),
-                    new Frame(0.9, vm.Top - by * .5),
-                    new Frame(1, vm.Top))
-                .Property(FrameworkElement.HeightProperty,
-                    new Frame(0.8, vm.Height + by),
-                    new Frame(0.9, vm.Height + by * .5),
-                    new Frame(1, vm.Height))
+                .Bounce(Canvas.LeftProperty, vm.Left, .1)
+                .Bounce(FrameworkElement.WidthProperty, vm.Width, .1)
+                .Bounce(Canvas.TopProperty, vm.Top)
+                .Bounce(FrameworkElement.HeightProperty, vm.Height)
                 .Begin();
             _point = point;
         }

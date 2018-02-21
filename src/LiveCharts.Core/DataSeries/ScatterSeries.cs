@@ -1,10 +1,8 @@
-﻿using System;
-using LiveCharts.Core.Abstractions;
+﻿using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Abstractions.DataSeries;
 using LiveCharts.Core.Charts;
 using LiveCharts.Core.Coordinates;
 using LiveCharts.Core.Data;
-using LiveCharts.Core.Dimensions;
 using LiveCharts.Core.Drawing;
 using LiveCharts.Core.Interaction;
 using LiveCharts.Core.ViewModels;
@@ -57,7 +55,7 @@ namespace LiveCharts.Core.DataSeries
                 var vm = new ScatterViewModel
                 {
                     Location = new Point(p[0], p[1]) + unitWidth,
-                    Size = new Size(dw, dw)
+                    Radius = dw
                 };
 
                 if (current.View == null)
