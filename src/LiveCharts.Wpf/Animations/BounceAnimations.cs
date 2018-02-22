@@ -15,8 +15,17 @@ namespace LiveCharts.Wpf.Animations
         public static AnimationBuilder Bounce(
             this AnimationBuilder builder, DependencyProperty property, double to, double maxBounce = double.NaN)
         {
-            var l = double.IsNaN(maxBounce) ? .25 : maxBounce;
-            var b = to * l;
+            double b;
+            if (double.IsNaN(maxBounce))
+            {
+                var l = double.IsNaN(maxBounce) ? .25 : maxBounce;
+                 b = to * l;
+            }
+            else
+            {
+                b = maxBounce;
+            }
+            
             return builder.Property(
                 property,
                 new Frame(0.8, to + b),
@@ -32,11 +41,19 @@ namespace LiveCharts.Wpf.Animations
         /// <param name="to">To.</param>
         /// <param name="maxBounce">The max bounce limit.</param>
         /// <returns></returns>
-        public static AnimationBuilder BounceInverse(
+        public static AnimationBuilder InverseBounce(
             this AnimationBuilder builder, DependencyProperty property, double to, double maxBounce = double.NaN)
         {
-            var l = double.IsNaN(maxBounce) ? .25 : maxBounce;
-            var b = to * l;
+            double b;
+            if (double.IsNaN(maxBounce))
+            {
+                var l = double.IsNaN(maxBounce) ? .25 : maxBounce;
+                b = to * l;
+            }
+            else
+            {
+                b = maxBounce;
+            }
             return builder.Property(
                 property,
                 new Frame(0.8, to - b),

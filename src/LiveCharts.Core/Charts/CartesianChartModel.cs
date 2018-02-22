@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography;
 using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Coordinates;
 using LiveCharts.Core.Dimensions;
@@ -82,6 +81,20 @@ namespace LiveCharts.Core.Charts
             var m = (y2 - y1) / (x2 - x1);
 
             return (pixelsValue - y1) / m + x1;
+        }
+
+        /// <summary>
+        /// Performs the lineal equation with 2 given points.
+        /// </summary>
+        /// <param name="p1">The p1.</param>
+        /// <param name="p2">The p2.</param>
+        /// <param name="value">The value.</param>
+        /// <returns></returns>
+        public double LinealScale(Point p1, Point p2, double value)
+        {
+            var m = (p2.Y - p1.Y) / (p2.X - p1.X);
+
+            return m * (value - p1.X) + p1.Y;
         }
 
         /// <inheritdoc cref="ChartModel.Update"/>
@@ -169,9 +182,9 @@ namespace LiveCharts.Core.Charts
 
             foreach (var point in query)
             {
-                var point2D = (Point2D) point.Coordinate;
-                sx += ScaleToUi(point2D.X, XAxis[point.Series.ScalesAt[0]]);
-                sy += ScaleToUi(point2D.Y, YAxis[point.Series.ScalesAt[1]]);
+                var coordinate = point.Coordinate;
+                sx += ScaleToUi(coordinate[0][0], XAxis[point.Series.ScalesAt[0]]);
+                sy += ScaleToUi(coordinate[1][0], YAxis[point.Series.ScalesAt[1]]);
             }
 
             sx = sx / query.Length;
@@ -217,10 +230,10 @@ namespace LiveCharts.Core.Charts
                     //plane.Dimension = index == 0 ? 1 : (index == 1 ? 0 : index);
                     // get the axis limits...
                     plane.ActualMinValue = double.IsNaN(plane.MinValue)
-                        ? plane.Range.To
+                        ? plane.DataRange.To
                         : plane.MinValue;
                     plane.ActualMaxValue = double.IsNaN(plane.MaxValue)
-                        ? plane.Range.From
+                        ? plane.DataRange.From
                         : plane.MaxValue;
 
                     plane.ActualReverse = plane.Dimension == 1;

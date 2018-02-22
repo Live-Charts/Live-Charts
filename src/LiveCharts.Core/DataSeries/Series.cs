@@ -88,12 +88,12 @@ namespace LiveCharts.Core.DataSeries
         }
 
         /// <summary>
-        /// Gets or sets the metatada.
+        /// Gets or sets the metadata.
         /// </summary>
         /// <value>
-        /// The metatada.
+        /// The metadata.
         /// </value>
-        public SeriesMetatada Metatada { get; set; }
+        public SeriesMetatada Metadata { get; set; }
 
         /// <summary>
         /// Gets or sets the mapper.
@@ -455,7 +455,7 @@ namespace LiveCharts.Core.DataSeries
             _itemsSource = itemsSource ?? new PlotableCollection<TModel>();
             OnItemsIntancechanged();
             var t = typeof(TModel);
-            Metatada = new SeriesMetatada
+            Metadata = new SeriesMetatada
             {
                 ModelType = t,
                 IsValueType = t.IsValueType

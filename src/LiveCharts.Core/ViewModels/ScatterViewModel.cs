@@ -21,6 +21,6 @@ namespace LiveCharts.Core.ViewModels
         /// <value>
         /// The size.
         /// </value>
-        public double Radius { get; set; }
+        public double Diameter { get; set; }
     }
 }

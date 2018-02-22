@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using System.Windows.Shapes;
 using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Coordinates;
@@ -23,9 +24,9 @@ namespace LiveCharts.Wpf.PointViews
             if (isNew)
             {
                 var wpfChart = (CartesianChart) chart;
-                Shape = new Path();
+                Shape = new Path{Stretch = Stretch.Fill};
                 wpfChart.DrawArea.Children.Add(Shape);
-                Canvas.SetLeft(Shape, vm.Location.X);
+                Canvas.SetLeft(Shape, vm.Location.X );
                 Canvas.SetTop(Shape, vm.Location.Y);
                 Shape.Width = 0;
                 Shape.Height = 0;
@@ -33,18 +34,50 @@ namespace LiveCharts.Wpf.PointViews
 
             Shape.Stroke = point.Series.Stroke.AsWpf();
             Shape.Fill = point.Series.Fill.AsWpf();
+            Shape.StrokeThickness = 3.5;
+            Shape.Stroke = point.Series.Stroke.AsWpf();
+            Shape.Data = Geometry.Parse(Core.Drawing.Svg.Geometry.Circle.Data); // Geometry.Parse(viewModel.Geometry.Data);
 
             var speed = chart.AnimationsSpeed;
-            var bounce = isNew ? vm.Radius * .3 : 0;
+            var r = vm.Diameter * .5;
+            var b = vm.Diameter * .18;
 
-            Shape.Animate()
-                .AtSpeed(speed)
-                .Property(Canvas.LeftProperty)
+            if (isNew)
+            {
+                Shape.Animate()
+                    .AtSpeed(speed)
+                    .InverseBounce(Canvas.LeftProperty, vm.Location.X - r, b * .5)
+                    .InverseBounce(Canvas.TopProperty, vm.Location.Y - r, b * .5)
+                    .Bounce(FrameworkElement.WidthProperty, vm.Diameter, b)
+                    .Bounce(FrameworkElement.HeightProperty, vm.Diameter, b)
+                    .Begin();
+            }
+            else
+            {
+                Shape.Animate()
+                    .AtSpeed(speed)
+                    .Property(Canvas.LeftProperty, vm.Location.X - r)
+                    .Property(Canvas.TopProperty, vm.Location.Y - r)
+                    .Begin();
+            }
         }
 
         protected override void OnDispose(IChartView chart)
         {
-            base.OnDispose(chart);
+            var wpfChart = (CartesianChart)chart;
+
+            var animation = Shape.Animate()
+                .AtSpeed(chart.AnimationsSpeed)
+                .Property(FrameworkElement.HeightProperty, 0)
+                .Property(FrameworkElement.WidthProperty, 0);
+
+            animation.Then((sender, args) =>
+            {
+                wpfChart.DrawArea.Children.Remove(Shape);
+                wpfChart.DrawArea.Children.Remove(Label);
+                animation.Dispose();
+                animation = null;
+            }).Begin();
         }
     }
 }

@@ -34,7 +34,7 @@ namespace LiveCharts.Core.Defaults
 
             settings.PlotPolar<PolarModel>((pm, index) => new PolarPoint(pm.Radius, pm.Angle));
 
-            settings.PlotWeighted2D<Weighted2DPoint>((point, index) => new Weighted2DPoint(point.X, point.Y, point.Weight));
+            settings.HasWeighed2DPlotFor<Weighted2DPoint>((point, index) => new Weighted2DPoint(point.X, point.Y, point.Weight));
 
             return settings;
         }

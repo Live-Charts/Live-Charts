@@ -23,9 +23,11 @@ namespace Assets.ViewModels
             LiveChartsSettings.Set(settings =>
                 {
                     settings.Has2DPlotFor<City>((city, index) => new Point2D(index, city.Population));
+                    settings.HasWeighed2DPlotFor<City>((city, index) =>
+                        new Weighted2DPoint(index, city.Population, _r.Next(0, 10)));
                 });
 
-            var series = new LineSeries<City>
+            var series = new ScatterSeries<City>
             {
                 new City
                 {
@@ -41,7 +43,6 @@ namespace Assets.ViewModels
                 }
             };
 
-            series.LineSmoothness = 1;
             series.StrokeDashArray = new[] {2d, 2d};
 
             SeriesCollection = new SeriesCollection

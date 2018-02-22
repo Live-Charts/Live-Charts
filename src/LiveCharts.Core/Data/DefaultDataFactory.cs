@@ -17,9 +17,9 @@ namespace LiveCharts.Core.Data
             where TCoordinate : ICoordinate
         {
             var mapper = args.Series.Mapper;
-            var notifiesChange = typeof(INotifyPropertyChanged).IsAssignableFrom(args.Series.Metatada.ModelType);
+            var notifiesChange = typeof(INotifyPropertyChanged).IsAssignableFrom(args.Series.Metadata.ModelType);
             var collection = args.Collection;
-            var isValueType = args.Series.Metatada.IsValueType;
+            var isValueType = args.Series.Metadata.IsValueType;
             var tracker = args.Series.Tracker;
 
             void InvalidateOnPropertyChanged(object sender, PropertyChangedEventArgs e)

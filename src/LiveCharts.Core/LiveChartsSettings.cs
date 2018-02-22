@@ -109,7 +109,7 @@ namespace LiveCharts.Core
         /// <typeparam name="TModel">The type of the model.</typeparam>
         /// <param name="predicate">The predicate.</param>
         /// <returns></returns>
-        public ModelToPointMapper<TModel, Weighted2DPoint> PlotWeighted2D<TModel>(
+        public ModelToPointMapper<TModel, Weighted2DPoint> HasWeighed2DPlotFor<TModel>(
             Func<TModel, int, Weighted2DPoint> predicate)
         {
             return PlotAs(predicate);

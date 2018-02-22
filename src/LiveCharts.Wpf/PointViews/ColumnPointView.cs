@@ -17,8 +17,6 @@ namespace LiveCharts.Wpf.PointViews
     /// <typeparam name="TPoint">the type of the chart point.</typeparam>
     /// <typeparam name="TShape">the type of the shape.</typeparam>
     /// <typeparam name="TLabel">the type of the label.</typeparam>
-    /// <typeparam name="TCoordinate">the type of the coordinate.</typeparam>
-    /// <typeparam name="TViewModel">the type of the view model.</typeparam>
     /// <seealso cref="PointView{TModel, Point,Point2D, ColumnViewModel, TShape, TLabel}" />
     public class ColumnPointView<TModel, TPoint, TShape, TLabel>
         : PointView<TModel, TPoint, Point2D, ColumnViewModel, TShape, TLabel>
@@ -82,15 +80,15 @@ namespace LiveCharts.Wpf.PointViews
                 Label.Measure(point.PackAll());
                 Canvas.SetLeft(Shape, Canvas.GetLeft(Shape));
                 Canvas.SetTop(Shape, Canvas.GetTop(Shape));
-                wpfChart.DrawArea.Children.Add((UIElement) Label);
+                wpfChart.DrawArea.Children.Add(Label);
             }
 
             var speed = chart.AnimationsSpeed;
 
-            ((FrameworkElement) Label).BeginAnimation(
+            Label.BeginAnimation(
                 Canvas.LeftProperty,
                 new DoubleAnimation(location.X, speed));
-            ((FrameworkElement) Label).BeginAnimation(
+            Label.BeginAnimation(
                 Canvas.TopProperty,
                 new DoubleAnimation(location.Y, speed));
         }
@@ -110,7 +108,7 @@ namespace LiveCharts.Wpf.PointViews
             animation.Then((sender, args) =>
             {
                 wpfChart.DrawArea.Children.Remove(Shape);
-                wpfChart.DrawArea.Children.Remove((UIElement) Label);
+                wpfChart.DrawArea.Children.Remove(Label);
                 animation.Dispose();
                 animation = null;
             }).Begin();

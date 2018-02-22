@@ -292,24 +292,22 @@ namespace LiveCharts.Core.Charts
                 {
                     if (series.ScalesAt.Length <= i) continue;
                     var plane = Dimensions[i][series.ScalesAt[i]];
-                    if (plane.PointWidth == null) plane.ActualPointWidth = series.DefaultPointWidth;
-                    plane.ResetRange();
-                    if (series.RangeByDimension[i].From > plane.Range.From)
+
+                    if (plane.PointWidth == null)
                     {
-                        plane.Range = new DoubleRange
-                        {
-                            To = plane.Range.To,
-                            From = series.RangeByDimension[i].From
-                        };
+                        plane.ActualPointWidth = series.DefaultPointWidth;
                     }
 
-                    if (series.RangeByDimension[i].To < plane.Range.To)
+                    plane.ResetRange();
+
+                    if (series.RangeByDimension[i].From > plane.DataRange.From)
                     {
-                        plane.Range = new DoubleRange
-                        {
-                            To = series.RangeByDimension[i].To,
-                            From = plane.Range.From
-                        };
+                        plane.DataRange.From = series.RangeByDimension[i].From;
+                    }
+
+                    if (series.RangeByDimension[i].To < plane.DataRange.To)
+                    {
+                        plane.DataRange.To = series.RangeByDimension[i].To;
                     }
                 }
             }

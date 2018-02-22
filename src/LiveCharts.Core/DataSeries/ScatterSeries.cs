@@ -4,6 +4,7 @@ using LiveCharts.Core.Charts;
 using LiveCharts.Core.Coordinates;
 using LiveCharts.Core.Data;
 using LiveCharts.Core.Drawing;
+using LiveCharts.Core.Drawing.Svg;
 using LiveCharts.Core.Interaction;
 using LiveCharts.Core.ViewModels;
 
@@ -20,6 +21,9 @@ namespace LiveCharts.Core.DataSeries
         /// </summary>
         public ScatterSeries()
         {
+            MaxPointDiameter = 30;
+            MinPointDiameter = 12;
+            Geometry = Geometry.Circle;
             LiveChartsSettings.Set<IScatterSeries>(this);
             RangeByDimension = RangeByDimension = new[]
             {
@@ -27,7 +31,18 @@ namespace LiveCharts.Core.DataSeries
                 new DoubleRange(), // y
                 new DoubleRange()  // w
             };
+            // ToDo: Check out if this is the best option... to avoid tooltip show throw...
+            ScalesAt = new[] {0, 0, 0};
         }
+
+        /// <inheritdoc />
+        public Geometry PointGeometry { get; set; }
+
+        /// <inheritdoc />
+        public double MaxPointDiameter { get; set; }
+
+        /// <inheritdoc />
+        public double MinPointDiameter { get; set; }
 
         /// <inheritdoc />
         public override double[] DefaultPointWidth => new []{0d,0d};
@@ -38,8 +53,9 @@ namespace LiveCharts.Core.DataSeries
             var cartesianChart = (CartesianChartModel)chart;
             var x = cartesianChart.XAxis[ScalesXAt];
             var y = cartesianChart.YAxis[ScalesYAt];
-            var w = chart.Dimensions[2][ScalesAt[2]];
             var unitWidth = chart.Get2DUiUnitWidth(x, y);
+            var p1 = new Point(RangeByDimension[2].To, MinPointDiameter);
+            var p2 = new Point(RangeByDimension[2].From, MaxPointDiameter);
 
             Point<TModel, Weighted2DPoint, ScatterViewModel> previous = null;
             foreach (var current in Points)
@@ -47,15 +63,14 @@ namespace LiveCharts.Core.DataSeries
                 var p = new[]
                 {
                     chart.ScaleToUi(current.Coordinate[0][0], x),
-                    chart.ScaleToUi(current.Coordinate[1][0], y)
+                    chart.ScaleToUi(current.Coordinate[1][0], y),
+                    cartesianChart.LinealScale(p1, p2, current.Coordinate.Weight)
                 };
-
-                var dw = chart.ScaleToUi(current.Coordinate.Weight, w);
 
                 var vm = new ScatterViewModel
                 {
                     Location = new Point(p[0], p[1]) + unitWidth,
-                    Radius = dw
+                    Diameter = p[2]
                 };
 
                 if (current.View == null)
@@ -68,10 +83,10 @@ namespace LiveCharts.Core.DataSeries
 
                 current.InteractionArea = new RectangleInteractionArea
                 {
-                    Top = vm.Location.Y,
-                    Left = vm.Location.X,
-                    Height = dw,
-                    Width = dw
+                    Top = vm.Location.Y - p[2] * .5,
+                    Left = vm.Location.X - p[2] * .5,
+                    Height = p[2],
+                    Width = p[2]
                 };
 
                 previous = current;

@@ -25,6 +25,7 @@ namespace LiveCharts.Core.DataSeries
         /// </summary>
         public LineSeries()
         {
+            Geometry = Geometry.Circle;
             LiveChartsSettings.Set<ILineSeries>(this);
         }
 

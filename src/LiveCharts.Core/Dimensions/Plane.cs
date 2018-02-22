@@ -25,7 +25,7 @@ namespace LiveCharts.Core.Dimensions
         {
             MinValue = double.NaN;
             MaxValue = double.NaN;
-            Range = new DoubleRange();
+            DataRange = new DoubleRange();
             LiveChartsSettings.Set(this);
         }
 
@@ -35,7 +35,7 @@ namespace LiveCharts.Core.Dimensions
         /// <value>
         /// The data range.
         /// </value>
-        public DoubleRange Range { get; internal set; }
+        public DoubleRange DataRange { get; internal set; }
 
         /// <summary>
         /// Gets or sets the maximum value to display.
@@ -244,7 +244,7 @@ namespace LiveCharts.Core.Dimensions
 
         internal void ResetRange()
         {
-            Range = new DoubleRange
+            DataRange = new DoubleRange
             {
                 From = double.MinValue,
                 To = double.MaxValue
