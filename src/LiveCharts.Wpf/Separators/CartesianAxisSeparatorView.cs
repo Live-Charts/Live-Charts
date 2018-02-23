@@ -105,9 +105,9 @@ namespace LiveCharts.Wpf.Separators
 
         private void SetInitialLabelParams()
         {
-            var uiLablel = (UIElement) Label;
-            Canvas.SetTop(uiLablel, 0);
-            Canvas.SetLeft(uiLablel, 0);
+            var label = (UIElement) Label;
+            Canvas.SetTop(label, 0);
+            Canvas.SetLeft(label, 0);
         }
 
         public event DisposingResourceHandler Disposed;
@@ -116,8 +116,8 @@ namespace LiveCharts.Wpf.Separators
 
         void IResource.Dispose(IChartView chart)
         {
-            chart.Content.AddChild(Rectangle);
-            chart.Content.AddChild((UIElement) Label);
+            chart.Content.RemoveChild(Rectangle);
+            chart.Content.RemoveChild((UIElement) Label);
             Rectangle = null;
             Disposed?.Invoke(chart, this);
         }
