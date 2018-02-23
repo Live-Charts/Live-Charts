@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using LiveCharts.Core.Abstractions;
-using LiveCharts.Core.Coordinates;
 using LiveCharts.Core.Dimensions;
 using LiveCharts.Core.Drawing;
 
@@ -130,7 +129,7 @@ namespace LiveCharts.Core.Charts
                     return;
                 }
 
-                View.UpdateDrawArea(new Rectangle(DrawAreaLocation, DrawAreaSize));
+                View.Content.DrawArea = new Rectangle(DrawAreaLocation, DrawAreaSize);
 
                 // draw separators
                 // for each dimension (for a cartesian chart X and Y)
@@ -159,6 +158,7 @@ namespace LiveCharts.Core.Charts
         /// <inheritdoc />
         protected override void ViewOnPointerMoved(Point location, TooltipSelectionMode selectionMode, params double[] dimensions)
         {
+            if (Series == null) return;
             var query = GetInteractedPoints(dimensions).ToArray();
 
             if (selectionMode == TooltipSelectionMode.Auto)

@@ -35,9 +35,8 @@ namespace LiveCharts.Wpf.PointViews
 
             if (isNew)
             {
-                var wpfChart = (CartesianChart) chart;
                 Shape = new TShape();
-                wpfChart.DrawArea.Children.Add(Shape);
+                chart.Content.AddChild(Shape);
                 Canvas.SetLeft(Shape, vm.Left);
                 Canvas.SetTop(Shape, vm.Zero);
                 Shape.Width = vm.Width;
@@ -75,12 +74,11 @@ namespace LiveCharts.Wpf.PointViews
 
             if (isNew)
             {
-                var wpfChart = (CartesianChart) chart;
                 Label = new TLabel();
                 Label.Measure(point.PackAll());
                 Canvas.SetLeft(Shape, Canvas.GetLeft(Shape));
                 Canvas.SetTop(Shape, Canvas.GetTop(Shape));
-                wpfChart.DrawArea.Children.Add(Label);
+                chart.Content.AddChild(Label);
             }
 
             var speed = chart.AnimationsSpeed;
@@ -96,8 +94,6 @@ namespace LiveCharts.Wpf.PointViews
         /// <inheritdoc />
         protected override void OnDispose(IChartView chart)
         {
-            var wpfChart = (CartesianChart) chart;
-
             var zero = chart.Model.ScaleToUi(0, chart.Dimensions[1][_point.Series.ScalesAt[1]]);
 
             var animation = Shape.Animate()
@@ -107,8 +103,8 @@ namespace LiveCharts.Wpf.PointViews
 
             animation.Then((sender, args) =>
             {
-                wpfChart.DrawArea.Children.Remove(Shape);
-                wpfChart.DrawArea.Children.Remove(Label);
+                chart.Content.RemoveChild(chart);
+                chart.Content.RemoveChild(Label);
                 animation.Dispose();
                 animation = null;
             }).Begin();

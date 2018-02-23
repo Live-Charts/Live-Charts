@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
@@ -14,7 +15,7 @@ namespace LiveCharts.Wpf.PointViews
         private readonly PathFigure _figure;
         private IEnumerable<double> _strokeDashArray;
         private double _previousLength;
-        private CartesianChart _chart;
+        private TimeSpan _animationsSpeed;
 
         public CartesianPath()
         {
@@ -35,8 +36,8 @@ namespace LiveCharts.Wpf.PointViews
         /// <inheritdoc />
         public void Initialize(IChartView view)
         {
-            _chart = (CartesianChart) view;
-            _chart.DrawArea.Children.Add(_strokePath);
+            _animationsSpeed = view.AnimationsSpeed;
+            view.Content.AddChild(_strokePath);
         }
 
         /// <inheritdoc />
@@ -45,7 +46,7 @@ namespace LiveCharts.Wpf.PointViews
             double strokeThickness, IEnumerable<double> strokeDashArray)
         {
             _figure.Animate()
-                .AtSpeed(_chart.AnimationsSpeed)
+                .AtSpeed(_animationsSpeed)
                 .Property(PathFigure.StartPointProperty, startPoint.AsWpf())
                 .Begin();
             _strokePath.Stroke = stroke.AsWpf();
@@ -94,7 +95,7 @@ namespace LiveCharts.Wpf.PointViews
 
         public void Dispose(IChartView view)
         {
-            _chart.DrawArea.Children.Remove(_strokePath);
+            view.Content.RemoveChild(_strokePath);
         }
 
         private IEnumerable<double> GetAnimatedStrokeDashArray(double length)

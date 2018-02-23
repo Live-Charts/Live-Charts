@@ -28,8 +28,6 @@ namespace LiveCharts.Wpf.Separators
 
         public void Move(CartesianAxisSeparatorArgs args)
         {
-            var wpfChart = (CartesianChart)args.ChartView;
-
             var isNew = Rectangle == null;
             var isNewLabel = Label == null;
             var speed = args.ChartView.AnimationsSpeed;
@@ -39,7 +37,7 @@ namespace LiveCharts.Wpf.Separators
                 Rectangle = new Rectangle();
                 Panel.SetZIndex(Rectangle, -1);
                 SetInitialLineParams(args);
-                wpfChart.DrawArea.Children.Add(Rectangle);
+                args.ChartView.Content.AddChild(Rectangle);
                 Rectangle.Animate()
                     .AtSpeed(speed)
                     .Property(UIElement.OpacityProperty, 1, 0)
@@ -50,14 +48,14 @@ namespace LiveCharts.Wpf.Separators
             {
                 Label = new TLabel();
                 SetInitialLabelParams();
-                wpfChart.DrawArea.Children.Add((UIElement)Label);
+                args.ChartView.Content.AddChild((UIElement) Label);
                 ((FrameworkElement) Label).Animate()
                     .AtSpeed(speed)
                     .Property(UIElement.OpacityProperty, 1, 0)
                     .Begin();
             }
 
-            var axis = (Axis)args.Plane;
+            var axis = (Axis) args.Plane;
             var style = args.Plane.Dimension == 0
                 ? (args.IsAlternative ? axis.XAlternativeSeparatorStyle : axis.XSeparatorStyle)
                 : (args.IsAlternative ? axis.YAlternativeSeparatorStyle : axis.YSeparatorStyle);
@@ -80,7 +78,7 @@ namespace LiveCharts.Wpf.Separators
                 .Property(FrameworkElement.WidthProperty, args.Model.Width > st
                     ? args.Model.Width
                     : st)
-                .SetTarget((UIElement)Label)
+                .SetTarget((UIElement) Label)
                 .Property(Canvas.LeftProperty, actualLabelLocation.X)
                 .Property(Canvas.TopProperty, actualLabelLocation.Y);
 
@@ -89,7 +87,7 @@ namespace LiveCharts.Wpf.Separators
                 storyboard.Property(UIElement.OpacityProperty, 0)
                     .Then((sender, e) =>
                     {
-                        ((IResource)this).Dispose(args.ChartView);
+                        ((IResource) this).Dispose(args.ChartView);
                         storyboard = null;
                     });
             }
@@ -116,13 +114,12 @@ namespace LiveCharts.Wpf.Separators
 
         object IResource.UpdateId { get; set; }
 
-        void IResource.Dispose(IChartView view)
+        void IResource.Dispose(IChartView chart)
         {
-            var wpfChart = (CartesianChart) view;
-            wpfChart.DrawArea.Children.Remove(Rectangle);
-            wpfChart.DrawArea.Children.Remove((UIElement)Label);
+            chart.Content.AddChild(Rectangle);
+            chart.Content.AddChild((UIElement) Label);
             Rectangle = null;
-            Disposed?.Invoke(view, this);
+            Disposed?.Invoke(chart, this);
         }
     }
 }

@@ -9,7 +9,7 @@
         Height="500"
         Width="600"
         d:DataContext="{d:DesignInstance wpf:NavigationHandler}">
-    <Border Padding="8">
+    <Border Padding="8" >
         <ContentControl Content="{Binding CurrentView}" ></ContentControl>
     </Border>
 </Window>

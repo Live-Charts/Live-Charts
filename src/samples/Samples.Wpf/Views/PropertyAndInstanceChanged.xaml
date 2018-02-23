@@ -30,7 +30,7 @@
         </StackPanel>
         <wpf:CartesianChart Grid.Row="1"
                             AnimationsSpeed="0:0:1"
-                            Series="{Binding SeriesCollection}" 
+                            Series="{Binding SeriesCollection, PresentationTraceSources.TraceLevel=High}" 
                             DataDoubleClickCommand="{Binding RemoveOnDoubleClick}" />
     </Grid>
 </UserControl>

@@ -35,6 +35,7 @@ namespace LiveCharts.Core.Charts
         protected ChartModel(IChartView view)
         {
             View = view;
+            View.Content = LiveChartsSettings.Current.UiProvider.GetChartContent();
             view.ChartViewLoaded += sender =>
             {
                 IsViewInitialized = true;

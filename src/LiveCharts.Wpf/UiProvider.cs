@@ -15,6 +15,12 @@ namespace LiveCharts.Wpf
     public class UiProvider : IUiProvider
     {
         /// <inheritdoc />
+        public IChartContent GetChartContent()
+        {
+            return new ChartContent();
+        }
+
+        /// <inheritdoc />
         public IPlaneLabelControl GetNewAxisLabel()
         {
             return new AxisLabel();

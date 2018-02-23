@@ -114,14 +114,12 @@ namespace LiveCharts.Wpf.Controls
         }
 
         double[] ILegend.Measure(
-            IEnumerable<DataSet> seriesCollection, 
-            Orientation orientation,
-            IChartView chart)
+            IEnumerable<DataSet> seriesCollection, Orientation orientation, IChartView chart)
         {
             if (Parent == null)
             {
-                var wpfChart = (Chart)chart;
-                wpfChart.Children.Add(this);
+                var content = chart.Content;
+                content.AddChild(this);
             }
 
             ItemsSource = seriesCollection;
@@ -152,14 +150,11 @@ namespace LiveCharts.Wpf.Controls
         object IResource.UpdateId { get; set; }
 
         /// <inheritdoc />
-        void IResource.Dispose(IChartView view)
+        void IResource.Dispose(IChartView chart)
         {
-            var wpfChart = (Chart)view;
-            if (wpfChart.Children.Contains(this))
-            {
-                wpfChart.Children.Remove(this);
-            }
-            Disposed?.Invoke(view, this);
+            var content = (ChartContent)chart.Content;
+            content.RemoveChild(this);
+            Disposed?.Invoke(chart, this);
         }
     }
 }

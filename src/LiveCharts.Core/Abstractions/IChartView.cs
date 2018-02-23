@@ -59,6 +59,14 @@ namespace LiveCharts.Core.Abstractions
         ChartModel Model { get; }
 
         /// <summary>
+        /// Gets or sets the content.
+        /// </summary>
+        /// <value>
+        /// The content.
+        /// </value>
+        IChartContent Content { get; set; }
+        
+        /// <summary>
         /// Gets the size of the control.
         /// </summary>
         /// <value>
@@ -129,12 +137,6 @@ namespace LiveCharts.Core.Abstractions
         /// The data tooltip.
         /// </value>
         IDataToolTip DataToolTip { get; }
-
-        /// <summary>
-        /// Updates the draw margin.
-        /// </summary>
-        /// <param name="model">The model.</param>
-        void UpdateDrawArea(Rectangle model);
 
         /// <summary>
         /// Dispatchers the specified action.

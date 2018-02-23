@@ -41,9 +41,8 @@ namespace LiveCharts.Wpf.PointViews
 
             if (isNew)
             {
-                var wpfChart = (CartesianChart)point.Chart.View;
                 Shape = new Path {Stretch = Stretch.Fill};
-                wpfChart.DrawArea.Children.Add(Shape);
+                chart.Content.AddChild(Shape);
                 Canvas.SetLeft(Shape, point.ViewModel.Location.X - .5 * _vm.GeometrySize);
                 Canvas.SetTop(Shape, point.ViewModel.Location.Y - .5 * _vm.GeometrySize);
                 Shape.Width = 0;
@@ -107,18 +106,17 @@ namespace LiveCharts.Wpf.PointViews
         protected override void OnDispose(IChartView chart)
         {
             IsDisposing = true;
-            var wpfChart = (CartesianChart) chart;
             var t = _next ?? _previous ?? this;
 
             var shapeAnimation = Shape.Animate()
-                .AtSpeed(wpfChart.AnimationsSpeed)
+                .AtSpeed(chart.AnimationsSpeed)
                 .Property(Canvas.LeftProperty, t._vm.Location.X - .5 * _vm.GeometrySize)
                 .Property(Canvas.TopProperty, t._vm.Location.Y - .5 * _vm.GeometrySize);
 
             shapeAnimation
                 .Then((sender, args) =>
                 {
-                    wpfChart.DrawArea.Children.Remove(Shape);
+                    chart.Content.RemoveChild(Shape);
                     IsDisposing = false;
                 })
                 .Begin();

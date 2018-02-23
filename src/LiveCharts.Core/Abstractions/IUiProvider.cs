@@ -10,6 +10,12 @@ namespace LiveCharts.Core.Abstractions
     public interface IUiProvider
     {
         /// <summary>
+        /// Gets the content of the chart.
+        /// </summary>
+        /// <returns></returns>
+        IChartContent GetChartContent();
+
+        /// <summary>
         /// The axis label provider.
         /// </summary>
         /// <returns></returns>
