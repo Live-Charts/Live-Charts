@@ -3,22 +3,22 @@
     /// <summary>
     /// Represents a range.
     /// </summary>
-    public class DoubleRange
+    public class RangeF
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="DoubleRange"/> class.
+        /// Initializes a new instance of the <see cref="RangeF"/> class.
         /// </summary>
-        public DoubleRange()
+        public RangeF()
         {
             
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DoubleRange"/> class.
+        /// Initializes a new instance of the <see cref="RangeF"/> class.
         /// </summary>
         /// <param name="min">The minimum.</param>
         /// <param name="max">The maximum.</param>
-        public DoubleRange(double min, double max)
+        public RangeF(float min, float max)
         {
             From = min;
             To = max;
@@ -30,7 +30,7 @@
         /// <value>
         /// From.
         /// </value>
-        public double From { get; set; }
+        public float From { get; set; }
 
         /// <summary>
         /// Gets or sets to.
@@ -38,6 +38,6 @@
         /// <value>
         /// To.
         /// </value>
-        public double To { get; set; }
+        public float To { get; set; }
     }
 }

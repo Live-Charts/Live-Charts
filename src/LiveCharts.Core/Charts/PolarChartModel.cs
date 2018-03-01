@@ -20,13 +20,13 @@ namespace LiveCharts.Core.Charts
         }
 
         /// <inheritdoc />
-        public override double ScaleToUi(double dataValue, Plane plane, double[] sizeVector = null)
+        public override float ScaleToUi(float dataValue, Plane plane, float[] sizeVector = null)
         {
             throw new System.NotImplementedException();
         }
 
         /// <inheritdoc />
-        public override double ScaleFromUi(double pixelsValue, Plane plane, double[] sizeVector)
+        public override float ScaleFromUi(float pixelsValue, Plane plane, float[] sizeVector = null)
         {
             throw new System.NotImplementedException();
         }

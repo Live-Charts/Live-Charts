@@ -12,12 +12,12 @@ namespace LiveCharts.Core.Coordinates
         /// <summary>
         /// The _vector.
         /// </summary>
-        private readonly double[][] _vector = new double[3][];
+        private readonly float[][] _vector = new float[3][];
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Point2D"/> struct.
         /// </summary>
-        public Weighted2DPoint(double x, double y, double weight)
+        public Weighted2DPoint(float x, float y, float weight)
         {
             _vector[0] = new []{x};
             _vector[1] = new []{y};
@@ -25,7 +25,7 @@ namespace LiveCharts.Core.Coordinates
         }
 
         /// <inheritdoc />
-        public double[] this[int dimension] => _vector[dimension];
+        public float[] this[int dimension] => _vector[dimension];
 
         /// <summary>
         /// Gets or sets the x.
@@ -33,7 +33,7 @@ namespace LiveCharts.Core.Coordinates
         /// <value>
         /// The x.
         /// </value>
-        public double X => _vector[0][0];
+        public float X => _vector[0][0];
 
         /// <summary>
         /// Gets or sets the y.
@@ -41,7 +41,7 @@ namespace LiveCharts.Core.Coordinates
         /// <value>
         /// The y.
         /// </value>
-        public double Y => _vector[1][0];
+        public float Y => _vector[1][0];
 
         /// <summary>
         /// Gets the weight.
@@ -49,10 +49,10 @@ namespace LiveCharts.Core.Coordinates
         /// <value>
         /// The w.
         /// </value>
-        public double Weight => _vector[2][0];
+        public float Weight => _vector[2][0];
 
         /// <inheritdoc />
-        public void CompareDimensions(DoubleRange[] rangeByDimension)
+        public void CompareDimensions(RangeF[] rangeByDimension)
         {
             var x = rangeByDimension[0];
             var y = rangeByDimension[1];

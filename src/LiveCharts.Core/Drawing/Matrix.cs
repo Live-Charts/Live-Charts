@@ -11,7 +11,7 @@
         /// <param name="v1">The v1.</param>
         /// <param name="v2">The v2.</param>
         /// <returns></returns>
-        public static double[] Sum2D(double[] v1, double[] v2)
+        public static float[] Sum2D(float[] v1, float[] v2)
         {
             return new[] {v1[0] + v2[0], v1[1] + v2[1]};
         }
@@ -22,7 +22,7 @@
         /// <param name="v1">The v1.</param>
         /// <param name="v2">The v2.</param>
         /// <returns></returns>
-        public static double[] Substract2D(double[] v1, double[] v2)
+        public static float[] Substract2D(float[] v1, float[] v2)
         {
             return new[] {v1[0] + v2[0], v1[1] + v2[1]};
         }

@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
-using LiveCharts.Core.Drawing;
 
 namespace LiveCharts.Core.Themes
 {

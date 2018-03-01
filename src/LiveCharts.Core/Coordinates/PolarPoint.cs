@@ -9,21 +9,21 @@ namespace LiveCharts.Core.Coordinates
     /// </summary>
     public class PolarPoint : ICoordinate
     {
-        private readonly double[][] _vector = new double[2][];
+        private readonly float[][] _vector = new float[2][];
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PolarPoint"/> struct.
         /// </summary>
         /// <param name="radius">The radius.</param>
         /// <param name="angle">The angle.</param>
-        public PolarPoint(double radius, double angle)
+        public PolarPoint(float radius, float angle)
         {
             _vector[0] = new[] {radius};
             _vector[1] = new[] {angle};
         }
 
         /// <inheritdoc />
-        public double[] this[int dimension] => _vector[dimension];
+        public float[] this[int dimension] => _vector[dimension];
 
         /// <summary>
         /// Gets or sets the angle.
@@ -31,7 +31,7 @@ namespace LiveCharts.Core.Coordinates
         /// <value>
         /// The angle.
         /// </value>
-        public double Angle => _vector[1][0];
+        public float Angle => _vector[1][0];
 
         /// <summary>
         /// Gets or sets the radius.
@@ -39,10 +39,10 @@ namespace LiveCharts.Core.Coordinates
         /// <value>
         /// The radius.
         /// </value>
-        public double Radius => _vector[0][0];
+        public float Radius => _vector[0][0];
 
         /// <inheritdoc cref="CompareDimensions"/>
-        public void CompareDimensions(DoubleRange[] rangeByDimension)
+        public void CompareDimensions(RangeF[] rangeByDimension)
         {
             var radius = rangeByDimension[0];
 

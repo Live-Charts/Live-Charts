@@ -52,7 +52,7 @@ namespace LiveCharts.Core.Drawing
         /// <param name="right">The right.</param>
         /// <param name="bottom">The bottom.</param>
         /// <param name="left">The left.</param>
-        public Margin(double top, double right, double bottom, double left)
+        public Margin(float top, float right, float bottom, float left)
         {
             _isEmpty = false;
             Top = top;
@@ -72,7 +72,7 @@ namespace LiveCharts.Core.Drawing
         /// <value>
         /// The top.
         /// </value>
-        public double Top { get; }
+        public float Top { get; }
 
         /// <summary>
         /// Gets or sets the left.
@@ -80,7 +80,7 @@ namespace LiveCharts.Core.Drawing
         /// <value>
         /// The left.
         /// </value>
-        public double Left { get; }
+        public float Left { get; }
 
         /// <summary>
         /// Gets or sets the right.
@@ -88,7 +88,7 @@ namespace LiveCharts.Core.Drawing
         /// <value>
         /// The right.
         /// </value>
-        public double Right { get; }
+        public float Right { get; }
 
         /// <summary>
         /// Gets or sets the bottom.
@@ -96,7 +96,7 @@ namespace LiveCharts.Core.Drawing
         /// <value>
         /// The bottom.
         /// </value>
-        public double Bottom { get; }
+        public float Bottom { get; }
 
         /// <summary>
         /// Returns a <see cref="System.String" /> that represents this instance.

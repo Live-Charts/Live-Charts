@@ -5,13 +5,14 @@ using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Media;
+using LiveCharts.Core;
 using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Charts;
 using LiveCharts.Core.DataSeries;
 using LiveCharts.Core.Dimensions;
 using LiveCharts.Core.Drawing;
 using LiveCharts.Core.Events;
+using LiveCharts.Core.Themes;
 using LiveCharts.Wpf.Controls;
 using LiveCharts.Wpf.Interaction;
 using DataInteractionHandler = LiveCharts.Core.Events.DataInteractionHandler;
@@ -35,6 +36,12 @@ namespace LiveCharts.Wpf
             DefaultStyleKeyProperty.OverrideMetadata(
                 typeof(Chart),
                 new FrameworkPropertyMetadata(typeof(Chart)));
+
+            LiveChartsSettings.SetPlatformSpecificSettings(settings =>
+            {
+                settings.UseWpf();
+                settings.UseMaterialDesignLightTheme();
+            });
         }
 
         /// <summary>
@@ -187,7 +194,7 @@ namespace LiveCharts.Wpf
             if (DataToolTip == null) return;
             var p = args.GetPosition(this);
             var c = new Point(p.X + ((IChartContent) Content).DrawArea.Left, p.Y + ((IChartContent)Content).DrawArea.Top);
-            PointerMoved?.Invoke(new Core.Drawing.Point(c.X, c.Y), DataToolTip.SelectionMode, c.X, c.Y);
+            PointerMoved?.Invoke(new Core.Drawing.Point((float) c.X, (float) c.Y), DataToolTip.SelectionMode, c.X, c.Y);
         }
 
         #endregion
@@ -262,7 +269,7 @@ namespace LiveCharts.Wpf
         }
 
         /// <inheritdoc cref="IChartView.ControlSize"/>
-        double[] IChartView.ControlSize => new [] {ActualWidth, ActualHeight};
+        float[] IChartView.ControlSize => new [] {(float) ActualWidth, (float) ActualHeight};
 
         /// <inheritdoc cref="IChartView.DrawMargin"/>
         public Margin DrawMargin { get; set; }

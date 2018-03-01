@@ -1,14 +1,13 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using LiveCharts.Core.Data;
 
 namespace Assets.Models
 {
     public class City: INotifyPropertyChanged
     {
-        private double _population;
+        private float _population;
 
-        public double Population
+        public float Population
         {
             get => _population;
             set

@@ -35,7 +35,7 @@ namespace LiveCharts.Core.Charts
         public IList<Plane> YAxis => Dimensions[1];
 
         /// <inheritdoc />
-        public override double ScaleToUi(double dataValue, Plane plane, double[] sizeVector = null)
+        public override float ScaleToUi(float dataValue, Plane plane, float[] sizeVector = null)
         {
             var chartSize = sizeVector ?? DrawAreaSize;
 
@@ -43,10 +43,10 @@ namespace LiveCharts.Core.Charts
             // y = m * (x - x1) + y1 
             // where x is the Series.Values scale and y the UI scale
 
-            var x1 = plane.ActualMaxValue + (plane.ActualPointWidth?[plane.Dimension] ?? 0);
+            var x1 = plane.ActualMaxValue + (plane.ActualPointWidth?[plane.Dimension] ?? 0f);
             var y1 = chartSize[plane.Dimension];
             var x2 = plane.ActualMinValue;
-            double y2 = 0;
+            var y2 = 0f;
 
             if (plane.ActualReverse)
             {
@@ -56,13 +56,16 @@ namespace LiveCharts.Core.Charts
                 y2 = temp1;
             }
 
+            // ReSharper disable once CompareOfFloatsByEqualityOperator
+            if (x2 == x1) return y1;
+
             var m = (y2 - y1) / (x2 - x1);
 
             return m * (dataValue - x1) + y1;
         }
 
         /// <inheritdoc />
-        public override double ScaleFromUi(double pixelsValue, Plane plane, double[] sizeVector = null)
+        public override float ScaleFromUi(float pixelsValue, Plane plane, float[] sizeVector = null)
         {
             var chartSize = sizeVector ?? DrawAreaSize;
 
@@ -72,10 +75,13 @@ namespace LiveCharts.Core.Charts
             // then
             // x = ((y - y1) / m) + x1
 
-            var x1 = plane.ActualMaxValue + (plane.ActualPointWidth?[plane.Dimension] ?? 0);
+            var x1 = plane.ActualMaxValue + (plane.ActualPointWidth?[plane.Dimension] ?? 0f);
             var y1 = chartSize[plane.Dimension];
             var x2 = plane.ActualMinValue;
-            double y2 = 0;
+            var y2 = 0f;
+
+            // ReSharper disable once CompareOfFloatsByEqualityOperator
+            if (x2 == x1) return x1;
 
             var m = (y2 - y1) / (x2 - x1);
 
@@ -89,8 +95,11 @@ namespace LiveCharts.Core.Charts
         /// <param name="p2">The p2.</param>
         /// <param name="value">The value.</param>
         /// <returns></returns>
-        public double LinealScale(Point p1, Point p2, double value)
+        public float LinealScale(Point p1, Point p2, float value)
         {
+            // ReSharper disable once CompareOfFloatsByEqualityOperator
+            if (p2.X == p1.X) return p1.Y;
+            
             var m = (p2.Y - p1.Y) / (p2.X - p1.X);
 
             return m * (value - p1.X) + p1.Y;
@@ -178,7 +187,7 @@ namespace LiveCharts.Core.Charts
             ToolTipTimeoutTimer.Stop();
 
             View.DataToolTip.ShowAndMeasure(query, View);
-            double sx = 0, sy = 0;
+            float sx = 0f, sy = 0f;
 
             foreach (var point in query)
             {
@@ -215,8 +224,8 @@ namespace LiveCharts.Core.Charts
         {
             var requiresDrawMarginEvaluation = DrawMargin == Margin.Empty;
 
-            double xt = 0, xr = 0, xb = 0, xl = 0;
-            double yt = 0, yr = 0, yb = 0, yl = 0;
+            float xt = 0f, xr = 0f, xb = 0f, xl = 0f;
+            float yt = 0f, yr = 0f, yb = 0f, yl = 0f;
 
             // for each dimension (for a cartesian chart X and Y)
             for (var index = 0; index < Dimensions.Length; index++)

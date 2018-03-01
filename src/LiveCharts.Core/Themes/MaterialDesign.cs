@@ -48,15 +48,22 @@ namespace LiveCharts.Core.Themes
                 .SetDefault<IColumnSeries>(columnSeries =>
                 {
                     columnSeries.Geometry = Geometry.Square;
-                    columnSeries.MaxColumnWidth = 20d;
+                    columnSeries.MaxColumnWidth = 20f;
+                })
+                .SetDefault<IScatterSeries>(scatterSeries =>
+                {
+                    scatterSeries.DefaultFillOpacity = .6f;
+                    scatterSeries.StrokeThickness = 3f;
+                    scatterSeries.MinPointDiameter = 25f;
+                    scatterSeries.MaxPointDiameter = 45f;
                 })
                 .SetDefault<ILineSeries>(lineSeries =>
                 {
                     lineSeries.Geometry = Geometry.Circle;
-                    lineSeries.GeometrySize = 15d;
-                    lineSeries.StrokeThickness = 3.5d;
-                    lineSeries.DefaultFillOpacity = .25d;
-                    lineSeries.LineSmoothness = .6d;
+                    lineSeries.GeometrySize = 15f;
+                    lineSeries.StrokeThickness = 3.5f;
+                    lineSeries.DefaultFillOpacity = .25f;
+                    lineSeries.LineSmoothness = .6f;
                 })
 
                 // sets a base for all the planes

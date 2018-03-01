@@ -8,7 +8,7 @@ using LiveCharts.Core.Data;
 using LiveCharts.Core.ViewModels;
 using LiveCharts.Wpf.Animations;
 
-namespace LiveCharts.Wpf.PointViews
+namespace LiveCharts.Wpf.Views
 {
     /// <summary>
     /// The column point view.

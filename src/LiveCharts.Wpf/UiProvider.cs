@@ -3,8 +3,7 @@ using LiveCharts.Core.Coordinates;
 using LiveCharts.Core.Data;
 using LiveCharts.Core.ViewModels;
 using LiveCharts.Wpf.Controls;
-using LiveCharts.Wpf.PointViews;
-using LiveCharts.Wpf.Separators;
+using LiveCharts.Wpf.Views;
 using Rectangle = System.Windows.Shapes.Rectangle;
 
 namespace LiveCharts.Wpf

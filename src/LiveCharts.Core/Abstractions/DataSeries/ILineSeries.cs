@@ -13,7 +13,7 @@ namespace LiveCharts.Core.Abstractions.DataSeries
         /// <value>
         /// The line smoothness.
         /// </value>
-        double LineSmoothness { get; set; }
+        float LineSmoothness { get; set; }
 
         /// <summary>
         /// Gets or sets the point geometry.
@@ -29,6 +29,6 @@ namespace LiveCharts.Core.Abstractions.DataSeries
         /// <value>
         /// The size of the geometry.
         /// </value>
-        double GeometrySize { get; set; }
+        float GeometrySize { get; set; }
     }
 }

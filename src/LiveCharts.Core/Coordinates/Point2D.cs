@@ -9,19 +9,19 @@ namespace LiveCharts.Core.Coordinates
     /// </summary>
     public class Point2D : ICoordinate
     {
-        private readonly double[][] _vector = new double[2][];
+        private readonly float[][] _vector = new float[2][];
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Point2D"/> struct.
         /// </summary>
-        public Point2D(double x, double y)
+        public Point2D(float x, float y)
         {
             _vector[0] = new[] {x};
             _vector[1] = new[] {y};
         }
 
         /// <inheritdoc />
-        public double[] this[int dimension] => _vector[dimension];
+        public float[] this[int dimension] => _vector[dimension];
 
         /// <summary>
         /// Gets or sets the x.
@@ -29,7 +29,7 @@ namespace LiveCharts.Core.Coordinates
         /// <value>
         /// The x.
         /// </value>
-        public double X => _vector[0][0];
+        public float X => _vector[0][0];
 
         /// <summary>
         /// Gets or sets the y.
@@ -37,10 +37,10 @@ namespace LiveCharts.Core.Coordinates
         /// <value>
         /// The y.
         /// </value>
-        public double Y => _vector[1][0];
+        public float Y => _vector[1][0];
 
         /// <inheritdoc />
-        public void CompareDimensions(DoubleRange[] rangeByDimension)
+        public void CompareDimensions(RangeF[] rangeByDimension)
         {
             var x = rangeByDimension[0];
             var y = rangeByDimension[1];

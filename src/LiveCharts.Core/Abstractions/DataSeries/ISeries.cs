@@ -32,7 +32,7 @@ namespace LiveCharts.Core.Abstractions.DataSeries
         /// <value>
         /// The default fill opacity.
         /// </value>
-        double DefaultFillOpacity { get; set; }
+        float DefaultFillOpacity { get; set; }
 
         /// <summary>
         /// Gets the default width of the point.
@@ -40,7 +40,7 @@ namespace LiveCharts.Core.Abstractions.DataSeries
         /// <value>
         /// The default width of the point.
         /// </value>
-        double[] DefaultPointWidth { get; }
+        float[] DefaultPointWidth { get; }
 
         /// <summary>
         /// Gets or sets the fill.
@@ -96,7 +96,7 @@ namespace LiveCharts.Core.Abstractions.DataSeries
         /// <value>
         /// The stroke thickness.
         /// </value>
-        double StrokeThickness { get; set; }
+        float StrokeThickness { get; set; }
 
         /// <summary>
         /// Gets or sets the title.
@@ -114,6 +114,9 @@ namespace LiveCharts.Core.Abstractions.DataSeries
         /// </value>
         int ZIndex { get; set; }
 
+        /// <summary>
+        /// Occurs when a property value changes.
+        /// </summary>
         event PropertyChangedEventHandler PropertyChanged;
     }
 }

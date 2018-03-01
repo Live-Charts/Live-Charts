@@ -12,7 +12,7 @@
         /// <value>
         /// The column padding.
         /// </value>
-        double ColumnPadding { get; set; }
+        float ColumnPadding { get; set; }
 
         /// <summary>
         /// Gets or sets the maximum width of the column.
@@ -20,6 +20,6 @@
         /// <value>
         /// The maximum width of the column.
         /// </value>
-        double MaxColumnWidth { get; set; }
+        float MaxColumnWidth { get; set; }
     }
 }

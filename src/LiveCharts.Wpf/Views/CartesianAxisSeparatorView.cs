@@ -6,7 +6,7 @@ using LiveCharts.Core.Events;
 using LiveCharts.Wpf.Animations;
 using Rectangle = System.Windows.Shapes.Rectangle;
 
-namespace LiveCharts.Wpf.Separators
+namespace LiveCharts.Wpf.Views
 {
     /// <summary>
     /// The separator class.
@@ -23,8 +23,16 @@ namespace LiveCharts.Wpf.Separators
         /// </value>
         public Rectangle Rectangle { get; protected set; }
 
+        /// <summary>
+        /// Gets or sets the label.
+        /// </summary>
+        /// <value>
+        /// The label.
+        /// </value>
+        public TLabel Label { get; protected set; }
+
         /// <inheritdoc />
-        public IPlaneLabelControl Label { get; protected set; }
+        object ICartesianAxisSeparator.VisualElement => Label;
 
         public void Move(CartesianAxisSeparatorArgs args)
         {
@@ -48,8 +56,8 @@ namespace LiveCharts.Wpf.Separators
             {
                 Label = new TLabel();
                 SetInitialLabelParams();
-                args.ChartView.Content.AddChild((UIElement) Label);
-                ((FrameworkElement) Label).Animate()
+                args.ChartView.Content.AddChild(Label);
+                Label.Animate()
                     .AtSpeed(speed)
                     .Property(UIElement.OpacityProperty, 1, 0)
                     .Begin();
@@ -78,7 +86,7 @@ namespace LiveCharts.Wpf.Separators
                 .Property(FrameworkElement.WidthProperty, args.Model.Width > st
                     ? args.Model.Width
                     : st)
-                .SetTarget((UIElement) Label)
+                .SetTarget(Label)
                 .Property(Canvas.LeftProperty, actualLabelLocation.X)
                 .Property(Canvas.TopProperty, actualLabelLocation.Y);
 
@@ -101,6 +109,14 @@ namespace LiveCharts.Wpf.Separators
             Canvas.SetLeft(Rectangle, args.Model.Left);
             Rectangle.Width = args.Model.Width;
             Rectangle.Height = args.Model.Height;
+            if (args.Plane.Dimension == 0) // if X
+            {
+
+            }
+            else
+            {
+
+            }
         }
 
         private void SetInitialLabelParams()
@@ -117,7 +133,7 @@ namespace LiveCharts.Wpf.Separators
         void IResource.Dispose(IChartView chart)
         {
             chart.Content.RemoveChild(Rectangle);
-            chart.Content.RemoveChild((UIElement) Label);
+            chart.Content.RemoveChild(Label);
             Rectangle = null;
             Disposed?.Invoke(chart, this);
         }

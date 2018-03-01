@@ -9,8 +9,8 @@ namespace LiveCharts.Core.Defaults
     /// <seealso cref="System.ComponentModel.INotifyPropertyChanged" />
     public class PolarModel : INotifyPropertyChanged
     {
-        private double _radius;
-        private double _angle;
+        private float _radius;
+        private float _angle;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PolarModel"/> class.
@@ -25,7 +25,7 @@ namespace LiveCharts.Core.Defaults
         /// </summary>
         /// <param name="radius">The radius.</param>
         /// <param name="angle">The angle.</param>
-        public PolarModel(double radius, double angle)
+        public PolarModel(float radius, float angle)
         {
             Radius = radius;
             Angle = angle;
@@ -37,7 +37,7 @@ namespace LiveCharts.Core.Defaults
         /// <value>
         /// The radius.
         /// </value>
-        public double Radius
+        public float Radius
         {
             get => _radius;
             set
@@ -53,7 +53,7 @@ namespace LiveCharts.Core.Defaults
         /// <value>
         /// The angle.
         /// </value>
-        public double Angle
+        public float Angle
         {
             get => _angle;
             set

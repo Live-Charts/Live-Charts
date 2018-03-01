@@ -9,10 +9,10 @@ namespace LiveCharts.Core.Defaults
     /// <seealso cref="System.ComponentModel.INotifyPropertyChanged" />
     public class FinancialModel : INotifyPropertyChanged
     {
-        private double _open;
-        private double _high;
-        private double _low;
-        private double _close;
+        private float _open;
+        private float _high;
+        private float _low;
+        private float _close;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FinancialModel"/> class.
@@ -29,7 +29,7 @@ namespace LiveCharts.Core.Defaults
         /// <param name="high">The high.</param>
         /// <param name="low">The low.</param>
         /// <param name="close">The close.</param>
-        public FinancialModel(double open, double high, double low, double close)
+        public FinancialModel(float open, float high, float low, float close)
         {
             Open = open;
             High = high;
@@ -43,7 +43,7 @@ namespace LiveCharts.Core.Defaults
         /// <value>
         /// The open.
         /// </value>
-        public double Open
+        public float Open
         {
             get => _open;
             set
@@ -59,7 +59,7 @@ namespace LiveCharts.Core.Defaults
         /// <value>
         /// The high.
         /// </value>
-        public double High
+        public float High
         {
             get => _high;
             set
@@ -75,7 +75,7 @@ namespace LiveCharts.Core.Defaults
         /// <value>
         /// The low.
         /// </value>
-        public double Low
+        public float Low
         {
             get => _low;
             set
@@ -91,7 +91,7 @@ namespace LiveCharts.Core.Defaults
         /// <value>
         /// The close.
         /// </value>
-        public double Close
+        public float Close
         {
             get => _close;
             set

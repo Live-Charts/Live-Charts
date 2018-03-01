@@ -15,17 +15,24 @@ namespace LiveCharts.Core.Defaults
         public static LiveChartsSettings PlotDefaults(this LiveChartsSettings settings)
         {
             settings.Has2DPlotFor<short>((value, index) => new Point2D(index, value));
-            // in the previous line, since we knew the cartesian coordinate type is Point2D
-            // we could also use the following syntax =>
-            // charting.PlotAs<short, Point2D>((value, index) => new Point2D());
             settings.Has2DPlotFor<ushort>((value, index) => new Point2D(index, value));
             settings.Has2DPlotFor<int>((value, index) => new Point2D(index, value));
             settings.Has2DPlotFor<long>((value, index) => new Point2D(index, value));
             settings.Has2DPlotFor<ulong>((value, index) => new Point2D(index, value));
-            settings.Has2DPlotFor<double>((value, index) => new Point2D(index, value));
+            settings.Has2DPlotFor<double>((value, index) => new Point2D(index, (float) value));
             settings.Has2DPlotFor<float>((value, index) => new Point2D(index, value));
 
-            settings.Has2DPlotFor<decimal>((value, index) => new Point2D(index, (double)value));
+            settings.HasWeighed2DPlotFor<short>((value, index) => new Weighted2DPoint(index, value, 0));
+            settings.HasWeighed2DPlotFor<ushort>((value, index) => new Weighted2DPoint(index, value, 0));
+            settings.HasWeighed2DPlotFor<int>((value, index) => new Weighted2DPoint(index, value, 0));
+            settings.HasWeighed2DPlotFor<long>((value, index) => new Weighted2DPoint(index, value, 0));
+            settings.HasWeighed2DPlotFor<ulong>((value, index) => new Weighted2DPoint(index, value, 0));
+            settings.HasWeighed2DPlotFor<double>((value, index) => new Weighted2DPoint(index, (float) value, 0));
+            settings.HasWeighed2DPlotFor<float>((value, index) => new Weighted2DPoint(index, value, 0));
+
+            settings.Has2DPlotFor<decimal>((value, index) => new Point2D(index, (float) value));
+            settings.HasWeighed2DPlotFor<decimal>((value, index) => new Weighted2DPoint(index, (float) value, 0));
+
             settings.Has2DPlotFor<ObservableModel>((om, index) => new Point2D(index, om.Value));
             settings.Has2DPlotFor<ObservablePointModel>((opm, index) => new Point2D(opm.X, opm.Y));
 
@@ -38,6 +45,5 @@ namespace LiveCharts.Core.Defaults
 
             return settings;
         }
-
     }
 }

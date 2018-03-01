@@ -10,7 +10,7 @@ namespace LiveCharts.Core.Coordinates
     /// </summary>
     public class FinancialPoint : ICoordinate
     {
-        private readonly double[][] _vector = new double[2][];
+        private readonly float[][] _vector = new float[2][];
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FinancialPoint"/> struct.
@@ -20,16 +20,16 @@ namespace LiveCharts.Core.Coordinates
         /// <param name="high">The high.</param>
         /// <param name="low">The low.</param>
         /// <param name="close">The close.</param>
-        public FinancialPoint(int index, double open, double high, double low, double close)
+        public FinancialPoint(int index, float open, float high, float low, float close)
         {
-            _vector[0] = new[] {(double) index};
+            _vector[0] = new[] {(float) index};
             _vector[1] = new[] {low, high};
             Open = open;
             Close = close;
         }
 
         /// <inheritdoc />
-        public double[] this[int dimension] => _vector[dimension];
+        public float[] this[int dimension] => _vector[dimension];
 
         /// <summary>
         /// Gets or sets the index.
@@ -45,7 +45,7 @@ namespace LiveCharts.Core.Coordinates
         /// <value>
         /// The open.
         /// </value>
-        public double Open { get; }
+        public float Open { get; }
 
         /// <summary>
         /// Gets the high.
@@ -53,7 +53,7 @@ namespace LiveCharts.Core.Coordinates
         /// <value>
         /// The high.
         /// </value>
-        public double High => _vector[1][1];
+        public float High => _vector[1][1];
 
         /// <summary>
         /// Gets the low.
@@ -61,7 +61,7 @@ namespace LiveCharts.Core.Coordinates
         /// <value>
         /// The low.
         /// </value>
-        public double Low => _vector[1][0];
+        public float Low => _vector[1][0];
 
         /// <summary>
         /// Gets the close.
@@ -69,10 +69,10 @@ namespace LiveCharts.Core.Coordinates
         /// <value>
         /// The close.
         /// </value>
-        public double Close { get; }
+        public float Close { get; }
 
         /// <inheritdoc />
-        public void CompareDimensions(DoubleRange[] rangeByDimension)
+        public void CompareDimensions(RangeF[] rangeByDimension)
         {
             var x = rangeByDimension[0];
             var y = rangeByDimension[1];

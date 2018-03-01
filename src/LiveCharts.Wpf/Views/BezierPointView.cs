@@ -1,17 +1,17 @@
 ﻿using System;
-using LiveCharts.Core.Abstractions;
-using LiveCharts.Core.Coordinates;
-using LiveCharts.Core.Data;
-using LiveCharts.Core.ViewModels;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using LiveCharts.Core.Abstractions;
+using LiveCharts.Core.Coordinates;
+using LiveCharts.Core.Data;
+using LiveCharts.Core.ViewModels;
 using LiveCharts.Wpf.Animations;
 using Frame = LiveCharts.Wpf.Animations.Frame;
 using Point = LiveCharts.Core.Drawing.Point;
 
-namespace LiveCharts.Wpf.PointViews
+namespace LiveCharts.Wpf.Views
 {
     public class BezierPointView<TModel, TPoint, TLabel>
         : PointView<TModel, TPoint, Point2D, BezierViewModel, Path, TLabel>

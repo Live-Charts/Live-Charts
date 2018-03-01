@@ -4,7 +4,6 @@ using System.Drawing;
 using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Coordinates;
 using LiveCharts.Core.Data;
-using LiveCharts.Core.Drawing;
 
 namespace LiveCharts.Core
 {
@@ -17,6 +16,9 @@ namespace LiveCharts.Core
 
         private static readonly Dictionary<Tuple<Type, Type>, object> DefaultMappers =
             new Dictionary<Tuple<Type, Type>, object>();
+
+        private static bool _isInitialized;
+        private static List<Action<LiveChartsSettings>> _initQ = new List<Action<LiveChartsSettings>>();
 
         /// <summary>
         /// Initializes the <see cref="LiveChartsSettings"/> class.
@@ -33,7 +35,7 @@ namespace LiveCharts.Core
         {
             Colors = new List<Color>();
         }
-
+        
         /// <summary>
         /// Gets the default colors.
         /// </summary>
@@ -65,6 +67,29 @@ namespace LiveCharts.Core
         /// The chart point factory.
         /// </value>
         public IDataFactory DataFactory { get; set; }
+
+        /// <summary>
+        /// This method should only be called by a view control consuming the core, you don't normally need to use this method
+        /// and might change without advise.
+        /// </summary>
+        public static void SetPlatformSpecificSettings(Action<LiveChartsSettings> defaults)
+        {
+            if (_isInitialized)
+            {
+                throw new LiveChartsException(
+                    $"{nameof(SetPlatformSpecificSettings)} method should only be called once.", 105);
+            };
+
+            defaults(Current);
+            _isInitialized = true;
+
+            foreach (var setting in _initQ)
+            {
+                setting(Current);
+            }
+
+            _initQ = null;
+        }
 
         #region Register types
 
@@ -177,8 +202,8 @@ namespace LiveCharts.Core
         public static void Set<T>(T instance)
         {
             if (!Builders.TryGetValue(typeof(T), out var builder)) return;
-            var casted = (Action<T>) builder;
-            casted(instance);
+            var c = (Action<T>) builder;
+            c(instance);
         }
 
         /// <summary>
@@ -187,7 +212,14 @@ namespace LiveCharts.Core
         /// <param name="settings">The builder.</param>
         public static void Set(Action<LiveChartsSettings> settings)
         {
-            settings(Current);
+            if (_isInitialized)
+            {
+                settings(Current);
+            }
+            else
+            {
+                _initQ.Add(settings);
+            }
         }
     }
 }

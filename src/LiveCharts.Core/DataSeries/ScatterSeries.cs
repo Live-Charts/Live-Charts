@@ -21,15 +21,16 @@ namespace LiveCharts.Core.DataSeries
         /// </summary>
         public ScatterSeries()
         {
-            MaxPointDiameter = 30;
-            MinPointDiameter = 12;
+            MaxPointDiameter = 30f;
+            MinPointDiameter = 12f;
+            StrokeThickness = 1f;
             Geometry = Geometry.Circle;
             LiveChartsSettings.Set<IScatterSeries>(this);
             RangeByDimension = RangeByDimension = new[]
             {
-                new DoubleRange(), // x
-                new DoubleRange(), // y
-                new DoubleRange()  // w
+                new RangeF(), // x
+                new RangeF(), // y
+                new RangeF()  // w
             };
             // ToDo: Check out if this is the best option... to avoid tooltip show throw...
             ScalesAt = new[] {0, 0, 0};
@@ -39,13 +40,13 @@ namespace LiveCharts.Core.DataSeries
         public Geometry PointGeometry { get; set; }
 
         /// <inheritdoc />
-        public double MaxPointDiameter { get; set; }
+        public float MaxPointDiameter { get; set; }
 
         /// <inheritdoc />
-        public double MinPointDiameter { get; set; }
+        public float MinPointDiameter { get; set; }
 
         /// <inheritdoc />
-        public override double[] DefaultPointWidth => new []{0d,0d};
+        public override float[] DefaultPointWidth => new []{0f,0f};
 
         /// <inheritdoc />
         public override void UpdateView(ChartModel chart)

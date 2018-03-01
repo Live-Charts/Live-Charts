@@ -13,12 +13,12 @@ namespace LiveCharts.Core.Coordinates
         /// <summary>
         /// The _vector.
         /// </summary>
-        private readonly double[][] _vector = new double[2][];
+        private readonly float[][] _vector = new float[2][];
 
         /// <summary>
         /// Initializes a new instance of the <see cref="StackedPoint"/> struct.
         /// </summary>
-        public StackedPoint(double participation, double value, int index)
+        public StackedPoint(float participation, float value, int index)
         {
             Participation = participation;
             Value = value;
@@ -27,7 +27,7 @@ namespace LiveCharts.Core.Coordinates
         }
 
         /// <inheritdoc />
-        public double[] this[int dimension] => throw new NotImplementedException();
+        public float[] this[int dimension] => throw new NotImplementedException();
 
         /// <summary>
         /// Gets or sets the index.
@@ -43,7 +43,7 @@ namespace LiveCharts.Core.Coordinates
         /// <value>
         /// The participation.
         /// </value>
-        public double Participation { get; }
+        public float Participation { get; }
 
         /// <summary>
         /// Gets or sets the value.
@@ -51,7 +51,7 @@ namespace LiveCharts.Core.Coordinates
         /// <value>
         /// The value.
         /// </value>
-        public double Value { get; }
+        public float Value { get; }
 
         /// <summary>
         /// Gets or sets the total.
@@ -59,10 +59,10 @@ namespace LiveCharts.Core.Coordinates
         /// <value>
         /// The total.
         /// </value>
-        public double TotalStacked => Value / Participation;
+        public float TotalStacked => Value / Participation;
 
         /// <inheritdoc />
-        public void CompareDimensions(DoubleRange[] rangeByDimension)
+        public void CompareDimensions(RangeF[] rangeByDimension)
         {
             var x = rangeByDimension[0];
             var y = rangeByDimension[1];

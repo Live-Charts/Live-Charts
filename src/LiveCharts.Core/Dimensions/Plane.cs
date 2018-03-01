@@ -14,7 +14,7 @@ namespace LiveCharts.Core.Dimensions
     /// </summary>
     public class Plane : IResource, INotifyPropertyChanged
     {
-        private double[] _pointWidth;
+        private float[] _pointWidth;
         private Font _font;
         private Func<double, string> _labelFormatter;
 
@@ -23,9 +23,9 @@ namespace LiveCharts.Core.Dimensions
         /// </summary>
         public Plane()
         {
-            MinValue = double.NaN;
-            MaxValue = double.NaN;
-            DataRange = new DoubleRange();
+            MinValue = float.NaN;
+            MaxValue = float.NaN;
+            DataRange = new RangeF();
             LiveChartsSettings.Set(this);
         }
 
@@ -35,7 +35,7 @@ namespace LiveCharts.Core.Dimensions
         /// <value>
         /// The data range.
         /// </value>
-        public DoubleRange DataRange { get; internal set; }
+        public RangeF DataRange { get; internal set; }
 
         /// <summary>
         /// Gets or sets the maximum value to display.
@@ -43,7 +43,7 @@ namespace LiveCharts.Core.Dimensions
         /// <value>
         /// The maximum value.
         /// </value>
-        public double MaxValue { get; set; }
+        public float MaxValue { get; set; }
 
         /// <summary>
         /// Gets or sets the minimum value to display.
@@ -51,7 +51,7 @@ namespace LiveCharts.Core.Dimensions
         /// <value>
         /// The minimum value.
         /// </value>
-        public double MinValue { get; set; }
+        public float MinValue { get; set; }
 
         /// <summary>
         /// Gets the actual maximum value.
@@ -59,7 +59,7 @@ namespace LiveCharts.Core.Dimensions
         /// <value>
         /// The actual maximum value.
         /// </value>
-        public double ActualMaxValue { get; internal set; }
+        public float ActualMaxValue { get; internal set; }
 
         /// <summary>
         /// Gets the actual minimum value.
@@ -67,7 +67,7 @@ namespace LiveCharts.Core.Dimensions
         /// <value>
         /// The actual minimum value.
         /// </value>
-        public double ActualMinValue { get; internal set; }
+        public float ActualMinValue { get; internal set; }
 
         /// <summary>
         /// Gets the actual point unit.
@@ -75,7 +75,7 @@ namespace LiveCharts.Core.Dimensions
         /// <value>
         /// The actual point unit.
         /// </value>
-        public double[] ActualPointWidth { get; internal set; }
+        public float[] ActualPointWidth { get; internal set; }
 
         /// <summary>
         /// Gets or sets the width of the point.
@@ -83,13 +83,13 @@ namespace LiveCharts.Core.Dimensions
         /// <value>
         /// The width of the point.
         /// </value>
-        public double[] PointWidth
+        public float[] PointWidth
         {
             get => _pointWidth;
             set
             {
                 _pointWidth = value;
-                ActualPointWidth = new [] {0d, 0d};
+                ActualPointWidth = new [] {0f, 0f};
             }
         }
 
@@ -217,12 +217,12 @@ namespace LiveCharts.Core.Dimensions
         /// </summary>
         /// <param name="chart">The chart.</param>
         /// <returns></returns>
-        public double[] Get2DUiUnitWidth(ChartModel chart)
+        public float[] Get2DUiUnitWidth(ChartModel chart)
         {
             return new[]
             {
-                chart.ScaleToUi(0, this) - chart.ScaleToUi(PointWidth[0], this),
-                chart.ScaleToUi(0, this) - chart.ScaleToUi(PointWidth[1], this)
+                chart.ScaleToUi(0f, this) - chart.ScaleToUi(PointWidth[0], this),
+                chart.ScaleToUi(0f, this) - chart.ScaleToUi(PointWidth[1], this)
             };
         }
 
@@ -244,10 +244,10 @@ namespace LiveCharts.Core.Dimensions
 
         internal void ResetRange()
         {
-            DataRange = new DoubleRange
+            DataRange = new RangeF
             {
-                From = double.MinValue,
-                To = double.MaxValue
+                From = float.MinValue,
+                To = float.MaxValue
             };
         }
 

@@ -12,10 +12,7 @@ namespace Samples.Wpf
     {
         public App()
         {
-            LiveChartsSettings.Set(
-                settings =>
-                    settings.UseWpf()
-                        .UseMaterialDesignLightTheme());
+            
         }
     }
 }

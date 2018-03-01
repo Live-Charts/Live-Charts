@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 
 namespace LiveCharts.Core.Drawing
@@ -41,7 +40,7 @@ namespace LiveCharts.Core.Drawing
         /// </summary>
         /// <param name="point">The point.</param>
         /// <param name="size">The size.</param>
-        public Rectangle(IReadOnlyList<double> point, IReadOnlyList<double> size)
+        public Rectangle(IReadOnlyList<float> point, IReadOnlyList<float> size)
         {
             Top = point[1];
             Left = point[0];

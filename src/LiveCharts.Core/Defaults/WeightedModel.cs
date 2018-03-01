@@ -22,7 +22,7 @@ namespace LiveCharts.Core.Defaults
         /// <param name="x">The x.</param>
         /// <param name="y">The y.</param>
         /// <param name="weight">The weight.</param>
-        public WeightedModel(double x, double y, double weight)
+        public WeightedModel(float x, float y, float weight)
             : base(x, y)
         {
             Weight = weight;

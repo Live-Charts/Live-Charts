@@ -65,19 +65,19 @@
     <Compile Include="Interaction\DataInteractionEventArgs.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Interaction\DataInteractionHandler.cs" />
-    <Compile Include="PointViews\BezierPointView.cs" />
-    <Compile Include="PointViews\CartesianPath.cs" />
-    <Compile Include="PointViews\PointView.cs" />
+    <Compile Include="Views\BezierPointView.cs" />
+    <Compile Include="Views\CartesianPath.cs" />
+    <Compile Include="Views\PointView.cs" />
     <Compile Include="Animations\AnimationBuilder.cs" />
-    <Compile Include="PointViews\ScatterPointView.cs" />
-    <Compile Include="Separators\CartesianAxisSeparatorView.cs" />
+    <Compile Include="Views\ScatterPointView.cs" />
+    <Compile Include="Views\CartesianAxisSeparatorView.cs" />
     <Compile Include="UiProvider.cs" />
     <Compile Include="CartesianChart.cs">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="PointViews\ColumnPointView.cs" />
+    <Compile Include="Views\ColumnPointView.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

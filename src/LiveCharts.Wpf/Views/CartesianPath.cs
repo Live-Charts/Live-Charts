@@ -7,7 +7,7 @@ using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Drawing;
 using LiveCharts.Wpf.Animations;
 
-namespace LiveCharts.Wpf.PointViews
+namespace LiveCharts.Wpf.Views
 {
     public class CartesianPath : ICartesianPath
     {

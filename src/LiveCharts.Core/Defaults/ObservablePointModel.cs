@@ -9,8 +9,8 @@ namespace LiveCharts.Core.Defaults
     /// <seealso cref="System.ComponentModel.INotifyPropertyChanged" />
     public class ObservablePointModel : INotifyPropertyChanged
     {
-        private double _x;
-        private double _y;
+        private float _x;
+        private float _y;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ObservablePointModel"/> class.
@@ -25,7 +25,7 @@ namespace LiveCharts.Core.Defaults
         /// </summary>
         /// <param name="x">The x.</param>
         /// <param name="y">The y.</param>
-        public ObservablePointModel(double x, double y)
+        public ObservablePointModel(float x, float y)
         {
             
         }
@@ -36,7 +36,7 @@ namespace LiveCharts.Core.Defaults
         /// <value>
         /// The x.
         /// </value>
-        public double X
+        public float X
         {
             get => _x;
             set
@@ -52,7 +52,7 @@ namespace LiveCharts.Core.Defaults
         /// <value>
         /// The y.
         /// </value>
-        public double Y
+        public float Y
         {
             get => _y;
             set

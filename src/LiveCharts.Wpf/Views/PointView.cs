@@ -5,7 +5,7 @@ using LiveCharts.Core.Data;
 using LiveCharts.Core.Events;
 using Point = LiveCharts.Core.Drawing.Point;
 
-namespace LiveCharts.Wpf.PointViews
+namespace LiveCharts.Wpf.Views
 {
     public class PointView<TModel, TPoint, TCoordinate, TViewModel, TShape, TLabel>
         : IPointView<TModel, TPoint, TCoordinate, TViewModel>

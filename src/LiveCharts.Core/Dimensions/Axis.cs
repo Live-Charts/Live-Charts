@@ -22,7 +22,7 @@ namespace LiveCharts.Core.Dimensions
         /// </summary>
         public Axis()
         {
-            Step = double.NaN;
+            Step = float.NaN;
             Position = AxisPosition.Auto;
             LiveChartsSettings.Set(this);
         }
@@ -33,7 +33,7 @@ namespace LiveCharts.Core.Dimensions
         /// <value>
         /// The step.
         /// </value>
-        public double Step { get; set; }
+        public float Step { get; set; }
 
         /// <summary>
         /// Gets the actual step.
@@ -41,7 +41,7 @@ namespace LiveCharts.Core.Dimensions
         /// <value>
         /// The actual step.
         /// </value>
-        public double ActualStep { get; internal set; }
+        public float ActualStep { get; internal set; }
 
         /// <summary>
         /// Gets or sets the position.
@@ -145,10 +145,10 @@ namespace LiveCharts.Core.Dimensions
             var dimension = space[Dimension];
             var step = 5; // ToDo: or use the real if it is defined?
 
-            var unit = ActualPointWidth?[Dimension] ?? 0;
+            var unit = ActualPointWidth?[Dimension] ?? 0f;
 
-            double l = 0, r = 0, t = 0, b = 0;
-            for (var i = 0d; i < dimension; i += step)
+            float l = 0f, r = 0f, t = 0f, b = 0f;
+            for (var i = 0f; i < dimension; i += step)
             {
                 var label = EvaluateAxisLabel(sizeVector.ScaleFromUi(i, this, space), space, unit, sizeVector);
 
@@ -176,11 +176,11 @@ namespace LiveCharts.Core.Dimensions
             var to = Math.Floor(ActualMaxValue / ActualStep) * ActualStep;
             var unit = ActualPointWidth?[Dimension] ?? 0;
 
-            var tolerance = ActualStep * .1;
+            var tolerance = ActualStep * .1f;
             var stepSize = Math.Abs(chart.ScaleToUi(ActualStep, this) - chart.ScaleToUi(0, this));
             var alternate = false;
 
-            for (var i = from; i < to + unit; i += ActualStep)
+            for (var i = (float) from; i < to + unit; i += ActualStep)
             {
                 alternate = !alternate;
                 var iui = chart.ScaleToUi(i, this);
@@ -250,9 +250,9 @@ namespace LiveCharts.Core.Dimensions
             return LiveChartsSettings.Current.UiProvider.GetNewAxisLabel();
         }
 
-        private double GetActualAxisStep(ChartModel chart)
+        private float GetActualAxisStep(ChartModel chart)
         {
-            if (!double.IsNaN(Step))
+            if (!float.IsNaN(Step))
             {
                 return Step;
             }
@@ -293,13 +293,13 @@ namespace LiveCharts.Core.Dimensions
 
             if (Labels != null)
             {
-                return tick < 1 ? 1 : tick;
+                return (float) (tick < 1 ? 1 : tick);
             }
 
-            return tick;
+            return (float) tick;
         }
 
-        private AxisLabelModel EvaluateAxisLabel(double value, double[] drawMargin, double unit, ChartModel chart)
+        private AxisLabelModel EvaluateAxisLabel(float value, float[] drawMargin, float unit, ChartModel chart)
         {
             const double toRadians = Math.PI / 180;
             var angle = ActualLabelsRotation;
@@ -409,13 +409,13 @@ namespace LiveCharts.Core.Dimensions
             }
 
             return new AxisLabelModel(
-                new Point(x, y),
-                new Point(xo, yo),
+                new Point((float) x, (float) y),
+                new Point((float) xo, (float) yo),
                 new Margin(
-                    t,
-                    xw + xh - l,
-                    yw + yh - t,
-                    l),
+                    (float) t,
+                    (float) (xw + xh - l),
+                    (float) (yw + yh - t),
+                    (float) l),
                 content);
         }
     }

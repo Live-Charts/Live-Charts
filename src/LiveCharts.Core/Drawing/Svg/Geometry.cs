@@ -41,7 +41,7 @@
         /// <value>
         /// The square.
         /// </value>
-        public static Geometry Square = new Geometry("M 1,1 h -2 v -2 h 2 z");
+        public static Geometry Square = new Geometry("M 1,1 H -2 V -2 H 2 Z");
 
         /// <summary>
         /// Gets the diamond.
@@ -49,7 +49,7 @@
         /// <value>
         /// The diamond.
         /// </value>
-        public static Geometry Diamond = new Geometry("M 1,0 L 2,1  1,2  0,1 z");
+        public static Geometry Diamond = new Geometry("M 1,0 L 2,1  1,2  0,1 Z");
 
         /// <summary>
         /// Gets the triangle.
@@ -57,7 +57,7 @@
         /// <value>
         /// The triangle.
         /// </value>
-        public static Geometry Triangle = new Geometry("M 0,1 l 1,1 h -2 Z");
+        public static Geometry Triangle = new Geometry("M 0,1 L 1,1 H -2 Z");
 
         /// <summary>
         /// Gets the cross.
@@ -65,7 +65,7 @@
         /// <value>
         /// The cross.
         /// </value>
-        public static Geometry Cross => new Geometry("M0, 0 L1, 1 M0, 1 l1, -1");
+        public static Geometry Cross = new Geometry("M0, 0 L1, 1 M0, 1 L1, -1");
 
         /// <summary>
         /// Gets the cross.
@@ -73,7 +73,7 @@
         /// <value>
         /// The cross.
         /// </value>
-        public static Geometry HorizontalLine => new Geometry("M 0,0.5 h 1,0.5 Z");
+        public static Geometry HorizontalLine = new Geometry("M 0,0.5 H 1,0.5 Z");
 
         /// <summary>
         /// Gets or sets the data.

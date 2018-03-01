@@ -23,7 +23,7 @@
         /// </summary>
         /// <param name="x">The x.</param>
         /// <param name="y">The y.</param>
-        public Point(double x, double y)
+        public Point(float x, float y)
         {
             _isEmpty = false;
             X = x;
@@ -41,7 +41,7 @@
         /// <value>
         /// The x.
         /// </value>
-        public double X { get; }
+        public float X { get; }
 
         /// <summary>
         /// Gets or sets the y.
@@ -49,7 +49,7 @@
         /// <value>
         /// The y.
         /// </value>
-        public double Y { get; }
+        public float Y { get; }
 
         /// <summary>
         /// Returns a <see cref="System.String" /> that represents this instance.
@@ -72,7 +72,7 @@
         /// </returns>
         public static Point operator +(Point p1, Point p2)
         {
-            return new Point(p1.X+ p2.X, p1.Y + p2.Y);
+            return new Point(p1.X + p2.X, p1.Y + p2.Y);
         }
 
         /// <summary>
@@ -96,7 +96,7 @@
         /// <returns>
         /// The result of the operator.
         /// </returns>
-        public static Point operator *(Point p1, double @const)
+        public static Point operator *(Point p1, float @const)
         {
             return new Point(p1.X * @const, p1.Y * @const);
         }
@@ -109,7 +109,7 @@
         /// <returns>
         /// The result of the operator.
         /// </returns>
-        public static Point operator *(double @const, Point p1)
+        public static Point operator *(float @const, Point p1)
         {
             return p1 * @const;
         }

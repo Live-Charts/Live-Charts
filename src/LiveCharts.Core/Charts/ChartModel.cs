@@ -73,7 +73,7 @@ namespace LiveCharts.Core.Charts
         /// <value>
         /// The draw area location.
         /// </value>
-        public double[] DrawAreaLocation { get; set; }
+        public float[] DrawAreaLocation { get; set; }
 
         /// <summary>
         /// Gets or sets the size of the draw area.
@@ -81,7 +81,7 @@ namespace LiveCharts.Core.Charts
         /// <value>
         /// The size of the draw area.
         /// </value>
-        public double[] DrawAreaSize { get; set; }
+        public float[] DrawAreaSize { get; set; }
 
         /// <summary>
         /// Gets the chart view.
@@ -172,7 +172,7 @@ namespace LiveCharts.Core.Charts
 
         internal Plane[][] Dimensions { get; set; }
 
-        internal double[] ControlSize { get; set; }
+        internal float[] ControlSize { get; set; }
 
         internal Margin DrawMargin { get; set; }
 
@@ -212,7 +212,7 @@ namespace LiveCharts.Core.Charts
         /// <param name="plane">The axis.</param>
         /// <param name="sizeVector">The draw margin, this param is optional, if not set, the current chart's draw margin area will be used.</param>
         /// <returns></returns>
-        public abstract double ScaleToUi(double dataValue, Plane plane, double[] sizeVector = null);
+        public abstract float ScaleToUi(float dataValue, Plane plane, float[] sizeVector = null);
 
         /// <summary>
         /// Scales from pixels to a data value.
@@ -222,7 +222,7 @@ namespace LiveCharts.Core.Charts
         /// <param name="sizeVector">The size.</param>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
-        public abstract double ScaleFromUi(double pixelsValue, Plane plane, double[] sizeVector = null);
+        public abstract float ScaleFromUi(float pixelsValue, Plane plane, float[] sizeVector = null);
 
         /// <summary>
         /// Get2s the width of the d UI unit.
@@ -314,8 +314,8 @@ namespace LiveCharts.Core.Charts
             }
 
             var chartSize = ControlSize;
-            double dax = 0, day = 0;
-            double lw = 0, lh = 0;
+            float dax = 0f, day = 0f;
+            float lw = 0f, lh = 0f;
 
             // draw and measure legend
             if (Legend != null && LegendPosition != LegendPosition.None)
@@ -324,7 +324,7 @@ namespace LiveCharts.Core.Charts
 
                 var legendSize = Legend.Measure(Series, DefaultLegendOrientation, View);
 
-                double lx = 0, ly = 0;
+                float lx = 0f, ly = 0f;
 
                 switch (LegendPosition)
                 {
@@ -333,22 +333,22 @@ namespace LiveCharts.Core.Charts
                     case LegendPosition.Top:
                         day = legendSize[1];
                         lh = legendSize[1];
-                        lx = ControlSize[0] * .5 - legendSize[0] * .5;
+                        lx = ControlSize[0] * .5f - legendSize[0] * .5f;
                         break;
                     case LegendPosition.Bottom:
                         lh = legendSize[1];
-                        lx = chartSize[0] * .5 - legendSize[0] * .5;
+                        lx = chartSize[0] * .5f - legendSize[0] * .5f;
                         ly = chartSize[1] - legendSize[1];
                         break;
                     case LegendPosition.Left:
                         dax = legendSize[0];
                         lw = legendSize[0];
-                        ly = chartSize[1] * .5 - legendSize[1] * .5;
+                        ly = chartSize[1] * .5f - legendSize[1] * .5f;
                         break;
                     case LegendPosition.Right:
                         lw = legendSize[0];
                         lx = chartSize[0] - legendSize[0];
-                        ly = chartSize[1] * .5 - legendSize[1] * .5;
+                        ly = chartSize[1] * .5f - legendSize[1] * .5f;
                         break;
                     default:
                         throw new ArgumentOutOfRangeException();

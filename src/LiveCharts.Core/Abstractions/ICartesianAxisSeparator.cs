@@ -14,7 +14,7 @@ namespace LiveCharts.Core.Abstractions
         /// <value>
         /// The label.
         /// </value>
-        IPlaneLabelControl Label { get; }
+        object VisualElement { get; }
 
         /// <summary>
         /// Moves the specified point1.

@@ -1,4 +1,5 @@
 using System;
+using System.Drawing;
 using System.Linq;
 using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Abstractions.DataSeries;
@@ -8,6 +9,8 @@ using LiveCharts.Core.Data;
 using LiveCharts.Core.Drawing;
 using LiveCharts.Core.Interaction;
 using LiveCharts.Core.ViewModels;
+using Point = LiveCharts.Core.Drawing.Point;
+using Rectangle = System.Drawing.Rectangle;
 
 namespace LiveCharts.Core.DataSeries
 {
@@ -23,29 +26,19 @@ namespace LiveCharts.Core.DataSeries
         /// </summary>
         public ColumnSeries()
         {
-            MaxColumnWidth = 45;
-            ColumnPadding = 2d;
+            MaxColumnWidth = 45f;
+            ColumnPadding = 2f;
             LiveChartsSettings.Set<IColumnSeries>(this);
         }
 
-        /// <summary>
-        /// Gets or sets the maximum width of the column.
-        /// </summary>
-        /// <value>
-        /// The maximum width of the column.
-        /// </value>
-        public double MaxColumnWidth { get; set; }
-
-        /// <summary>
-        /// Gets or sets the column padding.
-        /// </summary>
-        /// <value>
-        /// The column padding.
-        /// </value>
-        public double ColumnPadding { get; set; }
+        /// <inheritdoc />
+        public float MaxColumnWidth { get; set; }
 
         /// <inheritdoc />
-        public override double[] DefaultPointWidth => new[] {1d, 0d};
+        public float ColumnPadding { get; set; }
+
+        /// <inheritdoc />
+        public override float[] DefaultPointWidth => new[] {1f, 0f};
 
         /// <inheritdoc />
         public override void UpdateView(ChartModel chart)
@@ -61,11 +54,11 @@ namespace LiveCharts.Core.DataSeries
                 .ToList();
             var singleColumnWidth = xUnitWidth / columnSeries.Count;
 
-            double overFlow = 0;
+            var overFlow = 0f;
             var seriesPosition = columnSeries.IndexOf(this);
             if (singleColumnWidth > MaxColumnWidth)
             {
-                overFlow = (singleColumnWidth - MaxColumnWidth) * columnSeries.Count / 2;
+                overFlow = (singleColumnWidth - MaxColumnWidth) * columnSeries.Count / 2f;
                 singleColumnWidth = MaxColumnWidth;
             }
 
@@ -86,6 +79,18 @@ namespace LiveCharts.Core.DataSeries
                     chart.ScaleToUi(current.Coordinate.X, x),
                     chart.ScaleToUi(current.Coordinate.Y, y)
                 };
+
+                var isNew = current.View != null && current.View.VisualElement == null;
+
+                var initialState = isNew
+                    ? new RectangleF(p[0] + relativeLeft,
+                        p[1] < zero
+                            ? p[1]
+                            : zero,
+                        Math.Abs(p[1] - zero),
+                        0)
+                    : Rectangle.Empty;
+
                 var vm = new ColumnViewModel(
                     p[0] + relativeLeft,
                     p[1] < zero
@@ -93,7 +98,8 @@ namespace LiveCharts.Core.DataSeries
                         : zero,
                     Math.Abs(p[1] - zero),
                     singleColumnWidth - ColumnPadding,
-                    zero);
+                    zero,
+                    initialState);
 
                 if (current.View == null)
                 {

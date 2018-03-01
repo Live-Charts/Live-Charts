@@ -30,10 +30,10 @@ namespace LiveCharts.Core.DataSeries
         private bool _dataLabels;
         private string _title;
         private Color _stroke;
-        private double _strokeThickness;
+        private float _strokeThickness;
         private Color _fill;
         private Font _font;
-        private double _defaultFillOpacity;
+        private float _defaultFillOpacity;
         private Geometry _geometry;
         private DataLabelsPosition _dataLabelsPosition;
         private IEnumerable<double> _strokeDashArray;
@@ -156,7 +156,7 @@ namespace LiveCharts.Core.DataSeries
         /// <value>
         /// The stroke thickness.
         /// </value>
-        public double StrokeThickness
+        public float StrokeThickness
         {
             get => _strokeThickness;
             set
@@ -220,7 +220,7 @@ namespace LiveCharts.Core.DataSeries
         /// <value>
         /// The default fill opacity.
         /// </value>
-        public double DefaultFillOpacity
+        public float DefaultFillOpacity
         {
             get => _defaultFillOpacity;
             set
@@ -268,7 +268,7 @@ namespace LiveCharts.Core.DataSeries
         /// <value>
         /// The default width of the point.
         /// </value>
-        public abstract double[] DefaultPointWidth { get; }
+        public abstract float[] DefaultPointWidth { get; }
 
         /// <summary>
         /// Gets the range by dimension.
@@ -276,7 +276,7 @@ namespace LiveCharts.Core.DataSeries
         /// <value>
         /// The range by dimension.
         /// </value>
-        public DoubleRange[] RangeByDimension { get; protected set; }
+        public RangeF[] RangeByDimension { get; protected set; }
 
         /// <inheritdoc />
         bool IList.IsReadOnly => OnIListIsReadOnly();
@@ -471,31 +471,31 @@ namespace LiveCharts.Core.DataSeries
         protected Point GetLabelPosition(
             Point pointLocation,
             Margin pointMargin,
-            double betweenBottomLimit,
+            float betweenBottomLimit,
             Size labelModel,
             DataLabelsPosition labelsPosition)
         {
             const double toRadians = Math.PI / 180;
             var rotationAngle = DataLabelsPosition.Rotation;
 
-            var xw =
+            var xw = (float)
                 Math.Abs(Math.Cos(rotationAngle * toRadians) * labelModel.Width); // width's    horizontal    component
-            var yw =
+            var yw = (float)
                 Math.Abs(Math.Sin(rotationAngle * toRadians) * labelModel.Width); // width's    vertical      component
-            var xh =
+            var xh = (float)
                 Math.Abs(Math.Sin(rotationAngle * toRadians) * labelModel.Height); // height's   horizontal    component
-            var yh =
+            var yh = (float)
                 Math.Abs(Math.Cos(rotationAngle * toRadians) * labelModel.Height); // height's   vertical      component
 
             var width = xw + xh;
             var height = yh + yw;
 
-            double left, top;
+            float left, top;
 
             switch (DataLabelsPosition.HorizontalAlignment)
             {
                 case HorizontalAlingment.Centered:
-                    left = pointLocation.X - .5 * width;
+                    left = pointLocation.X - .5f * width;
                     break;
                 case HorizontalAlingment.Left:
                     left = pointLocation.X - pointMargin.Left - width;
@@ -504,7 +504,7 @@ namespace LiveCharts.Core.DataSeries
                     left = pointLocation.X + pointMargin.Right;
                     break;
                 case HorizontalAlingment.Between:
-                    left = ((pointLocation.X + betweenBottomLimit) / 2) - .5 * width;
+                    left = (pointLocation.X + betweenBottomLimit) / 2f - .5f * width;
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(
@@ -515,7 +515,7 @@ namespace LiveCharts.Core.DataSeries
             switch (DataLabelsPosition.VerticalAlignment)
             {
                 case VerticalLabelPosition.Centered:
-                    top = pointLocation.Y - .5 * height;
+                    top = pointLocation.Y - .5f * height;
                     break;
                 case VerticalLabelPosition.Top:
                     top = pointLocation.Y - pointMargin.Top - height;
@@ -524,7 +524,7 @@ namespace LiveCharts.Core.DataSeries
                     top = pointLocation.Y + pointMargin.Bottom;
                     break;
                 case VerticalLabelPosition.Between:
-                    top = ((pointLocation.Y + betweenBottomLimit) / 2) - .5 * height;
+                    top = (pointLocation.Y + betweenBottomLimit) / 2f - .5f * height;
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(
@@ -538,10 +538,10 @@ namespace LiveCharts.Core.DataSeries
         {
             for (var index = 0; index < RangeByDimension.Length; index++)
             {
-                RangeByDimension[index] = new DoubleRange
+                RangeByDimension[index] = new RangeF
                 {
-                    From = double.MinValue,
-                    To = double.MaxValue
+                    From = float.MinValue,
+                    To = float.MaxValue
                 };
             }
         }

@@ -9,20 +9,20 @@ namespace LiveCharts.Core.Abstractions
     public interface ICoordinate
     {
         /// <summary>
-        /// Gets or sets the <see cref="double"/> with the specified dimension.
+        /// Gets or sets the <see cref="float"/> with the specified dimension.
         /// </summary>
         /// <value>
-        /// The <see cref="double"/> value.
+        /// The <see cref="float"/> value.
         /// </value>
         /// <param name="dimension">The dimension.</param>
         /// <returns></returns>
-        double[] this[int dimension] { get; }
+        float[] this[int dimension] { get; }
 
         /// <summary>
         /// Compares the dimensions.
         /// </summary>
         /// <param name="rangeByDimension">The series range by dimension.</param>
-        void CompareDimensions(DoubleRange[] rangeByDimension);
+        void CompareDimensions(RangeF[] rangeByDimension);
 
         /// <summary>
         ///gets the coordinate as tooltip data.

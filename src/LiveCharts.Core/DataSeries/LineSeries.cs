@@ -30,16 +30,16 @@ namespace LiveCharts.Core.DataSeries
         }
 
         /// <inheritdoc />
-        public double LineSmoothness { get; set; }
+        public float LineSmoothness { get; set; }
 
         /// <inheritdoc />
         public Geometry PointGeometry { get; set; }
 
         /// <inheritdoc />
-        public double GeometrySize { get; set; }
+        public float GeometrySize { get; set; }
 
         /// <inheritdoc />
-        public override double[] DefaultPointWidth => new[] {0d, 0d};
+        public override float[] DefaultPointWidth => new[] {0f, 0f};
 
         private ICartesianPath _path;
 
@@ -132,12 +132,12 @@ namespace LiveCharts.Core.DataSeries
                     previous = current;
                 }
 
-                var xc1 = (previous.X + current.X) / 2.0;
-                var yc1 = (previous.Y + current.Y) / 2.0;
-                var xc2 = (current.X + next.X) / 2.0;
-                var yc2 = (current.Y + next.Y) / 2.0;
-                var xc3 = (next.X + nextNext.X) / 2.0;
-                var yc3 = (next.Y + nextNext.Y) / 2.0;
+                var xc1 = (previous.X + current.X) / 2d;
+                var yc1 = (previous.Y + current.Y) / 2d;
+                var xc2 = (current.X + next.X) / 2d;
+                var yc2 = (current.Y + next.Y) / 2d;
+                var xc3 = (next.X + nextNext.X) / 2d;
+                var yc3 = (next.Y + nextNext.Y) / 2d;
 
                 var len1 = Math.Sqrt((current.X - previous.X) * (current.X - previous.X) +
                                      (current.Y - previous.Y) * (current.Y - previous.Y));
@@ -166,8 +166,8 @@ namespace LiveCharts.Core.DataSeries
                 {
                     Index = i,
                     Location = current,
-                    Point1 = isFirstPoint ? current : new Point(c1X, c1Y),
-                    Point2 = new Point(c2X, c2Y),
+                    Point1 = isFirstPoint ? current : new Point((float) c1X, (float) c1Y),
+                    Point2 = new Point((float) c2X, (float) c2Y),
                     Point3 = next,
                     Geometry = Geometry,
                     GeometrySize = GeometrySize

@@ -113,7 +113,7 @@ namespace LiveCharts.Wpf.Controls
             }
         }
 
-        double[] ILegend.Measure(
+        float[] ILegend.Measure(
             IEnumerable<DataSet> seriesCollection, Orientation orientation, IChartView chart)
         {
             if (Parent == null)
@@ -136,7 +136,7 @@ namespace LiveCharts.Wpf.Controls
                 SetValue(ActualOrientationProperty, Orientation.AsWpf());
             }
             UpdateLayout();
-            return new[] {DesiredSize.Width, DesiredSize.Height};
+            return new[] {(float) DesiredSize.Width, (float) DesiredSize.Height};
         }
 
         void ILegend.Move(Point location, IChartView chart)
