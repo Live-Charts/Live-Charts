@@ -11,8 +11,8 @@ using LiveCharts.Wpf.Animations;
 namespace LiveCharts.Wpf.Views
 {
     public class ScatterPointView<TModel, TPoint, TLabel>
-        : PointView<TModel, TPoint, Weighted2DPoint, ScatterViewModel, Path, TLabel>
-        where TPoint : Point<TModel, Weighted2DPoint, ScatterViewModel>, new()
+        : PointView<TModel, TPoint, WeightedPoint, ScatterViewModel, Path, TLabel>
+        where TPoint : Point<TModel, WeightedPoint, ScatterViewModel>, new()
         where TLabel : FrameworkElement, IDataLabelControl, new()
     {
         protected override void OnDraw(TPoint point, TPoint previous)

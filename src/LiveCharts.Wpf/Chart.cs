@@ -36,12 +36,6 @@ namespace LiveCharts.Wpf
             DefaultStyleKeyProperty.OverrideMetadata(
                 typeof(Chart),
                 new FrameworkPropertyMetadata(typeof(Chart)));
-
-            LiveChartsSettings.SetPlatformSpecificSettings(settings =>
-            {
-                settings.UseWpf();
-                settings.UseMaterialDesignLightTheme();
-            });
         }
 
         /// <summary>

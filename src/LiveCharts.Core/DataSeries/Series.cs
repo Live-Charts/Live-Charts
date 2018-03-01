@@ -103,7 +103,7 @@ namespace LiveCharts.Core.DataSeries
         /// </value>
         public ModelToPointMapper<TModel, TCoordinate> Mapper
         {
-            get => _mapper ?? LiveChartsSettings.GetCurrentMapperFor<TModel, TCoordinate>();
+            get => _mapper ?? Charting.GetCurrentMapperFor<TModel, TCoordinate>();
             set
             {
                 _mapper = value;
@@ -195,7 +195,7 @@ namespace LiveCharts.Core.DataSeries
             // Fetch() has 2 main tasks.
             // 1. Calculate each ChartPoint required by the series.
             // 2. Evaluate every dimension to get Max and Min limits.
-            Points = LiveChartsSettings.Current.DataFactory
+            Points = Charting.Current.DataFactory
                 .Fetch(
                     new DataFactoryArgs<TModel, TCoordinate, TViewModel, TPoint>
                     {

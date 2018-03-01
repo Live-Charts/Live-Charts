@@ -48,7 +48,7 @@ namespace LiveCharts.Core.Abstractions
         /// </summary>
         /// <typeparam name="TModel">The type of the model.</typeparam>
         /// <returns></returns>
-        IPointView<TModel, Point<TModel, Point2D, ColumnViewModel>, Point2D, ColumnViewModel> 
+        IPointView<TModel, Point<TModel, Point, ColumnViewModel>, Point, ColumnViewModel> 
             GetNewColumnView<TModel>();
 
         /// <summary>
@@ -56,7 +56,7 @@ namespace LiveCharts.Core.Abstractions
         /// </summary>
         /// <typeparam name="TModel">The type of the model.</typeparam>
         /// <returns></returns>
-        IPointView<TModel, Point<TModel, Point2D, BezierViewModel>, Point2D, BezierViewModel>
+        IPointView<TModel, Point<TModel, Point, BezierViewModel>, Point, BezierViewModel>
             GetNewBezierView<TModel>();
 
         /// <summary>
@@ -64,7 +64,7 @@ namespace LiveCharts.Core.Abstractions
         /// </summary>
         /// <typeparam name="TModel">The type of the model.</typeparam>
         /// <returns></returns>
-        IPointView<TModel, Point<TModel, Weighted2DPoint, ScatterViewModel>, Weighted2DPoint, ScatterViewModel>
+        IPointView<TModel, Point<TModel, WeightedPoint, ScatterViewModel>, WeightedPoint, ScatterViewModel>
             GetNewScatterView <TModel>();
     }
 }

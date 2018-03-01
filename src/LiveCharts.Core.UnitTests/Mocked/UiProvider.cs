@@ -22,12 +22,12 @@ namespace LiveCharts.Core.UnitTests.Mocked
             return new AxisSeparator();
         }
 
-        public IPointView<TModel, Point<TModel, Point2D, ColumnViewModel>, Point2D, ColumnViewModel> ColumnViewProvider<TModel>()
+        public IPointView<TModel, Point<TModel, Point, ColumnViewModel>, Point, ColumnViewModel> ColumnViewProvider<TModel>()
         {
             return new ColumnView<TModel>();
         }
 
-        public IPointView<TModel, Point<TModel, Point2D, BezierViewModel>, Point2D, BezierViewModel> BezierViewProvider<TModel>()
+        public IPointView<TModel, Point<TModel, Point, BezierViewModel>, Point, BezierViewModel> BezierViewProvider<TModel>()
         {
             return new BezierProvider<TModel>();
         }

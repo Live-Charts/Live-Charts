@@ -7,10 +7,11 @@ using LiveCharts.Core.Data;
 using LiveCharts.Core.Drawing;
 using LiveCharts.Core.Events;
 using LiveCharts.Core.ViewModels;
+using Point = LiveCharts.Core.Coordinates.Point;
 
 namespace LiveCharts.Core.UnitTests.Mocked
 {
-    public class BezierProvider<TModel> : IPointView<TModel, Point<TModel, Point2D, BezierViewModel>, Point2D, BezierViewModel>
+    public class BezierProvider<TModel> : IPointView<TModel, Point<TModel, Point, BezierViewModel>, Point, BezierViewModel>
     {
         public event DisposingResourceHandler Disposed;
         public object UpdateId { get; set; }
@@ -21,12 +22,12 @@ namespace LiveCharts.Core.UnitTests.Mocked
 
         public object VisualElement { get; }
         public IDataLabelControl Label { get; }
-        public void DrawShape(Point<TModel, Point2D, BezierViewModel> point, Point<TModel, Point2D, BezierViewModel> previous)
+        public void DrawShape(Point<TModel, Point, BezierViewModel> point, Point<TModel, Point, BezierViewModel> previous)
         {
 
         }
 
-        public void DrawLabel(Point<TModel, Point2D, BezierViewModel> point, Point location)
+        public void DrawLabel(Point<TModel, Point, BezierViewModel> point, Drawing.Point location)
         {
 
         }

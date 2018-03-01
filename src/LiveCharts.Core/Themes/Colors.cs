@@ -12,7 +12,7 @@ namespace LiveCharts.Core.Themes
         /// Uses a custom colors array as the default series color set.
         /// </summary>
         /// <returns></returns>
-        public static LiveChartsSettings UseColors(this LiveChartsSettings settings, IEnumerable<Color> colors)
+        public static Charting UseColors(this Charting settings, IEnumerable<Color> colors)
         {
             settings.Colors.Clear();
             settings.Colors.AddRange(colors);
@@ -23,7 +23,7 @@ namespace LiveCharts.Core.Themes
         /// Uses Google's material design colors.
         /// </summary>
         /// <returns></returns>
-        public static LiveChartsSettings UseMaterialDesignColors(this LiveChartsSettings settings)
+        public static Charting UseMaterialDesignColors(this Charting settings)
         {
             settings.Colors.Clear();
 
@@ -51,7 +51,7 @@ namespace LiveCharts.Core.Themes
         /// Uses Microsoft's metro colors.
         /// </summary>
         /// <returns></returns>
-        public static LiveChartsSettings UseMetroColors(this LiveChartsSettings settings)
+        public static Charting UseMetroColors(this Charting settings)
         {
             settings.Colors.Clear();
             settings.Colors.AddRange(new[]
@@ -75,7 +75,7 @@ namespace LiveCharts.Core.Themes
         /// Uses a white scale colors.
         /// </summary>
         /// <returns></returns>
-        public static LiveChartsSettings UseWhiteScaleColors(this LiveChartsSettings settings)
+        public static Charting UseWhiteScaleColors(this Charting settings)
         {
             settings.Colors.Clear();
             settings.Colors.AddRange(new[]
@@ -94,7 +94,7 @@ namespace LiveCharts.Core.Themes
         /// Uses a black scale colors.
         /// </summary>
         /// <returns></returns>
-        public static LiveChartsSettings UseBlackScaleColors(this LiveChartsSettings settings)
+        public static Charting UseBlackScaleColors(this Charting settings)
         {
             settings.Colors.Clear();
             settings.Colors.AddRange(new[]
@@ -113,7 +113,7 @@ namespace LiveCharts.Core.Themes
         /// Uses a blue scale colors.
         /// </summary>
         /// <returns></returns>
-        public static LiveChartsSettings UseBlueScaleColors(this LiveChartsSettings settings)
+        public static Charting UseBlueScaleColors(this Charting settings)
         {
             settings.Colors.Clear();
             settings.Colors.AddRange(new[]

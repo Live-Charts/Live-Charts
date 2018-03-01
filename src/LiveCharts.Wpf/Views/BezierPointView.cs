@@ -14,8 +14,8 @@ using Point = LiveCharts.Core.Drawing.Point;
 namespace LiveCharts.Wpf.Views
 {
     public class BezierPointView<TModel, TPoint, TLabel>
-        : PointView<TModel, TPoint, Point2D, BezierViewModel, Path, TLabel>
-        where TPoint : Point<TModel, Point2D, BezierViewModel>, new()
+        : PointView<TModel, TPoint, Core.Coordinates.Point, BezierViewModel, Path, TLabel>
+        where TPoint : Point<TModel, Core.Coordinates.Point, BezierViewModel>, new()
         where TLabel : FrameworkElement, IDataLabelControl, new()
     {
         private BezierSegment _segment;

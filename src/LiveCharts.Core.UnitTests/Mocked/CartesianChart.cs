@@ -13,6 +13,7 @@ using LiveCharts.Core.Dimensions;
 using LiveCharts.Core.Drawing;
 using LiveCharts.Core.Events;
 using LiveCharts.Core.Themes;
+using Point = LiveCharts.Core.Coordinates.Point;
 
 namespace LiveCharts.Core.UnitTests.Mocked
 {
@@ -25,7 +26,7 @@ namespace LiveCharts.Core.UnitTests.Mocked
                 settings.DataFactory = new DefaultDataFactory();
                 settings.UiProvider = new UiProvider();
                 settings.UseMaterialDesignLightTheme()
-                    .Has2DPlotFor<City>((city, index) => new Point2D(index, city.Population));
+                    .Has2DPlotFor<City>((city, index) => new Point(index, city.Population));
             });
         }
 

@@ -4,34 +4,32 @@ using System.Drawing;
 using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Coordinates;
 using LiveCharts.Core.Data;
+using Point = LiveCharts.Core.Coordinates.Point;
 
 namespace LiveCharts.Core
 {
     /// <summary>
     /// LiveCharts configuration class.
     /// </summary>
-    public class LiveChartsSettings
+    public class Charting
     {
         private static readonly Dictionary<Type, object> Builders = new Dictionary<Type, object>();
 
         private static readonly Dictionary<Tuple<Type, Type>, object> DefaultMappers =
             new Dictionary<Tuple<Type, Type>, object>();
 
-        private static bool _isInitialized;
-        private static List<Action<LiveChartsSettings>> _initQ = new List<Action<LiveChartsSettings>>();
-
         /// <summary>
-        /// Initializes the <see cref="LiveChartsSettings"/> class.
+        /// Initializes the <see cref="Charting"/> class.
         /// </summary>
-        static LiveChartsSettings()
+        static Charting()
         {
-            Current = new LiveChartsSettings();
+            Current = new Charting();
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="LiveChartsSettings"/> class.
+        /// Initializes a new instance of the <see cref="Charting"/> class.
         /// </summary>
-        public LiveChartsSettings()
+        public Charting()
         {
             Colors = new List<Color>();
         }
@@ -50,7 +48,7 @@ namespace LiveCharts.Core
         /// <value>
         /// The current.
         /// </value>
-        public static LiveChartsSettings Current { get; }
+        public static Charting Current { get; }
 
         /// <summary>
         /// Gets the drawing provider.
@@ -67,29 +65,6 @@ namespace LiveCharts.Core
         /// The chart point factory.
         /// </value>
         public IDataFactory DataFactory { get; set; }
-
-        /// <summary>
-        /// This method should only be called by a view control consuming the core, you don't normally need to use this method
-        /// and might change without advise.
-        /// </summary>
-        public static void SetPlatformSpecificSettings(Action<LiveChartsSettings> defaults)
-        {
-            if (_isInitialized)
-            {
-                throw new LiveChartsException(
-                    $"{nameof(SetPlatformSpecificSettings)} method should only be called once.", 105);
-            };
-
-            defaults(Current);
-            _isInitialized = true;
-
-            foreach (var setting in _initQ)
-            {
-                setting(Current);
-            }
-
-            _initQ = null;
-        }
 
         #region Register types
 
@@ -118,36 +93,25 @@ namespace LiveCharts.Core
         }
 
         /// <summary>
-        /// Maps a model to a <see cref="Point2D"/> and saves the mapper globally.
+        /// Maps a model to a <see cref="Point"/> and saves the mapper globally.
         /// </summary>
         /// <typeparam name="TModel">The type of the model.</typeparam>
         /// <param name="predicate">The predicate.</param>
         /// <returns></returns>
-        public ModelToPointMapper<TModel, Point2D> Has2DPlotFor<TModel>(Func<TModel, int, Point2D> predicate)
+        public ModelToPointMapper<TModel, Point> For<TModel>(Func<TModel, int, Point> predicate)
         {
             return PlotAs(predicate);
         }
 
         /// <summary>
-        /// Maps a model to a <see cref="Weighted2DPoint"/> and saves the mapper globally.
+        /// Maps a model to a specified point and saves the mapper globally.
         /// </summary>
         /// <typeparam name="TModel">The type of the model.</typeparam>
+        /// <typeparam name="TPoint">The type of the point.</typeparam>
         /// <param name="predicate">The predicate.</param>
         /// <returns></returns>
-        public ModelToPointMapper<TModel, Weighted2DPoint> HasWeighed2DPlotFor<TModel>(
-            Func<TModel, int, Weighted2DPoint> predicate)
-        {
-            return PlotAs(predicate);
-        }
-
-        /// <summary>
-        /// Plots the financial.
-        /// </summary>
-        /// <typeparam name="TModel">The type of the model.</typeparam>
-        /// <param name="predicate">The predicate.</param>
-        /// <returns></returns>
-        public ModelToPointMapper<TModel, FinancialPoint> PlotFinancial<TModel>(
-            Func<TModel, int, FinancialPoint> predicate)
+        public ModelToPointMapper<TModel, TPoint> For<TModel, TPoint>(Func<TModel, int, TPoint> predicate)
+        where TPoint: ICoordinate
         {
             return PlotAs(predicate);
         }
@@ -188,7 +152,7 @@ namespace LiveCharts.Core
         /// </summary>
         /// <param name="builder">the builder.</param>
         /// <returns></returns>
-        public LiveChartsSettings SetDefault<T>(Action<T> builder)
+        public Charting SetDefault<T>(Action<T> builder)
         {
             Builders[typeof(T)] = builder;
             return Current;
@@ -199,7 +163,7 @@ namespace LiveCharts.Core
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="instance">The instance.</param>
-        public static void Set<T>(T instance)
+        public static void BuildFromSettings<T>(T instance)
         {
             if (!Builders.TryGetValue(typeof(T), out var builder)) return;
             var c = (Action<T>) builder;
@@ -209,17 +173,10 @@ namespace LiveCharts.Core
         /// <summary>
         /// Configures LiveCharts globally.
         /// </summary>
-        /// <param name="settings">The builder.</param>
-        public static void Set(Action<LiveChartsSettings> settings)
+        /// <param name="options">The builder.</param>
+        public static void Settings(Action<Charting> options)
         {
-            if (_isInitialized)
-            {
-                settings(Current);
-            }
-            else
-            {
-                _initQ.Add(settings);
-            }
+            options(Current);
         }
     }
 }

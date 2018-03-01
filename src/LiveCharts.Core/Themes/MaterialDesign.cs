@@ -19,11 +19,11 @@ namespace LiveCharts.Core.Themes
         /// </summary>
         /// <param name="settings">The settings.</param>
         /// <returns></returns>
-        public static LiveChartsSettings UseMaterialDesignLightTheme(this LiveChartsSettings settings)
+        public static Charting WithMaterialDesignLightTheme(this Charting settings)
         {
             var baseFont = new Font("Arial", 11, FontStyles.Regular, FontWeight.Regular);
 
-            settings.PlotDefaults()
+            settings
                 .UseMaterialDesignColors()
 
                 // sets a base for all the series
@@ -32,7 +32,7 @@ namespace LiveCharts.Core.Themes
                     series.IsVisible = true;
                     series.Font = baseFont;
                     series.DataLabels = false;
-                    series.DefaultFillOpacity = 1;
+                    series.DefaultFillOpacity = 1f;
                     series.Fill = Color.Empty; // if the color is empty, the DataFactory will assign it.
                     series.Stroke = Color.Empty;
                     series.StrokeThickness = 0;
@@ -47,8 +47,10 @@ namespace LiveCharts.Core.Themes
                 })
                 .SetDefault<IColumnSeries>(columnSeries =>
                 {
+                    columnSeries.StrokeThickness = 0f;
                     columnSeries.Geometry = Geometry.Square;
                     columnSeries.MaxColumnWidth = 20f;
+                    columnSeries.DefaultFillOpacity = 1f;
                 })
                 .SetDefault<IScatterSeries>(scatterSeries =>
                 {

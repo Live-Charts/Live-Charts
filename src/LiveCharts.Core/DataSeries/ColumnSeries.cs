@@ -19,7 +19,7 @@ namespace LiveCharts.Core.DataSeries
     /// </summary>The column series class.
     /// <typeparam name="TModel">The type of the model.</typeparam>
     public class ColumnSeries<TModel>
-        : CartesianSeries<TModel, Point2D, ColumnViewModel, Point<TModel, Point2D, ColumnViewModel>>, IColumnSeries
+        : CartesianSeries<TModel, Coordinates.Point, ColumnViewModel, Point<TModel, Coordinates.Point, ColumnViewModel>>, IColumnSeries
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ColumnSeries{TModel}"/> class.
@@ -28,7 +28,8 @@ namespace LiveCharts.Core.DataSeries
         {
             MaxColumnWidth = 45f;
             ColumnPadding = 2f;
-            LiveChartsSettings.Set<IColumnSeries>(this);
+
+            Charting.BuildFromSettings<IColumnSeries>(this);
         }
 
         /// <inheritdoc />
@@ -71,7 +72,7 @@ namespace LiveCharts.Core.DataSeries
                     : 0);
             var zero = chart.ScaleToUi(startAt, y);
 
-            Point<TModel, Point2D, ColumnViewModel> previous = null;
+            Point<TModel, Coordinates.Point, ColumnViewModel> previous = null;
             foreach (var current in Points)
             {
                 var p = new[]
@@ -80,13 +81,17 @@ namespace LiveCharts.Core.DataSeries
                     chart.ScaleToUi(current.Coordinate.Y, y)
                 };
 
-                var isNew = current.View != null && current.View.VisualElement == null;
+                if (current.View == null)
+                {
+                    current.View = PointViewProvider();
+                }
 
-                var initialState = isNew
-                    ? new RectangleF(p[0] + relativeLeft,
-                        p[1] < zero
-                            ? p[1]
-                            : zero,
+                var isNew = current.View.VisualElement == null;
+
+                var initialColumn = isNew
+                    ? new RectangleF(
+                        p[0] + relativeLeft,
+                        zero,
                         Math.Abs(p[1] - zero),
                         0)
                     : Rectangle.Empty;
@@ -99,12 +104,7 @@ namespace LiveCharts.Core.DataSeries
                     Math.Abs(p[1] - zero),
                     singleColumnWidth - ColumnPadding,
                     zero,
-                    initialState);
-
-                if (current.View == null)
-                {
-                    current.View = PointViewProvider();
-                }
+                    initialColumn);
 
                 current.ViewModel = vm;
                 current.View.DrawShape(current, previous);
@@ -136,10 +136,10 @@ namespace LiveCharts.Core.DataSeries
         }
 
         /// <inheritdoc />
-        protected override IPointView<TModel, Point<TModel, Point2D, ColumnViewModel>, Point2D, ColumnViewModel> 
+        protected override IPointView<TModel, Point<TModel, Coordinates.Point, ColumnViewModel>, Coordinates.Point, ColumnViewModel> 
             DefaultPointViewProvider()
         {
-            return LiveChartsSettings.Current.UiProvider.GetNewColumnView<TModel>();
+            return Charting.Current.UiProvider.GetNewColumnView<TModel>();
         }
     }
 }

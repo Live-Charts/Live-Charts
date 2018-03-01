@@ -10,6 +10,7 @@ using LiveCharts.Core;
 using LiveCharts.Core.Coordinates;
 using LiveCharts.Core.Data;
 using LiveCharts.Core.DataSeries;
+using Point = LiveCharts.Core.Coordinates.Point;
 
 namespace Assets.ViewModels
 {
@@ -20,14 +21,14 @@ namespace Assets.ViewModels
 
         public PropertyAndInstanceChanged()
         {
-            LiveChartsSettings.Set(settings =>
-                {
-                    settings.Has2DPlotFor<City>((city, index) => new Point2D(index, city.Population));
-                    settings.HasWeighed2DPlotFor<City>((city, index) =>
-                        new Weighted2DPoint(index, city.Population, _r.Next(0, 10)));
-                });
+            Charting.Settings(charting =>
+            {
+                charting.For<City>((city, index) => new Point(index, city.Population));
+                charting.For<City, WeightedPoint>((city, index) =>
+                    new WeightedPoint(index, city.Population, _r.Next(0, 10)));
+            });
 
-            var series = new ScatterSeries<City>
+            var series = new ColumnSeries<City>
             {
                 new City
                 {

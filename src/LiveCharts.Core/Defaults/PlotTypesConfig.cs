@@ -10,40 +10,40 @@ namespace LiveCharts.Core.Defaults
         /// <summary>
         /// Configures LiveCharts to plot the default types.
         /// </summary>
-        /// <param name="settings">The configuration.</param>
+        /// <param name="charting">The configuration.</param>
         /// <returns></returns>
-        public static LiveChartsSettings PlotDefaults(this LiveChartsSettings settings)
+        public static Charting ForPrimitiveAndDefaultTypes(this Charting charting)
         {
-            settings.Has2DPlotFor<short>((value, index) => new Point2D(index, value));
-            settings.Has2DPlotFor<ushort>((value, index) => new Point2D(index, value));
-            settings.Has2DPlotFor<int>((value, index) => new Point2D(index, value));
-            settings.Has2DPlotFor<long>((value, index) => new Point2D(index, value));
-            settings.Has2DPlotFor<ulong>((value, index) => new Point2D(index, value));
-            settings.Has2DPlotFor<double>((value, index) => new Point2D(index, (float) value));
-            settings.Has2DPlotFor<float>((value, index) => new Point2D(index, value));
+            charting.For<short>((value, index) => new Point(index, value));
+            charting.For<ushort>((value, index) => new Point(index, value));
+            charting.For<int>((value, index) => new Point(index, value));
+            charting.For<long>((value, index) => new Point(index, value));
+            charting.For<ulong>((value, index) => new Point(index, value));
+            charting.For<double>((value, index) => new Point(index, (float) value));
+            charting.For<float>((value, index) => new Point(index, value));
 
-            settings.HasWeighed2DPlotFor<short>((value, index) => new Weighted2DPoint(index, value, 0));
-            settings.HasWeighed2DPlotFor<ushort>((value, index) => new Weighted2DPoint(index, value, 0));
-            settings.HasWeighed2DPlotFor<int>((value, index) => new Weighted2DPoint(index, value, 0));
-            settings.HasWeighed2DPlotFor<long>((value, index) => new Weighted2DPoint(index, value, 0));
-            settings.HasWeighed2DPlotFor<ulong>((value, index) => new Weighted2DPoint(index, value, 0));
-            settings.HasWeighed2DPlotFor<double>((value, index) => new Weighted2DPoint(index, (float) value, 0));
-            settings.HasWeighed2DPlotFor<float>((value, index) => new Weighted2DPoint(index, value, 0));
+            charting.For<short, WeightedPoint>((value, index) => new WeightedPoint(index, value, 0));
+            charting.For<ushort, WeightedPoint>((value, index) => new WeightedPoint(index, value, 0));
+            charting.For<int, WeightedPoint>((value, index) => new WeightedPoint(index, value, 0));
+            charting.For<long, WeightedPoint>((value, index) => new WeightedPoint(index, value, 0));
+            charting.For<ulong, WeightedPoint>((value, index) => new WeightedPoint(index, value, 0));
+            charting.For<double, WeightedPoint>((value, index) => new WeightedPoint(index, (float) value, 0));
+            charting.For<float, WeightedPoint>((value, index) => new WeightedPoint(index, value, 0));
 
-            settings.Has2DPlotFor<decimal>((value, index) => new Point2D(index, (float) value));
-            settings.HasWeighed2DPlotFor<decimal>((value, index) => new Weighted2DPoint(index, (float) value, 0));
+            charting.For<decimal>((value, index) => new Point(index, (float) value));
+            charting.For<decimal, WeightedPoint>((value, index) => new WeightedPoint(index, (float) value, 0));
 
-            settings.Has2DPlotFor<ObservableModel>((om, index) => new Point2D(index, om.Value));
-            settings.Has2DPlotFor<ObservablePointModel>((opm, index) => new Point2D(opm.X, opm.Y));
+            charting.For<ObservableModel>((om, index) => new Point(index, om.Value));
+            charting.For<ObservablePointModel>((opm, index) => new Point(opm.X, opm.Y));
 
-            settings.PlotFinancial<FinancialModel>(
+            charting.For<FinancialModel, FinancialPoint>(
                 (fm, index) => new FinancialPoint(index, fm.Open, fm.High, fm.Low, fm.Close));
 
-            settings.PlotPolar<PolarModel>((pm, index) => new PolarPoint(pm.Radius, pm.Angle));
+            charting.PlotPolar<PolarModel>((pm, index) => new PolarPoint(pm.Radius, pm.Angle));
 
-            settings.HasWeighed2DPlotFor<Weighted2DPoint>((point, index) => new Weighted2DPoint(point.X, point.Y, point.Weight));
+            charting.For<WeightedPoint, WeightedPoint>((point, index) => new WeightedPoint(point.X, point.Y, point.Weight));
 
-            return settings;
+            return charting;
         }
     }
 }

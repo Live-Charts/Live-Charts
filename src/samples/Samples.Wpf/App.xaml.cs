@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using LiveCharts.Core;
+using LiveCharts.Core.Defaults;
 using LiveCharts.Core.Themes;
 using LiveCharts.Wpf;
 
@@ -12,7 +13,13 @@ namespace Samples.Wpf
     {
         public App()
         {
-            
+            Charting.Settings(charting =>
+            {
+                charting
+                    .ForPrimitiveAndDefaultTypes()
+                    .WithWpf()
+                    .WithMaterialDesignLightTheme();
+            });
         }
     }
 }

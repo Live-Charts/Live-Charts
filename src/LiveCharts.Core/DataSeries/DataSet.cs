@@ -44,7 +44,7 @@ namespace LiveCharts.Core.DataSeries
         protected DataSet()
         {
             IsVisible = true;
-            LiveChartsSettings.Set<ISeries>(this);
+            Charting.BuildFromSettings<ISeries>(this);
         }
 
         /// <inheritdoc />

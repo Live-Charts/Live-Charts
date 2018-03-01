@@ -7,7 +7,7 @@ namespace LiveCharts.Core.Coordinates
     /// <summary>
     /// A weighted coordinate.
     /// </summary>
-    public class Weighted2DPoint : ICoordinate
+    public class WeightedPoint : ICoordinate
     {
         /// <summary>
         /// The _vector.
@@ -15,9 +15,9 @@ namespace LiveCharts.Core.Coordinates
         private readonly float[][] _vector = new float[3][];
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Point2D"/> struct.
+        /// Initializes a new instance of the <see cref="Point"/> struct.
         /// </summary>
-        public Weighted2DPoint(float x, float y, float weight)
+        public WeightedPoint(float x, float y, float weight)
         {
             _vector[0] = new []{x};
             _vector[1] = new []{y};

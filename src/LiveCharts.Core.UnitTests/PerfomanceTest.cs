@@ -10,6 +10,7 @@ using LiveCharts.Core.Drawing;
 using LiveCharts.Core.UnitTests.Mocked;
 using LiveCharts.Core.ViewModels;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Point = LiveCharts.Core.Drawing.Point;
 
 namespace LiveCharts.Core.UnitTests
 {

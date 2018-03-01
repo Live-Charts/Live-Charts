@@ -24,7 +24,7 @@ namespace LiveCharts.Core.Dimensions
         {
             Step = float.NaN;
             Position = AxisPosition.Auto;
-            LiveChartsSettings.Set(this);
+            Charting.BuildFromSettings(this);
         }
 
         /// <summary>
@@ -189,7 +189,7 @@ namespace LiveCharts.Core.Dimensions
 
                 if (!_activeSeparators.TryGetValue(key, out var separator))
                 {
-                    separator = LiveChartsSettings.Current.UiProvider.GetNewAxisSeparator();
+                    separator = Charting.Current.UiProvider.GetNewAxisSeparator();
                     _activeSeparators.Add(key, separator);
                 }
                 chart.RegisterResource(separator);
@@ -247,7 +247,7 @@ namespace LiveCharts.Core.Dimensions
         /// <inheritdoc />
         protected override IPlaneLabelControl DefaultLabelProvider()
         {
-            return LiveChartsSettings.Current.UiProvider.GetNewAxisLabel();
+            return Charting.Current.UiProvider.GetNewAxisLabel();
         }
 
         private float GetActualAxisStep(ChartModel chart)

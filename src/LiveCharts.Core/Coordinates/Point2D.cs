@@ -7,14 +7,14 @@ namespace LiveCharts.Core.Coordinates
     /// <summary>
     /// A point coordinate.
     /// </summary>
-    public class Point2D : ICoordinate
+    public class Point : ICoordinate
     {
         private readonly float[][] _vector = new float[2][];
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Point2D"/> struct.
+        /// Initializes a new instance of the <see cref="Point"/> struct.
         /// </summary>
-        public Point2D(float x, float y)
+        public Point(float x, float y)
         {
             _vector[0] = new[] {x};
             _vector[1] = new[] {y};
@@ -74,9 +74,9 @@ namespace LiveCharts.Core.Coordinates
         /// <returns>
         /// The result of the operator.
         /// </returns>
-        public static Point2D operator +(Point2D p1, Point2D p2)
+        public static Point operator +(Point p1, Point p2)
         {
-            return new Point2D(p1.X+ p2.X, p1.Y+p2.Y);
+            return new Point(p1.X+ p2.X, p1.Y+p2.Y);
         }
 
         /// <summary>
@@ -87,9 +87,9 @@ namespace LiveCharts.Core.Coordinates
         /// <returns>
         /// The result of the operator.
         /// </returns>
-        public static Point2D operator -(Point2D p1, Point2D p2)
+        public static Point operator -(Point p1, Point p2)
         {
-            return new Point2D(p1.X - p2.X, p1.Y - p2.Y);
+            return new Point(p1.X - p2.X, p1.Y - p2.Y);
         }
 
         /// <summary>

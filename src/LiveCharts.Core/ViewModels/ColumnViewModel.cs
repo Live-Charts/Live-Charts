@@ -13,15 +13,15 @@
         /// <param name="h">The h.</param>
         /// <param name="w">The w.</param>
         /// <param name="zero">The zero.</param>
-        /// <param name="initialState">The initial view state.</param>
-        public ColumnViewModel(double l, double t, double h, double w, double zero, System.Drawing.RectangleF initialState)
+        /// <param name="columnInitialState">The initial view state.</param>
+        public ColumnViewModel(double l, double t, double h, double w, double zero, System.Drawing.RectangleF columnInitialState)
         {
             Left = l;
             Top = t;
             Height = h;
             Width = w;
             Zero = zero;
-            InitialState = initialState;
+            ColumnInitialState = columnInitialState;
         }
 
         /// <summary>
@@ -30,7 +30,7 @@
         /// <value>
         /// The initial state.
         /// </value>
-        public System.Drawing.RectangleF InitialState { get; }
+        public System.Drawing.RectangleF ColumnInitialState { get; }
 
         /// <summary>
         /// Specifies the column animation direction.

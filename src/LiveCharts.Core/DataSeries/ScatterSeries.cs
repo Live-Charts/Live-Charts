@@ -7,6 +7,7 @@ using LiveCharts.Core.Drawing;
 using LiveCharts.Core.Drawing.Svg;
 using LiveCharts.Core.Interaction;
 using LiveCharts.Core.ViewModels;
+using Point = LiveCharts.Core.Drawing.Point;
 
 namespace LiveCharts.Core.DataSeries
 {
@@ -14,7 +15,7 @@ namespace LiveCharts.Core.DataSeries
     /// The scatter series class.
     /// </summary>
     public class ScatterSeries<TModel> 
-        : CartesianSeries<TModel, Weighted2DPoint, ScatterViewModel, Point<TModel, Weighted2DPoint, ScatterViewModel>>, IScatterSeries
+        : CartesianSeries<TModel, WeightedPoint, ScatterViewModel, Point<TModel, WeightedPoint, ScatterViewModel>>, IScatterSeries
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ScatterSeries{TModel}"/> class.
@@ -25,7 +26,7 @@ namespace LiveCharts.Core.DataSeries
             MinPointDiameter = 12f;
             StrokeThickness = 1f;
             Geometry = Geometry.Circle;
-            LiveChartsSettings.Set<IScatterSeries>(this);
+            Charting.BuildFromSettings<IScatterSeries>(this);
             RangeByDimension = RangeByDimension = new[]
             {
                 new RangeF(), // x
@@ -58,7 +59,7 @@ namespace LiveCharts.Core.DataSeries
             var p1 = new Point(RangeByDimension[2].To, MinPointDiameter);
             var p2 = new Point(RangeByDimension[2].From, MaxPointDiameter);
 
-            Point<TModel, Weighted2DPoint, ScatterViewModel> previous = null;
+            Point<TModel, WeightedPoint, ScatterViewModel> previous = null;
             foreach (var current in Points)
             {
                 var p = new[]
@@ -95,10 +96,10 @@ namespace LiveCharts.Core.DataSeries
         }
 
         /// <inheritdoc />
-        protected override IPointView<TModel, Point<TModel, Weighted2DPoint, ScatterViewModel>, Weighted2DPoint, ScatterViewModel> 
+        protected override IPointView<TModel, Point<TModel, WeightedPoint, ScatterViewModel>, WeightedPoint, ScatterViewModel> 
             DefaultPointViewProvider()
         {
-            return LiveChartsSettings.Current.UiProvider.GetNewScatterView<TModel>();
+            return Charting.Current.UiProvider.GetNewScatterView<TModel>();
         }
     }
 }

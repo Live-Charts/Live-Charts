@@ -35,7 +35,7 @@ namespace LiveCharts.Core.Charts
         protected ChartModel(IChartView view)
         {
             View = view;
-            View.Content = LiveChartsSettings.Current.UiProvider.GetChartContent();
+            View.Content = Charting.Current.UiProvider.GetChartContent();
             view.ChartViewLoaded += sender =>
             {
                 IsViewInitialized = true;
@@ -107,7 +107,7 @@ namespace LiveCharts.Core.Charts
         /// </value>
         public IList<Color> Colors
         {
-            get => _colors ?? LiveChartsSettings.Current.Colors;
+            get => _colors ?? Charting.Current.Colors;
             set => _colors = value;
         }
 

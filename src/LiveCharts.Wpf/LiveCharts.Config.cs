@@ -5,7 +5,7 @@ namespace LiveCharts.Wpf
 {
     public static class Config
     {
-        public static LiveChartsSettings UseWpf(this LiveChartsSettings settings)
+        public static Charting WithWpf(this Charting settings)
         {
             settings.DataFactory = new DefaultDataFactory();
             settings.UiProvider = new UiProvider();

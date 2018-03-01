@@ -26,7 +26,7 @@ namespace LiveCharts.Core.Dimensions
             MinValue = float.NaN;
             MaxValue = float.NaN;
             DataRange = new RangeF();
-            LiveChartsSettings.Set(this);
+            Charting.BuildFromSettings(this);
         }
 
         /// <summary>

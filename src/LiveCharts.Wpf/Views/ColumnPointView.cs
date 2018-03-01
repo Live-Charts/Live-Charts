@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Drawing;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
@@ -7,6 +8,8 @@ using LiveCharts.Core.Coordinates;
 using LiveCharts.Core.Data;
 using LiveCharts.Core.ViewModels;
 using LiveCharts.Wpf.Animations;
+using Point = LiveCharts.Core.Coordinates.Point;
+using Rectangle = System.Windows.Shapes.Rectangle;
 
 namespace LiveCharts.Wpf.Views
 {
@@ -19,8 +22,8 @@ namespace LiveCharts.Wpf.Views
     /// <typeparam name="TLabel">the type of the label.</typeparam>
     /// <seealso cref="PointView{TModel, Point,Point2D, ColumnViewModel, TShape, TLabel}" />
     public class ColumnPointView<TModel, TPoint, TShape, TLabel>
-        : PointView<TModel, TPoint, Point2D, ColumnViewModel, TShape, TLabel>
-        where TPoint : Point<TModel, Point2D, ColumnViewModel>, new()
+        : PointView<TModel, TPoint, Point, ColumnViewModel, TShape, TLabel>
+        where TPoint : Point<TModel, Point, ColumnViewModel>, new()
         where TShape : Shape, new()
         where TLabel : FrameworkElement, IDataLabelControl, new()
     {
@@ -31,9 +34,9 @@ namespace LiveCharts.Wpf.Views
         {
             var chart = point.Chart.View;
             var vm = point.ViewModel;
-            var isNew = Shape == null;
+            var @is = vm.ColumnInitialState;
 
-            if (isNew)
+            if (@is != RectangleF.Empty)
             {
                 Shape = new TShape();
                 chart.Content.AddChild(Shape);
