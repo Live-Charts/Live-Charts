@@ -35,8 +35,9 @@ namespace LiveCharts.Wpf.Views
             var chart = point.Chart.View;
             var vm = point.ViewModel;
             var @is = vm.ColumnInitialState;
+            var isNewShape = Shape == null;
 
-            if (@is != RectangleF.Empty)
+            if (isNewShape)
             {
                 Shape = new TShape();
                 chart.Content.AddChild(Shape);
@@ -59,13 +60,27 @@ namespace LiveCharts.Wpf.Views
 
             var speed = chart.AnimationsSpeed;
 
-            Shape.Animate()
+            var animation = Shape.Animate()
                 .AtSpeed(speed)
-                .Bounce(Canvas.LeftProperty, vm.Left, .1)
-                .Bounce(FrameworkElement.WidthProperty, vm.Width, .1)
-                .Bounce(Canvas.TopProperty, vm.Top)
-                .Bounce(FrameworkElement.HeightProperty, vm.Height)
-                .Begin();
+                .Property(Canvas.LeftProperty, vm.Left)
+                .Property(FrameworkElement.WidthProperty, vm.Width);
+
+            if (isNewShape)
+            {
+                var b1 = vm.Height * .08;
+                animation
+                    .InverseBounce(Canvas.TopProperty, vm.Top, b1)
+                    .Bounce(FrameworkElement.HeightProperty, vm.Height, b1);
+            }
+            else
+            {
+                animation
+                    .Property(Canvas.TopProperty, vm.Top)
+                    .Property(FrameworkElement.HeightProperty, vm.Height);
+            }
+
+            animation.Begin();
+
             _point = point;
         }
 
