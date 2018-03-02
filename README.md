@@ -2,6 +2,19 @@
   <a href="http://lvcharts.net/"><img src="http://lvcharts.net/Content/Images/LiveChartsWhite.gif" /></a>
 </p>
 
+# LiveCharts 1.0 is comming soon (ETA April 2018)!
+
+We are doing a full rewrite of the library with all the learned lessons, the new version is focus on:
+
+* **If you own the Geared package** the new high performance version is already yours! thank you very much for all your support!
+
+* **Portability**: In version 0.x it was hard keep WPF, UWP and Winforms versions up to date, in the new version we extracted all the math to a dotnet core project, then we are working on 4 different platfomrs WPF, Xamarin, UWP and the new high performance package.
+* **Performance**: when the library started, performance was not the target, as the library community grow, the Geared package was released (the current high performance version), and it works for many cases, but we want LiveCharts to be the fastest library out there, in the new high performance package we are scaping from WPF performance limitations and drawing everything using DirectX with the well know [SharpDx](http://sharpdx.org/) package.
+* **3d**: 0.x layout was not designed to draw 3d plots, version 1.0 is really flexible and lucky we will be on 3d soon.
+* **Keep it easy!**: Even somethings might change, the idea of the library is the same, we only want to add support for the missing features and/or a better code quality so we can fix issues faster for all the platforms, all the samples will be updated with the new version.
+
+Check out our progress at [v1.0 branch](https://github.com/beto-rodriguez/Live-Charts/tree/v1.0).
+
 [![GitHub license](https://img.shields.io/github/license/beto-rodriguez/Live-Charts.svg?style=flat-square)](https://github.com/beto-rodriguez/Live-Charts/blob/master/LICENSE.TXT)
 [![AppVeyor](https://ci.appveyor.com/api/projects/status/707m8sye0ggbfrcq)](https://ci.appveyor.com/project/beto-rodriguez/live-charts)
 [![GitHub issues](https://img.shields.io/github/issues/beto-rodriguez/Live-Charts.svg?style=flat-square)](https://github.com/beto-rodriguez/Live-Charts/issues)
