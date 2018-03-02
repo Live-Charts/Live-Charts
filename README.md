@@ -4,7 +4,7 @@
 
 # LiveCharts 1.0 is comming soon (ETA April 2018)!
 
-We are doing a full rewrite of the library with all the learned lessons, the new version is focus on:
+We are doing a full rewrite of the library with all the learned lessons, the new version is focused on:
 
 * **If you own the Geared package** the new high performance version is already yours! thank you very much for all your support!
 
