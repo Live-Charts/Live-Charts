@@ -4,13 +4,11 @@ using System.Linq;
 using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Abstractions.DataSeries;
 using LiveCharts.Core.Charts;
-using LiveCharts.Core.Coordinates;
 using LiveCharts.Core.Data;
+using LiveCharts.Core.Dimensions;
 using LiveCharts.Core.Drawing;
 using LiveCharts.Core.Interaction;
 using LiveCharts.Core.ViewModels;
-using Point = LiveCharts.Core.Drawing.Point;
-using Rectangle = System.Drawing.Rectangle;
 
 namespace LiveCharts.Core.DataSeries
 {
@@ -44,90 +42,69 @@ namespace LiveCharts.Core.DataSeries
         /// <inheritdoc />
         public override void UpdateView(ChartModel chart)
         {
-            var cartesianChart = (CartesianChartModel) chart;
-            var x = cartesianChart.XAxis[ScalesXAt];
-            var y = cartesianChart.YAxis[ScalesYAt];
+            var xi = 0;
+            var yi = 1;
 
-            var xUnitWidth = Math.Abs(chart.ScaleToUi(0, x) - chart.ScaleToUi(x.ActualPointWidth[x.Dimension], x)) -
-                             ColumnPadding;
+            var x = chart.Dimensions[xi][ScalesAt[xi]];
+            var y = chart.Dimensions[yi][ScalesAt[yi]];
+
+            var uw = chart.Get2DUiUnitWidth(x, y);
+
             var columnSeries = chart.Series
                 .Where(series => series is IColumnSeries)
                 .ToList();
-            var singleColumnWidth = xUnitWidth / columnSeries.Count;
+
+            var cw = uw[xi] / columnSeries.Count;
 
             var overFlow = 0f;
             var seriesPosition = columnSeries.IndexOf(this);
-            if (singleColumnWidth > MaxColumnWidth)
+            if (cw > MaxColumnWidth)
             {
-                overFlow = (singleColumnWidth - MaxColumnWidth) * columnSeries.Count / 2f;
-                singleColumnWidth = MaxColumnWidth;
+                overFlow = (cw - MaxColumnWidth) * columnSeries.Count / 2f;
+                cw = MaxColumnWidth;
             }
 
-            var relativeLeft = ColumnPadding + overFlow + singleColumnWidth * seriesPosition;
-
-            var startAt = x.ActualMinValue >= 0 && y.ActualMaxValue > 0 // both positive
-                ? y.ActualMinValue // then use axisYMin
-                : (y.ActualMinValue < 0 && y.ActualMaxValue <= 0 // both negative
-                    ? y.ActualMaxValue // then use axisYMax
-                    : 0);
-            var zero = chart.ScaleToUi(startAt, y);
+            var zero = GetZero(chart, chart.InvertXy ? x : y, x, y);
 
             Point<TModel, Coordinates.Point, ColumnViewModel> previous = null;
             foreach (var current in Points)
             {
-                var p = new[]
+                var offset = chart.ScaleToUi(current.Coordinate[xi][0], x);
+
+                var c0 = new[]
                 {
-                    chart.ScaleToUi(current.Coordinate.X, x),
-                    chart.ScaleToUi(current.Coordinate.Y, y)
+                    offset,
+                    chart.ScaleToUi(current.Coordinate[yi][0], y)
                 };
+
+                var c1 = new[]
+                {
+                    offset + cw,
+                    zero
+                };
+
+                var difference = Vector.SubstractEach2D(c0, c1);
 
                 if (current.View == null)
                 {
                     current.View = PointViewProvider();
                 }
 
-                var isNew = current.View.VisualElement == null;
-
-                var initialColumn = isNew
-                    ? new RectangleF(
-                        p[0] + relativeLeft,
-                        zero,
-                        Math.Abs(p[1] - zero),
-                        0)
-                    : Rectangle.Empty;
+                var h = Math.Abs(difference[yi]);
+                var w = Math.Abs(Math.Abs(difference[xi]));
 
                 var vm = new ColumnViewModel(
-                    p[0] + relativeLeft,
-                    p[1] < zero
-                        ? p[1]
-                        : zero,
-                    Math.Abs(p[1] - zero),
-                    singleColumnWidth - ColumnPadding,
-                    zero,
-                    initialColumn);
+                    Column.Empty,
+                    new Column(
+                        offset,
+                        zero - h,
+                        h,
+                        w));
 
                 current.ViewModel = vm;
                 current.View.DrawShape(current, previous);
 
-                current.InteractionArea = new RectangleInteractionArea
-                {
-                    Top = vm.Top,
-                    Left = vm.Left,
-                    Height = vm.Height,
-                    Width = vm.Width
-                };
-
-                if (DataLabels && x.IsInRange(p[0]) && y.IsInRange(p[1]))
-                {
-                    current.View.DrawLabel(
-                        current,
-                        GetLabelPosition(
-                            new Point(p[0], p[1]),
-                            new Margin(0),
-                            zero,
-                            current.View.Label.Measure(current.PackAll()),
-                            DataLabelsPosition));
-                }
+                current.InteractionArea = new RectangleInteractionArea();
 
                 Mapper.EvaluateModelDependentActions(current.Model, current.View.VisualElement, current);
 
@@ -140,6 +117,89 @@ namespace LiveCharts.Core.DataSeries
             DefaultPointViewProvider()
         {
             return Charting.Current.UiProvider.GetNewColumnView<TModel>();
+        }
+
+        private void inverted(ChartModel chart)
+        {
+            var i = 0;
+            var j = 1;
+
+            var x = chart.Dimensions[i][ScalesAt[i]];
+            var y = chart.Dimensions[j][ScalesAt[j]];
+
+            var uw = chart.Get2DUiUnitWidth(x, y);
+
+            var columnSeries = chart.Series
+                .Where(series => series is IColumnSeries)
+                .ToList();
+            var cw = uw[i] / columnSeries.Count;
+
+            var overFlow = 0f;
+            var seriesPosition = columnSeries.IndexOf(this);
+            if (cw > MaxColumnWidth)
+            {
+                overFlow = (cw - MaxColumnWidth) * columnSeries.Count / 2f;
+                cw = MaxColumnWidth;
+            }
+
+            var startAt = x.ActualMinValue >= 0 && y.ActualMaxValue > 0
+                ? y.ActualMinValue
+                : (x.ActualMinValue < 0 && y.ActualMaxValue <= 0
+                    ? y.ActualMaxValue
+                    : 0);
+            var zero = chart.ScaleToUi(startAt, y);
+
+            Point<TModel, Coordinates.Point, ColumnViewModel> previous = null;
+            foreach (var current in Points)
+            {
+                var offset = chart.ScaleToUi(current.Coordinate[i][0], x) - uw[i]*.5f;
+
+                var c0 = new[]
+                {
+                    chart.ScaleToUi(current.Coordinate[j][0], y),
+                    offset
+                };
+
+                var c1 = new[]
+                {
+                    zero,
+                    offset + cw
+                };
+
+                var difference = Vector.SubstractEach2D(c0, c1);
+
+                if (current.View == null)
+                {
+                    current.View = PointViewProvider();
+                }
+
+                var vm = new ColumnViewModel(
+                    Column.Empty,
+                    new Column(
+                        zero,
+                        offset - .5f * cw,
+                        Math.Abs(difference[j]),
+                        Math.Abs(difference[i])));
+
+                current.ViewModel = vm;
+                current.View.DrawShape(current, previous);
+
+                current.InteractionArea = new RectangleInteractionArea();
+
+                Mapper.EvaluateModelDependentActions(current.Model, current.View.VisualElement, current);
+
+                previous = current;
+            }
+        }
+
+        private static float GetZero(ChartModel chart, Plane target, Plane x, Plane y)
+        {
+            var value = x.ActualMinValue >= 0 && y.ActualMaxValue > 0
+                ? target.ActualMinValue
+                : (x.ActualMinValue < 0 && y.ActualMaxValue <= 0
+                    ? target.ActualMaxValue
+                    : 0);
+            return chart.ScaleToUi(value, target);
         }
     }
 }

@@ -1,10 +1,9 @@
-﻿using System.Drawing;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using LiveCharts.Core.Abstractions;
-using LiveCharts.Core.Coordinates;
 using LiveCharts.Core.Data;
 using LiveCharts.Core.ViewModels;
 using LiveCharts.Wpf.Animations;
@@ -34,49 +33,72 @@ namespace LiveCharts.Wpf.Views
         {
             var chart = point.Chart.View;
             var vm = point.ViewModel;
-            var @is = vm.ColumnInitialState;
             var isNewShape = Shape == null;
 
+            if (Shape == null)
+            {
+                Shape = new TShape();
+                chart.Content.AddChild(Shape);
+            }
+
+            Shape.Width = vm.To.Width;
+            Shape.Height = vm.To.Height;
+            Canvas.SetLeft(Shape, vm.To.Left);
+            Canvas.SetTop(Shape, vm.To.Top);
+
+            Shape.Stroke = point.Series.Stroke.AsWpf();
+            Shape.Fill = point.Series.Fill.AsWpf();
+            Shape.StrokeThickness = point.Series.StrokeThickness;
+            Shape.StrokeDashArray = new DoubleCollection(point.Series.StrokeDashArray);
+
+            return;
+
+            // initialize shape
             if (isNewShape)
             {
                 Shape = new TShape();
                 chart.Content.AddChild(Shape);
-                Canvas.SetLeft(Shape, vm.Left);
-                Canvas.SetTop(Shape, vm.Zero);
-                Shape.Width = vm.Width;
-                Shape.Height = 0;
+                Canvas.SetLeft(Shape, vm.From.Left);
+                Canvas.SetTop(Shape, vm.From.Top);
+                Shape.Width = vm.From.Width;
+                Shape.Height = vm.From.Height;
             }
 
-            var r = Shape as Rectangle;
-            if (r != null)
-            {
-                var radius = vm.Width * .4;
-                r.RadiusY = radius;
-                r.RadiusX = radius;
-            }
+            // map shape properties
 
             Shape.Stroke = point.Series.Stroke.AsWpf();
             Shape.Fill = point.Series.Fill.AsWpf();
+            Shape.StrokeThickness = point.Series.StrokeThickness;
+            Shape.StrokeDashArray = new DoubleCollection(point.Series.StrokeDashArray);
+            
+            // special cases
+            var r = Shape as Rectangle;
+            if (r != null)
+            {
+                var radius = vm.To.Width * .4;
+                r.RadiusY = radius;
+                r.RadiusX = radius;
+            }
 
             var speed = chart.AnimationsSpeed;
 
             var animation = Shape.Animate()
                 .AtSpeed(speed)
-                .Property(Canvas.LeftProperty, vm.Left)
-                .Property(FrameworkElement.WidthProperty, vm.Width);
+                .Property(Canvas.LeftProperty, vm.To.Left)
+                .Property(FrameworkElement.WidthProperty, vm.To.Width);
 
             if (isNewShape)
             {
-                var b1 = vm.Height * .08;
+                var b1 = 8;
                 animation
-                    .InverseBounce(Canvas.TopProperty, vm.Top, b1)
-                    .Bounce(FrameworkElement.HeightProperty, vm.Height, b1);
+                    .InverseBounce(Canvas.TopProperty, vm.To.Top, b1)
+                    .Bounce(FrameworkElement.HeightProperty, vm.To.Height, b1);
             }
             else
             {
                 animation
-                    .Property(Canvas.TopProperty, vm.Top)
-                    .Property(FrameworkElement.HeightProperty, vm.Height);
+                    .Property(Canvas.TopProperty, vm.To.Top)
+                    .Property(FrameworkElement.HeightProperty, vm.To.Height);
             }
 
             animation.Begin();

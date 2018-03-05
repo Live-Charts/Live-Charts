@@ -8,7 +8,7 @@ using LiveCharts.Core.Dimensions;
 
 namespace LiveCharts.Wpf
 {
-    public class CartesianChart : Chart
+    public class CartesianChart : Chart, ICartesianChartView
     {
         static CartesianChart()
         {
@@ -85,6 +85,9 @@ namespace LiveCharts.Wpf
             get => (IList<Plane>)GetValue(WeightPlaneProperty);
             set => SetValue(WeightPlaneProperty, value);
         }
+
+        /// <inheritdoc />
+        public bool InvertAxis { get; set; }
 
         #endregion
 

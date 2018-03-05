@@ -3,10 +3,8 @@ using System.Collections.Generic;
 using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Abstractions.DataSeries;
 using LiveCharts.Core.Charts;
-using LiveCharts.Core.Coordinates;
 using LiveCharts.Core.Data;
 using LiveCharts.Core.Dimensions;
-using LiveCharts.Core.Drawing;
 using LiveCharts.Core.Drawing.Svg;
 using LiveCharts.Core.Interaction;
 using LiveCharts.Core.ViewModels;
@@ -55,7 +53,7 @@ namespace LiveCharts.Core.DataSeries
             var x = chart.Dimensions[di][ScalesAt[di]];;
             var y = chart.Dimensions[dj][ScalesAt[dj]];
 
-            var unitWidth = chart.Get2DUiUnitWidth(x, y);
+            var uw = chart.Get2DUiUnitWidth(x, y);
 
             Point<TModel, Point, BezierViewModel> previous = null;
 
@@ -69,7 +67,7 @@ namespace LiveCharts.Core.DataSeries
             var isFist = true;
             double i = 0, j = 0;
 
-            foreach (var bezier in GetBeziers(unitWidth, cartesianChart, x, y))
+            foreach (var bezier in GetBeziers(new Drawing.Point(uw[0], uw[1]), cartesianChart, x, y))
             {
                 var p = new[]
                 {

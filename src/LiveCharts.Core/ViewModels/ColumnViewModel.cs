@@ -1,75 +1,35 @@
 ﻿namespace LiveCharts.Core.ViewModels
 {
     /// <summary>
-    /// A column view model.
+    /// The column view model.
     /// </summary>
-    public class ColumnViewModel
+    public struct ColumnViewModel
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ColumnViewModel"/> struct.
         /// </summary>
-        /// <param name="l">The l.</param>
-        /// <param name="t">The t.</param>
-        /// <param name="h">The h.</param>
-        /// <param name="w">The w.</param>
-        /// <param name="zero">The zero.</param>
-        /// <param name="columnInitialState">The initial view state.</param>
-        public ColumnViewModel(double l, double t, double h, double w, double zero, System.Drawing.RectangleF columnInitialState)
+        /// <param name="from">From.</param>
+        /// <param name="to">To.</param>
+        public ColumnViewModel(Column from, Column to)
         {
-            Left = l;
-            Top = t;
-            Height = h;
-            Width = w;
-            Zero = zero;
-            ColumnInitialState = columnInitialState;
+            From = from;
+            To = to;
         }
 
         /// <summary>
-        /// Gets the initial state.
+        /// Gets or sets from.
         /// </summary>
         /// <value>
-        /// The initial state.
+        /// From.
         /// </value>
-        public System.Drawing.RectangleF ColumnInitialState { get; }
+        public Column From { get; set; }
 
         /// <summary>
-        /// Specifies the column animation direction.
+        /// Gets or sets to.
         /// </summary>
         /// <value>
-        /// The animate to top.
+        /// To.
         /// </value>
-        public double Zero { get; }
-
-        /// <summary>
-        /// Gets the height.
-        /// </summary>
-        /// <value>
-        /// The height.
-        /// </value>
-        public double Height { get; }
-
-        /// <summary>
-        /// Gets the width.
-        /// </summary>
-        /// <value>
-        /// The width.
-        /// </value>
-        public double Width { get; }
-
-        /// <summary>
-        /// Gets or sets the left.
-        /// </summary>
-        /// <value>
-        /// The left.
-        /// </value>
-        public double Left { get; set; }
-
-        /// <summary>
-        /// Gets or sets the top.
-        /// </summary>
-        /// <value>
-        /// The top.
-        /// </value>
-        public double Top { get; set; }
+        public Column To { get; set; }
     }
 }

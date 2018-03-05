@@ -5,14 +5,12 @@ using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using LiveCharts.Core;
 using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Charts;
 using LiveCharts.Core.DataSeries;
 using LiveCharts.Core.Dimensions;
 using LiveCharts.Core.Drawing;
 using LiveCharts.Core.Events;
-using LiveCharts.Core.Themes;
 using LiveCharts.Wpf.Controls;
 using LiveCharts.Wpf.Interaction;
 using DataInteractionHandler = LiveCharts.Core.Events.DataInteractionHandler;
@@ -89,7 +87,7 @@ namespace LiveCharts.Wpf
         /// </summary>
         public static readonly DependencyProperty AnimationsSpeedProperty = DependencyProperty.Register(
             nameof(AnimationsSpeed), typeof(TimeSpan), typeof(Chart),
-            new PropertyMetadata(TimeSpan.FromMilliseconds(250), RaiseOnPropertyChanged(nameof(AnimationsSpeed))));
+            new PropertyMetadata(TimeSpan.FromMilliseconds(450), RaiseOnPropertyChanged(nameof(AnimationsSpeed))));
 
         /// <summary>
         /// The tooltip timeout property

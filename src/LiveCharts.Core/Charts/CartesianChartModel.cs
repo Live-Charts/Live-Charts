@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Dimensions;
@@ -15,24 +14,16 @@ namespace LiveCharts.Core.Charts
         /// <inheritdoc />
         public CartesianChartModel(IChartView view)
             : base(view)
-        { 
+        {
+
         }
 
-        /// <summary>
-        /// Gets the x axis.
-        /// </summary>
-        /// <value>
-        /// The x axis.
-        /// </value>
-        public IList<Plane> XAxis => Dimensions[0];
-
-        /// <summary>
-        /// Gets the y axis.
-        /// </summary>
-        /// <value>
-        /// The y axis.
-        /// </value>
-        public IList<Plane> YAxis => Dimensions[1];
+        /// <inheritdoc />
+        protected override void CopyDataFromView()
+        {
+            base.CopyDataFromView();
+            InvertXy = ((ICartesianChartView) View).InvertAxis;
+        }
 
         /// <inheritdoc />
         public override float ScaleToUi(float dataValue, Plane plane, float[] sizeVector = null)
@@ -192,8 +183,8 @@ namespace LiveCharts.Core.Charts
             foreach (var point in query)
             {
                 var coordinate = point.Coordinate;
-                sx += ScaleToUi(coordinate[0][0], XAxis[point.Series.ScalesAt[0]]);
-                sy += ScaleToUi(coordinate[1][0], YAxis[point.Series.ScalesAt[1]]);
+                sx += ScaleToUi(coordinate[0][0], Dimensions[0][point.Series.ScalesAt[0]]);
+                sy += ScaleToUi(coordinate[1][0], Dimensions[1][point.Series.ScalesAt[1]]);
             }
 
             sx = sx / query.Length;
@@ -236,7 +227,27 @@ namespace LiveCharts.Core.Charts
                 foreach (var plane in dimension)
                 {
                     plane.Dimension = index;
-                    //plane.Dimension = index == 0 ? 1 : (index == 1 ? 0 : index);
+
+                    if (InvertXy)
+                    {
+                        switch (index)
+                        {
+                            case 0:
+                                plane.Dimension = 1;
+                                break;
+                            case 1:
+                                plane.Dimension = 0;
+                                break;
+                            case 2:
+                                plane.Dimension = 2;
+                                break;
+                            default:
+                                throw new LiveChartsException(
+                                    "A cartesian chart is not able to handle more than 3 dimensions (X, Y, Weight).",
+                                    130);
+                        }
+                    }
+
                     // get the axis limits...
                     plane.ActualMinValue = double.IsNaN(plane.MinValue)
                         ? plane.DataRange.To

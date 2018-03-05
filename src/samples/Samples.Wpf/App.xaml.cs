@@ -17,8 +17,8 @@ namespace Samples.Wpf
             {
                 charting
                     .ForPrimitiveAndDefaultTypes()
-                    .WithWpf()
-                    .WithMaterialDesignLightTheme();
+                    .UsingWpf()
+                    .UsingMaterialDesignLightTheme();
             });
         }
     }

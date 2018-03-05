@@ -188,6 +188,8 @@ namespace LiveCharts.Core.Charts
 
         internal IEnumerable<PackedPoint> PreviousHoveredPoints { get; set; }
 
+        internal bool InvertXy { get; set; }
+
         /// <summary>
         /// Invalidates this instance, the chart will queue an update request.
         /// </summary>
@@ -230,11 +232,13 @@ namespace LiveCharts.Core.Charts
         /// <param name="x">The x.</param>
         /// <param name="y">The y.</param>
         /// <returns></returns>
-        public virtual Point Get2DUiUnitWidth(Plane x, Plane y)
+        public virtual float[] Get2DUiUnitWidth(Plane x, Plane y)
         {
-            return new Point(
+            return new[]
+            {
                 Math.Abs(ScaleToUi(0, x) - ScaleToUi(x.ActualPointWidth[x.Dimension], x)),
-                Math.Abs(ScaleToUi(0, y) - ScaleToUi(y.ActualPointWidth[y.Dimension], y)));
+                Math.Abs(ScaleToUi(0, y) - ScaleToUi(y.ActualPointWidth[y.Dimension], y))
+            };
         }
 
         /// <summary>
@@ -296,7 +300,12 @@ namespace LiveCharts.Core.Charts
 
                     if (plane.PointWidth == null)
                     {
-                        plane.ActualPointWidth = series.DefaultPointWidth;
+                        var current = InvertXy ? series.DefaultPointWidth.InvertXy() : series.DefaultPointWidth;
+                        plane.ActualPointWidth = Vector.MaxEach2D(plane.ActualPointWidth ?? new[] {0f, 0f}, current);
+                    }
+                    else
+                    {
+                        plane.ActualPointWidth = plane.PointWidth;
                     }
 
                     plane.ResetRange();
@@ -358,7 +367,28 @@ namespace LiveCharts.Core.Charts
             }
 
             DrawAreaLocation = new[] {dax, day};
-            DrawAreaSize = Vector.Substract2D(chartSize, new[] {lw, lh});
+            DrawAreaSize = Vector.SubstractEach2D(chartSize, new[] {lw, lh});
+        }
+
+        /// <summary>
+        /// Copies the data from the view o use it in the next update cycle.
+        /// </summary>
+        protected virtual void CopyDataFromView()
+        {
+            Series = (View.Series ?? Enumerable.Empty<DataSet>()).ToArray();
+            Dimensions = View.Dimensions.Select(x => x.ToArray()).ToArray();
+            ControlSize = View.ControlSize;
+            DrawMargin = View.DrawMargin;
+            AnimationsSpeed = View.AnimationsSpeed;
+            LegendPosition = View.LegendPosition;
+            Legend = View.Legend;
+
+            RegisterResourceCollection(nameof(IChartView.Series), View.Series);
+            for (var index = 0; index < View.Dimensions.Count; index++)
+            {
+                var dimension = View.Dimensions[index];
+                RegisterResourceCollection($"{nameof(IChartView.Dimensions)}[{index}]", dimension);
+            }
         }
 
         internal Color GetNextColor()
@@ -444,24 +474,6 @@ namespace LiveCharts.Core.Charts
         private void InvalidateOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs args)
         {
             Invalidate(View);
-        }
-
-        private void CopyDataFromView()
-        {
-            Series = (View.Series ?? Enumerable.Empty<DataSet>()).ToArray();
-            Dimensions = View.Dimensions.Select(x => x.ToArray()).ToArray();
-            ControlSize = View.ControlSize;
-            DrawMargin = View.DrawMargin;
-            AnimationsSpeed = View.AnimationsSpeed;
-            LegendPosition = View.LegendPosition;
-            Legend = View.Legend;
-
-            RegisterResourceCollection(nameof(IChartView.Series), View.Series);
-            for (var index = 0; index < View.Dimensions.Count; index++)
-            {
-                var dimension = View.Dimensions[index];
-                RegisterResourceCollection($"{nameof(IChartView.Dimensions)}[{index}]", dimension);
-            }
         }
 
         /// <inheritdoc />

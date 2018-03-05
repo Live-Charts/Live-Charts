@@ -9,7 +9,7 @@ using Point = LiveCharts.Core.Coordinates.Point;
 
 namespace LiveCharts.Core.UnitTests.Mocked
 {
-    public class ColumnView<TModel> : IPointView<TModel, Point<TModel, Point, ColumnViewModel>, Point, ColumnViewModel>
+    public class ColumnView<TModel> : IPointView<TModel, Point<TModel, Point, Column>, Point, Column>
     {
         public event DisposingResourceHandler Disposed;
         public object UpdateId { get; set; }
@@ -20,11 +20,11 @@ namespace LiveCharts.Core.UnitTests.Mocked
 
         public object VisualElement { get; }
         public IDataLabelControl Label { get; }
-        public void DrawShape(Point<TModel, Point, ColumnViewModel> point, Point<TModel, Point, ColumnViewModel> previous)
+        public void DrawShape(Point<TModel, Point, Column> point, Point<TModel, Point, Column> previous)
         {
         }
 
-        public void DrawLabel(Point<TModel, Point, ColumnViewModel> point, Drawing.Point location)
+        public void DrawLabel(Point<TModel, Point, Column> point, Drawing.Point location)
         {
         }
     }

@@ -19,7 +19,7 @@ namespace LiveCharts.Core.Themes
         /// </summary>
         /// <param name="settings">The settings.</param>
         /// <returns></returns>
-        public static Charting WithMaterialDesignLightTheme(this Charting settings)
+        public static Charting UsingMaterialDesignLightTheme(this Charting settings)
         {
             var baseFont = new Font("Arial", 11, FontStyles.Regular, FontWeight.Regular);
 

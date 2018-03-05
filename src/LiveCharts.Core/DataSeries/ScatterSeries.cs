@@ -53,9 +53,9 @@ namespace LiveCharts.Core.DataSeries
         public override void UpdateView(ChartModel chart)
         {
             var cartesianChart = (CartesianChartModel)chart;
-            var x = cartesianChart.XAxis[ScalesXAt];
-            var y = cartesianChart.YAxis[ScalesYAt];
-            var unitWidth = chart.Get2DUiUnitWidth(x, y);
+            var x = cartesianChart.Dimensions[0][ScalesXAt];
+            var y = cartesianChart.Dimensions[1][ScalesYAt];
+            var uw = chart.Get2DUiUnitWidth(x, y);
             var p1 = new Point(RangeByDimension[2].To, MinPointDiameter);
             var p2 = new Point(RangeByDimension[2].From, MaxPointDiameter);
 
@@ -71,7 +71,7 @@ namespace LiveCharts.Core.DataSeries
 
                 var vm = new ScatterViewModel
                 {
-                    Location = new Point(p[0], p[1]) + unitWidth,
+                    Location = new Point(p[0], p[1]) + new Point(uw[0], uw[1]),
                     Diameter = p[2]
                 };
 
