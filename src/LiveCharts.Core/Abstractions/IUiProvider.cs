@@ -49,7 +49,7 @@ namespace LiveCharts.Core.Abstractions
         /// <typeparam name="TModel">The type of the model.</typeparam>
         /// <returns></returns>
         IPointView<TModel, Point<TModel, Point, ColumnViewModel>, Point, ColumnViewModel> 
-            GetNewColumnView<TModel>();
+            GetNerBarPointView<TModel>();
 
         /// <summary>
         /// Provides LiveCharts with a builder that returns a bezier view.

@@ -22,7 +22,7 @@ namespace LiveCharts.Wpf.Controls
         {
             Content = label;
             Measure(new System.Windows.Size(double.PositiveInfinity, double.PositiveInfinity));
-            return new Size(DesiredSize.Width, DesiredSize.Height);
+            return new Size((float) DesiredSize.Width, (float) DesiredSize.Height);
         }
     }
 }

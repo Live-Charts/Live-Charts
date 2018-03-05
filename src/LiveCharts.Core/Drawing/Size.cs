@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace LiveCharts.Core.Drawing
+﻿namespace LiveCharts.Core.Drawing
 {
     /// <summary>
     /// Represents a size.
@@ -21,7 +19,7 @@ namespace LiveCharts.Core.Drawing
         /// </summary>
         /// <param name="width">The width.</param>
         /// <param name="height">The height.</param>
-        public Size(double width, double height)
+        public Size(float width, float height)
         {
             _isEmpty = false;
             Width = width;
@@ -39,7 +37,7 @@ namespace LiveCharts.Core.Drawing
         /// <value>
         /// The width.
         /// </value>
-        public double Width { get; }
+        public float Width { get; }
 
         /// <summary>
         /// Gets or sets the height.
@@ -47,7 +45,7 @@ namespace LiveCharts.Core.Drawing
         /// <value>
         /// The height.
         /// </value>
-        public double Height { get; }
+        public float Height { get; }
 
         /// <summary>
         /// Returns a <see cref="System.String" /> that represents this instance.

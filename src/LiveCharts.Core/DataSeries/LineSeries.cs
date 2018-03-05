@@ -5,6 +5,7 @@ using LiveCharts.Core.Abstractions.DataSeries;
 using LiveCharts.Core.Charts;
 using LiveCharts.Core.Data;
 using LiveCharts.Core.Dimensions;
+using LiveCharts.Core.Drawing;
 using LiveCharts.Core.Drawing.Svg;
 using LiveCharts.Core.Interaction;
 using LiveCharts.Core.ViewModels;
@@ -81,13 +82,12 @@ namespace LiveCharts.Core.DataSeries
                     i = p[0];
                 }
 
-                bezier.Point.InteractionArea = new RectangleInteractionArea
-                {
-                    Top = p[1] - GeometrySize * .5,
-                    Left = p[0] - GeometrySize * .5,
-                    Height = GeometrySize,
-                    Width = GeometrySize
-                };
+                bezier.Point.InteractionArea = new RectangleInteractionArea(
+                    new Rectangle(
+                        p[0] - GeometrySize * .5f,
+                        p[1] - GeometrySize * .5f,
+                        GeometrySize,
+                        GeometrySize));
 
                 if (bezier.Point.View == null)
                 {

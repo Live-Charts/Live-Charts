@@ -16,7 +16,7 @@ namespace LiveCharts.Core.UnitTests
             {
                 Series = new SeriesCollection
                 {
-                    new ColumnSeries<City>
+                    new BarSeries<City>
                     {
                         new City
                         {
@@ -30,7 +30,7 @@ namespace LiveCharts.Core.UnitTests
 
             var newSeries = new SeriesCollection
             {
-                new ColumnSeries<City>
+                new BarSeries<City>
                 {
                     new City
                     {

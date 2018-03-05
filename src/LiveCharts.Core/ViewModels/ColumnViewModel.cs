@@ -1,4 +1,6 @@
-﻿namespace LiveCharts.Core.ViewModels
+﻿using LiveCharts.Core.Drawing;
+
+namespace LiveCharts.Core.ViewModels
 {
     /// <summary>
     /// The column view model.
@@ -10,7 +12,7 @@
         /// </summary>
         /// <param name="from">From.</param>
         /// <param name="to">To.</param>
-        public ColumnViewModel(Column from, Column to)
+        public ColumnViewModel(Rectangle from, Rectangle to)
         {
             From = from;
             To = to;
@@ -22,7 +24,7 @@
         /// <value>
         /// From.
         /// </value>
-        public Column From { get; set; }
+        public Rectangle From { get; set; }
 
         /// <summary>
         /// Gets or sets to.
@@ -30,6 +32,6 @@
         /// <value>
         /// To.
         /// </value>
-        public Column To { get; set; }
+        public Rectangle To { get; set; }
     }
 }

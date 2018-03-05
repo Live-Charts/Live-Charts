@@ -45,10 +45,10 @@ namespace LiveCharts.Wpf
         }
 
         /// <inheritdoc />
-        public IPointView<TModel, Point<TModel, Point, ColumnViewModel>, Point, ColumnViewModel>
-            GetNewColumnView<TModel>()
+        public IPointView<TModel, Point<TModel, Point, ColumnViewModel>, Point, ColumnViewModel> 
+            GetNerBarPointView<TModel>()
         {
-            return new ColumnPointView<TModel, Point<TModel, Point, ColumnViewModel>, Rectangle, DataLabel>();
+            return new BarColumnPointView<TModel, Point<TModel, Point, ColumnViewModel>, Rectangle, DataLabel>();
         }
 
         /// <inheritdoc />

@@ -20,7 +20,7 @@ namespace LiveCharts.Wpf.Views
     /// <typeparam name="TShape">the type of the shape.</typeparam>
     /// <typeparam name="TLabel">the type of the label.</typeparam>
     /// <seealso cref="PointView{TModel, Point,Point2D, ColumnViewModel, TShape, TLabel}" />
-    public class ColumnPointView<TModel, TPoint, TShape, TLabel>
+    public class BarColumnPointView<TModel, TPoint, TShape, TLabel>
         : PointView<TModel, TPoint, Point, ColumnViewModel, TShape, TLabel>
         where TPoint : Point<TModel, Point, ColumnViewModel>, new()
         where TShape : Shape, new()

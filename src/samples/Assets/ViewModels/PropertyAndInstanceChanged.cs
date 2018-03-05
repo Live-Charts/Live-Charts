@@ -28,7 +28,7 @@ namespace Assets.ViewModels
                     new WeightedPoint(index, city.Population, _r.Next(0, 10)));
             });
 
-            var series = new ColumnSeries<City>
+            var series = new BarSeries<City>
             {
                 new City
                 {
@@ -142,7 +142,7 @@ namespace Assets.ViewModels
         {
             SeriesCollection = new SeriesCollection
             {
-                new ColumnSeries<City>
+                new BarSeries<City>
                 {
                     new City
                     {
@@ -158,7 +158,7 @@ namespace Assets.ViewModels
 
         private void _addSeries()
         {
-            SeriesCollection.Add(new ColumnSeries<City>
+            SeriesCollection.Add(new BarSeries<City>
             {
                 new City
                 {

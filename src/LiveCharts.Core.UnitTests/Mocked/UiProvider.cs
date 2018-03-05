@@ -22,7 +22,7 @@ namespace LiveCharts.Core.UnitTests.Mocked
             return new AxisSeparator();
         }
 
-        public IPointView<TModel, Point<TModel, Point, Column>, Point, Column> ColumnViewProvider<TModel>()
+        public IPointView<TModel, Point<TModel, Point, Rectangle>, Point, Rectangle> ColumnViewProvider<TModel>()
         {
             return new ColumnView<TModel>();
         }

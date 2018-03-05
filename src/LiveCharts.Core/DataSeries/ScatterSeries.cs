@@ -83,14 +83,12 @@ namespace LiveCharts.Core.DataSeries
                 current.ViewModel = vm;
                 current.View.DrawShape(current, previous);
 
-                current.InteractionArea = new RectangleInteractionArea
-                {
-                    Top = vm.Location.Y - p[2] * .5,
-                    Left = vm.Location.X - p[2] * .5,
-                    Height = p[2],
-                    Width = p[2]
-                };
-
+                current.InteractionArea = new RectangleInteractionArea(
+                    new Rectangle(
+                        vm.Location.X - p[2] * .5f,
+                        vm.Location.Y - p[2] * .5f,
+                        p[2],
+                        p[2]));
                 previous = current;
             }
         }

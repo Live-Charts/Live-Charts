@@ -127,7 +127,7 @@ namespace LiveCharts.Wpf.Controls
             content.TooltipPopup.IsOpen = true;
             UpdateLayout();
 
-            return new Size(DesiredSize.Width, DesiredSize.Height);
+            return new Size((float) DesiredSize.Width, (float) DesiredSize.Height);
         }
 
         /// <inheritdoc />

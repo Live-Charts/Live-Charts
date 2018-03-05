@@ -6,10 +6,11 @@ using LiveCharts.Core.Drawing;
 using LiveCharts.Core.Events;
 using LiveCharts.Core.ViewModels;
 using Point = LiveCharts.Core.Coordinates.Point;
+using Rectangle = LiveCharts.Core.ViewModels.Rectangle;
 
 namespace LiveCharts.Core.UnitTests.Mocked
 {
-    public class ColumnView<TModel> : IPointView<TModel, Point<TModel, Point, Column>, Point, Column>
+    public class ColumnView<TModel> : IPointView<TModel, Point<TModel, Point, Rectangle>, Point, Rectangle>
     {
         public event DisposingResourceHandler Disposed;
         public object UpdateId { get; set; }
@@ -20,11 +21,11 @@ namespace LiveCharts.Core.UnitTests.Mocked
 
         public object VisualElement { get; }
         public IDataLabelControl Label { get; }
-        public void DrawShape(Point<TModel, Point, Column> point, Point<TModel, Point, Column> previous)
+        public void DrawShape(Point<TModel, Point, Rectangle> point, Point<TModel, Point, Rectangle> previous)
         {
         }
 
-        public void DrawLabel(Point<TModel, Point, Column> point, Drawing.Point location)
+        public void DrawLabel(Point<TModel, Point, Rectangle> point, Drawing.Point location)
         {
         }
     }

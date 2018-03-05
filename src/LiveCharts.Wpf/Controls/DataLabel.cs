@@ -1,6 +1,5 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Documents;
 using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Data;
 using Size = LiveCharts.Core.Drawing.Size;
@@ -20,7 +19,7 @@ namespace LiveCharts.Wpf.Controls
         {
             DataContext = point;
             Measure(new System.Windows.Size(double.PositiveInfinity, double.PositiveInfinity));
-            return new Size(DesiredSize.Width, DesiredSize.Height);
+            return new Size((float) DesiredSize.Width, (float) DesiredSize.Height);
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace LiveCharts.Core.Interaction
+﻿using LiveCharts.Core.Drawing;
+
+namespace LiveCharts.Core.Interaction
 {
     /// <summary>
     /// The hover rectangle class.
@@ -7,36 +9,21 @@
     public class RectangleInteractionArea : InteractionArea
     {
         /// <summary>
-        /// Gets or sets the top.
+        /// Initializes a new instance of the <see cref="RectangleInteractionArea"/> class.
         /// </summary>
-        /// <value>
-        /// The top.
-        /// </value>
-        public double Top { get; set; }
+        /// <param name="rectangle">The rectangle.</param>
+        public RectangleInteractionArea(Rectangle rectangle)
+        {
+            Rectangle = rectangle;
+        }
 
         /// <summary>
-        /// Gets or sets the left.
+        /// Gets or sets the rectangle.
         /// </summary>
         /// <value>
-        /// The left.
+        /// The rectangle.
         /// </value>
-        public double Left { get; set; }
-
-        /// <summary>
-        /// Gets or sets the width.
-        /// </summary>
-        /// <value>
-        /// The width.
-        /// </value>
-        public double Width { get; set; }
-
-        /// <summary>
-        /// Gets or sets the height.
-        /// </summary>
-        /// <value>
-        /// The height.
-        /// </value>
-        public double Height { get; set; }
+        public Rectangle Rectangle { get; set; }
 
         /// <inheritdoc />
         public override bool Contains(params double[] dimensions)
@@ -44,8 +31,8 @@
             var x = dimensions[0];
             var y = dimensions[1];
 
-            return x >= Left && x <= Left + Width &&
-                   y >= Top && y <= Top + Height;
+            return x >= Rectangle.Left && x <= Rectangle.Left +Rectangle.Width &&
+                   y >= Rectangle.Top && y <= Rectangle.Top + Rectangle.Height;
         }
     }
 }
