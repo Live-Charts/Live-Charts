@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Abstractions.DataSeries;
 using LiveCharts.Core.Charts;
@@ -41,34 +42,35 @@ namespace LiveCharts.Core.DataSeries
         public override void UpdateView(ChartModel chart)
         {
             int wi = 0, hi = 1, inverted = 1;
+            var orientation = Orientation.Horizontal;
 
             if (chart.InvertXy)
             {
                 wi = 1;
                 hi = 0;
                 inverted = 0;
+                orientation = Orientation.Vertical;
             }
 
             var directionAxis = chart.Dimensions[0][ScalesAt[0]];
             var scaleAxis = chart.Dimensions[1][ScalesAt[1]];
 
-            //var uw = chart.Get2DUiUnitWidth(widthColumnAxis, heightColumnAxis);
+            var uw = chart.Get2DUiUnitWidth(directionAxis, scaleAxis);
 
-            //var columnSeries = chart.Series
-            //    .Where(series => series is IColumnSeries)
-            //    .ToList();
+            var columnSeries = chart.Series
+                .Where(series => series.ScalesAt[1] == ScalesAt[1] &&
+                                 series is IColumnSeries)
+                .ToList();
 
-            //var cw = uw[0] / columnSeries.Count;
+            var cw = uw[0] / columnSeries.Count;
 
-            //var overFlow = 0f;
-            //var seriesPosition = columnSeries.IndexOf(this);
-            //if (cw > MaxColumnWidth)
-            //{
-            //    overFlow = (cw - MaxColumnWidth) * columnSeries.Count / 2f;
-            //    cw = MaxColumnWidth;
-            //}
+            var overFlow = 0f;
 
-            var cw = 20;
+            if (cw > MaxColumnWidth)
+            {
+                overFlow = (cw - MaxColumnWidth) * columnSeries.Count / 2f;
+                cw = MaxColumnWidth;
+            }
 
             var columnStart = GetColumnStart(chart, scaleAxis, directionAxis);
 
@@ -95,7 +97,12 @@ namespace LiveCharts.Core.DataSeries
                 if (current.View == null)
                 {
                     current.View = PointViewProvider();
-                    current.ViewModel = new ColumnViewModel(Rectangle.Empty, Rectangle.Empty);
+                }
+
+                if (current.View.VisualElement == null)
+                {
+                    var initialRectangle = new Rectangle();
+                    current.ViewModel = new ColumnViewModel(Rectangle.Empty, initialRectangle, orientation);
                 }
 
                 var location = new []
@@ -107,15 +114,16 @@ namespace LiveCharts.Core.DataSeries
                 var vm = new ColumnViewModel(
                     current.ViewModel.To,
                     new Rectangle(
-                        location[wi],
-                        location[hi],
+                        location[wi] - cw*.5f + uw[0]*.5f,
+                        location[hi] ,//- cw*.5f - uw[0]*.5f,
                         Math.Abs(difference[wi]),
-                        Math.Abs(Math.Abs(difference[hi]))));
+                        Math.Abs(Math.Abs(difference[hi]))),
+                    orientation);
+
+                current.InteractionArea = new RectangleInteractionArea(vm.To);
 
                 current.ViewModel = vm;
                 current.View.DrawShape(current, previous);
-
-                current.InteractionArea = new RectangleInteractionArea(vm.To);
 
                 Mapper.EvaluateModelDependentActions(current.Model, current.View.VisualElement, current);
 

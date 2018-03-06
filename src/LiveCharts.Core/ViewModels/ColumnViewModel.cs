@@ -1,4 +1,5 @@
-﻿using LiveCharts.Core.Drawing;
+﻿using LiveCharts.Core.Abstractions;
+using LiveCharts.Core.Drawing;
 
 namespace LiveCharts.Core.ViewModels
 {
@@ -12,11 +13,21 @@ namespace LiveCharts.Core.ViewModels
         /// </summary>
         /// <param name="from">From.</param>
         /// <param name="to">To.</param>
-        public ColumnViewModel(Rectangle from, Rectangle to)
+        /// <param name="orientation">The orientation property.</param>
+        public ColumnViewModel(Rectangle from, Rectangle to, Orientation orientation)
         {
             From = from;
             To = to;
+            Orientation = orientation;
         }
+
+        /// <summary>
+        /// Gets or sets the orientation.
+        /// </summary>
+        /// <value>
+        /// The orientation.
+        /// </value>
+        public Orientation Orientation { get; set; }
 
         /// <summary>
         /// Gets or sets from.

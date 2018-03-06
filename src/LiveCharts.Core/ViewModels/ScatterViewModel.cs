@@ -5,7 +5,7 @@ namespace LiveCharts.Core.ViewModels
     /// <summary>
     /// A scatter view model.
     /// </summary>
-    public class ScatterViewModel
+    public struct ScatterViewModel
     {
         /// <summary>
         /// Gets or sets the location.

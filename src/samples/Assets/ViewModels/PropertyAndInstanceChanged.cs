@@ -48,7 +48,11 @@ namespace Assets.ViewModels
 
             SeriesCollection = new SeriesCollection
             {
-                series
+                series,
+                new BarSeries<double>()
+                {
+                    3,2,1
+                }
             };
 
             AddPoint = new DelegateCommand(o => _addPoint());

@@ -2,7 +2,6 @@
 using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Abstractions.DataSeries;
 using LiveCharts.Core.Data;
-using LiveCharts.Core.Defaults;
 using LiveCharts.Core.Dimensions;
 using LiveCharts.Core.Drawing.Svg;
 using Font = LiveCharts.Core.Abstractions.Font;
@@ -10,20 +9,51 @@ using Font = LiveCharts.Core.Abstractions.Font;
 namespace LiveCharts.Core.Themes
 {
     /// <summary>
-    /// Predefined themes.
+    /// Testing theme.
+    /// </summary>
+    public static class Testing
+    {
+        /// <summary>
+        /// Uses the testing theme.
+        /// </summary>
+        /// <param name="charting">The charting.</param>
+        /// <returns></returns>
+        public static Charting UsingTestingTheme(this Charting charting)
+        {
+            var baseFont = new Font("Arial", 11, FontStyles.Regular, FontWeight.Regular);
+
+            var sepStyle = new SeparatorStyle(Color.FromArgb(255, 230, 230, 230), Color.FromArgb(255, 245, 245, 245), 1);
+
+            charting
+                .UseMaterialDesignColors()
+                .UseMaterialDesignColors()
+                .SetDefault<Axis>(axis =>
+                {
+                    axis.XSeparatorStyle = sepStyle;
+                    axis.YSeparatorStyle = sepStyle;
+                    axis.XAlternativeSeparatorStyle = sepStyle;
+                    axis.YAlternativeSeparatorStyle = sepStyle;
+                });
+
+            return charting;
+        }
+    }
+
+    /// <summary>
+    /// material design theme.
     /// </summary>
     public static class MaterialDesign
     {
         /// <summary>
         /// Uses the material design light theme.
         /// </summary>
-        /// <param name="settings">The settings.</param>
+        /// <param name="charting">The settings.</param>
         /// <returns></returns>
-        public static Charting UsingMaterialDesignLightTheme(this Charting settings)
+        public static Charting UsingMaterialDesignLightTheme(this Charting charting)
         {
             var baseFont = new Font("Arial", 11, FontStyles.Regular, FontWeight.Regular);
 
-            settings
+            charting
                 .UseMaterialDesignColors()
 
                 // sets a base for all the series
@@ -82,7 +112,7 @@ namespace LiveCharts.Core.Themes
                     axis.YAlternativeSeparatorStyle = SeparatorStyle.Empty;
                 });
 
-            return settings;
+            return charting;
         }
     }
 }

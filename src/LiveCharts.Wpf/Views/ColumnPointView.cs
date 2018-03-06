@@ -7,6 +7,7 @@ using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Data;
 using LiveCharts.Core.ViewModels;
 using LiveCharts.Wpf.Animations;
+using Orientation = LiveCharts.Core.Abstractions.Orientation;
 using Point = LiveCharts.Core.Coordinates.Point;
 using Rectangle = System.Windows.Shapes.Rectangle;
 
@@ -35,24 +36,6 @@ namespace LiveCharts.Wpf.Views
             var vm = point.ViewModel;
             var isNewShape = Shape == null;
 
-            if (Shape == null)
-            {
-                Shape = new TShape();
-                chart.Content.AddChild(Shape);
-            }
-
-            Shape.Width = vm.To.Width;
-            Shape.Height = vm.To.Height;
-            Canvas.SetLeft(Shape, vm.To.Left);
-            Canvas.SetTop(Shape, vm.To.Top);
-
-            Shape.Stroke = point.Series.Stroke.AsWpf();
-            Shape.Fill = point.Series.Fill.AsWpf();
-            Shape.StrokeThickness = point.Series.StrokeThickness;
-            Shape.StrokeDashArray = new DoubleCollection(point.Series.StrokeDashArray);
-
-            return;
-
             // initialize shape
             if (isNewShape)
             {
@@ -69,16 +52,22 @@ namespace LiveCharts.Wpf.Views
             Shape.Stroke = point.Series.Stroke.AsWpf();
             Shape.Fill = point.Series.Fill.AsWpf();
             Shape.StrokeThickness = point.Series.StrokeThickness;
-            Shape.StrokeDashArray = new DoubleCollection(point.Series.StrokeDashArray);
+            if (point.Series.StrokeDashArray != null)
+            {
+                Shape.StrokeDashArray = new DoubleCollection(point.Series.StrokeDashArray);
+            }
             
-            // special cases
+            // special case
+
             var r = Shape as Rectangle;
             if (r != null)
             {
-                var radius = vm.To.Width * .4;
+                var radius = (vm.Orientation == Orientation.Horizontal ? vm.To.Width : vm.To.Height) * .4;
                 r.RadiusY = radius;
                 r.RadiusX = radius;
             }
+
+            // animate
 
             var speed = chart.AnimationsSpeed;
 
@@ -89,10 +78,10 @@ namespace LiveCharts.Wpf.Views
 
             if (isNewShape)
             {
-                var b1 = 8;
+                const int bounce = 8;
                 animation
-                    .InverseBounce(Canvas.TopProperty, vm.To.Top, b1)
-                    .Bounce(FrameworkElement.HeightProperty, vm.To.Height, b1);
+                    .InverseBounce(Canvas.TopProperty, vm.To.Top, bounce)
+                    .Bounce(FrameworkElement.HeightProperty, vm.To.Height, bounce);
             }
             else
             {
