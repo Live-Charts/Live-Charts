@@ -7,9 +7,11 @@ using System.Windows.Input;
 using Assets.Commands;
 using Assets.Models;
 using LiveCharts.Core;
+using LiveCharts.Core.Collections;
 using LiveCharts.Core.Coordinates;
 using LiveCharts.Core.Data;
 using LiveCharts.Core.DataSeries;
+using LiveCharts.Core.Dimensions;
 using Point = LiveCharts.Core.Coordinates.Point;
 
 namespace Assets.ViewModels
@@ -17,7 +19,8 @@ namespace Assets.ViewModels
     public class PropertyAndInstanceChanged: INotifyPropertyChanged
     {
         private readonly Random _r = new Random();
-        private SeriesCollection _seriesCollection;
+        private ChartingCollection<Series> _seriesCollection;
+        private ChartingCollection<Plane> _x;
 
         public PropertyAndInstanceChanged()
         {
@@ -28,30 +31,33 @@ namespace Assets.ViewModels
                     new WeightedPoint(index, city.Population, _r.Next(0, 10)));
             });
 
-            var series = new BarSeries<City>
+            X = new ChartingCollection<Plane>
             {
-                new City
+                new Axis
                 {
-                    Population = 1
-                },
-                new City
-                {
-                    Population = 2
-                },
-                new City
-                {
-                    Population = 3
+                    Step = 1
                 }
             };
 
-            series.StrokeDashArray = new[] {2d, 2d};
-
-            SeriesCollection = new SeriesCollection
+            SeriesCollection = new ChartingCollection<Series>
             {
-                series,
-                new BarSeries<double>()
+                new BarSeries<double>
                 {
-                    3,2,1
+                    0.5,
+                    2,
+                    1
+                },
+                new BarSeries<double>
+                {
+                    0,
+                    3,
+                    3
+                },
+                new BarSeries<double>
+                {
+                    3,
+                    2,
+                    0.5
                 }
             };
 
@@ -68,12 +74,22 @@ namespace Assets.ViewModels
             RemoveOnDoubleClick = new DelegateCommand(o => _removeOnDoubleClick((IEnumerable<PackedPoint>) o));
         }
 
-        public SeriesCollection SeriesCollection
+        public ChartingCollection<Series> SeriesCollection
         {
             get => _seriesCollection;
             set
             {
                 _seriesCollection = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public ChartingCollection<Plane> X
+        {
+            get => _x;
+            set
+            {
+                _x = value;
                 OnPropertyChanged();
             }
         }
@@ -144,7 +160,7 @@ namespace Assets.ViewModels
 
         private void _setNewSeriesInstance()
         {
-            SeriesCollection = new SeriesCollection
+            SeriesCollection = new ChartingCollection<Series>
             {
                 new BarSeries<City>
                 {

@@ -23,6 +23,7 @@ namespace LiveCharts.Core.Dimensions
         public Axis()
         {
             Step = float.NaN;
+            StepStart = float.NaN;
             Position = AxisPosition.Auto;
             Charting.BuildFromSettings(this);
         }
@@ -42,6 +43,22 @@ namespace LiveCharts.Core.Dimensions
         /// The actual step.
         /// </value>
         public float ActualStep { get; internal set; }
+
+        /// <summary>
+        /// Gets or sets the step start.
+        /// </summary>
+        /// <value>
+        /// The step start.
+        /// </value>
+        public float StepStart { get; set; }
+
+        /// <summary>
+        /// Gets the actual step start.
+        /// </summary>
+        /// <value>
+        /// The actual step start.
+        /// </value>
+        public float ActualStepStart { get; internal set; }
 
         /// <summary>
         /// Gets or sets the position.
@@ -171,6 +188,7 @@ namespace LiveCharts.Core.Dimensions
         internal void DrawSeparators(ChartModel chart)
         {
             ActualStep = GetActualAxisStep(chart);
+            ActualStepStart = GetActualStepStart(chart);
 
             var from = Math.Ceiling(ActualMinValue / ActualStep) * ActualStep;
             var to = Math.Floor(ActualMaxValue / ActualStep) * ActualStep;
@@ -199,8 +217,8 @@ namespace LiveCharts.Core.Dimensions
                     separator.Move(
                         new CartesianAxisSeparatorArgs
                         {
-                            Model = new Rectangle(new Point(iui, 0), new Size(w, chart.DrawAreaSize[1])),
-                            AxisLabelModel = label,
+                            To = new Rectangle(new Point(iui, 0), new Size(w, chart.DrawAreaSize[1])),
+                            AxisLabelViewModel = label,
                             IsAlternative = alternate,
                             Disposing = false,
                             Plane = this,
@@ -213,8 +231,8 @@ namespace LiveCharts.Core.Dimensions
                     separator.Move(
                         new CartesianAxisSeparatorArgs
                         {
-                            Model = new Rectangle(new Point(0, iui), new Size(chart.DrawAreaSize[0], h)),
-                            AxisLabelModel = label,
+                            To = new Rectangle(new Point(0, iui), new Size(chart.DrawAreaSize[0], h)),
+                            AxisLabelViewModel = label,
                             IsAlternative = alternate,
                             Disposing = false,
                             Plane = this,
@@ -248,6 +266,18 @@ namespace LiveCharts.Core.Dimensions
         protected override IPlaneLabelControl DefaultLabelProvider()
         {
             return Charting.Current.UiProvider.GetNewAxisLabel();
+        }
+
+        private float GetActualStepStart(ChartModel chart)
+        {
+            if (!float.IsNaN(StepStart))
+            {
+                return StepStart;
+            }
+
+            var unit = ActualPointWidth?[Dimension] ?? 0;
+
+            return ActualMinValue + unit / 2;
         }
 
         private float GetActualAxisStep(ChartModel chart)
@@ -299,12 +329,12 @@ namespace LiveCharts.Core.Dimensions
             return (float) tick;
         }
 
-        private AxisLabelModel EvaluateAxisLabel(float value, float[] drawMargin, float unit, ChartModel chart)
+        private AxisLabelViewModel EvaluateAxisLabel(float value, float[] drawMargin, float axisPointWidth, ChartModel chart)
         {
             const double toRadians = Math.PI / 180;
             var angle = ActualLabelsRotation;
 
-            var content = FormatValue(value - .5 * unit);
+            var content = FormatValue(value); // FormatValue(value - .5 * unit);
             var labelModel = LabelProvider().Measure(content);
 
             var xw = Math.Abs(Math.Cos(angle * toRadians) * labelModel.Width);  // width's    horizontal    component
@@ -408,7 +438,22 @@ namespace LiveCharts.Core.Dimensions
                     $"An axis at dimension '{d}' can not be positioned at '{Position}'", 120);
             }
 
-            return new AxisLabelModel(
+            if (Math.Abs(ActualLabelsRotation) < 0.001)
+            {
+                var uiPw = chart.ScaleToUi(axisPointWidth, this) - chart.ScaleToUi(0, this);
+
+                if (Dimension == 0)
+                {
+                    xo = xo + uiPw * .5f - xw * .5f;
+                }
+
+                if (Dimension == 1)
+                {
+                    yo = yo + uiPw * .5f - yh * .5f;
+                }
+            }
+
+            return new AxisLabelViewModel(
                 new Point((float) x, (float) y),
                 new Point((float) xo, (float) yo),
                 new Margin(

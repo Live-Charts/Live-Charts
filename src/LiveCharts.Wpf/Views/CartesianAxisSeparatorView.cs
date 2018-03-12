@@ -72,19 +72,19 @@ namespace LiveCharts.Wpf.Views
             Rectangle.Fill = style.Fill.AsWpf();
             Rectangle.Stroke = style.Stroke.AsWpf();
 
-            Label.Measure(args.AxisLabelModel.Content);
+            Label.Measure(args.AxisLabelViewModel.Content);
 
-            var actualLabelLocation = args.AxisLabelModel.Location + args.AxisLabelModel.Offset;
+            var actualLabelLocation = args.AxisLabelViewModel.Location + args.AxisLabelViewModel.Offset;
 
             var storyboard = Rectangle.Animate()
                 .AtSpeed(speed)
-                .Property(Canvas.TopProperty, args.Model.Top)
-                .Property(Canvas.LeftProperty, args.Model.Left)
-                .Property(FrameworkElement.HeightProperty, args.Model.Height > st
-                    ? args.Model.Height
+                .Property(Canvas.TopProperty, args.To.Top)
+                .Property(Canvas.LeftProperty, args.To.Left)
+                .Property(FrameworkElement.HeightProperty, args.To.Height > st
+                    ? args.To.Height
                     : st)
-                .Property(FrameworkElement.WidthProperty, args.Model.Width > st
-                    ? args.Model.Width
+                .Property(FrameworkElement.WidthProperty, args.To.Width > st
+                    ? args.To.Width
                     : st)
                 .SetTarget(Label)
                 .Property(Canvas.LeftProperty, actualLabelLocation.X)
@@ -105,10 +105,10 @@ namespace LiveCharts.Wpf.Views
 
         private void SetInitialLineParams(CartesianAxisSeparatorArgs args)
         {
-            Canvas.SetTop(Rectangle, args.Model.Top);
-            Canvas.SetLeft(Rectangle, args.Model.Left);
-            Rectangle.Width = args.Model.Width;
-            Rectangle.Height = args.Model.Height;
+            Canvas.SetTop(Rectangle, args.To.Top);
+            Canvas.SetLeft(Rectangle, args.To.Left);
+            Rectangle.Width = args.To.Width;
+            Rectangle.Height = args.To.Height;
             if (args.Plane.Dimension == 0) // if X
             {
 

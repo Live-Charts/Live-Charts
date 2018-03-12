@@ -168,7 +168,7 @@ namespace LiveCharts.Core.Charts
         /// </value>
         public ICommand DataPointerLeaveCommand { get; set; }
 
-        internal DataSet[] Series { get; set; }
+        internal Series[] Series { get; set; }
 
         internal Plane[][] Dimensions { get; set; }
 
@@ -308,7 +308,14 @@ namespace LiveCharts.Core.Charts
                         plane.ActualPointWidth = plane.PointWidth;
                     }
 
-                    plane.ResetRange();
+                    if (plane.DataRange == null)
+                    {
+                        plane.DataRange = new RangeF
+                        {
+                            From = float.MinValue,
+                            To = float.MaxValue
+                        };
+                    }
 
                     if (series.RangeByDimension[i].From > plane.DataRange.From)
                     {
@@ -375,7 +382,7 @@ namespace LiveCharts.Core.Charts
         /// </summary>
         protected virtual void CopyDataFromView()
         {
-            Series = (View.Series ?? Enumerable.Empty<DataSet>()).ToArray();
+            Series = (View.Series ?? Enumerable.Empty<Series>()).ToArray();
             Dimensions = View.Dimensions.Select(x => x.ToArray()).ToArray();
             ControlSize = View.ControlSize;
             DrawMargin = View.DrawMargin;

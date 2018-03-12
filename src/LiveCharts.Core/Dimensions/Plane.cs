@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Charts;
+using LiveCharts.Core.Data;
 using LiveCharts.Core.Drawing;
 using LiveCharts.Core.Events;
 
@@ -26,6 +27,7 @@ namespace LiveCharts.Core.Dimensions
             MinValue = float.NaN;
             MaxValue = float.NaN;
             DataRange = new RangeF();
+            LabelFormatter = Formatters.AsMetricNumber;
             Charting.BuildFromSettings(this);
         }
 
@@ -240,15 +242,6 @@ namespace LiveCharts.Core.Dimensions
         {
             throw new LiveChartsException(
                 $"A {nameof(IPlaneLabelControl)} was not found when trying to draw Plane in the UI", 115);
-        }
-
-        internal void ResetRange()
-        {
-            DataRange = new RangeF
-            {
-                From = float.MinValue,
-                To = float.MaxValue
-            };
         }
 
         #region IResource implementation

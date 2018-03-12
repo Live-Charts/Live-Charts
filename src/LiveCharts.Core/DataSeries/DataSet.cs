@@ -21,7 +21,7 @@ namespace LiveCharts.Core.DataSeries
     /// The data set class, represents a series to plot in a chart.
     /// </summary>
     /// <seealso cref="IResource" />
-    public abstract class DataSet : IResource, ISeries, INotifyPropertyChanged, IList
+    public abstract class Series : IResource, ISeries, INotifyPropertyChanged, IList
     {
         private readonly List<ChartModel> _usedBy = new List<ChartModel>();
         private bool _isVisible;
@@ -39,9 +39,9 @@ namespace LiveCharts.Core.DataSeries
         private IEnumerable<double> _strokeDashArray;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DataSet"/> class.
+        /// Initializes a new instance of the <see cref="Series"/> class.
         /// </summary>
-        protected DataSet()
+        protected Series()
         {
             IsVisible = true;
             Charting.BuildFromSettings<ISeries>(this);

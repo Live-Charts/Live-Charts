@@ -5,7 +5,7 @@ namespace LiveCharts.Core.Data
     /// <summary>
     /// A helper class.
     /// </summary>
-    public static class Builders
+    public static class Formatters
     {
         /// <summary>
         /// Converts a double number to a short string, based on the metric convention. 

@@ -66,7 +66,7 @@ namespace LiveCharts.Core.Data
         /// <value>
         /// The series.
         /// </value>
-        public DataSeries.DataSet Series { get; internal set; }
+        public DataSeries.Series Series { get; internal set; }
 
         /// <summary>
         /// Gets the chart that owns the point.
@@ -147,7 +147,7 @@ namespace LiveCharts.Core.Data
         /// <value>
         /// The series.
         /// </value>
-        public DataSeries.DataSet Series { get; internal set; }
+        public DataSeries.Series Series { get; internal set; }
 
         /// <summary>
         /// Gets the chart that owns the point.

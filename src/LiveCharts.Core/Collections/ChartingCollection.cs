@@ -10,32 +10,32 @@ namespace LiveCharts.Core.Collections
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <seealso cref="System.Collections.ObjectModel.ObservableCollection{T}" />
-    public class PlotableCollection<T> : ObservableCollection<T>, INotifyRangeChanged<T>
+    public class ChartingCollection<T> : ObservableCollection<T>, INotifyRangeChanged<T>
     {
         private const string CountString = "Count";
         private const string IndexerName = "Item[]";
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PlotableCollection{T}"/> class.
+        /// Initializes a new instance of the <see cref="ChartingCollection{T}"/> class.
         /// </summary>
-        public PlotableCollection()
+        public ChartingCollection()
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PlotableCollection{T}"/> class.
+        /// Initializes a new instance of the <see cref="ChartingCollection{T}"/> class.
         /// </summary>
         /// <param name="collection">The collection from which the elements are copied.</param>
-        public PlotableCollection(IEnumerable<T> collection)
+        public ChartingCollection(IEnumerable<T> collection)
             : base(collection)
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PlotableCollection{T}"/> class.
+        /// Initializes a new instance of the <see cref="ChartingCollection{T}"/> class.
         /// </summary>
         /// <param name="list">The list that is wrapped by the new collection.</param>
-        public PlotableCollection(IList<T> list)
+        public ChartingCollection(IList<T> list)
             : base(list)
         {
         }

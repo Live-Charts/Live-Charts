@@ -114,7 +114,7 @@ namespace LiveCharts.Wpf.Controls
         }
 
         float[] ILegend.Measure(
-            IEnumerable<DataSet> seriesCollection, Orientation orientation, IChartView chart)
+            IEnumerable<Series> seriesCollection, Orientation orientation, IChartView chart)
         {
             if (Parent == null)
             {

@@ -4,16 +4,16 @@ namespace LiveCharts.Core.Drawing
     /// Represents an axis label.
     /// </summary>
     /// <seealso cref="Rectangle" />
-    public struct AxisLabelModel
+    public struct AxisLabelViewModel
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="AxisLabelModel"/> struct.
+        /// Initializes a new instance of the <see cref="AxisLabelViewModel"/> struct.
         /// </summary>
         /// <param name="location"></param>
         /// <param name="offset">The offset.</param>
         /// <param name="margin">The margin.</param>
         /// <param name="content">The content.</param>
-        public AxisLabelModel(Point location, Point offset, Margin margin, string content)
+        public AxisLabelViewModel(Point location, Point offset, Margin margin, string content)
         {
             Location = location;
             Offset = offset;

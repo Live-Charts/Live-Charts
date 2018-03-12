@@ -79,7 +79,7 @@ namespace LiveCharts.Wpf
         /// The series property.
         /// </summary>
         public static readonly DependencyProperty SeriesProperty = DependencyProperty.Register(
-            nameof(Series), typeof(IEnumerable<DataSet>), typeof(Chart),
+            nameof(Series), typeof(IEnumerable<Series>), typeof(Chart),
             new PropertyMetadata(null, RaiseOnPropertyChanged(nameof(Series))));
 
         /// <summary>
@@ -126,7 +126,7 @@ namespace LiveCharts.Wpf
         /// </summary>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
-        protected virtual IList<IList<Plane>> GetPlanes()
+        protected virtual IList<IList<Plane>> GetPlanesOrderedByDimension()
         {
             throw new NotImplementedException();
         }
@@ -267,12 +267,12 @@ namespace LiveCharts.Wpf
         public Margin DrawMargin { get; set; }
 
         /// <inheritdoc />
-        IList<IList<Plane>> IChartView.Dimensions => GetPlanes();
+        IList<IList<Plane>> IChartView.Dimensions => GetPlanesOrderedByDimension();
 
         /// <inheritdoc cref="IChartView.Series"/>
-        public IEnumerable<DataSet> Series
+        public IEnumerable<Series> Series
         {
-            get => (IEnumerable<DataSet>)GetValue(SeriesProperty);
+            get => (IEnumerable<Series>)GetValue(SeriesProperty);
             set => SetValue(SeriesProperty, value);
         }
 

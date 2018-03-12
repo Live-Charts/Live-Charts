@@ -17,7 +17,7 @@ namespace LiveCharts.Core.Abstractions
         /// <param name="orientation">The orientation.</param>
         /// <param name="chart">The chart.</param>
         /// <returns></returns>
-        float[] Measure(IEnumerable<DataSet> seriesCollection, Orientation orientation, IChartView chart);
+        float[] Measure(IEnumerable<Series> seriesCollection, Orientation orientation, IChartView chart);
 
         /// <summary>
         /// Moves to the specified location.

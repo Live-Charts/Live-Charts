@@ -29,9 +29,13 @@
             <Button Command="{Binding EditPoint}">*</Button>
         </StackPanel>
         <wpf:CartesianChart Grid.Row="1"
-                            Series="{Binding SeriesCollection, PresentationTraceSources.TraceLevel=High}" 
+                            Series="{Binding SeriesCollection}" 
+                            XAxis="{Binding X}"
                             DataDoubleClickCommand="{Binding RemoveOnDoubleClick}"
-                            InvertAxis="False"/>
+                            InvertAxis="False">
+        </wpf:CartesianChart>
     </Grid>
 </UserControl>
+
+
 

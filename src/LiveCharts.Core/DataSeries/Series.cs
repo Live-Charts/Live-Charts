@@ -22,7 +22,7 @@ namespace LiveCharts.Core.DataSeries
     /// <typeparam name="TPoint">The type of the point.</typeparam>
     /// <seealso cref="IResource" />
     public abstract class Series<TModel, TCoordinate, TViewModel, TPoint> 
-        : DataSet, IList<TModel>, INotifyCollectionChanged
+        : Series, IList<TModel>, INotifyCollectionChanged
         where TPoint : Point<TModel, TCoordinate, TViewModel>, new()
         where TCoordinate : ICoordinate
     { 
@@ -452,7 +452,7 @@ namespace LiveCharts.Core.DataSeries
         private void Initialize(IEnumerable<TModel> itemsSource = null)
         {
             Tracker = new Dictionary<object, TPoint>();
-            _itemsSource = itemsSource ?? new PlotableCollection<TModel>();
+            _itemsSource = itemsSource ?? new ChartingCollection<TModel>();
             OnItemsIntancechanged();
             var t = typeof(TModel);
             Metadata = new SeriesMetatada

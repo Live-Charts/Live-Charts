@@ -1,7 +1,8 @@
 ﻿using LiveCharts.Core.Abstractions;
-using LiveCharts.Core.Coordinates;
 using LiveCharts.Core.Data;
+using LiveCharts.Core.Drawing;
 using LiveCharts.Core.ViewModels;
+using Point = LiveCharts.Core.Coordinates.Point;
 
 namespace LiveCharts.Core.UnitTests.Mocked
 {

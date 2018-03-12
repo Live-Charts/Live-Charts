@@ -10,12 +10,20 @@ namespace LiveCharts.Core.Events
     public class CartesianAxisSeparatorArgs
     {
         /// <summary>
-        /// Gets or sets the rectangle.
+        /// Gets or sets from.
         /// </summary>
         /// <value>
-        /// The rectangle.
+        /// From.
         /// </value>
-        public Rectangle Model { get; set; }
+        public Rectangle From { get; set; }
+
+        /// <summary>
+        /// Gets or sets to.
+        /// </summary>
+        /// <value>
+        /// To.
+        /// </value>
+        public Rectangle To { get; set; }
 
         /// <summary>
         /// Gets or sets the axis label model.
@@ -23,7 +31,7 @@ namespace LiveCharts.Core.Events
         /// <value>
         /// The axis label model.
         /// </value>
-        public AxisLabelModel AxisLabelModel { get; set; }
+        public AxisLabelViewModel AxisLabelViewModel { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether this instance is alternative.

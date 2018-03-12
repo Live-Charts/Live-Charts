@@ -44,14 +44,6 @@ namespace LiveCharts.Core.DataSeries
             int wi = 0, hi = 1, inverted = 1;
             var orientation = Orientation.Horizontal;
 
-            if (chart.InvertXy)
-            {
-                wi = 1;
-                hi = 0;
-                inverted = 0;
-                orientation = Orientation.Vertical;
-            }
-
             var directionAxis = chart.Dimensions[0][ScalesAt[0]];
             var scaleAxis = chart.Dimensions[1][ScalesAt[1]];
 
@@ -63,13 +55,30 @@ namespace LiveCharts.Core.DataSeries
                 .ToList();
 
             var cw = uw[0] / columnSeries.Count;
+            var position = columnSeries.IndexOf(this);
 
             var overFlow = 0f;
 
             if (cw > MaxColumnWidth)
             {
-                overFlow = (cw - MaxColumnWidth) * columnSeries.Count / 2f;
                 cw = MaxColumnWidth;
+            }
+
+            var offsetX = -cw * .5f + uw[0] * .5f;
+            var offsetY = 0f;
+
+            ColumnPadding = 5;
+            
+            var xByPosition = (ColumnPadding + cw) * position;
+
+            if (chart.InvertXy)
+            {
+                wi = 1;
+                hi = 0;
+                inverted = 0;
+                orientation = Orientation.Vertical;
+                offsetX = 0;
+                offsetY = -cw * .5f - uw[0] * .5f;
             }
 
             var columnStart = GetColumnStart(chart, scaleAxis, directionAxis);
@@ -114,8 +123,8 @@ namespace LiveCharts.Core.DataSeries
                 var vm = new ColumnViewModel(
                     current.ViewModel.To,
                     new Rectangle(
-                        location[wi] - cw*.5f + uw[0]*.5f,
-                        location[hi] ,//- cw*.5f - uw[0]*.5f,
+                        location[wi] + offsetX + xByPosition,
+                        location[hi] + offsetY,
                         Math.Abs(difference[wi]),
                         Math.Abs(Math.Abs(difference[hi]))),
                     orientation);

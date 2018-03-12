@@ -9,37 +9,6 @@ using Font = LiveCharts.Core.Abstractions.Font;
 namespace LiveCharts.Core.Themes
 {
     /// <summary>
-    /// Testing theme.
-    /// </summary>
-    public static class Testing
-    {
-        /// <summary>
-        /// Uses the testing theme.
-        /// </summary>
-        /// <param name="charting">The charting.</param>
-        /// <returns></returns>
-        public static Charting UsingTestingTheme(this Charting charting)
-        {
-            var baseFont = new Font("Arial", 11, FontStyles.Regular, FontWeight.Regular);
-
-            var sepStyle = new SeparatorStyle(Color.FromArgb(255, 230, 230, 230), Color.FromArgb(255, 245, 245, 245), 1);
-
-            charting
-                .UseMaterialDesignColors()
-                .UseMaterialDesignColors()
-                .SetDefault<Axis>(axis =>
-                {
-                    axis.XSeparatorStyle = sepStyle;
-                    axis.YSeparatorStyle = sepStyle;
-                    axis.XAlternativeSeparatorStyle = sepStyle;
-                    axis.YAlternativeSeparatorStyle = sepStyle;
-                });
-
-            return charting;
-        }
-    }
-
-    /// <summary>
     /// material design theme.
     /// </summary>
     public static class MaterialDesign
@@ -102,7 +71,7 @@ namespace LiveCharts.Core.Themes
                 .SetDefault<Plane>(plane =>
                 {
                     plane.Font = baseFont;
-                    plane.LabelFormatter = Builders.AsMetricNumber;
+                    plane.LabelFormatter = Formatters.AsMetricNumber;
                 })
                 .SetDefault<Axis>(axis =>
                 {

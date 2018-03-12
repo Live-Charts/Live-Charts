@@ -20,10 +20,10 @@ namespace LiveCharts.Wpf
         public CartesianChart()
         {
             Model = new CartesianChartModel(this);
-            SetValue(SeriesProperty, new PlotableCollection<DataSet>());
-            SetValue(XAxisProperty, new PlotableCollection<Plane> {new Axis()});
-            SetValue(YAxisProperty, new PlotableCollection<Plane> {new Axis()});
-            SetValue(WeightPlaneProperty, new PlotableCollection<Plane> {new Plane()});
+            SetValue(SeriesProperty, new ChartingCollection<Series>());
+            SetValue(XAxisProperty, new ChartingCollection<Plane> {new Axis()});
+            SetValue(YAxisProperty, new ChartingCollection<Plane> {new Axis()});
+            SetValue(WeightPlaneProperty, new ChartingCollection<Plane> {new Plane()});
         }
 
         #region Dependency properties
@@ -91,8 +91,8 @@ namespace LiveCharts.Wpf
 
         #endregion
 
-        /// <inheritdoc cref="Chart.GetPlanes"/>
-        protected override IList<IList<Plane>> GetPlanes()
+        /// <inheritdoc cref="Chart.GetPlanesOrderedByDimension"/>
+        protected override IList<IList<Plane>> GetPlanesOrderedByDimension()
         {
             return new List<IList<Plane>>
             {
