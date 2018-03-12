@@ -1,10 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Charts;
 using LiveCharts.Core.Drawing;
 using LiveCharts.Core.Events;
+using Point = LiveCharts.Core.Drawing.Point;
+using Rectangle = LiveCharts.Core.Drawing.Rectangle;
+using Size = LiveCharts.Core.Drawing.Size;
 
 namespace LiveCharts.Core.Dimensions
 {
@@ -25,6 +29,11 @@ namespace LiveCharts.Core.Dimensions
             Step = float.NaN;
             StepStart = float.NaN;
             Position = AxisPosition.Auto;
+            XSeparatorStyle =
+                new SeparatorStyle(Color.FromArgb(255, 250, 250, 250), Color.FromArgb(50, 240, 240, 240), 1);
+            YSeparatorStyle = SeparatorStyle.Empty;
+            XAlternativeSeparatorStyle = SeparatorStyle.Empty;
+            YSeparatorStyle = SeparatorStyle.Empty;
             Charting.BuildFromSettings(this);
         }
 
@@ -210,7 +219,7 @@ namespace LiveCharts.Core.Dimensions
                     separator = Charting.Current.UiProvider.GetNewAxisSeparator();
                     _activeSeparators.Add(key, separator);
                 }
-                chart.RegisterResource(separator);
+
                 if (Dimension == 0)
                 {
                     var w = iui + stepSize > chart.DrawAreaSize[0] ? 0 : stepSize;
@@ -219,9 +228,8 @@ namespace LiveCharts.Core.Dimensions
                         {
                             To = new Rectangle(new Point(iui, 0), new Size(w, chart.DrawAreaSize[1])),
                             AxisLabelViewModel = label,
-                            IsAlternative = alternate,
                             Disposing = false,
-                            Plane = this,
+                            Style = alternate ? XAlternativeSeparatorStyle : XSeparatorStyle,
                             ChartView = chart.View
                         });
                 }
@@ -233,12 +241,12 @@ namespace LiveCharts.Core.Dimensions
                         {
                             To = new Rectangle(new Point(0, iui), new Size(chart.DrawAreaSize[0], h)),
                             AxisLabelViewModel = label,
-                            IsAlternative = alternate,
                             Disposing = false,
-                            Plane = this,
+                            Style = alternate ? YAlternativeSeparatorStyle : YSeparatorStyle,
                             ChartView = chart.View
                         });
                 }
+
                 chart.RegisterResource(separator);
             }
 
@@ -347,109 +355,120 @@ namespace LiveCharts.Core.Dimensions
 
             double x, y, xo, yo, l, t;
 
-            if (Dimension == 0 && Position == AxisPosition.Bottom)
+            switch (Dimension)
             {
-                // case 1
-                if (angle < 0)
-                {
-                    xo = -xw - .5 * xh;
-                    yo = -yw;
-                    l = -1 * xo;
-                    t = 0;
-                }
-                // case 2
-                else
-                {
-                    xo = .5 * xh;
-                    yo = 0;
-                    l = .5 * xh;
-                    t = 0;
-                }
-                x = chart.ScaleToUi(value, this, drawMargin);
-                y = drawMargin[1];
-            }
-            else if (Dimension == 0 && Position == AxisPosition.Top)
-            {
-                // case 3
-                if (angle < 0)
-                {
-                    xo = -.5 * xh;
-                    yo = yh;
-                    l = -1 * xo;
-                    t = yh + yw;
-                }
-                // case 4
-                else
-                {
-                    xo = -xw + .5 * xh;
-                    yo = yh + yw;
-                    l = xw + .5 * xh;
-                    t = yh + yw;
-                }
-                x = chart.ScaleToUi(value, this, drawMargin);
-                y = 0;
-            }
-            else if (Dimension == 1 && Position == AxisPosition.Left)
-            {
-                // case 6
-                if (angle < 0)
-                {
-                    xo = -xh - xw;
-                    yo = -yw + .5 * yh;
-                    l = xh + xw;
-                    t = .5 * yh;
-                }
-                // case 5
-                else
-                {
-                    xo = -xw;
-                    yo = yw;
-                    l = xh + xw;
-                    t = yw;
-                }
-                x = 0;
-                y = chart.ScaleToUi(value, this, drawMargin);
-            }
-            else if (Dimension == 1 && Position == AxisPosition.Right)
-            {
-                // case 8
-                if (angle < 0)
-                {
-                    xo = 0;
-                    yo = .5 * yh;
-                    l = 0;
-                    t = .5 * yh + yw;
-                }
-                // case 7
-                else
-                {
-                    xo = .5 * xh;
-                    yo = .5 * yh;
-                    l = 0;
-                    t = yo;
-                }
-                x = drawMargin[0];
-                y = chart.ScaleToUi(value, this, drawMargin);
-            }
-            else
-            {
-                var d = Dimension == 0 ? "X" : "Y";
-                throw new LiveChartsException(
-                    $"An axis at dimension '{d}' can not be positioned at '{Position}'", 120);
+                case 0 when Position == AxisPosition.Bottom:
+                    // case 1
+                    if (angle < 0)
+                    {
+                        xo = -xw - .5 * xh;
+                        yo = -yw;
+                        l = -1 * xo;
+                        t = 0;
+                    }
+                    // case 2
+                    else
+                    {
+                        xo = .5 * xh;
+                        yo = 0;
+                        l = .5 * xh;
+                        t = 0;
+                    }
+                    x = chart.ScaleToUi(value, this, drawMargin);
+                    y = drawMargin[1];
+                    break;
+                case 0 when Position == AxisPosition.Top:
+                    // case 3
+                    if (angle < 0)
+                    {
+                        xo = -.5 * xh;
+                        yo = yh;
+                        l = -1 * xo;
+                        t = yh + yw;
+                    }
+                    // case 4
+                    else
+                    {
+                        xo = -xw + .5 * xh;
+                        yo = yh + yw;
+                        l = xw + .5 * xh;
+                        t = yh + yw;
+                    }
+                    x = chart.ScaleToUi(value, this, drawMargin);
+                    y = 0;
+                    break;
+                case 1 when Position == AxisPosition.Left:
+                    // case 6
+                    if (angle < 0)
+                    {
+                        xo = -xh - xw;
+                        yo = -yw + .5 * yh;
+                        l = xh + xw;
+                        t = .5 * yh;
+                    }
+                    // case 5
+                    else
+                    {
+                        xo = -xw;
+                        yo = yw;
+                        l = xh + xw;
+                        t = yw;
+                    }
+                    x = 0;
+                    y = chart.ScaleToUi(value, this, drawMargin);
+                    break;
+                case 1 when Position == AxisPosition.Right:
+                    // case 8
+                    if (angle < 0)
+                    {
+                        xo = 0;
+                        yo = .5 * yh;
+                        l = 0;
+                        t = .5 * yh + yw;
+                    }
+                    // case 7
+                    else
+                    {
+                        xo = .5 * xh;
+                        yo = .5 * yh;
+                        l = 0;
+                        t = yo;
+                    }
+                    x = drawMargin[0];
+                    y = chart.ScaleToUi(value, this, drawMargin);
+                    break;
+                default:
+                    var d = Dimension == 0 ? "X" : "Y";
+                    throw new LiveChartsException(
+                        $"An axis at dimension '{d}' can not be positioned at '{Position}'", 120);
             }
 
-            if (Math.Abs(ActualLabelsRotation) < 0.001)
+            // correction by axis point unit
+            if (axisPointWidth > 0f)
             {
                 var uiPw = chart.ScaleToUi(axisPointWidth, this) - chart.ScaleToUi(0, this);
 
                 if (Dimension == 0)
                 {
-                    xo = xo + uiPw * .5f - xw * .5f;
+                    xo += uiPw *.5f;
+                }
+                else
+                {
+                    yo += uiPw * .5f;
+                }
+            }
+
+            // correction by rotation
+            if (Math.Abs(ActualLabelsRotation) < 0.001)
+            {
+                if (Dimension == 0)
+                {
+                    xo = xo - xw * .5f;
                 }
 
                 if (Dimension == 1)
                 {
-                    yo = yo + uiPw * .5f - yh * .5f;
+                    yo = yo - yh * .5f;
                 }
             }
 

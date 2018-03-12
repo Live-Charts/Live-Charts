@@ -34,14 +34,6 @@ namespace LiveCharts.Core.Events
         public AxisLabelViewModel AxisLabelViewModel { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether this instance is alternative.
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if this instance is alternative; otherwise, <c>false</c>.
-        /// </value>
-        public bool IsAlternative { get; set; }
-
-        /// <summary>
         /// Gets or sets a value indicating whether this <see cref="CartesianAxisSeparatorArgs"/> is disposing.
         /// </summary>
         /// <value>
@@ -55,7 +47,7 @@ namespace LiveCharts.Core.Events
         /// <value>
         /// The plane.
         /// </value>
-        public Plane Plane { get; set; }
+        public SeparatorStyle Style { get; set; }
 
         /// <summary>
         /// Gets or sets the chart view.

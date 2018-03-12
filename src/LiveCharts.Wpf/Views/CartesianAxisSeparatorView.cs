@@ -1,7 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using LiveCharts.Core.Abstractions;
-using LiveCharts.Core.Dimensions;
 using LiveCharts.Core.Events;
 using LiveCharts.Wpf.Animations;
 using Rectangle = System.Windows.Shapes.Rectangle;
@@ -36,16 +35,21 @@ namespace LiveCharts.Wpf.Views
 
         public void Move(CartesianAxisSeparatorArgs args)
         {
-            var isNew = Rectangle == null;
+            var isNewShape = Rectangle == null;
             var isNewLabel = Label == null;
             var speed = args.ChartView.AnimationsSpeed;
 
-            if (isNew)
+            // initialize the shape
+            if (isNewShape)
             {
                 Rectangle = new Rectangle();
-                Panel.SetZIndex(Rectangle, -1);
-                SetInitialLineParams(args);
                 args.ChartView.Content.AddChild(Rectangle);
+                Canvas.SetLeft(Rectangle, args.From.Left);
+                Canvas.SetTop(Rectangle, args.From.Top);
+                Rectangle.Width = args.From.Width;
+                Rectangle.Height = args.From.Height;
+                Panel.SetZIndex(Rectangle, -1);
+                
                 Rectangle.Animate()
                     .AtSpeed(speed)
                     .Property(UIElement.OpacityProperty, 1, 0)
@@ -55,22 +59,20 @@ namespace LiveCharts.Wpf.Views
             if (isNewLabel)
             {
                 Label = new TLabel();
-                SetInitialLabelParams();
                 args.ChartView.Content.AddChild(Label);
+                Canvas.SetLeft(Label, 0d);
+                Canvas.SetTop(Label, 0d);
+
                 Label.Animate()
                     .AtSpeed(speed)
                     .Property(UIElement.OpacityProperty, 1, 0)
                     .Begin();
             }
+            
+            var st = double.IsNaN(args.Style.StrokeThickness) ? 0 : args.Style.StrokeThickness;
 
-            var axis = (Axis) args.Plane;
-            var style = args.Plane.Dimension == 0
-                ? (args.IsAlternative ? axis.XAlternativeSeparatorStyle : axis.XSeparatorStyle)
-                : (args.IsAlternative ? axis.YAlternativeSeparatorStyle : axis.YSeparatorStyle);
-            var st = double.IsNaN(style.StrokeThickness) ? 0 : style.StrokeThickness;
-
-            Rectangle.Fill = style.Fill.AsWpf();
-            Rectangle.Stroke = style.Stroke.AsWpf();
+            Rectangle.Fill = args.Style.Fill.AsWpf();
+            Rectangle.Stroke = args.Style.Stroke.AsWpf();
 
             Label.Measure(args.AxisLabelViewModel.Content);
 
@@ -101,29 +103,6 @@ namespace LiveCharts.Wpf.Views
             }
 
             storyboard.Begin();
-        }
-
-        private void SetInitialLineParams(CartesianAxisSeparatorArgs args)
-        {
-            Canvas.SetTop(Rectangle, args.To.Top);
-            Canvas.SetLeft(Rectangle, args.To.Left);
-            Rectangle.Width = args.To.Width;
-            Rectangle.Height = args.To.Height;
-            if (args.Plane.Dimension == 0) // if X
-            {
-
-            }
-            else
-            {
-
-            }
-        }
-
-        private void SetInitialLabelParams()
-        {
-            var label = (UIElement) Label;
-            Canvas.SetTop(label, 0);
-            Canvas.SetLeft(label, 0);
         }
 
         public event DisposingResourceHandler Disposed;

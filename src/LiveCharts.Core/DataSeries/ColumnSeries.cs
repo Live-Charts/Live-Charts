@@ -24,7 +24,7 @@ namespace LiveCharts.Core.DataSeries
         public BarSeries()
         {
             MaxColumnWidth = 45f;
-            ColumnPadding = 2f;
+            ColumnPadding = 6f;
 
             Charting.BuildFromSettings<IColumnSeries>(this);
         }
@@ -54,7 +54,7 @@ namespace LiveCharts.Core.DataSeries
                                  series is IColumnSeries)
                 .ToList();
 
-            var cw = uw[0] / columnSeries.Count;
+            var cw = (uw[0] - ColumnPadding * columnSeries.Count) / columnSeries.Count;
             var position = columnSeries.IndexOf(this);
 
             var overFlow = 0f;
@@ -67,9 +67,7 @@ namespace LiveCharts.Core.DataSeries
             var offsetX = -cw * .5f + uw[0] * .5f;
             var offsetY = 0f;
 
-            ColumnPadding = 5;
-            
-            var xByPosition = (ColumnPadding + cw) * position;
+            var xByPosition = (ColumnPadding + cw) * position - (ColumnPadding + cw) * ((columnSeries.Count -1) * .5f);
 
             if (chart.InvertXy)
             {
