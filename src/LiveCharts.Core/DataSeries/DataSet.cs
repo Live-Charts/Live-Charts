@@ -38,6 +38,7 @@ using LiveCharts.Core.Data;
 using LiveCharts.Core.Drawing;
 using LiveCharts.Core.Drawing.Svg;
 using LiveCharts.Core.Events;
+using Font = LiveCharts.Core.Abstractions.Font;
 
 #endregion
 

@@ -64,20 +64,12 @@ namespace LiveCharts.Core.Events
         public PointF LabelFrom { get; set; }
 
         /// <summary>
-        /// Gets or sets the label to.
-        /// </summary>
-        /// <value>
-        /// The label to.
-        /// </value>
-        public PointF LabelTo { get; set; }
-
-        /// <summary>
         /// Gets or sets the axis label model.
         /// </summary>
         /// <value>
         /// The axis label model.
         /// </value>
-        public AxisLabelViewModel AxisLabelViewModel { get; set; }
+        public AxisLabelViewModel LabelViewModel { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether this <see cref="CartesianAxisSeparatorArgs"/> is disposing.

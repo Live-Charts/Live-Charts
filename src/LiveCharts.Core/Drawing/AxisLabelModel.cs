@@ -63,6 +63,14 @@ namespace LiveCharts.Core.Drawing
         public string Content { get; set; }
 
         /// <summary>
+        /// Gets the actual location (Location + Offset)
+        /// </summary>
+        /// <value>
+        /// The actual location.
+        /// </value>
+        public PointF ActualLocation => Perform.Sum(Location, Offset);
+
+        /// <summary>
         /// Gets or sets the raw location of the label, to ensure label readability, we set an <see cref="Offset"/> and calculate the margin from this point, to every direction (<see cref="Margin"/>).
         /// </summary>
         /// <value>

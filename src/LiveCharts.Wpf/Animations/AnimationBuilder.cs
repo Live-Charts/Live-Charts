@@ -172,7 +172,7 @@ namespace LiveCharts.Wpf.Animations
         /// Sets the target.
         /// </summary>
         /// <returns></returns>
-        public AnimationBuilder SetTarget(DependencyObject target)
+        public AnimationBuilder ChangeTarget(DependencyObject target)
         {
             _target = target;
             return this;

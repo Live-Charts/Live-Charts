@@ -31,6 +31,7 @@ using LiveCharts.Core.Abstractions.DataSeries;
 using LiveCharts.Core.Data;
 using LiveCharts.Core.Dimensions;
 using LiveCharts.Core.Drawing.Svg;
+using Font = LiveCharts.Core.Abstractions.Font;
 
 #endregion
 

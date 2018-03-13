@@ -237,7 +237,8 @@ namespace LiveCharts.Core.Dimensions
             {
                 alternate = !alternate;
                 var iui = chart.ScaleToUi(i, this);
-                var label = EvaluateAxisLabel(i, chart.DrawAreaSize, unit, chart);
+                var labelModel = EvaluateAxisLabel(i, chart.DrawAreaSize, unit, chart);
+                var actualLabelLocation = labelModel.ActualLocation;
                 var key = Math.Round(i / tolerance) * tolerance;
 
                 if (!_activeSeparators.TryGetValue(key, out var separator))
@@ -255,7 +256,8 @@ namespace LiveCharts.Core.Dimensions
                         {
                             SeparatorFrom = xModel, // ToDo: this probably wont look wood if the axis range changed, in that case it should mode from the previous range position to the new one..
                             SeparatorTo = xModel,
-                            AxisLabelViewModel = label,
+                            LabelFrom = new PointF(actualLabelLocation.X - labelModel.Size.Width*.5f, actualLabelLocation.Y),
+                            LabelViewModel = labelModel,
                             Disposing = false,
                             Style = alternate ? XAlternativeSeparatorStyle : XSeparatorStyle,
                             ChartView = chart.View
@@ -270,7 +272,8 @@ namespace LiveCharts.Core.Dimensions
                         {
                             SeparatorFrom = yModel, // ToDo: this probably wont look wood if the axis range changed, in that case it should mode from the previous range position to the new one..
                             SeparatorTo = yModel,
-                            AxisLabelViewModel = label,
+                            LabelFrom = new PointF(actualLabelLocation.X, actualLabelLocation.Y - labelModel.Size.Height*.5f),
+                            LabelViewModel = labelModel,
                             Disposing = false,
                             Style = alternate ? YAlternativeSeparatorStyle : YSeparatorStyle,
                             ChartView = chart.View

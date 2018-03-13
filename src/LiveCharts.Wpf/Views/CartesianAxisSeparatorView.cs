@@ -90,8 +90,8 @@ namespace LiveCharts.Wpf.Views
             {
                 Label = new TLabel();
                 args.ChartView.Content.AddChild(Label);
-                Canvas.SetLeft(Label, 0d);
-                Canvas.SetTop(Label, 0d);
+                Canvas.SetLeft(Label, args.LabelFrom.X);
+                Canvas.SetTop(Label, args.LabelFrom.Y);
 
                 Label.Animate()
                     .AtSpeed(speed)
@@ -102,9 +102,9 @@ namespace LiveCharts.Wpf.Views
             Rectangle.Fill = args.Style.Fill.AsWpf();
             Rectangle.Stroke = args.Style.Stroke.AsWpf();
 
-            Label.Measure(args.AxisLabelViewModel.Content);
+            Label.Measure(args.LabelViewModel.Content);
 
-            var actualLabelLocation = Perform.Sum(args.AxisLabelViewModel.Location, args.AxisLabelViewModel.Offset);
+            var actualLabelLocation = args.LabelViewModel.ActualLocation;
 
             var storyboard = Rectangle.Animate()
                 .AtSpeed(speed)
@@ -116,7 +116,7 @@ namespace LiveCharts.Wpf.Views
                 .Property(FrameworkElement.WidthProperty, args.SeparatorTo.Width > args.Style.StrokeThickness
                     ? args.SeparatorTo.Width
                     : args.Style.StrokeThickness)
-                .SetTarget(Label)
+                .ChangeTarget(Label)
                 .Property(Canvas.LeftProperty, actualLabelLocation.X)
                 .Property(Canvas.TopProperty, actualLabelLocation.Y);
 

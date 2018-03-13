@@ -39,12 +39,12 @@ namespace LiveCharts.Wpf.Animations
     {
         public static AnimationBuilder Animate(this FrameworkElement element)
         {
-            return new AnimationBuilder(true).SetTarget(element);
+            return new AnimationBuilder(true).ChangeTarget(element);
         }
 
         public static AnimationBuilder Animate(this Animatable animatable)
         {
-            return new AnimationBuilder(false).SetTarget(animatable);
+            return new AnimationBuilder(false).ChangeTarget(animatable);
         }
     }
 }
