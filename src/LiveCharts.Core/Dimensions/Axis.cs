@@ -256,7 +256,8 @@ namespace LiveCharts.Core.Dimensions
                         {
                             SeparatorFrom = xModel, // ToDo: this probably wont look wood if the axis range changed, in that case it should mode from the previous range position to the new one..
                             SeparatorTo = xModel,
-                            LabelFrom = new PointF(actualLabelLocation.X - labelModel.Size.Width*.5f, actualLabelLocation.Y),
+                            LabelFrom = new PointF(actualLabelLocation.X - labelModel.Size.Width * .5f,
+                                actualLabelLocation.Y),
                             LabelViewModel = labelModel,
                             Disposing = false,
                             Style = alternate ? XAlternativeSeparatorStyle : XSeparatorStyle,

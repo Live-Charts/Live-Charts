@@ -77,8 +77,7 @@ namespace LiveCharts.Wpf.Views
                 Shape.Height = vm.From.Height;
             }
 
-            // map shape properties
-
+            // map properties
             Shape.Stroke = point.Series.Stroke.AsWpf();
             Shape.Fill = point.Series.Fill.AsWpf();
             Shape.StrokeThickness = point.Series.StrokeThickness;
@@ -88,7 +87,6 @@ namespace LiveCharts.Wpf.Views
             }
             
             // special case
-
             var r = Shape as Rectangle;
             if (r != null)
             {
@@ -99,25 +97,35 @@ namespace LiveCharts.Wpf.Views
 
             // animate
 
-            var speed = chart.AnimationsSpeed;
+            var animation = Shape.Animate().AtSpeed(chart.AnimationsSpeed);
 
-            var animation = Shape.Animate()
-                .AtSpeed(speed)
-                .Property(Canvas.LeftProperty, vm.To.Left)
-                .Property(FrameworkElement.WidthProperty, vm.To.Width);
-
-            if (isNewShape)
+            if (!isNewShape)
             {
-                const int bounce = 8;
                 animation
-                    .InverseBounce(Canvas.TopProperty, vm.To.Top, bounce)
-                    .Bounce(FrameworkElement.HeightProperty, vm.To.Height, bounce);
+                    .Property(Canvas.LeftProperty, vm.To.Left)
+                    .Property(FrameworkElement.WidthProperty, vm.To.Width)
+                    .Property(Canvas.TopProperty, vm.To.Top)
+                    .Property(FrameworkElement.HeightProperty, vm.To.Height);
             }
             else
             {
-                animation
-                    .Property(Canvas.TopProperty, vm.To.Top)
-                    .Property(FrameworkElement.HeightProperty, vm.To.Height);
+                const int bounce = 8;
+                if (vm.Orientation == Orientation.Horizontal)
+                {
+                    animation
+                        .Property(Canvas.LeftProperty, vm.To.Left)
+                        .Property(FrameworkElement.WidthProperty, vm.To.Width)
+                        .InverseBounce(Canvas.TopProperty, vm.To.Top, bounce)
+                        .Bounce(FrameworkElement.HeightProperty, vm.To.Height, bounce);
+                }
+                else
+                {
+                    animation
+                        .Property(Canvas.TopProperty, vm.To.Top)
+                        .Property(FrameworkElement.HeightProperty, vm.To.Height)
+                        .InverseBounce(Canvas.LeftProperty, vm.To.Left, bounce)
+                        .Bounce(FrameworkElement.WidthProperty, vm.To.Width, bounce);
+                }
             }
 
             animation.Begin();

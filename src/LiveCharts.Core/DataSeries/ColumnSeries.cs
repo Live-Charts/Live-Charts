@@ -87,8 +87,6 @@ namespace LiveCharts.Core.DataSeries
             var cw = (uw[0] - ColumnPadding * columnSeries.Count) / columnSeries.Count;
             var position = columnSeries.IndexOf(this);
 
-            var overFlow = 0f;
-
             if (cw > MaxColumnWidth)
             {
                 cw = MaxColumnWidth;
@@ -97,7 +95,7 @@ namespace LiveCharts.Core.DataSeries
             var offsetX = -cw * .5f + uw[0] * .5f;
             var offsetY = 0f;
 
-            var xByPosition = (ColumnPadding + cw) * position - (ColumnPadding + cw) * ((columnSeries.Count -1) * .5f);
+            var positionOffset = new float[2];
 
             if (chart.InvertXy)
             {
@@ -108,6 +106,9 @@ namespace LiveCharts.Core.DataSeries
                 offsetX = 0;
                 offsetY = -cw * .5f - uw[0] * .5f;
             }
+
+            positionOffset[wi] =
+                (ColumnPadding + cw) * position - (ColumnPadding + cw) * ((columnSeries.Count - 1) * .5f);
 
             var columnStart = GetColumnStart(chart, scaleAxis, directionAxis);
 
@@ -136,25 +137,35 @@ namespace LiveCharts.Core.DataSeries
                     current.View = PointViewProvider();
                 }
 
-                if (current.View.VisualElement == null)
-                {
-                    var initialRectangle = new RectangleF();
-                    current.ViewModel = new ColumnViewModel(RectangleF.Empty, initialRectangle, orientation);
-                }
-
-                var location = new []
+                var location = new[]
                 {
                     offset,
                     columnStart - Math.Abs(difference[1]) * inverted
                 };
 
+                if (current.View.VisualElement == null)
+                {
+                    var initialRectangle = chart.InvertXy
+                        ? new RectangleF(
+                            columnStart,
+                            location[hi] + offsetY + positionOffset[1],
+                            0f,
+                            Math.Abs(difference[hi]))
+                        : new RectangleF(
+                            location[wi] + offsetX + positionOffset[0],
+                            columnStart,
+                            Math.Abs(difference[wi]),
+                            0f);
+                    current.ViewModel = new ColumnViewModel(RectangleF.Empty, initialRectangle, orientation);
+                }
+
                 var vm = new ColumnViewModel(
                     current.ViewModel.To,
                     new RectangleF(
-                        location[wi] + offsetX + xByPosition,
-                        location[hi] + offsetY,
+                        location[wi] + offsetX + positionOffset[0],
+                        location[hi] + offsetY + positionOffset[1],
                         Math.Abs(difference[wi]),
-                        Math.Abs(Math.Abs(difference[hi]))),
+                        Math.Abs(difference[hi])),
                     orientation);
 
                 current.InteractionArea = new RectangleInteractionArea(vm.To);

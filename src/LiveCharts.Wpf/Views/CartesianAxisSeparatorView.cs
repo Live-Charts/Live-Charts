@@ -29,7 +29,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Shapes;
 using LiveCharts.Core.Abstractions;
-using LiveCharts.Core.Drawing;
 using LiveCharts.Core.Events;
 using LiveCharts.Wpf.Animations;
 
@@ -110,12 +109,14 @@ namespace LiveCharts.Wpf.Views
                 .AtSpeed(speed)
                 .Property(Canvas.TopProperty, args.SeparatorTo.Top)
                 .Property(Canvas.LeftProperty, args.SeparatorTo.Left)
-                .Property(FrameworkElement.HeightProperty, args.SeparatorTo.Height > args.Style.StrokeThickness
-                    ? args.SeparatorTo.Height
-                    : args.Style.StrokeThickness)
-                .Property(FrameworkElement.WidthProperty, args.SeparatorTo.Width > args.Style.StrokeThickness
-                    ? args.SeparatorTo.Width
-                    : args.Style.StrokeThickness)
+                .Property(FrameworkElement.HeightProperty,
+                    args.SeparatorTo.Height > args.Style.StrokeThickness
+                        ? args.SeparatorTo.Height
+                        : args.Style.StrokeThickness)
+                .Property(FrameworkElement.WidthProperty,
+                    args.SeparatorTo.Width > args.Style.StrokeThickness
+                        ? args.SeparatorTo.Width
+                        : args.Style.StrokeThickness)
                 .ChangeTarget(Label)
                 .Property(Canvas.LeftProperty, actualLabelLocation.X)
                 .Property(Canvas.TopProperty, actualLabelLocation.Y);

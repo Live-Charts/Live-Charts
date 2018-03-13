@@ -31,7 +31,8 @@
         <wpf:CartesianChart Grid.Row="1"
                             Series="{Binding SeriesCollection}"
                             XAxis="{Binding X}"
+                            AnimationsSpeed="0:0:1"
                             DataDoubleClickCommand="{Binding RemoveOnDoubleClick}"
-                            InvertAxis="False" />
+                            InvertAxis="True" />
     </Grid>
 </UserControl>
