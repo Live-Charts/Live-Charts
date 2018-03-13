@@ -5,11 +5,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:wpf="clr-namespace:Samples.Wpf"
         mc:Ignorable="d"
-        Title="MainWindow" 
+        Title="MainWindow"
         Height="500"
         Width="600"
         d:DataContext="{d:DesignInstance wpf:NavigationHandler}">
-    <Border Padding="8" >
-        <ContentControl Content="{Binding CurrentView}" ></ContentControl>
+    <Border Padding="8">
+        <ContentControl Content="{Binding CurrentView}" />
     </Border>
 </Window>

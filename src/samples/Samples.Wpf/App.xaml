@@ -7,32 +7,37 @@
              mc:Ignorable="d"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-        <local:SampleImageConverter x:Key="SampleImageConverter"></local:SampleImageConverter>
-        <DropShadowEffect x:Key="CardShadow" BlurRadius="5" ShadowDepth="1" Direction="270" Color="#303030" Opacity=".15" RenderingBias="Performance"></DropShadowEffect>
+        <local:SampleImageConverter x:Key="SampleImageConverter" />
+        <DropShadowEffect x:Key="CardShadow" BlurRadius="5" ShadowDepth="1" Direction="270" Color="#303030"
+                          Opacity=".15" RenderingBias="Performance" />
         <Style x:Key="CardStyle" TargetType="Border">
-            <Setter Property="Background" Value="White"></Setter>
-            <Setter Property="BorderThickness" Value="0"></Setter>
-            <Setter Property="Margin" Value="15"></Setter>
-            <Setter Property="Padding" Value="8 10"></Setter>
-            <Setter Property="Height" Value="280"></Setter>
-            <Setter Property="Width" Value="250"></Setter>
-            <Setter Property="Cursor" Value="Hand"></Setter>
-            <Setter Property="Effect" Value="{StaticResource CardShadow}"></Setter>
+            <Setter Property="Background" Value="White" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="Margin" Value="15" />
+            <Setter Property="Padding" Value="8 10" />
+            <Setter Property="Height" Value="280" />
+            <Setter Property="Width" Value="250" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="Effect" Value="{StaticResource CardShadow}" />
             <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
                     <Trigger.EnterActions>
                         <BeginStoryboard>
                             <Storyboard>
-                                <DoubleAnimation Storyboard.TargetProperty="(Effect).BlurRadius" To="8" Duration="0:0:0.1"/>
-                                <DoubleAnimation Storyboard.TargetProperty="(Effect).ShadowDepth" To="4.5" Duration="0:0:0.1"/>
+                                <DoubleAnimation Storyboard.TargetProperty="(Effect).BlurRadius" To="8"
+                                                 Duration="0:0:0.1" />
+                                <DoubleAnimation Storyboard.TargetProperty="(Effect).ShadowDepth" To="4.5"
+                                                 Duration="0:0:0.1" />
                             </Storyboard>
                         </BeginStoryboard>
                     </Trigger.EnterActions>
                     <Trigger.ExitActions>
                         <BeginStoryboard>
                             <Storyboard>
-                                <DoubleAnimation Storyboard.TargetProperty="(Effect).BlurRadius" To="5" Duration="0:0:0.1"/>
-                                <DoubleAnimation Storyboard.TargetProperty="(Effect).ShadowDepth" To="1" Duration="0:0:0.1"/>
+                                <DoubleAnimation Storyboard.TargetProperty="(Effect).BlurRadius" To="5"
+                                                 Duration="0:0:0.1" />
+                                <DoubleAnimation Storyboard.TargetProperty="(Effect).ShadowDepth" To="1"
+                                                 Duration="0:0:0.1" />
                             </Storyboard>
                         </BeginStoryboard>
                     </Trigger.ExitActions>
@@ -43,22 +48,25 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type Button}">
-                        <TextBlock Margin="10 5" Foreground="#0F0F6C" FontSize="16" Cursor="Hand" Text="{TemplateBinding Content}" />
+                        <TextBlock Margin="10 5" Foreground="#0F0F6C" FontSize="16" Cursor="Hand"
+                                   Text="{TemplateBinding Content}" />
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
         </Style>
         <DataTemplate x:Key="MainMenuButtonTemplate">
             <Button d:DataContext="{d:DesignInstance models:Sample}"
-                    Command="{Binding Path=NavigationHandler.NavigateTo, RelativeSource={RelativeSource AncestorType={x:Type local:MainWindow}}}" 
+                    Command="{Binding Path=NavigationHandler.NavigateTo, RelativeSource={RelativeSource AncestorType={x:Type local:MainWindow}}}"
                     CommandParameter="{Binding Id}">
                 <Button.Template>
                     <ControlTemplate>
                         <Border Style="{StaticResource CardStyle}">
                             <StackPanel>
-                                <TextBlock Style="{DynamicResource Title}" Text="{Binding Name}" HorizontalAlignment="Center"></TextBlock>
-                                <Image Source="{Binding Converter={StaticResource SampleImageConverter}}" Height="128" Margin="0 25"></Image>
-                                <TextBlock Text="{Binding Text}" TextWrapping="Wrap" Opacity=".6"></TextBlock>
+                                <TextBlock Style="{DynamicResource Title}" Text="{Binding Name}"
+                                           HorizontalAlignment="Center" />
+                                <Image Source="{Binding Converter={StaticResource SampleImageConverter}}" Height="128"
+                                       Margin="0 25" />
+                                <TextBlock Text="{Binding Text}" TextWrapping="Wrap" Opacity=".6" />
                             </StackPanel>
                         </Border>
                     </ControlTemplate>
@@ -66,14 +74,13 @@
             </Button>
         </DataTemplate>
         <Style TargetType="TextBlock">
-            <Setter Property="FontFamily" Value="Trebuchet MS"></Setter>
-            <Setter Property="FontSize" Value="14"></Setter>
-            <Setter Property="Foreground" Value="#303030"></Setter>
+            <Setter Property="FontFamily" Value="Trebuchet MS" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="Foreground" Value="#303030" />
         </Style>
         <Style x:Key="Title" TargetType="TextBlock">
-            <Setter Property="FontSize" Value="22"></Setter>
-            <Setter Property="Margin" Value="0 0 0 15"></Setter>
+            <Setter Property="FontSize" Value="22" />
+            <Setter Property="Margin" Value="0 0 0 15" />
         </Style>
     </Application.Resources>
 </Application>
-

@@ -6,14 +6,14 @@
     xmlns:data="clr-namespace:LiveCharts.Core.Data;assembly=LiveCharts.Core"
     xmlns:controls="clr-namespace:LiveCharts.Wpf.Controls">
 
-    <converters:ColorToSolidBrushConverter x:Key="AsSolidColorBrush"/>
-    <converters:SvgToGeometryDataConverter x:Key="AsGeometryData"/>
-    <converters:GetXFromPointConverter x:Key="GetX"/>
-    <converters:GetYFromPointConverter x:Key="GetY"/>
+    <converters:ColorToSolidBrushConverter x:Key="AsSolidColorBrush" />
+    <converters:SvgToGeometryDataConverter x:Key="AsGeometryData" />
+    <converters:GetXFromPointConverter x:Key="GetX" />
+    <converters:GetYFromPointConverter x:Key="GetY" />
 
     <Style TargetType="{x:Type controls:AxisLabel}">
-        
-        <Setter Property="Padding" Value="6 3 6 3"></Setter>
+
+        <Setter Property="Padding" Value="6 3 6 3" />
 
         <Setter Property="Template">
             <Setter.Value>
@@ -22,7 +22,7 @@
                             BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness="{TemplateBinding BorderThickness}"
                             Padding="{TemplateBinding Padding}">
-                        <ContentPresenter/>
+                        <ContentPresenter />
                     </Border>
                 </ControlTemplate>
             </Setter.Value>
@@ -31,10 +31,10 @@
 
     <Style TargetType="{x:Type controls:ChartToolTip}">
 
-        <Setter Property="Background" Value="White"></Setter>
-        <Setter Property="Padding" Value="8 4"></Setter>
-        <Setter Property="Margin" Value="3"></Setter>
-        <Setter Property="CornerRadius" Value="3"></Setter>
+        <Setter Property="Background" Value="White" />
+        <Setter Property="Padding" Value="8 4" />
+        <Setter Property="Margin" Value="3" />
+        <Setter Property="CornerRadius" Value="3" />
 
         <Setter Property="Template">
             <Setter.Value>
@@ -46,7 +46,8 @@
                             Padding="{TemplateBinding Padding}"
                             Margin="{TemplateBinding Margin}">
                         <Border.Effect>
-                            <DropShadowEffect BlurRadius="5" ShadowDepth="1" Direction="270" Color="Black" Opacity=".42" RenderingBias="Performance" />
+                            <DropShadowEffect BlurRadius="5" ShadowDepth="1" Direction="270" Color="Black"
+                                              Opacity=".42" RenderingBias="Performance" />
                         </Border.Effect>
                         <ItemsPresenter />
                     </Border>
@@ -58,31 +59,31 @@
             <Setter.Value>
                 <DataTemplate DataType="{x:Type data:PackedPoint}">
                     <Grid>
-                         <Grid.ColumnDefinitions>
-                             <ColumnDefinition Width="Auto" SharedSizeGroup="SeriesGeometry" />
-                             <ColumnDefinition Width="Auto" SharedSizeGroup="SeriesTitle" />
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" SharedSizeGroup="SeriesGeometry" />
+                            <ColumnDefinition Width="Auto" SharedSizeGroup="SeriesTitle" />
                             <ColumnDefinition Width="Auto" SharedSizeGroup="Label" />
                         </Grid.ColumnDefinitions>
-                        <Path  Grid.Column="0"  
-                               Width="{Binding GeometrySize, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type controls:ChartToolTip}}}"
-                               Height="{Binding GeometrySize, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type controls:ChartToolTip}}}"
-                               StrokeThickness="{Binding Series.StrokeThickness}"
-                               Stroke="{Binding Series.Stroke, Converter={StaticResource AsSolidColorBrush}}"
-                               Fill="{Binding Series.Fill, Converter={StaticResource AsSolidColorBrush}}"
-                               Stretch="Fill"
-                               Data="{Binding Path=Series.Geometry.Data}"
-                               Margin="0 0 6 0"/>
+                        <Path Grid.Column="0"
+                              Width="{Binding GeometrySize, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type controls:ChartToolTip}}}"
+                              Height="{Binding GeometrySize, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type controls:ChartToolTip}}}"
+                              StrokeThickness="{Binding Series.StrokeThickness}"
+                              Stroke="{Binding Series.Stroke, Converter={StaticResource AsSolidColorBrush}}"
+                              Fill="{Binding Series.Fill, Converter={StaticResource AsSolidColorBrush}}"
+                              Stretch="Fill"
+                              Data="{Binding Path=Series.Geometry.Data}"
+                              Margin="0 0 6 0" />
                         <TextBlock Grid.Column="1"
                                    Text="{Binding Series.Title}"
                                    VerticalAlignment="Center"
-                                   Margin="0 0 6 0"/>
+                                   Margin="0 0 6 0" />
                         <TextBlock Grid.Column="2" Text="{Binding Converter={StaticResource GetY}}" />
                     </Grid>
                 </DataTemplate>
             </Setter.Value>
         </Setter>
     </Style>
-    
+
     <Style TargetType="{x:Type controls:ChartLegend}">
         <Setter Property="Template">
             <Setter.Value>
@@ -100,7 +101,8 @@
         <Setter Property="ItemsPanel">
             <Setter.Value>
                 <ItemsPanelTemplate>
-                    <WrapPanel Orientation="{Binding ActualOrientation, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type controls:ChartLegend}}}"></WrapPanel>
+                    <WrapPanel
+                        Orientation="{Binding ActualOrientation, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type controls:ChartLegend}}}" />
                 </ItemsPanelTemplate>
             </Setter.Value>
         </Setter>
@@ -109,15 +111,16 @@
             <Setter.Value>
                 <DataTemplate DataType="{x:Type dataSeries:Series}">
                     <StackPanel Orientation="Horizontal">
-                        <Path Width="{Binding GeometrySize, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type controls:ChartLegend}}}"
-                              Height="{Binding GeometrySize, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type controls:ChartLegend}}}"
-                              StrokeThickness="{Binding StrokeThickness}"
-                              Stroke="{Binding Stroke, Converter={StaticResource AsSolidColorBrush}}"
-                              Fill="{Binding Fill, Converter={StaticResource AsSolidColorBrush}}"
-                              Stretch="Fill"
-                              Data="{Binding Path=Geometry.Data}"
-                              Margin="0 0 6 0"/>
-                        <TextBlock Text="{Binding Title}" VerticalAlignment="Center"></TextBlock>
+                        <Path
+                            Width="{Binding GeometrySize, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type controls:ChartLegend}}}"
+                            Height="{Binding GeometrySize, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type controls:ChartLegend}}}"
+                            StrokeThickness="{Binding StrokeThickness}"
+                            Stroke="{Binding Stroke, Converter={StaticResource AsSolidColorBrush}}"
+                            Fill="{Binding Fill, Converter={StaticResource AsSolidColorBrush}}"
+                            Stretch="Fill"
+                            Data="{Binding Path=Geometry.Data}"
+                            Margin="0 0 6 0" />
+                        <TextBlock Text="{Binding Title}" VerticalAlignment="Center" />
                     </StackPanel>
                 </DataTemplate>
             </Setter.Value>

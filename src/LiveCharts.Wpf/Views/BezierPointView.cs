@@ -1,28 +1,57 @@
-﻿using System;
+﻿#region License
+// The MIT License (MIT)
+// 
+// Copyright (c) 2016 Alberto Rodríguez Orozco & LiveCharts contributors
+// 
+// Permission is hereby granted, free of charge, to any person obtaining a copy 
+// of this software and associated documentation files (the "Software"), to deal 
+// in the Software without restriction, including without limitation the rights to 
+// use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies 
+// of the Software, and to permit persons to whom the Software is furnished to 
+// do so, subject to the following conditions:
+// 
+// The above copyright notice and this permission notice shall be included in all 
+// copies or substantial portions of the Software.
+// 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, 
+// EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES 
+// OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND 
+// NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT 
+// HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, 
+// WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING 
+// FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR 
+// OTHER DEALINGS IN THE SOFTWARE.
+#endregion
+
+#region
+
+using System;
 using System.Drawing;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using LiveCharts.Core.Abstractions;
-using LiveCharts.Core.Coordinates;
 using LiveCharts.Core.Data;
 using LiveCharts.Core.ViewModels;
 using LiveCharts.Wpf.Animations;
 using Brushes = System.Windows.Media.Brushes;
 using Frame = LiveCharts.Wpf.Animations.Frame;
+using Point = LiveCharts.Core.Coordinates.Point;
+
+#endregion
 
 namespace LiveCharts.Wpf.Views
 {
     public class BezierPointView<TModel, TPoint, TLabel>
-        : PointView<TModel, TPoint, Core.Coordinates.Point, BezierViewModel, Path, TLabel>
-        where TPoint : Point<TModel, Core.Coordinates.Point, BezierViewModel>, new()
+        : PointView<TModel, TPoint, Point, BezierViewModel, Path, TLabel>
+        where TPoint : Point<TModel, Point, BezierViewModel>, new()
         where TLabel : FrameworkElement, IDataLabelControl, new()
     {
-        private BezierSegment _segment;
+        private BezierPointView<TModel, TPoint, TLabel> _next;
         private ICartesianPath _path;
         private BezierPointView<TModel, TPoint, TLabel> _previous;
-        private BezierPointView<TModel, TPoint, TLabel> _next;
+        private BezierSegment _segment;
         private BezierViewModel _vm;
 
         private bool IsMiddlePoint => _next != null && _previous != null;
@@ -35,10 +64,7 @@ namespace LiveCharts.Wpf.Views
             var isNew = Shape == null;
             var speed = chart.AnimationsSpeed;
             _previous = (BezierPointView<TModel, TPoint, TLabel>) previous?.View;
-            if (_previous != null)
-            {
-                _previous._next = this;
-            }
+            if (_previous != null) _previous._next = this;
 
             if (isNew)
             {
@@ -80,16 +106,15 @@ namespace LiveCharts.Wpf.Views
             Shape.StrokeThickness = 3.5;
             Shape.Stroke = point.Series.Stroke.AsWpf();
             Shape.Fill = Brushes.White;
-            Shape.Data = Geometry.Parse(Core.Drawing.Svg.Geometry.Circle.Data); // Geometry.Parse(viewModel.Geometry.Data);
+            Shape.Data =
+                Geometry.Parse(Core.Drawing.Svg.Geometry.Circle.Data); // Geometry.Parse(viewModel.Geometry.Data);
 
             if (!isNew)
-            {
                 Shape.Animate()
                     .AtSpeed(speed)
                     .Property(Canvas.LeftProperty, _vm.Location.X - .5 * _vm.GeometrySize)
                     .Property(Canvas.TopProperty, _vm.Location.Y - .5 * _vm.GeometrySize)
                     .Begin();
-            }
 
             _segment.Animate()
                 .AtSpeed(speed)
@@ -98,7 +123,7 @@ namespace LiveCharts.Wpf.Views
                 .Property(BezierSegment.Point3Property, _vm.Point3.AsWpf())
                 .Begin();
         }
-        
+
         protected override void OnDrawLabel(TPoint point, PointF location)
         {
             base.OnDrawLabel(point, location);
