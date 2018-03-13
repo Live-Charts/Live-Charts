@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Drawing;
 using LiveCharts.Core.DataSeries;
 using LiveCharts.Core.Drawing;
 
@@ -25,6 +26,6 @@ namespace LiveCharts.Core.Abstractions
         /// <param name="location">The location.</param>
         /// <param name="chart">The chart.</param>
         /// <returns></returns>
-        void Move(Point location, IChartView chart);
+        void Move(PointF location, IChartView chart);
     }
 }

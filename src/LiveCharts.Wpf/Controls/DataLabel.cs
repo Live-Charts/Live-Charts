@@ -1,8 +1,8 @@
-﻿using System.Windows;
+﻿using System.Drawing;
+using System.Windows;
 using System.Windows.Controls;
 using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Data;
-using Size = LiveCharts.Core.Drawing.Size;
 
 namespace LiveCharts.Wpf.Controls
 {
@@ -15,11 +15,11 @@ namespace LiveCharts.Wpf.Controls
                 new FrameworkPropertyMetadata(typeof(DataLabel)));
         }
 
-        Size IDataLabelControl.Measure(PackedPoint point)
+        SizeF IDataLabelControl.Measure(PackedPoint point)
         {
             DataContext = point;
             Measure(new System.Windows.Size(double.PositiveInfinity, double.PositiveInfinity));
-            return new Size((float) DesiredSize.Width, (float) DesiredSize.Height);
+            return new SizeF((float) DesiredSize.Width, (float) DesiredSize.Height);
         }
     }
 }

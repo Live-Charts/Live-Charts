@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using LiveCharts.Core.Abstractions;
+using LiveCharts.Core.Drawing;
 using LiveCharts.Core.Events;
 using LiveCharts.Wpf.Animations;
 using Rectangle = System.Windows.Shapes.Rectangle;
@@ -44,10 +45,10 @@ namespace LiveCharts.Wpf.Views
             {
                 Rectangle = new Rectangle();
                 args.ChartView.Content.AddChild(Rectangle);
-                Canvas.SetLeft(Rectangle, args.From.Left);
-                Canvas.SetTop(Rectangle, args.From.Top);
-                Rectangle.Width = args.From.Width;
-                Rectangle.Height = args.From.Height;
+                Canvas.SetLeft(Rectangle, args.SeparatorFrom.Left);
+                Canvas.SetTop(Rectangle, args.SeparatorFrom.Top);
+                Rectangle.Width = args.SeparatorFrom.Width;
+                Rectangle.Height = args.SeparatorFrom.Height;
                 Panel.SetZIndex(Rectangle, -1);
                 
                 Rectangle.Animate()
@@ -76,17 +77,17 @@ namespace LiveCharts.Wpf.Views
 
             Label.Measure(args.AxisLabelViewModel.Content);
 
-            var actualLabelLocation = args.AxisLabelViewModel.Location + args.AxisLabelViewModel.Offset;
+            var actualLabelLocation = Perform.Sum(args.AxisLabelViewModel.Location, args.AxisLabelViewModel.Offset);
 
             var storyboard = Rectangle.Animate()
                 .AtSpeed(speed)
-                .Property(Canvas.TopProperty, args.To.Top)
-                .Property(Canvas.LeftProperty, args.To.Left)
-                .Property(FrameworkElement.HeightProperty, args.To.Height > st
-                    ? args.To.Height
+                .Property(Canvas.TopProperty, args.SeparatorTo.Top)
+                .Property(Canvas.LeftProperty, args.SeparatorTo.Left)
+                .Property(FrameworkElement.HeightProperty, args.SeparatorTo.Height > st
+                    ? args.SeparatorTo.Height
                     : st)
-                .Property(FrameworkElement.WidthProperty, args.To.Width > st
-                    ? args.To.Width
+                .Property(FrameworkElement.WidthProperty, args.SeparatorTo.Width > st
+                    ? args.SeparatorTo.Width
                     : st)
                 .SetTarget(Label)
                 .Property(Canvas.LeftProperty, actualLabelLocation.X)

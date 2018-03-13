@@ -1,10 +1,23 @@
-﻿namespace LiveCharts.Core.Drawing
+﻿using System.Drawing;
+
+namespace LiveCharts.Core.Drawing
 {
     /// <summary>
     /// Vector operations.
     /// </summary>
-    public static class Vector
+    public static class Perform
     {
+        /// <summary>
+        /// Sums the specified p1.
+        /// </summary>
+        /// <param name="p1">The p1.</param>
+        /// <param name="p2">The p2.</param>
+        /// <returns></returns>
+        public static PointF Sum(PointF p1, PointF p2)
+        {
+            return new PointF(p1.X + p2.X, p1.Y + p2.Y);
+        }
+
         /// <summary>
         /// Sums 2 bi-dimensional vectors components.
         /// </summary>

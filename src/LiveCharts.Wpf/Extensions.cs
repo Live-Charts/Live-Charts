@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Drawing;
 using System.Windows;
 using System.Windows.Media;
 using Color = System.Drawing.Color;
 using Font = LiveCharts.Core.Abstractions.Font;
+using FontFamily = System.Windows.Media.FontFamily;
 using FontStyle = System.Windows.FontStyle;
 using FontStyles = LiveCharts.Core.Abstractions.FontStyles;
 using FontWeight = LiveCharts.Core.Abstractions.FontWeight;
@@ -83,7 +85,7 @@ namespace LiveCharts.Wpf
         /// </summary>
         /// <param name="point">The point.</param>
         /// <returns></returns>
-        public static Point AsWpf(this Core.Drawing.Point point)
+        public static Point AsWpf(this PointF point)
         {
             return new Point(point.X, point.Y);
         }

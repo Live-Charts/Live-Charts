@@ -1,7 +1,7 @@
-﻿using System.Windows;
+﻿using System.Drawing;
+using System.Windows;
 using System.Windows.Controls;
 using LiveCharts.Core.Abstractions;
-using Size = LiveCharts.Core.Drawing.Size;
 
 namespace LiveCharts.Wpf.Controls
 {
@@ -18,11 +18,11 @@ namespace LiveCharts.Wpf.Controls
                 new FrameworkPropertyMetadata(typeof(AxisLabel)));
         }
 
-        Size IPlaneLabelControl.Measure(string label)
+        SizeF IPlaneLabelControl.Measure(string label)
         {
             Content = label;
             Measure(new System.Windows.Size(double.PositiveInfinity, double.PositiveInfinity));
-            return new Size((float) DesiredSize.Width, (float) DesiredSize.Height);
+            return new SizeF((float) DesiredSize.Width, (float) DesiredSize.Height);
         }
     }
 }

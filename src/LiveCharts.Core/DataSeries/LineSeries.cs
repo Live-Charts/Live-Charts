@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Abstractions.DataSeries;
 using LiveCharts.Core.Charts;
@@ -68,7 +69,7 @@ namespace LiveCharts.Core.DataSeries
             var isFist = true;
             double i = 0, j = 0;
 
-            foreach (var bezier in GetBeziers(new Drawing.Point(uw[0], uw[1]), cartesianChart, x, y))
+            foreach (var bezier in GetBeziers(new PointF(uw[0], uw[1]), cartesianChart, x, y))
             {
                 var p = new[]
                 {
@@ -83,7 +84,7 @@ namespace LiveCharts.Core.DataSeries
                 }
 
                 bezier.Point.InteractionArea = new RectangleInteractionArea(
-                    new Rectangle(
+                    new RectangleF(
                         p[0] - GeometrySize * .5f,
                         p[1] - GeometrySize * .5f,
                         GeometrySize,
@@ -106,10 +107,10 @@ namespace LiveCharts.Core.DataSeries
             _path.Close(chart.View, length, i, j);
         }
 
-        private IEnumerable<BezierData> GetBeziers(Drawing.Point offset, ChartModel chart, Plane x, Plane y)
+        private IEnumerable<BezierData> GetBeziers(PointF offset, ChartModel chart, Plane x, Plane y)
         {
             Point<TModel, Point, BezierViewModel> pi, pn = null, pnn = null;
-            Drawing.Point previous, current = new Drawing.Point(0,0), next = new Drawing.Point(0,0), nextNext = new Drawing.Point(0, 0);
+            PointF previous, current = new PointF(0,0), next = new  PointF(0,0), nextNext = new PointF(0, 0);
             var i = 0;
 
             var smoothness = LineSmoothness > 1 ? 1 : (LineSmoothness < 0 ? 0 : LineSmoothness);
@@ -117,7 +118,7 @@ namespace LiveCharts.Core.DataSeries
             var e = Points.GetEnumerator();
             var isFirstPoint = true;
 
-            double GetDistance(Drawing.Point p1, Drawing.Point p2)
+            double GetDistance(PointF p1, PointF p2)
             {
                 return Math.Sqrt(
                     Math.Pow(p2.X - p1.X, 2) + Math.Pow(p2.Y - p1.Y, 2));
@@ -165,8 +166,8 @@ namespace LiveCharts.Core.DataSeries
                 {
                     Index = i,
                     Location = current,
-                    Point1 = isFirstPoint ? current : new Drawing.Point((float) c1X, (float) c1Y),
-                    Point2 = new Drawing.Point((float) c2X, (float) c2Y),
+                    Point1 = isFirstPoint ? current : new PointF((float) c1X, (float) c1Y),
+                    Point2 = new PointF((float) c2X, (float) c2Y),
                     Point3 = next,
                     Geometry = Geometry,
                     GeometrySize = GeometrySize
@@ -196,10 +197,10 @@ namespace LiveCharts.Core.DataSeries
                 previous = current;
                 current = next;
                 next = nextNext;
-                nextNext = new Drawing.Point(
-                               chart.ScaleToUi(pnn.Coordinate.X, x),
-                               chart.ScaleToUi(pnn.Coordinate.Y, y)
-                           ) + offset;
+                nextNext =
+                    Perform.Sum(
+                        new PointF(chart.ScaleToUi(pnn.Coordinate.X, x), chart.ScaleToUi(pnn.Coordinate.Y, y)),
+                        offset);
             }
 
             while (e.MoveNext())

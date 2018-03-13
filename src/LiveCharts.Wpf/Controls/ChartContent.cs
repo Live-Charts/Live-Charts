@@ -1,15 +1,15 @@
-﻿using System.Windows;
+﻿using System.Drawing;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using LiveCharts.Core.Abstractions;
-using LiveCharts.Core.Drawing;
 
 namespace LiveCharts.Wpf.Controls
 {
     /// <inheritdoc cref="IChartContent" />
     public class ChartContent : Canvas, IChartContent
     {
-        private Rectangle _drawArea;
+        private RectangleF _drawArea;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ChartContent"/> class.
@@ -33,7 +33,7 @@ namespace LiveCharts.Wpf.Controls
         public Popup TooltipPopup { get; set; }
 
         /// <inheritdoc />
-        public Rectangle DrawArea
+        public RectangleF DrawArea
         {
             get => _drawArea;
             set

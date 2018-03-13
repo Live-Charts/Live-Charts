@@ -1,9 +1,9 @@
 ﻿using System;
+using System.Drawing;
 using System.Windows;
 using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Data;
 using LiveCharts.Core.Events;
-using Point = LiveCharts.Core.Drawing.Point;
 
 namespace LiveCharts.Wpf.Views
 {
@@ -37,7 +37,7 @@ namespace LiveCharts.Wpf.Views
         }
 
         /// <inheritdoc cref="DrawLabel"/>
-        protected virtual void OnDrawLabel(TPoint point, Point location)
+        protected virtual void OnDrawLabel(TPoint point, PointF location)
         {
             throw new NotImplementedException();
         }
@@ -64,7 +64,7 @@ namespace LiveCharts.Wpf.Views
         }
 
         /// <inheritdoc />
-        public void DrawLabel(TPoint point, Point location)
+        public void DrawLabel(TPoint point, PointF location)
         {
             OnDrawLabel(point, location);
         }

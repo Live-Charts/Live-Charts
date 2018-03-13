@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
+using System.Drawing;
 using System.Windows;
 using System.Windows.Controls;
 using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.DataSeries;
 using LiveCharts.Core.Events;
 using Orientation = LiveCharts.Core.Abstractions.Orientation;
-using Point = LiveCharts.Core.Drawing.Point;
 
 namespace LiveCharts.Wpf.Controls
 {
@@ -139,7 +139,7 @@ namespace LiveCharts.Wpf.Controls
             return new[] {(float) DesiredSize.Width, (float) DesiredSize.Height};
         }
 
-        void ILegend.Move(Point location, IChartView chart)
+        void ILegend.Move(PointF location, IChartView chart)
         {
             Canvas.SetLeft(this, location.X);
             Canvas.SetTop(this, location.Y);

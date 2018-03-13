@@ -1,3 +1,5 @@
+using System.Drawing;
+
 namespace LiveCharts.Core.Drawing
 {
     /// <summary>
@@ -13,12 +15,14 @@ namespace LiveCharts.Core.Drawing
         /// <param name="offset">The offset.</param>
         /// <param name="margin">The margin.</param>
         /// <param name="content">The content.</param>
-        public AxisLabelViewModel(Point location, Point offset, Margin margin, string content)
+        /// <param name="size">The size.</param>
+        public AxisLabelViewModel(PointF location, PointF offset, Margin margin, string content, SizeF size)
         {
             Location = location;
             Offset = offset;
             Margin = margin;
             Content = content;
+            Size = size;
         }
 
         /// <summary>
@@ -35,7 +39,15 @@ namespace LiveCharts.Core.Drawing
         /// <value>
         /// The location.
         /// </value>
-        public Point Location { get; set; }
+        public PointF Location { get; set; }
+
+        /// <summary>
+        /// Gets the size of the label.
+        /// </summary>
+        /// <value>
+        /// The size.
+        /// </value>
+        public SizeF Size { get; }
 
         /// <summary>
         /// Gets or sets the offset to the <see cref="Location"/> point, see appendix/labels.2.png (xo, yo).
@@ -43,7 +55,7 @@ namespace LiveCharts.Core.Drawing
         /// <value>
         /// The offset.
         /// </value>
-        public Point Offset { get; set; }
+        public PointF Offset { get; set; }
 
         /// <summary>
         /// Gets or sets the margin, it represent the space taken by the label to every direction, top, left, bottom and right,see appendix/labels.2.png  [l, t, r, b].

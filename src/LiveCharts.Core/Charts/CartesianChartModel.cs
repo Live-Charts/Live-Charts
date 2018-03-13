@@ -1,4 +1,5 @@
 using System;
+using System.Drawing;
 using System.Linq;
 using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Dimensions;
@@ -9,7 +10,7 @@ namespace LiveCharts.Core.Charts
     /// <inheritdoc />
     public class CartesianChartModel : ChartModel
     {
-        private Point _previousTooltipLocation = Point.Empty;
+        private PointF _previousTooltipLocation = PointF.Empty;
         
         /// <inheritdoc />
         public CartesianChartModel(IChartView view)
@@ -86,7 +87,7 @@ namespace LiveCharts.Core.Charts
         /// <param name="p2">The p2.</param>
         /// <param name="value">The value.</param>
         /// <returns></returns>
-        public float LinealScale(Point p1, Point p2, float value)
+        public float LinealScale(PointF p1, PointF p2, float value)
         {
             // ReSharper disable once CompareOfFloatsByEqualityOperator
             if (p2.X == p1.X) return p1.Y;
@@ -129,7 +130,9 @@ namespace LiveCharts.Core.Charts
                     return;
                 }
 
-                View.Content.DrawArea = new Rectangle(DrawAreaLocation, DrawAreaSize);
+                View.Content.DrawArea = new RectangleF(
+                    new PointF(DrawAreaLocation[0], DrawAreaLocation[1]),
+                    new SizeF(DrawAreaSize[0], DrawAreaSize[1]));
 
                 // draw separators
                 // for each dimension (for a cartesian chart X and Y)
@@ -156,7 +159,7 @@ namespace LiveCharts.Core.Charts
         }
 
         /// <inheritdoc />
-        protected override void ViewOnPointerMoved(Point location, TooltipSelectionMode selectionMode, params double[] dimensions)
+        protected override void ViewOnPointerMoved(PointF location, TooltipSelectionMode selectionMode, params double[] dimensions)
         {
             if (Series == null) return;
             var query = GetInteractedPoints(dimensions).ToArray();
@@ -190,7 +193,7 @@ namespace LiveCharts.Core.Charts
             sx = sx / query.Length;
             sy = sy / query.Length;
 
-            var newTooltipLocation = new Point(sx, sy);
+            var newTooltipLocation = new PointF(sx, sy);
 
             if (_previousTooltipLocation != newTooltipLocation)
             {

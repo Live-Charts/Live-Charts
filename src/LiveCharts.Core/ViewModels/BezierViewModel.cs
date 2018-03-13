@@ -1,4 +1,5 @@
-﻿using LiveCharts.Core.Abstractions;
+﻿using System.Drawing;
+using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Drawing;
 using LiveCharts.Core.Drawing.Svg;
 
@@ -23,7 +24,7 @@ namespace LiveCharts.Core.ViewModels
         /// <value>
         /// The location.
         /// </value>
-        public Point Location { get; set; }
+        public PointF Location { get; set; }
 
         /// <summary>
         /// Gets or sets the path.
@@ -55,7 +56,7 @@ namespace LiveCharts.Core.ViewModels
         /// <value>
         /// The point1.
         /// </value>
-        public Point Point1 { get; set; }
+        public PointF Point1 { get; set; }
 
         /// <summary>
         /// Gets or sets the point2.
@@ -63,7 +64,7 @@ namespace LiveCharts.Core.ViewModels
         /// <value>
         /// The point2.
         /// </value>
-        public Point Point2 { get; set; }
+        public PointF Point2 { get; set; }
 
         /// <summary>
         /// Gets or sets the point3.
@@ -71,7 +72,7 @@ namespace LiveCharts.Core.ViewModels
         /// <value>
         /// The point3.
         /// </value>
-        public Point Point3 { get; set; }
+        public PointF Point3 { get; set; }
 
         /// <summary>
         /// Gets or sets the length of the aprox.

@@ -1,4 +1,5 @@
-﻿using LiveCharts.Core.Abstractions;
+﻿using System.Drawing;
+using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Abstractions.DataSeries;
 using LiveCharts.Core.Charts;
 using LiveCharts.Core.Coordinates;
@@ -7,7 +8,6 @@ using LiveCharts.Core.Drawing;
 using LiveCharts.Core.Drawing.Svg;
 using LiveCharts.Core.Interaction;
 using LiveCharts.Core.ViewModels;
-using Point = LiveCharts.Core.Drawing.Point;
 
 namespace LiveCharts.Core.DataSeries
 {
@@ -56,8 +56,8 @@ namespace LiveCharts.Core.DataSeries
             var x = cartesianChart.Dimensions[0][ScalesXAt];
             var y = cartesianChart.Dimensions[1][ScalesYAt];
             var uw = chart.Get2DUiUnitWidth(x, y);
-            var p1 = new Point(RangeByDimension[2].To, MinPointDiameter);
-            var p2 = new Point(RangeByDimension[2].From, MaxPointDiameter);
+            var p1 = new PointF(RangeByDimension[2].To, MinPointDiameter);
+            var p2 = new PointF(RangeByDimension[2].From, MaxPointDiameter);
 
             Point<TModel, WeightedPoint, ScatterViewModel> previous = null;
             foreach (var current in Points)
@@ -71,7 +71,7 @@ namespace LiveCharts.Core.DataSeries
 
                 var vm = new ScatterViewModel
                 {
-                    Location = new Point(p[0], p[1]) + new Point(uw[0], uw[1]),
+                    Location = Perform.Sum(new PointF(p[0], p[1]), new PointF(uw[0], uw[1])),
                     Diameter = p[2]
                 };
 
@@ -84,7 +84,7 @@ namespace LiveCharts.Core.DataSeries
                 current.View.DrawShape(current, previous);
 
                 current.InteractionArea = new RectangleInteractionArea(
-                    new Rectangle(
+                    new RectangleF(
                         vm.Location.X - p[2] * .5f,
                         vm.Location.Y - p[2] * .5f,
                         p[2],

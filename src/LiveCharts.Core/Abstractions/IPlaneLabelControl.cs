@@ -1,4 +1,4 @@
-using LiveCharts.Core.Drawing;
+using System.Drawing;
 
 namespace LiveCharts.Core.Abstractions
 {
@@ -7,6 +7,11 @@ namespace LiveCharts.Core.Abstractions
     /// </summary>
     public interface IPlaneLabelControl
     {
-        Size Measure(string label);
+        /// <summary>
+        /// Measures the specified label.
+        /// </summary>
+        /// <param name="label">The label.</param>
+        /// <returns></returns>
+        SizeF Measure(string label);
     }
 }

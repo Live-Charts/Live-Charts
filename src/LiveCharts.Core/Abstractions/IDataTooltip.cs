@@ -1,6 +1,6 @@
 using System.Collections.Generic;
+using System.Drawing;
 using LiveCharts.Core.Data;
-using LiveCharts.Core.Drawing;
 
 namespace LiveCharts.Core.Abstractions
 {
@@ -22,14 +22,14 @@ namespace LiveCharts.Core.Abstractions
         /// Measures this instance with the selected points.
         /// </summary>
         /// <returns></returns>
-        Size ShowAndMeasure(IEnumerable<PackedPoint> selected, IChartView chart);
+        SizeF ShowAndMeasure(IEnumerable<PackedPoint> selected, IChartView chart);
 
         /// <summary>
         ///  Moves to the specified location.
         /// </summary>
         /// <param name="location">The location.</param>
         /// <param name="chart">The chart.</param>
-        void Move(Point location, IChartView chart);
+        void Move(PointF location, IChartView chart);
 
         /// <summary>
         /// Hides from specified chart.

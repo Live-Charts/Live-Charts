@@ -1,7 +1,6 @@
 ﻿using System.ComponentModel;
 using System.Drawing;
 using LiveCharts.Core.Drawing.Svg;
-using Point = LiveCharts.Core.Drawing.Point;
 
 namespace LiveCharts.Core.Abstractions.DataSeries
 {

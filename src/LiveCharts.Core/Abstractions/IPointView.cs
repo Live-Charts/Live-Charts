@@ -1,5 +1,5 @@
+using System.Drawing;
 using LiveCharts.Core.Data;
-using LiveCharts.Core.Drawing;
 
 namespace LiveCharts.Core.Abstractions
 {
@@ -42,6 +42,6 @@ namespace LiveCharts.Core.Abstractions
         /// </summary>
         /// <param name="point">The point.</param>
         /// <param name="location">The location.</param>
-        void DrawLabel(TPoint point, Point location);
+        void DrawLabel(TPoint point, PointF location);
     }
 }

@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Data;
 using LiveCharts.Wpf.Animations;
-using Point = LiveCharts.Core.Drawing.Point;
-using Size = LiveCharts.Core.Drawing.Size;
+using Point = System.Windows.Point;
+using Size = System.Windows.Size;
 
 namespace LiveCharts.Wpf.Controls
 {
@@ -114,7 +115,7 @@ namespace LiveCharts.Wpf.Controls
 
         TooltipSelectionMode IDataToolTip.SelectionMode => SelectionMode;
 
-        Size IDataToolTip.ShowAndMeasure(IEnumerable<PackedPoint> selected, IChartView chart)
+        SizeF IDataToolTip.ShowAndMeasure(IEnumerable<PackedPoint> selected, IChartView chart)
         {
             var content = (ChartContent) chart.Content;
 
@@ -127,7 +128,7 @@ namespace LiveCharts.Wpf.Controls
             content.TooltipPopup.IsOpen = true;
             UpdateLayout();
 
-            return new Size((float) DesiredSize.Width, (float) DesiredSize.Height);
+            return new SizeF((float) DesiredSize.Width, (float) DesiredSize.Height);
         }
 
         /// <inheritdoc />
@@ -137,7 +138,7 @@ namespace LiveCharts.Wpf.Controls
             content.TooltipPopup.IsOpen = false;
         }
 
-        void IDataToolTip.Move(Point location, IChartView chart)
+        void IDataToolTip.Move(PointF location, IChartView chart)
         {
             var content = (ChartContent) chart.Content;
             content.TooltipPopup.Animate()

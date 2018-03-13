@@ -1,4 +1,5 @@
 using System;
+using System.Drawing;
 using System.Linq;
 using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Abstractions.DataSeries;
@@ -99,7 +100,7 @@ namespace LiveCharts.Core.DataSeries
                     columnStart
                 };
 
-                var difference = Vector.SubstractEach2D(columnCorner1, columnCorner2);
+                var difference = Perform.SubstractEach2D(columnCorner1, columnCorner2);
 
                 if (current.View == null)
                 {
@@ -108,8 +109,8 @@ namespace LiveCharts.Core.DataSeries
 
                 if (current.View.VisualElement == null)
                 {
-                    var initialRectangle = new Rectangle();
-                    current.ViewModel = new ColumnViewModel(Rectangle.Empty, initialRectangle, orientation);
+                    var initialRectangle = new RectangleF();
+                    current.ViewModel = new ColumnViewModel(RectangleF.Empty, initialRectangle, orientation);
                 }
 
                 var location = new []
@@ -120,7 +121,7 @@ namespace LiveCharts.Core.DataSeries
 
                 var vm = new ColumnViewModel(
                     current.ViewModel.To,
-                    new Rectangle(
+                    new RectangleF(
                         location[wi] + offsetX + xByPosition,
                         location[hi] + offsetY,
                         Math.Abs(difference[wi]),

@@ -11,9 +11,7 @@ using LiveCharts.Core.Data;
 using LiveCharts.Core.Drawing;
 using LiveCharts.Core.Drawing.Svg;
 using LiveCharts.Core.Events;
-using Size = LiveCharts.Core.Drawing.Size;
 using Font = LiveCharts.Core.Abstractions.Font;
-using Point = LiveCharts.Core.Drawing.Point;
 
 namespace LiveCharts.Core.DataSeries
 {
@@ -468,7 +466,7 @@ namespace LiveCharts.Core.DataSeries
         /// or
         /// vertical - null
         /// </exception>
-        protected Point GetLabelPosition(
+        protected PointF GetLabelPosition(
             Point pointLocation,
             Margin pointMargin,
             float betweenBottomLimit,
@@ -531,7 +529,7 @@ namespace LiveCharts.Core.DataSeries
                         nameof(DataLabelsPosition.VerticalAlignment), DataLabelsPosition.VerticalAlignment, null);
             }
 
-            return new Point(left, top);
+            return new PointF(left, top);
         }
 
         internal void ResetRanges()

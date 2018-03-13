@@ -1,5 +1,5 @@
+using System.Drawing;
 using LiveCharts.Core.Data;
-using LiveCharts.Core.Drawing;
 
 namespace LiveCharts.Core.Abstractions
 {
@@ -13,6 +13,6 @@ namespace LiveCharts.Core.Abstractions
         /// </summary>
         /// <param name="point">The point.</param>
         /// <returns></returns>
-        Size Measure(PackedPoint point);
+        SizeF Measure(PackedPoint point);
     }
 }

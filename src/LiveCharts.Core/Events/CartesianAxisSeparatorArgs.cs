@@ -1,4 +1,5 @@
-﻿using LiveCharts.Core.Abstractions;
+﻿using System.Drawing;
+using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Dimensions;
 using LiveCharts.Core.Drawing;
 
@@ -15,7 +16,7 @@ namespace LiveCharts.Core.Events
         /// <value>
         /// From.
         /// </value>
-        public Rectangle From { get; set; }
+        public RectangleF SeparatorFrom { get; set; }
 
         /// <summary>
         /// Gets or sets to.
@@ -23,7 +24,23 @@ namespace LiveCharts.Core.Events
         /// <value>
         /// To.
         /// </value>
-        public Rectangle To { get; set; }
+        public RectangleF SeparatorTo { get; set; }
+
+        /// <summary>
+        /// Gets or sets the label from.
+        /// </summary>
+        /// <value>
+        /// The label from.
+        /// </value>
+        public PointF LabelFrom { get; set; }
+
+        /// <summary>
+        /// Gets or sets the label to.
+        /// </summary>
+        /// <value>
+        /// The label to.
+        /// </value>
+        public PointF LabelTo { get; set; }
 
         /// <summary>
         /// Gets or sets the axis label model.

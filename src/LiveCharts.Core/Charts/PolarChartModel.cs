@@ -1,6 +1,6 @@
-﻿using LiveCharts.Core.Abstractions;
+﻿using System.Drawing;
+using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Dimensions;
-using LiveCharts.Core.Drawing;
 
 namespace LiveCharts.Core.Charts
 {
@@ -32,7 +32,7 @@ namespace LiveCharts.Core.Charts
         }
 
         /// <inheritdoc />
-        protected override void ViewOnPointerMoved(Point location, TooltipSelectionMode selectionMode, params double[] dimensions)
+        protected override void ViewOnPointerMoved(PointF location, TooltipSelectionMode selectionMode, params double[] dimensions)
         {
             throw new System.NotImplementedException();
         }

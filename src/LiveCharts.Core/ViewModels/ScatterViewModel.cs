@@ -1,4 +1,4 @@
-﻿using LiveCharts.Core.Drawing;
+﻿using System.Drawing;
 
 namespace LiveCharts.Core.ViewModels
 {
@@ -13,7 +13,7 @@ namespace LiveCharts.Core.ViewModels
         /// <value>
         /// The location.
         /// </value>
-        public Point Location { get; set; }
+        public PointF Location { get; set; }
 
         /// <summary>
         /// Gets or sets the size.

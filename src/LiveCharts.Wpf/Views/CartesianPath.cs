@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using LiveCharts.Core.Abstractions;
-using LiveCharts.Core.Drawing;
 using LiveCharts.Wpf.Animations;
 
 namespace LiveCharts.Wpf.Views
@@ -42,7 +42,7 @@ namespace LiveCharts.Wpf.Views
 
         /// <inheritdoc />
         public void SetStyle(
-            Point startPoint, System.Drawing.Color stroke, System.Drawing.Color fill, 
+            PointF startPoint, System.Drawing.Color stroke, System.Drawing.Color fill, 
             double strokeThickness, IEnumerable<double> strokeDashArray)
         {
             _figure.Animate()
@@ -57,7 +57,7 @@ namespace LiveCharts.Wpf.Views
         }
 
         /// <inheritdoc />
-        public object InsertSegment(object segment, int index, Point p1, Point p2, Point p3)
+        public object InsertSegment(object segment, int index, PointF p1, PointF p2, PointF p3)
         {
             var s = (BezierSegment) segment ?? new BezierSegment(p1.AsWpf(), p2.AsWpf(), p3.AsWpf(), true);
 

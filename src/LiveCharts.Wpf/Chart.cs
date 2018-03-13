@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Drawing;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
@@ -186,7 +187,7 @@ namespace LiveCharts.Wpf
             if (DataToolTip == null) return;
             var p = args.GetPosition(this);
             var c = new Point(p.X + ((IChartContent) Content).DrawArea.Left, p.Y + ((IChartContent)Content).DrawArea.Top);
-            PointerMoved?.Invoke(new Core.Drawing.Point((float) c.X, (float) c.Y), DataToolTip.SelectionMode, c.X, c.Y);
+            PointerMoved?.Invoke(new PointF((float) c.X, (float) c.Y), DataToolTip.SelectionMode, c.X, c.Y);
         }
 
         #endregion

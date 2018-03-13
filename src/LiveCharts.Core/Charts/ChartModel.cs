@@ -13,7 +13,6 @@ using LiveCharts.Core.DataSeries;
 using LiveCharts.Core.Dimensions;
 using LiveCharts.Core.Drawing;
 using LiveCharts.Core.Events;
-using Point = LiveCharts.Core.Drawing.Point;
 
 namespace LiveCharts.Core.Charts
 {
@@ -258,7 +257,7 @@ namespace LiveCharts.Core.Charts
         /// <param name="selectionMode">The selection mode.</param>
         /// <param name="dimensions">The dimensions.</param>
         protected abstract void ViewOnPointerMoved(
-            Point location, TooltipSelectionMode selectionMode, params double[] dimensions);
+            PointF location, TooltipSelectionMode selectionMode, params double[] dimensions);
 
         /// <summary>
         /// Updates the chart.
@@ -301,7 +300,7 @@ namespace LiveCharts.Core.Charts
                     if (plane.PointWidth == null)
                     {
                         var current = InvertXy ? series.DefaultPointWidth.InvertXy() : series.DefaultPointWidth;
-                        plane.ActualPointWidth = Vector.MaxEach2D(plane.ActualPointWidth ?? new[] {0f, 0f}, current);
+                        plane.ActualPointWidth = Perform.MaxEach2D(plane.ActualPointWidth ?? new[] {0f, 0f}, current);
                     }
                     else
                     {
@@ -370,11 +369,11 @@ namespace LiveCharts.Core.Charts
                         throw new ArgumentOutOfRangeException();
                 }
 
-                Legend.Move(new Point(lx, ly), View);
+                Legend.Move(new PointF(lx, ly), View);
             }
 
             DrawAreaLocation = new[] {dax, day};
-            DrawAreaSize = Vector.SubstractEach2D(chartSize, new[] {lw, lh});
+            DrawAreaSize = Perform.SubstractEach2D(chartSize, new[] {lw, lh});
         }
 
         /// <summary>

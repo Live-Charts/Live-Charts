@@ -1,4 +1,4 @@
-using LiveCharts.Core.Drawing;
+using System.Drawing;
 
 namespace LiveCharts.Core.Abstractions
 {
@@ -13,7 +13,7 @@ namespace LiveCharts.Core.Abstractions
         /// <value>
         /// The draw area.
         /// </value>
-        Rectangle DrawArea { get; set; }
+        RectangleF DrawArea { get; set; }
 
         /// <summary>
         /// Adds a child child.

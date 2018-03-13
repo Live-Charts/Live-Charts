@@ -1,4 +1,4 @@
-﻿using LiveCharts.Core.Drawing;
+﻿using System.Drawing;
 
 namespace LiveCharts.Core.Interaction
 {
@@ -12,7 +12,7 @@ namespace LiveCharts.Core.Interaction
         /// Initializes a new instance of the <see cref="RectangleInteractionArea"/> class.
         /// </summary>
         /// <param name="rectangle">The rectangle.</param>
-        public RectangleInteractionArea(Rectangle rectangle)
+        public RectangleInteractionArea(RectangleF rectangle)
         {
             Rectangle = rectangle;
         }
@@ -23,7 +23,7 @@ namespace LiveCharts.Core.Interaction
         /// <value>
         /// The rectangle.
         /// </value>
-        public Rectangle Rectangle { get; set; }
+        public RectangleF Rectangle { get; set; }
 
         /// <inheritdoc />
         public override bool Contains(params double[] dimensions)

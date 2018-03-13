@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Drawing;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
@@ -96,7 +97,7 @@ namespace LiveCharts.Wpf.Views
         }
 
         /// <inheritdoc />
-        protected override void OnDrawLabel(TPoint point, Core.Drawing.Point location)
+        protected override void OnDrawLabel(TPoint point, PointF location)
         {
             var chart = point.Chart.View;
             var isNew = Label == null;

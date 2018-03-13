@@ -6,9 +6,6 @@ using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Charts;
 using LiveCharts.Core.Drawing;
 using LiveCharts.Core.Events;
-using Point = LiveCharts.Core.Drawing.Point;
-using Rectangle = LiveCharts.Core.Drawing.Rectangle;
-using Size = LiveCharts.Core.Drawing.Size;
 
 namespace LiveCharts.Core.Dimensions
 {
@@ -223,10 +220,12 @@ namespace LiveCharts.Core.Dimensions
                 if (Dimension == 0)
                 {
                     var w = iui + stepSize > chart.DrawAreaSize[0] ? 0 : stepSize;
+                    var xModel = new RectangleF(new PointF(iui, 0), new SizeF(w, chart.DrawAreaSize[1]));
                     separator.Move(
                         new CartesianAxisSeparatorArgs
                         {
-                            To = new Rectangle(new Point(iui, 0), new Size(w, chart.DrawAreaSize[1])),
+                            SeparatorFrom = xModel, // ToDo: this probably wont look wood if the axis range changed, in that case it should mode from the previous range position to the new one..
+                            SeparatorTo = xModel,
                             AxisLabelViewModel = label,
                             Disposing = false,
                             Style = alternate ? XAlternativeSeparatorStyle : XSeparatorStyle,
@@ -236,10 +235,12 @@ namespace LiveCharts.Core.Dimensions
                 else
                 {
                     var h = iui + stepSize > chart.DrawAreaSize[1] ? 0 : stepSize;
+                    var yModel = new RectangleF(new PointF(0, iui), new SizeF(chart.DrawAreaSize[0], h));
                     separator.Move(
                         new CartesianAxisSeparatorArgs
                         {
-                            To = new Rectangle(new Point(0, iui), new Size(chart.DrawAreaSize[0], h)),
+                            SeparatorFrom = yModel, // ToDo: this probably wont look wood if the axis range changed, in that case it should mode from the previous range position to the new one..
+                            SeparatorTo = yModel,
                             AxisLabelViewModel = label,
                             Disposing = false,
                             Style = alternate ? YAlternativeSeparatorStyle : YSeparatorStyle,
@@ -343,12 +344,12 @@ namespace LiveCharts.Core.Dimensions
             var angle = ActualLabelsRotation;
 
             var content = FormatValue(value); // FormatValue(value - .5 * unit);
-            var labelModel = LabelProvider().Measure(content);
+            var labelSize = LabelProvider().Measure(content);
 
-            var xw = Math.Abs(Math.Cos(angle * toRadians) * labelModel.Width);  // width's    horizontal    component
-            var yw = Math.Abs(Math.Sin(angle * toRadians) * labelModel.Width);  // width's    vertical      component
-            var xh = Math.Abs(Math.Sin(angle * toRadians) * labelModel.Height); // height's   horizontal    component
-            var yh = Math.Abs(Math.Cos(angle * toRadians) * labelModel.Height); // height's   vertical      component
+            var xw = Math.Abs(Math.Cos(angle * toRadians) * labelSize.Width);  // width's    horizontal    component
+            var yw = Math.Abs(Math.Sin(angle * toRadians) * labelSize.Width);  // width's    vertical      component
+            var xh = Math.Abs(Math.Sin(angle * toRadians) * labelSize.Height); // height's   horizontal    component
+            var yh = Math.Abs(Math.Cos(angle * toRadians) * labelSize.Height); // height's   vertical      component
 
             // You can find more information about the cases at 
             // appendix/labels.2.png
@@ -459,28 +460,30 @@ namespace LiveCharts.Core.Dimensions
             }
 
             // correction by rotation
+            // ReSharper disable once InvertIf
             if (Math.Abs(ActualLabelsRotation) < 0.001)
             {
+                // ReSharper disable once ConvertIfStatementToSwitchStatement
                 if (Dimension == 0)
                 {
                     xo = xo - xw * .5f;
                 }
-
-                if (Dimension == 1)
+                else if (Dimension == 1)
                 {
                     yo = yo - yh * .5f;
                 }
             }
 
             return new AxisLabelViewModel(
-                new Point((float) x, (float) y),
-                new Point((float) xo, (float) yo),
+                new PointF((float) x, (float) y),
+                new PointF((float) xo, (float) yo),
                 new Margin(
                     (float) t,
                     (float) (xw + xh - l),
                     (float) (yw + yh - t),
                     (float) l),
-                content);
+                content,
+                labelSize);
         }
     }
 }

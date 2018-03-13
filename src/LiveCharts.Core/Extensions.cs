@@ -1,15 +1,11 @@
 ﻿using System.Drawing;
-using System.Linq;
-using LiveCharts.Core.Charts;
-using LiveCharts.Core.Data;
-using LiveCharts.Core.Drawing;
 
-namespace LiveCharts.Core.DefaultSettings
+namespace LiveCharts.Core
 {
     /// <summary>
     /// A set of useful extensions.
     /// </summary>
-    public static class LiveChartsExtensions
+    public static class Extensions
     {
         /// <summary>
         /// Sets the opacity.
