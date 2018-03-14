@@ -55,7 +55,6 @@ namespace LiveCharts.Core.Dimensions
         {
             MinValue = float.NaN;
             MaxValue = float.NaN;
-            DataRange = new RangeF();
             LabelFormatter = Formatters.AsMetricNumber;
             Charting.BuildFromSettings(this);
         }
@@ -67,6 +66,14 @@ namespace LiveCharts.Core.Dimensions
         /// The data range.
         /// </value>
         public RangeF DataRange { get; internal set; }
+
+        /// <summary>
+        /// Gets the point margin.
+        /// </summary>
+        /// <value>
+        /// The point margin.
+        /// </value>
+        public float PointMargin { get; internal set; }
 
         /// <summary>
         /// Gets or sets the maximum value to display.
@@ -291,8 +298,13 @@ namespace LiveCharts.Core.Dimensions
 
         #region INPC implementation
 
+        /// <inheritdoc />
         public event PropertyChangedEventHandler PropertyChanged;
 
+        /// <summary>
+        /// Called when a property changes.
+        /// </summary>
+        /// <param name="propertyName">Name of the property.</param>
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

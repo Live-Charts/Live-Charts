@@ -123,7 +123,7 @@ namespace LiveCharts.Wpf.Views
                     animation
                         .Property(Canvas.TopProperty, vm.To.Top)
                         .Property(FrameworkElement.HeightProperty, vm.To.Height)
-                        .InverseBounce(Canvas.LeftProperty, vm.To.Left, bounce)
+                        .Property(Canvas.LeftProperty, vm.To.Left, bounce)
                         .Bounce(FrameworkElement.WidthProperty, vm.To.Width, bounce);
                 }
             }

@@ -61,6 +61,11 @@ namespace LiveCharts.Core.Themes
                     series.StrokeThickness = 2;
                     series.DefaultFillOpacity = .3f;
                 })
+                .SetDefault<IScatterSeries>(scatter =>
+                {
+                    scatter.MinGeometrySize = 35;
+                    scatter.MaxGeometrySize = 40;
+                })
                 .SetDefault<Axis>(axis =>
                 {
                     axis.XSeparatorStyle = sepStyle;

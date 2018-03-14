@@ -336,13 +336,15 @@ namespace LiveCharts.Core.Charts
                         plane.ActualPointWidth = plane.PointWidth;
                     }
 
-                    if (plane.DataRange == null)
+                    if (((IResource) plane).UpdateId != UpdateId)
                     {
                         plane.DataRange = new RangeF
                         {
                             From = float.MinValue,
                             To = float.MaxValue
                         };
+
+                        plane.PointMargin = 0f;
                     }
 
                     if (series.RangeByDimension[i].From > plane.DataRange.From)
@@ -353,6 +355,11 @@ namespace LiveCharts.Core.Charts
                     if (series.RangeByDimension[i].To < plane.DataRange.To)
                     {
                         plane.DataRange.To = series.RangeByDimension[i].To;
+                    }
+
+                    if (series.PointMargin.Length > i && series.PointMargin[i] > plane.PointMargin)
+                    {
+                        plane.PointMargin = series.PointMargin[i];
                     }
                 }
             }

@@ -50,6 +50,8 @@ namespace LiveCharts.Core.DataSeries
     public class LineSeries<TModel>
         : CartesianSeries<TModel, Point, BezierViewModel, Point<TModel, Point, BezierViewModel>>, ILineSeries
     {
+        private ICartesianPath _path;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="LineSeries{TModel}"/> class.
         /// </summary>
@@ -71,7 +73,8 @@ namespace LiveCharts.Core.DataSeries
         /// <inheritdoc />
         public override float[] DefaultPointWidth => new[] {0f, 0f};
 
-        private ICartesianPath _path;
+        /// <inheritdoc />
+        public override float[] PointMargin => new[] {GeometrySize, GeometrySize};
 
         /// <inheritdoc />
         public override void UpdateView(ChartModel chart)

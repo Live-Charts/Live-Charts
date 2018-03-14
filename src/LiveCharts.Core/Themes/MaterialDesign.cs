@@ -84,8 +84,8 @@ namespace LiveCharts.Core.Themes
                 {
                     scatterSeries.DefaultFillOpacity = .6f;
                     scatterSeries.StrokeThickness = 3f;
-                    scatterSeries.MinPointDiameter = 25f;
-                    scatterSeries.MaxPointDiameter = 45f;
+                    scatterSeries.MinGeometrySize = 25f;
+                    scatterSeries.MaxGeometrySize = 45f;
                 })
                 .SetDefault<ILineSeries>(lineSeries =>
                 {

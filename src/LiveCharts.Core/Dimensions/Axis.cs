@@ -200,6 +200,7 @@ namespace LiveCharts.Core.Dimensions
             var unit = ActualPointWidth?[Dimension] ?? 0f;
 
             float l = 0f, r = 0f, t = 0f, b = 0f;
+
             for (var i = 0f; i < dimension; i += step)
             {
                 var label = EvaluateAxisLabel(sizeVector.ScaleFromUi(i, this, space), space, unit, sizeVector);
@@ -233,7 +234,7 @@ namespace LiveCharts.Core.Dimensions
             var stepSize = Math.Abs(chart.ScaleToUi(ActualStep, this) - chart.ScaleToUi(0, this));
             var alternate = false;
 
-            for (var i = (float) from; i < to + unit; i += ActualStep)
+            for (var i = (float) from; i <= to + unit + tolerance; i += ActualStep)
             {
                 alternate = !alternate;
                 var iui = chart.ScaleToUi(i, this);

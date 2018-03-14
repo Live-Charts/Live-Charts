@@ -70,23 +70,11 @@ namespace Assets.ViewModels
 
             SeriesCollection = new ChartingCollection<Series>
             {
-                new BarSeries<double>
+                new ScatterSeries<double>
                 {
-                    0.5,
+                    1,
                     2,
-                    1
-                },
-                new BarSeries<double>
-                {
-                    0,
-                    3,
                     3
-                },
-                new BarSeries<double>
-                {
-                    3,
-                    2,
-                    0.5
                 }
             };
 

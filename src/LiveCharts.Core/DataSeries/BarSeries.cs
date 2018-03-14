@@ -55,7 +55,6 @@ namespace LiveCharts.Core.DataSeries
         {
             MaxColumnWidth = 45f;
             ColumnPadding = 6f;
-
             Charting.BuildFromSettings<IColumnSeries>(this);
         }
 
@@ -67,6 +66,9 @@ namespace LiveCharts.Core.DataSeries
 
         /// <inheritdoc />
         public override float[] DefaultPointWidth => new[] {1f, 0f};
+
+        /// <inheritdoc />
+        public override float[] PointMargin => new[] {0f, 0f};
 
         /// <inheritdoc />
         public override void UpdateView(ChartModel chart)

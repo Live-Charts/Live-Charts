@@ -298,6 +298,14 @@ namespace LiveCharts.Core.DataSeries
         public abstract float[] DefaultPointWidth { get; }
 
         /// <summary>
+        /// Gets the point margin.
+        /// </summary>
+        /// <value>
+        /// The point margin.
+        /// </value>
+        public abstract float[] PointMargin { get; }
+
+        /// <summary>
         /// Gets the range by dimension.
         /// </summary>
         /// <value>

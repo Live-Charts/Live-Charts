@@ -110,7 +110,7 @@ namespace LiveCharts.Core.DataSeries
             set
             {
                 _itemsSource = value;
-                OnItemsIntancechanged();
+                OnItemsInstanceChanged();
                 OnPropertyChanged();
             }
         }
@@ -204,7 +204,7 @@ namespace LiveCharts.Core.DataSeries
             if (_chartPointsUpdateId == model.UpdateId) return;
             _chartPointsUpdateId = model.UpdateId;
 
-            // Assign a color if the user did not set it.
+            // Assign a color if the user didn't.
             if (Stroke == Color.Empty || Fill == Color.Empty)
             {
                 var nextColor = model.GetNextColor();
@@ -251,6 +251,8 @@ namespace LiveCharts.Core.DataSeries
                     InteractionArea = point.InteractionArea
                 });
         }
+
+        #region Items interaction
 
         /// <inheritdoc />
         public IEnumerator<TModel> GetEnumerator()
@@ -426,6 +428,8 @@ namespace LiveCharts.Core.DataSeries
             this[index] = (TModel) value;
         }
 
+        #endregion
+
         /// <inheritdoc />
         protected override void OnDisposing()
         {
@@ -454,7 +458,7 @@ namespace LiveCharts.Core.DataSeries
             }
         }
 
-        private void OnItemsIntancechanged()
+        private void OnItemsInstanceChanged()
         {
             _sourceAsIList = _itemsSource as IList<TModel>;
             _sourceAsRangeChanged = ItemsSource as INotifyRangeChanged<TModel>;
@@ -481,7 +485,7 @@ namespace LiveCharts.Core.DataSeries
         {
             Tracker = new Dictionary<object, TPoint>();
             _itemsSource = itemsSource ?? new ChartingCollection<TModel>();
-            OnItemsIntancechanged();
+            OnItemsInstanceChanged();
             var t = typeof(TModel);
             Metadata = new SeriesMetatada
             {

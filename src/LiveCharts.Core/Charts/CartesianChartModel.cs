@@ -253,8 +253,8 @@ namespace LiveCharts.Core.Charts
             // for each dimension (for a cartesian chart X and Y)
             for (var index = 0; index < Dimensions.Length; index++)
             {
+                // for each plane in each dimension
                 var dimension = Dimensions[index];
-// for each axis in each dimension
 
                 foreach (var plane in dimension)
                 {
@@ -280,12 +280,22 @@ namespace LiveCharts.Core.Charts
                         }
                     }
 
-                    // get the axis limits...
+                    // set the axis limits, use the user defined value if not double.Nan, otherwise use the value calculated by LVC
+
+                    var uiPointMargin = 0f;
+
+                    if (index < 2 && (double.IsNaN(plane.MinValue) || double.IsNaN(plane.MaxValue)))
+                    {
+                        plane.ActualMinValue = plane.DataRange.To;
+                        plane.ActualMaxValue = plane.DataRange.From;
+                        uiPointMargin = ScaleFromUi(plane.PointMargin, plane) - ScaleFromUi(0f, plane);
+                    }
+
                     plane.ActualMinValue = double.IsNaN(plane.MinValue)
-                        ? plane.DataRange.To
+                        ? plane.DataRange.To - uiPointMargin
                         : plane.MinValue;
                     plane.ActualMaxValue = double.IsNaN(plane.MaxValue)
-                        ? plane.DataRange.From
+                        ? plane.DataRange.From + uiPointMargin
                         : plane.MaxValue;
 
                     plane.ActualReverse = plane.Dimension == 1;
@@ -302,6 +312,7 @@ namespace LiveCharts.Core.Charts
 
                     // we stack the axis required margin
                     var mi = axis.CalculateAxisMargin(this);
+
                     switch (axis.Position)
                     {
                         case AxisPosition.Top:

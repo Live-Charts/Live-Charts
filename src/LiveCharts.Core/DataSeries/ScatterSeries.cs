@@ -51,8 +51,8 @@ namespace LiveCharts.Core.DataSeries
         /// </summary>
         public ScatterSeries()
         {
-            MaxPointDiameter = 30f;
-            MinPointDiameter = 12f;
+            MaxGeometrySize = 30f;
+            MinGeometrySize = 14f;
             StrokeThickness = 1f;
             Geometry = Geometry.Circle;
             Charting.BuildFromSettings<IScatterSeries>(this);
@@ -70,13 +70,16 @@ namespace LiveCharts.Core.DataSeries
         public Geometry PointGeometry { get; set; }
 
         /// <inheritdoc />
-        public float MaxPointDiameter { get; set; }
+        public float MaxGeometrySize { get; set; }
 
         /// <inheritdoc />
-        public float MinPointDiameter { get; set; }
+        public float MinGeometrySize { get; set; }
 
         /// <inheritdoc />
         public override float[] DefaultPointWidth => new []{0f,0f};
+
+        /// <inheritdoc />
+        public override float[] PointMargin => new[] {MaxGeometrySize, MaxGeometrySize};
 
         /// <inheritdoc />
         public override void UpdateView(ChartModel chart)
@@ -85,8 +88,8 @@ namespace LiveCharts.Core.DataSeries
             var x = cartesianChart.Dimensions[0][ScalesXAt];
             var y = cartesianChart.Dimensions[1][ScalesYAt];
             var uw = chart.Get2DUiUnitWidth(x, y);
-            var p1 = new PointF(RangeByDimension[2].To, MinPointDiameter);
-            var p2 = new PointF(RangeByDimension[2].From, MaxPointDiameter);
+            var p1 = new PointF(RangeByDimension[2].To, MinGeometrySize);
+            var p2 = new PointF(RangeByDimension[2].From, MaxGeometrySize);
 
             Point<TModel, WeightedPoint, ScatterViewModel> previous = null;
             foreach (var current in Points)
