@@ -85,11 +85,20 @@ namespace LiveCharts.Core.DataSeries
         public override void UpdateView(ChartModel chart)
         {
             var cartesianChart = (CartesianChartModel)chart;
-            var x = cartesianChart.Dimensions[0][ScalesXAt];
-            var y = cartesianChart.Dimensions[1][ScalesYAt];
+            var x = cartesianChart.Dimensions[0][ScalesAt[0]];
+            var y = cartesianChart.Dimensions[1][ScalesAt[1]];
+
             var uw = chart.Get2DUiUnitWidth(x, y);
+
             var p1 = new PointF(RangeByDimension[2].To, MinGeometrySize);
             var p2 = new PointF(RangeByDimension[2].From, MaxGeometrySize);
+
+            int xi = 0, yi = 1;
+            if (chart.InvertXy)
+            {
+                xi = 1;
+                yi = 0;
+            }
 
             Point<TModel, WeightedPoint, ScatterViewModel> previous = null;
             foreach (var current in Points)
@@ -103,7 +112,7 @@ namespace LiveCharts.Core.DataSeries
 
                 var vm = new ScatterViewModel
                 {
-                    Location = Perform.Sum(new PointF(p[0], p[1]), new PointF(uw[0], uw[1])),
+                    Location = Perform.Sum(new PointF(p[xi], p[yi]), new PointF(uw[0], uw[1])),
                     Diameter = p[2]
                 };
 

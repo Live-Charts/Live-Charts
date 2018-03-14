@@ -49,9 +49,9 @@ namespace LiveCharts.Core.Themes
         {
             var baseFont = new Font("Arial", 11, FontStyles.Regular, FontWeight.Regular);
 
-            var sepStyle = new SeparatorStyle(Color.FromArgb(255, 230, 230, 230), Color.FromArgb(50, 245, 245, 245), 1);
+            var sepStyle = new SeparatorStyle(Color.FromArgb(0, 230, 230, 230), Color.FromArgb(150, 245, 245, 245), 1);
             var altStyle =
-                new SeparatorStyle(Color.FromArgb(255, 220, 220, 220), Color.FromArgb(50, 220, 220, 220), 1);
+                new SeparatorStyle(Color.FromArgb(0, 220, 220, 220), Color.FromArgb(150, 220, 220, 220), 1);
 
             charting
                 .UseMaterialDesignColors()
