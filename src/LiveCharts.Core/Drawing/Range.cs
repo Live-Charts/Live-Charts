@@ -40,12 +40,12 @@ namespace LiveCharts.Core.Drawing
         /// <summary>
         /// Initializes a new instance of the <see cref="RangeF"/> class.
         /// </summary>
-        /// <param name="min">The minimum.</param>
-        /// <param name="max">The maximum.</param>
-        public RangeF(float min, float max)
+        /// <param name="max">The minimum.</param>
+        /// <param name="min">The maximum.</param>
+        public RangeF(float max, float min)
         {
-            From = min;
-            To = max;
+            Max = max;
+            Min = min;
         }
 
         /// <summary>
@@ -54,7 +54,7 @@ namespace LiveCharts.Core.Drawing
         /// <value>
         /// From.
         /// </value>
-        public float From { get; set; }
+        public float Max { get; set; }
 
         /// <summary>
         /// Gets or sets to.
@@ -62,6 +62,6 @@ namespace LiveCharts.Core.Drawing
         /// <value>
         /// To.
         /// </value>
-        public float To { get; set; }
+        public float Min { get; set; }
     }
 }

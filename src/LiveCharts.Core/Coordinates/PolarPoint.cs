@@ -75,8 +75,8 @@ namespace LiveCharts.Core.Coordinates
         {
             var radius = rangeByDimension[0];
 
-            if (Radius > radius.From) radius.From = Radius;
-            if (Radius < radius.To) radius.To = Radius;
+            if (Radius > radius.Max) radius.Max = Radius;
+            if (Radius < radius.Min) radius.Min = Radius;
         }
 
         /// <inheritdoc />

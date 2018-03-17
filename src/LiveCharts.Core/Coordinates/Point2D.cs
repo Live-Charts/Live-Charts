@@ -74,10 +74,10 @@ namespace LiveCharts.Core.Coordinates
             var x = rangeByDimension[0];
             var y = rangeByDimension[1];
 
-            if (X > x.From) x.From = X;
-            if (X < x.To) x.To = X;
-            if (Y > y.From) y.From = Y;
-            if (Y < y.To) y.To = Y;
+            if (X > x.Max) x.Max = X;
+            if (X < x.Min) x.Min = X;
+            if (Y > y.Max) y.Max = Y;
+            if (Y < y.Min) y.Min = Y;
         }
 
         /// <inheritdoc />

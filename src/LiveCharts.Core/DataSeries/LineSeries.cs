@@ -58,6 +58,8 @@ namespace LiveCharts.Core.DataSeries
         public LineSeries()
         {
             Geometry = Geometry.Circle;
+            GeometrySize = 12f;
+            LineSmoothness = .8f;
             Charting.BuildFromSettings<ILineSeries>(this);
         }
 
@@ -81,11 +83,8 @@ namespace LiveCharts.Core.DataSeries
         {
             var cartesianChart = (CartesianChartModel) chart;
 
-            var di = 0;
-            var dj = 1;
-
-            var x = chart.Dimensions[di][ScalesAt[di]];;
-            var y = chart.Dimensions[dj][ScalesAt[dj]];
+            var x = chart.Dimensions[0][ScalesAt[0]];
+            var y = chart.Dimensions[1][ScalesAt[1]];
 
             var uw = chart.Get2DUiUnitWidth(x, y);
 
@@ -108,6 +107,9 @@ namespace LiveCharts.Core.DataSeries
                     chart.ScaleToUi(bezier.Point.Coordinate.X, x),
                     chart.ScaleToUi(bezier.Point.Coordinate.Y, y)
                 };
+
+                if (chart.InvertXy) bezier.Invert();
+
                 if (isFist)
                 {
                     _path.SetStyle(bezier.ViewModel.Point1, Stroke, Fill, StrokeThickness, StrokeDashArray);
@@ -280,6 +282,14 @@ namespace LiveCharts.Core.DataSeries
         {
             public Point<TModel, Point, BezierViewModel> Point { get; set; }
             public BezierViewModel ViewModel { get; set; }
+
+            public void Invert()
+            {
+                ViewModel.Location = new PointF(ViewModel.Location.Y, ViewModel.Location.X);
+                ViewModel.Point1 = new PointF(ViewModel.Point1.Y, ViewModel.Point1.X);
+                ViewModel.Point2 = new PointF(ViewModel.Point2.Y, ViewModel.Point2.X);
+                ViewModel.Point3 = new PointF(ViewModel.Point3.Y, ViewModel.Point3.X);
+            }
         }
     }
 }

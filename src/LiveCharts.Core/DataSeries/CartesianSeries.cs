@@ -60,7 +60,7 @@ namespace LiveCharts.Core.DataSeries
             //      see: https://lvcharts.net/App/examples/v1/wf/Multiple%20Axes
             // The ScaleAt array, for a cartesian series has 2 dimensions:
             //               {x, y}
-            ScalesAt = new [] {0, 0};
+            ScalesAt = new[] {0, 0};
             RangeByDimension = new[]
             {
                 new RangeF(), // x

@@ -96,10 +96,10 @@ namespace LiveCharts.Core.Coordinates
             var x = rangeByDimension[0];
             var y = rangeByDimension[1];
 
-            if (Index > x.From) x.From = Index;
-            if (Index < x.To) x.To = Index;
-            if (Value > y.From) y.From = Value;
-            if (Value < y.To) y.To = Value;
+            if (Index > x.Max) x.Max = Index;
+            if (Index < x.Min) x.Min = Index;
+            if (Value > y.Max) y.Max = Value;
+            if (Value < y.Min) y.Min = Value;
         }
 
         /// <inheritdoc />

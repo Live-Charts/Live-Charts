@@ -569,18 +569,6 @@ namespace LiveCharts.Core.DataSeries
             return new PointF(left, top);
         }
 
-        internal void ResetRanges()
-        {
-            for (var index = 0; index < RangeByDimension.Length; index++)
-            {
-                RangeByDimension[index] = new RangeF
-                {
-                    From = float.MinValue,
-                    To = float.MaxValue
-                };
-            }
-        }
-
         internal void AddChart(ChartModel chart)
         {
             if (_usedBy.Contains(chart)) return;

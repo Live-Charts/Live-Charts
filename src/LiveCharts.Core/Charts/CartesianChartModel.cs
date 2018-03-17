@@ -286,16 +286,16 @@ namespace LiveCharts.Core.Charts
 
                     if (index < 2 && (double.IsNaN(plane.MinValue) || double.IsNaN(plane.MaxValue)))
                     {
-                        plane.ActualMinValue = plane.DataRange.To;
-                        plane.ActualMaxValue = plane.DataRange.From;
+                        plane.ActualMinValue = plane.DataRange.Min;
+                        plane.ActualMaxValue = plane.DataRange.Max;
                         uiPointMargin = ScaleFromUi(plane.PointMargin, plane) - ScaleFromUi(0f, plane);
                     }
 
                     plane.ActualMinValue = double.IsNaN(plane.MinValue)
-                        ? plane.DataRange.To - uiPointMargin
+                        ? plane.DataRange.Min - uiPointMargin
                         : plane.MinValue;
                     plane.ActualMaxValue = double.IsNaN(plane.MaxValue)
-                        ? plane.DataRange.From + uiPointMargin
+                        ? plane.DataRange.Max + uiPointMargin
                         : plane.MaxValue;
 
                     plane.ActualReverse = plane.Dimension == 1;

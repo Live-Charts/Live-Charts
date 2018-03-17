@@ -58,7 +58,7 @@ namespace LiveCharts.Core.Themes
                 .UseMaterialDesignColors()
                 .SetDefault<ISeries>(series =>
                 {
-                    series.StrokeThickness = 2;
+                    series.StrokeThickness = 3f;
                     series.DefaultFillOpacity = .3f;
                 })
                 .SetDefault<IScatterSeries>(scatter =>

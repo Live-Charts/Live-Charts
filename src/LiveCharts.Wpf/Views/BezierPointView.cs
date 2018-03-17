@@ -103,18 +103,20 @@ namespace LiveCharts.Wpf.Views
                     .Begin();
             }
 
-            Shape.StrokeThickness = 3.5;
+            Shape.StrokeThickness = point.Series.StrokeThickness;
             Shape.Stroke = point.Series.Stroke.AsWpf();
             Shape.Fill = Brushes.White;
             Shape.Data =
                 Geometry.Parse(Core.Drawing.Svg.Geometry.Circle.Data); // Geometry.Parse(viewModel.Geometry.Data);
 
             if (!isNew)
+            {
                 Shape.Animate()
                     .AtSpeed(speed)
                     .Property(Canvas.LeftProperty, _vm.Location.X - .5 * _vm.GeometrySize)
                     .Property(Canvas.TopProperty, _vm.Location.Y - .5 * _vm.GeometrySize)
                     .Begin();
+            }
 
             _segment.Animate()
                 .AtSpeed(speed)

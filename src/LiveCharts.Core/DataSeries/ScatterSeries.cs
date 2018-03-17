@@ -62,8 +62,6 @@ namespace LiveCharts.Core.DataSeries
                 new RangeF(), // y
                 new RangeF()  // w
             };
-            // ToDo: Check out if this is the best option... to avoid tooltip show throw...
-            ScalesAt = new[] {0, 0, 0};
         }
 
         /// <inheritdoc />
@@ -90,8 +88,8 @@ namespace LiveCharts.Core.DataSeries
 
             var uw = chart.Get2DUiUnitWidth(x, y);
 
-            var p1 = new PointF(RangeByDimension[2].To, MinGeometrySize);
-            var p2 = new PointF(RangeByDimension[2].From, MaxGeometrySize);
+            var p1 = new PointF(RangeByDimension[2].Min, MinGeometrySize);
+            var p2 = new PointF(RangeByDimension[2].Max, MaxGeometrySize);
 
             int xi = 0, yi = 1;
             if (chart.InvertXy)

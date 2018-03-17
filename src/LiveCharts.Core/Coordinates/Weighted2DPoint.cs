@@ -87,12 +87,12 @@ namespace LiveCharts.Core.Coordinates
             var y = rangeByDimension[1];
             var w = rangeByDimension[2];
 
-            if (X > x.From) x.From = X;
-            if (X < x.To) x.To = X;
-            if (Y > y.From) y.From = Y;
-            if (Y < y.To) y.To = Y;
-            if (Weight > w.From) w.From = Weight;
-            if (Weight < w.To) w.To = Weight;
+            if (X > x.Max) x.Max = X;
+            if (X < x.Min) x.Min = X;
+            if (Y > y.Max) y.Max = Y;
+            if (Y < y.Min) y.Min = Y;
+            if (Weight > w.Max) w.Max = Weight;
+            if (Weight < w.Min) w.Min = Weight;
         }
 
         /// <inheritdoc />

@@ -315,9 +315,17 @@ namespace LiveCharts.Core.Charts
 
             CopyDataFromView();
 
+            foreach (var dimension in Dimensions)
+            {
+                foreach (var plane in dimension)
+                {
+                    plane.DataRange = new RangeF(float.MinValue, float.MaxValue);
+                    plane.PointMargin = 0f;
+                }
+            }
+
             foreach (var series in Series.Where(x => x.IsVisible))
             {
-                series.ResetRanges();
                 series.Fetch(this);
                 RegisterResource(series);
 
@@ -336,25 +344,14 @@ namespace LiveCharts.Core.Charts
                         plane.ActualPointWidth = plane.PointWidth;
                     }
 
-                    if (((IResource) plane).UpdateId != UpdateId)
+                    if (series.RangeByDimension[i].Max > plane.DataRange.Max)
                     {
-                        plane.DataRange = new RangeF
-                        {
-                            From = float.MinValue,
-                            To = float.MaxValue
-                        };
-
-                        plane.PointMargin = 0f;
+                        plane.DataRange.Max = series.RangeByDimension[i].Max;
                     }
 
-                    if (series.RangeByDimension[i].From > plane.DataRange.From)
+                    if (series.RangeByDimension[i].Min < plane.DataRange.Min)
                     {
-                        plane.DataRange.From = series.RangeByDimension[i].From;
-                    }
-
-                    if (series.RangeByDimension[i].To < plane.DataRange.To)
-                    {
-                        plane.DataRange.To = series.RangeByDimension[i].To;
+                        plane.DataRange.Min = series.RangeByDimension[i].Min;
                     }
 
                     if (series.PointMargin.Length > i && series.PointMargin[i] > plane.PointMargin)

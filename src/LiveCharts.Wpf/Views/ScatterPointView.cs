@@ -54,7 +54,7 @@ namespace LiveCharts.Wpf.Views
             {
                 Shape = new Path{Stretch = Stretch.Fill};
                 chart.Content.AddChild(Shape);
-                Canvas.SetLeft(Shape, vm.Location.X );
+                Canvas.SetLeft(Shape, vm.Location.X);
                 Canvas.SetTop(Shape, vm.Location.Y);
                 Shape.Width = 0;
                 Shape.Height = 0;

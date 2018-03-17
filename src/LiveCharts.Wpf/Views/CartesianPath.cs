@@ -45,6 +45,7 @@ namespace LiveCharts.Wpf.Views
         private IEnumerable<double> _strokeDashArray;
         private double _previousLength;
         private TimeSpan _animationsSpeed;
+        private bool _isNew;
 
         public CartesianPath()
         {
@@ -67,6 +68,7 @@ namespace LiveCharts.Wpf.Views
         {
             _animationsSpeed = view.AnimationsSpeed;
             view.Content.AddChild(_strokePath);
+            _isNew = true;
         }
 
         /// <inheritdoc />
@@ -74,10 +76,19 @@ namespace LiveCharts.Wpf.Views
             PointF startPoint, System.Drawing.Color stroke, System.Drawing.Color fill, 
             double strokeThickness, IEnumerable<double> strokeDashArray)
         {
-            _figure.Animate()
-                .AtSpeed(_animationsSpeed)
-                .Property(PathFigure.StartPointProperty, startPoint.AsWpf())
-                .Begin();
+            if (_isNew)
+            {
+                // To self drawn animation.
+                _figure.StartPoint = startPoint.AsWpf();
+            }
+            else
+            {
+                _figure.Animate()
+                    .AtSpeed(_animationsSpeed)
+                    .Property(PathFigure.StartPointProperty, startPoint.AsWpf())
+                    .Begin();
+            }
+
             _strokePath.Stroke = stroke.AsWpf();
             _strokePath.Fill = null;
             _strokePath.StrokeThickness = strokeThickness;
@@ -113,7 +124,7 @@ namespace LiveCharts.Wpf.Views
                 remaining = -tl;
             }
 
-            _strokePath.StrokeDashArray = new DoubleCollection(GetAnimatedStrokeDashArray(l+remaining));
+            _strokePath.StrokeDashArray = new DoubleCollection(GetAnimatedStrokeDashArray(l + remaining));
             _strokePath.BeginAnimation(
                 Shape.StrokeDashOffsetProperty,
                 new DoubleAnimation(tl + remaining, 0, chart.AnimationsSpeed, FillBehavior.Stop));
@@ -130,6 +141,14 @@ namespace LiveCharts.Wpf.Views
         private IEnumerable<double> GetAnimatedStrokeDashArray(double length)
         {
             var stack = 0d;
+
+            if (_strokeDashArray == null)
+            {
+                yield return length;
+                yield return length;
+                yield break;
+            }
+
             var e = _strokeDashArray.GetEnumerator();
             var isStroked = true;
 

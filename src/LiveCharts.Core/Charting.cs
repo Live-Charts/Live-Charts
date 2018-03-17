@@ -195,8 +195,8 @@ namespace LiveCharts.Core
         public static void BuildFromSettings<T>(T instance)
         {
             if (!Builders.TryGetValue(typeof(T), out var builder)) return;
-            var c = (Action<T>) builder;
-            c(instance);
+            var builderForT = (Action<T>) builder;
+            builderForT(instance);
         }
 
         /// <summary>
