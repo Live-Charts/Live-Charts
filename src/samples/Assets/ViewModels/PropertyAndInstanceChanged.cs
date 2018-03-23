@@ -38,6 +38,7 @@ using LiveCharts.Core.Collections;
 using LiveCharts.Core.Coordinates;
 using LiveCharts.Core.Data;
 using LiveCharts.Core.DataSeries;
+using LiveCharts.Core.DataSeries.Data;
 using LiveCharts.Core.Dimensions;
 using Point = LiveCharts.Core.Coordinates.Point;
 
@@ -70,11 +71,11 @@ namespace Assets.ViewModels
 
             SeriesCollection = new ChartingCollection<Series>
             {
-                new LineSeries<double>
+                new LineSeries<City>
                 {
-                    1,
-                    5,
-                    3
+                    new City {Population = 1},
+                    new City {Population = 2},
+                    new City {Population = 3}
                 }
             };
 

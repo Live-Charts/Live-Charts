@@ -35,15 +35,15 @@ namespace LiveCharts.Core.ViewModels
     /// <summary>
     /// The column view model.
     /// </summary>
-    public struct ColumnViewModel
+    public struct BarViewModel
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ColumnViewModel"/> struct.
+        /// Initializes a new instance of the <see cref="BarViewModel"/> struct.
         /// </summary>
         /// <param name="from">From.</param>
         /// <param name="to">To.</param>
         /// <param name="orientation">The orientation property.</param>
-        public ColumnViewModel(RectangleF from, RectangleF to, Orientation orientation)
+        public BarViewModel(RectangleF from, RectangleF to, Orientation orientation)
         {
             From = from;
             To = to;

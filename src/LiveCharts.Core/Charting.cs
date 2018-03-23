@@ -31,6 +31,7 @@ using System.Drawing;
 using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Coordinates;
 using LiveCharts.Core.Data;
+using LiveCharts.Core.DataSeries.Data;
 using Point = LiveCharts.Core.Coordinates.Point;
 
 #endregion
@@ -80,20 +81,20 @@ namespace LiveCharts.Core
         public static Charting Current { get; }
 
         /// <summary>
-        /// Gets the drawing provider.
-        /// </summary>
-        /// <value>
-        /// The drawing provider.
-        /// </value>
-        public IUiProvider UiProvider { get; set; }
-
-        /// <summary>
         /// Gets or sets the chart point factory.
         /// </summary>
         /// <value>
         /// The chart point factory.
         /// </value>
         public IDataFactory DataFactory { get; set; }
+
+        /// <summary>
+        /// Gets or sets the UI provider.
+        /// </summary>
+        /// <value>
+        /// The UI provider.
+        /// </value>
+        public IUiProvider UiProvider { get; set; }
 
         #region Register types
 

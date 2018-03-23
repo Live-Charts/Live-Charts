@@ -29,7 +29,7 @@ using System;
 
 #endregion
 
-namespace LiveCharts.Core.Data
+namespace LiveCharts.Core.DataSeries.Data
 {
     /// <summary>
     /// A class containing series information.

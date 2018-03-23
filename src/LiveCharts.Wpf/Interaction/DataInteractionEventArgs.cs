@@ -28,6 +28,7 @@
 using System.Collections.Generic;
 using System.Windows.Input;
 using LiveCharts.Core.Data;
+using LiveCharts.Core.DataSeries.Data;
 
 #endregion
 

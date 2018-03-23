@@ -50,11 +50,6 @@ namespace LiveCharts.Core.Abstractions
         void AddChild(object child);
 
         /// <summary>
-        /// Moves the child.
-        /// </summary>
-        void MoveChild(object child, params double[] location);
-
-        /// <summary>
         /// Removes the child.
         /// </summary>
         void RemoveChild(object child);

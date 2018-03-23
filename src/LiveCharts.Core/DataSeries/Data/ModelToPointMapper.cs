@@ -28,11 +28,12 @@
 using System;
 using System.Collections.Generic;
 using LiveCharts.Core.Abstractions;
+using LiveCharts.Core.Data;
 using LiveCharts.Core.Events;
 
 #endregion
 
-namespace LiveCharts.Core.Data
+namespace LiveCharts.Core.DataSeries.Data
 {
     /// <summary>
     /// Defines a model to chart point mapping.

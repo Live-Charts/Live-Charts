@@ -82,13 +82,6 @@ namespace LiveCharts.Wpf.Controls
         }
 
         /// <inheritdoc />
-        public void MoveChild(object child, params double[] vector)
-        {
-            SetTop((UIElement) child, vector[0]);
-            SetLeft((UIElement) child, vector[1]);
-        }
-
-        /// <inheritdoc />
         public void RemoveChild(object child)
         {
             Children.Remove((UIElement) child);

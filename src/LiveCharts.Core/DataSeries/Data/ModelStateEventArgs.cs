@@ -25,36 +25,45 @@
 
 #region
 
-using System;
 using LiveCharts.Core.Abstractions;
-using LiveCharts.Core.Events;
 
 #endregion
 
-namespace LiveCharts.Core.Data
+namespace LiveCharts.Core.DataSeries.Data
 {
     /// <summary>
-    /// the model state class.
+    /// The model state event arguments.
     /// </summary>
-    /// <typeparam name="TModel">The type of the model.</typeparam>
-    /// <typeparam name="TCoordinate">The coordinate type.</typeparam>
-    public class ModelState<TModel, TCoordinate>
+    public class ModelStateEventArgs<TModel, TCoordinate>
         where TCoordinate : ICoordinate
     {
         /// <summary>
-        /// Gets or sets the condition.
+        /// Initializes a new instance of the <see cref="ModelStateEventArgs{TModel, TCoordinate}"/> class.
         /// </summary>
-        /// <value>
-        /// The condition.
-        /// </value>
-        public Func<TModel, bool> Trigger { get; set; }
+        /// <param name="visual">The visual.</param>
+        /// <param name="point">the point.</param>
+        public ModelStateEventArgs(
+            object visual,
+            PackedPoint<TModel, TCoordinate> point)
+        {
+            Visual = visual;
+            Point = point;
+        }
 
         /// <summary>
-        /// Gets or sets the type.
+        /// Gets a copy of the point in the chart.
         /// </summary>
         /// <value>
-        /// The type.
+        /// The point.
         /// </value>
-        public ModelStateHandler<TModel, TCoordinate> Handler { get; set; }
+        public PackedPoint<TModel, TCoordinate> Point { get; }
+
+        /// <summary>
+        /// Gets the visual.
+        /// </summary>
+        /// <value>
+        /// The visual.
+        /// </value>
+        public object Visual { get; }
     }
 }

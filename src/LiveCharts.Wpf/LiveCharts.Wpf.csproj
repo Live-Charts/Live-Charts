@@ -65,6 +65,9 @@
     <Compile Include="Interaction\DataInteractionEventArgs.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Interaction\DataInteractionHandler.cs" />
+    <Compile Include="Providers\BarSeriesViewProvider.cs" />
+    <Compile Include="Providers\BezierSeriesViewProvider.cs" />
+    <Compile Include="Providers\ScatterSeriesViewProvider.cs" />
     <Compile Include="Views\BezierPointView.cs" />
     <Compile Include="Views\CartesianPath.cs" />
     <Compile Include="Views\PointView.cs" />
@@ -77,7 +80,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Views\ColumnPointView.cs" />
+    <Compile Include="Views\BarPointView.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -105,10 +108,6 @@
     <ProjectReference Include="..\LiveCharts.Core\LiveCharts.Core.csproj">
       <Project>{8CAF054C-FB7C-405B-889D-59048650F4B4}</Project>
       <Name>LiveCharts.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\samples\Assets\Assets.csproj">
-      <Project>{742595A2-5344-4E28-AFD5-6BDCF7A9B729}</Project>
-      <Name>Assets</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

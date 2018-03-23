@@ -31,6 +31,7 @@ using LiveCharts.Core.Coordinates;
 using LiveCharts.Core.Data;
 using LiveCharts.Core.ViewModels;
 using LiveCharts.Wpf.Controls;
+using LiveCharts.Wpf.Providers;
 using LiveCharts.Wpf.Views;
 
 #endregion
@@ -74,24 +75,21 @@ namespace LiveCharts.Wpf
         }
 
         /// <inheritdoc />
-        public IPointView<TModel, Point<TModel, Point, ColumnViewModel>, Point, ColumnViewModel> 
-            GetNerBarPointView<TModel>()
+        public ISeriesViewProvider<TModel, Point, BarViewModel> BarViewProvider<TModel>()
         {
-            return new BarColumnPointView<TModel, Point<TModel, Point, ColumnViewModel>, Rectangle, DataLabel>();
+            return new BarSeriesViewProvider<TModel>();
         }
 
         /// <inheritdoc />
-        public IPointView<TModel, Point<TModel, Point, BezierViewModel>, Point, BezierViewModel>
-            GetNewBezierView<TModel>()
+        public ISeriesViewProvider<TModel, Point, BezierViewModel> BezierViewProvider<TModel>()
         {
-            return new BezierPointView<TModel, Point<TModel, Point, BezierViewModel>, DataLabel>();
+            return new BezierSeriesViewProvider<TModel>();
         }
 
         /// <inheritdoc />
-        public IPointView<TModel, Point<TModel, WeightedPoint, ScatterViewModel>, WeightedPoint, ScatterViewModel>
-            GetNewScatterView<TModel>()
+        public ISeriesViewProvider<TModel, WeightedPoint, ScatterViewModel> ScatterViewProvider<TModel>()
         {
-            return new ScatterPointView<TModel, Point<TModel, WeightedPoint, ScatterViewModel>, DataLabel>();
+            return new ScatterSeriesViewProvider<TModel>();
         }
     }
 }

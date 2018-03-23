@@ -179,7 +179,9 @@ namespace LiveCharts.Core.Charts
                 foreach (var series in Series.Where(x => x.IsVisible))
                 {
                     RegisterResource(series);
+                    series.UpdateStarted(View);
                     series.UpdateView(this);
+                    series.UpdateFinished(View);
                 }
 
                 CollectResources();

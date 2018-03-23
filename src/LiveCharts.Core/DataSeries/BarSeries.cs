@@ -32,10 +32,12 @@ using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Abstractions.DataSeries;
 using LiveCharts.Core.Charts;
 using LiveCharts.Core.Data;
+using LiveCharts.Core.DataSeries.Data;
 using LiveCharts.Core.Dimensions;
 using LiveCharts.Core.Drawing;
 using LiveCharts.Core.Interaction;
 using LiveCharts.Core.ViewModels;
+using Point = LiveCharts.Core.Coordinates.Point;
 
 #endregion
 
@@ -46,8 +48,10 @@ namespace LiveCharts.Core.DataSeries
     /// </summary>The column series class.
     /// <typeparam name="TModel">The type of the model.</typeparam>
     public class BarSeries<TModel>
-        : CartesianSeries<TModel, Coordinates.Point, ColumnViewModel, Point<TModel, Coordinates.Point, ColumnViewModel>>, IColumnSeries
+        : CartesianSeries<TModel, Point, BarViewModel, Point<TModel, Point, BarViewModel>>, IBarSeries
     {
+        private static ISeriesViewProvider<TModel, Point, BarViewModel> _provider;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="BarSeries{TModel}"/> class.
         /// </summary>
@@ -55,7 +59,7 @@ namespace LiveCharts.Core.DataSeries
         {
             MaxColumnWidth = 45f;
             ColumnPadding = 6f;
-            Charting.BuildFromSettings<IColumnSeries>(this);
+            Charting.BuildFromSettings<IBarSeries>(this);
         }
 
         /// <inheritdoc />
@@ -65,10 +69,17 @@ namespace LiveCharts.Core.DataSeries
         public float ColumnPadding { get; set; }
 
         /// <inheritdoc />
+        public override Type ResourceKey => typeof(IBarSeries);
+
+        /// <inheritdoc />
         public override float[] DefaultPointWidth => new[] {1f, 0f};
 
         /// <inheritdoc />
         public override float[] PointMargin => new[] {0f, 0f};
+
+        /// <inheritdoc />
+        protected override ISeriesViewProvider<TModel, Point, BarViewModel>
+            DefaultViewProvider => _provider ?? (_provider = Charting.Current.UiProvider.BarViewProvider<TModel>());
 
         /// <inheritdoc />
         public override void UpdateView(ChartModel chart)
@@ -83,7 +94,7 @@ namespace LiveCharts.Core.DataSeries
 
             var columnSeries = chart.Series
                 .Where(series => series.ScalesAt[1] == ScalesAt[1] &&
-                                 series is IColumnSeries)
+                                 series is IBarSeries)
                 .ToList();
 
             var cw = (uw[0] - ColumnPadding * columnSeries.Count) / columnSeries.Count;
@@ -114,7 +125,7 @@ namespace LiveCharts.Core.DataSeries
 
             var columnStart = GetColumnStart(chart, scaleAxis, directionAxis);
 
-            Point<TModel, Coordinates.Point, ColumnViewModel> previous = null;
+            Point<TModel, Coordinates.Point, BarViewModel> previous = null;
 
             foreach (var current in Points)
             {
@@ -136,7 +147,7 @@ namespace LiveCharts.Core.DataSeries
 
                 if (current.View == null)
                 {
-                    current.View = PointViewProvider();
+                    current.View = ViewProvider.GetNewPointView();
                 }
 
                 var location = new[]
@@ -158,10 +169,10 @@ namespace LiveCharts.Core.DataSeries
                             columnStart,
                             Math.Abs(difference[wi]),
                             0f);
-                    current.ViewModel = new ColumnViewModel(RectangleF.Empty, initialRectangle, orientation);
+                    current.ViewModel = new BarViewModel(RectangleF.Empty, initialRectangle, orientation);
                 }
 
-                var vm = new ColumnViewModel(
+                var vm = new BarViewModel(
                     current.ViewModel.To,
                     new RectangleF(
                         location[wi] + offsetX + positionOffset[0],
@@ -179,13 +190,6 @@ namespace LiveCharts.Core.DataSeries
 
                 previous = current;
             }
-        }
-
-        /// <inheritdoc />
-        protected override IPointView<TModel, Point<TModel, Coordinates.Point, ColumnViewModel>, Coordinates.Point, ColumnViewModel> 
-            DefaultPointViewProvider()
-        {
-            return Charting.Current.UiProvider.GetNerBarPointView<TModel>();
         }
 
         private static float GetColumnStart(ChartModel chart, Plane target, Plane complementary)

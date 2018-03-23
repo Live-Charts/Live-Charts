@@ -156,7 +156,7 @@ namespace LiveCharts.Wpf
         /// </summary>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
-        protected virtual IList<IList<Plane>> GetPlanesOrderedByDimension()
+        protected virtual IList<IList<Plane>> GetOrderedDimensions()
         {
             throw new NotImplementedException();
         }
@@ -280,14 +280,8 @@ namespace LiveCharts.Wpf
 
         IChartContent IChartView.Content
         {
-            get
-            {
-                return (IChartContent) Content;
-            }
-            set
-            {
-                Content = value;
-            }
+            get => (IChartContent) Content;
+            set => Content = value;
         }
 
         /// <inheritdoc cref="IChartView.ControlSize"/>
@@ -297,7 +291,7 @@ namespace LiveCharts.Wpf
         public Margin DrawMargin { get; set; }
 
         /// <inheritdoc />
-        IList<IList<Plane>> IChartView.Dimensions => GetPlanesOrderedByDimension();
+        IList<IList<Plane>> IChartView.Dimensions => GetOrderedDimensions();
 
         /// <inheritdoc cref="IChartView.Series"/>
         public IEnumerable<Series> Series

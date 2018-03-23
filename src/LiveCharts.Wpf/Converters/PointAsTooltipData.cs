@@ -29,6 +29,7 @@ using System;
 using System.Globalization;
 using System.Windows.Data;
 using LiveCharts.Core.Data;
+using LiveCharts.Core.DataSeries.Data;
 
 #endregion
 

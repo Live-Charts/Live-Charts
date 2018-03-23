@@ -120,8 +120,8 @@ namespace LiveCharts.Wpf
 
         #endregion
 
-        /// <inheritdoc cref="Chart.GetPlanesOrderedByDimension"/>
-        protected override IList<IList<Plane>> GetPlanesOrderedByDimension()
+        /// <inheritdoc cref="Chart.GetOrderedDimensions"/>
+        protected override IList<IList<Plane>> GetOrderedDimensions()
         {
             return new List<IList<Plane>>
             {

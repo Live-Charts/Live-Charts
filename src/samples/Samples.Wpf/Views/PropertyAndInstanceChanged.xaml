@@ -5,6 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:wpf="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
              xmlns:viewModels="clr-namespace:Assets.ViewModels;assembly=Assets"
+             xmlns:collections="clr-namespace:LiveCharts.Core.Collections;assembly=LiveCharts.Core"
+             xmlns:dataSeries="clr-namespace:LiveCharts.Core.DataSeries;assembly=LiveCharts.Core"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300">
     <UserControl.DataContext>
@@ -13,6 +15,7 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="35" />
+            <RowDefinition Height="*" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <StackPanel Orientation="Horizontal">
@@ -33,6 +36,8 @@
                             XAxis="{Binding X}"
                             AnimationsSpeed="0:0:1"
                             DataDoubleClickCommand="{Binding RemoveOnDoubleClick}"
-                            InvertAxis="True" />
+                            InvertAxis="False" />
+        <wpf:CartesianChart Grid.Row="2" Series="{Binding SeriesCollection}">
+        </wpf:CartesianChart>
     </Grid>
 </UserControl>

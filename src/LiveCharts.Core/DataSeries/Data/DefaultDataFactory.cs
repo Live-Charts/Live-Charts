@@ -31,7 +31,7 @@ using LiveCharts.Core.Abstractions;
 
 #endregion
 
-namespace LiveCharts.Core.Data
+namespace LiveCharts.Core.DataSeries.Data
 {
     /// <summary>
     /// Defines the default chart point factory.
@@ -49,7 +49,7 @@ namespace LiveCharts.Core.Data
             var notifiesChange = typeof(INotifyPropertyChanged).IsAssignableFrom(args.Series.Metadata.ModelType);
             var collection = args.Collection;
             var isValueType = args.Series.Metadata.IsValueType;
-            var tracker = args.Series.Tracker;
+            var tracker = args.Series.Content[args.Chart].PointTracker;
 
             void InvalidateOnPropertyChanged(object sender, PropertyChangedEventArgs e)
             {

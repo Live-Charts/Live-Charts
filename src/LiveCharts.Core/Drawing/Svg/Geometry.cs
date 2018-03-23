@@ -22,6 +22,7 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR 
 // OTHER DEALINGS IN THE SOFTWARE.
 #endregion
+
 namespace LiveCharts.Core.Drawing.Svg
 {
     /// <summary>
@@ -153,7 +154,7 @@ namespace LiveCharts.Core.Drawing.Svg
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj)) return false;
-            return obj is Geometry && Equals((Geometry)obj);
+            return obj is Geometry geometry && Equals(geometry);
         }
 
         /// <summary>

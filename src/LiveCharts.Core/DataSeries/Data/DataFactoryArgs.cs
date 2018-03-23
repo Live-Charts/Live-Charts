@@ -25,45 +25,43 @@
 
 #region
 
+using System.Collections.Generic;
 using LiveCharts.Core.Abstractions;
+using LiveCharts.Core.Charts;
 
 #endregion
 
-namespace LiveCharts.Core.Data
+namespace LiveCharts.Core.DataSeries.Data
 {
     /// <summary>
-    /// The model state event arguments.
+    /// Point factory options class.
     /// </summary>
-    public class ModelStateEventArgs<TModel, TCoordinate>
+    public class DataFactoryArgs<TModel, TCoordinate, TViewModel, TPoint>
+        where TPoint : Point<TModel, TCoordinate, TViewModel>, new()
         where TCoordinate : ICoordinate
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ModelStateEventArgs{TModel, TCoordinate}"/> class.
-        /// </summary>
-        /// <param name="visual">The visual.</param>
-        /// <param name="point">the point.</param>
-        public ModelStateEventArgs(
-            object visual,
-            PackedPoint<TModel, TCoordinate> point)
-        {
-            Visual = visual;
-            Point = point;
-        }
-
-        /// <summary>
-        /// Gets a copy of the point in the chart.
+        /// Gets or sets the collection.
         /// </summary>
         /// <value>
-        /// The point.
+        /// The collection.
         /// </value>
-        public PackedPoint<TModel, TCoordinate> Point { get; }
+        public IList<TModel> Collection { get; set; }
 
         /// <summary>
-        /// Gets the visual.
+        /// Gets or sets the series.
         /// </summary>
         /// <value>
-        /// The visual.
+        /// The series.
         /// </value>
-        public object Visual { get; }
+        public Series<TModel, TCoordinate, TViewModel, TPoint> Series { get; set; }
+
+        /// <summary>
+        /// Gets or sets the chart.
+        /// </summary>
+        /// <value>
+        /// The chart.
+        /// </value>
+        public ChartModel Chart { get; set; }
     }
 }

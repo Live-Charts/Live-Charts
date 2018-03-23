@@ -37,6 +37,7 @@ using System.Windows.Input;
 using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Data;
 using LiveCharts.Core.DataSeries;
+using LiveCharts.Core.DataSeries.Data;
 using LiveCharts.Core.Dimensions;
 using LiveCharts.Core.Drawing;
 using LiveCharts.Core.Events;
@@ -79,13 +80,6 @@ namespace LiveCharts.Core.Charts
                 ToolTipTimeoutTimer.Stop();
             };
         }
-
-#if DEBUG
-        /// <summary>
-        /// [DEBUG PROPERTY] Invalidation debug count.
-        /// </summary>
-        public int InvalidateCount { get; set; }
-#endif
 
         /// <summary>
         /// Gets the update identifier.
@@ -224,7 +218,6 @@ namespace LiveCharts.Core.Charts
         /// <returns></returns>
         public async void Invalidate(object sender)
         {
-            InvalidateCount++;
             if (!IsViewInitialized) return;
             if (_delayer != null && !_delayer.IsCompleted) return;
             var delay = AnimationsSpeed.TotalMilliseconds < 10
@@ -326,6 +319,7 @@ namespace LiveCharts.Core.Charts
 
             foreach (var series in Series.Where(x => x.IsVisible))
             {
+                series.UsedBy(this);
                 series.Fetch(this);
                 RegisterResource(series);
 

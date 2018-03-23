@@ -27,12 +27,13 @@
 
 using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Charts;
+using LiveCharts.Core.Data;
 using LiveCharts.Core.Events;
 using LiveCharts.Core.Interaction;
 
 #endregion
 
-namespace LiveCharts.Core.Data
+namespace LiveCharts.Core.DataSeries.Data
 {
     /// <summary>
     /// Represents a point int he chart.
@@ -100,7 +101,7 @@ namespace LiveCharts.Core.Data
         /// <value>
         /// The series.
         /// </value>
-        public DataSeries.Series Series { get; internal set; }
+        public Series Series { get; internal set; }
 
         /// <summary>
         /// Gets the chart that owns the point.

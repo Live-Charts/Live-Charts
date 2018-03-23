@@ -31,7 +31,7 @@ using System.Drawing;
 using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Abstractions.DataSeries;
 using LiveCharts.Core.Charts;
-using LiveCharts.Core.Data;
+using LiveCharts.Core.DataSeries.Data;
 using LiveCharts.Core.Dimensions;
 using LiveCharts.Core.Drawing;
 using LiveCharts.Core.Drawing.Svg;
@@ -50,7 +50,8 @@ namespace LiveCharts.Core.DataSeries
     public class LineSeries<TModel>
         : CartesianSeries<TModel, Point, BezierViewModel, Point<TModel, Point, BezierViewModel>>, ILineSeries
     {
-        private ICartesianPath _path;
+        private static ISeriesViewProvider<TModel, Point, BezierViewModel> _provider;
+        private const string Path = "path";
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LineSeries{TModel}"/> class.
@@ -73,10 +74,17 @@ namespace LiveCharts.Core.DataSeries
         public float GeometrySize { get; set; }
 
         /// <inheritdoc />
+        public override Type ResourceKey => typeof(ILineSeries);
+
+        /// <inheritdoc />
         public override float[] DefaultPointWidth => new[] {0f, 0f};
 
         /// <inheritdoc />
         public override float[] PointMargin => new[] {GeometrySize, GeometrySize};
+
+        /// <inheritdoc />
+        protected override ISeriesViewProvider<TModel, Point, BezierViewModel>
+            DefaultViewProvider => _provider ?? (_provider = Charting.Current.UiProvider.BezierViewProvider<TModel>());
 
         /// <inheritdoc />
         public override void UpdateView(ChartModel chart)
@@ -90,10 +98,14 @@ namespace LiveCharts.Core.DataSeries
 
             Point<TModel, Point, BezierViewModel> previous = null;
 
-            if (_path == null)
+            Content[chart].Visuals.TryGetValue(Path, out var path);
+            var cartesianPath = (ICartesianPath) path;
+
+            if (cartesianPath == null)
             {
-                _path = Charting.Current.UiProvider.GetNewPath();
-                _path.Initialize(chart.View);
+                cartesianPath = Charting.Current.UiProvider.GetNewPath();
+                cartesianPath.Initialize(chart.View);
+                Content[chart].Visuals[Path] = cartesianPath;
             }
 
             double length = 0;
@@ -112,7 +124,7 @@ namespace LiveCharts.Core.DataSeries
 
                 if (isFist)
                 {
-                    _path.SetStyle(bezier.ViewModel.Point1, Stroke, Fill, StrokeThickness, StrokeDashArray);
+                    cartesianPath.SetStyle(bezier.ViewModel.Point1, Stroke, Fill, StrokeThickness, StrokeDashArray);
                     isFist = false;
                     i = p[0];
                 }
@@ -126,10 +138,10 @@ namespace LiveCharts.Core.DataSeries
 
                 if (bezier.Point.View == null)
                 {
-                    bezier.Point.View = PointViewProvider();
+                    bezier.Point.View = ViewProvider.GetNewPointView();
                 }
 
-                bezier.ViewModel.Path = _path;
+                bezier.ViewModel.Path = cartesianPath;
                 bezier.Point.ViewModel = bezier.ViewModel;
                 bezier.Point.View.DrawShape(bezier.Point, previous);
 
@@ -138,7 +150,7 @@ namespace LiveCharts.Core.DataSeries
                 j = p[0];
             }
 
-            _path.Close(chart.View, length, i, j);
+            cartesianPath.Close(chart.View, length, i, j);
         }
 
         private IEnumerable<BezierData> GetBeziers(PointF offset, ChartModel chart, Plane x, Plane y)
@@ -270,12 +282,6 @@ namespace LiveCharts.Core.DataSeries
             };
 
             e.Dispose();
-        }
-
-        /// <inheritdoc />
-        protected override IPointView<TModel, Point<TModel, Point, BezierViewModel>, Point, BezierViewModel> DefaultPointViewProvider()
-        {
-            return Charting.Current.UiProvider.GetNewBezierView<TModel>();
         }
 
         private struct BezierData

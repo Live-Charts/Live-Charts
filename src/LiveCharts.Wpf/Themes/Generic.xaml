@@ -4,7 +4,8 @@
     xmlns:dataSeries="clr-namespace:LiveCharts.Core.DataSeries;assembly=LiveCharts.Core"
     xmlns:converters="clr-namespace:LiveCharts.Wpf.Converters"
     xmlns:data="clr-namespace:LiveCharts.Core.Data;assembly=LiveCharts.Core"
-    xmlns:controls="clr-namespace:LiveCharts.Wpf.Controls">
+    xmlns:controls="clr-namespace:LiveCharts.Wpf.Controls"
+    xmlns:data1="clr-namespace:LiveCharts.Core.DataSeries.Data;assembly=LiveCharts.Core">
 
     <converters:ColorToSolidBrushConverter x:Key="AsSolidColorBrush" />
     <converters:SvgToGeometryDataConverter x:Key="AsGeometryData" />
@@ -57,7 +58,7 @@
 
         <Setter Property="ItemTemplate">
             <Setter.Value>
-                <DataTemplate DataType="{x:Type data:PackedPoint}">
+                <DataTemplate DataType="{x:Type data1:PackedPoint}">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" SharedSizeGroup="SeriesGeometry" />

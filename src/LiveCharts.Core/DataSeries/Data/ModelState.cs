@@ -25,44 +25,36 @@
 
 #region
 
-using System.Collections.Generic;
+using System;
 using LiveCharts.Core.Abstractions;
-using LiveCharts.Core.Charts;
-using LiveCharts.Core.DataSeries;
+using LiveCharts.Core.Events;
 
 #endregion
 
-namespace LiveCharts.Core.Data
+namespace LiveCharts.Core.DataSeries.Data
 {
     /// <summary>
-    /// Point factory options class.
+    /// the model state class.
     /// </summary>
-    public class DataFactoryArgs<TModel, TCoordinate, TViewModel, TPoint>
-        where TPoint : Point<TModel, TCoordinate, TViewModel>, new()
+    /// <typeparam name="TModel">The type of the model.</typeparam>
+    /// <typeparam name="TCoordinate">The coordinate type.</typeparam>
+    public class ModelState<TModel, TCoordinate>
         where TCoordinate : ICoordinate
     {
         /// <summary>
-        /// Gets or sets the collection.
+        /// Gets or sets the condition.
         /// </summary>
         /// <value>
-        /// The collection.
+        /// The condition.
         /// </value>
-        public IList<TModel> Collection { get; set; }
+        public Func<TModel, bool> Trigger { get; set; }
 
         /// <summary>
-        /// Gets or sets the series.
+        /// Gets or sets the type.
         /// </summary>
         /// <value>
-        /// The series.
+        /// The type.
         /// </value>
-        public Series<TModel, TCoordinate, TViewModel, TPoint> Series { get; set; }
-
-        /// <summary>
-        /// Gets or sets the chart.
-        /// </summary>
-        /// <value>
-        /// The chart.
-        /// </value>
-        public ChartModel Chart { get; set; }
+        public ModelStateHandler<TModel, TCoordinate> Handler { get; set; }
     }
 }

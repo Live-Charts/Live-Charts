@@ -50,6 +50,6 @@ namespace LiveCharts.Core.ViewModels
         /// <value>
         /// The size.
         /// </value>
-        public double Diameter { get; set; }
+        public float Diameter { get; set; }
     }
 }

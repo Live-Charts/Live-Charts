@@ -73,7 +73,7 @@ namespace LiveCharts.Core.Themes
                         Rotation = 0
                     };
                 })
-                .SetDefault<IColumnSeries>(columnSeries =>
+                .SetDefault<IBarSeries>(columnSeries =>
                 {
                     columnSeries.StrokeThickness = 0f;
                     columnSeries.Geometry = Geometry.Square;

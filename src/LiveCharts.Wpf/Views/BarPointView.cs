@@ -33,6 +33,7 @@ using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Data;
+using LiveCharts.Core.DataSeries.Data;
 using LiveCharts.Core.ViewModels;
 using LiveCharts.Wpf.Animations;
 using Orientation = LiveCharts.Core.Abstractions.Orientation;
@@ -51,9 +52,9 @@ namespace LiveCharts.Wpf.Views
     /// <typeparam name="TShape">the type of the shape.</typeparam>
     /// <typeparam name="TLabel">the type of the label.</typeparam>
     /// <seealso cref="PointView{TModel, Point,Point2D, ColumnViewModel, TShape, TLabel}" />
-    public class BarColumnPointView<TModel, TPoint, TShape, TLabel>
-        : PointView<TModel, TPoint, Point, ColumnViewModel, TShape, TLabel>
-        where TPoint : Point<TModel, Point, ColumnViewModel>, new()
+    public class BarPointView<TModel, TPoint, TShape, TLabel>
+        : PointView<TModel, TPoint, Point, BarViewModel, TShape, TLabel>
+        where TPoint : Point<TModel, Point, BarViewModel>, new()
         where TShape : Shape, new()
         where TLabel : FrameworkElement, IDataLabelControl, new()
     {

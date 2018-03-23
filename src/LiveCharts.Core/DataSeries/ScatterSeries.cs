@@ -25,12 +25,14 @@
 
 #region
 
+using System;
 using System.Drawing;
 using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Abstractions.DataSeries;
 using LiveCharts.Core.Charts;
 using LiveCharts.Core.Coordinates;
 using LiveCharts.Core.Data;
+using LiveCharts.Core.DataSeries.Data;
 using LiveCharts.Core.Drawing;
 using LiveCharts.Core.Drawing.Svg;
 using LiveCharts.Core.Interaction;
@@ -46,6 +48,8 @@ namespace LiveCharts.Core.DataSeries
     public class ScatterSeries<TModel> 
         : CartesianSeries<TModel, WeightedPoint, ScatterViewModel, Point<TModel, WeightedPoint, ScatterViewModel>>, IScatterSeries
     {
+        private static ISeriesViewProvider<TModel, WeightedPoint, ScatterViewModel> _provider;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="ScatterSeries{TModel}"/> class.
         /// </summary>
@@ -74,10 +78,17 @@ namespace LiveCharts.Core.DataSeries
         public float MinGeometrySize { get; set; }
 
         /// <inheritdoc />
+        public override Type ResourceKey => typeof(IScatterSeries);
+
+        /// <inheritdoc />
         public override float[] DefaultPointWidth => new []{0f,0f};
 
         /// <inheritdoc />
         public override float[] PointMargin => new[] {MaxGeometrySize, MaxGeometrySize};
+
+        /// <inheritdoc />
+        protected override ISeriesViewProvider<TModel, WeightedPoint, ScatterViewModel>
+            DefaultViewProvider => _provider ?? (_provider = Charting.Current.UiProvider.ScatterViewProvider<TModel>());
 
         /// <inheritdoc />
         public override void UpdateView(ChartModel chart)
@@ -116,7 +127,7 @@ namespace LiveCharts.Core.DataSeries
 
                 if (current.View == null)
                 {
-                    current.View = PointViewProvider();
+                    current.View = ViewProvider .GetNewPointView();
                 }
 
                 current.ViewModel = vm;
@@ -130,13 +141,6 @@ namespace LiveCharts.Core.DataSeries
                         p[2]));
                 previous = current;
             }
-        }
-
-        /// <inheritdoc />
-        protected override IPointView<TModel, Point<TModel, WeightedPoint, ScatterViewModel>, WeightedPoint, ScatterViewModel> 
-            DefaultPointViewProvider()
-        {
-            return Charting.Current.UiProvider.GetNewScatterView<TModel>();
         }
     }
 }
