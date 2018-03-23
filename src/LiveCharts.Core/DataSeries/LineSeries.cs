@@ -112,7 +112,7 @@ namespace LiveCharts.Core.DataSeries
             var isFist = true;
             double i = 0, j = 0;
 
-            foreach (var bezier in GetBeziers(new PointF(uw[0], uw[1]), cartesianChart, x, y))
+            foreach (var bezier in GetBeziers(new PointF(uw[0]*.5f, uw[1]*.5f), cartesianChart, x, y))
             {
                 var p = new[]
                 {
