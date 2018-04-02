@@ -14,15 +14,15 @@ LiveCharts.Core is a dotnet Core project, thus it should also contain all the co
 
 The core only generates models for every shape, it has no idea how to draw a it in the UI, thus the core provides a dependency injection pattern, so a consumer (the view) could inject the logic to specify how a shape is drawn in the UI.
 
-## LiveCharts.WPF
+## LiveCharts.{ViewFramework}
 
 The WPF version draws the shapes indicated by LiveCharts.Core using the [shapes](https://docs.microsoft.com/en-us/dotnet/framework/wpf/graphics-multimedia/shapes-and-basic-drawing-in-wpf-overview) defined by the WPF framework.
 
-## LiveCharts.WPF.SeriesFramework
+## LiveCharts.{ViewFramework}.SeriesFramework
 
 This is the high performance framework that connects directly with the open source library by changing only one line of code, this project is not open source but it has a low price compared with most of the alternatives.
 
-WPF is based on DirectX and it does have a good performance, but is has also to be flexible so we users of the framework can achieve our goals, but when you are using LiveCharts.WPF.SeriesFramework the control is no longer being drawn by WPF, we are drawing it using DirectX also, bu the difference is that we optimize everything for our needs, resulting in a huge performance buff.
+Some {ViewFramework} hardware acceleration to draw the UI, WPF uses DirectX for example, and it does have a good performance, but it has also to be flexible so we users of the {ViewFramework} can achieve our goals, when you are using LiveCharts.{ViewFramework}.SeriesFramework, the control is no longer being drawn by {ViewFramework}, we are drawing it using DirectX also,but the difference is that we optimize everything for our needs, resulting in a huge performance buff.
 
 Besides that we lazy load the data as the user requires it, based on many parameters such as the chart size, current zoom, current pan and series type.
 
