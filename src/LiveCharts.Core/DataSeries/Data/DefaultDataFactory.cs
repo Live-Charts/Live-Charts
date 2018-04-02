@@ -49,7 +49,7 @@ namespace LiveCharts.Core.DataSeries.Data
             var notifiesChange = typeof(INotifyPropertyChanged).IsAssignableFrom(args.Series.Metadata.ModelType);
             var collection = args.Collection;
             var isValueType = args.Series.Metadata.IsValueType;
-            var tracker = args.Series.Content[args.Chart].PointTracker;
+            var tracker = (Dictionary<object, TPoint>) args.Series.Content[args.Chart][Series.Tracker];
 
             void InvalidateOnPropertyChanged(object sender, PropertyChangedEventArgs e)
             {

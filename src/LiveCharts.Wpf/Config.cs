@@ -22,7 +22,24 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR 
 // OTHER DEALINGS IN THE SOFTWARE.
 #endregion
-namespace LiveCharts.Wpf.Interaction
+
+#region
+
+using LiveCharts.Core;
+using LiveCharts.Core.DataSeries.Data;
+
+#endregion
+
+namespace LiveCharts.Wpf
 {
-    public delegate void DataInteractionHandler(object sender, DataInteractionEventArgs args);
+    public static class Config
+    {
+        public static Charting UsingWindowsPresentationFoundation(this Charting settings)
+        {
+            settings.DataFactory = new DefaultDataFactory();
+            settings.UiProvider = new UiProvider();
+
+            return settings;
+        }
+    }
 }

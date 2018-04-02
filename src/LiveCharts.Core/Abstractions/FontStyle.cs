@@ -1,7 +1,7 @@
-﻿#region License
+#region License
 // The MIT License (MIT)
 // 
-// Copyright (c) 2016 Alberto Rodríguez Orozco & LiveCharts contributors
+// Copyright (c) 2016 Alberto Rodr�guez Orozco & LiveCharts contributors
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy 
 // of this software and associated documentation files (the "Software"), to deal 
@@ -22,21 +22,20 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR 
 // OTHER DEALINGS IN THE SOFTWARE.
 #endregion
-namespace LiveCharts.Wpf.Converters
+namespace LiveCharts.Core.Abstractions
 {
     /// <summary>
-    /// 
+    /// Chart Available font styles.
     /// </summary>
-    /// <seealso cref="PointAsTooltipData" />
-    public class GetXFromPointConverter : PointAsTooltipData
+    public enum FontStyle
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="GetXFromPointConverter"/> class.
+        /// The regular style.
         /// </summary>
-        public GetXFromPointConverter()
-            : base(0)
-        {
-
-        }
+        Regular,
+        /// <summary>
+        /// The italic style.
+        /// </summary>
+        Italic
     }
 }

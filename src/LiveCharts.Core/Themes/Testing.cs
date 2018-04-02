@@ -30,6 +30,7 @@ using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Abstractions.DataSeries;
 using LiveCharts.Core.Dimensions;
 using Font = LiveCharts.Core.Abstractions.Font;
+using FontStyle = LiveCharts.Core.Abstractions.FontStyle;
 
 #endregion
 
@@ -47,7 +48,7 @@ namespace LiveCharts.Core.Themes
         /// <returns></returns>
         public static Charting UsingTestingTheme(this Charting charting)
         {
-            var baseFont = new Font("Arial", 11, FontStyles.Regular, FontWeight.Regular);
+            var baseFont = new Font("Arial", 11, FontStyle.Regular, FontWeight.Regular);
 
             var sepStyle = new SeparatorStyle(Color.FromArgb(0, 230, 230, 230), Color.FromArgb(150, 245, 245, 245), 1);
             var altStyle =

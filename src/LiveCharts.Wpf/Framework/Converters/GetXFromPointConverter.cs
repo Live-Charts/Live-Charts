@@ -22,19 +22,19 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR 
 // OTHER DEALINGS IN THE SOFTWARE.
 #endregion
-namespace LiveCharts.Wpf.Converters
+namespace LiveCharts.Wpf.Framework.Converters
 {
     /// <summary>
     /// 
     /// </summary>
     /// <seealso cref="PointAsTooltipData" />
-    public class GetYFromPointConverter : PointAsTooltipData
+    public class GetXFromPointConverter : PointAsTooltipData
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="GetYFromPointConverter"/> class.
+        /// Initializes a new instance of the <see cref="GetXFromPointConverter"/> class.
         /// </summary>
-        public GetYFromPointConverter()
-            : base(1)
+        public GetXFromPointConverter()
+            : base(0)
         {
 
         }

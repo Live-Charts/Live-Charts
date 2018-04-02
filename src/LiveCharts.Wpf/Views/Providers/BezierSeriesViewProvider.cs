@@ -1,13 +1,11 @@
 ﻿using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Abstractions.DataSeries;
 using LiveCharts.Core.Coordinates;
-using LiveCharts.Core.Data;
 using LiveCharts.Core.DataSeries.Data;
 using LiveCharts.Core.ViewModels;
 using LiveCharts.Wpf.Controls;
-using LiveCharts.Wpf.Views;
 
-namespace LiveCharts.Wpf.Providers
+namespace LiveCharts.Wpf.Views.Providers
 {
     /// <summary>
     /// The bezier view provider class.
@@ -20,7 +18,7 @@ namespace LiveCharts.Wpf.Providers
         {
         }
 
-        public IPointView<TModel, Point<TModel, Point, BezierViewModel>, Point, BezierViewModel> GetNewPointView()
+        public IPointView<TModel, Point<TModel, Point, BezierViewModel>, Point, BezierViewModel> Getter()
         {
             return new BezierPointView<TModel, Point<TModel, Point, BezierViewModel>, DataLabel>();
         }

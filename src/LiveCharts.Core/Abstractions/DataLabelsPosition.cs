@@ -35,7 +35,7 @@ namespace LiveCharts.Core.Abstractions
         /// <value>
         /// The horizontal alignment.
         /// </value>
-        public HorizontalAlingment HorizontalAlignment { get; set; }
+        public HorizontalAlignment HorizontalAlignment { get; set; }
 
         /// <summary>
         /// Gets or sets the vertical alignment.

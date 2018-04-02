@@ -27,7 +27,6 @@
 
 using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Charts;
-using LiveCharts.Core.Data;
 using LiveCharts.Core.Events;
 using LiveCharts.Core.Interaction;
 

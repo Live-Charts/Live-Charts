@@ -52,7 +52,7 @@ namespace LiveCharts.Core.Dimensions
         /// <param name="stroke">The stroke.</param>
         /// <param name="fill">The fill.</param>
         /// <param name="strokeThickness">The stroke thickness.</param>
-        public SeparatorStyle(Color stroke, Color fill, double strokeThickness)
+        public SeparatorStyle(Color stroke, Color fill, float strokeThickness)
         {
             _isEmpty = false;
             Stroke = stroke;
@@ -79,7 +79,7 @@ namespace LiveCharts.Core.Dimensions
         /// <value>
         /// The stroke thickness.
         /// </value>
-        public double StrokeThickness { get;}
+        public float StrokeThickness { get;}
 
         /// <summary>
         /// Gets or sets the fill.

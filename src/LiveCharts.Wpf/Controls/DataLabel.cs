@@ -29,7 +29,6 @@ using System.Drawing;
 using System.Windows;
 using System.Windows.Controls;
 using LiveCharts.Core.Abstractions;
-using LiveCharts.Core.Data;
 using LiveCharts.Core.DataSeries.Data;
 
 #endregion

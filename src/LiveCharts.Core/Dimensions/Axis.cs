@@ -255,6 +255,7 @@ namespace LiveCharts.Core.Dimensions
                     separator.Move(
                         new CartesianAxisSeparatorArgs
                         {
+                            Plane = this,
                             SeparatorFrom = xModel, // ToDo: this probably wont look wood if the axis range changed, in that case it should mode from the previous range position to the new one..
                             SeparatorTo = xModel,
                             LabelFrom = new PointF(actualLabelLocation.X - labelModel.Size.Width * .5f,
@@ -272,6 +273,7 @@ namespace LiveCharts.Core.Dimensions
                     separator.Move(
                         new CartesianAxisSeparatorArgs
                         {
+                            Plane = this,
                             SeparatorFrom = yModel, // ToDo: this probably wont look wood if the axis range changed, in that case it should mode from the previous range position to the new one..
                             SeparatorTo = yModel,
                             LabelFrom = new PointF(actualLabelLocation.X, actualLabelLocation.Y - labelModel.Size.Height*.5f),
@@ -376,9 +378,8 @@ namespace LiveCharts.Core.Dimensions
         {
             const double toRadians = Math.PI / 180;
             var angle = ActualLabelsRotation;
-
-            var content = FormatValue(value); // FormatValue(value - .5 * unit);
-            var labelSize = LabelProvider().Measure(content);
+            var text = FormatValue(value);
+            var labelSize = LabelProvider().MeasureAndUpdate(chart.View.Content, Font, text);
 
             var xw = Math.Abs(Math.Cos(angle * toRadians) * labelSize.Width);  // width's    horizontal    component
             var yw = Math.Abs(Math.Sin(angle * toRadians) * labelSize.Width);  // width's    vertical      component
@@ -516,7 +517,7 @@ namespace LiveCharts.Core.Dimensions
                     (float) (xw + xh - l),
                     (float) (yw + yh - t),
                     (float) l),
-                content,
+                text,
                 labelSize);
         }
     }

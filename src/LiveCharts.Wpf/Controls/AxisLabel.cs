@@ -28,7 +28,10 @@
 using System.Drawing;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using LiveCharts.Core.Abstractions;
+using Brushes = System.Windows.Media.Brushes;
+using Font = LiveCharts.Core.Abstractions.Font;
 
 #endregion
 
@@ -37,7 +40,7 @@ namespace LiveCharts.Wpf.Controls
     /// <summary>
     /// a default label for a point.
     /// </summary>
-    /// <seealso cref="System.Windows.Controls.TextBlock" />
+    /// <seealso cref="TextBlock" />
     public class AxisLabel : Label, IPlaneLabelControl
     {
         static AxisLabel()
@@ -47,9 +50,15 @@ namespace LiveCharts.Wpf.Controls
                 new FrameworkPropertyMetadata(typeof(AxisLabel)));
         }
 
-        SizeF IPlaneLabelControl.Measure(string label)
+        SizeF IPlaneLabelControl.MeasureAndUpdate(IChartContent content, Font font, string label)
         {
             Content = label;
+            FontFamily = new System.Windows.Media.FontFamily(font.FamilyName);
+            FontSize = font.Size;
+            FontWeight = font.Weight == Core.Abstractions.FontWeight.Bold ? FontWeights.Bold : FontWeights.Normal;
+            FontStyle = font.Style == Core.Abstractions.FontStyle.Italic ? FontStyles.Italic : FontStyles.Normal;
+            Foreground = Brushes.Black;
+
             Measure(new System.Windows.Size(double.PositiveInfinity, double.PositiveInfinity));
             return new SizeF((float) DesiredSize.Width, (float) DesiredSize.Height);
         }

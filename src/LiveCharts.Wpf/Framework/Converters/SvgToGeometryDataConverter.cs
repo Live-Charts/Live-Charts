@@ -28,18 +28,16 @@
 using System;
 using System.Globalization;
 using System.Windows.Data;
-using System.Windows.Media;
-using Color = System.Drawing.Color;
 
 #endregion
 
-namespace LiveCharts.Wpf.Converters
+namespace LiveCharts.Wpf.Framework.Converters
 {
     /// <summary>
     /// 
     /// </summary>
     /// <seealso cref="System.Windows.Data.IValueConverter" />
-    public class ColorToSolidBrushConverter : IValueConverter
+    public class SvgToGeometryDataConverter : IValueConverter
     {
         /// <summary>
         /// Converts a value.
@@ -51,14 +49,11 @@ namespace LiveCharts.Wpf.Converters
         /// <returns>
         /// A converted value. If the method returns <see langword="null" />, the valid null value is used.
         /// </returns>
-        /// <exception cref="NotImplementedException"></exception>
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (value == null) return null;
-
-            var lvcColor = (Color) value;
-            return new SolidColorBrush(
-                System.Windows.Media.Color.FromArgb(lvcColor.A, lvcColor.R, lvcColor.G, lvcColor.B));
+            var g = (string) value;
+            return System.Windows.Media.Geometry.Parse(g);
         }
 
         /// <summary>

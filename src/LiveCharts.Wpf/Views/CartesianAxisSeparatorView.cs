@@ -30,7 +30,7 @@ using System.Windows.Controls;
 using System.Windows.Shapes;
 using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Events;
-using LiveCharts.Wpf.Animations;
+using LiveCharts.Wpf.Framework.Animations;
 
 #endregion
 
@@ -92,16 +92,16 @@ namespace LiveCharts.Wpf.Views
                 Canvas.SetLeft(Label, args.LabelFrom.X);
                 Canvas.SetTop(Label, args.LabelFrom.Y);
 
-                Label.Animate()
-                    .AtSpeed(speed)
-                    .Property(UIElement.OpacityProperty, 1, 0)
-                    .Begin();
+                //Label.Animate()
+                //    .AtSpeed(speed)
+                //    .Property(UIElement.OpacityProperty, 1, 0)
+                //    .Begin();
             }
             
             Rectangle.Fill = args.Style.Fill.AsWpf();
             Rectangle.Stroke = args.Style.Stroke.AsWpf();
 
-            Label.Measure(args.LabelViewModel.Content);
+            Label.MeasureAndUpdate(args.ChartView.Content, args.Plane.Font, args.LabelViewModel.Content);
 
             var actualLabelLocation = args.LabelViewModel.ActualLocation;
 
@@ -123,7 +123,10 @@ namespace LiveCharts.Wpf.Views
 
             if (args.Disposing)
             {
-                storyboard.Property(UIElement.OpacityProperty, 0)
+                storyboard
+                    .Property(UIElement.OpacityProperty, 0)
+                    .ChangeTarget(Rectangle)
+                    .Property(UIElement.OpacityProperty, 0)
                     .Then((sender, e) =>
                     {
                         ((IResource) this).Dispose(args.ChartView);

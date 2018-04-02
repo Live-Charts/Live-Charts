@@ -46,7 +46,7 @@ namespace Samples.Wpf
             {
                 charting
                     .ForPrimitiveAndDefaultTypes()
-                    .UsingWpf()
+                    .UsingWindowsPresentationFoundation()
                     .UsingTestingTheme();
             });
         }

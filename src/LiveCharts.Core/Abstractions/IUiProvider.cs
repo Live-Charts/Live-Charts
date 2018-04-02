@@ -26,7 +26,6 @@
 #region
 
 using LiveCharts.Core.Coordinates;
-using LiveCharts.Core.Data;
 using LiveCharts.Core.ViewModels;
 
 #endregion

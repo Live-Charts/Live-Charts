@@ -1,5 +1,4 @@
 ﻿using LiveCharts.Core.Abstractions.DataSeries;
-using LiveCharts.Core.Data;
 using LiveCharts.Core.DataSeries.Data;
 
 namespace LiveCharts.Core.Abstractions
@@ -21,7 +20,7 @@ namespace LiveCharts.Core.Abstractions
         /// Called when LiveCharts requires a new point in the UI.
         /// </summary>
         /// <returns></returns>
-        IPointView<TModel, Point<TModel, TCoordinate, TViewModel>, TCoordinate, TViewModel> GetNewPointView();
+        IPointView<TModel, Point<TModel, TCoordinate, TViewModel>, TCoordinate, TViewModel> Getter();
 
         /// <summary>the series update finishes.
         /// </summary>

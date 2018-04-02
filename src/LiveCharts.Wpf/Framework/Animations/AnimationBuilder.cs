@@ -30,10 +30,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Media.Animation;
+using LiveCharts.Core;
 
 #endregion
 
-namespace LiveCharts.Wpf.Animations
+namespace LiveCharts.Wpf.Framework.Animations
 {
     /// <summary>
     /// A storyboard builder.
@@ -60,12 +61,14 @@ namespace LiveCharts.Wpf.Animations
             if (_isFe)
             {
                 _storyboard.Begin();
+                _storyboard.Completed += OnFinished;
             }
             else
             {
-                foreach (var tuple in _animations)
+                if (_animations.Count > 0) _animations[0].Item2.Completed += OnFinished;
+                foreach (var x in _animations)
                 {
-                    ((Animatable) _target).BeginAnimation(tuple.Item1, (AnimationTimeline) tuple.Item2);
+                    ((Animatable) _target).BeginAnimation(x.Item1, (AnimationTimeline) x.Item2);
                 }
             }
         }
@@ -115,8 +118,8 @@ namespace LiveCharts.Wpf.Animations
             {
                 animation.KeyFrames.Add(
                     new SplineDoubleKeyFrame(
-                        frame.To,
-                        TimeSpan.FromMilliseconds(_speed.TotalMilliseconds * frame.Proportion),
+                        frame.ToValue,
+                        TimeSpan.FromMilliseconds(_speed.TotalMilliseconds * frame.ElapsedTime),
                         new KeySpline(new Point(0.25, 0.5), new Point(0.75, 1))));
             }
 
@@ -185,14 +188,32 @@ namespace LiveCharts.Wpf.Animations
         /// <returns></returns>
         public AnimationBuilder Then(EventHandler callback)
         {
-            _storyboard.Completed += callback;
-            if (!_isFe && _animations.Any())
+            if (!_isFe)
             {
+                if (_animations.Count < 1)
+                {
+                    throw new LiveChartsException(
+                        "No animation was found, therefore it is not possible to listen for animation completion.",
+                        155);
+                }
                 _animations[0].Item2.Completed += callback;
             }
+            else
+            {
+                _storyboard.Completed += callback;
+            }
+
             return this;
         }
 
+        private void OnFinished(object sender, EventArgs eventArgs)
+        {
+            Dispose();
+        }
+
+        /// <summary>
+        /// Releases unmanaged and - optionally - managed resources.
+        /// </summary>
         public void Dispose()
         {
             _storyboard = null;

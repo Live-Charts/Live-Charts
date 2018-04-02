@@ -28,10 +28,11 @@
 using System.Drawing;
 using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Abstractions.DataSeries;
-using LiveCharts.Core.Data;
+using LiveCharts.Core.DataSeries.Data;
 using LiveCharts.Core.Dimensions;
 using LiveCharts.Core.Drawing.Svg;
 using Font = LiveCharts.Core.Abstractions.Font;
+using FontStyle = LiveCharts.Core.Abstractions.FontStyle;
 
 #endregion
 
@@ -49,7 +50,7 @@ namespace LiveCharts.Core.Themes
         /// <returns></returns>
         public static Charting UsingMaterialDesignLightTheme(this Charting charting)
         {
-            var baseFont = new Font("Arial", 11, FontStyles.Regular, FontWeight.Regular);
+            var baseFont = new Font("Arial", 11, FontStyle.Regular, FontWeight.Regular);
 
             charting
                 .UseMaterialDesignColors()
@@ -68,7 +69,7 @@ namespace LiveCharts.Core.Themes
                     series.Title = "Unnamed Series";
                     series.DataLabelsPosition = new DataLabelsPosition
                     {
-                        HorizontalAlignment = HorizontalAlingment.Centered,
+                        HorizontalAlignment = HorizontalAlignment.Centered,
                         VerticalAlignment = VerticalLabelPosition.Top,
                         Rotation = 0
                     };

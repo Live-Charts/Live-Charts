@@ -28,7 +28,6 @@
 using System;
 using System.Collections.Generic;
 using LiveCharts.Core.Abstractions;
-using LiveCharts.Core.Data;
 using LiveCharts.Core.Events;
 
 #endregion

@@ -28,30 +28,19 @@
 using System;
 using System.Globalization;
 using System.Windows.Data;
-using LiveCharts.Core.Data;
-using LiveCharts.Core.DataSeries.Data;
+using System.Windows.Media;
+using Color = System.Drawing.Color;
 
 #endregion
 
-namespace LiveCharts.Wpf.Converters
+namespace LiveCharts.Wpf.Framework.Converters
 {
     /// <summary>
     /// 
     /// </summary>
     /// <seealso cref="System.Windows.Data.IValueConverter" />
-    public abstract class PointAsTooltipData : IValueConverter
+    public class ColorToSolidBrushConverter : IValueConverter
     {
-        private readonly int _dimension;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PointAsTooltipData"/> class.
-        /// </summary>
-        /// <param name="dimension">The dimension.</param>
-        protected PointAsTooltipData(int dimension)
-        {
-            _dimension = dimension;
-        }
-
         /// <summary>
         /// Converts a value.
         /// </summary>
@@ -65,8 +54,11 @@ namespace LiveCharts.Wpf.Converters
         /// <exception cref="NotImplementedException"></exception>
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var point = (PackedPoint) value;
-            return point?.AsTooltipData()[_dimension];
+            if (value == null) return null;
+
+            var lvcColor = (Color) value;
+            return new SolidColorBrush(
+                System.Windows.Media.Color.FromArgb(lvcColor.A, lvcColor.R, lvcColor.G, lvcColor.B));
         }
 
         /// <summary>

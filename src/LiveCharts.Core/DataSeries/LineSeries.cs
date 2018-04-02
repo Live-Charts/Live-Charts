@@ -98,19 +98,19 @@ namespace LiveCharts.Core.DataSeries
 
             Point<TModel, Point, BezierViewModel> previous = null;
 
-            Content[chart].Visuals.TryGetValue(Path, out var path);
+            Content[chart].TryGetValue(Path, out var path);
             var cartesianPath = (ICartesianPath) path;
 
             if (cartesianPath == null)
             {
                 cartesianPath = Charting.Current.UiProvider.GetNewPath();
                 cartesianPath.Initialize(chart.View);
-                Content[chart].Visuals[Path] = cartesianPath;
+                Content[chart][Path] = cartesianPath;
             }
 
             double length = 0;
             var isFist = true;
-            double i = 0, j = 0;
+            float i = 0, j = 0;
 
             foreach (var bezier in GetBeziers(new PointF(uw[0]*.5f, uw[1]*.5f), cartesianChart, x, y))
             {
@@ -138,7 +138,7 @@ namespace LiveCharts.Core.DataSeries
 
                 if (bezier.Point.View == null)
                 {
-                    bezier.Point.View = ViewProvider.GetNewPointView();
+                    bezier.Point.View = ViewProvider.Getter();
                 }
 
                 bezier.ViewModel.Path = cartesianPath;
@@ -150,7 +150,7 @@ namespace LiveCharts.Core.DataSeries
                 j = p[0];
             }
 
-            cartesianPath.Close(chart.View, length, i, j);
+            cartesianPath.Close(chart.View, (float) length, i, j);
         }
 
         private IEnumerable<BezierData> GetBeziers(PointF offset, ChartModel chart, Plane x, Plane y)

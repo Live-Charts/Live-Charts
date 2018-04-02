@@ -36,7 +36,6 @@ using Assets.Models;
 using LiveCharts.Core;
 using LiveCharts.Core.Collections;
 using LiveCharts.Core.Coordinates;
-using LiveCharts.Core.Data;
 using LiveCharts.Core.DataSeries;
 using LiveCharts.Core.DataSeries.Data;
 using LiveCharts.Core.Dimensions;

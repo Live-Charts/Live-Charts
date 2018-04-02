@@ -28,11 +28,10 @@
 using System.Windows.Shapes;
 using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Coordinates;
-using LiveCharts.Core.Data;
 using LiveCharts.Core.ViewModels;
 using LiveCharts.Wpf.Controls;
-using LiveCharts.Wpf.Providers;
 using LiveCharts.Wpf.Views;
+using LiveCharts.Wpf.Views.Providers;
 
 #endregion
 

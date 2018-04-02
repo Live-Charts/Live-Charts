@@ -1,7 +1,7 @@
-#region License
+﻿#region License
 // The MIT License (MIT)
 // 
-// Copyright (c) 2016 Alberto Rodr�guez Orozco & LiveCharts contributors
+// Copyright (c) 2016 Alberto Rodríguez Orozco & LiveCharts contributors
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy 
 // of this software and associated documentation files (the "Software"), to deal 
@@ -22,29 +22,7 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR 
 // OTHER DEALINGS IN THE SOFTWARE.
 #endregion
-
-#region
-
-using System.Windows;
-using System.Windows.Media.Animation;
-
-#endregion
-
-namespace LiveCharts.Wpf.Animations
+namespace LiveCharts.Wpf.Framework.Interaction
 {
-    /// <summary>
-    /// The animations extensions.
-    /// </summary>
-    public static class Extensions
-    {
-        public static AnimationBuilder Animate(this FrameworkElement element)
-        {
-            return new AnimationBuilder(true).ChangeTarget(element);
-        }
-
-        public static AnimationBuilder Animate(this Animatable animatable)
-        {
-            return new AnimationBuilder(false).ChangeTarget(animatable);
-        }
-    }
+    public delegate void DataInteractionHandler(object sender, DataInteractionEventArgs args);
 }

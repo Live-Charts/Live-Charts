@@ -27,17 +27,16 @@
 
 using System.Collections.Generic;
 using System.Windows.Input;
-using LiveCharts.Core.Data;
 using LiveCharts.Core.DataSeries.Data;
 
 #endregion
 
-namespace LiveCharts.Wpf.Interaction
+namespace LiveCharts.Wpf.Framework.Interaction
 {
     /// <summary>
     /// User interaction with chart data event arguments.
     /// </summary>
-    /// <seealso cref="System.Windows.Input.MouseButtonEventArgs" />
+    /// <seealso cref="MouseButtonEventArgs" />
     public class DataInteractionEventArgs : MouseButtonEventArgs
     {
         /// <summary>
@@ -48,7 +47,10 @@ namespace LiveCharts.Wpf.Interaction
         /// <param name="button">The button.</param>
         /// <param name="points">The points.</param>
         public DataInteractionEventArgs(
-            MouseDevice mouse, int timestamp, MouseButton button, IEnumerable<PackedPoint> points) 
+            MouseDevice mouse, 
+            int timestamp, 
+            MouseButton button, 
+            IEnumerable<PackedPoint> points) 
             : base(mouse, timestamp, button)
         {
             Points = points;
@@ -63,7 +65,11 @@ namespace LiveCharts.Wpf.Interaction
         /// <param name="stylusDevice">The stylus device.</param>
         /// <param name="points">The points.</param>
         public DataInteractionEventArgs(
-            MouseDevice mouse, int timestamp, MouseButton button, StylusDevice stylusDevice, IEnumerable<PackedPoint> points) 
+            MouseDevice mouse, 
+            int timestamp, 
+            MouseButton button, 
+            StylusDevice stylusDevice, 
+            IEnumerable<PackedPoint> points) 
             : base(mouse, timestamp, button, stylusDevice)
         {
             Points = points;

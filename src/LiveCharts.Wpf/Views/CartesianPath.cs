@@ -32,7 +32,8 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using LiveCharts.Core.Abstractions;
-using LiveCharts.Wpf.Animations;
+using LiveCharts.Core.Effects;
+using LiveCharts.Wpf.Framework.Animations;
 
 #endregion
 
@@ -80,6 +81,7 @@ namespace LiveCharts.Wpf.Views
             {
                 // To self drawn animation.
                 _figure.StartPoint = startPoint.AsWpf();
+                _isNew = false;
             }
             else
             {
@@ -112,10 +114,8 @@ namespace LiveCharts.Wpf.Views
             _figure.Segments.Remove((PathSegment) segment);
         }
 
-        public void Close(IChartView view, double length, double i, double j)
+        public void Close(IChartView view, float length, float i, float j)
         {
-            var chart = (CartesianChart) view;
-
             var l = length / _strokePath.StrokeThickness;
             var tl = l - _previousLength;
             var remaining = 0d;
@@ -124,10 +124,11 @@ namespace LiveCharts.Wpf.Views
                 remaining = -tl;
             }
 
-            _strokePath.StrokeDashArray = new DoubleCollection(GetAnimatedStrokeDashArray(l + remaining));
+            _strokePath.StrokeDashArray = new DoubleCollection(
+                Effects.GetAnimatedFloatDashArray(_strokeDashArray, (float) (l + remaining)));
             _strokePath.BeginAnimation(
                 Shape.StrokeDashOffsetProperty,
-                new DoubleAnimation(tl + remaining, 0, chart.AnimationsSpeed, FillBehavior.Stop));
+                new DoubleAnimation(tl + remaining, 0, view.AnimationsSpeed, FillBehavior.Stop));
 
             _strokePath.StrokeDashOffset = 0;
             _previousLength = l;
@@ -136,40 +137,6 @@ namespace LiveCharts.Wpf.Views
         public void Dispose(IChartView view)
         {
             view.Content.RemoveChild(_strokePath);
-        }
-
-        private IEnumerable<double> GetAnimatedStrokeDashArray(double length)
-        {
-            var stack = 0d;
-
-            if (_strokeDashArray == null)
-            {
-                yield return length;
-                yield return length;
-                yield break;
-            }
-
-            var e = _strokeDashArray.GetEnumerator();
-            var isStroked = true;
-
-            while (stack < length)
-            {
-                if (!e.MoveNext())
-                {
-                    e.Reset();
-                    e.MoveNext();
-                }
-                isStroked = !isStroked;
-                yield return e.Current;
-                stack += e.Current;
-            }
-
-            if (isStroked)
-            {
-                yield return 0;
-            }
-            yield return length;
-            e.Dispose();
         }
     }
 }

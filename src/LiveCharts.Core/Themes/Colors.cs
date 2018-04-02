@@ -58,7 +58,7 @@ namespace LiveCharts.Core.Themes
 
             settings.Colors.AddRange(new[]
             {
-                // Goolge's material design
+                // Google's material design
                 // https://material.io/guidelines/style/color.html#color-color-palette
 
                 Color.FromArgb(255, 8, 98, 185), // blue         800
@@ -123,7 +123,7 @@ namespace LiveCharts.Core.Themes
         /// Uses a black scale colors.
         /// </summary>
         /// <returns></returns>
-        public static Charting UseBlackScaleColors(this Charting settings)
+        public static Charting UseGrayScaleColors(this Charting settings)
         {
             settings.Colors.Clear();
             settings.Colors.AddRange(new[]
@@ -147,7 +147,7 @@ namespace LiveCharts.Core.Themes
             settings.Colors.Clear();
             settings.Colors.AddRange(new[]
             {
-                // Goolge's material design
+                // Google's material design
                 // https://material.io/guidelines/style/color.html#color-color-palette
                 // blue
 

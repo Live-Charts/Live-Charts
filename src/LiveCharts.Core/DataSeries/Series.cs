@@ -37,7 +37,6 @@ using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Abstractions.DataSeries;
 using LiveCharts.Core.Charts;
 using LiveCharts.Core.Collections;
-using LiveCharts.Core.Content;
 using LiveCharts.Core.DataSeries.Data;
 using LiveCharts.Core.Drawing;
 using LiveCharts.Core.Drawing.Svg;
@@ -54,6 +53,7 @@ namespace LiveCharts.Core.DataSeries
     /// <seealso cref="IResource" />
     public abstract class Series : IResource, ISeries, INotifyPropertyChanged, IList
     {
+        public const string Tracker = "Tracker";
         private readonly List<ChartModel> _usedBy = new List<ChartModel>();
         private bool _isVisible;
         private int _zIndex;
@@ -303,6 +303,9 @@ namespace LiveCharts.Core.DataSeries
             }
         }
 
+        /// <inheritdoc />
+        public Dictionary<ChartModel, Dictionary<string, object>> Content { get; protected set; }
+
         /// <summary>
         /// Gets the default width of the point.
         /// </summary>
@@ -551,16 +554,16 @@ namespace LiveCharts.Core.DataSeries
 
             switch (DataLabelsPosition.HorizontalAlignment)
             {
-                case HorizontalAlingment.Centered:
+                case HorizontalAlignment.Centered:
                     left = pointLocation.X - .5f * width;
                     break;
-                case HorizontalAlingment.Left:
+                case HorizontalAlignment.Left:
                     left = pointLocation.X - pointMargin.Left - width;
                     break;
-                case HorizontalAlingment.Right:
+                case HorizontalAlignment.Right:
                     left = pointLocation.X + pointMargin.Right;
                     break;
-                case HorizontalAlingment.Between:
+                case HorizontalAlignment.Between:
                     left = (pointLocation.X + betweenBottomLimit) / 2f - .5f * width;
                     break;
                 default:
@@ -765,14 +768,6 @@ namespace LiveCharts.Core.DataSeries
         }
 
         /// <summary>
-        /// Gets the visual content.
-        /// </summary>
-        /// <value>
-        /// The tracker.
-        /// </value>
-        public Dictionary<ChartModel, SeriesContent<TModel, TCoordinate, TViewModel, TPoint>> Content { get; private set; }
-
-        /// <summary>
         /// Gets the points.
         /// </summary>
         /// <value>
@@ -817,12 +812,6 @@ namespace LiveCharts.Core.DataSeries
 
         #endregion
 
-        internal override void UsedBy(ChartModel chart)
-        {
-            if (Content.ContainsKey(chart)) return;
-            Content[chart] = new SeriesContent<TModel, TCoordinate, TViewModel, TPoint>();
-        }
-
         internal override void UpdateStarted(IChartView chart)
         {
             ViewProvider.OnUpdateStarted(chart, this);
@@ -831,6 +820,13 @@ namespace LiveCharts.Core.DataSeries
         internal override void UpdateFinished(IChartView chart)
         {
             ViewProvider.OnUpdateFinished(chart, this);
+        }
+
+        internal override void UsedBy(ChartModel chart)
+        {
+            if (Content.ContainsKey(chart)) return;
+            var defaultDictionary = new Dictionary<string, object> {[Tracker] = new Dictionary<object, TPoint>()};
+            Content[chart] = defaultDictionary;
         }
 
         /// <summary>
@@ -854,7 +850,7 @@ namespace LiveCharts.Core.DataSeries
                 {
                     Stroke = nextColor;
                 }
-
+                
                 if (Fill == Color.Empty)
                 {
                     Fill = nextColor.SetOpacity(DefaultFillOpacity);
@@ -1076,7 +1072,7 @@ namespace LiveCharts.Core.DataSeries
         protected override void OnDisposing(IChartView view)
         {
             if (!Content.ContainsKey(view.Model)) return;
-            Content[view.Model].Dispose();
+            Content[view.Model] = null;
             Content.Remove(view.Model);
         }
 
@@ -1107,11 +1103,13 @@ namespace LiveCharts.Core.DataSeries
             _sourceAsIList = _itemsSource as IList<TModel>;
             _sourceAsRangeChanged = ItemsSource as INotifyRangeChanged<TModel>;
 
+            // ReSharper disable once IdentifierTypo
             if (_itemsSource is INotifyCollectionChanged incc)
             {
                 incc.CollectionChanged += InccOnCollectionChanged;
             }
 
+            // ReSharper disable once IdentifierTypo
             if (_previousItemsSource is INotifyCollectionChanged pincc)
             {
                 pincc.CollectionChanged -= InccOnCollectionChanged;
@@ -1120,6 +1118,7 @@ namespace LiveCharts.Core.DataSeries
             _previousItemsSource = _itemsSource;
         }
 
+        // ReSharper disable once IdentifierTypo
         private void InccOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs notifyCollectionChangedEventArgs)
         {
             CollectionChanged?.Invoke(sender, notifyCollectionChangedEventArgs);
@@ -1127,7 +1126,7 @@ namespace LiveCharts.Core.DataSeries
 
         private void Initialize(IEnumerable<TModel> itemsSource = null)
         {
-            Content = new Dictionary<ChartModel, SeriesContent<TModel, TCoordinate, TViewModel, TPoint>>();
+            Content = new Dictionary<ChartModel, Dictionary<string, object>>();
             _itemsSource = itemsSource ?? new ChartingCollection<TModel>();
             OnItemsInstanceChanged();
             var t = typeof(TModel);

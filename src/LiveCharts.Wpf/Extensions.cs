@@ -33,7 +33,6 @@ using Color = System.Drawing.Color;
 using Font = LiveCharts.Core.Abstractions.Font;
 using FontFamily = System.Windows.Media.FontFamily;
 using FontStyle = System.Windows.FontStyle;
-using FontStyles = LiveCharts.Core.Abstractions.FontStyles;
 using FontWeight = LiveCharts.Core.Abstractions.FontWeight;
 using Orientation = System.Windows.Controls.Orientation;
 using Point = System.Windows.Point;
@@ -69,10 +68,10 @@ namespace LiveCharts.Wpf
 
             switch (font.Style)
             {
-                case FontStyles.Regular:
+                case Core.Abstractions.FontStyle.Regular:
                     s = System.Windows.FontStyles.Normal;
                     break;
-                case FontStyles.Italic:
+                case Core.Abstractions.FontStyle.Italic:
                     s = System.Windows.FontStyles.Italic;
                     break;
                 default:

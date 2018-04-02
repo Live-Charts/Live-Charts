@@ -35,7 +35,6 @@ using System.Threading.Tasks;
 using System.Timers;
 using System.Windows.Input;
 using LiveCharts.Core.Abstractions;
-using LiveCharts.Core.Data;
 using LiveCharts.Core.DataSeries;
 using LiveCharts.Core.DataSeries.Data;
 using LiveCharts.Core.Dimensions;

@@ -32,12 +32,11 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using LiveCharts.Core.Abstractions;
-using LiveCharts.Core.Data;
 using LiveCharts.Core.DataSeries.Data;
 using LiveCharts.Core.ViewModels;
-using LiveCharts.Wpf.Animations;
+using LiveCharts.Wpf.Framework.Animations;
 using Brushes = System.Windows.Media.Brushes;
-using Frame = LiveCharts.Wpf.Animations.Frame;
+using Frame = LiveCharts.Wpf.Framework.Animations.Frame;
 using Point = LiveCharts.Core.Coordinates.Point;
 
 #endregion

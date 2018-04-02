@@ -40,7 +40,7 @@ using LiveCharts.Core.Dimensions;
 using LiveCharts.Core.Drawing;
 using LiveCharts.Core.Events;
 using LiveCharts.Wpf.Controls;
-using LiveCharts.Wpf.Interaction;
+using LiveCharts.Wpf.Framework.Interaction;
 using DataInteractionHandler = LiveCharts.Core.Events.DataInteractionHandler;
 using Point = System.Windows.Point;
 
@@ -181,7 +181,7 @@ namespace LiveCharts.Wpf
         /// <param name="args">The <see cref="DataInteractionEventArgs"/> instance containing the event data.</param>
         protected virtual void OnDataClick(DataInteractionEventArgs args)
         {
-            DataClick?.Invoke(this, args);
+            DataClick?.Invoke(this, args.Points);
             if (DataClickCommand != null && DataClickCommand.CanExecute(args.Points))
             {
                 DataClickCommand.Execute(args.Points);
@@ -194,7 +194,7 @@ namespace LiveCharts.Wpf
         /// <param name="args">The <see cref="DataInteractionEventArgs"/> instance containing the event data.</param>
         protected virtual void OnDataDoubleClick(DataInteractionEventArgs args)
         {
-            DataDoubleClick?.Invoke(this, args);
+            DataDoubleClick?.Invoke(this, args.Points);
             if (DataDoubleClickCommand != null && DataDoubleClickCommand.CanExecute(args.Points))
             {
                 DataDoubleClickCommand.Execute(args.Points);
@@ -347,7 +347,7 @@ namespace LiveCharts.Wpf
         ///<summary>
         /// Occurs when the user clicks in a data point.
         /// </summary>
-        public event Interaction.DataInteractionHandler DataClick;
+        public event DataInteractionHandler DataClick;
 
         public static readonly DependencyProperty DataClickCommandProperty = DependencyProperty.Register(
             nameof(DataClickCommand), typeof(ICommand), typeof(Chart),
@@ -365,7 +365,7 @@ namespace LiveCharts.Wpf
         ///<summary>
         /// Occurs when the user double clicks in a data point.
         /// </summary>
-        public event Interaction.DataInteractionHandler DataDoubleClick;
+        public event DataInteractionHandler DataDoubleClick;
 
         public static readonly DependencyProperty DataDoubleClickCommandProperty = DependencyProperty.Register(
             nameof(DataDoubleClickCommand), typeof(ICommand), typeof(Chart),

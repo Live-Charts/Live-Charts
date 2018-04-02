@@ -26,7 +26,6 @@
 #region
 
 using LiveCharts.Core.Abstractions;
-using LiveCharts.Core.Data;
 using LiveCharts.Core.DataSeries.Data;
 using LiveCharts.Core.Drawing;
 

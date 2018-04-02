@@ -22,7 +22,7 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR 
 // OTHER DEALINGS IN THE SOFTWARE.
 #endregion
-namespace LiveCharts.Wpf.Animations
+namespace LiveCharts.Wpf.Framework.Animations
 {
     /// <summary>
     /// A helper class to build an animation using key frames.
@@ -32,12 +32,12 @@ namespace LiveCharts.Wpf.Animations
         /// <summary>
         /// Initializes a new instance of the <see cref="Frame" /> struct.
         /// </summary>
-        /// <param name="proportion">The time span proportion.</param>
-        /// <param name="to">The value.</param>
-        public Frame(double proportion, double to)
+        /// <param name="elapsedTime">The time span proportion.</param>
+        /// <param name="toValue">The value.</param>
+        public Frame(double elapsedTime, double toValue)
         {
-            To = to;
-            Proportion = proportion;
+            ToValue = toValue;
+            ElapsedTime = elapsedTime;
         }
 
         /// <summary>
@@ -46,7 +46,7 @@ namespace LiveCharts.Wpf.Animations
         /// <value>
         /// The value.
         /// </value>
-        public double To { get; set; }
+        public double ToValue { get; set; }
 
         /// <summary>
         /// Gets or sets the time span.
@@ -54,6 +54,6 @@ namespace LiveCharts.Wpf.Animations
         /// <value>
         /// The time span.
         /// </value>
-        public double Proportion { get; set; }
+        public double ElapsedTime { get; set; }
     }
 }

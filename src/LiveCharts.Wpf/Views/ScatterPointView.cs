@@ -31,10 +31,9 @@ using System.Windows.Media;
 using System.Windows.Shapes;
 using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Coordinates;
-using LiveCharts.Core.Data;
 using LiveCharts.Core.DataSeries.Data;
 using LiveCharts.Core.ViewModels;
-using LiveCharts.Wpf.Animations;
+using LiveCharts.Wpf.Framework.Animations;
 
 #endregion
 

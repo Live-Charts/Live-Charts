@@ -31,7 +31,6 @@ using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Abstractions.DataSeries;
 using LiveCharts.Core.Charts;
 using LiveCharts.Core.Coordinates;
-using LiveCharts.Core.Data;
 using LiveCharts.Core.DataSeries.Data;
 using LiveCharts.Core.Drawing;
 using LiveCharts.Core.Drawing.Svg;
@@ -127,7 +126,7 @@ namespace LiveCharts.Core.DataSeries
 
                 if (current.View == null)
                 {
-                    current.View = ViewProvider .GetNewPointView();
+                    current.View = ViewProvider .Getter();
                 }
 
                 current.ViewModel = vm;

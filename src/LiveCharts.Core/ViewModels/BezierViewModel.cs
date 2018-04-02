@@ -76,7 +76,7 @@ namespace LiveCharts.Core.ViewModels
         /// <value>
         /// The size of the geometry.
         /// </value>
-        public double GeometrySize { get; set; }
+        public float GeometrySize { get; set; }
 
         /// <summary>
         /// Gets or sets the point1.

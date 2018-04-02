@@ -45,7 +45,7 @@ namespace LiveCharts.Core.Events
         /// <value>
         /// From.
         /// </value>
-        public RectangleF SeparatorFrom { get; set; }
+        public RectangleF SeparatorFrom { get; internal set; }
 
         /// <summary>
         /// Gets or sets to.
@@ -53,15 +53,15 @@ namespace LiveCharts.Core.Events
         /// <value>
         /// To.
         /// </value>
-        public RectangleF SeparatorTo { get; set; }
+        public RectangleF SeparatorTo { get; internal set; }
 
         /// <summary>
-        /// Gets or sets the label from.
+        /// Gets the label from.
         /// </summary>
         /// <value>
         /// The label from.
         /// </value>
-        public PointF LabelFrom { get; set; }
+        public PointF LabelFrom { get; internal set; }
 
         /// <summary>
         /// Gets or sets the axis label model.
@@ -69,30 +69,38 @@ namespace LiveCharts.Core.Events
         /// <value>
         /// The axis label model.
         /// </value>
-        public AxisLabelViewModel LabelViewModel { get; set; }
+        public AxisLabelViewModel LabelViewModel { get; internal set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether this <see cref="CartesianAxisSeparatorArgs"/> is disposing.
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if disposing; otherwise, <c>false</c>.
-        /// </value>
-        public bool Disposing { get; set; }
-
-        /// <summary>
-        /// Gets or sets the plane.
+        /// Gets the plane.
         /// </summary>
         /// <value>
         /// The plane.
         /// </value>
-        public SeparatorStyle Style { get; set; }
+        public Plane Plane { get; internal set; }
 
         /// <summary>
-        /// Gets or sets the chart view.
+        /// Gets a value indicating whether this <see cref="CartesianAxisSeparatorArgs"/> is disposing.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if disposing; otherwise, <c>false</c>.
+        /// </value>
+        public bool Disposing { get; internal set; }
+
+        /// <summary>
+        /// Gets the plane.
+        /// </summary>
+        /// <value>
+        /// The plane.
+        /// </value>
+        public SeparatorStyle Style { get; internal set; }
+
+        /// <summary>
+        /// Gets the chart view.
         /// </summary>
         /// <value>
         /// The chart view.
         /// </value>
-        public IChartView ChartView { get; set; }
+        public IChartView ChartView { get; internal set; }
     }
 }

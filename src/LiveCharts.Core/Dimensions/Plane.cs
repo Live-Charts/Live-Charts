@@ -31,7 +31,7 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Charts;
-using LiveCharts.Core.Data;
+using LiveCharts.Core.DataSeries.Data;
 using LiveCharts.Core.Drawing;
 using LiveCharts.Core.Events;
 
@@ -56,6 +56,7 @@ namespace LiveCharts.Core.Dimensions
             MinValue = float.NaN;
             MaxValue = float.NaN;
             LabelFormatter = Formatters.AsMetricNumber;
+            Font = new Font("Arial", 11, FontStyle.Regular, FontWeight.Regular);
             Charting.BuildFromSettings(this);
         }
 

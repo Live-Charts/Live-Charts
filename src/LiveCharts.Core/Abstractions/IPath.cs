@@ -73,7 +73,7 @@ namespace LiveCharts.Core.Abstractions
         /// <summary>
         /// Closes this instance.
         /// </summary>
-        void Close(IChartView view, double length, double i, double j);
+        void Close(IChartView view, float length, float i, float j);
 
         /// <summary>
         /// Disposes the specified view.

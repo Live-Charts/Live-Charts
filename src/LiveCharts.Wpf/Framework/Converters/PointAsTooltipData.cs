@@ -28,17 +28,29 @@
 using System;
 using System.Globalization;
 using System.Windows.Data;
+using LiveCharts.Core.DataSeries.Data;
 
 #endregion
 
-namespace LiveCharts.Wpf.Converters
+namespace LiveCharts.Wpf.Framework.Converters
 {
     /// <summary>
     /// 
     /// </summary>
     /// <seealso cref="System.Windows.Data.IValueConverter" />
-    public class SvgToGeometryDataConverter : IValueConverter
+    public abstract class PointAsTooltipData : IValueConverter
     {
+        private readonly int _dimension;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PointAsTooltipData"/> class.
+        /// </summary>
+        /// <param name="dimension">The dimension.</param>
+        protected PointAsTooltipData(int dimension)
+        {
+            _dimension = dimension;
+        }
+
         /// <summary>
         /// Converts a value.
         /// </summary>
@@ -49,11 +61,11 @@ namespace LiveCharts.Wpf.Converters
         /// <returns>
         /// A converted value. If the method returns <see langword="null" />, the valid null value is used.
         /// </returns>
+        /// <exception cref="NotImplementedException"></exception>
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value == null) return null;
-            var g = (string) value;
-            return System.Windows.Media.Geometry.Parse(g);
+            var point = (PackedPoint) value;
+            return point?.AsTooltipData()[_dimension];
         }
 
         /// <summary>

@@ -43,7 +43,7 @@ namespace LiveCharts.Core.Abstractions
         /// <param name="size">The size.</param>
         /// <param name="style">The style.</param>
         /// <param name="weight">The weight.</param>
-        public Font(string familyName, double size, FontStyles style, FontWeight weight)
+        public Font(string familyName, float size, FontStyle style, FontWeight weight)
         {
             _isEmpty = false;
             FamilyName = familyName;
@@ -71,7 +71,7 @@ namespace LiveCharts.Core.Abstractions
         /// <value>
         /// The size of the font.
         /// </value>
-        public double Size { get; }
+        public float Size { get; }
 
         /// <summary>
         /// Gets or sets the font style.
@@ -79,7 +79,7 @@ namespace LiveCharts.Core.Abstractions
         /// <value>
         /// The font style.
         /// </value>
-        public FontStyles Style { get; }
+        public FontStyle Style { get; }
 
         /// <summary>
         /// Gets or sets the weight.

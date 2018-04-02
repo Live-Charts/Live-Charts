@@ -27,7 +27,7 @@ namespace LiveCharts.Core.Abstractions
     /// <summary>
     /// Horizontal label positioning.
     /// </summary>
-    public enum HorizontalAlingment
+    public enum HorizontalAlignment
     {
         /// <summary>
         /// Places the label at the center.

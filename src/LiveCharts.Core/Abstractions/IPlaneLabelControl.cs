@@ -39,8 +39,10 @@ namespace LiveCharts.Core.Abstractions
         /// <summary>
         /// Measures the specified label.
         /// </summary>
+        /// <param name="content">The chart content.</param>
+        /// <param name="font">The Font.</param>
         /// <param name="label">The label.</param>
         /// <returns></returns>
-        SizeF Measure(string label);
+        SizeF MeasureAndUpdate(IChartContent content, Font font, string label);
     }
 }

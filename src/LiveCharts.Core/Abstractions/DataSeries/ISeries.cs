@@ -25,8 +25,10 @@
 
 #region
 
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
+using LiveCharts.Core.Charts;
 using LiveCharts.Core.Drawing.Svg;
 
 #endregion
@@ -141,6 +143,14 @@ namespace LiveCharts.Core.Abstractions.DataSeries
         /// The index of the z.
         /// </value>
         int ZIndex { get; set; }
+
+        /// <summary>
+        /// Gets the content.
+        /// </summary>
+        /// <value>
+        /// The content.
+        /// </value>
+        Dictionary<ChartModel, Dictionary<string, object>> Content { get;}
 
         /// <summary>
         /// Occurs when a property value changes.
