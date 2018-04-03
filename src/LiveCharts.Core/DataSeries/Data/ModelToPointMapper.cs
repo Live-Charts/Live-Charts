@@ -37,17 +37,17 @@ namespace LiveCharts.Core.DataSeries.Data
     /// <summary>
     /// Defines a model to chart point mapping.
     /// </summary>
-    public class ModelToPointMapper<TModel, TCoordinate>
+    public class ModelToCoordinateMapper<TModel, TCoordinate>
         where TCoordinate : ICoordinate
     {
         private List<ModelState<TModel, TCoordinate>> _modelDependentActions;
         private readonly Dictionary<UiActions, List<ModelStateHandler<TModel, TCoordinate>>> _userUiActions;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ModelToPointMapper{TModel,TCoordinate}"/> class.
+        /// Initializes a new instance of the <see cref="ModelToCoordinateMapper{TModel,TCoordinate}"/> class.
         /// </summary>
         /// <param name="predicate">The predicate.</param>
-        public ModelToPointMapper(Func<TModel, int, TCoordinate> predicate)
+        public ModelToCoordinateMapper(Func<TModel, int, TCoordinate> predicate)
         {
             Predicate = predicate;
             _userUiActions = new Dictionary<UiActions, List<ModelStateHandler<TModel, TCoordinate>>>();
@@ -74,7 +74,7 @@ namespace LiveCharts.Core.DataSeries.Data
         /// </summary>
         /// <param name="predicate">The predicate.</param>
         /// <returns></returns>
-        public ModelToPointMapper<TModel, TCoordinate> LabeledAs(Func<TModel, string> predicate)
+        public ModelToCoordinateMapper<TModel, TCoordinate> LabeledAs(Func<TModel, string> predicate)
         {
             PointPredicate = predicate;
             return this;
@@ -84,7 +84,7 @@ namespace LiveCharts.Core.DataSeries.Data
         /// Whens this instance.
         /// </summary>
         /// <returns></returns>
-        public ModelToPointMapper<TModel, TCoordinate> When(
+        public ModelToCoordinateMapper<TModel, TCoordinate> When(
             Func<TModel, bool> trigger, ModelStateHandler<TModel, TCoordinate> handler)
         {
             if (_modelDependentActions == null)
@@ -105,7 +105,7 @@ namespace LiveCharts.Core.DataSeries.Data
         /// <param name="trigger">The trigger.</param>
         /// <param name="handler">The action.</param>
         /// <returns></returns>
-        public ModelToPointMapper<TModel, TCoordinate> When(
+        public ModelToCoordinateMapper<TModel, TCoordinate> When(
             UiActions trigger, ModelStateHandler<TModel, TCoordinate> handler)
         {
             if (!_userUiActions.ContainsKey(trigger))

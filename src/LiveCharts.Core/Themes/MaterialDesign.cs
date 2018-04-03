@@ -47,13 +47,34 @@ namespace LiveCharts.Core.Themes
         /// Uses the material design light theme.
         /// </summary>
         /// <param name="charting">The settings.</param>
-        /// <returns></returns>
-        public static Charting UsingMaterialDesignLightTheme(this Charting charting)
+        /// <returns>
+        internal static Charting SetMaterialDesignDefaults(this Charting charting)
         {
             var baseFont = new Font("Arial", 11, FontStyle.Regular, FontWeight.Regular);
 
             charting
-                .UseMaterialDesignColors()
+                .HasColors(new[]
+                {
+                    // Google's material design
+                    // https://material.io/guidelines/style/color.html#color-color-palette
+
+                    Color.FromArgb(255, 8, 98, 185), // blue         800
+                    Color.FromArgb(255, 219, 55, 52), // red          700
+                    Color.FromArgb(255, 254, 168, 62), // yellow       800
+                    Color.FromArgb(255, 82, 109, 120), // blue grey    600
+                    Color.FromArgb(255, 141, 24, 78), // pink         900
+                    Color.FromArgb(255, 41, 158, 82), // green        600
+                    Color.FromArgb(255, 120, 130, 197), // indigo       300
+                    Color.FromArgb(255, 0, 147, 135), // teal         500
+                    Color.FromArgb(255, 215, 230, 127), // lime         300
+                    Color.FromArgb(255, 254, 140, 43), // orange       600)
+                })
+
+                .SetDefault<ISeries>(series =>
+                {
+                    series.StrokeThickness = 3f;
+                    series.DefaultFillOpacity = .3f;
+                })
 
                 // sets a base for all the series
                 .SetDefault<ISeries>(series =>

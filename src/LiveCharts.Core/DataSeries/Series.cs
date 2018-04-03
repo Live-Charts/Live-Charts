@@ -685,7 +685,7 @@ namespace LiveCharts.Core.DataSeries
         private IEnumerable<TModel> _previousItemsSource;
         private IList<TModel> _sourceAsIList;
         private INotifyRangeChanged<TModel> _sourceAsRangeChanged;
-        private ModelToPointMapper<TModel, TCoordinate> _mapper;
+        private ModelToCoordinateMapper<TModel, TCoordinate> _mapper;
         private ISeriesViewProvider<TModel, TCoordinate, TViewModel> _viewProvider;
         private object _chartPointsUpdateId;
 
@@ -757,7 +757,7 @@ namespace LiveCharts.Core.DataSeries
         /// <value>
         /// The mapper.
         /// </value>
-        public ModelToPointMapper<TModel, TCoordinate> Mapper
+        public ModelToCoordinateMapper<TModel, TCoordinate> Mapper
         {
             get => _mapper ?? Charting.GetCurrentMapperFor<TModel, TCoordinate>();
             set

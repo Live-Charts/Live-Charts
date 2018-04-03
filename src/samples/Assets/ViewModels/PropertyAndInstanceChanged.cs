@@ -55,8 +55,8 @@ namespace Assets.ViewModels
         {
             Charting.Settings(charting =>
             {
-                charting.For<City>((city, index) => new Point(index, city.Population));
-                charting.For<City, WeightedPoint>((city, index) =>
+                charting.LearnType<City>((city, index) => new Point(index, city.Population));
+                charting.LearnType<City, WeightedPoint>((city, index) =>
                     new WeightedPoint(index, city.Population, _r.Next(0, 10)));
             });
 

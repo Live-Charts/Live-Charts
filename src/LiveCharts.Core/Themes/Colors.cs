@@ -35,13 +35,13 @@ namespace LiveCharts.Core.Themes
     /// <summary>
     /// Colors extensions.
     /// </summary>
-    public static class Colors
+    internal static class Colors
     {
         /// <summary>
         /// Uses a custom colors array as the default series color set.
         /// </summary>
         /// <returns></returns>
-        public static Charting UseColors(this Charting settings, IEnumerable<Color> colors)
+        public static Charting HasColors(this Charting settings, IEnumerable<Color> colors)
         {
             settings.Colors.Clear();
             settings.Colors.AddRange(colors);
@@ -49,41 +49,12 @@ namespace LiveCharts.Core.Themes
         }
 
         /// <summary>
-        /// Uses Google's material design colors.
-        /// </summary>
-        /// <returns></returns>
-        public static Charting UseMaterialDesignColors(this Charting settings)
-        {
-            settings.Colors.Clear();
-
-            settings.Colors.AddRange(new[]
-            {
-                // Google's material design
-                // https://material.io/guidelines/style/color.html#color-color-palette
-
-                Color.FromArgb(255, 8, 98, 185), // blue         800
-                Color.FromArgb(255, 219, 55, 52), // red          700
-                Color.FromArgb(255, 254, 168, 62), // yellow       800
-                Color.FromArgb(255, 82, 109, 120), // blue grey    600
-                Color.FromArgb(255, 141, 24, 78), // pink         900
-                Color.FromArgb(255, 41, 158, 82), // green        600
-                Color.FromArgb(255, 120, 130, 197), // indigo       300
-                Color.FromArgb(255, 0, 147, 135), // teal         500
-                Color.FromArgb(255, 215, 230, 127), // lime         300
-                Color.FromArgb(255, 254, 140, 43), // orange       600
-            });
-
-            return settings;
-        }
-
-        /// <summary>
         /// Uses Microsoft's metro colors.
         /// </summary>
         /// <returns></returns>
-        public static Charting UseMetroColors(this Charting settings)
+        public static Charting HasMetroColors(this Charting settings)
         {
-            settings.Colors.Clear();
-            settings.Colors.AddRange(new[]
+            settings.HasColors(new[]
             {
                 // Microsoft's Metro UI colors
                 Color.FromArgb(255, 43, 86, 145), // dark blue
@@ -104,10 +75,9 @@ namespace LiveCharts.Core.Themes
         /// Uses a white scale colors.
         /// </summary>
         /// <returns></returns>
-        public static Charting UseWhiteScaleColors(this Charting settings)
+        public static Charting HasWhiteScaleColors(this Charting settings)
         {
-            settings.Colors.Clear();
-            settings.Colors.AddRange(new[]
+            settings.HasColors(new[]
             {
                 Color.FromArgb(255, 245, 245, 245),
                 Color.FromArgb(255, 215, 215, 215),
@@ -123,10 +93,9 @@ namespace LiveCharts.Core.Themes
         /// Uses a black scale colors.
         /// </summary>
         /// <returns></returns>
-        public static Charting UseGrayScaleColors(this Charting settings)
+        public static Charting HasGrayScaleColors(this Charting settings)
         {
-            settings.Colors.Clear();
-            settings.Colors.AddRange(new[]
+            settings.HasColors(new[]
             {
                 Color.FromArgb(255, 30, 30, 30),
                 Color.FromArgb(255, 65, 65, 65),
@@ -142,10 +111,9 @@ namespace LiveCharts.Core.Themes
         /// Uses a blue scale colors.
         /// </summary>
         /// <returns></returns>
-        public static Charting UseBlueScaleColors(this Charting settings)
+        public static Charting HasBlueScaleColors(this Charting settings)
         {
-            settings.Colors.Clear();
-            settings.Colors.AddRange(new[]
+            settings.HasColors(new[]
             {
                 // Google's material design
                 // https://material.io/guidelines/style/color.html#color-color-palette

@@ -27,9 +27,13 @@
 
 using System.Windows;
 using LiveCharts.Core;
+using LiveCharts.Core.Coordinates;
+using LiveCharts.Core.DataSeries;
+using LiveCharts.Core.DataSeries.Data;
 using LiveCharts.Core.Defaults;
 using LiveCharts.Core.Themes;
 using LiveCharts.Wpf;
+using Point = LiveCharts.Core.Coordinates.Point;
 
 #endregion
 
@@ -45,9 +49,9 @@ namespace Samples.Wpf
             Charting.Settings(charting =>
             {
                 charting
-                    .ForPrimitiveAndDefaultTypes()
-                    .UsingWindowsPresentationFoundation()
-                    .UsingTestingTheme();
+                    .LearnPrimitiveAndDefaultTypes()
+                    .SetTheme(Themes.MaterialDesign)
+                    .TargetsWpf();
             });
         }
     }

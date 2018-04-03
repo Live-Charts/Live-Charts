@@ -41,36 +41,36 @@ namespace LiveCharts.Core.Defaults
         /// </summary>
         /// <param name="charting">The configuration.</param>
         /// <returns></returns>
-        public static Charting ForPrimitiveAndDefaultTypes(this Charting charting)
+        public static Charting LearnPrimitiveAndDefaultTypes(this Charting charting)
         {
-            charting.For<short>((value, index) => new Point(index, value));
-            charting.For<ushort>((value, index) => new Point(index, value));
-            charting.For<int>((value, index) => new Point(index, value));
-            charting.For<long>((value, index) => new Point(index, value));
-            charting.For<ulong>((value, index) => new Point(index, value));
-            charting.For<double>((value, index) => new Point(index, (float) value));
-            charting.For<float>((value, index) => new Point(index, value));
+            charting.LearnType<short>((value, index) => new Point(index, value));
+            charting.LearnType<ushort>((value, index) => new Point(index, value));
+            charting.LearnType<int>((value, index) => new Point(index, value));
+            charting.LearnType<long>((value, index) => new Point(index, value));
+            charting.LearnType<ulong>((value, index) => new Point(index, value));
+            charting.LearnType<double>((value, index) => new Point(index, (float) value));
+            charting.LearnType<float>((value, index) => new Point(index, value));
 
-            charting.For<short, WeightedPoint>((value, index) => new WeightedPoint(index, value, 0));
-            charting.For<ushort, WeightedPoint>((value, index) => new WeightedPoint(index, value, 0));
-            charting.For<int, WeightedPoint>((value, index) => new WeightedPoint(index, value, 0));
-            charting.For<long, WeightedPoint>((value, index) => new WeightedPoint(index, value, 0));
-            charting.For<ulong, WeightedPoint>((value, index) => new WeightedPoint(index, value, 0));
-            charting.For<double, WeightedPoint>((value, index) => new WeightedPoint(index, (float) value, 0));
-            charting.For<float, WeightedPoint>((value, index) => new WeightedPoint(index, value, 0));
+            charting.LearnType<short, WeightedPoint>((value, index) => new WeightedPoint(index, value, 0));
+            charting.LearnType<ushort, WeightedPoint>((value, index) => new WeightedPoint(index, value, 0));
+            charting.LearnType<int, WeightedPoint>((value, index) => new WeightedPoint(index, value, 0));
+            charting.LearnType<long, WeightedPoint>((value, index) => new WeightedPoint(index, value, 0));
+            charting.LearnType<ulong, WeightedPoint>((value, index) => new WeightedPoint(index, value, 0));
+            charting.LearnType<double, WeightedPoint>((value, index) => new WeightedPoint(index, (float) value, 0));
+            charting.LearnType<float, WeightedPoint>((value, index) => new WeightedPoint(index, value, 0));
 
-            charting.For<decimal>((value, index) => new Point(index, (float) value));
-            charting.For<decimal, WeightedPoint>((value, index) => new WeightedPoint(index, (float) value, 0));
+            charting.LearnType<decimal>((value, index) => new Point(index, (float) value));
+            charting.LearnType<decimal, WeightedPoint>((value, index) => new WeightedPoint(index, (float) value, 0));
 
-            charting.For<ObservableModel>((om, index) => new Point(index, om.Value));
-            charting.For<ObservablePointModel>((opm, index) => new Point(opm.X, opm.Y));
+            charting.LearnType<ObservableModel>((om, index) => new Point(index, om.Value));
+            charting.LearnType<ObservablePointModel>((opm, index) => new Point(opm.X, opm.Y));
 
-            charting.For<FinancialModel, FinancialPoint>(
+            charting.LearnType<FinancialModel, FinancialPoint>(
                 (fm, index) => new FinancialPoint(index, fm.Open, fm.High, fm.Low, fm.Close));
 
             charting.PlotPolar<PolarModel>((pm, index) => new PolarPoint(pm.Radius, pm.Angle));
 
-            charting.For<WeightedPoint, WeightedPoint>((point, index) => new WeightedPoint(point.X, point.Y, point.Weight));
+            charting.LearnType<WeightedPoint, WeightedPoint>((point, index) => new WeightedPoint(point.X, point.Y, point.Weight));
 
             return charting;
         }
