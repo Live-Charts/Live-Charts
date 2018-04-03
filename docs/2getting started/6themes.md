@@ -4,7 +4,7 @@ If you want to override the default value of a property globally this is the way
 
 ```c#
 charting
-    // overrides the default color array
+    // overrides the default colors array
     .HasColors(new[]
     {
         System.Drawing.Color.FromArgb(255, 8, 98, 185),

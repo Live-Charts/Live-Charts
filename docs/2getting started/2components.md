@@ -16,7 +16,7 @@ Use the `Series.Visibility` property to hide/show any series, use the `ZIndex` p
 
 ## Data Tool Tips
 
-A DataTooltip displays extra information for the user every time he interacts with a point, for example in a Desktop chart, when he places the mouse over a point a tooltip will appear and will let the user know more information about it, you can customize any tooltip to display as much information as your users require, see ${link, the tooltips section, docs/getting started/tooltips}.
+A DataTooltip displays extra information for the user every time he interacts with a point, for example in a Desktop chart, when he places the mouse over a point a tooltip will appear and will let the user know more information about it, you can customize any tooltip to display as much information as your users require, see [${link, the tooltips section, docs/getting started/tooltips}].
 
 ## Legends
 

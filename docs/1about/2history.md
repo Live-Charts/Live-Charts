@@ -14,4 +14,4 @@ By first I tried to patch the current code, but I had learned a lot in the proce
 
 After a long dilemma I decided that the best for the project was to write everything from scratch, this is how version 1.0 was born at may 2018, this version finally targets performance and memory usage, is designed to be cross platform, fixes many things that felt not correct for me anymore,  and improves the code quality drastically.
 
-I am sure there are many things to improve yet, and many lessons to learn, but I am here ready for the challenge the idea is to keep the project alive and help as many developers as possible, I really hope LiveCharts helps you to achieve your project!
+I am sure there are many things to improve yet, and many lessons to learn, but I am here ready for the challenge the idea is to keep the project alive and help as many developers as possible, I really hope LiveCharts helps you to achieve your goal!

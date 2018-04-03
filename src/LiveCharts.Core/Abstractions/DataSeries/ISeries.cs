@@ -26,7 +26,6 @@
 #region
 
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Drawing;
 using LiveCharts.Core.Charts;
 using LiveCharts.Core.Drawing.Svg;
@@ -41,10 +40,10 @@ namespace LiveCharts.Core.Abstractions.DataSeries
     public interface ISeries
     {
         /// <summary>
-        /// Gets or sets a value indicating whether [data labels].
+        /// Gets or sets a value indicating whether the series should display a label for every point in the series.
         /// </summary>
         /// <value>
-        ///   <c>true</c> if [data labels]; otherwise, <c>false</c>.
+        ///   <c>true</c> if display labels; otherwise, <c>false</c>.
         /// </value>
         bool DataLabels { get; set; }
 
@@ -57,7 +56,8 @@ namespace LiveCharts.Core.Abstractions.DataSeries
         DataLabelsPosition DataLabelsPosition { get; set; }
 
         /// <summary>
-        /// Gets or sets the default fill opacity.
+        /// Gets or sets the default fill opacity, this property is used to determine the fill opacity of a point when 
+        /// LiveCharts sets the <see cref="Fill"/> automatically based on the theme.
         /// </summary>
         /// <value>
         /// The default fill opacity.
@@ -65,7 +65,8 @@ namespace LiveCharts.Core.Abstractions.DataSeries
         float DefaultFillOpacity { get; set; }
 
         /// <summary>
-        /// Gets the default width of the point.
+        /// Gets the default width of the point, this property is used internally by the library and should only be used
+        ///  by you if you need to build a custom series.
         /// </summary>
         /// <value>
         /// The default width of the point.
@@ -89,7 +90,8 @@ namespace LiveCharts.Core.Abstractions.DataSeries
         Font Font { get; set; }
 
         /// <summary>
-        /// Gets or sets the geometry.
+        /// Gets or sets the geometry, the geometry property is used to represent the series in the legend and
+        /// depending on the series type it could also set the base geometry to draw every point (Line, Scatter and Bubble series).
         /// </summary>
         /// <value>
         /// The geometry.
@@ -105,7 +107,8 @@ namespace LiveCharts.Core.Abstractions.DataSeries
         bool IsVisible { get; set; }
 
         /// <summary>
-        /// Gets the scales at.
+        /// Gets the scales at array, this property is used internally by the library and should only be used
+        /// by you if you need to build a custom series.
         /// </summary>
         /// <value>
         /// The scales at.
@@ -129,6 +132,14 @@ namespace LiveCharts.Core.Abstractions.DataSeries
         float StrokeThickness { get; set; }
 
         /// <summary>
+        /// Gets or sets the stroke dash array.
+        /// </summary>
+        /// <value>
+        /// The stroke dash array.
+        /// </value>
+        IEnumerable<double> StrokeDashArray { get; set; }
+
+        /// <summary>
         /// Gets or sets the title.
         /// </summary>
         /// <value>
@@ -137,24 +148,12 @@ namespace LiveCharts.Core.Abstractions.DataSeries
         string Title { get; set; }
 
         /// <summary>
-        /// Gets or sets the index of the z.
-        /// </summary>
-        /// <value>
-        /// The index of the z.
-        /// </value>
-        int ZIndex { get; set; }
-
-        /// <summary>
-        /// Gets the content.
+        /// Gets the content, this property is used internally by the library and should only be used
+        /// by you if you need to build a custom series.
         /// </summary>
         /// <value>
         /// The content.
         /// </value>
         Dictionary<ChartModel, Dictionary<string, object>> Content { get;}
-
-        /// <summary>
-        /// Occurs when a property value changes.
-        /// </summary>
-        event PropertyChangedEventHandler PropertyChanged;
     }
 }

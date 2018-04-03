@@ -68,7 +68,7 @@ namespace LiveCharts.Core.Defaults
             charting.LearnType<FinancialModel, FinancialPoint>(
                 (fm, index) => new FinancialPoint(index, fm.Open, fm.High, fm.Low, fm.Close));
 
-            charting.PlotPolar<PolarModel>((pm, index) => new PolarPoint(pm.Radius, pm.Angle));
+            //charting.PlotPolar<PolarModel>((pm, index) => new PolarPoint(pm.Radius, pm.Angle));
 
             charting.LearnType<WeightedPoint, WeightedPoint>((point, index) => new WeightedPoint(point.X, point.Y, point.Weight));
 

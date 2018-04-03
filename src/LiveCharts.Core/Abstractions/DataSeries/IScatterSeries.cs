@@ -35,7 +35,7 @@ namespace LiveCharts.Core.Abstractions.DataSeries
     /// The scatter series interface.
     /// </summary>
     /// <seealso cref="LiveCharts.Core.Abstractions.DataSeries.ISeries" />
-    public interface IScatterSeries : ISeries
+    public interface IScatterSeries : ISeries, I2DSeries
     {
         /// <summary>
         /// Gets or sets the point geometry.

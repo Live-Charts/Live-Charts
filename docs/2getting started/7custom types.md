@@ -1,6 +1,6 @@
 # Teaching the library to plot a custom type
 
-This is probably the most confusing part of the library, it is not necessary to use the library because you can only call `.LearnPrimitiveAndDefaultTypes()` (explained at ´docs/getting started/settings´) and use the types that this documentation and samples set use, but might help you to achieve better code quality and performance.
+This is probably the most confusing part of the library, it is not necessary to use the library because you can only call `.LearnPrimitiveAndDefaultTypes()` (explained at [settings section](),docs/getting started/settings} and use the types that this documentation and samples set use, but might help you to achieve better code quality and performance.
 
 LiveCharts has no idea how to plot anything, you have to tell the library how to map an object to a point in a chart, as explained at `docs/getting started/settings` when we called `LearnPrimitiveAndDefaultTypes()` we taught the library how to plot all the primitive and the default types defined in the library.
 

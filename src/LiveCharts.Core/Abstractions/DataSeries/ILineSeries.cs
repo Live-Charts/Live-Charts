@@ -34,10 +34,10 @@ namespace LiveCharts.Core.Abstractions.DataSeries
     /// <summary>
     /// The line series interface.
     /// </summary>
-    public interface ILineSeries : ISeries
+    public interface ILineSeries : ISeries, I2DSeries
     {
         /// <summary>
-        /// Gets or sets the line smoothness.
+        /// Gets or sets the line smoothness, this property goes from 0 to 1, 0 will generate straight beziers, 1 super curved beziers.
         /// </summary>
         /// <value>
         /// The line smoothness.
@@ -45,7 +45,9 @@ namespace LiveCharts.Core.Abstractions.DataSeries
         float LineSmoothness { get; set; }
 
         /// <summary>
-        /// Gets or sets the point geometry.
+        /// Gets or sets the point geometry, a geometry is used to represent the series in the legend, 
+        /// and some times to represent it's points in the chart, for example a line or scatter series 
+        /// will use this property to draw every point.
         /// </summary>
         /// <value>
         /// The point geometry.
@@ -53,7 +55,7 @@ namespace LiveCharts.Core.Abstractions.DataSeries
         Geometry PointGeometry { get; set; }
 
         /// <summary>
-        /// Gets or sets the size of the geometry.
+        /// Gets or sets the size of the <see cref="PointGeometry"/> property. 
         /// </summary>
         /// <value>
         /// The size of the geometry.

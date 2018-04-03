@@ -26,6 +26,7 @@
 #region
 
 using LiveCharts.Core.Abstractions;
+using LiveCharts.Core.Abstractions.DataSeries;
 using LiveCharts.Core.DataSeries.Data;
 using LiveCharts.Core.Drawing;
 
@@ -42,10 +43,12 @@ namespace LiveCharts.Core.DataSeries
     /// <typeparam name="TViewModel">The type of the view model.</typeparam>
     /// <seealso cref="Series{TModel, TPoint, TCoordinate, TViewModel}" />
     public abstract class CartesianSeries<TModel, TCoordinate, TViewModel, TPoint> 
-        : Series<TModel, TCoordinate, TViewModel, TPoint>
+        : Series<TModel, TCoordinate, TViewModel, TPoint>, I2DSeries
         where TPoint : Point<TModel, TCoordinate, TViewModel>, new ()
         where TCoordinate : ICoordinate
     {
+        private int _zIndex;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="CartesianSeries{T,U,V,W}"/> class.
         /// </summary>
@@ -102,6 +105,17 @@ namespace LiveCharts.Core.DataSeries
             set
             {
                 ScalesAt[1] = value; 
+                OnPropertyChanged();
+            }
+        }
+
+        /// <inheritdoc />
+        public int ZIndex
+        {
+            get => _zIndex;
+            set
+            {
+                _zIndex = value;
                 OnPropertyChanged();
             }
         }

@@ -20,4 +20,3 @@ Defines a chart using the cartesian coordinate system ([X, Y] points) it support
 A pie chart only support the PieSeries class and will generate a pie chart plot.
 
 ## Solid Gauge
-

@@ -56,7 +56,6 @@ namespace LiveCharts.Core.DataSeries
         public const string Tracker = "Tracker";
         private readonly List<ChartModel> _usedBy = new List<ChartModel>();
         private bool _isVisible;
-        private int _zIndex;
         private int[] _scalesAt;
         private bool _dataLabels;
         private string _title;
@@ -95,12 +94,7 @@ namespace LiveCharts.Core.DataSeries
             set => SetItem(value, index);
         }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether [data labels].
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if [data labels]; otherwise, <c>false</c>.
-        /// </value>
+        /// <inheritdoc />
         public bool DataLabels
         {
             get => _dataLabels;
@@ -111,12 +105,7 @@ namespace LiveCharts.Core.DataSeries
             }
         }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether this instance is visible.
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if this instance is visible; otherwise, <c>false</c>.
-        /// </value>
+        /// <inheritdoc />
         public bool IsVisible
         {
             get => _isVisible;
@@ -127,12 +116,7 @@ namespace LiveCharts.Core.DataSeries
             }
         }
 
-        /// <summary>
-        /// Gets or sets the title.
-        /// </summary>
-        /// <value>
-        /// The title.
-        /// </value>
+        /// <inheritdoc />
         public string Title
         {
             get => _title;
@@ -143,28 +127,7 @@ namespace LiveCharts.Core.DataSeries
             }
         }
 
-        /// <summary>
-        /// Gets or sets the index of the z.
-        /// </summary>
-        /// <value>
-        /// The index of the z.
-        /// </value>
-        public int ZIndex
-        {
-            get => _zIndex;
-            set
-            {
-                _zIndex = value;
-                OnPropertyChanged();
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the scales at array.
-        /// </summary>
-        /// <value>
-        /// The scales at.
-        /// </value>
+        /// <inheritdoc />
         public int[] ScalesAt
         {
             get => _scalesAt;
@@ -175,12 +138,7 @@ namespace LiveCharts.Core.DataSeries
             }
         }
 
-        /// <summary>
-        /// Gets or sets the stroke.
-        /// </summary>
-        /// <value>
-        /// The stroke.
-        /// </value>
+        /// <inheritdoc />
         public Color Stroke
         {
             get => _stroke;
@@ -191,12 +149,7 @@ namespace LiveCharts.Core.DataSeries
             }
         }
 
-        /// <summary>
-        /// Gets or sets the stroke thickness.
-        /// </summary>
-        /// <value>
-        /// The stroke thickness.
-        /// </value>
+        /// <inheritdoc />
         public float StrokeThickness
         {
             get => _strokeThickness;
@@ -207,12 +160,7 @@ namespace LiveCharts.Core.DataSeries
             }
         }
 
-        /// <summary>
-        /// Gets or sets the stroke dash array.
-        /// </summary>
-        /// <value>
-        /// The stroke dash array.
-        /// </value>
+        /// <inheritdoc />
         public IEnumerable<double> StrokeDashArray
         {
             get => _strokeDashArray;
@@ -223,12 +171,7 @@ namespace LiveCharts.Core.DataSeries
             }
         }
 
-        /// <summary>
-        /// Gets or sets the fill.
-        /// </summary>
-        /// <value>
-        /// The fill.
-        /// </value>
+        /// <inheritdoc />
         public Color Fill
         {
             get => _fill;
@@ -239,12 +182,7 @@ namespace LiveCharts.Core.DataSeries
             }
         }
 
-        /// <summary>
-        /// Gets or sets the font.
-        /// </summary>
-        /// <value>
-        /// The font.
-        /// </value>
+        /// <inheritdoc />
         public Font Font
         {
             get => _font;
@@ -255,12 +193,7 @@ namespace LiveCharts.Core.DataSeries
             }
         }
 
-        /// <summary>
-        /// Gets or sets the default fill opacity.
-        /// </summary>
-        /// <value>
-        /// The default fill opacity.
-        /// </value>
+        /// <inheritdoc />
         public float DefaultFillOpacity
         {
             get => _defaultFillOpacity;
@@ -271,12 +204,7 @@ namespace LiveCharts.Core.DataSeries
             }
         }
 
-        /// <summary>
-        /// Gets or sets the default geometry.
-        /// </summary>
-        /// <value>
-        /// The default geometry.
-        /// </value>
+        /// <inheritdoc />
         public Geometry Geometry
         {
             get => _geometry;
@@ -287,12 +215,7 @@ namespace LiveCharts.Core.DataSeries
             }
         }
 
-        /// <summary>
-        /// Gets or sets the data labels position.
-        /// </summary>
-        /// <value>
-        /// The data labels position.
-        /// </value>
+        /// <inheritdoc />
         public DataLabelsPosition DataLabelsPosition
         {
             get => _dataLabelsPosition;
@@ -306,12 +229,7 @@ namespace LiveCharts.Core.DataSeries
         /// <inheritdoc />
         public Dictionary<ChartModel, Dictionary<string, object>> Content { get; protected set; }
 
-        /// <summary>
-        /// Gets the default width of the point.
-        /// </summary>
-        /// <value>
-        /// The default width of the point.
-        /// </value>
+        /// <inheritdoc />
         public abstract float[] DefaultPointWidth { get; }
 
         /// <summary>

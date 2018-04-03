@@ -1,8 +1,10 @@
 # Automatic updates
 
+Before explaining how automatic updates work, it is important for you to know that all the objects used in our official samples update automatically every time a property or a collection changes, this article explains the idea behind it.
+
 LiveCharts updates and animates automatically as your data changes, we listen for `INotifyPropertyChanged` or `INotifyCollectionChanged` implementations, the chart control registers a handler at many components it uses, that will enqueue an update when a property or a collection changes, finally when the resource is removed from the chart, the handler is also gone from the instance.
 
-As you probably noticed we said 'enqueue an update', this means that the charts in not redrawn every time a property or a collection changes, redrawing the UI specially in a charting library when we could have millions of objects could be a expensive task.
+As you probably noticed we said 'enqueue an update', this means that the charts in not redrawn every time a property or a collection changes, redrawing the UI specially in a charting library when we could have millions of objects could be an expensive task.
 
 ![updates cycle](../resources/updatescycle.png)
 
@@ -46,11 +48,12 @@ Even you can decide the type of the instance to store your series or axes, we re
 
 ```c#
 var chart = new CartesianChart();
-chart.Series = new ChartingCollection<Series>
+var seriesCollection = new ChartingCollection<Series>
 {
     new LineSeries<double>(),
     new BarSeries<double>()
 };
+chart.Series = seriesCollection;
 // the chart will draw any new series that is added to our seriesCollection instance
 seriesCollection.Add(new ScatterSeries<double>())
 // we can also add multiple series at once.
@@ -63,9 +66,9 @@ seriesCollection.AddRange(new Series[]
 
 ## Property Changed
 
-As you noticed the `Series` derived classes are generic, this way we can plot anything in our charts, but we have to teach the library how to do so, if you wantg to learn more about how to teach the library to plot a custom type, please see ${link, custom types section, docs/getting started/custom types}.
+As you noticed the `Series` derived classes are generic, this way we can plot anything in our charts, but we have to teach the library how to do so, if you want to learn more about how to teach the library to plot a custom type, please see ${link, custom types section, docs/getting started/custom types}.
 
-In this sample we will generate a chart to build a chart that displays our students data base, we want to compare the `Age` property in a bar chart.
+In this sample we will build a chart that displays our students data base, we want to compare the `Age` property in a bar chart.
 
 ```c#
 public class Student
@@ -81,7 +84,7 @@ we teach the library to map a student to a coordinate in a chart:
 Charting.Settings(charting =>
 {
     charting.LearnType<Student>(
-    (student, index) => new LiveCharts.Core.Coordinates.Point(index, student.Age));
+        (student, index) => new LiveCharts.Core.Coordinates.Point(index, student.Age));
 });
 ```
 

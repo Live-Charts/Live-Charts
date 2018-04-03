@@ -25,8 +25,14 @@
 
 #region
 
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using System.Windows;
 using LiveCharts.Core;
+using LiveCharts.Core.Collections;
 using LiveCharts.Core.Coordinates;
 using LiveCharts.Core.DataSeries;
 using LiveCharts.Core.DataSeries.Data;
@@ -53,6 +59,56 @@ namespace Samples.Wpf
                     .SetTheme(Themes.MaterialDesign)
                     .TargetsWpf();
             });
+
+            
+            Charting.Settings(charting =>
+            {
+                charting.LearnType<Student>(
+                    (student, index) => new LiveCharts.Core.Coordinates.Point(index, student.Age));
+            });
+
+            var chart = new CartesianChart();
+
+            var seriesCollection = new ChartingCollection<Series>();
+            chart.Series = seriesCollection;
+
+            var ageSeries = new BarSeries<Student>();
+
+            ageSeries.Add(new Student
+            {
+                Age = 22,
+                Name = "Charles"
+            });
+            ageSeries.Add(new Student
+            {
+                Age = 25,
+                Name = "Frida"
+            });
+
+            seriesCollection.Add(ageSeries);
+        }
+
+        public class Student : INotifyPropertyChanged
+        {
+            private int _age;
+            public string Name { get; set; }
+
+            public int Age
+            {
+                get { return _age; }
+                set
+                {
+                    _age = value;
+                    OnPropertyChanged();
+                }
+            }
+
+            public event PropertyChangedEventHandler PropertyChanged;
+
+            protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+            {
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            }
         }
     }
 }
