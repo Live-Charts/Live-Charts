@@ -7,6 +7,7 @@ This file explains the custom extended markdown used in the LiveCharts website.
 The site replaces the following commands with an HTML template:
 
 * **${installFromNuget}**: the install from Nuget template.
+* **${link, 0, 1}**: represents a link to another documentation file, 0: text, 1: documentation path.
 * **{if, 0}**: specifies if the next item should be displayed according to the '0' parameter condition
 
 ## Variables
