@@ -82,7 +82,7 @@ namespace LiveCharts.Core.Abstractions.DataSeries
         Color Fill { get; set; }
 
         /// <summary>
-        /// Gets or sets the font.
+        /// Gets or sets the font, the font will be used as the <see cref="DataLabels"/> font of this series.
         /// </summary>
         /// <value>
         /// The font.

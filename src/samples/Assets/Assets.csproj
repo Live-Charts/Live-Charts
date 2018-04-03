@@ -5,14 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Images\propertyAndInstanceChanged.png" />
     <None Remove="samples.json" />
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="Images\propertyAndInstanceChanged.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="samples.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

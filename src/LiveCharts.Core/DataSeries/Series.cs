@@ -53,7 +53,6 @@ namespace LiveCharts.Core.DataSeries
     /// <seealso cref="IResource" />
     public abstract class Series : IResource, ISeries, INotifyPropertyChanged, IList
     {
-        public const string Tracker = "Tracker";
         private readonly List<ChartModel> _usedBy = new List<ChartModel>();
         private bool _isVisible;
         private int[] _scalesAt;
@@ -76,6 +75,11 @@ namespace LiveCharts.Core.DataSeries
             IsVisible = true;
             Charting.BuildFromSettings<ISeries>(this);
         }
+
+        /// <summary>
+        /// The tracker constant.
+        /// </summary>
+        public const string Tracker = "Tracker";
 
         #region Properties
 
@@ -241,7 +245,8 @@ namespace LiveCharts.Core.DataSeries
         public abstract float[] PointMargin { get; }
 
         /// <summary>
-        /// Gets the range by dimension.
+        /// Gets the range by dimension, this property is used internally by the library and should only be used
+        ///  by you if you need to build a custom series.
         /// </summary>
         /// <value>
         /// The range by dimension.
@@ -645,7 +650,9 @@ namespace LiveCharts.Core.DataSeries
         }
 
         /// <summary>
-        /// Gets or sets the values.
+        /// Gets or sets the items source, the items source is where the series grabs the 
+        /// data to plot from, by default it is of type <see cref="ChartingCollection{T}"/>
+        /// but you can use any <see cref="IEnumerable{T}"/> as your data source.
         /// </summary>
         /// <value>
         /// The values.
@@ -662,12 +669,12 @@ namespace LiveCharts.Core.DataSeries
         }
 
         /// <summary>
-        /// Gets or sets the metadata.
+        /// Gets the metadata.
         /// </summary>
         /// <value>
         /// The metadata.
         /// </value>
-        public SeriesMetatada Metadata { get; set; }
+        public SeriesMetatada Metadata { get; protected set; }
 
         /// <summary>
         /// Gets or sets the mapper.
@@ -686,7 +693,7 @@ namespace LiveCharts.Core.DataSeries
         }
 
         /// <summary>
-        /// Gets the points.
+        /// Gets the points in the screen based on the data in the series, see <see cref="ItemsSource"/>.
         /// </summary>
         /// <value>
         /// The points.
@@ -719,7 +726,7 @@ namespace LiveCharts.Core.DataSeries
         }
 
         /// <inheritdoc />
-        public bool IsReadOnly
+        bool ICollection<TModel>.IsReadOnly
         {
             get
             {

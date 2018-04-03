@@ -6,10 +6,28 @@
         xmlns:wpf="clr-namespace:Samples.Wpf"
         mc:Ignorable="d"
         Title="MainWindow"
-        Height="500"
-        Width="600"
-        d:DataContext="{d:DesignInstance wpf:NavigationHandler}">
-    <Border Padding="8">
-        <ContentControl Content="{Binding CurrentView}" />
-    </Border>
+        Height="700"
+        Width="950"
+        WindowStartupLocation="CenterScreen">
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"></BooleanToVisibilityConverter>
+    </Window.Resources>
+   <Window.DataContext>
+       <wpf:NavigationHandler></wpf:NavigationHandler>
+   </Window.DataContext>
+    <Grid>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <Button Width="20" Height="20" HorizontalAlignment="Left" Margin="8" 
+                Visibility="{Binding IsMenuHidden, Converter={StaticResource BooleanToVisibilityConverter}}"
+                Command="{Binding ShowMenu}">
+            <Image Source="Images/menu.png"></Image>
+        </Button>
+
+        <ContentControl Grid.Row="1" Content="{Binding CurrentView}" />
+    </Grid>
 </Window>

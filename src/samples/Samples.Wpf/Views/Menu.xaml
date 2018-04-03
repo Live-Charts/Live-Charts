@@ -5,16 +5,33 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:viewModels="clr-namespace:Assets.ViewModels;assembly=Assets"
              mc:Ignorable="d"
-             d:DesignHeight="600" d:DesignWidth="800"
+             Background="#F9F9F9"
+             d:DesignHeight="650" d:DesignWidth="950"
              d:DataContext="{d:DesignInstance viewModels:Menu}">
     <UserControl.DataContext>
         <viewModels:Menu />
     </UserControl.DataContext>
-    <ItemsControl ItemsSource="{Binding Samples}" ItemTemplate="{StaticResource MainMenuButtonTemplate}" Margin="25">
-        <ItemsControl.ItemsPanel>
-            <ItemsPanelTemplate>
-                <WrapPanel VerticalAlignment="Center" HorizontalAlignment="Center" />
-            </ItemsPanelTemplate>
-        </ItemsControl.ItemsPanel>
-    </ItemsControl>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="20"></RowDefinition>
+        </Grid.RowDefinitions>
+        <ItemsControl Grid.Row="0" ItemsSource="{Binding Samples}" ItemTemplate="{StaticResource MainMenuButtonTemplate}" Margin="25, 10">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel VerticalAlignment="Center" HorizontalAlignment="Center" />
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+        </ItemsControl>
+        <TextBlock Grid.Row="1" TextAlignment="Center" VerticalAlignment="Bottom">
+            Icons made by
+            <Hyperlink NavigateUri="https://www.freepik.com/" RequestNavigate="Hyperlink_OnRequestNavigate">
+                Freepik
+            </Hyperlink>
+            from
+            <Hyperlink NavigateUri="https://www.flaticon.com/" RequestNavigate="Hyperlink_OnRequestNavigate">
+                www.flaticon.com
+            </Hyperlink>
+        </TextBlock>
+    </Grid>
 </UserControl>
