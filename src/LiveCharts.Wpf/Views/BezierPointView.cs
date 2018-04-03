@@ -106,8 +106,7 @@ namespace LiveCharts.Wpf.Views
             Shape.StrokeThickness = point.Series.StrokeThickness;
             Shape.Stroke = point.Series.Stroke.AsWpf();
             Shape.Fill = Brushes.White;
-            Shape.Data =
-                Geometry.Parse(Core.Drawing.Svg.Geometry.Circle.Data); // Geometry.Parse(viewModel.Geometry.Data);
+            Shape.Data = Geometry.Parse(point.Series.Geometry.Data);
 
             if (!isNew)
             {
