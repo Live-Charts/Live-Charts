@@ -102,7 +102,7 @@ namespace LiveCharts.Core.Themes
                     columnSeries.MaxColumnWidth = 20f;
                     columnSeries.DefaultFillOpacity = 1f;
                 })
-                .SetDefault<IScatterSeries>(scatterSeries =>
+                .SetDefault<IBubbleSeries>(scatterSeries =>
                 {
                     scatterSeries.DefaultFillOpacity = .6f;
                     scatterSeries.StrokeThickness = 3f;

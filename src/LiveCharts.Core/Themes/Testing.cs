@@ -76,7 +76,7 @@ namespace LiveCharts.Core.Themes
                     series.StrokeThickness = 3f;
                     series.DefaultFillOpacity = .3f;
                 })
-                .SetDefault<IScatterSeries>(scatter =>
+                .SetDefault<IBubbleSeries>(scatter =>
                 {
                     scatter.MinGeometrySize = 35;
                     scatter.MaxGeometrySize = 40;

@@ -12,15 +12,15 @@ namespace LiveCharts.Wpf.Views.Providers
     /// </summary>
     /// <typeparam name="TModel">The type of the model.</typeparam>
     /// <seealso cref="ISeriesViewProvider{TModel,TCoordinate,TViewModel}" />
-    public class BezierSeriesViewProvider<TModel> : ISeriesViewProvider<TModel, Point, BezierViewModel>
+    public class BezierSeriesViewProvider<TModel> : ISeriesViewProvider<TModel, PointCoordinate, BezierViewModel>
     {
         public void OnUpdateStarted(IChartView chart, ISeries series)
         {
         }
 
-        public IPointView<TModel, Point<TModel, Point, BezierViewModel>, Point, BezierViewModel> Getter()
+        public IPointView<TModel, Point<TModel, PointCoordinate, BezierViewModel>, PointCoordinate, BezierViewModel> Getter()
         {
-            return new BezierPointView<TModel, Point<TModel, Point, BezierViewModel>, DataLabel>();
+            return new BezierPointView<TModel, Point<TModel, PointCoordinate, BezierViewModel>, DataLabel>();
         }
 
         public void OnUpdateFinished(IChartView chart, ISeries series)

@@ -43,34 +43,32 @@ namespace LiveCharts.Core.Defaults
         /// <returns></returns>
         public static Charting LearnPrimitiveAndDefaultTypes(this Charting charting)
         {
-            charting.LearnType<short>((value, index) => new Point(index, value));
-            charting.LearnType<ushort>((value, index) => new Point(index, value));
-            charting.LearnType<int>((value, index) => new Point(index, value));
-            charting.LearnType<long>((value, index) => new Point(index, value));
-            charting.LearnType<ulong>((value, index) => new Point(index, value));
-            charting.LearnType<double>((value, index) => new Point(index, (float) value));
-            charting.LearnType<float>((value, index) => new Point(index, value));
+            // PointCoordinates
 
-            charting.LearnType<short, WeightedPoint>((value, index) => new WeightedPoint(index, value, 0));
-            charting.LearnType<ushort, WeightedPoint>((value, index) => new WeightedPoint(index, value, 0));
-            charting.LearnType<int, WeightedPoint>((value, index) => new WeightedPoint(index, value, 0));
-            charting.LearnType<long, WeightedPoint>((value, index) => new WeightedPoint(index, value, 0));
-            charting.LearnType<ulong, WeightedPoint>((value, index) => new WeightedPoint(index, value, 0));
-            charting.LearnType<double, WeightedPoint>((value, index) => new WeightedPoint(index, (float) value, 0));
-            charting.LearnType<float, WeightedPoint>((value, index) => new WeightedPoint(index, value, 0));
+            charting.LearnType<short>((value, index) => new PointCoordinate(index, value));
+            charting.LearnType<ushort>((value, index) => new PointCoordinate(index, value));
+            charting.LearnType<int>((value, index) => new PointCoordinate(index, value));
+            charting.LearnType<long>((value, index) => new PointCoordinate(index, value));
+            charting.LearnType<ulong>((value, index) => new PointCoordinate(index, value));
+            charting.LearnType<double>((value, index) => new PointCoordinate(index, (float) value));
+            charting.LearnType<float>((value, index) => new PointCoordinate(index, value));
+            charting.LearnType<decimal>((value, index) => new PointCoordinate(index, (float) value));
+            charting.LearnType<ObservableModel>((om, index) => new PointCoordinate(index, om.Value));
+            charting.LearnType<PointModel>((opm, index) => new PointCoordinate(opm.X, opm.Y));
 
-            charting.LearnType<decimal>((value, index) => new Point(index, (float) value));
-            charting.LearnType<decimal, WeightedPoint>((value, index) => new WeightedPoint(index, (float) value, 0));
+            // weighted coordinates
 
-            charting.LearnType<ObservableModel>((om, index) => new Point(index, om.Value));
-            charting.LearnType<ObservablePointModel>((opm, index) => new Point(opm.X, opm.Y));
+            charting.LearnType<WeightedModel, WeightedCoordinate>((model, index) =>
+                new WeightedCoordinate(model.X, model.Y, model.Weight));
+            
+            // financial coordinates
 
-            charting.LearnType<FinancialModel, FinancialPoint>(
-                (fm, index) => new FinancialPoint(index, fm.Open, fm.High, fm.Low, fm.Close));
+            charting.LearnType<FinancialModel, FinancialCoordinate>(
+                (fm, index) => new FinancialCoordinate(index, fm.Open, fm.High, fm.Low, fm.Close));
 
             //charting.PlotPolar<PolarModel>((pm, index) => new PolarPoint(pm.Radius, pm.Angle));
 
-            charting.LearnType<WeightedPoint, WeightedPoint>((point, index) => new WeightedPoint(point.X, point.Y, point.Weight));
+            charting.LearnType<WeightedCoordinate, WeightedCoordinate>((point, index) => new WeightedCoordinate(point.X, point.Y, point.Weight));
 
             return charting;
         }

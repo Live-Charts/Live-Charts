@@ -316,7 +316,7 @@ namespace LiveCharts.Core.DataSeries
         protected abstract int OnIListAdd(object item);
 
         /// <inheritdoc />
-        public bool Contains(object value)
+        bool IList.Contains(object value)
         {
             return OnIListContains(value);
         }
@@ -854,7 +854,7 @@ namespace LiveCharts.Core.DataSeries
         {
             Insert(index, (TModel) value);
         }
-
+        
         /// <inheritdoc />
         public void Add(TModel item)
         {

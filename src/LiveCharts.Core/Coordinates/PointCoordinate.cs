@@ -1,7 +1,7 @@
-#region License
+﻿#region License
 // The MIT License (MIT)
 // 
-// Copyright (c) 2016 Alberto Rodr�guez Orozco & LiveCharts contributors
+// Copyright (c) 2016 Alberto Rodríguez Orozco & LiveCharts contributors
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy 
 // of this software and associated documentation files (the "Software"), to deal 
@@ -34,49 +34,50 @@ using LiveCharts.Core.Drawing;
 namespace LiveCharts.Core.Coordinates
 {
     /// <summary>
-    /// A polar coordinate.
+    /// A point coordinate.
     /// </summary>
-    public class PolarPoint : ICoordinate
+    public class PointCoordinate : ICoordinate
     {
         private readonly float[][] _vector = new float[2][];
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PolarPoint"/> struct.
+        /// Initializes a new instance of the <see cref="PointCoordinate"/> struct.
         /// </summary>
-        /// <param name="radius">The radius.</param>
-        /// <param name="angle">The angle.</param>
-        public PolarPoint(float radius, float angle)
+        public PointCoordinate(float x, float y)
         {
-            _vector[0] = new[] {radius};
-            _vector[1] = new[] {angle};
+            _vector[0] = new[] {x};
+            _vector[1] = new[] {y};
         }
 
         /// <inheritdoc />
         public float[] this[int dimension] => _vector[dimension];
 
         /// <summary>
-        /// Gets or sets the angle.
+        /// Gets or sets the x.
         /// </summary>
         /// <value>
-        /// The angle.
+        /// The x.
         /// </value>
-        public float Angle => _vector[1][0];
+        public float X => _vector[0][0];
 
         /// <summary>
-        /// Gets or sets the radius.
+        /// Gets or sets the y.
         /// </summary>
         /// <value>
-        /// The radius.
+        /// The y.
         /// </value>
-        public float Radius => _vector[0][0];
+        public float Y => _vector[1][0];
 
-        /// <inheritdoc cref="CompareDimensions"/>
+        /// <inheritdoc />
         public void CompareDimensions(RangeF[] rangeByDimension)
         {
-            var radius = rangeByDimension[0];
+            var x = rangeByDimension[0];
+            var y = rangeByDimension[1];
 
-            if (Radius > radius.Max) radius.Max = Radius;
-            if (Radius < radius.Min) radius.Min = Radius;
+            if (X > x.Max) x.Max = X;
+            if (X < x.Min) x.Min = X;
+            if (Y > y.Max) y.Max = Y;
+            if (Y < y.Min) y.Min = Y;
         }
 
         /// <inheritdoc />
@@ -86,12 +87,49 @@ namespace LiveCharts.Core.Coordinates
             {
                 // x dimension:
                 // dimensions[0]
-                dimensions[0].FormatValue(Angle),
+                dimensions[0].FormatValue(X),
 
                 // y dimension
                 // dimensions[1]
-                dimensions[1].FormatValue(Radius)
+                dimensions[1].FormatValue(Y)
             };
+        }
+
+        /// <summary>
+        /// Implements the operator +.
+        /// </summary>
+        /// <param name="p1">The p1.</param>
+        /// <param name="p2">The p2.</param>
+        /// <returns>
+        /// The result of the operator.
+        /// </returns>
+        public static PointCoordinate operator +(PointCoordinate p1, PointCoordinate p2)
+        {
+            return new PointCoordinate(p1.X+ p2.X, p1.Y+p2.Y);
+        }
+
+        /// <summary>
+        /// Implements the operator -.
+        /// </summary>
+        /// <param name="p1">The p1.</param>
+        /// <param name="p2">The p2.</param>
+        /// <returns>
+        /// The result of the operator.
+        /// </returns>
+        public static PointCoordinate operator -(PointCoordinate p1, PointCoordinate p2)
+        {
+            return new PointCoordinate(p1.X - p2.X, p1.Y - p2.Y);
+        }
+
+        /// <summary>
+        /// Returns a <see cref="System.String" /> that represents this instance.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="System.String" /> that represents this instance.
+        /// </returns>
+        public override string ToString()
+        {
+            return $"{X}, {Y}";
         }
     }
 }

@@ -39,7 +39,6 @@ using LiveCharts.Core.DataSeries.Data;
 using LiveCharts.Core.Defaults;
 using LiveCharts.Core.Themes;
 using LiveCharts.Wpf;
-using Point = LiveCharts.Core.Coordinates.Point;
 
 #endregion
 

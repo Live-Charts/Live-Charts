@@ -74,19 +74,19 @@ namespace LiveCharts.Wpf
         }
 
         /// <inheritdoc />
-        public ISeriesViewProvider<TModel, Point, BarViewModel> BarViewProvider<TModel>()
+        public ISeriesViewProvider<TModel, PointCoordinate, BarViewModel> BarViewProvider<TModel>()
         {
             return new BarSeriesViewProvider<TModel>();
         }
 
         /// <inheritdoc />
-        public ISeriesViewProvider<TModel, Point, BezierViewModel> BezierViewProvider<TModel>()
+        public ISeriesViewProvider<TModel, PointCoordinate, BezierViewModel> BezierViewProvider<TModel>()
         {
             return new BezierSeriesViewProvider<TModel>();
         }
 
         /// <inheritdoc />
-        public ISeriesViewProvider<TModel, WeightedPoint, ScatterViewModel> ScatterViewProvider<TModel>()
+        public ISeriesViewProvider<TModel, WeightedCoordinate, ScatterViewModel> ScatterViewProvider<TModel>()
         {
             return new ScatterSeriesViewProvider<TModel>();
         }

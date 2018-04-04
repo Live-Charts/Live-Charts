@@ -31,7 +31,6 @@ using System.Drawing;
 using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Coordinates;
 using LiveCharts.Core.DataSeries.Data;
-using Point = LiveCharts.Core.Coordinates.Point;
 
 #endregion
 
@@ -122,12 +121,12 @@ namespace LiveCharts.Core
         }
 
         /// <summary>
-        /// Maps a model to a <see cref="Point"/> and saves the mapper globally.
+        /// Maps a model to a <see cref="PointCoordinate"/> and saves the mapper globally.
         /// </summary>
         /// <typeparam name="TModel">The type of the model.</typeparam>
         /// <param name="predicate">The predicate.</param>
         /// <returns></returns>
-        public ModelToCoordinateMapper<TModel, Point> LearnType<TModel>(Func<TModel, int, Point> predicate)
+        public ModelToCoordinateMapper<TModel, PointCoordinate> LearnType<TModel>(Func<TModel, int, PointCoordinate> predicate)
         {
             return PlotAs(predicate);
         }

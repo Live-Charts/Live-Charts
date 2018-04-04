@@ -35,16 +35,8 @@ namespace LiveCharts.Core.Abstractions.DataSeries
     /// The scatter series interface.
     /// </summary>
     /// <seealso cref="LiveCharts.Core.Abstractions.DataSeries.ISeries" />
-    public interface IScatterSeries : ISeries, I2DSeries
+    public interface IBubbleSeries : ISeries, I2DSeries
     {
-        /// <summary>
-        /// Gets or sets the point geometry.
-        /// </summary>
-        /// <value>
-        /// The point geometry.
-        /// </value>
-        Geometry PointGeometry { get; set; }
-
         /// <summary>
         /// Gets or sets the maximum point diameter.
         /// </summary>

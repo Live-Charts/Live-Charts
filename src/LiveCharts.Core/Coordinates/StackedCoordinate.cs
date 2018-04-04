@@ -1,7 +1,7 @@
-﻿#region License
+#region License
 // The MIT License (MIT)
 // 
-// Copyright (c) 2016 Alberto Rodríguez Orozco & LiveCharts contributors
+// Copyright (c) 2016 Alberto Rodr�guez Orozco & LiveCharts contributors
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy 
 // of this software and associated documentation files (the "Software"), to deal 
@@ -25,6 +25,7 @@
 
 #region
 
+using System;
 using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Dimensions;
 using LiveCharts.Core.Drawing;
@@ -34,76 +35,87 @@ using LiveCharts.Core.Drawing;
 namespace LiveCharts.Core.Coordinates
 {
     /// <summary>
-    /// A weighted coordinate.
+    /// A stacked coordinate.
     /// </summary>
-    public class WeightedPoint : ICoordinate
+    public class StackedCoordinate : ICoordinate
     {
         /// <summary>
         /// The _vector.
         /// </summary>
-        private readonly float[][] _vector = new float[3][];
+        private readonly float[][] _vector = new float[2][];
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Point"/> struct.
+        /// Initializes a new instance of the <see cref="StackedCoordinate"/> struct.
         /// </summary>
-        public WeightedPoint(float x, float y, float weight)
+        public StackedCoordinate(float participation, float value, int index)
         {
-            _vector[0] = new []{x};
-            _vector[1] = new []{y};
-            _vector[2] = new[] {weight};
+            Participation = participation;
+            Value = value;
+            Index = index;
+            throw new NotImplementedException();
         }
 
         /// <inheritdoc />
-        public float[] this[int dimension] => _vector[dimension];
+        public float[] this[int dimension] => throw new NotImplementedException();
 
         /// <summary>
-        /// Gets or sets the x.
+        /// Gets or sets the index.
         /// </summary>
         /// <value>
-        /// The x.
+        /// The index.
         /// </value>
-        public float X => _vector[0][0];
+        public int Index { get; }
 
         /// <summary>
-        /// Gets or sets the y.
+        /// Gets or sets the participation.
         /// </summary>
         /// <value>
-        /// The y.
+        /// The participation.
         /// </value>
-        public float Y => _vector[1][0];
+        public float Participation { get; }
 
         /// <summary>
-        /// Gets the weight.
+        /// Gets or sets the value.
         /// </summary>
         /// <value>
-        /// The w.
+        /// The value.
         /// </value>
-        public float Weight => _vector[2][0];
+        public float Value { get; }
+
+        /// <summary>
+        /// Gets or sets the total.
+        /// </summary>
+        /// <value>
+        /// The total.
+        /// </value>
+        public float TotalStacked => Value / Participation;
 
         /// <inheritdoc />
         public void CompareDimensions(RangeF[] rangeByDimension)
         {
             var x = rangeByDimension[0];
             var y = rangeByDimension[1];
-            var w = rangeByDimension[2];
 
-            if (X > x.Max) x.Max = X;
-            if (X < x.Min) x.Min = X;
-            if (Y > y.Max) y.Max = Y;
-            if (Y < y.Min) y.Min = Y;
-            if (Weight > w.Max) w.Max = Weight;
-            if (Weight < w.Min) w.Min = Weight;
+            if (Index > x.Max) x.Max = Index;
+            if (Index < x.Min) x.Min = Index;
+            if (Value > y.Max) y.Max = Value;
+            if (Value < y.Min) y.Min = Value;
         }
 
         /// <inheritdoc />
         public string[] AsTooltipData(params Plane[] dimensions)
         {
-            return new[]
-            {
-                dimensions[0].FormatValue(X),
-                dimensions[1].FormatValue(Y),
-                dimensions[2].FormatValue(Weight)
-            };
+            throw new NotImplementedException();
+            //return new[]
+            //{
+            //    // x dimension:
+            //    // dimensions[0]
+            //    new[] {dimensions[0].FormatValue(X)}, // first line in the tooltip.
+
+            //    // y dimension
+            //    // dimensions[1]
+            //    new[] {dimensions[1].FormatValue(Y)} // first line in the tooltip
+            //};
         }
     }
 }

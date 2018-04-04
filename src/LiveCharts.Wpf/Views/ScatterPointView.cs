@@ -40,8 +40,8 @@ using LiveCharts.Wpf.Framework.Animations;
 namespace LiveCharts.Wpf.Views
 {
     public class ScatterPointView<TModel, TPoint, TLabel>
-        : PointView<TModel, TPoint, WeightedPoint, ScatterViewModel, Path, TLabel>
-        where TPoint : Point<TModel, WeightedPoint, ScatterViewModel>, new()
+        : PointView<TModel, TPoint, WeightedCoordinate, ScatterViewModel, Path, TLabel>
+        where TPoint : Point<TModel, WeightedCoordinate, ScatterViewModel>, new()
         where TLabel : FrameworkElement, IDataLabelControl, new()
     {
         protected override void OnDraw(TPoint point, TPoint previous)
@@ -64,7 +64,7 @@ namespace LiveCharts.Wpf.Views
             Shape.Fill = point.Series.Fill.AsWpf();
             Shape.StrokeThickness = 3.5;
             Shape.Stroke = point.Series.Stroke.AsWpf();
-            Shape.Data = Geometry.Parse(Core.Drawing.Svg.Geometry.Circle.Data); // Geometry.Parse(viewModel.Geometry.Data);
+            Shape.Data = Geometry.Parse(point.Series.Geometry.Data);
 
             var speed = chart.AnimationsSpeed;
             var r = vm.Diameter * .5;

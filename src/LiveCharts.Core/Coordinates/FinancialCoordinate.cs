@@ -37,19 +37,19 @@ namespace LiveCharts.Core.Coordinates
     /// <summary>
     /// Financial coordinate.
     /// </summary>
-    public class FinancialPoint : ICoordinate
+    public class FinancialCoordinate : ICoordinate
     {
         private readonly float[][] _vector = new float[2][];
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="FinancialPoint"/> struct.
+        /// Initializes a new instance of the <see cref="FinancialCoordinate"/> struct.
         /// </summary>
         /// <param name="index">the index.</param>
         /// <param name="open">The open.</param>
         /// <param name="high">The high.</param>
         /// <param name="low">The low.</param>
         /// <param name="close">The close.</param>
-        public FinancialPoint(int index, float open, float high, float low, float close)
+        public FinancialCoordinate(int index, float open, float high, float low, float close)
         {
             _vector[0] = new[] {(float) index};
             _vector[1] = new[] {low, high};

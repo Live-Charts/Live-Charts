@@ -44,21 +44,21 @@ namespace LiveCharts.Core.DataSeries
     /// <summary>
     /// The scatter series class.
     /// </summary>
-    public class ScatterSeries<TModel> 
-        : CartesianSeries<TModel, WeightedPoint, ScatterViewModel, Point<TModel, WeightedPoint, ScatterViewModel>>, IScatterSeries
+    public class BubbleSeries<TModel> 
+        : CartesianSeries<TModel, WeightedCoordinate, ScatterViewModel, Point<TModel, WeightedCoordinate, ScatterViewModel>>, IBubbleSeries
     {
-        private static ISeriesViewProvider<TModel, WeightedPoint, ScatterViewModel> _provider;
+        private static ISeriesViewProvider<TModel, WeightedCoordinate, ScatterViewModel> _provider;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ScatterSeries{TModel}"/> class.
+        /// Initializes a new instance of the <see cref="BubbleSeries{TModel}"/> class.
         /// </summary>
-        public ScatterSeries()
+        public BubbleSeries()
         {
             MaxGeometrySize = 30f;
             MinGeometrySize = 14f;
             StrokeThickness = 1f;
             Geometry = Geometry.Circle;
-            Charting.BuildFromSettings<IScatterSeries>(this);
+            Charting.BuildFromSettings<IBubbleSeries>(this);
             RangeByDimension = RangeByDimension = new[]
             {
                 new RangeF(), // x
@@ -68,16 +68,13 @@ namespace LiveCharts.Core.DataSeries
         }
 
         /// <inheritdoc />
-        public Geometry PointGeometry { get; set; }
-
-        /// <inheritdoc />
         public float MaxGeometrySize { get; set; }
 
         /// <inheritdoc />
         public float MinGeometrySize { get; set; }
 
         /// <inheritdoc />
-        public override Type ResourceKey => typeof(IScatterSeries);
+        public override Type ResourceKey => typeof(IBubbleSeries);
 
         /// <inheritdoc />
         public override float[] DefaultPointWidth => new []{0f,0f};
@@ -86,7 +83,7 @@ namespace LiveCharts.Core.DataSeries
         public override float[] PointMargin => new[] {MaxGeometrySize, MaxGeometrySize};
 
         /// <inheritdoc />
-        protected override ISeriesViewProvider<TModel, WeightedPoint, ScatterViewModel>
+        protected override ISeriesViewProvider<TModel, WeightedCoordinate, ScatterViewModel>
             DefaultViewProvider => _provider ?? (_provider = Charting.Current.UiProvider.ScatterViewProvider<TModel>());
 
         /// <inheritdoc />
@@ -108,7 +105,7 @@ namespace LiveCharts.Core.DataSeries
                 yi = 0;
             }
 
-            Point<TModel, WeightedPoint, ScatterViewModel> previous = null;
+            Point<TModel, WeightedCoordinate, ScatterViewModel> previous = null;
             foreach (var current in Points)
             {
                 var p = new[]

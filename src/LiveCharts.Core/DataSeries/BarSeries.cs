@@ -31,12 +31,12 @@ using System.Linq;
 using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Abstractions.DataSeries;
 using LiveCharts.Core.Charts;
+using LiveCharts.Core.Coordinates;
 using LiveCharts.Core.DataSeries.Data;
 using LiveCharts.Core.Dimensions;
 using LiveCharts.Core.Drawing;
 using LiveCharts.Core.Interaction;
 using LiveCharts.Core.ViewModels;
-using Point = LiveCharts.Core.Coordinates.Point;
 
 #endregion
 
@@ -47,9 +47,9 @@ namespace LiveCharts.Core.DataSeries
     /// </summary>The column series class.
     /// <typeparam name="TModel">The type of the model.</typeparam>
     public class BarSeries<TModel>
-        : CartesianSeries<TModel, Point, BarViewModel, Point<TModel, Point, BarViewModel>>, IBarSeries
+        : CartesianSeries<TModel, PointCoordinate, BarViewModel, Point<TModel, PointCoordinate, BarViewModel>>, IBarSeries
     {
-        private static ISeriesViewProvider<TModel, Point, BarViewModel> _provider;
+        private static ISeriesViewProvider<TModel, PointCoordinate, BarViewModel> _provider;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BarSeries{TModel}"/> class.
@@ -77,7 +77,7 @@ namespace LiveCharts.Core.DataSeries
         public override float[] PointMargin => new[] {0f, 0f};
 
         /// <inheritdoc />
-        protected override ISeriesViewProvider<TModel, Point, BarViewModel>
+        protected override ISeriesViewProvider<TModel, PointCoordinate, BarViewModel>
             DefaultViewProvider => _provider ?? (_provider = Charting.Current.UiProvider.BarViewProvider<TModel>());
 
         /// <inheritdoc />
@@ -124,7 +124,7 @@ namespace LiveCharts.Core.DataSeries
 
             var columnStart = GetColumnStart(chart, scaleAxis, directionAxis);
 
-            Point<TModel, Coordinates.Point, BarViewModel> previous = null;
+            Point<TModel, Coordinates.PointCoordinate, BarViewModel> previous = null;
 
             foreach (var current in Points)
             {

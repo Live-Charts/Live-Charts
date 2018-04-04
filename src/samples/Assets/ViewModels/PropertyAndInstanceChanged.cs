@@ -39,7 +39,6 @@ using LiveCharts.Core.Coordinates;
 using LiveCharts.Core.DataSeries;
 using LiveCharts.Core.DataSeries.Data;
 using LiveCharts.Core.Dimensions;
-using Point = LiveCharts.Core.Coordinates.Point;
 
 #endregion
 
@@ -55,9 +54,9 @@ namespace Assets.ViewModels
         {
             Charting.Settings(charting =>
             {
-                charting.LearnType<City>((city, index) => new Point(index, city.Population));
-                charting.LearnType<City, WeightedPoint>((city, index) =>
-                    new WeightedPoint(index, city.Population, _r.Next(0, 10)));
+                charting.LearnType<City>((city, index) => new PointCoordinate(index, city.Population));
+                charting.LearnType<City, WeightedCoordinate>((city, index) =>
+                    new WeightedCoordinate(index, city.Population, _r.Next(0, 10)));
             });
 
             X = new ChartingCollection<Plane>

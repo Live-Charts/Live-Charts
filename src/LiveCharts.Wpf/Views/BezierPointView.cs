@@ -32,20 +32,20 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using LiveCharts.Core.Abstractions;
+using LiveCharts.Core.Coordinates;
 using LiveCharts.Core.DataSeries.Data;
 using LiveCharts.Core.ViewModels;
 using LiveCharts.Wpf.Framework.Animations;
 using Brushes = System.Windows.Media.Brushes;
 using Frame = LiveCharts.Wpf.Framework.Animations.Frame;
-using Point = LiveCharts.Core.Coordinates.Point;
 
 #endregion
 
 namespace LiveCharts.Wpf.Views
 {
     public class BezierPointView<TModel, TPoint, TLabel>
-        : PointView<TModel, TPoint, Point, BezierViewModel, Path, TLabel>
-        where TPoint : Point<TModel, Point, BezierViewModel>, new()
+        : PointView<TModel, TPoint, PointCoordinate, BezierViewModel, Path, TLabel>
+        where TPoint : Point<TModel, PointCoordinate, BezierViewModel>, new()
         where TLabel : FrameworkElement, IDataLabelControl, new()
     {
         private BezierPointView<TModel, TPoint, TLabel> _next;

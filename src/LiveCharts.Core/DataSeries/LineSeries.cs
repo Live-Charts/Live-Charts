@@ -31,13 +31,13 @@ using System.Drawing;
 using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Abstractions.DataSeries;
 using LiveCharts.Core.Charts;
+using LiveCharts.Core.Coordinates;
 using LiveCharts.Core.DataSeries.Data;
 using LiveCharts.Core.Dimensions;
 using LiveCharts.Core.Drawing;
 using LiveCharts.Core.Drawing.Svg;
 using LiveCharts.Core.Interaction;
 using LiveCharts.Core.ViewModels;
-using Point = LiveCharts.Core.Coordinates.Point;
 
 #endregion
 
@@ -48,9 +48,9 @@ namespace LiveCharts.Core.DataSeries
     /// </summary>
     /// <typeparam name="TModel">The type of the model.</typeparam>
     public class LineSeries<TModel>
-        : CartesianSeries<TModel, Point, BezierViewModel, Point<TModel, Point, BezierViewModel>>, ILineSeries
+        : CartesianSeries<TModel, PointCoordinate, BezierViewModel, Point<TModel, PointCoordinate, BezierViewModel>>, ILineSeries
     {
-        private static ISeriesViewProvider<TModel, Point, BezierViewModel> _provider;
+        private static ISeriesViewProvider<TModel, PointCoordinate, BezierViewModel> _provider;
         private const string Path = "path";
 
         /// <summary>
@@ -83,7 +83,7 @@ namespace LiveCharts.Core.DataSeries
         public override float[] PointMargin => new[] {GeometrySize, GeometrySize};
 
         /// <inheritdoc />
-        protected override ISeriesViewProvider<TModel, Point, BezierViewModel>
+        protected override ISeriesViewProvider<TModel, PointCoordinate, BezierViewModel>
             DefaultViewProvider => _provider ?? (_provider = Charting.Current.UiProvider.BezierViewProvider<TModel>());
 
         /// <inheritdoc />
@@ -96,7 +96,7 @@ namespace LiveCharts.Core.DataSeries
 
             var uw = chart.Get2DUiUnitWidth(x, y);
 
-            Point<TModel, Point, BezierViewModel> previous = null;
+            Point<TModel, PointCoordinate, BezierViewModel> previous = null;
 
             Content[chart].TryGetValue(Path, out var path);
             var cartesianPath = (ICartesianPath) path;
@@ -155,7 +155,7 @@ namespace LiveCharts.Core.DataSeries
 
         private IEnumerable<BezierData> GetBeziers(PointF offset, ChartModel chart, Plane x, Plane y)
         {
-            Point<TModel, Point, BezierViewModel> pi, pn = null, pnn = null;
+            Point<TModel, PointCoordinate, BezierViewModel> pi, pn = null, pnn = null;
             PointF previous, current = new PointF(0,0), next = new  PointF(0,0), nextNext = new PointF(0, 0);
             var i = 0;
 
@@ -234,7 +234,7 @@ namespace LiveCharts.Core.DataSeries
             }
 
             // ReSharper disable once ImplicitlyCapturedClosure
-            void Next(Point<TModel, Point, BezierViewModel> item)
+            void Next(Point<TModel, PointCoordinate, BezierViewModel> item)
             {
                 pi = pn;
                 pn = pnn;
@@ -286,7 +286,7 @@ namespace LiveCharts.Core.DataSeries
 
         private struct BezierData
         {
-            public Point<TModel, Point, BezierViewModel> Point { get; set; }
+            public Point<TModel, PointCoordinate, BezierViewModel> Point { get; set; }
             public BezierViewModel ViewModel { get; set; }
 
             public void Invert()

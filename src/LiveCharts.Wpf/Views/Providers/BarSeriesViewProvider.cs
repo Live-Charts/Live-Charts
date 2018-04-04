@@ -13,15 +13,15 @@ namespace LiveCharts.Wpf.Views.Providers
     /// </summary>
     /// <typeparam name="TModel">The type of the model.</typeparam>
     /// <seealso cref="ISeriesViewProvider{TModel,TCoordinate,TViewModel}" />
-    public class BarSeriesViewProvider<TModel> : ISeriesViewProvider<TModel, Point, BarViewModel>
+    public class BarSeriesViewProvider<TModel> : ISeriesViewProvider<TModel, PointCoordinate, BarViewModel>
     {
         public void OnUpdateStarted(IChartView chart, ISeries series)
         {
         }
 
-        public IPointView<TModel, Point<TModel, Point, BarViewModel>, Point, BarViewModel> Getter()
+        public IPointView<TModel, Point<TModel, PointCoordinate, BarViewModel>, PointCoordinate, BarViewModel> Getter()
         {
-            return new BarPointView<TModel, Point<TModel, Point, BarViewModel>, Rectangle, DataLabel>();
+            return new BarPointView<TModel, Point<TModel, PointCoordinate, BarViewModel>, Rectangle, DataLabel>();
         }
 
         public void OnUpdateFinished(IChartView chart, ISeries series)
