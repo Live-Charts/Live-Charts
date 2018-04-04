@@ -48,30 +48,31 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Framework\Animations\BounceAnimations.cs" />
-    <Compile Include="Framework\Animations\Frame.cs" />
-    <Compile Include="Framework\Animations\Extensions.cs" />
+    <Compile Include="Animations\BounceAnimations.cs" />
+    <Compile Include="Animations\Frame.cs" />
+    <Compile Include="Animations\Extensions.cs" />
     <Compile Include="Chart.cs" />
     <Compile Include="Controls\ChartContent.cs" />
-    <Compile Include="Framework\Converters\ColorToSolidBrushConverter.cs" />
-    <Compile Include="Framework\Converters\PointAsTooltipData.cs" />
-    <Compile Include="Framework\Converters\GetXFromPointConverter.cs" />
-    <Compile Include="Framework\Converters\GetYFromPointConverter.cs" />
-    <Compile Include="Framework\Converters\SvgToGeometryDataConverter.cs" />
+    <Compile Include="Converters\ColorToSolidBrushConverter.cs" />
+    <Compile Include="Converters\PointAsTooltipData.cs" />
+    <Compile Include="Converters\GetXFromPointConverter.cs" />
+    <Compile Include="Converters\GetYFromPointConverter.cs" />
+    <Compile Include="Converters\SvgToGeometryDataConverter.cs" />
     <Compile Include="Controls\DataLabel.cs" />
     <Compile Include="Controls\ChartTooltip.cs" />
     <Compile Include="Controls\ChartLegend.cs" />
     <Compile Include="Controls\AxisLabel.cs" />
-    <Compile Include="Framework\Interaction\DataInteractionEventArgs.cs" />
+    <Compile Include="Interaction\DataInteractionEventArgs.cs" />
     <Compile Include="Extensions.cs" />
-    <Compile Include="Framework\Interaction\DataInteractionHandler.cs" />
+    <Compile Include="Interaction\DataInteractionHandler.cs" />
+    <Compile Include="Shapes\PieSlice.cs" />
     <Compile Include="Views\Providers\BarSeriesViewProvider.cs" />
     <Compile Include="Views\Providers\BezierSeriesViewProvider.cs" />
     <Compile Include="Views\Providers\ScatterSeriesViewProvider.cs" />
     <Compile Include="Views\BezierPointView.cs" />
     <Compile Include="Views\CartesianPath.cs" />
     <Compile Include="Views\PointView.cs" />
-    <Compile Include="Framework\Animations\AnimationBuilder.cs" />
+    <Compile Include="Animations\AnimationBuilder.cs" />
     <Compile Include="Views\ScatterPointView.cs" />
     <Compile Include="Views\CartesianAxisSeparatorView.cs" />
     <Compile Include="UiProvider.cs" />
@@ -111,7 +112,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Page Include="Framework\Themes\Generic.xaml">
+    <Page Include="Themes\Generic.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

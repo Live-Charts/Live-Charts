@@ -28,11 +28,11 @@ namespace Assets.ViewModels
             // in our case 55 will be the bigger bubble, and 17 the smaller
             // now lets set the max and min size for our bubbles
 
-            bubbleSeries.MaxGeometrySize = 100; // when w = 55, our geometry size will be 100
-            bubbleSeries.MinGeometrySize = 30;  // when w = 17 our geometry size will be 30
+            bubbleSeries.MaxGeometrySize = 400; // when w = 55, our geometry size will be 400
+            bubbleSeries.MinGeometrySize = 150;  // when w = 17 our geometry size will be 150
 
-            // lets set a custom geometry, a triangle
-            bubbleSeries.Geometry = Geometry.Triangle;
+            // lets set a custom geometry, a square
+            bubbleSeries.Geometry = Geometry.Square;
 
             // finally lets add the series to our series collection,
             // we can add as many series as we need, in this case we will

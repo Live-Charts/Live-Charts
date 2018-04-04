@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:wpf="clr-namespace:Samples.Wpf"
+        xmlns:shapes="clr-namespace:LiveCharts.Wpf.Shapes;assembly=LiveCharts.Wpf"
         mc:Ignorable="d"
         Title="MainWindow"
         Height="700"
@@ -27,7 +28,7 @@
                 Command="{Binding ShowMenu}">
             <Image Source="Images/menu.png"></Image>
         </Button>
-
-        <ContentControl Grid.Row="1" Content="{Binding CurrentView}" />
+        <shapes:PieSlice Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Radius="100" InnerRadius="20" Angle="120" Stroke="Red" Fill="Blue" Width="1000" Height="200" ></shapes:PieSlice>
+        <!--<ContentControl Grid.Row="1" Content="{Binding CurrentView}" />-->
     </Grid>
 </Window>
