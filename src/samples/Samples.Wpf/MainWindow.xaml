@@ -30,11 +30,12 @@
                 <Image Source="Images/menu.png"></Image>
             </Button>
             <TextBlock>Angle(<TextBlock Text="{Binding ElementName=AngleSlider, Path=Value}"></TextBlock>)</TextBlock>
-            <Slider HorizontalAlignment="Left" x:Name="AngleSlider" Value="45" Minimum="0" Maximum="360" Width="100"></Slider>
+            <Slider HorizontalAlignment="Left" x:Name="AngleSlider" Value="45" Minimum="0" Maximum="360"  Width="100" TickFrequency="1" IsSnapToTickEnabled="True"></Slider>
             <TextBlock>CornerRadius(<TextBlock Text="{Binding ElementName=CornerRadiusSlider, Path=Value}"></TextBlock>)</TextBlock>
-            <Slider HorizontalAlignment="Left" x:Name="CornerRadiusSlider" Value="45" Minimum="0" Maximum="100" Width="100"></Slider>
+            <Slider HorizontalAlignment="Left" x:Name="CornerRadiusSlider" Value="45" Minimum="0" Maximum="100" Width="100" TickFrequency="1" IsSnapToTickEnabled="True"></Slider>
         </StackPanel>
         <Canvas Grid.Row="1">
+            <Line X1="0" Y1="500" X2="0" Y2="0" StrokeThickness="2" Stroke="Red" Canvas.Left="350" Canvas.Top="150"></Line>
             <shapes:Slice Canvas.Left="150" Canvas.Top="150" HorizontalAlignment="Center" VerticalAlignment="Center" 
                           Stroke="Blue"
                           StrokeThickness="4"

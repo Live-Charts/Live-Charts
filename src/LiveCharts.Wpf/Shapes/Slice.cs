@@ -137,7 +137,6 @@ namespace LiveCharts.Wpf.Shapes
             var center = new Point(Radius, Radius);
             const double toRadians = Math.PI / 180;
             var a = Angle;
-            var isLarge = a > 180;
 
             if (a > 359.9)
             {
@@ -156,6 +155,19 @@ namespace LiveCharts.Wpf.Shapes
             var outerRoundingAngle = Math.Atan(
                 cornerRadius / Math.Sqrt(
                     Math.Pow(Radius - cornerRadius, 2) + Math.Pow(cornerRadius, 2)));
+            var middleRoundingAngle = Math.Atan(
+                cornerRadius / Math.Sqrt(
+                    Math.Pow((Radius + InnerRadius)/2, 2) + Math.Pow(cornerRadius, 2)));
+
+            var rx = center.X + Math.Sqrt(
+                         Math.Pow(Radius - cornerRadius, 2) -
+                         Math.Pow(cornerRadius, 2)) * Math.Sin(angle);
+            var tx = center.X + Math.Sqrt(
+                         Math.Pow(Radius, 2)) * Math.Sin(angle);
+
+            Console.WriteLine(tx - rx);
+
+            var isLarge = angle - middleRoundingAngle * 2 >= Math.PI;
 
             var o1 = (InnerRadius + cornerRadius) * Math.Cos(innerRoundingAngle);
             var startPoint = new Point(center.X, center.Y + o1);
