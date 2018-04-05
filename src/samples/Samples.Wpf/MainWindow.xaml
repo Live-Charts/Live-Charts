@@ -28,7 +28,41 @@
                 Command="{Binding ShowMenu}">
             <Image Source="Images/menu.png"></Image>
         </Button>
-        <shapes:PieSlice Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Radius="100" InnerRadius="20" Angle="120" Stroke="Red" Fill="Blue" Width="1000" Height="200" ></shapes:PieSlice>
+        <Canvas Grid.Row="1">
+            <shapes:Slice Canvas.Left="150" Canvas.Top="150" HorizontalAlignment="Center" VerticalAlignment="Center" 
+                          Fill="Blue"
+                          Radius="200" 
+                          Opacity=".8"
+                          InnerRadius="100" 
+                          Angle="90"
+                          CornerRadius="8"></shapes:Slice>
+            <shapes:Slice Canvas.Left="150" Canvas.Top="150" HorizontalAlignment="Center" VerticalAlignment="Center" 
+                          Fill="Red"
+                          Radius="200" 
+                          Opacity=".8"
+                          InnerRadius="100" 
+                          Angle="90"
+                          CornerRadius="8"
+                          Rotation="90"></shapes:Slice>
+            <shapes:Slice Canvas.Left="150" Canvas.Top="150" HorizontalAlignment="Center" VerticalAlignment="Center" 
+                          Fill="Green"
+                          Radius="200" 
+                          Opacity=".8"
+                          InnerRadius="100" 
+                          Angle="90"
+                          CornerRadius="8"
+                          Rotation="180"></shapes:Slice>
+            <shapes:Slice Canvas.Left="150" Canvas.Top="150" HorizontalAlignment="Center" VerticalAlignment="Center" 
+                          Fill="Red"
+                          Radius="200" 
+                          Opacity=".8"
+                          InnerRadius="100" 
+                          Angle="90"
+                          CornerRadius="80"
+                          Rotation="270"></shapes:Slice>
+        </Canvas>
+        
+        
         <!--<ContentControl Grid.Row="1" Content="{Binding CurrentView}" />-->
     </Grid>
 </Window>
