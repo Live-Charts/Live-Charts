@@ -33,7 +33,7 @@ using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Effects;
-using LiveCharts.Wpf.Framework.Animations;
+using LiveCharts.Wpf.Animations;
 
 #endregion
 

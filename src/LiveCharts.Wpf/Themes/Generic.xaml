@@ -4,7 +4,7 @@
     xmlns:dataSeries="clr-namespace:LiveCharts.Core.DataSeries;assembly=LiveCharts.Core"
     xmlns:controls="clr-namespace:LiveCharts.Wpf.Controls"
     xmlns:data1="clr-namespace:LiveCharts.Core.DataSeries.Data;assembly=LiveCharts.Core"
-    xmlns:converters="clr-namespace:LiveCharts.Wpf.Framework.Converters">
+    xmlns:converters="clr-namespace:LiveCharts.Wpf.Converters">
 
     <converters:ColorToSolidBrushConverter x:Key="AsSolidColorBrush" />
     <converters:SvgToGeometryDataConverter x:Key="AsGeometryData" />

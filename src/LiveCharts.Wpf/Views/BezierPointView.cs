@@ -35,9 +35,9 @@ using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Coordinates;
 using LiveCharts.Core.DataSeries.Data;
 using LiveCharts.Core.ViewModels;
-using LiveCharts.Wpf.Framework.Animations;
+using LiveCharts.Wpf.Animations;
 using Brushes = System.Windows.Media.Brushes;
-using Frame = LiveCharts.Wpf.Framework.Animations.Frame;
+using Frame = LiveCharts.Wpf.Animations.Frame;
 
 #endregion
 

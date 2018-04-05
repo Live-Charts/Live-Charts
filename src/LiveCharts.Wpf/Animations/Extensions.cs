@@ -30,7 +30,7 @@ using System.Windows.Media.Animation;
 
 #endregion
 
-namespace LiveCharts.Wpf.Framework.Animations
+namespace LiveCharts.Wpf.Animations
 {
     /// <summary>
     /// The animations extensions.

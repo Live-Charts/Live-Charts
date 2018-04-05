@@ -29,7 +29,7 @@ using System.Windows;
 
 #endregion
 
-namespace LiveCharts.Wpf.Framework.Animations
+namespace LiveCharts.Wpf.Animations
 {
     public static class BounceAnimations
     {

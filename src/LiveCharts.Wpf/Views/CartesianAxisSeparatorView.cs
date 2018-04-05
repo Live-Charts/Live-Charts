@@ -30,7 +30,7 @@ using System.Windows.Controls;
 using System.Windows.Shapes;
 using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Events;
-using LiveCharts.Wpf.Framework.Animations;
+using LiveCharts.Wpf.Animations;
 
 #endregion
 

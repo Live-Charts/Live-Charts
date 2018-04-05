@@ -27,14 +27,13 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Windows;
 using System.Windows.Media.Animation;
 using LiveCharts.Core;
 
 #endregion
 
-namespace LiveCharts.Wpf.Framework.Animations
+namespace LiveCharts.Wpf.Animations
 {
     /// <summary>
     /// A storyboard builder.

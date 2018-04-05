@@ -22,7 +22,7 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR 
 // OTHER DEALINGS IN THE SOFTWARE.
 #endregion
-namespace LiveCharts.Wpf.Framework.Animations
+namespace LiveCharts.Wpf.Animations
 {
     /// <summary>
     /// A helper class to build an animation using key frames.

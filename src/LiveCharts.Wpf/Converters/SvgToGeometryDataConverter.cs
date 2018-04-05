@@ -31,7 +31,7 @@ using System.Windows.Data;
 
 #endregion
 
-namespace LiveCharts.Wpf.Framework.Converters
+namespace LiveCharts.Wpf.Converters
 {
     /// <summary>
     /// 

@@ -40,7 +40,7 @@ using LiveCharts.Core.Dimensions;
 using LiveCharts.Core.Drawing;
 using LiveCharts.Core.Events;
 using LiveCharts.Wpf.Controls;
-using LiveCharts.Wpf.Framework.Interaction;
+using LiveCharts.Wpf.Interaction;
 using DataInteractionHandler = LiveCharts.Core.Events.DataInteractionHandler;
 using Point = System.Windows.Point;
 

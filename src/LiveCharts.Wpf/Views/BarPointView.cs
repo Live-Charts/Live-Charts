@@ -35,7 +35,7 @@ using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Coordinates;
 using LiveCharts.Core.DataSeries.Data;
 using LiveCharts.Core.ViewModels;
-using LiveCharts.Wpf.Framework.Animations;
+using LiveCharts.Wpf.Animations;
 using Orientation = LiveCharts.Core.Abstractions.Orientation;
 using Rectangle = System.Windows.Shapes.Rectangle;
 

@@ -32,7 +32,7 @@ using LiveCharts.Core.DataSeries.Data;
 
 #endregion
 
-namespace LiveCharts.Wpf.Framework.Converters
+namespace LiveCharts.Wpf.Converters
 {
     /// <summary>
     /// 

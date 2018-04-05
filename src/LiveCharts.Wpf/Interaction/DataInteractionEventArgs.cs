@@ -31,7 +31,7 @@ using LiveCharts.Core.DataSeries.Data;
 
 #endregion
 
-namespace LiveCharts.Wpf.Framework.Interaction
+namespace LiveCharts.Wpf.Interaction
 {
     /// <summary>
     /// User interaction with chart data event arguments.
