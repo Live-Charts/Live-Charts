@@ -23,45 +23,36 @@
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
 
-        <Button Width="20" Height="20" HorizontalAlignment="Left" Margin="8" 
-                Visibility="{Binding IsMenuHidden, Converter={StaticResource BooleanToVisibilityConverter}}"
-                Command="{Binding ShowMenu}">
-            <Image Source="Images/menu.png"></Image>
-        </Button>
+        <StackPanel HorizontalAlignment="Left">
+            <Button Width="20" Height="20" HorizontalAlignment="Left" Margin="8" 
+                    Visibility="{Binding IsMenuHidden, Converter={StaticResource BooleanToVisibilityConverter}}"
+                    Command="{Binding ShowMenu}">
+                <Image Source="Images/menu.png"></Image>
+            </Button>
+            <TextBlock>Angle(<TextBlock Text="{Binding ElementName=AngleSlider, Path=Value}"></TextBlock>)</TextBlock>
+            <Slider HorizontalAlignment="Left" x:Name="AngleSlider" Value="45" Minimum="0" Maximum="360" Width="100"></Slider>
+            <TextBlock>CornerRadius(<TextBlock Text="{Binding ElementName=CornerRadiusSlider, Path=Value}"></TextBlock>)</TextBlock>
+            <Slider HorizontalAlignment="Left" x:Name="CornerRadiusSlider" Value="45" Minimum="0" Maximum="100" Width="100"></Slider>
+        </StackPanel>
         <Canvas Grid.Row="1">
             <shapes:Slice Canvas.Left="150" Canvas.Top="150" HorizontalAlignment="Center" VerticalAlignment="Center" 
-                          Fill="Blue"
+                          Stroke="Blue"
+                          StrokeThickness="4"
                           Radius="200" 
-                          Opacity=".8"
+                          Opacity=".2"
                           InnerRadius="100" 
-                          Angle="90"
-                          CornerRadius="8"></shapes:Slice>
-            <shapes:Slice Canvas.Left="150" Canvas.Top="150" HorizontalAlignment="Center" VerticalAlignment="Center" 
-                          Fill="Red"
-                          Radius="200" 
-                          Opacity=".8"
-                          InnerRadius="100" 
-                          Angle="90"
-                          CornerRadius="8"
-                          Rotation="90"></shapes:Slice>
-            <shapes:Slice Canvas.Left="150" Canvas.Top="150" HorizontalAlignment="Center" VerticalAlignment="Center" 
-                          Fill="Green"
-                          Radius="200" 
-                          Opacity=".8"
-                          InnerRadius="100" 
-                          Angle="90"
-                          CornerRadius="8"
-                          Rotation="180"></shapes:Slice>
-            <shapes:Slice Canvas.Left="150" Canvas.Top="150" HorizontalAlignment="Center" VerticalAlignment="Center" 
-                          Fill="Red"
-                          Radius="200" 
-                          Opacity=".8"
-                          InnerRadius="100" 
-                          Angle="90"
-                          CornerRadius="80"
-                          Rotation="270"></shapes:Slice>
+                          Angle="{Binding ElementName=AngleSlider, Path=Value}"
+                          CornerRadius="{Binding ElementName=CornerRadiusSlider, Path=Value}"></shapes:Slice>
         </Canvas>
-        
+        <Canvas Grid.Row="1">
+            <shapes:Slice Canvas.Left="150" Canvas.Top="150" HorizontalAlignment="Center" VerticalAlignment="Center" 
+                          Fill="Red"
+                          Radius="200" 
+                          Opacity=".2"
+                          InnerRadius="100" 
+                          Angle="{Binding ElementName=AngleSlider, Path=Value}"
+                          CornerRadius="0"></shapes:Slice>
+        </Canvas>
         
         <!--<ContentControl Grid.Row="1" Content="{Binding CurrentView}" />-->
     </Grid>

@@ -150,15 +150,12 @@ namespace LiveCharts.Wpf.Shapes
             var angle = a * toRadians;
             var cornerRadius = (Radius - InnerRadius)/2 > CornerRadius ? CornerRadius : (Radius - InnerRadius) / 2;
 
-            var outerCathetusLength = Math.Sqrt(
-                Math.Pow(Radius - cornerRadius, 2) + Math.Pow(cornerRadius, 2));
-            var innerCathetusLength = Math.Sqrt(
-                Math.Pow(InnerRadius + cornerRadius, 2) + Math.Pow(cornerRadius, 2));
-
             var innerRoundingAngle = Math.Atan(
-                cornerRadius / innerCathetusLength);
+                cornerRadius / Math.Sqrt(
+                    Math.Pow(InnerRadius + cornerRadius, 2) + Math.Pow(cornerRadius, 2)));
             var outerRoundingAngle = Math.Atan(
-                cornerRadius / outerCathetusLength);
+                cornerRadius / Math.Sqrt(
+                    Math.Pow(Radius - cornerRadius, 2) + Math.Pow(cornerRadius, 2)));
 
             var o1 = (InnerRadius + cornerRadius) * Math.Cos(innerRoundingAngle);
             var startPoint = new Point(center.X, center.Y + o1);
@@ -182,15 +179,19 @@ namespace LiveCharts.Wpf.Shapes
                 new Size(Radius, Radius), 0, isLarge, SweepDirection.Counterclockwise, true, true);
 
             // corner 2
+            var o3 = Math.Sqrt(Math.Pow(Radius - cornerRadius, 2) - Math.Pow(cornerRadius, 2));
+
             context.ArcTo(
                 new Point(
-                    center.X + outerCathetusLength * Math.Sin(angle),
-                    center.Y + outerCathetusLength * Math.Cos(angle)),
+                    center.X + o3 * Math.Sin(angle),
+                    center.Y + o3 * Math.Cos(angle)),
                 cornerSize, 0, false, SweepDirection.Counterclockwise, true, true);
 
+            var o4 = Math.Sqrt(Math.Pow(InnerRadius + cornerRadius, 2) - Math.Pow(cornerRadius, 2));
+
             context.LineTo(new Point(
-                center.X + innerCathetusLength * Math.Sin(angle),
-                center.Y + innerCathetusLength * Math.Cos(angle)), true, true);
+                center.X + o4 * Math.Sin(angle),
+                center.Y + o4 * Math.Cos(angle)), true, true);
 
             //corner 3
             context.ArcTo(
@@ -207,6 +208,11 @@ namespace LiveCharts.Wpf.Shapes
 
             // corner 4
             context.ArcTo(startPoint, cornerSize, 0, false, SweepDirection.Counterclockwise, true, true);
+        }
+
+        private double GetLength(Point p1, Point p2)
+        {
+            return Math.Sqrt(Math.Pow(p1.X - p2.X, 2) + Math.Pow(p1.Y - p2.Y, 2));
         }
 
         private static void PropertyChangedCallback(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
