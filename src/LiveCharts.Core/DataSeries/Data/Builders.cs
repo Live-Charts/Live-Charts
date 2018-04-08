@@ -34,7 +34,7 @@ namespace LiveCharts.Core.DataSeries.Data
     /// <summary>
     /// A helper class.
     /// </summary>
-    public static class Formatters
+    public static class Format
     {
         /// <summary>
         /// Converts a double number to a short string, based on the metric convention. 

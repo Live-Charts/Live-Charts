@@ -35,6 +35,7 @@ using System.Threading.Tasks;
 using System.Timers;
 using System.Windows.Input;
 using LiveCharts.Core.Abstractions;
+using LiveCharts.Core.Abstractions.DataSeries;
 using LiveCharts.Core.DataSeries;
 using LiveCharts.Core.DataSeries.Data;
 using LiveCharts.Core.Dimensions;
@@ -53,8 +54,8 @@ namespace LiveCharts.Core.Charts
         private static int _colorCount;
         private Task _delayer;
         private IList<Color> _colors;
-        private readonly HashSet<IResource> _resources = new HashSet<IResource>();
-        private readonly Dictionary<string, object> _resourcesCollections = new Dictionary<string, object>();
+        private HashSet<IResource> _resources = new HashSet<IResource>();
+        private Dictionary<string, object> _resourcesCollections = new Dictionary<string, object>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ChartModel"/> class.
@@ -211,6 +212,8 @@ namespace LiveCharts.Core.Charts
 
         internal bool InvertXy { get; set; }
 
+        internal Dictionary<object, float[]> Stacker;
+
         /// <summary>
         /// Invalidates this instance, the chart will queue an update request.
         /// </summary>
@@ -306,6 +309,8 @@ namespace LiveCharts.Core.Charts
             }
 
             CopyDataFromView();
+            // restart the stacking every time the chart is updated.
+            Stacker = new Dictionary<object, float[]>();
 
             foreach (var dimension in Dimensions)
             {
@@ -322,36 +327,7 @@ namespace LiveCharts.Core.Charts
                 series.Fetch(this);
                 RegisterResource(series);
 
-                for (var i = 0; i < Dimensions.Length; i++)
-                {
-                    if (series.ScalesAt.Length <= i) continue;
-                    var plane = Dimensions[i][series.ScalesAt[i]];
-
-                    if (plane.PointWidth == null)
-                    {
-                        var current = InvertXy ? series.DefaultPointWidth.InvertXy() : series.DefaultPointWidth;
-                        plane.ActualPointWidth = Perform.MaxEach2D(plane.ActualPointWidth ?? new[] {0f, 0f}, current);
-                    }
-                    else
-                    {
-                        plane.ActualPointWidth = plane.PointWidth;
-                    }
-
-                    if (series.RangeByDimension[i][0] < plane.DataRange[0])
-                    {
-                        plane.DataRange[0] = series.RangeByDimension[i][0];
-                    }
-
-                    if (series.RangeByDimension[i][1] > plane.DataRange[1])
-                    {
-                        plane.DataRange[1] = series.RangeByDimension[i][1];
-                    }
-
-                    if (series.PointMargin.Length > i && series.PointMargin[i] > plane.PointMargin)
-                    {
-                        plane.PointMargin = series.PointMargin[i];
-                    }
-                }
+                OnPreparingSeries(series);
             }
 
             var chartSize = ControlSize;
@@ -421,6 +397,14 @@ namespace LiveCharts.Core.Charts
                 var dimension = View.Dimensions[index];
                 RegisterResourceCollection($"{nameof(IChartView.Dimensions)}[{index}]", dimension);
             }
+        }
+
+        /// <summary>
+        /// Called when the series was fetched and registered in the resources collector.
+        /// </summary>
+        /// <param name="series">The series.</param>
+        protected virtual void OnPreparingSeries(Series series)
+        {
         }
 
         internal Color GetNextColor()
@@ -524,6 +508,11 @@ namespace LiveCharts.Core.Charts
                     incc.CollectionChanged -= InvalidateOnCollectionChanged;
                 }
             }
+
+            Stacker = null;
+            _resources = null;
+            _resourcesCollections = null;
+            _colors = null;
         }
 
         /// <summary>

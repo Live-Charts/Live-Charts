@@ -92,6 +92,7 @@ namespace LiveCharts.Core.DataSeries
             var uw = chart.Get2DUiUnitWidth(directionAxis, scaleAxis);
 
             var columnSeries = chart.Series
+                .Cast<ICartesianSeries>()
                 .Where(series => series.ScalesAt[1] == ScalesAt[1] &&
                                  series is IBarSeries)
                 .ToList();
@@ -124,7 +125,7 @@ namespace LiveCharts.Core.DataSeries
 
             var columnStart = GetColumnStart(chart, scaleAxis, directionAxis);
 
-            Point<TModel, Coordinates.PointCoordinate, BarViewModel> previous = null;
+            Point<TModel, PointCoordinate, BarViewModel> previous = null;
 
             foreach (var current in Points)
             {

@@ -25,6 +25,7 @@
 
 #region
 
+using System.Collections.Generic;
 using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Dimensions;
 
@@ -70,7 +71,7 @@ namespace LiveCharts.Core.Coordinates
         public float Radius => _vector[0][0];
 
         /// <inheritdoc cref="CompareDimensions"/>
-        public void CompareDimensions(float[][] rangeByDimension)
+        public void CompareDimensions(float[][] rangeByDimension, Dictionary<object, float[]> stacker)
         {
             var radius = rangeByDimension[0];
 

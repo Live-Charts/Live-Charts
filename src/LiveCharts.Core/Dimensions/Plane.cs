@@ -55,7 +55,7 @@ namespace LiveCharts.Core.Dimensions
         {
             MinValue = float.NaN;
             MaxValue = float.NaN;
-            LabelFormatter = Formatters.AsMetricNumber;
+            LabelFormatter = Format.AsMetricNumber;
             Font = new Font("Arial", 11, FontStyle.Regular, FontWeight.Regular);
             Charting.BuildFromSettings(this);
         }

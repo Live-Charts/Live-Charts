@@ -32,7 +32,7 @@ using System.Drawing;
 namespace LiveCharts.Core.Interaction
 {
     /// <summary>
-    /// The hover rectangle class.
+    /// The rectangle interaction area class.
     /// </summary>
     /// <seealso cref="InteractionArea" />
     public class RectangleInteractionArea : InteractionArea
@@ -47,12 +47,12 @@ namespace LiveCharts.Core.Interaction
         }
 
         /// <summary>
-        /// Gets or sets the rectangle.
+        /// Gets the rectangle interaction area.
         /// </summary>
         /// <value>
         /// The rectangle.
         /// </value>
-        public RectangleF Rectangle { get; set; }
+        public RectangleF Rectangle { get; }
 
         /// <inheritdoc />
         public override bool Contains(params double[] dimensions)

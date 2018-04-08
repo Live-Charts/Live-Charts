@@ -32,6 +32,7 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using LiveCharts.Core.Abstractions;
+using LiveCharts.Core.Abstractions.DataSeries;
 using LiveCharts.Core.Coordinates;
 using LiveCharts.Core.DataSeries.Data;
 using LiveCharts.Core.ViewModels;
@@ -161,7 +162,8 @@ namespace LiveCharts.Wpf.Views
         /// <inheritdoc />
         protected override void OnDispose(IChartView chart)
         {
-            var zero = chart.Model.ScaleToUi(0, chart.Dimensions[1][_point.Series.ScalesAt[1]]);
+            var cartesianSeries = (ICartesianSeries) _point.Series;
+            var zero = chart.Model.ScaleToUi(0, chart.Dimensions[1][cartesianSeries.ScalesAt[1]]);
 
             var animation = Shape.Animate()
                 .AtSpeed(chart.AnimationsSpeed)

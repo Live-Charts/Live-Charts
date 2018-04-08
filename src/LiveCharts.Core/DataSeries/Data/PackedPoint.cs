@@ -26,6 +26,7 @@
 #region
 
 using LiveCharts.Core.Abstractions;
+using LiveCharts.Core.Abstractions.DataSeries;
 using LiveCharts.Core.Charts;
 using LiveCharts.Core.Dimensions;
 using LiveCharts.Core.Interaction;
@@ -114,8 +115,18 @@ namespace LiveCharts.Core.DataSeries.Data
             for (var index = 0; index < Chart.Dimensions.Length; index++)
             {
                 var dimension = Chart.Dimensions[index];
-                if (index >= Series.ScalesAt.Length) continue;
-                planes[index] = dimension[Series.ScalesAt[index]];
+
+                var scalingIndex = 0;
+
+                if (Series is ICartesianSeries series)
+                {
+                    scalingIndex = series.ScalesAt[index];
+                }
+
+                // ToDo: define not ICartesianSeries...
+
+                if (index >= scalingIndex) continue;
+                planes[index] = dimension[scalingIndex];
             }
             return Coordinate.AsTooltipData(planes);
         }

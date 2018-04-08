@@ -122,7 +122,7 @@ namespace LiveCharts.Core.Themes
                 .SetDefault<Plane>(plane =>
                 {
                     plane.Font = baseFont;
-                    plane.LabelFormatter = Formatters.AsMetricNumber;
+                    plane.LabelFormatter = Format.AsMetricNumber;
                 })
                 .SetDefault<Axis>(axis =>
                 {

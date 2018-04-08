@@ -1,6 +1,6 @@
+using System.Collections.Generic;
 using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Dimensions;
-using LiveCharts.Core.Drawing;
 
 namespace LiveCharts.Core.Coordinates
 {
@@ -43,13 +43,14 @@ namespace LiveCharts.Core.Coordinates
         public float Value => _vector[1][0];
 
         /// <inheritdoc />
-        public void CompareDimensions(float[][] rangeByDimension)
+        public void CompareDimensions(float[][] rangeByDimension, Dictionary<object, float[]> stacker)
         {
-            // Do we need to do something with the index coordinate??
-            // rangeByDimension[0]
+            if (!stacker.ContainsKey(_vector[0][0]))
+            {
+                stacker.Add(_vector[0][0], new []{0f,0f});
+            }
 
-            // Sum the Value coordinate
-            rangeByDimension[1][0] += _vector[1][0];
+            stacker[_vector[0][0]][0] += _vector[1][0];
         }
 
         /// <inheritdoc />

@@ -30,6 +30,7 @@ using System.Drawing;
 using System.Linq;
 using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Abstractions.DataSeries;
+using LiveCharts.Core.DataSeries;
 using LiveCharts.Core.Dimensions;
 using LiveCharts.Core.Drawing;
 
@@ -194,6 +195,43 @@ namespace LiveCharts.Core.Charts
         }
 
         /// <inheritdoc />
+        protected override void OnPreparingSeries(Series series)
+        {
+            var cartesianSeries = (ICartesianSeries) series;
+
+            for (var i = 0; i < Dimensions.Length; i++)
+            {
+                if (cartesianSeries.ScalesAt.Length <= i) continue;
+                var plane = Dimensions[i][cartesianSeries.ScalesAt[i]];
+
+                if (plane.PointWidth == null)
+                {
+                    var current = InvertXy ? series.DefaultPointWidth.InvertXy() : series.DefaultPointWidth;
+                    plane.ActualPointWidth = Perform.MaxEach2D(plane.ActualPointWidth ?? new[] { 0f, 0f }, current);
+                }
+                else
+                {
+                    plane.ActualPointWidth = plane.PointWidth;
+                }
+
+                if (series.ByDimensionRanges[i][0] < plane.DataRange[0])
+                {
+                    plane.DataRange[0] = series.ByDimensionRanges[i][0];
+                }
+
+                if (series.ByDimensionRanges[i][1] > plane.DataRange[1])
+                {
+                    plane.DataRange[1] = series.ByDimensionRanges[i][1];
+                }
+
+                if (series.PointMargin.Length > i && series.PointMargin[i] > plane.PointMargin)
+                {
+                    plane.PointMargin = series.PointMargin[i];
+                }
+            }
+        }
+
+        /// <inheritdoc />
         protected override void ViewOnPointerMoved(PointF location, TooltipSelectionMode selectionMode, params double[] dimensions)
         {
             if (Series == null) return;
@@ -221,8 +259,9 @@ namespace LiveCharts.Core.Charts
             foreach (var point in query)
             {
                 var coordinate = point.Coordinate;
-                sx += ScaleToUi(coordinate[0][0], Dimensions[0][point.Series.ScalesAt[0]]);
-                sy += ScaleToUi(coordinate[1][0], Dimensions[1][point.Series.ScalesAt[1]]);
+                var cartesianSeries = (ICartesianSeries) point.Series;
+                sx += ScaleToUi(coordinate[0][0], Dimensions[0][cartesianSeries.ScalesAt[0]]);
+                sy += ScaleToUi(coordinate[1][0], Dimensions[1][cartesianSeries.ScalesAt[1]]);
             }
 
             sx = sx / query.Length;

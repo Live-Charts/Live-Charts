@@ -86,10 +86,10 @@ namespace LiveCharts.Core.DataSeries.Data
                 chartPoint.Key = index;
                 chartPoint.Series = args.Series;
                 chartPoint.Chart = args.Chart;
-                chartPoint.Coordinate = mapper.Predicate(instance, index);
+                chartPoint.Coordinate = mapper.Predicate.Invoke(instance, index);
 
                 // compare the dimensions to scale the chart.
-                chartPoint.Coordinate.CompareDimensions(args.Series.RangeByDimension);
+                chartPoint.Coordinate.CompareDimensions(args.Series.ByDimensionRanges, args.Chart.Stacker);
 
                 // evaluate model defined events
                 mapper.EvaluateModelDependentActions(instance, chartPoint.View, chartPoint);

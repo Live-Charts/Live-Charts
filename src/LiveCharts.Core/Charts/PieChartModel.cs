@@ -18,17 +18,19 @@ namespace LiveCharts.Core.Charts
         {
         }
 
-        /// <summary>
-        /// Scales to pixels a data value according to an axis range and a given area, if the area is not present, the chart draw margin size will be used.
-        /// </summary>
-        /// <param name="dataValue">The value.</param>
-        /// <param name="plane">The axis.</param>
-        /// <param name="sizeVector">The draw margin, this param is optional, if not set, the current chart's draw margin area will be used.</param>
-        /// <returns></returns>
-        /// <exception cref="NotImplementedException"></exception>
         public override float ScaleToUi(float dataValue, Plane plane, float[] sizeVector = null)
         {
-            throw new NotImplementedException();
+            return 0;
+            switch (plane.Dimension)
+            {
+                case 0:
+                    break;
+                case 1:
+                    break;
+                default:
+                    throw new LiveChartsException(
+                        $"A {nameof(PieChartModel)} does not know how to scale dimension '{plane.Dimension}'", 155);
+            }
         }
 
         public override float ScaleFromUi(float pixelsValue, Plane plane, float[] sizeVector = null)
@@ -68,6 +70,9 @@ namespace LiveCharts.Core.Charts
                     {
                         throw new LiveChartsException($"{series.ResourceKey.Name} is not supported at a {nameof(ICartesianChartView)}", 110);
                     }
+                    series.UpdateStarted(View);
+                    series.UpdateView(this);
+                    series.UpdateFinished(View);
                 }
 
                 CollectResources();

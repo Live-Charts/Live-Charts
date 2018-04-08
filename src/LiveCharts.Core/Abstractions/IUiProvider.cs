@@ -86,10 +86,17 @@ namespace LiveCharts.Core.Abstractions
         ISeriesViewProvider<TModel, PointCoordinate, BezierViewModel> BezierViewProvider<TModel>();
 
         /// <summary>
-        /// Defines the Scatter Ui Provider.
+        /// Provides LiveCharts with a builder that returns a scatter view.
         /// </summary>
         /// <typeparam name="TModel">The type of the model.</typeparam>
         /// <returns></returns>
         ISeriesViewProvider<TModel, WeightedCoordinate, ScatterViewModel> ScatterViewProvider<TModel>();
+
+        /// <summary>
+        /// Provides LiveCharts with a builder that returns a pie view.
+        /// </summary>
+        /// <typeparam name="TModel">The type of the model.</typeparam>
+        /// <returns></returns>
+        ISeriesViewProvider<TModel, PieCoordinate, PieViewModel> PieViewProvider<TModel>();
     }
 }

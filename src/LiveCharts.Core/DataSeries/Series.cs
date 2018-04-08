@@ -55,7 +55,6 @@ namespace LiveCharts.Core.DataSeries
     {
         private readonly List<ChartModel> _usedBy = new List<ChartModel>();
         private bool _isVisible;
-        private int[] _scalesAt;
         private bool _dataLabels;
         private string _title;
         private Color _stroke;
@@ -127,17 +126,6 @@ namespace LiveCharts.Core.DataSeries
             set
             {
                 _title = value;
-                OnPropertyChanged();
-            }
-        }
-
-        /// <inheritdoc />
-        public int[] ScalesAt
-        {
-            get => _scalesAt;
-            protected set
-            {
-                _scalesAt = value;
                 OnPropertyChanged();
             }
         }
@@ -237,7 +225,8 @@ namespace LiveCharts.Core.DataSeries
         public abstract float[] DefaultPointWidth { get; }
 
         /// <summary>
-        /// Gets the point margin.
+        /// Gets the point margin, this property is used internally by the library and should only be used
+        /// by you if you need to build a custom cartesian series.
         /// </summary>
         /// <value>
         /// The point margin.
@@ -251,7 +240,7 @@ namespace LiveCharts.Core.DataSeries
         /// <value>
         /// The range by dimension.
         /// </value>
-        public float[][] RangeByDimension { get; protected set; }
+        public float[][] ByDimensionRanges { get; protected set; }
 
         /// <inheritdoc />
         bool IList.IsReadOnly => OnIListIsReadOnly();

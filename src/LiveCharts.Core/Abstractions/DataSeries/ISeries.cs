@@ -66,7 +66,7 @@ namespace LiveCharts.Core.Abstractions.DataSeries
 
         /// <summary>
         /// Gets the default width of the point, this property is used internally by the library and should only be used
-        ///  by you if you need to build a custom series.
+        ///  by you if you need to build a custom cartesian series.
         /// </summary>
         /// <value>
         /// The default width of the point.
@@ -105,15 +105,6 @@ namespace LiveCharts.Core.Abstractions.DataSeries
         ///   <c>true</c> if this instance is visible; otherwise, <c>false</c>.
         /// </value>
         bool IsVisible { get; set; }
-
-        /// <summary>
-        /// Gets the scales at array, this property is used internally by the library and should only be used
-        /// by you if you need to build a custom series.
-        /// </summary>
-        /// <value>
-        /// The scales at.
-        /// </value>
-        int[] ScalesAt { get; }
 
         /// <summary>
         /// Gets or sets the stroke.

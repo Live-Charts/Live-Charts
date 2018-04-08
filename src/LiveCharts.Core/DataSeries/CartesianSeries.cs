@@ -64,18 +64,34 @@ namespace LiveCharts.Core.DataSeries
             // The ScaleAt array, for a cartesian series has 2 dimensions:
             //               {x, y}
             ScalesAt = new[] {0, 0};
-            RangeByDimension = new[]
-            {
-                new[] {float.MaxValue, float.MinValue},
-                new[] {float.MaxValue, float.MinValue}
-            };
+
             // This means that by default, any cartesian series is scaled at
             // the first element in the axis array for both, X and Y dimensions.
             // A user can change where the series is scaled using the properties
             // ScalesXAt and ScalesYAt, see properties below.
             // NOTE: notice we could get an OutOfRangeException if the index of this property
             // goes out of range with the CartesianChart.XAxis/YAxis array.
+
+            ByDimensionRanges = new[]
+            {
+                // ByDimensionRanges will be injected to every coordinate,
+                // then we can use this property to do anything we need
+                // according to the chart requirements
+                // in the case of a cartesian series
+                // we need to know the max and min limits,
+                // and we will store the result in the next array
+                //     {      min    ,      max      }
+                // by default min = float.Max, so any value will be smaller
+                // and stored in this array, 
+                // see LiveCharts.Core.Coordinates.Point.CompareDimensions(...)
+                new[] {float.MaxValue, float.MinValue}, // use this vector for the X plane
+                new[] {float.MaxValue, float.MinValue}  // this one for the Y plane
+            };
+
         }
+
+        /// <inheritdoc />
+        public int[] ScalesAt { get; protected set; }
 
         /// <summary>
         /// Gets or sets the index of the axis where the X coordinate is scaled at.
