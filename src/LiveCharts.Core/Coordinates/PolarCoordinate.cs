@@ -27,7 +27,6 @@
 
 using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Dimensions;
-using LiveCharts.Core.Drawing;
 
 #endregion
 
@@ -71,12 +70,13 @@ namespace LiveCharts.Core.Coordinates
         public float Radius => _vector[0][0];
 
         /// <inheritdoc cref="CompareDimensions"/>
-        public void CompareDimensions(RangeF[] rangeByDimension)
+        public void CompareDimensions(float[][] rangeByDimension)
         {
             var radius = rangeByDimension[0];
 
-            if (Radius > radius.Max) radius.Max = Radius;
-            if (Radius < radius.Min) radius.Min = Radius;
+            // 0:min, 1: max
+            if (Radius > radius[1]) radius[1] = Radius;
+            if (Radius < radius[0]) radius[0] = Radius;
         }
 
         /// <inheritdoc />

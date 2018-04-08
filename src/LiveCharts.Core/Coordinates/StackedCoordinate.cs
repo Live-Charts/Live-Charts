@@ -91,15 +91,15 @@ namespace LiveCharts.Core.Coordinates
         public float TotalStacked => Value / Participation;
 
         /// <inheritdoc />
-        public void CompareDimensions(RangeF[] rangeByDimension)
+        public void CompareDimensions(float[][] rangeByDimension)
         {
             var x = rangeByDimension[0];
             var y = rangeByDimension[1];
 
-            if (Index > x.Max) x.Max = Index;
-            if (Index < x.Min) x.Min = Index;
-            if (Value > y.Max) y.Max = Value;
-            if (Value < y.Min) y.Min = Value;
+            if (Index > x[1]) x[1] = Index;
+            if (Index < x[0]) x[0] = Index;
+            if (Value > y[1]) y[1] = Value;
+            if (Value < y[0]) y[0] = Value;
         }
 
         /// <inheritdoc />

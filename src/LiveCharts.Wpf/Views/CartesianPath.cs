@@ -125,7 +125,7 @@ namespace LiveCharts.Wpf.Views
             }
 
             _strokePath.StrokeDashArray = new DoubleCollection(
-                Effects.GetAnimatedFloatDashArray(_strokeDashArray, (float) (l + remaining)));
+                Effects.GetAnimatedDashArray(_strokeDashArray, (float) (l + remaining)));
             _strokePath.BeginAnimation(
                 Shape.StrokeDashOffsetProperty,
                 new DoubleAnimation(tl + remaining, 0, view.AnimationsSpeed, FillBehavior.Stop));

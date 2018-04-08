@@ -12,6 +12,7 @@
         /// The key.
         /// </value>
         public object Key { get; set; }
+
         /// <summary>
         /// Gets or sets the value.
         /// </summary>
@@ -19,5 +20,13 @@
         /// The value.
         /// </value>
         public float Value { get; set; }
+
+        /// <summary>
+        /// Gets or sets the grand total.
+        /// </summary>
+        /// <value>
+        /// The grand total.
+        /// </value>
+        public double GrandTotal { get; set; }
     }
 }

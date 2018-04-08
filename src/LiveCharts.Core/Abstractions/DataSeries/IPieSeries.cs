@@ -5,6 +5,12 @@
     /// </summary>
     public interface IPieSeries
     {
-
+        /// <summary>
+        /// Gets or sets the push out.
+        /// </summary>
+        /// <value>
+        /// The push out.
+        /// </value>
+        double PushOut { get; set; }
     }
 }

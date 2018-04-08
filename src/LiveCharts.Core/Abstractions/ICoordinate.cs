@@ -51,7 +51,7 @@ namespace LiveCharts.Core.Abstractions
         /// Compares the dimensions.
         /// </summary>
         /// <param name="rangeByDimension">The series range by dimension.</param>
-        void CompareDimensions(RangeF[] rangeByDimension);
+        void CompareDimensions(float[][] rangeByDimension);
 
         /// <summary>
         ///gets the coordinate as tooltip data.

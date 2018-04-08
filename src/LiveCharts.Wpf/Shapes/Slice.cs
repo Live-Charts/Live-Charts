@@ -189,7 +189,7 @@ namespace LiveCharts.Wpf.Shapes
 
         private void DrawGeometry(StreamGeometryContext context)
         {
-            var center = new PointF((float) Height/2, (float) Width/2);
+            var center = new PointF((float) Height / 2, (float) Width / 2);
 
             var model = Core.Drawing.SliceModel.Build(
                 OpeningAngle, Radius, InnerRadius, CornerRadius, center, ForceAngle, PushOut);
@@ -216,7 +216,7 @@ namespace LiveCharts.Wpf.Shapes
             context.ArcTo(model.Points[6].AsWpf(),
                 cornerSize, 0, false, SweepDirection.Counterclockwise, true, true);
 
-            context.ArcTo(model.Points[7].AsWpf(), new Size(InnerRadius, InnerRadius), 0, 
+            context.ArcTo(model.Points[7].AsWpf(), new Size(InnerRadius, InnerRadius), 0,
                 model.IsInnerRadiusLargeArc, SweepDirection.Clockwise, true, true);
 
             // corner 4

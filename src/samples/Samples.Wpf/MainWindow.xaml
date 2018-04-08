@@ -30,15 +30,7 @@
             </Button>
         </StackPanel>
         <ScrollViewer Grid.Row="1">
-            <StackPanel>
-                <Slider Value="0" Width="200" Minimum="0" Maximum="360" x:Name="Slider" TickFrequency="1" IsSnapToTickEnabled="True"></Slider>
-                <TextBlock Text="{Binding ElementName=Slider, Path=Value}" HorizontalAlignment="Center"></TextBlock>
-                <Canvas Height="300" Width="300" Name="Canvas">
-                    <shapes:Slice Height="{Binding ElementName=Canvas, Path=ActualHeight}" Width="{Binding ElementName=Canvas, Path=ActualWidth}" CornerRadius="5" Opacity=".5" Fill="Blue" Radius="100" OpeningAngle="90" PossiblePushOut="50" Rotation="{Binding ElementName=Slider, Path=Value}"/>
-                    <shapes:Slice Height="{Binding ElementName=Canvas, Path=ActualHeight}" Width="{Binding ElementName=Canvas, Path=ActualWidth}" CornerRadius="5" Opacity=".5" Fill="RED" Radius="100" OpeningAngle="90" PushOut="50" Rotation="{Binding ElementName=Slider, Path=Value}"/>
-                </Canvas>
-            </StackPanel>
-            <!--<ContentControl  Content="{Binding CurrentView}" />-->
+            <ContentControl  Content="{Binding CurrentView}" />
         </ScrollViewer>
     </Grid>
 </Window>

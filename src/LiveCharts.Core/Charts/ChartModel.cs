@@ -311,7 +311,7 @@ namespace LiveCharts.Core.Charts
             {
                 foreach (var plane in dimension)
                 {
-                    plane.DataRange = new RangeF(float.MinValue, float.MaxValue);
+                    plane.DataRange = new[] {float.MaxValue, float.MinValue};
                     plane.PointMargin = 0f;
                 }
             }
@@ -337,14 +337,14 @@ namespace LiveCharts.Core.Charts
                         plane.ActualPointWidth = plane.PointWidth;
                     }
 
-                    if (series.RangeByDimension[i].Max > plane.DataRange.Max)
+                    if (series.RangeByDimension[i][0] < plane.DataRange[0])
                     {
-                        plane.DataRange.Max = series.RangeByDimension[i].Max;
+                        plane.DataRange[0] = series.RangeByDimension[i][0];
                     }
 
-                    if (series.RangeByDimension[i].Min < plane.DataRange.Min)
+                    if (series.RangeByDimension[i][1] > plane.DataRange[1])
                     {
-                        plane.DataRange.Min = series.RangeByDimension[i].Min;
+                        plane.DataRange[1] = series.RangeByDimension[i][1];
                     }
 
                     if (series.PointMargin.Length > i && series.PointMargin[i] > plane.PointMargin)

@@ -13,7 +13,7 @@ namespace LiveCharts.Core.Effects
         /// <param name="strokeDashArray">The stroke dash array.</param>
         /// <param name="length">The length.</param>
         /// <returns></returns>
-        public static IEnumerable<double> GetAnimatedFloatDashArray(IEnumerable<double> strokeDashArray, float length)
+        public static IEnumerable<double> GetAnimatedDashArray(IEnumerable<double> strokeDashArray, float length)
         {
             var stack = 0d;
 
@@ -53,7 +53,7 @@ namespace LiveCharts.Core.Effects
         /// <param name="strokeDashArray">The stroke dash array.</param>
         /// <param name="length">The length.</param>
         /// <returns></returns>
-        public static IEnumerable<float> GetAnimatedFloatDashArray(IEnumerable<float> strokeDashArray, float length)
+        public static IEnumerable<float> GetAnimatedDashArray(IEnumerable<float> strokeDashArray, float length)
         {
             var stack = 0f;
 

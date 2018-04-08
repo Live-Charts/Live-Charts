@@ -66,7 +66,7 @@ namespace LiveCharts.Core.Dimensions
         /// <value>
         /// The data range.
         /// </value>
-        public RangeF DataRange { get; internal set; }
+        public float[] DataRange { get; internal set; }
 
         /// <summary>
         /// Gets the point margin.

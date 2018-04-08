@@ -66,8 +66,8 @@ namespace LiveCharts.Core.DataSeries
             ScalesAt = new[] {0, 0};
             RangeByDimension = new[]
             {
-                new RangeF(), // x
-                new RangeF()  // y
+                new[] {float.MaxValue, float.MinValue},
+                new[] {float.MaxValue, float.MinValue}
             };
             // This means that by default, any cartesian series is scaled at
             // the first element in the axis array for both, X and Y dimensions.

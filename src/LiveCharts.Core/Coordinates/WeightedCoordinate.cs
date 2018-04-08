@@ -27,7 +27,6 @@
 
 using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Dimensions;
-using LiveCharts.Core.Drawing;
 
 #endregion
 
@@ -81,18 +80,18 @@ namespace LiveCharts.Core.Coordinates
         public float Weight => _vector[2][0];
 
         /// <inheritdoc />
-        public void CompareDimensions(RangeF[] rangeByDimension)
+        public void CompareDimensions(float[][] rangeByDimension)
         {
             var x = rangeByDimension[0];
             var y = rangeByDimension[1];
             var w = rangeByDimension[2];
 
-            if (X > x.Max) x.Max = X;
-            if (X < x.Min) x.Min = X;
-            if (Y > y.Max) y.Max = Y;
-            if (Y < y.Min) y.Min = Y;
-            if (Weight > w.Max) w.Max = Weight;
-            if (Weight < w.Min) w.Min = Weight;
+            if (X > x[1]) x[1] = X;
+            if (X < x[0]) x[0] = X;
+            if (Y > y[1]) y[1] = Y;
+            if (Y < y[0]) y[0] = Y;
+            if (Weight > w[1]) w[1] = Weight;
+            if (Weight < w[0]) w[0] = Weight;
         }
 
         /// <inheritdoc />

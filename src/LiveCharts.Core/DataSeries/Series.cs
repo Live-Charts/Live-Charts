@@ -246,12 +246,12 @@ namespace LiveCharts.Core.DataSeries
 
         /// <summary>
         /// Gets the range by dimension, this property is used internally by the library and should only be used
-        ///  by you if you need to build a custom series.
+        /// by you if you need to build a custom series.
         /// </summary>
         /// <value>
         /// The range by dimension.
         /// </value>
-        public RangeF[] RangeByDimension { get; protected set; }
+        public float[][] RangeByDimension { get; protected set; }
 
         /// <inheritdoc />
         bool IList.IsReadOnly => OnIListIsReadOnly();

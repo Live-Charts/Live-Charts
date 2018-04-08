@@ -101,15 +101,16 @@ namespace LiveCharts.Core.Coordinates
         public float Close { get; }
 
         /// <inheritdoc />
-        public void CompareDimensions(RangeF[] rangeByDimension)
+        public void CompareDimensions(float[][] rangeByDimension)
         {
             var x = rangeByDimension[0];
             var y = rangeByDimension[1];
 
-            if (Index > x.Max) x.Max = Index;
-            if (Index < x.Min) x.Min = Index;
-            if (High > y.Max) y.Max = High;
-            if (Low < y.Min) y.Min = Low;
+            // 0: min, 1: max
+            if (Index > x[1]) x[1] = Index;
+            if (Index < x[0]) x[0] = Index;
+            if (High > y[1]) y[1] = High;
+            if (Low < y[0]) y[0] = Low;
         }
 
         /// <inheritdoc />
