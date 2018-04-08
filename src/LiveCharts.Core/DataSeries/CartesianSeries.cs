@@ -43,7 +43,7 @@ namespace LiveCharts.Core.DataSeries
     /// <typeparam name="TViewModel">The type of the view model.</typeparam>
     /// <seealso cref="Series{TModel, TPoint, TCoordinate, TViewModel}" />
     public abstract class CartesianSeries<TModel, TCoordinate, TViewModel, TPoint> 
-        : Series<TModel, TCoordinate, TViewModel, TPoint>, I2DSeries
+        : Series<TModel, TCoordinate, TViewModel, TPoint>, ICartesianSeries
         where TPoint : Point<TModel, TCoordinate, TViewModel>, new ()
         where TCoordinate : ICoordinate
     {

@@ -3,7 +3,7 @@
     /// <summary>
     /// A bi dimensional series.
     /// </summary>
-    public interface I2DSeries
+    public interface ICartesianSeries
     {
         /// <summary>
         /// Gets or sets the z index, it is the position of the series in the Z axis.

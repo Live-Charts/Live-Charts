@@ -28,7 +28,7 @@ namespace LiveCharts.Core.Abstractions.DataSeries
     /// The column series definition.
     /// </summary>
     /// <seealso cref="LiveCharts.Core.Abstractions.DataSeries.ISeries" />
-    public interface IBarSeries : ISeries, I2DSeries
+    public interface IBarSeries : ISeries, ICartesianSeries
     {
         /// <summary>
         /// Gets or sets the column padding.

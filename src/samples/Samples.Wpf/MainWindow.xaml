@@ -22,39 +22,23 @@
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
-
         <StackPanel HorizontalAlignment="Left">
             <Button Width="20" Height="20" HorizontalAlignment="Left" Margin="8" 
                     Visibility="{Binding IsMenuHidden, Converter={StaticResource BooleanToVisibilityConverter}}"
                     Command="{Binding ShowMenu}">
                 <Image Source="Images/menu.png"></Image>
             </Button>
-            <TextBlock>Angle(<TextBlock Text="{Binding ElementName=AngleSlider, Path=Value}"></TextBlock>)</TextBlock>
-            <Slider HorizontalAlignment="Left" x:Name="AngleSlider" Value="45" Minimum="0" Maximum="360"  Width="100" TickFrequency="1" IsSnapToTickEnabled="True"></Slider>
-            <TextBlock>CornerRadius(<TextBlock Text="{Binding ElementName=CornerRadiusSlider, Path=Value}"></TextBlock>)</TextBlock>
-            <Slider HorizontalAlignment="Left" x:Name="CornerRadiusSlider" Value="45" Minimum="0" Maximum="100" Width="100" TickFrequency="1" IsSnapToTickEnabled="True"></Slider>
         </StackPanel>
-        <Canvas Grid.Row="1">
-            <Line X1="0" Y1="500" X2="0" Y2="0" StrokeThickness="2" Stroke="Red" Canvas.Left="350" Canvas.Top="150"></Line>
-            <shapes:Slice Canvas.Left="150" Canvas.Top="150" HorizontalAlignment="Center" VerticalAlignment="Center" 
-                          Stroke="Blue"
-                          StrokeThickness="4"
-                          Radius="200" 
-                          Opacity=".2"
-                          InnerRadius="100" 
-                          Angle="{Binding ElementName=AngleSlider, Path=Value}"
-                          CornerRadius="{Binding ElementName=CornerRadiusSlider, Path=Value}"></shapes:Slice>
-        </Canvas>
-        <Canvas Grid.Row="1">
-            <shapes:Slice Canvas.Left="150" Canvas.Top="150" HorizontalAlignment="Center" VerticalAlignment="Center" 
-                          Fill="Red"
-                          Radius="200" 
-                          Opacity=".2"
-                          InnerRadius="100" 
-                          Angle="{Binding ElementName=AngleSlider, Path=Value}"
-                          CornerRadius="0"></shapes:Slice>
-        </Canvas>
-        
-        <!--<ContentControl Grid.Row="1" Content="{Binding CurrentView}" />-->
+        <ScrollViewer Grid.Row="1">
+            <StackPanel>
+                <Slider Value="0" Width="200" Minimum="0" Maximum="360" x:Name="Slider" TickFrequency="1" IsSnapToTickEnabled="True"></Slider>
+                <TextBlock Text="{Binding ElementName=Slider, Path=Value}" HorizontalAlignment="Center"></TextBlock>
+                <Canvas Height="300" Width="300" Name="Canvas">
+                    <shapes:Slice Height="{Binding ElementName=Canvas, Path=ActualHeight}" Width="{Binding ElementName=Canvas, Path=ActualWidth}" CornerRadius="5" Opacity=".5" Fill="Blue" Radius="100" OpeningAngle="90" PossiblePushOut="50" Rotation="{Binding ElementName=Slider, Path=Value}"/>
+                    <shapes:Slice Height="{Binding ElementName=Canvas, Path=ActualHeight}" Width="{Binding ElementName=Canvas, Path=ActualWidth}" CornerRadius="5" Opacity=".5" Fill="RED" Radius="100" OpeningAngle="90" PushOut="50" Rotation="{Binding ElementName=Slider, Path=Value}"/>
+                </Canvas>
+            </StackPanel>
+            <!--<ContentControl  Content="{Binding CurrentView}" />-->
+        </ScrollViewer>
     </Grid>
 </Window>

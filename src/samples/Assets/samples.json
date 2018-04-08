@@ -1,25 +1,35 @@
 ﻿{
   "version": "1.0",
-  "items": [
-    //{
-    //  "id": "PropertyAndInstanceChanged",
-    //  "name": "Property changed test",
-    //  "text": "A local test to debug when a property or an instance changes."
-    //},
-    {
-      "id": "BasicLine",
-      "name": "Basic line series",
-      "text": "An easy way to get started with line series."
-    },
-    {
-      "id": "BasicBar",
-      "name": "Basic bar series",
-      "text": "Get started with the bar series class."
-    },
-    {
-      "id": "BasicBubble",
-      "name": "Basic bubble series",
-      "text": "Similar to a scatter series, but the points are weithed." 
-    }
-  ]
+  "items": {
+    "Cartesian Chart": [
+      //{
+      //  "id": "PropertyAndInstanceChanged",
+      //  "name": "Property changed test",
+      //  "text": "A local test to debug when a property or an instance changes."
+      //},
+      {
+        "id": "BasicLine",
+        "name": "Basic line series",
+        "text": "An easy way to get started with line series."
+      },
+      {
+        "id": "BasicBar",
+        "name": "Basic bar series",
+        "text": "Get started with the bar series class."
+      },
+      {
+        "id": "BasicBubble",
+        "name": "Basic bubble series",
+        "text": "Similar to a scatter series, but the points are weithed."
+      }
+    ],
+    "Pie Chart": [
+      {
+        "id": "BasicPie",
+        "name": "Basic Pie chart",
+        "text": "Generate pie charts easily"
+      }
+    ]
+  }
 }
+

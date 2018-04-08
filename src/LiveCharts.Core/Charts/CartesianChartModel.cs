@@ -29,6 +29,7 @@ using System;
 using System.Drawing;
 using System.Linq;
 using LiveCharts.Core.Abstractions;
+using LiveCharts.Core.Abstractions.DataSeries;
 using LiveCharts.Core.Dimensions;
 using LiveCharts.Core.Drawing;
 
@@ -178,7 +179,10 @@ namespace LiveCharts.Core.Charts
 
                 foreach (var series in Series.Where(x => x.IsVisible))
                 {
-                    RegisterResource(series);
+                    if (!(series is ICartesianSeries))
+                    {
+                        throw new LiveChartsException($"{series.ResourceKey.Name} is not supported at a {nameof(ICartesianChartView)}", 110);
+                    }
                     series.UpdateStarted(View);
                     series.UpdateView(this);
                     series.UpdateFinished(View);

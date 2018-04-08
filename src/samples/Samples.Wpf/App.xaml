@@ -9,7 +9,7 @@
     <Application.Resources>
         <local:SampleImageConverter x:Key="SampleImageConverter" />
         <DropShadowEffect x:Key="CardShadow" BlurRadius="5" ShadowDepth="1" Direction="270" Color="#303030"
-                          Opacity=".25" RenderingBias="Performance" />
+                          Opacity=".25" RenderingBias="Quality" />
         <Style x:Key="CardStyle" TargetType="Border">
             <Setter Property="Background" Value="White" />
             <Setter Property="BorderThickness" Value="0" />
@@ -24,10 +24,10 @@
                     <Trigger.EnterActions>
                         <BeginStoryboard>
                             <Storyboard>
-                                <DoubleAnimation Storyboard.TargetProperty="(Effect).BlurRadius" To="8"
-                                                 Duration="0:0:0.1" />
+                                <DoubleAnimation Storyboard.TargetProperty="(Effect).BlurRadius" To="15"
+                                                 Duration="0:0:0.25" />
                                 <DoubleAnimation Storyboard.TargetProperty="(Effect).ShadowDepth" To="4.5"
-                                                 Duration="0:0:0.1" />
+                                                 Duration="0:0:0.25" />
                             </Storyboard>
                         </BeginStoryboard>
                     </Trigger.EnterActions>
@@ -35,9 +35,9 @@
                         <BeginStoryboard>
                             <Storyboard>
                                 <DoubleAnimation Storyboard.TargetProperty="(Effect).BlurRadius" To="5"
-                                                 Duration="0:0:0.1" />
+                                                 Duration="0:0:0.25" />
                                 <DoubleAnimation Storyboard.TargetProperty="(Effect).ShadowDepth" To="1"
-                                                 Duration="0:0:0.1" />
+                                                 Duration="0:0:0.25" />
                             </Storyboard>
                         </BeginStoryboard>
                     </Trigger.ExitActions>
@@ -63,10 +63,10 @@
                         <Border Style="{StaticResource CardStyle}">
                             <StackPanel>
                                 <TextBlock Style="{DynamicResource Title}" Text="{Binding Name}"
-                                           HorizontalAlignment="Center" />
+                                           HorizontalAlignment="Center" TextOptions.TextFormattingMode="Display" />
                                 <Image Source="{Binding Converter={StaticResource SampleImageConverter}}" Height="128"
                                        Margin="0 25" />
-                                <TextBlock Text="{Binding Text}" TextWrapping="Wrap" Opacity=".6" />
+                                <TextBlock Text="{Binding Text}" TextWrapping="Wrap" Opacity=".8" TextOptions.TextFormattingMode="Display" />
                             </StackPanel>
                         </Border>
                     </ControlTemplate>
@@ -78,9 +78,19 @@
             <Setter Property="FontSize" Value="14" />
             <Setter Property="Foreground" Value="#303030" />
         </Style>
+        <Style x:Key="MenuSectionTitle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="38"></Setter>
+            <Setter Property="Margin" Value="0 20 0 20"></Setter>
+            <Setter Property="Foreground" Value="#303030" />
+            <Setter Property="HorizontalAlignment" Value="Center"></Setter>
+            <Setter Property="FontWeight" Value="Bold"></Setter>
+        </Style>
         <Style x:Key="Title" TargetType="TextBlock">
-            <Setter Property="FontSize" Value="22" />
+            <Setter Property="HorizontalAlignment" Value="Center"></Setter>
+            <Setter Property="FontSize" Value="16" />
             <Setter Property="Margin" Value="0 0 0 15" />
+            <Setter Property="Foreground" Value="#303030" />
+            <Setter Property="FontWeight" Value="Bold"></Setter>
         </Style>
     </Application.Resources>
 </Application>

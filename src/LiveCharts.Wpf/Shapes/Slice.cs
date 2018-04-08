@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Drawing;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using Point = System.Windows.Point;
+using Size = System.Windows.Size;
 
 namespace LiveCharts.Wpf.Shapes
 {
@@ -14,8 +17,8 @@ namespace LiveCharts.Wpf.Shapes
         /// <summary>
         /// The angle property
         /// </summary>
-        public static readonly DependencyProperty AngleProperty = DependencyProperty.Register(
-            "Angle", typeof(double), typeof(Slice), new FrameworkPropertyMetadata(0d, FrameworkPropertyMetadataOptions.AffectsRender));
+        public static readonly DependencyProperty OpeningAngleProperty = DependencyProperty.Register(
+            "OpeningAngle", typeof(double), typeof(Slice), new FrameworkPropertyMetadata(0d, FrameworkPropertyMetadataOptions.AffectsRender));
 
         /// <summary>
         /// Gets or sets the angle in degrees.
@@ -23,15 +26,15 @@ namespace LiveCharts.Wpf.Shapes
         /// <value>
         /// The angle.
         /// </value>
-        public double Angle
+        public double OpeningAngle
         {
-            get => (double) GetValue(AngleProperty);
+            get => (double) GetValue(OpeningAngleProperty);
             set
             {
                 var a = value;
                 if (a > 360) a = 360;
                 if (a < 0) a = 0;
-                SetValue(AngleProperty, a);
+                SetValue(OpeningAngleProperty, a);
             }
         }
 
@@ -75,7 +78,9 @@ namespace LiveCharts.Wpf.Shapes
         /// The rotation property
         /// </summary>
         public static readonly DependencyProperty RotationProperty = DependencyProperty.Register(
-            "Rotation", typeof(double), typeof(Slice), new FrameworkPropertyMetadata(0d, FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.AffectsMeasure, PropertyChangedCallback));
+            "Rotation", typeof(double), typeof(Slice), 
+            new FrameworkPropertyMetadata(0d, FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.AffectsMeasure, 
+                SetTransformOnPropertyChanged));
 
         /// <summary>
         /// Gets or sets the rotation.
@@ -108,6 +113,61 @@ namespace LiveCharts.Wpf.Shapes
         }
 
         /// <summary>
+        /// The push out property
+        /// </summary>
+        public static readonly DependencyProperty PushOutProperty = DependencyProperty.Register(
+            "PushOut", typeof(double), typeof(Slice), new FrameworkPropertyMetadata(
+                0d, FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.AffectsMeasure));
+
+        /// <summary>
+        /// Gets or sets the push out.
+        /// </summary>
+        /// <value>
+        /// The push out.
+        /// </value>
+        public double PushOut
+        {
+            get => (double) GetValue(PushOutProperty);
+            set => SetValue(PushOutProperty, value);
+        }
+
+        /// <summary>
+        /// The force angle property
+        /// </summary>
+        public static readonly DependencyProperty ForceAngleProperty = DependencyProperty.Register(
+            "ForceAngle", typeof(bool), typeof(Slice), new PropertyMetadata(true));
+
+        /// <summary>
+        /// The possible push out property
+        /// </summary>
+        public static readonly DependencyProperty PossiblePushOutProperty = DependencyProperty.Register(
+            "PossiblePushOut", typeof(double), typeof(Slice), new PropertyMetadata(default(double)));
+
+        /// <summary>
+        /// Gets or sets the possible push out.
+        /// </summary>
+        /// <value>
+        /// The possible push out.
+        /// </value>
+        public double PossiblePushOut
+        {
+            get => (double) GetValue(PossiblePushOutProperty);
+            set => SetValue(PossiblePushOutProperty, value);
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether [force angle].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [force angle]; otherwise, <c>false</c>.
+        /// </value>
+        public bool ForceAngle
+        {
+            get => (bool) GetValue(ForceAngleProperty);
+            set => SetValue(ForceAngleProperty, value);
+        }
+
+        /// <summary>
         /// Gets a value that represents the <see cref="T:System.Windows.Media.Geometry" /> of the <see cref="T:System.Windows.Shapes.Shape" />.
         /// </summary>
         protected override Geometry DefiningGeometry
@@ -129,115 +189,48 @@ namespace LiveCharts.Wpf.Shapes
 
         private void DrawGeometry(StreamGeometryContext context)
         {
-            // See docs/resources/slice.png
-            // if you require to know more about the formulas in the geometry
+            var center = new PointF((float) Height/2, (float) Width/2);
 
-            Height = Radius * 2 + StrokeThickness / 2;
-            Width = Height;
-            var center = new Point(Radius, Radius);
-            const double toRadians = Math.PI / 180;
-            var a = Angle;
+            var model = Core.Drawing.SliceModel.Build(
+                OpeningAngle, Radius, InnerRadius, CornerRadius, center, ForceAngle, PushOut);
 
-            if (a > 359.9)
-            {
-                // workaround..
-                // for some reason, inverting isLarge seems not enough in this case..
-                // so lets just make it look like the circle is complete.
-                a = 359.9;
-            }
+            context.BeginFigure(model.Points[0].AsWpf(), true, true);
+            context.LineTo(model.Points[1].AsWpf(), true, true);
 
-            var angle = a * toRadians;
-            var cornerRadius = (Radius - InnerRadius)/2 > CornerRadius ? CornerRadius : (Radius - InnerRadius) / 2;
-
-            var innerRoundingAngle = Math.Atan(
-                cornerRadius / Math.Sqrt(
-                    Math.Pow(InnerRadius + cornerRadius, 2) + Math.Pow(cornerRadius, 2)));
-            var outerRoundingAngle = Math.Atan(
-                cornerRadius / Math.Sqrt(
-                    Math.Pow(Radius - cornerRadius, 2) + Math.Pow(cornerRadius, 2)));
-            var middleRoundingAngle = Math.Atan(
-                cornerRadius / Math.Sqrt(
-                    Math.Pow((Radius + InnerRadius)/2, 2) + Math.Pow(cornerRadius, 2)));
-
-            var rx = center.X + Math.Sqrt(
-                         Math.Pow(Radius - cornerRadius, 2) -
-                         Math.Pow(cornerRadius, 2)) * Math.Sin(angle);
-            var tx = center.X + Math.Sqrt(
-                         Math.Pow(Radius, 2)) * Math.Sin(angle);
-
-            Console.WriteLine(tx - rx);
-
-            var isLarge = angle - middleRoundingAngle * 2 >= Math.PI;
-
-            var o1 = (InnerRadius + cornerRadius) * Math.Cos(innerRoundingAngle);
-            var startPoint = new Point(center.X, center.Y + o1);
-            context.BeginFigure(startPoint, true, true);
-
-            var o2 = (Radius - cornerRadius) * Math.Cos(outerRoundingAngle);
-            context.LineTo(new Point(center.X, center.Y + o2), true, true);
-
-            var cornerSize = new Size(cornerRadius, cornerRadius);
+            var cornerSize = new Size(model.CornerRadius, model.CornerRadius);
 
             // corner 1
-            context.ArcTo(
-                new Point(
-                    center.X + Radius * Math.Sin(outerRoundingAngle),
-                    center.Y + Radius * Math.Cos(outerRoundingAngle)),
+            context.ArcTo(model.Points[2].AsWpf(),
                 cornerSize, 0, false, SweepDirection.Counterclockwise, true, true);
 
-            context.ArcTo(new Point(
-                    center.X + Radius * Math.Sin(angle - outerRoundingAngle),
-                    center.Y + Radius * Math.Cos(angle - outerRoundingAngle)),
-                new Size(Radius, Radius), 0, isLarge, SweepDirection.Counterclockwise, true, true);
+            context.ArcTo(model.Points[3].AsWpf(), new Size(Radius, Radius), 0,
+                model.IsRadiusLargeArc, SweepDirection.Counterclockwise, true, true);
 
             // corner 2
-            var o3 = Math.Sqrt(Math.Pow(Radius - cornerRadius, 2) - Math.Pow(cornerRadius, 2));
-
-            context.ArcTo(
-                new Point(
-                    center.X + o3 * Math.Sin(angle),
-                    center.Y + o3 * Math.Cos(angle)),
+            context.ArcTo(model.Points[4].AsWpf(),
                 cornerSize, 0, false, SweepDirection.Counterclockwise, true, true);
 
-            var o4 = Math.Sqrt(Math.Pow(InnerRadius + cornerRadius, 2) - Math.Pow(cornerRadius, 2));
-
-            context.LineTo(new Point(
-                center.X + o4 * Math.Sin(angle),
-                center.Y + o4 * Math.Cos(angle)), true, true);
+            context.LineTo(model.Points[5].AsWpf(), true, true);
 
             //corner 3
-            context.ArcTo(
-                new Point(
-                    center.X + InnerRadius * Math.Sin(angle - innerRoundingAngle),
-                    center.Y + InnerRadius * Math.Cos(angle - innerRoundingAngle)),
+            context.ArcTo(model.Points[6].AsWpf(),
                 cornerSize, 0, false, SweepDirection.Counterclockwise, true, true);
 
-            context.ArcTo(
-                new Point(
-                    center.X + InnerRadius * Math.Sin(innerRoundingAngle),
-                    center.Y + InnerRadius * Math.Cos(innerRoundingAngle)),
-                new Size(InnerRadius, InnerRadius), 0, isLarge, SweepDirection.Clockwise, true, true);
+            context.ArcTo(model.Points[7].AsWpf(), new Size(InnerRadius, InnerRadius), 0, 
+                model.IsInnerRadiusLargeArc, SweepDirection.Clockwise, true, true);
 
             // corner 4
-            context.ArcTo(startPoint, cornerSize, 0, false, SweepDirection.Counterclockwise, true, true);
+            context.ArcTo(model.Points[0].AsWpf(), cornerSize, 0,
+                false, SweepDirection.Counterclockwise, true, true);
         }
 
-        private double GetLength(Point p1, Point p2)
-        {
-            return Math.Sqrt(Math.Pow(p1.X - p2.X, 2) + Math.Pow(p1.Y - p2.Y, 2));
-        }
-
-        private static void PropertyChangedCallback(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
+        private static void SetTransformOnPropertyChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
         {
             var slice = (Slice) dependencyObject;
-            if (slice.Rotation > 0)
-            {
-                slice.RenderTransform = new RotateTransform
-                {
-                    Angle = slice.Rotation
-                };
-                slice.RenderTransformOrigin = new Point(0.5, 0.5);
-            }
+            if (!(slice.Rotation > 0)) return;
+
+            slice.RenderTransformOrigin = new Point(0.5, 0.5);
+            slice.RenderTransform = new RotateTransform(-slice.Rotation);
         }
     }
 }

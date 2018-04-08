@@ -45,6 +45,6 @@ namespace Assets.ViewModels
             }
         }
 
-        public List<Sample> Samples { get; set; }
+        public Dictionary<string, Sample[]> Samples { get; set; }
     }
 }

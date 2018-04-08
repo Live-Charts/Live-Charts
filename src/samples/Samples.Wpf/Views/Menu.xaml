@@ -16,16 +16,26 @@
             <RowDefinition Height="*"></RowDefinition>
             <RowDefinition Height="20"></RowDefinition>
         </Grid.RowDefinitions>
-        <ItemsControl Grid.Row="0" ItemsSource="{Binding Samples}" ItemTemplate="{StaticResource MainMenuButtonTemplate}" Margin="25, 10">
-            <ItemsControl.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <WrapPanel VerticalAlignment="Center" HorizontalAlignment="Center" />
-                </ItemsPanelTemplate>
-            </ItemsControl.ItemsPanel>
+        <ItemsControl Grid.Row="0" ItemsSource="{Binding Samples}"  Margin="25, 10">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel>
+                        <TextBlock HorizontalAlignment="Center" Style="{StaticResource MenuSectionTitle}" Text="{Binding Key}" />
+                        <ItemsControl ItemsSource="{Binding Value}" ItemTemplate="{StaticResource MainMenuButtonTemplate}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <WrapPanel VerticalAlignment="Center" HorizontalAlignment="Center" />
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                        </ItemsControl>
+                    </StackPanel>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
         </ItemsControl>
         <TextBlock Grid.Row="1" TextAlignment="Center" VerticalAlignment="Bottom">
             Icons made by
             <Hyperlink NavigateUri="https://www.freepik.com/" RequestNavigate="Hyperlink_OnRequestNavigate">
+                <!-- ReSharper disable once MarkupTextTypo -->
                 Freepik
             </Hyperlink>
             from
