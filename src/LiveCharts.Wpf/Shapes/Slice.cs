@@ -16,8 +16,8 @@ namespace LiveCharts.Wpf.Shapes
         /// <summary>
         /// The angle property
         /// </summary>
-        public static readonly DependencyProperty OpeningAngleProperty = DependencyProperty.Register(
-            "OpeningAngle", typeof(double), typeof(Slice), new FrameworkPropertyMetadata(0d, FrameworkPropertyMetadataOptions.AffectsRender));
+        public static readonly DependencyProperty WedgeProperty = DependencyProperty.Register(
+            "Wedge", typeof(double), typeof(Slice), new FrameworkPropertyMetadata(0d, FrameworkPropertyMetadataOptions.AffectsRender));
 
         /// <summary>
         /// Gets or sets the angle in degrees.
@@ -25,15 +25,15 @@ namespace LiveCharts.Wpf.Shapes
         /// <value>
         /// The angle.
         /// </value>
-        public double OpeningAngle
+        public double Wedge
         {
-            get => (double) GetValue(OpeningAngleProperty);
+            get => (double) GetValue(WedgeProperty);
             set
             {
                 var a = value;
                 if (a > 360) a = 360;
                 if (a < 0) a = 0;
-                SetValue(OpeningAngleProperty, a);
+                SetValue(WedgeProperty, a);
             }
         }
 
@@ -191,7 +191,7 @@ namespace LiveCharts.Wpf.Shapes
             var center = new PointF((float) Height / 2, (float) Width / 2);
 
             var model = Core.Drawing.SliceModel.Build(
-                OpeningAngle, Radius, InnerRadius, CornerRadius, center, ForceAngle, PushOut);
+                Wedge, Radius, InnerRadius, CornerRadius, center, ForceAngle, PushOut);
 
             context.BeginFigure(model.Points[0].AsWpf(), true, true);
             context.LineTo(model.Points[1].AsWpf(), true, true);

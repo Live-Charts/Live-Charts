@@ -82,6 +82,7 @@ namespace LiveCharts.Wpf.Views
             Shape.Stroke = point.Series.Stroke.AsWpf();
             Shape.Fill = point.Series.Fill.AsWpf();
             Shape.StrokeThickness = point.Series.StrokeThickness;
+            Panel.SetZIndex(Shape, ((ICartesianSeries) point.Series).ZIndex);
             if (point.Series.StrokeDashArray != null)
             {
                 Shape.StrokeDashArray = new DoubleCollection(point.Series.StrokeDashArray);

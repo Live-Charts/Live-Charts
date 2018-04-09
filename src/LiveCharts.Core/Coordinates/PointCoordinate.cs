@@ -70,7 +70,7 @@ namespace LiveCharts.Core.Coordinates
         public float Y => _vector[1][0];
 
         /// <inheritdoc />
-        public void CompareDimensions(float[][] rangeByDimension, Dictionary<object, float[]> stacker)
+        public void CompareDimensions(float[][] rangeByDimension, Dictionary<int, float[]> stacker)
         {
             var x = rangeByDimension[0];
             var y = rangeByDimension[1];

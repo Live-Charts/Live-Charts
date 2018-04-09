@@ -79,6 +79,8 @@ namespace LiveCharts.Core.Charts
                 View.InvokeOnUiThread(() => { ToolTip.Hide(View); });
                 ToolTipTimeoutTimer.Stop();
             };
+
+            Charting.BuildFromSettings(view);
         }
 
         /// <summary>
@@ -212,7 +214,7 @@ namespace LiveCharts.Core.Charts
 
         internal bool InvertXy { get; set; }
 
-        internal Dictionary<object, float[]> Stacker;
+        internal Dictionary<int, float[]> Stacker;
 
         /// <summary>
         /// Invalidates this instance, the chart will queue an update request.
@@ -310,7 +312,7 @@ namespace LiveCharts.Core.Charts
 
             CopyDataFromView();
             // restart the stacking every time the chart is updated.
-            Stacker = new Dictionary<object, float[]>();
+            Stacker = new Dictionary<int, float[]>();
 
             foreach (var dimension in Dimensions)
             {

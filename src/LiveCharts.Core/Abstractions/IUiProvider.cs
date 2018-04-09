@@ -97,6 +97,6 @@ namespace LiveCharts.Core.Abstractions
         /// </summary>
         /// <typeparam name="TModel">The type of the model.</typeparam>
         /// <returns></returns>
-        ISeriesViewProvider<TModel, PieCoordinate, PieViewModel> PieViewProvider<TModel>();
+        ISeriesViewProvider<TModel, StackedCoordinate, PieViewModel> PieViewProvider<TModel>();
     }
 }

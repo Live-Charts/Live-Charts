@@ -90,5 +90,11 @@ namespace LiveCharts.Wpf
         {
             return new ScatterSeriesViewProvider<TModel>();
         }
+
+        /// <inheritdoc />
+        public ISeriesViewProvider<TModel, StackedCoordinate, PieViewModel> PieViewProvider<TModel>()
+        {
+            return new PieSeriesViewProvider<TModel>();
+        }
     }
 }

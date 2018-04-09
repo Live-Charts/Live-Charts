@@ -1,4 +1,5 @@
 ﻿#region License
+
 // The MIT License (MIT)
 // 
 // Copyright (c) 2016 Alberto Rodríguez Orozco & LiveCharts contributors
@@ -21,6 +22,7 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING 
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR 
 // OTHER DEALINGS IN THE SOFTWARE.
+
 #endregion
 
 #region
@@ -37,8 +39,16 @@ using LiveCharts.Core.Dimensions;
 
 namespace LiveCharts.Wpf
 {
+    /// <summary>
+    /// The Cartesian chart class supports X,Y based plots.
+    /// </summary>
+    /// <seealso cref="LiveCharts.Wpf.Chart" />
+    /// <seealso cref="LiveCharts.Core.Abstractions.ICartesianChartView" />
     public class CartesianChart : Chart, ICartesianChartView
     {
+        /// <summary>
+        /// Initializes the <see cref="CartesianChart"/> class.
+        /// </summary>
         static CartesianChart()
         {
             DefaultStyleKeyProperty.OverrideMetadata(
@@ -46,6 +56,9 @@ namespace LiveCharts.Wpf
                 new FrameworkPropertyMetadata(typeof(CartesianChart)));
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CartesianChart"/> class.
+        /// </summary>
         public CartesianChart()
         {
             Model = new CartesianChartModel(this);
@@ -71,6 +84,9 @@ namespace LiveCharts.Wpf
             nameof(YAxis), typeof(IList<Plane>), typeof(CartesianChart),
             new PropertyMetadata(null, RaiseOnPropertyChanged(nameof(IChartView.Dimensions))));
 
+        /// <summary>
+        /// The weight plane property
+        /// </summary>
         public static readonly DependencyProperty WeightPlaneProperty = DependencyProperty.Register(
             nameof(WeightPlane), typeof(IList<Plane>), typeof(CartesianChart),
             new PropertyMetadata(null, RaiseOnPropertyChanged(nameof(IChartView.Dimensions))));
@@ -111,7 +127,7 @@ namespace LiveCharts.Wpf
         /// </value>
         public IList<Plane> WeightPlane
         {
-            get => (IList<Plane>)GetValue(WeightPlaneProperty);
+            get => (IList<Plane>) GetValue(WeightPlaneProperty);
             set => SetValue(WeightPlaneProperty, value);
         }
 

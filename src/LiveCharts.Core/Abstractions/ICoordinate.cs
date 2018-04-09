@@ -53,7 +53,7 @@ namespace LiveCharts.Core.Abstractions
         /// </summary>
         /// <param name="rangeByDimension">The series range by dimension, normally used to calculate min and max limits of a series.</param>
         /// <param name="stack">The reference where the stacking is done, the reference is per chart.</param>
-        void CompareDimensions(float[][] rangeByDimension, Dictionary<object, float[]> stack);
+        void CompareDimensions(float[][] rangeByDimension, Dictionary<int, float[]> stack);
 
         /// <summary>
         ///gets the coordinate as tooltip data.

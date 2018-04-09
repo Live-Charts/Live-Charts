@@ -1,57 +1,40 @@
-﻿using System.Drawing;
-
-namespace LiveCharts.Core.ViewModels
+﻿namespace LiveCharts.Core.ViewModels
 {
     /// <summary>
-    /// 
+    /// The Slice view model.
     /// </summary>
     public struct SliceViewModel
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="SliceViewModel"/> struct.
-        /// </summary>
-        /// <param name="points">The points.</param>
-        /// <param name="cornerRadius">The corner radius.</param>
-        /// <param name="isRadiusLargeArc">The is large arc.</param>
-        /// <param name="isInnerRadiusLargeArc">The is inner radius large arc.</param>
-        public SliceViewModel(PointF[] points, float cornerRadius, bool isRadiusLargeArc, bool isInnerRadiusLargeArc)
-        {
-            Points = points;
-            CornerRadius = cornerRadius;
-            IsRadiusLargeArc = isRadiusLargeArc;
-            IsInnerRadiusLargeArc = isInnerRadiusLargeArc;
-        }
-
-        /// <summary>
-        /// Gets or sets the points.
+        /// Gets the outer radius.
         /// </summary>
         /// <value>
-        /// The points.
+        /// The outer radius.
         /// </value>
-        public PointF[] Points { get; set; }
+        public float OuterRadius { get; internal set; }
 
         /// <summary>
-        /// Gets or sets the corner radius.
+        /// Gets the inner radius.
         /// </summary>
         /// <value>
-        /// The corner radius.
+        /// The inner radius.
         /// </value>
-        public float CornerRadius { get; set; }
+        public float InnerRadius { get; internal set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether this instance is large arc.
+        /// Gets the rotation.
         /// </summary>
         /// <value>
-        ///   <c>true</c> if this instance is large arc; otherwise, <c>false</c>.
+        /// The rotation.
         /// </value>
-        public bool IsRadiusLargeArc { get; set; }
+        public float Rotation { get; internal set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether this instance is inner radius large arc.
+        /// Gets the wedge.
         /// </summary>
         /// <value>
-        ///   <c>true</c> if this instance is inner radius large arc; otherwise, <c>false</c>.
+        /// The wedge.
         /// </value>
-        public bool IsInnerRadiusLargeArc { get; set; }
+        public float Wedge { get; set; }
     }
 }

@@ -12,7 +12,7 @@ namespace LiveCharts.Core.Drawing
         /// <summary>
         /// Builds the specified angle.
         /// </summary>
-        /// <param name="openingAngle">The angle.</param>
+        /// <param name="wedge">The angle.</param>
         /// <param name="radius">The radius.</param>
         /// <param name="innerRadius">The inner radius.</param>
         /// <param name="cornerRadius">The corner radius.</param>
@@ -20,16 +20,16 @@ namespace LiveCharts.Core.Drawing
         /// <param name="forceAngle">if set to <c>true</c> [force angle].</param>
         /// <param name="pushOut">The push out.</param>
         /// <returns></returns>
-        public static SliceViewModel Build(
-            double openingAngle, double radius, double innerRadius, 
+        public static S‪liceBuilder Build(
+            double wedge, double radius, double innerRadius, 
             double cornerRadius, PointF center, bool forceAngle, double pushOut)
         {
             return GetPoints(
-                openingAngle, radius, innerRadius, cornerRadius, center, forceAngle, pushOut);
+                wedge, radius, innerRadius, cornerRadius, center, forceAngle, pushOut);
         }
 
-        private static SliceViewModel GetPoints(
-            double openingAngle, double outerRadius, double innerRadius,
+        private static S‪liceBuilder GetPoints(
+            double wedge, double outerRadius, double innerRadius,
             double cornerRadius, PointF center, bool forceAngle, double pushOut)
         {
             // See docs/resources/slice.png
@@ -38,7 +38,7 @@ namespace LiveCharts.Core.Drawing
             var pts = new PointF[8];
 
             const double toRadians = Math.PI / 180d;
-            var a = openingAngle;
+            var a = wedge;
 
             if (a > 359.9f)
             {
@@ -109,7 +109,7 @@ namespace LiveCharts.Core.Drawing
                     (float) (center.X + innerRadius * Math.Sin(innerRoundingAngle) + xp),
                     (float) (center.Y + innerRadius * Math.Cos(innerRoundingAngle) + yp));
 
-                return new SliceViewModel(
+                return new S‪liceBuilder(
                     pts,
                     (float) cr,
                     angle - outerRoundingAngle * 2 >= Math.PI,

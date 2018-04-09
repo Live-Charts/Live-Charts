@@ -1,9 +1,12 @@
 ﻿using System;
+using System.Drawing;
+using System.Linq;
 using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Abstractions.DataSeries;
 using LiveCharts.Core.Charts;
 using LiveCharts.Core.Coordinates;
 using LiveCharts.Core.DataSeries.Data;
+using LiveCharts.Core.Interaction;
 using LiveCharts.Core.ViewModels;
 
 namespace LiveCharts.Core.DataSeries
@@ -15,9 +18,11 @@ namespace LiveCharts.Core.DataSeries
     /// <seealso cref="LiveCharts.Core.DataSeries.Series{TModel, PieCoordinate, PieViewModel, TPoint}" />
     /// <seealso cref="LiveCharts.Core.Abstractions.DataSeries.IPieSeries" />
     public class PieSeries<TModel> :
-        Series<TModel, PieCoordinate, PieViewModel, Point<TModel, PieCoordinate, PieViewModel>>, IPieSeries
+        Series<TModel, StackedCoordinate, PieViewModel, Point<TModel, StackedCoordinate, PieViewModel>>, IPieSeries
     {
-        private static ISeriesViewProvider<TModel, PieCoordinate, PieViewModel> _provider;
+        private static ISeriesViewProvider<TModel, StackedCoordinate, PieViewModel> _provider;
+        private double _pushOut;
+        private double _cornerRadius;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PieSeries{TModel}"/> class.
@@ -28,7 +33,26 @@ namespace LiveCharts.Core.DataSeries
         }
 
         /// <inheritdoc />
-        public double PushOut { get; set; }
+        public double PushOut
+        {
+            get => _pushOut;
+            set
+            {
+                _pushOut = value; 
+                OnPropertyChanged();
+            }
+        }
+
+        /// <inheritdoc />
+        public double CornerRadius
+        {
+            get => _cornerRadius;
+            set
+            {
+                _cornerRadius = value;
+                OnPropertyChanged();
+            }
+        }
 
         /// <inheritdoc />
         public override Type ResourceKey => typeof(IPieSeries);
@@ -40,15 +64,69 @@ namespace LiveCharts.Core.DataSeries
         public override float[] PointMargin => new[] {0f, 0f};
 
         /// <inheritdoc />
-        protected override ISeriesViewProvider<TModel, PieCoordinate, PieViewModel>
+        protected override ISeriesViewProvider<TModel, StackedCoordinate, PieViewModel>
             DefaultViewProvider => _provider ?? (_provider = Charting.Current.UiProvider.PieViewProvider<TModel>());
 
         /// <inheritdoc />
         public override void UpdateView(ChartModel chart)
         {
-            foreach (var point in Points)
+            var pieChart = (IPieChartView) chart.View;
+            
+            // ToDo: find a way to optimize this
+            // the max push out is calculated by every series
+            // this operation could be done only once, not by every series...
+            var maxPushOut = pieChart.Series
+                .Where(x => x.IsVisible)
+                .OfType<IPieSeries>()
+                .Select(x => x.PushOut)
+                .DefaultIfEmpty(0).Max();
+
+            var innerRadius = pieChart.InnerRadius;
+            var outerDiameter = pieChart.ControlSize[0] < pieChart.ControlSize[1]
+                ? pieChart.ControlSize[0]
+                : pieChart.ControlSize[1];
+
+            outerDiameter -= (float) maxPushOut *2f;
+
+            var centerPoint = new PointF(pieChart.ControlSize[0] / 2f, pieChart.ControlSize[1] / 2f);
+
+            var startsAt = pieChart.StartingRotationAngle > 360f
+                ? 360f
+                : (pieChart.StartingRotationAngle < 0
+                    ? 0f
+                    : (float) pieChart.StartingRotationAngle);
+
+            Point<TModel, StackedCoordinate, PieViewModel> previous = null;
+
+            foreach (var current in Points)
             {
-                var vm = new 
+                var range = current.Coordinate.To - current.Coordinate.From;
+                var stacked = chart.Stacker[current.Key][0];
+
+                var vm = new PieViewModel
+                {
+                    To = new SliceViewModel
+                    {
+                        Wedge = range * 360f / stacked,
+                        InnerRadius = (float) innerRadius,
+                        OuterRadius = outerDiameter / 2,
+                        Rotation = startsAt + current.Coordinate.From / 360f
+                    },
+                    ChartCenter = centerPoint
+                };
+
+                if (current.View == null)
+                {
+                    current.View = ViewProvider.Getter();
+                }
+
+                current.InteractionArea = new PolarInteractionArea(
+                    vm.To.OuterRadius, vm.To.Rotation, vm.To.Wedge, centerPoint);
+                current.ViewModel = vm;
+                current.View.DrawShape(current, previous);
+                Mapper.EvaluateModelDependentActions(current.Model, current.View.VisualElement, current);
+
+                previous = current;
             }
         }
     }

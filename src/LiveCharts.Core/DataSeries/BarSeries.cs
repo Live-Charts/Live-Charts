@@ -91,6 +91,8 @@ namespace LiveCharts.Core.DataSeries
 
             var uw = chart.Get2DUiUnitWidth(directionAxis, scaleAxis);
 
+            // ToDo: find a way to optimize this
+            // this operation could be done only once, not by every series...
             var columnSeries = chart.Series
                 .Cast<ICartesianSeries>()
                 .Where(series => series.ScalesAt[1] == ScalesAt[1] &&
@@ -182,10 +184,8 @@ namespace LiveCharts.Core.DataSeries
                     orientation);
 
                 current.InteractionArea = new RectangleInteractionArea(vm.To);
-
                 current.ViewModel = vm;
                 current.View.DrawShape(current, previous);
-
                 Mapper.EvaluateModelDependentActions(current.Model, current.View.VisualElement, current);
 
                 previous = current;

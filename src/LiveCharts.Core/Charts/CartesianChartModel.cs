@@ -47,7 +47,7 @@ namespace LiveCharts.Core.Charts
         public CartesianChartModel(IChartView view)
             : base(view)
         {
-
+            Charting.BuildFromSettings((ICartesianChartView) view);
         }
 
         /// <inheritdoc />

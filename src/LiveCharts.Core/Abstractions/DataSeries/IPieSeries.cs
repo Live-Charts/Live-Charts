@@ -12,5 +12,13 @@
         /// The push out.
         /// </value>
         double PushOut { get; set; }
+
+        /// <summary>
+        /// Gets or sets the corner radius.
+        /// </summary>
+        /// <value>
+        /// The corner radius.
+        /// </value>
+        double CornerRadius { get; set; }
     }
 }

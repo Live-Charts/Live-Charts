@@ -32,6 +32,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using LiveCharts.Core.Abstractions;
+using LiveCharts.Core.Abstractions.DataSeries;
 using LiveCharts.Core.Coordinates;
 using LiveCharts.Core.DataSeries.Data;
 using LiveCharts.Core.ViewModels;
@@ -107,6 +108,7 @@ namespace LiveCharts.Wpf.Views
             Shape.Stroke = point.Series.Stroke.AsWpf();
             Shape.Fill = Brushes.White;
             Shape.Data = Geometry.Parse(point.Series.Geometry.Data);
+            Panel.SetZIndex(Shape, ((ICartesianSeries)point.Series).ZIndex);
 
             if (!isNew)
             {

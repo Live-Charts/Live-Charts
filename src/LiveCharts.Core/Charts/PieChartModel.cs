@@ -16,6 +16,7 @@ namespace LiveCharts.Core.Charts
         /// <param name="view">The chart view.</param>
         public PieChartModel(IChartView view) : base(view)
         {
+            Charting.BuildFromSettings((IPieChartView) view);
         }
 
         public override float ScaleToUi(float dataValue, Plane plane, float[] sizeVector = null)
@@ -35,12 +36,12 @@ namespace LiveCharts.Core.Charts
 
         public override float ScaleFromUi(float pixelsValue, Plane plane, float[] sizeVector = null)
         {
-            throw new NotImplementedException();
+            return 0f;
         }
 
         protected override void ViewOnPointerMoved(PointF location, TooltipSelectionMode selectionMode, params double[] dimensions)
         {
-            throw new NotImplementedException();
+            
         }
 
         /// <inheritdoc />

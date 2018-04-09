@@ -8,11 +8,11 @@ using LiveCharts.Wpf.Controls;
 namespace LiveCharts.Wpf.Views.Providers
 {
     /// <summary>
-    /// The scatter view provider class.
+    /// The pie view provider.
     /// </summary>
     /// <typeparam name="TModel">The type of the model.</typeparam>
-    /// <seealso cref="ISeriesViewProvider{TModel,TCoordinate,TViewModel}" />
-    public class ScatterSeriesViewProvider<TModel> : ISeriesViewProvider<TModel, WeightedCoordinate, ScatterViewModel>
+    /// <seealso cref="LiveCharts.Core.Abstractions.ISeriesViewProvider{TModel, PieCoordinate, PieViewModel}" />
+    public class PieSeriesViewProvider<TModel>: ISeriesViewProvider<TModel, StackedCoordinate, PieViewModel>
     {
         /// <inheritdoc />
         public void OnUpdateStarted(IChartView chart, ISeries series)
@@ -20,9 +20,9 @@ namespace LiveCharts.Wpf.Views.Providers
         }
 
         /// <inheritdoc />
-        public IPointView<TModel, Point<TModel, WeightedCoordinate, ScatterViewModel>, WeightedCoordinate, ScatterViewModel> Getter()
+        public IPointView<TModel, Point<TModel, StackedCoordinate, PieViewModel>, StackedCoordinate, PieViewModel> Getter()
         {
-            return new ScatterPointView<TModel, Point<TModel, WeightedCoordinate, ScatterViewModel>, DataLabel>();
+            return new PiePointView<TModel, Point<TModel, StackedCoordinate, PieViewModel>, DataLabel>();
         }
 
         /// <inheritdoc />

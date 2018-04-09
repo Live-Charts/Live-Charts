@@ -752,7 +752,7 @@ namespace LiveCharts.Core.DataSeries
         /// <inheritdoc />
         public override void Fetch(ChartModel model)
         {
-            // returned cached points if this method was called from the same updateId.
+            // do not recalculate if this method was called from the same updateId.
             if (_chartPointsUpdateId == model.UpdateId) return;
             _chartPointsUpdateId = model.UpdateId;
 
@@ -774,14 +774,15 @@ namespace LiveCharts.Core.DataSeries
             // call the factory to fetch our data.
             // Fetch() has 2 main tasks.
             // 1. Calculate each ChartPoint required by the series.
-            // 2. Evaluate every dimension to get Max and Min limits.
+            // 2. Evaluate every dimension in the case of a cartesian chart, get Max and Min limits, 
+            // if stacked, then also do the stacking...
             Points = Charting.Current.DataFactory
                 .Fetch(
                     new DataFactoryArgs<TModel, TCoordinate, TViewModel, TPoint>
                     {
                         Series = this,
                         Chart = model,
-                        Collection = ItemsSource.ToArray() // create a copy of the current points.
+                        Collection = ItemsSource.ToArray() // create a copy of the current points, just in case it changes while we are updating
                     })
                 .ToArray();
         }

@@ -26,15 +26,16 @@
 #region
 
 using LiveCharts.Core.Coordinates;
+using LiveCharts.Core.Defaults;
 
 #endregion
 
-namespace LiveCharts.Core.Defaults
+namespace LiveCharts.Core
 {
     /// <summary>
     /// Primitive types configuration.
     /// </summary>
-    public static class PlotTypesConfig
+    public static class Config
     {
         /// <summary>
         /// Configures LiveCharts to plot the default types.
@@ -55,6 +56,24 @@ namespace LiveCharts.Core.Defaults
             charting.LearnType<decimal>((value, index) => new PointCoordinate(index, (float) value));
             charting.LearnType<ObservableModel>((om, index) => new PointCoordinate(index, om.Value));
             charting.LearnType<PointModel>((opm, index) => new PointCoordinate(opm.X, opm.Y));
+
+            // Stacked Coordinates
+
+            charting.LearnType<short, StackedCoordinate>((value, index) => new StackedCoordinate(index, value));
+            charting.LearnType<ushort, StackedCoordinate>((value, index) => new StackedCoordinate(index, value));
+            charting.LearnType<int, StackedCoordinate>((value, index) => new StackedCoordinate(index, value));
+            charting.LearnType<long, StackedCoordinate>((value, index) => new StackedCoordinate(index, value));
+            charting.LearnType<ulong, StackedCoordinate>((value, index) => new StackedCoordinate(index, value));
+            charting.LearnType<double, StackedCoordinate>(
+                (value, index) => new StackedCoordinate(index, (float) value));
+            charting.LearnType<float, StackedCoordinate>(
+                (value, index) => new StackedCoordinate(index, value));
+            charting.LearnType<decimal, StackedCoordinate>(
+                (value, index) => new StackedCoordinate(index, (float) value));
+            charting.LearnType<ObservableModel, StackedCoordinate>(
+                (om, index) => new StackedCoordinate(index, om.Value));
+            charting.LearnType<PointModel, StackedCoordinate>(
+                (opm, index) => new StackedCoordinate(opm.X, opm.Y));
 
             // weighted coordinates
 

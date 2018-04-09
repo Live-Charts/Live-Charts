@@ -71,7 +71,7 @@ namespace LiveCharts.Core.Coordinates
         public float Radius => _vector[0][0];
 
         /// <inheritdoc cref="CompareDimensions"/>
-        public void CompareDimensions(float[][] rangeByDimension, Dictionary<object, float[]> stacker)
+        public void CompareDimensions(float[][] rangeByDimension, Dictionary<int, float[]> stacker)
         {
             var radius = rangeByDimension[0];
 

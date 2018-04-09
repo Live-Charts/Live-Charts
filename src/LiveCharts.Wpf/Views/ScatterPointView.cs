@@ -30,6 +30,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using LiveCharts.Core.Abstractions;
+using LiveCharts.Core.Abstractions.DataSeries;
 using LiveCharts.Core.Coordinates;
 using LiveCharts.Core.DataSeries.Data;
 using LiveCharts.Core.ViewModels;
@@ -65,6 +66,7 @@ namespace LiveCharts.Wpf.Views
             Shape.StrokeThickness = 3.5;
             Shape.Stroke = point.Series.Stroke.AsWpf();
             Shape.Data = Geometry.Parse(point.Series.Geometry.Data);
+            Panel.SetZIndex(Shape, ((ICartesianSeries)point.Series).ZIndex);
 
             var speed = chart.AnimationsSpeed;
             var r = vm.Diameter * .5;

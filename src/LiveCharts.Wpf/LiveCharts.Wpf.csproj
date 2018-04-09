@@ -65,9 +65,12 @@
     <Compile Include="Interaction\DataInteractionEventArgs.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Interaction\DataInteractionHandler.cs" />
+    <Compile Include="PieChart.cs" />
     <Compile Include="Shapes\Slice.cs" />
+    <Compile Include="Views\PiePointView.cs" />
     <Compile Include="Views\Providers\BarSeriesViewProvider.cs" />
     <Compile Include="Views\Providers\BezierSeriesViewProvider.cs" />
+    <Compile Include="Views\Providers\PieSeriesViewProvider.cs" />
     <Compile Include="Views\Providers\ScatterSeriesViewProvider.cs" />
     <Compile Include="Views\BezierPointView.cs" />
     <Compile Include="Views\CartesianPath.cs" />
