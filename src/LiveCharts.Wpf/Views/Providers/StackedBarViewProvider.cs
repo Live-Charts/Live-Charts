@@ -9,11 +9,11 @@ using LiveCharts.Wpf.Controls;
 namespace LiveCharts.Wpf.Views.Providers
 {
     /// <summary>
-    /// The bar view provider class.
+    /// The stacked bar view provider.
     /// </summary>
     /// <typeparam name="TModel">The type of the model.</typeparam>
-    /// <seealso cref="ISeriesViewProvider{TModel,TCoordinate,TViewModel}" />
-    public class BarSeriesViewProvider<TModel> : ISeriesViewProvider<TModel, PointCoordinate, BarViewModel>
+    /// <seealso cref="LiveCharts.Core.Abstractions.ISeriesViewProvider{TModel, StackedCoordinate, BarViewModel}" />
+    public class StackedBarViewProvider<TModel> : ISeriesViewProvider<TModel, StackedCoordinate, BarViewModel>
     {
         /// <inheritdoc />
         public void OnUpdateStarted(IChartView chart, ISeries series)
@@ -21,10 +21,10 @@ namespace LiveCharts.Wpf.Views.Providers
         }
 
         /// <inheritdoc />
-        public IPointView<TModel, Point<TModel, PointCoordinate, BarViewModel>, PointCoordinate, BarViewModel> Getter()
+        public IPointView<TModel, Point<TModel, StackedCoordinate, BarViewModel>, StackedCoordinate, BarViewModel> Getter()
         {
-            return new BarPointView<TModel, PointCoordinate,
-                Point<TModel, PointCoordinate, BarViewModel>, Rectangle, DataLabel>();
+            return new BarPointView<TModel, StackedCoordinate,
+                Point<TModel, StackedCoordinate, BarViewModel>, Rectangle, DataLabel>();
         }
 
         /// <inheritdoc />

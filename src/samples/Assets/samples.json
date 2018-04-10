@@ -2,11 +2,6 @@
   "version": "1.0",
   "items": {
     "Cartesian Chart": [
-      //{
-      //  "id": "PropertyAndInstanceChanged",
-      //  "name": "Property changed test",
-      //  "text": "A local test to debug when a property or an instance changes."
-      //},
       {
         "id": "BasicLine",
         "name": "Basic line series",
@@ -16,6 +11,11 @@
         "id": "BasicBar",
         "name": "Basic bar series",
         "text": "Get started with the bar series class."
+      },
+      {
+        "id": "BasicStackedBar",
+        "name": "Basic stacked bar series",
+        "text": "A bar series that stacks the content."
       },
       {
         "id": "BasicBubble",

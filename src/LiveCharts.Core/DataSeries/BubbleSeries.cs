@@ -82,7 +82,7 @@ namespace LiveCharts.Core.DataSeries
             DefaultViewProvider => _provider ?? (_provider = Charting.Current.UiProvider.ScatterViewProvider<TModel>());
 
         /// <inheritdoc />
-        public override void UpdateView(ChartModel chart)
+        public override void UpdateView(ChartModel chart, UpdateContext context)
         {
             var cartesianChart = (CartesianChartModel)chart;
             var x = cartesianChart.Dimensions[0][ScalesAt[0]];

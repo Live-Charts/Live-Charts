@@ -9,6 +9,10 @@ namespace Assets.ViewModels
     {
         public BasicLine()
         {
+            // create a collection to store our series.
+            // you can use any IEnumerable, it is recommended to use
+            // the ChartingCollection<T> class, it inherits from
+            // ObservableCollection and adds the AddRange/RemoveRange methods
             SeriesCollection = new ChartingCollection<Series>();
 
             // create a new line series

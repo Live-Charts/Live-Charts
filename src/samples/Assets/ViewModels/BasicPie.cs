@@ -19,6 +19,10 @@ namespace Assets.ViewModels
             var explorerSeries = new PieSeries<double>();
             explorerSeries.Add(6d);
 
+            // some custom style..
+            explorerSeries.CornerRadius = 6;
+            explorerSeries.PushOut = 10;
+
             // add the series to our collection
             SeriesCollection.Add(chromeSeries);
             SeriesCollection.Add(fireFoxSeries);

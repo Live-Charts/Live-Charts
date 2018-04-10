@@ -87,7 +87,7 @@ namespace LiveCharts.Core.DataSeries
             DefaultViewProvider => _provider ?? (_provider = Charting.Current.UiProvider.BezierViewProvider<TModel>());
 
         /// <inheritdoc />
-        public override void UpdateView(ChartModel chart)
+        public override void UpdateView(ChartModel chart, UpdateContext context)
         {
             var cartesianChart = (CartesianChartModel) chart;
 

@@ -36,12 +36,12 @@ namespace LiveCharts.Wpf.Views
             {
                 Shape = new Slice();
                 chart.Content.AddChild(Shape);
-                Canvas.SetLeft(Shape, 0);
-                Canvas.SetTop(Shape,0);
+                Canvas.SetLeft(Shape, point.Chart.DrawAreaSize[0] / 2 - vm.To.OuterRadius);
+                Canvas.SetTop(Shape, point.Chart.DrawAreaSize[1] / 2 - vm.To.OuterRadius);
                 Shape.Rotation = 0d;
                 Shape.Wedge = 0d;
-                Shape.Width = point.Chart.View.ControlSize[0];
-                Shape.Height = point.Chart.View.ControlSize[1];
+                Shape.Width = vm.To.OuterRadius * 2;
+                Shape.Height = vm.To.OuterRadius * 2;
             }
 
             // map properties
@@ -64,14 +64,16 @@ namespace LiveCharts.Wpf.Views
 
             if (isNewShape)
             {
+                Shape.Radius = vm.To.OuterRadius * .8;
                 animation
-                    .Bounce(Slice.RotationProperty, vm.To.Rotation)
+                    .Bounce(Slice.RadiusProperty, vm.To.OuterRadius)
+                    .Property(Slice.RotationProperty, vm.To.Rotation)
                     .Property(Slice.WedgeProperty, vm.To.Wedge);
             }
             else
             {
                 animation
-                    .Bounce(Slice.RotationProperty, vm.To.Rotation)
+                    .Property(Slice.RotationProperty, vm.To.Rotation)
                     .Property(Slice.WedgeProperty, vm.To.Wedge);
             }
 

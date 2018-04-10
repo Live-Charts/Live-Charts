@@ -395,7 +395,8 @@ namespace LiveCharts.Core.DataSeries
         /// Updates the view.
         /// </summary>
         /// <param name="chart">The chart.</param>
-        public abstract void UpdateView(ChartModel chart);
+        /// <param name="context">The arguments.</param>
+        public abstract void UpdateView(ChartModel chart, UpdateContext context);
 
         internal abstract void UpdateFinished(IChartView chart);
 

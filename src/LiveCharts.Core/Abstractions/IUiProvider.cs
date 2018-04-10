@@ -98,5 +98,12 @@ namespace LiveCharts.Core.Abstractions
         /// <typeparam name="TModel">The type of the model.</typeparam>
         /// <returns></returns>
         ISeriesViewProvider<TModel, StackedCoordinate, PieViewModel> PieViewProvider<TModel>();
+
+        /// <summary>
+        /// Provides LiveCharts with a builder that returns a stacked bar view.
+        /// </summary>
+        /// <typeparam name="TModel">The type of the model.</typeparam>
+        /// <returns></returns>
+        ISeriesViewProvider<TModel, StackedCoordinate, BarViewModel> StackedBarViewProvider<TModel>();
     }
 }

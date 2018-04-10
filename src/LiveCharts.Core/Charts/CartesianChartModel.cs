@@ -178,15 +178,18 @@ namespace LiveCharts.Core.Charts
                     }
                 }
 
-                foreach (var series in Series.Where(x => x.IsVisible))
+                using (var context = new UpdateContext(Series.Where(series => series.IsVisible)))
                 {
-                    if (!(series is ICartesianSeries))
+                    foreach (var series in Series.Where(x => x.IsVisible))
                     {
-                        throw new LiveChartsException($"{series.ResourceKey.Name} is not supported at a {nameof(ICartesianChartView)}", 110);
+                        if (!(series is ICartesianSeries))
+                        {
+                            throw new LiveChartsException($"{series.ResourceKey.Name} is not supported at a {nameof(ICartesianChartView)}", 110);
+                        }
+                        series.UpdateStarted(View);
+                        series.UpdateView(this, context);
+                        series.UpdateFinished(View);
                     }
-                    series.UpdateStarted(View);
-                    series.UpdateView(this);
-                    series.UpdateFinished(View);
                 }
 
                 CollectResources();

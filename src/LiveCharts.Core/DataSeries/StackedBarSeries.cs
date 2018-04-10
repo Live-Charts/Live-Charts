@@ -1,30 +1,3 @@
-#region License
-// The MIT License (MIT)
-// 
-// Copyright (c) 2016 Alberto Rodríguez Orozco & LiveCharts contributors
-// 
-// Permission is hereby granted, free of charge, to any person obtaining a copy 
-// of this software and associated documentation files (the "Software"), to deal 
-// in the Software without restriction, including without limitation the rights to 
-// use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies 
-// of the Software, and to permit persons to whom the Software is furnished to 
-// do so, subject to the following conditions:
-// 
-// The above copyright notice and this permission notice shall be included in all 
-// copies or substantial portions of the Software.
-// 
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, 
-// EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES 
-// OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND 
-// NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT 
-// HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, 
-// WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING 
-// FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR 
-// OTHER DEALINGS IN THE SOFTWARE.
-#endregion
-
-#region
-
 using System;
 using System.Drawing;
 using System.Linq;
@@ -38,23 +11,24 @@ using LiveCharts.Core.Drawing;
 using LiveCharts.Core.Interaction;
 using LiveCharts.Core.ViewModels;
 
-#endregion
-
 namespace LiveCharts.Core.DataSeries
 {
     /// <summary>
-    /// The column series class.
-    /// </summary>The column series class.
+    /// The stacked bar series.
+    /// </summary>
     /// <typeparam name="TModel">The type of the model.</typeparam>
-    public class BarSeries<TModel>
-        : CartesianSeries<TModel, PointCoordinate, BarViewModel, Point<TModel, PointCoordinate, BarViewModel>>, IBarSeries
+    /// <seealso cref="CartesianSeries{TModel, StackedCoordinate, BarViewModel, Point}" />
+    /// <seealso cref="LiveCharts.Core.Abstractions.DataSeries.IBarSeries" />
+    public class StackedBarSeries<TModel>
+        : CartesianSeries<TModel, StackedCoordinate, BarViewModel, Point<TModel, StackedCoordinate, BarViewModel>>,
+            IBarSeries
     {
-        private static ISeriesViewProvider<TModel, PointCoordinate, BarViewModel> _provider;
+        private static ISeriesViewProvider<TModel, StackedCoordinate, BarViewModel> _provider;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="BarSeries{TModel}"/> class.
+        /// Initializes a new instance of the <see cref="StackedBarSeries{TModel}"/> class.
         /// </summary>
-        public BarSeries()
+        public StackedBarSeries()
         {
             MaxColumnWidth = 45f;
             BarPadding = 6f;
@@ -71,14 +45,15 @@ namespace LiveCharts.Core.DataSeries
         public override Type ResourceKey => typeof(IBarSeries);
 
         /// <inheritdoc />
-        public override float[] DefaultPointWidth => new[] {1f, 0f};
+        public override float[] DefaultPointWidth => new[] { 1f, 0f };
 
         /// <inheritdoc />
-        public override float[] PointMargin => new[] {0f, 0f};
+        public override float[] PointMargin => new[] { 0f, 0f };
 
         /// <inheritdoc />
-        protected override ISeriesViewProvider<TModel, PointCoordinate, BarViewModel>
-            DefaultViewProvider => _provider ?? (_provider = Charting.Current.UiProvider.BarViewProvider<TModel>());
+        protected override ISeriesViewProvider<TModel, StackedCoordinate, BarViewModel>
+            DefaultViewProvider =>
+            _provider ?? (_provider = Charting.Current.UiProvider.StackedBarViewProvider<TModel>());
 
         /// <inheritdoc />
         public override void UpdateView(ChartModel chart, UpdateContext context)
@@ -121,11 +96,12 @@ namespace LiveCharts.Core.DataSeries
 
             var columnStart = GetColumnStart(chart, scaleAxis, directionAxis);
 
-            Point<TModel, PointCoordinate, BarViewModel> previous = null;
+            Point<TModel, StackedCoordinate, BarViewModel> previous = null;
 
             foreach (var current in Points)
             {
                 var offset = chart.ScaleToUi(current.Coordinate[0][0], directionAxis);
+                var stack = chart.Stacker[current.Key][0];
 
                 var columnCorner1 = new[]
                 {
@@ -151,6 +127,9 @@ namespace LiveCharts.Core.DataSeries
                     offset,
                     columnStart - Math.Abs(difference[1]) * inverted
                 };
+
+                var start = current.Coordinate.From / stack;
+                var end = current.Coordinate.To / stack;
 
                 if (current.View.VisualElement == null)
                 {

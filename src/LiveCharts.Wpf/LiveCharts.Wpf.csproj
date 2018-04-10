@@ -76,6 +76,7 @@
     <Compile Include="Views\CartesianPath.cs" />
     <Compile Include="Views\PointView.cs" />
     <Compile Include="Animations\AnimationBuilder.cs" />
+    <Compile Include="Views\Providers\StackedBarViewProvider.cs" />
     <Compile Include="Views\ScatterPointView.cs" />
     <Compile Include="Views\CartesianAxisSeparatorView.cs" />
     <Compile Include="UiProvider.cs" />

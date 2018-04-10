@@ -9,6 +9,9 @@ namespace Assets.ViewModels
         public BasicBar()
         {
             // create a collection to store our series.
+            // you can use any IEnumerable, it is recommended to use
+            // the ChartingCollection<T> class, it inherits from
+            // ObservableCollection and adds the AddRange/RemoveRange methods
             SeriesCollection = new ChartingCollection<Series>();
 
             var barSeries = new BarSeries<double>();

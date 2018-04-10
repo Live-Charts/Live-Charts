@@ -80,6 +80,12 @@ namespace LiveCharts.Wpf
         }
 
         /// <inheritdoc />
+        public ISeriesViewProvider<TModel, StackedCoordinate, BarViewModel> StackedBarViewProvider<TModel>()
+        {
+            return new StackedBarViewProvider<TModel>();
+        }
+
+        /// <inheritdoc />
         public ISeriesViewProvider<TModel, PointCoordinate, BezierViewModel> BezierViewProvider<TModel>()
         {
             return new BezierSeriesViewProvider<TModel>();

@@ -68,18 +68,11 @@ namespace LiveCharts.Core.DataSeries
             DefaultViewProvider => _provider ?? (_provider = Charting.Current.UiProvider.PieViewProvider<TModel>());
 
         /// <inheritdoc />
-        public override void UpdateView(ChartModel chart)
+        public override void UpdateView(ChartModel chart, UpdateContext context)
         {
             var pieChart = (IPieChartView) chart.View;
             
-            // ToDo: find a way to optimize this
-            // the max push out is calculated by every series
-            // this operation could be done only once, not by every series...
-            var maxPushOut = pieChart.Series
-                .Where(x => x.IsVisible)
-                .OfType<IPieSeries>()
-                .Select(x => x.PushOut)
-                .DefaultIfEmpty(0).Max();
+            var maxPushOut = context.GetMaxPushOut();
 
             var innerRadius = pieChart.InnerRadius;
             var outerDiameter = pieChart.ControlSize[0] < pieChart.ControlSize[1]
@@ -110,7 +103,7 @@ namespace LiveCharts.Core.DataSeries
                         Wedge = range * 360f / stacked,
                         InnerRadius = (float) innerRadius,
                         OuterRadius = outerDiameter / 2,
-                        Rotation = startsAt + current.Coordinate.From / 360f
+                        Rotation = startsAt + current.Coordinate.From * 360f / stacked
                     },
                     ChartCenter = centerPoint
                 };

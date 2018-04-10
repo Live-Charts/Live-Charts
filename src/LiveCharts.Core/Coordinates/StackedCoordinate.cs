@@ -61,6 +61,7 @@ namespace LiveCharts.Core.Coordinates
         /// <inheritdoc />
         public void CompareDimensions(float[][] rangeByDimension, Dictionary<int, float[]> stacker)
         {
+            // stacking..
             int index;
 
             unchecked
@@ -78,6 +79,16 @@ namespace LiveCharts.Core.Coordinates
             From = stacker[index][0];
             To = From + value;
             stacker[index][0] = To;
+
+            if (rangeByDimension == null) return;
+            // store max and min limits..
+            var x = rangeByDimension[0];
+            var y = rangeByDimension[1];
+
+            if (index > x[1]) x[1] = index; // 0: min, 1: Max
+            if (index < x[0]) x[0] = index;
+            if (value > y[1]) y[1] = value;
+            if (value < y[0]) y[0] = value;
         }
 
         /// <inheritdoc />

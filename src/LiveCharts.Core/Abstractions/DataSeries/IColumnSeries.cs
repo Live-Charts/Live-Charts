@@ -36,7 +36,7 @@ namespace LiveCharts.Core.Abstractions.DataSeries
         /// <value>
         /// The column padding.
         /// </value>
-        float ColumnPadding { get; set; }
+        float BarPadding { get; set; }
 
         /// <summary>
         /// Gets or sets the maximum width of the column.
