@@ -35,7 +35,6 @@ using System.Threading.Tasks;
 using System.Timers;
 using System.Windows.Input;
 using LiveCharts.Core.Abstractions;
-using LiveCharts.Core.Abstractions.DataSeries;
 using LiveCharts.Core.DataSeries;
 using LiveCharts.Core.DataSeries.Data;
 using LiveCharts.Core.Dimensions;
@@ -214,7 +213,13 @@ namespace LiveCharts.Core.Charts
 
         internal bool InvertXy { get; set; }
 
-        internal Dictionary<int, float[]> Stacker;
+        /// <summary>
+        /// Gets the dimensions.
+        /// </summary>
+        /// <value>
+        /// The dimensions.
+        /// </value>
+        protected abstract int DimensionsCount { get; }
 
         /// <summary>
         /// Invalidates this instance, the chart will queue an update request.
@@ -222,14 +227,27 @@ namespace LiveCharts.Core.Charts
         /// <returns></returns>
         public async void Invalidate(object sender)
         {
-            if (!IsViewInitialized) return;
+            if (!IsViewInitialized)
+            {
+                return;
+            }
             if (_delayer != null && !_delayer.IsCompleted) return;
+
             var delay = AnimationsSpeed.TotalMilliseconds < 10
                 ? TimeSpan.FromMilliseconds(10)
                 : AnimationsSpeed;
             _delayer = Task.Delay(delay);
+
             await _delayer;
-            Update(false);
+
+            View.InvokeOnUiThread(() =>
+            {
+                CopyDataFromView();
+                using (var context = new UpdateContext(Series.Where(series => series.IsVisible), DimensionsCount))
+                {
+                    Update(false, context);
+                }
+            });
         }
 
         /// <summary>
@@ -289,16 +307,11 @@ namespace LiveCharts.Core.Charts
         /// Updates the chart.
         /// </summary>
         /// <param name="restart">if set to <c>true</c> all the elements in the view will be redrawn.</param>
+        /// <param name="context">the update context.</param>
         /// <exception cref="NotImplementedException"></exception>
-        protected virtual void Update(bool restart)
+        protected virtual void Update(bool restart, UpdateContext context)
         {
             UpdateId = new object();
-
-            if (!IsViewInitialized)
-            {
-                Invalidate(View);
-                return;
-            }
 
             if (restart)
             {
@@ -310,15 +323,10 @@ namespace LiveCharts.Core.Charts
                 _resources.Clear();
             }
 
-            CopyDataFromView();
-            // restart the stacking every time the chart is updated.
-            Stacker = new Dictionary<int, float[]>();
-
             foreach (var dimension in Dimensions)
             {
                 foreach (var plane in dimension)
                 {
-                    plane.DataRange = new[] {float.MaxValue, float.MinValue};
                     plane.PointMargin = 0f;
                 }
             }
@@ -326,10 +334,10 @@ namespace LiveCharts.Core.Charts
             foreach (var series in Series.Where(x => x.IsVisible))
             {
                 series.UsedBy(this);
-                series.Fetch(this);
+                series.Fetch(this, context);
                 RegisterResource(series);
 
-                OnPreparingSeries(series);
+                OnPreparingSeries(context, series);
             }
 
             var chartSize = ControlSize;
@@ -404,8 +412,9 @@ namespace LiveCharts.Core.Charts
         /// <summary>
         /// Called when the series was fetched and registered in the resources collector.
         /// </summary>
+        /// <param name="context">The update context.</param>
         /// <param name="series">The series.</param>
-        protected virtual void OnPreparingSeries(Series series)
+        protected virtual void OnPreparingSeries(UpdateContext context, Series series)
         {
         }
 
@@ -510,11 +519,16 @@ namespace LiveCharts.Core.Charts
                     incc.CollectionChanged -= InvalidateOnCollectionChanged;
                 }
             }
-
-            Stacker = null;
+;
             _resources = null;
             _resourcesCollections = null;
             _colors = null;
+            _delayer = null;
+
+            Series = null;
+            Dimensions = null;
+            ControlSize = null;
+            Legend = null;
         }
 
         /// <summary>

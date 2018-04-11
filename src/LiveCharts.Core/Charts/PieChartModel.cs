@@ -19,6 +19,9 @@ namespace LiveCharts.Core.Charts
             Charting.BuildFromSettings((IPieChartView) view);
         }
 
+        /// <inheritdoc />
+        protected override int DimensionsCount => 2;
+
         public override float ScaleToUi(float dataValue, Plane plane, float[] sizeVector = null)
         {
             return 0;
@@ -39,49 +42,46 @@ namespace LiveCharts.Core.Charts
             return 0f;
         }
 
-        protected override void ViewOnPointerMoved(PointF location, TooltipSelectionMode selectionMode, params double[] dimensions)
+        protected override void ViewOnPointerMoved(PointF location, TooltipSelectionMode selectionMode,
+            params double[] dimensions)
         {
-            
+
         }
 
         /// <inheritdoc />
-        protected override void Update(bool restart)
+        protected override void Update(bool restart, UpdateContext context)
         {
-            View.InvokeOnUiThread(() =>
+            OnUpdateStarted();
+
+            base.Update(restart, context);
+
+            if (DrawAreaSize[0] <= 0 || DrawAreaSize[1] <= 0)
             {
-                OnUpdateStarted();
+                // skip update if the chart is too small.
+                // and lets delete its content...
+                CollectResources(true);
+                return;
+            }
 
-                base.Update(restart);
+            View.Content.DrawArea = new RectangleF(
+                new PointF(DrawAreaLocation[0], DrawAreaLocation[1]),
+                new SizeF(DrawAreaSize[0], DrawAreaSize[1]));
 
-                if (DrawAreaSize[0] <= 0 || DrawAreaSize[1] <= 0)
+            foreach (var series in Series.Where(x => x.IsVisible))
+            {
+                if (!(series is IPieSeries))
                 {
-                    // skip update if the chart is too small.
-                    // and lets delete its content...
-                    CollectResources(true);
-                    return;
+                    throw new LiveChartsException(
+                        $"{series.ResourceKey.Name} is not supported at a {nameof(ICartesianChartView)}", 110);
                 }
 
-                View.Content.DrawArea = new RectangleF(
-                    new PointF(DrawAreaLocation[0], DrawAreaLocation[1]),
-                    new SizeF(DrawAreaSize[0], DrawAreaSize[1]));
+                series.UpdateStarted(View);
+                series.UpdateView(this, context);
+                series.UpdateFinished(View);
+            }
 
-                using (var context = new UpdateContext(Series.Where(x => x.IsVisible)))
-                {
-                    foreach (var series in Series.Where(x => x.IsVisible))
-                    {
-                        if (!(series is IPieSeries))
-                        {
-                            throw new LiveChartsException($"{series.ResourceKey.Name} is not supported at a {nameof(ICartesianChartView)}", 110);
-                        }
-                        series.UpdateStarted(View);
-                        series.UpdateView(this, context);
-                        series.UpdateFinished(View);
-                    }
-                }
-
-                CollectResources();
-                OnUpdateFinished();
-            });
+            CollectResources();
+            OnUpdateFinished();
         }
     }
 }

@@ -27,6 +27,7 @@
 
 using System.Collections.Generic;
 using LiveCharts.Core.Abstractions;
+using LiveCharts.Core.Abstractions.DataSeries;
 using LiveCharts.Core.Charts;
 
 #endregion
@@ -36,32 +37,59 @@ namespace LiveCharts.Core.DataSeries.Data
     /// <summary>
     /// Point factory options class.
     /// </summary>
-    public class DataFactoryArgs<TModel, TCoordinate, TViewModel, TPoint>
+    public class DataFactoryContext<TModel, TCoordinate, TViewModel, TPoint> : IDataFactoryContext
         where TPoint : Point<TModel, TCoordinate, TViewModel>, new()
         where TCoordinate : ICoordinate
     {
+        private bool _isGiKnown;
+        private int _gi;
+
         /// <summary>
-        /// Gets or sets the collection.
+        /// Gets the collection.
         /// </summary>
         /// <value>
         /// The collection.
         /// </value>
-        public IList<TModel> Collection { get; set; }
+        public IList<TModel> Collection { get; internal set; }
 
         /// <summary>
-        /// Gets or sets the series.
+        /// Gets the series.
         /// </summary>
         /// <value>
         /// The series.
         /// </value>
-        public Series<TModel, TCoordinate, TViewModel, TPoint> Series { get; set; }
+        public Series<TModel, TCoordinate, TViewModel, TPoint> Series { get; internal set; }
 
+        /// <inheritdoc />
+        public int SeriesGroupingIndex
+        {
+            get
+            {
+                if (_isGiKnown) return _gi;
+
+                _gi = ((ISeries) Series).GroupingIndex;
+                _isGiKnown = true;
+
+                return _gi;
+            }
+        }
+
+        /// <inheritdoc />
+        public ChartModel Chart { get; internal set; }
+        
+        /// <inheritdoc />
+        public UpdateContext UpdateContext { get; internal set; }
+
+        /// <inheritdoc />
         /// <summary>
-        /// Gets or sets the chart.
+        /// Releases unmanaged and - optionally - managed resources.
         /// </summary>
-        /// <value>
-        /// The chart.
-        /// </value>
-        public ChartModel Chart { get; set; }
+        public void Dispose()
+        {
+            Collection = null;
+            Series = null;
+            UpdateContext = null;
+            Chart = null;
+        }
     }
 }

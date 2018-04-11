@@ -139,12 +139,20 @@ namespace LiveCharts.Core.Abstractions.DataSeries
         string Title { get; set; }
 
         /// <summary>
+        /// Gets the index of the group, -1 indicates that the series is not grouped.
+        /// </summary>
+        /// <value>
+        /// The index of the group.
+        /// </value>
+        int GroupingIndex { get; }
+
+        /// <summary>
         /// Gets the content, this property is used internally by the library and should only be used
         /// by you if you need to build a custom series.
         /// </summary>
         /// <value>
         /// The content.
         /// </value>
-        Dictionary<ChartModel, Dictionary<string, object>> Content { get;}
+        Dictionary<ChartModel, Dictionary<string, object>> Content { get; }
     }
 }

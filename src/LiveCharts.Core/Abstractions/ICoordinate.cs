@@ -26,6 +26,8 @@
 #region
 
 using System.Collections.Generic;
+using LiveCharts.Core.Charts;
+using LiveCharts.Core.DataSeries.Data;
 using LiveCharts.Core.Dimensions;
 using LiveCharts.Core.Drawing;
 
@@ -51,9 +53,8 @@ namespace LiveCharts.Core.Abstractions
         /// <summary>
         /// Compares the dimensions.
         /// </summary>
-        /// <param name="rangeByDimension">The series range by dimension, normally used to calculate min and max limits of a series.</param>
-        /// <param name="stack">The reference where the stacking is done, the reference is per chart.</param>
-        void CompareDimensions(float[][] rangeByDimension, Dictionary<int, float[]> stack);
+        /// <param name="context">The context.</param>
+        void CompareDimensions(IDataFactoryContext context);
 
         /// <summary>
         ///gets the coordinate as tooltip data.

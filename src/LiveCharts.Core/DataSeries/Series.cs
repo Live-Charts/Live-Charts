@@ -219,6 +219,12 @@ namespace LiveCharts.Core.DataSeries
         }
 
         /// <inheritdoc />
+        int ISeries.GroupingIndex => GroupingIndex;
+
+        /// <inheritdoc cref="ISeries.GroupingIndex" />
+        protected int GroupingIndex => -1;
+
+        /// <inheritdoc />
         public Dictionary<ChartModel, Dictionary<string, object>> Content { get; protected set; }
 
         /// <inheritdoc />
@@ -232,15 +238,6 @@ namespace LiveCharts.Core.DataSeries
         /// The point margin.
         /// </value>
         public abstract float[] PointMargin { get; }
-
-        /// <summary>
-        /// Gets the range by dimension, this property is used internally by the library and should only be used
-        /// by you if you need to build a custom series.
-        /// </summary>
-        /// <value>
-        /// The range by dimension.
-        /// </value>
-        public float[][] ByDimensionRanges { get; protected set; }
 
         /// <inheritdoc />
         bool IList.IsReadOnly => OnIListIsReadOnly();
@@ -406,7 +403,8 @@ namespace LiveCharts.Core.DataSeries
         /// Fetches the data for the specified chart.
         /// </summary>
         /// <param name="chart">The chart.</param>
-        public abstract void Fetch(ChartModel chart);
+        /// <param name="context">The update context.</param>
+        public abstract void Fetch(ChartModel chart, UpdateContext context);
 
         /// <summary>
         /// Gets the points that  its hover area contains the given n dimensions.
@@ -751,7 +749,7 @@ namespace LiveCharts.Core.DataSeries
         protected abstract ISeriesViewProvider<TModel, TCoordinate, TViewModel> DefaultViewProvider { get; }
 
         /// <inheritdoc />
-        public override void Fetch(ChartModel model)
+        public override void Fetch(ChartModel model, UpdateContext context)
         {
             // do not recalculate if this method was called from the same updateId.
             if (_chartPointsUpdateId == model.UpdateId) return;
@@ -777,15 +775,17 @@ namespace LiveCharts.Core.DataSeries
             // 1. Calculate each ChartPoint required by the series.
             // 2. Evaluate every dimension in the case of a cartesian chart, get Max and Min limits, 
             // if stacked, then also do the stacking...
-            Points = Charting.Current.DataFactory
-                .Fetch(
-                    new DataFactoryArgs<TModel, TCoordinate, TViewModel, TPoint>
-                    {
-                        Series = this,
-                        Chart = model,
-                        Collection = ItemsSource.ToArray() // create a copy of the current points, just in case it changes while we are updating
-                    })
-                .ToArray();
+
+            using (var factoryContext = new DataFactoryContext<TModel, TCoordinate, TViewModel, TPoint>
+            {
+                Series = this,
+                Chart = model,
+                UpdateContext = context,
+                Collection = ItemsSource.ToArray()
+            })
+            {
+                Points = Charting.Current.DataFactory.Fetch(factoryContext);
+            }
         }
 
         /// <inheritdoc />

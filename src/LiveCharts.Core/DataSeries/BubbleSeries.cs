@@ -59,7 +59,6 @@ namespace LiveCharts.Core.DataSeries
             StrokeThickness = 1f;
             Geometry = Geometry.Circle;
             Charting.BuildFromSettings<IBubbleSeries>(this);
-            ByDimensionRanges = new float[3][]; // 0: x, 1: y, 2: weight
         }
 
         /// <inheritdoc />
@@ -90,8 +89,8 @@ namespace LiveCharts.Core.DataSeries
 
             var uw = chart.Get2DUiUnitWidth(x, y);
 
-            var p1 = new PointF(ByDimensionRanges[2][0], MinGeometrySize);
-            var p2 = new PointF(ByDimensionRanges[2][1], MaxGeometrySize);
+            var p1 = new PointF(context.RangeByDimension[2][0], MinGeometrySize);
+            var p2 = new PointF(context.RangeByDimension[2][1], MaxGeometrySize);
 
             int xi = 0, yi = 1;
             if (chart.InvertXy)

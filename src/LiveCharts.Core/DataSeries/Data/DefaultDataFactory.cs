@@ -40,20 +40,21 @@ namespace LiveCharts.Core.DataSeries.Data
     public class DefaultDataFactory : IDataFactory
     {
         /// <inheritdoc />
-        public IEnumerable<TPoint> Fetch<TModel, TCoordinate, TViewModel, TPoint>(
-            DataFactoryArgs<TModel, TCoordinate, TViewModel, TPoint> args)
+        public TPoint[] Fetch<TModel, TCoordinate, TViewModel, TPoint>(
+            DataFactoryContext<TModel, TCoordinate, TViewModel, TPoint> context)
             where TPoint : Point<TModel, TCoordinate, TViewModel>, new()
             where TCoordinate : ICoordinate
         {
-            var mapper = args.Series.Mapper;
-            var notifiesChange = typeof(INotifyPropertyChanged).IsAssignableFrom(args.Series.Metadata.ModelType);
-            var collection = args.Collection;
-            var isValueType = args.Series.Metadata.IsValueType;
-            var tracker = (Dictionary<object, TPoint>) args.Series.Content[args.Chart][Series.Tracker];
+            var results = new List<TPoint>();
+            var mapper = context.Series.Mapper;
+            var notifiesChange = typeof(INotifyPropertyChanged).IsAssignableFrom(context.Series.Metadata.ModelType);
+            var collection = context.Collection;
+            var isValueType = context.Series.Metadata.IsValueType;
+            var tracker = (Dictionary<object, TPoint>) context.Series.Content[context.Chart][Series.Tracker];
 
             void InvalidateOnPropertyChanged(object sender, PropertyChangedEventArgs e)
             {
-                args.Chart.Invalidate(args.Chart.View);
+                context.Chart.Invalidate(context.Chart.View);
             }
 
             for (var index = 0; index < collection.Count; index++)
@@ -84,21 +85,23 @@ namespace LiveCharts.Core.DataSeries.Data
                 // feed our chart points ...
                 chartPoint.Model = instance;
                 chartPoint.Key = index;
-                chartPoint.Series = args.Series;
-                chartPoint.Chart = args.Chart;
+                chartPoint.Series = context.Series;
+                chartPoint.Chart = context.Chart;
                 chartPoint.Coordinate = mapper.Predicate.Invoke(instance, index);
 
                 // compare the dimensions to scale the chart.
-                chartPoint.Coordinate.CompareDimensions(args.Series.ByDimensionRanges, args.Chart.Stacker);
+                chartPoint.Coordinate.CompareDimensions(context);
 
                 // evaluate model defined events
                 mapper.EvaluateModelDependentActions(instance, chartPoint.View, chartPoint);
 
                 // register our chart point at the resource collector
-                args.Chart.RegisterResource(chartPoint);
+                context.Chart.RegisterResource(chartPoint);
 
-                yield return chartPoint;
+                results.Add(chartPoint);
             }
+
+            return results.ToArray();
         }
     }
 }

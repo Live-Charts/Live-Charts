@@ -94,7 +94,13 @@ namespace LiveCharts.Core.DataSeries
             foreach (var current in Points)
             {
                 var range = current.Coordinate.To - current.Coordinate.From;
-                var stacked = chart.Stacker[current.Key][0];
+
+                float stacked;
+
+                unchecked
+                {
+                    stacked = context.GetStack(GroupingIndex, (int) current.Coordinate.Key, true);
+                }
 
                 var vm = new PieViewModel
                 {

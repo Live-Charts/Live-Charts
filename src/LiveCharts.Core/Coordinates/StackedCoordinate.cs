@@ -1,5 +1,6 @@
-using System.Collections.Generic;
 using LiveCharts.Core.Abstractions;
+using LiveCharts.Core.Charts;
+using LiveCharts.Core.DataSeries.Data;
 using LiveCharts.Core.Dimensions;
 
 namespace LiveCharts.Core.Coordinates
@@ -32,7 +33,7 @@ namespace LiveCharts.Core.Coordinates
         /// <value>
         /// The index.
         /// </value>
-        public float Index => _vector[0][0];
+        public float Key => _vector[0][0];
 
         /// <summary>
         /// Gets the value.
@@ -59,7 +60,7 @@ namespace LiveCharts.Core.Coordinates
         public float To { get; protected set; }
 
         /// <inheritdoc />
-        public void CompareDimensions(float[][] rangeByDimension, Dictionary<int, float[]> stacker)
+        public void CompareDimensions(IDataFactoryContext context)
         {
             // stacking..
             int index;
@@ -71,19 +72,15 @@ namespace LiveCharts.Core.Coordinates
 
             var value = _vector[1][0];
 
-            if (!stacker.ContainsKey(index))
-            {
-                stacker.Add(index, new[] {0f, 0f});
-            }
+            var stack = context.UpdateContext.Stack(context.SeriesGroupingIndex, index, value);
 
-            From = stacker[index][0];
-            To = From + value;
-            stacker[index][0] = To;
+            From = stack.From;
+            To = stack.To;
 
-            if (rangeByDimension == null) return;
+            if (context.UpdateContext.RangeByDimension == null) return;
             // store max and min limits..
-            var x = rangeByDimension[0];
-            var y = rangeByDimension[1];
+            var x = context.UpdateContext.RangeByDimension[0];
+            var y = context.UpdateContext.RangeByDimension[1];
 
             if (index > x[1]) x[1] = index; // 0: min, 1: Max
             if (index < x[0]) x[0] = index;

@@ -1,6 +1,5 @@
 using System;
 using System.Drawing;
-using System.Linq;
 using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Abstractions.DataSeries;
 using LiveCharts.Core.Charts;
@@ -24,6 +23,9 @@ namespace LiveCharts.Core.DataSeries
             IBarSeries
     {
         private static ISeriesViewProvider<TModel, StackedCoordinate, BarViewModel> _provider;
+        private float _barPadding;
+        private float _maxColumnWidth;
+        private int _groupingIndex;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="StackedBarSeries{TModel}"/> class.
@@ -36,10 +38,44 @@ namespace LiveCharts.Core.DataSeries
         }
 
         /// <inheritdoc />
-        public float MaxColumnWidth { get; set; }
+        public float BarPadding
+        {
+            get => _barPadding;
+            set
+            {
+                _barPadding = value;
+                OnPropertyChanged();
+            }
+        }
 
         /// <inheritdoc />
-        public float BarPadding { get; set; }
+        public float MaxColumnWidth
+        {
+            get => _maxColumnWidth;
+            set
+            {
+                _maxColumnWidth = value;
+                OnPropertyChanged();
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the index of the group, -1 indicates that the series is not grouped.
+        /// </summary>
+        /// <value>
+        /// The index of the group.
+        /// </value>
+        public new int GroupingIndex
+        {
+            get => _groupingIndex;
+            set
+            {
+                _groupingIndex = value;
+                OnPropertyChanged();
+            }
+        }
+
+        int ISeries.GroupingIndex => GroupingIndex;
 
         /// <inheritdoc />
         public override Type ResourceKey => typeof(IBarSeries);
@@ -101,7 +137,14 @@ namespace LiveCharts.Core.DataSeries
             foreach (var current in Points)
             {
                 var offset = chart.ScaleToUi(current.Coordinate[0][0], directionAxis);
-                var stack = chart.Stacker[current.Key][0];
+
+                float stack;
+
+                unchecked
+                {
+                    stack = context.GetStack(
+                        GroupingIndex, (int) current.Coordinate.Key, current.Coordinate[1][0] >= 0);
+                }
 
                 var columnCorner1 = new[]
                 {

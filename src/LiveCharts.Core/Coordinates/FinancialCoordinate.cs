@@ -28,6 +28,7 @@
 using System;
 using System.Collections.Generic;
 using LiveCharts.Core.Abstractions;
+using LiveCharts.Core.DataSeries.Data;
 using LiveCharts.Core.Dimensions;
 using LiveCharts.Core.Drawing;
 
@@ -102,10 +103,10 @@ namespace LiveCharts.Core.Coordinates
         public float Close { get; }
 
         /// <inheritdoc />
-        public void CompareDimensions(float[][] rangeByDimension, Dictionary<int, float[]> stacker)
+        public void CompareDimensions(IDataFactoryContext context)
         {
-            var x = rangeByDimension[0];
-            var y = rangeByDimension[1];
+            var x = context.UpdateContext.RangeByDimension[0];
+            var y = context.UpdateContext.RangeByDimension[1];
 
             // 0: min, 1: max
             if (Index > x[1]) x[1] = Index;

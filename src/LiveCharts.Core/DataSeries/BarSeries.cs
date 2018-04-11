@@ -27,7 +27,6 @@
 
 using System;
 using System.Drawing;
-using System.Linq;
 using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Abstractions.DataSeries;
 using LiveCharts.Core.Charts;
@@ -62,10 +61,10 @@ namespace LiveCharts.Core.DataSeries
         }
 
         /// <inheritdoc />
-        public float MaxColumnWidth { get; set; }
+        public float BarPadding { get; set; }
 
         /// <inheritdoc />
-        public float BarPadding { get; set; }
+        public float MaxColumnWidth { get; set; }
 
         /// <inheritdoc />
         public override Type ResourceKey => typeof(IBarSeries);

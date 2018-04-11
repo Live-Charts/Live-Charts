@@ -27,6 +27,7 @@
 
 using System.Collections.Generic;
 using LiveCharts.Core.Abstractions;
+using LiveCharts.Core.DataSeries.Data;
 using LiveCharts.Core.Dimensions;
 
 #endregion
@@ -71,9 +72,9 @@ namespace LiveCharts.Core.Coordinates
         public float Radius => _vector[0][0];
 
         /// <inheritdoc cref="CompareDimensions"/>
-        public void CompareDimensions(float[][] rangeByDimension, Dictionary<int, float[]> stacker)
+        public void CompareDimensions(IDataFactoryContext context)
         {
-            var radius = rangeByDimension[0];
+            var radius = context.UpdateContext.RangeByDimension[0];
 
             // 0:min, 1: max
             if (Radius > radius[1]) radius[1] = Radius;

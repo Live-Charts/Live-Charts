@@ -71,23 +71,6 @@ namespace LiveCharts.Core.DataSeries
             // ScalesXAt and ScalesYAt, see properties below.
             // NOTE: notice we could get an OutOfRangeException if the index of this property
             // goes out of range with the CartesianChart.XAxis/YAxis array.
-
-            ByDimensionRanges = new[]
-            {
-                // ByDimensionRanges will be injected to every coordinate,
-                // then we can use this property to do anything we need
-                // according to the chart requirements
-                // in the case of a cartesian series
-                // we need to know the max and min limits,
-                // and we will store the result in the next array
-                //     {      min    ,      max      }
-                // by default min = float.Max, so any value will be smaller
-                // and stored in this array, 
-                // see LiveCharts.Core.Coordinates.Point.CompareDimensions(...)
-                new[] {float.MaxValue, float.MinValue}, // use this vector for the X plane
-                new[] {float.MaxValue, float.MinValue}  // this one for the Y plane
-            };
-
         }
 
         /// <inheritdoc />

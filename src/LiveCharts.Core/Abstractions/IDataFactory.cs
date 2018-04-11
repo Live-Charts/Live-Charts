@@ -44,10 +44,10 @@ namespace LiveCharts.Core.Abstractions
         /// <typeparam name="TPoint">The type of the chart point.</typeparam>
         /// <typeparam name="TCoordinate">The type of the coordinate.</typeparam>
         /// <typeparam name="TViewModel">The type of the view model.</typeparam>
-        /// <param name="args">The arguments.</param>
+        /// <param name="context">The arguments.</param>
         /// <returns></returns>
-        IEnumerable<TPoint> Fetch<TModel, TCoordinate, TViewModel, TPoint>(
-            DataFactoryArgs<TModel, TCoordinate, TViewModel, TPoint> args)
+        TPoint[] Fetch<TModel, TCoordinate, TViewModel, TPoint>(
+            DataFactoryContext<TModel, TCoordinate, TViewModel, TPoint> context)
             where TPoint : Point<TModel, TCoordinate, TViewModel>, new()
             where TCoordinate : ICoordinate;
     }

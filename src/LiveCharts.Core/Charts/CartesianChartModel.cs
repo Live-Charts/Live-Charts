@@ -58,6 +58,9 @@ namespace LiveCharts.Core.Charts
         }
 
         /// <inheritdoc />
+        protected override int DimensionsCount => 3;
+
+        /// <inheritdoc />
         public override float ScaleToUi(float dataValue, Plane plane, float[] sizeVector = null)
         {
             var chartSize = sizeVector ?? DrawAreaSize;
@@ -129,76 +132,71 @@ namespace LiveCharts.Core.Charts
         }
 
         /// <inheritdoc cref="ChartModel.Update"/>
-        protected override void Update(bool restart)
+        protected override void Update(bool restart, UpdateContext context)
         {
-            // run the update on the view's thread
-            View.InvokeOnUiThread(() =>
+            OnUpdateStarted();
+
+            base.Update(restart, context);
+
+            // see appendix/chart.spacing.png
+            var drawMargin = EvaluateAxisAndGetDrawMargin(context);
+
+            DrawAreaSize = new[]
             {
-                OnUpdateStarted();
+                DrawAreaSize[0] - drawMargin.Left - drawMargin.Right,
+                DrawAreaSize[1] - drawMargin.Top - drawMargin.Bottom
+            };
 
-                base.Update(restart);
+            DrawAreaLocation = new[]
+            {
+                DrawAreaLocation[0] + drawMargin.Left,
+                DrawAreaLocation[1] + drawMargin.Top
+            };
 
-                // see appendix/chart.spacing.png
-                var drawMargin = EvaluateAxisAndGetDrawMargin();
+            if (DrawAreaSize[0] <= 0 || DrawAreaSize[1] <= 0)
+            {
+                // skip update if the chart is too small.
+                // and lets delete its content...
+                CollectResources(true);
+                return;
+            }
 
-                DrawAreaSize = new[]
+            View.Content.DrawArea = new RectangleF(
+                new PointF(DrawAreaLocation[0], DrawAreaLocation[1]),
+                new SizeF(DrawAreaSize[0], DrawAreaSize[1]));
+
+            // draw separators
+            // for each dimension (for a cartesian chart X and Y)
+            foreach (var dimension in Dimensions)
+            {
+                // for each plane in each dimension, in this case CartesianLinearAxis, for convention named Axis
+                foreach (var plane in dimension.OfType<Axis>())
                 {
-                    DrawAreaSize[0] - drawMargin.Left - drawMargin.Right,
-                    DrawAreaSize[1] - drawMargin.Top - drawMargin.Bottom
-                };
+                    var axis = plane;
+                    RegisterResource(axis);
+                    axis.DrawSeparators(this);
+                }
+            }
 
-                DrawAreaLocation = new[]
+            foreach (var series in Series.Where(x => x.IsVisible))
+            {
+                if (!(series is ICartesianSeries))
                 {
-                    DrawAreaLocation[0] + drawMargin.Left,
-                    DrawAreaLocation[1] + drawMargin.Top
-                };
-
-                if (DrawAreaSize[0] <= 0 || DrawAreaSize[1] <= 0)
-                {
-                    // skip update if the chart is too small.
-                    // and lets delete its content...
-                    CollectResources(true);
-                    return;
+                    throw new LiveChartsException(
+                        $"{series.ResourceKey.Name} is not supported at a {nameof(ICartesianChartView)}", 110);
                 }
 
-                View.Content.DrawArea = new RectangleF(
-                    new PointF(DrawAreaLocation[0], DrawAreaLocation[1]),
-                    new SizeF(DrawAreaSize[0], DrawAreaSize[1]));
+                series.UpdateStarted(View);
+                series.UpdateView(this, context);
+                series.UpdateFinished(View);
+            }
 
-                // draw separators
-                // for each dimension (for a cartesian chart X and Y)
-                foreach (var dimension in Dimensions)
-                {
-                    // for each plane in each dimension, in this case CartesianLinearAxis, for convention named Axis
-                    foreach (var plane in dimension.OfType<Axis>())
-                    {
-                        var axis = plane;
-                        RegisterResource(axis);
-                        axis.DrawSeparators(this);
-                    }
-                }
-
-                using (var context = new UpdateContext(Series.Where(series => series.IsVisible)))
-                {
-                    foreach (var series in Series.Where(x => x.IsVisible))
-                    {
-                        if (!(series is ICartesianSeries))
-                        {
-                            throw new LiveChartsException($"{series.ResourceKey.Name} is not supported at a {nameof(ICartesianChartView)}", 110);
-                        }
-                        series.UpdateStarted(View);
-                        series.UpdateView(this, context);
-                        series.UpdateFinished(View);
-                    }
-                }
-
-                CollectResources();
-                OnUpdateFinished();
-            });
+            CollectResources();
+            OnUpdateFinished();
         }
 
         /// <inheritdoc />
-        protected override void OnPreparingSeries(Series series)
+        protected override void OnPreparingSeries(UpdateContext context, Series series)
         {
             var cartesianSeries = (ICartesianSeries) series;
 
@@ -217,15 +215,6 @@ namespace LiveCharts.Core.Charts
                     plane.ActualPointWidth = plane.PointWidth;
                 }
 
-                if (series.ByDimensionRanges[i][0] < plane.DataRange[0])
-                {
-                    plane.DataRange[0] = series.ByDimensionRanges[i][0];
-                }
-
-                if (series.ByDimensionRanges[i][1] > plane.DataRange[1])
-                {
-                    plane.DataRange[1] = series.ByDimensionRanges[i][1];
-                }
 
                 if (series.PointMargin.Length > i && series.PointMargin[i] > plane.PointMargin)
                 {
@@ -291,7 +280,7 @@ namespace LiveCharts.Core.Charts
             _previousTooltipLocation = newTooltipLocation;
         }
 
-        internal Margin EvaluateAxisAndGetDrawMargin()
+        internal Margin EvaluateAxisAndGetDrawMargin(UpdateContext context)
         {
             var requiresDrawMarginEvaluation = DrawMargin == Margin.Empty;
 
@@ -334,16 +323,16 @@ namespace LiveCharts.Core.Charts
 
                     if (index < 2 && (double.IsNaN(plane.MinValue) || double.IsNaN(plane.MaxValue)))
                     {
-                        plane.ActualMinValue = plane.DataRange[0];
-                        plane.ActualMaxValue = plane.DataRange[1];
+                        plane.ActualMinValue = context.RangeByDimension[index][0];
+                        plane.ActualMaxValue = context.RangeByDimension[index][1];
                         uiPointMargin = ScaleFromUi(plane.PointMargin, plane) - ScaleFromUi(0f, plane);
                     }
 
                     plane.ActualMinValue = double.IsNaN(plane.MinValue)
-                        ? plane.DataRange[0] - uiPointMargin
+                        ? context.RangeByDimension[index][0] - uiPointMargin
                         : plane.MinValue;
                     plane.ActualMaxValue = double.IsNaN(plane.MaxValue)
-                        ? plane.DataRange[1] + uiPointMargin
+                        ? context.RangeByDimension[index][1] + uiPointMargin
                         : plane.MaxValue;
 
                     plane.ActualReverse = plane.Dimension == 1;
