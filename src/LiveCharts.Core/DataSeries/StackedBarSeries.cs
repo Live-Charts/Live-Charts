@@ -26,6 +26,7 @@ namespace LiveCharts.Core.DataSeries
         private float _barPadding;
         private float _maxColumnWidth;
         private int _groupingIndex;
+        private int _stackIndex;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="StackedBarSeries{TModel}"/> class.
@@ -59,23 +60,25 @@ namespace LiveCharts.Core.DataSeries
             }
         }
 
+        /// <inheritdoc />
+        int ISeries.GroupingIndex => StackIndex;
+
         /// <summary>
-        /// Gets or sets the index of the group, -1 indicates that the series is not grouped.
+        /// Gets or sets the stack index, bars that shares the same indexes will be stacked together, 
+        /// if set to -1 the series won't be stacked with any other series.
         /// </summary>
         /// <value>
-        /// The index of the group.
+        /// The index of the stack.
         /// </value>
-        public new int GroupingIndex
+        public int StackIndex
         {
-            get => _groupingIndex;
+            get => _stackIndex;
             set
             {
-                _groupingIndex = value;
+                _stackIndex = value;
                 OnPropertyChanged();
             }
         }
-
-        int ISeries.GroupingIndex => GroupingIndex;
 
         /// <inheritdoc />
         public override Type ResourceKey => typeof(IBarSeries);
@@ -142,8 +145,7 @@ namespace LiveCharts.Core.DataSeries
 
                 unchecked
                 {
-                    stack = context.GetStack(
-                        GroupingIndex, (int) current.Coordinate.Key, current.Coordinate[1][0] >= 0);
+                    stack = context.GetStack(StackIndex, (int) current.Coordinate.Key, current.Coordinate[1][0] >= 0);
                 }
 
                 var columnCorner1 = new[]

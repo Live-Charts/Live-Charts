@@ -13,9 +13,8 @@ namespace LiveCharts.Core.Charts
     public class UpdateContext : IDisposable
     {
         private IEnumerable<Series> _series;
-        private Dictionary<int, List<IBarSeries>> _barsCache = new Dictionary<int, List<IBarSeries>>();
         private double _maxPushOut = double.NaN;
-        private Dictionary<int, Dictionary<int, float[]>> _stacking;
+        private Dictionary<int, BarsGroup> _barsGroups;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="UpdateContext"/> class.
@@ -25,7 +24,7 @@ namespace LiveCharts.Core.Charts
         public UpdateContext(IEnumerable<Series> series, int chartDimensions)
         {
             _series = series;
-            _stacking = new Dictionary<int, Dictionary<int, float[]>>();
+            _barsGroups = new Dictionary<int, BarsGroup>();
             var dims = new List<float[]>();
             for (var i = 0; i < chartDimensions; i++)
             {
@@ -45,42 +44,38 @@ namespace LiveCharts.Core.Charts
         /// <summary>
         /// Gets the stack.
         /// </summary>
-        /// <param name="groupingIndex">Index of the grouping.</param>
-        /// <param name="itemKey">The item key.</param>
-        /// <param name="isPositive">if set to <c>true</c> [is positive].</param>
+        /// <param name="stackingIndex">The stacking index.</param>
+        /// <param name="scalingKey">The item key.</param>
+        /// <param name="isPositiveOrZero">if set to <c>true</c> [is positive].</param>
         /// <returns></returns>
-        public float GetStack(int groupingIndex, int itemKey, bool isPositive)
+        public float GetStack(int stackingIndex, int scalingKey, bool isPositiveOrZero)
         {
-            var i = isPositive ? 0 : 1;
-            return _stacking[groupingIndex][itemKey][i];
+            var i = isPositiveOrZero ? 0 : 1;
+            return _barsGroups[scalingKey].ByStackingIndexStack[stackingIndex][i];
         }
 
         /// <summary>
         /// Stacks the specified grouping index.
         /// </summary>
-        /// <param name="groupingIndex">Index of the grouping.</param>
-        /// <param name="itemKey">The item key.</param>
+        /// <param name="stackingIndex">The stacking index.</param>
+        /// <param name="scalingKey">The scaling index.</param>
         /// <param name="value">The value to stack.</param>
         /// <returns></returns>
-        public StackResult Stack(int groupingIndex, int itemKey, float value)
+        public StackResult Stack(int stackingIndex, int scalingKey, float value)
         {
-            if (!_stacking.TryGetValue(groupingIndex, out var byGroupingIndexDictionary))
-            {
-                byGroupingIndexDictionary = new Dictionary<int, float[]>();
-                _stacking.Add(groupingIndex, byGroupingIndexDictionary);
-            }
+            var bars = GetBarsFromCache(scalingKey);
 
-            if (!byGroupingIndexDictionary.TryGetValue(itemKey, out var group))
+            if (!bars.ByStackingIndexStack.TryGetValue(stackingIndex, out var stack))
             {
-                group = new[] {0f, 0f};
-                byGroupingIndexDictionary.Add(itemKey, group);
+                stack = new float[2];
+                bars.ByStackingIndexStack.Add(stackingIndex, stack);
             }
 
             var i = value >= 0 ? 0 : 1;
 
-            var from = group[i];
-            group[i] += value;
-            var to = group[i];
+            var current = stack[i];
+            var from = current;
+            var to = stack[i] = current + value;
 
             return new StackResult
             {
@@ -92,22 +87,22 @@ namespace LiveCharts.Core.Charts
         /// <summary>
         /// Gets the bars count.
         /// </summary>
-        /// <param name="scalingIndex">Index of the scaling.</param>
+        /// <param name="scalingKey">Index of the scaling.</param>
         /// <returns></returns>
-        public int GetBarsCount(int scalingIndex)
+        public int GetBarsCount(int scalingKey)
         {
-            return GetBarsFromCache(scalingIndex).Count;
+            return GetBarsFromCache(scalingKey, true).BarsCount;
         }
 
         /// <summary>
         /// Gets the index of the bar.
         /// </summary>
-        /// <param name="scalingIndex">Index of the scaling.</param>
-        /// <param name="series">The series.</param>
+        /// <param name="scalingKey">Index of the scaling.</param>
+        /// <param name="series">The series to calculate the index of.</param>
         /// <returns></returns>
-        public int GetBarIndex(int scalingIndex, IBarSeries series)
+        public int GetBarIndex(int scalingKey, IBarSeries series)
         {
-            return GetBarsFromCache(scalingIndex).IndexOf(series);
+            return GetBarsFromCache(scalingKey, true).BarSeriesGroupIndexes[series];
         }
 
         /// <summary>
@@ -118,22 +113,62 @@ namespace LiveCharts.Core.Charts
         {
             if (double.IsNaN(_maxPushOut))
             {
-                _maxPushOut = _series.OfType<IPieSeries>().Select(series => series.PushOut).DefaultIfEmpty(0).Max();
+                _maxPushOut = _series.OfType<IPieSeries>()
+                    .Select(series => series.PushOut)
+                    .DefaultIfEmpty(0)
+                    .Max();
             }
             return _maxPushOut;
         }
 
-        private List<IBarSeries> GetBarsFromCache(int key)
+        private BarsGroup GetBarsFromCache(int scalingIndex, bool calculateSeries = false)
         {
-            if (_barsCache.TryGetValue(key, out var barsSharedOnPlane))
+            if (!_barsGroups.TryGetValue(scalingIndex, out var group))
             {
-                return barsSharedOnPlane;
+                group = new BarsGroup();
+                _barsGroups.Add(scalingIndex, group);
             }
 
-            barsSharedOnPlane = _series.OfType<IBarSeries>().Where(x => x.ScalesAt[1] == key).ToList();
-            _barsCache.Add(key, barsSharedOnPlane);
+            if (calculateSeries && group.BarSeriesGroupIndexes == null)
+            {
+                var barsGroup = GroupBars(_series, scalingIndex);
+                group.BarSeriesGroupIndexes = barsGroup.Item1;
+                group.BarsCount = barsGroup.Item2;
+            }
 
-            return barsSharedOnPlane;
+            return group;
+        }
+
+        private static Tuple<Dictionary<IBarSeries, int>, int> GroupBars(IEnumerable<ISeries> series, int scalingIndex)
+        {
+            var result = new Dictionary<IBarSeries, int>();
+            var keys = new Dictionary<int, int>();
+
+            var barIndex = 0;
+
+            foreach (var s in series)
+            {
+                if (!(s is IBarSeries barSeries) || barSeries.ScalesAt[1] != scalingIndex) continue;
+
+                if (s.GroupingIndex == -1)
+                {
+                    result.Add(barSeries, barIndex);
+                    barIndex++;
+                }
+                else
+                {
+                    if (!keys.TryGetValue(s.GroupingIndex, out var assignedIndex))
+                    {
+                        assignedIndex = barIndex;
+                        keys.Add(s.GroupingIndex, assignedIndex);
+                        barIndex++;
+                    }
+
+                    result.Add(barSeries, assignedIndex);
+                }
+            }
+
+            return new Tuple<Dictionary<IBarSeries, int>, int>(result, barIndex);
         }
 
         /// <inheritdoc />
@@ -143,8 +178,7 @@ namespace LiveCharts.Core.Charts
         public void Dispose()
         {
             _series = null;
-            _barsCache = null;
-            _stacking = null;
+            _barsGroups = null;
             RangeByDimension = null;
         }
     }

@@ -219,10 +219,7 @@ namespace LiveCharts.Core.DataSeries
         }
 
         /// <inheritdoc />
-        int ISeries.GroupingIndex => GroupingIndex;
-
-        /// <inheritdoc cref="ISeries.GroupingIndex" />
-        protected int GroupingIndex => -1;
+        int ISeries.GroupingIndex => -1;
 
         /// <inheritdoc />
         public Dictionary<ChartModel, Dictionary<string, object>> Content { get; protected set; }
