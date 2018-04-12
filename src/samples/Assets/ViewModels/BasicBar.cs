@@ -17,9 +17,9 @@ namespace Assets.ViewModels
             var barSeries = new BarSeries<double>();
 
             // add some values to the series...
-            barSeries.Add(4);
-            barSeries.Add(7);
-            barSeries.Add(2);
+            barSeries.Add(-4);
+            barSeries.Add(-7);
+            barSeries.Add(-2);
             barSeries.Add(9);
 
             // a custom fill and stroke, if we don't set these properties

@@ -82,7 +82,7 @@ namespace LiveCharts.Core.DataSeries
         /// <inheritdoc />
         public override void UpdateView(ChartModel chart, UpdateContext context)
         {
-            int wi = 0, hi = 1, inverted = 1;
+            int wi = 0, hi = 1;
             var orientation = Orientation.Horizontal;
 
             var directionAxis = chart.Dimensions[0][ScalesAt[0]];
@@ -109,7 +109,6 @@ namespace LiveCharts.Core.DataSeries
             {
                 wi = 1;
                 hi = 0;
-                inverted = 0;
                 orientation = Orientation.Vertical;
                 offsetX = 0;
                 offsetY = -cw * .5f - uw[0] * .5f;
@@ -148,7 +147,7 @@ namespace LiveCharts.Core.DataSeries
                 var location = new[]
                 {
                     offset,
-                    columnStart - Math.Abs(difference[1]) * inverted
+                    columnStart + (columnCorner1[1] < columnStart ? difference[1] : 0f)
                 };
 
                 if (current.View.VisualElement == null)

@@ -20,8 +20,8 @@ namespace Assets.ViewModels
 
             // add some values to the series...
             lineSeries.Add(4);
-            lineSeries.Add(7);
-            lineSeries.Add(2);
+            lineSeries.Add(-7);
+            lineSeries.Add(-2);
             lineSeries.Add(9);
 
             // now lets customize it

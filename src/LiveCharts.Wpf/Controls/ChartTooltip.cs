@@ -151,9 +151,9 @@ namespace LiveCharts.Wpf.Controls
                 content.TooltipPopup.Child = this;
             }
 
-            ItemsSource = selected;
-            content.TooltipPopup.IsOpen = true;
-            UpdateLayout();
+            //ItemsSource = selected;
+            //content.TooltipPopup.IsOpen = true;
+            //UpdateLayout();
 
             return new SizeF((float) DesiredSize.Width, (float) DesiredSize.Height);
         }

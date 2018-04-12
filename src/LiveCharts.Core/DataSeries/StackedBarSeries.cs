@@ -25,7 +25,6 @@ namespace LiveCharts.Core.DataSeries
         private static ISeriesViewProvider<TModel, StackedCoordinate, BarViewModel> _provider;
         private float _barPadding;
         private float _maxColumnWidth;
-        private int _groupingIndex;
         private int _stackIndex;
 
         /// <summary>
