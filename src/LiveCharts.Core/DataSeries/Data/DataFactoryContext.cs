@@ -43,6 +43,8 @@ namespace LiveCharts.Core.DataSeries.Data
     {
         private bool _isGiKnown;
         private int _gi;
+        private bool _isScalesAtKnown;
+        private int[] _scalesAt;
 
         /// <summary>
         /// Gets the collection.
@@ -59,6 +61,27 @@ namespace LiveCharts.Core.DataSeries.Data
         /// The series.
         /// </value>
         public Series<TModel, TCoordinate, TViewModel, TPoint> Series { get; internal set; }
+
+        /// <inheritdoc />
+        public int[] SeriesScalesAt
+        {
+            get
+            {
+                if (_isScalesAtKnown) return _scalesAt;
+
+                if (!(Series is ICartesianSeries cartesianSeries))
+                {
+                    throw new LiveChartsException($"The given series in not {nameof(ICartesianSeries)}, " +
+                                                  $"thus it was not possible to get the {nameof(ICartesianSeries.ScalesAt)} property.",
+                        155);
+                }
+
+                _scalesAt = cartesianSeries.ScalesAt;
+                _isScalesAtKnown = true;
+
+                return _scalesAt;
+            }
+        }
 
         /// <inheritdoc />
         public int SeriesGroupingIndex

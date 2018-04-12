@@ -24,6 +24,7 @@ namespace Assets.ViewModels
 
             // a custom fill and stroke, if we don't set these properties
             // LiveCharts will set them for us according to our theme.
+            barSeries.StrokeThickness = 3f;
             barSeries.Stroke = Color.Purple;
             barSeries.Fill = Color.MediumPurple;
 

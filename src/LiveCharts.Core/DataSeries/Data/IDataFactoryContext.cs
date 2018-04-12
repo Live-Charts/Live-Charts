@@ -10,6 +10,14 @@ namespace LiveCharts.Core.DataSeries.Data
     public interface IDataFactoryContext : IDisposable
     {
         /// <summary>
+        /// Gets the series scales at.
+        /// </summary>
+        /// <value>
+        /// The series scales at.
+        /// </value>
+        int[] SeriesScalesAt { get; }
+
+        /// <summary>
         /// Gets the index of the grouping.
         /// </summary>
         /// <value>

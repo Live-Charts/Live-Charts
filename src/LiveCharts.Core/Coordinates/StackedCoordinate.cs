@@ -1,5 +1,4 @@
 using LiveCharts.Core.Abstractions;
-using LiveCharts.Core.Charts;
 using LiveCharts.Core.DataSeries.Data;
 using LiveCharts.Core.Dimensions;
 
@@ -72,7 +71,7 @@ namespace LiveCharts.Core.Coordinates
 
             var value = _vector[1][0];
 
-            var stack = context.UpdateContext.Stack(context.SeriesGroupingIndex, index, value);
+            var stack = context.UpdateContext.Stack(index, context.SeriesScalesAt[1], value);
 
             From = stack.From;
             To = stack.To;
@@ -84,8 +83,8 @@ namespace LiveCharts.Core.Coordinates
 
             if (index > x[1]) x[1] = index; // 0: min, 1: Max
             if (index < x[0]) x[0] = index;
-            if (value > y[1]) y[1] = value;
-            if (value < y[0]) y[0] = value;
+            if (To > y[1]) y[1] = To;
+            if (To < y[0]) y[0] = To;
         }
 
         /// <inheritdoc />

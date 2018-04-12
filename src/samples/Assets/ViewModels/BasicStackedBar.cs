@@ -18,17 +18,17 @@ namespace Assets.ViewModels
             var charlesSeries = new StackedBarSeries<double>();
             charlesSeries.Add(4d); // *
             charlesSeries.Add(8d);
-            charlesSeries.Add(3d);
+            charlesSeries.Add(-3d);
 
             var fridaSeries = new StackedBarSeries<double>();
             fridaSeries.Add(5d); // *
-            fridaSeries.Add(3d);
+            fridaSeries.Add(-3d);
             fridaSeries.Add(8d);
 
             var abrahamSeries = new StackedBarSeries<double>();
             abrahamSeries.Add(5d); // *
             abrahamSeries.Add(2d);
-            abrahamSeries.Add(7d);
+            abrahamSeries.Add(-7d);
 
             // The stack by default is done based on the index of each element 
             // so charles, frida and abraham at index = 0 share 4, 5 and 5 values (see * mark)
