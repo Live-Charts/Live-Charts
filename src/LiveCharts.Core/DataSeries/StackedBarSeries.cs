@@ -100,17 +100,35 @@ namespace LiveCharts.Core.DataSeries
                 current.ViewModel = new BarViewModel(RectangleF.Empty, initialRectangle, orientation);
             }
 
-            var y = location[h] + byBarOffset[1] + positionOffset[1];
-            var l = columnCorner1[1] > columnCorner2[1] ? columnCorner1[1] : columnCorner2[1];
+            // ToDo: optimize this rule???
+            if (orientation == Orientation.Horizontal)
+            {
+                var y = location[h] + byBarOffset[1] + positionOffset[1];
+                var l = columnCorner1[1] > columnCorner2[1] ? columnCorner1[1] : columnCorner2[1];
 
-            current.ViewModel = new BarViewModel(
-                current.ViewModel.To,
-                new RectangleF(
-                    location[w] + byBarOffset[0] + positionOffset[0],
-                    y + (l - y) * current.Coordinate.From / stack,
-                    Math.Abs(difference[w]),
-                    Math.Abs(difference[h]) * value / stack),
-                orientation);
+                current.ViewModel = new BarViewModel(
+                    current.ViewModel.To,
+                    new RectangleF(
+                        location[w] + byBarOffset[0] + positionOffset[0],
+                        y + (l - y) * current.Coordinate.From / stack,
+                        Math.Abs(difference[w]),
+                        Math.Abs(difference[h]) * value / stack),
+                    orientation);
+            }
+            else
+            {
+                var x = location[w] + byBarOffset[0] + positionOffset[0];
+                var l = columnCorner1[1] > columnCorner2[1] ? columnCorner1[1] : columnCorner2[1];
+
+                current.ViewModel = new BarViewModel(
+                    current.ViewModel.To,
+                    new RectangleF(
+                        x + (l - x) * current.Coordinate.From / stack,
+                        location[h] + byBarOffset[1] + positionOffset[1],
+                        Math.Abs(difference[w]) * value / stack,
+                        Math.Abs(difference[h])),
+                    orientation);
+            }
         }
     }
 }

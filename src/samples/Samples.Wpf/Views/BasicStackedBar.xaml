@@ -11,5 +11,5 @@
     <UserControl.DataContext>
         <viewModels:BasicStackedBar></viewModels:BasicStackedBar>
     </UserControl.DataContext>
-    <wpf:CartesianChart Series="{Binding SeriesCollection}"></wpf:CartesianChart>
+    <wpf:CartesianChart InvertAxis="True" Series="{Binding SeriesCollection}"></wpf:CartesianChart>
 </UserControl>
