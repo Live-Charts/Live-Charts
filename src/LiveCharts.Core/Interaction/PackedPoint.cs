@@ -120,12 +120,10 @@ namespace LiveCharts.Core.Interaction
 
                 if (Series is ICartesianSeries series)
                 {
+                    if (index >= series.ScalesAt.Length) continue;
                     scalingIndex = series.ScalesAt[index];
                 }
 
-                // ToDo: define not ICartesianSeries...
-
-                if (index >= scalingIndex) continue;
                 planes[index] = dimension[scalingIndex];
             }
             return Coordinate.AsTooltipData(planes);

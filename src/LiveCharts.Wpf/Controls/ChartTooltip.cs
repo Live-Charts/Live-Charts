@@ -28,6 +28,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -150,6 +151,8 @@ namespace LiveCharts.Wpf.Controls
             {
                 content.TooltipPopup.Child = this;
             }
+
+            var t = selected.ToArray();
 
             ItemsSource = selected;
             content.TooltipPopup.IsOpen = true;
