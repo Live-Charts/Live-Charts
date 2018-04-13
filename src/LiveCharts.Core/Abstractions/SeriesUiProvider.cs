@@ -1,5 +1,5 @@
 ﻿using LiveCharts.Core.Abstractions.DataSeries;
-using LiveCharts.Core.DataSeries.Data;
+using LiveCharts.Core.Interaction;
 
 namespace LiveCharts.Core.Abstractions
 {

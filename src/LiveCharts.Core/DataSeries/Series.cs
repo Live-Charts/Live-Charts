@@ -37,10 +37,11 @@ using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Abstractions.DataSeries;
 using LiveCharts.Core.Charts;
 using LiveCharts.Core.Collections;
-using LiveCharts.Core.DataSeries.Data;
 using LiveCharts.Core.Drawing;
 using LiveCharts.Core.Drawing.Svg;
 using LiveCharts.Core.Events;
+using LiveCharts.Core.Interaction;
+using LiveCharts.Core.Updater;
 using Font = LiveCharts.Core.Abstractions.Font;
 
 #endregion

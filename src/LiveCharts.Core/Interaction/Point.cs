@@ -27,12 +27,12 @@
 
 using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Charts;
+using LiveCharts.Core.DataSeries;
 using LiveCharts.Core.Events;
-using LiveCharts.Core.Interaction;
 
 #endregion
 
-namespace LiveCharts.Core.DataSeries.Data
+namespace LiveCharts.Core.Interaction
 {
     /// <summary>
     /// Represents a point int he chart.

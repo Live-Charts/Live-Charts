@@ -26,7 +26,7 @@
 #region
 
 using System.Collections.Generic;
-using LiveCharts.Core.DataSeries.Data;
+using LiveCharts.Core.Interaction;
 
 #endregion
 

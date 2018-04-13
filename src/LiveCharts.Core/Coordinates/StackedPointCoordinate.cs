@@ -1,6 +1,6 @@
 using LiveCharts.Core.Abstractions;
-using LiveCharts.Core.DataSeries.Data;
 using LiveCharts.Core.Dimensions;
+using LiveCharts.Core.Updater;
 
 namespace LiveCharts.Core.Coordinates
 {

@@ -1,7 +1,7 @@
 using System;
 using LiveCharts.Core.Charts;
 
-namespace LiveCharts.Core.DataSeries.Data
+namespace LiveCharts.Core.Updater
 {
     /// <summary>
     /// An abstraction of the data factory context.

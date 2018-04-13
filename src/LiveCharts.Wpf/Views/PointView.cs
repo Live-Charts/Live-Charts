@@ -29,8 +29,8 @@ using System;
 using System.Drawing;
 using System.Windows;
 using LiveCharts.Core.Abstractions;
-using LiveCharts.Core.DataSeries.Data;
 using LiveCharts.Core.Events;
+using LiveCharts.Core.Interaction;
 
 #endregion
 

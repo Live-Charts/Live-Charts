@@ -37,8 +37,8 @@ using LiveCharts.Core;
 using LiveCharts.Core.Collections;
 using LiveCharts.Core.Coordinates;
 using LiveCharts.Core.DataSeries;
-using LiveCharts.Core.DataSeries.Data;
 using LiveCharts.Core.Dimensions;
+using LiveCharts.Core.Interaction;
 
 #endregion
 

@@ -36,10 +36,11 @@ using System.Timers;
 using System.Windows.Input;
 using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.DataSeries;
-using LiveCharts.Core.DataSeries.Data;
 using LiveCharts.Core.Dimensions;
 using LiveCharts.Core.Drawing;
 using LiveCharts.Core.Events;
+using LiveCharts.Core.Interaction;
+using LiveCharts.Core.Updater;
 
 #endregion
 

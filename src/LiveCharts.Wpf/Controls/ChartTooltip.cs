@@ -32,7 +32,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using LiveCharts.Core.Abstractions;
-using LiveCharts.Core.DataSeries.Data;
+using LiveCharts.Core.Interaction;
 using LiveCharts.Wpf.Animations;
 
 #endregion

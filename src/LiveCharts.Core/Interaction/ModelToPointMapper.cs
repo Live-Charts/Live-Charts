@@ -32,7 +32,7 @@ using LiveCharts.Core.Events;
 
 #endregion
 
-namespace LiveCharts.Core.DataSeries.Data
+namespace LiveCharts.Core.Interaction
 {
     /// <summary>
     /// Defines a model to chart point mapping.

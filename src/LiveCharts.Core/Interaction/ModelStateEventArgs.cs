@@ -29,7 +29,7 @@ using LiveCharts.Core.Abstractions;
 
 #endregion
 
-namespace LiveCharts.Core.DataSeries.Data
+namespace LiveCharts.Core.Interaction
 {
     /// <summary>
     /// The model state event arguments.

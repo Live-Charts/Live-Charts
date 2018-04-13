@@ -25,8 +25,6 @@
 
 #region
 
-using LiveCharts.Core.DataSeries.Data;
-
 #endregion
 
 namespace LiveCharts.Core.Abstractions

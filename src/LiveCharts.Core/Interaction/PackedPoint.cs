@@ -28,12 +28,12 @@
 using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Abstractions.DataSeries;
 using LiveCharts.Core.Charts;
+using LiveCharts.Core.DataSeries;
 using LiveCharts.Core.Dimensions;
-using LiveCharts.Core.Interaction;
 
 #endregion
 
-namespace LiveCharts.Core.DataSeries.Data
+namespace LiveCharts.Core.Interaction
 {
     /// <summary>
     /// A boxed copy of the <see cref="Point{TModel,TCoordinate,TViewModel}"/> class.

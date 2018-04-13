@@ -3,8 +3,8 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:dataSeries="clr-namespace:LiveCharts.Core.DataSeries;assembly=LiveCharts.Core"
     xmlns:controls="clr-namespace:LiveCharts.Wpf.Controls"
-    xmlns:data1="clr-namespace:LiveCharts.Core.DataSeries.Data;assembly=LiveCharts.Core"
-    xmlns:converters="clr-namespace:LiveCharts.Wpf.Converters">
+    xmlns:converters="clr-namespace:LiveCharts.Wpf.Converters"
+    xmlns:data1="clr-namespace:LiveCharts.Core.Interaction;assembly=LiveCharts.Core">
 
     <converters:ColorToSolidBrushConverter x:Key="AsSolidColorBrush" />
     <converters:SvgToGeometryDataConverter x:Key="AsGeometryData" />

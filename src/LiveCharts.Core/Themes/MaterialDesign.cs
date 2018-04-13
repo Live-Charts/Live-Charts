@@ -28,9 +28,9 @@
 using System.Drawing;
 using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Abstractions.DataSeries;
-using LiveCharts.Core.DataSeries.Data;
 using LiveCharts.Core.Dimensions;
 using LiveCharts.Core.Drawing.Svg;
+using LiveCharts.Core.Interaction;
 using Font = LiveCharts.Core.Abstractions.Font;
 using FontStyle = LiveCharts.Core.Abstractions.FontStyle;
 

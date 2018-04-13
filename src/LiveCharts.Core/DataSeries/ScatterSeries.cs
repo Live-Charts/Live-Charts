@@ -4,10 +4,10 @@ using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Abstractions.DataSeries;
 using LiveCharts.Core.Charts;
 using LiveCharts.Core.Coordinates;
-using LiveCharts.Core.DataSeries.Data;
 using LiveCharts.Core.Drawing;
 using LiveCharts.Core.Drawing.Svg;
 using LiveCharts.Core.Interaction;
+using LiveCharts.Core.Updater;
 using LiveCharts.Core.ViewModels;
 
 namespace LiveCharts.Core.DataSeries

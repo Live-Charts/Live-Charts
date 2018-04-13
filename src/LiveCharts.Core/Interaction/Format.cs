@@ -29,7 +29,7 @@ using System;
 
 #endregion
 
-namespace LiveCharts.Core.DataSeries.Data
+namespace LiveCharts.Core.Interaction
 {
     /// <summary>
     /// A helper class.

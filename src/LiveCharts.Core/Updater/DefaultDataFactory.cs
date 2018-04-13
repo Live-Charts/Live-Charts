@@ -28,10 +28,12 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using LiveCharts.Core.Abstractions;
+using LiveCharts.Core.DataSeries;
+using LiveCharts.Core.Interaction;
 
 #endregion
 
-namespace LiveCharts.Core.DataSeries.Data
+namespace LiveCharts.Core.Updater
 {
     /// <summary>
     /// Defines the default chart point factory.

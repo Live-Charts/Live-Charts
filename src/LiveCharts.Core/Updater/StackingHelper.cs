@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using LiveCharts.Core.Abstractions.DataSeries;
 
-namespace LiveCharts.Core.Charts
+namespace LiveCharts.Core.Updater
 {
     /// <summary>
     /// Stacking helper class.

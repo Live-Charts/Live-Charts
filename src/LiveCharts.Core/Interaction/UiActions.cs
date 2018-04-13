@@ -1,7 +1,7 @@
-﻿#region License
+#region License
 // The MIT License (MIT)
 // 
-// Copyright (c) 2016 Alberto Rodríguez Orozco & LiveCharts contributors
+// Copyright (c) 2016 Alberto Rodr�guez Orozco & LiveCharts contributors
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy 
 // of this software and associated documentation files (the "Software"), to deal 
@@ -22,34 +22,29 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR 
 // OTHER DEALINGS IN THE SOFTWARE.
 #endregion
-
-#region
-
-using System;
-
-#endregion
-
-namespace LiveCharts.Core.DataSeries.Data
+namespace LiveCharts.Core.Interaction
 {
-    /// <summary>
-    /// A class containing series information.
-    /// </summary>
-    public struct SeriesMetatada
+    public enum UiActions
     {
         /// <summary>
-        /// Gets or sets the type of the model.
+        /// The always action.
         /// </summary>
-        /// <value>
-        /// The type of the model.
-        /// </value>
-        public Type ModelType { get; set; }
-
+        Always,
         /// <summary>
-        /// Gets or sets a value indicating whether this instance is referenced type.
+        /// The mouse enter action.
         /// </summary>
-        /// <value>
-        ///   <c>true</c> if this instance is referenced type; otherwise, <c>false</c>.
-        /// </value>
-        public bool IsValueType { get; set; }
+        PointerEnter,
+        /// <summary>
+        /// The mouse leave action.
+        /// </summary>
+        PointerLeave,
+        /// <summary>
+        /// The pointer down action.
+        /// </summary>
+        PointerDown,
+        /// <summary>
+        /// The pointer up action.
+        /// </summary>
+        PointerUp
     }
 }

@@ -30,7 +30,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Coordinates;
-using LiveCharts.Core.DataSeries.Data;
+using LiveCharts.Core.Interaction;
 
 #endregion
 

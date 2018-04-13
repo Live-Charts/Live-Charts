@@ -26,7 +26,7 @@
 #region
 
 using LiveCharts.Core.Abstractions;
-using LiveCharts.Core.DataSeries.Data;
+using LiveCharts.Core.Interaction;
 
 #endregion
 

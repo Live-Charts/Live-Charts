@@ -28,7 +28,7 @@
 using System;
 using System.Globalization;
 using System.Windows.Data;
-using LiveCharts.Core.DataSeries.Data;
+using LiveCharts.Core.Interaction;
 
 #endregion
 

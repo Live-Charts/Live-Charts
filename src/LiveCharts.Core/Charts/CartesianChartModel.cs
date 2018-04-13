@@ -33,6 +33,7 @@ using LiveCharts.Core.Abstractions.DataSeries;
 using LiveCharts.Core.DataSeries;
 using LiveCharts.Core.Dimensions;
 using LiveCharts.Core.Drawing;
+using LiveCharts.Core.Updater;
 
 #endregion
 

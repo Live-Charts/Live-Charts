@@ -26,7 +26,7 @@
 #region
 
 using LiveCharts.Core;
-using LiveCharts.Core.DataSeries.Data;
+using LiveCharts.Core.Updater;
 
 #endregion
 

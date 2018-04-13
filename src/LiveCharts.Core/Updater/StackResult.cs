@@ -1,4 +1,4 @@
-﻿namespace LiveCharts.Core.Charts
+﻿namespace LiveCharts.Core.Updater
 {
     /// <summary>
     /// The stack result.

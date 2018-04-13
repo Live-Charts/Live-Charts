@@ -4,7 +4,7 @@ using System.Linq;
 using LiveCharts.Core.Abstractions.DataSeries;
 using LiveCharts.Core.DataSeries;
 
-namespace LiveCharts.Core.Charts
+namespace LiveCharts.Core.Updater
 {
     /// <summary>
     /// The update context class lives as the update is done once the chart is updated, all the resources consumed by 

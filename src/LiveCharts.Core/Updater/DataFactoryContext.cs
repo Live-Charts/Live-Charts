@@ -29,10 +29,12 @@ using System.Collections.Generic;
 using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Abstractions.DataSeries;
 using LiveCharts.Core.Charts;
+using LiveCharts.Core.DataSeries;
+using LiveCharts.Core.Interaction;
 
 #endregion
 
-namespace LiveCharts.Core.DataSeries.Data
+namespace LiveCharts.Core.Updater
 {
     /// <summary>
     /// Point factory options class.

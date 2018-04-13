@@ -27,9 +27,9 @@
 
 using System.Collections.Generic;
 using LiveCharts.Core.Charts;
-using LiveCharts.Core.DataSeries.Data;
 using LiveCharts.Core.Dimensions;
 using LiveCharts.Core.Drawing;
+using LiveCharts.Core.Updater;
 
 #endregion
 

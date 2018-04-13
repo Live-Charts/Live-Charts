@@ -29,7 +29,7 @@ using System.Drawing;
 using System.Windows;
 using System.Windows.Controls;
 using LiveCharts.Core.Abstractions;
-using LiveCharts.Core.DataSeries.Data;
+using LiveCharts.Core.Interaction;
 
 #endregion
 
