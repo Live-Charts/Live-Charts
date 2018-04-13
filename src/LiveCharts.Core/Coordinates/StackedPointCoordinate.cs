@@ -92,7 +92,8 @@ namespace LiveCharts.Core.Coordinates
         {
             return new[]
             {
-                dimensions[0].FormatValue(Value)
+                dimensions[0].FormatValue(Key),
+                dimensions[1].FormatValue(Value)
             };
         }
     }
