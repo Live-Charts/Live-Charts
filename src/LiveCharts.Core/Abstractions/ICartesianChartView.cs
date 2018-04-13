@@ -36,6 +36,6 @@ namespace LiveCharts.Core.Abstractions
         /// <value>
         ///   <c>true</c> if the axis is inverted; otherwise, <c>false</c>, default is false.
         /// </value>
-        bool InvertAxis { get; set; }
+        bool InvertAxes { get; set; }
     }
 }

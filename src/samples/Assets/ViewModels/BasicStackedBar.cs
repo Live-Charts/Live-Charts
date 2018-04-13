@@ -7,12 +7,6 @@ namespace Assets.ViewModels
     {
         public BasicStackedBar()
         {
-            // create a collection to store our series.
-            // you can use any IEnumerable, it is recommended to use
-            // the ChartingCollection<T> class, it inherits from
-            // ObservableCollection and adds the AddRange/RemoveRange methods
-            SeriesCollection = new ChartingCollection<Series>();
-
             // let's feed the series...
             
             var charlesSeries = new StackedBarSeries<double>();
@@ -34,6 +28,11 @@ namespace Assets.ViewModels
             // so charles, frida and abraham at index = 0 share 4, 5 and 5 values (see * mark)
             // the total height of the bar when index = 0 will be 4 + 5 + 5 = 14
 
+            // create a collection to store our series.
+            // you can use any IEnumerable, it is recommended to use
+            // the ChartingCollection<T> class, it inherits from
+            // ObservableCollection and adds the AddRange/RemoveRange methods
+            SeriesCollection = new ChartingCollection<Series>();
             // finally lets add the series to our series collection,
             // we can add as many series as we need, in this case we will
             // only display one series.

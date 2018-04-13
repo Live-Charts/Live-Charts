@@ -7,9 +7,6 @@ namespace Assets.ViewModels
     {
         public BasicPie()
         {
-            // create a collection to store our series.
-            SeriesCollection = new ChartingCollection<Series>();
-
             var chromeSeries = new PieSeries<double>();
             chromeSeries.Add(12d);
 
@@ -23,6 +20,8 @@ namespace Assets.ViewModels
             explorerSeries.CornerRadius = 6;
             explorerSeries.PushOut = 10;
 
+            // create a collection to store our series.
+            SeriesCollection = new ChartingCollection<Series>();
             // add the series to our collection
             SeriesCollection.Add(chromeSeries);
             SeriesCollection.Add(fireFoxSeries);

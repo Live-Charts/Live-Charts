@@ -9,12 +9,6 @@ namespace Assets.ViewModels
     {
         public BasicLine()
         {
-            // create a collection to store our series.
-            // you can use any IEnumerable, it is recommended to use
-            // the ChartingCollection<T> class, it inherits from
-            // ObservableCollection and adds the AddRange/RemoveRange methods
-            SeriesCollection = new ChartingCollection<Series>();
-
             // create a new line series
             var lineSeries = new LineSeries<double>();
 
@@ -48,6 +42,11 @@ namespace Assets.ViewModels
             lineSeries.GeometrySize = 30;
             lineSeries.Geometry = Geometry.Diamond;
 
+            // create a collection to store our series.
+            // you can use any IEnumerable, it is recommended to use
+            // the ChartingCollection<T> class, it inherits from
+            // ObservableCollection and adds the AddRange/RemoveRange methods
+            SeriesCollection = new ChartingCollection<Series>();
             // finally lets add the series to our series collection,
             // we can add as many series as we need, in this case we will
             // only display one series.

@@ -91,6 +91,13 @@ namespace LiveCharts.Wpf
             nameof(WeightPlane), typeof(IList<Plane>), typeof(CartesianChart),
             new PropertyMetadata(null, RaiseOnPropertyChanged(nameof(IChartView.Dimensions))));
 
+        /// <summary>
+        /// The invert axes property
+        /// </summary>
+        public static readonly DependencyProperty InvertAxesProperty = DependencyProperty.Register(
+            nameof(InvertAxes), typeof(bool), typeof(CartesianChart),
+            new PropertyMetadata(false, RaiseOnPropertyChanged(nameof(InvertAxes))));
+
         #endregion
 
         #region Properties
@@ -132,7 +139,11 @@ namespace LiveCharts.Wpf
         }
 
         /// <inheritdoc />
-        public bool InvertAxis { get; set; }
+        public bool InvertAxes
+        {
+            get => (bool)GetValue(InvertAxesProperty);
+            set => SetValue(InvertAxesProperty, value);
+        }
 
         #endregion
 

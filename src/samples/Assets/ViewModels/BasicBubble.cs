@@ -9,12 +9,6 @@ namespace Assets.ViewModels
     {
         public BasicBubble()
         {
-            // create a collection to store our series.
-            // you can use any IEnumerable, it is recommended to use
-            // the ChartingCollection<T> class, it inherits from
-            // ObservableCollection and adds the AddRange/RemoveRange methods
-            SeriesCollection = new ChartingCollection<Series>();
-
             var bubbleSeries = new BubbleSeries<WeightedModel>();
 
             // add some values to the series...
@@ -37,6 +31,11 @@ namespace Assets.ViewModels
             // lets set a custom geometry, a square
             bubbleSeries.Geometry = Geometry.Square;
 
+            // create a collection to store our series.
+            // you can use any IEnumerable, it is recommended to use
+            // the ChartingCollection<T> class, it inherits from
+            // ObservableCollection and adds the AddRange/RemoveRange methods
+            SeriesCollection = new ChartingCollection<Series>();
             // finally lets add the series to our series collection,
             // we can add as many series as we need, in this case we will
             // only display one series.

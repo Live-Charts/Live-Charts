@@ -26,6 +26,11 @@
         "id": "BasicBubble",
         "name": "Basic bubble series",
         "text": "Similar to a scatter series, but the points are weithed."
+      },
+      {
+        "id": "InvertedSeries",
+        "name": "Inverted series",
+        "text": "Invert series using InvertAxes property."
       }
     ],
     "Pie Chart": [

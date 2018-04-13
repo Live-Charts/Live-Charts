@@ -55,7 +55,7 @@ namespace LiveCharts.Core.Charts
         protected override void CopyDataFromView()
         {
             base.CopyDataFromView();
-            InvertXy = ((ICartesianChartView) View).InvertAxis;
+            InvertXy = ((ICartesianChartView) View).InvertAxes;
         }
 
         /// <inheritdoc />
