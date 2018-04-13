@@ -18,6 +18,11 @@
         "text": "A bar series that stacks the content."
       },
       {
+        "id": "BasicScatter",
+        "name": "Basic scatter series",
+        "text": "Only a points series that explicitly sets X and Y coordinates."
+      },
+      {
         "id": "BasicBubble",
         "name": "Basic bubble series",
         "text": "Similar to a scatter series, but the points are weithed."

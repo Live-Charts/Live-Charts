@@ -74,6 +74,9 @@
     <Compile Include="Views\BasicPie.xaml.cs">
       <DependentUpon>BasicPie.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\BasicScatter.xaml.cs">
+      <DependentUpon>BasicScatter.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\BasicStackedBar.xaml.cs">
       <DependentUpon>BasicStackedBar.xaml</DependentUpon>
     </Compile>
@@ -108,6 +111,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\BasicPie.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\BasicScatter.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -173,6 +180,7 @@
     <Resource Include="Images\BasicBubble.png" />
     <Resource Include="Images\BasicPie.png" />
     <Resource Include="Images\BasicStackedBar.png" />
+    <Resource Include="Images\BasicScatter.png" />
     <Content Include="propertyAndInstanceChanged.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

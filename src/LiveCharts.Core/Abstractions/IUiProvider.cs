@@ -75,8 +75,10 @@ namespace LiveCharts.Core.Abstractions
         /// Provides LiveCharts with a builder that returns a column view.
         /// </summary>
         /// <typeparam name="TModel">The type of the model.</typeparam>
+        /// <typeparam name="TCoordinate">The type of the coordinate.</typeparam>
         /// <returns></returns>
-        ISeriesViewProvider<TModel, PointCoordinate, BarViewModel> BarViewProvider<TModel>();
+        ISeriesViewProvider<TModel, TCoordinate, BarViewModel> BarViewProvider<TModel, TCoordinate>()
+            where TCoordinate : ICoordinate;
 
         /// <summary>
         /// Provides LiveCharts with a builder that returns a bezier view.
@@ -89,21 +91,17 @@ namespace LiveCharts.Core.Abstractions
         /// Provides LiveCharts with a builder that returns a scatter view.
         /// </summary>
         /// <typeparam name="TModel">The type of the model.</typeparam>
+        /// <typeparam name="TCoordinate">The type of the coordinate.</typeparam>
         /// <returns></returns>
-        ISeriesViewProvider<TModel, WeightedCoordinate, ScatterViewModel> ScatterViewProvider<TModel>();
+        ISeriesViewProvider<TModel, TCoordinate, GeometryPointViewModel> GeometryPointViewProvider<TModel, TCoordinate>()
+            where TCoordinate : ICoordinate;
 
         /// <summary>
         /// Provides LiveCharts with a builder that returns a pie view.
         /// </summary>
         /// <typeparam name="TModel">The type of the model.</typeparam>
         /// <returns></returns>
-        ISeriesViewProvider<TModel, StackedCoordinate, PieViewModel> PieViewProvider<TModel>();
+        ISeriesViewProvider<TModel, StackedPointCoordinate, PieViewModel> PieViewProvider<TModel>();
 
-        /// <summary>
-        /// Provides LiveCharts with a builder that returns a stacked bar view.
-        /// </summary>
-        /// <typeparam name="TModel">The type of the model.</typeparam>
-        /// <returns></returns>
-        ISeriesViewProvider<TModel, StackedCoordinate, BarViewModel> StackedBarViewProvider<TModel>();
     }
 }

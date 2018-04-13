@@ -59,21 +59,21 @@ namespace LiveCharts.Core
 
             // Stacked Coordinates
 
-            charting.LearnType<short, StackedCoordinate>((value, index) => new StackedCoordinate(index, value));
-            charting.LearnType<ushort, StackedCoordinate>((value, index) => new StackedCoordinate(index, value));
-            charting.LearnType<int, StackedCoordinate>((value, index) => new StackedCoordinate(index, value));
-            charting.LearnType<long, StackedCoordinate>((value, index) => new StackedCoordinate(index, value));
-            charting.LearnType<ulong, StackedCoordinate>((value, index) => new StackedCoordinate(index, value));
-            charting.LearnType<double, StackedCoordinate>(
-                (value, index) => new StackedCoordinate(index, (float) value));
-            charting.LearnType<float, StackedCoordinate>(
-                (value, index) => new StackedCoordinate(index, value));
-            charting.LearnType<decimal, StackedCoordinate>(
-                (value, index) => new StackedCoordinate(index, (float) value));
-            charting.LearnType<ObservableModel, StackedCoordinate>(
-                (om, index) => new StackedCoordinate(index, om.Value));
-            charting.LearnType<PointModel, StackedCoordinate>(
-                (opm, index) => new StackedCoordinate(opm.X, opm.Y));
+            charting.LearnType<short, StackedPointCoordinate>((value, index) => new StackedPointCoordinate(index, value));
+            charting.LearnType<ushort, StackedPointCoordinate>((value, index) => new StackedPointCoordinate(index, value));
+            charting.LearnType<int, StackedPointCoordinate>((value, index) => new StackedPointCoordinate(index, value));
+            charting.LearnType<long, StackedPointCoordinate>((value, index) => new StackedPointCoordinate(index, value));
+            charting.LearnType<ulong, StackedPointCoordinate>((value, index) => new StackedPointCoordinate(index, value));
+            charting.LearnType<double, StackedPointCoordinate>(
+                (value, index) => new StackedPointCoordinate(index, (float) value));
+            charting.LearnType<float, StackedPointCoordinate>(
+                (value, index) => new StackedPointCoordinate(index, value));
+            charting.LearnType<decimal, StackedPointCoordinate>(
+                (value, index) => new StackedPointCoordinate(index, (float) value));
+            charting.LearnType<ObservableModel, StackedPointCoordinate>(
+                (om, index) => new StackedPointCoordinate(index, om.Value));
+            charting.LearnType<PointModel, StackedPointCoordinate>(
+                (opm, index) => new StackedPointCoordinate(opm.X, opm.Y));
 
             // weighted coordinates
 

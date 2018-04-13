@@ -45,17 +45,7 @@ namespace LiveCharts.Core.Abstractions.DataSeries
         float LineSmoothness { get; set; }
 
         /// <summary>
-        /// Gets or sets the point geometry, a geometry is used to represent the series in the legend, 
-        /// and some times to represent it's points in the chart, for example a line or scatter series 
-        /// will use this property to draw every point.
-        /// </summary>
-        /// <value>
-        /// The point geometry.
-        /// </value>
-        Geometry PointGeometry { get; set; }
-
-        /// <summary>
-        /// Gets or sets the size of the <see cref="PointGeometry"/> property. 
+        /// Gets or sets the size of the <see cref="ISeries.Geometry"/> property. 
         /// </summary>
         /// <value>
         /// The size of the geometry.

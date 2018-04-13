@@ -73,16 +73,10 @@ namespace LiveCharts.Wpf
             return new CartesianPath();
         }
 
-        /// <inheritdoc />
-        public ISeriesViewProvider<TModel, PointCoordinate, BarViewModel> BarViewProvider<TModel>()
+        public ISeriesViewProvider<TModel, TCoordinate, BarViewModel> BarViewProvider<TModel, TCoordinate>()
+            where TCoordinate : ICoordinate
         {
-            return new BarSeriesViewProvider<TModel>();
-        }
-
-        /// <inheritdoc />
-        public ISeriesViewProvider<TModel, StackedCoordinate, BarViewModel> StackedBarViewProvider<TModel>()
-        {
-            return new StackedBarViewProvider<TModel>();
+            return new BarSeriesViewProvider<TModel, TCoordinate>();
         }
 
         /// <inheritdoc />
@@ -91,14 +85,14 @@ namespace LiveCharts.Wpf
             return new BezierSeriesViewProvider<TModel>();
         }
 
-        /// <inheritdoc />
-        public ISeriesViewProvider<TModel, WeightedCoordinate, ScatterViewModel> ScatterViewProvider<TModel>()
+        public ISeriesViewProvider<TModel, TCoordinate, GeometryPointViewModel> GeometryPointViewProvider<TModel, TCoordinate>()
+            where TCoordinate : ICoordinate
         {
-            return new ScatterSeriesViewProvider<TModel>();
+            return new GeometryPointSeriesViewProvider<TModel, TCoordinate>();
         }
 
         /// <inheritdoc />
-        public ISeriesViewProvider<TModel, StackedCoordinate, PieViewModel> PieViewProvider<TModel>()
+        public ISeriesViewProvider<TModel, StackedPointCoordinate, PieViewModel> PieViewProvider<TModel>()
         {
             return new PieSeriesViewProvider<TModel>();
         }

@@ -20,8 +20,8 @@ namespace LiveCharts.Wpf.Views
     /// <typeparam name="TLabel">The type of the label.</typeparam>
     /// <seealso cref="LiveCharts.Wpf.Views.PointView{TModel, TPoint, PieCoordinate, PieViewModel, TShape, TLabel}" />
     public class PiePointView<TModel, TPoint, TLabel>
-        : PointView<TModel, TPoint, StackedCoordinate, PieViewModel, Slice, TLabel>
-        where TPoint : Point<TModel, StackedCoordinate, PieViewModel>, new()
+        : PointView<TModel, TPoint, StackedPointCoordinate, PieViewModel, Slice, TLabel>
+        where TPoint : Point<TModel, StackedPointCoordinate, PieViewModel>, new()
         where TLabel : FrameworkElement, IDataLabelControl, new()
     {
         /// <inheritdoc />

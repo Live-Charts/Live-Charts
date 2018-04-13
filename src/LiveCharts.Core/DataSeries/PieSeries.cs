@@ -18,9 +18,9 @@ namespace LiveCharts.Core.DataSeries
     /// <seealso cref="LiveCharts.Core.DataSeries.Series{TModel, PieCoordinate, PieViewModel, TPoint}" />
     /// <seealso cref="LiveCharts.Core.Abstractions.DataSeries.IPieSeries" />
     public class PieSeries<TModel> :
-        Series<TModel, StackedCoordinate, PieViewModel, Point<TModel, StackedCoordinate, PieViewModel>>, IPieSeries
+        Series<TModel, StackedPointCoordinate, PieViewModel, Point<TModel, StackedPointCoordinate, PieViewModel>>, IPieSeries
     {
-        private static ISeriesViewProvider<TModel, StackedCoordinate, PieViewModel> _provider;
+        private static ISeriesViewProvider<TModel, StackedPointCoordinate, PieViewModel> _provider;
         private double _pushOut;
         private double _cornerRadius;
 
@@ -64,7 +64,7 @@ namespace LiveCharts.Core.DataSeries
         public override float[] PointMargin => new[] {0f, 0f};
 
         /// <inheritdoc />
-        protected override ISeriesViewProvider<TModel, StackedCoordinate, PieViewModel>
+        protected override ISeriesViewProvider<TModel, StackedPointCoordinate, PieViewModel>
             DefaultViewProvider => _provider ?? (_provider = Charting.Current.UiProvider.PieViewProvider<TModel>());
 
         /// <inheritdoc />
@@ -89,7 +89,7 @@ namespace LiveCharts.Core.DataSeries
                     ? 0f
                     : (float) pieChart.StartingRotationAngle);
 
-            Point<TModel, StackedCoordinate, PieViewModel> previous = null;
+            Point<TModel, StackedPointCoordinate, PieViewModel> previous = null;
 
             foreach (var current in Points)
             {

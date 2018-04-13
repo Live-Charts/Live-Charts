@@ -8,16 +8,16 @@ namespace LiveCharts.Core.Coordinates
     /// The stacked coordinate.
     /// </summary>
     /// <seealso cref="LiveCharts.Core.Abstractions.ICoordinate" />
-    public class StackedCoordinate : ICoordinate
+    public class StackedPointCoordinate : ICoordinate
     {
         private readonly float[][] _vector = new float[2][];
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="StackedCoordinate"/> class.
+        /// Initializes a new instance of the <see cref="StackedPointCoordinate"/> class.
         /// </summary>
         /// <param name="key">The index.</param>
         /// <param name="value">The value.</param>
-        public StackedCoordinate(float key, float value)
+        public StackedPointCoordinate(float key, float value)
         {
             _vector[0] = new[] {key};
             _vector[1] = new[] {value};

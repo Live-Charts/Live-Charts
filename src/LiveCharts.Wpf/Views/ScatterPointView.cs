@@ -31,7 +31,6 @@ using System.Windows.Media;
 using System.Windows.Shapes;
 using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Abstractions.DataSeries;
-using LiveCharts.Core.Coordinates;
 using LiveCharts.Core.DataSeries.Data;
 using LiveCharts.Core.ViewModels;
 using LiveCharts.Wpf.Animations;
@@ -40,10 +39,19 @@ using LiveCharts.Wpf.Animations;
 
 namespace LiveCharts.Wpf.Views
 {
-    public class ScatterPointView<TModel, TPoint, TLabel>
-        : PointView<TModel, TPoint, WeightedCoordinate, ScatterViewModel, Path, TLabel>
-        where TPoint : Point<TModel, WeightedCoordinate, ScatterViewModel>, new()
+    /// <summary>
+    /// Geometry point view.
+    /// </summary>
+    /// <typeparam name="TModel">The type of the model.</typeparam>
+    /// <typeparam name="TCoordinate">The type of the coordinate.</typeparam>
+    /// <typeparam name="TPoint">The type of the point.</typeparam>
+    /// <typeparam name="TLabel">The type of the label.</typeparam>
+    /// <seealso cref="Views.PointView{TModel, TPoint, WeightedCoordinate, GeometryPointViewModel, Path, TLabel}" />
+    public class GeometryPointView<TModel, TCoordinate, TPoint, TLabel>
+        : PointView<TModel, TPoint, TCoordinate, GeometryPointViewModel, Path, TLabel>
+        where TPoint : Point<TModel, TCoordinate, GeometryPointViewModel>, new()
         where TLabel : FrameworkElement, IDataLabelControl, new()
+        where TCoordinate : ICoordinate
     {
         protected override void OnDraw(TPoint point, TPoint previous)
         {

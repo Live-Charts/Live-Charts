@@ -32,7 +32,7 @@ using LiveCharts.Core.Drawing.Svg;
 namespace LiveCharts.Core.Abstractions.DataSeries
 {
     /// <summary>
-    /// The scatter series interface.
+    /// The bubble series interface.
     /// </summary>
     /// <seealso cref="LiveCharts.Core.Abstractions.DataSeries.ISeries" />
     public interface IBubbleSeries : ISeries, ICartesianSeries

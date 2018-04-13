@@ -33,7 +33,7 @@ using System.Runtime.CompilerServices;
 namespace LiveCharts.Core.Defaults
 {
     /// <summary>
-    /// Defines an observable object, this object notifies the chart to update when the value property changes.
+    /// Defines an observable model, this object notifies the chart to update when the value property changes.
     /// </summary>
     /// <seealso cref="System.ComponentModel.INotifyPropertyChanged" />
     public class ObservableModel : INotifyPropertyChanged
@@ -74,12 +74,12 @@ namespace LiveCharts.Core.Defaults
         }
 
         /// <summary>
-        /// Occurs when Value property changes.
+        /// Occurs when <see cref="Value"/> property changes.
         /// </summary>
         public event PropertyChangedEventHandler PropertyChanged;
 
         /// <summary>
-        /// Called when Value property changes.
+        /// Called when <see cref="Value"/> property changes.
         /// </summary>
         /// <param name="propertyName">Name of the property.</param>
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)

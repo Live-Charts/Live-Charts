@@ -12,7 +12,7 @@ namespace LiveCharts.Wpf.Views.Providers
     /// </summary>
     /// <typeparam name="TModel">The type of the model.</typeparam>
     /// <seealso cref="LiveCharts.Core.Abstractions.ISeriesViewProvider{TModel, PieCoordinate, PieViewModel}" />
-    public class PieSeriesViewProvider<TModel>: ISeriesViewProvider<TModel, StackedCoordinate, PieViewModel>
+    public class PieSeriesViewProvider<TModel>: ISeriesViewProvider<TModel, StackedPointCoordinate, PieViewModel>
     {
         /// <inheritdoc />
         public void OnUpdateStarted(IChartView chart, ISeries series)
@@ -20,9 +20,9 @@ namespace LiveCharts.Wpf.Views.Providers
         }
 
         /// <inheritdoc />
-        public IPointView<TModel, Point<TModel, StackedCoordinate, PieViewModel>, StackedCoordinate, PieViewModel> Getter()
+        public IPointView<TModel, Point<TModel, StackedPointCoordinate, PieViewModel>, StackedPointCoordinate, PieViewModel> Getter()
         {
-            return new PiePointView<TModel, Point<TModel, StackedCoordinate, PieViewModel>, DataLabel>();
+            return new PiePointView<TModel, Point<TModel, StackedPointCoordinate, PieViewModel>, DataLabel>();
         }
 
         /// <inheritdoc />

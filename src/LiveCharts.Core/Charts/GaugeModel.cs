@@ -7,19 +7,16 @@ using LiveCharts.Core.Dimensions;
 
 namespace LiveCharts.Core.Charts
 {
-    /// <inheritdoc />
-    public class PieChartModel : ChartModel
+    /// <summary>
+    /// The gauge model.
+    /// </summary>
+    /// <seealso cref="LiveCharts.Core.Charts.ChartModel" />
+    public class GaugeModel : ChartModel
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PieChartModel"/> class.
-        /// </summary>
-        /// <param name="view">The chart view.</param>
-        public PieChartModel(IChartView view) : base(view)
+        public GaugeModel(IChartView view) : base(view)
         {
-            Charting.BuildFromSettings((IPieChartView) view);
         }
 
-        /// <inheritdoc />
         protected override int DimensionsCount => 2;
 
         public override float ScaleToUi(float dataValue, Plane plane, float[] sizeVector = null)
@@ -35,14 +32,11 @@ namespace LiveCharts.Core.Charts
         protected override void ViewOnPointerMoved(PointF location, TooltipSelectionMode selectionMode,
             params double[] dimensions)
         {
-
         }
 
         /// <inheritdoc />
         protected override void Update(bool restart, UpdateContext context)
         {
-            OnUpdateStarted();
-
             base.Update(restart, context);
 
             if (DrawAreaSize[0] <= 0 || DrawAreaSize[1] <= 0)

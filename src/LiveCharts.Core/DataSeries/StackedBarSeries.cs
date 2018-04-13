@@ -17,9 +17,9 @@ namespace LiveCharts.Core.DataSeries
     /// <typeparam name="TModel">The type of the model.</typeparam>
     /// <seealso cref="CartesianSeries{TModel, StackedCoordinate, BarViewModel, Point}" />
     /// <seealso cref="IBarSeries" />
-    public class StackedBarSeries<TModel> : BaseBarSeries<TModel, StackedCoordinate, Point<TModel, StackedCoordinate, BarViewModel>>, IBarSeries
+    public class StackedBarSeries<TModel> : BaseBarSeries<TModel, StackedPointCoordinate, Point<TModel, StackedPointCoordinate, BarViewModel>>, IBarSeries
     {
-        private static ISeriesViewProvider<TModel, StackedCoordinate, BarViewModel> _provider;
+        private static ISeriesViewProvider<TModel, StackedPointCoordinate, BarViewModel> _provider;
         private int _stackIndex;
 
         /// <inheritdoc />
@@ -43,13 +43,13 @@ namespace LiveCharts.Core.DataSeries
         }
 
         /// <inheritdoc />
-        protected override ISeriesViewProvider<TModel, StackedCoordinate, BarViewModel>
+        protected override ISeriesViewProvider<TModel, StackedPointCoordinate, BarViewModel>
             DefaultViewProvider =>
-            _provider ?? (_provider = Charting.Current.UiProvider.StackedBarViewProvider<TModel>());
+            _provider ?? (_provider = Charting.Current.UiProvider.BarViewProvider<TModel, StackedPointCoordinate>());
 
         /// <inheritdoc />
         protected override void BuildModel(
-            Point<TModel, StackedCoordinate, BarViewModel> current, UpdateContext context, 
+            Point<TModel, StackedPointCoordinate, BarViewModel> current, UpdateContext context, 
             ChartModel chart, Plane directionAxis, Plane scaleAxis, float cw, float columnStart, 
             float[] byBarOffset, float[] positionOffset, Orientation orientation, int h, int w)
         {

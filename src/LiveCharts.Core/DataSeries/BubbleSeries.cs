@@ -42,12 +42,12 @@ using LiveCharts.Core.ViewModels;
 namespace LiveCharts.Core.DataSeries
 {
     /// <summary>
-    /// The scatter series class.
+    /// The bubble series class.
     /// </summary>
     public class BubbleSeries<TModel> 
-        : CartesianSeries<TModel, WeightedCoordinate, ScatterViewModel, Point<TModel, WeightedCoordinate, ScatterViewModel>>, IBubbleSeries
+        : CartesianSeries<TModel, WeightedCoordinate, GeometryPointViewModel, Point<TModel, WeightedCoordinate, GeometryPointViewModel>>, IBubbleSeries
     {
-        private static ISeriesViewProvider<TModel, WeightedCoordinate, ScatterViewModel> _provider;
+        private static ISeriesViewProvider<TModel, WeightedCoordinate, GeometryPointViewModel> _provider;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BubbleSeries{TModel}"/> class.
@@ -77,8 +77,10 @@ namespace LiveCharts.Core.DataSeries
         public override float[] PointMargin => new[] {MaxGeometrySize, MaxGeometrySize};
 
         /// <inheritdoc />
-        protected override ISeriesViewProvider<TModel, WeightedCoordinate, ScatterViewModel>
-            DefaultViewProvider => _provider ?? (_provider = Charting.Current.UiProvider.ScatterViewProvider<TModel>());
+        protected override ISeriesViewProvider<TModel, WeightedCoordinate, GeometryPointViewModel>
+            DefaultViewProvider => _provider ??
+                                   (_provider = Charting.Current.UiProvider
+                                       .GeometryPointViewProvider<TModel, WeightedCoordinate>());
 
         /// <inheritdoc />
         public override void UpdateView(ChartModel chart, UpdateContext context)
@@ -99,7 +101,7 @@ namespace LiveCharts.Core.DataSeries
                 yi = 0;
             }
 
-            Point<TModel, WeightedCoordinate, ScatterViewModel> previous = null;
+            Point<TModel, WeightedCoordinate, GeometryPointViewModel> previous = null;
             foreach (var current in Points)
             {
                 var p = new[]
@@ -109,7 +111,7 @@ namespace LiveCharts.Core.DataSeries
                     cartesianChart.LinealScale(p1, p2, current.Coordinate.Weight)
                 };
 
-                var vm = new ScatterViewModel
+                var vm = new GeometryPointViewModel
                 {
                     Location = Perform.Sum(new PointF(p[xi], p[yi]), new PointF(uw[0], uw[1])),
                     Diameter = p[2]
