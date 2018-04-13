@@ -99,7 +99,7 @@ namespace LiveCharts.Core.DataSeries
 
                 unchecked
                 {
-                    stacked = context.GetStack(-1, (int) current.Coordinate.Key, true);
+                    stacked = context.GetStack((int) current.Coordinate.Key, 0, true);
                 }
 
                 var vm = new PieViewModel

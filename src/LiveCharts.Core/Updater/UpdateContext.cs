@@ -50,8 +50,6 @@ namespace LiveCharts.Core.Updater
         /// <returns></returns>
         public float GetStack(int stackingIndex, int scalingKey, bool isPositiveOrZero)
         {
-
-
             var i = isPositiveOrZero ? 0 : 1;
             return _barsGroups[scalingKey].ByStackingIndexStack[stackingIndex][i];
         }

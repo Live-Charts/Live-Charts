@@ -47,6 +47,7 @@ namespace LiveCharts.Core.Updater
         private int _gi;
         private bool _isScalesAtKnown;
         private int[] _scalesAt;
+        private static int[] _scalesPie = {0, 0};
 
         /// <summary>
         /// Gets the collection.
@@ -71,10 +72,12 @@ namespace LiveCharts.Core.Updater
             {
                 if (_isScalesAtKnown) return _scalesAt;
 
+                if (Series is IPieSeries) return _scalesPie;
+
                 if (!(Series is ICartesianSeries cartesianSeries))
                 {
-                    throw new LiveChartsException($"The given series in not {nameof(ICartesianSeries)}, " +
-                                                  $"thus it was not possible to get the {nameof(ICartesianSeries.ScalesAt)} property.",
+                    throw new LiveChartsException(
+                        "It was not possible to determine the plane of the series.",
                         155);
                 }
 
