@@ -244,8 +244,21 @@ namespace LiveCharts.Core.Charts
             View.InvokeOnUiThread(() =>
             {
                 CopyDataFromView();
-                using (var context = new UpdateContext(Series.Where(series => series.IsVisible), DimensionsCount))
+                using (var context = new UpdateContext(Series.Where(series => series.IsVisible)))
                 {
+                    var dims = new float[Dimensions.Length][][];
+                    for (var dimIndex = 0; dimIndex < Dimensions.Length; dimIndex++)
+                    {
+                        var dimension = Dimensions[dimIndex];
+                        dims[dimIndex] = new float[dimension.Length][];
+                        for (var planeIndex = 0; planeIndex < dimension.Length; planeIndex++)
+                        {
+                            dims[dimIndex][planeIndex] = new[] {float.MaxValue, float.MinValue};
+                        }
+                    }
+
+                    context.Ranges = dims;
+
                     Update(false, context);
                 }
             });

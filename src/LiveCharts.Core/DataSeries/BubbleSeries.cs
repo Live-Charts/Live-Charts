@@ -54,6 +54,7 @@ namespace LiveCharts.Core.DataSeries
         /// </summary>
         public BubbleSeries()
         {
+            ScalesAt = new[] {0, 0, 0};
             MaxGeometrySize = 30f;
             MinGeometrySize = 14f;
             StrokeThickness = 1f;
@@ -91,8 +92,8 @@ namespace LiveCharts.Core.DataSeries
 
             var uw = chart.Get2DUiUnitWidth(x, y);
 
-            var p1 = new PointF(context.RangeByDimension[2][0], MinGeometrySize);
-            var p2 = new PointF(context.RangeByDimension[2][1], MaxGeometrySize);
+            var p1 = new PointF(context.Ranges[2][ScalesAt[2]][0], MinGeometrySize);
+            var p2 = new PointF(context.Ranges[2][ScalesAt[2]][1], MaxGeometrySize);
 
             int xi = 0, yi = 1;
             if (chart.InvertXy)

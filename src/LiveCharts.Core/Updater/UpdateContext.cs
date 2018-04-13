@@ -20,26 +20,19 @@ namespace LiveCharts.Core.Updater
         /// Initializes a new instance of the <see cref="UpdateContext"/> class.
         /// </summary>
         /// <param name="series">The series.</param>
-        /// <param name="chartDimensions">The chart supported dimensions.</param>
-        public UpdateContext(IEnumerable<Series> series, int chartDimensions)
+        public UpdateContext(IEnumerable<Series> series)
         {
             _series = series;
             _barsGroups = new Dictionary<int, BarsGroup>();
-            var dims = new List<float[]>();
-            for (var i = 0; i < chartDimensions; i++)
-            {
-                dims.Add(new[] {float.MaxValue, float.MinValue});
-            }
-            RangeByDimension = dims.ToArray();
         }
 
         /// <summary>
-        /// Gets the ranges by dimension.
+        /// Gets or sets the ranges [i][j][k], where i is plane index (x, y), j is plane index (x1, x2 .. when multiple axes) and k 0: min, 1: max.
         /// </summary>
         /// <value>
-        /// The ranges by dimension.
+        /// The ranges.
         /// </value>
-        public float[][] RangeByDimension { get; private set; }
+        public float[][][] Ranges { get; set; }
 
         /// <summary>
         /// Gets the stack.
@@ -179,7 +172,7 @@ namespace LiveCharts.Core.Updater
         {
             _series = null;
             _barsGroups = null;
-            RangeByDimension = null;
+            Ranges = null;
         }
     }
 }

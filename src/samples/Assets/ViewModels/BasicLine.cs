@@ -51,6 +51,7 @@ namespace Assets.ViewModels
             // we can add as many series as we need, in this case we will
             // only display one series.
             SeriesCollection.Add(lineSeries);
+            // we bind the SeriesCollection property to the CartesianChart.Series property in XAML
         }
 
         public ChartingCollection<Series> SeriesCollection { get; set; }

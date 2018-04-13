@@ -76,10 +76,10 @@ namespace LiveCharts.Core.Coordinates
             From = stack.From;
             To = stack.To;
 
-            if (context.UpdateContext.RangeByDimension == null) return;
+            if (context.UpdateContext.Ranges == null) return;
             // store max and min limits..
-            var x = context.UpdateContext.RangeByDimension[0];
-            var y = context.UpdateContext.RangeByDimension[1];
+            var x = context.UpdateContext.Ranges[0][context.SeriesScalesAt[0]];
+            var y = context.UpdateContext.Ranges[1][context.SeriesScalesAt[0]];
 
             if (index > x[1]) x[1] = index; // 0: min, 1: Max
             if (index < x[0]) x[0] = index;

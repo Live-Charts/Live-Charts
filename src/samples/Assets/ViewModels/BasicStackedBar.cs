@@ -39,6 +39,7 @@ namespace Assets.ViewModels
             SeriesCollection.Add(charlesSeries);
             SeriesCollection.Add(fridaSeries);
             SeriesCollection.Add(abrahamSeries);
+            // we bind the SeriesCollection property to the CartesianChart.Series property in XAML
         }
 
         public ChartingCollection<Series> SeriesCollection { get; set; }

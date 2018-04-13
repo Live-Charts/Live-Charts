@@ -23,6 +23,7 @@ namespace Assets.ViewModels
             SeriesCollection = new ChartingCollection<Series>();
             SeriesCollection.Add(lineSeries);
             SeriesCollection.Add(barSeries);
+            // we bind the SeriesCollection property to the CartesianChart.Series property in XAML
         }
 
         public ChartingCollection<Series> SeriesCollection { get; set; }

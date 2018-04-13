@@ -85,9 +85,9 @@ namespace LiveCharts.Core.Coordinates
         /// <inheritdoc />
         public void CompareDimensions(IDataFactoryContext context)
         {
-            var x = context.UpdateContext.RangeByDimension[0];
-            var y = context.UpdateContext.RangeByDimension[1];
-            var w = context.UpdateContext.RangeByDimension[2];
+            var x = context.UpdateContext.Ranges[0][context.SeriesScalesAt[0]];
+            var y = context.UpdateContext.Ranges[1][context.SeriesScalesAt[1]];
+            var w = context.UpdateContext.Ranges[2][context.SeriesScalesAt[2]];
 
             if (X > x[1]) x[1] = X;
             if (X < x[0]) x[0] = X;

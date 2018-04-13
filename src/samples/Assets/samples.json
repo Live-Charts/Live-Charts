@@ -31,6 +31,11 @@
         "id": "InvertedSeries",
         "name": "Inverted series",
         "text": "Invert series using InvertAxes property."
+      },
+      {
+        "id": "MultipleAxes",
+        "name": "Multiple axes",
+        "text": "A chart that scales its series in multiple axes."
       }
     ],
     "Pie Chart": [

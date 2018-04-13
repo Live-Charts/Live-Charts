@@ -47,7 +47,7 @@ namespace LiveCharts.Core.Updater
         private int _gi;
         private bool _isScalesAtKnown;
         private int[] _scalesAt;
-        private static int[] _scalesPie = {0, 0};
+        private static readonly int[] ScalesPie = {0, 0};
 
         /// <summary>
         /// Gets the collection.
@@ -64,6 +64,9 @@ namespace LiveCharts.Core.Updater
         /// The series.
         /// </value>
         public Series<TModel, TCoordinate, TViewModel, TPoint> Series { get; internal set; }
+        
+        /// <inheritdoc />
+        public float[][][] Ranges { get; set; }
 
         /// <inheritdoc />
         public int[] SeriesScalesAt
@@ -72,7 +75,7 @@ namespace LiveCharts.Core.Updater
             {
                 if (_isScalesAtKnown) return _scalesAt;
 
-                if (Series is IPieSeries) return _scalesPie;
+                if (Series is IPieSeries) return ScalesPie;
 
                 if (!(Series is ICartesianSeries cartesianSeries))
                 {
@@ -114,6 +117,7 @@ namespace LiveCharts.Core.Updater
         /// </summary>
         public void Dispose()
         {
+            Ranges = null;
             Collection = null;
             Series = null;
             UpdateContext = null;

@@ -289,18 +289,19 @@ namespace LiveCharts.Core.Charts
             float yt = 0f, yr = 0f, yb = 0f, yl = 0f;
 
             // for each dimension (for a cartesian chart X and Y)
-            for (var index = 0; index < Dimensions.Length; index++)
+            for (var dimensionIndex = 0; dimensionIndex < Dimensions.Length; dimensionIndex++)
             {
                 // for each plane in each dimension
-                var dimension = Dimensions[index];
+                var dimension = Dimensions[dimensionIndex];
 
-                foreach (var plane in dimension)
+                for (var planeIndex = 0; planeIndex < dimension.Length; planeIndex++)
                 {
-                    plane.Dimension = index;
+                    var plane = dimension[planeIndex];
+                    plane.Dimension = dimensionIndex;
 
                     if (InvertXy)
                     {
-                        switch (index)
+                        switch (dimensionIndex)
                         {
                             case 0:
                                 plane.Dimension = 1;
@@ -322,18 +323,18 @@ namespace LiveCharts.Core.Charts
 
                     var uiPointMargin = 0f;
 
-                    if (index < 2 && (double.IsNaN(plane.MinValue) || double.IsNaN(plane.MaxValue)))
+                    if (dimensionIndex < 2 && (double.IsNaN(plane.MinValue) || double.IsNaN(plane.MaxValue)))
                     {
-                        plane.ActualMinValue = context.RangeByDimension[index][0];
-                        plane.ActualMaxValue = context.RangeByDimension[index][1];
+                        plane.ActualMinValue = context.Ranges[dimensionIndex][planeIndex][0];
+                        plane.ActualMaxValue = context.Ranges[dimensionIndex][planeIndex][1];
                         uiPointMargin = ScaleFromUi(plane.PointMargin, plane) - ScaleFromUi(0f, plane);
                     }
 
                     plane.ActualMinValue = double.IsNaN(plane.MinValue)
-                        ? context.RangeByDimension[index][0] - uiPointMargin
+                        ? context.Ranges[dimensionIndex][planeIndex][0] - uiPointMargin
                         : plane.MinValue;
                     plane.ActualMaxValue = double.IsNaN(plane.MaxValue)
-                        ? context.RangeByDimension[index][1] + uiPointMargin
+                        ? context.Ranges[dimensionIndex][planeIndex][1] + uiPointMargin
                         : plane.MaxValue;
 
                     plane.ActualReverse = plane.Dimension == 1;

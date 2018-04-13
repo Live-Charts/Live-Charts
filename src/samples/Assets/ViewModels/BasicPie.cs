@@ -26,6 +26,7 @@ namespace Assets.ViewModels
             SeriesCollection.Add(chromeSeries);
             SeriesCollection.Add(fireFoxSeries);
             SeriesCollection.Add(explorerSeries);
+            // we bind the SeriesCollection property to the PieChart.Series property in XAML
         }
 
         public ChartingCollection<Series> SeriesCollection { get; set; }

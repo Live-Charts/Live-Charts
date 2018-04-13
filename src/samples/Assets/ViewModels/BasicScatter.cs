@@ -39,6 +39,7 @@ namespace Assets.ViewModels
             // finally lets add the series to our series collection.
             SeriesCollection.Add(year2018Series);
             SeriesCollection.Add(year2017Series);
+            // we bind the SeriesCollection property to the CartesianChart.Series property in XAML
         }
 
         public ChartingCollection<Series> SeriesCollection { get; set; }
