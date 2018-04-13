@@ -311,11 +311,9 @@ namespace LiveCharts.Core.Charts
         /// <summary>
         /// Called when the pointer moves over a chart and there is a tooltip in the view.
         /// </summary>
-        /// <param name="location">The location.</param>
         /// <param name="selectionMode">The selection mode.</param>
-        /// <param name="dimensions">The dimensions.</param>
-        protected abstract void ViewOnPointerMoved(
-            PointF location, TooltipSelectionMode selectionMode, params double[] dimensions);
+        /// <param name="mouseLocation">The dimensions.</param>
+        protected abstract void ViewOnPointerMoved(TooltipSelectionMode selectionMode, params double[] mouseLocation);
 
         /// <summary>
         /// Updates the chart.

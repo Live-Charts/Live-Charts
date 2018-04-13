@@ -30,6 +30,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using LiveCharts.Core.Abstractions;
+using Brushes = System.Windows.Media.Brushes;
 
 #endregion
 
@@ -45,6 +46,7 @@ namespace LiveCharts.Wpf.Controls
         /// </summary>
         public ChartContent()
         {
+            Background = Brushes.Transparent; // otherwise mouse move is not fired...
             TooltipPopup = new Popup
             {
                 AllowsTransparency = true,

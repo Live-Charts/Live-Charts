@@ -33,8 +33,9 @@ namespace LiveCharts.Core.Charts
             throw new NotImplementedException();
         }
 
-        protected override void ViewOnPointerMoved(PointF location, TooltipSelectionMode selectionMode,
-            params double[] dimensions)
+        /// <inheritdoc />
+        protected override void ViewOnPointerMoved(
+            TooltipSelectionMode selectionMode, params double[] mouseLocation)
         {
 
         }

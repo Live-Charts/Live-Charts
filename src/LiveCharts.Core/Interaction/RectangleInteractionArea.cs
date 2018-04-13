@@ -60,8 +60,15 @@ namespace LiveCharts.Core.Interaction
             var x = dimensions[0];
             var y = dimensions[1];
 
-            return x >= Rectangle.Left && x <= Rectangle.Left + Rectangle.Width &&
-                   y >= Rectangle.Top && y <= Rectangle.Top + Rectangle.Height;
+            var a = x >= Rectangle.Left && x <= Rectangle.Left + Rectangle.Width &&
+                    y >= Rectangle.Top && y <= Rectangle.Top + Rectangle.Height;
+
+            if (a)
+            {
+                var b = 1;
+            }
+
+            return a;
         }
     }
 }

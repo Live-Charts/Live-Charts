@@ -77,30 +77,8 @@ namespace LiveCharts.Wpf
             Loaded += OnLoaded;
             SizeChanged += OnSizeChanged;
             MouseMove += OnMouseMove;
-            MouseLeftButtonUp += (sender, args) =>
-            {
-                var p = args.GetPosition(this);
-                var c = new Point(p.X + ((IChartContent)Content).DrawArea.Left, p.Y + ((IChartContent)Content).DrawArea.Top);
-                var points = Model.GetInteractedPoints(c.X, c.Y);
-                var e = new DataInteractionEventArgs(args.MouseDevice, args.Timestamp, args.ChangedButton, points)
-                {
-                    RoutedEvent = MouseDownEvent,
-                    Handled = args.Handled
-                };
-                OnDataClick(e);
-            };
-            MouseLeftButtonDown += (sender, args) =>
-            {
-                if (args.ClickCount != 2) return;
-                var p = args.GetPosition(this);
-                var c = new Point(p.X + ((IChartContent)Content).DrawArea.Left, p.Y + ((IChartContent)Content).DrawArea.Top);
-                var points = Model.GetInteractedPoints(c.X, c.Y);
-                var e = new DataInteractionEventArgs(args.MouseDevice, args.Timestamp, args.ChangedButton, points)
-                {
-                    RoutedEvent = MouseDownEvent
-                };
-                OnDataDoubleClick(e);
-            };
+            MouseLeftButtonUp += OnLeftButtonUp;
+            MouseLeftButtonDown += OnLeftButtonDown;
         }
 
         #region Dependency properties
@@ -215,8 +193,33 @@ namespace LiveCharts.Wpf
         {
             if (DataToolTip == null) return;
             var p = args.GetPosition(this);
-            var c = new Point(p.X + ((IChartContent) Content).DrawArea.Left, p.Y + ((IChartContent)Content).DrawArea.Top);
-            PointerMoved?.Invoke(new PointF((float) c.X, (float) c.Y), DataToolTip.SelectionMode, c.X, c.Y);
+            var c = new Point(
+                p.X - ((IChartContent) Content).DrawArea.Left,
+                p.Y - ((IChartContent) Content).DrawArea.Top);
+            PointerMovedOverPlot?.Invoke(DataToolTip.SelectionMode, c.X, c.Y);
+        }
+
+        private void OnLeftButtonDown(object sender, MouseButtonEventArgs args)
+        {
+            if (args.ClickCount != 2) return;
+            var p = args.GetPosition(this);
+            var c = new Point(p.X + ((IChartContent)Content).DrawArea.Left, p.Y + ((IChartContent)Content).DrawArea.Top);
+            var points = Model.GetInteractedPoints(c.X, c.Y);
+            var e = new DataInteractionEventArgs(args.MouseDevice, args.Timestamp, args.ChangedButton, points) { RoutedEvent = MouseDownEvent };
+            OnDataDoubleClick(e);
+        }
+
+        private void OnLeftButtonUp(object sender, MouseButtonEventArgs args)
+        {
+            var p = args.GetPosition(this);
+            var c = new Point(p.X + ((IChartContent)Content).DrawArea.Left, p.Y + ((IChartContent)Content).DrawArea.Top);
+            var points = Model.GetInteractedPoints(c.X, c.Y);
+            var e = new DataInteractionEventArgs(args.MouseDevice, args.Timestamp, args.ChangedButton, points)
+            {
+                RoutedEvent = MouseDownEvent,
+                Handled = args.Handled
+            };
+            OnDataClick(e);
         }
 
         #endregion
@@ -239,12 +242,12 @@ namespace LiveCharts.Wpf
             remove => ChartViewResized -= value;
         }
 
-        private event PointerMovedHandler PointerMoved;
+        private event PointerMovedHandler PointerMovedOverPlot;
 
         event PointerMovedHandler IChartView.PointerMoved
         {
-            add => PointerMoved += value;
-            remove => PointerMoved -= value;
+            add => PointerMovedOverPlot += value;
+            remove => PointerMovedOverPlot -= value;
         }
 
         /// <inheritdoc />
