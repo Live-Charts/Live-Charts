@@ -66,7 +66,29 @@ namespace LiveCharts.Core.Interaction
             var dy = Math.Abs(y - Center.Y);
 
             var radius = Math.Sqrt(Math.Pow(dx, 2) + Math.Pow(dy, 2));
-            var angle = Math.Atan(dy / dx);
+            var angle = Math.Atan(dy / dx) * 180 / Math.PI;
+
+            // correction because ATan returns angles from 0-90
+
+            if (x >= Center.X && y >= Center.Y)
+            {
+                angle = 90 - angle;
+            }
+
+            if (x >= Center.X && y <= Center.Y)
+            {
+                angle = 90 + angle;
+            }
+
+            if (x <= Center.X && y <= Center.Y)
+            {
+                angle = 270 - angle;
+            }
+
+            if (x <= Center.X && y >= Center.Y)
+            {
+                angle = 270 + angle;
+            }
 
             return AngleFrom <= angle && AngleTo >= angle && radius < Radius;
         }

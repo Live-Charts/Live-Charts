@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Drawing;
-using System.Linq;
 using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Abstractions.DataSeries;
 using LiveCharts.Core.Charts;
@@ -120,7 +119,7 @@ namespace LiveCharts.Core.DataSeries
                 }
 
                 current.InteractionArea = new PolarInteractionArea(
-                    vm.To.OuterRadius, vm.To.Rotation, vm.To.Wedge, centerPoint);
+                    vm.To.OuterRadius, vm.To.Rotation, vm.To.Rotation + vm.To.Wedge, centerPoint);
                 current.ViewModel = vm;
                 current.View.DrawShape(current, previous);
                 Mapper.EvaluateModelDependentActions(current.Model, current.View.VisualElement, current);
