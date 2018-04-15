@@ -44,27 +44,34 @@ using Frame = LiveCharts.Wpf.Animations.Frame;
 
 namespace LiveCharts.Wpf.Views
 {
-    public class BezierPointView<TModel, TPoint, TLabel>
-        : PointView<TModel, TPoint, PointCoordinate, BezierViewModel, Path, TLabel>
-        where TPoint : Point<TModel, PointCoordinate, BezierViewModel>, new()
+    /// <summary>
+    /// The bezier point view class.
+    /// </summary>
+    /// <typeparam name="TModel">The type of the model.</typeparam>
+    /// <typeparam name="TLabel">The type of the label.</typeparam>
+    /// <seealso cref="Views.PointView{TModel, TPoint, PointCoordinate, BezierViewModel, Path, TLabel}" />
+    public class BezierPointView<TModel, TLabel>
+        : PointView<TModel, PointCoordinate, BezierViewModel, ILineSeries, Path, TLabel>
         where TLabel : FrameworkElement, IDataLabelControl, new()
     {
-        private BezierPointView<TModel, TPoint, TLabel> _next;
+        private BezierPointView<TModel, TLabel> _next;
         private ICartesianPath _path;
-        private BezierPointView<TModel, TPoint, TLabel> _previous;
+        private BezierPointView<TModel, TLabel> _previous;
         private BezierSegment _segment;
         private BezierViewModel _vm;
 
         private bool IsMiddlePoint => _next != null && _previous != null;
         private bool IsDisposing { get; set; }
 
-        protected override void OnDraw(TPoint point, TPoint previous)
+        protected override void OnDraw(
+            Point<TModel, PointCoordinate, BezierViewModel, ILineSeries> point, 
+            Point<TModel, PointCoordinate, BezierViewModel, ILineSeries> previous)
         {
             var chart = point.Chart.View;
             _vm = point.ViewModel;
             var isNew = Shape == null;
             var speed = chart.AnimationsSpeed;
-            _previous = (BezierPointView<TModel, TPoint, TLabel>) previous?.View;
+            _previous = (BezierPointView<TModel, TLabel>) previous?.View;
             if (_previous != null) _previous._next = this;
 
             if (isNew)
@@ -108,7 +115,7 @@ namespace LiveCharts.Wpf.Views
             Shape.Stroke = point.Series.Stroke.AsWpf();
             Shape.Fill = Brushes.White;
             Shape.Data = Geometry.Parse(point.Series.Geometry.Data);
-            Panel.SetZIndex(Shape, ((ICartesianSeries)point.Series).ZIndex);
+            Panel.SetZIndex(Shape, point.Series.ZIndex);
 
             if (!isNew)
             {
@@ -127,7 +134,7 @@ namespace LiveCharts.Wpf.Views
                 .Begin();
         }
 
-        protected override void OnDrawLabel(TPoint point, PointF location)
+        protected override void OnDrawLabel(Point<TModel, PointCoordinate, BezierViewModel, ILineSeries> point, PointF location)
         {
             base.OnDrawLabel(point, location);
         }

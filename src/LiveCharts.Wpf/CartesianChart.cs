@@ -30,9 +30,9 @@
 using System.Collections.Generic;
 using System.Windows;
 using LiveCharts.Core.Abstractions;
+using LiveCharts.Core.Abstractions.DataSeries;
 using LiveCharts.Core.Charts;
 using LiveCharts.Core.Collections;
-using LiveCharts.Core.DataSeries;
 using LiveCharts.Core.Dimensions;
 
 #endregion
@@ -62,7 +62,7 @@ namespace LiveCharts.Wpf
         public CartesianChart()
         {
             Model = new CartesianChartModel(this);
-            SetValue(SeriesProperty, new ChartingCollection<Series>());
+            SetValue(SeriesProperty, new ChartingCollection<ISeries>());
             SetValue(XAxisProperty, new ChartingCollection<Plane> {new Axis()});
             SetValue(YAxisProperty, new ChartingCollection<Plane> {new Axis()});
             SetValue(WeightPlaneProperty, new ChartingCollection<Plane> {new Plane()});

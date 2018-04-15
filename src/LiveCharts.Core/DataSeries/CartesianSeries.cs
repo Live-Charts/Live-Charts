@@ -27,8 +27,6 @@
 
 using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Abstractions.DataSeries;
-using LiveCharts.Core.Drawing;
-using LiveCharts.Core.Interaction;
 
 #endregion
 
@@ -38,21 +36,21 @@ namespace LiveCharts.Core.DataSeries
     /// A series that requires at least a cartesian coordinate (X, Y).
     /// </summary>
     /// <typeparam name="TModel">The type of the model.</typeparam>
-    /// <typeparam name="TPoint">The type of the chart point.</typeparam>
     /// <typeparam name="TCoordinate">The type of the coordinate.</typeparam>
     /// <typeparam name="TViewModel">The type of the view model.</typeparam>
-    /// <seealso cref="Series{TModel, TPoint, TCoordinate, TViewModel}" />
-    public abstract class CartesianSeries<TModel, TCoordinate, TViewModel, TPoint> 
-        : Series<TModel, TCoordinate, TViewModel, TPoint>, ICartesianSeries
-        where TPoint : Point<TModel, TCoordinate, TViewModel>, new ()
+    /// <typeparam name="TSeries">The type of the series.</typeparam>
+    /// <seealso cref="Series{TModel, TCoordinate, TViewModel, TSeries}" />
+    public abstract class CartesianStrokeSeries<TModel, TCoordinate, TViewModel, TSeries> 
+        : StrokeSeries<TModel, TCoordinate, TViewModel, TSeries>, ICartesianSeries
         where TCoordinate : ICoordinate
+        where TSeries : class, ISeries
     {
         private int _zIndex;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CartesianSeries{T,U,V,W}"/> class.
+        /// Initializes a new instance of the <see cref="CartesianStrokeSeries{TModel,TCoordinate,TViewModel, TSeries}"/> class.
         /// </summary>
-        protected CartesianSeries()
+        protected CartesianStrokeSeries()
         {
             // A cartesian chart has 2 dimensions, X, Y
             // A cartesian chart can have as many axis as the user needs

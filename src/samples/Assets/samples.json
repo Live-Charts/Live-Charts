@@ -28,6 +28,11 @@
         "text": "Similar to a scatter series, but the points are weithed."
       },
       {
+        "id": "BasicHeat",
+        "name": "Heat series",
+        "text": "Heat series based on the weight of every point."
+      },
+      {
         "id": "InvertedSeries",
         "name": "Inverted series",
         "text": "Invert series using InvertAxes property."

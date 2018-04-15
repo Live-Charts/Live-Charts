@@ -34,6 +34,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using LiveCharts.Core.Abstractions;
+using LiveCharts.Core.Abstractions.DataSeries;
 using LiveCharts.Core.Charts;
 using LiveCharts.Core.DataSeries;
 using LiveCharts.Core.Dimensions;
@@ -87,7 +88,7 @@ namespace LiveCharts.Wpf
         /// The series property.
         /// </summary>
         public static readonly DependencyProperty SeriesProperty = DependencyProperty.Register(
-            nameof(Series), typeof(IEnumerable<Series>), typeof(Chart),
+            nameof(Series), typeof(IEnumerable<ISeries>), typeof(Chart),
             new PropertyMetadata(null, RaiseOnPropertyChanged(nameof(Series))));
 
         /// <summary>
@@ -297,9 +298,9 @@ namespace LiveCharts.Wpf
         IList<IList<Plane>> IChartView.Dimensions => GetOrderedDimensions();
 
         /// <inheritdoc cref="IChartView.Series"/>
-        public IEnumerable<Series> Series
+        public IEnumerable<ISeries> Series
         {
-            get => (IEnumerable<Series>)GetValue(SeriesProperty);
+            get => (IEnumerable<ISeries>)GetValue(SeriesProperty);
             set => SetValue(SeriesProperty, value);
         }
 

@@ -1,4 +1,5 @@
-﻿using LiveCharts.Core.Collections;
+﻿using LiveCharts.Core.Abstractions.DataSeries;
+using LiveCharts.Core.Collections;
 using LiveCharts.Core.DataSeries;
 
 namespace Assets.ViewModels
@@ -17,11 +18,11 @@ namespace Assets.ViewModels
             explorerSeries.Add(6d);
 
             // some custom style..
-            explorerSeries.CornerRadius = 6;
-            explorerSeries.PushOut = 10;
+            //explorerSeries.CornerRadius = 6;
+            //explorerSeries.PushOut = 10;
 
             // create a collection to store our series.
-            SeriesCollection = new ChartingCollection<Series>();
+            SeriesCollection = new ChartingCollection<ISeries>();
             // add the series to our collection
             SeriesCollection.Add(chromeSeries);
             SeriesCollection.Add(fireFoxSeries);
@@ -29,6 +30,6 @@ namespace Assets.ViewModels
             // we bind the SeriesCollection property to the PieChart.Series property in XAML
         }
 
-        public ChartingCollection<Series> SeriesCollection { get; set; }
+        public ChartingCollection<ISeries> SeriesCollection { get; set; }
     }
 }

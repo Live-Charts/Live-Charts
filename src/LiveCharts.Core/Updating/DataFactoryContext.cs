@@ -29,25 +29,23 @@ using System.Collections.Generic;
 using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Abstractions.DataSeries;
 using LiveCharts.Core.Charts;
-using LiveCharts.Core.DataSeries;
 using LiveCharts.Core.Interaction;
 
 #endregion
 
-namespace LiveCharts.Core.Updater
+namespace LiveCharts.Core.Updating
 {
     /// <summary>
     /// Point factory options class.
     /// </summary>
-    public class DataFactoryContext<TModel, TCoordinate, TViewModel, TPoint> : IDataFactoryContext
-        where TPoint : Point<TModel, TCoordinate, TViewModel>, new()
+    public class DataFactoryContext<TModel, TCoordinate, TSeries> : IDataFactoryContext
         where TCoordinate : ICoordinate
+        where TSeries : ISeries
     {
         private bool _isGiKnown;
         private int _gi;
         private bool _isScalesAtKnown;
         private int[] _scalesAt;
-        private static readonly int[] ScalesPie = {0, 0};
 
         /// <summary>
         /// Gets the collection.
@@ -63,9 +61,22 @@ namespace LiveCharts.Core.Updater
         /// <value>
         /// The series.
         /// </value>
-        public Series<TModel, TCoordinate, TViewModel, TPoint> Series { get; internal set; }
-        
-        /// <inheritdoc />
+        public TSeries Series { get; internal set; }
+
+        /// <summary>
+        /// Gets the mapper.
+        /// </summary>
+        /// <value>
+        /// The mapper.
+        /// </value>
+        public ModelToCoordinateMapper<TModel, TCoordinate> Mapper { get; internal set; }
+
+        /// <summary>
+        /// Gets or sets the ranges.
+        /// </summary>
+        /// <value>
+        /// The ranges.
+        /// </value>
         public float[][][] Ranges { get; set; }
 
         /// <inheritdoc />
@@ -75,7 +86,7 @@ namespace LiveCharts.Core.Updater
             {
                 if (_isScalesAtKnown) return _scalesAt;
 
-                if (Series is IPieSeries) return ScalesPie;
+                if (Series is IPieSeries) return Config.ScalesPieConst;
 
                 if (!(Series is ICartesianSeries cartesianSeries))
                 {
@@ -98,7 +109,7 @@ namespace LiveCharts.Core.Updater
             {
                 if (_isGiKnown) return _gi;
 
-                _gi = ((ISeries) Series).GroupingIndex;
+                _gi = Series.GroupingIndex;
                 _isGiKnown = true;
 
                 return _gi;
@@ -119,7 +130,7 @@ namespace LiveCharts.Core.Updater
         {
             Ranges = null;
             Collection = null;
-            Series = null;
+            Series = default(TSeries);
             UpdateContext = null;
             Chart = null;
         }

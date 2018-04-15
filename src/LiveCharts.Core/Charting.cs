@@ -139,7 +139,7 @@ namespace LiveCharts.Core
         /// <param name="predicate">The predicate.</param>
         /// <returns></returns>
         public ModelToCoordinateMapper<TModel, TPoint> LearnType<TModel, TPoint>(Func<TModel, int, TPoint> predicate)
-        where TPoint: ICoordinate
+            where TPoint: ICoordinate
         {
             return PlotAs(predicate);
         }

@@ -7,7 +7,7 @@ using LiveCharts.Core.Coordinates;
 using LiveCharts.Core.Dimensions;
 using LiveCharts.Core.Drawing;
 using LiveCharts.Core.Interaction;
-using LiveCharts.Core.Updater;
+using LiveCharts.Core.Updating;
 using LiveCharts.Core.ViewModels;
 
 namespace LiveCharts.Core.DataSeries
@@ -16,12 +16,17 @@ namespace LiveCharts.Core.DataSeries
     /// The stacked bar series.
     /// </summary>
     /// <typeparam name="TModel">The type of the model.</typeparam>
-    /// <seealso cref="CartesianSeries{TModel, StackedCoordinate, BarViewModel, Point}" />
+    /// <seealso cref="CartesianStrokeSeries{TModel,TCoordinate,TViewModel, TSeries}" />
     /// <seealso cref="IBarSeries" />
-    public class StackedBarSeries<TModel> : BaseBarSeries<TModel, StackedPointCoordinate, Point<TModel, StackedPointCoordinate, BarViewModel>>, IBarSeries
+    public class StackedBarSeries<TModel> : BaseBarSeries<TModel, StackedPointCoordinate, IStackedBarSeries>, IStackedBarSeries
     {
-        private static ISeriesViewProvider<TModel, StackedPointCoordinate, BarViewModel> _provider;
+        private static ISeriesViewProvider<TModel, StackedPointCoordinate, BarViewModel, IStackedBarSeries> _provider;
         private int _stackIndex;
+
+        public StackedBarSeries()
+        {
+            Charting.BuildFromSettings<IStackedBarSeries>(this);
+        }
 
         /// <inheritdoc />
         int ISeries.GroupingIndex => StackIndex;
@@ -44,13 +49,13 @@ namespace LiveCharts.Core.DataSeries
         }
 
         /// <inheritdoc />
-        protected override ISeriesViewProvider<TModel, StackedPointCoordinate, BarViewModel>
+        protected override ISeriesViewProvider<TModel, StackedPointCoordinate, BarViewModel, IStackedBarSeries>
             DefaultViewProvider =>
-            _provider ?? (_provider = Charting.Current.UiProvider.BarViewProvider<TModel, StackedPointCoordinate>());
+            _provider ?? (_provider = Charting.Current.UiProvider.BarViewProvider<TModel, StackedPointCoordinate, IStackedBarSeries>());
 
         /// <inheritdoc />
         protected override void BuildModel(
-            Point<TModel, StackedPointCoordinate, BarViewModel> current, UpdateContext context, 
+            Point<TModel, StackedPointCoordinate, BarViewModel, IStackedBarSeries> current, UpdateContext context, 
             ChartModel chart, Plane directionAxis, Plane scaleAxis, float cw, float columnStart, 
             float[] byBarOffset, float[] positionOffset, Orientation orientation, int h, int w)
         {

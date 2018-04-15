@@ -1,4 +1,5 @@
-﻿using LiveCharts.Core.Collections;
+﻿using LiveCharts.Core.Abstractions.DataSeries;
+using LiveCharts.Core.Collections;
 using LiveCharts.Core.DataSeries;
 using LiveCharts.Core.Dimensions;
 
@@ -50,14 +51,14 @@ namespace Assets.ViewModels
             series2.ScalesYAt = 1;
 
             // finally we add the series to our series collection.
-            SeriesCollection = new ChartingCollection<Series>();
+            SeriesCollection = new ChartingCollection<ISeries>();
             SeriesCollection.Add(series1);
             SeriesCollection.Add(series2);
 
             // we bind the SeriesCollection property to the CartesianChart.Series property in XAML
         }
 
-        public ChartingCollection<Series> SeriesCollection { get; set; }
+        public ChartingCollection<ISeries> SeriesCollection { get; set; }
         public ChartingCollection<Plane> YAxis { get; set; }
     }
 }

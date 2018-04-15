@@ -71,7 +71,7 @@ namespace LiveCharts.Core.Themes
                     Color.FromArgb(255, 215, 230, 127), // lime         300
                     Color.FromArgb(255, 254, 140, 43), // orange       600)
                 })
-                .SetDefault<ISeries>(series =>
+                .SetDefault<IStrokeSeries>(series =>
                 {
                     series.StrokeThickness = 3f;
                     series.DefaultFillOpacity = .3f;

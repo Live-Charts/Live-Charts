@@ -68,6 +68,9 @@
     <Compile Include="Views\BasicBubble.xaml.cs">
       <DependentUpon>BasicBubble.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\BasicHeat.xaml.cs">
+      <DependentUpon>BasicHeat.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\BasicLine.xaml.cs">
       <DependentUpon>BasicLine.xaml</DependentUpon>
     </Compile>
@@ -109,6 +112,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\BasicBubble.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\BasicHeat.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -197,6 +204,7 @@
     <Resource Include="Images\BasicScatter.png" />
     <Resource Include="Images\InvertedSeries.png" />
     <Resource Include="Images\MultipleAxes.png" />
+    <Resource Include="Images\BasicHeat.png" />
     <Content Include="propertyAndInstanceChanged.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

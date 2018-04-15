@@ -34,7 +34,7 @@ using LiveCharts.Core.Coordinates;
 using LiveCharts.Core.Drawing;
 using LiveCharts.Core.Drawing.Svg;
 using LiveCharts.Core.Interaction;
-using LiveCharts.Core.Updater;
+using LiveCharts.Core.Updating;
 using LiveCharts.Core.ViewModels;
 
 #endregion
@@ -45,9 +45,9 @@ namespace LiveCharts.Core.DataSeries
     /// The bubble series class.
     /// </summary>
     public class BubbleSeries<TModel> 
-        : CartesianSeries<TModel, WeightedCoordinate, GeometryPointViewModel, Point<TModel, WeightedCoordinate, GeometryPointViewModel>>, IBubbleSeries
+        : CartesianStrokeSeries<TModel, WeightedCoordinate, GeometryPointViewModel, IBubbleSeries>, IBubbleSeries
     {
-        private static ISeriesViewProvider<TModel, WeightedCoordinate, GeometryPointViewModel> _provider;
+        private static ISeriesViewProvider<TModel, WeightedCoordinate, GeometryPointViewModel, IBubbleSeries> _provider;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BubbleSeries{TModel}"/> class.
@@ -78,10 +78,10 @@ namespace LiveCharts.Core.DataSeries
         public override float[] PointMargin => new[] {MaxGeometrySize, MaxGeometrySize};
 
         /// <inheritdoc />
-        protected override ISeriesViewProvider<TModel, WeightedCoordinate, GeometryPointViewModel>
+        protected override ISeriesViewProvider<TModel, WeightedCoordinate, GeometryPointViewModel, IBubbleSeries>
             DefaultViewProvider => _provider ??
                                    (_provider = Charting.Current.UiProvider
-                                       .GeometryPointViewProvider<TModel, WeightedCoordinate>());
+                                       .GeometryPointViewProvider<TModel, WeightedCoordinate, IBubbleSeries>());
 
         /// <inheritdoc />
         public override void UpdateView(ChartModel chart, UpdateContext context)
@@ -102,7 +102,8 @@ namespace LiveCharts.Core.DataSeries
                 yi = 0;
             }
 
-            Point<TModel, WeightedCoordinate, GeometryPointViewModel> previous = null;
+            Point<TModel, WeightedCoordinate, GeometryPointViewModel, IBubbleSeries> previous = null;
+
             foreach (var current in Points)
             {
                 var p = new[]
@@ -128,8 +129,8 @@ namespace LiveCharts.Core.DataSeries
 
                 current.InteractionArea = new RectangleInteractionArea(
                     new RectangleF(
-                        vm.Location.X - p[2] * .5f,
-                        vm.Location.Y - p[2] * .5f,
+                        vm.Location.X,
+                        vm.Location.Y,
                         p[2],
                         p[2]));
                 previous = current;

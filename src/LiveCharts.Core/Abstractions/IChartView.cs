@@ -29,6 +29,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows.Input;
+using LiveCharts.Core.Abstractions.DataSeries;
 using LiveCharts.Core.Charts;
 using LiveCharts.Core.DataSeries;
 using LiveCharts.Core.Dimensions;
@@ -125,7 +126,7 @@ namespace LiveCharts.Core.Abstractions
         /// <value>
         /// The actual series.
         /// </value>
-        IEnumerable<Series> Series { get; }
+        IEnumerable<ISeries> Series { get; }
 
         /// <summary>
         /// Gets the animations speed.

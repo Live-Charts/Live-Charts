@@ -1,4 +1,5 @@
-﻿using LiveCharts.Core.Collections;
+﻿using LiveCharts.Core.Abstractions.DataSeries;
+using LiveCharts.Core.Collections;
 using LiveCharts.Core.DataSeries;
 
 namespace Assets.ViewModels
@@ -20,12 +21,12 @@ namespace Assets.ViewModels
             barSeries.Add(8d);
             barSeries.DefaultFillOpacity = .6f;
 
-            SeriesCollection = new ChartingCollection<Series>();
+            SeriesCollection = new ChartingCollection<ISeries>();
             SeriesCollection.Add(lineSeries);
             SeriesCollection.Add(barSeries);
             // we bind the SeriesCollection property to the CartesianChart.Series property in XAML
         }
 
-        public ChartingCollection<Series> SeriesCollection { get; set; }
+        public ChartingCollection<ISeries> SeriesCollection { get; set; }
     }
 }

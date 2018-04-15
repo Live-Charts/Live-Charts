@@ -26,8 +26,9 @@
 #region
 
 using System.Collections.Generic;
+using LiveCharts.Core.Abstractions.DataSeries;
 using LiveCharts.Core.Interaction;
-using LiveCharts.Core.Updater;
+using LiveCharts.Core.Updating;
 
 #endregion
 
@@ -42,14 +43,14 @@ namespace LiveCharts.Core.Abstractions
         /// Fetches the data.
         /// </summary>
         /// <typeparam name="TModel">The type of the model.</typeparam>
-        /// <typeparam name="TPoint">The type of the chart point.</typeparam>
         /// <typeparam name="TCoordinate">The type of the coordinate.</typeparam>
         /// <typeparam name="TViewModel">The type of the view model.</typeparam>
+        /// <typeparam name="TSeries">The type of the series.</typeparam>
         /// <param name="context">The arguments.</param>
         /// <returns></returns>
-        TPoint[] Fetch<TModel, TCoordinate, TViewModel, TPoint>(
-            DataFactoryContext<TModel, TCoordinate, TViewModel, TPoint> context)
-            where TPoint : Point<TModel, TCoordinate, TViewModel>, new()
-            where TCoordinate : ICoordinate;
+        Point<TModel, TCoordinate, TViewModel, TSeries>[] Fetch<TModel, TCoordinate, TViewModel, TSeries>(
+            DataFactoryContext<TModel, TCoordinate, TSeries> context)
+            where TCoordinate : ICoordinate
+            where TSeries : ISeries;
     }
 }

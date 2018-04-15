@@ -25,20 +25,70 @@
 
 #region
 
+using System;
+using System.Collections;
 using System.Collections.Generic;
-using System.Drawing;
+using System.ComponentModel;
 using LiveCharts.Core.Charts;
+using LiveCharts.Core.Drawing;
 using LiveCharts.Core.Drawing.Svg;
+using LiveCharts.Core.Interaction;
+using LiveCharts.Core.Updating;
 
 #endregion
 
 namespace LiveCharts.Core.Abstractions.DataSeries
 {
     /// <summary>
+    /// The series interface.
+    /// </summary>
+    /// <typeparam name="TModel">The type of the model.</typeparam>
+    /// <typeparam name="TCoordinate">The type of the coordinate.</typeparam>
+    /// <typeparam name="TSeries">The type of the series.</typeparam>
+    /// <typeparam name="TViewModel">The type of the view model.</typeparam>
+    /// <seealso cref="LiveCharts.Core.Abstractions.DataSeries.ISeries" />
+    public interface ISeries<TModel, TCoordinate, TViewModel, TSeries> : ISeries
+        where TCoordinate : ICoordinate
+        where TSeries : ISeries
+    {
+        /// <summary>
+        /// Gets or sets the mapper.
+        /// </summary>
+        /// <value>
+        /// The mapper.
+        /// </value>
+        ModelToCoordinateMapper<TModel, TCoordinate> Mapper { get; set; }
+
+        /// <summary>
+        /// Gets the points.
+        /// </summary>
+        /// <value>
+        /// The points.
+        /// </value>
+        IEnumerable<Point<TModel, TCoordinate, TViewModel, TSeries>> Points { get; }
+    }
+
+    /// <summary>
     /// Data Series
     /// </summary>
-    public interface ISeries
+    public interface ISeries : IResource, INotifyPropertyChanged, IList
     {
+        /// <summary>
+        /// Gets the resource key, the type used to style this element.
+        /// </summary>
+        /// <value>
+        /// The resource key.
+        /// </value>
+        Type ResourceKey { get; }
+
+        /// <summary>
+        /// Gets the metadata.
+        /// </summary>
+        /// <value>
+        /// The metadata.
+        /// </value>
+        SeriesMetatada Metadata { get; }
+
         /// <summary>
         /// Gets or sets a value indicating whether the series should display a label for every point in the series.
         /// </summary>
@@ -57,7 +107,7 @@ namespace LiveCharts.Core.Abstractions.DataSeries
 
         /// <summary>
         /// Gets or sets the default fill opacity, this property is used to determine the fill opacity of a point when 
-        /// LiveCharts sets the <see cref="Fill"/> automatically based on the theme.
+        /// LiveCharts sets the fill automatically based on the theme.
         /// </summary>
         /// <value>
         /// The default fill opacity.
@@ -72,14 +122,6 @@ namespace LiveCharts.Core.Abstractions.DataSeries
         /// The default width of the point.
         /// </value>
         float[] DefaultPointWidth { get; }
-
-        /// <summary>
-        /// Gets or sets the fill.
-        /// </summary>
-        /// <value>
-        /// The fill.
-        /// </value>
-        Color Fill { get; set; }
 
         /// <summary>
         /// Gets or sets the font, the font will be used as the <see cref="DataLabels"/> font of this series.
@@ -99,36 +141,20 @@ namespace LiveCharts.Core.Abstractions.DataSeries
         Geometry Geometry { get; set; }
 
         /// <summary>
+        /// Gets the series style.
+        /// </summary>
+        /// <value>
+        /// The series style.
+        /// </value>
+        SeriesStyle Style { get; }
+
+        /// <summary>
         /// Gets or sets a value indicating whether this instance is visible.
         /// </summary>
         /// <value>
         ///   <c>true</c> if this instance is visible; otherwise, <c>false</c>.
         /// </value>
         bool IsVisible { get; set; }
-
-        /// <summary>
-        /// Gets or sets the stroke.
-        /// </summary>
-        /// <value>
-        /// The stroke.
-        /// </value>
-        Color Stroke { get; set; }
-
-        /// <summary>
-        /// Gets or sets the stroke thickness.
-        /// </summary>
-        /// <value>
-        /// The stroke thickness.
-        /// </value>
-        float StrokeThickness { get; set; }
-
-        /// <summary>
-        /// Gets or sets the stroke dash array.
-        /// </summary>
-        /// <value>
-        /// The stroke dash array.
-        /// </value>
-        IEnumerable<double> StrokeDashArray { get; set; }
 
         /// <summary>
         /// Gets or sets the title.
@@ -147,12 +173,59 @@ namespace LiveCharts.Core.Abstractions.DataSeries
         int GroupingIndex { get; }
 
         /// <summary>
-        /// Gets the content, this property is used internally by the library and should only be used
-        /// by you if you need to build a custom series.
+        /// Gets or sets the content.
         /// </summary>
         /// <value>
         /// The content.
         /// </value>
         Dictionary<ChartModel, Dictionary<string, object>> Content { get; }
+
+        /// <summary>
+        /// Gets the point margin, this property is used internally by the library and should only be used
+        /// by you if you need to build a custom cartesian series.
+        /// </summary>
+        /// <value>
+        /// The point margin.
+        /// </value>
+        float[] PointMargin { get; }
+
+        /// <summary>
+        /// Fetches the specified chart.
+        /// </summary>
+        /// <param name="chart">The chart.</param>
+        /// <param name="context">The update context.</param>
+        void Fetch(ChartModel chart, UpdateContext context);
+
+        /// <summary>
+        /// Stores the series as a chart resource.
+        /// </summary>
+        /// <param name="chart">The chart.</param>
+        void UsedBy(ChartModel chart);
+
+        /// <summary>
+        /// Gets the interacted points according to a mouse position.
+        /// </summary>
+        /// <param name="dimensions">The dimensions.</param>
+        /// <returns></returns>
+        IEnumerable<PackedPoint> GetInteractedPoints(params double[] dimensions);
+
+        /// <summary>
+        /// Updates the started.
+        /// </summary>
+        /// <param name="chart">The chart.</param>
+        void UpdateStarted(IChartView chart);
+
+        /// <summary>
+        /// Updates the finished.
+        /// </summary>
+        /// <param name="chart">The chart.</param>
+        void UpdateFinished(IChartView chart);
+
+        /// <summary>
+        /// Updates the view.
+        /// </summary>
+        /// <param name="chart">The chart.</param>
+        /// <param name="context">The context.</param>
+        void UpdateView(ChartModel chart, UpdateContext context);
     }
 }

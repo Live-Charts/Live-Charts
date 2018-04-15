@@ -26,6 +26,7 @@
 #region
 
 using System.Drawing;
+using LiveCharts.Core.Abstractions.DataSeries;
 using LiveCharts.Core.Interaction;
 
 #endregion
@@ -36,11 +37,11 @@ namespace LiveCharts.Core.Abstractions
     /// Defines a point view.
     /// </summary>
     /// <typeparam name="TModel">The type of the model.</typeparam>
-    /// <typeparam name="TPoint">The type of the chart point.</typeparam>
     /// <typeparam name="TCoordinate">The type of the coordinate.</typeparam>
     /// <typeparam name="TViewModel">The type of the point model.</typeparam>
-    public interface IPointView<TModel, in TPoint, TCoordinate, TViewModel> : IResource
-        where TPoint : Point<TModel, TCoordinate, TViewModel>, new()
+    /// <typeparam name="TSeries">The type of the series.</typeparam>
+    public interface IPointView<TModel, TCoordinate, TViewModel, TSeries> : IResource
+        where TSeries : ISeries
         where TCoordinate : ICoordinate
     {
         /// <summary>
@@ -64,13 +65,13 @@ namespace LiveCharts.Core.Abstractions
         /// </summary>
         /// <param name="point">The point.</param>
         /// <param name="previous">The previous.</param>
-        void DrawShape(TPoint point, TPoint previous);
+        void DrawShape(Point<TModel, TCoordinate, TViewModel, TSeries> point, Point<TModel, TCoordinate, TViewModel, TSeries> previous);
 
         /// <summary>
         /// Draws the label.
         /// </summary>
         /// <param name="point">The point.</param>
         /// <param name="location">The location.</param>
-        void DrawLabel(TPoint point, PointF location);
+        void DrawLabel(Point<TModel, TCoordinate, TViewModel, TSeries> point, PointF location);
     }
 }

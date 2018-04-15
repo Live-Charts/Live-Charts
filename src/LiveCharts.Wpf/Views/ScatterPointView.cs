@@ -44,16 +44,19 @@ namespace LiveCharts.Wpf.Views
     /// </summary>
     /// <typeparam name="TModel">The type of the model.</typeparam>
     /// <typeparam name="TCoordinate">The type of the coordinate.</typeparam>
-    /// <typeparam name="TPoint">The type of the point.</typeparam>
     /// <typeparam name="TLabel">The type of the label.</typeparam>
+    /// <typeparam name="TSeries">The type of the series.</typeparam>
     /// <seealso cref="Views.PointView{TModel, TPoint, WeightedCoordinate, GeometryPointViewModel, Path, TLabel}" />
-    public class GeometryPointView<TModel, TCoordinate, TPoint, TLabel>
-        : PointView<TModel, TPoint, TCoordinate, GeometryPointViewModel, Path, TLabel>
-        where TPoint : Point<TModel, TCoordinate, GeometryPointViewModel>, new()
+    public class GeometryPointView<TModel, TCoordinate, TSeries, TLabel>
+        : PointView<TModel, TCoordinate, GeometryPointViewModel, TSeries, Path, TLabel>
         where TLabel : FrameworkElement, IDataLabelControl, new()
         where TCoordinate : ICoordinate
+        where TSeries : IStrokeSeries, ICartesianSeries
     {
-        protected override void OnDraw(TPoint point, TPoint previous)
+        /// <inheritdoc />
+        protected override void OnDraw(
+            Point<TModel, TCoordinate, GeometryPointViewModel, TSeries> point,
+            Point<TModel, TCoordinate, GeometryPointViewModel, TSeries> previous)
         {
             var chart = point.Chart.View;
             var vm = point.ViewModel;
@@ -74,7 +77,7 @@ namespace LiveCharts.Wpf.Views
             Shape.StrokeThickness = 3.5;
             Shape.Stroke = point.Series.Stroke.AsWpf();
             Shape.Data = Geometry.Parse(point.Series.Geometry.Data);
-            Panel.SetZIndex(Shape, ((ICartesianSeries)point.Series).ZIndex);
+            Panel.SetZIndex(Shape, point.Series.ZIndex);
 
             var speed = chart.AnimationsSpeed;
             var r = vm.Diameter * .5;

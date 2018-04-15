@@ -28,31 +28,32 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using LiveCharts.Core.Abstractions;
-using LiveCharts.Core.DataSeries;
+using LiveCharts.Core.Abstractions.DataSeries;
 using LiveCharts.Core.Interaction;
 
 #endregion
 
-namespace LiveCharts.Core.Updater
+namespace LiveCharts.Core.Updating
 {
     /// <summary>
     /// Defines the default chart point factory.
     /// </summary>
     /// <seealso cref="IDataFactory" />
-    public class DefaultDataFactory : IDataFactory
+    public class DataFactory : IDataFactory
     {
         /// <inheritdoc />
-        public TPoint[] Fetch<TModel, TCoordinate, TViewModel, TPoint>(
-            DataFactoryContext<TModel, TCoordinate, TViewModel, TPoint> context)
-            where TPoint : Point<TModel, TCoordinate, TViewModel>, new()
+        public Point<TModel, TCoordinate, TViewModel, TSeries>[] Fetch<TModel, TCoordinate, TViewModel, TSeries>(
+            DataFactoryContext<TModel, TCoordinate, TSeries> context)
             where TCoordinate : ICoordinate
+            where TSeries : ISeries
         {
-            var results = new List<TPoint>();
-            var mapper = context.Series.Mapper;
+            var results = new List<Point<TModel, TCoordinate, TViewModel, TSeries>>();
+            var mapper = context.Mapper;
             var notifiesChange = typeof(INotifyPropertyChanged).IsAssignableFrom(context.Series.Metadata.ModelType);
             var collection = context.Collection;
             var isValueType = context.Series.Metadata.IsValueType;
-            var tracker = (Dictionary<object, TPoint>) context.Series.Content[context.Chart][Series.Tracker];
+            var tracker = (Dictionary<object, Point<TModel, TCoordinate, TViewModel, TSeries>>)
+                context.Series.Content[context.Chart][Config.TrackerKey];
 
             void InvalidateOnPropertyChanged(object sender, PropertyChangedEventArgs e)
             {
@@ -67,7 +68,7 @@ namespace LiveCharts.Core.Updater
 
                 if (!tracker.TryGetValue(key, out var chartPoint))
                 {
-                    chartPoint = new TPoint();
+                    chartPoint = new Point<TModel, TCoordinate, TViewModel, TSeries>();
                     tracker.Add(key, chartPoint);
                     if (notifiesChange)
                     {

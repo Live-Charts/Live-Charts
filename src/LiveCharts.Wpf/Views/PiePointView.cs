@@ -16,16 +16,16 @@ namespace LiveCharts.Wpf.Views
     /// The pie point view.
     /// </summary>
     /// <typeparam name="TModel">The type of the model.</typeparam>
-    /// <typeparam name="TPoint">The type of the point.</typeparam>
     /// <typeparam name="TLabel">The type of the label.</typeparam>
     /// <seealso cref="LiveCharts.Wpf.Views.PointView{TModel, TPoint, PieCoordinate, PieViewModel, TShape, TLabel}" />
-    public class PiePointView<TModel, TPoint, TLabel>
-        : PointView<TModel, TPoint, StackedPointCoordinate, PieViewModel, Slice, TLabel>
-        where TPoint : Point<TModel, StackedPointCoordinate, PieViewModel>, new()
+    public class PiePointView<TModel,  TLabel>
+        : PointView<TModel, StackedPointCoordinate, PieViewModel, IPieSeries, Slice, TLabel>
         where TLabel : FrameworkElement, IDataLabelControl, new()
     {
         /// <inheritdoc />
-        protected override void OnDraw(TPoint point, TPoint previous)
+        protected override void OnDraw(
+            Point<TModel, StackedPointCoordinate, PieViewModel, IPieSeries> point,
+            Point<TModel, StackedPointCoordinate, PieViewModel, IPieSeries> previous)
         {
             var chart = point.Chart.View;
             var vm = point.ViewModel;
@@ -55,8 +55,8 @@ namespace LiveCharts.Wpf.Views
             Shape.InnerRadius = vm.To.InnerRadius;
             Shape.Radius = vm.To.OuterRadius;
             Shape.ForceAngle = true;
-            Shape.CornerRadius = ((IPieSeries) point.Series).CornerRadius;
-            Shape.PushOut = ((IPieSeries) point.Series).PushOut;
+            Shape.CornerRadius = point.Series.CornerRadius;
+            Shape.PushOut = point.Series.PushOut;
 
             // animate
 
@@ -81,7 +81,9 @@ namespace LiveCharts.Wpf.Views
         }
 
         /// <inheritdoc />
-        protected override void OnDrawLabel(TPoint point, PointF location)
+        protected override void OnDrawLabel(
+            Point<TModel, StackedPointCoordinate, PieViewModel, IPieSeries> point, 
+            PointF location)
         {
             base.OnDrawLabel(point, location);
         }

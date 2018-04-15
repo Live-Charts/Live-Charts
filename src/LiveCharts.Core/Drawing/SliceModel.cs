@@ -5,7 +5,7 @@ using LiveCharts.Core.ViewModels;
 namespace LiveCharts.Core.Drawing
 {
     /// <summary>
-    /// 
+    /// The slice model class.
     /// </summary>
     public static class SliceModel
     {

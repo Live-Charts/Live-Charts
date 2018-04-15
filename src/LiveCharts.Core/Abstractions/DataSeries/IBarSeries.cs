@@ -25,10 +25,10 @@
 namespace LiveCharts.Core.Abstractions.DataSeries
 {
     /// <summary>
-    /// The column series definition.
+    /// The stacked series definition.
     /// </summary>
     /// <seealso cref="LiveCharts.Core.Abstractions.DataSeries.ISeries" />
-    public interface IBarSeries : ISeries, ICartesianSeries
+    public interface IBarSeries : ICartesianSeries, IStrokeSeries
     {
         /// <summary>
         /// Gets or sets the column padding.

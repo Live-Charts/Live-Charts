@@ -26,7 +26,7 @@
 #region
 
 using LiveCharts.Core;
-using LiveCharts.Core.Updater;
+using LiveCharts.Core.Updating;
 
 #endregion
 
@@ -36,7 +36,7 @@ namespace LiveCharts.Wpf
     {
         public static Charting TargetsWpf(this Charting settings)
         {
-            settings.DataFactory = new DefaultDataFactory();
+            settings.DataFactory = new DataFactory();
             settings.UiProvider = new UiProvider();
 
             return settings;

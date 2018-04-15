@@ -1,9 +1,9 @@
 <ResourceDictionary
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:dataSeries="clr-namespace:LiveCharts.Core.DataSeries;assembly=LiveCharts.Core"
     xmlns:controls="clr-namespace:LiveCharts.Wpf.Controls"
     xmlns:converters="clr-namespace:LiveCharts.Wpf.Converters"
+    xmlns:dataSeries1="clr-namespace:LiveCharts.Core.Abstractions.DataSeries;assembly=LiveCharts.Core"
     xmlns:data1="clr-namespace:LiveCharts.Core.Interaction;assembly=LiveCharts.Core">
 
     <converters:ColorToSolidBrushConverter x:Key="AsSolidColorBrush" />
@@ -67,9 +67,9 @@
                         <Path Grid.Column="0"
                               Width="{Binding GeometrySize, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type controls:ChartToolTip}}}"
                               Height="{Binding GeometrySize, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type controls:ChartToolTip}}}"
-                              StrokeThickness="{Binding Series.StrokeThickness}"
-                              Stroke="{Binding Series.Stroke, Converter={StaticResource AsSolidColorBrush}}"
-                              Fill="{Binding Series.Fill, Converter={StaticResource AsSolidColorBrush}}"
+                              StrokeThickness="{Binding Series.Style.StrokeThickness}"
+                              Stroke="{Binding Series.Style.Stroke, Converter={StaticResource AsSolidColorBrush}}"
+                              Fill="{Binding Series.Style.Fill, Converter={StaticResource AsSolidColorBrush}}"
                               Stretch="Fill"
                               Data="{Binding Path=Series.Geometry.Data}"
                               Margin="0 0 6 0" />
@@ -109,14 +109,14 @@
 
         <Setter Property="ItemTemplate">
             <Setter.Value>
-                <DataTemplate DataType="{x:Type dataSeries:Series}">
+                <DataTemplate DataType="{x:Type dataSeries1:ISeries}">
                     <StackPanel Orientation="Horizontal">
                         <Path
                             Width="{Binding GeometrySize, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type controls:ChartLegend}}}"
                             Height="{Binding GeometrySize, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type controls:ChartLegend}}}"
-                            StrokeThickness="{Binding StrokeThickness}"
-                            Stroke="{Binding Stroke, Converter={StaticResource AsSolidColorBrush}}"
-                            Fill="{Binding Fill, Converter={StaticResource AsSolidColorBrush}}"
+                            StrokeThickness="{Binding Style.StrokeThickness}"
+                            Stroke="{Binding Style.Stroke, Converter={StaticResource AsSolidColorBrush}}"
+                            Fill="{Binding Style.Fill, Converter={StaticResource AsSolidColorBrush}}"
                             Stretch="Fill"
                             Data="{Binding Path=Geometry.Data}"
                             Margin="0 0 6 0" />

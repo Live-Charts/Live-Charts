@@ -38,6 +38,16 @@ namespace LiveCharts.Core
     public static class Config
     {
         /// <summary>
+        /// The tracker constant.
+        /// </summary>
+        public const string TrackerKey = "Tracker";
+
+        /// <summary>
+        /// The scales pie constant
+        /// </summary>
+        public static int[] ScalesPieConst = {0, 0};
+
+        /// <summary>
         /// Configures LiveCharts to plot the default types.
         /// </summary>
         /// <param name="charting">The configuration.</param>

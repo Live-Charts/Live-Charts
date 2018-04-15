@@ -30,7 +30,7 @@ using System.Drawing;
 using System.Windows;
 using System.Windows.Controls;
 using LiveCharts.Core.Abstractions;
-using LiveCharts.Core.DataSeries;
+using LiveCharts.Core.Abstractions.DataSeries;
 using LiveCharts.Core.Events;
 using Orientation = LiveCharts.Core.Abstractions.Orientation;
 
@@ -143,7 +143,7 @@ namespace LiveCharts.Wpf.Controls
         }
 
         float[] ILegend.Measure(
-            IEnumerable<Series> seriesCollection, Orientation orientation, IChartView chart)
+            IEnumerable<ISeries> seriesCollection, Orientation orientation, IChartView chart)
         {
             if (Parent == null)
             {

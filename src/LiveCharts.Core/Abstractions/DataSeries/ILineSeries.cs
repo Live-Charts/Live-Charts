@@ -34,7 +34,7 @@ namespace LiveCharts.Core.Abstractions.DataSeries
     /// <summary>
     /// The line series interface.
     /// </summary>
-    public interface ILineSeries : ISeries, ICartesianSeries
+    public interface ILineSeries : ISeries, ICartesianSeries, IStrokeSeries
     {
         /// <summary>
         /// Gets or sets the line smoothness, this property goes from 0 to 1, 0 will generate straight beziers, 1 super curved beziers.

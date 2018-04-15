@@ -25,6 +25,7 @@
 
 #region
 
+using LiveCharts.Core.Abstractions.DataSeries;
 using LiveCharts.Core.Coordinates;
 using LiveCharts.Core.ViewModels;
 
@@ -76,32 +77,47 @@ namespace LiveCharts.Core.Abstractions
         /// </summary>
         /// <typeparam name="TModel">The type of the model.</typeparam>
         /// <typeparam name="TCoordinate">The type of the coordinate.</typeparam>
+        /// <typeparam name="TSeries">The type of the series.</typeparam>
         /// <returns></returns>
-        ISeriesViewProvider<TModel, TCoordinate, BarViewModel> BarViewProvider<TModel, TCoordinate>()
-            where TCoordinate : ICoordinate;
+        ISeriesViewProvider<TModel, TCoordinate, BarViewModel, TSeries>
+            BarViewProvider<TModel, TCoordinate, TSeries>()
+            where TCoordinate : ICoordinate
+            where TSeries : ICartesianSeries, IStrokeSeries;
 
         /// <summary>
         /// Provides LiveCharts with a builder that returns a bezier view.
         /// </summary>
         /// <typeparam name="TModel">The type of the model.</typeparam>
         /// <returns></returns>
-        ISeriesViewProvider<TModel, PointCoordinate, BezierViewModel> BezierViewProvider<TModel>();
+        ISeriesViewProvider<TModel, PointCoordinate, BezierViewModel, ILineSeries> 
+            BezierViewProvider<TModel>();
 
         /// <summary>
         /// Provides LiveCharts with a builder that returns a scatter view.
         /// </summary>
         /// <typeparam name="TModel">The type of the model.</typeparam>
         /// <typeparam name="TCoordinate">The type of the coordinate.</typeparam>
+        /// <typeparam name="TSeries">The type of the series.</typeparam>
         /// <returns></returns>
-        ISeriesViewProvider<TModel, TCoordinate, GeometryPointViewModel> GeometryPointViewProvider<TModel, TCoordinate>()
-            where TCoordinate : ICoordinate;
+        ISeriesViewProvider<TModel, TCoordinate, GeometryPointViewModel, TSeries> 
+            GeometryPointViewProvider<TModel, TCoordinate, TSeries>()
+            where TCoordinate : ICoordinate
+            where TSeries : ICartesianSeries, IStrokeSeries;
 
         /// <summary>
         /// Provides LiveCharts with a builder that returns a pie view.
         /// </summary>
         /// <typeparam name="TModel">The type of the model.</typeparam>
         /// <returns></returns>
-        ISeriesViewProvider<TModel, StackedPointCoordinate, PieViewModel> PieViewProvider<TModel>();
+        ISeriesViewProvider<TModel, StackedPointCoordinate, PieViewModel, IPieSeries> 
+            PieViewProvider<TModel>();
 
+        /// <summary>
+        /// Provides LiveCharts with a builder that returns a heat view.
+        /// </summary>
+        /// <typeparam name="TModel">The type of the model.</typeparam>
+        /// <returns></returns>
+        ISeriesViewProvider<TModel, WeightedCoordinate, HeatViewModel, IHeatSeries> 
+            HeatViewProvider<TModel>();
     }
 }

@@ -3,7 +3,7 @@
     /// <summary>
     /// The pie series interface.
     /// </summary>
-    public interface IPieSeries
+    public interface IPieSeries: IStrokeSeries
     {
         /// <summary>
         /// Gets or sets the push out.

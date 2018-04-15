@@ -28,6 +28,7 @@
 using System;
 using System.Collections.Generic;
 using LiveCharts.Core.Abstractions;
+using LiveCharts.Core.Abstractions.DataSeries;
 using LiveCharts.Core.Events;
 
 #endregion
@@ -119,11 +120,12 @@ namespace LiveCharts.Core.Interaction
         /// <summary>
         /// Runs the UI action.
         /// </summary>
-        public void RunUiAction<TViewModel>(
+        public void RunUiAction<TViewModel, TSeries>(
             UiActions action, 
             TModel sender, 
             object visual,
-            Point<TModel, TCoordinate, TViewModel> point)
+            Point<TModel, TCoordinate, TViewModel, TSeries> point)
+            where TSeries : ISeries
         {
             var actionsCollection = _userUiActions[action];
 
@@ -142,10 +144,11 @@ namespace LiveCharts.Core.Interaction
         /// <summary>
         /// Evaluates models dependent actions.
         /// </summary>
-        public void EvaluateModelDependentActions<TViewModel>(
+        public void EvaluateModelDependentActions<TViewModel, TSeries>(
             TModel model, 
             object visual, 
-            Point<TModel, TCoordinate, TViewModel> point)
+            Point<TModel, TCoordinate, TViewModel, TSeries> point)
+            where TSeries : ISeries
         {
             if (_modelDependentActions == null) return;
 

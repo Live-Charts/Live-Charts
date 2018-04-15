@@ -41,7 +41,7 @@ using LiveCharts.Core.Drawing;
 using LiveCharts.Core.Drawing.Svg;
 using LiveCharts.Core.Events;
 using LiveCharts.Core.Interaction;
-using LiveCharts.Core.Updater;
+using LiveCharts.Core.Updating;
 using Font = LiveCharts.Core.Abstractions.Font;
 
 #endregion
@@ -49,54 +49,77 @@ using Font = LiveCharts.Core.Abstractions.Font;
 namespace LiveCharts.Core.DataSeries
 {
     /// <summary>
-    /// The data set class, represents a series to plot in a chart.
+    /// The series class with a defined plot model, represents a series to plot in a chart.
     /// </summary>
+    /// <typeparam name="TModel">The type of the model.</typeparam>
+    /// <typeparam name="TCoordinate">The type of the coordinate.</typeparam>
+    /// <typeparam name="TViewModel">The type of the view model.</typeparam>
+    /// <typeparam name="TSeries">The type of the series.</typeparam>
     /// <seealso cref="IResource" />
-    public abstract class Series : IResource, ISeries, INotifyPropertyChanged, IList
-    {
-        private readonly List<ChartModel> _usedBy = new List<ChartModel>();
+    public abstract class Series<TModel, TCoordinate, TViewModel, TSeries> 
+        : ISeries<TModel, TCoordinate, TViewModel, TSeries>, IList<TModel>, INotifyRangeChanged<TModel>
+        where TCoordinate : ICoordinate
+        where TSeries : class, ISeries
+    { 
+        private IEnumerable<TModel> _itemsSource;
+        private IEnumerable<TModel> _previousItemsSource;
+        private IList<TModel> _sourceAsIList;
+        private INotifyRangeChanged<TModel> _sourceAsRangeChanged;
+        private ModelToCoordinateMapper<TModel, TCoordinate> _mapper;
+        private ISeriesViewProvider<TModel, TCoordinate, TViewModel, TSeries> _viewProvider;
+        private object _chartPointsUpdateId;
+        private List<ChartModel> _usedBy = new List<ChartModel>();
         private bool _isVisible;
         private bool _dataLabels;
         private string _title;
-        private Color _stroke;
-        private float _strokeThickness;
-        private Color _fill;
         private Font _font;
         private float _defaultFillOpacity;
         private Geometry _geometry;
         private DataLabelsPosition _dataLabelsPosition;
-        private IEnumerable<double> _strokeDashArray;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Series"/> class.
+        /// Initializes a new instance of the <see cref="Series{TModel, TCoordinate, TViewModel, TSeries}"/> class.
         /// </summary>
         protected Series()
         {
-            IsVisible = true;
-            Charting.BuildFromSettings<ISeries>(this);
+            Initialize();
         }
 
         /// <summary>
-        /// The tracker constant.
+        /// Initializes a new instance of the <see cref="Series{TModel, TCoordinate, TViewModel, TSeries}"/> class.
         /// </summary>
-        public const string Tracker = "Tracker";
+        /// <param name="itemsSource">The values.</param>
+        protected Series(IEnumerable<TModel> itemsSource)
+        {
+            Initialize(itemsSource);
+        }
 
         #region Properties
 
-        /// <summary>
-        /// Gets the unique identifier.
-        /// </summary>
-        /// <value>
-        /// The key.
-        /// </value>
-        public abstract Type ResourceKey { get; }
+        /// <inheritdoc />
+        public TModel this[int index]
+        {
+            get
+            {
+                EnsureIListImplementation();
+                return _sourceAsIList[index];
+            }
+            set
+            {
+                EnsureIListImplementation();
+                _sourceAsIList[index] = value;
+                OnPropertyChanged();
+            }
+        }
+
+        object IList.this[int index]
+        {
+            get => this[index];
+            set => this[index] = (TModel)value;
+        }
 
         /// <inheritdoc />
-        public object this[int index]
-        {
-            get => GetItem(index);
-            set => SetItem(value, index);
-        }
+        public abstract Type ResourceKey { get; }
 
         /// <inheritdoc />
         public bool DataLabels
@@ -108,6 +131,9 @@ namespace LiveCharts.Core.DataSeries
                 OnPropertyChanged();
             }
         }
+
+        /// <inheritdoc />
+        public virtual SeriesStyle Style => throw new NotImplementedException();
 
         /// <inheritdoc />
         public bool IsVisible
@@ -127,50 +153,6 @@ namespace LiveCharts.Core.DataSeries
             set
             {
                 _title = value;
-                OnPropertyChanged();
-            }
-        }
-
-        /// <inheritdoc />
-        public Color Stroke
-        {
-            get => _stroke;
-            set
-            {
-                _stroke = value;
-                OnPropertyChanged();
-            }
-        }
-
-        /// <inheritdoc />
-        public float StrokeThickness
-        {
-            get => _strokeThickness;
-            set
-            {
-                _strokeThickness = value;
-                OnPropertyChanged();
-            }
-        }
-
-        /// <inheritdoc />
-        public IEnumerable<double> StrokeDashArray
-        {
-            get => _strokeDashArray;
-            set
-            {
-                _strokeDashArray = value;
-                OnPropertyChanged();
-            }
-        }
-
-        /// <inheritdoc />
-        public Color Fill
-        {
-            get => _fill;
-            set
-            {
-                _fill = value;
                 OnPropertyChanged();
             }
         }
@@ -227,201 +209,203 @@ namespace LiveCharts.Core.DataSeries
 
         /// <inheritdoc />
         public abstract float[] DefaultPointWidth { get; }
-
-        /// <summary>
-        /// Gets the point margin, this property is used internally by the library and should only be used
-        /// by you if you need to build a custom cartesian series.
-        /// </summary>
-        /// <value>
-        /// The point margin.
-        /// </value>
+        
+        /// <inheritdoc />
         public abstract float[] PointMargin { get; }
 
         /// <inheritdoc />
-        bool IList.IsReadOnly => OnIListIsReadOnly();
-
-        /// <summary>
-        /// Called when [i list is read only].
-        /// </summary>
-        /// <returns></returns>
-        /// <exception cref="NotImplementedException"></exception>
-        protected abstract bool OnIListIsReadOnly();
+        bool IList.IsReadOnly => _sourceAsIList.IsReadOnly;
 
         /// <inheritdoc />
-        bool IList.IsFixedSize => OnIListIsFixedSize();
-
-        /// <summary>
-        /// Called when [i list is fixed size].
-        /// </summary>
-        /// <returns></returns>
-        protected abstract bool OnIListIsFixedSize();
+        bool IList.IsFixedSize => ((IList) _sourceAsIList).IsFixedSize;
 
         /// <inheritdoc />
-        public int Count => OnIListCount();
+        void ICollection.CopyTo(Array array, int index)
+        {
+            ((ICollection) _sourceAsIList).CopyTo(array, index);
+        }
 
-        /// <summary>
-        /// Called when [i list count].
-        /// </summary>
-        /// <returns></returns>
-        protected abstract int OnIListCount();
-
-        /// <inheritdoc />
-        object ICollection.SyncRoot => OnIListSyncRoot();
-
-        /// <summary>
-        /// Called when [i list synchronize root].
-        /// </summary>
-        /// <returns></returns>
-        /// <exception cref="NotImplementedException"></exception>
-        protected abstract object OnIListSyncRoot();
+        /// <inheritdoc cref="List{T}.Count"/>
+        public int Count => _sourceAsIList?.Count ?? _itemsSource.Count();
 
         /// <inheritdoc />
-        bool ICollection.IsSynchronized => OnIListIsSynchronized();
+        object ICollection.SyncRoot => ((ICollection) ItemsSource).SyncRoot;
+
+        /// <inheritdoc />
+        bool ICollection.IsSynchronized => ((ICollection)ItemsSource).IsSynchronized;
+
+        /// <summary>
+        /// Gets or sets the items source, the items source is where the series grabs the 
+        /// data to plot from, by default it is of type <see cref="ChartingCollection{T}"/>
+        /// but you can use any <see cref="IEnumerable{T}"/> as your data source.
+        /// </summary>
+        /// <value>
+        /// The values.
+        /// </value>
+        public IEnumerable<TModel> ItemsSource
+        {
+            get => _itemsSource;
+            set
+            {
+                _itemsSource = value;
+                OnItemsInstanceChanged();
+                OnPropertyChanged();
+            }
+        }
+
+        /// <inheritdoc />
+        public SeriesMetatada Metadata { get; protected set; }
+
+        /// <summary>
+        /// Gets or sets the mapper.
+        /// </summary>
+        /// <value>
+        /// The mapper.
+        /// </value>
+        public ModelToCoordinateMapper<TModel, TCoordinate> Mapper
+        {
+            get => _mapper ?? Charting.GetCurrentMapperFor<TModel, TCoordinate>();
+            set
+            {
+                _mapper = value;
+                OnPropertyChanged();
+            }
+        }
+
+        /// <inheritdoc />
+        public IEnumerable<Point<TModel, TCoordinate, TViewModel, TSeries>> Points { get; private set; }
+
+        /// <summary>
+        /// Gets or sets the point builder.
+        /// </summary>
+        /// <value>
+        /// The point builder.
+        /// </value>
+        public Func<TModel, TViewModel> PointBuilder { get; set; }
+
+        /// <summary>
+        /// Gets or sets the point view provider.
+        /// </summary>
+        /// <value>
+        /// The point view provider.
+        /// </value>
+        public ISeriesViewProvider<TModel, TCoordinate, TViewModel, TSeries>
+            ViewProvider
+        {
+            get => _viewProvider ?? DefaultViewProvider;
+            set
+            {
+                _viewProvider = value;
+                OnPropertyChanged();
+            }
+        }
+
+        /// <inheritdoc />
+        bool ICollection<TModel>.IsReadOnly
+        {
+            get
+            {
+                EnsureIListImplementation();
+                return _sourceAsIList.IsReadOnly;
+            }
+        }
 
         #endregion
 
-        /// <summary>
-        /// Called when [i list is synchronized].
-        /// </summary>
-        /// <returns></returns>
-        /// <exception cref="NotImplementedException"></exception>
-        protected abstract bool OnIListIsSynchronized();
-
         /// <inheritdoc />
-        public int Add(object item)
+        void ISeries.UpdateStarted(IChartView chart)
         {
-            return OnIListAdd(item);
+            ViewProvider.OnUpdateStarted(chart, this as TSeries);
         }
 
-        /// <summary>
-        /// Called when [i list add].
-        /// </summary>
-        /// <returns></returns>
-        protected abstract int OnIListAdd(object item);
-
         /// <inheritdoc />
-        bool IList.Contains(object value)
+        void ISeries.UpdateFinished(IChartView chart)
         {
-            return OnIListContains(value);
+            ViewProvider.OnUpdateFinished(chart, this as TSeries);
         }
 
-        /// <summary>
-        /// Called when [i list contains].
-        /// </summary>
-        /// <returns></returns>
-        protected abstract bool OnIListContains(object value);
-
         /// <inheritdoc />
-        public void Clear()
-        {
-            OnIListClear();
-        }
-
-        /// <summary>
-        /// Called when [i list clear].
-        /// </summary>
-        protected abstract void OnIListClear();
-
-        /// <inheritdoc />
-        public int IndexOf(object value)
-        {
-            return OnListIndexOf(value);
-        }
-
-        /// <summary>
-        /// Called when [list index of].
-        /// </summary>
-        /// <returns></returns>
-        protected abstract int OnListIndexOf(object item);
-
-        /// <inheritdoc />
-        public void Insert(int index, object value)
-        {
-            OnIListInsert(index, value);
-        }
-
-        /// <summary>
-        /// Called when [i list insert].
-        /// </summary>
-        /// <param name="index">The index.</param>
-        /// <param name="value">The value.</param>
-        protected abstract void OnIListInsert(int index, object value);
-
-        /// <inheritdoc />
-        public void Remove(object item)
-        {
-            OnIListRemove(item);
-        }
-
-        /// <summary>
-        /// Called when [i list remove].
-        /// </summary>
-        /// <param name="item">The item.</param>
-        protected abstract void OnIListRemove(object item);
-
-        /// <inheritdoc />
-        public void RemoveAt(int index)
-        {
-            OnIListRemoveAt(index);
-        }
-
-        /// <summary>
-        /// Called when [i list remove at].
-        /// </summary>
-        /// <param name="index">The index.</param>
-        /// <exception cref="NotImplementedException"></exception>
-        protected abstract void OnIListRemoveAt(int index);
-
-        /// <summary>
-        /// Adds the given range of items.
-        /// </summary>
-        /// <param name="items">The items.</param>
-        public abstract void AddRange(IEnumerable items);
-
-        /// <summary>
-        /// Removes the given range of items.
-        /// </summary>
-        /// <param name="items">The items.</param>
-        public abstract void RemoveRange(IEnumerable items);
-
-        internal abstract void UpdateStarted(IChartView chart);
-
-        /// <summary>
-        /// Updates the view.
-        /// </summary>
-        /// <param name="chart">The chart.</param>
-        /// <param name="context">The arguments.</param>
         public abstract void UpdateView(ChartModel chart, UpdateContext context);
 
-        internal abstract void UpdateFinished(IChartView chart);
-
-        internal abstract void UsedBy(ChartModel chart);
-
-        /// <summary>
-        /// Fetches the data for the specified chart.
-        /// </summary>
-        /// <param name="chart">The chart.</param>
-        /// <param name="context">The update context.</param>
-        public abstract void Fetch(ChartModel chart, UpdateContext context);
-
-        /// <summary>
-        /// Gets the points that  its hover area contains the given n dimensions.
-        /// </summary>
-        /// <param name="dimensions">The dimensions.</param>
-        /// <returns></returns>
-        public abstract IEnumerable<PackedPoint> GetInteractedPoints(params double[] dimensions);
-
         /// <inheritdoc />
-        IEnumerator IEnumerable.GetEnumerator()
+        void ISeries.UsedBy(ChartModel chart)
         {
-            return OnGetEnumerator();
+            if (Content.ContainsKey(chart)) return;
+            var defaultDictionary = new Dictionary<string, object> {[Config.TrackerKey] = 
+                new Dictionary<object, Point<TModel, TCoordinate, TViewModel, TSeries>>()};
+            Content[chart] = defaultDictionary;
+        }
+
+        internal void AddChart(ChartModel chart)
+        {
+            if (_usedBy.Contains(chart)) return;
+            _usedBy.Add(chart);
         }
 
         /// <summary>
-        /// Called when [get enumerator].
+        /// Defaults the point view provider.
         /// </summary>
         /// <returns></returns>
-        protected abstract IEnumerator OnGetEnumerator();
+        protected abstract ISeriesViewProvider<TModel, TCoordinate, TViewModel, TSeries> DefaultViewProvider { get; }
+
+        /// <summary>
+        /// Sets the default colors.
+        /// </summary>
+        protected abstract void SetDefaultColors(ChartModel chart);
+
+        /// <inheritdoc />
+        public void Fetch(ChartModel chart, UpdateContext context)
+        {
+            // do not recalculate if this method was called from the same updateId.
+            if (_chartPointsUpdateId == chart.UpdateId) return;
+            _chartPointsUpdateId = chart.UpdateId;
+
+            // Assign a color if the user didn't.
+            SetDefaultColors(chart);
+
+            // call the factory to fetch our data.
+            // Fetch() has 2 main tasks.
+            // 1. Calculate each ChartPoint required by the series.
+            // 2. Evaluate every dimension in the case of a cartesian chart, get Max and Min limits, 
+            // if stacked, then also do the stacking...
+
+            var tSeries = this as TSeries;
+            if (tSeries == null)
+            {
+                throw new LiveChartsException(
+                    $"The series type {GetType().Name} is not assignable to {typeof(TSeries).Name}", 220);
+            }
+
+            using (var factoryContext = new DataFactoryContext<TModel, TCoordinate, TSeries>
+            {
+                Series = tSeries,
+                Mapper = Mapper,
+                Chart = chart,
+                UpdateContext = context,
+                Collection = ItemsSource.ToArray()
+            })
+            {
+                Points = Charting.Current.DataFactory.Fetch<TModel, TCoordinate, TViewModel, TSeries>(factoryContext);
+            }
+        }
+
+        /// <inheritdoc />
+        public virtual IEnumerable<PackedPoint> GetInteractedPoints(params double[] dimensions)
+        {
+            return Points
+                .Where(point => point.InteractionArea.Contains(dimensions))
+                .Select(point => new PackedPoint
+                {
+                    Key = point.Key,
+                    Model = point.Model,
+                    Chart = point.Chart,
+                    Coordinate = point.Coordinate,
+                    Series = point.Series,
+                    View = point.View,
+                    ViewModel = point.ViewModel,
+                    InteractionArea = point.InteractionArea
+                });
+        }
 
         /// <summary>
         /// Evaluates the data label.
@@ -445,7 +429,7 @@ namespace LiveCharts.Core.DataSeries
             DataLabelsPosition labelsPosition)
         {
             const double toRadians = Math.PI / 180;
-            var rotationAngle = DataLabelsPosition.Rotation;
+            var rotationAngle = labelsPosition.Rotation;
 
             var xw = (float)
                 Math.Abs(Math.Cos(rotationAngle * toRadians) * labelModel.Width); // width's    horizontal    component
@@ -461,7 +445,7 @@ namespace LiveCharts.Core.DataSeries
 
             float left, top;
 
-            switch (DataLabelsPosition.HorizontalAlignment)
+            switch (labelsPosition.HorizontalAlignment)
             {
                 case HorizontalAlignment.Centered:
                     left = pointLocation.X - .5f * width;
@@ -477,7 +461,8 @@ namespace LiveCharts.Core.DataSeries
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(
-                        nameof(DataLabelsPosition.HorizontalAlignment), DataLabelsPosition.HorizontalAlignment,
+                        nameof(Abstractions.DataLabelsPosition.HorizontalAlignment), 
+                        DataLabelsPosition.HorizontalAlignment,
                         null);
             }
 
@@ -497,323 +482,22 @@ namespace LiveCharts.Core.DataSeries
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(
-                        nameof(DataLabelsPosition.VerticalAlignment), DataLabelsPosition.VerticalAlignment, null);
+                        nameof(Abstractions.DataLabelsPosition.VerticalAlignment), 
+                        DataLabelsPosition.VerticalAlignment, null);
             }
 
             return new PointF(left, top);
         }
 
-        internal void AddChart(ChartModel chart)
-        {
-            if (_usedBy.Contains(chart)) return;
-            _usedBy.Add(chart);
-        }
-
-        /// <inheritdoc />
-        void ICollection.CopyTo(Array array, int index)
-        {
-            OnIListCopyTo(array, index);
-        }
-
-        /// <summary>
-        /// Called when [i list copy to].
-        /// </summary>
-        /// <param name="array">The array.</param>
-        /// <param name="index">The index.</param>
-        /// <exception cref="NotImplementedException"></exception>
-        protected abstract void OnIListCopyTo(Array array, int index);
-
-        /// <summary>
-        /// Gets the item.
-        /// </summary>
-        /// <param name="index">The index.</param>
-        /// <returns></returns>
-        protected abstract object GetItem(int index);
-
-        /// <summary>
-        /// Sets the item.
-        /// </summary>
-        /// <returns></returns>
-        protected abstract void SetItem(object value, int index);
-
-        #region IResource implementation
-
-        /// <inheritdoc />
-        public event DisposingResourceHandler Disposed;
-
-        object IResource.UpdateId { get; set; }
-
-        void IResource.Dispose(IChartView view)
-        {
-            OnDisposing(view);
-            Disposed?.Invoke(view, this);
-        }
-
-        /// <summary>
-        /// Called when the series is disposed.
-        /// </summary>
-        protected virtual void OnDisposing(IChartView view)
-        {
-        }
-
-        #endregion
-
-        #region INPC implementation
-
-        /// <summary>
-        /// Occurs when [property changed].
-        /// </summary>
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        /// <summary>
-        /// Called when a property changes.
-        /// </summary>
-        /// <param name="propertyName">Name of the property.</param>
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        #endregion
-    }
-
-    /// <summary>
-    /// The series class with a defined plot model, represents a series to plot in a chart.
-    /// </summary>
-    /// <typeparam name="TModel">The type of the model.</typeparam>
-    /// <typeparam name="TCoordinate">The type of the coordinate.</typeparam>
-    /// <typeparam name="TViewModel">The type of the view model.</typeparam>
-    /// <typeparam name="TPoint">The type of the point.</typeparam>
-    /// <seealso cref="IResource" />
-    public abstract class Series<TModel, TCoordinate, TViewModel, TPoint> 
-        : Series, IList<TModel>, INotifyCollectionChanged
-        where TPoint : Point<TModel, TCoordinate, TViewModel>, new()
-        where TCoordinate : ICoordinate
-    { 
-        private IEnumerable<TModel> _itemsSource;
-        private IEnumerable<TModel> _previousItemsSource;
-        private IList<TModel> _sourceAsIList;
-        private INotifyRangeChanged<TModel> _sourceAsRangeChanged;
-        private ModelToCoordinateMapper<TModel, TCoordinate> _mapper;
-        private ISeriesViewProvider<TModel, TCoordinate, TViewModel> _viewProvider;
-        private object _chartPointsUpdateId;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Series{TModel, TCoordinate, TViewModel, TPoint}"/> class.
-        /// </summary>
-        protected Series()
-        {
-            Initialize();
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Series{TModel, TCoordinate, TViewModel, TPoint}"/> class.
-        /// </summary>
-        /// <param name="itemsSource">The values.</param>
-        protected Series(IEnumerable<TModel> itemsSource)
-        {
-            Initialize(itemsSource);
-        }
-
-        /// <inheritdoc />
-        public event NotifyCollectionChangedEventHandler CollectionChanged;
-
-        #region Properties
-
-        /// <inheritdoc />
-        public new TModel this[int index]
-        {
-            get
-            {
-                EnsureIListImplementation();
-                return _sourceAsIList[index];
-            }
-            set
-            {
-                EnsureIListImplementation();
-                _sourceAsIList[index] = value;
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the items source, the items source is where the series grabs the 
-        /// data to plot from, by default it is of type <see cref="ChartingCollection{T}"/>
-        /// but you can use any <see cref="IEnumerable{T}"/> as your data source.
-        /// </summary>
-        /// <value>
-        /// The values.
-        /// </value>
-        public IEnumerable<TModel> ItemsSource
-        {
-            get => _itemsSource;
-            set
-            {
-                _itemsSource = value;
-                OnItemsInstanceChanged();
-                OnPropertyChanged();
-            }
-        }
-
-        /// <summary>
-        /// Gets the metadata.
-        /// </summary>
-        /// <value>
-        /// The metadata.
-        /// </value>
-        public SeriesMetatada Metadata { get; protected set; }
-
-        /// <summary>
-        /// Gets or sets the mapper.
-        /// </summary>
-        /// <value>
-        /// The mapper.
-        /// </value>
-        public ModelToCoordinateMapper<TModel, TCoordinate> Mapper
-        {
-            get => _mapper ?? Charting.GetCurrentMapperFor<TModel, TCoordinate>();
-            set
-            {
-                _mapper = value;
-                OnPropertyChanged();
-            }
-        }
-
-        /// <summary>
-        /// Gets the points in the screen based on the data in the series, see <see cref="ItemsSource"/>.
-        /// </summary>
-        /// <value>
-        /// The points.
-        /// </value>
-        public IEnumerable<TPoint> Points { get; private set; }
-
-        /// <summary>
-        /// Gets or sets the point builder.
-        /// </summary>
-        /// <value>
-        /// The point builder.
-        /// </value>
-        public Func<TModel, TViewModel> PointBuilder { get; set; }
-
-        /// <summary>
-        /// Gets or sets the point view provider.
-        /// </summary>
-        /// <value>
-        /// The point view provider.
-        /// </value>
-        public ISeriesViewProvider<TModel, TCoordinate, TViewModel>
-            ViewProvider
-        {
-            get => _viewProvider ?? DefaultViewProvider;
-            set
-            {
-                _viewProvider = value;
-                OnPropertyChanged();
-            }
-        }
-
-        /// <inheritdoc />
-        bool ICollection<TModel>.IsReadOnly
-        {
-            get
-            {
-                EnsureIListImplementation();
-                return _sourceAsIList.IsReadOnly;
-            }
-        }
-
-        #endregion
-
-        internal override void UpdateStarted(IChartView chart)
-        {
-            ViewProvider.OnUpdateStarted(chart, this);
-        }
-
-        internal override void UpdateFinished(IChartView chart)
-        {
-            ViewProvider.OnUpdateFinished(chart, this);
-        }
-
-        internal override void UsedBy(ChartModel chart)
-        {
-            if (Content.ContainsKey(chart)) return;
-            var defaultDictionary = new Dictionary<string, object> {[Tracker] = new Dictionary<object, TPoint>()};
-            Content[chart] = defaultDictionary;
-        }
-
-        /// <summary>
-        /// Defaults the point view provider.
-        /// </summary>
-        /// <returns></returns>
-        protected abstract ISeriesViewProvider<TModel, TCoordinate, TViewModel> DefaultViewProvider { get; }
-
-        /// <inheritdoc />
-        public override void Fetch(ChartModel model, UpdateContext context)
-        {
-            // do not recalculate if this method was called from the same updateId.
-            if (_chartPointsUpdateId == model.UpdateId) return;
-            _chartPointsUpdateId = model.UpdateId;
-
-            // Assign a color if the user didn't.
-            if (Stroke == Color.Empty || Fill == Color.Empty)
-            {
-                var nextColor = model.GetNextColor();
-                if (Stroke == Color.Empty)
-                {
-                    Stroke = nextColor;
-                }
-                
-                if (Fill == Color.Empty)
-                {
-                    Fill = nextColor.SetOpacity(DefaultFillOpacity);
-                }
-            }
-
-            // call the factory to fetch our data.
-            // Fetch() has 2 main tasks.
-            // 1. Calculate each ChartPoint required by the series.
-            // 2. Evaluate every dimension in the case of a cartesian chart, get Max and Min limits, 
-            // if stacked, then also do the stacking...
-
-            using (var factoryContext = new DataFactoryContext<TModel, TCoordinate, TViewModel, TPoint>
-            {
-                Series = this,
-                Chart = model,
-                UpdateContext = context,
-                Collection = ItemsSource.ToArray()
-            })
-            {
-                Points = Charting.Current.DataFactory.Fetch(factoryContext);
-            }
-        }
-
-        /// <inheritdoc />
-        public override IEnumerable<PackedPoint> GetInteractedPoints(params double[] dimensions)
-        {
-            return Points
-                .Where(point => point.InteractionArea.Contains(dimensions))
-                .Select(point => new PackedPoint
-                {
-                    Key = point.Key,
-                    Model = point.Model,
-                    Chart = point.Chart,
-                    Coordinate = point.Coordinate,
-                    Series = point.Series,
-                    View = point.View,
-                    ViewModel = point.ViewModel,
-                    InteractionArea = point.InteractionArea
-                });
-        }
-
         #region Items interaction
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
 
         /// <inheritdoc />
         public IEnumerator<TModel> GetEnumerator()
-        {
-            return ItemsSource.GetEnumerator();
-        }
-
-        /// <inheritdoc />
-        protected override IEnumerator OnGetEnumerator()
         {
             return ItemsSource.GetEnumerator();
         }
@@ -826,22 +510,10 @@ namespace LiveCharts.Core.DataSeries
         }
 
         /// <inheritdoc />
-        protected override int OnListIndexOf(object value)
-        {
-            return IndexOf((TModel) value);
-        }
-
-        /// <inheritdoc />
         public void Insert(int index, TModel item)
         {
             EnsureIListImplementation();
             _sourceAsIList.Insert(index, item);
-        }
-
-        /// <inheritdoc />
-        protected override void OnIListInsert(int index, object value)
-        {
-            Insert(index, (TModel) value);
         }
         
         /// <inheritdoc />
@@ -852,30 +524,35 @@ namespace LiveCharts.Core.DataSeries
         }
 
         /// <inheritdoc />
-        protected override int OnIListAdd(object item)
+        public int Add(object value)
         {
-            Add((TModel) item);
+            Add((TModel) value);
             return Count;
         }
 
         /// <inheritdoc />
-        public override void AddRange(IEnumerable items)
+        public bool Contains(object value)
         {
-            EnsureINotifyRangeImplementation();
-            _sourceAsRangeChanged.AddRange((IEnumerable<TModel>) items);
+            return Contains((TModel) value);
         }
 
-        /// <inheritdoc />
-        public new void Clear()
+        /// <inheritdoc cref="List{T}.Clear" />
+        public void Clear()
         {
             EnsureIListImplementation();
             _sourceAsIList.Clear();
         }
 
         /// <inheritdoc />
-        protected override void OnIListClear()
+        public int IndexOf(object value)
         {
-            Clear();
+            return IndexOf((TModel) value);
+        }
+
+        /// <inheritdoc />
+        public void Insert(int index, object value)
+        {
+            Insert(index, (TModel) value);
         }
 
         /// <inheritdoc />
@@ -886,22 +563,10 @@ namespace LiveCharts.Core.DataSeries
         }
 
         /// <inheritdoc />
-        protected override bool OnIListContains(object item)
-        {
-            return Contains((TModel) item);
-        }
-
-        /// <inheritdoc />
         void ICollection<TModel>.CopyTo(TModel[] array, int arrayIndex)
         {
             EnsureIListImplementation();
             _sourceAsIList.CopyTo(array, arrayIndex);
-        }
-
-        /// <inheritdoc />
-        protected override void OnIListCopyTo(Array array, int index)
-        {
-            ((ICollection<TModel>) this).CopyTo((TModel[]) array, index);
         }
 
         /// <inheritdoc />
@@ -912,83 +577,33 @@ namespace LiveCharts.Core.DataSeries
         }
 
         /// <inheritdoc />
-        protected override void OnIListRemove(object item)
+        public void Remove(object value)
         {
-            Remove((TModel) item);
+            Remove((TModel)value);
         }
 
-        /// <inheritdoc />
-        public new void RemoveAt(int index)
+        /// <inheritdoc cref="List{T}.RemoveAt" />
+        public void RemoveAt(int index)
         {
             EnsureIListImplementation();
             _sourceAsIList.RemoveAt(index);
         }
 
         /// <inheritdoc />
-        public override void RemoveRange(IEnumerable items)
+        public void AddRange(IEnumerable<TModel> items)
         {
             EnsureINotifyRangeImplementation();
-            _sourceAsRangeChanged.RemoveRange((IEnumerable<TModel>) items);
+            _sourceAsRangeChanged.AddRange(items);
         }
 
         /// <inheritdoc />
-        protected override void OnIListRemoveAt(int index)
+        public void RemoveRange(IEnumerable<TModel> items)
         {
-            RemoveAt(index);
-        }
-
-        /// <inheritdoc />
-        protected override bool OnIListIsReadOnly()
-        {
-            return _sourceAsIList.IsReadOnly;
-        }
-
-        /// <inheritdoc />
-        protected override bool OnIListIsFixedSize()
-        {
-            return ((IList) _sourceAsIList).IsFixedSize;
-        }
-
-        /// <inheritdoc />
-        protected override int OnIListCount()
-        {
-            EnsureIListImplementation();
-            return _sourceAsIList.Count;
-        }
-
-        /// <inheritdoc />
-        protected override object OnIListSyncRoot()
-        {
-            return ((IList) _sourceAsIList).SyncRoot;
-        }
-
-        /// <inheritdoc />
-        protected override bool OnIListIsSynchronized()
-        {
-            return ((IList) _sourceAsIList).IsSynchronized;
-        }
-
-        /// <inheritdoc />
-        protected override object GetItem(int index)
-        {
-            return this[index];
-        }
-
-        /// <inheritdoc />
-        protected override void SetItem(object value, int index)
-        {
-            this[index] = (TModel) value;
+            EnsureINotifyRangeImplementation();
+            _sourceAsRangeChanged.RemoveRange(items);
         }
 
         #endregion
-
-        /// <inheritdoc />
-        protected override void OnDisposing(IChartView view)
-        {
-            if (!Content.ContainsKey(view.Model)) return;
-            Content[view.Model] = null;
-            Content.Remove(view.Model);
-        }
 
         private void EnsureIListImplementation([CallerMemberName] string method = null)
         {
@@ -1040,6 +655,7 @@ namespace LiveCharts.Core.DataSeries
 
         private void Initialize(IEnumerable<TModel> itemsSource = null)
         {
+            _isVisible = true;
             Content = new Dictionary<ChartModel, Dictionary<string, object>>();
             _itemsSource = itemsSource ?? new ChartingCollection<TModel>();
             OnItemsInstanceChanged();
@@ -1050,5 +666,56 @@ namespace LiveCharts.Core.DataSeries
                 IsValueType = t.IsValueType
             };
         }
+
+        #region IResource implementation
+
+        /// <inheritdoc />
+        public event DisposingResourceHandler Disposed;
+
+        object IResource.UpdateId { get; set; }
+
+        void IResource.Dispose(IChartView view)
+        {
+           OnDisposing(view);
+            Disposed?.Invoke(view, this);
+        }
+
+        /// <summary>get
+        /// Called when the series is disposed.
+        /// </summary>
+        protected virtual void OnDisposing(IChartView view)
+        {
+            _usedBy = null;
+            if (!Content.ContainsKey(view.Model)) return;
+            Content[view.Model] = null;
+            Content.Remove(view.Model);
+        }
+
+        #endregion
+
+        #region INPC implementation
+
+        /// <summary>
+        /// Occurs when [property changed].
+        /// </summary>
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        /// <summary>
+        /// Called when a property changes.
+        /// </summary>
+        /// <param name="propertyName">Name of the property.</param>
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        #endregion
+
+        #region INCC implementation
+
+        /// <inheritdoc />
+        public event NotifyCollectionChangedEventHandler CollectionChanged;
+
+        #endregion
     }
 }

@@ -1,6 +1,5 @@
 ﻿using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Abstractions.DataSeries;
-using LiveCharts.Core.Interaction;
 using LiveCharts.Core.ViewModels;
 using LiveCharts.Wpf.Controls;
 
@@ -11,26 +10,26 @@ namespace LiveCharts.Wpf.Views.Providers
     /// </summary>
     /// <typeparam name="TModel">The type of the model.</typeparam>
     /// <typeparam name="TCoordinate">The type of the coordinate.</typeparam>
-    /// <seealso cref="ISeriesViewProvider{TModel,TCoordinate,TViewModel}" />
-    public class GeometryPointSeriesViewProvider<TModel, TCoordinate>
-        : ISeriesViewProvider<TModel, TCoordinate, GeometryPointViewModel>
+    /// <typeparam name="TSeries">The type of the series.</typeparam>
+    /// <seealso cref="ISeriesViewProvider{TModel,TCoordinate,TViewModel, TSeries}" />
+    public class GeometryPointSeriesViewProvider<TModel, TCoordinate, TSeries>
+        : ISeriesViewProvider<TModel, TCoordinate, GeometryPointViewModel, TSeries>
         where TCoordinate : ICoordinate
+        where TSeries : IStrokeSeries, ICartesianSeries
     {
         /// <inheritdoc />
-        public void OnUpdateStarted(IChartView chart, ISeries series)
+        public void OnUpdateStarted(IChartView chart, TSeries series)
         {
         }
 
         /// <inheritdoc />
-        public IPointView<TModel, Point<TModel, TCoordinate, GeometryPointViewModel>, TCoordinate,
-            GeometryPointViewModel> Getter()
+        public IPointView<TModel,  TCoordinate, GeometryPointViewModel, TSeries> Getter()
         {
-            return new GeometryPointView<TModel, TCoordinate,
-                Point<TModel, TCoordinate, GeometryPointViewModel>, DataLabel>();
+            return new GeometryPointView<TModel, TCoordinate, TSeries, DataLabel>();
         }
 
         /// <inheritdoc />
-        public void OnUpdateFinished(IChartView chart, ISeries series)
+        public void OnUpdateFinished(IChartView chart, TSeries series)
         {
         }
     }

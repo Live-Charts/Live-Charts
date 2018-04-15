@@ -27,7 +27,7 @@
 
 using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Dimensions;
-using LiveCharts.Core.Updater;
+using LiveCharts.Core.Updating;
 
 #endregion
 

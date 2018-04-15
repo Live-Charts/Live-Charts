@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using LiveCharts.Core.Abstractions.DataSeries;
-using LiveCharts.Core.DataSeries;
 
-namespace LiveCharts.Core.Updater
+namespace LiveCharts.Core.Updating
 {
     /// <summary>
     /// The update context class lives as the update is done once the chart is updated, all the resources consumed by 
@@ -12,7 +11,7 @@ namespace LiveCharts.Core.Updater
     /// </summary>
     public class UpdateContext : IDisposable
     {
-        private IEnumerable<Series> _series;
+        private IEnumerable<ISeries> _series;
         private double _maxPushOut = double.NaN;
         private Dictionary<int, BarsGroup> _barsGroups;
 
@@ -20,7 +19,7 @@ namespace LiveCharts.Core.Updater
         /// Initializes a new instance of the <see cref="UpdateContext"/> class.
         /// </summary>
         /// <param name="series">The series.</param>
-        public UpdateContext(IEnumerable<Series> series)
+        public UpdateContext(IEnumerable<ISeries> series)
         {
             _series = series;
             _barsGroups = new Dictionary<int, BarsGroup>();

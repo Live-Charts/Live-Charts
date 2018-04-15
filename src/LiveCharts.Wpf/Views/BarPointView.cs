@@ -25,17 +25,17 @@
 
 #region
 
+using LiveCharts.Core.Abstractions;
+using LiveCharts.Core.Abstractions.DataSeries;
+using LiveCharts.Core.ViewModels;
+using LiveCharts.Wpf.Animations;
 using System.Drawing;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
-using LiveCharts.Core.Abstractions;
-using LiveCharts.Core.Abstractions.DataSeries;
 using LiveCharts.Core.Interaction;
-using LiveCharts.Core.ViewModels;
-using LiveCharts.Wpf.Animations;
 using Orientation = LiveCharts.Core.Abstractions.Orientation;
 using Rectangle = System.Windows.Shapes.Rectangle;
 
@@ -47,22 +47,23 @@ namespace LiveCharts.Wpf.Views
     /// The column point view.
     /// </summary>
     /// <typeparam name="TModel">The type of the model.</typeparam>
-    /// <typeparam name="TPoint">the type of the chart point.</typeparam>
     /// <typeparam name="TShape">the type of the shape.</typeparam>
     /// <typeparam name="TLabel">the type of the label.</typeparam>
     /// <typeparam name="TCoordinate">The type of the coordinate.</typeparam>
+    /// <typeparam name="TSeries">The type fo the series.</typeparam>
     /// <seealso cref="PointView{TModel, Point,Point2D, ColumnViewModel, TShape, TLabel}" />
-    public class BarPointView<TModel, TCoordinate, TPoint, TShape, TLabel>
-        : PointView<TModel, TPoint, TCoordinate, BarViewModel, TShape, TLabel>
-        where TPoint : Point<TModel, TCoordinate, BarViewModel>, new()
+    public class BarPointView<TModel, TCoordinate, TSeries, TShape, TLabel>
+        : PointView<TModel, TCoordinate, BarViewModel, TSeries, TShape, TLabel>
         where TCoordinate : ICoordinate
+        where TSeries : IStrokeSeries
         where TShape : Shape, new()
         where TLabel : FrameworkElement, IDataLabelControl, new()
     {
-        private TPoint _point;
+        private Point<TModel, TCoordinate, BarViewModel, TSeries> _point;
 
         /// <inheritdoc />
-        protected override void OnDraw(TPoint point, TPoint previous)
+        protected override void OnDraw(
+            Point<TModel, TCoordinate, BarViewModel, TSeries> point, Point<TModel, TCoordinate, BarViewModel, TSeries> previous)
         {
             var chart = point.Chart.View;
             var vm = point.ViewModel;
@@ -137,7 +138,7 @@ namespace LiveCharts.Wpf.Views
         }
 
         /// <inheritdoc />
-        protected override void OnDrawLabel(TPoint point, PointF location)
+        protected override void OnDrawLabel(Point<TModel, TCoordinate, BarViewModel, TSeries> point, PointF location)
         {
             var chart = point.Chart.View;
             var isNew = Label == null;

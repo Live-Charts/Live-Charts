@@ -5,7 +5,7 @@ using LiveCharts.Core.Abstractions.DataSeries;
 using LiveCharts.Core.Charts;
 using LiveCharts.Core.Coordinates;
 using LiveCharts.Core.Interaction;
-using LiveCharts.Core.Updater;
+using LiveCharts.Core.Updating;
 using LiveCharts.Core.ViewModels;
 
 namespace LiveCharts.Core.DataSeries
@@ -14,12 +14,12 @@ namespace LiveCharts.Core.DataSeries
     /// The Pie series class.
     /// </summary>
     /// <typeparam name="TModel">The type of the model.</typeparam>
-    /// <seealso cref="LiveCharts.Core.DataSeries.Series{TModel, PieCoordinate, PieViewModel, TPoint}" />
+    /// <seealso cref="LiveCharts.Core.DataSeries.Series{TModel, PieCoordinate, PieViewModel, TSeries}" />
     /// <seealso cref="LiveCharts.Core.Abstractions.DataSeries.IPieSeries" />
     public class PieSeries<TModel> :
-        Series<TModel, StackedPointCoordinate, PieViewModel, Point<TModel, StackedPointCoordinate, PieViewModel>>, IPieSeries
+        StrokeSeries<TModel, StackedPointCoordinate, PieViewModel, IPieSeries>, IPieSeries
     {
-        private static ISeriesViewProvider<TModel, StackedPointCoordinate, PieViewModel> _provider;
+        private static ISeriesViewProvider<TModel, StackedPointCoordinate, PieViewModel, IPieSeries> _provider;
         private double _pushOut;
         private double _cornerRadius;
 
@@ -63,7 +63,7 @@ namespace LiveCharts.Core.DataSeries
         public override float[] PointMargin => new[] {0f, 0f};
 
         /// <inheritdoc />
-        protected override ISeriesViewProvider<TModel, StackedPointCoordinate, PieViewModel>
+        protected override ISeriesViewProvider<TModel, StackedPointCoordinate, PieViewModel, IPieSeries>
             DefaultViewProvider => _provider ?? (_provider = Charting.Current.UiProvider.PieViewProvider<TModel>());
 
         /// <inheritdoc />
@@ -88,7 +88,7 @@ namespace LiveCharts.Core.DataSeries
                     ? 0f
                     : (float) pieChart.StartingRotationAngle);
 
-            Point<TModel, StackedPointCoordinate, PieViewModel> previous = null;
+            Point<TModel, StackedPointCoordinate, PieViewModel, IPieSeries> previous = null;
 
             foreach (var current in Points)
             {

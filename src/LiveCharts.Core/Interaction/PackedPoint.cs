@@ -28,15 +28,15 @@
 using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Abstractions.DataSeries;
 using LiveCharts.Core.Charts;
-using LiveCharts.Core.DataSeries;
 using LiveCharts.Core.Dimensions;
+using LiveCharts.Core.Drawing;
 
 #endregion
 
 namespace LiveCharts.Core.Interaction
 {
     /// <summary>
-    /// A boxed copy of the <see cref="Point{TModel,TCoordinate,TViewModel}"/> class.
+    /// A boxed copy of the <see cref="Point{TModel,TCoordinate,TViewModel, TSeries}"/> class.
     /// </summary>
     public class PackedPoint
     {
@@ -95,7 +95,7 @@ namespace LiveCharts.Core.Interaction
         /// <value>
         /// The series.
         /// </value>
-        public Series Series { get; internal set; }
+        public ISeries Series { get; internal set; }
 
         /// <summary>
         /// Gets the chart that owns the point.
@@ -184,7 +184,7 @@ namespace LiveCharts.Core.Interaction
         /// <value>
         /// The series.
         /// </value>
-        public Series Series { get; internal set; }
+        public ISeries Series { get; internal set; }
 
         /// <summary>
         /// Gets the chart that owns the point.

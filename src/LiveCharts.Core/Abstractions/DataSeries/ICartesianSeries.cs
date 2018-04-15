@@ -3,7 +3,7 @@
     /// <summary>
     /// A bi dimensional series.
     /// </summary>
-    public interface ICartesianSeries
+    public interface ICartesianSeries : ISeries
     {
         /// <summary>
         /// Gets the scales at array, this property is used internally by the library and should only be used

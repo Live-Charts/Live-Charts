@@ -7,7 +7,7 @@ using LiveCharts.Core.Coordinates;
 using LiveCharts.Core.Drawing;
 using LiveCharts.Core.Drawing.Svg;
 using LiveCharts.Core.Interaction;
-using LiveCharts.Core.Updater;
+using LiveCharts.Core.Updating;
 using LiveCharts.Core.ViewModels;
 
 namespace LiveCharts.Core.DataSeries
@@ -16,14 +16,12 @@ namespace LiveCharts.Core.DataSeries
     /// The scatter series class.
     /// </summary>
     /// <typeparam name="TModel">The type of the model.</typeparam>
-    /// <seealso cref="CartesianSeries{TModel, PointCoordinate, GeometryPointViewModel, Point}" />
-    /// <seealso cref="LiveCharts.Core.Abstractions.DataSeries.IScatterSeries" />
+    /// <seealso cref="CartesianStrokeSeries{TModel,TCoordinate,TViewModel, TSeries}" />
+    /// <seealso cref="IScatterSeries" />
     public class ScatterSeries<TModel>
-        : CartesianSeries<TModel, PointCoordinate, GeometryPointViewModel,
-                Point<TModel, PointCoordinate, GeometryPointViewModel>>,
-            IScatterSeries
+        : CartesianStrokeSeries<TModel, PointCoordinate, GeometryPointViewModel, IScatterSeries>, IScatterSeries
     {
-        private static ISeriesViewProvider<TModel, PointCoordinate, GeometryPointViewModel> _provider;
+        private static ISeriesViewProvider<TModel, PointCoordinate, GeometryPointViewModel, IScatterSeries> _provider;
         private float _geometrySize;
 
         /// <summary>
@@ -63,10 +61,10 @@ namespace LiveCharts.Core.DataSeries
         public override float[] PointMargin => new[] {GeometrySize, GeometrySize};
 
         /// <inheritdoc />
-        protected override ISeriesViewProvider<TModel, PointCoordinate, GeometryPointViewModel>
+        protected override ISeriesViewProvider<TModel, PointCoordinate, GeometryPointViewModel, IScatterSeries>
             DefaultViewProvider => _provider ??
                                    (_provider = Charting.Current.UiProvider
-                                       .GeometryPointViewProvider<TModel, PointCoordinate>());
+                                       .GeometryPointViewProvider<TModel, PointCoordinate, IScatterSeries>());
 
         /// <inheritdoc />
         public override void UpdateView(ChartModel chart, UpdateContext context)
@@ -84,7 +82,8 @@ namespace LiveCharts.Core.DataSeries
                 yi = 0;
             }
 
-            Point<TModel, PointCoordinate, GeometryPointViewModel> previous = null;
+            Point<TModel, PointCoordinate, GeometryPointViewModel, IScatterSeries> previous = null;
+
             foreach (var current in Points)
             {
                 var p = new[]
@@ -109,8 +108,8 @@ namespace LiveCharts.Core.DataSeries
 
                 current.InteractionArea = new RectangleInteractionArea(
                     new RectangleF(
-                        vm.Location.X - GeometrySize * .5f,
-                        vm.Location.Y - GeometrySize * .5f,
+                        vm.Location.X,
+                        vm.Location.Y,
                         GeometrySize,
                         GeometrySize));
                 previous = current;

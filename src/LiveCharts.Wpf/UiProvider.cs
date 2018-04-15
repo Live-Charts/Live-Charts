@@ -25,8 +25,8 @@
 
 #region
 
-using System.Windows.Shapes;
 using LiveCharts.Core.Abstractions;
+using LiveCharts.Core.Abstractions.DataSeries;
 using LiveCharts.Core.Coordinates;
 using LiveCharts.Core.ViewModels;
 using LiveCharts.Wpf.Controls;
@@ -73,28 +73,40 @@ namespace LiveCharts.Wpf
             return new CartesianPath();
         }
 
-        public ISeriesViewProvider<TModel, TCoordinate, BarViewModel> BarViewProvider<TModel, TCoordinate>()
+        /// <inheritdoc />
+        public ISeriesViewProvider<TModel, TCoordinate, BarViewModel, TSeries> 
+            BarViewProvider<TModel, TCoordinate, TSeries>()
             where TCoordinate : ICoordinate
+            where TSeries : ICartesianSeries, IStrokeSeries
         {
-            return new BarSeriesViewProvider<TModel, TCoordinate>();
+            return new BarSeriesViewProvider<TModel, TCoordinate, TSeries>();
         }
 
         /// <inheritdoc />
-        public ISeriesViewProvider<TModel, PointCoordinate, BezierViewModel> BezierViewProvider<TModel>()
+        public ISeriesViewProvider<TModel, PointCoordinate, BezierViewModel, ILineSeries> BezierViewProvider<TModel>()
         {
             return new BezierSeriesViewProvider<TModel>();
         }
 
-        public ISeriesViewProvider<TModel, TCoordinate, GeometryPointViewModel> GeometryPointViewProvider<TModel, TCoordinate>()
+        /// <inheritdoc />
+        public ISeriesViewProvider<TModel, TCoordinate, GeometryPointViewModel, TSeries> 
+            GeometryPointViewProvider<TModel, TCoordinate, TSeries>()
             where TCoordinate : ICoordinate
+            where TSeries : ICartesianSeries, IStrokeSeries
         {
-            return new GeometryPointSeriesViewProvider<TModel, TCoordinate>();
+            return new GeometryPointSeriesViewProvider<TModel, TCoordinate, TSeries>();
         }
 
         /// <inheritdoc />
-        public ISeriesViewProvider<TModel, StackedPointCoordinate, PieViewModel> PieViewProvider<TModel>()
+        public ISeriesViewProvider<TModel, StackedPointCoordinate, PieViewModel, IPieSeries> PieViewProvider<TModel>()
         {
             return new PieSeriesViewProvider<TModel>();
+        }
+
+        /// <inheritdoc />
+        public ISeriesViewProvider<TModel, WeightedCoordinate, HeatViewModel, IHeatSeries> HeatViewProvider<TModel>()
+        {
+            return new HeatViewSeriesProvider<TModel>();
         }
     }
 }

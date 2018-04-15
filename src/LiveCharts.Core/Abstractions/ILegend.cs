@@ -27,6 +27,7 @@
 
 using System.Collections.Generic;
 using System.Drawing;
+using LiveCharts.Core.Abstractions.DataSeries;
 using LiveCharts.Core.DataSeries;
 
 #endregion
@@ -46,7 +47,7 @@ namespace LiveCharts.Core.Abstractions
         /// <param name="orientation">The orientation.</param>
         /// <param name="chart">The chart.</param>
         /// <returns></returns>
-        float[] Measure(IEnumerable<Series> seriesCollection, Orientation orientation, IChartView chart);
+        float[] Measure(IEnumerable<ISeries> seriesCollection, Orientation orientation, IChartView chart);
 
         /// <summary>
         /// Moves to the specified location.

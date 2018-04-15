@@ -34,6 +34,7 @@ using System.Windows.Input;
 using Assets.Commands;
 using Assets.Models;
 using LiveCharts.Core;
+using LiveCharts.Core.Abstractions.DataSeries;
 using LiveCharts.Core.Collections;
 using LiveCharts.Core.Coordinates;
 using LiveCharts.Core.DataSeries;
@@ -47,7 +48,7 @@ namespace Assets.ViewModels
     public class PropertyAndInstanceChanged: INotifyPropertyChanged
     {
         private readonly Random _r = new Random();
-        private ChartingCollection<Series> _seriesCollection;
+        private ChartingCollection<ISeries> _seriesCollection;
         private ChartingCollection<Plane> _x;
 
         public PropertyAndInstanceChanged()
@@ -67,7 +68,7 @@ namespace Assets.ViewModels
                 }
             };
 
-            SeriesCollection = new ChartingCollection<Series>
+            SeriesCollection = new ChartingCollection<ISeries>
             {
                 new LineSeries<City>
                 {
@@ -90,7 +91,7 @@ namespace Assets.ViewModels
             RemoveOnDoubleClick = new DelegateCommand(o => _removeOnDoubleClick((IEnumerable<PackedPoint>) o));
         }
 
-        public ChartingCollection<Series> SeriesCollection
+        public ChartingCollection<ISeries> SeriesCollection
         {
             get => _seriesCollection;
             set
@@ -176,7 +177,7 @@ namespace Assets.ViewModels
 
         private void _setNewSeriesInstance()
         {
-            SeriesCollection = new ChartingCollection<Series>
+            SeriesCollection = new ChartingCollection<ISeries>
             {
                 new BarSeries<City>
                 {
@@ -216,8 +217,8 @@ namespace Assets.ViewModels
         private void _changeSeriesProp()
         {
             if (SeriesCollection.Count <= 0) return;
-            SeriesCollection[0].Fill =
-                Color.FromArgb(255, (byte) _r.Next(0, 255), (byte) _r.Next(0, 255), (byte) _r.Next(0, 255));
+            // SeriesCollection[0].Fill =
+                // Color.FromArgb(255, (byte) _r.Next(0, 255), (byte) _r.Next(0, 255), (byte) _r.Next(0, 255));
         }
 
         private void _changeAllSeriesItems()

@@ -3,7 +3,7 @@
     /// <summary>
     /// The scatter series interface. 
     /// </summary>
-    public interface IScatterSeries : ISeries
+    public interface IScatterSeries : ICartesianSeries, IStrokeSeries
     {
         /// <summary>
         /// Gets or sets the size of the <see cref="ISeries.Geometry"/> property. 

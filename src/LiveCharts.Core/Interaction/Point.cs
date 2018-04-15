@@ -26,8 +26,8 @@
 #region
 
 using LiveCharts.Core.Abstractions;
+using LiveCharts.Core.Abstractions.DataSeries;
 using LiveCharts.Core.Charts;
-using LiveCharts.Core.DataSeries;
 using LiveCharts.Core.Events;
 
 #endregion
@@ -40,9 +40,11 @@ namespace LiveCharts.Core.Interaction
     /// <typeparam name="TModel">The type of the model.</typeparam>
     /// <typeparam name="TCoordinate">The type of the coordinate.</typeparam>
     /// <typeparam name="TViewModel">The type of the view model.</typeparam>
+    /// <typeparam name="TSeries">The type of the series.</typeparam>
     /// <seealso cref="T:System.IDisposable" />
-    public class Point<TModel, TCoordinate, TViewModel> : IResource
+    public class Point<TModel, TCoordinate, TViewModel, TSeries> : IResource
         where TCoordinate : ICoordinate
+        where TSeries : ISeries
     {
         /// <summary>
         /// Gets the key of the point, a key is used internally as a unique identifier in 
@@ -75,8 +77,7 @@ namespace LiveCharts.Core.Interaction
         /// <value>
         /// The view.
         /// </value>
-        public IPointView<TModel, Point<TModel, TCoordinate, TViewModel>, TCoordinate, TViewModel>
-            View { get; internal set; }
+        public IPointView<TModel, TCoordinate, TViewModel, TSeries> View { get; internal set; }
 
         /// <summary>
         /// Gets the point coordinate.
@@ -100,7 +101,7 @@ namespace LiveCharts.Core.Interaction
         /// <value>
         /// The series.
         /// </value>
-        public Series Series { get; internal set; }
+        public TSeries Series { get; internal set; }
 
         /// <summary>
         /// Gets the chart that owns the point.

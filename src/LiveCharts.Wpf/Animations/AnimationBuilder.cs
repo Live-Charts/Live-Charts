@@ -28,6 +28,7 @@
 using System;
 using System.Collections.Generic;
 using System.Windows;
+using System.Windows.Media;
 using System.Windows.Media.Animation;
 using LiveCharts.Core;
 
@@ -84,7 +85,7 @@ namespace LiveCharts.Wpf.Animations
         }
 
         /// <summary>
-        /// Animates the specified property linearly.
+        /// Animates the specified double property.
         /// </summary>
         /// <param name="property">Name of the property.</param>
         /// <param name="to">To.</param>
@@ -105,7 +106,7 @@ namespace LiveCharts.Wpf.Animations
         }
 
         /// <summary>
-        /// Animates the specified property using a defined .
+        /// Animates the specified property using a key frames.
         /// </summary>
         /// <param name="property">The property.</param>
         /// <param name="frames">The frames.</param>
@@ -129,7 +130,7 @@ namespace LiveCharts.Wpf.Animations
         }
 
         /// <summary>
-        /// Animates the specified property using a defined .
+        /// Animates the specified property using a key frames.
         /// </summary>
         /// <param name="properties">The properties.</param>
         /// <param name="frames">The frames.</param>
@@ -143,6 +144,14 @@ namespace LiveCharts.Wpf.Animations
             return this;
         }
 
+        /// <summary>
+        /// Animates to the specifies point property.
+        /// </summary>
+        /// <param name="property">The property.</param>
+        /// <param name="to">To.</param>
+        /// <param name="from">From.</param>
+        /// <param name="speed">The speed.</param>
+        /// <returns></returns>
         public AnimationBuilder Property(
             DependencyProperty property, Point to, Point? from = null, TimeSpan? speed = null)
         {
@@ -164,6 +173,38 @@ namespace LiveCharts.Wpf.Animations
             var animation = from == null
                 ? new PointAnimation(to, speed ?? _speed)
                 : new PointAnimation(from.Value, to, speed ?? _speed);
+
+            _animations.Add(new Tuple<DependencyProperty, Timeline>(property, animation));
+
+            return this;
+        }
+
+        /// <summary>
+        /// Animates to the specified color property.
+        /// </summary>
+        /// <param name="property">The property.</param>
+        /// <param name="to">To.</param>
+        /// <param name="from">From.</param>
+        /// <param name="speed">The speed.</param>
+        /// <returns></returns>
+        public AnimationBuilder Property(
+            DependencyProperty property, Color to, Color? from = null, TimeSpan? speed = null)
+        {
+            if (_isFe)
+            {
+                var feAnim = from == null
+                    ? new ColorAnimation(to, speed ?? _speed)
+                    : new ColorAnimation(from.Value, to, speed ?? _speed);
+                feAnim.RepeatBehavior = new RepeatBehavior(1);
+                _storyboard.Children.Add(feAnim);
+                Storyboard.SetTarget(feAnim, _target);
+                Storyboard.SetTargetProperty(feAnim, new PropertyPath(property));
+                return this;
+            }
+
+            var animation = from == null
+                ? new ColorAnimation(to, speed ?? _speed)
+                : new ColorAnimation(from.Value, to, speed ?? _speed);
 
             _animations.Add(new Tuple<DependencyProperty, Timeline>(property, animation));
 

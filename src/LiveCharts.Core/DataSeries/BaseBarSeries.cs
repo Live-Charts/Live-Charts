@@ -1,12 +1,10 @@
 using System;
-using System.Drawing;
 using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Abstractions.DataSeries;
 using LiveCharts.Core.Charts;
 using LiveCharts.Core.Dimensions;
-using LiveCharts.Core.Drawing;
 using LiveCharts.Core.Interaction;
-using LiveCharts.Core.Updater;
+using LiveCharts.Core.Updating;
 using LiveCharts.Core.ViewModels;
 
 namespace LiveCharts.Core.DataSeries
@@ -15,19 +13,19 @@ namespace LiveCharts.Core.DataSeries
     /// The base bar series.
     /// </summary>
     /// <typeparam name="TModel">The type of the model.</typeparam>
-    /// <typeparam name="TPoint">The type of the point.</typeparam>
-    /// <typeparam name="TCoordinate">The type fo the coordinate.</typeparam>
-    public abstract class BaseBarSeries<TModel, TCoordinate, TPoint>
-        : CartesianSeries<TModel, TCoordinate, BarViewModel, TPoint>, IBarSeries
+    /// <typeparam name="TCoordinate">The type of the coordinate.</typeparam>
+    /// <typeparam name="TSeries">The type of the series.</typeparam>
+    public abstract class BaseBarSeries<TModel, TCoordinate, TSeries>
+        : CartesianStrokeSeries<TModel, TCoordinate, BarViewModel, TSeries>, IBarSeries
         where TCoordinate : ICoordinate
-        where TPoint : Point<TModel, TCoordinate, BarViewModel>, new()
+        where TSeries : class, ISeries
     {
         private float _pivot;
         private float _barPadding;
         private float _maxColumnWidth;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="BaseBarSeries{TModel,TCoordinate,TPoint}"/> class.
+        /// Initializes a new instance of the <see cref="BaseBarSeries{TModel,TCoordinate, TSeries}"/> class.
         /// </summary>
         protected BaseBarSeries()
         {
@@ -121,7 +119,7 @@ namespace LiveCharts.Core.DataSeries
 
             var columnStart = GetColumnStart(chart, scaleAxis, directionAxis);
 
-            TPoint previous = null;
+            Point<TModel, TCoordinate, BarViewModel, TSeries> previous = null;
 
             foreach (var current in Points)
             {
@@ -147,58 +145,10 @@ namespace LiveCharts.Core.DataSeries
         /// Offsets the by stack.
         /// </summary>
         /// <returns></returns>
-        protected virtual void BuildModel(
-            TPoint current, UpdateContext context, ChartModel chart, Plane directionAxis, Plane scaleAxis,
+        protected abstract void BuildModel(
+            Point<TModel, TCoordinate, BarViewModel, TSeries> current, UpdateContext context, ChartModel chart, Plane directionAxis, Plane scaleAxis,
             float cw, float columnStart, float[] byBarOffset, float[] positionOffset, Orientation orientation,
-            int h, int w)
-        {
-            var currentOffset = chart.ScaleToUi(current.Coordinate[0][0], directionAxis);
-
-            var columnCorner1 = new[]
-            {
-                currentOffset,
-                chart.ScaleToUi(current.Coordinate[1][0], scaleAxis)
-            };
-
-            var columnCorner2 = new[]
-            {
-                currentOffset + cw,
-                columnStart
-            };
-
-            var difference = Perform.SubstractEach2D(columnCorner1, columnCorner2);
-
-            var location = new[]
-            {
-                currentOffset,
-                columnStart + (columnCorner1[1] < columnStart ? difference[1] : 0f)
-            };
-
-            if (current.View.VisualElement == null)
-            {
-                var initialRectangle = chart.InvertXy
-                    ? new RectangleF(
-                        columnStart,
-                        location[h] + byBarOffset[1] + positionOffset[1],
-                        0f,
-                        Math.Abs(difference[h]))
-                    : new RectangleF(
-                        location[w] + byBarOffset[0] + positionOffset[0],
-                        columnStart,
-                        Math.Abs(difference[w]),
-                        0f);
-                current.ViewModel = new BarViewModel(RectangleF.Empty, initialRectangle, orientation);
-            }
-
-            current.ViewModel = new BarViewModel(
-                current.ViewModel.To,
-                new RectangleF(
-                    location[w] + byBarOffset[0] + positionOffset[0],
-                    location[h] + byBarOffset[1] + positionOffset[1],
-                    Math.Abs(difference[w]),
-                    Math.Abs(difference[h])),
-                orientation);
-        }
+            int h, int w);
 
         private float GetColumnStart(ChartModel chart, Plane target, Plane complementary)
         {

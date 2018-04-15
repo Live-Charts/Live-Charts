@@ -1,4 +1,5 @@
 ﻿using System.Drawing;
+using LiveCharts.Core.Abstractions.DataSeries;
 using LiveCharts.Core.Collections;
 using LiveCharts.Core.DataSeries;
 
@@ -32,13 +33,13 @@ namespace Assets.ViewModels
             // you can use any IEnumerable, it is recommended to use
             // the ChartingCollection<T> class, it inherits from
             // ObservableCollection and adds the AddRange/RemoveRange methods
-            SeriesCollection = new ChartingCollection<Series>();
+            SeriesCollection = new ChartingCollection<ISeries>();
             // finally lets add the series to our series collection,
             // we can add as many series as we need, in this case we will
             // only display one series.
             SeriesCollection.Add(barSeries);
         }
 
-        public ChartingCollection<Series> SeriesCollection { get; set; }
+        public ChartingCollection<ISeries> SeriesCollection { get; set; }
     }
 }

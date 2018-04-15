@@ -29,6 +29,7 @@ using System;
 using System.Drawing;
 using System.Windows;
 using LiveCharts.Core.Abstractions;
+using LiveCharts.Core.Abstractions.DataSeries;
 using LiveCharts.Core.Events;
 using LiveCharts.Core.Interaction;
 
@@ -36,10 +37,10 @@ using LiveCharts.Core.Interaction;
 
 namespace LiveCharts.Wpf.Views
 {
-    public class PointView<TModel, TPoint, TCoordinate, TViewModel, TShape, TLabel>
-        : IPointView<TModel, TPoint, TCoordinate, TViewModel>
-        where TPoint : Point<TModel, TCoordinate, TViewModel>, new()
+    public class PointView<TModel, TCoordinate, TViewModel, TSeries, TShape, TLabel>
+        : IPointView<TModel, TCoordinate, TViewModel, TSeries>
         where TCoordinate : ICoordinate
+        where TSeries : ISeries
         where TShape : FrameworkElement, new()
         where TLabel : DependencyObject, IDataLabelControl, new()
     {
@@ -60,13 +61,13 @@ namespace LiveCharts.Wpf.Views
         public TLabel Label { get; protected set; }
 
         /// <inheritdoc cref="DrawShape"/>
-        protected virtual void OnDraw(TPoint point, TPoint previous)
+        protected virtual void OnDraw(Point<TModel, TCoordinate, TViewModel, TSeries> point, Point<TModel, TCoordinate, TViewModel, TSeries> previous)
         {
             throw new NotImplementedException();
         }
 
         /// <inheritdoc cref="DrawLabel"/>
-        protected virtual void OnDrawLabel(TPoint point, PointF location)
+        protected virtual void OnDrawLabel(Point<TModel, TCoordinate, TViewModel, TSeries> point, PointF location)
         {
             throw new NotImplementedException();
         }
@@ -81,19 +82,19 @@ namespace LiveCharts.Wpf.Views
 
 
         /// <inheritdoc />
-        object IPointView<TModel, TPoint, TCoordinate, TViewModel>.VisualElement => Shape;
+        object IPointView<TModel, TCoordinate, TViewModel, TSeries>.VisualElement => Shape;
 
         /// <inheritdoc />
-        IDataLabelControl IPointView<TModel, TPoint, TCoordinate, TViewModel>.Label => Label;
+        IDataLabelControl IPointView<TModel, TCoordinate, TViewModel, TSeries>.Label => Label;
 
         /// <inheritdoc />
-        public void DrawShape(TPoint point, TPoint previous)
+        public void DrawShape(Point<TModel, TCoordinate, TViewModel, TSeries> point, Point<TModel, TCoordinate, TViewModel, TSeries> previous)
         {
             OnDraw(point, previous);
         }
 
         /// <inheritdoc />
-        public void DrawLabel(TPoint point, PointF location)
+        public void DrawLabel(Point<TModel, TCoordinate, TViewModel, TSeries> point, PointF location)
         {
             OnDrawLabel(point, location);
         }

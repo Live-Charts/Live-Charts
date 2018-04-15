@@ -70,18 +70,13 @@ namespace LiveCharts.Core.Themes
                     Color.FromArgb(255, 254, 140, 43), // orange       600)
                 })
 
-                .SetDefault<ISeries>(series =>
-                {
-                    series.StrokeThickness = 3f;
-                    series.DefaultFillOpacity = .3f;
-                })
-
                 // sets a base for all the series
-                .SetDefault<ISeries>(series =>
+                .SetDefault<IStrokeSeries>(series =>
                 {
                     series.IsVisible = true;
                     series.Font = baseFont;
                     series.DataLabels = false;
+                    series.StrokeThickness = 3f;
                     series.DefaultFillOpacity = 1f;
                     series.Fill = Color.Empty; // if the color is empty, the DataFactory will assign it.
                     series.Stroke = Color.Empty;

@@ -35,12 +35,13 @@ using System.Threading.Tasks;
 using System.Timers;
 using System.Windows.Input;
 using LiveCharts.Core.Abstractions;
+using LiveCharts.Core.Abstractions.DataSeries;
 using LiveCharts.Core.DataSeries;
 using LiveCharts.Core.Dimensions;
 using LiveCharts.Core.Drawing;
 using LiveCharts.Core.Events;
 using LiveCharts.Core.Interaction;
-using LiveCharts.Core.Updater;
+using LiveCharts.Core.Updating;
 
 #endregion
 
@@ -192,7 +193,7 @@ namespace LiveCharts.Core.Charts
         /// </value>
         public ICommand DataPointerLeaveCommand { get; set; }
 
-        internal Series[] Series { get; set; }
+        internal ISeries[] Series { get; set; }
 
         internal Plane[][] Dimensions { get; set; }
 
@@ -405,7 +406,7 @@ namespace LiveCharts.Core.Charts
         /// </summary>
         protected virtual void CopyDataFromView()
         {
-            Series = (View.Series ?? Enumerable.Empty<Series>()).ToArray();
+            Series = (View.Series ?? Enumerable.Empty<ISeries>()).ToArray();
             Dimensions = View.Dimensions.Select(x => x.ToArray()).ToArray();
             ControlSize = View.ControlSize;
             DrawMargin = View.DrawMargin;
@@ -426,7 +427,7 @@ namespace LiveCharts.Core.Charts
         /// </summary>
         /// <param name="context">The update context.</param>
         /// <param name="series">The series.</param>
-        protected virtual void OnPreparingSeries(UpdateContext context, Series series)
+        protected virtual void OnPreparingSeries(UpdateContext context, ISeries series)
         {
         }
 
