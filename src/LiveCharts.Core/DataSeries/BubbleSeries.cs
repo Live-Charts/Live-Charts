@@ -106,6 +106,11 @@ namespace LiveCharts.Core.DataSeries
 
             foreach (var current in Points)
             {
+                if (current.View == null)
+                {
+                    current.View = ViewProvider.Getter();
+                }
+
                 var p = new[]
                 {
                     chart.ScaleToUi(current.Coordinate[0][0], x),
@@ -118,11 +123,6 @@ namespace LiveCharts.Core.DataSeries
                     Location = Perform.Sum(new PointF(p[xi], p[yi]), new PointF(uw[0], uw[1])),
                     Diameter = p[2]
                 };
-
-                if (current.View == null)
-                {
-                    current.View = ViewProvider .Getter();
-                }
 
                 current.ViewModel = vm;
                 current.View.DrawShape(current, previous);

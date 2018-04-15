@@ -13,6 +13,7 @@
     </UserControl.DataContext>
     <wpf:CartesianChart Series="{Binding SeriesCollection}"
                         XAxis="{Binding XAxis}"
-                        YAxis="{Binding YAxis}">
+                        YAxis="{Binding YAxis}"
+                        InvertAxes="False">
     </wpf:CartesianChart>
 </UserControl>

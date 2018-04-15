@@ -22,7 +22,7 @@ namespace LiveCharts.Wpf.Views
         where TLabel : FrameworkElement, IDataLabelControl, new()
     {
         protected override void OnDraw(
-            Point<TModel, WeightedCoordinate, HeatViewModel, IHeatSeries> point, 
+            Point<TModel, WeightedCoordinate, HeatViewModel, IHeatSeries> point,
             Point<TModel, WeightedCoordinate, HeatViewModel, IHeatSeries> previous)
         {
             var chart = point.Chart.View;
@@ -42,10 +42,10 @@ namespace LiveCharts.Wpf.Views
             Canvas.SetTop(Shape, vm.Rectangle.Top);
             Shape.Width = vm.Rectangle.Width;
             Shape.Height = vm.Rectangle.Height;
-            //Shape.Stroke = point.Series.Stroke.AsWpf();
-           // Shape.Fill = point.Series.Fill.AsWpf();
+            // Shape.Stroke = point.Series.Stroke.AsWpf();
+            // Shape.Fill = point.Series.Fill.AsWpf();
             //Shape.StrokeThickness = point.Series.StrokeThickness;
-            Panel.SetZIndex(Shape, ((ICartesianSeries)point.Series).ZIndex);
+            Panel.SetZIndex(Shape, point.Series.ZIndex);
             //if (point.Series.StrokeDashArray != null)
             //{
             //    Shape.StrokeDashArray = new DoubleCollection(point.Series.StrokeDashArray);

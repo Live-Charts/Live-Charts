@@ -87,7 +87,7 @@ namespace LiveCharts.Core.DataSeries
                     Fill = Fill,
                     Stroke = Stroke,
                     StrokeThickness = StrokeThickness,
-                    StrokeDashArray = StrokeDashArray.Select(x => (float) x)
+                    StrokeDashArray = StrokeDashArray?.Select(x => (float) x)
                 };
             }
         }
