@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System.Collections.ObjectModel;
+using System.Drawing;
 using LiveCharts.Core.Abstractions.DataSeries;
 using LiveCharts.Core.Collections;
 using LiveCharts.Core.DataSeries;
@@ -10,16 +11,17 @@ namespace Assets.ViewModels
     {
         public BasicLine()
         {
-            // create a new line series
-            var lineSeries = new LineSeries<double>();
+            var values = new ObservableCollection<double>();
 
-            // add some values to the series...
-            lineSeries.Add(4);
-            lineSeries.Add(-7);
-            lineSeries.Add(-2);
-            lineSeries.Add(9);
+            // add some values...
+            values.Add(4);
+            values.Add(-7);
+            values.Add(-2);
+            values.Add(9);
 
             // now lets customize it
+            var lineSeries = new LineSeries<double>();
+            lineSeries.Values = values;
 
             // a custom fill and stroke, if we don't set these properties
             // LiveCharts will set them for us according to our theme.

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using LiveCharts.Core.Abstractions.DataSeries;
 using LiveCharts.Core.Collections;
 using LiveCharts.Core.DataSeries;
@@ -13,7 +14,7 @@ namespace Assets.ViewModels
         {
             var r = new Random();
 
-            var heatSeries = new HeatSeries<WeightedModel>
+            var values = new ObservableCollection<WeightedModel>
             {
                 // we will initialize the collection with the next set of point
 
@@ -102,7 +103,10 @@ namespace Assets.ViewModels
 
             // we will bind in XAML SeriesCollection to CartesianChart.Series property
             SeriesCollection = new ChartingCollection<ISeries>();
-            SeriesCollection.Add(heatSeries);
+            SeriesCollection.Add(new HeatSeries<WeightedModel>
+            {
+                Values = values
+            });
         }
 
         public ChartingCollection<ISeries> SeriesCollection { get; set; }

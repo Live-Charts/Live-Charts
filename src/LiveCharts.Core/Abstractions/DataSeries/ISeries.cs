@@ -71,7 +71,7 @@ namespace LiveCharts.Core.Abstractions.DataSeries
     /// <summary>
     /// Data Series
     /// </summary>
-    public interface ISeries : IResource, INotifyPropertyChanged, IList
+    public interface ISeries : IResource, INotifyPropertyChanged
     {
         /// <summary>
         /// Gets the resource key, the type used to style this element.

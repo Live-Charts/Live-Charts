@@ -1,4 +1,5 @@
-﻿using LiveCharts.Core.Abstractions.DataSeries;
+﻿using System.Collections.ObjectModel;
+using LiveCharts.Core.Abstractions.DataSeries;
 using LiveCharts.Core.Collections;
 using LiveCharts.Core.DataSeries;
 using LiveCharts.Core.Defaults;
@@ -10,14 +11,14 @@ namespace Assets.ViewModels
     {
         public BasicBubble()
         {
-            var bubbleSeries = new BubbleSeries<WeightedModel>();
+            var values = new ObservableCollection<WeightedModel>();
 
             // add some values to the series...
             //                                 x, y, weight
-            bubbleSeries.Add(new WeightedModel(0, 4, 23));
-            bubbleSeries.Add(new WeightedModel(3, 2, 55));
-            bubbleSeries.Add(new WeightedModel(2, 0, 17));
-            bubbleSeries.Add(new WeightedModel(1, 3, 46));
+            values.Add(new WeightedModel(0, 4, 23));
+            values.Add(new WeightedModel(3, 2, 55));
+            values.Add(new WeightedModel(2, 0, 17));
+            values.Add(new WeightedModel(1, 3, 46));
 
             // we added 4 points
             // the first point has an X eq to 0, a Y eq to 4 and
@@ -25,6 +26,10 @@ namespace Assets.ViewModels
             // every bubble size will be scaled according to its weight
             // in our case 55 will be the bigger bubble, and 17 the smaller
             // now lets set the max and min size for our bubbles
+
+            var bubbleSeries = new BubbleSeries<WeightedModel>();
+
+            bubbleSeries.Values = values;
 
             bubbleSeries.MaxGeometrySize = 400; // when w = 55, our geometry size will be 400
             bubbleSeries.MinGeometrySize = 150;  // when w = 17 our geometry size will be 150

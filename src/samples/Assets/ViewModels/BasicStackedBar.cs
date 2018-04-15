@@ -1,4 +1,5 @@
-﻿using LiveCharts.Core.Abstractions.DataSeries;
+﻿using System.Collections.ObjectModel;
+using LiveCharts.Core.Abstractions.DataSeries;
 using LiveCharts.Core.Collections;
 using LiveCharts.Core.DataSeries;
 
@@ -10,20 +11,20 @@ namespace Assets.ViewModels
         {
             // let's feed the series...
             
-            var charlesSeries = new StackedBarSeries<double>();
-            charlesSeries.Add(4d); // *
-            charlesSeries.Add(8d);
-            charlesSeries.Add(-3d);
+            var charlesValues = new ObservableCollection<double>();
+            charlesValues.Add(4d); // *
+            charlesValues.Add(8d);
+            charlesValues.Add(-3d);
 
-            var fridaSeries = new StackedBarSeries<double>();
-            fridaSeries.Add(5d); // *
-            fridaSeries.Add(-3d);
-            fridaSeries.Add(8d);
+            var fridaValues = new ObservableCollection<double>();
+            fridaValues.Add(5d); // *
+            fridaValues.Add(-3d);
+            fridaValues.Add(8d);
 
-            var abrahamSeries = new StackedBarSeries<double>();
-            abrahamSeries.Add(5d); // *
-            abrahamSeries.Add(2d);
-            abrahamSeries.Add(-7d);
+            var abrahamValues = new ObservableCollection<double>();
+            abrahamValues.Add(5d); // *
+            abrahamValues.Add(2d);
+            abrahamValues.Add(-7d);
 
             // The stack by default is done based on the index of each element 
             // so charles, frida and abraham at index = 0 share 4, 5 and 5 values (see * mark)
@@ -37,9 +38,21 @@ namespace Assets.ViewModels
             // finally lets add the series to our series collection,
             // we can add as many series as we need, in this case we will
             // only display one series.
-            SeriesCollection.Add(charlesSeries);
-            SeriesCollection.Add(fridaSeries);
-            SeriesCollection.Add(abrahamSeries);
+            SeriesCollection.Add(
+                new StackedBarSeries<double>
+                {
+                    Values = charlesValues
+                });
+            SeriesCollection.Add(
+                new StackedBarSeries<double>
+                {
+                    Values = fridaValues
+                });
+            SeriesCollection.Add(
+                new StackedBarSeries<double>
+                {
+                    Values = abrahamValues
+                });
             // we bind the SeriesCollection property to the CartesianChart.Series property in XAML
         }
 

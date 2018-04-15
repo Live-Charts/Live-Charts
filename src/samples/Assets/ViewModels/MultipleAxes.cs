@@ -1,4 +1,5 @@
-﻿using LiveCharts.Core.Abstractions.DataSeries;
+﻿using System.Collections.ObjectModel;
+using LiveCharts.Core.Abstractions.DataSeries;
 using LiveCharts.Core.Collections;
 using LiveCharts.Core.DataSeries;
 using LiveCharts.Core.Dimensions;
@@ -25,17 +26,27 @@ namespace Assets.ViewModels
 
             // now we create some series.
 
-            var series1 = new LineSeries<double>();
-            series1.Add(10d);
-            series1.Add(5d);
-            series1.Add(3d);
-            series1.Add(6d);
+            var values1 = new ObservableCollection<double>();
+            values1.Add(10d);
+            values1.Add(5d);
+            values1.Add(3d);
+            values1.Add(6d);
 
-            var series2 = new LineSeries<double>();
-            series2.Add(350d);
-            series2.Add(650d);
-            series2.Add(125d);
-            series2.Add(156d);
+            var series1 = new LineSeries<double>
+            {
+                Values = values1
+            };
+
+            var values2 = new ObservableCollection<double>();
+            values2.Add(350d);
+            values2.Add(650d);
+            values2.Add(125d);
+            values2.Add(156d);
+
+            var series2 = new LineSeries<double>
+            {
+                Values = values2
+            };
 
             // we will scale series1 at axis1
             // axis1 is the first element in the Planes collection

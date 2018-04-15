@@ -1,6 +1,6 @@
-﻿using System.Drawing;
+﻿using System.Collections.ObjectModel;
+using System.Drawing;
 using LiveCharts.Core.Abstractions.DataSeries;
-using LiveCharts.Core.Collections;
 using LiveCharts.Core.DataSeries;
 
 namespace Assets.ViewModels
@@ -9,13 +9,17 @@ namespace Assets.ViewModels
     {
         public BasicBar()
         {
+            var values = new ObservableCollection<double>();
+
+            // add some values...
+            values.Add(-4);
+            values.Add(-7);
+            values.Add(-2);
+            values.Add(9);
+
             var barSeries = new BarSeries<double>();
 
-            // add some values to the series...
-            barSeries.Add(-4);
-            barSeries.Add(-7);
-            barSeries.Add(-2);
-            barSeries.Add(9);
+            barSeries.Values = values;
 
             // a custom fill and stroke, if we don't set these properties
             // LiveCharts will set them for us according to our theme.
@@ -33,13 +37,13 @@ namespace Assets.ViewModels
             // you can use any IEnumerable, it is recommended to use
             // the ChartingCollection<T> class, it inherits from
             // ObservableCollection and adds the AddRange/RemoveRange methods
-            SeriesCollection = new ChartingCollection<ISeries>();
+            SeriesCollection = new ObservableCollection<ISeries>();
             // finally lets add the series to our series collection,
             // we can add as many series as we need, in this case we will
             // only display one series.
             SeriesCollection.Add(barSeries);
         }
 
-        public ChartingCollection<ISeries> SeriesCollection { get; set; }
+        public ObservableCollection<ISeries> SeriesCollection { get; set; }
     }
 }

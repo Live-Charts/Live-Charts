@@ -1,4 +1,5 @@
-﻿using LiveCharts.Core.Abstractions.DataSeries;
+﻿using System.Collections.ObjectModel;
+using LiveCharts.Core.Abstractions.DataSeries;
 using LiveCharts.Core.Collections;
 using LiveCharts.Core.DataSeries;
 
@@ -8,22 +9,32 @@ namespace Assets.ViewModels
     {
         public InvertedSeries()
         {
-            var lineSeries = new LineSeries<double>();
-            lineSeries.Add(5d);
-            lineSeries.Add(3d);
-            lineSeries.Add(6d);
-            lineSeries.Add(4d);
+            var values1 = new ObservableCollection<double>();
+            values1.Add(5d);
+            values1.Add(3d);
+            values1.Add(6d);
+            values1.Add(4d);
 
-            var barSeries = new BarSeries<double>();
-            barSeries.Add(7d);
-            barSeries.Add(8d);
-            barSeries.Add(2d);
-            barSeries.Add(8d);
-            barSeries.DefaultFillOpacity = .6f;
+            var values2 = new ObservableCollection<double>();
+            values2.Add(7d);
+            values2.Add(8d);
+            values2.Add(2d);
+            values2.Add(8d);
 
             SeriesCollection = new ChartingCollection<ISeries>();
-            SeriesCollection.Add(lineSeries);
-            SeriesCollection.Add(barSeries);
+
+            SeriesCollection.Add(
+                new LineSeries<double>
+                {
+                    Values = values1
+                });
+
+            SeriesCollection.Add(
+                new LineSeries<double>
+                {
+                    Values = values2,
+                    DefaultFillOpacity = 0.3f
+                });
             // we bind the SeriesCollection property to the CartesianChart.Series property in XAML
         }
 

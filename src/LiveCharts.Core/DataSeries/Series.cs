@@ -26,7 +26,6 @@
 #region
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
@@ -57,11 +56,11 @@ namespace LiveCharts.Core.DataSeries
     /// <typeparam name="TSeries">The type of the series.</typeparam>
     /// <seealso cref="IResource" />
     public abstract class Series<TModel, TCoordinate, TViewModel, TSeries> 
-        : ISeries<TModel, TCoordinate, TViewModel, TSeries>, IList<TModel>, INotifyRangeChanged<TModel>
+        : ISeries<TModel, TCoordinate, TViewModel, TSeries>
         where TCoordinate : ICoordinate
         where TSeries : class, ISeries
     { 
-        private IEnumerable<TModel> _itemsSource;
+        private IEnumerable<TModel> _values;
         private IEnumerable<TModel> _previousItemsSource;
         private IList<TModel> _sourceAsIList;
         private INotifyRangeChanged<TModel> _sourceAsRangeChanged;
@@ -95,28 +94,6 @@ namespace LiveCharts.Core.DataSeries
         }
 
         #region Properties
-
-        /// <inheritdoc />
-        public TModel this[int index]
-        {
-            get
-            {
-                EnsureIListImplementation();
-                return _sourceAsIList[index];
-            }
-            set
-            {
-                EnsureIListImplementation();
-                _sourceAsIList[index] = value;
-                OnPropertyChanged();
-            }
-        }
-
-        object IList.this[int index]
-        {
-            get => this[index];
-            set => this[index] = (TModel)value;
-        }
 
         /// <inheritdoc />
         public abstract Type ResourceKey { get; }
@@ -213,26 +190,8 @@ namespace LiveCharts.Core.DataSeries
         /// <inheritdoc />
         public abstract float[] PointMargin { get; }
 
-        /// <inheritdoc />
-        bool IList.IsReadOnly => _sourceAsIList.IsReadOnly;
-
-        /// <inheritdoc />
-        bool IList.IsFixedSize => ((IList) _sourceAsIList).IsFixedSize;
-
-        /// <inheritdoc />
-        void ICollection.CopyTo(Array array, int index)
-        {
-            ((ICollection) _sourceAsIList).CopyTo(array, index);
-        }
-
         /// <inheritdoc cref="List{T}.Count"/>
-        public int Count => _sourceAsIList?.Count ?? _itemsSource.Count();
-
-        /// <inheritdoc />
-        object ICollection.SyncRoot => ((ICollection) ItemsSource).SyncRoot;
-
-        /// <inheritdoc />
-        bool ICollection.IsSynchronized => ((ICollection)ItemsSource).IsSynchronized;
+        public int Count => _sourceAsIList?.Count ?? _values.Count();
 
         /// <summary>
         /// Gets or sets the items source, the items source is where the series grabs the 
@@ -242,13 +201,13 @@ namespace LiveCharts.Core.DataSeries
         /// <value>
         /// The values.
         /// </value>
-        public IEnumerable<TModel> ItemsSource
+        public IEnumerable<TModel> Values
         {
-            get => _itemsSource;
+            get => _values;
             set
             {
-                _itemsSource = value;
-                OnItemsInstanceChanged();
+                _values = value;
+                OnValuesInstanceChanged();
                 OnPropertyChanged();
             }
         }
@@ -297,16 +256,6 @@ namespace LiveCharts.Core.DataSeries
             {
                 _viewProvider = value;
                 OnPropertyChanged();
-            }
-        }
-
-        /// <inheritdoc />
-        bool ICollection<TModel>.IsReadOnly
-        {
-            get
-            {
-                EnsureIListImplementation();
-                return _sourceAsIList.IsReadOnly;
             }
         }
 
@@ -382,7 +331,7 @@ namespace LiveCharts.Core.DataSeries
                 Mapper = Mapper,
                 Chart = chart,
                 UpdateContext = context,
-                Collection = ItemsSource.ToArray()
+                Collection = Values.ToArray()
             })
             {
                 Points = Charting.Current.DataFactory.Fetch<TModel, TCoordinate, TViewModel, TSeries>(factoryContext);
@@ -489,151 +438,13 @@ namespace LiveCharts.Core.DataSeries
             return new PointF(left, top);
         }
 
-        #region Items interaction
-
-        IEnumerator IEnumerable.GetEnumerator()
+        private void OnValuesInstanceChanged()
         {
-            return GetEnumerator();
-        }
-
-        /// <inheritdoc />
-        public IEnumerator<TModel> GetEnumerator()
-        {
-            return ItemsSource.GetEnumerator();
-        }
-
-        /// <inheritdoc />
-        public int IndexOf(TModel item)
-        {
-            EnsureIListImplementation();
-            return _sourceAsIList.IndexOf(item);
-        }
-
-        /// <inheritdoc />
-        public void Insert(int index, TModel item)
-        {
-            EnsureIListImplementation();
-            _sourceAsIList.Insert(index, item);
-        }
-        
-        /// <inheritdoc />
-        public void Add(TModel item)
-        {
-            EnsureIListImplementation();
-            _sourceAsIList.Add(item);
-        }
-
-        /// <inheritdoc />
-        public int Add(object value)
-        {
-            Add((TModel) value);
-            return Count;
-        }
-
-        /// <inheritdoc />
-        public bool Contains(object value)
-        {
-            return Contains((TModel) value);
-        }
-
-        /// <inheritdoc cref="List{T}.Clear" />
-        public void Clear()
-        {
-            EnsureIListImplementation();
-            _sourceAsIList.Clear();
-        }
-
-        /// <inheritdoc />
-        public int IndexOf(object value)
-        {
-            return IndexOf((TModel) value);
-        }
-
-        /// <inheritdoc />
-        public void Insert(int index, object value)
-        {
-            Insert(index, (TModel) value);
-        }
-
-        /// <inheritdoc />
-        public bool Contains(TModel item)
-        {
-            EnsureIListImplementation();
-            return _sourceAsIList.Contains(item);
-        }
-
-        /// <inheritdoc />
-        void ICollection<TModel>.CopyTo(TModel[] array, int arrayIndex)
-        {
-            EnsureIListImplementation();
-            _sourceAsIList.CopyTo(array, arrayIndex);
-        }
-
-        /// <inheritdoc />
-        public bool Remove(TModel item)
-        {
-            EnsureIListImplementation();
-            return _sourceAsIList.Remove(item);
-        }
-
-        /// <inheritdoc />
-        public void Remove(object value)
-        {
-            Remove((TModel)value);
-        }
-
-        /// <inheritdoc cref="List{T}.RemoveAt" />
-        public void RemoveAt(int index)
-        {
-            EnsureIListImplementation();
-            _sourceAsIList.RemoveAt(index);
-        }
-
-        /// <inheritdoc />
-        public void AddRange(IEnumerable<TModel> items)
-        {
-            EnsureINotifyRangeImplementation();
-            _sourceAsRangeChanged.AddRange(items);
-        }
-
-        /// <inheritdoc />
-        public void RemoveRange(IEnumerable<TModel> items)
-        {
-            EnsureINotifyRangeImplementation();
-            _sourceAsRangeChanged.RemoveRange(items);
-        }
-
-        #endregion
-
-        private void EnsureIListImplementation([CallerMemberName] string method = null)
-        {
-            if (_sourceAsIList == null)
-            {
-                throw new LiveChartsException(
-                    $"{nameof(ItemsSource)} property, does not implement {nameof(IList<TModel>)}, " +
-                    $"thus the method {method} is not supported.",
-                    200);
-            }
-        }
-
-        private void EnsureINotifyRangeImplementation([CallerMemberName] string method = null)
-        {
-            if (_sourceAsRangeChanged == null)
-            {
-                throw new LiveChartsException(
-                    $"{nameof(ItemsSource)} property, does not implement {nameof(INotifyRangeChanged<TModel>)}, " +
-                    $"thus the method {method} is not supported.",
-                    210);
-            }
-        }
-
-        private void OnItemsInstanceChanged()
-        {
-            _sourceAsIList = _itemsSource as IList<TModel>;
-            _sourceAsRangeChanged = ItemsSource as INotifyRangeChanged<TModel>;
+            _sourceAsIList = _values as IList<TModel>;
+            _sourceAsRangeChanged = Values as INotifyRangeChanged<TModel>;
 
             // ReSharper disable once IdentifierTypo
-            if (_itemsSource is INotifyCollectionChanged incc)
+            if (_values is INotifyCollectionChanged incc)
             {
                 incc.CollectionChanged += InccOnCollectionChanged;
             }
@@ -644,21 +455,21 @@ namespace LiveCharts.Core.DataSeries
                 pincc.CollectionChanged -= InccOnCollectionChanged;
             }
 
-            _previousItemsSource = _itemsSource;
+            _previousItemsSource = _values;
         }
 
         // ReSharper disable once IdentifierTypo
         private void InccOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs notifyCollectionChangedEventArgs)
         {
-            CollectionChanged?.Invoke(sender, notifyCollectionChangedEventArgs);
+            //CollectionChanged?.Invoke(sender, notifyCollectionChangedEventArgs);
         }
 
         private void Initialize(IEnumerable<TModel> itemsSource = null)
         {
             _isVisible = true;
             Content = new Dictionary<ChartModel, Dictionary<string, object>>();
-            _itemsSource = itemsSource ?? new ChartingCollection<TModel>();
-            OnItemsInstanceChanged();
+            _values = itemsSource ?? new ChartingCollection<TModel>();
+            OnValuesInstanceChanged();
             var t = typeof(TModel);
             Metadata = new SeriesMetatada
             {
@@ -676,7 +487,7 @@ namespace LiveCharts.Core.DataSeries
 
         void IResource.Dispose(IChartView view)
         {
-           OnDisposing(view);
+            OnDisposing(view);
             Disposed?.Invoke(view, this);
         }
 
@@ -708,13 +519,6 @@ namespace LiveCharts.Core.DataSeries
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-
-        #endregion
-
-        #region INCC implementation
-
-        /// <inheritdoc />
-        public event NotifyCollectionChangedEventHandler CollectionChanged;
 
         #endregion
     }

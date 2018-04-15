@@ -1,4 +1,5 @@
-﻿using LiveCharts.Core.Abstractions.DataSeries;
+﻿using System.Collections.ObjectModel;
+using LiveCharts.Core.Abstractions.DataSeries;
 using LiveCharts.Core.Collections;
 using LiveCharts.Core.DataSeries;
 using LiveCharts.Core.Defaults;
@@ -10,27 +11,30 @@ namespace Assets.ViewModels
     {
         public BasicScatter()
         {
-            // populate the series.
+            // feed the values
 
-            var year2017Series = new ScatterSeries<PointModel>();
+            var values2017 = new ObservableCollection<PointModel>();
             
             //                               ( x, y)
-            year2017Series.Add(new PointModel(10, 6));
-            year2017Series.Add(new PointModel(4, 3));
-            year2017Series.Add(new PointModel(3, 9));
-            year2017Series.Add(new PointModel(6, 2));
+            values2017.Add(new PointModel(10, 6));
+            values2017.Add(new PointModel(4, 3));
+            values2017.Add(new PointModel(3, 9));
+            values2017.Add(new PointModel(6, 2));
 
-            var year2018Series = new ScatterSeries<PointModel>();
+            var values2018 = new ObservableCollection<PointModel>();
 
             //                               (x, y)
-            year2018Series.Add(new PointModel(5, 8));
-            year2018Series.Add(new PointModel(5, 4));
-            year2018Series.Add(new PointModel(9, 6));
-            year2018Series.Add(new PointModel(3, 1));
+            values2018.Add(new PointModel(5, 8));
+            values2018.Add(new PointModel(5, 4));
+            values2018.Add(new PointModel(9, 6));
+            values2018.Add(new PointModel(3, 1));
+
+            var series2018 = new ScatterSeries<PointModel> {Values = values2018};
+            var series2017 = new ScatterSeries<PointModel> {Values = values2017};
 
             // some custom style.
-            year2018Series.Geometry = Geometry.Diamond;
-            year2017Series.Geometry = Geometry.Circle;
+            series2018.Geometry = Geometry.Diamond;
+            series2017.Geometry = Geometry.Circle;
 
             // create a collection to store our series.
             // you can use any IEnumerable, it is recommended to use
@@ -38,8 +42,8 @@ namespace Assets.ViewModels
             // ObservableCollection and adds the AddRange/RemoveRange methods
             SeriesCollection = new ChartingCollection<ISeries>();
             // finally lets add the series to our series collection.
-            SeriesCollection.Add(year2018Series);
-            SeriesCollection.Add(year2017Series);
+            SeriesCollection.Add(series2018);
+            SeriesCollection.Add(series2017);
             // we bind the SeriesCollection property to the CartesianChart.Series property in XAML
         }
 

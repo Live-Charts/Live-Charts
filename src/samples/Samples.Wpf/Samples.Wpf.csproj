@@ -92,9 +92,6 @@
     <Compile Include="Views\MultipleAxes.xaml.cs">
       <DependentUpon>MultipleAxes.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\PropertyAndInstanceChanged.xaml.cs">
-      <DependentUpon>PropertyAndInstanceChanged.xaml</DependentUpon>
-    </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -144,10 +141,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\MultipleAxes.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\PropertyAndInstanceChanged.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
