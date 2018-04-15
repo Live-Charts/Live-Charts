@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Drawing;
 using LiveCharts.Core.Abstractions.DataSeries;
 using LiveCharts.Core.Collections;
 using LiveCharts.Core.DataSeries;
 using LiveCharts.Core.Defaults;
 using LiveCharts.Core.Dimensions;
+using LiveCharts.Core.Drawing;
 
 namespace Assets.ViewModels
 {
@@ -105,7 +107,25 @@ namespace Assets.ViewModels
             SeriesCollection = new ChartingCollection<ISeries>();
             SeriesCollection.Add(new HeatSeries<WeightedModel>
             {
-                Values = values
+                Values = values,
+                Gradient = new[]
+                {
+                    new GradientStop
+                    {
+                        Color = Color.PaleVioletRed,
+                        Offset = 0
+                    },
+                    new GradientStop
+                    {
+                        Color = Color.MediumVioletRed,
+                        Offset = .3
+                    },
+                    new GradientStop
+                    {
+                        Color = Color.DarkRed,
+                        Offset = 1
+                    }
+                }
             });
         }
 
