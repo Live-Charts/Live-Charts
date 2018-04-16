@@ -34,7 +34,7 @@ namespace LiveCharts.Wpf.Views
             {
                 Shape = new Rectangle();
                 chart.Content.AddChild(Shape);
-                Shape.Fill = vm.From.AsWpf();
+                Shape.Fill = new SolidColorBrush(Color.FromArgb(vm.From.A, vm.From.R, vm.From.G, vm.From.B));
             }
 
             // map properties

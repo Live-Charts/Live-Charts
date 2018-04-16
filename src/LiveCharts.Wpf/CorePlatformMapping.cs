@@ -29,7 +29,8 @@ using System;
 using System.Drawing;
 using System.Windows;
 using System.Windows.Media;
-using Color = System.Drawing.Color;
+using LiveCharts.Core;
+using Brush = LiveCharts.Core.Drawing.Brush;
 using Font = LiveCharts.Core.Abstractions.Font;
 using FontFamily = System.Windows.Media.FontFamily;
 using FontStyle = System.Windows.FontStyle;
@@ -44,16 +45,27 @@ namespace LiveCharts.Wpf
     /// <summary>
     /// Windows presentation foundation Extensions.
     /// </summary>
-    public static class Extensions
+    public static class CorePlatformMapping
     {
         /// <summary>
-        /// Converts a WPF color to LiveCharts color.
+        /// converts a color to a solid color brush.
         /// </summary>
-        /// <param name="color">The color.</param>
+        /// <param name="brush">The color.</param>
         /// <returns></returns>
-        public static Color AsLiveCharts(this Color color)
+        public static SolidColorBrush AsWpf(this Brush brush)
         {
-            return Color.FromArgb(color.A, color.R, color.G, color.B);
+            if (brush == null) return null;
+
+            if (brush is Core.Drawing.SolidColorBrush scb)
+            {
+                return new SolidColorBrush(
+                    System.Windows.Media.Color.FromArgb(
+                        scb.Color.A, scb.Color.R, scb.Color.G, scb.Color.B));
+            }
+
+            throw new LiveChartsException(
+                "It was not possible to map a core brush to WPF, probably the brush type is not already supported.",
+                120);
         }
 
         /// <summary>
@@ -94,18 +106,6 @@ namespace LiveCharts.Wpf
 
             return new Typeface(
                 new FontFamily(font.FamilyName), s, w, FontStretches.Normal);
-        }
-
-        /// <summary>
-        /// converts a color to a solid color brush.
-        /// </summary>
-        /// <param name="color">The color.</param>
-        /// <returns></returns>
-        public static SolidColorBrush AsWpf(this Color color)
-        {
-            if (color == Color.Empty) return null;
-            return new SolidColorBrush(
-                System.Windows.Media.Color.FromArgb(color.A, color.R, color.G, color.B));
         }
 
         /// <summary>

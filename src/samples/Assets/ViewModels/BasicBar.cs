@@ -1,5 +1,4 @@
 ﻿using System.Collections.ObjectModel;
-using System.Drawing;
 using LiveCharts.Core.Abstractions.DataSeries;
 using LiveCharts.Core.DataSeries;
 
@@ -24,8 +23,8 @@ namespace Assets.ViewModels
             // a custom fill and stroke, if we don't set these properties
             // LiveCharts will set them for us according to our theme.
             barSeries.StrokeThickness = 3f;
-            barSeries.Stroke = Color.Purple;
-            barSeries.Fill = Color.MediumPurple;
+            barSeries.Stroke = LiveCharts.Core.Drawing.Brushes.Purple;
+            barSeries.Fill = LiveCharts.Core.Drawing.Brushes.MediumPurple;
 
             // limit the column width to 65.
             barSeries.MaxColumnWidth = 65f;

@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Drawing;
 
 namespace LiveCharts.Core.Drawing
 {
@@ -14,7 +13,7 @@ namespace LiveCharts.Core.Drawing
         /// <value>
         /// The stroke.
         /// </value>
-        public Color Stroke { get; set; }
+        public Brush Stroke { get; set; }
 
         /// <summary>
         /// Gets or sets the stroke thickness.
@@ -38,6 +37,6 @@ namespace LiveCharts.Core.Drawing
         /// <value>
         /// The fill.
         /// </value>
-        public Color Fill { get; set; }
+        public Brush Fill { get; set; }
     }
 }

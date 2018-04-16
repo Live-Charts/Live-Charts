@@ -56,7 +56,10 @@ namespace LiveCharts.Core.Dimensions
             StepStart = float.NaN;
             Position = AxisPosition.Auto;
             XSeparatorStyle =
-                new SeparatorStyle(Color.FromArgb(255, 250, 250, 250), Color.FromArgb(50, 240, 240, 240), 1);
+                new SeparatorStyle(
+                    new SolidColorBrush(Color.FromArgb(255, 250, 250, 250)),
+                    new SolidColorBrush(Color.FromArgb(50, 240, 240, 240)),
+                    1);
             YSeparatorStyle = SeparatorStyle.Empty;
             XAlternativeSeparatorStyle = SeparatorStyle.Empty;
             YSeparatorStyle = SeparatorStyle.Empty;

@@ -12,4 +12,12 @@
     <DocumentationFile>bin\Debug\net45\LiveCharts.Core.xml</DocumentationFile>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Remove="solidbrushes.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="solidbrushes.txt" />
+  </ItemGroup>
+
 </Project>

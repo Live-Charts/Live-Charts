@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Drawing;
 
 namespace LiveCharts.Core.Abstractions.DataSeries
 {
@@ -14,7 +13,7 @@ namespace LiveCharts.Core.Abstractions.DataSeries
         /// <value>
         /// The fill.
         /// </value>
-        Color Fill { get; set; }
+        Drawing.Brush Fill { get; set; }
 
         /// <summary>
         /// Gets or sets the stroke.
@@ -22,7 +21,7 @@ namespace LiveCharts.Core.Abstractions.DataSeries
         /// <value>
         /// The stroke.
         /// </value>
-        Color Stroke { get; set; }
+        Drawing.Brush Stroke { get; set; }
 
         /// <summary>
         /// Gets or sets the stroke thickness.

@@ -25,8 +25,8 @@ namespace Assets.ViewModels
 
             // a custom fill and stroke, if we don't set these properties
             // LiveCharts will set them for us according to our theme.
-            lineSeries.Stroke = Color.Purple;
-            lineSeries.Fill = Color.FromArgb(10, 80, 00, 80);
+            lineSeries.Stroke = LiveCharts.Core.Drawing.Brushes.Purple;
+            lineSeries.Fill = new LiveCharts.Core.Drawing.SolidColorBrush(Color.FromArgb(10, 80, 00, 80));
 
             // the beziers in the drawn line are calculated based on
             // the line smoothness property, the value goes from 

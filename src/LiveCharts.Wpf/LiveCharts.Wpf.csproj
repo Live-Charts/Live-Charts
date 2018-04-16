@@ -63,7 +63,7 @@
     <Compile Include="Controls\ChartLegend.cs" />
     <Compile Include="Controls\AxisLabel.cs" />
     <Compile Include="Interaction\DataInteractionEventArgs.cs" />
-    <Compile Include="Extensions.cs" />
+    <Compile Include="CorePlatformMapping.cs" />
     <Compile Include="Interaction\DataInteractionHandler.cs" />
     <Compile Include="PieChart.cs" />
     <Compile Include="Shapes\Slice.cs" />

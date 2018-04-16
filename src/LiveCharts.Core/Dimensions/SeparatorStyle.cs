@@ -27,6 +27,7 @@
 
 using System.Collections.Generic;
 using System.Drawing;
+using Brush = LiveCharts.Core.Drawing.Brush;
 
 #endregion
 
@@ -42,8 +43,8 @@ namespace LiveCharts.Core.Dimensions
         private SeparatorStyle(bool empty): this()
         {
             _isEmpty = empty;
-            Fill = Color.Empty;
-            Stroke = Color.Empty;
+            Fill = null;
+            Stroke = null;
         }
 
         /// <summary>
@@ -52,7 +53,7 @@ namespace LiveCharts.Core.Dimensions
         /// <param name="stroke">The stroke.</param>
         /// <param name="fill">The fill.</param>
         /// <param name="strokeThickness">The stroke thickness.</param>
-        public SeparatorStyle(Color stroke, Color fill, float strokeThickness)
+        public SeparatorStyle(Brush stroke, Brush fill, float strokeThickness)
         {
             _isEmpty = false;
             Stroke = stroke;
@@ -71,7 +72,7 @@ namespace LiveCharts.Core.Dimensions
         /// <value>
         /// The stroke.
         /// </value>
-        public Color Stroke { get; }
+        public Brush Stroke { get; }
 
         /// <summary>
         /// Gets or sets the stroke thickness.
@@ -87,7 +88,18 @@ namespace LiveCharts.Core.Dimensions
         /// <value>
         /// The fill.
         /// </value>
-        public Color Fill { get; }
+        public Brush Fill { get; }
+
+
+        /// <summary>
+        /// Compares the specified instances.
+        /// </summary>
+        /// <param name="other">The other.</param>
+        /// <returns></returns>
+        public bool Equals(SeparatorStyle other)
+        {
+            return _isEmpty == other._isEmpty && Stroke.Equals(other.Stroke) && StrokeThickness.Equals(other.StrokeThickness) && Fill.Equals(other.Fill);
+        }
 
         /// <summary>
         /// Determines whether the specified <see cref="System.Object" />, is equal to this instance.
@@ -98,26 +110,8 @@ namespace LiveCharts.Core.Dimensions
         /// </returns>
         public override bool Equals(object obj)
         {
-            if (!(obj is SeparatorStyle))
-            {
-                return false;
-            }
-
-            var style = (SeparatorStyle)obj;
-            return _isEmpty == style._isEmpty &&
-                   EqualityComparer<Color>.Default.Equals(Stroke, style.Stroke) &&
-                   StrokeThickness == style.StrokeThickness &&
-                   EqualityComparer<Color>.Default.Equals(Fill, style.Fill);
-        }
-
-        /// <summary>
-        /// Compares the specified instances.
-        /// </summary>
-        /// <param name="other">The other.</param>
-        /// <returns></returns>
-        public bool Equals(SeparatorStyle other)
-        {
-            return _isEmpty == other._isEmpty && Stroke.Equals(other.Stroke) && StrokeThickness.Equals(other.StrokeThickness) && Fill.Equals(other.Fill);
+            if (ReferenceEquals(null, obj)) return false;
+            return obj is SeparatorStyle && Equals((SeparatorStyle)obj);
         }
 
         /// <summary>

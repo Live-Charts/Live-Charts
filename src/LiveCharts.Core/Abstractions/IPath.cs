@@ -52,7 +52,7 @@ namespace LiveCharts.Core.Abstractions
         /// <param name="strokeThickness">The stroke thickness.</param>
         /// <param name="strokeDashArray">The stroke dash array.</param>
         void SetStyle(
-            PointF startPoint, Color stroke, Color fill, double strokeThickness, IEnumerable<double> strokeDashArray);
+            PointF startPoint, Drawing.Brush stroke, Drawing.Brush fill, double strokeThickness, IEnumerable<double> strokeDashArray);
 
         /// <summary>
         /// Adds the bezier segment and returns the instance added.

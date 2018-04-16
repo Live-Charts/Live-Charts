@@ -58,7 +58,7 @@ namespace LiveCharts.Core.DataSeries
         protected override ISeriesViewProvider<TModel, WeightedCoordinate, HeatViewModel, IHeatSeries>
             DefaultViewProvider => _provider ?? (_provider = Charting.Current.UiProvider.HeatViewProvider<TModel>());
 
-        public override SeriesStyle Style { get; }
+        public override SeriesStyle Style => new SeriesStyle(); // ToDo: How do we display it in the legend/tooltip ??
 
         /// <inheritdoc />
         public override void UpdateView(ChartModel chart, UpdateContext context)
@@ -155,7 +155,7 @@ namespace LiveCharts.Core.DataSeries
 
         private Color ColorInterpolation(float min, float max, float current)
         {
-            var currentOffset = current / max;
+            var currentOffset = (current - min) / (max - min);
             var enumerator = Gradient.GetEnumerator();
 
             if (!enumerator.MoveNext())

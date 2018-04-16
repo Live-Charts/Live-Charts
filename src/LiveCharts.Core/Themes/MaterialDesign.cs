@@ -29,6 +29,7 @@ using System.Drawing;
 using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Abstractions.DataSeries;
 using LiveCharts.Core.Dimensions;
+using LiveCharts.Core.Drawing;
 using LiveCharts.Core.Drawing.Svg;
 using LiveCharts.Core.Interaction;
 using Font = LiveCharts.Core.Abstractions.Font;
@@ -78,8 +79,8 @@ namespace LiveCharts.Core.Themes
                     series.DataLabels = false;
                     series.StrokeThickness = 3f;
                     series.DefaultFillOpacity = 1f;
-                    series.Fill = Color.Empty; // if the color is empty, the DataFactory will assign it.
-                    series.Stroke = Color.Empty;
+                    series.Fill = null; // if the color is empty, the series will assign it.
+                    series.Stroke = null;
                     series.StrokeThickness = 0;
                     series.Geometry = Geometry.Circle;
                     series.Title = "Unnamed Series";
@@ -122,7 +123,10 @@ namespace LiveCharts.Core.Themes
                 .SetDefault<Axis>(axis =>
                 {
                     axis.XSeparatorStyle = SeparatorStyle.Empty;
-                    axis.YSeparatorStyle = new SeparatorStyle(Color.FromArgb(0, 0, 0, 0), Color.FromArgb(255, 245, 245, 245), 0);
+                    axis.YSeparatorStyle = new SeparatorStyle(
+                        new SolidColorBrush(Color.FromArgb(0, 0, 0, 0)),
+                        new SolidColorBrush(Color.FromArgb(255, 245, 245, 245)),
+                        0);
                     axis.XAlternativeSeparatorStyle = SeparatorStyle.Empty;
                     axis.YAlternativeSeparatorStyle = SeparatorStyle.Empty;
                 });

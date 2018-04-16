@@ -25,17 +25,8 @@
 
 #region
 
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
 using System.Windows;
 using LiveCharts.Core;
-using LiveCharts.Core.Collections;
-using LiveCharts.Core.Coordinates;
-using LiveCharts.Core.DataSeries;
-using LiveCharts.Core.Defaults;
 using LiveCharts.Core.Themes;
 using LiveCharts.Wpf;
 

@@ -47,6 +47,13 @@ namespace LiveCharts.Core.Dimensions
         private float[] _pointWidth;
         private Font _font;
         private Func<double, string> _labelFormatter;
+        private float _maxValue;
+        private float _minValue;
+        private string _title;
+        private IList<string> _labels;
+        private double _labelsRotation;
+        private bool _reverse;
+        private IEnumerable<Section> _sections;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Plane"/> class.
@@ -74,7 +81,15 @@ namespace LiveCharts.Core.Dimensions
         /// <value>
         /// The maximum value.
         /// </value>
-        public float MaxValue { get; set; }
+        public float MaxValue
+        {
+            get => _maxValue;
+            set
+            {
+                _maxValue = value;
+                OnPropertyChanged();
+            }
+        }
 
         /// <summary>
         /// Gets or sets the minimum value to display.
@@ -82,7 +97,15 @@ namespace LiveCharts.Core.Dimensions
         /// <value>
         /// The minimum value.
         /// </value>
-        public float MinValue { get; set; }
+        public float MinValue
+        {
+            get => _minValue;
+            set
+            {
+                _minValue = value;
+                OnPropertyChanged();
+            }
+        }
 
         /// <summary>
         /// Gets the actual maximum value.
@@ -121,6 +144,7 @@ namespace LiveCharts.Core.Dimensions
             {
                 _pointWidth = value;
                 ActualPointWidth = new [] {0f, 0f};
+                OnPropertyChanged();
             }
         }
 
@@ -146,7 +170,15 @@ namespace LiveCharts.Core.Dimensions
         /// <value>
         /// The title.
         /// </value>
-        public string Title { get; set; }
+        public string Title
+        {
+            get => _title;
+            set
+            {
+                _title = value;
+                OnPropertyChanged();
+            }
+        }
 
         /// <summary>
         /// Gets or sets the labels.
@@ -154,7 +186,15 @@ namespace LiveCharts.Core.Dimensions
         /// <value>
         /// The labels.
         /// </value>
-        public IList<string> Labels { get; set; }
+        public IList<string> Labels
+        {
+            get => _labels;
+            set
+            {
+                _labels = value;
+                OnPropertyChanged();
+            }
+        }
 
         /// <summary>
         /// Gets or sets the label formatter.
@@ -165,8 +205,28 @@ namespace LiveCharts.Core.Dimensions
         public Func<double, string> LabelFormatter
         {
             get => _labelFormatter;
-            set => _labelFormatter = value ?? throw new LiveChartsException(
-                                         $"{nameof(LabelFormatter)} can not be null.", 0);
+            set
+            {
+                _labelFormatter = value ?? throw new LiveChartsException(
+                                      $"{nameof(Axis)}.{nameof(LabelFormatter)} property can not be null.", 0);
+                OnPropertyChanged();
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the sections.
+        /// </summary>
+        /// <value>
+        /// The sections.
+        /// </value>
+        public IEnumerable<Section> Sections
+        {
+            get => _sections;
+            set
+            {
+                _sections = value;
+                OnPropertyChanged();
+            }
         }
 
         /// <summary>
@@ -175,7 +235,15 @@ namespace LiveCharts.Core.Dimensions
         /// <value>
         /// The labels rotation.
         /// </value>
-        public double LabelsRotation { get; set; }
+        public double LabelsRotation
+        {
+            get => _labelsRotation;
+            set
+            {
+                _labelsRotation = value;
+                OnPropertyChanged();
+            }
+        }
 
         /// <summary>
         /// Gets the actual labels rotation.
@@ -210,7 +278,15 @@ namespace LiveCharts.Core.Dimensions
         /// <value>
         ///   <c>true</c> if reverse; otherwise, <c>false</c>.
         /// </value>
-        public bool Reverse { get; set; }
+        public bool Reverse
+        {
+            get => _reverse;
+            set
+            {
+                _reverse = value;
+                OnPropertyChanged();
+            }
+        }
 
         internal bool ActualReverse { get; set; }
 

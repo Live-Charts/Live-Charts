@@ -26,11 +26,9 @@
 #region
 
 using System.Drawing;
-using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Abstractions.DataSeries;
 using LiveCharts.Core.Dimensions;
-using Font = LiveCharts.Core.Abstractions.Font;
-using FontStyle = LiveCharts.Core.Abstractions.FontStyle;
+using LiveCharts.Core.Drawing;
 
 #endregion
 
@@ -48,11 +46,14 @@ namespace LiveCharts.Core.Themes
         /// <returns></returns>
         public static Charting UsingTestingTheme(this Charting charting)
         {
-            var baseFont = new Font("Arial", 11, FontStyle.Regular, FontWeight.Regular);
-
-            var sepStyle = new SeparatorStyle(Color.FromArgb(0, 230, 230, 230), Color.FromArgb(150, 245, 245, 245), 1);
-            var altStyle =
-                new SeparatorStyle(Color.FromArgb(0, 220, 220, 220), Color.FromArgb(150, 220, 220, 220), 1);
+            var sepStyle = new SeparatorStyle(
+                new SolidColorBrush(Color.FromArgb(0, 230, 230, 230)),
+                new SolidColorBrush(Color.FromArgb(150, 245, 245, 245)),
+                1);
+            var altStyle = new SeparatorStyle(
+                new SolidColorBrush(Color.FromArgb(0, 220, 220, 220)),
+                new SolidColorBrush(Color.FromArgb(150, 220, 220, 220)),
+                1);
 
             charting
                 .HasColors(new []

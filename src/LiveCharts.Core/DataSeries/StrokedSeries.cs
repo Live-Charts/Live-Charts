@@ -5,6 +5,7 @@ using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Abstractions.DataSeries;
 using LiveCharts.Core.Charts;
 using LiveCharts.Core.Drawing;
+using Brush = LiveCharts.Core.Drawing.Brush;
 
 namespace LiveCharts.Core.DataSeries
 {
@@ -22,9 +23,9 @@ namespace LiveCharts.Core.DataSeries
         where TCoordinate : ICoordinate
         where TSeries : class, ISeries
     {
-        private Color _stroke;
+        private Brush _stroke;
         private float _strokeThickness;
-        private Color _fill;
+        private Brush _fill;
         private IEnumerable<double> _strokeDashArray;
 
         /// <inheritdoc />
@@ -34,7 +35,7 @@ namespace LiveCharts.Core.DataSeries
         }
 
         /// <inheritdoc />
-        public Color Stroke
+        public Brush Stroke
         {
             get => _stroke;
             set
@@ -67,7 +68,7 @@ namespace LiveCharts.Core.DataSeries
         }
 
         /// <inheritdoc />
-        public Color Fill
+        public Brush Fill
         {
             get => _fill;
             set
@@ -95,18 +96,18 @@ namespace LiveCharts.Core.DataSeries
         /// <inheritdoc />
         protected override void SetDefaultColors(ChartModel chart)
         {
-            if (!(Stroke == Color.Empty || Fill == Color.Empty)) return;
+            if (!(Stroke == null || Fill == null)) return;
 
             var nextColor = chart.GetNextColor();
 
-            if (Stroke == Color.Empty)
+            if (Stroke == null)
             {
-                Stroke = nextColor;
+                Stroke = new SolidColorBrush(nextColor);
             }
 
-            if (Fill == Color.Empty)
+            if (Fill == null)
             {
-                Fill = nextColor.SetOpacity(DefaultFillOpacity);
+                Fill = new SolidColorBrush(nextColor.SetOpacity(DefaultFillOpacity));
             }
         }
     }

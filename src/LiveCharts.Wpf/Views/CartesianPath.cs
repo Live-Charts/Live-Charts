@@ -34,6 +34,7 @@ using System.Windows.Shapes;
 using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Effects;
 using LiveCharts.Wpf.Animations;
+using Brush = LiveCharts.Core.Drawing.Brush;
 
 #endregion
 
@@ -74,7 +75,7 @@ namespace LiveCharts.Wpf.Views
 
         /// <inheritdoc />
         public void SetStyle(
-            PointF startPoint, System.Drawing.Color stroke, System.Drawing.Color fill, 
+            PointF startPoint, Brush stroke, Brush fill, 
             double strokeThickness, IEnumerable<double> strokeDashArray)
         {
             if (_isNew)
