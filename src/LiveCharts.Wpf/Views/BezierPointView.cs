@@ -90,15 +90,21 @@ namespace LiveCharts.Wpf.Views
                 Shape.Animate()
                     .AtSpeed(TimeSpan.FromMilliseconds(speed.TotalMilliseconds * 2))
                     .Property(Canvas.LeftProperty,
-                        new Frame(0.5, _vm.Location.X),
-                        new Frame(0.8, _vm.Location.X - .5 * (_vm.GeometrySize + bounce)),
-                        new Frame(0.9, _vm.Location.X - .5 * (_vm.GeometrySize - bounce * .5)),
-                        new Frame(1, point.ViewModel.Location.X - .5 * _vm.GeometrySize))
+                        new []
+                        {
+                            new Frame(0.5, _vm.Location.X),
+                            new Frame(0.8, _vm.Location.X - .5 * (_vm.GeometrySize + bounce)),
+                            new Frame(0.9, _vm.Location.X - .5 * (_vm.GeometrySize - bounce * .5)),
+                            new Frame(1, point.ViewModel.Location.X - .5 * _vm.GeometrySize)
+                        })
                     .Property(Canvas.TopProperty,
-                        new Frame(0.5, _vm.Location.Y),
-                        new Frame(0.8, _vm.Location.Y - .5 * (_vm.GeometrySize + bounce)),
-                        new Frame(0.9, _vm.Location.Y - .5 * (_vm.GeometrySize - bounce * .5)),
-                        new Frame(1, point.ViewModel.Location.Y - .5 * _vm.GeometrySize))
+                        new []
+                        {
+                            new Frame(0.5, _vm.Location.Y),
+                            new Frame(0.8, _vm.Location.Y - .5 * (_vm.GeometrySize + bounce)),
+                            new Frame(0.9, _vm.Location.Y - .5 * (_vm.GeometrySize - bounce * .5)),
+                            new Frame(1, point.ViewModel.Location.Y - .5 * _vm.GeometrySize)
+                        })
                     .Properties(new[]
                         {
                             FrameworkElement.WidthProperty,

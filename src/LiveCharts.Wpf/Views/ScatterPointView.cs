@@ -87,10 +87,10 @@ namespace LiveCharts.Wpf.Views
             {
                 Shape.Animate()
                     .AtSpeed(speed)
-                    .InverseBounce(Canvas.LeftProperty, vm.Location.X - r, b * .5)
-                    .InverseBounce(Canvas.TopProperty, vm.Location.Y - r, b * .5)
-                    .Bounce(FrameworkElement.WidthProperty, vm.Diameter, b)
-                    .Bounce(FrameworkElement.HeightProperty, vm.Diameter, b)
+                    .Bounce(Canvas.LeftProperty, vm.Location.X, vm.Location.X - r)
+                    .Bounce(Canvas.TopProperty, vm.Location.Y, vm.Location.Y - r)
+                    .Bounce(FrameworkElement.WidthProperty, 0, vm.Diameter)
+                    .Bounce(FrameworkElement.HeightProperty, 0, vm.Diameter)
                     .Begin();
             }
             else

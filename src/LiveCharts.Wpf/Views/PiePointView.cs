@@ -66,7 +66,7 @@ namespace LiveCharts.Wpf.Views
             {
                 Shape.Radius = vm.To.OuterRadius * .8;
                 animation
-                    .Bounce(Slice.RadiusProperty, vm.To.OuterRadius)
+                    .Bounce(Slice.RadiusProperty, vm.From.InnerRadius, vm.To.OuterRadius)
                     .Property(Slice.RotationProperty, vm.To.Rotation)
                     .Property(Slice.WedgeProperty, vm.To.Wedge);
             }

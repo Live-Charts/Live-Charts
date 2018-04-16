@@ -11,9 +11,9 @@ namespace Assets.ViewModels
             var values = new ObservableCollection<double>();
 
             // add some values...
-            values.Add(-4);
-            values.Add(-7);
-            values.Add(-2);
+            values.Add(4);
+            values.Add(7);
+            values.Add(2);
             values.Add(9);
 
             var barSeries = new BarSeries<double>();

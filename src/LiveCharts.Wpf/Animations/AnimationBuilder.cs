@@ -111,16 +111,15 @@ namespace LiveCharts.Wpf.Animations
         /// <param name="property">The property.</param>
         /// <param name="frames">The frames.</param>
         /// <returns></returns>
-        public AnimationBuilder Property(DependencyProperty property, params Frame[] frames)
+        public AnimationBuilder Property(DependencyProperty property, IEnumerable<Frame> frames)
         {
             var animation = new DoubleAnimationUsingKeyFrames { RepeatBehavior = new RepeatBehavior(1) };
             foreach (var frame in frames)
             {
                 animation.KeyFrames.Add(
-                    new SplineDoubleKeyFrame(
+                    new LinearDoubleKeyFrame(
                         frame.ToValue,
-                        TimeSpan.FromMilliseconds(_speed.TotalMilliseconds * frame.ElapsedTime),
-                        new KeySpline(new Point(0.25, 0.5), new Point(0.75, 1))));
+                        TimeSpan.FromMilliseconds(_speed.TotalMilliseconds * frame.ElapsedTime)));
             }
 
             _storyboard.Children.Add(animation);

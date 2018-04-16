@@ -113,22 +113,21 @@ namespace LiveCharts.Wpf.Views
             }
             else
             {
-                const int bounce = 8;
                 if (vm.Orientation == Orientation.Horizontal)
                 {
                     animation
                         .Property(Canvas.LeftProperty, vm.To.Left)
                         .Property(FrameworkElement.WidthProperty, vm.To.Width)
-                        .InverseBounce(Canvas.TopProperty, vm.To.Top, bounce)
-                        .Bounce(FrameworkElement.HeightProperty, vm.To.Height, bounce);
+                        .Bounce(Canvas.TopProperty, vm.From.Top, vm.To.Top)
+                        .Bounce(FrameworkElement.HeightProperty, vm.From.Height, vm.To.Height);
                 }
                 else
                 {
                     animation
                         .Property(Canvas.TopProperty, vm.To.Top)
                         .Property(FrameworkElement.HeightProperty, vm.To.Height)
-                        .Property(Canvas.LeftProperty, vm.To.Left, bounce)
-                        .Bounce(FrameworkElement.WidthProperty, vm.To.Width, bounce);
+                        .Bounce(Canvas.LeftProperty, vm.From.Left, vm.To.Left)
+                        .Bounce(FrameworkElement.WidthProperty, vm.From.Width, vm.To.Width);
                 }
             }
 

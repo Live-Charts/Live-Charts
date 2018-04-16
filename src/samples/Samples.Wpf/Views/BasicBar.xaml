@@ -10,5 +10,5 @@
     <UserControl.DataContext>
         <viewModels:BasicBar></viewModels:BasicBar>
     </UserControl.DataContext>
-    <lvc:CartesianChart Series="{Binding SeriesCollection}"></lvc:CartesianChart>
+    <lvc:CartesianChart Series="{Binding SeriesCollection}" AnimationsSpeed="0:0:1"></lvc:CartesianChart>
 </UserControl>

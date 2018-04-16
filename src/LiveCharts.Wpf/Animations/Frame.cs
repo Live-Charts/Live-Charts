@@ -55,5 +55,11 @@ namespace LiveCharts.Wpf.Animations
         /// The time span.
         /// </value>
         public double ElapsedTime { get; set; }
+
+        /// <inheritdoc />
+        public override string ToString()
+        {
+            return $"@{ElapsedTime}=>{ToValue}";
+        }
     }
 }
