@@ -26,9 +26,12 @@
 #region
 
 using System;
+using System.Drawing;
 using System.Globalization;
 using System.Windows.Data;
 using System.Windows.Media;
+using LiveCharts.Core;
+using Brush = System.Windows.Media.Brush;
 using Color = System.Drawing.Color;
 
 #endregion
@@ -39,7 +42,7 @@ namespace LiveCharts.Wpf.Converters
     /// 
     /// </summary>
     /// <seealso cref="System.Windows.Data.IValueConverter" />
-    public class ColorToSolidBrushConverter : IValueConverter
+    public class CoreToWpfBrushConverter : IValueConverter
     {
         /// <summary>
         /// Converts a value.
@@ -56,9 +59,18 @@ namespace LiveCharts.Wpf.Converters
         {
             if (value == null) return null;
 
-            var lvcColor = (Color) value;
-            return new SolidColorBrush(
-                System.Windows.Media.Color.FromArgb(lvcColor.A, lvcColor.R, lvcColor.G, lvcColor.B));
+            var coreBrush = (Core.Drawing.Brush) value;
+
+            if (coreBrush is Core.Drawing.SolidColorBrush scb)
+            {
+                return new SolidColorBrush(
+                    System.Windows.Media.Color.FromArgb(
+                        scb.Color.A, scb.Color.R, scb.Color.G, scb.Color.B));
+            }
+
+            throw new LiveChartsException(
+                "It was not possible to map a core brush to WPF, probably the brush type is not already supported.",
+                120);
         }
 
         /// <summary>

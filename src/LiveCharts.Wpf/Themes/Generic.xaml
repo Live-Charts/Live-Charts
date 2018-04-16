@@ -6,7 +6,7 @@
     xmlns:dataSeries1="clr-namespace:LiveCharts.Core.Abstractions.DataSeries;assembly=LiveCharts.Core"
     xmlns:data1="clr-namespace:LiveCharts.Core.Interaction;assembly=LiveCharts.Core">
 
-    <converters:ColorToSolidBrushConverter x:Key="AsSolidColorBrush" />
+    <converters:CoreToWpfBrushConverter x:Key="AsSolidColorBrush" />
     <converters:SvgToGeometryDataConverter x:Key="AsGeometryData" />
     <converters:GetXFromPointConverter x:Key="GetX" />
     <converters:GetYFromPointConverter x:Key="GetY" />
