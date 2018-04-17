@@ -29,7 +29,7 @@ namespace LiveCharts.Core.Abstractions.DataSeries
         /// <value>
         /// The stroke thickness.
         /// </value>
-        float StrokeThickness { get; set; }
+        double StrokeThickness { get; set; }
 
         /// <summary>
         /// Gets or sets the stroke dash array.

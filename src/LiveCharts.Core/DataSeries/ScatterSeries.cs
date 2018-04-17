@@ -22,7 +22,7 @@ namespace LiveCharts.Core.DataSeries
         : CartesianStrokeSeries<TModel, PointCoordinate, GeometryPointViewModel, IScatterSeries>, IScatterSeries
     {
         private static ISeriesViewProvider<TModel, PointCoordinate, GeometryPointViewModel, IScatterSeries> _provider;
-        private float _geometrySize;
+        private double _geometrySize;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ScatterSeries{TModel}"/> class.
@@ -41,7 +41,7 @@ namespace LiveCharts.Core.DataSeries
         /// <value>
         /// The size of the geometry.
         /// </value>
-        public float GeometrySize
+        public double GeometrySize
         {
             get => _geometrySize;
             set
@@ -58,7 +58,7 @@ namespace LiveCharts.Core.DataSeries
         public override float[] DefaultPointWidth => new[] {0f, 0f};
 
         /// <inheritdoc />
-        public override float[] PointMargin => new[] {GeometrySize, GeometrySize};
+        public override float[] PointMargin => new[] {(float) GeometrySize, (float) GeometrySize};
 
         /// <inheritdoc />
         protected override ISeriesViewProvider<TModel, PointCoordinate, GeometryPointViewModel, IScatterSeries>
@@ -100,7 +100,7 @@ namespace LiveCharts.Core.DataSeries
                 var vm = new GeometryPointViewModel
                 {
                     Location = Perform.Sum(new PointF(p[xi], p[yi]), new PointF(uw[0], uw[1])),
-                    Diameter = GeometrySize
+                    Diameter = (float) GeometrySize
                 };
 
                 current.ViewModel = vm;
@@ -110,8 +110,8 @@ namespace LiveCharts.Core.DataSeries
                     new RectangleF(
                         vm.Location.X,
                         vm.Location.Y,
-                        GeometrySize,
-                        GeometrySize));
+                        (float) GeometrySize,
+                        (float) GeometrySize));
                 previous = current;
             }
         }

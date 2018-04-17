@@ -11,6 +11,6 @@
         /// <value>
         /// The size of the geometry.
         /// </value>
-        float GeometrySize { get; set; }
+        double GeometrySize { get; set; }
     }
 }

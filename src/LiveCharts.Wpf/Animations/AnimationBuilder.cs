@@ -42,7 +42,6 @@ namespace LiveCharts.Wpf.Animations
     public class AnimationBuilder
     {
         private Storyboard _storyboard;
-        private TimeSpan _speed;
         private DependencyObject _target;
         private readonly bool _isFe;
         private List<Tuple<DependencyProperty, Timeline>> _animations = new List<Tuple<DependencyProperty, Timeline>>();
@@ -52,6 +51,14 @@ namespace LiveCharts.Wpf.Animations
             _storyboard = new Storyboard();
             _isFe = isFe;
         }
+
+        /// <summary>
+        /// Gets the duration.
+        /// </summary>
+        /// <value>
+        /// The duration.
+        /// </value>
+        public TimeSpan Duration { get; private set; }
 
         /// <summary>
         /// Runs this instance.
@@ -80,7 +87,7 @@ namespace LiveCharts.Wpf.Animations
         /// <returns></returns>
         public AnimationBuilder AtSpeed(TimeSpan speedSpan)
         {
-            _speed = speedSpan;
+            Duration = speedSpan;
             return this;
         }
 
@@ -96,8 +103,8 @@ namespace LiveCharts.Wpf.Animations
             TimeSpan? speed = null)
         {
             var animation = from == null
-                ? new DoubleAnimation(to, speed ?? _speed)
-                : new DoubleAnimation(from.Value, to, speed ?? _speed);
+                ? new DoubleAnimation(to, speed ?? Duration)
+                : new DoubleAnimation(from.Value, to, speed ?? Duration);
             animation.RepeatBehavior = new RepeatBehavior(1);
             _storyboard.Children.Add(animation);
             Storyboard.SetTarget(animation, _target);
@@ -119,27 +126,12 @@ namespace LiveCharts.Wpf.Animations
                 animation.KeyFrames.Add(
                     new LinearDoubleKeyFrame(
                         frame.ToValue,
-                        TimeSpan.FromMilliseconds(_speed.TotalMilliseconds * frame.ElapsedTime)));
+                        TimeSpan.FromMilliseconds(Duration.TotalMilliseconds * frame.ElapsedTime)));
             }
 
             _storyboard.Children.Add(animation);
             Storyboard.SetTarget(animation, _target);
             Storyboard.SetTargetProperty(animation, new PropertyPath(property));
-            return this;
-        }
-
-        /// <summary>
-        /// Animates the specified property using a key frames.
-        /// </summary>
-        /// <param name="properties">The properties.</param>
-        /// <param name="frames">The frames.</param>
-        /// <returns></returns>
-        public AnimationBuilder Properties(IEnumerable<DependencyProperty> properties, params Frame[] frames)
-        {
-            foreach (var dependencyProperty in properties)
-            {
-                Property(dependencyProperty, frames);
-            }
             return this;
         }
 
@@ -157,8 +149,8 @@ namespace LiveCharts.Wpf.Animations
             if (_isFe)
             {
                 var feAnim = from == null
-                    ? new PointAnimation(to, speed ?? _speed)
-                    : new PointAnimation(from.Value, to, speed ?? _speed);
+                    ? new PointAnimation(to, speed ?? Duration)
+                    : new PointAnimation(from.Value, to, speed ?? Duration);
                 feAnim.RepeatBehavior = new RepeatBehavior(1);
                 _storyboard.Children.Add(feAnim);
                 Storyboard.SetTarget(feAnim, _target);
@@ -170,8 +162,8 @@ namespace LiveCharts.Wpf.Animations
             // because <- insert reason here???? ->
 
             var animation = from == null
-                ? new PointAnimation(to, speed ?? _speed)
-                : new PointAnimation(from.Value, to, speed ?? _speed);
+                ? new PointAnimation(to, speed ?? Duration)
+                : new PointAnimation(from.Value, to, speed ?? Duration);
 
             _animations.Add(new Tuple<DependencyProperty, Timeline>(property, animation));
 
@@ -192,8 +184,8 @@ namespace LiveCharts.Wpf.Animations
             if (_isFe)
             {
                 var feAnim = from == null
-                    ? new ColorAnimation(to, speed ?? _speed)
-                    : new ColorAnimation(from.Value, to, speed ?? _speed);
+                    ? new ColorAnimation(to, speed ?? Duration)
+                    : new ColorAnimation(from.Value, to, speed ?? Duration);
                 feAnim.RepeatBehavior = new RepeatBehavior(1);
                 _storyboard.Children.Add(feAnim);
                 Storyboard.SetTarget(feAnim, _target);
@@ -202,8 +194,8 @@ namespace LiveCharts.Wpf.Animations
             }
 
             var animation = from == null
-                ? new ColorAnimation(to, speed ?? _speed)
-                : new ColorAnimation(from.Value, to, speed ?? _speed);
+                ? new ColorAnimation(to, speed ?? Duration)
+                : new ColorAnimation(from.Value, to, speed ?? Duration);
 
             _animations.Add(new Tuple<DependencyProperty, Timeline>(property, animation));
 

@@ -112,7 +112,7 @@ namespace LiveCharts.Core.Abstractions.DataSeries
         /// <value>
         /// The default fill opacity.
         /// </value>
-        float DefaultFillOpacity { get; set; }
+        double DefaultFillOpacity { get; set; }
 
         /// <summary>
         /// Gets the default width of the point, this property is used internally by the library and should only be used

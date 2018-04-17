@@ -21,7 +21,7 @@ namespace LiveCharts.Core.Drawing
         /// <value>
         /// The stroke thickness.
         /// </value>
-        public float StrokeThickness { get; set; }
+        public double StrokeThickness { get; set; }
 
         /// <summary>
         /// Gets or sets the stroke dash array.

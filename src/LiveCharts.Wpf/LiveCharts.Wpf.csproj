@@ -49,6 +49,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Animations\BounceAnimations.cs" />
+    <Compile Include="Animations\BounceMagnitude.cs" />
     <Compile Include="Animations\Frame.cs" />
     <Compile Include="Animations\Extensions.cs" />
     <Compile Include="Chart.cs" />
@@ -78,7 +79,7 @@
     <Compile Include="Views\CartesianPath.cs" />
     <Compile Include="Views\PointView.cs" />
     <Compile Include="Animations\AnimationBuilder.cs" />
-    <Compile Include="Views\ScatterPointView.cs" />
+    <Compile Include="Views\GeometryPointView.cs" />
     <Compile Include="Views\CartesianAxisSeparatorView.cs" />
     <Compile Include="UiProvider.cs" />
     <Compile Include="CartesianChart.cs">

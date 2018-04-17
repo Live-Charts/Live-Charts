@@ -63,10 +63,10 @@ namespace LiveCharts.Core.DataSeries
         }
 
         /// <inheritdoc />
-        public float MaxGeometrySize { get; set; }
+        public double MaxGeometrySize { get; set; }
 
         /// <inheritdoc />
-        public float MinGeometrySize { get; set; }
+        public double MinGeometrySize { get; set; }
 
         /// <inheritdoc />
         public override Type ResourceKey => typeof(IBubbleSeries);
@@ -75,7 +75,7 @@ namespace LiveCharts.Core.DataSeries
         public override float[] DefaultPointWidth => new []{0f,0f};
 
         /// <inheritdoc />
-        public override float[] PointMargin => new[] {MaxGeometrySize, MaxGeometrySize};
+        public override float[] PointMargin => new[] {(float) MaxGeometrySize, (float) MaxGeometrySize};
 
         /// <inheritdoc />
         protected override ISeriesViewProvider<TModel, WeightedCoordinate, GeometryPointViewModel, IBubbleSeries>
@@ -92,8 +92,8 @@ namespace LiveCharts.Core.DataSeries
 
             var uw = chart.Get2DUiUnitWidth(x, y);
 
-            var p1 = new PointF(context.Ranges[2][ScalesAt[2]][0], MinGeometrySize);
-            var p2 = new PointF(context.Ranges[2][ScalesAt[2]][1], MaxGeometrySize);
+            var p1 = new PointF(context.Ranges[2][ScalesAt[2]][0], (float) MinGeometrySize);
+            var p2 = new PointF(context.Ranges[2][ScalesAt[2]][1], (float) MaxGeometrySize);
 
             int xi = 0, yi = 1;
             if (chart.InvertXy)

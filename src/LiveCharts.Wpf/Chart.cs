@@ -96,7 +96,7 @@ namespace LiveCharts.Wpf
         /// </summary>
         public static readonly DependencyProperty AnimationsSpeedProperty = DependencyProperty.Register(
             nameof(AnimationsSpeed), typeof(TimeSpan), typeof(Chart),
-            new PropertyMetadata(TimeSpan.FromMilliseconds(450), RaiseOnPropertyChanged(nameof(AnimationsSpeed))));
+            new PropertyMetadata(TimeSpan.FromMilliseconds(850), RaiseOnPropertyChanged(nameof(AnimationsSpeed))));
 
         /// <summary>
         /// The tooltip timeout property

@@ -43,7 +43,7 @@ namespace LiveCharts.Core.Abstractions.DataSeries
         /// <value>
         /// The maximum point diameter.
         /// </value>
-        float MaxGeometrySize { get; set; }
+        double MaxGeometrySize { get; set; }
 
         /// <summary>
         /// Gets or sets the minimum point diameter.
@@ -51,6 +51,6 @@ namespace LiveCharts.Core.Abstractions.DataSeries
         /// <value>
         /// The minimum point diameter.
         /// </value>
-        float MinGeometrySize { get; set; }
+        double MinGeometrySize { get; set; }
     }
 }

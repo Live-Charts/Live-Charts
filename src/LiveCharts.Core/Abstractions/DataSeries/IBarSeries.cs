@@ -36,7 +36,7 @@ namespace LiveCharts.Core.Abstractions.DataSeries
         /// <value>
         /// The column padding.
         /// </value>
-        float BarPadding { get; set; }
+        double BarPadding { get; set; }
 
         /// <summary>
         /// Gets or sets the maximum width of the column.
@@ -44,7 +44,7 @@ namespace LiveCharts.Core.Abstractions.DataSeries
         /// <value>
         /// The maximum width of the column.
         /// </value>
-        float MaxColumnWidth { get; set; }
+        double MaxColumnWidth { get; set; }
 
         /// <summary>
         /// Gets or sets the value where the bars change direction, default is 0;
@@ -52,6 +52,6 @@ namespace LiveCharts.Core.Abstractions.DataSeries
         /// <value>
         /// The pivot.
         /// </value>
-        float Pivot { get; set; }
+        double Pivot { get; set; }
     }
 }

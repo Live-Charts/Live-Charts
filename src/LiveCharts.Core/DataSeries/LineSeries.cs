@@ -65,10 +65,10 @@ namespace LiveCharts.Core.DataSeries
         }
 
         /// <inheritdoc />
-        public float LineSmoothness { get; set; }
+        public double LineSmoothness { get; set; }
 
         /// <inheritdoc />
-        public float GeometrySize { get; set; }
+        public double GeometrySize { get; set; }
 
         /// <inheritdoc />
         public override Type ResourceKey => typeof(ILineSeries);
@@ -77,7 +77,7 @@ namespace LiveCharts.Core.DataSeries
         public override float[] DefaultPointWidth => new[] {0f, 0f};
 
         /// <inheritdoc />
-        public override float[] PointMargin => new[] {GeometrySize, GeometrySize};
+        public override float[] PointMargin => new[] {(float) GeometrySize, (float) GeometrySize};
 
         /// <inheritdoc />
         protected override ISeriesViewProvider<TModel, PointCoordinate, BezierViewModel, ILineSeries>
@@ -128,10 +128,10 @@ namespace LiveCharts.Core.DataSeries
 
                 bezier.Point.InteractionArea = new RectangleInteractionArea(
                     new RectangleF(
-                        p[0] - GeometrySize * .5f,
-                        p[1] - GeometrySize * .5f,
-                        GeometrySize,
-                        GeometrySize));
+                        p[0] - (float) GeometrySize * .5f,
+                        p[1] - (float) GeometrySize * .5f,
+                        (float) GeometrySize,
+                        (float) GeometrySize));
 
                 if (bezier.Point.View == null)
                 {
@@ -213,7 +213,7 @@ namespace LiveCharts.Core.DataSeries
                     Point2 = new PointF((float) c2X, (float) c2Y),
                     Point3 = next,
                     Geometry = Geometry,
-                    GeometrySize = GeometrySize
+                    GeometrySize = (float) GeometrySize
                 };
 
                 // based on: 

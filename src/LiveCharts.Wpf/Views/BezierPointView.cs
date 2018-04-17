@@ -85,35 +85,16 @@ namespace LiveCharts.Wpf.Views
                 _path = _vm.Path;
                 _segment = (BezierSegment) _path.InsertSegment(_segment, _vm.Index, _vm.Point1, _vm.Point2, _vm.Point3);
 
-                var bounce = .3 * _vm.GeometrySize;
+                var r = .5 * _vm.GeometrySize;
 
                 Shape.Animate()
                     .AtSpeed(TimeSpan.FromMilliseconds(speed.TotalMilliseconds * 2))
-                    .Property(Canvas.LeftProperty,
-                        new []
-                        {
-                            new Frame(0.5, _vm.Location.X),
-                            new Frame(0.8, _vm.Location.X - .5 * (_vm.GeometrySize + bounce)),
-                            new Frame(0.9, _vm.Location.X - .5 * (_vm.GeometrySize - bounce * .5)),
-                            new Frame(1, point.ViewModel.Location.X - .5 * _vm.GeometrySize)
-                        })
-                    .Property(Canvas.TopProperty,
-                        new []
-                        {
-                            new Frame(0.5, _vm.Location.Y),
-                            new Frame(0.8, _vm.Location.Y - .5 * (_vm.GeometrySize + bounce)),
-                            new Frame(0.9, _vm.Location.Y - .5 * (_vm.GeometrySize - bounce * .5)),
-                            new Frame(1, point.ViewModel.Location.Y - .5 * _vm.GeometrySize)
-                        })
-                    .Properties(new[]
-                        {
-                            FrameworkElement.WidthProperty,
-                            FrameworkElement.HeightProperty
-                        },
-                        new Frame(0.5, 0),
-                        new Frame(0.8, _vm.GeometrySize + bounce),
-                        new Frame(0.9, _vm.GeometrySize - bounce * .5),
-                        new Frame(1, _vm.GeometrySize))
+                    .Bounce(Canvas.LeftProperty, _vm.Location.X - r * .5, _vm.Location.X - r, 5,
+                        BounceMagnitude.ExtraLarge, 0.5)
+                    .Bounce(Canvas.TopProperty, _vm.Location.Y - r * .5, _vm.Location.Y - r, 5,
+                        BounceMagnitude.ExtraLarge, 0.5)
+                    .Bounce(FrameworkElement.WidthProperty, 0, _vm.GeometrySize, 5, BounceMagnitude.ExtraLarge, 0.5)
+                    .Bounce(FrameworkElement.HeightProperty, 0, _vm.GeometrySize, 5, BounceMagnitude.ExtraLarge, 0.5)
                     .Begin();
             }
 

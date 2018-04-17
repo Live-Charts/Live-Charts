@@ -15,9 +15,9 @@ namespace Assets.ViewModels
 
             // add some values...
             values.Add(4);
-            values.Add(-7);
-            values.Add(-2);
             values.Add(9);
+            values.Add(2);
+            values.Add(6);
 
             // now lets customize it
             var lineSeries = new LineSeries<double>();

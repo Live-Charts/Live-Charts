@@ -20,9 +20,9 @@ namespace LiveCharts.Core.DataSeries
         where TCoordinate : ICoordinate
         where TSeries : class, ISeries
     {
-        private float _pivot;
-        private float _barPadding;
-        private float _maxColumnWidth;
+        private double _pivot;
+        private double _barPadding;
+        private double _maxColumnWidth;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BaseBarSeries{TModel,TCoordinate, TSeries}"/> class.
@@ -35,7 +35,7 @@ namespace LiveCharts.Core.DataSeries
         }
 
         /// <inheritdoc />
-        public float BarPadding
+        public double BarPadding
         {
             get => _barPadding;
             set
@@ -46,7 +46,7 @@ namespace LiveCharts.Core.DataSeries
         }
 
         /// <inheritdoc />
-        public float MaxColumnWidth
+        public double MaxColumnWidth
         {
             get => _maxColumnWidth;
             set
@@ -57,7 +57,7 @@ namespace LiveCharts.Core.DataSeries
         }
 
         /// <inheritdoc />
-        public float Pivot
+        public double Pivot
         {
             get => _pivot;
             set
@@ -89,13 +89,15 @@ namespace LiveCharts.Core.DataSeries
 
             var barsCount = context.GetBarsCount(ScalesAt[1]);
 
-            var cw = (uw[0] - BarPadding * barsCount) / barsCount;
+            var cw = (uw[0] - ((float) BarPadding) * barsCount) / barsCount;
             var position = context.GetBarIndex(ScalesAt[1], this);
 
             if (cw > MaxColumnWidth)
             {
-                cw = MaxColumnWidth;
+                cw = (float) MaxColumnWidth;
             }
+
+            var bp = (float) BarPadding;
 
             var byBarOffset = new[]
             {
@@ -111,11 +113,11 @@ namespace LiveCharts.Core.DataSeries
                 h = 0;
                 orientation = Orientation.Vertical;
                 byBarOffset[0] = 0;
-                byBarOffset[1] = -cw * .5f - uw[0] * .5f;
+                byBarOffset[1] = cw * .5f - uw[0] * .5f;
             }
 
-            positionOffset[w] =
-                (BarPadding + cw) * position - (BarPadding + cw) * ((barsCount - 1) * .5f);
+            positionOffset[w] = (bp + cw) * position - (bp + cw) * ((barsCount - 1) * .5f);
+            
 
             var columnStart = GetColumnStart(chart, scaleAxis, directionAxis);
 
@@ -152,11 +154,13 @@ namespace LiveCharts.Core.DataSeries
 
         private float GetColumnStart(ChartModel chart, Plane target, Plane complementary)
         {
-            var value = target.ActualMinValue >= Pivot && complementary.ActualMaxValue > Pivot
+            var p = (float) Pivot;
+
+            var value = target.ActualMinValue >= p && complementary.ActualMaxValue > p
                 ? target.ActualMinValue
-                : (target.ActualMinValue < Pivot && complementary.ActualMaxValue <= Pivot
+                : (target.ActualMinValue < p && complementary.ActualMaxValue <= p
                     ? target.ActualMaxValue
-                    : Pivot);
+                    : p);
             return chart.ScaleToUi(value, target);
         }
     }

@@ -72,7 +72,7 @@ namespace LiveCharts.Core.DataSeries
         private bool _dataLabels;
         private string _title;
         private Font _font;
-        private float _defaultFillOpacity;
+        private double _defaultFillOpacity;
         private Geometry _geometry;
         private DataLabelsPosition _dataLabelsPosition;
 
@@ -146,7 +146,7 @@ namespace LiveCharts.Core.DataSeries
         }
 
         /// <inheritdoc />
-        public float DefaultFillOpacity
+        public double DefaultFillOpacity
         {
             get => _defaultFillOpacity;
             set

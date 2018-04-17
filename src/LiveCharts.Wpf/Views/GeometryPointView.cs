@@ -81,16 +81,17 @@ namespace LiveCharts.Wpf.Views
 
             var speed = chart.AnimationsSpeed;
             var r = vm.Diameter * .5;
-            var b = vm.Diameter * .18;
 
             if (isNew)
             {
                 Shape.Animate()
                     .AtSpeed(speed)
-                    .Bounce(Canvas.LeftProperty, vm.Location.X, vm.Location.X - r)
-                    .Bounce(Canvas.TopProperty, vm.Location.Y, vm.Location.Y - r)
-                    .Bounce(FrameworkElement.WidthProperty, 0, vm.Diameter)
-                    .Bounce(FrameworkElement.HeightProperty, 0, vm.Diameter)
+                    .Bounce(Canvas.LeftProperty, vm.Location.X - r * .5, vm.Location.X - r, 5,
+                        BounceMagnitude.ExtraLarge)
+                    .Bounce(Canvas.TopProperty, vm.Location.Y - r * .5, vm.Location.Y - r, 5,
+                        BounceMagnitude.ExtraLarge)
+                    .Bounce(FrameworkElement.WidthProperty, 0, vm.Diameter, 5, BounceMagnitude.ExtraLarge)
+                    .Bounce(FrameworkElement.HeightProperty, 0, vm.Diameter, 5, BounceMagnitude.ExtraLarge)
                     .Begin();
             }
             else

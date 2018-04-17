@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Abstractions.DataSeries;
@@ -24,7 +23,7 @@ namespace LiveCharts.Core.DataSeries
         where TSeries : class, ISeries
     {
         private Brush _stroke;
-        private float _strokeThickness;
+        private double _strokeThickness;
         private Brush _fill;
         private IEnumerable<double> _strokeDashArray;
 
@@ -46,7 +45,7 @@ namespace LiveCharts.Core.DataSeries
         }
 
         /// <inheritdoc />
-        public float StrokeThickness
+        public double StrokeThickness
         {
             get => _strokeThickness;
             set
