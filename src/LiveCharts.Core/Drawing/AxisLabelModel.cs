@@ -22,7 +22,6 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR 
 // OTHER DEALINGS IN THE SOFTWARE.
 #endregion
-
 #region
 
 using System.Drawing;
@@ -35,23 +34,24 @@ namespace LiveCharts.Core.Drawing
     /// Represents an axis label.
     /// </summary>
     /// <seealso cref="Rectangle" />
-    public struct AxisLabelViewModel
+    public struct SectionLabelViewModel
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="AxisLabelViewModel"/> struct.
+        /// Initializes a new instance of the <see cref="SectionLabelViewModel"/> struct.
         /// </summary>
         /// <param name="location"></param>
         /// <param name="offset">The offset.</param>
         /// <param name="margin">The margin.</param>
         /// <param name="content">The content.</param>
         /// <param name="size">The size.</param>
-        public AxisLabelViewModel(PointF location, PointF offset, Margin margin, string content, SizeF size)
+        /// <param name="rotation">The label rotation</param>
+        public SectionLabelViewModel(PointF location, PointF offset, Margin margin, string content, SizeF size, float rotation)
         {
-            Location = location;
-            Offset = offset;
+            Position = Perform.Sum(location, offset);
             Margin = margin;
             Content = content;
             Size = size;
+            Rotation = rotation;
         }
 
         /// <summary>
@@ -68,15 +68,7 @@ namespace LiveCharts.Core.Drawing
         /// <value>
         /// The actual location.
         /// </value>
-        public PointF ActualLocation => Perform.Sum(Location, Offset);
-
-        /// <summary>
-        /// Gets or sets the raw location of the label, to ensure label readability, we set an <see cref="Offset"/> and calculate the margin from this point, to every direction (<see cref="Margin"/>).
-        /// </summary>
-        /// <value>
-        /// The location.
-        /// </value>
-        public PointF Location { get; set; }
+        public PointF Position { get; }
 
         /// <summary>
         /// Gets the size of the label.
@@ -87,19 +79,19 @@ namespace LiveCharts.Core.Drawing
         public SizeF Size { get; }
 
         /// <summary>
-        /// Gets or sets the offset to the <see cref="Location"/> point, see appendix/labels.2.png (xo, yo).
-        /// </summary>
-        /// <value>
-        /// The offset.
-        /// </value>
-        public PointF Offset { get; set; }
-
-        /// <summary>
         /// Gets or sets the margin, it represent the space taken by the label to every direction, top, left, bottom and right,see appendix/labels.2.png  [l, t, r, b].
         /// </summary>
         /// <value>
         /// The margin.
         /// </value>
         public Margin Margin { get; set; }
+
+        /// <summary>
+        /// Gets or sets the rotation.
+        /// </summary>
+        /// <value>
+        /// The rotation.
+        /// </value>
+        public float  Rotation { get; set; }
     }
 }

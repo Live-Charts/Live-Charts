@@ -22,7 +22,6 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR 
 // OTHER DEALINGS IN THE SOFTWARE.
 #endregion
-
 #region
 
 using System;
@@ -32,8 +31,10 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
-using LiveCharts.Core.Abstractions;
+using LiveCharts.Core.Charts;
 using LiveCharts.Core.Interaction;
+using LiveCharts.Core.Interaction.Controls;
+using LiveCharts.Core.Interaction.Points;
 using LiveCharts.Wpf.Animations;
 
 #endregion

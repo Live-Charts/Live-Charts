@@ -22,11 +22,13 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR 
 // OTHER DEALINGS IN THE SOFTWARE.
 #endregion
+#region
+
+#endregion
 
 #region
 
-using LiveCharts.Core.Abstractions;
-using LiveCharts.Core.Abstractions.DataSeries;
+using LiveCharts.Core.Coordinates;
 
 #endregion
 

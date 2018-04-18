@@ -22,16 +22,15 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR 
 // OTHER DEALINGS IN THE SOFTWARE.
 #endregion
-
 #region
 
 using System.Drawing;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
-using LiveCharts.Core.Abstractions;
+using LiveCharts.Core.Charts;
+using LiveCharts.Core.Interaction.Controls;
 using Brushes = System.Windows.Media.Brushes;
-using Font = LiveCharts.Core.Abstractions.Font;
+using Font = LiveCharts.Core.Interaction.Styles.Font;
 
 #endregion
 
@@ -55,8 +54,8 @@ namespace LiveCharts.Wpf.Controls
             Content = label;
             FontFamily = new System.Windows.Media.FontFamily(font.FamilyName);
             FontSize = font.Size;
-            FontWeight = font.Weight == Core.Abstractions.FontWeight.Bold ? FontWeights.Bold : FontWeights.Normal;
-            FontStyle = font.Style == Core.Abstractions.FontStyle.Italic ? FontStyles.Italic : FontStyles.Normal;
+            FontWeight = font.Weight == Core.Interaction.Styles.FontWeight.Bold ? FontWeights.Bold : FontWeights.Normal;
+            FontStyle = font.Style == Core.Interaction.Styles.FontStyle.Italic ? FontStyles.Italic : FontStyles.Normal;
             Foreground = Brushes.Black;
 
             Measure(new System.Windows.Size(double.PositiveInfinity, double.PositiveInfinity));

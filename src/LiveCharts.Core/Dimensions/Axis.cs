@@ -22,18 +22,21 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR 
 // OTHER DEALINGS IN THE SOFTWARE.
 #endregion
-
 #region
 
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Charts;
 using LiveCharts.Core.Drawing;
 using LiveCharts.Core.Events;
-
+using LiveCharts.Core.Interaction.Controls;
+using LiveCharts.Core.Interaction.Styles;
+using LiveCharts.Core.ViewModels;
+#if NET45 || NET46
+using Font = LiveCharts.Core.Interaction.Styles.Font;
+#endif
 #endregion
 
 namespace LiveCharts.Core.Dimensions
@@ -43,8 +46,8 @@ namespace LiveCharts.Core.Dimensions
     /// </summary>
     public class Axis : Plane
     {
-        private readonly Dictionary<double, ICartesianAxisSeparator> _activeSeparators =
-            new Dictionary<double, ICartesianAxisSeparator>();
+        private readonly Dictionary<double, ICartesianAxisSectionView> _activeSeparators =
+            new Dictionary<double, ICartesianAxisSectionView>();
         private Func<IPlaneLabelControl> _separatorProvider;
 
         /// <summary>
@@ -168,7 +171,7 @@ namespace LiveCharts.Core.Dimensions
 
         internal Margin CalculateAxisMargin(ChartModel sizeVector)
         {
-            #region note
+#region note
 
             // we'll ask the axis to generate a label every 5px to estimate its size
             // this method is not perfect, but it is should have a good performance
@@ -189,7 +192,7 @@ namespace LiveCharts.Core.Dimensions
             // then, if the user defines the Step property, we should be able
             // to calculate exactly the size don't we?
             // ... this is not supported for now.
-            #endregion
+#endregion
 
             var space = sizeVector.DrawAreaSize;
             if (!(Dimension == 0 || Dimension == 1))
@@ -208,16 +211,16 @@ namespace LiveCharts.Core.Dimensions
             {
                 var label = EvaluateAxisLabel(sizeVector.ScaleFromUi(i, this, space), space, unit, sizeVector);
 
-                var li = label.Location.X - label.Margin.Left;
+                var li = label.Position.X - label.Margin.Left;
                 if (li < 0 && l < -li) l = -li;
 
-                var ri = label.Location.X + label.Margin.Right;
+                var ri = label.Position.X + label.Margin.Right;
                 if (ri > space[0] && r < ri - space[0]) r = ri - space[0];
 
-                var ti = label.Location.Y - label.Margin.Top;
+                var ti = label.Position.Y - label.Margin.Top;
                 if (ti < 0 && t < ti) t = -ti;
 
-                var bi = label.Location.Y + label.Margin.Bottom;
+                var bi = label.Position.Y + label.Margin.Bottom;
                 if (bi > space[1] && b < bi - space[1]) b = bi - space[1];
             }
 
@@ -242,12 +245,11 @@ namespace LiveCharts.Core.Dimensions
                 alternate = !alternate;
                 var iui = chart.ScaleToUi(i, this);
                 var labelModel = EvaluateAxisLabel(i, chart.DrawAreaSize, unit, chart);
-                var actualLabelLocation = labelModel.ActualLocation;
                 var key = Math.Round(i / tolerance) * tolerance;
 
                 if (!_activeSeparators.TryGetValue(key, out var separator))
                 {
-                    separator = Charting.Current.UiProvider.GetNewAxisSeparator();
+                    separator = Charting.Current.UiProvider.GetNewAxisSection();
                     _activeSeparators.Add(key, separator);
                 }
 
@@ -255,15 +257,14 @@ namespace LiveCharts.Core.Dimensions
                 {
                     var w = iui + stepSize > chart.DrawAreaSize[0] ? 0 : stepSize;
                     var xModel = new RectangleF(new PointF(iui, 0), new SizeF(w, chart.DrawAreaSize[1]));
-                    separator.Move(
-                        new CartesianAxisSeparatorArgs
+                    separator.DrawShapes(
+                        new CartesianAxisSectionArgs
                         {
+                            ZIndex = int.MinValue,
                             Plane = this,
-                            SeparatorFrom = xModel, // ToDo: this probably wont look wood if the axis range changed, in that case it should mode from the previous range position to the new one..
-                            SeparatorTo = xModel,
-                            LabelFrom = new PointF(actualLabelLocation.X - labelModel.Size.Width * .5f,
-                                actualLabelLocation.Y),
-                            LabelViewModel = labelModel,
+                            // ToDo: this probably wont look good if the axis range changed, in that case it should mode from the previous range position to the new one..
+                            Rectangle =  new RectangleViewModel(xModel, xModel, Orientation.Auto),
+                            Label = labelModel,
                             Disposing = false,
                             Style = alternate ? XAlternativeSeparatorStyle : XSeparatorStyle,
                             ChartView = chart.View
@@ -273,14 +274,13 @@ namespace LiveCharts.Core.Dimensions
                 {
                     var h = iui + stepSize > chart.DrawAreaSize[1] ? 0 : stepSize;
                     var yModel = new RectangleF(new PointF(0, iui), new SizeF(chart.DrawAreaSize[0], h));
-                    separator.Move(
-                        new CartesianAxisSeparatorArgs
+                    separator.DrawShapes(
+                        new CartesianAxisSectionArgs
                         {
+                            ZIndex = int.MinValue,
                             Plane = this,
-                            SeparatorFrom = yModel, // ToDo: this probably wont look wood if the axis range changed, in that case it should mode from the previous range position to the new one..
-                            SeparatorTo = yModel,
-                            LabelFrom = new PointF(actualLabelLocation.X, actualLabelLocation.Y - labelModel.Size.Height*.5f),
-                            LabelViewModel = labelModel,
+                            Rectangle = new  RectangleViewModel(yModel, yModel, Orientation.Auto),
+                            Label = labelModel,
                             Disposing = false,
                             Style = alternate ? YAlternativeSeparatorStyle : YSeparatorStyle,
                             ChartView = chart.View
@@ -297,6 +297,84 @@ namespace LiveCharts.Core.Dimensions
                 {
                     _activeSeparators.Remove(separator.Key);
                 }
+            }
+        }
+
+        internal void DrawSections(ChartModel chart)
+        {
+            if (Sections == null) return;
+
+            foreach (var section in Sections)
+            {
+                if (section.View == null)
+                {
+                    section.View = Charting.Current.UiProvider.GetNewAxisSection();
+                }
+
+                var iui = chart.ScaleToUi(section.Value, this);
+
+                var length = Math.Abs(chart.ScaleToUi(section.Length, this) - chart.ScaleToUi(0, this));
+
+                var w = iui + length > chart.DrawAreaSize[0] ? 0 : length;
+                var h = iui + length > chart.DrawAreaSize[1] ? 0 : length;
+                var model = Dimension == 0
+                    ? new RectangleF(new PointF(iui, 0), new SizeF(w, chart.DrawAreaSize[1]))
+                    : new RectangleF(new PointF(0, iui), new SizeF(chart.DrawAreaSize[0], h));
+
+                var isXAxis = Dimension == 0;
+
+                var labelSize = section.View.Label.MeasureAndUpdate(
+                    chart.View.Content,
+                    section.Font == LiveCharts.Core.Interaction.Styles.Font.Empty ? Font : section.Font,
+                    section.LabelContent);
+
+                var x = 0f;
+                var y = 0f;
+
+                //switch (section.LabelHorizontalAlignment)
+                //{
+                //    case HorizontalAlignment.Centered:
+                //    case HorizontalAlignment.Between:
+                //        x = isXAxis
+                //            ? iui + length * .5f + labelSize.Width * .5f
+                //            : w + length * .5f + labelSize.Height * .5f;
+                //        break;
+                //    case HorizontalAlignment.Left:
+                //        x = isXAxis ? w : h;
+                //        break;
+                //    case HorizontalAlignment.Right:
+                //        x = isXAxis ? 
+                //        break;
+                //    default:
+                //        throw new ArgumentOutOfRangeException();
+                //}
+
+                switch (section.LabelVerticalAlignment)
+                {
+                    case VerticalAlignment.Between:
+                    case VerticalAlignment.Centered:
+                        break;
+                    case VerticalAlignment.Top:
+                        break;
+                    case VerticalAlignment.Bottom:
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+
+                section.View.DrawShapes(
+                    new CartesianAxisSectionArgs
+                    {
+                        ZIndex = int.MinValue + 1,
+                        Plane = this,
+                        Rectangle = new RectangleViewModel(model, model, Orientation.Auto),
+                        Label = new SectionLabelViewModel(),
+                        Disposing = false,
+                        Style = new SeparatorStyle(section.Stroke, section.Fill, (float) section.StrokeThickness),
+                        ChartView = chart.View
+                    });
+
+                chart.RegisterResource(section.View);
             }
         }
 
@@ -377,7 +455,7 @@ namespace LiveCharts.Core.Dimensions
             return (float) tick;
         }
 
-        private AxisLabelViewModel EvaluateAxisLabel(float value, float[] drawMargin, float axisPointWidth, ChartModel chart)
+        private SectionLabelViewModel EvaluateAxisLabel(float value, float[] drawMargin, float axisPointWidth, ChartModel chart)
         {
             const double toRadians = Math.PI / 180;
             var angle = ActualLabelsRotation;
@@ -512,7 +590,7 @@ namespace LiveCharts.Core.Dimensions
                 }
             }
 
-            return new AxisLabelViewModel(
+            return new SectionLabelViewModel(
                 new PointF((float) x, (float) y),
                 new PointF((float) xo, (float) yo),
                 new Margin(
@@ -521,7 +599,8 @@ namespace LiveCharts.Core.Dimensions
                     (float) (yw + yh - t),
                     (float) l),
                 text,
-                labelSize);
+                labelSize,
+                (float) ActualLabelsRotation);
         }
     }
 }

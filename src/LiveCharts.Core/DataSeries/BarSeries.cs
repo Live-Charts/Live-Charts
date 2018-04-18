@@ -22,18 +22,17 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR 
 // OTHER DEALINGS IN THE SOFTWARE.
 #endregion
-
 #region
 
 using System;
 using System.Drawing;
-using LiveCharts.Core.Abstractions;
-using LiveCharts.Core.Abstractions.DataSeries;
 using LiveCharts.Core.Charts;
 using LiveCharts.Core.Coordinates;
 using LiveCharts.Core.Dimensions;
 using LiveCharts.Core.Drawing;
-using LiveCharts.Core.Interaction;
+using LiveCharts.Core.Interaction.Points;
+using LiveCharts.Core.Interaction.Series;
+using LiveCharts.Core.Interaction.Styles;
 using LiveCharts.Core.Updating;
 using LiveCharts.Core.ViewModels;
 
@@ -47,16 +46,16 @@ namespace LiveCharts.Core.DataSeries
     /// <typeparam name="TModel">The type of the model.</typeparam>
     public class BarSeries<TModel> : BaseBarSeries<TModel, PointCoordinate, IBarSeries>
     {
-        private static ISeriesViewProvider<TModel, PointCoordinate, BarViewModel, IBarSeries> _provider;
+        private static ISeriesViewProvider<TModel, PointCoordinate, RectangleViewModel, IBarSeries> _provider;
 
         /// <inheritdoc />
-        protected override ISeriesViewProvider<TModel, PointCoordinate, BarViewModel, IBarSeries>
+        protected override ISeriesViewProvider<TModel, PointCoordinate, RectangleViewModel, IBarSeries>
             DefaultViewProvider => _provider ??
                                    (_provider = Charting.Current.UiProvider.BarViewProvider<TModel, PointCoordinate, IBarSeries>());
 
         /// <inheritdoc />
         protected override void BuildModel(
-            Point<TModel, PointCoordinate, BarViewModel, IBarSeries> current, UpdateContext context, ChartModel chart, 
+            Point<TModel, PointCoordinate, RectangleViewModel, IBarSeries> current, UpdateContext context, ChartModel chart, 
             Plane directionAxis, Plane scaleAxis, float cw, float columnStart, float[] byBarOffset, float[] positionOffset, 
             Orientation orientation, int h, int w)
         {
@@ -95,10 +94,10 @@ namespace LiveCharts.Core.DataSeries
                         columnStart,
                         Math.Abs(difference[w]),
                         0f);
-                current.ViewModel = new BarViewModel(RectangleF.Empty, initialRectangle, orientation);
+                current.ViewModel = new RectangleViewModel(RectangleF.Empty, initialRectangle, orientation);
             }
 
-            current.ViewModel = new BarViewModel(
+            current.ViewModel = new RectangleViewModel(
                 current.ViewModel.To,
                 new RectangleF(
                     location[w] + byBarOffset[0] + positionOffset[0],

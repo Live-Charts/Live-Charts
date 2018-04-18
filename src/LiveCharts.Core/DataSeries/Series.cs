@@ -22,7 +22,6 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR 
 // OTHER DEALINGS IN THE SOFTWARE.
 #endregion
-
 #region
 
 using System;
@@ -32,16 +31,20 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using LiveCharts.Core.Abstractions;
-using LiveCharts.Core.Abstractions.DataSeries;
 using LiveCharts.Core.Charts;
 using LiveCharts.Core.Collections;
+using LiveCharts.Core.Coordinates;
 using LiveCharts.Core.Drawing;
 using LiveCharts.Core.Drawing.Svg;
 using LiveCharts.Core.Events;
 using LiveCharts.Core.Interaction;
+using LiveCharts.Core.Interaction.Points;
+using LiveCharts.Core.Interaction.Series;
+using LiveCharts.Core.Interaction.Styles;
 using LiveCharts.Core.Updating;
-using Font = LiveCharts.Core.Abstractions.Font;
+#if NET45 || NET46
+using Font = LiveCharts.Core.Interaction.Styles.Font;
+#endif
 
 #endregion
 
@@ -93,7 +96,7 @@ namespace LiveCharts.Core.DataSeries
             Initialize(itemsSource);
         }
 
-        #region Properties
+#region Properties
 
         /// <inheritdoc />
         public abstract Type ResourceKey { get; }
@@ -249,7 +252,7 @@ namespace LiveCharts.Core.DataSeries
         /// The point view provider.
         /// </value>
         public ISeriesViewProvider<TModel, TCoordinate, TViewModel, TSeries>
-            ViewProvider
+            PointViewProvider
         {
             get => _viewProvider ?? DefaultViewProvider;
             set
@@ -259,18 +262,18 @@ namespace LiveCharts.Core.DataSeries
             }
         }
 
-        #endregion
+#endregion
 
         /// <inheritdoc />
         void ISeries.UpdateStarted(IChartView chart)
         {
-            ViewProvider.OnUpdateStarted(chart, this as TSeries);
+            PointViewProvider.OnUpdateStarted(chart, this as TSeries);
         }
 
         /// <inheritdoc />
         void ISeries.UpdateFinished(IChartView chart)
         {
-            ViewProvider.OnUpdateFinished(chart, this as TSeries);
+            PointViewProvider.OnUpdateFinished(chart, this as TSeries);
         }
 
         /// <inheritdoc />
@@ -410,28 +413,28 @@ namespace LiveCharts.Core.DataSeries
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(
-                        nameof(Abstractions.DataLabelsPosition.HorizontalAlignment), 
+                        nameof(DataLabelsPosition.HorizontalAlignment), 
                         DataLabelsPosition.HorizontalAlignment,
                         null);
             }
 
             switch (DataLabelsPosition.VerticalAlignment)
             {
-                case VerticalLabelPosition.Centered:
+                case VerticalAlignment.Centered:
                     top = pointLocation.Y - .5f * height;
                     break;
-                case VerticalLabelPosition.Top:
+                case VerticalAlignment.Top:
                     top = pointLocation.Y - pointMargin.Top - height;
                     break;
-                case VerticalLabelPosition.Bottom:
+                case VerticalAlignment.Bottom:
                     top = pointLocation.Y + pointMargin.Bottom;
                     break;
-                case VerticalLabelPosition.Between:
+                case VerticalAlignment.Between:
                     top = (pointLocation.Y + betweenBottomLimit) / 2f - .5f * height;
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(
-                        nameof(Abstractions.DataLabelsPosition.VerticalAlignment), 
+                        nameof(DataLabelsPosition.VerticalAlignment), 
                         DataLabelsPosition.VerticalAlignment, null);
             }
 
@@ -478,7 +481,7 @@ namespace LiveCharts.Core.DataSeries
             };
         }
 
-        #region IResource implementation
+#region IResource implementation
 
         /// <inheritdoc />
         public event DisposingResourceHandler Disposed;
@@ -502,9 +505,9 @@ namespace LiveCharts.Core.DataSeries
             Content.Remove(view.Model);
         }
 
-        #endregion
+#endregion
 
-        #region INPC implementation
+#region INPC implementation
 
         /// <summary>
         /// Occurs when [property changed].
@@ -520,6 +523,6 @@ namespace LiveCharts.Core.DataSeries
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        #endregion
+#endregion
     }
 }

@@ -22,18 +22,19 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR 
 // OTHER DEALINGS IN THE SOFTWARE.
 #endregion
-
 #region
 
 using System.Drawing;
-using LiveCharts.Core.Abstractions;
-using LiveCharts.Core.Abstractions.DataSeries;
+using LiveCharts.Core.DataSeries;
 using LiveCharts.Core.Dimensions;
 using LiveCharts.Core.Drawing;
 using LiveCharts.Core.Drawing.Svg;
 using LiveCharts.Core.Interaction;
-using Font = LiveCharts.Core.Abstractions.Font;
-using FontStyle = LiveCharts.Core.Abstractions.FontStyle;
+using LiveCharts.Core.Interaction.Styles;
+#if NET45 || NET46
+using Font = LiveCharts.Core.Interaction.Styles.Font;
+using FontStyle= LiveCharts.Core.Interaction.Styles.FontStyle;
+#endif
 
 #endregion
 
@@ -48,7 +49,6 @@ namespace LiveCharts.Core.Themes
         /// Uses the material design light theme.
         /// </summary>
         /// <param name="charting">The settings.</param>
-        /// <returns>
         internal static Charting SetMaterialDesignDefaults(this Charting charting)
         {
             var baseFont = new Font("Arial", 11, FontStyle.Regular, FontWeight.Regular);
@@ -87,7 +87,7 @@ namespace LiveCharts.Core.Themes
                     series.DataLabelsPosition = new DataLabelsPosition
                     {
                         HorizontalAlignment = HorizontalAlignment.Centered,
-                        VerticalAlignment = VerticalLabelPosition.Top,
+                        VerticalAlignment = VerticalAlignment.Top,
                         Rotation = 0
                     };
                 })

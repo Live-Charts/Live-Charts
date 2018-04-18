@@ -22,12 +22,15 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR 
 // OTHER DEALINGS IN THE SOFTWARE.
 #endregion
-
 #region
 
-using LiveCharts.Core.Abstractions;
-using LiveCharts.Core.Abstractions.DataSeries;
+using LiveCharts.Core.Charts;
 using LiveCharts.Core.Coordinates;
+using LiveCharts.Core.DataSeries;
+using LiveCharts.Core.Dimensions;
+using LiveCharts.Core.Interaction;
+using LiveCharts.Core.Interaction.Controls;
+using LiveCharts.Core.Interaction.Series;
 using LiveCharts.Core.ViewModels;
 using LiveCharts.Wpf.Controls;
 using LiveCharts.Wpf.Views;
@@ -62,9 +65,9 @@ namespace LiveCharts.Wpf
         }
 
         /// <inheritdoc />
-        public ICartesianAxisSeparator GetNewAxisSeparator()
+        public ICartesianAxisSectionView GetNewAxisSection()
         {
-            return new CartesianAxisSeparatorView<AxisLabel>();
+            return new CartesianAxisSectionView<AxisLabel>();
         }
 
         /// <inheritdoc />
@@ -74,7 +77,7 @@ namespace LiveCharts.Wpf
         }
 
         /// <inheritdoc />
-        public ISeriesViewProvider<TModel, TCoordinate, BarViewModel, TSeries> 
+        public ISeriesViewProvider<TModel, TCoordinate, RectangleViewModel, TSeries> 
             BarViewProvider<TModel, TCoordinate, TSeries>()
             where TCoordinate : ICoordinate
             where TSeries : ICartesianSeries, IStrokeSeries

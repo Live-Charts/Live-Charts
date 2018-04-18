@@ -45,11 +45,11 @@
             </Style.Triggers>
         </Style>
         <Style TargetType="Button">
-            <Setter Property="Cursor" Value="Hand"></Setter>
+            <Setter Property="Cursor" Value="Hand" />
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type Button}">
-                        <ContentPresenter></ContentPresenter>
+                        <ContentPresenter />
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
@@ -66,7 +66,8 @@
                                            HorizontalAlignment="Center" TextOptions.TextFormattingMode="Display" />
                                 <Image Source="{Binding Converter={StaticResource SampleImageConverter}}" Height="128"
                                        Margin="0 25" />
-                                <TextBlock Text="{Binding Text}" TextWrapping="Wrap" Opacity=".8" TextOptions.TextFormattingMode="Display" />
+                                <TextBlock Text="{Binding Text}" TextWrapping="Wrap" Opacity=".8"
+                                           TextOptions.TextFormattingMode="Display" />
                             </StackPanel>
                         </Border>
                     </ControlTemplate>
@@ -79,18 +80,18 @@
             <Setter Property="Foreground" Value="#303030" />
         </Style>
         <Style x:Key="MenuSectionTitle" TargetType="TextBlock">
-            <Setter Property="FontSize" Value="38"></Setter>
-            <Setter Property="Margin" Value="0 20 0 20"></Setter>
+            <Setter Property="FontSize" Value="38" />
+            <Setter Property="Margin" Value="0 20 0 20" />
             <Setter Property="Foreground" Value="#303030" />
-            <Setter Property="HorizontalAlignment" Value="Center"></Setter>
-            <Setter Property="FontWeight" Value="Bold"></Setter>
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="FontWeight" Value="Bold" />
         </Style>
         <Style x:Key="Title" TargetType="TextBlock">
-            <Setter Property="HorizontalAlignment" Value="Center"></Setter>
+            <Setter Property="HorizontalAlignment" Value="Center" />
             <Setter Property="FontSize" Value="16" />
             <Setter Property="Margin" Value="0 0 0 15" />
             <Setter Property="Foreground" Value="#303030" />
-            <Setter Property="FontWeight" Value="Bold"></Setter>
+            <Setter Property="FontWeight" Value="Bold" />
         </Style>
     </Application.Resources>
 </Application>

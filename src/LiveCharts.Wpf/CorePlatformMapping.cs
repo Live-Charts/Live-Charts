@@ -22,7 +22,6 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR 
 // OTHER DEALINGS IN THE SOFTWARE.
 #endregion
-
 #region
 
 using System;
@@ -31,10 +30,10 @@ using System.Windows;
 using System.Windows.Media;
 using LiveCharts.Core;
 using Brush = LiveCharts.Core.Drawing.Brush;
-using Font = LiveCharts.Core.Abstractions.Font;
+using Font = LiveCharts.Core.Interaction.Styles.Font;
 using FontFamily = System.Windows.Media.FontFamily;
 using FontStyle = System.Windows.FontStyle;
-using FontWeight = LiveCharts.Core.Abstractions.FontWeight;
+using FontWeight = LiveCharts.Core.Interaction.Styles.FontWeight;
 using Orientation = System.Windows.Controls.Orientation;
 using Point = System.Windows.Point;
 
@@ -80,10 +79,10 @@ namespace LiveCharts.Wpf
 
             switch (font.Style)
             {
-                case Core.Abstractions.FontStyle.Regular:
+                case Core.Interaction.Styles.FontStyle.Regular:
                     s = System.Windows.FontStyles.Normal;
                     break;
-                case Core.Abstractions.FontStyle.Italic:
+                case Core.Interaction.Styles.FontStyle.Italic:
                     s = System.Windows.FontStyles.Italic;
                     break;
                 default:
@@ -124,13 +123,13 @@ namespace LiveCharts.Wpf
         /// <param name="orientation">The orientation.</param>
         /// <returns></returns>
         /// <exception cref="ArgumentOutOfRangeException">orientation - null</exception>
-        public static Orientation AsWpf(this Core.Abstractions.Orientation orientation)
+        public static Orientation AsWpf(this Core.Interaction.Styles.Orientation orientation)
         {
             switch (orientation)
             {
-                case Core.Abstractions.Orientation.Vertical:
+                case Core.Interaction.Styles.Orientation.Vertical:
                     return Orientation.Vertical;
-                case Core.Abstractions.Orientation.Horizontal:
+                case Core.Interaction.Styles.Orientation.Horizontal:
                     return Orientation.Horizontal;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(orientation), orientation, null);

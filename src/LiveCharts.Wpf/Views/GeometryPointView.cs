@@ -22,16 +22,16 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR 
 // OTHER DEALINGS IN THE SOFTWARE.
 #endregion
-
 #region
 
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
-using LiveCharts.Core.Abstractions;
-using LiveCharts.Core.Abstractions.DataSeries;
-using LiveCharts.Core.Interaction;
+using LiveCharts.Core.Charts;
+using LiveCharts.Core.Coordinates;
+using LiveCharts.Core.DataSeries;
+using LiveCharts.Core.Interaction.Points;
 using LiveCharts.Core.ViewModels;
 using LiveCharts.Wpf.Animations;
 
@@ -49,7 +49,7 @@ namespace LiveCharts.Wpf.Views
     /// <seealso cref="Views.PointView{TModel, TPoint, WeightedCoordinate, GeometryPointViewModel, Path, TLabel}" />
     public class GeometryPointView<TModel, TCoordinate, TSeries, TLabel>
         : PointView<TModel, TCoordinate, GeometryPointViewModel, TSeries, Path, TLabel>
-        where TLabel : FrameworkElement, IDataLabelControl, new()
+        where TLabel : FrameworkElement, new()
         where TCoordinate : ICoordinate
         where TSeries : IStrokeSeries, ICartesianSeries
     {
@@ -62,12 +62,14 @@ namespace LiveCharts.Wpf.Views
             var vm = point.ViewModel;
             var isNew = Shape == null;
 
+            var r = vm.Diameter * .5;
+
             if (isNew)
             {
                 Shape = new Path{Stretch = Stretch.Fill};
                 chart.Content.AddChild(Shape);
-                Canvas.SetLeft(Shape, vm.Location.X);
-                Canvas.SetTop(Shape, vm.Location.Y);
+                Canvas.SetLeft(Shape, vm.Location.X - r);
+                Canvas.SetTop(Shape, vm.Location.Y - r);
                 Shape.Width = 0;
                 Shape.Height = 0;
             }
@@ -80,18 +82,17 @@ namespace LiveCharts.Wpf.Views
             Panel.SetZIndex(Shape, point.Series.ZIndex);
 
             var speed = chart.AnimationsSpeed;
-            var r = vm.Diameter * .5;
 
             if (isNew)
             {
+                var bm = BounceMagnitude.Small;
+
                 Shape.Animate()
                     .AtSpeed(speed)
-                    .Bounce(Canvas.LeftProperty, vm.Location.X - r * .5, vm.Location.X - r, 5,
-                        BounceMagnitude.ExtraLarge)
-                    .Bounce(Canvas.TopProperty, vm.Location.Y - r * .5, vm.Location.Y - r, 5,
-                        BounceMagnitude.ExtraLarge)
-                    .Bounce(FrameworkElement.WidthProperty, 0, vm.Diameter, 5, BounceMagnitude.ExtraLarge)
-                    .Bounce(FrameworkElement.HeightProperty, 0, vm.Diameter, 5, BounceMagnitude.ExtraLarge)
+                    .Bounce(Canvas.LeftProperty, vm.Location.X, vm.Location.X - r, bm)
+                    .Bounce(Canvas.TopProperty, vm.Location.Y, vm.Location.Y - r, bm)
+                    .Bounce(FrameworkElement.WidthProperty, 0, vm.Diameter, bm)
+                    .Bounce(FrameworkElement.HeightProperty, 0, vm.Diameter, bm)
                     .Begin();
             }
             else
@@ -110,7 +111,6 @@ namespace LiveCharts.Wpf.Views
                 .AtSpeed(chart.AnimationsSpeed)
                 .Property(FrameworkElement.HeightProperty, 0)
                 .Property(FrameworkElement.WidthProperty, 0);
-
             animation.Then((sender, args) =>
             {
                 chart.Content.RemoveChild(Shape);

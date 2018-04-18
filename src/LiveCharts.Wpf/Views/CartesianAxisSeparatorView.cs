@@ -22,14 +22,16 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR 
 // OTHER DEALINGS IN THE SOFTWARE.
 #endregion
-
 #region
 
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Shapes;
-using LiveCharts.Core.Abstractions;
+using LiveCharts.Core.Charts;
+using LiveCharts.Core.Dimensions;
 using LiveCharts.Core.Events;
+using LiveCharts.Core.Interaction;
+using LiveCharts.Core.Interaction.Controls;
 using LiveCharts.Wpf.Animations;
 
 #endregion
@@ -39,9 +41,9 @@ namespace LiveCharts.Wpf.Views
     /// <summary>
     /// The separator class.
     /// </summary>
-    /// <seealso cref="ICartesianAxisSeparator" />
-    public class CartesianAxisSeparatorView<TLabel> : ICartesianAxisSeparator
-        where TLabel : FrameworkElement, IPlaneLabelControl, new()
+    /// <seealso cref="ICartesianAxisSectionView" />
+    public class CartesianAxisSectionView<TLabel> : ICartesianAxisSectionView
+        where TLabel : UIElement, IPlaneLabelControl, new()
     {
         /// <summary>
         /// Gets or sets the line.
@@ -57,15 +59,15 @@ namespace LiveCharts.Wpf.Views
         /// <value>
         /// The label.
         /// </value>
-        public TLabel Label { get; protected set; }
+        public IPlaneLabelControl Label { get; protected set; }
 
         /// <inheritdoc />
-        object ICartesianAxisSeparator.VisualElement => Label;
+        object ICartesianAxisSectionView.VisualElement => Rectangle;
 
-        public void Move(CartesianAxisSeparatorArgs args)
+        /// <inheritdoc />
+        public virtual void DrawShapes(CartesianAxisSectionArgs args)
         {
             var isNewShape = Rectangle == null;
-            var isNewLabel = Label == null;
             var speed = args.ChartView.AnimationsSpeed;
 
             // initialize the shape
@@ -73,53 +75,33 @@ namespace LiveCharts.Wpf.Views
             {
                 Rectangle = new Rectangle();
                 args.ChartView.Content.AddChild(Rectangle);
-                Canvas.SetLeft(Rectangle, args.SeparatorFrom.Left);
-                Canvas.SetTop(Rectangle, args.SeparatorFrom.Top);
-                Rectangle.Width = args.SeparatorFrom.Width;
-                Rectangle.Height = args.SeparatorFrom.Height;
-                Panel.SetZIndex(Rectangle, -1);
+                Canvas.SetLeft(Rectangle, args.Rectangle.From.Left);
+                Canvas.SetTop(Rectangle, args.Rectangle.From.Top);
+                Rectangle.Width = args.Rectangle.From.Width;
+                Rectangle.Height = args.Rectangle.From.Height;
+                Panel.SetZIndex(Rectangle, args.ZIndex);
                 
                 Rectangle.Animate()
                     .AtSpeed(speed)
                     .Property(UIElement.OpacityProperty, 1, 0)
                     .Begin();
             }
-
-            if (isNewLabel)
-            {
-                Label = new TLabel();
-                args.ChartView.Content.AddChild(Label);
-                Canvas.SetLeft(Label, args.LabelFrom.X);
-                Canvas.SetTop(Label, args.LabelFrom.Y);
-
-                //Label.Animate()
-                //    .AtSpeed(speed)
-                //    .Property(UIElement.OpacityProperty, 1, 0)
-                //    .Begin();
-            }
             
             Rectangle.Fill = args.Style.Fill.AsWpf();
             Rectangle.Stroke = args.Style.Stroke.AsWpf();
 
-            Label.MeasureAndUpdate(args.ChartView.Content, args.Plane.Font, args.LabelViewModel.Content);
-
-            var actualLabelLocation = args.LabelViewModel.ActualLocation;
-
             var storyboard = Rectangle.Animate()
                 .AtSpeed(speed)
-                .Property(Canvas.TopProperty, args.SeparatorTo.Top)
-                .Property(Canvas.LeftProperty, args.SeparatorTo.Left)
+                .Property(Canvas.TopProperty, args.Rectangle.To.Top)
+                .Property(Canvas.LeftProperty, args.Rectangle.To.Left)
                 .Property(FrameworkElement.HeightProperty,
-                    args.SeparatorTo.Height > args.Style.StrokeThickness
-                        ? args.SeparatorTo.Height
+                    args.Rectangle.To.Height > args.Style.StrokeThickness
+                        ? args.Rectangle.To.Height
                         : args.Style.StrokeThickness)
                 .Property(FrameworkElement.WidthProperty,
-                    args.SeparatorTo.Width > args.Style.StrokeThickness
-                        ? args.SeparatorTo.Width
-                        : args.Style.StrokeThickness)
-                .ChangeTarget(Label)
-                .Property(Canvas.LeftProperty, actualLabelLocation.X)
-                .Property(Canvas.TopProperty, actualLabelLocation.Y);
+                    args.Rectangle.To.Width > args.Style.StrokeThickness
+                        ? args.Rectangle.To.Width
+                        : args.Style.StrokeThickness);
 
             if (args.Disposing)
             {
@@ -135,6 +117,24 @@ namespace LiveCharts.Wpf.Views
             }
 
             storyboard.Begin();
+        }
+
+        /// <inheritdoc />
+        public virtual void DrawLabel(CartesianAxisSectionArgs args)
+        {
+            var isNewLabel = Label == null;
+
+            if (isNewLabel)
+            {
+                Label = new TLabel();
+                args.ChartView.Content.AddChild(Label);
+                Canvas.SetLeft((UIElement)Label, args.Label.Position.X);
+                Canvas.SetTop((UIElement)Label, args.Label.Position.Y);
+            }
+
+            Label.MeasureAndUpdate(args.ChartView.Content, args.Plane.Font, args.Label.Content);
+
+            
         }
 
         public event DisposingResourceHandler Disposed;

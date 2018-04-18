@@ -22,7 +22,6 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR 
 // OTHER DEALINGS IN THE SOFTWARE.
 #endregion
-
 #region
 
 using System.Collections.Generic;
@@ -138,12 +137,13 @@ namespace LiveCharts.Wpf.Animations
         /// <returns></returns>
         public static AnimationBuilder Bounce(
             this AnimationBuilder builder, DependencyProperty property, double from, double to,
-            int scale = 1, BounceMagnitude magnitude = BounceMagnitude.Medium, double delay = 0)
+            BounceMagnitude magnitude = BounceMagnitude.Medium, double delay = 0, int scale = 1)
         {
             return builder.Property(
                 property,
                 GetCurve(magnitude, delay)
-                    .Select(x => new Frame(x[0], from + x[1] * (to - from) + (1 - x[1]) * scale)));
+                    .Select(x => 
+                        new Frame(x[0], from + x[1] * (to - from) + (1 - x[1]) * scale)));
         }
 
         private static IEnumerable<double[]> GetCurve(BounceMagnitude magnitude, double delay)

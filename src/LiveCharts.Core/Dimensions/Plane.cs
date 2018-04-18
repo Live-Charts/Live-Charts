@@ -22,18 +22,17 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR 
 // OTHER DEALINGS IN THE SOFTWARE.
 #endregion
-
 #region
 
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Charts;
-using LiveCharts.Core.Drawing;
 using LiveCharts.Core.Events;
 using LiveCharts.Core.Interaction;
+using LiveCharts.Core.Interaction.Controls;
+using LiveCharts.Core.Interaction.Styles;
 
 #endregion
 

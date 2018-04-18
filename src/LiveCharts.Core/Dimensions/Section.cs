@@ -1,4 +1,37 @@
-﻿using LiveCharts.Core.Drawing;
+﻿#region License
+// The MIT License (MIT)
+// 
+// Copyright (c) 2016 Alberto Rodríguez Orozco & LiveCharts contributors
+// 
+// Permission is hereby granted, free of charge, to any person obtaining a copy 
+// of this software and associated documentation files (the "Software"), to deal 
+// in the Software without restriction, including without limitation the rights to 
+// use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies 
+// of the Software, and to permit persons to whom the Software is furnished to 
+// do so, subject to the following conditions:
+// 
+// The above copyright notice and this permission notice shall be included in all 
+// copies or substantial portions of the Software.
+// 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, 
+// EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES 
+// OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND 
+// NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT 
+// HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, 
+// WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING 
+// FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR 
+// OTHER DEALINGS IN THE SOFTWARE.
+#endregion
+
+#region
+
+using LiveCharts.Core.Drawing;
+using LiveCharts.Core.Interaction.Styles;
+#if NET45 || NET46
+using Font = LiveCharts.Core.Interaction.Styles.Font;
+#endif
+
+#endregion
 
 namespace LiveCharts.Core.Dimensions
 {
@@ -7,6 +40,11 @@ namespace LiveCharts.Core.Dimensions
     /// </summary>
     public class Section
     {
+        public Section()
+        {
+            Font = Font.Empty;
+        }
+
         /// <summary>
         /// Gets or sets the value.
         /// </summary>
@@ -16,12 +54,12 @@ namespace LiveCharts.Core.Dimensions
         public double Value { get; set; }
 
         /// <summary>
-        /// Gets or sets the width.
+        /// Gets or sets the length.
         /// </summary>
         /// <value>
-        /// The width.
+        /// The length.
         /// </value>
-        public double Width { get; set; }
+        public double Length { get; set; }
 
         /// <summary>
         /// Gets or sets the stroke.
@@ -46,5 +84,45 @@ namespace LiveCharts.Core.Dimensions
         /// The fill.
         /// </value>
         public Brush Fill { get; set; }
+
+        /// <summary>
+        /// Gets or sets the font.
+        /// </summary>
+        /// <value>
+        /// The font.
+        /// </value>
+        public Font Font { get; set; }
+
+        /// <summary>
+        /// Gets or sets the content of the label.
+        /// </summary>
+        /// <value>
+        /// The content of the label.
+        /// </value>
+        public string LabelContent { get; set; }
+
+        /// <summary>
+        /// Gets or sets the label vertical alignment.
+        /// </summary>
+        /// <value>
+        /// The label vertical alignment.
+        /// </value>
+        public VerticalAlignment LabelVerticalAlignment { get; set; }
+
+        /// <summary>
+        /// Gets or sets the label horizontal alignment.
+        /// </summary>
+        /// <value>
+        /// The label horizontal alignment.
+        /// </value>
+        public HorizontalAlignment LabelHorizontalAlignment { get; set; }
+
+        /// <summary>
+        /// Gets the view.
+        /// </summary>
+        /// <value>
+        /// The view.
+        /// </value>
+        public ICartesianAxisSectionView View { get; internal set; }
     }
 }

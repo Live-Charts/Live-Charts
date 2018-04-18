@@ -22,23 +22,20 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR 
 // OTHER DEALINGS IN THE SOFTWARE.
 #endregion
-
 #region
 
 using System;
-using System.Drawing;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
-using LiveCharts.Core.Abstractions;
-using LiveCharts.Core.Abstractions.DataSeries;
+using LiveCharts.Core.Charts;
 using LiveCharts.Core.Coordinates;
-using LiveCharts.Core.Interaction;
+using LiveCharts.Core.DataSeries;
+using LiveCharts.Core.Interaction.Controls;
+using LiveCharts.Core.Interaction.Points;
 using LiveCharts.Core.ViewModels;
 using LiveCharts.Wpf.Animations;
-using Brushes = System.Windows.Media.Brushes;
-using Frame = LiveCharts.Wpf.Animations.Frame;
 
 #endregion
 
@@ -52,7 +49,7 @@ namespace LiveCharts.Wpf.Views
     /// <seealso cref="Views.PointView{TModel, TPoint, PointCoordinate, BezierViewModel, Path, TLabel}" />
     public class BezierPointView<TModel, TLabel>
         : PointView<TModel, PointCoordinate, BezierViewModel, ILineSeries, Path, TLabel>
-        where TLabel : FrameworkElement, IDataLabelControl, new()
+        where TLabel : FrameworkElement, new()
     {
         private BezierPointView<TModel, TLabel> _next;
         private ICartesianPath _path;
@@ -74,27 +71,27 @@ namespace LiveCharts.Wpf.Views
             _previous = (BezierPointView<TModel, TLabel>) previous?.View;
             if (_previous != null) _previous._next = this;
 
+            var r = .5 * _vm.GeometrySize;
+
             if (isNew)
             {
                 Shape = new Path {Stretch = Stretch.Fill};
                 chart.Content.AddChild(Shape);
-                Canvas.SetLeft(Shape, point.ViewModel.Location.X - .5 * _vm.GeometrySize);
-                Canvas.SetTop(Shape, point.ViewModel.Location.Y - .5 * _vm.GeometrySize);
+                Canvas.SetLeft(Shape, point.ViewModel.Location.X - r);
+                Canvas.SetTop(Shape, point.ViewModel.Location.Y - r);
                 Shape.Width = 0;
                 Shape.Height = 0;
                 _path = _vm.Path;
                 _segment = (BezierSegment) _path.InsertSegment(_segment, _vm.Index, _vm.Point1, _vm.Point2, _vm.Point3);
 
-                var r = .5 * _vm.GeometrySize;
+                var bm = BounceMagnitude.Small;
 
                 Shape.Animate()
                     .AtSpeed(TimeSpan.FromMilliseconds(speed.TotalMilliseconds * 2))
-                    .Bounce(Canvas.LeftProperty, _vm.Location.X - r * .5, _vm.Location.X - r, 5,
-                        BounceMagnitude.ExtraLarge, 0.5)
-                    .Bounce(Canvas.TopProperty, _vm.Location.Y - r * .5, _vm.Location.Y - r, 5,
-                        BounceMagnitude.ExtraLarge, 0.5)
-                    .Bounce(FrameworkElement.WidthProperty, 0, _vm.GeometrySize, 5, BounceMagnitude.ExtraLarge, 0.5)
-                    .Bounce(FrameworkElement.HeightProperty, 0, _vm.GeometrySize, 5, BounceMagnitude.ExtraLarge, 0.5)
+                    .Bounce(Canvas.LeftProperty, _vm.Location.X, _vm.Location.X - r, bm, 0.5)
+                    .Bounce(Canvas.TopProperty, _vm.Location.Y, _vm.Location.Y - r, bm, 0.5)
+                    .Bounce(FrameworkElement.WidthProperty, 0, _vm.GeometrySize, bm, 0.5)
+                    .Bounce(FrameworkElement.HeightProperty, 0, _vm.GeometrySize, bm, 0.5)
                     .Begin();
             }
 
@@ -108,8 +105,8 @@ namespace LiveCharts.Wpf.Views
             {
                 Shape.Animate()
                     .AtSpeed(speed)
-                    .Property(Canvas.LeftProperty, _vm.Location.X - .5 * _vm.GeometrySize)
-                    .Property(Canvas.TopProperty, _vm.Location.Y - .5 * _vm.GeometrySize)
+                    .Property(Canvas.LeftProperty, _vm.Location.X - r)
+                    .Property(Canvas.TopProperty, _vm.Location.Y - r)
                     .Begin();
             }
 
@@ -119,11 +116,6 @@ namespace LiveCharts.Wpf.Views
                 .Property(BezierSegment.Point2Property, _vm.Point2.AsWpf())
                 .Property(BezierSegment.Point3Property, _vm.Point3.AsWpf())
                 .Begin();
-        }
-
-        protected override void OnDrawLabel(Point<TModel, PointCoordinate, BezierViewModel, ILineSeries> point, PointF location)
-        {
-            base.OnDrawLabel(point, location);
         }
 
         protected override void OnDispose(IChartView chart)

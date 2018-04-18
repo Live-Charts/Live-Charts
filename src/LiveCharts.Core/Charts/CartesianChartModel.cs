@@ -22,16 +22,15 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR 
 // OTHER DEALINGS IN THE SOFTWARE.
 #endregion
-
 #region
 
 using System;
 using System.Drawing;
 using System.Linq;
-using LiveCharts.Core.Abstractions;
-using LiveCharts.Core.Abstractions.DataSeries;
+using LiveCharts.Core.DataSeries;
 using LiveCharts.Core.Dimensions;
 using LiveCharts.Core.Drawing;
+using LiveCharts.Core.Interaction;
 using LiveCharts.Core.Updating;
 
 #endregion
@@ -61,7 +60,7 @@ namespace LiveCharts.Core.Charts
         protected override int DimensionsCount => 3;
 
         /// <inheritdoc />
-        public override float ScaleToUi(float dataValue, Plane plane, float[] sizeVector = null)
+        public override float ScaleToUi(double dataValue, Plane plane, float[] sizeVector = null)
         {
             var chartSize = sizeVector ?? DrawAreaSize;
 
@@ -87,7 +86,7 @@ namespace LiveCharts.Core.Charts
 
             var m = (y2 - y1) / (x2 - x1);
 
-            return m * (dataValue - x1) + y1;
+            return m * ((float) dataValue - x1) + y1;
         }
 
         /// <inheritdoc />
@@ -175,6 +174,7 @@ namespace LiveCharts.Core.Charts
                     var axis = plane;
                     RegisterResource(axis);
                     axis.DrawSeparators(this);
+                    axis.DrawSections(this);
                 }
             }
 

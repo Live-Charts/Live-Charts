@@ -22,13 +22,12 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR 
 // OTHER DEALINGS IN THE SOFTWARE.
 #endregion
-
 #region
 
-using System.Drawing;
-using LiveCharts.Core.Abstractions;
+using LiveCharts.Core.Charts;
 using LiveCharts.Core.Dimensions;
 using LiveCharts.Core.Drawing;
+using LiveCharts.Core.ViewModels;
 
 #endregion
 
@@ -37,31 +36,23 @@ namespace LiveCharts.Core.Events
     /// <summary>
     /// The Cartesian Axis Separator Arguments.
     /// </summary>
-    public class CartesianAxisSeparatorArgs
+    public class CartesianAxisSectionArgs
     {
+        /// <summary>
+        /// Gets or sets the index of the z.
+        /// </summary>
+        /// <value>
+        /// The index of the z.
+        /// </value>
+        public int ZIndex { get; set; }
+
         /// <summary>
         /// Gets or sets from.
         /// </summary>
         /// <value>
         /// From.
         /// </value>
-        public RectangleF SeparatorFrom { get; internal set; }
-
-        /// <summary>
-        /// Gets or sets to.
-        /// </summary>
-        /// <value>
-        /// To.
-        /// </value>
-        public RectangleF SeparatorTo { get; internal set; }
-
-        /// <summary>
-        /// Gets the label from.
-        /// </summary>
-        /// <value>
-        /// The label from.
-        /// </value>
-        public PointF LabelFrom { get; internal set; }
+        public RectangleViewModel Rectangle { get; internal set; }
 
         /// <summary>
         /// Gets or sets the axis label model.
@@ -69,7 +60,7 @@ namespace LiveCharts.Core.Events
         /// <value>
         /// The axis label model.
         /// </value>
-        public AxisLabelViewModel LabelViewModel { get; internal set; }
+        public SectionLabelViewModel Label { get; internal set; }
 
         /// <summary>
         /// Gets the plane.
@@ -80,7 +71,7 @@ namespace LiveCharts.Core.Events
         public Plane Plane { get; internal set; }
 
         /// <summary>
-        /// Gets a value indicating whether this <see cref="CartesianAxisSeparatorArgs"/> is disposing.
+        /// Gets a value indicating whether this <see cref="CartesianAxisSectionArgs"/> is disposing.
         /// </summary>
         /// <value>
         ///   <c>true</c> if disposing; otherwise, <c>false</c>.

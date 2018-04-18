@@ -22,17 +22,13 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR 
 // OTHER DEALINGS IN THE SOFTWARE.
 #endregion
-
 #region
 
 using System;
-using System.Drawing;
 using System.Globalization;
 using System.Windows.Data;
 using System.Windows.Media;
 using LiveCharts.Core;
-using Brush = System.Windows.Media.Brush;
-using Color = System.Drawing.Color;
 
 #endregion
 

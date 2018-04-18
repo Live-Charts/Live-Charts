@@ -22,14 +22,13 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR 
 // OTHER DEALINGS IN THE SOFTWARE.
 #endregion
-
 #region
 
 using System.Drawing;
 using System.Windows;
 using System.Windows.Controls;
-using LiveCharts.Core.Abstractions;
-using LiveCharts.Core.Interaction;
+using LiveCharts.Core.Interaction.Controls;
+using LiveCharts.Core.Interaction.Points;
 
 #endregion
 
@@ -44,7 +43,7 @@ namespace LiveCharts.Wpf.Controls
                 new FrameworkPropertyMetadata(typeof(DataLabel)));
         }
 
-        SizeF IDataLabelControl.Measure(PackedPoint point)
+        SizeF IDataLabelControl.UpdateContentAndMeasure(PackedPoint point)
         {
             DataContext = point;
             Measure(new System.Windows.Size(double.PositiveInfinity, double.PositiveInfinity));

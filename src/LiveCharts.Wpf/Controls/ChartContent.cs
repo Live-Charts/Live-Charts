@@ -22,14 +22,13 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR 
 // OTHER DEALINGS IN THE SOFTWARE.
 #endregion
-
 #region
 
 using System.Drawing;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
-using LiveCharts.Core.Abstractions;
+using LiveCharts.Core.Charts;
 using Brushes = System.Windows.Media.Brushes;
 
 #endregion

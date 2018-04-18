@@ -22,7 +22,6 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR 
 // OTHER DEALINGS IN THE SOFTWARE.
 #endregion
-
 #region
 
 using System;
@@ -34,13 +33,14 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Timers;
 using System.Windows.Input;
-using LiveCharts.Core.Abstractions;
-using LiveCharts.Core.Abstractions.DataSeries;
 using LiveCharts.Core.DataSeries;
 using LiveCharts.Core.Dimensions;
 using LiveCharts.Core.Drawing;
 using LiveCharts.Core.Events;
 using LiveCharts.Core.Interaction;
+using LiveCharts.Core.Interaction.Controls;
+using LiveCharts.Core.Interaction.Points;
+using LiveCharts.Core.Interaction.Styles;
 using LiveCharts.Core.Updating;
 
 #endregion
@@ -272,7 +272,7 @@ namespace LiveCharts.Core.Charts
         /// <param name="plane">The axis.</param>
         /// <param name="sizeVector">The draw margin, this param is optional, if not set, the current chart's draw margin area will be used.</param>
         /// <returns></returns>
-        public abstract float ScaleToUi(float dataValue, Plane plane, float[] sizeVector = null);
+        public abstract float ScaleToUi(double dataValue, Plane plane, float[] sizeVector = null);
 
         /// <summary>
         /// Scales from pixels to a data value.

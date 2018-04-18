@@ -22,12 +22,9 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR 
 // OTHER DEALINGS IN THE SOFTWARE.
 #endregion
-
 #region
 
-using System.Collections.Generic;
-using System.Drawing;
-using Brush = LiveCharts.Core.Drawing.Brush;
+using LiveCharts.Core.Drawing;
 
 #endregion
 

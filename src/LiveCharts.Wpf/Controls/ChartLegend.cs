@@ -22,17 +22,18 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR 
 // OTHER DEALINGS IN THE SOFTWARE.
 #endregion
-
 #region
 
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows;
 using System.Windows.Controls;
-using LiveCharts.Core.Abstractions;
-using LiveCharts.Core.Abstractions.DataSeries;
+using LiveCharts.Core.Charts;
+using LiveCharts.Core.DataSeries;
 using LiveCharts.Core.Events;
-using Orientation = LiveCharts.Core.Abstractions.Orientation;
+using LiveCharts.Core.Interaction;
+using LiveCharts.Core.Interaction.Controls;
+using Orientation = LiveCharts.Core.Interaction.Styles.Orientation;
 
 #endregion
 
@@ -42,7 +43,7 @@ namespace LiveCharts.Wpf.Controls
     /// Default legend class.
     /// </summary>
     /// <seealso cref="System.Windows.Controls.WrapPanel" />
-    /// <seealso cref="LiveCharts.Core.Abstractions.ILegend" />
+    /// <seealso cref="ILegend" />
     public class ChartLegend : ItemsControl, ILegend
     {
         /// <summary>

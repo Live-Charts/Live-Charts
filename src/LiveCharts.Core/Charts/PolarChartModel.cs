@@ -22,12 +22,10 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR 
 // OTHER DEALINGS IN THE SOFTWARE.
 #endregion
-
 #region
 
-using System.Drawing;
-using LiveCharts.Core.Abstractions;
 using LiveCharts.Core.Dimensions;
+using LiveCharts.Core.Interaction;
 
 #endregion
 
@@ -52,7 +50,7 @@ namespace LiveCharts.Core.Charts
         protected override int DimensionsCount => 2;
 
         /// <inheritdoc />
-        public override float ScaleToUi(float dataValue, Plane plane, float[] sizeVector = null)
+        public override float ScaleToUi(double dataValue, Plane plane, float[] sizeVector = null)
         {
             throw new System.NotImplementedException();
         }

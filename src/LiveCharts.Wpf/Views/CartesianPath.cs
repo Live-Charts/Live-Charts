@@ -22,7 +22,6 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR 
 // OTHER DEALINGS IN THE SOFTWARE.
 #endregion
-
 #region
 
 using System;
@@ -31,8 +30,9 @@ using System.Drawing;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
-using LiveCharts.Core.Abstractions;
+using LiveCharts.Core.Charts;
 using LiveCharts.Core.Effects;
+using LiveCharts.Core.Interaction.Controls;
 using LiveCharts.Wpf.Animations;
 using Brush = LiveCharts.Core.Drawing.Brush;
 

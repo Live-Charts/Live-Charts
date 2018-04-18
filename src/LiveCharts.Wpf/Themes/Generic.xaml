@@ -3,8 +3,8 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:controls="clr-namespace:LiveCharts.Wpf.Controls"
     xmlns:converters="clr-namespace:LiveCharts.Wpf.Converters"
-    xmlns:dataSeries1="clr-namespace:LiveCharts.Core.Abstractions.DataSeries;assembly=LiveCharts.Core"
-    xmlns:data1="clr-namespace:LiveCharts.Core.Interaction;assembly=LiveCharts.Core">
+    xmlns:points="clr-namespace:LiveCharts.Core.Interaction.Points;assembly=LiveCharts.Core"
+    xmlns:series="clr-namespace:LiveCharts.Core.DataSeries;assembly=LiveCharts.Core">
 
     <converters:CoreToWpfBrushConverter x:Key="AsSolidColorBrush" />
     <converters:SvgToGeometryDataConverter x:Key="AsGeometryData" />
@@ -57,7 +57,7 @@
 
         <Setter Property="ItemTemplate">
             <Setter.Value>
-                <DataTemplate DataType="{x:Type data1:PackedPoint}">
+                <DataTemplate DataType="{x:Type points:PackedPoint}">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" SharedSizeGroup="SeriesGeometry" />
@@ -109,7 +109,7 @@
 
         <Setter Property="ItemTemplate">
             <Setter.Value>
-                <DataTemplate DataType="{x:Type dataSeries1:ISeries}">
+                <DataTemplate DataType="{x:Type series:ISeries}">
                     <StackPanel Orientation="Horizontal">
                         <Path
                             Width="{Binding GeometrySize, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type controls:ChartLegend}}}"

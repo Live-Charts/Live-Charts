@@ -22,18 +22,17 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR 
 // OTHER DEALINGS IN THE SOFTWARE.
 #endregion
-
 #region
 
 using System;
 using System.Drawing;
-using LiveCharts.Core.Abstractions;
-using LiveCharts.Core.Abstractions.DataSeries;
 using LiveCharts.Core.Charts;
 using LiveCharts.Core.Coordinates;
 using LiveCharts.Core.Drawing;
 using LiveCharts.Core.Drawing.Svg;
-using LiveCharts.Core.Interaction;
+using LiveCharts.Core.Interaction.ChartAreas;
+using LiveCharts.Core.Interaction.Points;
+using LiveCharts.Core.Interaction.Series;
 using LiveCharts.Core.Updating;
 using LiveCharts.Core.ViewModels;
 
@@ -108,7 +107,7 @@ namespace LiveCharts.Core.DataSeries
             {
                 if (current.View == null)
                 {
-                    current.View = ViewProvider.Getter();
+                    current.View = PointViewProvider.GetNewPoint();
                 }
 
                 var p = new[]

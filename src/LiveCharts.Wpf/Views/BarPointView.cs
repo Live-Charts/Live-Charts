@@ -22,22 +22,19 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR 
 // OTHER DEALINGS IN THE SOFTWARE.
 #endregion
-
 #region
 
-using LiveCharts.Core.Abstractions;
-using LiveCharts.Core.Abstractions.DataSeries;
-using LiveCharts.Core.ViewModels;
-using LiveCharts.Wpf.Animations;
-using System.Drawing;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using System.Windows.Media.Animation;
 using System.Windows.Shapes;
-using LiveCharts.Core.Interaction;
-using Orientation = LiveCharts.Core.Abstractions.Orientation;
-using Rectangle = System.Windows.Shapes.Rectangle;
+using LiveCharts.Core.Charts;
+using LiveCharts.Core.Coordinates;
+using LiveCharts.Core.DataSeries;
+using LiveCharts.Core.Interaction.Points;
+using LiveCharts.Core.ViewModels;
+using LiveCharts.Wpf.Animations;
+using Orientation = LiveCharts.Core.Interaction.Styles.Orientation;
 
 #endregion
 
@@ -53,17 +50,18 @@ namespace LiveCharts.Wpf.Views
     /// <typeparam name="TSeries">The type fo the series.</typeparam>
     /// <seealso cref="PointView{TModel, Point,Point2D, ColumnViewModel, TShape, TLabel}" />
     public class BarPointView<TModel, TCoordinate, TSeries, TShape, TLabel>
-        : PointView<TModel, TCoordinate, BarViewModel, TSeries, TShape, TLabel>
+        : PointView<TModel, TCoordinate, RectangleViewModel, TSeries, TShape, TLabel>
         where TCoordinate : ICoordinate
         where TSeries : IStrokeSeries
         where TShape : Shape, new()
-        where TLabel : FrameworkElement, IDataLabelControl, new()
+        where TLabel : FrameworkElement, new()
     {
-        private Point<TModel, TCoordinate, BarViewModel, TSeries> _point;
+        private Point<TModel, TCoordinate, RectangleViewModel, TSeries> _point;
 
         /// <inheritdoc />
         protected override void OnDraw(
-            Point<TModel, TCoordinate, BarViewModel, TSeries> point, Point<TModel, TCoordinate, BarViewModel, TSeries> previous)
+            Point<TModel, TCoordinate, RectangleViewModel, TSeries> point, 
+            Point<TModel, TCoordinate, RectangleViewModel, TSeries> previous)
         {
             var chart = point.Chart.View;
             var vm = point.ViewModel;
@@ -134,31 +132,6 @@ namespace LiveCharts.Wpf.Views
             animation.Begin();
 
             _point = point;
-        }
-
-        /// <inheritdoc />
-        protected override void OnDrawLabel(Point<TModel, TCoordinate, BarViewModel, TSeries> point, PointF location)
-        {
-            var chart = point.Chart.View;
-            var isNew = Label == null;
-
-            if (isNew)
-            {
-                Label = new TLabel();
-                Label.Measure(point.PackAll());
-                Canvas.SetLeft(Shape, Canvas.GetLeft(Shape));
-                Canvas.SetTop(Shape, Canvas.GetTop(Shape));
-                chart.Content.AddChild(Label);
-            }
-
-            var speed = chart.AnimationsSpeed;
-
-            Label.BeginAnimation(
-                Canvas.LeftProperty,
-                new DoubleAnimation(location.X, speed));
-            Label.BeginAnimation(
-                Canvas.TopProperty,
-                new DoubleAnimation(location.Y, speed));
         }
 
         /// <inheritdoc />

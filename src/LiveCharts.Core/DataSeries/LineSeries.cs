@@ -22,20 +22,20 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR 
 // OTHER DEALINGS IN THE SOFTWARE.
 #endregion
-
 #region
 
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using LiveCharts.Core.Abstractions;
-using LiveCharts.Core.Abstractions.DataSeries;
 using LiveCharts.Core.Charts;
 using LiveCharts.Core.Coordinates;
 using LiveCharts.Core.Dimensions;
 using LiveCharts.Core.Drawing;
 using LiveCharts.Core.Drawing.Svg;
-using LiveCharts.Core.Interaction;
+using LiveCharts.Core.Interaction.ChartAreas;
+using LiveCharts.Core.Interaction.Controls;
+using LiveCharts.Core.Interaction.Points;
+using LiveCharts.Core.Interaction.Series;
 using LiveCharts.Core.Updating;
 using LiveCharts.Core.ViewModels;
 
@@ -135,7 +135,7 @@ namespace LiveCharts.Core.DataSeries
 
                 if (bezier.Point.View == null)
                 {
-                    bezier.Point.View = ViewProvider.Getter();
+                    bezier.Point.View = PointViewProvider.GetNewPoint();
                 }
 
                 bezier.ViewModel.Path = cartesianPath;

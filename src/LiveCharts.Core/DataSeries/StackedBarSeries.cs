@@ -1,14 +1,46 @@
+#region License
+// The MIT License (MIT)
+// 
+// Copyright (c) 2016 Alberto Rodríguez Orozco & LiveCharts contributors
+// 
+// Permission is hereby granted, free of charge, to any person obtaining a copy 
+// of this software and associated documentation files (the "Software"), to deal 
+// in the Software without restriction, including without limitation the rights to 
+// use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies 
+// of the Software, and to permit persons to whom the Software is furnished to 
+// do so, subject to the following conditions:
+// 
+// The above copyright notice and this permission notice shall be included in all 
+// copies or substantial portions of the Software.
+// 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, 
+// EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES 
+// OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND 
+// NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT 
+// HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, 
+// WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING 
+// FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR 
+// OTHER DEALINGS IN THE SOFTWARE.
+#endregion
+
+#region
+
 using System;
 using System.Drawing;
-using LiveCharts.Core.Abstractions;
-using LiveCharts.Core.Abstractions.DataSeries;
 using LiveCharts.Core.Charts;
 using LiveCharts.Core.Coordinates;
 using LiveCharts.Core.Dimensions;
 using LiveCharts.Core.Drawing;
-using LiveCharts.Core.Interaction;
+using LiveCharts.Core.Interaction.Points;
+using LiveCharts.Core.Interaction.Series;
+using LiveCharts.Core.Interaction.Styles;
 using LiveCharts.Core.Updating;
 using LiveCharts.Core.ViewModels;
+#if NET45 || NET46
+using Font = LiveCharts.Core.Interaction.Styles.Font;
+#endif
+
+#endregion
 
 namespace LiveCharts.Core.DataSeries
 {
@@ -20,7 +52,7 @@ namespace LiveCharts.Core.DataSeries
     /// <seealso cref="IBarSeries" />
     public class StackedBarSeries<TModel> : BaseBarSeries<TModel, StackedPointCoordinate, IStackedBarSeries>, IStackedBarSeries
     {
-        private static ISeriesViewProvider<TModel, StackedPointCoordinate, BarViewModel, IStackedBarSeries> _provider;
+        private static ISeriesViewProvider<TModel, StackedPointCoordinate, RectangleViewModel, IStackedBarSeries> _provider;
         private int _stackIndex;
 
         public StackedBarSeries()
@@ -49,13 +81,13 @@ namespace LiveCharts.Core.DataSeries
         }
 
         /// <inheritdoc />
-        protected override ISeriesViewProvider<TModel, StackedPointCoordinate, BarViewModel, IStackedBarSeries>
+        protected override ISeriesViewProvider<TModel, StackedPointCoordinate, RectangleViewModel, IStackedBarSeries>
             DefaultViewProvider =>
             _provider ?? (_provider = Charting.Current.UiProvider.BarViewProvider<TModel, StackedPointCoordinate, IStackedBarSeries>());
 
         /// <inheritdoc />
         protected override void BuildModel(
-            Point<TModel, StackedPointCoordinate, BarViewModel, IStackedBarSeries> current, UpdateContext context, 
+            Point<TModel, StackedPointCoordinate, RectangleViewModel, IStackedBarSeries> current, UpdateContext context, 
             ChartModel chart, Plane directionAxis, Plane scaleAxis, float cw, float columnStart, 
             float[] byBarOffset, float[] positionOffset, Orientation orientation, int h, int w)
         {
@@ -103,7 +135,10 @@ namespace LiveCharts.Core.DataSeries
                         columnStart,
                         Math.Abs(difference[w]),
                         0f);
-                current.ViewModel = new BarViewModel(RectangleF.Empty, initialRectangle, orientation);
+                current.ViewModel = new RectangleViewModel(
+                    RectangleF.Empty, 
+                    initialRectangle, 
+                    orientation);
             }
 
             // ToDo: optimize this rule???
@@ -112,7 +147,7 @@ namespace LiveCharts.Core.DataSeries
                 var y = location[h] + byBarOffset[1] + positionOffset[1];
                 var l = columnCorner1[1] > columnCorner2[1] ? columnCorner1[1] : columnCorner2[1];
 
-                current.ViewModel = new BarViewModel(
+                current.ViewModel = new RectangleViewModel(
                     current.ViewModel.To,
                     new RectangleF(
                         location[w] + byBarOffset[0] + positionOffset[0],
@@ -126,7 +161,7 @@ namespace LiveCharts.Core.DataSeries
                 var x = location[w] + byBarOffset[0] + positionOffset[0];
                 var l = columnCorner1[1] > columnCorner2[1] ? columnCorner1[1] : columnCorner2[1];
 
-                current.ViewModel = new BarViewModel(
+                current.ViewModel = new RectangleViewModel(
                     current.ViewModel.To,
                     new RectangleF(
                         x + (l - x) * current.Coordinate.From / stack,

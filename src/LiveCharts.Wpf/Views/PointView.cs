@@ -22,16 +22,18 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR 
 // OTHER DEALINGS IN THE SOFTWARE.
 #endregion
-
 #region
 
 using System;
 using System.Drawing;
 using System.Windows;
-using LiveCharts.Core.Abstractions;
-using LiveCharts.Core.Abstractions.DataSeries;
+using LiveCharts.Core.Charts;
+using LiveCharts.Core.Coordinates;
+using LiveCharts.Core.DataSeries;
 using LiveCharts.Core.Events;
 using LiveCharts.Core.Interaction;
+using LiveCharts.Core.Interaction.Points;
+using LiveCharts.Core.Interaction.Styles;
 
 #endregion
 
@@ -42,7 +44,7 @@ namespace LiveCharts.Wpf.Views
         where TCoordinate : ICoordinate
         where TSeries : ISeries
         where TShape : FrameworkElement, new()
-        where TLabel : DependencyObject, IDataLabelControl, new()
+        where TLabel : FrameworkElement, new()
     {
         /// <summary>
         /// Gets or sets the shape.
@@ -61,15 +63,31 @@ namespace LiveCharts.Wpf.Views
         public TLabel Label { get; protected set; }
 
         /// <inheritdoc cref="DrawShape"/>
-        protected virtual void OnDraw(Point<TModel, TCoordinate, TViewModel, TSeries> point, Point<TModel, TCoordinate, TViewModel, TSeries> previous)
+        protected virtual void OnDraw(
+            Point<TModel, TCoordinate, TViewModel, TSeries> point, 
+            Point<TModel, TCoordinate, TViewModel, TSeries> previous)
         {
             throw new NotImplementedException();
         }
 
         /// <inheritdoc cref="DrawLabel"/>
-        protected virtual void OnDrawLabel(Point<TModel, TCoordinate, TViewModel, TSeries> point, PointF location)
+        protected virtual void OnDrawLabel(
+            Point<TModel, TCoordinate, TViewModel, TSeries> point, 
+            PointF location,
+            
+            DataLabelsPosition position)
         {
-            throw new NotImplementedException();
+            var chart = point.Chart.View;
+            var isNew = Label == null;
+
+            if (isNew)
+            {
+                Label = new TLabel();
+                chart.Content.AddChild(Label);
+            }
+
+
+
         }
 
         /// <inheritdoc cref="Dispose"/>
@@ -85,7 +103,7 @@ namespace LiveCharts.Wpf.Views
         object IPointView<TModel, TCoordinate, TViewModel, TSeries>.VisualElement => Shape;
 
         /// <inheritdoc />
-        IDataLabelControl IPointView<TModel, TCoordinate, TViewModel, TSeries>.Label => Label;
+        object IPointView<TModel, TCoordinate, TViewModel, TSeries>.Label => Label;
 
         /// <inheritdoc />
         public void DrawShape(Point<TModel, TCoordinate, TViewModel, TSeries> point, Point<TModel, TCoordinate, TViewModel, TSeries> previous)
@@ -94,11 +112,14 @@ namespace LiveCharts.Wpf.Views
         }
 
         /// <inheritdoc />
-        public void DrawLabel(Point<TModel, TCoordinate, TViewModel, TSeries> point, PointF location)
+        public void DrawLabel(
+            Point<TModel, TCoordinate, TViewModel, TSeries> point, 
+            PointF location, 
+            DataLabelsPosition position)
         {
-            OnDrawLabel(point, location);
+            OnDrawLabel(point, location, position);
         }
-
+        
         public event DisposingResourceHandler Disposed;
 
         object IResource.UpdateId { get; set; }

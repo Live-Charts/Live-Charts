@@ -22,28 +22,25 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR 
 // OTHER DEALINGS IN THE SOFTWARE.
 #endregion
-
 #region
 
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Drawing;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using LiveCharts.Core.Abstractions;
-using LiveCharts.Core.Abstractions.DataSeries;
 using LiveCharts.Core.Charts;
 using LiveCharts.Core.DataSeries;
 using LiveCharts.Core.Dimensions;
 using LiveCharts.Core.Drawing;
 using LiveCharts.Core.Events;
+using LiveCharts.Core.Interaction.Controls;
+using LiveCharts.Core.Interaction.Styles;
 using LiveCharts.Wpf.Controls;
 using LiveCharts.Wpf.Interaction;
 using DataInteractionHandler = LiveCharts.Core.Events.DataInteractionHandler;
-using Point = System.Windows.Point;
 
 #endregion
 

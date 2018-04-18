@@ -1,5 +1,4 @@
 ﻿#region License
-
 // The MIT License (MIT)
 // 
 // Copyright (c) 2016 Alberto Rodríguez Orozco & LiveCharts contributors
@@ -22,17 +21,14 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING 
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR 
 // OTHER DEALINGS IN THE SOFTWARE.
-
 #endregion
-
 #region
 
 using System.Collections.Generic;
 using System.Windows;
-using LiveCharts.Core.Abstractions;
-using LiveCharts.Core.Abstractions.DataSeries;
 using LiveCharts.Core.Charts;
 using LiveCharts.Core.Collections;
+using LiveCharts.Core.DataSeries;
 using LiveCharts.Core.Dimensions;
 
 #endregion
@@ -43,7 +39,7 @@ namespace LiveCharts.Wpf
     /// The Cartesian chart class supports X,Y based plots.
     /// </summary>
     /// <seealso cref="LiveCharts.Wpf.Chart" />
-    /// <seealso cref="LiveCharts.Core.Abstractions.ICartesianChartView" />
+    /// <seealso cref="ICartesianChartView" />
     public class CartesianChart : Chart, ICartesianChartView
     {
         /// <summary>

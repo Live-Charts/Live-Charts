@@ -11,26 +11,26 @@
         Width="950"
         WindowStartupLocation="CenterScreen">
     <Window.Resources>
-        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"></BooleanToVisibilityConverter>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
     </Window.Resources>
-   <Window.DataContext>
-       <wpf:NavigationHandler></wpf:NavigationHandler>
-   </Window.DataContext>
+    <Window.DataContext>
+        <wpf:NavigationHandler />
+    </Window.DataContext>
     <Grid>
 
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <StackPanel HorizontalAlignment="Left">
-            <Button Width="20" Height="20" HorizontalAlignment="Left" Margin="8" 
+            <Button Width="20" Height="20" HorizontalAlignment="Left" Margin="8"
                     Visibility="{Binding IsMenuHidden, Converter={StaticResource BooleanToVisibilityConverter}}"
                     Command="{Binding ShowMenu}">
-                <Image Source="Images/menu.png"></Image>
+                <Image Source="Images/menu.png" />
             </Button>
         </StackPanel>
         <ScrollViewer Grid.Row="1">
-            <ContentControl  Content="{Binding CurrentView}" />
+            <ContentControl Content="{Binding CurrentView}" />
         </ScrollViewer>
     </Grid>
 </Window>
