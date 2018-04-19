@@ -119,7 +119,7 @@ namespace LiveCharts.Core.DataSeries
 
                 var vm = new GeometryPointViewModel
                 {
-                    Location = Perform.Sum(new PointF(p[xi], p[yi]), new PointF(uw[0], uw[1])),
+                    Location = Perform.Sum(new PointF(p[xi], p[yi]), new PointF(uw[0] * .5f, uw[1] * .5f)),
                     Diameter = p[2]
                 };
 
