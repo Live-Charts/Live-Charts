@@ -63,9 +63,10 @@ namespace LiveCharts.Core.Dimensions
                     new SolidColorBrush(Color.FromArgb(255, 250, 250, 250)),
                     new SolidColorBrush(Color.FromArgb(50, 240, 240, 240)),
                     1);
-            YSeparatorStyle = SeparatorStyle.Empty;
-            XAlternativeSeparatorStyle = SeparatorStyle.Empty;
-            YSeparatorStyle = SeparatorStyle.Empty;
+            YSeparatorStyle = null;
+            XAlternativeSeparatorStyle = null;
+            YSeparatorStyle = null;
+            YSeparatorStyle = null;
             Charting.BuildFromSettings(this);
         }
 
@@ -370,7 +371,10 @@ namespace LiveCharts.Core.Dimensions
                         Rectangle = new RectangleViewModel(model, model, Orientation.Auto),
                         Label = new SectionLabelViewModel(),
                         Disposing = false,
-                        Style = new SeparatorStyle(section.Stroke, section.Fill, (float) section.StrokeThickness),
+                        Style = new SeparatorStyle(
+                            section.Stroke, 
+                            section.Fill, 
+                            (float) section.StrokeThickness),
                         ChartView = chart.View
                     });
 

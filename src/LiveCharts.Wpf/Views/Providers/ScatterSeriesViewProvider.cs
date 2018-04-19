@@ -25,7 +25,6 @@
 
 #region
 
-using System.Windows.Controls;
 using LiveCharts.Core.Charts;
 using LiveCharts.Core.Coordinates;
 using LiveCharts.Core.DataSeries;
@@ -57,7 +56,7 @@ namespace LiveCharts.Wpf.Views.Providers
         /// <inheritdoc />
         public IPointView<TModel,  TCoordinate, GeometryPointViewModel, TSeries> GetNewPoint()
         {
-            return new GeometryPointView<TModel, TCoordinate, TSeries, TextBlock>();
+            return new GeometryPointView<TModel, TCoordinate, TSeries>();
         }
 
         /// <inheritdoc />

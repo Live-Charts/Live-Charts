@@ -193,27 +193,81 @@ namespace LiveCharts.Core.Charts
         /// </value>
         public ICommand DataPointerLeaveCommand { get; set; }
 
-        internal ISeries[] Series { get; set; }
+        /// <summary>
+        /// Gets the series.
+        /// </summary>
+        /// <value>
+        /// The series.
+        /// </value>
+        public ISeries[] Series { get; internal set; }
 
-        internal Plane[][] Dimensions { get; set; }
+        /// <summary>
+        /// Gets the dimensions.
+        /// </summary>
+        /// <value>
+        /// The dimensions.
+        /// </value>
+        public Plane[][] Dimensions { get; internal set; }
 
-        internal float[] ControlSize { get; set; }
+        /// <summary>
+        /// Gets the size of the control.
+        /// </summary>
+        /// <value>
+        /// The size of the control.
+        /// </value>
+        public float[] ControlSize { get; internal set; }
 
-        internal Margin DrawMargin { get; set; }
+        /// <summary>
+        /// Gets the draw margin.
+        /// </summary>
+        /// <value>
+        /// The draw margin.
+        /// </value>
+        public Margin DrawMargin { get; internal set; }
 
-        internal TimeSpan AnimationsSpeed { get; set; }
+        /// <summary>
+        /// Gets the animations speed.
+        /// </summary>
+        /// <value>
+        /// The animations speed.
+        /// </value>
+        public TimeSpan AnimationsSpeed { get; internal set; }
 
-        internal IDataToolTip ToolTip { get; set; }
+        /// <summary>
+        /// Gets the tool tip.
+        /// </summary>
+        /// <value>
+        /// The tool tip.
+        /// </value>
+        public IDataToolTip ToolTip { get; internal set; }
 
-        internal ILegend Legend { get; set; }
+        /// <summary>
+        /// Gets the legend.
+        /// </summary>
+        /// <value>
+        /// The legend.
+        /// </value>
+        public ILegend Legend { get; internal set; }
 
-        internal LegendPosition LegendPosition { get; set; }
+        /// <summary>
+        /// Gets the legend position.
+        /// </summary>
+        /// <value>
+        /// The legend position.
+        /// </value>
+        public LegendPosition LegendPosition { get; internal set; }
+
+        /// <summary>
+        /// Gets a value indicating whether [invert xy].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [invert xy]; otherwise, <c>false</c>.
+        /// </value>
+        public bool InvertXy { get; internal set; }
 
         internal Timer ToolTipTimeoutTimer { get; set; }
 
         internal IEnumerable<PackedPoint> PreviousHoveredPoints { get; set; }
-
-        internal bool InvertXy { get; set; }
 
         /// <summary>
         /// Gets the dimensions.

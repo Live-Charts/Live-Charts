@@ -24,6 +24,7 @@
 #endregion
 #region
 
+using System.Drawing;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -35,6 +36,7 @@ using LiveCharts.Core.Interaction.Points;
 using LiveCharts.Core.ViewModels;
 using LiveCharts.Wpf.Animations;
 using Orientation = LiveCharts.Core.Interaction.Styles.Orientation;
+using Rectangle = System.Windows.Shapes.Rectangle;
 
 #endregion
 
@@ -45,16 +47,14 @@ namespace LiveCharts.Wpf.Views
     /// </summary>
     /// <typeparam name="TModel">The type of the model.</typeparam>
     /// <typeparam name="TShape">the type of the shape.</typeparam>
-    /// <typeparam name="TLabel">the type of the label.</typeparam>
     /// <typeparam name="TCoordinate">The type of the coordinate.</typeparam>
     /// <typeparam name="TSeries">The type fo the series.</typeparam>
-    /// <seealso cref="PointView{TModel, Point,Point2D, ColumnViewModel, TShape, TLabel}" />
-    public class BarPointView<TModel, TCoordinate, TSeries, TShape, TLabel>
-        : PointView<TModel, TCoordinate, RectangleViewModel, TSeries, TShape, TLabel>
+    /// <seealso cref="PointView{TModel, Point,Point2D, ColumnViewModel, TShape}" />
+    public class BarPointView<TModel, TCoordinate, TSeries, TShape>
+        : PointView<TModel, TCoordinate, RectangleViewModel, TSeries, TShape>
         where TCoordinate : ICoordinate
-        where TSeries : IStrokeSeries
+        where TSeries : IStrokeSeries, ICartesianSeries
         where TShape : Shape, new()
-        where TLabel : FrameworkElement, new()
     {
         private Point<TModel, TCoordinate, RectangleViewModel, TSeries> _point;
 
@@ -132,6 +132,23 @@ namespace LiveCharts.Wpf.Views
             animation.Begin();
 
             _point = point;
+        }
+
+        /// <inheritdoc />
+        protected override string GetLabelContent(
+            Point<TModel, TCoordinate, RectangleViewModel, TSeries> point)
+        {
+            var xAxis = point.Chart.Dimensions[0][point.Series.ScalesAt[0]];
+            return xAxis.FormatValue(point.Coordinate[1][0]);
+        }
+
+        /// <inheritdoc />
+        protected override void PlaceLabel(
+            Point<TModel, TCoordinate, RectangleViewModel, TSeries> point, 
+            SizeF labelSize)
+        {
+            Canvas.SetTop(Label, point.ViewModel.To.Y);
+            Canvas.SetLeft(Label, point.ViewModel.To.X);
         }
 
         /// <inheritdoc />

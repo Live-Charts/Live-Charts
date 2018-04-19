@@ -111,6 +111,14 @@ namespace LiveCharts.Core.DataSeries
         DataLabelsPosition DataLabelsPosition { get; set; }
 
         /// <summary>
+        /// Gets or sets the data label style.
+        /// </summary>
+        /// <value>
+        /// The data label style.
+        /// </value>
+        DataLabelStyle DataLabelStyle { get; set; }
+
+        /// <summary>
         /// Gets or sets the default fill opacity, this property is used to determine the fill opacity of a point when 
         /// LiveCharts sets the fill automatically based on the theme.
         /// </summary>

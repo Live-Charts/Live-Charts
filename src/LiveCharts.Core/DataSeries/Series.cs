@@ -42,6 +42,7 @@ using LiveCharts.Core.Interaction.Points;
 using LiveCharts.Core.Interaction.Series;
 using LiveCharts.Core.Interaction.Styles;
 using LiveCharts.Core.Updating;
+using FontStyle = LiveCharts.Core.Interaction.Styles.FontStyle;
 #if NET45 || NET46
 using Font = LiveCharts.Core.Interaction.Styles.Font;
 #endif
@@ -66,7 +67,6 @@ namespace LiveCharts.Core.DataSeries
         private IEnumerable<TModel> _values;
         private IEnumerable<TModel> _previousItemsSource;
         private IList<TModel> _sourceAsIList;
-        private INotifyRangeChanged<TModel> _sourceAsRangeChanged;
         private ModelToCoordinateMapper<TModel, TCoordinate> _mapper;
         private ISeriesViewProvider<TModel, TCoordinate, TViewModel, TSeries> _viewProvider;
         private object _chartPointsUpdateId;
@@ -78,6 +78,7 @@ namespace LiveCharts.Core.DataSeries
         private double _defaultFillOpacity;
         private Geometry _geometry;
         private DataLabelsPosition _dataLabelsPosition;
+        private DataLabelStyle _dataLabelStyle;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Series{TModel, TCoordinate, TViewModel, TSeries}"/> class.
@@ -108,6 +109,17 @@ namespace LiveCharts.Core.DataSeries
             set
             {
                 _dataLabels = value;
+                OnPropertyChanged();
+            }
+        }
+
+        /// <inheritdoc />
+        public DataLabelStyle DataLabelStyle
+        {
+            get => _dataLabelStyle;
+            set
+            {
+                _dataLabelStyle = value;
                 OnPropertyChanged();
             }
         }
@@ -444,7 +456,6 @@ namespace LiveCharts.Core.DataSeries
         private void OnValuesInstanceChanged()
         {
             _sourceAsIList = _values as IList<TModel>;
-            _sourceAsRangeChanged = Values as INotifyRangeChanged<TModel>;
 
             // ReSharper disable once IdentifierTypo
             if (_values is INotifyCollectionChanged incc)
@@ -471,6 +482,11 @@ namespace LiveCharts.Core.DataSeries
         {
             _isVisible = true;
             Content = new Dictionary<ChartModel, Dictionary<string, object>>();
+            DataLabelStyle = new DataLabelStyle
+            {
+                Font = new Font("Arial", 11, FontStyle.Regular, FontWeight.Regular),
+                Foreground = new SolidColorBrush(Color.FromArgb(30, 30, 30))
+            };
             _values = itemsSource ?? new ChartingCollection<TModel>();
             OnValuesInstanceChanged();
             var t = typeof(TModel);

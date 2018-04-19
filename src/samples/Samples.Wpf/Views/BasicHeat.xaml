@@ -5,13 +5,13 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:Samples.Wpf.Views"
              xmlns:viewModels="clr-namespace:Assets.ViewModels;assembly=Assets"
-             xmlns:wpf="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+             xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300">
     <UserControl.DataContext>
         <viewModels:BasicHeat />
     </UserControl.DataContext>
-    <wpf:CartesianChart Series="{Binding SeriesCollection}"
+    <lvc:CartesianChart Series="{Binding SeriesCollection}"
                         XAxis="{Binding XAxis}"
                         YAxis="{Binding YAxis}"
                         InvertAxes="False" />

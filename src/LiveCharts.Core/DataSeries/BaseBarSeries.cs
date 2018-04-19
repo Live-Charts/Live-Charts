@@ -170,6 +170,7 @@ namespace LiveCharts.Core.DataSeries
 
                 current.InteractionArea = new RectangleInteractionArea(current.ViewModel.To);
                 current.View.DrawShape(current, previous);
+                if (DataLabels) current.View.DrawLabel(current, DataLabelsPosition, DataLabelStyle);
                 Mapper.EvaluateModelDependentActions(current.Model, current.View.VisualElement, current);
 
                 previous = current;

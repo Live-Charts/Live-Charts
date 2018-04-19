@@ -122,13 +122,13 @@ namespace LiveCharts.Core.Themes
                 })
                 .SetDefault<Axis>(axis =>
                 {
-                    axis.XSeparatorStyle = SeparatorStyle.Empty;
+                    axis.XSeparatorStyle = null;
                     axis.YSeparatorStyle = new SeparatorStyle(
                         new SolidColorBrush(Color.FromArgb(0, 0, 0, 0)),
                         new SolidColorBrush(Color.FromArgb(255, 245, 245, 245)),
                         0);
-                    axis.XAlternativeSeparatorStyle = SeparatorStyle.Empty;
-                    axis.YAlternativeSeparatorStyle = SeparatorStyle.Empty;
+                    axis.XAlternativeSeparatorStyle = null;
+                    axis.YAlternativeSeparatorStyle = null;
                 });
 
             return charting;

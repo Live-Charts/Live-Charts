@@ -58,7 +58,7 @@ namespace LiveCharts.Wpf.Views.Providers
         /// <inheritdoc />
         public IPointView<TModel, TCoordinate, RectangleViewModel, TSeries> GetNewPoint()
         {
-            return new BarPointView<TModel, TCoordinate, TSeries, Rectangle, TextBlock>();
+            return new BarPointView<TModel, TCoordinate, TSeries, Rectangle>();
         }
 
         /// <inheritdoc />

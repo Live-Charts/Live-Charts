@@ -25,7 +25,7 @@
 
 #region
 
-using System.Windows;
+using System.Drawing;
 using System.Windows.Controls;
 using System.Windows.Media;
 using LiveCharts.Core.Charts;
@@ -44,11 +44,9 @@ namespace LiveCharts.Wpf.Views
     /// The pie point view.
     /// </summary>
     /// <typeparam name="TModel">The type of the model.</typeparam>
-    /// <typeparam name="TLabel">The type of the label.</typeparam>
-    /// <seealso cref="LiveCharts.Wpf.Views.PointView{TModel, TPoint, PieCoordinate, PieViewModel, TShape, TLabel}" />
-    public class PiePointView<TModel,  TLabel>
-        : PointView<TModel, StackedPointCoordinate, PieViewModel, IPieSeries, Slice, TLabel>
-        where TLabel : FrameworkElement, new()
+    /// <seealso cref="LiveCharts.Wpf.Views.PointView{TModel, TPoint, PieCoordinate, PieViewModel, TShape}" />
+    public class PiePointView<TModel>
+        : PointView<TModel, StackedPointCoordinate, PieViewModel, IPieSeries, Slice>
     {
         /// <inheritdoc />
         protected override void OnDraw(
@@ -106,6 +104,23 @@ namespace LiveCharts.Wpf.Views
             }
 
             animation.Begin();
+        }
+
+        /// <inheritdoc />
+        protected override string GetLabelContent(
+            Point<TModel, StackedPointCoordinate, PieViewModel, IPieSeries> point)
+        {
+            var valueAxis = point.Chart.Dimensions[1][0];
+            return valueAxis.FormatValue(point.Coordinate.Value);
+        }
+
+        /// <inheritdoc />
+        protected override void PlaceLabel(
+            Point<TModel, StackedPointCoordinate, PieViewModel, IPieSeries> point,
+            SizeF labelSize)
+        {
+            // this one could be a complex task...
+            throw new System.NotImplementedException();
         }
 
         /// <inheritdoc />

@@ -53,7 +53,7 @@ namespace LiveCharts.Wpf.Views.Providers
         /// <inheritdoc />
         public IPointView<TModel, WeightedCoordinate, HeatViewModel, IHeatSeries> GetNewPoint()
         {
-            return new HeatPointView<TModel, TextBlock>();
+            return new HeatPointView<TModel>();
         }
 
         /// <inheritdoc />

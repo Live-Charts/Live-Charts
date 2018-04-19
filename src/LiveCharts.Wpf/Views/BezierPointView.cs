@@ -25,6 +25,7 @@
 #region
 
 using System;
+using System.Drawing;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -36,6 +37,7 @@ using LiveCharts.Core.Interaction.Controls;
 using LiveCharts.Core.Interaction.Points;
 using LiveCharts.Core.ViewModels;
 using LiveCharts.Wpf.Animations;
+using Brushes = System.Windows.Media.Brushes;
 
 #endregion
 
@@ -46,9 +48,9 @@ namespace LiveCharts.Wpf.Views
     /// </summary>
     /// <typeparam name="TModel">The type of the model.</typeparam>
     /// <typeparam name="TLabel">The type of the label.</typeparam>
-    /// <seealso cref="Views.PointView{TModel, TPoint, PointCoordinate, BezierViewModel, Path, TLabel}" />
+    /// <seealso cref="Views.PointView{TModel, TPoint, PointCoordinate, BezierViewModel, Path}" />
     public class BezierPointView<TModel, TLabel>
-        : PointView<TModel, PointCoordinate, BezierViewModel, ILineSeries, Path, TLabel>
+        : PointView<TModel, PointCoordinate, BezierViewModel, ILineSeries, Path>
         where TLabel : FrameworkElement, new()
     {
         private BezierPointView<TModel, TLabel> _next;
@@ -116,6 +118,22 @@ namespace LiveCharts.Wpf.Views
                 .Property(BezierSegment.Point2Property, _vm.Point2.AsWpf())
                 .Property(BezierSegment.Point3Property, _vm.Point3.AsWpf())
                 .Begin();
+        }
+
+        /// <inheritdoc />
+        protected override string GetLabelContent(
+            Point<TModel, PointCoordinate, BezierViewModel, ILineSeries> point)
+        {
+            var xAxis = point.Chart.Dimensions[0][point.Series.ScalesAt[0]];
+            return xAxis.FormatValue(point.Coordinate[1][0]);
+        }
+
+        protected override void PlaceLabel(
+            Point<TModel, PointCoordinate, BezierViewModel, ILineSeries> point, 
+            SizeF labelSize)
+        {
+            Canvas.SetTop(Label, point.ViewModel.Location.Y);
+            Canvas.SetLeft(Label, point.ViewModel.Location.X);
         }
 
         protected override void OnDispose(IChartView chart)

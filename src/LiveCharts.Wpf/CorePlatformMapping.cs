@@ -33,7 +33,7 @@ using Brush = LiveCharts.Core.Drawing.Brush;
 using Font = LiveCharts.Core.Interaction.Styles.Font;
 using FontFamily = System.Windows.Media.FontFamily;
 using FontStyle = System.Windows.FontStyle;
-using FontWeight = LiveCharts.Core.Interaction.Styles.FontWeight;
+using FontWeight = System.Windows.FontWeight;
 using Orientation = System.Windows.Controls.Orientation;
 using Point = System.Windows.Point;
 
@@ -68,6 +68,56 @@ namespace LiveCharts.Wpf
         }
 
         /// <summary>
+        /// Converts a font style to wpf.
+        /// </summary>
+        /// <param name="style">The style.</param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentOutOfRangeException"></exception>
+        public static FontStyle AsWpf(this Core.Interaction.Styles.FontStyle style)
+        {
+            FontStyle s;
+
+            switch (style)
+            {
+                case Core.Interaction.Styles.FontStyle.Regular:
+                    s = FontStyles.Normal;
+                    break;
+                case Core.Interaction.Styles.FontStyle.Italic:
+                    s = FontStyles.Italic;
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+
+            return s;
+        }
+        
+        /// <summary>
+        /// Converts a font weight to wpf.
+        /// </summary>
+        /// <param name="weight">The weight.</param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentOutOfRangeException"></exception>
+        public static FontWeight AsWpf(this Core.Interaction.Styles.FontWeight weight)
+        {
+            FontWeight w;
+
+            switch (weight)
+            {
+                case Core.Interaction.Styles.FontWeight.Regular:
+                    w = FontWeights.Regular;
+                    break;
+                case Core.Interaction.Styles.FontWeight.Bold:
+                    w = FontWeights.Bold;
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+
+            return w;
+        }
+
+        /// <summary>
         /// Converts to a type face.
         /// </summary>
         /// <param name="font">The style.</param>
@@ -75,36 +125,8 @@ namespace LiveCharts.Wpf
         /// <exception cref="ArgumentOutOfRangeException">style - null</exception>
         public static Typeface AsTypeface(this Font font)
         {
-            FontStyle s;
-
-            switch (font.Style)
-            {
-                case Core.Interaction.Styles.FontStyle.Regular:
-                    s = System.Windows.FontStyles.Normal;
-                    break;
-                case Core.Interaction.Styles.FontStyle.Italic:
-                    s = System.Windows.FontStyles.Italic;
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
-
-            System.Windows.FontWeight w;
-
-            switch (font.Weight)
-            {
-                case FontWeight.Regular:
-                    w = FontWeights.Regular;
-                    break;
-                case FontWeight.Bold:
-                    w = FontWeights.Bold;
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
-
             return new Typeface(
-                new FontFamily(font.FamilyName), s, w, FontStretches.Normal);
+                new FontFamily(font.FamilyName), font.Style.AsWpf(), font.Weight.AsWpf(), FontStretches.Normal);
         }
 
         /// <summary>

@@ -25,16 +25,17 @@
 
 #region
 
-using System.Windows;
+using System.Drawing;
 using System.Windows.Controls;
 using System.Windows.Media;
-using System.Windows.Shapes;
 using LiveCharts.Core.Charts;
 using LiveCharts.Core.Coordinates;
 using LiveCharts.Core.DataSeries;
 using LiveCharts.Core.Interaction.Points;
 using LiveCharts.Core.ViewModels;
 using LiveCharts.Wpf.Animations;
+using Color = System.Windows.Media.Color;
+using Rectangle = System.Windows.Shapes.Rectangle;
 
 #endregion
 
@@ -44,11 +45,9 @@ namespace LiveCharts.Wpf.Views
     /// The heat point view.
     /// </summary>
     /// <typeparam name="TModel">The type of the model.</typeparam>
-    /// <typeparam name="TLabel">The type of the label.</typeparam>
-    /// <seealso cref="LiveCharts.Wpf.Views.PointView{TModel, LWeightedCoordinate, HeatViewModel, IHeatSeries, Rectangle, TLabel}" />
-    public class HeatPointView<TModel, TLabel>
-        : PointView<TModel, WeightedCoordinate, HeatViewModel, IHeatSeries, Rectangle, TLabel>
-        where TLabel : FrameworkElement, new()
+    /// <seealso cref="LiveCharts.Wpf.Views.PointView{TModel, LWeightedCoordinate, HeatViewModel, IHeatSeries, Rectangle}" />
+    public class HeatPointView<TModel>
+        : PointView<TModel, WeightedCoordinate, HeatViewModel, IHeatSeries, Rectangle>
     {
         protected override void OnDraw(
             Point<TModel, WeightedCoordinate, HeatViewModel, IHeatSeries> point,
@@ -86,6 +85,22 @@ namespace LiveCharts.Wpf.Views
                 .AtSpeed(chart.AnimationsSpeed)
                 .Property(SolidColorBrush.ColorProperty, Color.FromArgb(vm.To.A, vm.To.R, vm.To.G, vm.To.B))
                 .Begin();
+        }
+
+        /// <inheritdoc />
+        protected override string GetLabelContent(
+            Point<TModel, WeightedCoordinate, HeatViewModel, IHeatSeries> point)
+        {
+            var chart = point.Chart;
+            var wAxis = chart.Dimensions[2][point.Series.ScalesAt[2]];
+
+            return $"{wAxis.FormatValue(point.Coordinate[2][0])}";
+        }
+
+        protected override void PlaceLabel(Point<TModel, WeightedCoordinate, HeatViewModel, IHeatSeries> point, SizeF labelSize)
+        {
+            Canvas.SetTop(Label, point.ViewModel.Rectangle.Y);
+            Canvas.SetLeft(Label, point.ViewModel.Rectangle.X);
         }
 
         protected override void OnDispose(IChartView chart)

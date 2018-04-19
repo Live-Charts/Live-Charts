@@ -41,6 +41,11 @@
         "id": "MultipleAxes",
         "name": "Multiple axes",
         "text": "A chart that scales its series in multiple axes."
+      },
+      {
+        "id": "DataLabels",
+        "name": "Data Labels",
+        "text": "Set DataLabels = true in any series to display a label in every point."
       }
     ],
     "Pie Chart": [

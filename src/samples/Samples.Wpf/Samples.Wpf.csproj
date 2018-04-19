@@ -83,6 +83,9 @@
     <Compile Include="Views\BasicStackedBar.xaml.cs">
       <DependentUpon>BasicStackedBar.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\DataLabels.xaml.cs">
+      <DependentUpon>DataLabels.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\InvertedSeries.xaml.cs">
       <DependentUpon>InvertedSeries.xaml</DependentUpon>
     </Compile>
@@ -129,6 +132,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\BasicStackedBar.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\DataLabels.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -198,6 +205,7 @@
     <Resource Include="Images\InvertedSeries.png" />
     <Resource Include="Images\MultipleAxes.png" />
     <Resource Include="Images\BasicHeat.png" />
+    <Resource Include="Images\DataLabels.png" />
     <Content Include="propertyAndInstanceChanged.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

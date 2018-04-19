@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:Samples.Wpf.Views"
-             xmlns:wpf="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+             xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
              xmlns:viewModels="clr-namespace:Assets.ViewModels;assembly=Assets"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300">
@@ -18,7 +18,7 @@
         </Grid.RowDefinitions>
 
         <ToggleButton x:Name="ToggleButton" IsChecked="True">Toggle Invert</ToggleButton>
-        <wpf:CartesianChart Grid.Row="1"
+        <lvc:CartesianChart Grid.Row="1"
                             InvertAxes="{Binding ElementName=ToggleButton, Path=IsChecked}"
                             Series="{Binding SeriesCollection}" />
     </Grid>

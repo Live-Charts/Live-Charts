@@ -24,6 +24,7 @@
 #endregion
 #region
 
+using System.Drawing;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -44,12 +45,10 @@ namespace LiveCharts.Wpf.Views
     /// </summary>
     /// <typeparam name="TModel">The type of the model.</typeparam>
     /// <typeparam name="TCoordinate">The type of the coordinate.</typeparam>
-    /// <typeparam name="TLabel">The type of the label.</typeparam>
     /// <typeparam name="TSeries">The type of the series.</typeparam>
-    /// <seealso cref="Views.PointView{TModel, TPoint, WeightedCoordinate, GeometryPointViewModel, Path, TLabel}" />
-    public class GeometryPointView<TModel, TCoordinate, TSeries, TLabel>
-        : PointView<TModel, TCoordinate, GeometryPointViewModel, TSeries, Path, TLabel>
-        where TLabel : FrameworkElement, new()
+    /// <seealso cref="Views.PointView{TModel, TPoint, WeightedCoordinate, GeometryPointViewModel, Path}" />
+    public class GeometryPointView<TModel, TCoordinate, TSeries>
+        : PointView<TModel, TCoordinate, GeometryPointViewModel, TSeries, Path>
         where TCoordinate : ICoordinate
         where TSeries : IStrokeSeries, ICartesianSeries
     {
@@ -85,7 +84,7 @@ namespace LiveCharts.Wpf.Views
 
             if (isNew)
             {
-                var bm = BounceMagnitude.Small;
+                const BounceMagnitude bm = BounceMagnitude.Small;
 
                 Shape.Animate()
                     .AtSpeed(speed)
@@ -105,6 +104,27 @@ namespace LiveCharts.Wpf.Views
             }
         }
 
+        /// <inheritdoc />
+        protected override string GetLabelContent(
+            Point<TModel, TCoordinate, GeometryPointViewModel, TSeries> point)
+        {
+            var chart = point.Chart;
+            var xAxis = chart.Dimensions[0][point.Series.ScalesAt[0]];
+            var yAxis = chart.Dimensions[1][point.Series.ScalesAt[1]];
+
+            return $"{xAxis.FormatValue(point.Coordinate[0][0])}, {yAxis.FormatValue(point.Coordinate[1][0])}";
+        }
+
+        /// <inheritdoc />
+        protected override void PlaceLabel(
+            Point<TModel, TCoordinate, GeometryPointViewModel, TSeries> point,
+            SizeF labelSize)
+        {
+            Canvas.SetTop(Label, point.ViewModel.Location.Y);
+            Canvas.SetLeft(Label, point.ViewModel.Location.X);
+        }
+
+        /// <inheritdoc />
         protected override void OnDispose(IChartView chart)
         {
             var animation = Shape.Animate()

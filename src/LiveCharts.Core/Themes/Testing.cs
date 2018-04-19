@@ -28,6 +28,8 @@ using System.Drawing;
 using LiveCharts.Core.DataSeries;
 using LiveCharts.Core.Dimensions;
 using LiveCharts.Core.Drawing;
+using LiveCharts.Core.Interaction.Styles;
+using Font = LiveCharts.Core.Interaction.Styles.Font;
 
 #endregion
 

@@ -22,43 +22,54 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR 
 // OTHER DEALINGS IN THE SOFTWARE.
 #endregion
-
 #region
 
-using System.Windows.Controls;
-using LiveCharts.Core.Charts;
-using LiveCharts.Core.Coordinates;
-using LiveCharts.Core.DataSeries;
-using LiveCharts.Core.Interaction.Points;
-using LiveCharts.Core.Interaction.Series;
-using LiveCharts.Core.ViewModels;
+using Brush = LiveCharts.Core.Drawing.Brush;
 
 #endregion
 
-namespace LiveCharts.Wpf.Views.Providers
+namespace LiveCharts.Core.Interaction.Styles
 {
     /// <summary>
-    /// The pie view provider.
+    /// Defines a shape style.
     /// </summary>
-    /// <typeparam name="TModel">The type of the model.</typeparam>
-    /// <seealso cref="ISeriesViewProvider{TModel,TCoordinate,TViewModel,TSeries}" />
-    public class PieSeriesViewProvider<TModel>
-        : ISeriesViewProvider<TModel, StackedPointCoordinate, PieViewModel, IPieSeries>
+    public class SeparatorStyle
     {
-        /// <inheritdoc />
-        public void OnUpdateStarted(IChartView chart, IPieSeries series)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SeparatorStyle"/> struct.
+        /// </summary>
+        /// <param name="stroke">The stroke.</param>
+        /// <param name="fill">The fill.</param>
+        /// <param name="strokeThickness">The stroke thickness.</param>
+        public SeparatorStyle(Brush stroke, Brush fill, float strokeThickness)
         {
+            Stroke = stroke;
+            Fill = fill;
+            StrokeThickness = strokeThickness;
         }
 
-        /// <inheritdoc />
-        public IPointView<TModel, StackedPointCoordinate, PieViewModel, IPieSeries> GetNewPoint()
-        {
-            return new PiePointView<TModel>();
-        }
+        /// <summary>
+        /// Gets or sets the stroke.
+        /// </summary>
+        /// <value>
+        /// The stroke.
+        /// </value>
+        public Brush Stroke { get; }
 
-        /// <inheritdoc />
-        public void OnUpdateFinished(IChartView chart, IPieSeries series)
-        {
-        }
+        /// <summary>
+        /// Gets or sets the stroke thickness.
+        /// </summary>
+        /// <value>
+        /// The stroke thickness.
+        /// </value>
+        public float StrokeThickness { get;}
+
+        /// <summary>
+        /// Gets or sets the fill.
+        /// </summary>
+        /// <value>
+        /// The fill.
+        /// </value>
+        public Brush Fill { get; }
     }
 }

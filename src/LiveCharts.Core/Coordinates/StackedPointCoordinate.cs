@@ -35,7 +35,7 @@ namespace LiveCharts.Core.Coordinates
     /// <summary>
     /// The stacked coordinate.
     /// </summary>
-    /// <seealso cref="LiveCharts.Core.Abstractions.ICoordinate" />
+    /// <seealso cref="ICoordinate" />
     public class StackedPointCoordinate : ICoordinate
     {
         private readonly float[][] _vector = new float[2][];

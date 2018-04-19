@@ -300,9 +300,10 @@ namespace LiveCharts.Core.Dimensions
             if (Labels != null)
             {
                 return Labels.Count > value && value >= 0
-                    ? Labels[checked((int)value)]
+                    ? Labels[checked((int) value)]
                     : "";
             }
+
             return LabelFormatter(value);
         }
 

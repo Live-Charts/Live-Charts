@@ -87,21 +87,21 @@ namespace LiveCharts.Wpf.Views
                     .Begin();
             }
             
-            Rectangle.Fill = args.Style.Fill.AsWpf();
-            Rectangle.Stroke = args.Style.Stroke.AsWpf();
+            Rectangle.Fill = args.Style?.Fill.AsWpf();
+            Rectangle.Stroke = args.Style?.Stroke.AsWpf();
 
             var storyboard = Rectangle.Animate()
                 .AtSpeed(speed)
                 .Property(Canvas.TopProperty, args.Rectangle.To.Top)
                 .Property(Canvas.LeftProperty, args.Rectangle.To.Left)
                 .Property(FrameworkElement.HeightProperty,
-                    args.Rectangle.To.Height > args.Style.StrokeThickness
+                    args.Rectangle.To.Height > (args.Style?.StrokeThickness ?? 0)
                         ? args.Rectangle.To.Height
-                        : args.Style.StrokeThickness)
+                        : args.Style?.StrokeThickness ?? 0)
                 .Property(FrameworkElement.WidthProperty,
-                    args.Rectangle.To.Width > args.Style.StrokeThickness
+                    args.Rectangle.To.Width > (args.Style?.StrokeThickness ?? 0)
                         ? args.Rectangle.To.Width
-                        : args.Style.StrokeThickness);
+                        : args.Style?.StrokeThickness ?? 0);
 
             if (args.Disposing)
             {

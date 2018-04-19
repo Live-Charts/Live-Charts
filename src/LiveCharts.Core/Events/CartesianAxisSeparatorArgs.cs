@@ -27,6 +27,7 @@
 using LiveCharts.Core.Charts;
 using LiveCharts.Core.Dimensions;
 using LiveCharts.Core.Drawing;
+using LiveCharts.Core.Interaction.Styles;
 using LiveCharts.Core.ViewModels;
 
 #endregion
