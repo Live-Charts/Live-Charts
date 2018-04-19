@@ -95,7 +95,7 @@ namespace LiveCharts.Wpf.Views
         protected virtual void OnDrawLabel(
             Point<TModel, TCoordinate, TViewModel, TSeries> point,
             DataLabelsPosition position,
-            DataLabelStyle style)
+            LabelStyle style)
         {
             var chart = point.Chart.View;
             var isNew = Label == null;
@@ -149,7 +149,7 @@ namespace LiveCharts.Wpf.Views
         void IPointView<TModel, TCoordinate, TViewModel, TSeries>.DrawLabel(
             Point<TModel, TCoordinate, TViewModel, TSeries> point, 
             DataLabelsPosition position,
-            DataLabelStyle style)
+            LabelStyle style)
         {
             OnDrawLabel(point, position, style);
         }

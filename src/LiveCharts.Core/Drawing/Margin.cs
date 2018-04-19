@@ -33,7 +33,7 @@ namespace LiveCharts.Core.Drawing
 
         private Margin(bool isEmpty)
         {
-            _isEmpty = true;
+            _isEmpty = isEmpty;
             Top = 0;
             Left = 0;
             Right = 0;
@@ -44,7 +44,7 @@ namespace LiveCharts.Core.Drawing
         /// Initializes a new instance of the <see cref="Margin"/> struct.
         /// </summary>
         /// <param name="topRightBottomAndLeftMargin">The top right bottom and left margin.</param>
-        public Margin(int topRightBottomAndLeftMargin)
+        public Margin(float topRightBottomAndLeftMargin)
         {
             _isEmpty = false;
             Top = topRightBottomAndLeftMargin;
@@ -58,7 +58,7 @@ namespace LiveCharts.Core.Drawing
         /// </summary>
         /// <param name="xMargin">The x margin.</param>
         /// <param name="yMargin">The y margin.</param>
-        public Margin(int xMargin, int yMargin)
+        public Margin(float xMargin, float yMargin)
         {
             _isEmpty = false;
             Top = yMargin;

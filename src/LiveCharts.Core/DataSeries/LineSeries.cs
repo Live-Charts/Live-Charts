@@ -141,7 +141,7 @@ namespace LiveCharts.Core.DataSeries
                 bezier.ViewModel.Path = cartesianPath;
                 bezier.Point.ViewModel = bezier.ViewModel;
                 bezier.Point.View.DrawShape(bezier.Point, previous);
-                if (DataLabels) bezier.Point.View.DrawLabel(bezier.Point, DataLabelsPosition, DataLabelStyle);
+                if (DataLabels) bezier.Point.View.DrawLabel(bezier.Point, DataLabelsPosition, LabelsStyle);
 
                 previous = bezier.Point;
                 length += bezier.ViewModel.AproxLength;

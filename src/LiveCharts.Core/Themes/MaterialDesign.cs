@@ -75,7 +75,7 @@ namespace LiveCharts.Core.Themes
                 .SetDefault<IStrokeSeries>(series =>
                 {
                     series.IsVisible = true;
-                    series.Font = baseFont;
+                    series.DataLabelsFont = baseFont;
                     series.DataLabels = false;
                     series.StrokeThickness = 3f;
                     series.DefaultFillOpacity = 1f;
@@ -117,13 +117,15 @@ namespace LiveCharts.Core.Themes
                 // sets a base for all the planes
                 .SetDefault<Plane>(plane =>
                 {
-                    plane.Font = baseFont;
+                    plane.LabelsFont = baseFont;
+                    plane.LabelsForeground = new SolidColorBrush(Color.FromArgb(30, 30, 30));
+                    plane.LabelsRotation = 0;
                     plane.LabelFormatter = Format.AsMetricNumber;
                 })
                 .SetDefault<Axis>(axis =>
                 {
                     axis.XSeparatorStyle = null;
-                    axis.YSeparatorStyle = new SeparatorStyle(
+                    axis.YSeparatorStyle = new ShapeStyle(
                         new SolidColorBrush(Color.FromArgb(0, 0, 0, 0)),
                         new SolidColorBrush(Color.FromArgb(255, 245, 245, 245)),
                         0);

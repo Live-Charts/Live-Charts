@@ -33,6 +33,7 @@ using LiveCharts.Core.DataSeries;
 using LiveCharts.Core.Defaults;
 using LiveCharts.Core.Dimensions;
 using LiveCharts.Core.Drawing;
+using LiveCharts.Core.Interaction.Styles;
 
 #endregion
 
@@ -127,8 +128,8 @@ namespace Assets.ViewModels
                         "Robyn Williamson",
                         "Carole Haynes",
                         "Essie Nelson"
-                    },
-                    LabelsRotation = -30
+                    }, 
+                    
                 }
             }; 
 

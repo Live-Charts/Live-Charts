@@ -51,17 +51,7 @@ namespace LiveCharts.Core.Interaction
         /// The axis label provider.
         /// </summary>
         /// <returns></returns>
-        IPlaneLabelControl GetNewAxisLabel();
-
-        /// <summary>
-        /// The label provider.
-        /// </summary>
-        /// <typeparam name="TModel">The type of the model.</typeparam>
-        /// <typeparam name="TCoordinate">The type of the coordinate.</typeparam>
-        /// <typeparam name="TViewModel">The type of the view model.</typeparam>
-        /// <returns></returns>
-        IDataLabelControl GetNewDataLabel<TModel, TCoordinate, TViewModel>()
-            where TCoordinate : ICoordinate;
+        IMeasurableLabel GetNewAxisLabel();
 
         /// <summary>
         /// The axis separator provider.

@@ -153,7 +153,7 @@ namespace LiveCharts.Core.DataSeries
 
                 current.ViewModel = vm;
                 current.View.DrawShape(current, previous);
-                if (DataLabels) current.View.DrawLabel(current, DataLabelsPosition, DataLabelStyle);
+                if (DataLabels) current.View.DrawLabel(current, DataLabelsPosition, LabelsStyle);
 
                 current.InteractionArea = new RectangleInteractionArea(vm.Rectangle);
 

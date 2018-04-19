@@ -52,16 +52,9 @@ namespace LiveCharts.Wpf
         }
 
         /// <inheritdoc />
-        public IPlaneLabelControl GetNewAxisLabel()
+        public IMeasurableLabel GetNewAxisLabel()
         {
             return new AxisLabel();
-        }
-
-        /// <inheritdoc />
-        public IDataLabelControl GetNewDataLabel<TModel, TCoordinate, TViewModel>()
-            where TCoordinate : ICoordinate
-        {
-            return new DataLabel();
         }
 
         /// <inheritdoc />

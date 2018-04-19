@@ -151,8 +151,8 @@ namespace LiveCharts.Core.DataSeries
 
             positionOffset[w] = (bp + cw) * position - (bp + cw) * ((barsCount - 1) * .5f);
             
+            var pivot = GetColumnStart(chart, scaleAxis, directionAxis);
 
-            var columnStart = GetColumnStart(chart, scaleAxis, directionAxis);
 
             Point<TModel, TCoordinate, RectangleViewModel, TSeries> previous = null;
 
@@ -165,12 +165,12 @@ namespace LiveCharts.Core.DataSeries
 
                 BuildModel(
                     current, context, chart, directionAxis,
-                    scaleAxis, cw, columnStart, byBarOffset,
+                    scaleAxis, cw, pivot, byBarOffset,
                     positionOffset, orientation, h, w);
 
                 current.InteractionArea = new RectangleInteractionArea(current.ViewModel.To);
                 current.View.DrawShape(current, previous);
-                if (DataLabels) current.View.DrawLabel(current, DataLabelsPosition, DataLabelStyle);
+                if (DataLabels) current.View.DrawLabel(current, DataLabelsPosition, LabelsStyle);
                 Mapper.EvaluateModelDependentActions(current.Model, current.View.VisualElement, current);
 
                 previous = current;

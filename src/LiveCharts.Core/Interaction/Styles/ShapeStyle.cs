@@ -33,15 +33,15 @@ namespace LiveCharts.Core.Interaction.Styles
     /// <summary>
     /// Defines a shape style.
     /// </summary>
-    public class SeparatorStyle
+    public class ShapeStyle : LabelStyle
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="SeparatorStyle"/> struct.
+        /// Initializes a new instance of the <see cref="ShapeStyle"/> struct.
         /// </summary>
         /// <param name="stroke">The stroke.</param>
         /// <param name="fill">The fill.</param>
         /// <param name="strokeThickness">The stroke thickness.</param>
-        public SeparatorStyle(Brush stroke, Brush fill, float strokeThickness)
+        public ShapeStyle(Brush stroke, Brush fill, float strokeThickness)
         {
             Stroke = stroke;
             Fill = fill;

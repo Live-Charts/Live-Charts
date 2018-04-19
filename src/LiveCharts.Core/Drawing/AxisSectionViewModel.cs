@@ -25,6 +25,7 @@
 #region
 
 using System.Drawing;
+using LiveCharts.Core.Interaction.Styles;
 
 #endregion
 
@@ -34,24 +35,30 @@ namespace LiveCharts.Core.Drawing
     /// Represents an axis label.
     /// </summary>
     /// <seealso cref="Rectangle" />
-    public struct SectionLabelViewModel
+    public struct AxisSectionViewModel
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="SectionLabelViewModel"/> struct.
+        /// Initializes a new instance of the <see cref="AxisSectionViewModel"/> struct.
         /// </summary>
         /// <param name="location"></param>
         /// <param name="offset">The offset.</param>
         /// <param name="margin">The margin.</param>
         /// <param name="content">The content.</param>
         /// <param name="size">The size.</param>
-        /// <param name="rotation">The label rotation</param>
-        public SectionLabelViewModel(PointF location, PointF offset, Margin margin, string content, SizeF size, float rotation)
+        /// <param name="labelStyle">The label style.</param>
+        public AxisSectionViewModel(
+            PointF location, 
+            PointF offset, 
+            Margin margin, 
+            string content, 
+            SizeF size,
+            LabelStyle labelStyle)
         {
             Position = Perform.Sum(location, offset);
             Margin = margin;
             Content = content;
             Size = size;
-            Rotation = rotation;
+            LabelStyle = labelStyle;
         }
 
         /// <summary>
@@ -87,11 +94,11 @@ namespace LiveCharts.Core.Drawing
         public Margin Margin { get; set; }
 
         /// <summary>
-        /// Gets or sets the rotation.
+        /// Gets or sets the label style.
         /// </summary>
         /// <value>
-        /// The rotation.
+        /// The label style.
         /// </value>
-        public float  Rotation { get; set; }
+        public LabelStyle LabelStyle { get; set; }
     }
 }

@@ -61,7 +61,7 @@ namespace LiveCharts.Core.Events
         /// <value>
         /// The axis label model.
         /// </value>
-        public SectionLabelViewModel Label { get; internal set; }
+        public AxisSectionViewModel Label { get; internal set; }
 
         /// <summary>
         /// Gets the plane.
@@ -85,7 +85,7 @@ namespace LiveCharts.Core.Events
         /// <value>
         /// The plane.
         /// </value>
-        public SeparatorStyle Style { get; internal set; }
+        public ShapeStyle Style { get; internal set; }
 
         /// <summary>
         /// Gets the chart view.

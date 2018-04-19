@@ -25,22 +25,23 @@
 #region
 
 using System.Drawing;
-using LiveCharts.Core.Interaction.Points;
+using LiveCharts.Core.Interaction.Styles;
 
 #endregion
 
 namespace LiveCharts.Core.Interaction.Controls
 {
     /// <summary>
-    /// Defines a control that can be used as a data label.
+    /// A control that its able to measure itself.
     /// </summary>
-    public interface IDataLabelControl
+    public interface IMeasurableLabel
     {
         /// <summary>
-        /// Measures the control with the specified point.
+        /// Measures the specified content (without rotation) and maps the style to the control properties.
         /// </summary>
-        /// <param name="point">The point.</param>
+        /// <param name="content">The content.</param>
+        /// <param name="labelStyle">The label style.</param>
         /// <returns></returns>
-        SizeF UpdateContentAndMeasure(PackedPoint point);
+        SizeF Measure(object content, LabelStyle labelStyle);
     }
 }

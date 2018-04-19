@@ -27,12 +27,17 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Drawing;
 using System.Runtime.CompilerServices;
 using LiveCharts.Core.Charts;
+using LiveCharts.Core.Drawing;
 using LiveCharts.Core.Events;
 using LiveCharts.Core.Interaction;
 using LiveCharts.Core.Interaction.Controls;
 using LiveCharts.Core.Interaction.Styles;
+using Brush = LiveCharts.Core.Drawing.Brush;
+using Font = LiveCharts.Core.Interaction.Styles.Font;
+using FontStyle = LiveCharts.Core.Interaction.Styles.FontStyle;
 
 #endregion
 
@@ -44,15 +49,17 @@ namespace LiveCharts.Core.Dimensions
     public class Plane : IResource, INotifyPropertyChanged
     {
         private float[] _pointWidth;
-        private Font _font;
         private Func<double, string> _labelFormatter;
         private float _maxValue;
         private float _minValue;
         private string _title;
         private IList<string> _labels;
-        private double _labelsRotation;
         private bool _reverse;
         private IEnumerable<Section> _sections;
+        private double _labelsRotation;
+        private Font _labelsFont;
+        private Brush _labelsForeground;
+        private Margin _labelsPadding;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Plane"/> class.
@@ -62,7 +69,8 @@ namespace LiveCharts.Core.Dimensions
             MinValue = float.NaN;
             MaxValue = float.NaN;
             LabelFormatter = Format.AsMetricNumber;
-            Font = new Font("Arial", 11, FontStyle.Regular, FontWeight.Regular);
+            LabelsFont = new Font("Arial", 11, FontStyle.Regular, FontWeight.Regular);
+            LabelsForeground = new SolidColorBrush(Color.FromArgb(255, 30, 30, 30));
             Charting.BuildFromSettings(this);
         }
 
@@ -148,22 +156,6 @@ namespace LiveCharts.Core.Dimensions
         }
 
         /// <summary>
-        /// Gets or sets the font.
-        /// </summary>
-        /// <value>
-        /// The font.
-        /// </value>
-        public Font Font
-        {
-            get => _font;
-            set
-            {
-                _font = value;
-                OnPropertyChanged();
-            }
-        }
-
-        /// <summary>
         /// Gets or sets the title.
         /// </summary>
         /// <value>
@@ -191,6 +183,70 @@ namespace LiveCharts.Core.Dimensions
             set
             {
                 _labels = value;
+                OnPropertyChanged();
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the labels font.
+        /// </summary>
+        /// <value>
+        /// The labels font.
+        /// </value>
+        public Font LabelsFont
+        {
+            get => _labelsFont;
+            set
+            {
+                _labelsFont = value;
+                OnPropertyChanged();
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the labels foreground.
+        /// </summary>
+        /// <value>
+        /// The labels foreground.
+        /// </value>
+        public Brush LabelsForeground
+        {
+            get => _labelsForeground;
+            set
+            {
+                _labelsForeground = value;
+                OnPropertyChanged();
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the labels rotation.
+        /// </summary>
+        /// <value>
+        /// The labels rotation.
+        /// </value>
+        public double LabelsRotation
+        {
+            get => _labelsRotation;
+            set
+            {
+                _labelsRotation = value;
+                OnPropertyChanged();
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the labels padding.
+        /// </summary>
+        /// <value>
+        /// The labels padding.
+        /// </value>
+        public Margin LabelsPadding
+        {
+            get => _labelsPadding;
+            set
+            {
+                _labelsPadding = value;
                 OnPropertyChanged();
             }
         }
@@ -225,41 +281,6 @@ namespace LiveCharts.Core.Dimensions
             {
                 _sections = value;
                 OnPropertyChanged();
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the labels rotation.
-        /// </summary>
-        /// <value>
-        /// The labels rotation.
-        /// </value>
-        public double LabelsRotation
-        {
-            get => _labelsRotation;
-            set
-            {
-                _labelsRotation = value;
-                OnPropertyChanged();
-            }
-        }
-
-        /// <summary>
-        /// Gets the actual labels rotation.
-        /// </summary>
-        /// <value>
-        /// The actual labels rotation.
-        /// </value>
-        public double ActualLabelsRotation
-        {
-            get
-            {
-                // we only allow angles from -90° to 90°
-                // see appendix/labels.1.png
-                var alpha = LabelsRotation % 360;
-                if (alpha < -90) alpha += 360;
-                if (alpha > 90) alpha += 180;
-                return alpha;
             }
         }
 
@@ -343,10 +364,10 @@ namespace LiveCharts.Core.Dimensions
         /// The default separator provider.
         /// </summary>
         /// <returns></returns>
-        protected virtual IPlaneLabelControl DefaultLabelProvider()
+        protected virtual IMeasurableLabel DefaultLabelProvider()
         {
             throw new LiveChartsException(
-                $"A {nameof(IPlaneLabelControl)} was not found when trying to draw Plane in the UI", 115);
+                $"A {nameof(IMeasurableLabel)} was not found when trying to draw Plane in the UI", 115);
         }
 
         #region IResource implementation

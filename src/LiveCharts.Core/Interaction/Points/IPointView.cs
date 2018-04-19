@@ -73,6 +73,6 @@ namespace LiveCharts.Core.Interaction.Points
         /// <param name="point">The point.</param>
         /// <param name="position">The labels position.</param>
         /// <param name="style">The data label style.</param>
-        void DrawLabel(Point<TModel, TCoordinate, TViewModel, TSeries> point, DataLabelsPosition position, DataLabelStyle style);
+        void DrawLabel(Point<TModel, TCoordinate, TViewModel, TSeries> point, DataLabelsPosition position, LabelStyle style);
     }
 }

@@ -111,12 +111,12 @@ namespace LiveCharts.Core.DataSeries
         DataLabelsPosition DataLabelsPosition { get; set; }
 
         /// <summary>
-        /// Gets or sets the data label style.
+        /// Gets or sets the data labels foreground.
         /// </summary>
         /// <value>
-        /// The data label style.
+        /// The data labels foreground.
         /// </value>
-        DataLabelStyle DataLabelStyle { get; set; }
+        Brush DataLabelsForeground { get; set; }
 
         /// <summary>
         /// Gets or sets the default fill opacity, this property is used to determine the fill opacity of a point when 
@@ -142,7 +142,7 @@ namespace LiveCharts.Core.DataSeries
         /// <value>
         /// The font.
         /// </value>
-        Font Font { get; set; }
+        Font DataLabelsFont { get; set; }
 
         /// <summary>
         /// Gets or sets the geometry, the geometry property is used to represent the series in the legend and

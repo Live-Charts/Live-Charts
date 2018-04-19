@@ -51,13 +51,13 @@ namespace LiveCharts.Core.Dimensions
         /// <value>
         /// The label.
         /// </value>
-        IPlaneLabelControl Label { get; }
+        IMeasurableLabel Label { get; }
 
         /// <summary>
         /// Moves the specified point1.
         /// </summary>
         /// <param name="args">The arguments.</param>
-        void DrawShapes(CartesianAxisSectionArgs args);
+        void DrawShape(CartesianAxisSectionArgs args);
 
         /// <summary>
         /// Draws the label.

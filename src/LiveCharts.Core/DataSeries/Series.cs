@@ -42,6 +42,7 @@ using LiveCharts.Core.Interaction.Points;
 using LiveCharts.Core.Interaction.Series;
 using LiveCharts.Core.Interaction.Styles;
 using LiveCharts.Core.Updating;
+using Brush = LiveCharts.Core.Drawing.Brush;
 using FontStyle = LiveCharts.Core.Interaction.Styles.FontStyle;
 #if NET45 || NET46
 using Font = LiveCharts.Core.Interaction.Styles.Font;
@@ -74,11 +75,11 @@ namespace LiveCharts.Core.DataSeries
         private bool _isVisible;
         private bool _dataLabels;
         private string _title;
-        private Font _font;
+        private Font _dataLabelsFont;
         private double _defaultFillOpacity;
         private Geometry _geometry;
         private DataLabelsPosition _dataLabelsPosition;
-        private DataLabelStyle _dataLabelStyle;
+        private Brush _dataLabelsForeground;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Series{TModel, TCoordinate, TViewModel, TSeries}"/> class.
@@ -101,28 +102,6 @@ namespace LiveCharts.Core.DataSeries
 
         /// <inheritdoc />
         public abstract Type ResourceKey { get; }
-
-        /// <inheritdoc />
-        public bool DataLabels
-        {
-            get => _dataLabels;
-            set
-            {
-                _dataLabels = value;
-                OnPropertyChanged();
-            }
-        }
-
-        /// <inheritdoc />
-        public DataLabelStyle DataLabelStyle
-        {
-            get => _dataLabelStyle;
-            set
-            {
-                _dataLabelStyle = value;
-                OnPropertyChanged();
-            }
-        }
 
         /// <inheritdoc />
         public virtual SeriesStyle Style => throw new NotImplementedException();
@@ -150,17 +129,6 @@ namespace LiveCharts.Core.DataSeries
         }
 
         /// <inheritdoc />
-        public Font Font
-        {
-            get => _font;
-            set
-            {
-                _font = value;
-                OnPropertyChanged();
-            }
-        }
-
-        /// <inheritdoc />
         public double DefaultFillOpacity
         {
             get => _defaultFillOpacity;
@@ -183,6 +151,17 @@ namespace LiveCharts.Core.DataSeries
         }
 
         /// <inheritdoc />
+        public bool DataLabels
+        {
+            get => _dataLabels;
+            set
+            {
+                _dataLabels = value;
+                OnPropertyChanged();
+            }
+        }
+
+        /// <inheritdoc />
         public DataLabelsPosition DataLabelsPosition
         {
             get => _dataLabelsPosition;
@@ -192,6 +171,28 @@ namespace LiveCharts.Core.DataSeries
                 OnPropertyChanged();
             }
         }
+
+        /// <inheritdoc />
+        public Font DataLabelsFont
+        {
+            get => _dataLabelsFont;
+            set
+            {
+                _dataLabelsFont = value;
+                OnPropertyChanged();
+            }
+        }
+
+        /// <inheritdoc />
+        public Brush DataLabelsForeground
+        {
+            get => _dataLabelsForeground;
+            set
+            {
+                _dataLabelsForeground = value;
+                OnPropertyChanged();
+            }
+        }        
 
         /// <inheritdoc />
         int ISeries.GroupingIndex => -1;
@@ -273,6 +274,14 @@ namespace LiveCharts.Core.DataSeries
                 OnPropertyChanged();
             }
         }
+
+        internal LabelStyle LabelsStyle => new LabelStyle
+        {
+            Font = DataLabelsFont,
+            Foreground = DataLabelsForeground,
+            LabelsRotation = 0d,
+            Padding = new Margin(0f)
+        };
 
 #endregion
 
@@ -482,11 +491,8 @@ namespace LiveCharts.Core.DataSeries
         {
             _isVisible = true;
             Content = new Dictionary<ChartModel, Dictionary<string, object>>();
-            DataLabelStyle = new DataLabelStyle
-            {
-                Font = new Font("Arial", 11, FontStyle.Regular, FontWeight.Regular),
-                Foreground = new SolidColorBrush(Color.FromArgb(30, 30, 30))
-            };
+            DataLabelsFont = new Font("Arial", 11, FontStyle.Regular, FontWeight.Regular);
+            DataLabelsForeground = new SolidColorBrush(Color.FromArgb(30, 30, 30));
             _values = itemsSource ?? new ChartingCollection<TModel>();
             OnValuesInstanceChanged();
             var t = typeof(TModel);
@@ -495,6 +501,7 @@ namespace LiveCharts.Core.DataSeries
                 ModelType = t,
                 IsValueType = t.IsValueType
             };
+            Charting.BuildFromSettings<ISeries>(this);
         }
 
 #region IResource implementation

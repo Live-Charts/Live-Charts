@@ -25,12 +25,12 @@
 #region
 
 using System.Drawing;
+using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
-using LiveCharts.Core.Charts;
+using System.Windows.Media;
 using LiveCharts.Core.Interaction.Controls;
-using Brushes = System.Windows.Media.Brushes;
-using Font = LiveCharts.Core.Interaction.Styles.Font;
+using LiveCharts.Core.Interaction.Styles;
 
 #endregion
 
@@ -40,7 +40,7 @@ namespace LiveCharts.Wpf.Controls
     /// a default label for a point.
     /// </summary>
     /// <seealso cref="TextBlock" />
-    public class AxisLabel : Label, IPlaneLabelControl
+    public class AxisLabel : Label, IMeasurableLabel
     {
         static AxisLabel()
         {
@@ -49,17 +49,35 @@ namespace LiveCharts.Wpf.Controls
                 new FrameworkPropertyMetadata(typeof(AxisLabel)));
         }
 
-        SizeF IPlaneLabelControl.MeasureAndUpdate(IChartContent content, Font font, string label)
+        /// <inheritdoc />
+        SizeF IMeasurableLabel.Measure(object content, LabelStyle labelStyle)
         {
-            Content = label;
+            var font = labelStyle.Font;
+
+            Content = content;
             FontFamily = new System.Windows.Media.FontFamily(font.FamilyName);
             FontSize = font.Size;
-            FontWeight = font.Weight == Core.Interaction.Styles.FontWeight.Bold ? FontWeights.Bold : FontWeights.Normal;
-            FontStyle = font.Style == Core.Interaction.Styles.FontStyle.Italic ? FontStyles.Italic : FontStyles.Normal;
-            Foreground = Brushes.Black;
+            FontWeight = font.Weight.AsWpf();
+            FontStyle = font.Style.AsWpf();
+            Foreground = labelStyle.Foreground.AsWpf();
+            Padding = new Thickness(
+                labelStyle.Padding.Left,
+                labelStyle.Padding.Top,
+                labelStyle.Padding.Right,
+                labelStyle.Padding.Bottom);
+            RenderTransform = new RotateTransform(labelStyle.ActualLabelsRotation);
 
-            Measure(new System.Windows.Size(double.PositiveInfinity, double.PositiveInfinity));
-            return new SizeF((float) DesiredSize.Width, (float) DesiredSize.Height);
+            var formatted = new FormattedText(
+                (string) content,
+                CultureInfo.CurrentCulture,
+                FlowDirection.LeftToRight,
+                new Typeface(FontFamily, FontStyle, FontWeight, FontStretch),
+                FontSize, 
+                Foreground);
+
+            return new SizeF(
+                (float) (formatted.Width + labelStyle.Padding.Left + labelStyle.Padding.Right),
+                (float) (formatted.Height + labelStyle.Padding.Top + labelStyle.Padding.Bottom));
         }
     }
 }

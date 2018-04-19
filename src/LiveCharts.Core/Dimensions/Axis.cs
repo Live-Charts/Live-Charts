@@ -48,7 +48,8 @@ namespace LiveCharts.Core.Dimensions
     {
         private readonly Dictionary<double, ICartesianAxisSectionView> _activeSeparators =
             new Dictionary<double, ICartesianAxisSectionView>();
-        private Func<IPlaneLabelControl> _separatorProvider;
+
+        private Func<IMeasurableLabel> _separatorProvider;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Axis"/> class.
@@ -59,7 +60,7 @@ namespace LiveCharts.Core.Dimensions
             StepStart = float.NaN;
             Position = AxisPosition.Auto;
             XSeparatorStyle =
-                new SeparatorStyle(
+                new ShapeStyle(
                     new SolidColorBrush(Color.FromArgb(255, 250, 250, 250)),
                     new SolidColorBrush(Color.FromArgb(50, 240, 240, 240)),
                     1);
@@ -116,7 +117,7 @@ namespace LiveCharts.Core.Dimensions
         /// <value>
         /// The x axis separator style.
         /// </value>
-        public SeparatorStyle XSeparatorStyle { get; set; }
+        public ShapeStyle XSeparatorStyle { get; set; }
 
         /// <summary>
         /// Gets or sets the x axis alternative separator style.
@@ -124,7 +125,7 @@ namespace LiveCharts.Core.Dimensions
         /// <value>
         /// The x axis alternative separator style.
         /// </value>
-        public SeparatorStyle XAlternativeSeparatorStyle { get; set; }
+        public ShapeStyle XAlternativeSeparatorStyle { get; set; }
 
         /// <summary>
         /// Gets or sets the y axis separator style.
@@ -132,7 +133,7 @@ namespace LiveCharts.Core.Dimensions
         /// <value>
         /// The y axis separator style.
         /// </value>
-        public SeparatorStyle YSeparatorStyle { get; set; }
+        public ShapeStyle YSeparatorStyle { get; set; }
 
         /// <summary>
         /// Gets or sets the y axis alternative separator style.
@@ -140,7 +141,7 @@ namespace LiveCharts.Core.Dimensions
         /// <value>
         /// The y axis alternative separator style.
         /// </value>
-        public SeparatorStyle YAlternativeSeparatorStyle { get; set; }
+        public ShapeStyle YAlternativeSeparatorStyle { get; set; }
 
         /// <summary>
         /// Gets or sets the separator provider.
@@ -148,7 +149,7 @@ namespace LiveCharts.Core.Dimensions
         /// <value>
         /// The separator provider.
         /// </value>
-        public Func<IPlaneLabelControl> LabelProvider
+        public Func<IMeasurableLabel> LabelProvider
         {
             get => _separatorProvider ?? DefaultLabelProvider;
             set
@@ -208,9 +209,24 @@ namespace LiveCharts.Core.Dimensions
 
             float l = 0f, r = 0f, t = 0f, b = 0f;
 
+            var dummyControl = Charting.Current.UiProvider.GetNewAxisLabel();
+            var labelsStyle = new LabelStyle
+            {
+                Font = LabelsFont,
+                Foreground = LabelsForeground,
+                LabelsRotation = LabelsRotation,
+                Padding = LabelsPadding
+            };
+
             for (var i = 0f; i < dimension; i += step)
             {
-                var label = EvaluateAxisLabel(sizeVector.ScaleFromUi(i, this, space), space, unit, sizeVector);
+                var label = EvaluateAxisLabel(
+                    dummyControl,
+                    labelsStyle,
+                    sizeVector.ScaleFromUi(i, this, space),
+                    space,
+                    unit,
+                    sizeVector);
 
                 var li = label.Position.X - label.Margin.Left;
                 if (li < 0 && l < -li) l = -li;
@@ -241,11 +257,19 @@ namespace LiveCharts.Core.Dimensions
             var stepSize = Math.Abs(chart.ScaleToUi(ActualStep, this) - chart.ScaleToUi(0, this));
             var alternate = false;
 
+            var dummyControl = Charting.Current.UiProvider.GetNewAxisLabel();
+            var labelsStyle = new LabelStyle
+            {
+                Font = LabelsFont,
+                Foreground = LabelsForeground,
+                LabelsRotation = LabelsRotation,
+                Padding = LabelsPadding
+            };
+
             for (var i = (float) from; i <= to + unit + tolerance; i += ActualStep)
             {
                 alternate = !alternate;
                 var iui = chart.ScaleToUi(i, this);
-                var labelModel = EvaluateAxisLabel(i, chart.DrawAreaSize, unit, chart);
                 var key = Math.Round(i / tolerance) * tolerance;
 
                 if (!_activeSeparators.TryGetValue(key, out var separator))
@@ -254,38 +278,46 @@ namespace LiveCharts.Core.Dimensions
                     _activeSeparators.Add(key, separator);
                 }
 
+                var labelModel = EvaluateAxisLabel(dummyControl, labelsStyle, i, chart.DrawAreaSize, unit, chart);
+
                 if (Dimension == 0)
                 {
                     var w = iui + stepSize > chart.DrawAreaSize[0] ? 0 : stepSize;
                     var xModel = new RectangleF(new PointF(iui, 0), new SizeF(w, chart.DrawAreaSize[1]));
-                    separator.DrawShapes(
-                        new CartesianAxisSectionArgs
-                        {
-                            ZIndex = int.MinValue,
-                            Plane = this,
-                            // ToDo: this probably wont look good if the axis range changed, in that case it should mode from the previous range position to the new one..
-                            Rectangle =  new RectangleViewModel(xModel, xModel, Orientation.Auto),
-                            Label = labelModel,
-                            Disposing = false,
-                            Style = alternate ? XAlternativeSeparatorStyle : XSeparatorStyle,
-                            ChartView = chart.View
-                        });
+
+                    var args = new CartesianAxisSectionArgs
+                    {
+                        ZIndex = int.MinValue,
+                        Plane = this,
+                        // ToDo: this probably wont look good if the axis range changed, in that case it should mode from the previous range position to the new one..
+                        Rectangle = new RectangleViewModel(xModel, xModel, Orientation.Auto),
+                        Label = labelModel,
+                        Disposing = false,
+                        Style = alternate ? XAlternativeSeparatorStyle : XSeparatorStyle,
+                        ChartView = chart.View
+                    };
+
+                    separator.DrawShape(args);
+                    separator.DrawLabel(args);
                 }
                 else
                 {
                     var h = iui + stepSize > chart.DrawAreaSize[1] ? 0 : stepSize;
                     var yModel = new RectangleF(new PointF(0, iui), new SizeF(chart.DrawAreaSize[0], h));
-                    separator.DrawShapes(
-                        new CartesianAxisSectionArgs
-                        {
-                            ZIndex = int.MinValue,
-                            Plane = this,
-                            Rectangle = new  RectangleViewModel(yModel, yModel, Orientation.Auto),
-                            Label = labelModel,
-                            Disposing = false,
-                            Style = alternate ? YAlternativeSeparatorStyle : YSeparatorStyle,
-                            ChartView = chart.View
-                        });
+
+                    var args = new CartesianAxisSectionArgs
+                    {
+                        ZIndex = int.MinValue,
+                        Plane = this,
+                        Rectangle = new RectangleViewModel(yModel, yModel, Orientation.Auto),
+                        Label = labelModel,
+                        Disposing = false,
+                        Style = alternate ? YAlternativeSeparatorStyle : YSeparatorStyle,
+                        ChartView = chart.View
+                    };
+
+                    separator.DrawShape(args);
+                    separator.DrawLabel(args);
                 }
 
                 chart.RegisterResource(separator);
@@ -324,10 +356,10 @@ namespace LiveCharts.Core.Dimensions
 
                 var isXAxis = Dimension == 0;
 
-                var labelSize = section.View.Label.MeasureAndUpdate(
-                    chart.View.Content,
-                    section.Font == LiveCharts.Core.Interaction.Styles.Font.Empty ? Font : section.Font,
-                    section.LabelContent);
+                //var labelSize = section.View.Label.MeasureAndUpdate(
+                //    chart.View.Content,
+                //    section.Font == LiveCharts.Core.Interaction.Styles.Font.Empty ? Font : section.Font,
+                //    section.LabelContent);
 
                 var x = 0f;
                 var y = 0f;
@@ -363,15 +395,15 @@ namespace LiveCharts.Core.Dimensions
                         throw new ArgumentOutOfRangeException();
                 }
 
-                section.View.DrawShapes(
+                section.View.DrawShape(
                     new CartesianAxisSectionArgs
                     {
                         ZIndex = int.MinValue + 1,
                         Plane = this,
                         Rectangle = new RectangleViewModel(model, model, Orientation.Auto),
-                        Label = new SectionLabelViewModel(),
+                        Label = new AxisSectionViewModel(),
                         Disposing = false,
-                        Style = new SeparatorStyle(
+                        Style = new ShapeStyle(
                             section.Stroke, 
                             section.Fill, 
                             (float) section.StrokeThickness),
@@ -393,7 +425,7 @@ namespace LiveCharts.Core.Dimensions
         }
         
         /// <inheritdoc />
-        protected override IPlaneLabelControl DefaultLabelProvider()
+        protected override IMeasurableLabel DefaultLabelProvider()
         {
             return Charting.Current.UiProvider.GetNewAxisLabel();
         }
@@ -459,12 +491,18 @@ namespace LiveCharts.Core.Dimensions
             return (float) tick;
         }
 
-        private SectionLabelViewModel EvaluateAxisLabel(float value, float[] drawMargin, float axisPointWidth, ChartModel chart)
+        private AxisSectionViewModel EvaluateAxisLabel(
+            IMeasurableLabel control, 
+            LabelStyle labelStyle, 
+            float value, 
+            float[] drawMargin, 
+            float axisPointWidth, 
+            ChartModel chart)
         {
             const double toRadians = Math.PI / 180;
-            var angle = ActualLabelsRotation;
+            var angle = labelStyle.ActualLabelsRotation;
             var text = FormatValue(value);
-            var labelSize = LabelProvider().MeasureAndUpdate(chart.View.Content, Font, text);
+            var labelSize = control.Measure(text, labelStyle);
 
             var xw = Math.Abs(Math.Cos(angle * toRadians) * labelSize.Width);  // width's    horizontal    component
             var yw = Math.Abs(Math.Sin(angle * toRadians) * labelSize.Width);  // width's    vertical      component
@@ -581,7 +619,7 @@ namespace LiveCharts.Core.Dimensions
 
             // correction by rotation
             // ReSharper disable once InvertIf
-            if (Math.Abs(ActualLabelsRotation) < 0.001)
+            if (Math.Abs(labelStyle.ActualLabelsRotation) < 0.001)
             {
                 // ReSharper disable once ConvertIfStatementToSwitchStatement
                 if (Dimension == 0)
@@ -594,7 +632,7 @@ namespace LiveCharts.Core.Dimensions
                 }
             }
 
-            return new SectionLabelViewModel(
+            return new AxisSectionViewModel(
                 new PointF((float) x, (float) y),
                 new PointF((float) xo, (float) yo),
                 new Margin(
@@ -604,7 +642,7 @@ namespace LiveCharts.Core.Dimensions
                     (float) l),
                 text,
                 labelSize,
-                (float) ActualLabelsRotation);
+                labelStyle);
         }
     }
 }

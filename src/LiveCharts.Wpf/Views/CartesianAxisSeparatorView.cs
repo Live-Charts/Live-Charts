@@ -43,7 +43,7 @@ namespace LiveCharts.Wpf.Views
     /// </summary>
     /// <seealso cref="ICartesianAxisSectionView" />
     public class CartesianAxisSectionView<TLabel> : ICartesianAxisSectionView
-        where TLabel : UIElement, IPlaneLabelControl, new()
+        where TLabel : FrameworkElement, IMeasurableLabel, new()
     {
         /// <summary>
         /// Gets or sets the line.
@@ -59,13 +59,10 @@ namespace LiveCharts.Wpf.Views
         /// <value>
         /// The label.
         /// </value>
-        public IPlaneLabelControl Label { get; protected set; }
+        public TLabel Label { get; protected set; }
 
         /// <inheritdoc />
-        object ICartesianAxisSectionView.VisualElement => Rectangle;
-
-        /// <inheritdoc />
-        public virtual void DrawShapes(CartesianAxisSectionArgs args)
+        public virtual void DrawShape(CartesianAxisSectionArgs args)
         {
             var isNewShape = Rectangle == null;
             var speed = args.ChartView.AnimationsSpeed;
@@ -128,16 +125,20 @@ namespace LiveCharts.Wpf.Views
             {
                 Label = new TLabel();
                 args.ChartView.Content.AddChild(Label);
-                Canvas.SetLeft((UIElement)Label, args.Label.Position.X);
-                Canvas.SetTop((UIElement)Label, args.Label.Position.Y);
+                Canvas.SetLeft(Label, args.Label.Position.X);
+                Canvas.SetTop(Label, args.Label.Position.Y);
             }
 
-            Label.MeasureAndUpdate(args.ChartView.Content, args.Plane.Font, args.Label.Content);
-
-            
+            Label.Measure(args.Label.Content, args.Label.LabelStyle);
         }
 
         public event DisposingResourceHandler Disposed;
+
+        /// <inheritdoc />
+        object ICartesianAxisSectionView.VisualElement => Rectangle;
+
+        /// <inheritdoc />
+        IMeasurableLabel ICartesianAxisSectionView.Label => Label;
 
         object IResource.UpdateId { get; set; }
 
