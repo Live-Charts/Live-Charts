@@ -85,6 +85,7 @@ namespace LiveCharts.Core.Themes
                 })
                 .SetDefault<Axis>(axis =>
                 {
+                    axis.LabelsFont = new Font("Calibri", 30, Interaction.Styles.FontStyle.Regular, FontWeight.Regular);
                     axis.XSeparatorStyle = sepStyle;
                     axis.YSeparatorStyle = sepStyle;
                     axis.XAlternativeSeparatorStyle = altStyle;

@@ -127,7 +127,7 @@ namespace LiveCharts.Core.Themes
                     axis.XSeparatorStyle = null;
                     axis.YSeparatorStyle = new ShapeStyle(
                         new SolidColorBrush(Color.FromArgb(0, 0, 0, 0)),
-                        new SolidColorBrush(Color.FromArgb(255, 245, 245, 245)),
+                        new SolidColorBrush(Color.FromArgb(255, 225, 225, 225)),
                         0);
                     axis.XAlternativeSeparatorStyle = null;
                     axis.YAlternativeSeparatorStyle = null;

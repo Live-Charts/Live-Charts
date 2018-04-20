@@ -26,8 +26,12 @@
 
 using System.Windows;
 using LiveCharts.Core;
+using LiveCharts.Core.Dimensions;
+using LiveCharts.Core.Interaction.Styles;
 using LiveCharts.Core.Themes;
 using LiveCharts.Wpf;
+using FontStyle = LiveCharts.Core.Interaction.Styles.FontStyle;
+using FontWeight = LiveCharts.Core.Interaction.Styles.FontWeight;
 
 #endregion
 
@@ -45,6 +49,7 @@ namespace Samples.Wpf
                 charting
                     .LearnPrimitiveAndDefaultTypes()
                     .SetTheme(Themes.MaterialDesign)
+                    .SetDefault<Axis>(axis => axis.LabelsFont = new Font("Calibri", 50, FontStyle.Regular, FontWeight.Regular))
                     .TargetsWpf();
             });
         }

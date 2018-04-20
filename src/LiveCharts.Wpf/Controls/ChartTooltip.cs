@@ -146,17 +146,15 @@ namespace LiveCharts.Wpf.Controls
 
         SizeF IDataToolTip.ShowAndMeasure(IEnumerable<PackedPoint> selected, IChartView chart)
         {
-            var content = (ChartContent) chart.Content;
+            var wpfChart = (Chart) chart;
 
             if (Parent == null)
             {
-                content.TooltipPopup.Child = this;
+                wpfChart.TooltipPopup.Child = this;
             }
 
-            var t = selected.ToArray();
-
             ItemsSource = selected;
-            content.TooltipPopup.IsOpen = true;
+            wpfChart.TooltipPopup.IsOpen = true;
             UpdateLayout();
 
             return new SizeF((float) DesiredSize.Width, (float) DesiredSize.Height);
@@ -165,14 +163,14 @@ namespace LiveCharts.Wpf.Controls
         /// <inheritdoc />
         void IDataToolTip.Hide(IChartView chart)
         {
-            var content = (ChartContent)chart.Content;
-            content.TooltipPopup.IsOpen = false;
+            var wpfChart = (Chart) chart;
+            wpfChart.TooltipPopup.IsOpen = false;
         }
 
         void IDataToolTip.Move(PointF location, IChartView chart)
         {
-            var content = (ChartContent) chart.Content;
-            content.TooltipPopup.Animate()
+            var wpfChart = (Chart) chart;
+            wpfChart.TooltipPopup.Animate()
                 .AtSpeed(TimeSpan.FromMilliseconds(150))
                 .Property(Popup.HorizontalOffsetProperty, location.X)
                 .Property(Popup.VerticalOffsetProperty, location.Y)

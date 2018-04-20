@@ -36,14 +36,6 @@ namespace LiveCharts.Core.Charts
     public interface IChartContent
     {
         /// <summary>
-        /// Gets or sets the draw area.
-        /// </summary>
-        /// <value>
-        /// The draw area.
-        /// </value>
-        RectangleF DrawArea { get; set; }
-
-        /// <summary>
         /// Adds a child child.
         /// </summary>
         void AddChild(object child);

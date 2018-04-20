@@ -42,8 +42,8 @@ namespace Assets.ViewModels
             // and all the series are scaled in the default axis.
             // in this case we will only override the Y axis
             // the X axis will have the default value.
-            var axis1 = new Axis();
-            var axis2 = new Axis();
+            var axis1 = new Axis{Position = AxisPosition.Right};
+            var axis2 = new Axis{Position = AxisPosition.Right};
 
             // we create a collection to store our axes collection.
             YAxis = new ChartingCollection<Plane>();

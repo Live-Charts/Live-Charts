@@ -27,9 +27,11 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Drawing;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using LiveCharts.Core.Charts;
 using LiveCharts.Core.DataSeries;
@@ -41,6 +43,7 @@ using LiveCharts.Core.Interaction.Styles;
 using LiveCharts.Wpf.Controls;
 using LiveCharts.Wpf.Interaction;
 using DataInteractionHandler = LiveCharts.Core.Events.DataInteractionHandler;
+using Point = System.Windows.Point;
 
 #endregion
 
@@ -52,7 +55,7 @@ namespace LiveCharts.Wpf
     /// <seealso cref="Canvas" />
     /// <seealso cref="IChartView" />
     /// <seealso cref="IDesktopChart" />
-    public abstract class Chart : ContentPresenter, IChartView, IDesktopChart
+    public abstract class Chart : Canvas, IChartView, IDesktopChart
     {
         /// <summary>
         /// Initializes the <see cref="Chart"/> class.
@@ -69,6 +72,7 @@ namespace LiveCharts.Wpf
         /// </summary>
         protected Chart()
         {
+            VisualDrawMargin = new ContentPresenter();
             DrawMargin = Core.Drawing.Margin.Empty;
             SetValue(LegendProperty, new ChartLegend());
             SetValue(DataTooltipProperty, new ChartToolTip());
@@ -77,7 +81,30 @@ namespace LiveCharts.Wpf
             MouseMove += OnMouseMove;
             MouseLeftButtonUp += OnLeftButtonUp;
             MouseLeftButtonDown += OnLeftButtonDown;
+            TooltipPopup = new Popup
+            {
+                AllowsTransparency = true,
+                Placement = PlacementMode.RelativePoint
+            };
+            Children.Add(TooltipPopup);
+            Children.Add(VisualDrawMargin);
         }
+
+        /// <summary>
+        /// Gets or sets the visual draw margin.
+        /// </summary>
+        /// <value>
+        /// The visual draw margin.
+        /// </value>
+        protected ContentPresenter VisualDrawMargin { get; set; }
+
+        /// <summary>
+        /// Gets the tooltip popup.
+        /// </summary>
+        /// <value>
+        /// The tooltip popup.
+        /// </value>
+        public Popup TooltipPopup { get; protected set; }
 
         #region Dependency properties
 
@@ -192,8 +219,8 @@ namespace LiveCharts.Wpf
             if (DataToolTip == null) return;
             var p = args.GetPosition(this);
             var c = new Point(
-                p.X - ((IChartContent) Content).DrawArea.Left,
-                p.Y - ((IChartContent) Content).DrawArea.Top);
+                p.X - GetLeft(VisualDrawMargin),
+                p.Y - GetTop(VisualDrawMargin));
             PointerMovedOverPlot?.Invoke(DataToolTip.SelectionMode, c.X, c.Y);
         }
 
@@ -201,16 +228,23 @@ namespace LiveCharts.Wpf
         {
             if (args.ClickCount != 2) return;
             var p = args.GetPosition(this);
-            var c = new Point(p.X + ((IChartContent)Content).DrawArea.Left, p.Y + ((IChartContent)Content).DrawArea.Top);
+            var c = new Point(
+                p.X +GetLeft(VisualDrawMargin),
+                p.Y + GetTop(VisualDrawMargin));
             var points = Model.GetInteractedPoints(c.X, c.Y);
-            var e = new DataInteractionEventArgs(args.MouseDevice, args.Timestamp, args.ChangedButton, points) { RoutedEvent = MouseDownEvent };
+            var e = new DataInteractionEventArgs(args.MouseDevice, args.Timestamp, args.ChangedButton, points)
+            {
+                RoutedEvent = MouseDownEvent
+            };
             OnDataDoubleClick(e);
         }
 
         private void OnLeftButtonUp(object sender, MouseButtonEventArgs args)
         {
             var p = args.GetPosition(this);
-            var c = new Point(p.X + ((IChartContent)Content).DrawArea.Left, p.Y + ((IChartContent)Content).DrawArea.Top);
+            var c = new Point(
+                p.X + GetLeft(VisualDrawMargin),
+                p.Y + GetTop(VisualDrawMargin));
             var points = Model.GetInteractedPoints(c.X, c.Y);
             var e = new DataInteractionEventArgs(args.MouseDevice, args.Timestamp, args.ChangedButton, points)
             {
@@ -281,8 +315,8 @@ namespace LiveCharts.Wpf
 
         IChartContent IChartView.Content
         {
-            get => (IChartContent) Content;
-            set => Content = value;
+            get => (IChartContent) VisualDrawMargin.Content;
+            set => VisualDrawMargin.Content = value;
         }
 
         /// <inheritdoc cref="IChartView.ControlSize"/>
@@ -334,6 +368,14 @@ namespace LiveCharts.Wpf
         {
             get => (IDataToolTip)GetValue(DataTooltipProperty);
             set => SetValue(DataTooltipProperty, value);
+        }
+
+        void IChartView.SetDrawArea(RectangleF drawArea)
+        {
+            SetTop(VisualDrawMargin, drawArea.Top);
+            SetLeft(VisualDrawMargin, drawArea.Left);
+            VisualDrawMargin.Width = drawArea.Width;
+            VisualDrawMargin.Height = drawArea.Height;
         }
 
         void IChartView.InvokeOnUiThread(Action action)

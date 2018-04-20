@@ -11,24 +11,6 @@
     <converters:GetXFromPointConverter x:Key="GetX" />
     <converters:GetYFromPointConverter x:Key="GetY" />
 
-    <Style TargetType="{x:Type controls:AxisLabel}">
-
-        <Setter Property="Padding" Value="6 3 6 3" />
-
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type controls:AxisLabel}">
-                    <Border Background="{TemplateBinding Background}"
-                            BorderBrush="{TemplateBinding BorderBrush}"
-                            BorderThickness="{TemplateBinding BorderThickness}"
-                            Padding="{TemplateBinding Padding}">
-                        <ContentPresenter />
-                    </Border>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
-
     <Style TargetType="{x:Type controls:ChartToolTip}">
 
         <Setter Property="Background" Value="White" />

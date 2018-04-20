@@ -38,42 +38,12 @@ namespace LiveCharts.Wpf.Controls
     /// <inheritdoc cref="IChartContent" />
     public class ChartContent : Canvas, IChartContent
     {
-        private RectangleF _drawArea;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="ChartContent"/> class.
         /// </summary>
         public ChartContent()
         {
             Background = Brushes.Transparent; // otherwise mouse move is not fired...
-            TooltipPopup = new Popup
-            {
-                AllowsTransparency = true,
-                Placement = PlacementMode.RelativePoint
-            };
-            Children.Add(TooltipPopup);
-        }
-
-        /// <summary>
-        /// Gets or sets the tooltip popup.
-        /// </summary>
-        /// <value>
-        /// The tooltip popup.
-        /// </value>
-        public Popup TooltipPopup { get; set; }
-
-        /// <inheritdoc />
-        public RectangleF DrawArea
-        {
-            get => _drawArea;
-            set
-            {
-                _drawArea = value;
-                SetTop(this, _drawArea.Top);
-                SetLeft(this, _drawArea.Left);
-                Width = _drawArea.Width;
-                Height = _drawArea.Height;
-            }
         }
 
         /// <inheritdoc />

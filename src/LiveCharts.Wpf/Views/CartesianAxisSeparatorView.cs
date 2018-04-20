@@ -130,6 +130,12 @@ namespace LiveCharts.Wpf.Views
             }
 
             Label.Measure(args.Label.Content, args.Label.LabelStyle);
+
+            Label.Animate()
+                .AtSpeed(args.ChartView.AnimationsSpeed)
+                .Property(Canvas.LeftProperty, args.Label.Position.X)
+                .Property(Canvas.TopProperty, args.Label.Position.Y)
+                .Begin();
         }
 
         public event DisposingResourceHandler Disposed;

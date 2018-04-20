@@ -310,6 +310,8 @@ namespace LiveCharts.Core.Dimensions
 
         internal bool ActualReverse { get; set; }
 
+        internal Margin ByStackMargin { get; set; }
+
         /// <summary>
         /// Formats a given value according to the axis, <see cref="LabelFormatter"/> and <see cref="Labels"/> properties.
         /// If <see cref="Labels"/> property is null, <see cref="LabelFormatter"/> delegate will be used to get the formatted value.

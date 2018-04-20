@@ -37,6 +37,11 @@
         "name": "Inverted series",
         "text": "Invert series using InvertAxes property."
       },
+      //{
+      //  "id": "AxesPositioning",
+      //  "name": "Axes positioning",
+      //  "text": "Use the axis position and invert properties to customize any plane." 
+      //},
       {
         "id": "MultipleAxes",
         "name": "Multiple axes",

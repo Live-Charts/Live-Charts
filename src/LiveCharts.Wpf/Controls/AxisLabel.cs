@@ -25,7 +25,6 @@
 #region
 
 using System.Drawing;
-using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -40,7 +39,7 @@ namespace LiveCharts.Wpf.Controls
     /// a default label for a point.
     /// </summary>
     /// <seealso cref="TextBlock" />
-    public class AxisLabel : Label, IMeasurableLabel
+    public class AxisLabel : TextBlock, IMeasurableLabel
     {
         static AxisLabel()
         {
@@ -54,7 +53,7 @@ namespace LiveCharts.Wpf.Controls
         {
             var font = labelStyle.Font;
 
-            Content = content;
+            Text = (string) content;
             FontFamily = new System.Windows.Media.FontFamily(font.FamilyName);
             FontSize = font.Size;
             FontWeight = font.Weight.AsWpf();
@@ -65,19 +64,13 @@ namespace LiveCharts.Wpf.Controls
                 labelStyle.Padding.Top,
                 labelStyle.Padding.Right,
                 labelStyle.Padding.Bottom);
+            Margin = new Thickness(0);
+
             RenderTransform = new RotateTransform(labelStyle.ActualLabelsRotation);
 
-            var formatted = new FormattedText(
-                (string) content,
-                CultureInfo.CurrentCulture,
-                FlowDirection.LeftToRight,
-                new Typeface(FontFamily, FontStyle, FontWeight, FontStretch),
-                FontSize, 
-                Foreground);
+            Measure(new System.Windows.Size(double.PositiveInfinity, double.PositiveInfinity));
 
-            return new SizeF(
-                (float) (formatted.Width + labelStyle.Padding.Left + labelStyle.Padding.Right),
-                (float) (formatted.Height + labelStyle.Padding.Top + labelStyle.Padding.Bottom));
+            return new SizeF((float) DesiredSize.Width, (float) DesiredSize.Height);
         }
     }
 }

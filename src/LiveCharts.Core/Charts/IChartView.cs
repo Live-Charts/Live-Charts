@@ -27,6 +27,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Drawing;
 using System.Windows.Input;
 using LiveCharts.Core.DataSeries;
 using LiveCharts.Core.Dimensions;
@@ -166,6 +167,12 @@ namespace LiveCharts.Core.Charts
         /// The data tooltip.
         /// </value>
         IDataToolTip DataToolTip { get; }
+
+        /// <summary>
+        /// Sets the draw area.
+        /// </summary>
+        /// <param name="drawArea">The draw area.</param>
+        void SetDrawArea(RectangleF drawArea);
 
         /// <summary>
         /// Dispatchers the specified action.

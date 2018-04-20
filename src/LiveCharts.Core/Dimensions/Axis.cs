@@ -174,7 +174,6 @@ namespace LiveCharts.Core.Dimensions
         internal Margin CalculateAxisMargin(ChartModel sizeVector)
         {
 #region note
-
             // we'll ask the axis to generate a label every 5px to estimate its size
             // this method is not perfect, but it is should have a good performance
             // and also should return a trust-able size of the axis.
@@ -195,7 +194,6 @@ namespace LiveCharts.Core.Dimensions
             // to calculate exactly the size don't we?
             // ... this is not supported for now.
 #endregion
-
             var space = sizeVector.DrawAreaSize;
             if (!(Dimension == 0 || Dimension == 1))
             {
@@ -228,7 +226,7 @@ namespace LiveCharts.Core.Dimensions
                     unit,
                     sizeVector);
 
-                var li = label.Position.X - label.Margin.Left;
+                var li = label.Position.X;// - label.Margin.Left;
                 if (li < 0 && l < -li) l = -li;
 
                 var ri = label.Position.X + label.Margin.Right;
@@ -247,7 +245,7 @@ namespace LiveCharts.Core.Dimensions
         internal void DrawSeparators(ChartModel chart)
         {
             ActualStep = GetActualAxisStep(chart);
-            ActualStepStart = GetActualStepStart(chart);
+            ActualStepStart = GetActualStepStart();
 
             var from = Math.Ceiling(ActualMinValue / ActualStep) * ActualStep;
             var to = Math.Floor(ActualMaxValue / ActualStep) * ActualStep;
@@ -324,6 +322,7 @@ namespace LiveCharts.Core.Dimensions
             }
 
             // remove unnecessary elements from cache
+            // the visual element will be removed by the chart's resource collector
             foreach (var separator in _activeSeparators.ToArray())
             {
                 if (separator.Value.UpdateId != chart.UpdateId)
@@ -430,7 +429,7 @@ namespace LiveCharts.Core.Dimensions
             return Charting.Current.UiProvider.GetNewAxisLabel();
         }
 
-        private float GetActualStepStart(ChartModel chart)
+        private float GetActualStepStart()
         {
             if (!float.IsNaN(StepStart))
             {
@@ -633,7 +632,9 @@ namespace LiveCharts.Core.Dimensions
             }
 
             return new AxisSectionViewModel(
-                new PointF((float) x, (float) y),
+                new PointF(
+                    (float) x - ByStackMargin.Left + ByStackMargin.Right,
+                    (float) y - ByStackMargin.Top + ByStackMargin.Bottom),
                 new PointF((float) xo, (float) yo),
                 new Margin(
                     (float) t,

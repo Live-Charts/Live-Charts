@@ -47,10 +47,10 @@ namespace LiveCharts.Core.Drawing
         /// <param name="size">The size.</param>
         /// <param name="labelStyle">The label style.</param>
         public AxisSectionViewModel(
-            PointF location, 
-            PointF offset, 
-            Margin margin, 
-            string content, 
+            PointF location,
+            PointF offset,
+            Margin margin,
+            string content,
             SizeF size,
             LabelStyle labelStyle)
         {

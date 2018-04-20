@@ -160,19 +160,19 @@ namespace LiveCharts.Core.Charts
                 return;
             }
 
-            View.Content.DrawArea = new RectangleF(
+            View.SetDrawArea(new RectangleF(
                 new PointF(DrawAreaLocation[0], DrawAreaLocation[1]),
-                new SizeF(DrawAreaSize[0], DrawAreaSize[1]));
+                new SizeF(DrawAreaSize[0], DrawAreaSize[1])));
 
             // draw separators
             // for each dimension (for a cartesian chart X and Y)
             foreach (var dimension in Dimensions)
             {
                 // for each plane in each dimension, in this case CartesianLinearAxis, for convention named Axis
-                foreach (var plane in dimension.OfType<Axis>())
+                foreach (var plane in dimension)
                 {
-                    var axis = plane;
-                    RegisterResource(axis);
+                    RegisterResource(plane);
+                    if (!(plane is Axis axis)) continue;
                     axis.DrawSeparators(this);
                     axis.DrawSections(this);
                 }
@@ -214,7 +214,6 @@ namespace LiveCharts.Core.Charts
                 {
                     plane.ActualPointWidth = plane.PointWidth;
                 }
-
 
                 if (series.PointMargin.Length > i && series.PointMargin[i] > plane.PointMargin)
                 {
@@ -354,21 +353,25 @@ namespace LiveCharts.Core.Charts
                     switch (axis.Position)
                     {
                         case AxisPosition.Top:
+                            plane.ByStackMargin = new Margin(yt, 0, 0, 0);
                             yt += mi.Top + mi.Bottom;
                             yl += mi.Left;
                             yr += mi.Right;
                             break;
                         case AxisPosition.Bottom:
+                            plane.ByStackMargin = new Margin(0, 0, yb, 0);
                             yb += mi.Top + mi.Bottom;
                             yl += mi.Left;
                             yr += mi.Right;
                             break;
                         case AxisPosition.Left:
+                            plane.ByStackMargin = new Margin(0, 0, 0, xl);
                             xl += mi.Left + mi.Right;
                             xb += mi.Bottom;
                             xt += mi.Top;
                             break;
                         case AxisPosition.Right:
+                            plane.ByStackMargin = new Margin(0, xr, 0, 0);
                             xr += mi.Left + mi.Right;
                             xb += mi.Bottom;
                             xt += mi.Top;
