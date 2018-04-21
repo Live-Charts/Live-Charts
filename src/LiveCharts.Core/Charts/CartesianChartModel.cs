@@ -31,6 +31,7 @@ using LiveCharts.Core.DataSeries;
 using LiveCharts.Core.Dimensions;
 using LiveCharts.Core.Drawing;
 using LiveCharts.Core.Interaction;
+using LiveCharts.Core.Interaction.Styles;
 using LiveCharts.Core.Updating;
 
 #endregion
@@ -173,8 +174,15 @@ namespace LiveCharts.Core.Charts
                 {
                     RegisterResource(plane);
                     if (!(plane is Axis axis)) continue;
-                    axis.DrawSeparators(this);
-                    axis.DrawSections(this);
+                    var labelsStyle = new LabelStyle
+                    {
+                        Font = plane.LabelsFont,
+                        Foreground = plane.LabelsForeground,
+                        LabelsRotation = plane.LabelsRotation,
+                        Padding = plane.LabelsPadding
+                    };
+                    axis.DrawSeparators(this, labelsStyle);
+                    axis.DrawSections(this, labelsStyle);
                 }
             }
 

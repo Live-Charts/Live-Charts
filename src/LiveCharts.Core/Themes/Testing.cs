@@ -50,11 +50,13 @@ namespace LiveCharts.Core.Themes
             var sepStyle = new ShapeStyle(
                 new SolidColorBrush(Color.FromArgb(0, 230, 230, 230)),
                 new SolidColorBrush(Color.FromArgb(150, 245, 245, 245)),
-                1);
+                1,
+                null);
             var altStyle = new ShapeStyle(
                 new SolidColorBrush(Color.FromArgb(0, 220, 220, 220)),
                 new SolidColorBrush(Color.FromArgb(150, 220, 220, 220)),
-                1);
+                1,
+                null);
 
             charting
                 .HasColors(new []

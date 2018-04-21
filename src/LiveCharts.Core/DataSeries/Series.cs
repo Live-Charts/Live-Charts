@@ -265,7 +265,7 @@ namespace LiveCharts.Core.DataSeries
         /// The point view provider.
         /// </value>
         public ISeriesViewProvider<TModel, TCoordinate, TViewModel, TSeries>
-            PointViewProvider
+            ViewProvider
         {
             get => _viewProvider ?? DefaultViewProvider;
             set
@@ -288,13 +288,13 @@ namespace LiveCharts.Core.DataSeries
         /// <inheritdoc />
         void ISeries.UpdateStarted(IChartView chart)
         {
-            PointViewProvider.OnUpdateStarted(chart, this as TSeries);
+            ViewProvider.OnUpdateStarted(chart, this as TSeries);
         }
 
         /// <inheritdoc />
         void ISeries.UpdateFinished(IChartView chart)
         {
-            PointViewProvider.OnUpdateFinished(chart, this as TSeries);
+            ViewProvider.OnUpdateFinished(chart, this as TSeries);
         }
 
         /// <inheritdoc />

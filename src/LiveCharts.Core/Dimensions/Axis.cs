@@ -32,6 +32,7 @@ using LiveCharts.Core.Charts;
 using LiveCharts.Core.Drawing;
 using LiveCharts.Core.Events;
 using LiveCharts.Core.Interaction.Controls;
+using LiveCharts.Core.Interaction.Dimensions;
 using LiveCharts.Core.Interaction.Styles;
 using LiveCharts.Core.ViewModels;
 #if NET45 || NET46
@@ -46,10 +47,10 @@ namespace LiveCharts.Core.Dimensions
     /// </summary>
     public class Axis : Plane
     {
-        private readonly Dictionary<double, ICartesianAxisSectionView> _activeSeparators =
-            new Dictionary<double, ICartesianAxisSectionView>();
+        private readonly Dictionary<double, IPlaneSection> _activeSeparators =
+            new Dictionary<double, IPlaneSection>();
 
-        private Func<IMeasurableLabel> _separatorProvider;
+        private IPlaneViewProvider _planeViewProvider;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Axis"/> class.
@@ -63,7 +64,8 @@ namespace LiveCharts.Core.Dimensions
                 new ShapeStyle(
                     new SolidColorBrush(Color.FromArgb(255, 250, 250, 250)),
                     new SolidColorBrush(Color.FromArgb(50, 240, 240, 240)),
-                    1);
+                    1,
+                    null);
             YSeparatorStyle = null;
             XAlternativeSeparatorStyle = null;
             YSeparatorStyle = null;
@@ -149,12 +151,12 @@ namespace LiveCharts.Core.Dimensions
         /// <value>
         /// The separator provider.
         /// </value>
-        public Func<IMeasurableLabel> LabelProvider
+        public IPlaneViewProvider ViewProvider
         {
-            get => _separatorProvider ?? DefaultLabelProvider;
+            get => _planeViewProvider ?? (_planeViewProvider = DefaultViewProvider());
             set
             {
-                _separatorProvider = value;
+                _planeViewProvider = value;
                 OnPropertyChanged();
             }
         }
@@ -207,7 +209,7 @@ namespace LiveCharts.Core.Dimensions
 
             float l = 0f, r = 0f, t = 0f, b = 0f;
 
-            var dummyControl = Charting.Current.UiProvider.GetNewAxisLabel();
+            var dummyControl = ViewProvider.GetMeasurableLabel();
             var labelsStyle = new LabelStyle
             {
                 Font = LabelsFont,
@@ -242,7 +244,7 @@ namespace LiveCharts.Core.Dimensions
             return new Margin(t, r, b, l);
         }
 
-        internal void DrawSeparators(ChartModel chart)
+        internal void DrawSeparators(ChartModel chart, LabelStyle labelStyle)
         {
             ActualStep = GetActualAxisStep(chart);
             ActualStepStart = GetActualStepStart();
@@ -255,14 +257,8 @@ namespace LiveCharts.Core.Dimensions
             var stepSize = Math.Abs(chart.ScaleToUi(ActualStep, this) - chart.ScaleToUi(0, this));
             var alternate = false;
 
-            var dummyControl = Charting.Current.UiProvider.GetNewAxisLabel();
-            var labelsStyle = new LabelStyle
-            {
-                Font = LabelsFont,
-                Foreground = LabelsForeground,
-                LabelsRotation = LabelsRotation,
-                Padding = LabelsPadding
-            };
+            var dummyControl = ViewProvider.GetMeasurableLabel();
+            
 
             for (var i = (float) from; i <= to + unit + tolerance; i += ActualStep)
             {
@@ -272,11 +268,11 @@ namespace LiveCharts.Core.Dimensions
 
                 if (!_activeSeparators.TryGetValue(key, out var separator))
                 {
-                    separator = Charting.Current.UiProvider.GetNewAxisSection();
+                    separator = ViewProvider.GetNewVisual();
                     _activeSeparators.Add(key, separator);
                 }
 
-                var labelModel = EvaluateAxisLabel(dummyControl, labelsStyle, i, chart.DrawAreaSize, unit, chart);
+                var labelModel = EvaluateAxisLabel(dummyControl, labelStyle, i, chart.DrawAreaSize, unit, chart);
 
                 if (Dimension == 0)
                 {
@@ -332,82 +328,110 @@ namespace LiveCharts.Core.Dimensions
             }
         }
 
-        internal void DrawSections(ChartModel chart)
+        internal void DrawSections(ChartModel chart, LabelStyle labelStyle)
         {
             if (Sections == null) return;
+
+            var isX = Dimension == 0;
+
+            if (isX)
+            {
+                labelStyle.LabelsRotation = -90;
+            }
 
             foreach (var section in Sections)
             {
                 if (section.View == null)
                 {
-                    section.View = Charting.Current.UiProvider.GetNewAxisSection();
+                    section.View = section.ViewProvider.GetNewVisual();
                 }
 
                 var iui = chart.ScaleToUi(section.Value, this);
+                var jui = chart.ScaleToUi(section.Value + section.Length, this);
 
-                var length = Math.Abs(chart.ScaleToUi(section.Length, this) - chart.ScaleToUi(0, this));
+                var length = Math.Abs(iui - jui);
 
                 var w = iui + length > chart.DrawAreaSize[0] ? 0 : length;
                 var h = iui + length > chart.DrawAreaSize[1] ? 0 : length;
-                var model = Dimension == 0
-                    ? new RectangleF(new PointF(iui, 0), new SizeF(w, chart.DrawAreaSize[1]))
-                    : new RectangleF(new PointF(0, iui), new SizeF(chart.DrawAreaSize[0], h));
+                
+                var t = isX ? (Reverse ? jui : iui) : (Reverse ? iui : jui);
 
-                var isXAxis = Dimension == 0;
+                var model = isX
+                    ? new RectangleF(new PointF(t, 0), new SizeF(w, chart.DrawAreaSize[1]))
+                    : new RectangleF(new PointF(0, t), new SizeF(chart.DrawAreaSize[0], h));
 
-                //var labelSize = section.View.Label.MeasureAndUpdate(
-                //    chart.View.Content,
-                //    section.Font == LiveCharts.Core.Interaction.Styles.Font.Empty ? Font : section.Font,
-                //    section.LabelContent);
+                var dummyLabel = section.ViewProvider.GetMeasurableLabel();
+                var labelSize = dummyLabel.Measure(section.LabelContent, labelStyle);
 
-                var x = 0f;
-                var y = 0f;
+                float x;
+                float y;
+                const float m = 3f; // default margin
 
-                //switch (section.LabelHorizontalAlignment)
-                //{
-                //    case HorizontalAlignment.Centered:
-                //    case HorizontalAlignment.Between:
-                //        x = isXAxis
-                //            ? iui + length * .5f + labelSize.Width * .5f
-                //            : w + length * .5f + labelSize.Height * .5f;
-                //        break;
-                //    case HorizontalAlignment.Left:
-                //        x = isXAxis ? w : h;
-                //        break;
-                //    case HorizontalAlignment.Right:
-                //        x = isXAxis ? 
-                //        break;
-                //    default:
-                //        throw new ArgumentOutOfRangeException();
-                //}
-
-                switch (section.LabelVerticalAlignment)
+                switch (section.LabelHorizontalAlignment)
                 {
-                    case VerticalAlignment.Between:
-                    case VerticalAlignment.Centered:
+                    case HorizontalAlignment.Centered:
+                    case HorizontalAlignment.Between:
+                        x = isX
+                            ? t + length * .5f - labelSize.Height * .5f
+                            : chart.DrawAreaSize[0] * .5f - labelSize.Width * .5f;
                         break;
-                    case VerticalAlignment.Top:
+                    case HorizontalAlignment.Left:
+                        x = isX ? t + m : m;
                         break;
-                    case VerticalAlignment.Bottom:
+                    case HorizontalAlignment.Right:
+                        x = isX
+                            ? t + length - m - labelSize.Height
+                            : chart.DrawAreaSize[0] - m - labelSize.Width;
                         break;
                     default:
                         throw new ArgumentOutOfRangeException();
                 }
 
-                section.View.DrawShape(
-                    new CartesianAxisSectionArgs
-                    {
-                        ZIndex = int.MinValue + 1,
-                        Plane = this,
-                        Rectangle = new RectangleViewModel(model, model, Orientation.Auto),
-                        Label = new AxisSectionViewModel(),
-                        Disposing = false,
-                        Style = new ShapeStyle(
-                            section.Stroke, 
-                            section.Fill, 
-                            (float) section.StrokeThickness),
-                        ChartView = chart.View
-                    });
+                switch (section.LabelVerticalAlignment)
+                {
+                    case VerticalAlignment.Between:
+                    case VerticalAlignment.Centered:
+                        y = isX
+                            ? chart.DrawAreaSize[1] * .5f + labelSize.Width * .5f
+                            : t + length * .5f - labelSize.Height * .5f;
+                        break;
+                    case VerticalAlignment.Top:
+                        y = isX
+                            ? m + labelSize.Width
+                            : t + m;
+                        break;
+                    case VerticalAlignment.Bottom:
+                        y = isX
+                            ? chart.DrawAreaSize[1]- m
+                            : t + length - labelSize.Height - m;
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+
+                var args = new CartesianAxisSectionArgs
+                {
+                    ZIndex = int.MinValue + 1,
+                    Plane = this,
+                    Rectangle = new RectangleViewModel(model, model, Orientation.Auto),
+                    Label = new AxisSectionViewModel(
+                        new PointF(x, y),
+                        new PointF(0, 0),
+                        new Margin(0),
+                        section.LabelContent,
+                        labelSize,
+                        labelStyle),
+                    Disposing = false,
+                    Style = new ShapeStyle(
+                        section.Stroke,
+                        section.Fill,
+                        (float) section.StrokeThickness,
+                        section.StrokeDashArray),
+                    ChartView = chart.View
+                };
+
+                section.View.DrawShape(args);
+                section.View.DrawLabel(args);
 
                 chart.RegisterResource(section.View);
             }
@@ -420,13 +444,19 @@ namespace LiveCharts.Core.Dimensions
             {
                 separator.Value.Dispose(chart);
             }
+
+            foreach (var section in Sections ?? Enumerable.Empty<Section>())
+            {
+                section.View.Dispose(chart);
+            }
+
             _activeSeparators.Clear();
         }
         
         /// <inheritdoc />
-        protected override IMeasurableLabel DefaultLabelProvider()
+        protected override IPlaneViewProvider DefaultViewProvider()
         {
-            return Charting.Current.UiProvider.GetNewAxisLabel();
+            return Charting.Current.UiProvider.GetNewPlane();
         }
 
         private float GetActualStepStart()

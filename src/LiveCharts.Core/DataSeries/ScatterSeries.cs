@@ -50,7 +50,7 @@ namespace LiveCharts.Core.DataSeries
     public class ScatterSeries<TModel>
         : CartesianStrokeSeries<TModel, PointCoordinate, GeometryPointViewModel, IScatterSeries>, IScatterSeries
     {
-        private static ISeriesViewProvider<TModel, PointCoordinate, GeometryPointViewModel, IScatterSeries> _provider;
+        private ISeriesViewProvider<TModel, PointCoordinate, GeometryPointViewModel, IScatterSeries> _provider;
         private double _geometrySize;
 
         /// <summary>
@@ -117,7 +117,7 @@ namespace LiveCharts.Core.DataSeries
             {
                 if (current.View == null)
                 {
-                    current.View = PointViewProvider.GetNewPoint();
+                    current.View = ViewProvider.GetNewPoint();
                 }
 
                 var p = new[]

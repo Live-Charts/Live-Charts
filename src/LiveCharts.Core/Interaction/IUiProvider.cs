@@ -29,6 +29,7 @@ using LiveCharts.Core.Coordinates;
 using LiveCharts.Core.DataSeries;
 using LiveCharts.Core.Dimensions;
 using LiveCharts.Core.Interaction.Controls;
+using LiveCharts.Core.Interaction.Dimensions;
 using LiveCharts.Core.Interaction.Series;
 using LiveCharts.Core.ViewModels;
 
@@ -48,16 +49,16 @@ namespace LiveCharts.Core.Interaction
         IChartContent GetChartContent();
 
         /// <summary>
-        /// The axis label provider.
-        /// </summary>
-        /// <returns></returns>
-        IMeasurableLabel GetNewAxisLabel();
-
-        /// <summary>
         /// The axis separator provider.
         /// </summary>
         /// <returns></returns>
-        ICartesianAxisSectionView GetNewAxisSection();
+        IPlaneViewProvider GetNewPlane();
+
+        /// <summary>
+        /// Gets the new section.
+        /// </summary>
+        /// <returns></returns>
+        IPlaneViewProvider GetNewSection();
 
         /// <summary>
         /// The path provider.

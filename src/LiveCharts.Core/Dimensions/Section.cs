@@ -26,6 +26,7 @@
 #region
 
 using LiveCharts.Core.Drawing;
+using LiveCharts.Core.Interaction.Dimensions;
 using LiveCharts.Core.Interaction.Styles;
 #if NET45 || NET46
 using Font = LiveCharts.Core.Interaction.Styles.Font;
@@ -40,9 +41,16 @@ namespace LiveCharts.Core.Dimensions
     /// </summary>
     public class Section
     {
+        private IPlaneViewProvider _viewProvider;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Section"/> class.
+        /// </summary>
         public Section()
         {
             Font = Font.Empty;
+            LabelHorizontalAlignment = HorizontalAlignment.Centered;
+            LabelVerticalAlignment = VerticalAlignment.Centered;
         }
 
         /// <summary>
@@ -78,6 +86,14 @@ namespace LiveCharts.Core.Dimensions
         public double StrokeThickness { get; set; }
 
         /// <summary>
+        /// Gets or sets the stroke dash array.
+        /// </summary>
+        /// <value>
+        /// The stroke dash array.
+        /// </value>
+        public float[] StrokeDashArray { get; set; }
+
+        /// <summary>
         /// Gets or sets the fill.
         /// </summary>
         /// <value>
@@ -99,7 +115,7 @@ namespace LiveCharts.Core.Dimensions
         /// <value>
         /// The content of the label.
         /// </value>
-        public string LabelContent { get; set; }
+        public object LabelContent { get; set; }
 
         /// <summary>
         /// Gets or sets the label vertical alignment.
@@ -123,6 +139,27 @@ namespace LiveCharts.Core.Dimensions
         /// <value>
         /// The view.
         /// </value>
-        public ICartesianAxisSectionView View { get; internal set; }
+        public IPlaneSection View { get; internal set; }
+
+        /// <summary>
+        /// Gets or sets the view provider.
+        /// </summary>
+        /// <value>
+        /// The view provider.
+        /// </value>
+        public IPlaneViewProvider ViewProvider
+        {
+            get => _viewProvider ?? (_viewProvider = DefaultViewProvider());
+            set => _viewProvider = value;
+        }
+
+        /// <summary>
+        /// Specifies the default ui provider.
+        /// </summary>
+        /// <returns></returns>
+        protected virtual IPlaneViewProvider DefaultViewProvider()
+        {
+            return Charting.Current.UiProvider.GetNewSection();
+        }
     }
 }

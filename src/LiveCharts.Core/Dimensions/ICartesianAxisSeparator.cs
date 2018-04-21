@@ -35,7 +35,7 @@ namespace LiveCharts.Core.Dimensions
     /// <summary>
     /// Defines a separator view.
     /// </summary>
-    public interface ICartesianAxisSectionView : IResource
+    public interface IPlaneSection : IResource
     {
         /// <summary>
         /// Gets the label.

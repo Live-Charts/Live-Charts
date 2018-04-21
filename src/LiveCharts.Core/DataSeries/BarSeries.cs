@@ -46,7 +46,7 @@ namespace LiveCharts.Core.DataSeries
     /// <typeparam name="TModel">The type of the model.</typeparam>
     public class BarSeries<TModel> : BaseBarSeries<TModel, PointCoordinate, IBarSeries>
     {
-        private static ISeriesViewProvider<TModel, PointCoordinate, RectangleViewModel, IBarSeries> _provider;
+        private ISeriesViewProvider<TModel, PointCoordinate, RectangleViewModel, IBarSeries> _provider;
 
         /// <inheritdoc />
         protected override ISeriesViewProvider<TModel, PointCoordinate, RectangleViewModel, IBarSeries>

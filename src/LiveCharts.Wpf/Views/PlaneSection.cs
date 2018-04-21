@@ -24,8 +24,11 @@
 #endregion
 #region
 
+using System;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using System.Windows.Shapes;
 using LiveCharts.Core.Charts;
 using LiveCharts.Core.Dimensions;
@@ -41,8 +44,8 @@ namespace LiveCharts.Wpf.Views
     /// <summary>
     /// The separator class.
     /// </summary>
-    /// <seealso cref="ICartesianAxisSectionView" />
-    public class CartesianAxisSectionView<TLabel> : ICartesianAxisSectionView
+    /// <seealso cref="IPlaneSection" />
+    public class PlaneView<TLabel> : IPlaneSection
         where TLabel : FrameworkElement, IMeasurableLabel, new()
     {
         /// <summary>
@@ -86,6 +89,10 @@ namespace LiveCharts.Wpf.Views
             
             Rectangle.Fill = args.Style?.Fill.AsWpf();
             Rectangle.Stroke = args.Style?.Stroke.AsWpf();
+            Rectangle.StrokeThickness = args.Style?.StrokeThickness ?? 0;
+            Rectangle.StrokeDashArray = args.Style?.StrokeDashArray == null
+                ? null
+                : new DoubleCollection(args.Style?.StrokeDashArray.Select(x => (double) x));
 
             var storyboard = Rectangle.Animate()
                 .AtSpeed(speed)
@@ -141,10 +148,10 @@ namespace LiveCharts.Wpf.Views
         public event DisposingResourceHandler Disposed;
 
         /// <inheritdoc />
-        object ICartesianAxisSectionView.VisualElement => Rectangle;
+        object IPlaneSection.VisualElement => Rectangle;
 
         /// <inheritdoc />
-        IMeasurableLabel ICartesianAxisSectionView.Label => Label;
+        IMeasurableLabel IPlaneSection.Label => Label;
 
         object IResource.UpdateId { get; set; }
 

@@ -52,9 +52,12 @@ namespace LiveCharts.Core.DataSeries
     /// <seealso cref="IBarSeries" />
     public class StackedBarSeries<TModel> : BaseBarSeries<TModel, StackedPointCoordinate, IStackedBarSeries>, IStackedBarSeries
     {
-        private static ISeriesViewProvider<TModel, StackedPointCoordinate, RectangleViewModel, IStackedBarSeries> _provider;
+        private ISeriesViewProvider<TModel, StackedPointCoordinate, RectangleViewModel, IStackedBarSeries> _provider;
         private int _stackIndex;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="StackedBarSeries{TModel}"/> class.
+        /// </summary>
         public StackedBarSeries()
         {
             Charting.BuildFromSettings<IStackedBarSeries>(this);

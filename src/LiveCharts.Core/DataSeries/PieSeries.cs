@@ -48,7 +48,7 @@ namespace LiveCharts.Core.DataSeries
     public class PieSeries<TModel> :
         StrokeSeries<TModel, StackedPointCoordinate, PieViewModel, IPieSeries>, IPieSeries
     {
-        private static ISeriesViewProvider<TModel, StackedPointCoordinate, PieViewModel, IPieSeries> _provider;
+        private ISeriesViewProvider<TModel, StackedPointCoordinate, PieViewModel, IPieSeries> _provider;
         private double _pushOut;
         private double _cornerRadius;
 
@@ -144,7 +144,7 @@ namespace LiveCharts.Core.DataSeries
 
                 if (current.View == null)
                 {
-                    current.View = PointViewProvider.GetNewPoint();
+                    current.View = ViewProvider.GetNewPoint();
                 }
 
                 current.InteractionArea = new PolarInteractionArea(

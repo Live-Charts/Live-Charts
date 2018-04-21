@@ -50,7 +50,7 @@ namespace LiveCharts.Core.DataSeries
     public class HeatSeries<TModel>
         : CartesianStrokeSeries<TModel, WeightedCoordinate, HeatViewModel, IHeatSeries>, IHeatSeries
     {
-        private static ISeriesViewProvider<TModel, WeightedCoordinate, HeatViewModel, IHeatSeries> _provider;
+        private ISeriesViewProvider<TModel, WeightedCoordinate, HeatViewModel, IHeatSeries> _provider;
         private IEnumerable<GradientStop> _gradient;
 
         /// <summary>
@@ -131,7 +131,7 @@ namespace LiveCharts.Core.DataSeries
             {
                 if (current.View == null)
                 {
-                    current.View = PointViewProvider.GetNewPoint();
+                    current.View = ViewProvider.GetNewPoint();
                     current.ViewModel = new HeatViewModel
                     {
                         To = Color.FromArgb(0, 0, 0, 0)

@@ -50,7 +50,7 @@ namespace LiveCharts.Core.DataSeries
     public class LineSeries<TModel>
         : CartesianStrokeSeries<TModel, PointCoordinate, BezierViewModel, ILineSeries>, ILineSeries
     {
-        private static ISeriesViewProvider<TModel, PointCoordinate, BezierViewModel, ILineSeries> _provider;
+        private ISeriesViewProvider<TModel, PointCoordinate, BezierViewModel, ILineSeries> _provider;
         private const string Path = "path";
 
         /// <summary>
@@ -135,7 +135,7 @@ namespace LiveCharts.Core.DataSeries
 
                 if (bezier.Point.View == null)
                 {
-                    bezier.Point.View = PointViewProvider.GetNewPoint();
+                    bezier.Point.View = ViewProvider.GetNewPoint();
                 }
 
                 bezier.ViewModel.Path = cartesianPath;

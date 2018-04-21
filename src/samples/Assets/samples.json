@@ -40,8 +40,13 @@
       //{
       //  "id": "AxesPositioning",
       //  "name": "Axes positioning",
-      //  "text": "Use the axis position and invert properties to customize any plane." 
+      //  "text": "Use the axis position and invert properties to customize any plane."
       //},
+      {
+        "id": "AxisSections",
+        "name": "Axis sections",
+        "text": "A chart that highlights a range in an axis."
+      },
       {
         "id": "MultipleAxes",
         "name": "Multiple axes",

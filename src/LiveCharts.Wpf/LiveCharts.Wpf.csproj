@@ -73,13 +73,14 @@
     <Compile Include="Views\Providers\BezierSeriesViewProvider.cs" />
     <Compile Include="Views\Providers\HeatViewSeriesProvider.cs" />
     <Compile Include="Views\Providers\PieSeriesViewProvider.cs" />
+    <Compile Include="Views\Providers\PlaneViewProvider.cs" />
     <Compile Include="Views\Providers\ScatterSeriesViewProvider.cs" />
     <Compile Include="Views\BezierPointView.cs" />
     <Compile Include="Views\CartesianPath.cs" />
     <Compile Include="Views\PointView.cs" />
     <Compile Include="Animations\AnimationBuilder.cs" />
     <Compile Include="Views\GeometryPointView.cs" />
-    <Compile Include="Views\CartesianAxisSeparatorView.cs" />
+    <Compile Include="Views\PlaneSection.cs" />
     <Compile Include="UiProvider.cs" />
     <Compile Include="CartesianChart.cs">
       <SubType>Code</SubType>

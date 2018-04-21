@@ -30,6 +30,7 @@ using LiveCharts.Core.DataSeries;
 using LiveCharts.Core.Dimensions;
 using LiveCharts.Core.Interaction;
 using LiveCharts.Core.Interaction.Controls;
+using LiveCharts.Core.Interaction.Dimensions;
 using LiveCharts.Core.Interaction.Series;
 using LiveCharts.Core.ViewModels;
 using LiveCharts.Wpf.Controls;
@@ -52,15 +53,15 @@ namespace LiveCharts.Wpf
         }
 
         /// <inheritdoc />
-        public IMeasurableLabel GetNewAxisLabel()
+        public IPlaneViewProvider GetNewPlane()
         {
-            return new AxisLabel();
+            return new PlaneViewProvider();
         }
 
         /// <inheritdoc />
-        public ICartesianAxisSectionView GetNewAxisSection()
+        public IPlaneViewProvider GetNewSection()
         {
-            return new CartesianAxisSectionView<AxisLabel>();
+            return new PlaneViewProvider();
         }
 
         /// <inheritdoc />

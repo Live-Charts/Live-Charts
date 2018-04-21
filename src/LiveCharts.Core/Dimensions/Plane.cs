@@ -34,6 +34,7 @@ using LiveCharts.Core.Drawing;
 using LiveCharts.Core.Events;
 using LiveCharts.Core.Interaction;
 using LiveCharts.Core.Interaction.Controls;
+using LiveCharts.Core.Interaction.Dimensions;
 using LiveCharts.Core.Interaction.Styles;
 using Brush = LiveCharts.Core.Drawing.Brush;
 using Font = LiveCharts.Core.Interaction.Styles.Font;
@@ -366,7 +367,7 @@ namespace LiveCharts.Core.Dimensions
         /// The default separator provider.
         /// </summary>
         /// <returns></returns>
-        protected virtual IMeasurableLabel DefaultLabelProvider()
+        protected virtual IPlaneViewProvider DefaultViewProvider()
         {
             throw new LiveChartsException(
                 $"A {nameof(IMeasurableLabel)} was not found when trying to draw Plane in the UI", 115);

@@ -160,7 +160,7 @@ namespace LiveCharts.Core.DataSeries
             {
                 if (current.View == null)
                 {
-                    current.View = PointViewProvider.GetNewPoint();
+                    current.View = ViewProvider.GetNewPoint();
                 }
 
                 BuildModel(

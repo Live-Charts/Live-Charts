@@ -50,7 +50,7 @@ namespace LiveCharts.Core.Drawing
             PointF location,
             PointF offset,
             Margin margin,
-            string content,
+            object content,
             SizeF size,
             LabelStyle labelStyle)
         {
@@ -67,7 +67,7 @@ namespace LiveCharts.Core.Drawing
         /// <value>
         /// The content.
         /// </value>
-        public string Content { get; set; }
+        public object Content { get; set; }
 
         /// <summary>
         /// Gets the actual location (Location + Offset)

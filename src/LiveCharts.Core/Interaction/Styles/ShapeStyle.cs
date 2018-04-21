@@ -41,11 +41,13 @@ namespace LiveCharts.Core.Interaction.Styles
         /// <param name="stroke">The stroke.</param>
         /// <param name="fill">The fill.</param>
         /// <param name="strokeThickness">The stroke thickness.</param>
-        public ShapeStyle(Brush stroke, Brush fill, float strokeThickness)
+        /// <param name="strokeDashArray">The stroke dash array.</param>
+        public ShapeStyle(Brush stroke, Brush fill, float strokeThickness, float[] strokeDashArray)
         {
             Stroke = stroke;
             Fill = fill;
             StrokeThickness = strokeThickness;
+            StrokeDashArray = strokeDashArray;
         }
 
         /// <summary>
@@ -63,6 +65,14 @@ namespace LiveCharts.Core.Interaction.Styles
         /// The stroke thickness.
         /// </value>
         public float StrokeThickness { get;}
+
+        /// <summary>
+        /// Gets or sets the stroke dash array.
+        /// </summary>
+        /// <value>
+        /// The stroke dash array.
+        /// </value>
+        public float[] StrokeDashArray { get; set; }
 
         /// <summary>
         /// Gets or sets the fill.

@@ -46,7 +46,7 @@ namespace LiveCharts.Core.DataSeries
     public class BubbleSeries<TModel> 
         : CartesianStrokeSeries<TModel, WeightedCoordinate, GeometryPointViewModel, IBubbleSeries>, IBubbleSeries
     {
-        private static ISeriesViewProvider<TModel, WeightedCoordinate, GeometryPointViewModel, IBubbleSeries> _provider;
+        private ISeriesViewProvider<TModel, WeightedCoordinate, GeometryPointViewModel, IBubbleSeries> _provider;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BubbleSeries{TModel}"/> class.
@@ -107,7 +107,7 @@ namespace LiveCharts.Core.DataSeries
             {
                 if (current.View == null)
                 {
-                    current.View = PointViewProvider.GetNewPoint();
+                    current.View = ViewProvider.GetNewPoint();
                 }
 
                 var p = new[]
