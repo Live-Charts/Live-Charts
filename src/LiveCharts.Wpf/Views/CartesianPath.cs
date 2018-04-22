@@ -42,7 +42,6 @@ namespace LiveCharts.Wpf.Views
 {
     public class CartesianPath : ICartesianPath
     {
-        private readonly Path _strokePath;
         private readonly PathFigure _figure;
         private IEnumerable<double> _strokeDashArray;
         private double _previousLength;
@@ -51,12 +50,12 @@ namespace LiveCharts.Wpf.Views
 
         public CartesianPath()
         {
-            _strokePath = new Path();
+            StrokePath = new Path();
             _figure = new PathFigure
             {
                 Segments = new PathSegmentCollection()
             };
-            _strokePath.Data = new PathGeometry
+            StrokePath.Data = new PathGeometry
             {
                 Figures = new PathFigureCollection(1)
                 {
@@ -65,11 +64,15 @@ namespace LiveCharts.Wpf.Views
             };
         }
 
+        public Path StrokePath { get; }
+
+        public Path FillPath => null;
+
         /// <inheritdoc />
         public void Initialize(IChartView view)
         {
             _animationsSpeed = view.AnimationsSpeed;
-            view.Content.AddChild(_strokePath);
+            view.Content.AddChild(StrokePath);
             _isNew = true;
         }
 
@@ -92,11 +95,11 @@ namespace LiveCharts.Wpf.Views
                     .Begin();
             }
 
-            _strokePath.Stroke = stroke.AsWpf();
-            _strokePath.Fill = null;
-            _strokePath.StrokeThickness = strokeThickness;
+            StrokePath.Stroke = stroke.AsWpf();
+            StrokePath.Fill = null;
+            StrokePath.StrokeThickness = strokeThickness;
             _strokeDashArray = strokeDashArray;
-            _strokePath.StrokeDashOffset = 0;
+            StrokePath.StrokeDashOffset = 0;
         }
 
         /// <inheritdoc />
@@ -117,7 +120,7 @@ namespace LiveCharts.Wpf.Views
 
         public void Close(IChartView view, float length, float i, float j)
         {
-            var l = length / _strokePath.StrokeThickness;
+            var l = length / StrokePath.StrokeThickness;
             var tl = l - _previousLength;
             var remaining = 0d;
             if (tl < 0)
@@ -125,19 +128,19 @@ namespace LiveCharts.Wpf.Views
                 remaining = -tl;
             }
 
-            _strokePath.StrokeDashArray = new DoubleCollection(
+            StrokePath.StrokeDashArray = new DoubleCollection(
                 Effects.GetAnimatedDashArray(_strokeDashArray, (float) (l + remaining)));
-            _strokePath.BeginAnimation(
+            StrokePath.BeginAnimation(
                 Shape.StrokeDashOffsetProperty,
                 new DoubleAnimation(tl + remaining, 0, view.AnimationsSpeed, FillBehavior.Stop));
 
-            _strokePath.StrokeDashOffset = 0;
+            StrokePath.StrokeDashOffset = 0;
             _previousLength = l;
         }
 
         public void Dispose(IChartView view)
         {
-            view.Content.RemoveChild(_strokePath);
+            view.Content.RemoveChild(StrokePath);
         }
     }
 }

@@ -356,19 +356,19 @@ namespace LiveCharts.Core.Charts
         /// <summary>
         /// Selects the points.
         /// </summary>
-        /// <param name="dimensions">The dimensions.</param>
+        /// <param name="pointerLocation">The dimensions.</param>
         /// <returns></returns>
-        public IEnumerable<PackedPoint> GetInteractedPoints(params double[] dimensions)
+        public IEnumerable<PackedPoint> GetHoveredPoints(PointF pointerLocation)
         {
-            return Series.SelectMany(series => series.GetInteractedPoints(dimensions));
+            return Series.SelectMany(series => series.GetHoveredPoints(pointerLocation));
         }
 
         /// <summary>
         /// Called when the pointer moves over a chart and there is a tooltip in the view.
         /// </summary>
         /// <param name="selectionMode">The selection mode.</param>
-        /// <param name="mouseLocation">The dimensions.</param>
-        protected abstract void ViewOnPointerMoved(TooltipSelectionMode selectionMode, params double[] mouseLocation);
+        /// <param name="pointerLocation">The dimensions.</param>
+        protected abstract void ViewOnPointerMoved(TooltipSelectionMode selectionMode, PointF pointerLocation);
 
         /// <summary>
         /// Updates the chart.
@@ -602,7 +602,7 @@ namespace LiveCharts.Core.Charts
         }
 
         /// <inheritdoc />
-        public void Dispose()
+        public virtual void Dispose()
         {
             foreach (var resource in _resources)
             {

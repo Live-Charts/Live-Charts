@@ -59,8 +59,9 @@ namespace LiveCharts.Wpf.Views
         private BezierSegment _segment;
         private BezierViewModel _vm;
 
+        public CartesianPath Path => (CartesianPath) _path;
+
         private bool IsMiddlePoint => _next != null && _previous != null;
-        private bool IsDisposing { get; set; }
 
         protected override void OnDraw(
             Point<TModel, PointCoordinate, BezierViewModel, ILineSeries> point, 
@@ -138,7 +139,6 @@ namespace LiveCharts.Wpf.Views
 
         protected override void OnDispose(IChartView chart)
         {
-            IsDisposing = true;
             var t = _next ?? _previous ?? this;
 
             var shapeAnimation = Shape.Animate()
@@ -150,7 +150,6 @@ namespace LiveCharts.Wpf.Views
                 .Then((sender, args) =>
                 {
                     chart.Content.RemoveChild(Shape);
-                    IsDisposing = false;
                 })
                 .Begin();
 
@@ -171,7 +170,6 @@ namespace LiveCharts.Wpf.Views
                 segmentAnimation
                     .Then((sender, args) =>
                     {
-                        IsDisposing = false;
                         _path.RemoveSegment(_segment);
                         _segment = null;
                         _path = null;

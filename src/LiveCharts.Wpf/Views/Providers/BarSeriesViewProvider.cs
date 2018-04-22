@@ -61,6 +61,20 @@ namespace LiveCharts.Wpf.Views.Providers
         }
 
         /// <inheritdoc />
+        public void OnPointHighlight(PackedPoint point)
+        {
+            var view = (BarPointView<TModel, TCoordinate, TSeries, Rectangle>) point.View;
+            view.Shape.Opacity = 0.85;
+        }
+
+        /// <inheritdoc />
+        public void RemovePointHighlight(PackedPoint point)
+        {
+            var view = (BarPointView<TModel, TCoordinate, TSeries, Rectangle>)point.View;
+            view.Shape.Opacity = 1;
+        }
+
+        /// <inheritdoc />
         public void OnUpdateFinished(IChartView chart, TSeries series)
         {
         }

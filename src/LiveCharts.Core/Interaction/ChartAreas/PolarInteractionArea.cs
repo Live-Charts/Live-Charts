@@ -86,10 +86,10 @@ namespace LiveCharts.Core.Interaction.ChartAreas
         public PointF Center { get; }
 
         /// <inheritdoc />
-        public override bool Contains(params double[] dimensions)
+        public override bool Contains(PointF pointerLocation)
         {
-            var x = dimensions[0];
-            var y = dimensions[1];
+            var x = pointerLocation.X;
+            var y = pointerLocation.Y;
 
             var dx = Math.Abs(x - Center.X);
             var dy = Math.Abs(y - Center.Y);

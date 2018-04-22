@@ -39,6 +39,13 @@ namespace LiveCharts.Core.Interaction.Points
     /// </summary>
     public class PackedPoint
     {
+        private readonly object _packingSource;
+
+        internal PackedPoint(object packingSource)
+        {
+            _packingSource = packingSource;
+        }
+
         /// <summary>
         /// Gets the key of the point, a key is used internally as a unique identifier in 
         /// in a <see cref="Series"/> 
@@ -127,15 +134,34 @@ namespace LiveCharts.Core.Interaction.Points
             }
             return Coordinate.AsTooltipData(planes);
         }
+
+        /// <inheritdoc />
+        public override bool Equals(object obj)
+        {
+            return Equals(obj, _packingSource);
+        }
+
+        /// <inheritdoc />
+        public override int GetHashCode()
+        {
+            return _packingSource.GetHashCode();
+        }
     }
 
     /// <summary>
-    /// A boxed copy of the <see cref="Point{TModel,TCoordinate,TViewModel}"/> class.
+    /// A boxed copy of the <see cref="Point{TModel,TCoordinate,TViewModel, TSeries}"/> class.
     /// </summary>
     /// <typeparam name="TModel">The type of the model.</typeparam>
     /// <typeparam name="TCoordinate">The type of the coordinate.</typeparam>
     public class PackedPoint<TModel, TCoordinate>
     {
+        private readonly object _packingSource;
+
+        internal PackedPoint(object packingSource)
+        {
+            _packingSource = packingSource;
+        }
+
         /// <summary>
         /// Gets the key of the point, a key is used internally as a unique identifier in 
         /// in a <see cref="Series"/> 
@@ -192,5 +218,17 @@ namespace LiveCharts.Core.Interaction.Points
         /// The chart.
         /// </value>
         public ChartModel Chart { get; internal set; }
+
+        /// <inheritdoc />
+        public override bool Equals(object obj)
+        {
+            return Equals(obj, _packingSource);
+        }
+
+        /// <inheritdoc />
+        public override int GetHashCode()
+        {
+            return _packingSource.GetHashCode();
+        }
     }
 }

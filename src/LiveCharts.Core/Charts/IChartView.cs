@@ -43,7 +43,7 @@ namespace LiveCharts.Core.Charts
     /// <summary>
     /// Defines a chart view
     /// </summary>
-    public interface IChartView : INotifyPropertyChanged
+    public interface IChartView : INotifyPropertyChanged, IDisposable
     {
         /// <summary>
         /// Occurs when the charts is initialized.
@@ -127,6 +127,14 @@ namespace LiveCharts.Core.Charts
         /// The actual series.
         /// </value>
         IEnumerable<ISeries> Series { get; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether this <see cref="IChartView"/> is hoverable.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if hoverable; otherwise, <c>false</c>.
+        /// </value>
+        bool Hoverable { get; set; }
 
         /// <summary>
         /// Gets the animations speed.

@@ -25,12 +25,14 @@
 #region
 
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using LiveCharts.Core.DataSeries;
 using LiveCharts.Core.Dimensions;
 using LiveCharts.Core.Drawing;
 using LiveCharts.Core.Interaction;
+using LiveCharts.Core.Interaction.Points;
 using LiveCharts.Core.Interaction.Styles;
 using LiveCharts.Core.Updating;
 
@@ -42,6 +44,7 @@ namespace LiveCharts.Core.Charts
     public class CartesianChartModel : ChartModel
     {
         private PointF _previousTooltipLocation = PointF.Empty;
+        private IEnumerable<PackedPoint> _previousHovered;
         
         /// <inheritdoc />
         public CartesianChartModel(IChartView view)
@@ -231,10 +234,12 @@ namespace LiveCharts.Core.Charts
         }
 
         /// <inheritdoc />
-        protected override void ViewOnPointerMoved(TooltipSelectionMode selectionMode, params double[] mouseLocation)
+        protected override void ViewOnPointerMoved(
+            TooltipSelectionMode selectionMode,
+            PointF pointerLocation)
         {
             if (Series == null) return;
-            var query = GetInteractedPoints(mouseLocation).ToArray();
+            var query = GetHoveredPoints(pointerLocation).ToArray();
 
             if (selectionMode == TooltipSelectionMode.Auto)
             {
@@ -247,10 +252,29 @@ namespace LiveCharts.Core.Charts
             if (!query.Any())
             {
                 ToolTipTimeoutTimer.Start();
+
+                if (!View.Hoverable) return;
+
+                foreach (var leftPoint in _previousHovered ?? Enumerable.Empty<PackedPoint>())
+                {
+                    leftPoint.Series.ResetPointStyle(leftPoint);
+                }
+
+                _previousHovered = null;
                 return;
             }
 
             ToolTipTimeoutTimer.Stop();
+
+            if (View.Hoverable)
+            {
+                foreach (var leftPoint in _previousHovered?.Except(query) ?? Enumerable.Empty<PackedPoint>())
+                {
+                    leftPoint.Series.ResetPointStyle(leftPoint);
+                }
+
+                _previousHovered = query;
+            }
 
             View.DataToolTip.ShowAndMeasure(query, View);
             float sx = 0f, sy = 0f;
@@ -261,6 +285,7 @@ namespace LiveCharts.Core.Charts
                 var cartesianSeries = (ICartesianSeries) point.Series;
                 sx += ScaleToUi(coordinate[0][0], Dimensions[0][cartesianSeries.ScalesAt[0]]);
                 sy += ScaleToUi(coordinate[1][0], Dimensions[1][cartesianSeries.ScalesAt[1]]);
+                if (View.Hoverable) cartesianSeries.OnPointHover(point);
             }
 
             sx = sx / query.Length;
@@ -275,7 +300,7 @@ namespace LiveCharts.Core.Charts
 
             OnDataPointerEnter(query);
             var leftPoints = PreviousHoveredPoints?.ToArray()
-                .Where(x => !x.InteractionArea.Contains(mouseLocation));
+                .Where(x => !x.InteractionArea.Contains(pointerLocation));
             // ReSharper disable once PossibleMultipleEnumeration
             if (leftPoints != null && leftPoints.Any())
             {
@@ -401,6 +426,12 @@ namespace LiveCharts.Core.Charts
                     xb > yb ? xb : yb,
                     xl > yl ? xl : yl)
                 : DrawMargin;
+        }
+
+        public override void Dispose()
+        {
+            base.Dispose();
+            _previousHovered = null;
         }
     }
 }

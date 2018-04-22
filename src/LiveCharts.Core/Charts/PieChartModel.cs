@@ -66,11 +66,10 @@ namespace LiveCharts.Core.Charts
         }
 
         /// <inheritdoc />
-        protected override void ViewOnPointerMoved(
-            TooltipSelectionMode selectionMode, params double[] mouseLocation)
+        protected override void ViewOnPointerMoved(TooltipSelectionMode selectionMode, PointF pointerLocation)
         {
             if (Series == null) return;
-            var query = GetInteractedPoints(mouseLocation).ToArray();
+            var query = GetHoveredPoints(pointerLocation).ToArray();
 
             if (selectionMode == TooltipSelectionMode.Auto)
             {
@@ -108,7 +107,7 @@ namespace LiveCharts.Core.Charts
 
             OnDataPointerEnter(query);
             var leftPoints = PreviousHoveredPoints?.ToArray()
-                .Where(x => !x.InteractionArea.Contains(mouseLocation));
+                .Where(x => !x.InteractionArea.Contains(pointerLocation));
             // ReSharper disable once PossibleMultipleEnumeration
             if (leftPoints != null && leftPoints.Any())
             {

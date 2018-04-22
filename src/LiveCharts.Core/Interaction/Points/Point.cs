@@ -118,7 +118,7 @@ namespace LiveCharts.Core.Interaction.Points
         /// <returns></returns>
         public PackedPoint<TModel, TCoordinate> Pack()
         {
-            return new PackedPoint<TModel, TCoordinate>
+            return new PackedPoint<TModel, TCoordinate>(this)
             {
                 Chart = Chart,
                 Coordinate = Coordinate,
@@ -136,7 +136,7 @@ namespace LiveCharts.Core.Interaction.Points
         /// <returns></returns>
         public PackedPoint PackAll()
         {
-            return new PackedPoint
+            return new PackedPoint(this)
             {
                 Chart = Chart,
                 Coordinate = Coordinate,

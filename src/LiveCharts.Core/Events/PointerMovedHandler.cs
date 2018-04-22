@@ -24,6 +24,7 @@
 #endregion
 #region
 
+using System.Drawing;
 using LiveCharts.Core.Interaction;
 
 #endregion
@@ -34,6 +35,6 @@ namespace LiveCharts.Core.Events
     /// The pointer moved handler.
     /// </summary>
     /// <param name="selectionMode">The selection mode.</param>
-    /// <param name="dimensions">The dimensions.</param>
-    public delegate void PointerMovedHandler(TooltipSelectionMode selectionMode, params double[] dimensions);
+    /// <param name="pointerLocation">The pointer location.</param>
+    public delegate void PointerMovedHandler(TooltipSelectionMode selectionMode, PointF pointerLocation);
 }

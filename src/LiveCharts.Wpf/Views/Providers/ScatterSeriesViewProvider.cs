@@ -25,6 +25,8 @@
 
 #region
 
+using System.Windows;
+using System.Windows.Media;
 using LiveCharts.Core.Charts;
 using LiveCharts.Core.Coordinates;
 using LiveCharts.Core.DataSeries;
@@ -57,6 +59,22 @@ namespace LiveCharts.Wpf.Views.Providers
         public IPointView<TModel,  TCoordinate, GeometryPointViewModel, TSeries> GetNewPoint()
         {
             return new GeometryPointView<TModel, TCoordinate, TSeries>();
+        }
+
+        /// <inheritdoc />
+        public void OnPointHighlight(PackedPoint point)
+        {
+            var view = (GeometryPointView<TModel, TCoordinate, TSeries>) point.View;
+            view.Shape.RenderTransformOrigin = new Point(0.5, 0.5);
+            view.Shape.RenderTransform = new ScaleTransform(1.2, 1.2);
+        }
+
+        /// <inheritdoc />
+        public void RemovePointHighlight(PackedPoint point)
+        {
+            var view = (GeometryPointView<TModel, TCoordinate, TSeries>) point.View;
+            view.Shape.RenderTransformOrigin = new Point();
+            view.Shape.RenderTransform = null;
         }
 
         /// <inheritdoc />

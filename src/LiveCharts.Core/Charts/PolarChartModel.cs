@@ -24,6 +24,7 @@
 #endregion
 #region
 
+using System.Drawing;
 using LiveCharts.Core.Dimensions;
 using LiveCharts.Core.Interaction;
 
@@ -62,8 +63,7 @@ namespace LiveCharts.Core.Charts
         }
 
         /// <inheritdoc />
-        protected override void ViewOnPointerMoved(
-            TooltipSelectionMode selectionMode, params double[] mouseLocation)
+        protected override void ViewOnPointerMoved(TooltipSelectionMode selectionMode, PointF pointerLocation)
         {
             throw new System.NotImplementedException();
         }

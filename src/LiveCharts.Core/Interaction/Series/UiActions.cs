@@ -24,12 +24,11 @@
 #endregion
 namespace LiveCharts.Core.Interaction.Series
 {
+    /// <summary>
+    /// supported ui actions.
+    /// </summary>
     public enum UiActions
     {
-        /// <summary>
-        /// The always action.
-        /// </summary>
-        Always,
         /// <summary>
         /// The mouse enter action.
         /// </summary>

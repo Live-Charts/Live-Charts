@@ -54,6 +54,18 @@ namespace LiveCharts.Core.Interaction.Series
         /// <returns></returns>
         IPointView<TModel, TCoordinate, TViewModel, TSeries> GetNewPoint();
 
+        /// <summary>
+        /// Called when a point is selected.
+        /// </summary>
+        /// <param name="point">The point.</param>
+        void OnPointHighlight(PackedPoint point);
+
+        /// <summary>
+        /// Resets the point style.
+        /// </summary>
+        /// <param name="point">The point.</param>
+        void RemovePointHighlight(PackedPoint point);
+
         /// <summary>the series update finishes.
         /// </summary>
         /// <param name="chart">The chart.</param>

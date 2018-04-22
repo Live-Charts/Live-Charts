@@ -57,6 +57,20 @@ namespace LiveCharts.Wpf.Views.Providers
         }
 
         /// <inheritdoc />
+        public void OnPointHighlight(PackedPoint point)
+        {
+            var view = (HeatPointView<TModel>) point.View;
+            view.Shape.Opacity = .85;
+        }
+
+        /// <inheritdoc />
+        public void RemovePointHighlight(PackedPoint point)
+        {
+            var view = (HeatPointView<TModel>)point.View;
+            view.Shape.Opacity = 1;
+        }
+
+        /// <inheritdoc />
         public void OnUpdateFinished(IChartView chart, IHeatSeries series)
         {
         }

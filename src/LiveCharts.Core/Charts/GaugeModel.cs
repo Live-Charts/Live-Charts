@@ -60,8 +60,7 @@ namespace LiveCharts.Core.Charts
         }
 
         /// <inheritdoc />
-        protected override void ViewOnPointerMoved(
-            TooltipSelectionMode selectionMode, params double[] mouseLocation)
+        protected override void ViewOnPointerMoved(TooltipSelectionMode selectionMode, PointF pointerLocation)
         {
         }
 

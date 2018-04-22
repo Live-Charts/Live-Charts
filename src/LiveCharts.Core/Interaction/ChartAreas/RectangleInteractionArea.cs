@@ -54,10 +54,10 @@ namespace LiveCharts.Core.Interaction.ChartAreas
         public RectangleF Rectangle { get; }
 
         /// <inheritdoc />
-        public override bool Contains(params double[] dimensions)
+        public override bool Contains(PointF pointerLocation)
         {
-            var x = dimensions[0];
-            var y = dimensions[1];
+            var x = pointerLocation.X;
+            var y = pointerLocation.Y;
 
             var a = x >= Rectangle.Left && x <= Rectangle.Left + Rectangle.Width &&
                     y >= Rectangle.Top && y <= Rectangle.Top + Rectangle.Height;

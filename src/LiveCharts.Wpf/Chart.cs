@@ -55,7 +55,7 @@ namespace LiveCharts.Wpf
     /// <seealso cref="Canvas" />
     /// <seealso cref="IChartView" />
     /// <seealso cref="IDesktopChart" />
-    public abstract class Chart : Canvas, IChartView, IDesktopChart
+    public abstract class Chart : Canvas, IChartView, IDesktopChart, IDisposable
     {
         /// <summary>
         /// Initializes the <see cref="Chart"/> class.
@@ -150,6 +150,12 @@ namespace LiveCharts.Wpf
             nameof(DataToolTip), typeof(IDataToolTip), typeof(Chart),
             new PropertyMetadata(null));
 
+        /// <summary>
+        /// The hoverable property
+        /// </summary>
+        public static readonly DependencyProperty HoverableProperty = DependencyProperty.Register(
+            nameof(Hoverable), typeof(bool), typeof(Chart), new PropertyMetadata(true));
+
         #endregion
 
         #region private and protected methods
@@ -221,7 +227,7 @@ namespace LiveCharts.Wpf
             var c = new Point(
                 p.X - GetLeft(VisualDrawMargin),
                 p.Y - GetTop(VisualDrawMargin));
-            PointerMovedOverPlot?.Invoke(DataToolTip.SelectionMode, c.X, c.Y);
+            PointerMovedOverPlot?.Invoke(DataToolTip.SelectionMode, new PointF((float) c.X, (float) c.Y));
         }
 
         private void OnLeftButtonDown(object sender, MouseButtonEventArgs args)
@@ -231,7 +237,7 @@ namespace LiveCharts.Wpf
             var c = new Point(
                 p.X +GetLeft(VisualDrawMargin),
                 p.Y + GetTop(VisualDrawMargin));
-            var points = Model.GetInteractedPoints(c.X, c.Y);
+            var points = Model.GetHoveredPoints(new PointF((float) c.X, (float) c.Y));
             var e = new DataInteractionEventArgs(args.MouseDevice, args.Timestamp, args.ChangedButton, points)
             {
                 RoutedEvent = MouseDownEvent
@@ -245,7 +251,7 @@ namespace LiveCharts.Wpf
             var c = new Point(
                 p.X + GetLeft(VisualDrawMargin),
                 p.Y + GetTop(VisualDrawMargin));
-            var points = Model.GetInteractedPoints(c.X, c.Y);
+            var points = Model.GetHoveredPoints(new PointF((float) c.X, (float) c.Y));
             var e = new DataInteractionEventArgs(args.MouseDevice, args.Timestamp, args.ChangedButton, points)
             {
                 RoutedEvent = MouseDownEvent,
@@ -363,6 +369,13 @@ namespace LiveCharts.Wpf
             set => SetValue(LegendPositionProperty, value);
         }
 
+        /// <inheritdoc />
+        public bool Hoverable
+        {
+            get => (bool)GetValue(HoverableProperty);
+            set => SetValue(HoverableProperty, value);
+        }
+
         /// <inheritdoc cref="IChartView.DataToolTip"/>
         public IDataToolTip DataToolTip
         {
@@ -470,5 +483,24 @@ namespace LiveCharts.Wpf
         }
 
         #endregion
+
+        public void Dispose()
+        {
+            Model.Dispose();
+            Series = null;
+            Children.Remove(TooltipPopup);
+            Children.Remove(VisualDrawMargin);
+            Loaded -= OnLoaded;
+            VisualDrawMargin = null;
+            DrawMargin = Core.Drawing.Margin.Empty;
+            SetValue(LegendProperty, null);
+            SetValue(DataTooltipProperty, null);
+            Loaded -= OnLoaded;
+            SizeChanged -= OnSizeChanged;
+            MouseMove -= OnMouseMove;
+            MouseLeftButtonUp -= OnLeftButtonUp;
+            MouseLeftButtonDown -= OnLeftButtonDown;
+            TooltipPopup = null;
+        }
     }
 }

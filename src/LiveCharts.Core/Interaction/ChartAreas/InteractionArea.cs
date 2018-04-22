@@ -22,6 +22,9 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR 
 // OTHER DEALINGS IN THE SOFTWARE.
 #endregion
+
+using System.Drawing;
+
 namespace LiveCharts.Core.Interaction.ChartAreas
 {
     /// <summary>
@@ -32,10 +35,10 @@ namespace LiveCharts.Core.Interaction.ChartAreas
         /// <summary>
         /// Determines whether this area contains the given n dimensions point.
         /// </summary>
-        /// <param name="dimensions">The dimensions.</param>
+        /// <param name="pointerLocation">The dimensions.</param>
         /// <returns>
         ///   <c>true</c> if [contains] [the specified selection model]; otherwise, <c>false</c>.
         /// </returns>
-        public abstract bool Contains(params double[] dimensions);
+        public abstract bool Contains(PointF pointerLocation);
     }
 }

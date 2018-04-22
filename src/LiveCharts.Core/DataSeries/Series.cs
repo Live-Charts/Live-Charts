@@ -285,6 +285,8 @@ namespace LiveCharts.Core.DataSeries
 
 #endregion
 
+        
+
         /// <inheritdoc />
         void ISeries.UpdateStarted(IChartView chart)
         {
@@ -363,11 +365,11 @@ namespace LiveCharts.Core.DataSeries
         }
 
         /// <inheritdoc />
-        public virtual IEnumerable<PackedPoint> GetInteractedPoints(params double[] dimensions)
+        public virtual IEnumerable<PackedPoint> GetHoveredPoints(PointF pointerLocation)
         {
             return Points
-                .Where(point => point.InteractionArea.Contains(dimensions))
-                .Select(point => new PackedPoint
+                .Where(point => point.InteractionArea.Contains(pointerLocation))
+                .Select(point => new PackedPoint(point)
                 {
                     Key = point.Key,
                     Model = point.Model,
@@ -378,6 +380,21 @@ namespace LiveCharts.Core.DataSeries
                     ViewModel = point.ViewModel,
                     InteractionArea = point.InteractionArea
                 });
+        }
+
+        void ISeries.OnPointHover(PackedPoint point)
+        {
+            ViewProvider.OnPointHighlight(point);
+        }
+
+        void ISeries.OnPointSelected(PackedPoint point)
+        {
+            ViewProvider.OnPointHighlight(point);
+        }
+
+        void ISeries.ResetPointStyle(PackedPoint point)
+        {
+            ViewProvider.RemovePointHighlight(point);
         }
 
         /// <summary>

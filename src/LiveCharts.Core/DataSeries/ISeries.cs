@@ -27,6 +27,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Drawing;
 using LiveCharts.Core.Charts;
 using LiveCharts.Core.Coordinates;
 using LiveCharts.Core.Drawing;
@@ -36,6 +37,7 @@ using LiveCharts.Core.Interaction.Points;
 using LiveCharts.Core.Interaction.Series;
 using LiveCharts.Core.Interaction.Styles;
 using LiveCharts.Core.Updating;
+using Brush = LiveCharts.Core.Drawing.Brush;
 #if NET45 || NET46
 using Font = LiveCharts.Core.Interaction.Styles.Font;
 #endif
@@ -71,6 +73,14 @@ namespace LiveCharts.Core.DataSeries
         /// The points.
         /// </value>
         IEnumerable<Point<TModel, TCoordinate, TViewModel, TSeries>> Points { get; }
+
+        /// <summary>
+        /// Gets the view provider.
+        /// </summary>
+        /// <value>
+        /// The view provider.
+        /// </value>
+        ISeriesViewProvider<TModel, TCoordinate, TViewModel, TSeries> ViewProvider { get; }
     }
 
     /// <summary>
@@ -218,9 +228,15 @@ namespace LiveCharts.Core.DataSeries
         /// <summary>
         /// Gets the interacted points according to a mouse position.
         /// </summary>
-        /// <param name="dimensions">The dimensions.</param>
+        /// <param name="pointerLocation">The pointer location.</param>
         /// <returns></returns>
-        IEnumerable<PackedPoint> GetInteractedPoints(params double[] dimensions);
+        IEnumerable<PackedPoint> GetHoveredPoints(PointF pointerLocation);
+
+        void OnPointHover(PackedPoint point);
+
+        void ResetPointStyle(PackedPoint point);
+
+        void OnPointSelected(PackedPoint point);
 
         /// <summary>
         /// Updates the started.

@@ -32,6 +32,8 @@ using LiveCharts.Core.DataSeries;
 using LiveCharts.Core.Interaction.Points;
 using LiveCharts.Core.Interaction.Series;
 using LiveCharts.Core.ViewModels;
+using LiveCharts.Wpf.Animations;
+using LiveCharts.Wpf.Shapes;
 
 #endregion
 
@@ -54,6 +56,28 @@ namespace LiveCharts.Wpf.Views.Providers
         public IPointView<TModel, StackedPointCoordinate, PieViewModel, IPieSeries> GetNewPoint()
         {
             return new PiePointView<TModel>();
+        }
+
+        /// <inheritdoc />
+        public void OnPointHighlight(PackedPoint point)
+        {
+            var view = (PiePointView<TModel>) point.View;
+            view.Shape
+                .Animate()
+                .AtSpeed(point.Chart.AnimationsSpeed)
+                .Property(Slice.PushOutProperty, ((IPieSeries) point.Series).PushOut + 15)
+                .Begin();
+        }
+
+        /// <inheritdoc />
+        public void RemovePointHighlight(PackedPoint point)
+        {
+            var view = (PiePointView<TModel>)point.View;
+            view.Shape
+                .Animate()
+                .AtSpeed(point.Chart.AnimationsSpeed)
+                .Property(Slice.PushOutProperty, ((IPieSeries) point.Series).PushOut)
+                .Begin();
         }
 
         /// <inheritdoc />
