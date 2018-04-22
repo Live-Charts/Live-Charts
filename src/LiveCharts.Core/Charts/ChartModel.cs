@@ -57,6 +57,8 @@ namespace LiveCharts.Core.Charts
         private IList<Color> _colors;
         private HashSet<IResource> _resources = new HashSet<IResource>();
         private Dictionary<string, object> _resourcesCollections = new Dictionary<string, object>();
+        private PointF _previousTooltipLocation = PointF.Empty;
+        private IEnumerable<PackedPoint> _previousHovered;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ChartModel"/> class.
@@ -267,8 +269,6 @@ namespace LiveCharts.Core.Charts
 
         internal Timer ToolTipTimeoutTimer { get; set; }
 
-        internal IEnumerable<PackedPoint> PreviousHoveredPoints { get; set; }
-
         /// <summary>
         /// Gets the dimensions.
         /// </summary>
@@ -368,7 +368,57 @@ namespace LiveCharts.Core.Charts
         /// </summary>
         /// <param name="selectionMode">The selection mode.</param>
         /// <param name="pointerLocation">The dimensions.</param>
-        protected abstract void ViewOnPointerMoved(TooltipSelectionMode selectionMode, PointF pointerLocation);
+        protected virtual void ViewOnPointerMoved(TooltipSelectionMode selectionMode, PointF pointerLocation)
+        {
+            if (Series == null) return;
+            var query = GetHoveredPoints(pointerLocation).ToArray();
+
+            if (selectionMode == TooltipSelectionMode.Auto)
+            {
+                // ToDo: guess what the user meant here ...
+            }
+
+            ToolTip = View.DataToolTip;
+
+            if (View.Hoverable)
+            {
+                foreach (var leftPoint in _previousHovered?
+                                              .Where(x =>
+                                                  !x.InteractionArea.Contains(pointerLocation))
+                                          ?? Enumerable.Empty<PackedPoint>())
+                {
+                    leftPoint.Series.ResetPointStyle(leftPoint);
+                    OnDataPointerLeave(query);
+                }
+
+                _previousHovered = query;
+            }
+
+            if (!query.Any())
+            {
+                ToolTipTimeoutTimer.Start();
+                _previousHovered = null;
+                return;
+            }
+
+            ToolTipTimeoutTimer.Stop();
+
+            View.DataToolTip.ShowAndMeasure(query, View);
+
+            var newTooltipLocation = GetToolTipLocationAndFireHovering(query);
+
+            if (_previousTooltipLocation != newTooltipLocation)
+            {
+                View.DataToolTip.Move(newTooltipLocation, View);
+            }
+
+            OnDataPointerEnter(query);
+
+            _previousTooltipLocation = newTooltipLocation;
+        }
+
+        protected abstract PointF GetToolTipLocationAndFireHovering(
+            PackedPoint[] points);
 
         /// <summary>
         /// Updates the chart.
@@ -627,6 +677,8 @@ namespace LiveCharts.Core.Charts
             Dimensions = null;
             ControlSize = null;
             Legend = null;
+
+            _previousHovered = null;
         }
 
         /// <summary>

@@ -31,6 +31,7 @@ using System.Linq;
 using LiveCharts.Core.DataSeries;
 using LiveCharts.Core.Dimensions;
 using LiveCharts.Core.Interaction;
+using LiveCharts.Core.Interaction.Points;
 using LiveCharts.Core.Updating;
 
 #endregion
@@ -62,6 +63,11 @@ namespace LiveCharts.Core.Charts
         /// <inheritdoc />
         protected override void ViewOnPointerMoved(TooltipSelectionMode selectionMode, PointF pointerLocation)
         {
+        }
+
+        protected override PointF GetToolTipLocationAndFireHovering(PackedPoint[] points)
+        {
+            throw new NotImplementedException();
         }
 
         /// <inheritdoc />

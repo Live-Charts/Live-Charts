@@ -1,7 +1,7 @@
 ﻿{
   "version": "1.0",
   "items": {
-    "Cartesian Chart": [
+    "Basic Plots": [
       {
         "id": "BasicLine",
         "name": "Basic line series",
@@ -37,11 +37,6 @@
         "name": "Inverted series",
         "text": "Invert series using InvertAxes property."
       },
-      //{
-      //  "id": "AxesPositioning",
-      //  "name": "Axes positioning",
-      //  "text": "Use the axis position and invert properties to customize any plane."
-      //},
       {
         "id": "AxisSections",
         "name": "Axis sections",
@@ -56,14 +51,15 @@
         "id": "DataLabels",
         "name": "Data Labels",
         "text": "Set DataLabels = true in any series to display a label in every point."
-      }
-    ],
-    "Pie Chart": [
+      },
       {
         "id": "BasicPie",
         "name": "Basic Pie chart",
         "text": "Generate pie charts easily"
       }
+    ],
+    "Features": [
+      
     ]
   }
 }

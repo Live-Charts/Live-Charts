@@ -74,7 +74,7 @@
     <Compile Include="Views\Providers\HeatViewSeriesProvider.cs" />
     <Compile Include="Views\Providers\PieSeriesViewProvider.cs" />
     <Compile Include="Views\Providers\PlaneViewProvider.cs" />
-    <Compile Include="Views\Providers\ScatterSeriesViewProvider.cs" />
+    <Compile Include="Views\Providers\GeometryPointSeriesViewProvider.cs" />
     <Compile Include="Views\BezierPointView.cs" />
     <Compile Include="Views\CartesianPath.cs" />
     <Compile Include="Views\PointView.cs" />

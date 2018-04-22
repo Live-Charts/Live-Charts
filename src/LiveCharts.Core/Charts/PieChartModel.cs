@@ -31,6 +31,7 @@ using System.Linq;
 using LiveCharts.Core.DataSeries;
 using LiveCharts.Core.Dimensions;
 using LiveCharts.Core.Interaction;
+using LiveCharts.Core.Interaction.Points;
 using LiveCharts.Core.Updating;
 using LiveCharts.Core.ViewModels;
 
@@ -65,58 +66,18 @@ namespace LiveCharts.Core.Charts
             throw new NotImplementedException();
         }
 
-        /// <inheritdoc />
-        protected override void ViewOnPointerMoved(TooltipSelectionMode selectionMode, PointF pointerLocation)
+        protected override PointF GetToolTipLocationAndFireHovering(PackedPoint[] points)
         {
-            if (Series == null) return;
-            var query = GetHoveredPoints(pointerLocation).ToArray();
+            var p = points[0];
 
-            if (selectionMode == TooltipSelectionMode.Auto)
-            {
-                // ToDo: guess what the user meant here ...
-            }
-
-            ToolTip = View.DataToolTip;
-
-            // ReSharper disable once PossibleMultipleEnumeration
-            if (!query.Any())
-            {
-                ToolTipTimeoutTimer.Start();
-                return;
-            }
-
-            ToolTipTimeoutTimer.Stop();
-
-            View.DataToolTip.ShowAndMeasure(query, View);
-
-            var p = query.First();
-
-            var model = (PieViewModel) p.ViewModel;
-            var angle = ((IPieChartView) View).StartingRotationAngle + model.To.Rotation + model.To.Wedge * .5;
+            var model = (PieViewModel)p.ViewModel;
+            var angle = ((IPieChartView)View).StartingRotationAngle + model.To.Rotation + model.To.Wedge * .5;
             var radius = model.To.OuterRadius;
 
             var sx = model.ChartCenter.X + radius * Math.Sin(angle * Math.PI / 180);
             var sy = model.ChartCenter.Y + radius * Math.Cos(angle * Math.PI / 180);
 
-            var newTooltipLocation = new PointF((float) sx, (float) sy);
-
-            if (_previousTooltipLocation != newTooltipLocation)
-            {
-                View.DataToolTip.Move(newTooltipLocation, View);
-            }
-
-            OnDataPointerEnter(query);
-            var leftPoints = PreviousHoveredPoints?.ToArray()
-                .Where(x => !x.InteractionArea.Contains(pointerLocation));
-            // ReSharper disable once PossibleMultipleEnumeration
-            if (leftPoints != null && leftPoints.Any())
-            {
-                // ReSharper disable once PossibleMultipleEnumeration
-                OnDataPointerLeave(leftPoints);
-            }
-            PreviousHoveredPoints = query;
-
-            _previousTooltipLocation = newTooltipLocation;
+            return new PointF((float) sx, (float) sy);
         }
 
         /// <inheritdoc />

@@ -43,9 +43,6 @@ namespace LiveCharts.Core.Charts
     /// <inheritdoc />
     public class CartesianChartModel : ChartModel
     {
-        private PointF _previousTooltipLocation = PointF.Empty;
-        private IEnumerable<PackedPoint> _previousHovered;
-        
         /// <inheritdoc />
         public CartesianChartModel(IChartView view)
             : base(view)
@@ -233,83 +230,27 @@ namespace LiveCharts.Core.Charts
             }
         }
 
-        /// <inheritdoc />
-        protected override void ViewOnPointerMoved(
-            TooltipSelectionMode selectionMode,
-            PointF pointerLocation)
+        protected override PointF GetToolTipLocationAndFireHovering(
+            PackedPoint[] points)
         {
-            if (Series == null) return;
-            var query = GetHoveredPoints(pointerLocation).ToArray();
+            float x = 0f, y = 0f;
 
-            if (selectionMode == TooltipSelectionMode.Auto)
-            {
-                // ToDo: guess what the user meant here ...
-            }
-
-            ToolTip = View.DataToolTip;
-
-            // ReSharper disable once PossibleMultipleEnumeration
-            if (!query.Any())
-            {
-                ToolTipTimeoutTimer.Start();
-
-                if (!View.Hoverable) return;
-
-                foreach (var leftPoint in _previousHovered ?? Enumerable.Empty<PackedPoint>())
-                {
-                    leftPoint.Series.ResetPointStyle(leftPoint);
-                }
-
-                _previousHovered = null;
-                return;
-            }
-
-            ToolTipTimeoutTimer.Stop();
-
-            if (View.Hoverable)
-            {
-                foreach (var leftPoint in _previousHovered?.Except(query) ?? Enumerable.Empty<PackedPoint>())
-                {
-                    leftPoint.Series.ResetPointStyle(leftPoint);
-                }
-
-                _previousHovered = query;
-            }
-
-            View.DataToolTip.ShowAndMeasure(query, View);
-            float sx = 0f, sy = 0f;
-
-            foreach (var point in query)
+            foreach (var point in points)
             {
                 var coordinate = point.Coordinate;
-                var cartesianSeries = (ICartesianSeries) point.Series;
-                sx += ScaleToUi(coordinate[0][0], Dimensions[0][cartesianSeries.ScalesAt[0]]);
-                sy += ScaleToUi(coordinate[1][0], Dimensions[1][cartesianSeries.ScalesAt[1]]);
-                if (View.Hoverable) cartesianSeries.OnPointHover(point);
+                var cartesianSeries = (ICartesianSeries)point.Series;
+                x += ScaleToUi(coordinate[0][0], Dimensions[0][cartesianSeries.ScalesAt[0]]);
+                y += ScaleToUi(coordinate[1][0], Dimensions[1][cartesianSeries.ScalesAt[1]]);
+                if (View.Hoverable)
+                {
+                    cartesianSeries.OnPointHover(point);
+                }
             }
 
-            sx = sx / query.Length;
-            sy = sy / query.Length;
+            x = x / points.Length;
+            y = y / points.Length;
 
-            var newTooltipLocation = new PointF(sx, sy);
-
-            if (_previousTooltipLocation != newTooltipLocation)
-            {
-                View.DataToolTip.Move(newTooltipLocation, View);
-            }
-
-            OnDataPointerEnter(query);
-            var leftPoints = PreviousHoveredPoints?.ToArray()
-                .Where(x => !x.InteractionArea.Contains(pointerLocation));
-            // ReSharper disable once PossibleMultipleEnumeration
-            if (leftPoints != null && leftPoints.Any())
-            {
-                // ReSharper disable once PossibleMultipleEnumeration
-                OnDataPointerLeave(leftPoints);
-            }
-            PreviousHoveredPoints = query;
-
-            _previousTooltipLocation = newTooltipLocation;
+            return new PointF(x, y);
         }
 
         internal Margin EvaluateAxisAndGetDrawMargin(UpdateContext context)
@@ -426,12 +367,6 @@ namespace LiveCharts.Core.Charts
                     xb > yb ? xb : yb,
                     xl > yl ? xl : yl)
                 : DrawMargin;
-        }
-
-        public override void Dispose()
-        {
-            base.Dispose();
-            _previousHovered = null;
         }
     }
 }
