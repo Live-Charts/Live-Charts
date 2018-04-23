@@ -55,16 +55,16 @@ namespace LiveCharts.Core
         {
             // PointCoordinates
 
-            charting.LearnType<short>((value, index) => new PointCoordinate(index, value));
-            charting.LearnType<ushort>((value, index) => new PointCoordinate(index, value));
-            charting.LearnType<int>((value, index) => new PointCoordinate(index, value));
-            charting.LearnType<long>((value, index) => new PointCoordinate(index, value));
-            charting.LearnType<ulong>((value, index) => new PointCoordinate(index, value));
-            charting.LearnType<double>((value, index) => new PointCoordinate(index, (float) value));
-            charting.LearnType<float>((value, index) => new PointCoordinate(index, value));
-            charting.LearnType<decimal>((value, index) => new PointCoordinate(index, (float) value));
-            charting.LearnType<ObservableModel>((om, index) => new PointCoordinate(index, om.Value));
-            charting.LearnType<PointModel>((opm, index) => new PointCoordinate(opm.X, opm.Y));
+            charting.LearnType<short, PointCoordinate>((value, index) => new PointCoordinate(index, value));
+            charting.LearnType<ushort, PointCoordinate>((value, index) => new PointCoordinate(index, value));
+            charting.LearnType<int, PointCoordinate>((value, index) => new PointCoordinate(index, value));
+            charting.LearnType<long, PointCoordinate>((value, index) => new PointCoordinate(index, value));
+            charting.LearnType<ulong, PointCoordinate>((value, index) => new PointCoordinate(index, value));
+            charting.LearnType<double, PointCoordinate>((value, index) => new PointCoordinate(index, (float) value));
+            charting.LearnType<float, PointCoordinate>((value, index) => new PointCoordinate(index, value));
+            charting.LearnType<decimal, PointCoordinate>((value, index) => new PointCoordinate(index, (float) value));
+            charting.LearnType<ObservableModel, PointCoordinate>((om, index) => new PointCoordinate(index, om.Value));
+            charting.LearnType<PointModel, PointCoordinate>((opm, index) => new PointCoordinate(opm.X, opm.Y));
 
             // Stacked Coordinates
 

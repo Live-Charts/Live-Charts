@@ -75,12 +75,22 @@ namespace LiveCharts.Core.DataSeries
         IEnumerable<Point<TModel, TCoordinate, TViewModel, TSeries>> Points { get; }
 
         /// <summary>
+        /// Gets or sets the items source, the items source is where the series grabs the 
+        /// data to plot from, by default it is of type <see cref="LiveCharts.Core.Collections.ChartingCollection{T}"/>
+        /// but you can use any <see cref="IEnumerable{T}"/> as your data source.
+        /// </summary>
+        /// <value>
+        /// The values.
+        /// </value>
+        IEnumerable<TModel> Values { get; set; }
+
+        /// <summary>
         /// Gets the view provider.
         /// </summary>
         /// <value>
         /// The view provider.
         /// </value>
-        ISeriesViewProvider<TModel, TCoordinate, TViewModel, TSeries> ViewProvider { get; }
+        ISeriesViewProvider<TModel, TCoordinate, TViewModel, TSeries> ViewProvider { get; set; }
     }
 
     /// <summary>

@@ -126,13 +126,14 @@ namespace LiveCharts.Core.DataSeries
                 current.ViewModel = vm;
                 current.View.DrawShape(current, previous);
                 if (DataLabels) current.View.DrawLabel(current, DataLabelsPosition, LabelsStyle);
-
+                Mapper.EvaluateModelDependentActions(current.Model, current.View.VisualElement, current);
                 current.InteractionArea = new RectangleInteractionArea(
                     new RectangleF(
                         vm.Location.X,
                         vm.Location.Y,
                         p[2],
                         p[2]));
+
                 previous = current;
             }
         }

@@ -209,14 +209,7 @@ namespace LiveCharts.Core.DataSeries
         /// <inheritdoc cref="List{T}.Count"/>
         public int Count => _sourceAsIList?.Count ?? _values.Count();
 
-        /// <summary>
-        /// Gets or sets the items source, the items source is where the series grabs the 
-        /// data to plot from, by default it is of type <see cref="ChartingCollection{T}"/>
-        /// but you can use any <see cref="IEnumerable{T}"/> as your data source.
-        /// </summary>
-        /// <value>
-        /// The values.
-        /// </value>
+        /// <inheritdoc />
         public IEnumerable<TModel> Values
         {
             get => _values;
@@ -230,16 +223,11 @@ namespace LiveCharts.Core.DataSeries
 
         /// <inheritdoc />
         public SeriesMetatada Metadata { get; protected set; }
-
-        /// <summary>
-        /// Gets or sets the mapper.
-        /// </summary>
-        /// <value>
-        /// The mapper.
-        /// </value>
+        
+        /// <inheritdoc />
         public ModelToCoordinateMapper<TModel, TCoordinate> Mapper
         {
-            get => _mapper ?? Charting.GetCurrentMapperFor<TModel, TCoordinate>();
+            get => _mapper ?? ( _mapper = Charting.GetCurrentMapperFor<TModel, TCoordinate>());
             set
             {
                 _mapper = value;
@@ -354,8 +342,8 @@ namespace LiveCharts.Core.DataSeries
             using (var factoryContext = new DataFactoryContext<TModel, TCoordinate, TSeries>
             {
                 Series = tSeries,
-                Mapper = Mapper,
                 Chart = chart,
+                Mapper = Mapper,
                 UpdateContext = context,
                 Collection = Values.ToArray()
             })

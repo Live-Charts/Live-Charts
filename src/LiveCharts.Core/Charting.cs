@@ -102,33 +102,23 @@ namespace LiveCharts.Core
         /// <typeparam name="TModel">The type of the model.</typeparam>
         /// <typeparam name="TCoordinate">the type of the coordinate.</typeparam>
         /// <returns></returns>
-        public ModelToCoordinateMapper<TModel, TCoordinate> PlotAs<TModel, TCoordinate>(
-            Func<TModel, int, TCoordinate> predicate)
+        private ModelToCoordinateMapper<TModel, TCoordinate> Learn<TModel, TCoordinate>(
+            Func<TModel, int, TCoordinate> pointPredicate,
+            Func<TModel, string> labelPredicate)
             where TCoordinate : ICoordinate
         {
             var modelType = typeof(TModel);
             var coordinateType = typeof(TCoordinate);
             var key = new Tuple<Type, Type>(modelType, coordinateType);
-            // ReSharper disable once InconsistentNaming
-            var m2p = new ModelToCoordinateMapper<TModel, TCoordinate>(predicate);
+            var modelToPoint = new ModelToCoordinateMapper<TModel, TCoordinate>(
+                pointPredicate, labelPredicate);
             if (DefaultMappers.ContainsKey(key))
             {
-                DefaultMappers[key] = m2p;
-                return m2p;
+                DefaultMappers[key] = modelToPoint;
+                return modelToPoint;
             }
-            DefaultMappers.Add(key, m2p);
-            return m2p;
-        }
-
-        /// <summary>
-        /// Maps a model to a <see cref="PointCoordinate"/> and saves the mapper globally.
-        /// </summary>
-        /// <typeparam name="TModel">The type of the model.</typeparam>
-        /// <param name="predicate">The predicate.</param>
-        /// <returns></returns>
-        public ModelToCoordinateMapper<TModel, PointCoordinate> LearnType<TModel>(Func<TModel, int, PointCoordinate> predicate)
-        {
-            return PlotAs(predicate);
+            DefaultMappers.Add(key, modelToPoint);
+            return modelToPoint;
         }
 
         /// <summary>
@@ -136,12 +126,29 @@ namespace LiveCharts.Core
         /// </summary>
         /// <typeparam name="TModel">The type of the model.</typeparam>
         /// <typeparam name="TPoint">The type of the point.</typeparam>
-        /// <param name="predicate">The predicate.</param>
+        /// <param name="predicate">The point predicate.</param>
         /// <returns></returns>
-        public ModelToCoordinateMapper<TModel, TPoint> LearnType<TModel, TPoint>(Func<TModel, int, TPoint> predicate)
+        public ModelToCoordinateMapper<TModel, TPoint> LearnType<TModel, TPoint>(
+            Func<TModel, int, TPoint> predicate)
             where TPoint: ICoordinate
         {
-            return PlotAs(predicate);
+            return Learn(predicate, null);
+        }
+
+        /// <summary>
+        /// Maps a model to a specified point and saves the mapper globally.
+        /// </summary>
+        /// <typeparam name="TModel">The type of the model.</typeparam>
+        /// <typeparam name="TPoint">The type of the point.</typeparam>
+        /// <param name="pointPredicate">The point predicate.</param>
+        /// <param name="labelPredicate">The point label predicate.</param>
+        /// <returns></returns>
+        public ModelToCoordinateMapper<TModel, TPoint> LearnType<TModel, TPoint>(
+            Func<TModel, int, TPoint> pointPredicate,
+            Func<TModel, string> labelPredicate)
+            where TPoint : ICoordinate
+        {
+            return Learn(pointPredicate, labelPredicate);
         }
 
         #endregion

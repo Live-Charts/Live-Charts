@@ -109,42 +109,46 @@ namespace LiveCharts.Core.DataSeries
             var isFist = true;
             float i = 0, j = 0;
 
-            foreach (var bezier in GetBeziers(new PointF(uw[0]*.5f, uw[1]*.5f), cartesianChart, x, y))
+            foreach (var currentBezier in GetBeziers(new PointF(uw[0]*.5f, uw[1]*.5f), cartesianChart, x, y))
             {
                 var p = new[]
                 {
-                    chart.ScaleToUi(bezier.Point.Coordinate.X, x),
-                    chart.ScaleToUi(bezier.Point.Coordinate.Y, y)
+                    chart.ScaleToUi(currentBezier.Point.Coordinate.X, x),
+                    chart.ScaleToUi(currentBezier.Point.Coordinate.Y, y)
                 };
 
-                if (chart.InvertXy) bezier.Invert();
+                if (chart.InvertXy) currentBezier.Invert();
 
                 if (isFist)
                 {
-                    cartesianPath.SetStyle(bezier.ViewModel.Point1, Stroke, Fill, StrokeThickness, StrokeDashArray);
+                    cartesianPath.SetStyle(currentBezier.ViewModel.Point1, Stroke, Fill, StrokeThickness, StrokeDashArray);
                     isFist = false;
                     i = p[0];
                 }
 
-                bezier.Point.InteractionArea = new RectangleInteractionArea(
+                currentBezier.Point.InteractionArea = new RectangleInteractionArea(
                     new RectangleF(
                         p[0] - (float) GeometrySize * .5f,
                         p[1] - (float) GeometrySize * .5f,
                         (float) GeometrySize,
                         (float) GeometrySize));
 
-                if (bezier.Point.View == null)
+                if (currentBezier.Point.View == null)
                 {
-                    bezier.Point.View = ViewProvider.GetNewPoint();
+                    currentBezier.Point.View = ViewProvider.GetNewPoint();
                 }
 
-                bezier.ViewModel.Path = cartesianPath;
-                bezier.Point.ViewModel = bezier.ViewModel;
-                bezier.Point.View.DrawShape(bezier.Point, previous);
-                if (DataLabels) bezier.Point.View.DrawLabel(bezier.Point, DataLabelsPosition, LabelsStyle);
+                currentBezier.ViewModel.Path = cartesianPath;
+                currentBezier.Point.ViewModel = currentBezier.ViewModel;
+                currentBezier.Point.View.DrawShape(currentBezier.Point, previous);
+                if (DataLabels)
+                    currentBezier.Point.View.DrawLabel(
+                        currentBezier.Point, DataLabelsPosition, LabelsStyle);
+                Mapper.EvaluateModelDependentActions(
+                    currentBezier.Point.Model, currentBezier.Point.View.VisualElement, currentBezier.Point);
 
-                previous = bezier.Point;
-                length += bezier.ViewModel.AproxLength;
+                previous = currentBezier.Point;
+                length += currentBezier.ViewModel.AproxLength;
                 j = p[0];
             }
 

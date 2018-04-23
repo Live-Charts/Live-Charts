@@ -153,7 +153,6 @@ namespace LiveCharts.Core.DataSeries
             
             var pivot = GetColumnStart(chart, scaleAxis, directionAxis);
 
-
             Point<TModel, TCoordinate, RectangleViewModel, TSeries> previous = null;
 
             foreach (var current in Points)
@@ -168,10 +167,10 @@ namespace LiveCharts.Core.DataSeries
                     scaleAxis, cw, pivot, byBarOffset,
                     positionOffset, orientation, h, w);
 
-                current.InteractionArea = new RectangleInteractionArea(current.ViewModel.To);
                 current.View.DrawShape(current, previous);
                 if (DataLabels) current.View.DrawLabel(current, DataLabelsPosition, LabelsStyle);
                 Mapper.EvaluateModelDependentActions(current.Model, current.View.VisualElement, current);
+                current.InteractionArea = new RectangleInteractionArea(current.ViewModel.To);
 
                 previous = current;
             }

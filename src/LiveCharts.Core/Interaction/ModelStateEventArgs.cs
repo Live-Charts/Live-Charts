@@ -44,13 +44,13 @@ namespace LiveCharts.Core.Interaction
         /// <summary>
         /// Initializes a new instance of the <see cref="ModelStateEventArgs{TModel, TCoordinate}"/> class.
         /// </summary>
-        /// <param name="visual">The visual.</param>
+        /// <param name="shape">The visual.</param>
         /// <param name="point">the point.</param>
         public ModelStateEventArgs(
-            object visual,
+            object shape,
             PackedPoint<TModel, TCoordinate> point)
         {
-            Visual = visual;
+            Shape = shape;
             Point = point;
         }
 
@@ -68,6 +68,6 @@ namespace LiveCharts.Core.Interaction
         /// <value>
         /// The visual.
         /// </value>
-        public object Visual { get; }
+        public object Shape { get; }
     }
 }

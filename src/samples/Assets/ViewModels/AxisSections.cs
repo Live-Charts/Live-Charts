@@ -7,11 +7,6 @@ using LiveCharts.Core.Interaction.Styles;
 
 namespace Assets.ViewModels
 {
-    public class ModelDependentStyle
-    {
-
-    }
-
     public class AxisSections
     {
         public AxisSections()

@@ -90,13 +90,10 @@ namespace LiveCharts.Core.Updating
                 chartPoint.Key = index;
                 chartPoint.Series = context.Series;
                 chartPoint.Chart = context.Chart;
-                chartPoint.Coordinate = mapper.Predicate.Invoke(instance, index);
+                chartPoint.Coordinate = mapper.PointPredicate.Invoke(instance, index);
 
                 // compare the dimensions to scale the chart.
                 chartPoint.Coordinate.CompareDimensions(context);
-
-                // evaluate model defined events
-                mapper.EvaluateModelDependentActions(instance, chartPoint.View, chartPoint);
 
                 // register our chart point at the resource collector
                 context.Chart.RegisterResource(chartPoint);

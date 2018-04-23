@@ -56,6 +56,13 @@
         "id": "BasicPie",
         "name": "Basic Pie chart",
         "text": "Generate pie charts easily"
+      }, {
+        "id": "ModelDependentStyle",
+        "name": "Model Dependent Style",
+        "text": "The chart style changes according to the data in every point.",
+        "files": [
+          "Models/Player.cs"
+        ]
       }
     ],
     "Features": [

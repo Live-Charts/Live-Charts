@@ -42,16 +42,18 @@ namespace LiveCharts.Core.Interaction.Series
         where TCoordinate : ICoordinate
     {
         private List<ModelState<TModel, TCoordinate>> _modelDependentActions;
-        private readonly Dictionary<UiActions, List<ModelStateHandler<TModel, TCoordinate>>> _userUiActions;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ModelToCoordinateMapper{TModel,TCoordinate}"/> class.
         /// </summary>
-        /// <param name="predicate">The predicate.</param>
-        public ModelToCoordinateMapper(Func<TModel, int, TCoordinate> predicate)
+        /// <param name="pointPredicate">The point predicate.</param>
+        /// <param name="labelPredicate">The label predicate.</param>
+        public ModelToCoordinateMapper(
+            Func<TModel, int, TCoordinate> pointPredicate,
+            Func<TModel, string> labelPredicate)
         {
-            Predicate = predicate;
-            _userUiActions = new Dictionary<UiActions, List<ModelStateHandler<TModel, TCoordinate>>>();
+            PointPredicate = pointPredicate;
+            LabelPredicate = labelPredicate;
         }
 
         /// <summary>
@@ -60,7 +62,7 @@ namespace LiveCharts.Core.Interaction.Series
         /// <value>
         /// The mapper.
         /// </value>
-        public Func<TModel, int, TCoordinate> Predicate { get; }
+        public Func<TModel, int, TCoordinate> PointPredicate { get; }
 
         /// <summary>
         /// Gets the point predicate.
@@ -68,18 +70,7 @@ namespace LiveCharts.Core.Interaction.Series
         /// <value>
         /// The point predicate.
         /// </value>
-        public Func<TModel, string> PointPredicate { get; private set; }
-
-        /// <summary>
-        /// Sets a delegate to map a type to a series data label, if null, then the series will set it for you, default is null.
-        /// </summary>
-        /// <param name="predicate">The predicate.</param>
-        /// <returns></returns>
-        public ModelToCoordinateMapper<TModel, TCoordinate> LabeledAs(Func<TModel, string> predicate)
-        {
-            PointPredicate = predicate;
-            return this;
-        }
+        public Func<TModel, string> LabelPredicate { get; }
 
         /// <summary>
         /// Whens this instance.
@@ -101,50 +92,9 @@ namespace LiveCharts.Core.Interaction.Series
         }
 
         /// <summary>
-        /// Whens the specified trigger.
-        /// </summary>
-        /// <param name="trigger">The trigger.</param>
-        /// <param name="handler">The action.</param>
-        /// <returns></returns>
-        public ModelToCoordinateMapper<TModel, TCoordinate> When(
-            UiActions trigger, ModelStateHandler<TModel, TCoordinate> handler)
-        {
-            if (!_userUiActions.ContainsKey(trigger))
-            {
-                _userUiActions.Add(trigger, new List<ModelStateHandler<TModel, TCoordinate>>());
-            }
-            _userUiActions[trigger].Add(handler);
-            return this;
-        }
-
-        /// <summary>
-        /// Runs the UI action.
-        /// </summary>
-        public void RunUiAction<TViewModel, TSeries>(
-            UiActions action, 
-            TModel sender, 
-            object visual,
-            Point<TModel, TCoordinate, TViewModel, TSeries> point)
-            where TSeries : ISeries
-        {
-            var actionsCollection = _userUiActions[action];
-
-            if (actionsCollection == null) return;
-
-            foreach (var userAction in actionsCollection)
-            {
-                userAction(
-                    sender, 
-                    new ModelStateEventArgs<TModel, TCoordinate>(
-                        visual, 
-                        point.Pack()));
-            }
-        }
-
-        /// <summary>
         /// Evaluates models dependent actions.
         /// </summary>
-        public void EvaluateModelDependentActions<TViewModel, TSeries>(
+        internal void EvaluateModelDependentActions<TViewModel, TSeries>(
             TModel model, 
             object visual, 
             Point<TModel, TCoordinate, TViewModel, TSeries> point)
