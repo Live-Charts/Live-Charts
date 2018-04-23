@@ -87,7 +87,7 @@ namespace LiveCharts.Core.DataSeries
         public override float[] DefaultPointWidth => new[] {0f, 0f};
 
         /// <inheritdoc />
-        public override float[] PointMargin => new[] {(float) GeometrySize, (float) GeometrySize};
+        public override float PointMargin => (float) GeometrySize;
 
         /// <inheritdoc />
         protected override ISeriesViewProvider<TModel, PointCoordinate, GeometryPointViewModel, IScatterSeries>

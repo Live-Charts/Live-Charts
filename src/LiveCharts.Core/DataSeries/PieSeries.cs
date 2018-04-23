@@ -89,7 +89,7 @@ namespace LiveCharts.Core.DataSeries
         public override float[] DefaultPointWidth => new[] {0f, 0f};
 
         /// <inheritdoc />
-        public override float[] PointMargin => new[] {0f, 0f};
+        public override float PointMargin => 0f;
 
         /// <inheritdoc />
         protected override ISeriesViewProvider<TModel, StackedPointCoordinate, PieViewModel, IPieSeries>

@@ -81,7 +81,7 @@ namespace LiveCharts.Core.DataSeries
         public override float[] DefaultPointWidth => new[] {1f, 1f};
 
         /// <inheritdoc />
-        public override float[] PointMargin => new[] {0f, 0f};
+        public override float PointMargin => 0f;
 
         /// <inheritdoc />
         protected override ISeriesViewProvider<TModel, WeightedCoordinate, HeatViewModel, IHeatSeries>
@@ -119,8 +119,8 @@ namespace LiveCharts.Core.DataSeries
 
             // ReSharper restore CompareOfFloatsByEqualityOperator
 
-            var wp = cartesianChart.DrawAreaSize[0] / (d[xi] + 1);
-            var hp = cartesianChart.DrawAreaSize[1] / (d[yi] + 1);
+            var wp = (float) (cartesianChart.DrawAreaSize[0] / (d[xi] + 1));
+            var hp = (float) (cartesianChart.DrawAreaSize[1] / (d[yi] + 1));
 
             var minW = context.Ranges[2][ScalesAt[2]][0];
             var maxW = context.Ranges[2][ScalesAt[2]][1];

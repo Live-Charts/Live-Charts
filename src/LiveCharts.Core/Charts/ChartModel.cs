@@ -336,7 +336,7 @@ namespace LiveCharts.Core.Charts
         /// <param name="sizeVector">The size.</param>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
-        public abstract float ScaleFromUi(float pixelsValue, Plane plane, float[] sizeVector = null);
+        public abstract double ScaleFromUi(float pixelsValue, Plane plane, float[] sizeVector = null);
 
         /// <summary>
         /// Get2s the width of the d UI unit.
@@ -348,8 +348,8 @@ namespace LiveCharts.Core.Charts
         {
             return new[]
             {
-                Math.Abs(ScaleToUi(0, x) - ScaleToUi(x.ActualPointWidth[x.Dimension], x)),
-                Math.Abs(ScaleToUi(0, y) - ScaleToUi(y.ActualPointWidth[y.Dimension], y))
+                Math.Abs(ScaleToUi(0, x) - ScaleToUi(x.ActualPointLength[x.Dimension], x)),
+                Math.Abs(ScaleToUi(0, y) - ScaleToUi(y.ActualPointLength[y.Dimension], y))
             };
         }
 
@@ -440,20 +440,11 @@ namespace LiveCharts.Core.Charts
                 _resources.Clear();
             }
 
-            foreach (var dimension in Dimensions)
-            {
-                foreach (var plane in dimension)
-                {
-                    plane.PointMargin = 0f;
-                }
-            }
-
             foreach (var series in Series.Where(x => x.IsVisible))
             {
                 series.UsedBy(this);
                 series.Fetch(this, context);
                 RegisterResource(series);
-
                 OnPreparingSeries(context, series);
             }
 

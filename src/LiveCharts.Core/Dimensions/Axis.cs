@@ -57,8 +57,8 @@ namespace LiveCharts.Core.Dimensions
         /// </summary>
         public Axis()
         {
-            Step = float.NaN;
-            StepStart = float.NaN;
+            Step = double.NaN;
+            StepStart = double.NaN;
             Position = AxisPosition.Auto;
             XSeparatorStyle =
                 new ShapeStyle(
@@ -79,7 +79,7 @@ namespace LiveCharts.Core.Dimensions
         /// <value>
         /// The step.
         /// </value>
-        public float Step { get; set; }
+        public double Step { get; set; }
 
         /// <summary>
         /// Gets the actual step.
@@ -87,7 +87,7 @@ namespace LiveCharts.Core.Dimensions
         /// <value>
         /// The actual step.
         /// </value>
-        public float ActualStep { get; internal set; }
+        public double ActualStep { get; internal set; }
 
         /// <summary>
         /// Gets or sets the step start.
@@ -95,7 +95,7 @@ namespace LiveCharts.Core.Dimensions
         /// <value>
         /// The step start.
         /// </value>
-        public float StepStart { get; set; }
+        public double StepStart { get; set; }
 
         /// <summary>
         /// Gets the actual step start.
@@ -103,7 +103,7 @@ namespace LiveCharts.Core.Dimensions
         /// <value>
         /// The actual step start.
         /// </value>
-        public float ActualStepStart { get; internal set; }
+        public double ActualStepStart { get; internal set; }
 
         /// <summary>
         /// Gets or sets the position.
@@ -205,7 +205,7 @@ namespace LiveCharts.Core.Dimensions
             var dimension = space[Dimension];
             var step = 5; // ToDo: or use the real if it is defined?
 
-            var unit = ActualPointWidth?[Dimension] ?? 0f;
+            var unit = ActualPointLength?[Dimension] ?? 0f;
 
             float l = 0f, r = 0f, t = 0f, b = 0f;
 
@@ -223,7 +223,7 @@ namespace LiveCharts.Core.Dimensions
                 var label = EvaluateAxisLabel(
                     dummyControl,
                     labelsStyle,
-                    sizeVector.ScaleFromUi(i, this, space),
+                    (float) sizeVector.ScaleFromUi(i, this, space),
                     space,
                     unit,
                     sizeVector);
@@ -251,16 +251,17 @@ namespace LiveCharts.Core.Dimensions
 
             var from = Math.Ceiling(ActualMinValue / ActualStep) * ActualStep;
             var to = Math.Floor(ActualMaxValue / ActualStep) * ActualStep;
-            var unit = ActualPointWidth?[Dimension] ?? 0;
+            var unit = ActualPointLength?[Dimension] ?? 0;
 
             var tolerance = ActualStep * .1f;
             var stepSize = Math.Abs(chart.ScaleToUi(ActualStep, this) - chart.ScaleToUi(0, this));
             var alternate = false;
 
             var dummyControl = ViewProvider.GetMeasurableLabel();
-            
 
-            for (var i = (float) from; i <= to + unit + tolerance; i += ActualStep)
+            var delta = (float) ActualStep;
+
+            for (var i = (float) from; i <= to + unit + tolerance; i += delta)
             {
                 alternate = !alternate;
                 var iui = chart.ScaleToUi(i, this);
@@ -461,24 +462,24 @@ namespace LiveCharts.Core.Dimensions
 
         private float GetActualStepStart()
         {
-            if (!float.IsNaN(StepStart))
+            if (!double.IsNaN(StepStart))
             {
-                return StepStart;
+                return (float) StepStart;
             }
 
-            var unit = ActualPointWidth?[Dimension] ?? 0;
+            var unit = ActualPointLength?[Dimension] ?? 0;
 
-            return ActualMinValue + unit / 2;
+            return (float) (ActualMinValue + unit / 2);
         }
 
         private float GetActualAxisStep(ChartModel chart)
         {
-            if (!float.IsNaN(Step))
+            if (!double.IsNaN(Step))
             {
-                return Step;
+                return (float) Step;
             }
 
-            var unit = ActualPointWidth?[Dimension] ?? 0;
+            var unit = ActualPointLength?[Dimension] ?? 0;
 
             var range = ActualMaxValue + unit - ActualMinValue;
             range = range <= 0 ? 1 : range;

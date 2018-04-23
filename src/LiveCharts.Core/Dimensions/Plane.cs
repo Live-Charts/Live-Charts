@@ -49,10 +49,10 @@ namespace LiveCharts.Core.Dimensions
     /// </summary>
     public class Plane : IResource, INotifyPropertyChanged
     {
-        private float[] _pointWidth;
+        private float[] _pointLength;
         private Func<double, string> _labelFormatter;
-        private float _maxValue;
-        private float _minValue;
+        private double _maxValue;
+        private double _minValue;
         private string _title;
         private IList<string> _labels;
         private bool _reverse;
@@ -61,35 +61,38 @@ namespace LiveCharts.Core.Dimensions
         private Font _labelsFont;
         private Brush _labelsForeground;
         private Margin _labelsPadding;
+        private double _pointMargin;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Plane"/> class.
         /// </summary>
         public Plane()
         {
-            MinValue = float.NaN;
-            MaxValue = float.NaN;
-            LabelFormatter = Format.AsMetricNumber;
-            LabelsFont = new Font("Arial", 11, FontStyle.Regular, FontWeight.Regular);
-            LabelsForeground = new SolidColorBrush(Color.FromArgb(255, 30, 30, 30));
+            _minValue = double.NaN;
+            _maxValue = double.NaN;
+            _pointMargin = double.NaN;
+            _labelFormatter = Format.AsMetricNumber;
+            _labelsFont = new Font("Arial", 11, FontStyle.Regular, FontWeight.Regular);
+            _labelsForeground = new SolidColorBrush(Color.FromArgb(255, 30, 30, 30));
             Charting.BuildFromSettings(this);
         }
 
         /// <summary>
-        /// Gets the point margin.
+        /// Gets the used <see cref="MaxValue"/>, if <see cref="MaxValue"/> is double.NaN, 
+        /// the library will calculate this property and will expose the calculated value here,
+        /// if <see cref="MaxValue"/> is not double.NaN, <see cref="ActualMaxValue"/> is equals
+        /// to <see cref="MaxValue"/> property.
         /// </summary>
-        /// <value>
-        /// The point margin.
-        /// </value>
-        public float PointMargin { get; internal set; }
+        public double ActualMaxValue { get; internal set; }
 
         /// <summary>
-        /// Gets or sets the maximum value to display.
+        /// Gets or sets the maximum value to display in this plane, use double.NaN to let the library 
+        /// calculate it automatically.
         /// </summary>
         /// <value>
         /// The maximum value.
         /// </value>
-        public float MaxValue
+        public double MaxValue
         {
             get => _maxValue;
             set
@@ -100,12 +103,20 @@ namespace LiveCharts.Core.Dimensions
         }
 
         /// <summary>
+        /// Gets the used <see cref="MinValue"/>, if <see cref="MinValue"/> is double.NaN, 
+        /// the library will calculate this property and will expose the calculated value here,
+        /// if <see cref="MinValue"/> is not double.NaN, <see cref="ActualMinValue"/> is equals
+        /// to <see cref="MinValue"/> property.
+        /// </summary>
+        public double ActualMinValue { get; internal set; }
+
+        /// <summary>
         /// Gets or sets the minimum value to display.
         /// </summary>
         /// <value>
         /// The minimum value.
         /// </value>
-        public float MinValue
+        public double MinValue
         {
             get => _minValue;
             set
@@ -116,42 +127,55 @@ namespace LiveCharts.Core.Dimensions
         }
 
         /// <summary>
-        /// Gets the actual maximum value.
+        /// Gets the used <see cref="PointLength"/>, if <see cref="PointLength"/> is null, 
+        /// the library will calculate this property and will expose the calculated value here,
+        /// if <see cref="PointLength"/> is not null, <see cref="ActualPointLength"/> is equals
+        /// to <see cref="PointLength"/> property.
         /// </summary>
-        /// <value>
-        /// The actual maximum value.
-        /// </value>
-        public float ActualMaxValue { get; internal set; }
+        public float[] ActualPointLength { get; internal set; }
 
         /// <summary>
-        /// Gets the actual minimum value.
-        /// </summary>
-        /// <value>
-        /// The actual minimum value.
-        /// </value>
-        public float ActualMinValue { get; internal set; }
-
-        /// <summary>
-        /// Gets the actual point unit.
-        /// </summary>
-        /// <value>
-        /// The actual point unit.
-        /// </value>
-        public float[] ActualPointWidth { get; internal set; }
-
-        /// <summary>
-        /// Gets or sets the width of the point.
+        /// Gets or sets the <see cref="PointLength"/>, this property represents the space taken by a single point,
+        /// In LiveCharts for example a LineSeries point has a width and height of 0, while a BarSeries was a width of 1
+        /// and a height of 0, this means that the library requires 1 in the X UI coordinate to display the bar properly, 
+        /// PointWidth[0] represents the X in the UI while PointWidth[1] represents Y in the UI, if this property is not 
+        /// set, the library will calculate based on the requirements of every series in the plot.
         /// </summary>
         /// <value>
         /// The width of the point.
         /// </value>
-        public float[] PointWidth
+        public float[] PointLength
         {
-            get => _pointWidth;
+            get => _pointLength;
             set
             {
-                _pointWidth = value;
-                ActualPointWidth = new [] {0f, 0f};
+                _pointLength = value;
+                OnPropertyChanged();
+            }
+        }
+
+        /// <summary>
+        /// Gets the used <see cref="PointMargin"/>, if <see cref="PointMargin"/> is double.NaN, 
+        /// the library will calculate this property and will expose the calculated value here,
+        /// if <see cref="PointMargin"/> is not double.NaN, <see cref="ActualPointMargin"/> is equals
+        /// to <see cref="PointMargin"/> property.
+        /// </summary>
+        public double ActualPointMargin { get; internal set; }
+
+        /// <summary>
+        /// Gets the point margin, this property represents the space required for a point from
+        /// its coordinate to every direction (left, top, right and bottom), the library will
+        /// at least add a margin in the plot based on this property.
+        /// </summary>
+        /// <value>
+        /// The point margin.
+        /// </value>
+        public double PointMargin
+        {
+            get => _pointMargin;
+            set
+            {
+                _pointMargin = value;
                 OnPropertyChanged();
             }
         }
@@ -352,8 +376,8 @@ namespace LiveCharts.Core.Dimensions
         {
             return new[]
             {
-                chart.ScaleToUi(0f, this) - chart.ScaleToUi(PointWidth[0], this),
-                chart.ScaleToUi(0f, this) - chart.ScaleToUi(PointWidth[1], this)
+                chart.ScaleToUi(0f, this) - chart.ScaleToUi(PointLength[0], this),
+                chart.ScaleToUi(0f, this) - chart.ScaleToUi(PointLength[1], this)
             };
         }
 

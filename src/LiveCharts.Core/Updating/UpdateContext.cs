@@ -52,6 +52,8 @@ namespace LiveCharts.Core.Updating
         {
             _series = series;
             _barsGroups = new Dictionary<int, BarsGroup>();
+            PointLength = new[] {0f, 0f};
+            PointMargin = 0d;
         }
 
         /// <summary>
@@ -60,7 +62,23 @@ namespace LiveCharts.Core.Updating
         /// <value>
         /// The ranges.
         /// </value>
-        public float[][][] Ranges { get; set; }
+        public float[][][] Ranges { get; internal set; }
+
+        /// <summary>
+        /// Gets the width of the point.
+        /// </summary>
+        /// <value>
+        /// The width of the point.
+        /// </value>
+        public float[] PointLength { get; internal set; }
+
+        /// <summary>
+        /// Gets the point margin.
+        /// </summary>
+        /// <value>
+        /// The point margin.
+        /// </value>
+        public double PointMargin { get; internal set; }
 
         /// <summary>
         /// Gets the stack.
@@ -200,6 +218,7 @@ namespace LiveCharts.Core.Updating
         {
             _series = null;
             _barsGroups = null;
+            PointLength = null;
             Ranges = null;
         }
     }

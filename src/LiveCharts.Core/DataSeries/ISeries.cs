@@ -228,7 +228,7 @@ namespace LiveCharts.Core.DataSeries
         /// <value>
         /// The point margin.
         /// </value>
-        float[] PointMargin { get; }
+        float PointMargin { get; }
 
         /// <summary>
         /// Fetches the specified chart.

@@ -61,7 +61,7 @@ namespace LiveCharts.Core.Charts
             throw new NotImplementedException();
         }
 
-        public override float ScaleFromUi(float pixelsValue, Plane plane, float[] sizeVector = null)
+        public override double ScaleFromUi(float pixelsValue, Plane plane, float[] sizeVector = null)
         {
             throw new NotImplementedException();
         }

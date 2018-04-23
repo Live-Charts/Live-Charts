@@ -69,9 +69,9 @@ namespace LiveCharts.Core.Charts
             // y = m * (x - x1) + y1 
             // where x is the Series.Values scale and y the UI scale
 
-            var x1 = plane.ActualMaxValue + (plane.ActualPointWidth?[plane.Dimension] ?? 0f);
+            var x1 = plane.ActualMaxValue + plane.ActualPointLength?[plane.Dimension] ?? 0f;
             var y1 = chartSize[plane.Dimension];
-            var x2 = plane.ActualMinValue;
+            var x2 =  plane.ActualMinValue;
             var y2 = 0f;
 
             if (plane.ActualReverse)
@@ -87,11 +87,11 @@ namespace LiveCharts.Core.Charts
 
             var m = (y2 - y1) / (x2 - x1);
 
-            return m * ((float) dataValue - x1) + y1;
+            return (float) (m * (dataValue - x1) + y1);
         }
 
         /// <inheritdoc />
-        public override float ScaleFromUi(float pixelsValue, Plane plane, float[] sizeVector = null)
+        public override double ScaleFromUi(float pixelsValue, Plane plane, float[] sizeVector = null)
         {
             var chartSize = sizeVector ?? DrawAreaSize;
 
@@ -101,7 +101,7 @@ namespace LiveCharts.Core.Charts
             // then
             // x = ((y - y1) / m) + x1
 
-            var x1 = plane.ActualMaxValue + (plane.ActualPointWidth?[plane.Dimension] ?? 0f);
+            var x1 =plane.ActualMaxValue + (plane.ActualPointLength?[plane.Dimension] ?? 0f);
             var y1 = chartSize[plane.Dimension];
             var x2 = plane.ActualMinValue;
             var y2 = 0f;
@@ -206,30 +206,11 @@ namespace LiveCharts.Core.Charts
         /// <inheritdoc />
         protected override void OnPreparingSeries(UpdateContext context, ISeries series)
         {
-            var cartesianSeries = (ICartesianSeries) series;
-
-            for (var i = 0; i < Dimensions.Length; i++)
-            {
-                if (cartesianSeries.ScalesAt.Length <= i) continue;
-                var plane = Dimensions[i][cartesianSeries.ScalesAt[i]];
-
-                if (plane.PointWidth == null)
-                {
-                    var current = InvertXy ? series.DefaultPointWidth.InvertXy() : series.DefaultPointWidth;
-                    plane.ActualPointWidth = Perform.MaxEach2D(plane.ActualPointWidth ?? new[] { 0f, 0f }, current);
-                }
-                else
-                {
-                    plane.ActualPointWidth = plane.PointWidth;
-                }
-
-                if (series.PointMargin.Length > i && series.PointMargin[i] > plane.PointMargin)
-                {
-                    plane.PointMargin = series.PointMargin[i];
-                }
-            }
+            context.PointLength = Perform.MaxEach2D(context.PointLength, series.DefaultPointWidth);
+            context.PointMargin = series.PointMargin > context.PointMargin ? series.PointMargin : context.PointMargin;
         }
 
+        /// <inheritdoc />
         protected override PointF GetToolTipLocationAndFireHovering(
             PackedPoint[] points)
         {
@@ -293,13 +274,17 @@ namespace LiveCharts.Core.Charts
 
                     // set the axis limits, use the user defined value if not double.Nan, otherwise use the value calculated by LVC
 
-                    var uiPointMargin = 0f;
+                    var uiPointMargin = 0d;
+
+                    plane.ActualPointMargin = double.IsNaN(plane.PointMargin)
+                        ? context.PointMargin
+                        : plane.PointMargin;
 
                     if (dimensionIndex < 2 && (double.IsNaN(plane.MinValue) || double.IsNaN(plane.MaxValue)))
                     {
                         plane.ActualMinValue = context.Ranges[dimensionIndex][planeIndex][0];
                         plane.ActualMaxValue = context.Ranges[dimensionIndex][planeIndex][1];
-                        uiPointMargin = ScaleFromUi(plane.PointMargin, plane) - ScaleFromUi(0f, plane);
+                        uiPointMargin = ScaleFromUi((float) plane.ActualPointMargin, plane) - ScaleFromUi(0f, plane);
                     }
 
                     plane.ActualMinValue = double.IsNaN(plane.MinValue)
@@ -308,6 +293,8 @@ namespace LiveCharts.Core.Charts
                     plane.ActualMaxValue = double.IsNaN(plane.MaxValue)
                         ? context.Ranges[dimensionIndex][planeIndex][1] + uiPointMargin
                         : plane.MaxValue;
+
+                    plane.ActualPointLength = plane.PointLength ?? context.PointLength;
 
                     plane.ActualReverse = plane.Dimension == 1;
                     if (plane.Reverse) plane.ActualReverse = !plane.ActualReverse;

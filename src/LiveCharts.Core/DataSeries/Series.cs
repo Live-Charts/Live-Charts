@@ -204,7 +204,7 @@ namespace LiveCharts.Core.DataSeries
         public abstract float[] DefaultPointWidth { get; }
         
         /// <inheritdoc />
-        public abstract float[] PointMargin { get; }
+        public abstract float PointMargin { get; }
 
         /// <inheritdoc cref="List{T}.Count"/>
         public int Count => _sourceAsIList?.Count ?? _values.Count();

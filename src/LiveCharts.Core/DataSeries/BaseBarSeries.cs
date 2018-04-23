@@ -107,7 +107,7 @@ namespace LiveCharts.Core.DataSeries
         public override float[] DefaultPointWidth => new[] { 1f, 0f };
 
         /// <inheritdoc />
-        public override float[] PointMargin => new[] { 0f, 0f };
+        public override float PointMargin => 0f;
 
         /// <inheritdoc />
         public override void UpdateView(ChartModel chart, UpdateContext context)
