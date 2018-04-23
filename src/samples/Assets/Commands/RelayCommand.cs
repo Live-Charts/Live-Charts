@@ -31,11 +31,11 @@ using System.Windows.Input;
 
 namespace Assets.Commands
 {
-    public class DelegateCommand : ICommand
+    public class RelayCommand : ICommand
     {
         public Action<object> Action { get; set; }
 
-        public DelegateCommand(Action<object> action)
+        public RelayCommand(Action<object> action)
         {
             Action = action;
         }

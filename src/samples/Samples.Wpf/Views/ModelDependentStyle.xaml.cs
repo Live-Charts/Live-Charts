@@ -19,12 +19,13 @@ namespace Samples.Wpf.Views
             // in this case we will build a chart using the Player class
             // we need to teach LiveCharts how to map a player to a chart coordinate.
 
-            Charting.Settings(charting =>
+            Charting.Configure(charting =>
             {
                 // we will map player to a point in a chart
                 // where the X coordinate will be the index of the player in our data collection
                 // and the Y coordinate is the player.Score property
 
+                // A mapper from player to a point coordinate
                 var playerMapper = charting.LearnType<Player, PointCoordinate>(
                     (player, index) => new PointCoordinate(index, (float)player.Score));
 

@@ -44,12 +44,11 @@ namespace Samples.Wpf
     {
         public App()
         {
-            Charting.Settings(charting =>
+            Charting.Configure(charting =>
             {
                 charting
                     .LearnPrimitiveAndDefaultTypes()
                     .SetTheme(Themes.MaterialDesign)
-                    .SetDefault<Axis>(axis => axis.LabelsFont = new Font("Calibri", 50, FontStyle.Regular, FontWeight.Regular))
                     .TargetsWpf();
             });
         }

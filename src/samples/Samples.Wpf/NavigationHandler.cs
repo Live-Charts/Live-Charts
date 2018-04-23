@@ -46,12 +46,12 @@ namespace Samples.Wpf
         public NavigationHandler()
         {
             CurrentView = new Menu();
-            NavigateTo = new DelegateCommand(o =>
+            NavigateTo = new RelayCommand(o =>
             {
                 var path = (string) o;
                 _navigateTo(path);
             });
-            ShowMenu = new DelegateCommand(o =>
+            ShowMenu = new RelayCommand(o =>
             {
                 _showMenu();
             });

@@ -1,7 +1,7 @@
 ﻿{
   "version": "1.0",
   "items": {
-    "Basic Plots": [
+    "Title...": [
       {
         "id": "BasicLine",
         "name": "Basic line series",
@@ -60,13 +60,20 @@
         "id": "ModelDependentStyle",
         "name": "Model Dependent Style",
         "text": "The chart style changes according to the data in every point.",
-        "files": [
+        "extraFiles": [
           "Models/Player.cs"
         ]
       }
     ],
-    "Features": [
-      
+    "Testing": [
+      {
+        "id": "ObservableSeries",
+        "name": "ObservableSeries",
+        "text": "Tests Chart.Series property change and Chart.Series items interaction",
+        "extraFiles": [
+          "Commands/RelayCommand.cs"
+        ]
+      }
     ]
   }
 }

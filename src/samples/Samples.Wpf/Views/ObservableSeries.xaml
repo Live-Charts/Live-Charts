@@ -1,0 +1,29 @@
+﻿<UserControl x:Class="Samples.Wpf.Views.ObservableSeries"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:viewModels="clr-namespace:Assets.ViewModels;assembly=Assets"
+             xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <UserControl.DataContext>
+        <viewModels:ObservableSeries/>
+    </UserControl.DataContext>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Row="0"
+                    Orientation="Horizontal">
+            <Button Command="{Binding AddSeries}" Margin="8">Add Series</Button>
+            <Button Command="{Binding RemoveSeries}" Margin="8">Remove Series</Button>
+            <TextBlock Margin="8">SeriesType</TextBlock>
+            <ComboBox SelectedValue="{Binding SeriesType}" ItemsSource="{Binding AvailableTypes}"></ComboBox>
+        </StackPanel>
+        <lvc:CartesianChart Grid.Row="1"
+                            Series="{Binding SeriesCollection}">
+        </lvc:CartesianChart>
+    </Grid>
+</UserControl>

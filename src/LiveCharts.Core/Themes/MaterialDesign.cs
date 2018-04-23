@@ -51,7 +51,7 @@ namespace LiveCharts.Core.Themes
         /// <param name="charting">The settings.</param>
         internal static Charting SetMaterialDesignDefaults(this Charting charting)
         {
-            var baseFont = new Font("Arial", 11, FontStyle.Regular, FontWeight.Regular);
+            var baseFont = new Font("Arial", 13, FontStyle.Regular, FontWeight.Regular);
 
             charting
                 .HasColors(new[]

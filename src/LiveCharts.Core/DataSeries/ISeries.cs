@@ -54,7 +54,7 @@ namespace LiveCharts.Core.DataSeries
     /// <typeparam name="TSeries">The type of the series.</typeparam>
     /// <typeparam name="TViewModel">The type of the view model.</typeparam>
     /// <seealso cref="ISeries" />
-    public interface ISeries<TModel, TCoordinate, TViewModel, TSeries> : ISeries
+    public interface ISeries<TModel, TCoordinate, TViewModel, TSeries> : ISeries<TModel>
         where TCoordinate : ICoordinate
         where TSeries : ISeries
     {
@@ -75,16 +75,6 @@ namespace LiveCharts.Core.DataSeries
         IEnumerable<Point<TModel, TCoordinate, TViewModel, TSeries>> Points { get; }
 
         /// <summary>
-        /// Gets or sets the items source, the items source is where the series grabs the 
-        /// data to plot from, by default it is of type <see cref="LiveCharts.Core.Collections.ChartingCollection{T}"/>
-        /// but you can use any <see cref="IEnumerable{T}"/> as your data source.
-        /// </summary>
-        /// <value>
-        /// The values.
-        /// </value>
-        IEnumerable<TModel> Values { get; set; }
-
-        /// <summary>
         /// Gets the view provider.
         /// </summary>
         /// <value>
@@ -94,7 +84,25 @@ namespace LiveCharts.Core.DataSeries
     }
 
     /// <summary>
-    /// Data Series
+    /// The series interface.
+    /// </summary>
+    /// <typeparam name="TModel">The type of the model.</typeparam>
+    /// <seealso cref="ISeries" />
+    public interface ISeries<TModel> : ISeries
+    {
+        /// <summary>
+        /// Gets or sets the items source, the items source is where the series grabs the 
+        /// data to plot from, by default it is of type <see cref="LiveCharts.Core.Collections.ChartingCollection{T}"/>
+        /// but you can use any <see cref="IEnumerable{T}"/> as your data source.
+        /// </summary>
+        /// <value>
+        /// The values.
+        /// </value>
+        IEnumerable<TModel> Values { get; set; }
+    }
+
+    /// <summary>
+    /// The series interface.
     /// </summary>
     public interface ISeries : IResource, INotifyPropertyChanged
     {
