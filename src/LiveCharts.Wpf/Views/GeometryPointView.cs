@@ -61,14 +61,12 @@ namespace LiveCharts.Wpf.Views
             var vm = point.ViewModel;
             var isNew = Shape == null;
 
-            var r = vm.Diameter * .5;
-
             if (isNew)
             {
                 Shape = new Path{Stretch = Stretch.Fill};
                 chart.Content.AddChild(Shape);
-                Canvas.SetLeft(Shape, vm.Location.X - r);
-                Canvas.SetTop(Shape, vm.Location.Y - r);
+                Canvas.SetLeft(Shape, vm.Location.X);
+                Canvas.SetTop(Shape, vm.Location.Y);
                 Shape.Width = 0;
                 Shape.Height = 0;
             }
@@ -88,8 +86,8 @@ namespace LiveCharts.Wpf.Views
 
                 Shape.Animate()
                     .AtSpeed(speed)
-                    .Bounce(Canvas.LeftProperty, vm.Location.X, vm.Location.X - r, bm)
-                    .Bounce(Canvas.TopProperty, vm.Location.Y, vm.Location.Y - r, bm)
+                    .Bounce(Canvas.LeftProperty, vm.Location.X, vm.Location.X, bm)
+                    .Bounce(Canvas.TopProperty, vm.Location.Y, vm.Location.Y, bm)
                     .Bounce(FrameworkElement.WidthProperty, 0, vm.Diameter, bm)
                     .Bounce(FrameworkElement.HeightProperty, 0, vm.Diameter, bm)
                     .Begin();
@@ -98,8 +96,8 @@ namespace LiveCharts.Wpf.Views
             {
                 Shape.Animate()
                     .AtSpeed(speed)
-                    .Property(Canvas.LeftProperty, vm.Location.X - r)
-                    .Property(Canvas.TopProperty, vm.Location.Y - r)
+                    .Property(Canvas.LeftProperty, vm.Location.X)
+                    .Property(Canvas.TopProperty, vm.Location.Y)
                     .Begin();
             }
         }

@@ -111,6 +111,8 @@ namespace LiveCharts.Core.DataSeries
                 yi = 0;
             }
 
+            var r = (float) GeometrySize * .5f;
+
             Point<TModel, PointCoordinate, GeometryPointViewModel, IScatterSeries> previous = null;
 
             foreach (var current in Points)
@@ -128,13 +130,13 @@ namespace LiveCharts.Core.DataSeries
 
                 var vm = new GeometryPointViewModel
                 {
-                    Location = Perform.Sum(new PointF(p[xi], p[yi]), new PointF(uw[0] * .5f, uw[1] * .5f)),
+                    Location = Perform.Sum(new PointF(p[xi] - r, p[yi] - r), new PointF(uw[0] * .5f, uw[1] * .5f)),
                     Diameter = (float) GeometrySize
                 };
 
                 current.ViewModel = vm;
                 current.View.DrawShape(current, previous);
-                current.View.DrawLabel(current, DataLabelsPosition, LabelsStyle);
+                if (DataLabels) current.View.DrawLabel(current, DataLabelsPosition, LabelsStyle);
                 Mapper.EvaluateModelDependentActions(current.Model, current.View.VisualElement, current);
                 current.InteractionArea = new RectangleInteractionArea(
                     new RectangleF(

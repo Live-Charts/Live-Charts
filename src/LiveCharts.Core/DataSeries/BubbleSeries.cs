@@ -117,9 +117,11 @@ namespace LiveCharts.Core.DataSeries
                     cartesianChart.LinealScale(p1, p2, current.Coordinate.Weight)
                 };
 
+                var r = p[2] * .5f;
+
                 var vm = new GeometryPointViewModel
                 {
-                    Location = Perform.Sum(new PointF(p[xi], p[yi]), new PointF(uw[0] * .5f, uw[1] * .5f)),
+                    Location = Perform.Sum(new PointF(p[xi] - r, p[yi] - r), new PointF(uw[0] * .5f, uw[1] * .5f)),
                     Diameter = p[2]
                 };
 
