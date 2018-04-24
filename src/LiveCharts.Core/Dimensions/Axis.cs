@@ -51,6 +51,13 @@ namespace LiveCharts.Core.Dimensions
             new Dictionary<double, IPlaneSection>();
 
         private IPlaneViewProvider _planeViewProvider;
+        private double _step;
+        private double _stepStart;
+        private AxisPosition _position;
+        private ShapeStyle _xSeparatorStyle;
+        private ShapeStyle _xAlternativeSeparatorStyle;
+        private ShapeStyle _ySeparatorStyle;
+        private ShapeStyle _yAlternativeSeparatorStyle;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Axis"/> class.
@@ -74,15 +81,28 @@ namespace LiveCharts.Core.Dimensions
         }
 
         /// <summary>
-        /// Gets or sets the step.
+        /// Gets or sets the step, the space between every separator in the plane units,
+        /// use double.NaN to let the library calculate this property for you based on the
+        /// chart size and the plane units.
         /// </summary>
         /// <value>
         /// The step.
         /// </value>
-        public double Step { get; set; }
+        public double Step
+        {
+            get => _step;
+            set
+            {
+                _step = value;
+                OnPropertyChanged();
+            }
+        }
 
         /// <summary>
-        /// Gets the actual step.
+        /// Gets the used <see cref="Step"/>, if <see cref="Step"/> is double.NaN, 
+        /// the library will calculate this property and will expose the calculated value here,
+        /// if <see cref="Step"/> is not double.NaN, <see cref="ActualStep"/> is equals
+        /// to <see cref="Step"/> property.
         /// </summary>
         /// <value>
         /// The actual step.
@@ -90,15 +110,30 @@ namespace LiveCharts.Core.Dimensions
         public double ActualStep { get; internal set; }
 
         /// <summary>
-        /// Gets or sets the step start.
+        /// Gets or sets the step start, it is the value where the first separator is drawn, 
+        /// the next separators will be drawn based on this property and the <see cref="ActualStep"/> property
+        /// ( first separator at st + 0 * s, second at st + 1 * s, third at st + 2 * s ... n at st + (n-1) * s )
+        /// where st is <see cref="ActualStepStart"/> and s is <see cref="ActualStep"/>, use double.NaN to let
+        /// the library calculate this value for you.
         /// </summary>
         /// <value>
         /// The step start.
         /// </value>
-        public double StepStart { get; set; }
+        public double StepStart
+        {
+            get => _stepStart;
+            set
+            {
+                _stepStart = value;
+                OnPropertyChanged();
+            }
+        }
 
         /// <summary>
-        /// Gets the actual step start.
+        /// Gets the used <see cref="StepStart"/>, if <see cref="StepStart"/> is double.NaN, 
+        /// the library will calculate this property and will expose the calculated value here,
+        /// if <see cref="StepStart"/> is not double.NaN, <see cref="ActualStepStart"/> is equals
+        /// to <see cref="StepStart"/> property.
         /// </summary>
         /// <value>
         /// The actual step start.
@@ -111,7 +146,15 @@ namespace LiveCharts.Core.Dimensions
         /// <value>
         /// The position.
         /// </value>
-        public AxisPosition Position { get; set; }
+        public AxisPosition Position
+        {
+            get => _position;
+            set
+            {
+                _position = value;
+                OnPropertyChanged();
+            }
+        }
 
         /// <summary>
         /// Gets or sets the x axis separator style.
@@ -119,7 +162,15 @@ namespace LiveCharts.Core.Dimensions
         /// <value>
         /// The x axis separator style.
         /// </value>
-        public ShapeStyle XSeparatorStyle { get; set; }
+        public ShapeStyle XSeparatorStyle
+        {
+            get => _xSeparatorStyle;
+            set
+            {
+                _xSeparatorStyle = value;
+                OnPropertyChanged();
+            }
+        }
 
         /// <summary>
         /// Gets or sets the x axis alternative separator style.
@@ -127,7 +178,15 @@ namespace LiveCharts.Core.Dimensions
         /// <value>
         /// The x axis alternative separator style.
         /// </value>
-        public ShapeStyle XAlternativeSeparatorStyle { get; set; }
+        public ShapeStyle XAlternativeSeparatorStyle
+        {
+            get => _xAlternativeSeparatorStyle;
+            set
+            {
+                _xAlternativeSeparatorStyle = value;
+                OnPropertyChanged();
+            }
+        }
 
         /// <summary>
         /// Gets or sets the y axis separator style.
@@ -135,7 +194,15 @@ namespace LiveCharts.Core.Dimensions
         /// <value>
         /// The y axis separator style.
         /// </value>
-        public ShapeStyle YSeparatorStyle { get; set; }
+        public ShapeStyle YSeparatorStyle
+        {
+            get => _ySeparatorStyle;
+            set
+            {
+                _ySeparatorStyle = value;
+                OnPropertyChanged();
+            }
+        }
 
         /// <summary>
         /// Gets or sets the y axis alternative separator style.
@@ -143,7 +210,15 @@ namespace LiveCharts.Core.Dimensions
         /// <value>
         /// The y axis alternative separator style.
         /// </value>
-        public ShapeStyle YAlternativeSeparatorStyle { get; set; }
+        public ShapeStyle YAlternativeSeparatorStyle
+        {
+            get => _yAlternativeSeparatorStyle;
+            set
+            {
+                _yAlternativeSeparatorStyle = value;
+                OnPropertyChanged();
+            }
+        }
 
         /// <summary>
         /// Gets or sets the separator provider.
@@ -218,9 +293,6 @@ namespace LiveCharts.Core.Dimensions
                 Padding = LabelsPadding
             };
 
-            var x = chart.ScaleFromUi(0, this, space);
-            var x1 = chart.ScaleFromUi(dimension, this, space);
-
             for (var i = 0f; i < dimension; i += step)
             {
                 var label = EvaluateAxisLabel(
@@ -252,9 +324,9 @@ namespace LiveCharts.Core.Dimensions
             ActualStep = GetActualAxisStep(chart);
             ActualStepStart = GetActualStepStart();
 
-            var from = Math.Ceiling(ActualMinValue / ActualStep) * ActualStep;
-            var to = Math.Floor(ActualMaxValue / ActualStep) * ActualStep;
             var unit = ActualPointLength?[Dimension] ?? 0;
+            var from = Math.Ceiling((ActualMinValue - unit * .5f) / ActualStep) * ActualStep;
+            var to = Math.Floor((ActualMaxValue + unit * .5f) / ActualStep) * ActualStep;
 
             var tolerance = ActualStep * .1f;
             var stepSize = Math.Abs(chart.ScaleToUi(ActualStep, this) - chart.ScaleToUi(0, this));
@@ -264,7 +336,7 @@ namespace LiveCharts.Core.Dimensions
 
             var delta = (float) ActualStep;
 
-            for (var i = (float) from; i <= to + unit + tolerance; i += delta)
+            for (var i = (float) from; i <= to + tolerance; i += delta)
             {
                 alternate = !alternate;
                 var iui = chart.ScaleToUi(i, this);
