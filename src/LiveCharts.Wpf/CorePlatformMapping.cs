@@ -30,7 +30,7 @@ using System.Windows;
 using System.Windows.Media;
 using LiveCharts.Core;
 using Brush = LiveCharts.Core.Drawing.Brush;
-using Font = LiveCharts.Core.Interaction.Styles.Font;
+using Font = LiveCharts.Core.Drawing.Styles.Font;
 using FontFamily = System.Windows.Media.FontFamily;
 using FontStyle = System.Windows.FontStyle;
 using FontWeight = System.Windows.FontWeight;
@@ -73,16 +73,16 @@ namespace LiveCharts.Wpf
         /// <param name="style">The style.</param>
         /// <returns></returns>
         /// <exception cref="ArgumentOutOfRangeException"></exception>
-        public static FontStyle AsWpf(this Core.Interaction.Styles.FontStyle style)
+        public static FontStyle AsWpf(this Core.Drawing.Styles.FontStyle style)
         {
             FontStyle s;
 
             switch (style)
             {
-                case Core.Interaction.Styles.FontStyle.Regular:
+                case Core.Drawing.Styles.FontStyle.Regular:
                     s = FontStyles.Normal;
                     break;
-                case Core.Interaction.Styles.FontStyle.Italic:
+                case Core.Drawing.Styles.FontStyle.Italic:
                     s = FontStyles.Italic;
                     break;
                 default:
@@ -98,16 +98,16 @@ namespace LiveCharts.Wpf
         /// <param name="weight">The weight.</param>
         /// <returns></returns>
         /// <exception cref="ArgumentOutOfRangeException"></exception>
-        public static FontWeight AsWpf(this Core.Interaction.Styles.FontWeight weight)
+        public static FontWeight AsWpf(this Core.Drawing.Styles.FontWeight weight)
         {
             FontWeight w;
 
             switch (weight)
             {
-                case Core.Interaction.Styles.FontWeight.Regular:
+                case Core.Drawing.Styles.FontWeight.Regular:
                     w = FontWeights.Regular;
                     break;
-                case Core.Interaction.Styles.FontWeight.Bold:
+                case Core.Drawing.Styles.FontWeight.Bold:
                     w = FontWeights.Bold;
                     break;
                 default:
@@ -145,13 +145,13 @@ namespace LiveCharts.Wpf
         /// <param name="orientation">The orientation.</param>
         /// <returns></returns>
         /// <exception cref="ArgumentOutOfRangeException">orientation - null</exception>
-        public static Orientation AsWpf(this Core.Interaction.Styles.Orientation orientation)
+        public static Orientation AsWpf(this Core.Drawing.Styles.Orientation orientation)
         {
             switch (orientation)
             {
-                case Core.Interaction.Styles.Orientation.Vertical:
+                case Core.Drawing.Styles.Orientation.Vertical:
                     return Orientation.Vertical;
-                case Core.Interaction.Styles.Orientation.Horizontal:
+                case Core.Drawing.Styles.Orientation.Horizontal:
                     return Orientation.Horizontal;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(orientation), orientation, null);

@@ -68,8 +68,8 @@ namespace LiveCharts.Core.Coordinates
         /// </value>
         public float Radius => _vector[0][0];
 
-        /// <inheritdoc cref="CompareDimensions"/>
-        public void CompareDimensions(IDataFactoryContext context)
+        /// <inheritdoc cref="Compare"/>
+        public void Compare(IDataFactoryContext context)
         {
             var radius = context.UpdateContext.Ranges[0][context.SeriesScalesAt[0]];
 

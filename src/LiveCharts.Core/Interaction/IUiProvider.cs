@@ -28,10 +28,10 @@ using LiveCharts.Core.Charts;
 using LiveCharts.Core.Coordinates;
 using LiveCharts.Core.DataSeries;
 using LiveCharts.Core.Dimensions;
+using LiveCharts.Core.Drawing;
 using LiveCharts.Core.Interaction.Controls;
 using LiveCharts.Core.Interaction.Dimensions;
 using LiveCharts.Core.Interaction.Series;
-using LiveCharts.Core.ViewModels;
 
 #endregion
 

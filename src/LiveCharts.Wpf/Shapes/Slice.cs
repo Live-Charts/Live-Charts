@@ -219,7 +219,7 @@ namespace LiveCharts.Wpf.Shapes
         {
             var center = new PointF((float) Height / 2, (float) Width / 2);
 
-            var model = Core.Drawing.SliceModel.Build(
+            var model = Core.Drawing.Slice.Build(
                 Wedge, Radius, InnerRadius, CornerRadius, center, ForceAngle, PushOut);
 
             context.BeginFigure(model.Points[0].AsWpf(), true, true);

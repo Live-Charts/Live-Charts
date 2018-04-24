@@ -30,10 +30,10 @@ using System.Drawing;
 using System.Linq;
 using LiveCharts.Core.DataSeries;
 using LiveCharts.Core.Dimensions;
+using LiveCharts.Core.Drawing;
 using LiveCharts.Core.Interaction;
 using LiveCharts.Core.Interaction.Points;
 using LiveCharts.Core.Updating;
-using LiveCharts.Core.ViewModels;
 
 #endregion
 

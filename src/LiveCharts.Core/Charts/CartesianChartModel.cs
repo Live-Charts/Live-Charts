@@ -30,8 +30,8 @@ using System.Linq;
 using LiveCharts.Core.DataSeries;
 using LiveCharts.Core.Dimensions;
 using LiveCharts.Core.Drawing;
+using LiveCharts.Core.Drawing.Styles;
 using LiveCharts.Core.Interaction.Points;
-using LiveCharts.Core.Interaction.Styles;
 using LiveCharts.Core.Updating;
 
 #endregion
@@ -69,7 +69,7 @@ namespace LiveCharts.Core.Charts
 
             var x1 = plane.ActualMaxValue + plane.ActualPointLength?[plane.Dimension] ?? 0f;
             var y1 = chartSize[plane.Dimension];
-            var x2 =  plane.ActualMinValue;
+            var x2 = plane.ActualMinValue;
             var y2 = 0f;
 
             if (plane.ActualReverse)
@@ -105,6 +105,14 @@ namespace LiveCharts.Core.Charts
             var y1 = chartSize[plane.Dimension];
             var x2 = plane.ActualMinValue - l * .5f;
             var y2 = 0f;
+
+            if (plane.ActualReverse)
+            {
+                var temp1 = y1;
+                var temp2 = y2;
+                y1 = temp2;
+                y2 = temp1;
+            }
 
             // ReSharper disable once CompareOfFloatsByEqualityOperator
             if (x2 == x1) return x1;

@@ -27,7 +27,6 @@
 
 using System;
 using System.Drawing;
-using LiveCharts.Core.ViewModels;
 
 #endregion
 
@@ -36,7 +35,7 @@ namespace LiveCharts.Core.Drawing
     /// <summary>
     /// The slice model class.
     /// </summary>
-    public static class SliceModel
+    public static class Slice
     {
         /// <summary>
         /// Builds the specified angle.
@@ -49,7 +48,7 @@ namespace LiveCharts.Core.Drawing
         /// <param name="forceAngle">if set to <c>true</c> [force angle].</param>
         /// <param name="pushOut">The push out.</param>
         /// <returns></returns>
-        public static S‪liceBuilder Build(
+        public static S‪liceBuilderViewModel Build(
             double wedge, double radius, double innerRadius, 
             double cornerRadius, PointF center, bool forceAngle, double pushOut)
         {
@@ -57,7 +56,7 @@ namespace LiveCharts.Core.Drawing
                 wedge, radius, innerRadius, cornerRadius, center, forceAngle, pushOut);
         }
 
-        private static S‪liceBuilder GetPoints(
+        private static S‪liceBuilderViewModel GetPoints(
             double wedge, double outerRadius, double innerRadius,
             double cornerRadius, PointF center, bool forceAngle, double pushOut)
         {
@@ -138,7 +137,7 @@ namespace LiveCharts.Core.Drawing
                     (float) (center.X + innerRadius * Math.Sin(innerRoundingAngle) + xp),
                     (float) (center.Y + innerRadius * Math.Cos(innerRoundingAngle) + yp));
 
-                return new S‪liceBuilder(
+                return new S‪liceBuilderViewModel(
                     pts,
                     (float) cr,
                     angle - outerRoundingAngle * 2 >= Math.PI,

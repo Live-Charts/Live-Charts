@@ -35,17 +35,15 @@ using LiveCharts.Core.Charts;
 using LiveCharts.Core.Collections;
 using LiveCharts.Core.Coordinates;
 using LiveCharts.Core.Drawing;
-using LiveCharts.Core.Drawing.Svg;
-using LiveCharts.Core.Events;
-using LiveCharts.Core.Interaction;
+using LiveCharts.Core.Drawing.Styles;
+using LiveCharts.Core.Interaction.Events;
 using LiveCharts.Core.Interaction.Points;
 using LiveCharts.Core.Interaction.Series;
-using LiveCharts.Core.Interaction.Styles;
 using LiveCharts.Core.Updating;
 using Brush = LiveCharts.Core.Drawing.Brush;
-using FontStyle = LiveCharts.Core.Interaction.Styles.FontStyle;
+using FontStyle = LiveCharts.Core.Drawing.Styles.FontStyle;
 #if NET45 || NET46
-using Font = LiveCharts.Core.Interaction.Styles.Font;
+using Font = LiveCharts.Core.Drawing.Styles.Font;
 #endif
 
 #endregion
@@ -222,7 +220,7 @@ namespace LiveCharts.Core.DataSeries
         }
 
         /// <inheritdoc />
-        public SeriesMetatada Metadata { get; protected set; }
+        public SeriesMetadata Metadata { get; protected set; }
         
         /// <inheritdoc />
         public ModelToCoordinateMapper<TModel, TCoordinate> Mapper
@@ -501,7 +499,7 @@ namespace LiveCharts.Core.DataSeries
             _values = itemsSource ?? new ChartingCollection<TModel>();
             OnValuesInstanceChanged();
             var t = typeof(TModel);
-            Metadata = new SeriesMetatada
+            Metadata = new SeriesMetadata
             {
                 ModelType = t,
                 IsValueType = t.IsValueType

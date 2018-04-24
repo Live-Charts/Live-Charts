@@ -24,9 +24,10 @@
 #endregion
 #region
 
-using LiveCharts.Core.Events;
+using LiveCharts.Core.Charts;
 using LiveCharts.Core.Interaction;
 using LiveCharts.Core.Interaction.Controls;
+using LiveCharts.Core.Interaction.Events;
 
 #endregion
 
@@ -35,7 +36,7 @@ namespace LiveCharts.Core.Dimensions
     /// <summary>
     /// Defines a separator view.
     /// </summary>
-    public interface IPlaneSection : IResource
+    public interface IPlaneSeparatorView
     {
         /// <summary>
         /// Gets the label.
@@ -64,5 +65,11 @@ namespace LiveCharts.Core.Dimensions
         /// </summary>
         /// <param name="args">The arguments.</param>
         void DrawLabel(CartesianAxisSectionArgs args);
+
+        /// <summary>
+        /// Disposes the specified view.
+        /// </summary>
+        /// <param name="view">The view.</param>
+        void Dispose(IChartView view);
     }
 }

@@ -17,7 +17,7 @@ namespace LiveCharts.Wpf.Views.Providers
         /// </summary>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
-        public IPlaneSection GetNewVisual()
+        public IPlaneSeparatorView GetNewVisual()
         {
             return new PlaneView<AxisLabel>();
         }

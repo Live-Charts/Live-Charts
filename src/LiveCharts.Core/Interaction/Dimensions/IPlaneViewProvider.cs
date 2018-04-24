@@ -12,7 +12,7 @@ namespace LiveCharts.Core.Interaction.Dimensions
         /// Gets the new visual.
         /// </summary>
         /// <returns></returns>
-        IPlaneSection GetNewVisual();
+        IPlaneSeparatorView GetNewVisual();
 
         /// <summary>
         /// Gets the new label.

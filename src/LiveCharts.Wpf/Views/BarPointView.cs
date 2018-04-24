@@ -32,10 +32,10 @@ using System.Windows.Shapes;
 using LiveCharts.Core.Charts;
 using LiveCharts.Core.Coordinates;
 using LiveCharts.Core.DataSeries;
+using LiveCharts.Core.Drawing;
 using LiveCharts.Core.Interaction.Points;
-using LiveCharts.Core.ViewModels;
 using LiveCharts.Wpf.Animations;
-using Orientation = LiveCharts.Core.Interaction.Styles.Orientation;
+using Orientation = LiveCharts.Core.Drawing.Styles.Orientation;
 using Rectangle = System.Windows.Shapes.Rectangle;
 
 #endregion

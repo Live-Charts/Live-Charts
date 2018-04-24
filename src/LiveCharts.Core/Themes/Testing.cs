@@ -28,8 +28,8 @@ using System.Drawing;
 using LiveCharts.Core.DataSeries;
 using LiveCharts.Core.Dimensions;
 using LiveCharts.Core.Drawing;
-using LiveCharts.Core.Interaction.Styles;
-using Font = LiveCharts.Core.Interaction.Styles.Font;
+using LiveCharts.Core.Drawing.Styles;
+using Font = LiveCharts.Core.Drawing.Styles.Font;
 
 #endregion
 
@@ -87,7 +87,7 @@ namespace LiveCharts.Core.Themes
                 })
                 .SetDefault<Axis>(axis =>
                 {
-                    axis.LabelsFont = new Font("Calibri", 30, Interaction.Styles.FontStyle.Regular, FontWeight.Regular);
+                    axis.LabelsFont = new Font("Calibri", 30, Drawing.Styles.FontStyle.Regular, FontWeight.Regular);
                     axis.XSeparatorStyle = sepStyle;
                     axis.YSeparatorStyle = sepStyle;
                     axis.XAlternativeSeparatorStyle = altStyle;

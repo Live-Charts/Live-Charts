@@ -27,6 +27,7 @@
 using System.Drawing;
 using LiveCharts.Core.Dimensions;
 using LiveCharts.Core.Interaction;
+using LiveCharts.Core.Interaction.Controls;
 using LiveCharts.Core.Interaction.Points;
 
 #endregion

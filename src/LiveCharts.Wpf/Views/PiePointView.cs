@@ -31,10 +31,10 @@ using System.Windows.Media;
 using LiveCharts.Core.Charts;
 using LiveCharts.Core.Coordinates;
 using LiveCharts.Core.DataSeries;
+using LiveCharts.Core.Drawing;
 using LiveCharts.Core.Interaction.Points;
-using LiveCharts.Core.ViewModels;
 using LiveCharts.Wpf.Animations;
-using LiveCharts.Wpf.Shapes;
+using Slice = LiveCharts.Wpf.Shapes.Slice;
 
 #endregion
 

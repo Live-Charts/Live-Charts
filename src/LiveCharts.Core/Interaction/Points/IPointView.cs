@@ -25,9 +25,10 @@
 #region
 
 using System.Drawing;
+using LiveCharts.Core.Charts;
 using LiveCharts.Core.Coordinates;
 using LiveCharts.Core.DataSeries;
-using LiveCharts.Core.Interaction.Styles;
+using LiveCharts.Core.Drawing.Styles;
 
 #endregion
 

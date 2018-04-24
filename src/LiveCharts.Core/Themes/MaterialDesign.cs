@@ -28,12 +28,11 @@ using System.Drawing;
 using LiveCharts.Core.DataSeries;
 using LiveCharts.Core.Dimensions;
 using LiveCharts.Core.Drawing;
-using LiveCharts.Core.Drawing.Svg;
+using LiveCharts.Core.Drawing.Styles;
 using LiveCharts.Core.Interaction;
-using LiveCharts.Core.Interaction.Styles;
 #if NET45 || NET46
-using Font = LiveCharts.Core.Interaction.Styles.Font;
-using FontStyle= LiveCharts.Core.Interaction.Styles.FontStyle;
+using Font = LiveCharts.Core.Drawing.Styles.Font;
+using FontStyle= LiveCharts.Core.Drawing.Styles.FontStyle;
 #endif
 
 #endregion

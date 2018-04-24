@@ -26,12 +26,10 @@
 
 using System.Windows;
 using LiveCharts.Core;
-using LiveCharts.Core.Dimensions;
-using LiveCharts.Core.Interaction.Styles;
 using LiveCharts.Core.Themes;
 using LiveCharts.Wpf;
-using FontStyle = LiveCharts.Core.Interaction.Styles.FontStyle;
-using FontWeight = LiveCharts.Core.Interaction.Styles.FontWeight;
+using FontStyle = LiveCharts.Core.Drawing.Styles.FontStyle;
+using FontWeight = LiveCharts.Core.Drawing.Styles.FontWeight;
 
 #endregion
 

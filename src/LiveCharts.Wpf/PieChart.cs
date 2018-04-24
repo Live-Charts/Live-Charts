@@ -38,7 +38,7 @@ namespace LiveCharts.Wpf
     /// Generates pie charts.
     /// </summary>
     /// <seealso cref="LiveCharts.Wpf.Chart" />
-    /// <seealso cref="LiveCharts.Core.Abstractions.IPieChartView" />
+    /// <seealso cref="IPieChartView" />
     public class PieChart : Chart, IPieChartView
     {
         private readonly IList<IList<Plane>> _planes;

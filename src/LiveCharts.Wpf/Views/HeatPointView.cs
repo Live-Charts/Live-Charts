@@ -27,15 +27,15 @@
 
 using System.Drawing;
 using System.Windows.Controls;
-using System.Windows.Media;
 using LiveCharts.Core.Charts;
 using LiveCharts.Core.Coordinates;
 using LiveCharts.Core.DataSeries;
+using LiveCharts.Core.Drawing;
 using LiveCharts.Core.Interaction.Points;
-using LiveCharts.Core.ViewModels;
 using LiveCharts.Wpf.Animations;
 using Color = System.Windows.Media.Color;
 using Rectangle = System.Windows.Shapes.Rectangle;
+using SolidColorBrush = System.Windows.Media.SolidColorBrush;
 
 #endregion
 

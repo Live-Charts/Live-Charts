@@ -26,7 +26,7 @@
 
 using System;
 using LiveCharts.Core.Coordinates;
-using LiveCharts.Core.Events;
+using LiveCharts.Core.Interaction.Events;
 
 #endregion
 

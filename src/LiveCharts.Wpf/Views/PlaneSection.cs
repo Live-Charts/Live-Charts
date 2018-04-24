@@ -24,7 +24,6 @@
 #endregion
 #region
 
-using System;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -32,9 +31,8 @@ using System.Windows.Media;
 using System.Windows.Shapes;
 using LiveCharts.Core.Charts;
 using LiveCharts.Core.Dimensions;
-using LiveCharts.Core.Events;
-using LiveCharts.Core.Interaction;
 using LiveCharts.Core.Interaction.Controls;
+using LiveCharts.Core.Interaction.Events;
 using LiveCharts.Wpf.Animations;
 
 #endregion
@@ -44,8 +42,8 @@ namespace LiveCharts.Wpf.Views
     /// <summary>
     /// The separator class.
     /// </summary>
-    /// <seealso cref="IPlaneSection" />
-    public class PlaneView<TLabel> : IPlaneSection
+    /// <seealso cref="IPlaneSeparatorView" />
+    public class PlaneView<TLabel> : IPlaneSeparatorView
         where TLabel : FrameworkElement, IMeasurableLabel, new()
     {
         /// <summary>
@@ -115,7 +113,7 @@ namespace LiveCharts.Wpf.Views
                     .Property(UIElement.OpacityProperty, 0)
                     .Then((sender, e) =>
                     {
-                        ((IResource) this).Dispose(args.ChartView);
+                        ((IPlaneSeparatorView) this).Dispose(args.ChartView);
                         storyboard = null;
                     });
             }
@@ -145,22 +143,18 @@ namespace LiveCharts.Wpf.Views
                 .Begin();
         }
 
-        public event DisposingResourceHandler Disposed;
-
-        /// <inheritdoc />
-        object IPlaneSection.VisualElement => Rectangle;
-
-        /// <inheritdoc />
-        IMeasurableLabel IPlaneSection.Label => Label;
-
-        object IResource.UpdateId { get; set; }
-
-        void IResource.Dispose(IChartView chart)
+        void IPlaneSeparatorView.Dispose(IChartView view)
         {
-            chart.Content.RemoveChild(Rectangle);
-            chart.Content.RemoveChild(Label);
+            view.Content.RemoveChild(Rectangle);
+            view.Content.RemoveChild(Label);
             Rectangle = null;
-            Disposed?.Invoke(chart, this);
+            Label = null;
         }
+
+        /// <inheritdoc />
+        object IPlaneSeparatorView.VisualElement => Rectangle;
+
+        /// <inheritdoc />
+        IMeasurableLabel IPlaneSeparatorView.Label => Label;
     }
 }

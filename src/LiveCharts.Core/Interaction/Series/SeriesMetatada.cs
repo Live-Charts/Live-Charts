@@ -33,7 +33,7 @@ namespace LiveCharts.Core.Interaction.Series
     /// <summary>
     /// A class containing series information.
     /// </summary>
-    public struct SeriesMetatada
+    public struct SeriesMetadata
     {
         /// <summary>
         /// Gets or sets the type of the model.

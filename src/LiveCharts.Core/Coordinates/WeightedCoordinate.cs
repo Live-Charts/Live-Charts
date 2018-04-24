@@ -79,7 +79,7 @@ namespace LiveCharts.Core.Coordinates
         public float Weight => _vector[2][0];
 
         /// <inheritdoc />
-        public void CompareDimensions(IDataFactoryContext context)
+        public void Compare(IDataFactoryContext context)
         {
             var x = context.UpdateContext.Ranges[0][context.SeriesScalesAt[0]];
             var y = context.UpdateContext.Ranges[1][context.SeriesScalesAt[1]];

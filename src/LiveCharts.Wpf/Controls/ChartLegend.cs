@@ -30,10 +30,9 @@ using System.Windows;
 using System.Windows.Controls;
 using LiveCharts.Core.Charts;
 using LiveCharts.Core.DataSeries;
-using LiveCharts.Core.Events;
-using LiveCharts.Core.Interaction;
 using LiveCharts.Core.Interaction.Controls;
-using Orientation = LiveCharts.Core.Interaction.Styles.Orientation;
+using LiveCharts.Core.Interaction.Events;
+using Orientation = LiveCharts.Core.Drawing.Styles.Orientation;
 
 #endregion
 
@@ -154,7 +153,7 @@ namespace LiveCharts.Wpf.Controls
 
             ItemsSource = seriesCollection;
 
-            if (Orientation == Orientation.Auto)
+            if (orientation == Orientation.Auto)
             {
                 SetValue(ActualOrientationProperty,
                     orientation == Orientation.Horizontal
@@ -163,7 +162,7 @@ namespace LiveCharts.Wpf.Controls
             }
             else
             {
-                SetValue(ActualOrientationProperty, Orientation.AsWpf());
+                SetValue(ActualOrientationProperty, orientation.AsWpf());
             }
             UpdateLayout();
             return new[] {(float) DesiredSize.Width, (float) DesiredSize.Height};

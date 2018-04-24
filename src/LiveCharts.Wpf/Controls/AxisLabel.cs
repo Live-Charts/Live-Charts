@@ -28,8 +28,8 @@ using System.Drawing;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using LiveCharts.Core.Drawing.Styles;
 using LiveCharts.Core.Interaction.Controls;
-using LiveCharts.Core.Interaction.Styles;
 
 #endregion
 

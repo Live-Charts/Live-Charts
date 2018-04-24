@@ -31,15 +31,13 @@ using System.Drawing;
 using LiveCharts.Core.Charts;
 using LiveCharts.Core.Coordinates;
 using LiveCharts.Core.Drawing;
-using LiveCharts.Core.Drawing.Svg;
-using LiveCharts.Core.Interaction;
+using LiveCharts.Core.Drawing.Styles;
 using LiveCharts.Core.Interaction.Points;
 using LiveCharts.Core.Interaction.Series;
-using LiveCharts.Core.Interaction.Styles;
 using LiveCharts.Core.Updating;
 using Brush = LiveCharts.Core.Drawing.Brush;
 #if NET45 || NET46
-using Font = LiveCharts.Core.Interaction.Styles.Font;
+using Font = LiveCharts.Core.Drawing.Styles.Font;
 #endif
 
 #endregion
@@ -120,7 +118,7 @@ namespace LiveCharts.Core.DataSeries
         /// <value>
         /// The metadata.
         /// </value>
-        SeriesMetatada Metadata { get; }
+        SeriesMetadata Metadata { get; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the series should display a label for every point in the series.

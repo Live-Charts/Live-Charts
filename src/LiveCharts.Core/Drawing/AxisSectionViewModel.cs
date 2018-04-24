@@ -25,7 +25,7 @@
 #region
 
 using System.Drawing;
-using LiveCharts.Core.Interaction.Styles;
+using LiveCharts.Core.Drawing.Styles;
 
 #endregion
 

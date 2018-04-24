@@ -47,13 +47,14 @@ namespace LiveCharts.Core.Coordinates
         float[] this[int dimension] { get; }
 
         /// <summary>
-        /// Compares the dimensions.
+        /// Compares the current coordinate with the current factory context, 
+        /// then updates the context if necessary.
         /// </summary>
         /// <param name="context">The context.</param>
-        void CompareDimensions(IDataFactoryContext context);
+        void Compare(IDataFactoryContext context);
 
         /// <summary>
-        ///gets the coordinate as tooltip data.
+        /// Gets the coordinate as tooltip data.
         /// </summary>
         /// <returns></returns>
         string[] AsTooltipData(params Plane[] dimensions);

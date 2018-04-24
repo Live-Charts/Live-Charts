@@ -33,11 +33,12 @@ using System.Windows.Shapes;
 using LiveCharts.Core.Charts;
 using LiveCharts.Core.Coordinates;
 using LiveCharts.Core.DataSeries;
+using LiveCharts.Core.Drawing;
 using LiveCharts.Core.Interaction.Controls;
 using LiveCharts.Core.Interaction.Points;
-using LiveCharts.Core.ViewModels;
 using LiveCharts.Wpf.Animations;
 using Brushes = System.Windows.Media.Brushes;
+using Geometry = System.Windows.Media.Geometry;
 
 #endregion
 

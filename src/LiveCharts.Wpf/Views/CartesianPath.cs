@@ -31,7 +31,7 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using LiveCharts.Core.Charts;
-using LiveCharts.Core.Effects;
+using LiveCharts.Core.Drawing;
 using LiveCharts.Core.Interaction.Controls;
 using LiveCharts.Wpf.Animations;
 using Brush = LiveCharts.Core.Drawing.Brush;

@@ -33,10 +33,10 @@ using System.Windows.Media;
 using LiveCharts.Core.Charts;
 using LiveCharts.Core.Coordinates;
 using LiveCharts.Core.DataSeries;
-using LiveCharts.Core.Events;
+using LiveCharts.Core.Drawing.Styles;
 using LiveCharts.Core.Interaction;
+using LiveCharts.Core.Interaction.Events;
 using LiveCharts.Core.Interaction.Points;
-using LiveCharts.Core.Interaction.Styles;
 using FontFamily = System.Windows.Media.FontFamily;
 using Size = System.Windows.Size;
 

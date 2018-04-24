@@ -87,7 +87,7 @@ namespace LiveCharts.Core.Coordinates
         public float To { get; protected set; }
 
         /// <inheritdoc />
-        public void CompareDimensions(IDataFactoryContext context)
+        public void Compare(IDataFactoryContext context)
         {
             // stacking..
             int index;

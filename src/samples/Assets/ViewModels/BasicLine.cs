@@ -29,7 +29,7 @@ using System.Collections.ObjectModel;
 using System.Drawing;
 using LiveCharts.Core.Collections;
 using LiveCharts.Core.DataSeries;
-using LiveCharts.Core.Drawing.Svg;
+using LiveCharts.Core.Drawing;
 
 #endregion
 

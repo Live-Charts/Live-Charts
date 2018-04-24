@@ -59,15 +59,8 @@ namespace LiveCharts.Core.Interaction.ChartAreas
             var x = pointerLocation.X;
             var y = pointerLocation.Y;
 
-            var a = x >= Rectangle.Left && x <= Rectangle.Left + Rectangle.Width &&
-                    y >= Rectangle.Top && y <= Rectangle.Top + Rectangle.Height;
-
-            if (a)
-            {
-                var b = 1;
-            }
-
-            return a;
+            return x >= Rectangle.Left && x <= Rectangle.Left + Rectangle.Width &&
+                   y >= Rectangle.Top && y <= Rectangle.Top + Rectangle.Height;
         }
     }
 }

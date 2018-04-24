@@ -93,7 +93,7 @@ namespace LiveCharts.Core.Updating
                 chartPoint.Coordinate = mapper.PointPredicate.Invoke(instance, index);
 
                 // compare the dimensions to scale the chart.
-                chartPoint.Coordinate.CompareDimensions(context);
+                chartPoint.Coordinate.Compare(context);
 
                 // register our chart point at the resource collector
                 context.Chart.RegisterResource(chartPoint);

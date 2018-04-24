@@ -31,14 +31,13 @@ using System.Drawing;
 using System.Runtime.CompilerServices;
 using LiveCharts.Core.Charts;
 using LiveCharts.Core.Drawing;
-using LiveCharts.Core.Events;
+using LiveCharts.Core.Drawing.Styles;
 using LiveCharts.Core.Interaction;
-using LiveCharts.Core.Interaction.Controls;
 using LiveCharts.Core.Interaction.Dimensions;
-using LiveCharts.Core.Interaction.Styles;
+using LiveCharts.Core.Interaction.Events;
 using Brush = LiveCharts.Core.Drawing.Brush;
-using Font = LiveCharts.Core.Interaction.Styles.Font;
-using FontStyle = LiveCharts.Core.Interaction.Styles.FontStyle;
+using Font = LiveCharts.Core.Drawing.Styles.Font;
+using FontStyle = LiveCharts.Core.Drawing.Styles.FontStyle;
 
 #endregion
 
@@ -394,7 +393,7 @@ namespace LiveCharts.Core.Dimensions
         protected virtual IPlaneViewProvider DefaultViewProvider()
         {
             throw new LiveChartsException(
-                $"A {nameof(IMeasurableLabel)} was not found when trying to draw Plane in the UI", 115);
+                $"A {nameof(IPlaneViewProvider)} was not found when trying to draw {this} in the UI", 115);
         }
 
         #region IResource implementation

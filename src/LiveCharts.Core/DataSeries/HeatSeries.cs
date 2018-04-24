@@ -35,7 +35,6 @@ using LiveCharts.Core.Interaction.ChartAreas;
 using LiveCharts.Core.Interaction.Points;
 using LiveCharts.Core.Interaction.Series;
 using LiveCharts.Core.Updating;
-using LiveCharts.Core.ViewModels;
 
 #endregion
 

@@ -25,11 +25,14 @@
 
 #region
 
+using System;
+using LiveCharts.Core.Charts;
 using LiveCharts.Core.Drawing;
+using LiveCharts.Core.Drawing.Styles;
 using LiveCharts.Core.Interaction.Dimensions;
-using LiveCharts.Core.Interaction.Styles;
+using LiveCharts.Core.Interaction.Events;
 #if NET45 || NET46
-using Font = LiveCharts.Core.Interaction.Styles.Font;
+using Font = LiveCharts.Core.Drawing.Styles.Font;
 #endif
 
 #endregion
@@ -39,7 +42,7 @@ namespace LiveCharts.Core.Dimensions
     /// <summary>
     /// Defines a section in an axis.
     /// </summary>
-    public class Section
+    public class Section : IResource
     {
         private IPlaneViewProvider _viewProvider;
 
@@ -139,7 +142,7 @@ namespace LiveCharts.Core.Dimensions
         /// <value>
         /// The view.
         /// </value>
-        public IPlaneSection View { get; internal set; }
+        public IPlaneSeparatorView View { get; internal set; }
 
         /// <summary>
         /// Gets or sets the view provider.
@@ -161,5 +164,19 @@ namespace LiveCharts.Core.Dimensions
         {
             return Charting.Current.UiProvider.GetNewSection();
         }
+
+        #region IResource implementation
+
+        /// <inheritdoc />
+        public event DisposingResourceHandler Disposed;
+
+        object IResource.UpdateId { get; set; }
+
+        void IResource.Dispose(IChartView view)
+        {
+            View.Dispose(view);
+        }
+
+        #endregion
     }
 }

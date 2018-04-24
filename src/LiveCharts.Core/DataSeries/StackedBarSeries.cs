@@ -31,13 +31,12 @@ using LiveCharts.Core.Charts;
 using LiveCharts.Core.Coordinates;
 using LiveCharts.Core.Dimensions;
 using LiveCharts.Core.Drawing;
+using LiveCharts.Core.Drawing.Styles;
 using LiveCharts.Core.Interaction.Points;
 using LiveCharts.Core.Interaction.Series;
-using LiveCharts.Core.Interaction.Styles;
 using LiveCharts.Core.Updating;
-using LiveCharts.Core.ViewModels;
 #if NET45 || NET46
-using Font = LiveCharts.Core.Interaction.Styles.Font;
+using Font = LiveCharts.Core.Drawing.Styles.Font;
 #endif
 
 #endregion

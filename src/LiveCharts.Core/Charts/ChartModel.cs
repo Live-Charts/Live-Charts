@@ -36,11 +36,11 @@ using System.Windows.Input;
 using LiveCharts.Core.DataSeries;
 using LiveCharts.Core.Dimensions;
 using LiveCharts.Core.Drawing;
-using LiveCharts.Core.Events;
+using LiveCharts.Core.Drawing.Styles;
 using LiveCharts.Core.Interaction;
 using LiveCharts.Core.Interaction.Controls;
+using LiveCharts.Core.Interaction.Events;
 using LiveCharts.Core.Interaction.Points;
-using LiveCharts.Core.Interaction.Styles;
 using LiveCharts.Core.Updating;
 
 #endregion

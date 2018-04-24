@@ -3,7 +3,7 @@ using System.Drawing;
 using LiveCharts.Core.DataSeries;
 using LiveCharts.Core.Dimensions;
 using LiveCharts.Core.Drawing;
-using LiveCharts.Core.Interaction.Styles;
+using LiveCharts.Core.Drawing.Styles;
 
 namespace Assets.ViewModels
 {

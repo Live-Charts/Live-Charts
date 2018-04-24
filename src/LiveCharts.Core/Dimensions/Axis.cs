@@ -30,13 +30,12 @@ using System.Drawing;
 using System.Linq;
 using LiveCharts.Core.Charts;
 using LiveCharts.Core.Drawing;
-using LiveCharts.Core.Events;
+using LiveCharts.Core.Drawing.Styles;
 using LiveCharts.Core.Interaction.Controls;
 using LiveCharts.Core.Interaction.Dimensions;
-using LiveCharts.Core.Interaction.Styles;
-using LiveCharts.Core.ViewModels;
+using LiveCharts.Core.Interaction.Events;
 #if NET45 || NET46
-using Font = LiveCharts.Core.Interaction.Styles.Font;
+using Font = LiveCharts.Core.Drawing.Styles.Font;
 #endif
 #endregion
 
@@ -47,8 +46,7 @@ namespace LiveCharts.Core.Dimensions
     /// </summary>
     public class Axis : Plane
     {
-        private Dictionary<double, IPlaneSection> _activeSeparators =
-            new Dictionary<double, IPlaneSection>();
+        private Dictionary<double, PlaneSeparator> _activeSeparators = new Dictionary<double, PlaneSeparator>();
 
         private IPlaneViewProvider _planeViewProvider;
         private double _step;
@@ -344,7 +342,10 @@ namespace LiveCharts.Core.Dimensions
 
                 if (!_activeSeparators.TryGetValue(key, out var separator))
                 {
-                    separator = ViewProvider.GetNewVisual();
+                    separator = new PlaneSeparator
+                    {
+                        View = ViewProvider.GetNewVisual()
+                    };
                     _activeSeparators.Add(key, separator);
                 }
 
@@ -367,8 +368,8 @@ namespace LiveCharts.Core.Dimensions
                         ChartView = chart.View
                     };
 
-                    separator.DrawShape(args);
-                    separator.DrawLabel(args);
+                    separator.View.DrawShape(args);
+                    separator.View.DrawLabel(args);
                 }
                 else
                 {
@@ -386,8 +387,8 @@ namespace LiveCharts.Core.Dimensions
                         ChartView = chart.View
                     };
 
-                    separator.DrawShape(args);
-                    separator.DrawLabel(args);
+                    separator.View.DrawShape(args);
+                    separator.View.DrawLabel(args);
                 }
 
                 chart.RegisterResource(separator);
@@ -509,7 +510,7 @@ namespace LiveCharts.Core.Dimensions
                 section.View.DrawShape(args);
                 section.View.DrawLabel(args);
 
-                chart.RegisterResource(section.View);
+                chart.RegisterResource(section);
             }
         }
 
