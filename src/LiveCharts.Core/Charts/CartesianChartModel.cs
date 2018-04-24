@@ -25,13 +25,11 @@
 #region
 
 using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using LiveCharts.Core.DataSeries;
 using LiveCharts.Core.Dimensions;
 using LiveCharts.Core.Drawing;
-using LiveCharts.Core.Interaction;
 using LiveCharts.Core.Interaction.Points;
 using LiveCharts.Core.Interaction.Styles;
 using LiveCharts.Core.Updating;
@@ -101,9 +99,11 @@ namespace LiveCharts.Core.Charts
             // then
             // x = ((y - y1) / m) + x1
 
-            var x1 =plane.ActualMaxValue + (plane.ActualPointLength?[plane.Dimension] ?? 0f);
+            var l = plane.ActualPointLength?[plane.Dimension] ?? 0f;
+
+            var x1 = plane.ActualMaxValue + l * .5f;
             var y1 = chartSize[plane.Dimension];
-            var x2 = plane.ActualMinValue;
+            var x2 = plane.ActualMinValue - l * .5f;
             var y2 = 0f;
 
             // ReSharper disable once CompareOfFloatsByEqualityOperator

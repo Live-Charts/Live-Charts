@@ -659,6 +659,8 @@ namespace LiveCharts.Core.Charts
                 }
             }
 ;
+            UpdateId = null;
+
             _resources = null;
             _resourcesCollections = null;
             _colors = null;

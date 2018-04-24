@@ -47,7 +47,7 @@ namespace LiveCharts.Core.Dimensions
     /// </summary>
     public class Axis : Plane
     {
-        private readonly Dictionary<double, IPlaneSection> _activeSeparators =
+        private Dictionary<double, IPlaneSection> _activeSeparators =
             new Dictionary<double, IPlaneSection>();
 
         private IPlaneViewProvider _planeViewProvider;
@@ -173,7 +173,7 @@ namespace LiveCharts.Core.Dimensions
             return $"{d} at {Position}, from {FormatValue(ActualMinValue)} to {FormatValue(ActualMaxValue)} @ {FormatValue(ActualStep)}";
         }
 
-        internal Margin CalculateAxisMargin(ChartModel sizeVector)
+        internal Margin CalculateAxisMargin(ChartModel chart)
         {
 #region note
             // we'll ask the axis to generate a label every 5px to estimate its size
@@ -196,14 +196,14 @@ namespace LiveCharts.Core.Dimensions
             // to calculate exactly the size don't we?
             // ... this is not supported for now.
 #endregion
-            var space = sizeVector.DrawAreaSize;
+            var space = chart.DrawAreaSize;
             if (!(Dimension == 0 || Dimension == 1))
             {
                 throw new LiveChartsException(
                     $"A Cartesian chart is not able to handle dimension {Dimension}.", 130);
             }
             var dimension = space[Dimension];
-            var step = 5; // ToDo: or use the real if it is defined?
+            var step = (float) (double.IsNaN(Step) ? 5d : Step);
 
             var unit = ActualPointLength?[Dimension] ?? 0f;
 
@@ -218,15 +218,18 @@ namespace LiveCharts.Core.Dimensions
                 Padding = LabelsPadding
             };
 
+            var x = chart.ScaleFromUi(0, this, space);
+            var x1 = chart.ScaleFromUi(dimension, this, space);
+
             for (var i = 0f; i < dimension; i += step)
             {
                 var label = EvaluateAxisLabel(
                     dummyControl,
                     labelsStyle,
-                    (float) sizeVector.ScaleFromUi(i, this, space),
+                    (float) chart.ScaleFromUi(i, this, space),
                     space,
                     unit,
-                    sizeVector);
+                    chart);
 
                 var li = label.Position.X;// - label.Margin.Left;
                 if (li < 0 && l < -li) l = -li;
@@ -452,6 +455,7 @@ namespace LiveCharts.Core.Dimensions
             }
 
             _activeSeparators.Clear();
+            _activeSeparators = null;
         }
         
         /// <inheritdoc />
