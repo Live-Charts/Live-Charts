@@ -34,6 +34,7 @@ using LiveCharts.Core.Collections;
 using LiveCharts.Core.DataSeries;
 using LiveCharts.Core.Dimensions;
 using LiveCharts.Core.Interaction;
+using Point = System.Windows.Point;
 
 #endregion
 
@@ -63,6 +64,9 @@ namespace LiveCharts.Wpf
         {
             Model = new CartesianChartModel(this);
             MouseWheel += OnMouseWheel;
+            MouseDown += OnMouseDown;
+            MouseMove += OnMouseMove;
+            MouseUp += OnMouseUp;
             SetValue(SeriesProperty, new ChartingCollection<ISeries>());
             SetValue(XAxisProperty, new ChartingCollection<Plane> {new Axis()});
             SetValue(YAxisProperty, new ChartingCollection<Plane> {new Axis()});
@@ -205,6 +209,7 @@ namespace LiveCharts.Wpf
             var pivot = e.GetPosition(VisualDrawMargin);
 
             e.Handled = true;
+
             var cartesianModel = (CartesianChartModel) Model;
 
             if (e.Delta > 0)
@@ -215,6 +220,38 @@ namespace LiveCharts.Wpf
             {
                 cartesianModel.ZoomOut(new PointF((float) pivot.X, (float) pivot.Y));
             }
+        }
+
+        private bool _isDragging;
+        private Point _previous;
+
+        private void OnMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (Panning == Panning.None) return;
+            _previous = e.GetPosition(VisualDrawMargin);
+            _isDragging = true;
+        }
+
+        private void OnMouseMove(object sender, MouseEventArgs e)
+        {
+            if (!_isDragging) return;
+
+            var cartesianModel = (CartesianChartModel) Model;
+
+            var current = e.GetPosition(VisualDrawMargin);
+
+            cartesianModel.Drag(
+                new PointF(
+                    (float) (_previous.X - current.X),
+                    (float) (_previous.Y - current.Y)
+                ));
+
+            _previous = current;
+        }
+
+        private void OnMouseUp(object sender, MouseButtonEventArgs e)
+        {
+            _isDragging = false;
         }
     }
 }

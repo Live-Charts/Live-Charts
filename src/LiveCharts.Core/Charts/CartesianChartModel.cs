@@ -212,9 +212,11 @@ namespace LiveCharts.Core.Charts
         /// <param name="pivot">The pivot, the point in the UI where the zoom was requested.</param>
         public void ZoomOut(PointF pivot)
         {
-            if (!IsViewInitialized) return;
-
             var cartesianView = (ICartesianChartView)View;
+
+            if (!IsViewInitialized) return;
+            if (cartesianView.Zooming == Zooming.None) return;
+
             ToolTip.Hide(View);
 
             var speed = cartesianView.ZoomingSpeed < 0.1
@@ -265,6 +267,60 @@ namespace LiveCharts.Core.Charts
                     var minR = py - target * rMin;
                     var maxR = py + target * rMax;
                     yPlane.SetRange(minR, maxR);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Drags the specified delta.
+        /// </summary>
+        /// <param name="delta">The delta.</param>
+        public void Drag(PointF delta)
+        {
+            var cartesianView = (ICartesianChartView) View;
+
+            if ((cartesianView.Panning == Panning.Unset &&
+                 cartesianView.Zooming == Zooming.None) ||
+                cartesianView.Panning == Panning.None)
+            {
+                return;
+            }
+
+            var px = cartesianView.Panning == Panning.Unset &&
+                     (cartesianView.Zooming == Zooming.X || cartesianView.Zooming == Zooming.Xy);
+
+            px = px || cartesianView.Panning == Panning.X || cartesianView.Panning == Panning.Xy;
+
+            if (px)
+            {
+                for (var index = 0; index < Dimensions[0].Length; index++)
+                {
+                    var xPlane = Dimensions[0][index];
+
+                    var dx = ScaleFromUi(delta.X, xPlane) - ScaleFromUi(0f, xPlane);
+
+                    xPlane.SetRange(
+                        (double.IsNaN(xPlane.MinValue) ? xPlane.ActualMinValue : xPlane.MinValue) + dx,
+                        (double.IsNaN(xPlane.MaxValue) ? xPlane.ActualMaxValue : xPlane.MaxValue) + dx);
+                }
+            }
+
+            var py = cartesianView.Panning == Panning.Unset &&
+                     (cartesianView.Zooming == Zooming.Y || cartesianView.Zooming == Zooming.Xy);
+
+            py = py || cartesianView.Panning == Panning.Y || cartesianView.Panning == Panning.Xy;
+
+            if (py)
+            {
+                for (var index = 0; index < Dimensions[1].Length; index++)
+                {
+                    var yPlane = Dimensions[1][index];
+
+                    var dy = ScaleFromUi(delta.Y, yPlane) - ScaleFromUi(0f, yPlane);
+
+                    yPlane.SetRange(
+                        (double.IsNaN(yPlane.MinValue) ? yPlane.ActualMinValue : yPlane.MinValue) + dy,
+                        (double.IsNaN(yPlane.MaxValue) ? yPlane.ActualMaxValue : yPlane.MaxValue) + dy);
                 }
             }
         }
