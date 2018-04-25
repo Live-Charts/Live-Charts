@@ -64,6 +64,8 @@ namespace LiveCharts.Core.Dimensions
         {
             Step = double.NaN;
             StepStart = double.NaN;
+            MaxRange = double.MaxValue;
+            MinRange = double.MinValue;
             Position = AxisPosition.Auto;
             XSeparatorStyle =
                 new ShapeStyle(
@@ -411,7 +413,7 @@ namespace LiveCharts.Core.Dimensions
                     separator.View.DrawLabel(args);
                 }
 
-                chart.RegisterResource(separator);
+                chart.RegisterINotifyPropertyChanged(separator);
             }
 
             // remove unnecessary elements from cache
@@ -530,7 +532,7 @@ namespace LiveCharts.Core.Dimensions
                 section.View.DrawShape(args);
                 section.View.DrawLabel(args);
 
-                chart.RegisterResource(section);
+                chart.RegisterINotifyPropertyChanged(section);
             }
         }
 

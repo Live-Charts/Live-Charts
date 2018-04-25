@@ -109,7 +109,7 @@ namespace LiveCharts.Wpf
         /// The zooming speed property
         /// </summary>
         public static readonly DependencyProperty ZoomingSpeedProperty = DependencyProperty.Register(
-            nameof(ZoomingSpeed), typeof(double), typeof(CartesianChart), new PropertyMetadata(default(double)));
+            nameof(ZoomingSpeed), typeof(double), typeof(CartesianChart), new PropertyMetadata(0.8d));
 
         /// <summary>
         /// The panning property

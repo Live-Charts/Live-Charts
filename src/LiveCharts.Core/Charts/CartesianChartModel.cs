@@ -165,15 +165,15 @@ namespace LiveCharts.Core.Charts
 
                     var px = ScaleFromUi(pivot.X, xPlane);
 
-                    var max = xPlane.ActualMaxValue;
-                    var min = xPlane.ActualMinValue;
+                    var max = double.IsNaN(xPlane.MaxValue) ? xPlane.ActualMaxValue : xPlane.MaxValue;
+                    var min = double.IsNaN(xPlane.MinValue) ? xPlane.ActualMinValue : xPlane.MinValue;
                     var l = max - min;
 
                     var rMin = (px - min) / l;
                     var rMax = 1 - rMin;
 
                     var unit = l * speed;
-                    if (unit < xPlane.ActualMinValue) return;
+                    if (unit < xPlane.MinRange) return;
 
                     var minR = px - unit * rMin;
                     var maxR = px + unit * rMax;
@@ -190,14 +190,14 @@ namespace LiveCharts.Core.Charts
 
                     var py = ScaleFromUi(pivot.Y, yPlane);
 
-                    var max = yPlane.ActualMaxValue;
-                    var min = yPlane.ActualMinValue;
+                    var max = double.IsNaN(yPlane.MaxValue) ? yPlane.ActualMaxValue : yPlane.MaxValue;
+                    var min = double.IsNaN(yPlane.MinValue) ? yPlane.ActualMinValue : yPlane.MinValue;
                     var l = max - min;
                     var rMin = (py - min) / l;
                     var rMax = 1 - rMin;
 
                     var target = l * speed;
-                    if (target < yPlane.ActualMinValue) return;
+                    if (target < yPlane.MinRange) return;
 
                     var minR = py - target * rMin;
                     var maxR = py + target * rMax;
@@ -225,20 +225,20 @@ namespace LiveCharts.Core.Charts
 
             if (cartesianView.Zooming == Zooming.X || cartesianView.Zooming == Zooming.Xy)
             {
-                for (var index = 0; index < Dimensions[1].Length; index++)
+                for (var index = 0; index < Dimensions[0].Length; index++)
                 {
-                    var xPlane = Dimensions[1][index];
+                    var xPlane = (Axis) Dimensions[0][index];
 
                     var px = ScaleFromUi(pivot.X, xPlane);
 
-                    var max = xPlane.ActualMaxValue;
-                    var min = xPlane.ActualMinValue;
+                    var max = double.IsNaN(xPlane.MaxValue) ? xPlane.ActualMaxValue : xPlane.MaxValue;
+                    var min = double.IsNaN(xPlane.MinValue) ? xPlane.ActualMinValue : xPlane.MinValue;
                     var l = max - min;
                     var rMin = (px - min) / l;
                     var rMax = 1 - rMin;
 
                     var target = l * (1 / speed);
-                    if (target > xPlane.ActualMaxValue) return;
+                    if (target > xPlane.MaxRange) return;
 
                     var minR = px - target * rMin;
                     var maxR = px + target * rMax;
@@ -254,8 +254,8 @@ namespace LiveCharts.Core.Charts
 
                     var py = ScaleFromUi(pivot.Y, yPlane);
 
-                    var max = yPlane.ActualMaxValue;
-                    var min = yPlane.ActualMinValue;
+                    var max = double.IsNaN(yPlane.MaxValue) ? yPlane.ActualMaxValue : yPlane.MaxValue;
+                    var min = double.IsNaN(yPlane.MinValue) ? yPlane.ActualMinValue : yPlane.MinValue;
                     var l = max - min;
                     var rMin = (py - min) / l;
                     var rMax = 1 - rMin;
@@ -310,7 +310,7 @@ namespace LiveCharts.Core.Charts
                 // for each plane in each dimension, in this case CartesianLinearAxis, for convention named Axis
                 foreach (var plane in dimension)
                 {
-                    RegisterResource(plane);
+                    RegisterINotifyPropertyChanged(plane);
                     if (!(plane is Axis axis)) continue;
                     var labelsStyle = new LabelStyle
                     {

@@ -408,8 +408,10 @@ namespace LiveCharts.Core.Dimensions
 
         internal void SetRange(double min, double max)
         {
-            ActualMinValue = min;
-            ActualMaxValue = max;
+            _minValue = min;
+            _maxValue = max;
+
+            OnPropertyChanged(nameof(ActualRange));
 
             // ToDo: raise event!
         }

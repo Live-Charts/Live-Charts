@@ -51,7 +51,9 @@ namespace LiveCharts.Core.Charts
         Zooming Zooming { get; set; }
 
         /// <summary>
-        /// Gets or sets the zooming speed.
+        /// Gets or sets the zooming speed, the property goes from 0 to 1
+        /// where 0 is the fastest and 1 the slowest, any value out of that range will
+        /// be caped.
         /// </summary>
         /// <value>
         /// The zooming speed.
@@ -60,9 +62,7 @@ namespace LiveCharts.Core.Charts
 
         /// <summary>
         /// Gets or sets the panning, default is Panning.Unset it means that it will be 
-        /// based on the <see cref="Zooming"/> property, the property goes from 0 to 1
-        /// where 0 is the slowest and 1 the fastest, any value out of that range will 
-        /// be caped.
+        /// based on the <see cref="Zooming"/> property.
         /// </summary>
         /// <value>
         /// The panning.

@@ -449,8 +449,8 @@ namespace LiveCharts.Core.Charts
             {
                 series.UsedBy(this);
                 series.Fetch(this, context);
-                RegisterResource(series);
-                RegisterNotifiableCollection(series.Values);
+                RegisterINotifyPropertyChanged(series);
+                RegisterINotifyCollectionChanged(series.Values);
                 OnPreparingSeries(context, series);
             }
 
@@ -461,7 +461,7 @@ namespace LiveCharts.Core.Charts
             // draw and measure legend
             if (Legend != null && LegendPosition != LegendPosition.None)
             {
-                RegisterResource(Legend);
+                RegisterINotifyPropertyChanged(Legend);
 
                 var legendSize = Legend.Measure(Series, DefaultLegendOrientation, View);
 
@@ -514,10 +514,10 @@ namespace LiveCharts.Core.Charts
             AnimationsSpeed = View.AnimationsSpeed;
             LegendPosition = View.LegendPosition;
             Legend = View.Legend;
-            RegisterNotifiableCollection(View.Series);
+            RegisterINotifyCollectionChanged(View.Series);
             foreach (var dimension in View.Dimensions)
             {
-                RegisterNotifiableCollection(dimension);
+                RegisterINotifyCollectionChanged(dimension);
             }
         }
 
@@ -536,7 +536,7 @@ namespace LiveCharts.Core.Charts
             return Colors[_colorCount++ % Colors.Count];
         }
 
-        internal void RegisterResource(IResource resource)
+        internal void RegisterINotifyPropertyChanged(IResource resource)
         {
             if (!_resources.Contains(resource))
             {
@@ -560,7 +560,7 @@ namespace LiveCharts.Core.Charts
             resource.UpdateId = UpdateId;
         }
 
-        internal void RegisterNotifiableCollection(IEnumerable collection)
+        internal void RegisterINotifyCollectionChanged(IEnumerable collection)
         {
             // ReSharper disable once IdentifierTypo
             if (!(collection is INotifyCollectionChanged incc)) return;
@@ -580,13 +580,13 @@ namespace LiveCharts.Core.Charts
 
                 incc.CollectionChanged += InvalidateOnCollectionChanged;
 
-                void DisposeNotifyCollectionChanged()
+                void DisposeCollectionChanged()
                 {
                     incc.CollectionChanged -= InvalidateOnCollectionChanged;
-                    resource.Disposed -= DisposeNotifyCollectionChanged;
+                    resource.Disposed -= DisposeCollectionChanged;
                 }
 
-                resource.Disposed += DisposeNotifyCollectionChanged;
+                resource.Disposed += DisposeCollectionChanged;
             }
 
             resource.UpdateId = UpdateId;

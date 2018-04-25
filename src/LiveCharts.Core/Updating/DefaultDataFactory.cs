@@ -96,7 +96,7 @@ namespace LiveCharts.Core.Updating
                 chartPoint.Coordinate.Compare(context);
 
                 // register our chart point at the resource collector
-                context.Chart.RegisterResource(chartPoint);
+                context.Chart.RegisterINotifyPropertyChanged(chartPoint);
 
                 results.Add(chartPoint);
             }
