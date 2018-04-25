@@ -139,6 +139,26 @@ namespace LiveCharts.Core.Dimensions
         public double ActualStepStart { get; internal set; }
 
         /// <summary>
+        /// Gets or sets the maximum range, it represents the upper limit for the zooming, the
+        /// user will not be able to zoom further this range, see <see cref="Plane.ActualRange"/>.
+        /// </summary>
+        /// <value>
+        /// The maximum range.
+        /// </value>
+        public double MaxRange { get; set; }
+
+        /// <summary>
+        /// Gets or sets the minimum range, it represents the lower limit for the zooming, the
+        /// user will not be able to zoom further this range, see <see cref="Plane.ActualRange"/>.
+        /// </summary>
+        /// <value>
+        /// The minimum range.
+        /// </value>
+        public double MinRange { get; set; }
+
+        internal AxisPosition ActualPosition { get; set; }
+
+        /// <summary>
         /// Gets or sets the position.
         /// </summary>
         /// <value>
@@ -623,7 +643,7 @@ namespace LiveCharts.Core.Dimensions
 
             switch (Dimension)
             {
-                case 0 when Position == AxisPosition.Bottom:
+                case 0 when ActualPosition == AxisPosition.Bottom:
                     // case 1
                     if (angle < 0)
                     {
@@ -643,7 +663,7 @@ namespace LiveCharts.Core.Dimensions
                     x = chart.ScaleToUi(value, this, drawMargin);
                     y = drawMargin[1];
                     break;
-                case 0 when Position == AxisPosition.Top:
+                case 0 when ActualPosition == AxisPosition.Top:
                     // case 3
                     if (angle < 0)
                     {
@@ -663,7 +683,7 @@ namespace LiveCharts.Core.Dimensions
                     x = chart.ScaleToUi(value, this, drawMargin);
                     y = 0;
                     break;
-                case 1 when Position == AxisPosition.Left:
+                case 1 when ActualPosition == AxisPosition.Left:
                     // case 6
                     if (angle < 0)
                     {
@@ -683,7 +703,7 @@ namespace LiveCharts.Core.Dimensions
                     x = 0;
                     y = chart.ScaleToUi(value, this, drawMargin);
                     break;
-                case 1 when Position == AxisPosition.Right:
+                case 1 when ActualPosition == AxisPosition.Right:
                     // case 8
                     if (angle < 0)
                     {

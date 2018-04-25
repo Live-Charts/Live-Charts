@@ -126,6 +126,16 @@ namespace LiveCharts.Core.Dimensions
         }
 
         /// <summary>
+        /// Gets the actual range, the range of values displayed in the current axis, 
+        /// this property is the difference between <see cref="ActualMaxValue"/> and
+        /// <see cref="ActualMinValue"/>.
+        /// </summary>
+        /// <value>
+        /// The actual range.
+        /// </value>
+        public double ActualRange => ActualMaxValue - ActualMinValue;
+
+        /// <summary>
         /// Gets the used <see cref="PointLength"/>, if <see cref="PointLength"/> is null, 
         /// the library will calculate this property and will expose the calculated value here,
         /// if <see cref="PointLength"/> is not null, <see cref="ActualPointLength"/> is equals
@@ -394,6 +404,14 @@ namespace LiveCharts.Core.Dimensions
         {
             throw new LiveChartsException(
                 $"A {nameof(IPlaneViewProvider)} was not found when trying to draw {this} in the UI", 115);
+        }
+
+        internal void SetRange(double min, double max)
+        {
+            ActualMinValue = min;
+            ActualMaxValue = max;
+
+            // ToDo: raise event!
         }
 
         #region IResource implementation

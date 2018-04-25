@@ -11,7 +11,7 @@ namespace Assets.ViewModels
 {
     public class ObservableSeriesAndValues : INotifyPropertyChanged
     {
-        private ObservableCollection<ISeries<double>> _seriesCollection;
+        private ObservableCollection<ISeries> _seriesCollection;
         private readonly Random _r = new Random();
         private Type _seriesType;
 
@@ -38,7 +38,7 @@ namespace Assets.ViewModels
             };
         }
 
-        public ObservableCollection<ISeries<double>> SeriesCollection
+        public ObservableCollection<ISeries> SeriesCollection
         {
             get => _seriesCollection;
             set
@@ -79,7 +79,7 @@ namespace Assets.ViewModels
 
         private void BuildNewSeriesCollection()
         {
-            SeriesCollection = new ObservableCollection<ISeries<double>>
+            SeriesCollection = new ObservableCollection<ISeries>
             {
                 BuildNewSeries(),
                 BuildNewSeries(),
@@ -87,9 +87,9 @@ namespace Assets.ViewModels
             };
         }
 
-        private ISeries<double> BuildNewSeries()
+        private ISeries BuildNewSeries()
         {
-            var series = (ISeries<double>) Activator.CreateInstance(SeriesType);
+            var series = (ISeries) Activator.CreateInstance(SeriesType);
             series.Values = new ObservableCollection<double> {_r.Next(0, 10), _r.Next(0, 10), _r.Next(0, 10)};
             return series;
         }

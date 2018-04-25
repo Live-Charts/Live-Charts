@@ -63,6 +63,10 @@
         "extraFiles": [
           "Models/Player.cs"
         ]
+      }, {
+        "id": "ZoomingAndPanning",
+        "name": "Zooming and panning",
+        "text": "A chart with zooming and pannign enabled." 
       }
     ],
     "Testing": [

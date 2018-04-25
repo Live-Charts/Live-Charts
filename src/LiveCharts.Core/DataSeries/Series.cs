@@ -25,8 +25,8 @@
 #region
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
@@ -64,8 +64,6 @@ namespace LiveCharts.Core.DataSeries
         where TSeries : class, ISeries
     { 
         private IEnumerable<TModel> _values;
-        private IEnumerable<TModel> _previousItemsSource;
-        private IList<TModel> _sourceAsIList;
         private ModelToCoordinateMapper<TModel, TCoordinate> _mapper;
         private ISeriesViewProvider<TModel, TCoordinate, TViewModel, TSeries> _viewProvider;
         private object _chartPointsUpdateId;
@@ -204,24 +202,27 @@ namespace LiveCharts.Core.DataSeries
         /// <inheritdoc />
         public abstract float PointMargin { get; }
 
-        /// <inheritdoc cref="List{T}.Count"/>
-        public int Count => _sourceAsIList?.Count ?? _values.Count();
-
-        /// <inheritdoc />
+        /// <inheritdoc cref="ISeries.Values" />
         public IEnumerable<TModel> Values
         {
             get => _values;
             set
             {
                 _values = value;
-                OnValuesInstanceChanged();
                 OnPropertyChanged();
             }
         }
 
         /// <inheritdoc />
         public SeriesMetadata Metadata { get; protected set; }
-        
+
+        /// <inheritdoc />
+        IEnumerable ISeries.Values
+        {
+            get => Values;
+            set => Values = (IEnumerable<TModel>) value;
+        }
+
         /// <inheritdoc />
         public ModelToCoordinateMapper<TModel, TCoordinate> Mapper
         {
@@ -270,8 +271,6 @@ namespace LiveCharts.Core.DataSeries
         };
 
 #endregion
-
-        
 
         /// <inheritdoc />
         void ISeries.UpdateStarted(IChartView chart)
@@ -465,31 +464,6 @@ namespace LiveCharts.Core.DataSeries
             return new PointF(left, top);
         }
 
-        private void OnValuesInstanceChanged()
-        {
-            _sourceAsIList = _values as IList<TModel>;
-
-            // ReSharper disable once IdentifierTypo
-            if (_values is INotifyCollectionChanged incc)
-            {
-                incc.CollectionChanged += InccOnCollectionChanged;
-            }
-
-            // ReSharper disable once IdentifierTypo
-            if (_previousItemsSource is INotifyCollectionChanged pincc)
-            {
-                pincc.CollectionChanged -= InccOnCollectionChanged;
-            }
-
-            _previousItemsSource = _values;
-        }
-
-        // ReSharper disable once IdentifierTypo
-        private void InccOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs notifyCollectionChangedEventArgs)
-        {
-            //CollectionChanged?.Invoke(sender, notifyCollectionChangedEventArgs);
-        }
-
         private void Initialize(IEnumerable<TModel> itemsSource = null)
         {
             _isVisible = true;
@@ -497,7 +471,6 @@ namespace LiveCharts.Core.DataSeries
             DataLabelsFont = new Font("Arial", 11, FontStyle.Regular, FontWeight.Regular);
             DataLabelsForeground = new SolidColorBrush(Color.FromArgb(30, 30, 30));
             _values = itemsSource ?? new ChartingCollection<TModel>();
-            OnValuesInstanceChanged();
             var t = typeof(TModel);
             Metadata = new SeriesMetadata
             {

@@ -24,12 +24,16 @@
 #endregion
 #region
 
+using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Windows;
+using System.Windows.Input;
 using LiveCharts.Core.Charts;
 using LiveCharts.Core.Collections;
 using LiveCharts.Core.DataSeries;
 using LiveCharts.Core.Dimensions;
+using LiveCharts.Core.Interaction;
 
 #endregion
 
@@ -58,6 +62,7 @@ namespace LiveCharts.Wpf
         public CartesianChart()
         {
             Model = new CartesianChartModel(this);
+            MouseWheel += OnMouseWheel;
             SetValue(SeriesProperty, new ChartingCollection<ISeries>());
             SetValue(XAxisProperty, new ChartingCollection<Plane> {new Axis()});
             SetValue(YAxisProperty, new ChartingCollection<Plane> {new Axis()});
@@ -93,6 +98,24 @@ namespace LiveCharts.Wpf
         public static readonly DependencyProperty InvertAxesProperty = DependencyProperty.Register(
             nameof(InvertAxes), typeof(bool), typeof(CartesianChart),
             new PropertyMetadata(false, RaiseOnPropertyChanged(nameof(InvertAxes))));
+
+        /// <summary>
+        /// The zooming property
+        /// </summary>
+        public static readonly DependencyProperty ZoomingProperty = DependencyProperty.Register(
+            nameof(Zooming), typeof(Zooming), typeof(CartesianChart), new PropertyMetadata(Zooming.None));
+
+        /// <summary>
+        /// The zooming speed property
+        /// </summary>
+        public static readonly DependencyProperty ZoomingSpeedProperty = DependencyProperty.Register(
+            nameof(ZoomingSpeed), typeof(double), typeof(CartesianChart), new PropertyMetadata(default(double)));
+
+        /// <summary>
+        /// The panning property
+        /// </summary>
+        public static readonly DependencyProperty PanningProperty = DependencyProperty.Register(
+            nameof(Panning), typeof(Panning), typeof(CartesianChart), new PropertyMetadata(Panning.Unset));
 
         #endregion
 
@@ -141,6 +164,27 @@ namespace LiveCharts.Wpf
             set => SetValue(InvertAxesProperty, value);
         }
 
+        /// <inheritdoc />
+        public Panning Panning
+        {
+            get => (Panning)GetValue(PanningProperty);
+            set => SetValue(PanningProperty, value);
+        }
+
+        /// <inheritdoc />
+        public Zooming Zooming
+        {
+            get => (Zooming)GetValue(ZoomingProperty);
+            set => SetValue(ZoomingProperty, value);
+        }
+
+        /// <inheritdoc />
+        public double ZoomingSpeed
+        {
+            get => (double)GetValue(ZoomingSpeedProperty);
+            set => SetValue(ZoomingSpeedProperty, value);
+        }
+
         #endregion
 
         /// <inheritdoc cref="Chart.GetOrderedDimensions"/>
@@ -152,6 +196,25 @@ namespace LiveCharts.Wpf
                 YAxis,
                 WeightPlane
             };
+        }
+
+        private void OnMouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            if (Zooming == Zooming.None) return;
+
+            var pivot = e.GetPosition(VisualDrawMargin);
+
+            e.Handled = true;
+            var cartesianModel = (CartesianChartModel) Model;
+
+            if (e.Delta > 0)
+            {
+                cartesianModel.ZoomIn(new PointF((float) pivot.X, (float) pivot.Y));
+            }
+            else
+            {
+                cartesianModel.ZoomOut(new PointF((float) pivot.X, (float) pivot.Y));
+            }
         }
     }
 }

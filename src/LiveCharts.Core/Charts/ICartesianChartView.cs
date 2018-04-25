@@ -22,6 +22,9 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR 
 // OTHER DEALINGS IN THE SOFTWARE.
 #endregion
+
+using LiveCharts.Core.Interaction;
+
 namespace LiveCharts.Core.Charts
 {
     /// <summary>
@@ -34,8 +37,36 @@ namespace LiveCharts.Core.Charts
         /// Gets or sets a value indicating whether the X/Y axis are inverted.
         /// </summary>
         /// <value>
-        ///   <c>true</c> if the axis is inverted; otherwise, <c>false</c>, default is false.
+        ///   <c>true</c> if the axis is inverted; otherwise, <c>false</c>, 
+        /// default is false.
         /// </value>
         bool InvertAxes { get; set; }
+
+        /// <summary>
+        /// Gets or sets the zoom, default is Zoom.None.
+        /// </summary>
+        /// <value>
+        /// The zoom.
+        /// </value>
+        Zooming Zooming { get; set; }
+
+        /// <summary>
+        /// Gets or sets the zooming speed.
+        /// </summary>
+        /// <value>
+        /// The zooming speed.
+        /// </value>
+        double ZoomingSpeed { get; set; }
+
+        /// <summary>
+        /// Gets or sets the panning, default is Panning.Unset it means that it will be 
+        /// based on the <see cref="Zooming"/> property, the property goes from 0 to 1
+        /// where 0 is the slowest and 1 the fastest, any value out of that range will 
+        /// be caped.
+        /// </summary>
+        /// <value>
+        /// The panning.
+        /// </value>
+        Panning Panning { get; set; }
     }
 }

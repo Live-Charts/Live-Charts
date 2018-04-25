@@ -1,18 +1,22 @@
-# Components
+# Components overview
 
-The next image illustrates the components of the `CartesianChart` object and will guide you to get familiar with all the charts components.
+The next image illustrates the components of the `CartesianChart` object and will guide you to get familiar with all the charts components, since the `CartesianChart` object is the most complex element in the library, this section will explain it.
 
-![components](../resources/components.png)
+![components](../../resources/components.png)
 
 ## Series
 
-A Series is a generic collection of data, every series type defines the result in the user interface, in the image above we are seeing 2 `LineSeries` objects, one is blue, the second is red, all the series have a `Stroke` and `Fill` properties.
+ Every series type defines the result in the user interface, in the image above we are seeing 2 `LineSeries` objects, one is blue, the second is red, all the series have a `Stroke` and `Fill` properties, every series has a `Values` property where you can set the element to draw in the chart.
 
-![stroke and fill](../resources/strokeandfill.png)
+![stroke and fill](../../resources/strokeandfill.png)
 
 If you don't set the color of your series, the library will set them for you according to the position of each series in the `Chart.Series` property, the colors will repeat if necessary.
 
 Use the `Series.Visibility` property to hide/show any series, use the `ZIndex` property to indicate the position of the series in the Z index (in a 2d chart).
+
+## Axis
+
+An axis is in charge of many common task such as zooming, panning and the labels, labels are highly flexible and it will be covered with more details in the [${link, the axis section, docs/getting started/components/axis}]
 
 ## Data Tool Tips
 

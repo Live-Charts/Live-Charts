@@ -25,6 +25,7 @@
 #region
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
@@ -52,7 +53,7 @@ namespace LiveCharts.Core.DataSeries
     /// <typeparam name="TSeries">The type of the series.</typeparam>
     /// <typeparam name="TViewModel">The type of the view model.</typeparam>
     /// <seealso cref="ISeries" />
-    public interface ISeries<TModel, TCoordinate, TViewModel, TSeries> : ISeries<TModel>
+    public interface ISeries<TModel, TCoordinate, TViewModel, TSeries> : ISeries
         where TCoordinate : ICoordinate
         where TSeries : ISeries
     {
@@ -84,24 +85,6 @@ namespace LiveCharts.Core.DataSeries
     /// <summary>
     /// The series interface.
     /// </summary>
-    /// <typeparam name="TModel">The type of the model.</typeparam>
-    /// <seealso cref="ISeries" />
-    public interface ISeries<TModel> : ISeries
-    {
-        /// <summary>
-        /// Gets or sets the items source, the items source is where the series grabs the 
-        /// data to plot from, by default it is of type <see cref="LiveCharts.Core.Collections.ChartingCollection{T}"/>
-        /// but you can use any <see cref="IEnumerable{T}"/> as your data source.
-        /// </summary>
-        /// <value>
-        /// The values.
-        /// </value>
-        IEnumerable<TModel> Values { get; set; }
-    }
-
-    /// <summary>
-    /// The series interface.
-    /// </summary>
     public interface ISeries : IResource, INotifyPropertyChanged
     {
         /// <summary>
@@ -119,6 +102,14 @@ namespace LiveCharts.Core.DataSeries
         /// The metadata.
         /// </value>
         SeriesMetadata Metadata { get; }
+
+        /// <summary>
+        /// Gets or sets the values to display in the plot.
+        /// </summary>
+        /// <value>
+        /// The values.
+        /// </value>
+        IEnumerable Values { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the series should display a label for every point in the series.

@@ -1,3 +1,3 @@
 # About
 
-All the samples and code in this documentation are built using C# 7 and visual studio 2017.
+All the samples and code in this repository and web site are built using C# 7 and visual studio 2017.

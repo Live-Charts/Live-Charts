@@ -18,12 +18,10 @@ The core only generates models for every shape, it has no idea how to draw a it 
 
 The WPF version draws the shapes indicated by LiveCharts.Core using the [shapes](https://docs.microsoft.com/en-us/dotnet/framework/wpf/graphics-multimedia/shapes-and-basic-drawing-in-wpf-overview) defined by the WPF framework.
 
-## LiveCharts.{ViewFramework}.SeriesFramework
+If you need more details about how the code works, please see ToDo: set link to file here...
 
-This is the high performance framework that connects directly with the open source library by changing only one line of code, this project is not open source but it has a low price compared with most of the alternatives.
+## LiveCharts high performance version
 
-Some {ViewFramework} hardware acceleration to draw the UI, WPF uses DirectX for example, and it does have a good performance, but it has also to be flexible so we users of the {ViewFramework} can achieve our goals, when you are using LiveCharts.{ViewFramework}.SeriesFramework, the control is no longer being drawn by {ViewFramework}, we are drawing it using DirectX also,but the difference is that we optimize everything for our needs, resulting in a huge performance buff.
-
-Besides that we lazy load the data as the user requires it, based on many parameters such as the chart size, current zoom, current pan and series type.
+There is also a paid version of the library, it optimizes the library in two different ways, 1. it draws the UI using SharpDx, 2. it lazy loads the data according to many factors such as the chart size, current zoom and pan, and the series type.
 
 ![core-view diagram](../resources/core-view.png)

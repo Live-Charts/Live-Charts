@@ -31,6 +31,7 @@ using LiveCharts.Core.DataSeries;
 using LiveCharts.Core.Dimensions;
 using LiveCharts.Core.Drawing;
 using LiveCharts.Core.Drawing.Styles;
+using LiveCharts.Core.Interaction;
 using LiveCharts.Core.Interaction.Points;
 using LiveCharts.Core.Updating;
 
@@ -137,6 +138,135 @@ namespace LiveCharts.Core.Charts
             var m = (p2.Y - p1.Y) / (p2.X - p1.X);
 
             return m * (value - p1.X) + p1.Y;
+        }
+
+        /// <summary>
+        /// Zooms a unit in, where a unit is calculated automatically based on the ZoomingSpeed property.
+        /// </summary>
+        /// <param name="pivot">The pivot, the point in the screen where the zoom was requested.</param>
+        public void ZoomIn(PointF pivot)
+        {
+            if (!IsViewInitialized) return;
+
+            var cartesianView = (ICartesianChartView) View;
+            ToolTip.Hide(View);
+
+            var speed = cartesianView.ZoomingSpeed < 0.1
+                ? 0.1
+                : (cartesianView.ZoomingSpeed > 0.95
+                    ? 0.95
+                    : cartesianView.ZoomingSpeed);
+
+            if (cartesianView.Zooming == Zooming.X || cartesianView.Zooming == Zooming.Xy)
+            {
+                for (var index = 0; index < Dimensions[0].Length; index++)
+                {
+                    var xPlane = (Axis) cartesianView.Dimensions[0][index];
+
+                    var px = ScaleFromUi(pivot.X, xPlane);
+
+                    var max = xPlane.ActualMaxValue;
+                    var min = xPlane.ActualMinValue;
+                    var l = max - min;
+
+                    var rMin = (px - min) / l;
+                    var rMax = 1 - rMin;
+
+                    var unit = l * speed;
+                    if (unit < xPlane.ActualMinValue) return;
+
+                    var minR = px - unit * rMin;
+                    var maxR = px + unit * rMax;
+
+                    xPlane.SetRange(minR, maxR);
+                }
+            }
+
+            if (cartesianView.Zooming == Zooming.Y || cartesianView.Zooming == Zooming.Xy)
+            {
+                for (var index = 0; index < Dimensions[1].Length; index++)
+                {
+                    var yPlane = (Axis) cartesianView.Dimensions[1][index];
+
+                    var py = ScaleFromUi(pivot.Y, yPlane);
+
+                    var max = yPlane.ActualMaxValue;
+                    var min = yPlane.ActualMinValue;
+                    var l = max - min;
+                    var rMin = (py - min) / l;
+                    var rMax = 1 - rMin;
+
+                    var target = l * speed;
+                    if (target < yPlane.ActualMinValue) return;
+
+                    var minR = py - target * rMin;
+                    var maxR = py + target * rMax;
+                    yPlane.SetRange(minR, maxR);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Zooms a unit out, where a unit is calculated automatically based on the ZoomingSpeed property.
+        /// </summary>
+        /// <param name="pivot">The pivot, the point in the UI where the zoom was requested.</param>
+        public void ZoomOut(PointF pivot)
+        {
+            if (!IsViewInitialized) return;
+
+            var cartesianView = (ICartesianChartView)View;
+            ToolTip.Hide(View);
+
+            var speed = cartesianView.ZoomingSpeed < 0.1
+                ? 0.1
+                : (cartesianView.ZoomingSpeed > 0.95
+                    ? 0.95
+                    : cartesianView.ZoomingSpeed); 
+
+            if (cartesianView.Zooming == Zooming.X || cartesianView.Zooming == Zooming.Xy)
+            {
+                for (var index = 0; index < Dimensions[1].Length; index++)
+                {
+                    var xPlane = Dimensions[1][index];
+
+                    var px = ScaleFromUi(pivot.X, xPlane);
+
+                    var max = xPlane.ActualMaxValue;
+                    var min = xPlane.ActualMinValue;
+                    var l = max - min;
+                    var rMin = (px - min) / l;
+                    var rMax = 1 - rMin;
+
+                    var target = l * (1 / speed);
+                    if (target > xPlane.ActualMaxValue) return;
+
+                    var minR = px - target * rMin;
+                    var maxR = px + target * rMax;
+                    xPlane.SetRange(minR, maxR);
+                }
+            }
+
+            if (cartesianView.Zooming == Zooming.Y || cartesianView.Zooming == Zooming.Xy)
+            {
+                for (var index = 0; index < Dimensions[1].Length; index++)
+                {
+                    var yPlane = (Axis) Dimensions[1][index];
+
+                    var py = ScaleFromUi(pivot.Y, yPlane);
+
+                    var max = yPlane.ActualMaxValue;
+                    var min = yPlane.ActualMinValue;
+                    var l = max - min;
+                    var rMin = (py - min) / l;
+                    var rMax = 1 - rMin;
+
+                    var target = l * (1 / speed);
+                    if (target > yPlane.MaxRange) return;
+                    var minR = py - target * rMin;
+                    var maxR = py + target * rMax;
+                    yPlane.SetRange(minR, maxR);
+                }
+            }
         }
 
         /// <inheritdoc cref="ChartModel.Update"/>
@@ -310,7 +440,7 @@ namespace LiveCharts.Core.Charts
                     if (!requiresDrawMarginEvaluation) continue;
                     if (!(plane is Axis axis)) continue;
 
-                    axis.Position = axis.Position == AxisPosition.Auto
+                    axis.ActualPosition = axis.Position == AxisPosition.Auto
                         ? (plane.Dimension == 0
                             ? AxisPosition.Bottom
                             : AxisPosition.Left)
@@ -319,7 +449,7 @@ namespace LiveCharts.Core.Charts
                     // we stack the axis required margin
                     var mi = axis.CalculateAxisMargin(this);
 
-                    switch (axis.Position)
+                    switch (axis.ActualPosition)
                     {
                         case AxisPosition.Top:
                             plane.ByStackMargin = new Margin(yt, 0, 0, 0);

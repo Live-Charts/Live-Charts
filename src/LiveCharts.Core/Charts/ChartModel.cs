@@ -25,6 +25,7 @@
 #region
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
@@ -37,7 +38,6 @@ using LiveCharts.Core.DataSeries;
 using LiveCharts.Core.Dimensions;
 using LiveCharts.Core.Drawing;
 using LiveCharts.Core.Drawing.Styles;
-using LiveCharts.Core.Interaction;
 using LiveCharts.Core.Interaction.Controls;
 using LiveCharts.Core.Interaction.Events;
 using LiveCharts.Core.Interaction.Points;
@@ -56,7 +56,7 @@ namespace LiveCharts.Core.Charts
         private Task _delayer;
         private IList<Color> _colors;
         private HashSet<IResource> _resources = new HashSet<IResource>();
-        private Dictionary<string, object> _resourcesCollections = new Dictionary<string, object>();
+        private Dictionary<IEnumerable, EnumerableResource> _enumerableResources = new Dictionary<IEnumerable, EnumerableResource>();
         private PointF _previousTooltipLocation = PointF.Empty;
         private IEnumerable<PackedPoint> _previousHovered;
 
@@ -417,6 +417,11 @@ namespace LiveCharts.Core.Charts
             _previousTooltipLocation = newTooltipLocation;
         }
 
+        /// <summary>
+        /// Gets the tool tip location and fires hovering.
+        /// </summary>
+        /// <param name="points">The points.</param>
+        /// <returns></returns>
         protected abstract PointF GetToolTipLocationAndFireHovering(
             PackedPoint[] points);
 
@@ -445,6 +450,7 @@ namespace LiveCharts.Core.Charts
                 series.UsedBy(this);
                 series.Fetch(this, context);
                 RegisterResource(series);
+                RegisterNotifiableCollection(series.Values);
                 OnPreparingSeries(context, series);
             }
 
@@ -508,12 +514,10 @@ namespace LiveCharts.Core.Charts
             AnimationsSpeed = View.AnimationsSpeed;
             LegendPosition = View.LegendPosition;
             Legend = View.Legend;
-
-            RegisterResourceCollection(nameof(IChartView.Series), View.Series);
-            for (var index = 0; index < View.Dimensions.Count; index++)
+            RegisterNotifiableCollection(View.Series);
+            foreach (var dimension in View.Dimensions)
             {
-                var dimension = View.Dimensions[index];
-                RegisterResourceCollection($"{nameof(IChartView.Dimensions)}[{index}]", dimension);
+                RegisterNotifiableCollection(dimension);
             }
         }
 
@@ -537,6 +541,7 @@ namespace LiveCharts.Core.Charts
             if (!_resources.Contains(resource))
             {
                 _resources.Add(resource);
+
                 // ReSharper disable once IdentifierTypo
                 if (resource is INotifyPropertyChanged inpc)
                 {
@@ -550,60 +555,63 @@ namespace LiveCharts.Core.Charts
 
                     resource.Disposed += DisposePropertyChanged;
                 }
-
-                // ReSharper disable once IdentifierTypo
-                if (resource is INotifyCollectionChanged incc)
-                {
-                    incc.CollectionChanged += InvalidateOnCollectionChanged;
-
-                    void DisposeCollectionChanged(IChartView view, object instance)
-                    {
-                        incc.CollectionChanged -= InvalidateOnCollectionChanged;
-                        resource.Disposed -= DisposeCollectionChanged;
-                    }
-
-                    resource.Disposed += DisposeCollectionChanged;
-                }
             }
 
             resource.UpdateId = UpdateId;
         }
 
-        internal void RegisterResourceCollection(string propertyName, object collection)
+        internal void RegisterNotifiableCollection(IEnumerable collection)
         {
-            if (!_resourcesCollections.TryGetValue(propertyName, out var previous))
-            {
-                _resourcesCollections.Add(propertyName, collection);
-            }
-            if (previous != null && Equals(collection, previous)) return;
             // ReSharper disable once IdentifierTypo
-            if (collection is INotifyCollectionChanged incc)
+            if (!(collection is INotifyCollectionChanged incc)) return;
+
+            // ReSharper disable once PossibleMultipleEnumeration
+            if (!_enumerableResources.TryGetValue(collection, out var resource))
             {
+                resource = new EnumerableResource
+                {
+                    // ReSharper disable once PossibleMultipleEnumeration
+                    Collection = collection,
+                    UpdateId = UpdateId
+                };
+
+                // ReSharper disable once PossibleMultipleEnumeration
+                _enumerableResources.Add(collection, resource);
+
                 incc.CollectionChanged += InvalidateOnCollectionChanged;
+
+                void DisposeNotifyCollectionChanged()
+                {
+                    incc.CollectionChanged -= InvalidateOnCollectionChanged;
+                    resource.Disposed -= DisposeNotifyCollectionChanged;
+                }
+
+                resource.Disposed += DisposeNotifyCollectionChanged;
             }
 
-            // ReSharper disable once IdentifierTypo
-            if (previous is INotifyCollectionChanged pincc)
-            {
-                pincc.CollectionChanged -= InvalidateOnCollectionChanged;
-            }
-
-            _resourcesCollections[propertyName] = collection;
+            resource.UpdateId = UpdateId;
         }
-        
+
         internal void CollectResources(bool collectAll = false)
         {
             foreach (var resource in _resources.ToArray())
             {
-                if (!collectAll && resource.UpdateId == UpdateId) continue;
-                resource.Dispose(View);
+                if (!collectAll && Equals(resource.UpdateId, UpdateId)) continue;
                 _resources.Remove(resource);
+                resource.Dispose(View);
+            }
+
+            foreach (var resource in _enumerableResources.ToArray())
+            {
+                if (!collectAll && Equals(resource.Value.UpdateId, UpdateId)) continue;
+                _enumerableResources.Remove(resource.Value.Collection);
+                resource.Value.Dispose();
             }
         }
 
-        private void InvalidatePropertyChanged(object sender, PropertyChangedEventArgs args)
+        private void InvalidatePropertyChanged(
+            object sender, PropertyChangedEventArgs args)
         {
-            if (! IsViewInitialized) return;
             if (sender is ICartesianChartView && args.PropertyName == nameof(ICartesianChartView.InvertAxes))
             {
                 //invert orientation
@@ -612,21 +620,21 @@ namespace LiveCharts.Core.Charts
                     foreach (var plane in dimension)
                     {
                         if (!(plane is Axis axis)) continue;
-                        switch (axis.Position)
+                        switch (axis.ActualPosition)
                         {
                             case AxisPosition.Auto:
                                 break;
                             case AxisPosition.Top:
-                                axis.Position = AxisPosition.Right;
+                                axis.ActualPosition = AxisPosition.Right;
                                 break;
                             case AxisPosition.Left:
-                                axis.Position = AxisPosition.Bottom;
+                                axis.ActualPosition = AxisPosition.Bottom;
                                 break;
                             case AxisPosition.Right:
-                                axis.Position = AxisPosition.Top;
+                                axis.ActualPosition = AxisPosition.Top;
                                 break;
                             case AxisPosition.Bottom:
-                                axis.Position = AxisPosition.Left;
+                                axis.ActualPosition = AxisPosition.Left;
                                 break;
                             default:
                                 throw new ArgumentOutOfRangeException();
@@ -634,10 +642,13 @@ namespace LiveCharts.Core.Charts
                     }
                 }
             }
+
+            if (!IsViewInitialized) return;
             Invalidate(View);
         }
 
-        private void InvalidateOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs args)
+        private void InvalidateOnCollectionChanged(
+            object sender, NotifyCollectionChangedEventArgs args)
         {
             Invalidate(View);
         }
@@ -650,7 +661,7 @@ namespace LiveCharts.Core.Charts
                 resource.Dispose(View);
             }
 
-            foreach (var resourceCollection in _resourcesCollections.Values)
+            foreach (var resourceCollection in _enumerableResources.Values)
             {
                 // ReSharper disable once IdentifierTypo
                 if (resourceCollection is INotifyCollectionChanged incc)
@@ -662,7 +673,7 @@ namespace LiveCharts.Core.Charts
             UpdateId = null;
 
             _resources = null;
-            _resourcesCollections = null;
+            _enumerableResources = null;
             _colors = null;
             _delayer = null;
 

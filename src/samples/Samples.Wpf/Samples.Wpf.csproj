@@ -104,6 +104,9 @@
     <Compile Include="Views\ObservableSeries.xaml.cs">
       <DependentUpon>ObservableSeries.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\ZoomingAndPanning.xaml.cs">
+      <DependentUpon>ZoomingAndPanning.xaml</DependentUpon>
+    </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -172,6 +175,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\ZoomingAndPanning.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -229,6 +236,7 @@
     <Resource Include="Images\DataLabels.png" />
     <Resource Include="Images\AxisSections.png" />
     <Resource Include="Images\ModelDependentStyle.png" />
+    <Resource Include="Images\ZommingAndPanning.png" />
     <Content Include="propertyAndInstanceChanged.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
