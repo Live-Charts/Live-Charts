@@ -230,6 +230,7 @@ namespace LiveCharts.Wpf
             if (Panning == Panning.None) return;
             _previous = e.GetPosition(VisualDrawMargin);
             _isDragging = true;
+            CaptureMouse();
         }
 
         private void OnMouseMove(object sender, MouseEventArgs e)
@@ -251,7 +252,9 @@ namespace LiveCharts.Wpf
 
         private void OnMouseUp(object sender, MouseButtonEventArgs e)
         {
+            if (Panning == Panning.None) return;
             _isDragging = false;
+            ReleaseMouseCapture();
         }
     }
 }
